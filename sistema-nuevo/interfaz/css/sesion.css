@@ -1,0 +1,28 @@
+/* Caja de sesión (usuario conectado + cerrar sesión) en la topbar. */
+
+.session-box {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-left: auto;
+}
+
+.session-username {
+  font-size: 0.82rem;
+  color: var(--dato-fecha);
+}
+
+.logout-button {
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--bad);
+  border-radius: 6px;
+  background: var(--bad-soft);
+  color: var(--bad);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background: rgba(255, 40, 100, 0.25);
+}

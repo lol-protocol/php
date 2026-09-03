@@ -4,22 +4,25 @@ Panel de administración para revisar, acción por acción, la actividad de un u
 como un flujo cronológico, comparando cada acción (duración, monto pagado) contra el
 promedio de un "universo" de otros usuarios filtrable por país / grupo de países
 (OTAN, BRICS, LATAM, países islámicos, Zona Euro, Espacio Schengen), rango de edad y
-género. Requiere iniciar sesión.
+género. Requiere iniciar sesión. Interfaz oscura, con colores neón distintos por
+tipo de dato mostrado.
 
 Sistema independiente del protocolo LoL en PHP que vive en la raíz de este repositorio.
 
 ## Arquitectura
 
 Tres componentes, cada uno en su propia carpeta, sin dependencias externas más allá
-del JDK/PHP/navegador (nada que instalar vía Composer/Maven/npm). Nombres en español
-simple; se mantienen en inglés los nombres de lenguaje (php/java/css/js) y las
-convenciones estándar que el propio tooling espera literalmente (`index.php`,
-`index.html`, `README.md`, `public/`, `src/`, `api.php`).
+del JDK/PHP/navegador. Nombres en español simple; se mantienen en inglés los nombres
+de lenguaje (php/java/css/js) y las convenciones estándar que el propio tooling
+espera literalmente (`index.php`, `README.md`, `public/`→`publico/` es la excepción
+que sí se tradujo, `src/`→`codigo/` también). Ningún archivo de código pasa las 100
+líneas — todo está modularizado en piezas chicas y enfocadas.
 
 ```
 sistema-nuevo/
-├── datos/                          Datos semilla + generador + saneador
-│   ├── generar-datos-semilla.php      Genera todo lo de abajo (reproducible, semilla fija)
+├── datos/                          Datos semilla + generador (modularizado)
+│   ├── generar-datos-semilla.php      Orquesta la generación (requiere generador/*.php)
+│   ├── generador/                     Catálogos, generación de flujo/registro, saneo, escritura
 │   ├── usuarios.json                  60 usuarios sintéticos (país, edad, género)
 │   ├── acciones-crudas.json           Log "crudo": formatos inconsistentes a propósito
 │   ├── acciones.json                  Log saneado (esquema canónico), en flujos por usuario
@@ -28,23 +31,29 @@ sistema-nuevo/
 │   └── monedas.json                   Moneda por país + cotización fija frente al USD
 │
 ├── servicio-estadisticas-java/     Microservicio de estadísticas (Java, solo JDK)
-│   └── ServicioEstadisticas.java      GET /stats → promedio de duración/monto (USD) de
-│                                       un tipo de acción para un universo de comparación
+│   ├── ServicioEstadisticas.java      main(): carga el CSV, levanta el servidor HTTP
+│   ├── Accion.java                    record de una fila ya aplanada
+│   ├── ManejadorEstadisticas.java     GET /stats: filtra y agrega
+│   └── UtilHttp.java                  Parseo de query string, respuesta JSON
 │
 ├── servidor-php/                   API backend (PHP)
-│   ├── publico/index.php              Front controller: CORS+cookies, rutas /api/*
+│   ├── publico/index.php              Front controller: CORS+cookies, preflight, rutas /api/*
 │   └── codigo/
 │       ├── AlmacenDatos.php           Lee usuarios/acciones/grupos-de-paises (JSON)
 │       ├── ClienteEstadisticas.php    Llama al servicio de estadísticas por HTTP
 │       ├── autenticacion.php          Sesión simple (login/logout, un solo usuario)
 │       ├── credenciales.php           Usuario demo + hash de contraseña (bcrypt)
-│       ├── saneador.php               Limpia/valida el log crudo (ver más abajo)
-│       └── api.php                    Lógica de los endpoints
+│       ├── saneador.php               Punto de entrada del saneador (ver saneador/)
+│       ├── saneador/                  primitivas.php, marca-temporal.php, accion.php
+│       ├── api.php                    Punto de entrada de los endpoints (ver api/)
+│       └── api/                       sesion.php, usuarios.php, linea-tiempo.php, ayudantes.php
 │
 ├── interfaz/                       Panel de administración (HTML/CSS/JS, sin frameworks)
-│   ├── index.html                     Pantalla de login + panel
-│   ├── css/estilo.css
-│   └── js/aplicacion.js               Llama a la API PHP con fetch() (credenciales incluidas)
+│   ├── index.php                      Ensambla partes/*.php + enlaza los .css
+│   ├── partes/                        pantalla-login.php, topbar.php, panel-principal.php
+│   ├── css/                           11 archivos chicos (base, login, topbar, tarjetas...)
+│   └── js/                            Módulos ES: nucleo, formato, sesion, selectores,
+│                                       tarjeta-usuario, linea-tiempo, aplicacion (entry point)
 │
 └── ejecutar.sh                     Levanta los 3 servicios de una
 ```
@@ -55,6 +64,31 @@ aparece en su timeline, le pregunta una vez al microservicio Java el promedio de
 tipo de acción para el universo de comparación actual (país/grupo, edad, género —
 excluyendo siempre al propio usuario). Con eso arma el timeline enriquecido con el
 delta % de cada acción contra ese promedio.
+
+## Interfaz: fondo negro, colores neón por tipo de dato
+
+Tema oscuro (`interfaz/css/base.css`), tipografía monoespaciada, textos con glow.
+Cada tipo de dato que aparece en una tarjeta de acción tiene su propio color neón
+fijo (ver la leyenda "Colores por tipo de dato" en la barra lateral de la app):
+
+| Dato                     | Color   |
+|---------------------------|---------|
+| fecha/hora                | lima    |
+| duración                  | cian    |
+| monto                     | dorado  |
+| comentario                | magenta |
+| endpoint / código HTTP    | naranja |
+| tamaño de archivo         | violeta |
+
+Los badges de comparación (mejor/peor/≈ promedio) usan verde/rojo neón, igual que antes.
+
+## Fechas y horas
+
+Formato canónico `Y.m.d.H.i.s` (ej. `2026.09.03.19.47.10`), siempre en UTC — mismo
+orden que ISO-8601 así que sigue ordenando bien como texto, solo que con puntos en
+vez de guiones/`T`/`Z`. Lo define `saneador_marca_temporal()` en
+`servidor-php/codigo/saneador/marca-temporal.php`; el frontend lo muestra tal cual,
+sin reformatear.
 
 ## Autenticación
 
@@ -78,7 +112,7 @@ pago real — y el saneador deriva `amount_usd` a partir de esa cotización.
 
 El servicio de estadísticas en Java compara **solo en USD**: promediar montos en
 monedas distintas sin normalizar no tendría sentido. La interfaz muestra ambos
-valores, p. ej. `290,65 MYR (≈ 61,84 US$)`, pero el badge de comparación (más
+valores, p. ej. `₹5.412 (≈ 65,19 US$)`, pero el badge de comparación (más
 caro/barato) se calcula siempre sobre el monto en USD.
 
 ## Datos sintéticos y saneamiento
@@ -88,8 +122,7 @@ Los logs de acciones se generan en dos pasos, para poder mostrar un saneador rea
 1. **`acciones-crudas.json`**: 14 tipos de acción (login, password_reset, search,
    view_product, api_call, profile_update, add_to_cart, checkout_start, payment,
    refund, review_submit, support_ticket, file_upload, logout) con formatos
-   deliberadamente inconsistentes — mismo tipo de variación que se ve en logs reales
-   de fuentes heterogéneas:
+   deliberadamente inconsistentes:
    - Fechas en 5 formatos distintos (ISO+Z, ISO+offset, `Y-m-d H:i:s`, epoch en
      segundos, epoch en milisegundos).
    - Números a veces como texto, con símbolo de moneda o separador de miles
@@ -98,17 +131,15 @@ Los logs de acciones se generan en dos pasos, para poder mostrar un saneador rea
    - Comentarios de reseñas/tickets con HTML y scripts colados (`<script>...`,
      `<img onerror=...>`, entidades HTML codificadas) para poder mostrar que el
      saneador los neutraliza.
-   - Una fracción de registros con campos faltantes o inválidos a propósito
-     (usuario vacío, tipo desconocido, fecha o duración no interpretable).
+   - Una fracción de registros con campos faltantes o inválidos a propósito.
 
-2. **`saneador.php`** (`servidor-php/codigo/saneador.php`) limpia cada registro:
-   normaliza fechas a UTC ISO-8601, parsea números con formato inconsistente, valida
-   tipo de acción/moneda/código HTTP contra catálogos conocidos, decodifica entidades
-   HTML y **elimina cualquier etiqueta** (`strip_tags`) de los campos de texto libre
-   antes de guardarlos, y descarta el registro completo si le faltan campos
-   esenciales (usuario, tipo, fecha o duración válidos). El resultado es
-   `acciones.json`, que es lo único que lee el backend en vivo — el saneamiento
-   corre una sola vez al generar los datos, no en cada request.
+2. **`saneador/` (primitivas.php, marca-temporal.php, accion.php)** limpia cada
+   registro: normaliza fechas, parsea números con formato inconsistente, valida
+   tipo de acción/moneda/código HTTP contra catálogos conocidos, decodifica
+   entidades HTML y **elimina cualquier etiqueta** (`strip_tags`) de los campos de
+   texto libre antes de guardarlos, y descarta el registro completo si le faltan
+   campos esenciales. El resultado es `acciones.json`, lo único que lee el backend
+   en vivo — el saneamiento corre una sola vez al generar los datos.
 
    Se puede verificar que funcionó: `acciones-crudas.json` sí contiene fragmentos
    como `<script>` o `<img onerror=`; en `acciones.json` no queda ninguno.
@@ -134,13 +165,13 @@ Deja corriendo:
 # 1. Datos semilla (solo hace falta una vez, o para regenerar)
 php datos/generar-datos-semilla.php
 
-# 2. Microservicio de estadísticas (Java)
-cd servicio-estadisticas-java && java ServicioEstadisticas.java
+# 2. Microservicio de estadísticas (Java) — son 4 archivos, hay que compilarlos juntos
+cd servicio-estadisticas-java && javac *.java && java ServicioEstadisticas
 
 # 3. API backend (PHP)
 php -S localhost:8000 -t servidor-php/publico servidor-php/publico/index.php
 
-# 4. Panel de administración (estático)
+# 4. Panel de administración
 php -S localhost:8082 -t interfaz
 ```
 

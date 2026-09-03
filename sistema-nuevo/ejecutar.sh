@@ -9,7 +9,7 @@ echo "Generando datos semilla (crudos -> saneados)..."
 php datos/generar-datos-semilla.php
 
 echo "Compilando el microservicio de estadísticas (Java)..."
-javac servicio-estadisticas-java/ServicioEstadisticas.java
+javac servicio-estadisticas-java/*.java
 
 pids=()
 cleanup() {
