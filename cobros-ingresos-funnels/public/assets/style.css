@@ -1,0 +1,288 @@
+/* ---------- Tema y paleta (paleta validada: ver skill de dataviz) ---------- */
+:root {
+    color-scheme: light;
+    --surface-1: #fcfcfb;
+    --page: #f9f9f7;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #898781;
+    --gridline: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+
+    --series-1: #2a78d6; /* ingresos / serie principal */
+    --series-2: #eb6834; /* cobros / serie secundaria */
+
+    --seq-250: #86b6ef;
+    --seq-350: #5598e7;
+    --seq-450: #2a78d6;
+    --seq-600: #184f95;
+
+    --good: #0ca30c;
+    --warning: #fab219;
+    --serious: #ec835a;
+    --critical: #d03b3b;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --surface-1: #1a1a19;
+        --page: #0d0d0d;
+        --text-primary: #ffffff;
+        --text-secondary: #c3c2b7;
+        --text-muted: #898781;
+        --gridline: #2c2c2a;
+        --baseline: #383835;
+        --border: rgba(255, 255, 255, 0.10);
+
+        --series-1: #3987e5;
+        --series-2: #d95926;
+
+        --seq-250: #6da7ec;
+        --seq-350: #3987e5;
+        --seq-450: #2a78d6;
+        --seq-600: #104281;
+    }
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--page);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+a { color: var(--series-1); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header.topbar {
+    background: var(--surface-1);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+header.topbar .brand {
+    font-weight: 600;
+    padding: 16px 0;
+    white-space: nowrap;
+}
+
+nav.tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+nav.tabs a {
+    display: inline-block;
+    padding: 18px 14px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+}
+
+nav.tabs a:hover { color: var(--text-primary); text-decoration: none; }
+
+nav.tabs a.active {
+    color: var(--series-1);
+    border-bottom-color: var(--series-1);
+}
+
+main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+h1 { font-size: 20px; margin: 0 0 4px; }
+h2 { font-size: 15px; margin: 0 0 14px; color: var(--text-primary); }
+p.subtitulo { color: var(--text-secondary); margin: 0 0 20px; }
+
+.panel {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    gap: 16px;
+}
+
+.grid-kpis { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+
+/* ---------- Filtros ---------- */
+form.filtros {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+form.filtros label {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+form.filtros select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface-1);
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+form.filtros button {
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--series-1);
+    background: var(--series-1);
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+form.filtros button:hover { opacity: 0.9; }
+
+/* ---------- Stat tiles ---------- */
+.stat-tile { display: flex; flex-direction: column; gap: 6px; }
+.stat-tile .label { color: var(--text-secondary); font-size: 13px; }
+.stat-tile .value { font-size: 26px; font-weight: 600; }
+.stat-tile .delta { font-size: 12px; color: var(--text-muted); }
+.stat-tile .delta.good { color: var(--good); }
+.stat-tile .delta.critical { color: var(--critical); }
+
+/* ---------- Leyenda ---------- */
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+.legend .item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); }
+.legend .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+/* ---------- Grafico de barras (CSS puro, con tooltip nativo) ---------- */
+.chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    height: 200px;
+    border-bottom: 1px solid var(--baseline);
+    padding: 0 4px;
+    position: relative;
+}
+
+.chart .grupo {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    flex: 1;
+    height: 100%;
+    justify-content: center;
+    min-width: 0;
+}
+
+.bar {
+    width: 22px;
+    max-width: 24px;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    cursor: default;
+}
+
+.bar:focus { outline: 2px solid var(--series-1); outline-offset: 2px; }
+
+.bar[data-tooltip]:hover::after,
+.bar[data-tooltip]:focus::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 6px;
+    background: var(--text-primary);
+    color: var(--surface-1);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 5;
+}
+
+.chart-etiquetas {
+    display: flex;
+    gap: 14px;
+    padding: 6px 4px 0;
+}
+
+.chart-etiquetas .grupo-label {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    min-width: 0;
+}
+
+/* ---------- Barras horizontales (metodo de pago, etc.) ---------- */
+.hbar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.hbar-row .hbar-label { width: 130px; flex-shrink: 0; color: var(--text-secondary); font-size: 13px; }
+.hbar-track { flex: 1; background: var(--gridline); border-radius: 4px; height: 16px; overflow: hidden; display: block; }
+.hbar-fill { display: block; height: 100%; border-radius: 4px; background: var(--series-1); }
+.hbar-value { width: 110px; flex-shrink: 0; text-align: right; font-size: 13px; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+/* ---------- Estados / status ---------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.badge.pagada { background: rgba(12, 163, 12, 0.12); color: var(--good); }
+.badge.pendiente { background: rgba(250, 178, 25, 0.16); color: #9a6a00; }
+.badge.parcial { background: rgba(235, 104, 52, 0.14); color: #b04a1c; }
+.badge.vencida { background: rgba(208, 59, 59, 0.12); color: var(--critical); }
+
+@media (prefers-color-scheme: dark) {
+    .badge.pendiente { color: var(--warning); }
+    .badge.parcial { color: var(--series-2); }
+}
+
+/* ---------- Tablas ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+th, td {
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--gridline);
+}
+
+th { color: var(--text-muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.02em; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.table-wrap { overflow-x: auto; }
+
+footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    padding: 30px 24px;
+}
