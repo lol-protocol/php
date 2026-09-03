@@ -16,6 +16,17 @@ function api_unauthorized(): void
     echo json_encode(['error' => 'no autenticado']);
 }
 
+/** @return array{total:int,page:int,per_page:int,total_pages:int} Forma común de paginación de /api/users y /api/timeline. */
+function api_pagination_meta(int $total, int $page, int $perPage): array
+{
+    return [
+        'total' => $total,
+        'page' => $page,
+        'per_page' => $perPage,
+        'total_pages' => $perPage > 0 ? (int) ceil($total / $perPage) : 0,
+    ];
+}
+
 function api_delta_pct(int|float $value, int|float|null $average): ?float
 {
     if ($average === null || $average <= 0) {

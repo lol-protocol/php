@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/** Endpoint principal: /api/timeline. */
+/** Endpoint principal: /api/timeline. Paginado y filtrable por tipo de acción. */
 
 function api_timeline(): void
 {
@@ -28,29 +28,16 @@ function api_timeline(): void
     $ageMax = isset($_GET['age_max']) ? (int) $_GET['age_max'] : 150;
     $gender = $_GET['gender'] ?? 'all';
 
-    $client = new ClienteEstadisticas();
-    $statsCache = [];
-    $timeline = [];
+    $tipoRaw = trim((string) ($_GET['type'] ?? ''));
+    $tipo = ($tipoRaw === '' || $tipoRaw === 'all') ? null : $tipoRaw;
 
-    foreach (AlmacenDatos::actionsByUser($userId) as $action) {
-        $type = $action['type'];
-        if (!array_key_exists($type, $statsCache)) {
-            $statsCache[$type] = $client->stats($type, $countries, $ageMin, $ageMax, $gender, $userId);
-        }
-        $cohort = $statsCache[$type];
+    $pagina = api_pagina_desde_query();
+    $porPagina = api_por_pagina_desde_query();
 
-        // amount_local/currency/comment/endpoint/http_status/file_size_kb/path/ip*
-        // ya vienen en $action (esquema canónico saneado); se pasan tal cual.
-        $timeline[] = $action + [
-            'cohort' => $cohort,
-            'duration_delta_pct' => api_delta_pct($action['duration_ms'], $cohort['avg_duration_ms'] ?? null),
-            'amount_delta_pct' => $action['amount_usd'] === null
-                ? null
-                : api_delta_pct($action['amount_usd'], $cohort['avg_amount_usd'] ?? null),
-            // La IP no siempre coincide con el país declarado del usuario (VPN/proxy/viaje).
-            'ip_mismatch' => $action['ip_country'] !== null && $action['ip_country'] !== $user['country'],
-        ];
-    }
+    $paginaAcciones = AlmacenAcciones::pagina($userId, $tipo, $pagina, $porPagina);
+    $cohortes = api_timeline_con_cohortes(
+        $paginaAcciones['items'], $userId, $user['country'], $countries, $ageMin, $ageMax, $gender
+    );
 
     echo json_encode([
         'user' => $user + ['country_name' => $groups['countries'][$user['country']] ?? $user['country']],
@@ -60,8 +47,11 @@ function api_timeline(): void
             'age_min' => $ageMin,
             'age_max' => $ageMax,
             'gender' => $gender,
+            'type' => $tipo ?? 'all',
         ],
-        'stats_service_available' => $statsCache === [] || !in_array(null, $statsCache, true),
-        'timeline' => $timeline,
+        'pagination' => api_pagination_meta($paginaAcciones['total'], $pagina, $porPagina),
+        'chart' => AlmacenAcciones::resumenDiario($userId, $tipo),
+        'stats_service_available' => $cohortes['stats_service_available'],
+        'timeline' => $cohortes['timeline'],
     ], JSON_UNESCAPED_UNICODE);
 }

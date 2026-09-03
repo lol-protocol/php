@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 
 $offsetPorPais = [
+    'AT' => 1,
     'AL' => 1, 'BE' => 1, 'BG' => 2, 'CA' => -5, 'HR' => 1,
     'CZ' => 1, 'DK' => 1, 'EE' => 2, 'FI' => 2, 'FR' => 1,
     'DE' => 1, 'GR' => 2, 'HU' => 1, 'IS' => 0, 'IT' => 1,

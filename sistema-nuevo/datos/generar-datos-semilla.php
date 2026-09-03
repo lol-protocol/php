@@ -15,6 +15,8 @@ require __DIR__ . '/generador/generar-usuarios.php';
 require __DIR__ . '/generador/generar-acciones-crudas.php';
 require __DIR__ . '/generador/sanear-acciones.php';
 require __DIR__ . '/generador/escribir-archivos.php';
+require __DIR__ . '/generador/cargar-postgres.php';
+require __DIR__ . '/generador/validar-catalogos.php';
 
 mt_srand(20260903); // semilla fija: datos reproducibles entre corridas
 $ahora = strtotime('2026-09-03T12:00:00+00:00'); // ancla fija, no time(): reproducible byte a byte
@@ -23,8 +25,10 @@ $catalogoPaises = require __DIR__ . '/generador/catalogo-paises.php';
 $catalogoMonedas = require __DIR__ . '/generador/catalogo-monedas.php';
 $catalogoRed = require __DIR__ . '/generador/catalogo-red.php';
 $nombres = require __DIR__ . '/generador/nombres.php';
+$nombresNativos = require __DIR__ . '/generador/nombres-nativos.php';
 $tiposAccionData = require __DIR__ . '/generador/tipos-accion.php';
 $comentarios = require __DIR__ . '/generador/comentarios.php';
+validar_catalogos($catalogoPaises, $catalogoMonedas, $catalogoRed);
 
 $allCountries = array_keys($catalogoPaises['countryNames']);
 
@@ -34,7 +38,7 @@ foreach ($allCountries as $c) {
     $countryPriceFactor[$c] = 0.7 + ((crc32($c) % 100) / 100) * 0.9;
 }
 
-$users = generar_usuarios(60, $allCountries, $nombres);
+$users = generar_usuarios(60, $allCountries, $nombres, $nombresNativos);
 $usersById = array_column($users, null, 'id');
 
 $crudas = generar_acciones_crudas(
@@ -81,7 +85,15 @@ escribir_json($dataDir . '/monedas.json', [
 ]);
 escribir_csv_acciones($dataDir . '/acciones-planas.csv', $acciones, $usersById);
 
+// PostgreSQL es la fuente de datos del backend en vivo (ver AlmacenDatos.php);
+// los JSON de arriba quedan como artefacto legible + lo que consume el CSV para Java.
+cargar_en_postgres(
+    $users, $acciones, $catalogoPaises['countryNames'], $catalogoMonedas['currencyByCountry'],
+    $catalogoMonedas['rateToUsd'], $catalogoRed['offsetPorPais'], $catalogoPaises['presets'],
+    $tiposAccionData['tiposAccion']
+);
+
 fwrite(STDERR, sprintf(
-    "Generados %d usuarios, %d acciones crudas -> %d saneadas, %d descartadas por datos inválidos.\n",
+    "Generados %d usuarios, %d acciones crudas -> %d saneadas, %d descartadas por datos inválidos. Cargado en PostgreSQL.\n",
     count($users), count($crudas), count($acciones), $saneado['descartadas']
 ));

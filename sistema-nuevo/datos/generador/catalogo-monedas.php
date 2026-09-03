@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 $currencyByCountry = [
+    'AT' => 'EUR',
     'AL' => 'ALL', 'BE' => 'EUR', 'BG' => 'BGN', 'CA' => 'CAD', 'HR' => 'EUR',
     'CZ' => 'CZK', 'DK' => 'DKK', 'EE' => 'EUR', 'FI' => 'EUR', 'FR' => 'EUR',
     'DE' => 'EUR', 'GR' => 'EUR', 'HU' => 'HUF', 'IS' => 'ISK', 'IT' => 'EUR',

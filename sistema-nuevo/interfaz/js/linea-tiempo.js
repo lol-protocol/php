@@ -1,13 +1,14 @@
 import { el, ACTION_ICONS } from "./nucleo.js";
+import { t } from "./idioma.js";
 import { formatPct } from "./formato.js";
 import { buildMetricNodes } from "./metricas.js";
 
 function buildDeltaBadge(deltaPct, { betterWhenLower = true, goodLabel, badLabel }) {
   if (deltaPct === null) {
-    return el("span", { class: "badge badge--neutral", text: "Sin datos de comparación" });
+    return el("span", { class: "badge badge--neutral", text: t("badge_no_comparison") });
   }
   if (Math.abs(deltaPct) <= 10) {
-    return el("span", { class: "badge badge--neutral", text: `≈ promedio (${formatPct(deltaPct)})` });
+    return el("span", { class: "badge badge--neutral", text: t("badge_avg", { pct: formatPct(deltaPct) }) });
   }
   const isGood = betterWhenLower ? deltaPct < 0 : deltaPct > 0;
   return el("span", {
@@ -21,7 +22,7 @@ export function renderTimeline(items) {
   list.innerHTML = "";
 
   if (items.length === 0) {
-    list.appendChild(el("li", { class: "empty-state", text: "Este usuario no tiene acciones registradas." }));
+    list.appendChild(el("li", { class: "empty-state", text: t("timeline_empty") }));
     return;
   }
 
@@ -32,16 +33,16 @@ export function renderTimeline(items) {
     ]);
 
     const header = el("div", { class: "card-header" }, [
-      el("span", { class: "card-title", text: item.label }),
+      el("span", { class: "card-title", text: t(`action_${item.type}`) }),
       el("span", { class: "card-time", text: item.timestamp }),
     ]);
 
     const metrics = el("div", { class: "card-metrics" }, buildMetricNodes(item));
 
     const badges = el("div", { class: "badges" }, [
-      buildDeltaBadge(item.duration_delta_pct, { betterWhenLower: true, goodLabel: "más rápido", badLabel: "más lento" }),
+      buildDeltaBadge(item.duration_delta_pct, { betterWhenLower: true, goodLabel: t("badge_faster"), badLabel: t("badge_slower") }),
       ...(item.amount_usd !== null
-        ? [buildDeltaBadge(item.amount_delta_pct, { betterWhenLower: true, goodLabel: "más barato", badLabel: "más caro" })]
+        ? [buildDeltaBadge(item.amount_delta_pct, { betterWhenLower: true, goodLabel: t("badge_cheaper"), badLabel: t("badge_pricier") })]
         : []),
     ]);
 

@@ -77,9 +77,15 @@ function saneador_ip(mixed $valor): ?string
     if (!is_string($valor)) {
         return null;
     }
-    // Admite un ":puerto" colado ("203.45.12.9:54321") antes de validar.
-    $limpio = preg_replace('/:\d+$/', '', trim($valor)) ?? '';
-    return filter_var($limpio, FILTER_VALIDATE_IP) !== false ? $limpio : null;
+    $limpio = trim($valor);
+    if (filter_var($limpio, FILTER_VALIDATE_IP) !== false) {
+        return $limpio;
+    }
+    // No es una IP válida tal cual: puede traer un ":puerto" colado (p. ej.
+    // "203.45.12.9:54321"). Recién acá tiene sentido probar a sacarlo, porque
+    // ":" también es el separador propio de IPv6 (ej. "::1" no debe tocarse).
+    $sinPuerto = preg_replace('/:\d+$/', '', $limpio) ?? '';
+    return filter_var($sinPuerto, FILTER_VALIDATE_IP) !== false ? $sinPuerto : null;
 }
 
 function saneador_codigo_pais(mixed $valor, array $paisesValidos): ?string

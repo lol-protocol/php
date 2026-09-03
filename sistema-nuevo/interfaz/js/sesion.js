@@ -1,14 +1,15 @@
-import { API_BASE } from "./nucleo.js";
+import { API_BASE, state } from "./nucleo.js";
+import { t } from "./idioma.js";
 
 export async function fetchJson(path) {
   const response = await fetch(API_BASE + path, { credentials: "include" });
   if (response.status === 401) {
     showLogin();
-    throw new Error("sesión expirada");
+    throw new Error(t("error_session_expired"));
   }
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || `Error ${response.status} al llamar ${path}`);
+    throw new Error(body.error || t("error_http", { status: response.status, path }));
   }
   return response.json();
 }
@@ -22,7 +23,7 @@ export async function postJson(path, body) {
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(data.error || `Error ${response.status} al llamar ${path}`);
+    throw new Error(data.error || t("error_http", { status: response.status, path }));
   }
   return data;
 }
@@ -40,9 +41,10 @@ export function showLogin(errorMessage = "") {
 }
 
 export function showApp(username) {
+  state.username = username;
   document.getElementById("login-screen").hidden = true;
   document.getElementById("app").hidden = false;
-  document.getElementById("session-username").textContent = `Conectado como ${username}`;
+  document.getElementById("session-username").textContent = t("session_connected_as", { name: username });
 }
 
 /** @param {() => Promise<void>} onAuthenticated */
@@ -56,6 +58,6 @@ export async function boot(onAuthenticated) {
       showLogin();
     }
   } catch (err) {
-    showLogin(`No se pudo conectar con el backend PHP en ${API_BASE}. (${err.message})`);
+    showLogin(t("error_connection", { base: API_BASE, message: err.message }));
   }
 }

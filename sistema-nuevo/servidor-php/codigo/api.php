@@ -10,4 +10,6 @@ declare(strict_types=1);
 require __DIR__ . '/api/ayudantes.php';
 require __DIR__ . '/api/sesion.php';
 require __DIR__ . '/api/usuarios.php';
+require __DIR__ . '/api/alertas.php';
+require __DIR__ . '/api/linea-tiempo-cohortes.php';
 require __DIR__ . '/api/linea-tiempo.php';

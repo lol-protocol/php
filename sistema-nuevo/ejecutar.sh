@@ -5,7 +5,9 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-echo "Generando datos semilla (crudos -> saneados)..."
+./preparar-postgres.sh
+
+echo "Generando datos semilla (crudos -> saneados, cargados en PostgreSQL)..."
 php datos/generar-datos-semilla.php
 
 echo "Compilando el microservicio de estadísticas (Java)..."

@@ -1,8 +1,11 @@
-import { state, debounce } from "./nucleo.js";
-import { fetchJson, postJson, showLogin, showApp, boot } from "./sesion.js";
-import { populateScopeSelect, renderUserOptions } from "./selectores.js";
+import { state, PER_PAGE } from "./nucleo.js";
+import { fetchJson } from "./sesion.js";
+import { populateScopeSelect, populateTypeSelect, renderUserOptions } from "./selectores.js";
 import { renderUserCard, renderFilterSummary, renderStatusMessage } from "./tarjeta-usuario.js";
 import { renderTimeline } from "./linea-tiempo.js";
+import { renderPagination } from "./paginacion.js";
+import { renderChart } from "./grafico.js";
+import { renderAlerts } from "./alertas.js";
 
 async function loadTimeline() {
   if (!state.selectedUserId) return;
@@ -11,15 +14,22 @@ async function loadTimeline() {
   const ageMin = document.getElementById("age-min").value || 0;
   const ageMax = document.getElementById("age-max").value || 150;
   const gender = document.getElementById("gender-select").value;
+  const type = document.getElementById("type-select").value;
 
-  const query = new URLSearchParams({ user_id: state.selectedUserId, scope, age_min: ageMin, age_max: ageMax, gender });
+  const query = new URLSearchParams({
+    user_id: state.selectedUserId, scope, age_min: ageMin, age_max: ageMax, gender, type,
+    page: state.page, per_page: PER_PAGE,
+  });
 
   try {
     const data = await fetchJson(`/api/timeline?${query.toString()}`);
+    state.lastTimeline = data;
     renderUserCard(data.user);
-    renderFilterSummary(data.filters, data.timeline.length);
+    renderFilterSummary(data.filters, data.pagination.total);
     renderStatusMessage(data.stats_service_available);
+    renderChart(data.chart);
     renderTimeline(data.timeline);
+    renderPagination(data.pagination, goToPage);
   } catch (err) {
     const box = document.getElementById("status-message");
     box.hidden = false;
@@ -28,18 +38,45 @@ async function loadTimeline() {
   }
 }
 
-async function loadAppData() {
+export function goToPage(page) {
+  state.page = page;
+  return loadTimeline();
+}
+
+// Cualquier cambio de filtro (usuario, universo, edad, género, tipo) vuelve a la página 1.
+export function loadTimelineFromStart() {
+  state.page = 1;
+  return loadTimeline();
+}
+
+/** Selecciona un usuario desde afuera del selector (p. ej. un clic en el panel de alertas). */
+export function selectUser(userId) {
+  state.selectedUserId = userId;
+  document.getElementById("user-select").value = userId;
+  return loadTimelineFromStart();
+}
+
+export async function loadAppData() {
   try {
-    const [groups, users] = await Promise.all([fetchJson("/api/groups"), fetchJson("/api/users")]);
+    const [groups, actionTypes, users, alerts] = await Promise.all([
+      fetchJson("/api/groups"),
+      fetchJson("/api/action-types"),
+      fetchJson("/api/users?per_page=100"),
+      fetchJson("/api/alerts"),
+    ]);
     state.groups = groups;
-    state.users = users;
+    state.actionTypes = actionTypes;
+    state.users = users.items;
+    state.lastAlerts = alerts;
 
     populateScopeSelect();
-    renderUserOptions("", loadTimeline);
+    populateTypeSelect();
+    renderUserOptions("", loadTimelineFromStart);
+    renderAlerts(alerts, selectUser);
 
     if (state.users.length > 0) {
       state.selectedUserId = document.getElementById("user-select").value || state.users[0].id;
-      await loadTimeline();
+      await loadTimelineFromStart();
     }
   } catch (err) {
     const box = document.getElementById("status-message");
@@ -48,38 +85,3 @@ async function loadAppData() {
     box.textContent = `⚠ ${err.message}`;
   }
 }
-
-document.getElementById("login-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const username = document.getElementById("login-username").value.trim();
-  const password = document.getElementById("login-password").value;
-  try {
-    const result = await postJson("/api/login", { username, password });
-    document.getElementById("login-password").value = "";
-    showApp(result.username);
-    await loadAppData();
-  } catch (err) {
-    showLogin(err.message);
-  }
-});
-
-document.getElementById("logout-button").addEventListener("click", async () => {
-  try {
-    await postJson("/api/logout", {});
-  } finally {
-    state.selectedUserId = null;
-    showLogin();
-  }
-});
-
-document.getElementById("user-search").addEventListener("input", (e) => renderUserOptions(e.target.value, loadTimeline));
-document.getElementById("user-select").addEventListener("change", (e) => {
-  state.selectedUserId = e.target.value;
-  loadTimeline();
-});
-document.getElementById("scope-select").addEventListener("change", loadTimeline);
-document.getElementById("gender-select").addEventListener("change", loadTimeline);
-document.getElementById("age-min").addEventListener("input", debounce(loadTimeline, 400));
-document.getElementById("age-max").addEventListener("input", debounce(loadTimeline, 400));
-
-boot(loadAppData);

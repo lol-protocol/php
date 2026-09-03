@@ -1,4 +1,5 @@
 import { el } from "./nucleo.js";
+import { t } from "./idioma.js";
 import { formatDuration, formatMoney, formatFileSize } from "./formato.js";
 
 // Cada tipo de dato mostrado tiene su propia clase de color (ver css/tarjetas.css).
@@ -26,10 +27,10 @@ export function buildMetricNodes(item) {
   }
 
   if (item.ip) {
-    const detalle = [item.ip_country, item.ip_local_time && `${item.ip_local_time} hora local`, item.ip_isp]
+    const detalle = [item.ip_country, item.ip_local_time && `${item.ip_local_time} ${t("metric_local_time_suffix")}`, item.ip_isp]
       .filter(Boolean)
       .join(" · ");
-    const alerta = item.ip_mismatch ? " ⚠ no coincide con el país declarado" : "";
+    const alerta = item.ip_mismatch ? ` ${t("metric_ip_mismatch")}` : "";
     nodes.push(el("span", {
       class: `metric ${item.ip_mismatch ? "metric--ip-alerta" : "metric--ip"}`,
       text: `🌐 ${item.ip} · ${detalle}${alerta}`,
@@ -37,7 +38,7 @@ export function buildMetricNodes(item) {
   }
 
   if (item.cohort) {
-    nodes.push(el("span", { class: "metric", text: `(vs. ${item.cohort.count} acciones del universo elegido)` }));
+    nodes.push(el("span", { class: "metric", text: t("metric_cohort_count", { count: item.cohort.count }) }));
   }
 
   return nodes;

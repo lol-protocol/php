@@ -41,6 +41,9 @@
 .user-card h2 {
   font-size: 1.05rem;
   margin-bottom: 0.2rem;
+  /* nombres en árabe/hebreo (RTL) se leen bien aunque el resto de la
+     interfaz sea LTR -- el navegador detecta la dirección solo */
+  unicode-bidi: plaintext;
 }
 
 .user-card .user-meta {

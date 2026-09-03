@@ -18,12 +18,18 @@ export const ACTION_ICONS = {
   logout: "🚪",
 };
 
-export const GENDER_LABELS = { M: "Masculino", F: "Femenino", O: "Otro" };
+export const PER_PAGE = 20;
 
 export const state = {
   users: [],
   groups: null,
+  actionTypes: [],
   selectedUserId: null,
+  page: 1,
+  lang: "es",
+  lastTimeline: null,
+  lastAlerts: null,
+  username: null,
 };
 
 export const el = (tag, props = {}, children = []) => {

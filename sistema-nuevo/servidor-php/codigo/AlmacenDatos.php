@@ -2,55 +2,77 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/ConexionBd.php';
+
 /**
- * Acceso de solo lectura a los datos semilla (JSON) generados en sistema-nuevo/datos/.
+ * Acceso de solo lectura a usuarios/países/grupos — PostgreSQL, no JSON (los
+ * JSON en datos/ quedan como artefacto legible + insumo del CSV para Java).
+ * Las acciones viven en AlmacenAcciones.php (son la tabla grande, paginada).
  */
 final class AlmacenDatos
 {
-    private static ?array $users = null;
-    private static ?array $actions = null;
-    private static ?array $groups = null;
+    private const CAMPOS_USUARIO =
+        'u.id, u.nombre AS name, u.pais_codigo AS country, u.edad AS age, u.genero AS gender,
+         p.nombre AS country_name';
 
-    private static function dataDir(): string
+    /** @return array{items: array, total: int} */
+    public static function usersPage(int $pagina, int $porPagina, string $busqueda): array
     {
-        return __DIR__ . '/../../datos';
-    }
+        $pdo = ConexionBd::obtener();
+        $patron = '%' . $busqueda . '%';
 
-    private static function readJson(string $file): array
-    {
-        $path = self::dataDir() . '/' . $file;
-        $contents = file_get_contents($path);
-        if ($contents === false) {
-            throw new RuntimeException("No se pudo leer $path. ¿Corriste generar-datos-semilla.php?");
-        }
-        return json_decode($contents, true);
-    }
+        $stmtTotal = $pdo->prepare(
+            'SELECT COUNT(*) FROM usuarios u JOIN paises p ON p.codigo = u.pais_codigo
+             WHERE u.nombre ILIKE :patron OR p.nombre ILIKE :patron'
+        );
+        $stmtTotal->execute(['patron' => $patron]);
 
-    public static function users(): array
-    {
-        return self::$users ??= self::readJson('usuarios.json');
+        $stmt = $pdo->prepare(
+            'SELECT ' . self::CAMPOS_USUARIO . '
+             FROM usuarios u JOIN paises p ON p.codigo = u.pais_codigo
+             WHERE u.nombre ILIKE :patron OR p.nombre ILIKE :patron
+             ORDER BY u.nombre
+             LIMIT :limite OFFSET :offset'
+        );
+        $stmt->bindValue('patron', $patron);
+        $stmt->bindValue('limite', $porPagina, PDO::PARAM_INT);
+        $stmt->bindValue('offset', ($pagina - 1) * $porPagina, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return ['items' => $stmt->fetchAll(), 'total' => (int) $stmtTotal->fetchColumn()];
     }
 
     public static function userById(string $id): ?array
     {
-        foreach (self::users() as $user) {
-            if ($user['id'] === $id) {
-                return $user;
-            }
-        }
-        return null;
-    }
-
-    public static function actionsByUser(string $userId): array
-    {
-        $actions = self::$actions ??= self::readJson('acciones.json');
-        $result = array_values(array_filter($actions, fn ($a) => $a['user_id'] === $userId));
-        usort($result, fn ($a, $b) => $a['timestamp'] <=> $b['timestamp']);
-        return $result;
+        $stmt = ConexionBd::obtener()->prepare(
+            'SELECT ' . self::CAMPOS_USUARIO . '
+             FROM usuarios u JOIN paises p ON p.codigo = u.pais_codigo WHERE u.id = :id'
+        );
+        $stmt->execute(['id' => $id]);
+        $fila = $stmt->fetch();
+        return $fila === false ? null : $fila;
     }
 
     public static function groups(): array
     {
-        return self::$groups ??= self::readJson('grupos-de-paises.json');
+        $pdo = ConexionBd::obtener();
+
+        $grupos = $pdo->query('SELECT clave, etiqueta FROM grupos_paises ORDER BY etiqueta')->fetchAll();
+        $miembros = $pdo->query('SELECT grupo_clave, pais_codigo FROM grupo_pais ORDER BY pais_codigo')->fetchAll();
+
+        $paisesPorGrupo = [];
+        foreach ($miembros as $m) {
+            $paisesPorGrupo[$m['grupo_clave']][] = $m['pais_codigo'];
+        }
+
+        $presets = array_map(fn ($g) => [
+            'key' => $g['clave'],
+            'label' => $g['etiqueta'],
+            'countries' => $paisesPorGrupo[$g['clave']] ?? [],
+        ], $grupos);
+
+        $countryRows = $pdo->query('SELECT codigo, nombre FROM paises')->fetchAll();
+
+        return ['presets' => $presets, 'countries' => array_column($countryRows, 'nombre', 'codigo')];
     }
 }

@@ -36,6 +36,7 @@ $presets = [
 ];
 
 $countryNames = [
+    'AT' => 'Austria',
     'AL' => 'Albania', 'BE' => 'Bélgica', 'BG' => 'Bulgaria', 'CA' => 'Canadá', 'HR' => 'Croacia',
     'CZ' => 'Chequia', 'DK' => 'Dinamarca', 'EE' => 'Estonia', 'FI' => 'Finlandia', 'FR' => 'Francia',
     'DE' => 'Alemania', 'GR' => 'Grecia', 'HU' => 'Hungría', 'IS' => 'Islandia', 'IT' => 'Italia',

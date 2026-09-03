@@ -10,8 +10,11 @@
   <link rel="stylesheet" href="css/sesion.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/leyenda.css">
+  <link rel="stylesheet" href="css/alertas.css">
   <link rel="stylesheet" href="css/estado.css">
   <link rel="stylesheet" href="css/linea-tiempo.css">
+  <link rel="stylesheet" href="css/paginacion.css">
+  <link rel="stylesheet" href="css/grafico.css">
   <link rel="stylesheet" href="css/tarjetas.css">
   <link rel="stylesheet" href="css/comentarios.css">
   <link rel="stylesheet" href="css/badges.css">
@@ -24,6 +27,6 @@
     <?php include __DIR__ . '/partes/panel-principal.php'; ?>
   </div>
 
-  <script type="module" src="js/aplicacion.js"></script>
+  <script type="module" src="js/eventos.js"></script>
 </body>
 </html>

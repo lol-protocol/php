@@ -11,10 +11,27 @@ iniciá sesión con el usuario demo:
 - **Contraseña:** `admin123`
 
 Si la contraseña es incorrecta, el mensaje aparece debajo del botón. Una vez
-adentro, arriba a la derecha vas a ver "Conectado como admin" y el botón
-**Cerrar sesión**.
+adentro, arriba a la derecha vas a ver el selector de idioma, "Conectado como
+admin" y el botón **Cerrar sesión**.
 
-## 2. Elegir un usuario
+## 2. Idioma (ES/EN)
+
+Arriba a la derecha, los botones **ES**/**EN** cambian el idioma de toda la
+interfaz al instante, sin recargar la página, y se recuerda la próxima vez que
+entrás. Lo que **no** cambia con el idioma: nombres de usuario, nombres de país y
+rutas/endpoints del backend — son datos, no texto de la interfaz, igual que un
+nombre propio no se traduce. Los nombres en japonés, árabe, hebreo u otros
+alfabetos se leen bien elijas el idioma que elijas.
+
+## 3. Alertas (panel lateral)
+
+Si hay usuarios con acciones cuya IP no coincide con el país que declararon
+(posible VPN/proxy/viaje), aparece un panel rojo arriba de todo en la barra
+lateral apenas entrás, con los más afectados primero — no hace falta elegir un
+usuario para verlo. Un clic en cualquiera de la lista lo selecciona y carga su
+timeline directamente.
+
+## 4. Elegir un usuario
 
 Arriba a la izquierda:
 
@@ -22,20 +39,30 @@ Arriba a la izquierda:
   elegí uno del desplegable. Se carga automáticamente el primero de la lista al
   entrar.
 
-## 3. Elegir contra quién comparar (el "universo")
+## 5. Elegir contra quién comparar (el "universo") y qué tipo de acción ver
 
-El resto de la barra superior define contra qué grupo de usuarios se compara
-cada acción:
+El resto de la barra superior define qué se muestra y contra qué grupo de
+usuarios se compara cada acción:
 
 - **Comparar contra**: "Todos los países", un preset (OTAN, BRICS, LATAM,
   países islámicos, Zona Euro, Espacio Schengen) o un país específico.
+- **Tipo de acción**: "Todos los tipos" o uno solo (login, pago, búsqueda...) —
+  útil para revisar, por ejemplo, únicamente los pagos de un usuario.
 - **Edad**: rango mínimo/máximo.
 - **Género**: todos, masculino, femenino u otro.
 
 El usuario que estás mirando nunca se compara contra sí mismo. Cambiar
-cualquiera de estos filtros recalcula todo el timeline al instante.
+cualquiera de estos filtros recalcula todo el timeline al instante y vuelve a
+la primera página.
 
-## 4. Leer el timeline
+## 6. Gráfico de evolución temporal
+
+Arriba del flujo de acciones, un gráfico muestra la cantidad de acciones por
+día (barras celestes) y el gasto acumulado en USD (línea dorada) del usuario
+elegido, respetando el filtro de tipo de acción. Sirve para ver de un vistazo
+si la actividad se concentra en algunos días o es pareja en el tiempo.
+
+## 7. Leer el timeline
 
 Cada acción del usuario aparece como una tarjeta, en orden cronológico, con:
 
@@ -52,13 +79,17 @@ Cada acción del usuario aparece como una tarjeta, en orden cronológico, con:
   - 🌐 **IP** (verde, o rojo si no coincide con el país declarado del
     usuario): dirección IP de esa sesión, el país que indica esa IP, la hora
     local en ese país, y el proveedor. El rojo es una señal de posible
-    VPN/proxy o viaje — no necesariamente algo malo, pero vale la pena mirarlo.
+    VPN/proxy o viaje — no necesariamente algo malo, pero vale la pena mirarlo
+    (y es lo mismo que resume el panel de alertas).
 - **Guías de comparación** (badges verde/rojo/gris) debajo: cuánto más
   rápido/lento o más barato/caro estuvo esa acción respecto al promedio del
   universo elegido arriba. ±10% se considera "dentro del promedio".
 - 💬 **Comentario** (magenta), solo en reseñas y algunos tickets de soporte.
 
-## 5. Cerrar sesión
+Al pie del flujo, **‹ Anterior** / **Siguiente ›** pasan de página cuando el
+usuario tiene muchas acciones (se muestran 20 por página).
+
+## 8. Cerrar sesión
 
 Botón "Cerrar sesión" arriba a la derecha. Te vuelve a la pantalla de login.
 
@@ -76,3 +107,8 @@ vivo) — ver `README.md`.
 **¿Los datos son reales?** No, son sintéticos, generados con una semilla fija
 para que sean siempre los mismos — pensado para probar el sistema, no
 información real de usuarios.
+
+**Cambié el idioma a inglés pero algunos textos siguen en español, ¿está
+roto?** No — nombres de usuario, de país y las rutas/endpoints del backend son
+datos, no textos de interfaz, así que se muestran igual sin importar el
+idioma elegido (ver la sección "Idioma" arriba).

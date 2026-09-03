@@ -1,5 +1,6 @@
 {
     "currency_by_country": {
+        "AT": "EUR",
         "AL": "ALL",
         "BE": "EUR",
         "BG": "BGN",

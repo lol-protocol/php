@@ -1,5 +1,6 @@
 // El timestamp ya llega del backend como texto en formato Y.m.d.H.i.s
 // (ej. "2026.09.03.19.47.10"): se muestra tal cual, sin reformatear acá.
+import { state } from "./nucleo.js";
 
 export function formatDuration(ms) {
   if (ms < 1000) return `${Math.round(ms)} ms`;
@@ -10,7 +11,8 @@ export function formatDuration(ms) {
 }
 
 export function formatMoney(amount, currency) {
-  return new Intl.NumberFormat("es", { style: "currency", currency }).format(amount);
+  const locale = state.lang === "en" ? "en-US" : "es";
+  return new Intl.NumberFormat(locale, { style: "currency", currency }).format(amount);
 }
 
 export function formatFileSize(kb) {

@@ -1,23 +1,28 @@
 <header class="topbar">
   <div class="topbar-title">
     <h1>Backoffice</h1>
-    <span class="subtitle">Actividad de usuarios</span>
+    <span class="subtitle" data-i18n="topbar_subtitle">Actividad de usuarios</span>
   </div>
 
   <div class="filters">
     <div class="filter-group">
-      <label for="user-search">Usuario</label>
-      <input type="text" id="user-search" placeholder="Buscar por nombre o país...">
+      <label for="user-search" data-i18n="label_user">Usuario</label>
+      <input type="text" id="user-search" data-i18n-placeholder="topbar_user_placeholder" placeholder="Buscar por nombre o país...">
       <select id="user-select" size="1"></select>
     </div>
 
     <div class="filter-group">
-      <label for="scope-select">Comparar contra</label>
+      <label for="scope-select" data-i18n="label_scope">Comparar contra</label>
       <select id="scope-select"></select>
     </div>
 
+    <div class="filter-group">
+      <label for="type-select" data-i18n="label_type">Tipo de acción</label>
+      <select id="type-select"></select>
+    </div>
+
     <div class="filter-group filter-group--narrow">
-      <label>Edad</label>
+      <label data-i18n="label_age">Edad</label>
       <div class="range-inputs">
         <input type="number" id="age-min" min="0" max="120" value="18">
         <span>–</span>
@@ -26,18 +31,22 @@
     </div>
 
     <div class="filter-group filter-group--narrow">
-      <label for="gender-select">Género</label>
+      <label for="gender-select" data-i18n="label_gender">Género</label>
       <select id="gender-select">
-        <option value="all">Todos</option>
-        <option value="M">Masculino</option>
-        <option value="F">Femenino</option>
-        <option value="O">Otro</option>
+        <option value="all" data-i18n="gender_all">Todos</option>
+        <option value="M" data-i18n="gender_m">Masculino</option>
+        <option value="F" data-i18n="gender_f">Femenino</option>
+        <option value="O" data-i18n="gender_o">Otro</option>
       </select>
     </div>
   </div>
 
   <div class="session-box">
+    <div class="lang-switch">
+      <button type="button" class="lang-button" data-lang="es">ES</button>
+      <button type="button" class="lang-button" data-lang="en">EN</button>
+    </div>
     <span id="session-username" class="session-username"></span>
-    <button type="button" id="logout-button" class="logout-button">Cerrar sesión</button>
+    <button type="button" id="logout-button" class="logout-button" data-i18n="topbar_logout">Cerrar sesión</button>
   </div>
 </header>
