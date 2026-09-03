@@ -7,7 +7,7 @@ use App\Config;
 /** @var array $aging */
 /** @var array $serieMensual */
 /** @var array $funnelResumen */
-/** @var array $topClientes */
+/** @var array $segmentacion */
 /** @var int $meses */
 
 $maxMensual = 1.0;
@@ -27,6 +27,14 @@ $etapasFunnel = [
 ];
 $maxEtapa = max(1, ...array_values($etapasFunnel));
 $rampaFunnel = ['var(--seq-250)', 'var(--seq-350)', 'var(--seq-450)', 'var(--seq-600)'];
+
+$coloresSegmento = [
+    'Pais' => 'var(--accent-pais)',
+    'Ciudad' => 'var(--accent-ciudad)',
+    'Idioma' => 'var(--accent-idioma)',
+    'Genero' => 'var(--accent-genero)',
+    'Rango de edad' => 'var(--accent-edad)',
+];
 ?>
 
 <h1><?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></h1>
@@ -108,45 +116,45 @@ $rampaFunnel = ['var(--seq-250)', 'var(--seq-350)', 'var(--seq-450)', 'var(--seq
     </div>
 </div>
 
-<div class="grid grid-2">
-    <div class="panel">
-        <h2>Funnel de conversion (periodo)</h2>
-        <div class="chart">
-            <?php foreach ($etapasFunnel as $etapa => $valor): $i = array_search($etapa, array_keys($etapasFunnel), true); ?>
-                <div class="grupo">
-                    <div class="bar" style="height: <?= pct_altura((float) $valor, $maxEtapa) ?>%; background: <?= $rampaFunnel[$i] ?>;"
-                         tabindex="0" data-tooltip="<?= $etapa ?>: <?= $valor ?>"></div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="chart-etiquetas">
-            <?php foreach ($etapasFunnel as $etapa => $valor): ?>
-                <span class="grupo-label"><?= $etapa ?><br><strong><?= $valor ?></strong></span>
-            <?php endforeach; ?>
-        </div>
-        <p class="subtitulo" style="margin-top:14px;"><a href="?page=funnel">Ver funnel completo &rarr;</a></p>
+<div class="panel">
+    <h2>Funnel de conversion (periodo)</h2>
+    <div class="chart">
+        <?php foreach ($etapasFunnel as $etapa => $valor): $i = array_search($etapa, array_keys($etapasFunnel), true); ?>
+            <div class="grupo">
+                <div class="bar" style="height: <?= pct_altura((float) $valor, $maxEtapa) ?>%; background: <?= $rampaFunnel[$i] ?>;"
+                     tabindex="0" data-tooltip="<?= $etapa ?>: <?= $valor ?>"></div>
+            </div>
+        <?php endforeach; ?>
     </div>
+    <div class="chart-etiquetas">
+        <?php foreach ($etapasFunnel as $etapa => $valor): ?>
+            <span class="grupo-label"><?= $etapa ?><br><strong><?= $valor ?></strong></span>
+        <?php endforeach; ?>
+    </div>
+    <p class="subtitulo" style="margin-top:14px;"><a href="?page=funnel">Ver funnel completo &rarr;</a></p>
+</div>
 
-    <div class="panel">
-        <h2>Top clientes por facturacion</h2>
-        <div class="table-wrap">
-            <table>
-                <thead>
-                <tr><th>Cliente</th><th>Segmento</th><th class="num">Facturado</th></tr>
-                </thead>
-                <tbody>
-                <?php foreach ($topClientes as $c): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($c['nombre']) ?></td>
-                        <td><?= htmlspecialchars($c['segmento']) ?></td>
-                        <td class="num"><?= Config::money((float) $c['total_facturado']) ?></td>
-                    </tr>
+<div class="panel">
+    <h2>Segmentacion de clientes por facturacion</h2>
+    <p class="subtitulo">Que paises, ciudades, idiomas, generos y rangos de edad generan mas ingresos (top 5 de cada uno).</p>
+    <div class="grid grid-segmentos">
+        <?php foreach ($segmentacion as $titulo => $filas): ?>
+            <div class="subpanel">
+                <h3><?= htmlspecialchars($titulo) ?></h3>
+                <?php $maxSeg = max(1.0, ...array_column($filas, 'total_facturado')); ?>
+                <?php foreach ($filas as $fila): ?>
+                    <div class="hbar-row compacto">
+                        <span class="hbar-label" title="<?= htmlspecialchars($fila['etiqueta']) ?>"><?= htmlspecialchars($fila['etiqueta']) ?></span>
+                        <span class="hbar-track">
+                            <span class="hbar-fill" style="width: <?= pct_altura((float) $fila['total_facturado'], $maxSeg) ?>%; background: <?= $coloresSegmento[$titulo] ?>;"></span>
+                        </span>
+                        <span class="hbar-value" title="<?= number_format((float) $fila['total_facturado'], 2) ?>"><?= money_compacta((float) $fila['total_facturado']) ?></span>
+                    </div>
                 <?php endforeach; ?>
-                <?php if (!$topClientes): ?>
-                    <tr><td colspan="3">Sin datos todavia.</td></tr>
+                <?php if (!$filas): ?>
+                    <p class="subtitulo">Sin datos todavia.</p>
                 <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
+            </div>
+        <?php endforeach; ?>
     </div>
 </div>

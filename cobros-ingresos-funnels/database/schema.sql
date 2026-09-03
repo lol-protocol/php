@@ -10,17 +10,29 @@ CREATE TABLE clientes (
     nombre TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     segmento TEXT NOT NULL DEFAULT 'general',
-    fecha_alta TEXT NOT NULL
+    fecha_alta TEXT NOT NULL,
+    pais TEXT NOT NULL,
+    ciudad TEXT NOT NULL,
+    idioma TEXT NOT NULL,
+    genero TEXT NOT NULL,
+    fecha_nacimiento TEXT NOT NULL
 );
 
 -- Cada fila es un usuario que entro al funnel de adquisicion.
 -- Las fechas de cada etapa quedan NULL hasta que el usuario la alcanza;
 -- si fecha_conversion no es NULL, el usuario paso a ser cliente (cliente_id).
+-- El perfil (pais/ciudad/idioma/genero/nacimiento) se captura una sola vez
+-- por persona y viaja con ella si se convierte en cliente.
 CREATE TABLE usuarios_funnel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     canal TEXT NOT NULL,
+    pais TEXT NOT NULL,
+    ciudad TEXT NOT NULL,
+    idioma TEXT NOT NULL,
+    genero TEXT NOT NULL,
+    fecha_nacimiento TEXT NOT NULL,
     fecha_visita TEXT NOT NULL,
     fecha_registro TEXT,
     fecha_lead TEXT,

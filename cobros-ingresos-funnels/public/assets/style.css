@@ -13,6 +13,12 @@
     --series-1: #2a78d6; /* ingresos / serie principal */
     --series-2: #eb6834; /* cobros / serie secundaria */
 
+    --accent-pais: #2a78d6;
+    --accent-ciudad: #eb6834;
+    --accent-idioma: #1baf7a;
+    --accent-genero: #4a3aa7;
+    --accent-edad: #008300;
+
     --seq-250: #86b6ef;
     --seq-350: #5598e7;
     --seq-450: #2a78d6;
@@ -38,6 +44,12 @@
 
         --series-1: #3987e5;
         --series-2: #d95926;
+
+        --accent-pais: #3987e5;
+        --accent-ciudad: #d95926;
+        --accent-idioma: #199e70;
+        --accent-genero: #9085e9;
+        --accent-edad: #008300;
 
         --seq-250: #6da7ec;
         --seq-350: #3987e5;
@@ -123,6 +135,7 @@ p.subtitulo { color: var(--text-secondary); margin: 0 0 20px; }
 
 .grid-kpis { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
 .grid-2 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+.grid-segmentos { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
 
 /* ---------- Filtros ---------- */
 form.filtros {
@@ -236,10 +249,17 @@ form.filtros button:hover { opacity: 0.9; }
 
 /* ---------- Barras horizontales (metodo de pago, etc.) ---------- */
 .hbar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.hbar-row .hbar-label { width: 130px; flex-shrink: 0; color: var(--text-secondary); font-size: 13px; }
+.hbar-row .hbar-label { width: 130px; flex-shrink: 0; color: var(--text-secondary); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hbar-track { flex: 1; background: var(--gridline); border-radius: 4px; height: 16px; overflow: hidden; display: block; }
 .hbar-fill { display: block; height: 100%; border-radius: 4px; background: var(--series-1); }
 .hbar-value { width: 110px; flex-shrink: 0; text-align: right; font-size: 13px; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+.hbar-row.compacto .hbar-label { width: 78px; font-size: 12px; }
+.hbar-row.compacto .hbar-track { height: 12px; }
+.hbar-row.compacto .hbar-value { width: 68px; font-size: 12px; }
+
+.subpanel { border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+.subpanel h3 { font-size: 12px; margin: 0 0 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; }
 
 /* ---------- Estados / status ---------- */
 .badge {

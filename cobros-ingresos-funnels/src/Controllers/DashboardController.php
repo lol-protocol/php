@@ -35,7 +35,13 @@ final class DashboardController
             'carteraPendiente' => array_sum($aging),
             'serieMensual' => $serieMensual,
             'funnelResumen' => $funnelRepo->resumenEtapas($desde, $hasta),
-            'topClientes' => $clienteRepo->topPorFacturacion(5),
+            'segmentacion' => [
+                'Pais' => $clienteRepo->topPorPais(),
+                'Ciudad' => $clienteRepo->topPorCiudad(),
+                'Idioma' => $clienteRepo->topPorIdioma(),
+                'Genero' => $clienteRepo->topPorGenero(),
+                'Rango de edad' => $clienteRepo->topPorRangoEdad(),
+            ],
             'activePage' => 'dashboard',
             'titulo' => 'Dashboard',
         ]);

@@ -12,6 +12,20 @@ function mes_label(string $ym): string
     return ($meses[$mes] ?? $mes) . ' ' . $anio;
 }
 
+/** Formato compacto para espacios angostos, ej. '$12.3K', '$4.2M'. */
+function money_compacta(float $valor): string
+{
+    $moneda = \App\Config::MONEDA;
+    $abs = abs($valor);
+    if ($abs >= 1_000_000) {
+        return $moneda . number_format($abs / 1_000_000, 1) . 'M';
+    }
+    if ($abs >= 1_000) {
+        return $moneda . number_format($abs / 1_000, 1) . 'K';
+    }
+    return \App\Config::money($valor);
+}
+
 /** Altura porcentual para una barra, con un piso visible cuando el valor es > 0. */
 function pct_altura(float $valor, float $max): float
 {

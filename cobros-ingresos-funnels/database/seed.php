@@ -83,12 +83,46 @@ $conceptos = ['Suscripcion mensual', 'Licencia anual', 'Implementacion', 'Soport
 $canalPesos = ['organico' => 35, 'ads' => 25, 'referido' => 20, 'redes_sociales' => 15, 'email' => 5];
 $metodoPesos = ['transferencia' => 50, 'tarjeta' => 35, 'efectivo' => 15];
 
+$geo = [
+    'Mexico' => ['idioma' => 'Espanol', 'ciudades' => ['Ciudad de Mexico', 'Guadalajara', 'Monterrey']],
+    'Colombia' => ['idioma' => 'Espanol', 'ciudades' => ['Bogota', 'Medellin']],
+    'Argentina' => ['idioma' => 'Espanol', 'ciudades' => ['Buenos Aires', 'Cordoba']],
+    'Chile' => ['idioma' => 'Espanol', 'ciudades' => ['Santiago']],
+    'Peru' => ['idioma' => 'Espanol', 'ciudades' => ['Lima']],
+    'Espana' => ['idioma' => 'Espanol', 'ciudades' => ['Madrid', 'Barcelona']],
+    'Estados Unidos' => ['idioma' => 'Ingles', 'ciudades' => ['Miami', 'Los Angeles']],
+    'Brasil' => ['idioma' => 'Portugues', 'ciudades' => ['Sao Paulo', 'Rio de Janeiro']],
+];
+$paisPesos = ['Mexico' => 28, 'Colombia' => 18, 'Argentina' => 14, 'Chile' => 10,
+    'Peru' => 8, 'Espana' => 10, 'Estados Unidos' => 8, 'Brasil' => 4];
+$generoPesos = ['Femenino' => 48, 'Masculino' => 48, 'No especifica' => 4];
+
+/** @return array{pais:string, ciudad:string, idioma:string, genero:string, fecha_nacimiento:string} */
+function perfilAleatorio(array $geo, array $paisPesos, array $generoPesos, DateTimeImmutable $hoy): array
+{
+    $pais = eleccionPonderada($paisPesos);
+    $info = $geo[$pais];
+    $edad = random_int(18, 68);
+    $nacimiento = $hoy->modify("-{$edad} years")->modify('-' . random_int(0, 364) . ' days');
+
+    return [
+        'pais' => $pais,
+        'ciudad' => $info['ciudades'][array_rand($info['ciudades'])],
+        'idioma' => $info['idioma'],
+        'genero' => eleccionPonderada($generoPesos),
+        'fecha_nacimiento' => fecha($nacimiento),
+    ];
+}
+
 $insCliente = $pdo->prepare(
-    'INSERT INTO clientes (nombre, email, segmento, fecha_alta) VALUES (:nombre, :email, :segmento, :fecha_alta)'
+    'INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais, ciudad, idioma, genero, fecha_nacimiento)
+     VALUES (:nombre, :email, :segmento, :fecha_alta, :pais, :ciudad, :idioma, :genero, :fecha_nacimiento)'
 );
 $insUsuario = $pdo->prepare(
-    'INSERT INTO usuarios_funnel (nombre, email, canal, fecha_visita, fecha_registro, fecha_lead, fecha_conversion, cliente_id)
-     VALUES (:nombre, :email, :canal, :fecha_visita, :fecha_registro, :fecha_lead, :fecha_conversion, :cliente_id)'
+    'INSERT INTO usuarios_funnel (nombre, email, canal, pais, ciudad, idioma, genero, fecha_nacimiento,
+                                  fecha_visita, fecha_registro, fecha_lead, fecha_conversion, cliente_id)
+     VALUES (:nombre, :email, :canal, :pais, :ciudad, :idioma, :genero, :fecha_nacimiento,
+             :fecha_visita, :fecha_registro, :fecha_lead, :fecha_conversion, :cliente_id)'
 );
 $insFactura = $pdo->prepare(
     'INSERT INTO facturas (cliente_id, concepto, monto, fecha_emision, fecha_vencimiento)
@@ -109,11 +143,17 @@ for ($i = 0; $i < 18; $i++) {
     $nombresUsados[$nombre] = true;
     $email = emailUnico($nombre, $dominios, $emailsUsados);
     $altaLegacy = diasAleatorios($inicioLegacy, 150);
+    $perfil = perfilAleatorio($geo, $paisPesos, $generoPesos, $hoy);
     $insCliente->execute([
         ':nombre' => $nombre,
         ':email' => $email,
         ':segmento' => $segmentos[array_rand($segmentos)],
         ':fecha_alta' => fecha($altaLegacy),
+        ':pais' => $perfil['pais'],
+        ':ciudad' => $perfil['ciudad'],
+        ':idioma' => $perfil['idioma'],
+        ':genero' => $perfil['genero'],
+        ':fecha_nacimiento' => $perfil['fecha_nacimiento'],
     ]);
     $clienteIds[] = (int) $pdo->lastInsertId();
 }
@@ -127,6 +167,7 @@ for ($i = 0; $i < 320; $i++) {
     $nombresUsados[$nombre] = true;
     $email = emailUnico($nombre, $dominios, $emailsUsados);
     $canal = eleccionPonderada($canalPesos);
+    $perfil = perfilAleatorio($geo, $paisPesos, $generoPesos, $hoy);
 
     $fVisita = diasAleatorios($inicioFunnel, $rangoFunnelDias);
     $fRegistro = $fLead = $fConversion = null;
@@ -146,6 +187,11 @@ for ($i = 0; $i < 320; $i++) {
                     ':email' => $email,
                     ':segmento' => $segmentos[array_rand($segmentos)],
                     ':fecha_alta' => fecha($fConversion),
+                    ':pais' => $perfil['pais'],
+                    ':ciudad' => $perfil['ciudad'],
+                    ':idioma' => $perfil['idioma'],
+                    ':genero' => $perfil['genero'],
+                    ':fecha_nacimiento' => $perfil['fecha_nacimiento'],
                 ]);
                 $clienteId = (int) $pdo->lastInsertId();
                 $clienteIds[] = $clienteId;
@@ -157,6 +203,11 @@ for ($i = 0; $i < 320; $i++) {
         ':nombre' => $nombre,
         ':email' => $email,
         ':canal' => $canal,
+        ':pais' => $perfil['pais'],
+        ':ciudad' => $perfil['ciudad'],
+        ':idioma' => $perfil['idioma'],
+        ':genero' => $perfil['genero'],
+        ':fecha_nacimiento' => $perfil['fecha_nacimiento'],
         ':fecha_visita' => fecha($fVisita),
         ':fecha_registro' => $fRegistro ? fecha($fRegistro) : null,
         ':fecha_lead' => $fLead ? fecha($fLead) : null,
