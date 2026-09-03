@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /**
- * Cliente HTTP hacia el microservicio de estadísticas en Java (stats-service-java).
+ * Cliente HTTP hacia el microservicio de estadísticas en Java (servicio-estadisticas-java).
  */
-final class StatsClient
+final class ClienteEstadisticas
 {
     public function __construct(private readonly string $baseUrl = 'http://localhost:8081')
     {

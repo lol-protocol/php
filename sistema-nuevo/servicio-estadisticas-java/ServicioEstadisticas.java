@@ -20,13 +20,13 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
- * Motor de estadisticas del backoffice: agrega duracion/monto de acciones de usuario
- * por "universo" de comparacion (paises, rango de edad, genero). Sin dependencias
- * externas (solo JDK) para poder compilar/ejecutar sin acceso a red.
+ * Motor de estadisticas del backoffice: agrega duracion/monto (en USD) de acciones de
+ * usuario por "universo" de comparacion (paises, rango de edad, genero). Sin
+ * dependencias externas (solo JDK) para poder compilar/ejecutar sin acceso a red.
  *
- * Uso: java StatsService.java [ruta-a-actions_flat.csv] [puerto]
+ * Uso: java ServicioEstadisticas.java [ruta-a-acciones-planas.csv] [puerto]
  */
-public class StatsService {
+public class ServicioEstadisticas {
 
     record Action(String userId, String type, double durationMs, Double amountUsd,
                   String country, int age, String gender) {
@@ -52,7 +52,7 @@ public class StatsService {
         if (override != null) {
             return Path.of(override);
         }
-        String[] candidates = {"data/actions_flat.csv", "../data/actions_flat.csv", "../../data/actions_flat.csv"};
+        String[] candidates = {"datos/acciones-planas.csv", "../datos/acciones-planas.csv", "../../datos/acciones-planas.csv"};
         for (String c : candidates) {
             Path p = Path.of(c);
             if (Files.exists(p)) {
@@ -60,8 +60,8 @@ public class StatsService {
             }
         }
         throw new IllegalStateException(
-                "No se encontro actions_flat.csv. Ejecuta el servicio desde new-system/ o "
-                + "new-system/stats-service-java/, o pasa la ruta como primer argumento.");
+                "No se encontro acciones-planas.csv. Ejecuta el servicio desde sistema-nuevo/ o "
+                + "sistema-nuevo/servicio-estadisticas-java/, o pasa la ruta como primer argumento.");
     }
 
     private static List<Action> loadActions(Path csvPath) throws IOException {

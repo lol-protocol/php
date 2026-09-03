@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /**
- * Acceso de solo lectura a los datos semilla (JSON) generados en new-system/data/.
+ * Acceso de solo lectura a los datos semilla (JSON) generados en sistema-nuevo/datos/.
  */
-final class DataStore
+final class AlmacenDatos
 {
     private static ?array $users = null;
     private static ?array $actions = null;
@@ -13,7 +13,7 @@ final class DataStore
 
     private static function dataDir(): string
     {
-        return __DIR__ . '/../../data';
+        return __DIR__ . '/../../datos';
     }
 
     private static function readJson(string $file): array
@@ -21,14 +21,14 @@ final class DataStore
         $path = self::dataDir() . '/' . $file;
         $contents = file_get_contents($path);
         if ($contents === false) {
-            throw new RuntimeException("No se pudo leer $path. ¿Corriste generate_seed_data.php?");
+            throw new RuntimeException("No se pudo leer $path. ¿Corriste generar-datos-semilla.php?");
         }
         return json_decode($contents, true);
     }
 
     public static function users(): array
     {
-        return self::$users ??= self::readJson('users.json');
+        return self::$users ??= self::readJson('usuarios.json');
     }
 
     public static function userById(string $id): ?array
@@ -43,7 +43,7 @@ final class DataStore
 
     public static function actionsByUser(string $userId): array
     {
-        $actions = self::$actions ??= self::readJson('actions.json');
+        $actions = self::$actions ??= self::readJson('acciones.json');
         $result = array_values(array_filter($actions, fn ($a) => $a['user_id'] === $userId));
         usort($result, fn ($a, $b) => $a['timestamp'] <=> $b['timestamp']);
         return $result;
@@ -51,6 +51,6 @@ final class DataStore
 
     public static function groups(): array
     {
-        return self::$groups ??= self::readJson('country_groups.json');
+        return self::$groups ??= self::readJson('grupos-de-paises.json');
     }
 }

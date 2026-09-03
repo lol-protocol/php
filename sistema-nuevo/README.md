@@ -1,0 +1,170 @@
+# Backoffice de actividad de usuarios
+
+Panel de administración para revisar, acción por acción, la actividad de un usuario
+como un flujo cronológico, comparando cada acción (duración, monto pagado) contra el
+promedio de un "universo" de otros usuarios filtrable por país / grupo de países
+(OTAN, BRICS, LATAM, países islámicos, Zona Euro, Espacio Schengen), rango de edad y
+género. Requiere iniciar sesión.
+
+Sistema independiente del protocolo LoL en PHP que vive en la raíz de este repositorio.
+
+## Arquitectura
+
+Tres componentes, cada uno en su propia carpeta, sin dependencias externas más allá
+del JDK/PHP/navegador (nada que instalar vía Composer/Maven/npm). Nombres en español
+simple; se mantienen en inglés los nombres de lenguaje (php/java/css/js) y las
+convenciones estándar que el propio tooling espera literalmente (`index.php`,
+`index.html`, `README.md`, `public/`, `src/`, `api.php`).
+
+```
+sistema-nuevo/
+├── datos/                          Datos semilla + generador + saneador
+│   ├── generar-datos-semilla.php      Genera todo lo de abajo (reproducible, semilla fija)
+│   ├── usuarios.json                  60 usuarios sintéticos (país, edad, género)
+│   ├── acciones-crudas.json           Log "crudo": formatos inconsistentes a propósito
+│   ├── acciones.json                  Log saneado (esquema canónico), en flujos por usuario
+│   ├── acciones-planas.csv            Igual que acciones.json pero desnormalizado, para Java
+│   ├── grupos-de-paises.json          Presets de grupos de países + catálogo de países
+│   └── monedas.json                   Moneda por país + cotización fija frente al USD
+│
+├── servicio-estadisticas-java/     Microservicio de estadísticas (Java, solo JDK)
+│   └── ServicioEstadisticas.java      GET /stats → promedio de duración/monto (USD) de
+│                                       un tipo de acción para un universo de comparación
+│
+├── servidor-php/                   API backend (PHP)
+│   ├── publico/index.php              Front controller: CORS+cookies, rutas /api/*
+│   └── codigo/
+│       ├── AlmacenDatos.php           Lee usuarios/acciones/grupos-de-paises (JSON)
+│       ├── ClienteEstadisticas.php    Llama al servicio de estadísticas por HTTP
+│       ├── autenticacion.php          Sesión simple (login/logout, un solo usuario)
+│       ├── credenciales.php           Usuario demo + hash de contraseña (bcrypt)
+│       ├── saneador.php               Limpia/valida el log crudo (ver más abajo)
+│       └── api.php                    Lógica de los endpoints
+│
+├── interfaz/                       Panel de administración (HTML/CSS/JS, sin frameworks)
+│   ├── index.html                     Pantalla de login + panel
+│   ├── css/estilo.css
+│   └── js/aplicacion.js               Llama a la API PHP con fetch() (credenciales incluidas)
+│
+└── ejecutar.sh                     Levanta los 3 servicios de una
+```
+
+**Flujo de una request:** el navegador solo habla con el backend PHP. El backend PHP
+lee el log de acciones del usuario elegido y, por cada tipo de acción distinto que
+aparece en su timeline, le pregunta una vez al microservicio Java el promedio de ese
+tipo de acción para el universo de comparación actual (país/grupo, edad, género —
+excluyendo siempre al propio usuario). Con eso arma el timeline enriquecido con el
+delta % de cada acción contra ese promedio.
+
+## Autenticación
+
+Sesión simple por cookie (PHP `session`), sin roles ni registro — pensada para un
+prototipo, no para producción (sin CSRF, sin límite de intentos de login).
+
+- Usuario demo: **admin** / **admin123** (hash bcrypt en `credenciales.php`, la
+  contraseña nunca se compara ni se guarda en texto plano).
+- Como la interfaz y la API corren en puertos distintos, la cookie de sesión viaja
+  entre orígenes: `servidor-php/publico/index.php` responde el preflight CORS (OPTIONS)
+  y refleja `http://localhost:8082` como único origen permitido con
+  `Access-Control-Allow-Credentials`, en vez de usar `*` (que el navegador rechaza
+  para requests con credenciales, y que sería una configuración CORS abierta).
+
+## Montos: moneda local y USD
+
+Cada país tiene asignada una moneda (`datos/monedas.json`) y una cotización fija e
+ilustrativa frente al USD (no hay acceso a una API de cotizaciones en tiempo real).
+Los pagos y reembolsos se generan y guardan en **moneda local** — como llegaría un
+pago real — y el saneador deriva `amount_usd` a partir de esa cotización.
+
+El servicio de estadísticas en Java compara **solo en USD**: promediar montos en
+monedas distintas sin normalizar no tendría sentido. La interfaz muestra ambos
+valores, p. ej. `290,65 MYR (≈ 61,84 US$)`, pero el badge de comparación (más
+caro/barato) se calcula siempre sobre el monto en USD.
+
+## Datos sintéticos y saneamiento
+
+Los logs de acciones se generan en dos pasos, para poder mostrar un saneador real:
+
+1. **`acciones-crudas.json`**: 14 tipos de acción (login, password_reset, search,
+   view_product, api_call, profile_update, add_to_cart, checkout_start, payment,
+   refund, review_submit, support_ticket, file_upload, logout) con formatos
+   deliberadamente inconsistentes — mismo tipo de variación que se ve en logs reales
+   de fuentes heterogéneas:
+   - Fechas en 5 formatos distintos (ISO+Z, ISO+offset, `Y-m-d H:i:s`, epoch en
+     segundos, epoch en milisegundos).
+   - Números a veces como texto, con símbolo de moneda o separador de miles
+     (`"$1,234.56"`), o con espacios de más.
+   - Mayúsculas/minúsculas y espacios inconsistentes en campos de texto.
+   - Comentarios de reseñas/tickets con HTML y scripts colados (`<script>...`,
+     `<img onerror=...>`, entidades HTML codificadas) para poder mostrar que el
+     saneador los neutraliza.
+   - Una fracción de registros con campos faltantes o inválidos a propósito
+     (usuario vacío, tipo desconocido, fecha o duración no interpretable).
+
+2. **`saneador.php`** (`servidor-php/codigo/saneador.php`) limpia cada registro:
+   normaliza fechas a UTC ISO-8601, parsea números con formato inconsistente, valida
+   tipo de acción/moneda/código HTTP contra catálogos conocidos, decodifica entidades
+   HTML y **elimina cualquier etiqueta** (`strip_tags`) de los campos de texto libre
+   antes de guardarlos, y descarta el registro completo si le faltan campos
+   esenciales (usuario, tipo, fecha o duración válidos). El resultado es
+   `acciones.json`, que es lo único que lee el backend en vivo — el saneamiento
+   corre una sola vez al generar los datos, no en cada request.
+
+   Se puede verificar que funcionó: `acciones-crudas.json` sí contiene fragmentos
+   como `<script>` o `<img onerror=`; en `acciones.json` no queda ninguno.
+
+## Cómo correrlo
+
+Requiere PHP (probado en 8.4) y JDK (probado en 21). Nada más.
+
+**Opción rápida** — desde `sistema-nuevo/`:
+
+```bash
+./ejecutar.sh
+```
+
+Deja corriendo:
+- Panel de administración: http://localhost:8082 (usuario demo: `admin` / `admin123`)
+- API backend (PHP): http://localhost:8000/api/session
+- Stats service (Java): http://localhost:8081/stats?type=login
+
+**Manual**, en 3 terminales separadas desde `sistema-nuevo/`:
+
+```bash
+# 1. Datos semilla (solo hace falta una vez, o para regenerar)
+php datos/generar-datos-semilla.php
+
+# 2. Microservicio de estadísticas (Java)
+cd servicio-estadisticas-java && java ServicioEstadisticas.java
+
+# 3. API backend (PHP)
+php -S localhost:8000 -t servidor-php/publico servidor-php/publico/index.php
+
+# 4. Panel de administración (estático)
+php -S localhost:8082 -t interfaz
+```
+
+Abrir http://localhost:8082.
+
+## API (backend PHP)
+
+- `POST /api/login` — `{"username": "...", "password": "..."}` → inicia sesión.
+- `POST /api/logout` — cierra sesión.
+- `GET /api/session` — `{"authenticated": bool, "username": ?string}` (pública, no requiere login).
+- `GET /api/users` — lista de usuarios para el selector. **Requiere sesión.**
+- `GET /api/groups` — presets de país + catálogo de países. **Requiere sesión.**
+- `GET /api/timeline?user_id=u001&scope=preset:latam&age_min=18&age_max=65&gender=all`
+  — timeline del usuario con cada acción enriquecida con `cohort` (promedio del
+  universo), `duration_delta_pct` y `amount_delta_pct`. **Requiere sesión.**
+  - `scope`: `all` | `preset:<otan|brics|latam|islamicos|euro|schengen>` | `country:<CODE>`
+  - `gender`: `all` | `M` | `F` | `O`
+
+## Notas / alcance
+
+- Los datos son sintéticos (generados con semilla fija) para poder probar el sistema
+  sin depender de logs reales; `generar-datos-semilla.php` documenta cómo se arman.
+- Autenticación de un solo usuario, sin roles: alcanza para el prototipo, no para un
+  despliegue real (ver "Autenticación" arriba).
+- Si el servicio de estadísticas en Java no está corriendo, el backend PHP no rompe:
+  cada acción queda sin comparación (`cohort: null`) y el panel lo indica con un aviso.
+- Las cotizaciones de moneda son fijas e ilustrativas, no de mercado en vivo.

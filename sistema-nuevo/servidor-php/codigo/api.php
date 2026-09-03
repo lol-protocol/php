@@ -6,13 +6,43 @@ declare(strict_types=1);
  * Manejadores de los endpoints /api/*. Cada uno escribe directamente la respuesta JSON.
  */
 
+function api_login(): void
+{
+    $body = json_decode(file_get_contents('php://input') ?: '[]', true) ?? [];
+    $username = is_string($body['username'] ?? null) ? $body['username'] : '';
+    $password = is_string($body['password'] ?? null) ? $body['password'] : '';
+
+    if ($username === '' || $password === '' || !auth_verificar_credenciales($username, $password)) {
+        http_response_code(401);
+        echo json_encode(['error' => 'usuario o contraseña incorrectos']);
+        return;
+    }
+
+    auth_marcar_autenticado($username);
+    echo json_encode(['authenticated' => true, 'username' => $username]);
+}
+
+function api_logout(): void
+{
+    auth_cerrar_sesion();
+    echo json_encode(['authenticated' => false]);
+}
+
+function api_session(): void
+{
+    echo json_encode([
+        'authenticated' => auth_esta_autenticado(),
+        'username' => auth_usuario_actual(),
+    ]);
+}
+
 function api_users(): void
 {
-    $groups = DataStore::groups();
+    $groups = AlmacenDatos::groups();
     $users = array_map(static function (array $u) use ($groups): array {
         $u['country_name'] = $groups['countries'][$u['country']] ?? $u['country'];
         return $u;
-    }, DataStore::users());
+    }, AlmacenDatos::users());
 
     usort($users, fn ($a, $b) => $a['name'] <=> $b['name']);
 
@@ -21,7 +51,7 @@ function api_users(): void
 
 function api_groups(): void
 {
-    echo json_encode(DataStore::groups(), JSON_UNESCAPED_UNICODE);
+    echo json_encode(AlmacenDatos::groups(), JSON_UNESCAPED_UNICODE);
 }
 
 function api_timeline(): void
@@ -33,14 +63,14 @@ function api_timeline(): void
         return;
     }
 
-    $user = DataStore::userById($userId);
+    $user = AlmacenDatos::userById($userId);
     if ($user === null) {
         http_response_code(404);
         echo json_encode(['error' => 'usuario no encontrado']);
         return;
     }
 
-    $groups = DataStore::groups();
+    $groups = AlmacenDatos::groups();
     $scope = $_GET['scope'] ?? 'all';
     $countries = api_resolve_scope_countries($scope, $groups);
 
@@ -48,17 +78,19 @@ function api_timeline(): void
     $ageMax = isset($_GET['age_max']) ? (int) $_GET['age_max'] : 150;
     $gender = $_GET['gender'] ?? 'all';
 
-    $client = new StatsClient();
+    $client = new ClienteEstadisticas();
     $statsCache = [];
     $timeline = [];
 
-    foreach (DataStore::actionsByUser($userId) as $action) {
+    foreach (AlmacenDatos::actionsByUser($userId) as $action) {
         $type = $action['type'];
         if (!array_key_exists($type, $statsCache)) {
             $statsCache[$type] = $client->stats($type, $countries, $ageMin, $ageMax, $gender, $userId);
         }
         $cohort = $statsCache[$type];
 
+        // amount_local/currency/comment/endpoint/http_status/file_size_kb ya vienen
+        // en $action (esquema canónico saneado); se pasan tal cual al frontend.
         $timeline[] = $action + [
             'cohort' => $cohort,
             'duration_delta_pct' => api_delta_pct($action['duration_ms'], $cohort['avg_duration_ms'] ?? null),
@@ -86,6 +118,12 @@ function api_not_found(): void
 {
     http_response_code(404);
     echo json_encode(['error' => 'ruta no encontrada']);
+}
+
+function api_unauthorized(): void
+{
+    http_response_code(401);
+    echo json_encode(['error' => 'no autenticado']);
 }
 
 function api_delta_pct(int|float $value, int|float|null $average): ?float

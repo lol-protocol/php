@@ -6,12 +6,18 @@
 
   const ACTION_ICONS = {
     login: "🔐",
+    password_reset: "🔑",
     search: "🔎",
     view_product: "👀",
+    api_call: "⚙️",
+    profile_update: "📝",
     add_to_cart: "🛒",
     checkout_start: "🧾",
     payment: "💳",
+    refund: "💸",
+    review_submit: "⭐",
     support_ticket: "🆘",
+    file_upload: "📎",
     logout: "🚪",
   };
 
@@ -47,12 +53,30 @@
   };
 
   async function fetchJson(path) {
-    const response = await fetch(API_BASE + path);
+    const response = await fetch(API_BASE + path, { credentials: "include" });
+    if (response.status === 401) {
+      showLogin();
+      throw new Error("sesión expirada");
+    }
     if (!response.ok) {
       const body = await response.json().catch(() => ({}));
       throw new Error(body.error || `Error ${response.status} al llamar ${path}`);
     }
     return response.json();
+  }
+
+  async function postJson(path, body) {
+    const response = await fetch(API_BASE + path, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.error || `Error ${response.status} al llamar ${path}`);
+    }
+    return data;
   }
 
   function formatDuration(ms) {
@@ -63,8 +87,12 @@
     return `${minutes} m ${seconds} s`;
   }
 
-  function formatMoney(amount) {
-    return new Intl.NumberFormat("es", { style: "currency", currency: "USD" }).format(amount);
+  function formatMoney(amount, currency) {
+    return new Intl.NumberFormat("es", { style: "currency", currency }).format(amount);
+  }
+
+  function formatFileSize(kb) {
+    return kb >= 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb.toFixed(1)} KB`;
   }
 
   function formatDateTime(iso) {
@@ -74,6 +102,40 @@
   function formatPct(pct) {
     const sign = pct > 0 ? "+" : "";
     return `${sign}${pct.toFixed(0)}%`;
+  }
+
+  // --- Sesión ---
+
+  function showLogin(errorMessage = "") {
+    document.getElementById("app").hidden = true;
+    document.getElementById("login-screen").hidden = false;
+    const errorBox = document.getElementById("login-error");
+    if (errorMessage) {
+      errorBox.hidden = false;
+      errorBox.textContent = errorMessage;
+    } else {
+      errorBox.hidden = true;
+    }
+  }
+
+  function showApp(username) {
+    document.getElementById("login-screen").hidden = true;
+    document.getElementById("app").hidden = false;
+    document.getElementById("session-username").textContent = `Conectado como ${username}`;
+  }
+
+  async function boot() {
+    try {
+      const session = await fetchJson("/api/session");
+      if (session.authenticated) {
+        showApp(session.username);
+        await loadAppData();
+      } else {
+        showLogin();
+      }
+    } catch (err) {
+      showLogin(`No se pudo conectar con el backend PHP en ${API_BASE}. (${err.message})`);
+    }
   }
 
   // --- Poblado de selectores ---
@@ -181,6 +243,32 @@
     });
   }
 
+  function buildMetricNodes(item) {
+    const nodes = [el("span", { class: "metric", text: `⏱ ${formatDuration(item.duration_ms)}` })];
+
+    if (item.amount_usd !== null) {
+      const texto =
+        item.currency && item.currency !== "USD"
+          ? `💰 ${formatMoney(item.amount_local, item.currency)} (≈ ${formatMoney(item.amount_usd, "USD")})`
+          : `💰 ${formatMoney(item.amount_usd, "USD")}`;
+      nodes.push(el("span", { class: "metric", text: texto }));
+    }
+
+    if (item.endpoint) {
+      nodes.push(el("span", { class: "metric", text: `⚙ ${item.endpoint} → ${item.http_status ?? "?"}` }));
+    }
+
+    if (item.file_size_kb !== null) {
+      nodes.push(el("span", { class: "metric", text: `📎 ${formatFileSize(item.file_size_kb)}` }));
+    }
+
+    if (item.cohort) {
+      nodes.push(el("span", { class: "metric", text: `(vs. ${item.cohort.count} acciones del universo elegido)` }));
+    }
+
+    return nodes;
+  }
+
   function renderTimeline(items) {
     const list = document.getElementById("timeline");
     list.innerHTML = "";
@@ -201,11 +289,7 @@
         el("span", { class: "card-time", text: formatDateTime(item.timestamp) }),
       ]);
 
-      const metrics = el("div", { class: "card-metrics" }, [
-        el("span", { class: "metric", text: `⏱ ${formatDuration(item.duration_ms)}` }),
-        ...(item.amount_usd !== null ? [el("span", { class: "metric", text: `💰 ${formatMoney(item.amount_usd)}` })] : []),
-        ...(item.cohort ? [el("span", { class: "metric", text: `(vs. ${item.cohort.count} acciones del universo elegido)` })] : []),
-      ]);
+      const metrics = el("div", { class: "card-metrics" }, buildMetricNodes(item));
 
       const badges = el("div", { class: "badges" }, [
         buildDeltaBadge(item.duration_delta_pct, { betterWhenLower: true, goodLabel: "más rápido", badLabel: "más lento" }),
@@ -214,7 +298,12 @@
           : []),
       ]);
 
-      const card = el("div", { class: "card" }, [header, metrics, badges]);
+      const cardChildren = [header, metrics, badges];
+      if (item.comment) {
+        cardChildren.push(el("div", { class: "comment-block", text: `💬 "${item.comment}"` }));
+      }
+
+      const card = el("div", { class: "card" }, cardChildren);
       list.appendChild(el("li", { class: "timeline-item" }, [marker, card]));
     });
   }
@@ -251,7 +340,7 @@
     }
   }
 
-  async function init() {
+  async function loadAppData() {
     try {
       const [groups, users] = await Promise.all([fetchJson("/api/groups"), fetchJson("/api/users")]);
       state.groups = groups;
@@ -272,6 +361,29 @@
     }
   }
 
+  document.getElementById("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const username = document.getElementById("login-username").value.trim();
+    const password = document.getElementById("login-password").value;
+    try {
+      const result = await postJson("/api/login", { username, password });
+      document.getElementById("login-password").value = "";
+      showApp(result.username);
+      await loadAppData();
+    } catch (err) {
+      showLogin(err.message);
+    }
+  });
+
+  document.getElementById("logout-button").addEventListener("click", async () => {
+    try {
+      await postJson("/api/logout", {});
+    } finally {
+      state.selectedUserId = null;
+      showLogin();
+    }
+  });
+
   document.getElementById("user-search").addEventListener("input", (e) => renderUserOptions(e.target.value));
   document.getElementById("user-select").addEventListener("change", (e) => {
     state.selectedUserId = e.target.value;
@@ -282,5 +394,5 @@
   document.getElementById("age-min").addEventListener("input", debounce(loadTimeline, 400));
   document.getElementById("age-max").addEventListener("input", debounce(loadTimeline, 400));
 
-  init();
+  boot();
 })();
