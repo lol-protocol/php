@@ -185,7 +185,7 @@ form.filtros button:hover { opacity: 0.9; }
 .legend .item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); }
 .legend .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 
-/* ---------- Grafico de barras (CSS puro, con tooltip nativo) ---------- */
+/* ---------- Grafico de barras (mini-graficos SVG) ---------- */
 .chart {
     display: flex;
     align-items: flex-end;
@@ -207,31 +207,13 @@ form.filtros button:hover { opacity: 0.9; }
 }
 
 .bar {
+    display: block;
     width: 22px;
     max-width: 24px;
-    border-radius: 4px 4px 0 0;
-    position: relative;
     cursor: default;
 }
 
 .bar:focus { outline: 2px solid var(--series-1); outline-offset: 2px; }
-
-.bar[data-tooltip]:hover::after,
-.bar[data-tooltip]:focus::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 6px;
-    background: var(--text-primary);
-    color: var(--surface-1);
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    z-index: 5;
-}
 
 .chart-etiquetas {
     display: flex;
@@ -251,7 +233,7 @@ form.filtros button:hover { opacity: 0.9; }
 .hbar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 .hbar-row .hbar-label { width: 130px; flex-shrink: 0; color: var(--text-secondary); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hbar-track { flex: 1; background: var(--gridline); border-radius: 4px; height: 16px; overflow: hidden; display: block; }
-.hbar-fill { display: block; height: 100%; border-radius: 4px; background: var(--series-1); }
+.hbar-fill { display: block; height: 100%; }
 .hbar-value { width: 110px; flex-shrink: 0; text-align: right; font-size: 13px; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 
 .hbar-row.compacto .hbar-label { width: 78px; font-size: 12px; }

@@ -6,7 +6,7 @@ use App\Config;
 /** @var float $carteraPendiente */
 /** @var array $aging */
 /** @var array $ingresosPorMes */
-/** @var array $facturas */
+/** @var array $boletas */
 /** @var int $meses */
 /** @var string $estado */
 
@@ -23,7 +23,7 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
 ?>
 
 <h1>Cobros e ingresos</h1>
-<p class="subtitulo">Ingresos devengados (facturacion) frente al efectivo realmente cobrado, y estado de la cartera.</p>
+<p class="subtitulo">Ingresos devengados (boletas emitidas) frente al efectivo realmente cobrado, y estado de la cartera.</p>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="cobros">
@@ -68,8 +68,12 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
         <div class="chart">
             <?php foreach ($ingresosPorMes as $fila): ?>
                 <div class="grupo">
-                    <div class="bar" style="height: <?= pct_altura((float) $fila['total'], $maxIngresos) ?>%; background: var(--series-1);"
-                         tabindex="0" data-tooltip="<?= mes_label($fila['mes']) ?>: <?= Config::money((float) $fila['total']) ?>"></div>
+                    <?= svg_barra(
+                        'bar',
+                        'height:' . pct_altura((float) $fila['total'], $maxIngresos) . '%',
+                        'var(--series-1)',
+                        mes_label($fila['mes']) . ': ' . Config::money((float) $fila['total'])
+                    ) ?>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -85,8 +89,12 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
         <div class="chart">
             <?php foreach ($aging as $bucket => $monto): ?>
                 <div class="grupo">
-                    <div class="bar" style="height: <?= pct_altura((float) $monto, $maxAging) ?>%; background: <?= $coloresAging[$bucket] ?>;"
-                         tabindex="0" data-tooltip="<?= $bucket ?>: <?= Config::money((float) $monto) ?>"></div>
+                    <?= svg_barra(
+                        'bar',
+                        'height:' . pct_altura((float) $monto, $maxAging) . '%',
+                        $coloresAging[$bucket],
+                        $bucket . ': ' . Config::money((float) $monto)
+                    ) ?>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -99,7 +107,7 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
 </div>
 
 <div class="panel">
-    <h2>Facturas (<?= count($facturas) ?>)</h2>
+    <h2>Boletas (<?= count($boletas) ?>)</h2>
     <div class="table-wrap">
         <table>
             <thead>
@@ -109,19 +117,19 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($facturas as $f): ?>
+            <?php foreach ($boletas as $b): ?>
                 <tr>
-                    <td><?= htmlspecialchars($f['cliente']) ?></td>
-                    <td><?= htmlspecialchars($f['concepto']) ?></td>
-                    <td><?= htmlspecialchars($f['fecha_emision']) ?></td>
-                    <td><?= htmlspecialchars($f['fecha_vencimiento']) ?></td>
-                    <td class="num"><?= Config::money((float) $f['monto']) ?></td>
-                    <td class="num"><?= Config::money((float) $f['saldo']) ?></td>
-                    <td><span class="badge <?= $f['estado'] ?>"><?= $estadosLabel[$f['estado']] ?></span></td>
+                    <td><?= htmlspecialchars($b['cliente']) ?></td>
+                    <td><?= htmlspecialchars($b['concepto']) ?></td>
+                    <td><?= htmlspecialchars($b['fecha_emision']) ?></td>
+                    <td><?= htmlspecialchars($b['fecha_vencimiento']) ?></td>
+                    <td class="num"><?= Config::money((float) $b['monto']) ?></td>
+                    <td class="num"><?= Config::money((float) $b['saldo']) ?></td>
+                    <td><span class="badge <?= $b['estado'] ?>"><?= $estadosLabel[$b['estado']] ?></span></td>
                 </tr>
             <?php endforeach; ?>
-            <?php if (!$facturas): ?>
-                <tr><td colspan="7">No hay facturas para este filtro.</td></tr>
+            <?php if (!$boletas): ?>
+                <tr><td colspan="7">No hay boletas para este filtro.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>

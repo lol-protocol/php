@@ -6,7 +6,7 @@ namespace App\Controllers;
 
 use App\Filtros;
 use App\Repositories\ClienteRepository;
-use App\Repositories\FacturaRepository;
+use App\Repositories\BoletaRepository;
 use App\Repositories\FunnelRepository;
 use App\Repositories\PagoRepository;
 use App\View;
@@ -18,19 +18,19 @@ final class DashboardController
         $meses = Filtros::meses();
         [$desde, $hasta] = Filtros::rango($meses);
 
-        $facturaRepo = new FacturaRepository();
+        $boletaRepo = new BoletaRepository();
         $pagoRepo = new PagoRepository();
         $funnelRepo = new FunnelRepository();
         $clienteRepo = new ClienteRepository();
 
-        $ingresos = $facturaRepo->ingresosPorMes($desde, $hasta);
+        $ingresos = $boletaRepo->ingresosPorMes($desde, $hasta);
         $cobros = $pagoRepo->cobrosPorMes($desde, $hasta);
         $serieMensual = self::combinarPorMes($ingresos, $cobros);
-        $aging = $facturaRepo->carteraAging();
+        $aging = $boletaRepo->carteraAging();
 
         View::render('dashboard', [
             'meses' => $meses,
-            'kpis' => $facturaRepo->kpis($desde, $hasta),
+            'kpis' => $boletaRepo->kpis($desde, $hasta),
             'aging' => $aging,
             'carteraPendiente' => array_sum($aging),
             'serieMensual' => $serieMensual,

@@ -1,7 +1,7 @@
 -- Esquema del sistema de cobros, ingresos, pagos y funnel de conversion
 
 DROP TABLE IF EXISTS pagos;
-DROP TABLE IF EXISTS facturas;
+DROP TABLE IF EXISTS boletas;
 DROP TABLE IF EXISTS usuarios_funnel;
 DROP TABLE IF EXISTS clientes;
 
@@ -40,9 +40,10 @@ CREATE TABLE usuarios_funnel (
     cliente_id INTEGER REFERENCES clientes(id)
 );
 
--- Ingresos devengados (facturacion). El estado de cobro se calcula
--- dinamicamente a partir de los pagos aplicados, no se guarda aqui.
-CREATE TABLE facturas (
+-- Ingresos devengados (boletas de venta al usuario final, no facturas
+-- fiscales). El estado de cobro se calcula dinamicamente a partir de los
+-- pagos aplicados, no se guarda aqui.
+CREATE TABLE boletas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_id INTEGER NOT NULL REFERENCES clientes(id),
     concepto TEXT NOT NULL,
@@ -51,20 +52,21 @@ CREATE TABLE facturas (
     fecha_vencimiento TEXT NOT NULL
 );
 
--- Cobros reales (caja). factura_id es opcional: permite registrar
--- anticipos o pagos sueltos no ligados a una factura puntual.
+-- Cobros reales (caja): solo pagos que el usuario nos hace a nosotros.
+-- boleta_id es opcional: permite registrar anticipos o pagos sueltos no
+-- ligados a una boleta puntual.
 CREATE TABLE pagos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    factura_id INTEGER REFERENCES facturas(id),
+    boleta_id INTEGER REFERENCES boletas(id),
     cliente_id INTEGER NOT NULL REFERENCES clientes(id),
     monto REAL NOT NULL,
     fecha_pago TEXT NOT NULL,
     metodo TEXT NOT NULL DEFAULT 'transferencia'
 );
 
-CREATE INDEX idx_facturas_cliente ON facturas(cliente_id);
-CREATE INDEX idx_facturas_fecha_emision ON facturas(fecha_emision);
-CREATE INDEX idx_pagos_factura ON pagos(factura_id);
+CREATE INDEX idx_boletas_cliente ON boletas(cliente_id);
+CREATE INDEX idx_boletas_fecha_emision ON boletas(fecha_emision);
+CREATE INDEX idx_pagos_boleta ON pagos(boleta_id);
 CREATE INDEX idx_pagos_cliente ON pagos(cliente_id);
 CREATE INDEX idx_pagos_fecha ON pagos(fecha_pago);
 CREATE INDEX idx_funnel_fechas ON usuarios_funnel(fecha_visita, fecha_registro, fecha_lead, fecha_conversion);

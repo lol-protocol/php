@@ -52,8 +52,12 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
         <div class="chart">
             <?php foreach ($cobrosPorMes as $fila): ?>
                 <div class="grupo">
-                    <div class="bar" style="height: <?= pct_altura((float) $fila['total'], $maxCobros) ?>%; background: var(--series-2);"
-                         tabindex="0" data-tooltip="<?= mes_label($fila['mes']) ?>: <?= Config::money((float) $fila['total']) ?>"></div>
+                    <?= svg_barra(
+                        'bar',
+                        'height:' . pct_altura((float) $fila['total'], $maxCobros) . '%',
+                        'var(--series-2)',
+                        mes_label($fila['mes']) . ': ' . Config::money((float) $fila['total'])
+                    ) ?>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -70,7 +74,13 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
             <div class="hbar-row">
                 <span class="hbar-label"><?= $metodoLabel[$fila['metodo']] ?? htmlspecialchars($fila['metodo']) ?></span>
                 <span class="hbar-track">
-                    <span class="hbar-fill" style="width: <?= pct_altura((float) $fila['total'], $maxMetodo) ?>%; background: <?= $coloresMetodo[$fila['metodo']] ?? 'var(--series-1)' ?>;"></span>
+                    <?= svg_barra(
+                        'hbar-fill',
+                        'width:' . pct_altura((float) $fila['total'], $maxMetodo) . '%',
+                        $coloresMetodo[$fila['metodo']] ?? 'var(--series-1)',
+                        ($metodoLabel[$fila['metodo']] ?? $fila['metodo']) . ': ' . Config::money((float) $fila['total']) . ' (' . $fila['cantidad'] . ')',
+                        3
+                    ) ?>
                 </span>
                 <span class="hbar-value"><?= Config::money((float) $fila['total']) ?> (<?= $fila['cantidad'] ?>)</span>
             </div>
@@ -94,7 +104,7 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
                     <td><?= htmlspecialchars($p['cliente']) ?></td>
                     <td><?= htmlspecialchars($p['fecha_pago']) ?></td>
                     <td><?= $metodoLabel[$p['metodo']] ?? htmlspecialchars($p['metodo']) ?></td>
-                    <td><?= $p['factura_id'] ? 'Factura #' . (int) $p['factura_id'] : 'Anticipo' ?></td>
+                    <td><?= $p['boleta_id'] ? 'Boleta #' . (int) $p['boleta_id'] : 'Anticipo' ?></td>
                     <td class="num"><?= Config::money((float) $p['monto']) ?></td>
                 </tr>
             <?php endforeach; ?>

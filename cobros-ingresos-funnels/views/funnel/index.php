@@ -63,8 +63,8 @@ foreach ($serieMensual as $fila) {
     <div class="chart">
         <?php foreach ($etapas as $etapa => $valor): $i = array_search($etapa, array_keys($etapas), true); ?>
             <div class="grupo">
-                <div class="bar" style="height: <?= pct_altura((float) $valor, $maxEtapa) ?>%; background: <?= $rampaFunnel[$i] ?>;"
-                     tabindex="0" data-tooltip="<?= $etapa ?>: <?= $valor ?> (<?= $resumen['visitantes'] > 0 ? number_format($valor / $resumen['visitantes'] * 100, 1) : 0 ?>% de visitantes)"></div>
+                <?php $pct = $resumen['visitantes'] > 0 ? number_format($valor / $resumen['visitantes'] * 100, 1) : 0; ?>
+                <?= svg_barra('bar', 'height:' . pct_altura((float) $valor, $maxEtapa) . '%', $rampaFunnel[$i], "{$etapa}: {$valor} ({$pct}% de visitantes)") ?>
             </div>
         <?php endforeach; ?>
     </div>
@@ -89,10 +89,18 @@ foreach ($serieMensual as $fila) {
         <div class="chart">
             <?php foreach ($serieMensual as $fila): ?>
                 <div class="grupo">
-                    <div class="bar" style="height: <?= pct_altura((float) $fila['visitantes'], $maxSerie) ?>%; background: var(--series-1);"
-                         tabindex="0" data-tooltip="Visitantes <?= mes_label($fila['mes']) ?>: <?= $fila['visitantes'] ?>"></div>
-                    <div class="bar" style="height: <?= pct_altura((float) $fila['clientes'], $maxSerie) ?>%; background: var(--series-2);"
-                         tabindex="0" data-tooltip="Clientes <?= mes_label($fila['mes']) ?>: <?= $fila['clientes'] ?>"></div>
+                    <?= svg_barra(
+                        'bar',
+                        'height:' . pct_altura((float) $fila['visitantes'], $maxSerie) . '%',
+                        'var(--series-1)',
+                        'Visitantes ' . mes_label($fila['mes']) . ': ' . $fila['visitantes']
+                    ) ?>
+                    <?= svg_barra(
+                        'bar',
+                        'height:' . pct_altura((float) $fila['clientes'], $maxSerie) . '%',
+                        'var(--series-2)',
+                        'Clientes ' . mes_label($fila['mes']) . ': ' . $fila['clientes']
+                    ) ?>
                 </div>
             <?php endforeach; ?>
         </div>

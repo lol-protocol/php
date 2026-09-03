@@ -84,10 +84,18 @@ $coloresSegmento = [
         <div class="chart">
             <?php foreach ($serieMensual as $fila): ?>
                 <div class="grupo">
-                    <div class="bar" style="height: <?= pct_altura((float) $fila['ingresos'], $maxMensual) ?>%; background: var(--series-1);"
-                         tabindex="0" data-tooltip="Ingresos <?= mes_label($fila['mes']) ?>: <?= Config::money((float) $fila['ingresos']) ?>"></div>
-                    <div class="bar" style="height: <?= pct_altura((float) $fila['cobros'], $maxMensual) ?>%; background: var(--series-2);"
-                         tabindex="0" data-tooltip="Cobros <?= mes_label($fila['mes']) ?>: <?= Config::money((float) $fila['cobros']) ?>"></div>
+                    <?= svg_barra(
+                        'bar',
+                        'height:' . pct_altura((float) $fila['ingresos'], $maxMensual) . '%',
+                        'var(--series-1)',
+                        'Ingresos ' . mes_label($fila['mes']) . ': ' . Config::money((float) $fila['ingresos'])
+                    ) ?>
+                    <?= svg_barra(
+                        'bar',
+                        'height:' . pct_altura((float) $fila['cobros'], $maxMensual) . '%',
+                        'var(--series-2)',
+                        'Cobros ' . mes_label($fila['mes']) . ': ' . Config::money((float) $fila['cobros'])
+                    ) ?>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -103,8 +111,12 @@ $coloresSegmento = [
         <div class="chart">
             <?php foreach ($aging as $bucket => $monto): ?>
                 <div class="grupo">
-                    <div class="bar" style="height: <?= pct_altura((float) $monto, $maxAging) ?>%; background: <?= $coloresAging[$bucket] ?>;"
-                         tabindex="0" data-tooltip="<?= $bucket ?>: <?= Config::money((float) $monto) ?>"></div>
+                    <?= svg_barra(
+                        'bar',
+                        'height:' . pct_altura((float) $monto, $maxAging) . '%',
+                        $coloresAging[$bucket],
+                        $bucket . ': ' . Config::money((float) $monto)
+                    ) ?>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -121,8 +133,7 @@ $coloresSegmento = [
     <div class="chart">
         <?php foreach ($etapasFunnel as $etapa => $valor): $i = array_search($etapa, array_keys($etapasFunnel), true); ?>
             <div class="grupo">
-                <div class="bar" style="height: <?= pct_altura((float) $valor, $maxEtapa) ?>%; background: <?= $rampaFunnel[$i] ?>;"
-                     tabindex="0" data-tooltip="<?= $etapa ?>: <?= $valor ?>"></div>
+                <?= svg_barra('bar', 'height:' . pct_altura((float) $valor, $maxEtapa) . '%', $rampaFunnel[$i], $etapa . ': ' . $valor) ?>
             </div>
         <?php endforeach; ?>
     </div>
@@ -146,7 +157,13 @@ $coloresSegmento = [
                     <div class="hbar-row compacto">
                         <span class="hbar-label" title="<?= htmlspecialchars($fila['etiqueta']) ?>"><?= htmlspecialchars($fila['etiqueta']) ?></span>
                         <span class="hbar-track">
-                            <span class="hbar-fill" style="width: <?= pct_altura((float) $fila['total_facturado'], $maxSeg) ?>%; background: <?= $coloresSegmento[$titulo] ?>;"></span>
+                            <?= svg_barra(
+                                'hbar-fill',
+                                'width:' . pct_altura((float) $fila['total_facturado'], $maxSeg) . '%',
+                                $coloresSegmento[$titulo],
+                                $fila['etiqueta'] . ': ' . Config::money((float) $fila['total_facturado']),
+                                3
+                            ) ?>
                         </span>
                         <span class="hbar-value" title="<?= number_format((float) $fila['total_facturado'], 2) ?>"><?= money_compacta((float) $fila['total_facturado']) ?></span>
                     </div>

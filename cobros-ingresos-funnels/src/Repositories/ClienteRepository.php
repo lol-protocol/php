@@ -67,9 +67,9 @@ final class ClienteRepository
         $stmt = $this->db->prepare(
             "SELECT {$expresionSql} AS etiqueta,
                     COUNT(DISTINCT c.id) AS clientes,
-                    COALESCE(SUM(f.monto), 0) AS total_facturado
+                    COALESCE(SUM(b.monto), 0) AS total_facturado
              FROM clientes c
-             JOIN facturas f ON f.cliente_id = c.id
+             JOIN boletas b ON b.cliente_id = c.id
              GROUP BY etiqueta
              ORDER BY total_facturado DESC
              LIMIT :limite"

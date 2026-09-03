@@ -43,7 +43,7 @@ final class PagoRepository
     public function listado(string $desde, string $hasta): array
     {
         $stmt = $this->db->prepare(
-            "SELECT p.id, p.monto, p.fecha_pago, p.metodo, p.factura_id,
+            "SELECT p.id, p.monto, p.fecha_pago, p.metodo, p.boleta_id,
                     c.nombre AS cliente
              FROM pagos p
              JOIN clientes c ON c.id = p.cliente_id

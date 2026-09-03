@@ -2,10 +2,13 @@
 
 Pequeño sistema en PHP (sin framework) para analizar:
 
-- **Ingresos** devengados (facturación) vs. **cobros** reales (caja).
+- **Ingresos** devengados (boletas emitidas al usuario) vs. **cobros** reales (caja).
+  Solo se registran pagos que el usuario nos hace a nosotros — no hay modulo de
+  costos ni pagos propios del negocio.
 - **Cartera** pendiente, con antigüedad de saldo (aging: al día / 1-30 / 31-60 / 61+ días).
 - **Pagos**: por mes y por método (transferencia, tarjeta, efectivo).
 - **Funnel de conversión**: visitante → registrado → lead → cliente, con tasas por etapa y por canal de adquisición.
+- **Segmentación de clientes**: top país, ciudad, idioma, género y rango de edad por facturación.
 
 ## Requisitos
 
@@ -42,23 +45,29 @@ views/                plantillas PHP (una carpeta por sección)
 
 ## Modelo de datos
 
-- `clientes`: clientes ya convertidos (vía funnel o cartera preexistente).
-- `usuarios_funnel`: cada visitante que entra al funnel, con la fecha en que alcanzó
-  cada etapa (`fecha_visita`, `fecha_registro`, `fecha_lead`, `fecha_conversion`) y
-  el canal de adquisición.
-- `facturas`: ingresos devengados (monto, emisión, vencimiento).
-- `pagos`: cobros reales, opcionalmente ligados a una factura (`factura_id` puede
-  ser `NULL` para anticipos/pagos sueltos).
+- `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
+  perfil (`pais`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
+  segmentación del dashboard.
+- `usuarios_funnel`: cada visitante que entra al funnel, con el mismo perfil y la
+  fecha en que alcanzó cada etapa (`fecha_visita`, `fecha_registro`, `fecha_lead`,
+  `fecha_conversion`) y el canal de adquisición. El perfil se genera una sola vez
+  por persona y viaja a `clientes` si convierte.
+- `boletas`: ingresos devengados al usuario final (monto, emisión, vencimiento) —
+  no son facturas fiscales.
+- `pagos`: cobros reales del usuario, opcionalmente ligados a una boleta
+  (`boleta_id` puede ser `NULL` para anticipos/pagos sueltos).
 
-El estado de cada factura (pagada / parcial / pendiente / vencida) se calcula
+El estado de cada boleta (pagada / parcial / pendiente / vencida) se calcula
 dinámicamente a partir de sus pagos y la fecha de vencimiento, no se guarda en la
 base — así nunca queda desincronizado.
 
 ## Notas de diseño
 
-- Sin JavaScript ni librerías de gráficos externas: los charts son barras CSS con
-  tooltip nativo (`data-tooltip` + `:hover`/`:focus`), pensado para funcionar sin
-  build step ni conexión a internet.
+- Sin JavaScript ni librerías de gráficos externas: los mini-gráficos son SVG
+  inline (barras con `<rect>` redondeado + `<title>` como tooltip nativo),
+  pensado para funcionar sin build step ni conexión a internet. El tamaño lo
+  sigue resolviendo el layout flexbox existente (el SVG no lleva `viewBox`, así
+  que sus coordenadas son los píxeles reales de su caja, igual que un div).
 - Sigue una paleta validada para accesibilidad (contraste y daltonismo): colores
   categóricos fijos para series (ingresos/cobros), rampa secuencial para las etapas
   del funnel, y colores de estado reservados para la antigüedad de cartera.

@@ -7,7 +7,7 @@ namespace App\Repositories;
 use App\Database;
 use PDO;
 
-final class FacturaRepository
+final class BoletaRepository
 {
     private PDO $db;
 
@@ -16,12 +16,12 @@ final class FacturaRepository
         $this->db = Database::connection();
     }
 
-    /** Ingresos devengados (facturacion) agrupados por mes de emision. */
+    /** Ingresos devengados (boletas emitidas) agrupados por mes de emision. */
     public function ingresosPorMes(string $desde, string $hasta): array
     {
         $stmt = $this->db->prepare(
             "SELECT strftime('%Y-%m', fecha_emision) AS mes, SUM(monto) AS total
-             FROM facturas
+             FROM boletas
              WHERE fecha_emision BETWEEN :desde AND :hasta
              GROUP BY mes ORDER BY mes"
         );
@@ -29,11 +29,11 @@ final class FacturaRepository
         return $stmt->fetchAll();
     }
 
-    /** KPIs del periodo: ingresos facturados vs efectivo cobrado en el rango dado. */
+    /** KPIs del periodo: ingresos emitidos en boletas vs efectivo cobrado en el rango dado. */
     public function kpis(string $desde, string $hasta): array
     {
         $stmtFacturado = $this->db->prepare(
-            'SELECT COALESCE(SUM(monto), 0) FROM facturas WHERE fecha_emision BETWEEN :desde AND :hasta'
+            'SELECT COALESCE(SUM(monto), 0) FROM boletas WHERE fecha_emision BETWEEN :desde AND :hasta'
         );
         $stmtFacturado->execute([':desde' => $desde, ':hasta' => $hasta]);
         $facturado = (float) $stmtFacturado->fetchColumn();
@@ -55,10 +55,10 @@ final class FacturaRepository
     public function carteraAging(): array
     {
         $rows = $this->db->query(
-            "SELECT f.id, f.fecha_vencimiento,
-                    f.monto - COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.factura_id = f.id), 0) AS saldo,
-                    CAST(julianday('now') - julianday(f.fecha_vencimiento) AS INTEGER) AS dias_vencido
-             FROM facturas f"
+            "SELECT b.id, b.fecha_vencimiento,
+                    b.monto - COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.boleta_id = b.id), 0) AS saldo,
+                    CAST(julianday('now') - julianday(b.fecha_vencimiento) AS INTEGER) AS dias_vencido
+             FROM boletas b"
         )->fetchAll();
 
         $buckets = [
@@ -89,13 +89,13 @@ final class FacturaRepository
     public function listado(string $desde, string $hasta, ?string $estado = null): array
     {
         $stmt = $this->db->prepare(
-            "SELECT f.id, f.concepto, f.monto, f.fecha_emision, f.fecha_vencimiento,
+            "SELECT b.id, b.concepto, b.monto, b.fecha_emision, b.fecha_vencimiento,
                     c.nombre AS cliente,
-                    COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.factura_id = f.id), 0) AS pagado
-             FROM facturas f
-             JOIN clientes c ON c.id = f.cliente_id
-             WHERE f.fecha_emision BETWEEN :desde AND :hasta
-             ORDER BY f.fecha_emision DESC"
+                    COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.boleta_id = b.id), 0) AS pagado
+             FROM boletas b
+             JOIN clientes c ON c.id = b.cliente_id
+             WHERE b.fecha_emision BETWEEN :desde AND :hasta
+             ORDER BY b.fecha_emision DESC"
         );
         $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
         $rows = $stmt->fetchAll();

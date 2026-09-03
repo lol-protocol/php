@@ -124,12 +124,12 @@ $insUsuario = $pdo->prepare(
      VALUES (:nombre, :email, :canal, :pais, :ciudad, :idioma, :genero, :fecha_nacimiento,
              :fecha_visita, :fecha_registro, :fecha_lead, :fecha_conversion, :cliente_id)'
 );
-$insFactura = $pdo->prepare(
-    'INSERT INTO facturas (cliente_id, concepto, monto, fecha_emision, fecha_vencimiento)
+$insBoleta = $pdo->prepare(
+    'INSERT INTO boletas (cliente_id, concepto, monto, fecha_emision, fecha_vencimiento)
      VALUES (:cliente_id, :concepto, :monto, :fecha_emision, :fecha_vencimiento)'
 );
 $insPago = $pdo->prepare(
-    'INSERT INTO pagos (factura_id, cliente_id, monto, fecha_pago, metodo) VALUES (:factura_id, :cliente_id, :monto, :fecha_pago, :metodo)'
+    'INSERT INTO pagos (boleta_id, cliente_id, monto, fecha_pago, metodo) VALUES (:boleta_id, :cliente_id, :monto, :fecha_pago, :metodo)'
 );
 
 $pdo->beginTransaction();
@@ -216,7 +216,7 @@ for ($i = 0; $i < 320; $i++) {
     ]);
 }
 
-// 3) Facturacion (ingresos devengados) y pagos (cobros/caja) por cliente.
+// 3) Boletas (ingresos devengados) y pagos del usuario (cobros/caja) por cliente.
 $clientesInfo = $pdo->query('SELECT id, fecha_alta FROM clientes')->fetchAll();
 
 foreach ($clientesInfo as $cliente) {
@@ -224,10 +224,10 @@ foreach ($clientesInfo as $cliente) {
     if ($altaCliente >= $hoy) {
         continue;
     }
-    $numFacturas = random_int(1, 6);
+    $numBoletas = random_int(1, 6);
     $cursor = $altaCliente;
 
-    for ($f = 0; $f < $numFacturas; $f++) {
+    for ($f = 0; $f < $numBoletas; $f++) {
         if ($cursor >= $hoy) {
             break;
         }
@@ -239,14 +239,14 @@ foreach ($clientesInfo as $cliente) {
         $monto = round(mt_rand(15000, 320000) / 100, 2);
         $concepto = $conceptos[array_rand($conceptos)];
 
-        $insFactura->execute([
+        $insBoleta->execute([
             ':cliente_id' => $cliente['id'],
             ':concepto' => $concepto,
             ':monto' => $monto,
             ':fecha_emision' => fecha($emision),
             ':fecha_vencimiento' => fecha($vencimiento),
         ]);
-        $facturaId = (int) $pdo->lastInsertId();
+        $boletaId = (int) $pdo->lastInsertId();
 
         $comportamiento = eleccionPonderada(['pagada' => 70, 'parcial' => 15, 'pendiente' => 15]);
         if ($comportamiento !== 'pendiente') {
@@ -257,7 +257,7 @@ foreach ($clientesInfo as $cliente) {
             $fPago = diasAleatorios($emision, max(1, (int) (($limitePago->getTimestamp() - $emision->getTimestamp()) / DIA)));
             if ($fPago <= $hoy) {
                 $insPago->execute([
-                    ':factura_id' => $facturaId,
+                    ':boleta_id' => $boletaId,
                     ':cliente_id' => $cliente['id'],
                     ':monto' => $montoPago,
                     ':fecha_pago' => fecha($fPago),
@@ -270,12 +270,12 @@ foreach ($clientesInfo as $cliente) {
     }
 }
 
-// 4) Un puñado de anticipos / pagos sueltos no ligados a una factura puntual.
+// 4) Un puñado de anticipos / pagos sueltos no ligados a una boleta puntual.
 for ($i = 0; $i < 10; $i++) {
     $cliente = $clienteIds[array_rand($clienteIds)];
     $fPago = diasAleatorios($hoy->modify('-90 days'), 90);
     $insPago->execute([
-        ':factura_id' => null,
+        ':boleta_id' => null,
         ':cliente_id' => $cliente,
         ':monto' => round(mt_rand(5000, 60000) / 100, 2),
         ':fecha_pago' => fecha($fPago),
@@ -287,11 +287,11 @@ $pdo->commit();
 
 $totalClientes = $pdo->query('SELECT COUNT(*) FROM clientes')->fetchColumn();
 $totalUsuarios = $pdo->query('SELECT COUNT(*) FROM usuarios_funnel')->fetchColumn();
-$totalFacturas = $pdo->query('SELECT COUNT(*) FROM facturas')->fetchColumn();
+$totalBoletas = $pdo->query('SELECT COUNT(*) FROM boletas')->fetchColumn();
 $totalPagos = $pdo->query('SELECT COUNT(*) FROM pagos')->fetchColumn();
 
 echo "Seed completado:\n";
 echo "  clientes:        {$totalClientes}\n";
 echo "  usuarios_funnel: {$totalUsuarios}\n";
-echo "  facturas:        {$totalFacturas}\n";
+echo "  boletas:         {$totalBoletas}\n";
 echo "  pagos:           {$totalPagos}\n";

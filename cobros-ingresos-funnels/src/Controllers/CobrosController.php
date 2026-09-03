@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Filtros;
-use App\Repositories\FacturaRepository;
+use App\Repositories\BoletaRepository;
 use App\View;
 
 final class CobrosController
@@ -16,17 +16,17 @@ final class CobrosController
         [$desde, $hasta] = Filtros::rango($meses);
         $estado = $_GET['estado'] ?? '';
 
-        $facturaRepo = new FacturaRepository();
-        $aging = $facturaRepo->carteraAging();
+        $boletaRepo = new BoletaRepository();
+        $aging = $boletaRepo->carteraAging();
 
         View::render('cobros/index', [
             'meses' => $meses,
             'estado' => $estado,
-            'kpis' => $facturaRepo->kpis($desde, $hasta),
-            'ingresosPorMes' => $facturaRepo->ingresosPorMes($desde, $hasta),
+            'kpis' => $boletaRepo->kpis($desde, $hasta),
+            'ingresosPorMes' => $boletaRepo->ingresosPorMes($desde, $hasta),
             'aging' => $aging,
             'carteraPendiente' => array_sum($aging),
-            'facturas' => $facturaRepo->listado($desde, $hasta, $estado ?: null),
+            'boletas' => $boletaRepo->listado($desde, $hasta, $estado ?: null),
             'activePage' => 'cobros',
             'titulo' => 'Cobros e ingresos',
         ]);
