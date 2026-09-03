@@ -1,5 +1,6 @@
 import { el, ACTION_ICONS } from "./nucleo.js";
-import { formatDuration, formatMoney, formatFileSize, formatPct } from "./formato.js";
+import { formatPct } from "./formato.js";
+import { buildMetricNodes } from "./metricas.js";
 
 function buildDeltaBadge(deltaPct, { betterWhenLower = true, goodLabel, badLabel }) {
   if (deltaPct === null) {
@@ -13,33 +14,6 @@ function buildDeltaBadge(deltaPct, { betterWhenLower = true, goodLabel, badLabel
     class: `badge ${isGood ? "badge--good" : "badge--bad"}`,
     text: `${formatPct(deltaPct)} ${isGood ? goodLabel : badLabel}`,
   });
-}
-
-// Cada tipo de dato mostrado tiene su propia clase de color (ver css/tarjetas.css).
-function buildMetricNodes(item) {
-  const nodes = [el("span", { class: "metric metric--duracion", text: `⏱ ${formatDuration(item.duration_ms)}` })];
-
-  if (item.amount_usd !== null) {
-    const texto =
-      item.currency && item.currency !== "USD"
-        ? `💰 ${formatMoney(item.amount_local, item.currency)} (≈ ${formatMoney(item.amount_usd, "USD")})`
-        : `💰 ${formatMoney(item.amount_usd, "USD")}`;
-    nodes.push(el("span", { class: "metric metric--dinero", text: texto }));
-  }
-
-  if (item.endpoint) {
-    nodes.push(el("span", { class: "metric metric--endpoint", text: `⚙ ${item.endpoint} → ${item.http_status ?? "?"}` }));
-  }
-
-  if (item.file_size_kb !== null) {
-    nodes.push(el("span", { class: "metric metric--archivo", text: `📎 ${formatFileSize(item.file_size_kb)}` }));
-  }
-
-  if (item.cohort) {
-    nodes.push(el("span", { class: "metric", text: `(vs. ${item.cohort.count} acciones del universo elegido)` }));
-  }
-
-  return nodes;
 }
 
 export function renderTimeline(items) {

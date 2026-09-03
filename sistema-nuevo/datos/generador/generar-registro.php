@@ -8,7 +8,10 @@ require_once __DIR__ . '/crudo.php';
 /**
  * Arma un registro crudo (formato inconsistente a propósito) para una acción.
  *
- * @param array{speedFactor: float, priceFactorUsd: float, moneda: string, tasaMoneda: float} $contextoUsuario
+ * @param array{
+ *   speedFactor: float, priceFactorUsd: float, moneda: string, tasaMoneda: float,
+ *   ip: string, ipCountry: string, ipIsp: string
+ * } $contextoUsuario
  * @param array{tiposConMonto: string[], comentarios: array, apiEndpoints: string[], httpStatusPool: int[]} $catalogos
  * @return array{registro: array, cursor: int}
  */
@@ -30,6 +33,10 @@ function generar_registro_crudo(
         'type' => tal_vez(2) ? 'evento_desconocido' : crudo_espacios(crudo_may_min($tipo)),
         'timestamp' => tal_vez(2) ? 'fecha-invalida' : crudo_marca_temporal($cursor),
         'duration_ms' => tal_vez(3) ? (tal_vez(50) ? 'N/D' : -$duracionMs) : crudo_numero($duracionMs, 0),
+        'path' => $meta['ruta'],
+        'ip' => tal_vez(5) ? ($contextoUsuario['ip'] . ':' . mt_rand(1024, 65000)) : $contextoUsuario['ip'],
+        'ip_country' => crudo_espacios(crudo_may_min($contextoUsuario['ipCountry'])),
+        'ip_isp' => crudo_espacios($contextoUsuario['ipIsp']),
     ];
 
     if (in_array($tipo, $catalogos['tiposConMonto'], true)) {

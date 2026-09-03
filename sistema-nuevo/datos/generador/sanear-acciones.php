@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * Pasa todas las acciones crudas por el saneador (saneador.php) y arma el
- * contexto de saneamiento (usuarios, monedas válidas, etiquetas por tipo).
+ * contexto de saneamiento (usuarios, monedas válidas, rutas, husos horarios).
  *
  * @return array{acciones: array, descartadas: int}
  */
@@ -13,7 +13,8 @@ function sanear_acciones(
     array $usersById,
     array $currencyByCountry,
     array $rateToUsd,
-    array $tiposAccion
+    array $tiposAccion,
+    array $offsetPorPais
 ): array {
     $contexto = [
         'usuarios_por_id' => $usersById,
@@ -21,6 +22,9 @@ function sanear_acciones(
         'moneda_por_pais' => $currencyByCountry,
         'tasa_por_moneda' => $rateToUsd,
         'etiquetas' => array_map(fn ($meta) => $meta['label'], $tiposAccion),
+        'rutas' => array_map(fn ($meta) => $meta['ruta'], $tiposAccion),
+        'paises_validos' => array_keys($currencyByCountry),
+        'offset_por_pais' => $offsetPorPais,
     ];
 
     $acciones = [];

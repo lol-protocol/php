@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 /**
- * Saneamiento de fecha/hora y duración. Formato canónico de salida: Y.m.d.H.i.s
- * (ej. "2026.09.03.19.47.10", siempre UTC) — mismo orden que ISO-8601, así que
- * sigue ordenando bien como texto, solo que con puntos en vez de guiones/T/Z.
+ * Saneamiento de fecha/hora y duración. Formato canónico de salida: Y-m-d H:i:s
+ * (ej. "2026-09-03 19:47:10", siempre UTC) — mismo orden que ISO-8601, así que
+ * sigue ordenando bien como texto aunque no lleve T/Z.
  */
 
-const SANEADOR_FORMATO_FECHA = 'Y.m.d.H.i.s';
+const SANEADOR_FORMATO_FECHA = 'Y-m-d H:i:s';
 
 function saneador_marca_temporal(mixed $valor): ?string
 {

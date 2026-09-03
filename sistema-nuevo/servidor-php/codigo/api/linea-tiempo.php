@@ -39,14 +39,16 @@ function api_timeline(): void
         }
         $cohort = $statsCache[$type];
 
-        // amount_local/currency/comment/endpoint/http_status/file_size_kb ya vienen
-        // en $action (esquema canónico saneado); se pasan tal cual al frontend.
+        // amount_local/currency/comment/endpoint/http_status/file_size_kb/path/ip*
+        // ya vienen en $action (esquema canónico saneado); se pasan tal cual.
         $timeline[] = $action + [
             'cohort' => $cohort,
             'duration_delta_pct' => api_delta_pct($action['duration_ms'], $cohort['avg_duration_ms'] ?? null),
             'amount_delta_pct' => $action['amount_usd'] === null
                 ? null
                 : api_delta_pct($action['amount_usd'], $cohort['avg_amount_usd'] ?? null),
+            // La IP no siempre coincide con el país declarado del usuario (VPN/proxy/viaje).
+            'ip_mismatch' => $action['ip_country'] !== null && $action['ip_country'] !== $user['country'],
         ];
     }
 

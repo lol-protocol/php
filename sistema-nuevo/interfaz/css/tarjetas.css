@@ -49,10 +49,20 @@
   color: var(--dato-dinero);
 }
 
-.metric--endpoint {
-  color: var(--dato-endpoint);
+.metric--ruta {
+  color: var(--dato-ruta);
 }
 
 .metric--archivo {
   color: var(--dato-archivo);
+}
+
+.metric--ip {
+  color: var(--dato-ip);
+}
+
+/* IP cuyo país no coincide con el país declarado del usuario (VPN/proxy/viaje) */
+.metric--ip-alerta {
+  color: var(--bad);
+  text-shadow: 0 0 6px var(--bad);
 }

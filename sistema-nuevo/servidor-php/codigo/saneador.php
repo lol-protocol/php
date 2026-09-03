@@ -16,4 +16,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/saneador/primitivas.php';
 require __DIR__ . '/saneador/marca-temporal.php';
+require __DIR__ . '/saneador/accion-monto.php';
+require __DIR__ . '/saneador/accion-campos.php';
+require __DIR__ . '/saneador/accion-ip.php';
 require __DIR__ . '/saneador/accion.php';

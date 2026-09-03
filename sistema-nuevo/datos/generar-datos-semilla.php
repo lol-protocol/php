@@ -17,9 +17,11 @@ require __DIR__ . '/generador/sanear-acciones.php';
 require __DIR__ . '/generador/escribir-archivos.php';
 
 mt_srand(20260903); // semilla fija: datos reproducibles entre corridas
+$ahora = strtotime('2026-09-03T12:00:00+00:00'); // ancla fija, no time(): reproducible byte a byte
 
 $catalogoPaises = require __DIR__ . '/generador/catalogo-paises.php';
 $catalogoMonedas = require __DIR__ . '/generador/catalogo-monedas.php';
+$catalogoRed = require __DIR__ . '/generador/catalogo-red.php';
 $nombres = require __DIR__ . '/generador/nombres.php';
 $tiposAccionData = require __DIR__ . '/generador/tipos-accion.php';
 $comentarios = require __DIR__ . '/generador/comentarios.php';
@@ -46,11 +48,15 @@ $crudas = generar_acciones_crudas(
     ],
     $catalogoMonedas['currencyByCountry'],
     $catalogoMonedas['rateToUsd'],
-    $countryPriceFactor
+    $countryPriceFactor,
+    $allCountries,
+    $catalogoRed['proveedoresIsp'],
+    $ahora
 );
 
 $saneado = sanear_acciones(
-    $crudas, $usersById, $catalogoMonedas['currencyByCountry'], $catalogoMonedas['rateToUsd'], $tiposAccionData['tiposAccion']
+    $crudas, $usersById, $catalogoMonedas['currencyByCountry'], $catalogoMonedas['rateToUsd'],
+    $tiposAccionData['tiposAccion'], $catalogoRed['offsetPorPais']
 );
 $acciones = $saneado['acciones'];
 

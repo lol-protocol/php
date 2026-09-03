@@ -71,3 +71,22 @@ function saneador_codigo_http(mixed $valor): ?int
     $codigo = (int) $numero;
     return ($codigo >= 100 && $codigo <= 599) ? $codigo : null;
 }
+
+function saneador_ip(mixed $valor): ?string
+{
+    if (!is_string($valor)) {
+        return null;
+    }
+    // Admite un ":puerto" colado ("203.45.12.9:54321") antes de validar.
+    $limpio = preg_replace('/:\d+$/', '', trim($valor)) ?? '';
+    return filter_var($limpio, FILTER_VALIDATE_IP) !== false ? $limpio : null;
+}
+
+function saneador_codigo_pais(mixed $valor, array $paisesValidos): ?string
+{
+    if (!is_string($valor)) {
+        return null;
+    }
+    $limpio = strtoupper(trim($valor));
+    return in_array($limpio, $paisesValidos, true) ? $limpio : null;
+}

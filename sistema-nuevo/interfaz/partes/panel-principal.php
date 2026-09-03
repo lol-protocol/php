@@ -17,9 +17,11 @@
         <span class="legend-swatch" style="--dot-color: var(--dato-duracion)">duración</span>
         <span class="legend-swatch" style="--dot-color: var(--dato-dinero)">monto</span>
         <span class="legend-swatch" style="--dot-color: var(--dato-comentario)">comentario</span>
-        <span class="legend-swatch" style="--dot-color: var(--dato-endpoint)">endpoint/HTTP</span>
-        <span class="legend-swatch" style="--dot-color: var(--dato-archivo)">archivo</span>
+        <span class="legend-swatch" style="--dot-color: var(--dato-ruta)">ruta/archivo, endpoint</span>
+        <span class="legend-swatch" style="--dot-color: var(--dato-archivo)">tamaño de archivo</span>
+        <span class="legend-swatch" style="--dot-color: var(--dato-ip)">IP</span>
       </div>
+      <p class="legend-note">Una IP en rojo no coincide con el país declarado del usuario (posible VPN/proxy).</p>
     </div>
   </aside>
 

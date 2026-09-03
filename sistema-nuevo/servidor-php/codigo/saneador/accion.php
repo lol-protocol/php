@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 /**
  * Orquesta el saneamiento de un registro de acción completo, combinando las
- * primitivas (primitivas.php, marca-temporal.php) según el esquema canónico.
+ * primitivas y los sub-saneadores (accion-monto.php, accion-campos.php,
+ * accion-ip.php) según el esquema canónico.
  */
 
 const SANEADOR_TIPOS_VALIDOS = [
@@ -25,7 +26,10 @@ const SANEADOR_TIPOS_CON_MONTO = ['payment', 'refund'];
  *   monedas_validas: string[],
  *   moneda_por_pais: array<string,string>,
  *   tasa_por_moneda: array<string,float>,
- *   etiquetas: array<string,string>
+ *   etiquetas: array<string,string>,
+ *   rutas: array<string,string>,
+ *   paises_validos: string[],
+ *   offset_por_pais: array<string,float>
  * } $contexto
  */
 function saneador_accion(array $crudo, array $contexto): ?array
@@ -50,6 +54,7 @@ function saneador_accion(array $crudo, array $contexto): ?array
         'label' => $contexto['etiquetas'][$tipo] ?? $tipo,
         'timestamp' => $timestamp,
         'duration_ms' => $duracion,
+        'path' => saneador_texto($crudo['path'] ?? null, 160) ?? ($contexto['rutas'][$tipo] ?? '/desconocido'),
         'amount_local' => null,
         'currency' => null,
         'amount_usd' => null,
@@ -57,36 +62,15 @@ function saneador_accion(array $crudo, array $contexto): ?array
         'endpoint' => null,
         'http_status' => null,
         'file_size_kb' => null,
+        'ip' => null,
+        'ip_country' => null,
+        'ip_local_time' => null,
+        'ip_isp' => null,
     ];
 
-    if (in_array($tipo, SANEADOR_TIPOS_CON_MONTO, true)) {
-        $monto = saneador_numero($crudo['amount'] ?? null);
-        if ($monto !== null && $monto > 0) {
-            // Si la moneda cruda es inválida, se asume la moneda del país del usuario
-            // en vez de descartar el pago entero: el monto sí se registró.
-            $moneda = saneador_moneda($crudo['currency'] ?? null, $contexto['monedas_validas'])
-                ?? $contexto['moneda_por_pais'][$usuario['country']]
-                ?? 'USD';
-            $tasa = $contexto['tasa_por_moneda'][$moneda] ?? 1.0;
-            $limpio['amount_local'] = round($monto, 2);
-            $limpio['currency'] = $moneda;
-            $limpio['amount_usd'] = round($monto / $tasa, 2);
-        }
-    }
-
-    if ($tipo === 'review_submit' || $tipo === 'support_ticket') {
-        $limpio['comment'] = saneador_texto($crudo['comment'] ?? null, 300);
-    }
-
-    if ($tipo === 'api_call') {
-        $limpio['endpoint'] = saneador_texto($crudo['endpoint'] ?? null, 120);
-        $limpio['http_status'] = saneador_codigo_http($crudo['http_status'] ?? null);
-    }
-
-    if (isset($crudo['file_size_kb'])) {
-        $tamano = saneador_numero($crudo['file_size_kb']);
-        $limpio['file_size_kb'] = ($tamano !== null && $tamano > 0) ? round($tamano, 1) : null;
-    }
+    saneador_aplicar_monto($limpio, $crudo, $tipo, $usuario, $contexto);
+    saneador_aplicar_campos_tipo($limpio, $crudo, $tipo);
+    saneador_aplicar_ip($limpio, $crudo, $timestamp, $contexto);
 
     return $limpio;
 }

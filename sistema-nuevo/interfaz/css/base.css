@@ -29,9 +29,10 @@
   --dato-duracion: #00e5ff;
   --dato-dinero: #ffd400;
   --dato-comentario: #ff2fd0;
-  --dato-endpoint: #ff8800;
+  --dato-ruta: #ff8800;
   --dato-archivo: #b388ff;
   --dato-fecha: #3d8bff;
+  --dato-ip: #00ffa2;
 
   --font-mono: ui-monospace, "SFMono-Regular", "Courier New", Consolas, Menlo, monospace;
 }
