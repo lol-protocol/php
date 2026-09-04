@@ -6,6 +6,7 @@ use App\Config;
 /** @var array $porMetodo */
 /** @var array $pagos */
 /** @var int $meses */
+/** @var string $cliente */
 
 $maxCobros = 1.0;
 foreach ($cobrosPorMes as $fila) {
@@ -32,12 +33,15 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
         <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
         <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
     </select>
+    <label for="cliente">Cliente</label>
+    <input type="search" name="cliente" id="cliente" placeholder="Buscar por nombre..." value="<?= htmlspecialchars($cliente) ?>">
     <button type="submit">Aplicar</button>
+    <a href="?page=pago-nuevo" style="margin-left:auto;">+ Nuevo pago</a>
 </form>
 
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
-        <span class="label">Total cobrado (periodo)</span>
+        <span class="label">Total cobrado (periodo, USD)</span>
         <span class="value"><?= Config::money($totalPeriodo) ?></span>
     </div>
     <div class="panel stat-tile">
@@ -101,11 +105,11 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
             <tbody>
             <?php foreach ($pagos as $p): ?>
                 <tr>
-                    <td><?= htmlspecialchars($p['cliente']) ?></td>
+                    <td><a href="?page=cliente&id=<?= (int) $p['cliente_id'] ?>"><?= htmlspecialchars($p['cliente']) ?></a></td>
                     <td><?= htmlspecialchars($p['fecha_pago']) ?></td>
                     <td><?= $metodoLabel[$p['metodo']] ?? htmlspecialchars($p['metodo']) ?></td>
                     <td><?= $p['boleta_id'] ? 'Boleta #' . (int) $p['boleta_id'] : 'Anticipo' ?></td>
-                    <td class="num"><?= Config::money((float) $p['monto']) ?></td>
+                    <td class="num"><?= money_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!$pagos): ?>

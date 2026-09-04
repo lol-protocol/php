@@ -3,11 +3,13 @@
 declare(strict_types=1);
 
 /**
- * Reconstruye el esquema y carga datos de ejemplo reproducibles.
+ * Reconstruye el esquema (PostgreSQL) y carga datos de ejemplo reproducibles.
  * Uso: php database/seed.php
+ * Variables de conexion: DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD.
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/paises_monedas.php';
 
 use App\Database;
 
@@ -44,6 +46,36 @@ function eleccionPonderada(array $pesos): string
     }
     return array_key_last($pesos);
 }
+
+// --- 0) Catalogo de referencia: monedas y paises (~200 territorios). ---
+$catalogo = catalogoPaisesMonedas();
+
+$insMoneda = $pdo->prepare(
+    'INSERT INTO monedas (codigo, nombre, simbolo, tasa_a_usd) VALUES (:codigo, :nombre, :simbolo, :tasa_a_usd)'
+);
+foreach ($catalogo['monedas'] as $codigo => $m) {
+    $insMoneda->execute([
+        ':codigo' => $codigo,
+        ':nombre' => $m['nombre'],
+        ':simbolo' => $m['simbolo'],
+        ':tasa_a_usd' => $m['tasa_a_usd'],
+    ]);
+}
+
+$insPais = $pdo->prepare('INSERT INTO paises (codigo, nombre, moneda_codigo) VALUES (:codigo, :nombre, :moneda)');
+foreach ($catalogo['paises'] as $codigo => $p) {
+    $insPais->execute([':codigo' => $codigo, ':nombre' => $p['nombre'], ':moneda' => $p['moneda']]);
+}
+
+// --- 0b) Usuario admin para entrar al panel. ---
+$emailAdmin = 'admin@ejemplo.com';
+$passwordAdmin = 'admin1234';
+$pdo->prepare('INSERT INTO usuarios_sistema (nombre, email, password_hash) VALUES (:nombre, :email, :hash)')
+    ->execute([
+        ':nombre' => 'Administrador',
+        ':email' => $emailAdmin,
+        ':hash' => password_hash($passwordAdmin, PASSWORD_DEFAULT),
+    ]);
 
 $nombresPila = ['Lucia', 'Mateo', 'Sofia', 'Diego', 'Valentina', 'Santiago', 'Camila', 'Emilio',
     'Martina', 'Nicolas', 'Renata', 'Sebastian', 'Paula', 'Joaquin', 'Daniela', 'Andres',
@@ -83,59 +115,99 @@ $conceptos = ['Suscripcion mensual', 'Licencia anual', 'Implementacion', 'Soport
 $canalPesos = ['organico' => 35, 'ads' => 25, 'referido' => 20, 'redes_sociales' => 15, 'email' => 5];
 $metodoPesos = ['transferencia' => 50, 'tarjeta' => 35, 'efectivo' => 15];
 
-$geo = [
-    'Mexico' => ['idioma' => 'Espanol', 'ciudades' => ['Ciudad de Mexico', 'Guadalajara', 'Monterrey']],
-    'Colombia' => ['idioma' => 'Espanol', 'ciudades' => ['Bogota', 'Medellin']],
-    'Argentina' => ['idioma' => 'Espanol', 'ciudades' => ['Buenos Aires', 'Cordoba']],
-    'Chile' => ['idioma' => 'Espanol', 'ciudades' => ['Santiago']],
-    'Peru' => ['idioma' => 'Espanol', 'ciudades' => ['Lima']],
-    'Espana' => ['idioma' => 'Espanol', 'ciudades' => ['Madrid', 'Barcelona']],
-    'Estados Unidos' => ['idioma' => 'Ingles', 'ciudades' => ['Miami', 'Los Angeles']],
-    'Brasil' => ['idioma' => 'Portugues', 'ciudades' => ['Sao Paulo', 'Rio de Janeiro']],
+// Subconjunto de paises usado para generar personas de ejemplo (el catalogo
+// completo de ~200 queda cargado igual para los formularios de alta).
+$ciudadesPorPais = [
+    'MX' => ['Ciudad de Mexico', 'Guadalajara', 'Monterrey'],
+    'CO' => ['Bogota', 'Medellin'],
+    'AR' => ['Buenos Aires', 'Cordoba'],
+    'CL' => ['Santiago'],
+    'PE' => ['Lima'],
+    'ES' => ['Madrid', 'Barcelona'],
+    'US' => ['Miami', 'Los Angeles', 'Nueva York'],
+    'BR' => ['Sao Paulo', 'Rio de Janeiro'],
+    'EC' => ['Quito', 'Guayaquil'],
+    'UY' => ['Montevideo'],
+    'GT' => ['Ciudad de Guatemala'],
+    'DO' => ['Santo Domingo'],
+    'PA' => ['Ciudad de Panama'],
+    'VE' => ['Caracas'],
+    'PY' => ['Asuncion'],
+    'BO' => ['La Paz'],
+    'CA' => ['Toronto', 'Vancouver'],
+    'FR' => ['Paris'],
+    'DE' => ['Berlin', 'Munich'],
+    'GB' => ['Londres'],
+    'IT' => ['Roma', 'Milan'],
+    'IN' => ['Bombay', 'Delhi'],
+    'JP' => ['Tokio'],
+    'CN' => ['Shanghai', 'Pekin'],
+    'AU' => ['Sidney'],
+    'ZA' => ['Johannesburgo'],
+    'NG' => ['Lagos'],
+    'PH' => ['Manila'],
 ];
-$paisPesos = ['Mexico' => 28, 'Colombia' => 18, 'Argentina' => 14, 'Chile' => 10,
-    'Peru' => 8, 'Espana' => 10, 'Estados Unidos' => 8, 'Brasil' => 4];
+$idiomaPorPais = [
+    'MX' => 'Espanol', 'CO' => 'Espanol', 'AR' => 'Espanol', 'CL' => 'Espanol', 'PE' => 'Espanol',
+    'ES' => 'Espanol', 'EC' => 'Espanol', 'UY' => 'Espanol', 'GT' => 'Espanol', 'DO' => 'Espanol',
+    'PA' => 'Espanol', 'VE' => 'Espanol', 'PY' => 'Espanol', 'BO' => 'Espanol',
+    'US' => 'Ingles', 'CA' => 'Ingles', 'GB' => 'Ingles', 'AU' => 'Ingles',
+    'IN' => 'Ingles', 'ZA' => 'Ingles', 'NG' => 'Ingles', 'PH' => 'Ingles',
+    'BR' => 'Portugues', 'FR' => 'Frances', 'DE' => 'Aleman', 'IT' => 'Italiano',
+    'JP' => 'Japones', 'CN' => 'Chino',
+];
+$paisPesos = [
+    'MX' => 22, 'CO' => 13, 'AR' => 10, 'CL' => 8, 'PE' => 7, 'ES' => 8, 'US' => 7, 'BR' => 5,
+    'EC' => 2, 'UY' => 2, 'GT' => 2, 'DO' => 2, 'PA' => 1, 'VE' => 2, 'PY' => 1, 'BO' => 1,
+    'CA' => 2, 'FR' => 2, 'DE' => 2, 'GB' => 2, 'IT' => 1,
+    'IN' => 1, 'JP' => 1, 'CN' => 1, 'AU' => 1, 'ZA' => 1, 'NG' => 1, 'PH' => 1,
+];
 $generoPesos = ['Femenino' => 48, 'Masculino' => 48, 'No especifica' => 4];
+$monedaPorPais = array_map(static fn ($p) => $p['moneda'], $catalogo['paises']);
 
-/** @return array{pais:string, ciudad:string, idioma:string, genero:string, fecha_nacimiento:string} */
-function perfilAleatorio(array $geo, array $paisPesos, array $generoPesos, DateTimeImmutable $hoy): array
+/** @return array{pais_codigo:string, ciudad:string, idioma:string, genero:string, fecha_nacimiento:string, moneda:string} */
+function perfilAleatorio(array $paisPesos, array $ciudadesPorPais, array $idiomaPorPais, array $monedaPorPais, array $generoPesos, DateTimeImmutable $hoy): array
 {
-    $pais = eleccionPonderada($paisPesos);
-    $info = $geo[$pais];
+    $paisCodigo = eleccionPonderada($paisPesos);
     $edad = random_int(18, 68);
     $nacimiento = $hoy->modify("-{$edad} years")->modify('-' . random_int(0, 364) . ' days');
+    $ciudades = $ciudadesPorPais[$paisCodigo];
 
     return [
-        'pais' => $pais,
-        'ciudad' => $info['ciudades'][array_rand($info['ciudades'])],
-        'idioma' => $info['idioma'],
+        'pais_codigo' => $paisCodigo,
+        'ciudad' => $ciudades[array_rand($ciudades)],
+        'idioma' => $idiomaPorPais[$paisCodigo],
         'genero' => eleccionPonderada($generoPesos),
         'fecha_nacimiento' => fecha($nacimiento),
+        'moneda' => $monedaPorPais[$paisCodigo],
     ];
 }
 
 $insCliente = $pdo->prepare(
-    'INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais, ciudad, idioma, genero, fecha_nacimiento)
-     VALUES (:nombre, :email, :segmento, :fecha_alta, :pais, :ciudad, :idioma, :genero, :fecha_nacimiento)'
+    'INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
+     VALUES (:nombre, :email, :segmento, :fecha_alta, :pais_codigo, :ciudad, :idioma, :genero, :fecha_nacimiento)
+     RETURNING id'
 );
 $insUsuario = $pdo->prepare(
-    'INSERT INTO usuarios_funnel (nombre, email, canal, pais, ciudad, idioma, genero, fecha_nacimiento,
+    'INSERT INTO usuarios_funnel (nombre, email, canal, pais_codigo, ciudad, idioma, genero, fecha_nacimiento,
                                   fecha_visita, fecha_registro, fecha_lead, fecha_conversion, cliente_id)
-     VALUES (:nombre, :email, :canal, :pais, :ciudad, :idioma, :genero, :fecha_nacimiento,
+     VALUES (:nombre, :email, :canal, :pais_codigo, :ciudad, :idioma, :genero, :fecha_nacimiento,
              :fecha_visita, :fecha_registro, :fecha_lead, :fecha_conversion, :cliente_id)'
 );
 $insBoleta = $pdo->prepare(
-    'INSERT INTO boletas (cliente_id, concepto, monto, fecha_emision, fecha_vencimiento)
-     VALUES (:cliente_id, :concepto, :monto, :fecha_emision, :fecha_vencimiento)'
+    'INSERT INTO boletas (cliente_id, concepto, monto, moneda_codigo, fecha_emision, fecha_vencimiento)
+     VALUES (:cliente_id, :concepto, :monto, :moneda_codigo, :fecha_emision, :fecha_vencimiento)
+     RETURNING id'
 );
 $insPago = $pdo->prepare(
-    'INSERT INTO pagos (boleta_id, cliente_id, monto, fecha_pago, metodo) VALUES (:boleta_id, :cliente_id, :monto, :fecha_pago, :metodo)'
+    'INSERT INTO pagos (boleta_id, cliente_id, monto, moneda_codigo, fecha_pago, metodo)
+     VALUES (:boleta_id, :cliente_id, :monto, :moneda_codigo, :fecha_pago, :metodo)'
 );
 
 $pdo->beginTransaction();
 
 // 1) Base de clientes "legacy": ya existian antes de que se empezara a medir el funnel.
-$clienteIds = [];
+$clientesInfo = [];
 $nombresUsados = [];
 $inicioLegacy = $hoy->modify('-14 months');
 for ($i = 0; $i < 18; $i++) {
@@ -143,19 +215,20 @@ for ($i = 0; $i < 18; $i++) {
     $nombresUsados[$nombre] = true;
     $email = emailUnico($nombre, $dominios, $emailsUsados);
     $altaLegacy = diasAleatorios($inicioLegacy, 150);
-    $perfil = perfilAleatorio($geo, $paisPesos, $generoPesos, $hoy);
+    $perfil = perfilAleatorio($paisPesos, $ciudadesPorPais, $idiomaPorPais, $monedaPorPais, $generoPesos, $hoy);
     $insCliente->execute([
         ':nombre' => $nombre,
         ':email' => $email,
         ':segmento' => $segmentos[array_rand($segmentos)],
         ':fecha_alta' => fecha($altaLegacy),
-        ':pais' => $perfil['pais'],
+        ':pais_codigo' => $perfil['pais_codigo'],
         ':ciudad' => $perfil['ciudad'],
         ':idioma' => $perfil['idioma'],
         ':genero' => $perfil['genero'],
         ':fecha_nacimiento' => $perfil['fecha_nacimiento'],
     ]);
-    $clienteIds[] = (int) $pdo->lastInsertId();
+    $id = (int) $insCliente->fetchColumn();
+    $clientesInfo[] = ['id' => $id, 'fecha_alta' => fecha($altaLegacy), 'moneda' => $perfil['moneda']];
 }
 
 // 2) Funnel de conversion: visitantes -> registro -> lead -> cliente, ultimos 6 meses.
@@ -167,7 +240,7 @@ for ($i = 0; $i < 320; $i++) {
     $nombresUsados[$nombre] = true;
     $email = emailUnico($nombre, $dominios, $emailsUsados);
     $canal = eleccionPonderada($canalPesos);
-    $perfil = perfilAleatorio($geo, $paisPesos, $generoPesos, $hoy);
+    $perfil = perfilAleatorio($paisPesos, $ciudadesPorPais, $idiomaPorPais, $monedaPorPais, $generoPesos, $hoy);
 
     $fVisita = diasAleatorios($inicioFunnel, $rangoFunnelDias);
     $fRegistro = $fLead = $fConversion = null;
@@ -187,14 +260,14 @@ for ($i = 0; $i < 320; $i++) {
                     ':email' => $email,
                     ':segmento' => $segmentos[array_rand($segmentos)],
                     ':fecha_alta' => fecha($fConversion),
-                    ':pais' => $perfil['pais'],
+                    ':pais_codigo' => $perfil['pais_codigo'],
                     ':ciudad' => $perfil['ciudad'],
                     ':idioma' => $perfil['idioma'],
                     ':genero' => $perfil['genero'],
                     ':fecha_nacimiento' => $perfil['fecha_nacimiento'],
                 ]);
-                $clienteId = (int) $pdo->lastInsertId();
-                $clienteIds[] = $clienteId;
+                $clienteId = (int) $insCliente->fetchColumn();
+                $clientesInfo[] = ['id' => $clienteId, 'fecha_alta' => fecha($fConversion), 'moneda' => $perfil['moneda']];
             }
         }
     }
@@ -203,7 +276,7 @@ for ($i = 0; $i < 320; $i++) {
         ':nombre' => $nombre,
         ':email' => $email,
         ':canal' => $canal,
-        ':pais' => $perfil['pais'],
+        ':pais_codigo' => $perfil['pais_codigo'],
         ':ciudad' => $perfil['ciudad'],
         ':idioma' => $perfil['idioma'],
         ':genero' => $perfil['genero'],
@@ -217,8 +290,7 @@ for ($i = 0; $i < 320; $i++) {
 }
 
 // 3) Boletas (ingresos devengados) y pagos del usuario (cobros/caja) por cliente.
-$clientesInfo = $pdo->query('SELECT id, fecha_alta FROM clientes')->fetchAll();
-
+// Cada boleta y sus pagos quedan en la moneda del pais del cliente.
 foreach ($clientesInfo as $cliente) {
     $altaCliente = new DateTimeImmutable($cliente['fecha_alta']);
     if ($altaCliente >= $hoy) {
@@ -243,10 +315,11 @@ foreach ($clientesInfo as $cliente) {
             ':cliente_id' => $cliente['id'],
             ':concepto' => $concepto,
             ':monto' => $monto,
+            ':moneda_codigo' => $cliente['moneda'],
             ':fecha_emision' => fecha($emision),
             ':fecha_vencimiento' => fecha($vencimiento),
         ]);
-        $boletaId = (int) $pdo->lastInsertId();
+        $boletaId = (int) $insBoleta->fetchColumn();
 
         $comportamiento = eleccionPonderada(['pagada' => 70, 'parcial' => 15, 'pendiente' => 15]);
         if ($comportamiento !== 'pendiente') {
@@ -260,6 +333,7 @@ foreach ($clientesInfo as $cliente) {
                     ':boleta_id' => $boletaId,
                     ':cliente_id' => $cliente['id'],
                     ':monto' => $montoPago,
+                    ':moneda_codigo' => $cliente['moneda'],
                     ':fecha_pago' => fecha($fPago),
                     ':metodo' => eleccionPonderada($metodoPesos),
                 ]);
@@ -272,12 +346,13 @@ foreach ($clientesInfo as $cliente) {
 
 // 4) Un puñado de anticipos / pagos sueltos no ligados a una boleta puntual.
 for ($i = 0; $i < 10; $i++) {
-    $cliente = $clienteIds[array_rand($clienteIds)];
+    $cliente = $clientesInfo[array_rand($clientesInfo)];
     $fPago = diasAleatorios($hoy->modify('-90 days'), 90);
     $insPago->execute([
         ':boleta_id' => null,
-        ':cliente_id' => $cliente,
+        ':cliente_id' => $cliente['id'],
         ':monto' => round(mt_rand(5000, 60000) / 100, 2),
+        ':moneda_codigo' => $cliente['moneda'],
         ':fecha_pago' => fecha($fPago),
         ':metodo' => eleccionPonderada($metodoPesos),
     ]);
@@ -285,13 +360,18 @@ for ($i = 0; $i < 10; $i++) {
 
 $pdo->commit();
 
+$totalPaises = $pdo->query('SELECT COUNT(*) FROM paises')->fetchColumn();
+$totalMonedas = $pdo->query('SELECT COUNT(*) FROM monedas')->fetchColumn();
 $totalClientes = $pdo->query('SELECT COUNT(*) FROM clientes')->fetchColumn();
 $totalUsuarios = $pdo->query('SELECT COUNT(*) FROM usuarios_funnel')->fetchColumn();
 $totalBoletas = $pdo->query('SELECT COUNT(*) FROM boletas')->fetchColumn();
 $totalPagos = $pdo->query('SELECT COUNT(*) FROM pagos')->fetchColumn();
 
 echo "Seed completado:\n";
+echo "  paises:          {$totalPaises}\n";
+echo "  monedas:         {$totalMonedas}\n";
 echo "  clientes:        {$totalClientes}\n";
 echo "  usuarios_funnel: {$totalUsuarios}\n";
 echo "  boletas:         {$totalBoletas}\n";
 echo "  pagos:           {$totalPagos}\n";
+echo "\nLogin: {$emailAdmin} / {$passwordAdmin}\n";

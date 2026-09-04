@@ -2,6 +2,9 @@
 
 /** @var array $resumen */
 /** @var array $porCanal */
+/** @var array $porPais */
+/** @var array $porGenero */
+/** @var array $porRangoEdad */
 /** @var array $serieMensual */
 /** @var float $tiempoPromedioConversion */
 /** @var int $meses */
@@ -136,4 +139,12 @@ foreach ($serieMensual as $fila) {
             </table>
         </div>
     </div>
+</div>
+
+<div class="grid grid-2">
+    <?php $titulo = 'Conversion por pais'; $filas = $porPais; include __DIR__ . '/_tabla_dimension.php'; ?>
+    <?php $titulo = 'Conversion por genero'; $filas = $porGenero; include __DIR__ . '/_tabla_dimension.php'; ?>
+</div>
+<div class="grid grid-2">
+    <?php $titulo = 'Conversion por rango de edad'; $filas = $porRangoEdad; include __DIR__ . '/_tabla_dimension.php'; ?>
 </div>

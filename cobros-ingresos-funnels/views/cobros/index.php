@@ -9,6 +9,7 @@ use App\Config;
 /** @var array $boletas */
 /** @var int $meses */
 /** @var string $estado */
+/** @var string $cliente */
 
 $maxIngresos = 1.0;
 foreach ($ingresosPorMes as $fila) {
@@ -23,7 +24,7 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
 ?>
 
 <h1>Cobros e ingresos</h1>
-<p class="subtitulo">Ingresos devengados (boletas emitidas) frente al efectivo realmente cobrado, y estado de la cartera.</p>
+<p class="subtitulo">Ingresos devengados (boletas emitidas) frente al efectivo realmente cobrado, y estado de la cartera. Los totales se consolidan en USD; el detalle muestra la moneda original de cada boleta.</p>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="cobros">
@@ -40,7 +41,10 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
             <option value="<?= $clave ?>" <?= $estado === $clave ? 'selected' : '' ?>><?= $etiqueta ?></option>
         <?php endforeach; ?>
     </select>
+    <label for="cliente">Cliente</label>
+    <input type="search" name="cliente" id="cliente" placeholder="Buscar por nombre..." value="<?= htmlspecialchars($cliente) ?>">
     <button type="submit">Aplicar</button>
+    <a href="?page=boleta-nueva" style="margin-left:auto;">+ Nueva boleta</a>
 </form>
 
 <div class="grid grid-kpis">
@@ -64,7 +68,7 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
 
 <div class="grid grid-2">
     <div class="panel">
-        <h2>Ingresos facturados por mes</h2>
+        <h2>Ingresos facturados por mes (USD)</h2>
         <div class="chart">
             <?php foreach ($ingresosPorMes as $fila): ?>
                 <div class="grupo">
@@ -85,7 +89,7 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
     </div>
 
     <div class="panel">
-        <h2>Cartera pendiente por antiguedad</h2>
+        <h2>Cartera pendiente por antiguedad (USD)</h2>
         <div class="chart">
             <?php foreach ($aging as $bucket => $monto): ?>
                 <div class="grupo">
@@ -119,12 +123,12 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
             <tbody>
             <?php foreach ($boletas as $b): ?>
                 <tr>
-                    <td><?= htmlspecialchars($b['cliente']) ?></td>
+                    <td><a href="?page=cliente&id=<?= (int) $b['cliente_id'] ?>"><?= htmlspecialchars($b['cliente']) ?></a></td>
                     <td><?= htmlspecialchars($b['concepto']) ?></td>
                     <td><?= htmlspecialchars($b['fecha_emision']) ?></td>
                     <td><?= htmlspecialchars($b['fecha_vencimiento']) ?></td>
-                    <td class="num"><?= Config::money((float) $b['monto']) ?></td>
-                    <td class="num"><?= Config::money((float) $b['saldo']) ?></td>
+                    <td class="num"><?= money_moneda((float) $b['monto'], $b['moneda_codigo']) ?></td>
+                    <td class="num"><?= money_moneda((float) $b['saldo'], $b['moneda_codigo']) ?></td>
                     <td><span class="badge <?= $b['estado'] ?>"><?= $estadosLabel[$b['estado']] ?></span></td>
                 </tr>
             <?php endforeach; ?>

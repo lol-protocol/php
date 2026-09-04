@@ -3,6 +3,7 @@
 /** @var string $activePage */
 /** @var string $titulo */
 
+use App\Auth;
 use App\Config;
 
 $paginas = [
@@ -10,7 +11,10 @@ $paginas = [
     'cobros' => 'Cobros e ingresos',
     'pagos' => 'Pagos',
     'funnel' => 'Funnel',
+    'cohortes' => 'Cohortes',
+    'clientes' => 'Clientes',
 ];
+$usuario = Auth::usuarioActual();
 ?>
 <!doctype html>
 <html lang="es">
@@ -28,6 +32,12 @@ $paginas = [
             <a href="?page=<?= $clave ?>" class="<?= $activePage === $clave ? 'active' : '' ?>"><?= $etiqueta ?></a>
         <?php endforeach; ?>
     </nav>
+    <?php if ($usuario): ?>
+        <div class="cuenta">
+            <span><?= htmlspecialchars($usuario['nombre']) ?></span>
+            <a href="?page=logout">Salir</a>
+        </div>
+    <?php endif; ?>
 </header>
 <main>
     <?= $content ?>

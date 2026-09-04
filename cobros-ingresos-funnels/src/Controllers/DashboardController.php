@@ -28,9 +28,12 @@ final class DashboardController
         $serieMensual = self::combinarPorMes($ingresos, $cobros);
         $aging = $boletaRepo->carteraAging();
 
+        [$desdeAnt, $hastaAnt] = Filtros::rangoAnterior($desde, $hasta);
+
         View::render('dashboard', [
             'meses' => $meses,
             'kpis' => $boletaRepo->kpis($desde, $hasta),
+            'kpisAnterior' => $boletaRepo->kpis($desdeAnt, $hastaAnt),
             'aging' => $aging,
             'carteraPendiente' => array_sum($aging),
             'serieMensual' => $serieMensual,

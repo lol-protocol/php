@@ -4,24 +4,49 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use App\Auth;
+use App\Controllers\ClienteController;
 use App\Controllers\CobrosController;
+use App\Controllers\CohortesController;
 use App\Controllers\DashboardController;
 use App\Controllers\FunnelController;
+use App\Controllers\LoginController;
 use App\Controllers\PagosController;
+use App\Database;
 use App\Router;
 
-$dbFile = __DIR__ . '/../database/database.sqlite';
-if (!file_exists($dbFile)) {
+try {
+    Database::connection();
+} catch (Throwable $e) {
     http_response_code(500);
-    echo 'La base de datos no existe todavia. Corre: php database/seed.php';
+    echo 'No se pudo conectar a la base de datos. Corre: php database/seed.php' . "\n" . $e->getMessage();
     exit;
 }
 
+Auth::iniciar();
+
 $router = new Router();
-$router->add('dashboard', fn () => (new DashboardController())->index());
-$router->add('cobros', fn () => (new CobrosController())->index());
-$router->add('pagos', fn () => (new PagosController())->index());
-$router->add('funnel', fn () => (new FunnelController())->index());
+$router->add('login', fn () => (new LoginController())->index());
+$router->add('logout', fn () => (new LoginController())->salir());
+
+$paginasProtegidas = [
+    'dashboard' => fn () => (new DashboardController())->index(),
+    'cobros' => fn () => (new CobrosController())->index(),
+    'boleta-nueva' => fn () => (new CobrosController())->nueva(),
+    'pagos' => fn () => (new PagosController())->index(),
+    'pago-nuevo' => fn () => (new PagosController())->nuevo(),
+    'funnel' => fn () => (new FunnelController())->index(),
+    'cohortes' => fn () => (new CohortesController())->index(),
+    'clientes' => fn () => (new ClienteController())->index(),
+    'cliente-nuevo' => fn () => (new ClienteController())->nuevo(),
+    'cliente' => fn () => (new ClienteController())->ficha(),
+];
+foreach ($paginasProtegidas as $pagina => $manejador) {
+    $router->add($pagina, function () use ($manejador) {
+        Auth::requerir();
+        $manejador();
+    });
+}
 
 $page = $_GET['page'] ?? 'dashboard';
 $router->dispatch($page);

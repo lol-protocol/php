@@ -6,7 +6,7 @@ namespace App;
 
 final class View
 {
-    public static function render(string $template, array $data = []): void
+    public static function render(string $template, array $data = [], bool $sinLayout = false): void
     {
         extract($data, EXTR_SKIP);
         $viewsPath = dirname(__DIR__) . '/views';
@@ -14,6 +14,11 @@ final class View
         ob_start();
         require $viewsPath . '/' . $template . '.php';
         $content = ob_get_clean();
+
+        if ($sinLayout) {
+            echo $content;
+            return;
+        }
 
         require $viewsPath . '/layout.php';
     }

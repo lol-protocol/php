@@ -3,6 +3,7 @@
 use App\Config;
 
 /** @var array $kpis */
+/** @var array $kpisAnterior */
 /** @var float $carteraPendiente */
 /** @var array $aging */
 /** @var array $serieMensual */
@@ -55,17 +56,17 @@ $coloresSegmento = [
     <div class="panel stat-tile">
         <span class="label">Facturado (periodo)</span>
         <span class="value"><?= Config::money($kpis['facturado']) ?></span>
-        <span class="delta">Ingresos devengados</span>
+        <?= delta_badge(delta_pct($kpis['facturado'], $kpisAnterior['facturado'])) ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Cobrado (periodo)</span>
         <span class="value"><?= Config::money($kpis['cobrado']) ?></span>
-        <span class="delta">Efectivo recibido</span>
+        <?= delta_badge(delta_pct($kpis['cobrado'], $kpisAnterior['cobrado'])) ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Tasa de cobranza</span>
         <span class="value"><?= number_format($kpis['tasa_cobranza'] * 100, 1) ?>%</span>
-        <span class="delta">Cobrado / facturado del periodo</span>
+        <?= delta_badge(delta_pct($kpis['tasa_cobranza'], $kpisAnterior['tasa_cobranza'])) ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Cartera pendiente</span>

@@ -26,6 +26,45 @@ function money_compacta(float $valor): string
     return \App\Config::money($valor);
 }
 
+/** Formatea un monto en su moneda original (no convertida), ej. 'MX$1,234.00'. */
+function money_moneda(float $monto, string $codigoMoneda): string
+{
+    return \App\Repositories\MonedaRepository::simbolo($codigoMoneda) . number_format($monto, 2) . ' ' . $codigoMoneda;
+}
+
+/** % de cambio de anterior a actual, o null si no hay base para comparar. */
+function delta_pct(float $actual, float $anterior): ?float
+{
+    if ($anterior <= 0.0) {
+        return null;
+    }
+    return ($actual - $anterior) / $anterior * 100;
+}
+
+/** @return array{0: string, 1: string} [fondo, texto] segun intensidad, para el heatmap de cohortes. */
+function color_celda_cohorte(float $pct): array
+{
+    return match (true) {
+        $pct <= 0 => ['var(--gridline)', 'var(--text-muted)'],
+        $pct < 25 => ['var(--seq-250)', 'var(--text-primary)'],
+        $pct < 50 => ['var(--seq-350)', '#fff'],
+        $pct < 75 => ['var(--seq-450)', '#fff'],
+        default => ['var(--seq-600)', '#fff'],
+    };
+}
+
+/** Badge de comparacion vs. el periodo anterior, coloreado segun si subir es bueno para esa metrica. */
+function delta_badge(?float $pct, bool $subirEsBueno = true): string
+{
+    if ($pct === null) {
+        return '<span class="delta">Sin datos del periodo anterior</span>';
+    }
+    $bueno = $subirEsBueno ? $pct >= 0 : $pct <= 0;
+    $clase = $bueno ? 'good' : 'critical';
+    $signo = $pct >= 0 ? '+' : '';
+    return '<span class="delta ' . $clase . '">' . $signo . number_format($pct, 1) . '% vs. periodo anterior</span>';
+}
+
 /** Altura porcentual para una barra, con un piso visible cuando el valor es > 0. */
 function pct_altura(float $valor, float $max): float
 {
