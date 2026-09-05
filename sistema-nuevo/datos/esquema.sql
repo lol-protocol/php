@@ -51,6 +51,16 @@ CREATE TABLE configuracion_alertas (
     valor VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE filtros_guardados (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    scope VARCHAR(50) NOT NULL,      -- 'all_countries', 'grupo:otan', 'pais:US', etc.
+    age_min INTEGER,
+    age_max INTEGER,
+    gender VARCHAR(10),              -- 'all', 'm', 'f', 'o'
+    tipo_accion VARCHAR(30)          -- 'all', 'login', 'payment', etc.
+);
+
 INSERT INTO configuracion_alertas VALUES
   ('alerta_ip_pais', 'true'),
   ('alerta_cambio_pais', 'true'),

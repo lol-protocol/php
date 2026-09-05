@@ -5,6 +5,12 @@
   </div>
 
   <div class="filters">
+    <div class="filter-group filter-group--narrow">
+      <label for="saved-filters-select" data-i18n="label_saved_filters">Filtro guardado</label>
+      <select id="saved-filters-select"></select>
+      <button type="button" id="btn-guardar-filtro" class="mini-button" data-i18n="btn_guardar_filtro">Guardar</button>
+    </div>
+
     <div class="filter-group">
       <label for="user-search" data-i18n="label_user">Usuario</label>
       <input type="text" id="user-search" data-i18n-placeholder="topbar_user_placeholder" placeholder="Buscar por nombre o país...">

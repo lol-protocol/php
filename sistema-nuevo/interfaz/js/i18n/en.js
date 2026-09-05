@@ -87,6 +87,11 @@ export default {
   pagination_next: "Next ›",
   pagination_info: "Page {page} of {total} · {count} actions",
 
+  label_saved_filters: "Saved filter",
+  btn_guardar_filtro: "Save",
+  filtro_nombre_prompt: "Filter name:",
+  filtro_eliminar_confirmar: "Delete this filter?",
+
   login_subtitle: "Sign in to continue",
   label_password: "Password",
   login_submit: "Sign in",

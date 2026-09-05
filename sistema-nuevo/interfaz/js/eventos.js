@@ -4,6 +4,7 @@ import { renderUserOptions } from "./selectores.js";
 import { loadAppData, loadTimelineFromStart, selectUser, goToPage } from "./aplicacion.js";
 import { establecerIdioma, inicializarIdioma } from "./idioma.js";
 import { refrescarIdioma } from "./idioma-refrescar.js";
+import { cargarFiltrosGuardados, aplicarFiltroGuardado, guardarFiltroActual } from "./filtros.js";
 
 inicializarIdioma();
 document.querySelectorAll(".lang-button").forEach((boton) => {
@@ -45,4 +46,15 @@ document.getElementById("type-select").addEventListener("change", loadTimelineFr
 document.getElementById("age-min").addEventListener("input", debounce(loadTimelineFromStart, 400));
 document.getElementById("age-max").addEventListener("input", debounce(loadTimelineFromStart, 400));
 
-boot(loadAppData);
+document.getElementById("saved-filters-select").addEventListener("change", (e) => {
+  if (e.target.value) {
+    aplicarFiltroGuardado(e.target.value);
+  }
+});
+
+document.getElementById("btn-guardar-filtro").addEventListener("click", guardarFiltroActual);
+
+boot(async () => {
+  await cargarFiltrosGuardados();
+  await loadAppData();
+});

@@ -29,6 +29,18 @@ export async function postJson(path, body) {
   return data;
 }
 
+export async function deleteJson(path) {
+  const response = await fetch(API_BASE + path, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || t("error_http", { status: response.status, path }));
+  }
+  return data;
+}
+
 export function showLogin(errorMessage = "") {
   detenerMonitorInactividad();
   document.getElementById("app").hidden = true;

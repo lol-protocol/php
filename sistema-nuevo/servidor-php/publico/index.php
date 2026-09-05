@@ -6,6 +6,7 @@ require __DIR__ . '/../codigo/AlmacenDatos.php';
 require __DIR__ . '/../codigo/AlmacenAcciones.php';
 require __DIR__ . '/../codigo/AlmacenAlertas.php';
 require __DIR__ . '/../codigo/AlmacenConfiguracion.php';
+require __DIR__ . '/../codigo/AlmacenFiltros.php';
 require __DIR__ . '/../codigo/ClienteEstadisticas.php';
 require __DIR__ . '/../codigo/autenticacion.php';
 require __DIR__ . '/../codigo/api.php';
@@ -35,7 +36,7 @@ header('Content-Type: application/json; charset=utf-8');
 auth_iniciar_sesion_php();
 
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
-$rutasProtegidas = ['/api/users', '/api/groups', '/api/action-types', '/api/alerts', '/api/alerts-config', '/api/timeline'];
+$rutasProtegidas = ['/api/users', '/api/groups', '/api/action-types', '/api/alerts', '/api/alerts-config', '/api/filtros', '/api/timeline'];
 
 try {
     if (in_array($path, $rutasProtegidas, true) && !auth_esta_autenticado()) {
@@ -56,6 +57,10 @@ try {
         api_alerts();
     } elseif ($path === '/api/alerts-config') {
         api_alertas_config();
+    } elseif ($path === '/api/filtros') {
+        api_filtros();
+    } elseif (preg_match('#^/api/filtros/(\d+)$#', $path, $m)) {
+        api_filtros_delete((int)$m[1]);
     } elseif ($path === '/api/timeline') {
         api_timeline();
     } else {
