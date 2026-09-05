@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS grupo_pais CASCADE;
 DROP TABLE IF EXISTS grupos_paises CASCADE;
 DROP TABLE IF EXISTS paises CASCADE;
 DROP TABLE IF EXISTS monedas CASCADE;
+DROP TABLE IF EXISTS configuracion_alertas CASCADE;
 
 CREATE TABLE monedas (
     codigo     CHAR(3) PRIMARY KEY,   -- 'USD', 'EUR', 'ARS'...
@@ -44,3 +45,14 @@ CREATE TABLE tipos_accion (
     duracion_base_ms  INTEGER NOT NULL CHECK (duracion_base_ms >= 0),
     tiene_monto       BOOLEAN NOT NULL DEFAULT FALSE
 );
+
+CREATE TABLE configuracion_alertas (
+    clave VARCHAR(50) PRIMARY KEY,
+    valor VARCHAR(255) NOT NULL
+);
+
+INSERT INTO configuracion_alertas VALUES
+  ('alerta_ip_pais', 'true'),
+  ('alerta_cambio_pais', 'true'),
+  ('alerta_logins_fallidos', 'true'),
+  ('umbral_sensibilidad', '50');  -- 0-100, por defecto 50%

@@ -47,3 +47,22 @@
 .alerts-button:hover {
   box-shadow: 0 0 8px rgba(255, 40, 100, 0.4);
 }
+
+.alerts-section {
+  margin-bottom: 0.8rem;
+}
+
+.alerts-type-title {
+  color: var(--bad);
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin: 0 0 0.4rem;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.alerts-section .alerts-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

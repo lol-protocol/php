@@ -72,7 +72,8 @@ function mostrarAdvertencia() {
   }
 
   if (timerFinal) clearTimeout(timerFinal);
-  timerFinal = setTimeout(logoutAutomatico, ADVERTENCIA_MS);
+  const tiempoHastaLogout = TIMEOUT_MS - ADVERTENCIA_MS;
+  timerFinal = setTimeout(logoutAutomatico, tiempoHastaLogout);
 }
 
 function cerrarAdvertencia() {

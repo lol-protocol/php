@@ -35,8 +35,10 @@ export default {
   action_file_upload: "Subida de archivo",
   action_logout: "Cierre de sesión",
 
-  alerts_title: "⚠ Alertas: IP fuera del país declarado",
-  alerts_summary: "{total} acciones en {users} usuarios con IP fuera de su país declarado.",
+  alerts_title: "⚠ Alertas",
+  alerts_title_ip: "⚠ IP fuera del país declarado",
+  alerts_title_cambios: "⚠ Cambios de país imposibles",
+  alerts_summary: "{total} acciones en {users} usuarios.",
   alerts_last_seen: "Última vez: {date}",
 
   legend_title: "Cómo leer las guías",
