@@ -63,4 +63,22 @@ final class EstadoBoletaTest extends TestCase
         self::assertSame('pagada', $r['estado']);
         self::assertEqualsWithDelta(-200.0, $r['saldo'], 0.001);
     }
+
+    public function testAnuladaGanaAVencidaAunqueEsteVencidaYSinPagos(): void
+    {
+        $r = EstadoBoleta::calcular(1000.0, 0.0, '2026-01-01', '2026-06-01', anulada: true);
+        self::assertSame('anulada', $r['estado']);
+    }
+
+    public function testAnuladaGanaAPagadaAunqueEsteSaldada(): void
+    {
+        $r = EstadoBoleta::calcular(1000.0, 1000.0, '2026-12-31', '2026-06-01', anulada: true);
+        self::assertSame('anulada', $r['estado']);
+    }
+
+    public function testNoAnuladaPorDefecto(): void
+    {
+        $r = EstadoBoleta::calcular(1000.0, 0.0, '2026-12-31', '2026-06-01');
+        self::assertNotSame('anulada', $r['estado']);
+    }
 }

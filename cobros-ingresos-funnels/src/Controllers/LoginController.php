@@ -23,11 +23,17 @@ final class LoginController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = trim((string) ($_POST['email'] ?? ''));
             $password = (string) ($_POST['password'] ?? '');
-            if (Auth::intentarLogin($email, $password)) {
+            $resultado = Auth::intentarLogin($email, $password);
+
+            if ($resultado === 'ok') {
                 header('Location: ' . $next);
                 exit;
             }
-            $error = 'Email o contraseña incorrectos.';
+
+            $error = match ($resultado) {
+                'bloqueado' => 'Demasiados intentos fallidos. Probá de nuevo en ' . Auth::minutosDeBloqueo($email) . ' minuto(s).',
+                default => 'Email o contraseña incorrectos.',
+            };
         }
 
         View::render('login', [

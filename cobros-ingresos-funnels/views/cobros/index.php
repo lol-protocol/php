@@ -7,7 +7,13 @@ use App\Config;
 /** @var array $aging */
 /** @var array $ingresosPorMes */
 /** @var array $boletas */
+/** @var int $totalBoletas */
+/** @var int $totalPaginas */
+/** @var int $pagina */
 /** @var int $meses */
+/** @var string $desde */
+/** @var string $hasta */
+/** @var bool $personalizado */
 /** @var string $estado */
 /** @var string $cliente */
 
@@ -20,7 +26,7 @@ $maxAging = max(1.0, ...array_values($aging));
 $iconosAging = ['Al dia' => '●', '1-30 dias' => '▲', '31-60 dias' => '◆', '61+ dias' => '■'];
 $coloresAging = ['Al dia' => 'var(--good)', '1-30 dias' => 'var(--warning)', '31-60 dias' => 'var(--serious)', '61+ dias' => 'var(--critical)'];
 
-$estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 'Parcial', 'vencida' => 'Vencida'];
+$estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 'Parcial', 'vencida' => 'Vencida', 'anulada' => 'Anulada'];
 ?>
 
 <h1>Cobros e ingresos</h1>
@@ -34,6 +40,7 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
         <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
         <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
     </select>
+    <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <label for="estado">Estado</label>
     <select name="estado" id="estado">
         <option value="">Todos</option>
@@ -111,13 +118,13 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
 </div>
 
 <div class="panel">
-    <h2>Boletas (<?= count($boletas) ?>)</h2>
+    <h2>Boletas (<?= $totalBoletas ?>)</h2>
     <div class="table-wrap">
         <table>
             <thead>
             <tr>
                 <th>Cliente</th><th>Concepto</th><th>Emision</th><th>Vencimiento</th>
-                <th class="num">Monto</th><th class="num">Saldo</th><th>Estado</th>
+                <th class="num">Monto</th><th class="num">Saldo</th><th>Estado</th><th>&nbsp;</th>
             </tr>
             </thead>
             <tbody>
@@ -130,12 +137,19 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
                     <td class="num"><?= money_moneda((float) $b['monto'], $b['moneda_codigo']) ?></td>
                     <td class="num"><?= money_moneda((float) $b['saldo'], $b['moneda_codigo']) ?></td>
                     <td><span class="badge <?= $b['estado'] ?>"><?= $estadosLabel[$b['estado']] ?></span></td>
+                    <td class="acciones">
+                        <?php if ($b['estado'] !== 'anulada'): ?>
+                            <a href="?page=boleta-editar&id=<?= (int) $b['id'] ?>">Editar</a>
+                            <a href="?page=boleta-anular&id=<?= (int) $b['id'] ?>">Anular</a>
+                        <?php endif; ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!$boletas): ?>
-                <tr><td colspan="7">No hay boletas para este filtro.</td></tr>
+                <tr><td colspan="8">No hay boletas para este filtro.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>
     </div>
+    <?php include __DIR__ . '/../_paginacion.php'; ?>
 </div>

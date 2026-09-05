@@ -5,7 +5,13 @@ use App\Config;
 /** @var array $cobrosPorMes */
 /** @var array $porMetodo */
 /** @var array $pagos */
+/** @var int $totalPagos */
+/** @var int $totalPaginas */
+/** @var int $pagina */
 /** @var int $meses */
+/** @var string $desde */
+/** @var string $hasta */
+/** @var bool $personalizado */
 /** @var string $cliente */
 
 $maxCobros = 1.0;
@@ -33,6 +39,7 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
         <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
         <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
     </select>
+    <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <label for="cliente">Cliente</label>
     <input type="search" name="cliente" id="cliente" placeholder="Buscar por nombre..." value="<?= htmlspecialchars($cliente) ?>">
     <button type="submit">Aplicar</button>
@@ -46,7 +53,7 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
     </div>
     <div class="panel stat-tile">
         <span class="label">Pagos registrados</span>
-        <span class="value"><?= count($pagos) ?></span>
+        <span class="value"><?= $totalPagos ?></span>
     </div>
 </div>
 
@@ -96,11 +103,11 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
 </div>
 
 <div class="panel">
-    <h2>Detalle de pagos (<?= count($pagos) ?>)</h2>
+    <h2>Detalle de pagos (<?= $totalPagos ?>)</h2>
     <div class="table-wrap">
         <table>
             <thead>
-            <tr><th>Cliente</th><th>Fecha</th><th>Metodo</th><th>Origen</th><th class="num">Monto</th></tr>
+            <tr><th>Cliente</th><th>Fecha</th><th>Metodo</th><th>Origen</th><th class="num">Monto</th><th>&nbsp;</th></tr>
             </thead>
             <tbody>
             <?php foreach ($pagos as $p): ?>
@@ -110,12 +117,21 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
                     <td><?= $metodoLabel[$p['metodo']] ?? htmlspecialchars($p['metodo']) ?></td>
                     <td><?= $p['boleta_id'] ? 'Boleta #' . (int) $p['boleta_id'] : 'Anticipo' ?></td>
                     <td class="num"><?= money_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
+                    <td class="acciones">
+                        <?php if ($p['anulada']): ?>
+                            <span class="badge anulada">Anulado</span>
+                        <?php else: ?>
+                            <a href="?page=pago-editar&id=<?= (int) $p['id'] ?>">Editar</a>
+                            <a href="?page=pago-anular&id=<?= (int) $p['id'] ?>">Anular</a>
+                        <?php endif; ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!$pagos): ?>
-                <tr><td colspan="5">No hay pagos para este filtro.</td></tr>
+                <tr><td colspan="6">No hay pagos para este filtro.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>
     </div>
+    <?php include __DIR__ . '/../_paginacion.php'; ?>
 </div>

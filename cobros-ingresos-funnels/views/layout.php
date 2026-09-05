@@ -13,6 +13,7 @@ $paginas = [
     'funnel' => 'Funnel',
     'cohortes' => 'Cohortes',
     'clientes' => 'Clientes',
+    'auditoria' => 'Auditoría',
 ];
 $usuario = Auth::usuarioActual();
 ?>

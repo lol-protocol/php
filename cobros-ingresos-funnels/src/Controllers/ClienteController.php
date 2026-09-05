@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Auth;
+use App\Paginacion;
+use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\FunnelRepository;
@@ -16,11 +19,15 @@ final class ClienteController
     public function index(): void
     {
         $q = trim((string) ($_GET['q'] ?? ''));
-        $clienteRepo = new ClienteRepository();
+        $pagina = Paginacion::pagina();
+        $listado = (new ClienteRepository())->buscar($q, $pagina);
 
         View::render('clientes/index', [
             'q' => $q,
-            'clientes' => $clienteRepo->buscar($q),
+            'pagina' => $pagina,
+            'clientes' => $listado['filas'],
+            'totalClientes' => $listado['total'],
+            'totalPaginas' => $listado['totalPaginas'],
             'activePage' => 'clientes',
             'titulo' => 'Clientes',
         ]);
@@ -75,6 +82,14 @@ final class ClienteController
                         'genero' => $genero ?: 'No especifica',
                         'fecha_nacimiento' => $fechaNacimiento,
                     ]);
+                    $usuario = Auth::usuarioActual();
+                    (new AuditoriaRepository())->registrar(
+                        $usuario['id'] ?? null,
+                        'crear',
+                        'cliente',
+                        $id,
+                        "Cliente #{$id}: {$nombre} ({$email})"
+                    );
                     header('Location: ?page=cliente&id=' . $id);
                     exit;
                 } catch (\PDOException $e) {

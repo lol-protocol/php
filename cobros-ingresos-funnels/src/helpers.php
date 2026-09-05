@@ -53,16 +53,24 @@ function color_celda_cohorte(float $pct): array
     };
 }
 
-/** Badge de comparacion vs. el periodo anterior, coloreado segun si subir es bueno para esa metrica. */
-function delta_badge(?float $pct, bool $subirEsBueno = true): string
+/** Badge de comparacion contra una base (periodo anterior, año anterior, etc.), coloreado segun si subir es bueno para esa metrica. */
+function delta_badge(?float $pct, bool $subirEsBueno = true, string $etiqueta = 'vs. periodo anterior'): string
 {
     if ($pct === null) {
-        return '<span class="delta">Sin datos del periodo anterior</span>';
+        return '<span class="delta">Sin datos para comparar (' . htmlspecialchars($etiqueta) . ')</span>';
     }
     $bueno = $subirEsBueno ? $pct >= 0 : $pct <= 0;
     $clase = $bueno ? 'good' : 'critical';
     $signo = $pct >= 0 ? '+' : '';
-    return '<span class="delta ' . $clase . '">' . $signo . number_format($pct, 1) . '% vs. periodo anterior</span>';
+    return '<span class="delta ' . $clase . '">' . $signo . number_format($pct, 1) . '% ' . htmlspecialchars($etiqueta) . '</span>';
+}
+
+/** URL actual (?page=...&filtro=...) con un parametro reemplazado, para los links de paginacion. */
+function url_con_parametro(string $clave, string|int $valor): string
+{
+    $params = $_GET;
+    $params[$clave] = $valor;
+    return '?' . http_build_query($params);
 }
 
 /** Altura porcentual para una barra, con un piso visible cuando el valor es > 0. */

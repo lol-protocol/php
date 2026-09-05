@@ -8,6 +8,9 @@
 /** @var array $serieMensual */
 /** @var float $tiempoPromedioConversion */
 /** @var int $meses */
+/** @var string $desde */
+/** @var string $hasta */
+/** @var bool $personalizado */
 
 $etapas = [
     'Visitantes' => $resumen['visitantes'],
@@ -38,6 +41,7 @@ foreach ($serieMensual as $fila) {
         <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
         <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
     </select>
+    <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <button type="submit">Aplicar</button>
 </form>
 

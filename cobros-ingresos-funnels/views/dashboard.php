@@ -4,6 +4,10 @@ use App\Config;
 
 /** @var array $kpis */
 /** @var array $kpisAnterior */
+/** @var array $kpisAnioAnterior */
+/** @var string $desde */
+/** @var string $hasta */
+/** @var bool $personalizado */
 /** @var float $carteraPendiente */
 /** @var array $aging */
 /** @var array $serieMensual */
@@ -49,24 +53,29 @@ $coloresSegmento = [
         <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
         <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
     </select>
+    <?php include __DIR__ . '/_filtro_fechas.php'; ?>
     <button type="submit">Aplicar</button>
 </form>
+<p class="subtitulo">Si completás "Desde" y "Hasta" se usa ese rango exacto en vez del período de arriba.</p>
 
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
         <span class="label">Facturado (periodo)</span>
         <span class="value"><?= Config::money($kpis['facturado']) ?></span>
         <?= delta_badge(delta_pct($kpis['facturado'], $kpisAnterior['facturado'])) ?>
+        <?= delta_badge(delta_pct($kpis['facturado'], $kpisAnioAnterior['facturado']), etiqueta: 'vs. año anterior') ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Cobrado (periodo)</span>
         <span class="value"><?= Config::money($kpis['cobrado']) ?></span>
         <?= delta_badge(delta_pct($kpis['cobrado'], $kpisAnterior['cobrado'])) ?>
+        <?= delta_badge(delta_pct($kpis['cobrado'], $kpisAnioAnterior['cobrado']), etiqueta: 'vs. año anterior') ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Tasa de cobranza</span>
         <span class="value"><?= number_format($kpis['tasa_cobranza'] * 100, 1) ?>%</span>
         <?= delta_badge(delta_pct($kpis['tasa_cobranza'], $kpisAnterior['tasa_cobranza'])) ?>
+        <?= delta_badge(delta_pct($kpis['tasa_cobranza'], $kpisAnioAnterior['tasa_cobranza']), etiqueta: 'vs. año anterior') ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Cartera pendiente</span>

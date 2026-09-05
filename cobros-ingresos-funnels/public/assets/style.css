@@ -161,14 +161,19 @@ form.filtros label {
     font-size: 13px;
 }
 
-form.filtros select {
+form.filtros select,
+form.filtros input {
     padding: 6px 10px;
     border-radius: 6px;
     border: 1px solid var(--border);
     background: var(--surface-1);
     color: var(--text-primary);
     font-size: 13px;
+    font-family: inherit;
 }
+
+form.filtros input[type="search"] { width: 180px; }
+form.filtros input[type="date"] { width: 140px; }
 
 form.filtros button {
     padding: 7px 14px;
@@ -269,11 +274,15 @@ form.filtros button:hover { opacity: 0.9; }
 .badge.pendiente { background: rgba(250, 178, 25, 0.16); color: #9a6a00; }
 .badge.parcial { background: rgba(235, 104, 52, 0.14); color: #b04a1c; }
 .badge.vencida { background: rgba(208, 59, 59, 0.12); color: var(--critical); }
+.badge.anulada { background: var(--gridline); color: var(--text-muted); text-decoration: line-through; }
 
 @media (prefers-color-scheme: dark) {
     .badge.pendiente { color: var(--warning); }
     .badge.parcial { color: var(--series-2); }
 }
+
+td.acciones { white-space: nowrap; }
+td.acciones a { margin-right: 10px; font-size: 12px; }
 
 /* ---------- Tablas ---------- */
 table {
@@ -291,6 +300,18 @@ th, td {
 th { color: var(--text-muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.02em; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .table-wrap { overflow-x: auto; }
+
+.paginacion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding-top: 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.paginacion .inactivo { color: var(--text-muted); opacity: 0.5; }
 
 footer {
     text-align: center;

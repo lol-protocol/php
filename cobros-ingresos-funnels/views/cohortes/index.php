@@ -1,7 +1,13 @@
 <?php
 
+use App\Config;
+
 /** @var array $cohortes */
+/** @var array $ltvPorCohorte */
 /** @var int $meses */
+/** @var string $desde */
+/** @var string $hasta */
+/** @var bool $personalizado */
 ?>
 
 <h1>Cohortes de conversion</h1>
@@ -15,6 +21,7 @@
         <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
         <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
     </select>
+    <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <button type="submit">Aplicar</button>
 </form>
 
@@ -53,4 +60,28 @@
         </table>
     </div>
     <p class="subtitulo" style="margin-top:14px;">"+1 mes", por ejemplo, es el % que ya habia convertido a mas tardar un mes despues de su primera visita (acumulado, no solo ese mes).</p>
+</div>
+
+<div class="panel">
+    <h2>LTV promedio por cohorte de cliente</h2>
+    <p class="subtitulo">Valor de vida (historico, todos los pagos a la fecha) promedio por cliente, agrupado por el mes en que se dio de alta. No se filtra por el periodo elegido arriba: mezclar cohortes viejas con pocos meses de historia distorsionaria la comparacion.</p>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr><th>Cohorte (alta)</th><th class="num">Clientes</th><th class="num">LTV promedio (USD)</th></tr>
+            </thead>
+            <tbody>
+            <?php foreach ($ltvPorCohorte as $fila): ?>
+                <tr>
+                    <td><?= mes_label($fila['cohorte']) ?></td>
+                    <td class="num"><?= (int) $fila['clientes'] ?></td>
+                    <td class="num"><?= Config::money((float) $fila['ltv_promedio']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            <?php if (!$ltvPorCohorte): ?>
+                <tr><td colspan="3">Sin datos de clientes.</td></tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>

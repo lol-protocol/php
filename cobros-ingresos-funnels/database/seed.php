@@ -201,7 +201,8 @@ $insBoleta = $pdo->prepare(
 );
 $insPago = $pdo->prepare(
     'INSERT INTO pagos (boleta_id, cliente_id, monto, moneda_codigo, fecha_pago, metodo)
-     VALUES (:boleta_id, :cliente_id, :monto, :moneda_codigo, :fecha_pago, :metodo)'
+     VALUES (:boleta_id, :cliente_id, :monto, :moneda_codigo, :fecha_pago, :metodo)
+     RETURNING id'
 );
 
 $pdo->beginTransaction();
@@ -291,6 +292,8 @@ for ($i = 0; $i < 320; $i++) {
 
 // 3) Boletas (ingresos devengados) y pagos del usuario (cobros/caja) por cliente.
 // Cada boleta y sus pagos quedan en la moneda del pais del cliente.
+$boletaIds = [];
+$pagoIds = [];
 foreach ($clientesInfo as $cliente) {
     $altaCliente = new DateTimeImmutable($cliente['fecha_alta']);
     if ($altaCliente >= $hoy) {
@@ -320,6 +323,7 @@ foreach ($clientesInfo as $cliente) {
             ':fecha_vencimiento' => fecha($vencimiento),
         ]);
         $boletaId = (int) $insBoleta->fetchColumn();
+        $boletaIds[] = $boletaId;
 
         $comportamiento = eleccionPonderada(['pagada' => 70, 'parcial' => 15, 'pendiente' => 15]);
         if ($comportamiento !== 'pendiente') {
@@ -337,6 +341,7 @@ foreach ($clientesInfo as $cliente) {
                     ':fecha_pago' => fecha($fPago),
                     ':metodo' => eleccionPonderada($metodoPesos),
                 ]);
+                $pagoIds[] = (int) $insPago->fetchColumn();
             }
         }
 
@@ -356,6 +361,18 @@ for ($i = 0; $i < 10; $i++) {
         ':fecha_pago' => fecha($fPago),
         ':metodo' => eleccionPonderada($metodoPesos),
     ]);
+    $pagoIds[] = (int) $insPago->fetchColumn();
+}
+
+// 5) Anular un par de boletas y pagos de ejemplo, para poder ver la insignia
+// "Anulada" y probar el filtro sin tener que anular nada a mano primero.
+$anulBoleta = $pdo->prepare('UPDATE boletas SET anulada = TRUE WHERE id = :id');
+foreach (array_slice($boletaIds, 4, 2) as $id) {
+    $anulBoleta->execute([':id' => $id]);
+}
+$anulPago = $pdo->prepare('UPDATE pagos SET anulada = TRUE WHERE id = :id');
+foreach (array_slice($pagoIds, 4, 2) as $id) {
+    $anulPago->execute([':id' => $id]);
 }
 
 $pdo->commit();
@@ -366,12 +383,14 @@ $totalClientes = $pdo->query('SELECT COUNT(*) FROM clientes')->fetchColumn();
 $totalUsuarios = $pdo->query('SELECT COUNT(*) FROM usuarios_funnel')->fetchColumn();
 $totalBoletas = $pdo->query('SELECT COUNT(*) FROM boletas')->fetchColumn();
 $totalPagos = $pdo->query('SELECT COUNT(*) FROM pagos')->fetchColumn();
+$boletasAnuladas = $pdo->query('SELECT COUNT(*) FROM boletas WHERE anulada')->fetchColumn();
+$pagosAnulados = $pdo->query('SELECT COUNT(*) FROM pagos WHERE anulada')->fetchColumn();
 
 echo "Seed completado:\n";
 echo "  paises:          {$totalPaises}\n";
 echo "  monedas:         {$totalMonedas}\n";
 echo "  clientes:        {$totalClientes}\n";
 echo "  usuarios_funnel: {$totalUsuarios}\n";
-echo "  boletas:         {$totalBoletas}\n";
-echo "  pagos:           {$totalPagos}\n";
+echo "  boletas:         {$totalBoletas} ({$boletasAnuladas} anuladas)\n";
+echo "  pagos:           {$totalPagos} ({$pagosAnulados} anulados)\n";
 echo "\nLogin: {$emailAdmin} / {$passwordAdmin}\n";

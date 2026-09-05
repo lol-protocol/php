@@ -47,4 +47,73 @@ final class FiltrosTest extends TestCase
 
         self::assertLessThan($desde, $hastaAnterior);
     }
+
+    public function testRangoAnioAnteriorRestaExactamenteUnAnioCalendario(): void
+    {
+        [$desde, $hasta] = Filtros::rangoAnioAnterior('2026-06-01', '2026-09-01');
+
+        self::assertSame('2025-06-01', $desde);
+        self::assertSame('2025-09-01', $hasta);
+    }
+
+    public function testRangoAnioAnteriorManeja29DeFebreroEnAnioBisiesto(): void
+    {
+        // DateTimeImmutable::modify('-1 year') sobre 29-feb (bisiesto) cae en
+        // 28-feb del anio siguiente no bisiesto; documentamos ese comportamiento.
+        [$desde] = Filtros::rangoAnioAnterior('2024-02-29', '2024-03-01');
+
+        self::assertSame('2023-03-01', $desde);
+    }
+
+    public function testRangoPersonalizadoNuloSinParametros(): void
+    {
+        unset($_GET['desde'], $_GET['hasta']);
+        self::assertNull(Filtros::rangoPersonalizado());
+    }
+
+    public function testRangoPersonalizadoNuloConFechaInvalida(): void
+    {
+        $_GET['desde'] = '2026-13-40';
+        $_GET['hasta'] = '2026-09-01';
+        self::assertNull(Filtros::rangoPersonalizado());
+    }
+
+    public function testRangoPersonalizadoNuloCuandoDesdeEsPosteriorAHasta(): void
+    {
+        $_GET['desde'] = '2026-09-01';
+        $_GET['hasta'] = '2026-06-01';
+        self::assertNull(Filtros::rangoPersonalizado());
+
+        unset($_GET['desde'], $_GET['hasta']);
+    }
+
+    public function testRangoPersonalizadoValidoDevuelveLasMismasFechas(): void
+    {
+        $_GET['desde'] = '2026-01-15';
+        $_GET['hasta'] = '2026-02-20';
+
+        self::assertSame(['2026-01-15', '2026-02-20'], Filtros::rangoPersonalizado());
+
+        unset($_GET['desde'], $_GET['hasta']);
+    }
+
+    public function testRangoActivoUsaElPersonalizadoCuandoEstaPresente(): void
+    {
+        $_GET['desde'] = '2026-01-15';
+        $_GET['hasta'] = '2026-02-20';
+
+        self::assertSame(['2026-01-15', '2026-02-20'], Filtros::rangoActivo());
+
+        unset($_GET['desde'], $_GET['hasta']);
+    }
+
+    public function testRangoActivoCaeAlRangoPorMesesSinPersonalizado(): void
+    {
+        unset($_GET['desde'], $_GET['hasta']);
+        $_GET['meses'] = '3';
+
+        self::assertSame(Filtros::rango(3), Filtros::rangoActivo());
+
+        unset($_GET['meses']);
+    }
 }

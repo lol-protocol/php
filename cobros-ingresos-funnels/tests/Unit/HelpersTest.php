@@ -66,4 +66,36 @@ final class HelpersTest extends TestCase
         self::assertNotSame($fondoBajo, $fondoAlto);
         self::assertSame(['var(--gridline)', 'var(--text-muted)'], color_celda_cohorte(0.0));
     }
+
+    public function testDeltaBadgeUsaLaEtiquetaProvista(): void
+    {
+        self::assertStringContainsString('vs. año anterior', delta_badge(5.0, true, 'vs. año anterior'));
+        self::assertStringContainsString('Sin datos para comparar (vs. año anterior)', delta_badge(null, true, 'vs. año anterior'));
+    }
+
+    public function testDeltaBadgeUsaEtiquetaPorDefectoSiNoSeIndicaOtra(): void
+    {
+        self::assertStringContainsString('vs. periodo anterior', delta_badge(5.0));
+    }
+
+    public function testUrlConParametroPreservaLosDemasParametrosDeLaQuery(): void
+    {
+        $_GET = ['page' => 'cobros', 'meses' => '6'];
+
+        $url = url_con_parametro('pagina', 2);
+
+        self::assertStringStartsWith('?', $url);
+        parse_str(ltrim($url, '?'), $params);
+        self::assertSame(['page' => 'cobros', 'meses' => '6', 'pagina' => '2'], $params);
+    }
+
+    public function testUrlConParametroSobreescribeUnParametroExistente(): void
+    {
+        $_GET = ['page' => 'cobros', 'pagina' => '3'];
+
+        $url = url_con_parametro('pagina', 5);
+
+        parse_str(ltrim($url, '?'), $params);
+        self::assertSame('5', $params['pagina']);
+    }
 }

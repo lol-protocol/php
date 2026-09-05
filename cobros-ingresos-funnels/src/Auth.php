@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Repositories\IntentoLoginRepository;
 use App\Repositories\UsuarioSistemaRepository;
 
 final class Auth
@@ -26,18 +27,33 @@ final class Auth
         return self::usuarioActual() !== null;
     }
 
-    /** Devuelve true y abre sesion si las credenciales son validas. */
-    public static function intentarLogin(string $email, string $password): bool
+    /**
+     * Intenta loguear. Devuelve 'ok', 'bloqueado' (demasiados intentos
+     * fallidos seguidos) o 'invalido' (email/password incorrectos).
+     */
+    public static function intentarLogin(string $email, string $password): string
     {
-        $usuario = (new UsuarioSistemaRepository())->porEmail($email);
-        if ($usuario === null || !password_verify($password, $usuario['password_hash'])) {
-            return false;
+        $intentos = new IntentoLoginRepository();
+        if ($intentos->minutosDeBloqueo($email) !== null) {
+            return 'bloqueado';
         }
 
+        $usuario = (new UsuarioSistemaRepository())->porEmail($email);
+        if ($usuario === null || !password_verify($password, $usuario['password_hash'])) {
+            $intentos->registrarFallo($email);
+            return 'invalido';
+        }
+
+        $intentos->limpiar($email);
         self::iniciar();
         session_regenerate_id(true);
         $_SESSION['usuario'] = ['id' => $usuario['id'], 'nombre' => $usuario['nombre'], 'email' => $usuario['email']];
-        return true;
+        return 'ok';
+    }
+
+    public static function minutosDeBloqueo(string $email): ?int
+    {
+        return (new IntentoLoginRepository())->minutosDeBloqueo($email);
     }
 
     public static function logout(): void

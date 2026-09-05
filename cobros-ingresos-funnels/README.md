@@ -12,12 +12,24 @@ Pequeño sistema en PHP (sin framework) para analizar:
 - **Cohortes**: qué % de cada cohorte (mes de primera visita) convirtió a cliente
   dentro de 0, 1, 2 o 3 meses.
 - **Segmentación de clientes**: top país, ciudad, idioma, género y rango de edad por facturación.
-- **Comparativo automático** de los KPIs del dashboard contra el período anterior.
+- **LTV (valor de vida)** promedio por cliente, agrupado por cohorte de alta —
+  histórico y sin filtrar por período, para no distorsionar la comparación entre
+  cohortes viejas y nuevas.
+- **Comparativo automático** de los KPIs del dashboard contra el período anterior
+  y contra el mismo período del año pasado.
+- **Rango de fechas personalizado**: además del selector de últimos 3/6/12 meses,
+  se puede fijar un Desde/Hasta exacto en Dashboard, Cobros, Pagos, Funnel y Cohortes.
 - **Multi-moneda**: cada cliente factura y paga en la moneda de su país (catálogo
   de ~200 países/territorios); los totales y gráficos agregados se consolidan a USD.
 - **Clientes**: alta manual, buscador y ficha con su historial completo (boletas,
   pagos y su recorrido por el funnel si entró por ahí).
-- **Login** con sesión para no dejar el panel abierto a cualquiera.
+- **Boletas y pagos**: alta, edición y anulación. Anular es un soft-delete (queda
+  marcada "Anulada" y se excluye de los agregados) para no perder el rastro.
+- **Auditoría**: quién creó, editó o anuló cada boleta, pago o cliente, con fecha
+  y el detalle de qué cambió.
+- **Paginación** en los listados grandes (boletas, pagos, clientes).
+- **Login** con sesión para no dejar el panel abierto a cualquiera, con bloqueo
+  temporal tras varios intentos fallidos seguidos (protección de fuerza bruta).
 
 ## Requisitos
 
@@ -67,20 +79,25 @@ contra la base de las variables `DB_*` de arriba — corré el seed primero).
 public/            front controller (index.php) + CSS
 src/
   Controllers/       un controlador por sección (dashboard, cobros, pagos, funnel,
-                      cohortes, clientes, login)
-  Repositories/       consultas y agregaciones SQL por entidad
+                      cohortes, clientes, auditoria, login)
+  Repositories/       consultas y agregaciones SQL por entidad (incluye
+                      AuditoriaRepository e IntentoLoginRepository)
   Database.php         conexión PDO a PostgreSQL (singleton, config por env vars)
-  Auth.php             login/logout, guard de sesión
+  Auth.php             login/logout, guard de sesión, bloqueo por fuerza bruta
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
+  Paginacion.php        helper de paginación (página/offset/total, testeado)
   Router.php, View.php, Filtros.php, Config.php, helpers.php
 database/
   schema.sql            esquema de la base
   seed.php               generador de datos de ejemplo
   paises_monedas.php      catalogo de ~200 paises y sus monedas (ISO 4217)
-views/                  plantillas PHP (una carpeta por sección)
+views/                  plantillas PHP (una carpeta por sección), con partials
+                        compartidos _filtro_fechas.php y _paginacion.php
 tests/
-  Unit/                 sin base de datos (calculo de estado, filtros, helpers)
-  Integration/           contra la base real (repositorios)
+  Unit/                 sin base de datos (calculo de estado, filtros, helpers,
+                        paginación)
+  Integration/           contra la base real (repositorios, auditoría, bloqueo
+                        de login)
 ```
 
 ## Modelo de datos
@@ -97,15 +114,23 @@ tests/
   `fecha_conversion`) y el canal de adquisición. El perfil se genera una sola vez
   por persona y viaja a `clientes` si convierte.
 - `boletas`: ingresos devengados al usuario final (monto, moneda, emisión,
-  vencimiento) — no son facturas fiscales.
+  vencimiento, `anulada`) — no son facturas fiscales.
 - `pagos`: cobros reales del usuario, opcionalmente ligados a una boleta
-  (`boleta_id` puede ser `NULL` para anticipos/pagos sueltos).
+  (`boleta_id` puede ser `NULL` para anticipos/pagos sueltos) y con `anulada`.
+- `auditoria`: un registro por cada alta/edición/anulación (quién, cuándo, sobre
+  qué entidad y el detalle de qué cambió). Es de solo inserción — no se borra.
+- `intentos_login`: contador de intentos fallidos de login por email y hasta
+  cuándo queda bloqueado, para la protección de fuerza bruta.
 
-El estado de cada boleta (pagada / parcial / pendiente / vencida) se calcula
-dinámicamente (`App\EstadoBoleta`) a partir de sus pagos y la fecha de vencimiento,
-no se guarda en la base — así nunca queda desincronizado. Los KPIs y gráficos
-agregados suman `monto * tasa_a_usd` para consolidar en USD; las tablas de detalle
-(boletas, pagos, ficha de cliente) muestran el monto en su moneda original.
+El estado de cada boleta (pagada / parcial / pendiente / vencida / **anulada**) se
+calcula dinámicamente (`App\EstadoBoleta`) a partir de sus pagos, la fecha de
+vencimiento y si fue anulada — no se guarda en la base, así nunca queda
+desincronizado. Una boleta o pago anulado es un **soft-delete**: la fila queda
+(con su badge "Anulada" en los listados, para trazabilidad) pero se excluye de
+todos los KPIs, gráficos y agregados (`AND NOT anulada` en cada consulta que suma
+montos). Los KPIs y gráficos agregados suman `monto * tasa_a_usd` para consolidar
+en USD; las tablas de detalle (boletas, pagos, ficha de cliente) muestran el monto
+en su moneda original.
 
 ## Notas de diseño
 
@@ -121,4 +146,14 @@ agregados suman `monto * tasa_a_usd` para consolidar en USD; las tablas de detal
 - Login con sesión de PHP nativa (`password_hash`/`password_verify`), sin roles
   ni permisos — un solo nivel de acceso. Después de loguearse te manda de vuelta
   a la página que habías pedido (`?next=`), validado contra un patrón fijo para
-  que nunca sea un open redirect.
+  que nunca sea un open redirect. Tras 5 intentos fallidos seguidos con el mismo
+  email, se bloquea 15 minutos (`intentos_login`); el contador se reinicia al
+  loguearse bien.
+- Paginación de 25 filas por página. En Pagos y Clientes es `LIMIT`/`OFFSET` en
+  SQL (el filtro es puro SQL). En Boletas el estado se calcula en PHP a partir de
+  los pagos aplicados, así que ese filtro no existe en SQL: se trae el rango
+  filtrado por fecha/cliente completo, se calcula el estado de cada fila, se
+  filtra por estado si corresponde y recién ahí se pagina con `array_slice`. Es
+  correcto y suficiente a la escala de este sistema (cientos de filas, no
+  millones); con un volumen mucho mayor convendría guardar el estado o paginar
+  distinto.

@@ -13,12 +13,16 @@ final class FunnelController
     public function index(): void
     {
         $meses = Filtros::meses();
-        [$desde, $hasta] = Filtros::rango($meses);
+        $personalizado = Filtros::rangoPersonalizado();
+        [$desde, $hasta] = $personalizado ?? Filtros::rango($meses);
 
         $funnelRepo = new FunnelRepository();
 
         View::render('funnel/index', [
             'meses' => $meses,
+            'desde' => $desde,
+            'hasta' => $hasta,
+            'personalizado' => $personalizado !== null,
             'resumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'porCanal' => $funnelRepo->porCanal($desde, $hasta),
             'porPais' => $funnelRepo->porPais($desde, $hasta),

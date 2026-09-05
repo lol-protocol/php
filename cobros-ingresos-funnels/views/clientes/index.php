@@ -1,6 +1,9 @@
 <?php
 
 /** @var array $clientes */
+/** @var int $totalClientes */
+/** @var int $totalPaginas */
+/** @var int $pagina */
 /** @var string $q */
 ?>
 
@@ -16,7 +19,7 @@
 </form>
 
 <div class="panel">
-    <h2>Resultado (<?= count($clientes) ?>)</h2>
+    <h2>Resultado (<?= $totalClientes ?>)</h2>
     <div class="table-wrap">
         <table>
             <thead>
@@ -38,4 +41,5 @@
             </tbody>
         </table>
     </div>
+    <?php include __DIR__ . '/../_paginacion.php'; ?>
 </div>

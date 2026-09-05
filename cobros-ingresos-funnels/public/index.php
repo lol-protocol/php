@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Auth;
+use App\Controllers\AuditoriaController;
 use App\Controllers\ClienteController;
 use App\Controllers\CobrosController;
 use App\Controllers\CohortesController;
@@ -33,13 +34,18 @@ $paginasProtegidas = [
     'dashboard' => fn () => (new DashboardController())->index(),
     'cobros' => fn () => (new CobrosController())->index(),
     'boleta-nueva' => fn () => (new CobrosController())->nueva(),
+    'boleta-editar' => fn () => (new CobrosController())->editar(),
+    'boleta-anular' => fn () => (new CobrosController())->anular(),
     'pagos' => fn () => (new PagosController())->index(),
     'pago-nuevo' => fn () => (new PagosController())->nuevo(),
+    'pago-editar' => fn () => (new PagosController())->editar(),
+    'pago-anular' => fn () => (new PagosController())->anular(),
     'funnel' => fn () => (new FunnelController())->index(),
     'cohortes' => fn () => (new CohortesController())->index(),
     'clientes' => fn () => (new ClienteController())->index(),
     'cliente-nuevo' => fn () => (new ClienteController())->nuevo(),
     'cliente' => fn () => (new ClienteController())->ficha(),
+    'auditoria' => fn () => (new AuditoriaController())->index(),
 ];
 foreach ($paginasProtegidas as $pagina => $manejador) {
     $router->add($pagina, function () use ($manejador) {

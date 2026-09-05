@@ -16,7 +16,8 @@ final class DashboardController
     public function index(): void
     {
         $meses = Filtros::meses();
-        [$desde, $hasta] = Filtros::rango($meses);
+        $personalizado = Filtros::rangoPersonalizado();
+        [$desde, $hasta] = $personalizado ?? Filtros::rango($meses);
 
         $boletaRepo = new BoletaRepository();
         $pagoRepo = new PagoRepository();
@@ -29,11 +30,16 @@ final class DashboardController
         $aging = $boletaRepo->carteraAging();
 
         [$desdeAnt, $hastaAnt] = Filtros::rangoAnterior($desde, $hasta);
+        [$desdeAnio, $hastaAnio] = Filtros::rangoAnioAnterior($desde, $hasta);
 
         View::render('dashboard', [
             'meses' => $meses,
+            'desde' => $desde,
+            'hasta' => $hasta,
+            'personalizado' => $personalizado !== null,
             'kpis' => $boletaRepo->kpis($desde, $hasta),
             'kpisAnterior' => $boletaRepo->kpis($desdeAnt, $hastaAnt),
+            'kpisAnioAnterior' => $boletaRepo->kpis($desdeAnio, $hastaAnio),
             'aging' => $aging,
             'carteraPendiente' => array_sum($aging),
             'serieMensual' => $serieMensual,

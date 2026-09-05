@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Database;
+use App\Paginacion;
 use PDO;
 
 final class PagoRepository
@@ -35,46 +36,73 @@ final class PagoRepository
         return (int) $stmt->fetchColumn();
     }
 
-    /** Todo el historial de pagos de un cliente puntual (para su ficha), sin filtro de fecha. */
-    public function porCliente(int $clienteId): array
+    public function porId(int $id): ?array
     {
         $stmt = $this->db->prepare(
-            'SELECT id, monto, moneda_codigo, fecha_pago, metodo, boleta_id
-             FROM pagos WHERE cliente_id = :id ORDER BY fecha_pago DESC'
+            'SELECT p.*, c.nombre AS cliente
+             FROM pagos p JOIN clientes c ON c.id = p.cliente_id
+             WHERE p.id = :id'
         );
-        $stmt->execute([':id' => $clienteId]);
-        return $stmt->fetchAll();
+        $stmt->execute([':id' => $id]);
+        $row = $stmt->fetch();
+        return $row ?: null;
     }
 
-    /** Cobros por mes, consolidados a USD. */
+    /** Edita monto/fecha/metodo. No se puede reasignar el cliente, la boleta ni la moneda. */
+    public function actualizar(int $id, array $datos): void
+    {
+        $stmt = $this->db->prepare(
+            'UPDATE pagos SET monto = :monto, fecha_pago = :fecha_pago, metodo = :metodo WHERE id = :id'
+        );
+        $stmt->execute([
+            ':id' => $id,
+            ':monto' => $datos['monto'],
+            ':fecha_pago' => $datos['fecha_pago'],
+            ':metodo' => $datos['metodo'],
+        ]);
+    }
+
+    public function anular(int $id): void
+    {
+        $stmt = $this->db->prepare('UPDATE pagos SET anulada = TRUE WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+    }
+
+    /** Cobros por mes (sin pagos anulados), consolidados a USD. */
     public function cobrosPorMes(string $desde, string $hasta): array
     {
         $stmt = $this->db->prepare(
             "SELECT to_char(p.fecha_pago, 'YYYY-MM') AS mes, SUM(p.monto * m.tasa_a_usd) AS total
              FROM pagos p
              JOIN monedas m ON m.codigo = p.moneda_codigo
-             WHERE p.fecha_pago BETWEEN :desde AND :hasta
+             WHERE p.fecha_pago BETWEEN :desde AND :hasta AND NOT p.anulada
              GROUP BY mes ORDER BY mes"
         );
         $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
         return $stmt->fetchAll();
     }
 
-    /** Total por metodo de pago, consolidado a USD. */
+    /** Total por metodo de pago (sin anulados), consolidado a USD. */
     public function porMetodo(string $desde, string $hasta): array
     {
         $stmt = $this->db->prepare(
             "SELECT p.metodo, SUM(p.monto * m.tasa_a_usd) AS total, COUNT(*) AS cantidad
              FROM pagos p
              JOIN monedas m ON m.codigo = p.moneda_codigo
-             WHERE p.fecha_pago BETWEEN :desde AND :hasta
+             WHERE p.fecha_pago BETWEEN :desde AND :hasta AND NOT p.anulada
              GROUP BY p.metodo ORDER BY total DESC"
         );
         $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
         return $stmt->fetchAll();
     }
 
-    public function listado(string $desde, string $hasta, ?string $cliente = null): array
+    /**
+     * Listado paginado para la pantalla de Pagos. Incluye los anulados
+     * (marcados) para no perder el rastro de la correccion.
+     *
+     * @return array{filas: array, total: int, totalPaginas: int}
+     */
+    public function listado(string $desde, string $hasta, ?string $cliente = null, int $pagina = 1): array
     {
         $params = [':desde' => $desde, ':hasta' => $hasta];
         $filtroCliente = '';
@@ -83,15 +111,44 @@ final class PagoRepository
             $params[':cliente'] = '%' . $cliente . '%';
         }
 
+        $stmtTotal = $this->db->prepare(
+            "SELECT COUNT(*) FROM pagos p JOIN clientes c ON c.id = p.cliente_id
+             WHERE p.fecha_pago BETWEEN :desde AND :hasta{$filtroCliente}"
+        );
+        $stmtTotal->execute($params);
+        $total = (int) $stmtTotal->fetchColumn();
+
         $stmt = $this->db->prepare(
-            "SELECT p.id, p.monto, p.moneda_codigo, p.fecha_pago, p.metodo, p.boleta_id,
+            "SELECT p.id, p.monto, p.moneda_codigo, p.fecha_pago, p.metodo, p.boleta_id, p.anulada,
                     c.id AS cliente_id, c.nombre AS cliente
              FROM pagos p
              JOIN clientes c ON c.id = p.cliente_id
              WHERE p.fecha_pago BETWEEN :desde AND :hasta{$filtroCliente}
-             ORDER BY p.fecha_pago DESC"
+             ORDER BY p.fecha_pago DESC
+             LIMIT :limite OFFSET :offset"
         );
-        $stmt->execute($params);
+        foreach ($params as $clave => $valor) {
+            $stmt->bindValue($clave, $valor);
+        }
+        $stmt->bindValue(':limite', Paginacion::POR_PAGINA, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', Paginacion::offset($pagina), PDO::PARAM_INT);
+        $stmt->execute();
+
+        return [
+            'filas' => $stmt->fetchAll(),
+            'total' => $total,
+            'totalPaginas' => Paginacion::totalPaginas($total),
+        ];
+    }
+
+    /** Todo el historial de pagos de un cliente puntual (para su ficha), sin filtro de fecha. */
+    public function porCliente(int $clienteId): array
+    {
+        $stmt = $this->db->prepare(
+            'SELECT id, monto, moneda_codigo, fecha_pago, metodo, boleta_id, anulada
+             FROM pagos WHERE cliente_id = :id ORDER BY fecha_pago DESC'
+        );
+        $stmt->execute([':id' => $clienteId]);
         return $stmt->fetchAll();
     }
 }
