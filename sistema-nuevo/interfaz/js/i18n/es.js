@@ -94,4 +94,10 @@ export default {
   error_connection: "No se pudo conectar con el backend PHP en {base}. ({message})",
   error_session_expired: "sesión expirada",
   error_http: "Error {status} al llamar {path}",
+
+  inactividad_titulo: "Sesión por expirar",
+  inactividad_mensaje: "Por inactividad, tu sesión se cerrará en 1 minuto.",
+  inactividad_continuar: "Continuar activo",
+  inactividad_logout: "Cerrar sesión ahora",
+  inactividad_sesion_cerrada: "Tu sesión fue cerrada por inactividad.",
 };

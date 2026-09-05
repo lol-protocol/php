@@ -5,9 +5,8 @@ declare(strict_types=1);
 /**
  * Autenticación simple por sesión (un único usuario admin, sin roles ni registro).
  *
- * Pensada para un prototipo: sin tokens CSRF, sin límite de intentos, sin expiración
- * configurable. La contraseña nunca se compara en texto plano (password_verify contra
- * un hash bcrypt en credenciales.php).
+ * Con protección CSRF: token regenerado en cada login y validado en logout + otros POST.
+ * La contraseña nunca se compara en texto plano (password_verify contra un hash bcrypt).
  */
 
 function auth_iniciar_sesion_php(): void
@@ -32,6 +31,7 @@ function auth_marcar_autenticado(string $username): void
 {
     session_regenerate_id(true);
     $_SESSION['username'] = $username;
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
 function auth_esta_autenticado(): bool
@@ -48,4 +48,17 @@ function auth_cerrar_sesion(): void
 {
     $_SESSION = [];
     session_destroy();
+}
+
+function auth_obtener_csrf_token(): string
+{
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function auth_validar_csrf_token(string $token): bool
+{
+    return hash_equals($_SESSION['csrf_token'] ?? '', $token);
 }

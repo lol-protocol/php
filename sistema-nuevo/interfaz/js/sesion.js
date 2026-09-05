@@ -1,5 +1,6 @@
 import { API_BASE, state } from "./nucleo.js";
 import { t } from "./idioma.js";
+import { iniciarMonitorInactividad, detenerMonitorInactividad } from "./inactividad.js";
 
 export async function fetchJson(path) {
   const response = await fetch(API_BASE + path, { credentials: "include" });
@@ -29,6 +30,7 @@ export async function postJson(path, body) {
 }
 
 export function showLogin(errorMessage = "") {
+  detenerMonitorInactividad();
   document.getElementById("app").hidden = true;
   document.getElementById("login-screen").hidden = false;
   const errorBox = document.getElementById("login-error");
@@ -40,11 +42,13 @@ export function showLogin(errorMessage = "") {
   }
 }
 
-export function showApp(username) {
+export function showApp(username, csrfToken = null) {
   state.username = username;
+  if (csrfToken) state.csrf_token = csrfToken;
   document.getElementById("login-screen").hidden = true;
   document.getElementById("app").hidden = false;
   document.getElementById("session-username").textContent = t("session_connected_as", { name: username });
+  iniciarMonitorInactividad();
 }
 
 /** @param {() => Promise<void>} onAuthenticated */
@@ -52,6 +56,7 @@ export async function boot(onAuthenticated) {
   try {
     const session = await fetchJson("/api/session");
     if (session.authenticated) {
+      state.csrf_token = session.csrf_token;
       showApp(session.username);
       await onAuthenticated();
     } else {

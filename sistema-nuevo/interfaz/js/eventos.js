@@ -20,7 +20,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
   try {
     const result = await postJson("/api/login", { username, password });
     document.getElementById("login-password").value = "";
-    showApp(result.username);
+    showApp(result.username, result.csrf_token);
     await loadAppData();
   } catch (err) {
     showLogin(err.message);
@@ -29,9 +29,10 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
 document.getElementById("logout-button").addEventListener("click", async () => {
   try {
-    await postJson("/api/logout", {});
+    await postJson("/api/logout", { csrf_token: state.csrf_token || "" });
   } finally {
     state.selectedUserId = null;
+    state.csrf_token = null;
     showLogin();
   }
 });
