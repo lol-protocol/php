@@ -50,3 +50,10 @@ CREATE TABLE acciones (
 
 CREATE INDEX idx_acciones_usuario_tiempo ON acciones (usuario_id, marca_temporal);
 CREATE INDEX idx_acciones_tipo ON acciones (tipo_clave);
+
+CREATE TABLE notas_acciones (
+    id SERIAL PRIMARY KEY,
+    accion_id CHAR(6) NOT NULL UNIQUE REFERENCES acciones(id) ON DELETE CASCADE,
+    texto TEXT NOT NULL DEFAULT '',
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

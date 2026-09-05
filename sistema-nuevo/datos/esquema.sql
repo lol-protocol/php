@@ -61,13 +61,6 @@ CREATE TABLE filtros_guardados (
     tipo_accion VARCHAR(30)          -- 'all', 'login', 'payment', etc.
 );
 
-CREATE TABLE notas_acciones (
-    id SERIAL PRIMARY KEY,
-    accion_id INTEGER NOT NULL UNIQUE REFERENCES acciones(id) ON DELETE CASCADE,
-    texto TEXT NOT NULL DEFAULT '',
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 INSERT INTO configuracion_alertas VALUES
   ('alerta_ip_pais', 'true'),
   ('alerta_cambio_pais', 'true'),
