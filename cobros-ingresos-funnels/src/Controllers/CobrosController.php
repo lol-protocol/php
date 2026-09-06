@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Auth;
 use App\Filtros;
 use App\Paginacion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
+use App\Repositories\IngresosRepository;
 use App\View;
 
 final class CobrosController
@@ -23,9 +23,9 @@ final class CobrosController
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
 
-        $boletaRepo = new BoletaRepository();
-        $aging = $boletaRepo->carteraAging();
-        $listado = $boletaRepo->listado($desde, $hasta, $estado ?: null, $cliente ?: null, $pagina);
+        $ingresosRepo = new IngresosRepository();
+        $aging = $ingresosRepo->carteraAging();
+        $listado = (new BoletaRepository())->listado($desde, $hasta, $estado ?: null, $cliente ?: null, $pagina);
 
         View::render('cobros/index', [
             'meses' => $meses,
@@ -35,8 +35,8 @@ final class CobrosController
             'estado' => $estado,
             'cliente' => $cliente,
             'pagina' => $pagina,
-            'kpis' => $boletaRepo->kpis($desde, $hasta),
-            'ingresosPorMes' => $boletaRepo->ingresosPorMes($desde, $hasta),
+            'kpis' => $ingresosRepo->kpis($desde, $hasta),
+            'ingresosPorMes' => $ingresosRepo->ingresosPorMes($desde, $hasta),
             'aging' => $aging,
             'carteraPendiente' => array_sum($aging),
             'boletas' => $listado['filas'],
@@ -73,7 +73,7 @@ final class CobrosController
                     'fecha_emision' => $fechaEmision,
                     'fecha_vencimiento' => $fechaVencimiento,
                 ]);
-                self::auditar('crear', 'boleta', $id, sprintf(
+                AuditoriaRepository::auditarComoUsuarioActual('crear', 'boleta', $id, sprintf(
                     'Boleta #%d para %s: "%s" %s',
                     $id,
                     $cliente['nombre'],
@@ -124,7 +124,7 @@ final class CobrosController
                     'fecha_emision' => $fechaEmision,
                     'fecha_vencimiento' => $fechaVencimiento,
                 ]);
-                self::auditar('editar', 'boleta', $id, sprintf('Boleta #%d: %s -> %s', $id, $antes, $despues));
+                AuditoriaRepository::auditarComoUsuarioActual('editar', 'boleta', $id, sprintf('Boleta #%d: %s -> %s', $id, $antes, $despues));
                 header('Location: ?page=cobros&editada=' . $id);
                 exit;
             }
@@ -158,7 +158,7 @@ final class CobrosController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $boletaRepo->anular($id);
-            self::auditar('anular', 'boleta', $id, sprintf(
+            AuditoriaRepository::auditarComoUsuarioActual('anular', 'boleta', $id, sprintf(
                 'Boleta #%d ("%s", %s)',
                 $id,
                 $boleta['concepto'],
@@ -175,9 +175,4 @@ final class CobrosController
         ]);
     }
 
-    private static function auditar(string $accion, string $entidad, int $entidadId, string $detalle): void
-    {
-        $usuario = Auth::usuarioActual();
-        (new AuditoriaRepository())->registrar($usuario['id'] ?? null, $accion, $entidad, $entidadId, $detalle);
-    }
 }

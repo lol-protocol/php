@@ -23,11 +23,6 @@ $rampaFunnel = ['var(--seq-250)', 'var(--seq-350)', 'var(--seq-450)', 'var(--seq
 $canalLabel = ['organico' => 'Organico', 'ads' => 'Ads', 'referido' => 'Referido', 'redes_sociales' => 'Redes sociales', 'email' => 'Email'];
 
 $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visitantes'] * 100 : 0.0;
-
-$maxSerie = 1.0;
-foreach ($serieMensual as $fila) {
-    $maxSerie = max($maxSerie, (float) $fila['visitantes'], (float) $fila['clientes']);
-}
 ?>
 
 <h1>Funnel de conversion</h1>
@@ -93,29 +88,15 @@ foreach ($serieMensual as $fila) {
             <span class="item"><span class="swatch" style="background:var(--series-1)"></span>Visitantes</span>
             <span class="item"><span class="swatch" style="background:var(--series-2)"></span>Clientes nuevos</span>
         </div>
-        <div class="chart">
-            <?php foreach ($serieMensual as $fila): ?>
-                <div class="grupo">
-                    <?= svg_barra(
-                        'bar',
-                        'height:' . pct_altura((float) $fila['visitantes'], $maxSerie) . '%',
-                        'var(--series-1)',
-                        'Visitantes ' . mes_label($fila['mes']) . ': ' . $fila['visitantes']
-                    ) ?>
-                    <?= svg_barra(
-                        'bar',
-                        'height:' . pct_altura((float) $fila['clientes'], $maxSerie) . '%',
-                        'var(--series-2)',
-                        'Clientes ' . mes_label($fila['mes']) . ': ' . $fila['clientes']
-                    ) ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="chart-etiquetas">
-            <?php foreach ($serieMensual as $fila): ?>
-                <span class="grupo-label"><?= mes_label($fila['mes']) ?></span>
-            <?php endforeach; ?>
-        </div>
+        <?php
+        $filas = $serieMensual;
+        $series = [
+            ['clave' => 'visitantes', 'etiqueta' => 'Visitantes', 'color' => 'var(--series-1)'],
+            ['clave' => 'clientes', 'etiqueta' => 'Clientes', 'color' => 'var(--series-2)'],
+        ];
+        $formato = 'entero';
+        include __DIR__ . '/../_grafico_serie_mensual.php';
+        ?>
     </div>
 
     <div class="panel">

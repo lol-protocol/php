@@ -14,11 +14,6 @@ use App\Config;
 /** @var bool $personalizado */
 /** @var string $cliente */
 
-$maxCobros = 1.0;
-foreach ($cobrosPorMes as $fila) {
-    $maxCobros = max($maxCobros, (float) $fila['total']);
-}
-
 $coloresMetodo = ['transferencia' => 'var(--series-1)', 'tarjeta' => 'var(--series-2)', 'efectivo' => 'var(--seq-350)'];
 $metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efectivo' => 'Efectivo'];
 $maxMetodo = 1.0;
@@ -60,23 +55,12 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
 <div class="grid grid-2">
     <div class="panel">
         <h2>Cobros por mes</h2>
-        <div class="chart">
-            <?php foreach ($cobrosPorMes as $fila): ?>
-                <div class="grupo">
-                    <?= svg_barra(
-                        'bar',
-                        'height:' . pct_altura((float) $fila['total'], $maxCobros) . '%',
-                        'var(--series-2)',
-                        mes_label($fila['mes']) . ': ' . Config::money((float) $fila['total'])
-                    ) ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="chart-etiquetas">
-            <?php foreach ($cobrosPorMes as $fila): ?>
-                <span class="grupo-label"><?= mes_label($fila['mes']) ?></span>
-            <?php endforeach; ?>
-        </div>
+        <?php
+        $filas = $cobrosPorMes;
+        $series = [['clave' => 'total', 'etiqueta' => '', 'color' => 'var(--series-2)']];
+        $formato = 'money';
+        include __DIR__ . '/../_grafico_serie_mensual.php';
+        ?>
     </div>
 
     <div class="panel">

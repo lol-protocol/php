@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Auth;
 use App\Database;
 use PDO;
 
@@ -14,6 +15,17 @@ final class AuditoriaRepository
     public function __construct()
     {
         $this->db = Database::connection();
+    }
+
+    /**
+     * Registra la accion atribuida al usuario de la sesion actual (o null si
+     * no hay sesion). Punto unico usado por los controllers para no repetir
+     * "Auth::usuarioActual() + registrar()" en cada uno.
+     */
+    public static function auditarComoUsuarioActual(string $accion, string $entidad, int $entidadId, string $detalle): void
+    {
+        $usuario = Auth::usuarioActual();
+        (new self())->registrar($usuario['id'] ?? null, $accion, $entidad, $entidadId, $detalle);
     }
 
     public function registrar(?int $usuarioId, string $accion, string $entidad, int $entidadId, string $detalle): void

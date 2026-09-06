@@ -80,8 +80,14 @@ public/            front controller (index.php) + CSS
 src/
   Controllers/       un controlador por sección (dashboard, cobros, pagos, funnel,
                       cohortes, clientes, auditoria, login)
-  Repositories/       consultas y agregaciones SQL por entidad (incluye
-                      AuditoriaRepository e IntentoLoginRepository)
+  Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/...) más
+                      IngresosRepository (kpis, ingresos y cobros por mes,
+                      antigüedad de cartera, por método de pago) y
+                      SegmentacionRepository (top país/ciudad/idioma/género/
+                      edad, LTV por cohorte) para el reporting, que no es CRUD
+                      y crecía por separado. AuditoriaRepository también
+                      concentra el `auditarComoUsuarioActual()` que usan todos
+                      los controllers en vez de repetirlo cada uno.
   Database.php         conexión PDO a PostgreSQL (singleton, config por env vars)
   Auth.php             login/logout, guard de sesión, bloqueo por fuerza bruta
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
@@ -92,12 +98,15 @@ database/
   seed.php               generador de datos de ejemplo
   paises_monedas.php      catalogo de ~200 paises y sus monedas (ISO 4217)
 views/                  plantillas PHP (una carpeta por sección), con partials
-                        compartidos _filtro_fechas.php y _paginacion.php
+                        compartidos: _filtro_fechas.php, _paginacion.php,
+                        _grafico_aging.php y _grafico_serie_mensual.php (los
+                        dos graficos de barras que se repetian en dashboard,
+                        cobros, pagos y funnel)
 tests/
   Unit/                 sin base de datos (calculo de estado, filtros, helpers,
                         paginación)
-  Integration/           contra la base real (repositorios, auditoría, bloqueo
-                        de login)
+  Integration/           contra la base real (un archivo por repositorio,
+                        auditoría, bloqueo de login)
 ```
 
 ## Modelo de datos

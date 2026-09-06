@@ -8,6 +8,7 @@ use App\Database;
 use App\Paginacion;
 use PDO;
 
+/** CRUD de pagos. El reporting de cobros vive en IngresosRepository. */
 final class PagoRepository
 {
     private PDO $db;
@@ -66,34 +67,6 @@ final class PagoRepository
     {
         $stmt = $this->db->prepare('UPDATE pagos SET anulada = TRUE WHERE id = :id');
         $stmt->execute([':id' => $id]);
-    }
-
-    /** Cobros por mes (sin pagos anulados), consolidados a USD. */
-    public function cobrosPorMes(string $desde, string $hasta): array
-    {
-        $stmt = $this->db->prepare(
-            "SELECT to_char(p.fecha_pago, 'YYYY-MM') AS mes, SUM(p.monto * m.tasa_a_usd) AS total
-             FROM pagos p
-             JOIN monedas m ON m.codigo = p.moneda_codigo
-             WHERE p.fecha_pago BETWEEN :desde AND :hasta AND NOT p.anulada
-             GROUP BY mes ORDER BY mes"
-        );
-        $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
-        return $stmt->fetchAll();
-    }
-
-    /** Total por metodo de pago (sin anulados), consolidado a USD. */
-    public function porMetodo(string $desde, string $hasta): array
-    {
-        $stmt = $this->db->prepare(
-            "SELECT p.metodo, SUM(p.monto * m.tasa_a_usd) AS total, COUNT(*) AS cantidad
-             FROM pagos p
-             JOIN monedas m ON m.codigo = p.moneda_codigo
-             WHERE p.fecha_pago BETWEEN :desde AND :hasta AND NOT p.anulada
-             GROUP BY p.metodo ORDER BY total DESC"
-        );
-        $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
-        return $stmt->fetchAll();
     }
 
     /**

@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Filtros;
-use App\Repositories\ClienteRepository;
-use App\Repositories\BoletaRepository;
 use App\Repositories\FunnelRepository;
-use App\Repositories\PagoRepository;
+use App\Repositories\IngresosRepository;
+use App\Repositories\SegmentacionRepository;
 use App\View;
 
 final class DashboardController
@@ -19,15 +18,14 @@ final class DashboardController
         $personalizado = Filtros::rangoPersonalizado();
         [$desde, $hasta] = $personalizado ?? Filtros::rango($meses);
 
-        $boletaRepo = new BoletaRepository();
-        $pagoRepo = new PagoRepository();
+        $ingresosRepo = new IngresosRepository();
         $funnelRepo = new FunnelRepository();
-        $clienteRepo = new ClienteRepository();
+        $segmentacionRepo = new SegmentacionRepository();
 
-        $ingresos = $boletaRepo->ingresosPorMes($desde, $hasta);
-        $cobros = $pagoRepo->cobrosPorMes($desde, $hasta);
+        $ingresos = $ingresosRepo->ingresosPorMes($desde, $hasta);
+        $cobros = $ingresosRepo->cobrosPorMes($desde, $hasta);
         $serieMensual = self::combinarPorMes($ingresos, $cobros);
-        $aging = $boletaRepo->carteraAging();
+        $aging = $ingresosRepo->carteraAging();
 
         [$desdeAnt, $hastaAnt] = Filtros::rangoAnterior($desde, $hasta);
         [$desdeAnio, $hastaAnio] = Filtros::rangoAnioAnterior($desde, $hasta);
@@ -37,19 +35,19 @@ final class DashboardController
             'desde' => $desde,
             'hasta' => $hasta,
             'personalizado' => $personalizado !== null,
-            'kpis' => $boletaRepo->kpis($desde, $hasta),
-            'kpisAnterior' => $boletaRepo->kpis($desdeAnt, $hastaAnt),
-            'kpisAnioAnterior' => $boletaRepo->kpis($desdeAnio, $hastaAnio),
+            'kpis' => $ingresosRepo->kpis($desde, $hasta),
+            'kpisAnterior' => $ingresosRepo->kpis($desdeAnt, $hastaAnt),
+            'kpisAnioAnterior' => $ingresosRepo->kpis($desdeAnio, $hastaAnio),
             'aging' => $aging,
             'carteraPendiente' => array_sum($aging),
             'serieMensual' => $serieMensual,
             'funnelResumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'segmentacion' => [
-                'Pais' => $clienteRepo->topPorPais(),
-                'Ciudad' => $clienteRepo->topPorCiudad(),
-                'Idioma' => $clienteRepo->topPorIdioma(),
-                'Genero' => $clienteRepo->topPorGenero(),
-                'Rango de edad' => $clienteRepo->topPorRangoEdad(),
+                'Pais' => $segmentacionRepo->topPorPais(),
+                'Ciudad' => $segmentacionRepo->topPorCiudad(),
+                'Idioma' => $segmentacionRepo->topPorIdioma(),
+                'Genero' => $segmentacionRepo->topPorGenero(),
+                'Rango de edad' => $segmentacionRepo->topPorRangoEdad(),
             ],
             'activePage' => 'dashboard',
             'titulo' => 'Dashboard',

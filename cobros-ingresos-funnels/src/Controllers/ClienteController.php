@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Auth;
 use App\Paginacion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
@@ -82,14 +81,7 @@ final class ClienteController
                         'genero' => $genero ?: 'No especifica',
                         'fecha_nacimiento' => $fechaNacimiento,
                     ]);
-                    $usuario = Auth::usuarioActual();
-                    (new AuditoriaRepository())->registrar(
-                        $usuario['id'] ?? null,
-                        'crear',
-                        'cliente',
-                        $id,
-                        "Cliente #{$id}: {$nombre} ({$email})"
-                    );
+                    AuditoriaRepository::auditarComoUsuarioActual('crear', 'cliente', $id, "Cliente #{$id}: {$nombre} ({$email})");
                     header('Location: ?page=cliente&id=' . $id);
                     exit;
                 } catch (\PDOException $e) {

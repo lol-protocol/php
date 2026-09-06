@@ -15,15 +15,6 @@ use App\Config;
 /** @var array $segmentacion */
 /** @var int $meses */
 
-$maxMensual = 1.0;
-foreach ($serieMensual as $fila) {
-    $maxMensual = max($maxMensual, (float) $fila['ingresos'], (float) $fila['cobros']);
-}
-
-$maxAging = max(1.0, ...array_values($aging));
-$iconosAging = ['Al dia' => '●', '1-30 dias' => '▲', '31-60 dias' => '◆', '61+ dias' => '■'];
-$coloresAging = ['Al dia' => 'var(--good)', '1-30 dias' => 'var(--warning)', '31-60 dias' => 'var(--serious)', '61+ dias' => 'var(--critical)'];
-
 $etapasFunnel = [
     'Visitantes' => $funnelResumen['visitantes'],
     'Registrados' => $funnelResumen['registrados'],
@@ -91,50 +82,20 @@ $coloresSegmento = [
             <span class="item"><span class="swatch" style="background:var(--series-1)"></span>Ingresos (facturado)</span>
             <span class="item"><span class="swatch" style="background:var(--series-2)"></span>Cobros (caja)</span>
         </div>
-        <div class="chart">
-            <?php foreach ($serieMensual as $fila): ?>
-                <div class="grupo">
-                    <?= svg_barra(
-                        'bar',
-                        'height:' . pct_altura((float) $fila['ingresos'], $maxMensual) . '%',
-                        'var(--series-1)',
-                        'Ingresos ' . mes_label($fila['mes']) . ': ' . Config::money((float) $fila['ingresos'])
-                    ) ?>
-                    <?= svg_barra(
-                        'bar',
-                        'height:' . pct_altura((float) $fila['cobros'], $maxMensual) . '%',
-                        'var(--series-2)',
-                        'Cobros ' . mes_label($fila['mes']) . ': ' . Config::money((float) $fila['cobros'])
-                    ) ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="chart-etiquetas">
-            <?php foreach ($serieMensual as $fila): ?>
-                <span class="grupo-label"><?= mes_label($fila['mes']) ?></span>
-            <?php endforeach; ?>
-        </div>
+        <?php
+        $filas = $serieMensual;
+        $series = [
+            ['clave' => 'ingresos', 'etiqueta' => 'Ingresos', 'color' => 'var(--series-1)'],
+            ['clave' => 'cobros', 'etiqueta' => 'Cobros', 'color' => 'var(--series-2)'],
+        ];
+        $formato = 'money';
+        include __DIR__ . '/_grafico_serie_mensual.php';
+        ?>
     </div>
 
     <div class="panel">
         <h2>Cartera pendiente por antiguedad</h2>
-        <div class="chart">
-            <?php foreach ($aging as $bucket => $monto): ?>
-                <div class="grupo">
-                    <?= svg_barra(
-                        'bar',
-                        'height:' . pct_altura((float) $monto, $maxAging) . '%',
-                        $coloresAging[$bucket],
-                        $bucket . ': ' . Config::money((float) $monto)
-                    ) ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="chart-etiquetas">
-            <?php foreach ($aging as $bucket => $monto): ?>
-                <span class="grupo-label"><?= $iconosAging[$bucket] ?> <?= $bucket ?></span>
-            <?php endforeach; ?>
-        </div>
+        <?php include __DIR__ . '/_grafico_aging.php'; ?>
     </div>
 </div>
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
-use App\Repositories\ClienteRepository;
 use App\Repositories\MonedaRepository;
+use App\Repositories\SegmentacionRepository;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -32,7 +32,7 @@ final class MonedaYSegmentacionTest extends TestCase
 
     public function testTopPorDimensionEstaOrdenadoDescendentePorFacturacion(): void
     {
-        $filas = (new ClienteRepository())->topPorPais(5);
+        $filas = (new SegmentacionRepository())->topPorPais(5);
 
         $totales = array_column($filas, 'total_facturado');
         $ordenados = $totales;

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Auth;
 use App\Filtros;
 use App\Paginacion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
+use App\Repositories\IngresosRepository;
 use App\Repositories\PagoRepository;
 use App\View;
 
@@ -23,8 +23,8 @@ final class PagosController
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
 
-        $pagoRepo = new PagoRepository();
-        $listado = $pagoRepo->listado($desde, $hasta, $cliente ?: null, $pagina);
+        $ingresosRepo = new IngresosRepository();
+        $listado = (new PagoRepository())->listado($desde, $hasta, $cliente ?: null, $pagina);
 
         View::render('pagos/index', [
             'meses' => $meses,
@@ -33,8 +33,8 @@ final class PagosController
             'personalizado' => $personalizado !== null,
             'cliente' => $cliente,
             'pagina' => $pagina,
-            'cobrosPorMes' => $pagoRepo->cobrosPorMes($desde, $hasta),
-            'porMetodo' => $pagoRepo->porMetodo($desde, $hasta),
+            'cobrosPorMes' => $ingresosRepo->cobrosPorMes($desde, $hasta),
+            'porMetodo' => $ingresosRepo->porMetodo($desde, $hasta),
             'pagos' => $listado['filas'],
             'totalPagos' => $listado['total'],
             'totalPaginas' => $listado['totalPaginas'],
@@ -70,7 +70,7 @@ final class PagosController
                     'fecha_pago' => $fechaPago,
                     'metodo' => $metodo,
                 ]);
-                self::auditar('crear', 'pago', $id, sprintf(
+                AuditoriaRepository::auditarComoUsuarioActual('crear', 'pago', $id, sprintf(
                     'Pago #%d de %s: %s%s',
                     $id,
                     $clienteElegido['nombre'],
@@ -116,7 +116,7 @@ final class PagosController
                 $despues = money_moneda($monto, $pago['moneda_codigo']) . " ({$metodo})";
 
                 $pagoRepo->actualizar($id, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
-                self::auditar('editar', 'pago', $id, sprintf('Pago #%d: %s -> %s', $id, $antes, $despues));
+                AuditoriaRepository::auditarComoUsuarioActual('editar', 'pago', $id, sprintf('Pago #%d: %s -> %s', $id, $antes, $despues));
                 header('Location: ?page=pagos&editado=' . $id);
                 exit;
             }
@@ -145,7 +145,7 @@ final class PagosController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pagoRepo->anular($id);
-            self::auditar('anular', 'pago', $id, sprintf(
+            AuditoriaRepository::auditarComoUsuarioActual('anular', 'pago', $id, sprintf(
                 'Pago #%d (%s)',
                 $id,
                 money_moneda((float) $pago['monto'], $pago['moneda_codigo'])
@@ -161,9 +161,4 @@ final class PagosController
         ]);
     }
 
-    private static function auditar(string $accion, string $entidad, int $entidadId, string $detalle): void
-    {
-        $usuario = Auth::usuarioActual();
-        (new AuditoriaRepository())->registrar($usuario['id'] ?? null, $accion, $entidad, $entidadId, $detalle);
-    }
 }

@@ -17,15 +17,6 @@ use App\Config;
 /** @var string $estado */
 /** @var string $cliente */
 
-$maxIngresos = 1.0;
-foreach ($ingresosPorMes as $fila) {
-    $maxIngresos = max($maxIngresos, (float) $fila['total']);
-}
-
-$maxAging = max(1.0, ...array_values($aging));
-$iconosAging = ['Al dia' => '●', '1-30 dias' => '▲', '31-60 dias' => '◆', '61+ dias' => '■'];
-$coloresAging = ['Al dia' => 'var(--good)', '1-30 dias' => 'var(--warning)', '31-60 dias' => 'var(--serious)', '61+ dias' => 'var(--critical)'];
-
 $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 'Parcial', 'vencida' => 'Vencida', 'anulada' => 'Anulada'];
 ?>
 
@@ -76,44 +67,17 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
 <div class="grid grid-2">
     <div class="panel">
         <h2>Ingresos facturados por mes (USD)</h2>
-        <div class="chart">
-            <?php foreach ($ingresosPorMes as $fila): ?>
-                <div class="grupo">
-                    <?= svg_barra(
-                        'bar',
-                        'height:' . pct_altura((float) $fila['total'], $maxIngresos) . '%',
-                        'var(--series-1)',
-                        mes_label($fila['mes']) . ': ' . Config::money((float) $fila['total'])
-                    ) ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="chart-etiquetas">
-            <?php foreach ($ingresosPorMes as $fila): ?>
-                <span class="grupo-label"><?= mes_label($fila['mes']) ?></span>
-            <?php endforeach; ?>
-        </div>
+        <?php
+        $filas = $ingresosPorMes;
+        $series = [['clave' => 'total', 'etiqueta' => '', 'color' => 'var(--series-1)']];
+        $formato = 'money';
+        include __DIR__ . '/../_grafico_serie_mensual.php';
+        ?>
     </div>
 
     <div class="panel">
         <h2>Cartera pendiente por antiguedad (USD)</h2>
-        <div class="chart">
-            <?php foreach ($aging as $bucket => $monto): ?>
-                <div class="grupo">
-                    <?= svg_barra(
-                        'bar',
-                        'height:' . pct_altura((float) $monto, $maxAging) . '%',
-                        $coloresAging[$bucket],
-                        $bucket . ': ' . Config::money((float) $monto)
-                    ) ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="chart-etiquetas">
-            <?php foreach ($aging as $bucket => $monto): ?>
-                <span class="grupo-label"><?= $iconosAging[$bucket] ?> <?= $bucket ?></span>
-            <?php endforeach; ?>
-        </div>
+        <?php include __DIR__ . '/../_grafico_aging.php'; ?>
     </div>
 </div>
 

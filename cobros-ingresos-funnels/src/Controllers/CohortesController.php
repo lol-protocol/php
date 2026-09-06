@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Filtros;
-use App\Repositories\ClienteRepository;
 use App\Repositories\FunnelRepository;
+use App\Repositories\SegmentacionRepository;
 use App\View;
 
 final class CohortesController
@@ -23,7 +23,7 @@ final class CohortesController
             'hasta' => $hasta,
             'personalizado' => $personalizado !== null,
             'cohortes' => (new FunnelRepository())->cohortes($desde, $hasta),
-            'ltvPorCohorte' => (new ClienteRepository())->ltvPorCohorte(),
+            'ltvPorCohorte' => (new SegmentacionRepository())->ltvPorCohorte(),
             'activePage' => 'cohortes',
             'titulo' => 'Cohortes de conversion',
         ]);
