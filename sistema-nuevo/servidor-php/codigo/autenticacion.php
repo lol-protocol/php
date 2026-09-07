@@ -60,5 +60,8 @@ function auth_obtener_csrf_token(): string
 
 function auth_validar_csrf_token(string $token): bool
 {
-    return hash_equals($_SESSION['csrf_token'] ?? '', $token);
+    if ($token === '' || !isset($_SESSION['csrf_token'])) {
+        return false;
+    }
+    return hash_equals($_SESSION['csrf_token'], $token);
 }

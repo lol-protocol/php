@@ -1,6 +1,11 @@
 -- Esquema PostgreSQL: entidades núcleo. Se corre después de esquema.sql
 -- (referencia paises/monedas/tipos_accion, que viven ahí).
 
+-- notas_acciones no se dropea vía CASCADE al recrear "acciones" en esquema.sql
+-- (CASCADE ahí solo elimina la FK dependiente, no la tabla), así que necesita
+-- su propio DROP explícito para que las corridas sucesivas no fallen.
+DROP TABLE IF EXISTS notas_acciones CASCADE;
+
 CREATE TABLE usuarios (
     id          CHAR(4) PRIMARY KEY, -- 'u001'
     nombre      VARCHAR(120) NOT NULL,

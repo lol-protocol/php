@@ -1,4 +1,3 @@
-import { state, el, API_BASE } from "./nucleo.js";
 import { postJson, deleteJson, fetchJson } from "./sesion.js";
 import { t } from "./idioma.js";
 
@@ -29,24 +28,15 @@ export async function aplicarFiltroGuardado(filtroId) {
 
   try {
     const filtros = await fetchJson("/api/filtros");
-    const filtro = filtros.find((f) => f.id == filtroId);
+    const filtro = filtros.find((f) => String(f.id) === String(filtroId));
     if (!filtro) return;
 
-    // Parsear scope (e.g., "pais:US", "grupo:otan")
-    if (filtro.scope === "all_countries") {
-      document.getElementById("scope-select").value = "all";
-    } else if (filtro.scope.startsWith("pais:")) {
-      const pais = filtro.scope.split(":")[1];
-      document.getElementById("scope-select").value = pais;
-    } else if (filtro.scope.startsWith("grupo:")) {
-      const grupo = filtro.scope.split(":")[1];
-      document.getElementById("scope-select").value = grupo;
-    }
-
-    if (filtro.age_min !== null) document.getElementById("age-min").value = filtro.age_min;
-    if (filtro.age_max !== null) document.getElementById("age-max").value = filtro.age_max;
-    if (filtro.gender) document.getElementById("gender-select").value = filtro.gender;
-    if (filtro.tipo_accion) document.getElementById("type-select").value = filtro.tipo_accion;
+    // scope se guarda tal cual viene de #scope-select (ya trae "country:XX"/"preset:XX").
+    document.getElementById("scope-select").value = filtro.scope === "all_countries" ? "all" : filtro.scope;
+    document.getElementById("age-min").value = filtro.age_min ?? 18;
+    document.getElementById("age-max").value = filtro.age_max ?? 65;
+    document.getElementById("gender-select").value = filtro.gender || "all";
+    document.getElementById("type-select").value = filtro.tipo_accion || "all";
 
     // Disparar evento de cambio para cargar datos
     document.getElementById("scope-select").dispatchEvent(new Event("change"));
@@ -55,13 +45,18 @@ export async function aplicarFiltroGuardado(filtroId) {
   }
 }
 
+function parseIntOrNull(value) {
+  const n = parseInt(value, 10);
+  return Number.isNaN(n) ? null : n;
+}
+
 export async function guardarFiltroActual() {
   const nombre = prompt(t("filtro_nombre_prompt"));
   if (!nombre) return;
 
   const scope = document.getElementById("scope-select").value;
-  const ageMin = parseInt(document.getElementById("age-min").value) || null;
-  const ageMax = parseInt(document.getElementById("age-max").value) || null;
+  const ageMin = parseIntOrNull(document.getElementById("age-min").value);
+  const ageMax = parseIntOrNull(document.getElementById("age-max").value);
   const gender = document.getElementById("gender-select").value || null;
   const tipoAccion = document.getElementById("type-select").value || null;
 

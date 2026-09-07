@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 class AlmacenConfiguracion
 {
-    private ConexionBd $bd;
+    private PDO $pdo;
 
-    public function __construct(ConexionBd $bd)
+    public function __construct(PDO $pdo)
     {
-        $this->bd = $bd;
+        $this->pdo = $pdo;
     }
 
     public function obtener(string $clave): ?string
     {
-        $stmt = $this->bd->conexion()->prepare('SELECT valor FROM configuracion_alertas WHERE clave = ?');
+        $stmt = $this->pdo->prepare('SELECT valor FROM configuracion_alertas WHERE clave = ?');
         $stmt->execute([$clave]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ? $row['valor'] : null;
@@ -21,7 +21,7 @@ class AlmacenConfiguracion
 
     public function guardar(string $clave, string $valor): void
     {
-        $stmt = $this->bd->conexion()->prepare(
+        $stmt = $this->pdo->prepare(
             'INSERT INTO configuracion_alertas (clave, valor) VALUES (?, ?)
              ON CONFLICT (clave) DO UPDATE SET valor = EXCLUDED.valor'
         );
@@ -30,7 +30,7 @@ class AlmacenConfiguracion
 
     public function obtenerTodos(): array
     {
-        $stmt = $this->bd->conexion()->query('SELECT clave, valor FROM configuracion_alertas ORDER BY clave');
+        $stmt = $this->pdo->query('SELECT clave, valor FROM configuracion_alertas ORDER BY clave');
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     }
 

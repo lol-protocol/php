@@ -61,8 +61,16 @@
   opacity: 0.8;
 }
 
-.alerts-section .alerts-item {
+.alerts-sublist {
   list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.alerts-item {
   margin: 0;
   padding: 0;
 }

@@ -98,3 +98,18 @@
   background: rgba(0, 240, 255, 0.1);
   box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
 }
+
+.saved-filters-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.mini-button--danger {
+  border-color: var(--bad, #ff2864);
+  color: var(--bad, #ff2864);
+}
+
+.mini-button--danger:hover {
+  background: rgba(255, 40, 100, 0.1);
+  box-shadow: 0 0 8px rgba(255, 40, 100, 0.4);
+}

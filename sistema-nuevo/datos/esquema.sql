@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS grupos_paises CASCADE;
 DROP TABLE IF EXISTS paises CASCADE;
 DROP TABLE IF EXISTS monedas CASCADE;
 DROP TABLE IF EXISTS configuracion_alertas CASCADE;
+DROP TABLE IF EXISTS filtros_guardados CASCADE;
 
 CREATE TABLE monedas (
     codigo     CHAR(3) PRIMARY KEY,   -- 'USD', 'EUR', 'ARS'...

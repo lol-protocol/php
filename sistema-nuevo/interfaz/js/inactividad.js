@@ -27,6 +27,9 @@ export function iniciarMonitorInactividad() {
 export function detenerMonitorInactividad() {
   if (timerInactividad) clearInterval(timerInactividad);
   if (timerFinal) clearTimeout(timerFinal);
+  timerInactividad = null;
+  timerFinal = null;
+  if (modalAdvertencia) modalAdvertencia.hidden = true;
   ["click", "mousemove", "keypress", "scroll", "touchstart"].forEach((evento) => {
     document.removeEventListener(evento, registrarActividad, true);
   });
@@ -78,7 +81,11 @@ function mostrarAdvertencia() {
 
 function cerrarAdvertencia() {
   if (modalAdvertencia) modalAdvertencia.hidden = true;
-  registrarActividad();
+  if (timerFinal) {
+    clearTimeout(timerFinal);
+    timerFinal = null;
+  }
+  ultimaActividad = Date.now();
 }
 
 async function logoutAutomatico() {

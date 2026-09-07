@@ -4,7 +4,7 @@ import { renderUserOptions } from "./selectores.js";
 import { loadAppData, loadTimelineFromStart, selectUser, goToPage } from "./aplicacion.js";
 import { establecerIdioma, inicializarIdioma } from "./idioma.js";
 import { refrescarIdioma } from "./idioma-refrescar.js";
-import { cargarFiltrosGuardados, aplicarFiltroGuardado, guardarFiltroActual } from "./filtros.js";
+import { cargarFiltrosGuardados, aplicarFiltroGuardado, guardarFiltroActual, eliminarFiltroGuardado } from "./filtros.js";
 
 inicializarIdioma();
 document.querySelectorAll(".lang-button").forEach((boton) => {
@@ -53,6 +53,12 @@ document.getElementById("saved-filters-select").addEventListener("change", (e) =
 });
 
 document.getElementById("btn-guardar-filtro").addEventListener("click", guardarFiltroActual);
+
+document.getElementById("btn-eliminar-filtro").addEventListener("click", async () => {
+  const select = document.getElementById("saved-filters-select");
+  if (!select.value) return;
+  await eliminarFiltroGuardado(select.value);
+});
 
 boot(async () => {
   await cargarFiltrosGuardados();

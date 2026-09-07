@@ -31,6 +31,12 @@ function api_filtros(): void
 
 function api_filtros_delete(int $id): void
 {
+    if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
+        http_response_code(405);
+        echo json_encode(['error' => 'método no permitido']);
+        return;
+    }
+
     $almacen = new AlmacenFiltros(ConexionBd::obtener());
     if ($almacen->eliminar($id)) {
         echo json_encode(['ok' => true]);

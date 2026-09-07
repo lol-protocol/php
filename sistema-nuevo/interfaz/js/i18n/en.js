@@ -89,6 +89,7 @@ export default {
 
   label_saved_filters: "Saved filter",
   btn_guardar_filtro: "Save",
+  btn_eliminar_filtro: "Delete",
   filtro_nombre_prompt: "Filter name:",
   filtro_eliminar_confirmar: "Delete this filter?",
 

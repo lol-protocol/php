@@ -25,7 +25,7 @@ if (in_array($origen, $origenesPermitidos, true)) {
 // un preflight OPTIONS: hay que responderlo (con los mismos headers CORS de
 // arriba) antes de que llegue ninguna cookie de sesión real.
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
-    header('Access-Control-Allow-Methods: GET, POST');
+    header('Access-Control-Allow-Methods: GET, POST, DELETE');
     header('Access-Control-Allow-Headers: Content-Type');
     http_response_code(204);
     exit;
@@ -37,9 +37,10 @@ auth_iniciar_sesion_php();
 
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
 $rutasProtegidas = ['/api/users', '/api/groups', '/api/action-types', '/api/alerts', '/api/alerts-config', '/api/filtros', '/api/timeline'];
+$esFiltroPorId = (bool) preg_match('#^/api/filtros/\d+$#', $path);
 
 try {
-    if (in_array($path, $rutasProtegidas, true) && !auth_esta_autenticado()) {
+    if ((in_array($path, $rutasProtegidas, true) || $esFiltroPorId) && !auth_esta_autenticado()) {
         api_unauthorized();
     } elseif ($path === '/api/login') {
         api_login();

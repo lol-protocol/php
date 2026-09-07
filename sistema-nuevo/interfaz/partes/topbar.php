@@ -8,7 +8,10 @@
     <div class="filter-group filter-group--narrow">
       <label for="saved-filters-select" data-i18n="label_saved_filters">Filtro guardado</label>
       <select id="saved-filters-select"></select>
-      <button type="button" id="btn-guardar-filtro" class="mini-button" data-i18n="btn_guardar_filtro">Guardar</button>
+      <div class="saved-filters-actions">
+        <button type="button" id="btn-guardar-filtro" class="mini-button" data-i18n="btn_guardar_filtro">Guardar</button>
+        <button type="button" id="btn-eliminar-filtro" class="mini-button mini-button--danger" data-i18n="btn_eliminar_filtro">Eliminar</button>
+      </div>
     </div>
 
     <div class="filter-group">

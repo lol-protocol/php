@@ -33,6 +33,7 @@ function renderAlertType(list, alertData, titleKey, onSelectUser) {
   const section = el("li", { class: "alerts-section" });
   section.appendChild(el("h4", { class: "alerts-type-title", "data-i18n": titleKey }));
 
+  const subList = el("ul", { class: "alerts-sublist" });
   alertData.top.forEach((row) => {
     const button = el("button", {
       type: "button",
@@ -41,8 +42,9 @@ function renderAlertType(list, alertData, titleKey, onSelectUser) {
       title: t("alerts_last_seen", { date: row.last_seen }),
     });
     button.addEventListener("click", () => onSelectUser(row.user_id));
-    section.appendChild(el("li", { class: "alerts-item" }, [button]));
+    subList.appendChild(el("li", { class: "alerts-item" }, [button]));
   });
+  section.appendChild(subList);
 
   list.appendChild(section);
 }
