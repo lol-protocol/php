@@ -104,6 +104,11 @@ final class CobrosController
             echo 'Boleta no encontrada.';
             return;
         }
+        if ($boleta['anulada']) {
+            http_response_code(409);
+            echo 'La boleta esta anulada y no se puede editar.';
+            return;
+        }
 
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

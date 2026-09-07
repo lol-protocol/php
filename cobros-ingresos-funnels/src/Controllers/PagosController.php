@@ -102,6 +102,11 @@ final class PagosController
             echo 'Pago no encontrado.';
             return;
         }
+        if ($pago['anulada']) {
+            http_response_code(409);
+            echo 'El pago esta anulado y no se puede editar.';
+            return;
+        }
 
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
