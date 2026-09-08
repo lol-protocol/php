@@ -1,190 +1,88 @@
 # Changelog
 
-Todos los cambios notables en este proyecto se documentarán en este archivo.
+## [3.0.0] - 2026-09-08
+
+Cambio incompatible: los idiomas pasan a identificarse por ISO 639-3.
+
+### Añadido
+
+- **`LanguageRegistry`** — resuelve códigos, agrupa idiomas por familia y modela
+  la afinidad léxica entre pares.
+- **Validación cruzada entre idiomas asociados** — `validateAcrossRelated()`
+  consulta el idioma principal y los emparentados; una coincidencia en un idioma
+  asociado lleva la afinidad como `confidence` y esa confianza descuenta la
+  severidad. `validateInLanguages()` permite un conjunto explícito sin descuento.
+- **`config/language-families.php`** — 14 familias y 60 pares de afinidad,
+  incluidos pares sin parentesco directo pero con préstamo intenso
+  (`jpn`↔`zho`, `ron`↔`bul`, `tur`↔`ell`).
+- **Protección de apellidos legítimos** — `nameCollision` marca términos que
+  también son nombres documentados (`cerda`, `moro`, `calvo`, `bastard`,
+  `savage`, `hogg`). Una coincidencia grave sobre ellos baja de `reject` a
+  `review` en vez de rechazarse en automático.
+- **`decide()`** — traduce severidad y colisión en acción concreta:
+  `accept` / `accept_with_flag` / `review` / `reject`.
+- **Detección de frases** — `findInText()` prueba ventanas de hasta tres
+  palabras, de modo que "hijo de puta" cuenta como un término y no como tres.
+- **`coverage` por diccionario** — `comprehensive` / `moderate` / `basic`, para
+  saber qué idiomas necesitan revisión de hablante nativo antes de producción.
+- **`requiresTokenizer`** — `jpn`, `zho` y `tha` no separan palabras con
+  espacios y declaran que necesitan un segmentador externo para texto libre.
+- Términos de ridiculización por rasgo neutro (`zurdo`, `diestro`), con
+  severidad baja: se marcan sin bloquear.
+
+### Cambiado
+
+- **Los idiomas usan ISO 639-3 (tres letras).** `es`→`spa`, `en`→`eng`,
+  `de`→`deu`, `zh`→`zho`, `el`→`ell`, `cs`→`ces`… Los códigos de dos letras se
+  siguen aceptando como alias de entrada y se normalizan al entrar, así que una
+  integración existente puede seguir pasando `es`.
+- **Diccionarios ampliados de ~600 a ~4.600 términos.** Ningún idioma queda como
+  stub: el mínimo son 105 términos y los seis principales pasan de 200.
+  Español 415, inglés 266, francés 226, portugués 222, alemán 208, italiano 206.
+- **Formato de los diccionarios**: `['meta' => [...], 'words' => [...]]`. El
+  formato plano anterior se sigue leyendo.
+- **Severidad por palabra**, no por categoría: cada entrada declara la suya y la
+  del nombre es la del peor término hallado.
+- `addFlaggedTerm()` toma un array de datos en lugar de cuatro escalares.
+- Normalización ampliada a diacríticos eslavos, nórdicos y turcos, más `ß`→`ss`,
+  `æ`→`ae`, `œ`→`oe`.
+- El constructor del reviewer toma un `LanguageRegistry` y un directorio de
+  diccionarios; `create()` monta todo desde el directorio de configuración.
+
+### Eliminado
+
+- `config/defamatory-words.php` — sustituido por `config/languages/spa.php`.
+- Los 30 archivos de idioma con nombre de dos letras.
+- `README_v2.md` y `USAGE_GUIDE.md` — documentaban la API de la v1 con ejemplos
+  que ya no funcionan; su contenido vigente está en `README.md`.
+
+### Tests
+
+44 tests, 9.440 aserciones. Cubren resolución de códigos y alias, simetría de
+afinidades, validación cruzada y descuento por confianza, colisión con
+apellidos, frases multipalabra, plegado de diacríticos, y verificación de que
+los 30 diccionarios existen, declaran su propio código y usan sólo tipos de
+riesgo y severidades válidos.
+
+---
+
+## [2.0.0] - 2026-09-08
+
+### Añadido
+
+- 10 tipos de riesgo (`animal`, `intelectual`, `discapacidad`, `fisico`,
+  `moral`, `genero`, `ordinario`, `burlesco`, `etnico`, `religioso`).
+- Soporte multiidioma con carga dinámica de diccionarios.
+- Análisis por tipo de riesgo en los informes detallados.
+- Estadísticas de diccionario.
+
+### Conocido
+
+- 23 de los 30 idiomas eran stubs de tres palabras. Resuelto en la 3.0.0.
+
+---
 
 ## [1.0.0] - 2026-09-08
 
-### Agregado
-
-- **Módulo Principal de Revisión de Contenido Difamatorio**
-  - Clase `DefamatoryContentReviewer` para validación de nombres
-  - Clase `WordList` para gestión de palabras inapropiadas
-  - Clase `ValidationResult` para representar resultados de validación
-
-- **Funcionalidades Core**
-  - Validación de nombre completo (nombre y apellido)
-  - Validación de nombre único
-  - Validación por lotes de nombres
-  - Detección insensible a mayúsculas/minúsculas
-  - Detección insensible a acentos
-  - Normalización inteligente de caracteres Unicode
-
-- **Categorización**
-  - 9 categorías de palabras inapropiadas:
-    - insultos_personales
-    - insultos_corporales
-    - insultos_morales
-    - insultos_apariencia
-    - insultos_capacidad
-    - burlas_ridiculas
-    - palabras_soeces
-    - insultos_inteligencia
-    - insultos_comportamiento
-
-- **Sistema de Severidad**
-  - Cuatro niveles: none, low, medium, high
-  - Clasificación automática basada en categoría
-  - Recomendaciones basadas en severidad
-
-- **Reportes**
-  - Reportes detallados de validación
-  - Listado de términos marcados por categoría
-  - Recomendaciones de acción
-  - Exportación a formato array/JSON
-
-- **Tests**
-  - 15+ tests unitarios con PHPUnit
-  - Cobertura de funcionalidades principales
-  - Tests de normalización, detección y severidad
-
-- **Documentación**
-  - README.md completo con guía de uso
-  - USAGE_GUIDE.md con casos de uso avanzados
-  - Ejemplos de código en `examples/usage.php`
-  - Documentación de API detallada
-
-- **Configuración**
-  - `composer.json` con dependencias
-  - `phpunit.xml` para configuración de tests
-  - `.gitignore` para exclusión de archivos
-
-### Características
-
-- ✓ Detección de contenido difamatorio en nombres
-- ✓ Validación de integridad de datos genealógicos
-- ✓ Análisis sensible al contexto
-- ✓ Normalización inteligente
-- ✓ Validación por lotes
-- ✓ Reportes detallados
-- ✓ Fácil integración
-- ✓ Altamente personalizable
-
-### Palabras Incluidas
-
-**Total de palabras en lista negra:** 100+
-
-Categorías incluidas:
-- Insultos personales (17 palabras)
-- Insultos corporales (11 palabras)
-- Insultos morales (13 palabras)
-- Insultos de apariencia (17 palabras)
-- Insultos de capacidad (7 palabras)
-- Burlas ridículas (13 palabras)
-- Palabras soeces (16 palabras)
-- Insultos de inteligencia (9 palabras)
-- Insultos de comportamiento (14 palabras)
-
-### Ejemplos Funcionales
-
-```php
-// Ejemplo 1: Validación simple
-$result = $reviewer->validateFullName('Zoila', 'Cerda');
-// Resultado: Inválido, severidad: medium
-
-// Ejemplo 2: Nombre limpio
-$result = $reviewer->validateFullName('Juan', 'Pérez');
-// Resultado: Válido
-
-// Ejemplo 3: Validación por lotes
-$results = $reviewer->batchValidateFullNames([
-    'Juan Pérez',
-    'Zoila Cerda',
-    'María González'
-]);
-```
-
-### Requisitos
-
-- PHP >= 8.0
-- Composer (recomendado)
-
-### Instalación
-
-```bash
-composer install
-```
-
-### Testing
-
-```bash
-./vendor/bin/phpunit tests/
-```
-
-### Rendimiento
-
-- Validación simple: < 1ms
-- Validación de 1000 nombres: < 100ms
-- Normalización: O(1)
-- Búsqueda: O(1)
-
----
-
-## [Planificado]
-
-- [ ] Soporte multiidioma mejorado
-- [ ] API REST para validación remota
-- [ ] Dashboard web para gestión de palabras
-- [ ] Machine Learning para detección contextual
-- [ ] Integración con bases de datos externas
-- [ ] WebHooks para eventos de validación
-- [ ] Estadísticas y análisis
-- [ ] Versionado de listas de palabras
-
----
-
-## Notas de Desarrollo
-
-### Convenciones de Código
-
-- PSR-12 para estilo de código
-- PSR-4 para autoloading
-- Namespacing completo
-- Type hints fuertes
-- Documentación de métodos públicos
-
-### Estructura de Carpetas
-
-```
-php/
-├── src/DefamatoryContentReview/     # Código fuente
-├── config/                           # Configuración
-├── tests/                            # Tests unitarios
-├── examples/                         # Ejemplos de uso
-├── composer.json                     # Dependencias
-├── phpunit.xml                       # Config de tests
-├── README.md                         # Documentación
-├── USAGE_GUIDE.md                    # Guía de uso
-└── CHANGELOG.md                      # Este archivo
-```
-
-### Contribuciones
-
-Las contribuciones son bienvenidas. Por favor:
-
-1. Fork el proyecto
-2. Crea una rama para tu feature
-3. Commit con mensajes descriptivos
-4. Push y abre un Pull Request
-
-### Licencia
-
-MIT License - Ver LICENSE para detalles
-
----
-
-## Histórico de Versiones
-
-### v1.0.0 (2026-09-08)
-- Lanzamiento inicial completo
-- Funcionalidad core implementada
-- Tests y documentación completos
+Versión inicial: validación de nombres contra una lista de términos en español,
+con severidad por categoría y validación por lotes.

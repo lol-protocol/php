@@ -3,140 +3,126 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\WordList;
 
-$riskCategories = require __DIR__ . '/../config/risk-categories.php';
-$config = require __DIR__ . '/../config/languages/es.php';
-$wordList = new WordList($config, 'es', $riskCategories);
-$reviewer = new DefamatoryContentReviewer($wordList, 'es', $riskCategories);
+$reviewer = DefamatoryContentReviewer::create(__DIR__ . '/../config', 'spa');
+$registry = $reviewer->getRegistry();
 
-echo "╔════════════════════════════════════════════════════════════╗\n";
-echo "║   MÓDULO DE REVISIÓN DE CONTENIDO DIFAMATORIO v2.0        ║\n";
-echo "║   Con Clasificación de Riesgos y Soporte Multiidioma       ║\n";
-echo "╚════════════════════════════════════════════════════════════╝\n\n";
+$rule = fn(string $t = '') => print("\n" . ($t ? "── {$t} " : '') . str_repeat('─', 72 - mb_strlen($t)) . "\n\n");
 
-echo "=== Ejemplos de Validación Simple ===\n\n";
+// printf cuenta bytes, no caracteres: con acentos las columnas se desalinean.
+$pad = fn(string $s, int $width) => $s . str_repeat(' ', max(0, $width - mb_strlen($s)));
 
-$testCases = [
-    ['firstName' => 'Zoila', 'lastName' => 'Cerda'],
-    ['firstName' => 'Juan', 'lastName' => 'Pérez'],
-    ['firstName' => 'Carlos', 'lastName' => 'Idiota García'],
-    ['firstName' => 'María', 'lastName' => 'González'],
-];
+$rule('1. Validación en el idioma principal');
 
-foreach ($testCases as $case) {
-    $result = $reviewer->validateFullName($case['firstName'], $case['lastName']);
-    $report = $reviewer->getDetailedReport($result);
+foreach ([['Zoila', 'Cerda'], ['Juan', 'Pérez'], ['Zurdo', 'Diestro'], ['Luis', 'Bastardo']] as [$first, $last]) {
+    $report = $reviewer->getDetailedReport($reviewer->validateFullName($first, $last));
 
-    echo "Nombre: {$report['name']}\n";
-    echo "Lenguaje: {$report['language']}\n";
-    echo "Válido: " . ($report['valid'] ? 'Sí ✓' : 'No ✗') . "\n";
-    echo "Severidad: {$report['severity']}\n";
+    printf("%s %s\n", $first, $last);
+    printf("  severidad: %-8s decisión: %s\n", $report['severity'], $report['decision']);
+    printf("  %s\n", $report['recommendation']);
 
-    if (!$report['valid']) {
-        echo "Tipos de riesgo detectados: " . implode(', ', $report['flaggedRiskTypes']) . "\n";
-        echo "Categorías: " . implode(', ', $report['flaggedCategories']) . "\n";
-
-        echo "Términos marcados por tipo de riesgo:\n";
-        foreach ($report['termsByRiskType'] as $riskType => $terms) {
-            echo "  🔴 $riskType:\n";
-            foreach ($terms as $term) {
-                echo "     - '{$term['term']}' [Severidad: {$term['severity']}]\n";
-            }
-        }
-
-        echo "\nAnálisis de Riesgos:\n";
-        foreach ($report['riskAnalysis'] as $riskType => $analysis) {
-            $level = $analysis['isSevere'] ? '⚠️  ALTO' : '⚠️  MEDIO';
-            echo "  $level: {$analysis['description']}\n";
-        }
+    foreach ($report['riskAnalysis'] as $riskType => $analysis) {
+        printf("    · %s %s [%s]\n", $pad($riskType, 14), $pad($analysis['description'], 42), $analysis['level']);
     }
-
-    echo "Recomendación: {$report['recommendation']}\n";
-    echo str_repeat("─", 60) . "\n\n";
+    echo "\n";
 }
 
-echo "=== Validación por Lotes ===\n\n";
+$rule('2. Apellidos legítimos que coinciden con el diccionario');
 
-$names = [
-    'Zoila Cerda',
-    'Juan Pérez',
-    'Carlos Imbécil García',
-    'María González',
-    'Roberto Canalla Mendez',
-    'Anna Bastardo López',
-];
+// "Cerda", "Moro" o "Calvo" son linajes documentados. Una coincidencia grave
+// sobre ellos va a revisión humana, nunca a rechazo automático.
+foreach ([['Juan', 'Moro'], ['Ana', 'Cerda'], ['Luis', 'Bastardo']] as [$first, $last]) {
+    $result = $reviewer->validateFullName($first, $last);
 
-$results = $reviewer->batchValidateFullNames($names);
-
-echo "Resumen de resultados:\n";
-echo str_repeat("─", 80) . "\n";
-printf("%-30s | %-12s | %-30s\n", "Nombre", "Estado", "Tipos de Riesgo");
-echo str_repeat("─", 80) . "\n";
-
-foreach ($results as $result) {
-    $status = $result->isValid() ? '✓ Válido' : '✗ Inválido';
-    $riskTypes = $result->getFlaggedRiskTypes();
-    $riskTypesStr = $result->isValid() ? 'N/A' : implode(', ', $riskTypes);
-
-    printf("%-30s | %-12s | %-30s\n", substr($result->getFullName(), 0, 28), $status, substr($riskTypesStr, 0, 28));
+    printf(
+        "%s severidad=%-6s colisión con apellido=%s → %s\n",
+        $pad("{$first} {$last}", 16),
+        $result->getSeverity(),
+        $pad($result->hasNameCollision() ? 'sí' : 'no', 3),
+        $reviewer->decide($result)
+    );
 }
-echo str_repeat("─", 80) . "\n\n";
 
-echo "=== Estadísticas del Diccionario ===\n\n";
+$rule('3. Idiomas asociados');
 
-$stats = $reviewer->getWordListStatistics();
-echo "Total de palabras: {$stats['totalWords']}\n";
-echo "Lenguaje: {$stats['language']}\n\n";
+printf("Idioma activo: %s (%s)\n\n", $reviewer->getLanguage(), $registry->getMetadata('spa')['nativeName']);
+echo "Asociados por afinidad léxica:\n";
 
-echo "Distribución por tipo de riesgo:\n";
+foreach ($reviewer->getRelatedLanguages() as $code => $affinity) {
+    printf("  %s  %s afinidad %.2f\n", $code, $pad($registry->getMetadata($code)['nativeName'], 12), $affinity);
+}
+
+echo "\nUn término de un idioma asociado se detecta, pero pesa menos:\n\n";
+
+foreach (['João Porco', 'Marco Stronzo', 'Ana Salope'] as $name) {
+    $solo = $reviewer->validateName($name);
+    $crossed = $reviewer->validateAcrossRelated($name);
+    $term = $crossed->getFlaggedTerms()[0] ?? null;
+
+    printf("  %s sólo español: %-8s cruzado: %-8s", $pad($name, 16), $solo->getSeverity(), $crossed->getSeverity());
+
+    if ($term) {
+        printf("  (%s '%s', confianza %.2f)", $term['sourceLanguage'], $term['term'], $term['confidence']);
+    }
+    echo "\n";
+}
+
+$rule('4. Familias lingüísticas');
+
+foreach ($registry->getFamilies() as $family) {
+    if (count($family['languages']) < 2) {
+        continue;
+    }
+    printf("  %s %s\n", $pad($family['name'], 14), implode(', ', $family['languages']));
+}
+
+echo "\nPares más cercanos de cada familia:\n";
+foreach (['spa' => 'por', 'ces' => 'slk', 'dan' => 'nor', 'rus' => 'ukr', 'deu' => 'nld'] as $a => $b) {
+    printf("  %s ↔ %s   %.2f\n", $a, $b, $registry->getAffinity($a, $b));
+}
+
+$rule('5. Conjunto explícito de idiomas');
+
+// Cuando ya se sabe qué lenguas concurren en un fondo documental, se pasan
+// directamente y todas cuentan con confianza plena.
+$result = $reviewer->validateInLanguages('Hans Scheisse', ['spa', 'deu']);
+printf(
+    "Hans Scheisse en [spa, deu]: severidad=%s decisión=%s\n",
+    $result->getSeverity(),
+    $reviewer->decide($result)
+);
+
+$rule('6. Estado de los diccionarios');
+
+printf("%-5s %-20s %-15s %8s %12s\n", 'CÓD', 'IDIOMA', 'COBERTURA', 'TÉRMINOS', 'COLISIONES');
+echo str_repeat('─', 72) . "\n";
+
+$total = 0;
+foreach ($registry->getAll() as $code => $meta) {
+    $stats = $reviewer->getWordListStatistics($code);
+    $total += $stats['totalWords'];
+
+    printf(
+        "%-5s %s %-15s %8d %12d\n",
+        $code,
+        $pad($meta['name'], 20),
+        $stats['coverage'],
+        $stats['totalWords'],
+        $stats['nameCollisions']
+    );
+}
+
+echo str_repeat('─', 72) . "\n";
+printf("%d términos en %d idiomas\n", $total, count($registry->getCodes()));
+
+$basic = $registry->getLanguagesByCoverage('basic');
+if ($basic) {
+    printf("\nPendientes de revisión por hablante nativo: %s\n", implode(', ', $basic));
+}
+
+$rule('7. Reparto por tipo de riesgo (español)');
+
+$stats = $reviewer->getWordListStatistics('spa');
 foreach ($stats['byRiskType'] as $riskType => $count) {
-    echo "  - $riskType: $count palabras\n";
+    printf("  %-14s %3d  %s\n", $riskType, $count, str_repeat('█', (int) round($count / 4)));
 }
-
-echo "\nDistribución por severidad:\n";
-foreach ($stats['bySeverity'] as $severity => $count) {
-    echo "  - $severity: $count palabras\n";
-}
-
-echo "\n=== Demostración Multiidioma ===\n\n";
-
-echo "Idiomas soportados:\n";
-$supportedLanguages = require __DIR__ . '/../config/languages/supported-languages.php';
-$languageCount = 0;
-foreach ($supportedLanguages as $code => $lang) {
-    echo "  - {$lang['nativeName']} ($code)\n";
-    $languageCount++;
-    if ($languageCount % 5 === 0) {
-        echo "\n";
-    }
-}
-
-echo "\nCargando diccionario en Inglés...\n";
-$reviewerEN = new DefamatoryContentReviewer($wordList, 'en', $riskCategories);
-if ($reviewerEN->loadLanguage('en')) {
-    echo "✓ Diccionario Inglés cargado correctamente\n";
-    $resultEN = $reviewerEN->validateName('idiot');
-    echo "Prueba: 'idiot' - " . ($resultEN->isValid() ? 'Válido' : 'Inválido') . "\n";
-    if (!$resultEN->isValid()) {
-        echo "  Tipos de riesgo: " . implode(', ', $resultEN->getFlaggedRiskTypes()) . "\n";
-    }
-} else {
-    echo "✗ No se pudo cargar el diccionario Inglés\n";
-}
-
-echo "\nCargando diccionario en Francés...\n";
-if ($reviewerEN->loadLanguage('fr')) {
-    echo "✓ Diccionario Francés cargado correctamente\n";
-    $resultFR = $reviewerEN->validateName('idiot');
-    echo "Prueba: 'idiot' - " . ($resultFR->isValid() ? 'Válido' : 'Inválido') . "\n";
-    if (!$resultFR->isValid()) {
-        echo "  Tipos de riesgo: " . implode(', ', $resultFR->getFlaggedRiskTypes()) . "\n";
-    }
-} else {
-    echo "✗ No se pudo cargar el diccionario Francés\n";
-}
-
-echo "\n" . str_repeat("═", 60) . "\n";
-echo "Fin de demostración\n";
-echo str_repeat("═", 60) . "\n";

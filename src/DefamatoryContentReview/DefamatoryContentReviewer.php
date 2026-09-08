@@ -2,193 +2,300 @@
 
 namespace DefamatoryContentReview;
 
+use RuntimeException;
+
 class DefamatoryContentReviewer
 {
-    private WordList $wordList;
-    private array $highSeverityRiskTypes = [
-        'ordinario',
-        'moral',
-        'discapacidad',
-        'genero',
-        'religioso',
-        'etnico',
-    ];
-    private array $mediumSeverityRiskTypes = [
-        'animal',
-        'intelectual',
-        'fisico',
-    ];
-    private string $language = 'es';
-    private array $riskCategories = [];
+    private LanguageRegistry $registry;
+    private string $languageDir;
+    private string $language;
 
-    public function __construct(WordList $wordList, string $language = 'es', array $riskCategories = [])
+    /** @var array<string,WordList> diccionarios ya cargados, por código ISO 639-3 */
+    private array $dictionaries = [];
+
+    /**
+     * Tipos de riesgo que por sí solos justifican severidad alta cuando la
+     * palabra concreta no declara la suya. La severidad por palabra manda; esto
+     * es sólo el respaldo.
+     */
+    private array $highSeverityRiskTypes = [
+        'ordinario', 'moral', 'discapacidad', 'genero', 'religioso', 'etnico',
+    ];
+
+    private const SEVERITY_VALUE = ['none' => 0, 'low' => 1, 'medium' => 2, 'high' => 3];
+
+    public function __construct(LanguageRegistry $registry, string $languageDir, string $language = 'spa')
     {
-        $this->wordList = $wordList;
-        $this->language = $language;
-        $this->riskCategories = $riskCategories;
+        $this->registry = $registry;
+        $this->languageDir = rtrim($languageDir, '/');
+        $this->language = $registry->resolve($language);
+    }
+
+    public static function create(string $configDir, string $language = 'spa'): self
+    {
+        $configDir = rtrim($configDir, '/');
+
+        return new self(
+            LanguageRegistry::fromConfigDirectory($configDir),
+            $configDir . '/languages',
+            $language
+        );
+    }
+
+    // -----------------------------------------------------------------
+    // Validación en el idioma principal
+    // -----------------------------------------------------------------
+
+    public function validateName(string $name): ValidationResult
+    {
+        return $this->evaluate($name, [$this->language => 1.0]);
     }
 
     public function validateFullName(string $firstName, string $lastName): ValidationResult
     {
-        $fullName = trim($firstName . ' ' . $lastName);
-        $result = new ValidationResult($fullName, true, $this->language);
-
-        $firstNameMatches = $this->wordList->findInText($firstName);
-        $lastNameMatches = $this->wordList->findInText($lastName);
-
-        $allMatches = array_merge($firstNameMatches, $lastNameMatches);
-
-        if (count($allMatches) === 0) {
-            $result->setValid(true);
-            $result->setSeverity('none');
-            return $result;
-        }
-
-        $result->setValid(false);
-        $maxSeverity = 'low';
-
-        foreach ($allMatches as $match) {
-            $riskType = $match['riskType'] ?? 'ordinario';
-            $severity = $match['severity'] ?? 'medium';
-
-            $result->addFlaggedTerm($match['found'], $match['category'], $riskType, $severity);
-
-            if (in_array($riskType, $this->highSeverityRiskTypes)) {
-                $maxSeverity = 'high';
-            } elseif (in_array($riskType, $this->mediumSeverityRiskTypes) && $maxSeverity !== 'high') {
-                $maxSeverity = 'medium';
-            }
-        }
-
-        $result->setSeverity($maxSeverity);
-        return $result;
+        return $this->validateName(trim($firstName . ' ' . $lastName));
     }
 
-    public function validateName(string $name): ValidationResult
-    {
-        $result = new ValidationResult($name, true, $this->language);
-        $matches = $this->wordList->findInText($name);
-
-        if (count($matches) === 0) {
-            $result->setValid(true);
-            $result->setSeverity('none');
-            return $result;
-        }
-
-        $result->setValid(false);
-        $maxSeverity = 'low';
-
-        foreach ($matches as $match) {
-            $riskType = $match['riskType'] ?? 'ordinario';
-            $severity = $match['severity'] ?? 'medium';
-
-            $result->addFlaggedTerm($match['found'], $match['category'], $riskType, $severity);
-
-            if (in_array($riskType, $this->highSeverityRiskTypes)) {
-                $maxSeverity = 'high';
-            } elseif (in_array($riskType, $this->mediumSeverityRiskTypes) && $maxSeverity !== 'high') {
-                $maxSeverity = 'medium';
-            }
-        }
-
-        $result->setSeverity($maxSeverity);
-        return $result;
-    }
-
+    /**
+     * @param array<int,string> $names
+     * @return array<int,ValidationResult>
+     */
     public function batchValidateNames(array $names): array
     {
-        $results = [];
-
-        foreach ($names as $name) {
-            $results[] = $this->validateName($name);
-        }
-
-        return $results;
+        return array_map(fn(string $name) => $this->validateName($name), $names);
     }
 
+    /**
+     * @param array<int,string> $fullNames
+     * @return array<int,ValidationResult>
+     */
     public function batchValidateFullNames(array $fullNames): array
     {
-        $results = [];
+        return array_map(fn(string $name) => $this->validateName(trim($name)), $fullNames);
+    }
 
-        foreach ($fullNames as $name) {
-            $parts = explode(' ', trim($name), 2);
-            $firstName = $parts[0] ?? '';
-            $lastName = $parts[1] ?? '';
+    // -----------------------------------------------------------------
+    // Validación cruzada entre idiomas asociados
+    // -----------------------------------------------------------------
 
-            $results[] = $this->validateFullName($firstName, $lastName);
+    /**
+     * Valida contra el idioma principal y los emparentados con él.
+     *
+     * En una plataforma genealógica los registros de una región traen apellidos
+     * de las lenguas vecinas: un árbol español contiene ramas portuguesas, uno
+     * ruso ramas ucranianas. Una coincidencia hallada en un idioma asociado
+     * pesa menos que una del principal — su confianza es la afinidad léxica
+     * entre ambos — de modo que un insulto grave en portugués marca un nombre
+     * español para revisión, pero no lo rechaza con la misma rotundidad que si
+     * lo fuera en español.
+     *
+     * @param float|null $threshold Afinidad mínima para incluir un idioma.
+     */
+    public function validateAcrossRelated(string $name, ?float $threshold = null): ValidationResult
+    {
+        return $this->evaluate($name, $this->registry->getValidationSet($this->language, $threshold));
+    }
+
+    public function validateFullNameAcrossRelated(
+        string $firstName,
+        string $lastName,
+        ?float $threshold = null
+    ): ValidationResult {
+        return $this->validateAcrossRelated(trim($firstName . ' ' . $lastName), $threshold);
+    }
+
+    /**
+     * Valida contra un conjunto explícito de idiomas, cada uno con confianza 1.0.
+     * Útil cuando la plataforma ya sabe qué lenguas concurren en un fondo
+     * documental concreto, sin depender del modelo de parentesco.
+     *
+     * @param array<int,string> $languages
+     */
+    public function validateInLanguages(string $name, array $languages): ValidationResult
+    {
+        $set = [];
+        foreach ($languages as $code) {
+            $set[$this->registry->resolve($code)] = 1.0;
         }
 
-        return $results;
+        return $this->evaluate($name, $set);
     }
+
+    // -----------------------------------------------------------------
+    // Núcleo de evaluación
+    // -----------------------------------------------------------------
+
+    /**
+     * @param array<string,float> $languageSet código => confianza (1.0 = idioma principal)
+     */
+    private function evaluate(string $name, array $languageSet): ValidationResult
+    {
+        $result = new ValidationResult($name, true, $this->language);
+        $result->setLanguagesChecked($languageSet);
+
+        $maxScore = 0.0;
+        $seen = [];
+
+        foreach ($languageSet as $code => $confidence) {
+            foreach ($this->dictionary($code)->findInText($name) as $match) {
+                // El mismo término puede estar en varios diccionarios de una
+                // familia; se conserva la aparición de mayor confianza.
+                $key = $match['found'] . '|' . $match['riskType'];
+                if (isset($seen[$key]) && $seen[$key] >= $confidence) {
+                    continue;
+                }
+                $seen[$key] = $confidence;
+
+                $result->addFlaggedTerm($match + [
+                    'sourceLanguage' => $code,
+                    'confidence' => $confidence,
+                ]);
+
+                $maxScore = max($maxScore, $this->scoreOf($match) * $confidence);
+            }
+        }
+
+        if ($maxScore <= 0.0) {
+            return $result->setValid(true)->setSeverity('none');
+        }
+
+        return $result->setValid(false)->setSeverity($this->severityFromScore($maxScore));
+    }
+
+    private function scoreOf(array $match): float
+    {
+        $severity = $match['severity'] ?? null;
+
+        if ($severity === null || !isset(self::SEVERITY_VALUE[$severity])) {
+            $severity = in_array($match['riskType'] ?? '', $this->highSeverityRiskTypes, true)
+                ? 'high'
+                : 'medium';
+        }
+
+        return (float) self::SEVERITY_VALUE[$severity];
+    }
+
+    private function severityFromScore(float $score): string
+    {
+        if ($score >= 2.5) {
+            return 'high';
+        }
+
+        if ($score >= 1.5) {
+            return 'medium';
+        }
+
+        return 'low';
+    }
+
+    // -----------------------------------------------------------------
+    // Informes
+    // -----------------------------------------------------------------
 
     public function getDetailedReport(ValidationResult $result): array
     {
         $data = $result->toArray();
+        $decision = $this->decide($result);
 
-        return [
-            'name' => $data['fullName'],
-            'language' => $data['language'],
-            'valid' => $data['isValid'],
-            'severity' => $data['severity'],
-            'flaggedTermsCount' => $data['totalFlagged'],
-            'flaggedCategories' => $data['flaggedCategories'],
-            'flaggedRiskTypes' => $data['flaggedRiskTypes'],
-            'flaggedTerms' => $data['flaggedTerms'],
-            'termsByRiskType' => $data['termsByRiskType'],
-            'recommendation' => $this->getRecommendation($data['severity'], $data['flaggedRiskTypes']),
-            'riskAnalysis' => $this->analyzeRisks($data['flaggedRiskTypes']),
+        return $data + [
+            'decision' => $decision,
+            'recommendation' => $this->recommendationFor($decision, $result),
+            'riskAnalysis' => $this->analyzeRisks($result),
         ];
     }
 
-    private function getRecommendation(string $severity, array $riskTypes): string
+    /**
+     * Traduce severidad y colisión de nombre en una acción concreta.
+     *
+     * Un término que además es apellido documentado nunca se rechaza solo: baja
+     * a revisión humana. Rechazar "Cerda" o "Moreno" en automático borraría
+     * linajes reales del árbol.
+     */
+    public function decide(ValidationResult $result): string
     {
-        return match ($severity) {
-            'high' => 'Rechazar: Contiene insultos graves o palabras inapropiadas. Tipos de riesgo: ' . implode(', ', $riskTypes),
-            'medium' => 'Revisar: Contiene términos potencialmente ofensivos. Tipos de riesgo: ' . implode(', ', $riskTypes),
-            'low' => 'Advertencia: Contiene palabras que podrían ser consideradas inapropiadas.',
-            default => 'Aceptar: No contiene contenido difamatorio detectado.',
+        if ($result->isValid()) {
+            return 'accept';
+        }
+
+        return match ($result->getSeverity()) {
+            'high' => $result->hasNameCollision() ? 'review' : 'reject',
+            'medium' => 'review',
+            default => 'accept_with_flag',
         };
     }
 
-    private function analyzeRisks(array $riskTypes): array
+    private function recommendationFor(string $decision, ValidationResult $result): string
     {
-        $analysis = [];
+        $types = implode(', ', $result->getFlaggedRiskTypes());
 
-        $riskTypeDescriptions = [
-            'animal' => 'Comparaciones animales',
-            'intelectual' => 'Insultos intelectuales',
-            'discapacidad' => 'Insultos sobre discapacidad',
-            'fisico' => 'Insultos sobre apariencia física',
-            'moral' => 'Insultos morales',
-            'genero' => 'Insultos de género/sexualidad',
-            'ordinario' => 'Palabras vulgares',
-            'burlesco' => 'Burlas/ridiculización',
-            'etnico' => 'Insultos étnicos',
-            'religioso' => 'Insultos religiosos',
+        return match ($decision) {
+            'reject' => "Rechazar: contenido gravemente ofensivo (tipos de riesgo: {$types}).",
+            'review' => $result->hasNameCollision()
+                ? "Revisión humana: coincide con términos ofensivos ({$types}) pero también con apellidos documentados."
+                : "Revisión humana: términos potencialmente ofensivos ({$types}).",
+            'accept_with_flag' => "Aceptar con marca: términos de bajo riesgo ({$types}).",
+            default => 'Aceptar: sin contenido difamatorio detectado.',
+        };
+    }
+
+    private function analyzeRisks(ValidationResult $result): array
+    {
+        $descriptions = [
+            'animal' => 'Comparación con animales',
+            'intelectual' => 'Menoscabo de la capacidad intelectual',
+            'discapacidad' => 'Referencia despectiva a discapacidad',
+            'fisico' => 'Menoscabo de la apariencia física',
+            'moral' => 'Imputación moral o delictiva',
+            'genero' => 'Insulto por género u orientación sexual',
+            'ordinario' => 'Léxico soez u obsceno',
+            'burlesco' => 'Burla o ridiculización',
+            'etnico' => 'Insulto étnico o racial',
+            'religioso' => 'Insulto religioso',
         ];
 
-        foreach ($riskTypes as $riskType) {
-            $isSevere = in_array($riskType, $this->highSeverityRiskTypes);
+        $analysis = [];
+
+        foreach ($result->getFlaggedRiskTypes() as $riskType) {
+            $terms = $result->getTermsByRiskType($riskType);
+            $worst = 'low';
+
+            foreach ($terms as $term) {
+                if (self::SEVERITY_VALUE[$term['severity']] > self::SEVERITY_VALUE[$worst]) {
+                    $worst = $term['severity'];
+                }
+            }
+
             $analysis[$riskType] = [
-                'description' => $riskTypeDescriptions[$riskType] ?? $riskType,
-                'isSevere' => $isSevere,
-                'level' => $isSevere ? 'high' : 'medium',
+                'description' => $descriptions[$riskType] ?? $riskType,
+                'level' => $worst,
+                'isSevere' => $worst === 'high',
+                'termCount' => count($terms),
+                'languages' => array_values(array_unique(array_column($terms, 'sourceLanguage'))),
             ];
         }
 
         return $analysis;
     }
 
-    public function setHighSeverityRiskTypes(array $riskTypes): self
-    {
-        $this->highSeverityRiskTypes = $riskTypes;
-        return $this;
-    }
+    // -----------------------------------------------------------------
+    // Idiomas y diccionarios
+    // -----------------------------------------------------------------
 
-    public function setMediumSeverityRiskTypes(array $riskTypes): self
+    private function dictionary(string $code): WordList
     {
-        $this->mediumSeverityRiskTypes = $riskTypes;
-        return $this;
+        $code = $this->registry->resolve($code);
+
+        if (!isset($this->dictionaries[$code])) {
+            $path = "{$this->languageDir}/{$code}.php";
+
+            if (!is_file($path)) {
+                throw new RuntimeException("No existe diccionario para el idioma '{$code}' en {$path}.");
+            }
+
+            $this->dictionaries[$code] = WordList::fromLanguageFile($path, $code);
+        }
+
+        return $this->dictionaries[$code];
     }
 
     public function getLanguage(): string
@@ -196,29 +303,37 @@ class DefamatoryContentReviewer
         return $this->language;
     }
 
+    /** Acepta códigos de dos o tres letras; siempre se guarda el de tres. */
     public function setLanguage(string $language): self
     {
-        $this->language = $language;
+        $this->language = $this->registry->resolve($language);
         return $this;
     }
 
-    public function loadLanguage(string $languageCode): bool
+    /** @return array<string,float> idiomas asociados => afinidad */
+    public function getRelatedLanguages(?float $threshold = null): array
     {
-        $languageFile = __DIR__ . '/../../config/languages/' . $languageCode . '.php';
-
-        if (!file_exists($languageFile)) {
-            return false;
-        }
-
-        $config = require $languageFile;
-        $this->wordList = new WordList($config, $languageCode, $this->riskCategories);
-        $this->language = $languageCode;
-
-        return true;
+        return $this->registry->getRelated($this->language, $threshold);
     }
 
-    public function getWordListStatistics(): array
+    public function getRegistry(): LanguageRegistry
     {
-        return $this->wordList->getStatistics();
+        return $this->registry;
+    }
+
+    public function getWordList(?string $language = null): WordList
+    {
+        return $this->dictionary($language ?? $this->language);
+    }
+
+    public function getWordListStatistics(?string $language = null): array
+    {
+        return $this->getWordList($language)->getStatistics();
+    }
+
+    public function setHighSeverityRiskTypes(array $riskTypes): self
+    {
+        $this->highSeverityRiskTypes = $riskTypes;
+        return $this;
     }
 }

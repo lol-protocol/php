@@ -4,97 +4,124 @@ namespace DefamatoryContentReview;
 
 class WordList
 {
+    /** @var array<string,array> normalizado => datos del término */
     private array $words = [];
-    private array $normalizedWords = [];
-    private string $language = 'es';
-    private array $riskCategories = [];
-    private bool $useUnicodeNormalization = true;
+    private array $meta = [];
+    private string $language;
 
-    public function __construct(array $wordsConfig, string $language = 'es', array $riskCategories = [])
+    /**
+     * @param array  $config   Diccionario en formato ['meta' => [...], 'words' => [...]].
+     *                         Se acepta también el formato plano heredado (categoría => términos).
+     * @param string $language Código ISO 639-3. Si el config trae `meta.code`, ese tiene prioridad.
+     */
+    public function __construct(array $config, string $language = 'spa')
     {
-        $this->language = $language;
-        $this->riskCategories = $riskCategories;
-        $this->loadWords($wordsConfig);
+        $this->meta = $config['meta'] ?? [];
+        $this->language = $this->meta['code'] ?? $language;
+
+        $this->loadWords($config['words'] ?? $config);
     }
 
-    private function loadWords(array $wordsConfig): void
+    public static function fromLanguageFile(string $path, string $language = 'spa'): self
     {
-        foreach ($wordsConfig as $category => $terms) {
-            if (is_array($terms)) {
-                foreach ($terms as $term) {
-                    if (is_array($term)) {
-                        $this->addWord($term, $category);
-                    } else {
-                        $this->addWord(['word' => $term], $category);
-                    }
-                }
+        return new self(require $path, $language);
+    }
+
+    private function loadWords(array $categories): void
+    {
+        foreach ($categories as $category => $terms) {
+            if (!is_array($terms)) {
+                continue;
+            }
+
+            foreach ($terms as $term) {
+                $this->addWord(is_array($term) ? $term : ['word' => $term], (string) $category);
             }
         }
     }
 
-    private function addWord(array $wordData, string $category): void
+    private function addWord(array $data, string $category): void
     {
-        $term = $wordData['word'] ?? '';
-        if (empty($term)) {
+        $term = $data['word'] ?? '';
+        if ($term === '') {
             return;
         }
 
-        $normalized = $this->normalize($term);
-        $this->words[$normalized] = [
+        $this->words[$this->normalize($term)] = [
             'original' => $term,
             'category' => $category,
-            'riskType' => $wordData['riskType'] ?? 'ordinario',
-            'description' => $wordData['description'] ?? '',
-            'severity' => $wordData['severity'] ?? 'medium',
+            'riskType' => $data['riskType'] ?? 'ordinario',
+            'severity' => $data['severity'] ?? 'medium',
+            // Términos que también son apellidos o nombres legítimos: la
+            // coincidencia se registra pero no basta para rechazar por sí sola.
+            'nameCollision' => $data['nameCollision'] ?? false,
         ];
-        $this->normalizedWords[] = $normalized;
     }
 
+    /**
+     * Minúsculas y plegado de diacríticos, para que "Cérda", "CERDA" y "cerda"
+     * lleguen a la misma clave. Los espacios internos se conservan: hay entradas
+     * multipalabra ("hijo de puta") que deben poder buscarse tal cual.
+     */
     public function normalize(string $word): string
     {
-        $word = mb_strtolower($word, 'UTF-8');
-        $word = preg_replace('/\s+/', '', $word);
+        $word = mb_strtolower(trim($word), 'UTF-8');
+        $word = preg_replace('/\s+/u', ' ', $word);
 
-        if ($this->useUnicodeNormalization) {
-            $word = $this->removeAccents($word);
-        }
-
-        return $word;
+        return strtr($word, self::FOLDING);
     }
 
-    private function removeAccents(string $text): string
-    {
-        $replacements = [
-            'á' => 'a', 'à' => 'a', 'ä' => 'a', 'â' => 'a', 'ã' => 'a',
-            'é' => 'e', 'è' => 'e', 'ë' => 'e', 'ê' => 'e',
-            'í' => 'i', 'ì' => 'i', 'ï' => 'i', 'î' => 'i',
-            'ó' => 'o', 'ò' => 'o', 'ö' => 'o', 'ô' => 'o', 'õ' => 'o',
-            'ú' => 'u', 'ù' => 'u', 'ü' => 'u', 'û' => 'u',
-            'ý' => 'y', 'ÿ' => 'y',
-            'ñ' => 'n', 'ç' => 'c',
-            'ß' => 'ss',
-            'š' => 's', 'ž' => 'z', 'č' => 'c',
-            'ł' => 'l',
-        ];
-
-        return strtr($text, $replacements);
-    }
+    private const FOLDING = [
+        'á' => 'a', 'à' => 'a', 'ä' => 'a', 'â' => 'a', 'ã' => 'a', 'å' => 'a', 'ā' => 'a', 'ă' => 'a', 'ą' => 'a',
+        'é' => 'e', 'è' => 'e', 'ë' => 'e', 'ê' => 'e', 'ē' => 'e', 'ė' => 'e', 'ę' => 'e', 'ě' => 'e',
+        'í' => 'i', 'ì' => 'i', 'ï' => 'i', 'î' => 'i', 'ī' => 'i', 'į' => 'i', 'ı' => 'i',
+        'ó' => 'o', 'ò' => 'o', 'ö' => 'o', 'ô' => 'o', 'õ' => 'o', 'ø' => 'o', 'ō' => 'o', 'ő' => 'o',
+        'ú' => 'u', 'ù' => 'u', 'ü' => 'u', 'û' => 'u', 'ū' => 'u', 'ů' => 'u', 'ű' => 'u', 'ų' => 'u',
+        'ý' => 'y', 'ÿ' => 'y',
+        'ñ' => 'n', 'ń' => 'n', 'ň' => 'n',
+        'ç' => 'c', 'ć' => 'c', 'č' => 'c',
+        'ś' => 's', 'š' => 's', 'ş' => 's',
+        'ź' => 'z', 'ż' => 'z', 'ž' => 'z',
+        'ł' => 'l', 'ĺ' => 'l', 'ľ' => 'l',
+        'ř' => 'r', 'ŕ' => 'r',
+        'ť' => 't', 'ţ' => 't',
+        'ď' => 'd', 'đ' => 'd',
+        'ğ' => 'g',
+        'ß' => 'ss', 'æ' => 'ae', 'œ' => 'oe',
+    ];
 
     public function search(string $word): ?array
     {
-        $normalized = $this->normalize($word);
-        return $this->words[$normalized] ?? null;
+        return $this->words[$this->normalize($word)] ?? null;
     }
 
+    /**
+     * Busca todos los términos del diccionario presentes en un texto.
+     *
+     * Además de cada token suelto, prueba las ventanas de 2 y 3 palabras
+     * consecutivas, porque hay entradas multipalabra ("hijo de puta",
+     * "vieja fille") que se perderían token a token.
+     *
+     * @return array<int,array> coincidencias con la forma hallada en el texto
+     */
     public function findInText(string $text): array
     {
+        $tokens = preg_split('/[\s\-.,_·]+/u', $text, -1, PREG_SPLIT_NO_EMPTY) ?: [];
         $matches = [];
-        $words = preg_split('/[\s\-\.]+/', $text, -1, PREG_SPLIT_NO_EMPTY);
+        $count = count($tokens);
 
-        foreach ($words as $word) {
-            $result = $this->search($word);
-            if ($result !== null) {
-                $matches[] = array_merge($result, ['found' => $word]);
+        for ($i = 0; $i < $count; $i++) {
+            for ($span = min(3, $count - $i); $span >= 1; $span--) {
+                $phrase = implode(' ', array_slice($tokens, $i, $span));
+                $found = $this->search($phrase);
+
+                if ($found !== null) {
+                    $matches[] = $found + ['found' => $phrase];
+                    // Un token ya consumido por una frase larga no vuelve a
+                    // contarse por separado.
+                    $i += $span - 1;
+                    break;
+                }
             }
         }
 
@@ -103,19 +130,23 @@ class WordList
 
     public function getByRiskType(string $riskType): array
     {
-        return array_filter($this->words, fn($word) => $word['riskType'] === $riskType);
+        return array_filter($this->words, fn(array $w) => $w['riskType'] === $riskType);
     }
 
     public function getByCategory(string $category): array
     {
-        return array_filter($this->words, fn($word) => $word['category'] === $category);
+        return array_filter($this->words, fn(array $w) => $w['category'] === $category);
     }
 
-    public function getByRiskTypeAndCategory(string $riskType, string $category): array
+    public function getBySeverity(string $severity): array
     {
-        return array_filter($this->words, fn($word) =>
-            $word['riskType'] === $riskType && $word['category'] === $category
-        );
+        return array_filter($this->words, fn(array $w) => $w['severity'] === $severity);
+    }
+
+    /** Términos que colisionan con nombres o apellidos legítimos. */
+    public function getNameCollisions(): array
+    {
+        return array_filter($this->words, fn(array $w) => $w['nameCollision'] === true);
     }
 
     public function getAllWords(): array
@@ -133,42 +164,43 @@ class WordList
         return $this->language;
     }
 
-    public function setLanguage(string $language): self
+    public function getMeta(): array
     {
-        $this->language = $language;
-        return $this;
+        return $this->meta;
     }
 
-    public function getRiskCategories(): array
+    public function getCoverage(): string
     {
-        return $this->riskCategories;
+        return $this->meta['coverage'] ?? 'basic';
     }
 
-    public function setRiskCategories(array $categories): self
+    /** Idiomas sin separación por espacios que necesitan segmentador externo. */
+    public function requiresTokenizer(): bool
     {
-        $this->riskCategories = $categories;
-        return $this;
+        return (bool) ($this->meta['requiresTokenizer'] ?? false);
     }
 
     public function getStatistics(): array
     {
         $stats = [
-            'totalWords' => $this->getWordCount(),
             'language' => $this->language,
+            'coverage' => $this->getCoverage(),
+            'totalWords' => $this->getWordCount(),
+            'nameCollisions' => count($this->getNameCollisions()),
             'byRiskType' => [],
             'byCategory' => [],
             'bySeverity' => [],
         ];
 
         foreach ($this->words as $word) {
-            $riskType = $word['riskType'];
-            $category = $word['category'];
-            $severity = $word['severity'];
-
-            $stats['byRiskType'][$riskType] = ($stats['byRiskType'][$riskType] ?? 0) + 1;
-            $stats['byCategory'][$category] = ($stats['byCategory'][$category] ?? 0) + 1;
-            $stats['bySeverity'][$severity] = ($stats['bySeverity'][$severity] ?? 0) + 1;
+            foreach (['riskType', 'category', 'severity'] as $field) {
+                $key = $field === 'riskType' ? 'byRiskType' : ($field === 'category' ? 'byCategory' : 'bySeverity');
+                $stats[$key][$word[$field]] = ($stats[$key][$word[$field]] ?? 0) + 1;
+            }
         }
+
+        arsort($stats['byRiskType']);
+        arsort($stats['bySeverity']);
 
         return $stats;
     }

@@ -1,341 +1,345 @@
 # Módulo de Revisión de Contenido Difamatorio
 
-Un módulo PHP robusto para detectar y validar contenido difamatorio, insultos y palabras inapropiadas en nombres de personas para plataformas genealógicas.
+Detecta insultos, léxico soez y construcciones de ridiculización en nombres y
+apellidos de personas, para plataformas de información genealógica.
 
-## Características
+- **10 tipos de riesgo** — no sólo *cuánto* ofende un término, sino *de qué modo*.
+- **30 idiomas** identificados por código ISO 639-3, con ~4.600 términos.
+- **Modelo de parentesco lingüístico** — validación cruzada entre lenguas
+  emparentadas, con la coincidencia ponderada por su afinidad léxica.
+- **Protección de apellidos legítimos** — «Cerda», «Moro» o «Savage» son linajes
+  reales; nunca se rechazan en automático.
 
-✓ **Detección de Contenido Difamatorio**: Identifica insultos, palabras soeces y términos ofensivos  
-✓ **Análisis Sensible al Contexto**: Diferencia entre severidad alta, media y baja  
-✓ **Normalización Inteligente**: Maneja mayúsculas, acentos y espacios  
-✓ **Validación por Lotes**: Procesa múltiples nombres eficientemente  
-✓ **Reportes Detallados**: Proporciona recomendaciones y categorización  
-✓ **Fácil Integración**: API simple y clara  
-
-## Estructura del Proyecto
-
-```
-src/
-  DefamatoryContentReview/
-    DefamatoryContentReviewer.php    # Clase principal de validación
-    WordList.php                      # Gestor de lista de palabras
-    ValidationResult.php              # Resultado de validación
-config/
-  defamatory-words.php               # Lista de palabras inapropiadas
-tests/
-  DefamatoryContentReviewTest.php    # Tests unitarios
-examples/
-  usage.php                          # Ejemplos de uso
-```
+---
 
 ## Instalación
-
-### Requisitos
-
-- PHP >= 8.0
-- Composer (opcional, para dependencias)
-
-### Setup
 
 ```bash
 composer install
 ```
 
-## Uso Rápido
+Requiere PHP >= 8.0 y la extensión `mbstring`.
 
-### Validación Simple de Nombre Completo
+## Uso
 
 ```php
-require_once __DIR__ . '/vendor/autoload.php';
-
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\WordList;
 
-$config = require __DIR__ . '/config/defamatory-words.php';
-$wordList = new WordList($config);
-$reviewer = new DefamatoryContentReviewer($wordList);
+$reviewer = DefamatoryContentReviewer::create(__DIR__ . '/config', 'spa');
 
-$result = $reviewer->validateFullName('Zoila', 'Cerda');
-
-if ($result->isValid()) {
-    echo "Nombre válido";
-} else {
-    echo "Nombre contiene contenido inapropiado: " . $result->getSeverity();
-}
-```
-
-### Validación de Nombre Único
-
-```php
-$result = $reviewer->validateName('Juan');
-
-if ($result->isValid()) {
-    echo "Nombre válido";
-}
-```
-
-### Validación por Lotes
-
-```php
-$names = [
-    'Juan Pérez',
-    'Zoila Cerda',
-    'María González',
-];
-
-$results = $reviewer->batchValidateFullNames($names);
-
-foreach ($results as $result) {
-    echo $result->getFullName() . ": " . ($result->isValid() ? "OK" : "PROBLEMA") . "\n";
-}
-```
-
-### Obtener Reporte Detallado
-
-```php
 $result = $reviewer->validateFullName('Zoila', 'Cerda');
 $report = $reviewer->getDetailedReport($result);
 
-echo "Nombre: " . $report['name'] . "\n";
-echo "Válido: " . ($report['valid'] ? 'Sí' : 'No') . "\n";
-echo "Severidad: " . $report['severity'] . "\n";
-echo "Recomendación: " . $report['recommendation'] . "\n";
-
-foreach ($report['flaggedTerms'] as $term) {
-    echo "- Término: {$term['found']} (Categoría: {$term['category']})\n";
-}
+$report['severity'];   // medium
+$report['decision'];   // review
+$report['recommendation'];
+// Revisión humana: coincide con términos ofensivos (animal) pero también
+// con apellidos documentados.
 ```
 
-## API Detallada
+---
 
-### DefamatoryContentReviewer
+## Tipos de riesgo
 
-#### `validateFullName(string $firstName, string $lastName): ValidationResult`
+Cada término declara *qué clase* de agravio supone, además de su severidad.
+Una comparación con un animal y un insulto étnico no son el mismo problema y
+no deberían tratarse con el mismo procedimiento.
 
-Valida un nombre completo (nombre y apellido).
+| Tipo | Qué recoge | Ejemplo (es) |
+|---|---|---|
+| `animal` | Comparación con animales | cerda, burro, sabandija |
+| `intelectual` | Menoscabo de la capacidad mental | idiota, zopenco, subnormal |
+| `fisico` | Menoscabo de la apariencia | adefesio, gordinflón, esperpento |
+| `discapacidad` | Referencia despectiva a discapacidad | tullido, jorobado, cegato |
+| `moral` | Imputación moral o delictiva | bastardo, canalla, estafador |
+| `genero` | Insulto por género u orientación | maricón, furcia, marimacho |
+| `ordinario` | Léxico soez u obsceno | mierda, gilipollas, coño |
+| `burlesco` | Burla y ridiculización | vejestorio, mamarracho, **zurdo** |
+| `etnico` | Insulto étnico o racial | sudaca, negrata, charnego |
+| `religioso` | Insulto religioso | hereje, blasfemo, endemoniado |
 
-**Parámetros:**
-- `$firstName`: Nombre de pila
-- `$lastName`: Apellido
+Las definiciones viven en `config/risk-categories.php`.
 
-**Retorna:** `ValidationResult`
+### Severidad y decisión
 
-#### `validateName(string $name): ValidationResult`
+Cada palabra trae su propia severidad (`low` / `medium` / `high`); la del nombre
+es la del peor término hallado. La severidad se traduce luego en una acción:
 
-Valida un nombre único.
+| Severidad | Decisión | Salvo que… |
+|---|---|---|
+| `none` | `accept` | |
+| `low` | `accept_with_flag` | |
+| `medium` | `review` | |
+| `high` | `reject` | haya colisión con apellido → `review` |
 
-**Parámetros:**
-- `$name`: Nombre a validar
+### Ridiculización
 
-**Retorna:** `ValidationResult`
+Algunos rasgos no son insulto por sí solos y sólo ofenden usados como mote —
+sobre todo combinados de forma contradictoria, como el «Zurdo Diestro» clásico.
+Van marcados `burlesco` con severidad `low`: se señalan sin bloquear.
 
-#### `batchValidateNames(array $names): array`
-
-Valida múltiples nombres.
-
-**Parámetros:**
-- `$names`: Array de nombres a validar
-
-**Retorna:** Array de `ValidationResult`
-
-#### `batchValidateFullNames(array $fullNames): array`
-
-Valida múltiples nombres completos (nombre apellido).
-
-**Parámetros:**
-- `$fullNames`: Array de nombres completos
-
-**Retorna:** Array de `ValidationResult`
-
-#### `getDetailedReport(ValidationResult $result): array`
-
-Obtiene un reporte detallado de validación.
-
-**Parámetros:**
-- `$result`: Resultado de validación
-
-**Retorna:** Array con detalles de validación
-
-### ValidationResult
-
-#### `isValid(): bool`
-
-Indica si el nombre es válido.
-
-#### `getSeverity(): string`
-
-Retorna el nivel de severidad: `none`, `low`, `medium`, `high`.
-
-#### `getFlaggedTerms(): array`
-
-Retorna array de términos problemáticos encontrados.
-
-#### `getFlaggedCategories(): array`
-
-Retorna array de categorías de problemas detectadas.
-
-#### `toArray(): array`
-
-Convierte el resultado a array.
-
-### WordList
-
-#### `normalize(string $word): string`
-
-Normaliza una palabra (minúsculas, sin acentos, sin espacios).
-
-#### `search(string $word): ?array`
-
-Busca una palabra en la lista.
-
-#### `findInText(string $text): array`
-
-Busca todos los términos problemáticos en un texto.
-
-## Categorías de Palabras
-
-El módulo organiza las palabras en las siguientes categorías:
-
-- **insultos_personales**: Insultos generales (idiota, bobo, tonto, etc.)
-- **insultos_corporales**: Insultos sobre aspectos físicos discapacitantes
-- **insultos_morales**: Insultos sobre moralidad (bastardo, canalla, etc.)
-- **insultos_apariencia**: Insultos sobre apariencia física
-- **insultos_capacidad**: Insultos sobre habilidades (zurdo, etc.)
-- **burlas_ridiculas**: Burlas sobre edad, madurez, etc.
-- **palabras_soeces**: Palabras vulgares y obscenas
-- **insultos_inteligencia**: Insultos sobre inteligencia (analfabeto, ignorante, etc.)
-- **insultos_comportamiento**: Insultos sobre comportamiento (mentiroso, corrupto, etc.)
-
-## Niveles de Severidad
-
-| Severidad | Descripción |
-|-----------|-------------|
-| `none` | Sin problemas detectados |
-| `low` | Contiene palabras que podrían ser consideradas inapropiadas |
-| `medium` | Contiene términos potencialmente ofensivos |
-| `high` | Contiene insultos graves o palabras inapropiadas |
-
-## Ejemplos Reales
-
-### Ejemplo 1: Insulto Clásico
-
-```
-Entrada: "Zoila" + "Cerda"
-Resultado: NO VÁLIDO
-Severidad: medium
-Términos: [cerda → insultos_personales]
+```php
+$reviewer->validateFullName('Zurdo', 'Diestro')->getSeverity();  // low
+$reviewer->decide($result);                                      // accept_with_flag
 ```
 
-### Ejemplo 2: Ridiculización
+---
+
+## Idiomas
+
+Identificados por **ISO 639-3** (tres letras). Los códigos de dos letras se
+aceptan como alias de entrada y se normalizan al entrar, de modo que una
+integración existente puede seguir pasando `es` o `pt`.
+
+```php
+$registry->resolve('es');   // 'spa'
+$registry->resolve('zh');   // 'zho'
+$registry->resolve('SPA');  // 'spa'
+```
+
+| Familia | Idiomas |
+|---|---|
+| Romance | `spa` `por` `fra` `ita` `ron` |
+| Germánica | `eng` `deu` `nld` `swe` `dan` `nor` |
+| Eslava | `rus` `ukr` `bul` `pol` `ces` `slk` |
+| Urálica | `fin` `hun` |
+| Semítica | `ara` `heb` |
+| Otras | `ell` `tur` `hin` `jpn` `kor` `zho` `tha` `vie` `ind` |
+
+### Cobertura de los diccionarios
+
+`coverage` no es cosmético: dice dónde hace falta revisión de hablante nativo
+antes de usar el módulo en producción para ese idioma.
+
+| Nivel | Idiomas | Términos c/u |
+|---|---|---|
+| `comprehensive` | spa, eng, por, fra, ita, deu | 200 – 415 |
+| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, ell, hun, fin, tur | 120 – 160 |
+| `basic` | slk, bul, ara, heb, hin, jpn, kor, zho, tha, vie, ind | 105 – 125 |
+
+```php
+$registry->getLanguagesByCoverage('basic');  // los que faltan por ampliar
+```
+
+Los idiomas sin separación por espacios (`jpn`, `zho`, `tha`) declaran
+`requiresTokenizer`: para texto libre necesitan un segmentador externo
+(MeCab, jieba) antes de consultar el diccionario. Para nombres ya separados en
+campos no hace falta.
+
+---
+
+## Parentesco entre idiomas
+
+Los registros genealógicos de una región traen apellidos de las lenguas
+vecinas: un árbol español contiene ramas portuguesas, uno ruso ramas ucranianas.
+El módulo modela ese parentesco y puede validar contra el idioma principal
+**y sus asociados a la vez**.
+
+```php
+// "porco" es portugués, no español: sólo aparece al cruzar.
+$reviewer->validateName('João Porco')->isValid();          // true
+$reviewer->validateAcrossRelated('João Porco')->isValid(); // false
+```
+
+Una coincidencia hallada en un idioma asociado **pesa menos** que una del
+principal: su confianza es la afinidad léxica entre ambos, y esa confianza
+descuenta la severidad. Un insulto grave en italiano marca un nombre español
+para revisión, pero no lo rechaza con la rotundidad de uno en español.
+
+```php
+$term = $reviewer->validateAcrossRelated('Marco Stronzo')->getFlaggedTerms()[0];
+
+$term['sourceLanguage'];  // 'ita'
+$term['confidence'];      // 0.82
+$term['severity'];        // 'high' en italiano…
+// …pero la severidad del nombre baja a 'medium' por el descuento.
+```
+
+### Afinidades
+
+Aproximaciones basadas en estimaciones publicadas de similitud léxica e
+inteligibilidad mutua. No son medidas exactas: son el peso relativo con el que
+decidir qué diccionarios consultar y cuánto fiarse de lo que encuentren.
+
+| Par | Afinidad | Par | Afinidad |
+|---|---|---|---|
+| `ces` ↔ `slk` | 0.91 | `spa` ↔ `por` | 0.89 |
+| `dan` ↔ `nor` | 0.90 | `fra` ↔ `ita` | 0.89 |
+| `swe` ↔ `nor` | 0.88 | `rus` ↔ `ukr` | 0.86 |
+| `deu` ↔ `nld` | 0.84 | `spa` ↔ `ita` | 0.82 |
+| `eng` ↔ `nld` | 0.63 | `eng` ↔ `deu` | 0.60 |
+
+Se incluyen también pares sin parentesco directo pero con préstamo intenso
+(`jpn`↔`zho`, `ron`↔`bul`, `tur`↔`ell`), con afinidad baja.
+
+```php
+$registry->getAffinity('spa', 'por');   // 0.89 — simétrico
+$registry->getRelated('rus');           // ['ukr'=>0.86, 'bul'=>0.74, …]
+$registry->getFamilyMembers('ces');     // ['rus','ukr','bul','pol','slk']
+```
+
+El umbral por defecto (0.60) se ajusta por llamada:
+
+```php
+$reviewer->validateAcrossRelated($name, 0.85);  // sólo los muy cercanos
+```
+
+O se salta el modelo por completo cuando ya se sabe qué lenguas concurren:
+
+```php
+$reviewer->validateInLanguages('Hans Scheisse', ['spa', 'deu']);  // ambas al 1.0
+```
+
+---
+
+## Apellidos legítimos
+
+El riesgo real de una lista negra en genealogía es borrar linajes reales.
+**Cerda** es la casa de la Cerda; **Moro**, **Calvo**, **Bravo**, **Vaca**,
+**Savage**, **Hogg** y **Bastard** son apellidos documentados.
+
+Esos términos llevan `nameCollision => true`. Siguen detectándose y siguen
+puntuando, pero **nunca bastan por sí solos para rechazar**: la decisión baja a
+revisión humana.
+
+```php
+$result = $reviewer->validateFullName('Juan', 'Moro');
+
+$result->getSeverity();       // 'high'
+$result->hasNameCollision();  // true
+$reviewer->decide($result);   // 'review'  ← no 'reject'
+```
+
+---
+
+## API
+
+### `DefamatoryContentReviewer`
+
+```php
+DefamatoryContentReviewer::create(string $configDir, string $language = 'spa'): self
+```
+
+| Método | Devuelve |
+|---|---|
+| `validateName(string $name)` | `ValidationResult` |
+| `validateFullName(string $first, string $last)` | `ValidationResult` |
+| `validateAcrossRelated(string $name, ?float $threshold = null)` | `ValidationResult` |
+| `validateFullNameAcrossRelated(string $first, string $last, ?float $threshold = null)` | `ValidationResult` |
+| `validateInLanguages(string $name, array $languages)` | `ValidationResult` |
+| `batchValidateNames(array $names)` | `ValidationResult[]` |
+| `batchValidateFullNames(array $names)` | `ValidationResult[]` |
+| `decide(ValidationResult $r)` | `accept` \| `accept_with_flag` \| `review` \| `reject` |
+| `getDetailedReport(ValidationResult $r)` | `array` |
+| `getRelatedLanguages(?float $threshold = null)` | `array<string,float>` |
+| `getWordList(?string $lang = null)` | `WordList` |
+| `getWordListStatistics(?string $lang = null)` | `array` |
+
+### `ValidationResult`
+
+| Método | Devuelve |
+|---|---|
+| `isValid()` / `getSeverity()` | `bool` / `string` |
+| `getFlaggedTerms()` | términos con `riskType`, `severity`, `sourceLanguage`, `confidence`, `nameCollision` |
+| `getFlaggedRiskTypes()` / `getFlaggedCategories()` | `string[]` |
+| `getTermsByRiskType(string $t)` | `array` |
+| `getTermsByLanguage(string $l)` / `getPrimaryLanguageTerms()` | `array` |
+| `hasNameCollision()` / `getNameCollisionTerms()` | `bool` / `array` |
+| `getLanguagesChecked()` | `array<string,float>` |
+| `toArray()` | `array` |
+
+### `LanguageRegistry`
+
+| Método | Devuelve |
+|---|---|
+| `resolve(string $code)` | ISO 639-3; lanza `InvalidArgumentException` si no existe |
+| `isSupported(string $code)` | `bool` |
+| `getAffinity(string $a, string $b)` | `float` (simétrico; 1.0 consigo mismo) |
+| `getRelated(string $c, ?float $t = null)` | `array<string,float>` ordenado desc. |
+| `getValidationSet(string $c, ?float $t = null)` | el idioma + sus asociados |
+| `getFamily()` / `getFamilyMembers()` / `getFamilies()` | rama genealógica |
+| `getLanguagesByCoverage(string $level)` | `string[]` |
+| `getMetadata()` / `getAll()` / `getCodes()` | catálogo |
+
+### `WordList`
+
+`search()`, `findInText()` (detecta frases de hasta 3 palabras),
+`getByRiskType()`, `getByCategory()`, `getBySeverity()`, `getNameCollisions()`,
+`getStatistics()`, `requiresTokenizer()`, `getCoverage()`.
+
+---
+
+## Estructura
 
 ```
-Entrada: "Zurdo" + "Diestro"
-Resultado: NO VÁLIDO
-Severidad: medium
-Términos: [zurdo → insultos_capacidad, diestro → insultos_capacidad]
+src/DefamatoryContentReview/
+├── DefamatoryContentReviewer.php   Motor de validación y decisión
+├── LanguageRegistry.php            Códigos, familias y afinidades
+├── WordList.php                    Diccionario y normalización
+└── ValidationResult.php            Resultado con trazabilidad por idioma
+
+config/
+├── risk-categories.php             Los 10 tipos de riesgo
+├── language-families.php           Familias y afinidades
+└── languages/
+    ├── supported-languages.php     Catálogo ISO 639-3 + alias 639-1
+    └── spa.php eng.php por.php …   30 diccionarios
+
+tests/    examples/
 ```
 
-### Ejemplo 3: Nombre Limpio
+## Añadir un idioma
 
+1. Crear `config/languages/<iso639-3>.php`:
+
+```php
+return [
+    'meta' => [
+        'code' => 'cat', 'iso639_1' => 'ca', 'name' => 'Catalan',
+        'nativeName' => 'Català', 'family' => 'romance', 'coverage' => 'basic',
+    ],
+    'words' => [
+        'animal' => [
+            ['word' => 'porc', 'riskType' => 'animal', 'severity' => 'medium'],
+        ],
+    ],
+];
 ```
-Entrada: "Juan" + "Pérez"
-Resultado: VÁLIDO
-Severidad: none
-```
+
+2. Registrarlo en `config/languages/supported-languages.php`.
+3. Añadirlo a su familia y declarar afinidades en `config/language-families.php`.
+
+Los tests verifican automáticamente que todo idioma registrado tenga
+diccionario, que declare su propio código y que use tipos de riesgo y
+severidades válidos.
+
+## Ampliar un diccionario existente
+
+Añadir entradas en la categoría que corresponda y subir `coverage` cuando el
+idioma quede cubierto en las diez categorías de riesgo. Marcar
+`nameCollision => true` en todo término que también sea nombre o apellido
+documentado — es lo que evita que la lista negra borre linajes reales.
 
 ## Tests
 
-Ejecutar tests unitarios:
-
 ```bash
-./vendor/bin/phpunit tests/
+./vendor/bin/phpunit
 ```
 
-El módulo incluye 15+ tests que cubren:
+---
 
-- ✓ Validación de nombres limpios
-- ✓ Detección de insultos en nombre y apellido
-- ✓ Insensibilidad a mayúsculas/minúsculas
-- ✓ Insensibilidad a acentos
-- ✓ Detección de múltiples insultos
-- ✓ Clasificación de severidad
-- ✓ Validación por lotes
-- ✓ Generación de reportes
-- ✓ Normalización de palabras
-- ✓ Y más...
+## Limitaciones
 
-## Personalización
-
-### Cambiar Categorías de Severidad
-
-```php
-$reviewer->setHighSeverityCategories([
-    'insultos_morales',
-    'palabras_soeces',
-    'insultos_corporales', // Agregado como severidad alta
-]);
-
-$reviewer->setMediumSeverityCategories([
-    'insultos_personales',
-    'insultos_comportamiento',
-]);
-```
-
-### Agregar Palabras Personalizadas
-
-```php
-$customConfig = require 'config/defamatory-words.php';
-$customConfig['insultos_personales'][] = 'palabra_personalizada';
-
-$wordList = new WordList($customConfig);
-$reviewer = new DefamatoryContentReviewer($wordList);
-```
-
-## Consideraciones Importantes
-
-⚠️ **Limitaciones:**
-
-1. La detección es a nivel de palabra completa, no detecta palabras dentro de palabras
-2. El módulo está optimizado para español, pero funciona con otros idiomas
-3. La lista de palabras es extensible pero no exhaustiva
-4. Algunos contextos pueden requerir revisión manual
-
-⚠️ **Recomendaciones:**
-
-1. Usar en combinación con revisión manual para nombres con ambigüedad
-2. Permitir apelación de usuarios si un nombre es rechazado incorrectamente
-3. Actualizar regularmente la lista de palabras basado en feedback
-4. Considerar el contexto cultural y regional
-
-## Rendimiento
-
-- Normalización: O(1) por palabra
-- Búsqueda: O(1) con hash interno
-- Validación de nombre: O(n) donde n = número de palabras en el nombre
-- Validación por lotes: O(m*n) donde m = número de nombres, n = palabras por nombre
-
-Para 1000 nombres con promedio de 2 palabras cada uno: < 100ms
-
-## Seguridad
-
-- No almacena datos de usuarios
-- No realiza queries externas
-- Normalización segura de caracteres Unicode
-- Función de búsqueda de texto sin inyección
+- La detección es por término completo o frase de hasta tres palabras; no
+  encuentra palabras incrustadas dentro de otras ni transliteraciones creativas
+  (`c3rda`, `k3rda`).
+- Los diccionarios `basic` cubren el núcleo verificable de cada lengua y
+  necesitan revisión de hablante nativo antes de producción.
+- El árabe dialectal y las variedades regionales del chino no están cubiertos.
+- Las afinidades son aproximaciones, no medidas.
+- El módulo no decide por la plataforma: `decide()` propone, y los casos
+  `review` requieren persona.
 
 ## Licencia
 
 MIT
-
-## Contribuciones
-
-Las contribuciones son bienvenidas. Por favor:
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/mi-feature`)
-3. Commit tus cambios (`git commit -am 'Add new feature'`)
-4. Push a la rama (`git push origin feature/mi-feature`)
-5. Abre un Pull Request
-
-## Soporte
-
-Para reportar bugs o sugerir mejoras, abre un issue en el repositorio.
