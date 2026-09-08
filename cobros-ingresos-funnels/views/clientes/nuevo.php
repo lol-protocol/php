@@ -1,5 +1,7 @@
 <?php
 
+use App\Csrf;
+
 /** @var array $paises */
 /** @var string|null $error */
 
@@ -12,6 +14,7 @@ $segmentos = ['general', 'starter', 'pro', 'enterprise'];
 
 <div class="panel">
     <form class="form-alta" method="post">
+        <?= Csrf::campo() ?>
         <?php if ($error): ?>
             <p class="error"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>

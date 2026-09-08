@@ -1,5 +1,7 @@
 <?php
 
+use App\Csrf;
+
 /** @var array $boleta */
 /** @var string|null $error */
 ?>
@@ -10,6 +12,7 @@
 <div class="panel">
     <p class="subtitulo">Cliente: <strong><?= htmlspecialchars($boleta['cliente']) ?></strong> (no se puede reasignar desde acá)</p>
     <form class="form-alta" method="post">
+        <?= Csrf::campo() ?>
         <?php if ($error): ?>
             <p class="error"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>

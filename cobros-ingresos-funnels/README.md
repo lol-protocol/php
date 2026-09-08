@@ -92,6 +92,7 @@ src/
   Auth.php             login/logout, guard de sesión, bloqueo por fuerza bruta
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
   Paginacion.php        helper de paginación (página/offset/total, testeado)
+  Csrf.php              token CSRF por sesión, verificado en Router (testeado)
   Router.php, View.php, Filtros.php, Config.php, helpers.php
 database/
   schema.sql            esquema de la base
@@ -104,7 +105,7 @@ views/                  plantillas PHP (una carpeta por sección), con partials
                         cobros, pagos y funnel)
 tests/
   Unit/                 sin base de datos (calculo de estado, filtros, helpers,
-                        paginación)
+                        paginación, CSRF, router)
   Integration/           contra la base real (un archivo por repositorio,
                         auditoría, bloqueo de login)
 ```
@@ -158,11 +159,16 @@ en su moneda original.
   que nunca sea un open redirect. Tras 5 intentos fallidos seguidos con el mismo
   email, se bloquea 15 minutos (`intentos_login`); el contador se reinicia al
   loguearse bien.
-- Paginación de 25 filas por página. En Pagos y Clientes es `LIMIT`/`OFFSET` en
-  SQL (el filtro es puro SQL). En Boletas el estado se calcula en PHP a partir de
-  los pagos aplicados, así que ese filtro no existe en SQL: se trae el rango
-  filtrado por fecha/cliente completo, se calcula el estado de cada fila, se
-  filtra por estado si corresponde y recién ahí se pagina con `array_slice`. Es
-  correcto y suficiente a la escala de este sistema (cientos de filas, no
-  millones); con un volumen mucho mayor convendría guardar el estado o paginar
-  distinto.
+- Paginación de 25 filas por página, con `LIMIT`/`OFFSET` en SQL. En Boletas,
+  como el estado (pagada/parcial/pendiente/vencida/anulada) se calcula en PHP
+  a partir de los pagos aplicados y no se guarda en la base, filtrar por
+  estado no se puede hacer en el `WHERE`: para ese caso puntual se trae el
+  rango completo, se calcula el estado de cada fila, se filtra y recién ahí
+  se pagina con `array_slice`. Es la única parte del listado que no pagina en
+  SQL — el resto (sin filtro de estado, y el resto de las pantallas) sí lo
+  hace. A la escala de este sistema (cientos de filas, no millones) esto es
+  correcto y suficiente.
+- Protección CSRF: `App\Csrf` guarda un token fijo por sesión que cada
+  `<form method="post">` incluye oculto, y el `Router` lo valida antes de
+  despachar cualquier POST (login incluido) — si falta o no coincide, corta
+  con 403 antes de que el controller toque nada.

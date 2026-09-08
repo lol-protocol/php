@@ -1,6 +1,7 @@
 <?php
 
 use App\Config;
+use App\Csrf;
 
 /** @var string|null $error */
 /** @var string $next */
@@ -16,6 +17,7 @@ use App\Config;
 <body>
 <div class="login-wrap">
     <form class="panel login-card" method="post" action="?page=login&next=<?= urlencode($next) ?>">
+        <?= Csrf::campo() ?>
         <h1 style="margin-bottom:4px;"><?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></h1>
         <p class="subtitulo">Ingresá para ver el panel.</p>
         <?php if ($error): ?>

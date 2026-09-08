@@ -22,6 +22,11 @@ final class Router
             echo '404 - pagina no encontrada';
             return;
         }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !Csrf::valido()) {
+            http_response_code(403);
+            echo 'Token de seguridad invalido o expirado. Volve atras y probá de nuevo.';
+            return;
+        }
         $handler();
     }
 }

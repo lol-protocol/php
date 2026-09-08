@@ -1,5 +1,7 @@
 <?php
 
+use App\Csrf;
+
 /** @var array $clientes */
 /** @var array|null $clienteElegido */
 /** @var array $boletasCliente */
@@ -32,6 +34,7 @@ $metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efe
             &middot; <a href="?page=pago-nuevo">cambiar cliente</a>
         </p>
         <form class="form-alta" method="post">
+            <?= Csrf::campo() ?>
             <input type="hidden" name="cliente_id" value="<?= (int) $clienteElegido['id'] ?>">
             <?php if ($error): ?>
                 <p class="error"><?= htmlspecialchars($error) ?></p>

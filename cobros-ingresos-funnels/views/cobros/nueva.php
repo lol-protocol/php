@@ -1,5 +1,7 @@
 <?php
 
+use App\Csrf;
+
 /** @var array $clientes */
 /** @var string|null $error */
 /** @var array $valores */
@@ -13,6 +15,7 @@ $vencimientoDefault = date('Y-m-d', strtotime('+30 days'));
 
 <div class="panel">
     <form class="form-alta" method="post">
+        <?= Csrf::campo() ?>
         <?php if ($error): ?>
             <p class="error"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>

@@ -87,26 +87,21 @@ final class BoletaRepository
              ORDER BY b.fecha_emision DESC"
         );
         $stmt->execute([':id' => $clienteId]);
-        $rows = $stmt->fetchAll();
 
-        foreach ($rows as &$row) {
-            $calculo = EstadoBoleta::calcular(
-                (float) $row['monto'],
-                (float) $row['pagado'],
-                $row['fecha_vencimiento'],
-                null,
-                (bool) $row['anulada']
-            );
-            $row['saldo'] = $calculo['saldo'];
-            $row['estado'] = $calculo['estado'];
-        }
-
-        return $rows;
+        return self::conEstadoCalculado($stmt->fetchAll());
     }
 
     /**
      * Listado paginado para la pantalla de Cobros. Incluye anuladas (con su
      * badge) salvo que se filtre explicitamente por otro estado.
+     *
+     * El estado (pagada/parcial/pendiente/vencida/anulada) no se guarda en la
+     * base, se calcula en PHP a partir de los pagos aplicados (ver
+     * EstadoBoleta). Sin filtro de estado eso no afecta que filas entran, asi
+     * que se pagina en SQL con LIMIT/OFFSET igual que PagoRepository. Con
+     * filtro de estado no hay forma de paginar en SQL sin duplicar esa logica
+     * en una expresion CASE, asi que ese camino trae el rango completo, lo
+     * filtra en PHP y recien ahi pagina con array_slice.
      *
      * @return array{filas: array, total: int, totalPaginas: int}
      */
@@ -119,37 +114,42 @@ final class BoletaRepository
             $params[':cliente'] = '%' . $cliente . '%';
         }
 
-        $stmt = $this->db->prepare(
-            "SELECT b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada,
+        $select = "SELECT b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada,
                     c.id AS cliente_id, c.nombre AS cliente,
                     COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.boleta_id = b.id AND NOT p.anulada), 0) AS pagado
              FROM boletas b
              JOIN clientes c ON c.id = b.cliente_id
-             WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}
-             ORDER BY b.fecha_emision DESC"
-        );
-        $stmt->execute($params);
-        $rows = $stmt->fetchAll();
+             WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}";
 
-        $filtradas = [];
-        foreach ($rows as $row) {
-            $calculo = EstadoBoleta::calcular(
-                (float) $row['monto'],
-                (float) $row['pagado'],
-                $row['fecha_vencimiento'],
-                null,
-                (bool) $row['anulada']
+        if ($estado === null || $estado === '') {
+            $stmtTotal = $this->db->prepare(
+                "SELECT COUNT(*) FROM boletas b JOIN clientes c ON c.id = b.cliente_id
+                 WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}"
             );
+            $stmtTotal->execute($params);
+            $total = (int) $stmtTotal->fetchColumn();
 
-            if ($estado !== null && $estado !== '' && $calculo['estado'] !== $estado) {
-                continue;
+            $stmt = $this->db->prepare("{$select} ORDER BY b.fecha_emision DESC LIMIT :limite OFFSET :offset");
+            foreach ($params as $clave => $valor) {
+                $stmt->bindValue($clave, $valor);
             }
+            $stmt->bindValue(':limite', Paginacion::POR_PAGINA, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', Paginacion::offset($pagina), PDO::PARAM_INT);
+            $stmt->execute();
 
-            $row['saldo'] = $calculo['saldo'];
-            $row['estado'] = $calculo['estado'];
-            $filtradas[] = $row;
+            return [
+                'filas' => self::conEstadoCalculado($stmt->fetchAll()),
+                'total' => $total,
+                'totalPaginas' => Paginacion::totalPaginas($total),
+            ];
         }
 
+        $stmt = $this->db->prepare("{$select} ORDER BY b.fecha_emision DESC");
+        $stmt->execute($params);
+        $filtradas = array_filter(
+            self::conEstadoCalculado($stmt->fetchAll()),
+            static fn (array $fila): bool => $fila['estado'] === $estado
+        );
         $total = count($filtradas);
 
         return [
@@ -157,5 +157,23 @@ final class BoletaRepository
             'total' => $total,
             'totalPaginas' => Paginacion::totalPaginas($total),
         ];
+    }
+
+    /** Agrega saldo/estado calculado (EstadoBoleta) a cada fila de un fetchAll() de boletas. */
+    private static function conEstadoCalculado(array $filas): array
+    {
+        foreach ($filas as &$fila) {
+            $calculo = EstadoBoleta::calcular(
+                (float) $fila['monto'],
+                (float) $fila['pagado'],
+                $fila['fecha_vencimiento'],
+                null,
+                (bool) $fila['anulada']
+            );
+            $fila['saldo'] = $calculo['saldo'];
+            $fila['estado'] = $calculo['estado'];
+        }
+
+        return $filas;
     }
 }

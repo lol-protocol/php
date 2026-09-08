@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
+use App\Database;
 use App\Repositories\BoletaRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -75,5 +76,20 @@ final class BoletaRepositoryTest extends TestCase
             $idsPagina2 = array_column($pagina2, 'id');
             self::assertEmpty(array_intersect($idsPagina1, $idsPagina2), 'paginas distintas no deben repetir filas');
         }
+    }
+
+    public function testListadoSinFiltroDeEstadoPaginaEnSqlYElTotalCoincideConUnaCuentaIndependiente(): void
+    {
+        // Sin filtro de estado, listado() pagina con LIMIT/OFFSET en SQL en
+        // vez de traer todo a PHP; esto confirma que el total que devuelve
+        // coincide con una cuenta hecha aparte, directo contra la base.
+        $repo = new BoletaRepository();
+        $listado = $repo->listado('2000-01-01', '2100-01-01', null, null, 1);
+
+        $totalIndependiente = (int) Database::connection()->query(
+            "SELECT COUNT(*) FROM boletas WHERE fecha_emision BETWEEN '2000-01-01' AND '2100-01-01'"
+        )->fetchColumn();
+
+        self::assertSame($totalIndependiente, $listado['total']);
     }
 }

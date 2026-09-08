@@ -1,5 +1,7 @@
 <?php
 
+use App\Csrf;
+
 /** @var array $pago */
 ?>
 
@@ -17,6 +19,7 @@
         <tr><th>Origen</th><td><?= $pago['boleta_id'] ? 'Boleta #' . (int) $pago['boleta_id'] : 'Anticipo' ?></td></tr>
     </table>
     <form method="post">
+        <?= Csrf::campo() ?>
         <button type="submit" style="background:var(--critical);border-color:var(--critical);color:#fff;padding:9px 16px;border-radius:6px;cursor:pointer;">
             Si, anular este pago
         </button>

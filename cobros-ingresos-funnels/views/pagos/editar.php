@@ -1,5 +1,7 @@
 <?php
 
+use App\Csrf;
+
 /** @var array $pago */
 /** @var string|null $error */
 
@@ -16,6 +18,7 @@ $metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efe
         (no se puede reasignar desde acá)
     </p>
     <form class="form-alta" method="post">
+        <?= Csrf::campo() ?>
         <?php if ($error): ?>
             <p class="error"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>

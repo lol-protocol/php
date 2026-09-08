@@ -1,5 +1,7 @@
 <?php
 
+use App\Csrf;
+
 /** @var array $boleta */
 ?>
 
@@ -16,6 +18,7 @@
         <tr><th>Emision</th><td><?= htmlspecialchars($boleta['fecha_emision']) ?></td></tr>
     </table>
     <form method="post">
+        <?= Csrf::campo() ?>
         <button type="submit" style="background:var(--critical);border-color:var(--critical);color:#fff;padding:9px 16px;border-radius:6px;cursor:pointer;">
             Si, anular esta boleta
         </button>
