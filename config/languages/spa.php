@@ -337,6 +337,14 @@ return [
             ['word' => 'chocho', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'concha', 'riskType' => 'ordinario', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'almeja', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'vagina', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'pelotas', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            // Vulgar en varios países latinoamericanos (Argentina, Chile,
+            // Venezuela...); neutro en España y México. Cubre también la
+            // grafía "cojes" vía plegado fonético (PhoneticFolder).
+            ['word' => 'coges', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            // Eufemismo vulgar para el pene, sobre todo en España.
+            ['word' => 'zanahoria', 'riskType' => 'ordinario', 'severity' => 'low'],
             ['word' => 'teta', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'tetamen', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'pezón', 'riskType' => 'ordinario', 'severity' => 'medium'],

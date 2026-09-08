@@ -38,7 +38,10 @@ class ValidationResult
     /**
      * @param array $term Datos del término tal como los devuelve WordList, más
      *                    `sourceLanguage` y `confidence` cuando la coincidencia
-     *                    viene de un idioma asociado y no del principal.
+     *                    viene de un idioma asociado y no del principal, y
+     *                    `detectionMethod` ('literal' por defecto;
+     *                    'phonetic_fusion' o 'phonetic_variant' cuando viene
+     *                    de PhoneticFusionDetector).
      */
     public function addFlaggedTerm(array $term): self
     {
@@ -50,6 +53,7 @@ class ValidationResult
             'nameCollision' => $term['nameCollision'] ?? false,
             'sourceLanguage' => $term['sourceLanguage'] ?? $this->language,
             'confidence' => $term['confidence'] ?? 1.0,
+            'detectionMethod' => $term['detectionMethod'] ?? 'literal',
         ];
 
         $this->flaggedTerms[] = $entry;
@@ -122,6 +126,41 @@ class ValidationResult
         return array_values(array_filter($this->flaggedTerms, fn(array $t) => $t['nameCollision']));
     }
 
+    public function getTermsByDetectionMethod(string $method): array
+    {
+        return array_values(array_filter($this->flaggedTerms, fn(array $t) => $t['detectionMethod'] === $method));
+    }
+
+    public function getPhoneticFusionTerms(): array
+    {
+        return $this->getTermsByDetectionMethod('phonetic_fusion');
+    }
+
+    public function getPhoneticVariantTerms(): array
+    {
+        return $this->getTermsByDetectionMethod('phonetic_variant');
+    }
+
+    /**
+     * Todo lo marcado proviene sólo de inferencia fonética (fusión o
+     * variante), nada de coincidencia literal directa. Es la señal de menor
+     * certeza: nunca debe bastar por sí sola para un rechazo automático.
+     */
+    public function hasOnlyPhoneticDetections(): bool
+    {
+        if (empty($this->flaggedTerms)) {
+            return false;
+        }
+
+        foreach ($this->flaggedTerms as $term) {
+            if ($term['detectionMethod'] === 'literal') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function setSeverity(string $severity): self
     {
         $this->severity = $severity;
@@ -173,6 +212,7 @@ class ValidationResult
             'flaggedRiskTypes' => $this->flaggedRiskTypes,
             'termsByRiskType' => $termsByRiskType,
             'hasNameCollision' => $this->hasNameCollision(),
+            'hasOnlyPhoneticDetections' => $this->hasOnlyPhoneticDetections(),
             'totalFlagged' => count($this->flaggedTerms),
         ];
     }

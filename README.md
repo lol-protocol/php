@@ -3,12 +3,15 @@
 Detecta insultos, léxico soez y construcciones de ridiculización en nombres y
 apellidos de personas, para plataformas de información genealógica.
 
-- **10 tipos de riesgo** — no sólo *cuánto* ofende un término, sino *de qué modo*.
+- **11 tipos de riesgo** — no sólo *cuánto* ofende un término, sino *de qué modo*.
 - **30 idiomas** identificados por código ISO 639-3, con ~4.600 términos.
 - **Modelo de parentesco lingüístico** — validación cruzada entre lenguas
   emparentadas, con la coincidencia ponderada por su afinidad léxica.
 - **Protección de apellidos legítimos** — «Cerda», «Moro» o «Savage» son linajes
   reales; nunca se rechazan en automático.
+- **Detección de fusión fonética** — «Elba Gina» → «el vagina», «Felipe Lotas»
+  → «Feli-pelotas»: nombre y apellido, ninguno ofensivo por separado, que al
+  leerse seguidos componen otra palabra.
 
 ---
 
@@ -57,6 +60,7 @@ no deberían tratarse con el mismo procedimiento.
 | `burlesco` | Burla y ridiculización | vejestorio, mamarracho, **zurdo** |
 | `etnico` | Insulto étnico o racial | sudaca, negrata, charnego |
 | `religioso` | Insulto religioso | hereje, blasfemo, endemoniado |
+| `fonetico` | Fusión de nombre y apellido en otra palabra | Elba Gina → «el vagina» |
 
 Las definiciones viven en `config/risk-categories.php`.
 
@@ -82,6 +86,67 @@ Van marcados `burlesco` con severidad `low`: se señalan sin bloquear.
 $reviewer->validateFullName('Zurdo', 'Diestro')->getSeverity();  // low
 $reviewer->decide($result);                                      // accept_with_flag
 ```
+
+### Fusión fonética: cuando el agravio vive en la unión
+
+Hay un fenómeno bien documentado de humor —y a veces difamación— con nombres:
+"Elba Gina", "Felipe Lotas", "Dolores Delano", "Susana Oria". Ninguno de los
+dos campos es ofensivo por separado; leídos seguidos, sin la pausa que marca
+dónde termina uno y empieza el otro, forman una palabra distinta:
+
+```
+Elba Gina     → "elvagina"   → contiene "vagina"
+Felipe Lotas  → "felipelotas" → contiene "pelotas"
+Susana Oria   → "susanaoria"  → contiene "zanahoria" (z/s y h muda se pliegan igual)
+```
+
+El módulo lo detecta plegando cada campo a una forma fonética aproximada
+(`PhoneticFolder`: unifica b/v, s/z/c suave, ll/y, h muda, y el sonido de j y
+de g suave) y buscando términos del diccionario que **crucen la frontera**
+entre el nombre y el apellido plegados:
+
+```php
+$result = $reviewer->validateFullName('Elba', 'Gina');
+
+$result->isValid();                     // false
+$result->hasOnlyPhoneticDetections();   // true — es inferencia, no coincidencia literal
+$result->getPhoneticFusionTerms();      // [{term: 'vagina', riskType: 'ordinario', ...}]
+
+$reviewer->decide($result);             // 'review' — nunca 'reject' sólo por esto
+```
+
+**La exigencia de cruce es la salvaguarda.** "ano" cae entero dentro de
+«Mariano», «Luciano», «Adriano», «Cristiano», «Emiliano» — apellidos y nombres
+perfectamente corrientes. Sin esa exigencia, cualquiera de ellos dispararía
+una alerta falsa. El detector sólo cuenta una coincidencia si empieza antes de
+la frontera entre los dos campos y termina después:
+
+```php
+// "ano" aparece en "Mariano", pero entero dentro del apellido: no cruza.
+$reviewer->validateFullName('Juan', 'Mariano')->isValid();  // true
+
+// "vagina" aparece a caballo entre "Elba" y "Gina": sí cruza.
+$reviewer->validateFullName('Elba', 'Gina')->isValid();     // false
+```
+
+También cubre variantes ortográficas de un solo campo que suenan igual a un
+término del diccionario (evasivas o no): "Cojes" frente a la entrada "Coges".
+
+```php
+$reviewer->validateFullName('Paco', 'Cojes');
+// getPhoneticVariantTerms() — no es fusión: cae entero en el apellido,
+// pero con otra grafía del mismo sonido.
+```
+
+**Limitaciones conocidas**, documentadas y deliberadas:
+
+- Sólo español (`spa`): las reglas de `PhoneticFolder` son específicas de esa
+  fonética.
+- No cubre la re-segmentación dentro de un único campo («Delano» → «de ano»):
+  exigir el cruce de frontera es justamente lo que evita los falsos positivos
+  masivos, a costa de no atrapar el chiste que vive dentro de una sola palabra.
+- Es inferencia, no un insulto literal: por eso `decide()` nunca la usa sola
+  para rechazar, sólo para marcar en revisión.
 
 ---
 
@@ -245,6 +310,9 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa'): 
 | `getTermsByRiskType(string $t)` | `array` |
 | `getTermsByLanguage(string $l)` / `getPrimaryLanguageTerms()` | `array` |
 | `hasNameCollision()` / `getNameCollisionTerms()` | `bool` / `array` |
+| `hasOnlyPhoneticDetections()` | `bool` |
+| `getPhoneticFusionTerms()` / `getPhoneticVariantTerms()` | `array` |
+| `getTermsByDetectionMethod(string $m)` | `array` (`'literal'` \| `'phonetic_fusion'` \| `'phonetic_variant'`) |
 | `getLanguagesChecked()` | `array<string,float>` |
 | `toArray()` | `array` |
 
@@ -265,7 +333,16 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa'): 
 
 `search()`, `findInText()` (detecta frases de hasta 3 palabras),
 `getByRiskType()`, `getByCategory()`, `getBySeverity()`, `getNameCollisions()`,
-`getStatistics()`, `requiresTokenizer()`, `getCoverage()`.
+`getStatistics()`, `requiresTokenizer()`, `getCoverage()`,
+`searchPhoneticExact()`, `getFusionCandidates()`.
+
+### `PhoneticFusionDetector` / `PhoneticFolder`
+
+| Método | Devuelve |
+|---|---|
+| `PhoneticFolder::fold(string $text)` | forma fonética canónica (estático) |
+| `detectFusion(string $first, string $last)` | coincidencias que cruzan la frontera |
+| `detectVariant(string $word)` | coincidencia fonética exacta de un campo completo |
 
 ---
 
@@ -276,7 +353,9 @@ src/DefamatoryContentReview/
 ├── DefamatoryContentReviewer.php   Motor de validación y decisión
 ├── LanguageRegistry.php            Códigos, familias y afinidades
 ├── WordList.php                    Diccionario y normalización
-└── ValidationResult.php            Resultado con trazabilidad por idioma
+├── PhoneticFolder.php              Plegado fonético del español
+├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
+└── ValidationResult.php            Resultado con trazabilidad por idioma y método
 
 config/
 ├── risk-categories.php             Los 10 tipos de riesgo
@@ -330,9 +409,11 @@ documentado — es lo que evita que la lista negra borre linajes reales.
 
 ## Limitaciones
 
-- La detección es por término completo o frase de hasta tres palabras; no
-  encuentra palabras incrustadas dentro de otras ni transliteraciones creativas
-  (`c3rda`, `k3rda`).
+- La detección literal es por término completo o frase de hasta tres palabras;
+  no encuentra transliteraciones numéricas (`c3rda`) ni palabras incrustadas
+  dentro de una sola palabra sin cruce de frontera (ver más arriba).
+- La fusión fonética sólo cubre español, y sólo el cruce entre nombre y
+  apellido — no la re-segmentación dentro de un único campo.
 - Los diccionarios `basic` cubren el núcleo verificable de cada lengua y
   necesitan revisión de hablante nativo antes de producción.
 - El árabe dialectal y las variedades regionales del chino no están cubiertos.

@@ -27,7 +27,24 @@ foreach ([['Zoila', 'Cerda'], ['Juan', 'Pérez'], ['Zurdo', 'Diestro'], ['Luis',
     echo "\n";
 }
 
-$rule('2. Apellidos legítimos que coinciden con el diccionario');
+$rule('2. Fusión fonética: nombre y apellido componen otra palabra al unirse');
+
+// Ninguno de los dos campos es ofensivo por separado; el agravio vive en el
+// punto de unión. El detector exige que la coincidencia CRUCE esa frontera,
+// por eso "Mariano" o "Luciano" (que contienen "ano" enteros dentro de un
+// único apellido) nunca se disparan.
+foreach ([['Elba', 'Gina'], ['Felipe', 'Lotas'], ['Susana', 'Oria'], ['Mariano', 'Rajoy']] as [$first, $last]) {
+    $result = $reviewer->validateFullName($first, $last);
+    $report = $reviewer->getDetailedReport($result);
+
+    printf("%s severidad=%-6s decisión=%s\n", $pad("{$first} {$last}", 16), $report['severity'], $report['decision']);
+
+    foreach ($result->getPhoneticFusionTerms() as $term) {
+        printf("    fusión → '%s' (%s)\n", $term['term'], $term['riskType']);
+    }
+}
+
+$rule('3. Apellidos legítimos que coinciden con el diccionario');
 
 // "Cerda", "Moro" o "Calvo" son linajes documentados. Una coincidencia grave
 // sobre ellos va a revisión humana, nunca a rechazo automático.
@@ -43,7 +60,7 @@ foreach ([['Juan', 'Moro'], ['Ana', 'Cerda'], ['Luis', 'Bastardo']] as [$first, 
     );
 }
 
-$rule('3. Idiomas asociados');
+$rule('4. Idiomas asociados');
 
 printf("Idioma activo: %s (%s)\n\n", $reviewer->getLanguage(), $registry->getMetadata('spa')['nativeName']);
 echo "Asociados por afinidad léxica:\n";
@@ -67,7 +84,7 @@ foreach (['João Porco', 'Marco Stronzo', 'Ana Salope'] as $name) {
     echo "\n";
 }
 
-$rule('4. Familias lingüísticas');
+$rule('5. Familias lingüísticas');
 
 foreach ($registry->getFamilies() as $family) {
     if (count($family['languages']) < 2) {
@@ -81,7 +98,7 @@ foreach (['spa' => 'por', 'ces' => 'slk', 'dan' => 'nor', 'rus' => 'ukr', 'deu' 
     printf("  %s ↔ %s   %.2f\n", $a, $b, $registry->getAffinity($a, $b));
 }
 
-$rule('5. Conjunto explícito de idiomas');
+$rule('6. Conjunto explícito de idiomas');
 
 // Cuando ya se sabe qué lenguas concurren en un fondo documental, se pasan
 // directamente y todas cuentan con confianza plena.
@@ -92,7 +109,7 @@ printf(
     $reviewer->decide($result)
 );
 
-$rule('6. Estado de los diccionarios');
+$rule('7. Estado de los diccionarios');
 
 printf("%-5s %-20s %-15s %8s %12s\n", 'CÓD', 'IDIOMA', 'COBERTURA', 'TÉRMINOS', 'COLISIONES');
 echo str_repeat('─', 72) . "\n";
@@ -120,7 +137,7 @@ if ($basic) {
     printf("\nPendientes de revisión por hablante nativo: %s\n", implode(', ', $basic));
 }
 
-$rule('7. Reparto por tipo de riesgo (español)');
+$rule('8. Reparto por tipo de riesgo (español)');
 
 $stats = $reviewer->getWordListStatistics('spa');
 foreach ($stats['byRiskType'] as $riskType => $count) {

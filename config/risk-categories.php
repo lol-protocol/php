@@ -61,4 +61,12 @@ return [
         'severity' => 'high',
         'examples' => ['negro', 'indio', 'gitano'],
     ],
+    'fonetico' => [
+        'name' => 'Fonético',
+        'description' => 'Nombre y apellido, leídos seguidos y sin pausa, componen una palabra ' .
+            'u otro término distinto (a menudo vulgar) que no está presente en ninguno de los ' .
+            'dos por separado',
+        'severity' => 'medium',
+        'examples' => ['Elba Gina → "el vagina"', 'Felipe Lotas → "Feli-pelotas"', 'Susana Oria → "su zanahoria"'],
+    ],
 ];

@@ -8,6 +8,8 @@ class WordList
     private array $words = [];
     private array $meta = [];
     private string $language;
+    /** @var array<string,array>|null forma fonética => datos del primer término que la produce */
+    private ?array $phoneticIndex = null;
 
     /**
      * @param array  $config   Diccionario en formato ['meta' => [...], 'words' => [...]].
@@ -178,6 +180,53 @@ class WordList
     public function requiresTokenizer(): bool
     {
         return (bool) ($this->meta['requiresTokenizer'] ?? false);
+    }
+
+    /** @return array<string,array> forma fonética => datos del primer término que la produce */
+    private function phoneticIndex(): array
+    {
+        if ($this->phoneticIndex === null) {
+            $this->phoneticIndex = [];
+            foreach ($this->words as $word) {
+                $folded = PhoneticFolder::fold($word['original']);
+                $this->phoneticIndex[$folded] ??= $word;
+            }
+        }
+
+        return $this->phoneticIndex;
+    }
+
+    /**
+     * Coincidencia fonética exacta: mismo sonido que un término del
+     * diccionario aunque la ortografía sea distinta (p. ej. "Cojes" frente a
+     * la entrada "Coges"). A diferencia de search(), no exige la misma grafía.
+     *
+     * Español únicamente: usa las reglas de PhoneticFolder.
+     */
+    public function searchPhoneticExact(string $word): ?array
+    {
+        return $this->phoneticIndex()[PhoneticFolder::fold($word)] ?? null;
+    }
+
+    /**
+     * Candidatos para detectar fusiones nombre+apellido: forma fonética de
+     * cada término del diccionario, filtrados por longitud mínima para no
+     * disparar con fragmentos demasiado comunes (p. ej. "ano", que aparece
+     * dentro de "Mariano" o "Luciano" sin que eso sea el fenómeno buscado).
+     *
+     * @return array<int,array{phonetic:string,data:array}>
+     */
+    public function getFusionCandidates(int $minLength = 4): array
+    {
+        $candidates = [];
+
+        foreach ($this->phoneticIndex() as $folded => $data) {
+            if (mb_strlen($folded) >= $minLength) {
+                $candidates[] = ['phonetic' => $folded, 'data' => $data];
+            }
+        }
+
+        return $candidates;
     }
 
     public function getStatistics(): array

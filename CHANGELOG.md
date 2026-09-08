@@ -1,5 +1,63 @@
 # Changelog
 
+## [3.1.0] - 2026-09-08
+
+### Añadido
+
+- **Detección de fusión fonética.** "Elba Gina" ("el vagina"), "Felipe Lotas"
+  ("Feli-pelotas"), "Susana Oria" ("su zanahoria"): nombre y apellido, ninguno
+  ofensivo por separado, que al leerse seguidos y sin pausa componen otra
+  palabra. Es el fenómeno detrás de los clásicos "nombres graciosos con doble
+  sentido" — y, cuando el resultado es vulgar u ofensivo, un vector real de
+  difamación que la validación literal por sí sola no cubre.
+- **`PhoneticFolder`** — plegado fonético del español: unifica b/v, s/z/c
+  suave, ll/y, h muda, y el sonido de j y de g suave (ge, gi). Aproximación
+  deliberadamente mínima: cubre exactamente las confusiones que producen
+  coincidencias reales para este módulo.
+- **`PhoneticFusionDetector`** — `detectFusion()` busca términos del
+  diccionario que crucen la frontera entre nombre y apellido plegados
+  fonéticamente; `detectVariant()` encuentra variantes ortográficas de un
+  campo completo que suenan igual a una entrada del diccionario (p. ej.
+  "Cojes" frente a "Coges").
+- **La exigencia de cruce de frontera como salvaguarda central.** Un
+  fragmento de riesgo que cae entero dentro de un único campo no cuenta —
+  "ano" aparece en "Mariano", "Luciano", "Adriano", "Cristiano", "Emiliano";
+  sin esa exigencia, cualquiera de esos apellidos corrientes dispararía una
+  alerta falsa. Verificado explícitamente con 8 nombres reales de este tipo,
+  ninguno se marca.
+- Nuevo tipo de riesgo `fonetico` en `config/risk-categories.php`.
+- `ValidationResult::hasOnlyPhoneticDetections()`, `getPhoneticFusionTerms()`,
+  `getPhoneticVariantTerms()`, `getTermsByDetectionMethod()`. Cada término
+  marcado ahora lleva `detectionMethod` (`literal` / `phonetic_fusion` /
+  `phonetic_variant`).
+- `WordList::searchPhoneticExact()` y `getFusionCandidates()`.
+- Cuatro entradas nuevas en `config/languages/spa.php`: `vagina`, `pelotas`,
+  `zanahoria`, `coges` (esta última cubre también la grafía "cojes" vía
+  plegado fonético).
+
+### Cambiado
+
+- **`decide()` nunca rechaza en automático sólo por inferencia fonética.**
+  Igual que con la colisión de apellidos, una detección `high` cuya única
+  fuente sea `phonetic_fusion`/`phonetic_variant` baja a `review`: es
+  inferencia, no una coincidencia literal directa.
+- `validateFullName()` y `validateFullNameAcrossRelated()` ejecutan la
+  comprobación fonética automáticamente (sólo cuando el idioma activo es
+  español y ambos campos traen texto); `validateName()` no cambia, ya que
+  necesita conocer la frontera entre nombre y apellido.
+- `analyzeRisks()` añade `detectionMethods` por tipo de riesgo.
+
+### Tests
+
+21 tests nuevos en `tests/PhoneticFusionTest.php`: unidades de
+`PhoneticFolder`, los tres ejemplos reales de fusión, la variante ortográfica
+de "Cojes", ocho nombres reales que confirman que el resguardo de cruce de
+frontera no genera falsos positivos, el tope de `decide()` en `review`, y que
+la comprobación queda fuera de español. 65 tests, 10.234 aserciones, todo en
+verde — sin regresiones sobre la suite anterior.
+
+---
+
 ## [3.0.0] - 2026-09-08
 
 Cambio incompatible: los idiomas pasan a identificarse por ISO 639-3.

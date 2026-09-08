@@ -53,7 +53,10 @@ class DefamatoryContentReviewer
 
     public function validateFullName(string $firstName, string $lastName): ValidationResult
     {
-        return $this->validateName(trim($firstName . ' ' . $lastName));
+        $result = $this->validateName(trim($firstName . ' ' . $lastName));
+        $this->applyPhoneticChecks($result, $firstName, $lastName);
+
+        return $result;
     }
 
     /**
@@ -101,7 +104,10 @@ class DefamatoryContentReviewer
         string $lastName,
         ?float $threshold = null
     ): ValidationResult {
-        return $this->validateAcrossRelated(trim($firstName . ' ' . $lastName), $threshold);
+        $result = $this->validateAcrossRelated(trim($firstName . ' ' . $lastName), $threshold);
+        $this->applyPhoneticChecks($result, $firstName, $lastName);
+
+        return $result;
     }
 
     /**
@@ -189,6 +195,73 @@ class DefamatoryContentReviewer
     }
 
     // -----------------------------------------------------------------
+    // Fusión fonética entre nombre y apellido
+    // -----------------------------------------------------------------
+
+    /**
+     * "Elba Gina" ("el vagina"), "Felipe Lotas" ("Feli-pelotas"), "Susana
+     * Oria" ("su zanahoria"): nombre y apellido, ninguno ofensivo por
+     * separado, que al leerse seguidos componen otra palabra. Se suma a lo ya
+     * detectado por evaluate() sin sustituirlo — el resultado ya trae, si los
+     * hay, los hallazgos literales de validateName()/validateAcrossRelated().
+     *
+     * Sólo se aplica en español (las reglas de PhoneticFolder son específicas
+     * de esa fonética) y sólo cuando ambos campos traen texto.
+     */
+    private function applyPhoneticChecks(ValidationResult $result, string $firstName, string $lastName): void
+    {
+        if ($this->language !== 'spa' || trim($firstName) === '' || trim($lastName) === '') {
+            return;
+        }
+
+        $wordList = $this->dictionary($this->language);
+        $detector = new PhoneticFusionDetector($wordList);
+        $added = false;
+
+        foreach ($detector->detectFusion($firstName, $lastName) as $match) {
+            $result->addFlaggedTerm($match + ['sourceLanguage' => $this->language, 'confidence' => 1.0]);
+            $added = true;
+        }
+
+        foreach ([$firstName, $lastName] as $field) {
+            if ($wordList->search($field) !== null) {
+                continue; // ya cubierto por la búsqueda literal de evaluate()
+            }
+
+            $variant = $detector->detectVariant($field);
+
+            if ($variant !== null) {
+                $result->addFlaggedTerm($variant + ['sourceLanguage' => $this->language, 'confidence' => 1.0]);
+                $added = true;
+            }
+        }
+
+        if ($added) {
+            $this->recomputeSeverity($result);
+        }
+    }
+
+    /**
+     * Recalcula validez y severidad a partir de TODOS los términos marcados
+     * hasta ahora (literales más, si los hubo, los de fusión fonética).
+     */
+    private function recomputeSeverity(ValidationResult $result): void
+    {
+        $maxScore = 0.0;
+
+        foreach ($result->getFlaggedTerms() as $term) {
+            $maxScore = max($maxScore, $this->scoreOf($term) * ($term['confidence'] ?? 1.0));
+        }
+
+        if ($maxScore <= 0.0) {
+            $result->setValid(true)->setSeverity('none');
+            return;
+        }
+
+        $result->setValid(false)->setSeverity($this->severityFromScore($maxScore));
+    }
+
+    // -----------------------------------------------------------------
     // Informes
     // -----------------------------------------------------------------
 
@@ -205,11 +278,14 @@ class DefamatoryContentReviewer
     }
 
     /**
-     * Traduce severidad y colisión de nombre en una acción concreta.
+     * Traduce severidad, colisión de nombre y método de detección en una
+     * acción concreta.
      *
-     * Un término que además es apellido documentado nunca se rechaza solo: baja
-     * a revisión humana. Rechazar "Cerda" o "Moreno" en automático borraría
-     * linajes reales del árbol.
+     * Un término que además es apellido documentado nunca se rechaza solo:
+     * baja a revisión humana. Rechazar "Cerda" o "Moreno" en automático
+     * borraría linajes reales del árbol. Lo mismo para una fusión fonética:
+     * es una inferencia, no una coincidencia literal, así que tampoco basta
+     * por sí sola para un rechazo automático.
      */
     public function decide(ValidationResult $result): string
     {
@@ -218,7 +294,7 @@ class DefamatoryContentReviewer
         }
 
         return match ($result->getSeverity()) {
-            'high' => $result->hasNameCollision() ? 'review' : 'reject',
+            'high' => ($result->hasNameCollision() || $result->hasOnlyPhoneticDetections()) ? 'review' : 'reject',
             'medium' => 'review',
             default => 'accept_with_flag',
         };
@@ -230,9 +306,13 @@ class DefamatoryContentReviewer
 
         return match ($decision) {
             'reject' => "Rechazar: contenido gravemente ofensivo (tipos de riesgo: {$types}).",
-            'review' => $result->hasNameCollision()
-                ? "Revisión humana: coincide con términos ofensivos ({$types}) pero también con apellidos documentados."
-                : "Revisión humana: términos potencialmente ofensivos ({$types}).",
+            'review' => match (true) {
+                $result->hasNameCollision() => "Revisión humana: coincide con términos ofensivos ({$types}) " .
+                    "pero también con apellidos documentados.",
+                $result->hasOnlyPhoneticDetections() => "Revisión humana: nombre y apellido, fusionados, " .
+                    "componen un término ofensivo ({$types}) que ninguno de los dos tiene por separado.",
+                default => "Revisión humana: términos potencialmente ofensivos ({$types}).",
+            },
             'accept_with_flag' => "Aceptar con marca: términos de bajo riesgo ({$types}).",
             default => 'Aceptar: sin contenido difamatorio detectado.',
         };
@@ -251,6 +331,7 @@ class DefamatoryContentReviewer
             'burlesco' => 'Burla o ridiculización',
             'etnico' => 'Insulto étnico o racial',
             'religioso' => 'Insulto religioso',
+            'fonetico' => 'Fusión fonética entre nombre y apellido',
         ];
 
         $analysis = [];
@@ -271,6 +352,7 @@ class DefamatoryContentReviewer
                 'isSevere' => $worst === 'high',
                 'termCount' => count($terms),
                 'languages' => array_values(array_unique(array_column($terms, 'sourceLanguage'))),
+                'detectionMethods' => array_values(array_unique(array_column($terms, 'detectionMethod'))),
             ];
         }
 
