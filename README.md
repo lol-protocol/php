@@ -218,13 +218,20 @@ $registry->resolve('SPA');  // 'spa'
 antes de usar el módulo en producción para ese idioma. ~4.800 términos en
 total; ningún idioma queda ya en `basic`.
 
+Vive en un único sitio — `meta.coverage` dentro del propio archivo de cada
+idioma — y se consulta a través de `DefamatoryContentReviewer`, no del
+registro de idiomas: `LanguageRegistry` es sólo identidad y parentesco
+(nombre, alias, familia), nunca estado de contenido. Guardarlo dos veces fue
+justamente el bug que motivó este diseño: las dos copias se desincronizaron
+la primera vez que sólo una de ellas se actualizó.
+
 | Nivel | Idiomas | Términos c/u |
 |---|---|---|
 | `comprehensive` | spa, eng, por, fra, ita, deu | 200 – 418 |
 | `moderate` | los 24 restantes (ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, zho, tha, vie, ind) | 120 – 160 |
 
 ```php
-$registry->getLanguagesByCoverage('moderate');  // los candidatos a comprehensive
+$reviewer->getLanguagesByCoverage('moderate');  // los candidatos a comprehensive
 ```
 
 Un test de integridad (`DictionaryIntegrityTest`) exige que todo idioma
@@ -344,6 +351,7 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa'): 
 | `getRelatedLanguages(?float $threshold = null)` | `array<string,float>` |
 | `getWordList(?string $lang = null)` | `WordList` |
 | `getWordListStatistics(?string $lang = null)` | `array` |
+| `getLanguagesByCoverage(string $level)` | `string[]` — única fuente: `WordList::getCoverage()` de cada idioma |
 
 ### `ValidationResult`
 
@@ -371,8 +379,7 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa'): 
 | `getRelated(string $c, ?float $t = null)` | `array<string,float>` ordenado desc. |
 | `getValidationSet(string $c, ?float $t = null)` | el idioma + sus asociados |
 | `getFamily()` / `getFamilyMembers()` / `getFamilies()` | rama genealógica |
-| `getLanguagesByCoverage(string $level)` | `string[]` |
-| `getMetadata()` / `getAll()` / `getCodes()` | catálogo |
+| `getMetadata()` / `getAll()` / `getCodes()` | catálogo (identidad, no estado de contenido) |
 
 ### `WordList`
 

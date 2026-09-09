@@ -370,7 +370,7 @@ class DefamatoryContentReviewTest extends TestCase
 
     public function testComprehensiveDictionariesAreSubstantial(): void
     {
-        foreach ($this->registry->getLanguagesByCoverage('comprehensive') as $code) {
+        foreach ($this->reviewer->getLanguagesByCoverage('comprehensive') as $code) {
             $this->assertGreaterThanOrEqual(
                 200,
                 $this->reviewer->getWordList($code)->getWordCount(),

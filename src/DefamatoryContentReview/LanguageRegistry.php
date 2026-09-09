@@ -171,15 +171,4 @@ class LanguageRegistry
     {
         return $this->defaultThreshold;
     }
-
-    /**
-     * Idiomas cuyo diccionario aún necesita revisión de hablante nativo.
-     */
-    public function getLanguagesByCoverage(string $coverage): array
-    {
-        return array_keys(array_filter(
-            $this->languages,
-            fn(array $meta) => ($meta['coverage'] ?? 'basic') === $coverage
-        ));
-    }
 }

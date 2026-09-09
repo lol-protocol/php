@@ -1,5 +1,33 @@
 # Changelog
 
+## [3.4.0] - 2026-09-09
+
+### Cambiado
+
+- **`coverage` tiene ahora una única fuente de verdad.** Vivía en dos sitios
+  — `meta.coverage` de cada archivo de idioma, y una copia en
+  `config/languages/supported-languages.php` — y se desincronizaron la
+  primera vez que sólo uno de los dos se actualizó (el bug que motivó
+  `DictionaryIntegrityTest` en la 3.3.0). Se quitó la copia del catálogo:
+  `LanguageRegistry` vuelve a ser sólo identidad y parentesco (nombre, alias,
+  familia), nunca estado de contenido.
+- `LanguageRegistry::getLanguagesByCoverage()` se elimina. La reemplaza
+  `DefamatoryContentReviewer::getLanguagesByCoverage()`, que consulta
+  `WordList::getCoverage()` de cada idioma directamente — el mismo objeto que
+  ya es la fuente real, sin copia intermedia.
+- `DictionaryIntegrityTest::testCoverageMatchesBetweenCatalogAndLanguageFile()`
+  (comparaba las dos copias) se reemplaza por
+  `testCatalogHasNoDuplicatedCoverageField()`: ahora impide que el catálogo
+  vuelva a declarar `coverage` en absoluto, en vez de sólo detectar cuándo
+  las dos copias difieren.
+
+### Tests
+
+92 tests (sin nuevos, dos actualizados para el método movido), todo en
+verde — sin regresiones.
+
+---
+
 ## [3.3.0] - 2026-09-09
 
 ### Ampliado

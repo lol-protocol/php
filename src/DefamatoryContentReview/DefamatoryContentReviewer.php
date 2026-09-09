@@ -414,6 +414,27 @@ class DefamatoryContentReviewer
         return $this->getWordList($language)->getStatistics();
     }
 
+    /**
+     * Idiomas cuyo diccionario declara un nivel de cobertura concreto
+     * ('basic' / 'moderate' / 'comprehensive'). Única fuente: el propio
+     * `meta.coverage` de cada archivo de idioma vía WordList::getCoverage() —
+     * no hay una copia separada en LanguageRegistry.
+     *
+     * @return array<int,string>
+     */
+    public function getLanguagesByCoverage(string $coverage): array
+    {
+        $matches = [];
+
+        foreach ($this->registry->getCodes() as $code) {
+            if ($this->dictionary($code)->getCoverage() === $coverage) {
+                $matches[] = $code;
+            }
+        }
+
+        return $matches;
+    }
+
     public function setHighSeverityRiskTypes(array $riskTypes): self
     {
         $this->highSeverityRiskTypes = $riskTypes;

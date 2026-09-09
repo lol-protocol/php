@@ -132,9 +132,9 @@ foreach ($registry->getAll() as $code => $meta) {
 echo str_repeat('─', 72) . "\n";
 printf("%d términos en %d idiomas\n", $total, count($registry->getCodes()));
 
-$basic = $registry->getLanguagesByCoverage('basic');
-if ($basic) {
-    printf("\nPendientes de revisión por hablante nativo: %s\n", implode(', ', $basic));
+$pendingReview = $reviewer->getLanguagesByCoverage('moderate');
+if ($pendingReview) {
+    printf("\nPendientes de revisión por hablante nativo: %s\n", implode(', ', $pendingReview));
 }
 
 $rule('8. Reparto por tipo de riesgo (español)');

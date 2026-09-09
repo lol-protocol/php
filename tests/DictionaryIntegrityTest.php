@@ -14,9 +14,12 @@ use PHPUnit\Framework\TestCase;
  *   idioma (p. ej. "burro" a la vez en `animal` e `intelectual`): como
  *   WordList indexa por palabra normalizada, la segunda pisa a la primera en
  *   silencio y una de las dos categorías queda huérfana sin que nada avise.
- * - El campo `coverage` vive en dos sitios (la propia `meta` del archivo de
- *   idioma, y el catálogo `supported-languages.php`) y puede desincronizarse
- *   si se actualiza uno sin el otro.
+ * - El campo `coverage` llegó a vivir en dos sitios (la propia `meta` del
+ *   archivo de idioma, y una copia en el catálogo `supported-languages.php`)
+ *   y se desincronizó la primera vez que sólo una de las dos se actualizó.
+ *   Ahora `supported-languages.php` no declara `coverage` en absoluto —
+ *   `testCatalogHasNoDuplicatedCoverageField()` es la guarda que impide que
+ *   alguien reintroduzca esa segunda copia sin darse cuenta.
  */
 class DictionaryIntegrityTest extends TestCase
 {
@@ -53,17 +56,21 @@ class DictionaryIntegrityTest extends TestCase
         }
     }
 
-    public function testCoverageMatchesBetweenCatalogAndLanguageFile(): void
+    /**
+     * `coverage` tiene una única fuente: `meta.coverage` en cada archivo de
+     * idioma. Si el catálogo vuelve a declarar su propia copia, las dos
+     * pueden desincronizarse otra vez — exactamente el bug que motivó este
+     * test.
+     */
+    public function testCatalogHasNoDuplicatedCoverageField(): void
     {
         $catalog = require self::CONFIG_DIR . '/languages/supported-languages.php';
 
-        foreach ($this->languageCodes() as $code) {
-            $config = require self::CONFIG_DIR . "/languages/{$code}.php";
-
-            $this->assertSame(
-                $catalog[$code]['coverage'],
-                $config['meta']['coverage'],
-                "'{$code}': coverage no coincide entre supported-languages.php y su propio meta."
+        foreach ($catalog as $code => $meta) {
+            $this->assertArrayNotHasKey(
+                'coverage',
+                $meta,
+                "'{$code}' en supported-languages.php declara 'coverage': eso reintroduce la doble fuente."
             );
         }
     }
