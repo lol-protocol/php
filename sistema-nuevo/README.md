@@ -154,7 +154,7 @@ esto de forma **proactiva**, sin tener que elegir un usuario primero.
 ## Autenticación
 
 Sesión simple por cookie (PHP `session`), sin roles ni registro — pensada para un
-prototipo, no para producción (sin CSRF, sin límite de intentos de login).
+prototipo, no para producción (sin límite de intentos de login).
 
 - Usuario demo: **admin** / **admin123** (hash bcrypt en `credenciales.php`, la
   contraseña nunca se compara ni se guarda en texto plano).
@@ -163,6 +163,14 @@ prototipo, no para producción (sin CSRF, sin límite de intentos de login).
   y refleja `http://localhost:8082` como único origen permitido con
   `Access-Control-Allow-Credentials`, en vez de usar `*` (que el navegador rechaza
   para requests con credenciales, y que sería una configuración CORS abierta).
+- **CSRF**: `auth_marcar_autenticado()` regenera un token en cada login
+  (`bin2hex(random_bytes(32))`, guardado en `$_SESSION`); `POST /api/logout` lo
+  exige en el body y lo valida con `hash_equals()` — sin token válido, 403. El
+  frontend lo recibe en la respuesta de `/api/login` y `/api/session`, y lo manda
+  de vuelta en cada logout (manual o automático por inactividad).
+- **Auto-logout por inactividad**: `interfaz/js/inactividad.js` cierra la sesión
+  a los 30 minutos sin clicks/movimiento/teclas/scroll, avisando con un modal
+  ("Continuar activo" / "Cerrar sesión ahora") un minuto antes.
 
 ## Montos: moneda local y USD
 
@@ -187,6 +195,16 @@ acción — el desplegable "Tipo de acción" de la barra superior arma este filt
 combina con el resto (universo, edad, género) y cambiar cualquiera vuelve a la
 página 1.
 
+### Filtros guardados
+
+Cualquier combinación de universo/edad/género/tipo se puede nombrar y guardar
+(`filtros_guardados` en PostgreSQL: `AlmacenFiltros.php`, `GET/POST /api/filtros`,
+`DELETE /api/filtros/{id}`) y volver a aplicar después desde un desplegable en la
+barra superior. El `scope` se guarda tal cual sale de `#scope-select`
+(`country:XX`/`preset:XX`/`all`) — el mismo valor se usa para poblar el selector y
+para reconstruirlo al aplicar el filtro, sin una capa de traducción intermedia que
+pueda desincronizarse.
+
 ## Gráfico de evolución temporal
 
 Arriba del timeline, un SVG armado a mano (sin librerías de gráficos, coherente con
@@ -196,13 +214,62 @@ arma `AlmacenAcciones::resumenDiario()` con un `GROUP BY marca_temporal::date` e
 SQL; el acumulado se calcula en PHP recorriendo los días en orden. Respeta el mismo
 filtro de tipo de acción que el timeline.
 
+## Dashboard de KPIs
+
+`GET /api/kpis` (`AlmacenKpis.php`) agrega, para todo el sistema (no un usuario
+puntual), usuarios/acciones/gasto totales y el tipo de acción y país con más
+acciones. Se pinta como una fila de tarjetas arriba de todo (`interfaz/js/kpis.js`)
+apenas se entra, antes incluso de elegir un usuario — pensado para tener una foto
+general del sistema de un vistazo.
+
+## Comparación por percentiles
+
+Además del promedio (`avg_duration_ms`/`avg_amount_usd`, que sigue siendo la base
+del badge verde/rojo de cada tarjeta), `GET /stats` del microservicio Java devuelve
+la **mediana** y el **percentil 90** de duración y monto del universo elegido
+(`EstadisticasCalculo.percentile()`, interpolación lineal sobre la lista ordenada,
+`null`-safe si el cohort está vacío o no tiene montos). El promedio se puede
+distorsionar con pocos valores extremos; la mediana no. El frontend los muestra
+como tooltip (`title`) al pasar el mouse por el badge de comparación, sin agregar
+otro elemento visual a la tarjeta.
+
+## Notas por acción
+
+Cada tarjeta del timeline tiene un campo de texto libre (`interfaz/js/notas.js` +
+`notas_acciones` en PostgreSQL, FK a `acciones` con `ON DELETE CASCADE`) para que
+el admin deje una observación puntual — no es un dato de la acción en sí, es
+metadata operativa. Se guarda solo con un debounce de 600ms **por acción** (un
+`Map` de timers, no un debounce compartido: escribir en una tarjeta no debe
+cancelar el guardado pendiente de otra) contra `POST /api/notes`; texto vacío
+elimina la fila en vez de guardar un string vacío. Para evitar N+1 requests, la
+nota viaja como columna más (`LEFT JOIN notas_acciones`) en la misma consulta
+paginada de `AlmacenAcciones::pagina()`, no en una llamada aparte por tarjeta.
+
 ## Alertas proactivas
 
-`GET /api/alerts` agrupa, para **todos** los usuarios (no solo el elegido), cuántas
-acciones tienen una IP que no coincide con el país declarado — a diferencia del aviso
-rojo en cada tarjeta (que hay que ir a buscar acción por acción), este panel aparece
-solo en la barra lateral apenas se entra al sistema, con los usuarios más afectados
-primero. Un clic en cualquiera de la lista selecciona ese usuario y carga su timeline.
+`GET /api/alerts` agrupa, para **todos** los usuarios (no solo el elegido), dos tipos
+de anomalía — a diferencia del aviso rojo en cada tarjeta (que hay que ir a buscar
+acción por acción), este panel aparece solo en la barra lateral apenas se entra al
+sistema, con los usuarios más afectados primero, una sección por tipo. Un clic en
+cualquiera de la lista selecciona ese usuario y carga su timeline.
+
+- **IP fuera del país declarado** (`AlmacenAlertas::ipMismatches()`): igual que el
+  aviso individual de cada tarjeta, pero agregado por usuario.
+- **Cambios de país imposibles** (`AlmacenAlertas::cambiosPaisImposibles()`): dos
+  acciones consecutivas del mismo usuario en países distintos separadas por menos
+  tiempo del que tomaría viajar entre ellos. La ventana de tiempo que cuenta como
+  "imposible" no es fija: sale de la **sensibilidad** configurable (ver debajo),
+  interpolada linealmente entre 0.5h (sensibilidad 0) y 4h (sensibilidad 100).
+
+### Configuración de alertas
+
+`configuracion_alertas` en PostgreSQL (`AlmacenConfiguracion.php`,
+`GET/POST /api/alerts-config`) guarda, por tipo de alerta, si está habilitada, más
+un umbral de sensibilidad único (0-100) que hoy usa `cambiosPaisImposibles()` como
+se describió arriba. Se edita desde el botón **⚙** del panel de alertas en la
+interfaz (`interfaz/js/configuracion-alertas.js`): checkboxes por tipo + un
+slider, sin recargar la página — guardar dispara un `GET /api/alerts` para
+refrescar el panel con la configuración nueva.
 
 ## Idioma de la interfaz (ES/EN)
 
@@ -227,9 +294,11 @@ visitas. Alcance deliberado:
 
 El backend en vivo lee de PostgreSQL, no de los JSON (que quedan como artefacto
 legible + insumo del CSV para Java). `datos/esquema.sql` (catálogos: `monedas`,
-`paises`, `grupos_paises`/`grupo_pais`, `tipos_accion`) y `datos/esquema-nucleo.sql`
-(`usuarios`, `administradores`, `acciones`, con `CHECK`/`FOREIGN KEY` según el tipo)
-son el DDL real que corre cada vez que se generan los datos —
+`paises`, `grupos_paises`/`grupo_pais`, `tipos_accion`, más `configuracion_alertas`
+y `filtros_guardados`, que no dependen de `usuarios`/`acciones`) y
+`datos/esquema-nucleo.sql` (`usuarios`, `administradores`, `acciones` y
+`notas_acciones`, con `CHECK`/`FOREIGN KEY` según el tipo) son el DDL real que
+corre cada vez que se generan los datos —
 `datos/generador/cargar-postgres*.php`, orquestado desde `cargar-postgres.php`, dropea
 y recrea las tablas y carga todo dentro de una transacción. `preparar-postgres.sh`
 dejá el servicio arriba y crea el rol/base si hacen falta (idempotente, seguro
@@ -241,6 +310,13 @@ correrlo de nuevo). Variables de entorno (con default si no están seteadas):
 `datos/esquema-datos-ejemplo.sql` es aparte: un puñado de INSERT de ejemplo
 standalone, para mirar el esquema con datos sin correr el generador completo — el
 sistema no lo carga automáticamente.
+
+Ojo si se agrega una tabla nueva con FK hacia `acciones` o `usuarios`: el
+`DROP TABLE ... CASCADE` de esas dos en `esquema.sql` borra la *constraint* de FK
+en la tabla dependiente, pero no la tabla en sí (`notas_acciones` lo aprendió por
+las malas — necesita su propio `DROP TABLE IF EXISTS notas_acciones CASCADE`
+al principio de `esquema-nucleo.sql`, si no la segunda corrida del generador
+falla con "relation already exists").
 
 ## Datos sintéticos y saneamiento
 
@@ -358,19 +434,34 @@ Abrir http://localhost:8082.
 
 ## API (backend PHP)
 
-- `POST /api/login` — `{"username": "...", "password": "..."}` → inicia sesión.
-- `POST /api/logout` — cierra sesión.
-- `GET /api/session` — `{"authenticated": bool, "username": ?string}` (pública, no requiere login).
+- `POST /api/login` — `{"username": "...", "password": "..."}` → inicia sesión,
+  responde con `csrf_token`.
+- `POST /api/logout` — `{"csrf_token": "..."}`, requerido y validado con
+  `hash_equals()`; sin token válido, 403.
+- `GET /api/session` — `{"authenticated": bool, "username": ?string, "csrf_token": ?string}`
+  (pública, no requiere login).
 - `GET /api/users?page=1&per_page=20&search=` — `{items, pagination}`. **Requiere sesión.**
 - `GET /api/groups` — presets de país + catálogo de países. **Requiere sesión.**
 - `GET /api/action-types` — `[{key, label}]`, catálogo de tipos de acción. **Requiere sesión.**
-- `GET /api/alerts` — `{total_mismatches, total_users_affected, top: [{user_id, user_name, country, mismatch_count, last_seen}]}`,
-  usuarios con más acciones cuya IP no coincide con su país declarado. **Requiere sesión.**
+- `GET /api/alerts` — `{ip_pais_mismatch?: {...}, cambios_pais_imposibles?: {...}}` (cada
+  clave presente solo si ese tipo está habilitado en la configuración), usuarios con
+  más anomalías de cada tipo. **Requiere sesión.**
+- `GET|POST /api/alerts-config` — GET devuelve `{alertas: {ip_pais, cambio_pais,
+  logins_fallidos}, umbral}`; POST guarda cualquier subconjunto de esos campos.
+  **Requiere sesión.**
+- `GET|POST /api/filtros`, `DELETE /api/filtros/{id}` — CRUD de combinaciones de
+  filtro guardadas (`{nombre, scope, age_min, age_max, gender, tipo_accion}`).
+  **Requiere sesión.**
+- `POST /api/notes` — `{"accion_id": "...", "texto": "..."}`, guarda o (si `texto`
+  queda vacío tras `trim()`) borra la nota de una acción. **Requiere sesión.**
+- `GET /api/kpis` — `{total_users, total_actions, total_spend_usd, last_action_at,
+  top_action_types, top_countries}`, agregado de todo el sistema. **Requiere sesión.**
 - `GET /api/timeline?user_id=u001&scope=preset:latam&age_min=18&age_max=65&gender=all&type=payment&page=1&per_page=20`
-  — timeline paginado del usuario con cada acción enriquecida con `cohort` (promedio
-  del universo), `duration_delta_pct`, `amount_delta_pct` e `ip_mismatch` (bool: la
-  IP de esa acción no coincide con el país declarado del usuario), más `pagination`
-  y `chart` (acciones/día + gasto acumulado, sin paginar). **Requiere sesión.**
+  — timeline paginado del usuario con cada acción enriquecida con `cohort` (`avg_*`,
+  `median_*`, `p90_*` de duración y monto del universo), `duration_delta_pct`,
+  `amount_delta_pct` (calculados contra el promedio), `ip_mismatch` (bool) y `note`
+  (texto de la nota si existe), más `pagination` y `chart` (acciones/día + gasto
+  acumulado, sin paginar). **Requiere sesión.**
   - `scope`: `all` | `preset:<otan|brics|latam|islamicos|euro|schengen>` | `country:<CODE>`
   - `gender`: `all` | `M` | `F` | `O`
   - `type`: `all` | `<clave de tipo de acción>` (ver `/api/action-types`)
