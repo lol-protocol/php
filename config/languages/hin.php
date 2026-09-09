@@ -5,7 +5,7 @@
 return [
     'meta' => [
         'code' => 'hin', 'iso639_1' => 'hi', 'name' => 'Hindi',
-        'nativeName' => 'हिन्दी', 'family' => 'indo_aryan', 'coverage' => 'basic',
+        'nativeName' => 'हिन्दी', 'family' => 'indo_aryan', 'coverage' => 'moderate',
     ],
     'words' => [
         'jaanvar' => [
@@ -21,6 +21,8 @@ return [
             ['word' => 'गाय', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'कुत्ता', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'कुत्ते की औलाद', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'सांप', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'गिद्ध', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'buddhi' => [
             ['word' => 'मूर्ख', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -31,6 +33,9 @@ return [
             ['word' => 'निरक्षर', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'अनपढ़', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'अज्ञानी', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'बुद्धू', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'सुस्त', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'जाहिल', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'shareer' => [
             ['word' => 'बदसूरत', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -45,6 +50,7 @@ return [
             ['word' => 'बदबूदार', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'गंदा', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'बुढ़िया', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'दैत्य', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
         'viklangta' => [
             ['word' => 'अपाहिज', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -86,6 +92,8 @@ return [
             ['word' => 'आलसी', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'शराबी', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'नशेड़ी', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'लालची', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'रिश्वतखोर', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
         'ling' => [
             ['word' => 'छक्का', 'riskType' => 'genero', 'severity' => 'high'],
@@ -96,6 +104,8 @@ return [
             ['word' => 'वेश्या', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'कुलटा', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'बूढ़ी कुंवारी', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'रंडीबाज', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'नामर्द', 'riskType' => 'genero', 'severity' => 'high'],
         ],
         'ashleel' => [
             ['word' => 'गू', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -135,6 +145,8 @@ return [
             ['word' => 'चमार', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'भंगी', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'विदेशी', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => 'मद्रासी', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => 'बिहारी', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
         'dharmik' => [
             ['word' => 'काफिर', 'riskType' => 'religioso', 'severity' => 'high'],

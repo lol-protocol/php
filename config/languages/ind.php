@@ -5,7 +5,7 @@
 return [
     'meta' => [
         'code' => 'ind', 'iso639_1' => 'id', 'name' => 'Indonesian',
-        'nativeName' => 'Bahasa Indonesia', 'family' => 'austronesian', 'coverage' => 'basic',
+        'nativeName' => 'Bahasa Indonesia', 'family' => 'austronesian', 'coverage' => 'moderate',
     ],
     'words' => [
         'hewan' => [
@@ -21,6 +21,7 @@ return [
             ['word' => 'kera', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'sapi', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'anjing', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'ular', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'kecerdasan' => [
             ['word' => 'bodoh', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -33,6 +34,8 @@ return [
             ['word' => 'keterbelakangan mental', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'tidak berpendidikan', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'buta huruf', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'lemot', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'lugu', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
         'tubuh' => [
             ['word' => 'jelek', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -91,6 +94,8 @@ return [
             ['word' => 'pemalas', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'pemabuk', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'pecandu', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'diktator', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'tidak tahu balas budi', 'riskType' => 'moral', 'severity' => 'low'],
         ],
         'gender' => [
             ['word' => 'banci', 'riskType' => 'genero', 'severity' => 'high'],
@@ -103,6 +108,7 @@ return [
             ['word' => 'jalang', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'sundal', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'perawan tua', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'buaya darat', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
         'kasar' => [
             ['word' => 'tai', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -139,6 +145,8 @@ return [
             ['word' => 'pribumi', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'bule', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'orang asing', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => 'kampungan', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'katrok', 'riskType' => 'etnico', 'severity' => 'medium'],
         ],
         'agama' => [
             ['word' => 'kafir', 'riskType' => 'religioso', 'severity' => 'high'],

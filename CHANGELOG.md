@@ -1,5 +1,47 @@
 # Changelog
 
+## [3.3.0] - 2026-09-09
+
+### Ampliado
+
+- **Los 11 diccionarios `basic` suben a `moderate`.** slk, bul, ara, heb, hin,
+  jpn, kor, zho, tha, vie, ind pasan de 105-125 términos a 122-155,
+  reforzando sobre todo `genero` y `etnico` (las categorías más desiguales en
+  los 11). Ningún idioma queda ya en `basic`: 6 `comprehensive` + 24
+  `moderate`, ~4.800 términos en total (antes ~4.600).
+- **`config/languages/supported-languages.php`** actualizado en paralelo — su
+  `coverage` es una copia independiente de la de cada archivo de idioma, y
+  quedaba desincronizada si sólo se actualizaba una de las dos.
+
+### Corregido
+
+- **3 duplicados preexistentes** encontrados al construir el verificador de
+  este trabajo: `путка` en `bul.php` (genero/ordinario), `baran` en `pol.php`
+  (animal/intelectual), y `burro`+`baleia` en `por.php` (animal/intelectual,
+  animal/fisico) — estos dos últimos introducidos en esta misma sesión de
+  ampliación. Como `WordList` indexa por palabra normalizada, la entrada
+  posterior pisaba a la primera en silencio: la categoría más antigua quedaba
+  huérfana sin que nada lo señalara.
+- **Documentación desactualizada** en la sección de Limitaciones del README:
+  seguía listando la transliteración numérica como no cubierta después de
+  haberla cubierto en la 3.2.0, y la fusión fonética como exclusiva de
+  español después de extenderla a portugués e italiano en la misma versión.
+
+### Añadido
+
+- **`DictionaryIntegrityTest`**: cuatro chequeos transversales a los 30
+  diccionarios, para que la clase de error de arriba se detecte sola en vez
+  de a mano. Verifica que ninguna palabra se repita en dos categorías del
+  mismo idioma, que `coverage` coincida entre el catálogo y cada archivo, que
+  los 30 diccionarios carguen sin error, y que el conteo de términos cumpla
+  el mínimo de su nivel declarado (`moderate` ≥120, `comprehensive` ≥200).
+
+### Tests
+
+4 tests nuevos. 92 tests, 15.563 aserciones, todo en verde.
+
+---
+
 ## [3.2.0] - 2026-09-09
 
 ### Añadido

@@ -10,7 +10,7 @@
 return [
     'meta' => [
         'code' => 'tha', 'iso639_1' => 'th', 'name' => 'Thai',
-        'nativeName' => 'ไทย', 'family' => 'tai_kadai', 'coverage' => 'basic',
+        'nativeName' => 'ไทย', 'family' => 'tai_kadai', 'coverage' => 'moderate',
         'requiresTokenizer' => true,
     ],
     'words' => [
@@ -27,6 +27,7 @@ return [
             ['word' => 'วัว', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'หมา', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'ไอ้หมา', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'งู', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'panya' => [
             ['word' => 'โง่', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -36,6 +37,8 @@ return [
             ['word' => 'บ้องตื้น', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ไม่รู้เรื่อง', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ไร้การศึกษา', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'เซ่อ', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'งี่เง่า', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'rangkai' => [
             ['word' => 'ขี้เหร่', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -50,6 +53,7 @@ return [
             ['word' => 'เหม็น', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'สกปรก', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'ยายแก่', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'ยักษ์', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
         'phikan' => [
             ['word' => 'พิการ', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -88,6 +92,8 @@ return [
             ['word' => 'ขี้เกียจ', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'ขี้เมา', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'ติดยา', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'เผด็จการ', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'อกตัญญู', 'riskType' => 'moral', 'severity' => 'low'],
         ],
         'phet' => [
             ['word' => 'ตุ๊ด', 'riskType' => 'genero', 'severity' => 'high'],
@@ -99,6 +105,7 @@ return [
             ['word' => 'กะหรี่', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'โสเภณี', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'ขึ้นคาน', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'สำส่อน', 'riskType' => 'genero', 'severity' => 'high'],
         ],
         'yap' => [
             ['word' => 'ขี้', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -136,6 +143,7 @@ return [
             ['word' => 'แขก', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'ฝรั่ง', 'riskType' => 'etnico', 'severity' => 'low'],
             ['word' => 'ต่างด้าว', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'เขมร', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
         'satsana' => [
             ['word' => 'นอกรีต', 'riskType' => 'religioso', 'severity' => 'high'],

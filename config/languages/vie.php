@@ -5,7 +5,7 @@
 return [
     'meta' => [
         'code' => 'vie', 'iso639_1' => 'vi', 'name' => 'Vietnamese',
-        'nativeName' => 'Tiếng Việt', 'family' => 'austroasiatic', 'coverage' => 'basic',
+        'nativeName' => 'Tiếng Việt', 'family' => 'austroasiatic', 'coverage' => 'moderate',
     ],
     'words' => [
         'dongvat' => [
@@ -20,6 +20,7 @@ return [
             ['word' => 'con khỉ', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'con bò', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'chó đẻ', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'con rắn', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'trituê' => [
             ['word' => 'ngu', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -31,6 +32,7 @@ return [
             ['word' => 'chậm phát triển', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'dốt', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'mù chữ', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'ngờ nghệch', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'cothe' => [
             ['word' => 'xấu xí', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -86,6 +88,8 @@ return [
             ['word' => 'lười biếng', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'nghiện rượu', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'nghiện ma túy', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'độc tài', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'vô ơn', 'riskType' => 'moral', 'severity' => 'low'],
         ],
         'gioitinh' => [
             ['word' => 'pê đê', 'riskType' => 'genero', 'severity' => 'high'],
@@ -97,6 +101,7 @@ return [
             ['word' => 'gái điếm', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'con điếm', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'gái ế', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'lăng loàn', 'riskType' => 'genero', 'severity' => 'high'],
         ],
         'thotuc' => [
             ['word' => 'cứt', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -135,6 +140,7 @@ return [
             ['word' => 'chệt', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'tây', 'riskType' => 'etnico', 'severity' => 'low'],
             ['word' => 'người nước ngoài', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => 'mọi rợ', 'riskType' => 'etnico', 'severity' => 'high'],
         ],
         'tongiao' => [
             ['word' => 'kẻ dị giáo', 'riskType' => 'religioso', 'severity' => 'high'],

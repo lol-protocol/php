@@ -5,7 +5,7 @@
 return [
     'meta' => [
         'code' => 'heb', 'iso639_1' => 'he', 'name' => 'Hebrew',
-        'nativeName' => 'עברית', 'family' => 'semitic', 'coverage' => 'basic',
+        'nativeName' => 'עברית', 'family' => 'semitic', 'coverage' => 'moderate',
     ],
     'words' => [
         'khaya' => [
@@ -20,6 +20,9 @@ return [
             ['word' => 'קוף', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'פרה', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'כלב', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'נחש', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'צפרדע', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'עלוקה', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'sekhel' => [
             ['word' => 'אידיוט', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -30,6 +33,9 @@ return [
             ['word' => 'דביל', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'בור', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'אנאלפבית', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'שוטה', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'תמים', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'קהה', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'guf' => [
             ['word' => 'מכוער', 'riskType' => 'fisico', 'severity' => 'low'],
@@ -42,6 +48,8 @@ return [
             ['word' => 'קירח', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'מסריח', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'מלוכלך', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'ענק', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'מכשפה זקנה', 'riskType' => 'fisico', 'severity' => 'high'],
         ],
         'nekhut' => [
             ['word' => 'נכה', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -54,6 +62,7 @@ return [
             ['word' => 'מגמגם', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'משותק', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'משוגע', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'מטורף', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
         'musar' => [
             ['word' => 'ממזר', 'riskType' => 'moral', 'severity' => 'high'],
@@ -80,6 +89,8 @@ return [
             ['word' => 'עצלן', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'שיכור', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'נרקומן', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'עריץ', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'חמדן', 'riskType' => 'moral', 'severity' => 'low'],
         ],
         'migdar' => [
             ['word' => 'הומו', 'riskType' => 'genero', 'severity' => 'high'],
@@ -89,6 +100,7 @@ return [
             ['word' => 'זונה', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'פרוצה', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'רווקה זקנה', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'סוטה', 'riskType' => 'genero', 'severity' => 'high'],
         ],
         'gas' => [
             ['word' => 'חרא', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -100,6 +112,7 @@ return [
             ['word' => 'ציצי', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'ביצים', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'לזיין', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'זבל', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
         'lagleg' => [
             ['word' => 'זקן', 'riskType' => 'burlesco', 'severity' => 'low'],
@@ -114,6 +127,7 @@ return [
             ['word' => 'ליצן', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'מגוחך', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'פתטי', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'שחצן', 'riskType' => 'burlesco', 'severity' => 'low'],
         ],
         'etni' => [
             ['word' => 'כושי', 'riskType' => 'etnico', 'severity' => 'high'],
@@ -121,6 +135,7 @@ return [
             ['word' => 'ערבוש', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'גוי', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'זר', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => 'ערבי', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
         'dati' => [
             ['word' => 'כופר', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -133,6 +148,7 @@ return [
             ['word' => 'שטן', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'מכשפה', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'קנאי', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'חילוני', 'riskType' => 'religioso', 'severity' => 'low'],
         ],
     ],
 ];

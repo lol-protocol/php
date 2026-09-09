@@ -37,7 +37,6 @@ return [
             ['word' => 'durny', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'tuman', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'matoł', 'riskType' => 'intelectual', 'severity' => 'medium'],
-            ['word' => 'baran', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ignorant', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'analfabeta', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],

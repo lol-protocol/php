@@ -215,17 +215,21 @@ $registry->resolve('SPA');  // 'spa'
 ### Cobertura de los diccionarios
 
 `coverage` no es cosmético: dice dónde hace falta revisión de hablante nativo
-antes de usar el módulo en producción para ese idioma.
+antes de usar el módulo en producción para ese idioma. ~4.800 términos en
+total; ningún idioma queda ya en `basic`.
 
 | Nivel | Idiomas | Términos c/u |
 |---|---|---|
-| `comprehensive` | spa, eng, por, fra, ita, deu | 200 – 415 |
-| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, ell, hun, fin, tur | 120 – 160 |
-| `basic` | slk, bul, ara, heb, hin, jpn, kor, zho, tha, vie, ind | 105 – 125 |
+| `comprehensive` | spa, eng, por, fra, ita, deu | 200 – 418 |
+| `moderate` | los 24 restantes (ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, zho, tha, vie, ind) | 120 – 160 |
 
 ```php
-$registry->getLanguagesByCoverage('basic');  // los que faltan por ampliar
+$registry->getLanguagesByCoverage('moderate');  // los candidatos a comprehensive
 ```
+
+Un test de integridad (`DictionaryIntegrityTest`) exige que todo idioma
+declarado `moderate` tenga ≥120 términos y `comprehensive` ≥200: subir el
+nivel es responder por un mínimo verificable, no una etiqueta.
 
 Los idiomas sin separación por espacios (`jpn`, `zho`, `tha`) declaran
 `requiresTokenizer`: para texto libre necesitan un segmentador externo
@@ -457,13 +461,20 @@ documentado — es lo que evita que la lista negra borre linajes reales.
 ## Limitaciones
 
 - La detección literal es por término completo o frase de hasta tres palabras;
-  no encuentra transliteraciones numéricas (`c3rda`) ni palabras incrustadas
-  dentro de una sola palabra sin cruce de frontera (ver más arriba).
-- La fusión fonética sólo cubre español, y sólo el cruce entre nombre y
-  apellido — no la re-segmentación dentro de un único campo.
-- Los diccionarios `basic` cubren el núcleo verificable de cada lengua y
-  necesitan revisión de hablante nativo antes de producción.
+  no encuentra palabras incrustadas dentro de una sola palabra sin cruce de
+  frontera (ver la sección de fusión fonética más arriba). La transliteración
+  numérica de un solo carácter sí se cubre (ver «Evasión cubierta y no
+  cubierta»).
+- La fusión fonética sólo cubre español, portugués e italiano — el resto de
+  idiomas no tiene folder registrado en `PhoneticFolderRegistry`, y en
+  cualquiera de los tres sólo cubre el cruce entre nombre y apellido, no la
+  re-segmentación dentro de un único campo.
+- Ningún diccionario queda en `basic`, pero `moderate` (24 de los 30) sigue
+  necesitando revisión de hablante nativo antes de producción — es una base
+  verificable, no una traducción exhaustiva.
 - El árabe dialectal y las variedades regionales del chino no están cubiertos.
+- La distancia de edición («Cerrda») no está cubierta: ver el docblock de
+  `EvasionTest::testEditDistanceEvasionIsADeliberateGap()` para el porqué.
 - Las afinidades son aproximaciones, no medidas.
 - El módulo no decide por la plataforma: `decide()` propone, y los casos
   `review` requieren persona.

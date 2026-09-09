@@ -5,7 +5,7 @@
 return [
     'meta' => [
         'code' => 'kor', 'iso639_1' => 'ko', 'name' => 'Korean',
-        'nativeName' => '한국어', 'family' => 'koreanic', 'coverage' => 'basic',
+        'nativeName' => '한국어', 'family' => 'koreanic', 'coverage' => 'moderate',
     ],
     'words' => [
         'dongmul' => [
@@ -18,6 +18,8 @@ return [
             ['word' => '원숭이', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => '소', 'riskType' => 'animal', 'severity' => 'low'],
             ['word' => '개새끼', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => '뱀', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => '거머리', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'jineung' => [
             ['word' => '바보', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -28,6 +30,8 @@ return [
             ['word' => '저능아', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => '무식', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => '문맹', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => '멍텅구리', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => '얼간이', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'sinche' => [
             ['word' => '못생긴', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -42,6 +46,7 @@ return [
             ['word' => '냄새나는', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => '더러운', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => '할망구', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => '거인', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
         'jangae' => [
             ['word' => '불구자', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -55,6 +60,7 @@ return [
             ['word' => '말더듬이', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => '기형', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => '미치광이', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => '정신병자', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
         'doduk' => [
             ['word' => '사생아', 'riskType' => 'moral', 'severity' => 'high'],
@@ -81,6 +87,8 @@ return [
             ['word' => '게으름뱅이', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => '술주정뱅이', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => '마약중독자', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => '독재자', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => '배은망덕', 'riskType' => 'moral', 'severity' => 'low'],
         ],
         'seongbyeol' => [
             ['word' => '호모', 'riskType' => 'genero', 'severity' => 'high'],
@@ -90,6 +98,8 @@ return [
             ['word' => '갈보', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => '매춘부', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => '노처녀', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => '색골', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => '헤픈여자', 'riskType' => 'genero', 'severity' => 'high'],
         ],
         'biseog' => [
             ['word' => '똥', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -102,6 +112,7 @@ return [
             ['word' => '불알', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => '씨발', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => '지랄', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => '씹', 'riskType' => 'ordinario', 'severity' => 'high'],
         ],
         'jomeong' => [
             ['word' => '늙은이', 'riskType' => 'burlesco', 'severity' => 'high'],
@@ -125,6 +136,8 @@ return [
             ['word' => '쪽발이', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => '양놈', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => '외국인', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => '왜놈', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '튀기', 'riskType' => 'etnico', 'severity' => 'high'],
         ],
         'jonggyo' => [
             ['word' => '이단자', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -136,6 +149,7 @@ return [
             ['word' => '악마', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => '마녀', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => '광신도', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => '무당', 'riskType' => 'religioso', 'severity' => 'low'],
         ],
     ],
 ];

@@ -11,7 +11,7 @@
 return [
     'meta' => [
         'code' => 'zho', 'iso639_1' => 'zh', 'name' => 'Chinese',
-        'nativeName' => '中文', 'family' => 'sinitic', 'coverage' => 'basic',
+        'nativeName' => '中文', 'family' => 'sinitic', 'coverage' => 'moderate',
         'requiresTokenizer' => true,
     ],
     'words' => [
@@ -27,6 +27,7 @@ return [
             ['word' => '猴子', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => '狗东西', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => '狗娘养的', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => '蛇', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'zhili' => [
             ['word' => '白痴', 'riskType' => 'intelectual', 'severity' => 'high'],
@@ -39,6 +40,8 @@ return [
             ['word' => '低能儿', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => '无知', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => '文盲', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => '愚蠢', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => '呆子', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'shenti' => [
             ['word' => '丑八怪', 'riskType' => 'fisico', 'severity' => 'high'],
@@ -54,6 +57,7 @@ return [
             ['word' => '臭', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => '肮脏', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => '老太婆', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => '巨人', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
         'canji' => [
             ['word' => '残废', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -97,6 +101,8 @@ return [
             ['word' => '懒鬼', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => '酒鬼', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => '瘾君子', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => '独裁者', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => '忘恩负义', 'riskType' => 'moral', 'severity' => 'low'],
         ],
         'xingbie' => [
             ['word' => '同性恋', 'riskType' => 'genero', 'severity' => 'medium'],
@@ -108,6 +114,8 @@ return [
             ['word' => '婊子', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => '荡妇', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => '老处女', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => '人妖', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => '花痴', 'riskType' => 'genero', 'severity' => 'high'],
         ],
         'cusu' => [
             ['word' => '屎', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -147,6 +155,8 @@ return [
             ['word' => '棒子', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => '阿三', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => '外国人', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => '土鳖', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => '乡巴佬', 'riskType' => 'etnico', 'severity' => 'medium'],
         ],
         'zongjiao' => [
             ['word' => '异教徒', 'riskType' => 'religioso', 'severity' => 'high'],

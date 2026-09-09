@@ -11,7 +11,7 @@
 return [
     'meta' => [
         'code' => 'ara', 'iso639_1' => 'ar', 'name' => 'Arabic',
-        'nativeName' => 'العربية', 'family' => 'semitic', 'coverage' => 'basic',
+        'nativeName' => 'العربية', 'family' => 'semitic', 'coverage' => 'moderate',
     ],
     'words' => [
         'hayawan' => [
@@ -26,6 +26,9 @@ return [
             ['word' => 'قرد', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'بقرة', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'كلب', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'ثعبان', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'ضبع', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'بغل', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'aql' => [
             ['word' => 'غبي', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -35,6 +38,9 @@ return [
             ['word' => 'متخلف', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'جاهل', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'أمي', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'بليد', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'ساذج', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'قليل الفهم', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'jasad' => [
             ['word' => 'قبيح', 'riskType' => 'fisico', 'severity' => 'low'],
@@ -48,6 +54,8 @@ return [
             ['word' => 'أصلع', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'نتن', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'قذر', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'عملاق', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'عجوز شمطاء', 'riskType' => 'fisico', 'severity' => 'high'],
         ],
         'iaqa' => [
             ['word' => 'أعرج', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -61,6 +69,7 @@ return [
             ['word' => 'ألثغ', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'مشلول', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'مجنون', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'معاق', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
         'akhlaq' => [
             ['word' => 'لقيط', 'riskType' => 'moral', 'severity' => 'high'],
@@ -88,6 +97,9 @@ return [
             ['word' => 'كسول', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'سكير', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'مدمن', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'سارق', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'مرتشي', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'طماع', 'riskType' => 'moral', 'severity' => 'low'],
         ],
         'jins' => [
             ['word' => 'شاذ', 'riskType' => 'genero', 'severity' => 'high'],
@@ -99,6 +111,7 @@ return [
             ['word' => 'شرموطة', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'مومس', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'عانس', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'زير نساء', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
         'badhi' => [
             ['word' => 'خرا', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -110,6 +123,7 @@ return [
             ['word' => 'كس', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'نيك', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'لعنة', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'ضرطة', 'riskType' => 'ordinario', 'severity' => 'low'],
         ],
         'sukhriya' => [
             ['word' => 'عجوز', 'riskType' => 'burlesco', 'severity' => 'medium'],
@@ -123,6 +137,7 @@ return [
             ['word' => 'مهرج', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'سخيف', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'مثير للشفقة', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'مغرور', 'riskType' => 'burlesco', 'severity' => 'low'],
         ],
         'irqi' => [
             ['word' => 'زنجي', 'riskType' => 'etnico', 'severity' => 'high'],
@@ -144,6 +159,7 @@ return [
             ['word' => 'شيطان', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'ساحرة', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'متعصب', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'دجال', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
     ],
 ];

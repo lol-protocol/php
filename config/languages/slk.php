@@ -5,7 +5,7 @@
 return [
     'meta' => [
         'code' => 'slk', 'iso639_1' => 'sk', 'name' => 'Slovak',
-        'nativeName' => 'Slovenčina', 'family' => 'slavic', 'coverage' => 'basic',
+        'nativeName' => 'Slovenčina', 'family' => 'slavic', 'coverage' => 'moderate',
     ],
     'words' => [
         'zviera' => [
@@ -21,6 +21,12 @@ return [
             ['word' => 'opica', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'krava', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'suka', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'baran', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'had', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'žaba', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'sliepka', 'riskType' => 'animal', 'severity' => 'low'],
+            ['word' => 'parazit', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'pijavica', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'rozum' => [
             ['word' => 'idiot', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -33,6 +39,12 @@ return [
             ['word' => 'somár', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'truľo', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'analfabet', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'sprostý', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'tupec', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'pomalý', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'nevzdelaný', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'ignorant', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'blbý', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
         'telo' => [
             ['word' => 'škaredý', 'riskType' => 'fisico', 'severity' => 'low'],
@@ -46,6 +58,11 @@ return [
             ['word' => 'plešatý', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'smradľavý', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'špinavý', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'vychudnutý', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'holohlavý', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'bezzubý', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'ošklivá', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'obor', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
         'postihnutie' => [
             ['word' => 'mrzák', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -60,6 +77,10 @@ return [
             ['word' => 'ochrnutý', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'blázon', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'šialený', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'nemocný', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'zmrzačený', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'postihnutý', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'ohluchnutý', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
         'moral' => [
             ['word' => 'bastard', 'riskType' => 'moral', 'severity' => 'high'],
@@ -84,6 +105,13 @@ return [
             ['word' => 'lenivec', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'opilec', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'narkoman', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'gauner', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'grázel', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'tyran', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'násilnícky', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'chamtivý', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'lakomý', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'pochlebovač', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
         'pohlavie' => [
             ['word' => 'teplouš', 'riskType' => 'genero', 'severity' => 'high'],
@@ -92,6 +120,10 @@ return [
             ['word' => 'kurva', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'děvka', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'prostitútka', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'zženštilý', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'homosexuál', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'štetka', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'stará dievka', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
         'vulgarne' => [
             ['word' => 'hovno', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -104,6 +136,9 @@ return [
             ['word' => 'kozy', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'mrdať', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'doriti', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'prdel', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'čurák', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'kokotina', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
         'posmech' => [
             ['word' => 'dedko', 'riskType' => 'burlesco', 'severity' => 'low'],
@@ -118,6 +153,9 @@ return [
             ['word' => 'šašo', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'smiešny', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'úbohý', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'sopliak', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'chvastúň', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'domýšľavý', 'riskType' => 'burlesco', 'severity' => 'low'],
         ],
         'etnicke' => [
             ['word' => 'černoch', 'riskType' => 'etnico', 'severity' => 'medium'],
@@ -126,6 +164,9 @@ return [
             ['word' => 'žid', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'šikmooký', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'cudzinec', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => 'moslim', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => 'ruský', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => 'maďar', 'riskType' => 'etnico', 'severity' => 'medium'],
         ],
         'nabozenske' => [
             ['word' => 'kacír', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -138,6 +179,9 @@ return [
             ['word' => 'diabol', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'bosorka', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'fanatik', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'čarodejník', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'bezbožník', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'modloslužobník', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
     ],
 ];

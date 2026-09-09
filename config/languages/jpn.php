@@ -12,7 +12,7 @@
 return [
     'meta' => [
         'code' => 'jpn', 'iso639_1' => 'ja', 'name' => 'Japanese',
-        'nativeName' => '日本語', 'family' => 'japonic', 'coverage' => 'basic',
+        'nativeName' => '日本語', 'family' => 'japonic', 'coverage' => 'moderate',
         'requiresTokenizer' => true,
     ],
     'words' => [
@@ -27,6 +27,8 @@ return [
             ['word' => '猿', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => '牛', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => '犬', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => '蛇', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => '蛆虫', 'riskType' => 'animal', 'severity' => 'high'],
         ],
         'chinou' => [
             ['word' => '馬鹿', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -39,6 +41,8 @@ return [
             ['word' => '白痴', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => '無知', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => '文盲', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'とんま', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'ノロマ', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'karada' => [
             ['word' => 'ブス', 'riskType' => 'fisico', 'severity' => 'high'],
@@ -54,6 +58,7 @@ return [
             ['word' => '汚い', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'ババア', 'riskType' => 'fisico', 'severity' => 'high'],
             ['word' => 'ジジイ', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => '巨人', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
         'shougai' => [
             ['word' => '片輪', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -67,6 +72,7 @@ return [
             ['word' => '障害者', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => '狂人', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'キチガイ', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => '精神病者', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
         'dou' => [
             ['word' => '外道', 'riskType' => 'moral', 'severity' => 'high'],
@@ -93,6 +99,8 @@ return [
             ['word' => '怠け者', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => '酔っぱらい', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => '麻薬中毒者', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => '独裁者', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => '恩知らず', 'riskType' => 'moral', 'severity' => 'low'],
         ],
         'seibetsu' => [
             ['word' => 'オカマ', 'riskType' => 'genero', 'severity' => 'high'],
@@ -103,6 +111,8 @@ return [
             ['word' => '娼婦', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'ビッチ', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => '行き遅れ', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'ヤリチン', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => '尻軽', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
         'gehin' => [
             ['word' => 'クソ', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -114,6 +124,8 @@ return [
             ['word' => 'おっぱい', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'キンタマ', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'ヤリマン', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => '屁', 'riskType' => 'ordinario', 'severity' => 'low'],
+            ['word' => 'アホンダラ', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
         'azakeri' => [
             ['word' => 'ミイラ', 'riskType' => 'burlesco', 'severity' => 'low'],
@@ -137,6 +149,8 @@ return [
             ['word' => '毛唐', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => '土人', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => '外人', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => '半島人', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'ガイジン', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
         'shuukyou' => [
             ['word' => '異端者', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -148,6 +162,7 @@ return [
             ['word' => '悪魔', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => '魔女', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => '狂信者', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => '祟り', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
     ],
 ];
