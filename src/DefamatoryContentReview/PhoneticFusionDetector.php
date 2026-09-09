@@ -20,8 +20,10 @@ namespace DefamatoryContentReview;
  * ortografía difiere de la del diccionario pero suena igual (p. ej. "Cojes"
  * frente a la entrada "Coges").
  *
- * Implementado sólo para español: las reglas de PhoneticFolder son
- * específicas de esa fonética.
+ * Sólo funciona para los idiomas con reglas de plegado registradas en
+ * PhoneticFolderRegistry (consultadas aquí a través del WordList que se le
+ * pasa, para que este detector no necesite saber qué idioma es): para el
+ * resto, ambos métodos devuelven vacío sin error.
  */
 class PhoneticFusionDetector
 {
@@ -41,8 +43,12 @@ class PhoneticFusionDetector
      */
     public function detectFusion(string $firstName, string $lastName): array
     {
-        $firstFold = PhoneticFolder::fold($firstName);
-        $lastFold = PhoneticFolder::fold($lastName);
+        if (!$this->wordList->supportsPhoneticFolding()) {
+            return [];
+        }
+
+        $firstFold = $this->wordList->fold($firstName);
+        $lastFold = $this->wordList->fold($lastName);
 
         if ($firstFold === '' || $lastFold === '') {
             return [];

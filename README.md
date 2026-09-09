@@ -138,15 +138,56 @@ $reviewer->validateFullName('Paco', 'Cojes');
 // pero con otra grafía del mismo sonido.
 ```
 
-**Limitaciones conocidas**, documentadas y deliberadas:
+### Tres idiomas, tres fonéticas distintas
 
-- Sólo español (`spa`): las reglas de `PhoneticFolder` son específicas de esa
-  fonética.
-- No cubre la re-segmentación dentro de un único campo («Delano» → «de ano»):
-  exigir el cruce de frontera es justamente lo que evita los falsos positivos
-  masivos, a costa de no atrapar el chiste que vive dentro de una sola palabra.
-- Es inferencia, no un insulto literal: por eso `decide()` nunca la usa sola
-  para rechazar, sólo para marcar en revisión.
+Cubre español, portugués e italiano — cada uno con su propio folder
+(`PhoneticFolder`, `PortuguesePhoneticFolder`, `ItalianPhoneticFolder`),
+seleccionado por `PhoneticFolderRegistry` según el idioma activo. No son la
+misma clase con distinto nombre: cada fonética tiene sus propias confusiones
+reales, y aplicar las reglas de una a otra produciría colisiones falsas.
+
+| | español | portugués | italiano |
+|---|---|---|---|
+| b/v | se confunden | **no** se confunden | **no** se confunden |
+| s/z/c suave | se confunden | se confunden | **no** se confunden |
+| h | muda | muda | endurece c/g (che, chi) — nunca se borra |
+| g suave / j | se aspira, se borra | sonido audible, se unifica (no se borra) | — |
+
+```php
+$reviewer = DefamatoryContentReviewer::create($configDir, 'por');
+$reviewer->getWordList('por')->supportsPhoneticFolding();  // true
+$reviewer->getWordList('eng')->supportsPhoneticFolding();  // false — sin reglas registradas
+```
+
+Añadir un cuarto idioma es añadir su folder y una fila en
+`PhoneticFolderRegistry::FOLDERS` — nada más cambia.
+
+### Evasión cubierta y no cubierta
+
+- **Transliteración numérica** ("c3rda", "v4g1na"): cubierta. `WordList::normalize()`
+  sustituye los dígitos/símbolos de un solo carácter más comunes
+  (`0→o 1→i 3→e 4→a 5→s 7→t 8→b @→a $→s`) antes de comparar, y los tres
+  folders fonéticos hacen lo mismo antes de plegar — por eso también se
+  detecta combinada con la fusión: `validateFullName('Elb4', 'G1na')` marca
+  "vagina" igual que la versión sin dígitos.
+- **Apellidos compuestos con guion o apóstrofo** ("Pérez-García", "O'Brien"):
+  cubierta. La búsqueda literal ya los separaba en tokens; los folders
+  fonéticos ahora también descartan el guion/apóstrofo (antes quedaba
+  literal en la forma plegada y rompía el cálculo de la frontera de fusión).
+- **Variantes por distancia de edición** ("Cerrda", "Certa"): **deliberadamente
+  no cubierta**. Colapsar letras dobles cerraría este caso, pero across
+  ~4.600 palabras en 30 idiomas no hay forma de verificar a mano qué
+  colisiones no deseadas produciría — "Serrano" (apellido real) se volvería
+  "Serano", y así con cada doble letra en cada idioma. Se documenta como
+  límite en vez de implementarse a medias.
+- **Re-segmentación dentro de un único campo** («Delano» → «de ano»):
+  deliberadamente no cubierta, por la misma razón que arriba (ver la sección
+  de fusión fonética): exigir el cruce de frontera es lo que evita los falsos
+  positivos masivos.
+
+Es inferencia, no un insulto literal: por eso `decide()` nunca usa sola una
+detección fonética o de evasión numérica para rechazar, sólo para marcar en
+revisión.
 
 ---
 
@@ -334,14 +375,16 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa'): 
 `search()`, `findInText()` (detecta frases de hasta 3 palabras),
 `getByRiskType()`, `getByCategory()`, `getBySeverity()`, `getNameCollisions()`,
 `getStatistics()`, `requiresTokenizer()`, `getCoverage()`,
-`searchPhoneticExact()`, `getFusionCandidates()`.
+`supportsPhoneticFolding()`, `fold()`, `searchPhoneticExact()`,
+`getFusionCandidates()`.
 
-### `PhoneticFusionDetector` / `PhoneticFolder`
+### `PhoneticFusionDetector` / folders fonéticos
 
 | Método | Devuelve |
 |---|---|
-| `PhoneticFolder::fold(string $text)` | forma fonética canónica (estático) |
-| `detectFusion(string $first, string $last)` | coincidencias que cruzan la frontera |
+| `PhoneticFolderRegistry::isSupported(string $lang)` | si ese idioma tiene reglas registradas |
+| `PhoneticFolderRegistry::fold(string $lang, string $text)` | forma fonética canónica para ese idioma |
+| `detectFusion(string $first, string $last)` | coincidencias que cruzan la frontera (vacío si el idioma no tiene reglas) |
 | `detectVariant(string $word)` | coincidencia fonética exacta de un campo completo |
 
 ---
@@ -352,8 +395,12 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa'): 
 src/DefamatoryContentReview/
 ├── DefamatoryContentReviewer.php   Motor de validación y decisión
 ├── LanguageRegistry.php            Códigos, familias y afinidades
-├── WordList.php                    Diccionario y normalización
+├── WordList.php                    Diccionario, normalización y leetspeak
 ├── PhoneticFolder.php              Plegado fonético del español
+├── PortuguesePhoneticFolder.php    Plegado fonético del portugués
+├── ItalianPhoneticFolder.php       Plegado fonético del italiano
+├── LeetspeakFolding.php            Sustitución numérica compartida por los folders
+├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
 ├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
 └── ValidationResult.php            Resultado con trazabilidad por idioma y método
 

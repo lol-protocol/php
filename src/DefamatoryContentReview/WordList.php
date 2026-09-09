@@ -61,17 +61,33 @@ class WordList
     }
 
     /**
-     * Minúsculas y plegado de diacríticos, para que "Cérda", "CERDA" y "cerda"
-     * lleguen a la misma clave. Los espacios internos se conservan: hay entradas
-     * multipalabra ("hijo de puta") que deben poder buscarse tal cual.
+     * Minúsculas, plegado de diacríticos y de sustitución numérica ("leet"),
+     * para que "Cérda", "CERDA", "cerda" y "c3rda" lleguen a la misma clave.
+     * Los espacios internos se conservan: hay entradas multipalabra ("hijo de
+     * puta") que deben poder buscarse tal cual.
      */
     public function normalize(string $word): string
     {
         $word = mb_strtolower(trim($word), 'UTF-8');
         $word = preg_replace('/\s+/u', ' ', $word);
+        $word = strtr($word, self::LEETSPEAK);
 
         return strtr($word, self::FOLDING);
     }
+
+    /**
+     * Sustituciones numéricas/simbólicas más comunes para esquivar un
+     * filtro literal ("c3rda", "v4g1na", "put@"). No exhaustivo — no cubre
+     * variantes multi-carácter como "|)" por "d" o "ph" por "f" — pero cubre
+     * las de un solo carácter que de verdad se usan para esto. Se omite "1"
+     * como posible "l" (queda sólo como "i", su lectura más frecuente): una
+     * sustitución ambigua entre dos letras no puede resolverse sin contexto,
+     * así que se prioriza la lectura más común en vez de intentar las dos.
+     */
+    private const LEETSPEAK = [
+        '0' => 'o', '1' => 'i', '3' => 'e', '4' => 'a', '5' => 's',
+        '7' => 't', '8' => 'b', '@' => 'a', '$' => 's',
+    ];
 
     private const FOLDING = [
         'á' => 'a', 'à' => 'a', 'ä' => 'a', 'â' => 'a', 'ã' => 'a', 'å' => 'a', 'ā' => 'a', 'ă' => 'a', 'ą' => 'a',
@@ -182,13 +198,33 @@ class WordList
         return (bool) ($this->meta['requiresTokenizer'] ?? false);
     }
 
+    /** Si este idioma tiene reglas de plegado fonético (ver PhoneticFolderRegistry). */
+    public function supportsPhoneticFolding(): bool
+    {
+        return PhoneticFolderRegistry::isSupported($this->language);
+    }
+
+    /**
+     * Pliega un texto con las reglas fonéticas de este idioma. Si el idioma
+     * no tiene reglas registradas, devuelve el texto sin tocar — llamar antes
+     * a supportsPhoneticFolding() para saber si el resultado es significativo.
+     */
+    public function fold(string $text): string
+    {
+        return PhoneticFolderRegistry::fold($this->language, $text);
+    }
+
     /** @return array<string,array> forma fonética => datos del primer término que la produce */
     private function phoneticIndex(): array
     {
+        if (!$this->supportsPhoneticFolding()) {
+            return [];
+        }
+
         if ($this->phoneticIndex === null) {
             $this->phoneticIndex = [];
             foreach ($this->words as $word) {
-                $folded = PhoneticFolder::fold($word['original']);
+                $folded = $this->fold($word['original']);
                 $this->phoneticIndex[$folded] ??= $word;
             }
         }
@@ -201,11 +237,16 @@ class WordList
      * diccionario aunque la ortografía sea distinta (p. ej. "Cojes" frente a
      * la entrada "Coges"). A diferencia de search(), no exige la misma grafía.
      *
-     * Español únicamente: usa las reglas de PhoneticFolder.
+     * Devuelve null si el idioma no tiene reglas de plegado (ver
+     * supportsPhoneticFolding()).
      */
     public function searchPhoneticExact(string $word): ?array
     {
-        return $this->phoneticIndex()[PhoneticFolder::fold($word)] ?? null;
+        if (!$this->supportsPhoneticFolding()) {
+            return null;
+        }
+
+        return $this->phoneticIndex()[$this->fold($word)] ?? null;
     }
 
     /**
@@ -213,6 +254,8 @@ class WordList
      * cada término del diccionario, filtrados por longitud mínima para no
      * disparar con fragmentos demasiado comunes (p. ej. "ano", que aparece
      * dentro de "Mariano" o "Luciano" sin que eso sea el fenómeno buscado).
+     *
+     * Vacío si el idioma no tiene reglas de plegado.
      *
      * @return array<int,array{phonetic:string,data:array}>
      */

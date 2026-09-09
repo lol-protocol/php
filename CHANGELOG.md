@@ -1,5 +1,51 @@
 # Changelog
 
+## [3.2.0] - 2026-09-09
+
+### Añadido
+
+- **Fusión fonética en portugués e italiano**, además de español.
+  `PhoneticFolderRegistry` mapea idioma → clase de plegado;
+  `PortuguesePhoneticFolder` e `ItalianPhoneticFolder` tienen reglas propias,
+  no una copia de las del español — b/v y s/z se confunden en español y
+  portugués pero no en italiano; la "h" es muda en español/portugués pero
+  endurece la c/g en italiano (che, chi). `WordList::supportsPhoneticFolding()`
+  reemplaza el chequeo hardcodeado a `'spa'` en
+  `DefamatoryContentReviewer::applyPhoneticChecks()`.
+- **Cobertura de evasión numérica ("leet")**: `WordList::normalize()` sustituye
+  `0/1/3/4/5/7/8/@/$` por sus letras más probables antes de comparar
+  (`c3rda`→`cerda`, `v4g1na`→`vagina`). Los tres folders fonéticos hacen lo
+  mismo (trait `LeetspeakFolding` compartido), así que la evasión numérica
+  combinada con la fusión también se detecta (`Elb4`+`G1na` → "vagina").
+
+### Corregido
+
+- **Bug**: los folders fonéticos no quitaban guiones ni apóstrofos, sólo
+  espacios — un apellido compuesto como "Pérez-García" conservaba el guion
+  literal en la forma plegada, descuadrando el cálculo de la frontera entre
+  nombre y apellido para la detección de fusión. Ahora se quitan igual que
+  los espacios en los tres folders.
+
+### Documentado (límites deliberados, no implementados)
+
+- **Variantes por distancia de edición** ("Cerrda", "Certa"): colapsar letras
+  dobles cerraría este caso puntual, pero no hay forma de verificar a mano,
+  a través de ~4.600 palabras en 30 idiomas, qué colisiones no deseadas
+  produciría (p. ej. "Serrano", apellido real, se volvería "Serano"). Se
+  documenta como límite en vez de implementarse a medias.
+
+### Tests
+
+23 tests nuevos (`PhoneticFusionMultiLanguageTest.php`, `EvasionTest.php`):
+las reglas de cada folder por separado, dos ejemplos de fusión construidos
+para portugués e italiano (no chistes documentados como los del español),
+el resguardo de nombres corrientes en los tres idiomas, el fix de
+guion/apóstrofo, la evasión numérica simple y combinada con fusión, y la
+confirmación explícita de que la distancia de edición sigue sin cubrirse.
+88 tests, 10.281 aserciones, todo en verde — sin regresiones.
+
+---
+
 ## [3.1.0] - 2026-09-08
 
 ### Añadido

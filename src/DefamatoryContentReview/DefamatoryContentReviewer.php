@@ -205,16 +205,17 @@ class DefamatoryContentReviewer
      * detectado por evaluate() sin sustituirlo — el resultado ya trae, si los
      * hay, los hallazgos literales de validateName()/validateAcrossRelated().
      *
-     * Sólo se aplica en español (las reglas de PhoneticFolder son específicas
-     * de esa fonética) y sólo cuando ambos campos traen texto.
+     * Sólo se aplica a los idiomas con reglas de plegado fonético registradas
+     * (ver PhoneticFolderRegistry) y sólo cuando ambos campos traen texto.
      */
     private function applyPhoneticChecks(ValidationResult $result, string $firstName, string $lastName): void
     {
-        if ($this->language !== 'spa' || trim($firstName) === '' || trim($lastName) === '') {
+        $wordList = $this->dictionary($this->language);
+
+        if (!$wordList->supportsPhoneticFolding() || trim($firstName) === '' || trim($lastName) === '') {
             return;
         }
 
-        $wordList = $this->dictionary($this->language);
         $detector = new PhoneticFusionDetector($wordList);
         $added = false;
 
