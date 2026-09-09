@@ -3,6 +3,8 @@
 namespace Tests;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
+use DefamatoryContentReview\FrenchPhoneticFolder;
+use DefamatoryContentReview\GermanPhoneticFolder;
 use DefamatoryContentReview\ItalianPhoneticFolder;
 use DefamatoryContentReview\PhoneticFolder;
 use DefamatoryContentReview\PhoneticFolderRegistry;
@@ -13,9 +15,10 @@ use PHPUnit\Framework\TestCase;
  * La fusión fonética ("Elba Gina" -> "el vagina") no es un fenómeno
  * exclusivamente español: se extiende aquí a portugués e italiano, cada uno
  * con sus propias reglas de plegado (b/v y s/z se confunden en español y
- * portugués pero no en italiano; la "h" es muda en español y portugués pero
- * endurece la c/g en italiano). El resguardo — exigir que la coincidencia
- * cruce la frontera entre nombre y apellido — es el mismo en los tres.
+ * portugués pero no en italiano; la "h" es muda en español, portugués y
+ * francés, pero endurece la c/g en italiano y no se toca en absoluto en
+ * alemán). El resguardo — exigir que la coincidencia cruce la frontera entre
+ * nombre y apellido — es el mismo en los cinco.
  */
 class PhoneticFusionMultiLanguageTest extends TestCase
 {
@@ -27,7 +30,7 @@ class PhoneticFusionMultiLanguageTest extends TestCase
 
     public function testRegistryListsExactlyTheSupportedLanguages(): void
     {
-        $this->assertSame(['spa', 'por', 'ita'], PhoneticFolderRegistry::supportedLanguages());
+        $this->assertSame(['spa', 'por', 'ita', 'fra', 'deu'], PhoneticFolderRegistry::supportedLanguages());
     }
 
     public function testUnsupportedLanguageFoldsToUnchangedText(): void
@@ -39,11 +42,13 @@ class PhoneticFusionMultiLanguageTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'spa');
 
-        $this->assertTrue($reviewer->getWordList('spa')->supportsPhoneticFolding());
-        $this->assertTrue($reviewer->getWordList('por')->supportsPhoneticFolding());
-        $this->assertTrue($reviewer->getWordList('ita')->supportsPhoneticFolding());
-        $this->assertFalse($reviewer->getWordList('eng')->supportsPhoneticFolding());
-        $this->assertFalse($reviewer->getWordList('deu')->supportsPhoneticFolding());
+        foreach (['spa', 'por', 'ita', 'fra', 'deu'] as $code) {
+            $this->assertTrue($reviewer->getWordList($code)->supportsPhoneticFolding(), $code);
+        }
+
+        foreach (['eng', 'rus', 'jpn'] as $code) {
+            $this->assertFalse($reviewer->getWordList($code)->supportsPhoneticFolding(), $code);
+        }
     }
 
     // -----------------------------------------------------------------
@@ -155,6 +160,113 @@ class PhoneticFusionMultiLanguageTest extends TestCase
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'ita');
 
         foreach ([['Giulia', 'Ferrari'], ['Marco', 'Rossi'], ['Luciano', 'Pavarotti']] as [$first, $last]) {
+            $this->assertTrue(
+                $reviewer->validateFullName($first, $last)->isValid(),
+                "'{$first} {$last}' no debería marcarse."
+            );
+        }
+    }
+
+    // -----------------------------------------------------------------
+    // Francés
+    // -----------------------------------------------------------------
+
+    public function testFrenchFoldUnifiesCedillaAndSoftCWithS(): void
+    {
+        $this->assertSame(
+            FrenchPhoneticFolder::fold('garçon'),
+            FrenchPhoneticFolder::fold('garson')
+        );
+    }
+
+    public function testFrenchFoldUnifiesPhWithF(): void
+    {
+        $this->assertSame(
+            FrenchPhoneticFolder::fold('phare'),
+            FrenchPhoneticFolder::fold('fare')
+        );
+    }
+
+    public function testFrenchFoldProtectsChDigraph(): void
+    {
+        // "chat" (gato) no debe sonar como "cat" con una c(a) suelta.
+        $this->assertNotSame(FrenchPhoneticFolder::fold('chat'), FrenchPhoneticFolder::fold('cat'));
+    }
+
+    public function testFrenchFoldDropsSilentH(): void
+    {
+        $this->assertSame(FrenchPhoneticFolder::fold('homme'), FrenchPhoneticFolder::fold('omme'));
+    }
+
+    /** Ejemplo construido para probar el mecanismo, no un chiste documentado. */
+    public function testFrenchFusionCrossesBoundary(): void
+    {
+        $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'fra');
+
+        $result = $reviewer->validateFullName('Aubi', 'Termont');
+
+        $this->assertFalse($result->isValid());
+        $this->assertSame(['bite'], array_column($result->getPhoneticFusionTerms(), 'term'));
+    }
+
+    public function testFrenchCommonNamesAreNotFlagged(): void
+    {
+        $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'fra');
+
+        foreach ([['Jean', 'Dupont'], ['Marie', 'Martin'], ['Luciano', 'Fernandez']] as [$first, $last]) {
+            $this->assertTrue(
+                $reviewer->validateFullName($first, $last)->isValid(),
+                "'{$first} {$last}' no debería marcarse."
+            );
+        }
+    }
+
+    // -----------------------------------------------------------------
+    // Alemán
+    // -----------------------------------------------------------------
+
+    public function testGermanFoldExpandsUmlautsToTheirAlternateSpelling(): void
+    {
+        $this->assertSame('mueller', GermanPhoneticFolder::fold('Müller'));
+        $this->assertSame('strasse', GermanPhoneticFolder::fold('Straße'));
+    }
+
+    public function testGermanFoldUnifiesWWithV(): void
+    {
+        $this->assertSame(
+            GermanPhoneticFolder::fold('Wagen'),
+            GermanPhoneticFolder::fold('Vagen')
+        );
+    }
+
+    public function testGermanFoldDoesNotTouchNativeV(): void
+    {
+        // "Vater" suena /f/ pero "Vase" suena /v/: sin diccionario de origen
+        // no se puede distinguir un caso del otro, así que no se pliega.
+        $this->assertSame('vater', GermanPhoneticFolder::fold('Vater'));
+    }
+
+    /** Ejemplo construido para probar el mecanismo, no un chiste documentado. */
+    public function testGermanFusionCrossesBoundary(): void
+    {
+        $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'deu');
+
+        $result = $reviewer->validateFullName('Konrad', 'Ummerath');
+
+        $this->assertFalse($result->isValid());
+        $this->assertSame(['dumm'], array_column($result->getPhoneticFusionTerms(), 'term'));
+    }
+
+    public function testGermanCommonNamesAreNotFlagged(): void
+    {
+        $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'deu');
+
+        $names = [
+            ['Hans', 'Müller'], ['Anna', 'Schmidt'], ['Wolfgang', 'Meyer'],
+            ['Ingrid', 'Wagner'], ['Mariano', 'Schulz'],
+        ];
+
+        foreach ($names as [$first, $last]) {
             $this->assertTrue(
                 $reviewer->validateFullName($first, $last)->isValid(),
                 "'{$first} {$last}' no debería marcarse."

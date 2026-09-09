@@ -1,5 +1,42 @@
 # Changelog
 
+## [3.5.0] - 2026-09-09
+
+### Añadido
+
+- **Fusión fonética extendida a francés y alemán.** `FrenchPhoneticFolder` y
+  `GermanPhoneticFolder` se suman a español, portugués e italiano, cada uno
+  con reglas propias de su ortografía real (no copiadas de los otros):
+  - Francés: ç/c(e,i,y)→s, ph→f, qu→k, protege el dígrafo "ch" (sonido
+    "sh", no la africada del español), g(e,i,y) se unifica a un sonido
+    audible en vez de borrarse, h siempre muda.
+  - Alemán: deliberadamente el folder más restringido — ä/ö/ü/ß se expanden
+    a su grafía alternativa real (ae/oe/ue/ss, no una aproximación), w→v sin
+    excepciones. No toca "v" ni "h": ambas son bimodales en alemán ("Vater"
+    /f/ vs. "Vase" /v/; "h" alarga vocal o es inicial audible) y sin
+    diccionario de origen por palabra, plegarlas a ciegas arriesgaba más
+    colisiones falsas de las que resolvía.
+  - `PhoneticFolderRegistry::FOLDERS` pasa de 3 a 5 entradas; ningún otro
+    componente cambió — confirma que el diseño de extensión (folder nuevo +
+    una fila de registro) escala sin tocar `DefamatoryContentReviewer` ni
+    `PhoneticFusionDetector`.
+- Batería de tests nueva en `PhoneticFusionMultiLanguageTest`: reglas de
+  plegado unitarias, fusión que cruza la frontera nombre/apellido con
+  ejemplos construidos, y guardas de falso positivo con nombres reales
+  (Jean Dupont, Hans Müller, Wolfgang Meyer, entre otros).
+
+### Cambiado
+
+- README: la tabla comparativa de fonéticas pasa de 3 a 5 columnas, con una
+  fila nueva para las reglas propias de francés y alemán que no encajan en
+  las filas compartidas (qu→k, protección de "ch", expansión de umlauts).
+
+### Tests
+
+103 tests (11 nuevos), todo en verde — sin regresiones.
+
+---
+
 ## [3.4.0] - 2026-09-09
 
 ### Cambiado

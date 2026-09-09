@@ -21,6 +21,8 @@ final class PhoneticFolderRegistry
         'spa' => PhoneticFolder::class,
         'por' => PortuguesePhoneticFolder::class,
         'ita' => ItalianPhoneticFolder::class,
+        'fra' => FrenchPhoneticFolder::class,
+        'deu' => GermanPhoneticFolder::class,
     ];
 
     public static function isSupported(string $language): bool

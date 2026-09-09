@@ -138,28 +138,30 @@ $reviewer->validateFullName('Paco', 'Cojes');
 // pero con otra grafía del mismo sonido.
 ```
 
-### Tres idiomas, tres fonéticas distintas
+### Cinco idiomas, cinco fonéticas distintas
 
-Cubre español, portugués e italiano — cada uno con su propio folder
-(`PhoneticFolder`, `PortuguesePhoneticFolder`, `ItalianPhoneticFolder`),
-seleccionado por `PhoneticFolderRegistry` según el idioma activo. No son la
-misma clase con distinto nombre: cada fonética tiene sus propias confusiones
-reales, y aplicar las reglas de una a otra produciría colisiones falsas.
+Cubre español, portugués, italiano, francés y alemán — cada uno con su propio
+folder (`PhoneticFolder`, `PortuguesePhoneticFolder`, `ItalianPhoneticFolder`,
+`FrenchPhoneticFolder`, `GermanPhoneticFolder`), seleccionado por
+`PhoneticFolderRegistry` según el idioma activo. No son la misma clase con
+distinto nombre: cada fonética tiene sus propias confusiones reales, y
+aplicar las reglas de una a otra produciría colisiones falsas.
 
-| | español | portugués | italiano |
-|---|---|---|---|
-| b/v | se confunden | **no** se confunden | **no** se confunden |
-| s/z/c suave | se confunden | se confunden | **no** se confunden |
-| h | muda | muda | endurece c/g (che, chi) — nunca se borra |
-| g suave / j | se aspira, se borra | sonido audible, se unifica (no se borra) | — |
+| | español | portugués | italiano | francés | alemán |
+|---|---|---|---|---|---|
+| b/v | se confunden | **no** se confunden | **no** se confunden | **no** se confunden | **no** se toca (bimodal: "Vater"/"Vase") |
+| s/z/c suave | se confunden | se confunden | **no** se confunden | ç/ce/ci/cy → s | — |
+| h | muda | muda | endurece c/g (che, chi) — nunca se borra | siempre muda | **no** se toca (bimodal: alarga vocal o inicial audible) |
+| g suave / j | se aspira, se borra | sonido audible, se unifica (no se borra) | — | sonido audible, se unifica (no se borra) | — |
+| otras reglas propias | — | — | — | qu→k, ph→f, protege "ch" (sonido "sh") | ä/ö/ü/ß → grafía alternativa real (ae/oe/ue/ss); w→v sin excepciones |
 
 ```php
-$reviewer = DefamatoryContentReviewer::create($configDir, 'por');
-$reviewer->getWordList('por')->supportsPhoneticFolding();  // true
+$reviewer = DefamatoryContentReviewer::create($configDir, 'fra');
+$reviewer->getWordList('fra')->supportsPhoneticFolding();  // true
 $reviewer->getWordList('eng')->supportsPhoneticFolding();  // false — sin reglas registradas
 ```
 
-Añadir un cuarto idioma es añadir su folder y una fila en
+Añadir un sexto idioma es añadir su folder y una fila en
 `PhoneticFolderRegistry::FOLDERS` — nada más cambia.
 
 ### Evasión cubierta y no cubierta
@@ -410,6 +412,8 @@ src/DefamatoryContentReview/
 ├── PhoneticFolder.php              Plegado fonético del español
 ├── PortuguesePhoneticFolder.php    Plegado fonético del portugués
 ├── ItalianPhoneticFolder.php       Plegado fonético del italiano
+├── FrenchPhoneticFolder.php        Plegado fonético del francés
+├── GermanPhoneticFolder.php        Plegado fonético del alemán
 ├── LeetspeakFolding.php            Sustitución numérica compartida por los folders
 ├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
 ├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
@@ -472,9 +476,10 @@ documentado — es lo que evita que la lista negra borre linajes reales.
   frontera (ver la sección de fusión fonética más arriba). La transliteración
   numérica de un solo carácter sí se cubre (ver «Evasión cubierta y no
   cubierta»).
-- La fusión fonética sólo cubre español, portugués e italiano — el resto de
-  idiomas no tiene folder registrado en `PhoneticFolderRegistry`, y en
-  cualquiera de los tres sólo cubre el cruce entre nombre y apellido, no la
+- La fusión fonética sólo cubre español, portugués, italiano, francés y
+  alemán — el resto de idiomas no tiene folder registrado en
+  `PhoneticFolderRegistry`, y en cualquiera de los cinco sólo cubre el
+  cruce entre nombre y apellido, no la
   re-segmentación dentro de un único campo.
 - Ningún diccionario queda en `basic`, pero `moderate` (24 de los 30) sigue
   necesitando revisión de hablante nativo antes de producción — es una base
