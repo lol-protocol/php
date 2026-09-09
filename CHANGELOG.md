@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.7.0] - 2026-09-09
+
+### Añadido
+
+- **CI de GitHub Actions** (`.github/workflows/tests.yml`): corre
+  `composer install` + `./vendor/bin/phpunit` en cada push y pull request,
+  en una matriz de PHP 8.1 a 8.4 (el mínimo real que exige PHPUnit ^10, ya
+  instalado). Badge de estado agregado al README.
+
+---
+
 ## [3.6.0] - 2026-09-09
 
 ### Añadido
