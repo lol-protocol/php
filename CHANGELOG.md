@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.6.0] - 2026-09-09
+
+### Añadido
+
+- **`CONTRIBUTING.md`**: documenta el proceso de revisión por hablante
+  nativo para los 24 diccionarios en nivel `moderate` — qué revisar en cada
+  entrada (`word`, `riskType`, `severity`, `nameCollision`), la tabla de
+  mínimos de palabras por nivel de `coverage` (basic 60 / moderate 120 /
+  comprehensive 200) y por qué el mínimo de palabras es condición necesaria
+  pero no suficiente para subir a `comprehensive`. Enlazado desde el
+  README, sección "Ampliar un diccionario existente".
+
+---
+
 ## [3.5.0] - 2026-09-09
 
 ### Añadido

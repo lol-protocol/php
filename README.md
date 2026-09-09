@@ -461,6 +461,10 @@ idioma quede cubierto en las diez categorías de riesgo. Marcar
 `nameCollision => true` en todo término que también sea nombre o apellido
 documentado — es lo que evita que la lista negra borre linajes reales.
 
+Los 24 diccionarios en nivel `moderate` necesitan sobre todo revisión de
+hablantes nativos, no más palabras — ver [`CONTRIBUTING.md`](CONTRIBUTING.md)
+para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
+
 ## Tests
 
 ```bash
