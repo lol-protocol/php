@@ -1,9 +1,30 @@
+<section id="kpis-dashboard" class="kpis-dashboard"></section>
+
 <main class="layout">
   <aside class="sidebar">
     <div id="alerts-panel" class="alerts-panel" hidden>
-      <h3 data-i18n="alerts_title">⚠ Alertas: IP fuera del país declarado</h3>
+      <div class="alerts-header">
+        <h3 data-i18n="alerts_title">⚠ Alertas</h3>
+        <button type="button" id="btn-config-alertas" class="alerts-config-toggle" title="Configurar alertas">⚙</button>
+      </div>
       <p id="alerts-summary" class="alerts-summary"></p>
       <ul id="alerts-list" class="alerts-list"></ul>
+
+      <div id="alerts-config-panel" class="alerts-config-panel" hidden>
+        <label class="alerts-config-check">
+          <input type="checkbox" id="config-alerta-ip_pais">
+          <span data-i18n="config_alerta_ip_pais">IP fuera del país declarado</span>
+        </label>
+        <label class="alerts-config-check">
+          <input type="checkbox" id="config-alerta-cambio_pais">
+          <span data-i18n="config_alerta_cambio_pais">Cambios de país imposibles</span>
+        </label>
+        <label class="alerts-config-slider">
+          <span><span data-i18n="config_umbral_label">Sensibilidad</span>: <strong id="config-umbral-valor">50</strong>%</span>
+          <input type="range" id="config-umbral" min="0" max="100" step="10" value="50">
+        </label>
+        <button type="button" id="btn-guardar-config-alertas" class="mini-button" data-i18n="config_guardar">Guardar configuración</button>
+      </div>
     </div>
 
     <div id="user-card" class="user-card">

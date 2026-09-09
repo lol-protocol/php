@@ -6,6 +6,7 @@ import { renderTimeline } from "./linea-tiempo.js";
 import { renderPagination } from "./paginacion.js";
 import { renderChart } from "./grafico.js";
 import { renderAlerts } from "./alertas.js";
+import { renderKpis } from "./kpis.js";
 
 async function loadTimeline() {
   if (!state.selectedUserId) return;
@@ -56,23 +57,32 @@ export function selectUser(userId) {
   return loadTimelineFromStart();
 }
 
+export async function reloadAlerts() {
+  const alerts = await fetchJson("/api/alerts");
+  state.lastAlerts = alerts;
+  renderAlerts(alerts, selectUser);
+}
+
 export async function loadAppData() {
   try {
-    const [groups, actionTypes, users, alerts] = await Promise.all([
+    const [groups, actionTypes, users, alerts, kpis] = await Promise.all([
       fetchJson("/api/groups"),
       fetchJson("/api/action-types"),
       fetchJson("/api/users?per_page=100"),
       fetchJson("/api/alerts"),
+      fetchJson("/api/kpis"),
     ]);
     state.groups = groups;
     state.actionTypes = actionTypes;
     state.users = users.items;
     state.lastAlerts = alerts;
+    state.lastKpis = kpis;
 
     populateScopeSelect();
     populateTypeSelect();
     renderUserOptions("", loadTimelineFromStart);
     renderAlerts(alerts, selectUser);
+    renderKpis(kpis);
 
     if (state.users.length > 0) {
       state.selectedUserId = document.getElementById("user-select").value || state.users[0].id;

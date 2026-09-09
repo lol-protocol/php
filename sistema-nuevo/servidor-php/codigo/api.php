@@ -13,5 +13,7 @@ require __DIR__ . '/api/usuarios.php';
 require __DIR__ . '/api/alertas.php';
 require __DIR__ . '/api/alertas-config.php';
 require __DIR__ . '/api/filtros.php';
+require __DIR__ . '/api/notas.php';
+require __DIR__ . '/api/kpis.php';
 require __DIR__ . '/api/linea-tiempo-cohortes.php';
 require __DIR__ . '/api/linea-tiempo.php';

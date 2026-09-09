@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="css/comentarios.css">
   <link rel="stylesheet" href="css/badges.css">
   <link rel="stylesheet" href="css/inactividad.css">
+  <link rel="stylesheet" href="css/notas.css">
+  <link rel="stylesheet" href="css/kpis.css">
 </head>
 <body>
   <?php include __DIR__ . '/partes/pantalla-login.php'; ?>

@@ -14,7 +14,7 @@ function api_alerts(): void
     }
 
     if ($almacen->esAlertaHabilitada('cambio_pais')) {
-        $alertas['cambios_pais_imposibles'] = AlmacenAlertas::cambiosPaisImposibles();
+        $alertas['cambios_pais_imposibles'] = AlmacenAlertas::cambiosPaisImposibles($almacen->obtenerUmbral());
     }
 
     echo json_encode($alertas, JSON_UNESCAPED_UNICODE);

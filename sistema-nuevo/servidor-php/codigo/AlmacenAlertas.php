@@ -30,13 +30,22 @@ final class AlmacenAlertas
         ];
     }
 
-    public static function cambiosPaisImposibles(): array
+    /** @param int $umbral Sensibilidad 0-100: más alto = ventana de tiempo más amplia cuenta como "cambio imposible". */
+    public static function cambiosPaisImposibles(int $umbral = 50): array
     {
+        $horasUmbral = 0.5 + (max(0, min(100, $umbral)) / 100) * 3.5; // rango 0.5h (umbral=0) .. 4h (umbral=100)
+
         $pdo = ConexionBd::obtener();
         $cte = 'WITH c AS (SELECT a.usuario_id, u.nombre, LAG(a.ip_pais_codigo) OVER (PARTITION BY a.usuario_id ORDER BY a.marca_temporal) AS p1, a.ip_pais_codigo AS p2, LAG(a.marca_temporal) OVER (PARTITION BY a.usuario_id ORDER BY a.marca_temporal) AS t1, a.marca_temporal AS t2 FROM acciones a JOIN usuarios u ON u.id = a.usuario_id WHERE a.ip_pais_codigo IS NOT NULL)';
+        $condicion = 'p1 IS NOT NULL AND p1 <> p2 AND (EXTRACT(EPOCH FROM (t2 - t1)) / 3600) < :horas';
 
-        $resumen = $pdo->query("$cte SELECT COUNT(*) AS total, COUNT(DISTINCT usuario_id) AS usuarios FROM c WHERE p1 IS NOT NULL AND p1 <> p2 AND (EXTRACT(EPOCH FROM (t2 - t1)) / 3600) < 2")->fetch();
-        $stmt = $pdo->prepare("$cte SELECT usuario_id AS id, nombre, p1, p2, COUNT(*) AS cnt, MAX(t2) AS last_seen FROM c WHERE p1 IS NOT NULL AND p1 <> p2 AND (EXTRACT(EPOCH FROM (t2 - t1)) / 3600) < 2 GROUP BY usuario_id, nombre, p1, p2 ORDER BY cnt DESC LIMIT :l");
+        $resumen = $pdo->prepare("$cte SELECT COUNT(*) AS total, COUNT(DISTINCT usuario_id) AS usuarios FROM c WHERE $condicion");
+        $resumen->bindValue(':horas', $horasUmbral);
+        $resumen->execute();
+        $resumen = $resumen->fetch();
+
+        $stmt = $pdo->prepare("$cte SELECT usuario_id AS id, nombre, p1, p2, COUNT(*) AS cnt, MAX(t2) AS last_seen FROM c WHERE $condicion GROUP BY usuario_id, nombre, p1, p2 ORDER BY cnt DESC LIMIT :l");
+        $stmt->bindValue(':horas', $horasUmbral);
         $stmt->bindValue(':l', self::LIMITE_USUARIOS, PDO::PARAM_INT);
         $stmt->execute();
 

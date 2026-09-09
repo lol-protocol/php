@@ -29,6 +29,7 @@ export const state = {
   lang: "es",
   lastTimeline: null,
   lastAlerts: null,
+  lastKpis: null,
   username: null,
 };
 

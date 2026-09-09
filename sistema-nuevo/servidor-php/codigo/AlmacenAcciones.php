@@ -13,7 +13,7 @@ final class AlmacenAcciones
          a.monto_local AS amount_local, a.moneda_codigo AS currency, a.monto_usd AS amount_usd,
          a.comentario AS comment, a.endpoint AS endpoint, a.codigo_http AS http_status,
          a.tamano_archivo_kb AS file_size_kb, a.ip AS ip, a.ip_pais_codigo AS ip_country,
-         a.ip_hora_local AS ip_local_time, a.ip_proveedor AS ip_isp";
+         a.ip_hora_local AS ip_local_time, a.ip_proveedor AS ip_isp, n.texto AS note";
 
     /** @return array{key:string,label:string}[] Catálogo completo de tipos de acción (filtro del timeline). */
     public static function tipos(): array
@@ -35,6 +35,7 @@ final class AlmacenAcciones
         $stmt = $pdo->prepare(
             'SELECT ' . self::CAMPOS . "
              FROM acciones a JOIN tipos_accion t ON t.clave = a.tipo_clave
+             LEFT JOIN notas_acciones n ON n.accion_id = a.id
              WHERE a.usuario_id = :id $condicionTipo
              ORDER BY a.marca_temporal
              LIMIT :limite OFFSET :offset"

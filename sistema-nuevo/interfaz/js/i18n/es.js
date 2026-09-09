@@ -41,6 +41,11 @@ export default {
   alerts_summary: "{total} acciones en {users} usuarios.",
   alerts_last_seen: "Última vez: {date}",
 
+  config_alerta_ip_pais: "IP fuera del país declarado",
+  config_alerta_cambio_pais: "Cambios de país imposibles",
+  config_umbral_label: "Sensibilidad",
+  config_guardar: "Guardar configuración",
+
   legend_title: "Cómo leer las guías",
   legend_good: "mejor que el promedio",
   legend_bad: "peor que el promedio",
@@ -79,6 +84,9 @@ export default {
   metric_ip_mismatch: "⚠ no coincide con el país declarado",
   metric_cohort_count: "(vs. {count} acciones del universo elegido)",
 
+  stats_median: "mediana: {value}",
+  stats_p90: "p90: {value}",
+
   chart_title: "Evolución temporal",
   chart_legend_count: "acciones/día",
   chart_legend_spend: "gasto acumulado (USD)",
@@ -108,4 +116,11 @@ export default {
   inactividad_continuar: "Continuar activo",
   inactividad_logout: "Cerrar sesión ahora",
   inactividad_sesion_cerrada: "Tu sesión fue cerrada por inactividad.",
+
+  note_placeholder: "Agregar una nota sobre esta acción...",
+
+  kpi_total_users: "Usuarios totales",
+  kpi_total_actions: "Acciones totales",
+  kpi_total_spend: "Gasto total",
+  kpi_top_action: "Acción más frecuente",
 };

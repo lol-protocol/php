@@ -14,6 +14,62 @@
   margin-bottom: 0.4rem;
 }
 
+.alerts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alerts-header h3 {
+  margin-bottom: 0;
+}
+
+.alerts-config-toggle {
+  background: transparent;
+  border: 1px solid var(--bad);
+  color: var(--bad);
+  border-radius: 4px;
+  width: 1.8rem;
+  height: 1.8rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.alerts-config-toggle:hover {
+  background: rgba(255, 40, 100, 0.1);
+}
+
+.alerts-config-panel {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--bad);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.alerts-config-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.alerts-config-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.alerts-config-slider input[type="range"] {
+  width: 100%;
+}
+
 .alerts-summary {
   font-size: 0.8rem;
   color: var(--text-muted);

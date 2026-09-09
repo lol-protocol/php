@@ -6,6 +6,7 @@ import { renderTimeline } from "./linea-tiempo.js";
 import { renderPagination } from "./paginacion.js";
 import { renderChart } from "./grafico.js";
 import { renderAlerts } from "./alertas.js";
+import { renderKpis } from "./kpis.js";
 
 /**
  * Vuelve a pintar todo lo que ya está en pantalla en el nuevo idioma, usando lo
@@ -30,6 +31,10 @@ export function refrescarIdioma(onSelectUser, onPageChange) {
 
   if (state.lastAlerts) {
     renderAlerts(state.lastAlerts, onSelectUser);
+  }
+
+  if (state.lastKpis) {
+    renderKpis(state.lastKpis);
   }
 
   const data = state.lastTimeline;

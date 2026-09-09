@@ -13,7 +13,9 @@ final class ClienteEstadisticas
 
     /**
      * @param string[]|null $countries null = sin filtro de país (todos)
-     * @return array{type:string,count:int,avg_duration_ms:float,avg_amount_usd:?float,currency:string}|null
+     * @return array{type:string,count:int,avg_duration_ms:float,median_duration_ms:?float,
+     *         p90_duration_ms:?float,avg_amount_usd:?float,median_amount_usd:?float,
+     *         p90_amount_usd:?float,currency:string}|null
      *         null si el servicio de estadísticas no respondió (p. ej. no está corriendo).
      */
     public function stats(

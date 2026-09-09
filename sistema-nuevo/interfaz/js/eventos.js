@@ -1,10 +1,11 @@
 import { state, debounce } from "./nucleo.js";
 import { postJson, showLogin, showApp, boot } from "./sesion.js";
 import { renderUserOptions } from "./selectores.js";
-import { loadAppData, loadTimelineFromStart, selectUser, goToPage } from "./aplicacion.js";
+import { loadAppData, loadTimelineFromStart, selectUser, goToPage, reloadAlerts } from "./aplicacion.js";
 import { establecerIdioma, inicializarIdioma } from "./idioma.js";
 import { refrescarIdioma } from "./idioma-refrescar.js";
 import { cargarFiltrosGuardados, aplicarFiltroGuardado, guardarFiltroActual, eliminarFiltroGuardado } from "./filtros.js";
+import { cargarConfigAlertas, toggleConfigPanel, guardarConfigAlertas } from "./configuracion-alertas.js";
 
 inicializarIdioma();
 document.querySelectorAll(".lang-button").forEach((boton) => {
@@ -59,6 +60,18 @@ document.getElementById("btn-eliminar-filtro").addEventListener("click", async (
   if (!select.value) return;
   await eliminarFiltroGuardado(select.value);
 });
+
+document.getElementById("btn-config-alertas").addEventListener("click", async () => {
+  const panel = document.getElementById("alerts-config-panel");
+  if (panel.hidden) await cargarConfigAlertas();
+  toggleConfigPanel();
+});
+
+document.getElementById("config-umbral").addEventListener("input", (e) => {
+  document.getElementById("config-umbral-valor").textContent = e.target.value;
+});
+
+document.getElementById("btn-guardar-config-alertas").addEventListener("click", () => guardarConfigAlertas(reloadAlerts));
 
 boot(async () => {
   await cargarFiltrosGuardados();

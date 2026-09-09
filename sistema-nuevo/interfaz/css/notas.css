@@ -1,0 +1,41 @@
+/* Nota libre del admin sobre una acción puntual (no es dato de la acción en sí). */
+
+.note-block {
+  margin-top: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--surface-alt);
+  border-left: 3px solid var(--neutral);
+  border-radius: 4px;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.note-icon {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.note-textarea {
+  flex: 1;
+  resize: vertical;
+  min-height: 2.2rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.note-textarea:hover {
+  border-color: var(--border);
+}
+
+.note-textarea:focus {
+  outline: none;
+  border-color: var(--neutral);
+  color: var(--text);
+  background: var(--surface);
+}
