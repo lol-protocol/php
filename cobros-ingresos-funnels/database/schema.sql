@@ -28,12 +28,16 @@ CREATE TABLE paises (
     moneda_codigo CHAR(3) NOT NULL REFERENCES monedas(codigo)
 );
 
--- Usuarios que pueden entrar al panel (login).
+-- Usuarios que pueden entrar al panel (login). activo=FALSE revoca el acceso
+-- sin borrar el usuario (soft-delete, igual que boletas/pagos anulados), asi
+-- que la auditoria conserva su nombre en vez de quedar con un usuario_id
+-- colgado.
 CREATE TABLE usuarios_sistema (
     id SERIAL PRIMARY KEY,
     nombre TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
     creado_en TIMESTAMP NOT NULL DEFAULT now()
 );
 

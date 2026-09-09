@@ -13,8 +13,14 @@ use App\Controllers\DashboardController;
 use App\Controllers\FunnelController;
 use App\Controllers\LoginController;
 use App\Controllers\PagosController;
+use App\Controllers\UsuarioController;
 use App\Database;
 use App\Router;
+use App\SecurityHeaders;
+
+foreach (SecurityHeaders::listado() as $nombre => $valor) {
+    header("{$nombre}: {$valor}");
+}
 
 try {
     Database::connection();
@@ -46,6 +52,10 @@ $paginasProtegidas = [
     'cliente-nuevo' => fn () => (new ClienteController())->nuevo(),
     'cliente' => fn () => (new ClienteController())->ficha(),
     'auditoria' => fn () => (new AuditoriaController())->index(),
+    'usuarios' => fn () => (new UsuarioController())->index(),
+    'usuario-nuevo' => fn () => (new UsuarioController())->nuevo(),
+    'usuario-password' => fn () => (new UsuarioController())->cambiarPassword(),
+    'usuario-revocar' => fn () => (new UsuarioController())->revocar(),
 ];
 foreach ($paginasProtegidas as $pagina => $manejador) {
     $router->add($pagina, function () use ($manejador) {

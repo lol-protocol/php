@@ -2,8 +2,8 @@
 
 /** @var array $registros */
 
-$accionLabel = ['crear' => 'Creó', 'editar' => 'Editó', 'anular' => 'Anuló'];
-$entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente'];
+$accionLabel = ['crear' => 'Creó', 'editar' => 'Editó', 'anular' => 'Anuló', 'activar' => 'Reactivó'];
+$entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente', 'usuario' => 'Usuario'];
 ?>
 
 <h1>Auditoría</h1>

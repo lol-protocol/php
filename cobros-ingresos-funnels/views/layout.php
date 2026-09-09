@@ -14,6 +14,7 @@ $paginas = [
     'cohortes' => 'Cohortes',
     'clientes' => 'Clientes',
     'auditoria' => 'Auditoría',
+    'usuarios' => 'Usuarios',
 ];
 $usuario = Auth::usuarioActual();
 ?>

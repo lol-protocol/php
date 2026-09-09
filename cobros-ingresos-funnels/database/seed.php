@@ -67,15 +67,25 @@ foreach ($catalogo['paises'] as $codigo => $p) {
     $insPais->execute([':codigo' => $codigo, ':nombre' => $p['nombre'], ':moneda' => $p['moneda']]);
 }
 
-// --- 0b) Usuario admin para entrar al panel. ---
+// --- 0b) Usuarios para entrar al panel. ---
 $emailAdmin = 'admin@ejemplo.com';
 $passwordAdmin = 'admin1234';
-$pdo->prepare('INSERT INTO usuarios_sistema (nombre, email, password_hash) VALUES (:nombre, :email, :hash)')
-    ->execute([
-        ':nombre' => 'Administrador',
-        ':email' => $emailAdmin,
-        ':hash' => password_hash($passwordAdmin, PASSWORD_DEFAULT),
-    ]);
+$insUsuarioSistema = $pdo->prepare(
+    'INSERT INTO usuarios_sistema (nombre, email, password_hash) VALUES (:nombre, :email, :hash)'
+);
+$insUsuarioSistema->execute([
+    ':nombre' => 'Administrador',
+    ':email' => $emailAdmin,
+    ':hash' => password_hash($passwordAdmin, PASSWORD_DEFAULT),
+]);
+// Un segundo usuario de ejemplo, para que la pantalla de Usuarios no muestre
+// una sola fila y se pueda probar "cambiar contraseña"/"revocar" sobre un
+// usuario que no sea el que esta logueado.
+$insUsuarioSistema->execute([
+    ':nombre' => 'Soporte',
+    ':email' => 'soporte@ejemplo.com',
+    ':hash' => password_hash('soporte1234', PASSWORD_DEFAULT),
+]);
 
 $nombresPila = ['Lucia', 'Mateo', 'Sofia', 'Diego', 'Valentina', 'Santiago', 'Camila', 'Emilio',
     'Martina', 'Nicolas', 'Renata', 'Sebastian', 'Paula', 'Joaquin', 'Daniela', 'Andres',
@@ -394,3 +404,4 @@ echo "  usuarios_funnel: {$totalUsuarios}\n";
 echo "  boletas:         {$totalBoletas} ({$boletasAnuladas} anuladas)\n";
 echo "  pagos:           {$totalPagos} ({$pagosAnulados} anulados)\n";
 echo "\nLogin: {$emailAdmin} / {$passwordAdmin}\n";
+echo "(tambien: soporte@ejemplo.com / soporte1234)\n";

@@ -30,6 +30,8 @@ Pequeño sistema en PHP (sin framework) para analizar:
 - **Paginación** en los listados grandes (boletas, pagos, clientes).
 - **Login** con sesión para no dejar el panel abierto a cualquiera, con bloqueo
   temporal tras varios intentos fallidos seguidos (protección de fuerza bruta).
+- **Usuarios del sistema**: alta, cambio de contraseña y revocar/reactivar
+  acceso (soft-delete, no se borra a nadie), todo auditado.
 
 ## Requisitos
 
@@ -57,7 +59,8 @@ php -S localhost:8000 -t public
 ```
 
 Abrí `http://localhost:8000` — te va a mandar a `?page=login`. Credenciales de
-ejemplo (las crea el seed): **admin@ejemplo.com / admin1234**.
+ejemplo (las crea el seed): **admin@ejemplo.com / admin1234** (también
+soporte@ejemplo.com / soporte1234, para probar "Usuarios" con más de una fila).
 
 Volver a correr `php database/seed.php` en cualquier momento reconstruye el esquema
 y regenera los datos de ejemplo desde cero (es reproducible: usa una semilla fija).
@@ -79,13 +82,13 @@ contra la base de las variables `DB_*` de arriba — corré el seed primero).
 public/            front controller (index.php) + CSS
 src/
   Controllers/       un controlador por sección (dashboard, cobros, pagos, funnel,
-                      cohortes, clientes, auditoria, login)
-  Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/...) más
-                      IngresosRepository (kpis, ingresos y cobros por mes,
-                      antigüedad de cartera, por método de pago) y
-                      SegmentacionRepository (top país/ciudad/idioma/género/
-                      edad, LTV por cohorte) para el reporting, que no es CRUD
-                      y crecía por separado. AuditoriaRepository también
+                      cohortes, clientes, auditoria, usuarios, login)
+  Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/
+                      UsuarioSistema/...) más IngresosRepository (kpis, ingresos
+                      y cobros por mes, antigüedad de cartera, por método de
+                      pago) y SegmentacionRepository (top país/ciudad/idioma/
+                      género/edad, LTV por cohorte) para el reporting, que no es
+                      CRUD y crecía por separado. AuditoriaRepository también
                       concentra el `auditarComoUsuarioActual()` que usan todos
                       los controllers en vez de repetirlo cada uno.
   Database.php         conexión PDO a PostgreSQL (singleton, config por env vars)
@@ -93,6 +96,8 @@ src/
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
   Paginacion.php        helper de paginación (página/offset/total, testeado)
   Csrf.php              token CSRF por sesión, verificado en Router (testeado)
+  Http.php              detecta HTTPS (directo o detras de proxy), testeado
+  SecurityHeaders.php   headers de seguridad de cada respuesta, testeado
   Router.php, View.php, Filtros.php, Config.php, helpers.php
 database/
   schema.sql            esquema de la base
@@ -105,9 +110,10 @@ views/                  plantillas PHP (una carpeta por sección), con partials
                         cobros, pagos y funnel)
 tests/
   Unit/                 sin base de datos (calculo de estado, filtros, helpers,
-                        paginación, CSRF, router)
+                        paginación, CSRF, router, headers de seguridad, deteccion
+                        de HTTPS)
   Integration/           contra la base real (un archivo por repositorio,
-                        auditoría, bloqueo de login)
+                        auditoría, bloqueo de login, usuario revocado)
 ```
 
 ## Modelo de datos
@@ -115,7 +121,10 @@ tests/
 - `monedas` / `paises`: catálogo de referencia (código ISO, nombre, símbolo y
   `tasa_a_usd` — cuánto vale 1 unidad de esa moneda en USD, para consolidar
   reportes). Son tasas estáticas de ejemplo, no un feed en vivo.
-- `usuarios_sistema`: quién puede entrar al panel (login).
+- `usuarios_sistema`: quién puede entrar al panel (login), con `activo` para
+  revocar el acceso sin borrar al usuario (mismo patrón soft-delete que
+  boletas/pagos, por la misma razón: no dejar un `usuario_id` colgado en
+  `auditoria`).
 - `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
   perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
   segmentación del dashboard y su moneda de facturación.
@@ -172,3 +181,20 @@ en su moneda original.
   `<form method="post">` incluye oculto, y el `Router` lo valida antes de
   despachar cualquier POST (login incluido) — si falta o no coincide, corta
   con 403 antes de que el controller toque nada.
+- Cookie de sesión endurecida: `HttpOnly` (JS no puede leerla — igual no hay
+  JS en la app) + `SameSite=Lax` (capa extra contra CSRF, sumada al token) +
+  `Secure` cuando el request llega por HTTPS (`App\Http::esSegura()`, que
+  tambien mira `X-Forwarded-Proto` si hay un proxy adelante). En HTTP plano
+  (dev local) `Secure` queda apagado a proposito, sino el browser descarta
+  la cookie y no se podria loguear.
+- Headers de seguridad en cada respuesta (`App\SecurityHeaders`):
+  `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y una
+  `Content-Security-Policy` que bloquea JavaScript por completo
+  (`script-src 'none'` — la app no usa JS en ningun lado) y permite estilos
+  inline (`style-src 'unsafe-inline'`, que usan los graficos SVG). Con HTTPS
+  se suma `Strict-Transport-Security`.
+- Gestión de usuarios sin roles: como es un solo nivel de acceso, cualquier
+  usuario logueado puede crear otros usuarios, cambiarle la contraseña a
+  cualquiera o revocarles el acceso — excepto revocarse a si mismo, bloqueado
+  a proposito (server-side, no solo ocultando el botón) para que siempre
+  quede al menos un usuario activo capaz de loguearse.

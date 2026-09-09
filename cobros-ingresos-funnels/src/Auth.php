@@ -12,6 +12,13 @@ final class Auth
     public static function iniciar(): void
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_set_cookie_params([
+                'lifetime' => 0,
+                'path' => '/',
+                'httponly' => true,
+                'samesite' => 'Lax',
+                'secure' => Http::esSegura(),
+            ]);
             session_start();
         }
     }
@@ -39,7 +46,7 @@ final class Auth
         }
 
         $usuario = (new UsuarioSistemaRepository())->porEmail($email);
-        if ($usuario === null || !password_verify($password, $usuario['password_hash'])) {
+        if ($usuario === null || !$usuario['activo'] || !password_verify($password, $usuario['password_hash'])) {
             $intentos->registrarFallo($email);
             return 'invalido';
         }
