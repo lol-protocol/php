@@ -38,3 +38,12 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
+
+.kpi-tile--alert {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+
+.kpi-tile--alert .kpi-value {
+  color: var(--bad);
+}

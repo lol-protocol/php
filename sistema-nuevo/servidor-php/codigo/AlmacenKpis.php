@@ -36,8 +36,31 @@ final class AlmacenKpis
             'total_actions' => (int) $totales['acciones'],
             'total_spend_usd' => round((float) $totales['gasto_usd'], 2),
             'last_action_at' => $totales['ultima_accion'],
+            'active_alerts_users' => self::usuariosConAlertaActiva($pdo),
             'top_action_types' => array_map(fn ($f) => ['type' => $f['clave'], 'count' => (int) $f['cantidad']], $porTipo),
             'top_countries' => array_map(fn ($f) => ['country' => $f['country'], 'count' => (int) $f['cantidad']], $porPais),
         ];
+    }
+
+    /**
+     * Usuarios afectados por cualquier tipo de alerta HABILITADO (respeta
+     * configuracion_alertas). Suma total_users_affected de cada tipo -- no
+     * deduplica entre tipos (un usuario con ambas anomalías cuenta dos veces),
+     * a cambio de no truncar al top 15 de cada consulta como haría contar
+     * desde 'top'. Aceptable para un KPI de pantalla, no para un total exacto.
+     */
+    private static function usuariosConAlertaActiva(PDO $pdo): int
+    {
+        $config = new AlmacenConfiguracion($pdo);
+        $total = 0;
+
+        if ($config->esAlertaHabilitada('ip_pais')) {
+            $total += AlmacenAlertas::ipMismatches()['total_users_affected'];
+        }
+        if ($config->esAlertaHabilitada('cambio_pais')) {
+            $total += AlmacenAlertas::cambiosPaisImposibles($config->obtenerUmbral())['total_users_affected'];
+        }
+
+        return $total;
     }
 }

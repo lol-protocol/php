@@ -50,9 +50,11 @@ sistema-nuevo/
 ├── preparar-postgres.sh            Deja PostgreSQL listo (servicio, rol, base) — idempotente
 │
 ├── servicio-estadisticas-java/     Microservicio de estadísticas (Java, solo JDK)
-│   ├── ServicioEstadisticas.java      main(): carga el CSV, levanta el servidor HTTP
+│   ├── ServicioEstadisticas.java      main(): carga el CSV, arranca el watcher, levanta el HTTP
+│   ├── CargadorAcciones.java          Lee el CSV + watcher que recarga sola si cambia el mtime
 │   ├── Accion.java                    record de una fila ya aplanada
-│   ├── ManejadorEstadisticas.java     GET /stats: filtra y agrega
+│   ├── ManejadorEstadisticas.java     GET /stats: filtra el cohort según los query params
+│   ├── EstadisticasCalculo.java       Agrega avg/mediana/p90 y arma el JSON de respuesta
 │   └── UtilHttp.java                  Parseo de query string, respuesta JSON
 │
 ├── servidor-php/                   API backend (PHP), lee de PostgreSQL
@@ -64,7 +66,8 @@ sistema-nuevo/
 │       │                               resumen diario para el gráfico
 │       ├── AlmacenAlertas.php         Detección proactiva: IPs fuera del país declarado
 │       ├── ClienteEstadisticas.php    Llama al servicio de estadísticas por HTTP
-│       ├── autenticacion.php          Sesión simple (login/logout, un solo usuario)
+│       ├── autenticacion.php          Sesión + CSRF (login/logout, un solo usuario)
+│       ├── AlmacenIntentosLogin.php   Rate limiting de /api/login por IP
 │       ├── credenciales.php           Usuario demo + hash de contraseña (bcrypt)
 │       ├── saneador.php               Punto de entrada del saneador (ver saneador/)
 │       ├── saneador/                  primitivas, marca-temporal, accion(-monto/-campos/-ip)
@@ -154,7 +157,7 @@ esto de forma **proactiva**, sin tener que elegir un usuario primero.
 ## Autenticación
 
 Sesión simple por cookie (PHP `session`), sin roles ni registro — pensada para un
-prototipo, no para producción (sin límite de intentos de login).
+prototipo, no para producción.
 
 - Usuario demo: **admin** / **admin123** (hash bcrypt en `credenciales.php`, la
   contraseña nunca se compara ni se guarda en texto plano).
@@ -171,6 +174,11 @@ prototipo, no para producción (sin límite de intentos de login).
 - **Auto-logout por inactividad**: `interfaz/js/inactividad.js` cierra la sesión
   a los 30 minutos sin clicks/movimiento/teclas/scroll, avisando con un modal
   ("Continuar activo" / "Cerrar sesión ahora") un minuto antes.
+- **Rate limiting contra fuerza bruta**: `AlmacenIntentosLogin.php` cuenta
+  intentos fallidos por IP (no por usuario: hay uno solo) en la tabla
+  `intentos_login`. Al 5to fallo consecutivo, esa IP queda bloqueada 15 minutos
+  — `POST /api/login` responde 429 incluso si en ese momento manda la contraseña
+  correcta, hasta que expire el bloqueo. Un login exitoso resetea el contador.
 
 ## Montos: moneda local y USD
 
@@ -217,10 +225,13 @@ filtro de tipo de acción que el timeline.
 ## Dashboard de KPIs
 
 `GET /api/kpis` (`AlmacenKpis.php`) agrega, para todo el sistema (no un usuario
-puntual), usuarios/acciones/gasto totales y el tipo de acción y país con más
-acciones. Se pinta como una fila de tarjetas arriba de todo (`interfaz/js/kpis.js`)
-apenas se entra, antes incluso de elegir un usuario — pensado para tener una foto
-general del sistema de un vistazo.
+puntual), usuarios/acciones/gasto totales, usuarios afectados por alguna alerta
+activa, y el tipo de acción y país con más acciones. Se pinta como una fila de
+tarjetas arriba de todo (`interfaz/js/kpis.js`) apenas se entra, antes incluso
+de elegir un usuario — pensado para tener una foto general del sistema de un
+vistazo. El tile de alertas suma `total_users_affected` de cada tipo
+habilitado (no deduplica un usuario que tenga ambas anomalías) y se resalta en
+rojo cuando es mayor a cero.
 
 ## Comparación por percentiles
 
@@ -235,15 +246,19 @@ otro elemento visual a la tarjeta.
 
 ## Notas por acción
 
-Cada tarjeta del timeline tiene un campo de texto libre (`interfaz/js/notas.js` +
-`notas_acciones` en PostgreSQL, FK a `acciones` con `ON DELETE CASCADE`) para que
-el admin deje una observación puntual — no es un dato de la acción en sí, es
-metadata operativa. Se guarda solo con un debounce de 600ms **por acción** (un
-`Map` de timers, no un debounce compartido: escribir en una tarjeta no debe
-cancelar el guardado pendiente de otra) contra `POST /api/notes`; texto vacío
-elimina la fila en vez de guardar un string vacío. Para evitar N+1 requests, la
-nota viaja como columna más (`LEFT JOIN notas_acciones`) en la misma consulta
-paginada de `AlmacenAcciones::pagina()`, no en una llamada aparte por tarjeta.
+Cada tarjeta del timeline tiene un campo de texto libre (`interfaz/js/nota-bloque.js`
++ `interfaz/js/notas.js` + `notas_acciones` en PostgreSQL, FK a `acciones` con
+`ON DELETE CASCADE`) para que el admin deje una observación puntual — no es un
+dato de la acción en sí, es metadata operativa. Se guarda solo con un debounce
+de 600ms **por acción** (un `Map` de timers, no un debounce compartido: escribir
+en una tarjeta no debe cancelar el guardado pendiente de otra) contra
+`POST /api/notes`; texto vacío elimina la fila en vez de guardar un string
+vacío. Para evitar N+1 requests, la nota viaja como columna más
+(`LEFT JOIN notas_acciones`) en la misma consulta paginada de
+`AlmacenAcciones::pagina()`, no en una llamada aparte por tarjeta. Un indicador
+chico al lado del textarea muestra el estado del guardado (⏳ guardando, ✓
+guardado — se oculta solo a los 2s —, ⚠ error) para que quede claro si se
+perdió o no lo que se escribió.
 
 ## Alertas proactivas
 
@@ -360,8 +375,12 @@ Sin sumar dependencias nuevas: PHP y Node ya estaban, y Playwright ya viene
 instalado globalmente en este entorno.
 
 ```bash
-# Unit tests del saneador (framework propio en pruebas/marco-pruebas.php)
+# Unit tests del saneador (framework propio en pruebas/marco-pruebas.php, sin BD)
 php pruebas/ejecutar-php.php
+
+# Integración: Almacen*.php contra PostgreSQL real -- requiere el servicio arriba
+# con los datos semilla cargados (mismo framework, misma sintaxis assert_igual/verdadero)
+php pruebas/ejecutar-integracion.php
 
 # Unit tests de JS (node:test + node:assert, nativos de Node)
 ./pruebas/ejecutar-js.sh
@@ -375,12 +394,23 @@ php pruebas/ejecutar-php.php
   `duracion_ms` (fechas), y `saneador_accion()` de punta a punta (registro válido,
   campo esencial faltante, usuario inexistente, comentario con HTML, moneda
   inválida cae al país del usuario, hora local derivada de la IP).
+- `pruebas/php-integracion/`: `AlmacenFiltros` (CRUD completo, age_min=0/null no se
+  pierde), `AlmacenNotas` (guardar es upsert, texto vacío borra la fila),
+  `AlmacenConfiguracion` (default habilitado si no hay fila, guardar/leer umbral),
+  `AlmacenIntentosLogin` (bloqueo justo al 5to fallo, no antes, `limpiar` lo
+  resetea) y `AlmacenKpis` (invariantes: nada negativo, orden descendente de
+  `top_action_types` — no valores pelados, para no romperse si el generador de
+  datos semilla cambia sin que `AlmacenKpis` tenga ningún bug real).
 - `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje) e `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz).
 - `pruebas/e2e/`: login (credenciales incorrectas/correctas, logout), elegir
   usuario, paginación, filtro por tipo, gráfico, alertas (clic salta de usuario) e
-  idioma — contra el panel real en un Chromium headless.
+  idioma; más, en `panel-nuevas-features.e2e.cjs`: el tile de KPIs de alertas, el
+  indicador visual al guardar una nota, y el rate limiting (5 fallos + bloqueo con
+  la contraseña correcta) — este último limpia `intentos_login` con `psql` en un
+  `finally`, para no dejar la IP del test runner bloqueada 15 minutos si algo
+  falla a mitad de camino.
 
 Las pruebas e2e usan `require()` (CommonJS) en vez de `import`, a propósito: Node
 solo resuelve paquetes globales (Playwright no tiene `node_modules` propio acá) vía
@@ -435,7 +465,8 @@ Abrir http://localhost:8082.
 ## API (backend PHP)
 
 - `POST /api/login` — `{"username": "...", "password": "..."}` → inicia sesión,
-  responde con `csrf_token`.
+  responde con `csrf_token`. 429 tras 5 fallos consecutivos de esa IP (bloqueo de
+  15 minutos, ver "Autenticación" arriba).
 - `POST /api/logout` — `{"csrf_token": "..."}`, requerido y validado con
   `hash_equals()`; sin token válido, 403.
 - `GET /api/session` — `{"authenticated": bool, "username": ?string, "csrf_token": ?string}`
@@ -474,6 +505,9 @@ Abrir http://localhost:8082.
   despliegue real (ver "Autenticación" arriba).
 - Si el servicio de estadísticas en Java no está corriendo, el backend PHP no rompe:
   cada acción queda sin comparación (`cohort: null`) y el panel lo indica con un aviso.
+- El servicio Java recarga solo `acciones-planas.csv` si cambia su mtime (chequeo
+  cada 5 segundos, `CargadorAcciones.iniciarWatcher()`) — no hace falta reiniciarlo
+  a mano después de correr `generar-datos-semilla.php` de nuevo.
 - Las cotizaciones de moneda y los husos horarios son fijos e ilustrativos, no de
   mercado/geolocalización en vivo.
 - La generación usa una fecha ancla fija (no `time()`) para que los datos salgan

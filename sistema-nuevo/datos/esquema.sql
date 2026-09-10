@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS paises CASCADE;
 DROP TABLE IF EXISTS monedas CASCADE;
 DROP TABLE IF EXISTS configuracion_alertas CASCADE;
 DROP TABLE IF EXISTS filtros_guardados CASCADE;
+DROP TABLE IF EXISTS intentos_login CASCADE;
 
 CREATE TABLE monedas (
     codigo     CHAR(3) PRIMARY KEY,   -- 'USD', 'EUR', 'ARS'...
@@ -60,6 +61,15 @@ CREATE TABLE filtros_guardados (
     age_max INTEGER,
     gender VARCHAR(10),              -- 'all', 'm', 'f', 'o'
     tipo_accion VARCHAR(30)          -- 'all', 'login', 'payment', etc.
+);
+
+-- Protección contra fuerza bruta en /api/login: un contador por IP, no por
+-- usuario (hay un solo admin, así que "por usuario" no aportaría nada).
+CREATE TABLE intentos_login (
+    ip               VARCHAR(45) PRIMARY KEY,
+    intentos         INTEGER NOT NULL DEFAULT 0,
+    ultimo_intento   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    bloqueado_hasta  TIMESTAMP NULL
 );
 
 INSERT INTO configuracion_alertas VALUES

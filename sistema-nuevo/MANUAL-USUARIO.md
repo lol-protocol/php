@@ -10,8 +10,13 @@ iniciá sesión con el usuario demo:
 - **Usuario:** `admin`
 - **Contraseña:** `admin123`
 
-Si la contraseña es incorrecta, el mensaje aparece debajo del botón. Una vez
-adentro, arriba a la derecha vas a ver el selector de idioma, "Conectado como
+Si la contraseña es incorrecta, el mensaje aparece debajo del botón. Después
+de 5 intentos fallidos seguidos, el sistema bloquea los inicios de sesión
+desde ese lugar por 15 minutos (protección contra fuerza bruta) — aunque
+pongas la contraseña correcta, va a seguir rechazando el login hasta que pase
+ese tiempo.
+
+Una vez adentro, arriba a la derecha vas a ver el selector de idioma, "Conectado como
 admin" y el botón **Cerrar sesión**.
 
 Por seguridad, si no hacés nada durante 29 minutos aparece un aviso ("Sesión
@@ -29,10 +34,11 @@ alfabetos se leen bien elijas el idioma que elijas.
 
 ## 3. Panel de KPIs
 
-Apenas entrás, arriba de todo aparecen cuatro tarjetas con un resumen de todo
+Apenas entrás, arriba de todo aparecen cinco tarjetas con un resumen de todo
 el sistema (no de un usuario en particular): usuarios totales, acciones
-totales, gasto acumulado en USD, y el tipo de acción más frecuente. Sirve para
-tener una foto general antes de meterte a mirar un usuario puntual.
+totales, gasto acumulado en USD, usuarios con alguna alerta activa (se pone
+roja si hay alguno) y el tipo de acción más frecuente. Sirve para tener una
+foto general antes de meterte a mirar un usuario puntual.
 
 ## 4. Alertas (panel lateral)
 
@@ -115,7 +121,8 @@ Cada acción del usuario aparece como una tarjeta, en orden cronológico, con:
   observación propia sobre esa acción puntual (por ejemplo, "revisado, es un
   falso positivo"). Se guarda solo, unos segundos después de dejar de
   escribir — no hace falta ningún botón, y queda ahí la próxima vez que
-  entrés.
+  entrés. Un símbolo chico al lado avisa cómo va: ⏳ mientras guarda, ✓ un
+  par de segundos cuando terminó, ⚠ si falló (reintentá escribiendo de nuevo).
 
 Al pie del flujo, **‹ Anterior** / **Siguiente ›** pasan de página cuando el
 usuario tiene muchas acciones (se muestran 20 por página).
@@ -148,3 +155,8 @@ idioma elegido (ver la sección "Idioma" arriba).
 raros en los datos?** Puede estar apagado en la configuración (⚙ del panel de
 alertas), o la sensibilidad puede estar muy baja para ese caso puntual —
 subila y probá de nuevo.
+
+**Me equivoqué de contraseña varias veces y ahora no me deja entrar ni con la
+correcta, ¿está roto?** No — es la protección contra fuerza bruta: tras 5
+intentos fallidos seguidos, ese acceso queda bloqueado 15 minutos aunque
+pongas la contraseña bien. Esperá y probá de nuevo.

@@ -6,15 +6,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /** Maneja GET /stats: agrega duración/monto (USD) de un tipo de acción para un universo. */
 final class ManejadorEstadisticas implements HttpHandler {
 
-    private final List<Accion> acciones;
+    private final AtomicReference<List<Accion>> accionesRef;
 
-    ManejadorEstadisticas(List<Accion> acciones) {
-        this.acciones = acciones;
+    ManejadorEstadisticas(AtomicReference<List<Accion>> accionesRef) {
+        this.accionesRef = accionesRef;
     }
 
     @Override
@@ -42,7 +43,7 @@ final class ManejadorEstadisticas implements HttpHandler {
             String excludeUser = params.get("exclude");
 
             List<String> finalCountries = countries;
-            List<Accion> cohort = acciones.stream()
+            List<Accion> cohort = accionesRef.get().stream()
                     .filter(a -> a.type().equals(type))
                     .filter(a -> finalCountries == null || finalCountries.contains(a.country()))
                     .filter(a -> a.age() >= ageMin && a.age() <= ageMax)

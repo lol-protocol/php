@@ -118,9 +118,13 @@ export default {
   inactividad_sesion_cerrada: "Tu sesión fue cerrada por inactividad.",
 
   note_placeholder: "Agregar una nota sobre esta acción...",
+  note_status_guardando: "Guardando...",
+  note_status_guardado: "Guardado",
+  note_status_error: "Error al guardar, reintentá",
 
   kpi_total_users: "Usuarios totales",
   kpi_total_actions: "Acciones totales",
   kpi_total_spend: "Gasto total",
   kpi_top_action: "Acción más frecuente",
+  kpi_active_alerts: "Usuarios con alertas",
 };

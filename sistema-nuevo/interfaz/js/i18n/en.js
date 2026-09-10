@@ -118,9 +118,13 @@ export default {
   inactividad_sesion_cerrada: "Your session was closed due to inactivity.",
 
   note_placeholder: "Add a note about this action...",
+  note_status_guardando: "Saving...",
+  note_status_guardado: "Saved",
+  note_status_error: "Failed to save, try again",
 
   kpi_total_users: "Total users",
   kpi_total_actions: "Total actions",
   kpi_total_spend: "Total spend",
   kpi_top_action: "Most frequent action",
+  kpi_active_alerts: "Users with alerts",
 };

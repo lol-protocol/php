@@ -2,7 +2,7 @@ import { el, ACTION_ICONS } from "./nucleo.js";
 import { t } from "./idioma.js";
 import { formatPct, formatDuration, formatMoney } from "./formato.js";
 import { buildMetricNodes } from "./metricas.js";
-import { guardarNotaConDebounce } from "./notas.js";
+import { buildNoteBlock } from "./nota-bloque.js";
 
 function buildDeltaBadge(deltaPct, { betterWhenLower = true, goodLabel, badLabel, tooltip = "" }) {
   const props = tooltip ? { title: tooltip } : {};
@@ -26,20 +26,6 @@ function buildStatsTooltip(median, p90, formatter) {
   if (median !== null) parts.push(t("stats_median", { value: formatter(median) }));
   if (p90 !== null) parts.push(t("stats_p90", { value: formatter(p90) }));
   return parts.join(" · ");
-}
-
-function buildNoteBlock(item) {
-  const textarea = el("textarea", {
-    class: "note-textarea",
-    rows: "2",
-    placeholder: t("note_placeholder"),
-  });
-  textarea.value = item.note || "";
-  textarea.addEventListener("input", () => guardarNotaConDebounce(item.id, textarea.value));
-  return el("div", { class: "note-block" }, [
-    el("span", { class: "note-icon", text: "📝" }),
-    textarea,
-  ]);
 }
 
 export function renderTimeline(items) {

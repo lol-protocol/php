@@ -39,3 +39,28 @@
   color: var(--text);
   background: var(--surface);
 }
+
+.note-status {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  min-width: 1rem;
+  text-align: center;
+}
+
+.note-status--pending {
+  color: var(--text-muted);
+  animation: note-pulse 1s ease-in-out infinite;
+}
+
+.note-status--ok {
+  color: var(--good);
+}
+
+.note-status--error {
+  color: var(--bad);
+}
+
+@keyframes note-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
