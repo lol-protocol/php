@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.8.0] - 2026-09-10
+
+### Corregido
+
+- **`composer.lock` se versiona.** Estaba en `.gitignore`; cada `composer
+  install` (incluido el de la CI) resolvía versiones frescas contra los
+  rangos de `composer.json` sin nada que garantizara reproducibilidad entre
+  corridas. Ahora el lock queda commiteado y la CI instala exactamente lo
+  que él fija.
+- **`"php": ">=8.0"` corregido a `">=8.1"`.** El mínimo declarado nunca se
+  había probado: PHPUnit `^10` (única forma de testear el proyecto) exige
+  PHP 8.1+, y la matriz de CI ya arrancaba en 8.1. El constraint ahora
+  coincide con lo que realmente se verifica.
+
+---
+
 ## [3.7.0] - 2026-09-09
 
 ### Añadido
