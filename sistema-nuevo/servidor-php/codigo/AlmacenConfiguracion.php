@@ -44,6 +44,8 @@ class AlmacenConfiguracion
     public function obtenerUmbral(): int
     {
         $valor = $this->obtener('umbral_sensibilidad');
-        return $valor ? (int)$valor : 50;
+        // OJO: NO usar "$valor ? ... : 50" -- el string "0" es falsy en PHP,
+        // así que una sensibilidad guardada en 0 terminaría leyéndose como 50.
+        return $valor !== null ? (int)$valor : 50;
     }
 }

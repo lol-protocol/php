@@ -28,6 +28,11 @@ assert_igual(true, $almacen->esAlertaHabilitada('ip_pais'), 'config: alerta_ip_p
 $almacen->guardar('umbral_sensibilidad', '80');
 assert_igual(80, $almacen->obtenerUmbral(), 'config: obtenerUmbral lee el valor guardado como int');
 
+// Caso trampa: "0" es falsy en PHP -- un obtenerUmbral() escrito como
+// "$valor ? (int)$valor : 50" leería sensibilidad=0 como si fuera 50.
+$almacen->guardar('umbral_sensibilidad', '0');
+assert_igual(0, $almacen->obtenerUmbral(), 'config: sensibilidad guardada en 0 se lee como 0, no como el default 50');
+
 foreach ($original as $clave => $valor) {
     $almacen->guardar($clave, $valor);
 }
