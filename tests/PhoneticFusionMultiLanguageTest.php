@@ -13,12 +13,17 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * La fusión fonética ("Elba Gina" -> "el vagina") no es un fenómeno
- * exclusivamente español: se extiende aquí a portugués e italiano, cada uno
- * con sus propias reglas de plegado (b/v y s/z se confunden en español y
+ * exclusivamente español. Este archivo cubre las cinco fonéticas
+ * "clásicas" (español, portugués, italiano, francés, alemán), cada una con
+ * sus propias reglas de plegado (b/v y s/z se confunden en español y
  * portugués pero no en italiano; la "h" es muda en español, portugués y
  * francés, pero endurece la c/g en italiano y no se toca en absoluto en
- * alemán). El resguardo — exigir que la coincidencia cruce la frontera entre
- * nombre y apellido — es el mismo en los cinco.
+ * alemán). Los otros doce idiomas en script latino (checo, eslovaco, danés,
+ * noruego, sueco, finlandés, húngaro, indonesio, turco, polaco, neerlandés,
+ * rumano) están en `PhoneticFusionLatinScriptExtendedTest`, separados por
+ * volumen, no por criterio distinto: el resguardo — exigir que la
+ * coincidencia cruce la frontera entre nombre y apellido — es el mismo en
+ * los diecisiete.
  */
 class PhoneticFusionMultiLanguageTest extends TestCase
 {
@@ -28,9 +33,14 @@ class PhoneticFusionMultiLanguageTest extends TestCase
     // Registro: qué idiomas tienen plegado fonético
     // -----------------------------------------------------------------
 
+    private const SUPPORTED = [
+        'spa', 'por', 'ita', 'fra', 'deu',
+        'ces', 'slk', 'dan', 'nor', 'swe', 'fin', 'hun', 'ind', 'tur', 'pol', 'nld', 'ron',
+    ];
+
     public function testRegistryListsExactlyTheSupportedLanguages(): void
     {
-        $this->assertSame(['spa', 'por', 'ita', 'fra', 'deu'], PhoneticFolderRegistry::supportedLanguages());
+        $this->assertSame(self::SUPPORTED, PhoneticFolderRegistry::supportedLanguages());
     }
 
     public function testUnsupportedLanguageFoldsToUnchangedText(): void
@@ -42,11 +52,13 @@ class PhoneticFusionMultiLanguageTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'spa');
 
-        foreach (['spa', 'por', 'ita', 'fra', 'deu'] as $code) {
+        foreach (self::SUPPORTED as $code) {
             $this->assertTrue($reviewer->getWordList($code)->supportsPhoneticFolding(), $code);
         }
 
-        foreach (['eng', 'rus', 'jpn'] as $code) {
+        // vie: script latino pero excluido a propósito (tono fonémico).
+        // rus, jpn: script no latino, el mecanismo no aplica sin romanización.
+        foreach (['eng', 'vie', 'rus', 'jpn'] as $code) {
             $this->assertFalse($reviewer->getWordList($code)->supportsPhoneticFolding(), $code);
         }
     }

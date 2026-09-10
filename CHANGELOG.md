@@ -1,5 +1,57 @@
 # Changelog
 
+## [3.9.0] - 2026-09-10
+
+### Añadido
+
+- **Fusión fonética extendida a 12 idiomas más** (checo, eslovaco, danés,
+  noruego, sueco, finlandés, húngaro, indonesio, turco, polaco, neerlandés,
+  rumano) — de 5 a 17 de los 30 idiomas soportados, todos los que usan
+  script latino salvo el vietnamita. Cada folder cubre sólo la ambigüedad (o
+  el par) verdaderamente sistemática del idioma, casi siempre la que un
+  hablante nativo aprendió de memoria en la escuela porque el oído no la
+  resuelve solo:
+  - "y"/"i" en checo y eslovaco (homófonos reales; cuál se escribe es regla
+    histórica).
+  - "å/æ/ø" → "aa/ae/oe" en danés, noruego y sueco — grafía alternativa real
+    y consolidada (histórica, no una aproximación).
+  - "ä/ö" → "a/o" en finlandés — sin el dígrafo codificado del alemán, la
+    práctica real es simplificar a la vocal base.
+  - "ly"→"j" y ő/ű→ö/ü en húngaro.
+  - La reforma ortográfica indonesia de 1972 completa: oe→u, dj/tj/nj/sj/
+    ch→j/c/ny/sy/kh, j suelta→y ("Soekarno"/"Sukarno").
+  - Sustitución sin teclado turco: ı/ş/ç/ö/ü/ğ→i/s/c/o/u/g
+    ("Erdoğan"/"Erdogan").
+  - "ó"→"u", rz/ż y ch/h unificados en polaco — los tres pares son
+    homófonos reales.
+  - "ei"/"ij" y "au"/"ou" unificados en neerlandés — la confusión
+    ortográfica más famosa del idioma.
+  - "â"/"î" unificados en rumano (mismo sonido, posición histórica); ş/ţ
+    normalizados a ș/ț (variantes de codificación de la misma letra, no
+    fonética).
+  - **Vietnamita excluido a propósito**: es de script latino, pero el tono
+    es fonémico (seis tonos distinguen palabras) y no hay grafía
+    alternativa real que plegar sin colapsar significados. Los 10 idiomas
+    en script no latino (árabe, búlgaro, hebreo, hindi, japonés, coreano,
+    ruso, tailandés, ucraniano, chino) quedan fuera por la misma disciplina
+    que ya rige el resto del proyecto: el mecanismo de plegado por
+    sustitución de caracteres no tiene equivalente verificable sin una
+    romanización propia confirmada por un hablante nativo.
+  - `PhoneticFolderRegistry::FOLDERS` pasa de 5 a 17 entradas; ningún otro
+    componente cambió.
+- Tests nuevos en `PhoneticFusionLatinScriptExtendedTest` (nuevo archivo,
+  separado de `PhoneticFusionMultiLanguageTest` por volumen): reglas de
+  plegado unitarias, fusión que cruza la frontera con ejemplos construidos,
+  y guardas de falso positivo con nombres reales de cada idioma (Jan Novák,
+  Anders Hansen, Budi Santoso, Mehmet Yılmaz, Jan Kowalski, Ion Popescu,
+  entre otros).
+
+### Tests
+
+146 tests (43 nuevos), todo en verde — sin regresiones.
+
+---
+
 ## [3.8.0] - 2026-09-10
 
 ### Corregido

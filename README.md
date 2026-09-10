@@ -140,14 +140,21 @@ $reviewer->validateFullName('Paco', 'Cojes');
 // pero con otra grafía del mismo sonido.
 ```
 
-### Cinco idiomas, cinco fonéticas distintas
+### Diecisiete idiomas, diecisiete fonéticas distintas
 
-Cubre español, portugués, italiano, francés y alemán — cada uno con su propio
-folder (`PhoneticFolder`, `PortuguesePhoneticFolder`, `ItalianPhoneticFolder`,
-`FrenchPhoneticFolder`, `GermanPhoneticFolder`), seleccionado por
-`PhoneticFolderRegistry` según el idioma activo. No son la misma clase con
-distinto nombre: cada fonética tiene sus propias confusiones reales, y
-aplicar las reglas de una a otra produciría colisiones falsas.
+Cubre los 17 idiomas en script latino de los 30 soportados — cada uno con su
+propio folder (`PhoneticFolder`, `PortuguesePhoneticFolder`,
+`ItalianPhoneticFolder`, `FrenchPhoneticFolder`, `GermanPhoneticFolder`,
+`CzechPhoneticFolder`, `SlovakPhoneticFolder`, `DanishPhoneticFolder`,
+`NorwegianPhoneticFolder`, `SwedishPhoneticFolder`, `FinnishPhoneticFolder`,
+`HungarianPhoneticFolder`, `IndonesianPhoneticFolder`,
+`TurkishPhoneticFolder`, `PolishPhoneticFolder`, `DutchPhoneticFolder`,
+`RomanianPhoneticFolder`), seleccionado por `PhoneticFolderRegistry` según el
+idioma activo. No son la misma clase con distinto nombre: cada fonética
+tiene sus propias confusiones reales, y aplicar las reglas de una a otra
+produciría colisiones falsas.
+
+**Las cinco fonéticas originales:**
 
 | | español | portugués | italiano | francés | alemán |
 |---|---|---|---|---|---|
@@ -157,14 +164,41 @@ aplicar las reglas de una a otra produciría colisiones falsas.
 | g suave / j | se aspira, se borra | sonido audible, se unifica (no se borra) | — | sonido audible, se unifica (no se borra) | — |
 | otras reglas propias | — | — | — | qu→k, ph→f, protege "ch" (sonido "sh") | ä/ö/ü/ß → grafía alternativa real (ae/oe/ue/ss); w→v sin excepciones |
 
+**Los doce idiomas añadidos después**, cada uno con una sola ambigüedad (o
+un par) verdaderamente sistemática — casi siempre la que un hablante nativo
+aprendió de memoria en la escuela porque el oído no la resuelve solo:
+
+| Idioma | Qué pliega | Por qué es real |
+|---|---|---|
+| Checo (`ces`) | y/ý → i/í | Suenan idéntico; cuál se escribe es una regla histórica, no fonética |
+| Eslovaco (`slk`) | y/ý → i/í | Misma ambigüedad que el checo |
+| Danés (`dan`) | æ/ø/å → ae/oe/aa | Grafía alternativa real, no aproximación (å era literalmente "aa") |
+| Noruego (`nor`) | æ/ø/å → ae/oe/aa | Misma convención histórica que el danés |
+| Sueco (`swe`) | ä/ö/å → ae/oe/aa | Misma convención histórica |
+| Finlandés (`fin`) | ä/ö → a/o | A diferencia del alemán, no hay dígrafo codificado: la práctica real es simplificar a la vocal base |
+| Húngaro (`hun`) | ly → j; ő/ű → ö/ü | "ly" y "j" suenan igual (regla histórica); ő/ű son sólo la versión larga de ö/ü |
+| Indonesio (`ind`) | oe → u; dj/tj/nj/sj/ch/j → j/c/ny/sy/kh/y | Reforma ortográfica de 1972 — "Soekarno"/"Sukarno" es el ejemplo de manual |
+| Turco (`tur`) | ı/ş/ç/ö/ü/ğ → i/s/c/o/u/g | Sustitución real y extendida cuando no hay teclado turco ("Erdoğan"→"Erdogan") |
+| Polaco (`pol`) | ó → u; rz/ż y ch/h se unifican | Los tres pares suenan idéntico; cuál se escribe es etimología, no sonido |
+| Neerlandés (`nld`) | ei/ij se unifican; au/ou se unifican | La confusión ortográfica más famosa del idioma — ambos pares son homófonos reales |
+| Rumano (`ron`) | â/î se unifican; ş/ţ → ș/ț | â/î suenan idéntico (posición, no sonido); ş/ţ son variantes de codificación de la misma letra |
+
+Quedan fuera a propósito: el **vietnamita** (script latino, pero el tono es
+fonémico — no hay grafía alternativa que plegar sin colapsar significados),
+y los diez idiomas en script no latino (árabe, búlgaro, hebreo, hindi,
+japonés, coreano, ruso, tailandés, ucraniano, chino) — el mecanismo de
+plegar sustituyendo caracteres no tiene un equivalente verificable sin una
+romanización propia, y sin un hablante nativo que confirme cada regla sería
+inventar, no normalizar.
+
 ```php
-$reviewer = DefamatoryContentReviewer::create($configDir, 'fra');
-$reviewer->getWordList('fra')->supportsPhoneticFolding();  // true
+$reviewer = DefamatoryContentReviewer::create($configDir, 'pol');
+$reviewer->getWordList('pol')->supportsPhoneticFolding();  // true
 $reviewer->getWordList('eng')->supportsPhoneticFolding();  // false — sin reglas registradas
 ```
 
-Añadir un sexto idioma es añadir su folder y una fila en
-`PhoneticFolderRegistry::FOLDERS` — nada más cambia.
+Añadir un idioma nuevo a la fusión fonética es añadir su folder y una fila
+en `PhoneticFolderRegistry::FOLDERS` — nada más cambia.
 
 ### Evasión cubierta y no cubierta
 
@@ -416,6 +450,7 @@ src/DefamatoryContentReview/
 ├── ItalianPhoneticFolder.php       Plegado fonético del italiano
 ├── FrenchPhoneticFolder.php        Plegado fonético del francés
 ├── GermanPhoneticFolder.php        Plegado fonético del alemán
+├── Czech…RomanianPhoneticFolder.php  Los otros 12 idiomas latinos (ver tabla arriba)
 ├── LeetspeakFolding.php            Sustitución numérica compartida por los folders
 ├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
 ├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
@@ -482,11 +517,11 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
   frontera (ver la sección de fusión fonética más arriba). La transliteración
   numérica de un solo carácter sí se cubre (ver «Evasión cubierta y no
   cubierta»).
-- La fusión fonética sólo cubre español, portugués, italiano, francés y
-  alemán — el resto de idiomas no tiene folder registrado en
-  `PhoneticFolderRegistry`, y en cualquiera de los cinco sólo cubre el
-  cruce entre nombre y apellido, no la
-  re-segmentación dentro de un único campo.
+- La fusión fonética sólo cubre los 17 idiomas en script latino con folder
+  registrado en `PhoneticFolderRegistry` (vietnamita excluido a propósito
+  por su tono fonémico; los 10 idiomas en script no latino, fuera del
+  alcance del mecanismo). En cualquiera de los 17 sólo cubre el cruce entre
+  nombre y apellido, no la re-segmentación dentro de un único campo.
 - Ningún diccionario queda en `basic`, pero `moderate` (24 de los 30) sigue
   necesitando revisión de hablante nativo antes de producción — es una base
   verificable, no una traducción exhaustiva.
