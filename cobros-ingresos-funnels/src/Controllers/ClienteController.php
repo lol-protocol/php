@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Filtros;
 use App\Paginacion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
@@ -68,6 +69,8 @@ final class ClienteController
 
             if ($nombre === '' || $email === '' || $paisCodigo === '' || $ciudad === '' || $fechaNacimiento === '') {
                 $error = 'Completá todos los campos obligatorios.';
+            } elseif (!Filtros::esFechaValida($fechaNacimiento)) {
+                $error = 'La fecha de nacimiento no es válida.';
             } else {
                 try {
                     $id = (new ClienteRepository())->crear([

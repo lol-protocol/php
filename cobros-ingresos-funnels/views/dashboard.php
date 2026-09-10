@@ -123,7 +123,7 @@ $coloresSegmento = [
         <?php foreach ($segmentacion as $titulo => $filas): ?>
             <div class="subpanel">
                 <h3><?= htmlspecialchars($titulo) ?></h3>
-                <?php $maxSeg = max(1.0, ...array_column($filas, 'total_facturado')); ?>
+                <?php $maxSeg = $filas ? max(1.0, ...array_column($filas, 'total_facturado')) : 1.0; ?>
                 <?php foreach ($filas as $fila): ?>
                     <div class="hbar-row compacto">
                         <span class="hbar-label" title="<?= htmlspecialchars($fila['etiqueta']) ?>"><?= htmlspecialchars($fila['etiqueta']) ?></span>

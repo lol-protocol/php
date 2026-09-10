@@ -64,6 +64,8 @@ final class CobrosController
                 $error = 'Elegí un cliente valido.';
             } elseif ($concepto === '' || $monto <= 0 || $fechaEmision === '' || $fechaVencimiento === '') {
                 $error = 'Completá todos los campos.';
+            } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
+                $error = 'La fecha de emisión o de vencimiento no es válida.';
             } else {
                 $id = (new BoletaRepository())->crear([
                     'cliente_id' => $clienteId,
@@ -119,6 +121,8 @@ final class CobrosController
 
             if ($concepto === '' || $monto <= 0 || $fechaEmision === '' || $fechaVencimiento === '') {
                 $error = 'Completá todos los campos.';
+            } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
+                $error = 'La fecha de emisión o de vencimiento no es válida.';
             } else {
                 $antes = sprintf('"%s" %s', $boleta['concepto'], money_moneda((float) $boleta['monto'], $boleta['moneda_codigo']));
                 $despues = sprintf('"%s" %s', $concepto, money_moneda($monto, $boleta['moneda_codigo']));

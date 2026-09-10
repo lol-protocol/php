@@ -61,6 +61,8 @@ final class PagosController
                 $error = 'Elegí un cliente valido.';
             } elseif ($monto <= 0 || $fechaPago === '' || $metodo === '') {
                 $error = 'Completá todos los campos.';
+            } elseif (!Filtros::esFechaValida($fechaPago)) {
+                $error = 'La fecha de pago no es válida.';
             } else {
                 $id = (new PagoRepository())->crear([
                     'boleta_id' => $boletaId ?: null,
@@ -116,6 +118,8 @@ final class PagosController
 
             if ($monto <= 0 || $fechaPago === '' || $metodo === '') {
                 $error = 'Completá todos los campos.';
+            } elseif (!Filtros::esFechaValida($fechaPago)) {
+                $error = 'La fecha de pago no es válida.';
             } else {
                 $antes = money_moneda((float) $pago['monto'], $pago['moneda_codigo']) . " ({$pago['metodo']})";
                 $despues = money_moneda($monto, $pago['moneda_codigo']) . " ({$metodo})";

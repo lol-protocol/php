@@ -116,4 +116,22 @@ final class FiltrosTest extends TestCase
 
         unset($_GET['meses']);
     }
+
+    public function testEsFechaValidaAceptaFechasReales(): void
+    {
+        self::assertTrue(Filtros::esFechaValida('2026-01-15'));
+        self::assertTrue(Filtros::esFechaValida('2024-02-29'), '2024 es bisiesto');
+    }
+
+    public function testEsFechaValidaRechazaTextoSuelto(): void
+    {
+        self::assertFalse(Filtros::esFechaValida('esto-no-es-una-fecha'));
+        self::assertFalse(Filtros::esFechaValida(''));
+    }
+
+    public function testEsFechaValidaRechazaFechasImposiblesAunqueTenganElFormatoCorrecto(): void
+    {
+        self::assertFalse(Filtros::esFechaValida('2026-13-40'), 'mes 13 no existe');
+        self::assertFalse(Filtros::esFechaValida('2025-02-29'), '2025 no es bisiesto');
+    }
 }

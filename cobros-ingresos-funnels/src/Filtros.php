@@ -76,7 +76,8 @@ final class Filtros
         return self::rangoPersonalizado() ?? self::rango(self::meses());
     }
 
-    private static function esFechaValida(string $fecha): bool
+    /** true si $fecha es una fecha real en formato Y-m-d (rechaza "2026-02-30", texto suelto, etc.). */
+    public static function esFechaValida(string $fecha): bool
     {
         $d = DateTimeImmutable::createFromFormat('Y-m-d', $fecha);
         return $d !== false && $d->format('Y-m-d') === $fecha;

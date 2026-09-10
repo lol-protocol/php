@@ -5,7 +5,7 @@
 /** @var array $pagos */
 /** @var array|null $viajeFunnel */
 
-$estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 'Parcial', 'vencida' => 'Vencida'];
+$estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 'Parcial', 'vencida' => 'Vencida', 'anulada' => 'Anulada'];
 $metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efectivo' => 'Efectivo'];
 $canalLabel = ['organico' => 'Organico', 'ads' => 'Ads', 'referido' => 'Referido', 'redes_sociales' => 'Redes sociales', 'email' => 'Email'];
 
