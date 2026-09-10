@@ -55,7 +55,7 @@ psql -h $DB_HOST -U postgres -c "CREATE ROLE $DB_USER LOGIN PASSWORD '$DB_PASSWO
 psql -h $DB_HOST -U postgres -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 
 php database/seed.php      # crea el esquema y carga datos de ejemplo
-php -S localhost:8000 -t public
+php -S localhost:8000 -t public   # solo para desarrollo, ver "Despliegue en producción"
 ```
 
 Abrí `http://localhost:8000` — te va a mandar a `?page=login`. Credenciales de
@@ -66,6 +66,62 @@ Volver a correr `php database/seed.php` en cualquier momento reconstruye el esqu
 y regenera los datos de ejemplo desde cero (es reproducible: usa una semilla fija).
 Las mismas variables `DB_*` tienen que estar exportadas cuando corrés el servidor,
 el seed y los tests, para que los tres apunten a la misma base.
+
+## Despliegue en producción
+
+`php -S` (el comando de arriba) es el servidor de desarrollo embebido de PHP.
+El propio manual de PHP dice que no está pensado para producción (es
+mono-proceso, sin tuning de rendimiento ni manejo serio de concurrencia). Para
+correr esto de verdad hace falta **PHP-FPM + un servidor web** (nginx, Caddy o
+Apache) delante.
+
+Ejemplo mínimo con nginx (asumiendo php-fpm escuchando en `127.0.0.1:9000`):
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name tu-dominio.com;
+    root /ruta/al/proyecto/public;
+    index index.php;
+
+    # TLS: certificado real (ej. Let's Encrypt/certbot) va acá.
+
+    location / {
+        try_files $uri /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        # Las variables DB_* tienen que llegar al proceso de PHP-FPM, no alcanza
+        # con exportarlas en la shell: se configuran en el pool de php-fpm
+        # (www.conf: env[DB_HOST] = ..., etc.) o vía fastcgi_param acá mismo.
+    }
+}
+server {
+    listen 80;
+    server_name tu-dominio.com;
+    return 301 https://$host$request_uri;   # nginx redirige a HTTPS, no la app
+}
+```
+
+Con TLS terminado en nginx, la app detecta HTTPS solo si nginx manda
+`X-Forwarded-Proto: https` en el `fastcgi_param` (agregalo si no está ya en tu
+`fastcgi_params`) — de eso depende que la cookie de sesión salga con `Secure`
+y que se mande `Strict-Transport-Security` (ver `App\Http::esSegura()`).
+
+Otros dos puntos que la app ya resuelve por su cuenta pero vale saber:
+
+- **Errores**: `public/index.php` fuerza `display_errors=0` y registra un
+  manejador global (`App\ErrorHandler`) que manda el detalle de cualquier
+  excepción no capturada a `error_log()` — nunca a la respuesta. Dónde
+  termina ese log depende de tu `php.ini`/pool de FPM (`error_log` de PHP);
+  configuralo a un archivo real en producción en vez del default.
+- **Backups**: no hay nada automatizado acá — es un `pg_dump` de la base
+  como cualquier otra base de Postgres. Con `boletas`/`pagos`/`clientes`
+  reales adentro, un backup periódico deja de ser opcional.
 
 ## Tests
 
@@ -98,6 +154,8 @@ src/
   Csrf.php              token CSRF por sesión, verificado en Router (testeado)
   Http.php              detecta HTTPS (directo o detras de proxy), testeado
   SecurityHeaders.php   headers de seguridad de cada respuesta, testeado
+  ErrorHandler.php      red de seguridad para excepciones no capturadas
+                        (loguea el detalle, nunca lo muestra), testeado
   Router.php, View.php, Filtros.php, Config.php, helpers.php
 database/
   schema.sql            esquema de la base

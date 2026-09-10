@@ -15,8 +15,12 @@ use App\Controllers\LoginController;
 use App\Controllers\PagosController;
 use App\Controllers\UsuarioController;
 use App\Database;
+use App\ErrorHandler;
 use App\Router;
 use App\SecurityHeaders;
+
+ini_set('display_errors', '0');
+ErrorHandler::registrar();
 
 foreach (SecurityHeaders::listado() as $nombre => $valor) {
     header("{$nombre}: {$valor}");
@@ -25,8 +29,9 @@ foreach (SecurityHeaders::listado() as $nombre => $valor) {
 try {
     Database::connection();
 } catch (Throwable $e) {
+    error_log('No se pudo conectar a la base de datos: ' . $e->getMessage());
     http_response_code(500);
-    echo 'No se pudo conectar a la base de datos. Corre: php database/seed.php' . "\n" . $e->getMessage();
+    echo 'No se pudo conectar a la base de datos. Si es la primera vez, corré: php database/seed.php';
     exit;
 }
 
