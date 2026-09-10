@@ -244,7 +244,10 @@ return [
             ['word' => 'niakoué', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'youpin', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'rital', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'polak', 'riskType' => 'etnico', 'severity' => 'high'],
+            // 'Polak' es también un apellido real y documentado (checo,
+            // polaco y de la diáspora judía) — nunca debe rechazar en
+            // automático a un apellido real.
+            ['word' => 'polak', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'boche', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'rosbif', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'gitan', 'riskType' => 'etnico', 'severity' => 'medium'],

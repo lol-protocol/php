@@ -146,8 +146,11 @@ return [
             ['word' => 'cigány', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'zsidó', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'ferdeszemű', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'oláh', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'tót', 'riskType' => 'etnico', 'severity' => 'high'],
+            // 'Oláh' y 'Tót' son también apellidos húngaros reales y comunes
+            // (el primero, en particular, muy frecuente entre familias romaníes
+            // húngaras) — nunca deben rechazar en automático a un apellido real.
+            ['word' => 'oláh', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
+            ['word' => 'tót', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'idegen', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
         'vallasi' => [

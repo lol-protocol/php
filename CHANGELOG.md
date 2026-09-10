@@ -1,5 +1,57 @@
 # Changelog
 
+## [3.10.0] - 2026-09-10
+
+### Corregido
+
+- **Seis apellidos reales rechazaban en automático.** Auditoría de la lógica
+  fonética y el diccionario: un barrido de ~6.800 combinaciones de nombre y
+  apellido reales sobre los 17 idiomas con fusión fonética (10-20 nombres ×
+  10-20 apellidos por idioma) encontró que `decide()` devolvía `reject` para
+  seis apellidos reales y documentados, porque su entrada en el diccionario
+  tenía severidad alta y categoría `etnico` sin `nameCollision => true`:
+  - `oláh` y `tót` (húngaro) — el primero, en particular, muy frecuente
+    entre familias romaníes húngaras.
+  - `negro` (italiano, frecuente en Piemonte).
+  - `negrão` (portugués/brasileño).
+  - `polak` (francés — checo/polaco/diáspora judía).
+  - `szwab` (polaco).
+
+  Los seis quedan marcados con `nameCollision => true`: la coincidencia se
+  sigue registrando, pero ahora manda a revisión humana en vez de rechazar
+  automáticamente un linaje real, que es exactamente para lo que existe ese
+  mecanismo.
+- `tests/NameCollisionRegressionTest.php` (nuevo): fija los seis casos como
+  regresión, y añade una prueba de seguimiento que cuenta cuántos términos
+  de severidad alta en categoría `etnico` siguen sin `nameCollision`
+  evaluado (160 al momento de escribir esto) — no falla si crece, pero deja
+  el número visible para que agregar uno nuevo sin pensar en la colisión no
+  pase desapercibido. El resto de esa lista no se tocó: requiere la misma
+  revisión por hablante nativo que ya documenta `CONTRIBUTING.md`, no
+  conjeturas sobre idiomas que este proyecto no habla con certeza.
+
+### Verificado
+
+- Cero colisiones fonéticas problemáticas entre términos distintos del
+  mismo diccionario en los 17 idiomas con fusión fonética (una sola
+  colisión encontrada, inocua: `gerizekalı`/`geri zekalı` en turco son dos
+  grafías del mismo insulto).
+- Cero salidas vacías o degeneradas al plegar cualquier palabra de los 17
+  diccionarios fonéticos.
+- Tras las seis correcciones, cero decisiones `reject` en el barrido de
+  ~6.800 combinaciones reales — sólo quedan casos ya esperados en `review`
+  (colisión de apellido o fusión fonética, ambos limitados a revisión por
+  diseño) y un `accept_with_flag` de severidad baja ("Francisco Costa" →
+  "cocô" en portugués, un artefacto de frontera genuino pero de la
+  severidad más baja posible — el sistema lo acota correctamente, no
+  requiere corrección).
+
+### Tests
+
+156 tests (10 nuevos), todo en verde — sin regresiones.
+
+---
+
 ## [3.9.0] - 2026-09-10
 
 ### Añadido

@@ -219,7 +219,10 @@ return [
         ],
 
         'etnico' => [
-            ['word' => 'negro', 'riskType' => 'etnico', 'severity' => 'high'],
+            // 'Negro' es también un apellido italiano real y documentado
+            // (frecuente en Piemonte) — nunca debe rechazar en automático a un
+            // apellido real.
+            ['word' => 'negro', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'mulatto', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'meticcio', 'riskType' => 'etnico', 'severity' => 'low'],
             ['word' => 'terrone', 'riskType' => 'etnico', 'severity' => 'high'],

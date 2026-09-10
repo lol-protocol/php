@@ -159,7 +159,10 @@ return [
             ['word' => 'żydek', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'skośnooki', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'ruski', 'riskType' => 'etnico', 'severity' => 'medium'],
-            ['word' => 'szwab', 'riskType' => 'etnico', 'severity' => 'high'],
+            // 'Szwab' es también un apellido polaco real y documentado
+            // (de "szwab", suabo) — nunca debe rechazar en automático a un
+            // apellido real.
+            ['word' => 'szwab', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'obcy', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
         'religijne' => [

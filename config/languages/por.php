@@ -233,7 +233,9 @@ return [
         'etnico' => [
             ['word' => 'preto', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'crioulo', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'negrão', 'riskType' => 'etnico', 'severity' => 'high'],
+            // 'Negrão' es también un apellido portugués/brasileño real y
+            // documentado — nunca debe rechazar en automático a un apellido real.
+            ['word' => 'negrão', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'mulato', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'mestiço', 'riskType' => 'etnico', 'severity' => 'low'],
             ['word' => 'índio', 'riskType' => 'etnico', 'severity' => 'medium'],
