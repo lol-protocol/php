@@ -1,0 +1,68 @@
+/* Tarjeta de una acción: encabezado y métricas coloreadas por tipo de dato. */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.card-time {
+  color: var(--dato-fecha);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.card-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+}
+
+.metric {
+  color: var(--text-muted);
+}
+
+.metric--duracion {
+  color: var(--dato-duracion);
+}
+
+.metric--dinero {
+  color: var(--dato-dinero);
+}
+
+.metric--ruta {
+  color: var(--dato-ruta);
+}
+
+.metric--archivo {
+  color: var(--dato-archivo);
+}
+
+.metric--ip {
+  color: var(--dato-ip);
+}
+
+/* IP cuyo país no coincide con el país declarado del usuario (VPN/proxy/viaje) */
+.metric--ip-alerta {
+  color: var(--bad);
+  text-shadow: 0 0 6px var(--bad);
+}

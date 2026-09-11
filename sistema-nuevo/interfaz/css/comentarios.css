@@ -1,0 +1,12 @@
+/* Bloque de comentario saneado (reseñas / tickets de soporte). */
+
+.comment-block {
+  margin-top: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--surface-alt);
+  border-left: 3px solid var(--dato-comentario);
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: var(--dato-comentario);
+  font-style: italic;
+}

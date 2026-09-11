@@ -1,0 +1,54 @@
+/* Caja de sesión (usuario conectado + cerrar sesión) en la topbar. */
+
+.session-box {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-left: auto;
+}
+
+.session-username {
+  font-size: 0.82rem;
+  color: var(--dato-fecha);
+}
+
+.lang-switch {
+  display: flex;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.lang-button {
+  padding: 0.4rem 0.6rem;
+  border: none;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.lang-button + .lang-button {
+  border-left: 1px solid var(--accent);
+}
+
+.lang-button.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.logout-button {
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--bad);
+  border-radius: 6px;
+  background: var(--bad-soft);
+  color: var(--bad);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background: rgba(255, 40, 100, 0.25);
+}

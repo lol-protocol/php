@@ -1,0 +1,132 @@
+/* Panel de alertas proactivas: usuarios con IPs fuera de su país declarado. */
+
+.alerts-panel {
+  background: var(--bad-soft);
+  border: 1px solid var(--bad);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+}
+
+.alerts-panel h3 {
+  color: var(--bad);
+  text-shadow: 0 0 8px var(--bad);
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.alerts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alerts-header h3 {
+  margin-bottom: 0;
+}
+
+.alerts-config-toggle {
+  background: transparent;
+  border: 1px solid var(--bad);
+  color: var(--bad);
+  border-radius: 4px;
+  width: 1.8rem;
+  height: 1.8rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.alerts-config-toggle:hover {
+  background: rgba(255, 40, 100, 0.1);
+}
+
+.alerts-config-panel {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--bad);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.alerts-config-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.alerts-config-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.alerts-config-slider input[type="range"] {
+  width: 100%;
+}
+
+.alerts-summary {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0 0 0.6rem;
+}
+
+.alerts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.alerts-button {
+  width: 100%;
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--bad);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--bad);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.alerts-button:hover {
+  box-shadow: 0 0 8px rgba(255, 40, 100, 0.4);
+}
+
+.alerts-section {
+  margin-bottom: 0.8rem;
+}
+
+.alerts-type-title {
+  color: var(--bad);
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin: 0 0 0.4rem;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.alerts-sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.alerts-item {
+  margin: 0;
+  padding: 0;
+}
