@@ -55,4 +55,24 @@ final class AuthTest extends TestCase
 
         self::assertSame('invalido', Auth::intentarLogin($this->email, 'cualquier-cosa'));
     }
+
+    /**
+     * requerir() re-chequea esto en cada request para cortar sesiones que
+     * quedaron abiertas cuando alguien les revoca el acceso. Se prueba la
+     * funcion pura por separado porque requerir() en si misma llama exit().
+     */
+    public function testSesionSigueValidaConUsuarioActivo(): void
+    {
+        self::assertTrue(Auth::sesionSigueValida(['id' => 1, 'activo' => true]));
+    }
+
+    public function testSesionSigueValidaEsFalsaSiElUsuarioFueRevocado(): void
+    {
+        self::assertFalse(Auth::sesionSigueValida(['id' => 1, 'activo' => false]));
+    }
+
+    public function testSesionSigueValidaEsFalsaSiElUsuarioYaNoExiste(): void
+    {
+        self::assertFalse(Auth::sesionSigueValida(null));
+    }
 }

@@ -6,6 +6,7 @@ namespace App\Tests\Integration;
 
 use App\Database;
 use App\Repositories\BoletaRepository;
+use App\Repositories\ClienteRepository;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,6 +17,19 @@ use PHPUnit\Framework\TestCase;
  */
 final class BoletaRepositoryTest extends TestCase
 {
+    /** @var int[] */
+    private array $idsCreados = [];
+
+    protected function tearDown(): void
+    {
+        if ($this->idsCreados === []) {
+            return;
+        }
+        $marcadores = implode(',', array_fill(0, count($this->idsCreados), '?'));
+        $stmt = Database::connection()->prepare("DELETE FROM boletas WHERE id IN ({$marcadores})");
+        $stmt->execute($this->idsCreados);
+    }
+
     public function testListadoFiltradoPorEstadoSoloDevuelveEseEstado(): void
     {
         $repo = new BoletaRepository();
@@ -76,6 +90,43 @@ final class BoletaRepositoryTest extends TestCase
             $idsPagina2 = array_column($pagina2, 'id');
             self::assertEmpty(array_intersect($idsPagina1, $idsPagina2), 'paginas distintas no deben repetir filas');
         }
+    }
+
+    /**
+     * Reproduce a proposito el escenario que antes rompia la paginacion: un
+     * grupo de filas empatadas en fecha_emision (la columna de ORDER BY) que
+     * cruza el borde entre pagina 1 y pagina 2. Sin un desempate deterministico
+     * (id), Postgres puede ordenar ese empate distinto en cada ejecucion y
+     * una misma fila aparece en las dos paginas (o en ninguna).
+     */
+    public function testPaginacionNoDuplicaNiPierdeFilasCuandoHayEmpateEnLaFechaDeCorte(): void
+    {
+        $cliente = (new ClienteRepository())->porId(1);
+        self::assertNotNull($cliente, 'este test asume que el cliente #1 existe (lo trae el seed)');
+
+        $fechaFija = '1901-01-01';
+        $cantidad = \App\Paginacion::POR_PAGINA + 5;
+        $repo = new BoletaRepository();
+        for ($i = 0; $i < $cantidad; $i++) {
+            $this->idsCreados[] = $repo->crear([
+                'cliente_id' => 1,
+                'concepto' => 'Test empate paginacion',
+                'monto' => 100,
+                'moneda_codigo' => $cliente['moneda_codigo'],
+                'fecha_emision' => $fechaFija,
+                'fecha_vencimiento' => $fechaFija,
+            ]);
+        }
+
+        $pagina1 = $repo->listado($fechaFija, $fechaFija, null, null, 1);
+        $pagina2 = $repo->listado($fechaFija, $fechaFija, null, null, 2);
+
+        self::assertSame($cantidad, $pagina1['total']);
+        $idsPagina1 = array_column($pagina1['filas'], 'id');
+        $idsPagina2 = array_column($pagina2['filas'], 'id');
+
+        self::assertEmpty(array_intersect($idsPagina1, $idsPagina2), 'la misma fila no debe aparecer en dos paginas distintas');
+        self::assertCount($cantidad, array_unique(array_merge($idsPagina1, $idsPagina2)), 'entre ambas paginas no se debe perder ninguna fila');
     }
 
     public function testListadoSinFiltroDeEstadoPaginaEnSqlYElTotalCoincideConUnaCuentaIndependiente(): void

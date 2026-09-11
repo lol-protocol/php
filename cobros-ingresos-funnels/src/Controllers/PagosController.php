@@ -57,12 +57,16 @@ final class PagosController
             $metodo = (string) ($_POST['metodo'] ?? '');
             $boletaId = (int) ($_POST['boleta_id'] ?? 0);
 
+            $boleta = $boletaId > 0 ? $boletaRepo->porId($boletaId) : null;
+
             if ($clienteElegido === null) {
                 $error = 'Elegí un cliente valido.';
             } elseif ($monto <= 0 || $fechaPago === '' || $metodo === '') {
                 $error = 'Completá todos los campos.';
             } elseif (!Filtros::esFechaValida($fechaPago)) {
                 $error = 'La fecha de pago no es válida.';
+            } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
+                $error = 'La boleta elegida no es válida para este cliente.';
             } else {
                 $id = (new PagoRepository())->crear([
                     'boleta_id' => $boletaId ?: null,
@@ -92,6 +96,16 @@ final class PagosController
             'activePage' => 'pagos',
             'titulo' => 'Nuevo pago',
         ]);
+    }
+
+    /**
+     * Una boleta solo es un origen valido para el pago de $clienteId si
+     * existe, es de ese mismo cliente y no esta anulada (evita registrar un
+     * cobro contra una boleta ajena o ya sin efecto).
+     */
+    public static function boletaEsValidaParaCliente(?array $boleta, int $clienteId): bool
+    {
+        return $boleta !== null && (int) $boleta['cliente_id'] === $clienteId && !$boleta['anulada'];
     }
 
     public function editar(): void
@@ -153,12 +167,14 @@ final class PagosController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $pagoRepo->anular($id);
-            AuditoriaRepository::auditarComoUsuarioActual('anular', 'pago', $id, sprintf(
-                'Pago #%d (%s)',
-                $id,
-                money_moneda((float) $pago['monto'], $pago['moneda_codigo'])
-            ));
+            if (!$pago['anulada']) {
+                $pagoRepo->anular($id);
+                AuditoriaRepository::auditarComoUsuarioActual('anular', 'pago', $id, sprintf(
+                    'Pago #%d (%s)',
+                    $id,
+                    money_moneda((float) $pago['monto'], $pago['moneda_codigo'])
+                ));
+            }
             header('Location: ?page=pagos&anulado=' . $id);
             exit;
         }

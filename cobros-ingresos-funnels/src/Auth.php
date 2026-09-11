@@ -70,7 +70,14 @@ final class Auth
         session_destroy();
     }
 
-    /** Corta la ejecucion y redirige a login (con destino de vuelta) si no hay sesion activa. */
+    /**
+     * Corta la ejecucion y redirige a login (con destino de vuelta) si no hay
+     * sesion activa. Tambien re-chequea contra la base que el usuario siga
+     * activo: revocar acceso no invalida por si solo una sesion que ya
+     * estaba abierta (el navegador se queda con la cookie), asi que sin este
+     * chequeo alguien revocado seguiria entrando a todo hasta que cierre
+     * sesion por su cuenta.
+     */
     public static function requerir(): void
     {
         if (!self::autenticado()) {
@@ -78,6 +85,19 @@ final class Auth
             header('Location: ?page=login&next=' . urlencode($destino));
             exit;
         }
+
+        $usuario = (new UsuarioSistemaRepository())->porId(self::usuarioActual()['id']);
+        if (!self::sesionSigueValida($usuario)) {
+            self::logout();
+            header('Location: ?page=login');
+            exit;
+        }
+    }
+
+    /** Extraida de requerir() para poder probarla sin pasar por exit(). */
+    public static function sesionSigueValida(?array $usuario): bool
+    {
+        return $usuario !== null && $usuario['activo'];
     }
 
     /**

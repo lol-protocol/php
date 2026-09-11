@@ -97,7 +97,7 @@ final class PagoRepository
              FROM pagos p
              JOIN clientes c ON c.id = p.cliente_id
              WHERE p.fecha_pago BETWEEN :desde AND :hasta{$filtroCliente}
-             ORDER BY p.fecha_pago DESC
+             ORDER BY p.fecha_pago DESC, p.id DESC
              LIMIT :limite OFFSET :offset"
         );
         foreach ($params as $clave => $valor) {

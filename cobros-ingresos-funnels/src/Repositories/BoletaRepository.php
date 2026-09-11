@@ -129,7 +129,7 @@ final class BoletaRepository
             $stmtTotal->execute($params);
             $total = (int) $stmtTotal->fetchColumn();
 
-            $stmt = $this->db->prepare("{$select} ORDER BY b.fecha_emision DESC LIMIT :limite OFFSET :offset");
+            $stmt = $this->db->prepare("{$select} ORDER BY b.fecha_emision DESC, b.id DESC LIMIT :limite OFFSET :offset");
             foreach ($params as $clave => $valor) {
                 $stmt->bindValue($clave, $valor);
             }

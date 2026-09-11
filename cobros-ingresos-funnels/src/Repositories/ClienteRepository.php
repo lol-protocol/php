@@ -60,7 +60,7 @@ final class ClienteRepository
              FROM clientes c
              JOIN paises p ON p.codigo = c.pais_codigo
              {$where}
-             ORDER BY c.nombre
+             ORDER BY c.nombre, c.id
              LIMIT :limite OFFSET :offset"
         );
         foreach ($params as $clave => $valor) {

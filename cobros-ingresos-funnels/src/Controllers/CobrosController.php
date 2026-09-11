@@ -166,13 +166,15 @@ final class CobrosController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $boletaRepo->anular($id);
-            AuditoriaRepository::auditarComoUsuarioActual('anular', 'boleta', $id, sprintf(
-                'Boleta #%d ("%s", %s)',
-                $id,
-                $boleta['concepto'],
-                money_moneda((float) $boleta['monto'], $boleta['moneda_codigo'])
-            ));
+            if (!$boleta['anulada']) {
+                $boletaRepo->anular($id);
+                AuditoriaRepository::auditarComoUsuarioActual('anular', 'boleta', $id, sprintf(
+                    'Boleta #%d ("%s", %s)',
+                    $id,
+                    $boleta['concepto'],
+                    money_moneda((float) $boleta['monto'], $boleta['moneda_codigo'])
+                ));
+            }
             header('Location: ?page=cobros&anulada=' . $id);
             exit;
         }
