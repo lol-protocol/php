@@ -38,8 +38,34 @@ final class UtilHttp {
         }
     }
 
+    /**
+     * Escape JSON completo, no solo barra invertida y comillas: un carácter de
+     * control (0x00-0x1F) sin escapar -- p. ej. un newline real colado en
+     * "type" vía query string -- produce JSON inválido según RFC 8259 aunque
+     * las comillas estén bien escapadas, y rompe el parseo del lado PHP.
+     */
     static String escape(String s) {
-        return s.replace("\\", "\\\\").replace("\"", "\\\"");
+        StringBuilder out = new StringBuilder(s.length());
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '\\' -> out.append("\\\\");
+                case '"' -> out.append("\\\"");
+                case '\n' -> out.append("\\n");
+                case '\r' -> out.append("\\r");
+                case '\t' -> out.append("\\t");
+                case '\b' -> out.append("\\b");
+                case '\f' -> out.append("\\f");
+                default -> {
+                    if (c < 0x20) {
+                        out.append(String.format("\\u%04x", (int) c));
+                    } else {
+                        out.append(c);
+                    }
+                }
+            }
+        }
+        return out.toString();
     }
 
     static void respond(HttpExchange exchange, int status, String json) throws IOException {

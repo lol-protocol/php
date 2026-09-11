@@ -13,7 +13,8 @@ class AlmacenNotas
 
     public function guardar(string $accionId, string $texto): void
     {
-        if (trim($texto) === '') {
+        $texto = trim($texto);
+        if ($texto === '') {
             $this->eliminar($accionId);
             return;
         }

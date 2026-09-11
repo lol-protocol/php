@@ -24,6 +24,13 @@ assert_igual('nota actualizada', $leerTexto($pdo, $accionId), 'notas: guardar de
 $almacen->guardar($accionId, '   ');
 assert_igual(null, $leerTexto($pdo, $accionId), 'notas: guardar con texto en blanco borra la nota en vez de guardar espacios');
 
+// La API responde con trim($texto) (ver api/notas.php): si guardar() no
+// recorta antes de INSERT, lo que queda en la fila no coincide con lo que
+// el endpoint le dice al cliente que guardó.
+$almacen->guardar($accionId, '  con espacios alrededor  ');
+assert_igual('con espacios alrededor', $leerTexto($pdo, $accionId), 'notas: guardar recorta espacios, igual que la respuesta del endpoint');
+$almacen->eliminar($accionId);
+
 $almacen->guardar($accionId, 'otra vez');
 $almacen->eliminar($accionId);
 assert_igual(null, $leerTexto($pdo, $accionId), 'notas: eliminar borra la fila');
