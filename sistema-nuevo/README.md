@@ -54,8 +54,9 @@ sistema-nuevo/
 │   ├── CargadorAcciones.java          Lee el CSV + watcher que recarga sola si cambia el mtime
 │   ├── Accion.java                    record de una fila ya aplanada
 │   ├── ManejadorEstadisticas.java     GET /stats: filtra el cohort según los query params
-│   ├── EstadisticasCalculo.java       Agrega avg/mediana/p90 y arma el JSON de respuesta
-│   └── UtilHttp.java                  Parseo de query string, respuesta JSON
+│   ├── EstadisticasCalculo.java       Agrega avg/mediana/p90 del cohort filtrado
+│   ├── JsonBuilder.java               Arma objetos JSON campo por campo (sin String.format posicional)
+│   └── UtilHttp.java                  Parseo de query string, escape JSON, respuesta HTTP
 │
 ├── servidor-php/                   API backend (PHP), lee de PostgreSQL
 │   ├── publico/index.php              Front controller: CORS+cookies, preflight, rutas /api/*

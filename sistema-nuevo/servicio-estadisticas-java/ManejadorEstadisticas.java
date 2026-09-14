@@ -24,7 +24,7 @@ final class ManejadorEstadisticas implements HttpHandler {
             Map<String, String> params = UtilHttp.parseQuery(exchange.getRequestURI().getRawQuery());
             String type = params.get("type");
             if (type == null || type.isBlank()) {
-                UtilHttp.respond(exchange, 400, "{\"error\":\"missing required parameter: type\"}");
+                UtilHttp.respond(exchange, 400, new JsonBuilder().put("error", "missing required parameter: type").build());
                 return;
             }
 
@@ -54,7 +54,7 @@ final class ManejadorEstadisticas implements HttpHandler {
             UtilHttp.respond(exchange, 200, EstadisticasCalculo.buildStatsJson(type, cohort));
         } catch (Exception e) {
             String message = e.getMessage() == null ? e.toString() : e.getMessage();
-            UtilHttp.respond(exchange, 500, "{\"error\":\"" + UtilHttp.escape(message) + "\"}");
+            UtilHttp.respond(exchange, 500, new JsonBuilder().put("error", message).build());
         }
     }
 }
