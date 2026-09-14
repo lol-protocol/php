@@ -179,6 +179,9 @@ prototipo, no para producción.
   `intentos_login`. Al 5to fallo consecutivo, esa IP queda bloqueada 15 minutos
   — `POST /api/login` responde 429 incluso si en ese momento manda la contraseña
   correcta, hasta que expire el bloqueo. Un login exitoso resetea el contador.
+  Sin cron en este proyecto, la tabla se poda sola: cada llamada a
+  `registrarFallo()` tiene 1/20 de probabilidad de disparar un DELETE de filas
+  con más de 24h sin fallar de nuevo, así que no crece sin límite.
 
 ## Montos: moneda local y USD
 

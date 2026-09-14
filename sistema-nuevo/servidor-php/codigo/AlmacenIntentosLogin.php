@@ -7,6 +7,8 @@ final class AlmacenIntentosLogin
 {
     private const MAX_INTENTOS = 5;
     private const BLOQUEO_MINUTOS = 15;
+    private const RETENCION_HORAS = 24;
+    private const PROBABILIDAD_PODA = 20; // 1 de cada 20 llamadas a registrarFallo poda filas viejas
 
     public static function bloqueadaHasta(PDO $pdo, string $ip): ?string
     {
@@ -18,6 +20,14 @@ final class AlmacenIntentosLogin
 
     public static function registrarFallo(PDO $pdo, string $ip): void
     {
+        // No hay cron en este proyecto (todo corre con scripts simples), así
+        // que la poda de filas viejas viaja "gratis" sobre la única operación
+        // que hace crecer la tabla -- con probabilidad baja para no pagar un
+        // DELETE de más en cada intento fallido de login.
+        if (random_int(1, self::PROBABILIDAD_PODA) === 1) {
+            self::podarViejos($pdo);
+        }
+
         $stmt = $pdo->prepare(
             "INSERT INTO intentos_login (ip, intentos, ultimo_intento, bloqueado_hasta)
              VALUES (:ip, 1, NOW(), NULL)
@@ -36,5 +46,12 @@ final class AlmacenIntentosLogin
     {
         $stmt = $pdo->prepare('DELETE FROM intentos_login WHERE ip = ?');
         $stmt->execute([$ip]);
+    }
+
+    /** Filas de IPs que no volvieron a fallar en self::RETENCION_HORAS: ya no aportan nada al rate limiting. */
+    public static function podarViejos(PDO $pdo): void
+    {
+        $stmt = $pdo->prepare("DELETE FROM intentos_login WHERE ultimo_intento < NOW() - (:horas || ' hours')::interval");
+        $stmt->execute(['horas' => self::RETENCION_HORAS]);
     }
 }
