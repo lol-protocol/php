@@ -44,10 +44,15 @@ final class AlmacenKpis
 
     /**
      * Usuarios afectados por cualquier tipo de alerta HABILITADO (respeta
-     * configuracion_alertas). Suma total_users_affected de cada tipo -- no
-     * deduplica entre tipos (un usuario con ambas anomalías cuenta dos veces),
-     * a cambio de no truncar al top 15 de cada consulta como haría contar
-     * desde 'top'. Aceptable para un KPI de pantalla, no para un total exacto.
+     * configuracion_alertas). Suma el conteo de cada tipo -- no deduplica
+     * entre tipos (un usuario con ambas anomalías cuenta dos veces).
+     * Aceptable para un KPI de pantalla, no para un total exacto.
+     *
+     * OJO: cuenta directo con SELECT COUNT(DISTINCT ...), sin pasar por
+     * AlmacenAlertas::ipMismatches()/cambiosPaisImposibles() -- esos también
+     * arman el 'top' (JOIN de nombre + GROUP BY + ORDER BY + LIMIT) que acá
+     * no hace falta, así que reusarlos pagaría un JOIN y un ORDER BY de más
+     * en cada carga del dashboard solo para tirar el resultado.
      */
     private static function usuariosConAlertaActiva(PDO $pdo): int
     {
@@ -55,12 +60,41 @@ final class AlmacenKpis
         $total = 0;
 
         if ($config->esAlertaHabilitada('ip_pais')) {
-            $total += AlmacenAlertas::ipMismatches()['total_users_affected'];
+            $total += (int) $pdo->query(<<<SQL
+                SELECT COUNT(DISTINCT a.usuario_id)
+                FROM acciones a JOIN usuarios u ON u.id = a.usuario_id
+                WHERE a.ip_pais_codigo IS NOT NULL AND a.ip_pais_codigo <> u.pais_codigo
+                SQL)->fetchColumn();
         }
+
         if ($config->esAlertaHabilitada('cambio_pais')) {
-            $total += AlmacenAlertas::cambiosPaisImposibles($config->obtenerUmbral())['total_users_affected'];
+            $total += self::contarUsuariosConCambioPais($pdo, $config->obtenerUmbral());
         }
 
         return $total;
+    }
+
+    /** Misma fórmula de horasUmbral que AlmacenAlertas::cambiosPaisImposibles() -- si cambia una, cambia la otra. */
+    private static function contarUsuariosConCambioPais(PDO $pdo, int $umbral): int
+    {
+        $horasUmbral = 0.5 + (max(0, min(100, $umbral)) / 100) * 3.5;
+
+        $stmt = $pdo->prepare(<<<SQL
+            WITH cambios AS (
+                SELECT usuario_id,
+                       LAG(ip_pais_codigo) OVER ventana AS pais_anterior, ip_pais_codigo AS pais_actual,
+                       LAG(marca_temporal) OVER ventana AS tiempo_anterior, marca_temporal AS tiempo_actual
+                FROM acciones
+                WHERE ip_pais_codigo IS NOT NULL
+                WINDOW ventana AS (PARTITION BY usuario_id ORDER BY marca_temporal)
+            )
+            SELECT COUNT(DISTINCT usuario_id) FROM cambios
+            WHERE pais_anterior IS NOT NULL AND pais_anterior <> pais_actual
+            AND (EXTRACT(EPOCH FROM (tiempo_actual - tiempo_anterior)) / 3600) < :horas
+            SQL);
+        $stmt->bindValue('horas', $horasUmbral);
+        $stmt->execute();
+
+        return (int) $stmt->fetchColumn();
     }
 }

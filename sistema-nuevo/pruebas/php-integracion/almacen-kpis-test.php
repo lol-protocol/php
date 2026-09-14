@@ -27,3 +27,15 @@ for ($i = 1; $i < count($kpis['top_action_types']); $i++) {
 }
 
 assert_verdadero(count($kpis['top_countries']) > 0, 'kpis: top_countries no viene vacío');
+
+// active_alerts_users cuenta directo con SQL (ver AlmacenKpis::usuariosConAlertaActiva)
+// en vez de pasar por AlmacenAlertas -- confirma que ambos caminos dan el mismo número.
+$config = new AlmacenConfiguracion($pdo);
+$referencia = 0;
+if ($config->esAlertaHabilitada('ip_pais')) {
+    $referencia += AlmacenAlertas::ipMismatches()['total_users_affected'];
+}
+if ($config->esAlertaHabilitada('cambio_pais')) {
+    $referencia += AlmacenAlertas::cambiosPaisImposibles($config->obtenerUmbral())['total_users_affected'];
+}
+assert_igual($referencia, $kpis['active_alerts_users'], 'kpis: el conteo optimizado de active_alerts_users coincide con sumar total_users_affected de AlmacenAlertas');
