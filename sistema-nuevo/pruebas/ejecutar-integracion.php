@@ -18,6 +18,7 @@ require __DIR__ . '/../servidor-php/codigo/AlmacenConfiguracion.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenIntentosLogin.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenKpis.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenAlertas.php';
+require __DIR__ . '/../servidor-php/codigo/ClienteEstadisticas.php';
 
 $pdo = ConexionBd::obtener();
 
