@@ -1,15 +1,20 @@
 import { fetchJson, postJson } from "./sesion.js";
+import { intentar } from "./nucleo.js";
+import { mostrarError } from "./notificaciones.js";
+import { t } from "./idioma.js";
 
 export async function cargarConfigAlertas() {
-  try {
-    const config = await fetchJson("/api/alerts-config");
-    document.getElementById("config-alerta-ip_pais").checked = config.alertas.ip_pais;
-    document.getElementById("config-alerta-cambio_pais").checked = config.alertas.cambio_pais;
-    document.getElementById("config-umbral").value = config.umbral;
-    document.getElementById("config-umbral-valor").textContent = config.umbral;
-  } catch (err) {
-    console.error("Error cargando configuración de alertas:", err);
-  }
+  const config = await intentar(
+    () => fetchJson("/api/alerts-config"),
+    "Error cargando configuración de alertas:",
+    () => mostrarError(t("toast_error_cargar"))
+  );
+  if (!config) return;
+
+  document.getElementById("config-alerta-ip_pais").checked = config.alertas.ip_pais;
+  document.getElementById("config-alerta-cambio_pais").checked = config.alertas.cambio_pais;
+  document.getElementById("config-umbral").value = config.umbral;
+  document.getElementById("config-umbral-valor").textContent = config.umbral;
 }
 
 export function toggleConfigPanel() {
@@ -24,10 +29,8 @@ export async function guardarConfigAlertas(onGuardado) {
   };
   const umbral = parseInt(document.getElementById("config-umbral").value, 10);
 
-  try {
+  await intentar(async () => {
     await postJson("/api/alerts-config", { alertas, umbral });
     if (onGuardado) await onGuardado();
-  } catch (err) {
-    console.error("Error guardando configuración de alertas:", err);
-  }
+  }, "Error guardando configuración de alertas:", () => mostrarError(t("toast_error_guardar")));
 }

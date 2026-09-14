@@ -1,16 +1,16 @@
 import { postJson } from "./sesion.js";
+import { intentar } from "./nucleo.js";
 
 const timers = new Map();
 
 async function guardarNota(accionId, texto, onEstado) {
   onEstado?.("guardando");
-  try {
-    await postJson("/api/notes", { accion_id: accionId, texto });
-    onEstado?.("guardado");
-  } catch (err) {
-    console.error("Error guardando nota:", err);
-    onEstado?.("error");
-  }
+  const resultado = await intentar(
+    () => postJson("/api/notes", { accion_id: accionId, texto }),
+    "Error guardando nota:",
+    () => onEstado?.("error")
+  );
+  if (resultado !== null) onEstado?.("guardado");
 }
 
 /**

@@ -46,6 +46,15 @@ async function intentarLogin(page, password) {
     await page.waitForResponse((r) => r.url().includes("/api/notes"));
   });
 
+  await paso("guardar un filtro con el backend caído muestra un toast de error", async () => {
+    await page.route("**/api/filtros", (route) => route.abort("failed"));
+    page.once("dialog", (dialog) => dialog.accept("filtro que va a fallar"));
+    await page.click("#btn-guardar-filtro");
+    await page.waitForSelector("#toast-error:not([hidden])", { timeout: 2000 });
+    assert.equal((await page.textContent("#toast-error")).length > 0, true);
+    await page.unroute("**/api/filtros");
+  });
+
   await browser.close();
 
   // Rate limiting: aparte, en su propia sesión de navegador y SIEMPRE con

@@ -111,6 +111,10 @@ export default {
   error_session_expired: "sesión expirada",
   error_http: "Error {status} al llamar {path}",
 
+  toast_error_guardar: "No se pudo guardar. Probá de nuevo.",
+  toast_error_eliminar: "No se pudo eliminar. Probá de nuevo.",
+  toast_error_cargar: "No se pudo cargar. Probá de nuevo.",
+
   inactividad_titulo: "Sesión por expirar",
   inactividad_mensaje: "Por inactividad, tu sesión se cerrará en 1 minuto.",
   inactividad_continuar: "Continuar activo",

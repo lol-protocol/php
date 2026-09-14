@@ -55,3 +55,20 @@ export const debounce = (fn, wait) => {
     timer = setTimeout(() => fn(...args), wait);
   };
 };
+
+/**
+ * Ejecuta fn() capturando cualquier error: lo loguea y devuelve null en vez
+ * de propagarlo. Común a los módulos que hacen fetch/postJson contra el
+ * backend y sólo necesitan no romper la UI si la llamada falla (filtros,
+ * configuración de alertas...). onError, si se pasa, recibe el error antes
+ * de loguearlo -- para mostrar feedback visual además de loguear.
+ */
+export async function intentar(fn, mensajeError, onError = null) {
+  try {
+    return await fn();
+  } catch (err) {
+    console.error(mensajeError, err);
+    onError?.(err);
+    return null;
+  }
+}

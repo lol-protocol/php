@@ -1,13 +1,15 @@
 import { postJson, deleteJson, fetchJson } from "./sesion.js";
+import { intentar } from "./nucleo.js";
 import { t } from "./idioma.js";
+import { mostrarError } from "./notificaciones.js";
 
 export async function cargarFiltrosGuardados() {
-  try {
-    const filtros = await fetchJson("/api/filtros");
-    renderFiltrosDropdown(filtros);
-  } catch (err) {
-    console.error("Error cargando filtros:", err);
-  }
+  const filtros = await intentar(
+    () => fetchJson("/api/filtros"),
+    "Error cargando filtros:",
+    () => mostrarError(t("toast_error_cargar"))
+  );
+  if (filtros) renderFiltrosDropdown(filtros);
 }
 
 function renderFiltrosDropdown(filtros) {
@@ -26,7 +28,7 @@ function renderFiltrosDropdown(filtros) {
 export async function aplicarFiltroGuardado(filtroId) {
   if (!filtroId) return;
 
-  try {
+  await intentar(async () => {
     const filtros = await fetchJson("/api/filtros");
     const filtro = filtros.find((f) => String(f.id) === String(filtroId));
     if (!filtro) return;
@@ -40,9 +42,7 @@ export async function aplicarFiltroGuardado(filtroId) {
 
     // Disparar evento de cambio para cargar datos
     document.getElementById("scope-select").dispatchEvent(new Event("change"));
-  } catch (err) {
-    console.error("Error aplicando filtro:", err);
-  }
+  }, "Error aplicando filtro:", () => mostrarError(t("toast_error_cargar")));
 }
 
 function parseIntOrNull(value) {
@@ -60,7 +60,7 @@ export async function guardarFiltroActual() {
   const gender = document.getElementById("gender-select").value || null;
   const tipoAccion = document.getElementById("type-select").value || null;
 
-  try {
+  await intentar(async () => {
     await postJson("/api/filtros", {
       nombre,
       scope: scope === "all" ? "all_countries" : scope,
@@ -70,18 +70,14 @@ export async function guardarFiltroActual() {
       tipo_accion: tipoAccion === "all" ? null : tipoAccion,
     });
     await cargarFiltrosGuardados();
-  } catch (err) {
-    console.error("Error guardando filtro:", err);
-  }
+  }, "Error guardando filtro:", () => mostrarError(t("toast_error_guardar")));
 }
 
 export async function eliminarFiltroGuardado(filtroId) {
   if (!confirm(t("filtro_eliminar_confirmar"))) return;
 
-  try {
+  await intentar(async () => {
     await deleteJson("/api/filtros/" + filtroId);
     await cargarFiltrosGuardados();
-  } catch (err) {
-    console.error("Error eliminando filtro:", err);
-  }
+  }, "Error eliminando filtro:", () => mostrarError(t("toast_error_eliminar")));
 }
