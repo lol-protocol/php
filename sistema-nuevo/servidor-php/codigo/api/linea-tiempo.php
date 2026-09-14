@@ -13,14 +13,18 @@ function api_timeline(): void
         return;
     }
 
-    $user = AlmacenDatos::userById($userId);
+    $pdo = ConexionBd::obtener();
+    $datos = new AlmacenDatos($pdo);
+    $acciones = new AlmacenAcciones($pdo);
+
+    $user = $datos->userById($userId);
     if ($user === null) {
         http_response_code(404);
         echo json_encode(['error' => 'usuario no encontrado']);
         return;
     }
 
-    $groups = AlmacenDatos::groups();
+    $groups = $datos->groups();
     $scope = $_GET['scope'] ?? 'all';
     $countries = api_resolve_scope_countries($scope, $groups);
 
@@ -34,7 +38,7 @@ function api_timeline(): void
     $pagina = api_pagina_desde_query();
     $porPagina = api_por_pagina_desde_query();
 
-    $paginaAcciones = AlmacenAcciones::pagina($userId, $tipo, $pagina, $porPagina);
+    $paginaAcciones = $acciones->pagina($userId, $tipo, $pagina, $porPagina);
     $cohortes = api_timeline_con_cohortes(
         $paginaAcciones['items'], $userId, $user['country'], $countries, $ageMin, $ageMax, $gender
     );
@@ -50,7 +54,7 @@ function api_timeline(): void
             'type' => $tipo ?? 'all',
         ],
         'pagination' => api_pagination_meta($paginaAcciones['total'], $pagina, $porPagina),
-        'chart' => AlmacenAcciones::resumenDiario($userId, $tipo),
+        'chart' => $acciones->resumenDiario($userId, $tipo),
         'stats_service_available' => $cohortes['stats_service_available'],
         'timeline' => $cohortes['timeline'],
     ], JSON_UNESCAPED_UNICODE);

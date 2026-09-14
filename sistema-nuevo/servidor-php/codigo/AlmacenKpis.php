@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/ConexionBd.php';
-
 /** Métricas agregadas para el dashboard inicial, antes de elegir un usuario puntual. */
 final class AlmacenKpis
 {
-    public static function resumen(): array
+    public function __construct(private readonly PDO $pdo)
     {
-        $pdo = ConexionBd::obtener();
+    }
 
-        $totales = $pdo->query(
+    public function resumen(): array
+    {
+        $totales = $this->pdo->query(
             'SELECT (SELECT COUNT(*) FROM usuarios) AS usuarios,
                     COUNT(*) AS acciones,
                     COALESCE(SUM(monto_usd), 0) AS gasto_usd,
@@ -19,13 +19,13 @@ final class AlmacenKpis
              FROM acciones'
         )->fetch();
 
-        $porTipo = $pdo->query(
+        $porTipo = $this->pdo->query(
             'SELECT a.tipo_clave AS clave, COUNT(*) AS cantidad
              FROM acciones a
              GROUP BY a.tipo_clave ORDER BY cantidad DESC LIMIT 5'
         )->fetchAll();
 
-        $porPais = $pdo->query(
+        $porPais = $this->pdo->query(
             'SELECT u.pais_codigo AS country, COUNT(*) AS cantidad
              FROM acciones a JOIN usuarios u ON u.id = a.usuario_id
              GROUP BY u.pais_codigo ORDER BY cantidad DESC LIMIT 5'
@@ -36,7 +36,7 @@ final class AlmacenKpis
             'total_actions' => (int) $totales['acciones'],
             'total_spend_usd' => round((float) $totales['gasto_usd'], 2),
             'last_action_at' => $totales['ultima_accion'],
-            'active_alerts_users' => self::usuariosConAlertaActiva($pdo),
+            'active_alerts_users' => $this->usuariosConAlertaActiva(),
             'top_action_types' => array_map(fn ($f) => ['type' => $f['clave'], 'count' => (int) $f['cantidad']], $porTipo),
             'top_countries' => array_map(fn ($f) => ['country' => $f['country'], 'count' => (int) $f['cantidad']], $porPais),
         ];
@@ -54,13 +54,13 @@ final class AlmacenKpis
      * no hace falta, así que reusarlos pagaría un JOIN y un ORDER BY de más
      * en cada carga del dashboard solo para tirar el resultado.
      */
-    private static function usuariosConAlertaActiva(PDO $pdo): int
+    private function usuariosConAlertaActiva(): int
     {
-        $config = new AlmacenConfiguracion($pdo);
+        $config = new AlmacenConfiguracion($this->pdo);
         $total = 0;
 
         if ($config->esAlertaHabilitada('ip_pais')) {
-            $total += (int) $pdo->query(<<<SQL
+            $total += (int) $this->pdo->query(<<<SQL
                 SELECT COUNT(DISTINCT a.usuario_id)
                 FROM acciones a JOIN usuarios u ON u.id = a.usuario_id
                 WHERE a.ip_pais_codigo IS NOT NULL AND a.ip_pais_codigo <> u.pais_codigo
@@ -68,18 +68,18 @@ final class AlmacenKpis
         }
 
         if ($config->esAlertaHabilitada('cambio_pais')) {
-            $total += self::contarUsuariosConCambioPais($pdo, $config->obtenerUmbral());
+            $total += $this->contarUsuariosConCambioPais($config->obtenerUmbral());
         }
 
         return $total;
     }
 
     /** Misma fórmula de horasUmbral que AlmacenAlertas::cambiosPaisImposibles() -- si cambia una, cambia la otra. */
-    private static function contarUsuariosConCambioPais(PDO $pdo, int $umbral): int
+    private function contarUsuariosConCambioPais(int $umbral): int
     {
         $horasUmbral = 0.5 + (max(0, min(100, $umbral)) / 100) * 3.5;
 
-        $stmt = $pdo->prepare(<<<SQL
+        $stmt = $this->pdo->prepare(<<<SQL
             WITH cambios AS (
                 SELECT usuario_id,
                        LAG(ip_pais_codigo) OVER ventana AS pais_anterior, ip_pais_codigo AS pais_actual,

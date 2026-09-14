@@ -6,10 +6,10 @@ declare(strict_types=1);
 
 function api_login(): void
 {
-    $pdo = ConexionBd::obtener();
+    $intentos = new AlmacenIntentosLogin(ConexionBd::obtener());
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'desconocida';
 
-    $bloqueadaHasta = AlmacenIntentosLogin::bloqueadaHasta($pdo, $ip);
+    $bloqueadaHasta = $intentos->bloqueadaHasta($ip);
     if ($bloqueadaHasta !== null) {
         http_response_code(429);
         echo json_encode(['error' => 'demasiados intentos fallidos, probá de nuevo más tarde', 'retry_after' => $bloqueadaHasta]);
@@ -21,13 +21,13 @@ function api_login(): void
     $password = is_string($body['password'] ?? null) ? $body['password'] : '';
 
     if ($username === '' || $password === '' || !auth_verificar_credenciales($username, $password)) {
-        AlmacenIntentosLogin::registrarFallo($pdo, $ip);
+        $intentos->registrarFallo($ip);
         http_response_code(401);
         echo json_encode(['error' => 'usuario o contraseña incorrectos']);
         return;
     }
 
-    AlmacenIntentosLogin::limpiar($pdo, $ip);
+    $intentos->limpiar($ip);
     auth_marcar_autenticado($username);
     echo json_encode([
         'authenticated' => true,

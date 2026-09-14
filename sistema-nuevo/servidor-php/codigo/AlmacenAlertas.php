@@ -2,24 +2,25 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/ConexionBd.php';
-
 final class AlmacenAlertas
 {
     private const LIMITE_USUARIOS = 15;
 
-    public static function ipMismatches(): array
+    public function __construct(private readonly PDO $pdo)
     {
-        $pdo = ConexionBd::obtener();
+    }
+
+    public function ipMismatches(): array
+    {
         $where = 'a.ip_pais_codigo IS NOT NULL AND a.ip_pais_codigo <> u.pais_codigo';
 
-        $resumen = $pdo->query(<<<SQL
+        $resumen = $this->pdo->query(<<<SQL
             SELECT COUNT(*) AS total, COUNT(DISTINCT a.usuario_id) AS usuarios
             FROM acciones a JOIN usuarios u ON u.id = a.usuario_id
             WHERE $where
             SQL)->fetch();
 
-        $stmt = $pdo->prepare(<<<SQL
+        $stmt = $this->pdo->prepare(<<<SQL
             SELECT u.id, u.nombre, u.pais_codigo, COUNT(*) AS cantidad, MAX(a.marca_temporal) AS last_seen
             FROM acciones a JOIN usuarios u ON u.id = a.usuario_id
             WHERE $where
@@ -42,10 +43,9 @@ final class AlmacenAlertas
     }
 
     /** @param int $umbral Sensibilidad 0-100: más alto = ventana de tiempo más amplia cuenta como "cambio imposible". */
-    public static function cambiosPaisImposibles(int $umbral = 50): array
+    public function cambiosPaisImposibles(int $umbral = 50): array
     {
         $horasUmbral = 0.5 + (max(0, min(100, $umbral)) / 100) * 3.5; // rango 0.5h (umbral=0) .. 4h (umbral=100)
-        $pdo = ConexionBd::obtener();
 
         $cte = <<<SQL
             WITH cambios AS (
@@ -62,12 +62,12 @@ final class AlmacenAlertas
             AND (EXTRACT(EPOCH FROM (tiempo_actual - tiempo_anterior)) / 3600) < :horas
             SQL;
 
-        $resumenStmt = $pdo->prepare("$cte SELECT COUNT(*) AS total, COUNT(DISTINCT usuario_id) AS usuarios FROM cambios WHERE $condicion");
+        $resumenStmt = $this->pdo->prepare("$cte SELECT COUNT(*) AS total, COUNT(DISTINCT usuario_id) AS usuarios FROM cambios WHERE $condicion");
         $resumenStmt->bindValue('horas', $horasUmbral);
         $resumenStmt->execute();
         $resumen = $resumenStmt->fetch();
 
-        $stmt = $pdo->prepare(<<<SQL
+        $stmt = $this->pdo->prepare(<<<SQL
             $cte
             SELECT usuario_id AS id, nombre, pais_anterior, pais_actual,
                    COUNT(*) AS cantidad, MAX(tiempo_actual) AS last_seen

@@ -2,13 +2,10 @@
 
 declare(strict_types=1);
 
-class AlmacenFiltros
+final class AlmacenFiltros
 {
-    private PDO $pdo;
-
-    public function __construct(PDO $pdo)
+    public function __construct(private readonly PDO $pdo)
     {
-        $this->pdo = $pdo;
     }
 
     public function obtenerTodos(): array

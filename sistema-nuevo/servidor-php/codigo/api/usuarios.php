@@ -24,7 +24,7 @@ function api_users(): void
     $porPagina = api_por_pagina_desde_query();
     $busqueda = trim((string) ($_GET['search'] ?? ''));
 
-    $resultado = AlmacenDatos::usersPage($pagina, $porPagina, $busqueda);
+    $resultado = (new AlmacenDatos(ConexionBd::obtener()))->usersPage($pagina, $porPagina, $busqueda);
 
     echo json_encode([
         'items' => $resultado['items'],
@@ -34,10 +34,10 @@ function api_users(): void
 
 function api_groups(): void
 {
-    echo json_encode(AlmacenDatos::groups(), JSON_UNESCAPED_UNICODE);
+    echo json_encode((new AlmacenDatos(ConexionBd::obtener()))->groups(), JSON_UNESCAPED_UNICODE);
 }
 
 function api_action_types(): void
 {
-    echo json_encode(AlmacenAcciones::tipos(), JSON_UNESCAPED_UNICODE);
+    echo json_encode((new AlmacenAcciones(ConexionBd::obtener()))->tipos(), JSON_UNESCAPED_UNICODE);
 }

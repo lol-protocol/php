@@ -10,25 +10,29 @@ final class AlmacenIntentosLogin
     private const RETENCION_HORAS = 24;
     private const PROBABILIDAD_PODA = 20; // 1 de cada 20 llamadas a registrarFallo poda filas viejas
 
-    public static function bloqueadaHasta(PDO $pdo, string $ip): ?string
+    public function __construct(private readonly PDO $pdo)
     {
-        $stmt = $pdo->prepare('SELECT bloqueado_hasta FROM intentos_login WHERE ip = ? AND bloqueado_hasta > NOW()');
+    }
+
+    public function bloqueadaHasta(string $ip): ?string
+    {
+        $stmt = $this->pdo->prepare('SELECT bloqueado_hasta FROM intentos_login WHERE ip = ? AND bloqueado_hasta > NOW()');
         $stmt->execute([$ip]);
         $valor = $stmt->fetchColumn();
         return $valor === false ? null : $valor;
     }
 
-    public static function registrarFallo(PDO $pdo, string $ip): void
+    public function registrarFallo(string $ip): void
     {
         // No hay cron en este proyecto (todo corre con scripts simples), así
         // que la poda de filas viejas viaja "gratis" sobre la única operación
         // que hace crecer la tabla -- con probabilidad baja para no pagar un
         // DELETE de más en cada intento fallido de login.
         if (random_int(1, self::PROBABILIDAD_PODA) === 1) {
-            self::podarViejos($pdo);
+            $this->podarViejos();
         }
 
-        $stmt = $pdo->prepare(
+        $stmt = $this->pdo->prepare(
             "INSERT INTO intentos_login (ip, intentos, ultimo_intento, bloqueado_hasta)
              VALUES (:ip, 1, NOW(), NULL)
              ON CONFLICT (ip) DO UPDATE SET
@@ -42,16 +46,16 @@ final class AlmacenIntentosLogin
         $stmt->execute(['ip' => $ip, 'max' => self::MAX_INTENTOS, 'min' => self::BLOQUEO_MINUTOS]);
     }
 
-    public static function limpiar(PDO $pdo, string $ip): void
+    public function limpiar(string $ip): void
     {
-        $stmt = $pdo->prepare('DELETE FROM intentos_login WHERE ip = ?');
+        $stmt = $this->pdo->prepare('DELETE FROM intentos_login WHERE ip = ?');
         $stmt->execute([$ip]);
     }
 
     /** Filas de IPs que no volvieron a fallar en self::RETENCION_HORAS: ya no aportan nada al rate limiting. */
-    public static function podarViejos(PDO $pdo): void
+    public function podarViejos(): void
     {
-        $stmt = $pdo->prepare("DELETE FROM intentos_login WHERE ultimo_intento < NOW() - (:horas || ' hours')::interval");
+        $stmt = $this->pdo->prepare("DELETE FROM intentos_login WHERE ultimo_intento < NOW() - (:horas || ' hours')::interval");
         $stmt->execute(['horas' => self::RETENCION_HORAS]);
     }
 }

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/ConexionBd.php';
-
 /**
  * Acceso de solo lectura a usuarios/países/grupos — PostgreSQL, no JSON (los
  * JSON en datos/ quedan como artefacto legible + insumo del CSV para Java).
@@ -15,10 +13,14 @@ final class AlmacenDatos
         'u.id, u.nombre AS name, u.pais_codigo AS country, u.edad AS age, u.genero AS gender,
          p.nombre AS country_name';
 
-    /** @return array{items: array, total: int} */
-    public static function usersPage(int $pagina, int $porPagina, string $busqueda): array
+    public function __construct(private readonly PDO $pdo)
     {
-        $pdo = ConexionBd::obtener();
+    }
+
+    /** @return array{items: array, total: int} */
+    public function usersPage(int $pagina, int $porPagina, string $busqueda): array
+    {
+        $pdo = $this->pdo;
         $patron = '%' . $busqueda . '%';
 
         $stmtTotal = $pdo->prepare(
@@ -42,9 +44,9 @@ final class AlmacenDatos
         return ['items' => $stmt->fetchAll(), 'total' => (int) $stmtTotal->fetchColumn()];
     }
 
-    public static function userById(string $id): ?array
+    public function userById(string $id): ?array
     {
-        $stmt = ConexionBd::obtener()->prepare(
+        $stmt = $this->pdo->prepare(
             'SELECT ' . self::CAMPOS_USUARIO . '
              FROM usuarios u JOIN paises p ON p.codigo = u.pais_codigo WHERE u.id = :id'
         );
@@ -53,9 +55,9 @@ final class AlmacenDatos
         return $fila === false ? null : $fila;
     }
 
-    public static function groups(): array
+    public function groups(): array
     {
-        $pdo = ConexionBd::obtener();
+        $pdo = $this->pdo;
 
         $grupos = $pdo->query('SELECT clave, etiqueta FROM grupos_paises ORDER BY etiqueta')->fetchAll();
         $miembros = $pdo->query('SELECT grupo_clave, pais_codigo FROM grupo_pais ORDER BY pais_codigo')->fetchAll();

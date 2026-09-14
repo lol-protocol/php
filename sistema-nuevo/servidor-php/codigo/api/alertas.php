@@ -6,15 +6,17 @@ declare(strict_types=1);
 
 function api_alerts(): void
 {
-    $almacen = new AlmacenConfiguracion(ConexionBd::obtener());
+    $pdo = ConexionBd::obtener();
+    $almacen = new AlmacenConfiguracion($pdo);
+    $alertasStore = new AlmacenAlertas($pdo);
     $alertas = [];
 
     if ($almacen->esAlertaHabilitada('ip_pais')) {
-        $alertas['ip_pais_mismatch'] = AlmacenAlertas::ipMismatches();
+        $alertas['ip_pais_mismatch'] = $alertasStore->ipMismatches();
     }
 
     if ($almacen->esAlertaHabilitada('cambio_pais')) {
-        $alertas['cambios_pais_imposibles'] = AlmacenAlertas::cambiosPaisImposibles($almacen->obtenerUmbral());
+        $alertas['cambios_pais_imposibles'] = $alertasStore->cambiosPaisImposibles($almacen->obtenerUmbral());
     }
 
     echo json_encode($alertas, JSON_UNESCAPED_UNICODE);

@@ -221,7 +221,7 @@ pueda desincronizarse.
 Arriba del timeline, un SVG armado a mano (sin librerías de gráficos, coherente con
 el resto del proyecto): barras con la cantidad de acciones por día y una línea con
 el gasto acumulado en USD, cada una con su propia escala (eje izquierdo/derecho). Lo
-arma `AlmacenAcciones::resumenDiario()` con un `GROUP BY marca_temporal::date` en
+arma `AlmacenAcciones->resumenDiario()` con un `GROUP BY marca_temporal::date` en
 SQL; el acumulado se calcula en PHP recorriendo los días en orden. Respeta el mismo
 filtro de tipo de acción que el timeline.
 
@@ -258,7 +258,7 @@ en una tarjeta no debe cancelar el guardado pendiente de otra) contra
 `POST /api/notes`; texto vacío elimina la fila en vez de guardar un string
 vacío. Para evitar N+1 requests, la nota viaja como columna más
 (`LEFT JOIN notas_acciones`) en la misma consulta paginada de
-`AlmacenAcciones::pagina()`, no en una llamada aparte por tarjeta. Un indicador
+`AlmacenAcciones->pagina()`, no en una llamada aparte por tarjeta. Un indicador
 chico al lado del textarea muestra el estado del guardado (⏳ guardando, ✓
 guardado — se oculta solo a los 2s —, ⚠ error) para que quede claro si se
 perdió o no lo que se escribió.

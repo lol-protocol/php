@@ -9,7 +9,9 @@ declare(strict_types=1);
  * AlmacenAlertas tenga ningún bug real.
  */
 
-$ip = AlmacenAlertas::ipMismatches();
+$almacen = new AlmacenAlertas($pdo);
+
+$ip = $almacen->ipMismatches();
 assert_verdadero($ip['total_mismatches'] >= 0, 'alertas: ipMismatches total_mismatches nunca negativo');
 assert_verdadero($ip['total_users_affected'] >= 0, 'alertas: ipMismatches total_users_affected nunca negativo');
 assert_verdadero(count($ip['top']) <= 15, 'alertas: ipMismatches top nunca trae más de 15 (LIMITE_USUARIOS)');
@@ -27,8 +29,8 @@ if ($ip['top']) {
     }
 }
 
-$cambiosSensibilidadBaja = AlmacenAlertas::cambiosPaisImposibles(0);
-$cambiosSensibilidadAlta = AlmacenAlertas::cambiosPaisImposibles(100);
+$cambiosSensibilidadBaja = $almacen->cambiosPaisImposibles(0);
+$cambiosSensibilidadAlta = $almacen->cambiosPaisImposibles(100);
 assert_verdadero(
     $cambiosSensibilidadAlta['total_changes'] >= $cambiosSensibilidadBaja['total_changes'],
     'alertas: más sensibilidad detecta al menos tantos cambios de país como menos sensibilidad (ventana de tiempo más amplia)'

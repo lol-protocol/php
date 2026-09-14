@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+require __DIR__ . '/../codigo/ConexionBd.php';
 require __DIR__ . '/../codigo/AlmacenDatos.php';
 require __DIR__ . '/../codigo/AlmacenAcciones.php';
 require __DIR__ . '/../codigo/AlmacenAlertas.php';

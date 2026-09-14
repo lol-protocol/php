@@ -8,7 +8,7 @@ declare(strict_types=1);
  * invariantes en vez de números pelados -- así esta prueba no se rompe si el
  * generador cambia sin que AlmacenKpis tenga ningún bug.
  */
-$kpis = AlmacenKpis::resumen();
+$kpis = (new AlmacenKpis($pdo))->resumen();
 
 assert_verdadero($kpis['total_users'] > 0, 'kpis: total_users positivo con los datos semilla cargados');
 assert_verdadero($kpis['total_actions'] > 0, 'kpis: total_actions positivo con los datos semilla cargados');
@@ -31,11 +31,12 @@ assert_verdadero(count($kpis['top_countries']) > 0, 'kpis: top_countries no vien
 // active_alerts_users cuenta directo con SQL (ver AlmacenKpis::usuariosConAlertaActiva)
 // en vez de pasar por AlmacenAlertas -- confirma que ambos caminos dan el mismo número.
 $config = new AlmacenConfiguracion($pdo);
+$alertasStore = new AlmacenAlertas($pdo);
 $referencia = 0;
 if ($config->esAlertaHabilitada('ip_pais')) {
-    $referencia += AlmacenAlertas::ipMismatches()['total_users_affected'];
+    $referencia += $alertasStore->ipMismatches()['total_users_affected'];
 }
 if ($config->esAlertaHabilitada('cambio_pais')) {
-    $referencia += AlmacenAlertas::cambiosPaisImposibles($config->obtenerUmbral())['total_users_affected'];
+    $referencia += $alertasStore->cambiosPaisImposibles($config->obtenerUmbral())['total_users_affected'];
 }
 assert_igual($referencia, $kpis['active_alerts_users'], 'kpis: el conteo optimizado de active_alerts_users coincide con sumar total_users_affected de AlmacenAlertas');
