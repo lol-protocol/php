@@ -68,15 +68,22 @@ Las definiciones viven en `config/risk-categories.php`.
 
 ### Severidad y decisión
 
-Cada palabra trae su propia severidad (`low` / `medium` / `high`); la del nombre
-es la del peor término hallado. La severidad se traduce luego en una acción:
+Cada palabra trae su propia severidad (`low` / `medium` / `high`); por defecto,
+la del nombre completo es la del **peor** término hallado (no la suma de
+todos). La severidad se traduce luego en una acción:
 
 | Severidad | Decisión | Salvo que… |
 |---|---|---|
 | `none` | `accept` | |
 | `low` | `accept_with_flag` | |
 | `medium` | `review` | |
-| `high` | `reject` | haya colisión con apellido → `review` |
+| `high` | `reject` | haya colisión con apellido, o la detección sea sólo fonética → `review` |
+
+Ninguno de estos números está grabado en la clase del motor: pesos,
+cortes de banda, reglas de decisión y modo de agregación viven en un
+objeto `ScoringPolicy` aparte, pensado para ajustarse sin tocar
+`DefamatoryContentReviewer`. Ver la sección **Ajustar la sensibilidad del
+filtro (`ScoringPolicy`)** más abajo.
 
 ### Ridiculización
 
@@ -367,12 +374,83 @@ $reviewer->decide($result);   // 'review'  ← no 'reject'
 
 ---
 
+## Ajustar la sensibilidad del filtro (`ScoringPolicy`)
+
+**¿Filtro binario o un puntaje tipo spam?** Ninguna de las dos cosas
+exactamente. Cada término marcado tiene un puntaje numérico (0.0 por
+defecto para `none`, 3.0 para `high`), pero por defecto el puntaje del
+nombre completo es el **del peor término encontrado, no la suma de
+todos** — diez coincidencias de baja severidad no se combinan en una
+severidad alta, a diferencia de un filtro bayesiano de spam donde muchas
+señales débiles sí se acumulan hasta cruzar un umbral. Ese puntaje se
+discretiza luego en 4 bandas (`none`/`low`/`medium`/`high`) y una tabla de
+reglas pequeña las traduce en una decisión.
+
+Nada de eso está fijo en `DefamatoryContentReviewer`: vive en un objeto
+`ScoringPolicy` inmutable que el motor recibe opcionalmente.
+`ScoringPolicy::default()` reproduce exactamente el comportamiento de
+siempre — no pasar ninguno es idéntico a antes de que esta clase existiera.
+
+```php
+use DefamatoryContentReview\ScoringPolicy;
+
+// Pesos por severidad, por defecto none=0 / low=1 / medium=2 / high=3.
+$propia = ScoringPolicy::default()->withSeverityWeights([
+    'none' => 0.0, 'low' => 0.5, 'medium' => 2.0, 'high' => 5.0,
+]);
+
+// Multiplicador por tipo de riesgo: subir la sensibilidad a 'etnico' sin
+// tocar la severidad de cada palabra individual.
+$propia = $propia->withRiskTypeWeight('etnico', 1.5);
+
+// Bandas propias — tantas como haga falta, no sólo 3.
+$propia = $propia->withBands([
+    [4.0, 'high'], [2.0, 'medium'], [0.5, 'low'],
+]);
+
+// Qué decisión corresponde a cada banda.
+$propia = $propia->withDecisionRules([
+    'none' => 'accept', 'low' => 'accept_with_flag',
+    'medium' => 'review', 'high' => 'reject',
+]);
+
+// En qué bandas una colisión de apellido o una detección puramente
+// fonética degradan 'reject' a 'review' (por defecto, sólo 'high').
+$propia = $propia->withPhoneticCapLabels(['high', 'medium']);
+
+// 'max' (por defecto, el peor término manda) o 'sum' (se acumulan todos
+// los términos — más parecido a un filtro de spam aditivo, a costa de
+// que muchos términos leves puedan superar a uno solo grave).
+$propia = $propia->withAggregation('sum');
+
+$reviewer = DefamatoryContentReviewer::create($configDir, 'spa', $propia);
+// o sobre uno ya creado:
+$reviewer->setPolicy($propia);
+```
+
+Cada `with*()` devuelve una copia; la política original no cambia. El
+puntaje numérico crudo (antes de discretizar) queda disponible en el
+resultado, por si se prefiere un umbral propio en vez de las bandas:
+
+```php
+$result = $reviewer->validateName('Cerda');
+$result->getScore();  // 2.0 — el peso de 'medium', el severidad declarada de "Cerda"
+```
+
+El resguardo contra rechazo automático (`nameCollision` / detección sólo
+fonética) sigue aplicando aunque se reconfiguren bandas y reglas: sólo se
+activa cuando la regla resuelta es `reject` y la banda está en
+`phoneticCapLabels` — nunca desaparece por accidente al personalizar otra
+cosa, hay que sacarlo explícitamente con `withPhoneticCapLabels([])`.
+
+---
+
 ## API
 
 ### `DefamatoryContentReviewer`
 
 ```php
-DefamatoryContentReviewer::create(string $configDir, string $language = 'spa'): self
+DefamatoryContentReviewer::create(string $configDir, string $language = 'spa', ?ScoringPolicy $policy = null): self
 ```
 
 | Método | Devuelve |
@@ -390,12 +468,14 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa'): 
 | `getWordList(?string $lang = null)` | `WordList` |
 | `getWordListStatistics(?string $lang = null)` | `array` |
 | `getLanguagesByCoverage(string $level)` | `string[]` — única fuente: `WordList::getCoverage()` de cada idioma |
+| `getPolicy()` / `setPolicy(ScoringPolicy $p)` | `ScoringPolicy` / `self` |
 
 ### `ValidationResult`
 
 | Método | Devuelve |
 |---|---|
 | `isValid()` / `getSeverity()` | `bool` / `string` |
+| `getScore()` | `float` — puntaje crudo antes de discretizar en severidad |
 | `getFlaggedTerms()` | términos con `riskType`, `severity`, `sourceLanguage`, `confidence`, `nameCollision` |
 | `getFlaggedRiskTypes()` / `getFlaggedCategories()` | `string[]` |
 | `getTermsByRiskType(string $t)` | `array` |
@@ -406,6 +486,25 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa'): 
 | `getTermsByDetectionMethod(string $m)` | `array` (`'literal'` \| `'phonetic_fusion'` \| `'phonetic_variant'`) |
 | `getLanguagesChecked()` | `array<string,float>` |
 | `toArray()` | `array` |
+
+### `ScoringPolicy`
+
+```php
+ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1.5/2.5, agregación 'max'
+```
+
+| Método | Devuelve |
+|---|---|
+| `withSeverityWeights(array $w)` | `self` (copia) — peso por etiqueta de severidad |
+| `withRiskTypeWeight(string $t, float $w)` / `withRiskTypeWeights(array $w)` | `self` — multiplicador por tipo de riesgo |
+| `withHighSeverityRiskTypes(array $types)` | `self` — respaldo cuando la palabra no declara severidad |
+| `withBands(array $bands)` | `self` — pares `[umbral, etiqueta]`, tantos como se quiera |
+| `withDecisionRules(array $rules)` | `self` — etiqueta de severidad → decisión |
+| `withPhoneticCapLabels(array $labels)` | `self` — en qué etiquetas `nameCollision`/sólo-fonético bajan `reject` a `review` |
+| `withAggregation('max' \| 'sum')` | `self` — el peor término, o la suma de todos |
+| `scoreOf(array $match)` / `aggregate(array $scores)` | `float` |
+| `severityFromScore(float $s)` / `decisionFor(...)` | `string` |
+| `getSeverityWeights()` / `getRiskTypeWeights()` / `getBands()` / `getDecisionRules()` / `getPhoneticCapLabels()` / `getAggregation()` | introspección |
 
 ### `LanguageRegistry`
 
@@ -454,6 +553,7 @@ src/DefamatoryContentReview/
 ├── LeetspeakFolding.php            Sustitución numérica compartida por los folders
 ├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
 ├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
+├── ScoringPolicy.php               Pesos, bandas, reglas de decisión y agregación (configurable)
 └── ValidationResult.php            Resultado con trazabilidad por idioma y método
 
 config/

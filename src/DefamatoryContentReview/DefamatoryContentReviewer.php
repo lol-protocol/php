@@ -9,37 +9,49 @@ class DefamatoryContentReviewer
     private LanguageRegistry $registry;
     private string $languageDir;
     private string $language;
+    private ScoringPolicy $policy;
 
     /** @var array<string,WordList> diccionarios ya cargados, por código ISO 639-3 */
     private array $dictionaries = [];
 
-    /**
-     * Tipos de riesgo que por sí solos justifican severidad alta cuando la
-     * palabra concreta no declara la suya. La severidad por palabra manda; esto
-     * es sólo el respaldo.
-     */
-    private array $highSeverityRiskTypes = [
-        'ordinario', 'moral', 'discapacidad', 'genero', 'religioso', 'etnico',
-    ];
-
-    private const SEVERITY_VALUE = ['none' => 0, 'low' => 1, 'medium' => 2, 'high' => 3];
-
-    public function __construct(LanguageRegistry $registry, string $languageDir, string $language = 'spa')
-    {
+    public function __construct(
+        LanguageRegistry $registry,
+        string $languageDir,
+        string $language = 'spa',
+        ?ScoringPolicy $policy = null
+    ) {
         $this->registry = $registry;
         $this->languageDir = rtrim($languageDir, '/');
         $this->language = $registry->resolve($language);
+        $this->policy = $policy ?? ScoringPolicy::default();
     }
 
-    public static function create(string $configDir, string $language = 'spa'): self
+    public static function create(string $configDir, string $language = 'spa', ?ScoringPolicy $policy = null): self
     {
         $configDir = rtrim($configDir, '/');
 
         return new self(
             LanguageRegistry::fromConfigDirectory($configDir),
             $configDir . '/languages',
-            $language
+            $language,
+            $policy
         );
+    }
+
+    /**
+     * Cómo se combinan los términos marcados en una severidad y una
+     * decisión (pesos, bandas, reglas de decisión, modo de agregación). Ver
+     * ScoringPolicy — `default()` reproduce el comportamiento de siempre.
+     */
+    public function getPolicy(): ScoringPolicy
+    {
+        return $this->policy;
+    }
+
+    public function setPolicy(ScoringPolicy $policy): self
+    {
+        $this->policy = $policy;
+        return $this;
     }
 
     // -----------------------------------------------------------------
@@ -139,7 +151,7 @@ class DefamatoryContentReviewer
         $result = new ValidationResult($name, true, $this->language);
         $result->setLanguagesChecked($languageSet);
 
-        $maxScore = 0.0;
+        $scores = [];
         $seen = [];
 
         foreach ($languageSet as $code => $confidence) {
@@ -157,41 +169,32 @@ class DefamatoryContentReviewer
                     'confidence' => $confidence,
                 ]);
 
-                $maxScore = max($maxScore, $this->scoreOf($match) * $confidence);
+                $scores[] = $this->policy->scoreOf($match) * $confidence;
             }
         }
 
-        if ($maxScore <= 0.0) {
+        return $this->finalizeScore($result, $scores);
+    }
+
+    /**
+     * Agrega los puntajes ya calculados (según ScoringPolicy::aggregate,
+     * 'max' por defecto) y fija validez y severidad a partir de eso. Punto
+     * único usado por evaluate() y recomputeSeverity() para que ambos
+     * caminos —hallazgo literal y fusión fonética— apliquen exactamente la
+     * misma política.
+     *
+     * @param array<int,float> $scores
+     */
+    private function finalizeScore(ValidationResult $result, array $scores): ValidationResult
+    {
+        $score = $this->policy->aggregate($scores);
+        $result->setScore($score);
+
+        if ($score <= 0.0) {
             return $result->setValid(true)->setSeverity('none');
         }
 
-        return $result->setValid(false)->setSeverity($this->severityFromScore($maxScore));
-    }
-
-    private function scoreOf(array $match): float
-    {
-        $severity = $match['severity'] ?? null;
-
-        if ($severity === null || !isset(self::SEVERITY_VALUE[$severity])) {
-            $severity = in_array($match['riskType'] ?? '', $this->highSeverityRiskTypes, true)
-                ? 'high'
-                : 'medium';
-        }
-
-        return (float) self::SEVERITY_VALUE[$severity];
-    }
-
-    private function severityFromScore(float $score): string
-    {
-        if ($score >= 2.5) {
-            return 'high';
-        }
-
-        if ($score >= 1.5) {
-            return 'medium';
-        }
-
-        return 'low';
+        return $result->setValid(false)->setSeverity($this->policy->severityFromScore($score));
     }
 
     // -----------------------------------------------------------------
@@ -248,18 +251,12 @@ class DefamatoryContentReviewer
      */
     private function recomputeSeverity(ValidationResult $result): void
     {
-        $maxScore = 0.0;
+        $scores = array_map(
+            fn(array $term) => $this->policy->scoreOf($term) * ($term['confidence'] ?? 1.0),
+            $result->getFlaggedTerms()
+        );
 
-        foreach ($result->getFlaggedTerms() as $term) {
-            $maxScore = max($maxScore, $this->scoreOf($term) * ($term['confidence'] ?? 1.0));
-        }
-
-        if ($maxScore <= 0.0) {
-            $result->setValid(true)->setSeverity('none');
-            return;
-        }
-
-        $result->setValid(false)->setSeverity($this->severityFromScore($maxScore));
+        $this->finalizeScore($result, $scores);
     }
 
     // -----------------------------------------------------------------
@@ -290,15 +287,11 @@ class DefamatoryContentReviewer
      */
     public function decide(ValidationResult $result): string
     {
-        if ($result->isValid()) {
-            return 'accept';
-        }
-
-        return match ($result->getSeverity()) {
-            'high' => ($result->hasNameCollision() || $result->hasOnlyPhoneticDetections()) ? 'review' : 'reject',
-            'medium' => 'review',
-            default => 'accept_with_flag',
-        };
+        return $this->policy->decisionFor(
+            $result->getSeverity(),
+            $result->hasNameCollision(),
+            $result->hasOnlyPhoneticDetections()
+        );
     }
 
     private function recommendationFor(string $decision, ValidationResult $result): string
@@ -342,7 +335,7 @@ class DefamatoryContentReviewer
             $worst = 'low';
 
             foreach ($terms as $term) {
-                if (self::SEVERITY_VALUE[$term['severity']] > self::SEVERITY_VALUE[$worst]) {
+                if ($this->policy->weightOf($term['severity']) > $this->policy->weightOf($worst)) {
                     $worst = $term['severity'];
                 }
             }
@@ -350,7 +343,7 @@ class DefamatoryContentReviewer
             $analysis[$riskType] = [
                 'description' => $descriptions[$riskType] ?? $riskType,
                 'level' => $worst,
-                'isSevere' => $worst === 'high',
+                'isSevere' => $worst === $this->policy->topSeverityLabel(),
                 'termCount' => count($terms),
                 'languages' => array_values(array_unique(array_column($terms, 'sourceLanguage'))),
                 'detectionMethods' => array_values(array_unique(array_column($terms, 'detectionMethod'))),
@@ -435,9 +428,4 @@ class DefamatoryContentReviewer
         return $matches;
     }
 
-    public function setHighSeverityRiskTypes(array $riskTypes): self
-    {
-        $this->highSeverityRiskTypes = $riskTypes;
-        return $this;
-    }
 }

@@ -8,6 +8,7 @@ class ValidationResult
     private string $language;
     private bool $isValid;
     private string $severity = 'none';
+    private float $score = 0.0;
 
     /** @var array<int,array> */
     private array $flaggedTerms = [];
@@ -172,6 +173,24 @@ class ValidationResult
         return $this->severity;
     }
 
+    /**
+     * Puntaje numérico crudo antes de discretizar en severidad, según la
+     * ScoringPolicy en uso (ver DefamatoryContentReviewer::getPolicy()) —
+     * por defecto, el peso del peor término encontrado. Sirve para quien
+     * quiera un umbral propio en vez de las cuatro bandas fijas, al estilo
+     * de un puntaje de spam.
+     */
+    public function setScore(float $score): self
+    {
+        $this->score = $score;
+        return $this;
+    }
+
+    public function getScore(): float
+    {
+        return $this->score;
+    }
+
     public function getFullName(): string
     {
         return $this->fullName;
@@ -207,6 +226,7 @@ class ValidationResult
             'languagesChecked' => $this->languagesChecked,
             'isValid' => $this->isValid,
             'severity' => $this->severity,
+            'score' => $this->score,
             'flaggedTerms' => $this->flaggedTerms,
             'flaggedCategories' => $this->flaggedCategories,
             'flaggedRiskTypes' => $this->flaggedRiskTypes,

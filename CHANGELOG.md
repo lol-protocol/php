@@ -1,5 +1,52 @@
 # Changelog
 
+## [4.0.0] - 2026-09-14
+
+### Cambiado (rotura de compatibilidad menor)
+
+- **`ScoringPolicy` (nueva clase): pesos, bandas, reglas de decisión y modo
+  de agregación salen de `DefamatoryContentReviewer` a un objeto de
+  configuración independiente e inmutable.** Antes vivían repartidos en una
+  constante (`SEVERITY_VALUE`), una propiedad (`$highSeverityRiskTypes`) y
+  dos métodos privados (`scoreOf()`, `severityFromScore()`) del motor —
+  ajustar la sensibilidad del filtro exigía editar esa clase. Ahora:
+  - `ScoringPolicy::default()` reproduce el comportamiento exacto de
+    siempre (pesos none=0/low=1/medium=2/high=3, cortes en 1.5/2.5,
+    agregación por el peor término) — no pasar ninguna política a
+    `DefamatoryContentReviewer::create()`/`__construct()` es idéntico a
+    antes de este cambio.
+  - Se puede ajustar: pesos por severidad, multiplicador por tipo de
+    riesgo (subir la sensibilidad a `etnico` sin tocar la severidad de
+    cada palabra), bandas propias (no sólo 3), qué decisión corresponde a
+    cada banda, en qué bandas `nameCollision`/detección-sólo-fonética
+    degradan `reject` a `review`, y el modo de agregación: `'max'` (por
+    defecto, el peor término manda, igual que siempre) o `'sum'` (se
+    acumulan todos los términos, más parecido a un filtro de spam
+    aditivo — opt-in, nunca el default, porque sumar sin criterio castiga
+    más a un nombre con muchas palabras leves que a uno con una sola grave).
+  - `ValidationResult::getScore()` (nuevo): expone el puntaje numérico
+    crudo antes de discretizar en severidad, para quien prefiera un
+    umbral propio en vez de las 4 bandas fijas.
+- **`DefamatoryContentReviewer::setHighSeverityRiskTypes()` se elimina.**
+  La reemplaza `$reviewer->setPolicy($reviewer->getPolicy()->withHighSeverityRiskTypes([...]))`
+  — no había ningún uso de este método fuera de la propia clase, y
+  mantenerlo junto a `ScoringPolicy` habría reintroducido una segunda
+  fuente de verdad para la misma configuración (el mismo error que motivó
+  el refactor de `coverage` en la 3.4.0).
+- `DefamatoryContentReviewer::create()` y el constructor aceptan un
+  `?ScoringPolicy $policy = null` opcional como último argumento.
+  `getPolicy()`/`setPolicy()` (nuevos) para leer o cambiar la política de
+  un reviewer ya creado.
+
+### Tests
+
+173 tests (17 nuevos en `ScoringPolicyTest`), todo en verde — sin
+regresiones: la batería completa existente pasa sin modificar un solo test,
+porque `ScoringPolicy::default()` reproduce el comportamiento anterior al
+milímetro.
+
+---
+
 ## [3.10.0] - 2026-09-10
 
 ### Corregido
