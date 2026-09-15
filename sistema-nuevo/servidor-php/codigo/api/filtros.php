@@ -31,6 +31,11 @@ function api_filtros(): void
             echo json_encode(['error' => 'falta nombre del filtro']);
             return;
         }
+        if (mb_strlen($nombre) > 100) {
+            http_response_code(400);
+            echo json_encode(['error' => 'el nombre no puede superar los 100 caracteres']);
+            return;
+        }
 
         $almacen = new AlmacenFiltros(ConexionBd::obtener());
         $id = $almacen->crear($nombre, $scope, $ageMin, $ageMax, $gender, $tipoAccion);

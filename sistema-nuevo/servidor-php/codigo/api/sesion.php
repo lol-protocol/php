@@ -21,7 +21,12 @@ function api_login(): void
     $password = is_string($body['password'] ?? null) ? $body['password'] : '';
 
     if ($username === '' || $password === '' || !auth_verificar_credenciales($username, $password)) {
-        $intentos->registrarFallo($ip);
+        $bloqueadaAhora = $intentos->registrarFallo($ip);
+        if ($bloqueadaAhora !== null) {
+            http_response_code(429);
+            echo json_encode(['error' => 'demasiados intentos fallidos, probá de nuevo más tarde', 'retry_after' => $bloqueadaAhora]);
+            return;
+        }
         http_response_code(401);
         echo json_encode(['error' => 'usuario o contraseña incorrectos']);
         return;

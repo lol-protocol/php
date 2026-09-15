@@ -22,7 +22,24 @@ final class AlmacenIntentosLogin
         return $valor === false ? null : $valor;
     }
 
-    public function registrarFallo(string $ip): void
+    /**
+     * @return ?string bloqueado_hasta si ESTE fallo llega después de que la
+     *   IP ya había cruzado el umbral; null si todavía no (incluido el fallo
+     *   que recién lo cruza -- ese termina de bloquear para la PRÓXIMA vez,
+     *   pero sigue siendo "contraseña incorrecta" para sí mismo).
+     *
+     *   bloqueadaHasta() es una lectura aparte de este UPDATE, y bajo
+     *   requests concurrentes puede quedar stale: varias pueden leerla en
+     *   "todavía no bloqueada" antes de que cualquiera de sus propios fallos
+     *   se escriba (verificado con 15 logins en paralelo). El contador nunca
+     *   pierde un update -- Postgres serializa el UPSERT por fila -- pero esa
+     *   lectura previa sí puede quedar vieja. El RETURNING de acá da el
+     *   "intentos" ya serializado por Postgres, que refleja la posición real
+     *   de ESTE fallo entre todos los concurrentes (no el orden en que
+     *   llegaron las requests): por encima de MAX_INTENTOS, el umbral ya
+     *   estaba cruzado antes de este fallo puntual.
+     */
+    public function registrarFallo(string $ip): ?string
     {
         // No hay cron en este proyecto (todo corre con scripts simples), así
         // que la poda de filas viejas viaja "gratis" sobre la única operación
@@ -41,9 +58,12 @@ final class AlmacenIntentosLogin
                 bloqueado_hasta = CASE
                     WHEN intentos_login.intentos + 1 >= :max THEN NOW() + (:min || ' minutes')::interval
                     ELSE intentos_login.bloqueado_hasta
-                END"
+                END
+             RETURNING intentos, bloqueado_hasta"
         );
         $stmt->execute(['ip' => $ip, 'max' => self::MAX_INTENTOS, 'min' => self::BLOQUEO_MINUTOS]);
+        $fila = $stmt->fetch();
+        return ($fila['intentos'] > self::MAX_INTENTOS) ? $fila['bloqueado_hasta'] : null;
     }
 
     public function limpiar(string $ip): void
