@@ -40,7 +40,7 @@ class FrenchPhoneticFolder
         $text = mb_strtolower(trim($text), 'UTF-8');
         $text = self::unleet($text);
         $text = strtr($text, self::ACCENTS);
-        $text = preg_replace('/[\s\-\'’]+/u', '', $text); // fusión: sin pausas ni guiones/apóstrofos
+        $text = self::stripSeparators($text);
 
         // "ch" es un sonido propio ("sh"): se protege antes de tocar la "c" o la "h" sueltas.
         $text = str_replace('ch', "\x01", $text);

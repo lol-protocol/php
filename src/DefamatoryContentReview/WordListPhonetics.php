@@ -13,6 +13,9 @@ final class WordListPhonetics
     /** @var array<string,array>|null forma fonética => datos del primer término que la produce */
     private ?array $index = null;
 
+    /** @var array<int,array<int,array{phonetic:string,data:array}>> minLength => candidatos ya filtrados */
+    private array $fusionCandidatesCache = [];
+
     public function __construct(private readonly string $language)
     {
     }
@@ -37,6 +40,10 @@ final class WordListPhonetics
      */
     public function fusionCandidates(array $words, int $minLength): array
     {
+        if (isset($this->fusionCandidatesCache[$minLength])) {
+            return $this->fusionCandidatesCache[$minLength];
+        }
+
         $candidates = [];
 
         foreach ($this->buildIndex($words) as $folded => $data) {
@@ -45,7 +52,7 @@ final class WordListPhonetics
             }
         }
 
-        return $candidates;
+        return $this->fusionCandidatesCache[$minLength] = $candidates;
     }
 
     private function buildIndex(array $words): array

@@ -39,7 +39,7 @@ class PortuguesePhoneticFolder
         $text = mb_strtolower(trim($text), 'UTF-8');
         $text = self::unleet($text);
         $text = strtr($text, self::ACCENTS);
-        $text = preg_replace('/[\s\-\'’]+/u', '', $text); // fusión: sin pausas ni guiones/apóstrofos
+        $text = self::stripSeparators($text);
 
         // Dígrafos con sonido propio: se protegen antes de tocar sus letras sueltas.
         $text = str_replace(['lh', 'nh', 'ch'], ["\x01", "\x02", "\x03"], $text);

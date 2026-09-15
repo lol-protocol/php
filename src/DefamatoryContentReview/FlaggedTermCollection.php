@@ -54,9 +54,14 @@ final class FlaggedTermCollection
     public function categories(): array { return $this->categories; }
     public function riskTypes(): array { return $this->riskTypes; }
 
-    public function byRiskType(string $riskType): array { return array_values(array_filter($this->terms, fn(array $t) => $t['riskType'] === $riskType)); }
-    public function byLanguage(string $language): array { return array_values(array_filter($this->terms, fn(array $t) => $t['sourceLanguage'] === $language)); }
-    public function byDetectionMethod(string $method): array { return array_values(array_filter($this->terms, fn(array $t) => $t['detectionMethod'] === $method)); }
+    public function byRiskType(string $riskType): array { return $this->filterBy('riskType', $riskType); }
+    public function byLanguage(string $language): array { return $this->filterBy('sourceLanguage', $language); }
+    public function byDetectionMethod(string $method): array { return $this->filterBy('detectionMethod', $method); }
+
+    private function filterBy(string $field, string $value): array
+    {
+        return array_values(array_filter($this->terms, fn(array $t) => $t[$field] === $value));
+    }
 
     /** Un término que además es apellido/nombre documentado — va a revisión humana, no a rechazo automático. */
     public function hasNameCollision(): bool

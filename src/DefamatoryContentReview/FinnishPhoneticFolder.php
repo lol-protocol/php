@@ -32,6 +32,6 @@ class FinnishPhoneticFolder
         $text = self::unleet($text);
         $text = strtr($text, self::ACCENTS);
 
-        return preg_replace('/[\s\-\'’]+/u', '', $text); // fusión: sin pausas ni guiones/apóstrofos
+        return self::stripSeparators($text);
     }
 }

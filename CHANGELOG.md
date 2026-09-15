@@ -1,5 +1,42 @@
 # Changelog
 
+## [4.1.1] - 2026-09-15
+
+### Cambiado
+
+- **Pasada de DRY sobre el módulo completo** (revisión en 4 ángulos:
+  reutilización, simplificación, eficiencia, altitud):
+  - Los 17 folders fonéticos compartían dos líneas idénticas (sustitución
+    de leetspeak y borrado de separadores antes de la fusión
+    nombre+apellido). Se movieron a `LeetspeakFolding::stripSeparators()`,
+    junto al `unleet()` que ya vivía ahí — cero cambio de comportamiento,
+    el regex es el mismo.
+  - `WordListIndex` y `FlaggedTermCollection` tenían tres/cuatro métodos
+    `byX()` casi idénticos (mismo `array_filter` con distinto campo). Se
+    consolidan en un `filterBy(campo, valor)` privado por clase.
+  - `WordListPhonetics::fusionCandidates()` recorría y filtraba el índice
+    fonético en cada llamada; ahora memoiza por `$minLength`, igual que
+    `buildIndex()` ya memoiza el índice base una fila más arriba.
+  - `PhoneticFusionDetector::detectFusion()` extrae la condición de cruce
+    de frontera a `crossesBoundary()`, con nombre y comentario propios en
+    vez de una expresión inline.
+  - Se elimina `LanguageRegistry::getDefaultThreshold()` y
+    `LanguageAffinity::defaultThreshold()`: sin llamadores (ni en `src/`,
+    `tests/`, `examples/` ni documentados en el README) tras verificar en
+    todo el repositorio, no sólo en el árbol fuente.
+  - Se evalúa y se descarta consolidar los mapas `ACCENTS` de cada folder
+    en `AccentFolding::MAP`: varios idiomas (p. ej. francés, con "ç" → "s"
+    por regla fonética, no "c" por accent-stripping genérico) necesitan
+    una tabla propia — unificarlas cambiaría resultados, no sólo
+    reorganizaría código.
+  - Se evalúa y se descarta una clase base para el `CONFIG_DIR`/`setUp()`
+    repetido en los tests: la variación real entre archivos (idioma,
+    nombre de variable, parámetros de política) hace que el ahorro no
+    compense la indirección.
+  - 173 tests, 0 regresiones.
+
+---
+
 ## [4.1.0] - 2026-09-15
 
 ### Cambiado

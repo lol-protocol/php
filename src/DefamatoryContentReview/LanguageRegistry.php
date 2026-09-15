@@ -93,6 +93,4 @@ class LanguageRegistry
         $resolved = $this->resolve($code);
         return [$resolved => 1.0] + $this->getRelated($resolved, $threshold);
     }
-
-    public function getDefaultThreshold(): float { return $this->affinity->defaultThreshold(); }
 }

@@ -35,6 +35,6 @@ class RomanianPhoneticFolder
         $text = self::unleet($text);
         $text = strtr($text, self::NORMALIZE);
 
-        return preg_replace('/[\s\-\'’]+/u', '', $text); // fusión: sin pausas ni guiones/apóstrofos
+        return self::stripSeparators($text);
     }
 }

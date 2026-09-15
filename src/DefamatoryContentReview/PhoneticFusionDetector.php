@@ -56,9 +56,7 @@ class PhoneticFusionDetector
             $searchFrom = 0;
 
             while (($index = self::mbStrpos($full, $needle, $searchFrom)) !== null) {
-                $end = $index + $needleLen;
-
-                if ($index < $boundary && $end > $boundary) {
+                if (self::crossesBoundary($index, $index + $needleLen, $boundary)) {
                     $matches[] = $candidate['data'] + [
                         'found' => $candidate['data']['original'],
                         'detectionMethod' => 'phonetic_fusion',
@@ -92,5 +90,11 @@ class PhoneticFusionDetector
     {
         $pos = mb_strpos($haystack, $needle, $offset);
         return $pos === false ? null : $pos;
+    }
+
+    /** true si el rango [start,end) tiene la unión nombre/apellido estrictamente en su interior. */
+    private static function crossesBoundary(int $start, int $end, int $boundary): bool
+    {
+        return $start < $boundary && $end > $boundary;
     }
 }

@@ -25,7 +25,7 @@ class DutchPhoneticFolder
     {
         $text = mb_strtolower(trim($text), 'UTF-8');
         $text = self::unleet($text);
-        $text = preg_replace('/[\s\-\'’]+/u', '', $text); // fusión: sin pausas ni guiones/apóstrofos
+        $text = self::stripSeparators($text);
 
         $text = str_replace('ij', 'ei', $text);
 

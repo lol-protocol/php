@@ -18,11 +18,16 @@ final class WordListIndex
     public function all(): array { return $this->words; }
     public function count(): int { return count($this->words); }
 
-    public function byRiskType(string $riskType): array { return array_filter($this->words, fn(array $w) => $w['riskType'] === $riskType); }
-    public function byCategory(string $category): array { return array_filter($this->words, fn(array $w) => $w['category'] === $category); }
-    public function bySeverity(string $severity): array { return array_filter($this->words, fn(array $w) => $w['severity'] === $severity); }
+    public function byRiskType(string $riskType): array { return $this->filterBy('riskType', $riskType); }
+    public function byCategory(string $category): array { return $this->filterBy('category', $category); }
+    public function bySeverity(string $severity): array { return $this->filterBy('severity', $severity); }
     /** Términos que colisionan con nombres o apellidos legítimos. */
     public function nameCollisions(): array { return array_filter($this->words, fn(array $w) => $w['nameCollision'] === true); }
+
+    private function filterBy(string $field, string $value): array
+    {
+        return array_filter($this->words, fn(array $w) => $w[$field] === $value);
+    }
 
     public function statistics(string $language, string $coverage): array
     {

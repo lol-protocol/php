@@ -40,9 +40,4 @@ final class LanguageAffinity
 
         return $related;
     }
-
-    public function defaultThreshold(): float
-    {
-        return $this->defaultThreshold;
-    }
 }

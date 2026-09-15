@@ -35,6 +35,6 @@ class ItalianPhoneticFolder
         $text = self::unleet($text);
         $text = strtr($text, self::ACCENTS);
 
-        return preg_replace('/[\s\-\'’]+/u', '', $text);
+        return self::stripSeparators($text);
     }
 }
