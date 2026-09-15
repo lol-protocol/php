@@ -6,20 +6,12 @@ use DefamatoryContentReview\WordList;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Chequeos de integridad sobre los 30 diccionarios que no dependen de ningún
- * idioma en concreto. Nacen de errores reales encontrados a mano durante la
- * ampliación de los diccionarios `basic`:
- *
- * - Dos entradas con la misma palabra en categorías distintas del mismo
- *   idioma (p. ej. "burro" a la vez en `animal` e `intelectual`): como
- *   WordList indexa por palabra normalizada, la segunda pisa a la primera en
- *   silencio y una de las dos categorías queda huérfana sin que nada avise.
- * - El campo `coverage` llegó a vivir en dos sitios (la propia `meta` del
- *   archivo de idioma, y una copia en el catálogo `supported-languages.php`)
- *   y se desincronizó la primera vez que sólo una de las dos se actualizó.
- *   Ahora `supported-languages.php` no declara `coverage` en absoluto —
- *   `testCatalogHasNoDuplicatedCoverageField()` es la guarda que impide que
- *   alguien reintroduzca esa segunda copia sin darse cuenta.
+ * Chequeos de integridad sobre los 30 diccionarios, sin depender de ningún
+ * idioma en concreto. Nacen de errores reales: una misma palabra en dos
+ * categorías del mismo idioma pisa en silencio la primera en el índice de
+ * WordList, y `coverage` llegó a vivir duplicado (meta del idioma + copia
+ * en el catálogo) hasta desincronizarse — `testCatalogHasNoDuplicatedCoverageField()`
+ * impide que esa segunda copia vuelva sin darse cuenta.
  */
 class DictionaryIntegrityTest extends TestCase
 {

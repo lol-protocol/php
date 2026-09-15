@@ -6,20 +6,13 @@ use DefamatoryContentReview\DefamatoryContentReviewer;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Apellidos reales que en algún momento se rechazaron en automático porque
- * su entrada en el diccionario tenía severidad alta y le faltaba
- * `nameCollision => true`. Encontrado mediante un barrido de ~6.800
- * combinaciones de nombre y apellido reales sobre los 17 idiomas con
- * fusión fonética: "oláh" y "tót" (húngaro), "negro" (italiano),
- * "negrão" (portugués), "polak" (francés) y "szwab" (polaco) son, a la
- * vez, insultos étnicos documentados y apellidos reales — el primero, en
- * particular, muy frecuente entre familias romaníes húngaras.
- *
- * `decide()` nunca debe devolver 'reject' para un apellido real conocido:
- * como mucho 'review', que es exactamente para lo que existe
- * `nameCollision`. Esta prueba fija esos cuatro casos y sirve de
- * regresión general del patrón — si se agrega una entrada de severidad
- * alta sin marcar la colisión, un apellido real volverá a caer aquí.
+ * Apellidos reales que en algún momento se rechazaron en automático por
+ * severidad alta sin `nameCollision => true`. Encontrado con un barrido de
+ * ~6.800 combinaciones reales sobre los 17 idiomas con fusión fonética:
+ * "oláh"/"tót" (húngaro), "negro" (italiano), "negrão" (portugués),
+ * "polak" (francés) y "szwab" (polaco) son, a la vez, insultos étnicos
+ * documentados y apellidos reales. `decide()` nunca debe devolver 'reject'
+ * para un apellido real: esta prueba fija esos casos como regresión.
  */
 class NameCollisionRegressionTest extends TestCase
 {
