@@ -38,6 +38,7 @@ export default {
   alerts_title: "⚠ Alerts",
   alerts_title_ip: "⚠ IP outside declared country",
   alerts_title_cambios: "⚠ Impossible country changes",
+  alerts_config_title: "Configure alerts",
   alerts_summary: "{total} actions across {users} users.",
   alerts_last_seen: "Last seen: {date}",
 

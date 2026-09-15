@@ -1,7 +1,8 @@
 -- Datos de ejemplo para esquema.sql: alcanza para ver una fila de cada tipo de
 -- acción (login "normal", pago con monto, reseña con comentario, llamada a
--- API con endpoint/código HTTP, subida de archivo) y una IP que no coincide
--- con el país declarado del usuario (fila a000005).
+-- API con endpoint/código HTTP, subida de archivo) e IPs que no coinciden con
+-- el país declarado del usuario (filas a00004 y a00005: usuario u021 es de ZA,
+-- la IP de sesión reporta CH).
 
 INSERT INTO monedas (codigo, tasa_a_usd) VALUES
     ('USD', 1.0), ('EUR', 0.92), ('ARS', 1400.0), ('ZAR', 18.7), ('CHF', 0.88);

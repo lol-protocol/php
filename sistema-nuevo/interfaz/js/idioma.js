@@ -29,6 +29,9 @@ export function aplicarEstatico() {
   document.querySelectorAll("[data-i18n-placeholder]").forEach((nodo) => {
     nodo.placeholder = t(nodo.dataset.i18nPlaceholder);
   });
+  document.querySelectorAll("[data-i18n-title]").forEach((nodo) => {
+    nodo.title = t(nodo.dataset.i18nTitle);
+  });
   if (state.username) {
     document.getElementById("session-username").textContent = t("session_connected_as", { name: state.username });
   }

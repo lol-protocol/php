@@ -6,7 +6,9 @@ declare(strict_types=1);
  * Nombres en su escritura nativa (no romanizados). Se mezclan con nombres.php
  * al generar usuarios (generar-usuarios.php) para probar que el sistema lee y
  * muestra bien otras escrituras además de español/inglés — japonés, árabe y
- * hebreo en particular (árabe/hebreo además son RTL, ver css/base.css).
+ * hebreo en particular (árabe/hebreo además son RTL: sin `dir` explícito en
+ * ningún template, quedan a merced del algoritmo bidi por defecto del
+ * navegador, no de un CSS propio del proyecto).
  *
  * @return array<string, array{first: string[], last: string[]}>
  */

@@ -22,8 +22,8 @@
 
 .status-message--warning {
   background: rgba(255, 136, 0, 0.12);
-  border-color: var(--dato-endpoint);
-  color: var(--dato-endpoint);
+  border-color: var(--dato-ruta);
+  color: var(--dato-ruta);
 }
 
 .empty-state {

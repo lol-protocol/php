@@ -5,7 +5,7 @@
     <div id="alerts-panel" class="alerts-panel" hidden>
       <div class="alerts-header">
         <h3 data-i18n="alerts_title">⚠ Alertas</h3>
-        <button type="button" id="btn-config-alertas" class="alerts-config-toggle" title="Configurar alertas">⚙</button>
+        <button type="button" id="btn-config-alertas" class="alerts-config-toggle" data-i18n-title="alerts_config_title" title="Configurar alertas">⚙</button>
       </div>
       <p id="alerts-summary" class="alerts-summary"></p>
       <ul id="alerts-list" class="alerts-list"></ul>
