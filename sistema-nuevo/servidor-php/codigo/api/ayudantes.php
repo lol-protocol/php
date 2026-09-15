@@ -68,6 +68,9 @@ function api_scope_label(string $scope, array $groups): string
                 return $preset['label'];
             }
         }
+        // Preset desconocido (ej. borrado después de guardar un filtro con él):
+        // mismo criterio que api_resolve_scope_countries, nunca el string crudo.
+        return 'Todos los países';
     }
     if (str_starts_with($scope, 'country:')) {
         $code = substr($scope, strlen('country:'));

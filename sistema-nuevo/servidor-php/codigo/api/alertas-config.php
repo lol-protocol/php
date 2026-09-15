@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../AlmacenConfiguracion.php';
+const API_TIPOS_ALERTA_VALIDOS = ['ip_pais', 'cambio_pais'];
 
 function api_alertas_config(): void
 {
@@ -12,17 +12,27 @@ function api_alertas_config(): void
             'alertas' => [
                 'ip_pais' => $almacen->esAlertaHabilitada('ip_pais'),
                 'cambio_pais' => $almacen->esAlertaHabilitada('cambio_pais'),
-                'logins_fallidos' => $almacen->esAlertaHabilitada('logins_fallidos'),
             ],
             'umbral' => $almacen->obtenerUmbral(),
         ]);
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        return;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!auth_validar_csrf_header()) {
+            http_response_code(403);
+            echo json_encode(['error' => 'token CSRF inválido']);
+            return;
+        }
+
         $body = json_decode(file_get_contents('php://input') ?: '{}', true) ?? [];
         $almacen = new AlmacenConfiguracion(ConexionBd::obtener());
 
         if (isset($body['alertas'])) {
             foreach ($body['alertas'] as $tipo => $habilitado) {
-                $almacen->guardar('alerta_' . $tipo, $habilitado ? 'true' : 'false');
+                if (in_array($tipo, API_TIPOS_ALERTA_VALIDOS, true)) {
+                    $almacen->guardar('alerta_' . $tipo, $habilitado ? 'true' : 'false');
+                }
             }
         }
 
@@ -32,5 +42,9 @@ function api_alertas_config(): void
         }
 
         echo json_encode(['ok' => true]);
+        return;
     }
+
+    http_response_code(405);
+    echo json_encode(['error' => 'método no permitido']);
 }

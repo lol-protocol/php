@@ -19,5 +19,11 @@ async function guardarNota(accionId, texto, onEstado) {
  */
 export function guardarNotaConDebounce(accionId, texto, onEstado) {
   clearTimeout(timers.get(accionId));
-  timers.set(accionId, setTimeout(() => guardarNota(accionId, texto, onEstado), 600));
+  timers.set(
+    accionId,
+    setTimeout(() => {
+      timers.delete(accionId);
+      guardarNota(accionId, texto, onEstado);
+    }, 600)
+  );
 }

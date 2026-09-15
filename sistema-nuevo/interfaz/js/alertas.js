@@ -31,7 +31,7 @@ export function renderAlerts(data, onSelectUser) {
 
 function renderAlertType(list, alertData, titleKey, onSelectUser) {
   const section = el("li", { class: "alerts-section" });
-  section.appendChild(el("h4", { class: "alerts-type-title", "data-i18n": titleKey }));
+  section.appendChild(el("h4", { class: "alerts-type-title", text: t(titleKey) }));
 
   const subList = el("ul", { class: "alerts-sublist" });
   alertData.top.forEach((row) => {

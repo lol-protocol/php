@@ -96,6 +96,7 @@ export default {
   pagination_info: "Página {page} de {total} · {count} acciones",
 
   label_saved_filters: "Filtro guardado",
+  filtro_cargar_placeholder: "-- Cargar filtro guardado --",
   btn_guardar_filtro: "Guardar",
   btn_eliminar_filtro: "Eliminar",
   filtro_nombre_prompt: "Nombre del filtro:",

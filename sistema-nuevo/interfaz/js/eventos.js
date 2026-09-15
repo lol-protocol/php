@@ -31,10 +31,12 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
 document.getElementById("logout-button").addEventListener("click", async () => {
   try {
-    await postJson("/api/logout", { csrf_token: state.csrf_token || "" });
+    await postJson("/api/logout");
+  } catch (err) {
+    console.error("Error cerrando sesión:", err);
   } finally {
     state.selectedUserId = null;
-    state.csrf_token = null;
+    state.csrfToken = null;
     showLogin();
   }
 });

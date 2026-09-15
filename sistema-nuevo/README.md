@@ -481,9 +481,9 @@ Abrir http://localhost:8082.
 - `GET /api/alerts` — `{ip_pais_mismatch?: {...}, cambios_pais_imposibles?: {...}}` (cada
   clave presente solo si ese tipo está habilitado en la configuración), usuarios con
   más anomalías de cada tipo. **Requiere sesión.**
-- `GET|POST /api/alerts-config` — GET devuelve `{alertas: {ip_pais, cambio_pais,
-  logins_fallidos}, umbral}`; POST guarda cualquier subconjunto de esos campos.
-  **Requiere sesión.**
+- `GET|POST /api/alerts-config` — GET devuelve `{alertas: {ip_pais, cambio_pais},
+  umbral}`; POST guarda cualquier subconjunto de esos campos (tipos fuera de la
+  whitelist se ignoran). **Requiere sesión.**
 - `GET|POST /api/filtros`, `DELETE /api/filtros/{id}` — CRUD de combinaciones de
   filtro guardadas (`{nombre, scope, age_min, age_max, gender, tipo_accion}`).
   **Requiere sesión.**

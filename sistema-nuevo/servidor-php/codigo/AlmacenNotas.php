@@ -28,4 +28,11 @@ final class AlmacenNotas
         $stmt = $this->pdo->prepare('DELETE FROM notas_acciones WHERE accion_id = ?');
         $stmt->execute([$accionId]);
     }
+
+    public function accionExiste(string $accionId): bool
+    {
+        $stmt = $this->pdo->prepare('SELECT 1 FROM acciones WHERE id = ?');
+        $stmt->execute([$accionId]);
+        return $stmt->fetchColumn() !== false;
+    }
 }

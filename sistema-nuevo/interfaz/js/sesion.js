@@ -15,11 +15,11 @@ export async function fetchJson(path) {
   return response.json();
 }
 
-export async function postJson(path, body) {
+export async function postJson(path, body = {}) {
   const response = await fetch(API_BASE + path, {
     method: "POST",
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "X-CSRF-Token": state.csrfToken || "" },
     body: JSON.stringify(body),
   });
   const data = await response.json().catch(() => ({}));
@@ -33,6 +33,7 @@ export async function deleteJson(path) {
   const response = await fetch(API_BASE + path, {
     method: "DELETE",
     credentials: "include",
+    headers: { "X-CSRF-Token": state.csrfToken || "" },
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
@@ -56,7 +57,7 @@ export function showLogin(errorMessage = "") {
 
 export function showApp(username, csrfToken = null) {
   state.username = username;
-  if (csrfToken) state.csrf_token = csrfToken;
+  if (csrfToken) state.csrfToken = csrfToken;
   document.getElementById("login-screen").hidden = true;
   document.getElementById("app").hidden = false;
   document.getElementById("session-username").textContent = t("session_connected_as", { name: username });
@@ -68,7 +69,7 @@ export async function boot(onAuthenticated) {
   try {
     const session = await fetchJson("/api/session");
     if (session.authenticated) {
-      state.csrf_token = session.csrf_token;
+      state.csrfToken = session.csrf_token;
       showApp(session.username);
       await onAuthenticated();
     } else {

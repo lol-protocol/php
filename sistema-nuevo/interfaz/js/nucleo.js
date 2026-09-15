@@ -31,6 +31,7 @@ export const state = {
   lastAlerts: null,
   lastKpis: null,
   username: null,
+  csrfToken: null,
 };
 
 export const el = (tag, props = {}, children = []) => {

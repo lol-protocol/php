@@ -75,5 +75,4 @@ CREATE TABLE intentos_login (
 INSERT INTO configuracion_alertas VALUES
   ('alerta_ip_pais', 'true'),
   ('alerta_cambio_pais', 'true'),
-  ('alerta_logins_fallidos', 'true'),
   ('umbral_sensibilidad', '50');  -- 0-100, por defecto 50%

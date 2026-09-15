@@ -1,11 +1,12 @@
 import { state, API_BASE } from "./nucleo.js";
 import { postJson, showLogin } from "./sesion.js";
-import { t } from "./idioma.js";
+import { t, aplicarEstatico } from "./idioma.js";
 
 const TIMEOUT_MINUTOS = 30;
 const ADVERTENCIA_MINUTOS = 1;
 const TIMEOUT_MS = TIMEOUT_MINUTOS * 60 * 1000;
 const ADVERTENCIA_MS = (TIMEOUT_MINUTOS - ADVERTENCIA_MINUTOS) * 60 * 1000;
+const EVENTOS_ACTIVIDAD = ["click", "mousemove", "keypress", "scroll", "touchstart"];
 
 let ultimaActividad = Date.now();
 let timerInactividad = null;
@@ -16,11 +17,7 @@ export function iniciarMonitorInactividad() {
   if (!state.username) return;
 
   registrarActividad();
-
-  ["click", "mousemove", "keypress", "scroll", "touchstart"].forEach((evento) => {
-    document.addEventListener(evento, registrarActividad, true);
-  });
-
+  EVENTOS_ACTIVIDAD.forEach((evento) => document.addEventListener(evento, registrarActividad, true));
   timerInactividad = setInterval(verificarInactividad, 10000);
 }
 
@@ -30,9 +27,7 @@ export function detenerMonitorInactividad() {
   timerInactividad = null;
   timerFinal = null;
   if (modalAdvertencia) modalAdvertencia.hidden = true;
-  ["click", "mousemove", "keypress", "scroll", "touchstart"].forEach((evento) => {
-    document.removeEventListener(evento, registrarActividad, true);
-  });
+  EVENTOS_ACTIVIDAD.forEach((evento) => document.removeEventListener(evento, registrarActividad, true));
 }
 
 function registrarActividad() {
@@ -69,14 +64,14 @@ function mostrarAdvertencia() {
       </div>
     `;
     document.body.appendChild(modalAdvertencia);
+    aplicarEstatico();
 
     document.getElementById("btn-continuar").addEventListener("click", cerrarAdvertencia);
     document.getElementById("btn-logout").addEventListener("click", logoutAutomatico);
   }
 
   if (timerFinal) clearTimeout(timerFinal);
-  const tiempoHastaLogout = TIMEOUT_MS - ADVERTENCIA_MS;
-  timerFinal = setTimeout(logoutAutomatico, tiempoHastaLogout);
+  timerFinal = setTimeout(logoutAutomatico, TIMEOUT_MS - ADVERTENCIA_MS);
 }
 
 function cerrarAdvertencia() {
@@ -91,10 +86,12 @@ function cerrarAdvertencia() {
 async function logoutAutomatico() {
   detenerMonitorInactividad();
   try {
-    await postJson("/api/logout", { csrf_token: state.csrf_token || "" });
+    await postJson("/api/logout");
+  } catch (err) {
+    console.error("Error en logout automático:", err);
   } finally {
     state.selectedUserId = null;
-    state.csrf_token = null;
+    state.csrfToken = null;
     showLogin(t("inactividad_sesion_cerrada"));
   }
 }

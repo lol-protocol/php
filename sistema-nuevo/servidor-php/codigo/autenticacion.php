@@ -65,3 +65,9 @@ function auth_validar_csrf_token(string $token): bool
     }
     return hash_equals($_SESSION['csrf_token'], $token);
 }
+
+/** CSRF vía header (X-CSRF-Token): así cubre POST y DELETE por igual, sin depender de si hay body. */
+function auth_validar_csrf_header(): bool
+{
+    return auth_validar_csrf_token($_SERVER['HTTP_X_CSRF_TOKEN'] ?? '');
+}

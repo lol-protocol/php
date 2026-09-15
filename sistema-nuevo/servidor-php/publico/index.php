@@ -30,7 +30,7 @@ if (in_array($origen, $origenesPermitidos, true)) {
 // arriba) antes de que llegue ninguna cookie de sesión real.
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
     header('Access-Control-Allow-Methods: GET, POST, DELETE');
-    header('Access-Control-Allow-Headers: Content-Type');
+    header('Access-Control-Allow-Headers: Content-Type, X-CSRF-Token');
     http_response_code(204);
     exit;
 }
@@ -76,6 +76,7 @@ try {
         api_not_found();
     }
 } catch (Throwable $e) {
+    error_log($e->getMessage());
     http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
+    echo json_encode(['error' => 'error interno del servidor']);
 }

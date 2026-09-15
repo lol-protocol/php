@@ -26,17 +26,37 @@ final class CargadorAcciones {
         try (BufferedReader reader = Files.newBufferedReader(csvPath, StandardCharsets.UTF_8)) {
             reader.readLine(); // descarta encabezado
             String line;
+            int numeroLinea = 1;
             while ((line = reader.readLine()) != null) {
+                numeroLinea++;
                 if (line.isBlank()) {
                     continue;
                 }
-                // user_id,type,duration_ms,amount_usd,country,age,gender,timestamp
-                String[] f = line.split(",", -1);
-                Double amount = f[3].isEmpty() ? null : Double.parseDouble(f[3]);
-                actions.add(new Accion(f[0], f[1], Double.parseDouble(f[2]), amount, f[4], Integer.parseInt(f[5]), f[6]));
+                Accion accion = parseLinea(line, numeroLinea);
+                if (accion != null) {
+                    actions.add(accion);
+                }
             }
         }
         return actions;
+    }
+
+    /**
+     * Una línea corrupta (columna faltante, número inválido) no debe tirar
+     * abajo la carga completa -- ni el arranque del servicio ni una recarga en
+     * caliente por un dato sembrado a medias. Se ignora esa fila sola, como
+     * hace el saneador del lado PHP con un registro que no puede recuperar.
+     */
+    private static Accion parseLinea(String line, int numeroLinea) {
+        try {
+            // user_id,type,duration_ms,amount_usd,country,age,gender,timestamp
+            String[] f = line.split(",", -1);
+            Double amount = f[3].isEmpty() ? null : Double.parseDouble(f[3]);
+            return new Accion(f[0], f[1], Double.parseDouble(f[2]), amount, f[4], Integer.parseInt(f[5]), f[6]);
+        } catch (RuntimeException e) {
+            System.err.println("Línea " + numeroLinea + " inválida en el CSV, se ignora: " + e.getMessage());
+            return null;
+        }
     }
 
     /** Chequea el mtime del CSV cada intervaloSegundos y recarga accionesRef si cambió. */

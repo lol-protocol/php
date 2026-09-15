@@ -1,5 +1,5 @@
 import { postJson, deleteJson, fetchJson } from "./sesion.js";
-import { intentar } from "./nucleo.js";
+import { intentar, el } from "./nucleo.js";
 import { t } from "./idioma.js";
 import { mostrarError } from "./notificaciones.js";
 
@@ -16,7 +16,8 @@ function renderFiltrosDropdown(filtros) {
   const select = document.getElementById("saved-filters-select");
   if (!select) return;
 
-  select.innerHTML = '<option value="">-- Cargar filtro guardado --</option>';
+  select.innerHTML = "";
+  select.appendChild(el("option", { value: "", text: t("filtro_cargar_placeholder") }));
   filtros.forEach((f) => {
     const opt = document.createElement("option");
     opt.value = f.id;

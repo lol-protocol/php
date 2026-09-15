@@ -38,10 +38,7 @@ function api_login(): void
 
 function api_logout(): void
 {
-    $body = json_decode(file_get_contents('php://input') ?: '[]', true) ?? [];
-    $token = is_string($body['csrf_token'] ?? null) ? $body['csrf_token'] : '';
-
-    if (!auth_validar_csrf_token($token)) {
+    if (!auth_validar_csrf_header()) {
         http_response_code(403);
         echo json_encode(['error' => 'token CSRF inválido']);
         return;
