@@ -4,26 +4,18 @@ namespace DefamatoryContentReview;
 
 /**
  * Detecta contenido ofensivo que sólo existe en la fusión de nombre y
- * apellido: ninguno de los dos, por separado, es un término del diccionario,
- * pero leídos seguidos —sin la pausa que marca dónde termina uno y empieza
- * el otro— componen otro. Es el fenómeno de "Elba Gina" ("el vagina") o
- * "Felipe Lotas" ("Feli-pelotas"): el agravio vive exactamente en el punto
- * de unión.
+ * apellido: ninguno por separado es un término del diccionario, pero
+ * leídos seguidos —sin la pausa que marca dónde termina uno y empieza el
+ * otro— componen otro ("Elba Gina" → "el vagina"). Por eso sólo cuentan las
+ * coincidencias que CRUZAN ese punto de unión: "ano" entero dentro de
+ * "Mariano" no cuenta, o arrasaría con nombres comunes.
  *
- * Por eso sólo cuentan las coincidencias que CRUZAN ese punto de unión. Un
- * término que cae entero dentro de un único nombre o apellido (p. ej. "ano"
- * dentro de "Mariano") no es este fenómeno — es sólo una palabra frecuente
- * que contiene esas letras, y de aceptarse sin esta restricción, arrasaría
- * con nombres perfectamente comunes (Mariano, Luciano, Adriano, Emiliano...).
+ * También cubre la variante de un solo campo: un nombre cuya ortografía
+ * difiere de la del diccionario pero suena igual ("Cojes" vs. "Coges").
  *
- * También cubre la variante de un solo campo: un nombre o apellido cuya
- * ortografía difiere de la del diccionario pero suena igual (p. ej. "Cojes"
- * frente a la entrada "Coges").
- *
- * Sólo funciona para los idiomas con reglas de plegado registradas en
- * PhoneticFolderRegistry (consultadas aquí a través del WordList que se le
- * pasa, para que este detector no necesite saber qué idioma es): para el
- * resto, ambos métodos devuelven vacío sin error.
+ * Sólo funciona para idiomas con plegado registrado en
+ * PhoneticFolderRegistry (vía el WordList recibido, para no depender de
+ * saber qué idioma es): para el resto, ambos métodos devuelven vacío.
  */
 class PhoneticFusionDetector
 {
@@ -99,7 +91,6 @@ class PhoneticFusionDetector
     private static function mbStrpos(string $haystack, string $needle, int $offset): ?int
     {
         $pos = mb_strpos($haystack, $needle, $offset);
-
         return $pos === false ? null : $pos;
     }
 }

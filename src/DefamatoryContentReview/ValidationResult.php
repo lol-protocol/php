@@ -2,6 +2,12 @@
 
 namespace DefamatoryContentReview;
 
+/**
+ * Resultado de validar un nombre: validez, severidad, puntaje y los
+ * términos marcados. Los términos y sus consultas viven en
+ * `FlaggedTermCollection` (colaborador interno) — esta clase expone los
+ * mismos métodos de siempre, delegando ahí.
+ */
 class ValidationResult
 {
     private string $fullName;
@@ -9,11 +15,7 @@ class ValidationResult
     private bool $isValid;
     private string $severity = 'none';
     private float $score = 0.0;
-
-    /** @var array<int,array> */
-    private array $flaggedTerms = [];
-    private array $flaggedCategories = [];
-    private array $flaggedRiskTypes = [];
+    private FlaggedTermCollection $terms;
     /** @var array<string,float> idiomas consultados => afinidad con el principal */
     private array $languagesChecked = [];
 
@@ -23,200 +25,48 @@ class ValidationResult
         $this->isValid = $isValid;
         $this->language = $language;
         $this->languagesChecked = [$language => 1.0];
+        $this->terms = new FlaggedTermCollection($language);
     }
 
-    public function isValid(): bool
-    {
-        return $this->isValid;
-    }
+    public function isValid(): bool { return $this->isValid; }
+    public function setValid(bool $valid): self { $this->isValid = $valid; return $this; }
 
-    public function setValid(bool $valid): self
-    {
-        $this->isValid = $valid;
-        return $this;
-    }
+    public function addFlaggedTerm(array $term): self { $this->terms->add($term); return $this; }
 
-    /**
-     * @param array $term Datos del término tal como los devuelve WordList, más
-     *                    `sourceLanguage` y `confidence` cuando la coincidencia
-     *                    viene de un idioma asociado y no del principal, y
-     *                    `detectionMethod` ('literal' por defecto;
-     *                    'phonetic_fusion' o 'phonetic_variant' cuando viene
-     *                    de PhoneticFusionDetector).
-     */
-    public function addFlaggedTerm(array $term): self
-    {
-        $entry = [
-            'term' => $term['found'] ?? $term['original'] ?? '',
-            'category' => $term['category'] ?? 'desconocida',
-            'riskType' => $term['riskType'] ?? 'ordinario',
-            'severity' => $term['severity'] ?? 'medium',
-            'nameCollision' => $term['nameCollision'] ?? false,
-            'sourceLanguage' => $term['sourceLanguage'] ?? $this->language,
-            'confidence' => $term['confidence'] ?? 1.0,
-            'detectionMethod' => $term['detectionMethod'] ?? 'literal',
-        ];
-
-        $this->flaggedTerms[] = $entry;
-
-        if (!in_array($entry['category'], $this->flaggedCategories, true)) {
-            $this->flaggedCategories[] = $entry['category'];
-        }
-
-        if (!in_array($entry['riskType'], $this->flaggedRiskTypes, true)) {
-            $this->flaggedRiskTypes[] = $entry['riskType'];
-        }
-
-        return $this;
-    }
-
-    public function getFlaggedTerms(): array
-    {
-        return $this->flaggedTerms;
-    }
-
-    public function getFlaggedCategories(): array
-    {
-        return $this->flaggedCategories;
-    }
-
-    public function getFlaggedRiskTypes(): array
-    {
-        return $this->flaggedRiskTypes;
-    }
-
-    public function getTermsByRiskType(string $riskType): array
-    {
-        return array_values(array_filter(
-            $this->flaggedTerms,
-            fn(array $t) => $t['riskType'] === $riskType
-        ));
-    }
-
-    public function getTermsByLanguage(string $language): array
-    {
-        return array_values(array_filter(
-            $this->flaggedTerms,
-            fn(array $t) => $t['sourceLanguage'] === $language
-        ));
-    }
+    public function getFlaggedTerms(): array { return $this->terms->all(); }
+    public function getFlaggedCategories(): array { return $this->terms->categories(); }
+    public function getFlaggedRiskTypes(): array { return $this->terms->riskTypes(); }
+    public function getTermsByRiskType(string $riskType): array { return $this->terms->byRiskType($riskType); }
+    public function getTermsByLanguage(string $language): array { return $this->terms->byLanguage($language); }
 
     /** Coincidencias halladas en el idioma principal, no en los asociados. */
-    public function getPrimaryLanguageTerms(): array
-    {
-        return $this->getTermsByLanguage($this->language);
-    }
+    public function getPrimaryLanguageTerms(): array { return $this->getTermsByLanguage($this->language); }
 
-    /**
-     * Un término marcado que además es apellido o nombre documentado. Estos
-     * casos van a revisión humana en lugar de rechazarse en automático.
-     */
-    public function hasNameCollision(): bool
-    {
-        foreach ($this->flaggedTerms as $term) {
-            if ($term['nameCollision']) {
-                return true;
-            }
-        }
+    public function hasNameCollision(): bool { return $this->terms->hasNameCollision(); }
+    public function getNameCollisionTerms(): array { return $this->terms->nameCollisionTerms(); }
+    public function getTermsByDetectionMethod(string $method): array { return $this->terms->byDetectionMethod($method); }
+    public function getPhoneticFusionTerms(): array { return $this->getTermsByDetectionMethod('phonetic_fusion'); }
+    public function getPhoneticVariantTerms(): array { return $this->getTermsByDetectionMethod('phonetic_variant'); }
+    public function hasOnlyPhoneticDetections(): bool { return $this->terms->hasOnlyPhoneticDetections(); }
 
-        return false;
-    }
+    public function setSeverity(string $severity): self { $this->severity = $severity; return $this; }
+    public function getSeverity(): string { return $this->severity; }
 
-    public function getNameCollisionTerms(): array
-    {
-        return array_values(array_filter($this->flaggedTerms, fn(array $t) => $t['nameCollision']));
-    }
+    /** Puntaje crudo antes de discretizar en severidad (ver ScoringPolicy) — el peso del peor término, por defecto. */
+    public function setScore(float $score): self { $this->score = $score; return $this; }
+    public function getScore(): float { return $this->score; }
 
-    public function getTermsByDetectionMethod(string $method): array
-    {
-        return array_values(array_filter($this->flaggedTerms, fn(array $t) => $t['detectionMethod'] === $method));
-    }
+    public function getFullName(): string { return $this->fullName; }
+    public function getLanguage(): string { return $this->language; }
 
-    public function getPhoneticFusionTerms(): array
-    {
-        return $this->getTermsByDetectionMethod('phonetic_fusion');
-    }
-
-    public function getPhoneticVariantTerms(): array
-    {
-        return $this->getTermsByDetectionMethod('phonetic_variant');
-    }
-
-    /**
-     * Todo lo marcado proviene sólo de inferencia fonética (fusión o
-     * variante), nada de coincidencia literal directa. Es la señal de menor
-     * certeza: nunca debe bastar por sí sola para un rechazo automático.
-     */
-    public function hasOnlyPhoneticDetections(): bool
-    {
-        if (empty($this->flaggedTerms)) {
-            return false;
-        }
-
-        foreach ($this->flaggedTerms as $term) {
-            if ($term['detectionMethod'] === 'literal') {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public function setSeverity(string $severity): self
-    {
-        $this->severity = $severity;
-        return $this;
-    }
-
-    public function getSeverity(): string
-    {
-        return $this->severity;
-    }
-
-    /**
-     * Puntaje numérico crudo antes de discretizar en severidad, según la
-     * ScoringPolicy en uso (ver DefamatoryContentReviewer::getPolicy()) —
-     * por defecto, el peso del peor término encontrado. Sirve para quien
-     * quiera un umbral propio en vez de las cuatro bandas fijas, al estilo
-     * de un puntaje de spam.
-     */
-    public function setScore(float $score): self
-    {
-        $this->score = $score;
-        return $this;
-    }
-
-    public function getScore(): float
-    {
-        return $this->score;
-    }
-
-    public function getFullName(): string
-    {
-        return $this->fullName;
-    }
-
-    public function getLanguage(): string
-    {
-        return $this->language;
-    }
-
-    public function setLanguagesChecked(array $languages): self
-    {
-        $this->languagesChecked = $languages;
-        return $this;
-    }
-
+    public function setLanguagesChecked(array $languages): self { $this->languagesChecked = $languages; return $this; }
     /** @return array<string,float> */
-    public function getLanguagesChecked(): array
-    {
-        return $this->languagesChecked;
-    }
+    public function getLanguagesChecked(): array { return $this->languagesChecked; }
 
     public function toArray(): array
     {
         $termsByRiskType = [];
-        foreach ($this->flaggedRiskTypes as $riskType) {
+        foreach ($this->getFlaggedRiskTypes() as $riskType) {
             $termsByRiskType[$riskType] = $this->getTermsByRiskType($riskType);
         }
 
@@ -227,13 +77,13 @@ class ValidationResult
             'isValid' => $this->isValid,
             'severity' => $this->severity,
             'score' => $this->score,
-            'flaggedTerms' => $this->flaggedTerms,
-            'flaggedCategories' => $this->flaggedCategories,
-            'flaggedRiskTypes' => $this->flaggedRiskTypes,
+            'flaggedTerms' => $this->getFlaggedTerms(),
+            'flaggedCategories' => $this->getFlaggedCategories(),
+            'flaggedRiskTypes' => $this->getFlaggedRiskTypes(),
             'termsByRiskType' => $termsByRiskType,
             'hasNameCollision' => $this->hasNameCollision(),
             'hasOnlyPhoneticDetections' => $this->hasOnlyPhoneticDetections(),
-            'totalFlagged' => count($this->flaggedTerms),
+            'totalFlagged' => count($this->getFlaggedTerms()),
         ];
     }
 }
