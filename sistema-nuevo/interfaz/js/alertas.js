@@ -20,11 +20,11 @@ export function renderAlerts(data, onSelectUser) {
   const list = document.getElementById("alerts-list");
   list.innerHTML = "";
 
-  if (data.ip_pais_mismatch?.top) {
+  if (data.ip_pais_mismatch?.top.length > 0) {
     renderAlertType(list, data.ip_pais_mismatch, "alerts_title_ip", onSelectUser);
   }
 
-  if (data.cambios_pais_imposibles?.top) {
+  if (data.cambios_pais_imposibles?.top.length > 0) {
     renderAlertType(list, data.cambios_pais_imposibles, "alerts_title_cambios", onSelectUser);
   }
 }

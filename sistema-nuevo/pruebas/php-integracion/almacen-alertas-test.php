@@ -43,3 +43,12 @@ if ($cambiosSensibilidadAlta['top']) {
     );
     assert_verdadero($primero['pais_anterior'] !== $primero['pais_actual'], 'alertas: un "cambio" siempre es entre dos países distintos');
 }
+
+// LIMITE_USUARIOS limita usuarios distintos, no filas: un usuario con varios
+// pares de país "imposibles" debe aparecer una sola vez en el top.
+$idsEnTop = array_column($cambiosSensibilidadAlta['top'], 'user_id');
+assert_igual(
+    count($idsEnTop),
+    count(array_unique($idsEnTop)),
+    'alertas: cambiosPaisImposibles.top nunca repite el mismo usuario en dos filas'
+);

@@ -2,44 +2,46 @@ import { API_BASE, state } from "./nucleo.js";
 import { t } from "./idioma.js";
 import { iniciarMonitorInactividad, detenerMonitorInactividad } from "./inactividad.js";
 
-export async function fetchJson(path) {
-  const response = await fetch(API_BASE + path, { credentials: "include" });
-  if (response.status === 401) {
+/**
+ * Único punto donde se hace fetch() contra la API: así una sesión que ya no
+ * vale (401) se maneja igual sin importar el verbo -- antes solo fetchJson()
+ * mandaba al login; un POST/DELETE con sesión muerta dejaba al usuario en un
+ * panel muerto con un error genérico ("probá de nuevo") que nunca funciona.
+ *
+ * /api/login queda afuera: ahí un 401 es "contraseña incorrecta" (un intento
+ * normal, ni siquiera hay sesión todavía), no una sesión que expiró -- mandar
+ * a showLogin() y pisar el mensaje del servidor rompería el login mismo.
+ */
+async function pedir(path, options = {}) {
+  const response = await fetch(API_BASE + path, { credentials: "include", ...options });
+  if (response.status === 401 && path !== "/api/login") {
     showLogin();
     throw new Error(t("error_session_expired"));
   }
+  const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new Error(body.error || t("error_http", { status: response.status, path }));
+    throw new Error(data.error || t("error_http", { status: response.status, path }));
   }
-  return response.json();
+  return data;
 }
 
-export async function postJson(path, body = {}) {
-  const response = await fetch(API_BASE + path, {
+export function fetchJson(path) {
+  return pedir(path);
+}
+
+export function postJson(path, body = {}) {
+  return pedir(path, {
     method: "POST",
-    credentials: "include",
     headers: { "Content-Type": "application/json", "X-CSRF-Token": state.csrfToken || "" },
     body: JSON.stringify(body),
   });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.error || t("error_http", { status: response.status, path }));
-  }
-  return data;
 }
 
-export async function deleteJson(path) {
-  const response = await fetch(API_BASE + path, {
+export function deleteJson(path) {
+  return pedir(path, {
     method: "DELETE",
-    credentials: "include",
     headers: { "X-CSRF-Token": state.csrfToken || "" },
   });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.error || t("error_http", { status: response.status, path }));
-  }
-  return data;
 }
 
 export function showLogin(errorMessage = "") {
