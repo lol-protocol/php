@@ -1,13 +1,16 @@
 <?php
 
 /** @var array $registros */
+/** @var int $totalRegistros */
+/** @var int $totalPaginas */
+/** @var int $pagina */
 
 $accionLabel = ['crear' => 'Creó', 'editar' => 'Editó', 'anular' => 'Anuló', 'activar' => 'Reactivó'];
 $entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente', 'usuario' => 'Usuario'];
 ?>
 
 <h1>Auditoría</h1>
-<p class="subtitulo">Quién hizo qué: últimas <?= count($registros) ?> altas, ediciones y anulaciones.</p>
+<p class="subtitulo">Quién hizo qué: <?= $totalRegistros ?> altas, ediciones y anulaciones en total.</p>
 
 <div class="panel">
     <div class="table-wrap">
@@ -33,4 +36,5 @@ $entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente',
             </tbody>
         </table>
     </div>
+    <?php include __DIR__ . '/../_paginacion.php'; ?>
 </div>

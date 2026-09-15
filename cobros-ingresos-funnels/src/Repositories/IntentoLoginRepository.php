@@ -31,16 +31,28 @@ final class IntentoLoginRepository
         return $minutos !== false ? max(1, (int) $minutos) : null;
     }
 
-    /** Suma un intento fallido; a partir del quinto seguido, bloquea 15 minutos. */
+    /**
+     * Suma un intento fallido; a partir del quinto seguido, bloquea 15
+     * minutos. Si el ultimo intento fue hace mas de esos 15 minutos (la
+     * racha se corto, haya llegado a bloquear o no), arranca de nuevo desde
+     * 1 en vez de seguir sumando: sin esto, una sola contraseña mal tipeada
+     * mucho despues de un bloqueo ya vencido volvia a bloquear de una.
+     */
     public function registrarFallo(string $email): void
     {
         $stmt = $this->db->prepare(
             'INSERT INTO intentos_login (email, intentos, ultimo_intento, bloqueado_hasta)
              VALUES (:email, 1, now(), NULL)
              ON CONFLICT (email) DO UPDATE SET
-                intentos = intentos_login.intentos + 1,
+                intentos = CASE
+                    WHEN intentos_login.ultimo_intento < now() - make_interval(mins => :bloqueo)
+                    THEN 1
+                    ELSE intentos_login.intentos + 1
+                END,
                 ultimo_intento = now(),
                 bloqueado_hasta = CASE
+                    WHEN intentos_login.ultimo_intento < now() - make_interval(mins => :bloqueo)
+                    THEN NULL
                     WHEN intentos_login.intentos + 1 >= :maximo
                     THEN now() + make_interval(mins => :bloqueo)
                     ELSE intentos_login.bloqueado_hasta

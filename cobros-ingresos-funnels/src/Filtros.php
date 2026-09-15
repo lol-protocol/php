@@ -70,10 +70,25 @@ final class Filtros
         return [$desde, $hasta];
     }
 
-    /** El rango personalizado si esta presente y es valido; si no, el rango por meses. */
+    /**
+     * meses + el rango activo (personalizado si esta presente y es valido,
+     * si no el de meses) + si ese rango activo es el personalizado: el combo
+     * que Dashboard/Cobros/Pagos/Funnel/Cohortes repetian cada uno por su
+     * cuenta en 3 lineas.
+     * @return array{meses: int, desde: string, hasta: string, personalizado: bool}
+     */
     public static function rangoActivo(): array
     {
-        return self::rangoPersonalizado() ?? self::rango(self::meses());
+        $meses = self::meses();
+        $personalizado = self::rangoPersonalizado();
+        [$desde, $hasta] = $personalizado ?? self::rango($meses);
+
+        return [
+            'meses' => $meses,
+            'desde' => $desde,
+            'hasta' => $hasta,
+            'personalizado' => $personalizado !== null,
+        ];
     }
 
     /** true si $fecha es una fecha real en formato Y-m-d (rechaza "2026-02-30", texto suelto, etc.). */

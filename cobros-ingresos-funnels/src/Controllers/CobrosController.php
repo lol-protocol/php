@@ -18,9 +18,7 @@ final class CobrosController
 {
     public function index(): void
     {
-        $meses = Filtros::meses();
-        $personalizado = Filtros::rangoPersonalizado();
-        [$desde, $hasta] = $personalizado ?? Filtros::rango($meses);
+        ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
         $estado = $_GET['estado'] ?? '';
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
@@ -33,7 +31,7 @@ final class CobrosController
             'meses' => $meses,
             'desde' => $desde,
             'hasta' => $hasta,
-            'personalizado' => $personalizado !== null,
+            'personalizado' => $personalizado,
             'estado' => $estado,
             'cliente' => $cliente,
             'pagina' => $pagina,

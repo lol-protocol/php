@@ -19,9 +19,7 @@ final class PagosController
 {
     public function index(): void
     {
-        $meses = Filtros::meses();
-        $personalizado = Filtros::rangoPersonalizado();
-        [$desde, $hasta] = $personalizado ?? Filtros::rango($meses);
+        ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
 
@@ -32,7 +30,7 @@ final class PagosController
             'meses' => $meses,
             'desde' => $desde,
             'hasta' => $hasta,
-            'personalizado' => $personalizado !== null,
+            'personalizado' => $personalizado,
             'cliente' => $cliente,
             'pagina' => $pagina,
             'cobrosPorMes' => $ingresosRepo->cobrosPorMes($desde, $hasta),
@@ -69,6 +67,10 @@ final class PagosController
                 $error = 'La fecha de pago no es válida.';
             } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
                 $error = 'La boleta elegida no es válida para este cliente.';
+            } elseif ($boletaId > 0 && !self::fechaPagoEsValida($fechaPago, $boleta)) {
+                $error = 'La fecha de pago no puede ser anterior a la emisión de la boleta.';
+            } elseif ($boletaId > 0 && !self::montoNoSuperaElSaldo($monto, $boleta)) {
+                $error = 'El monto supera el saldo pendiente de la boleta.';
             } else {
                 $id = (new PagoRepository())->crear([
                     'boleta_id' => $boletaId ?: null,
@@ -108,6 +110,18 @@ final class PagosController
     public static function boletaEsValidaParaCliente(?array $boleta, int $clienteId): bool
     {
         return $boleta !== null && (int) $boleta['cliente_id'] === $clienteId && !$boleta['anulada'];
+    }
+
+    /** No se puede registrar un pago con fecha anterior a que la boleta fue emitida. */
+    public static function fechaPagoEsValida(string $fechaPago, array $boleta): bool
+    {
+        return $fechaPago >= $boleta['fecha_emision'];
+    }
+
+    /** Tolerancia de un centavo para poder pagar exactamente el saldo restante sin que el redondeo lo rechace. */
+    public static function montoNoSuperaElSaldo(float $monto, array $boleta): bool
+    {
+        return $monto <= (float) $boleta['saldo'] + 0.01;
     }
 
     public function editar(): void

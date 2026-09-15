@@ -21,6 +21,7 @@ foreach ($porMetodo as $fila) {
     $maxMetodo = max($maxMetodo, (float) $fila['total']);
 }
 $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
+$pagosVigentes = array_sum(array_column($porMetodo, 'cantidad'));
 ?>
 
 <h1>Pagos</h1>
@@ -48,7 +49,7 @@ $totalPeriodo = array_sum(array_column($porMetodo, 'total'));
     </div>
     <div class="panel stat-tile">
         <span class="label">Pagos registrados</span>
-        <span class="value"><?= $totalPagos ?></span>
+        <span class="value"><?= $pagosVigentes ?></span>
     </div>
 </div>
 

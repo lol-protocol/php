@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Auth;
 use App\Database;
+use App\Paginacion;
 use PDO;
 
 final class AuditoriaRepository
@@ -43,18 +44,27 @@ final class AuditoriaRepository
         ]);
     }
 
-    public function listado(int $limite = 200): array
+    /** @return array{filas: array, total: int, totalPaginas: int} */
+    public function listado(int $pagina = 1): array
     {
+        $total = (int) $this->db->query('SELECT COUNT(*) FROM auditoria')->fetchColumn();
+
         $stmt = $this->db->prepare(
             "SELECT a.creado_en, a.accion, a.entidad, a.entidad_id, a.detalle,
                     COALESCE(u.nombre, 'Sistema') AS usuario
              FROM auditoria a
              LEFT JOIN usuarios_sistema u ON u.id = a.usuario_id
-             ORDER BY a.creado_en DESC
-             LIMIT :limite"
+             ORDER BY a.creado_en DESC, a.id DESC
+             LIMIT :limite OFFSET :offset"
         );
-        $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
+        $stmt->bindValue(':limite', Paginacion::POR_PAGINA, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', Paginacion::offset($pagina), PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll();
+
+        return [
+            'filas' => $stmt->fetchAll(),
+            'total' => $total,
+            'totalPaginas' => Paginacion::totalPaginas($total),
+        ];
     }
 }

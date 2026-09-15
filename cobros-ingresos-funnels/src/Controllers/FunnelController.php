@@ -12,9 +12,7 @@ final class FunnelController
 {
     public function index(): void
     {
-        $meses = Filtros::meses();
-        $personalizado = Filtros::rangoPersonalizado();
-        [$desde, $hasta] = $personalizado ?? Filtros::rango($meses);
+        ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
 
         $funnelRepo = new FunnelRepository();
 
@@ -22,7 +20,7 @@ final class FunnelController
             'meses' => $meses,
             'desde' => $desde,
             'hasta' => $hasta,
-            'personalizado' => $personalizado !== null,
+            'personalizado' => $personalizado,
             'resumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'porCanal' => $funnelRepo->porCanal($desde, $hasta),
             'porPais' => $funnelRepo->porPais($desde, $hasta),

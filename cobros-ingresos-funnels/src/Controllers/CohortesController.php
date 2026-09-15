@@ -13,15 +13,13 @@ final class CohortesController
 {
     public function index(): void
     {
-        $meses = Filtros::meses();
-        $personalizado = Filtros::rangoPersonalizado();
-        [$desde, $hasta] = $personalizado ?? Filtros::rango($meses);
+        ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
 
         View::render('cohortes/index', [
             'meses' => $meses,
             'desde' => $desde,
             'hasta' => $hasta,
-            'personalizado' => $personalizado !== null,
+            'personalizado' => $personalizado,
             'cohortes' => (new FunnelRepository())->cohortes($desde, $hasta),
             'ltvPorCohorte' => (new SegmentacionRepository())->ltvPorCohorte(),
             'activePage' => 'cohortes',

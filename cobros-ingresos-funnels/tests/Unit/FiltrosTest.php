@@ -102,7 +102,11 @@ final class FiltrosTest extends TestCase
         $_GET['desde'] = '2026-01-15';
         $_GET['hasta'] = '2026-02-20';
 
-        self::assertSame(['2026-01-15', '2026-02-20'], Filtros::rangoActivo());
+        $contexto = Filtros::rangoActivo();
+
+        self::assertSame('2026-01-15', $contexto['desde']);
+        self::assertSame('2026-02-20', $contexto['hasta']);
+        self::assertTrue($contexto['personalizado']);
 
         unset($_GET['desde'], $_GET['hasta']);
     }
@@ -112,7 +116,11 @@ final class FiltrosTest extends TestCase
         unset($_GET['desde'], $_GET['hasta']);
         $_GET['meses'] = '3';
 
-        self::assertSame(Filtros::rango(3), Filtros::rangoActivo());
+        $contexto = Filtros::rangoActivo();
+
+        self::assertSame(3, $contexto['meses']);
+        self::assertSame(Filtros::rango(3), [$contexto['desde'], $contexto['hasta']]);
+        self::assertFalse($contexto['personalizado']);
 
         unset($_GET['meses']);
     }

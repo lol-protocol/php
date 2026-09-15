@@ -12,8 +12,10 @@ $canalLabel = ['organico' => 'Organico', 'ads' => 'Ads', 'referido' => 'Referido
 $nacimiento = new DateTimeImmutable($cliente['fecha_nacimiento']);
 $edad = $nacimiento->diff(new DateTimeImmutable('today'))->y;
 
-$totalFacturado = array_sum(array_column($boletas, 'monto'));
-$totalCobrado = array_sum(array_column($pagos, 'monto'));
+$boletasVigentes = array_filter($boletas, static fn (array $b): bool => !$b['anulada']);
+$pagosVigentes = array_filter($pagos, static fn (array $p): bool => !$p['anulada']);
+$totalFacturado = array_sum(array_column($boletasVigentes, 'monto'));
+$totalCobrado = array_sum(array_column($pagosVigentes, 'monto'));
 ?>
 
 <h1><?= htmlspecialchars($cliente['nombre']) ?></h1>
@@ -52,12 +54,12 @@ $totalCobrado = array_sum(array_column($pagos, 'monto'));
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
         <span class="label">Boletas emitidas</span>
-        <span class="value"><?= count($boletas) ?></span>
+        <span class="value"><?= count($boletasVigentes) ?></span>
         <span class="delta"><?= money_moneda($totalFacturado, $cliente['moneda_codigo']) ?> en total</span>
     </div>
     <div class="panel stat-tile">
         <span class="label">Pagos recibidos</span>
-        <span class="value"><?= count($pagos) ?></span>
+        <span class="value"><?= count($pagosVigentes) ?></span>
         <span class="delta"><?= money_moneda($totalCobrado, $cliente['moneda_codigo']) ?> en total</span>
     </div>
 </div>
@@ -93,7 +95,7 @@ $totalCobrado = array_sum(array_column($pagos, 'monto'));
     <div class="table-wrap">
         <table>
             <thead>
-            <tr><th>Fecha</th><th>Metodo</th><th>Origen</th><th class="num">Monto</th></tr>
+            <tr><th>Fecha</th><th>Metodo</th><th>Origen</th><th class="num">Monto</th><th>Estado</th></tr>
             </thead>
             <tbody>
             <?php foreach ($pagos as $p): ?>
@@ -102,10 +104,17 @@ $totalCobrado = array_sum(array_column($pagos, 'monto'));
                     <td><?= $metodoLabel[$p['metodo']] ?? htmlspecialchars($p['metodo']) ?></td>
                     <td><?= $p['boleta_id'] ? 'Boleta #' . (int) $p['boleta_id'] : 'Anticipo' ?></td>
                     <td class="num"><?= money_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
+                    <td>
+                        <?php if ($p['anulada']): ?>
+                            <span class="badge anulada">Anulado</span>
+                        <?php else: ?>
+                            <span class="badge pagada">Vigente</span>
+                        <?php endif; ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!$pagos): ?>
-                <tr><td colspan="4">Todavia no tiene pagos.</td></tr>
+                <tr><td colspan="5">Todavia no tiene pagos.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>

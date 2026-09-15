@@ -98,4 +98,48 @@ final class HelpersTest extends TestCase
         parse_str(ltrim($url, '?'), $params);
         self::assertSame('5', $params['pagina']);
     }
+
+    public function testSvgBarraIncluyeClaseEstiloColorYTooltip(): void
+    {
+        $svg = svg_barra('hbar-fill', 'width:50%', 'var(--series-1)', 'Enero: $100');
+
+        self::assertStringContainsString('class="hbar-fill"', $svg);
+        self::assertStringContainsString('style="width:50%"', $svg);
+        self::assertStringContainsString('fill="var(--series-1)"', $svg);
+        self::assertStringContainsString('aria-label="Enero: $100"', $svg);
+        self::assertStringContainsString('<title>Enero: $100</title>', $svg);
+    }
+
+    public function testSvgBarraEscapaElTooltip(): void
+    {
+        $svg = svg_barra('bar', 'height:10%', 'red', 'Cliente "VIP" & socio');
+
+        self::assertStringContainsString('Cliente &quot;VIP&quot; &amp; socio', $svg);
+    }
+
+    public function testSvgBarraUsaElRadioIndicado(): void
+    {
+        $svg = svg_barra('bar', 'width:10%', 'blue', 'x', 3);
+
+        self::assertStringContainsString('rx="3"', $svg);
+        self::assertStringContainsString('ry="3"', $svg);
+    }
+
+    public function testSvgBarraRadioPorDefectoEsCuatro(): void
+    {
+        $svg = svg_barra('bar', 'width:10%', 'blue', 'x');
+
+        self::assertStringContainsString('rx="4"', $svg);
+        self::assertStringContainsString('ry="4"', $svg);
+    }
+
+    public function testDeltaBadgeUsaLaUnidadIndicada(): void
+    {
+        self::assertStringContainsString('+10.0 pp vs. periodo anterior', delta_badge(10.0, etiqueta: 'vs. periodo anterior', unidad: ' pp'));
+    }
+
+    public function testDeltaBadgeUsaPorcentajePorDefecto(): void
+    {
+        self::assertStringContainsString('+10.0%', delta_badge(10.0));
+    }
 }

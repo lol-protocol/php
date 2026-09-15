@@ -65,8 +65,8 @@ $coloresSegmento = [
     <div class="panel stat-tile">
         <span class="label">Tasa de cobranza</span>
         <span class="value"><?= number_format($kpis['tasa_cobranza'] * 100, 1) ?>%</span>
-        <?= delta_badge(delta_pct($kpis['tasa_cobranza'], $kpisAnterior['tasa_cobranza'])) ?>
-        <?= delta_badge(delta_pct($kpis['tasa_cobranza'], $kpisAnioAnterior['tasa_cobranza']), etiqueta: 'vs. año anterior') ?>
+        <?= delta_badge(($kpis['tasa_cobranza'] - $kpisAnterior['tasa_cobranza']) * 100, unidad: ' pp') ?>
+        <?= delta_badge(($kpis['tasa_cobranza'] - $kpisAnioAnterior['tasa_cobranza']) * 100, etiqueta: 'vs. año anterior', unidad: ' pp') ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Cartera pendiente</span>
@@ -102,10 +102,11 @@ $coloresSegmento = [
 <div class="panel">
     <h2>Funnel de conversion (periodo)</h2>
     <div class="chart">
-        <?php foreach ($etapasFunnel as $etapa => $valor): $i = array_search($etapa, array_keys($etapasFunnel), true); ?>
+        <?php $i = 0; foreach ($etapasFunnel as $etapa => $valor): ?>
             <div class="grupo">
                 <?= svg_barra('bar', 'height:' . pct_altura((float) $valor, $maxEtapa) . '%', $rampaFunnel[$i], $etapa . ': ' . $valor) ?>
             </div>
+            <?php $i++; ?>
         <?php endforeach; ?>
     </div>
     <div class="chart-etiquetas">

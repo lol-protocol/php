@@ -156,6 +156,13 @@ src/
   SecurityHeaders.php   headers de seguridad de cada respuesta, testeado
   ErrorHandler.php      red de seguridad para excepciones no capturadas
                         (loguea el detalle, nunca lo muestra), testeado
+  Peticion.php           guard clauses de los controllers: id de la ruta,
+                        404 si no existe, 409 si hay conflicto (anulado,
+                        auto-revocacion), testeado
+  Validacion.php         chequeos repetidos entre formularios: campos
+                        obligatorios vacios y mensaje de email duplicado
+  Repositories/Anulable.php  trait con el UPDATE ... anulada = TRUE que
+                        comparten BoletaRepository y PagoRepository
   Router.php, View.php, Filtros.php, Config.php, helpers.php
 database/
   schema.sql            esquema de la base

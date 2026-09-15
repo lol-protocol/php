@@ -14,9 +14,7 @@ final class DashboardController
 {
     public function index(): void
     {
-        $meses = Filtros::meses();
-        $personalizado = Filtros::rangoPersonalizado();
-        [$desde, $hasta] = $personalizado ?? Filtros::rango($meses);
+        ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
 
         $ingresosRepo = new IngresosRepository();
         $funnelRepo = new FunnelRepository();
@@ -34,7 +32,7 @@ final class DashboardController
             'meses' => $meses,
             'desde' => $desde,
             'hasta' => $hasta,
-            'personalizado' => $personalizado !== null,
+            'personalizado' => $personalizado,
             'kpis' => $ingresosRepo->kpis($desde, $hasta),
             'kpisAnterior' => $ingresosRepo->kpis($desdeAnt, $hastaAnt),
             'kpisAnioAnterior' => $ingresosRepo->kpis($desdeAnio, $hastaAnio),

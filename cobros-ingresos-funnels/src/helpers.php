@@ -53,8 +53,13 @@ function color_celda_cohorte(float $pct): array
     };
 }
 
-/** Badge de comparacion contra una base (periodo anterior, año anterior, etc.), coloreado segun si subir es bueno para esa metrica. */
-function delta_badge(?float $pct, bool $subirEsBueno = true, string $etiqueta = 'vs. periodo anterior'): string
+/**
+ * Badge de comparacion contra una base (periodo anterior, año anterior,
+ * etc.), coloreado segun si subir es bueno para esa metrica. $unidad va
+ * pegado al numero tal cual (ej. '%' sin espacio, ' pp' con espacio para
+ * puntos porcentuales).
+ */
+function delta_badge(?float $pct, bool $subirEsBueno = true, string $etiqueta = 'vs. periodo anterior', string $unidad = '%'): string
 {
     if ($pct === null) {
         return '<span class="delta">Sin datos para comparar (' . htmlspecialchars($etiqueta) . ')</span>';
@@ -62,7 +67,7 @@ function delta_badge(?float $pct, bool $subirEsBueno = true, string $etiqueta = 
     $bueno = $subirEsBueno ? $pct >= 0 : $pct <= 0;
     $clase = $bueno ? 'good' : 'critical';
     $signo = $pct >= 0 ? '+' : '';
-    return '<span class="delta ' . $clase . '">' . $signo . number_format($pct, 1) . '% ' . htmlspecialchars($etiqueta) . '</span>';
+    return '<span class="delta ' . $clase . '">' . $signo . number_format($pct, 1) . $unidad . ' ' . htmlspecialchars($etiqueta) . '</span>';
 }
 
 /** URL actual (?page=...&filtro=...) con un parametro reemplazado, para los links de paginacion. */
