@@ -70,24 +70,10 @@ class WordList
     {
         $word = mb_strtolower(trim($word), 'UTF-8');
         $word = preg_replace('/\s+/u', ' ', $word);
-        $word = strtr($word, self::LEETSPEAK);
+        $word = Leetspeak::unleet($word);
 
         return strtr($word, self::FOLDING);
     }
-
-    /**
-     * Sustituciones numéricas/simbólicas más comunes para esquivar un
-     * filtro literal ("c3rda", "v4g1na", "put@"). No exhaustivo — no cubre
-     * variantes multi-carácter como "|)" por "d" o "ph" por "f" — pero cubre
-     * las de un solo carácter que de verdad se usan para esto. Se omite "1"
-     * como posible "l" (queda sólo como "i", su lectura más frecuente): una
-     * sustitución ambigua entre dos letras no puede resolverse sin contexto,
-     * así que se prioriza la lectura más común en vez de intentar las dos.
-     */
-    private const LEETSPEAK = [
-        '0' => 'o', '1' => 'i', '3' => 'e', '4' => 'a', '5' => 's',
-        '7' => 't', '8' => 'b', '@' => 'a', '$' => 's',
-    ];
 
     private const FOLDING = [
         'á' => 'a', 'à' => 'a', 'ä' => 'a', 'â' => 'a', 'ã' => 'a', 'å' => 'a', 'ā' => 'a', 'ă' => 'a', 'ą' => 'a',
