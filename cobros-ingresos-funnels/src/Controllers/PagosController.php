@@ -6,11 +6,13 @@ namespace App\Controllers;
 
 use App\Filtros;
 use App\Paginacion;
+use App\Peticion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\IngresosRepository;
 use App\Repositories\PagoRepository;
+use App\Validacion;
 use App\View;
 
 final class PagosController
@@ -61,7 +63,7 @@ final class PagosController
 
             if ($clienteElegido === null) {
                 $error = 'Elegí un cliente valido.';
-            } elseif ($monto <= 0 || $fechaPago === '' || $metodo === '') {
+            } elseif (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
                 $error = 'Completá todos los campos.';
             } elseif (!Filtros::esFechaValida($fechaPago)) {
                 $error = 'La fecha de pago no es válida.';
@@ -110,17 +112,13 @@ final class PagosController
 
     public function editar(): void
     {
-        $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
+        $id = Peticion::id();
         $pagoRepo = new PagoRepository();
         $pago = $pagoRepo->porId($id);
-        if ($pago === null) {
-            http_response_code(404);
-            echo 'Pago no encontrado.';
+        if (Peticion::abortarSiNoExiste($pago, 'Pago no encontrado.')) {
             return;
         }
-        if ($pago['anulada']) {
-            http_response_code(409);
-            echo 'El pago esta anulado y no se puede editar.';
+        if (Peticion::abortarSiConflicto($pago['anulada'], 'El pago esta anulado y no se puede editar.')) {
             return;
         }
 
@@ -130,7 +128,7 @@ final class PagosController
             $fechaPago = (string) ($_POST['fecha_pago'] ?? '');
             $metodo = (string) ($_POST['metodo'] ?? '');
 
-            if ($monto <= 0 || $fechaPago === '' || $metodo === '') {
+            if (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
                 $error = 'Completá todos los campos.';
             } elseif (!Filtros::esFechaValida($fechaPago)) {
                 $error = 'La fecha de pago no es válida.';
@@ -157,12 +155,10 @@ final class PagosController
 
     public function anular(): void
     {
-        $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
+        $id = Peticion::id();
         $pagoRepo = new PagoRepository();
         $pago = $pagoRepo->porId($id);
-        if ($pago === null) {
-            http_response_code(404);
-            echo 'Pago no encontrado.';
+        if (Peticion::abortarSiNoExiste($pago, 'Pago no encontrado.')) {
             return;
         }
 

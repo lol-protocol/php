@@ -6,10 +6,12 @@ namespace App\Controllers;
 
 use App\Filtros;
 use App\Paginacion;
+use App\Peticion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\IngresosRepository;
+use App\Validacion;
 use App\View;
 
 final class CobrosController
@@ -62,7 +64,7 @@ final class CobrosController
             $cliente = $clienteId > 0 ? $clienteRepo->porId($clienteId) : null;
             if ($cliente === null) {
                 $error = 'Elegí un cliente valido.';
-            } elseif ($concepto === '' || $monto <= 0 || $fechaEmision === '' || $fechaVencimiento === '') {
+            } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
                 $error = 'Completá todos los campos.';
             } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
                 $error = 'La fecha de emisión o de vencimiento no es válida.';
@@ -98,17 +100,13 @@ final class CobrosController
 
     public function editar(): void
     {
-        $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
+        $id = Peticion::id();
         $boletaRepo = new BoletaRepository();
         $boleta = $boletaRepo->porId($id);
-        if ($boleta === null) {
-            http_response_code(404);
-            echo 'Boleta no encontrada.';
+        if (Peticion::abortarSiNoExiste($boleta, 'Boleta no encontrada.')) {
             return;
         }
-        if ($boleta['anulada']) {
-            http_response_code(409);
-            echo 'La boleta esta anulada y no se puede editar.';
+        if (Peticion::abortarSiConflicto($boleta['anulada'], 'La boleta esta anulada y no se puede editar.')) {
             return;
         }
 
@@ -119,7 +117,7 @@ final class CobrosController
             $fechaEmision = (string) ($_POST['fecha_emision'] ?? '');
             $fechaVencimiento = (string) ($_POST['fecha_vencimiento'] ?? '');
 
-            if ($concepto === '' || $monto <= 0 || $fechaEmision === '' || $fechaVencimiento === '') {
+            if (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
                 $error = 'Completá todos los campos.';
             } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
                 $error = 'La fecha de emisión o de vencimiento no es válida.';
@@ -156,12 +154,10 @@ final class CobrosController
 
     public function anular(): void
     {
-        $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
+        $id = Peticion::id();
         $boletaRepo = new BoletaRepository();
         $boleta = $boletaRepo->porId($id);
-        if ($boleta === null) {
-            http_response_code(404);
-            echo 'Boleta no encontrada.';
+        if (Peticion::abortarSiNoExiste($boleta, 'Boleta no encontrada.')) {
             return;
         }
 

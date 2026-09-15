@@ -19,9 +19,7 @@ $metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efe
     </p>
     <form class="form-alta" method="post">
         <?= Csrf::campo() ?>
-        <?php if ($error): ?>
-            <p class="error"><?= htmlspecialchars($error) ?></p>
-        <?php endif; ?>
+        <?php include __DIR__ . '/../_error.php'; ?>
 
         <label for="monto">Monto (<?= htmlspecialchars($pago['moneda_codigo']) ?>)</label>
         <input type="number" name="monto" id="monto" required min="0.01" step="0.01" value="<?= htmlspecialchars((string) $pago['monto']) ?>">

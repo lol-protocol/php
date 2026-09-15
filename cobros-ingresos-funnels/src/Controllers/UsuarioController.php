@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Auth;
+use App\Peticion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\UsuarioSistemaRepository;
+use App\Validacion;
 use App\View;
 use PDOException;
 
@@ -35,7 +37,7 @@ final class UsuarioController
             $confirmar = (string) ($_POST['password_confirmar'] ?? '');
 
             $error = self::validarPassword($password, $confirmar);
-            if ($error === null && ($nombre === '' || $email === '')) {
+            if ($error === null && Validacion::faltanCampos([$nombre, $email])) {
                 $error = 'Completá todos los campos.';
             }
 
@@ -51,9 +53,7 @@ final class UsuarioController
                     header('Location: ?page=usuarios&creado=' . $id);
                     exit;
                 } catch (PDOException $e) {
-                    $error = str_contains($e->getMessage(), 'unique')
-                        ? 'Ya existe un usuario con ese email.'
-                        : 'No se pudo crear el usuario.';
+                    $error = Validacion::mensajeDeConflicto($e, 'usuario');
                 }
             }
         }
@@ -67,12 +67,10 @@ final class UsuarioController
 
     public function cambiarPassword(): void
     {
-        $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
+        $id = Peticion::id();
         $repo = new UsuarioSistemaRepository();
         $usuario = $repo->porId($id);
-        if ($usuario === null) {
-            http_response_code(404);
-            echo 'Usuario no encontrado.';
+        if (Peticion::abortarSiNoExiste($usuario, 'Usuario no encontrado.')) {
             return;
         }
 
@@ -105,12 +103,10 @@ final class UsuarioController
 
     public function revocar(): void
     {
-        $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
+        $id = Peticion::id();
         $repo = new UsuarioSistemaRepository();
         $usuario = $repo->porId($id);
-        if ($usuario === null) {
-            http_response_code(404);
-            echo 'Usuario no encontrado.';
+        if (Peticion::abortarSiNoExiste($usuario, 'Usuario no encontrado.')) {
             return;
         }
 
@@ -118,9 +114,7 @@ final class UsuarioController
         $esUnoMismo = $usuario['id'] === $usuarioActualId;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($esUnoMismo) {
-                http_response_code(409);
-                echo 'No podés revocar tu propio acceso.';
+            if (Peticion::abortarSiConflicto($esUnoMismo, 'No podés revocar tu propio acceso.')) {
                 return;
             }
 

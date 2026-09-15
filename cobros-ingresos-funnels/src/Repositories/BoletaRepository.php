@@ -12,7 +12,10 @@ use PDO;
 /** CRUD de boletas. El reporting de ingresos vive en IngresosRepository. */
 final class BoletaRepository
 {
+    use Anulable;
+
     private PDO $db;
+    private string $tablaAnulable = 'boletas';
 
     public function __construct()
     {
@@ -65,12 +68,6 @@ final class BoletaRepository
             ':fecha_emision' => $datos['fecha_emision'],
             ':fecha_vencimiento' => $datos['fecha_vencimiento'],
         ]);
-    }
-
-    public function anular(int $id): void
-    {
-        $stmt = $this->db->prepare('UPDATE boletas SET anulada = TRUE WHERE id = :id');
-        $stmt->execute([':id' => $id]);
     }
 
     /**

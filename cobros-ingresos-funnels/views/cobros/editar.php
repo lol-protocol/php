@@ -13,9 +13,7 @@ use App\Csrf;
     <p class="subtitulo">Cliente: <strong><?= htmlspecialchars($boleta['cliente']) ?></strong> (no se puede reasignar desde acá)</p>
     <form class="form-alta" method="post">
         <?= Csrf::campo() ?>
-        <?php if ($error): ?>
-            <p class="error"><?= htmlspecialchars($error) ?></p>
-        <?php endif; ?>
+        <?php include __DIR__ . '/../_error.php'; ?>
 
         <label for="concepto">Concepto</label>
         <input type="text" name="concepto" id="concepto" required value="<?= htmlspecialchars($boleta['concepto']) ?>">

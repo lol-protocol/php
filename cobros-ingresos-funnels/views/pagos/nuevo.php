@@ -36,9 +36,7 @@ $metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efe
         <form class="form-alta" method="post">
             <?= Csrf::campo() ?>
             <input type="hidden" name="cliente_id" value="<?= (int) $clienteElegido['id'] ?>">
-            <?php if ($error): ?>
-                <p class="error"><?= htmlspecialchars($error) ?></p>
-            <?php endif; ?>
+            <?php include __DIR__ . '/../_error.php'; ?>
 
             <label for="boleta_id">Boleta que paga (opcional)</label>
             <select name="boleta_id" id="boleta_id">

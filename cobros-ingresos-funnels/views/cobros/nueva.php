@@ -16,9 +16,7 @@ $vencimientoDefault = date('Y-m-d', strtotime('+30 days'));
 <div class="panel">
     <form class="form-alta" method="post">
         <?= Csrf::campo() ?>
-        <?php if ($error): ?>
-            <p class="error"><?= htmlspecialchars($error) ?></p>
-        <?php endif; ?>
+        <?php include __DIR__ . '/../_error.php'; ?>
 
         <label for="cliente_id">Cliente</label>
         <select name="cliente_id" id="cliente_id" required>

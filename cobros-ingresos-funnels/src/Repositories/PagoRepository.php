@@ -11,7 +11,10 @@ use PDO;
 /** CRUD de pagos. El reporting de cobros vive en IngresosRepository. */
 final class PagoRepository
 {
+    use Anulable;
+
     private PDO $db;
+    private string $tablaAnulable = 'pagos';
 
     public function __construct()
     {
@@ -61,12 +64,6 @@ final class PagoRepository
             ':fecha_pago' => $datos['fecha_pago'],
             ':metodo' => $datos['metodo'],
         ]);
-    }
-
-    public function anular(int $id): void
-    {
-        $stmt = $this->db->prepare('UPDATE pagos SET anulada = TRUE WHERE id = :id');
-        $stmt->execute([':id' => $id]);
     }
 
     /**

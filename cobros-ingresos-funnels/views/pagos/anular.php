@@ -1,15 +1,17 @@
 <?php
 
-use App\Csrf;
-
 /** @var array $pago */
+$anulado = $pago['anulada'];
+$volverHref = '?page=pagos';
+$volverTexto = '&larr; Volver a Pagos';
+$botonTexto = 'Si, anular este pago';
 ?>
 
 <h1>Anular pago #<?= (int) $pago['id'] ?></h1>
-<p class="subtitulo"><a href="?page=pagos">&larr; Volver a Pagos</a></p>
+<p class="subtitulo"><a href="<?= $volverHref ?>"><?= $volverTexto ?></a></p>
 
 <div class="panel">
-    <?php if ($pago['anulada']): ?>
+    <?php if ($anulado): ?>
         <p>Este pago ya está anulado.</p>
     <?php else: ?>
         <p>¿Seguro que querés anular este pago? Deja de contar en los reportes de cobros y, si
@@ -22,15 +24,5 @@ use App\Csrf;
         <tr><th>Fecha</th><td><?= htmlspecialchars($pago['fecha_pago']) ?></td></tr>
         <tr><th>Origen</th><td><?= $pago['boleta_id'] ? 'Boleta #' . (int) $pago['boleta_id'] : 'Anticipo' ?></td></tr>
     </table>
-    <?php if ($pago['anulada']): ?>
-        <a href="?page=pagos">&larr; Volver a Pagos</a>
-    <?php else: ?>
-        <form method="post">
-            <?= Csrf::campo() ?>
-            <button type="submit" style="background:var(--critical);border-color:var(--critical);color:#fff;padding:9px 16px;border-radius:6px;cursor:pointer;">
-                Si, anular este pago
-            </button>
-            <a href="?page=pagos" style="margin-left:12px;">Cancelar</a>
-        </form>
-    <?php endif; ?>
+    <?php include __DIR__ . '/../_accion_confirmar.php'; ?>
 </div>

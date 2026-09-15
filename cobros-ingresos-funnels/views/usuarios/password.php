@@ -13,9 +13,7 @@ use App\Csrf;
     <p class="subtitulo">Usuario: <strong><?= htmlspecialchars($usuario['nombre']) ?></strong> (<?= htmlspecialchars($usuario['email']) ?>)</p>
     <form class="form-alta" method="post">
         <?= Csrf::campo() ?>
-        <?php if ($error): ?>
-            <p class="error"><?= htmlspecialchars($error) ?></p>
-        <?php endif; ?>
+        <?php include __DIR__ . '/../_error.php'; ?>
 
         <label for="password">Contraseña nueva</label>
         <input type="password" name="password" id="password" required minlength="8" autofocus>

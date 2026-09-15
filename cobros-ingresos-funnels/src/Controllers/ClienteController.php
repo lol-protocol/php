@@ -6,12 +6,14 @@ namespace App\Controllers;
 
 use App\Filtros;
 use App\Paginacion;
+use App\Peticion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\FunnelRepository;
 use App\Repositories\PagoRepository;
 use App\Repositories\PaisRepository;
+use App\Validacion;
 use App\View;
 
 final class ClienteController
@@ -35,11 +37,9 @@ final class ClienteController
 
     public function ficha(): void
     {
-        $id = (int) ($_GET['id'] ?? 0);
+        $id = Peticion::id();
         $cliente = (new ClienteRepository())->porId($id);
-        if ($cliente === null) {
-            http_response_code(404);
-            echo 'Cliente no encontrado.';
+        if (Peticion::abortarSiNoExiste($cliente, 'Cliente no encontrado.')) {
             return;
         }
 
@@ -67,7 +67,7 @@ final class ClienteController
             $fechaNacimiento = (string) ($_POST['fecha_nacimiento'] ?? '');
             $segmento = (string) ($_POST['segmento'] ?? 'general');
 
-            if ($nombre === '' || $email === '' || $paisCodigo === '' || $ciudad === '' || $fechaNacimiento === '') {
+            if (Validacion::faltanCampos([$nombre, $email, $paisCodigo, $ciudad, $fechaNacimiento])) {
                 $error = 'Completá todos los campos obligatorios.';
             } elseif (!Filtros::esFechaValida($fechaNacimiento)) {
                 $error = 'La fecha de nacimiento no es válida.';
@@ -88,9 +88,7 @@ final class ClienteController
                     header('Location: ?page=cliente&id=' . $id);
                     exit;
                 } catch (\PDOException $e) {
-                    $error = str_contains($e->getMessage(), 'unique')
-                        ? 'Ya existe un cliente con ese email.'
-                        : 'No se pudo crear el cliente.';
+                    $error = Validacion::mensajeDeConflicto($e, 'cliente');
                 }
             }
         }

@@ -11,9 +11,7 @@ use App\Csrf;
 <div class="panel">
     <form class="form-alta" method="post">
         <?= Csrf::campo() ?>
-        <?php if ($error): ?>
-            <p class="error"><?= htmlspecialchars($error) ?></p>
-        <?php endif; ?>
+        <?php include __DIR__ . '/../_error.php'; ?>
 
         <label for="nombre">Nombre</label>
         <input type="text" name="nombre" id="nombre" required value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>">
