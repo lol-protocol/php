@@ -575,8 +575,11 @@ src/DefamatoryContentReview/
 ├── RiskReportBuilder.php           Arma getDetailedReport() (interno)
 ├── LanguageAccess.php              Diccionarios y cobertura — $reviewer->languages()
 ├── RelatedLanguageValidator.php    Validación entre idiomas emparentados — $reviewer->related()
-├── LanguageRegistry.php            Códigos, familias y afinidades
-├── WordList.php                    Diccionario, normalización y leetspeak
+├── LanguageRegistry.php            Identidad de idiomas (códigos, alias, familias)
+├── LanguageAffinity.php            Afinidad léxica — colaborador de LanguageRegistry
+├── WordList.php                    Diccionario: carga, normalización, búsqueda
+├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
+├── AccentFolding.php               Plegado de diacríticos compartido por WordList
 ├── ScoringPolicy.php               Orquesta pesos/bandas/decisión (configurable)
 ├── ScoringWeights.php / SeverityBands.php / DecisionTable.php   Colaboradores de ScoringPolicy
 ├── PhoneticFolder.php              Plegado fonético del español
@@ -588,7 +591,8 @@ src/DefamatoryContentReview/
 ├── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica compartida por los folders
 ├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
 ├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
-└── ValidationResult.php            Resultado con trazabilidad por idioma y método
+├── ValidationResult.php            Resultado con trazabilidad por idioma y método
+└── FlaggedTermCollection.php       Términos marcados y sus consultas — colaborador de ValidationResult
 
 config/
 ├── risk-categories.php             Los 10 tipos de riesgo
@@ -599,6 +603,15 @@ config/
 
 tests/    examples/
 ```
+
+Ningún archivo de `src/` o `tests/` supera 100 líneas — cuando una clase
+crece más allá de eso, se descompone en colaboradores internos (mismo
+patrón en todo el proyecto: `ScoringPolicy`/`WordList`/`ValidationResult`/
+`LanguageRegistry` conservan su API pública intacta; sólo
+`DefamatoryContentReviewer` se dividió rompiendo API, en objetos propios
+como `languages()`/`related()`, porque ahí no alcanzaba con recomponer
+internamente). `config/languages/*.php` queda exento: son diccionarios de
+datos, no lógica.
 
 ## Añadir un idioma
 

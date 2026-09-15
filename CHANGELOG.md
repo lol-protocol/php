@@ -1,5 +1,43 @@
 # Changelog
 
+## [4.1.0] - 2026-09-15
+
+### Cambiado
+
+- **Ningún archivo de `src/` o `tests/` supera 100 líneas.** Se corrigió de
+  paso un bug real de compatibilidad encontrado en el camino: una
+  constante declarada directamente en un trait (`LeetspeakFolding`) exige
+  PHP 8.2+, y el `composer.json` del proyecto declara `">=8.1"` — el job
+  8.1 de la CI habría fallado en tiempo de compilación en los 17 folders
+  fonéticos que usan ese trait. Se extrae a `Leetspeak`, una clase normal.
+- **`src/` (6 archivos grandes → 15):** mismo patrón en casi todos —
+  colaboradores internos, cero cambio de API pública, los tests existentes
+  no necesitaron tocarse:
+  - `ScoringPolicy` (344→98) delega en `ScoringWeights`, `SeverityBands`,
+    `DecisionTable`.
+  - `WordList` (285→98) delega en `WordListIndex` y `WordListPhonetics`;
+    el mapa de diacríticos sale a `AccentFolding`.
+  - `ValidationResult` (239→89) delega en `FlaggedTermCollection`.
+  - `LanguageRegistry` (174→98) delega en `LanguageAffinity`.
+  - **`DefamatoryContentReviewer` (431→95) es la única rotura de API
+    deliberada**: los métodos de idiomas emparentados y acceso a
+    diccionarios se mueven a `$reviewer->related()` y
+    `$reviewer->languages()` — ver la sección "API" del README para la
+    tabla de equivalencias antes/después. `validateName`,
+    `validateFullName`, `decide`, `getDetailedReport`, `getPolicy`,
+    `setPolicy`, `getLanguage`, `setLanguage` no cambian.
+- **`tests/` (8 archivos de hasta 444 líneas → 41):** se reparten por
+  idioma (fusión fonética), por colaborador (ScoringPolicy) o por tema
+  (validación cruzada, acceso a diccionarios...), sin perder ni un test:
+  173 antes, 173 después.
+- **`examples/usage.php` (185 líneas) → 9 scripts numerados** en
+  `examples/`, cada uno ejecutable por separado.
+- `config/languages/*.php` queda exento a propósito: son diccionarios de
+  datos, no lógica — mismo criterio que usan la mayoría de linters de LOC
+  para fixtures.
+
+---
+
 ## [4.0.0] - 2026-09-14
 
 ### Cambiado (rotura de compatibilidad menor)
