@@ -200,8 +200,8 @@ inventar, no normalizar.
 
 ```php
 $reviewer = DefamatoryContentReviewer::create($configDir, 'pol');
-$reviewer->getWordList('pol')->supportsPhoneticFolding();  // true
-$reviewer->getWordList('eng')->supportsPhoneticFolding();  // false — sin reglas registradas
+$reviewer->languages()->wordList('pol')->supportsPhoneticFolding();  // true
+$reviewer->languages()->wordList('eng')->supportsPhoneticFolding();  // false — sin reglas registradas
 ```
 
 Añadir un idioma nuevo a la fusión fonética es añadir su folder y una fila
@@ -276,7 +276,7 @@ la primera vez que sólo una de ellas se actualizó.
 | `moderate` | los 24 restantes (ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, zho, tha, vie, ind) | 120 – 160 |
 
 ```php
-$reviewer->getLanguagesByCoverage('moderate');  // los candidatos a comprehensive
+$reviewer->languages()->byCoverage('moderate');  // los candidatos a comprehensive
 ```
 
 Un test de integridad (`DictionaryIntegrityTest`) exige que todo idioma
@@ -300,7 +300,7 @@ El módulo modela ese parentesco y puede validar contra el idioma principal
 ```php
 // "porco" es portugués, no español: sólo aparece al cruzar.
 $reviewer->validateName('João Porco')->isValid();          // true
-$reviewer->validateAcrossRelated('João Porco')->isValid(); // false
+$reviewer->related()->validate('João Porco')->isValid(); // false
 ```
 
 Una coincidencia hallada en un idioma asociado **pesa menos** que una del
@@ -309,7 +309,7 @@ descuenta la severidad. Un insulto grave en italiano marca un nombre español
 para revisión, pero no lo rechaza con la rotundidad de uno en español.
 
 ```php
-$term = $reviewer->validateAcrossRelated('Marco Stronzo')->getFlaggedTerms()[0];
+$term = $reviewer->related()->validate('Marco Stronzo')->getFlaggedTerms()[0];
 
 $term['sourceLanguage'];  // 'ita'
 $term['confidence'];      // 0.82
@@ -343,7 +343,7 @@ $registry->getFamilyMembers('ces');     // ['rus','ukr','bul','pol','slk']
 El umbral por defecto (0.60) se ajusta por llamada:
 
 ```php
-$reviewer->validateAcrossRelated($name, 0.85);  // sólo los muy cercanos
+$reviewer->related()->validate($name, 0.85);  // sólo los muy cercanos
 ```
 
 O se salta el modelo por completo cuando ya se sabe qué lenguas concurren:
@@ -457,18 +457,30 @@ DefamatoryContentReviewer::create(string $configDir, string $language = 'spa', ?
 |---|---|
 | `validateName(string $name)` | `ValidationResult` |
 | `validateFullName(string $first, string $last)` | `ValidationResult` |
-| `validateAcrossRelated(string $name, ?float $threshold = null)` | `ValidationResult` |
-| `validateFullNameAcrossRelated(string $first, string $last, ?float $threshold = null)` | `ValidationResult` |
 | `validateInLanguages(string $name, array $languages)` | `ValidationResult` |
 | `batchValidateNames(array $names)` | `ValidationResult[]` |
 | `batchValidateFullNames(array $names)` | `ValidationResult[]` |
 | `decide(ValidationResult $r)` | `accept` \| `accept_with_flag` \| `review` \| `reject` |
 | `getDetailedReport(ValidationResult $r)` | `array` |
-| `getRelatedLanguages(?float $threshold = null)` | `array<string,float>` |
-| `getWordList(?string $lang = null)` | `WordList` |
-| `getWordListStatistics(?string $lang = null)` | `array` |
-| `getLanguagesByCoverage(string $level)` | `string[]` — única fuente: `WordList::getCoverage()` de cada idioma |
+| `getLanguage()` / `setLanguage(string $l)` | `string` / `self` |
 | `getPolicy()` / `setPolicy(ScoringPolicy $p)` | `ScoringPolicy` / `self` |
+| `languages()` | `LanguageAccess` — diccionarios y cobertura |
+| `related()` | `RelatedLanguageValidator` — validación contra idiomas emparentados |
+
+Los métodos que antes vivían directo en `DefamatoryContentReviewer` para
+idiomas emparentados y acceso a diccionarios ahora cuelgan de dos objetos
+más chicos — mismo comportamiento, distinta puerta de entrada:
+
+```php
+// antes                                          ahora
+$reviewer->validateAcrossRelated($n, $t);          $reviewer->related()->validate($n, $t);
+$reviewer->validateFullNameAcrossRelated($f,$l,$t); $reviewer->related()->validateFullName($f,$l,$t);
+$reviewer->getRelatedLanguages($t);                 $reviewer->related()->languages($t);
+$reviewer->getRegistry();                           $reviewer->languages()->registry();
+$reviewer->getWordList($code);                      $reviewer->languages()->wordList($code);
+$reviewer->getWordListStatistics($code);            $reviewer->languages()->statistics($code);
+$reviewer->getLanguagesByCoverage($level);           $reviewer->languages()->byCoverage($level);
+```
 
 ### `ValidationResult`
 
@@ -506,6 +518,23 @@ ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1
 | `severityFromScore(float $s)` / `decisionFor(...)` | `string` |
 | `getSeverityWeights()` / `getRiskTypeWeights()` / `getBands()` / `getDecisionRules()` / `getPhoneticCapLabels()` / `getAggregation()` | introspección |
 
+### `LanguageAccess` (`$reviewer->languages()`)
+
+| Método | Devuelve |
+|---|---|
+| `registry()` | `LanguageRegistry` |
+| `wordList(string $code)` | `WordList` |
+| `statistics(string $code)` | `array` |
+| `byCoverage(string $level)` | `string[]` — única fuente: `WordList::getCoverage()` de cada idioma |
+
+### `RelatedLanguageValidator` (`$reviewer->related()`)
+
+| Método | Devuelve |
+|---|---|
+| `validate(string $name, ?float $threshold = null)` | `ValidationResult` |
+| `validateFullName(string $first, string $last, ?float $threshold = null)` | `ValidationResult` |
+| `languages(?float $threshold = null)` | `array<string,float>` idiomas asociados => afinidad |
+
 ### `LanguageRegistry`
 
 | Método | Devuelve |
@@ -541,19 +570,24 @@ ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1
 
 ```
 src/DefamatoryContentReview/
-├── DefamatoryContentReviewer.php   Motor de validación y decisión
+├── DefamatoryContentReviewer.php   Facade: construcción y validación en el idioma principal
+├── NameEvaluator.php               Coincidencias literales y fusión fonética (interno)
+├── RiskReportBuilder.php           Arma getDetailedReport() (interno)
+├── LanguageAccess.php              Diccionarios y cobertura — $reviewer->languages()
+├── RelatedLanguageValidator.php    Validación entre idiomas emparentados — $reviewer->related()
 ├── LanguageRegistry.php            Códigos, familias y afinidades
 ├── WordList.php                    Diccionario, normalización y leetspeak
+├── ScoringPolicy.php               Orquesta pesos/bandas/decisión (configurable)
+├── ScoringWeights.php / SeverityBands.php / DecisionTable.php   Colaboradores de ScoringPolicy
 ├── PhoneticFolder.php              Plegado fonético del español
 ├── PortuguesePhoneticFolder.php    Plegado fonético del portugués
 ├── ItalianPhoneticFolder.php       Plegado fonético del italiano
 ├── FrenchPhoneticFolder.php        Plegado fonético del francés
 ├── GermanPhoneticFolder.php        Plegado fonético del alemán
 ├── Czech…RomanianPhoneticFolder.php  Los otros 12 idiomas latinos (ver tabla arriba)
-├── LeetspeakFolding.php            Sustitución numérica compartida por los folders
+├── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica compartida por los folders
 ├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
 ├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
-├── ScoringPolicy.php               Pesos, bandas, reglas de decisión y agregación (configurable)
 └── ValidationResult.php            Resultado con trazabilidad por idioma y método
 
 config/

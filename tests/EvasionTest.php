@@ -50,7 +50,7 @@ class EvasionTest extends TestCase
             $this->assertFalse($result->isValid(), "'{$evasive}' debería detectarse.");
             $this->assertSame(
                 $expectedOriginal,
-                $this->reviewer->getWordList('spa')->search($evasive)['original'],
+                $this->reviewer->languages()->wordList('spa')->search($evasive)['original'],
                 "'{$evasive}' debería resolver a '{$expectedOriginal}'."
             );
         }

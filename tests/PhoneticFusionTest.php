@@ -145,7 +145,7 @@ class PhoneticFusionTest extends TestCase
 
     public function testFragmentFullyInsideOneFieldDoesNotCountAsFusion(): void
     {
-        $wordList = $this->reviewer->getWordList('spa');
+        $wordList = $this->reviewer->languages()->wordList('spa');
         $detector = new PhoneticFusionDetector($wordList);
 
         // "ano" cae entero dentro de "Mariano" (apellido), no cruza hacia "Juan".
@@ -242,7 +242,7 @@ class PhoneticFusionTest extends TestCase
 
     public function testFusionCandidatesRespectMinimumLength(): void
     {
-        $wordList = $this->reviewer->getWordList('spa');
+        $wordList = $this->reviewer->languages()->wordList('spa');
 
         foreach ($wordList->getFusionCandidates(5) as $candidate) {
             $this->assertGreaterThanOrEqual(5, mb_strlen($candidate['phonetic']));
@@ -251,7 +251,7 @@ class PhoneticFusionTest extends TestCase
 
     public function testSearchPhoneticExactFindsSpellingVariant(): void
     {
-        $wordList = $this->reviewer->getWordList('spa');
+        $wordList = $this->reviewer->languages()->wordList('spa');
 
         // "Serda" con s: mismo sonido que "Cerda" (c ante e -> s), otra grafía.
         $this->assertNotNull($wordList->searchPhoneticExact('serda'));

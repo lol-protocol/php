@@ -18,7 +18,7 @@ class DefamatoryContentReviewTest extends TestCase
     protected function setUp(): void
     {
         $this->reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'spa');
-        $this->registry = $this->reviewer->getRegistry();
+        $this->registry = $this->reviewer->languages()->registry();
     }
 
     // -----------------------------------------------------------------
@@ -69,7 +69,7 @@ class DefamatoryContentReviewTest extends TestCase
     public function testEveryDictionaryDeclaresItsOwnCode(): void
     {
         foreach ($this->registry->getCodes() as $code) {
-            $this->assertSame($code, $this->reviewer->getWordList($code)->getLanguage());
+            $this->assertSame($code, $this->reviewer->languages()->wordList($code)->getLanguage());
         }
     }
 
@@ -266,7 +266,7 @@ class DefamatoryContentReviewTest extends TestCase
         // "porco" es portugués, no español: sólo aparece al cruzar.
         $this->assertTrue($this->reviewer->validateName('João Porco')->isValid());
 
-        $crossed = $this->reviewer->validateAcrossRelated('João Porco');
+        $crossed = $this->reviewer->related()->validate('João Porco');
 
         $this->assertFalse($crossed->isValid());
         $this->assertSame(['por'], array_column($crossed->getFlaggedTerms(), 'sourceLanguage'));
@@ -274,7 +274,7 @@ class DefamatoryContentReviewTest extends TestCase
 
     public function testCrossLanguageMatchCarriesReducedConfidence(): void
     {
-        $result = $this->reviewer->validateAcrossRelated('Marco Stronzo');
+        $result = $this->reviewer->related()->validate('Marco Stronzo');
         $term = $result->getFlaggedTerms()[0];
 
         $this->assertSame('ita', $term['sourceLanguage']);
@@ -285,13 +285,13 @@ class DefamatoryContentReviewTest extends TestCase
     public function testConfidenceDownweightsSeverity(): void
     {
         // "stronzo" es 'high' en italiano; a 0.82 de afinidad baja a 'medium'.
-        $this->assertSame('high', $this->reviewer->getWordList('ita')->search('stronzo')['severity']);
-        $this->assertSame('medium', $this->reviewer->validateAcrossRelated('Marco Stronzo')->getSeverity());
+        $this->assertSame('high', $this->reviewer->languages()->wordList('ita')->search('stronzo')['severity']);
+        $this->assertSame('medium', $this->reviewer->related()->validate('Marco Stronzo')->getSeverity());
     }
 
     public function testPrimaryLanguageMatchKeepsFullConfidence(): void
     {
-        $result = $this->reviewer->validateAcrossRelated('Luis Bastardo');
+        $result = $this->reviewer->related()->validate('Luis Bastardo');
         $primary = $result->getPrimaryLanguageTerms();
 
         $this->assertNotEmpty($primary);
@@ -301,7 +301,7 @@ class DefamatoryContentReviewTest extends TestCase
 
     public function testCrossLanguageRecordsWhichLanguagesWereChecked(): void
     {
-        $checked = $this->reviewer->validateAcrossRelated('Juan Pérez')->getLanguagesChecked();
+        $checked = $this->reviewer->related()->validate('Juan Pérez')->getLanguagesChecked();
 
         $this->assertArrayHasKey('spa', $checked);
         $this->assertArrayHasKey('por', $checked);
@@ -330,7 +330,7 @@ class DefamatoryContentReviewTest extends TestCase
 
     public function testWordListNormalisation(): void
     {
-        $list = $this->reviewer->getWordList('spa');
+        $list = $this->reviewer->languages()->wordList('spa');
 
         $this->assertSame($list->search('cerda'), $list->search('CERDA'));
         $this->assertSame($list->search('cerda'), $list->search('cérda'));
@@ -338,7 +338,7 @@ class DefamatoryContentReviewTest extends TestCase
 
     public function testGermanEszettFolding(): void
     {
-        $list = $this->reviewer->getWordList('deu');
+        $list = $this->reviewer->languages()->wordList('deu');
 
         $this->assertNotNull($list->search('scheiße'));
         $this->assertSame($list->search('scheiße'), $list->search('scheisse'));
@@ -346,7 +346,7 @@ class DefamatoryContentReviewTest extends TestCase
 
     public function testFilteringByRiskType(): void
     {
-        $animals = $this->reviewer->getWordList('spa')->getByRiskType('animal');
+        $animals = $this->reviewer->languages()->wordList('spa')->getByRiskType('animal');
 
         $this->assertNotEmpty($animals);
         foreach ($animals as $word) {
@@ -356,7 +356,7 @@ class DefamatoryContentReviewTest extends TestCase
 
     public function testStatisticsCoverEveryRiskType(): void
     {
-        $stats = $this->reviewer->getWordListStatistics('spa');
+        $stats = $this->reviewer->languages()->statistics('spa');
 
         $expected = [
             'animal', 'intelectual', 'discapacidad', 'fisico', 'moral',
@@ -370,10 +370,10 @@ class DefamatoryContentReviewTest extends TestCase
 
     public function testComprehensiveDictionariesAreSubstantial(): void
     {
-        foreach ($this->reviewer->getLanguagesByCoverage('comprehensive') as $code) {
+        foreach ($this->reviewer->languages()->byCoverage('comprehensive') as $code) {
             $this->assertGreaterThanOrEqual(
                 200,
-                $this->reviewer->getWordList($code)->getWordCount(),
+                $this->reviewer->languages()->wordList($code)->getWordCount(),
                 "El diccionario '{$code}' se declara comprehensive pero tiene pocos términos."
             );
         }
@@ -384,7 +384,7 @@ class DefamatoryContentReviewTest extends TestCase
         $valid = array_keys(require self::CONFIG_DIR . '/risk-categories.php');
 
         foreach ($this->registry->getCodes() as $code) {
-            foreach ($this->reviewer->getWordList($code)->getAllWords() as $word) {
+            foreach ($this->reviewer->languages()->wordList($code)->getAllWords() as $word) {
                 $this->assertContains(
                     $word['riskType'],
                     $valid,
@@ -397,7 +397,7 @@ class DefamatoryContentReviewTest extends TestCase
     public function testEveryDictionaryDeclaresValidSeverities(): void
     {
         foreach ($this->registry->getCodes() as $code) {
-            foreach ($this->reviewer->getWordList($code)->getAllWords() as $word) {
+            foreach ($this->reviewer->languages()->wordList($code)->getAllWords() as $word) {
                 $this->assertContains($word['severity'], ['low', 'medium', 'high']);
             }
         }

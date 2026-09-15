@@ -6,7 +6,7 @@ use DefamatoryContentReview\DefamatoryContentReviewer;
 use DefamatoryContentReview\ScoringPolicy;
 
 $reviewer = DefamatoryContentReviewer::create(__DIR__ . '/../config', 'spa');
-$registry = $reviewer->getRegistry();
+$registry = $reviewer->languages()->registry();
 
 $rule = fn(string $t = '') => print("\n" . ($t ? "── {$t} " : '') . str_repeat('─', 72 - mb_strlen($t)) . "\n\n");
 
@@ -66,7 +66,7 @@ $rule('4. Idiomas asociados');
 printf("Idioma activo: %s (%s)\n\n", $reviewer->getLanguage(), $registry->getMetadata('spa')['nativeName']);
 echo "Asociados por afinidad léxica:\n";
 
-foreach ($reviewer->getRelatedLanguages() as $code => $affinity) {
+foreach ($reviewer->related()->languages() as $code => $affinity) {
     printf("  %s  %s afinidad %.2f\n", $code, $pad($registry->getMetadata($code)['nativeName'], 12), $affinity);
 }
 
@@ -74,7 +74,7 @@ echo "\nUn término de un idioma asociado se detecta, pero pesa menos:\n\n";
 
 foreach (['João Porco', 'Marco Stronzo', 'Ana Salope'] as $name) {
     $solo = $reviewer->validateName($name);
-    $crossed = $reviewer->validateAcrossRelated($name);
+    $crossed = $reviewer->related()->validate($name);
     $term = $crossed->getFlaggedTerms()[0] ?? null;
 
     printf("  %s sólo español: %-8s cruzado: %-8s", $pad($name, 16), $solo->getSeverity(), $crossed->getSeverity());
@@ -117,7 +117,7 @@ echo str_repeat('─', 72) . "\n";
 
 $total = 0;
 foreach ($registry->getAll() as $code => $meta) {
-    $stats = $reviewer->getWordListStatistics($code);
+    $stats = $reviewer->languages()->statistics($code);
     $total += $stats['totalWords'];
 
     printf(
@@ -133,14 +133,14 @@ foreach ($registry->getAll() as $code => $meta) {
 echo str_repeat('─', 72) . "\n";
 printf("%d términos en %d idiomas\n", $total, count($registry->getCodes()));
 
-$pendingReview = $reviewer->getLanguagesByCoverage('moderate');
+$pendingReview = $reviewer->languages()->byCoverage('moderate');
 if ($pendingReview) {
     printf("\nPendientes de revisión por hablante nativo: %s\n", implode(', ', $pendingReview));
 }
 
 $rule('8. Reparto por tipo de riesgo (español)');
 
-$stats = $reviewer->getWordListStatistics('spa');
+$stats = $reviewer->languages()->statistics('spa');
 foreach ($stats['byRiskType'] as $riskType => $count) {
     printf("  %-14s %3d  %s\n", $riskType, $count, str_repeat('█', (int) round($count / 4)));
 }

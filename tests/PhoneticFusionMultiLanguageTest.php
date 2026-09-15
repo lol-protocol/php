@@ -53,13 +53,13 @@ class PhoneticFusionMultiLanguageTest extends TestCase
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'spa');
 
         foreach (self::SUPPORTED as $code) {
-            $this->assertTrue($reviewer->getWordList($code)->supportsPhoneticFolding(), $code);
+            $this->assertTrue($reviewer->languages()->wordList($code)->supportsPhoneticFolding(), $code);
         }
 
         // vie: script latino pero excluido a propósito (tono fonémico).
         // rus, jpn: script no latino, el mecanismo no aplica sin romanización.
         foreach (['eng', 'vie', 'rus', 'jpn'] as $code) {
-            $this->assertFalse($reviewer->getWordList($code)->supportsPhoneticFolding(), $code);
+            $this->assertFalse($reviewer->languages()->wordList($code)->supportsPhoneticFolding(), $code);
         }
     }
 
