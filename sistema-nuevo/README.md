@@ -168,10 +168,11 @@ prototipo, no para producción.
   `Access-Control-Allow-Credentials`, en vez de usar `*` (que el navegador rechaza
   para requests con credenciales, y que sería una configuración CORS abierta).
 - **CSRF**: `auth_marcar_autenticado()` regenera un token en cada login
-  (`bin2hex(random_bytes(32))`, guardado en `$_SESSION`); `POST /api/logout` lo
-  exige en el body y lo valida con `hash_equals()` — sin token válido, 403. El
-  frontend lo recibe en la respuesta de `/api/login` y `/api/session`, y lo manda
-  de vuelta en cada logout (manual o automático por inactividad).
+  (`bin2hex(random_bytes(32))`, guardado en `$_SESSION`). El frontend lo recibe
+  en la respuesta de `/api/login` y `/api/session`, y `postJson`/`deleteJson`
+  (`sesion.js`) lo mandan solos en el header `X-CSRF-Token` en cada POST/DELETE
+  contra la API; el backend lo valida con `hash_equals()` — sin token válido,
+  403. Cubre logout, filtros, notas y configuración de alertas por igual.
 - **Auto-logout por inactividad**: `interfaz/js/inactividad.js` cierra la sesión
   a los 30 minutos sin clicks/movimiento/teclas/scroll, avisando con un modal
   ("Continuar activo" / "Cerrar sesión ahora") un minuto antes.
@@ -471,8 +472,8 @@ Abrir http://localhost:8082.
 - `POST /api/login` — `{"username": "...", "password": "..."}` → inicia sesión,
   responde con `csrf_token`. 429 tras 5 fallos consecutivos de esa IP (bloqueo de
   15 minutos, ver "Autenticación" arriba).
-- `POST /api/logout` — `{"csrf_token": "..."}`, requerido y validado con
-  `hash_equals()`; sin token válido, 403.
+- `POST /api/logout` — requiere el header `X-CSRF-Token` (igual que todo
+  POST/DELETE de la API que cambia estado); sin token válido, 403.
 - `GET /api/session` — `{"authenticated": bool, "username": ?string, "csrf_token": ?string}`
   (pública, no requiere login).
 - `GET /api/users?page=1&per_page=20&search=` — `{items, pagination}`. **Requiere sesión.**
