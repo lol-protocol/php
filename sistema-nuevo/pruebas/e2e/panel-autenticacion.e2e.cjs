@@ -21,6 +21,18 @@ const { assert, paso, resumenPasos, iniciarSesion, BASE_URL } = require("./ayuda
     assert.match(await page.textContent("#session-username"), /admin/);
   });
 
+  await paso("un POST sin token CSRF (o con uno inválido) se rechaza pese a tener sesión válida", async () => {
+    const API_BASE = "http://localhost:8000";
+    const sinToken = await page.request.post(`${API_BASE}/api/notes`, { data: { accion_id: "a00037", texto: "no debería guardarse" } });
+    assert.equal(sinToken.status(), 403);
+
+    const tokenInvalido = await page.request.post(`${API_BASE}/api/notes`, {
+      headers: { "X-CSRF-Token": "token-invento-falso" },
+      data: { accion_id: "a00037", texto: "no debería guardarse" },
+    });
+    assert.equal(tokenInvalido.status(), 403);
+  });
+
   await paso("cerrar sesión vuelve a la pantalla de login", async () => {
     await page.click("#logout-button");
     await page.waitForSelector("#login-screen:not([hidden])");
