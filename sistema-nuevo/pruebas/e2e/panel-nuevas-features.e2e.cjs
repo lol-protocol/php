@@ -46,6 +46,31 @@ async function intentarLogin(page, password) {
     await page.waitForResponse((r) => r.url().includes("/api/notes"));
   });
 
+  await paso("dos guardados de nota superpuestos: gana el último texto escrito, no el que llega primero", async () => {
+    const textarea = page.locator(".note-textarea").first();
+    let numeroRequest = 0;
+    await page.route("**/api/notes", async (route) => {
+      numeroRequest++;
+      if (numeroRequest === 1) await new Promise((r) => setTimeout(r, 1000)); // el 1er guardado (texto viejo) se demora a propósito
+      await route.continue();
+    });
+
+    await textarea.fill("primero");
+    await page.waitForTimeout(700); // deja que el debounce dispare el 1er guardado, todavía en vuelo
+    await textarea.fill("segundo"); // sin el fix, este 2do guardado le podía ganar la carrera al primero
+    await page.waitForTimeout(2200); // esperar a que ambas respuestas vuelvan, incluida la demorada
+    await page.unroute("**/api/notes");
+
+    // Releer desde el backend (no el DOM, que nunca se tocó): si el guardado
+    // viejo pisó al nuevo, esto lo muestra.
+    await page.selectOption("#user-select", "u030");
+    await page.waitForTimeout(600);
+    assert.equal(await page.locator(".note-textarea").first().inputValue(), "segundo");
+
+    await textarea.fill("");
+    await page.waitForResponse((r) => r.url().includes("/api/notes"));
+  });
+
   await paso("guardar un filtro con el backend caído muestra un toast de error", async () => {
     await page.route("**/api/filtros", (route) => route.abort("failed"));
     page.once("dialog", (dialog) => dialog.accept("filtro que va a fallar"));

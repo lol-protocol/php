@@ -8,6 +8,8 @@ import { renderChart } from "./grafico.js";
 import { renderAlerts } from "./alertas.js";
 import { renderKpis } from "./kpis.js";
 
+let ultimaPeticionTimeline = 0;
+
 async function loadTimeline() {
   if (!state.selectedUserId) return;
 
@@ -21,9 +23,11 @@ async function loadTimeline() {
     user_id: state.selectedUserId, scope, age_min: ageMin, age_max: ageMax, gender, type,
     page: state.page, per_page: PER_PAGE,
   });
+  const peticionId = ++ultimaPeticionTimeline;
 
   try {
     const data = await fetchJson(`/api/timeline?${query.toString()}`);
+    if (peticionId !== ultimaPeticionTimeline) return; // una respuesta más nueva ya ganó
     state.lastTimeline = data;
     renderUserCard(data.user);
     renderFilterSummary(data.filters, data.pagination.total);
@@ -32,6 +36,7 @@ async function loadTimeline() {
     renderTimeline(data.timeline);
     renderPagination(data.pagination, goToPage);
   } catch (err) {
+    if (peticionId !== ultimaPeticionTimeline) return;
     const box = document.getElementById("status-message");
     box.hidden = false;
     box.className = "status-message status-message--warning";
@@ -66,11 +71,8 @@ export async function reloadAlerts() {
 export async function loadAppData() {
   try {
     const [groups, actionTypes, users, alerts, kpis] = await Promise.all([
-      fetchJson("/api/groups"),
-      fetchJson("/api/action-types"),
-      fetchJson("/api/users?per_page=100"),
-      fetchJson("/api/alerts"),
-      fetchJson("/api/kpis"),
+      fetchJson("/api/groups"), fetchJson("/api/action-types"), fetchJson("/api/users?per_page=100"),
+      fetchJson("/api/alerts"), fetchJson("/api/kpis"),
     ]);
     state.groups = groups;
     state.actionTypes = actionTypes;
@@ -80,7 +82,7 @@ export async function loadAppData() {
 
     populateScopeSelect();
     populateTypeSelect();
-    renderUserOptions("", loadTimelineFromStart);
+    renderUserOptions("", () => {}); // el bloque de abajo ya dispara la carga inicial; duplicaba el pedido
     renderAlerts(alerts, selectUser);
     renderKpis(kpis);
 

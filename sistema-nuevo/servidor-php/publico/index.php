@@ -43,6 +43,16 @@ $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
 $rutasProtegidas = ['/api/users', '/api/groups', '/api/action-types', '/api/alerts', '/api/alerts-config', '/api/filtros', '/api/notes', '/api/kpis', '/api/timeline'];
 $esFiltroPorId = (bool) preg_match('#^/api/filtros/\d+$#', $path);
 
+// Libera el lock del archivo de sesión ni bien terminamos de leerla (auth +
+// CSRF ya solo necesitan lectura de acá en más): si no, cualquier pedido
+// concurrente de la misma pestaña -- aunque sea a otro endpoint -- se
+// serializa esperando este mismo lock, sin importar cuántos workers tenga
+// el server. login/logout/session son la excepción: necesitan la sesión
+// abierta para escribir en ella.
+if (!in_array($path, ['/api/login', '/api/logout', '/api/session'], true)) {
+    session_write_close();
+}
+
 try {
     if ((in_array($path, $rutasProtegidas, true) || $esFiltroPorId) && !auth_esta_autenticado()) {
         api_unauthorized();
