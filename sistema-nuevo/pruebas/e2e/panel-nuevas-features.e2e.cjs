@@ -2,7 +2,7 @@ const { chromium } = require("playwright");
 const { execSync } = require("node:child_process");
 const { assert, paso, resumenPasos, iniciarSesion, BASE_URL } = require("./ayudante-e2e.cjs");
 
-function limpiarIntentosLogin() {
+function ejecutarSql(sql) {
   const env = {
     ...process.env,
     PGPASSWORD: process.env.BACKOFFICE_BD_CLAVE || "backoffice_dev_2026",
@@ -10,7 +10,11 @@ function limpiarIntentosLogin() {
   const host = process.env.BACKOFFICE_BD_HOST || "localhost";
   const usuario = process.env.BACKOFFICE_BD_USUARIO || "backoffice_app";
   const nombre = process.env.BACKOFFICE_BD_NOMBRE || "backoffice";
-  execSync(`psql -h ${host} -U ${usuario} -d ${nombre} -c "DELETE FROM intentos_login;"`, { env, stdio: "pipe" });
+  execSync(`psql -h ${host} -U ${usuario} -d ${nombre} -c "${sql}"`, { env, stdio: "pipe" });
+}
+
+function limpiarIntentosLogin() {
+  ejecutarSql("DELETE FROM intentos_login;");
 }
 
 async function intentarLogin(page, password) {
@@ -78,6 +82,34 @@ async function intentarLogin(page, password) {
     await page.waitForSelector("#toast-error:not([hidden])", { timeout: 2000 });
     assert.equal((await page.textContent("#toast-error")).length > 0, true);
     await page.unroute("**/api/filtros");
+  });
+
+  await paso("cambiar rápido entre 2 filtros guardados aplica el más nuevo, no el que responde último", async () => {
+    ejecutarSql(`INSERT INTO filtros_guardados (nombre, scope, age_min, age_max, gender, tipo_accion) VALUES
+      ('e2e-test-filtro-A', 'all_countries', 18, 30, 'M', 'login'),
+      ('e2e-test-filtro-B', 'all_countries', 40, 65, 'F', 'payment');`);
+    await page.reload();
+    await page.waitForSelector("#app:not([hidden])", { timeout: 30000 });
+    await page.waitForTimeout(500);
+
+    let numeroRequest = 0;
+    await page.route("**/api/filtros", async (route) => {
+      numeroRequest++;
+      if (numeroRequest === 1) await new Promise((r) => setTimeout(r, 1000)); // filtro A (viejo) se demora a propósito
+      await route.continue();
+    });
+
+    await page.selectOption("#saved-filters-select", { label: "e2e-test-filtro-A" });
+    await page.waitForTimeout(200);
+    await page.selectOption("#saved-filters-select", { label: "e2e-test-filtro-B" }); // sin el fix, A (más lento) le podía ganar la carrera a B
+    await page.waitForTimeout(1500);
+    await page.unroute("**/api/filtros");
+
+    assert.equal(await page.locator("#age-min").inputValue(), "40");
+    assert.equal(await page.locator("#age-max").inputValue(), "65");
+    assert.equal(await page.locator("#gender-select").inputValue(), "F");
+
+    ejecutarSql("DELETE FROM filtros_guardados WHERE nombre LIKE 'e2e-test-filtro-%';");
   });
 
   await browser.close();

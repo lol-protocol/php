@@ -3,6 +3,8 @@ import { intentar, el } from "./nucleo.js";
 import { t } from "./idioma.js";
 import { mostrarError } from "./notificaciones.js";
 
+let ultimaPeticionFiltro = 0;
+
 export async function cargarFiltrosGuardados() {
   const filtros = await intentar(
     () => fetchJson("/api/filtros"),
@@ -28,9 +30,11 @@ function renderFiltrosDropdown(filtros) {
 
 export async function aplicarFiltroGuardado(filtroId) {
   if (!filtroId) return;
+  const peticionId = ++ultimaPeticionFiltro;
 
   await intentar(async () => {
     const filtros = await fetchJson("/api/filtros");
+    if (peticionId !== ultimaPeticionFiltro) return; // un cambio de filtro más nuevo ya ganó
     const filtro = filtros.find((f) => String(f.id) === String(filtroId));
     if (!filtro) return;
 

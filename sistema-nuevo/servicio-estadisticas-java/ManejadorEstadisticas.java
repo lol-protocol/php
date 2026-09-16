@@ -53,8 +53,8 @@ final class ManejadorEstadisticas implements HttpHandler {
 
             UtilHttp.respond(exchange, 200, EstadisticasCalculo.buildStatsJson(type, cohort));
         } catch (Exception e) {
-            String message = e.getMessage() == null ? e.toString() : e.getMessage();
-            UtilHttp.respond(exchange, 500, new JsonBuilder().put("error", message).build());
+            System.err.println("Error en /stats: " + e);
+            UtilHttp.respond(exchange, 500, new JsonBuilder().put("error", "error interno del servidor").build());
         }
     }
 }

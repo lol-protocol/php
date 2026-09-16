@@ -23,6 +23,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     const result = await postJson("/api/login", { username, password });
     document.getElementById("login-password").value = "";
     showApp(result.username, result.csrf_token);
+    await cargarFiltrosGuardados();
     await loadAppData();
   } catch (err) {
     showLogin(err.message);

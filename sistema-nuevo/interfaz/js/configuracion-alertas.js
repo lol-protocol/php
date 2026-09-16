@@ -3,13 +3,16 @@ import { intentar } from "./nucleo.js";
 import { mostrarError } from "./notificaciones.js";
 import { t } from "./idioma.js";
 
+let ultimaPeticionConfig = 0;
+
 export async function cargarConfigAlertas() {
+  const peticionId = ++ultimaPeticionConfig;
   const config = await intentar(
     () => fetchJson("/api/alerts-config"),
     "Error cargando configuración de alertas:",
     () => mostrarError(t("toast_error_cargar"))
   );
-  if (!config) return;
+  if (!config || peticionId !== ultimaPeticionConfig) return; // una carga más nueva ya ganó
 
   document.getElementById("config-alerta-ip_pais").checked = config.alertas.ip_pais;
   document.getElementById("config-alerta-cambio_pais").checked = config.alertas.cambio_pais;
