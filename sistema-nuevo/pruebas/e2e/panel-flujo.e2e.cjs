@@ -55,6 +55,19 @@ const { assert, paso, resumenPasos, iniciarSesion } = require("./ayudante-e2e.cj
     assert.equal(await page.textContent("#logout-button"), "Cerrar sesión");
   });
 
+  await paso("cambiar de idioma no pisa una nota recién tipeada", async () => {
+    const textarea = page.locator(".note-textarea").first();
+    await textarea.fill("nota que no se debe perder");
+    await page.click('.lang-button[data-lang="en"]'); // bien adentro de la ventana de debounce de 600ms
+    await page.waitForTimeout(200);
+    assert.equal(await textarea.inputValue(), "nota que no se debe perder");
+    await page.click('.lang-button[data-lang="es"]');
+    await page.waitForResponse((r) => r.url().includes("/api/notes")); // dejar que el guardado original termine
+
+    await textarea.fill("");
+    await page.waitForResponse((r) => r.url().includes("/api/notes"));
+  });
+
   await browser.close();
   process.exit(resumenPasos());
 })();

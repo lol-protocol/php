@@ -13,6 +13,7 @@ export function buildNoteBlock(item) {
     class: "note-textarea",
     rows: "2",
     placeholder: t("note_placeholder"),
+    "data-accion-id": item.id,
   });
   textarea.value = item.note || "";
 

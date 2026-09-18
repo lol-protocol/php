@@ -43,7 +43,18 @@ export function refrescarIdioma(onSelectUser, onPageChange) {
     renderFilterSummary(data.filters, data.pagination.total);
     renderStatusMessage(data.stats_service_available);
     renderChart(data.chart);
-    renderTimeline(data.timeline);
+
+    // Una nota recién tipeada puede no estar guardada todavía (debounce de
+    // 600ms): reconstruir el timeline desde el caché de data.timeline la
+    // pisaría con el texto viejo, aunque el guardado en curso sí vaya a la
+    // base bien -- solo la pantalla quedaría mintiendo.
+    const notasEnPantalla = new Map(
+      Array.from(document.querySelectorAll(".note-textarea[data-accion-id]")).map((n) => [n.dataset.accionId, n.value])
+    );
+    const timeline = data.timeline.map((item) =>
+      notasEnPantalla.has(String(item.id)) ? { ...item, note: notasEnPantalla.get(String(item.id)) } : item
+    );
+    renderTimeline(timeline);
     renderPagination(data.pagination, onPageChange);
   }
 }
