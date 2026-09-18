@@ -62,7 +62,7 @@ final class RiskReportBuilder
 
         foreach ($result->getFlaggedRiskTypes() as $riskType) {
             $terms = $result->getTermsByRiskType($riskType);
-            $worst = 'low';
+            $worst = $terms[0]['severity'] ?? 'none';
 
             foreach ($terms as $term) {
                 if ($policy->weightOf($term['severity']) > $policy->weightOf($worst)) {
@@ -73,7 +73,7 @@ final class RiskReportBuilder
             $analysis[$riskType] = [
                 'description' => self::DESCRIPTIONS[$riskType] ?? $riskType,
                 'level' => $worst,
-                'isSevere' => $worst === $policy->topSeverityLabel(),
+                'isSevere' => $this->isTopWeight($worst, $policy),
                 'termCount' => count($terms),
                 'languages' => array_values(array_unique(array_column($terms, 'sourceLanguage'))),
                 'detectionMethods' => array_values(array_unique(array_column($terms, 'detectionMethod'))),
@@ -81,5 +81,19 @@ final class RiskReportBuilder
         }
 
         return $analysis;
+    }
+
+    /**
+     * `$worst` es una severidad del diccionario ('high') y
+     * `topSeverityLabel()` una etiqueta de banda: con las bandas por defecto
+     * coinciden por casualidad, pero al renombrarlas comparar los nombres
+     * daba siempre false, aun con la decisión en 'reject'. Se comparan los
+     * pesos, que sí son el mismo lenguaje.
+     */
+    private function isTopWeight(string $severity, ScoringPolicy $policy): bool
+    {
+        $weights = $policy->getSeverityWeights();
+
+        return $weights !== [] && $policy->weightOf($severity) >= max($weights);
     }
 }

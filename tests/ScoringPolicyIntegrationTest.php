@@ -51,6 +51,20 @@ class ScoringPolicyIntegrationTest extends TestCase
         $this->assertSame('high', $result->getSeverity());
     }
 
+    /** El reporte no puede contradecirse: si la decisión es 'reject', el riesgo es severo. */
+    public function testReportSeverityFlagSurvivesRenamedBandLabels(): void
+    {
+        $renamed = ScoringPolicy::default()
+            ->withBands([[2.5, 'critico'], [1.5, 'medio'], [0.0, 'leve']])
+            ->withDecisionRules(['none' => 'accept', 'leve' => 'accept_with_flag', 'medio' => 'review', 'critico' => 'reject']);
+
+        $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'spa', $renamed);
+        $report = $reviewer->getDetailedReport($reviewer->validateName('bastardo'));
+
+        $this->assertSame('reject', $report['decision']);
+        $this->assertTrue($report['riskAnalysis']['moral']['isSevere']);
+    }
+
     public function testValidationResultExposesRawScore(): void
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'spa');

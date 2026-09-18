@@ -57,10 +57,22 @@ final class ScoringWeights
                 : 'medium';
         }
 
-        $base = $this->severityWeights[$severity] ?? 0.0;
+        $base = $this->severityWeights[$severity] ?? $this->fallbackWeight();
         $multiplier = $this->riskTypeWeights[$match['riskType'] ?? ''] ?? 1.0;
 
         return $base * $multiplier;
+    }
+
+    /**
+     * Si ni la severidad del término ni las etiquetas de respaldo existen en
+     * los pesos configurados —pasa al renombrar las severidades con
+     * `withSeverityWeights()`— un término ya marcado puntuaría 0 y el filtro
+     * aceptaría todo en silencio. Ante una configuración incoherente, el
+     * lado seguro de un filtro es sobremarcar: se usa el peso mayor.
+     */
+    private function fallbackWeight(): float
+    {
+        return $this->severityWeights === [] ? 0.0 : max($this->severityWeights);
     }
 
     public function weightOf(string $severity): float

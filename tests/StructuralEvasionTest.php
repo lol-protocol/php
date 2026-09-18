@@ -38,6 +38,26 @@ class StructuralEvasionTest extends TestCase
         $this->assertTrue($result->isValid());
     }
 
+    /** Un separador metido dentro del término no lo parte en dos palabras. */
+    public function testSeparatorInsideATermDoesNotEvadeDetection(): void
+    {
+        foreach (['cer-da', 'cer.da', 'cer_da', "cer'da", 'cer·da'] as $evasion) {
+            $this->assertFalse(
+                $this->reviewer->validateName($evasion)->isValid(),
+                "'{$evasion}' debería detectarse igual que 'cerda'."
+            );
+        }
+    }
+
+    /** Una entrada del diccionario con guion tiene que ser alcanzable por texto. */
+    public function testHyphenatedDictionaryEntryIsReachable(): void
+    {
+        $portuguese = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'por');
+
+        $this->assertNotNull($portuguese->languages()->wordList('por')->search('vira-lata'));
+        $this->assertFalse($portuguese->validateName('Ana Vira-Lata')->isValid());
+    }
+
     /**
      * "Cerrda" (con letra duplicada) no coincide con la entrada "cerda". Se
      * podría cerrar colapsando letras dobles en normalize(), pero eso

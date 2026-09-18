@@ -1,5 +1,54 @@
 # Changelog
 
+## [4.1.3] - 2026-09-18
+
+### Arreglado
+
+- **Un separador metido dentro de un término evadía el filtro literal, en
+  los 30 idiomas**: "pu-ta", "pu.ta", "pu_ta", "pu,ta", "pu·ta" y "pu'ta"
+  pasaban como nombre válido. `findInText()` partía por esos caracteres y
+  buscaba "pu ta", que no es la clave de nada. Es la misma evasión que el
+  plegado fonético ya cerraba con `stripSeparators()`, pero el camino
+  literal —el único que tienen los 13 idiomas sin reglas fonéticas— la
+  seguía teniendo abierta. Ahora cada palabra se busca también sin sus
+  separadores intercalados (`WordListScanner`), y `normalize()` los quita
+  de la clave para que ambos lados coincidan.
+- **8 entradas del diccionario con guion eran inalcanzables** por la misma
+  causa: existían en el índice pero ninguna búsqueda producía su clave, así
+  que `half-breed` (eng), `blanc-bec`, `casse-pieds` (fra),
+  `kekanak-kanakan` (ind), `vira-lata`, `dedo-duro` (por) nunca se
+  detectaban — sólo `lèche-cul` y `puxa-saco`, y de rebote, por un
+  subtérmino. Verificado antes y después: las 8 se detectan ahora.
+- **`ScoringWeights::scoreOf()` puntuaba 0 al renombrar las severidades.**
+  Si la severidad del diccionario no está en el mapa configurado, caía a
+  las etiquetas `'high'`/`'medium'` — que tampoco están cuando se
+  renombran con `withSeverityWeights()`, así que el peso terminaba en 0.0:
+  con una policy de etiquetas propias, "bastardo" puntuaba 0 y **el filtro
+  aceptaba todo en silencio**. Ahora una severidad desconocida usa el peso
+  mayor declarado: ante una configuración incoherente, un filtro debe
+  sobremarcar, no dejar pasar.
+- **`riskAnalysis[...]['isSevere']` comparaba dos vocabularios distintos**:
+  la severidad del diccionario (`high`) contra la etiqueta de banda
+  (`topSeverityLabel()`). Con las bandas por defecto coinciden por
+  casualidad; al renombrarlas quedaba siempre en `false` aunque la decisión
+  fuera `reject`. Ahora se comparan los pesos. De paso, `level` ya no
+  arranca en un `'low'` hardcodeado que no tiene por qué existir en una
+  configuración propia.
+- 4 tests nuevos. 179 tests, 0 regresiones, y 0 falsos positivos nuevos
+  sobre un barrido de 60 nombres legítimos de 20 idiomas (con énfasis en
+  compuestos con guion y apóstrofo: "Jean-Luc", "O'Brien", "Hans-Peter",
+  "García-López").
+
+### Límites conocidos (sin cambios)
+
+- Intercalar un carácter que no es separador (`pu*ta`, `pu/ta`) o un
+  espacio (`pu ta`) sigue evadiendo el camino literal: cerrarlo exigiría
+  coincidencia difusa, descartada a propósito por los falsos positivos que
+  genera sobre ~4.600 términos en 30 idiomas. El caso del espacio sí lo
+  cubre el detector de fusión en los 17 idiomas con reglas fonéticas.
+
+---
+
 ## [4.1.2] - 2026-09-18
 
 ### Arreglado

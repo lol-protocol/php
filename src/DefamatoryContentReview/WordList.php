@@ -49,32 +49,15 @@ class WordList
         ]);
     }
 
-    /** Minúsculas + diacríticos + leet, para que "Cérda"/"CERDA"/"c3rda" lleguen a la misma clave. Conserva espacios internos (entradas multipalabra). */
+    /** Minúsculas + diacríticos + leet + separadores intercalados, para que "Cérda"/"CERDA"/"c3rda"/"cer-da" lleguen a la misma clave. Conserva espacios internos (entradas multipalabra). */
     public function normalize(string $word): string
     {
         $word = preg_replace('/\s+/u', ' ', mb_strtolower(trim($word), 'UTF-8'));
-        return AccentFolding::fold(Leetspeak::unleet($word));
+        return AccentFolding::fold(Leetspeak::unleet(WordListScanner::stripInsideWord($word)));
     }
     public function search(string $word): ?array { return $this->index->get($this->normalize($word)); }
-    /** Todos los términos presentes en un texto: cada token, y ventanas de 2-3 palabras (entradas multipalabra como "hijo de puta"). */
-    public function findInText(string $text): array
-    {
-        $tokens = preg_split('/[\s\-.,_·]+/u', $text, -1, PREG_SPLIT_NO_EMPTY) ?: [];
-        $matches = [];
-        $count = count($tokens);
-        for ($i = 0; $i < $count; $i++) {
-            for ($span = min(3, $count - $i); $span >= 1; $span--) {
-                $phrase = implode(' ', array_slice($tokens, $i, $span));
-                $found = $this->search($phrase);
-                if ($found !== null) {
-                    $matches[] = $found + ['found' => $phrase];
-                    $i += $span - 1; // un token ya consumido por una frase larga no vuelve a contarse
-                    break;
-                }
-            }
-        }
-        return $matches;
-    }
+    /** Todos los términos presentes en un texto: ventanas de 1-3 palabras y la palabra sin separadores intercalados. Ver WordListScanner. */
+    public function findInText(string $text): array { return WordListScanner::scan($text, fn(string $phrase) => $this->search($phrase)); }
     public function getByRiskType(string $riskType): array { return $this->index->byRiskType($riskType); }
     public function getByCategory(string $category): array { return $this->index->byCategory($category); }
     public function getBySeverity(string $severity): array { return $this->index->bySeverity($severity); }

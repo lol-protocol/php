@@ -49,6 +49,20 @@ class ScoringWeightsTest extends TestCase
         $this->assertSame(0.5, $policy->scoreOf(['severity' => 'low', 'riskType' => 'ordinario']));
     }
 
+    /**
+     * Al renombrar las severidades, las del diccionario ('high'...) ya no
+     * existen en el mapa — ni las etiquetas de respaldo. Un término marcado
+     * no puede puntuar 0 por eso: el filtro aceptaría todo en silencio.
+     */
+    public function testRenamedSeverityLabelsDoNotSilentlyScoreZero(): void
+    {
+        $policy = ScoringPolicy::default()->withSeverityWeights([
+            'none' => 0.0, 'leve' => 1.0, 'medio' => 2.0, 'critico' => 3.0,
+        ]);
+
+        $this->assertSame(3.0, $policy->scoreOf(['severity' => 'high', 'riskType' => 'moral']));
+    }
+
     public function testWithersReturnNewInstancesWithoutMutatingTheOriginal(): void
     {
         $original = ScoringPolicy::default();
