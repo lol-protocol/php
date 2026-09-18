@@ -42,7 +42,7 @@ $metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efe
             <select name="boleta_id" id="boleta_id">
                 <option value="">Anticipo / sin boleta asociada</option>
                 <?php foreach ($boletasCliente as $b): ?>
-                    <?php if ($b['anulada']): continue; endif; ?>
+                    <?php if ($b['anulada'] || $b['saldo'] <= 0.01): continue; endif; ?>
                     <option value="<?= (int) $b['id'] ?>">
                         #<?= (int) $b['id'] ?> · <?= htmlspecialchars($b['concepto']) ?> ·
                         <?= money_moneda((float) $b['saldo'], $b['moneda_codigo']) ?> pendiente

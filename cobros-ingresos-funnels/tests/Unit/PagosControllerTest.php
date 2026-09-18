@@ -70,4 +70,33 @@ final class PagosControllerTest extends TestCase
 
         self::assertFalse(PagosController::montoNoSuperaElSaldo(100.02, $boleta));
     }
+
+    /**
+     * Reproduce el bug real: editar un pago de $484.10 a $5000 contra una
+     * boleta con saldo (ya descontando este mismo pago) de $789.86 debia
+     * rechazarse -el saldo disponible real es 789.86 + 484.10 = 1273.96-
+     * pero sin sumar de vuelta el monto viejo se aceptaba cualquier cosa.
+     */
+    public function testEditarUnPagoPorEncimaDelSaldoDisponibleLoSupera(): void
+    {
+        $boleta = ['saldo' => 789.86];
+
+        self::assertFalse(PagosController::montoNoSuperaElSaldoAlEditar(5000.0, $boleta, 484.10));
+    }
+
+    public function testEditarUnPagoDentroDelSaldoDisponibleNoLoSupera(): void
+    {
+        $boleta = ['saldo' => 789.86];
+
+        self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(600.0, $boleta, 484.10));
+    }
+
+    public function testEditarUnPagoAlMismoMontoSiempreEsValido(): void
+    {
+        // Dejar un pago sin cambios nunca deberia rechazarse por saldo,
+        // sea cual sea el saldo restante de la boleta.
+        $boleta = ['saldo' => 0.0];
+
+        self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(484.10, $boleta, 484.10));
+    }
 }

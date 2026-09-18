@@ -124,6 +124,18 @@ final class PagosController
         return $monto <= (float) $boleta['saldo'] + 0.01;
     }
 
+    /**
+     * Misma regla que montoNoSuperaElSaldo() pero al EDITAR un pago ya
+     * existente: BoletaRepository::porId() calcula el saldo restando todos
+     * los pagos vigentes de la boleta, este mismo pago incluido, asi que
+     * hay que sumarle de vuelta $montoViejo antes de comparar contra el
+     * monto nuevo (si no, el pago se estaria descontando a si mismo).
+     */
+    public static function montoNoSuperaElSaldoAlEditar(float $montoNuevo, array $boleta, float $montoViejo): bool
+    {
+        return self::montoNoSuperaElSaldo($montoNuevo, ['saldo' => (float) $boleta['saldo'] + $montoViejo]);
+    }
+
     public function editar(): void
     {
         $id = Peticion::id();
@@ -136,6 +148,8 @@ final class PagosController
             return;
         }
 
+        $boleta = $pago['boleta_id'] ? (new BoletaRepository())->porId($pago['boleta_id']) : null;
+
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $monto = (float) ($_POST['monto'] ?? 0);
@@ -146,6 +160,10 @@ final class PagosController
                 $error = 'Completá todos los campos.';
             } elseif (!Filtros::esFechaValida($fechaPago)) {
                 $error = 'La fecha de pago no es válida.';
+            } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {
+                $error = 'La fecha de pago no puede ser anterior a la emisión de la boleta.';
+            } elseif ($boleta !== null && !self::montoNoSuperaElSaldoAlEditar($monto, $boleta, (float) $pago['monto'])) {
+                $error = 'El monto supera el saldo pendiente de la boleta.';
             } else {
                 $antes = money_moneda((float) $pago['monto'], $pago['moneda_codigo']) . " ({$pago['metodo']})";
                 $despues = money_moneda($monto, $pago['moneda_codigo']) . " ({$metodo})";

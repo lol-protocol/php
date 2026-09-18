@@ -63,11 +63,12 @@ $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visi
 <div class="panel">
     <h2>Embudo por etapa</h2>
     <div class="chart">
-        <?php foreach ($etapas as $etapa => $valor): $i = array_search($etapa, array_keys($etapas), true); ?>
+        <?php $i = 0; foreach ($etapas as $etapa => $valor): ?>
             <div class="grupo">
                 <?php $pct = $resumen['visitantes'] > 0 ? number_format($valor / $resumen['visitantes'] * 100, 1) : 0; ?>
                 <?= svg_barra('bar', 'height:' . pct_altura((float) $valor, $maxEtapa) . '%', $rampaFunnel[$i], "{$etapa}: {$valor} ({$pct}% de visitantes)") ?>
             </div>
+            <?php $i++; ?>
         <?php endforeach; ?>
     </div>
     <div class="chart-etiquetas">

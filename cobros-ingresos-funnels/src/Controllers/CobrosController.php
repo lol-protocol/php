@@ -16,6 +16,16 @@ use App\View;
 
 final class CobrosController
 {
+    /**
+     * Al editar una boleta, el monto no puede bajar de lo que ya se cobro
+     * (dejaria un saldo negativo y la boleta se seguiria mostrando como
+     * "pagada" sin avisar que en realidad se sobrecobro).
+     */
+    public static function montoCubreLoYaCobrado(float $monto, array $boleta): bool
+    {
+        return $monto >= (float) $boleta['pagado'] - 0.01;
+    }
+
     public function index(): void
     {
         ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
@@ -119,6 +129,8 @@ final class CobrosController
                 $error = 'Completá todos los campos.';
             } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
                 $error = 'La fecha de emisión o de vencimiento no es válida.';
+            } elseif (!self::montoCubreLoYaCobrado($monto, $boleta)) {
+                $error = 'El monto no puede ser menor a lo ya cobrado (' . money_moneda((float) $boleta['pagado'], $boleta['moneda_codigo']) . ').';
             } else {
                 $antes = sprintf('"%s" %s', $boleta['concepto'], money_moneda((float) $boleta['monto'], $boleta['moneda_codigo']));
                 $despues = sprintf('"%s" %s', $concepto, money_moneda($monto, $boleta['moneda_codigo']));
