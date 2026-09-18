@@ -2,12 +2,15 @@
 
 namespace Tests;
 
+use DefamatoryContentReview\DefamatoryContentReviewer;
 use DefamatoryContentReview\ScoringPolicy;
 use PHPUnit\Framework\TestCase;
 
 /** Modo de agregación 'max' (por defecto) vs. 'sum' — ScoringPolicy::aggregate(). */
 class ScoringAggregationTest extends TestCase
 {
+    private const CONFIG_DIR = __DIR__ . '/../config';
+
     public function testSumAggregationAddsInsteadOfTakingTheWorst(): void
     {
         $max = ScoringPolicy::default();
@@ -29,5 +32,17 @@ class ScoringAggregationTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         ScoringPolicy::default()->withAggregation('average');
+    }
+
+    public function testRepeatedIdenticalTermIsNotCollapsedBySameLanguageDedup(): void
+    {
+        $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'spa', ScoringPolicy::default()->withAggregation('sum'));
+
+        $once = $reviewer->validateName('puta');
+        $twice = $reviewer->validateName('puta puta');
+
+        $this->assertCount(1, $once->getFlaggedTerms());
+        $this->assertCount(2, $twice->getFlaggedTerms(), 'Dos apariciones del mismo insulto no son una sola.');
+        $this->assertSame($once->getScore() * 2, $twice->getScore());
     }
 }

@@ -1,5 +1,38 @@
 # Changelog
 
+## [4.1.2] - 2026-09-18
+
+### Arreglado
+
+- **`batchValidateFullNames()` no aplicaba detección de fusión fonética**,
+  a diferencia de `validateFullName()`: trataba cada nombre completo como
+  un único campo en vez de separar nombre/apellido, así que evasiones como
+  "Elba Gina" pasaban el filtro en lote aunque `validateFullName('Elba',
+  'Gina')` sí las detectaba. Ahora separa por el primer espacio y llama a
+  `validateFullName()` internamente, igual que la versión singular.
+- **Dos apariciones idénticas del mismo término en un nombre se contaban
+  como una sola**, incluso dentro de un mismo idioma (`validateName('puta
+  puta')` marcaba un solo término, no dos), lo que además rompía en
+  silencio el modo de agregación `'sum'` (`ScoringPolicy::withAggregation`)
+  para el caso que ese modo existe para cubrir: acumular todo lo
+  encontrado. La deduplicación pensada para "el mismo término aparece en
+  varios diccionarios de una familia de idiomas" no distinguía esa
+  situación de "el mismo término aparece dos veces en el texto". Ahora la
+  clave de deduplicación incluye la posición de la aparición.
+- `PhoneticFusionDetector` y `WordListPhonetics` pasaban `mb_strlen()` /
+  `mb_strpos()` sin el argumento de codificación explícito, a diferencia
+  de todos los folders fonéticos de este mismo módulo — inconsistente, y
+  en hosts con `default_charset` distinto de UTF-8 podía desalinear el
+  punto de unión nombre/apellido. Se agrega `'UTF-8'` explícito en los
+  cuatro sitios.
+- `WordListIndex::statistics()` ordenaba `byRiskType` y `bySeverity` de
+  mayor a menor pero dejaba `byCategory` sin ordenar — asimetría no
+  intencional en el contrato de salida. Ahora las tres se ordenan igual.
+- 2 tests nuevos (fusión fonética en lote, término repetido no se
+  colapsa). 175 tests, 0 regresiones.
+
+---
+
 ## [4.1.1] - 2026-09-15
 
 ### Cambiado

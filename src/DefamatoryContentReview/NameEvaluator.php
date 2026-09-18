@@ -22,10 +22,13 @@ final class NameEvaluator
         $seen = [];
 
         foreach ($languageSet as $code => $confidence) {
-            foreach ($this->languages->wordList($code)->findInText($name) as $match) {
-                // El mismo término puede estar en varios diccionarios de una
-                // familia; se conserva la aparición de mayor confianza.
-                $key = $match['found'] . '|' . $match['riskType'];
+            foreach (array_values($this->languages->wordList($code)->findInText($name)) as $i => $match) {
+                // El mismo término, en la misma posición de aparición, puede
+                // estar en varios diccionarios de una familia; se conserva la
+                // aparición de mayor confianza. La posición entra en la clave
+                // para no colapsar dos apariciones distintas del mismo
+                // término dentro de un único idioma (p. ej. "puta puta").
+                $key = $i . '|' . $match['found'] . '|' . $match['riskType'];
                 if (isset($seen[$key]) && $seen[$key] >= $confidence) {
                     continue;
                 }

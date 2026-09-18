@@ -45,6 +45,7 @@ final class WordListIndex
         }
 
         arsort($stats['byRiskType']);
+        arsort($stats['byCategory']);
         arsort($stats['bySeverity']);
 
         return $stats;

@@ -68,8 +68,11 @@ class DefamatoryContentReviewer
     /** @param array<int,string> $names @return array<int,ValidationResult> */
     public function batchValidateNames(array $names): array { return array_map(fn(string $n) => $this->validateName($n), $names); }
 
-    /** @param array<int,string> $fullNames @return array<int,ValidationResult> */
-    public function batchValidateFullNames(array $fullNames): array { return array_map(fn(string $n) => $this->validateName(trim($n)), $fullNames); }
+    /** Separa por el primer espacio para detectar fusión fonética como validateFullName(). @param array<int,string> $fullNames @return array<int,ValidationResult> */
+    public function batchValidateFullNames(array $fullNames): array
+    {
+        return array_map(fn(string $n) => $this->validateFullName(...array_pad(explode(' ', trim($n), 2), 2, '')), $fullNames);
+    }
 
     /** Idiomas explícitos, cada uno con confianza 1.0 — sin depender del modelo de parentesco. @param array<int,string> $languages */
     public function validateInLanguages(string $name, array $languages): ValidationResult

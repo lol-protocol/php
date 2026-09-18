@@ -47,7 +47,7 @@ final class WordListPhonetics
         $candidates = [];
 
         foreach ($this->buildIndex($words) as $folded => $data) {
-            if (mb_strlen($folded) >= $minLength) {
+            if (mb_strlen($folded, 'UTF-8') >= $minLength) {
                 $candidates[] = ['phonetic' => $folded, 'data' => $data];
             }
         }

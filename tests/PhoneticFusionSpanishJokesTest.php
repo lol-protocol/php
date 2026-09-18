@@ -58,4 +58,12 @@ class PhoneticFusionSpanishJokesTest extends TestCase
         $this->assertNotEmpty($result->getPhoneticVariantTerms());
         $this->assertEmpty($result->getPhoneticFusionTerms());
     }
+
+    public function testBatchValidateFullNamesDetectsFusionLikeTheSingularVersion(): void
+    {
+        $batch = $this->reviewer->batchValidateFullNames(['Elba Gina']);
+
+        $this->assertFalse($batch[0]->isValid(), 'batchValidateFullNames() debe detectar la misma fusión fonética que validateFullName().');
+        $this->assertSame(['vagina'], array_column($batch[0]->getPhoneticFusionTerms(), 'term'));
+    }
 }
