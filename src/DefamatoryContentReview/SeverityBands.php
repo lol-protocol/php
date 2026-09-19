@@ -39,8 +39,11 @@ final class SeverityBands
 
         // Puntaje positivo pero por debajo de toda banda configurada: la
         // banda más baja de las declaradas es la que corresponde.
+        if (empty($this->bands)) {
+            return 'low';
+        }
         $lowest = end($this->bands);
-        return $lowest[1] ?? 'low';
+        return $lowest[1];
     }
 
     /** Etiqueta de la banda de mayor umbral — la "más grave" configurada. */

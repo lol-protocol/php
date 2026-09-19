@@ -34,4 +34,10 @@ class SeverityBandsTest extends TestCase
 
         $this->assertSame([[2.5, 'high'], [1.5, 'medium'], [0.0, 'low']], $policy->getBands());
     }
+
+    public function testEmptyBandsDefaultsToLow(): void
+    {
+        $policy = ScoringPolicy::default()->withBands([]);
+        $this->assertSame('low', $policy->severityFromScore(0.5));
+    }
 }

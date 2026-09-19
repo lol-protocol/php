@@ -16,7 +16,11 @@ final class LanguageAffinity
     public function __construct(array $pairs, private readonly float $defaultThreshold)
     {
         foreach ($pairs as $pair => $score) {
-            [$a, $b] = explode('|', $pair);
+            $parts = explode('|', $pair);
+            if (count($parts) !== 2) {
+                throw new \InvalidArgumentException("Pair format must be 'a|b', got: $pair");
+            }
+            [$a, $b] = $parts;
             $this->scores[$a][$b] = $score;
             $this->scores[$b][$a] = $score;
         }
