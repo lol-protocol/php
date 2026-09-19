@@ -39,7 +39,7 @@ final class AlmacenAcciones
              FROM acciones a JOIN tipos_accion t ON t.clave = a.tipo_clave
              LEFT JOIN notas_acciones n ON n.accion_id = a.id
              WHERE a.usuario_id = :id $condicionTipo
-             ORDER BY a.marca_temporal
+             ORDER BY a.marca_temporal, a.id
              LIMIT :limite OFFSET :offset"
         );
         self::vincularComunes($stmt, $userId, $tipo);
