@@ -33,7 +33,7 @@ final class AlmacenDatos
             'SELECT ' . self::CAMPOS_USUARIO . '
              FROM usuarios u JOIN paises p ON p.codigo = u.pais_codigo
              WHERE u.nombre ILIKE :patron OR p.nombre ILIKE :patron
-             ORDER BY u.nombre
+             ORDER BY u.nombre, u.id
              LIMIT :limite OFFSET :offset'
         );
         $stmt->bindValue('patron', $patron);
