@@ -6,6 +6,7 @@ namespace App\Tests\Integration;
 
 use App\Database;
 use App\Repositories\IngresosRepository;
+use App\Repositories\NotaCreditoRepository;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -60,12 +61,28 @@ final class IngresosRepositoryTest extends TestCase
         }
     }
 
-    public function testPorMetodoSumaLoMismoQueCobrosPorMes(): void
+    /**
+     * porMetodo() es bruto a proposito (responde "por que canal entro la
+     * plata", y una devolucion no es un canal), mientras que cobrosPorMes()
+     * va neto de notas de credito. La relacion entre los dos, entonces, es
+     * bruto = neto + devoluciones; es lo que la pantalla de Pagos muestra
+     * desglosado para que los numeros reconcilien a la vista.
+     */
+    public function testPorMetodoEsElBrutoYCobrosPorMesElNetoDeDevoluciones(): void
     {
         $repo = new IngresosRepository();
         $totalPorMetodo = array_sum(array_column($repo->porMetodo('2000-01-01', '2100-01-01'), 'total'));
         $totalPorMes = array_sum(array_column($repo->cobrosPorMes('2000-01-01', '2100-01-01'), 'total'));
+        $devoluciones = (new NotaCreditoRepository())->totalEnRangoUsd('2000-01-01', '2100-01-01');
 
-        self::assertEqualsWithDelta($totalPorMes, $totalPorMetodo, 0.05);
+        self::assertEqualsWithDelta($totalPorMes + $devoluciones, $totalPorMetodo, 0.05);
+    }
+
+    public function testKpisDescuentaLasDevolucionesDelCobradoBruto(): void
+    {
+        $kpis = (new IngresosRepository())->kpis('2000-01-01', '2100-01-01');
+
+        self::assertEqualsWithDelta($kpis['cobrado_bruto'] - $kpis['devoluciones'], $kpis['cobrado'], 0.0001);
+        self::assertGreaterThanOrEqual(0.0, $kpis['devoluciones']);
     }
 }

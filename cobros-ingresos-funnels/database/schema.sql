@@ -3,6 +3,7 @@
 
 DROP TABLE IF EXISTS auditoria;
 DROP TABLE IF EXISTS intentos_login;
+DROP TABLE IF EXISTS notas_credito;
 DROP TABLE IF EXISTS pagos;
 DROP TABLE IF EXISTS boletas;
 DROP TABLE IF EXISTS usuarios_funnel;
@@ -105,6 +106,21 @@ CREATE TABLE pagos (
     anulada BOOLEAN NOT NULL DEFAULT FALSE
 );
 
+-- Devoluciones: cuando se anula una boleta que ya tenia pagos, los pagos NO
+-- se tocan (la plata entro de verdad y tiene que seguir en el historial de
+-- caja), sino que se emite una nota de credito por lo cobrado. Los reportes
+-- restan estas notas de lo cobrado para que el neto cierre.
+CREATE TABLE notas_credito (
+    id SERIAL PRIMARY KEY,
+    boleta_id INTEGER NOT NULL REFERENCES boletas(id),
+    cliente_id INTEGER NOT NULL REFERENCES clientes(id),
+    monto NUMERIC(14, 2) NOT NULL CHECK (monto > 0),
+    moneda_codigo CHAR(3) NOT NULL REFERENCES monedas(codigo),
+    fecha DATE NOT NULL,
+    motivo TEXT NOT NULL,
+    creado_en TIMESTAMP NOT NULL DEFAULT now()
+);
+
 -- Quien hizo que, para trazabilidad de altas/ediciones/anulaciones.
 CREATE TABLE auditoria (
     id SERIAL PRIMARY KEY,
@@ -133,5 +149,8 @@ CREATE INDEX idx_pagos_cliente ON pagos(cliente_id);
 CREATE INDEX idx_pagos_fecha ON pagos(fecha_pago);
 CREATE INDEX idx_funnel_fechas ON usuarios_funnel(fecha_visita, fecha_registro, fecha_lead, fecha_conversion);
 CREATE INDEX idx_funnel_pais ON usuarios_funnel(pais_codigo);
+CREATE INDEX idx_notas_credito_boleta ON notas_credito(boleta_id);
+CREATE INDEX idx_notas_credito_cliente ON notas_credito(cliente_id);
+CREATE INDEX idx_notas_credito_fecha ON notas_credito(fecha);
 CREATE INDEX idx_auditoria_creado_en ON auditoria(creado_en DESC);
 CREATE INDEX idx_auditoria_entidad ON auditoria(entidad, entidad_id);

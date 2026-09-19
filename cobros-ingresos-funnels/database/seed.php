@@ -376,9 +376,34 @@ for ($i = 0; $i < 10; $i++) {
 
 // 5) Anular un par de boletas y pagos de ejemplo, para poder ver la insignia
 // "Anulada" y probar el filtro sin tener que anular nada a mano primero.
+// Si la boleta anulada ya tenia pagos, se emite su nota de credito igual que
+// lo hace la app, para que los datos de ejemplo queden consistentes (los
+// pagos siguen en el historial y la devolucion los netea en los reportes).
 $anulBoleta = $pdo->prepare('UPDATE boletas SET anulada = TRUE WHERE id = :id');
+$cobradoDe = $pdo->prepare(
+    'SELECT b.cliente_id, b.concepto, b.moneda_codigo,
+            COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.boleta_id = b.id AND NOT p.anulada), 0) AS pagado
+     FROM boletas b WHERE b.id = :id'
+);
+$insNota = $pdo->prepare(
+    'INSERT INTO notas_credito (boleta_id, cliente_id, monto, moneda_codigo, fecha, motivo)
+     VALUES (:boleta_id, :cliente_id, :monto, :moneda_codigo, :fecha, :motivo)'
+);
 foreach (array_slice($boletaIds, 4, 2) as $id) {
+    $cobradoDe->execute([':id' => $id]);
+    $datos = $cobradoDe->fetch();
     $anulBoleta->execute([':id' => $id]);
+
+    if ((float) $datos['pagado'] > 0.01) {
+        $insNota->execute([
+            ':boleta_id' => $id,
+            ':cliente_id' => $datos['cliente_id'],
+            ':monto' => $datos['pagado'],
+            ':moneda_codigo' => $datos['moneda_codigo'],
+            ':fecha' => $hoy->format('Y-m-d'),
+            ':motivo' => sprintf('Anulacion de la boleta #%d ("%s")', $id, $datos['concepto']),
+        ]);
+    }
 }
 $anulPago = $pdo->prepare('UPDATE pagos SET anulada = TRUE WHERE id = :id');
 foreach (array_slice($pagoIds, 4, 2) as $id) {
@@ -395,6 +420,7 @@ $totalBoletas = $pdo->query('SELECT COUNT(*) FROM boletas')->fetchColumn();
 $totalPagos = $pdo->query('SELECT COUNT(*) FROM pagos')->fetchColumn();
 $boletasAnuladas = $pdo->query('SELECT COUNT(*) FROM boletas WHERE anulada')->fetchColumn();
 $pagosAnulados = $pdo->query('SELECT COUNT(*) FROM pagos WHERE anulada')->fetchColumn();
+$totalNotas = $pdo->query('SELECT COUNT(*) FROM notas_credito')->fetchColumn();
 
 echo "Seed completado:\n";
 echo "  paises:          {$totalPaises}\n";
@@ -403,5 +429,6 @@ echo "  clientes:        {$totalClientes}\n";
 echo "  usuarios_funnel: {$totalUsuarios}\n";
 echo "  boletas:         {$totalBoletas} ({$boletasAnuladas} anuladas)\n";
 echo "  pagos:           {$totalPagos} ({$pagosAnulados} anulados)\n";
+echo "  notas de credito: {$totalNotas}\n";
 echo "\nLogin: {$emailAdmin} / {$passwordAdmin}\n";
 echo "(tambien: soporte@ejemplo.com / soporte1234)\n";

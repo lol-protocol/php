@@ -41,12 +41,17 @@ final class BoletaRepository
         return (int) $stmt->fetchColumn();
     }
 
-    /** Incluye pagado/saldo (igual que listado()/porCliente()) para poder validar sobrepagos al registrar un pago. */
+    /**
+     * Incluye pagado/saldo (igual que listado()/porCliente()) para poder
+     * validar sobrepagos, y primer_pago para no dejar mover la emision por
+     * delante de los pagos que la boleta ya tiene.
+     */
     public function porId(int $id): ?array
     {
         $stmt = $this->db->prepare(
             "SELECT b.*, c.nombre AS cliente,
-                    COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.boleta_id = b.id AND NOT p.anulada), 0) AS pagado
+                    COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.boleta_id = b.id AND NOT p.anulada), 0) AS pagado,
+                    (SELECT MIN(p.fecha_pago) FROM pagos p WHERE p.boleta_id = b.id AND NOT p.anulada) AS primer_pago
              FROM boletas b JOIN clientes c ON c.id = b.cliente_id
              WHERE b.id = :id"
         );

@@ -21,7 +21,12 @@ final class IngresosRepository
         $this->db = Database::connection();
     }
 
-    /** KPIs del periodo (consolidados a USD, sin boletas/pagos anulados): emitido vs cobrado en el rango dado. */
+    /**
+     * KPIs del periodo (consolidados a USD, sin boletas/pagos anulados):
+     * emitido vs cobrado en el rango dado. "cobrado" va neto de las notas
+     * de credito del periodo: si se anulo una boleta que ya estaba cobrada,
+     * esa plata se devuelve y no puede seguir contando como ingreso.
+     */
     public function kpis(string $desde, string $hasta): array
     {
         $stmtFacturado = $this->db->prepare(
@@ -38,11 +43,16 @@ final class IngresosRepository
              WHERE p.fecha_pago BETWEEN :desde AND :hasta AND NOT p.anulada"
         );
         $stmtCobrado->execute([':desde' => $desde, ':hasta' => $hasta]);
-        $cobrado = (float) $stmtCobrado->fetchColumn();
+        $cobradoBruto = (float) $stmtCobrado->fetchColumn();
+
+        $devoluciones = (new NotaCreditoRepository())->totalEnRangoUsd($desde, $hasta);
+        $cobrado = $cobradoBruto - $devoluciones;
 
         return [
             'facturado' => $facturado,
             'cobrado' => $cobrado,
+            'cobrado_bruto' => $cobradoBruto,
+            'devoluciones' => $devoluciones,
             'tasa_cobranza' => $facturado > 0 ? $cobrado / $facturado : 0.0,
         ];
     }
@@ -98,7 +108,7 @@ final class IngresosRepository
         return $buckets;
     }
 
-    /** Cobros por mes (sin pagos anulados), consolidados a USD. */
+    /** Cobros por mes (sin pagos anulados y netos de devoluciones), consolidados a USD. */
     public function cobrosPorMes(string $desde, string $hasta): array
     {
         $stmt = $this->db->prepare(
@@ -109,7 +119,14 @@ final class IngresosRepository
              GROUP BY mes ORDER BY mes"
         );
         $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
-        return $stmt->fetchAll();
+        $filas = $stmt->fetchAll();
+
+        $devolucionesPorMes = (new NotaCreditoRepository())->porMesUsd($desde, $hasta);
+        foreach ($filas as &$fila) {
+            $fila['total'] = (float) $fila['total'] - ($devolucionesPorMes[$fila['mes']] ?? 0.0);
+        }
+
+        return $filas;
     }
 
     /** Total por metodo de pago (sin anulados), consolidado a USD. */

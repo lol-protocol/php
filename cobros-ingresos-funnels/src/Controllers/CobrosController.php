@@ -11,6 +11,7 @@ use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\IngresosRepository;
+use App\Repositories\NotaCreditoRepository;
 use App\Validacion;
 use App\View;
 
@@ -24,6 +25,22 @@ final class CobrosController
     public static function montoCubreLoYaCobrado(float $monto, array $boleta): bool
     {
         return $monto >= (float) $boleta['pagado'] - 0.01;
+    }
+
+    /** Una boleta no puede vencer antes de haber sido emitida. */
+    public static function vencimientoNoAnteriorALaEmision(string $fechaEmision, string $fechaVencimiento): bool
+    {
+        return $fechaVencimiento >= $fechaEmision;
+    }
+
+    /**
+     * Al editar, la emision no puede quedar despues del primer pago que la
+     * boleta ya tiene: seria una boleta cobrada antes de existir (el espejo
+     * de la validacion que ya hace PagosController del lado del pago).
+     */
+    public static function emisionNoPosteriorAlPrimerPago(string $fechaEmision, array $boleta): bool
+    {
+        return $boleta['primer_pago'] === null || $fechaEmision <= $boleta['primer_pago'];
     }
 
     public function index(): void
@@ -76,6 +93,8 @@ final class CobrosController
                 $error = 'Completá todos los campos.';
             } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
                 $error = 'La fecha de emisión o de vencimiento no es válida.';
+            } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
+                $error = 'El vencimiento no puede ser anterior a la emisión.';
             } else {
                 $id = (new BoletaRepository())->crear([
                     'cliente_id' => $clienteId,
@@ -129,8 +148,12 @@ final class CobrosController
                 $error = 'Completá todos los campos.';
             } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
                 $error = 'La fecha de emisión o de vencimiento no es válida.';
+            } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
+                $error = 'El vencimiento no puede ser anterior a la emisión.';
             } elseif (!self::montoCubreLoYaCobrado($monto, $boleta)) {
                 $error = 'El monto no puede ser menor a lo ya cobrado (' . money_moneda((float) $boleta['pagado'], $boleta['moneda_codigo']) . ').';
+            } elseif (!self::emisionNoPosteriorAlPrimerPago($fechaEmision, $boleta)) {
+                $error = 'La emisión no puede ser posterior al primer pago de la boleta (' . $boleta['primer_pago'] . ').';
             } else {
                 $antes = sprintf('"%s" %s', $boleta['concepto'], money_moneda((float) $boleta['monto'], $boleta['moneda_codigo']));
                 $despues = sprintf('"%s" %s', $concepto, money_moneda($monto, $boleta['moneda_codigo']));
@@ -180,6 +203,7 @@ final class CobrosController
                     $boleta['concepto'],
                     money_moneda((float) $boleta['monto'], $boleta['moneda_codigo'])
                 ));
+                $this->emitirNotaDeCredito($boleta);
             }
             header('Location: ?page=cobros&anulada=' . $id);
             exit;
@@ -192,4 +216,33 @@ final class CobrosController
         ]);
     }
 
+    /**
+     * Al anular una boleta que ya tenia pagos, los pagos no se tocan (la
+     * plata entro de verdad y tiene que seguir en el historial de caja): se
+     * emite una nota de credito por lo cobrado, que los reportes restan para
+     * que el neto cierre.
+     */
+    private function emitirNotaDeCredito(array $boleta): void
+    {
+        $pagado = (float) $boleta['pagado'];
+        if ($pagado <= 0.01) {
+            return;
+        }
+
+        $notaId = (new NotaCreditoRepository())->crear([
+            'boleta_id' => $boleta['id'],
+            'cliente_id' => $boleta['cliente_id'],
+            'monto' => $pagado,
+            'moneda_codigo' => $boleta['moneda_codigo'],
+            'fecha' => date('Y-m-d'),
+            'motivo' => sprintf('Anulacion de la boleta #%d ("%s")', $boleta['id'], $boleta['concepto']),
+        ]);
+
+        AuditoriaRepository::auditarComoUsuarioActual('crear', 'nota_credito', $notaId, sprintf(
+            'Nota de credito #%d por %s (boleta #%d anulada con pagos)',
+            $notaId,
+            money_moneda($pagado, $boleta['moneda_codigo']),
+            $boleta['id']
+        ));
+    }
 }

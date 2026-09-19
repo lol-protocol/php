@@ -11,6 +11,7 @@ use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\IngresosRepository;
+use App\Repositories\NotaCreditoRepository;
 use App\Repositories\PagoRepository;
 use App\Validacion;
 use App\View;
@@ -35,6 +36,7 @@ final class PagosController
             'pagina' => $pagina,
             'cobrosPorMes' => $ingresosRepo->cobrosPorMes($desde, $hasta),
             'porMetodo' => $ingresosRepo->porMetodo($desde, $hasta),
+            'devoluciones' => (new NotaCreditoRepository())->totalEnRangoUsd($desde, $hasta),
             'pagos' => $listado['filas'],
             'totalPagos' => $listado['total'],
             'totalPaginas' => $listado['totalPaginas'],

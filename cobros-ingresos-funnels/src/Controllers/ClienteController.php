@@ -11,6 +11,7 @@ use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\FunnelRepository;
+use App\Repositories\NotaCreditoRepository;
 use App\Repositories\PagoRepository;
 use App\Repositories\PaisRepository;
 use App\Validacion;
@@ -47,6 +48,7 @@ final class ClienteController
             'cliente' => $cliente,
             'boletas' => (new BoletaRepository())->porCliente($id),
             'pagos' => (new PagoRepository())->porCliente($id),
+            'notasCredito' => (new NotaCreditoRepository())->porCliente($id),
             'viajeFunnel' => (new FunnelRepository())->viajeDeCliente($id),
             'activePage' => 'clientes',
             'titulo' => $cliente['nombre'],

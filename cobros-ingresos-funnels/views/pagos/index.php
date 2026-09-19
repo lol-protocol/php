@@ -20,8 +20,9 @@ $maxMetodo = 1.0;
 foreach ($porMetodo as $fila) {
     $maxMetodo = max($maxMetodo, (float) $fila['total']);
 }
-$totalPeriodo = array_sum(array_column($porMetodo, 'total'));
+$cobradoBruto = array_sum(array_column($porMetodo, 'total'));
 $pagosVigentes = array_sum(array_column($porMetodo, 'cantidad'));
+$cobradoNeto = $cobradoBruto - $devoluciones;
 ?>
 
 <h1>Pagos</h1>
@@ -44,8 +45,16 @@ $pagosVigentes = array_sum(array_column($porMetodo, 'cantidad'));
 
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
-        <span class="label">Total cobrado (periodo, USD)</span>
-        <span class="value"><?= Config::money($totalPeriodo) ?></span>
+        <span class="label">Cobrado neto (periodo, USD)</span>
+        <span class="value"><?= Config::money($cobradoNeto) ?></span>
+        <?php if ($devoluciones > 0.01): ?>
+            <span class="delta"><?= Config::money($cobradoBruto) ?> cobrados &minus; <?= Config::money($devoluciones) ?> devueltos</span>
+        <?php endif; ?>
+    </div>
+    <div class="panel stat-tile">
+        <span class="label">Devoluciones (periodo, USD)</span>
+        <span class="value"><?= Config::money($devoluciones) ?></span>
+        <span class="delta">Notas de crédito por boletas anuladas que ya estaban cobradas</span>
     </div>
     <div class="panel stat-tile">
         <span class="label">Pagos registrados</span>

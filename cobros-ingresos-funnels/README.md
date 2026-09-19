@@ -163,6 +163,9 @@ src/
                         obligatorios vacios y mensaje de email duplicado
   Repositories/Anulable.php  trait con el UPDATE ... anulada = TRUE que
                         comparten BoletaRepository y PagoRepository
+  Repositories/NotaCreditoRepository.php  devoluciones emitidas al anular
+                        una boleta ya cobrada, y su total por rango/mes en
+                        USD para netear los cobros de los reportes
   Router.php, View.php, Filtros.php, Config.php, helpers.php
 database/
   schema.sql            esquema de la base
@@ -201,6 +204,12 @@ tests/
   vencimiento, `anulada`) — no son facturas fiscales.
 - `pagos`: cobros reales del usuario, opcionalmente ligados a una boleta
   (`boleta_id` puede ser `NULL` para anticipos/pagos sueltos) y con `anulada`.
+- `notas_credito`: devoluciones. Al anular una boleta que ya tenía pagos, los
+  pagos **no** se tocan (la plata entró de verdad y tiene que seguir en el
+  historial de caja): se emite una nota de crédito por lo cobrado, que queda
+  como devolución pendiente con el cliente. Los reportes de cobros restan estas
+  notas para mostrar el neto, así anular una boleta cobrada no deja plata
+  contando como ingreso sin respaldo.
 - `auditoria`: un registro por cada alta/edición/anulación (quién, cuándo, sobre
   qué entidad y el detalle de qué cambió). Es de solo inserción — no se borra.
 - `intentos_login`: contador de intentos fallidos de login por email y hasta

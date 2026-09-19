@@ -40,6 +40,8 @@ final class IntentoLoginRepository
      */
     public function registrarFallo(string $email): void
     {
+        $this->purgarVencidos();
+
         $stmt = $this->db->prepare(
             'INSERT INTO intentos_login (email, intentos, ultimo_intento, bloqueado_hasta)
              VALUES (:email, 1, now(), NULL)
@@ -63,6 +65,22 @@ final class IntentoLoginRepository
             ':maximo' => self::MAX_INTENTOS,
             ':bloqueo' => self::BLOQUEO_MINUTOS,
         ]);
+    }
+
+    /**
+     * Borra las filas cuya racha ya vencio: pasada la ventana, el contador
+     * se reinicia igual, asi que no aportan nada. Sin esto la tabla crece
+     * sin techo con una fila por cada email que nunca llega a loguearse
+     * bien (tipeos, o alguien probando direcciones al azar), que es entrada
+     * no autenticada.
+     */
+    private function purgarVencidos(): void
+    {
+        $stmt = $this->db->prepare(
+            'DELETE FROM intentos_login
+             WHERE ultimo_intento < now() - make_interval(mins => :bloqueo)'
+        );
+        $stmt->execute([':bloqueo' => self::BLOQUEO_MINUTOS]);
     }
 
     public function limpiar(string $email): void

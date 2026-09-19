@@ -3,6 +3,7 @@
 /** @var array $cliente */
 /** @var array $boletas */
 /** @var array $pagos */
+/** @var array $notasCredito */
 /** @var array|null $viajeFunnel */
 
 $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 'Parcial', 'vencida' => 'Vencida', 'anulada' => 'Anulada'];
@@ -15,7 +16,8 @@ $edad = $nacimiento->diff(new DateTimeImmutable('today'))->y;
 $boletasVigentes = array_filter($boletas, static fn (array $b): bool => !$b['anulada']);
 $pagosVigentes = array_filter($pagos, static fn (array $p): bool => !$p['anulada']);
 $totalFacturado = array_sum(array_column($boletasVigentes, 'monto'));
-$totalCobrado = array_sum(array_column($pagosVigentes, 'monto'));
+$totalDevuelto = array_sum(array_column($notasCredito, 'monto'));
+$totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelto;
 ?>
 
 <h1><?= htmlspecialchars($cliente['nombre']) ?></h1>
@@ -60,7 +62,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto'));
     <div class="panel stat-tile">
         <span class="label">Pagos recibidos</span>
         <span class="value"><?= count($pagosVigentes) ?></span>
-        <span class="delta"><?= money_moneda($totalCobrado, $cliente['moneda_codigo']) ?> en total</span>
+        <span class="delta"><?= money_moneda($totalCobrado, $cliente['moneda_codigo']) ?> neto<?= $totalDevuelto > 0.01 ? ' (ya descontada la devolución)' : '' ?></span>
     </div>
 </div>
 
@@ -120,3 +122,27 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto'));
         </table>
     </div>
 </div>
+
+<?php if ($notasCredito): ?>
+<div class="panel">
+    <h2>Notas de crédito (devoluciones)</h2>
+    <p class="subtitulo">Emitidas al anular boletas que ya estaban cobradas. Los pagos originales siguen en el historial de arriba; estas notas son lo que hay que devolverle al cliente.</p>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr><th>Fecha</th><th>Boleta</th><th>Motivo</th><th class="num">Monto</th></tr>
+            </thead>
+            <tbody>
+            <?php foreach ($notasCredito as $n): ?>
+                <tr>
+                    <td><?= htmlspecialchars($n['fecha']) ?></td>
+                    <td>Boleta #<?= (int) $n['boleta_id'] ?></td>
+                    <td><?= htmlspecialchars($n['motivo']) ?></td>
+                    <td class="num"><?= money_moneda((float) $n['monto'], $n['moneda_codigo']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<?php endif; ?>
