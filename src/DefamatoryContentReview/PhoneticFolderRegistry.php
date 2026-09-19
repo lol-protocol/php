@@ -12,17 +12,26 @@ namespace DefamatoryContentReview;
  * de idioma → clase, para que WordList y PhoneticFusionDetector no necesiten
  * saber cuál usar.
  *
- * Cubre los 17 idiomas en script latino de los 30 soportados. Quedan fuera
- * a propósito:
+ * Cubre 17 de los 30 idiomas soportados. Quedan fuera a propósito:
+ * - **Inglés**: de script latino, pero —a diferencia del resto de esta
+ *   lista— su ortografía no tiene una grafía alternativa real y
+ *   consolidada que sustituir (el "ae"/"oe" nórdico, la "ß"/"ss" alemana):
+ *   la distancia entre sonido y letra es irregular caso por caso (letras
+ *   mudas, el mismo dígrafo con varias pronunciaciones), y los chistes de
+ *   fusión conocidos en inglés ("Mike Rotch", "Anna Sasin") dependen de un
+ *   parecido fonético aproximado, no de una equivalencia ortográfica
+ *   verificable. Plegarlo iría a adivinar reglas, no a normalizar una
+ *   variante real — el mismo motivo que ya excluye la distancia de
+ *   edición en el resto de idiomas.
  * - **Vietnamita**: es de script latino, pero el tono es fonémico (seis
  *   tonos distinguen palabras distintas) y no hay una grafía alternativa
  *   real para plegar sin colapsar significados — el mismo riesgo que ya
  *   evita la distancia de edición en el resto de idiomas.
- * - **Árabe, búlgaro, hebreo, hindi, japonés, coreano, ruso, tailandés,
- *   ucraniano y chino**: su script no es latino, y este mecanismo (plegar
- *   sustituyendo caracteres) no tiene un equivalente verificable sin una
- *   romanización propia — intentarlo sin un hablante nativo que confirme
- *   cada regla sería inventar, no normalizar.
+ * - **Árabe, búlgaro, griego, hebreo, hindi, japonés, coreano, ruso,
+ *   tailandés, ucraniano y chino**: su script no es latino, y este
+ *   mecanismo (plegar sustituyendo caracteres) no tiene un equivalente
+ *   verificable sin una romanización propia — intentarlo sin un hablante
+ *   nativo que confirme cada regla sería inventar, no normalizar.
  *
  * Añadir un idioma nuevo a la detección de fusión es añadir su fila aquí,
  * nada más.

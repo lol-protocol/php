@@ -43,8 +43,10 @@ class PhoneticFusionRegistryTest extends TestCase
             $this->assertTrue($reviewer->languages()->wordList($code)->supportsPhoneticFolding(), $code);
         }
 
-        // vie: script latino pero excluido a propósito (tono fonémico).
-        // rus, jpn: script no latino, el mecanismo no aplica sin romanización.
+        // eng: script latino, pero sin grafía alternativa real que plegar
+        // (ver PhoneticFolderRegistry). vie: script latino pero excluido a
+        // propósito (tono fonémico). rus, jpn: script no latino, el
+        // mecanismo no aplica sin romanización.
         foreach (['eng', 'vie', 'rus', 'jpn'] as $code) {
             $this->assertFalse($reviewer->languages()->wordList($code)->supportsPhoneticFolding(), $code);
         }

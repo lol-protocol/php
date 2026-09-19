@@ -190,13 +190,18 @@ aprendió de memoria en la escuela porque el oído no la resuelve solo:
 | Neerlandés (`nld`) | ei/ij se unifican; au/ou se unifican | La confusión ortográfica más famosa del idioma — ambos pares son homófonos reales |
 | Rumano (`ron`) | â/î se unifican; ş/ţ → ș/ț | â/î suenan idéntico (posición, no sonido); ş/ţ son variantes de codificación de la misma letra |
 
-Quedan fuera a propósito: el **vietnamita** (script latino, pero el tono es
-fonémico — no hay grafía alternativa que plegar sin colapsar significados),
-y los diez idiomas en script no latino (árabe, búlgaro, hebreo, hindi,
-japonés, coreano, ruso, tailandés, ucraniano, chino) — el mecanismo de
-plegar sustituyendo caracteres no tiene un equivalente verificable sin una
-romanización propia, y sin un hablante nativo que confirme cada regla sería
-inventar, no normalizar.
+Quedan fuera a propósito: el **inglés** (script latino, pero sin la grafía
+alternativa real y consolidada que sí tiene el resto de esta tabla — la
+distancia entre sonido y letra es irregular caso por caso, y los chistes de
+fusión conocidos en inglés, "Mike Rotch", dependen de un parecido fonético
+aproximado, no de una equivalencia ortográfica verificable); el
+**vietnamita** (script latino, pero el tono es fonémico — no hay grafía
+alternativa que plegar sin colapsar significados); y los once idiomas en
+script no latino (árabe, búlgaro, griego, hebreo, hindi, japonés, coreano,
+ruso, tailandés, ucraniano, chino) — el mecanismo de plegar sustituyendo
+caracteres no tiene un equivalente verificable sin una romanización propia,
+y sin un hablante nativo que confirme cada regla sería inventar, no
+normalizar.
 
 ```php
 $reviewer = DefamatoryContentReviewer::create($configDir, 'pol');
@@ -664,11 +669,15 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
   frontera (ver la sección de fusión fonética más arriba). La transliteración
   numérica de un solo carácter sí se cubre (ver «Evasión cubierta y no
   cubierta»).
-- La fusión fonética sólo cubre los 17 idiomas en script latino con folder
-  registrado en `PhoneticFolderRegistry` (vietnamita excluido a propósito
-  por su tono fonémico; los 10 idiomas en script no latino, fuera del
-  alcance del mecanismo). En cualquiera de los 17 sólo cubre el cruce entre
-  nombre y apellido, no la re-segmentación dentro de un único campo.
+- La fusión fonética sólo cubre 17 de los 30 idiomas, los que tienen folder
+  registrado en `PhoneticFolderRegistry`: inglés excluido a propósito
+  porque su ortografía no tiene grafía alternativa real que plegar (a
+  diferencia del resto, es aproximación fonética laxa, no equivalencia
+  ortográfica verificable); vietnamita por su tono fonémico; los 11
+  idiomas en script no latino (árabe, búlgaro, griego, hebreo, hindi,
+  japonés, coreano, ruso, tailandés, ucraniano, chino), fuera del alcance
+  del mecanismo. En cualquiera de los 17 sólo cubre el cruce entre nombre
+  y apellido, no la re-segmentación dentro de un único campo.
 - Ningún diccionario queda en `basic`, pero `moderate` (24 de los 30) sigue
   necesitando revisión de hablante nativo antes de producción — es una base
   verificable, no una traducción exhaustiva.

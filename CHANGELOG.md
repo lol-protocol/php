@@ -1,5 +1,32 @@
 # Changelog
 
+## [4.1.4] - 2026-09-19
+
+### Arreglado
+
+- **El inglés quedaba sin cobertura fonética, sin que nada lo dijera.** De
+  los 30 idiomas soportados, es el único de script latino sin folder en
+  `PhoneticFolderRegistry` — y a diferencia del resto (documentado como
+  exclusión deliberada para el vietnamita y los 11 de script no latino),
+  no había ninguna nota explicando por qué. Es además uno de los 6
+  diccionarios en nivel `comprehensive`. Verificado: los chistes de fusión
+  conocidos en inglés ("Mike Rotch", "Anna Sasin") pasan sin detectarse
+  (`validateFullName('Mike', 'Rotch')->isValid()` da `true`), y es un gap
+  real de motivo distinto a los demás: el resto de folders sustituye una
+  grafía alternativa real y consolidada (ae/æ, ß/ss); el inglés no tiene
+  ese tipo de variante — su distancia entre sonido y letra es irregular
+  caso por caso, y esos chistes dependen de un parecido fonético
+  aproximado, no de una equivalencia ortográfica verificable. Documentado
+  ahora en `PhoneticFolderRegistry`, el README y el test que ya
+  verificaba el comportamiento (sin cambio de comportamiento: seguía sin
+  soporte, ahora se sabe por qué). De paso, el griego —también script no
+  latino— faltaba en esa misma lista en ambos lugares (10 idiomas
+  contados en vez de 11).
+- 179 tests, sin cambios en el comportamiento — corrección puramente
+  documental sobre un hueco real.
+
+---
+
 ## [4.1.3] - 2026-09-18
 
 ### Arreglado
