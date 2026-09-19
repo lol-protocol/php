@@ -28,6 +28,26 @@ for ($i = 1; $i < count($kpis['top_action_types']); $i++) {
 
 assert_verdadero(count($kpis['top_countries']) > 0, 'kpis: top_countries no viene vacío');
 
+// Dos entradas empatadas en count no deben depender del plan que elija el
+// optimizador para el ORDER BY: el desempate es por la clave de agrupación
+// (tipo/país), así que entre empatadas debe quedar en orden alfabético.
+for ($i = 1; $i < count($kpis['top_action_types']); $i++) {
+    if ($kpis['top_action_types'][$i - 1]['count'] === $kpis['top_action_types'][$i]['count']) {
+        assert_verdadero(
+            $kpis['top_action_types'][$i - 1]['type'] < $kpis['top_action_types'][$i]['type'],
+            'kpis: top_action_types empatados en count se ordenan alfabéticamente por tipo'
+        );
+    }
+}
+for ($i = 1; $i < count($kpis['top_countries']); $i++) {
+    if ($kpis['top_countries'][$i - 1]['count'] === $kpis['top_countries'][$i]['count']) {
+        assert_verdadero(
+            $kpis['top_countries'][$i - 1]['country'] < $kpis['top_countries'][$i]['country'],
+            'kpis: top_countries empatados en count se ordenan alfabéticamente por país'
+        );
+    }
+}
+
 // active_alerts_users cuenta directo con SQL (ver AlmacenKpis::usuariosConAlertaActiva)
 // en vez de pasar por AlmacenAlertas -- confirma que ambos caminos dan el mismo número.
 $config = new AlmacenConfiguracion($pdo);

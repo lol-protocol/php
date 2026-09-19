@@ -25,7 +25,7 @@ final class AlmacenAlertas
             FROM acciones a JOIN usuarios u ON u.id = a.usuario_id
             WHERE $where
             GROUP BY u.id, u.nombre, u.pais_codigo
-            ORDER BY cantidad DESC
+            ORDER BY cantidad DESC, u.id
             LIMIT :limite
             SQL);
         $stmt->bindValue('limite', self::LIMITE_USUARIOS, PDO::PARAM_INT);
@@ -77,7 +77,7 @@ final class AlmacenAlertas
             )
             SELECT usuario_id AS id, nombre, pais_anterior, pais_actual, cantidad, last_seen
             FROM por_usuario
-            ORDER BY cantidad DESC
+            ORDER BY cantidad DESC, usuario_id
             LIMIT :limite
             SQL);
         $stmt->bindValue('horas', $horasUmbral);

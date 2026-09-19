@@ -22,13 +22,13 @@ final class AlmacenKpis
         $porTipo = $this->pdo->query(
             'SELECT a.tipo_clave AS clave, COUNT(*) AS cantidad
              FROM acciones a
-             GROUP BY a.tipo_clave ORDER BY cantidad DESC LIMIT 5'
+             GROUP BY a.tipo_clave ORDER BY cantidad DESC, a.tipo_clave LIMIT 5'
         )->fetchAll();
 
         $porPais = $this->pdo->query(
             'SELECT u.pais_codigo AS country, COUNT(*) AS cantidad
              FROM acciones a JOIN usuarios u ON u.id = a.usuario_id
-             GROUP BY u.pais_codigo ORDER BY cantidad DESC LIMIT 5'
+             GROUP BY u.pais_codigo ORDER BY cantidad DESC, u.pais_codigo LIMIT 5'
         )->fetchAll();
 
         return [
