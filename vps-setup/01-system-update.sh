@@ -8,7 +8,7 @@ echo ""
 
 sudo apt-get update
 sudo apt-get upgrade -y
-sudo apt-get install -y curl wget git build-essential software-properties-common dnsutils sudo cron
+sudo apt-get install -y curl wget git build-essential software-properties-common dnsutils
 
 echo ""
 echo "✓ Sistema actualizado"

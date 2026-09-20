@@ -25,34 +25,34 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 
 ## 🛠️ Stack Tecnológico
 
-### Panel de Control
-- **CloudPanel** (Community Edition, gratis)
-  - Administra Nginx, PHP-FPM, MariaDB/MySQL y Let's Encrypt
-  - Interfaz web (`:8443`) + CLI (`clpctl`)
-  - Alternativa a cPanel (de pago) y Virtualmin (quiere controlar todo el servidor)
+### Panel de Administración
+- **Webmin** (gratis, opcional)
+  - GUI que **edita los archivos de configuración nativos** (Nginx, cron, usuarios, UFW) — no tiene base de datos propia ni convención de carpetas propietaria
+  - Si se desinstala, nada dejar de funcionar: todo sigue siendo Nginx/Certbot/systemd estándar
+  - Interfaz web (`:10000`), mismo usuario/contraseña que SSH
+  - Alternativa a cPanel (de pago), Virtualmin y CloudPanel (que administran el servidor con su propio CLI/base de datos y no resisten bien no tener panel)
 
 ### Servidor Web
-- **Nginx** (instalado y administrado por CloudPanel)
+- **Nginx 1.26+** (instalado con `apt`, configurado a mano, un `sites-available/<dominio>` por sitio)
   - Reverse proxy
   - Compresión GZIP
   - Cache HTTP
-  - Un vhost por sitio, con SSL propio
 
 ### Lenguajes & Frameworks
-- **PHP 8.3** - Backend web (una versión por sitio, vía CloudPanel)
-- **Python 3.12** - Scripts, apps Flask/FastAPI (sitios Python vía CloudPanel) y Whisper
-- **Java 21** - Apps empresariales, vía Apache Tomcat detrás de un sitio reverse-proxy de CloudPanel
+- **PHP 8.3** - Backend web (PHP-FPM, instalación única para todo el servidor)
+- **Python 3.12** - Scripts, apps Flask/FastAPI y Whisper
+- **Java 21** - Apps empresariales, vía Apache Tomcat detrás de un reverse-proxy de Nginx
 
 ### Base de Datos
-- **MariaDB/MySQL** - Incluida en CloudPanel, una base por sitio (`clpctl db:add`)
-- **PostgreSQL 16+** - Instalación aparte (`03_C-install-postgresql.sh`), para proyectos que la requieran específicamente
+- **PostgreSQL 16+** - Base de datos principal
+- **MariaDB** - Opcional, para software que exija específicamente ese motor
 
 ### SSL/TLS
-- **Let's Encrypt** - Integrado en CloudPanel, un clic o `clpctl lets-encrypt:install:certificate`
-- Renovación automática gestionada por el panel
+- **Let's Encrypt** - Vía Certbot (`certbot certify --nginx`)
+- Renovación automática con `certbot.timer`
 
 ### Monitoreo & Logging
-- **Logs por sitio** - Vistos desde el panel de CloudPanel (Nginx + PHP-FPM)
+- **Nginx Logs** - Access & error logs por dominio, también visibles desde Webmin
 - **Syslog** - Sistema centralizado (futuro)
 - **Prometheus** - Métricas (futuro)
 
@@ -61,21 +61,47 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 ## 📁 Estructura de Directorios
 
 ```
-/home/
-├── conce/htdocs/conce.com/public/              # Landing page (conce.com)
-├── initech/htdocs/initech.cl/public/           # Landing page (initech.cl)
-├── contrastocolor/htdocs/contrastocolor.ink/   # App Python (Flask)
-└── wikipedia/htdocs/wikipedia.cl/public/       # App PHP
+/var/www/
+├── landing-page/
+│   ├── conce.com/
+│   │   └── index.html
+│   └── initech.cl/
+│       └── index.html
+├── contrastocolor.ink/
+│   ├── venv/
+│   └── app.py
+└── wikipedia.cl/
+    └── public/
 
-# Cada carpeta /home/<siteUser>/ pertenece a un sitio creado con
-# CloudPanel (04_A-add-site-php.sh / 04_B-add-site-python.sh); Nginx,
-# PHP-FPM y SSL de cada uno se administran desde el panel, no a mano.
+/etc/nginx/
+├── sites-available/
+│   ├── conce.com
+│   ├── initech.cl
+│   ├── contrastocolor.ink
+│   └── wikipedia.cl
+└── sites-enabled/
+    └── (enlaces simbólicos)
+
+/etc/letsencrypt/live/
+├── conce.com/
+├── initech.cl/
+├── contrastocolor.ink/
+└── wikipedia.cl/
+
+/var/log/nginx/
+├── conce.com/
+├── initech.cl/
+├── contrastocolor.ink/
+└── wikipedia.cl/
 
 /var/lib/postgresql/
-└── (datos de PostgreSQL, si se instaló aparte)
+└── (datos de PostgreSQL)
 
 /opt/venvs/whisper/
 └── (entorno virtual de Python + Whisper, si se instaló)
+
+/etc/webmin/
+└── (configuración de Webmin, si se instaló — no interfiere con lo anterior)
 
 /home/backups/
 ├── daily/
@@ -94,7 +120,7 @@ Usuario (Internet)
         ↓
   158.69.222.245:80/443
         ↓
-  [Nginx - administrado por CloudPanel, un vhost por sitio]
+  [Nginx - Reverse Proxy, un vhost por sitio en /etc/nginx/sites-available/]
         ↓
    ┌─────────────────────────────────────┐
    │                                     │
@@ -103,12 +129,14 @@ HTML/CSS/JS                         [PHP-FPM 8.3]
 Landing Pages                       o [Python Apps] o [Tomcat via reverse-proxy]
    │                                     │
    ↓                                     ↓
-/home/<siteUser>/htdocs/<dominio>/  /home/<siteUser>/htdocs/<dominio>/
+/var/www/landing-page/          /var/www/{app}/
    │                                     │
    └─────────────────────────────────────┘
            ↓
-  [MariaDB/MySQL (CloudPanel)] o [PostgreSQL 16 (aparte)]
+    [PostgreSQL 16] o [MariaDB, opcional]
 ```
+
+Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta misma configuración — no está en el camino de las peticiones de los usuarios finales.
 
 ---
 
@@ -155,8 +183,8 @@ Landing Pages                       o [Python Apps] o [Tomcat via reverse-proxy]
          └────────────┬─────────────┘
                       │
          ┌────────────▼─────────────┐
-         │   CloudPanel :8443       │
-         │  (Nginx + PHP + MariaDB) │
+         │  Nginx (Reverse Proxy)   │
+         │  + Webmin :10000 (admin) │
          └────────────┬─────────────┘
                       │
         ┌─────────────┼─────────────┐
@@ -168,10 +196,9 @@ Landing Pages                       o [Python Apps] o [Tomcat via reverse-proxy]
    └─────────┘  └────┬────┘  └────┬───┘
                      │            │
                  ┌───▼────────────▼───┐
-                 │ MariaDB/MySQL      │
-                 │ (por CloudPanel)   │
-                 │ + PostgreSQL 16    │
-                 │ (aparte, opcional) │
+                 │ PostgreSQL 16      │
+                 │ + MariaDB          │
+                 │ (opcional)         │
                  └────────────────────┘
 ```
 
@@ -181,9 +208,10 @@ Landing Pages                       o [Python Apps] o [Tomcat via reverse-proxy]
 
 ### **Fase 1: Setup Base** (ACTUAL)
 - [x] Instalación de software base
-- [x] CloudPanel instalado (Nginx + PHP + MariaDB + SSL)
+- [x] Configuración de Nginx
+- [x] Webmin instalado (panel de administración opcional)
 - [ ] Landing pages (conce.com, initech.cl)
-- [ ] SSL/HTTPS (Let's Encrypt vía CloudPanel)
+- [ ] SSL/HTTPS (Let's Encrypt vía Certbot)
 - [ ] Configuración DNS
 
 ### **Fase 2: Aplicaciones Web**
@@ -227,7 +255,9 @@ Landing Pages                       o [Python Apps] o [Tomcat via reverse-proxy]
 - **Disco:** < 85%
 
 ### Logs
-- **Access/Error Log:** panel de CloudPanel → sitio → "Logs" (Nginx + PHP-FPM por sitio)
+- **Access Log:** `/var/log/nginx/[dominio]/access.log`
+- **Error Log:** `/var/log/nginx/[dominio]/error.log`
+- También visibles desde Webmin (módulo Nginx Webserver), si está instalado
 - **Syslog:** `/var/log/syslog`
 
 ---

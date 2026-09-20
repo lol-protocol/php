@@ -21,52 +21,45 @@ apt-cache search <pkg> # Buscar paquete
 
 ---
 
-## 🎛️ Panel de Control
+## 🎛️ Panel de Administración
 
-### CloudPanel
-**Propósito:** Panel de control web gratuito (alternativa a cPanel, que requiere licencia paga) — administra Nginx, PHP, MariaDB/MySQL y SSL desde una interfaz web y por CLI (`clpctl`)
+### Webmin *(opcional)*
+**Propósito:** GUI web para administrar el servidor sin dejar de usar comandos Unix nativos
 
-**Por qué CloudPanel y no cPanel/Virtualmin:**
+**Por qué Webmin y no cPanel/Virtualmin/CloudPanel:**
 - cPanel: requiere licencia paga.
-- Virtualmin: quiere controlar todo el servidor (correo, DNS, base de datos) desde su propio instalador — no convive bien con configuraciones hechas a mano.
-- CloudPanel: gratis (Community Edition), usa Nginx nativamente, SSL con un clic, soporta sitios PHP/Python/Node/estáticos/reverse-proxy.
-
-⚠️ Requiere un servidor **limpio**, sin Nginx/Apache preinstalados.
+- Virtualmin/CloudPanel: administran el servidor con su propia base de datos de sitios/usuarios y su propio CLI — si el panel se cae o se desinstala, hay que reconstruir a mano su estructura propietaria.
+- Webmin: **edita los archivos de configuración nativos** (`/etc/nginx/`, `/etc/letsencrypt/`, crontab, `/etc/passwd`, reglas de `ufw`). Todo lo que haces desde la UI es exactamente lo mismo que harías por SSH con `nginx`, `certbot`, `systemctl`. Si se desinstala, nada deja de funcionar.
 
 **Instalación:**
 ```bash
-./02-install-cloudpanel.sh
+./02_J-install-webmin.sh
 ```
 
-**Panel web:** `https://IP_DEL_VPS:8443` (crear el usuario admin inmediatamente después de instalar)
+**Panel web:** `https://IP_DEL_VPS:10000` (mismo usuario/contraseña que SSH)
 
-**CLI (`clpctl`) — comandos más usados:**
+**Módulos más útiles:**
+- **Nginx Webserver** — edita server blocks, SSL, proxy, gzip sobre `/etc/nginx/` directamente
+- **Users and Groups** — administra cuentas del sistema
+- **Scheduled Cron Jobs** — cron visual
+- **Firewall (UFW)** — reglas de puertos
+- **Software Package Updates** — `apt update/upgrade` desde la web
+- **File Manager** — navega y edita archivos del servidor
+
+**Comandos útiles:**
 ```bash
-clpctl site:list                                    # Ver todos los sitios
-clpctl site:add:php --domainName=... --phpVersion=8.3 --vhostTemplate=Generic --siteUser=... --siteUserPassword=...
-clpctl site:add:python --domainName=... --pythonVersion=3.12 --appPort=8000 --siteUser=... --siteUserPassword=...
-clpctl site:add:reverse-proxy --domainName=... --reverseProxyUrl=http://127.0.0.1:8080 --siteUser=... --siteUserPassword=...
-clpctl lets-encrypt:install:certificate --domainName=... --subjectAlternativeName=www...
-clpctl db:add --domainName=... --databaseName=... --databaseUserName=... --databaseUserPassword=...
+sudo systemctl status webmin
+sudo systemctl restart webmin
 ```
-
-**Estructura de sitios:**
-```
-/home/<siteUser>/htdocs/<dominio>/public/   # Raíz del sitio (donde van tus archivos)
-```
-
-Estos comandos ya están envueltos en los scripts `04_A`, `04_B`, `04_C` y `04_D` de `vps-setup/`.
 
 ---
 
 ## 🌐 Servidor Web
 
-### Nginx 1.26+ *(administrado por CloudPanel)*
+### Nginx 1.26+
 **Propósito:** Servidor web, reverse proxy, balanceo de carga
 
-CloudPanel instala y gestiona Nginx internamente — no se instala aparte a mano. Estos comandos son de referencia general (para diagnóstico), no para configurarlo manualmente:
-
-**Instalación (referencia — no ejecutar en un VPS con CloudPanel):**
+**Instalación:**
 ```bash
 sudo apt-get install nginx
 sudo systemctl start nginx
@@ -94,7 +87,11 @@ sudo systemctl restart nginx   # Reiniciar completamente
 sudo systemctl status nginx    # Ver estado
 ```
 
-**Nota:** las rutas de arriba (`/etc/nginx/sites-available/`, `/var/www/`) son las de una instalación manual de Nginx. Con CloudPanel, cada sitio vive en `/home/<siteUser>/htdocs/<dominio>/` y su configuración de Nginx se administra desde el panel — no hace falta editar `sites-available` a mano.
+**Archivos de configuración creados:**
+- `/etc/nginx/sites-available/conce.com`
+- `/etc/nginx/sites-available/initech.cl`
+- `/etc/nginx/sites-available/contrastocolor.ink`
+- `/etc/nginx/sites-available/wikipedia.cl`
 
 ### Apache Tomcat 10 *(opcional)*
 **Propósito:** Servidor de aplicaciones para Java (servlets, WAR) — Nginx no ejecuta Java, así que para apps Java se usa Tomcat detrás de Nginx como reverse proxy
@@ -122,19 +119,22 @@ curl http://127.0.0.1:8080          # Prueba local (puerto por defecto)
 
 **Exponerlo con Nginx bajo un dominio:**
 ```bash
-./04_C-add-site-reverse-proxy.sh tudominio.com http://127.0.0.1:8080
+./06_D-setup-tomcat-app.sh tudominio.com mi-app
 ```
 Esto configura Nginx como reverse proxy hacia `http://127.0.0.1:8080`.
 
 ---
 
-## 🐘 PHP 8.3 *(instalado por CloudPanel, por sitio)*
+## 🐘 PHP 8.3
 
 **Propósito:** Backend web dinámico
 
-CloudPanel instala PHP-FPM automáticamente al crear un sitio PHP (`04_A-add-site-php.sh` / `clpctl site:add:php --phpVersion=8.3 ...`), y permite tener varias versiones de PHP conviviendo (una por sitio). No se instala con `apt-get` por separado.
+**Instalación:**
+```bash
+sudo apt-get install php8.3 php8.3-fpm php8.3-cli
+```
 
-**Extensiones instaladas por defecto (referencia):**
+**Extensiones instaladas:**
 ```bash
 php8.3-common       # Librerías comunes
 php8.3-fpm          # FastCGI Process Manager
@@ -212,7 +212,7 @@ pip install -r requirements.txt
 
 **Instalación:**
 ```bash
-./03_E-install-python-whisper.sh
+./02_I-install-python-whisper.sh
 ```
 
 Este script:
@@ -306,31 +306,38 @@ sudo -u postgres psql mi_base < backup.sql
 sudo -u postgres pg_dump -Fc mi_base > backup.dump
 ```
 
-### MariaDB/MySQL *(incluido en CloudPanel)*
+### MariaDB *(opcional)*
 
 **Propósito:** Base de datos relacional compatible con MySQL — para software que exija específicamente ese motor
 
-Ya no se instala aparte: CloudPanel lo instala como parte de `02-install-cloudpanel.sh` (eliges MySQL 8.0, MariaDB 11.4 o MariaDB 10.11 durante ese instalador).
-
-**Crear una base de datos para un sitio (CLI):**
+**Instalación:**
 ```bash
-sudo clpctl db:add \
-    --domainName=tudominio.com \
-    --databaseName=mi_base \
-    --databaseUserName=mi_usuario \
-    --databaseUserPassword='contraseña_segura'
+sudo apt-get install mariadb-server mariadb-client
 ```
 
-O desde el panel web: tu sitio → pestaña "Databases".
+**Endurecer la instalación (recomendado, correr una sola vez):**
+```bash
+sudo mysql_secure_installation
+```
 
 **Comandos útiles:**
 ```bash
-sudo mysql                          # Conectar como root
-mysql -u usuario -p nombre_base     # Conectar como usuario normal
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
+sudo systemctl status mariadb
+
+# Conectar
+sudo mysql
+mysql -u usuario -p nombre_base
 ```
 
 **Comandos SQL básicos:**
 ```sql
+CREATE DATABASE mi_base;
+CREATE USER 'mi_usuario'@'localhost' IDENTIFIED BY 'contraseña_segura';
+GRANT ALL PRIVILEGES ON mi_base.* TO 'mi_usuario'@'localhost';
+FLUSH PRIVILEGES;
+
 SHOW DATABASES;
 USE mi_base;
 SHOW TABLES;
@@ -342,30 +349,53 @@ mysqldump -u usuario -p mi_base > backup.sql
 mysql -u usuario -p mi_base < backup.sql
 ```
 
-**Extensión PHP:** cada sitio PHP creado con CloudPanel ya incluye soporte MySQL — no requiere pasos adicionales.
+**Extensión PHP:** ya incluida en `02_B-install-php.sh` (`php8.3-mysql`) — no requiere pasos adicionales para que PHP se conecte.
 
 ---
 
 ## 🔒 SSL/TLS
 
-### Let's Encrypt (integrado en CloudPanel)
+### Certbot + Let's Encrypt
 
 **Propósito:** Certificados SSL/HTTPS automáticos y gratuitos
 
-CloudPanel trae Let's Encrypt integrado — no se instala Certbot aparte. Se pide desde el panel web o por CLI:
-
+**Instalación:**
 ```bash
-./04_D-install-ssl-cloudpanel.sh dominio.com
+sudo apt-get install certbot python3-certbot-nginx
 ```
 
-Equivalente directo con `clpctl`:
+**Obtener certificado:**
 ```bash
-sudo clpctl lets-encrypt:install:certificate \
-    --domainName=dominio.com \
-    --subjectAlternativeName=www.dominio.com
+sudo certbot certify --nginx \
+  -d dominio.com \
+  -d www.dominio.com \
+  --email admin@dominio.com
 ```
 
-**Renovación:** automática, gestionada por CloudPanel — se verifica desde el panel, sección SSL/TLS de cada sitio.
+**Renovación automática:**
+```bash
+sudo systemctl enable certbot.timer
+sudo systemctl start certbot.timer
+
+# Probar renovación (sin aplicar)
+sudo certbot renew --dry-run
+```
+
+**Comandos útiles:**
+```bash
+sudo certbot certificates               # Ver certificados
+sudo certbot renew                      # Renovar todos
+sudo certbot delete --cert-name dominio # Eliminar certificado
+```
+
+**Ubicación de certificados:**
+```
+/etc/letsencrypt/live/dominio.com/
+├── fullchain.pem    # Certificado completo
+├── privkey.pem      # Clave privada
+├── cert.pem         # Solo certificado
+└── chain.pem        # Cadena intermedia
+```
 
 ---
 
@@ -534,40 +564,39 @@ chown usuario:grupo archivo # Cambiar propietario
 
 ---
 
-## 🚀 Instalación Rápida (script único)
+## 🚀 Instalación Rápida (One-Liner)
 
-⚠️ Nginx, PHP y Certbot **no se instalan con `apt-get` directamente** — CloudPanel los necesita instalar él mismo en un servidor limpio. El equivalente al "one-liner" es:
-
+**Instalar todo de una vez:**
 ```bash
-cd vps-setup
-chmod +x *.sh
-./install-all.sh tudominio.com
+sudo apt-get update && \
+sudo apt-get upgrade -y && \
+sudo apt-get install -y \
+  build-essential curl wget git htop nano vim openssh-server \
+  openjdk-21-jdk \
+  nginx \
+  php8.3 php8.3-fpm php8.3-cli php8.3-common php8.3-mysql \
+  php8.3-postgresql php8.3-gd php8.3-curl php8.3-json php8.3-zip \
+  python3 python3-pip python3-venv \
+  postgresql postgresql-contrib \
+  certbot python3-certbot-nginx \
+  ufw ntp
 ```
-
-Esto corre `01-system-update.sh` (utilidades base) → `02-install-cloudpanel.sh` (Nginx+PHP+MariaDB+SSL) → `04_A-add-site-php.sh` → `05-deploy-landing-page.sh`.
-
-**Extras opcionales, uno por uno:**
-```bash
-./03_A-install-java.sh
-./03_B-install-python.sh
-./03_C-install-postgresql.sh
-./03_D-install-tomcat.sh            # requiere 03_A
-./03_E-install-python-whisper.sh    # requiere 03_B
-```
-
-MySQL/MariaDB ya no se instala por separado — viene incluido con CloudPanel (`02-install-cloudpanel.sh`).
 
 ---
 
 ## 📋 Checklist de Instalación
 
-- [ ] APT actualizado (`01-system-update.sh`)
-- [ ] CloudPanel instalado y usuario admin creado (`02-install-cloudpanel.sh`)
-- [ ] Sitio creado para el dominio (`04_A-add-site-php.sh`)
-- [ ] Landing page desplegada (`05-deploy-landing-page.sh`)
-- [ ] DNS del dominio apuntando al VPS
-- [ ] Certificado SSL generado (`04_D-install-ssl-cloudpanel.sh`)
-- [ ] (Opcional) Java, PostgreSQL, Tomcat, Whisper instalados según necesidad
+- [ ] APT actualizado
+- [ ] Nginx instalado y corriendo
+- [ ] PHP 8.3 con extensiones
+- [ ] Python 3 con pip
+- [ ] PostgreSQL instalado y corriendo
+- [ ] Certbot y Let's Encrypt
+- [ ] SSH configurado
+- [ ] UFW habilitado
+- [ ] Certificados SSL generados
+- [ ] Dominios configurados
+- [ ] Webmin instalado (opcional)
 
 ---
 

@@ -2,17 +2,14 @@
 set -e
 
 DOMAIN=${1:-"initech.fun"}
-SITE_USER=${2:-"${DOMAIN%%.*}"}
+EMAIL=${2:-"admin@$DOMAIN"}
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║   VPS Setup Completo - Ubuntu 24 LTS + CloudPanel          ║"
+echo "║   VPS Setup Completo - Ubuntu 24 LTS                      ║"
 echo "║   Dominio: $DOMAIN"
-echo "║   Usuario del sitio: $SITE_USER"
+echo "║   Email: $EMAIL"
 echo "╚════════════════════════════════════════════════════════════╝"
-echo ""
-echo "Esto instala CloudPanel (panel de control, requiere servidor limpio),"
-echo "luego crea el sitio para tu dominio y despliega la landing page."
 echo ""
 read -p "¿Continuar? (s/n) " -n 1 -r
 echo
@@ -24,11 +21,21 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 chmod +x *.sh
 
+# Pasos con letra (02_A..02_J) son independientes entre si: el orden
+# dentro del mismo numero no importa, solo que terminen antes del
+# siguiente numero.
 STEPS=(
     "01-system-update.sh"
-    "02-install-cloudpanel.sh"
-    "04_A-add-site-php.sh:$DOMAIN $SITE_USER"
-    "05-deploy-landing-page.sh:$DOMAIN $SITE_USER"
+    "02_A-install-java.sh"
+    "02_B-install-php.sh"
+    "02_C-install-python.sh"
+    "02_D-install-postgresql.sh"
+    "02_E-install-nginx.sh"
+    "02_F-install-certbot.sh"
+    "02_J-install-webmin.sh"
+    "03-configure-nginx-site.sh:$DOMAIN"
+    "04-setup-ssl.sh:$DOMAIN $EMAIL"
+    "05-deploy-landing-page.sh"
 )
 
 TOTAL=${#STEPS[@]}
@@ -51,29 +58,29 @@ done
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║  ✓ SETUP BASE COMPLETADO                                   ║"
+echo "║  ✓ SETUP COMPLETADO EXITOSAMENTE                          ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
-echo "Tu landing page deberia responder en:"
-echo "  🔗 http://$DOMAIN   (aun sin SSL)"
+echo "Tu landing page esta disponible en:"
+echo "  🔗 https://$DOMAIN"
+echo "  🔗 https://www.$DOMAIN"
 echo ""
-echo "Pasos siguientes:"
-echo "  1. Verifica que el DNS de $DOMAIN ya apunte a este VPS:"
-echo "     nslookup $DOMAIN"
+sudo certbot certificates -d $DOMAIN 2>/dev/null || echo "Verificando certificado..."
 echo ""
-echo "  2. Una vez propagado, instala SSL:"
-echo "     ./04_D-install-ssl-cloudpanel.sh $DOMAIN"
+echo "Logs de Nginx:"
+echo "  Access: /var/log/nginx/$DOMAIN/access.log"
+echo "  Error:  /var/log/nginx/$DOMAIN/error.log"
 echo ""
-echo "  3. Si aun no creaste el usuario admin de CloudPanel, entra a:"
-echo "     https://$(curl -s ifconfig.me):8443"
+echo "Panel de administracion (Webmin):"
+IP=$(curl -s ifconfig.me)
+echo "  🔗 https://$IP:10000  (usuario/contraseña: los mismos que por SSH)"
 echo ""
-echo "Extras opcionales (independientes entre si):"
-echo "  - Base de datos MySQL/MariaDB: ya viene con CloudPanel (usa su UI o 'clpctl db:add')"
-echo "  - PostgreSQL:        bash ./03_C-install-postgresql.sh"
-echo "  - Java:               bash ./03_A-install-java.sh"
-echo "  - Apache Tomcat:      bash ./03_D-install-tomcat.sh   (requiere 03_A)"
-echo "  - Python + Whisper:   bash ./03_E-install-python-whisper.sh   (requiere 03_B)"
-echo "  - Otro sitio Python:  bash ./04_B-add-site-python.sh dominio.com"
-echo "  - Reverse proxy (ej. a Tomcat): bash ./04_C-add-site-reverse-proxy.sh dominio.com http://127.0.0.1:8080"
-echo "  - Servidor DNS propio (solo si tu registrador no gestiona DNS): bash ./06_A-setup-dns-server.sh dominio.com IP"
+echo "Pasos opcionales (independientes entre si):"
+echo "  - MariaDB:            bash ./02_G-install-mariadb.sh"
+echo "  - Java + Tomcat:      bash ./02_A-install-java.sh && bash ./02_H-install-tomcat.sh"
+echo "  - Whisper (audio):    bash ./02_I-install-python-whisper.sh"
+echo "  - Aplicacion PHP:     bash ./06_A-setup-php-app.sh nombre-app dominio.com"
+echo "  - Aplicacion Python:  bash ./06_B-setup-python-app.sh nombre-app dominio.com"
+echo "  - Servidor DNS propio (solo si tu registrador no tiene DNS Management): bash ./06_C-setup-dns-server.sh dominio.com IP"
+echo "  - App Java (Tomcat) con su propio dominio: bash ./06_D-setup-tomcat-app.sh dominio.com mi-app"
 echo ""
