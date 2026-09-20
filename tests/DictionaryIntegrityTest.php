@@ -6,7 +6,7 @@ use DefamatoryContentReview\WordList;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Chequeos de integridad sobre los 30 diccionarios, sin depender de ningún
+ * Chequeos de integridad sobre los 33 diccionarios, sin depender de ningún
  * idioma en concreto. Nacen de errores reales: una misma palabra en dos
  * categorías del mismo idioma pisa en silencio la primera en el índice de
  * WordList, y `coverage` llegó a vivir duplicado (meta del idioma + copia

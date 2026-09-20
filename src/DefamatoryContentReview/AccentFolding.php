@@ -5,7 +5,7 @@ namespace DefamatoryContentReview;
 /**
  * Plegado de diacríticos compartido por WordList::normalize(), para que
  * "Cérda", "cerda" y variantes con distinto acento lleguen a la misma
- * clave de búsqueda. Cubre los diacríticos latinos de los 30 idiomas del
+ * clave de búsqueda. Cubre los diacríticos latinos de los 33 idiomas del
  * proyecto, no sólo los del español.
  */
 final class AccentFolding

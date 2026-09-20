@@ -43,8 +43,11 @@ return [
     'hin' => ['iso639_1' => 'hi', 'name' => 'Hindi',      'nativeName' => 'हिन्दी',              'family' => 'indo_aryan'],
     'jpn' => ['iso639_1' => 'ja', 'name' => 'Japanese',   'nativeName' => '日本語',              'family' => 'japonic'],
     'kor' => ['iso639_1' => 'ko', 'name' => 'Korean',     'nativeName' => '한국어',              'family' => 'koreanic'],
-    'zho' => ['iso639_1' => 'zh', 'name' => 'Chinese',    'nativeName' => '中文',                'family' => 'sinitic'],
+    'yue' => ['iso639_1' => 'zh', 'name' => 'Cantonese',  'nativeName' => '廣東話',              'family' => 'sinitic'],
     'tha' => ['iso639_1' => 'th', 'name' => 'Thai',       'nativeName' => 'ไทย',                'family' => 'tai_kadai'],
     'vie' => ['iso639_1' => 'vi', 'name' => 'Vietnamese', 'nativeName' => 'Tiếng Việt',        'family' => 'austroasiatic'],
     'ind' => ['iso639_1' => 'id', 'name' => 'Indonesian', 'nativeName' => 'Bahasa Indonesia',  'family' => 'austronesian'],
+    'isl' => ['iso639_1' => 'is', 'name' => 'Icelandic',  'nativeName' => 'Íslenska',          'family' => 'germanic'],
+    'swa' => ['iso639_1' => 'sw', 'name' => 'Swahili',    'nativeName' => 'Kiswahili',         'family' => 'bantu'],
+    'tgl' => ['iso639_1' => 'tl', 'name' => 'Tagalog',    'nativeName' => 'Tagalog',           'family' => 'austronesian'],
 ];

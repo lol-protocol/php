@@ -12,7 +12,7 @@ namespace DefamatoryContentReview;
  * de idioma → clase, para que WordList y PhoneticFusionDetector no necesiten
  * saber cuál usar.
  *
- * Cubre 17 de los 30 idiomas soportados. Quedan fuera a propósito:
+ * Cubre 17 de los 33 idiomas soportados. Quedan fuera a propósito:
  * - **Inglés**: de script latino, pero —a diferencia del resto de esta
  *   lista— su ortografía no tiene una grafía alternativa real y
  *   consolidada que sustituir (el "ae"/"oe" nórdico, la "ß"/"ss" alemana):

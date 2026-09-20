@@ -22,7 +22,7 @@ return [
         ],
         'germanic' => [
             'name' => 'Germánica',
-            'languages' => ['eng', 'deu', 'nld', 'swe', 'dan', 'nor'],
+            'languages' => ['eng', 'deu', 'nld', 'swe', 'dan', 'nor', 'isl'],
         ],
         'slavic' => [
             'name' => 'Eslava',
@@ -58,7 +58,7 @@ return [
         ],
         'sinitic' => [
             'name' => 'Sinítica',
-            'languages' => ['zho'],
+            'languages' => ['yue'],
         ],
         'tai_kadai' => [
             'name' => 'Tai-Kadai',
@@ -70,7 +70,11 @@ return [
         ],
         'austronesian' => [
             'name' => 'Austronesia',
-            'languages' => ['ind'],
+            'languages' => ['ind', 'tgl'],
+        ],
+        'bantu' => [
+            'name' => 'Bantú',
+            'languages' => ['swa'],
         ],
     ],
 
@@ -104,6 +108,12 @@ return [
         'eng|nor' => 0.50,
         'deu|nor' => 0.53,
         'nld|nor' => 0.54,
+        // El islandés conservó morfología antigua y se distanció léxicamente
+        // del resto del nórdico continental; la afinidad es menor de lo que
+        // sugeriría el parentesco genealógico.
+        'isl|nor' => 0.52,
+        'isl|dan' => 0.48,
+        'isl|swe' => 0.48,
 
         // --- Eslava ---
         'ces|slk' => 0.91,
@@ -137,16 +147,20 @@ return [
         'ron|ukr' => 0.33,
         // Griego aportó vocabulario culto al romance.
         'ell|ita' => 0.30,
-        // Japonés y coreano comparten léxico sinojaponés/sinocoreano.
-        'jpn|zho' => 0.40,
-        'kor|zho' => 0.40,
+        // Japonés y coreano comparten léxico sinojaponés/sinocoreano; el
+        // cantonés conservó lecturas de caracteres más cercanas al chino
+        // medio que el mandarín, pero el préstamo léxico compartido persiste.
+        'jpn|yue' => 0.38,
+        'kor|yue' => 0.38,
         'jpn|kor' => 0.35,
-        'vie|zho' => 0.40,
+        'vie|yue' => 0.38,
         // Hindi y árabe/persa vía préstamos.
         'hin|ara' => 0.25,
         // Indonesio con préstamos árabes y neerlandeses.
         'ind|ara' => 0.22,
         'ind|nld' => 0.20,
+        // Indonesio y tagalo comparten la rama malayo-polinesia del austronesio.
+        'ind|tgl' => 0.28,
         // Tailandés con préstamos sánscritos/pali compartidos con hindi.
         'tha|hin' => 0.20,
     ],

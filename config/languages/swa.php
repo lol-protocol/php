@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * ISO 639-3: swa — Kiswahili
+ */
+
+return [
+    'meta' => [
+        'code' => 'swa', 'iso639_1' => 'sw', 'name' => 'Swahili',
+        'nativeName' => 'Kiswahili', 'family' => 'bantu', 'coverage' => 'basic',
+    ],
+    'words' => [
+        'wanyama' => [
+            ['word' => 'nguruwe', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'mbwa', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'punda', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'fisi', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'nyoka', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'mnyama', 'riskType' => 'animal', 'severity' => 'high'],
+        ],
+        'akili' => [
+            ['word' => 'mjinga', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'mpumbavu', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'pumbavu', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'bwege', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'zuzu', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'mzuzu', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'shamba', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'mshamba', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'zezeta', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'kobe', 'riskType' => 'intelectual', 'severity' => 'low'],
+        ],
+        'mwili' => [
+            ['word' => 'mnene', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'mwembamba', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'kizee', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'kikongwe', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'mbaya sura', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'dhaifu', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'mchafu', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'jitu', 'riskType' => 'fisico', 'severity' => 'low'],
+        ],
+        'ulemavu' => [
+            ['word' => 'kichaa', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'mwendawazimu', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'kiwete', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'kipofu', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'kiziwi', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+        ],
+        'maadili' => [
+            ['word' => 'mshenzi', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'mwizi', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'muuaji', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'mwongo', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'mdanganyifu', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'msaliti', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'katili', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'dhalimu', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'mchawi', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'shetani', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'kigeugeu', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'mchoyo', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'bahili', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'mlafi', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'mvivu', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'goigoi', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'mnafiki', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'fisadi', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'jambazi', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'gaidi', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'mroho', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'jeuri', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'mkorofi', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'mzinifu', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'mlevi', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'mkaidi', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'mlegevu', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'mnyanyasaji', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'tapeli', 'riskType' => 'moral', 'severity' => 'high'],
+        ],
+        'jinsia' => [
+            ['word' => 'kahaba', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'malaya', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'mwasherati', 'riskType' => 'genero', 'severity' => 'high'],
+        ],
+    ],
+];

@@ -62,7 +62,7 @@ class StructuralEvasionTest extends TestCase
      * "Cerrda" (con letra duplicada) no coincide con la entrada "cerda". Se
      * podría cerrar colapsando letras dobles en normalize(), pero eso
      * generaría falsos positivos impredecibles a través de ~4.600 palabras en
-     * 30 idiomas: p. ej. colapsar "rr" convertiría el apellido real
+     * 33 idiomas: p. ej. colapsar "rr" convertiría el apellido real
      * "Serrano" en "Serano", y no hay forma de verificar a mano, entrada por
      * entrada, qué otras colisiones no deseadas produciría en cada idioma.
      * Se documenta como límite deliberado en vez de implementarse a medias.

@@ -30,7 +30,7 @@ class LanguageCodeResolutionTest extends TestCase
     {
         $this->assertSame('spa', $this->registry->resolve('es'));
         $this->assertSame('deu', $this->registry->resolve('de'));
-        $this->assertSame('zho', $this->registry->resolve('zh'));
+        $this->assertSame('yue', $this->registry->resolve('zh'));
         $this->assertSame('ell', $this->registry->resolve('el'));
     }
 
@@ -46,9 +46,9 @@ class LanguageCodeResolutionTest extends TestCase
         $this->registry->resolve('xyz');
     }
 
-    public function testAllThirtyLanguagesAreRegistered(): void
+    public function testAllThirtyThreeLanguagesAreRegistered(): void
     {
-        $this->assertCount(30, $this->registry->getCodes());
+        $this->assertCount(33, $this->registry->getCodes());
     }
 
     public function testEveryRegisteredLanguageHasADictionaryFile(): void

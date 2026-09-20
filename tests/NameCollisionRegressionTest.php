@@ -86,8 +86,13 @@ class NameCollisionRegressionTest extends TestCase
         // si también es un gentilicio o apellido real — no es un error en
         // sí, pero merece una revisión deliberada antes de subir el número
         // aquí.
+        //
+        // Subido a 162 al añadir yue.php (cantonés): 黑鬼, 死鬼佬, 棒子, 阿差,
+        // 賓妹, 大陸妹, 北姑 son jerga despectiva/étnica, no apellidos ni
+        // gentilicios documentados — se revisaron y ninguno requiere
+        // nameCollision.
         $this->assertLessThanOrEqual(
-            160,
+            162,
             count($unflagged),
             'Crecieron los términos étnicos de severidad alta sin nameCollision revisado: ' .
                 implode(', ', array_slice($unflagged, 0, 10)) . '...'
