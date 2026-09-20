@@ -18,6 +18,14 @@ fi
 
 sudo mkdir -p /var/log/nginx/$DOMAIN
 
+# Cuando 'proxy_pass' incluye una URI (aunque sea "/"), Nginx reemplaza el
+# prefijo de la location con esa URI y le PEGA el resto de la peticion tal
+# cual, sin agregar ninguna barra. Sin barra final aqui, una peticion a
+# /pagina1 llegaria a Tomcat como "/miapppagina1" (pegado, sin separador)
+# en vez de "/miapp/pagina1". Por eso forzamos que termine en "/" siempre.
+PROXY_TARGET="http://127.0.0.1:8080/${CONTEXT_PATH}"
+[[ "$PROXY_TARGET" != */ ]] && PROXY_TARGET="${PROXY_TARGET}/"
+
 # Nginx aqui actua puramente como reverse proxy: no sirve archivos propios,
 # solo reenvia todo el trafico del dominio publico hacia Tomcat (puerto 8080
 # local). El $CONTEXT_PATH es la subcarpeta bajo la que Tomcat publica tu
@@ -32,7 +40,7 @@ server {
     error_log /var/log/nginx/$DOMAIN/error.log;
 
     location / {
-        proxy_pass http://127.0.0.1:8080/${CONTEXT_PATH};
+        proxy_pass $PROXY_TARGET;
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;

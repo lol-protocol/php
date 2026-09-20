@@ -11,8 +11,11 @@ echo "Dominio: $DOMAIN"
 echo "========================================"
 echo ""
 
-# Carpeta donde vivira esta app (separada de /var/www/landing-page)
+# Carpeta donde vivira esta app (separada de /var/www/landing-page), y su
+# propia carpeta de logs -- si no existe, "nginx -t" falla mas abajo porque
+# Nginx no crea directorios el solo, solo los archivos de log dentro de ellos.
 sudo mkdir -p $APP_PATH
+sudo mkdir -p /var/log/nginx/$DOMAIN
 sudo chown -R www-data:www-data $APP_PATH   # www-data es el usuario con el que corre Nginx/PHP-FPM
 
 # Pagina de prueba minima para confirmar que PHP-FPM + Nginx estan sirviendo

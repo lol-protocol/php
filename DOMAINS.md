@@ -51,8 +51,10 @@ server {
 
 **Pasos de configuración:**
 ```bash
-# 1. Crear directorio
+# 1. Crear directorio (y su carpeta de logs -- Nginx no la crea sola,
+#    si falta "nginx -t" falla mas abajo)
 sudo mkdir -p /var/www/landing-page/conce.com
+sudo mkdir -p /var/log/nginx/conce.com
 sudo cp landing-page/index.html /var/www/landing-page/conce.com/
 
 # 2. Configurar Nginx
@@ -120,6 +122,7 @@ server {
 **Pasos de configuración:**
 ```bash
 sudo mkdir -p /var/www/landing-page/initech.cl
+sudo mkdir -p /var/log/nginx/initech.cl
 sudo cp landing-page/index.html /var/www/landing-page/initech.cl/
 sudo nano /etc/nginx/sites-available/initech.cl
 sudo ln -sf /etc/nginx/sites-available/initech.cl /etc/nginx/sites-enabled/initech.cl
@@ -230,6 +233,16 @@ server {
 }
 ```
 
+**Habilitar el sitio** (la carpeta de logs hay que crearla a mano -- Nginx no
+la crea sola, y sin ella `nginx -t` falla):
+```bash
+sudo mkdir -p /var/log/nginx/contrastocolor.ink
+sudo nano /etc/nginx/sites-available/contrastocolor.ink   # pegar la config de arriba
+sudo ln -sf /etc/nginx/sites-available/contrastocolor.ink /etc/nginx/sites-enabled/contrastocolor.ink
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
 **Systemd Service:**
 ```bash
 sudo tee /etc/systemd/system/contrastocolor.service > /dev/null <<'EOF'
@@ -338,6 +351,16 @@ composer install
 # Permisos
 sudo chown -R www-data:www-data .
 sudo chmod -R 755 .
+```
+
+**Habilitar el sitio** (la carpeta de logs hay que crearla a mano -- Nginx no
+la crea sola, y sin ella `nginx -t` falla):
+```bash
+sudo mkdir -p /var/log/nginx/wikipedia.cl
+sudo nano /etc/nginx/sites-available/wikipedia.cl   # pegar la config de arriba
+sudo ln -sf /etc/nginx/sites-available/wikipedia.cl /etc/nginx/sites-enabled/wikipedia.cl
+sudo nginx -t
+sudo systemctl reload nginx
 ```
 
 ---

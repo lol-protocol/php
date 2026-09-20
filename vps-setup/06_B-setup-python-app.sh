@@ -14,6 +14,9 @@ echo ""
 
 echo "Creando directorios..."
 sudo mkdir -p $APP_PATH
+# Carpeta de logs propia de este dominio -- si no existe, "nginx -t" falla mas
+# abajo porque Nginx no crea directorios el solo, solo los archivos dentro.
+sudo mkdir -p /var/log/nginx/$DOMAIN
 sudo chown -R www-data:www-data $APP_PATH   # www-data va a ejecutar la app (via systemd, ver abajo)
 
 # Entorno virtual propio de esta app: aisla sus dependencias (Flask, etc.) del

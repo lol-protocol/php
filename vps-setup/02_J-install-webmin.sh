@@ -12,7 +12,11 @@ echo "funcionando exactamente igual porque solo edito archivos estandar."
 echo ""
 
 echo "[1/3] Agregando el repositorio oficial de Webmin..."
-curl -o /tmp/setup-repos.sh https://raw.githubusercontent.com/webmin/webmin/master/setup-repos.sh
+# -f: si la URL devuelve error HTTP (ej. 404), curl falla claramente en vez
+#     de guardar la pagina de error como si fuera el script y luego intentar
+#     "ejecutarla" con bash (que fallaria despues, de forma mucho mas confusa).
+# -sS: sin barra de progreso, pero SI muestra el error si -f lo dispara.
+curl -fsS -o /tmp/setup-repos.sh https://raw.githubusercontent.com/webmin/webmin/master/setup-repos.sh
 sudo bash /tmp/setup-repos.sh
 
 echo "[2/3] Instalando Webmin..."

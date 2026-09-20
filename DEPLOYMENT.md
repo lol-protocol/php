@@ -132,6 +132,10 @@ dig conce.com
 En el VPS, para cada dominio:
 
 ```bash
+# Carpeta de logs de cada dominio -- Nginx no la crea sola; sin ella
+# "nginx -t" falla mas abajo
+sudo mkdir -p /var/log/nginx/conce.com /var/log/nginx/initech.cl
+
 # Landing page - conce.com
 sudo nano /etc/nginx/sites-available/conce.com
 # Configurar según DOMAINS.md
@@ -214,6 +218,7 @@ sudo chown -R www-data:www-data /var/www/contrastocolor.ink
 Configurar Nginx (ver DOMAINS.md) y SSL:
 
 ```bash
+sudo mkdir -p /var/log/nginx/contrastocolor.ink
 sudo nano /etc/nginx/sites-available/contrastocolor.ink
 sudo ln -sf /etc/nginx/sites-available/contrastocolor.ink /etc/nginx/sites-enabled/contrastocolor.ink
 sudo nginx -t
@@ -262,6 +267,7 @@ sudo chmod -R 755 /var/www/wikipedia.cl
 Configurar Nginx (ver DOMAINS.md) y SSL:
 
 ```bash
+sudo mkdir -p /var/log/nginx/wikipedia.cl
 sudo nano /etc/nginx/sites-available/wikipedia.cl
 sudo ln -sf /etc/nginx/sites-available/wikipedia.cl /etc/nginx/sites-enabled/wikipedia.cl
 sudo nginx -t

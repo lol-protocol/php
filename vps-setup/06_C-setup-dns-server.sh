@@ -71,8 +71,16 @@ EOF
 # Registra la zona en la configuracion principal de BIND. 'type master' indica
 # que ESTE servidor es la fuente de verdad; allow-transfer/also-notify le dan
 # permiso explicito a OVH (y le avisan) para copiar la zona como respaldo.
+#
+# 'tee -a' agrega al final del archivo -- si este script ya se corrio antes
+# para el mismo dominio, agregar el bloque de nuevo dejaria DOS zonas con el
+# mismo nombre y "named-checkconf" fallaria por zona duplicada. Por eso
+# primero revisamos si la zona ya esta registrada.
 echo "[3/4] Registrando zona en BIND..."
-sudo tee -a /etc/bind/named.conf.local > /dev/null <<EOF
+if sudo grep -q "zone \"$DOMAIN\"" /etc/bind/named.conf.local 2>/dev/null; then
+    echo "  La zona '$DOMAIN' ya estaba registrada en named.conf.local, no se duplica."
+else
+    sudo tee -a /etc/bind/named.conf.local > /dev/null <<EOF
 
 zone "$DOMAIN" {
     type master;
@@ -81,6 +89,7 @@ zone "$DOMAIN" {
     also-notify { $OVH_SECONDARY_IP; };
 };
 EOF
+fi
 
 # Valida la sintaxis ANTES de reiniciar -- un error aqui tumbaria la
 # resolucion DNS de TODOS los dominios que dependan de este servidor
