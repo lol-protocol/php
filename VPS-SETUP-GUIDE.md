@@ -74,34 +74,24 @@ chmod +x install-all.sh
 
 Si prefieres más control, ejecuta cada paso manualmente.
 
-### Paso 1️⃣: Instalación Base
+### Paso 1️⃣: Instalación Base (7 scripts, uno por componente)
 
 ```bash
-bash 01-initial-setup.sh
+bash 01-system-update.sh       # Actualiza el sistema
+bash 02-install-java.sh        # Java 21
+bash 03-install-php.sh         # PHP 8.3 + extensiones
+bash 04-install-python.sh      # Python 3
+bash 05-install-postgresql.sh  # PostgreSQL
+bash 06-install-nginx.sh       # Nginx
+bash 07-install-certbot.sh     # Certbot (para SSL)
 ```
 
-Esto instala:
-- Java 21
-- PHP 8.3 con extensiones
-- Python 3
-- PostgreSQL
-- Nginx
-- Certbot (para SSL)
-
-**Salida esperada:**
-```
-✓ Setup completado exitosamente
-- Java: 21.0.x
-- PHP: 8.3.x
-- Python: 3.12.x
-- PostgreSQL: 16.x
-- Nginx: 1.26.x
-```
+Cada script confirma al final la versión instalada de su componente.
 
 ### Paso 2️⃣: Configurar Nginx
 
 ```bash
-bash 02-nginx-setup.sh initech.cl
+bash 08-configure-nginx-site.sh initech.cl
 ```
 
 Esto:
@@ -113,15 +103,16 @@ Esto:
 ```bash
 sudo nginx -t
 sudo systemctl status nginx
+curl http://initech.cl
 ```
 
 ### Paso 3️⃣: Configurar SSL/HTTPS
 
 ```bash
-bash 03-ssl-setup.sh initech.cl admin@initech.cl
+bash 09-setup-ssl.sh initech.cl admin@initech.cl
 ```
 
-⚠️ **IMPORTANTE:** Tu dominio debe estar apuntando a la IP del VPS antes de este paso.
+⚠️ **IMPORTANTE:** Tu dominio debe estar apuntando a la IP del VPS antes de este paso. El script verifica el DNS automáticamente antes de continuar.
 
 Esto:
 - Obtiene certificado SSL de Let's Encrypt
@@ -136,7 +127,7 @@ sudo certbot certificates -d initech.cl
 ### Paso 4️⃣: Desplegar Landing Page
 
 ```bash
-bash 04-deploy-landing-page.sh
+bash 10-deploy-landing-page.sh
 ```
 
 Copia los archivos de la landing page a:
@@ -247,7 +238,7 @@ sudo certbot renew --dry-run
 ### Si necesitas Aplicación PHP:
 
 ```bash
-bash 05-setup-php-app.sh mi-app dominio.com
+bash 11-setup-php-app.sh mi-app dominio.com
 ```
 
 Luego:
@@ -258,7 +249,7 @@ Luego:
 ### Si necesitas Aplicación Python:
 
 ```bash
-bash 06-setup-python-app.sh mi-app dominio.com
+bash 12-setup-python-app.sh mi-app dominio.com
 ```
 
 Luego:

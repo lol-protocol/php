@@ -44,19 +44,25 @@ chmod +x install-all.sh
 chmod +x *.sh
 
 # Instalar software base
-./01-initial-setup.sh
+./01-system-update.sh
+./02-install-java.sh
+./03-install-php.sh
+./04-install-python.sh
+./05-install-postgresql.sh
+./06-install-nginx.sh
+./07-install-certbot.sh
 
 # Configurar Nginx (cambiar dominio según necesidad)
-./02-nginx-setup.sh conce.com
+./08-configure-nginx-site.sh conce.com
 
 # Esperar propagación DNS antes de siguiente paso
 # ...
 
 # Configurar SSL
-./03-ssl-setup.sh conce.com admin@conce.com
+./09-setup-ssl.sh conce.com admin@conce.com
 
 # Desplegar landing page
-./04-deploy-landing-page.sh
+./10-deploy-landing-page.sh
 ```
 
 ### Paso 4: Verificar Instalación
