@@ -58,7 +58,7 @@ curl http://initech.fun                     # Prueba SIN SSL primero
 ./04-setup-ssl.sh initech.fun admin@initech.fun
 
 # --- 05: (re)despliegue de la landing page ---
-./05-deploy-landing-page.sh
+./05-deploy-landing-page.sh initech.fun
 
 # --- extras opcionales del grupo 02 (corre solo los que necesites) ---
 ./02_G-install-mariadb.sh          # MariaDB
@@ -134,8 +134,8 @@ sudo tail -f /var/log/nginx/tudominio.com/error.log
 # SSL
 sudo certbot certificates
 
-# Landing page
-ls -la /var/www/landing-page/
+# Landing page (una carpeta por dominio)
+ls -la /var/www/landing-page/tudominio.com/
 ```
 
 ## 🆘 Troubleshooting
@@ -144,7 +144,7 @@ ls -la /var/www/landing-page/
 
 **El paso 04 (SSL) falla:** el DNS aún no propaga. Espera y vuelve a intentar: `./04-setup-ssl.sh tudominio.com tu@email.com`
 
-**Landing page no se ve:** verifica permisos con `sudo chown -R www-data:www-data /var/www/landing-page`
+**Landing page no se ve:** verifica permisos con `sudo chown -R www-data:www-data /var/www/landing-page/tudominio.com`
 
 **No puedo entrar a Webmin:** verifica que el puerto 10000 esté abierto (`sudo ufw status`) y que el servicio esté corriendo (`sudo systemctl status webmin`)
 

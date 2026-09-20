@@ -65,7 +65,7 @@ chmod +x *.sh
 ./04-setup-ssl.sh conce.com admin@conce.com
 
 # 05: desplegar landing page
-./05-deploy-landing-page.sh
+./05-deploy-landing-page.sh conce.com
 ```
 
 ### Paso 4: Verificar Instalación
@@ -151,14 +151,14 @@ sudo systemctl reload nginx
 
 ```bash
 # Para conce.com
-sudo certbot certify --nginx \
+sudo certbot run --nginx \
     -d conce.com -d www.conce.com \
     --email admin@conce.com \
     --agree-tos \
     --non-interactive
 
 # Para initech.cl
-sudo certbot certify --nginx \
+sudo certbot run --nginx \
     -d initech.cl -d www.initech.cl \
     --email admin@initech.cl \
     --agree-tos \
@@ -220,7 +220,7 @@ sudo nginx -t
 sudo systemctl reload nginx
 
 # Después que DNS propague:
-sudo certbot certify --nginx -d contrastocolor.ink
+sudo certbot run --nginx -d contrastocolor.ink
 ```
 
 Crear servicio systemd:
@@ -268,7 +268,7 @@ sudo nginx -t
 sudo systemctl reload nginx
 
 # Después que DNS propague:
-sudo certbot certify --nginx -d wikipedia.cl
+sudo certbot run --nginx -d wikipedia.cl
 ```
 
 ---
@@ -323,8 +323,9 @@ sudo systemctl status contrastocolor
 # 2. Certificados SSL
 sudo certbot certificates
 
-# 3. Archivos en su lugar
-ls -la /var/www/landing-page/
+# 3. Archivos en su lugar (una carpeta por dominio dentro de landing-page/)
+ls -la /var/www/landing-page/conce.com/
+ls -la /var/www/landing-page/initech.cl/
 ls -la /var/www/contrastocolor.ink/
 ls -la /var/www/wikipedia.cl/
 

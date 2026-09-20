@@ -47,10 +47,14 @@ sudo ln -sf /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/$DOMAIN
 sudo nginx -t              # valida ANTES de recargar, para no tumbar los sitios que ya funcionan
 sudo systemctl reload nginx
 
+# Si no se paso context path, la app va en la raiz de Tomcat, cuyo archivo
+# se llama ROOT.war (nunca ".war" a secas -- ese nombre no es valido)
+WAR_NAME="${CONTEXT_PATH:-ROOT}.war"
+
 echo ""
 echo "✓ Nginx configurado como reverse proxy hacia Tomcat"
 echo ""
-echo "Despliega tu .war en: /var/lib/tomcat10/webapps/${CONTEXT_PATH}.war"
+echo "Despliega tu .war en: /var/lib/tomcat10/webapps/${WAR_NAME}"
 echo "(Tomcat lo despliega automaticamente al detectarlo)"
 echo ""
 echo "Prueba con: curl http://$DOMAIN"

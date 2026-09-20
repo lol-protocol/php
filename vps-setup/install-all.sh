@@ -38,7 +38,7 @@ STEPS=(
     "02_J-install-webmin.sh"
     "03-configure-nginx-site.sh:$DOMAIN"
     "04-setup-ssl.sh:$DOMAIN $EMAIL"
-    "05-deploy-landing-page.sh"
+    "05-deploy-landing-page.sh:$DOMAIN"
 )
 
 # Cada entrada de STEPS es "script.sh" o "script.sh:argumentos". El ":" separa
@@ -81,7 +81,7 @@ echo "  Access: /var/log/nginx/$DOMAIN/access.log"
 echo "  Error:  /var/log/nginx/$DOMAIN/error.log"
 echo ""
 echo "Panel de administracion (Webmin):"
-IP=$(curl -s ifconfig.me)
+IP=$(curl -s --max-time 5 ifconfig.me || echo "TU_IP_PUBLICA")   # --max-time evita colgarse si el servicio no responde
 echo "  🔗 https://$IP:10000  (usuario/contraseña: los mismos que por SSH)"
 echo ""
 echo "Pasos opcionales (independientes entre si):"

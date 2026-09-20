@@ -92,9 +92,13 @@ sudo systemctl restart bind9
 sudo systemctl enable bind9   # arranca automaticamente si el VPS se reinicia
 
 # El puerto 53 (DNS) usa tanto TCP como UDP -- UDP para consultas normales,
-# TCP para respuestas grandes y para las transferencias de zona (AXFR)
-sudo ufw allow 53/tcp
-sudo ufw allow 53/udp
+# TCP para respuestas grandes y para las transferencias de zona (AXFR).
+# El "|| true" evita que el script aborte si UFW no esta instalado/activo
+# (BIND9 ya quedo funcionando arriba; esto es solo abrir el firewall).
+if command -v ufw &> /dev/null; then
+    sudo ufw allow 53/tcp || true
+    sudo ufw allow 53/udp || true
+fi
 
 echo ""
 echo "✓ Servidor DNS configurado exitosamente"

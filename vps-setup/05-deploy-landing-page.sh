@@ -1,12 +1,23 @@
 #!/bin/bash
 set -e
 
+DOMAIN=${1:-"initech.fun"}
+# Debe coincidir con el APP_PATH de 03-configure-nginx-site.sh (una carpeta
+# por dominio) -- si no, esto reescribiria la carpeta equivocada o una que
+# Nginx ni siquiera esta sirviendo.
+APP_PATH="/var/www/landing-page/$DOMAIN"
+
 echo "========================================"
-echo "[05] Deploy de Landing Page"
+echo "[05] Deploy de Landing Page para $DOMAIN"
 echo "========================================"
 echo ""
 
-APP_PATH="/var/www/landing-page"
+if [ ! -d "$APP_PATH" ]; then
+    echo "ERROR: no existe $APP_PATH"
+    echo "Crea el sitio primero: ./03-configure-nginx-site.sh $DOMAIN"
+    exit 1
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Vuelve a copiar los archivos de landing-page/ del repo al destino real.

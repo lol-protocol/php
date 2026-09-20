@@ -2,7 +2,10 @@
 set -e
 
 DOMAIN=${1:-"initech.fun"}
-APP_PATH="/var/www/landing-page"
+# Subcarpeta POR DOMINIO -- sin el "/$DOMAIN" al final, dos dominios distintos
+# (ej. conce.com e initech.fun) terminarian compartiendo la misma carpeta y
+# sirviendo el mismo contenido, porque ambos usarian literalmente el mismo path.
+APP_PATH="/var/www/landing-page/$DOMAIN"
 
 echo "========================================"
 echo "[03] Configuracion de Nginx para $DOMAIN"

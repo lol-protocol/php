@@ -16,7 +16,11 @@ echo ""
 # veces puedes pedir certificado para el mismo dominio por semana).
 echo "Verificando que el DNS ya resuelve a este servidor..."
 RESOLVED_IP=$(dig +short $DOMAIN | tail -1)
-MY_IP=$(curl -s ifconfig.me)
+# -4 fuerza IPv4: "dig +short" (sin mas flags) consulta el registro A (IPv4).
+# Sin -4, si el VPS tiene conectividad IPv6, curl podria devolver una IPv6
+# aqui y la comparacion de abajo daria un falso "el DNS no apunta a este VPS"
+# aunque el registro A si sea correcto.
+MY_IP=$(curl -4 -s --max-time 5 ifconfig.me)   # --max-time evita que el script se cuelgue si el servicio no responde
 
 echo "  DNS de $DOMAIN resuelve a: $RESOLVED_IP"
 echo "  IP de este VPS: $MY_IP"
@@ -32,11 +36,13 @@ if [ "$RESOLVED_IP" != "$MY_IP" ]; then
     fi
 fi
 
-# --nginx: usa el plugin de Nginx (agrega el bloque 443 y la redirección
-#          HTTP->HTTPS a la config existente automaticamente)
+# 'run' obtiene el certificado Y lo instala (agrega el bloque 443 y la
+# redirección HTTP->HTTPS a la config de Nginx automaticamente). NOTA: el
+# subcomando se llama 'run' (o 'certonly' si solo quisieras el certificado
+# sin tocar Nginx) -- "certify" no existe en Certbot, es un error comun.
 # --agree-tos / --no-eff-email: evita que el comando se detenga pidiendo
 #          confirmacion interactiva (necesario para correrlo desde un script)
-sudo certbot certify --nginx \
+sudo certbot run --nginx \
     --agree-tos \
     --no-eff-email \
     --email $EMAIL \
@@ -55,6 +61,9 @@ sudo systemctl reload nginx
 
 echo ""
 echo "✓ SSL configurado exitosamente"
-sudo certbot certificates -d $DOMAIN
+# "|| true": esto es solo informativo -- si fallara, el certificado ya fue
+# emitido e instalado arriba, no queremos que el script termine en error
+# por un problema al solo LISTAR el resultado.
+sudo certbot certificates -d $DOMAIN || true
 echo ""
 echo "Accede a: https://$DOMAIN"

@@ -48,7 +48,7 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 - **MariaDB** - Opcional, para software que exija específicamente ese motor
 
 ### SSL/TLS
-- **Let's Encrypt** - Vía Certbot (`certbot certify --nginx`)
+- **Let's Encrypt** - Vía Certbot (`certbot run --nginx`)
 - Renovación automática con `certbot.timer`
 
 ### Monitoreo & Logging
@@ -129,7 +129,7 @@ HTML/CSS/JS                         [PHP-FPM 8.3]
 Landing Pages                       o [Python Apps] o [Tomcat via reverse-proxy]
    │                                     │
    ↓                                     ↓
-/var/www/landing-page/          /var/www/{app}/
+/var/www/landing-page/{dominio}/     /var/www/{app}/
    │                                     │
    └─────────────────────────────────────┘
            ↓

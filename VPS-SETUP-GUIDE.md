@@ -103,7 +103,7 @@ bash 03-configure-nginx-site.sh initech.cl
 ```
 
 Esto:
-- Crea `/var/www/landing-page`
+- Crea `/var/www/landing-page/initech.cl` (una carpeta por dominio)
 - Configura Nginx para servir tu landing page
 - Establece permisos correctos
 
@@ -135,12 +135,12 @@ sudo certbot certificates -d initech.cl
 ### Paso 5️⃣: Desplegar Landing Page
 
 ```bash
-bash 05-deploy-landing-page.sh
+bash 05-deploy-landing-page.sh initech.cl
 ```
 
-Copia los archivos de la landing page a:
+Copia los archivos de la landing page a (una carpeta por dominio, para que varios sitios no se pisen entre si):
 ```
-/var/www/landing-page/
+/var/www/landing-page/initech.cl/
 ```
 
 ---
@@ -203,12 +203,12 @@ sudo tail -f /var/log/nginx/initech.cl/error.log
 ### Verificar landing page
 
 ```bash
-# Ver archivos
-ls -la /var/www/landing-page/
+# Ver archivos (cada dominio tiene su propia carpeta)
+ls -la /var/www/landing-page/initech.cl/
 
 # Verificar permisos
-sudo chown -R www-data:www-data /var/www/landing-page
-sudo chmod -R 755 /var/www/landing-page
+sudo chown -R www-data:www-data /var/www/landing-page/initech.cl
+sudo chmod -R 755 /var/www/landing-page/initech.cl
 ```
 
 ### Verificar SSL
@@ -228,8 +228,8 @@ sudo certbot renew --dry-run
 - **Verificar:** `nslookup dominio.com`
 
 **Problema:** "404 Not Found"
-- **Solución:** Verifica que los archivos estén en `/var/www/landing-page/`
-- **Verificar:** `ls -la /var/www/landing-page/`
+- **Solución:** Verifica que los archivos estén en `/var/www/landing-page/tudominio.com/`
+- **Verificar:** `ls -la /var/www/landing-page/tudominio.com/`
 
 **Problema:** SSL no se genera
 - **Solución:** Asegúrate que DNS esté propagado (5-15 min)
@@ -322,9 +322,10 @@ Si tienes problemas:
 
 ```
 /var/www/landing-page/
-├── index.html          # Landing page principal
-├── assets/            # Imágenes, CSS, JS (si lo agregas)
-└── ...
+└── initech.cl/            # una carpeta por dominio -- asi conce.com, initech.cl,
+    ├── index.html         # etc. no comparten ni se pisan el contenido entre si
+    ├── assets/             # Imágenes, CSS, JS (si lo agregas)
+    └── ...
 
 /etc/nginx/sites-available/
 ├── initech.cl         # Configuración de Nginx

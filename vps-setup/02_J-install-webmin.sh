@@ -23,7 +23,7 @@ if command -v ufw &> /dev/null; then
     sudo ufw allow 10000/tcp || true
 fi
 
-IP=$(curl -s ifconfig.me)
+IP=$(curl -s --max-time 5 ifconfig.me || echo "TU_IP_PUBLICA")   # --max-time evita colgarse si el servicio no responde
 
 echo ""
 echo "✓ Webmin instalado"

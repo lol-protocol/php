@@ -69,7 +69,7 @@ sudo nginx -t
 sudo systemctl reload nginx
 
 # 6. Obtener SSL
-sudo certbot certify --nginx -d conce.com -d www.conce.com
+sudo certbot run --nginx -d conce.com -d www.conce.com
 ```
 
 ---
@@ -125,7 +125,7 @@ sudo nano /etc/nginx/sites-available/initech.cl
 sudo ln -sf /etc/nginx/sites-available/initech.cl /etc/nginx/sites-enabled/initech.cl
 sudo nginx -t
 sudo systemctl reload nginx
-sudo certbot certify --nginx -d initech.cl -d www.initech.cl
+sudo certbot run --nginx -d initech.cl -d www.initech.cl
 ```
 
 ---
@@ -407,28 +407,28 @@ conce.com    A    158.69.222.245
 
 **Para cada dominio:**
 ```bash
-sudo certbot certify --nginx \
+sudo certbot run --nginx \
     -d conce.com \
     -d www.conce.com \
     --email admin@conce.com \
     --agree-tos \
     --non-interactive
 
-sudo certbot certify --nginx \
+sudo certbot run --nginx \
     -d initech.cl \
     -d www.initech.cl \
     --email admin@initech.cl \
     --agree-tos \
     --non-interactive
 
-sudo certbot certify --nginx \
+sudo certbot run --nginx \
     -d contrastocolor.ink \
     -d www.contrastocolor.ink \
     --email admin@contrastocolor.ink \
     --agree-tos \
     --non-interactive
 
-sudo certbot certify --nginx \
+sudo certbot run --nginx \
     -d wikipedia.cl \
     -d www.wikipedia.cl \
     --email admin@wikipedia.cl \

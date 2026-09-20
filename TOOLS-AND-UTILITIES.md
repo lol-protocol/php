@@ -366,7 +366,7 @@ sudo apt-get install certbot python3-certbot-nginx
 
 **Obtener certificado:**
 ```bash
-sudo certbot certify --nginx \
+sudo certbot run --nginx \
   -d dominio.com \
   -d www.dominio.com \
   --email admin@dominio.com
