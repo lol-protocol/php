@@ -14,6 +14,10 @@ test("formatDuration: minutos y segundos combinados", () => {
   assert.equal(formatDuration(125_000), "2 m 5 s");
 });
 
+test("formatDuration: el resto de segundos que redondea a 60 acarrea el minuto extra", () => {
+  assert.equal(formatDuration(119_500), "2 m 0 s"); // antes: "1 m 60 s"
+});
+
 test("formatFileSize: kilobytes con un decimal", () => {
   assert.equal(formatFileSize(512), "512.0 KB");
 });
