@@ -63,16 +63,26 @@ cd php/vps-setup
 ```bash
 # Con tu dominio (example: initech.cl)
 chmod +x install-all.sh
-./install-all.sh initech.cl admin@initech.cl
+./install-all.sh initech.cl
 ```
+
+Esto instala **CloudPanel** (panel de control gratuito, alternativa a cPanel — ver más abajo), crea el sitio para tu dominio y despliega la landing page. El SSL se hace en un paso aparte porque necesita que el DNS ya haya propagado.
 
 **¡Listo!** El script hará todo automáticamente.
 
 ---
 
+## 🎛️ Panel de Control: CloudPanel
+
+Usamos **CloudPanel** (gratis, Community Edition) en vez de cPanel (de pago) o Virtualmin (que exige controlar todo el servidor — correo, DNS, base de datos — y no convive bien con configuraciones hechas a mano). CloudPanel usa Nginx de forma nativa, tiene UI web moderna y SSL con un clic.
+
+⚠️ Requiere un **servidor limpio** (sin Nginx/Apache ya instalados) — por eso no instalamos Nginx/PHP/Certbot a mano, todo eso lo hace CloudPanel.
+
+Tras instalarlo, entra de inmediato a `https://IP_DEL_VPS:8443` para crear el usuario admin.
+
 ## 🔧 Instalación Manual (Paso a Paso)
 
-Si prefieres más control, ejecuta cada paso manualmente.
+Si prefieres más control, ejecuta cada paso manualmente. Ver la referencia completa y actualizada de todos los scripts (incluidos los opcionales: Java, PostgreSQL, Tomcat, Whisper, DNS propio) en [`vps-setup/README.md`](vps-setup/README.md).
 
 ### Paso 1️⃣: Prerequisito único
 
@@ -80,64 +90,47 @@ Si prefieres más control, ejecuta cada paso manualmente.
 bash 01-system-update.sh       # Actualiza el sistema
 ```
 
-### Paso 2️⃣: Instalaciones independientes entre sí (6 scripts, cualquier orden)
+### Paso 2️⃣: Panel de control
 
 ```bash
-bash 02_A-install-java.sh        # Java 21
-bash 02_B-install-php.sh         # PHP 8.3 + extensiones
-bash 02_C-install-python.sh      # Python 3
-bash 02_D-install-postgresql.sh  # PostgreSQL
-bash 02_E-install-nginx.sh       # Nginx
-bash 02_F-install-certbot.sh     # Certbot (para SSL)
+bash 02-install-cloudpanel.sh
 ```
 
-Cada script confirma al final la versión instalada de su componente. La letra indica que no importa el orden entre ellos — solo que todos terminen antes del Paso 3.
+Instala CloudPanel completo (Nginx + PHP + MariaDB + Let's Encrypt). Al terminar, entra a `https://IP_DEL_VPS:8443` y crea el usuario admin.
 
-### Paso 3️⃣: Configurar Nginx
+### Paso 3️⃣: Crear el sitio para tu dominio
 
 ```bash
-bash 03-configure-nginx-site.sh initech.cl
+bash 04_A-add-site-php.sh initech.cl
 ```
 
-Esto:
-- Crea `/var/www/landing-page`
-- Configura Nginx para servir tu landing page
-- Establece permisos correctos
+Esto crea el vhost en CloudPanel (`clpctl site:add:php`) con su propio usuario de sitio y contraseña (se muestran al final — guárdalas).
 
 **Verificación:**
 ```bash
-sudo nginx -t
-sudo systemctl status nginx
+sudo clpctl site:list
 curl http://initech.cl
 ```
 
-### Paso 4️⃣: Configurar SSL/HTTPS
+### Paso 4️⃣: Desplegar la landing page
 
 ```bash
-bash 04-setup-ssl.sh initech.cl admin@initech.cl
+bash 05-deploy-landing-page.sh initech.cl
+```
+
+Copia los archivos a `/home/<usuario-del-sitio>/htdocs/initech.cl/public/`.
+
+### Paso 5️⃣: Configurar SSL/HTTPS
+
+```bash
+bash 04_D-install-ssl-cloudpanel.sh initech.cl
 ```
 
 ⚠️ **IMPORTANTE:** Tu dominio debe estar apuntando a la IP del VPS antes de este paso. El script verifica el DNS automáticamente antes de continuar.
 
-Esto:
-- Obtiene certificado SSL de Let's Encrypt
-- Configura renovación automática
-- Redirige todo a HTTPS
-
 **Verificación:**
 ```bash
-sudo certbot certificates -d initech.cl
-```
-
-### Paso 5️⃣: Desplegar Landing Page
-
-```bash
-bash 05-deploy-landing-page.sh
-```
-
-Copia los archivos de la landing page a:
-```
-/var/www/landing-page/
+sudo clpctl site:list
 ```
 
 ---
@@ -186,36 +179,25 @@ Espera 5-15 minutos para que se propague.
 ### Verificar estado general
 
 ```bash
-# Estado de Nginx
-sudo systemctl status nginx
+# Sitios en CloudPanel
+sudo clpctl site:list
 
-# Estado de PHP-FPM
-sudo systemctl status php8.3-fpm
-
-# Ver logs de Nginx
-sudo tail -f /var/log/nginx/initech.cl/access.log
-sudo tail -f /var/log/nginx/initech.cl/error.log
+# Panel web
+https://IP_DEL_VPS:8443
 ```
 
 ### Verificar landing page
 
 ```bash
-# Ver archivos
-ls -la /var/www/landing-page/
-
-# Verificar permisos
-sudo chown -R www-data:www-data /var/www/landing-page
-sudo chmod -R 755 /var/www/landing-page
+# Ver archivos (reemplaza SITE_USER y el dominio)
+ls -la /home/SITE_USER/htdocs/initech.cl/public/
 ```
 
 ### Verificar SSL
 
+Desde el panel web (`https://IP_DEL_VPS:8443` → tu sitio → SSL/TLS) o:
 ```bash
-# Ver certificado
-sudo certbot certificates
-
-# Verificar fecha de renovación
-sudo certbot renew --dry-run
+sudo clpctl site:list
 ```
 
 ### Problemas Comunes
@@ -225,44 +207,48 @@ sudo certbot renew --dry-run
 - **Verificar:** `nslookup dominio.com`
 
 **Problema:** "404 Not Found"
-- **Solución:** Verifica que los archivos estén en `/var/www/landing-page/`
-- **Verificar:** `ls -la /var/www/landing-page/`
+- **Solución:** Verifica que los archivos estén en `/home/SITE_USER/htdocs/dominio.com/public/`
 
 **Problema:** SSL no se genera
 - **Solución:** Asegúrate que DNS esté propagado (5-15 min)
 - **Verificar:** `curl http://dominio.com` (sin S)
 
-**Problema:** PHP no funciona
-- **Solución:** Verifica que PHP-FPM esté corriendo
-- **Verificar:** `sudo systemctl status php8.3-fpm`
+**Problema:** `02-install-cloudpanel.sh` falla con "ya hay Nginx/Apache instalado"
+- **Solución:** el VPS ya no está limpio. Reinstala el VPS (Ubuntu 24.04) desde tu proveedor y empieza de nuevo desde el paso 1.
 
 ---
 
 ## 🎯 Pasos Siguientes
 
-### Si necesitas Aplicación PHP:
+### Si necesitas otro sitio PHP o una app adicional:
 
 ```bash
-bash 06_A-setup-php-app.sh mi-app dominio.com
+bash 04_A-add-site-php.sh otro-dominio.com
+bash 05-deploy-landing-page.sh otro-dominio.com
 ```
-
-Luego:
-1. Copia tu código PHP en `/var/www/mi-app/`
-2. Ejecuta SSL con Certbot
-3. Reinicia Nginx
 
 ### Si necesitas Aplicación Python:
 
 ```bash
-bash 06_B-setup-python-app.sh mi-app dominio.com
+bash 03_B-install-python.sh              # si aun no esta instalado
+bash 04_B-add-site-python.sh miapp.dominio.com
 ```
 
-Luego:
-1. Copia tu código Python en `/var/www/mi-app/`
-2. Instala dependencias: `pip install -r requirements.txt`
-3. Ejecuta SSL con Certbot
+### Si necesitas Java + Tomcat:
 
-### Gestión de Base de Datos PostgreSQL:
+```bash
+bash 03_A-install-java.sh
+bash 03_D-install-tomcat.sh
+bash 04_C-add-site-reverse-proxy.sh miapp.dominio.com http://127.0.0.1:8080
+```
+
+### Gestión de Base de Datos PostgreSQL
+
+CloudPanel solo trae MySQL/MariaDB. Si necesitas PostgreSQL además (como usan otros proyectos de este repo):
+
+```bash
+bash 03_C-install-postgresql.sh
+```
 
 ```bash
 # Conectar a PostgreSQL
@@ -298,10 +284,7 @@ tar -czf /backups/landing-page-$(date +%Y%m%d).tar.gz /var/www/landing-page/
 
 Si tienes problemas:
 
-1. **Revisa los logs:**
-   ```bash
-   sudo tail -50 /var/log/nginx/initech.cl/error.log
-   ```
+1. **Revisa los logs:** entra al panel (`https://IP_DEL_VPS:8443`) → tu sitio → pestaña "Logs" (Nginx/PHP-FPM en un solo lugar, sin recordar rutas)
 
 2. **Verifica DNS:**
    ```bash
@@ -318,22 +301,14 @@ Si tienes problemas:
 ## 📊 Estructura de Archivos
 
 ```
-/var/www/landing-page/
-├── index.html          # Landing page principal
-├── assets/            # Imágenes, CSS, JS (si lo agregas)
-└── ...
-
-/etc/nginx/sites-available/
-├── initech.cl         # Configuración de Nginx
-
-/etc/letsencrypt/live/initech.cl/
-├── fullchain.pem      # Certificado SSL
-└── privkey.pem        # Clave privada
-
-/var/log/nginx/initech.cl/
-├── access.log         # Logs de acceso
-└── error.log          # Logs de error
+/home/SITE_USER/htdocs/initech.cl/
+└── public/
+    ├── index.html      # Landing page principal
+    ├── assets/         # Imágenes, CSS, JS (si lo agregas)
+    └── ...
 ```
+
+La configuración de Nginx, el certificado SSL y los logs los administra CloudPanel internamente — no hace falta tocarlos a mano; se ven y editan desde `https://IP_DEL_VPS:8443`.
 
 ---
 

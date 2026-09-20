@@ -2,14 +2,14 @@
 set -e
 
 echo "========================================"
-echo "[02_H] Instalacion de Apache Tomcat"
+echo "[03_D] Instalacion de Apache Tomcat"
 echo "========================================"
 echo ""
-echo "NOTA: requiere Java ya instalado (script 02_A-install-java.sh)."
+echo "NOTA: requiere Java ya instalado (script 03_A-install-java.sh)."
 echo ""
 
 if ! command -v java &> /dev/null; then
-    echo "ERROR: Java no esta instalado. Corre primero: ./02_A-install-java.sh"
+    echo "ERROR: Java no esta instalado. Corre primero: ./03_A-install-java.sh"
     exit 1
 fi
 
@@ -35,4 +35,4 @@ echo "  Config:   /etc/tomcat10/"
 echo "  Logs:     /var/log/tomcat10/"
 echo ""
 echo "Para exponerlo bajo un dominio con Nginx como reverse proxy,"
-echo "usa: ./06_D-setup-tomcat-app.sh tudominio.com"
+echo "usa: ./04_C-add-site-reverse-proxy.sh tudominio.com http://127.0.0.1:8080"

@@ -25,31 +25,34 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 
 ## 🛠️ Stack Tecnológico
 
+### Panel de Control
+- **CloudPanel** (Community Edition, gratis)
+  - Administra Nginx, PHP-FPM, MariaDB/MySQL y Let's Encrypt
+  - Interfaz web (`:8443`) + CLI (`clpctl`)
+  - Alternativa a cPanel (de pago) y Virtualmin (quiere controlar todo el servidor)
+
 ### Servidor Web
-- **Nginx 1.26+**
+- **Nginx** (instalado y administrado por CloudPanel)
   - Reverse proxy
-  - Load balancing
   - Compresión GZIP
   - Cache HTTP
+  - Un vhost por sitio, con SSL propio
 
 ### Lenguajes & Frameworks
-- **PHP 8.3** - Backend web
-- **Python 3.12** - Scripts y aplicaciones
-- **Java 21** - Aplicaciones empresariales (futuro)
+- **PHP 8.3** - Backend web (una versión por sitio, vía CloudPanel)
+- **Python 3.12** - Scripts, apps Flask/FastAPI (sitios Python vía CloudPanel) y Whisper
+- **Java 21** - Apps empresariales, vía Apache Tomcat detrás de un sitio reverse-proxy de CloudPanel
 
 ### Base de Datos
-- **PostgreSQL 16+**
-  - Replicación (futuro)
-  - Backups automáticos
-  - Connection pooling (PgBouncer)
+- **MariaDB/MySQL** - Incluida en CloudPanel, una base por sitio (`clpctl db:add`)
+- **PostgreSQL 16+** - Instalación aparte (`03_C-install-postgresql.sh`), para proyectos que la requieran específicamente
 
 ### SSL/TLS
-- **Let's Encrypt** - Certificados gratuitos
-- **Certbot** - Renovación automática
-- **HTTPS Everywhere**
+- **Let's Encrypt** - Integrado en CloudPanel, un clic o `clpctl lets-encrypt:install:certificate`
+- Renovación automática gestionada por el panel
 
 ### Monitoreo & Logging
-- **Nginx Logs** - Access & error logs
+- **Logs por sitio** - Vistos desde el panel de CloudPanel (Nginx + PHP-FPM)
 - **Syslog** - Sistema centralizado (futuro)
 - **Prometheus** - Métricas (futuro)
 
@@ -58,52 +61,21 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 ## 📁 Estructura de Directorios
 
 ```
-/var/www/
-├── landing-page/
-│   ├── conce.com/
-│   │   └── index.html
-│   ├── initech.cl/
-│   │   └── index.html
-│   └── shared/
-│       ├── css/
-│       ├── js/
-│       └── images/
-│
-├── contrastocolor.ink/
-│   ├── public/
-│   ├── src/
-│   ├── config/
-│   └── requirements.txt
-│
-└── wikipedia.cl/
-    ├── public/
-    ├── app/
-    ├── config/
-    └── composer.json
+/home/
+├── conce/htdocs/conce.com/public/              # Landing page (conce.com)
+├── initech/htdocs/initech.cl/public/           # Landing page (initech.cl)
+├── contrastocolor/htdocs/contrastocolor.ink/   # App Python (Flask)
+└── wikipedia/htdocs/wikipedia.cl/public/       # App PHP
 
-/etc/nginx/
-├── sites-available/
-│   ├── conce.com
-│   ├── initech.cl
-│   ├── contrastocolor.ink
-│   └── wikipedia.cl
-└── sites-enabled/
-    └── (enlaces simbólicos)
-
-/etc/letsencrypt/live/
-├── conce.com/
-├── initech.cl/
-├── contrastocolor.ink/
-└── wikipedia.cl/
-
-/var/log/nginx/
-├── conce.com/
-├── initech.cl/
-├── contrastocolor.ink/
-└── wikipedia.cl/
+# Cada carpeta /home/<siteUser>/ pertenece a un sitio creado con
+# CloudPanel (04_A-add-site-php.sh / 04_B-add-site-python.sh); Nginx,
+# PHP-FPM y SSL de cada uno se administran desde el panel, no a mano.
 
 /var/lib/postgresql/
-└── (datos de base de datos)
+└── (datos de PostgreSQL, si se instaló aparte)
+
+/opt/venvs/whisper/
+└── (entorno virtual de Python + Whisper, si se instaló)
 
 /home/backups/
 ├── daily/
@@ -122,21 +94,20 @@ Usuario (Internet)
         ↓
   158.69.222.245:80/443
         ↓
-  [Nginx - Reverse Proxy]
+  [Nginx - administrado por CloudPanel, un vhost por sitio]
         ↓
    ┌─────────────────────────────────────┐
    │                                     │
    v                                     v
 HTML/CSS/JS                         [PHP-FPM 8.3]
-Landing Pages                       o [Python Apps]
+Landing Pages                       o [Python Apps] o [Tomcat via reverse-proxy]
    │                                     │
    ↓                                     ↓
-/var/www/landing-page/          /var/www/{app}/
+/home/<siteUser>/htdocs/<dominio>/  /home/<siteUser>/htdocs/<dominio>/
    │                                     │
    └─────────────────────────────────────┘
            ↓
-    [PostgreSQL 16]
-         (datos)
+  [MariaDB/MySQL (CloudPanel)] o [PostgreSQL 16 (aparte)]
 ```
 
 ---
@@ -184,8 +155,8 @@ Landing Pages                       o [Python Apps]
          └────────────┬─────────────┘
                       │
          ┌────────────▼─────────────┐
-         │    Nginx (Reverse Proxy) │
-         │   (Virtual Hosts)        │
+         │   CloudPanel :8443       │
+         │  (Nginx + PHP + MariaDB) │
          └────────────┬─────────────┘
                       │
         ┌─────────────┼─────────────┐
@@ -197,8 +168,10 @@ Landing Pages                       o [Python Apps]
    └─────────┘  └────┬────┘  └────┬───┘
                      │            │
                  ┌───▼────────────▼───┐
-                 │ PostgreSQL 16      │
-                 │ (Centralizada)     │
+                 │ MariaDB/MySQL      │
+                 │ (por CloudPanel)   │
+                 │ + PostgreSQL 16    │
+                 │ (aparte, opcional) │
                  └────────────────────┘
 ```
 
@@ -208,9 +181,9 @@ Landing Pages                       o [Python Apps]
 
 ### **Fase 1: Setup Base** (ACTUAL)
 - [x] Instalación de software base
-- [x] Configuración de Nginx
-- [x] Landing pages (conce.com, initech.cl)
-- [ ] SSL/HTTPS (Let's Encrypt)
+- [x] CloudPanel instalado (Nginx + PHP + MariaDB + SSL)
+- [ ] Landing pages (conce.com, initech.cl)
+- [ ] SSL/HTTPS (Let's Encrypt vía CloudPanel)
 - [ ] Configuración DNS
 
 ### **Fase 2: Aplicaciones Web**
@@ -254,8 +227,7 @@ Landing Pages                       o [Python Apps]
 - **Disco:** < 85%
 
 ### Logs
-- **Access Log:** `/var/log/nginx/[dominio]/access.log`
-- **Error Log:** `/var/log/nginx/[dominio]/error.log`
+- **Access/Error Log:** panel de CloudPanel → sitio → "Logs" (Nginx + PHP-FPM por sitio)
 - **Syslog:** `/var/log/syslog`
 
 ---
@@ -289,4 +261,4 @@ Landing Pages                       o [Python Apps]
 ---
 
 **Última actualización:** 2026-09-20
-**Versión:** 1.0.0
+**Versión:** 2.0.0

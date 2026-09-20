@@ -6,11 +6,16 @@ Guía paso a paso para desplegar todo el sistema en el VPS.
 
 ## 📋 Pre-requisitos
 
-- ✅ VPS Ubuntu 24.04 LTS activo (158.69.222.245)
+- ✅ VPS Ubuntu 24.04 LTS activo (158.69.222.245), **limpio** (sin Nginx/Apache instalados) — requisito de CloudPanel
 - ✅ Acceso SSH al VPS (usuario: Ubuntu, contraseña: DmSdQKUQZQrp)
 - ✅ Dominios registrados (conce.com, initech.cl, contrastocolor.ink, wikipedia.cl)
 - ✅ Acceso a panel DNS de cada dominio
-- ✅ Email para certificados SSL (ej: admin@domain.com)
+
+---
+
+## 🎛️ Panel de Control: CloudPanel
+
+Usamos **CloudPanel** (gratis, Community Edition) en vez de cPanel (de pago) o Virtualmin (que exige controlar todo el servidor y no convive bien con configuraciones hechas a mano). CloudPanel administra Nginx, PHP, MariaDB/MySQL y SSL (Let's Encrypt) — todo también scripteable vía su CLI `clpctl`, que es lo que usan los scripts de `vps-setup/`.
 
 ---
 
@@ -36,7 +41,7 @@ cd php/vps-setup
 **Opción A: Automática (Recomendado)**
 ```bash
 chmod +x install-all.sh
-./install-all.sh conce.com admin@conce.com
+./install-all.sh conce.com
 ```
 
 **Opción B: Manual (Más Control)**
@@ -46,41 +51,33 @@ chmod +x *.sh
 # 01: prerequisito único
 ./01-system-update.sh
 
-# 02_A..02_F: instalaciones independientes entre sí (cualquier orden)
-./02_A-install-java.sh
-./02_B-install-php.sh
-./02_C-install-python.sh
-./02_D-install-postgresql.sh
-./02_E-install-nginx.sh
-./02_F-install-certbot.sh
+# 02: panel de control (instala Nginx+PHP+MariaDB+SSL internamente)
+./02-install-cloudpanel.sh
+# Entra de inmediato a https://158.69.222.245:8443 y crea el usuario admin
 
-# 03: configurar Nginx (cambiar dominio según necesidad)
-./03-configure-nginx-site.sh conce.com
-
-# Esperar propagación DNS antes de siguiente paso
-# ...
-
-# 04: configurar SSL
-./04-setup-ssl.sh conce.com admin@conce.com
+# 04_A: crear el sitio para el dominio
+./04_A-add-site-php.sh conce.com
 
 # 05: desplegar landing page
-./05-deploy-landing-page.sh
+./05-deploy-landing-page.sh conce.com
+
+# 04_D: SSL (necesita DNS ya propagado)
+./04_D-install-ssl-cloudpanel.sh conce.com
 ```
 
 ### Paso 4: Verificar Instalación
 
 ```bash
-# Verificar servicios
-sudo systemctl status nginx
-sudo systemctl status php8.3-fpm
-sudo systemctl status postgresql
+# Sitios en CloudPanel
+sudo clpctl site:list
 
-# Verificar software instalado
-java -version
-php -v
+# Panel web
+https://158.69.222.245:8443
+
+# Software opcional que hayas instalado
+java -version 2>/dev/null
 python3 --version
-psql --version
-nginx -v
+psql --version 2>/dev/null
 ```
 
 ---
@@ -89,13 +86,9 @@ nginx -v
 
 ### Paso 1: Configurar DNS para cada dominio
 
-**En tu registrador de dominio (GoDaddy, Namecheap, ISP Chile, etc.):**
+**En tu registrador de dominio (GoDaddy, Namecheap, Network Solutions, ISP Chile, etc.):**
 
-Para cada dominio (conce.com, initech.cl, etc.):
-
-1. Accede al panel de control
-2. Busca "DNS" o "Nameservers"
-3. Agrega registros **A**:
+Para cada dominio (conce.com, initech.cl, etc.), agrega registros **A**:
 
 ```
 Tipo: A
@@ -111,13 +104,11 @@ Valor: 158.69.222.245
 TTL: 3600
 ```
 
-4. Guarda los cambios
-5. **ESPERA 5-15 MINUTOS** para que se propague
+Guarda los cambios y **espera 15-60 minutos** para que se propague (algunos registradores tardan hasta 24h).
 
 ### Paso 2: Verificar propagación DNS
 
 ```bash
-# En tu computadora (no en el VPS)
 nslookup conce.com
 dig conce.com
 
@@ -125,46 +116,25 @@ dig conce.com
 # conce.com.  3600  IN  A  158.69.222.245
 ```
 
-### Paso 3: Configurar sitios en Nginx
+### Paso 3: Crear el sitio en CloudPanel para cada dominio
 
-En el VPS, para cada dominio:
+En el VPS, para cada dominio adicional:
 
 ```bash
-# Landing page - conce.com
-sudo nano /etc/nginx/sites-available/conce.com
-# Configurar según DOMAINS.md
-
-sudo ln -sf /etc/nginx/sites-available/conce.com /etc/nginx/sites-enabled/conce.com
-
-# Landing page - initech.cl
-sudo nano /etc/nginx/sites-available/initech.cl
-sudo ln -sf /etc/nginx/sites-available/initech.cl /etc/nginx/sites-enabled/initech.cl
-
-# Validar
-sudo nginx -t
-sudo systemctl reload nginx
+./04_A-add-site-php.sh initech.cl
+./05-deploy-landing-page.sh initech.cl
 ```
+
+Esto crea el vhost de Nginx, el usuario del sitio y la estructura `/home/<usuario>/htdocs/<dominio>/public/` — todo gestionado por CloudPanel, sin editar Nginx a mano.
 
 ### Paso 4: Obtener Certificados SSL
 
 ```bash
-# Para conce.com
-sudo certbot certify --nginx \
-    -d conce.com -d www.conce.com \
-    --email admin@conce.com \
-    --agree-tos \
-    --non-interactive
-
-# Para initech.cl
-sudo certbot certify --nginx \
-    -d initech.cl -d www.initech.cl \
-    --email admin@initech.cl \
-    --agree-tos \
-    --non-interactive
-
-# Verificar
-sudo certbot certificates
+./04_D-install-ssl-cloudpanel.sh conce.com
+./04_D-install-ssl-cloudpanel.sh initech.cl
 ```
+
+Cada script verifica que el DNS ya resuelva a este VPS antes de pedir el certificado.
 
 ### Paso 5: Probar acceso
 
@@ -185,52 +155,17 @@ Desde tu navegador:
 En el VPS:
 
 ```bash
-# Crear directorio
-sudo mkdir -p /var/www/contrastocolor.ink
-cd /var/www/contrastocolor.ink
+# Python base (si no esta instalado)
+./03_B-install-python.sh
 
-# Crear entorno virtual
-python3 -m venv venv
-source venv/bin/activate
-
-# Instalar dependencias
-pip install flask flask-cors psycopg2-binary python-dotenv gunicorn
-
-# Crear app.py (ver DOMAINS.md para contenido)
-nano app.py
-
-# Crear requirements.txt
-pip freeze > requirements.txt
-
-# Desactivar venv
-deactivate
-
-# Cambiar permisos
-sudo chown -R www-data:www-data /var/www/contrastocolor.ink
+# Crear el sitio Python en CloudPanel (puerto 8000 para la app)
+./04_B-add-site-python.sh contrastocolor.ink contrastocolor 8000
 ```
 
-Configurar Nginx (ver DOMAINS.md) y SSL:
+Esto crea `/home/contrastocolor/htdocs/contrastocolor.ink/` y deja el sitio esperando una app que escuche en el puerto 8000. Sube tu código (Flask/FastAPI, ver `DOMAINS.md` para un ejemplo de `app.py`) por SFTP/SSH con el usuario del sitio, instala dependencias en un venv, y arráncalo con `gunicorn` (systemd es la forma recomendada de mantenerlo corriendo — CloudPanel documenta esto en su panel para sitios Python).
 
 ```bash
-sudo nano /etc/nginx/sites-available/contrastocolor.ink
-sudo ln -sf /etc/nginx/sites-available/contrastocolor.ink /etc/nginx/sites-enabled/contrastocolor.ink
-sudo nginx -t
-sudo systemctl reload nginx
-
-# Después que DNS propague:
-sudo certbot certify --nginx -d contrastocolor.ink
-```
-
-Crear servicio systemd:
-
-```bash
-sudo nano /etc/systemd/system/contrastocolor.service
-# (Copiar contenido de DOMAINS.md)
-
-sudo systemctl daemon-reload
-sudo systemctl enable contrastocolor
-sudo systemctl start contrastocolor
-sudo systemctl status contrastocolor
+./04_D-install-ssl-cloudpanel.sh contrastocolor.ink
 ```
 
 ### 3.2: Aplicación PHP (wikipedia.cl)
@@ -238,64 +173,55 @@ sudo systemctl status contrastocolor
 En el VPS:
 
 ```bash
-# Crear directorio
-sudo mkdir -p /var/www/wikipedia.cl/public
-cd /var/www/wikipedia.cl
-
-# Instalar Composer (si no está)
-curl -sS https://getcomposer.org/installer | php
-sudo mv composer.phar /usr/local/bin/composer
-
-# Crear proyecto (o copiar código existente)
-composer create-project laravel/laravel . --prefer-dist
-
-# O instalar dependencias si tienes un proyecto:
-composer install
-
-# Permisos
-sudo chown -R www-data:www-data /var/www/wikipedia.cl
-sudo chmod -R 755 /var/www/wikipedia.cl
+./04_A-add-site-php.sh wikipedia.cl
 ```
 
-Configurar Nginx (ver DOMAINS.md) y SSL:
+Sube o instala tu código dentro de `/home/wikipedia/htdocs/wikipedia.cl/public/` (por SFTP/SSH con el usuario del sitio, o vía Composer si tienes acceso a esa carpeta):
 
 ```bash
-sudo nano /etc/nginx/sites-available/wikipedia.cl
-sudo ln -sf /etc/nginx/sites-available/wikipedia.cl /etc/nginx/sites-enabled/wikipedia.cl
-sudo nginx -t
-sudo systemctl reload nginx
+cd /home/wikipedia/htdocs/wikipedia.cl
+composer install   # o: composer create-project laravel/laravel . --prefer-dist
+```
 
-# Después que DNS propague:
-sudo certbot certify --nginx -d wikipedia.cl
+```bash
+./04_D-install-ssl-cloudpanel.sh wikipedia.cl
 ```
 
 ---
 
 ## 🗄️ Fase 4: Configurar Base de Datos
 
-En el VPS:
+CloudPanel trae MySQL/MariaDB integrado — para crear una base de datos ligada a un sitio:
 
 ```bash
-# Conectar como usuario postgres
-sudo -u postgres psql
+sudo clpctl db:add \
+    --domainName=wikipedia.cl \
+    --databaseName=wikipedia \
+    --databaseUserName=wikipedia_app \
+    --databaseUserPassword='contraseña_segura'
+```
 
-# En PostgreSQL:
+Si necesitas **PostgreSQL** además (como usan otros proyectos de este repo, p. ej. `cobros-ingresos-funnels`):
+
+```bash
+./03_C-install-postgresql.sh
+
+sudo -u postgres psql
 CREATE DATABASE mi_base_datos;
 CREATE USER mi_usuario WITH PASSWORD 'contraseña_segura';
 GRANT ALL PRIVILEGES ON DATABASE mi_base_datos TO mi_usuario;
-
 \q
 ```
 
 Desde aplicaciones PHP/Python:
 
 ```php
-// PHP
+// PHP + PostgreSQL
 $dbconn = pg_connect("host=localhost user=mi_usuario password=contraseña_segura dbname=mi_base_datos");
 ```
 
 ```python
-# Python
+# Python + PostgreSQL
 import psycopg2
 conn = psycopg2.connect(
     host="localhost",
@@ -312,28 +238,17 @@ conn = psycopg2.connect(
 ### Checklist de Verificación
 
 ```bash
-# 1. Servicios corriendo
-sudo systemctl status nginx
-sudo systemctl status php8.3-fpm
-sudo systemctl status postgresql
-sudo systemctl status contrastocolor
+# 1. Sitios y estado general
+sudo clpctl site:list
 
-# 2. Certificados SSL
-sudo certbot certificates
+# 2. Archivos en su lugar
+ls -la /home/conce/htdocs/conce.com/public/
+ls -la /home/wikipedia/htdocs/wikipedia.cl/public/
 
-# 3. Archivos en su lugar
-ls -la /var/www/landing-page/
-ls -la /var/www/contrastocolor.ink/
-ls -la /var/www/wikipedia.cl/
+# 3. Software opcional
+sudo systemctl status postgresql 2>/dev/null
 
-# 4. Permisos correctos
-sudo ls -la /var/www/ | grep www-data
-
-# 5. Logs sin errores
-sudo tail -20 /var/log/nginx/conce.com/error.log
-sudo tail -20 /var/log/nginx/contrastocolor.ink/error.log
-
-# 6. Conectividad a BD
+# 4. Conectividad a BD (si usas Postgres)
 sudo -u postgres psql -l
 ```
 
@@ -348,10 +263,7 @@ Desde tu computadora:
 ✅ https://wikipedia.cl (app PHP)
 ```
 
-Todos deben:
-- Cargar correctamente
-- Mostrar HTTPS (candado verde)
-- Tener certificado válido
+Todos deben cargar correctamente y mostrar HTTPS con certificado válido.
 
 ---
 
@@ -359,39 +271,19 @@ Todos deben:
 
 ### Monitoreo de Logs
 
-```bash
-# Ver logs en tiempo real
-sudo tail -f /var/log/nginx/conce.com/access.log
-sudo tail -f /var/log/nginx/conce.com/error.log
-
-# Buscar errores
-sudo grep -i error /var/log/nginx/*/error.log | head -20
-```
+Desde el panel (`https://158.69.222.245:8443` → sitio → "Logs") o, si prefieres CLI, revisa `sudo clpctl site:list` para confirmar estado; CloudPanel centraliza logs de Nginx y PHP-FPM por sitio en su interfaz.
 
 ### Chequeos de Salud
 
 ```bash
-# Estado de servicios
-sudo systemctl status nginx php8.3-fpm postgresql
-
 # Uso de recursos
 htop
 
 # Espacio en disco
 df -h
 
-# Conectividad bases de datos
+# Conectividad bases de datos (si usas Postgres)
 sudo -u postgres psql -l
-```
-
-### Limpiar Logs (opcional)
-
-```bash
-# Rotar logs manualmente
-sudo logrotate -f /etc/logrotate.conf
-
-# O limpiar logs viejos (cuidado!)
-sudo find /var/log/nginx -name "*.log" -mtime +30 -delete
 ```
 
 ---
@@ -405,25 +297,23 @@ sudo apt-get update
 sudo apt-get upgrade -y
 ```
 
+⚠️ No actualices Nginx/PHP/MariaDB por fuera de CloudPanel (`apt-get upgrade` normal no los toca porque vienen de los repos propios de CloudPanel, pero evita instalar/reinstalar esos paquetes a mano).
+
 ### Renovar Certificados SSL
 
-```bash
-# Probar renovación
-sudo certbot renew --dry-run
-
-# Renovar (generalmente automático)
-sudo certbot renew
-```
+CloudPanel renueva los certificados Let's Encrypt automáticamente. Verifica su estado desde el panel, sección SSL/TLS de cada sitio.
 
 ### Backup de Base de Datos
 
 ```bash
-# Backup completo
-sudo -u postgres pg_dump -Fc mi_base_datos > ~/backups/mi_base_datos_$(date +%Y%m%d).dump
-
-# O todo a la vez
+# PostgreSQL (si lo usas)
 sudo -u postgres pg_dumpall > ~/backups/all_databases_$(date +%Y%m%d).sql
+
+# MySQL/MariaDB (via CloudPanel)
+mysqldump -u usuario -p nombre_base > ~/backups/nombre_base_$(date +%Y%m%d).sql
 ```
+
+CloudPanel también incluye su propio módulo de backups programados en el panel.
 
 ---
 
@@ -432,71 +322,58 @@ sudo -u postgres pg_dumpall > ~/backups/all_databases_$(date +%Y%m%d).sql
 ### Landing page no carga
 
 ```bash
-# 1. Verificar que Nginx esté corriendo
-sudo systemctl status nginx
+# 1. Verificar que el sitio existe en CloudPanel
+sudo clpctl site:list
 
 # 2. Verificar archivos
-ls -la /var/www/landing-page/conce.com/
+ls -la /home/conce/htdocs/conce.com/public/
 
-# 3. Chequear configuración
-sudo nginx -t
-
-# 4. Ver error log
-sudo tail /var/log/nginx/conce.com/error.log
+# 3. Ver logs desde el panel: https://158.69.222.245:8443 -> sitio -> Logs
 ```
 
 ### App Python no responde
 
 ```bash
-# 1. Verificar servicio
-sudo systemctl status contrastocolor
-
-# 2. Ver logs del servicio
+# 1. Ver logs del servicio (si lo corres via systemd)
 sudo journalctl -u contrastocolor -n 50
 
-# 3. Reiniciar
+# 2. Reiniciar
 sudo systemctl restart contrastocolor
 
-# 4. Probar conexión
+# 3. Probar conexión directa al puerto de la app
 curl http://127.0.0.1:8000
 ```
 
 ### Base de datos no responde
 
 ```bash
-# 1. Verificar PostgreSQL
+# PostgreSQL
 sudo systemctl status postgresql
-
-# 2. Conectar
 sudo -u postgres psql
-
-# 3. Ver bases de datos
 \l
 
-# 4. Si hay problemas, reiniciar
-sudo systemctl restart postgresql
+# MySQL/MariaDB (CloudPanel)
+sudo clpctl db:list 2>/dev/null || sudo mysql -e "SHOW DATABASES;"
 ```
 
 ### SSL no funciona
 
 ```bash
-# 1. Verificar certificado
-sudo certbot certificates
-
-# 2. Forzar renovación
-sudo certbot renew --force-renewal
-
-# 3. Recargar Nginx
-sudo systemctl reload nginx
+# Reintentar (verifica DNS automaticamente antes)
+./04_D-install-ssl-cloudpanel.sh tudominio.com
 ```
+
+### `02-install-cloudpanel.sh` falla con "ya hay Nginx/Apache instalado"
+
+El VPS ya no está limpio (quizás corriste una versión anterior de estos scripts que instalaba Nginx a mano). Reinstala el VPS desde OVHCloud (Ubuntu 24.04 limpio) y empieza de nuevo desde el Paso 1.
 
 ---
 
 ## 📞 Contacto & Soporte
 
-- **Email:** admin@conce.com
 - **Proveedor VPS:** OVHCloud (https://www.ovhcloud.com)
-- **Documentación:** Ver ARCHITECTURE.md, TOOLS-AND-UTILITIES.md, DOMAINS.md
+- **Panel de control:** CloudPanel — `https://158.69.222.245:8443`
+- **Documentación:** Ver ARCHITECTURE.md, TOOLS-AND-UTILITIES.md, DOMAINS.md, vps-setup/README.md
 
 ---
 
@@ -513,4 +390,4 @@ sudo systemctl reload nginx
 ---
 
 **Última actualización:** 2026-09-20
-**Versión:** 1.0.0
+**Versión:** 2.0.0

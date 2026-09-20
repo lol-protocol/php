@@ -4,15 +4,15 @@ set -e
 VENV_PATH="/opt/venvs/whisper"
 
 echo "========================================"
-echo "[02_I] Python: Whisper + librerias basicas"
+echo "[03_E] Python: Whisper + librerias basicas"
 echo "========================================"
 echo ""
-echo "NOTA: requiere Python ya instalado (script 02_C-install-python.sh)."
+echo "NOTA: requiere Python ya instalado (script 03_B-install-python.sh)."
 echo "AVISO: esto descarga PyTorch (~200-500 MB). Puede tardar varios minutos."
 echo ""
 
 if ! command -v python3 &> /dev/null; then
-    echo "ERROR: Python no esta instalado. Corre primero: ./02_C-install-python.sh"
+    echo "ERROR: Python no esta instalado. Corre primero: ./03_B-install-python.sh"
     exit 1
 fi
 

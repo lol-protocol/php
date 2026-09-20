@@ -1,175 +1,68 @@
 # 🌐 Configuración de Dominios - VPS Initech
 
-Guía completa para configurar y gestionar los múltiples dominios en el VPS.
+Guía completa para configurar y gestionar los múltiples dominios en el VPS, usando **CloudPanel** (ver `ARCHITECTURE.md` y `vps-setup/README.md` para por qué CloudPanel y no cPanel/Virtualmin).
+
+Todos los pasos de Nginx, vhosts y SSL de cada dominio se hacen a través de CloudPanel (`clpctl` o el panel web en `:8443`) — ya no se edita `/etc/nginx/` a mano.
 
 ---
 
 ## 📊 Dominios Principales
 
 ### 1️⃣ **conce.com**
-**Tipo:** Landing Page  
-**Propósito:** Sitio principal de Conce  
-**Tecnología:** HTML/CSS/SVG estático  
+**Tipo:** Landing Page
+**Propósito:** Sitio principal de Conce
+**Tecnología:** HTML/CSS/SVG estático
 **Estado:** 🔄 Configuración pendiente
 
-**Archivos:**
-```
-/var/www/landing-page/conce.com/
-└── index.html
-```
-
-**Configuración Nginx:**
-```nginx
-server {
-    listen 80;
-    listen [::]:80;
-    server_name conce.com www.conce.com;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name conce.com www.conce.com;
-
-    root /var/www/landing-page/conce.com;
-    index index.html;
-
-    # SSL
-    ssl_certificate /etc/letsencrypt/live/conce.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/conce.com/privkey.pem;
-
-    # Logs
-    access_log /var/log/nginx/conce.com/access.log;
-    error_log /var/log/nginx/conce.com/error.log;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-}
-```
+**Archivos:** `/home/conce/htdocs/conce.com/public/`
 
 **Pasos de configuración:**
 ```bash
-# 1. Crear directorio
-sudo mkdir -p /var/www/landing-page/conce.com
-sudo cp landing-page/index.html /var/www/landing-page/conce.com/
-
-# 2. Configurar Nginx
-sudo nano /etc/nginx/sites-available/conce.com
-# (Pegar configuración arriba)
-
-# 3. Habilitar sitio
-sudo ln -sf /etc/nginx/sites-available/conce.com /etc/nginx/sites-enabled/conce.com
-
-# 4. Validar
-sudo nginx -t
-
-# 5. Recargar
-sudo systemctl reload nginx
-
-# 6. Obtener SSL
-sudo certbot certify --nginx -d conce.com -d www.conce.com
+cd vps-setup
+./04_A-add-site-php.sh conce.com conce
+./05-deploy-landing-page.sh conce.com conce
+# (después de que el DNS propague)
+./04_D-install-ssl-cloudpanel.sh conce.com
 ```
 
 ---
 
-### 2️⃣ **initech.cl**
-**Tipo:** Landing Page  
-**Propósito:** Sitio corporativo de Initech  
-**Tecnología:** HTML/CSS/SVG estático  
+### 2️⃣ **initech.cl / initech.fun**
+**Tipo:** Landing Page
+**Propósito:** Sitio corporativo de Initech
+**Tecnología:** HTML/CSS/SVG estático
 **Estado:** 🔄 Configuración pendiente
 
-**Archivos:**
-```
-/var/www/landing-page/initech.cl/
-└── index.html
-```
-
-**Configuración Nginx:**
-```nginx
-server {
-    listen 80;
-    listen [::]:80;
-    server_name initech.cl www.initech.cl;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name initech.cl www.initech.cl;
-
-    root /var/www/landing-page/initech.cl;
-    index index.html;
-
-    # SSL
-    ssl_certificate /etc/letsencrypt/live/initech.cl/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/initech.cl/privkey.pem;
-
-    # Logs
-    access_log /var/log/nginx/initech.cl/access.log;
-    error_log /var/log/nginx/initech.cl/error.log;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-}
-```
+**Archivos:** `/home/initech/htdocs/initech.fun/public/`
 
 **Pasos de configuración:**
 ```bash
-sudo mkdir -p /var/www/landing-page/initech.cl
-sudo cp landing-page/index.html /var/www/landing-page/initech.cl/
-sudo nano /etc/nginx/sites-available/initech.cl
-sudo ln -sf /etc/nginx/sites-available/initech.cl /etc/nginx/sites-enabled/initech.cl
-sudo nginx -t
-sudo systemctl reload nginx
-sudo certbot certify --nginx -d initech.cl -d www.initech.cl
+./04_A-add-site-php.sh initech.fun initech
+./05-deploy-landing-page.sh initech.fun initech
+./04_D-install-ssl-cloudpanel.sh initech.fun
 ```
 
 ---
 
 ### 3️⃣ **contrastocolor.ink**
-**Tipo:** Aplicación Web (Python)  
-**Propósito:** Portal de colores y contrastes  
-**Tecnología:** Flask + PostgreSQL  
+**Tipo:** Aplicación Web (Python)
+**Propósito:** Portal de colores y contrastes
+**Tecnología:** Flask + PostgreSQL
 **Estado:** 🔄 Desarrollo
 
-**Archivos:**
-```
-/var/www/contrastocolor.ink/
-├── app.py                  # Aplicación principal
-├── config.py               # Configuración
-├── requirements.txt        # Dependencias
-├── static/
-│   ├── css/
-│   ├── js/
-│   └── images/
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   └── ...
-└── venv/                   # Entorno virtual
-```
+**Archivos:** `/home/contrastocolor/htdocs/contrastocolor.ink/`
 
-**Instalación:**
+**Crear el sitio (CloudPanel):**
 ```bash
-# 1. Crear directorio
-sudo mkdir -p /var/www/contrastocolor.ink
-cd /var/www/contrastocolor.ink
+./03_B-install-python.sh   # si aun no esta instalado
+./04_B-add-site-python.sh contrastocolor.ink contrastocolor 8000
+```
 
-# 2. Entorno virtual
-python3 -m venv venv
-source venv/bin/activate
+**Subir la app** (por SFTP/SSH con el usuario `contrastocolor`) dentro de `/home/contrastocolor/htdocs/contrastocolor.ink/`:
 
-# 3. Instalar dependencias
-pip install flask flask-cors psycopg2-binary python-dotenv gunicorn
-
-# 4. Crear app.py
-cat > app.py << 'EOF'
+```python
+# app.py
 from flask import Flask, render_template, jsonify
-import os
 
 app = Flask(__name__)
 
@@ -184,53 +77,19 @@ def calculate_contrast(color1, color2):
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000)
-EOF
+```
 
-# 5. Crear requirements.txt
+**Entorno virtual y dependencias:**
+```bash
+cd /home/contrastocolor/htdocs/contrastocolor.ink
+python3 -m venv venv
+source venv/bin/activate
+pip install flask flask-cors psycopg2-binary python-dotenv gunicorn
 pip freeze > requirements.txt
+deactivate
 ```
 
-**Configuración Nginx:**
-```nginx
-upstream contrastocolor {
-    server 127.0.0.1:8000;
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name contrastocolor.ink www.contrastocolor.ink;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name contrastocolor.ink www.contrastocolor.ink;
-
-    # SSL
-    ssl_certificate /etc/letsencrypt/live/contrastocolor.ink/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/contrastocolor.ink/privkey.pem;
-
-    # Logs
-    access_log /var/log/nginx/contrastocolor.ink/access.log;
-    error_log /var/log/nginx/contrastocolor.ink/error.log;
-
-    location / {
-        proxy_pass http://contrastocolor;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    location /static/ {
-        alias /var/www/contrastocolor.ink/static/;
-    }
-}
-```
-
-**Systemd Service:**
+**Mantenerla corriendo (systemd, apuntando al puerto 8000 que ya espera CloudPanel):**
 ```bash
 sudo tee /etc/systemd/system/contrastocolor.service > /dev/null <<'EOF'
 [Unit]
@@ -239,10 +98,10 @@ After=network.target
 
 [Service]
 Type=notify
-User=www-data
-WorkingDirectory=/var/www/contrastocolor.ink
-Environment="PATH=/var/www/contrastocolor.ink/venv/bin"
-ExecStart=/var/www/contrastocolor.ink/venv/bin/gunicorn \
+User=contrastocolor
+WorkingDirectory=/home/contrastocolor/htdocs/contrastocolor.ink
+Environment="PATH=/home/contrastocolor/htdocs/contrastocolor.ink/venv/bin"
+ExecStart=/home/contrastocolor/htdocs/contrastocolor.ink/venv/bin/gunicorn \
     --workers 4 \
     --bind 127.0.0.1:8000 \
     app:app
@@ -258,86 +117,43 @@ sudo systemctl enable contrastocolor
 sudo systemctl start contrastocolor
 ```
 
+```bash
+./04_D-install-ssl-cloudpanel.sh contrastocolor.ink
+```
+
 ---
 
 ### 4️⃣ **wikipedia.cl**
-**Tipo:** Aplicación Web (PHP)  
-**Propósito:** Wiki colaborativa local  
-**Tecnología:** PHP 8.3 + PostgreSQL  
+**Tipo:** Aplicación Web (PHP)
+**Propósito:** Wiki colaborativa local
+**Tecnología:** PHP 8.3 + PostgreSQL
 **Estado:** 🔄 Desarrollo
 
-**Archivos:**
-```
-/var/www/wikipedia.cl/
-├── public/
-│   ├── index.php           # Punto de entrada
-│   ├── css/
-│   └── js/
-├── src/
-│   ├── Controller/
-│   ├── Model/
-│   └── View/
-├── config/
-│   ├── database.php
-│   └── config.php
-├── composer.json
-└── .htaccess
-```
+**Archivos:** `/home/wikipedia/htdocs/wikipedia.cl/public/`
 
-**Configuración Nginx:**
-```nginx
-server {
-    listen 80;
-    listen [::]:80;
-    server_name wikipedia.cl www.wikipedia.cl;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name wikipedia.cl www.wikipedia.cl;
-
-    root /var/www/wikipedia.cl/public;
-    index index.php;
-
-    # SSL
-    ssl_certificate /etc/letsencrypt/live/wikipedia.cl/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/wikipedia.cl/privkey.pem;
-
-    # Logs
-    access_log /var/log/nginx/wikipedia.cl/access.log;
-    error_log /var/log/nginx/wikipedia.cl/error.log;
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
-    }
-
-    location ~ /\.ht {
-        deny all;
-    }
-}
-```
-
-**Instalación:**
+**Crear el sitio (CloudPanel):**
 ```bash
-sudo mkdir -p /var/www/wikipedia.cl/public
-cd /var/www/wikipedia.cl
+./04_A-add-site-php.sh wikipedia.cl wikipedia
+```
 
-# Instalar Composer (si no está)
+**Instalar el código** (por SFTP/SSH con el usuario `wikipedia`):
+```bash
+cd /home/wikipedia/htdocs/wikipedia.cl
 composer create-project laravel/laravel . --prefer-dist
+# o: composer install   (si ya tienes el proyecto)
+```
 
-# O instalar paquetes existentes
-composer install
+**Base de datos** (MariaDB/MySQL vía CloudPanel, o PostgreSQL aparte — ver más abajo):
+```bash
+sudo clpctl db:add \
+    --domainName=wikipedia.cl \
+    --databaseName=wikipedia \
+    --databaseUserName=wikipedia_app \
+    --databaseUserPassword='contraseña_segura'
+```
 
-# Permisos
-sudo chown -R www-data:www-data .
-sudo chmod -R 755 .
+```bash
+./04_D-install-ssl-cloudpanel.sh wikipedia.cl
 ```
 
 ---
@@ -346,7 +162,7 @@ sudo chmod -R 755 .
 
 ### Registrador de Dominio
 
-Para cada dominio, agrega estos registros **A**:
+Para cada dominio, agrega estos registros **A** (o cambia los nameservers, según lo que te permita el registrador — ver `VPS-SETUP-GUIDE.md` para el caso de Network Solutions):
 
 ```
 Tipo: A
@@ -362,36 +178,11 @@ Valor: 158.69.222.245
 TTL: 3600
 ```
 
-### Proveedores Específicos
-
-#### **conce.com** (Si está en GoDaddy/Namecheap/ISP Chile)
-1. Ingresa a tu panel de control
-2. Busca "DNS Records" o "Manage DNS"
-3. Añade registros A como arriba
-4. Guarda cambios
-5. Espera 5-15 minutos para propagación
-
-#### **initech.cl** (Si está en ISP Chile)
-Mismo procedimiento que conce.com
-
-#### **contrastocolor.ink** (Si está en Namecheap/Google Domains)
-1. Panel de control del registrador
-2. Editar DNS
-3. Añadir registros A
-4. Guardar
-
-#### **wikipedia.cl** (Si está en ISP Chile)
-Mismo procedimiento general
-
 ### Verificar Propagación DNS
 
 ```bash
-# Desde tu computadora
 nslookup conce.com
 dig conce.com
-
-# En el VPS
-nslookup conce.com 8.8.8.8
 ```
 
 **Salida esperada:**
@@ -401,93 +192,46 @@ conce.com    A    158.69.222.245
 
 ---
 
-## 🔐 SSL/HTTPS - Certificados
+## 🔐 SSL/HTTPS — Certificados (vía CloudPanel)
 
-### Obtener Certificados
-
-**Para cada dominio:**
+**Para cada dominio, una vez que el DNS ya resuelve:**
 ```bash
-sudo certbot certify --nginx \
-    -d conce.com \
-    -d www.conce.com \
-    --email admin@conce.com \
-    --agree-tos \
-    --non-interactive
-
-sudo certbot certify --nginx \
-    -d initech.cl \
-    -d www.initech.cl \
-    --email admin@initech.cl \
-    --agree-tos \
-    --non-interactive
-
-sudo certbot certify --nginx \
-    -d contrastocolor.ink \
-    -d www.contrastocolor.ink \
-    --email admin@contrastocolor.ink \
-    --agree-tos \
-    --non-interactive
-
-sudo certbot certify --nginx \
-    -d wikipedia.cl \
-    -d www.wikipedia.cl \
-    --email admin@wikipedia.cl \
-    --agree-tos \
-    --non-interactive
+./04_D-install-ssl-cloudpanel.sh conce.com
+./04_D-install-ssl-cloudpanel.sh initech.fun
+./04_D-install-ssl-cloudpanel.sh contrastocolor.ink
+./04_D-install-ssl-cloudpanel.sh wikipedia.cl
 ```
 
-### Renovación Automática
+Cada script verifica el DNS antes de pedir el certificado y usa `clpctl lets-encrypt:install:certificate` internamente. La renovación es automática (la gestiona CloudPanel).
 
-```bash
-sudo systemctl enable certbot.timer
-sudo systemctl start certbot.timer
-sudo certbot renew --dry-run
-```
-
-### Ver Certificados
-
-```bash
-sudo certbot certificates
-```
+**Ver certificados:** panel web (`https://IP_DEL_VPS:8443`) → sitio → SSL/TLS, o `sudo clpctl site:list`.
 
 ---
 
 ## 📋 Checklist por Dominio
 
-### conce.com
+### conce.com / initech.fun (landing pages)
 - [ ] Agregar registros A en DNS
 - [ ] Esperar propagación DNS
-- [ ] Crear directorio `/var/www/landing-page/conce.com/`
-- [ ] Copiar index.html
-- [ ] Configurar Nginx
-- [ ] Obtener SSL con Certbot
-- [ ] Probar acceso a https://conce.com
-
-### initech.cl
-- [ ] Agregar registros A en DNS
-- [ ] Esperar propagación DNS
-- [ ] Crear directorio `/var/www/landing-page/initech.cl/`
-- [ ] Copiar index.html
-- [ ] Configurar Nginx
-- [ ] Obtener SSL con Certbot
-- [ ] Probar acceso a https://initech.cl
+- [ ] `04_A-add-site-php.sh` (crea el sitio en CloudPanel)
+- [ ] `05-deploy-landing-page.sh` (copia el HTML)
+- [ ] `04_D-install-ssl-cloudpanel.sh`
+- [ ] Probar acceso a https://el-dominio
 
 ### contrastocolor.ink
 - [ ] Agregar registros A en DNS
-- [ ] Crear aplicación Flask
-- [ ] Instalar dependencias
-- [ ] Configurar Nginx (upstream)
-- [ ] Crear systemd service
-- [ ] Obtener SSL con Certbot
+- [ ] `03_B-install-python.sh`
+- [ ] `04_B-add-site-python.sh`
+- [ ] Subir la app Flask + crear el servicio systemd
+- [ ] `04_D-install-ssl-cloudpanel.sh`
 - [ ] Probar acceso a https://contrastocolor.ink
 
 ### wikipedia.cl
 - [ ] Agregar registros A en DNS
-- [ ] Crear estructura PHP
-- [ ] Instalar Composer
-- [ ] Configurar base de datos
-- [ ] Configurar Nginx (PHP-FPM)
-- [ ] Obtener SSL con Certbot
+- [ ] `04_A-add-site-php.sh`
+- [ ] Instalar código (Composer)
+- [ ] Crear base de datos (`clpctl db:add`)
+- [ ] `04_D-install-ssl-cloudpanel.sh`
 - [ ] Probar acceso a https://wikipedia.cl
 
 ---
@@ -497,13 +241,9 @@ sudo certbot certificates
 ### Cambiar servidor de un dominio
 
 ```bash
-# 1. Actualizar DNS en registrador
-# Cambiar A record a nueva IP
-
-# 2. En el nuevo servidor, configurar sitio
-# (Repetir los pasos de configuración de Nginx/SSL)
-
-# 3. Esperar propagación (5-15 minutos)
+# 1. Actualizar DNS en registrador (cambiar el registro A a la nueva IP)
+# 2. En el nuevo servidor, crear el sitio con los scripts 04_*
+# 3. Esperar propagación (15 min - 24h)
 ```
 
 ### Cambiar propietario de dominio
@@ -514,10 +254,10 @@ Contacta al registrador para transferencia de dominio.
 
 ## 📊 Status de Dominios
 
-| Dominio | DNS | Nginx | SSL | Estado |
-|---------|-----|-------|-----|--------|
+| Dominio | DNS | Sitio CloudPanel | SSL | Estado |
+|---------|-----|-------------------|-----|--------|
 | conce.com | ⚠️ Pendiente | ⚠️ Pendiente | ⚠️ Pendiente | Setup |
-| initech.cl | ⚠️ Pendiente | ⚠️ Pendiente | ⚠️ Pendiente | Setup |
+| initech.fun | ⚠️ Pendiente | ⚠️ Pendiente | ⚠️ Pendiente | Setup |
 | contrastocolor.ink | ⚠️ Pendiente | ⚠️ Pendiente | ⚠️ Pendiente | Dev |
 | wikipedia.cl | ⚠️ Pendiente | ⚠️ Pendiente | ⚠️ Pendiente | Dev |
 
@@ -525,19 +265,19 @@ Contacta al registrador para transferencia de dominio.
 
 ## 🆘 Troubleshooting
 
-### "Domain name invalid" en Certbot
-**Causa:** DNS no está propagado aún  
-**Solución:** Esperar 5-15 minutos y reintentar
+### El certificado SSL falla
+**Causa:** DNS no está propagado aún
+**Solución:** Esperar y reintentar `./04_D-install-ssl-cloudpanel.sh dominio.com`
 
 ### "Connection refused" al acceder al dominio
-**Causa:** DNS no está configurado correctamente  
-**Solución:** Verificar registros A en el registrador
+**Causa:** DNS no está configurado correctamente
+**Solución:** Verificar registros A en el registrador (`nslookup dominio.com`)
 
-### "403 Forbidden"
-**Causa:** Permisos incorrectos en archivos  
-**Solución:** `sudo chown -R www-data:www-data /var/www/dominio`
+### "403 Forbidden" / "404 Not Found"
+**Causa:** Archivos no están en la carpeta correcta o permisos incorrectos
+**Solución:** Verificar `/home/SITE_USER/htdocs/dominio.com/public/` y sus permisos (el usuario dueño debe ser `SITE_USER`, no `www-data`)
 
 ---
 
 **Última actualización:** 2026-09-20
-**Versión:** 1.0.0
+**Versión:** 2.0.0
