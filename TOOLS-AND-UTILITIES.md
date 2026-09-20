@@ -60,6 +60,36 @@ sudo systemctl status nginx    # Ver estado
 - `/etc/nginx/sites-available/contrastocolor.ink`
 - `/etc/nginx/sites-available/wikipedia.cl`
 
+### Apache Tomcat 10 *(opcional)*
+**Propósito:** Servidor de aplicaciones para Java (servlets, WAR) — Nginx no ejecuta Java, así que para apps Java se usa Tomcat detrás de Nginx como reverse proxy
+
+**Instalación:**
+```bash
+sudo apt-get install tomcat10 tomcat10-admin
+sudo systemctl start tomcat10
+sudo systemctl enable tomcat10
+```
+
+**Directorios importantes:**
+```
+/var/lib/tomcat10/webapps/   # Despliega tus .war aquí
+/etc/tomcat10/               # Configuración
+/var/log/tomcat10/           # Logs
+```
+
+**Comandos útiles:**
+```bash
+sudo systemctl status tomcat10
+sudo systemctl restart tomcat10
+curl http://127.0.0.1:8080          # Prueba local (puerto por defecto)
+```
+
+**Exponerlo con Nginx bajo un dominio:**
+```bash
+./06_D-setup-tomcat-app.sh tudominio.com mi-app
+```
+Esto configura Nginx como reverse proxy hacia `http://127.0.0.1:8080`.
+
 ---
 
 ## 🐘 PHP 8.3
@@ -121,15 +151,20 @@ sudo apt-get install python3 python3-pip python3-venv
 - **venv:** Entornos virtuales
 
 **Paquetes comunes a instalar:**
+
+⚠️ Ubuntu 24.04 bloquea `pip install` global ("externally-managed-environment", PEP 668). Usa siempre un entorno virtual:
 ```bash
-pip3 install flask          # Framework web
-pip3 install fastapi        # Framework moderno
-pip3 install django         # Framework robusto
-pip3 install gunicorn       # WSGI HTTP Server
-pip3 install psycopg2       # Driver PostgreSQL
-pip3 install requests       # Cliente HTTP
-pip3 install python-dotenv  # Variables de entorno
-pip3 install pytest         # Framework de testing
+python3 -m venv /var/www/myapp/venv
+source /var/www/myapp/venv/bin/activate
+
+pip install flask          # Framework web
+pip install fastapi        # Framework moderno
+pip install django         # Framework robusto
+pip install gunicorn       # WSGI HTTP Server
+pip install psycopg2       # Driver PostgreSQL
+pip install requests       # Cliente HTTP
+pip install python-dotenv  # Variables de entorno
+pip install pytest         # Framework de testing
 ```
 
 **Crear entorno virtual:**
@@ -138,6 +173,39 @@ python3 -m venv /var/www/myapp/venv
 source /var/www/myapp/venv/bin/activate
 pip install -r requirements.txt
 ```
+
+### Whisper (OpenAI) *(opcional)*
+**Propósito:** Transcripción y traducción de audio a texto
+
+**Instalación:**
+```bash
+./02_I-install-python-whisper.sh
+```
+
+Este script:
+- Instala `ffmpeg` (requerido para decodificar audio/video)
+- Crea un entorno virtual compartido en `/opt/venvs/whisper`
+- Instala `openai-whisper` + librerías básicas (`requests`, `numpy`, `pandas`, `flask`, `fastapi`, `uvicorn`, `python-dotenv`, `gunicorn`)
+- Deja el comando `whisper` disponible globalmente (symlink a `/usr/local/bin/whisper`)
+
+**Uso:**
+```bash
+whisper audio.mp3 --model base --language Spanish
+whisper video.mp4 --model small --output_format srt
+```
+
+**Modelos** (de menor a mayor precisión y tamaño — se descargan la primera vez que se usan):
+```
+tiny, base, small, medium, large
+```
+
+**Usar las librerías Python del venv en tus propios scripts:**
+```bash
+source /opt/venvs/whisper/bin/activate
+python3 mi_script.py
+```
+
+**Nota de recursos:** Whisper corre en CPU en un VPS típico (sin GPU), por lo que modelos grandes (`medium`, `large`) pueden ser lentos. Para uso ligero, `base` o `small` suelen ser suficientes.
 
 ---
 
@@ -204,6 +272,51 @@ sudo -u postgres psql mi_base < backup.sql
 # Backup con compresión
 sudo -u postgres pg_dump -Fc mi_base > backup.dump
 ```
+
+### MariaDB *(opcional)*
+
+**Propósito:** Base de datos relacional compatible con MySQL — para software que exija específicamente ese motor
+
+**Instalación:**
+```bash
+sudo apt-get install mariadb-server mariadb-client
+```
+
+**Endurecer la instalación (recomendado, correr una sola vez):**
+```bash
+sudo mysql_secure_installation
+```
+
+**Comandos útiles:**
+```bash
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
+sudo systemctl status mariadb
+
+# Conectar
+sudo mysql
+mysql -u usuario -p nombre_base
+```
+
+**Comandos SQL básicos:**
+```sql
+CREATE DATABASE mi_base;
+CREATE USER 'mi_usuario'@'localhost' IDENTIFIED BY 'contraseña_segura';
+GRANT ALL PRIVILEGES ON mi_base.* TO 'mi_usuario'@'localhost';
+FLUSH PRIVILEGES;
+
+SHOW DATABASES;
+USE mi_base;
+SHOW TABLES;
+```
+
+**Backup & Restore:**
+```bash
+mysqldump -u usuario -p mi_base > backup.sql
+mysql -u usuario -p mi_base < backup.sql
+```
+
+**Extensión PHP:** ya incluida en `02_B-install-php.sh` (`php8.3-mysql`) — no requiere pasos adicionales para que PHP se conecte.
 
 ---
 

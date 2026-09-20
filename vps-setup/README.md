@@ -2,6 +2,7 @@
 
 Scripts automáticos, uno por paso, para configurar un VPS Ubuntu 24 LTS con:
 - Java 21, PHP 8.3, Python 3, PostgreSQL, Nginx + SSL/HTTPS
+- Extras opcionales: MariaDB, Apache Tomcat, Python + Whisper (transcripción de audio)
 
 ## 📐 Convención de nombres
 
@@ -46,6 +47,11 @@ curl http://initech.fun                     # Prueba SIN SSL primero
 
 # --- 05: (re)despliegue de la landing page ---
 ./05-deploy-landing-page.sh
+
+# --- extras opcionales del grupo 02 (corre solo los que necesites) ---
+./02_G-install-mariadb.sh          # MariaDB
+./02_H-install-tomcat.sh           # Apache Tomcat (requiere 02_A ya hecho)
+./02_I-install-python-whisper.sh   # Whisper + libs Python (requiere 02_C ya hecho)
 ```
 
 ## ⚠️ Importante: DNS primero
@@ -71,15 +77,19 @@ curl http://initech.fun                     # Prueba SIN SSL primero
 | 02_D | `02_D-install-postgresql.sh` | Instala y arranca PostgreSQL |
 | 02_E | `02_E-install-nginx.sh` | Instala y arranca Nginx |
 | 02_F | `02_F-install-certbot.sh` | Instala Certbot (Let's Encrypt) |
+| 02_G | `02_G-install-mariadb.sh` | *(Opcional)* Instala MariaDB |
+| 02_H | `02_H-install-tomcat.sh` | *(Opcional)* Instala Apache Tomcat — requiere que `02_A` (Java) ya haya corrido |
+| 02_I | `02_I-install-python-whisper.sh` | *(Opcional)* Instala Whisper (OpenAI, transcripción de audio) + ffmpeg + librerías Python básicas (flask, fastapi, pandas, numpy...) en un venv en `/opt/venvs/whisper` — requiere que `02_C` (Python) ya haya corrido |
 | 03 | `03-configure-nginx-site.sh` | Crea el virtual host de Nginx y copia la landing page |
 | 04 | `04-setup-ssl.sh` | Obtiene certificado SSL (verifica DNS antes) |
 | 05 | `05-deploy-landing-page.sh` | (Re)copia los archivos de la landing page |
 | 06_A | `06_A-setup-php-app.sh` | *(Opcional)* Configura una app PHP adicional |
 | 06_B | `06_B-setup-python-app.sh` | *(Opcional)* Configura una app Python (Flask + Gunicorn) |
 | 06_C | `06_C-setup-dns-server.sh` | *(Opcional)* Instala BIND9 como servidor DNS propio — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
-| — | `install-all.sh` | Ejecuta 01 → 02_A..F → 03 → 04 → 05 en orden |
+| 06_D | `06_D-setup-tomcat-app.sh` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio — requiere `02_H` ya hecho |
+| — | `install-all.sh` | Ejecuta 01 → 02_A..F (stack base) → 03 → 04 → 05 en orden. **No** incluye los opcionales `02_G/H/I` ni `06_*` — esos se corren a mano |
 
-Los pasos `06_*` son opcionales e independientes entre sí — instala solo los que necesites, en cualquier orden.
+Los pasos `02_G`/`02_H`/`02_I` y todos los `06_*` son opcionales e independientes entre sí — instala solo los que necesites. Las notas "requiere X ya hecho" son las únicas excepciones a "cualquier orden": son dependencias reales de software (Tomcat necesita Java corriendo; Whisper necesita Python corriendo), no de orden de ejecución arbitrario.
 
 ## ✅ Verificación Post-Instalación
 
@@ -110,6 +120,7 @@ ls -la /var/www/landing-page/
 ```bash
 ./06_A-setup-php-app.sh mi-app dominio.com      # App PHP
 ./06_B-setup-python-app.sh mi-app dominio.com   # App Python
+./06_D-setup-tomcat-app.sh dominio.com miapp    # App Java (Tomcat) detrás de Nginx
 ```
 
 Ver también: [ARCHITECTURE.md](../ARCHITECTURE.md), [DOMAINS.md](../DOMAINS.md), [DEPLOYMENT.md](../DEPLOYMENT.md), [TOOLS-AND-UTILITIES.md](../TOOLS-AND-UTILITIES.md)
