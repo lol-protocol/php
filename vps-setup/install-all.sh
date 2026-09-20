@@ -23,7 +23,10 @@ chmod +x *.sh
 
 # Pasos con letra (02_A..02_J) son independientes entre si: el orden
 # dentro del mismo numero no importa, solo que terminen antes del
-# siguiente numero.
+# siguiente numero. Solo incluye el stack MINIMO para dejar la landing
+# page respondiendo por HTTPS -- los extras (MariaDB, Tomcat, Whisper,
+# apps adicionales, DNS propio) se corren a mano cuando se necesiten
+# (ver el mensaje final de este script).
 STEPS=(
     "01-system-update.sh"
     "02_A-install-java.sh"
@@ -38,6 +41,12 @@ STEPS=(
     "05-deploy-landing-page.sh"
 )
 
+# Cada entrada de STEPS es "script.sh" o "script.sh:argumentos". El ":" separa
+# el nombre del script de los argumentos que necesita (ej. el dominio y el
+# email para 03/04). Aqui los separamos para poder llamar cada script con
+# sus propios argumentos dentro del mismo bucle:
+#   STEP="${ENTRY%%:*}"  -> todo ANTES del primer ":"  (el nombre del script)
+#   ARGS="${ENTRY#*:}"   -> todo DESPUES del primer ":" (sus argumentos)
 TOTAL=${#STEPS[@]}
 for i in "${!STEPS[@]}"; do
     ENTRY="${STEPS[$i]}"

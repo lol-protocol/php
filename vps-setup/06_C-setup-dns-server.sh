@@ -6,14 +6,21 @@ VPS_IP=${2:-"158.69.222.245"}
 OVH_SECONDARY=${3:-"sdns2.ovh.ca"}
 
 echo "========================================"
-echo "Configurando Servidor DNS (BIND9)"
+echo "[06_C] Configurando Servidor DNS (BIND9)"
 echo "Dominio: $DOMAIN"
 echo "IP VPS: $VPS_IP"
 echo "Secundario OVH: $OVH_SECONDARY"
 echo "========================================"
 echo ""
+echo "NOTA: solo necesitas este script si tu registrador de dominio NO te"
+echo "deja gestionar registros DNS (A/CNAME/TXT) directamente -- la mayoria"
+echo "de registradores si tienen esa opcion; revisa antes de usar esto."
+echo ""
 
-# Resolve OVH secondary DNS IP for AXFR whitelist
+# AXFR (transferencia de zona) es el mecanismo con el que OVH copia
+# automaticamente nuestra zona DNS como respaldo. Necesitamos la IP real de
+# su servidor secundario para autorizarla explicitamente mas abajo
+# (allow-transfer) -- sin esto, OVH no podria sincronizar los registros.
 echo "Resolviendo IP del servidor secundario de OVH..."
 OVH_SECONDARY_IP=$(dig +short $OVH_SECONDARY | tail -1)
 
@@ -26,24 +33,31 @@ fi
 echo "IP de $OVH_SECONDARY: $OVH_SECONDARY_IP"
 echo ""
 
-# Install BIND9
+# bind9: el servidor DNS en si (el mismo que usan la mayoria de registradores
+#        por detras). bind9utils trae named-checkconf/named-checkzone, que
+#        usamos mas abajo para validar que no haya errores de sintaxis.
 echo "[1/4] Instalando BIND9..."
 sudo apt-get update
 sudo apt-get install -y bind9 bind9utils dnsutils
 
-# Create zone file
 echo "[2/4] Creando zona DNS para $DOMAIN..."
 sudo mkdir -p /etc/bind/zones
 
+# El "Serial" de la zona debe subir cada vez que la editas para que otros
+# servidores DNS (como el secundario de OVH) sepan que hay cambios que
+# sincronizar. Usar la fecha (YYYYMMDDnn) es la convencion estandar.
 SERIAL=$(date +%Y%m%d01)
 
+# \$TTL con backslash: queremos que BIND lea "$TTL" literal (es sintaxis
+# propia de los archivos de zona), no que bash intente sustituir una
+# variable de shell llamada TTL que no existe.
 sudo tee /etc/bind/zones/db.$DOMAIN > /dev/null <<EOF
 \$TTL    3600
 @       IN      SOA     ns1.$DOMAIN. admin.$DOMAIN. (
-                        $SERIAL  ; Serial
-                        3600            ; Refresh
-                        1800            ; Retry
-                        604800          ; Expire
+                        $SERIAL  ; Serial   (sube en cada cambio de esta zona)
+                        3600            ; Refresh (cada cuanto el secundario revisa cambios)
+                        1800            ; Retry   (si el refresh falla, cuanto esperar para reintentar)
+                        604800          ; Expire  (tras cuanto el secundario deja de responder si no logra sincronizar)
                         3600 )          ; Negative Cache TTL
 ;
 @       IN      NS      ns1.$DOMAIN.
@@ -54,7 +68,9 @@ ns1     IN      A       $VPS_IP
 www     IN      A       $VPS_IP
 EOF
 
-# Configure zone in named.conf.local
+# Registra la zona en la configuracion principal de BIND. 'type master' indica
+# que ESTE servidor es la fuente de verdad; allow-transfer/also-notify le dan
+# permiso explicito a OVH (y le avisan) para copiar la zona como respaldo.
 echo "[3/4] Registrando zona en BIND..."
 sudo tee -a /etc/bind/named.conf.local > /dev/null <<EOF
 
@@ -66,16 +82,17 @@ zone "$DOMAIN" {
 };
 EOF
 
-# Validate configuration
+# Valida la sintaxis ANTES de reiniciar -- un error aqui tumbaria la
+# resolucion DNS de TODOS los dominios que dependan de este servidor
 echo "[4/4] Validando configuración..."
 sudo named-checkconf
 sudo named-checkzone $DOMAIN /etc/bind/zones/db.$DOMAIN
 
-# Restart BIND9
 sudo systemctl restart bind9
-sudo systemctl enable bind9
+sudo systemctl enable bind9   # arranca automaticamente si el VPS se reinicia
 
-# Open firewall for DNS (port 53)
+# El puerto 53 (DNS) usa tanto TCP como UDP -- UDP para consultas normales,
+# TCP para respuestas grandes y para las transferencias de zona (AXFR)
 sudo ufw allow 53/tcp
 sudo ufw allow 53/udp
 

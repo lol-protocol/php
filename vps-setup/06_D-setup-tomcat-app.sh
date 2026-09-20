@@ -5,7 +5,7 @@ DOMAIN=${1:-"app.initech.fun"}
 CONTEXT_PATH=${2:-""}
 
 echo "========================================"
-echo "Configurando Nginx -> Tomcat"
+echo "[06_D] Configurando Nginx -> Tomcat"
 echo "Dominio: $DOMAIN"
 echo "Context path: /${CONTEXT_PATH}"
 echo "========================================"
@@ -18,6 +18,10 @@ fi
 
 sudo mkdir -p /var/log/nginx/$DOMAIN
 
+# Nginx aqui actua puramente como reverse proxy: no sirve archivos propios,
+# solo reenvia todo el trafico del dominio publico hacia Tomcat (puerto 8080
+# local). El $CONTEXT_PATH es la subcarpeta bajo la que Tomcat publica tu
+# app (el nombre del .war sin la extension, ver el aviso final del script).
 sudo tee /etc/nginx/sites-available/$DOMAIN > /dev/null <<EOF
 server {
     listen 80;
@@ -37,9 +41,10 @@ server {
 }
 EOF
 
+# El enlace en sites-enabled es lo que realmente activa el sitio
 sudo ln -sf /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/$DOMAIN
 
-sudo nginx -t
+sudo nginx -t              # valida ANTES de recargar, para no tumbar los sitios que ya funcionan
 sudo systemctl reload nginx
 
 echo ""
