@@ -21,49 +21,39 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 chmod +x *.sh
 
+# Pasos con letra (02_A..02_F) son independientes entre si: el orden
+# dentro del mismo numero no importa, solo que terminen antes del
+# siguiente numero.
 STEPS=(
     "01-system-update.sh"
-    "02-install-java.sh"
-    "03-install-php.sh"
-    "04-install-python.sh"
-    "05-install-postgresql.sh"
-    "06-install-nginx.sh"
-    "07-install-certbot.sh"
+    "02_A-install-java.sh"
+    "02_B-install-php.sh"
+    "02_C-install-python.sh"
+    "02_D-install-postgresql.sh"
+    "02_E-install-nginx.sh"
+    "02_F-install-certbot.sh"
+    "03-configure-nginx-site.sh:$DOMAIN"
+    "04-setup-ssl.sh:$DOMAIN $EMAIL"
+    "05-deploy-landing-page.sh"
 )
 
+TOTAL=${#STEPS[@]}
 for i in "${!STEPS[@]}"; do
-    STEP="${STEPS[$i]}"
+    ENTRY="${STEPS[$i]}"
+    STEP="${ENTRY%%:*}"
+    if [[ "$ENTRY" == *:* ]]; then
+        ARGS="${ENTRY#*:}"
+    else
+        ARGS=""
+    fi
+
     echo ""
     echo "╔════════════════════════════════════════════════════════════╗"
-    printf "║ [%d/%d] %-52s ║\n" "$((i+1))" "$((${#STEPS[@]}+3))" "$STEP"
+    printf "║ [%d/%d] %-52s ║\n" "$((i+1))" "$TOTAL" "$STEP"
     echo "╚════════════════════════════════════════════════════════════╝"
     echo ""
-    bash "./$STEP"
+    bash "./$STEP" $ARGS
 done
-
-N=$((${#STEPS[@]}+1))
-echo ""
-echo "╔════════════════════════════════════════════════════════════╗"
-printf "║ [%d/%d] %-52s ║\n" "$N" "$((${#STEPS[@]}+3))" "08-configure-nginx-site.sh"
-echo "╚════════════════════════════════════════════════════════════╝"
-echo ""
-bash ./08-configure-nginx-site.sh "$DOMAIN"
-
-N=$((N+1))
-echo ""
-echo "╔════════════════════════════════════════════════════════════╗"
-printf "║ [%d/%d] %-52s ║\n" "$N" "$((${#STEPS[@]}+3))" "09-setup-ssl.sh"
-echo "╚════════════════════════════════════════════════════════════╝"
-echo ""
-bash ./09-setup-ssl.sh "$DOMAIN" "$EMAIL"
-
-N=$((N+1))
-echo ""
-echo "╔════════════════════════════════════════════════════════════╗"
-printf "║ [%d/%d] %-52s ║\n" "$N" "$((${#STEPS[@]}+3))" "10-deploy-landing-page.sh"
-echo "╚════════════════════════════════════════════════════════════╝"
-echo ""
-bash ./10-deploy-landing-page.sh
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════╗"
@@ -80,8 +70,8 @@ echo "Logs de Nginx:"
 echo "  Access: /var/log/nginx/$DOMAIN/access.log"
 echo "  Error:  /var/log/nginx/$DOMAIN/error.log"
 echo ""
-echo "Pasos opcionales:"
-echo "  - Aplicacion PHP:    bash ./11-setup-php-app.sh nombre-app dominio.com"
-echo "  - Aplicacion Python: bash ./12-setup-python-app.sh nombre-app dominio.com"
-echo "  - Servidor DNS propio (solo si tu registrador no tiene DNS Management): bash ./13-setup-dns-server.sh dominio.com IP"
+echo "Pasos opcionales (independientes entre si):"
+echo "  - Aplicacion PHP:    bash ./06_A-setup-php-app.sh nombre-app dominio.com"
+echo "  - Aplicacion Python: bash ./06_B-setup-python-app.sh nombre-app dominio.com"
+echo "  - Servidor DNS propio (solo si tu registrador no tiene DNS Management): bash ./06_C-setup-dns-server.sh dominio.com IP"
 echo ""

@@ -74,24 +74,29 @@ chmod +x install-all.sh
 
 Si prefieres más control, ejecuta cada paso manualmente.
 
-### Paso 1️⃣: Instalación Base (7 scripts, uno por componente)
+### Paso 1️⃣: Prerequisito único
 
 ```bash
 bash 01-system-update.sh       # Actualiza el sistema
-bash 02-install-java.sh        # Java 21
-bash 03-install-php.sh         # PHP 8.3 + extensiones
-bash 04-install-python.sh      # Python 3
-bash 05-install-postgresql.sh  # PostgreSQL
-bash 06-install-nginx.sh       # Nginx
-bash 07-install-certbot.sh     # Certbot (para SSL)
 ```
 
-Cada script confirma al final la versión instalada de su componente.
-
-### Paso 2️⃣: Configurar Nginx
+### Paso 2️⃣: Instalaciones independientes entre sí (6 scripts, cualquier orden)
 
 ```bash
-bash 08-configure-nginx-site.sh initech.cl
+bash 02_A-install-java.sh        # Java 21
+bash 02_B-install-php.sh         # PHP 8.3 + extensiones
+bash 02_C-install-python.sh      # Python 3
+bash 02_D-install-postgresql.sh  # PostgreSQL
+bash 02_E-install-nginx.sh       # Nginx
+bash 02_F-install-certbot.sh     # Certbot (para SSL)
+```
+
+Cada script confirma al final la versión instalada de su componente. La letra indica que no importa el orden entre ellos — solo que todos terminen antes del Paso 3.
+
+### Paso 3️⃣: Configurar Nginx
+
+```bash
+bash 03-configure-nginx-site.sh initech.cl
 ```
 
 Esto:
@@ -106,10 +111,10 @@ sudo systemctl status nginx
 curl http://initech.cl
 ```
 
-### Paso 3️⃣: Configurar SSL/HTTPS
+### Paso 4️⃣: Configurar SSL/HTTPS
 
 ```bash
-bash 09-setup-ssl.sh initech.cl admin@initech.cl
+bash 04-setup-ssl.sh initech.cl admin@initech.cl
 ```
 
 ⚠️ **IMPORTANTE:** Tu dominio debe estar apuntando a la IP del VPS antes de este paso. El script verifica el DNS automáticamente antes de continuar.
@@ -124,10 +129,10 @@ Esto:
 sudo certbot certificates -d initech.cl
 ```
 
-### Paso 4️⃣: Desplegar Landing Page
+### Paso 5️⃣: Desplegar Landing Page
 
 ```bash
-bash 10-deploy-landing-page.sh
+bash 05-deploy-landing-page.sh
 ```
 
 Copia los archivos de la landing page a:
@@ -238,7 +243,7 @@ sudo certbot renew --dry-run
 ### Si necesitas Aplicación PHP:
 
 ```bash
-bash 11-setup-php-app.sh mi-app dominio.com
+bash 06_A-setup-php-app.sh mi-app dominio.com
 ```
 
 Luego:
@@ -249,7 +254,7 @@ Luego:
 ### Si necesitas Aplicación Python:
 
 ```bash
-bash 12-setup-python-app.sh mi-app dominio.com
+bash 06_B-setup-python-app.sh mi-app dominio.com
 ```
 
 Luego:
