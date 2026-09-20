@@ -12,16 +12,17 @@ function mes_label(string $ym): string
     return ($meses[$mes] ?? $mes) . ' ' . $anio;
 }
 
-/** Formato compacto para espacios angostos, ej. '$12.3K', '$4.2M'. */
+/** Formato compacto para espacios angostos, ej. '$12.3K', '$4.2M', '-$4.2M'. */
 function money_compacta(float $valor): string
 {
     $moneda = \App\Config::MONEDA;
+    $signo = $valor < 0 ? '-' : '';
     $abs = abs($valor);
     if ($abs >= 1_000_000) {
-        return $moneda . number_format($abs / 1_000_000, 1) . 'M';
+        return $signo . $moneda . number_format($abs / 1_000_000, 1) . 'M';
     }
     if ($abs >= 1_000) {
-        return $moneda . number_format($abs / 1_000, 1) . 'K';
+        return $signo . $moneda . number_format($abs / 1_000, 1) . 'K';
     }
     return \App\Config::money($valor);
 }
@@ -29,7 +30,8 @@ function money_compacta(float $valor): string
 /** Formatea un monto en su moneda original (no convertida), ej. 'MX$1,234.00'. */
 function money_moneda(float $monto, string $codigoMoneda): string
 {
-    return \App\Repositories\MonedaRepository::simbolo($codigoMoneda) . number_format($monto, 2) . ' ' . $codigoMoneda;
+    $simbolo = \App\Repositories\MonedaRepository::simbolo($codigoMoneda);
+    return ($monto < 0 ? '-' : '') . $simbolo . number_format(abs($monto), 2) . ' ' . $codigoMoneda;
 }
 
 /** % de cambio de anterior a actual, o null si no hay base para comparar. */

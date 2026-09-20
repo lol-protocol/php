@@ -96,7 +96,10 @@ final class SegmentacionRepository
 
     /**
      * LTV (a la fecha) por cohorte de alta: para cada mes en que un grupo de
-     * clientes se dio de alta, el promedio de cuanto pago cada uno hasta hoy.
+     * clientes se dio de alta, el promedio de cuanto pago cada uno hasta hoy,
+     * neto de sus notas de credito -si le devolvimos la plata no es valor
+     * que el cliente haya dejado-. Las notas van por subconsulta escalar y
+     * no por otro JOIN, para no multiplicar filas contra el join de pagos.
      */
     public function ltvPorCohorte(): array
     {
@@ -104,7 +107,11 @@ final class SegmentacionRepository
             "SELECT cohorte, COUNT(*) AS clientes, AVG(total_cliente) AS ltv_promedio
              FROM (
                  SELECT to_char(c.fecha_alta, 'YYYY-MM') AS cohorte, c.id,
-                        COALESCE(SUM(p.monto * m.tasa_a_usd), 0) AS total_cliente
+                        COALESCE(SUM(p.monto * m.tasa_a_usd), 0)
+                          - COALESCE((SELECT SUM(n.monto * mn.tasa_a_usd)
+                                      FROM notas_credito n
+                                      JOIN monedas mn ON mn.codigo = n.moneda_codigo
+                                      WHERE n.cliente_id = c.id), 0) AS total_cliente
                  FROM clientes c
                  LEFT JOIN pagos p ON p.cliente_id = c.id AND NOT p.anulada
                  LEFT JOIN monedas m ON m.codigo = p.moneda_codigo

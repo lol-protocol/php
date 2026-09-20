@@ -14,10 +14,13 @@ use App\Config;
  * @var string $formato 'money' (Config::money) o 'entero' (numero tal cual), para el tooltip
  */
 
+// Se escala por valor absoluto: un mes puede dar negativo (mas devoluciones
+// que cobros) y si se lo midiera con el valor crudo la barra quedaria en 0%,
+// o sea invisible, igual que un mes sin movimiento.
 $maxValor = 1.0;
 foreach ($filas as $fila) {
     foreach ($series as $serie) {
-        $maxValor = max($maxValor, (float) $fila[$serie['clave']]);
+        $maxValor = max($maxValor, abs((float) $fila[$serie['clave']]));
     }
 }
 
@@ -29,12 +32,13 @@ $formatearValor = $formato === 'money'
     <?php foreach ($filas as $fila): ?>
         <div class="grupo">
             <?php foreach ($series as $serie): ?>
+                <?php $valor = (float) $fila[$serie['clave']]; ?>
                 <?= svg_barra(
                     'bar',
-                    'height:' . pct_altura((float) $fila[$serie['clave']], $maxValor) . '%',
-                    $serie['color'],
+                    'height:' . pct_altura(abs($valor), $maxValor) . '%',
+                    $valor < 0 ? 'var(--critical)' : $serie['color'],
                     ($serie['etiqueta'] !== '' ? $serie['etiqueta'] . ' ' : '')
-                        . mes_label($fila['mes']) . ': ' . $formatearValor((float) $fila[$serie['clave']])
+                        . mes_label($fila['mes']) . ': ' . $formatearValor($valor)
                 ) ?>
             <?php endforeach; ?>
         </div>

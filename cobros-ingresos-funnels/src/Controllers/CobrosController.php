@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Database;
 use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
@@ -196,14 +197,18 @@ final class CobrosController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!$boleta['anulada']) {
-                $boletaRepo->anular($id);
-                AuditoriaRepository::auditarComoUsuarioActual('anular', 'boleta', $id, sprintf(
-                    'Boleta #%d ("%s", %s)',
-                    $id,
-                    $boleta['concepto'],
-                    money_moneda((float) $boleta['monto'], $boleta['moneda_codigo'])
-                ));
-                $this->emitirNotaDeCredito($boleta);
+                // Atomico: la boleta no puede quedar anulada sin su nota de
+                // credito, porque la guarda de arriba impediria reintentar.
+                Database::transaccion(function () use ($boletaRepo, $id, $boleta): void {
+                    $boletaRepo->anular($id);
+                    AuditoriaRepository::auditarComoUsuarioActual('anular', 'boleta', $id, sprintf(
+                        'Boleta #%d ("%s", %s)',
+                        $id,
+                        $boleta['concepto'],
+                        money_moneda((float) $boleta['monto'], $boleta['moneda_codigo'])
+                    ));
+                    $this->emitirNotaDeCredito($boleta);
+                });
             }
             header('Location: ?page=cobros&anulada=' . $id);
             exit;

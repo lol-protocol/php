@@ -108,7 +108,15 @@ final class IngresosRepository
         return $buckets;
     }
 
-    /** Cobros por mes (sin pagos anulados y netos de devoluciones), consolidados a USD. */
+    /**
+     * Cobros por mes (sin pagos anulados y netos de devoluciones),
+     * consolidados a USD.
+     *
+     * Se fusionan los meses de las dos fuentes, no solo los que tienen
+     * pagos: un mes que solo tuvo devoluciones tambien es un mes con
+     * movimiento, y si se lo salteara el grafico no cerraria con el KPI de
+     * cobrado (que si las cuenta). Por eso un mes puede dar negativo.
+     */
     public function cobrosPorMes(string $desde, string $hasta): array
     {
         $stmt = $this->db->prepare(
@@ -116,14 +124,22 @@ final class IngresosRepository
              FROM pagos p
              JOIN monedas m ON m.codigo = p.moneda_codigo
              WHERE p.fecha_pago BETWEEN :desde AND :hasta AND NOT p.anulada
-             GROUP BY mes ORDER BY mes"
+             GROUP BY mes"
         );
         $stmt->execute([':desde' => $desde, ':hasta' => $hasta]);
-        $filas = $stmt->fetchAll();
 
-        $devolucionesPorMes = (new NotaCreditoRepository())->porMesUsd($desde, $hasta);
-        foreach ($filas as &$fila) {
-            $fila['total'] = (float) $fila['total'] - ($devolucionesPorMes[$fila['mes']] ?? 0.0);
+        $porMes = [];
+        foreach ($stmt->fetchAll() as $fila) {
+            $porMes[$fila['mes']] = (float) $fila['total'];
+        }
+        foreach ((new NotaCreditoRepository())->porMesUsd($desde, $hasta) as $mes => $devuelto) {
+            $porMes[$mes] = ($porMes[$mes] ?? 0.0) - $devuelto;
+        }
+        ksort($porMes);
+
+        $filas = [];
+        foreach ($porMes as $mes => $total) {
+            $filas[] = ['mes' => $mes, 'total' => $total];
         }
 
         return $filas;

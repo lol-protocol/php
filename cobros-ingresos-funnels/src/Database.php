@@ -28,4 +28,26 @@ final class Database
 
         return self::$connection;
     }
+
+    /**
+     * Corre $operacion dentro de una transaccion: o quedan todas sus
+     * escrituras o ninguna. Para los flujos que escriben mas de una fila
+     * relacionada (ej. anular una boleta y emitir su nota de credito: si la
+     * nota fallara despues del UPDATE, la boleta quedaria anulada con sus
+     * pagos sin respaldo, y la guarda de idempotencia impediria reintentar).
+     * La excepcion se vuelve a lanzar tras el rollback, para que la maneje
+     * el ErrorHandler global.
+     */
+    public static function transaccion(callable $operacion): void
+    {
+        $db = self::connection();
+        $db->beginTransaction();
+        try {
+            $operacion();
+            $db->commit();
+        } catch (\Throwable $e) {
+            $db->rollBack();
+            throw $e;
+        }
+    }
 }

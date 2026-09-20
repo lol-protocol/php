@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
+use App\Database;
 use App\Repositories\MonedaRepository;
 use App\Repositories\SegmentacionRepository;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +29,61 @@ final class MonedaYSegmentacionTest extends TestCase
     {
         $texto = money_moneda(1234.5, 'USD');
         self::assertSame('$1,234.50 USD', $texto);
+    }
+
+    public function testMoneyMonedaPoneElSignoAntesDelSimbolo(): void
+    {
+        self::assertSame('-$1,234.50 USD', money_moneda(-1234.5, 'USD'));
+    }
+
+    /**
+     * Si al cliente le devolvimos la plata, esa plata no es valor que haya
+     * dejado: el LTV tiene que restar sus notas de credito. Reproduce el
+     * caso real de un cliente con todo lo cobrado devuelto, que aparecia
+     * con su LTV bruto intacto.
+     */
+    public function testLtvPorCohorteDescuentaLasNotasDeCredito(): void
+    {
+        $db = Database::connection();
+        $boleta = $db->query('SELECT id, cliente_id, moneda_codigo FROM boletas ORDER BY id LIMIT 1')->fetch();
+        self::assertNotFalse($boleta, 'este test asume que el seed dejo al menos una boleta');
+
+        $cohorte = $db->prepare("SELECT to_char(fecha_alta, 'YYYY-MM') FROM clientes WHERE id = :id");
+        $cohorte->execute([':id' => $boleta['cliente_id']]);
+        $mesCohorte = (string) $cohorte->fetchColumn();
+
+        $repo = new SegmentacionRepository();
+        $ltvDe = static function (array $filas, string $mes): ?float {
+            foreach ($filas as $fila) {
+                if ($fila['cohorte'] === $mes) {
+                    return (float) $fila['ltv_promedio'];
+                }
+            }
+            return null;
+        };
+
+        $antes = $ltvDe($repo->ltvPorCohorte(), $mesCohorte);
+        self::assertNotNull($antes);
+
+        $stmt = $db->prepare(
+            'INSERT INTO notas_credito (boleta_id, cliente_id, monto, moneda_codigo, fecha, motivo)
+             VALUES (:b, :c, 500, :m, CURRENT_DATE, :motivo) RETURNING id'
+        );
+        $stmt->execute([
+            ':b' => $boleta['id'],
+            ':c' => $boleta['cliente_id'],
+            ':m' => $boleta['moneda_codigo'],
+            ':motivo' => 'Nota de prueba ' . uniqid(),
+        ]);
+        $notaId = (int) $stmt->fetchColumn();
+
+        try {
+            $despues = $ltvDe($repo->ltvPorCohorte(), $mesCohorte);
+            self::assertNotNull($despues);
+            self::assertLessThan($antes, $despues, 'emitir una nota de credito tiene que bajar el LTV de esa cohorte');
+        } finally {
+            $db->prepare('DELETE FROM notas_credito WHERE id = :id')->execute([':id' => $notaId]);
+        }
     }
 
     public function testTopPorDimensionEstaOrdenadoDescendentePorFacturacion(): void

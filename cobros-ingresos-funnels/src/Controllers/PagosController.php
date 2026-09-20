@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Database;
 use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
@@ -198,12 +199,16 @@ final class PagosController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!$pago['anulada']) {
-                $pagoRepo->anular($id);
-                AuditoriaRepository::auditarComoUsuarioActual('anular', 'pago', $id, sprintf(
-                    'Pago #%d (%s)',
-                    $id,
-                    money_moneda((float) $pago['monto'], $pago['moneda_codigo'])
-                ));
+                // Atomico por la misma razon que en boletas: la guarda de
+                // idempotencia impediria reintentar si quedara a medias.
+                Database::transaccion(function () use ($pagoRepo, $id, $pago): void {
+                    $pagoRepo->anular($id);
+                    AuditoriaRepository::auditarComoUsuarioActual('anular', 'pago', $id, sprintf(
+                        'Pago #%d (%s)',
+                        $id,
+                        money_moneda((float) $pago['monto'], $pago['moneda_codigo'])
+                    ));
+                });
             }
             header('Location: ?page=pagos&anulado=' . $id);
             exit;

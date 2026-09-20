@@ -40,6 +40,21 @@ final class HelpersTest extends TestCase
         self::assertSame('$999.00', money_compacta(999.0));
     }
 
+    /** money_compacta() se comia el signo en los tramos K/M: -4.2M se veia igual que +4.2M. */
+    public function testMoneyCompactaConservaElSignoDeLosNegativos(): void
+    {
+        self::assertSame('-$12.3K', money_compacta(-12345.0));
+        self::assertSame('-$4.2M', money_compacta(-4_200_000.0));
+        self::assertSame('-$999.00', money_compacta(-999.0));
+    }
+
+    /** El signo va antes del simbolo: los cobros netos pueden dar negativo si hay devoluciones. */
+    public function testMoneyPoneElSignoAntesDelSimbolo(): void
+    {
+        self::assertSame('-$58.00', \App\Config::money(-58.0));
+        self::assertSame('$58.00', \App\Config::money(58.0));
+    }
+
     public function testDeltaPctNuloSinBaseDeComparacion(): void
     {
         self::assertNull(delta_pct(100.0, 0.0));
