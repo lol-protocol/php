@@ -14,8 +14,14 @@ echo ""
 # de emitir el certificado -- si el DNS no propago aun, Certbot fallara.
 # Este chequeo previo evita gastar un intento (Let's Encrypt limita cuantas
 # veces puedes pedir certificado para el mismo dominio por semana).
+#
+# Revisamos TANTO $DOMAIN como www.$DOMAIN porque el comando de Certbot de
+# abajo pide el certificado para los dos a la vez (-d $DOMAIN -d www.$DOMAIN):
+# si a cualquiera de los dos le falta el registro A, Certbot rechaza TODO el
+# certificado (no emite uno parcial), no solo el subdominio que falla.
 echo "Verificando que el DNS ya resuelve a este servidor..."
 RESOLVED_IP=$(dig +short $DOMAIN | tail -1)
+RESOLVED_WWW_IP=$(dig +short www.$DOMAIN | tail -1)
 # -4 fuerza IPv4: "dig +short" (sin mas flags) consulta el registro A (IPv4).
 # Sin -4, si el VPS tiene conectividad IPv6, curl podria devolver una IPv6
 # aqui y la comparacion de abajo daria un falso "el DNS no apunta a este VPS"
@@ -23,11 +29,12 @@ RESOLVED_IP=$(dig +short $DOMAIN | tail -1)
 MY_IP=$(curl -4 -s --max-time 5 ifconfig.me)   # --max-time evita que el script se cuelgue si el servicio no responde
 
 echo "  DNS de $DOMAIN resuelve a: $RESOLVED_IP"
+echo "  DNS de www.$DOMAIN resuelve a: $RESOLVED_WWW_IP"
 echo "  IP de este VPS: $MY_IP"
 
-if [ "$RESOLVED_IP" != "$MY_IP" ]; then
+if [ "$RESOLVED_IP" != "$MY_IP" ] || [ "$RESOLVED_WWW_IP" != "$MY_IP" ]; then
     echo ""
-    echo "ADVERTENCIA: el DNS todavia no apunta a este VPS."
+    echo "ADVERTENCIA: el DNS de $DOMAIN y/o www.$DOMAIN todavia no apunta a este VPS."
     echo "Espera a que propague antes de continuar (puede tardar hasta 24-48h)."
     read -p "¿Continuar de todas formas? (s/n) " -n 1 -r
     echo

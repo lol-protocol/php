@@ -180,7 +180,7 @@ nslookup initech.cl
 dig initech.cl
 ```
 
-Espera 5-15 minutos para que se propague.
+Espera a que se propague -- normalmente 15-60 minutos, pero según el registrador puede tardar hasta 24-48h (por experiencia, Network Solutions puede ser de los lentos).
 
 ---
 
@@ -232,7 +232,7 @@ sudo certbot renew --dry-run
 - **Verificar:** `ls -la /var/www/landing-page/tudominio.com/`
 
 **Problema:** SSL no se genera
-- **Solución:** Asegúrate que DNS esté propagado (5-15 min)
+- **Solución:** Asegúrate que DNS esté propagado (15-60 min, hasta 24-48h segun el registrador)
 - **Verificar:** `curl http://dominio.com` (sin S)
 
 **Problema:** PHP no funciona

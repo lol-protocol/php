@@ -392,7 +392,7 @@ TTL: 3600
 2. Busca "DNS Records" o "Manage DNS"
 3. Añade registros A como arriba
 4. Guarda cambios
-5. Espera 5-15 minutos para propagación
+5. Espera a que propague -- normalmente 15-60 minutos, aunque algunos registradores (ej. Network Solutions) pueden tardar hasta 24-48h
 
 #### **initech.cl** (Si está en ISP Chile)
 Mismo procedimiento que conce.com
@@ -526,7 +526,7 @@ sudo certbot certificates
 # 2. En el nuevo servidor, configurar sitio
 # (Repetir los pasos de configuración de Nginx/SSL)
 
-# 3. Esperar propagación (5-15 minutos)
+# 3. Esperar propagación (15-60 min, hasta 24-48h segun el registrador)
 ```
 
 ### Cambiar propietario de dominio
@@ -550,7 +550,7 @@ Contacta al registrador para transferencia de dominio.
 
 ### "Domain name invalid" en Certbot
 **Causa:** DNS no está propagado aún  
-**Solución:** Esperar 5-15 minutos y reintentar
+**Solución:** Esperar (15-60 min, hasta 24-48h segun el registrador) y reintentar
 
 ### "Connection refused" al acceder al dominio
 **Causa:** DNS no está configurado correctamente  
