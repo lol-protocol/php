@@ -56,11 +56,11 @@ CREATE TABLE configuracion_alertas (
 CREATE TABLE filtros_guardados (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    scope VARCHAR(50) NOT NULL,      -- 'all_countries', 'grupo:otan', 'pais:US', etc.
+    scope VARCHAR(50) NOT NULL,      -- 'all_countries', 'preset:otan', 'country:US', etc.
     age_min INTEGER,
     age_max INTEGER,
-    gender VARCHAR(10),              -- 'all', 'm', 'f', 'o'
-    tipo_accion VARCHAR(30)          -- 'all', 'login', 'payment', etc.
+    gender VARCHAR(10),              -- NULL = todos; si no, 'M', 'F', 'O'
+    tipo_accion VARCHAR(30)          -- NULL = todos; si no, clave de tipo_accion ('login', 'payment', etc.)
 );
 
 -- Protección contra fuerza bruta en /api/login: un contador por IP, no por

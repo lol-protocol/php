@@ -66,6 +66,10 @@ sistema-nuevo/
 │       ├── AlmacenAcciones.php        Acciones de un usuario: paginado, filtro por tipo,
 │       │                               resumen diario para el gráfico
 │       ├── AlmacenAlertas.php         Detección proactiva: IPs fuera del país declarado
+│       ├── AlmacenConfiguracion.php   Config de alertas (habilitadas/umbral), clave-valor
+│       ├── AlmacenFiltros.php         CRUD de combinaciones de filtro guardadas
+│       ├── AlmacenKpis.php            Métricas agregadas del dashboard inicial
+│       ├── AlmacenNotas.php           Notas por acción (guardar es upsert, texto vacío borra)
 │       ├── ClienteEstadisticas.php    Llama al servicio de estadísticas por HTTP
 │       ├── autenticacion.php          Sesión + CSRF (login/logout, un solo usuario)
 │       ├── AlmacenIntentosLogin.php   Rate limiting de /api/login por IP
@@ -73,24 +77,28 @@ sistema-nuevo/
 │       ├── saneador.php               Punto de entrada del saneador (ver saneador/)
 │       ├── saneador/                  primitivas, marca-temporal, accion(-monto/-campos/-ip)
 │       ├── api.php                    Punto de entrada de los endpoints (ver api/)
-│       └── api/                       sesion, usuarios (+ groups, action-types), alertas,
-│                                       linea-tiempo (+ linea-tiempo-cohortes), ayudantes
+│       └── api/                       sesion, usuarios (+ groups, action-types), alertas(-config),
+│                                       linea-tiempo (+ linea-tiempo-cohortes), filtros, kpis,
+│                                       notas, ayudantes
 │
 ├── interfaz/                       Panel de administración (HTML/CSS/JS, sin frameworks)
 │   ├── index.php                      Ensambla partes/*.php + enlaza los .css
 │   ├── partes/                        pantalla-login.php, topbar.php, panel-principal.php
-│   ├── css/                           14 archivos chicos (base, login, topbar, tarjetas,
+│   ├── css/                           18 archivos chicos (base, login, topbar, tarjetas,
 │   │                                   paginacion, grafico, alertas...)
 │   └── js/                            Módulos ES: nucleo, formato, sesion, selectores,
 │       ├── i18n/es.js, i18n/en.js         tarjeta-usuario, metricas, linea-tiempo, paginacion,
 │       ├── idioma.js, idioma-refrescar.js grafico, alertas, idioma(-refrescar), aplicacion,
-│       └── aplicacion.js, eventos.js      eventos (entry point)
+│       └── aplicacion.js, eventos.js      eventos (entry point), configuracion-alertas, filtros,
+│                                           inactividad, kpis, nota-bloque, notas, notificaciones
 │
 ├── pruebas/                        Pruebas automatizadas, sin dependencias nuevas
 │   ├── marco-pruebas.php / ejecutar-php.php     Framework mínimo + runner (PHP)
 │   ├── php/                                     Unit tests del saneador
+│   ├── ejecutar-integracion.php                 Runner de integración (Almacen*.php, PostgreSQL real)
+│   ├── php-integracion/                         Unit tests de Almacen*.php y ClienteEstadisticas.php
 │   ├── ejecutar-js.sh                           Runner (node:test, ya viene con Node)
-│   ├── js/                                      Unit tests de formato.js e idioma.js
+│   ├── js/                                      Unit tests de formato.js, idioma.js y alertas.js
 │   ├── ejecutar-e2e.sh                          Runner e2e (Playwright, ya instalado)
 │   └── e2e/                                     Login, timeline, paginación, filtros,
 │                                                 gráfico, alertas, idioma — panel completo
@@ -403,12 +411,20 @@ php pruebas/ejecutar-integracion.php
   pierde), `AlmacenNotas` (guardar es upsert, texto vacío borra la fila),
   `AlmacenConfiguracion` (default habilitado si no hay fila, guardar/leer umbral),
   `AlmacenIntentosLogin` (bloqueo justo al 5to fallo, no antes, `limpiar` lo
-  resetea) y `AlmacenKpis` (invariantes: nada negativo, orden descendente de
+  resetea), `AlmacenKpis` (invariantes: nada negativo, orden descendente de
   `top_action_types` — no valores pelados, para no romperse si el generador de
-  datos semilla cambia sin que `AlmacenKpis` tenga ningún bug real).
-- `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje) e `idioma.js`
+  datos semilla cambia sin que `AlmacenKpis` tenga ningún bug real),
+  `AlmacenAcciones` y `AlmacenDatos` (empate en `marca_temporal`/`nombre` se
+  desempata por `id`, para que la paginación no repita/salte filas),
+  `AlmacenAlertas` (mismas invariantes que `AlmacenKpis`, tope de 15 en el top,
+  empate en `mismatch_count` también desempatado por `id`) y
+  `ClienteEstadisticas` (servicio caído devuelve `null` sin lanzar excepción, y
+  el reintento no tarda segundos).
+- `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
-  rompe la interfaz).
+  rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
+  resultados no dibuja una sección vacía, sin ninguna alerta real el panel
+  entero queda oculto).
 - `pruebas/e2e/`: login (credenciales incorrectas/correctas, logout), elegir
   usuario, paginación, filtro por tipo, gráfico, alertas (clic salta de usuario) e
   idioma; más, en `panel-nuevas-features.e2e.cjs`: el tile de KPIs de alertas, el
@@ -455,7 +471,7 @@ Deja PostgreSQL arriba (`preparar-postgres.sh`), genera y carga los datos, y lev
 ./preparar-postgres.sh
 php datos/generar-datos-semilla.php
 
-# 2. Microservicio de estadísticas (Java) — son 4 archivos, hay que compilarlos juntos
+# 2. Microservicio de estadísticas (Java) — son 7 archivos, hay que compilarlos juntos
 cd servicio-estadisticas-java && javac *.java && java ServicioEstadisticas
 
 # 3. API backend (PHP)
@@ -491,7 +507,8 @@ Abrir http://localhost:8082.
 - `POST /api/notes` — `{"accion_id": "...", "texto": "..."}`, guarda o (si `texto`
   queda vacío tras `trim()`) borra la nota de una acción. **Requiere sesión.**
 - `GET /api/kpis` — `{total_users, total_actions, total_spend_usd, last_action_at,
-  top_action_types, top_countries}`, agregado de todo el sistema. **Requiere sesión.**
+  active_alerts_users, top_action_types, top_countries}`, agregado de todo el
+  sistema. **Requiere sesión.**
 - `GET /api/timeline?user_id=u001&scope=preset:latam&age_min=18&age_max=65&gender=all&type=payment&page=1&per_page=20`
   — timeline paginado del usuario con cada acción enriquecida con `cohort` (`avg_*`,
   `median_*`, `p90_*` de duración y monto del universo), `duration_delta_pct`,
