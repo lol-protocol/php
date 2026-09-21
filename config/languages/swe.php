@@ -25,6 +25,7 @@ return [
             ['word' => 'padda', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'kräk', 'riskType' => 'animal', 'severity' => 'high'],
         ],
+
         'forstand' => [
             ['word' => 'idiot', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'imbecill', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -39,7 +40,12 @@ return [
             ['word' => 'tönt', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'analfabet', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'obildad', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'tokig', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'knäpp', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'dumskalle', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'fjant', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
+
         'kropp' => [
             ['word' => 'ful', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'vidrig', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -58,6 +64,7 @@ return [
             ['word' => 'smutsig', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'käring', 'riskType' => 'fisico', 'severity' => 'high'],
         ],
+
         'funktionshinder' => [
             ['word' => 'krympling', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'invalid', 'riskType' => 'discapacidad', 'severity' => 'medium'],
@@ -76,6 +83,7 @@ return [
             ['word' => 'galen', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'vansinnig', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
+
         'moral' => [
             ['word' => 'oäkting', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'jävel', 'riskType' => 'moral', 'severity' => 'high'],
@@ -104,7 +112,11 @@ return [
             ['word' => 'lat', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'fyllo', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'knarkare', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'niding', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'usling', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'inställsam', 'riskType' => 'moral', 'severity' => 'low'],
         ],
+
         'kon' => [
             ['word' => 'bög', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'fjolla', 'riskType' => 'genero', 'severity' => 'high'],
@@ -115,6 +127,7 @@ return [
             ['word' => 'prostituerad', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'gammal nucka', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
+
         'grovt' => [
             ['word' => 'skit', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'bajs', 'riskType' => 'ordinario', 'severity' => 'medium'],
@@ -132,6 +145,7 @@ return [
             ['word' => 'fan', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'helvete', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
+
         'hån' => [
             ['word' => 'gubbe', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'mumie', 'riskType' => 'burlesco', 'severity' => 'low'],
@@ -147,7 +161,9 @@ return [
             ['word' => 'löjlig', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'patetisk', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'förlorare', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'ytlig', 'riskType' => 'burlesco', 'severity' => 'low'],
         ],
+
         'etniskt' => [
             ['word' => 'neger', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'blatte', 'riskType' => 'etnico', 'severity' => 'high'],
@@ -157,6 +173,7 @@ return [
             ['word' => 'jude', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'utlänning', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
+
         'religiost' => [
             ['word' => 'kättare', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'hädare', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -169,5 +186,6 @@ return [
             ['word' => 'häxa', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'fanatiker', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
+
     ],
 ];
