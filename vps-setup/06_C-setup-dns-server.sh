@@ -43,10 +43,13 @@ sudo apt-get install -y bind9 bind9utils dnsutils
 echo "[2/4] Creando zona DNS para $DOMAIN..."
 sudo mkdir -p /etc/bind/zones
 
-# El "Serial" de la zona debe subir cada vez que la editas para que otros
-# servidores DNS (como el secundario de OVH) sepan que hay cambios que
-# sincronizar. Usar la fecha (YYYYMMDDnn) es la convencion estandar.
-SERIAL=$(date +%Y%m%d01)
+# El "Serial" de la zona debe SUBIR cada vez que la editas para que el
+# secundario (OVH) sepa que hay cambios que sincronizar. La convencion mas
+# comun es YYYYMMDDnn, pero si este script se corre dos veces el mismo dia
+# (ej. corrigiendo algo), "nn" fijo en "01" generaria el MISMO serial las dos
+# veces -- OVH pensaria que nada cambio aunque los registros si cambiaron.
+# Usamos el timestamp Unix (siempre creciente, nunca se repite) para evitarlo.
+SERIAL=$(date +%s)
 
 # \$TTL con backslash: queremos que BIND lea "$TTL" literal (es sintaxis
 # propia de los archivos de zona), no que bash intente sustituir una

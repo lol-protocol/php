@@ -18,28 +18,23 @@ Guía completa para configurar y gestionar los múltiples dominios en el VPS.
 └── index.html
 ```
 
-**Configuración Nginx:**
+**Configuración Nginx (SOLO HTTP -- el bloque HTTPS lo agrega Certbot solo):**
+
+⚠️ Importante: esta config **no incluye** `ssl_certificate` a propósito. Ese
+archivo todavía no existe en este punto (lo crea Certbot en el paso 6) -- si
+pegas una config que ya referencia `/etc/letsencrypt/live/...` antes de
+correr Certbot, `nginx -t` (paso 4) va a fallar porque ese certificado aun
+no existe.
+
 ```nginx
 server {
     listen 80;
     listen [::]:80;
     server_name conce.com www.conce.com;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name conce.com www.conce.com;
 
     root /var/www/landing-page/conce.com;
     index index.html;
 
-    # SSL
-    ssl_certificate /etc/letsencrypt/live/conce.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/conce.com/privkey.pem;
-
-    # Logs
     access_log /var/log/nginx/conce.com/access.log;
     error_log /var/log/nginx/conce.com/error.log;
 
@@ -57,9 +52,9 @@ sudo mkdir -p /var/www/landing-page/conce.com
 sudo mkdir -p /var/log/nginx/conce.com
 sudo cp landing-page/index.html /var/www/landing-page/conce.com/
 
-# 2. Configurar Nginx
+# 2. Configurar Nginx (SOLO la config HTTP de arriba, sin SSL todavia)
 sudo nano /etc/nginx/sites-available/conce.com
-# (Pegar configuración arriba)
+# (Pegar la config de arriba)
 
 # 3. Habilitar sitio
 sudo ln -sf /etc/nginx/sites-available/conce.com /etc/nginx/sites-enabled/conce.com
@@ -70,7 +65,9 @@ sudo nginx -t
 # 5. Recargar
 sudo systemctl reload nginx
 
-# 6. Obtener SSL
+# 6. Obtener SSL -- esto MODIFICA el archivo que acabas de crear: agrega el
+#    bloque 443, la redireccion HTTP->HTTPS y las lineas ssl_certificate
+#    automaticamente. No hace falta (ni conviene) escribirlas a mano.
 sudo certbot run --nginx -d conce.com -d www.conce.com
 ```
 
@@ -88,28 +85,18 @@ sudo certbot run --nginx -d conce.com -d www.conce.com
 └── index.html
 ```
 
-**Configuración Nginx:**
+**Configuración Nginx (SOLO HTTP -- Certbot agrega el bloque HTTPS solo,
+ver la advertencia en la sección de conce.com sobre por que no se pega el
+bloque SSL antes de correr Certbot):**
 ```nginx
 server {
     listen 80;
     listen [::]:80;
     server_name initech.cl www.initech.cl;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name initech.cl www.initech.cl;
 
     root /var/www/landing-page/initech.cl;
     index index.html;
 
-    # SSL
-    ssl_certificate /etc/letsencrypt/live/initech.cl/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/initech.cl/privkey.pem;
-
-    # Logs
     access_log /var/log/nginx/initech.cl/access.log;
     error_log /var/log/nginx/initech.cl/error.log;
 
@@ -193,7 +180,9 @@ EOF
 pip freeze > requirements.txt
 ```
 
-**Configuración Nginx:**
+**Configuración Nginx (SOLO HTTP -- Certbot agrega el bloque HTTPS solo,
+ver la advertencia en la sección de conce.com sobre por que no se pega el
+bloque SSL antes de correr Certbot):**
 ```nginx
 upstream contrastocolor {
     server 127.0.0.1:8000;
@@ -203,19 +192,7 @@ server {
     listen 80;
     listen [::]:80;
     server_name contrastocolor.ink www.contrastocolor.ink;
-    return 301 https://$host$request_uri;
-}
 
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name contrastocolor.ink www.contrastocolor.ink;
-
-    # SSL
-    ssl_certificate /etc/letsencrypt/live/contrastocolor.ink/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/contrastocolor.ink/privkey.pem;
-
-    # Logs
     access_log /var/log/nginx/contrastocolor.ink/access.log;
     error_log /var/log/nginx/contrastocolor.ink/error.log;
 
@@ -297,28 +274,18 @@ sudo systemctl start contrastocolor
 └── .htaccess
 ```
 
-**Configuración Nginx:**
+**Configuración Nginx (SOLO HTTP -- Certbot agrega el bloque HTTPS solo,
+ver la advertencia en la sección de conce.com sobre por que no se pega el
+bloque SSL antes de correr Certbot):**
 ```nginx
 server {
     listen 80;
     listen [::]:80;
     server_name wikipedia.cl www.wikipedia.cl;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name wikipedia.cl www.wikipedia.cl;
 
     root /var/www/wikipedia.cl/public;
     index index.php;
 
-    # SSL
-    ssl_certificate /etc/letsencrypt/live/wikipedia.cl/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/wikipedia.cl/privkey.pem;
-
-    # Logs
     access_log /var/log/nginx/wikipedia.cl/access.log;
     error_log /var/log/nginx/wikipedia.cl/error.log;
 
