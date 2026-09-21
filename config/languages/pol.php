@@ -25,6 +25,7 @@ return [
             ['word' => 'ropucha', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'suka', 'riskType' => 'animal', 'severity' => 'high'],
         ],
+
         'rozum' => [
             ['word' => 'idiota', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'debil', 'riskType' => 'intelectual', 'severity' => 'high'],
@@ -39,7 +40,16 @@ return [
             ['word' => 'matoł', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ignorant', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'analfabeta', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'debilka', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'kretynka', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'imbecylka', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'upośledzona', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'opóźniona', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'głupia', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'durna', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'ignorantka', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
+
         'cialo' => [
             ['word' => 'brzydki', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'ohydny', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -57,7 +67,21 @@ return [
             ['word' => 'śmierdzący', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'brudny', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'babsztyl', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'brzydka', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'ohydna', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'obrzydliwa', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'odrażająca', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'gruba', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'grubaska', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'otyła', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'chuda', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'wychudzona', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'karlica', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'łysa', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'śmierdząca', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'brudna', 'riskType' => 'fisico', 'severity' => 'medium'],
         ],
+
         'niepelnosprawnosc' => [
             ['word' => 'kaleka', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'inwalida', 'riskType' => 'discapacidad', 'severity' => 'medium'],
@@ -74,7 +98,20 @@ return [
             ['word' => 'sparaliżowany', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'wariat', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'szalony', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'kulawa', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'bezręka', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'garbuska', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'ślepa', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'jednooka', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'zezowata', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'głucha', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'niema', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'zdeformowana', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'sparaliżowana', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'wariatka', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'szalona', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
+
         'moral' => [
             ['word' => 'bękart', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'skurwysyn', 'riskType' => 'moral', 'severity' => 'high'],
@@ -104,7 +141,25 @@ return [
             ['word' => 'leń', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'pijak', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'narkoman', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'łajdaczka', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'oszustka', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'kłamczucha', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'złodziejka', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'morderczyni', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'przestępczyni', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'zdrajczyni', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'donosicielka', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'skorumpowana', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'chciwa', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'egoistka', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'okrutna', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'sadystka', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'pedofilka', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'lizuska', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'pijaczka', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'narkomanka', 'riskType' => 'moral', 'severity' => 'high'],
         ],
+
         'plec' => [
             ['word' => 'pedał', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'ciota', 'riskType' => 'genero', 'severity' => 'high'],
@@ -116,6 +171,7 @@ return [
             ['word' => 'prostytutka', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'stara panna', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
+
         'wulgarne' => [
             ['word' => 'gówno', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'kupa', 'riskType' => 'ordinario', 'severity' => 'low'],
@@ -133,6 +189,7 @@ return [
             ['word' => 'skurwiel', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'cholera', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
+
         'kpina' => [
             ['word' => 'dziadek', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'starzec', 'riskType' => 'burlesco', 'severity' => 'low'],
@@ -150,7 +207,17 @@ return [
             ['word' => 'śmieszny', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'żałosny', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'nieudacznik', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'zdziecinniała', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'zgrzybiała', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'smarkula', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'dziecinna', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'niedojrzała', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'zarozumiała', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'śmieszna', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'żałosna', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'nieudacznica', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
+
         'etniczne' => [
             ['word' => 'murzyn', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'czarnuch', 'riskType' => 'etnico', 'severity' => 'high'],
@@ -159,12 +226,17 @@ return [
             ['word' => 'żydek', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'skośnooki', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'ruski', 'riskType' => 'etnico', 'severity' => 'medium'],
-            // 'Szwab' es también un apellido polaco real y documentado
-            // (de "szwab", suabo) — nunca debe rechazar en automático a un
-            // apellido real.
             ['word' => 'szwab', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'obcy', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => 'murzynka', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'czarnucha', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'cyganka', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'żydówka', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'skośnooka', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'ruska', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'obca', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
+
         'religijne' => [
             ['word' => 'heretyk', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'odstępca', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -178,6 +250,15 @@ return [
             ['word' => 'wiedźma', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'czarownica', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'fanatyk', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'heretyczka', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'odstępczyni', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'bluźnierczyni', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'niewierna', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'poganka', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'bezbożniczka', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'opętana', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'fanatyczka', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
+
     ],
 ];

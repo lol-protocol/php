@@ -104,8 +104,18 @@ class NameCollisionRegressionTest extends TestCase
         //
         // Subido a 173 al añadir formas femeninas reales en ron.php:
         // țigancă. No es apellido documentado.
+        //
+        // Subido a 181 al añadir formas femeninas/adjetivas reales en
+        // rus.php (негритянка, жидовка, хохлушка, инородка, узкоглазая) y
+        // pol.php (murzynka, czarnucha, skośnooka). Ninguna es apellido
+        // documentado (a diferencia de "szwab", ya protegido en pol.php).
+        //
+        // Subido a 191 al añadir formas femeninas/adjetivas reales en
+        // ces.php (cikánka, ruska, cizačka), slk.php (negerka, cigánka,
+        // šikmooká), ukr.php (жидівка, вузькоока, кацапка) y bul.php
+        // (циганка). Ninguna es apellido documentado.
         $this->assertLessThanOrEqual(
-            173,
+            191,
             count($unflagged),
             'Crecieron los términos étnicos de severidad alta sin nameCollision revisado: ' .
                 implode(', ', array_slice($unflagged, 0, 10)) . '...'
