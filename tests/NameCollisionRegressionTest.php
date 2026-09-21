@@ -117,8 +117,11 @@ class NameCollisionRegressionTest extends TestCase
         //
         // Subido a 192 al añadir la forma femenina real γύφτισσα en
         // ell.php. No es apellido documentado.
+        //
+        // Subido a 195 al añadir formas femeninas reales en heb.php
+        // (צוענייה) y ara.php (زنجية, غجرية). Ninguna es apellido documentado.
         $this->assertLessThanOrEqual(
-            192,
+            195,
             count($unflagged),
             'Crecieron los términos étnicos de severidad alta sin nameCollision revisado: ' .
                 implode(', ', array_slice($unflagged, 0, 10)) . '...'
