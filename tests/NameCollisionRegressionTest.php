@@ -114,8 +114,11 @@ class NameCollisionRegressionTest extends TestCase
         // ces.php (cikánka, ruska, cizačka), slk.php (negerka, cigánka,
         // šikmooká), ukr.php (жидівка, вузькоока, кацапка) y bul.php
         // (циганка). Ninguna es apellido documentado.
+        //
+        // Subido a 192 al añadir la forma femenina real γύφτισσα en
+        // ell.php. No es apellido documentado.
         $this->assertLessThanOrEqual(
-            191,
+            192,
             count($unflagged),
             'Crecieron los términos étnicos de severidad alta sin nameCollision revisado: ' .
                 implode(', ', array_slice($unflagged, 0, 10)) . '...'

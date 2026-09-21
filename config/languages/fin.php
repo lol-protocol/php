@@ -23,6 +23,7 @@ return [
             ['word' => 'rupikonna', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'narttu', 'riskType' => 'animal', 'severity' => 'high'],
         ],
+
         'aly' => [
             ['word' => 'idiootti', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'debiili', 'riskType' => 'intelectual', 'severity' => 'high'],
@@ -36,7 +37,10 @@ return [
             ['word' => 'pöljä', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'lukutaidoton', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'tietämätön', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'ääliö', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'pöhkö', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
+
         'keho' => [
             ['word' => 'ruma', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'inhottava', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -53,6 +57,7 @@ return [
             ['word' => 'likainen', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'akka', 'riskType' => 'fisico', 'severity' => 'high'],
         ],
+
         'vammaisuus' => [
             ['word' => 'rampa', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'invalidi', 'riskType' => 'discapacidad', 'severity' => 'medium'],
@@ -69,6 +74,7 @@ return [
             ['word' => 'halvaantunut', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'hullu', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
+
         'moraali' => [
             ['word' => 'äpärä', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'paskiainen', 'riskType' => 'moral', 'severity' => 'high'],
@@ -96,7 +102,10 @@ return [
             ['word' => 'laiskuri', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'juoppo', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'narkkari', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'kusipää', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'nynny', 'riskType' => 'moral', 'severity' => 'low'],
         ],
+
         'sukupuoli' => [
             ['word' => 'homo', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'hintti', 'riskType' => 'genero', 'severity' => 'high'],
@@ -107,6 +116,7 @@ return [
             ['word' => 'prostituoitu', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'vanhapiika', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
+
         'karkea' => [
             ['word' => 'paska', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'kakka', 'riskType' => 'ordinario', 'severity' => 'low'],
@@ -123,6 +133,7 @@ return [
             ['word' => 'helvetti', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'saatana', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
+
         'pilkka' => [
             ['word' => 'ukko', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'muumio', 'riskType' => 'burlesco', 'severity' => 'low'],
@@ -139,6 +150,7 @@ return [
             ['word' => 'säälittävä', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'luuseri', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
+
         'etninen' => [
             ['word' => 'neekeri', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'mustalainen', 'riskType' => 'etnico', 'severity' => 'high'],
@@ -147,6 +159,7 @@ return [
             ['word' => 'ryssä', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'ulkomaalainen', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
+
         'uskonnollinen' => [
             ['word' => 'harhaoppinen', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'luopio', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -160,5 +173,6 @@ return [
             ['word' => 'noita', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'fanaatikko', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
+
     ],
 ];

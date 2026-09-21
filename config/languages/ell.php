@@ -22,6 +22,7 @@ return [
             ['word' => 'αγελάδα', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'σκύλα', 'riskType' => 'animal', 'severity' => 'high'],
         ],
+
         'noimosini' => [
             ['word' => 'ηλίθιος', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'βλάκας', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -34,7 +35,15 @@ return [
             ['word' => 'μπούφος', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'αγράμματος', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'αδαής', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'ηλίθια', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'κρετίνα', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'καθυστερημένη', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'χαζή', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'κουτή', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'ανόητη', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'αγράμματη', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
+
         'soma' => [
             ['word' => 'άσχημος', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'αποκρουστικός', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -48,7 +57,18 @@ return [
             ['word' => 'φαλακρός', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'βρωμιάρης', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'γριά', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'άσχημη', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'αποκρουστική', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'αηδιαστική', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'χοντρή', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'παχύσαρκη', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'αδύνατη', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'κοκαλιάρα', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'νάνα', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'φαλακρή', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'βρωμιάρα', 'riskType' => 'fisico', 'severity' => 'medium'],
         ],
+
         'anapiria' => [
             ['word' => 'ανάπηρος', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'σακάτης', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -62,7 +82,20 @@ return [
             ['word' => 'τραυλός', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'παράλυτος', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'τρελός', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'ανάπηρη', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'σακάτισσα', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'κουτσή', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'καμπούρα', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'τυφλή', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'μονόφθαλμη', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'αλλήθωρη', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'κωφή', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'μουγγή', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'τραυλή', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'παράλυτη', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'τρελή', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
+
         'ithiki' => [
             ['word' => 'μπάσταρδος', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'κάθαρμα', 'riskType' => 'moral', 'severity' => 'high'],
@@ -89,7 +122,24 @@ return [
             ['word' => 'τεμπέλης', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'μέθυσος', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'ναρκομανής', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'μπάσταρδη', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'απατεώνισσα', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'ψεύτρα', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'υποκρίτρια', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'κλέφτρα', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'δολοφόνισσα', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'προδότρια', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'καταδότρια', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'διεφθαρμένη', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'τσιγκούνα', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'εγωίστρια', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'σκληρή', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'σαδίστρια', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'δειλή', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'τεμπέλα', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'μέθυση', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
+
         'fylo' => [
             ['word' => 'πούστης', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'αδερφή', 'riskType' => 'genero', 'severity' => 'high'],
@@ -100,6 +150,7 @@ return [
             ['word' => 'πόρνη', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'γεροντοκόρη', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
+
         'chydaio' => [
             ['word' => 'σκατά', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'κακά', 'riskType' => 'ordinario', 'severity' => 'low'],
@@ -113,6 +164,7 @@ return [
             ['word' => 'γαμώ', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'μαλάκας', 'riskType' => 'ordinario', 'severity' => 'high'],
         ],
+
         'chleuasmos' => [
             ['word' => 'γέρος', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'μούμια', 'riskType' => 'burlesco', 'severity' => 'low'],
@@ -127,7 +179,15 @@ return [
             ['word' => 'κλόουν', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'γελοίος', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'αξιολύπητος', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'ξεμωραμένη', 'riskType' => 'burlesco', 'severity' => 'high'],
+            ['word' => 'μυξιάρα', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'ανώριμη', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'ξιπασμένη', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'καυχησιάρα', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'γελοία', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'αξιολύπητη', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
+
         'ethnotiko' => [
             ['word' => 'αράπης', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'νέγρος', 'riskType' => 'etnico', 'severity' => 'high'],
@@ -137,7 +197,14 @@ return [
             ['word' => 'τούρκος', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'αλβανός', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'ξένος', 'riskType' => 'etnico', 'severity' => 'low'],
+            ['word' => 'γύφτισσα', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'τσιγγάνα', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'εβραία', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'τουρκάλα', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'αλβανίδα', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'ξένη', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
+
         'thriskeftiko' => [
             ['word' => 'αιρετικός', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'αποστάτης', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -150,6 +217,16 @@ return [
             ['word' => 'διάβολος', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'μάγισσα', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'φανατικός', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'αιρετική', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'αποστάτισσα', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'βλάσφημη', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'άπιστη', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'ειδωλολάτρισσα', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'άθεη', 'riskType' => 'religioso', 'severity' => 'low'],
+            ['word' => 'δαιμονισμένη', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'σατανική', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'φανατική', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
+
     ],
 ];

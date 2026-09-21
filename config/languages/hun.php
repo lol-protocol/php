@@ -23,7 +23,9 @@ return [
             ['word' => 'tehén', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'varangy', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'szuka', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'marha', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
+
         'ertelem' => [
             ['word' => 'idióta', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'debil', 'riskType' => 'intelectual', 'severity' => 'high'],
@@ -38,7 +40,10 @@ return [
             ['word' => 'tökfej', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'analfabéta', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'tudatlan', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'fafej', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'tökkelütött', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
+
         'test' => [
             ['word' => 'csúnya', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'ronda', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -56,6 +61,7 @@ return [
             ['word' => 'mocskos', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'vénasszony', 'riskType' => 'fisico', 'severity' => 'medium'],
         ],
+
         'fogyatekossag' => [
             ['word' => 'nyomorék', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'rokkant', 'riskType' => 'discapacidad', 'severity' => 'medium'],
@@ -72,6 +78,7 @@ return [
             ['word' => 'béna', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'őrült', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
+
         'erkolcs' => [
             ['word' => 'fattyú', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'rohadék', 'riskType' => 'moral', 'severity' => 'high'],
@@ -99,7 +106,11 @@ return [
             ['word' => 'lusta', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'részeges', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'drogos', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'szemét', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'rohadt', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'link', 'riskType' => 'moral', 'severity' => 'low'],
         ],
+
         'nem' => [
             ['word' => 'buzi', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'homokos', 'riskType' => 'genero', 'severity' => 'high'],
@@ -111,6 +122,7 @@ return [
             ['word' => 'prostituált', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'vénlány', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
+
         'trágár' => [
             ['word' => 'szar', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'kaka', 'riskType' => 'ordinario', 'severity' => 'low'],
@@ -125,6 +137,7 @@ return [
             ['word' => 'geci', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'francba', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
+
         'gúny' => [
             ['word' => 'vénember', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'múmia', 'riskType' => 'burlesco', 'severity' => 'low'],
@@ -141,18 +154,17 @@ return [
             ['word' => 'szánalmas', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'lúzer', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
+
         'etnikai' => [
             ['word' => 'néger', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'cigány', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'zsidó', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'ferdeszemű', 'riskType' => 'etnico', 'severity' => 'high'],
-            // 'Oláh' y 'Tót' son también apellidos húngaros reales y comunes
-            // (el primero, en particular, muy frecuente entre familias romaníes
-            // húngaras) — nunca deben rechazar en automático a un apellido real.
             ['word' => 'oláh', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'tót', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'idegen', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
+
         'vallasi' => [
             ['word' => 'eretnek', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'hitehagyott', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -166,5 +178,6 @@ return [
             ['word' => 'boszorkány', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'fanatikus', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
+
     ],
 ];

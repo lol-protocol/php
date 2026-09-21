@@ -23,6 +23,7 @@ return [
             ['word' => 'köpek', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'it', 'riskType' => 'animal', 'severity' => 'high'],
         ],
+
         'zeka' => [
             ['word' => 'aptal', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'salak', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -35,7 +36,12 @@ return [
             ['word' => 'budala', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'cahil', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'okuma yazma bilmez', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'dangalak', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'gerzek', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'keriz', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'şapşal', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
+
         'beden' => [
             ['word' => 'çirkin', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'iğrenç', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -51,6 +57,7 @@ return [
             ['word' => 'pasaklı', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'kocakarı', 'riskType' => 'fisico', 'severity' => 'high'],
         ],
+
         'engellilik' => [
             ['word' => 'sakat', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'topal', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -66,6 +73,7 @@ return [
             ['word' => 'deli', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'meczup', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
+
         'ahlak' => [
             ['word' => 'piç', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'alçak', 'riskType' => 'moral', 'severity' => 'high'],
@@ -95,6 +103,7 @@ return [
             ['word' => 'ayyaş', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'uyuşturucu bağımlısı', 'riskType' => 'moral', 'severity' => 'high'],
         ],
+
         'cinsiyet' => [
             ['word' => 'ibne', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'top', 'riskType' => 'genero', 'severity' => 'high'],
@@ -107,6 +116,7 @@ return [
             ['word' => 'fahişe', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'evde kalmış', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
+
         'kaba' => [
             ['word' => 'bok', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'kaka', 'riskType' => 'ordinario', 'severity' => 'low'],
@@ -123,6 +133,7 @@ return [
             ['word' => 'amcık', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'lanet', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
+
         'alay' => [
             ['word' => 'ihtiyar', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'moruk', 'riskType' => 'burlesco', 'severity' => 'medium'],
@@ -141,6 +152,7 @@ return [
             ['word' => 'zavallı', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'ezik', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
+
         'etnik' => [
             ['word' => 'zenci', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'çingene', 'riskType' => 'etnico', 'severity' => 'high'],
@@ -149,6 +161,7 @@ return [
             ['word' => 'gavur', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'yabancı', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
+
         'dini' => [
             ['word' => 'kafir', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'mürtet', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -161,6 +174,8 @@ return [
             ['word' => 'şeytan', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'cadı', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'fanatik', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'yobaz', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
+
     ],
 ];
