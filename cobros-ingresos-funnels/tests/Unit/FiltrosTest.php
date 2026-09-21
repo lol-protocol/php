@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit;
 
 use App\Filtros;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 final class FiltrosTest extends TestCase
@@ -27,7 +28,7 @@ final class FiltrosTest extends TestCase
 
         self::assertSame(date('Y-m-d'), $hasta);
         self::assertSame(
-            (new \DateTimeImmutable('today'))->modify('-3 months')->format('Y-m-d'),
+            Filtros::restarMeses(new DateTimeImmutable('today'), 3)->format('Y-m-d'),
             $desde
         );
     }
@@ -56,13 +57,17 @@ final class FiltrosTest extends TestCase
         self::assertSame('2025-09-01', $hasta);
     }
 
+    /**
+     * El 29 de febrero no existe un anio antes, y DateTimeImmutable resuelve
+     * ese modify('-1 year') desbordando al 1 de marzo. El equivalente real es
+     * el ultimo dia de febrero: si no, el comparativo interanual arranca un
+     * dia tarde y se pierde el 28.
+     */
     public function testRangoAnioAnteriorManeja29DeFebreroEnAnioBisiesto(): void
     {
-        // DateTimeImmutable::modify('-1 year') sobre 29-feb (bisiesto) cae en
-        // 28-feb del anio siguiente no bisiesto; documentamos ese comportamiento.
         [$desde] = Filtros::rangoAnioAnterior('2024-02-29', '2024-03-01');
 
-        self::assertSame('2023-03-01', $desde);
+        self::assertSame('2023-02-28', $desde);
     }
 
     public function testRangoPersonalizadoNuloSinParametros(): void
@@ -141,5 +146,47 @@ final class FiltrosTest extends TestCase
     {
         self::assertFalse(Filtros::esFechaValida('2026-13-40'), 'mes 13 no existe');
         self::assertFalse(Filtros::esFechaValida('2025-02-29'), '2025 no es bisiesto');
+    }
+
+    /**
+     * Reproduce el bug real: "ultimos 3 meses" un 31 de mayo arrancaba el 3
+     * de marzo, porque febrero no tiene 31 dias y modify() se desbordaba al
+     * mes siguiente. Pasaba sin avisar unos 4 a 7 dias por mes.
+     */
+    public function testRestarMesesNoSeDesbordaAlMesSiguiente(): void
+    {
+        $casos = [
+            ['2026-05-31', 3, '2026-02-28'],
+            ['2026-05-31', 6, '2025-11-30'],
+            ['2026-08-31', 6, '2026-02-28'],
+            ['2026-03-31', 1, '2026-02-28'],
+            ['2028-03-29', 1, '2028-02-29'],
+        ];
+
+        foreach ($casos as [$hoy, $meses, $esperado]) {
+            self::assertSame(
+                $esperado,
+                Filtros::restarMeses(new DateTimeImmutable($hoy), $meses)->format('Y-m-d'),
+                "{$hoy} menos {$meses} meses"
+            );
+        }
+    }
+
+    public function testRestarMesesDejaIntactaUnaFechaQueSiExisteEnElMesDestino(): void
+    {
+        self::assertSame('2026-03-20', Filtros::restarMeses(new DateTimeImmutable('2026-09-20'), 6)->format('Y-m-d'));
+        self::assertSame('2025-09-20', Filtros::restarMeses(new DateTimeImmutable('2026-09-20'), 12)->format('Y-m-d'));
+    }
+
+    /** El desde de rango() nunca puede caer en un mes posterior al que corresponde. */
+    public function testRangoNoAdelantaElMesDeInicio(): void
+    {
+        foreach ([3, 6, 12] as $meses) {
+            [$desde, $hasta] = Filtros::rango($meses);
+
+            $mesesDeDiferencia = (((int) substr($hasta, 0, 4) * 12) + (int) substr($hasta, 5, 2))
+                - (((int) substr($desde, 0, 4) * 12) + (int) substr($desde, 5, 2));
+            self::assertSame($meses, $mesesDeDiferencia, "rango({$meses}) tiene que abarcar {$meses} meses exactos");
+        }
     }
 }

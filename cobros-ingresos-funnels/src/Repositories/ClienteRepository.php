@@ -40,7 +40,7 @@ final class ClienteRepository
     /**
      * Listado paginado de clientes con buscador opcional por nombre/email.
      *
-     * @return array{filas: array, total: int, totalPaginas: int}
+     * @return array{filas: array, total: int, totalPaginas: int, pagina: int}
      */
     public function buscar(string $query = '', int $pagina = 1): array
     {
@@ -54,6 +54,7 @@ final class ClienteRepository
         $stmtTotal = $this->db->prepare("SELECT COUNT(*) FROM clientes c{$where}");
         $stmtTotal->execute($params);
         $total = (int) $stmtTotal->fetchColumn();
+        $pagina = Paginacion::acotar($pagina, $total);
 
         $stmt = $this->db->prepare(
             "SELECT c.id, c.nombre, c.email, c.segmento, c.fecha_alta, p.nombre AS pais_nombre
@@ -74,6 +75,7 @@ final class ClienteRepository
             'filas' => $stmt->fetchAll(),
             'total' => $total,
             'totalPaginas' => Paginacion::totalPaginas($total),
+            'pagina' => $pagina,
         ];
     }
 

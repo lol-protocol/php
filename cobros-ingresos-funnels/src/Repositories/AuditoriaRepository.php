@@ -44,10 +44,11 @@ final class AuditoriaRepository
         ]);
     }
 
-    /** @return array{filas: array, total: int, totalPaginas: int} */
+    /** @return array{filas: array, total: int, totalPaginas: int, pagina: int} */
     public function listado(int $pagina = 1): array
     {
         $total = (int) $this->db->query('SELECT COUNT(*) FROM auditoria')->fetchColumn();
+        $pagina = Paginacion::acotar($pagina, $total);
 
         $stmt = $this->db->prepare(
             "SELECT a.creado_en, a.accion, a.entidad, a.entidad_id, a.detalle,
@@ -65,6 +66,7 @@ final class AuditoriaRepository
             'filas' => $stmt->fetchAll(),
             'total' => $total,
             'totalPaginas' => Paginacion::totalPaginas($total),
+            'pagina' => $pagina,
         ];
     }
 }

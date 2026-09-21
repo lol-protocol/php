@@ -34,7 +34,7 @@ final class PagosController
             'hasta' => $hasta,
             'personalizado' => $personalizado,
             'cliente' => $cliente,
-            'pagina' => $pagina,
+            'pagina' => $listado['pagina'],
             'cobrosPorMes' => $ingresosRepo->cobrosPorMes($desde, $hasta),
             'porMetodo' => $ingresosRepo->porMetodo($desde, $hasta),
             'devoluciones' => (new NotaCreditoRepository())->totalEnRangoUsd($desde, $hasta),
@@ -121,6 +121,20 @@ final class PagosController
         return $fechaPago >= $boleta['fecha_emision'];
     }
 
+    /**
+     * Un pago cuya boleta ya fue anulada queda congelado: al anularla se
+     * emitio una nota de credito por lo que estaba cobrado en ese momento, y
+     * esa nota no se recalcula. Si despues se pudiera anular o editar el
+     * pago, la plata se contaria dos veces (el pago sale de la caja y la
+     * nota lo sigue devolviendo) o la devolucion quedaria corta. Es la regla
+     * simetrica de boletaEsValidaParaCliente(), que ya impide cargar un pago
+     * nuevo contra una boleta anulada.
+     */
+    public static function boletaAnuladaCongelaElPago(?array $boleta): bool
+    {
+        return $boleta !== null && (bool) $boleta['anulada'];
+    }
+
     /** Tolerancia de un centavo para poder pagar exactamente el saldo restante sin que el redondeo lo rechace. */
     public static function montoNoSuperaElSaldo(float $monto, array $boleta): bool
     {
@@ -152,6 +166,12 @@ final class PagosController
         }
 
         $boleta = $pago['boleta_id'] ? (new BoletaRepository())->porId($pago['boleta_id']) : null;
+        if (Peticion::abortarSiConflicto(
+            self::boletaAnuladaCongelaElPago($boleta),
+            'La boleta de este pago esta anulada y ya tiene su nota de credito: editarlo descuadraria la devolucion.'
+        )) {
+            return;
+        }
 
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -197,19 +217,28 @@ final class PagosController
             return;
         }
 
+        $boleta = $pago['boleta_id'] ? (new BoletaRepository())->porId($pago['boleta_id']) : null;
+        if (Peticion::abortarSiConflicto(
+            self::boletaAnuladaCongelaElPago($boleta),
+            'La boleta de este pago esta anulada y ya tiene su nota de credito: anularlo descontaria la plata dos veces.'
+        )) {
+            return;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!$pago['anulada']) {
-                // Atomico por la misma razon que en boletas: la guarda de
-                // idempotencia impediria reintentar si quedara a medias.
-                Database::transaccion(function () use ($pagoRepo, $id, $pago): void {
-                    $pagoRepo->anular($id);
-                    AuditoriaRepository::auditarComoUsuarioActual('anular', 'pago', $id, sprintf(
-                        'Pago #%d (%s)',
-                        $id,
-                        money_moneda((float) $pago['monto'], $pago['moneda_codigo'])
-                    ));
-                });
-            }
+            // Atomico por la misma razon que en boletas, y con el chequeo de
+            // "todavia estaba activo" dentro de la propia sentencia: si no,
+            // dos anulaciones simultaneas duplican la entrada de auditoria.
+            Database::transaccion(function () use ($pagoRepo, $id, $pago): void {
+                if (!$pagoRepo->anularSiEstabaActiva($id)) {
+                    return;
+                }
+                AuditoriaRepository::auditarComoUsuarioActual('anular', 'pago', $id, sprintf(
+                    'Pago #%d (%s)',
+                    $id,
+                    money_moneda((float) $pago['monto'], $pago['moneda_codigo'])
+                ));
+            });
             header('Location: ?page=pagos&anulado=' . $id);
             exit;
         }

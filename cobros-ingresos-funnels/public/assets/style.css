@@ -199,6 +199,7 @@ form.filtros button:hover { opacity: 0.9; }
 .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
 .legend .item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); }
 .legend .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.legend.abajo { margin: 10px 0 0; }
 
 /* ---------- Grafico de barras (mini-graficos SVG) ---------- */
 .chart {

@@ -16,11 +16,13 @@ use App\Controllers\PagosController;
 use App\Controllers\UsuarioController;
 use App\Database;
 use App\ErrorHandler;
+use App\Peticion;
 use App\Router;
 use App\SecurityHeaders;
 
 ini_set('display_errors', '0');
 ErrorHandler::registrar();
+Peticion::normalizarParametros();
 
 foreach (SecurityHeaders::listado() as $nombre => $valor) {
     header("{$nombre}: {$valor}");

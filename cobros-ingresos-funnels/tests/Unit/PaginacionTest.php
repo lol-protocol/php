@@ -57,4 +57,38 @@ final class PaginacionTest extends TestCase
     {
         self::assertSame(1, Paginacion::totalPaginas(0));
     }
+
+    /**
+     * Reproduce el caso real: "?pagina=5000" sobre cuatro paginas de datos
+     * devolvia una tabla vacia rotulada "Pagina 5000 de 4", con el unico link
+     * de vuelta apuntando a la 4999.
+     */
+    public function testAcotarRecortaLaPaginaALaUltimaQueExiste(): void
+    {
+        $cuatroPaginas = Paginacion::POR_PAGINA * 4;
+
+        self::assertSame(4, Paginacion::acotar(5000, $cuatroPaginas));
+        self::assertSame(3, Paginacion::acotar(3, $cuatroPaginas));
+        self::assertSame(1, Paginacion::acotar(-7, $cuatroPaginas));
+    }
+
+    public function testAcotarDaLaPagina1CuandoNoHayFilas(): void
+    {
+        self::assertSame(1, Paginacion::acotar(99, 0));
+    }
+
+    /**
+     * Sin acotar, ($pagina - 1) * POR_PAGINA sobre un int ya saturado en
+     * PHP_INT_MAX se desbordaba a float y tiraba un 500 en las cuatro
+     * pantallas paginadas (TypeError en offset(), o bigint out of range en
+     * Postgres). Acotado primero, el offset sigue siendo un int usable.
+     */
+    public function testAcotarEvitaElDesbordeDelOffsetConUnaPaginaAbsurda(): void
+    {
+        $pagina = Paginacion::acotar((int) '9999999999999999999', Paginacion::POR_PAGINA * 4);
+
+        self::assertSame(4, $pagina);
+        self::assertIsInt(Paginacion::offset($pagina));
+        self::assertSame(Paginacion::POR_PAGINA * 3, Paginacion::offset($pagina));
+    }
 }

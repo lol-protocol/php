@@ -18,9 +18,12 @@ use App\Config;
 // que cobros) y si se lo midiera con el valor crudo la barra quedaria en 0%,
 // o sea invisible, igual que un mes sin movimiento.
 $maxValor = 1.0;
+$hayNegativos = false;
 foreach ($filas as $fila) {
     foreach ($series as $serie) {
-        $maxValor = max($maxValor, abs((float) $fila[$serie['clave']]));
+        $valor = (float) $fila[$serie['clave']];
+        $maxValor = max($maxValor, abs($valor));
+        $hayNegativos = $hayNegativos || $valor < 0;
     }
 }
 
@@ -49,3 +52,9 @@ $formatearValor = $formato === 'money'
         <span class="grupo-label"><?= mes_label($fila['mes']) ?></span>
     <?php endforeach; ?>
 </div>
+<?php if ($hayNegativos): ?>
+    <?php /* La aclaracion la pone el grafico y no la leyenda de cada pantalla, asi aparece exactamente cuando hay una barra roja y no queda un color sin explicar. */ ?>
+    <div class="legend abajo">
+        <span class="item"><span class="swatch" style="background:var(--critical)"></span>Mes en negativo (se devolvió más de lo que entró)</span>
+    </div>
+<?php endif; ?>

@@ -27,7 +27,7 @@ final class ClienteController
 
         View::render('clientes/index', [
             'q' => $q,
-            'pagina' => $pagina,
+            'pagina' => $listado['pagina'],
             'clientes' => $listado['filas'],
             'totalClientes' => $listado['total'],
             'totalPaginas' => $listado['totalPaginas'],

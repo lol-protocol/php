@@ -18,8 +18,24 @@ final class Filtros
     public static function rango(int $meses): array
     {
         $hasta = new DateTimeImmutable('today');
-        $desde = $hasta->modify("-{$meses} months");
-        return [$desde->format('Y-m-d'), $hasta->format('Y-m-d')];
+        return [self::restarMeses($hasta, $meses)->format('Y-m-d'), $hasta->format('Y-m-d')];
+    }
+
+    /**
+     * Resta meses sin que el dia se desborde al mes siguiente. PHP resuelve
+     * "2026-05-31 -3 months" como 2026-03-03, porque febrero no tiene 31 dias
+     * y el modify() se pasa de largo: los "ultimos 3 meses" arrancaban tres
+     * dias tarde, en silencio, cada vez que hoy caia cerca de fin de mes. La
+     * fecha correcta es el ultimo dia real del mes destino (2026-02-28).
+     */
+    public static function restarMeses(DateTimeImmutable $fecha, int $meses): DateTimeImmutable
+    {
+        $resultado = $fecha->modify("-{$meses} months");
+        if ($resultado->format('j') === $fecha->format('j')) {
+            return $resultado;
+        }
+
+        return $resultado->modify('first day of this month')->modify('-1 day');
     }
 
     /**
@@ -47,8 +63,8 @@ final class Filtros
     public static function rangoAnioAnterior(string $desde, string $hasta): array
     {
         return [
-            (new DateTimeImmutable($desde))->modify('-1 year')->format('Y-m-d'),
-            (new DateTimeImmutable($hasta))->modify('-1 year')->format('Y-m-d'),
+            self::restarMeses(new DateTimeImmutable($desde), 12)->format('Y-m-d'),
+            self::restarMeses(new DateTimeImmutable($hasta), 12)->format('Y-m-d'),
         ];
     }
 

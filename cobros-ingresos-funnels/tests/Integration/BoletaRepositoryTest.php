@@ -143,4 +143,35 @@ final class BoletaRepositoryTest extends TestCase
 
         self::assertSame($totalIndependiente, $listado['total']);
     }
+
+    /**
+     * Reproduce el caso real: pedir una pagina que no existe devolvia una
+     * tabla vacia rotulada "Pagina 5000 de 4", y con un numero lo bastante
+     * grande el offset se desbordaba a float y tiraba un 500. Ahora la
+     * peticion cae en la ultima pagina real, que si trae filas, y el listado
+     * informa en que pagina quedo parado para que la vista no mienta.
+     *
+     * Vale para los dos caminos de listado(): el que pagina en SQL y el que
+     * filtra por estado en PHP y recien ahi corta con array_slice.
+     */
+    public function testUnaPaginaFueraDeRangoCaeEnLaUltimaQueExiste(): void
+    {
+        $repo = new BoletaRepository();
+
+        foreach ([null, 'pagada'] as $estado) {
+            $primera = $repo->listado('2000-01-01', '2100-01-01', $estado, null, 1);
+            if ($primera['total'] === 0) {
+                continue;
+            }
+
+            $ultima = $repo->listado('2000-01-01', '2100-01-01', $estado, null, (int) '9999999999999999999');
+
+            self::assertSame($primera['totalPaginas'], $ultima['pagina'], 'tiene que quedar parado en la ultima pagina');
+            self::assertNotEmpty($ultima['filas'], 'la ultima pagina real siempre trae filas');
+            self::assertSame(
+                $repo->listado('2000-01-01', '2100-01-01', $estado, null, $primera['totalPaginas'])['filas'],
+                $ultima['filas']
+            );
+        }
+    }
 }

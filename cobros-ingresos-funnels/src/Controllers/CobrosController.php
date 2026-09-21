@@ -62,7 +62,7 @@ final class CobrosController
             'personalizado' => $personalizado,
             'estado' => $estado,
             'cliente' => $cliente,
-            'pagina' => $pagina,
+            'pagina' => $listado['pagina'],
             'kpis' => $ingresosRepo->kpis($desde, $hasta),
             'ingresosPorMes' => $ingresosRepo->ingresosPorMes($desde, $hasta),
             'aging' => $aging,
@@ -196,20 +196,27 @@ final class CobrosController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!$boleta['anulada']) {
-                // Atomico: la boleta no puede quedar anulada sin su nota de
-                // credito, porque la guarda de arriba impediria reintentar.
-                Database::transaccion(function () use ($boletaRepo, $id, $boleta): void {
-                    $boletaRepo->anular($id);
-                    AuditoriaRepository::auditarComoUsuarioActual('anular', 'boleta', $id, sprintf(
-                        'Boleta #%d ("%s", %s)',
-                        $id,
-                        $boleta['concepto'],
-                        money_moneda((float) $boleta['monto'], $boleta['moneda_codigo'])
-                    ));
-                    $this->emitirNotaDeCredito($boleta);
-                });
-            }
+            // Atomico: la boleta no puede quedar anulada sin su nota de
+            // credito, porque la guarda de idempotencia impediria reintentar.
+            // Y el "todavia estaba activa" se resuelve en la propia sentencia
+            // de anulacion, no con el $boleta leido arriba: dos anulaciones
+            // simultaneas pasaban las dos y emitian dos notas de credito.
+            Database::transaccion(function () use ($boletaRepo, $id): void {
+                if (!$boletaRepo->anularSiEstabaActiva($id)) {
+                    return;
+                }
+                // Relectura con la fila ya bloqueada por esta transaccion,
+                // para que la nota salga por lo efectivamente cobrado y no
+                // por el 'pagado' que se leyo antes de tomar el candado.
+                $boleta = $boletaRepo->porId($id);
+                AuditoriaRepository::auditarComoUsuarioActual('anular', 'boleta', $id, sprintf(
+                    'Boleta #%d ("%s", %s)',
+                    $id,
+                    $boleta['concepto'],
+                    money_moneda((float) $boleta['monto'], $boleta['moneda_codigo'])
+                ));
+                $this->emitirNotaDeCredito($boleta);
+            });
             header('Location: ?page=cobros&anulada=' . $id);
             exit;
         }

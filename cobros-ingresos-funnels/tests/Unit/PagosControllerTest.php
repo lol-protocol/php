@@ -99,4 +99,26 @@ final class PagosControllerTest extends TestCase
 
         self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(484.10, $boleta, 484.10));
     }
+
+    /**
+     * Reproduce el caso real: al anular una boleta con pagos se emite una
+     * nota de credito por lo cobrado, y esa nota no se recalcula. Anular
+     * despues el pago sacaba la plata de la caja dejando la devolucion en
+     * pie, o sea descontandola dos veces del cobrado neto.
+     */
+    public function testUnPagoDeBoletaAnuladaQuedaCongelado(): void
+    {
+        self::assertTrue(PagosController::boletaAnuladaCongelaElPago(['anulada' => true]));
+    }
+
+    public function testUnPagoDeBoletaVigenteSePuedeTocar(): void
+    {
+        self::assertFalse(PagosController::boletaAnuladaCongelaElPago(['anulada' => false]));
+    }
+
+    /** Un anticipo (pago sin boleta) no tiene nota de credito que descuadrar. */
+    public function testUnPagoSinBoletaNoQuedaCongelado(): void
+    {
+        self::assertFalse(PagosController::boletaAnuladaCongelaElPago(null));
+    }
 }

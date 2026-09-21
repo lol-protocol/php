@@ -19,7 +19,7 @@ final class AuditoriaController
             'registros' => $listado['filas'],
             'totalRegistros' => $listado['total'],
             'totalPaginas' => $listado['totalPaginas'],
-            'pagina' => $pagina,
+            'pagina' => $listado['pagina'],
             'activePage' => 'auditoria',
             'titulo' => 'Auditoría',
         ]);

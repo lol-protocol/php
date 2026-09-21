@@ -111,7 +111,7 @@ final class BoletaRepository
      * en una expresion CASE, asi que ese camino trae el rango completo, lo
      * filtra en PHP y recien ahi pagina con array_slice.
      *
-     * @return array{filas: array, total: int, totalPaginas: int}
+     * @return array{filas: array, total: int, totalPaginas: int, pagina: int}
      */
     public function listado(string $desde, string $hasta, ?string $estado = null, ?string $cliente = null, int $pagina = 1): array
     {
@@ -136,6 +136,7 @@ final class BoletaRepository
             );
             $stmtTotal->execute($params);
             $total = (int) $stmtTotal->fetchColumn();
+            $pagina = Paginacion::acotar($pagina, $total);
 
             $stmt = $this->db->prepare("{$select} ORDER BY b.fecha_emision DESC, b.id DESC LIMIT :limite OFFSET :offset");
             foreach ($params as $clave => $valor) {
@@ -149,6 +150,7 @@ final class BoletaRepository
                 'filas' => self::conEstadoCalculado($stmt->fetchAll()),
                 'total' => $total,
                 'totalPaginas' => Paginacion::totalPaginas($total),
+                'pagina' => $pagina,
             ];
         }
 
@@ -159,11 +161,13 @@ final class BoletaRepository
             static fn (array $fila): bool => $fila['estado'] === $estado
         );
         $total = count($filtradas);
+        $pagina = Paginacion::acotar($pagina, $total);
 
         return [
             'filas' => array_slice($filtradas, Paginacion::offset($pagina), Paginacion::POR_PAGINA),
             'total' => $total,
             'totalPaginas' => Paginacion::totalPaginas($total),
+            'pagina' => $pagina,
         ];
     }
 

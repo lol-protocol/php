@@ -161,8 +161,12 @@ src/
                         auto-revocacion), testeado
   Validacion.php         chequeos repetidos entre formularios: campos
                         obligatorios vacios y mensaje de email duplicado
-  Repositories/Anulable.php  trait con el UPDATE ... anulada = TRUE que
-                        comparten BoletaRepository y PagoRepository
+  Repositories/Anulable.php  trait con el soft-delete que comparten
+                        BoletaRepository y PagoRepository: un unico
+                        UPDATE ... SET anulada = TRUE WHERE id = :id AND NOT
+                        anulada, que devuelve si fue esa llamada la que anulo
+                        (chequear antes en PHP dejaba pasar dos anulaciones
+                        simultaneas), testeado
   Repositories/NotaCreditoRepository.php  devoluciones emitidas al anular
                         una boleta ya cobrada, y su total por rango/mes en
                         USD para netear los cobros de los reportes
@@ -209,7 +213,11 @@ tests/
   historial de caja): se emite una nota de crédito por lo cobrado, que queda
   como devolución pendiente con el cliente. Los reportes de cobros restan estas
   notas para mostrar el neto, así anular una boleta cobrada no deja plata
-  contando como ingreso sin respaldo.
+  contando como ingreso sin respaldo. La nota se emite una sola vez y no se
+  recalcula, así que una vez anulada la boleta sus pagos quedan congelados:
+  anularlos o editarlos descuadraría la devolución, y la app lo rechaza con un
+  409 (la regla simétrica de no poder cargar un pago nuevo contra una boleta
+  anulada).
 - `auditoria`: un registro por cada alta/edición/anulación (quién, cuándo, sobre
   qué entidad y el detalle de qué cambió). Es de solo inserción — no se borra.
 - `intentos_login`: contador de intentos fallidos de login por email y hasta

@@ -70,7 +70,7 @@ final class PagoRepository
      * Listado paginado para la pantalla de Pagos. Incluye los anulados
      * (marcados) para no perder el rastro de la correccion.
      *
-     * @return array{filas: array, total: int, totalPaginas: int}
+     * @return array{filas: array, total: int, totalPaginas: int, pagina: int}
      */
     public function listado(string $desde, string $hasta, ?string $cliente = null, int $pagina = 1): array
     {
@@ -87,6 +87,7 @@ final class PagoRepository
         );
         $stmtTotal->execute($params);
         $total = (int) $stmtTotal->fetchColumn();
+        $pagina = Paginacion::acotar($pagina, $total);
 
         $stmt = $this->db->prepare(
             "SELECT p.id, p.monto, p.moneda_codigo, p.fecha_pago, p.metodo, p.boleta_id, p.anulada,
@@ -108,6 +109,7 @@ final class PagoRepository
             'filas' => $stmt->fetchAll(),
             'total' => $total,
             'totalPaginas' => Paginacion::totalPaginas($total),
+            'pagina' => $pagina,
         ];
     }
 
