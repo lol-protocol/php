@@ -91,8 +91,18 @@ class NameCollisionRegressionTest extends TestCase
         // 賓妹, 大陸妹, 北姑 son jerga despectiva/étnica, no apellidos ni
         // gentilicios documentados — se revisaron y ninguno requiere
         // nameCollision.
+        //
+        // Subido a 167 al añadir formas femeninas reales en spa.php: chola,
+        // naca, panchita, charnega, maketa. Ninguna es apellido español
+        // documentado (a diferencia de "moro"/"negro", ya protegidos).
+        //
+        // Subido a 170 al añadir formas femeninas reales en fra/ita/por.php:
+        // youpine, zingara, crioula. Ninguna es apellido documentado.
+        //
+        // Subido a 172 al añadir formas femeninas reales en deu.php:
+        // Zigeunerin, Negerin. Ninguna es apellido documentado.
         $this->assertLessThanOrEqual(
-            162,
+            172,
             count($unflagged),
             'Crecieron los términos étnicos de severidad alta sin nameCollision revisado: ' .
                 implode(', ', array_slice($unflagged, 0, 10)) . '...'

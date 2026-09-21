@@ -42,6 +42,8 @@ return [
             ['word' => 'kröte', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'natter', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'köter', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'eselin', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'äffin', 'riskType' => 'animal', 'severity' => 'high'],
         ],
 
         'verstand' => [
@@ -68,6 +70,9 @@ return [
             ['word' => 'ignorant', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'analphabet', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ungebildet', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'idiotin', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'vollidiotin', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'analphabetin', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
 
         'koerper' => [
@@ -94,6 +99,7 @@ return [
             ['word' => 'stinkend', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'dreckig', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'vettel', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'zwergin', 'riskType' => 'fisico', 'severity' => 'medium'],
         ],
 
         'behinderung' => [
@@ -117,6 +123,8 @@ return [
             ['word' => 'irrer', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'wahnsinnig', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'verrückt', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'bucklige', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'stotterin', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
 
         'moral' => [
@@ -156,6 +164,27 @@ return [
             ['word' => 'säufer', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'trunkenbold', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'junkie', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'schurkin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'gaunerin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'betrügerin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'schwindlerin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'lügnerin', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'heuchlerin', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'hochstaplerin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'diebin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'mörderin', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'verbrecherin', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'verräterin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'denunziantin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'egoistin', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'sadistin', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'tyrannin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'vergewaltigerin', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'kinderschänderin', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'ehebrecherin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'speicheleckerin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'schmarotzerin', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'säuferin', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
 
         'geschlecht' => [
@@ -223,6 +252,11 @@ return [
             ['word' => 'erbärmlich', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'versager', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'nervensäge', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'greisin', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'tattergreisin', 'riskType' => 'burlesco', 'severity' => 'high'],
+            ['word' => 'wichtigtuerin', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'angeberin', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'versagerin', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
 
         'ethnisch' => [
@@ -237,6 +271,10 @@ return [
             ['word' => 'russki', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'ausländer', 'riskType' => 'etnico', 'severity' => 'low'],
             ['word' => 'fremdling', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'negerin', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'zigeunerin', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'jüdin', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'ausländerin', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
 
         'religioes' => [
@@ -256,6 +294,18 @@ return [
             ['word' => 'zauberer', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'frömmler', 'riskType' => 'religioso', 'severity' => 'low'],
             ['word' => 'fanatiker', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'ketzerin', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'abtrünnige', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'gotteslästerin', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'frevlerin', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'ungläubige', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'heidin', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'götzendienerin', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'hexer', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'zauberin', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'frömmlerin', 'riskType' => 'religioso', 'severity' => 'low'],
+            ['word' => 'fanatikerin', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
+
     ],
 ];

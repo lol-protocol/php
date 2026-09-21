@@ -40,6 +40,8 @@ return [
             ['word' => 'crapaud', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'charogne', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'clébard', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'cochonne', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'ânesse', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
 
         'intellect' => [
@@ -65,6 +67,17 @@ return [
             ['word' => 'analphabète', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'illettré', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'inculte', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'idiote', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'crétine', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'attardée', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'mongole', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'demeurée', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'abrutie', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'nigaude', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'niaise', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'sotte', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'ignorante', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'illettrée', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
 
         'physique' => [
@@ -92,6 +105,19 @@ return [
             ['word' => 'puant', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'crasseux', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'vieille peau', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'laide', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'hideuse', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'affreuse', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'repoussante', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'répugnante', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'grasse', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'bedonnante', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'chétive', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'nabote', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'courtaude', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'édentée', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'puante', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'crasseuse', 'riskType' => 'fisico', 'severity' => 'medium'],
         ],
 
         'handicap' => [
@@ -114,6 +140,16 @@ return [
             ['word' => 'dément', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'aliéné', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'taré', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'estropiée', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'boiteuse', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'manchote', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'bossue', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'sourde', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'muette', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'naine', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'démente', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'aliénée', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'tarée', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
 
         'moral' => [
@@ -157,6 +193,21 @@ return [
             ['word' => 'ivrogne', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'poivrot', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'drogué', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'bâtarde', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'salaude', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'gredine', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'menteuse', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'voleuse', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'meurtrière', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'criminelle', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'traîtresse', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'corrompue', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'radine', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'cruelle', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'cocue', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'fainéante', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'poivrote', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'droguée', 'riskType' => 'moral', 'severity' => 'high'],
         ],
 
         'genre' => [
@@ -206,6 +257,9 @@ return [
             ['word' => 'branleur', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'enculé', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'bordel', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'merdeuse', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'branleuse', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'enculée', 'riskType' => 'ordinario', 'severity' => 'high'],
         ],
 
         'derision' => [
@@ -232,6 +286,14 @@ return [
             ['word' => 'pathétique', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'raté', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'casse-pieds', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'croulante', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'gâteuse', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'décrépite', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'morveuse', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'gamine', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'prétentieuse', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'vantarde', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'ratée', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
 
         'ethnique' => [
@@ -244,15 +306,14 @@ return [
             ['word' => 'niakoué', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'youpin', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'rital', 'riskType' => 'etnico', 'severity' => 'high'],
-            // 'Polak' es también un apellido real y documentado (checo,
-            // polaco y de la diáspora judía) — nunca debe rechazar en
-            // automático a un apellido real.
             ['word' => 'polak', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'boche', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'rosbif', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'gitan', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'manouche', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'métèque', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'youpine', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'gitane', 'riskType' => 'etnico', 'severity' => 'medium'],
         ],
 
         'religieux' => [
@@ -272,6 +333,15 @@ return [
             ['word' => 'sorcière', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'bigot', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'fanatique', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'apostate', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'blasphématrice', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'païenne', 'riskType' => 'religioso', 'severity' => 'low'],
+            ['word' => 'mécréante', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'excommuniée', 'riskType' => 'religioso', 'severity' => 'medium'],
+            ['word' => 'possédée', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'sorcier', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'bigote', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
+
     ],
 ];
