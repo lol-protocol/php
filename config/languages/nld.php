@@ -24,7 +24,9 @@ return [
             ['word' => 'koe', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'pad', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'teef', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'rund', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
+
         'verstand' => [
             ['word' => 'idioot', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'imbeciel', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -40,7 +42,12 @@ return [
             ['word' => 'onnozel', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'analfabeet', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'onwetend', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'uilskuiken', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'oelewapper', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'prutser', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'trut', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
+
         'lichaam' => [
             ['word' => 'lelijk', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'afzichtelijk', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -59,6 +66,7 @@ return [
             ['word' => 'smerig', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'oude heks', 'riskType' => 'fisico', 'severity' => 'high'],
         ],
+
         'handicap' => [
             ['word' => 'kreupel', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'invalide', 'riskType' => 'discapacidad', 'severity' => 'medium'],
@@ -75,7 +83,9 @@ return [
             ['word' => 'gehandicapt', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'gek', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'krankzinnig', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'mafkees', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
+
         'moraal' => [
             ['word' => 'bastaard', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'klootzak', 'riskType' => 'moral', 'severity' => 'high'],
@@ -107,7 +117,18 @@ return [
             ['word' => 'luiaard', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'dronkaard', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'junkie', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'eikel', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'lomperd', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'rotzak', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'smeerlap', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'zeikerd', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'kwal', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'slapjanus', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'fielt', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'viezerik', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'engerd', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
+
         'geslacht' => [
             ['word' => 'flikker', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'homo', 'riskType' => 'genero', 'severity' => 'medium'],
@@ -120,6 +141,7 @@ return [
             ['word' => 'prostituee', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'oude vrijster', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
+
         'grof' => [
             ['word' => 'schijt', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'stront', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -137,6 +159,7 @@ return [
             ['word' => 'wijf', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'verdomd', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
+
         'spot' => [
             ['word' => 'ouwe', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'mummie', 'riskType' => 'burlesco', 'severity' => 'low'],
@@ -152,7 +175,12 @@ return [
             ['word' => 'belachelijk', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'zielig', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'sukkelaar', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'kwibus', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'druiloor', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'zeurpiet', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'aansteller', 'riskType' => 'burlesco', 'severity' => 'low'],
         ],
+
         'etnisch' => [
             ['word' => 'neger', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'zwartje', 'riskType' => 'etnico', 'severity' => 'high'],
@@ -163,6 +191,7 @@ return [
             ['word' => 'mof', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'buitenlander', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
+
         'religieus' => [
             ['word' => 'ketter', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'godslasteraar', 'riskType' => 'religioso', 'severity' => 'high'],
@@ -175,5 +204,6 @@ return [
             ['word' => 'heks', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'fanaticus', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
+
     ],
 ];

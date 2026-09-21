@@ -23,7 +23,9 @@ return [
             ['word' => 'vacă', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'broască', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'javră', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'măgăriță', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
+
         'intelect' => [
             ['word' => 'idiot', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'imbecil', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -38,7 +40,13 @@ return [
             ['word' => 'nătăfleț', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'ignorant', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'analfabet', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'proastă', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'tâmpită', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'nătângă', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'ignorantă', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'analfabetă', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
+
         'fizic' => [
             ['word' => 'urât', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'hidos', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -52,7 +60,17 @@ return [
             ['word' => 'chel', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'puturos', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'jegos', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'urâtă', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'hidoasă', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'respingătoare', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'scârboasă', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'grasă', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'obeză', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'slabă', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'cheală', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'puturoasă', 'riskType' => 'fisico', 'severity' => 'medium'],
         ],
+
         'dizabilitate' => [
             ['word' => 'schilod', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'olog', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -68,7 +86,18 @@ return [
             ['word' => 'diform', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'paralitic', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'nebun', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'schiloadă', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'oloagă', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'șchioapă', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'oarbă', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'surdă', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'mută', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'pitică', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'diformă', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'paralitică', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'nebună', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
+
         'moral' => [
             ['word' => 'bastard', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'ticălos', 'riskType' => 'moral', 'severity' => 'high'],
@@ -95,7 +124,26 @@ return [
             ['word' => 'leneș', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'bețiv', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'drogat', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'bastardă', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'ticăloasă', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'nemernică', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'mincinoasă', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'ipocrită', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'hoață', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'criminală', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'trădătoare', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'turnătoare', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'coruptă', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'zgârcită', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'egoistă', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'crudă', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'pedofilă', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'lașă', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'leneșă', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'bețivă', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'drogată', 'riskType' => 'moral', 'severity' => 'high'],
         ],
+
         'gen' => [
             ['word' => 'poponar', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'homosexual', 'riskType' => 'genero', 'severity' => 'medium'],
@@ -106,6 +154,7 @@ return [
             ['word' => 'prostituată', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'fată bătrână', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
+
         'vulgar' => [
             ['word' => 'căcat', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'rahat', 'riskType' => 'ordinario', 'severity' => 'high'],
@@ -119,6 +168,7 @@ return [
             ['word' => 'futut', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'muist', 'riskType' => 'ordinario', 'severity' => 'high'],
         ],
+
         'batjocura' => [
             ['word' => 'moșneag', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'hârcă', 'riskType' => 'burlesco', 'severity' => 'high'],
@@ -133,7 +183,14 @@ return [
             ['word' => 'clovn', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'ridicol', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'patetic', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'copilăroasă', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'imatură', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'îngâmfată', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'lăudăroasă', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'ridicolă', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'patetică', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
+
         'etnic' => [
             ['word' => 'țigan', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'cioară', 'riskType' => 'etnico', 'severity' => 'high'],
@@ -141,7 +198,10 @@ return [
             ['word' => 'jidan', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'negru', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'corcitură', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'țigancă', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'neagră', 'riskType' => 'etnico', 'severity' => 'medium'],
         ],
+
         'religios' => [
             ['word' => 'eretic', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'blestemat', 'riskType' => 'religioso', 'severity' => 'medium'],
@@ -153,5 +213,6 @@ return [
             ['word' => 'vrăjitoare', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'fanatic', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
+
     ],
 ];

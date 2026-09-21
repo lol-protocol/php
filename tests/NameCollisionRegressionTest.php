@@ -101,8 +101,11 @@ class NameCollisionRegressionTest extends TestCase
         //
         // Subido a 172 al añadir formas femeninas reales en deu.php:
         // Zigeunerin, Negerin. Ninguna es apellido documentado.
+        //
+        // Subido a 173 al añadir formas femeninas reales en ron.php:
+        // țigancă. No es apellido documentado.
         $this->assertLessThanOrEqual(
-            172,
+            173,
             count($unflagged),
             'Crecieron los términos étnicos de severidad alta sin nameCollision revisado: ' .
                 implode(', ', array_slice($unflagged, 0, 10)) . '...'
