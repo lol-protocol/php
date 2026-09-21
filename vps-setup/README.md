@@ -100,7 +100,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 
 | Paso | Script | Qué hace |
 |------|--------|----------|
-| 01 | `01-system-update.sh` | Actualiza APT e instala utilidades base (git, curl, build-essential) |
+| 01 | `01-system-update.sh` | Actualiza APT, instala utilidades base (git, curl, build-essential) y **activa UFW** (con SSH permitido antes de encenderlo) |
 | 02_A | `02_A-install-java.sh` | Instala Java 21 (OpenJDK) |
 | 02_B | `02_B-install-php.sh` | Instala PHP 8.3 + FPM + extensiones comunes |
 | 02_C | `02_C-install-python.sh` | Instala Python 3 + pip + venv |

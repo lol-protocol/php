@@ -460,13 +460,25 @@ Sincroniza la hora del sistema.
 ## 🔐 Seguridad
 
 ### UFW (Uncomplicated Firewall)
-```bash
-sudo ufw enable
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
 
-# Abrir puertos
-sudo ufw allow 22/tcp      # SSH
+`01-system-update.sh` ya hace esto automáticamente (permite SSH y activa el
+firewall antes de instalar cualquier otra cosa). Referencia manual, por si
+necesitas hacerlo en otro servidor:
+
+⚠️ **El orden importa.** Permite SSH **antes** de activar el firewall -- si
+activas `ufw` primero (política por defecto: bloquear todo lo entrante) sin
+haber permitido SSH todavía, pierdes el acceso a tu propia sesión en la
+siguiente conexión, sin forma de volver a entrar salvo por la consola de
+rescate del proveedor.
+
+```bash
+# 1. Permitir SSH PRIMERO
+sudo ufw allow OpenSSH      # o: sudo ufw allow 22/tcp
+
+# 2. RECIEN AHORA activar (--force evita la confirmacion interactiva)
+sudo ufw --force enable
+
+# 3. Abrir los puertos que necesites
 sudo ufw allow 80/tcp      # HTTP
 sudo ufw allow 443/tcp     # HTTPS
 
@@ -564,22 +576,25 @@ chown usuario:grupo archivo # Cambiar propietario
 
 ---
 
-## 🚀 Instalación Rápida (One-Liner)
+## 🚀 Instalación Rápida (script único)
 
-**Instalar todo de una vez:**
+**Instalar todo de una vez** (usa los scripts numerados de `vps-setup/`, no un solo `apt-get` gigante -- así cada paso se valida por separado y un fallo en uno no deja el sistema a medio instalar):
 ```bash
-sudo apt-get update && \
-sudo apt-get upgrade -y && \
-sudo apt-get install -y \
-  build-essential curl wget git htop nano vim openssh-server \
-  openjdk-21-jdk \
-  nginx \
-  php8.3 php8.3-fpm php8.3-cli php8.3-common php8.3-mysql \
-  php8.3-postgresql php8.3-gd php8.3-curl php8.3-json php8.3-zip \
-  python3 python3-pip python3-venv \
-  postgresql postgresql-contrib \
-  certbot python3-certbot-nginx \
-  ufw ntp
+cd vps-setup
+chmod +x *.sh
+./install-all.sh tudominio.com tu@email.com
+```
+
+Esto corre, en orden: `01-system-update.sh` (incluye activar UFW) →
+`02_A`..`02_F` + `02_J` (Java, PHP, Python, PostgreSQL, Nginx, Certbot,
+Webmin) → `03-configure-nginx-site.sh` → `04-setup-ssl.sh` →
+`05-deploy-landing-page.sh`.
+
+**Extras opcionales, uno por uno:**
+```bash
+./02_G-install-mariadb.sh
+./02_H-install-tomcat.sh            # requiere 02_A
+./02_I-install-python-whisper.sh    # requiere 02_C
 ```
 
 ---

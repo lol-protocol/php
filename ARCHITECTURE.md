@@ -145,17 +145,17 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 ### SSL/TLS
 - ✅ Certificados Let's Encrypt (gratis)
 - ✅ Renovación automática (Certbot)
-- ✅ HTTPS obligatorio (redirección automática)
-- ✅ Headers de seguridad
-  - `Strict-Transport-Security`
-  - `X-Frame-Options`
-  - `X-Content-Type-Options`
-  - `X-XSS-Protection`
+- ✅ HTTPS obligatorio (redirección automática, la agrega Certbot al instalar el certificado)
+- ⚠️ Headers de seguridad (`Strict-Transport-Security`, `X-Frame-Options`,
+  `X-Content-Type-Options`, `X-XSS-Protection`) -- **ningún script los agrega
+  todavía**. Si los quieres, hay que sumarlos a mano en cada
+  `/etc/nginx/sites-available/<dominio>` con `add_header`, dentro del
+  bloque `server` de cada sitio.
 
 ### Firewall
-- ✅ UFW habilitado
-- ✅ Puertos abiertos: 22 (SSH), 80 (HTTP), 443 (HTTPS)
-- ✅ SSH con key-based auth
+- ✅ UFW habilitado (por `01-system-update.sh`, con SSH permitido antes de activarlo)
+- ✅ Puertos abiertos: 22 (SSH), 80 (HTTP, vía `02_E`), 443 (HTTPS, vía `04`)
+- ⚠️ SSH por contraseña (ningún script configura llaves SSH ni desactiva el login por contraseña -- si quieres esto, es un paso manual aparte: generar un par de llaves, copiar la pública con `ssh-copy-id`, y luego editar `/etc/ssh/sshd_config` para poner `PasswordAuthentication no`)
 
 ### Base de Datos
 - ✅ PostgreSQL sin acceso externo
