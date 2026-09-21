@@ -7,7 +7,7 @@ Guía paso a paso para desplegar todo el sistema en el VPS.
 ## 📋 Pre-requisitos
 
 - ✅ VPS Ubuntu 24.04 LTS activo (158.69.222.245)
-- ✅ Acceso SSH al VPS (usuario: Ubuntu, contraseña: DmSdQKUQZQrp)
+- ✅ Acceso SSH al VPS (usuario: ubuntu — usa tu propia contraseña o, mejor, una llave SSH; nunca la dejes escrita en este repo)
 - ✅ Dominios registrados (conce.com, initech.cl, contrastocolor.ink, wikipedia.cl)
 - ✅ Acceso a panel DNS de cada dominio
 - ✅ Email para certificados SSL (ej: admin@domain.com)
@@ -20,7 +20,7 @@ Guía paso a paso para desplegar todo el sistema en el VPS.
 
 ```bash
 ssh ubuntu@158.69.222.245
-# Contraseña: DmSdQKUQZQrp
+# Te pedirá la contraseña del usuario ubuntu (no la guardes en texto plano en ningún repo)
 ```
 
 ### Paso 2: Descargar Scripts de Instalación

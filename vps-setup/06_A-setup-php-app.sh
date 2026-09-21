@@ -19,12 +19,13 @@ sudo mkdir -p /var/log/nginx/$DOMAIN
 sudo chown -R www-data:www-data $APP_PATH   # www-data es el usuario con el que corre Nginx/PHP-FPM
 
 # Pagina de prueba minima para confirmar que PHP-FPM + Nginx estan sirviendo
-# correctamente antes de subir el codigo real de la app
+# correctamente antes de subir el codigo real de la app. A proposito NO usa
+# phpinfo(): esa funcion expone version de PHP, modulos, rutas del servidor
+# y variables de entorno a cualquiera que visite la URL por HTTP plano.
 echo "Creando página de prueba..."
 sudo tee $APP_PATH/index.php > /dev/null <<'EOF'
 <?php
-phpinfo();
-?>
+echo "PHP-FPM + Nginx funcionando correctamente.";
 EOF
 
 sudo chown www-data:www-data $APP_PATH/index.php

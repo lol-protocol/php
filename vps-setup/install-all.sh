@@ -23,10 +23,13 @@ chmod +x *.sh
 
 # Pasos con letra (02_A..02_J) son independientes entre si: el orden
 # dentro del mismo numero no importa, solo que terminen antes del
-# siguiente numero. Solo incluye el stack MINIMO para dejar la landing
-# page respondiendo por HTTPS -- los extras (MariaDB, Tomcat, Whisper,
-# apps adicionales, DNS propio) se corren a mano cuando se necesiten
-# (ver el mensaje final de este script).
+# siguiente numero. Instala el stack COMPLETO de lenguajes/servicios
+# soportados (Java, PHP, Python, PostgreSQL, Nginx, Certbot, Webmin), no
+# solo lo que usa la landing page estatica -- si solo necesitas la landing
+# page por HTTPS, corre a mano 01, 02_E, 02_F, 03, 04 y 05. Los extras
+# realmente opcionales (MariaDB, Tomcat, Whisper, apps adicionales, DNS
+# propio) se corren aparte cuando se necesiten (ver el mensaje final de
+# este script).
 STEPS=(
     "01-system-update.sh"
     "02_A-install-java.sh"

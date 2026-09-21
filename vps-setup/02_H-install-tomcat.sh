@@ -22,11 +22,12 @@ sudo apt-get install -y tomcat10 tomcat10-admin
 sudo systemctl start tomcat10
 sudo systemctl enable tomcat10   # Arranca automaticamente si el VPS se reinicia
 
-# Abrimos el 8080 solo para pruebas locales/diagnostico; en produccion el trafico
-# real deberia entrar por Nginx (80/443), no directo a este puerto.
-if command -v ufw &> /dev/null; then
-    sudo ufw allow 8080/tcp || true
-fi
+# NO abrimos el 8080 en UFW: el trafico de loopback (127.0.0.1) no pasa por
+# el firewall, asi que "curl http://127.0.0.1:8080" funciona igual sin esta
+# regla. Abrir 8080/tcp aqui expondria Tomcat (incluidos /manager y
+# /host-manager) directo a internet, saltandose Nginx y cualquier HTTPS o
+# header de seguridad. El trafico real debe entrar siempre por Nginx
+# (80/443) via reverse proxy -- ver 06_D-setup-tomcat-app.sh.
 
 echo ""
 echo "✓ Apache Tomcat instalado y corriendo en el puerto 8080"
