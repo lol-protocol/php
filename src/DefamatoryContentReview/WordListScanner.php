@@ -40,30 +40,72 @@ final class WordListScanner
      */
     public static function scan(string $text, callable $search): array
     {
-        $matches = self::scanWindows(preg_split(self::BETWEEN_WORDS, $text, -1, PREG_SPLIT_NO_EMPTY) ?: [], $search);
+        $words = preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY) ?: [];
 
-        foreach (preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY) ?: [] as $word) {
+        // Cada token recuerda de qué palabra salió, para poder decidir
+        // después qué coincidencias caen enteras dentro de una misma.
+        $tokens = [];
+        foreach ($words as $index => $word) {
+            foreach (preg_split(self::BETWEEN_WORDS, $word, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $token) {
+                $tokens[] = ['text' => $token, 'word' => $index];
+            }
+        }
+
+        $matches = self::scanWindows($tokens, $search);
+
+        foreach ($words as $index => $word) {
             $glued = self::stripInsideWord($word);
 
             if ($glued === $word || ($found = $search($glued)) === null) {
                 continue;
             }
 
-            // Si el paso 1 ya marcó algo dentro de esta misma palabra, la
-            // coincidencia pegada es la misma señal contada dos veces.
-            foreach ($matches as $match) {
-                if (mb_stripos($word, $match['found']) !== false) {
-                    continue 2;
-                }
-            }
+            // La palabra entera es un término del diccionario, así que
+            // manda sobre los fragmentos que el paso 1 halló dentro de
+            // ella: "pedó-filo" es "pedófilo" (high), no el "filo" (low)
+            // que quedaba al partir por el guion. Antes ganaba el
+            // fragmento —bastaba con intercalar un guion para bajarse la
+            // severidad— porque una coincidencia previa contenida en la
+            // palabra descartaba la pegada. Sólo se descartan las
+            // coincidencias contenidas en ESTA palabra: una frase que la
+            // cruza ("hijo de puta") abarca más y sigue valiendo.
+            $matches = array_values(array_filter(
+                $matches,
+                fn(array $match) => $match['firstWord'] !== $index || $match['lastWord'] !== $index
+            ));
 
-            $matches[] = $found + ['found' => $word];
+            $matches[] = $found + [
+                'found' => $word,
+                'start' => self::firstTokenOf($tokens, $index),
+                'firstWord' => $index,
+                'lastWord' => $index,
+            ];
         }
 
-        return $matches;
+        // El orden de aparición importa: NameEvaluator usa la posición de
+        // cada coincidencia para no colapsar dos apariciones distintas del
+        // mismo término entre idiomas de una familia.
+        usort($matches, fn(array $a, array $b) => $a['start'] <=> $b['start']);
+
+        return array_map(
+            fn(array $match) => array_diff_key($match, ['start' => null, 'firstWord' => null, 'lastWord' => null]),
+            $matches
+        );
     }
 
-    /** @param array<int,string> $tokens @param callable(string):?array $search */
+    /** @param array<int,array{text:string,word:int}> $tokens */
+    private static function firstTokenOf(array $tokens, int $word): int
+    {
+        foreach ($tokens as $position => $token) {
+            if ($token['word'] === $word) {
+                return $position;
+            }
+        }
+
+        return count($tokens);
+    }
+
+    /** @param array<int,array{text:string,word:int}> $tokens @param callable(string):?array $search */
     private static function scanWindows(array $tokens, callable $search): array
     {
         $matches = [];
@@ -71,11 +113,17 @@ final class WordListScanner
 
         for ($i = 0; $i < $count; $i++) {
             for ($span = min(3, $count - $i); $span >= 1; $span--) {
-                $phrase = implode(' ', array_slice($tokens, $i, $span));
+                $window = array_slice($tokens, $i, $span);
+                $phrase = implode(' ', array_column($window, 'text'));
                 $found = $search($phrase);
 
                 if ($found !== null) {
-                    $matches[] = $found + ['found' => $phrase];
+                    $matches[] = $found + [
+                        'found' => $phrase,
+                        'start' => $i,
+                        'firstWord' => $window[0]['word'],
+                        'lastWord' => $window[$span - 1]['word'],
+                    ];
                     $i += $span - 1; // un token ya consumido por una frase larga no vuelve a contarse
                     break;
                 }

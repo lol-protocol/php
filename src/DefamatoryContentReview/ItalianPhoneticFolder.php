@@ -33,6 +33,7 @@ class ItalianPhoneticFolder
     {
         $text = mb_strtolower(trim($text), 'UTF-8');
         $text = self::unleet($text);
+        $text = self::stripCombiningMarks($text);
         $text = strtr($text, self::ACCENTS);
 
         return self::stripSeparators($text);

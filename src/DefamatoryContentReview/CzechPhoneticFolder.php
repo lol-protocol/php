@@ -34,6 +34,7 @@ class CzechPhoneticFolder
     {
         $text = mb_strtolower(trim($text), 'UTF-8');
         $text = self::unleet($text);
+        $text = self::stripCombiningMarks($text);
         $text = self::stripSeparators($text);
 
         return strtr($text, self::ACCENTS);

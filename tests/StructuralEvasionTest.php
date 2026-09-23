@@ -49,6 +49,42 @@ class StructuralEvasionTest extends TestCase
         }
     }
 
+    /**
+     * El separador intercalado tampoco debe REBAJAR la severidad. Partir
+     * "pedófilo" por el guion deja "filo", que también está en el
+     * diccionario pero es `low`: antes ganaba ese fragmento y el nombre
+     * pasaba de `reject` a `accept_with_flag`, así que bastaba un guion
+     * para elegir la severidad con la que te marcaban.
+     */
+    public function testSeparatorInsideATermDoesNotLowerSeverity(): void
+    {
+        $cases = ['pedófilo' => 'pedó-filo', 'negrata' => 'neg-rata', 'mulato' => 'mula-to'];
+
+        foreach ($cases as $plain => $evasion) {
+            $expected = $this->reviewer->validateName($plain);
+            $actual = $this->reviewer->validateName($evasion);
+
+            $this->assertSame(
+                $expected->getSeverity(),
+                $actual->getSeverity(),
+                "'{$evasion}' debería conservar la severidad de '{$plain}'."
+            );
+            $this->assertSame($this->reviewer->decide($expected), $this->reviewer->decide($actual));
+            $this->assertSame([$evasion], array_column($actual->getFlaggedTerms(), 'term'));
+        }
+    }
+
+    /**
+     * La palabra pegada manda sobre sus fragmentos, pero sólo dentro de su
+     * propia palabra: una entrada multipalabra abarca más y sigue valiendo.
+     */
+    public function testMultiWordEntrySurvivesTheGluedWordPass(): void
+    {
+        $result = $this->reviewer->validateName('Ana hijo de puta Pérez');
+
+        $this->assertSame(['hijo de puta'], array_column($result->getFlaggedTerms(), 'term'));
+    }
+
     /** Una entrada del diccionario con guion tiene que ser alcanzable por texto. */
     public function testHyphenatedDictionaryEntryIsReachable(): void
     {

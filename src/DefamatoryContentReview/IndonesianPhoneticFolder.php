@@ -28,6 +28,7 @@ class IndonesianPhoneticFolder
     {
         $text = mb_strtolower(trim($text), 'UTF-8');
         $text = self::unleet($text);
+        $text = self::stripCombiningMarks($text);
         $text = self::stripSeparators($text);
 
         $text = str_replace('oe', 'u', $text); // grafía Van Ophuijsen: "oe" = /u/
