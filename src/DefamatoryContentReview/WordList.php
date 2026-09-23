@@ -76,6 +76,10 @@ class WordList
     public function fold(string $text): string { return $this->phonetics->fold($text); }
     /** Coincidencia fonética exacta de un término completo. Null si el idioma no tiene reglas de plegado. */
     public function searchPhoneticExact(string $word): ?array { return $this->phonetics->searchExact($word, $this->index->all()); }
-    /** Candidatos para fusiones nombre+apellido. Vacío si el idioma no tiene reglas de plegado. */
+    /** Si este idioma tiene detección de fusión nombre+apellido (ver FusionSupport). */
+    public function supportsFusion(): bool { return $this->phonetics->supportsFusion(); }
+    /** Forma sobre la que se busca la fusión: fonética o literal según FusionSupport. */
+    public function fusionFold(string $text): string { return $this->phonetics->fusionFold($text); }
+    /** Candidatos para fusiones nombre+apellido. Vacío si el idioma no tiene detección de fusión. */
     public function getFusionCandidates(int $minLength = 4): array { return $this->phonetics->fusionCandidates($this->index->all(), $minLength); }
 }

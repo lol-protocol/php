@@ -6,7 +6,7 @@ Detecta insultos, léxico soez y construcciones de ridiculización en nombres y
 apellidos de personas, para plataformas de información genealógica.
 
 - **11 tipos de riesgo** — no sólo *cuánto* ofende un término, sino *de qué modo*.
-- **30 idiomas** identificados por código ISO 639-3, con ~4.600 términos.
+- **33 idiomas** identificados por código ISO 639-3, con ~6.400 términos.
 - **Modelo de parentesco lingüístico** — validación cruzada entre lenguas
   emparentadas, con la coincidencia ponderada por su afinidad léxica.
 - **Protección de apellidos legítimos** — «Cerda», «Moro» o «Savage» son linajes
@@ -212,6 +212,33 @@ $reviewer->languages()->wordList('eng')->supportsPhoneticFolding();  // false �
 Añadir un idioma nuevo a la fusión fonética es añadir su folder y una fila
 en `PhoneticFolderRegistry::FOLDERS` — nada más cambia.
 
+### Fusión literal en idiomas sin reglas fonéticas
+
+La fusión en sí no necesita reglas fonéticas: es unir nombre y apellido y
+buscar un término que cruce la unión. Para 9 idiomas sin folder (ruso,
+ucraniano, búlgaro, griego, hindi, coreano, islandés, swahili y tagalo),
+`FusionSupport` la hace sobre la misma forma normalizada que usa la búsqueda
+literal — sin variantes fonéticas de un solo campo, que ahí duplicarían la
+búsqueda literal. Con eso la fusión cubre **26 de los 33 idiomas**.
+
+Cada idioma entró sólo tras un barrido de combinaciones de nombres reales
+comunes con cero falsos positivos. Quedaron fuera los que no lo pasaron o no
+pueden pasarlo:
+
+| Excluido | Motivo |
+|---|---|
+| Inglés | Falsos positivos reales: «Chris Hitt» → «shit», «Dustin King» → «stinking» |
+| Árabe | Falsos positivos reales: «محمد منصور» (Mohammed Mansour) → «مدمن» |
+| Hebreo | Como el árabe, no escribe vocales: las uniones forman palabras con demasiada facilidad |
+| Japonés, tailandés, cantonés | Sin espacios entre palabras; el umbral de longitud está pensado para alfabetos |
+| Vietnamita | El tono distingue palabras y la normalización colapsa parte de los tonos |
+
+```php
+$reviewer = DefamatoryContentReviewer::create($configDir, 'rus');
+$reviewer->validateFullName('Сво', 'Лочь')->getPhoneticFusionTerms();  // «сволочь»
+FusionSupport::isSupported('ara');                                      // false
+```
+
 ### Evasión cubierta y no cubierta
 
 - **Transliteración numérica** ("c3rda", "v4g1na"): cubierta. `WordList::normalize()`
@@ -220,13 +247,19 @@ en `PhoneticFolderRegistry::FOLDERS` — nada más cambia.
   folders fonéticos hacen lo mismo antes de plegar — por eso también se
   detecta combinada con la fusión: `validateFullName('Elb4', 'G1na')` marca
   "vagina" igual que la versión sin dígitos.
+- **Variantes ortográficas estándar de scripts no latinos**: cubierta.
+  `ScriptFolding` iguala las formas que los propios hablantes tratan como
+  equivalentes: griego en mayúsculas («ΜΑΛΑΚΑΣ», sin tonos y con sigma
+  medial — lo normal en registros genealógicos), ruso con «е» por «ё»
+  («козел»), árabe con kashida, harakat, alef sin hamza, «ى»/«ي» y
+  «ة»/«ه», y hebreo con niqqud. Antes todas estas formas pasaban.
 - **Apellidos compuestos con guion o apóstrofo** ("Pérez-García", "O'Brien"):
   cubierta. La búsqueda literal ya los separaba en tokens; los folders
   fonéticos ahora también descartan el guion/apóstrofo (antes quedaba
   literal en la forma plegada y rompía el cálculo de la frontera de fusión).
 - **Variantes por distancia de edición** ("Cerrda", "Certa"): **deliberadamente
   no cubierta**. Colapsar letras dobles cerraría este caso, pero across
-  ~4.600 palabras en 30 idiomas no hay forma de verificar a mano qué
+  ~6.400 palabras en 33 idiomas no hay forma de verificar a mano qué
   colisiones no deseadas produciría — "Serrano" (apellido real) se volvería
   "Serano", y así con cada doble letra en cada idioma. Se documenta como
   límite en vez de implementarse a medias.
@@ -585,6 +618,7 @@ src/DefamatoryContentReview/
 ├── WordList.php                    Diccionario: carga, normalización, búsqueda
 ├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
 ├── AccentFolding.php               Plegado de diacríticos compartido por WordList
+├── ScriptFolding.php               Variantes estándar de griego, cirílico, árabe y hebreo
 ├── ScoringPolicy.php               Orquesta pesos/bandas/decisión (configurable)
 ├── ScoringWeights.php / SeverityBands.php / DecisionTable.php   Colaboradores de ScoringPolicy
 ├── PhoneticFolder.php              Plegado fonético del español
@@ -595,6 +629,7 @@ src/DefamatoryContentReview/
 ├── Czech…RomanianPhoneticFolder.php  Los otros 12 idiomas latinos (ver tabla arriba)
 ├── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica compartida por los folders
 ├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
+├── FusionSupport.php               Qué idiomas tienen fusión (fonética o literal) y por qué no el resto
 ├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
 ├── ValidationResult.php            Resultado con trazabilidad por idioma y método
 └── FlaggedTermCollection.php       Términos marcados y sus consultas — colaborador de ValidationResult
@@ -669,15 +704,13 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
   frontera (ver la sección de fusión fonética más arriba). La transliteración
   numérica de un solo carácter sí se cubre (ver «Evasión cubierta y no
   cubierta»).
-- La fusión fonética sólo cubre 17 de los 30 idiomas, los que tienen folder
-  registrado en `PhoneticFolderRegistry`: inglés excluido a propósito
-  porque su ortografía no tiene grafía alternativa real que plegar (a
-  diferencia del resto, es aproximación fonética laxa, no equivalencia
-  ortográfica verificable); vietnamita por su tono fonémico; los 11
-  idiomas en script no latino (árabe, búlgaro, griego, hebreo, hindi,
-  japonés, coreano, ruso, tailandés, ucraniano, chino), fuera del alcance
-  del mecanismo. En cualquiera de los 17 sólo cubre el cruce entre nombre
-  y apellido, no la re-segmentación dentro de un único campo.
+- La fusión cubre 26 de los 33 idiomas: 17 con plegado fonético
+  (`PhoneticFolderRegistry`) y 9 con fusión literal (`FusionSupport`).
+  Quedan fuera inglés, árabe, hebreo, japonés, tailandés, cantonés y
+  vietnamita (motivos en la sección «Fusión literal»). En coreano la
+  longitud mínima se cuenta en sílabas, así que sólo alcanza a los
+  términos más largos. En todos, sólo cubre el cruce entre nombre y
+  apellido, no la re-segmentación dentro de un único campo.
 - Ningún diccionario queda en `basic`, pero `moderate` (24 de los 30) sigue
   necesitando revisión de hablante nativo antes de producción — es una base
   verificable, no una traducción exhaustiva.

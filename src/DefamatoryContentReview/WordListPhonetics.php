@@ -4,9 +4,9 @@ namespace DefamatoryContentReview;
 
 /**
  * Plegado fonético, coincidencia fonética exacta y candidatos de fusión
- * para un idioma. Colaborador interno de WordList — separado porque sólo
- * tiene sentido para idiomas con reglas registradas en
- * PhoneticFolderRegistry; el resto de WordList no depende de esto.
+ * para un idioma. Colaborador interno de WordList. La coincidencia exacta
+ * sólo aplica a idiomas con reglas en PhoneticFolderRegistry; los
+ * candidatos de fusión, a todos los de FusionSupport.
  */
 final class WordListPhonetics
 {
@@ -22,6 +22,8 @@ final class WordListPhonetics
 
     public function supports(): bool { return PhoneticFolderRegistry::isSupported($this->language); }
     public function fold(string $text): string { return PhoneticFolderRegistry::fold($this->language, $text); }
+    public function supportsFusion(): bool { return FusionSupport::isSupported($this->language); }
+    public function fusionFold(string $text): string { return FusionSupport::fold($this->language, $text); }
 
     /**
      * Coincidencia fonética exacta: mismo sonido que un término del
@@ -30,7 +32,7 @@ final class WordListPhonetics
      */
     public function searchExact(string $word, array $words): ?array
     {
-        return $this->supports() ? ($this->buildIndex($words)[$this->fold($word)] ?? null) : null;
+        return $this->supports() ? ($this->buildIndex($words)[$this->fusionFold($word)] ?? null) : null;
     }
 
     /**
@@ -57,14 +59,14 @@ final class WordListPhonetics
 
     private function buildIndex(array $words): array
     {
-        if (!$this->supports()) {
+        if (!$this->supportsFusion()) {
             return [];
         }
 
         if ($this->index === null) {
             $this->index = [];
             foreach ($words as $word) {
-                $this->index[$this->fold($word['original'])] ??= $word;
+                $this->index[$this->fusionFold($word['original'])] ??= $word;
             }
         }
 
