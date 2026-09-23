@@ -1,0 +1,284 @@
+<?php
+
+namespace PhoneDirectory;
+
+class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
+{
+    private ?\PDO $pdo = null;
+    private string $dsn;
+
+    public function __construct(string $dsn = 'sqlite::memory:')
+    {
+        $this->dsn = $dsn;
+    }
+
+    public function connect(): void
+    {
+        if ($this->pdo !== null) {
+            return;
+        }
+
+        try {
+            $this->pdo = new \PDO($this->dsn);
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        } catch (\PDOException $e) {
+            throw new \RuntimeException("Database connection failed: {$e->getMessage()}");
+        }
+    }
+
+    public function disconnect(): void
+    {
+        $this->pdo = null;
+    }
+
+    public function isConnected(): bool
+    {
+        return $this->pdo !== null;
+    }
+
+    public function createTable(): void
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $sql = <<<SQL
+        CREATE TABLE IF NOT EXISTS phone_directory (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            full_name TEXT NOT NULL,
+            street TEXT NOT NULL,
+            phone_number TEXT,
+            record_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_full_name ON phone_directory(full_name);
+        CREATE INDEX IF NOT EXISTS idx_street ON phone_directory(street);
+        CREATE INDEX IF NOT EXISTS idx_phone_number ON phone_directory(phone_number);
+        SQL;
+
+        $this->pdo->exec($sql);
+    }
+
+    public function insert(PhoneDirectoryEntry $entry): int
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $sql = <<<SQL
+        INSERT INTO phone_directory (full_name, street, phone_number, record_date)
+        VALUES (:fullName, :street, :phoneNumber, :recordDate)
+        SQL;
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':fullName' => $entry->getFullName(),
+            ':street' => $entry->getStreet(),
+            ':phoneNumber' => $entry->getPhoneNumber(),
+            ':recordDate' => $entry->getRecordDate()->format('Y-m-d H:i:s'),
+        ]);
+
+        return (int) $this->pdo->lastInsertId();
+    }
+
+    public function insertBatch(array $entries): int
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $count = 0;
+        $this->pdo->beginTransaction();
+
+        try {
+            foreach ($entries as $entry) {
+                if ($entry instanceof PhoneDirectoryEntry) {
+                    $this->insert($entry);
+                    $count++;
+                }
+            }
+            $this->pdo->commit();
+        } catch (\Throwable $e) {
+            $this->pdo->rollBack();
+            throw new \RuntimeException("Batch insert failed: {$e->getMessage()}");
+        }
+
+        return $count;
+    }
+
+    public function findById(int $id): ?PhoneDirectoryEntry
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $sql = 'SELECT * FROM phone_directory WHERE id = :id LIMIT 1';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $row ? $this->rowToEntry($row) : null;
+    }
+
+    public function findByName(string $name): array
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $sql = 'SELECT * FROM phone_directory WHERE full_name LIKE :name ORDER BY full_name';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':name' => "%{$name}%"]);
+
+        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
+    public function findByStreet(string $street): array
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $sql = 'SELECT * FROM phone_directory WHERE street LIKE :street ORDER BY street, full_name';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':street' => "%{$street}%"]);
+
+        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
+    public function findByPhone(string $phone): ?PhoneDirectoryEntry
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $sql = 'SELECT * FROM phone_directory WHERE phone_number = :phone LIMIT 1';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':phone' => $phone]);
+
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $row ? $this->rowToEntry($row) : null;
+    }
+
+    public function getAll(): array
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $sql = 'SELECT * FROM phone_directory ORDER BY full_name';
+        $stmt = $this->pdo->query($sql);
+
+        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
+    public function update(PhoneDirectoryEntry $entry): bool
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        if ($entry->getId() === 0) {
+            throw new \InvalidArgumentException('Cannot update entry without ID');
+        }
+
+        $sql = <<<SQL
+        UPDATE phone_directory
+        SET full_name = :fullName, street = :street, phone_number = :phoneNumber, updated_at = CURRENT_TIMESTAMP
+        WHERE id = :id
+        SQL;
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':fullName' => $entry->getFullName(),
+            ':street' => $entry->getStreet(),
+            ':phoneNumber' => $entry->getPhoneNumber(),
+            ':id' => $entry->getId(),
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function delete(int $id): bool
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $sql = 'DELETE FROM phone_directory WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function count(): int
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $stmt = $this->pdo->query('SELECT COUNT(*) as count FROM phone_directory');
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return (int) ($row['count'] ?? 0);
+    }
+
+    public function search(array $criteria): array
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $where = [];
+        $params = [];
+
+        if (!empty($criteria['name'])) {
+            $where[] = 'full_name LIKE :name';
+            $params[':name'] = "%{$criteria['name']}%";
+        }
+
+        if (!empty($criteria['street'])) {
+            $where[] = 'street LIKE :street';
+            $params[':street'] = "%{$criteria['street']}%";
+        }
+
+        if (!empty($criteria['phone'])) {
+            $where[] = 'phone_number = :phone';
+            $params[':phone'] = $criteria['phone'];
+        }
+
+        if (empty($where)) {
+            return $this->getAll();
+        }
+
+        $sql = 'SELECT * FROM phone_directory WHERE ' . implode(' AND ', $where) . ' ORDER BY full_name';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
+    public function clear(): bool
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $this->pdo->exec('DELETE FROM phone_directory');
+        return true;
+    }
+
+    private function rowToEntry(array $row): PhoneDirectoryEntry
+    {
+        return new PhoneDirectoryEntry(
+            fullName: $row['full_name'],
+            street: $row['street'],
+            phoneNumber: $row['phone_number'],
+            id: (int) $row['id'],
+            recordDate: new \DateTime($row['record_date'])
+        );
+    }
+}
