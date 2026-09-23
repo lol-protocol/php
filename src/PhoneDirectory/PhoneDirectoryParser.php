@@ -113,6 +113,7 @@ class PhoneDirectoryParser
         try {
             $entry = new PhoneDirectoryEntry(
                 fullName: $data['name'],
+                countryCode: 'US',
                 street: $data['street'],
                 phoneNumber: $data['phone']
             );

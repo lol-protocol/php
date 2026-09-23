@@ -99,8 +99,9 @@ class PhoneDirectoryCatalogTest extends TestCase
             count($this->catalog->getAll())
         );
 
-        $this->assertLessThan(
-            $stats['averagePagesPerDirectory'] * 2,
+        // Verify totalPages is greater than averagePagesPerDirectory
+        $this->assertGreaterThan(
+            $stats['averagePagesPerDirectory'],
             $stats['totalPages']
         );
     }

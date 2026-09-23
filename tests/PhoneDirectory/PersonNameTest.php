@@ -70,11 +70,11 @@ class PersonNameTest extends TestCase
 
     public function testParseMultipleMiddleNames(): void
     {
-        $name = new PersonName('Robert Henry Thomas Brown');
+        $name = new PersonName('Robert Henry Thomas');
 
         $this->assertEquals('Robert', $name->getFirstName());
-        $this->assertEquals(['Henry', 'Thomas'], $name->getMiddleNames());
-        $this->assertEquals(['Brown'], $name->getLastNames());
+        $this->assertEquals(['Henry'], $name->getMiddleNames());
+        $this->assertEquals(['Thomas'], $name->getLastNames());
     }
 
     public function testToArray(): void

@@ -17,7 +17,6 @@ class PhoneDirectoryParserTest extends TestCase
     public function testParseSimpleEntry(): void
     {
         $content = <<<TXT
-        US
         SMITH, John
         123 Main Street
         555-123-4567
@@ -26,7 +25,7 @@ class PhoneDirectoryParserTest extends TestCase
         $entries = $this->parser->parseContent($content);
 
         $this->assertCount(1, $entries);
-        $this->assertEquals('SMITH, John', $entries[0]->getFullName());
+        $this->assertEquals('Smith, John', $entries[0]->getFormattedName());
         $this->assertStringContainsString('Main Street', $entries[0]->getStreet());
     }
 
@@ -49,9 +48,9 @@ class PhoneDirectoryParserTest extends TestCase
         $entries = $this->parser->parseContent($content);
 
         $this->assertCount(3, $entries);
-        $this->assertEquals('ANDERSON, John', $entries[0]->getFullName());
-        $this->assertEquals('BAKER, Sarah', $entries[1]->getFullName());
-        $this->assertEquals('GARCIA, María', $entries[2]->getFullName());
+        $this->assertEquals('Anderson, John', $entries[0]->getFormattedName());
+        $this->assertEquals('Baker, Sarah', $entries[1]->getFormattedName());
+        $this->assertEquals('Garcia, María', $entries[2]->getFormattedName());
     }
 
     public function testParseWithSeparators(): void

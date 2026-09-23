@@ -53,6 +53,7 @@ class PhoneDirectoryManagerTest extends TestCase
     {
         $entry = new PhoneDirectoryEntry(
             fullName: 'SMITH, John',
+            countryCode: 'US',
             street: '123 Main Street',
             phoneNumber: '555-123-4567'
         );
@@ -64,19 +65,19 @@ class PhoneDirectoryManagerTest extends TestCase
 
     public function testGetEntry(): void
     {
-        $entry = new PhoneDirectoryEntry('JOHNSON, Mary', '456 Oak Avenue');
+        $entry = new PhoneDirectoryEntry('JOHNSON, Mary', 'US', '456 Oak Avenue');
         $id = $this->manager->addEntry($entry);
 
         $found = $this->manager->getEntry($id);
 
         $this->assertNotNull($found);
-        $this->assertEquals('JOHNSON, Mary', $found->getFullName());
+        $this->assertEquals('Johnson, Mary', $found->getFormattedName());
     }
 
     public function testFindByName(): void
     {
-        $entry1 = new PhoneDirectoryEntry('WILLIAMS, Robert', '321 Pine Drive');
-        $entry2 = new PhoneDirectoryEntry('WILLIAMS, Patricia', '654 Elm Lane');
+        $entry1 = new PhoneDirectoryEntry('WILLIAMS, Robert', 'US', '321 Pine Drive');
+        $entry2 = new PhoneDirectoryEntry('WILLIAMS, Patricia', 'US', '654 Elm Lane');
 
         $this->manager->addEntry($entry1);
         $this->manager->addEntry($entry2);
@@ -88,9 +89,9 @@ class PhoneDirectoryManagerTest extends TestCase
 
     public function testFindByStreet(): void
     {
-        $entry1 = new PhoneDirectoryEntry('MILLER, Betty', '246 Spruce Lane');
-        $entry2 = new PhoneDirectoryEntry('WILSON, Charles', '246 Spruce Lane');
-        $entry3 = new PhoneDirectoryEntry('MOORE, Dorothy', '467 Birch Avenue');
+        $entry1 = new PhoneDirectoryEntry('MILLER, Betty', 'US', '246 Spruce Lane');
+        $entry2 = new PhoneDirectoryEntry('WILSON, Charles', 'US', '246 Spruce Lane');
+        $entry3 = new PhoneDirectoryEntry('MOORE, Dorothy', 'US', '467 Birch Avenue');
 
         $this->manager->addEntry($entry1);
         $this->manager->addEntry($entry2);
@@ -105,6 +106,7 @@ class PhoneDirectoryManagerTest extends TestCase
     {
         $entry = new PhoneDirectoryEntry(
             fullName: 'TAYLOR, George',
+            countryCode: 'US',
             street: '654 Walnut Road',
             phoneNumber: '555-567-8901'
         );
@@ -114,14 +116,14 @@ class PhoneDirectoryManagerTest extends TestCase
         $found = $this->manager->findByPhone('555-567-8901');
 
         $this->assertNotNull($found);
-        $this->assertEquals('TAYLOR, George', $found->getFullName());
+        $this->assertEquals('Taylor, George', $found->getFormattedName());
     }
 
     public function testGetAllEntries(): void
     {
-        $entry1 = new PhoneDirectoryEntry('DAVIS, Jennifer', '987 Chestnut Avenue');
-        $entry2 = new PhoneDirectoryEntry('THOMPSON, Edward', '246 Hickory Street');
-        $entry3 = new PhoneDirectoryEntry('JACKSON, Susan', '890 Poplar Lane');
+        $entry1 = new PhoneDirectoryEntry('DAVIS, Jennifer', 'US', '987 Chestnut Avenue');
+        $entry2 = new PhoneDirectoryEntry('THOMPSON, Edward', 'US', '246 Hickory Street');
+        $entry3 = new PhoneDirectoryEntry('JACKSON, Susan', 'US', '890 Poplar Lane');
 
         $this->manager->addEntry($entry1);
         $this->manager->addEntry($entry2);
@@ -134,8 +136,8 @@ class PhoneDirectoryManagerTest extends TestCase
 
     public function testSearchCriteria(): void
     {
-        $entry1 = new PhoneDirectoryEntry('WHITE, Donald', '123 Sycamore Street', '555-789-0123');
-        $entry2 = new PhoneDirectoryEntry('HARRIS, Christine', '456 Laurel Avenue', '555-890-1234');
+        $entry1 = new PhoneDirectoryEntry('WHITE, Donald', 'US', '123 Sycamore Street', '555-789-0123');
+        $entry2 = new PhoneDirectoryEntry('HARRIS, Christine', 'US', '456 Laurel Avenue', '555-890-1234');
 
         $this->manager->addEntry($entry1);
         $this->manager->addEntry($entry2);
@@ -147,11 +149,12 @@ class PhoneDirectoryManagerTest extends TestCase
 
     public function testUpdateEntry(): void
     {
-        $entry = new PhoneDirectoryEntry('MARTIN, Michael', '789 Magnolia Road');
+        $entry = new PhoneDirectoryEntry('MARTIN, Michael', 'US', '789 Magnolia Road');
         $id = $this->manager->addEntry($entry);
 
         $updated = new PhoneDirectoryEntry(
             fullName: 'MARTIN, Michael S.',
+            countryCode: 'US',
             street: '789 Magnolia Road, Apt. 10',
             id: $id
         );
@@ -163,7 +166,7 @@ class PhoneDirectoryManagerTest extends TestCase
 
     public function testDeleteEntry(): void
     {
-        $entry = new PhoneDirectoryEntry('THOMAS, Richard', '567 Locust Boulevard');
+        $entry = new PhoneDirectoryEntry('THOMAS, Richard', 'US', '567 Locust Boulevard');
         $id = $this->manager->addEntry($entry);
 
         $this->assertNotNull($this->manager->getEntry($id));
@@ -178,8 +181,8 @@ class PhoneDirectoryManagerTest extends TestCase
     {
         $this->assertEquals(0, $this->manager->getTotalCount());
 
-        $entry1 = new PhoneDirectoryEntry('ANDERSON, John', '123 Main Street');
-        $entry2 = new PhoneDirectoryEntry('BAKER, Sarah', '456 Oak Avenue');
+        $entry1 = new PhoneDirectoryEntry('ANDERSON, John', 'US', '123 Main Street');
+        $entry2 = new PhoneDirectoryEntry('BAKER, Sarah', 'US', '456 Oak Avenue');
 
         $this->manager->addEntry($entry1);
         $this->assertEquals(1, $this->manager->getTotalCount());

@@ -46,6 +46,9 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         CREATE TABLE IF NOT EXISTS phone_directory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             full_name TEXT NOT NULL,
+            country_code TEXT NOT NULL DEFAULT 'US',
+            zone TEXT,
+            city TEXT,
             street TEXT NOT NULL,
             phone_number TEXT,
             record_date DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -54,6 +57,7 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         );
 
         CREATE INDEX IF NOT EXISTS idx_full_name ON phone_directory(full_name);
+        CREATE INDEX IF NOT EXISTS idx_country_code ON phone_directory(country_code);
         CREATE INDEX IF NOT EXISTS idx_street ON phone_directory(street);
         CREATE INDEX IF NOT EXISTS idx_phone_number ON phone_directory(phone_number);
         SQL;
@@ -68,13 +72,16 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         }
 
         $sql = <<<SQL
-        INSERT INTO phone_directory (full_name, street, phone_number, record_date)
-        VALUES (:fullName, :street, :phoneNumber, :recordDate)
+        INSERT INTO phone_directory (full_name, country_code, zone, city, street, phone_number, record_date)
+        VALUES (:fullName, :countryCode, :zone, :city, :street, :phoneNumber, :recordDate)
         SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':fullName' => $entry->getFullName(),
+            ':countryCode' => $entry->getCountryCode(),
+            ':zone' => $entry->getZone(),
+            ':city' => $entry->getCity(),
             ':street' => $entry->getStreet(),
             ':phoneNumber' => $entry->getPhoneNumber(),
             ':recordDate' => $entry->getRecordDate()->format('Y-m-d H:i:s'),
@@ -186,13 +193,16 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
 
         $sql = <<<SQL
         UPDATE phone_directory
-        SET full_name = :fullName, street = :street, phone_number = :phoneNumber, updated_at = CURRENT_TIMESTAMP
+        SET full_name = :fullName, country_code = :countryCode, zone = :zone, city = :city, street = :street, phone_number = :phoneNumber, updated_at = CURRENT_TIMESTAMP
         WHERE id = :id
         SQL;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':fullName' => $entry->getFullName(),
+            ':countryCode' => $entry->getCountryCode(),
+            ':zone' => $entry->getZone(),
+            ':city' => $entry->getCity(),
             ':street' => $entry->getStreet(),
             ':phoneNumber' => $entry->getPhoneNumber(),
             ':id' => $entry->getId(),
@@ -275,8 +285,11 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
     {
         return new PhoneDirectoryEntry(
             fullName: $row['full_name'],
+            countryCode: $row['country_code'] ?? 'US',
             street: $row['street'],
-            phoneNumber: $row['phone_number'],
+            phoneNumber: $row['phone_number'] ?? null,
+            zone: $row['zone'] ?? null,
+            city: $row['city'] ?? null,
             id: (int) $row['id'],
             recordDate: new \DateTime($row['record_date'])
         );
