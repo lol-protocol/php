@@ -17,6 +17,7 @@ class PhoneDirectoryParserTest extends TestCase
     public function testParseSimpleEntry(): void
     {
         $content = <<<TXT
+        US
         SMITH, John
         123 Main Street
         555-123-4567
