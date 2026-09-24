@@ -662,6 +662,9 @@
             constructor() {
                 this.formats = sampleFormats;
                 this.filteredFormats = [...this.formats];
+                this.formatMap = new Map(this.formats.map((f, i) => [f.format_name, i]));
+                this.statsCache = null;
+                this.filterState = {search: '', country: '', category: ''};
                 this.init();
             }
 
@@ -728,40 +731,54 @@
 
                 const {countryFilter: countrySelect, categoryFilter: categorySelect, fromFormat: fromSelect, toFormat: toSelect} = this.els;
 
+                const countryFragment = document.createDocumentFragment();
+                const fromFragment = document.createDocumentFragment();
+                const toFragment = document.createDocumentFragment();
+
                 countries.forEach(country => {
-                    let option = document.createElement('option');
-                    option.value = country;
-                    option.textContent = country;
-                    countrySelect.appendChild(option);
+                    const option1 = document.createElement('option');
+                    option1.value = country;
+                    option1.textContent = country;
+                    countryFragment.appendChild(option1);
 
-                    option = option.cloneNode(true);
-                    fromSelect.appendChild(option);
+                    const option2 = document.createElement('option');
+                    option2.value = country;
+                    option2.textContent = country;
+                    fromFragment.appendChild(option2);
 
-                    option = option.cloneNode(true);
-                    toSelect.appendChild(option);
+                    const option3 = document.createElement('option');
+                    option3.value = country;
+                    option3.textContent = country;
+                    toFragment.appendChild(option3);
                 });
 
+                countrySelect.appendChild(countryFragment);
+                fromSelect.appendChild(fromFragment);
+                toSelect.appendChild(toFragment);
+
+                const categoryFragment = document.createDocumentFragment();
                 categories.forEach(category => {
                     const option = document.createElement('option');
                     option.value = category;
                     option.textContent = category;
-                    categorySelect.appendChild(option);
+                    categoryFragment.appendChild(option);
                 });
+                categorySelect.appendChild(categoryFragment);
             }
 
             filterFormats() {
                 const {search, countryFilter, categoryFilter} = this.els;
-                const searchVal = search.value.toLowerCase();
-                const country = countryFilter.value;
-                const category = categoryFilter.value;
+                this.filterState.search = search.value.toLowerCase();
+                this.filterState.country = countryFilter.value;
+                this.filterState.category = categoryFilter.value;
 
                 this.filteredFormats = this.formats.filter(format => {
-                    const matchSearch = !searchVal ||
-                        format.format_name.toLowerCase().includes(searchVal) ||
-                        format.common_use.toLowerCase().includes(searchVal);
+                    const matchSearch = !this.filterState.search ||
+                        format.format_name.toLowerCase().includes(this.filterState.search) ||
+                        format.common_use.toLowerCase().includes(this.filterState.search);
 
-                    const matchCountry = !country || format.country === country;
-                    const matchCategory = !category || format.category === category;
+                    const matchCountry = !this.filterState.country || format.country === this.filterState.country;
+                    const matchCategory = !this.filterState.category || format.category === this.filterState.category;
 
                     return matchSearch && matchCountry && matchCategory;
                 });
@@ -771,6 +788,7 @@
 
             renderFormats(formats) {
                 const {container} = this.els;
+                container.innerHTML = '';
 
                 if (formats.length === 0) {
                     container.innerHTML = `
@@ -782,8 +800,11 @@
                     return;
                 }
 
-                container.innerHTML = formats.map(format => `
-                    <div class="format-card">
+                const fragment = document.createDocumentFragment();
+                formats.forEach(format => {
+                    const card = document.createElement('div');
+                    card.className = 'format-card';
+                    card.innerHTML = `
                         <div class="format-card-header">
                             <h3>${format.format_name}</h3>
                             <span class="badge badge-${format.category.toLowerCase()}">${format.category}</span>
@@ -810,8 +831,10 @@
                             ${this.generatePreviewSVG(format)}
                         </div>
                         <button class="btn btn-primary">Select Format</button>
-                    </div>
-                `).join('');
+                    `;
+                    fragment.appendChild(card);
+                });
+                container.appendChild(fragment);
             }
 
             generatePreviewSVG(format) {
@@ -832,13 +855,27 @@
             }
 
             updateStats() {
+                if (this.statsCache) {
+                    const {totalFormats, totalCountries, totalCategories} = this.els;
+                    totalFormats.textContent = this.statsCache.totalFormats;
+                    totalCountries.textContent = this.statsCache.totalCountries;
+                    totalCategories.textContent = this.statsCache.totalCategories;
+                    return;
+                }
+
                 const {totalFormats, totalCountries, totalCategories} = this.els;
                 const countries = new Set(this.formats.map(f => f.country)).size;
                 const categories = new Set(this.formats.map(f => f.category)).size;
 
-                totalFormats.textContent = this.formats.length;
-                totalCountries.textContent = countries;
-                totalCategories.textContent = categories;
+                this.statsCache = {
+                    totalFormats: this.formats.length,
+                    totalCountries: countries,
+                    totalCategories: categories
+                };
+
+                totalFormats.textContent = this.statsCache.totalFormats;
+                totalCountries.textContent = this.statsCache.totalCountries;
+                totalCategories.textContent = this.statsCache.totalCategories;
             }
 
             switchTab(tabName) {
@@ -851,40 +888,43 @@
             }
 
             updateConverter() {
-                const {fromFormat, toFormat} = this.els;
-                const fromName = fromFormat.value;
-                const toName = toFormat.value;
+                const {fromFormat: fromFormatEl, toFormat: toFormatEl} = this.els;
+                const fromName = fromFormatEl.value;
+                const toName = toFormatEl.value;
 
                 if (!fromName || !toName) {
                     document.getElementById('conversion-result').classList.remove('show');
                     return;
                 }
 
-                const fromFormat = this.formats.find(f => f.format_name === fromName);
-                const toFormat = this.formats.find(f => f.format_name === toName);
+                const fromIdx = this.formatMap.get(fromName);
+                const toIdx = this.formatMap.get(toName);
 
-                if (fromFormat && toFormat) {
-                    const widthDiff = Math.abs(fromFormat.width_mm - toFormat.width_mm) / fromFormat.width_mm;
-                    const heightDiff = Math.abs(fromFormat.height_mm - toFormat.height_mm) / fromFormat.height_mm;
-                    const avgDiff = (widthDiff + heightDiff) / 2;
-                    const equivalence = Math.max(0, Math.min(100, (1 - avgDiff) * 100));
+                if (fromIdx === undefined || toIdx === undefined) return;
 
-                    const result = document.getElementById('conversion-result');
-                    const info = document.getElementById('conversion-info');
-                    const fill = document.getElementById('equivalence-fill');
+                const fromFormat = this.formats[fromIdx];
+                const toFormat = this.formats[toIdx];
 
-                    info.innerHTML = `
-                        <p><strong>${fromFormat.format_name}</strong> → <strong>${toFormat.format_name}</strong></p>
-                        <p style="font-size: 14px; color: var(--text-light);">
-                            Equivalence: ${equivalence.toFixed(1)}%
-                        </p>
-                    `;
+                const widthDiff = Math.abs(fromFormat.width_mm - toFormat.width_mm) / fromFormat.width_mm;
+                const heightDiff = Math.abs(fromFormat.height_mm - toFormat.height_mm) / fromFormat.height_mm;
+                const avgDiff = (widthDiff + heightDiff) / 2;
+                const equivalence = Math.max(0, Math.min(100, (1 - avgDiff) * 100));
 
-                    fill.style.width = equivalence + '%';
-                    fill.textContent = equivalence.toFixed(0) + '%';
+                const result = document.getElementById('conversion-result');
+                const info = document.getElementById('conversion-info');
+                const fill = document.getElementById('equivalence-fill');
 
-                    result.classList.add('show');
-                }
+                info.innerHTML = `
+                    <p><strong>${fromFormat.format_name}</strong> → <strong>${toFormat.format_name}</strong></p>
+                    <p style="font-size: 14px; color: var(--text-light);">
+                        Equivalence: ${equivalence.toFixed(1)}%
+                    </p>
+                `;
+
+                fill.style.width = equivalence + '%';
+                fill.textContent = equivalence.toFixed(0) + '%';
+
+                result.classList.add('show');
             }
         }
 

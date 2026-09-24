@@ -30,16 +30,17 @@ const groupBy = (items, keyFn) => {
     return groups;
 };
 
-// CSV Parser - shared across all managers
-const parseCSV = (text) => {
+// CSV Parser - shared across all managers with smart type conversion
+const NUMERIC_FIELDS = new Set(['width_mm', 'height_mm', 'width_inches', 'height_inches', 'ppi', 'cost_factor', 'durability_rating', 'page_range_min', 'page_range_max', 'year']);
+const parseCSV = (text, numericFields = NUMERIC_FIELDS) => {
     const lines = text.trim().split('\n');
     const headers = lines[0].split(',').map(h => h.trim());
     return lines.slice(1).map(line => {
         const values = line.split(',');
         const obj = {};
         headers.forEach((header, i) => {
-            const value = values[i] ? values[i].trim() : '';
-            obj[header] = isNaN(value) || value === '' ? value : parseFloat(value);
+            const value = values[i]?.trim() || '';
+            obj[header] = numericFields.has(header) && value ? parseFloat(value) : value;
         });
         return obj;
     });
@@ -87,7 +88,10 @@ class FormatSearcher {
     }
 
     buildIndex() {
+        const MIN_WORD_LENGTH = 2;
+        const STOP_WORDS = new Set(['a', 'an', 'the', 'for', 'and', 'or', 'in', 'to', 'of', 'is']);
         const index = {};
+
         this.formats.forEach((format, idx) => {
             const words = [
                 format.format_name,
@@ -98,12 +102,18 @@ class FormatSearcher {
             .filter(Boolean)
             .join(' ')
             .toLowerCase()
-            .split(/\s+/);
+            .split(/\s+/)
+            .filter(w => w.length >= MIN_WORD_LENGTH && !STOP_WORDS.has(w));
 
             words.forEach(word => {
-                if (!index[word]) index[word] = [];
-                index[word].push(idx);
+                if (!index[word]) index[word] = new Set();
+                index[word].add(idx);
             });
+        });
+
+        // Convert Sets to Arrays for compatibility
+        Object.keys(index).forEach(word => {
+            index[word] = Array.from(index[word]);
         });
         return index;
     }
@@ -161,10 +171,21 @@ class FormatConverter {
     constructor(formats) {
         this.formats = formats;
         this.formatMap = new Map(formats.map((f, i) => [f.format_name, i]));
+        this.dimensionIndex = this._buildDimensionIndex();
         this.calculateSimilarity = memoize(
             (f1Name, f2Name) => this._calcSimilarity(f1Name, f2Name),
             (f1, f2) => [f1, f2].sort().join('|')
         );
+    }
+
+    _buildDimensionIndex() {
+        const index = new Map();
+        this.formats.forEach((f, idx) => {
+            const bucket = Math.round((f.width_mm || 0) / 10) * 10;
+            if (!index.has(bucket)) index.set(bucket, []);
+            index.get(bucket).push(idx);
+        });
+        return index;
     }
 
     _calcSimilarity(f1Name, f2Name) {
@@ -188,13 +209,21 @@ class FormatConverter {
         const idx = this.formatMap.get(formatName);
         if (idx === undefined) return [];
 
+        const format = this.formats[idx];
+        const bucket = Math.round((format.width_mm || 0) / 10) * 10;
+        const candidateIndices = new Set();
+
+        for (let b = bucket - 20; b <= bucket + 20; b += 10) {
+            (this.dimensionIndex.get(b) || []).forEach(i => candidateIndices.add(i));
+        }
+
         const candidates = [];
-        for (let i = 0; i < this.formats.length; i++) {
+        candidateIndices.forEach(i => {
             if (i !== idx && this.formats[i].width_mm && this.formats[i].height_mm) {
                 const sim = this.calculateSimilarity(formatName, this.formats[i].format_name);
                 if (sim >= threshold) candidates.push({format: this.formats[i], similarity: sim});
             }
-        }
+        });
 
         candidates.sort((a, b) => b.similarity - a.similarity);
 
@@ -256,6 +285,24 @@ class DocumentGenerator {
     constructor(formats) {
         this.formats = formats;
         this.formatMap = new Map(formats.map((f, i) => [f.format_name, i]));
+        this.conversionCache = new Map();
+    }
+
+    _getFormatInCM(formatName) {
+        if (this.conversionCache.has(formatName)) {
+            return this.conversionCache.get(formatName);
+        }
+
+        const idx = this.formatMap.get(formatName);
+        if (idx === undefined) return null;
+        const format = this.formats[idx];
+
+        const result = {
+            widthCm: (parseFloat(format.width_mm) / 10).toFixed(1),
+            heightCm: (parseFloat(format.height_mm) / 10).toFixed(1)
+        };
+        this.conversionCache.set(formatName, result);
+        return result;
     }
 
     createTemplate(formatName, content = '') {
@@ -301,12 +348,8 @@ class DocumentGenerator {
     }
 
     generateHTML(formatName, title = '', body = '') {
-        const idx = this.formatMap.get(formatName);
-        if (idx === undefined) throw new Error(`Format ${formatName} not found`);
-        const format = this.formats[idx];
-
-        const widthCm = (parseFloat(format.width_mm) / 10).toFixed(1);
-        const heightCm = (parseFloat(format.height_mm) / 10).toFixed(1);
+        const dims = this._getFormatInCM(formatName);
+        if (!dims) throw new Error(`Format ${formatName} not found`);
 
         return `
 <!DOCTYPE html>
@@ -316,7 +359,7 @@ class DocumentGenerator {
     <title>${title || formatName}</title>
     <style>
         @page {
-            size: ${widthCm}cm ${heightCm}cm;
+            size: ${dims.widthCm}cm ${dims.heightCm}cm;
             margin: 2cm;
         }
         body {
@@ -334,25 +377,21 @@ class DocumentGenerator {
     }
 
     generatePrintCSS(formatName) {
-        const idx = this.formatMap.get(formatName);
-        if (idx === undefined) throw new Error(`Format ${formatName} not found`);
-        const format = this.formats[idx];
-
-        const widthCm = (parseFloat(format.width_mm) / 10).toFixed(1);
-        const heightCm = (parseFloat(format.height_mm) / 10).toFixed(1);
+        const dims = this._getFormatInCM(formatName);
+        if (!dims) throw new Error(`Format ${formatName} not found`);
 
         return `
 @media print {
     @page {
-        size: ${widthCm}cm ${heightCm}cm;
+        size: ${dims.widthCm}cm ${dims.heightCm}cm;
         margin: 2cm;
     }
 
     body {
         margin: 0;
         padding: 2cm;
-        width: ${widthCm - 4}cm;
-        height: ${heightCm - 4}cm;
+        width: ${dims.widthCm - 4}cm;
+        height: ${dims.heightCm - 4}cm;
     }
 }
         `;
@@ -372,10 +411,21 @@ class FormatValidator {
     constructor(formats) {
         this.formats = formats;
         this.formatMap = new Map(formats.map((f, i) => [f.format_name, i]));
+        this.dimensionIndex = this._buildDimensionIndex();
         this.validateDimensions = memoize(
             (w, h, u) => this._validateDimensions(w, h, u),
             (w, h, u) => `${w}|${h}|${u}`
         );
+    }
+
+    _buildDimensionIndex() {
+        const index = new Map();
+        this.formats.forEach((f, idx) => {
+            const bucket = Math.round((f.width_mm || 0) / 10) * 10;
+            if (!index.has(bucket)) index.set(bucket, []);
+            index.get(bucket).push(idx);
+        });
+        return index;
     }
 
     _validateDimensions(width, height, unit = 'mm') {
@@ -384,13 +434,23 @@ class FormatValidator {
 
         const normalizedWidth = width * factor;
         const normalizedHeight = height * factor;
+        const bucket = Math.round(normalizedWidth / 10) * 10;
 
-        const matches = this.formats.filter(f => {
+        const candidateIndices = new Set();
+        for (let b = bucket - 20; b <= bucket + 20; b += 10) {
+            (this.dimensionIndex.get(b) || []).forEach(i => candidateIndices.add(i));
+        }
+
+        const matches = [];
+        candidateIndices.forEach(i => {
+            const f = this.formats[i];
             const fWidth = parseFloat(f.width_mm);
             const fHeight = parseFloat(f.height_mm);
 
-            return Math.abs(fWidth - normalizedWidth) < 1 &&
-                   Math.abs(fHeight - normalizedHeight) < 1;
+            if (Math.abs(fWidth - normalizedWidth) < 1 &&
+                Math.abs(fHeight - normalizedHeight) < 1) {
+                matches.push(f);
+            }
         });
 
         return {
@@ -538,29 +598,20 @@ class FormatBatchProcessor {
             .map(callback);
     }
 
-    exportAsJSON(filters = {}) {
+    _applyFilters(filters = {}) {
         let data = this.formats;
+        if (filters.country) data = data.filter(f => f.country === filters.country);
+        if (filters.category) data = data.filter(f => f.category === filters.category);
+        return data;
+    }
 
-        if (filters.country) {
-            data = data.filter(f => f.country === filters.country);
-        }
-        if (filters.category) {
-            data = data.filter(f => f.category === filters.category);
-        }
-
+    exportAsJSON(filters = {}) {
+        const data = this._applyFilters(filters);
         return JSON.stringify(data, null, 2);
     }
 
     exportAsCSV(filters = {}) {
-        let data = this.formats;
-
-        if (filters.country) {
-            data = data.filter(f => f.country === filters.country);
-        }
-        if (filters.category) {
-            data = data.filter(f => f.category === filters.category);
-        }
-
+        const data = this._applyFilters(filters);
         if (data.length === 0) return '';
 
         const headers = Object.keys(data[0]);
@@ -580,34 +631,29 @@ class FormatBatchProcessor {
     }
 
     exportAsHTML(filters = {}) {
-        let data = this.formats;
+        const data = this._applyFilters(filters);
 
-        if (filters.country) {
-            data = data.filter(f => f.country === filters.country);
-        }
-        if (filters.category) {
-            data = data.filter(f => f.category === filters.category);
-        }
-
-        let html = '<table border="1"><thead><tr>';
+        const rows = [];
+        rows.push('<table border="1"><thead><tr>');
 
         if (data.length > 0) {
-            Object.keys(data[0]).forEach(key => {
-                html += `<th>${key}</th>`;
+            const headers = Object.keys(data[0]);
+            headers.forEach(key => {
+                rows.push(`<th>${key}</th>`);
             });
-            html += '</tr></thead><tbody>';
+            rows.push('</tr></thead><tbody>');
 
             data.forEach(row => {
-                html += '<tr>';
+                rows.push('<tr>');
                 Object.values(row).forEach(value => {
-                    html += `<td>${value}</td>`;
+                    rows.push(`<td>${value}</td>`);
                 });
-                html += '</tr>';
+                rows.push('</tr>');
             });
         }
 
-        html += '</tbody></table>';
-        return html;
+        rows.push('</tbody></table>');
+        return rows.join('');
     }
 }
 
@@ -638,21 +684,27 @@ class LocalizationManager {
         this.currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
         this.translations = {};
         this.supportedLanguagesSet = new Set(Object.keys(LocalizationManager.LANGUAGE_NAMES));
-        this.listeners = [];
+        this.listeners = new Map();
+        this.listenerIdCounter = 0;
     }
 
     async init() {
         await this.loadLanguage(this.currentLanguage);
     }
 
-    async loadLanguage(langCode) {
+    async loadLanguage(langCode, timeout = 5000) {
         if (!this.supportedLanguagesSet.has(langCode)) {
             console.warn(`Language ${langCode} not supported, falling back to English`);
             langCode = 'en';
         }
 
         try {
-            const response = await fetch(`${this.translationsPath}/${langCode}.json`);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+            const response = await fetch(`${this.translationsPath}/${langCode}.json`, {signal: controller.signal});
+            clearTimeout(timeoutId);
+
             if (!response.ok) throw new Error(`Failed to load ${langCode}.json`);
             this.translations = await response.json();
             this.currentLanguage = langCode;
@@ -661,7 +713,7 @@ class LocalizationManager {
         } catch (error) {
             console.error(`Error loading language ${langCode}:`, error);
             if (langCode !== 'en') {
-                await this.loadLanguage('en');
+                await this.loadLanguage('en', timeout);
             }
         }
     }
@@ -749,9 +801,10 @@ class LocalizationManager {
     }
 
     subscribe(callback) {
-        this.listeners.push(callback);
+        const id = this.listenerIdCounter++;
+        this.listeners.set(id, callback);
         return () => {
-            this.listeners = this.listeners.filter(l => l !== callback);
+            this.listeners.delete(id);
         };
     }
 
@@ -835,6 +888,8 @@ class ScreenDeviceManager {
         this.tablets = [];
         this.ereaders = [];
         this.deviceIndex = new Map();
+        this.sizeIndex = new Map();
+        this.deviceTypeIndex = new Map();
     }
 
     async loadAllDevices(monitorPath, phonePath, tabletPath, ereaderPath) {
@@ -844,15 +899,45 @@ class ScreenDeviceManager {
             this.loadTablets(tabletPath),
             this.loadEReaders(ereaderPath)
         ]);
-        this._buildDeviceIndex();
+        this._buildIndexes();
     }
 
-    _buildDeviceIndex() {
+    _buildIndexes() {
         this.deviceIndex.clear();
-        this.monitors.forEach(d => this.deviceIndex.set(d.monitor_type, d));
-        this.smartphones.forEach(d => this.deviceIndex.set(d.device_name, d));
-        this.tablets.forEach(d => this.deviceIndex.set(d.device_name, d));
-        this.ereaders.forEach(d => this.deviceIndex.set(d.device_name, d));
+        this.sizeIndex.clear();
+        this.deviceTypeIndex.clear();
+
+        this.monitors.forEach(d => {
+            this.deviceIndex.set(d.monitor_type, d);
+            this.deviceTypeIndex.set(d.monitor_type, {device: d, type: 'monitor'});
+            const size = Math.round(parseFloat(d.screen_size_inches || 0) / 5) * 5;
+            if (!this.sizeIndex.has(size)) this.sizeIndex.set(size, []);
+            this.sizeIndex.get(size).push(d);
+        });
+
+        this.smartphones.forEach(d => {
+            this.deviceIndex.set(d.device_name, d);
+            this.deviceTypeIndex.set(d.device_name, {device: d, type: 'phone'});
+            const size = Math.round(parseFloat(d.size_inches || 0) / 2) * 2;
+            if (!this.sizeIndex.has(size)) this.sizeIndex.set(size, []);
+            this.sizeIndex.get(size).push(d);
+        });
+
+        this.tablets.forEach(d => {
+            this.deviceIndex.set(d.device_name, d);
+            this.deviceTypeIndex.set(d.device_name, {device: d, type: 'tablet'});
+            const size = Math.round(parseFloat(d.screen_size_inches || 0) / 2) * 2;
+            if (!this.sizeIndex.has(size)) this.sizeIndex.set(size, []);
+            this.sizeIndex.get(size).push(d);
+        });
+
+        this.ereaders.forEach(d => {
+            this.deviceIndex.set(d.device_name, d);
+            this.deviceTypeIndex.set(d.device_name, {device: d, type: 'ereader'});
+            const size = Math.round(parseFloat(d.screen_size_inches || 0) / 2) * 2;
+            if (!this.sizeIndex.has(size)) this.sizeIndex.set(size, []);
+            this.sizeIndex.get(size).push(d);
+        });
     }
 
     async loadMonitors(csvPath = 'monitors.csv') {
@@ -897,31 +982,30 @@ class ScreenDeviceManager {
     getDevice(deviceName, type = 'all') {
         if (type === 'all') {
             return this.deviceIndex.get(deviceName);
-        } else if (type === 'monitor') {
-            return this.monitors.find(d => d.monitor_type === deviceName);
-        } else if (type === 'phone') {
-            return this.smartphones.find(d => d.device_name === deviceName);
-        } else if (type === 'tablet') {
-            return this.tablets.find(d => d.device_name === deviceName);
-        } else if (type === 'ereader') {
-            return this.ereaders.find(d => d.device_name === deviceName);
         }
+        const deviceInfo = this.deviceTypeIndex.get(deviceName);
+        return deviceInfo && deviceInfo.type === type ? deviceInfo.device : undefined;
     }
 
     getDevicesBySize(minInches, maxInches, type = 'all') {
-        const types = type === 'all' ? ['monitors', 'smartphones', 'tablets', 'ereaders'] : [type];
         const results = [];
+        const sizeRange = new Set();
 
-        types.forEach(t => {
-            const devices = t === 'monitors' ? this.monitors :
-                           t === 'smartphones' ? this.smartphones :
-                           t === 'tablets' ? this.tablets :
-                           this.ereaders;
+        for (let size = Math.floor(minInches / 5) * 5; size <= Math.ceil(maxInches / 5) * 5; size += 5) {
+            if (this.sizeIndex.has(size)) {
+                sizeRange.add(size);
+            }
+        }
 
-            results.push(...devices.filter(d => {
-                const size = parseFloat(d.screen_size_inches || d.size_inches);
-                return size >= minInches && size <= maxInches;
-            }));
+        sizeRange.forEach(size => {
+            this.sizeIndex.get(size).forEach(d => {
+                const sizeVal = parseFloat(d.screen_size_inches || d.size_inches);
+                if (sizeVal >= minInches && sizeVal <= maxInches) {
+                    if (type === 'all' || this.deviceTypeIndex.get(d.device_name || d.monitor_type)?.type === type) {
+                        results.push(d);
+                    }
+                }
+            });
         });
 
         return results;
