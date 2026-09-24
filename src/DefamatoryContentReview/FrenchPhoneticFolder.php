@@ -23,17 +23,10 @@ namespace DefamatoryContentReview;
  */
 class FrenchPhoneticFolder extends AbstractPhoneticFolder
 {
-    private const ACCENTS = [
-        'à' => 'a', 'â' => 'a', 'ä' => 'a',
-        'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
-        'î' => 'i', 'ï' => 'i',
-        'ô' => 'o', 'ö' => 'o',
-        'û' => 'u', 'ù' => 'u', 'ü' => 'u',
-        'ÿ' => 'y',
-        'œ' => 'oe', 'æ' => 'ae',
-    ];
-
-    protected static function getAccents(): array { return self::ACCENTS; }
+    protected static function getAccents(): array
+    {
+        return CommonPhoneticAccents::withExtras(['ÿ' => 'y', 'œ' => 'oe', 'æ' => 'ae']);
+    }
 
     protected static function applyLanguageRules(string $text): string
     {

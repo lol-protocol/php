@@ -19,15 +19,7 @@ namespace DefamatoryContentReview;
  */
 class ItalianPhoneticFolder extends AbstractPhoneticFolder
 {
-    private const ACCENTS = [
-        'à' => 'a', 'á' => 'a',
-        'è' => 'e', 'é' => 'e',
-        'ì' => 'i', 'í' => 'i',
-        'ò' => 'o', 'ó' => 'o',
-        'ù' => 'u', 'ú' => 'u',
-    ];
-
-    protected static function getAccents(): array { return self::ACCENTS; }
+    protected static function getAccents(): array { return CommonPhoneticAccents::EUROPEAN_VOWELS; }
 
     protected static function applyLanguageRules(string $text): string { return $text; }
 }

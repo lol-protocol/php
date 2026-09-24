@@ -17,11 +17,7 @@ namespace DefamatoryContentReview;
  */
 class SwedishPhoneticFolder extends AbstractPhoneticFolder
 {
-    private const ACCENTS = [
-        'ä' => 'ae', 'ö' => 'oe', 'å' => 'aa',
-    ];
-
-    protected static function getAccents(): array { return self::ACCENTS; }
+    protected static function getAccents(): array { return CommonPhoneticAccents::NORDIC_VOWELS; }
 
     protected static function applyLanguageRules(string $text): string { return $text; }
 }

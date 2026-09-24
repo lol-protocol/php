@@ -23,12 +23,10 @@ namespace DefamatoryContentReview;
  */
 class GermanPhoneticFolder extends AbstractPhoneticFolder
 {
-    private const ACCENTS = [
-        'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue',
-        'ß' => 'ss',
-    ];
-
-    protected static function getAccents(): array { return self::ACCENTS; }
+    protected static function getAccents(): array
+    {
+        return CommonPhoneticAccents::withExtras(['ü' => 'ue', 'ß' => 'ss']);
+    }
 
     protected static function applyLanguageRules(string $text): string
     {

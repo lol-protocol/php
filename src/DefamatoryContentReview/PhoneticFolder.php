@@ -16,16 +16,10 @@ namespace DefamatoryContentReview;
  */
 class PhoneticFolder extends AbstractPhoneticFolder
 {
-    private const ACCENTS = [
-        'á' => 'a', 'à' => 'a', 'ä' => 'a', 'â' => 'a', 'ã' => 'a',
-        'é' => 'e', 'è' => 'e', 'ë' => 'e', 'ê' => 'e',
-        'í' => 'i', 'ì' => 'i', 'ï' => 'i', 'î' => 'i',
-        'ó' => 'o', 'ò' => 'o', 'ö' => 'o', 'ô' => 'o', 'õ' => 'o',
-        'ú' => 'u', 'ù' => 'u', 'ü' => 'u', 'û' => 'u',
-        'ñ' => 'n', 'ç' => 'c',
-    ];
-
-    protected static function getAccents(): array { return self::ACCENTS; }
+    protected static function getAccents(): array
+    {
+        return CommonPhoneticAccents::withExtras(['ñ' => 'n', 'ç' => 'c']);
+    }
 
     protected static function applyLanguageRules(string $text): string
     {

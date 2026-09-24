@@ -24,15 +24,10 @@ namespace DefamatoryContentReview;
  */
 class PortuguesePhoneticFolder extends AbstractPhoneticFolder
 {
-    private const ACCENTS = [
-        'á' => 'a', 'à' => 'a', 'â' => 'a', 'ã' => 'a',
-        'é' => 'e', 'ê' => 'e',
-        'í' => 'i',
-        'ó' => 'o', 'ô' => 'o', 'õ' => 'o',
-        'ú' => 'u', 'ü' => 'u',
-    ];
-
-    protected static function getAccents(): array { return self::ACCENTS; }
+    protected static function getAccents(): array
+    {
+        return CommonPhoneticAccents::withExtras(['ü' => 'u']);
+    }
 
     protected static function applyLanguageRules(string $text): string
     {
