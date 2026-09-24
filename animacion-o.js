@@ -2,12 +2,19 @@ let isAnimating = true;
 
 function toggleAnimation() {
     const ink = document.querySelector('.ink');
+    const button = document.querySelector('button');
+
+    if (!ink || !button) {
+        console.error('Required elements not found');
+        return;
+    }
+
     if (isAnimating) {
         ink.style.animationPlayState = 'paused';
-        document.querySelector('button').textContent = 'Reanudar';
+        button.textContent = 'Reanudar';
     } else {
         ink.style.animationPlayState = 'running';
-        document.querySelector('button').textContent = 'Pausar/Reanudar';
+        button.textContent = 'Pausar/Reanudar';
     }
     isAnimating = !isAnimating;
 }

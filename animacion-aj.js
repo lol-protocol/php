@@ -1,26 +1,46 @@
 const container = document.getElementById('sandContainer');
-let isFalling = true;
-let fallInterval;
 
-class HourglassToggle {
+if (!container) {
+    console.error('Sand container not found');
+    throw new Error('Animation setup failed: #sandContainer not found');
+}
+
+class HourglassToggle extends AnimationToggle {
     constructor() {
-        this.isAnimating = true;
+        super([], true);
+        this.fallInterval = null;
         this.startSand();
     }
 
     toggle() {
-        this.isAnimating = !this.isAnimating;
+        super.toggle();
         if (this.isAnimating) {
             this.startSand();
-            document.querySelector('button').textContent = 'Pausar/Reanudar';
         } else {
-            clearInterval(fallInterval);
-            document.querySelector('button').textContent = 'Reanudar';
+            this._clearInterval();
+        }
+    }
+
+    pause() {
+        super.pause();
+        this._clearInterval();
+    }
+
+    resume() {
+        super.resume();
+        this.startSand();
+    }
+
+    _clearInterval() {
+        if (this.fallInterval) {
+            clearInterval(this.fallInterval);
+            this.fallInterval = null;
         }
     }
 
     startSand() {
-        fallInterval = setInterval(() => {
+        this._clearInterval();
+        this.fallInterval = setInterval(() => {
             if (this.isAnimating) {
                 const grain = createDiv('sand-grain');
                 grain.style.left = (145 + Math.random() * 10 - 5) + 'px';

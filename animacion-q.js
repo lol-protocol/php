@@ -2,12 +2,19 @@ let isAnimating = true;
 
 function toggleAnimation() {
     const auroras = document.querySelectorAll('.aurora');
+    const button = document.querySelector('button');
+
+    if (!button) {
+        console.error('Button not found');
+        return;
+    }
+
     if (isAnimating) {
         auroras.forEach(a => a.style.animationPlayState = 'paused');
-        document.querySelector('button').textContent = 'Reanudar';
+        button.textContent = 'Reanudar';
     } else {
         auroras.forEach(a => a.style.animationPlayState = 'running');
-        document.querySelector('button').textContent = 'Pausar/Reanudar';
+        button.textContent = 'Pausar/Reanudar';
     }
     isAnimating = !isAnimating;
 }

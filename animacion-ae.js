@@ -1,4 +1,10 @@
 const svg = document.getElementById('networkSvg');
+
+if (!svg) {
+    console.error('Network SVG element not found');
+    throw new Error('Animation setup failed: #networkSvg not found');
+}
+
 const nodes = [{x: 100, y: 100}, {x: 300, y: 100}, {x: 200, y: 300}, {x: 100, y: 300}, {x: 300, y: 300}];
 
 // Draw connections
