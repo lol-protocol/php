@@ -71,6 +71,17 @@ Cómo llevar estos principios a la práctica en tu producto. Checklist y ejemplo
 - Métricas de éxito (más allá de conversión)
 - Casos de estudio
 
+### 8. [Templates y Checklists Prácticos](./08-templates-and-checklists.md)
+Plantillas listos para copiar, pegar y adaptar. Comunicaciones, formularios, conversaciones, checklists de audit.
+
+**Temas clave:**
+- Email de cambios (transparente)
+- Formularios de signup (ético)
+- Scripts de conversación
+- Checklists de privacidad, UX y marketing
+- Dashboards de métricas
+- Guías rápidas de acción
+
 ---
 
 ## 🎯 Cómo usar esta guía
@@ -84,8 +95,11 @@ Cómo llevar estos principios a la práctica en tu producto. Checklist y ejemplo
 **Si trabajas en Producto/Tech:**
 - Empieza por [UX Design](./03-ux-design-principles.md) → [Conversacional](./04-conversational-design.md) → [Research](./06-research-methods.md)
 
+**Si quieres templates listos para usar:**
+- Salta a [Templates y Checklists](./08-templates-and-checklists.md) y copia lo que necesitas
+
 **Si quieres la visión completa:**
-- Lee en orden: 1 → 2 → 3 → 4 → 5 → 6 → 7
+- Lee en orden: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 ---
 
