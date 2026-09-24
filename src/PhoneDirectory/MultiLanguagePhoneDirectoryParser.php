@@ -38,6 +38,8 @@ class MultiLanguagePhoneDirectoryParser
         'fr' => ['sarl', 'sas', 'eirl', 'eurl', 'magasin', 'restaurant', 'hôtel', 'banque', 'pharmacie', 'hôpital'],
     ];
 
+    private const SUPPORTED_LANGUAGES = ['es', 'en', 'fr', 'pt', 'de', 'it'];
+
     private PhoneDirectoryParser $parser;
     private string $detectedLanguage = 'en';
     private array $entries = [];
@@ -97,6 +99,10 @@ class MultiLanguagePhoneDirectoryParser
 
         if ($language === null) {
             $language = $this->detectLanguage($content);
+        }
+
+        if (!in_array($language, self::SUPPORTED_LANGUAGES, true)) {
+            throw new \InvalidArgumentException("Unsupported language: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
         }
 
         $this->detectedLanguage = $language;
@@ -320,7 +326,7 @@ class MultiLanguagePhoneDirectoryParser
     private function streetPattern(string $language): string
     {
         if (!isset(self::LANGUAGE_STREET_MARKERS[$language])) {
-            $language = 'en';
+            throw new \InvalidArgumentException("Unsupported language for street pattern: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
         }
 
         $words = implode('|', array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_MARKERS[$language]));
