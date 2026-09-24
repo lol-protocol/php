@@ -82,6 +82,50 @@ Plantillas listos para copiar, pegar y adaptar. Comunicaciones, formularios, con
 - Dashboards de métricas
 - Guías rápidas de acción
 
+### 9. [FAQ: Dilemas y Preguntas Frecuentes](./09-faq-common-dilemmas.md)
+Respuestas a las 14 preguntas más difíciles sobre ética, privacidad, negocio y product.
+
+**Temas clave:**
+- "¿Si recolecto menos datos, no pierdo insights?"
+- "¿Es ético usar psicología?"
+- "¿Qué pasa si competencia presiona?"
+- "¿Cómo motivar equipo a priorizar ética?"
+- "¿Cómo medimos ROI de privacidad?"
+
+### 10. [Dilemas Éticos en Gris](./10-gray-area-ethics.md)
+Decisiones donde ambas opciones tienen costo. Cómo navegar la zona gris ética.
+
+**Temas clave:**
+- Ubicación real-time vs. Seguridad
+- Personalización vs. Profiling
+- Monetización sin anuncios invasivos
+- Retención vs. Libertad del usuario
+- Algoritmos vs. Echo chambers
+- Framework de decisión para gris
+
+### 11. [Transformación Organizacional](./11-organizational-transformation.md)
+Cómo cambiar toda una organización hacia prácticas éticas. Fase por fase, obstáculos, roadmap.
+
+**Temas clave:**
+- Audit de estado actual
+- Conversión de liderazgo
+- Cambios estructurales (roles, políticas)
+- Training & cultura
+- Comunicación externa
+- Medición & iteración
+
+### 12. [Métricas Avanzadas de Ética](./12-advanced-metrics.md)
+Qué medir para asegurar que ética + negocio van juntos. 12 categorías de métricas.
+
+**Temas clave:**
+- Privacy Score (0-100)
+- Trust Score
+- Dark Patterns Index
+- Regulatory Compliance Score
+- User Value Achievement
+- Business Sustainability Ratio
+- Dashboards integrados
+
 ---
 
 ## 🎯 Cómo usar esta guía
@@ -98,8 +142,20 @@ Plantillas listos para copiar, pegar y adaptar. Comunicaciones, formularios, con
 **Si quieres templates listos para usar:**
 - Salta a [Templates y Checklists](./08-templates-and-checklists.md) y copia lo que necesitas
 
+**Si tienes preguntas difíciles:**
+- Ve a [FAQ](./09-faq-common-dilemmas.md) para respuestas prácticas
+
+**Si navegas zona gris ética:**
+- Lee [Dilemas en Gris](./10-gray-area-ethics.md) para un framework de decisión
+
+**Si quieres transformar tu organización:**
+- Sigue [Transformación Organizacional](./11-organizational-transformation.md) paso a paso
+
+**Si quieres medir progreso:**
+- Usa [Métricas Avanzadas](./12-advanced-metrics.md) para dashboards e indicadores
+
 **Si quieres la visión completa:**
-- Lee en orden: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
+- Lee en orden: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 12
 
 ---
 
