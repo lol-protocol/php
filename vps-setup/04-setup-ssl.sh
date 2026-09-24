@@ -47,11 +47,12 @@ fi
 # redirección HTTP->HTTPS a la config de Nginx automaticamente). NOTA: el
 # subcomando se llama 'run' (o 'certonly' si solo quisieras el certificado
 # sin tocar Nginx) -- "certify" no existe en Certbot, es un error comun.
-# --agree-tos / --no-eff-email: evita que el comando se detenga pidiendo
-#          confirmacion interactiva (necesario para correrlo desde un script)
+# --agree-tos / --no-eff-email / --non-interactive: evita que el comando se
+#          detenga pidiendo confirmacion interactiva (necesario para automatizacion)
 sudo certbot run --nginx \
     --agree-tos \
     --no-eff-email \
+    --non-interactive \
     --email $EMAIL \
     -d $DOMAIN \
     -d www.$DOMAIN

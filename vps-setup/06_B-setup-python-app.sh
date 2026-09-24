@@ -46,6 +46,11 @@ sudo -u www-data $VENV_PATH/bin/pip install flask gunicorn
 
 # systemd mantiene la app corriendo en segundo plano y la reinicia sola si se
 # cae (Restart=always) o si el servidor reinicia (systemctl enable)
+# Calcular workers dinamicamente: (CPU cores * 2) + 1 (recomendado por Gunicorn)
+# En lugar de hardcoded a 4, que desperdicia recursos en VPS pequenos o
+# subutiliza los grandes. Ej: 2 cores -> 5 workers, 4 cores -> 9 workers
+WORKERS=$(($(nproc) * 2 + 1))
+
 echo "Creando servicio systemd..."
 sudo tee /etc/systemd/system/$APP_NAME.service > /dev/null <<EOFSERVICE
 [Unit]
@@ -57,9 +62,11 @@ Type=notify
 User=www-data
 WorkingDirectory=$APP_PATH
 Environment="PATH=$VENV_PATH/bin"
-ExecStart=$VENV_PATH/bin/gunicorn --workers 4 --bind 127.0.0.1:8000 app:app
+ExecStart=$VENV_PATH/bin/gunicorn --workers $WORKERS --bind 127.0.0.1:8000 app:app
 Restart=always
 RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=3
 
 [Install]
 WantedBy=multi-user.target

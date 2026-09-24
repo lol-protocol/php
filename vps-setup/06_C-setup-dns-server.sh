@@ -36,8 +36,8 @@ echo ""
 # bind9: el servidor DNS en si (el mismo que usan la mayoria de registradores
 #        por detras). bind9utils trae named-checkconf/named-checkzone, que
 #        usamos mas abajo para validar que no haya errores de sintaxis.
+# NOTA: apt-get update ya se corrio en 01-system-update.sh, asi que saltamos ese paso
 echo "[1/4] Instalando BIND9..."
-sudo apt-get update
 sudo apt-get install -y bind9 bind9utils dnsutils
 
 echo "[2/4] Creando zona DNS para $DOMAIN..."
