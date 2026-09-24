@@ -7,6 +7,7 @@ class Container
     private static $instance;
     private $bindings = [];
     private $singletons = [];
+    private $resolved = [];
 
     public static function getInstance()
     {
@@ -36,14 +37,12 @@ class Container
         }
 
         if (isset($this->singletons[$key])) {
-            if (!isset($this->_resolved[$key])) {
-                $this->_resolved[$key] = $this->bindings[$key]($this);
+            if (!array_key_exists($key, $this->resolved)) {
+                $this->resolved[$key] = $this->bindings[$key]($this);
             }
-            return $this->_resolved[$key];
+            return $this->resolved[$key];
         }
 
         return $this->bindings[$key]($this);
     }
-
-    private $_resolved = [];
 }

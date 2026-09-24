@@ -122,14 +122,18 @@ class Router
             return $this->handleError("Controller not found: $fullClass");
         }
 
-        $controller = new $fullClass();
-        $method = $match['method'];
+        try {
+            $controller = new $fullClass();
+            $method = $match['method'];
 
-        if (!method_exists($controller, $method)) {
-            return $this->handleError("Method not found: {$method}");
+            if (!method_exists($controller, $method)) {
+                return $this->handleError("Method not found: {$method}");
+            }
+
+            return call_user_func([$controller, $method], $match['params']);
+        } catch (\Throwable $e) {
+            return $this->handleError("Controller error: " . $e->getMessage());
         }
-
-        return call_user_func([$controller, $method], $match['params']);
     }
 
     protected function handleNotFound()

@@ -53,9 +53,13 @@ function view($name, $data = [])
         return "View not found: $name";
     }
 
-    extract($data);
     ob_start();
-    include $file;
+    (function() use ($file, $data) {
+        foreach ($data as $key => $value) {
+            ${$key} = $value;
+        }
+        include $file;
+    })();
     return ob_get_clean();
 }
 

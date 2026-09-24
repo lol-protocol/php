@@ -2,21 +2,35 @@
 
 namespace App\Controllers\POS;
 
-class CuentaController
+use App\Controllers\BaseController;
+
+class CuentaController extends BaseController
 {
     public function index($params = [])
     {
-        // TODO: requiere sesion iniciada
-        return view('pos/cuenta/index');
+        if (!$this->requireAuth()) {
+            return $this->handleUnauthorized('Login required to access account');
+        }
+
+        return view('pos/cuenta/index', ['userId' => $this->getCurrentUserId()]);
     }
 
     public function perfil($params = [])
     {
-        return view('pos/cuenta/perfil');
+        if (!$this->requireAuth()) {
+            return $this->handleUnauthorized('Login required to access profile');
+        }
+
+        return view('pos/cuenta/perfil', ['userId' => $this->getCurrentUserId()]);
     }
 
     public function ordenes($params = [])
     {
+        if (!$this->requireAuth()) {
+            return $this->handleUnauthorized('Login required to view orders');
+        }
+
+        // TODO: fetch user orders from DB filtered by getCurrentUserId()
         $ordenes = [];
 
         return view('pos/cuenta/ordenes', ['ordenes' => $ordenes]);
@@ -24,6 +38,11 @@ class CuentaController
 
     public function deseos($params = [])
     {
+        if (!$this->requireAuth()) {
+            return $this->handleUnauthorized('Login required to view wishlist');
+        }
+
+        // TODO: fetch user wishlist from DB filtered by getCurrentUserId()
         $deseos = [];
 
         return view('pos/cuenta/deseos', ['deseos' => $deseos]);
@@ -31,6 +50,11 @@ class CuentaController
 
     public function direcciones($params = [])
     {
+        if (!$this->requireAuth()) {
+            return $this->handleUnauthorized('Login required to manage addresses');
+        }
+
+        // TODO: fetch user addresses from DB filtered by getCurrentUserId()
         $direcciones = [];
 
         return view('pos/cuenta/direcciones', ['direcciones' => $direcciones]);
@@ -38,6 +62,10 @@ class CuentaController
 
     public function preferencias($params = [])
     {
-        return view('pos/cuenta/preferencias');
+        if (!$this->requireAuth()) {
+            return $this->handleUnauthorized('Login required to manage preferences');
+        }
+
+        return view('pos/cuenta/preferencias', ['userId' => $this->getCurrentUserId()]);
     }
 }
