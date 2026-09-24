@@ -1,0 +1,34 @@
+
+
+
+.gears-container {
+    width: 300px;
+    height: 300px;
+}
+
+.gears-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(var(--shadow-md));
+}
+
+#gear1 {
+    animation: spinGear1 2s linear infinite;
+    transform-origin: 100px 150px;
+}
+
+#gear2 {
+    animation: spinGear2 2s linear infinite;
+    transform-origin: 200px 150px;
+}
+
+@keyframes spinGear1 {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes spinGear2 {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación B - DVD Bouncing</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="animacion-b.css">
+</head>
+<body class="fullscreen-container">
+    <div class="info-panel">
+        <h2>B) Círculos Rebotadores</h2>
+        <p>Dos círculos rebotan en rectángulo de proporción áurea (1.618:1).</p>
+    </div>
+
+    <div class="golden-rectangle" id="bouncingContainer">
+        <div class="ball ball-1" id="ball1"></div>
+        <div class="ball ball-2" id="ball2"></div>
+    </div>
+
+    <button class="control-btn" onclick="toggle.toggle()">Pausar/Reanudar</button>
+
+    <script src="common.js"></script>
+    <script src="animacion-b.js"></script>
+</body>
+</html>

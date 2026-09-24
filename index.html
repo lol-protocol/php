@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animaciones Web - Galería Completa</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            font-size: 1em;
+            opacity: 0.85;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .card-letter {
+            font-size: 2.5em;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .card-desc {
+            font-size: 0.9em;
+            opacity: 0.85;
+            line-height: 1.5;
+        }
+
+        .card-link {
+            margin-top: auto;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .card:hover .card-link {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .category {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            color: white;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .stats { flex-direction: column; gap: 10px; }
+            .grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Animaciones Web</h1>
+            <p class="subtitle">Galería Completa de 22 Animaciones Interactivas</p>
+            <div class="stats">
+                <div>📁 22 Animaciones</div>
+                <div>📄 66 Archivos</div>
+                <div>⚙️ HTML + CSS + JS</div>
+            </div>
+        </header>
+
+        <!-- Geometría & 3D -->
+        <div class="category">
+            <h2 class="category-title">🎲 Geometría & 3D</h2>
+            <div class="grid">
+                <a href="animacion-a.html" class="card">
+                    <div class="card-letter">A</div>
+                    <div class="card-title">Vuelo 3D</div>
+                    <div class="card-desc">Rectángulo centrado que rota en 3D y vuela a esquina superior</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-c.html" class="card">
+                    <div class="card-letter">C</div>
+                    <div class="card-title">Página Volteándose</div>
+                    <div class="card-desc">Un libro/página se voltea en 3D mostrando ambos lados</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-d.html" class="card">
+                    <div class="card-letter">D</div>
+                    <div class="card-title">Cubo 3D</div>
+                    <div class="card-desc">Cubo rotando mostrando sus 6 caras con colores</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-e.html" class="card">
+                    <div class="card-letter">E</div>
+                    <div class="card-title">Pirámide</div>
+                    <div class="card-desc">Pirámide construyéndose capas por capas con bloques</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-f.html" class="card">
+                    <div class="card-letter">F</div>
+                    <div class="card-title">Polígono Morphing</div>
+                    <div class="card-desc">Forma que se transforma entre círculo, cuadrado, triángulo y hexágono</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Movimiento & Física -->
+        <div class="category">
+            <h2 class="category-title">💫 Movimiento & Física</h2>
+            <div class="grid">
+                <a href="animacion-b.html" class="card">
+                    <div class="card-letter">B</div>
+                    <div class="card-title">DVD Bouncing</div>
+                    <div class="card-desc">Círculos con degradados 3D rebotan en rectángulo dorado</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-g.html" class="card">
+                    <div class="card-letter">G</div>
+                    <div class="card-title">Lluvia Partículas</div>
+                    <div class="card-desc">Partículas caen con gravedad y rebotan en las paredes</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-h.html" class="card">
+                    <div class="card-letter">H</div>
+                    <div class="card-title">Hoja Cayendo</div>
+                    <div class="card-desc">Hoja cae con movimiento ondulante realista</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-i.html" class="card">
+                    <div class="card-letter">I</div>
+                    <div class="card-title">Péndulo</div>
+                    <div class="card-desc">Péndulo oscila con movimiento natural</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-j.html" class="card">
+                    <div class="card-letter">J</div>
+                    <div class="card-title">Bola en Laberinto</div>
+                    <div class="card-desc">Bola rueda a través de un laberinto simple</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Patrones & Ondas -->
+        <div class="category">
+            <h2 class="category-title">〰️ Patrones & Ondas</h2>
+            <div class="grid">
+                <a href="animacion-k.html" class="card">
+                    <div class="card-letter">K</div>
+                    <div class="card-title">Onda Sinusoidal</div>
+                    <div class="card-desc">Barras que suben y bajan como un ecualizador de música</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-l.html" class="card">
+                    <div class="card-letter">L</div>
+                    <div class="card-title">Círculos Concéntricos</div>
+                    <div class="card-desc">Anillos que se expanden y contraen desde el centro</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-m.html" class="card">
+                    <div class="card-letter">M</div>
+                    <div class="card-title">Grid Deformándose</div>
+                    <div class="card-desc">Cuadrícula de puntos que se deforma ondulando</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-n.html" class="card">
+                    <div class="card-letter">N</div>
+                    <div class="card-title">Espiral Hipnótica</div>
+                    <div class="card-desc">Espiral de anillos que rota hipnóticamente</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Efectos Especiales -->
+        <div class="category">
+            <h2 class="category-title">✨ Efectos Especiales</h2>
+            <div class="grid">
+                <a href="animacion-o.html" class="card">
+                    <div class="card-letter">O</div>
+                    <div class="card-title">Tinta Derramándose</div>
+                    <div class="card-desc">Mancha de tinta se disuelve y se expande</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-p.html" class="card">
+                    <div class="card-letter">P</div>
+                    <div class="card-title">Tela Ondeando</div>
+                    <div class="card-desc">Tela se ondula como si estuviera en el viento</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-q.html" class="card">
+                    <div class="card-letter">Q</div>
+                    <div class="card-title">Aurora Boreal</div>
+                    <div class="card-desc">Luces danzantes simulando una aurora boreal</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-r.html" class="card">
+                    <div class="card-letter">R</div>
+                    <div class="card-title">Efecto Matriz</div>
+                    <div class="card-desc">Caracteres digitales caen como en la película Matrix</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Interactivos & Mecánicos -->
+        <div class="category">
+            <h2 class="category-title">⚙️ Interactivos & Mecánicos</h2>
+            <div class="grid">
+                <a href="animacion-s.html" class="card">
+                    <div class="card-letter">S</div>
+                    <div class="card-title">Dominó Cayendo</div>
+                    <div class="card-desc">Fichas de dominó caen en cascada ordenadamente</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-t.html" class="card">
+                    <div class="card-letter">T</div>
+                    <div class="card-title">Engranajes</div>
+                    <div class="card-desc">Engranajes interlocked rotando en conjunto</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-u.html" class="card">
+                    <div class="card-letter">U</div>
+                    <div class="card-title">Reloj Analógico</div>
+                    <div class="card-desc">Manecillas de reloj rotando marcando la hora real</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+
+                <a href="animacion-v.html" class="card">
+                    <div class="card-letter">V</div>
+                    <div class="card-title">Brújula</div>
+                    <div class="card-desc">Brújula que gira y apunta a direcciones cardinales</div>
+                    <div class="card-link">Abrir →</div>
+                </a>
+            </div>
+        </div>
+
+        <footer>
+            <p>🚀 Animaciones Web - Galería Completa | Creado con HTML, CSS y JavaScript</p>
+            <p style="margin-top: 10px; opacity: 0.7;">Cada animación está optimizada para navegadores modernos con soporte para CSS 3D y animaciones</p>
+        </footer>
+    </div>
+</body>
+</html>
