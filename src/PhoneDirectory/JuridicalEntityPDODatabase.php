@@ -55,10 +55,10 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
 
-        CREATE INDEX IF NOT EXISTS idx_business_name ON juridical_entities(business_name);
-        CREATE INDEX IF NOT EXISTS idx_street ON juridical_entities(street);
-        CREATE INDEX IF NOT EXISTS idx_phone_number ON juridical_entities(phone_number);
-        CREATE INDEX IF NOT EXISTS idx_business_type ON juridical_entities(business_type);
+        CREATE INDEX IF NOT EXISTS idx_juridical_entities_business_name ON juridical_entities(business_name);
+        CREATE INDEX IF NOT EXISTS idx_juridical_entities_street ON juridical_entities(street);
+        CREATE INDEX IF NOT EXISTS idx_juridical_entities_phone_number ON juridical_entities(phone_number);
+        CREATE INDEX IF NOT EXISTS idx_juridical_entities_business_type ON juridical_entities(business_type);
         SQL;
 
         $this->pdo->exec($sql);
@@ -133,9 +133,9 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             $this->connect();
         }
 
-        $sql = 'SELECT * FROM juridical_entities WHERE business_name LIKE :name ORDER BY business_name';
+        $sql = "SELECT * FROM juridical_entities WHERE business_name LIKE :name ESCAPE '!' ORDER BY business_name";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':name' => "%{$name}%"]);
+        $stmt->execute([':name' => $this->containsPattern($name)]);
 
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -146,9 +146,9 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             $this->connect();
         }
 
-        $sql = 'SELECT * FROM juridical_entities WHERE street LIKE :street ORDER BY street, business_name';
+        $sql = "SELECT * FROM juridical_entities WHERE street LIKE :street ESCAPE '!' ORDER BY street, business_name";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':street' => "%{$street}%"]);
+        $stmt->execute([':street' => $this->containsPattern($street)]);
 
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -173,9 +173,9 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             $this->connect();
         }
 
-        $sql = 'SELECT * FROM juridical_entities WHERE business_type LIKE :type ORDER BY business_name';
+        $sql = "SELECT * FROM juridical_entities WHERE business_type LIKE :type ESCAPE '!' ORDER BY business_name";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':type' => "%{$type}%"]);
+        $stmt->execute([':type' => $this->containsPattern($type)]);
 
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -257,13 +257,13 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         $params = [];
 
         if (!empty($criteria['businessName'])) {
-            $where[] = 'business_name LIKE :businessName';
-            $params[':businessName'] = "%{$criteria['businessName']}%";
+            $where[] = "business_name LIKE :businessName ESCAPE '!'";
+            $params[':businessName'] = $this->containsPattern($criteria['businessName']);
         }
 
         if (!empty($criteria['street'])) {
-            $where[] = 'street LIKE :street';
-            $params[':street'] = "%{$criteria['street']}%";
+            $where[] = "street LIKE :street ESCAPE '!'";
+            $params[':street'] = $this->containsPattern($criteria['street']);
         }
 
         if (!empty($criteria['phone'])) {
@@ -272,8 +272,8 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         }
 
         if (!empty($criteria['businessType'])) {
-            $where[] = 'business_type LIKE :businessType';
-            $params[':businessType'] = "%{$criteria['businessType']}%";
+            $where[] = "business_type LIKE :businessType ESCAPE '!'";
+            $params[':businessType'] = $this->containsPattern($criteria['businessType']);
         }
 
         if (empty($where)) {
@@ -308,5 +308,10 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             id: (int) $row['id'],
             recordDate: new \DateTime($row['record_date'])
         );
+    }
+
+    private function containsPattern(string $text): string
+    {
+        return '%' . strtr($text, ['!' => '!!', '%' => '!%', '_' => '!_']) . '%';
     }
 }

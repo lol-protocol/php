@@ -300,13 +300,14 @@ class PhoneDirectoryManagerV2
 
     public function getStatistics(): array
     {
+        $natural = $this->getTotalNaturalPeopleCount();
+        $juridical = $this->getTotalJuridicalEntitiesCount();
+
         return [
-            'total' => $this->getTotalCount(),
-            'natural_people' => $this->getTotalNaturalPeopleCount(),
-            'juridical_entities' => $this->getTotalJuridicalEntitiesCount(),
-            'ratio_natural_to_juridical' => $this->getTotalNaturalPeopleCount() > 0
-                ? round($this->getTotalNaturalPeopleCount() / $this->getTotalJuridicalEntitiesCount(), 2)
-                : 0,
+            'total' => $natural + $juridical,
+            'natural_people' => $natural,
+            'juridical_entities' => $juridical,
+            'ratio_natural_to_juridical' => $juridical > 0 ? round($natural / $juridical, 2) : null,
         ];
     }
 

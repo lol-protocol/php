@@ -4,6 +4,17 @@ namespace PhoneDirectory;
 
 class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
 {
+    // Columns added after the original table; createTable() adds any that an existing database lacks.
+    private const ADDED_COLUMNS = [
+        'raw_name' => 'TEXT',
+        'language' => 'TEXT',
+        'country_code' => "TEXT NOT NULL DEFAULT 'US'",
+        'zone' => 'TEXT',
+        'city' => 'TEXT',
+        'source_directory_id' => 'TEXT',
+        'source_line' => 'INTEGER',
+    ];
+
     private ?\PDO $pdo = null;
     private string $dsn;
 
@@ -42,32 +53,39 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             $this->connect();
         }
 
-        $sql = <<<SQL
+        $this->pdo->exec(<<<SQL
         CREATE TABLE IF NOT EXISTS phone_directory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             full_name TEXT NOT NULL,
-            raw_name TEXT,
-            language TEXT,
-            country_code TEXT NOT NULL DEFAULT 'US',
-            zone TEXT,
-            city TEXT,
             street TEXT NOT NULL,
             phone_number TEXT,
-            source_directory_id TEXT,
-            source_line INTEGER,
             record_date DATETIME DEFAULT CURRENT_TIMESTAMP,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
+        )
+        SQL);
 
-        CREATE INDEX IF NOT EXISTS idx_full_name ON phone_directory(full_name);
-        CREATE INDEX IF NOT EXISTS idx_country_code ON phone_directory(country_code);
-        CREATE INDEX IF NOT EXISTS idx_street ON phone_directory(street);
-        CREATE INDEX IF NOT EXISTS idx_phone_number ON phone_directory(phone_number);
-        CREATE INDEX IF NOT EXISTS idx_source_directory ON phone_directory(source_directory_id);
-        SQL;
+        $this->addMissingColumns();
 
-        $this->pdo->exec($sql);
+        // Index names are database-wide, so they carry the table name to avoid colliding with juridical_entities.
+        foreach (['full_name', 'country_code', 'street', 'phone_number', 'source_directory_id'] as $column) {
+            $this->pdo->exec("CREATE INDEX IF NOT EXISTS idx_phone_directory_{$column} ON phone_directory({$column})");
+        }
+    }
+
+    private function addMissingColumns(): void
+    {
+        $stmt = $this->pdo->query('SELECT * FROM phone_directory LIMIT 0');
+        $existing = [];
+        for ($i = 0; $i < $stmt->columnCount(); $i++) {
+            $existing[] = $stmt->getColumnMeta($i)['name'];
+        }
+
+        foreach (self::ADDED_COLUMNS as $column => $definition) {
+            if (!in_array($column, $existing, true)) {
+                $this->pdo->exec("ALTER TABLE phone_directory ADD COLUMN {$column} {$definition}");
+            }
+        }
     }
 
     public function insert(PhoneDirectoryEntry $entry): int
@@ -134,9 +152,9 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             $this->connect();
         }
 
-        $sql = 'SELECT * FROM phone_directory WHERE full_name LIKE :name ORDER BY full_name';
+        $sql = "SELECT * FROM phone_directory WHERE full_name LIKE :name ESCAPE '!' ORDER BY full_name";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':name' => "%{$name}%"]);
+        $stmt->execute([':name' => $this->containsPattern($name)]);
 
         return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -147,9 +165,9 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             $this->connect();
         }
 
-        $sql = 'SELECT * FROM phone_directory WHERE street LIKE :street ORDER BY street, full_name';
+        $sql = "SELECT * FROM phone_directory WHERE street LIKE :street ESCAPE '!' ORDER BY street, full_name";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':street' => "%{$street}%"]);
+        $stmt->execute([':street' => $this->containsPattern($street)]);
 
         return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -241,13 +259,13 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         $params = [];
 
         if (!empty($criteria['name'])) {
-            $where[] = 'full_name LIKE :name';
-            $params[':name'] = "%{$criteria['name']}%";
+            $where[] = "full_name LIKE :name ESCAPE '!'";
+            $params[':name'] = $this->containsPattern($criteria['name']);
         }
 
         if (!empty($criteria['street'])) {
-            $where[] = 'street LIKE :street';
-            $params[':street'] = "%{$criteria['street']}%";
+            $where[] = "street LIKE :street ESCAPE '!'";
+            $params[':street'] = $this->containsPattern($criteria['street']);
         }
 
         if (!empty($criteria['phone'])) {
@@ -308,5 +326,10 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             language: $row['language'] ?? null,
             sourceLine: isset($row['source_line']) ? (int) $row['source_line'] : null
         );
+    }
+
+    private function containsPattern(string $text): string
+    {
+        return '%' . strtr($text, ['!' => '!!', '%' => '!%', '_' => '!_']) . '%';
     }
 }

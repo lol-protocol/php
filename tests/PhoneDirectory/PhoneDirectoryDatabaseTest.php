@@ -5,6 +5,7 @@ namespace Tests\PhoneDirectory;
 use PHPUnit\Framework\TestCase;
 use PhoneDirectory\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
+use PhoneDirectory\JuridicalEntityPDODatabase;
 
 class PhoneDirectoryDatabaseTest extends TestCase
 {
@@ -277,5 +278,83 @@ class PhoneDirectoryDatabaseTest extends TestCase
         $this->assertEquals('SMITH, John A.', $updated->getRawName());
         $this->assertEquals('us_1915_national', $updated->getSourceDirectoryId());
         $this->assertSame(7, $updated->getSourceLine());
+    }
+
+    public function testCreateTableAddsMissingColumnsToOldDatabase(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'phonedir_');
+        try {
+            $legacy = new \PDO("sqlite:{$file}");
+            $legacy->exec('CREATE TABLE phone_directory (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                full_name TEXT NOT NULL,
+                street TEXT NOT NULL,
+                phone_number TEXT,
+                record_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )');
+            $legacy->exec("INSERT INTO phone_directory (full_name, street) VALUES ('John Smith', '123 Main Street')");
+            $legacy = null;
+
+            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $database->createTable();
+            $database->createTable();
+
+            $old = $database->findById(1);
+            $this->assertEquals('John Smith', $old->getRawName());
+            $this->assertEquals('US', $old->getCountryCode());
+            $this->assertNull($old->getSourceDirectoryId());
+
+            $id = $database->insert(new PhoneDirectoryEntry(
+                fullName: 'GARCÍA LÓPEZ, Juan',
+                countryCode: 'ES',
+                street: 'Calle Mayor 12',
+                sourceDirectoryId: 'es_1930_madrid',
+                sourceLine: 3
+            ));
+            $new = $database->findById($id);
+            $this->assertEquals('ES', $new->getCountryCode());
+            $this->assertEquals(['García', 'López'], $new->getLastNames());
+            $this->assertSame(3, $new->getSourceLine());
+            $database->disconnect();
+        } finally {
+            unlink($file);
+        }
+    }
+
+    public function testSearchTreatsWildcardCharactersLiterally(): void
+    {
+        $this->database->insert(new PhoneDirectoryEntry('SMITH, John', 'US', '1 Oak Avenue'));
+        $this->database->insert(new PhoneDirectoryEntry('JONES, Ann', 'US', '2 Oak_Avenue'));
+
+        $this->assertCount(0, $this->database->findByName('%'));
+        $this->assertCount(0, $this->database->findByName('_'));
+        $this->assertCount(1, $this->database->findByStreet('Oak_Avenue'));
+        $this->assertCount(1, $this->database->search(['street' => 'Oak_Avenue']));
+        $this->assertCount(2, $this->database->findByStreet('Oak'));
+    }
+
+    public function testIndexesDoNotCollideWithJuridicalTableInSharedDatabase(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'phonedir_');
+        try {
+            $natural = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $natural->createTable();
+            $juridical = new JuridicalEntityPDODatabase("sqlite:{$file}");
+            $juridical->createTable();
+            $natural->disconnect();
+            $juridical->disconnect();
+
+            $pdo = new \PDO("sqlite:{$file}");
+            $indexedColumns = $pdo->query("SELECT il.name FROM sqlite_master m, pragma_index_list(m.name) l, pragma_index_info(l.name) il WHERE m.name = 'juridical_entities'")
+                ->fetchAll(\PDO::FETCH_COLUMN);
+            $pdo = null;
+
+            $this->assertContains('street', $indexedColumns);
+            $this->assertContains('phone_number', $indexedColumns);
+        } finally {
+            unlink($file);
+        }
     }
 }
