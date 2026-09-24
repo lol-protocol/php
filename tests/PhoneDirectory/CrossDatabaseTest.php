@@ -183,4 +183,30 @@ class CrossDatabaseTest extends TestCase
         $this->assertCount(1, $database->findBySurnameSound('Smith'));
         $database->disconnect();
     }
+
+    #[DataProvider('databases')]
+    public function testAccentInsensitiveSearchIsConsistentAcrossDatabases(string $dsn, ?string $user, ?string $password): void
+    {
+        $this->rawConnection($dsn, $user, $password);
+        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password);
+        $database->createTable();
+        $database->insert(new PhoneDirectoryEntry('GARCÍA LÓPEZ, José', 'ES', 'Calle Mayor 12'));
+
+        $this->assertCount(1, $database->findByName('garcia'));
+        $this->assertCount(1, $database->findByStreet('calle mayor'));
+        $database->disconnect();
+    }
+
+    #[DataProvider('databases')]
+    public function testJuridicalEntityAccentInsensitiveSearch(string $dsn, ?string $user, ?string $password): void
+    {
+        $this->rawConnection($dsn, $user, $password);
+        $database = new JuridicalEntityPDODatabase($dsn, $user, $password);
+        $database->createTable();
+        $database->insert(new JuridicalEntity(businessName: 'FARMACIA ÁGUILA', street: 'Avenida Sánchez 3'));
+
+        $this->assertCount(1, $database->findByBusinessName('aguila'));
+        $this->assertCount(1, $database->findByStreet('sanchez'));
+        $database->disconnect();
+    }
 }

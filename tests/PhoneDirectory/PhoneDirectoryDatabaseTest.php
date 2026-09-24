@@ -434,4 +434,41 @@ class PhoneDirectoryDatabaseTest extends TestCase
         $this->assertSame([], $this->database->findBySurnameSound('Smith'));
         $this->assertCount(1, $this->database->findBySurnameSound('Jones'));
     }
+
+    public function testSearchIsAccentInsensitive(): void
+    {
+        $this->database->insert(new PhoneDirectoryEntry('GARCÍA LÓPEZ, José', 'ES', 'Calle Mayor 12'));
+
+        $this->assertCount(1, $this->database->findByName('garcia'));
+        $this->assertCount(1, $this->database->findByName('García'));
+        $this->assertCount(1, $this->database->findByStreet('calle mayor'));
+        $this->assertCount(1, $this->database->search(['name' => 'jose']));
+    }
+
+    public function testAccentInsensitiveSearchIsBackfilledForExistingRows(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'phonedir_');
+        try {
+            $legacy = new \PDO("sqlite:{$file}");
+            $legacy->exec('CREATE TABLE phone_directory (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                full_name TEXT NOT NULL,
+                street TEXT NOT NULL,
+                phone_number TEXT,
+                record_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )');
+            $legacy->exec("INSERT INTO phone_directory (full_name, street) VALUES ('José García', '123 Main Street')");
+            $legacy = null;
+
+            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $database->createTable();
+
+            $this->assertCount(1, $database->findByName('garcia'));
+            $database->disconnect();
+        } finally {
+            unlink($file);
+        }
+    }
 }

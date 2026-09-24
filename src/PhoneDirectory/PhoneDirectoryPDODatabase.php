@@ -2,6 +2,8 @@
 
 namespace PhoneDirectory;
 
+use DefamatoryContentReview\AccentFolding;
+
 class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
 {
     private const TABLE = 'phone_directory';
@@ -27,10 +29,16 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         'source_line' => ['int'],
         'surname_soundex' => ['string'],
         'surname_phonetic' => ['string'],
+        // Lowercased, accent-folded copies of full_name/street, searched instead of the raw columns so
+        // "garcia" finds "García" the same way on SQLite and PostgreSQL as it already does on MySQL,
+        // where the default collation folds accents but SQLite's and PostgreSQL's plain LIKE do not.
+        'full_name_folded' => ['string'],
+        'street_folded' => ['string'],
     ];
 
     private const INDEXED_COLUMNS = [
-        'full_name', 'country_code', 'street', 'phone_number', 'source_directory_id', 'surname_soundex', 'surname_phonetic',
+        'full_name', 'country_code', 'street', 'phone_number', 'source_directory_id',
+        'surname_soundex', 'surname_phonetic', 'full_name_folded', 'street_folded',
     ];
 
     private ?\PDO $pdo = null;
@@ -74,23 +82,28 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         }
 
         $this->dialect->ensureTable(self::TABLE, self::BASE_COLUMNS, self::ADDED_COLUMNS, self::INDEXED_COLUMNS);
-        $this->backfillSurnameKeys();
+        $this->backfillDerivedColumns();
     }
 
-    private function backfillSurnameKeys(): void
+    private function backfillDerivedColumns(): void
     {
-        $rows = $this->pdo->query('SELECT * FROM phone_directory WHERE surname_soundex IS NULL')->fetchAll(\PDO::FETCH_ASSOC);
+        $rows = $this->pdo->query(
+            'SELECT * FROM phone_directory WHERE surname_soundex IS NULL OR full_name_folded IS NULL'
+        )->fetchAll(\PDO::FETCH_ASSOC);
         if ($rows === []) {
             return;
         }
 
-        $stmt = $this->pdo->prepare('UPDATE phone_directory SET surname_soundex = :soundex, surname_phonetic = :phonetic WHERE id = :id');
+        $stmt = $this->pdo->prepare(<<<SQL
+            UPDATE phone_directory
+            SET surname_soundex = :surnameSoundex, surname_phonetic = :surnamePhonetic,
+                full_name_folded = :fullNameFolded, street_folded = :streetFolded
+            WHERE id = :id
+            SQL);
         $this->pdo->beginTransaction();
         foreach ($rows as $row) {
-            $keys = $this->surnameKeyParams($this->rowToEntry($row));
-            if ($keys[':surnameSoundex'] !== null) {
-                $stmt->execute([':soundex' => $keys[':surnameSoundex'], ':phonetic' => $keys[':surnamePhonetic'], ':id' => $row['id']]);
-            }
+            $entry = $this->rowToEntry($row);
+            $stmt->execute($this->surnameKeyParams($entry) + $this->foldedSearchParams($entry) + [':id' => $row['id']]);
         }
         $this->pdo->commit();
     }
@@ -103,9 +116,9 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
 
         $sql = <<<SQL
         INSERT INTO phone_directory (full_name, raw_name, language, country_code, zone, city, street, phone_number,
-            source_directory_id, source_line, surname_soundex, surname_phonetic, record_date)
+            source_directory_id, source_line, surname_soundex, surname_phonetic, full_name_folded, street_folded, record_date)
         VALUES (:fullName, :rawName, :language, :countryCode, :zone, :city, :street, :phoneNumber,
-            :sourceDirectoryId, :sourceLine, :surnameSoundex, :surnamePhonetic, :recordDate)
+            :sourceDirectoryId, :sourceLine, :surnameSoundex, :surnamePhonetic, :fullNameFolded, :streetFolded, :recordDate)
         SQL;
 
         $stmt = $this->pdo->prepare($sql);
@@ -161,9 +174,9 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             $this->connect();
         }
 
-        $sql = 'SELECT * FROM phone_directory WHERE ' . $this->dialect->containsCondition('full_name', ':name') . ' ORDER BY full_name';
+        $sql = 'SELECT * FROM phone_directory WHERE ' . $this->dialect->containsCondition('full_name_folded', ':name') . ' ORDER BY full_name';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':name' => $this->dialect->containsValue($name)]);
+        $stmt->execute([':name' => $this->dialect->containsValue($this->fold($name))]);
 
         return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -174,9 +187,9 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             $this->connect();
         }
 
-        $sql = 'SELECT * FROM phone_directory WHERE ' . $this->dialect->containsCondition('street', ':street') . ' ORDER BY street, full_name';
+        $sql = 'SELECT * FROM phone_directory WHERE ' . $this->dialect->containsCondition('street_folded', ':street') . ' ORDER BY street, full_name';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':street' => $this->dialect->containsValue($street)]);
+        $stmt->execute([':street' => $this->dialect->containsValue($this->fold($street))]);
 
         return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -262,7 +275,8 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         UPDATE phone_directory
         SET full_name = :fullName, raw_name = :rawName, language = :language, country_code = :countryCode, zone = :zone, city = :city,
             street = :street, phone_number = :phoneNumber, source_directory_id = :sourceDirectoryId, source_line = :sourceLine,
-            surname_soundex = :surnameSoundex, surname_phonetic = :surnamePhonetic, updated_at = CURRENT_TIMESTAMP
+            surname_soundex = :surnameSoundex, surname_phonetic = :surnamePhonetic,
+            full_name_folded = :fullNameFolded, street_folded = :streetFolded, updated_at = CURRENT_TIMESTAMP
         WHERE id = :id
         SQL;
 
@@ -309,13 +323,13 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         $params = [];
 
         if (!empty($criteria['name'])) {
-            $where[] = $this->dialect->containsCondition('full_name', ':name');
-            $params[':name'] = $this->dialect->containsValue($criteria['name']);
+            $where[] = $this->dialect->containsCondition('full_name_folded', ':name');
+            $params[':name'] = $this->dialect->containsValue($this->fold($criteria['name']));
         }
 
         if (!empty($criteria['street'])) {
-            $where[] = $this->dialect->containsCondition('street', ':street');
-            $params[':street'] = $this->dialect->containsValue($criteria['street']);
+            $where[] = $this->dialect->containsCondition('street_folded', ':street');
+            $params[':street'] = $this->dialect->containsValue($this->fold($criteria['street']));
         }
 
         if (!empty($criteria['phone'])) {
@@ -357,7 +371,7 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             ':phoneNumber' => $entry->getPhoneNumber(),
             ':sourceDirectoryId' => $entry->getSourceDirectoryId(),
             ':sourceLine' => $entry->getSourceLine(),
-        ] + $this->surnameKeyParams($entry);
+        ] + $this->surnameKeyParams($entry) + $this->foldedSearchParams($entry);
     }
 
     private function surnameKeyParams(PhoneDirectoryEntry $entry): array
@@ -368,6 +382,19 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             ':surnameSoundex' => SurnameKeys::soundex($root),
             ':surnamePhonetic' => SurnameKeys::languageKey($root, $entry->getLanguage()),
         ];
+    }
+
+    private function foldedSearchParams(PhoneDirectoryEntry $entry): array
+    {
+        return [
+            ':fullNameFolded' => $this->fold($entry->getFullName()),
+            ':streetFolded' => $this->fold($entry->getStreet()),
+        ];
+    }
+
+    private function fold(string $text): string
+    {
+        return AccentFolding::fold(mb_strtolower($text, 'UTF-8'));
     }
 
     private function rowToEntry(array $row): PhoneDirectoryEntry

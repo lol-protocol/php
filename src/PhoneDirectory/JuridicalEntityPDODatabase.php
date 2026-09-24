@@ -2,6 +2,8 @@
 
 namespace PhoneDirectory;
 
+use DefamatoryContentReview\AccentFolding;
+
 class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
 {
     private const TABLE = 'juridical_entities';
@@ -23,9 +25,16 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         'country_code' => ['country', "NOT NULL DEFAULT 'US'"],
         'source_directory_id' => ['string'],
         'source_line' => ['int'],
+        // Lowercased, accent-folded copies searched instead of the raw columns, so search behaves the
+        // same on SQLite and PostgreSQL as it already does on MySQL's accent-folding default collation.
+        'business_name_folded' => ['string'],
+        'street_folded' => ['string'],
     ];
 
-    private const INDEXED_COLUMNS = ['business_name', 'street', 'phone_number', 'business_type', 'country_code', 'source_directory_id'];
+    private const INDEXED_COLUMNS = [
+        'business_name', 'street', 'phone_number', 'business_type', 'country_code', 'source_directory_id',
+        'business_name_folded', 'street_folded',
+    ];
 
     private ?\PDO $pdo = null;
     private ?SqlDialect $dialect = null;
@@ -68,6 +77,26 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         }
 
         $this->dialect->ensureTable(self::TABLE, self::BASE_COLUMNS, self::ADDED_COLUMNS, self::INDEXED_COLUMNS);
+        $this->backfillFoldedColumns();
+    }
+
+    private function backfillFoldedColumns(): void
+    {
+        $rows = $this->pdo->query(
+            'SELECT * FROM juridical_entities WHERE business_name_folded IS NULL'
+        )->fetchAll(\PDO::FETCH_ASSOC);
+        if ($rows === []) {
+            return;
+        }
+
+        $stmt = $this->pdo->prepare(
+            'UPDATE juridical_entities SET business_name_folded = :businessNameFolded, street_folded = :streetFolded WHERE id = :id'
+        );
+        $this->pdo->beginTransaction();
+        foreach ($rows as $row) {
+            $stmt->execute($this->foldedSearchParams($this->rowToEntity($row)) + [':id' => $row['id']]);
+        }
+        $this->pdo->commit();
     }
 
     public function insert(JuridicalEntity $entity): int
@@ -77,8 +106,10 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         }
 
         $sql = <<<SQL
-        INSERT INTO juridical_entities (business_name, legal_name, street, phone_number, business_type, country_code, source_directory_id, source_line, record_date)
-        VALUES (:businessName, :legalName, :street, :phoneNumber, :businessType, :countryCode, :sourceDirectoryId, :sourceLine, :recordDate)
+        INSERT INTO juridical_entities (business_name, legal_name, street, phone_number, business_type, country_code,
+            source_directory_id, source_line, business_name_folded, street_folded, record_date)
+        VALUES (:businessName, :legalName, :street, :phoneNumber, :businessType, :countryCode,
+            :sourceDirectoryId, :sourceLine, :businessNameFolded, :streetFolded, :recordDate)
         SQL;
 
         $stmt = $this->pdo->prepare($sql);
@@ -134,9 +165,9 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             $this->connect();
         }
 
-        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('business_name', ':name') . ' ORDER BY business_name';
+        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('business_name_folded', ':name') . ' ORDER BY business_name';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':name' => $this->dialect->containsValue($name)]);
+        $stmt->execute([':name' => $this->dialect->containsValue($this->fold($name))]);
 
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -147,9 +178,9 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             $this->connect();
         }
 
-        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('street', ':street') . ' ORDER BY street, business_name';
+        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('street_folded', ':street') . ' ORDER BY street, business_name';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':street' => $this->dialect->containsValue($street)]);
+        $stmt->execute([':street' => $this->dialect->containsValue($this->fold($street))]);
 
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -207,7 +238,8 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         UPDATE juridical_entities
         SET business_name = :businessName, legal_name = :legalName, street = :street,
             phone_number = :phoneNumber, business_type = :businessType, country_code = :countryCode,
-            source_directory_id = :sourceDirectoryId, source_line = :sourceLine, updated_at = CURRENT_TIMESTAMP
+            source_directory_id = :sourceDirectoryId, source_line = :sourceLine,
+            business_name_folded = :businessNameFolded, street_folded = :streetFolded, updated_at = CURRENT_TIMESTAMP
         WHERE id = :id
         SQL;
 
@@ -254,13 +286,13 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         $params = [];
 
         if (!empty($criteria['businessName'])) {
-            $where[] = $this->dialect->containsCondition('business_name', ':businessName');
-            $params[':businessName'] = $this->dialect->containsValue($criteria['businessName']);
+            $where[] = $this->dialect->containsCondition('business_name_folded', ':businessName');
+            $params[':businessName'] = $this->dialect->containsValue($this->fold($criteria['businessName']));
         }
 
         if (!empty($criteria['street'])) {
-            $where[] = $this->dialect->containsCondition('street', ':street');
-            $params[':street'] = $this->dialect->containsValue($criteria['street']);
+            $where[] = $this->dialect->containsCondition('street_folded', ':street');
+            $params[':street'] = $this->dialect->containsValue($this->fold($criteria['street']));
         }
 
         if (!empty($criteria['phone'])) {
@@ -321,6 +353,19 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             ':countryCode' => $entity->getCountryCode(),
             ':sourceDirectoryId' => $entity->getSourceDirectoryId(),
             ':sourceLine' => $entity->getSourceLine(),
+        ] + $this->foldedSearchParams($entity);
+    }
+
+    private function foldedSearchParams(JuridicalEntity $entity): array
+    {
+        return [
+            ':businessNameFolded' => $this->fold($entity->getBusinessName()),
+            ':streetFolded' => $this->fold($entity->getStreet()),
         ];
+    }
+
+    private function fold(string $text): string
+    {
+        return AccentFolding::fold(mb_strtolower($text, 'UTF-8'));
     }
 }

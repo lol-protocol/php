@@ -18,6 +18,20 @@ class MultiLanguagePhoneDirectoryParser
         'de' => ['straße', 'strasse', 'allee', 'weg', 'platz'],
     ];
 
+    // Subset of LANGUAGE_STREET_MARKERS used only to detect the language, deliberately excluding words
+    // that are also ordinary English words or English street types ("plaza", "avenue", "boulevard",
+    // "square", "via", "ring"): one of those appearing in an otherwise-English directory would otherwise
+    // outscore English's own (zero) count and misdetect the whole file. English is this project's
+    // baseline language, so detection only overrides it on genuinely distinctive vocabulary. Street
+    // *extraction* for an already-known language still uses the full LANGUAGE_STREET_MARKERS list.
+    private const LANGUAGE_DETECTION_MARKERS = [
+        'es' => ['calle', 'avenida', 'pasaje', 'camino', 'ruta', 'carrera'],
+        'fr' => ['rue', 'allée', 'cours'],
+        'pt' => ['rua', 'avenida', 'praça', 'alameda', 'estrada', 'largo'],
+        'de' => [], // detected via LANGUAGE_STREET_SUFFIXES only; its own marker words are too ambiguous
+        'it' => ['viale', 'corso', 'piazza', 'largo', 'strada'],
+    ];
+
     private const ENTITY_TYPE_MARKERS = [
         'es' => ['spa', 'srl', 'sa', 'ltda', 'inc', 'comercial', 'empresa', 'negocio', 'tienda', 'restaurante', 'hotel', 'banco', 'farmacia', 'hospital'],
         'en' => ['corp', 'inc', 'ltd', 'llc', 'company', 'store', 'shop', 'restaurant', 'hotel', 'bank', 'pharmacy', 'hospital'],
@@ -139,13 +153,36 @@ class MultiLanguagePhoneDirectoryParser
 
     private function detectLanguage(string $content): string
     {
-        $scores = [];
-        foreach (array_keys(self::LANGUAGE_STREET_MARKERS) as $lang) {
-            $scores[$lang] = preg_match_all($this->streetPattern($lang), $content);
+        $scores = ['en' => 0];
+        foreach (self::LANGUAGE_DETECTION_MARKERS as $lang => $words) {
+            $pattern = $this->detectionPattern($lang, $words);
+            $scores[$lang] = $pattern === null ? 0 : preg_match_all($pattern, $content);
         }
 
         arsort($scores);
-        return array_key_first($scores) ?? 'en';
+        $best = array_key_first($scores);
+
+        // A tie (including an all-zero one) stays with English rather than falling to whichever
+        // language happens to sort first; only genuine evidence overrides the baseline.
+        return $scores[$best] > 0 ? $best : 'en';
+    }
+
+    private function detectionPattern(string $language, array $words): ?string
+    {
+        $suffixes = self::LANGUAGE_STREET_SUFFIXES[$language] ?? [];
+        if ($words === [] && $suffixes === []) {
+            return null;
+        }
+
+        $parts = [];
+        if ($words !== []) {
+            $parts[] = '\\b(?:' . implode('|', array_map(fn($m) => preg_quote($m, '/'), $words)) . ')\\b';
+        }
+        foreach ($suffixes as $suffix) {
+            $parts[] = preg_quote($suffix, '/') . '\\b';
+        }
+
+        return '/' . implode('|', $parts) . '/iu';
     }
 
     private function processBuffer(array $lines, int $startLine, string $language): void

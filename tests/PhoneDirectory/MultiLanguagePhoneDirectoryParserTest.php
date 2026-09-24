@@ -28,6 +28,35 @@ class MultiLanguagePhoneDirectoryParserTest extends TestCase
         $this->assertEquals('Pérez Ruiz, Ana María', $entries[1]['entity']->getFormattedName());
     }
 
+    public function testEnglishAddressContainingAmbiguousWordIsNotMisdetected(): void
+    {
+        // "Plaza" is a genuine Spanish street marker, but also an ordinary English street name/word;
+        // an otherwise-English directory shouldn't be misdetected as Spanish just because of it.
+        $content = "John Michael Smith\n40 West Plaza\n555-111-2222\n\nRobert Allen Carter\n12 East Plaza\n555-333-4444";
+
+        $entries = $this->parser->parseContent($content);
+
+        $this->assertEquals('en', $this->parser->getDetectedLanguage());
+        $this->assertEquals(['Smith'], $entries[0]['entity']->getLastNames());
+        $this->assertEquals('Smith, John Michael', $entries[0]['entity']->getFormattedName());
+    }
+
+    public function testNoRecognizedMarkersDefaultsToEnglish(): void
+    {
+        $content = "Robert Miller\n123 Somewhere\n\nJohn Carter\n40 Elsewhere";
+
+        $this->parser->parseContent($content);
+
+        $this->assertEquals('en', $this->parser->getDetectedLanguage());
+    }
+
+    public function testGenuineSpanishContentIsStillDetectedWithOnlyOneMarker(): void
+    {
+        $this->parser->parseContent("Juan García López\nCalle Mayor 12");
+
+        $this->assertEquals('es', $this->parser->getDetectedLanguage());
+    }
+
     public function testGermanCompoundStreetIsDetected(): void
     {
         $entries = $this->parser->parseContent("Hans Müller\nHauptstraße 5\n\nKarl Weber\nLindenallee 9", 'de');

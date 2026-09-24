@@ -53,6 +53,12 @@ class GeoLocationTest extends TestCase
         new GeoLocation('U', '123 Main Street');
     }
 
+    public function testInvalidCountryCodeNonAlphabetic(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new GeoLocation('12', '123 Main Street');
+    }
+
     public function testGetFullAddress(): void
     {
         $location = new GeoLocation(

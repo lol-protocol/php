@@ -145,4 +145,28 @@ class RecordLinkerTest extends TestCase
         $this->assertContains('John-J.', $pairs);
         $this->assertContains('Mary-M.', $pairs);
     }
+
+    public function testUncatalogedDirectoriesOrderByYearEmbeddedInTheId(): void
+    {
+        $links = (new RecordLinker())->link([
+            $this->entry('SMITH, John', '12 Oak Street', 'custom_2020_springfield'),
+            $this->entry('SMITH, John', '12 Oak Street', 'custom_1990_springfield'),
+        ]);
+
+        $this->assertCount(1, $links);
+        $this->assertEquals('custom_1990_springfield', $links[0]->earlier->getSourceDirectoryId());
+        $this->assertEquals('custom_2020_springfield', $links[0]->later->getSourceDirectoryId());
+    }
+
+    public function testUncatalogedDirectoriesWithNoYearFallBackToInputOrder(): void
+    {
+        $links = (new RecordLinker())->link([
+            $this->entry('SMITH, John', '12 Oak Street', 'my_directory_a'),
+            $this->entry('SMITH, John', '12 Oak Street', 'my_directory_b'),
+        ]);
+
+        $this->assertCount(1, $links);
+        $this->assertEquals('my_directory_a', $links[0]->earlier->getSourceDirectoryId());
+        $this->assertEquals('my_directory_b', $links[0]->later->getSourceDirectoryId());
+    }
 }

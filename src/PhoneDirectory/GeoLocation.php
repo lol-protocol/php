@@ -15,8 +15,8 @@ class GeoLocation
         ?string $zone = null,
         ?string $city = null
     ) {
-        if (strlen($countryCode) !== 2) {
-            throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2)");
+        if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
+            throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
         }
 
         $this->countryCode = strtoupper($countryCode);
