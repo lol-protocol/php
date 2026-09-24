@@ -149,7 +149,10 @@ class Router
 
         $id = $this->segments[1] ?? null;
 
-        if (!$id || !ctype_digit($id)) {
+        // Not "!$id" — the numeric string "0" is falsy in PHP and would
+        // be rejected as if it were missing, even though ctype_digit('0')
+        // accepts it as a perfectly valid id.
+        if ($id === null || !ctype_digit($id)) {
             return null;
         }
 
