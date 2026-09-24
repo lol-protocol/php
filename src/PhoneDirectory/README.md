@@ -296,6 +296,22 @@ echo "Total: {$manager->getTotalCount()}";
 $all = $manager->getAllEntries();
 ```
 
+## Herramienta de línea de comandos
+
+`bin/phonedir` cubre los usos más comunes (importar, buscar, ver estadísticas, enlazar registros entre ediciones, consultar el catálogo) sin escribir código PHP. Detecta personas y empresas automáticamente y funciona con SQLite, MySQL/MariaDB o PostgreSQL.
+
+```bash
+php bin/phonedir import directorio.txt --catalog=es_1930_madrid --dsn=sqlite:madrid.sqlite
+php bin/phonedir search --name=garcia --dsn=sqlite:madrid.sqlite
+php bin/phonedir search --surname-sound=valdez --language=es --dsn=sqlite:madrid.sqlite
+php bin/phonedir stats --dsn=sqlite:madrid.sqlite
+php bin/phonedir link --sources=es_1930_madrid,es_1975_national --dsn=sqlite:madrid.sqlite
+php bin/phonedir catalog list --country=ES
+php bin/phonedir help
+```
+
+`--catalog=<id>` toma el país y ayuda a fijar el idioma de un directorio ya listado en el catálogo; para un archivo propio, se usan `--country` y `--source` en su lugar. Ver `php bin/phonedir help` para todas las opciones.
+
 ## Formato de Archivo TXT
 
 El parser acepta dos formatos, línea por línea, sin necesidad de indicarlo:

@@ -1,0 +1,315 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+use PhoneDirectory\JuridicalEntity;
+use PhoneDirectory\MultiLanguagePhoneDirectoryParser;
+use PhoneDirectory\PhoneDirectoryCatalog;
+use PhoneDirectory\PhoneDirectoryEntry;
+use PhoneDirectory\PhoneDirectoryManagerV2;
+use PhoneDirectory\PhoneDirectoryPDODatabase;
+use PhoneDirectory\JuridicalEntityPDODatabase;
+use PhoneDirectory\RecordLinker;
+
+/**
+ * Command-line front end for the PhoneDirectory module: import a TXT file, search what's in the
+ * database, see basic statistics, browse the historical catalog, and link records across directory
+ * editions -- everything the README shows as PHP snippets, without writing PHP.
+ */
+
+/** @return array{command: ?string, args: string[], options: array<string,string|true>} */
+function parseArgv(array $argv): array
+{
+    array_shift($argv); // script path
+    $command = array_shift($argv);
+
+    $args = [];
+    $options = [];
+    foreach ($argv as $token) {
+        if (str_starts_with($token, '--')) {
+            $body = substr($token, 2);
+            if (str_contains($body, '=')) {
+                [$key, $value] = explode('=', $body, 2);
+                $options[$key] = $value;
+            } else {
+                $options[$body] = true;
+            }
+        } else {
+            $args[] = $token;
+        }
+    }
+
+    return ['command' => $command, 'args' => $args, 'options' => $options];
+}
+
+function option(array $options, string $key, ?string $default = null): ?string
+{
+    $value = $options[$key] ?? $default;
+
+    return $value === true ? $default : $value;
+}
+
+function fail(string $message): never
+{
+    fwrite(STDERR, "Error: {$message}\n");
+    exit(1);
+}
+
+function printHelp(): void
+{
+    echo <<<TXT
+    phonedir - herramienta de línea de comandos para el módulo PhoneDirectory
+
+    Uso:
+      phonedir import <archivo> [opciones]
+      phonedir search --name=<texto> | --street=<texto> | --phone=<texto> | --surname-sound=<texto> [opciones]
+      phonedir stats [--dsn=<dsn>]
+      phonedir link --sources=<id1>,<id2>,... [--min-score=0.5] [--dsn=<dsn>]
+      phonedir catalog list [--country=XX] [--year-from=YYYY] [--year-to=YYYY]
+      phonedir catalog show <id>
+      phonedir help
+
+    Opciones comunes:
+      --dsn=<dsn>          Cadena de conexión PDO (por defecto: sqlite:phonedirectory.sqlite)
+      --user=<usuario>     Usuario de la base de datos (MySQL/PostgreSQL)
+      --password=<clave>   Contraseña de la base de datos (MySQL/PostgreSQL)
+
+    import:
+      --catalog=<id>       Toma país e idioma de un directorio del catálogo (ver 'catalog list')
+      --country=<XX>       Código de país ISO 3166-1 (por defecto: US; ignorado si se usa --catalog)
+      --source=<id>        Id de directorio de origen (ignorado si se usa --catalog)
+      --language=<es|en|fr|pt|de|it>  Fuerza el idioma en vez de detectarlo automáticamente
+      --clear              Vacía las tablas antes de importar
+
+    search:
+      --type=natural|juridical|all   Qué buscar (por defecto: all)
+
+    Ejemplos:
+      phonedir import directorio_1930.txt --catalog=es_1930_madrid --dsn=sqlite:madrid.sqlite
+      phonedir search --name=garcia --dsn=sqlite:madrid.sqlite
+      phonedir search --surname-sound=valdez --language=es --dsn=sqlite:madrid.sqlite
+      phonedir link --sources=es_1930_madrid,es_1975_national --dsn=sqlite:madrid.sqlite
+
+    TXT;
+}
+
+function buildManager(array $options, ?MultiLanguagePhoneDirectoryParser $parser = null): PhoneDirectoryManagerV2
+{
+    $dsn = option($options, 'dsn', 'sqlite:phonedirectory.sqlite');
+    $user = option($options, 'user');
+    $password = option($options, 'password');
+
+    return new PhoneDirectoryManagerV2(
+        parser: $parser,
+        naturalDatabase: new PhoneDirectoryPDODatabase($dsn, $user, $password),
+        juridicalDatabase: new JuridicalEntityPDODatabase($dsn, $user, $password)
+    );
+}
+
+function formatNatural(PhoneDirectoryEntry $entry): string
+{
+    $phone = $entry->getPhoneNumber() ? " | {$entry->getPhoneNumber()}" : '';
+    $source = $entry->getSourceDirectoryId() ? " | {$entry->getSourceDirectoryId()}" : '';
+
+    return "  [persona] {$entry->getFormattedName()} | {$entry->getStreet()}, {$entry->getCountryCode()}{$phone}{$source}";
+}
+
+function formatJuridical(JuridicalEntity $entity): string
+{
+    $phone = $entity->getPhoneNumber() ? " | {$entity->getPhoneNumber()}" : '';
+
+    return "  [empresa]  {$entity->getBusinessName()} | {$entity->getStreet()}, {$entity->getCountryCode()}{$phone}";
+}
+
+function commandImport(array $args, array $options): int
+{
+    $file = $args[0] ?? fail('uso: phonedir import <archivo> [opciones]');
+    if (!is_file($file)) {
+        fail("no se encontró el archivo: {$file}");
+    }
+
+    $catalogId = option($options, 'catalog');
+    $language = option($options, 'language');
+
+    if ($catalogId !== null) {
+        $directory = (new PhoneDirectoryCatalog())->get($catalogId);
+        if ($directory === null) {
+            fail("directorio desconocido en el catálogo: {$catalogId}");
+        }
+        $parser = new MultiLanguagePhoneDirectoryParser($directory['country'], $catalogId);
+    } else {
+        $parser = new MultiLanguagePhoneDirectoryParser(option($options, 'country', 'US'), option($options, 'source'));
+    }
+
+    $manager = buildManager($options, $parser);
+
+    $result = $manager->processFile($file, $language, isset($options['clear']));
+
+    echo "Idioma detectado: {$result['language']}\n";
+    echo "Líneas parseadas: {$result['totalParsed']}\n";
+    echo "Personas insertadas: {$result['naturalInserted']}\n";
+    echo "Empresas insertadas: {$result['juridicalInserted']}\n";
+    echo "Errores: {$result['errorCount']}\n";
+
+    foreach (array_slice($result['errors'], 0, 10) as $error) {
+        echo "  línea {$error['line']}: {$error['reason']}\n";
+    }
+    if ($result['errorCount'] > 10) {
+        echo '  ... y ' . ($result['errorCount'] - 10) . " más\n";
+    }
+
+    return 0;
+}
+
+function commandSearch(array $options): int
+{
+    $manager = buildManager($options);
+    $type = option($options, 'type', 'all');
+
+    if (($name = option($options, 'name')) !== null) {
+        $natural = fn() => $manager->findNaturalPeopleByName($name);
+        $juridical = fn() => $manager->findJuridicalEntitiesByName($name);
+    } elseif (($street = option($options, 'street')) !== null) {
+        $natural = fn() => $manager->findNaturalPeopleByStreet($street);
+        $juridical = fn() => $manager->findJuridicalEntitiesByStreet($street);
+    } elseif (($phone = option($options, 'phone')) !== null) {
+        $natural = fn() => array_filter([$manager->findNaturalPersonByPhone($phone)]);
+        $juridical = fn() => array_filter([$manager->findJuridicalEntityByPhone($phone)]);
+    } elseif (($surname = option($options, 'surname-sound')) !== null) {
+        $language = option($options, 'language');
+        $natural = fn() => $manager->findNaturalPeopleBySurnameSound($surname, $language);
+        $juridical = fn() => [];
+    } else {
+        fail('indica un criterio: --name=, --street=, --phone= o --surname-sound=');
+    }
+
+    $count = 0;
+    if ($type === 'natural' || $type === 'all') {
+        foreach ($natural() as $entry) {
+            echo formatNatural($entry) . "\n";
+            $count++;
+        }
+    }
+    if ($type === 'juridical' || $type === 'all') {
+        foreach ($juridical() as $entity) {
+            echo formatJuridical($entity) . "\n";
+            $count++;
+        }
+    }
+
+    echo "\n{$count} resultado(s)\n";
+
+    return 0;
+}
+
+function commandStats(array $options): int
+{
+    $stats = buildManager($options)->getStatistics();
+
+    echo "Total: {$stats['total']}\n";
+    echo "Personas naturales: {$stats['natural_people']}\n";
+    echo "Empresas: {$stats['juridical_entities']}\n";
+    echo 'Proporción personas/empresas: ' . ($stats['ratio_natural_to_juridical'] ?? 'n/d') . "\n";
+
+    return 0;
+}
+
+function commandLink(array $options): int
+{
+    $sourcesOption = option($options, 'sources');
+    if ($sourcesOption === null) {
+        fail('uso: phonedir link --sources=<id1>,<id2>,... [--min-score=0.5]');
+    }
+    $sources = array_filter(array_map('trim', explode(',', $sourcesOption)));
+    if (count($sources) < 2) {
+        fail('--sources necesita al menos dos ids de directorio, separados por coma');
+    }
+
+    $database = buildManager($options)->getNaturalDatabase();
+    $entries = [];
+    foreach ($sources as $sourceId) {
+        $entries = array_merge($entries, $database->findBySourceDirectory($sourceId));
+    }
+
+    $minScore = (float) option($options, 'min-score', '0.5');
+    $links = (new RecordLinker(minimumScore: $minScore))->link($entries);
+
+    foreach ($links as $link) {
+        $evidence = implode(', ', $link->evidence);
+        printf(
+            "%.2f  %s (%s)  ->  %s (%s)  [%s]\n",
+            $link->score,
+            $link->earlier->getFormattedName(),
+            $link->earlier->getSourceDirectoryId(),
+            $link->later->getFormattedName(),
+            $link->later->getSourceDirectoryId(),
+            $evidence
+        );
+    }
+
+    echo "\n" . count($links) . " enlace(s) propuesto(s)\n";
+
+    return 0;
+}
+
+function commandCatalog(array $args, array $options): int
+{
+    $catalog = new PhoneDirectoryCatalog();
+    $sub = $args[0] ?? 'list';
+
+    if ($sub === 'show') {
+        $id = $args[1] ?? fail('uso: phonedir catalog show <id>');
+        $directory = $catalog->get($id);
+        if ($directory === null) {
+            fail("directorio desconocido: {$id}");
+        }
+        foreach ($directory as $key => $value) {
+            echo "{$key}: {$value}\n";
+        }
+
+        return 0;
+    }
+
+    $directories = $catalog->getAll();
+    if (($country = option($options, 'country')) !== null) {
+        $directories = $catalog->getByCountry($country);
+    }
+    if (($from = option($options, 'year-from')) !== null || ($to = option($options, 'year-to')) !== null) {
+        $directories = $catalog->getByYearRange((int) ($from ?? 1800), (int) ($to ?? 2100));
+    }
+
+    foreach ($directories as $id => $directory) {
+        printf("%-24s %4d  %-2s  %s\n", $id, $directory['year'], $directory['country'], $directory['title']);
+    }
+
+    return 0;
+}
+
+$parsed = parseArgv($argv);
+$command = $parsed['command'];
+
+try {
+    exit(match ($command) {
+        'import' => commandImport($parsed['args'], $parsed['options']),
+        'search' => commandSearch($parsed['options']),
+        'stats' => commandStats($parsed['options']),
+        'link' => commandLink($parsed['options']),
+        'catalog' => commandCatalog($parsed['args'], $parsed['options']),
+        'help', null => (function () {
+            printHelp();
+
+            return 0;
+        })(),
+        default => (function () use ($command) {
+            fwrite(STDERR, "Comando desconocido: {$command}\n\n");
+            printHelp();
+
+            return 1;
+        })(),
+    });
+} catch (\Throwable $e) {
+    fail($e->getMessage());
+}

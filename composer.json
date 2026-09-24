@@ -13,6 +13,9 @@
     "require-dev": {
         "phpunit/phpunit": "^10.0"
     },
+    "bin": [
+        "bin/phonedir"
+    ],
     "autoload": {
         "psr-4": {
             "DefamatoryContentReview\\": "src/DefamatoryContentReview/",
