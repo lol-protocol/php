@@ -1,227 +1,140 @@
-# Estructuras de URLs Friendly
+# Estructura de URLs — Esquema Abstracto por Longitud
 
-## 1. Sitio de Genealogía
+Ningún tipo de recurso aparece como palabra en la URL. El **tipo se infiere de la forma** del primer segmento:
 
-### Perfiles / Individuos
-- `/people/` - Listado de personas
-- `/people/{id}/` - Perfil individual (ej: /people/juan-garcia-1925/)
-- `/people/{id}/ancestors/` - Árbol ancestral
-- `/people/{id}/descendants/` - Árbol descendiente
-- `/people/{id}/relationships/` - Relaciones familiares
-- `/people/{id}/timeline/` - Línea de tiempo de vida
+- **Solo dígitos** → el número de dígitos selecciona el tipo (ver tablas abajo).
+- **Solo letras** → jerarquía de lugar (país/región/ciudad).
+- **Coincidencia exacta** → rutas fijas de sistema (`cart`, `checkout`, `order`, `0` para cuenta).
 
-### Apellidos / Familias
-- `/surnames/` - Listado de apellidos
-- `/surnames/{surname}/` - Apellido específico (ej: /surnames/garcia/)
-- `/surnames/{surname}/tree/` - Árbol del apellido
-- `/surnames/{surname}/distribution/` - Distribución geográfica
-- `/families/{family-id}/` - Familia específica
-- `/families/{family-id}/genealogy/` - Genealogía de la familia
-- `/families/{family-id}/members/` - Miembros de la familia
+El largo en dígitos escala con el tamaño esperado del catálogo de cada tipo: a mayor cardinalidad prevista, más dígitos. `persona` es el techo (10 dígitos); todo lo demás queda por debajo, en orden.
 
-### Lugares / Localizaciones
-- `/places/` - Listado de lugares
-- `/places/{country}/` - País (ej: /places/mexico/)
-- `/places/{country}/{state}/` - Estado/Provincia (ej: /places/mexico/jalisco/)
-- `/places/{country}/{state}/{city}/` - Ciudad (ej: /places/mexico/jalisco/guadalajara/)
-- `/places/{place-id}/people/` - Personas de un lugar
-- `/places/{place-id}/events/` - Eventos registrados en un lugar
+No se usan guiones ni guiones bajos en ningún segmento.
 
-### Organizaciones / Instituciones
-- `/organizations/` - Listado de organizaciones
-- `/organizations/{org-id}/` - Organización específica
-- `/organizations/{org-id}/members/` - Miembros de la organización
-- `/organizations/{org-id}/records/` - Registros gestionados
+## Idiomas
 
-### Eventos
-- `/events/` - Listado de eventos
-- `/events/births/` - Nacimientos
-- `/events/deaths/` - Muertes
-- `/events/marriages/` - Matrimonios
-- `/events/migrations/` - Migraciones
-- `/events/{event-id}/` - Evento específico
-
-### Registros / Documentos
-- `/records/` - Listado de registros
-- `/records/{type}/` - Por tipo (births, deaths, marriages, etc.)
-- `/records/{record-id}/` - Registro específico
-- `/records/{record-id}/source/` - Fuente del registro
-
-### Búsqueda y Filtros
-- `/search/` - Búsqueda general
-- `/search/people/?q={query}` - Búsqueda de personas
-- `/search/surnames/?q={query}` - Búsqueda de apellidos
-- `/search/places/?q={query}` - Búsqueda de lugares
-
-### Árbol Genealógico
-- `/trees/` - Listado de árboles
-- `/trees/{tree-id}/` - Árbol específico
-- `/trees/{tree-id}/view/` - Vista del árbol
-- `/trees/{tree-id}/edit/` - Editar árbol
-- `/trees/{tree-id}/export/` - Exportar árbol (GEDCOM, PDF, etc.)
-
-### Usuario / Cuenta
-- `/profile/` - Perfil del usuario
-- `/profile/trees/` - Mis árboles
-- `/profile/contributions/` - Mis contribuciones
-- `/profile/saved/` - Guardados
-- `/settings/` - Configuración
-
-### Reportes
-- `/reports/` - Listado de reportes
-- `/reports/statistics/` - Estadísticas globales
-- `/reports/surnames-distribution/` - Distribución de apellidos
-- `/reports/timeline/{year}/` - Eventos por año
+Subdominios de 3 letras (ISO 639-2): `spa.` (español), `eng.` (inglés), etc. La ruta es idéntica entre idiomas — solo cambia el subdominio.
 
 ---
 
-## 2. Sitio de Etiquetado POS (Contrastocolor)
+## 1. Genealogía
 
-### Productos
-- `/products/` - Catálogo de productos
-- `/products/{product-id}/` - Producto específico
-- `/products/{product-id}/details/` - Detalles del producto
-- `/products/{product-id}/variants/` - Variantes del producto
-- `/products/{product-id}/colors/` - Paleta de colores disponibles
+| Formato | Tipo | Justificación de escala |
+|---|---|---|
+| 10 dígitos | persona | mayor cardinalidad esperada (individuos) |
+| 9 dígitos | suceso | eventos ligados a personas |
+| 8 dígitos | registro | documentos / fuentes |
+| 7 dígitos | colección | árboles genealógicos |
+| 6 dígitos | grupo | apellidos / familias |
+| 5 dígitos | organización | instituciones / archivos |
+| texto (2-4 letras) | lugar | jerárquico país/región/ciudad; no es un registro secuencial |
 
-### Categorías
-- `/categories/` - Listado de categorías
-- `/categories/{category-slug}/` - Categoría específica (ej: /categories/contrast-shirts/)
-- `/categories/{category-slug}/subcategories/` - Subcategorías
-- `/categories/{category-slug}/{subcategory-slug}/` - Subcategoría
+### Acciones (segundo segmento, numérico, con significado propio por tipo)
 
-### Colores / Contrastes
-- `/colors/` - Paleta de colores disponibles
-- `/colors/{color-id}/` - Color específico
-- `/colors/{color-id}/products/` - Productos de ese color
-- `/contrast-palettes/` - Paletas de contraste predefinidas
-- `/contrast-palettes/{palette-id}/` - Paleta específica
-- `/contrast-checker/` - Herramienta de verificación de contraste
+**persona** (10 dígitos):
+| Código | Acción |
+|---|---|
+| 1 | ascendencia |
+| 2 | descendencia |
+| 3 | vínculos |
+| 4 | cronología |
 
-### Órdenes / Transacciones
-- `/orders/` - Mis órdenes
-- `/orders/{order-id}/` - Orden específica
-- `/orders/{order-id}/invoice/` - Factura
-- `/orders/{order-id}/tracking/` - Seguimiento
-- `/orders/{order-id}/returns/` - Devoluciones
+**colección** (7 dígitos): `1` vista · `2` editar · `3` exportar
+**grupo** (6 dígitos): `1` red · `2` dispersión
+**organización** (5 dígitos): `1` miembros · `2` registros
+**registro** (8 dígitos): `1` fuente
+**lugar** (texto): `1` personas de ese lugar · `2` sucesos de ese lugar
 
-### Carrito de Compras
-- `/cart/` - Carrito
-- `/checkout/` - Proceso de compra
-- `/checkout/shipping/` - Envío
-- `/checkout/payment/` - Pago
-- `/checkout/confirmation/` - Confirmación
-
-### Etiquetado / Tagging
-- `/tags/` - Listado de etiquetas
-- `/tags/{tag-slug}/` - Etiqueta específica
-- `/tags/{tag-slug}/products/` - Productos con etiqueta
-
-### Búsqueda
-- `/search/` - Búsqueda general
-- `/search/?q={query}` - Búsqueda por término
-- `/search/?q={query}&category={category}` - Búsqueda filtrada
-- `/search/?q={query}&color={color}` - Búsqueda por color
-- `/search/?q={query}&price-min={min}&price-max={max}` - Búsqueda por precio
-
-### Filtros Avanzados
-- `/products/filter/?category={cat}&color={color}&size={size}` - Filtrado múltiple
-- `/products/filter/?contrast-level={level}` - Por nivel de contraste
-- `/products/filter/?accessible=true` - Productos accesibles
-
-### Colecciones / Campañas
-- `/collections/` - Colecciones especiales
-- `/collections/{collection-id}/` - Colección específica
-- `/campaigns/` - Campañas promocionales
-- `/campaigns/{campaign-id}/` - Campaña específica
-
-### Usuario / Cuenta
-- `/account/` - Mi cuenta
-- `/account/profile/` - Perfil
-- `/account/orders/` - Historial de órdenes
-- `/account/wishlist/` - Lista de deseos
-- `/account/addresses/` - Direcciones guardadas
-- `/account/settings/` - Configuración
-- `/account/preferences/` - Preferencias
-
-### Promociones
-- `/promotions/` - Ofertas y descuentos
-- `/promotions/{promo-id}/` - Promoción específica
-- `/deals/` - Ofertas del día
-- `/seasonal/` - Colecciones estacionales
-
-### Soporte
-- `/help/` - Centro de ayuda
-- `/help/faq/` - Preguntas frecuentes
-- `/help/shipping/` - Envíos
-- `/help/returns/` - Política de devoluciones
-- `/help/size-guide/` - Guía de tallas
-- `/contact/` - Contacto
-
-### Admin / Gestión (si aplica)
-- `/admin/` - Panel de administración
-- `/admin/products/` - Gestión de productos
-- `/admin/inventory/` - Inventario
-- `/admin/orders/` - Gestión de órdenes
-- `/admin/reports/` - Reportes
-- `/admin/colors/` - Gestión de colores
-- `/admin/tags/` - Gestión de etiquetas
-
----
-
-## Convenciones de URL
-
-### Formato General
-- **Minúsculas**: Todas las URLs en minúsculas
-- **Guiones**: Separar palabras con guiones (kebab-case)
-- **Sin extensiones**: No incluir extensiones de archivo (.php, .html)
-- **Con barra final**: Terminan en `/`
-- **Parámetros de query**: Para filtros, búsquedas y opcionales
-
-### Ejemplos Correctos
-✓ `/categories/contrasted-shirts/`
-✓ `/people/maria-garcia-1980/`
-✓ `/search/?q=blue-shirts&color=navy`
-✓ `/places/mexico/jalisco/`
-
-### Ejemplos Incorrectos
-✗ `/Categories/Contrasted-Shirts`
-✗ `/people/mariaCasillas/`
-✗ `/search.php?query=`
-✗ `/Places/Mexico/Jalisco`
-
----
-
-## Enrutamiento en PHP
-
-### Estructura Recomendada
+### Ejemplos
 
 ```
-routes/
-├── genealogy.php
-├── pos.php
-├── api.php
-└── web.php
+spa.tudominio.com/6128473190/         persona
+spa.tudominio.com/6128473190/1/       ascendencia
+spa.tudominio.com/6128473190/2/       descendencia
+spa.tudominio.com/6128473190/3/       vínculos
+spa.tudominio.com/6128473190/4/       cronología
 
-controllers/
-├── Genealogy/
-│   ├── PeopleController.php
-│   ├── SurnamesController.php
-│   ├── PlacesController.php
-│   ├── OrganizationsController.php
-│   ├── EventsController.php
-│   └── TreesController.php
-└── POS/
-    ├── ProductsController.php
-    ├── CategoriesController.php
-    ├── OrdersController.php
-    ├── CartController.php
-    └── SearchController.php
+spa.tudominio.com/1048293/            colección (árbol)
+spa.tudominio.com/1048293/1/          vista
+spa.tudominio.com/1048293/3/          exportar
+
+spa.tudominio.com/582317/             grupo (apellido)
+spa.tudominio.com/582317/1/           red (árbol del apellido)
+
+spa.tudominio.com/mx/                 lugar: país
+spa.tudominio.com/mx/jal/             lugar: región
+spa.tudominio.com/mx/jal/gdl/         lugar: ciudad
+spa.tudominio.com/mx/jal/gdl/1/       personas de esa ciudad
+
+spa.tudominio.com/?t=10&q=texto       listado/búsqueda de personas (t = dígitos del tipo)
+spa.tudominio.com/0/                  cuenta
 ```
 
-### Middleware Recomendado
-- URL rewriting (mod_rewrite en Apache)
-- Slug validation
-- 404 handling
-- Locale detection (si es multiidioma)
-- Canonical URLs
+---
+
+## 2. POS — Contrastocolor
+
+| Formato | Tipo | Justificación de escala |
+|---|---|---|
+| 8 dígitos | producto | mayor cardinalidad del sitio, menor que persona |
+| 7 dígitos | colección | colecciones / campañas |
+| 6 dígitos | etiqueta | |
+| 5 dígitos | atributo | color / variante — conjunto acotado |
+| 4 dígitos | grupo | categoría — taxonomía pequeña |
+
+### Acciones
+
+**producto** (8 dígitos): `1` variantes · `2` atributos
+**etiqueta** (6 dígitos): `1` productos con esa etiqueta
+**atributo** (5 dígitos): `1` productos de ese color
+
+### Flujo transaccional (excepción deliberada — palabras cortas en inglés, sin guiones)
+
+```
+/cart/
+/checkout/
+/checkout/shipping/
+/checkout/payment/
+/checkout/confirm/
+/order/{id}/
+/order/{id}/1/    invoice
+/order/{id}/2/    track
+/order/{id}/3/    devolucion
+```
+
+El id de `order` es secuencial simple (no requiere inferencia por largo, ya está bajo el prefijo `order`).
+
+### Ejemplos
+
+```
+spa.contrastocolor.com/81372047/           producto
+spa.contrastocolor.com/81372047/1/         variantes
+spa.contrastocolor.com/81372047/2/         atributos (colores del producto)
+
+spa.contrastocolor.com/48213/              atributo (color)
+spa.contrastocolor.com/48213/1/            productos de ese color
+
+spa.contrastocolor.com/?t=8&q=texto        listado/búsqueda de productos
+
+spa.contrastocolor.com/cart/
+spa.contrastocolor.com/checkout/payment/
+spa.contrastocolor.com/order/8137204719000/
+spa.contrastocolor.com/order/8137204719000/2/   track
+
+spa.contrastocolor.com/0/                  cuenta
+```
+
+---
+
+## Lógica de despacho (router)
+
+```
+segmento vacío           -> reserved['']  (home)
+literal exacto           -> literal[segmento]  (cart, checkout/*)
+"order" + id + acción?   -> order         (POS)
+"0" (único segmento)     -> reserved['0'] (cuenta)
+solo dígitos             -> by_length[strlen(segmento)]
+solo letras              -> place (lugar, jerárquico)
+cualquier otra cosa      -> 404
+```
+
+Un segundo segmento numérico (cuando aplica) selecciona una acción dentro del tipo ya resuelto — su significado está definido por tipo, nunca es global.

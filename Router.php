@@ -1,254 +1,194 @@
 <?php
 
 /**
- * Simple URL Router for handling friendly URLs
- * Supports genealogy and POS (Contrastocolor) site routing
+ * URL Router — dispatches by the SHAPE of the first path segment
+ * instead of by matching words against named patterns:
+ *
+ *   - all digits  -> digit count selects the resource type
+ *   - all letters -> place hierarchy (pais/region/ciudad)
+ *   - exact word  -> a literal or reserved system path
+ *
+ * A second numeric segment, when present, selects a sub-action on
+ * the matched resource (its meaning is scoped to that resource type).
  */
 
 class Router
 {
-    protected $routes = [];
-    protected $currentRequest = '';
-    protected $currentMethod = '';
-    protected $routeParams = [];
+    protected $config = [];
+    protected $segments = [];
 
     public function __construct()
     {
-        $this->currentRequest = $this->parseUrl($_SERVER['REQUEST_URI'] ?? '/');
-        $this->currentMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        $this->segments = $this->parseSegments($_SERVER['REQUEST_URI'] ?? '/');
     }
 
-    /**
-     * Register routes from configuration files
-     */
-    public function registerRoutes($configFile)
+    protected function parseSegments($uri)
     {
-        $routes = require $configFile;
-        $this->routes = array_merge($this->routes, $routes);
+        $path = trim(strtok($uri, '?'), '/');
+        return $path === '' ? [] : explode('/', $path);
     }
 
-    /**
-     * Parse the requested URL
-     */
-    protected function parseUrl($url)
+    public function loadConfig($configFile)
     {
-        // Remove base path if needed
-        $basePath = getenv('APP_BASE_PATH') ?: '';
-        if ($basePath && strpos($url, $basePath) === 0) {
-            $url = substr($url, strlen($basePath));
-        }
-
-        // Remove query string
-        $url = strtok($url, '?');
-
-        // Ensure it starts with /
-        if (!str_starts_with($url, '/')) {
-            $url = '/' . $url;
-        }
-
-        // Remove trailing slash (optional)
-        if ($url !== '/' && str_ends_with($url, '/')) {
-            $url = rtrim($url, '/');
-        }
-
-        return $url;
+        $this->config = require $configFile;
     }
 
-    /**
-     * Match the requested URL against registered routes
-     */
-    public function matchRoute()
+    public function dispatch()
     {
-        foreach ($this->routes as $name => $route) {
-            if (!$this->methodMatches($route)) {
-                continue;
-            }
+        $match = $this->resolve();
 
-            $params = $this->matchPattern($route['path']);
-            if ($params !== false) {
-                $this->routeParams = $params;
-                return [
-                    'name' => $name,
-                    'controller' => $route['controller'],
-                    'params' => $params,
-                    'route' => $route,
-                ];
-            }
+        if (!$match) {
+            return $this->handleNotFound();
+        }
+
+        return $this->callController($match);
+    }
+
+    protected function resolve()
+    {
+        if (empty($this->segments)) {
+            $entry = $this->config['reserved'][''] ?? null;
+            return $entry ? $entry + ['params' => []] : null;
+        }
+
+        $literal = $this->matchLiteral();
+        if ($literal) {
+            return $literal;
+        }
+
+        if (isset($this->config['order']) && $this->segments[0] === 'order') {
+            return $this->matchOrder();
+        }
+
+        $first = $this->segments[0];
+
+        if (count($this->segments) === 1 && isset($this->config['reserved'][$first])) {
+            return $this->config['reserved'][$first] + ['params' => []];
+        }
+
+        if (ctype_digit($first)) {
+            return $this->matchByLength($first);
+        }
+
+        if (ctype_alpha($first) && isset($this->config['place'])) {
+            return $this->matchPlace();
         }
 
         return null;
     }
 
-    /**
-     * Check if HTTP method matches
-     */
-    protected function methodMatches($route)
+    protected function matchLiteral()
     {
-        $methods = $route['methods'] ?? ['GET'];
-        return in_array($this->currentMethod, $methods);
-    }
-
-    /**
-     * Match URL pattern against request
-     */
-    protected function matchPattern($pattern)
-    {
-        // Convert route pattern to regex
-        $regexPattern = $this->patternToRegex($pattern);
-
-        if (preg_match($regexPattern, $this->currentRequest . '/', $matches)) {
-            // Extract named parameters
-            $params = [];
-            array_shift($matches); // Remove full match
-
-            // Get parameter names from pattern
-            preg_match_all('/{([a-zA-Z_][a-zA-Z0-9_]*)}/', $pattern, $paramNames);
-
-            foreach ($paramNames[1] as $index => $name) {
-                $params[$name] = $matches[$index + 1] ?? null;
-            }
-
-            return $params;
-        }
-
-        return false;
-    }
-
-    /**
-     * Convert route pattern to regex
-     */
-    protected function patternToRegex($pattern)
-    {
-        $regex = preg_quote($pattern, '#');
-
-        // Replace {param} with regex groups
-        $regex = preg_replace_callback(
-            '/{([a-zA-Z_][a-zA-Z0-9_]*)}/',
-            function ($matches) {
-                return '([a-z0-9-]+)';
-            },
-            $regex
-        );
-
-        return '#^' . $regex . '$#i';
-    }
-
-    /**
-     * Get route parameters
-     */
-    public function getParams()
-    {
-        return $this->routeParams;
-    }
-
-    /**
-     * Get parameter value
-     */
-    public function getParam($name, $default = null)
-    {
-        return $this->routeParams[$name] ?? $default;
-    }
-
-    /**
-     * Generate URL for a route
-     */
-    public function route($name, $params = [])
-    {
-        if (!isset($this->routes[$name])) {
+        if (!isset($this->config['literal'])) {
             return null;
         }
 
-        $path = $this->routes[$name]['path'];
+        $joined = implode('/', $this->segments);
 
-        // Replace parameters in path
-        foreach ($params as $key => $value) {
-            $path = str_replace('{' . $key . '}', $value, $path);
+        if (isset($this->config['literal'][$joined])) {
+            return $this->config['literal'][$joined] + ['params' => []];
         }
 
-        return $path;
+        return null;
     }
 
-    /**
-     * Dispatch request to controller
-     */
-    public function dispatch()
+    protected function matchOrder()
     {
-        $matched = $this->matchRoute();
+        $id = $this->segments[1] ?? null;
 
-        if (!$matched) {
-            return $this->handleNotFound();
+        if (!$id || !ctype_digit($id)) {
+            return null;
         }
 
-        return $this->callController($matched);
+        $entry = $this->config['order'];
+        $actionCode = $this->segments[2] ?? null;
+        $method = $this->resolveAction($entry['actions'] ?? [], $actionCode);
+
+        return [
+            'controller' => $entry['controller'],
+            'method' => $method,
+            'params' => ['id' => $id],
+        ];
     }
 
-    /**
-     * Call controller method
-     */
-    protected function callController($matched)
+    protected function matchByLength($id)
     {
-        [$controllerClass, $method] = explode('@', $matched['controller']);
+        $entry = $this->config['by_length'][strlen($id)] ?? null;
 
-        // Convert to proper namespace
-        $fullClass = 'App\\Controllers\\' . $controllerClass;
+        if (!$entry) {
+            return null;
+        }
+
+        $actionCode = $this->segments[1] ?? null;
+        $method = $this->resolveAction($entry['actions'] ?? [], $actionCode);
+
+        return [
+            'controller' => $entry['controller'],
+            'method' => $method,
+            'params' => ['id' => $id],
+        ];
+    }
+
+    protected function matchPlace()
+    {
+        $entry = $this->config['place'];
+        $codes = [];
+        $actionCode = null;
+
+        foreach ($this->segments as $segment) {
+            if (ctype_alpha($segment)) {
+                $codes[] = $segment;
+            } elseif (ctype_digit($segment)) {
+                $actionCode = $segment;
+                break;
+            } else {
+                return null;
+            }
+        }
+
+        return [
+            'controller' => $entry['controller'],
+            'method' => $this->resolveAction($entry['actions'] ?? [], $actionCode),
+            'params' => ['codes' => $codes],
+        ];
+    }
+
+    protected function resolveAction(array $actions, $code)
+    {
+        if ($code !== null && isset($actions[(int) $code])) {
+            return $actions[(int) $code];
+        }
+
+        return 'show';
+    }
+
+    protected function callController($match)
+    {
+        $fullClass = 'App\\Controllers\\' . $match['controller'];
 
         if (!class_exists($fullClass)) {
             return $this->handleError("Controller not found: $fullClass");
         }
 
         $controller = new $fullClass();
+        $method = $match['method'];
 
         if (!method_exists($controller, $method)) {
             return $this->handleError("Method not found: {$method}");
         }
 
-        return call_user_func_array(
-            [$controller, $method],
-            [$matched['params']]
-        );
+        return call_user_func([$controller, $method], $match['params']);
     }
 
-    /**
-     * Handle 404 errors
-     */
     protected function handleNotFound()
     {
         http_response_code(404);
-        return $this->renderError('404 - Page Not Found');
+        echo '<h1>404 - Pagina no encontrada</h1>';
     }
 
-    /**
-     * Handle errors
-     */
     protected function handleError($message)
     {
         http_response_code(500);
-        return $this->renderError('500 - ' . $message);
+        echo '<h1>500 - ' . htmlspecialchars($message) . '</h1>';
     }
-
-    /**
-     * Render error page
-     */
-    protected function renderError($message)
-    {
-        echo "<h1>$message</h1>";
-    }
-}
-
-/**
- * Helper function to generate URLs in templates
- */
-function route($name, $params = [])
-{
-    global $router;
-    return $router->route($name, $params);
-}
-
-/**
- * Helper function to get current route parameter
- */
-function routeParam($name, $default = null)
-{
-    global $router;
-    return $router->getParam($name, $default);
 }

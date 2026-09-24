@@ -1,80 +1,67 @@
-# Estructura de URLs Friendly - Genealogía y POS
+# Esquema de URLs Abstracto — Genealogía y POS
 
-Este proyecto implementa una arquitectura de URLs friendly para dos aplicaciones: un sitio de genealogía y un sitio de ecommerce para Contrastocolor.
+URLs sin palabras de dominio, sin guiones ni guiones bajos. El tipo de recurso se infiere de la **forma** del primer segmento de la URL (cantidad de dígitos, o letras puras para lugares). Ver [`URL_STRUCTURES.md`](./URL_STRUCTURES.md) para la tabla completa de formatos y ejemplos.
 
 ## 📁 Estructura de Archivos
 
 ```
 /php
-├── index.php                          # Punto de entrada principal
-├── Router.php                          # Motor de enrutamiento
+├── index.php                          # Punto de entrada, detecta sitio + idioma
+├── Router.php                          # Despacho por forma del segmento
 ├── .htaccess                           # Configuración Apache
-├── URL_STRUCTURES.md                   # Documentación completa de URLs
+├── URL_STRUCTURES.md                   # Tabla completa de formatos
 ├── README_URLS.md                      # Este archivo
 ├── routes/
-│   ├── genealogy.php                  # Rutas del sitio de genealogía
-│   └── pos.php                         # Rutas del sitio de ecommerce
+│   ├── genealogy.php                  # Registro de tipos por largo de dígitos
+│   └── pos.php                         # Registro de tipos + flujo transaccional
 └── Controllers/
     ├── Genealogy/
-    │   └── PeopleController.php        # Controlador de personas
+    │   ├── PersonaController.php       # 10 dígitos
+    │   ├── HomeController.php          # raíz, listado/búsqueda
+    │   └── CuentaController.php        # ruta reservada "0"
     └── POS/
-        └── ProductsController.php      # Controlador de productos
+        ├── ProductoController.php      # 8 dígitos
+        ├── HomeController.php
+        ├── CuentaController.php
+        ├── CartController.php          # /cart/
+        ├── CheckoutController.php      # /checkout/...
+        └── OrderController.php         # /order/{id}/...
 ```
+
+## 🧠 Principio de diseño
+
+1. **Solo dígitos** → el número de dígitos selecciona el tipo. Más dígitos = mayor cardinalidad esperada de ese catálogo. `persona` es el techo (10 dígitos) en genealogía; `producto` es el techo (8 dígitos) en POS, deliberadamente menor que persona.
+2. **Solo letras** → jerarquía de lugar (país/región/ciudad), porque es una jerarquía de códigos, no una secuencia de registros.
+3. **Palabra exacta reservada** → rutas de sistema fuera del esquema numérico: `cart`, `checkout`, `order` (flujo de compra, en inglés por decisión explícita) y `0` (cuenta).
+4. Un segundo segmento numérico, cuando existe, selecciona una **acción** sobre el recurso ya resuelto — su significado depende del tipo (está definido en el arreglo `actions` de cada entrada en `routes/*.php`).
 
 ## 🚀 Inicio Rápido
 
-### 1. Configuración del Servidor
+### Apache (mod_rewrite)
 
-#### Apache (mod_rewrite habilitado)
-
-El archivo `.htaccess` redirige automáticamente todas las requests a `index.php`:
+El `.htaccess` ya incluido redirige todo a `index.php`:
 
 ```bash
-# Verificar que mod_rewrite está habilitado
 a2enmod rewrite
-
-# Reiniciar Apache
 systemctl restart apache2
 ```
 
-#### Nginx
-
-```nginx
-server {
-    listen 80;
-    server_name genealogy.local;
-    root /path/to/php;
-
-    location / {
-        if (!-e $request_filename) {
-            rewrite ^(.*)$ /index.php last;
-        }
-    }
-
-    location ~ \.php$ {
-        fastcgi_pass unix:/run/php/php-fpm.sock;
-        fastcgi_index index.php;
-        include fastcgi_params;
-    }
-}
-```
-
-### 2. Hosts Locales
-
-Agregar a `/etc/hosts` (Linux/Mac) o `C:\Windows\System32\drivers\etc\hosts` (Windows):
+### Hosts locales + subdominios de idioma
 
 ```
-127.0.0.1 genealogy.local
-127.0.0.1 contrastocolor.local
-127.0.0.1 pos.local
+127.0.0.1 spa.tudominio.local
+127.0.0.1 eng.tudominio.local
+127.0.0.1 spa.contrastocolor.local
+127.0.0.1 eng.contrastocolor.local
 ```
 
-### 3. Ejecutar Servidor Local
+El idioma se toma del subdominio de 3 letras (`determineLocale()` en `index.php`); si no hay uno válido, cae a `spa` por defecto. La ruta (path) es idéntica entre idiomas.
+
+### Servidor local
 
 ```bash
-# PHP built-in server (solo desarrollo)
-php -S genealogy.local:8000 index.php
-php -S contrastocolor.local:8001 index.php
+php -S spa.tudominio.local:8000 index.php
+php -S spa.contrastocolor.local:8001 index.php
 ```
 
 ## 🔍 Ejemplos de URLs
@@ -82,216 +69,108 @@ php -S contrastocolor.local:8001 index.php
 ### Genealogía
 
 ```
-http://genealogy.local/people/                    # Lista de personas
-http://genealogy.local/people/juan-garcia-1925/   # Perfil de Juan García
-http://genealogy.local/people/123/ancestors/      # Ancestros de persona ID 123
-http://genealogy.local/surnames/garcia/           # Página del apellido García
-http://genealogy.local/places/mexico/jalisco/     # Estado de Jalisco
-http://genealogy.local/events/births/?year=1920   # Nacimientos año 1920
-http://genealogy.local/search/?q=maria            # Buscar "maria"
+spa.tudominio.local:8000/6128473190/       persona
+spa.tudominio.local:8000/6128473190/1/     ascendencia
+spa.tudominio.local:8000/1048293/          colección (árbol)
+spa.tudominio.local:8000/582317/           grupo (apellido)
+spa.tudominio.local:8000/mx/jal/gdl/       lugar (país/región/ciudad)
+spa.tudominio.local:8000/?t=10&q=maria     búsqueda de personas
+spa.tudominio.local:8000/0/                cuenta
 ```
 
 ### POS (Contrastocolor)
 
 ```
-http://contrastocolor.local/products/              # Catálogo de productos
-http://contrastocolor.local/products/blue-shirt-v1/     # Camiseta azul
-http://contrastocolor.local/categories/shirts/    # Categoría de camisetas
-http://contrastocolor.local/colors/navy/          # Productos color azul marino
-http://contrastocolor.local/orders/                # Mis órdenes
-http://contrastocolor.local/cart/                 # Carrito de compras
-http://contrastocolor.local/search/?q=shirts      # Buscar "camisetas"
-http://contrastocolor.local/products/filter/?category=shirts&color=blue
+spa.contrastocolor.local:8001/81372047/       producto
+spa.contrastocolor.local:8001/81372047/1/     variantes
+spa.contrastocolor.local:8001/48213/          atributo (color)
+spa.contrastocolor.local:8001/cart/
+spa.contrastocolor.local:8001/checkout/payment/
+spa.contrastocolor.local:8001/order/8137204719000/2/   seguimiento
 ```
 
-## 📝 Crear Nuevas Rutas
+## 📝 Agregar un tipo de recurso nuevo
 
-### Paso 1: Agregar Ruta al Archivo de Configuración
-
-En `routes/genealogy.php` o `routes/pos.php`:
+### Paso 1: elegir un largo de dígitos libre en `routes/{sitio}.php`
 
 ```php
-'people.create' => [
-    'path' => '/people/create/',
-    'controller' => 'Genealogy\PeopleController@create',
-    'methods' => ['GET', 'POST'],
+'by_length' => [
+    // ...
+    3 => [
+        'type' => 'nuevo_tipo',
+        'controller' => 'Genealogy\NuevoTipoController',
+        'actions' => [
+            1 => 'accion_uno',
+        ],
+    ],
 ],
 ```
 
-### Paso 2: Implementar Controlador
+El largo debe ser único dentro del mismo sitio (mismo dominio); no hace falta que coincida entre genealogía y POS, ya que viven en dominios distintos.
 
-En `Controllers/Genealogy/PeopleController.php`:
+### Paso 2: crear el controlador
 
 ```php
-public function create($params = [])
+<?php
+
+namespace App\Controllers\Genealogy;
+
+class NuevoTipoController
 {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Procesar formulario
-        $data = $_POST;
-        // TODO: Guardar en base de datos
-        redirect('people.index');
+    public function show($params = [])
+    {
+        // $params['id'] trae el identificador numérico completo
     }
 
-    return view('genealogy/people/create');
+    public function accion_uno($params = [])
+    {
+        // llamado en /{id-de-N-digitos}/1/
+    }
 }
 ```
 
-### Paso 3: Generar URL en Plantillas
+### Paso 3: generar el enlace
 
 ```php
-<a href="<?php echo route('people.create'); ?>">Crear Persona</a>
-
-<!-- Con parámetros -->
-<a href="<?php echo route('people.show', ['id' => 'juan-garcia-1925']); ?>">
-    Ver Perfil
-</a>
+<a href="<?php echo enlace($id); ?>">Ver</a>
+<!-- el id ya trae implícito el tipo por su largo -->
 ```
 
 ## 🔐 Seguridad
 
-### Validación de Parámetros
+### Validar el id antes de consultar la base de datos
 
 ```php
 public function show($params = [])
 {
-    $id = $params['id'] ?? null;
+    $id = $params['id'];
 
-    // Validar que el ID sea válido
-    if (!$id || !preg_match('/^[a-z0-9-]+$/', $id)) {
+    if (!ctype_digit($id)) {
         http_response_code(400);
-        return 'Invalid ID';
+        return 'Id inválido';
     }
-
-    // Continuar...
+    // ...
 }
 ```
 
-### Escapar Salida
+### Escapar salida
 
 ```php
-<!-- En plantillas PHP -->
-<h1><?php echo esc($person['name']); ?></h1>
-
-<!-- Previene XSS -->
-```
-
-### CSRF Protection (Recomendado)
-
-```php
-// En controladores con POST
-if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-    http_response_code(403);
-    return 'CSRF token mismatch';
-}
+<h1><?php echo esc($persona['nombre']); ?></h1>
 ```
 
 ## 🎯 Convenciones
 
-### Nombres de Rutas
-
-- Usar punto para jerarquía: `people.index`, `people.show`, `people.create`
-- Usar singular para recursos: `product`, `person`, `order`
-- Usar plural para colecciones: `products`, `people`, `orders`
-
-### URLs
-
-- ✅ Minúsculas: `/people/`, `/categories/`
-- ✅ Guiones: `/user-profiles/`, `/contact-info/`
-- ✅ Con barra final: `/products/`, `/help/`
-- ❌ Sin extensiones: No `.php`, `.html`
-- ❌ Sin mayúsculas: No `/Products/`, `/Categories/`
-
-### Parámetros
-
-- Usar query string para filtros: `?page=2&category=shirts`
-- Usar URL path para IDs: `/people/{id}/`, `/products/{id}/`
-
-## 📊 Debugging
-
-### Habilitar Modo Debug
-
-Agregar a `index.php`:
-
-```php
-define('DEBUG_MODE', getenv('DEBUG') === 'true');
-```
-
-Ejecutar con debug:
-
-```bash
-DEBUG=true php index.php
-```
-
-### Ver Rutas Registradas
-
-```php
-// Temporalmente en index.php
-echo '<pre>';
-print_r($router->routes);
-echo '</pre>';
-```
-
-## 🔧 Personalizaciones
-
-### Cambiar Dominios
-
-En `index.php`, función `determineSite()`:
-
-```php
-$genealogy_domains = [
-    'mi-genealogy.com',
-    'genealogy.mi-sitio.com',
-];
-
-$pos_domains = [
-    'tienda.contrastocolor.com',
-    'shop.contrastocolor.com',
-];
-```
-
-### Agregar Prefix a URLs
-
-En `index.php`:
-
-```php
-define('APP_BASE_PATH', '/sitios/php/');
-```
-
-Luego las URLs serían:
-```
-http://localhost/sitios/php/people/
-http://localhost/sitios/php/products/
-```
+- ✅ Sin guiones ni guiones bajos en ningún segmento.
+- ✅ Solo dígitos, o solo letras — nunca mezclados en un mismo segmento (excepto las rutas literales reservadas).
+- ✅ Con barra final.
+- ❌ Sin extensiones de archivo (`.php`, `.html`).
+- ❌ Sin palabras de dominio en la URL (ni en español ni en inglés), salvo el flujo transaccional de POS.
 
 ## 🐛 Solución de Problemas
 
-### URLs no funcionan (404)
+**404 en todas las rutas**: verificar `mod_rewrite` habilitado y `.htaccess` presente en la raíz con permisos `644`.
 
-1. Verificar que mod_rewrite está habilitado: `a2enmod rewrite`
-2. Verificar `.htaccess` está en la raíz
-3. Verificar permisos: `chmod 644 .htaccess`
-4. Reiniciar servidor: `systemctl restart apache2`
+**Un id no despacha al controlador esperado**: contar los dígitos exactos del segmento — un dígito de más o de menos cae en otro tipo (o en ningún tipo, y da 404). Revisar `routes/{sitio}.php` → `by_length`.
 
-### Parámetros no se capturan
-
-1. Verificar patrón de ruta coincide con URL
-2. Verificar constraints en configuración
-3. Revisar logs de Apache: `tail -f /var/log/apache2/error.log`
-
-### Controlador no encontrado
-
-1. Verificar nombre de clase coincide exactamente
-2. Verificar namespace es correcto
-3. Verificar archivo existe en estructura de carpetas
-4. Verificar autoloader (spl_autoload_register)
-
-## 📚 Recursos
-
-- [URL Structures Documentation](./URL_STRUCTURES.md) - Documentación completa
-- [Router Class](./Router.php) - Código del motor de enrutamiento
-- [Genealogy Routes](./routes/genealogy.php) - Todas las rutas de genealogía
-- [POS Routes](./routes/pos.php) - Todas las rutas de ecommerce
-
-## 📝 Licencia
-
-MIT License - Libre para usar y modificar.
+**Una acción no se ejecuta**: el segundo segmento debe ser un entero que exista como clave en el arreglo `actions` de ese tipo; si no coincide, el router usa `show` por defecto.

@@ -2,16 +2,15 @@
 
 /**
  * Main Application Entry Point
- * Handles routing for both genealogy and POS sites
+ * Loads the route registry for the current domain and dispatches the request.
  */
 
-// Set environment variables
 define('APP_BASE_PATH', '/');
 define('DEBUG_MODE', getenv('DEBUG') === 'true');
 
-// Autoloader
 spl_autoload_register(function ($class) {
-    $path = str_replace('\\', '/', $class);
+    $relative = preg_replace('/^App\\\\/', '', $class);
+    $path = str_replace('\\', '/', $relative);
     $file = __DIR__ . '/' . $path . '.php';
 
     if (file_exists($file)) {
@@ -19,68 +18,57 @@ spl_autoload_register(function ($class) {
     }
 });
 
-// Start session
 session_start();
 
-// Initialize router
 require 'Router.php';
 $router = new Router();
 
-// Determine which site is being accessed
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $site = determineSite($host);
+$GLOBALS['locale'] = determineLocale($host);
 
-// Register appropriate routes
-if ($site === 'genealogy') {
-    $router->registerRoutes('routes/genealogy.php');
-} elseif ($site === 'pos') {
-    $router->registerRoutes('routes/pos.php');
-}
-
-// Make router globally available for helper functions
+$router->loadConfig(__DIR__ . "/routes/{$site}.php");
 $GLOBALS['router'] = $router;
 
-// Dispatch the request
 $response = $router->dispatch();
 
 /**
- * Determine which site should be used based on domain
+ * Which route registry to load, based on domain.
  */
 function determineSite($host)
 {
-    // Remove port if present
     $host = explode(':', $host)[0];
-
-    $genealogy_domains = [
-        'genealogy.local',
-        'genealogy.test',
-        'genealogy.app',
-        'localhost:8001',
-    ];
 
     $pos_domains = [
         'contrastocolor.local',
         'contrastocolor.test',
         'contrastocolor.app',
-        'pos.local',
-        'localhost:8002',
     ];
 
-    if (in_array($host, $genealogy_domains)) {
-        return 'genealogy';
+    foreach ($pos_domains as $domain) {
+        if (str_ends_with($host, $domain)) {
+            return 'pos';
+        }
     }
 
-    if (in_array($host, $pos_domains)) {
-        return 'pos';
-    }
-
-    // Default to genealogy if not matched
     return 'genealogy';
 }
 
 /**
- * Simple templating function
+ * Language subdomain, ISO 639-2 (3 letters): spa, eng, ...
+ * Defaults to spa when no 3-letter subdomain is present.
  */
+function determineLocale($host)
+{
+    $parts = explode('.', explode(':', $host)[0]);
+
+    if (count($parts) > 2 && strlen($parts[0]) === 3 && ctype_alpha($parts[0])) {
+        return strtolower($parts[0]);
+    }
+
+    return 'spa';
+}
+
 function view($name, $data = [])
 {
     $file = __DIR__ . '/views/' . $name . '.php';
@@ -96,27 +84,22 @@ function view($name, $data = [])
 }
 
 /**
- * Redirect to a route
+ * URL for a numeric-id resource — the id's length alone carries the type,
+ * so building the link is just the id itself.
  */
-function redirect($routeName, $params = [])
+function enlace($id)
 {
-    global $router;
-    $url = $router->route($routeName, $params);
-    header('Location: ' . $url);
-    exit;
+    return '/' . $id . '/';
 }
 
 /**
- * Get current site
+ * URL for a place, from its list of hierarchical text codes (pais/region/ciudad).
  */
-function currentSite()
+function enlaceLugar(array $codes)
 {
-    return determineSite($_SERVER['HTTP_HOST'] ?? 'localhost');
+    return '/' . implode('/', $codes) . '/';
 }
 
-/**
- * Security: Escape output
- */
 function esc($text)
 {
     return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
