@@ -1,0 +1,18 @@
+book_format,top_mm,bottom_mm,inner_mm,outer_mm,top_inches,bottom_inches,inner_inches,outer_inches,notes
+Mass Market,16,16,12,10,0.63,0.63,0.47,0.39,Pocket-sized fiction paperback
+Trade Paperback,19,19,16,13,0.75,0.75,0.63,0.51,Standard softcover books
+Digest,19,19,16,13,0.75,0.75,0.63,0.51,Magazine-sized books
+Royal,19,22,16,13,0.75,0.87,0.63,0.51,Larger hardcover fiction
+Demy,19,22,16,13,0.75,0.87,0.63,0.51,Traditional fiction size
+Crown,19,22,16,13,0.75,0.87,0.63,0.51,Standard commercial size
+Large Print,22,22,19,16,0.87,0.87,0.75,0.63,Visually impaired readers
+Hardcover Standard,19,22,16,13,0.75,0.87,0.63,0.51,Typical hardcover fiction
+Academic Textbook,19,25,16,13,0.75,0.98,0.63,0.51,University textbooks
+Coffee Table,25,25,19,16,0.98,0.98,0.75,0.63,Large format books
+Art Book,22,25,19,16,0.87,0.98,0.75,0.63,High-quality illustrations
+Children Picture Book,13,13,10,10,0.51,0.51,0.39,0.39,Early readers
+Young Adult,16,19,12,10,0.63,0.75,0.47,0.39,Teen fiction
+Memoir/Biography,19,22,16,13,0.75,0.87,0.63,0.51,Non-fiction standard
+Poetry,16,19,13,10,0.63,0.75,0.51,0.39,Lyric poetry collections
+Technical Manual,22,25,19,13,0.87,0.98,0.75,0.51,Professional reference
+Pamphlet,13,13,10,10,0.51,0.51,0.39,0.39,Short-form publications

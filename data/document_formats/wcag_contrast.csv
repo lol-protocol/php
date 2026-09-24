@@ -1,0 +1,30 @@
+element_type,wcag_level_a,wcag_level_aa,wcag_level_aaa,font_size_pt,color_example_light,color_example_dark,perception_difficulty,notes
+Normal Text,4.5:1,4.5:1,7:1,12,#FFFFFF,#000000,Not difficult,Standard body text requirement
+Large Text,3:1,3:1,4.5:1,18,#FFFFFF,#333333,Not difficult,18pt+ considered large
+Heading,Not specified,4.5:1,7:1,24,#FFFFFF,#000000,Not difficult,Large heading text
+Link Color,4.5:1,4.5:1,7:1,12,#0000EE,#FFFFFF,Moderate,Blue link standard color
+Button,3:1,4.5:1,7:1,14,#FFFFFF,#0066CC,Moderate,Interactive button element
+Form Input,3:1,4.5:1,7:1,12,#FFFFFF,#333333,Difficult,Input field border text
+Label,3:1,4.5:1,7:1,11,#FFFFFF,#444444,Not difficult,Form label text
+Disabled State,Not specified,3:1,4.5:1,12,#CCCCCC,#FFFFFF,Difficult,Intentionally low contrast
+Focus Indicator,3:1,3:1,3:1,12,#FFFF00,#000000,Easy,Very visible outline
+Icon Alone,3:1,4.5:1,7:1,16,#0000FF,#FFFFFF,Very difficult,Icon without text label
+Icon + Text,Not specified,4.5:1,7:1,12,#0000FF,#FFFFFF,Not difficult,Text provides redundancy
+Image Text,3:1,4.5:1,7:1,12,#FFFFFF,#000000,Difficult,Text overlaid on image
+Graph Line,3:1,4.5:1,7:1,N/A,#FF0000,#00FF00,Very difficult,Data visualization line
+Error Message,3:1,4.5:1,7:1,12,#FFFFFF,#CC0000,Moderate,Alert important information
+Success Message,3:1,4.5:1,7:1,12,#FFFFFF,#00AA00,Moderate,Confirmation positive feedback
+Warning Message,3:1,4.5:1,7:1,12,#000000,#FFFF00,Moderate,Caution yellow standard
+Info Message,3:1,4.5:1,7:1,12,#FFFFFF,#0088FF,Moderate,Information blue standard
+Tooltip Text,3:1,4.5:1,7:1,10,#FFFFFF,#333333,Difficult,Small help text very small
+Menu Item,3:1,4.5:1,7:1,13,#FFFFFF,#333333,Not difficult,Navigation menu standard
+Breadcrumb,3:1,4.5:1,7:1,11,#0066CC,#FFFFFF,Moderate,Navigation path link
+Pagination Link,4.5:1,4.5:1,7:1,12,#0000EE,#FFFFFF,Not difficult,Page number navigation
+Tab Active,3:1,4.5:1,7:1,12,#FFFFFF,#0066CC,Moderate,Selected tab indicator
+Tab Inactive,3:1,4.5:1,7:1,12,#666666,#FFFFFF,Difficult,Unselected tab deemphasized
+Code Block,3:1,4.5:1,7:1,11,#CCCCCC,#1E1E1E,Not difficult,Monospace programming text
+Comment Text,3:1,4.5:1,7:1,10,#008000,#FFFFFF,Moderate,Code comments green standard
+Keyword Highlight,3:1,4.5:1,7:1,11,#0000FF,#FFFFFF,Moderate,Syntax highlighting blue
+String Highlight,3:1,4.5:1,7:1,11,#FF0000,#FFFFFF,Moderate,Syntax highlighting red string
+Citation,3:1,4.5:1,7:1,11,#800080,#FFFFFF,Difficult,Quote or source reference
+Footnote,3:1,4.5:1,7:1,10,#666666,#FFFFFF,Very difficult,Small reference text

@@ -1,0 +1,30 @@
+region,primary_format,secondary_formats,tertiary_formats,legal_standard,government_official,business_standard,postal_standard,notes
+North America,Letter,Legal Executive,Half Letter Tabloid,USA ANSI,Federal US,Business Letter,#10 Envelope,Dominates USA Canada Mexico
+Europe,A4,A3 A5 A6,C4 Envelope DL,ISO 216,European Standard,Business A4,C4 C5 Envelope,Universal European standard
+United Kingdom,A4,A3 A5,C4 Envelope,ISO 216,Government Official,Business A4,C4 C5 Envelope,Former imperial now ISO
+Germany,A4,A3 A5 DIN,C4 Envelope DIN,DIN 476 ISO,Government Formal,Business A4,C4 DIN Envelope,DIN standard very rigid
+France,A4,A3 A5,C4 Envelope,ISO 216 French,Government Formal,Business A4,C4 Envelope,France metric origin
+Japan,JIS B4,JIS B5 JIS A3,Hagaki Postcard,JIS X 0216,Government Official,Business B4 A4,Japanese Standard,Unique JIS series traditional
+China,16K,32K 8K A4,B5 A3,GB/T 1999,Government Official,Business A4 16K,Chinese Standard,Traditional 16K common
+Australia,A4,A3 A5,C4 Envelope,ISO 216,Government Official,Business A4,C4 Envelope,Adopted ISO standard
+Brazil,A4,Carta Oficio A3,C4 Envelope,ISO 216 Brazilian,Government Official,Business A4,C4 Envelope,Mix of ISO and local
+Russia,A4,A3 A5 GOST,C4 Envelope,GOST 5773,Government Official,Business A4,C4 Envelope,GOST standard former Soviet
+South Korea,A4,A3 A5 KS,C4 Envelope,KS X 6001 ISO,Government Official,Business A4,C4 Envelope,ISO with Korean variants
+India,A4,A3 A5 A6,C4 Envelope,ISO 216 Indian,Government Official,Business A4,C4 Envelope,ISO 216 adopted official
+Middle East,A4,A3 A5,C4 Envelope,ISO 216 Regional,Government Bilingual Arabic,Business A4,C4 Envelope,ISO with Arabic adaptations
+South Africa,A4,A3 A5,C4 Envelope,ISO 216,Government Official,Business A4,C4 Envelope,Former British now ISO
+Canada,Letter,Legal Executive,A4 Half Letter,USA ANSI (North America),Government Official,Business Letter A4,#10 Envelope,Similar to USA ANSI
+Mexico,Carta,Oficio Media Carta,A4,Carta Standard Mexican,Government Official,Business Carta,DL Envelope,Local names Carta Letter equivalent
+Indonesia,A4,A3 A5,C4 Envelope,ISO 216 Indonesian,Government Official,Business A4,C4 Envelope,ISO standard adopted
+Thailand,A4,A3 A5 Thai,C4 Envelope,ISO 216 Thai,Government Official,Business A4,C4 Envelope,ISO with Thai variants
+Vietnam,A4,A3 A5,C4 Envelope,ISO 216 Vietnamese,Government Official,Business A4,C4 Envelope,ISO 216 standard
+Philippines,Legal,Letter Half Letter,Tabloid A4,USA ANSI Philippine,Government Official,Business Legal,#10 Envelope,American influence inherited
+Singapore,A4,A3 A5,C4 Envelope,ISO 216,Government Official,Business A4,C4 Envelope,British inheritance ISO adopted
+Malaysia,A4,A3 A5,C4 Envelope,ISO 216 Malaysian,Government Official,Business A4,C4 Envelope,ISO standard adopted
+Pakistan,A4,A3 A5 Legal,C4 Envelope,ISO 216 Pakistani,Government Official,Business A4,C4 Envelope,Mix ISO and British
+Nigeria,A4,A3 A5,C4 Envelope,ISO 216,Government Official,Business A4,C4 Envelope,British inheritance ISO
+Egypt,A4,A3 A5 Legal,C4 Envelope,ISO 216 Arabic,Government Bilingual Arabic,Business A4,C4 Envelope,Arabic bilingual official
+Israel,A4,A3 A5,C4 Envelope,ISO 216 Hebrew,Government Bilingual Hebrew,Business A4,C4 Envelope,ISO with Hebrew variants
+Turkey,A4,A3 A5,C4 Envelope,ISO 216 Turkish,Government Official,Business A4,C4 Envelope,ISO 216 standard
+Nordic Countries,A4,A3 A5,C4 Envelope,ISO 216 Nordic,Government Official,Business A4,C4 Envelope,Scandinavian ISO adherence
+Balkans,A4,A3 A5 Serbian,C4 Envelope,ISO 216 Regional,Government Official,Business A4,C4 Envelope,Post-Soviet ISO adoption

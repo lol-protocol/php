@@ -1,0 +1,21 @@
+source_format,source_mm_w,source_mm_h,fold_type,result_format,result_mm_w,result_mm_h,pages_increase,practical_use,notes
+A4,210,297,Half Vertical,A5,148,210,2,Standard brochure,Fold left to right
+A4,210,297,Half Horizontal,Half A4,210,148.5,2,Greeting card,Fold top to bottom
+A4,210,297,Thirds,Trifold,70,297,3,Brochure standard,Two folds create three panels
+A4,210,297,Quarters,A6,105,148,4,Compact,Two vertical two horizontal folds
+Letter,215.9,279.4,Half Vertical,Half Letter,139.7,215.9,2,Standard US brochure,Fold left to right
+Letter,215.9,279.4,Half Horizontal,Half Letter Horizontal,215.9,139.7,2,US greeting card,Fold top to bottom
+Letter,215.9,279.4,Thirds,Trifold Letter,71.97,279.4,3,US brochure standard,Two folds create three panels
+Legal,215.9,355.6,Half Vertical,Half Legal,139.7,355.6,2,Legal document,Fold left to right
+A3,297,420,Half Vertical,A4,210,297,2,Poster to document,Fold left to right
+A3,297,420,Half Horizontal,A4,297,210,2,Landscape to portrait,Fold top to bottom
+A3,297,420,Quarters,A5,148,210,4,Compact document,Multiple folds
+A5,148,210,Half Vertical,A6,105,148,2,Small card,Fold left to right
+A5,148,210,Half Horizontal,A6,148,105,2,Compact card,Fold top to bottom
+Tabloid,279.4,431.8,Half Vertical,Letter,215.9,279.4,2,Newspaper to standard,Fold left to right
+Tabloid,279.4,431.8,Half Horizontal,Half Tabloid,279.4,215.9,2,Display to standard,Fold top to bottom
+A2,420,594,Half Vertical,A3,297,420,2,Poster to standard,Fold left to right
+A2,420,594,Half Horizontal,A3,420,297,2,Landscape to portrait,Fold top to bottom
+B5,176,250,Half Vertical,B6,125,176,2,Book to small,Fold left to right
+Ledger,431.8,279.4,Half Vertical,Letter,215.9,279.4,2,Large to standard,Fold left to right
+DL Envelope,110,220,Half,Half DL,55,220,2,Compact envelope,Fold left to right

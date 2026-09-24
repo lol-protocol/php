@@ -1,0 +1,21 @@
+device_name,manufacturer,release_year,screen_size_inches,width_inches,height_inches,aspect_ratio,resolution_width,resolution_height,ppi,screen_type,refresh_hz,notes
+Kindle Paperwhite 11th Gen,Amazon,2021,6.8,5.73,8.15,4:3,1680,2260,300,E Ink,60,Premium e-reader
+Kindle Paperwhite Signature,Amazon,2023,6.8,5.73,8.15,4:3,1680,2260,300,E Ink Gallery,60,With warm light
+Kindle Basic,Amazon,2022,6,5.04,7.14,4:3,1448,1920,300,E Ink,15,Budget e-reader
+Kindle Scribe,Amazon,2023,10.2,7.62,10.20,4:3,1860,2480,226,E Ink Gallery,60,Note-taking e-reader
+Kobo Sage,Rakuten Kobo,2023,7.0,5.87,8.35,4:3,1680,2240,300,E Ink Gallery,60,Premium Kobo
+Kobo Elipsa 2e,Rakuten Kobo,2023,10.3,7.68,10.31,4:3,1872,2480,227,E Ink Gallery,60,Note-taking Kobo
+Kobo Clara 2e,Rakuten Kobo,2022,6.0,5.04,7.14,4:3,1448,1920,300,E Ink Gallery,60,Budget Kobo
+Kobo Libra 2,Rakuten Kobo,2021,7.0,5.87,8.35,4:3,1680,2240,300,E Ink,60,Mid-range Kobo
+Tolino Vision 6,Tolino,2022,7.0,5.87,8.35,4:3,1680,2240,300,E Ink Gallery,60,Premium Tolino
+Tolino Page 2,Tolino,2022,6.0,5.04,7.14,4:3,1448,1920,300,E Ink,60,Budget Tolino
+boox Note Air 3,Onyx Boox,2023,7.8,6.50,9.25,4:3,1872,2640,300,E Ink Gallery,60,Note-taking Android
+boox Page,Onyx Boox,2023,10.3,7.68,10.31,4:3,1872,2480,227,E Ink Gallery,60,Large note-taking
+Remarkable 2,Remarkable,2020,10.3,7.40,10.13,16:10,1872,2560,226,E Ink Gallery,60,Premium note-taking
+Elipsa 2,Remarkable,2023,10.3,7.68,10.31,4:3,1872,2480,227,E Ink Gallery,60,Remarkable with notes
+Pocketbook InkPad X,Pocketbook,2021,7.8,6.50,9.25,4:3,1872,2640,300,E Ink Gallery,60,Premium Pocketbook
+Pocketbook Touch Lux 5,Pocketbook,2021,6.0,5.04,7.14,4:3,1448,1920,300,E Ink Gallery,60,Budget Pocketbook
+Ink Pad Pro,Bigme,2023,7.3,6.10,8.70,4:3,1624,2448,300,E Ink Gallery,60,Budget alternative
+Color e-reader Kaleido,Bigme,2023,7.3,6.10,8.70,4:3,1600,2560,300,Kaleido Gallery,60,Color e-reader
+E Ink technology reference,Reference,2024,N/A,N/A,N/A,N/A,N/A,N/A,300,E Ink Gallery,60,Standard e-reader specification
+Used for PDF reading,Reference,2024,10.3,7.68,10.31,4:3,1872,2480,227,E Ink Gallery,60,Academic and professional reading

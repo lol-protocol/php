@@ -1,0 +1,33 @@
+country,primary_format,secondary_formats,measurement_system,recommended_for_export,challenges,notes
+USA,Letter,Legal/Tabloid,Imperial,Letter,International compatibility,Uses imperial measurements
+Mexico,Carta/Oficio,A4/A3,Metric,A4,Mixed standards,Uses both imperial and metric
+Canada,Letter,Legal,Imperial,Letter,Uses USA standards,Follows USA conventions
+Brazil,Carta,Oficio/A4,Metric,A4,Mix of standards,Adopting ISO increasingly
+UK,A4,A3/A5,Metric,A4,Foolscap legacy,Primarily ISO 216 now
+Australia,Letter,A4/A3,Metric,A4,Mixed standards,Uses both imperial and metric
+Germany,A4,A3/A5,Metric,A4,Strict ISO compliance,Pure ISO 216 adoption
+France,A4,A3/A5,Metric,A4,Strict ISO compliance,Pure ISO 216 adoption
+Spain,A4,A3/A5,Metric,A4,Strict ISO compliance,Pure ISO 216 adoption
+Italy,A4,A3/A5,Metric,A4,Strict ISO compliance,Pure ISO 216 adoption
+Japan,JIS B4,JIS B5/A4,Metric,A4,JIS standards different,Uses JIS B series primarily
+China,16K,8K/A4,Metric,A4,Traditional formats,Mixing traditional and ISO
+India,Letter,A4/Foolscap,Metric,A4,Mixed standards,Uses multiple formats
+Russia,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Turkey,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+UAE,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Saudi Arabia,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Israel,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+South Korea,A4,B4/B5,Metric,A4,JIS influenced,Uses both ISO and JIS
+Thailand,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Vietnam,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Philippines,A4,Letter,Metric,A4,Mixed standards,Uses USA and ISO standards
+Singapore,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Malaysia,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Indonesia,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Pakistan,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Bangladesh,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Egypt,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+South Africa,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Nigeria,A4,Letter,Metric,A4,Mixed standards,Uses USA and ISO standards
+Kenya,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
+Morocco,A4,A3/A5,Metric,A4,ISO compliance,Follows ISO 216 standard
