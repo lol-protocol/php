@@ -211,4 +211,69 @@ class PersonNameTest extends TestCase
 
         $this->assertEquals('John Michael Smith', $name->getFullName());
     }
+
+    public function testTitleStrippedFromCommaFormat(): void
+    {
+        $name = new PersonName('SMITH, Mrs. John');
+
+        $this->assertEquals('John', $name->getFirstName());
+        $this->assertEquals(['Smith'], $name->getLastNames());
+        $this->assertEquals('Mrs.', $name->getTitle());
+    }
+
+    public function testTitleStrippedFromNoCommaFormat(): void
+    {
+        $name = new PersonName('Mrs. John Smith');
+
+        $this->assertEquals('John', $name->getFirstName());
+        $this->assertEquals(['Smith'], $name->getLastNames());
+        $this->assertEquals('Mrs.', $name->getTitle());
+    }
+
+    public function testTitleIsCaseInsensitiveAndPeriodOptional(): void
+    {
+        $name = new PersonName('DR MARIA FERNANDEZ');
+
+        $this->assertEquals('Maria', $name->getFirstName());
+        $this->assertEquals('Dr', $name->getTitle());
+    }
+
+    public function testWidowPhraseIsCapturedAsTitle(): void
+    {
+        $name = new PersonName('GARCÍA, Vda. de Juan Pérez', 'es');
+
+        $this->assertEquals('Vda. de', $name->getTitle());
+        $this->assertEquals(['Juan', 'Pérez'], $name->getFirstNames());
+    }
+
+    public function testWidowPhraseVariantsAreRecognized(): void
+    {
+        $this->assertEquals('Viuda de', (new PersonName('Viuda de Pedro Ruiz', 'es'))->getTitle());
+        $this->assertEquals('Wid. of', (new PersonName('Wid. of Robert Brown'))->getTitle());
+        $this->assertEquals('Veuve de', (new PersonName('Veuve de Jean Dupont', 'fr'))->getTitle());
+    }
+
+    public function testNoTitleMeansNullTitle(): void
+    {
+        $name = new PersonName('SMITH, John');
+
+        $this->assertNull($name->getTitle());
+    }
+
+    public function testMiddleInitialIsNotMistakenForFrenchTitle(): void
+    {
+        // Bare "M" (Monsieur) is deliberately not treated as a title: it is indistinguishable from a
+        // middle initial such as this one.
+        $name = new PersonName('John M Smith');
+
+        $this->assertEquals(['John', 'M'], $name->getFirstNames());
+        $this->assertNull($name->getTitle());
+    }
+
+    public function testTitleAppearsInToArray(): void
+    {
+        $name = new PersonName('SMITH, Mrs. John');
+
+        $this->assertSame('Mrs.', $name->toArray()['title']);
+    }
 }

@@ -104,6 +104,26 @@ class MultiLanguagePhoneDirectoryParser
                 continue;
             }
 
+            // Most historical directories print one full record per line rather than one field per
+            // line; try that shape before falling back to the original multi-line block assumption.
+            $single = SingleLineEntrySplitter::split(
+                $trimmed,
+                fn($street) => $this->extractStreet($street, $language) !== null,
+                PersonName::LANGUAGE_SURNAME_COUNT[$language] ?? 1
+            );
+            if ($single !== null) {
+                if (!empty($buffer)) {
+                    $this->processBuffer($buffer, $bufferStart, $language);
+                    $buffer = [];
+                }
+                $this->finalizeEntry(
+                    ['name' => $single['name'], 'phone' => $single['phone'], 'street' => $single['street'], 'type' => $this->extractBusinessType($single['name'], $language)],
+                    $lineNumber,
+                    $language
+                );
+                continue;
+            }
+
             if ($buffer === []) {
                 $bufferStart = $lineNumber;
             }
@@ -137,12 +157,11 @@ class MultiLanguagePhoneDirectoryParser
             'type' => null,
         ];
 
+        $nameSet = false;
+
         foreach ($lines as $line) {
-            if (empty($data['phone'])) {
-                preg_match('/\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b/', $line, $matches);
-                if (!empty($matches)) {
-                    $data['phone'] = $matches[0];
-                }
+            if (empty($data['phone']) && preg_match(PhonePattern::REGEX, $line, $matches)) {
+                $data['phone'] = $matches[0];
             }
 
             if (empty($data['type'])) {
@@ -159,11 +178,19 @@ class MultiLanguagePhoneDirectoryParser
                 }
             }
 
-            if (empty($data['name'])) {
+            // A line is the name only once it's been ruled out as a phone or a street; otherwise a
+            // street-first or phone-first layout would have its address or number read as the name.
+            if (!$nameSet && !preg_match(PhonePattern::REGEX, $line) && !$this->extractStreet($line, $language)) {
                 $data['name'] = $line;
+                $nameSet = true;
             }
         }
 
+        $this->finalizeEntry($data, $startLine, $language);
+    }
+
+    private function finalizeEntry(array $data, int $startLine, string $language): void
+    {
         if (!$this->validateEntry($data)) {
             $this->parseErrors[] = [
                 'line' => $startLine,
@@ -220,6 +247,11 @@ class MultiLanguagePhoneDirectoryParser
     {
         if (preg_match($this->streetPattern($language), $line)) {
             return $line;
+        }
+
+        // A line that is only a phone number is not also a street, even though it starts with digits.
+        if (PhonePattern::isOnlyAPhoneNumber($line)) {
+            return null;
         }
 
         if (preg_match('/\d+\s+[\w\s]+/', $line, $matches)) {

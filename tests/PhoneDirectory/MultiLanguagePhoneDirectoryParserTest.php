@@ -87,4 +87,55 @@ class MultiLanguagePhoneDirectoryParserTest extends TestCase
         $this->assertEquals('mx_1960_mexico', $business->getSourceDirectoryId());
         $this->assertSame(4, $business->getSourceLine());
     }
+
+    public function testStreetFirstLayoutIsNotReadAsTheName(): void
+    {
+        $entries = $this->parser->parseContent("Calle Mayor 12\nJuan García López\n555-123-4567", 'es');
+
+        $this->assertCount(1, $entries);
+        $entity = $entries[0]['entity'];
+        $this->assertEquals('García López, Juan', $entity->getFormattedName());
+        $this->assertEquals('Calle Mayor 12', $entity->getStreet());
+    }
+
+    public function testPhoneOnlyLineIsNotAlsoReadAsStreet(): void
+    {
+        $entries = $this->parser->parseContent("JONES, Ann\n555 234 5678\n45 Pine Street", 'en');
+
+        $this->assertCount(1, $entries);
+        $entity = $entries[0]['entity'];
+        $this->assertEquals('45 Pine Street', $entity->getStreet());
+        $this->assertEquals('555 234 5678', $entity->getPhoneNumber());
+    }
+
+    public function testSingleLineEntryCommaDelimited(): void
+    {
+        $entries = $this->parser->parseContent('García, Juan, Calle Mayor 12, 555-123-4567', 'es');
+
+        $this->assertCount(1, $entries);
+        $entity = $entries[0]['entity'];
+        $this->assertEquals('García, Juan', $entity->getFormattedName());
+        $this->assertEquals('Calle Mayor 12', $entity->getStreet());
+        $this->assertEquals('555-123-4567', $entity->getPhoneNumber());
+    }
+
+    public function testSingleLineEntryWithTwoSpanishSurnamesAndNoDelimiter(): void
+    {
+        $entries = $this->parser->parseContent('GARCIA LOPEZ Juan 12 Calle Mayor 555-123-4567', 'es');
+
+        $this->assertCount(1, $entries);
+        $entity = $entries[0]['entity'];
+        $this->assertEquals(['Garcia', 'Lopez'], $entity->getLastNames());
+        $this->assertEquals('Juan', $entity->getFirstName());
+        $this->assertEquals('12 Calle Mayor', $entity->getStreet());
+    }
+
+    public function testGermanCompoundStreetInSingleLineEntry(): void
+    {
+        $entries = $this->parser->parseContent('Hans Müller, Hauptstraße 5, 555-111-2222', 'de');
+
+        $this->assertCount(1, $entries);
+        $entity = $entries[0]['entity'];
+        $this->assertEquals('Hauptstraße 5', $entity->getStreet());
+    }
 }

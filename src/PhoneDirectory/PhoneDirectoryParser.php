@@ -6,7 +6,7 @@ class PhoneDirectoryParser
 {
     private const COMMON_PATTERNS = [
         'line_separator' => '/^(?:[-=_*]\s*){2,}$/',
-        'phone_pattern' => '/\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b/',
+        'phone_pattern' => PhonePattern::REGEX,
         'street_marker' => '/\b(?:st|street|ave|avenue|rd|road|dr|drive|ln|lane|blvd|boulevard|cir|circle)\b/iu',
     ];
 
@@ -85,6 +85,18 @@ class PhoneDirectoryParser
                 continue;
             }
 
+            // Most historical directories print one full record per line rather than one field per
+            // line; try that shape before falling back to the original multi-line block assumption.
+            $single = SingleLineEntrySplitter::split($trimmed, fn($street) => $this->isStreet($street), 1);
+            if ($single !== null) {
+                if (!empty($buffer)) {
+                    $this->processBuffer($buffer, $bufferStart);
+                    $buffer = [];
+                }
+                $this->finalizeEntry($single, $lineNumber);
+                continue;
+            }
+
             if ($buffer === []) {
                 $bufferStart = $lineNumber;
             }
@@ -129,6 +141,11 @@ class PhoneDirectoryParser
             }
         }
 
+        $this->finalizeEntry($data, $startLine);
+    }
+
+    private function finalizeEntry(array $data, int $startLine): void
+    {
         if (!$this->validateEntry($data)) {
             $this->parseErrors[] = [
                 'line' => $startLine,
@@ -143,7 +160,7 @@ class PhoneDirectoryParser
                 fullName: $data['name'],
                 countryCode: $this->countryCode,
                 street: $data['street'],
-                phoneNumber: $data['phone'],
+                phoneNumber: $data['phone'] ?? null,
                 sourceDirectoryId: $this->sourceDirectoryId,
                 sourceLine: $startLine
             );
@@ -157,10 +174,20 @@ class PhoneDirectoryParser
         }
     }
 
+    private function isStreet(string $line): bool
+    {
+        return preg_match(self::COMMON_PATTERNS['street_marker'], $line) === 1;
+    }
+
     private function extractStreet(string $line): ?string
     {
-        if (preg_match(self::COMMON_PATTERNS['street_marker'], $line)) {
+        if ($this->isStreet($line)) {
             return $line;
+        }
+
+        // A line that is only a phone number is not also a street, even though it starts with digits.
+        if (PhonePattern::isOnlyAPhoneNumber($line)) {
+            return null;
         }
 
         if (preg_match('/\d+\s+[\w\s]+/', $line, $matches)) {

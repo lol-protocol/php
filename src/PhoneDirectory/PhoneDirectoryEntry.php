@@ -72,6 +72,11 @@ class PhoneDirectoryEntry
         return $this->personName->getFormattedName();
     }
 
+    public function getTitle(): ?string
+    {
+        return $this->personName->getTitle();
+    }
+
     public function getFirstName(): string
     {
         return $this->personName->getFirstName();

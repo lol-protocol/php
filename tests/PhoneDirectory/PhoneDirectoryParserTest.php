@@ -349,4 +349,83 @@ class PhoneDirectoryParserTest extends TestCase
         $this->assertEquals('GARCÍA LÓPEZ, JOSÉ', $entries[0]->getRawName());
         $this->assertEquals('García López, José', $entries[0]->getFormattedName());
     }
+
+    public function testSingleLineEntriesWithDotLeaders(): void
+    {
+        $content = "SMITH John 12 Oak St ........ 555-111-2222\nJONES Mary 40 Elm Rd ........ 555-333-4444";
+
+        $entries = $this->parser->parseContent($content);
+
+        $this->assertCount(2, $entries);
+        $this->assertCount(0, $this->parser->getErrors());
+        $this->assertEquals('12 Oak St', $entries[0]->getStreet());
+        $this->assertEquals('555-111-2222', $entries[0]->getPhoneNumber());
+        $this->assertEquals('40 Elm Rd', $entries[1]->getStreet());
+    }
+
+    public function testSingleLineEntryWithSingleSpaces(): void
+    {
+        $entries = $this->parser->parseContent('SMITH John 12 Oak Street 555-123-4567');
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals('12 Oak Street', $entries[0]->getStreet());
+        $this->assertEquals('555-123-4567', $entries[0]->getPhoneNumber());
+    }
+
+    public function testSingleLineEntryWithoutPhone(): void
+    {
+        $entries = $this->parser->parseContent('SMITH John 12 Oak Street');
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals('12 Oak Street', $entries[0]->getStreet());
+        $this->assertNull($entries[0]->getPhoneNumber());
+    }
+
+    public function testSingleLineEntryCommaDelimitedWithHistoricalExchangePhone(): void
+    {
+        $entries = $this->parser->parseContent('BROWN, Alfred, 12 Fleet Street, BUtterfield 8-4521');
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals('Brown, Alfred', $entries[0]->getFormattedName());
+        $this->assertEquals('12 Fleet Street', $entries[0]->getStreet());
+        $this->assertEquals('BUtterfield 8-4521', $entries[0]->getPhoneNumber());
+    }
+
+    public function testHistoricalExchangePhoneAcrossMultipleLines(): void
+    {
+        $entries = $this->parser->parseContent("BROWN, Alfred\n12 Fleet Street\nBUtterfield 8-4521");
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals('BUtterfield 8-4521', $entries[0]->getPhoneNumber());
+    }
+
+    public function testPhoneLineWithSpacesIsNotAlsoReadAsStreet(): void
+    {
+        $entries = $this->parser->parseContent("JONES, Ann\n555 234 5678\n45 Pine Street");
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals('45 Pine Street', $entries[0]->getStreet());
+        $this->assertEquals('555 234 5678', $entries[0]->getPhoneNumber());
+    }
+
+    public function testMultiLineBlocksStillWorkAlongsideSingleLineEntries(): void
+    {
+        $content = "ANDERSON, John\n123 Main Street\n555-123-4567\n\nBAKER Sarah 456 Oak Avenue 555-234-5678";
+
+        $entries = $this->parser->parseContent($content);
+
+        $this->assertCount(2, $entries);
+        $this->assertEquals('Anderson, John', $entries[0]->getFormattedName());
+        $this->assertEquals('Baker, Sarah', $entries[1]->getFormattedName());
+        $this->assertEquals('456 Oak Avenue', $entries[1]->getStreet());
+    }
+
+    public function testWidowTitleIsNotReadAsGivenName(): void
+    {
+        $entries = $this->parser->parseContent("SMITH, Mrs. John, 12 Oak Street, 555-111-2222");
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals('Smith, John', $entries[0]->getFormattedName());
+        $this->assertEquals('Mrs.', $entries[0]->getTitle());
+    }
 }

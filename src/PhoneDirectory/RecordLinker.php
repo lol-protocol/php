@@ -42,10 +42,17 @@ final class RecordLinker
     {
         $blocks = [];
         foreach ($entries as $entry) {
-            $key = SurnameKeys::soundex($entry->getPersonName()->getSurnameRoot());
-            if ($key !== null && $entry->getSourceDirectoryId() !== null) {
-                $blocks[$entry->getCountryCode() . ':' . $key][] = $entry;
+            $surnameKey = SurnameKeys::soundex($entry->getPersonName()->getSurnameRoot());
+            $givenName = $this->normalize($entry->getFirstName());
+            if ($surnameKey === null || $givenName === '' || $entry->getSourceDirectoryId() === null) {
+                continue;
             }
+
+            // compare() only ever links entries whose given names share a first letter (either they
+            // match outright, or one is an initial matching the other's first letter), so blocking on
+            // that letter too splits a common-surname block into much smaller pieces without discarding
+            // any pair that could have linked.
+            $blocks[$entry->getCountryCode() . ':' . $surnameKey . ':' . $givenName[0]][] = $entry;
         }
 
         $links = [];

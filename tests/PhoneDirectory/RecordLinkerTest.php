@@ -122,4 +122,27 @@ class RecordLinkerTest extends TestCase
         $this->assertSame(0.85, $links[0]->score);
         $this->assertEquals('es_1930_madrid', $links[0]->earlier->getSourceDirectoryId());
     }
+
+    public function testBlockingByInitialDoesNotDropValidLinksWithinACommonSurname(): void
+    {
+        // Same surname sound, several different given-name initials: blocking must split these into
+        // per-initial groups without losing the pairs that share an initial with each other.
+        $entries = [
+            $this->entry('SMITH, John', '12 Oak Street', 'us_1878_ny'),
+            $this->entry('SMITH, J.', '12 Oak Street', 'us_1915_national'),
+            $this->entry('SMITH, Mary', '40 Elm Road', 'us_1878_ny'),
+            $this->entry('SMITH, M.', '40 Elm Road', 'us_1915_national'),
+            $this->entry('SMITH, Robert', '8 Pine Road', 'us_1878_ny'),
+        ];
+
+        $links = (new RecordLinker())->link($entries);
+        $pairs = array_map(
+            fn($l) => $l->earlier->getFirstName() . '-' . $l->later->getFirstName(),
+            $links
+        );
+
+        $this->assertCount(2, $links);
+        $this->assertContains('John-J.', $pairs);
+        $this->assertContains('Mary-M.', $pairs);
+    }
 }
