@@ -2,61 +2,62 @@ const container = document.getElementById('bouncingContainer');
 const ball1 = document.getElementById('ball1');
 const ball2 = document.getElementById('ball2');
 
-class Ball {
-    constructor(element, containerWidth, containerHeight, radius) {
-        this.element = element;
-        this.containerWidth = containerWidth;
-        this.containerHeight = containerHeight;
-        this.radius = radius;
-        this.x = Math.random() * (containerWidth - radius * 2) + radius;
-        this.y = Math.random() * (containerHeight - radius * 2) + radius;
-        this.vx = (Math.random() - 0.5) * 4;
-        this.vy = (Math.random() - 0.5) * 4;
-        this.update();
+class Ball extends PhysicsObject {
+    constructor(element, bounds, radius) {
+        super(element, {
+            x: Math.random() * (bounds.width - radius * 2) + radius,
+            y: Math.random() * (bounds.height - radius * 2) + radius,
+            vx: (Math.random() - 0.5) * 4,
+            vy: (Math.random() - 0.5) * 4,
+            radius: radius,
+            bounceCoeff: 1,
+            bounds: bounds
+        });
+        this.render();
+    }
+
+    checkBounds() {
+        if (this.x < this.radius || this.x + this.radius > this.bounds.width) {
+            this.vx = -this.vx;
+            this.x = Math.max(this.radius, Math.min(this.bounds.width - this.radius, this.x));
+        }
+        if (this.y < this.radius || this.y + this.radius > this.bounds.height) {
+            this.vy = -this.vy;
+            this.y = Math.max(this.radius, Math.min(this.bounds.height - this.radius, this.y));
+        }
     }
 
     update() {
         this.x += this.vx;
         this.y += this.vy;
-
-        if (this.x - this.radius <= 0 || this.x + this.radius >= this.containerWidth) {
-            this.vx = -this.vx;
-            this.x = Math.max(this.radius, Math.min(this.containerWidth - this.radius, this.x));
-        }
-
-        if (this.y - this.radius <= 0 || this.y + this.radius >= this.containerHeight) {
-            this.vy = -this.vy;
-            this.y = Math.max(this.radius, Math.min(this.containerHeight - this.radius, this.y));
-        }
-
-        this.element.style.left = (this.x - this.radius) + 'px';
-        this.element.style.top = (this.y - this.radius) + 'px';
+        this.checkBounds();
+        this.render();
     }
 }
 
-const containerWidth = container.offsetWidth;
-const containerHeight = container.offsetHeight;
+const bounds = { width: container.offsetWidth, height: container.offsetHeight };
 const balls = [
-    new Ball(ball1, containerWidth, containerHeight, 20),
-    new Ball(ball2, containerWidth, containerHeight, 25)
+    new Ball(ball1, bounds, 20),
+    new Ball(ball2, bounds, 25)
 ];
 
+const manager = new AnimationManager(balls);
 const toggle = new AnimationToggle([], true);
 
-function animate() {
-    if (toggle.isAnimating) {
-        balls.forEach(ball => ball.update());
+// Bridge AnimationToggle to AnimationManager
+const originalToggle = toggle.toggle.bind(toggle);
+toggle.toggle = function() {
+    originalToggle();
+    if (this.isAnimating) {
+        manager.resume();
+    } else {
+        manager.pause();
     }
-    requestAnimationFrame(animate);
-}
+};
 
-animate();
+manager.start();
 
 window.addEventListener('resize', () => {
-    const newWidth = container.offsetWidth;
-    const newHeight = container.offsetHeight;
-    balls.forEach(ball => {
-        ball.containerWidth = newWidth;
-        ball.containerHeight = newHeight;
-    });
+    bounds.width = container.offsetWidth;
+    bounds.height = container.offsetHeight;
 });

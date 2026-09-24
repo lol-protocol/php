@@ -32,6 +32,31 @@ class AnimationToggle {
     }
 }
 
+// Particle emitter for spawning/destroying elements on interval
+class ParticleEmitterToggle extends AnimationToggle {
+    constructor(emitFn, emitInterval) {
+        super([], true);
+        this.emitFn = emitFn;
+        this.emitInterval = emitInterval;
+        this.emitterIntervalId = null;
+    }
+
+    toggle() {
+        super.toggle();
+        if (this.isAnimating) {
+            this.startEmitting();
+        } else {
+            clearInterval(this.emitterIntervalId);
+        }
+    }
+
+    startEmitting() {
+        this.emitterIntervalId = setInterval(() => {
+            if (this.isAnimating) this.emitFn();
+        }, this.emitInterval);
+    }
+}
+
 // Utilidades para manejo de colores
 const Colors = {
     RED: { main: '#ff6b6b', accent: '#ee5a6f' },
@@ -163,6 +188,138 @@ const Patterns = {
                 y: Math.sin(angle) * radius
             });
         }
+        return points;
+    }
+};
+
+// Base class for physics-based objects
+class PhysicsObject {
+    constructor(element, config = {}) {
+        this.element = element;
+        this.x = config.x || 0;
+        this.y = config.y || 0;
+        this.vx = config.vx || 0;
+        this.vy = config.vy || 0;
+        this.radius = config.radius || 10;
+        this.bounceCoeff = config.bounceCoeff || 0.8;
+        this.bounds = config.bounds || { width: window.innerWidth, height: window.innerHeight };
+    }
+
+    update() {
+        this.vy += Physics.gravity;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.checkBounds();
+        this.render();
+    }
+
+    checkBounds() {
+        if (this.y + this.radius > this.bounds.height) {
+            this.y = this.bounds.height - this.radius;
+            this.vy *= -this.bounceCoeff;
+        }
+        if (this.x < this.radius || this.x + this.radius > this.bounds.width) {
+            this.vx *= -1;
+            this.x = Math.max(this.radius, Math.min(this.bounds.width - this.radius, this.x));
+        }
+    }
+
+    render() {
+        this.element.style.left = (this.x - this.radius) + 'px';
+        this.element.style.top = (this.y - this.radius) + 'px';
+    }
+}
+
+// Animation manager for objects with animation loop
+class AnimationManager {
+    constructor(objects = []) {
+        this.objects = objects;
+        this.isRunning = true;
+        this.animationId = null;
+    }
+
+    start() {
+        const loop = () => {
+            if (this.isRunning) {
+                this.objects.forEach(obj => obj.update());
+            }
+            this.animationId = requestAnimationFrame(loop);
+        };
+        loop();
+    }
+
+    stop() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+        }
+    }
+
+    pause() {
+        this.isRunning = false;
+    }
+
+    resume() {
+        this.isRunning = true;
+    }
+}
+
+// SVG pattern generator
+const SVGPatterns = {
+    createRadialWeb: (container, centerX, centerY, layers, pointsPerLayer) => {
+        const svg = container;
+        const points = [];
+
+        for (let layer = 1; layer <= layers; layer++) {
+            const radius = (layer / layers) * 100;
+            const layerPoints = [];
+
+            for (let i = 0; i < pointsPerLayer; i++) {
+                const angle = (i / pointsPerLayer) * Math.PI * 2;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                layerPoints.push({ x, y, angle, radius });
+
+                if (i > 0) {
+                    const prev = layerPoints[i - 1];
+                    const line = createSVGElement('line', {
+                        x1: prev.x, y1: prev.y, x2: x, y2: y,
+                        class: 'web-line'
+                    });
+                    svg.appendChild(line);
+                }
+
+                if (layer > 1) {
+                    const prevRadius = ((layer - 1) / layers) * 100;
+                    const radialX = centerX + Math.cos(angle) * prevRadius;
+                    const radialY = centerY + Math.sin(angle) * prevRadius;
+                    const radial = createSVGElement('line', {
+                        x1: radialX, y1: radialY, x2: x, y2: y,
+                        class: 'web-line'
+                    });
+                    svg.appendChild(radial);
+                }
+
+                const node = createSVGElement('circle', {
+                    cx: x, cy: y, r: 4,
+                    class: 'web-node'
+                });
+                svg.appendChild(node);
+            }
+            points.push(...layerPoints);
+        }
+        return points;
+    },
+
+    createStarPattern: (container, count, radius, color = '#fff') => {
+        const points = Patterns.createRadial(count, radius);
+        points.forEach(p => {
+            const circle = createSVGElement('circle', {
+                cx: p.x, cy: p.y, r: 3,
+                fill: color,
+                class: 'star-point'
+            });
+            container.appendChild(circle);
+        });
         return points;
     }
 };

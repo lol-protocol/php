@@ -207,12 +207,148 @@ const toggle = new AnimationToggle('.element');
 
 ---
 
-## Archivos Relevantes
+---
 
-- `common.css` - Variables y clases base
-- `common.js` - Clases y helpers
-- `animation-templates.js` - Plantillas para futuras animaciones
+## Nuevos Patrones DRY (Fase 2)
+
+### 1. Clases Base para Física
+
+#### PhysicsObject
+```javascript
+class Ball extends PhysicsObject {
+    constructor(element, bounds, radius) {
+        super(element, {
+            x: Math.random() * (bounds.width - radius * 2) + radius,
+            y: Math.random() * (bounds.height - radius * 2) + radius,
+            vx: (Math.random() - 0.5) * 4,
+            vy: (Math.random() - 0.5) * 4,
+            radius: radius,
+            bounceCoeff: 1,
+            bounds: bounds
+        });
+    }
+}
+```
+
+**Ventajas:**
+- Elimina duplicación de código de física
+- update(), checkBounds(), render() automáticos
+- Herencia reutilizable
+
+#### AnimationManager
+```javascript
+const manager = new AnimationManager(objects);
+manager.start();  // Inicia el loop
+manager.pause();  // Pausa
+manager.resume(); // Continúa
+```
+
+### 2. Generador SVG Patterns
+
+#### SVGPatterns.createRadialWeb()
+```javascript
+// Antes: 40+ líneas de código
+for (let layer = 1; layer <= layers; layer++) {
+    const radius = (layer / layers) * 100;
+    for (let i = 0; i < pointsPerLayer; i++) {
+        const angle = (i / pointsPerLayer) * Math.PI * 2;
+        const x = center.x + Math.cos(angle) * radius;
+        // ... 20 más líneas
+    }
+}
+
+// Después: Una sola línea
+SVGPatterns.createRadialWeb(svg, centerX, centerY, layers, pointsPerLayer);
+```
+
+### 3. Clases Extendidas de AnimationToggle
+
+#### SequenceToggle
+Para animaciones que se repiten en secuencias:
+```javascript
+const toggle = new SequenceToggle(() => buildPyramid(), 4000);
+toggle.scheduleNext();
+```
+
+Automáticamente maneja pausar/reanudar la secuencia.
 
 ---
 
-**Resultado Final:** Código más mantenible, escalable y reducido en ~40-50%
+## Consolidación de Patrones Comunes
+
+### Antes: 3 implementaciones diferentes de toggle
+```javascript
+// animacion-c.js - Custom function
+let isAnimating = true;
+function toggleAnimation() { /* 10 líneas */ }
+
+// animacion-e.js - Custom class
+class PyramidToggle { /* 20 líneas */ }
+
+// animacion-a.js - AnimationToggle
+const toggle = new AnimationToggle('.element');
+```
+
+### Después: Una sola implementación
+- `AnimationToggle` - Para clases CSS
+- `SequenceToggle` - Para secuencias timed
+- `PhysicsObject + AnimationManager` - Para física
+
+**Reducción: ~70% en código de control**
+
+---
+
+## Refactorización de Animaciones Existentes
+
+### Animacion B (DVD bouncing)
+```javascript
+// Antes: Custom Ball class con lógica duplicada
+class Ball { /* 30 líneas */ }
+
+// Después: Ball extends PhysicsObject
+class Ball extends PhysicsObject {
+    constructor(element, bounds, radius) {
+        super(element, { /* configuración */ });
+    }
+}
+```
+
+### Animacion G (Particles)
+```javascript
+// Antes: Custom Particle class con Physics inline
+class Particle { /* 30 líneas */ }
+
+// Después: Particle extends PhysicsObject
+class Particle extends PhysicsObject {
+    constructor() {
+        super(el, { /* configuración */ });
+    }
+}
+```
+
+### Animacion AI (SVG Web)
+```javascript
+// Antes: 40+ líneas de generación de SVG
+for (let layer = 1; layer <= layers; layer++) {
+    // ... nested loops ...
+}
+
+// Después: Una línea
+SVGPatterns.createRadialWeb(svg, 200, 200, 5, 8);
+```
+
+---
+
+## Archivos Relevantes
+
+- `common.css` - Variables y clases base
+- `common.js` - Clases y helpers (ahora con PhysicsObject, AnimationManager, SVGPatterns, SequenceToggle)
+- `animation-templates.js` - Plantillas incluyendo física, SVG, secuencias
+- `DRY-GUIDE.md` - Esta guía
+
+---
+
+**Resultado Final:** 
+- Fase 1: ~40-50% reducción
+- Fase 2: +30-40% reducción adicional (total ~60-70%)
+- Código mantenible, escalable, reutilizable

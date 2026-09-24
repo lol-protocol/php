@@ -86,5 +86,76 @@ points.forEach((p, i) => {
     el.style.animationDelay = generateCascadeDelay(i, ${count});
     container.appendChild(el);
 });
-const toggle = new AnimationToggle('.${className}');`
+const toggle = new AnimationToggle('.${className}');`,
+
+    // Patrón JS para física con múltiples objetos
+    jsPhysicsObjects: (objectCount, objectRadius, containerId) => `
+class Ball extends PhysicsObject {
+    constructor(element, bounds, radius) {
+        super(element, {
+            x: Math.random() * (bounds.width - radius * 2) + radius,
+            y: Math.random() * (bounds.height - radius * 2) + radius,
+            vx: (Math.random() - 0.5) * 4,
+            vy: (Math.random() - 0.5) * 4,
+            radius: radius,
+            bounceCoeff: 1,
+            bounds: bounds
+        });
+        this.render();
+    }
+}
+
+const container = document.getElementById('${containerId}');
+const bounds = { width: container.offsetWidth, height: container.offsetHeight };
+const objects = [];
+for (let i = 0; i < ${objectCount}; i++) {
+    const el = createDiv('ball');
+    container.appendChild(el);
+    objects.push(new Ball(el, bounds, ${objectRadius}));
+}
+
+const manager = new AnimationManager(objects);
+const toggle = new AnimationToggle([], true);
+const origToggle = toggle.toggle.bind(toggle);
+toggle.toggle = function() {
+    origToggle();
+    this.isAnimating ? manager.resume() : manager.pause();
+};
+manager.start();`,
+
+    // Patrón JS para red radial SVG
+    jsSVGRadialWeb: (layers, pointsPerLayer, centerX, centerY, svgId) => `
+const svg = document.getElementById('${svgId}');
+SVGPatterns.createRadialWeb(svg, ${centerX}, ${centerY}, ${layers}, ${pointsPerLayer});
+const toggle = new AnimationToggle('.web-svg');`,
+
+    // Patrón JS para secuencia repetida
+    jsSequenceAnimation: (buildFunctionName, delayMs = 4000) => `
+class SequenceToggle extends AnimationToggle {
+    constructor(callback, delay = ${delayMs}) {
+        super([], true);
+        this.callback = callback;
+        this.delay = delay;
+        this.timeoutId = null;
+    }
+
+    toggle() {
+        super.toggle();
+        if (this.isAnimating) {
+            this.scheduleNext();
+        } else {
+            clearTimeout(this.timeoutId);
+        }
+    }
+
+    scheduleNext() {
+        this.callback();
+        if (this.isAnimating) {
+            this.timeoutId = setTimeout(() => this.scheduleNext(), this.delay);
+        }
+    }
+}
+
+const toggle = new SequenceToggle(() => ${buildFunctionName}(), ${delayMs});
+toggle.scheduleNext();`
 };

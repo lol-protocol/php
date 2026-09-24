@@ -5,27 +5,13 @@ const shapes = [
     "M100,20 L145,55 L180,110 L145,145 L55,145 L20,110 L55,55 Z"
 ];
 
-class MorphToggle {
-    constructor() {
-        this.isAnimating = true;
-        this.currentShape = 0;
-        this.path = document.querySelector('.morph-shape path');
-        this.startMorph();
-    }
+const path = document.querySelector('.morph-shape path');
+let currentShape = 0;
 
-    toggle() {
-        this.isAnimating = !this.isAnimating;
-        document.querySelector('button').textContent = this.isAnimating ? 'Pausar/Reanudar' : 'Reanudar';
-    }
-
-    startMorph() {
-        setInterval(() => {
-            if (this.isAnimating) {
-                this.currentShape = (this.currentShape + 1) % shapes.length;
-                this.path.setAttribute('d', shapes[this.currentShape]);
-            }
-        }, 2000);
-    }
+function morphShape() {
+    currentShape = (currentShape + 1) % shapes.length;
+    path.setAttribute('d', shapes[currentShape]);
 }
 
-const toggle = new MorphToggle();
+const toggle = new SequenceToggle(morphShape, 2000);
+toggle.scheduleNext();

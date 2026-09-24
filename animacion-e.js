@@ -16,29 +16,30 @@ function buildPyramid() {
     }
 }
 
-class PyramidToggle {
-    constructor() {
-        this.isAnimating = true;
+class SequenceToggle extends AnimationToggle {
+    constructor(callback, delay = 4000) {
+        super([], true);
+        this.callback = callback;
+        this.delay = delay;
+        this.timeoutId = null;
     }
 
     toggle() {
-        this.isAnimating = !this.isAnimating;
+        super.toggle();
         if (this.isAnimating) {
-            this.startAnimation();
-            document.querySelector('button').textContent = 'Pausar/Reanudar';
+            this.scheduleNext();
         } else {
-            clearTimeout(animationTimeout);
-            document.querySelector('button').textContent = 'Reanudar';
+            clearTimeout(this.timeoutId);
         }
     }
 
-    startAnimation() {
-        buildPyramid();
+    scheduleNext() {
+        this.callback();
         if (this.isAnimating) {
-            animationTimeout = setTimeout(() => this.startAnimation(), 4000);
+            this.timeoutId = setTimeout(() => this.scheduleNext(), this.delay);
         }
     }
 }
 
-const toggle = new PyramidToggle();
-toggle.startAnimation();
+const toggle = new SequenceToggle(() => buildPyramid(), 4000);
+toggle.scheduleNext();
