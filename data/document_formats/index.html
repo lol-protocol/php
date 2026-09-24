@@ -731,39 +731,22 @@
 
                 const {countryFilter: countrySelect, categoryFilter: categorySelect, fromFormat: fromSelect, toFormat: toSelect} = this.els;
 
-                const countryFragment = document.createDocumentFragment();
-                const fromFragment = document.createDocumentFragment();
-                const toFragment = document.createDocumentFragment();
-
                 countries.forEach(country => {
-                    const option1 = document.createElement('option');
-                    option1.value = country;
-                    option1.textContent = country;
-                    countryFragment.appendChild(option1);
+                    let option = document.createElement('option');
+                    option.value = country;
+                    option.textContent = country;
+                    countrySelect.appendChild(option);
 
-                    const option2 = document.createElement('option');
-                    option2.value = country;
-                    option2.textContent = country;
-                    fromFragment.appendChild(option2);
-
-                    const option3 = document.createElement('option');
-                    option3.value = country;
-                    option3.textContent = country;
-                    toFragment.appendChild(option3);
+                    fromSelect.appendChild(option.cloneNode(true));
+                    toSelect.appendChild(option.cloneNode(true));
                 });
 
-                countrySelect.appendChild(countryFragment);
-                fromSelect.appendChild(fromFragment);
-                toSelect.appendChild(toFragment);
-
-                const categoryFragment = document.createDocumentFragment();
                 categories.forEach(category => {
                     const option = document.createElement('option');
                     option.value = category;
                     option.textContent = category;
-                    categoryFragment.appendChild(option);
+                    categorySelect.appendChild(option);
                 });
-                categorySelect.appendChild(categoryFragment);
             }
 
             filterFormats() {
@@ -788,7 +771,6 @@
 
             renderFormats(formats) {
                 const {container} = this.els;
-                container.innerHTML = '';
 
                 if (formats.length === 0) {
                     container.innerHTML = `
@@ -800,11 +782,8 @@
                     return;
                 }
 
-                const fragment = document.createDocumentFragment();
-                formats.forEach(format => {
-                    const card = document.createElement('div');
-                    card.className = 'format-card';
-                    card.innerHTML = `
+                container.innerHTML = formats.map(format => `
+                    <div class="format-card">
                         <div class="format-card-header">
                             <h3>${format.format_name}</h3>
                             <span class="badge badge-${format.category.toLowerCase()}">${format.category}</span>
@@ -831,10 +810,8 @@
                             ${this.generatePreviewSVG(format)}
                         </div>
                         <button class="btn btn-primary">Select Format</button>
-                    `;
-                    fragment.appendChild(card);
-                });
-                container.appendChild(fragment);
+                    </div>
+                `).join('');
             }
 
             generatePreviewSVG(format) {
@@ -855,24 +832,15 @@
             }
 
             updateStats() {
-                if (this.statsCache) {
-                    const {totalFormats, totalCountries, totalCategories} = this.els;
-                    totalFormats.textContent = this.statsCache.totalFormats;
-                    totalCountries.textContent = this.statsCache.totalCountries;
-                    totalCategories.textContent = this.statsCache.totalCategories;
-                    return;
+                if (!this.statsCache) {
+                    this.statsCache = {
+                        totalFormats: this.formats.length,
+                        totalCountries: new Set(this.formats.map(f => f.country)).size,
+                        totalCategories: new Set(this.formats.map(f => f.category)).size
+                    };
                 }
 
                 const {totalFormats, totalCountries, totalCategories} = this.els;
-                const countries = new Set(this.formats.map(f => f.country)).size;
-                const categories = new Set(this.formats.map(f => f.category)).size;
-
-                this.statsCache = {
-                    totalFormats: this.formats.length,
-                    totalCountries: countries,
-                    totalCategories: categories
-                };
-
                 totalFormats.textContent = this.statsCache.totalFormats;
                 totalCountries.textContent = this.statsCache.totalCountries;
                 totalCategories.textContent = this.statsCache.totalCategories;

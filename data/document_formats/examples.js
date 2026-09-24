@@ -171,21 +171,10 @@ class FormatConverter {
     constructor(formats) {
         this.formats = formats;
         this.formatMap = new Map(formats.map((f, i) => [f.format_name, i]));
-        this.dimensionIndex = this._buildDimensionIndex();
         this.calculateSimilarity = memoize(
             (f1Name, f2Name) => this._calcSimilarity(f1Name, f2Name),
             (f1, f2) => [f1, f2].sort().join('|')
         );
-    }
-
-    _buildDimensionIndex() {
-        const index = new Map();
-        this.formats.forEach((f, idx) => {
-            const bucket = Math.round((f.width_mm || 0) / 10) * 10;
-            if (!index.has(bucket)) index.set(bucket, []);
-            index.get(bucket).push(idx);
-        });
-        return index;
     }
 
     _calcSimilarity(f1Name, f2Name) {
@@ -209,21 +198,13 @@ class FormatConverter {
         const idx = this.formatMap.get(formatName);
         if (idx === undefined) return [];
 
-        const format = this.formats[idx];
-        const bucket = Math.round((format.width_mm || 0) / 10) * 10;
-        const candidateIndices = new Set();
-
-        for (let b = bucket - 20; b <= bucket + 20; b += 10) {
-            (this.dimensionIndex.get(b) || []).forEach(i => candidateIndices.add(i));
-        }
-
         const candidates = [];
-        candidateIndices.forEach(i => {
+        for (let i = 0; i < this.formats.length; i++) {
             if (i !== idx && this.formats[i].width_mm && this.formats[i].height_mm) {
                 const sim = this.calculateSimilarity(formatName, this.formats[i].format_name);
                 if (sim >= threshold) candidates.push({format: this.formats[i], similarity: sim});
             }
-        });
+        }
 
         candidates.sort((a, b) => b.similarity - a.similarity);
 
@@ -411,21 +392,10 @@ class FormatValidator {
     constructor(formats) {
         this.formats = formats;
         this.formatMap = new Map(formats.map((f, i) => [f.format_name, i]));
-        this.dimensionIndex = this._buildDimensionIndex();
         this.validateDimensions = memoize(
             (w, h, u) => this._validateDimensions(w, h, u),
             (w, h, u) => `${w}|${h}|${u}`
         );
-    }
-
-    _buildDimensionIndex() {
-        const index = new Map();
-        this.formats.forEach((f, idx) => {
-            const bucket = Math.round((f.width_mm || 0) / 10) * 10;
-            if (!index.has(bucket)) index.set(bucket, []);
-            index.get(bucket).push(idx);
-        });
-        return index;
     }
 
     _validateDimensions(width, height, unit = 'mm') {
@@ -434,23 +404,13 @@ class FormatValidator {
 
         const normalizedWidth = width * factor;
         const normalizedHeight = height * factor;
-        const bucket = Math.round(normalizedWidth / 10) * 10;
 
-        const candidateIndices = new Set();
-        for (let b = bucket - 20; b <= bucket + 20; b += 10) {
-            (this.dimensionIndex.get(b) || []).forEach(i => candidateIndices.add(i));
-        }
-
-        const matches = [];
-        candidateIndices.forEach(i => {
-            const f = this.formats[i];
+        const matches = this.formats.filter(f => {
             const fWidth = parseFloat(f.width_mm);
             const fHeight = parseFloat(f.height_mm);
 
-            if (Math.abs(fWidth - normalizedWidth) < 1 &&
-                Math.abs(fHeight - normalizedHeight) < 1) {
-                matches.push(f);
-            }
+            return Math.abs(fWidth - normalizedWidth) < 1 &&
+                   Math.abs(fHeight - normalizedHeight) < 1;
         });
 
         return {
@@ -882,14 +842,19 @@ class BookMarginManager {
 // EXAMPLE 10: Screen Device Manager
 // ============================================
 class ScreenDeviceManager {
+    static TYPE_CONFIG = [
+        {list: 'monitors', idField: 'monitor_type', type: 'monitor'},
+        {list: 'smartphones', idField: 'device_name', type: 'phone'},
+        {list: 'tablets', idField: 'device_name', type: 'tablet'},
+        {list: 'ereaders', idField: 'device_name', type: 'ereader'}
+    ];
+
     constructor(devices = []) {
         this.monitors = [];
         this.smartphones = [];
         this.tablets = [];
         this.ereaders = [];
         this.deviceIndex = new Map();
-        this.sizeIndex = new Map();
-        this.deviceTypeIndex = new Map();
     }
 
     async loadAllDevices(monitorPath, phonePath, tabletPath, ereaderPath) {
@@ -899,44 +864,15 @@ class ScreenDeviceManager {
             this.loadTablets(tabletPath),
             this.loadEReaders(ereaderPath)
         ]);
-        this._buildIndexes();
+        this._buildDeviceIndex();
     }
 
-    _buildIndexes() {
+    _buildDeviceIndex() {
         this.deviceIndex.clear();
-        this.sizeIndex.clear();
-        this.deviceTypeIndex.clear();
-
-        this.monitors.forEach(d => {
-            this.deviceIndex.set(d.monitor_type, d);
-            this.deviceTypeIndex.set(d.monitor_type, {device: d, type: 'monitor'});
-            const size = Math.round(parseFloat(d.screen_size_inches || 0) / 5) * 5;
-            if (!this.sizeIndex.has(size)) this.sizeIndex.set(size, []);
-            this.sizeIndex.get(size).push(d);
-        });
-
-        this.smartphones.forEach(d => {
-            this.deviceIndex.set(d.device_name, d);
-            this.deviceTypeIndex.set(d.device_name, {device: d, type: 'phone'});
-            const size = Math.round(parseFloat(d.size_inches || 0) / 2) * 2;
-            if (!this.sizeIndex.has(size)) this.sizeIndex.set(size, []);
-            this.sizeIndex.get(size).push(d);
-        });
-
-        this.tablets.forEach(d => {
-            this.deviceIndex.set(d.device_name, d);
-            this.deviceTypeIndex.set(d.device_name, {device: d, type: 'tablet'});
-            const size = Math.round(parseFloat(d.screen_size_inches || 0) / 2) * 2;
-            if (!this.sizeIndex.has(size)) this.sizeIndex.set(size, []);
-            this.sizeIndex.get(size).push(d);
-        });
-
-        this.ereaders.forEach(d => {
-            this.deviceIndex.set(d.device_name, d);
-            this.deviceTypeIndex.set(d.device_name, {device: d, type: 'ereader'});
-            const size = Math.round(parseFloat(d.screen_size_inches || 0) / 2) * 2;
-            if (!this.sizeIndex.has(size)) this.sizeIndex.set(size, []);
-            this.sizeIndex.get(size).push(d);
+        ScreenDeviceManager.TYPE_CONFIG.forEach(({list, idField, type}) => {
+            this[list].forEach(d => {
+                this.deviceIndex.set(d[idField], {device: d, type});
+            });
         });
     }
 
@@ -980,31 +916,19 @@ class ScreenDeviceManager {
     }
 
     getDevice(deviceName, type = 'all') {
-        if (type === 'all') {
-            return this.deviceIndex.get(deviceName);
-        }
-        const deviceInfo = this.deviceTypeIndex.get(deviceName);
-        return deviceInfo && deviceInfo.type === type ? deviceInfo.device : undefined;
+        const entry = this.deviceIndex.get(deviceName);
+        if (!entry) return undefined;
+        return type === 'all' || entry.type === type ? entry.device : undefined;
     }
 
     getDevicesBySize(minInches, maxInches, type = 'all') {
         const results = [];
-        const sizeRange = new Set();
 
-        for (let size = Math.floor(minInches / 5) * 5; size <= Math.ceil(maxInches / 5) * 5; size += 5) {
-            if (this.sizeIndex.has(size)) {
-                sizeRange.add(size);
-            }
-        }
-
-        sizeRange.forEach(size => {
-            this.sizeIndex.get(size).forEach(d => {
-                const sizeVal = parseFloat(d.screen_size_inches || d.size_inches);
-                if (sizeVal >= minInches && sizeVal <= maxInches) {
-                    if (type === 'all' || this.deviceTypeIndex.get(d.device_name || d.monitor_type)?.type === type) {
-                        results.push(d);
-                    }
-                }
+        ScreenDeviceManager.TYPE_CONFIG.forEach(({list, type: t}) => {
+            if (type !== 'all' && type !== t) return;
+            this[list].forEach(d => {
+                const size = parseFloat(d.screen_size_inches || d.size_inches);
+                if (size >= minInches && size <= maxInches) results.push(d);
             });
         });
 
