@@ -2,9 +2,9 @@
 
 namespace PhoneDirectory;
 
-use DefamatoryContentReview\AccentFolding;
+use PhoneDirectory\Database\AbstractPDODatabase;
 
-class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
+class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDirectoryDatabaseInterface
 {
     private const TABLE = 'phone_directory';
 
@@ -18,7 +18,6 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         'updated_at' => ['datetime', 'DEFAULT CURRENT_TIMESTAMP'],
     ];
 
-    // Columns added after the original table; createTable() adds any that an existing database lacks.
     private const ADDED_COLUMNS = [
         'raw_name' => ['text'],
         'language' => ['string'],
@@ -29,9 +28,6 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         'source_line' => ['int'],
         'surname_soundex' => ['string'],
         'surname_phonetic' => ['string'],
-        // Lowercased, accent-folded copies of full_name/street, searched instead of the raw columns so
-        // "garcia" finds "García" the same way on SQLite and PostgreSQL as it already does on MySQL,
-        // where the default collation folds accents but SQLite's and PostgreSQL's plain LIKE do not.
         'full_name_folded' => ['string'],
         'street_folded' => ['string'],
     ];
@@ -40,40 +36,6 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         'full_name', 'country_code', 'street', 'phone_number', 'source_directory_id',
         'surname_soundex', 'surname_phonetic', 'full_name_folded', 'street_folded',
     ];
-
-    private ?\PDO $pdo = null;
-    private ?SqlDialect $dialect = null;
-    private string $dsn;
-    private ?string $username;
-    private ?string $password;
-
-    public function __construct(string $dsn = 'sqlite::memory:', ?string $username = null, ?string $password = null)
-    {
-        $this->dsn = $dsn;
-        $this->username = $username;
-        $this->password = $password;
-    }
-
-    public function connect(): void
-    {
-        if ($this->pdo !== null) {
-            return;
-        }
-
-        $this->pdo = SqlDialect::connect($this->dsn, $this->username, $this->password);
-        $this->dialect = new SqlDialect($this->pdo);
-    }
-
-    public function disconnect(): void
-    {
-        $this->pdo = null;
-        $this->dialect = null;
-    }
-
-    public function isConnected(): bool
-    {
-        return $this->pdo !== null;
-    }
 
     public function createTable(): void
     {
@@ -415,23 +377,6 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             ':fullNameFolded' => $this->fold($entry->getFullName()),
             ':streetFolded' => $this->fold($entry->getStreet()),
         ];
-    }
-
-    private function fold(string $text): string
-    {
-        $lower = mb_strtolower($text, 'UTF-8');
-
-        if (!mb_check_encoding($lower, 'UTF-8')) {
-            throw new \RuntimeException('Invalid UTF-8 encoding in text after mb_strtolower');
-        }
-
-        $folded = AccentFolding::fold($lower);
-
-        if (!mb_check_encoding($folded, 'UTF-8')) {
-            throw new \RuntimeException('Invalid UTF-8 encoding in text after accent folding');
-        }
-
-        return $folded;
     }
 
     private function rowToEntry(array $row): PhoneDirectoryEntry

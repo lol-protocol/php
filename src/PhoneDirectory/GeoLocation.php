@@ -2,8 +2,12 @@
 
 namespace PhoneDirectory;
 
+use PhoneDirectory\Validation\InputValidator;
+
 class GeoLocation
 {
+    use InputValidator;
+
     private string $countryCode;
     private ?string $zone;
     private ?string $city;
@@ -24,17 +28,8 @@ class GeoLocation
         ?string $zone = null,
         ?string $city = null
     ) {
-        if (empty(trim($countryCode))) {
-            throw new \InvalidArgumentException('Country code cannot be empty');
-        }
-
-        if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
-            throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
-        }
-
-        if (empty(trim($street))) {
-            throw new \InvalidArgumentException('Street cannot be empty');
-        }
+        $this->validateCountryCode($countryCode);
+        $this->validateNotEmpty($street, 'Street');
 
         $this->countryCode = strtoupper($countryCode);
         $this->zone = $zone;

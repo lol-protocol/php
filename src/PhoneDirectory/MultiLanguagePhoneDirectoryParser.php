@@ -2,8 +2,11 @@
 
 namespace PhoneDirectory;
 
+use PhoneDirectory\Validation\InputValidator;
+
 class MultiLanguagePhoneDirectoryParser
 {
+    use InputValidator;
     private const LANGUAGE_STREET_MARKERS = [
         'es' => ['calle', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
         'en' => ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln', 'boulevard', 'blvd', 'circle', 'cir'],
@@ -54,17 +57,8 @@ class MultiLanguagePhoneDirectoryParser
      */
     public function __construct(string $countryCode = 'US', ?string $sourceDirectoryId = null)
     {
-        if (empty($countryCode)) {
-            throw new \InvalidArgumentException('Country code cannot be empty');
-        }
-
-        if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
-            throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
-        }
-
-        if ($sourceDirectoryId !== null && empty($sourceDirectoryId)) {
-            throw new \InvalidArgumentException('Source directory ID cannot be empty string');
-        }
+        $this->validateCountryCode($countryCode);
+        $this->validateOptionalNotEmpty($sourceDirectoryId, 'Source directory ID');
 
         $this->countryCode = strtoupper($countryCode);
         $this->sourceDirectoryId = $sourceDirectoryId;

@@ -3,9 +3,12 @@
 namespace PhoneDirectory\Database;
 
 use DefamatoryContentReview\AccentFolding;
+use PhoneDirectory\SqlDialect;
 
 abstract class AbstractPDODatabase
 {
+    use SearchableDatabase;
+
     protected ?\PDO $pdo = null;
     protected ?SqlDialect $dialect = null;
     protected string $dsn;

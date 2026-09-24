@@ -2,9 +2,9 @@
 
 namespace PhoneDirectory;
 
-use DefamatoryContentReview\AccentFolding;
+use PhoneDirectory\Database\AbstractPDODatabase;
 
-class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
+class JuridicalEntityPDODatabase extends AbstractPDODatabase implements JuridicalEntityDatabaseInterface
 {
     private const TABLE = 'juridical_entities';
 
@@ -20,13 +20,10 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         'updated_at' => ['datetime', 'DEFAULT CURRENT_TIMESTAMP'],
     ];
 
-    // Columns added after the original table; createTable() adds any that an existing database lacks.
     private const ADDED_COLUMNS = [
         'country_code' => ['country', "NOT NULL DEFAULT 'US'"],
         'source_directory_id' => ['string'],
         'source_line' => ['int'],
-        // Lowercased, accent-folded copies searched instead of the raw columns, so search behaves the
-        // same on SQLite and PostgreSQL as it already does on MySQL's accent-folding default collation.
         'business_name_folded' => ['string'],
         'street_folded' => ['string'],
     ];
@@ -35,40 +32,6 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         'business_name', 'street', 'phone_number', 'business_type', 'country_code', 'source_directory_id',
         'business_name_folded', 'street_folded',
     ];
-
-    private ?\PDO $pdo = null;
-    private ?SqlDialect $dialect = null;
-    private string $dsn;
-    private ?string $username;
-    private ?string $password;
-
-    public function __construct(string $dsn = 'sqlite::memory:', ?string $username = null, ?string $password = null)
-    {
-        $this->dsn = $dsn;
-        $this->username = $username;
-        $this->password = $password;
-    }
-
-    public function connect(): void
-    {
-        if ($this->pdo !== null) {
-            return;
-        }
-
-        $this->pdo = SqlDialect::connect($this->dsn, $this->username, $this->password);
-        $this->dialect = new SqlDialect($this->pdo);
-    }
-
-    public function disconnect(): void
-    {
-        $this->pdo = null;
-        $this->dialect = null;
-    }
-
-    public function isConnected(): bool
-    {
-        return $this->pdo !== null;
-    }
 
     public function createTable(): void
     {
@@ -389,20 +352,4 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         ];
     }
 
-    private function fold(string $text): string
-    {
-        $lower = mb_strtolower($text, 'UTF-8');
-
-        if (!mb_check_encoding($lower, 'UTF-8')) {
-            throw new \RuntimeException('Invalid UTF-8 encoding in text after mb_strtolower');
-        }
-
-        $folded = AccentFolding::fold($lower);
-
-        if (!mb_check_encoding($folded, 'UTF-8')) {
-            throw new \RuntimeException('Invalid UTF-8 encoding in text after accent folding');
-        }
-
-        return $folded;
-    }
 }
