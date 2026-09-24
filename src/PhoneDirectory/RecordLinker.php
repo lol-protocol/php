@@ -124,7 +124,9 @@ final class RecordLinker
 
     private function year(PhoneDirectoryEntry $entry): int
     {
-        $catalogYear = $this->catalog->get($entry->getSourceDirectoryId())['year'] ?? null;
+        $dirId = $entry->getSourceDirectoryId();
+
+        $catalogYear = $this->catalog->get($dirId)['year'] ?? null;
         if ($catalogYear !== null) {
             return $catalogYear;
         }
@@ -134,7 +136,7 @@ final class RecordLinker
         // use it so links between non-catalog directories are still ordered chronologically.
         // Not \b: an underscore is a "word" character too, so "custom_1990_x" has no word boundary
         // around the digits at all; look for a 4-digit run not itself touching other digits instead.
-        if (preg_match('/(?<!\d)(1[89]\d{2}|20\d{2})(?!\d)/', $entry->getSourceDirectoryId() ?? '', $m)) {
+        if ($dirId && preg_match('/(?<!\d)(1[89]\d{2}|20\d{2})(?!\d)/', $dirId, $m)) {
             return (int) $m[1];
         }
 

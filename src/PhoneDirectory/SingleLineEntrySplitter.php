@@ -125,7 +125,7 @@ final class SingleLineEntrySplitter
         $rest = $line;
         $phone = null;
 
-        if (preg_match(PhonePattern::REGEX, $line, $match, PREG_OFFSET_CAPTURE)) {
+        if (preg_match(PhonePattern::getValidatedRegex(), $line, $match, PREG_OFFSET_CAPTURE)) {
             $phone = $match[0][0];
             $offset = $match[0][1];
             $rest = substr($line, 0, $offset) . substr($line, $offset + strlen($phone));

@@ -40,6 +40,8 @@ class PersonName
 
     public function __construct(string $fullName, ?string $language = null)
     {
+        $this->firstNames = [];
+        $this->lastNames = [];
         $this->language = $language !== null ? strtolower($language) : null;
         $this->parse($fullName);
     }

@@ -4,16 +4,11 @@ namespace PhoneDirectory;
 
 class PhoneDirectoryParser
 {
-    private const COMMON_PATTERNS = [
-        'line_separator' => '/^(?:[-=_*]\s*){2,}$/',
-        'phone_pattern' => PhonePattern::REGEX,
-        'street_marker' => '/\b(?:st|street|ave|avenue|rd|road|dr|drive|ln|lane|blvd|boulevard|cir|circle)\b/iu',
-    ];
-
     private array $entries = [];
     private array $parseErrors = [];
     private string $countryCode;
     private ?string $sourceDirectoryId;
+    private ?array $patterns = null;
 
     public function __construct(string $countryCode = 'US', ?string $sourceDirectoryId = null)
     {
@@ -43,6 +38,21 @@ class PhoneDirectoryParser
     public function getSourceDirectoryId(): ?string
     {
         return $this->sourceDirectoryId;
+    }
+
+    private function getPatterns(): array
+    {
+        if ($this->patterns !== null) {
+            return $this->patterns;
+        }
+
+        $this->patterns = [
+            'line_separator' => '/^(?:[-=_*]\s*){2,}$/',
+            'phone_pattern' => PhonePattern::getValidatedRegex(),
+            'street_marker' => '/\b(?:st|street|ave|avenue|rd|road|dr|drive|ln|lane|blvd|boulevard|cir|circle)\b/iu',
+        ];
+
+        return $this->patterns;
     }
 
     public function parseFile(string $filePath): array
@@ -77,7 +87,8 @@ class PhoneDirectoryParser
             $lineNumber++;
             $trimmed = trim($line);
 
-            if ($trimmed === '' || preg_match(self::COMMON_PATTERNS['line_separator'], $trimmed)) {
+            $patterns = $this->getPatterns();
+            if ($trimmed === '' || preg_match($patterns['line_separator'], $trimmed)) {
                 if (!empty($buffer)) {
                     $this->processBuffer($buffer, $bufferStart);
                     $buffer = [];
@@ -119,9 +130,10 @@ class PhoneDirectoryParser
         ];
 
         $nameSet = false;
+        $patterns = $this->getPatterns();
 
         foreach ($lines as $line) {
-            if (empty($data['phone']) && preg_match(self::COMMON_PATTERNS['phone_pattern'], $line, $matches)) {
+            if (empty($data['phone']) && preg_match($patterns['phone_pattern'], $line, $matches)) {
                 $data['phone'] = $matches[0];
             }
 
@@ -132,7 +144,7 @@ class PhoneDirectoryParser
                 }
             }
 
-            if (!$nameSet && !preg_match(self::COMMON_PATTERNS['phone_pattern'], $line)) {
+            if (!$nameSet && !preg_match($patterns['phone_pattern'], $line)) {
                 $streetMatch = $this->extractStreet($line);
                 if (!$streetMatch) {
                     $data['name'] = $line;
@@ -176,7 +188,8 @@ class PhoneDirectoryParser
 
     private function isStreet(string $line): bool
     {
-        return preg_match(self::COMMON_PATTERNS['street_marker'], $line) === 1;
+        $patterns = $this->getPatterns();
+        return preg_match($patterns['street_marker'], $line) === 1;
     }
 
     private function extractStreet(string $line): ?string

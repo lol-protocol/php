@@ -77,6 +77,10 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         }
 
         $this->dialect->ensureTable(self::TABLE, self::BASE_COLUMNS, self::ADDED_COLUMNS, self::INDEXED_COLUMNS);
+
+        // Migration: backfill NULL country_code with default before enforcing NOT NULL constraint
+        $this->pdo->exec("UPDATE " . self::TABLE . " SET country_code = 'US' WHERE country_code IS NULL");
+
         $this->backfillFoldedColumns();
     }
 

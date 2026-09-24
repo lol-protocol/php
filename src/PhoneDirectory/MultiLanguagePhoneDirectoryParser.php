@@ -100,6 +100,7 @@ class MultiLanguagePhoneDirectoryParser
         }
 
         $this->detectedLanguage = $language;
+        $phoneRegex = PhonePattern::getValidatedRegex();
 
         $lines = explode("\n", $content);
         $buffer = [];
@@ -112,7 +113,7 @@ class MultiLanguagePhoneDirectoryParser
 
             if ($trimmed === '' || preg_match('/^(?:[-=_*]\s*){2,}$/', $trimmed)) {
                 if (!empty($buffer)) {
-                    $this->processBuffer($buffer, $bufferStart, $language);
+                    $this->processBuffer($buffer, $bufferStart, $language, $phoneRegex);
                     $buffer = [];
                 }
                 continue;
@@ -127,7 +128,7 @@ class MultiLanguagePhoneDirectoryParser
             );
             if ($single !== null) {
                 if (!empty($buffer)) {
-                    $this->processBuffer($buffer, $bufferStart, $language);
+                    $this->processBuffer($buffer, $bufferStart, $language, $phoneRegex);
                     $buffer = [];
                 }
                 $this->finalizeEntry(
@@ -145,7 +146,7 @@ class MultiLanguagePhoneDirectoryParser
         }
 
         if (!empty($buffer)) {
-            $this->processBuffer($buffer, $bufferStart, $language);
+            $this->processBuffer($buffer, $bufferStart, $language, $phoneRegex);
         }
 
         return $this->entries;
@@ -185,7 +186,7 @@ class MultiLanguagePhoneDirectoryParser
         return '/' . implode('|', $parts) . '/iu';
     }
 
-    private function processBuffer(array $lines, int $startLine, string $language): void
+    private function processBuffer(array $lines, int $startLine, string $language, string $phoneRegex): void
     {
         $data = [
             'name' => null,
@@ -197,7 +198,7 @@ class MultiLanguagePhoneDirectoryParser
         $nameSet = false;
 
         foreach ($lines as $line) {
-            if (empty($data['phone']) && preg_match(PhonePattern::REGEX, $line, $matches)) {
+            if (empty($data['phone']) && preg_match($phoneRegex, $line, $matches)) {
                 $data['phone'] = $matches[0];
             }
 
@@ -217,7 +218,7 @@ class MultiLanguagePhoneDirectoryParser
 
             // A line is the name only once it's been ruled out as a phone or a street; otherwise a
             // street-first or phone-first layout would have its address or number read as the name.
-            if (!$nameSet && !preg_match(PhonePattern::REGEX, $line) && !$this->extractStreet($line, $language)) {
+            if (!$nameSet && !preg_match($phoneRegex, $line) && !$this->extractStreet($line, $language)) {
                 $data['name'] = $line;
                 $nameSet = true;
             }
@@ -282,6 +283,11 @@ class MultiLanguagePhoneDirectoryParser
 
     private function extractStreet(string $line, string $language): ?string
     {
+        // Validate UTF-8 encoding before regex operations with /u flag
+        if (!mb_check_encoding($line, 'UTF-8')) {
+            return null;
+        }
+
         if (preg_match($this->streetPattern($language), $line)) {
             return $line;
         }
