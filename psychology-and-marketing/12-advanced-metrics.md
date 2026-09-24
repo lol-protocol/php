@@ -1,11 +1,11 @@
 # 12. 📊 Métricas Avanzadas de Ética
 
 **Lectura previa:** [Transformación Organizacional](./11-organizational-transformation.md)  
-**Volver a:** [Índice Principal](./README.md)
+**Siguiente:** [Dilemas Avanzados](./13-advanced-dilemmas.md)
 
 ---
 
-## Introducción
+## 👋 Introducción
 
 Medir es lo que haces. Lo que no mides, no haces.
 
@@ -13,7 +13,7 @@ Por eso necesitas métricas que **premien ética, no solo crecimiento.**
 
 ---
 
-## Nivel 1: Métricas Fundamentales
+## 1️⃣ Nivel 1: Métricas Fundamentales
 
 ### 1.1 Privacy Score (0-100)
 
@@ -105,7 +105,7 @@ Si ambos = 50:
 
 ---
 
-## Nivel 2: Métricas de Engagement
+## 2️⃣ Nivel 2: Métricas de Engagement
 
 ### 2.1 Engagement Genuino (% de feature adoption sin notifs)
 
@@ -181,7 +181,7 @@ HEALTHY RATIO:
 
 ---
 
-## Nivel 3: Métricas de Impacto Ético
+## 3️⃣ Nivel 3: Métricas de Impacto Ético
 
 ### 3.1 Dark Patterns Index (DPI)
 
@@ -280,7 +280,7 @@ TARGET:
 
 ---
 
-## Nivel 4: Métricas de Valor de Usuario
+## 4️⃣ Nivel 4: Métricas de Valor de Usuario
 
 ### 4.1 User Value Achievement (UVA)
 
@@ -343,7 +343,7 @@ Fix or discontinue feature
 
 ---
 
-## Nivel 5: Métricas de Sostenibilidad
+## 5️⃣ Nivel 5: Métricas de Sostenibilidad
 
 ### 5.1 Business Sustainability Ratio (BSR)
 
@@ -411,7 +411,7 @@ If >5:
 
 ---
 
-## Nivel 6: Dashboards Integrados
+## 6️⃣ Nivel 6: Dashboards Integrados
 
 ### 6.1 Quarterly Business & Ethics Report
 
@@ -478,7 +478,7 @@ IF ANY OF THESE DROP:
 
 ---
 
-## Nivel 7: Advanced Analysis
+## 7️⃣ Nivel 7: Advanced Analysis
 
 ### 7.1 Ethical Elasticity
 
@@ -523,7 +523,7 @@ Market shifts to you
 
 ---
 
-## Cómo Implementar Este Sistema
+## 🛠️ Cómo Implementar Este Sistema
 
 ### Fase 1: Pick Top 5 Metrics
 
@@ -557,7 +557,7 @@ If metrics decline:
 
 ---
 
-## Resumen: Métrica Fundamental
+## 📝 Resumen: Métrica Fundamental
 
 Si solo tracked UNA métrica:
 
@@ -575,7 +575,7 @@ Optimize for UVA + Trust, other metrics follow.
 
 ---
 
-**Regresa:** [Índice Principal](./README.md)
+**Siguiente lectura:** [Dilemas Avanzados →](./13-advanced-dilemmas.md)
 
 **Relacionado:**
 - [Implementation Guide](./07-implementation-guide.md)

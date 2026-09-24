@@ -1,6 +1,6 @@
 # 13. 🔥 Dilemas Avanzados (Casos Reales Complejos)
 
-**Lectura previa:** [Dilemas en Gris](./10-gray-area-ethics.md)  
+**Lectura previa:** [Métricas Avanzadas](./12-advanced-metrics.md)  
 **Siguiente:** [Mentalidad del Usuario](./14-user-psychology-deep.md)
 
 ---

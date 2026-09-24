@@ -5,7 +5,7 @@
 
 ---
 
-## Preguntas Frecuentes
+## ❓ Preguntas Frecuentes
 
 ### P1: "Si recolecto menos datos, ¿no pierdo insights sobre mis usuarios?"
 
@@ -374,7 +374,7 @@ Privacidad no es costo. Es inversión.
 
 ---
 
-## Conclusión
+## 🏁 Conclusión
 
 **Las preguntas "difíciles" casi siempre tienen respuesta clara si aplicas principio:**
 

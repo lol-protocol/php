@@ -5,7 +5,7 @@
 
 ---
 
-## ¿Por qué Investigación?
+## 🔬 ¿Por qué Investigación?
 
 ### Sin investigación:
 ```
@@ -25,7 +25,7 @@
 
 ---
 
-## 1. UX Research Honesto (No Dark)
+## 1. 🕯️ UX Research Honesto (No Dark)
 
 ### ❌ Dark Research (Invasivo)
 ```
@@ -46,7 +46,7 @@
 
 ---
 
-## 2. Métodos de Investigación
+## 2. 🧪 Métodos de Investigación
 
 ### Método 1: Encuestas (Surveys)
 
@@ -251,7 +251,7 @@ Problema real, no outlier
 
 ---
 
-## 3. Plan de Research: Paso a Paso
+## 3. 🗓️ Plan de Research: Paso a Paso
 
 ### Fase 1: Definir Pregunta
 ```
@@ -301,7 +301,7 @@ A/B test (validar cambios)
 
 ---
 
-## 4. A/B Testing Ético
+## 4. 🔀 A/B Testing Ético
 
 **¿Qué es:** Mostrar 2 versiones a usuarios (50-50) y ver cuál funciona mejor.
 
@@ -344,7 +344,7 @@ B) Muestra precio inflado vs. "descuento"
 
 ---
 
-## 5. Segmentación y Personalización Ética
+## 5. 🎯 Segmentación y Personalización Ética
 
 ### ❌ Invasivo
 ```
@@ -369,7 +369,7 @@ B) Muestra precio inflado vs. "descuento"
 
 ---
 
-## 6. Sesgo de Investigador
+## 6. ⚠️ Sesgo de Investigador
 
 ### Problema
 **Tu opinión influencia resultados.**
@@ -401,7 +401,7 @@ TÚ interpreta: "Le encanta" (porque quieres creerlo)
 
 ---
 
-## 7. Tamaño de Muestra
+## 7. 📏 Tamaño de Muestra
 
 ### Regla de Dedo
 
@@ -423,7 +423,7 @@ Con 100 en survey, ves tendencias.
 
 ---
 
-## Checklist: ¿Tu Research es Ético?
+## ✅ Checklist: ¿Tu Research es Ético?
 
 - [ ] ¿Pedí consentimiento? (Informado, explícito)
 - [ ] ¿Explico qué hago con los datos?
@@ -437,7 +437,7 @@ Con 100 en survey, ves tendencias.
 
 ---
 
-## Research en Acción: Caso Real
+## 📚 Research en Acción: Caso Real
 
 ### Escenario
 Startup de fitness quiere saber: ¿Por qué se van a los 30 días?
@@ -480,7 +480,7 @@ Retroalimentación: usuario vuelve por variedad + comunidad
 
 ---
 
-## Herramientas Recomendadas
+## 🧰 Herramientas Recomendadas
 
 | Tipo | Herramienta | Costo | Nota |
 |------|-----------|-------|------|
@@ -492,7 +492,7 @@ Retroalimentación: usuario vuelve por variedad + comunidad
 
 ---
 
-## Conclusión
+## 🏁 Conclusión
 
 **Buena research = Mejor producto.**
 

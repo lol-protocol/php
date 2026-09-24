@@ -5,7 +5,7 @@
 
 ---
 
-## ¿Qué es Engagement Real?
+## 🔥 ¿Qué es Engagement Real?
 
 **No es:**
 ```
@@ -24,7 +24,7 @@
 
 ---
 
-## 1. Motivación Intrínseca vs. Extrínseca (Revisión)
+## 1. ⚡ Motivación Intrínseca vs. Extrínseca (Revisión)
 
 ### Motivación Intrínseca (la que importa)
 Haces algo porque:
@@ -66,7 +66,7 @@ Te pagan $10 por cada hora de juego
 
 ---
 
-## 2. Las 3 Necesidades Psicológicas (Deci & Ryan)
+## 2. 🧩 Las 3 Necesidades Psicológicas (Deci & Ryan)
 
 ### 1. Autonomía
 Necesidad de **sentir control** sobre tus acciones.
@@ -122,7 +122,7 @@ Hacen challenges juntos
 
 ---
 
-## 3. Hábitos: El Loop de Fogg
+## 3. 🔁 Hábitos: El Loop de Fogg
 
 ### B.J. Fogg: Comportamiento = Motivación + Capacidad + Trigger
 
@@ -165,7 +165,7 @@ Trigger: "Notificación de la app" (débil)
 
 ---
 
-## 4. Engagement Loop Ético
+## 4. 🔄 Engagement Loop Ético
 
 ### Paso 1: Primera Motivación
 ```
@@ -203,7 +203,7 @@ Ve su vida mejorada por el hábito:
 
 ---
 
-## 5. Dopamina: El Químico del Engagement
+## 5. 🧪 Dopamina: El Químico del Engagement
 
 ### Qué es
 Dopamina no es "placer" es **anticipación de recompensa**.
@@ -240,7 +240,7 @@ Ejemplo: Completar workout → Subis puntos (siempre)
 
 ---
 
-## 6. El "Dip" (La Caída)
+## 6. 📉 El "Dip" (La Caída)
 
 ### La realidad
 ```
@@ -283,7 +283,7 @@ Semana 2: "Es normal que sientas caída"
 
 ---
 
-## 7. Stickiness vs. Growth
+## 7. 🪢 Stickiness vs. Growth
 
 ### Stickiness (Retención)
 ```
@@ -312,7 +312,7 @@ Semana 2: "Es normal que sientas caída"
 
 ---
 
-## 8. Métricas de Engagement Ético
+## 8. 📊 Métricas de Engagement Ético
 
 ### ❌ Métricas Oscuras
 - Time spent (no importa si el usuario quería)
@@ -328,7 +328,7 @@ Semana 2: "Es normal que sientas caída"
 
 ---
 
-## 9. Antipatrones: Addiction by Design
+## 9. 🚨 Antipatrones: Addiction by Design
 
 ### Dark Pattern 1: Infinite Scroll
 ```
@@ -371,7 +371,7 @@ Nunca sabes qué va a salir
 
 ---
 
-## 10. El Propósito es King
+## 10. 👑 El Propósito es King
 
 ### Hallazgo clave
 ```
@@ -406,7 +406,7 @@ Es: "Porque me acerca a algo que me importa"
 
 ---
 
-## Checklist: ¿Tu Engagement es Ético?
+## ✅ Checklist: ¿Tu Engagement es Ético?
 
 - [ ] ¿Tu métrica primaria es progreso del usuario, no time spent?
 - [ ] ¿El usuario sabe por qué volverá (propósito claro)?
@@ -420,7 +420,7 @@ Es: "Porque me acerca a algo que me importa"
 
 ---
 
-## Modelo de Engagement Ético (Resumen)
+## 📝 Modelo de Engagement Ético (Resumen)
 
 ```
 Propósito Claro
@@ -438,7 +438,7 @@ Recomendación Genuina
 
 ---
 
-## Conclusión
+## 🏁 Conclusión
 
 El engagement genuino no es un truco. Es crear algo que:
 - ✅ Resuelva un problema real

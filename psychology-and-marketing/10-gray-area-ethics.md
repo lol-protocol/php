@@ -5,13 +5,13 @@
 
 ---
 
-## Introducción
+## 👋 Introducción
 
 No todo es blanco o negro. Hay decisiones donde **ambas opciones tienen costo**. Aquí es cómo navegarlas.
 
 ---
 
-## Dilema 1: Ubicación Real-Time vs. Seguridad
+## Dilema 1: 📍 Ubicación Real-Time vs. Seguridad
 
 ### Escenario
 Tu app de viajes/dating quiere ofrecer features útiles:
@@ -74,7 +74,7 @@ RESULTADO:
 
 ---
 
-## Dilema 2: Personalización vs. Profiling
+## Dilema 2: 🎯 Personalización vs. Profiling
 
 ### Escenario
 Tienes datos: "Usuario busca X, compra Y, chatea Z"
@@ -127,7 +127,7 @@ RESULTADO:
 
 ---
 
-## Dilema 3: Monetización sin Anuncios vs. Viabilidad
+## Dilema 3: 💰 Monetización sin Anuncios vs. Viabilidad
 
 ### Escenario
 Tienes app útil (fitness, productividad, finanzas).
@@ -195,7 +195,7 @@ Spotify:
 
 ---
 
-## Dilema 4: Retención vs. Libertad
+## Dilema 4: 🔓 Retención vs. Libertad
 
 ### Escenario
 User usó app 30 días. Ahora quiere dejar.
@@ -248,7 +248,7 @@ RESULTADO:
 
 ---
 
-## Dilema 5: Algoritmo Recomendador vs. Echo Chamber
+## Dilema 5: 🔁 Algoritmo Recomendador vs. Echo Chamber
 
 ### Escenario
 Tu algoritmo muestra contenido similar a lo que user consume.
@@ -306,7 +306,7 @@ RESULTADO:
 
 ---
 
-## Dilema 6: Early Exit vs. Complete Onboarding
+## Dilema 6: 🚪 Early Exit vs. Complete Onboarding
 
 ### Escenario
 User empieza signup. A mitad de la forma, se va.
@@ -355,7 +355,7 @@ RESULTADO:
 
 ---
 
-## Dilema 7: Influencer Disclosure vs. Authenticity
+## Dilema 7: 📣 Influencer Disclosure vs. Authenticity
 
 ### Escenario
 Influencer ama tu producto. ¿Lo promovería sin pago?
@@ -406,7 +406,7 @@ RESULTADO:
 
 ---
 
-## Dilema 8: User Data Request vs. Privacy
+## Dilema 8: 🏛️ User Data Request vs. Privacy
 
 ### Escenario
 Government pide datos de user.
@@ -457,7 +457,7 @@ RESULTADO:
 
 ---
 
-## Framework: Cómo Decidir en Gris
+## 🧭 Framework: Cómo Decidir en Gris
 
 ### 1. Responde esta pregunta
 ```
@@ -497,7 +497,7 @@ Casi siempre existe third option:
 
 ---
 
-## Conclusión
+## 🏁 Conclusión
 
 **Los dilemas éticos en gris NO tienen enemy perfect.**
 

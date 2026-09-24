@@ -5,7 +5,7 @@
 
 ---
 
-## ¿Qué es Diseño Conversacional?
+## 💬 ¿Qué es Diseño Conversacional?
 
 Es diseñar **interacciones humanas** en un contexto digital. Cómo tu producto "habla" con el usuario.
 
@@ -28,7 +28,7 @@ P: "Perfecto, voy a mostrarte opciones para BA"
 
 ---
 
-## 1. El Tono de Voz
+## 1. 🎙️ El Tono de Voz
 
 ### Define quién eres como marca
 
@@ -60,7 +60,7 @@ P: "Perfecto, voy a mostrarte opciones para BA"
 
 ---
 
-## 2. Preguntas Abiertas vs. Cerradas
+## 2. ❓ Preguntas Abiertas vs. Cerradas
 
 ### Preguntas Cerradas
 Requieren sí/no o selección de opciones.
@@ -100,7 +100,7 @@ R: "15"
 
 ---
 
-## 3. Contexto y Relevancia
+## 3. 🧭 Contexto y Relevancia
 
 ### Regla de Oro
 **No preguntes lo que ya sabes.**
@@ -141,7 +141,7 @@ Ahora: "¿Tienes depresión?"
 
 ---
 
-## 4. Empatía en el Diálogo
+## 4. 🤍 Empatía en el Diálogo
 
 ### Validar antes de pedir
 
@@ -169,7 +169,7 @@ Error: "CONTRASEÑA INCORRECTA"
 
 ---
 
-## 5. Claridad sobre Claridad
+## 5. 🔍 Claridad sobre Claridad
 
 ### Evita ambigüedad
 ```
@@ -201,7 +201,7 @@ Error: "CONTRASEÑA INCORRECTA"
 
 ---
 
-## 6. Ritmo y Pacing
+## 6. 🥁 Ritmo y Pacing
 
 ### No bombardees
 ```
@@ -227,7 +227,7 @@ Confirmaciones, sin prisa
 
 ---
 
-## 7. Manejo de Errores
+## 7. 🚧 Manejo de Errores
 
 ### El error es oportunidad, no castigo
 
@@ -259,7 +259,7 @@ Confirmaciones, sin prisa
 
 ---
 
-## 8. Flujo de Conversación Natural
+## 8. 🌊 Flujo de Conversación Natural
 
 ### Estructura básica:
 ```
@@ -290,7 +290,7 @@ App: "[Mostrar 3 rutinas]" (ACTION)
 
 ---
 
-## 9. Manejo de Silencios
+## 9. 🤫 Manejo de Silencios
 
 ### El silencio táctico puede ser manipulación
 
@@ -312,7 +312,7 @@ Si necesitas más info, pregunta claramente:
 
 ---
 
-## 10. Respeta la Privacidad Conversacional
+## 10. 🔒 Respeta la Privacidad Conversacional
 
 ### No asumas
 ```
@@ -345,7 +345,7 @@ Mostrar recursos de salud mental sin mencionar búsquedas específicas
 
 ---
 
-## Checklist: ¿Tu Conversación es Ética?
+## ✅ Checklist: ¿Tu Conversación es Ética?
 
 - [ ] ¿El tono es consistente y auténtico?
 - [ ] ¿Evito preguntas que ya sé la respuesta?
@@ -359,7 +359,7 @@ Mostrar recursos de salud mental sin mencionar búsquedas específicas
 
 ---
 
-## Caso de Estudio: Dos Chatbots
+## 📚 Caso de Estudio: Dos Chatbots
 
 ### Chatbot ❌ (Manipulador)
 ```
@@ -389,7 +389,7 @@ Bot: "Sin problema, puedes agregarlo después en configuración"
 
 ---
 
-## Conversación vs. Dark Pattern
+## ⚔️ Conversación vs. Dark Pattern
 
 | Aspecto | Conversación | Dark Pattern |
 |---------|-------------|------------|
@@ -402,7 +402,7 @@ Bot: "Sin problema, puedes agregarlo después en configuración"
 
 ---
 
-## Herramientas para Diseñar Conversaciones
+## 🧰 Herramientas para Diseñar Conversaciones
 
 ### 1. Script de conversación
 ```
@@ -426,7 +426,7 @@ Duda → Ofrecen garantía
 
 ---
 
-## Conclusión
+## 🏁 Conclusión
 
 El diseño conversacional es como una buena amistad:
 - ✅ Te entiende sin que expliques todo

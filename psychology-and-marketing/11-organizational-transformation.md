@@ -5,7 +5,7 @@
 
 ---
 
-## Introducción
+## 👋 Introducción
 
 Cambiar una organización entera requiere más que documentos bonitos.
 
@@ -13,7 +13,7 @@ Requiere **culturar, incentivos, y liderazgo.**
 
 ---
 
-## Fase 1: Diagnóstico (Semana 1-2)
+## 1️⃣ Fase 1: Diagnóstico (Semana 1-2)
 
 ### 1.1 Audit Actual
 
@@ -70,7 +70,7 @@ OPORTUNIDADES:
 
 ---
 
-## Fase 2: Conversión de Liderazgo (Semana 2-4)
+## 2️⃣ Fase 2: Conversión de Liderazgo (Semana 2-4)
 
 ### 2.1 El Pitch a C-Suite
 
@@ -141,7 +141,7 @@ Comunica internamente:
 
 ---
 
-## Fase 3: Cambios Estructurales (Semana 4-12)
+## 3️⃣ Fase 3: Cambios Estructurales (Semana 4-12)
 
 ### 3.1 Crear Role: Privacy Champion
 
@@ -208,7 +208,7 @@ Every new feature must pass:
 
 ---
 
-## Fase 4: Training & Culture (Semana 12+)
+## 4️⃣ Fase 4: Training & Culture (Semana 12+)
 
 ### 4.1 Capacitación del Team
 
@@ -273,7 +273,7 @@ ANNUAL: Ethics report (public)
 
 ---
 
-## Fase 5: Comunicación Externa (Semana 16+)
+## 5️⃣ Fase 5: Comunicación Externa (Semana 16+)
 
 ### 5.1 Tell Your Story
 
@@ -335,7 +335,7 @@ Brand value ↑↑↑
 
 ---
 
-## Fase 6: Measurement & Iteration (Ongoing)
+## 6️⃣ Fase 6: Measurement & Iteration (Ongoing)
 
 ### 6.1 Dashboard Ético
 
@@ -372,7 +372,7 @@ Double down on wins.
 
 ---
 
-## Obstáculos Comunes (y cómo superarlos)
+## 🚧 Obstáculos Comunes (y cómo superarlos)
 
 ### Obstáculo 1: "Investors want growth at all costs"
 
@@ -431,7 +431,7 @@ ACCIÓN:
 
 ---
 
-## Roadmap de Transformación: 12 Meses
+## 🗺️ Roadmap de Transformación: 12 Meses
 
 ```
 MONTH 1-2: Diagnóstico + C-level alignment
@@ -471,7 +471,7 @@ To "we're the ethical choice"
 
 ---
 
-## Señales de Éxito
+## 🏆 Señales de Éxito
 
 ```
 ✅ MÉTRICA                        │ TARGET
@@ -489,7 +489,7 @@ Industry recognition              │ None → Notable
 
 ---
 
-## Conclusión
+## 🏁 Conclusión
 
 **La transformación ética no es rápida. Pero es irreversible.**
 

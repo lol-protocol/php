@@ -1,17 +1,17 @@
 # 8. 📋 Templates y Checklists Prácticos
 
 **Lectura previa:** [Implementation Guide](./07-implementation-guide.md)  
-**Volver a:** [Índice Principal](./README.md)
+**Siguiente:** [FAQ: Dilemas y Preguntas Frecuentes](./09-faq-common-dilemmas.md)
 
 ---
 
-## Introducción
+## 👋 Introducción
 
 Este documento contiene **templates listos para usar** y checklists que puedes copiar, adaptar y implementar directamente en tu producto.
 
 ---
 
-## 1. Templates: Comunicación
+## 1. ✉️ Templates: Comunicación
 
 ### 1.1 Email de Cambio de Política (Transparente)
 
@@ -90,7 +90,7 @@ Pregunta: ¿hay algo específico que te gustaría que pruebe?
 
 ---
 
-## 2. Templates: Formularios y Onboarding
+## 2. 📝 Templates: Formularios y Onboarding
 
 ### 2.1 Formulario de Signup (Ético)
 
@@ -207,7 +207,7 @@ Pregunta: ¿hay algo específico que te gustaría que pruebe?
 
 ---
 
-## 3. Templates: Conversaciones (Chatbot/Asistente)
+## 3. 🤖 Templates: Conversaciones (Chatbot/Asistente)
 
 ### 3.1 Conversación de Onboarding
 
@@ -285,7 +285,7 @@ BOT: Puede ser que el email no llegó.
 
 ---
 
-## 4. Templates: Investigación de Usuarios
+## 4. 🔬 Templates: Investigación de Usuarios
 
 ### 4.1 Script de Entrevista (30 min)
 
@@ -360,7 +360,7 @@ CIERRE:
 
 ---
 
-## 5. Checklists: Audit de Producto
+## 5. 🕵️ Checklists: Audit de Producto
 
 ### 5.1 Privacy Audit Checklist
 
@@ -486,7 +486,7 @@ Crítico si: <70%
 
 ---
 
-## 6. Checklists: Lanzamiento
+## 6. 🚀 Checklists: Lanzamiento
 
 ### 6.1 Pre-Launch Checklist (Cambio Grande)
 
@@ -574,7 +574,7 @@ Thankyou post a usuarios que dieron feedback
 
 ---
 
-## 7. Métricas: Dashboard Ético
+## 7. 📊 Métricas: Dashboard Ético
 
 ### 7.1 Tablero de Privacidad (Mensual)
 
@@ -634,7 +634,7 @@ Thankyou post a usuarios que dieron feedback
 
 ---
 
-## 8. Guías Rápidas
+## 8. ⚡ Guías Rápidas
 
 ### 8.1 Guía: Pedir Permiso (Correctamente)
 
@@ -710,7 +710,7 @@ Ocultamiento = Confianza destruida
 
 ---
 
-## 9. Plantilla: Roadmap de Privacidad (2026-2027)
+## 9. 🗺️ Plantilla: Roadmap de Privacidad (2026-2027)
 
 ```
 Q4 2026 (Octubre-Diciembre):
@@ -744,7 +744,7 @@ METRICS TO TRACK:
 
 ---
 
-## 10. Conclusión
+## 10. 🏁 Conclusión
 
 Usa estos templates como starting point. **Adapta a tu contexto.** El principio es:
 
@@ -754,7 +754,7 @@ No es manipulación. Es diseño honesto.
 
 ---
 
-**Regresa:** [Índice Principal](./README.md)
+**Siguiente lectura:** [FAQ: Dilemas y Preguntas Frecuentes →](./09-faq-common-dilemmas.md)
 
 **Relacionado:**
 - [UX Design Principles](./03-ux-design-principles.md)

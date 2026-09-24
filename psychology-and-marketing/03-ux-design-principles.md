@@ -5,7 +5,7 @@
 
 ---
 
-## UX Ético vs. Dark Patterns
+## ⚔️ UX Ético vs. Dark Patterns
 
 ### Dark Patterns: Tácticas manipuladoras
 ```
@@ -27,7 +27,7 @@
 
 ---
 
-## 1. Transparencia Radical
+## 1. 🔦 Transparencia Radical
 
 ### Qué significa
 El usuario **entiende completamente** qué datos pides, por qué, y qué hará con ellos.
@@ -57,7 +57,7 @@ El usuario **entiende completamente** qué datos pides, por qué, y qué hará c
 
 ---
 
-## 2. Consentimiento Informado
+## 2. ✍️ Consentimiento Informado
 
 ### NO es consentimiento:
 ```
@@ -87,7 +87,7 @@ El usuario **entiende completamente** qué datos pides, por qué, y qué hará c
 
 ---
 
-## 3. Arquitectura de Información Clara
+## 3. 🗺️ Arquitectura de Información Clara
 
 ### Problema: Sobrecarga cognitiva
 Si pides 15 datos a la vez, el usuario:
@@ -115,7 +115,7 @@ Cada paso tiene propósito claro.
 
 ---
 
-## 4. Validación Transparente
+## 4. ✔️ Validación Transparente
 
 ### ❌ Malo:
 ```
@@ -136,7 +136,7 @@ Errores desaparecen en tiempo real
 
 ---
 
-## 5. Reversibilidad y Control
+## 5. ⏪ Reversibilidad y Control
 
 ### El usuario debe poder:
 - [ ] Ver qué datos tienes de él
@@ -156,7 +156,7 @@ Errores desaparecen en tiempo real
 
 ---
 
-## 6. Minimización de Datos
+## 6. 📉 Minimización de Datos
 
 ### Pregunta para cada campo:
 **"¿Realmente necesito esto?"**
@@ -174,7 +174,7 @@ Errores desaparecen en tiempo real
 
 ---
 
-## 7. Defensa en Profundidad (Defense in Depth)
+## 7. 🛡️ Defensa en Profundidad (Defense in Depth)
 
 No confíes en una sola medida.
 
@@ -188,7 +188,7 @@ Capa 5: Backup (recuperación en emergencia)
 
 ---
 
-## 8. Notificación en Cambios
+## 8. 🔔 Notificación en Cambios
 
 ### Cuando cambias política de privacidad:
 - [ ] Notificación clara (no email perdido en spam)
@@ -199,7 +199,7 @@ Capa 5: Backup (recuperación en emergencia)
 
 ---
 
-## 9. Vocabulario Claro
+## 9. 🗣️ Vocabulario Claro
 
 ### ❌ Confuso:
 ```
@@ -215,7 +215,7 @@ Capa 5: Backup (recuperación en emergencia)
 
 ---
 
-## 10. Defensa contra Fricciones
+## 10. 🧯 Defensa contra Fricciones
 
 ### Dark Pattern: Fricciones innecesarias para "No"
 ```
@@ -233,7 +233,7 @@ Capa 5: Backup (recuperación en emergencia)
 
 ---
 
-## Checklist: ¿Tu UX es ético?
+## ✅ Checklist: ¿Tu UX es ético?
 
 ### Datos
 - [ ] ¿Explico por qué pido cada dato?
@@ -260,7 +260,7 @@ Capa 5: Backup (recuperación en emergencia)
 
 ---
 
-## Caso de Estudio: Apple vs. Facebook
+## 📚 Caso de Estudio: Apple vs. Facebook
 
 ### Apple (Privacy-First)
 ```
@@ -283,7 +283,7 @@ Capa 5: Backup (recuperación en emergencia)
 
 ---
 
-## Privacy by Design: Framework de Cavoukian
+## 🏛️ Privacy by Design: Framework de Cavoukian
 
 ### 7 Principios:
 
@@ -318,7 +318,7 @@ Capa 5: Backup (recuperación en emergencia)
 
 ---
 
-## Ejemplo: Formulario Ético
+## 📄 Ejemplo: Formulario Ético
 
 ```html
 <!-- ❌ MALO -->
@@ -348,7 +348,7 @@ Capa 5: Backup (recuperación en emergencia)
 
 ---
 
-## Conclusión
+## 🏁 Conclusión
 
 **UX ético no es menos rentable.** Es más.
 

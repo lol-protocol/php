@@ -5,7 +5,7 @@
 
 ---
 
-## ¿Qué es Neuromarketing?
+## 🧬 ¿Qué es Neuromarketing?
 
 Neuromarketing es usar hallazgos de **neurociencia y psicología** para entender por qué los usuarios compran, usan o recomiendan un producto.
 
@@ -14,7 +14,7 @@ Neuromarketing es usar hallazgos de **neurociencia y psicología** para entender
 
 ---
 
-## Principios de Persuasión (Versión Ética)
+## 🎯 Principios de Persuasión (Versión Ética)
 
 Robert Cialdini identificó 6 principios de influencia. Aquí veremos cómo aplicarlos **éticamente**.
 
@@ -176,7 +176,7 @@ Comunidad real, no fabricada
 
 ---
 
-## 7 Principios Adicionales (Johnson & Johnson)
+## 🔟 7 Principios Adicionales (Johnson & Johnson)
 
 ### 7. Emoción
 
@@ -213,7 +213,7 @@ Pedir información en momentos relevantes
 
 ---
 
-## El Efecto Halo
+## 😇 El Efecto Halo
 
 **La ciencia:** Si alguien es bueno en una cosa, asumes que es bueno en todo.
 
@@ -238,7 +238,7 @@ Confianza porque funciona, no porque se ve bien
 
 ---
 
-## Disonancia Cognitiva
+## 🌀 Disonancia Cognitiva
 
 **La ciencia:** Cuando tus acciones no coinciden con tus valores, te sientes mal.
 
@@ -265,7 +265,7 @@ Alineación honesta entre valores y acciones
 
 ---
 
-## Neuromarketing en Acción: Ejemplo Completo
+## 🎬 Neuromarketing en Acción: Ejemplo Completo
 
 ### Caso: Vender un curso de programación
 
@@ -290,7 +290,7 @@ Alineación honesta entre valores y acciones
 
 ---
 
-## Checklist: ¿Es tu marketing ético?
+## ✅ Checklist: ¿Es tu marketing ético?
 
 - [ ] ¿Puedes respaldar cada claim con datos?
 - [ ] ¿Las reviews son reales?
@@ -306,7 +306,7 @@ Si contestas "no" a cualquiera, **revisa ese punto**.
 
 ---
 
-## El Poder de la Honestidad en Marketing
+## 💎 El Poder de la Honestidad en Marketing
 
 **Paradoja:** La honestidad es más persuasiva que el engaño.
 
@@ -328,7 +328,7 @@ Empresa B: "Reduce síntomas en 60% de usuarios en promedio"
 
 ---
 
-## Resumen de Principios Éticos
+## 📝 Resumen de Principios Éticos
 
 | Principio | Manipulativo | Ético |
 |-----------|-------------|--------|
@@ -342,7 +342,7 @@ Empresa B: "Reduce síntomas en 60% de usuarios en promedio"
 
 ---
 
-## Conclusión
+## 🏁 Conclusión
 
 El neuromarketing ético es poderoso porque:
 - ✅ Funciona mejor a largo plazo

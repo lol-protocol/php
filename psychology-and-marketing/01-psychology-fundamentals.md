@@ -48,7 +48,7 @@ Antes de diseñar un producto o estrategia de marketing, necesitas entender **c�
 
 ---
 
-## 2. Heurísticas y Sesgos Cognitivos
+## 2. 🎭 Heurísticas y Sesgos Cognitivos
 
 Los usuarios usan "atajos mentales" para tomar decisiones rápidas. Son útiles pero pueden llevar a errores.
 
@@ -108,7 +108,7 @@ Entonces asumes que "la mayoría son positivas".
 
 ---
 
-## 3. Memoria: Cómo Recordamos
+## 3. 💾 Memoria: Cómo Recordamos
 
 ### Memoria de Trabajo (Corto Plazo)
 - Capacidad limitada: ~7 elementos
@@ -136,7 +136,7 @@ Entonces asumes que "la mayoría son positivas".
 
 ---
 
-## 4. Atención: El Recurso Más Valioso
+## 4. 👁️ Atención: El Recurso Más Valioso
 
 ### Atención es finita
 Los usuarios tienen ~8 segundos de atención. Después, suele perderse el interés.
@@ -156,7 +156,7 @@ Solo notas lo que **esperas** notar.
 
 ---
 
-## 5. Toma de Decisiones
+## 5. ⚖️ Toma de Decisiones
 
 ### Cuando decidimos, consideramos:
 
@@ -181,7 +181,7 @@ Alternativas → Atributos evaluados → Criterio de decisión → Decisión
 
 ---
 
-## 6. Estado Emocional y Decisiones
+## 6. 💗 Estado Emocional y Decisiones
 
 ### Las emociones dirigen, la razón justifica
 
@@ -201,7 +201,7 @@ Cuando estás **triste:**
 
 ---
 
-## 7. Motivación: Intrínseca vs. Extrínseca
+## 7. 🔥 Motivación: Intrínseca vs. Extrínseca
 
 ### Motivación Intrínseca
 Haces algo porque lo disfrutes o es significativo.
@@ -234,7 +234,7 @@ Pagas a alguien para que juegue un videojuego que amaba
 
 ---
 
-## 8. Carga Cognitiva
+## 8. 🏋️ Carga Cognitiva
 
 **Definición:** Cuánto esfuerzo mental requiere una tarea.
 
@@ -260,7 +260,7 @@ Si carga > capacidad → abandono
 
 ---
 
-## 9. Reconocimiento vs. Recuerdo
+## 9. 🔎 Reconocimiento vs. Recuerdo
 
 ### Reconocimiento (fácil)
 "¿Viste este logo antes?" → Muchos dirán sí
@@ -274,7 +274,7 @@ Si carga > capacidad → abandono
 
 ---
 
-## 10. Principios Aplicados a Productos
+## 10. 🛠️ Principios Aplicados a Productos
 
 | Concepto | Aplicación |
 |----------|-----------|
@@ -289,7 +289,7 @@ Si carga > capacidad → abandono
 
 ---
 
-## Resumen
+## 📝 Resumen
 
 Los usuarios **no son totalmente racionales**, y eso está bien. El trabajo de un diseñador ético es:
 
