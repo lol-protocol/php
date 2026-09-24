@@ -6,6 +6,12 @@ const shapes = [
 ];
 
 const path = document.querySelector('.morph-shape path');
+
+if (!path) {
+    console.error('Morph shape path not found');
+    throw new Error('Animation setup failed: .morph-shape path not found');
+}
+
 let currentShape = 0;
 
 function morphShape() {

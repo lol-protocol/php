@@ -1,4 +1,10 @@
 const pyramid = document.getElementById('pyramid');
+
+if (!pyramid) {
+    console.error('Pyramid container not found');
+    throw new Error('Animation setup failed: #pyramid not found');
+}
+
 let animationTimeout;
 
 function buildPyramid() {
@@ -13,31 +19,6 @@ function buildPyramid() {
             delay++;
         }
         pyramid.appendChild(row);
-    }
-}
-
-class SequenceToggle extends AnimationToggle {
-    constructor(callback, delay = 4000) {
-        super([], true);
-        this.callback = callback;
-        this.delay = delay;
-        this.timeoutId = null;
-    }
-
-    toggle() {
-        super.toggle();
-        if (this.isAnimating) {
-            this.scheduleNext();
-        } else {
-            clearTimeout(this.timeoutId);
-        }
-    }
-
-    scheduleNext() {
-        this.callback();
-        if (this.isAnimating) {
-            this.timeoutId = setTimeout(() => this.scheduleNext(), this.delay);
-        }
     }
 }
 

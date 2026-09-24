@@ -32,6 +32,50 @@ class AnimationToggle {
     }
 }
 
+// Sequence-based toggle for repeated callbacks
+class SequenceToggle extends AnimationToggle {
+    constructor(callback, delay = 4000) {
+        super([], true);
+        this.callback = callback;
+        this.delay = delay;
+        this.timeoutId = null;
+    }
+
+    toggle() {
+        super.toggle();
+        if (this.isAnimating) {
+            this.scheduleNext();
+        } else {
+            this._clearTimeout();
+        }
+    }
+
+    pause() {
+        super.pause();
+        this._clearTimeout();
+    }
+
+    resume() {
+        super.resume();
+        this.scheduleNext();
+    }
+
+    _clearTimeout() {
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+            this.timeoutId = null;
+        }
+    }
+
+    scheduleNext() {
+        this._clearTimeout();
+        this.callback();
+        if (this.isAnimating) {
+            this.timeoutId = setTimeout(() => this.scheduleNext(), this.delay);
+        }
+    }
+}
+
 // Particle emitter for spawning/destroying elements on interval
 class ParticleEmitterToggle extends AnimationToggle {
     constructor(emitFn, emitInterval) {
@@ -46,11 +90,29 @@ class ParticleEmitterToggle extends AnimationToggle {
         if (this.isAnimating) {
             this.startEmitting();
         } else {
+            this._stopEmitting();
+        }
+    }
+
+    pause() {
+        super.pause();
+        this._stopEmitting();
+    }
+
+    resume() {
+        super.resume();
+        this.startEmitting();
+    }
+
+    _stopEmitting() {
+        if (this.emitterIntervalId) {
             clearInterval(this.emitterIntervalId);
+            this.emitterIntervalId = null;
         }
     }
 
     startEmitting() {
+        this._stopEmitting();
         this.emitterIntervalId = setInterval(() => {
             if (this.isAnimating) this.emitFn();
         }, this.emitInterval);
@@ -69,6 +131,10 @@ const Colors = {
 // Animación rápida para crear múltiples elementos
 function createAnimatedElements(count, className, parentSelector, position = 'absolute') {
     const container = document.querySelector(parentSelector);
+    if (!container) {
+        console.error('Container not found: ' + parentSelector);
+        return [];
+    }
     const elements = [];
     for (let i = 0; i < count; i++) {
         const el = createDiv(className);
@@ -236,9 +302,15 @@ class AnimationManager {
         this.objects = objects;
         this.isRunning = true;
         this.animationId = null;
+        this.isStarted = false;
     }
 
     start() {
+        if (this.isStarted) {
+            console.warn('AnimationManager already started');
+            return;
+        }
+        this.isStarted = true;
         const loop = () => {
             if (this.isRunning) {
                 this.objects.forEach(obj => obj.update());
@@ -251,6 +323,8 @@ class AnimationManager {
     stop() {
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+            this.isStarted = false;
         }
     }
 
@@ -266,6 +340,10 @@ class AnimationManager {
 // SVG pattern generator
 const SVGPatterns = {
     createRadialWeb: (container, centerX, centerY, layers, pointsPerLayer) => {
+        if (!container) {
+            console.error('SVG container is null');
+            return [];
+        }
         const svg = container;
         const points = [];
 

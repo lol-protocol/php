@@ -1,5 +1,10 @@
 const container = document.getElementById('mandalaContainer');
 
+if (!container) {
+    console.error('Mandala container not found');
+    throw new Error('Animation setup failed: #mandalaContainer not found');
+}
+
 for (let i = 0; i < 6; i++) {
     const ring = createDiv('mandala-ring');
     const size = (50 - i * 8) * 2;

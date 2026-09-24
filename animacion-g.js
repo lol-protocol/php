@@ -1,6 +1,11 @@
 const container = document.getElementById('particleContainer');
 const colorArray = [Colors.RED.main, Colors.TEAL.main, Colors.YELLOW.main, Colors.GREEN.main, '#c44569'];
 
+if (!container) {
+    console.error('Particle container not found');
+    throw new Error('Animation setup failed: #particleContainer not found');
+}
+
 class Particle extends PhysicsObject {
     constructor() {
         const size = Math.random() * 20 + 5;

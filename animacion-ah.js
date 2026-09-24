@@ -1,5 +1,10 @@
 const container = document.getElementById('starRainContainer');
 
+if (!container) {
+    console.error('Star rain container not found');
+    throw new Error('Animation setup failed: #starRainContainer not found');
+}
+
 function createFallingStar() {
     const star = createDiv('falling-star');
     star.textContent = '★';

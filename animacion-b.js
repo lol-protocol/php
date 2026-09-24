@@ -2,6 +2,11 @@ const container = document.getElementById('bouncingContainer');
 const ball1 = document.getElementById('ball1');
 const ball2 = document.getElementById('ball2');
 
+if (!container || !ball1 || !ball2) {
+    console.error('Required elements not found');
+    throw new Error('Animation setup failed: missing elements');
+}
+
 class Ball extends PhysicsObject {
     constructor(element, bounds, radius) {
         super(element, {
