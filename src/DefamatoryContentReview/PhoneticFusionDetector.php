@@ -13,9 +13,9 @@ namespace DefamatoryContentReview;
  * También cubre la variante de un solo campo: un nombre cuya ortografía
  * difiere de la del diccionario pero suena igual ("Cojes" vs. "Coges").
  *
- * Sólo funciona para idiomas con plegado registrado en
- * PhoneticFolderRegistry (vía el WordList recibido, para no depender de
- * saber qué idioma es): para el resto, ambos métodos devuelven vacío.
+ * La fusión funciona para los idiomas de FusionSupport; la variante, sólo
+ * para los que tienen reglas en PhoneticFolderRegistry. Para el resto,
+ * ambos métodos devuelven vacío.
  */
 class PhoneticFusionDetector
 {
@@ -35,12 +35,12 @@ class PhoneticFusionDetector
      */
     public function detectFusion(string $firstName, string $lastName): array
     {
-        if (!$this->wordList->supportsPhoneticFolding()) {
+        if (!$this->wordList->supportsFusion()) {
             return [];
         }
 
-        $firstFold = $this->wordList->fold($firstName);
-        $lastFold = $this->wordList->fold($lastName);
+        $firstFold = $this->wordList->fusionFold($firstName);
+        $lastFold = $this->wordList->fusionFold($lastName);
 
         if ($firstFold === '' || $lastFold === '') {
             return [];
