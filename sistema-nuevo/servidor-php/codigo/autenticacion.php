@@ -14,7 +14,7 @@ function auth_iniciar_sesion_php(): void
     if (session_status() === PHP_SESSION_ACTIVE) {
         return;
     }
-    session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'samesite' => 'Lax']);
+    session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'samesite' => 'Lax', 'httponly' => true]);
     session_start();
 }
 

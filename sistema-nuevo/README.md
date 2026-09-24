@@ -425,13 +425,14 @@ php pruebas/ejecutar-integracion.php
   rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
   resultados no dibuja una sección vacía, sin ninguna alerta real el panel
   entero queda oculto).
-- `pruebas/e2e/`: login (credenciales incorrectas/correctas, logout), elegir
-  usuario, paginación, filtro por tipo, gráfico, alertas (clic salta de usuario) e
-  idioma; más, en `panel-nuevas-features.e2e.cjs`: el tile de KPIs de alertas, el
-  indicador visual al guardar una nota, y el rate limiting (5 fallos + bloqueo con
-  la contraseña correcta) — este último limpia `intentos_login` con `psql` en un
-  `finally`, para no dejar la IP del test runner bloqueada 15 minutos si algo
-  falla a mitad de camino.
+- `pruebas/e2e/`: login (credenciales incorrectas/correctas, logout), cookie de
+  sesión `HttpOnly` (el JS de la página no la puede leer), POST sin token CSRF o
+  con uno inválido → 403, elegir usuario, paginación, filtro por tipo, gráfico,
+  alertas (clic salta de usuario) e idioma; más, en `panel-nuevas-features.e2e.cjs`:
+  el tile de KPIs de alertas, el indicador visual al guardar una nota, y el rate
+  limiting (5 fallos + bloqueo con la contraseña correcta) — este último limpia
+  `intentos_login` con `psql` en un `finally`, para no dejar la IP del test runner
+  bloqueada 15 minutos si algo falla a mitad de camino.
 
 Las pruebas e2e usan `require()` (CommonJS) en vez de `import`, a propósito: Node
 solo resuelve paquetes globales (Playwright no tiene `node_modules` propio acá) vía
