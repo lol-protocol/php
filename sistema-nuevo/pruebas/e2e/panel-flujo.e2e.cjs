@@ -2,7 +2,7 @@ const { chromium } = require("playwright");
 const { assert, paso, resumenPasos, iniciarSesion } = require("./ayudante-e2e.cjs");
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+  const browser = await chromium.launch();
   const page = await browser.newPage();
   await iniciarSesion(page);
 

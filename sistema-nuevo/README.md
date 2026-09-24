@@ -439,6 +439,12 @@ Las pruebas e2e usan `require()` (CommonJS) en vez de `import`, a propósito: No
 solo resuelve paquetes globales (Playwright no tiene `node_modules` propio acá) vía
 `NODE_PATH` con `require()`, no con `import` bajo ESM.
 
+En GitHub, `.github/workflows/pruebas-backoffice.yml` (en la raíz del repositorio)
+corre las 4 suites en cada pull request que toque `sistema-nuevo/` y en cada push a
+`master`: PostgreSQL 16 como servicio con las mismas credenciales que los defaults
+de `ConexionBd.php`, datos semilla, y los 3 componentes levantados para el e2e. Si
+algo falla, el último paso imprime los logs de Java, la API y el panel.
+
 ## Ejemplos
 
 `datos/ejemplos/`:

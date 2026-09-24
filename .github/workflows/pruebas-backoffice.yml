@@ -1,0 +1,102 @@
+name: Pruebas backoffice
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "sistema-nuevo/**"
+      - ".github/workflows/pruebas-backoffice.yml"
+  pull_request:
+    paths:
+      - "sistema-nuevo/**"
+      - ".github/workflows/pruebas-backoffice.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: sistema-nuevo
+
+    # Mismas credenciales que los defaults de ConexionBd.php: la app no necesita configuración extra.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: backoffice_app
+          POSTGRES_PASSWORD: backoffice_dev_2026
+          POSTGRES_DB: backoffice
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U backoffice_app -d backoffice"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: pdo_pgsql, curl, mbstring
+          coverage: none
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Instalar Playwright, Chromium y psql
+        run: |
+          npm install -g playwright@1.56.1
+          playwright install --with-deps chromium
+          command -v psql >/dev/null || sudo apt-get install -y postgresql-client
+
+      - name: Unit tests PHP (saneador)
+        run: php pruebas/ejecutar-php.php
+
+      - name: Unit tests JS
+        run: ./pruebas/ejecutar-js.sh
+
+      - name: Cargar datos semilla en PostgreSQL
+        run: php datos/generar-datos-semilla.php
+
+      - name: Integración (Almacen*.php contra PostgreSQL)
+        run: php pruebas/ejecutar-integracion.php
+
+      - name: Levantar Java, API y panel
+        run: |
+          javac servicio-estadisticas-java/*.java
+          (cd servicio-estadisticas-java && java ServicioEstadisticas > /tmp/java.log 2>&1 &)
+          php -S localhost:8000 -t servidor-php/publico servidor-php/publico/index.php > /tmp/api.log 2>&1 &
+          php -S localhost:8082 -t interfaz > /tmp/panel.log 2>&1 &
+          for url in "http://localhost:8081/stats?type=login" "http://localhost:8000/api/session" "http://localhost:8082/"; do
+            for _ in $(seq 1 30); do
+              curl -sf -o /dev/null --max-time 2 "$url" && continue 2
+              sleep 1
+            done
+            echo "No levantó a tiempo: $url"
+            exit 1
+          done
+
+      - name: e2e (Playwright)
+        run: NODE_PATH="$(npm root -g)" ./pruebas/ejecutar-e2e.sh
+
+      - name: Logs de los servicios
+        if: failure()
+        run: tail -n 50 /tmp/java.log /tmp/api.log /tmp/panel.log || true

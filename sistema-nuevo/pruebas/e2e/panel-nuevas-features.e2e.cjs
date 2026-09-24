@@ -26,7 +26,7 @@ async function intentarLogin(page, password) {
 }
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+  const browser = await chromium.launch();
   const page = await browser.newPage();
   await iniciarSesion(page);
 
@@ -118,7 +118,7 @@ async function intentarLogin(page, password) {
   // limpieza al final (try/finally) -- si esto queda bloqueado, toda corrida
   // posterior de la suite (o el uso real del panel) se rompe por 15 minutos.
   try {
-    const browser2 = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+    const browser2 = await chromium.launch();
     const page2 = await browser2.newPage();
 
     await paso("5 intentos fallidos de login bloquean con 429 y mensaje claro", async () => {
