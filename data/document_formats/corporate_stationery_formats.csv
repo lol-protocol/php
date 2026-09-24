@@ -1,0 +1,28 @@
+format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,category,description,common_use
+Letterhead Standard,210,297,8.3,11.7,1:1.414,International,Stationery,Standard letter paper,Business correspondence
+Letterhead Legal,215.9,355.6,8.5,14,8.5:14,International,Stationery,Legal size letterhead,Official correspondence
+Business Card Standard,90,50,3.54,1.97,90:50,International,Stationery,Standard business card,Business cards
+Business Card Thick,90,50,3.54,1.97,90:50,International,Stationery,Premium thick card,Premium business cards
+Business Card Oversized,100,60,3.94,2.36,100:60,International,Stationery,Larger business card,Premium cards
+Envelope #10,104.78,241.3,4.125,9.5,4.125:9.5,International,Stationery,Standard business envelope,Business mail
+Envelope A4,110,220,4.3,8.7,110:220,International,Stationery,A4 envelope size,Document mailing
+Envelope A5,89,152,3.5,6,3.5:6,International,Stationery,Small envelope,Small correspondence
+Envelope C6,114,162,4.5,6.4,4.5:6.4,International,Stationery,Postcard envelope,Small documents
+Envelope C5,162,229,6.4,9,6.4:9,International,Stationery,Medium envelope,Medium documents
+Envelope DL,110,220,4.3,8.7,110:220,International,Stationery,Long envelope,Bills, correspondence
+Folder Two Pocket,228,305,9,12,9:12,International,Stationery,Two pocket folder,Document folders
+Folder Fastener,228,305,9,12,9:12,International,Stationery,Folder with fasteners,Secured documents
+Folder Prong,228,305,9,12,9:12,International,Stationery,Folder with prongs,Organized documents
+Presentation Folder,254,305,10,12,10:12,International,Stationery,Custom presentation folder,Professional documents
+Memo Pad 3x5,76,127,3,5,3:5,International,Stationery,Small memo size,Office memos
+Memo Pad 4x6,102,152,4,6,4:6,International,Stationery,Standard memo pad,Memos, notes
+Tab Divider 5-Tab,203,279,8,11,8:11,International,Stationery,Five tab divider,Document organization
+Tab Divider 8-Tab,203,279,8,11,8:11,International,Stationery,Eight tab divider,Document organization
+Index Card 3x5,76,127,3,5,3:5,International,Stationery,Small index card,Reference cards
+Index Card 4x6,102,152,4,6,4:6,International,Stationery,Standard index card,Research cards
+Note Pad Adhesive 3x3,76,76,3,3,1:1,International,Stationery,Sticky notes,Quick notes
+Note Pad Adhesive 4x6,102,152,4,6,4:6,International,Stationery,Large sticky notes,Larger notes
+Certificate Standard,216,279,8.5,11,8.5:11,International,Stationery,Standard certificate,Achievement certificates
+Certificate Landscape,279,216,11,8.5,11:8.5,International,Stationery,Horizontal certificate,Landscape certificates
+Notebook A4,210,297,8.3,11.7,1:1.414,International,Stationery,Standard notebook,Note taking
+Notebook A5,148,210,5.8,8.3,5.8:8.3,International,Stationery,Small notebook,Portable notes

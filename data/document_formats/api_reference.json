@@ -1,0 +1,269 @@
+{
+  "version": "2.0",
+  "title": "Document Formats API Reference",
+  "description": "Complete API reference for document, paper, and book formats database",
+  "base_url": "/api/v1/formats",
+  "endpoints": [
+    {
+      "name": "List All Formats",
+      "method": "GET",
+      "path": "/formats",
+      "parameters": {
+        "country": "string (optional) - Filter by country code (e.g., 'US', 'MX')",
+        "category": "string (optional) - Filter by category (e.g., 'Standard', 'Legal')",
+        "type": "string (optional) - Filter by type (e.g., 'Paper', 'Book')",
+        "page": "integer (optional) - Pagination page number (default: 1)",
+        "limit": "integer (optional) - Results per page (default: 20, max: 100)",
+        "sort": "string (optional) - Sort field (e.g., 'name', 'width_mm')",
+        "order": "string (optional) - Sort order ('asc' or 'desc')"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "data": [
+            {
+              "format_id": 1,
+              "format_name": "A4",
+              "country": "International",
+              "category": "Standard",
+              "type": "Paper",
+              "width_mm": 210,
+              "height_mm": 297,
+              "width_inches": 8.3,
+              "height_inches": 11.7,
+              "aspect_ratio": "1:1.414",
+              "description": "Standard office paper",
+              "common_use": "Office documents, letters, reports"
+            }
+          ],
+          "pagination": {
+            "current_page": 1,
+            "total_pages": 5,
+            "total_results": 95,
+            "results_per_page": 20
+          }
+        }
+      }
+    },
+    {
+      "name": "Get Format by ID",
+      "method": "GET",
+      "path": "/formats/{format_id}",
+      "parameters": {
+        "format_id": "integer (required) - The format ID"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "data": {
+            "format_id": 1,
+            "format_name": "A4",
+            "country": "International",
+            "category": "Standard",
+            "type": "Paper",
+            "width_mm": 210,
+            "height_mm": 297,
+            "width_inches": 8.3,
+            "height_inches": 11.7,
+            "aspect_ratio": "1:1.414",
+            "description": "Standard office paper",
+            "common_use": "Office documents, letters, reports",
+            "technical_specs": {
+              "weight_gsm": "60-300",
+              "recommended_dpi": "300-600",
+              "finish_types": ["Matte", "Glossy"],
+              "special_notes": "Standard office paper 80-90 gsm"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Search Formats",
+      "method": "GET",
+      "path": "/formats/search",
+      "parameters": {
+        "q": "string (required) - Search query (format name, country, category)",
+        "limit": "integer (optional) - Results limit (default: 20)"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "query": "A4",
+          "results": [
+            {
+              "format_id": 1,
+              "format_name": "A4",
+              "country": "International",
+              "relevance_score": 1.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Format Conversions",
+      "method": "GET",
+      "path": "/formats/{format_id}/conversions",
+      "parameters": {
+        "format_id": "integer (required) - Source format ID"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "source_format": "A4",
+          "conversions": [
+            {
+              "to_format": "Letter",
+              "to_country": "USA",
+              "equivalence_level": "Very Similar",
+              "equivalence_percentage": 95,
+              "notes": "Nearly equivalent size"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Country Formats",
+      "method": "GET",
+      "path": "/countries/{country_code}/formats",
+      "parameters": {
+        "country_code": "string (required) - ISO 3166-1 alpha-2 country code",
+        "category": "string (optional) - Filter by category"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "country": "United States",
+          "measurement_system": "Imperial",
+          "formats": [
+            {
+              "format_id": 2,
+              "format_name": "Letter",
+              "category": "Standard",
+              "width_inches": 8.5,
+              "height_inches": 11,
+              "width_mm": 215.9,
+              "height_mm": 279.4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Formats by Dimensions",
+      "method": "GET",
+      "path": "/formats/by-dimensions",
+      "parameters": {
+        "width_mm_min": "number (optional) - Minimum width in mm",
+        "width_mm_max": "number (optional) - Maximum width in mm",
+        "height_mm_min": "number (optional) - Minimum height in mm",
+        "height_mm_max": "number (optional) - Maximum height in mm"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "filters": {
+            "width_range": "200-220 mm",
+            "height_range": "270-300 mm"
+          },
+          "results": [
+            {
+              "format_id": 1,
+              "format_name": "A4",
+              "width_mm": 210,
+              "height_mm": 297
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Paper Weight Standards",
+      "method": "GET",
+      "path": "/paper-weights",
+      "parameters": {
+        "weight_type": "string (optional) - Filter by type (Bond, Text, Cover, Cardstock)"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "weights": [
+            {
+              "weight_id": 1,
+              "weight_name": "20 lb Bond",
+              "gsm": 75,
+              "lb_bond": 20,
+              "typical_use": "Standard printer paper"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Country Compatibility",
+      "method": "GET",
+      "path": "/countries/{country_code}/compatibility",
+      "parameters": {
+        "country_code": "string (required) - ISO 3166-1 alpha-2 country code"
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "success": true,
+          "country": "United States",
+          "primary_format": "Letter",
+          "measurement_system": "Imperial",
+          "recommended_export_format": "Letter",
+          "challenges": "International compatibility issues with A4 standard",
+          "notes": "Uses imperial measurements, not widely adopted internationally"
+        }
+      }
+    }
+  ],
+  "error_responses": [
+    {
+      "status": 400,
+      "code": "INVALID_PARAMETER",
+      "message": "Invalid parameter value provided"
+    },
+    {
+      "status": 404,
+      "code": "NOT_FOUND",
+      "message": "Requested resource not found"
+    },
+    {
+      "status": 422,
+      "code": "VALIDATION_ERROR",
+      "message": "Request validation failed"
+    },
+    {
+      "status": 500,
+      "code": "INTERNAL_ERROR",
+      "message": "Internal server error"
+    }
+  ],
+  "authentication": {
+    "type": "API Key",
+    "header": "X-API-Key",
+    "example": "X-API-Key: your_api_key_here"
+  },
+  "rate_limiting": {
+    "requests_per_minute": 60,
+    "requests_per_hour": 1000,
+    "header": "X-RateLimit-Remaining"
+  },
+  "data_formats": {
+    "measurement": "All sizes provided in both mm and inches",
+    "aspect_ratio": "Calculated as width:height",
+    "timestamps": "ISO 8601 format"
+  }
+}

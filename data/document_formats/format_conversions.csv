@@ -1,0 +1,40 @@
+from_format,from_country,to_format,to_country,equivalence_level,notes
+Letter,USA,A4,International,95%,Nearly equivalent size
+Legal,USA,Oficio,Mexico,98%,Nearly identical legal size
+Tabloid,USA,A3,International,105%,A3 slightly smaller
+Executive,USA,None,International,Low,No direct equivalent
+A4,International,Letter,USA,95%,Letter slightly larger
+A3,International,Tabloid,USA,105%,Tabloid slightly larger
+A5,International,None,USA,Low,No direct equivalent
+A6,International,Postcard,International,95%,Nearly equivalent
+B5,International,16K,China,95%,Similar book size
+JIS B4,Japan,A3,International,102%,Very similar size
+JIS B5,Japan,B5,International,98%,Nearly identical
+Hagaki,Japan,Postcard,International,98%,Nearly identical postcard size
+Letter,USA,Carta,Mexico,100%,Identical office size
+Legal,USA,Oficio,Mexico,98%,Nearly identical
+Foolscap,UK,Legal,USA,100%,Equivalent document size
+Crown,UK,5x8,International,95%,Very similar book size
+Royal,UK,6x9,International,98%,Nearly identical book size
+A4,International,A4,Any,100%,Standard international size
+A3,International,A3,Any,100%,Standard international size
+Business Card,International,Meishi,Japan,95%,Nearly identical card size
+DL Envelope,International,Envelope C6.5,International,98%,Very similar envelope
+C6 Envelope,International,C6,International,100%,Identical envelope size
+Postcard,International,A6,International,95%,Nearly equivalent
+Photo 4x6,International,Postcard,International,98%,Nearly identical
+Certificate,USA,A4,International,95%,Similar size
+Menu,International,Invitation,International,98%,Nearly identical
+Leaflet,International,Brochure,International,95%,Similar promotional size
+Ticket,International,Receipt,International,100%,Both small format
+16K,China,A5,International,95%,Similar book size
+8K,China,A3,International,102%,Very similar large size
+B5,International,Digest,International,98%,Nearly identical digest size
+Paperback,International,Mass Market,International,90%,Mass market smaller
+Hardcover,International,Trade Paperback,International,98%,Nearly identical book size
+Coffee Table,International,Large Format,International,95%,Similar oversized format
+Foolscap,India,Legal,USA,100%,Equivalent size
+Demy,UK,6x8.5,International,98%,Nearly identical
+Crown,UK,5x8,International,95%,Similar size
+Envelope #10,USA,DL Envelope,International,100%,Identical business envelope
+A4,Any,Letter,USA,95%,Near equivalent
