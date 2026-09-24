@@ -47,12 +47,12 @@ class PhoneticFusionDetector
         }
 
         $full = $firstFold . $lastFold;
-        $boundary = mb_strlen($firstFold, 'UTF-8');
+        $boundary = StringUtils::len($firstFold);
         $matches = [];
 
         foreach ($this->wordList->getFusionCandidates($this->minLength) as $candidate) {
             $needle = $candidate['phonetic'];
-            $needleLen = mb_strlen($needle, 'UTF-8');
+            $needleLen = StringUtils::len($needle);
             $searchFrom = 0;
 
             while (($index = self::mbStrpos($full, $needle, $searchFrom)) !== null) {
