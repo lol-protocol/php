@@ -25,9 +25,13 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         'city' => ['string'],
         'source_directory_id' => ['string'],
         'source_line' => ['int'],
+        'surname_soundex' => ['string'],
+        'surname_phonetic' => ['string'],
     ];
 
-    private const INDEXED_COLUMNS = ['full_name', 'country_code', 'street', 'phone_number', 'source_directory_id'];
+    private const INDEXED_COLUMNS = [
+        'full_name', 'country_code', 'street', 'phone_number', 'source_directory_id', 'surname_soundex', 'surname_phonetic',
+    ];
 
     private ?\PDO $pdo = null;
     private ?SqlDialect $dialect = null;
@@ -70,6 +74,25 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         }
 
         $this->dialect->ensureTable(self::TABLE, self::BASE_COLUMNS, self::ADDED_COLUMNS, self::INDEXED_COLUMNS);
+        $this->backfillSurnameKeys();
+    }
+
+    private function backfillSurnameKeys(): void
+    {
+        $rows = $this->pdo->query('SELECT * FROM phone_directory WHERE surname_soundex IS NULL')->fetchAll(\PDO::FETCH_ASSOC);
+        if ($rows === []) {
+            return;
+        }
+
+        $stmt = $this->pdo->prepare('UPDATE phone_directory SET surname_soundex = :soundex, surname_phonetic = :phonetic WHERE id = :id');
+        $this->pdo->beginTransaction();
+        foreach ($rows as $row) {
+            $keys = $this->surnameKeyParams($this->rowToEntry($row));
+            if ($keys[':surnameSoundex'] !== null) {
+                $stmt->execute([':soundex' => $keys[':surnameSoundex'], ':phonetic' => $keys[':surnamePhonetic'], ':id' => $row['id']]);
+            }
+        }
+        $this->pdo->commit();
     }
 
     public function insert(PhoneDirectoryEntry $entry): int
@@ -79,8 +102,10 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         }
 
         $sql = <<<SQL
-        INSERT INTO phone_directory (full_name, raw_name, language, country_code, zone, city, street, phone_number, source_directory_id, source_line, record_date)
-        VALUES (:fullName, :rawName, :language, :countryCode, :zone, :city, :street, :phoneNumber, :sourceDirectoryId, :sourceLine, :recordDate)
+        INSERT INTO phone_directory (full_name, raw_name, language, country_code, zone, city, street, phone_number,
+            source_directory_id, source_line, surname_soundex, surname_phonetic, record_date)
+        VALUES (:fullName, :rawName, :language, :countryCode, :zone, :city, :street, :phoneNumber,
+            :sourceDirectoryId, :sourceLine, :surnameSoundex, :surnamePhonetic, :recordDate)
         SQL;
 
         $stmt = $this->pdo->prepare($sql);
@@ -170,6 +195,35 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         return $row ? $this->rowToEntry($row) : null;
     }
 
+    public function findBySurnameSound(string $surname, ?string $language = null): array
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $root = SurnameKeys::root($surname);
+        $soundex = SurnameKeys::soundex($root);
+        if ($soundex === null) {
+            return [];
+        }
+
+        $where = 'surname_soundex = :soundex';
+        $params = [':soundex' => $soundex];
+
+        // Language keys are only comparable between entries folded with the same language's rules.
+        $phonetic = SurnameKeys::languageKey($root, $language);
+        if ($phonetic !== null) {
+            $where .= ' OR (language = :language AND surname_phonetic = :phonetic)';
+            $params[':language'] = $language;
+            $params[':phonetic'] = $phonetic;
+        }
+
+        $stmt = $this->pdo->prepare("SELECT * FROM phone_directory WHERE {$where} ORDER BY full_name");
+        $stmt->execute($params);
+
+        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
     public function getAll(): array
     {
         if (!$this->isConnected()) {
@@ -196,7 +250,7 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         UPDATE phone_directory
         SET full_name = :fullName, raw_name = :rawName, language = :language, country_code = :countryCode, zone = :zone, city = :city,
             street = :street, phone_number = :phoneNumber, source_directory_id = :sourceDirectoryId, source_line = :sourceLine,
-            updated_at = CURRENT_TIMESTAMP
+            surname_soundex = :surnameSoundex, surname_phonetic = :surnamePhonetic, updated_at = CURRENT_TIMESTAMP
         WHERE id = :id
         SQL;
 
@@ -291,6 +345,16 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             ':phoneNumber' => $entry->getPhoneNumber(),
             ':sourceDirectoryId' => $entry->getSourceDirectoryId(),
             ':sourceLine' => $entry->getSourceLine(),
+        ] + $this->surnameKeyParams($entry);
+    }
+
+    private function surnameKeyParams(PhoneDirectoryEntry $entry): array
+    {
+        $root = $entry->getPersonName()->getSurnameRoot();
+
+        return [
+            ':surnameSoundex' => SurnameKeys::soundex($root),
+            ':surnamePhonetic' => SurnameKeys::languageKey($root, $entry->getLanguage()),
         ];
     }
 

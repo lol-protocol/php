@@ -357,4 +357,81 @@ class PhoneDirectoryDatabaseTest extends TestCase
             unlink($file);
         }
     }
+
+    private function surnames(array $entries): array
+    {
+        $names = array_map(fn($e) => $e->getFormattedName(), $entries);
+        sort($names);
+
+        return $names;
+    }
+
+    public function testFindBySurnameSoundMatchesSpellingVariants(): void
+    {
+        $this->database->insert(new PhoneDirectoryEntry('SMITH, John', 'US', '1 Oak Avenue'));
+        $this->database->insert(new PhoneDirectoryEntry('SMYTH, Mary', 'US', '2 Oak Avenue'));
+        $this->database->insert(new PhoneDirectoryEntry('JONES, Ann', 'US', '3 Oak Avenue'));
+
+        $this->assertEquals(['Smith, John', 'Smyth, Mary'], $this->surnames($this->database->findBySurnameSound('Smithe')));
+    }
+
+    public function testFindBySurnameSoundUsesLanguageRules(): void
+    {
+        $this->database->insert(new PhoneDirectoryEntry(fullName: 'Juan Valdez Ruiz', countryCode: 'MX', street: 'Calle Hidalgo 4', language: 'es'));
+        $this->database->insert(new PhoneDirectoryEntry(fullName: 'Ana Baldez Soto', countryCode: 'MX', street: 'Calle Juárez 9', language: 'es'));
+
+        $this->assertCount(1, $this->database->findBySurnameSound('Valdez'));
+        $this->assertEquals(
+            ['Baldez Soto, Ana', 'Valdez Ruiz, Juan'],
+            $this->surnames($this->database->findBySurnameSound('Valdez', 'es'))
+        );
+    }
+
+    public function testFindBySurnameSoundUsesSurnameRoot(): void
+    {
+        $this->database->insert(new PhoneDirectoryEntry('DE LA CRUZ, María', 'ES', 'Calle Mayor 1'));
+        $this->database->insert(new PhoneDirectoryEntry('CRUZ, Pedro', 'ES', 'Calle Mayor 2'));
+        $this->database->insert(new PhoneDirectoryEntry('DELGADO, Luis', 'ES', 'Calle Mayor 3'));
+
+        $expected = ['Cruz, Pedro', 'de la Cruz, María'];
+        $this->assertEquals($expected, $this->surnames($this->database->findBySurnameSound('de la Cruz')));
+        $this->assertEquals($expected, $this->surnames($this->database->findBySurnameSound('Cruz')));
+        $this->assertSame([], $this->database->findBySurnameSound('de la'));
+    }
+
+    public function testSurnameKeysAreBackfilledForExistingRows(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'phonedir_');
+        try {
+            $legacy = new \PDO("sqlite:{$file}");
+            $legacy->exec('CREATE TABLE phone_directory (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                full_name TEXT NOT NULL,
+                street TEXT NOT NULL,
+                phone_number TEXT,
+                record_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )');
+            $legacy->exec("INSERT INTO phone_directory (full_name, street) VALUES ('John Smyth', '123 Main Street')");
+            $legacy = null;
+
+            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $database->createTable();
+
+            $this->assertEquals(['Smyth, John'], $this->surnames($database->findBySurnameSound('Smith')));
+            $database->disconnect();
+        } finally {
+            unlink($file);
+        }
+    }
+
+    public function testUpdateRecomputesSurnameKeys(): void
+    {
+        $id = $this->database->insert(new PhoneDirectoryEntry('SMITH, John', 'US', '1 Oak Avenue'));
+        $this->database->update(new PhoneDirectoryEntry(fullName: 'JONES, John', countryCode: 'US', street: '1 Oak Avenue', id: $id));
+
+        $this->assertSame([], $this->database->findBySurnameSound('Smith'));
+        $this->assertCount(1, $this->database->findBySurnameSound('Jones'));
+    }
 }

@@ -165,4 +165,19 @@ class CrossDatabaseTest extends TestCase
         $this->assertTrue($database->update($found));
         $database->disconnect();
     }
+
+    #[DataProvider('databases')]
+    public function testSurnameSoundSearch(string $dsn, ?string $user, ?string $password): void
+    {
+        $this->rawConnection($dsn, $user, $password);
+        $database = new PhoneDirectoryPDODatabase($dsn, $user, $password);
+        $database->createTable();
+        $database->insert(new PhoneDirectoryEntry(fullName: 'Juan Valdez Ruiz', countryCode: 'MX', street: 'Calle Hidalgo 4', language: 'es'));
+        $database->insert(new PhoneDirectoryEntry(fullName: 'Ana Baldez Soto', countryCode: 'MX', street: 'Calle Juárez 9', language: 'es'));
+        $database->insert(new PhoneDirectoryEntry('SMYTH, Mary', 'US', '2 Oak Avenue'));
+
+        $this->assertCount(2, $database->findBySurnameSound('Valdez', 'es'));
+        $this->assertCount(1, $database->findBySurnameSound('Smith'));
+        $database->disconnect();
+    }
 }

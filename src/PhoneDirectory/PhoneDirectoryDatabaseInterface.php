@@ -24,6 +24,9 @@ interface PhoneDirectoryDatabaseInterface
 
     public function findByPhone(string $phone): ?PhoneDirectoryEntry;
 
+    /** Entries whose surname sounds like $surname; $language enables that language's spelling equivalences. */
+    public function findBySurnameSound(string $surname, ?string $language = null): array;
+
     public function getAll(): array;
 
     public function update(PhoneDirectoryEntry $entry): bool;

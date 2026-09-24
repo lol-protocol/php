@@ -4,7 +4,7 @@ namespace PhoneDirectory;
 
 class PersonName
 {
-    private const PARTICLES = ['de', 'del', 'della', 'di', 'da', 'das', 'do', 'dos', 'du', 'van', 'von', 'der', 'den', 'le', 'la', 'los', 'las'];
+    public const PARTICLES = ['de', 'del', 'della', 'di', 'da', 'das', 'do', 'dos', 'du', 'van', 'von', 'der', 'den', 'le', 'la', 'los', 'las'];
 
     // Single-letter connectors collide with middle initials ("John E Smith"), so they only count when the language uses them.
     private const LANGUAGE_CONNECTORS = [
@@ -115,6 +115,18 @@ class PersonName
     public function getLastNames(): array
     {
         return $this->lastNames;
+    }
+
+    /** First surname word that is not a particle ("de la Cruz" → "Cruz"); null when there is no surname. */
+    public function getSurnameRoot(): ?string
+    {
+        foreach ($this->lastNames as $word) {
+            if (!$this->isParticle($word)) {
+                return $word;
+            }
+        }
+
+        return null;
     }
 
     public function getPrimaryLastName(): string

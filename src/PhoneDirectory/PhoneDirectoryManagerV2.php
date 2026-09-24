@@ -119,6 +119,15 @@ class PhoneDirectoryManagerV2
         return $this->naturalDatabase->findByName($name);
     }
 
+    public function findNaturalPeopleBySurnameSound(string $surname, ?string $language = null): array
+    {
+        if (!$this->naturalDatabase->isConnected()) {
+            $this->naturalDatabase->connect();
+        }
+
+        return $this->naturalDatabase->findBySurnameSound($surname, $language);
+    }
+
     public function findJuridicalEntitiesByName(string $name): array
     {
         if (!$this->juridicalDatabase->isConnected()) {

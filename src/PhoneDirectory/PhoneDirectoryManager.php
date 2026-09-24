@@ -88,6 +88,15 @@ class PhoneDirectoryManager
         return $this->database->findByPhone($phone);
     }
 
+    public function findBySurnameSound(string $surname, ?string $language = null): array
+    {
+        if (!$this->database->isConnected()) {
+            $this->database->connect();
+        }
+
+        return $this->database->findBySurnameSound($surname, $language);
+    }
+
     public function getAllEntries(): array
     {
         if (!$this->database->isConnected()) {
