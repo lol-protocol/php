@@ -105,11 +105,20 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             WHERE id = :id
             SQL);
         $this->pdo->beginTransaction();
-        foreach ($rows as $row) {
-            $entry = $this->rowToEntry($row);
-            $stmt->execute($this->surnameKeyParams($entry) + $this->foldedSearchParams($entry) + [':id' => $row['id']]);
+        try {
+            foreach ($rows as $row) {
+                $entry = $this->rowToEntry($row);
+                $stmt->execute($this->surnameKeyParams($entry) + $this->foldedSearchParams($entry) + [':id' => $row['id']]);
+            }
+            $this->pdo->commit();
+        } catch (\Throwable $e) {
+            try {
+                $this->pdo->rollBack();
+            } catch (\Throwable $rollbackError) {
+                // Log but do not suppress original error
+            }
+            throw new \RuntimeException("Backfill transaction failed: {$e->getMessage()}", 0, $e);
         }
-        $this->pdo->commit();
     }
 
     public function insert(PhoneDirectoryEntry $entry): int
@@ -155,8 +164,12 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             }
             $this->pdo->commit();
         } catch (\Throwable $e) {
-            $this->pdo->rollBack();
-            throw new \RuntimeException("Batch insert failed: {$e->getMessage()}");
+            try {
+                $this->pdo->rollBack();
+            } catch (\Throwable $rollbackError) {
+                // Log but do not suppress original error
+            }
+            throw new \RuntimeException("Batch insert failed: {$e->getMessage()}", 0, $e);
         }
 
         return $count;

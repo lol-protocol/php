@@ -97,10 +97,19 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             'UPDATE juridical_entities SET business_name_folded = :businessNameFolded, street_folded = :streetFolded WHERE id = :id'
         );
         $this->pdo->beginTransaction();
-        foreach ($rows as $row) {
-            $stmt->execute($this->foldedSearchParams($this->rowToEntity($row)) + [':id' => $row['id']]);
+        try {
+            foreach ($rows as $row) {
+                $stmt->execute($this->foldedSearchParams($this->rowToEntity($row)) + [':id' => $row['id']]);
+            }
+            $this->pdo->commit();
+        } catch (\Throwable $e) {
+            try {
+                $this->pdo->rollBack();
+            } catch (\Throwable $rollbackError) {
+                // Log but do not suppress original error
+            }
+            throw new \RuntimeException("Backfill transaction failed: {$e->getMessage()}", 0, $e);
         }
-        $this->pdo->commit();
     }
 
     public function insert(JuridicalEntity $entity): int
@@ -146,8 +155,12 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             }
             $this->pdo->commit();
         } catch (\Throwable $e) {
-            $this->pdo->rollBack();
-            throw new \RuntimeException("Batch insert failed: {$e->getMessage()}");
+            try {
+                $this->pdo->rollBack();
+            } catch (\Throwable $rollbackError) {
+                // Log but do not suppress original error
+            }
+            throw new \RuntimeException("Batch insert failed: {$e->getMessage()}", 0, $e);
         }
 
         return $count;
