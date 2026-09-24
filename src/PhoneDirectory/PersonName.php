@@ -38,8 +38,21 @@ class PersonName
     private ?string $language;
     private ?string $title = null;
 
+    /**
+     * Parse and normalize a person's full name
+     *
+     * @param string $fullName Full name to parse. Supports "LastName, FirstName" format.
+     *                          For names without comma, assumes Western order: given names followed by surname.
+     * @param string|null $language Language code (es, en, fr, pt, de, it) for language-specific parsing rules.
+     *                               If not provided, defaults to English rules.
+     * @throws \InvalidArgumentException If fullName is empty
+     */
     public function __construct(string $fullName, ?string $language = null)
     {
+        if (empty(trim($fullName))) {
+            throw new \InvalidArgumentException('Full name cannot be empty');
+        }
+
         $this->firstNames = [];
         $this->lastNames = [];
         $this->language = $language !== null ? strtolower($language) : null;

@@ -47,10 +47,23 @@ class MultiLanguagePhoneDirectoryParser
     private string $countryCode;
     private ?string $sourceDirectoryId;
 
+    /**
+     * @param string $countryCode Two-letter ISO 3166-1 alpha-2 country code
+     * @param string|null $sourceDirectoryId Identifier for the source directory
+     * @throws \InvalidArgumentException If country code is invalid
+     */
     public function __construct(string $countryCode = 'US', ?string $sourceDirectoryId = null)
     {
+        if (empty($countryCode)) {
+            throw new \InvalidArgumentException('Country code cannot be empty');
+        }
+
         if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
             throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
+        }
+
+        if ($sourceDirectoryId !== null && empty($sourceDirectoryId)) {
+            throw new \InvalidArgumentException('Source directory ID cannot be empty string');
         }
 
         $this->countryCode = strtoupper($countryCode);
@@ -92,6 +105,14 @@ class MultiLanguagePhoneDirectoryParser
         return $this->parseContent($content, $language);
     }
 
+    /**
+     * Parse phone directory content and extract entries
+     *
+     * @param string $content The raw directory content to parse
+     * @param string|null $language Language code (es, en, fr, pt, de, it). Auto-detected if null.
+     * @return array Parsed entries with 'type' => 'natural'|'juridical' and 'entity'
+     * @throws \InvalidArgumentException If language is unsupported
+     */
     public function parseContent(string $content, ?string $language = null): array
     {
         $this->entries = [];

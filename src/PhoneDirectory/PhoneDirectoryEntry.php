@@ -13,6 +13,22 @@ class PhoneDirectoryEntry
     private string $rawName;
     private ?int $sourceLine;
 
+    /**
+     * Create a phone directory entry for a natural person
+     *
+     * @param string $fullName Person's full name (supports "LastName, FirstName" format)
+     * @param string $countryCode Two-letter ISO 3166-1 alpha-2 country code
+     * @param string $street Street address
+     * @param string|null $phoneNumber Phone number
+     * @param string|null $zone Geographic zone/region
+     * @param string|null $city City name
+     * @param int|null $id Database record ID (for existing records)
+     * @param \DateTime|null $recordDate Date the entry was recorded (defaults to now)
+     * @param string|null $sourceDirectoryId Source directory identifier
+     * @param string|null $language Language code (es, en, fr, pt, de, it) for name parsing
+     * @param int|null $sourceLine Line number in source file
+     * @throws \InvalidArgumentException If fullName or street are empty
+     */
     public function __construct(
         string $fullName,
         string $countryCode,
@@ -26,6 +42,14 @@ class PhoneDirectoryEntry
         ?string $language = null,
         ?int $sourceLine = null
     ) {
+        if (empty(trim($fullName))) {
+            throw new \InvalidArgumentException('Full name cannot be empty');
+        }
+
+        if (empty(trim($street))) {
+            throw new \InvalidArgumentException('Street cannot be empty');
+        }
+
         $this->id = $id ?? 0;
         $this->rawName = trim($fullName);
         $this->sourceLine = $sourceLine;

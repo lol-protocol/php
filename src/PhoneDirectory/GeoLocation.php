@@ -9,14 +9,31 @@ class GeoLocation
     private ?string $city;
     private string $street;
 
+    /**
+     * Create geographic location information
+     *
+     * @param string $countryCode Two-letter ISO 3166-1 alpha-2 country code
+     * @param string $street Street address (required, cannot be empty)
+     * @param string|null $zone Geographic zone/region/state
+     * @param string|null $city City name
+     * @throws \InvalidArgumentException If country code is invalid or street is empty
+     */
     public function __construct(
         string $countryCode,
         string $street,
         ?string $zone = null,
         ?string $city = null
     ) {
+        if (empty(trim($countryCode))) {
+            throw new \InvalidArgumentException('Country code cannot be empty');
+        }
+
         if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
             throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
+        }
+
+        if (empty(trim($street))) {
+            throw new \InvalidArgumentException('Street cannot be empty');
         }
 
         $this->countryCode = strtoupper($countryCode);
