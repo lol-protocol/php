@@ -121,7 +121,11 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             ':recordDate' => $entity->getRecordDate()->format('Y-m-d H:i:s'),
         ]);
 
-        return (int) $this->pdo->lastInsertId();
+        $id = $this->pdo->lastInsertId();
+        if (!$id || $id === '0' || $id === 0) {
+            throw new \RuntimeException('Failed to get last insert ID from database');
+        }
+        return (int) $id;
     }
 
     public function insertBatch(array $entities): int
