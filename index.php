@@ -6,6 +6,9 @@ use App\Support\ClassLoader;
 use App\Support\Container;
 use App\Support\HostParser;
 use App\Support\UrlHelper;
+use App\Support\ServiceLocator;
+use App\Support\Logger;
+use App\Support\SessionManager;
 
 /**
  * Main Application Entry Point
@@ -16,7 +19,7 @@ define('APP_BASE_PATH', '/');
 define('DEBUG_MODE', getenv('DEBUG') === 'true');
 
 ClassLoader::register();
-session_start();
+SessionManager::getInstance()->start();
 
 require 'Router.php';
 
@@ -37,14 +40,10 @@ $container->singleton('url', function ($c) {
     return new UrlHelper($c->get('router'));
 });
 
-$router = $container->get('router');
-$urlHelper = $container->get('url');
+ServiceLocator::initialize($container, $locale);
+$locator = ServiceLocator::getInstance();
 
-$GLOBALS['locale'] = $locale;
-$GLOBALS['router'] = $router;
-$GLOBALS['url'] = $urlHelper;
-
-$response = $router->dispatch();
+$response = $locator->getRouter()->dispatch();
 echo $response;
 
 function view($name, $data = [])
@@ -65,27 +64,47 @@ function view($name, $data = [])
     return ob_get_clean();
 }
 
-function enlace($tipo, $id)
+function enlace(string $tipo, int|string $id): string
 {
-    return $GLOBALS['url']->enlace($tipo, $id);
+    return ServiceLocator::getInstance()->getUrlHelper()->enlace($tipo, $id);
 }
 
-function accion($tipo, $id, $codigo)
+function accion(string $tipo, int|string $id, int|string $codigo): string
 {
-    return $GLOBALS['url']->accion($tipo, $id, $codigo);
+    return ServiceLocator::getInstance()->getUrlHelper()->accion($tipo, $id, $codigo);
 }
 
-function enlaceLugar(array $codes)
+function enlaceLugar(array $codes): string
 {
-    return $GLOBALS['url']->enlaceLugar($codes);
+    return ServiceLocator::getInstance()->getUrlHelper()->enlaceLugar($codes);
 }
 
-function cuenta($codigo = null)
+function cuenta(int|string|null $codigo = null): string
 {
-    return $GLOBALS['url']->cuenta($codigo);
+    return ServiceLocator::getInstance()->getUrlHelper()->cuenta($codigo);
 }
 
-function esc($text)
+function esc(mixed $text): string
 {
-    return $GLOBALS['url']->esc($text);
+    return ServiceLocator::getInstance()->getUrlHelper()->esc($text);
+}
+
+function log_info(string $message, array $context = []): void
+{
+    ServiceLocator::getInstance()->getLogger()->info($message, $context);
+}
+
+function log_error(string $message, array $context = []): void
+{
+    ServiceLocator::getInstance()->getLogger()->error($message, $context);
+}
+
+function get_locale(): string
+{
+    return ServiceLocator::getInstance()->getLocale();
+}
+
+function get_csrf_token(): string
+{
+    return ServiceLocator::getInstance()->getSessionManager()->setCsrfToken();
 }

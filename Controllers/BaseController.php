@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Support\ServiceLocator;
+
 class BaseController
 {
     protected function requireAuth(): bool
@@ -13,6 +15,22 @@ class BaseController
             return false;
         }
         return true;
+    }
+
+    protected function validateCsrfToken(): bool
+    {
+        $token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
+        if ($token === null) {
+            http_response_code(403);
+            return false;
+        }
+
+        return ServiceLocator::getInstance()->getSessionManager()->validateCsrfToken($token);
+    }
+
+    protected function getCsrfToken(): string
+    {
+        return ServiceLocator::getInstance()->getSessionManager()->setCsrfToken();
     }
 
     protected function getCurrentUserId(): int|null
