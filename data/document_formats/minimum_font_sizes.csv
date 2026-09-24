@@ -1,0 +1,30 @@
+format,device_type,content_type,min_font_size_pt,recommended_size_pt,reading_distance_cm,target_age,wcag_level,notes
+A4,Print,Body Text,10,12,25-30,Adults,AA,Standard office document minimum
+A4,Print,Heading,14,18,25-30,Adults,AA,Headlines larger readable
+Legal,Print,Body Text,10,12,25-30,Adults,AA,Legal documents contracts
+Letter,Print,Body Text,10,12,25-30,Adults,AA,US standard business letter
+A3,Print,Body Text,11,13,30-40,Adults,AA,Larger format slightly larger
+Magazine,Print,Body Text,9,11,25-35,Adults,AAA,Magazine article text
+Book Trade,Print,Body Text,10.5,12,20-25,Adults,AA,Trade paperback comfortable
+Book Large Print,Print,Body Text,16,18,20-25,Elderly,AAA,Vision impaired large print
+Poster A2,Print,Heading,24,32,100-150,Adults,AA,Large poster viewing distance
+Label Small,Print,Body Text,6,8,15-20,Adults,AAA,Product label tiny text
+Business Card,Print,Body Text,8,10,20-25,Adults,AA,Small card constraints
+Brochure A5,Print,Body Text,9,11,25-30,Adults,AA,Folded brochure compact
+Smartphone,Digital,Body Text,16,18,20-30,Adults,AA,Touch screen minimum
+Smartphone,Digital,Small Text,14,16,20-30,Adults,AAA,Secondary info text
+Smartphone,Digital,Heading,20,24,20-30,Adults,AA,Title large readable
+Tablet 10",Digital,Body Text,13,15,30-45,Adults,AA,Relaxed tablet reading
+Tablet 10",Digital,Heading,18,22,30-45,Adults,AA,Tablet comfortable size
+Laptop,Digital,Body Text,12,14,45-60,Adults,AA,Desktop screen distance
+Monitor Desktop,Digital,Body Text,11,13,50-75,Adults,AA,Typical office monitor
+Monitor Desktop,Digital,Code Monospace,10,12,50-75,Developer,AA,Programming editor
+TV 55",Digital,Body Text,32,40,200-300,Adults,AA,Large screen distance
+TV 55",Digital,Menu,24,28,200-300,Adults,AA,Navigation readable
+E-reader,Digital,Body Text,14,16,25-35,Adults,AA,E-reader comfortable
+E-reader Large Print,Digital,Body Text,20,24,25-35,Elderly,AAA,Vision impaired e-reader
+Projection Presentation,Digital,Slide Text,28,32,300-500,Audience,AA,Large audience viewing
+Projection Presentation,Digital,Code,24,28,300-500,Audience,AA,Programming presentation
+VR Headset,Digital,Interface Text,12,16,Near eye,Adults,AA,Very close virtual distance
+Car Dashboard,Digital,Navigation,20,24,100-150,Driver,AA,Quick glance safety
+Smart Watch,Digital,Body Text,8,10,15-20,Adults,AAA,Tiny screen constraint

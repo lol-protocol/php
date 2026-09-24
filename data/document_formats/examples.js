@@ -898,6 +898,124 @@ class ScreenDeviceManager {
 // const tablets7to10 = devices.getDevicesBySize(7, 10, 'tablet');
 
 
+// ============================================
+// EXAMPLE 11: Specification Loaders
+// ============================================
+class SpecificationManager {
+    constructor() {
+        this.bindingStyles = [];
+        this.foldCompatibility = [];
+        this.pixelDensity = [];
+        this.videoResolutions = [];
+        this.colorSpaces = [];
+        this.fontSizes = [];
+        this.wcagContrast = [];
+        this.formatEquivalence = [];
+        this.regionalCompatibility = [];
+        this.standardsReference = [];
+    }
+
+    async loadAllSpecifications(basePath = './') {
+        await Promise.all([
+            this.loadCSV(`${basePath}binding_styles.csv`, 'bindingStyles'),
+            this.loadCSV(`${basePath}fold_compatibility.csv`, 'foldCompatibility'),
+            this.loadCSV(`${basePath}pixel_density_guide.csv`, 'pixelDensity'),
+            this.loadCSV(`${basePath}video_resolutions.csv`, 'videoResolutions'),
+            this.loadCSV(`${basePath}color_spaces.csv`, 'colorSpaces'),
+            this.loadCSV(`${basePath}minimum_font_sizes.csv`, 'fontSizes'),
+            this.loadCSV(`${basePath}wcag_contrast.csv`, 'wcagContrast'),
+            this.loadCSV(`${basePath}format_equivalence_matrix.csv`, 'formatEquivalence'),
+            this.loadCSV(`${basePath}regional_compatibility.csv`, 'regionalCompatibility'),
+            this.loadCSV(`${basePath}standards_reference.csv`, 'standardsReference')
+        ]);
+    }
+
+    async loadCSV(csvPath, property) {
+        try {
+            const response = await fetch(csvPath);
+            const text = await response.text();
+            const lines = text.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim());
+
+            this[property] = lines.slice(1).map(line => {
+                const values = line.split(',');
+                const obj = {};
+                headers.forEach((header, i) => {
+                    const value = values[i] ? values[i].trim() : '';
+                    obj[header] = isNaN(value) || value === '' ? value : parseFloat(value);
+                });
+                return obj;
+            });
+        } catch (error) {
+            console.error(`Error loading ${property}:`, error);
+        }
+    }
+
+    getBindingStyle(styleName) {
+        return this.bindingStyles.find(b => b.binding_style === styleName);
+    }
+
+    getFoldCompatibility(sourceFormat) {
+        return this.foldCompatibility.filter(f => f.source_format === sourceFormat);
+    }
+
+    getPixelDensityGuide(deviceType, useCase) {
+        return this.pixelDensity.find(p => p.device_type === deviceType && p.use_case === useCase);
+    }
+
+    getVideoResolution(resolutionName) {
+        return this.videoResolutions.find(v => v.resolution_name === resolutionName);
+    }
+
+    getColorSpace(name) {
+        return this.colorSpaces.find(c => c.color_space === name);
+    }
+
+    getMinimumFontSize(format, deviceType, contentType) {
+        return this.fontSizes.find(f => f.format === format && f.device_type === deviceType && f.content_type === contentType);
+    }
+
+    getWCAGContrast(elementType, wcagLevel = 'AA') {
+        const element = this.wcagContrast.find(w => w.element_type === elementType);
+        if (!element) return null;
+        return {
+            element: elementType,
+            level: wcagLevel,
+            ratio: element[`wcag_level_${wcagLevel.toLowerCase()}`],
+            fontSize: element.font_size_pt
+        };
+    }
+
+    getFormatEquivalent(sourceFormat, targetFormat) {
+        return this.formatEquivalence.find(f => f.source_format === sourceFormat && f.target_format === targetFormat);
+    }
+
+    getRegionalFormats(region) {
+        return this.regionalCompatibility.find(r => r.region === region);
+    }
+
+    getStandardReference(formatName) {
+        return this.standardsReference.find(s => s.format_name === formatName);
+    }
+
+    getVideoResolutionsByCategory(category) {
+        return this.videoResolutions.filter(v => v.category === category);
+    }
+
+    getColorSpacesByUse(bestFor) {
+        return this.colorSpaces.filter(c => c.best_for === bestFor);
+    }
+}
+
+// Usage:
+// const specs = new SpecificationManager();
+// await specs.loadAllSpecifications('./');
+// const tradeBinding = specs.getBindingStyle('Perfect Binding');
+// const folds = specs.getFoldCompatibility('A4');
+// const fontMin = specs.getMinimumFontSize('A4', 'Print', 'Body Text');
+// const wcag = specs.getWCAGContrast('Normal Text', 'AAA');
+
+
 // Export all classes for use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -910,6 +1028,7 @@ if (typeof module !== 'undefined' && module.exports) {
         FormatBatchProcessor,
         LocalizationManager,
         BookMarginManager,
-        ScreenDeviceManager
+        ScreenDeviceManager,
+        SpecificationManager
     };
 }

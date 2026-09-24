@@ -1,0 +1,21 @@
+color_space,gamut_percentage_srgb,color_bits,bit_depth_total,best_for,accuracy_rating,industry_standard,monitor_type,calibration_difficulty,notes
+sRGB,100,~8 million,24-bit,Web graphics standard,Very Good,Universal standard,Standard office,Easy,Default for internet web
+Adobe RGB,140,~40 million,24-bit,Photo editing professional,Excellent,Photography standard,Professional monitor,Medium,Larger gamut than sRGB
+DCI-P3,118,~12 million,24-bit,Video production streaming,Excellent,Cinema broadcast standard,Professional broadcast,Medium,Apple standard color space
+ProPhoto RGB,160,~282 trillion,24-bit,High-end photography archive,Excellent,Archival professional,Professional monitor,Hard,Largest gamut complex
+Display P3,118,~12 million,24-bit,Modern Apple devices content,Excellent,Apple standard,MacBook iPad iPhone,Easy,Modern Apple ecosystem
+Rec. 709,100,~8 million,24-bit,HDTV broadcast HD video,Very Good,Broadcast standard,TV monitor,Medium,Television broadcast standard
+Rec. 2020,146,~68 million,24-bit,4K 8K broadcast ultra HD,Excellent,Future broadcast standard,Professional 4K monitor,Hard,Emerging UHD standard
+NTSC,70,~8 million,24-bit,Legacy television analog,Poor,Legacy standard,CRT tube,Medium,Obsolete analog TV
+PAL,70,~8 million,24-bit,Legacy television Europe,Poor,Legacy standard,CRT tube,Medium,Obsolete analog TV
+LAB Color,Unlimited,Unlimited,32-bit,Device-independent editing,Very Good,Professional printing,Color management,Hard,Perceptually uniform space
+CMYK,70,Varies,32-bit,Printing offset digital,Good,Printing standard,Print preview,Hard,Subtractive printing color
+HSV,100,~16 million,24-bit,Color selection adjustment,Fair,Software tools,All displays,Easy,Hue saturation value model
+HSL,100,~16 million,24-bit,Color selection CSS,Fair,Web standard,All displays,Easy,Hue saturation lightness model
+YCbCr,100,~8 million,24-bit,Video compression JPEG,Good,Video standard,All displays,Easy,Luminance chrominance component
+XYZ,100,~282 trillion,32-bit,CIE standard reference,Excellent,Scientific reference,Colorimeter,Very Hard,Commission Internationale Eclairage
+Oklab,100,Variable,32-bit,Modern perceptual color,Excellent,Emerging standard,Modern software,Medium,Better human perception accuracy
+Wide Gamut RGB,200,~282 trillion,32-bit,Professional cinema DCP,Excellent,Cinema professional,Professional DCP,Very Hard,Digital cinema package standard
+BT.2100,146,~68 million,32-bit,HDR broadcast video,Excellent,HDR standard,HDR TV monitor,Hard,High Dynamic Range HDR standard
+Dolby Vision,Proprietary,Proprietary,12-bit,HDR premium video,Excellent,Premium cinema streaming,Dolby Vision TV,Very Hard,Proprietary premium HDR format
+scRGB,200,~68 million,32-bit,Linear color space professional,Excellent,HDR professional,HDR monitor,Very Hard,Extended range linear RGB
