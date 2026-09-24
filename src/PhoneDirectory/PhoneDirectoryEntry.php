@@ -10,6 +10,8 @@ class PhoneDirectoryEntry
     private ?string $phoneNumber;
     private ?\DateTime $recordDate;
     private ?string $sourceDirectoryId;
+    private string $rawName;
+    private ?int $sourceLine;
 
     public function __construct(
         string $fullName,
@@ -21,9 +23,12 @@ class PhoneDirectoryEntry
         ?int $id = null,
         ?\DateTime $recordDate = null,
         ?string $sourceDirectoryId = null,
-        ?string $language = null
+        ?string $language = null,
+        ?int $sourceLine = null
     ) {
         $this->id = $id ?? 0;
+        $this->rawName = trim($fullName);
+        $this->sourceLine = $sourceLine;
         $this->personName = new PersonName($fullName, $language);
         $this->geoLocation = new GeoLocation($countryCode, $street, $zone, $city);
         $this->phoneNumber = $phoneNumber;
@@ -50,6 +55,16 @@ class PhoneDirectoryEntry
     public function getFullName(): string
     {
         return $this->personName->getFullName();
+    }
+
+    public function getRawName(): string
+    {
+        return $this->rawName;
+    }
+
+    public function getLanguage(): ?string
+    {
+        return $this->personName->getLanguage();
     }
 
     public function getFormattedName(): string
@@ -117,15 +132,23 @@ class PhoneDirectoryEntry
         return $this->sourceDirectoryId;
     }
 
+    public function getSourceLine(): ?int
+    {
+        return $this->sourceLine;
+    }
+
     public function toArray(): array
     {
         return [
             'id' => $this->id,
+            'rawName' => $this->rawName,
+            'language' => $this->getLanguage(),
             'person' => $this->personName->toArray(),
             'location' => $this->geoLocation->toArray(),
             'phoneNumber' => $this->phoneNumber,
             'recordDate' => $this->recordDate->format('Y-m-d H:i:s'),
             'sourceDirectoryId' => $this->sourceDirectoryId,
+            'sourceLine' => $this->sourceLine,
         ];
     }
 }

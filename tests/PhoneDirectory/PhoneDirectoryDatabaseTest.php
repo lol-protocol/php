@@ -227,4 +227,55 @@ class PhoneDirectoryDatabaseTest extends TestCase
         $this->database->insert($entry2);
         $this->assertEquals(2, $this->database->count());
     }
+
+    public function testCommaSurnamesSurviveRoundTrip(): void
+    {
+        $id = $this->database->insert(new PhoneDirectoryEntry('GARCÍA LÓPEZ, Juan', 'ES', 'Calle Mayor 12'));
+
+        $found = $this->database->findById($id);
+
+        $this->assertEquals('GARCÍA LÓPEZ, Juan', $found->getRawName());
+        $this->assertEquals(['García', 'López'], $found->getLastNames());
+        $this->assertEquals('ES', $found->getCountryCode());
+    }
+
+    public function testLanguageSurvivesRoundTrip(): void
+    {
+        $entry = new PhoneDirectoryEntry(fullName: 'Juan García López', countryCode: 'ES', street: 'Calle Mayor 12', language: 'es');
+
+        $found = $this->database->findById($this->database->insert($entry));
+
+        $this->assertEquals('es', $found->getLanguage());
+        $this->assertEquals(['García', 'López'], $found->getLastNames());
+    }
+
+    public function testSourceProvenanceSurvivesInsertAndUpdate(): void
+    {
+        $entry = new PhoneDirectoryEntry(
+            fullName: 'SMITH, John',
+            countryCode: 'US',
+            street: '123 Main Street',
+            sourceDirectoryId: 'us_1878_ny',
+            sourceLine: 42
+        );
+        $id = $this->database->insert($entry);
+
+        $found = $this->database->findById($id);
+        $this->assertEquals('us_1878_ny', $found->getSourceDirectoryId());
+        $this->assertSame(42, $found->getSourceLine());
+
+        $this->database->update(new PhoneDirectoryEntry(
+            fullName: 'SMITH, John A.',
+            countryCode: 'US',
+            street: '123 Main Street',
+            id: $id,
+            sourceDirectoryId: 'us_1915_national',
+            sourceLine: 7
+        ));
+
+        $updated = $this->database->findById($id);
+        $this->assertEquals('SMITH, John A.', $updated->getRawName());
+        $this->assertEquals('us_1915_national', $updated->getSourceDirectoryId());
+        $this->assertSame(7, $updated->getSourceLine());
+    }
 }

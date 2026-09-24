@@ -28,10 +28,38 @@ class MultiLanguagePhoneDirectoryParser
     private string $detectedLanguage = 'en';
     private array $entries = [];
     private array $parseErrors = [];
+    private string $countryCode;
+    private ?string $sourceDirectoryId;
 
-    public function __construct()
+    public function __construct(string $countryCode = 'US', ?string $sourceDirectoryId = null)
     {
-        $this->parser = new PhoneDirectoryParser();
+        if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
+            throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
+        }
+
+        $this->countryCode = strtoupper($countryCode);
+        $this->sourceDirectoryId = $sourceDirectoryId;
+        $this->parser = new PhoneDirectoryParser($this->countryCode, $sourceDirectoryId);
+    }
+
+    public static function forCatalogDirectory(string $directoryId, ?PhoneDirectoryCatalog $catalog = null): self
+    {
+        $directory = ($catalog ?? new PhoneDirectoryCatalog())->get($directoryId);
+        if ($directory === null) {
+            throw new \InvalidArgumentException("Unknown catalog directory: {$directoryId}");
+        }
+
+        return new self($directory['country'], $directoryId);
+    }
+
+    public function getCountryCode(): string
+    {
+        return $this->countryCode;
+    }
+
+    public function getSourceDirectoryId(): ?string
+    {
+        return $this->sourceDirectoryId;
     }
 
     public function parseFile(string $filePath, ?string $language = null): array
@@ -61,33 +89,29 @@ class MultiLanguagePhoneDirectoryParser
 
         $lines = explode("\n", $content);
         $buffer = [];
+        $bufferStart = 0;
         $lineNumber = 0;
 
         foreach ($lines as $line) {
             $lineNumber++;
             $trimmed = trim($line);
 
-            if (empty($trimmed)) {
+            if ($trimmed === '' || preg_match('/^(?:[-=_*]\s*){2,}$/', $trimmed)) {
                 if (!empty($buffer)) {
-                    $this->processBuffer($buffer, $lineNumber - count($buffer), $language);
+                    $this->processBuffer($buffer, $bufferStart, $language);
                     $buffer = [];
                 }
                 continue;
             }
 
-            if (preg_match('/^(?:[-=_*]\s*){2,}$/', $trimmed)) {
-                if (!empty($buffer)) {
-                    $this->processBuffer($buffer, $lineNumber - count($buffer), $language);
-                    $buffer = [];
-                }
-                continue;
+            if ($buffer === []) {
+                $bufferStart = $lineNumber;
             }
-
             $buffer[] = $trimmed;
         }
 
         if (!empty($buffer)) {
-            $this->processBuffer($buffer, $lineNumber - count($buffer), $language);
+            $this->processBuffer($buffer, $bufferStart, $language);
         }
 
         return $this->entries;
@@ -167,10 +191,12 @@ class MultiLanguagePhoneDirectoryParser
             } else {
                 $entry = new PhoneDirectoryEntry(
                     fullName: $data['name'],
-                    countryCode: 'US',
+                    countryCode: $this->countryCode,
                     street: $data['street'],
                     phoneNumber: $data['phone'],
-                    language: $language
+                    sourceDirectoryId: $this->sourceDirectoryId,
+                    language: $language,
+                    sourceLine: $startLine
                 );
                 $this->entries[] = [
                     'type' => 'natural',

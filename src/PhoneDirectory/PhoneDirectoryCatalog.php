@@ -215,6 +215,11 @@ class PhoneDirectoryCatalog
         return $this->directories;
     }
 
+    public function get(string $directoryId): ?array
+    {
+        return $this->directories[$directoryId] ?? null;
+    }
+
     public function getByCountry(string $countryCode): array
     {
         return array_filter(

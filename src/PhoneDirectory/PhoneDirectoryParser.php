@@ -12,6 +12,38 @@ class PhoneDirectoryParser
 
     private array $entries = [];
     private array $parseErrors = [];
+    private string $countryCode;
+    private ?string $sourceDirectoryId;
+
+    public function __construct(string $countryCode = 'US', ?string $sourceDirectoryId = null)
+    {
+        if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
+            throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
+        }
+
+        $this->countryCode = strtoupper($countryCode);
+        $this->sourceDirectoryId = $sourceDirectoryId;
+    }
+
+    public static function forCatalogDirectory(string $directoryId, ?PhoneDirectoryCatalog $catalog = null): self
+    {
+        $directory = ($catalog ?? new PhoneDirectoryCatalog())->get($directoryId);
+        if ($directory === null) {
+            throw new \InvalidArgumentException("Unknown catalog directory: {$directoryId}");
+        }
+
+        return new self($directory['country'], $directoryId);
+    }
+
+    public function getCountryCode(): string
+    {
+        return $this->countryCode;
+    }
+
+    public function getSourceDirectoryId(): ?string
+    {
+        return $this->sourceDirectoryId;
+    }
 
     public function parseFile(string $filePath): array
     {
@@ -38,33 +70,29 @@ class PhoneDirectoryParser
     {
         $lines = explode("\n", $content);
         $buffer = [];
+        $bufferStart = 0;
         $lineNumber = 0;
 
         foreach ($lines as $line) {
             $lineNumber++;
             $trimmed = trim($line);
 
-            if (empty($trimmed)) {
+            if ($trimmed === '' || preg_match(self::COMMON_PATTERNS['line_separator'], $trimmed)) {
                 if (!empty($buffer)) {
-                    $this->processBuffer($buffer, $lineNumber - count($buffer));
+                    $this->processBuffer($buffer, $bufferStart);
                     $buffer = [];
                 }
                 continue;
             }
 
-            if (preg_match(self::COMMON_PATTERNS['line_separator'], $trimmed)) {
-                if (!empty($buffer)) {
-                    $this->processBuffer($buffer, $lineNumber - count($buffer));
-                    $buffer = [];
-                }
-                continue;
+            if ($buffer === []) {
+                $bufferStart = $lineNumber;
             }
-
             $buffer[] = $trimmed;
         }
 
         if (!empty($buffer)) {
-            $this->processBuffer($buffer, $lineNumber - count($buffer));
+            $this->processBuffer($buffer, $bufferStart);
         }
 
         return $this->entries;
@@ -113,9 +141,11 @@ class PhoneDirectoryParser
         try {
             $entry = new PhoneDirectoryEntry(
                 fullName: $data['name'],
-                countryCode: 'US',
+                countryCode: $this->countryCode,
                 street: $data['street'],
-                phoneNumber: $data['phone']
+                phoneNumber: $data['phone'],
+                sourceDirectoryId: $this->sourceDirectoryId,
+                sourceLine: $startLine
             );
             $this->entries[] = $entry;
         } catch (\Throwable $e) {

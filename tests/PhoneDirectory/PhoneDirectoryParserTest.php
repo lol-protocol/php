@@ -292,4 +292,61 @@ class PhoneDirectoryParserTest extends TestCase
         $this->assertNotNull($entries[1]->getPhoneNumber());
         $this->assertNotNull($entries[2]->getPhoneNumber());
     }
+
+    public function testDefaultsToUnitedStatesWithoutSource(): void
+    {
+        $entries = $this->parser->parseContent("SMITH, John\n123 Main Street");
+
+        $this->assertEquals('US', $entries[0]->getCountryCode());
+        $this->assertNull($entries[0]->getSourceDirectoryId());
+    }
+
+    public function testCountryAndSourceDirectoryAreApplied(): void
+    {
+        $parser = new PhoneDirectoryParser('mx', 'mx_1960_mexico');
+
+        $entries = $parser->parseContent("HERNÁNDEZ, Luis\n45 Reforma Avenue");
+
+        $this->assertEquals('MX', $entries[0]->getCountryCode());
+        $this->assertEquals('mx_1960_mexico', $entries[0]->getSourceDirectoryId());
+    }
+
+    public function testForCatalogDirectoryUsesCatalogCountry(): void
+    {
+        $parser = PhoneDirectoryParser::forCatalogDirectory('uk_1880_london');
+
+        $entries = $parser->parseContent("BROWN, Alfred\n12 Fleet Street");
+
+        $this->assertEquals('GB', $entries[0]->getCountryCode());
+        $this->assertEquals('uk_1880_london', $entries[0]->getSourceDirectoryId());
+    }
+
+    public function testForCatalogDirectoryRejectsUnknownId(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        PhoneDirectoryParser::forCatalogDirectory('xx_0000_nowhere');
+    }
+
+    public function testInvalidCountryCodeIsRejected(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new PhoneDirectoryParser('USA');
+    }
+
+    public function testSourceLineNumbersIncludingLastBlock(): void
+    {
+        $content = "\nSMITH, John\n123 Main Street\n\nJONES, Ann\n456 Oak Avenue\n=====\nBROWN, Tom\n7 Pine Road";
+
+        $entries = $this->parser->parseContent($content);
+
+        $this->assertSame([2, 5, 8], array_map(fn($e) => $e->getSourceLine(), $entries));
+    }
+
+    public function testRawNameIsPreserved(): void
+    {
+        $entries = $this->parser->parseContent("GARCÍA LÓPEZ, JOSÉ\n789 Maple Road");
+
+        $this->assertEquals('GARCÍA LÓPEZ, JOSÉ', $entries[0]->getRawName());
+        $this->assertEquals('García López, José', $entries[0]->getFormattedName());
+    }
 }
