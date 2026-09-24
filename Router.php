@@ -17,6 +17,9 @@
  * Contract: numeric ids MUST be generated zero-padded to their
  * type's fixed digit width (see `enlace()` in index.php) — an
  * unpadded id silently resolves as a different, shorter type.
+ *
+ * dispatch() always RETURNS the response body (never echoes it) —
+ * on every path, success or error — so the caller must echo it.
  */
 
 class Router
@@ -233,11 +236,20 @@ class Router
     /**
      * null code -> base resource ("show" or the entry's own default).
      * Unmapped code -> null, meaning "404", never a silent fall-back.
+     *
+     * The code must be purely digits before it's ever cast to int — a
+     * bare (int) cast on "1abc" or "1e0" reads only the leading digits
+     * and would silently match action 1, exactly the loose matching
+     * this router is built to avoid.
      */
     protected function resolveAction(array $actions, $code, $default = 'show')
     {
         if ($code === null) {
             return $default;
+        }
+
+        if (!ctype_digit($code)) {
+            return null;
         }
 
         return $actions[(int) $code] ?? null;
@@ -264,12 +276,12 @@ class Router
     protected function handleNotFound()
     {
         http_response_code(404);
-        echo '<h1>404 - Pagina no encontrada</h1>';
+        return '<h1>404 - Pagina no encontrada</h1>';
     }
 
     protected function handleError($message)
     {
         http_response_code(500);
-        echo '<h1>500 - ' . htmlspecialchars($message) . '</h1>';
+        return '<h1>500 - ' . htmlspecialchars($message) . '</h1>';
     }
 }

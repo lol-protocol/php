@@ -31,6 +31,7 @@ $router->loadConfig(__DIR__ . "/routes/{$site}.php");
 $GLOBALS['router'] = $router;
 
 $response = $router->dispatch();
+echo $response;
 
 /**
  * Which route registry to load, based on domain.

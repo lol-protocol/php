@@ -17,6 +17,7 @@ URLs sin palabras de dominio, sin guiones ni guiones bajos. El tipo de recurso s
 └── Controllers/
     ├── Genealogy/
     │   ├── PersonaController.php       # 10 dígitos
+    │   ├── LugarController.php         # jerarquía país/región/ciudad
     │   ├── HomeController.php          # raíz, listado/búsqueda
     │   └── CuentaController.php        # ruta reservada "0"
     └── POS/
@@ -27,6 +28,8 @@ URLs sin palabras de dominio, sin guiones ni guiones bajos. El tipo de recurso s
         ├── CheckoutController.php      # /checkout/...
         └── OrderController.php         # /order/{id}/...
 ```
+
+**Solo estos ocho controladores están implementados.** `routes/genealogy.php` y `routes/pos.php` también registran `suceso`, `registro`, `coleccion`, `grupo`, `organizacion` (genealogía) y `coleccion`, `etiqueta`, `atributo`, `grupo` (POS) — sus tipos están definidos y sus URLs despachan correctamente, pero como no existe el archivo de controlador correspondiente, esas rutas dan **500 "Controller not found"** hasta que se implementen siguiendo el mismo patrón que `PersonaController`/`LugarController`.
 
 ## 🧠 Principio de diseño
 
