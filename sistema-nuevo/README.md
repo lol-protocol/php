@@ -418,9 +418,9 @@ php pruebas/ejecutar-integracion.php
   desempata por `id`, para que la paginación no repita/salte filas),
   `AlmacenAlertas` (mismas invariantes que `AlmacenKpis`, tope de 15 en el top,
   empate en `mismatch_count` también desempatado por `id`) y
-  `ClienteEstadisticas` (servicio caído devuelve `null` sin lanzar excepción, y
-  el reintento no tarda segundos; servicio colgado — acepta la conexión pero no
-  responde —, solo el primer tipo pedido espera los timeouts).
+  `ClienteEstadisticas` (servicio caído devuelve `null` sin lanzar excepción y
+  el reintento no tarda segundos; `statsVarios()` pide varios tipos en paralelo,
+  y con el servicio colgado el lote entero paga un solo timeout, no uno por tipo).
 - `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
@@ -535,9 +535,11 @@ Abrir http://localhost:8082.
   despliegue real (ver "Autenticación" arriba).
 - Si el servicio de estadísticas en Java no está corriendo, el backend PHP no rompe:
   cada acción queda sin comparación (`cohort: null`) y el panel lo indica con un aviso.
-  Si está colgado (acepta la conexión pero no responde), solo el primer tipo de
-  acción de cada request espera los timeouts (~6 s: 2 intentos de 3 s); los demás
-  tipos se dan por no disponibles sin volver a llamarlo.
+  Los tipos distintos de la página se piden todos juntos, en paralelo
+  (`ClienteEstadisticas::statsVarios()`, vía `curl_multi`) en vez de uno por uno:
+  si el servicio está colgado (acepta la conexión pero no responde), toda la
+  página paga un solo timeout (~3 s) sin importar cuántos tipos distintos tenga,
+  en vez de uno por tipo.
 - El servicio Java recarga solo `acciones-planas.csv` si cambia su mtime (chequeo
   cada 5 segundos, `CargadorAcciones.iniciarWatcher()`) — no hace falta reiniciarlo
   a mano después de correr `generar-datos-semilla.php` de nuevo.

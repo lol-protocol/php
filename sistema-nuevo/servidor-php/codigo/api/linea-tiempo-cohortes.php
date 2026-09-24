@@ -14,15 +14,15 @@ function api_timeline_con_cohortes(
     string $gender
 ): array {
     $client = new ClienteEstadisticas();
-    $statsCache = [];
-    $timeline = [];
 
+    // Un solo lote en paralelo por los tipos distintos de la página, en vez de
+    // una llamada secuencial por tipo (ver ClienteEstadisticas::statsVarios()).
+    $tipos = array_values(array_unique(array_column($acciones, 'type')));
+    $statsCache = $client->statsVarios($tipos, $countries, $ageMin, $ageMax, $gender, $userId);
+
+    $timeline = [];
     foreach ($acciones as $action) {
-        $type = $action['type'];
-        if (!array_key_exists($type, $statsCache)) {
-            $statsCache[$type] = $client->stats($type, $countries, $ageMin, $ageMax, $gender, $userId);
-        }
-        $cohort = $statsCache[$type];
+        $cohort = $statsCache[$action['type']];
 
         // amount_local/currency/comment/endpoint/http_status/file_size_kb/path/ip*
         // ya vienen en $action (esquema canónico saneado); se pasan tal cual.
