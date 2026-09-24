@@ -11,9 +11,12 @@
 
 .bar {
     width: 25px;
+    height: 180px;
     background: linear-gradient(180deg, var(--color-1), var(--color-2));
     border-radius: 4px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    will-change: transform;
+    transform-origin: bottom;
 }
 
 .bar:nth-child(1) { animation: wave 1s ease-in-out infinite; }
@@ -25,6 +28,6 @@
 .bar:nth-child(7) { animation: wave 1s ease-in-out 0.2s infinite; }
 
 @keyframes wave {
-    0%, 100% { height: 40px; }
-    50% { height: 180px; }
+    0%, 100% { transform: scaleY(0.22); }
+    50% { transform: scaleY(1); }
 }

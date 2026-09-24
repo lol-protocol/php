@@ -280,6 +280,68 @@
             color: white;
         }
 
+        /* Card Actions */
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .copy-code-btn {
+            background: #667eea;
+            color: white;
+            flex: 1;
+            border: none;
+        }
+
+        .copy-code-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .view-details-btn {
+            background: #f0f0f0;
+            color: #333;
+            flex: 1;
+            border: none;
+        }
+
+        .view-details-btn:hover {
+            background: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .card-link {
+            margin-top: auto;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            padding: 10px 16px !important;
+            border-radius: 8px !important;
+            border: none !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+            text-align: center !important;
+            cursor: pointer !important;
+        }
+
+        .card:hover .card-link {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 2em; }
             .stats { gap: 20px; }
@@ -398,9 +460,9 @@
         }
 
         function createCard(anim) {
-            const card = document.createElement('a');
-            card.href = `animacion-${anim.id}.html`;
+            const card = document.createElement('div');
             card.className = 'card';
+            card.setAttribute('data-anim-id', anim.id);
             card.innerHTML = `
                 <div class="card-header">
                     <div class="card-letter">${anim.id.toUpperCase()}</div>
@@ -414,7 +476,11 @@
                 <div class="techniques">
                     ${anim.techniques.map(t => `<span class="technique-chip">${t}</span>`).join('')}
                 </div>
-                <button class="card-link">Abrir Animación →</button>
+                <div class="card-actions">
+                    <a href="animacion-${anim.id}.html" class="action-btn card-link" style="flex: 2; text-decoration: none; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px;">Abrir →</a>
+                    <button class="action-btn copy-code-btn" title="Copiar código HTML">📋</button>
+                    <button class="action-btn view-details-btn" title="Ver detalles">ℹ️</button>
+                </div>
             `;
             return card;
         }
@@ -454,5 +520,6 @@
         // Renderizar animaciones al cargar
         renderAnimations();
     </script>
+    <script src="dashboard-interactive.js"></script>
 </body>
 </html>
