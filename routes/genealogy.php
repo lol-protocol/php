@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Genealogy site — resource type is inferred from the shape of the
  * first path segment, never from words:

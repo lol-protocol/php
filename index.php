@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Support\ClassLoader;
 use App\Support\Container;
 use App\Support\HostParser;

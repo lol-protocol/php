@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Routing;
 
 class PlaceMatchStrategy implements MatchStrategy
@@ -47,7 +49,7 @@ class PlaceMatchStrategy implements MatchStrategy
         ];
     }
 
-    private function resolveAction(array $actions, $code, $default = 'show')
+    private function resolveAction(array $actions, string|null $code, string $default = 'show'): string|null
     {
         if ($code === null) {
             return $default;

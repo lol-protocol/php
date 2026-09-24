@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support;
 
 class Container
@@ -17,20 +19,20 @@ class Container
         return self::$instance;
     }
 
-    public function bind($key, callable $factory)
+    public function bind(string $key, callable $factory): self
     {
         $this->bindings[$key] = $factory;
         return $this;
     }
 
-    public function singleton($key, callable $factory)
+    public function singleton(string $key, callable $factory): self
     {
         $this->bind($key, $factory);
         $this->singletons[$key] = true;
         return $this;
     }
 
-    public function get($key)
+    public function get(string $key): mixed
     {
         if (!isset($this->bindings[$key])) {
             throw new \Exception("Binding not found: {$key}");

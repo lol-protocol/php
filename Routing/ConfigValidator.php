@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Routing;
 
 class ConfigValidator
 {
-    public static function validate(array $config)
+    public static function validate(array $config): void
     {
         // Validate by_length entries
         if (isset($config['by_length'])) {

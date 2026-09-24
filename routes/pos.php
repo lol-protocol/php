@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * POS site (Contrastocolor) — same dispatch principle as genealogy:
  * digit count of the first segment selects the type. The purchase

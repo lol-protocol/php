@@ -1,22 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support;
+
+// Router is in global namespace (no namespace), so we reference it directly
+use Router;
 
 class UrlHelper
 {
-    private $router;
+    private Router $router;
 
-    public function __construct($router)
+    public function __construct(Router $router)
     {
         $this->router = $router;
     }
 
-    /**
-     * URL for a numeric-id resource. $id is zero-padded to $tipo's fixed
-     * digit width before it's used — an unpadded id would silently resolve
-     * as a different (shorter) type, so callers never hand-format this.
-     */
-    public function enlace($tipo, $id)
+    public function enlace(string $tipo, int|string $id): string
     {
         if (!ctype_digit((string) $id)) {
             throw new \InvalidArgumentException("Id no numerico para {$tipo}: {$id}");
@@ -35,21 +35,12 @@ class UrlHelper
         return '/' . str_pad((string) $id, $largo, '0', STR_PAD_LEFT) . '/';
     }
 
-    /**
-     * URL for a sub-action on a numeric-id resource (see enlace()).
-     */
-    public function accion($tipo, $id, $codigo)
+    public function accion(string $tipo, int|string $id, int|string $codigo): string
     {
         return rtrim($this->enlace($tipo, $id), '/') . '/' . $codigo . '/';
     }
 
-    /**
-     * URL for a place, from its list of hierarchical text codes (pais/region/ciudad).
-     * Mirrors the router's own shape check (1-3 alphabetic codes) so a bad
-     * call fails here, at generation time, instead of producing a link that
-     * 404s when someone clicks it.
-     */
-    public function enlaceLugar(array $codes)
+    public function enlaceLugar(array $codes): string
     {
         if (empty($codes) || count($codes) > 3) {
             throw new \InvalidArgumentException('Un lugar tiene entre 1 y 3 codigos');
@@ -64,19 +55,13 @@ class UrlHelper
         return '/' . implode('/', array_map('strtolower', $codes)) . '/';
     }
 
-    /**
-     * URL for the account area, optionally a sub-section by its action code.
-     */
-    public function cuenta($codigo = null)
+    public function cuenta(int|string|null $codigo = null): string
     {
         return $codigo === null ? '/0/' : "/0/{$codigo}/";
     }
 
-    /**
-     * Escape HTML output.
-     */
-    public function esc($text)
+    public function esc(mixed $text): string
     {
-        return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars((string)$text, ENT_QUOTES, 'UTF-8');
     }
 }

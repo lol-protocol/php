@@ -1,14 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support;
 
 class HostParser
 {
-    /**
-     * Parse host header into domain (without port) and subdomain.
-     * Returns ['domain' => string, 'subdomain' => string|null, 'host_without_port' => string]
-     */
-    public static function parse($host)
+    public static function parse(string $host): array
     {
         $hostWithoutPort = explode(':', $host)[0];
         $parts = explode('.', $hostWithoutPort);
@@ -19,11 +17,7 @@ class HostParser
         ];
     }
 
-    /**
-     * Check if host is or belongs to one of the given domains.
-     * "evilcontrastocolor.local" should NOT match "contrastocolor.local".
-     */
-    public static function matchesDomain($host, array $domains)
+    public static function matchesDomain(string $host, array $domains): string|null
     {
         $parsed = self::parse($host);
         $hostWithoutPort = $parsed['host_without_port'];
@@ -37,10 +31,7 @@ class HostParser
         return null;
     }
 
-    /**
-     * Get 3-letter subdomain if it matches the whitelist.
-     */
-    public static function getLocale($host, array $supportedLocales = ['spa', 'eng'])
+    public static function getLocale(string $host, array $supportedLocales = ['spa', 'eng']): string
     {
         $parsed = self::parse($host);
         $parts = $parsed['parts'];

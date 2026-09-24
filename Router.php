@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Routing\LiteralMatchStrategy;
 use App\Routing\OrderMatchStrategy;
 use App\Routing\ReservedMatchStrategy;
@@ -41,7 +43,7 @@ class Router
         $this->initializeStrategies();
     }
 
-    protected function initializeStrategies()
+    protected function initializeStrategies(): void
     {
         $this->strategies = [
             new LiteralMatchStrategy(),
@@ -52,9 +54,9 @@ class Router
         ];
     }
 
-    protected function parseSegments($uri)
+    protected function parseSegments(string $uri): array
     {
-        $path = trim(strtok($uri, '?'), '/');
+        $path = trim((string)strtok($uri, '?'), '/');
 
         if ($path === '') {
             return [];
@@ -63,17 +65,13 @@ class Router
         return array_map('strtolower', explode('/', $path));
     }
 
-    public function loadConfig($configFile)
+    public function loadConfig(string $configFile): void
     {
         $this->config = require $configFile;
         ConfigValidator::validate($this->config);
     }
 
-    /**
-     * Digit width reserved for a given type name, or null if it isn't
-     * a by_length type (e.g. "lugar" or "order", which aren't).
-     */
-    public function typeLength($type)
+    public function typeLength(string $type): int|null
     {
         foreach ($this->config['by_length'] ?? [] as $length => $entry) {
             if ($entry['type'] === $type) {
@@ -84,7 +82,7 @@ class Router
         return null;
     }
 
-    public function dispatch()
+    public function dispatch(): string
     {
         $match = $this->resolve();
 
@@ -95,7 +93,7 @@ class Router
         return $this->callController($match);
     }
 
-    protected function resolve()
+    protected function resolve(): array|null
     {
         if (empty($this->segments)) {
             $entry = $this->config['reserved'][''] ?? null;
@@ -114,7 +112,7 @@ class Router
         return null;
     }
 
-    protected function callController($match)
+    protected function callController(array $match): string
     {
         $fullClass = 'App\\Controllers\\' . $match['controller'];
 
@@ -130,19 +128,19 @@ class Router
                 return $this->handleError("Method not found: {$method}");
             }
 
-            return call_user_func([$controller, $method], $match['params']);
+            return (string)call_user_func([$controller, $method], $match['params']);
         } catch (\Throwable $e) {
             return $this->handleError("Controller error: " . $e->getMessage());
         }
     }
 
-    protected function handleNotFound()
+    protected function handleNotFound(): string
     {
         http_response_code(404);
         return '<h1>404 - Pagina no encontrada</h1>';
     }
 
-    protected function handleError($message)
+    protected function handleError(string $message): string
     {
         http_response_code(500);
         return '<h1>500 - ' . htmlspecialchars($message) . '</h1>';
