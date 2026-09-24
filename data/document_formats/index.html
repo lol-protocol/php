@@ -694,9 +694,19 @@
             setupEventListeners() {
                 const {search, countryFilter, categoryFilter, resetBtn, tabBtns, fromFormat, toFormat} = this.els;
 
-                search.addEventListener('input', () => this.filterFormats());
-                countryFilter.addEventListener('change', () => this.filterFormats());
-                categoryFilter.addEventListener('change', () => this.filterFormats());
+                // Delegated events for filters
+                document.addEventListener('change', (e) => {
+                    if (e.target === countryFilter || e.target === categoryFilter) {
+                        this.filterFormats();
+                    } else if (e.target === fromFormat || e.target === toFormat) {
+                        this.updateConverter();
+                    }
+                });
+
+                document.addEventListener('input', (e) => {
+                    if (e.target === search) this.filterFormats();
+                });
+
                 resetBtn.addEventListener('click', () => {
                     search.value = '';
                     countryFilter.value = '';
@@ -704,12 +714,12 @@
                     this.filterFormats();
                 });
 
-                tabBtns.forEach(btn => {
-                    btn.addEventListener('click', (e) => this.switchTab(e.target.dataset.tab));
+                // Tab buttons delegation
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('tab-btn')) {
+                        this.switchTab(e.target.dataset.tab);
+                    }
                 });
-
-                fromFormat.addEventListener('change', () => this.updateConverter());
-                toFormat.addEventListener('change', () => this.updateConverter());
             }
 
             populateFilters() {

@@ -58,7 +58,7 @@ class FormatLoader {
         try {
             const response = await fetch(this.csvUrl);
             const text = await response.text();
-            this.formats = this.parseCSV(text);
+            this.formats = parseCSV(text);
             console.log(`Loaded ${this.formats.length} formats`);
             return this.formats;
         } catch (error) {
@@ -66,19 +66,6 @@ class FormatLoader {
         }
     }
 
-    parseCSV(text) {
-        const lines = text.trim().split('\n');
-        const headers = lines[0].split(',').map(h => h.trim());
-
-        return lines.slice(1).map(line => {
-            const values = line.split(',').map(v => v.trim());
-            const obj = {};
-            headers.forEach((header, i) => {
-                obj[header] = values[i] === 'N/A' ? null : values[i];
-            });
-            return obj;
-        });
-    }
 }
 
 // Usage:
@@ -185,10 +172,10 @@ class FormatConverter {
         const f2 = this.formats[this.formatMap.get(f2Name)];
         if (!f1 || !f2) return 0;
 
-        const w1 = parseFloat(f1.width_mm || 0);
-        const h1 = parseFloat(f1.height_mm || 0);
-        const w2 = parseFloat(f2.width_mm || 0);
-        const h2 = parseFloat(f2.height_mm || 0);
+        const w1 = f1.width_mm || 0;
+        const h1 = f1.height_mm || 0;
+        const w2 = f2.width_mm || 0;
+        const h2 = f2.height_mm || 0;
 
         if (w1 === 0 || h1 === 0 || w2 === 0 || h2 === 0) return 0;
 
@@ -200,25 +187,26 @@ class FormatConverter {
     findEquivalents(formatName, threshold = 90) {
         const idx = this.formatMap.get(formatName);
         if (idx === undefined) return [];
-        const sourceFormat = this.formats[idx];
 
-        return this.formats
-            .filter((f, i) => i !== idx && f.width_mm && f.height_mm)
-            .map(format => ({
-                format,
-                similarity: this.calculateSimilarity(formatName, format.format_name)
-            }))
-            .filter(item => item.similarity >= threshold)
-            .sort((a, b) => b.similarity - a.similarity)
-            .map(item => ({
-                name: item.format.format_name,
-                country: item.format.country,
-                similarity: item.similarity,
-                dimensions: {
-                    mm: `${item.format.width_mm}×${item.format.height_mm}`,
-                    inches: `${item.format.width_inches}"×${item.format.height_inches}"`
-                }
-            }));
+        const candidates = [];
+        for (let i = 0; i < this.formats.length; i++) {
+            if (i !== idx && this.formats[i].width_mm && this.formats[i].height_mm) {
+                const sim = this.calculateSimilarity(formatName, this.formats[i].format_name);
+                if (sim >= threshold) candidates.push({format: this.formats[i], similarity: sim});
+            }
+        }
+
+        candidates.sort((a, b) => b.similarity - a.similarity);
+
+        return candidates.map(item => ({
+            name: item.format.format_name,
+            country: item.format.country,
+            similarity: item.similarity,
+            dimensions: {
+                mm: `${item.format.width_mm}×${item.format.height_mm}`,
+                inches: `${item.format.width_inches}"×${item.format.height_inches}"`
+            }
+        }));
     }
 
     convert(fromName, toName) {
@@ -434,15 +422,17 @@ class FormatValidator {
     }
 
     getCompatibility(format1Name, format2Name) {
-        const f1 = this.formats.find(f => f.format_name === format1Name);
-        const f2 = this.formats.find(f => f.format_name === format2Name);
+        const idx1 = this.formatMap.get(format1Name);
+        const idx2 = this.formatMap.get(format2Name);
+        if (idx1 === undefined || idx2 === undefined) return { compatible: false };
 
-        if (!f1 || !f2) return { compatible: false };
+        const f1 = this.formats[idx1];
+        const f2 = this.formats[idx2];
 
-        const w1 = parseFloat(f1.width_mm);
-        const h1 = parseFloat(f1.height_mm);
-        const w2 = parseFloat(f2.width_mm);
-        const h2 = parseFloat(f2.height_mm);
+        const w1 = f1.width_mm || 0;
+        const h1 = f1.height_mm || 0;
+        const w2 = f2.width_mm || 0;
+        const h2 = f2.height_mm || 0;
 
         const widthDiff = Math.abs(w1 - w2) / Math.max(w1, w2) * 100;
         const heightDiff = Math.abs(h1 - h2) / Math.max(h1, h2) * 100;
@@ -632,11 +622,22 @@ class FormatBatchProcessor {
 // EXAMPLE 8: Localization Manager
 // ============================================
 class LocalizationManager {
+    static LANGUAGE_NAMES = {
+        'en': 'English', 'es': 'Español', 'fr': 'Français', 'de': 'Deutsch',
+        'zh': '中文', 'ja': '日本語', 'pt': 'Português', 'ru': 'Русский',
+        'ar': 'العربية', 'ko': '한국어', 'it': 'Italiano', 'nl': 'Nederlands',
+        'tr': 'Türkçe', 'hi': 'हिन्दी', 'th': 'ไทย', 'vi': 'Tiếng Việt',
+        'pl': 'Polski', 'sv': 'Svenska', 'no': 'Norsk', 'da': 'Dansk',
+        'fi': 'Suomi', 'el': 'Ελληνικά', 'cs': 'Čeština', 'hu': 'Magyar',
+        'ro': 'Română', 'bg': 'Български', 'sr': 'Српски', 'hr': 'Hrvatski',
+        'sk': 'Slovenčina', 'uk': 'Українська'
+    };
+
     constructor(translationsPath = 'translations') {
         this.translationsPath = translationsPath;
         this.currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
         this.translations = {};
-        this.supportedLanguages = ['en', 'es', 'fr', 'de', 'zh', 'ja', 'pt', 'ru', 'ar', 'ko', 'it', 'nl', 'tr', 'hi', 'th', 'vi', 'pl', 'sv', 'no', 'da', 'fi', 'el', 'cs', 'hu', 'ro', 'bg', 'sr', 'hr', 'sk', 'uk'];
+        this.supportedLanguagesSet = new Set(Object.keys(LocalizationManager.LANGUAGE_NAMES));
         this.listeners = [];
     }
 
@@ -645,7 +646,7 @@ class LocalizationManager {
     }
 
     async loadLanguage(langCode) {
-        if (!this.supportedLanguages.includes(langCode)) {
+        if (!this.supportedLanguagesSet.has(langCode)) {
             console.warn(`Language ${langCode} not supported, falling back to English`);
             langCode = 'en';
         }
@@ -674,7 +675,7 @@ class LocalizationManager {
     }
 
     getSupportedLanguages() {
-        return this.supportedLanguages;
+        return Array.from(this.supportedLanguagesSet);
     }
 
     translate(key, defaultValue = key) {
@@ -726,15 +727,13 @@ class LocalizationManager {
 
             elements.forEach(el => {
                 const attr = el.getAttribute('data-translate');
-                if (attr) {
-                    const parts = attr.split('|');
-                    const translations = {};
-                    parts.forEach(part => {
-                        const [key, targetAttr] = part.split(':');
-                        translations[targetAttr || 'text'] = this.translate(key.trim());
-                    });
-                    updates.push({element: el, translations});
-                }
+                if (!attr) return;
+                const translations = {};
+                attr.split('|').forEach(part => {
+                    const [key, targetAttr] = part.split(':');
+                    translations[targetAttr || 'text'] = this.translate(key.trim());
+                });
+                updates.push({element: el, translations});
             });
 
             updates.forEach(({element, translations}) => {
@@ -761,39 +760,7 @@ class LocalizationManager {
     }
 
     getLanguageName(langCode) {
-        const names = {
-            'en': 'English',
-            'es': 'Español',
-            'fr': 'Français',
-            'de': 'Deutsch',
-            'zh': '中文',
-            'ja': '日本語',
-            'pt': 'Português',
-            'ru': 'Русский',
-            'ar': 'العربية',
-            'ko': '한국어',
-            'it': 'Italiano',
-            'nl': 'Nederlands',
-            'tr': 'Türkçe',
-            'hi': 'हिन्दी',
-            'th': 'ไทย',
-            'vi': 'Tiếng Việt',
-            'pl': 'Polski',
-            'sv': 'Svenska',
-            'no': 'Norsk',
-            'da': 'Dansk',
-            'fi': 'Suomi',
-            'el': 'Ελληνικά',
-            'cs': 'Čeština',
-            'hu': 'Magyar',
-            'ro': 'Română',
-            'bg': 'Български',
-            'sr': 'Српски',
-            'hr': 'Hrvatski',
-            'sk': 'Slovenčina',
-            'uk': 'Українська'
-        };
-        return names[langCode] || langCode;
+        return LocalizationManager.LANGUAGE_NAMES[langCode] || langCode;
     }
 }
 
@@ -816,17 +783,7 @@ class BookMarginManager {
         try {
             const response = await fetch(csvPath);
             const text = await response.text();
-            const lines = text.trim().split('\n');
-            const headers = lines[0].split(',');
-
-            this.margins = lines.slice(1).map(line => {
-                const values = line.split(',');
-                const obj = {};
-                headers.forEach((header, i) => {
-                    obj[header.trim()] = isNaN(values[i]) ? values[i].trim() : parseFloat(values[i]);
-                });
-                return obj;
-            });
+            this.margins = parseCSV(text);
         } catch (error) {
             console.error('Error loading book margins:', error);
         }
@@ -877,6 +834,7 @@ class ScreenDeviceManager {
         this.smartphones = [];
         this.tablets = [];
         this.ereaders = [];
+        this.deviceIndex = new Map();
     }
 
     async loadAllDevices(monitorPath, phonePath, tabletPath, ereaderPath) {
@@ -886,6 +844,15 @@ class ScreenDeviceManager {
             this.loadTablets(tabletPath),
             this.loadEReaders(ereaderPath)
         ]);
+        this._buildDeviceIndex();
+    }
+
+    _buildDeviceIndex() {
+        this.deviceIndex.clear();
+        this.monitors.forEach(d => this.deviceIndex.set(d.monitor_type, d));
+        this.smartphones.forEach(d => this.deviceIndex.set(d.device_name, d));
+        this.tablets.forEach(d => this.deviceIndex.set(d.device_name, d));
+        this.ereaders.forEach(d => this.deviceIndex.set(d.device_name, d));
     }
 
     async loadMonitors(csvPath = 'monitors.csv') {
@@ -929,10 +896,7 @@ class ScreenDeviceManager {
 
     getDevice(deviceName, type = 'all') {
         if (type === 'all') {
-            return this.monitors.find(d => d.monitor_type === deviceName) ||
-                   this.smartphones.find(d => d.device_name === deviceName) ||
-                   this.tablets.find(d => d.device_name === deviceName) ||
-                   this.ereaders.find(d => d.device_name === deviceName);
+            return this.deviceIndex.get(deviceName);
         } else if (type === 'monitor') {
             return this.monitors.find(d => d.monitor_type === deviceName);
         } else if (type === 'phone') {
@@ -1015,7 +979,7 @@ class SpecificationManager {
         try {
             const response = await fetch(csvPath);
             const text = await response.text();
-            const data = this._parseCSV(text);
+            const data = parseCSV(text);
 
             this.specifications.set(name, data);
             this._buildIndex(name, data);
@@ -1023,20 +987,6 @@ class SpecificationManager {
             console.error(`Error loading ${name}:`, error);
             this.specifications.set(name, []);
         }
-    }
-
-    _parseCSV(text) {
-        const lines = text.trim().split('\n');
-        const headers = lines[0].split(',').map(h => h.trim());
-        return lines.slice(1).map(line => {
-            const values = line.split(',');
-            const obj = {};
-            headers.forEach((header, i) => {
-                const value = values[i] ? values[i].trim() : '';
-                obj[header] = isNaN(value) || value === '' ? value : parseFloat(value);
-            });
-            return obj;
-        });
     }
 
     _buildIndex(name, data) {
@@ -1047,7 +997,9 @@ class SpecificationManager {
     }
 
     get(specType, key, query) {
-        const cacheKey = `${specType}:${key}:${JSON.stringify(query || {})}`;
+        const cacheKey = query
+            ? `${specType}:${Object.keys(query).sort().map(k => `${k}=${query[k]}`).join('&')}`
+            : `${specType}:${key}`;
         if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
         let result;
