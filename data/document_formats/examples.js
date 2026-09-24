@@ -119,66 +119,65 @@ class FormatSearcher {
 
 
 // ============================================
-// EXAMPLE 3: Format Converter
+// EXAMPLE 3: Format Converter (Dynamic)
 // ============================================
 class FormatConverter {
-    constructor(formats, conversionsUrl) {
+    constructor(formats) {
         this.formats = formats;
-        this.conversions = new Map();
-        this.loadConversions(conversionsUrl);
     }
 
-    async loadConversions(conversionsUrl) {
-        try {
-            const response = await fetch(conversionsUrl);
-            const text = await response.text();
-            const lines = text.trim().split('\n').slice(1);
+    calculateSimilarity(format1, format2) {
+        const w1 = parseFloat(format1.width_mm || 0);
+        const h1 = parseFloat(format1.height_mm || 0);
+        const w2 = parseFloat(format2.width_mm || 0);
+        const h2 = parseFloat(format2.height_mm || 0);
 
-            lines.forEach(line => {
-                const [from, toCountry, to, , equivalence] = line.split(',').map(v => v.trim());
-                const key = `${from}→${to}`;
-                this.conversions.set(key, {
-                    from,
-                    to,
-                    equivalence: parseFloat(equivalence),
-                    toCountry
-                });
-            });
-        } catch (error) {
-            console.error('Error loading conversions:', error);
-        }
+        if (w1 === 0 || h1 === 0 || w2 === 0 || h2 === 0) return 0;
+
+        const widthDiff = Math.abs(w1 - w2) / Math.max(w1, w2) * 100;
+        const heightDiff = Math.abs(h1 - h2) / Math.max(h1, h2) * 100;
+        const similarity = 100 - ((widthDiff + heightDiff) / 2);
+
+        return Math.round(similarity);
     }
 
-    findEquivalents(formatName, threshold = 95) {
-        return this.formats.filter(format => {
-            const from = this.formats.find(f => f.format_name === formatName);
-            if (!from) return false;
+    findEquivalents(formatName, threshold = 90) {
+        const sourceFormat = this.formats.find(f => f.format_name === formatName);
+        if (!sourceFormat) return [];
 
-            const w1 = parseFloat(from.width_mm);
-            const h1 = parseFloat(from.height_mm);
-            const w2 = parseFloat(format.width_mm);
-            const h2 = parseFloat(format.height_mm);
-
-            const widthSim = Math.abs(w1 - w2) / w1 * 100;
-            const heightSim = Math.abs(h1 - h2) / h1 * 100;
-            const similarity = 100 - ((widthSim + heightSim) / 2);
-
-            return similarity >= threshold && format.format_name !== formatName;
-        });
+        return this.formats
+            .filter(f => f.format_name !== formatName && f.width_mm && f.height_mm)
+            .map(format => ({
+                format,
+                similarity: this.calculateSimilarity(sourceFormat, format)
+            }))
+            .filter(item => item.similarity >= threshold)
+            .sort((a, b) => b.similarity - a.similarity)
+            .map(item => ({
+                name: item.format.format_name,
+                country: item.format.country,
+                similarity: item.similarity,
+                dimensions: {
+                    mm: `${item.format.width_mm}×${item.format.height_mm}`,
+                    inches: `${item.format.width_inches}"×${item.format.height_inches}"`
+                }
+            }));
     }
 
     convert(fromName, toName) {
         const from = this.formats.find(f => f.format_name === fromName);
         const to = this.formats.find(f => f.format_name === toName);
 
-        if (!from || !to) return null;
+        if (!from || !to || !from.width_mm || !to.width_mm) return null;
 
+        const similarity = this.calculateSimilarity(from, to);
         const widthDiff = Math.abs(from.width_mm - to.width_mm);
         const heightDiff = Math.abs(from.height_mm - to.height_mm);
 
         return {
             from: fromName,
             to: toName,
+            similarity: similarity,
             fromSize: {
                 mm: `${from.width_mm}×${from.height_mm}`,
                 inches: `${from.width_inches}"×${from.height_inches}"`
@@ -190,28 +189,15 @@ class FormatConverter {
             differences: {
                 width: widthDiff.toFixed(1),
                 height: heightDiff.toFixed(1)
-            },
-            similarity: this.calculateSimilarity(from, to)
+            }
         };
-    }
-
-    calculateSimilarity(format1, format2) {
-        const w1 = parseFloat(format1.width_mm);
-        const h1 = parseFloat(format1.height_mm);
-        const w2 = parseFloat(format2.width_mm);
-        const h2 = parseFloat(format2.height_mm);
-
-        const widthDiff = Math.abs(w1 - w2) / Math.max(w1, w2) * 100;
-        const heightDiff = Math.abs(h1 - h2) / Math.max(h1, h2) * 100;
-
-        return Math.round(100 - ((widthDiff + heightDiff) / 2));
     }
 }
 
 // Usage:
-// const converter = new FormatConverter(formats, 'format_conversions.csv');
+// const converter = new FormatConverter(formats);
 // const conversion = converter.convert('Letter', 'A4');
-// const equivalents = converter.findEquivalents('A4');
+// const equivalents = converter.findEquivalents('A4', 90);
 
 
 // ============================================
@@ -735,6 +721,183 @@ class LocalizationManager {
 // i18n.subscribe(lang => console.log(`Language changed to ${lang}`));
 
 
+// ============================================
+// EXAMPLE 9: Book Margin Manager
+// ============================================
+class BookMarginManager {
+    constructor(margins) {
+        this.margins = margins;
+    }
+
+    async load(csvPath = 'book_margins.csv') {
+        try {
+            const response = await fetch(csvPath);
+            const text = await response.text();
+            const lines = text.trim().split('\n');
+            const headers = lines[0].split(',');
+
+            this.margins = lines.slice(1).map(line => {
+                const values = line.split(',');
+                const obj = {};
+                headers.forEach((header, i) => {
+                    obj[header.trim()] = isNaN(values[i]) ? values[i].trim() : parseFloat(values[i]);
+                });
+                return obj;
+            });
+        } catch (error) {
+            console.error('Error loading book margins:', error);
+        }
+    }
+
+    getMargins(bookFormat) {
+        return this.margins.find(m => m.book_format === bookFormat);
+    }
+
+    getAllMargins() {
+        return this.margins;
+    }
+
+    calculatePrintableArea(bookFormat, width_mm, height_mm) {
+        const margins = this.getMargins(bookFormat);
+        if (!margins) return null;
+
+        return {
+            format: bookFormat,
+            totalSize: { mm: `${width_mm}×${height_mm}` },
+            margins: {
+                top: margins.top_mm,
+                bottom: margins.bottom_mm,
+                inner: margins.inner_mm,
+                outer: margins.outer_mm
+            },
+            printableArea: {
+                mm: `${width_mm - margins.inner_mm - margins.outer_mm}×${height_mm - margins.top_mm - margins.bottom_mm}`,
+                inches: `${((width_mm - margins.inner_mm - margins.outer_mm) / 25.4).toFixed(2)}"×${((height_mm - margins.top_mm - margins.bottom_mm) / 25.4).toFixed(2)}"`
+            }
+        };
+    }
+}
+
+// Usage:
+// const bookMargins = new BookMarginManager([]);
+// await bookMargins.load('book_margins.csv');
+// const tradeMargins = bookMargins.getMargins('Trade Paperback');
+// const printable = bookMargins.calculatePrintableArea('Trade Paperback', 152, 228);
+
+
+// ============================================
+// EXAMPLE 10: Screen Device Manager
+// ============================================
+class ScreenDeviceManager {
+    constructor(devices = []) {
+        this.monitors = [];
+        this.smartphones = [];
+        this.tablets = [];
+        this.ereaders = [];
+    }
+
+    async loadAllDevices(monitorPath, phonePath, tabletPath, ereaderPath) {
+        await Promise.all([
+            this.loadMonitors(monitorPath),
+            this.loadSmartphones(phonePath),
+            this.loadTablets(tabletPath),
+            this.loadEReaders(ereaderPath)
+        ]);
+    }
+
+    async loadMonitors(csvPath = 'monitors.csv') {
+        await this.loadDeviceType(csvPath, 'monitors');
+    }
+
+    async loadSmartphones(csvPath = 'smartphones.csv') {
+        await this.loadDeviceType(csvPath, 'smartphones');
+    }
+
+    async loadTablets(csvPath = 'tablets.csv') {
+        await this.loadDeviceType(csvPath, 'tablets');
+    }
+
+    async loadEReaders(csvPath = 'ereaders.csv') {
+        await this.loadDeviceType(csvPath, 'ereaders');
+    }
+
+    async loadDeviceType(csvPath, type) {
+        try {
+            const response = await fetch(csvPath);
+            const text = await response.text();
+            const lines = text.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim());
+
+            const devices = lines.slice(1).map(line => {
+                const values = line.split(',');
+                const obj = {};
+                headers.forEach((header, i) => {
+                    const value = values[i] ? values[i].trim() : '';
+                    obj[header] = isNaN(value) || value === '' ? value : parseFloat(value);
+                });
+                return obj;
+            });
+
+            this[type] = devices;
+        } catch (error) {
+            console.error(`Error loading ${type}:`, error);
+        }
+    }
+
+    getDevice(deviceName, type = 'all') {
+        if (type === 'all') {
+            return this.monitors.find(d => d.monitor_type === deviceName) ||
+                   this.smartphones.find(d => d.device_name === deviceName) ||
+                   this.tablets.find(d => d.device_name === deviceName) ||
+                   this.ereaders.find(d => d.device_name === deviceName);
+        } else if (type === 'monitor') {
+            return this.monitors.find(d => d.monitor_type === deviceName);
+        } else if (type === 'phone') {
+            return this.smartphones.find(d => d.device_name === deviceName);
+        } else if (type === 'tablet') {
+            return this.tablets.find(d => d.device_name === deviceName);
+        } else if (type === 'ereader') {
+            return this.ereaders.find(d => d.device_name === deviceName);
+        }
+    }
+
+    getDevicesBySize(minInches, maxInches, type = 'all') {
+        const types = type === 'all' ? ['monitors', 'smartphones', 'tablets', 'ereaders'] : [type];
+        const results = [];
+
+        types.forEach(t => {
+            const devices = t === 'monitors' ? this.monitors :
+                           t === 'smartphones' ? this.smartphones :
+                           t === 'tablets' ? this.tablets :
+                           this.ereaders;
+
+            results.push(...devices.filter(d => {
+                const size = parseFloat(d.screen_size_inches || d.size_inches);
+                return size >= minInches && size <= maxInches;
+            }));
+        });
+
+        return results;
+    }
+
+    getPixelDensity(deviceName) {
+        const device = this.getDevice(deviceName);
+        return device ? device.ppi : null;
+    }
+
+    calculateDPI(screenSizeInches, resolutionWidth, resolutionHeight) {
+        const diagonal = Math.sqrt(resolutionWidth ** 2 + resolutionHeight ** 2);
+        return Math.round(diagonal / screenSizeInches);
+    }
+}
+
+// Usage:
+// const devices = new ScreenDeviceManager();
+// await devices.loadAllDevices('monitors.csv', 'smartphones.csv', 'tablets.csv', 'ereaders.csv');
+// const iphone = devices.getDevice('iPhone 15 Pro Max');
+// const tablets7to10 = devices.getDevicesBySize(7, 10, 'tablet');
+
+
 // Export all classes for use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -745,6 +908,8 @@ if (typeof module !== 'undefined' && module.exports) {
         FormatValidator,
         FormatStatistics,
         FormatBatchProcessor,
-        LocalizationManager
+        LocalizationManager,
+        BookMarginManager,
+        ScreenDeviceManager
     };
 }
