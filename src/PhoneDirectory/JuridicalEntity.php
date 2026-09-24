@@ -11,6 +11,9 @@ class JuridicalEntity
     private ?string $phoneNumber;
     private ?string $businessType;
     private ?\DateTime $recordDate;
+    private string $countryCode;
+    private ?string $sourceDirectoryId;
+    private ?int $sourceLine;
 
     public function __construct(
         string $businessName,
@@ -19,8 +22,15 @@ class JuridicalEntity
         ?string $businessType = null,
         ?string $phoneNumber = null,
         ?int $id = null,
-        ?\DateTime $recordDate = null
+        ?\DateTime $recordDate = null,
+        string $countryCode = 'US',
+        ?string $sourceDirectoryId = null,
+        ?int $sourceLine = null
     ) {
+        if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
+            throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
+        }
+
         $this->id = $id ?? 0;
         $this->businessName = $businessName;
         $this->legalName = $legalName;
@@ -28,6 +38,9 @@ class JuridicalEntity
         $this->phoneNumber = $phoneNumber;
         $this->businessType = $businessType;
         $this->recordDate = $recordDate ?? new \DateTime();
+        $this->countryCode = strtoupper($countryCode);
+        $this->sourceDirectoryId = $sourceDirectoryId;
+        $this->sourceLine = $sourceLine;
     }
 
     public function getId(): int
@@ -71,6 +84,21 @@ class JuridicalEntity
         return $this->recordDate;
     }
 
+    public function getCountryCode(): string
+    {
+        return $this->countryCode;
+    }
+
+    public function getSourceDirectoryId(): ?string
+    {
+        return $this->sourceDirectoryId;
+    }
+
+    public function getSourceLine(): ?int
+    {
+        return $this->sourceLine;
+    }
+
     public function toArray(): array
     {
         return [
@@ -81,6 +109,9 @@ class JuridicalEntity
             'phoneNumber' => $this->phoneNumber,
             'businessType' => $this->businessType,
             'recordDate' => $this->recordDate->format('Y-m-d H:i:s'),
+            'countryCode' => $this->countryCode,
+            'sourceDirectoryId' => $this->sourceDirectoryId,
+            'sourceLine' => $this->sourceLine,
         ];
     }
 }

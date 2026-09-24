@@ -4,12 +4,40 @@ namespace PhoneDirectory;
 
 class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
 {
-    private ?\PDO $pdo = null;
-    private string $dsn;
+    private const TABLE = 'juridical_entities';
 
-    public function __construct(string $dsn = 'sqlite::memory:')
+    private const BASE_COLUMNS = [
+        'id' => ['id'],
+        'business_name' => ['string', 'NOT NULL'],
+        'legal_name' => ['text'],
+        'street' => ['string', 'NOT NULL'],
+        'phone_number' => ['string'],
+        'business_type' => ['string'],
+        'record_date' => ['datetime', 'DEFAULT CURRENT_TIMESTAMP'],
+        'created_at' => ['datetime', 'DEFAULT CURRENT_TIMESTAMP'],
+        'updated_at' => ['datetime', 'DEFAULT CURRENT_TIMESTAMP'],
+    ];
+
+    // Columns added after the original table; createTable() adds any that an existing database lacks.
+    private const ADDED_COLUMNS = [
+        'country_code' => ['country', "NOT NULL DEFAULT 'US'"],
+        'source_directory_id' => ['string'],
+        'source_line' => ['int'],
+    ];
+
+    private const INDEXED_COLUMNS = ['business_name', 'street', 'phone_number', 'business_type', 'country_code', 'source_directory_id'];
+
+    private ?\PDO $pdo = null;
+    private ?SqlDialect $dialect = null;
+    private string $dsn;
+    private ?string $username;
+    private ?string $password;
+
+    public function __construct(string $dsn = 'sqlite::memory:', ?string $username = null, ?string $password = null)
     {
         $this->dsn = $dsn;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     public function connect(): void
@@ -18,17 +46,14 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             return;
         }
 
-        try {
-            $this->pdo = new \PDO($this->dsn);
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        } catch (\PDOException $e) {
-            throw new \RuntimeException("Database connection failed: {$e->getMessage()}");
-        }
+        $this->pdo = SqlDialect::connect($this->dsn, $this->username, $this->password);
+        $this->dialect = new SqlDialect($this->pdo);
     }
 
     public function disconnect(): void
     {
         $this->pdo = null;
+        $this->dialect = null;
     }
 
     public function isConnected(): bool
@@ -42,26 +67,7 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             $this->connect();
         }
 
-        $sql = <<<SQL
-        CREATE TABLE IF NOT EXISTS juridical_entities (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            business_name TEXT NOT NULL,
-            legal_name TEXT,
-            street TEXT NOT NULL,
-            phone_number TEXT,
-            business_type TEXT,
-            record_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE INDEX IF NOT EXISTS idx_juridical_entities_business_name ON juridical_entities(business_name);
-        CREATE INDEX IF NOT EXISTS idx_juridical_entities_street ON juridical_entities(street);
-        CREATE INDEX IF NOT EXISTS idx_juridical_entities_phone_number ON juridical_entities(phone_number);
-        CREATE INDEX IF NOT EXISTS idx_juridical_entities_business_type ON juridical_entities(business_type);
-        SQL;
-
-        $this->pdo->exec($sql);
+        $this->dialect->ensureTable(self::TABLE, self::BASE_COLUMNS, self::ADDED_COLUMNS, self::INDEXED_COLUMNS);
     }
 
     public function insert(JuridicalEntity $entity): int
@@ -71,17 +77,12 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         }
 
         $sql = <<<SQL
-        INSERT INTO juridical_entities (business_name, legal_name, street, phone_number, business_type, record_date)
-        VALUES (:businessName, :legalName, :street, :phoneNumber, :businessType, :recordDate)
+        INSERT INTO juridical_entities (business_name, legal_name, street, phone_number, business_type, country_code, source_directory_id, source_line, record_date)
+        VALUES (:businessName, :legalName, :street, :phoneNumber, :businessType, :countryCode, :sourceDirectoryId, :sourceLine, :recordDate)
         SQL;
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            ':businessName' => $entity->getBusinessName(),
-            ':legalName' => $entity->getLegalName(),
-            ':street' => $entity->getStreet(),
-            ':phoneNumber' => $entity->getPhoneNumber(),
-            ':businessType' => $entity->getBusinessType(),
+        $stmt->execute($this->entityParams($entity) + [
             ':recordDate' => $entity->getRecordDate()->format('Y-m-d H:i:s'),
         ]);
 
@@ -133,9 +134,9 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             $this->connect();
         }
 
-        $sql = "SELECT * FROM juridical_entities WHERE business_name LIKE :name ESCAPE '!' ORDER BY business_name";
+        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('business_name', ':name') . ' ORDER BY business_name';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':name' => $this->containsPattern($name)]);
+        $stmt->execute([':name' => $this->dialect->containsValue($name)]);
 
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -146,9 +147,9 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             $this->connect();
         }
 
-        $sql = "SELECT * FROM juridical_entities WHERE street LIKE :street ESCAPE '!' ORDER BY street, business_name";
+        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('street', ':street') . ' ORDER BY street, business_name';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':street' => $this->containsPattern($street)]);
+        $stmt->execute([':street' => $this->dialect->containsValue($street)]);
 
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -173,9 +174,9 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             $this->connect();
         }
 
-        $sql = "SELECT * FROM juridical_entities WHERE business_type LIKE :type ESCAPE '!' ORDER BY business_name";
+        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('business_type', ':type') . ' ORDER BY business_name';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':type' => $this->containsPattern($type)]);
+        $stmt->execute([':type' => $this->dialect->containsValue($type)]);
 
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -205,17 +206,13 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         $sql = <<<SQL
         UPDATE juridical_entities
         SET business_name = :businessName, legal_name = :legalName, street = :street,
-            phone_number = :phoneNumber, business_type = :businessType, updated_at = CURRENT_TIMESTAMP
+            phone_number = :phoneNumber, business_type = :businessType, country_code = :countryCode,
+            source_directory_id = :sourceDirectoryId, source_line = :sourceLine, updated_at = CURRENT_TIMESTAMP
         WHERE id = :id
         SQL;
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            ':businessName' => $entity->getBusinessName(),
-            ':legalName' => $entity->getLegalName(),
-            ':street' => $entity->getStreet(),
-            ':phoneNumber' => $entity->getPhoneNumber(),
-            ':businessType' => $entity->getBusinessType(),
+        $stmt->execute($this->entityParams($entity) + [
             ':id' => $entity->getId(),
         ]);
 
@@ -257,13 +254,13 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         $params = [];
 
         if (!empty($criteria['businessName'])) {
-            $where[] = "business_name LIKE :businessName ESCAPE '!'";
-            $params[':businessName'] = $this->containsPattern($criteria['businessName']);
+            $where[] = $this->dialect->containsCondition('business_name', ':businessName');
+            $params[':businessName'] = $this->dialect->containsValue($criteria['businessName']);
         }
 
         if (!empty($criteria['street'])) {
-            $where[] = "street LIKE :street ESCAPE '!'";
-            $params[':street'] = $this->containsPattern($criteria['street']);
+            $where[] = $this->dialect->containsCondition('street', ':street');
+            $params[':street'] = $this->dialect->containsValue($criteria['street']);
         }
 
         if (!empty($criteria['phone'])) {
@@ -272,8 +269,8 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
         }
 
         if (!empty($criteria['businessType'])) {
-            $where[] = "business_type LIKE :businessType ESCAPE '!'";
-            $params[':businessType'] = $this->containsPattern($criteria['businessType']);
+            $where[] = $this->dialect->containsCondition('business_type', ':businessType');
+            $params[':businessType'] = $this->dialect->containsValue($criteria['businessType']);
         }
 
         if (empty($where)) {
@@ -306,12 +303,24 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
             businessType: $row['business_type'],
             phoneNumber: $row['phone_number'],
             id: (int) $row['id'],
-            recordDate: new \DateTime($row['record_date'])
+            recordDate: new \DateTime($row['record_date']),
+            countryCode: $row['country_code'] ?? 'US',
+            sourceDirectoryId: $row['source_directory_id'] ?? null,
+            sourceLine: isset($row['source_line']) ? (int) $row['source_line'] : null
         );
     }
 
-    private function containsPattern(string $text): string
+    private function entityParams(JuridicalEntity $entity): array
     {
-        return '%' . strtr($text, ['!' => '!!', '%' => '!%', '_' => '!_']) . '%';
+        return [
+            ':businessName' => $entity->getBusinessName(),
+            ':legalName' => $entity->getLegalName(),
+            ':street' => $entity->getStreet(),
+            ':phoneNumber' => $entity->getPhoneNumber(),
+            ':businessType' => $entity->getBusinessType(),
+            ':countryCode' => $entity->getCountryCode(),
+            ':sourceDirectoryId' => $entity->getSourceDirectoryId(),
+            ':sourceLine' => $entity->getSourceLine(),
+        ];
     }
 }

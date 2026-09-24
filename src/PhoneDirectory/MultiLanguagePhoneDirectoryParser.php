@@ -182,7 +182,10 @@ class MultiLanguagePhoneDirectoryParser
                     businessName: $data['name'],
                     street: $data['street'],
                     businessType: $data['type'],
-                    phoneNumber: $data['phone']
+                    phoneNumber: $data['phone'],
+                    countryCode: $this->countryCode,
+                    sourceDirectoryId: $this->sourceDirectoryId,
+                    sourceLine: $startLine
                 );
                 $this->entries[] = [
                     'type' => 'juridical',

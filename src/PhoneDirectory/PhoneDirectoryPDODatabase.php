@@ -4,23 +4,42 @@ namespace PhoneDirectory;
 
 class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
 {
-    // Columns added after the original table; createTable() adds any that an existing database lacks.
-    private const ADDED_COLUMNS = [
-        'raw_name' => 'TEXT',
-        'language' => 'TEXT',
-        'country_code' => "TEXT NOT NULL DEFAULT 'US'",
-        'zone' => 'TEXT',
-        'city' => 'TEXT',
-        'source_directory_id' => 'TEXT',
-        'source_line' => 'INTEGER',
+    private const TABLE = 'phone_directory';
+
+    private const BASE_COLUMNS = [
+        'id' => ['id'],
+        'full_name' => ['string', 'NOT NULL'],
+        'street' => ['string', 'NOT NULL'],
+        'phone_number' => ['string'],
+        'record_date' => ['datetime', 'DEFAULT CURRENT_TIMESTAMP'],
+        'created_at' => ['datetime', 'DEFAULT CURRENT_TIMESTAMP'],
+        'updated_at' => ['datetime', 'DEFAULT CURRENT_TIMESTAMP'],
     ];
 
-    private ?\PDO $pdo = null;
-    private string $dsn;
+    // Columns added after the original table; createTable() adds any that an existing database lacks.
+    private const ADDED_COLUMNS = [
+        'raw_name' => ['text'],
+        'language' => ['string'],
+        'country_code' => ['country', "NOT NULL DEFAULT 'US'"],
+        'zone' => ['string'],
+        'city' => ['string'],
+        'source_directory_id' => ['string'],
+        'source_line' => ['int'],
+    ];
 
-    public function __construct(string $dsn = 'sqlite::memory:')
+    private const INDEXED_COLUMNS = ['full_name', 'country_code', 'street', 'phone_number', 'source_directory_id'];
+
+    private ?\PDO $pdo = null;
+    private ?SqlDialect $dialect = null;
+    private string $dsn;
+    private ?string $username;
+    private ?string $password;
+
+    public function __construct(string $dsn = 'sqlite::memory:', ?string $username = null, ?string $password = null)
     {
         $this->dsn = $dsn;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     public function connect(): void
@@ -29,17 +48,14 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             return;
         }
 
-        try {
-            $this->pdo = new \PDO($this->dsn);
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        } catch (\PDOException $e) {
-            throw new \RuntimeException("Database connection failed: {$e->getMessage()}");
-        }
+        $this->pdo = SqlDialect::connect($this->dsn, $this->username, $this->password);
+        $this->dialect = new SqlDialect($this->pdo);
     }
 
     public function disconnect(): void
     {
         $this->pdo = null;
+        $this->dialect = null;
     }
 
     public function isConnected(): bool
@@ -53,39 +69,7 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             $this->connect();
         }
 
-        $this->pdo->exec(<<<SQL
-        CREATE TABLE IF NOT EXISTS phone_directory (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            full_name TEXT NOT NULL,
-            street TEXT NOT NULL,
-            phone_number TEXT,
-            record_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-        SQL);
-
-        $this->addMissingColumns();
-
-        // Index names are database-wide, so they carry the table name to avoid colliding with juridical_entities.
-        foreach (['full_name', 'country_code', 'street', 'phone_number', 'source_directory_id'] as $column) {
-            $this->pdo->exec("CREATE INDEX IF NOT EXISTS idx_phone_directory_{$column} ON phone_directory({$column})");
-        }
-    }
-
-    private function addMissingColumns(): void
-    {
-        $stmt = $this->pdo->query('SELECT * FROM phone_directory LIMIT 0');
-        $existing = [];
-        for ($i = 0; $i < $stmt->columnCount(); $i++) {
-            $existing[] = $stmt->getColumnMeta($i)['name'];
-        }
-
-        foreach (self::ADDED_COLUMNS as $column => $definition) {
-            if (!in_array($column, $existing, true)) {
-                $this->pdo->exec("ALTER TABLE phone_directory ADD COLUMN {$column} {$definition}");
-            }
-        }
+        $this->dialect->ensureTable(self::TABLE, self::BASE_COLUMNS, self::ADDED_COLUMNS, self::INDEXED_COLUMNS);
     }
 
     public function insert(PhoneDirectoryEntry $entry): int
@@ -152,9 +136,9 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             $this->connect();
         }
 
-        $sql = "SELECT * FROM phone_directory WHERE full_name LIKE :name ESCAPE '!' ORDER BY full_name";
+        $sql = 'SELECT * FROM phone_directory WHERE ' . $this->dialect->containsCondition('full_name', ':name') . ' ORDER BY full_name';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':name' => $this->containsPattern($name)]);
+        $stmt->execute([':name' => $this->dialect->containsValue($name)]);
 
         return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -165,9 +149,9 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             $this->connect();
         }
 
-        $sql = "SELECT * FROM phone_directory WHERE street LIKE :street ESCAPE '!' ORDER BY street, full_name";
+        $sql = 'SELECT * FROM phone_directory WHERE ' . $this->dialect->containsCondition('street', ':street') . ' ORDER BY street, full_name';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':street' => $this->containsPattern($street)]);
+        $stmt->execute([':street' => $this->dialect->containsValue($street)]);
 
         return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
@@ -259,13 +243,13 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         $params = [];
 
         if (!empty($criteria['name'])) {
-            $where[] = "full_name LIKE :name ESCAPE '!'";
-            $params[':name'] = $this->containsPattern($criteria['name']);
+            $where[] = $this->dialect->containsCondition('full_name', ':name');
+            $params[':name'] = $this->dialect->containsValue($criteria['name']);
         }
 
         if (!empty($criteria['street'])) {
-            $where[] = "street LIKE :street ESCAPE '!'";
-            $params[':street'] = $this->containsPattern($criteria['street']);
+            $where[] = $this->dialect->containsCondition('street', ':street');
+            $params[':street'] = $this->dialect->containsValue($criteria['street']);
         }
 
         if (!empty($criteria['phone'])) {
@@ -326,10 +310,5 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
             language: $row['language'] ?? null,
             sourceLine: isset($row['source_line']) ? (int) $row['source_line'] : null
         );
-    }
-
-    private function containsPattern(string $text): string
-    {
-        return '%' . strtr($text, ['!' => '!!', '%' => '!%', '_' => '!_']) . '%';
     }
 }

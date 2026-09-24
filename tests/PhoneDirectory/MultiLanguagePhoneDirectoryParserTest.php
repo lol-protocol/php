@@ -74,4 +74,17 @@ class MultiLanguagePhoneDirectoryParserTest extends TestCase
         $this->assertEquals('es', $entry->getLanguage());
         $this->assertSame(2, $entry->getSourceLine());
     }
+
+    public function testBusinessGetsCountrySourceAndLine(): void
+    {
+        $parser = MultiLanguagePhoneDirectoryParser::forCatalogDirectory('mx_1960_mexico');
+
+        $entries = $parser->parseContent("Juan Pérez Soto\nCalle Hidalgo 4\n\nFarmacia Guadalajara\nAvenida Juárez 10", 'es');
+
+        $business = $entries[1]['entity'];
+        $this->assertEquals('juridical', $entries[1]['type']);
+        $this->assertEquals('MX', $business->getCountryCode());
+        $this->assertEquals('mx_1960_mexico', $business->getSourceDirectoryId());
+        $this->assertSame(4, $business->getSourceLine());
+    }
 }
