@@ -190,4 +190,24 @@ class PhoneDirectoryManagerTest extends TestCase
         $this->manager->addEntry($entry2);
         $this->assertEquals(2, $this->manager->getTotalCount());
     }
+
+    public function testAddEntryWorksWithoutCallingProcessFileFirst(): void
+    {
+        // A manager built on a brand-new, uncreated database: only processFile() used to create the
+        // table, so any other method (addEntry included) failed with "no such table" until it was
+        // called first, even though nothing in the public API says that's required.
+        $manager = new PhoneDirectoryManager(database: new PhoneDirectoryPDODatabase('sqlite::memory:'));
+
+        $id = $manager->addEntry(new PhoneDirectoryEntry('SMITH, John', 'US', '123 Main Street'));
+
+        $this->assertGreaterThan(0, $id);
+        $this->assertEquals(1, $manager->getTotalCount());
+    }
+
+    public function testFindByNameWorksWithoutCallingProcessFileFirst(): void
+    {
+        $manager = new PhoneDirectoryManager(database: new PhoneDirectoryPDODatabase('sqlite::memory:'));
+
+        $this->assertSame([], $manager->findByName('Smith'));
+    }
 }

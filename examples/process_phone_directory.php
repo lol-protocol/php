@@ -66,6 +66,7 @@ echo "\n";
 echo "5. Adding a new entry manually:\n";
 $newEntry = new PhoneDirectoryEntry(
     fullName: 'RODRIGUEZ, José Miguel',
+    countryCode: 'US',
     street: '555 Family Lane',
     phoneNumber: '555-999-0000'
 );

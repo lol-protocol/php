@@ -17,11 +17,7 @@ class PhoneDirectoryManager
 
     public function processFile(string $filePath, bool $clearExisting = false): array
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
-
-        $this->database->createTable();
+        $this->ensureReady();
 
         if ($clearExisting) {
             $this->database->clear();
@@ -45,99 +41,77 @@ class PhoneDirectoryManager
 
     public function addEntry(PhoneDirectoryEntry $entry): int
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->insert($entry);
     }
 
     public function getEntry(int $id): ?PhoneDirectoryEntry
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->findById($id);
     }
 
     public function findByName(string $name): array
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->findByName($name);
     }
 
     public function findByStreet(string $street): array
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->findByStreet($street);
     }
 
     public function findByPhone(string $phone): ?PhoneDirectoryEntry
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->findByPhone($phone);
     }
 
     public function findBySurnameSound(string $surname, ?string $language = null): array
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->findBySurnameSound($surname, $language);
     }
 
     public function getAllEntries(): array
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->getAll();
     }
 
     public function search(array $criteria): array
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->search($criteria);
     }
 
     public function updateEntry(PhoneDirectoryEntry $entry): bool
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->update($entry);
     }
 
     public function deleteEntry(int $id): bool
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->delete($id);
     }
 
     public function getTotalCount(): int
     {
-        if (!$this->database->isConnected()) {
-            $this->database->connect();
-        }
+        $this->ensureReady();
 
         return $this->database->count();
     }
@@ -150,6 +124,14 @@ class PhoneDirectoryManager
     public function getDatabase(): PhoneDirectoryDatabaseInterface
     {
         return $this->database;
+    }
+
+    private function ensureReady(): void
+    {
+        if (!$this->database->isConnected()) {
+            $this->database->connect();
+            $this->database->createTable();
+        }
     }
 
     public function disconnect(): void

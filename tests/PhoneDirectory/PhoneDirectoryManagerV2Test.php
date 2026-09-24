@@ -3,6 +3,7 @@
 namespace Tests\PhoneDirectory;
 
 use PHPUnit\Framework\TestCase;
+use PhoneDirectory\JuridicalEntity;
 use PhoneDirectory\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryManagerV2;
 
@@ -34,5 +35,25 @@ class PhoneDirectoryManagerV2Test extends TestCase
 
         $this->assertSame(0, $stats['total']);
         $this->assertNull($stats['ratio_natural_to_juridical']);
+    }
+
+    public function testAddNaturalPersonWorksWithoutCallingProcessFileFirst(): void
+    {
+        // Only processFile() used to create both tables; every other method failed with "no such
+        // table" the first time it was called on a fresh manager.
+        $manager = new PhoneDirectoryManagerV2();
+
+        $id = $manager->addNaturalPerson(new PhoneDirectoryEntry('SMITH, John', 'US', '123 Main Street'));
+
+        $this->assertGreaterThan(0, $id);
+    }
+
+    public function testAddJuridicalEntityWorksWithoutCallingProcessFileFirst(): void
+    {
+        $manager = new PhoneDirectoryManagerV2();
+
+        $id = $manager->addJuridicalEntity(new JuridicalEntity(businessName: 'Farmacia Central', street: 'Calle Luna 3'));
+
+        $this->assertGreaterThan(0, $id);
     }
 }

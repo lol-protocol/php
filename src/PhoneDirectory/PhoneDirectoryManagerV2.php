@@ -20,16 +20,8 @@ class PhoneDirectoryManagerV2
 
     public function processFile(string $filePath, ?string $language = null, bool $clearExisting = false): array
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
-
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
-
-        $this->naturalDatabase->createTable();
-        $this->juridicalDatabase->createTable();
+        $this->ensureNaturalReady();
+        $this->ensureJuridicalReady();
 
         if ($clearExisting) {
             $this->naturalDatabase->clear();
@@ -76,81 +68,63 @@ class PhoneDirectoryManagerV2
 
     public function addNaturalPerson(PhoneDirectoryEntry $entry): int
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->insert($entry);
     }
 
     public function addJuridicalEntity(JuridicalEntity $entity): int
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->insert($entity);
     }
 
     public function getNaturalPerson(int $id): ?PhoneDirectoryEntry
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->findById($id);
     }
 
     public function getJuridicalEntity(int $id): ?JuridicalEntity
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->findById($id);
     }
 
     public function findNaturalPeopleByName(string $name): array
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->findByName($name);
     }
 
     public function findNaturalPeopleBySurnameSound(string $surname, ?string $language = null): array
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->findBySurnameSound($surname, $language);
     }
 
     public function findJuridicalEntitiesByName(string $name): array
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->findByBusinessName($name);
     }
 
     public function findNaturalPeopleByStreet(string $street): array
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->findByStreet($street);
     }
 
     public function findJuridicalEntitiesByStreet(string $street): array
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->findByStreet($street);
     }
@@ -168,18 +142,14 @@ class PhoneDirectoryManagerV2
 
     public function findNaturalPersonByPhone(string $phone): ?PhoneDirectoryEntry
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->findByPhone($phone);
     }
 
     public function findJuridicalEntityByPhone(string $phone): ?JuridicalEntity
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->findByPhone($phone);
     }
@@ -197,27 +167,21 @@ class PhoneDirectoryManagerV2
 
     public function findJuridicalEntitiesByType(string $type): array
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->findByBusinessType($type);
     }
 
     public function getAllNaturalPeople(): array
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->getAll();
     }
 
     public function getAllJuridicalEntities(): array
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->getAll();
     }
@@ -232,72 +196,56 @@ class PhoneDirectoryManagerV2
 
     public function searchNaturalPeople(array $criteria): array
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->search($criteria);
     }
 
     public function searchJuridicalEntities(array $criteria): array
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->search($criteria);
     }
 
     public function updateNaturalPerson(PhoneDirectoryEntry $entry): bool
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->update($entry);
     }
 
     public function updateJuridicalEntity(JuridicalEntity $entity): bool
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->update($entity);
     }
 
     public function deleteNaturalPerson(int $id): bool
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->delete($id);
     }
 
     public function deleteJuridicalEntity(int $id): bool
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->delete($id);
     }
 
     public function getTotalNaturalPeopleCount(): int
     {
-        if (!$this->naturalDatabase->isConnected()) {
-            $this->naturalDatabase->connect();
-        }
+        $this->ensureNaturalReady();
 
         return $this->naturalDatabase->count();
     }
 
     public function getTotalJuridicalEntitiesCount(): int
     {
-        if (!$this->juridicalDatabase->isConnected()) {
-            $this->juridicalDatabase->connect();
-        }
+        $this->ensureJuridicalReady();
 
         return $this->juridicalDatabase->count();
     }
@@ -333,6 +281,22 @@ class PhoneDirectoryManagerV2
     public function getJuridicalDatabase(): JuridicalEntityDatabaseInterface
     {
         return $this->juridicalDatabase;
+    }
+
+    private function ensureNaturalReady(): void
+    {
+        if (!$this->naturalDatabase->isConnected()) {
+            $this->naturalDatabase->connect();
+            $this->naturalDatabase->createTable();
+        }
+    }
+
+    private function ensureJuridicalReady(): void
+    {
+        if (!$this->juridicalDatabase->isConnected()) {
+            $this->juridicalDatabase->connect();
+            $this->juridicalDatabase->createTable();
+        }
     }
 
     public function disconnect(): void
