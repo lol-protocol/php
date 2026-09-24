@@ -10,6 +10,9 @@ final class ClienteEstadisticas
     private const MAX_INTENTOS = 2;
     private const ESPERA_ENTRE_INTENTOS_MS = 150;
 
+    /** Sin respuesta HTTP en el último intento (caído o colgado): corta las llamadas siguientes de esta instancia. */
+    private bool $sinRespuesta = false;
+
     public function __construct(private readonly string $baseUrl = 'http://localhost:8081')
     {
     }
@@ -29,6 +32,10 @@ final class ClienteEstadisticas
         string $gender,
         ?string $excludeUserId
     ): ?array {
+        if ($this->sinRespuesta) {
+            return null;
+        }
+
         $query = ['type' => $type, 'age_min' => $ageMin, 'age_max' => $ageMax, 'gender' => $gender];
         if ($countries !== null) {
             $query['countries'] = implode(',', $countries);
@@ -44,7 +51,7 @@ final class ClienteEstadisticas
         // (CargadorAcciones.iniciarWatcher, cada 5s) y momentáneamente no acepte
         // conexiones -- no para esperar a un servicio que está caído de verdad.
         for ($intento = 1; $intento <= self::MAX_INTENTOS; $intento++) {
-            $body = self::pedir($url);
+            $body = $this->pedir($url);
             if ($body !== null) {
                 $decoded = json_decode($body, true);
                 return is_array($decoded) ? $decoded : null;
@@ -57,7 +64,7 @@ final class ClienteEstadisticas
         return null;
     }
 
-    private static function pedir(string $url): ?string
+    private function pedir(string $url): ?string
     {
         $ch = curl_init($url);
         curl_setopt_array($ch, [
@@ -69,6 +76,7 @@ final class ClienteEstadisticas
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
+        $this->sinRespuesta = $body === false;
         return ($body === false || $httpCode !== 200) ? null : $body;
     }
 }
