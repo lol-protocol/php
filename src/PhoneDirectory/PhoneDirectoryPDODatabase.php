@@ -419,7 +419,19 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
 
     private function fold(string $text): string
     {
-        return AccentFolding::fold(mb_strtolower($text, 'UTF-8'));
+        $lower = mb_strtolower($text, 'UTF-8');
+
+        if (!mb_check_encoding($lower, 'UTF-8')) {
+            throw new \RuntimeException('Invalid UTF-8 encoding in text after mb_strtolower');
+        }
+
+        $folded = AccentFolding::fold($lower);
+
+        if (!mb_check_encoding($folded, 'UTF-8')) {
+            throw new \RuntimeException('Invalid UTF-8 encoding in text after accent folding');
+        }
+
+        return $folded;
     }
 
     private function rowToEntry(array $row): PhoneDirectoryEntry

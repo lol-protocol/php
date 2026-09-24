@@ -147,7 +147,19 @@ final class RecordLinker
 
     private function normalize(?string $text): string
     {
-        return preg_replace('/[^a-z0-9]/', '', AccentFolding::fold(mb_strtolower($text ?? '', 'UTF-8')));
+        $lower = mb_strtolower($text ?? '', 'UTF-8');
+
+        if (!mb_check_encoding($lower, 'UTF-8')) {
+            throw new \InvalidArgumentException('Invalid UTF-8 encoding in text after mb_strtolower');
+        }
+
+        $folded = AccentFolding::fold($lower);
+
+        if (!mb_check_encoding($folded, 'UTF-8')) {
+            throw new \InvalidArgumentException('Invalid UTF-8 encoding in text after accent folding');
+        }
+
+        return preg_replace('/[^a-z0-9]/', '', $folded);
     }
 
     private function normalizeStreet(string $street): string
