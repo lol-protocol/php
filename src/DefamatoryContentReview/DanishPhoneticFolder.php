@@ -17,20 +17,13 @@ namespace DefamatoryContentReview;
  * grafía alternativa sistemática — intentar plegarlos sería adivinar, no
  * normalizar.
  */
-class DanishPhoneticFolder
+class DanishPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
-
     private const ACCENTS = [
         'æ' => 'ae', 'ø' => 'oe', 'å' => 'aa',
     ];
 
-    public static function fold(string $text): string
-    {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
+    protected static function getAccents(): array { return self::ACCENTS; }
 
-        return self::stripSeparators($text);
-    }
+    protected static function applyLanguageRules(string $text): string { return $text; }
 }

@@ -21,22 +21,17 @@ namespace DefamatoryContentReview;
  * - La "w" alemana suena siempre como la "v" del inglés ("Wagen" = "Vagen"),
  *   sin las excepciones que sí tiene la "v" nativa.
  */
-class GermanPhoneticFolder
+class GermanPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
-
     private const ACCENTS = [
         'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue',
         'ß' => 'ss',
     ];
 
-    public static function fold(string $text): string
-    {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-        $text = self::stripSeparators($text);
+    protected static function getAccents(): array { return self::ACCENTS; }
 
+    protected static function applyLanguageRules(string $text): string
+    {
         return str_replace('w', 'v', $text);
     }
 }

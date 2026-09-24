@@ -17,10 +17,8 @@ namespace DefamatoryContentReview;
  * sin inventar plegados que no responden a una confusión real y que sólo
  * aumentarían el riesgo de falsos positivos.
  */
-class ItalianPhoneticFolder
+class ItalianPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
-
     private const ACCENTS = [
         'à' => 'a', 'á' => 'a',
         'è' => 'e', 'é' => 'e',
@@ -29,12 +27,7 @@ class ItalianPhoneticFolder
         'ù' => 'u', 'ú' => 'u',
     ];
 
-    public static function fold(string $text): string
-    {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
+    protected static function getAccents(): array { return self::ACCENTS; }
 
-        return self::stripSeparators($text);
-    }
+    protected static function applyLanguageRules(string $text): string { return $text; }
 }

@@ -21,10 +21,8 @@ namespace DefamatoryContentReview;
  * resolvía. Cubre exactamente las confusiones ortográficas reales para este
  * módulo, nada más.
  */
-class FrenchPhoneticFolder
+class FrenchPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
-
     private const ACCENTS = [
         'à' => 'a', 'â' => 'a', 'ä' => 'a',
         'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
@@ -35,23 +33,17 @@ class FrenchPhoneticFolder
         'œ' => 'oe', 'æ' => 'ae',
     ];
 
-    public static function fold(string $text): string
+    protected static function getAccents(): array { return self::ACCENTS; }
+
+    protected static function applyLanguageRules(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-        $text = self::stripSeparators($text);
-
-        // "ch" es un sonido propio ("sh"): se protege antes de tocar la "c" o la "h" sueltas.
         $text = str_replace('ch', "\x01", $text);
-
         $text = str_replace('ç', 's', $text);
-        $text = preg_replace('/c(?=[eiy])/u', 's', $text);  // ce, ci, cy: mismo sonido que la s
+        $text = preg_replace('/c(?=[eiy])/u', 's', $text);
         $text = str_replace('qu', 'k', $text);
         $text = str_replace('ph', 'f', $text);
-        $text = preg_replace('/g(?=[eiy])/u', 'j', $text);  // ge, gi, gy: sonido audible, se unifica
-        $text = str_replace('h', '', $text);                 // h muda siempre
-
+        $text = preg_replace('/g(?=[eiy])/u', 'j', $text);
+        $text = str_replace('h', '', $text);
         return str_replace("\x01", 'ch', $text);
     }
 }

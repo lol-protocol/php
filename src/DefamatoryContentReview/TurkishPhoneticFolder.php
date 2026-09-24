@@ -19,20 +19,13 @@ namespace DefamatoryContentReview;
  * letras distintas en turco, pero al plegar todo a minúsculas antes de
  * aplicar estas reglas esa distinción ya no aplica aquí.
  */
-class TurkishPhoneticFolder
+class TurkishPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
-
     private const ACCENTS = [
         'ı' => 'i', 'ş' => 's', 'ç' => 'c', 'ö' => 'o', 'ü' => 'u', 'ğ' => 'g',
     ];
 
-    public static function fold(string $text): string
-    {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
+    protected static function getAccents(): array { return self::ACCENTS; }
 
-        return self::stripSeparators($text);
-    }
+    protected static function applyLanguageRules(string $text): string { return $text; }
 }

@@ -22,10 +22,8 @@ namespace DefamatoryContentReview;
  * confusiones que en portugués producen coincidencias reales para este
  * módulo, nada más.
  */
-class PortuguesePhoneticFolder
+class PortuguesePhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
-
     private const ACCENTS = [
         'á' => 'a', 'à' => 'a', 'â' => 'a', 'ã' => 'a',
         'é' => 'e', 'ê' => 'e',
@@ -34,23 +32,17 @@ class PortuguesePhoneticFolder
         'ú' => 'u', 'ü' => 'u',
     ];
 
-    public static function fold(string $text): string
+    protected static function getAccents(): array { return self::ACCENTS; }
+
+    protected static function applyLanguageRules(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-        $text = self::stripSeparators($text);
-
-        // Dígrafos con sonido propio: se protegen antes de tocar sus letras sueltas.
         $text = str_replace(['lh', 'nh', 'ch'], ["\x01", "\x02", "\x03"], $text);
-
         $text = str_replace('ç', 's', $text);
-        $text = preg_replace('/c(?=[ei])/u', 's', $text);  // ce, ci: mismo sonido que la s
+        $text = preg_replace('/c(?=[ei])/u', 's', $text);
         $text = str_replace('qu', 'k', $text);
-        $text = preg_replace('/g(?=[ei])/u', 'j', $text);   // sonido audible: se unifica, no se borra
-        $text = str_replace('h', '', $text);                 // h suelta, muda
+        $text = preg_replace('/g(?=[ei])/u', 'j', $text);
+        $text = str_replace('h', '', $text);
         $text = str_replace('z', 's', $text);
-
         return str_replace(["\x01", "\x02", "\x03"], ['lh', 'nh', 'ch'], $text);
     }
 }

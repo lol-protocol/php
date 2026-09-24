@@ -17,18 +17,13 @@ namespace DefamatoryContentReview;
  * otra confusión: fuera de esos dos pares, la ortografía neerlandesa es
  * bastante regular.
  */
-class DutchPhoneticFolder
+class DutchPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
+    protected static function getAccents(): array { return []; }
 
-    public static function fold(string $text): string
+    protected static function applyLanguageRules(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = self::stripSeparators($text);
-
         $text = str_replace('ij', 'ei', $text);
-
         return str_replace('ou', 'au', $text);
     }
 }
