@@ -1,0 +1,111 @@
+# Psicología Humana & Neuromarketing Ético para Plataformas
+
+**Última actualización:** 2026-09-24
+
+Una guía completa sobre cómo entender y diseñar productos que respeten la privacidad del usuario mientras logran objetivos de negocio legítimos.
+
+---
+
+## 📚 Documentos
+
+### 1. [Fundamentos de Psicología Cognitiva](./01-psychology-fundamentals.md)
+Cómo los usuarios procesan información, toman decisiones y qué factores influyen en su comportamiento. Base teórica para todo lo demás.
+
+**Temas clave:** 
+- Cognitica dual (rápido/lento)
+- Heurísticas y sesgos
+- Memoria y atención
+- Toma de decisiones
+
+### 2. [Neuromarketing Ético](./02-ethical-neuromarketing.md)
+Principios científicos de persuasión que funcionan PORQUE son verdad, no porque engañan. Cómo aplicar neuromarketing respetando al usuario.
+
+**Temas clave:**
+- Principios de Cialdini (versión ética)
+- Reciprocidad genuina
+- Escasez y urgencia honestas
+- Prueba social real vs. fake
+
+### 3. [Principios de Diseño UX](./03-ux-design-principles.md)
+Cómo diseñar interfaces y flujos que sean efectivos sin ser manipulativos. Privacidad by design.
+
+**Temas clave:**
+- Transparencia en la recolección de datos
+- Diseño sin dark patterns
+- Arquitectura de información clara
+- Consentimiento informado
+
+### 4. [Diseño Conversacional](./04-conversational-design.md)
+Cómo diseñar chatbots, asistentes y diálogos que se sientan naturales y respeten al usuario. Conversación vs. interrogatorio.
+
+**Temas clave:**
+- Flujo natural de conversación
+- Empatía en el diálogo
+- Claridad vs. ambigüedad
+- Preguntas abiertas vs. cerradas
+
+### 5. [Psicología del Engagement](./05-user-engagement-psychology.md)
+Qué motiva a los usuarios a volver, recomendar y estar leales. Engagement genuino vs. addiction patterns.
+
+**Temas clave:**
+- Motivación intrínseca vs. extrínseca
+- Propósito y pertenencia
+- Progreso y logro
+- Hábitos sin manipulación
+
+### 6. [Métodos de Investigación Ética](./06-research-methods.md)
+Cómo entender a tus usuarios sin invasión de privacidad ni engaño.
+
+**Temas clave:**
+- UX Research transparente
+- Surveys y entrevistas honestas
+- Análisis de datos anónimos
+- Pruebas A/B éticas
+
+### 7. [Guía de Implementación](./07-implementation-guide.md)
+Cómo llevar estos principios a la práctica en tu producto. Checklist y ejemplos.
+
+**Temas clave:**
+- Audit de tu producto actual
+- Roadmap de cambios
+- Métricas de éxito (más allá de conversión)
+- Casos de estudio
+
+---
+
+## 🎯 Cómo usar esta guía
+
+**Si eres PM/Diseñador:**
+- Empieza por [Fundamentos](./01-psychology-fundamentals.md) → [UX Design](./03-ux-design-principles.md) → [Implementación](./07-implementation-guide.md)
+
+**Si eres Marketer:**
+- Empieza por [Neuromarketing Ético](./02-ethical-neuromarketing.md) → [Engagement](./05-user-engagement-psychology.md) → [Implementación](./07-implementation-guide.md)
+
+**Si trabajas en Producto/Tech:**
+- Empieza por [UX Design](./03-ux-design-principles.md) → [Conversacional](./04-conversational-design.md) → [Research](./06-research-methods.md)
+
+**Si quieres la visión completa:**
+- Lee en orden: 1 → 2 → 3 → 4 → 5 → 6 → 7
+
+---
+
+## 💡 Principio Central
+
+> **No se trata de hacer que los usuarios hagan lo que queremos. Se trata de diseñar un producto que ellos realmente quieren usar, donde nuestros objetivos de negocio y sus necesidades se alinean.**
+
+La diferencia:
+- **Manipulación:** "¿Cómo puedo hacer que revelen datos privados?"
+- **Diseño ético:** "¿Cómo puedo ofrecer valor de forma transparente?"
+
+---
+
+## 📖 Próximos pasos
+
+1. Lee el documento que más aplique a tu rol
+2. Discute con tu equipo los principios clave
+3. Audita tu producto contra la [Guía de Implementación](./07-implementation-guide.md)
+4. Implementa cambios incrementales
+
+---
+
+**Nota:** Esta guía es un documento vivo. Será actualizado con nuevos hallazgos, casos de estudio y feedback del equipo.
