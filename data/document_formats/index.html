@@ -666,58 +666,57 @@
             }
 
             init() {
+                this.cacheElements();
                 this.setupEventListeners();
                 this.populateFilters();
                 this.updateStats();
                 this.renderFormats(this.filteredFormats);
             }
 
+            cacheElements() {
+                this.els = {
+                    search: document.getElementById('search-input'),
+                    countryFilter: document.getElementById('country-filter'),
+                    categoryFilter: document.getElementById('category-filter'),
+                    resetBtn: document.getElementById('reset-btn'),
+                    tabBtns: document.querySelectorAll('.tab-btn'),
+                    tabContents: document.querySelectorAll('.tab-content'),
+                    fromFormat: document.getElementById('from-format'),
+                    toFormat: document.getElementById('to-format'),
+                    container: document.getElementById('formats-container'),
+                    totalFormats: document.getElementById('total-formats'),
+                    totalCountries: document.getElementById('total-countries'),
+                    totalCategories: document.getElementById('total-categories'),
+                    converterResult: document.getElementById('converter-result')
+                };
+            }
+
             setupEventListeners() {
-                // Browser tab
-                document.getElementById('search-input').addEventListener('input', (e) => {
+                const {search, countryFilter, categoryFilter, resetBtn, tabBtns, fromFormat, toFormat} = this.els;
+
+                search.addEventListener('input', () => this.filterFormats());
+                countryFilter.addEventListener('change', () => this.filterFormats());
+                categoryFilter.addEventListener('change', () => this.filterFormats());
+                resetBtn.addEventListener('click', () => {
+                    search.value = '';
+                    countryFilter.value = '';
+                    categoryFilter.value = '';
                     this.filterFormats();
                 });
 
-                document.getElementById('country-filter').addEventListener('change', () => {
-                    this.filterFormats();
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => this.switchTab(e.target.dataset.tab));
                 });
 
-                document.getElementById('category-filter').addEventListener('change', () => {
-                    this.filterFormats();
-                });
-
-                document.getElementById('reset-btn').addEventListener('click', () => {
-                    document.getElementById('search-input').value = '';
-                    document.getElementById('country-filter').value = '';
-                    document.getElementById('category-filter').value = '';
-                    this.filterFormats();
-                });
-
-                // Tabs
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        this.switchTab(e.target.dataset.tab);
-                    });
-                });
-
-                // Converter
-                document.getElementById('from-format').addEventListener('change', () => {
-                    this.updateConverter();
-                });
-
-                document.getElementById('to-format').addEventListener('change', () => {
-                    this.updateConverter();
-                });
+                fromFormat.addEventListener('change', () => this.updateConverter());
+                toFormat.addEventListener('change', () => this.updateConverter());
             }
 
             populateFilters() {
                 const countries = [...new Set(this.formats.map(f => f.country))].sort();
                 const categories = [...new Set(this.formats.map(f => f.category))].sort();
 
-                const countrySelect = document.getElementById('country-filter');
-                const categorySelect = document.getElementById('category-filter');
-                const fromSelect = document.getElementById('from-format');
-                const toSelect = document.getElementById('to-format');
+                const {countryFilter: countrySelect, categoryFilter: categorySelect, fromFormat: fromSelect, toFormat: toSelect} = this.els;
 
                 countries.forEach(country => {
                     let option = document.createElement('option');
@@ -741,14 +740,15 @@
             }
 
             filterFormats() {
-                const search = document.getElementById('search-input').value.toLowerCase();
-                const country = document.getElementById('country-filter').value;
-                const category = document.getElementById('category-filter').value;
+                const {search, countryFilter, categoryFilter} = this.els;
+                const searchVal = search.value.toLowerCase();
+                const country = countryFilter.value;
+                const category = categoryFilter.value;
 
                 this.filteredFormats = this.formats.filter(format => {
-                    const matchSearch = !search ||
-                        format.format_name.toLowerCase().includes(search) ||
-                        format.common_use.toLowerCase().includes(search);
+                    const matchSearch = !searchVal ||
+                        format.format_name.toLowerCase().includes(searchVal) ||
+                        format.common_use.toLowerCase().includes(searchVal);
 
                     const matchCountry = !country || format.country === country;
                     const matchCategory = !category || format.category === category;
@@ -760,7 +760,7 @@
             }
 
             renderFormats(formats) {
-                const container = document.getElementById('formats-container');
+                const {container} = this.els;
 
                 if (formats.length === 0) {
                     container.innerHTML = `
@@ -822,29 +822,28 @@
             }
 
             updateStats() {
+                const {totalFormats, totalCountries, totalCategories} = this.els;
                 const countries = new Set(this.formats.map(f => f.country)).size;
                 const categories = new Set(this.formats.map(f => f.category)).size;
 
-                document.getElementById('total-formats').textContent = this.formats.length;
-                document.getElementById('total-countries').textContent = countries;
-                document.getElementById('total-categories').textContent = categories;
+                totalFormats.textContent = this.formats.length;
+                totalCountries.textContent = countries;
+                totalCategories.textContent = categories;
             }
 
             switchTab(tabName) {
-                document.querySelectorAll('.tab-content').forEach(tab => {
-                    tab.classList.remove('active');
-                });
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
+                const {tabContents, tabBtns} = this.els;
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                tabBtns.forEach(btn => btn.classList.remove('active'));
 
                 document.getElementById(tabName).classList.add('active');
                 document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
             }
 
             updateConverter() {
-                const fromName = document.getElementById('from-format').value;
-                const toName = document.getElementById('to-format').value;
+                const {fromFormat, toFormat} = this.els;
+                const fromName = fromFormat.value;
+                const toName = toFormat.value;
 
                 if (!fromName || !toName) {
                     document.getElementById('conversion-result').classList.remove('show');
