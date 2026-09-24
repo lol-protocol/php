@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación J - Bola Rodando</title>
+    <link rel="stylesheet" href="../../helpers/common.css">
+    <link rel="stylesheet" href="animacion-j.css">
+</head>
+<body class="fullscreen-container">
+    <div class="info-panel">
+        <h2>J) Bola Rodando por Laberinto</h2>
+        <p>Una bola rueda a través de un laberinto simple.</p>
+    </div>
+
+    <div class="maze-container">
+        <svg viewBox="0 0 400 400" class="maze">
+            <rect x="10" y="10" width="380" height="380" fill="none" stroke="white" stroke-width="2"/>
+            <line x1="100" y1="50" x2="100" y2="150" stroke="white" stroke-width="2"/>
+            <line x1="200" y1="80" x2="200" y2="180" stroke="white" stroke-width="2"/>
+            <line x1="300" y1="100" x2="300" y2="250" stroke="white" stroke-width="2"/>
+        </svg>
+        <div class="ball"></div>
+    </div>
+
+    <button class="control-btn" onclick="toggle.toggle()">Pausar/Reanudar</button>
+    <script src="../../helpers/common.js"></script>
+    <script src="animacion-j.js"></script>
+</body>
+</html>

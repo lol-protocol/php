@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación D - Cubo 3D</title>
+    <link rel="stylesheet" href="../../helpers/common.css">
+    <link rel="stylesheet" href="animacion-d.css">
+</head>
+<body class="fullscreen-container">
+    <div class="info-panel">
+        <h2>D) Cubo 3D Rotando</h2>
+        <p>Un cubo 3D rotando mostrando sus 6 caras con colores.</p>
+    </div>
+
+    <div class="cube-container">
+        <div class="cube">
+            <div class="cube-face front">1</div>
+            <div class="cube-face back">2</div>
+            <div class="cube-face right">3</div>
+            <div class="cube-face left">4</div>
+            <div class="cube-face top">5</div>
+            <div class="cube-face bottom">6</div>
+        </div>
+    </div>
+
+    <button class="control-btn" onclick="toggle.toggle()">Pausar/Reanudar</button>
+    <script src="../../helpers/common.js"></script>
+    <script>
+        const toggle = new AnimationToggle('.cube');
+    </script>
+</body>
+</html>

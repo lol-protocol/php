@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación L - Círculos Concéntricos</title>
+    <link rel="stylesheet" href="../../helpers/common.css">
+    <link rel="stylesheet" href="animacion-l.css">
+</head>
+<body class="fullscreen-container">
+    <div class="info-panel">
+        <h2>L) Círculos Concéntricos</h2>
+        <p>Anillos que se expanden y contraen desde el centro.</p>
+    </div>
+
+    <div class="concentric-container">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <div class="center"></div>
+    </div>
+
+    <button class="control-btn" onclick="toggle.toggle()">Pausar/Reanudar</button>
+    <script src="../../helpers/common.js"></script>
+    <script>
+        const toggle = new AnimationToggle('.ring');
+    </script>
+</body>
+</html>

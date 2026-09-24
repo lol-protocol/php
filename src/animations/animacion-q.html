@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación Q - Aurora</title>
+    <link rel="stylesheet" href="../../helpers/common.css">
+    <link rel="stylesheet" href="animacion-q.css">
+</head>
+<body>
+    <div class="aurora-background">
+        <div class="aurora aurora-1"></div>
+        <div class="aurora aurora-2"></div>
+        <div class="aurora aurora-3"></div>
+    </div>
+
+    <div class="info-panel">
+        <h2>Q) Aurora Boreal</h2>
+        <p>Luces danzantes simulando una aurora boreal.</p>
+    </div>
+
+    <button class="control-btn" onclick="toggle.toggle()">Pausar/Reanudar</button>
+    <script src="../../helpers/common.js"></script>
+    <script>
+        const toggle = new AnimationToggle('.aurora');
+    </script>
+</body>
+</html>
