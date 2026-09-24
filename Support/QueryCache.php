@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+/**
+ * In-process request-scoped cache. Static state lives only for the lifetime
+ * of the PHP process handling the current request (or worker, under
+ * PHP-FPM/Swoole) — it is not shared across requests or servers. Use it to
+ * avoid recomputing the same query within a single request, not as a
+ * substitute for a real shared cache (Redis/Memcached).
+ */
 class QueryCache
 {
     private static array $cache = [];

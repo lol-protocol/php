@@ -25,6 +25,14 @@ class AssetOptimizer
         return self::$instance;
     }
 
+    /**
+     * Regex-based best-effort minifier for simple stylesheets. It does not
+     * parse CSS, so constructs like `content: "/* not a comment *\/"` or
+     * strings containing braces/semicolons can be mangled. For production
+     * assets, prefer a real build step (esbuild, cssnano) and reserve this
+     * for small inline snippets (e.g. critical CSS) where a build step
+     * isn't practical.
+     */
     public function minifyCss(string $css): string
     {
         if (!$this->minifyEnabled) {
@@ -39,6 +47,12 @@ class AssetOptimizer
         return $css;
     }
 
+    /**
+     * Regex-based best-effort minifier. It does not parse JS, so template
+     * literals, regex literals, and strings containing `//` or `/*` can be
+     * mangled. For production assets, prefer a real build step (esbuild,
+     * terser) and reserve this for small inline snippets.
+     */
     public function minifyJs(string $js): string
     {
         if (!$this->minifyEnabled) {

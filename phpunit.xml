@@ -13,6 +13,10 @@
     <source>
         <include>
             <directory suffix=".php">src</directory>
+            <directory suffix=".php">Support</directory>
+            <directory suffix=".php">Routing</directory>
+            <directory suffix=".php">Controllers</directory>
+            <file>Router.php</file>
         </include>
     </source>
 

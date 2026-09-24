@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Support\ClassLoader;
 use App\Support\Container;
+use App\Support\HealthCheck;
 use App\Support\HostParser;
 use App\Support\UrlHelper;
 use App\Support\ServiceLocator;
@@ -17,10 +17,13 @@ use App\Support\RateLimiter;
  * Loads the route registry for the current domain and dispatches the request.
  */
 
+require __DIR__ . '/vendor/autoload.php';
+
 define('APP_BASE_PATH', '/');
 define('DEBUG_MODE', getenv('DEBUG') === 'true');
 
-ClassLoader::register();
+HealthCheck::handle();
+
 SessionManager::getInstance()->start();
 HttpSecurityHeaders::setSecurityHeaders();
 

@@ -138,26 +138,38 @@ class APM
             return;
         }
 
-        $options = [
-            'http' => [
-                'method' => 'POST',
-                'header' => [
-                    'Content-Type: application/json',
-                    'Authorization: Bearer ' . $this->config['api_key'],
-                ],
-                'content' => json_encode($payload),
-                'timeout' => 5,
-            ],
-        ];
+        $url = parse_url($this->config['endpoint']);
+        if ($url === false || !isset($url['host'])) {
+            return;
+        }
 
-        $context = stream_context_create($options);
-        $result = @file_get_contents($this->config['endpoint'], false, $context);
+        $isSecure = ($url['scheme'] ?? 'http') === 'https';
+        $port = $url['port'] ?? ($isSecure ? 443 : 80);
+        $path = ($url['path'] ?? '/') . (isset($url['query']) ? '?' . $url['query'] : '');
+        $body = (string)json_encode($payload);
 
-        if ($result === false) {
+        $socket = @fsockopen(($isSecure ? 'ssl://' : '') . $url['host'], (int)$port, $errno, $errstr, 2);
+        if ($socket === false) {
             ServiceLocator::getInstance()->getLogger()->warning('APM send failed', [
                 'endpoint' => $this->config['endpoint'],
+                'error' => $errstr,
             ]);
+            return;
         }
+
+        // Fire-and-forget: write the request and close without waiting for a
+        // response, so exporting metrics never adds latency to the request
+        // that triggered this flush.
+        $request = "POST {$path} HTTP/1.1\r\n" .
+            "Host: {$url['host']}\r\n" .
+            "Content-Type: application/json\r\n" .
+            "Authorization: Bearer {$this->config['api_key']}\r\n" .
+            "Content-Length: " . strlen($body) . "\r\n" .
+            "Connection: Close\r\n\r\n" .
+            $body;
+
+        fwrite($socket, $request);
+        fclose($socket);
     }
 
     private function shouldSample(): bool
