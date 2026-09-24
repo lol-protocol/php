@@ -34,6 +34,10 @@ $response = $router->dispatch();
 
 /**
  * Which route registry to load, based on domain.
+ *
+ * Matches the domain itself or any of its subdomains — never a bare
+ * string suffix, or "evilcontrastocolor.local" would match
+ * "contrastocolor.local" too (same trailing characters, different host).
  */
 function determineSite($host)
 {
@@ -46,7 +50,7 @@ function determineSite($host)
     ];
 
     foreach ($pos_domains as $domain) {
-        if (str_ends_with($host, $domain)) {
+        if ($host === $domain || str_ends_with($host, '.' . $domain)) {
             return 'pos';
         }
     }
@@ -56,14 +60,18 @@ function determineSite($host)
 
 /**
  * Language subdomain, ISO 639-2 (3 letters): spa, eng, ...
- * Defaults to spa when no 3-letter subdomain is present.
+ * Defaults to spa when no subdomain matches a supported language —
+ * an unrelated 3-letter subdomain (api, cdn, ...) must not be read as one.
  */
 function determineLocale($host)
 {
-    $parts = explode('.', explode(':', $host)[0]);
+    $idiomas_soportados = ['spa', 'eng'];
 
-    if (count($parts) > 2 && strlen($parts[0]) === 3 && ctype_alpha($parts[0])) {
-        return strtolower($parts[0]);
+    $parts = explode('.', explode(':', $host)[0]);
+    $sub = strtolower($parts[0] ?? '');
+
+    if (count($parts) > 2 && in_array($sub, $idiomas_soportados, true)) {
+        return $sub;
     }
 
     return 'spa';
@@ -90,10 +98,18 @@ function view($name, $data = [])
  */
 function enlace($tipo, $id)
 {
+    if (!ctype_digit((string) $id)) {
+        throw new InvalidArgumentException("Id no numerico para {$tipo}: {$id}");
+    }
+
     $largo = $GLOBALS['router']->typeLength($tipo);
 
     if ($largo === null) {
         throw new InvalidArgumentException("Tipo desconocido: {$tipo}");
+    }
+
+    if (strlen((string) $id) > $largo) {
+        throw new InvalidArgumentException("Id demasiado largo para {$tipo} ({$largo} digitos): {$id}");
     }
 
     return '/' . str_pad((string) $id, $largo, '0', STR_PAD_LEFT) . '/';
@@ -109,10 +125,23 @@ function accion($tipo, $id, $codigo)
 
 /**
  * URL for a place, from its list of hierarchical text codes (pais/region/ciudad).
+ * Mirrors the router's own shape check (1-3 alphabetic codes) so a bad
+ * call fails here, at generation time, instead of producing a link that
+ * 404s when someone clicks it.
  */
 function enlaceLugar(array $codes)
 {
-    return '/' . implode('/', $codes) . '/';
+    if (empty($codes) || count($codes) > 3) {
+        throw new InvalidArgumentException('Un lugar tiene entre 1 y 3 codigos');
+    }
+
+    foreach ($codes as $code) {
+        if (!ctype_alpha($code)) {
+            throw new InvalidArgumentException("Codigo de lugar invalido: {$code}");
+        }
+    }
+
+    return '/' . implode('/', array_map('strtolower', $codes)) . '/';
 }
 
 /**

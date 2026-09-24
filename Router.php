@@ -10,7 +10,9 @@
  *
  * A second numeric segment, when present, selects a sub-action on
  * the matched resource. An action segment that doesn't map to
- * anything is a 404, not a silent fall-back to the base resource.
+ * anything is a 404, not a silent fall-back to the base resource —
+ * and so is any segment beyond what a type's shape allows (extra
+ * trailing garbage, a 4th place level). Nothing is silently ignored.
  *
  * Contract: numeric ids MUST be generated zero-padded to their
  * type's fixed digit width (see `enlace()` in index.php) — an
@@ -138,6 +140,10 @@ class Router
 
     protected function matchOrder()
     {
+        if (count($this->segments) > 3) {
+            return null;
+        }
+
         $id = $this->segments[1] ?? null;
 
         if (!$id || !ctype_digit($id)) {
@@ -161,6 +167,10 @@ class Router
 
     protected function matchByLength($id)
     {
+        if (count($this->segments) > 2) {
+            return null;
+        }
+
         $entry = $this->config['by_length'][strlen($id)] ?? null;
 
         if (!$entry) {
@@ -181,19 +191,28 @@ class Router
         ];
     }
 
+    /**
+     * Place hierarchy is at most 3 levels (pais/region/ciudad), optionally
+     * followed by one numeric action segment. Anything beyond that shape
+     * — a 4th place level, junk after the action — is a 404, not a
+     * silent truncation to whatever came first.
+     */
     protected function matchPlace()
     {
         $entry = $this->config['place'];
-        $codes = [];
+        $codes = $this->segments;
         $actionCode = null;
 
-        foreach ($this->segments as $segment) {
-            if (ctype_alpha($segment)) {
-                $codes[] = $segment;
-            } elseif (ctype_digit($segment)) {
-                $actionCode = $segment;
-                break;
-            } else {
+        if (ctype_digit(end($codes))) {
+            $actionCode = array_pop($codes);
+        }
+
+        if (empty($codes) || count($codes) > 3) {
+            return null;
+        }
+
+        foreach ($codes as $code) {
+            if (!ctype_alpha($code)) {
                 return null;
             }
         }

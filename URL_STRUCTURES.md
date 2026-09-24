@@ -18,6 +18,14 @@ Un id **debe** generarse ya relleno con ceros al ancho fijo de su tipo. `persona
 
 Si el segundo segmento es numérico pero no está en el arreglo `actions` del tipo resuelto, el resultado es **404**, no un silencioso `show` del recurso base. Evita que una URL mal escrita parezca funcionar mostrando el contenido equivocado.
 
+### Sin segmentos sobrantes
+
+`/582317/1/basura/`, `/mx/jal/1/gdl/` o cualquier segmento después de lo que la forma del tipo permite también es **404**. Nada se trunca ni se ignora en silencio — incluye un 4° nivel de `lugar` (el tope es país/región/ciudad, 3 niveles).
+
+### Dominio e idioma
+
+`determineSite()` exige coincidencia exacta de dominio o un subdominio real (`.contrastocolor.local`), nunca un sufijo de cadena suelto — así `evilcontrastocolor.local` no se confunde con un subdominio legítimo. `determineLocale()` solo reconoce subdominios que están en la lista explícita de idiomas soportados (`spa`, `eng`); un subdominio de 3 letras que no sea un idioma real (`api.`, `cdn.`) nunca se interpreta como uno.
+
 ### Headroom para tipos futuros
 
 Los largos de dígito no usados por debajo del tipo más chico de cada sitio (1-4 en genealogía, 1-3 en POS) quedan deliberadamente libres, para poder agregar un tipo nuevo de baja cardinalidad más adelante sin tener que renumerar ningún tipo existente.
