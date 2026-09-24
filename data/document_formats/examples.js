@@ -590,6 +590,151 @@ class FormatBatchProcessor {
 // const html = processor.exportAsHTML();
 
 
+// ============================================
+// EXAMPLE 8: Localization Manager
+// ============================================
+class LocalizationManager {
+    constructor(translationsPath = 'translations') {
+        this.translationsPath = translationsPath;
+        this.currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
+        this.translations = {};
+        this.supportedLanguages = ['en', 'es', 'fr', 'de', 'zh', 'ja', 'pt', 'ru', 'ar', 'ko', 'it', 'nl', 'tr', 'hi', 'th', 'vi', 'pl', 'sv', 'no', 'da', 'fi', 'el', 'cs', 'hu', 'ro', 'bg', 'sr', 'hr', 'sk', 'uk'];
+        this.listeners = [];
+    }
+
+    async init() {
+        await this.loadLanguage(this.currentLanguage);
+    }
+
+    async loadLanguage(langCode) {
+        if (!this.supportedLanguages.includes(langCode)) {
+            console.warn(`Language ${langCode} not supported, falling back to English`);
+            langCode = 'en';
+        }
+
+        try {
+            const response = await fetch(`${this.translationsPath}/${langCode}.json`);
+            if (!response.ok) throw new Error(`Failed to load ${langCode}.json`);
+            this.translations = await response.json();
+            this.currentLanguage = langCode;
+            localStorage.setItem('preferredLanguage', langCode);
+            this.notifyListeners();
+        } catch (error) {
+            console.error(`Error loading language ${langCode}:`, error);
+            if (langCode !== 'en') {
+                await this.loadLanguage('en');
+            }
+        }
+    }
+
+    setLanguage(langCode) {
+        return this.loadLanguage(langCode);
+    }
+
+    getLanguage() {
+        return this.currentLanguage;
+    }
+
+    getSupportedLanguages() {
+        return this.supportedLanguages;
+    }
+
+    translate(key, defaultValue = key) {
+        const keys = key.split('.');
+        let value = this.translations;
+
+        for (const k of keys) {
+            if (typeof value === 'object' && value !== null && k in value) {
+                value = value[k];
+            } else {
+                return defaultValue;
+            }
+        }
+
+        return typeof value === 'string' ? value : defaultValue;
+    }
+
+    t(key, defaultValue = key) {
+        return this.translate(key, defaultValue);
+    }
+
+    translateElement(element) {
+        const translateAttr = element.getAttribute('data-translate');
+        if (translateAttr) {
+            const parts = translateAttr.split('|');
+            parts.forEach(part => {
+                const [key, attr] = part.split(':');
+                const translated = this.translate(key.trim());
+                if (attr) {
+                    element.setAttribute(attr.trim(), translated);
+                } else {
+                    element.textContent = translated;
+                }
+            });
+        }
+
+        element.querySelectorAll('[data-translate]').forEach(el => this.translateElement(el));
+    }
+
+    translatePage() {
+        this.translateElement(document.documentElement);
+    }
+
+    subscribe(callback) {
+        this.listeners.push(callback);
+        return () => {
+            this.listeners = this.listeners.filter(l => l !== callback);
+        };
+    }
+
+    notifyListeners() {
+        this.listeners.forEach(callback => callback(this.currentLanguage));
+    }
+
+    getLanguageName(langCode) {
+        const names = {
+            'en': 'English',
+            'es': 'Español',
+            'fr': 'Français',
+            'de': 'Deutsch',
+            'zh': '中文',
+            'ja': '日本語',
+            'pt': 'Português',
+            'ru': 'Русский',
+            'ar': 'العربية',
+            'ko': '한국어',
+            'it': 'Italiano',
+            'nl': 'Nederlands',
+            'tr': 'Türkçe',
+            'hi': 'हिन्दी',
+            'th': 'ไทย',
+            'vi': 'Tiếng Việt',
+            'pl': 'Polski',
+            'sv': 'Svenska',
+            'no': 'Norsk',
+            'da': 'Dansk',
+            'fi': 'Suomi',
+            'el': 'Ελληνικά',
+            'cs': 'Čeština',
+            'hu': 'Magyar',
+            'ro': 'Română',
+            'bg': 'Български',
+            'sr': 'Српски',
+            'hr': 'Hrvatski',
+            'sk': 'Slovenčina',
+            'uk': 'Українська'
+        };
+        return names[langCode] || langCode;
+    }
+}
+
+// Usage:
+// const i18n = new LocalizationManager('translations');
+// await i18n.init();
+// const text = i18n.t('header.title');
+// i18n.subscribe(lang => console.log(`Language changed to ${lang}`));
+
+
 // Export all classes for use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -599,6 +744,7 @@ if (typeof module !== 'undefined' && module.exports) {
         DocumentGenerator,
         FormatValidator,
         FormatStatistics,
-        FormatBatchProcessor
+        FormatBatchProcessor,
+        LocalizationManager
     };
 }
