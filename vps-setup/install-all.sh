@@ -4,6 +4,11 @@ set -e
 DOMAIN=${1:-"initech.fun"}
 EMAIL=${2:-"admin@$DOMAIN"}
 
+# Source shared functions
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+source lib.sh
+
 echo ""
 echo "╔════════════════════════════════════════════════════════════╗"
 echo "║   VPS Setup Completo - Ubuntu 24 LTS                      ║"
@@ -11,14 +16,19 @@ echo "║   Dominio: $DOMAIN"
 echo "║   Email: $EMAIL"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
-read -p "¿Continuar? (s/n) " -n 1 -r
-echo
-if [[ ! $REPLY =~ ^[Ss]$ ]]; then
-    exit 1
+
+# Only prompt if stdin is a TTY (interactive mode)
+if [ -t 0 ]; then
+    read -p "¿Continuar? (s/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Ss]$ ]]; then
+        exit 1
+    fi
+else
+    # Non-interactive: assume yes
+    echo "Modo no-interactivo detectado. Continuando sin confirmacion..."
 fi
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
 chmod +x *.sh
 
 # Pasos con letra (02_A..02_J) son independientes entre si: el orden
@@ -84,7 +94,7 @@ echo "  Access: /var/log/nginx/$DOMAIN/access.log"
 echo "  Error:  /var/log/nginx/$DOMAIN/error.log"
 echo ""
 echo "Panel de administracion (Webmin):"
-IP=$(curl -s --max-time 5 ifconfig.me || echo "TU_IP_PUBLICA")   # --max-time evita colgarse si el servicio no responde
+IP=$(get_public_ip)  # Usa IP cacheada de 02_J (evita duplicate fetch)
 echo "  🔗 https://$IP:10000  (usuario/contraseña: los mismos que por SSH)"
 echo ""
 echo "Pasos opcionales (independientes entre si):"

@@ -1,10 +1,11 @@
 #!/bin/bash
 set -e
 
-echo "========================================"
-echo "[02_J] Instalacion de Webmin"
-echo "========================================"
-echo ""
+# Source shared functions
+source "$(dirname "$0")/lib.sh"
+
+print_header "02_J" "Instalacion de Webmin"
+
 echo "Webmin es una GUI que edita los archivos de configuracion nativos"
 echo "de Linux (Nginx, cron, usuarios, firewall, etc). No reemplaza ni"
 echo "controla nada por su cuenta: si lo desinstalas, todo sigue"
@@ -23,11 +24,9 @@ echo "[2/3] Instalando Webmin..."
 sudo apt-get install -y --install-recommends webmin
 
 echo "[3/3] Abriendo el puerto 10000 en el firewall..."
-if command -v ufw &> /dev/null; then
-    sudo ufw allow 10000/tcp || true
-fi
+ufw_allow "10000/tcp"
 
-IP=$(curl -s --max-time 5 ifconfig.me || echo "TU_IP_PUBLICA")   # --max-time evita colgarse si el servicio no responde
+IP=$(get_public_ip)  # Usa IP cacheada (evita duplicate fetch si install-all.sh ya la obtuvo)
 
 echo ""
 echo "✓ Webmin instalado"

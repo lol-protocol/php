@@ -1,17 +1,15 @@
 #!/bin/bash
 set -e
 
+# Source shared functions
+source "$(dirname "$0")/lib.sh"
+
 DOMAIN=${1:-"initech.fun"}
 VPS_IP=${2:-"158.69.222.245"}
 OVH_SECONDARY=${3:-"sdns2.ovh.ca"}
 
-echo "========================================"
-echo "[06_C] Configurando Servidor DNS (BIND9)"
-echo "Dominio: $DOMAIN"
-echo "IP VPS: $VPS_IP"
-echo "Secundario OVH: $OVH_SECONDARY"
-echo "========================================"
-echo ""
+print_header "06_C" "Configurando Servidor DNS (BIND9)"
+
 echo "NOTA: solo necesitas este script si tu registrador de dominio NO te"
 echo "deja gestionar registros DNS (A/CNAME/TXT) directamente -- la mayoria"
 echo "de registradores si tienen esa opcion; revisa antes de usar esto."
@@ -22,7 +20,7 @@ echo ""
 # su servidor secundario para autorizarla explicitamente mas abajo
 # (allow-transfer) -- sin esto, OVH no podria sincronizar los registros.
 echo "Resolviendo IP del servidor secundario de OVH..."
-OVH_SECONDARY_IP=$(dig +short $OVH_SECONDARY | tail -1)
+OVH_SECONDARY_IP=$(dig +short -t A "$OVH_SECONDARY" 2>/dev/null | head -1)
 
 if [ -z "$OVH_SECONDARY_IP" ]; then
     echo "ADVERTENCIA: No se pudo resolver $OVH_SECONDARY. Instala 'dnsutils' primero:"
@@ -105,12 +103,8 @@ sudo systemctl enable bind9   # arranca automaticamente si el VPS se reinicia
 
 # El puerto 53 (DNS) usa tanto TCP como UDP -- UDP para consultas normales,
 # TCP para respuestas grandes y para las transferencias de zona (AXFR).
-# El "|| true" evita que el script aborte si UFW no esta instalado/activo
-# (BIND9 ya quedo funcionando arriba; esto es solo abrir el firewall).
-if command -v ufw &> /dev/null; then
-    sudo ufw allow 53/tcp || true
-    sudo ufw allow 53/udp || true
-fi
+ufw_allow "53/tcp"
+ufw_allow "53/udp"
 
 echo ""
 echo "✓ Servidor DNS configurado exitosamente"

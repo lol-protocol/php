@@ -19,12 +19,14 @@ service_start_enable() {
     sudo systemctl enable "$service"
 }
 
-# Safe UFW rule (only if ufw exists)
+# Safe UFW rule (only if ufw is active)
 ufw_allow() {
     local rule=$1
-    if command -v ufw &> /dev/null; then
-        sudo ufw allow "$rule" || true
+    if ! sudo ufw status | grep -q "^Status: active"; then
+        echo "WARNING: UFW is not active, skipping rule: $rule"
+        return 0
     fi
+    sudo ufw allow "$rule" || echo "WARNING: Failed to add UFW rule: $rule"
 }
 
 # Verify UFW is actually enabled, not just installed
@@ -109,6 +111,48 @@ verify_dns_resolution() {
 
     if [ "$resolved_ip" != "$expected_ip" ]; then
         echo "WARNING: $domain resolves to $resolved_ip, expected $expected_ip"
+        return 1
+    fi
+
+    return 0
+}
+
+# Get public IP (cached if already fetched this session)
+get_public_ip() {
+    # Check if already cached in this session
+    if [ -n "$CACHED_PUBLIC_IP" ]; then
+        echo "$CACHED_PUBLIC_IP"
+        return 0
+    fi
+
+    local ip
+    ip=$(curl -4 -s --max-time 5 ifconfig.me 2>/dev/null || echo "")
+    if [ -z "$ip" ]; then
+        ip="TU_IP_PUBLICA"
+    fi
+
+    # Cache for this session
+    CACHED_PUBLIC_IP="$ip"
+    echo "$ip"
+}
+
+# Batch DNS lookups (avoid multiple dig calls)
+verify_dns_resolution() {
+    local domain=$1
+    local expected_ip=$2
+
+    # Single dig call to check both domain and www.domain in one go
+    local ips
+    ips=$(dig +short -t A "$domain" www."$domain" 2>/dev/null | sort -u)
+
+    if [ -z "$ips" ]; then
+        echo "WARNING: $domain does not resolve yet. DNS propagation can take 15-60 minutes."
+        return 1
+    fi
+
+    # Check if expected IP is in the results
+    if ! echo "$ips" | grep -q "^${expected_ip}$"; then
+        echo "WARNING: $domain resolves to [$ips], expected $expected_ip"
         return 1
     fi
 

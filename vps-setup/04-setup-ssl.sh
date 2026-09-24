@@ -1,14 +1,13 @@
 #!/bin/bash
 set -e
 
+# Source shared functions
+source "$(dirname "$0")/lib.sh"
+
 DOMAIN=${1:-"initech.fun"}
 EMAIL=${2:-"admin@$DOMAIN"}
 
-echo "========================================"
-echo "[04] SSL/HTTPS con Let's Encrypt"
-echo "Dominio: $DOMAIN"
-echo "========================================"
-echo ""
+print_header "04" "SSL/HTTPS con Let's Encrypt (Dominio: $DOMAIN)"
 
 # Let's Encrypt verifica que el dominio realmente apunte a este servidor antes
 # de emitir el certificado -- si el DNS no propago aun, Certbot fallara.
@@ -20,26 +19,25 @@ echo ""
 # si a cualquiera de los dos le falta el registro A, Certbot rechaza TODO el
 # certificado (no emite uno parcial), no solo el subdominio que falla.
 echo "Verificando que el DNS ya resuelve a este servidor..."
-RESOLVED_IP=$(dig +short $DOMAIN | tail -1)
-RESOLVED_WWW_IP=$(dig +short www.$DOMAIN | tail -1)
-# -4 fuerza IPv4: "dig +short" (sin mas flags) consulta el registro A (IPv4).
-# Sin -4, si el VPS tiene conectividad IPv6, curl podria devolver una IPv6
-# aqui y la comparacion de abajo daria un falso "el DNS no apunta a este VPS"
-# aunque el registro A si sea correcto.
-MY_IP=$(curl -4 -s --max-time 5 ifconfig.me)   # --max-time evita que el script se cuelgue si el servicio no responde
+MY_IP=$(get_public_ip)
+echo "IP de este VPS: $MY_IP"
+echo ""
 
-echo "  DNS de $DOMAIN resuelve a: $RESOLVED_IP"
-echo "  DNS de www.$DOMAIN resuelve a: $RESOLVED_WWW_IP"
-echo "  IP de este VPS: $MY_IP"
-
-if [ "$RESOLVED_IP" != "$MY_IP" ] || [ "$RESOLVED_WWW_IP" != "$MY_IP" ]; then
+# Usar verify_dns_resolution (batched DNS lookup) en lugar de dos dig calls
+if ! verify_dns_resolution "$DOMAIN" "$MY_IP"; then
     echo ""
     echo "ADVERTENCIA: el DNS de $DOMAIN y/o www.$DOMAIN todavia no apunta a este VPS."
     echo "Espera a que propague antes de continuar (puede tardar hasta 24-48h)."
-    read -p "¿Continuar de todas formas? (s/n) " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Ss]$ ]]; then
-        exit 1
+
+    # Solo prompt si es interactivo
+    if [ -t 0 ]; then
+        read -p "¿Continuar de todas formas? (s/n) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Ss]$ ]]; then
+            exit 1
+        fi
+    else
+        echo "Modo no-interactivo: asumiendo que el DNS ya propago..."
     fi
 fi
 
