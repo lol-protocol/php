@@ -1,4 +1,4 @@
-# 9. FAQ: Dilemas y Preguntas Frecuentes
+# 9. ❓ FAQ: Dilemas y Preguntas Frecuentes
 
 **Lectura previa:** [Templates](./08-templates-and-checklists.md)  
 **Siguiente:** [Dilemas Éticos en Gris](./10-gray-area-ethics.md)

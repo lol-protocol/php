@@ -1,4 +1,4 @@
-# 8. Templates y Checklists Prácticos
+# 8. 📋 Templates y Checklists Prácticos
 
 **Lectura previa:** [Implementation Guide](./07-implementation-guide.md)  
 **Volver a:** [Índice Principal](./README.md)

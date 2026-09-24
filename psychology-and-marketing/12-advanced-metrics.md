@@ -1,4 +1,4 @@
-# 12. Métricas Avanzadas de Ética
+# 12. 📊 Métricas Avanzadas de Ética
 
 **Lectura previa:** [Transformación Organizacional](./11-organizational-transformation.md)  
 **Volver a:** [Índice Principal](./README.md)

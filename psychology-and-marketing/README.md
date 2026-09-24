@@ -126,6 +126,64 @@ Qué medir para asegurar que ética + negocio van juntos. 12 categorías de mét
 - Business Sustainability Ratio
 - Dashboards integrados
 
+### 13. [Dilemas Avanzados](./13-advanced-dilemmas.md) 🔥
+10 dilemas complejos del mundo real: Growth vs Sustainability, First-Mover vs Doing Right, Engagement vs Wellbeing, y más.
+
+**Temas clave:**
+- Growth vs Sustainability
+- First Mover Advantage
+- Engagement Metrics vs User Wellbeing
+- Government Data Requests
+- Vulnerable Population Protection
+- Open Source vs Monetization
+- Employee Pressure to Cut Corners
+- Contractor Trust
+- Ethical Competitor Entry
+- Ethical Pivots
+- Framework para resolver cualquier dilema
+
+### 14. [Mentalidad del Usuario](./14-user-psychology-deep.md) 🧠
+Psicología profunda del usuario: cómo piensan, qué los motiva, por qué confían, cómo deciden abandonar.
+
+**Temas clave:**
+- Los tres cerebros (reptiliano, límbico, neocórtex)
+- Motivación intrínseca vs extrínseca (Deci & Ryan)
+- Construcción de confianza
+- Hábitos vs Addiction
+- Sesgos cognitivos
+- Psicología del cambio
+- Psicología del abandono
+- Sentido de comunidad y pertenencia
+
+### 15. [Checklist de Lanzamiento](./15-launch-checklist.md) ✅
+Checklist completo para lanzar features de forma ética y segura. De pre-launch a post-launch.
+
+**Temas clave:**
+- Product readiness
+- Privacy & security audit
+- Compliance verification
+- Technical launch
+- Quality assurance
+- Communication strategy
+- Ethical audit
+- Metrics & analytics
+- Post-launch review
+- Continuous monitoring
+- Templates de resumen
+
+### 16. [Conflictos Internos](./16-internal-conflicts.md) ⚔️
+Cómo resolver conflictos entre equipos (Product vs Marketing, Growth vs Retention, Speed vs Quality, etc.) sin sacrificar ética.
+
+**Temas clave:**
+- 5 conflictos más comunes
+- Framework de resolución
+- Trade-offs reales
+- Problemas específicos del equipo
+- Cambios culturales
+- Estructura organizacional
+- Decision rights claros
+- Cross-functional reviews
+
 ---
 
 ## 🎯 Cómo usar esta guía
@@ -155,7 +213,7 @@ Qué medir para asegurar que ética + negocio van juntos. 12 categorías de mét
 - Usa [Métricas Avanzadas](./12-advanced-metrics.md) para dashboards e indicadores
 
 **Si quieres la visión completa:**
-- Lee en orden: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 12
+- Lee en orden: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 12 → 13 → 14 → 15 → 16
 
 ---
 

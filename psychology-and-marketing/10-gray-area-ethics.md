@@ -1,4 +1,4 @@
-# 10. Dilemas Éticos en Gris
+# 10. ⚖️ Dilemas Éticos en Gris
 
 **Lectura previa:** [FAQ](./09-faq-common-dilemmas.md)  
 **Siguiente:** [Transformación Organizacional](./11-organizational-transformation.md)

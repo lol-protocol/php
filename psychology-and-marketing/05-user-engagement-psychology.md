@@ -1,4 +1,4 @@
-# 5. Psicología del Engagement
+# 5. 🎯 Psicología del Engagement
 
 **Lectura previa:** [Diseño Conversacional](./04-conversational-design.md)  
 **Siguiente:** [Métodos de Investigación](./06-research-methods.md)

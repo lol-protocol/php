@@ -1,4 +1,4 @@
-# 6. Métodos de Investigación Ética (UX Research)
+# 6. 🔍 Métodos de Investigación Ética (UX Research)
 
 **Lectura previa:** [Engagement Psychology](./05-user-engagement-psychology.md)  
 **Siguiente:** [Implementation Guide](./07-implementation-guide.md)

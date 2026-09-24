@@ -1,4 +1,4 @@
-# 7. Guía de Implementación
+# 7. 🚀 Guía de Implementación
 
 **Lectura previa:** [Research Methods](./06-research-methods.md)  
 **Regreso:** [Índice Principal](./README.md)

@@ -1,4 +1,4 @@
-# 3. Principios de Diseño UX (Privacy by Design)
+# 3. 🎨 Principios de Diseño UX (Privacy by Design)
 
 **Lectura previa:** [Neuromarketing Ético](./02-ethical-neuromarketing.md)  
 **Siguiente:** [Diseño Conversacional](./04-conversational-design.md)

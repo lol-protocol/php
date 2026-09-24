@@ -1,4 +1,4 @@
-# 11. Transformación Organizacional Hacia Ética
+# 11. 🌱 Transformación Organizacional Hacia Ética
 
 **Lectura previa:** [Dilemas Éticos](./10-gray-area-ethics.md)  
 **Siguiente:** [Métricas Avanzadas](./12-advanced-metrics.md)

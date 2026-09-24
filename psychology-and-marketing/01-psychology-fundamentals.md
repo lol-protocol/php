@@ -1,11 +1,11 @@
-# 1. Fundamentos de Psicología Cognitiva
+# 1. 🧠 Fundamentos de Psicología Cognitiva
 
 **Lectura previa:** Parte de [Psicología & Neuromarketing Ético](./README.md)  
 **Siguiente:** [Neuromarketing Ético](./02-ethical-neuromarketing.md)
 
 ---
 
-## ¿Por qué importa entender cómo piensan los usuarios?
+## ❓ ¿Por qué importa entender cómo piensan los usuarios?
 
 Antes de diseñar un producto o estrategia de marketing, necesitas entender **cómo funciona la mente**. Los usuarios no siempre son racionales. Sus decisiones están influenciadas por:
 - Procesos automáticos (rápidos, inconscientes)
@@ -15,11 +15,11 @@ Antes de diseñar un producto o estrategia de marketing, necesitas entender **c�
 
 ---
 
-## 1. Pensamiento Dual: Rápido vs. Lento
+## 1. ⚡ Pensamiento Dual: Rápido vs. Lento
 
 **Teoría de Kahneman & Tversky**
 
-### Sistema 1 (Rápido)
+### ⚡ Sistema 1 (Rápido)
 - Automático, sin esfuerzo
 - Instintivo, emocional
 - Usa heurísticas (atajos mentales)
@@ -30,7 +30,7 @@ Antes de diseñar un producto o estrategia de marketing, necesitas entender **c�
 - Comprar porque ves que otros lo tienen
 - Cerrar una ventana emergente sin leerla
 
-### Sistema 2 (Lento)
+### 🤔 Sistema 2 (Lento)
 - Deliberado, requiere esfuerzo
 - Racional, analítico
 - Evalúa información cuidadosamente

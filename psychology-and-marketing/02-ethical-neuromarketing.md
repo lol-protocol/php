@@ -1,4 +1,4 @@
-# 2. Neuromarketing Ético
+# 2. 💡 Neuromarketing Ético
 
 **Lectura previa:** [Fundamentos de Psicología](./01-psychology-fundamentals.md)  
 **Siguiente:** [UX Design Principles](./03-ux-design-principles.md)
