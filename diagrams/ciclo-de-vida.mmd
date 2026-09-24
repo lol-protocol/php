@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant N as Navegador
+    participant H as .htaccess
+    participant I as index.php
+    participant R as Router
+    participant C as Controlador
+
+    N->>H: GET spa.contrastocolor.local/81372047/1/
+    H->>I: rewrite (mod_rewrite) -> index.php
+    I->>I: determineSite(host) -> "pos"\n(exige dominio exacto o subdominio real)
+    I->>I: determineLocale(host) -> "spa"\n(solo whitelist spa/eng)
+    I->>R: loadConfig(routes/pos.php)
+    I->>R: dispatch()
+    R->>R: parseSegments()\n-> ["81372047","1"] (minusculas)
+    R->>R: resolve(): no vacio, no literal,\nno order, no reservado,\nctype_digit -> matchByLength
+    R->>R: strlen("81372047")=8 -> producto\naccion 1 -> "variantes"\n(maximo 2 segmentos, ya validado)
+    R->>C: ProductoController->variantes(['id'=>'81372047'])
+    C-->>N: HTML
