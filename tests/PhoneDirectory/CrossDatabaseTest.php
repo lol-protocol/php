@@ -81,6 +81,9 @@ class CrossDatabaseTest extends TestCase
         $this->assertEquals('es_1930_madrid', $found->getSourceDirectoryId());
         $this->assertSame(42, $found->getSourceLine());
 
+        $this->assertCount(1, $database->findBySourceDirectory('es_1930_madrid'));
+        $this->assertCount(1, $database->findBySurnameSound('Garsia', 'es'));
+
         $this->assertTrue($database->update($found), 'saving an unchanged entry still reports success');
         $this->assertTrue($database->delete($id));
         $this->assertSame(0, $database->count());

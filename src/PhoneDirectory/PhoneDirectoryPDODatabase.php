@@ -224,6 +224,18 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
         return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    public function findBySourceDirectory(string $sourceDirectoryId): array
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
+        }
+
+        $stmt = $this->pdo->prepare('SELECT * FROM phone_directory WHERE source_directory_id = :source ORDER BY source_line, id');
+        $stmt->execute([':source' => $sourceDirectoryId]);
+
+        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+    }
+
     public function getAll(): array
     {
         if (!$this->isConnected()) {
