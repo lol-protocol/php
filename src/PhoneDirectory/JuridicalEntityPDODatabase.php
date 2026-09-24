@@ -50,7 +50,7 @@ class JuridicalEntityPDODatabase extends AbstractPDODatabase implements Juridica
     private function backfillFoldedColumns(): void
     {
         $result = $this->pdo->query(
-            'SELECT * FROM juridical_entities WHERE business_name_folded IS NULL'
+            'SELECT id, business_name, street FROM juridical_entities WHERE business_name_folded IS NULL'
         );
         if ($result === false) {
             throw new \RuntimeException('Cannot query juridical_entities for backfill: ' . implode(', ', $this->pdo->errorInfo()));
@@ -66,7 +66,12 @@ class JuridicalEntityPDODatabase extends AbstractPDODatabase implements Juridica
         $this->pdo->beginTransaction();
         try {
             foreach ($rows as $row) {
-                $stmt->execute($this->foldedSearchParams($this->rowToEntity($row)) + [':id' => $row['id']]);
+                $entity = new JuridicalEntity(
+                    businessName: $row['business_name'],
+                    street: $row['street'],
+                    countryCode: 'US'
+                );
+                $stmt->execute($this->foldedSearchParams($entity) + [':id' => $row['id']]);
             }
             $this->pdo->commit();
         } catch (\Throwable $e) {

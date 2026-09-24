@@ -54,7 +54,7 @@ class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDire
     private function backfillDerivedColumns(): void
     {
         $result = $this->pdo->query(
-            'SELECT * FROM phone_directory WHERE surname_soundex IS NULL OR full_name_folded IS NULL'
+            'SELECT id, full_name, street FROM phone_directory WHERE surname_soundex IS NULL OR full_name_folded IS NULL'
         );
         if ($result === false) {
             throw new \RuntimeException('Cannot query phone_directory for backfill: ' . implode(', ', $this->pdo->errorInfo()));
@@ -73,7 +73,11 @@ class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDire
         $this->pdo->beginTransaction();
         try {
             foreach ($rows as $row) {
-                $entry = $this->rowToEntry($row);
+                $entry = new PhoneDirectoryEntry(
+                    fullName: $row['full_name'],
+                    countryCode: 'US',
+                    street: $row['street']
+                );
                 $stmt->execute($this->surnameKeyParams($entry) + $this->foldedSearchParams($entry) + [':id' => $row['id']]);
             }
             $this->pdo->commit();

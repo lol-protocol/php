@@ -50,6 +50,10 @@ class MultiLanguagePhoneDirectoryParser
     private string $countryCode;
     private ?string $sourceDirectoryId;
 
+    private array $streetPatternCache = [];
+    private array $entityTypePatternCache = [];
+    private array $detectionPatternCache = [];
+
     /**
      * @param string $countryCode Two-letter ISO 3166-1 alpha-2 country code
      * @param string|null $sourceDirectoryId Identifier for the source directory
@@ -177,34 +181,37 @@ class MultiLanguagePhoneDirectoryParser
     {
         $scores = ['en' => 0];
         foreach (self::LANGUAGE_DETECTION_MARKERS as $lang => $words) {
-            $pattern = $this->detectionPattern($lang, $words);
+            $pattern = $this->getDetectionPattern($lang, $words);
             $scores[$lang] = $pattern === null ? 0 : preg_match_all($pattern, $content);
         }
 
         arsort($scores);
         $best = array_key_first($scores);
 
-        // A tie (including an all-zero one) stays with English rather than falling to whichever
-        // language happens to sort first; only genuine evidence overrides the baseline.
         return $scores[$best] > 0 ? $best : 'en';
     }
 
-    private function detectionPattern(string $language, array $words): ?string
+    private function getDetectionPattern(string $language, array $words): ?string
     {
-        $suffixes = self::LANGUAGE_STREET_SUFFIXES[$language] ?? [];
-        if ($words === [] && $suffixes === []) {
-            return null;
+        if (!isset($this->detectionPatternCache[$language])) {
+            $suffixes = self::LANGUAGE_STREET_SUFFIXES[$language] ?? [];
+            if ($words === [] && $suffixes === []) {
+                $this->detectionPatternCache[$language] = null;
+                return null;
+            }
+
+            $parts = [];
+            if ($words !== []) {
+                $parts[] = '\\b(?:' . implode('|', array_map(fn($m) => preg_quote($m, '/'), $words)) . ')\\b';
+            }
+            foreach ($suffixes as $suffix) {
+                $parts[] = preg_quote($suffix, '/') . '\\b';
+            }
+
+            $this->detectionPatternCache[$language] = '/' . implode('|', $parts) . '/iu';
         }
 
-        $parts = [];
-        if ($words !== []) {
-            $parts[] = '\\b(?:' . implode('|', array_map(fn($m) => preg_quote($m, '/'), $words)) . ')\\b';
-        }
-        foreach ($suffixes as $suffix) {
-            $parts[] = preg_quote($suffix, '/') . '\\b';
-        }
-
-        return '/' . implode('|', $parts) . '/iu';
+        return $this->detectionPatternCache[$language];
     }
 
     private function processBuffer(array $lines, int $startLine, string $language, string $phoneRegex): void
@@ -237,8 +244,6 @@ class MultiLanguagePhoneDirectoryParser
                 }
             }
 
-            // A line is the name only once it's been ruled out as a phone or a street; otherwise a
-            // street-first or phone-first layout would have its address or number read as the name.
             if (!$nameSet && !preg_match($phoneRegex, $line) && !$this->extractStreet($line, $language)) {
                 $data['name'] = $line;
                 $nameSet = true;
@@ -304,16 +309,14 @@ class MultiLanguagePhoneDirectoryParser
 
     private function extractStreet(string $line, string $language): ?string
     {
-        // Validate UTF-8 encoding before regex operations with /u flag
         if (!mb_check_encoding($line, 'UTF-8')) {
             return null;
         }
 
-        if (preg_match($this->streetPattern($language), $line)) {
+        if (preg_match($this->getStreetPattern($language), $line)) {
             return $line;
         }
 
-        // A line that is only a phone number is not also a street, even though it starts with digits.
         if (PhonePattern::isOnlyAPhoneNumber($line)) {
             return null;
         }
@@ -328,36 +331,57 @@ class MultiLanguagePhoneDirectoryParser
     private function extractBusinessType(string $line, string $language): ?string
     {
         $markers = self::ENTITY_TYPE_MARKERS[$language] ?? [];
+        if (empty($markers)) {
+            return null;
+        }
 
-        foreach ($markers as $marker) {
-            if (preg_match($this->wordPattern([$marker]), $line)) {
-                return $marker;
+        $pattern = $this->getEntityTypePattern($language);
+        if (preg_match($pattern, $line)) {
+            foreach ($markers as $marker) {
+                if (str_contains(strtolower($line), strtolower($marker))) {
+                    return $marker;
+                }
             }
         }
 
         return null;
     }
 
-    private function streetPattern(string $language): string
+    private function getStreetPattern(string $language): string
     {
-        if (!isset(self::LANGUAGE_STREET_MARKERS[$language])) {
-            throw new \InvalidArgumentException("Unsupported language for street pattern: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
+        if (!isset($this->streetPatternCache[$language])) {
+            if (!isset(self::LANGUAGE_STREET_MARKERS[$language])) {
+                throw new \InvalidArgumentException("Unsupported language for street pattern: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
+            }
+
+            $words = implode('|', array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_MARKERS[$language]));
+            $suffixes = array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_SUFFIXES[$language] ?? []);
+
+            $pattern = '\\b(?:' . $words . ')\\b';
+            if ($suffixes) {
+                $pattern .= '|(?:' . implode('|', $suffixes) . ')\\b';
+            }
+
+            $this->streetPatternCache[$language] = '/' . $pattern . '/iu';
         }
 
-        $words = implode('|', array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_MARKERS[$language]));
-        $suffixes = array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_SUFFIXES[$language] ?? []);
-
-        $pattern = '\\b(?:' . $words . ')\\b';
-        if ($suffixes) {
-            $pattern .= '|(?:' . implode('|', $suffixes) . ')\\b';
-        }
-
-        return '/' . $pattern . '/iu';
+        return $this->streetPatternCache[$language];
     }
 
-    private function wordPattern(array $words): string
+    private function getEntityTypePattern(string $language): ?string
     {
-        return '/\\b(?:' . implode('|', array_map(fn($m) => preg_quote($m, '/'), $words)) . ')\\b/iu';
+        if (!isset($this->entityTypePatternCache[$language])) {
+            $markers = self::ENTITY_TYPE_MARKERS[$language] ?? [];
+
+            if (empty($markers)) {
+                $this->entityTypePatternCache[$language] = null;
+            } else {
+                $pattern = '\\b(?:' . implode('|', array_map(fn($m) => preg_quote($m, '/'), $markers)) . ')\\b';
+                $this->entityTypePatternCache[$language] = '/' . $pattern . '/iu';
+            }
+        }
+
+        return $this->entityTypePatternCache[$language];
     }
 
     private function isJuridicalEntity(array $data, string $language): bool
@@ -366,9 +390,8 @@ class MultiLanguagePhoneDirectoryParser
             return true;
         }
 
-        $markers = self::ENTITY_TYPE_MARKERS[$language] ?? [];
-
-        return $markers !== [] && preg_match($this->wordPattern($markers), $data['name'] ?? '') === 1;
+        $pattern = $this->getEntityTypePattern($language);
+        return $pattern !== null && preg_match($pattern, $data['name'] ?? '') === 1;
     }
 
     private function validateEntry(array $data): bool
