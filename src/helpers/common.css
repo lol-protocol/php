@@ -26,6 +26,16 @@
     --ease-linear: linear;
 }
 
+/* Accesibilidad: Respeto a preferencias de movimiento */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -67,6 +77,7 @@ body {
     transition: var(--transition);
     backdrop-filter: blur(10px);
     z-index: 10;
+    outline: none;
 }
 
 .control-btn:hover {
@@ -76,6 +87,19 @@ body {
 
 .control-btn:active {
     transform: scale(0.95);
+}
+
+/* Accesibilidad: Estados de enfoque visibles para navegación por teclado */
+.control-btn:focus-visible {
+    outline: 3px solid #ffff00;
+    outline-offset: 3px;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.control-btn:focus {
+    outline: 3px solid #ffff00;
+    outline-offset: 3px;
+    background: rgba(255, 255, 255, 0.4);
 }
 
 /* Layouts Comunes */

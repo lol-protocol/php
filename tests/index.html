@@ -266,6 +266,9 @@
             <button class="btn-primary" id="runTestsBtn" onclick="runTests()">
                 ▶️ Ejecutar Tests
             </button>
+            <button class="btn-primary" id="runPerfBtn" onclick="runPerformanceTests()">
+                🚀 Performance Tests
+            </button>
             <button class="btn-secondary" id="exportHtmlBtn" onclick="exportHTML()" disabled>
                 📄 Exportar HTML
             </button>
@@ -290,8 +293,114 @@
     </div>
 
     <script src="animation-validation.js"></script>
+    <script src="performance-tests.js"></script>
     <script>
         let testSuite = null;
+        let performanceSuite = null;
+
+        async function runPerformanceTests() {
+            const runBtn = document.getElementById('runPerfBtn');
+            const loading = document.getElementById('loading');
+            const resultsDiv = document.getElementById('results');
+
+            runBtn.disabled = true;
+            loading.classList.add('show');
+            resultsDiv.classList.remove('show');
+
+            try {
+                performanceSuite = new PerformanceTestSuite();
+                const results = await performanceSuite.runAll();
+
+                setTimeout(() => {
+                    loading.classList.remove('show');
+                    displayPerformanceResults(results);
+                    runBtn.disabled = false;
+                    document.getElementById('exportHtmlBtn').disabled = false;
+                    document.getElementById('exportJsonBtn').disabled = false;
+                    document.getElementById('clearBtn').disabled = false;
+                }, 500);
+            } catch (err) {
+                console.error('Error running performance tests:', err);
+                loading.classList.remove('show');
+                resultsDiv.classList.add('show');
+                resultsDiv.innerHTML = `<div class="summary">❌ Error ejecutando performance tests: ${err.message}</div>`;
+                runBtn.disabled = false;
+            }
+        }
+
+        function displayPerformanceResults(results) {
+            const resultsDiv = document.getElementById('results');
+
+            let html = `
+                <div class="stats">
+                    <div class="stat-box stat-total">
+                        <div class="stat-number">${results.summary.avgFps}</div>
+                        <div class="stat-label">FPS Promedio</div>
+                    </div>
+                    <div class="stat-box stat-total">
+                        <div class="stat-number">${results.summary.avgMemory}MB</div>
+                        <div class="stat-label">Memoria Promedio</div>
+                    </div>
+                    <div class="stat-box stat-total">
+                        <div class="stat-number">${results.summary.totalTestsRun}</div>
+                        <div class="stat-label">Tests Ejecutados</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 20px; color: #333;">Performance por Animación</h3>
+            `;
+
+            const statusIcons = {
+                'PASS': '✅',
+                'WARN': '⚠️',
+                'SLOW': '🐢',
+                'FAIL': '❌'
+            };
+
+            results.animations.forEach(anim => {
+                const statusType = anim.status.includes('PASS') ? 'pass' : anim.status.includes('WARN') ? 'warn' : 'fail';
+                const statusKey = anim.status.split(' ')[0];
+                const icon = statusIcons[statusKey] || '❓';
+
+                html += `
+                    <div class="test-result ${statusType}">
+                        <div class="test-icon">${icon}</div>
+                        <div class="test-info">
+                            <span class="test-category">Animacion-${anim.id.toUpperCase()}</span>
+                            <div class="test-name">${anim.status}</div>
+                            <div class="test-message">Load: ${anim.loadTime.toFixed(2)}ms | FPS: ${anim.fps} | Memory: ${anim.memory.usedJSHeapSize}MB</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Memory Leak Test
+            html += `
+                <h3 style="margin: 30px 0 20px; color: #333;">Memory Leak Analysis</h3>
+                <div class="test-result ${results.memoryLeakTest.leaked ? 'warn' : 'pass'}">
+                    <div class="test-icon">${results.memoryLeakTest.leaked ? '⚠️' : '✅'}</div>
+                    <div class="test-info">
+                        <div class="test-name">${results.memoryLeakTest.status}</div>
+                        <div class="test-message">${results.memoryLeakTest.message}</div>
+                    </div>
+                </div>
+            `;
+
+            // Simultaneous Animations Test
+            html += `
+                <h3 style="margin: 30px 0 20px; color: #333;">Simultaneous Animations (5)</h3>
+                <div class="test-result pass">
+                    <div class="test-icon">⚙️</div>
+                    <div class="test-info">
+                        <div class="test-name">${results.simultaneousTest.status}</div>
+                        <div class="test-message">FPS Degradation: ${results.simultaneousTest.degradation}%</div>
+                    </div>
+                </div>
+            `;
+
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.add('show');
+        }
 
         async function runTests() {
             const runBtn = document.getElementById('runTestsBtn');
@@ -383,17 +492,19 @@
         }
 
         function exportHTML() {
-            if (!testSuite) return;
-            const html = testSuite.exportHTML();
+            if (!testSuite && !performanceSuite) return;
+            const html = testSuite ? testSuite.exportHTML() : performanceSuite.exportHTML();
+            const filename = testSuite ? 'test-results.html' : 'performance-results.html';
             const blob = new Blob([html], { type: 'text/html' });
-            downloadFile(blob, 'test-results.html');
+            downloadFile(blob, filename);
         }
 
         function exportJSON() {
-            if (!testSuite) return;
-            const json = testSuite.exportJSON();
+            if (!testSuite && !performanceSuite) return;
+            const json = testSuite ? testSuite.exportJSON() : performanceSuite.exportJSON();
+            const filename = testSuite ? 'test-results.json' : 'performance-results.json';
             const blob = new Blob([json], { type: 'application/json' });
-            downloadFile(blob, 'test-results.json');
+            downloadFile(blob, filename);
         }
 
         function downloadFile(blob, filename) {
