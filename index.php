@@ -9,6 +9,7 @@ use App\Support\UrlHelper;
 use App\Support\ServiceLocator;
 use App\Support\Logger;
 use App\Support\SessionManager;
+use App\Support\HttpSecurityHeaders;
 
 /**
  * Main Application Entry Point
@@ -20,13 +21,15 @@ define('DEBUG_MODE', getenv('DEBUG') === 'true');
 
 ClassLoader::register();
 SessionManager::getInstance()->start();
+HttpSecurityHeaders::setSecurityHeaders();
 
 require 'Router.php';
 
 $container = Container::getInstance();
 
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$pos_domains = ['contrastocolor.local', 'contrastocolor.test', 'contrastocolor.app'];
+$pos_domains = explode(',', getenv('POS_DOMAINS') ?: 'contrastocolor.local,contrastocolor.test,contrastocolor.app');
+$pos_domains = array_map('trim', $pos_domains);
 $site = HostParser::matchesDomain($host, $pos_domains) ? 'pos' : 'genealogy';
 $locale = HostParser::getLocale($host);
 
@@ -46,22 +49,35 @@ $locator = ServiceLocator::getInstance();
 $response = $locator->getRouter()->dispatch();
 echo $response;
 
-function view($name, $data = [])
+function view(string $name, array $data = []): string
 {
-    $file = __DIR__ . '/views/' . $name . '.php';
+    // Prevent path traversal attacks
+    $safeName = preg_replace('/\.\./', '', $name);
+    $file = __DIR__ . '/views/' . $safeName . '.php';
 
     if (!file_exists($file)) {
-        return "View not found: $name";
+        $logger = ServiceLocator::getInstance()->getLogger();
+        $logger->warning('View not found', ['view' => $name]);
+        return "View not found: " . htmlspecialchars($name);
     }
 
     ob_start();
-    (function() use ($file, $data) {
-        foreach ($data as $key => $value) {
-            ${$key} = $value;
-        }
-        include $file;
-    })();
-    return ob_get_clean();
+    try {
+        (function() use ($file, $data): void {
+            foreach ($data as $key => $value) {
+                ${$key} = $value;
+            }
+            include $file;
+        })();
+        return (string)ob_get_clean();
+    } catch (\Throwable $e) {
+        ob_end_clean();
+        ServiceLocator::getInstance()->getLogger()->error('View error', [
+            'view' => $name,
+            'error' => $e->getMessage(),
+        ]);
+        return '<h1>Error loading view</h1>';
+    }
 }
 
 function enlace(string $tipo, int|string $id): string
