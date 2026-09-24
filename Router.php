@@ -46,11 +46,11 @@ class Router
     protected function initializeStrategies(): void
     {
         $this->strategies = [
-            new LiteralMatchStrategy(),
-            new OrderMatchStrategy(),
-            new ReservedMatchStrategy(),
-            new ByLengthMatchStrategy(),
-            new PlaceMatchStrategy(),
+            new ByLengthMatchStrategy(),      // Most common (numeric IDs: /1234/)
+            new PlaceMatchStrategy(),          // Common (places: /mx/jalisco/)
+            new LiteralMatchStrategy(),        // Less common (exact paths)
+            new OrderMatchStrategy(),          // Specific (/order/)
+            new ReservedMatchStrategy(),       // Edge case (/0/)
         ];
     }
 

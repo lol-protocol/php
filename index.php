@@ -10,6 +10,7 @@ use App\Support\ServiceLocator;
 use App\Support\Logger;
 use App\Support\SessionManager;
 use App\Support\HttpSecurityHeaders;
+use App\Support\RateLimiter;
 
 /**
  * Main Application Entry Point
@@ -45,6 +46,11 @@ $container->singleton('url', function ($c) {
 
 ServiceLocator::initialize($container, $locale);
 $locator = ServiceLocator::getInstance();
+
+if (!RateLimiter::getInstance()->checkLimit(100, 60)) {
+    echo '<h1>429 - Too Many Requests</h1>';
+    exit;
+}
 
 $response = $locator->getRouter()->dispatch();
 echo $response;

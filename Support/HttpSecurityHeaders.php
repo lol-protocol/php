@@ -8,6 +8,23 @@ class HttpSecurityHeaders
 {
     public static function setSecurityHeaders(): void
     {
+        self::enableCompression();
+        self::setSecurityPolicies();
+    }
+
+    private static function enableCompression(): void
+    {
+        if (!headers_sent()) {
+            // Enable gzip compression for responses > 1KB
+            if (extension_loaded('zlib') && !ini_get('output_handler')) {
+                ob_start('ob_gzhandler');
+                header('Vary: Accept-Encoding');
+            }
+        }
+    }
+
+    private static function setSecurityPolicies(): void
+    {
         $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
                    $_SERVER['SERVER_PORT'] === 443;
 
@@ -31,7 +48,6 @@ class HttpSecurityHeaders
                "frame-ancestors 'none';";
 
         header("Content-Security-Policy: {$csp}");
-
         header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
     }
 }
