@@ -82,9 +82,13 @@ class JuridicalEntityPDODatabase implements JuridicalEntityDatabaseInterface
 
     private function backfillFoldedColumns(): void
     {
-        $rows = $this->pdo->query(
+        $result = $this->pdo->query(
             'SELECT * FROM juridical_entities WHERE business_name_folded IS NULL'
-        )->fetchAll(\PDO::FETCH_ASSOC);
+        );
+        if ($result === false) {
+            throw new \RuntimeException('Cannot query juridical_entities for backfill: ' . implode(', ', $this->pdo->errorInfo()));
+        }
+        $rows = $result->fetchAll(\PDO::FETCH_ASSOC);
         if ($rows === []) {
             return;
         }

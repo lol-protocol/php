@@ -87,9 +87,13 @@ class PhoneDirectoryPDODatabase implements PhoneDirectoryDatabaseInterface
 
     private function backfillDerivedColumns(): void
     {
-        $rows = $this->pdo->query(
+        $result = $this->pdo->query(
             'SELECT * FROM phone_directory WHERE surname_soundex IS NULL OR full_name_folded IS NULL'
-        )->fetchAll(\PDO::FETCH_ASSOC);
+        );
+        if ($result === false) {
+            throw new \RuntimeException('Cannot query phone_directory for backfill: ' . implode(', ', $this->pdo->errorInfo()));
+        }
+        $rows = $result->fetchAll(\PDO::FETCH_ASSOC);
         if ($rows === []) {
             return;
         }
