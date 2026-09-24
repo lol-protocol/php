@@ -483,11 +483,19 @@ php datos/generar-datos-semilla.php
 cd servicio-estadisticas-java && javac *.java && java ServicioEstadisticas
 
 # 3. API backend (PHP)
-php -S localhost:8000 -t servidor-php/publico servidor-php/publico/index.php
+PHP_CLI_SERVER_WORKERS=4 php -S localhost:8000 -t servidor-php/publico servidor-php/publico/index.php
 
 # 4. Panel de administración
-php -S localhost:8082 -t interfaz
+PHP_CLI_SERVER_WORKERS=4 php -S localhost:8082 -t interfaz
 ```
+
+`PHP_CLI_SERVER_WORKERS`: el servidor embebido de PHP atiende un solo request
+a la vez por default. El panel ya pide varios endpoints en paralelo con
+`Promise.all()` (`loadAppData()` en `aplicacion.js`) — sin esto, esos pedidos
+se encolan igual del lado del servidor (medido: 5 requests en paralelo bajan
+de ~110ms a ~55-90ms con 4 workers). Sin efecto en el estado de sesión ni en
+el rate limiting de login: ambos viven en PostgreSQL/archivos de sesión
+compartidos, no en memoria de un proceso.
 
 Abrir http://localhost:8082.
 

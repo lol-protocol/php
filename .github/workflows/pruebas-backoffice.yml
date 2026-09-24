@@ -83,8 +83,8 @@ jobs:
         run: |
           javac servicio-estadisticas-java/*.java
           (cd servicio-estadisticas-java && java ServicioEstadisticas > /tmp/java.log 2>&1 &)
-          php -S localhost:8000 -t servidor-php/publico servidor-php/publico/index.php > /tmp/api.log 2>&1 &
-          php -S localhost:8082 -t interfaz > /tmp/panel.log 2>&1 &
+          PHP_CLI_SERVER_WORKERS=4 php -S localhost:8000 -t servidor-php/publico servidor-php/publico/index.php > /tmp/api.log 2>&1 &
+          PHP_CLI_SERVER_WORKERS=4 php -S localhost:8082 -t interfaz > /tmp/panel.log 2>&1 &
           for url in "http://localhost:8081/stats?type=login" "http://localhost:8000/api/session" "http://localhost:8082/"; do
             for _ in $(seq 1 30); do
               curl -sf -o /dev/null --max-time 2 "$url" && continue 2
