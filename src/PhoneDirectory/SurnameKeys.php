@@ -24,9 +24,16 @@ final class SurnameKeys
         'nl' => 'nld',
     ];
 
+    private const MAX_SURNAME_LENGTH = 1000;
+
     public static function soundex(?string $surname): ?string
     {
-        $letters = preg_replace('/[^a-z]/', '', AccentFolding::fold(mb_strtolower($surname ?? '', 'UTF-8')));
+        if ($surname === null || strlen($surname) === 0) {
+            return null;
+        }
+
+        $truncated = substr($surname, 0, self::MAX_SURNAME_LENGTH);
+        $letters = preg_replace('/[^a-z]/', '', AccentFolding::fold(mb_strtolower($truncated, 'UTF-8')));
 
         return $letters === '' ? null : soundex($letters);
     }
@@ -38,7 +45,8 @@ final class SurnameKeys
             return null;
         }
 
-        return PhoneticFolderRegistry::fold($folderLanguage, $surname);
+        $truncated = substr($surname, 0, self::MAX_SURNAME_LENGTH);
+        return PhoneticFolderRegistry::fold($folderLanguage, $truncated);
     }
 
     /** The word a surname is indexed by: "de la Cruz" → "Cruz", "García López" → "García". */
