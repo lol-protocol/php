@@ -1,5 +1,28 @@
 // Dashboard Interactivo para Animaciones
 class InteractiveDashboard {
+  static SELECTORS = {
+    CARD: '[data-anim-id]',
+    COPY_BTN: '.copy-code-btn',
+    DETAILS_BTN: '.view-details-btn',
+    MODAL_CLOSE: '.modal-close',
+    MODAL_OVERLAY: '.modal-overlay',
+  };
+
+  static CONFIG = {
+    PATHS: {
+      CSS: 'src/animations/animacion-{id}.css',
+      JS: 'src/animations/animacion-{id}.js',
+      HTML: 'src/animations/animacion-{id}.html',
+      COMMON_JS: 'src/helpers/common.js',
+    },
+    DIFFICULTY_COLORS: {
+      'Fácil': '#4CAF50',
+      'Medio': '#ff9800',
+      'Alto': '#f44336',
+    },
+    FEEDBACK_DURATION: 2000,
+  };
+
   constructor() {
     this.currentAnimation = null;
     this.initializeEventListeners();
@@ -7,13 +30,15 @@ class InteractiveDashboard {
 
   initializeEventListeners() {
     document.addEventListener('click', (e) => {
-      if (e.target.closest('.copy-code-btn')) {
-        this.copyAnimationCode(e.target.closest('[data-anim-id]').dataset.animId);
-      }
-      if (e.target.closest('.view-details-btn')) {
-        this.showDetailsModal(e.target.closest('[data-anim-id]').dataset.animId);
-      }
-      if (e.target.closest('.modal-close')) {
+      const card = e.target.closest(InteractiveDashboard.SELECTORS.CARD);
+      if (!card) return;
+
+      const animId = card.dataset.animId;
+      if (e.target.closest(InteractiveDashboard.SELECTORS.COPY_BTN)) {
+        this.copyAnimationCode(animId);
+      } else if (e.target.closest(InteractiveDashboard.SELECTORS.DETAILS_BTN)) {
+        this.showDetailsModal(animId);
+      } else if (e.target.closest(InteractiveDashboard.SELECTORS.MODAL_CLOSE)) {
         this.closeModal();
       }
     });
@@ -23,96 +48,84 @@ class InteractiveDashboard {
     });
   }
 
-  // Copiar código de animación
-  copyAnimationCode(animId) {
-    const html = `
-<!-- Animación ${animId.toUpperCase()} -->
-<link rel="stylesheet" href="src/animations/animacion-${animId}.css">
-<div class="animation-container" id="container${animId}"></div>
-<button onclick="toggle.toggle()">Pausar/Reanudar</button>
-<script src="src/helpers/common.js"><\/script>
-<script src="src/animations/animacion-${animId}.js"><\/script>
-    `.trim();
-
-    navigator.clipboard.writeText(html).then(() => {
-      const btn = document.querySelector(`[data-anim-id="${animId}"] .copy-code-btn`);
-      const originalText = btn.textContent;
-      btn.textContent = '✅ Copiado!';
-      setTimeout(() => {
-        btn.textContent = originalText;
-      }, 2000);
-    });
+  getAnimId(element) {
+    return element.closest(InteractiveDashboard.SELECTORS.CARD)?.dataset.animId;
   }
 
-  // Mostrar modal con detalles
-  showDetailsModal(animId) {
-    const data = this.findAnimationData(animId);
-    if (!data) return;
+  formatPath(template, id) {
+    return template.replace('{id}', id);
+  }
 
-    const difficultyColor = {
-      'Fácil': '#4CAF50',
-      'Medio': '#ff9800',
-      'Alto': '#f44336'
-    };
+  getAnimationHtmlSnippet(animId) {
+    const paths = InteractiveDashboard.CONFIG.PATHS;
+    return `
+<!-- Animación ${animId.toUpperCase()} -->
+<link rel="stylesheet" href="${this.formatPath(paths.CSS, animId)}">
+<div class="animation-container" id="container${animId}"></div>
+<button onclick="toggle.toggle()">Pausar/Reanudar</button>
+<script src="${paths.COMMON_JS}"><\/script>
+<script src="${this.formatPath(paths.JS, animId)}"><\/script>
+    `.trim();
+  }
 
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `
+  async copyAnimationCode(animId) {
+    const html = this.getAnimationHtmlSnippet(animId);
+    const btn = document.querySelector(`[data-anim-id="${animId}"] ${InteractiveDashboard.SELECTORS.COPY_BTN}`);
+
+    try {
+      await navigator.clipboard.writeText(html);
+      this.showButtonFeedback(btn, '✅ Copiado!');
+    } catch (err) {
+      console.error('Error al copiar:', err);
+      this.showButtonFeedback(btn, '❌ Error');
+    }
+  }
+
+  showButtonFeedback(btn, message) {
+    const originalText = btn.textContent;
+    btn.textContent = message;
+    setTimeout(() => {
+      btn.textContent = originalText;
+    }, InteractiveDashboard.CONFIG.FEEDBACK_DURATION);
+  }
+
+  createSection(title, content) {
+    return `<div class="modal-section"><h3>${title}</h3>${content}</div>`;
+  }
+
+  buildModalHtml(data, animId) {
+    const paths = InteractiveDashboard.CONFIG.PATHS;
+    const diffColor = InteractiveDashboard.CONFIG.DIFFICULTY_COLORS[data.difficulty];
+    const iframeCode = `&lt;iframe src="${this.formatPath(paths.HTML, animId)}" width="100%" height="600px"&gt;&lt;/iframe&gt;`;
+
+    return `
       <div class="modal-content">
         <div class="modal-header">
           <h2>${data.title}</h2>
           <button class="modal-close">&times;</button>
         </div>
-
         <div class="modal-body">
-          <div class="modal-section">
-            <h3>📝 Descripción</h3>
-            <p>${data.description}</p>
-          </div>
-
+          ${this.createSection('📝 Descripción', `<p>${data.description}</p>`)}
           <div class="modal-grid">
-            <div class="modal-section">
-              <h3>📊 Dificultad</h3>
-              <div class="difficulty-badge" style="background: ${difficultyColor[data.difficulty]}">
-                ${data.difficulty}
-              </div>
-            </div>
-
-            <div class="modal-section">
-              <h3>🏷️ Categoría</h3>
-              <div class="category-badge">${data.category}</div>
-            </div>
+            ${this.createSection('📊 Dificultad', `<div class="difficulty-badge" style="background:${diffColor}">${data.difficulty}</div>`)}
+            ${this.createSection('🏷️ Categoría', `<div class="category-badge">${data.category}</div>`)}
           </div>
-
-          <div class="modal-section">
-            <h3>⚙️ Técnicas Utilizadas</h3>
-            <div class="techniques-list">
-              ${data.techniques.map(t => `<span class="technique-tag">${t}</span>`).join('')}
-            </div>
-          </div>
-
-          <div class="modal-section">
-            <h3>📋 Archivo HTML</h3>
-            <code class="code-block">src/animations/animacion-${animId}.html</code>
-          </div>
-
-          <div class="modal-section">
-            <h3>💻 Código de Inicio Rápido</h3>
-            <textarea class="code-block code-textarea" readonly>&lt;iframe src="src/animations/animacion-${animId}.html" width="100%" height="600px"&gt;&lt;/iframe&gt;</textarea>
-            <button class="copy-btn" onclick="this.parentElement.querySelector('textarea').select(); document.execCommand('copy');">Copiar iframe</button>
-          </div>
-
-          <div class="modal-section">
-            <h3>🔗 Links</h3>
-            <div class="links-grid">
-              <a href="animacion-${animId}.html" target="_blank" class="link-btn">Ver Animación ↗</a>
-              <a href="animacion-${animId}.css" target="_blank" class="link-btn">Ver CSS ↗</a>
-              <a href="animacion-${animId}.js" target="_blank" class="link-btn">Ver JS ↗</a>
-            </div>
-          </div>
+          ${this.createSection('⚙️ Técnicas Utilizadas', `<div class="techniques-list">${data.techniques.map(t => `<span class="technique-tag">${t}</span>`).join('')}</div>`)}
+          ${this.createSection('📋 Archivo HTML', `<code class="code-block">${this.formatPath(paths.HTML, animId)}</code>`)}
+          ${this.createSection('💻 Código de Inicio Rápido', `<textarea class="code-block code-textarea" readonly>${iframeCode}</textarea><button class="copy-btn" onclick="this.parentElement.querySelector('textarea').select();document.execCommand('copy');">Copiar iframe</button>`)}
+          ${this.createSection('🔗 Links', `<div class="links-grid"><a href="animacion-${animId}.html" target="_blank" class="link-btn">Ver Animación ↗</a><a href="animacion-${animId}.css" target="_blank" class="link-btn">Ver CSS ↗</a><a href="animacion-${animId}.js" target="_blank" class="link-btn">Ver JS ↗</a></div>`)}
         </div>
       </div>
     `;
+  }
+
+  showDetailsModal(animId) {
+    const data = this.findAnimationData(animId);
+    if (!data) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = this.buildModalHtml(data, animId);
 
     document.body.appendChild(modal);
     setTimeout(() => modal.classList.add('active'), 10);

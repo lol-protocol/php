@@ -425,100 +425,115 @@
     </div>
 
     <script>
-        let currentFilter = 'all';
-        let currentCategoryFilter = null;
-        let searchTerm = '';
+        // Gallery Controller
+        class GalleryController {
+            constructor() {
+                this.groups = ['initial', 'extended', 'complex'];
+                this.currentFilter = 'all';
+                this.currentCategoryFilter = null;
+                this.searchTerm = '';
+                this.init();
+            }
 
-        function renderAnimations() {
-            renderGroup('initial', animationsData.initial);
-            renderGroup('extended', animationsData.extended);
-            renderGroup('complex', animationsData.complex);
-            updateResultCount();
+            init() {
+                this.setupEventListeners();
+                this.render();
+            }
+
+            setupEventListeners() {
+                document.getElementById('searchInput').addEventListener('input', (e) => {
+                    this.searchTerm = e.target.value;
+                    this.render();
+                });
+
+                this.attachFilterListeners('[data-filter]', (e) => {
+                    this.currentFilter = e.target.dataset.filter;
+                    this.currentCategoryFilter = null;
+                    this.updateActiveButton('[data-filter]', e.target);
+                });
+
+                this.attachFilterListeners('[data-filter-category]', (e) => {
+                    this.currentCategoryFilter = e.target.dataset.filterCategory;
+                    this.currentFilter = null;
+                    this.updateActiveButton('[data-filter]', null);
+                    this.updateActiveButton('[data-filter-category]', e.target);
+                });
+            }
+
+            attachFilterListeners(selector, callback) {
+                document.querySelectorAll(selector).forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        callback(e);
+                        this.render();
+                    });
+                });
+            }
+
+            updateActiveButton(selector, target) {
+                document.querySelectorAll(selector).forEach(b => b.classList.remove('active'));
+                if (target) target.classList.add('active');
+            }
+
+            matchesFilters(anim) {
+                const matchesSearch = anim.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                                     anim.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+                const matchesCategory = !this.currentCategoryFilter || anim.category === this.currentCategoryFilter;
+                return matchesSearch && matchesCategory;
+            }
+
+            createCard(anim) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.animId = anim.id;
+                const techniques = anim.techniques.map(t => `<span class="technique-chip">${t}</span>`).join('');
+
+                card.innerHTML = `
+                    <div class="card-header"><div class="card-letter">${anim.id.toUpperCase()}</div></div>
+                    <div class="card-meta">
+                        <span class="category-tag">${anim.category}</span>
+                        <span class="difficulty-tag">${anim.difficulty}</span>
+                    </div>
+                    <div class="card-title">${anim.title}</div>
+                    <div class="card-desc">${anim.description}</div>
+                    <div class="techniques">${techniques}</div>
+                    <div class="card-actions">
+                        <a href="animacion-${anim.id}.html" class="action-btn card-link" style="flex: 2; text-decoration: none; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px;">Abrir →</a>
+                        <button class="action-btn copy-code-btn" title="Copiar código HTML">📋</button>
+                        <button class="action-btn view-details-btn" title="Ver detalles">ℹ️</button>
+                    </div>
+                `;
+                return card;
+            }
+
+            renderGroup(groupId) {
+                const groupData = animationsData[groupId];
+                const grid = document.getElementById(`${groupId}-grid`);
+                const section = document.getElementById(`${groupId}-section`);
+                grid.innerHTML = '';
+
+                const cards = groupData.animations
+                    .filter(anim => this.matchesFilters(anim))
+                    .map(anim => this.createCard(anim));
+
+                cards.forEach(card => grid.appendChild(card));
+                section.style.display = cards.length > 0 ? 'block' : 'none';
+            }
+
+            render() {
+                this.groups.forEach(group => this.renderGroup(group));
+                this.updateResultCount();
+            }
+
+            updateResultCount() {
+                const total = Object.values(animationsData)
+                    .flatMap(g => g.animations)
+                    .filter(anim => this.matchesFilters(anim)).length;
+                document.getElementById('resultCount').textContent = `Mostrando ${total} de 36 animaciones`;
+            }
         }
 
-        function renderGroup(groupId, groupData) {
-            const grid = document.getElementById(`${groupId}-grid`);
-            const section = document.getElementById(`${groupId}-section`);
-            grid.innerHTML = '';
-            let visibleCount = 0;
-
-            groupData.animations.forEach(anim => {
-                if (shouldShowAnimation(anim)) {
-                    grid.appendChild(createCard(anim));
-                    visibleCount++;
-                }
-            });
-
-            section.style.display = visibleCount > 0 ? 'block' : 'none';
-        }
-
-        function shouldShowAnimation(anim) {
-            const matchesSearch = anim.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                 anim.description.toLowerCase().includes(searchTerm.toLowerCase());
-            const matchesCategory = !currentCategoryFilter || anim.category === currentCategoryFilter;
-            return matchesSearch && matchesCategory;
-        }
-
-        function createCard(anim) {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.setAttribute('data-anim-id', anim.id);
-            card.innerHTML = `
-                <div class="card-header">
-                    <div class="card-letter">${anim.id.toUpperCase()}</div>
-                </div>
-                <div class="card-meta">
-                    <span class="category-tag">${anim.category}</span>
-                    <span class="difficulty-tag">${anim.difficulty}</span>
-                </div>
-                <div class="card-title">${anim.title}</div>
-                <div class="card-desc">${anim.description}</div>
-                <div class="techniques">
-                    ${anim.techniques.map(t => `<span class="technique-chip">${t}</span>`).join('')}
-                </div>
-                <div class="card-actions">
-                    <a href="animacion-${anim.id}.html" class="action-btn card-link" style="flex: 2; text-decoration: none; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px;">Abrir →</a>
-                    <button class="action-btn copy-code-btn" title="Copiar código HTML">📋</button>
-                    <button class="action-btn view-details-btn" title="Ver detalles">ℹ️</button>
-                </div>
-            `;
-            return card;
-        }
-
-        function updateResultCount() {
-            const total = getAllAnimations().filter(shouldShowAnimation).length;
-            document.getElementById('resultCount').textContent =
-                `Mostrando ${total} de 36 animaciones`;
-        }
-
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            searchTerm = e.target.value;
-            renderAnimations();
-        });
-
-        document.querySelectorAll('[data-filter]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                currentFilter = e.target.dataset.filter;
-                currentCategoryFilter = null;
-                renderAnimations();
-            });
-        });
-
-        document.querySelectorAll('[data-filter-category]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('[data-filter-category]').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                currentCategoryFilter = e.target.dataset.filterCategory;
-                currentFilter = null;
-                renderAnimations();
-            });
-        });
-
-        // Renderizar animaciones al cargar
-        renderAnimations();
+        // Inicializar cuando el DOM esté listo
+        new GalleryController();
     </script>
     <script src="dashboard-interactive.js"></script>
 </body>
