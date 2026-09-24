@@ -899,120 +899,115 @@ class ScreenDeviceManager {
 
 
 // ============================================
-// EXAMPLE 11: Specification Loaders
+// EXAMPLE 11: Specification Loaders (Refactored)
 // ============================================
 class SpecificationManager {
+    static SPECS = {
+        bindingStyles: { file: 'binding_styles.csv', key: 'binding_style' },
+        foldCompatibility: { file: 'fold_compatibility.csv', key: 'source_format' },
+        pixelDensity: { file: 'pixel_density_guide.csv', key: 'device_type' },
+        videoResolutions: { file: 'video_resolutions.csv', key: 'resolution_name' },
+        colorSpaces: { file: 'color_spaces.csv', key: 'color_space' },
+        fontSizes: { file: 'minimum_font_sizes.csv', key: 'format' },
+        wcagContrast: { file: 'wcag_contrast.csv', key: 'element_type' },
+        formatEquivalence: { file: 'format_equivalence_matrix.csv', key: 'source_format' },
+        regionalCompatibility: { file: 'regional_compatibility.csv', key: 'region' },
+        standardsReference: { file: 'standards_reference.csv', key: 'format_name' }
+    };
+
     constructor() {
-        this.bindingStyles = [];
-        this.foldCompatibility = [];
-        this.pixelDensity = [];
-        this.videoResolutions = [];
-        this.colorSpaces = [];
-        this.fontSizes = [];
-        this.wcagContrast = [];
-        this.formatEquivalence = [];
-        this.regionalCompatibility = [];
-        this.standardsReference = [];
+        this.specifications = new Map();
+        this.indexes = new Map();
+        this.cache = new Map();
     }
 
     async loadAllSpecifications(basePath = './') {
-        await Promise.all([
-            this.loadCSV(`${basePath}binding_styles.csv`, 'bindingStyles'),
-            this.loadCSV(`${basePath}fold_compatibility.csv`, 'foldCompatibility'),
-            this.loadCSV(`${basePath}pixel_density_guide.csv`, 'pixelDensity'),
-            this.loadCSV(`${basePath}video_resolutions.csv`, 'videoResolutions'),
-            this.loadCSV(`${basePath}color_spaces.csv`, 'colorSpaces'),
-            this.loadCSV(`${basePath}minimum_font_sizes.csv`, 'fontSizes'),
-            this.loadCSV(`${basePath}wcag_contrast.csv`, 'wcagContrast'),
-            this.loadCSV(`${basePath}format_equivalence_matrix.csv`, 'formatEquivalence'),
-            this.loadCSV(`${basePath}regional_compatibility.csv`, 'regionalCompatibility'),
-            this.loadCSV(`${basePath}standards_reference.csv`, 'standardsReference')
-        ]);
+        const specs = Object.entries(SpecificationManager.SPECS);
+        await Promise.all(specs.map(([name, {file}]) =>
+            this._loadAndIndex(name, `${basePath}${file}`)
+        ));
     }
 
-    async loadCSV(csvPath, property) {
+    async _loadAndIndex(name, csvPath) {
         try {
             const response = await fetch(csvPath);
             const text = await response.text();
-            const lines = text.trim().split('\n');
-            const headers = lines[0].split(',').map(h => h.trim());
+            const data = this._parseCSV(text);
 
-            this[property] = lines.slice(1).map(line => {
-                const values = line.split(',');
-                const obj = {};
-                headers.forEach((header, i) => {
-                    const value = values[i] ? values[i].trim() : '';
-                    obj[header] = isNaN(value) || value === '' ? value : parseFloat(value);
-                });
-                return obj;
-            });
+            this.specifications.set(name, data);
+            this._buildIndex(name, data);
         } catch (error) {
-            console.error(`Error loading ${property}:`, error);
+            console.error(`Error loading ${name}:`, error);
+            this.specifications.set(name, []);
         }
     }
 
-    getBindingStyle(styleName) {
-        return this.bindingStyles.find(b => b.binding_style === styleName);
+    _parseCSV(text) {
+        const lines = text.trim().split('\n');
+        const headers = lines[0].split(',').map(h => h.trim());
+        return lines.slice(1).map(line => {
+            const values = line.split(',');
+            const obj = {};
+            headers.forEach((header, i) => {
+                const value = values[i] ? values[i].trim() : '';
+                obj[header] = isNaN(value) || value === '' ? value : parseFloat(value);
+            });
+            return obj;
+        });
     }
 
-    getFoldCompatibility(sourceFormat) {
-        return this.foldCompatibility.filter(f => f.source_format === sourceFormat);
+    _buildIndex(name, data) {
+        const {key} = SpecificationManager.SPECS[name];
+        const index = new Map();
+        data.forEach(item => index.set(item[key], item));
+        this.indexes.set(name, index);
     }
 
-    getPixelDensityGuide(deviceType, useCase) {
-        return this.pixelDensity.find(p => p.device_type === deviceType && p.use_case === useCase);
+    get(specType, key, query) {
+        const cacheKey = `${specType}:${key}:${JSON.stringify(query || {})}`;
+        if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
+
+        let result;
+        const data = this.specifications.get(specType) || [];
+
+        if (query) {
+            result = data.filter(item =>
+                Object.entries(query).every(([k, v]) => item[k] === v)
+            );
+        } else {
+            const index = this.indexes.get(specType);
+            result = index ? index.get(key) : data.find(item =>
+                item[SpecificationManager.SPECS[specType].key] === key
+            );
+        }
+
+        this.cache.set(cacheKey, result);
+        return result;
     }
 
-    getVideoResolution(resolutionName) {
-        return this.videoResolutions.find(v => v.resolution_name === resolutionName);
+    getBindingStyle(styleName) { return this.get('bindingStyles', styleName); }
+    getFoldCompatibility(format) { return this.get('foldCompatibility', null, {source_format: format}); }
+    getPixelDensityGuide(type, useCase) { return this.get('pixelDensity', null, {device_type: type, use_case: useCase}); }
+    getVideoResolution(name) { return this.get('videoResolutions', name); }
+    getColorSpace(name) { return this.get('colorSpaces', name); }
+    getMinimumFontSize(format, type, content) { return this.get('fontSizes', null, {format, device_type: type, content_type: content}); }
+    getWCAGContrast(elementType, level = 'AA') {
+        const element = this.get('wcagContrast', elementType);
+        return element ? {element: elementType, level, ratio: element[`wcag_level_${level.toLowerCase()}`], fontSize: element.font_size_pt} : null;
     }
-
-    getColorSpace(name) {
-        return this.colorSpaces.find(c => c.color_space === name);
-    }
-
-    getMinimumFontSize(format, deviceType, contentType) {
-        return this.fontSizes.find(f => f.format === format && f.device_type === deviceType && f.content_type === contentType);
-    }
-
-    getWCAGContrast(elementType, wcagLevel = 'AA') {
-        const element = this.wcagContrast.find(w => w.element_type === elementType);
-        if (!element) return null;
-        return {
-            element: elementType,
-            level: wcagLevel,
-            ratio: element[`wcag_level_${wcagLevel.toLowerCase()}`],
-            fontSize: element.font_size_pt
-        };
-    }
-
-    getFormatEquivalent(sourceFormat, targetFormat) {
-        return this.formatEquivalence.find(f => f.source_format === sourceFormat && f.target_format === targetFormat);
-    }
-
-    getRegionalFormats(region) {
-        return this.regionalCompatibility.find(r => r.region === region);
-    }
-
-    getStandardReference(formatName) {
-        return this.standardsReference.find(s => s.format_name === formatName);
-    }
-
-    getVideoResolutionsByCategory(category) {
-        return this.videoResolutions.filter(v => v.category === category);
-    }
-
-    getColorSpacesByUse(bestFor) {
-        return this.colorSpaces.filter(c => c.best_for === bestFor);
-    }
+    getFormatEquivalent(source, target) { return this.get('formatEquivalence', null, {source_format: source, target_format: target}); }
+    getRegionalFormats(region) { return this.get('regionalCompatibility', region); }
+    getStandardReference(format) { return this.get('standardsReference', format); }
+    getVideoResolutionsByCategory(category) { return this.get('videoResolutions', null, {category}); }
+    getColorSpacesByUse(useCase) { return this.get('colorSpaces', null, {best_for: useCase}); }
 }
 
 // Usage:
 // const specs = new SpecificationManager();
 // await specs.loadAllSpecifications('./');
-// const tradeBinding = specs.getBindingStyle('Perfect Binding');
+// const binding = specs.getBindingStyle('Perfect Binding');
 // const folds = specs.getFoldCompatibility('A4');
-// const fontMin = specs.getMinimumFontSize('A4', 'Print', 'Body Text');
+// const font = specs.getMinimumFontSize('A4', 'Print', 'Body Text');
 // const wcag = specs.getWCAGContrast('Normal Text', 'AAA');
 
 
