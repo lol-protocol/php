@@ -5,9 +5,9 @@ namespace PhoneDirectory;
 class PhoneDirectoryParser
 {
     private const COMMON_PATTERNS = [
-        'line_separator' => '/^\s*-{2,}|={2,}\s*$/',
+        'line_separator' => '/^(?:[-=_*]\s*){2,}$/',
         'phone_pattern' => '/\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b/',
-        'street_markers' => ['st', 'street', 'ave', 'avenue', 'rd', 'road', 'dr', 'drive', 'ln', 'lane', 'blvd', 'boulevard', 'cir', 'circle'],
+        'street_marker' => '/\b(?:st|street|ave|avenue|rd|road|dr|drive|ln|lane|blvd|boulevard|cir|circle)\b/iu',
     ];
 
     private array $entries = [];
@@ -129,12 +129,8 @@ class PhoneDirectoryParser
 
     private function extractStreet(string $line): ?string
     {
-        $lowerLine = strtolower($line);
-
-        foreach (self::COMMON_PATTERNS['street_markers'] as $marker) {
-            if (stripos($line, $marker) !== false) {
-                return $line;
-            }
+        if (preg_match(self::COMMON_PATTERNS['street_marker'], $line)) {
+            return $line;
         }
 
         if (preg_match('/\d+\s+[\w\s]+/', $line, $matches)) {

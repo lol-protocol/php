@@ -4,84 +4,97 @@ namespace PhoneDirectory;
 
 class PersonName
 {
+    private const PARTICLES = ['de', 'del', 'della', 'di', 'da', 'das', 'do', 'dos', 'du', 'van', 'von', 'der', 'den', 'le', 'la', 'los', 'las'];
+
+    // Single-letter connectors collide with middle initials ("John E Smith"), so they only count when the language uses them.
+    private const LANGUAGE_CONNECTORS = [
+        'es' => ['y'],
+        'pt' => ['e'],
+        'it' => ['e'],
+    ];
+
+    private const LANGUAGE_SURNAME_COUNT = [
+        'es' => 2,
+        'pt' => 2,
+    ];
+
     private array $firstNames;
     private array $lastNames;
+    private ?string $language;
 
-    public function __construct(string $fullName)
+    public function __construct(string $fullName, ?string $language = null)
     {
+        $this->language = $language !== null ? strtolower($language) : null;
         $this->parse($fullName);
     }
 
-    private function normalizeCase(string $word): string
+    private function isParticle(string $word): bool
     {
-        $lowerWord = strtolower($word);
-        $particles = ['de', 'del', 'di', 'da', 'van', 'von', 'le', 'la', 'los', 'las', 'y', 'e'];
+        $lower = mb_strtolower($word, 'UTF-8');
 
-        // Keep particles lowercase (traditional naming convention)
-        if (in_array($lowerWord, $particles)) {
-            return $lowerWord;
+        return in_array($lower, self::PARTICLES, true)
+            || in_array($lower, self::LANGUAGE_CONNECTORS[$this->language] ?? [], true);
+    }
+
+    private function normalizeCase(string $word, bool $isLeadingToken = false): string
+    {
+        if (!$isLeadingToken && $this->isParticle($word)) {
+            return mb_strtolower($word, 'UTF-8');
         }
 
-        // Capitalize first letter for regular names
-        return ucfirst($lowerWord);
+        return mb_convert_case(mb_strtolower($word, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+    }
+
+    private function splitWords(string $text): array
+    {
+        return preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY);
     }
 
     private function parse(string $fullName): void
     {
         $fullName = trim($fullName);
 
-        if (empty($fullName)) {
+        if ($fullName === '') {
             throw new \InvalidArgumentException("Full name cannot be empty");
         }
 
-        // Handle comma-separated format: "LastName, FirstName" or "LastName1 LastName2, FirstName"
-        if (strpos($fullName, ',') !== false) {
+        if (str_contains($fullName, ',')) {
             [$lastNamePart, $firstNamePart] = explode(',', $fullName, 2);
-            $lastNameParts = preg_split('/\s+/', trim($lastNamePart), -1, PREG_SPLIT_NO_EMPTY);
-            $firstNameParts = preg_split('/\s+/', trim($firstNamePart), -1, PREG_SPLIT_NO_EMPTY);
-            $this->lastNames = array_map(function($name) { return $this->normalizeCase($name); }, $lastNameParts);
-            $this->firstNames = array_map(function($name) { return $this->normalizeCase($name); }, $firstNameParts);
+            $this->lastNames = array_map(fn($w) => $this->normalizeCase($w), $this->splitWords($lastNamePart));
+            $firstNameWords = $this->splitWords($firstNamePart);
+            $this->firstNames = array_map(
+                fn($w, $i) => $this->normalizeCase($w, $i === 0),
+                $firstNameWords,
+                array_keys($firstNameWords)
+            );
             return;
         }
 
-        $parts = preg_split('/\s+/', $fullName, -1, PREG_SPLIT_NO_EMPTY);
-        // Normalize case for all parts
-        $parts = array_map(function($name) { return $this->normalizeCase($name); }, $parts);
+        $words = $this->splitWords($fullName);
+        $parts = array_map(fn($w, $i) => $this->normalizeCase($w, $i === 0), $words, array_keys($words));
 
-        if (count($parts) < 2) {
-            $this->firstNames = [$fullName];
-            $this->lastNames = [];
-            return;
-        }
+        // Walk backwards taking one surname per iteration, pulling in any particles that precede it
+        // ("de la Cruz", "van der Rohe", "Ortega y Gasset"); the first token always stays a given name.
+        $surnameCount = self::LANGUAGE_SURNAME_COUNT[$this->language] ?? 1;
+        $lastNames = [];
+        $taken = 0;
 
-        $lastNameParticles = ['de', 'del', 'di', 'da', 'van', 'von', 'le', 'la', 'los', 'las', 'y', 'e'];
-
-        // Check for name particles (de, del, di, da, van, von, etc.)
-        $splitIndex = null;
-        for ($i = 1; $i < count($parts); $i++) {
-            if (in_array(strtolower($parts[$i]), $lastNameParticles)) {
-                $splitIndex = $i;
-                break;
+        while ($taken < $surnameCount && count($parts) > 1) {
+            $group = [array_pop($parts)];
+            while (count($parts) > 1 && $this->isParticle(end($parts))) {
+                array_unshift($group, array_pop($parts));
             }
+            $lastNames = array_merge($group, $lastNames);
+            $taken++;
         }
 
-        if ($splitIndex !== null) {
-            // Particle found, split at particle
-            $this->firstNames = array_slice($parts, 0, $splitIndex);
-            $this->lastNames = array_slice($parts, $splitIndex);
-        } else {
-            // No particle found - use different strategies based on count
-            if (count($parts) <= 3) {
-                // For 2-3 parts: last word is last name, rest are first/middle names
-                $this->firstNames = array_slice($parts, 0, -1);
-                $this->lastNames = [array_pop($parts)];
-            } else {
-                // For 4+ parts: use midpoint (handles compound surnames like "García López")
-                $splitIndex = (int) floor(count($parts) / 2);
-                $this->firstNames = array_slice($parts, 0, $splitIndex);
-                $this->lastNames = array_slice($parts, $splitIndex);
-            }
-        }
+        $this->firstNames = $parts;
+        $this->lastNames = $lastNames;
+    }
+
+    public function getLanguage(): ?string
+    {
+        return $this->language;
     }
 
     public function getFirstNames(): array

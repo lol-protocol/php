@@ -20,10 +20,11 @@ class PhoneDirectoryEntry
         ?string $city = null,
         ?int $id = null,
         ?\DateTime $recordDate = null,
-        ?string $sourceDirectoryId = null
+        ?string $sourceDirectoryId = null,
+        ?string $language = null
     ) {
         $this->id = $id ?? 0;
-        $this->personName = new PersonName($fullName);
+        $this->personName = new PersonName($fullName, $language);
         $this->geoLocation = new GeoLocation($countryCode, $street, $zone, $city);
         $this->phoneNumber = $phoneNumber;
         $this->recordDate = $recordDate ?? new \DateTime();

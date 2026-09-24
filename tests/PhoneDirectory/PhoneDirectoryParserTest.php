@@ -212,6 +212,63 @@ class PhoneDirectoryParserTest extends TestCase
         $this->assertEquals(1, $this->parser->getErrorsCount());
     }
 
+    public function testSurnamesContainingStreetAbbreviationsAreNames(): void
+    {
+        $content = <<<TXT
+        JOHNSTON, Robert
+        12 Oak Avenue
+        555-111-2222
+
+        RICHARDS, Ann
+        9 Elm Road
+        555-333-4444
+
+        CHRISTENSEN, Lars
+        4 Birch Lane
+        555-555-6666
+        TXT;
+
+        $entries = $this->parser->parseContent($content);
+
+        $this->assertCount(3, $entries);
+        $this->assertCount(0, $this->parser->getErrors());
+        $this->assertEquals('Johnston, Robert', $entries[0]->getFormattedName());
+        $this->assertEquals('12 Oak Avenue', $entries[0]->getStreet());
+        $this->assertEquals('Richards, Ann', $entries[1]->getFormattedName());
+        $this->assertEquals('Christensen, Lars', $entries[2]->getFormattedName());
+    }
+
+    public function testAbbreviatedStreetTypeIsDetected(): void
+    {
+        $entries = $this->parser->parseContent("MOORE, Paul\nOak St.\n555-111-2222");
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals('Oak St.', $entries[0]->getStreet());
+    }
+
+    public function testAccentedUppercaseNameIsNormalized(): void
+    {
+        $entries = $this->parser->parseContent("GARCÍA, JOSÉ\n789 Maple Road\n555-345-6789");
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals('García, José', $entries[0]->getFormattedName());
+    }
+
+    public function testSeparatorLinesOfMixedCharacters(): void
+    {
+        $content = "SMITH, John\n123 Main Street\n- - - - -\nJONES, Ann\n456 Oak Avenue\n***\nBROWN, Tom\n7 Pine Road";
+
+        $this->assertCount(3, $this->parser->parseContent($content));
+    }
+
+    public function testLineEndingWithEqualsIsNotSeparator(): void
+    {
+        $entries = $this->parser->parseContent("RIVERA, Ana\n45 Pine Street ==\n555-000-1111");
+
+        $this->assertCount(1, $entries);
+        $this->assertStringContainsString('Pine Street', $entries[0]->getStreet());
+    }
+
     public function testParseVariousPhoneFormats(): void
     {
         $content = <<<TXT

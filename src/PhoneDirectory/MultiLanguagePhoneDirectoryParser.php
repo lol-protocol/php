@@ -9,8 +9,13 @@ class MultiLanguagePhoneDirectoryParser
         'en' => ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln', 'boulevard', 'blvd', 'circle', 'cir'],
         'fr' => ['rue', 'avenue', 'allée', 'place', 'boulevard', 'bd', 'cours', 'square'],
         'pt' => ['rua', 'avenida', 'av', 'praça', 'alameda', 'estrada', 'largo'],
-        'de' => ['straße', 'strasse', 'allee', 'weg', 'platz', 'ring', 'hof'],
+        'de' => ['ring', 'hof'],
         'it' => ['via', 'viale', 'corso', 'piazza', 'largo', 'strada'],
+    ];
+
+    // German compounds glue the street type onto the name ("Hauptstraße"), so these match as word endings.
+    private const LANGUAGE_STREET_SUFFIXES = [
+        'de' => ['straße', 'strasse', 'allee', 'weg', 'platz'],
     ];
 
     private const ENTITY_TYPE_MARKERS = [
@@ -70,7 +75,7 @@ class MultiLanguagePhoneDirectoryParser
                 continue;
             }
 
-            if (preg_match('/^\s*-{2,}|={2,}\s*$/', $trimmed)) {
+            if (preg_match('/^(?:[-=_*]\s*){2,}$/', $trimmed)) {
                 if (!empty($buffer)) {
                     $this->processBuffer($buffer, $lineNumber - count($buffer), $language);
                     $buffer = [];
@@ -92,15 +97,7 @@ class MultiLanguagePhoneDirectoryParser
     {
         $scores = [];
         foreach (array_keys(self::LANGUAGE_STREET_MARKERS) as $lang) {
-            $scores[$lang] = 0;
-        }
-
-        $lowerContent = strtolower($content);
-
-        foreach (self::LANGUAGE_STREET_MARKERS as $lang => $markers) {
-            foreach ($markers as $marker) {
-                $scores[$lang] += substr_count($lowerContent, $marker);
-            }
+            $scores[$lang] = preg_match_all($this->streetPattern($lang), $content);
         }
 
         arsort($scores);
@@ -170,8 +167,10 @@ class MultiLanguagePhoneDirectoryParser
             } else {
                 $entry = new PhoneDirectoryEntry(
                     fullName: $data['name'],
+                    countryCode: 'US',
                     street: $data['street'],
-                    phoneNumber: $data['phone']
+                    phoneNumber: $data['phone'],
+                    language: $language
                 );
                 $this->entries[] = [
                     'type' => 'natural',
@@ -190,12 +189,8 @@ class MultiLanguagePhoneDirectoryParser
 
     private function extractStreet(string $line, string $language): ?string
     {
-        $markers = self::LANGUAGE_STREET_MARKERS[$language] ?? self::LANGUAGE_STREET_MARKERS['en'];
-
-        foreach ($markers as $marker) {
-            if (stripos($line, $marker) !== false) {
-                return $line;
-            }
+        if (preg_match($this->streetPattern($language), $line)) {
+            return $line;
         }
 
         if (preg_match('/\d+\s+[\w\s]+/', $line, $matches)) {
@@ -210,12 +205,34 @@ class MultiLanguagePhoneDirectoryParser
         $markers = self::ENTITY_TYPE_MARKERS[$language] ?? [];
 
         foreach ($markers as $marker) {
-            if (stripos($line, $marker) !== false) {
+            if (preg_match($this->wordPattern([$marker]), $line)) {
                 return $marker;
             }
         }
 
         return null;
+    }
+
+    private function streetPattern(string $language): string
+    {
+        if (!isset(self::LANGUAGE_STREET_MARKERS[$language])) {
+            $language = 'en';
+        }
+
+        $words = implode('|', array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_MARKERS[$language]));
+        $suffixes = array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_SUFFIXES[$language] ?? []);
+
+        $pattern = '\\b(?:' . $words . ')\\b';
+        if ($suffixes) {
+            $pattern .= '|(?:' . implode('|', $suffixes) . ')\\b';
+        }
+
+        return '/' . $pattern . '/iu';
+    }
+
+    private function wordPattern(array $words): string
+    {
+        return '/\\b(?:' . implode('|', array_map(fn($m) => preg_quote($m, '/'), $words)) . ')\\b/iu';
     }
 
     private function isJuridicalEntity(array $data, string $language): bool
@@ -225,15 +242,8 @@ class MultiLanguagePhoneDirectoryParser
         }
 
         $markers = self::ENTITY_TYPE_MARKERS[$language] ?? [];
-        $name = strtolower($data['name'] ?? '');
 
-        foreach ($markers as $marker) {
-            if (stripos($name, $marker) !== false) {
-                return true;
-            }
-        }
-
-        return false;
+        return $markers !== [] && preg_match($this->wordPattern($markers), $data['name'] ?? '') === 1;
     }
 
     private function validateEntry(array $data): bool

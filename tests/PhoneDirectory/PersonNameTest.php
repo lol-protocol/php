@@ -27,7 +27,7 @@ class PersonNameTest extends TestCase
 
     public function testParseCompoundLastName(): void
     {
-        $name = new PersonName('Juan Carlos García López');
+        $name = new PersonName('Juan Carlos García López', 'es');
 
         $this->assertEquals('Juan', $name->getFirstName());
         $this->assertEquals(['García', 'López'], $name->getLastNames());
@@ -70,11 +70,88 @@ class PersonNameTest extends TestCase
 
     public function testParseMultipleMiddleNames(): void
     {
-        $name = new PersonName('Robert Henry Thomas');
+        $name = new PersonName('Robert Henry Thomas Brown');
 
         $this->assertEquals('Robert', $name->getFirstName());
-        $this->assertEquals(['Henry'], $name->getMiddleNames());
-        $this->assertEquals(['Thomas'], $name->getLastNames());
+        $this->assertEquals(['Henry', 'Thomas'], $name->getMiddleNames());
+        $this->assertEquals(['Brown'], $name->getLastNames());
+    }
+
+    public function testSpanishThreePartNameHasTwoSurnames(): void
+    {
+        $name = new PersonName('Juan García López', 'es');
+
+        $this->assertEquals(['Juan'], $name->getFirstNames());
+        $this->assertEquals(['García', 'López'], $name->getLastNames());
+    }
+
+    public function testSpanishTwoPartNameKeepsGivenName(): void
+    {
+        $name = new PersonName('Juan García', 'es');
+
+        $this->assertEquals(['Juan'], $name->getFirstNames());
+        $this->assertEquals(['García'], $name->getLastNames());
+    }
+
+    public function testSpanishParticleInGivenNameIsNotSurname(): void
+    {
+        $name = new PersonName('María del Carmen García López', 'es');
+
+        $this->assertEquals(['María', 'del', 'Carmen'], $name->getFirstNames());
+        $this->assertEquals(['García', 'López'], $name->getLastNames());
+    }
+
+    public function testSpanishConnectorJoinsSurnames(): void
+    {
+        $name = new PersonName('José Ortega y Gasset', 'es');
+
+        $this->assertEquals(['José'], $name->getFirstNames());
+        $this->assertEquals(['Ortega', 'y', 'Gasset'], $name->getLastNames());
+    }
+
+    public function testPortugueseParticlesAndConnector(): void
+    {
+        $name = new PersonName('João da Silva e Souza', 'pt');
+
+        $this->assertEquals(['João'], $name->getFirstNames());
+        $this->assertEquals(['da', 'Silva', 'e', 'Souza'], $name->getLastNames());
+    }
+
+    public function testChainedGermanParticles(): void
+    {
+        $name = new PersonName('Ludwig Mies van der Rohe', 'de');
+
+        $this->assertEquals(['Ludwig', 'Mies'], $name->getFirstNames());
+        $this->assertEquals(['van', 'der', 'Rohe'], $name->getLastNames());
+    }
+
+    public function testMiddleInitialIsNotConnectorWithoutLanguage(): void
+    {
+        $name = new PersonName('JOHN E SMITH');
+
+        $this->assertEquals(['John', 'E'], $name->getFirstNames());
+        $this->assertEquals(['Smith'], $name->getLastNames());
+    }
+
+    public function testUppercaseAccentedNamesAreNormalized(): void
+    {
+        $name = new PersonName('GARCÍA LÓPEZ, JOSÉ ÁNGEL');
+
+        $this->assertEquals('García López, José Ángel', $name->getFormattedName());
+    }
+
+    public function testUppercaseParticlesAreLowercasedInSurname(): void
+    {
+        $name = new PersonName('DE LA CRUZ, MARÍA');
+
+        $this->assertEquals('de la Cruz, María', $name->getFormattedName());
+    }
+
+    public function testSingleWordNameIsNormalized(): void
+    {
+        $name = new PersonName('MADONNA');
+
+        $this->assertEquals('Madonna', $name->getFullName());
     }
 
     public function testToArray(): void
