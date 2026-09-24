@@ -71,8 +71,17 @@ return [
         ],
     ],
 
+    // Lengths 1-4 are deliberately unused below organizacion (5) — headroom
+    // for future low-cardinality types without renumbering anything above.
     'reserved' => [
         '' => ['controller' => 'Genealogy\HomeController', 'method' => 'index'],
-        '0' => ['controller' => 'Genealogy\CuentaController', 'method' => 'index'],
+        '0' => [
+            'controller' => 'Genealogy\CuentaController',
+            'method' => 'index',
+            'actions' => [
+                1 => 'colecciones',
+                2 => 'aportes',
+            ],
+        ],
     ],
 ];

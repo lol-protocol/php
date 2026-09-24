@@ -84,12 +84,27 @@ function view($name, $data = [])
 }
 
 /**
- * URL for a numeric-id resource — the id's length alone carries the type,
- * so building the link is just the id itself.
+ * URL for a numeric-id resource. $id is zero-padded to $tipo's fixed
+ * digit width before it's used — an unpadded id would silently resolve
+ * as a different (shorter) type, so callers never hand-format this.
  */
-function enlace($id)
+function enlace($tipo, $id)
 {
-    return '/' . $id . '/';
+    $largo = $GLOBALS['router']->typeLength($tipo);
+
+    if ($largo === null) {
+        throw new InvalidArgumentException("Tipo desconocido: {$tipo}");
+    }
+
+    return '/' . str_pad((string) $id, $largo, '0', STR_PAD_LEFT) . '/';
+}
+
+/**
+ * URL for a sub-action on a numeric-id resource (see enlace()).
+ */
+function accion($tipo, $id, $codigo)
+{
+    return rtrim(enlace($tipo, $id), '/') . '/' . $codigo . '/';
 }
 
 /**
@@ -98,6 +113,14 @@ function enlace($id)
 function enlaceLugar(array $codes)
 {
     return '/' . implode('/', $codes) . '/';
+}
+
+/**
+ * URL for the account area, optionally a sub-section by its action code.
+ */
+function cuenta($codigo = null)
+{
+    return $codigo === null ? '/0/' : "/0/{$codigo}/";
 }
 
 function esc($text)

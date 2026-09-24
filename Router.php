@@ -9,7 +9,12 @@
  *   - exact word  -> a literal or reserved system path
  *
  * A second numeric segment, when present, selects a sub-action on
- * the matched resource (its meaning is scoped to that resource type).
+ * the matched resource. An action segment that doesn't map to
+ * anything is a 404, not a silent fall-back to the base resource.
+ *
+ * Contract: numeric ids MUST be generated zero-padded to their
+ * type's fixed digit width (see `enlace()` in index.php) — an
+ * unpadded id silently resolves as a different, shorter type.
  */
 
 class Router
@@ -25,12 +30,34 @@ class Router
     protected function parseSegments($uri)
     {
         $path = trim(strtok($uri, '?'), '/');
-        return $path === '' ? [] : explode('/', $path);
+
+        if ($path === '') {
+            return [];
+        }
+
+        // Letters are canonicalized to lowercase so /MX/ and /mx/ are
+        // the same URL; digits are untouched (case has no meaning there).
+        return array_map('strtolower', explode('/', $path));
     }
 
     public function loadConfig($configFile)
     {
         $this->config = require $configFile;
+    }
+
+    /**
+     * Digit width reserved for a given type name, or null if it isn't
+     * a by_length type (e.g. "lugar" or "order", which aren't).
+     */
+    public function typeLength($type)
+    {
+        foreach ($this->config['by_length'] ?? [] as $length => $entry) {
+            if ($entry['type'] === $type) {
+                return $length;
+            }
+        }
+
+        return null;
     }
 
     public function dispatch()
@@ -62,8 +89,8 @@ class Router
 
         $first = $this->segments[0];
 
-        if (count($this->segments) === 1 && isset($this->config['reserved'][$first])) {
-            return $this->config['reserved'][$first] + ['params' => []];
+        if (isset($this->config['reserved'][$first]) && count($this->segments) <= 2) {
+            return $this->matchReserved($first);
         }
 
         if (ctype_digit($first)) {
@@ -92,6 +119,23 @@ class Router
         return null;
     }
 
+    protected function matchReserved($first)
+    {
+        $entry = $this->config['reserved'][$first];
+        $actionCode = $this->segments[1] ?? null;
+        $method = $this->resolveAction($entry['actions'] ?? [], $actionCode, $entry['method'] ?? 'index');
+
+        if ($method === null) {
+            return null;
+        }
+
+        return [
+            'controller' => $entry['controller'],
+            'method' => $method,
+            'params' => [],
+        ];
+    }
+
     protected function matchOrder()
     {
         $id = $this->segments[1] ?? null;
@@ -103,6 +147,10 @@ class Router
         $entry = $this->config['order'];
         $actionCode = $this->segments[2] ?? null;
         $method = $this->resolveAction($entry['actions'] ?? [], $actionCode);
+
+        if ($method === null) {
+            return null;
+        }
 
         return [
             'controller' => $entry['controller'],
@@ -121,6 +169,10 @@ class Router
 
         $actionCode = $this->segments[1] ?? null;
         $method = $this->resolveAction($entry['actions'] ?? [], $actionCode);
+
+        if ($method === null) {
+            return null;
+        }
 
         return [
             'controller' => $entry['controller'],
@@ -146,20 +198,30 @@ class Router
             }
         }
 
+        $method = $this->resolveAction($entry['actions'] ?? [], $actionCode);
+
+        if ($method === null) {
+            return null;
+        }
+
         return [
             'controller' => $entry['controller'],
-            'method' => $this->resolveAction($entry['actions'] ?? [], $actionCode),
+            'method' => $method,
             'params' => ['codes' => $codes],
         ];
     }
 
-    protected function resolveAction(array $actions, $code)
+    /**
+     * null code -> base resource ("show" or the entry's own default).
+     * Unmapped code -> null, meaning "404", never a silent fall-back.
+     */
+    protected function resolveAction(array $actions, $code, $default = 'show')
     {
-        if ($code !== null && isset($actions[(int) $code])) {
-            return $actions[(int) $code];
+        if ($code === null) {
+            return $default;
         }
 
-        return 'show';
+        return $actions[(int) $code] ?? null;
     }
 
     protected function callController($match)

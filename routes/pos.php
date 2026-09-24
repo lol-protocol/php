@@ -60,8 +60,20 @@ return [
         ],
     ],
 
+    // Lengths 1-3 are deliberately unused below grupo (4) — headroom for
+    // future low-cardinality types without renumbering anything above.
     'reserved' => [
         '' => ['controller' => 'POS\HomeController', 'method' => 'index'],
-        '0' => ['controller' => 'POS\CuentaController', 'method' => 'index'],
+        '0' => [
+            'controller' => 'POS\CuentaController',
+            'method' => 'index',
+            'actions' => [
+                1 => 'perfil',
+                2 => 'ordenes',
+                3 => 'deseos',
+                4 => 'direcciones',
+                5 => 'preferencias',
+            ],
+        ],
     ],
 ];

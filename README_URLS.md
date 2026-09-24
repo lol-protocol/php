@@ -32,8 +32,9 @@ URLs sin palabras de dominio, sin guiones ni guiones bajos. El tipo de recurso s
 
 1. **Solo dígitos** → el número de dígitos selecciona el tipo. Más dígitos = mayor cardinalidad esperada de ese catálogo. `persona` es el techo (10 dígitos) en genealogía; `producto` es el techo (8 dígitos) en POS, deliberadamente menor que persona.
 2. **Solo letras** → jerarquía de lugar (país/región/ciudad), porque es una jerarquía de códigos, no una secuencia de registros.
-3. **Palabra exacta reservada** → rutas de sistema fuera del esquema numérico: `cart`, `checkout`, `order` (flujo de compra, en inglés por decisión explícita) y `0` (cuenta).
-4. Un segundo segmento numérico, cuando existe, selecciona una **acción** sobre el recurso ya resuelto — su significado depende del tipo (está definido en el arreglo `actions` de cada entrada en `routes/*.php`).
+3. **Palabra exacta reservada** → rutas de sistema fuera del esquema numérico: `cart`, `checkout`, `order` (flujo de compra, en inglés por decisión explícita) y `0` (cuenta, con sus propias sub-acciones por el mismo mecanismo).
+4. Un segundo segmento numérico, cuando existe, selecciona una **acción** sobre el recurso ya resuelto — su significado depende del tipo (está definido en el arreglo `actions` de cada entrada en `routes/*.php`). Un código de acción que no existe en ese arreglo es **404**, nunca un `show` silencioso del recurso base.
+5. **Contrato de ids**: todo id numérico se genera relleno con ceros al ancho fijo de su tipo — usa siempre `enlace($tipo, $id)` (nunca concatenes el id a mano), que hace el padding automáticamente vía `Router::typeLength()`.
 
 ## 🚀 Inicio Rápido
 
@@ -132,8 +133,9 @@ class NuevoTipoController
 ### Paso 3: generar el enlace
 
 ```php
-<a href="<?php echo enlace($id); ?>">Ver</a>
-<!-- el id ya trae implícito el tipo por su largo -->
+<a href="<?php echo enlace('nuevo_tipo', $id); ?>">Ver</a>
+<a href="<?php echo accion('nuevo_tipo', $id, 1); ?>">Acción 1</a>
+<!-- enlace() rellena $id con ceros al ancho fijo del tipo automáticamente -->
 ```
 
 ## 🔐 Seguridad

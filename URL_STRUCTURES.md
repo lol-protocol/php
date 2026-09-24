@@ -8,7 +8,19 @@ Ningún tipo de recurso aparece como palabra en la URL. El **tipo se infiere de 
 
 El largo en dígitos escala con el tamaño esperado del catálogo de cada tipo: a mayor cardinalidad prevista, más dígitos. `persona` es el techo (10 dígitos); todo lo demás queda por debajo, en orden.
 
-No se usan guiones ni guiones bajos en ningún segmento.
+No se usan guiones ni guiones bajos en ningún segmento. Los códigos de lugar se normalizan a minúsculas (`/MX/` y `/mx/` son la misma URL).
+
+### Contrato de generación de ids (importante)
+
+Un id **debe** generarse ya relleno con ceros al ancho fijo de su tipo. `persona #47` no es `/47/` (2 dígitos → caería en un tipo de 2 dígitos, que no existe, o peor, en uno que sí exista) — es `/0000000047/` (10 dígitos). El helper `enlace($tipo, $id)` en `index.php` hace este padding automáticamente consultando `Router::typeLength()`; nunca se debe construir un enlace concatenando el id "crudo" a mano.
+
+### Sufijo de acción desconocido
+
+Si el segundo segmento es numérico pero no está en el arreglo `actions` del tipo resuelto, el resultado es **404**, no un silencioso `show` del recurso base. Evita que una URL mal escrita parezca funcionar mostrando el contenido equivocado.
+
+### Headroom para tipos futuros
+
+Los largos de dígito no usados por debajo del tipo más chico de cada sitio (1-4 en genealogía, 1-3 en POS) quedan deliberadamente libres, para poder agregar un tipo nuevo de baja cardinalidad más adelante sin tener que renumerar ningún tipo existente.
 
 ## Idiomas
 
@@ -67,6 +79,8 @@ spa.tudominio.com/mx/jal/gdl/1/       personas de esa ciudad
 
 spa.tudominio.com/?t=10&q=texto       listado/búsqueda de personas (t = dígitos del tipo)
 spa.tudominio.com/0/                  cuenta
+spa.tudominio.com/0/1/                cuenta: mis colecciones
+spa.tudominio.com/0/2/                cuenta: mis aportes
 ```
 
 ---
@@ -121,6 +135,8 @@ spa.contrastocolor.com/order/8137204719000/
 spa.contrastocolor.com/order/8137204719000/2/   track
 
 spa.contrastocolor.com/0/                  cuenta
+spa.contrastocolor.com/0/2/                cuenta: mis órdenes
+spa.contrastocolor.com/0/3/                cuenta: deseos
 ```
 
 ---
