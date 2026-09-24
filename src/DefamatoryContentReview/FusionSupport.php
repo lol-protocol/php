@@ -29,10 +29,16 @@ namespace DefamatoryContentReview;
 final class FusionSupport
 {
     private const LITERAL_FUSION = ['rus', 'ukr', 'bul', 'ell', 'hin', 'kor', 'isl', 'swa', 'tgl'];
+    /** @var array<string,true> cached for O(1) lookup */
+    private static ?array $literalFusionMap = null;
 
     public static function isSupported(string $language): bool
     {
-        return PhoneticFolderRegistry::isSupported($language) || in_array($language, self::LITERAL_FUSION, true);
+        if (PhoneticFolderRegistry::isSupported($language)) {
+            return true;
+        }
+        self::$literalFusionMap ??= array_flip(self::LITERAL_FUSION);
+        return isset(self::$literalFusionMap[$language]);
     }
 
     /** Forma sobre la que se busca la fusión: fonética si el idioma tiene reglas, literal si no. */
@@ -47,9 +53,12 @@ final class FusionSupport
         return preg_replace('/[\s\-\'’]+/u', '', ScriptFolding::fold($text));
     }
 
+    /** @var array<int,string>|null cached merged list */
+    private static ?array $supportedLanguagesCache = null;
+
     /** @return array<int,string> */
     public static function supportedLanguages(): array
     {
-        return array_merge(PhoneticFolderRegistry::supportedLanguages(), self::LITERAL_FUSION);
+        return self::$supportedLanguagesCache ??= array_merge(PhoneticFolderRegistry::supportedLanguages(), self::LITERAL_FUSION);
     }
 }
