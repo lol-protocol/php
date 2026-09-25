@@ -49,11 +49,11 @@ class WordList
         ]);
     }
 
-    /** Minúsculas + diacríticos + leet + separadores intercalados, para que "Cérda"/"CERDA"/"c3rda"/"cer-da" lleguen a la misma clave. Conserva espacios internos (entradas multipalabra). */
+    /** Minúsculas + diacríticos + leet + separadores intercalados + variantes de script ("ΜΑΛΑΚΑΣ", "козел", "مـدمـن"), para que todas lleguen a la misma clave. Conserva espacios internos (entradas multipalabra). */
     public function normalize(string $word): string
     {
         $word = preg_replace('/\s+/u', ' ', mb_strtolower(trim($word), 'UTF-8'));
-        return AccentFolding::fold(Leetspeak::unleet(WordListScanner::stripInsideWord($word)));
+        return ScriptFolding::fold(AccentFolding::fold(Leetspeak::unleet(WordListScanner::stripInsideWord($word))));
     }
     public function search(string $word): ?array { return $this->index->get($this->normalize($word)); }
     /** Todos los términos presentes en un texto: ventanas de 1-3 palabras y la palabra sin separadores intercalados. Ver WordListScanner. */
@@ -76,6 +76,10 @@ class WordList
     public function fold(string $text): string { return $this->phonetics->fold($text); }
     /** Coincidencia fonética exacta de un término completo. Null si el idioma no tiene reglas de plegado. */
     public function searchPhoneticExact(string $word): ?array { return $this->phonetics->searchExact($word, $this->index->all()); }
-    /** Candidatos para fusiones nombre+apellido. Vacío si el idioma no tiene reglas de plegado. */
+    /** Si este idioma tiene detección de fusión nombre+apellido (ver FusionSupport). */
+    public function supportsFusion(): bool { return $this->phonetics->supportsFusion(); }
+    /** Forma sobre la que se busca la fusión: fonética o literal según FusionSupport. */
+    public function fusionFold(string $text): string { return $this->phonetics->fusionFold($text); }
+    /** Candidatos para fusiones nombre+apellido. Vacío si el idioma no tiene detección de fusión. */
     public function getFusionCandidates(int $minLength = 4): array { return $this->phonetics->fusionCandidates($this->index->all(), $minLength); }
 }

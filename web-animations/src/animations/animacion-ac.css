@@ -1,0 +1,23 @@
+.nebula-container {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(ellipse at center, rgba(100, 50, 150, 0.1) 0%, rgba(20, 10, 40, 0.8) 100%);
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--color-1);
+    animation: floatStar 8s ease-in-out infinite;
+}
+
+@keyframes floatStar {
+    0%, 100% { transform: translate(0, 0); opacity: 0.5; }
+    50% { transform: translate(var(--tx), var(--ty)); opacity: 1; }
+}

@@ -1,0 +1,41 @@
+format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,category,description,common_use
+Letter,215.9,279.4,8.5,11,8.5:11,Canada,Standard,Canadian office paper,Office documents
+Legal,215.9,355.6,8.5,14,8.5:14,Canada,Standard,Canadian legal size,Contracts, legal documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Canada,Standard,ISO A4 size,International documents
+A Letter,215.9,279.4,8.5,11,8.5:11,Australia,Standard,Australian Letter size,Office documents, correspondence
+A Legal,215.9,355.6,8.5,14,8.5:14,Australia,Standard,Australian Legal size,Legal documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Australia,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,Australia,Standard,ISO A3 size,Large documents
+Foolscap,215.9,330.2,8.5,13,8.5:13,Australia,Standard,Australian foolscap size,Forms, documents
+Letter,215.9,279.4,8.5,11,8.5:11,India,Standard,Letter size paper,Office documents
+Demy,139,216,5.5,8.5,5.5:8.5,India,Standard,Demy size,Books, documents
+A4 ISO,210,297,8.3,11.7,1:1.414,India,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,India,Standard,ISO A3 size,Large format documents
+Foolscap,215.9,330.2,8.5,13,8.5:13,India,Standard,Indian foolscap size,Forms, legal documents
+Letter,215.9,279.4,8.5,11,8.5:11,Brazil,Standard,Letter size paper,Office documents, correspondence
+Ofício,216,279,8.5,11,8.5:11,Brazil,Standard,Brazilian legal size,Official documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Brazil,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,Brazil,Standard,ISO A3 size,Large format documents
+Meio Ofício,100,150,3.94,5.91,100:150,Brazil,Small,Half foolscap,Forms, documents
+Cartão de Visita,90,50,3.54,1.97,90:50,Brazil,Card,Business card,Business cards
+Letter,215.9,279.4,8.5,11,8.5:11,UK,Standard,British Letter size,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,UK,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,UK,Standard,ISO A3 size,Large documents
+Crown,127,203,5,8,5:8,UK,Book,Crown format,Books, textbooks
+Demy,139,216,5.5,8.5,5.5:8.5,UK,Book,Demy format,Traditional books
+Royal,152,229,6,9,6:9,UK,Book,Royal format,Books, publications
+Foolscap,215.9,330.2,8.5,13,8.5:13,UK,Standard,Foolscap size,Forms, legal documents
+DL Envelope,110,220,4.3,8.7,110:220,UK,Envelope,Standard envelope,Business mail
+C5 Envelope,162,229,6.4,9.0,1:1.414,UK,Envelope,C5 envelope,Business correspondence
+Letter,215.9,279.4,8.5,11,8.5:11,South Korea,Standard,Letter size paper,Office documents
+B5 KS,189,262,7.44,10.31,189:262,South Korea,Standard,Korean B5 format,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,South Korea,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,South Korea,Standard,ISO A3 size,Large format documents
+JIS B4,257,364,10.1,14.3,1:1.414,South Korea,Standard,B4 size,Office documents
+Namecard,90,50,3.54,1.97,90:50,South Korea,Card,Business card,Business cards
+Letter,215.9,279.4,8.5,11,8.5:11,Russia,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Russia,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,Russia,Standard,ISO A3 size,Large format documents
+Postcard,100,150,3.94,5.91,100:150,Russia,Card,Postcard size,Postcards, marketing
+Envelope C5,162,229,6.4,9.0,1:1.414,Russia,Envelope,C5 envelope,Business mail
+Envelope DL,110,220,4.3,8.7,110:220,Russia,Envelope,DL envelope,Business correspondence

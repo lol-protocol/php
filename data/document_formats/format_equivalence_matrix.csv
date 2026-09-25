@@ -1,0 +1,41 @@
+source_format,target_format,similarity_percent,can_rotate,can_fold,can_trim,compatibility_level,notes
+A4,Letter,95,Yes,No,No,Direct,Nearly identical size slight width difference
+A4,A5,100,No,Yes,No,Folded,A4 folded creates A5
+A3,A4,100,No,Yes,No,Folded,A3 folded creates A4
+A3,Tabloid,105,No,Yes,No,Similar,Very similar dimensions
+Letter,A4,95,Yes,No,No,Direct,Nearly identical size slight height difference
+Letter,Half Letter,100,No,Yes,No,Folded,Letter folded creates half
+Legal,Oficio,98,No,No,No,Direct,Nearly identical legal sizes
+Carta,Letter,100,No,No,No,Direct,Mexican Carta same as Letter
+Oficio,Legal,98,No,No,No,Direct,Mexican Oficio same as Legal
+Tabloid,A3,105,No,Yes,No,Similar,Very similar dimensions
+Executive,A5,90,Yes,No,No,Similar,Reasonably equivalent size
+A6,Postcard,95,No,No,No,Direct,Nearly identical size
+Ledger,A3,105,No,Yes,No,Similar,Very similar dimensions
+B5,A5,85,Yes,No,No,Similar,Reasonably sized alternatives
+Crown,A4,100,No,No,No,Direct,Book size equivalent
+Demy,A4,98,No,No,No,Direct,Book size very similar
+Royal,A3,100,No,No,No,Direct,Book size equivalent
+JIS B4,A3,102,No,No,No,Direct,Japanese alternative A3
+JIS B5,A5,98,No,No,No,Direct,Japanese alternative A5
+A2,Poster,100,No,Yes,No,Direct,Standard poster size
+A1,Poster Large,100,No,Yes,No,Direct,Large poster size
+A0,Poster Extra Large,100,No,Yes,No,Direct,Extra large poster
+C4 Envelope,A4,80,No,No,No,Contains,Envelope for A4 paper
+C5 Envelope,A5,80,No,No,No,Contains,Envelope for folded A4
+DL Envelope,A4 Folded,95,No,No,No,Contains,DL standard envelope
+Postcard A6,Greeting Card,95,No,No,No,Direct,Nearly identical size
+4x6 Photo,Postcard,98,No,No,No,Direct,Standard photo print size
+5x7 Photo,Small Art,100,No,No,No,Direct,Medium photo print size
+8x10 Photo,Large Art,100,No,No,No,Direct,Standard portrait photo size
+Business Card,A8,100,No,No,No,Direct,Business card standard size
+Trade Paperback,A4,90,No,No,No,Similar,Book to paper format
+Mass Market,A6,95,No,No,No,Similar,Pocket book size
+Digest,Letter,98,No,No,No,Direct,Magazine to standard paper
+Hagaki Postcard,Postcard,98,No,No,No,Direct,Japanese postcard standard
+Index Card 3x5,Postcard,95,No,No,No,Similar,Small card format
+Index Card 5x8,Half Letter,100,No,No,No,Direct,Standard index card
+Label 4x6,Postcard,100,No,No,No,Direct,Label to postcard size
+Label 8.5x11,Letter,100,No,No,No,Direct,Sheet label to letter
+Mailing Label,Postcard,85,No,No,No,Similar,Small label format
+Specialty Paper 5x8,Index Card,100,No,No,No,Direct,Specialty to standard card

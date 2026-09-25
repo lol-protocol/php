@@ -19,7 +19,7 @@ namespace DefamatoryContentReview;
  */
 class SlovakPhoneticFolder
 {
-    use LeetspeakFolding;
+    use AccentOnlyPhoneticFolding;
 
     private const ACCENTS = [
         'á' => 'a', 'ä' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o',
@@ -29,10 +29,6 @@ class SlovakPhoneticFolder
 
     public static function fold(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = self::stripSeparators($text);
-
-        return strtr($text, self::ACCENTS);
+        return self::foldSeparatorsThenAccents($text);
     }
 }

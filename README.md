@@ -6,7 +6,7 @@ Detecta insultos, léxico soez y construcciones de ridiculización en nombres y
 apellidos de personas, para plataformas de información genealógica.
 
 - **11 tipos de riesgo** — no sólo *cuánto* ofende un término, sino *de qué modo*.
-- **30 idiomas** identificados por código ISO 639-3, con ~4.600 términos.
+- **33 idiomas** identificados por código ISO 639-3, con ~6.400 términos.
 - **Modelo de parentesco lingüístico** — validación cruzada entre lenguas
   emparentadas, con la coincidencia ponderada por su afinidad léxica.
 - **Protección de apellidos legítimos** — «Cerda», «Moro» o «Savage» son linajes
@@ -23,7 +23,7 @@ apellidos de personas, para plataformas de información genealógica.
 composer install
 ```
 
-Requiere PHP >= 8.0 y la extensión `mbstring`.
+Requiere PHP >= 8.1 y la extensión `mbstring`.
 
 ## Uso
 
@@ -110,7 +110,7 @@ Susana Oria   → "susanaoria"  → contiene "zanahoria" (z/s y h muda se pliega
 ```
 
 El módulo lo detecta plegando cada campo a una forma fonética aproximada
-(`PhoneticFolder`: unifica b/v, s/z/c suave, ll/y, h muda, y el sonido de j y
+(`SpanishPhoneticFolder`: unifica b/v, s/z/c suave, ll/y, h muda, y el sonido de j y
 de g suave) y buscando términos del diccionario que **crucen la frontera**
 entre el nombre y el apellido plegados:
 
@@ -149,8 +149,8 @@ $reviewer->validateFullName('Paco', 'Cojes');
 
 ### Diecisiete idiomas, diecisiete fonéticas distintas
 
-Cubre los 17 idiomas en script latino de los 30 soportados — cada uno con su
-propio folder (`PhoneticFolder`, `PortuguesePhoneticFolder`,
+Cubre los 17 idiomas en script latino de los 33 soportados — cada uno con su
+propio folder (`SpanishPhoneticFolder`, `PortuguesePhoneticFolder`,
 `ItalianPhoneticFolder`, `FrenchPhoneticFolder`, `GermanPhoneticFolder`,
 `CzechPhoneticFolder`, `SlovakPhoneticFolder`, `DanishPhoneticFolder`,
 `NorwegianPhoneticFolder`, `SwedishPhoneticFolder`, `FinnishPhoneticFolder`,
@@ -212,21 +212,54 @@ $reviewer->languages()->wordList('eng')->supportsPhoneticFolding();  // false �
 Añadir un idioma nuevo a la fusión fonética es añadir su folder y una fila
 en `PhoneticFolderRegistry::FOLDERS` — nada más cambia.
 
+### Fusión literal en idiomas sin reglas fonéticas
+
+La fusión en sí no necesita reglas fonéticas: es unir nombre y apellido y
+buscar un término que cruce la unión. Para 9 idiomas sin folder (ruso,
+ucraniano, búlgaro, griego, hindi, coreano, islandés, swahili y tagalo),
+`FusionSupport` la hace sobre la misma forma normalizada que usa la búsqueda
+literal — sin variantes fonéticas de un solo campo, que ahí duplicarían la
+búsqueda literal. Con eso la fusión cubre **26 de los 33 idiomas**.
+
+Cada idioma entró sólo tras un barrido de combinaciones de nombres reales
+comunes con cero falsos positivos. Quedaron fuera los que no lo pasaron o no
+pueden pasarlo:
+
+| Excluido | Motivo |
+|---|---|
+| Inglés | Falsos positivos reales: «Chris Hitt» → «shit», «Dustin King» → «stinking» |
+| Árabe | Falsos positivos reales: «محمد منصور» (Mohammed Mansour) → «مدمن» |
+| Hebreo | Como el árabe, no escribe vocales: las uniones forman palabras con demasiada facilidad |
+| Japonés, tailandés, cantonés | Sin espacios entre palabras; el umbral de longitud está pensado para alfabetos |
+| Vietnamita | El tono distingue palabras y la normalización colapsa parte de los tonos |
+
+```php
+$reviewer = DefamatoryContentReviewer::create($configDir, 'rus');
+$reviewer->validateFullName('Сво', 'Лочь')->getPhoneticFusionTerms();  // «сволочь»
+FusionSupport::isSupported('ara');                                      // false
+```
+
 ### Evasión cubierta y no cubierta
 
 - **Transliteración numérica** ("c3rda", "v4g1na"): cubierta. `WordList::normalize()`
   sustituye los dígitos/símbolos de un solo carácter más comunes
-  (`0→o 1→i 3→e 4→a 5→s 7→t 8→b @→a $→s`) antes de comparar, y los tres
+  (`0→o 1→i 3→e 4→a 5→s 7→t 8→b @→a $→s`) antes de comparar, y los 17
   folders fonéticos hacen lo mismo antes de plegar — por eso también se
   detecta combinada con la fusión: `validateFullName('Elb4', 'G1na')` marca
   "vagina" igual que la versión sin dígitos.
+- **Variantes ortográficas estándar de scripts no latinos**: cubierta.
+  `ScriptFolding` iguala las formas que los propios hablantes tratan como
+  equivalentes: griego en mayúsculas («ΜΑΛΑΚΑΣ», sin tonos y con sigma
+  medial — lo normal en registros genealógicos), ruso con «е» por «ё»
+  («козел»), árabe con kashida, harakat, alef sin hamza, «ى»/«ي» y
+  «ة»/«ه», y hebreo con niqqud. Antes todas estas formas pasaban.
 - **Apellidos compuestos con guion o apóstrofo** ("Pérez-García", "O'Brien"):
   cubierta. La búsqueda literal ya los separaba en tokens; los folders
   fonéticos ahora también descartan el guion/apóstrofo (antes quedaba
   literal en la forma plegada y rompía el cálculo de la frontera de fusión).
 - **Variantes por distancia de edición** ("Cerrda", "Certa"): **deliberadamente
   no cubierta**. Colapsar letras dobles cerraría este caso, pero across
-  ~4.600 palabras en 30 idiomas no hay forma de verificar a mano qué
+  ~6.400 palabras en 33 idiomas no hay forma de verificar a mano qué
   colisiones no deseadas produciría — "Serrano" (apellido real) se volvería
   "Serano", y así con cada doble letra en cada idioma. Se documenta como
   límite en vez de implementarse a medias.
@@ -249,24 +282,26 @@ integración existente puede seguir pasando `es` o `pt`.
 
 ```php
 $registry->resolve('es');   // 'spa'
-$registry->resolve('zh');   // 'zho'
+$registry->resolve('zh');   // 'yue'
 $registry->resolve('SPA');  // 'spa'
 ```
 
 | Familia | Idiomas |
 |---|---|
 | Romance | `spa` `por` `fra` `ita` `ron` |
-| Germánica | `eng` `deu` `nld` `swe` `dan` `nor` |
+| Germánica | `eng` `deu` `nld` `swe` `dan` `nor` `isl` |
 | Eslava | `rus` `ukr` `bul` `pol` `ces` `slk` |
 | Urálica | `fin` `hun` |
 | Semítica | `ara` `heb` |
-| Otras | `ell` `tur` `hin` `jpn` `kor` `zho` `tha` `vie` `ind` |
+| Austronesia | `ind` `tgl` |
+| Otras (una familia cada una) | `ell` `tur` `hin` `jpn` `kor` `yue` `tha` `vie` `swa` |
 
 ### Cobertura de los diccionarios
 
 `coverage` no es cosmético: dice dónde hace falta revisión de hablante nativo
-antes de usar el módulo en producción para ese idioma. ~4.800 términos en
-total; ningún idioma queda ya en `basic`.
+antes de usar el módulo en producción para ese idioma. ~6.400 términos en
+total; sólo 3 idiomas (`isl`, `swa`, `tgl` — los últimos en incorporarse)
+siguen en `basic`.
 
 Vive en un único sitio — `meta.coverage` dentro del propio archivo de cada
 idioma — y se consulta a través de `DefamatoryContentReviewer`, no del
@@ -277,8 +312,9 @@ la primera vez que sólo una de ellas se actualizó.
 
 | Nivel | Idiomas | Términos c/u |
 |---|---|---|
-| `comprehensive` | spa, eng, por, fra, ita, deu | 200 – 418 |
-| `moderate` | los 24 restantes (ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, zho, tha, vie, ind) | 120 – 160 |
+| `comprehensive` | spa, eng, por, fra, ita, deu (6) | 200 – 418 |
+| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 120 – 160 |
+| `basic` | isl, swa, tgl (3) | 60 – 119 |
 
 ```php
 $reviewer->languages()->byCoverage('moderate');  // los candidatos a comprehensive
@@ -288,7 +324,7 @@ Un test de integridad (`DictionaryIntegrityTest`) exige que todo idioma
 declarado `moderate` tenga ≥120 términos y `comprehensive` ≥200: subir el
 nivel es responder por un mínimo verificable, no una etiqueta.
 
-Los idiomas sin separación por espacios (`jpn`, `zho`, `tha`) declaran
+Los idiomas sin separación por espacios (`jpn`, `yue`, `tha`) declaran
 `requiresTokenizer`: para texto libre necesitan un segmentador externo
 (MeCab, jieba) antes de consultar el diccionario. Para nombres ya separados en
 campos no hace falta.
@@ -337,7 +373,7 @@ decidir qué diccionarios consultar y cuánto fiarse de lo que encuentren.
 | `eng` ↔ `nld` | 0.63 | `eng` ↔ `deu` | 0.60 |
 
 Se incluyen también pares sin parentesco directo pero con préstamo intenso
-(`jpn`↔`zho`, `ron`↔`bul`, `tur`↔`ell`), con afinidad baja.
+(`jpn`↔`yue`, `ron`↔`bul`, `tur`↔`ell`), con afinidad baja.
 
 ```php
 $registry->getAffinity('spa', 'por');   // 0.89 — simétrico
@@ -584,27 +620,31 @@ src/DefamatoryContentReview/
 ├── LanguageAffinity.php            Afinidad léxica — colaborador de LanguageRegistry
 ├── WordList.php                    Diccionario: carga, normalización, búsqueda
 ├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
+├── WordListScanner.php             Búsqueda de términos en texto — colaborador de WordList
 ├── AccentFolding.php               Plegado de diacríticos compartido por WordList
+├── ScriptFolding.php               Variantes estándar de griego, cirílico, árabe y hebreo
 ├── ScoringPolicy.php               Orquesta pesos/bandas/decisión (configurable)
 ├── ScoringWeights.php / SeverityBands.php / DecisionTable.php   Colaboradores de ScoringPolicy
-├── PhoneticFolder.php              Plegado fonético del español
+├── SpanishPhoneticFolder.php       Plegado fonético del español
 ├── PortuguesePhoneticFolder.php    Plegado fonético del portugués
 ├── ItalianPhoneticFolder.php       Plegado fonético del italiano
 ├── FrenchPhoneticFolder.php        Plegado fonético del francés
 ├── GermanPhoneticFolder.php        Plegado fonético del alemán
 ├── Czech…RomanianPhoneticFolder.php  Los otros 12 idiomas latinos (ver tabla arriba)
+├── AccentOnlyPhoneticFolding.php   Wiring compartido por los folders sin reglas propias además de acentos
 ├── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica compartida por los folders
 ├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
+├── FusionSupport.php               Qué idiomas tienen fusión (fonética o literal) y por qué no el resto
 ├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
 ├── ValidationResult.php            Resultado con trazabilidad por idioma y método
 └── FlaggedTermCollection.php       Términos marcados y sus consultas — colaborador de ValidationResult
 
 config/
-├── risk-categories.php             Los 10 tipos de riesgo
+├── risk-categories.php             Los 11 tipos de riesgo
 ├── language-families.php           Familias y afinidades
 └── languages/
     ├── supported-languages.php     Catálogo ISO 639-3 + alias 639-1
-    └── spa.php eng.php por.php …   30 diccionarios
+    └── spa.php eng.php por.php …   33 diccionarios
 
 tests/    examples/
 ```
@@ -646,7 +686,7 @@ severidades válidos.
 ## Ampliar un diccionario existente
 
 Añadir entradas en la categoría que corresponda y subir `coverage` cuando el
-idioma quede cubierto en las diez categorías de riesgo. Marcar
+idioma quede cubierto en las once categorías de riesgo. Marcar
 `nameCollision => true` en todo término que también sea nombre o apellido
 documentado — es lo que evita que la lista negra borre linajes reales.
 
@@ -669,24 +709,28 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
   frontera (ver la sección de fusión fonética más arriba). La transliteración
   numérica de un solo carácter sí se cubre (ver «Evasión cubierta y no
   cubierta»).
-- La fusión fonética sólo cubre 17 de los 30 idiomas, los que tienen folder
-  registrado en `PhoneticFolderRegistry`: inglés excluido a propósito
-  porque su ortografía no tiene grafía alternativa real que plegar (a
-  diferencia del resto, es aproximación fonética laxa, no equivalencia
-  ortográfica verificable); vietnamita por su tono fonémico; los 11
-  idiomas en script no latino (árabe, búlgaro, griego, hebreo, hindi,
-  japonés, coreano, ruso, tailandés, ucraniano, chino), fuera del alcance
-  del mecanismo. En cualquiera de los 17 sólo cubre el cruce entre nombre
-  y apellido, no la re-segmentación dentro de un único campo.
-- Ningún diccionario queda en `basic`, pero `moderate` (24 de los 30) sigue
-  necesitando revisión de hablante nativo antes de producción — es una base
-  verificable, no una traducción exhaustiva.
+- La fusión cubre 26 de los 33 idiomas: 17 con plegado fonético
+  (`PhoneticFolderRegistry`) y 9 con fusión literal (`FusionSupport`).
+  Quedan fuera inglés, árabe, hebreo, japonés, tailandés, cantonés y
+  vietnamita (motivos en la sección «Fusión literal»). En coreano la
+  longitud mínima se cuenta en sílabas, así que sólo alcanza a los
+  términos más largos. En todos, sólo cubre el cruce entre nombre y
+  apellido, no la re-segmentación dentro de un único campo.
+- 3 diccionarios (`isl`, `swa`, `tgl`) siguen en `basic`, y los 24 en
+  `moderate` siguen necesitando revisión de hablante nativo antes de
+  producción — es una base verificable, no una traducción exhaustiva.
 - El árabe dialectal y las variedades regionales del chino no están cubiertos.
 - La distancia de edición («Cerrda») no está cubierta: ver el docblock de
   `EvasionTest::testEditDistanceEvasionIsADeliberateGap()` para el porqué.
 - Las afinidades son aproximaciones, no medidas.
 - El módulo no decide por la plataforma: `decide()` propone, y los casos
   `review` requieren persona.
+
+## Otros contenidos de este repositorio
+
+[`web-animations/`](web-animations/) es una galería de demostración de 36
+animaciones HTML/CSS/JS, sin relación con este módulo — ver su propio
+[README](web-animations/README.md).
 
 ## Licencia
 
