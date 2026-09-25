@@ -44,11 +44,15 @@ class MultiLanguagePhoneDirectoryParser
         'es' => ['spa', 'srl', 'sa', 'ltda', 'inc', 'comercial', 'empresa', 'negocio', 'tienda', 'restaurante', 'hotel', 'banco', 'farmacia', 'hospital'],
         'en' => ['corp', 'inc', 'ltd', 'llc', 'company', 'store', 'shop', 'restaurant', 'hotel', 'bank', 'pharmacy', 'hospital'],
         'fr' => ['sarl', 'sas', 'eirl', 'eurl', 'magasin', 'restaurant', 'hôtel', 'banque', 'pharmacie', 'hôpital'],
+        'pt' => ['ltda', 'lda', 'eireli', 'empresa', 'comercial', 'loja', 'padaria', 'restaurante', 'hotel', 'banco', 'farmácia', 'hospital'],
+        'de' => ['gmbh', 'ag', 'kg', 'ohg', 'apotheke', 'bäckerei', 'gasthaus', 'restaurant', 'hotel', 'bank', 'krankenhaus'],
+        'it' => ['srl', 'spa', 'snc', 'sas', 'negozio', 'panificio', 'trattoria', 'ristorante', 'albergo', 'hotel', 'banca', 'farmacia', 'ospedale'],
     ];
 
     private const SUPPORTED_LANGUAGES = ['es', 'en', 'fr', 'pt', 'de', 'it'];
 
-    private PhoneDirectoryParser $parser;
+    /** @deprecated Never read; no longer built on construction. */
+    private ?PhoneDirectoryParser $parser = null;
     private string $detectedLanguage = 'en';
     private array $entries = [];
     private array $parseErrors = [];
@@ -71,7 +75,6 @@ class MultiLanguagePhoneDirectoryParser
 
         $this->countryCode = strtoupper($countryCode);
         $this->sourceDirectoryId = $sourceDirectoryId;
-        $this->parser = new PhoneDirectoryParser($this->countryCode, $sourceDirectoryId);
     }
 
     public static function forCatalogDirectory(string $directoryId, ?PhoneDirectoryCatalog $catalog = null): self
@@ -100,12 +103,10 @@ class MultiLanguagePhoneDirectoryParser
             throw new \RuntimeException("File not found: {$filePath}");
         }
 
-        $content = file_get_contents($filePath);
-        if ($content === false) {
-            throw new \RuntimeException("Could not read file: {$filePath}");
-        }
+        // Two streaming passes (detect, then parse) instead of holding the whole file in memory.
+        $language ??= $this->detectLanguage(LineReader::read($filePath));
 
-        return $this->parseContent($content, $language);
+        return $this->parseLines(LineReader::read($filePath), $language);
     }
 
     /**
@@ -118,12 +119,15 @@ class MultiLanguagePhoneDirectoryParser
      */
     public function parseContent(string $content, ?string $language = null): array
     {
+        $language ??= $this->detectLanguage([$content]);
+
+        return $this->parseLines(explode("\n", $content), $language);
+    }
+
+    private function parseLines(iterable $lines, string $language): array
+    {
         $this->entries = [];
         $this->parseErrors = [];
-
-        if ($language === null) {
-            $language = $this->detectLanguage($content);
-        }
 
         if (!in_array($language, self::SUPPORTED_LANGUAGES, true)) {
             throw new InvalidLanguageException("Unsupported language: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
@@ -132,7 +136,6 @@ class MultiLanguagePhoneDirectoryParser
         $this->detectedLanguage = $language;
         $phoneRegex = PhonePattern::getValidatedRegex();
 
-        $lines = explode("\n", $content);
         $buffer = [];
         $bufferStart = 0;
         $lineNumber = 0;
@@ -151,11 +154,13 @@ class MultiLanguagePhoneDirectoryParser
 
             // Most historical directories print one full record per line rather than one field per
             // line; try that shape before falling back to the original multi-line block assumption.
-            $single = SingleLineEntrySplitter::split(
+            // Invalid UTF-8 would crash the splitter's /u regex; such lines fall through to the block
+            // path, where finalizeEntry() reports the record as a parse error.
+            $single = mb_check_encoding($trimmed, 'UTF-8') ? SingleLineEntrySplitter::split(
                 $trimmed,
                 fn($street) => $this->extractStreet($street, $language) !== null,
                 PersonName::LANGUAGE_SURNAME_COUNT[$language] ?? 1
-            );
+            ) : null;
             if ($single !== null) {
                 if (!empty($buffer)) {
                     $this->processBuffer($buffer, $bufferStart, $language, $phoneRegex);
@@ -182,12 +187,24 @@ class MultiLanguagePhoneDirectoryParser
         return $this->entries;
     }
 
-    private function detectLanguage(string $content): string
+    /**
+     * @param iterable<string> $chunks The whole content as one chunk, or a file line by line
+     */
+    private function detectLanguage(iterable $chunks): string
     {
         $scores = ['en' => 0];
+        $patterns = [];
         foreach (self::LANGUAGE_DETECTION_MARKERS as $lang => $words) {
-            $pattern = $this->getDetectionPattern($lang, $words);
-            $scores[$lang] = $pattern === null ? 0 : preg_match_all($pattern, $content);
+            $scores[$lang] = 0;
+            $patterns[$lang] = $this->getDetectionPattern($lang, $words);
+        }
+
+        foreach ($chunks as $chunk) {
+            foreach ($patterns as $lang => $pattern) {
+                if ($pattern !== null) {
+                    $scores[$lang] += (int) preg_match_all($pattern, $chunk);
+                }
+            }
         }
 
         arsort($scores);
@@ -270,6 +287,17 @@ class MultiLanguagePhoneDirectoryParser
             return;
         }
 
+        // Rejected here so one badly-encoded line becomes a parse error instead of aborting a whole batch insert.
+        if (!self::isValidUtf8($data)) {
+            $this->parseErrors[] = [
+                'line' => $startLine,
+                'reason' => 'Invalid UTF-8 encoding',
+                'language' => $language,
+                'data' => $data,
+            ];
+            return;
+        }
+
         try {
             $isJuridical = $this->isJuridicalEntity($data, $language);
 
@@ -341,12 +369,8 @@ class MultiLanguagePhoneDirectoryParser
         }
 
         $pattern = $this->getEntityTypePattern($language);
-        if (preg_match($pattern, $line)) {
-            foreach ($markers as $marker) {
-                if (str_contains(strtolower($line), strtolower($marker))) {
-                    return $marker;
-                }
-            }
+        if (preg_match($pattern, $line, $matches)) {
+            return mb_strtolower($matches[1], 'UTF-8');
         }
 
         return null;
@@ -381,7 +405,7 @@ class MultiLanguagePhoneDirectoryParser
             if (empty($markers)) {
                 $this->entityTypePatternCache[$language] = null;
             } else {
-                $pattern = '\\b(?:' . implode('|', array_map(fn($m) => preg_quote($m, '/'), $markers)) . ')\\b';
+                $pattern = '\\b(' . implode('|', array_map(fn($m) => preg_quote($m, '/'), $markers)) . ')\\b';
                 $this->entityTypePatternCache[$language] = '/' . $pattern . '/iu';
             }
         }
@@ -397,6 +421,17 @@ class MultiLanguagePhoneDirectoryParser
 
         $pattern = $this->getEntityTypePattern($language);
         return $pattern !== null && preg_match($pattern, $data['name'] ?? '') === 1;
+    }
+
+    private static function isValidUtf8(array $data): bool
+    {
+        foreach ($data as $value) {
+            if (is_string($value) && !mb_check_encoding($value, 'UTF-8')) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function validateEntry(array $data): bool

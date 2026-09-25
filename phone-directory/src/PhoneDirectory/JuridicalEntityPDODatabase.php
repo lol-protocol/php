@@ -39,6 +39,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         return self::TABLE_NAME;
     }
 
+    /** @deprecated Never called; use ensureConnection(). */
     protected function ensureConnected(): void
     {
         $this->ensureConnection();

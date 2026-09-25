@@ -167,4 +167,65 @@ class MultiLanguagePhoneDirectoryParserTest extends TestCase
         $entity = $entries[0]['entity'];
         $this->assertEquals('Hauptstraße 5', $entity->getStreet());
     }
+
+    public function testBusinessTypeIsTheMarkerWordThatMatchedNotASubstring(): void
+    {
+        // Previously the first marker appearing as a substring anywhere won: "Inca" gave 'inc', "Sanchez" gave 'sa'.
+        $entries = $this->parser->parseContent("Banco Inca\nCalle Luna 3\n\nHotel Sanchez\nCalle Sol 5", 'es');
+
+        $this->assertEquals('banco', $entries[0]['entity']->getBusinessType());
+        $this->assertEquals('hotel', $entries[1]['entity']->getBusinessType());
+    }
+
+    public function testBusinessesAreJuridicalInPortugueseGermanAndItalian(): void
+    {
+        $cases = [
+            'pt' => "Farmácia Lisboa\nRua Augusta 10",
+            'de' => "Müller GmbH\nHauptstraße 5",
+            'it' => "Trattoria Roma\nVia Appia 7",
+        ];
+
+        foreach ($cases as $language => $content) {
+            $entries = $this->parser->parseContent($content, $language);
+
+            $this->assertCount(1, $entries, $language);
+            $this->assertEquals('juridical', $entries[0]['type'], $language);
+        }
+    }
+
+    public function testParseFileMatchesParseContentIncludingLanguageDetection(): void
+    {
+        $content = "JOSÉ GARCÍA LÓPEZ\nCalle Mayor 12\n555-123-4567\n\nFarmacia Central\nAvenida del Sol 5\n";
+        $file = tempnam(sys_get_temp_dir(), 'phonedir_');
+        file_put_contents($file, $content);
+
+        try {
+            $fileParser = new MultiLanguagePhoneDirectoryParser();
+            $fromFile = $fileParser->parseFile($file);
+            $fromContent = $this->parser->parseContent($content);
+
+            $summary = fn(array $entries) => array_map(fn($e) => [
+                $e['type'],
+                $e['type'] === 'juridical' ? $e['entity']->getBusinessName() : $e['entity']->getRawName(),
+                $e['entity']->getStreet(),
+                $e['entity']->getSourceLine(),
+            ], $entries);
+
+            $this->assertCount(2, $fromFile);
+            $this->assertEquals($summary($fromContent), $summary($fromFile));
+            $this->assertEquals('es', $fileParser->getDetectedLanguage());
+        } finally {
+            unlink($file);
+        }
+    }
+
+    public function testInvalidUtf8LineIsAParseErrorNotAnEntry(): void
+    {
+        $entries = $this->parser->parseContent("Juan Mu\xF1oz\nCalle Mayor 12\n\nAna Pérez\nCalle Sol 5", 'es');
+
+        $this->assertCount(1, $entries);
+        $this->assertEquals('Pérez, Ana', $entries[0]['entity']->getFormattedName());
+        $this->assertCount(1, $this->parser->getErrors());
+        $this->assertEquals('Invalid UTF-8 encoding', $this->parser->getErrors()[0]['reason']);
+    }
 }

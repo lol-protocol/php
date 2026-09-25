@@ -2,6 +2,9 @@
 
 namespace PhoneDirectory\Database;
 
+/**
+ * @deprecated Neither method is called; the database classes query through EntityPDODatabase helpers.
+ */
 trait SearchableDatabase
 {
     /**

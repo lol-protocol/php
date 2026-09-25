@@ -6,9 +6,13 @@ final class DatabaseConstants
 {
     public const DEFAULT_COUNTRY_CODE = 'US';
     public const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    /** @deprecated Unused. */
     public const SQL_LIMIT_ONE = ' LIMIT 1';
+    /** @deprecated Unused. */
     public const SQL_ORDER_BY = ' ORDER BY ';
+    /** @deprecated Unused. */
     public const SQL_WHERE = ' WHERE ';
+    /** @deprecated Unused. */
     public const SQL_AND = ' AND ';
 
     public const QUERY_LIMIT_ONE_BY_ID = 'SELECT * FROM %s WHERE id = :id LIMIT 1';
@@ -23,5 +27,6 @@ final class DatabaseConstants
     public const ERROR_NO_LAST_INSERT_ID = 'Failed to get last insert ID from database';
 
     public const MIGRATION_NULL_COUNTRY_CODE = "UPDATE %s SET country_code = '%s' WHERE country_code IS NULL";
+    /** @deprecated Unused. */
     public const BACKFILL_CONDITION = ' IS NULL';
 }

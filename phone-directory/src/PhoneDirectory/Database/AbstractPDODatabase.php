@@ -5,6 +5,7 @@ namespace PhoneDirectory\Database;
 use DefamatoryContentReview\AccentFolding;
 use PhoneDirectory\Exception\InvalidEncodingException;
 use PhoneDirectory\SqlDialect;
+use PhoneDirectory\TextFolding;
 
 abstract class AbstractPDODatabase
 {
@@ -44,20 +45,11 @@ abstract class AbstractPDODatabase
         return $this->pdo !== null;
     }
 
+    /**
+     * @throws InvalidEncodingException If the text is not valid UTF-8
+     */
     protected function fold(string $text): string
     {
-        $lower = mb_strtolower($text, 'UTF-8');
-
-        if (!mb_check_encoding($lower, 'UTF-8')) {
-            throw new InvalidEncodingException('Invalid UTF-8 encoding in text after mb_strtolower');
-        }
-
-        $folded = AccentFolding::fold($lower);
-
-        if (!mb_check_encoding($folded, 'UTF-8')) {
-            throw new InvalidEncodingException('Invalid UTF-8 encoding in text after accent folding');
-        }
-
-        return $folded;
+        return TextFolding::fold($text);
     }
 }

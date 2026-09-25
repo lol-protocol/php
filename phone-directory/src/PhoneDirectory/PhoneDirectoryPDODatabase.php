@@ -43,6 +43,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         return self::TABLE_NAME;
     }
 
+    /** @deprecated Never called; use ensureConnection(). */
     protected function ensureConnected(): void
     {
         $this->ensureConnection();

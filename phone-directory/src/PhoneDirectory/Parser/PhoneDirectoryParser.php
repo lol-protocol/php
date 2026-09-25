@@ -72,17 +72,16 @@ class PhoneDirectoryParser
         $this->entries = [];
         $this->parseErrors = [];
 
-        $content = file_get_contents($filePath);
-        if ($content === false) {
-            throw new \RuntimeException("Could not read file: {$filePath}");
-        }
-
-        return $this->parseContent($content);
+        return $this->parseLines(LineReader::read($filePath));
     }
 
     public function parseContent(string $content): array
     {
-        $lines = explode("\n", $content);
+        return $this->parseLines(explode("\n", $content));
+    }
+
+    private function parseLines(iterable $lines): array
+    {
         $buffer = [];
         $bufferStart = 0;
         $lineNumber = 0;
@@ -102,7 +101,11 @@ class PhoneDirectoryParser
 
             // Most historical directories print one full record per line rather than one field per
             // line; try that shape before falling back to the original multi-line block assumption.
-            $single = SingleLineEntrySplitter::split($trimmed, fn($street) => $this->isStreet($street), 1);
+            // Invalid UTF-8 would crash the splitter's /u regex; such lines fall through to the block
+            // path, where finalizeEntry() reports the record as a parse error.
+            $single = mb_check_encoding($trimmed, 'UTF-8')
+                ? SingleLineEntrySplitter::split($trimmed, fn($street) => $this->isStreet($street), 1)
+                : null;
             if ($single !== null) {
                 if (!empty($buffer)) {
                     $this->processBuffer($buffer, $bufferStart);
@@ -169,6 +172,18 @@ class PhoneDirectoryParser
                 'data' => $data,
             ];
             return;
+        }
+
+        // Rejected here so one badly-encoded line becomes a parse error instead of aborting a whole batch insert.
+        foreach ($data as $value) {
+            if (is_string($value) && !mb_check_encoding($value, 'UTF-8')) {
+                $this->parseErrors[] = [
+                    'line' => $startLine,
+                    'reason' => 'Invalid UTF-8 encoding',
+                    'data' => $data,
+                ];
+                return;
+            }
         }
 
         try {
