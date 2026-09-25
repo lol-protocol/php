@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Formats Database - Interactive Browser</title>
+    <link rel="icon" href="data:,">
     <style>
         * {
             margin: 0;
@@ -226,6 +227,8 @@
             font-weight: 600;
             text-transform: uppercase;
             white-space: nowrap;
+            background: var(--border);
+            color: var(--text);
         }
 
         .badge-standard { background: var(--primary); color: white; }
@@ -461,7 +464,7 @@
 <body>
     <div class="header">
         <h1>📄 Document Formats Database</h1>
-        <p>Browse, search, and compare document formats from 30+ countries</p>
+        <p>Browse, search, and compare paper and document formats by country</p>
     </div>
 
     <div class="container">
@@ -575,8 +578,8 @@
                 <h2>About This Database</h2>
                 <p>This comprehensive document format database includes:</p>
                 <ul style="margin: 15px 0; padding-left: 20px;">
-                    <li><strong>500+ formats</strong> across multiple categories</li>
-                    <li><strong>30+ countries</strong> with local and international standards</li>
+                    <li><strong id="about-formats">…</strong> formats across multiple categories</li>
+                    <li><strong id="about-countries">…</strong> countries and regions with local and international standards</li>
                     <li><strong>Dual measurements</strong> in both metric and imperial units</li>
                     <li><strong>Technical specifications</strong> for printing and design</li>
                     <li><strong>Format conversions</strong> showing international equivalents</li>
@@ -593,90 +596,17 @@
         <p>Document Formats Database v2.0 | Built with HTML5, CSS3, and JavaScript</p>
     </div>
 
+    <script src="document-formats.js"></script>
     <script>
-        const HTML_ESCAPES = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
-        const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, char => HTML_ESCAPES[char]);
-
-        // Sample format data - in production, load from CSV or API
-        const sampleFormats = [
-            {
-                id: 1,
-                format_name: 'A4',
-                country: 'International',
-                category: 'Standard',
-                width_mm: 210,
-                height_mm: 297,
-                width_inches: 8.3,
-                height_inches: 11.7,
-                aspect_ratio: '1:1.414',
-                common_use: 'Standard office paper'
-            },
-            {
-                id: 2,
-                format_name: 'Letter',
-                country: 'USA',
-                category: 'Standard',
-                width_mm: 215.9,
-                height_mm: 279.4,
-                width_inches: 8.5,
-                height_inches: 11,
-                aspect_ratio: '8.5:11',
-                common_use: 'USA office documents'
-            },
-            {
-                id: 3,
-                format_name: 'Legal',
-                country: 'USA',
-                category: 'Legal',
-                width_mm: 215.9,
-                height_mm: 355.6,
-                width_inches: 8.5,
-                height_inches: 14,
-                aspect_ratio: '8.5:14',
-                common_use: 'Legal documents'
-            },
-            {
-                id: 4,
-                format_name: 'A3',
-                country: 'International',
-                category: 'Standard',
-                width_mm: 297,
-                height_mm: 420,
-                width_inches: 11.7,
-                height_inches: 16.5,
-                aspect_ratio: '1:1.414',
-                common_use: 'Large documents, posters'
-            },
-            {
-                id: 5,
-                format_name: '4x6',
-                country: 'International',
-                category: 'Photo',
-                width_mm: 102,
-                height_mm: 152,
-                width_inches: 4,
-                height_inches: 6,
-                aspect_ratio: '4:6',
-                common_use: 'Photo prints'
-            }
-        ];
-
         class FormatBrowser {
-            constructor() {
-                this.formats = sampleFormats;
-                this.filteredFormats = [...this.formats];
-                this.formatMap = new Map(this.formats.map((f, i) => [f.format_name, i]));
-                this.statsCache = null;
-                this.filterState = {search: '', country: '', category: ''};
-                this.init();
-            }
-
-            init() {
+            constructor(formats) {
+                this.formats = formats;
+                this.converter = new FormatConverter(formats);
                 this.cacheElements();
                 this.setupEventListeners();
                 this.populateFilters();
                 this.updateStats();
-                this.renderFormats(this.filteredFormats);
+                this.renderFormats(this.formats);
             }
 
             cacheElements() {
@@ -690,17 +620,17 @@
                     fromFormat: document.getElementById('from-format'),
                     toFormat: document.getElementById('to-format'),
                     container: document.getElementById('formats-container'),
+                    compareSearch: document.getElementById('compare-search'),
+                    compareBody: document.getElementById('comparison-body'),
                     totalFormats: document.getElementById('total-formats'),
                     totalCountries: document.getElementById('total-countries'),
-                    totalCategories: document.getElementById('total-categories'),
-                    converterResult: document.getElementById('converter-result')
+                    totalCategories: document.getElementById('total-categories')
                 };
             }
 
             setupEventListeners() {
-                const {search, countryFilter, categoryFilter, resetBtn, tabBtns, fromFormat, toFormat} = this.els;
+                const {search, countryFilter, categoryFilter, resetBtn, fromFormat, toFormat, compareSearch} = this.els;
 
-                // Delegated events for filters
                 document.addEventListener('change', (e) => {
                     if (e.target === countryFilter || e.target === categoryFilter) {
                         this.filterFormats();
@@ -711,6 +641,7 @@
 
                 document.addEventListener('input', (e) => {
                     if (e.target === search) this.filterFormats();
+                    else if (e.target === compareSearch) this.updateComparison();
                 });
 
                 resetBtn.addEventListener('click', () => {
@@ -720,7 +651,6 @@
                     this.filterFormats();
                 });
 
-                // Tab buttons delegation
                 document.addEventListener('click', (e) => {
                     if (e.target.classList.contains('tab-btn')) {
                         this.switchTab(e.target.dataset.tab);
@@ -729,47 +659,41 @@
             }
 
             populateFilters() {
-                const countries = [...new Set(this.formats.map(f => f.country))].sort();
-                const categories = [...new Set(this.formats.map(f => f.category))].sort();
+                const unique = (values) => [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
+                const addOptions = (select, entries) => {
+                    for (const [value, label] of entries) {
+                        const option = document.createElement('option');
+                        option.value = value;
+                        option.textContent = label;
+                        select.appendChild(option);
+                    }
+                };
+                const {countryFilter, categoryFilter, fromFormat, toFormat} = this.els;
 
-                const {countryFilter: countrySelect, categoryFilter: categorySelect, fromFormat: fromSelect, toFormat: toSelect} = this.els;
+                addOptions(countryFilter, unique(this.formats.map(f => f.country)).map(c => [c, c]));
+                addOptions(categoryFilter, unique(this.formats.map(f => f.category)).map(c => [c, c]));
 
-                countries.forEach(country => {
-                    let option = document.createElement('option');
-                    option.value = country;
-                    option.textContent = country;
-                    countrySelect.appendChild(option);
-
-                    fromSelect.appendChild(option.cloneNode(true));
-                    toSelect.appendChild(option.cloneNode(true));
-                });
-
-                categories.forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category;
-                    option.textContent = category;
-                    categorySelect.appendChild(option);
-                });
+                // Same-named formats in different countries share a size, so one entry per name.
+                const byName = new Map(this.formats.map(f => [f.format_name, f]));
+                const formatOptions = unique([...byName.keys()])
+                    .map(name => [name, `${name} (${byName.get(name).width_mm}×${byName.get(name).height_mm} mm)`]);
+                addOptions(fromFormat, formatOptions);
+                addOptions(toFormat, formatOptions);
             }
 
             filterFormats() {
                 const {search, countryFilter, categoryFilter} = this.els;
-                this.filterState.search = search.value.toLowerCase();
-                this.filterState.country = countryFilter.value;
-                this.filterState.category = categoryFilter.value;
+                const query = search.value.toLowerCase();
+                const country = countryFilter.value;
+                const category = categoryFilter.value;
 
-                this.filteredFormats = this.formats.filter(format => {
-                    const matchSearch = !this.filterState.search ||
-                        format.format_name.toLowerCase().includes(this.filterState.search) ||
-                        format.common_use.toLowerCase().includes(this.filterState.search);
-
-                    const matchCountry = !this.filterState.country || format.country === this.filterState.country;
-                    const matchCategory = !this.filterState.category || format.category === this.filterState.category;
-
-                    return matchSearch && matchCountry && matchCategory;
-                });
-
-                this.renderFormats(this.filteredFormats);
+                const filtered = this.formats.filter(format =>
+                    (!query || [format.format_name, format.description, format.common_use]
+                        .some(text => String(text ?? '').toLowerCase().includes(query))) &&
+                    (!country || format.country === country) &&
+                    (!category || format.category === category)
+                );
+                this.renderFormats(filtered);
             }
 
             renderFormats(formats) {
@@ -789,7 +713,7 @@
                     <div class="format-card">
                         <div class="format-card-header">
                             <h3>${escapeHtml(format.format_name)}</h3>
-                            <span class="badge badge-${escapeHtml(format.category.toLowerCase())}">${escapeHtml(format.category)}</span>
+                            <span class="badge badge-${escapeHtml(String(format.category).toLowerCase())}">${escapeHtml(format.category)}</span>
                         </div>
                         <div class="format-info">
                             <div class="info-row">
@@ -812,41 +736,29 @@
                         <div class="format-preview">
                             ${this.generatePreviewSVG(format)}
                         </div>
-                        <button class="btn btn-primary">Select Format</button>
                     </div>
                 `).join('');
             }
 
             generatePreviewSVG(format) {
-                const scale = 0.5;
-                const w = parseFloat(format.width_mm) * scale;
-                const h = parseFloat(format.height_mm) * scale;
+                // Sizes run from 24 mm slides to 1.4 m posters: draw every sheet with its longest side at 100.
+                const scale = 100 / Math.max(format.width_mm, format.height_mm);
+                const w = format.width_mm * scale;
+                const h = format.height_mm * scale;
 
                 return `
-                    <svg viewBox="0 0 ${w} ${h}" style="width: 100%; height: 100%;">
-                        <rect x="2" y="2" width="${w-4}" height="${h-4}"
+                    <svg viewBox="0 0 ${w} ${h}" style="height: 120px; max-width: 100%;" role="img" aria-label="${escapeHtml(format.format_name)} proportions">
+                        <rect x="1" y="1" width="${w - 2}" height="${h - 2}"
                               fill="white" stroke="#999" stroke-width="1"/>
-                        <text x="${w/2}" y="${h/2}" text-anchor="middle" dominant-baseline="middle"
-                              font-size="10" fill="#666" font-weight="600">
-                            ${escapeHtml(format.format_name)}
-                        </text>
                     </svg>
                 `;
             }
 
             updateStats() {
-                if (!this.statsCache) {
-                    this.statsCache = {
-                        totalFormats: this.formats.length,
-                        totalCountries: new Set(this.formats.map(f => f.country)).size,
-                        totalCategories: new Set(this.formats.map(f => f.category)).size
-                    };
-                }
-
                 const {totalFormats, totalCountries, totalCategories} = this.els;
-                totalFormats.textContent = this.statsCache.totalFormats;
-                totalCountries.textContent = this.statsCache.totalCountries;
-                totalCategories.textContent = this.statsCache.totalCategories;
+                totalFormats.textContent = this.formats.length;
+                totalCountries.textContent = new Set(this.formats.map(f => f.country)).size;
+                totalCategories.textContent = new Set(this.formats.map(f => f.category)).size;
             }
 
             switchTab(tabName) {
@@ -858,50 +770,71 @@
                 document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
             }
 
-            updateConverter() {
-                const {fromFormat: fromFormatEl, toFormat: toFormatEl} = this.els;
-                const fromName = fromFormatEl.value;
-                const toName = toFormatEl.value;
+            updateComparison() {
+                const terms = this.els.compareSearch.value.toLowerCase().split(',').map(t => t.trim()).filter(Boolean);
+                const matches = terms.length === 0 ? [] : this.formats.filter(format =>
+                    terms.some(term => format.format_name.toLowerCase().includes(term))
+                ).slice(0, 100);
 
-                if (!fromName || !toName) {
-                    document.getElementById('conversion-result').classList.remove('show');
+                this.els.compareBody.innerHTML = matches.map(format => `
+                    <tr>
+                        <td>${escapeHtml(format.format_name)}</td>
+                        <td>${escapeHtml(format.country)}</td>
+                        <td>${escapeHtml(format.width_mm)}</td>
+                        <td>${escapeHtml(format.height_mm)}</td>
+                        <td>${escapeHtml(format.aspect_ratio)}</td>
+                    </tr>
+                `).join('');
+            }
+
+            updateConverter() {
+                const fromName = this.els.fromFormat.value;
+                const toName = this.els.toFormat.value;
+                const result = document.getElementById('conversion-result');
+
+                const conversion = fromName && toName ? this.converter.convert(fromName, toName) : null;
+                if (!conversion) {
+                    result.classList.remove('show');
                     return;
                 }
 
-                const fromIdx = this.formatMap.get(fromName);
-                const toIdx = this.formatMap.get(toName);
-
-                if (fromIdx === undefined || toIdx === undefined) return;
-
-                const fromFormat = this.formats[fromIdx];
-                const toFormat = this.formats[toIdx];
-
-                const widthDiff = Math.abs(fromFormat.width_mm - toFormat.width_mm) / fromFormat.width_mm;
-                const heightDiff = Math.abs(fromFormat.height_mm - toFormat.height_mm) / fromFormat.height_mm;
-                const avgDiff = (widthDiff + heightDiff) / 2;
-                const equivalence = Math.max(0, Math.min(100, (1 - avgDiff) * 100));
-
-                const result = document.getElementById('conversion-result');
-                const info = document.getElementById('conversion-info');
-                const fill = document.getElementById('equivalence-fill');
-
-                info.innerHTML = `
-                    <p><strong>${escapeHtml(fromFormat.format_name)}</strong> → <strong>${escapeHtml(toFormat.format_name)}</strong></p>
+                document.getElementById('conversion-info').innerHTML = `
+                    <p><strong>${escapeHtml(fromName)}</strong> (${escapeHtml(conversion.fromSize.mm)} mm)
+                        → <strong>${escapeHtml(toName)}</strong> (${escapeHtml(conversion.toSize.mm)} mm)</p>
                     <p style="font-size: 14px; color: var(--text-light);">
-                        Equivalence: ${equivalence.toFixed(1)}%
+                        Size similarity: ${conversion.similarity}%
                     </p>
                 `;
 
-                fill.style.width = equivalence + '%';
-                fill.textContent = equivalence.toFixed(0) + '%';
-
+                const fill = document.getElementById('equivalence-fill');
+                fill.style.width = conversion.similarity + '%';
+                fill.textContent = conversion.similarity + '%';
                 result.classList.add('show');
             }
         }
 
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', () => {
-            new FormatBrowser();
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('formats-container');
+            container.innerHTML = '<p class="no-results">Loading formats…</p>';
+
+            let formats;
+            try {
+                formats = await loadFormatCatalogs();
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <p>Couldn't load the CSV files (${escapeHtml(error.message)}).</p>
+                        <p>Browsers block reading local files from a page opened with a double click.
+                        Serve the folder instead: run <code>python3 -m http.server</code> in
+                        <code>document-formats/</code> and open <code>http://localhost:8000/app/</code>.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            new FormatBrowser(formats);
+            document.getElementById('about-formats').textContent = formats.length;
+            document.getElementById('about-countries').textContent = new Set(formats.map(f => f.country)).size;
         });
     </script>
 </body>

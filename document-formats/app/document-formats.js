@@ -118,6 +118,7 @@ class FormatLoader {
     async load() {
         try {
             const response = await fetch(this.csvUrl);
+            if (!response.ok) throw new Error(`HTTP ${response.status} for ${this.csvUrl}`);
             const text = await response.text();
             this.formats = parseCSV(text);
             console.log(`Loaded ${this.formats.length} formats`);
@@ -132,6 +133,43 @@ class FormatLoader {
 // Usage:
 // const loader = new FormatLoader('../formats/all_formats_master.csv');
 // const formats = await loader.load();
+
+// Every file listing sheet sizes, relative to app/. They share one column
+// layout; the master file is left out because it only repeats their rows.
+const FORMAT_CATALOG_FILES = [
+    '../specs/iso_216_series.csv',
+    '../countries/usa_formats.csv',
+    '../countries/mexico_formats.csv',
+    '../countries/europe_formats.csv',
+    '../countries/japan_formats.csv',
+    '../countries/china_formats.csv',
+    '../countries/asia_pacific_formats.csv',
+    '../countries/middle_east_africa_formats.csv',
+    '../countries/other_countries_formats.csv',
+    '../formats/book_formats.csv',
+    '../formats/legal_documents.csv',
+    '../formats/corporate_stationery_formats.csv',
+    '../formats/labels_stickers_formats.csv',
+    '../formats/photo_print_formats.csv',
+    '../formats/specialty_papers.csv'
+];
+
+// Loads every catalog in parallel; throws if any file can't be fetched.
+const loadFormatCatalogs = async (files = FORMAT_CATALOG_FILES) => {
+    const texts = await Promise.all(files.map(async file => {
+        const response = await fetch(file);
+        if (!response.ok) throw new Error(`HTTP ${response.status} for ${file}`);
+        return response.text();
+    }));
+
+    const seen = new Set();
+    return texts.flatMap(text => parseCSV(text)).filter(format => {
+        const key = [format.format_name, format.country, format.width_mm, format.height_mm].join('|');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+};
 
 
 // ============================================
@@ -1086,6 +1124,8 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         escapeHtml,
         sizeSimilarity,
+        FORMAT_CATALOG_FILES,
+        loadFormatCatalogs,
         splitCSVLine,
         parseCSV,
         FormatLoader,

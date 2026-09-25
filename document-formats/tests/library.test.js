@@ -5,15 +5,18 @@ const path = require('node:path');
 
 const APP_DIR = path.join(__dirname, '..', 'app');
 
-// The library fetches paths relative to the page in app/; serve them from disk.
+// The library fetches paths relative to the page in app/; serve them from
+// disk, answering 404 for a missing file the way a web server would.
 globalThis.fetch = async (url) => {
-    const text = fs.readFileSync(path.resolve(APP_DIR, url), 'utf8');
-    return { ok: true, text: async () => text, json: async () => JSON.parse(text) };
+    const file = path.resolve(APP_DIR, url);
+    if (!fs.existsSync(file)) return { ok: false, status: 404, text: async () => 'Not found' };
+    const text = fs.readFileSync(file, 'utf8');
+    return { ok: true, status: 200, text: async () => text, json: async () => JSON.parse(text) };
 };
 globalThis.localStorage = { getItem: () => null, setItem: () => {} };
 
 const {
-    escapeHtml, splitCSVLine, parseCSV,
+    escapeHtml, splitCSVLine, parseCSV, sizeSimilarity, FORMAT_CATALOG_FILES, loadFormatCatalogs,
     FormatConverter, FormatValidator, FormatBatchProcessor, DocumentGenerator,
     BookMarginManager, ScreenDeviceManager, SpecificationManager, LocalizationManager,
 } = require('../app/document-formats.js');
@@ -136,4 +139,43 @@ test('the default language loads from app/translations', async () => {
     await quiet(() => i18n.init());
     assert.equal(i18n.getLanguage(), 'en');
     assert.notEqual(i18n.t('header.title'), 'header.title');
+});
+
+test('sizeSimilarity ignores orientation', () => {
+    const ledger = { width_mm: 431.8, height_mm: 279.4 };
+    const tabloid = { width_mm: 279.4, height_mm: 431.8 };
+    assert.equal(sizeSimilarity(ledger, tabloid), 100);
+    assert.equal(Math.round(sizeSimilarity({ width_mm: 210, height_mm: 297 }, { width_mm: 148, height_mm: 210 })), 71);
+});
+
+test('the catalog list names every file of sheet sizes', () => {
+    const listed = new Set(FORMAT_CATALOG_FILES.map(file => path.resolve(APP_DIR, file)));
+    for (const dir of ['countries', 'formats', 'specs']) {
+        for (const name of fs.readdirSync(path.join(APP_DIR, '..', dir))) {
+            const file = path.join(APP_DIR, '..', dir, name);
+            const header = fs.readFileSync(file, 'utf8').split('\n', 1)[0];
+            const isCatalog = header.startsWith('format_name,width_mm,') && name !== 'all_formats_master.csv';
+            assert.equal(listed.has(file), isCatalog, `${dir}/${name} ${isCatalog ? 'is missing from' : 'should not be in'} FORMAT_CATALOG_FILES`);
+        }
+    }
+});
+
+test('loadFormatCatalogs returns every format once, with a category', async () => {
+    const formats = await loadFormatCatalogs();
+    assert.ok(formats.length > 300, `only ${formats.length} formats`);
+    assert.ok(formats.every(f => f.category), 'a format has no category');
+    const keys = formats.map(f => [f.format_name, f.country, f.width_mm, f.height_mm].join('|'));
+    assert.equal(new Set(keys).size, keys.length);
+});
+
+test('loadFormatCatalogs fails loudly when a file is missing', async () => {
+    await assert.rejects(loadFormatCatalogs(['../formats/does_not_exist.csv']));
+});
+
+test('every catalog has the same columns in the same order', () => {
+    const headerOf = (file) => fs.readFileSync(path.resolve(APP_DIR, file), 'utf8').split('\n', 1)[0];
+    const expected = headerOf(FORMAT_CATALOG_FILES[0]);
+    for (const file of FORMAT_CATALOG_FILES) {
+        assert.equal(headerOf(file), expected, `${file} has different columns`);
+    }
 });

@@ -78,7 +78,7 @@ document-formats/
 
 ## Columns
 
-Most format files share these columns:
+Every format catalog (the files under `countries/` and `formats/` with sizes, plus `specs/iso_216_series.csv`) has these columns:
 
 - `format_name` — e.g. "A4", "Letter", "Oficio"
 - `width_mm`, `height_mm`, `width_inches`, `height_inches`
@@ -173,9 +173,18 @@ server is included.
 
 ## Demo
 
-Open `app/index.html` in a browser: format browser with search and filters,
-side-by-side comparison and a converter showing how close two formats are.
-It runs on five built-in sample formats rather than loading the CSV files.
+The demo reads the CSV files, so it needs to be served over HTTP (browsers
+block a page opened from disk from reading other local files):
+
+```bash
+cd document-formats
+python3 -m http.server
+# then open http://localhost:8000/app/
+```
+
+It loads every catalog listed in `FORMAT_CATALOG_FILES` (about 300 formats)
+and offers a browser with search and country/category filters, a
+comparison table, and a converter that shows how similar two sizes are.
 
 `app/translations/` holds UI strings in 30 languages for
 `LocalizationManager` in `document-formats.js`; see `docs/Localization.md`.
