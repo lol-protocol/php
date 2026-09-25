@@ -1,0 +1,52 @@
+.gear-container {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gear {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: var(--color-3);
+    border-radius: 50%;
+    box-shadow: var(--shadow-lg);
+    animation: rotateGear 4s linear infinite;
+}
+
+.gear::before,
+.gear::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--color-4);
+    border-radius: 50%;
+}
+
+.gear-1 {
+    left: 50px;
+    top: 150px;
+    animation-direction: normal;
+}
+
+.gear-2 {
+    right: 50px;
+    top: 150px;
+    animation-direction: reverse;
+}
+
+.gear-3 {
+    left: 50%;
+    bottom: 50px;
+    transform: translateX(-50%);
+    animation-direction: normal;
+}
+
+@keyframes rotateGear {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -7,10 +7,10 @@ cubre cómo se verifica automáticamente cualquier cambio.
 
 ## Por qué hace falta revisión nativa
 
-Los 24 diccionarios `moderate` (todos menos los 6 `comprehensive`: alemán,
-español, francés, inglés, italiano y portugués) se ampliaron con
-vocabulario de referencia general, sin que un hablante
-nativo de cada idioma confirmara caso por caso que:
+Los 24 diccionarios `moderate` (todos menos los 6 `comprehensive` — alemán,
+español, francés, inglés, italiano y portugués — y los 3 `basic`: islandés,
+suajili y tagalo) se ampliaron con vocabulario de referencia general, sin que
+un hablante nativo de cada idioma confirmara caso por caso que:
 
 - cada término realmente se usa como insulto en ese idioma hoy, y no es
   arcaico, regional o directamente incorrecto;

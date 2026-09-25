@@ -1,0 +1,37 @@
+.hexagon-container {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.hexagon {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: var(--color-3);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    animation: hexPulse 3s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+.hex-0 { animation-delay: 0s; }
+.hex-1 { animation-delay: 0.2s; left: 120px; }
+.hex-2 { animation-delay: 0.4s; right: 120px; }
+.hex-3 { animation-delay: 0.6s; top: 120px; }
+.hex-4 { animation-delay: 0.8s; bottom: 120px; }
+.hex-5 { animation-delay: 1s; left: 80px; top: 80px; }
+.hex-6 { animation-delay: 1.2s; right: 80px; top: 80px; }
+
+@keyframes hexPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.4);
+        opacity: 0.6;
+    }
+}
