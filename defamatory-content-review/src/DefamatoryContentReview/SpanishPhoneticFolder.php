@@ -14,43 +14,24 @@ namespace DefamatoryContentReview;
  *
  * Implementación específica del español; no se usa para otros idiomas.
  */
-class SpanishPhoneticFolder
+class SpanishPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
-
-    private const ACCENTS = [
-        'á' => 'a', 'à' => 'a', 'ä' => 'a', 'â' => 'a', 'ã' => 'a',
-        'é' => 'e', 'è' => 'e', 'ë' => 'e', 'ê' => 'e',
-        'í' => 'i', 'ì' => 'i', 'ï' => 'i', 'î' => 'i',
-        'ó' => 'o', 'ò' => 'o', 'ö' => 'o', 'ô' => 'o', 'õ' => 'o',
-        'ú' => 'u', 'ù' => 'u', 'ü' => 'u', 'û' => 'u',
-        'ñ' => 'n', 'ç' => 'c',
-    ];
-
-    /**
-     * Forma fonética canónica: minúsculas, sin acentos, sin espacios (para
-     * simular la fusión al pronunciar nombre y apellido sin pausa entre
-     * ellos), con las equivalencias sonoras del español unificadas.
-     */
-    public static function fold(string $text): string
+    protected static function getAccents(): array
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-        $text = self::stripSeparators($text);
+        return CommonPhoneticAccents::withExtras(['ñ' => 'n', 'ç' => 'c']);
+    }
 
-        // "ch" es un sonido propio: se protege antes de tocar la "c" o la "h" sueltas.
+    protected static function applyLanguageRules(string $text): string
+    {
         $text = str_replace('ch', "\x01", $text);
-
         $text = str_replace('qu', 'k', $text);
-        $text = preg_replace('/g(?=[ei])/u', '', $text); // ge, gi: sonido aspirado
-        $text = str_replace('j', '', $text);              // la jota: igual de aspirada
-        $text = str_replace('h', '', $text);               // h muda siempre
+        $text = preg_replace('/g(?=[ei])/u', '', $text);
+        $text = str_replace('j', '', $text);
+        $text = str_replace('h', '', $text);
         $text = str_replace('v', 'b', $text);
-        $text = preg_replace('/c(?=[ei])/u', 's', $text);  // ce, ci: mismo sonido que la s
+        $text = preg_replace('/c(?=[ei])/u', 's', $text);
         $text = str_replace('z', 's', $text);
         $text = str_replace('ll', 'y', $text);
-
         return str_replace("\x01", 'ch', $text);
     }
 }

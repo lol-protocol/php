@@ -16,9 +16,11 @@ namespace DefamatoryContentReview;
  * más largos: cobertura parcial, pero sin riesgo añadido.
  *
  * Quedan fuera, con motivo:
- * - Inglés y árabe: el barrido sí dio falsos positivos con nombres muy
- *   comunes ("Chris Hitt" → "shit", "Dustin King" → "stinking",
- *   "محمد منصور" → "مدمن").
+ * - Inglés y árabe: el barrido dio falsos positivos con nombres muy
+ *   comunes. Con la regla de lectura de PhoneticFusionDetector (anclada y
+ *   2+ letras por lado) "Chris Hitt" y "محمد منصور" ya no disparan, pero
+ *   "Dustin King" → "stinking" sí; el árabe necesita un corpus mayor y
+ *   revisión nativa antes de activarse.
  * - Hebreo: como el árabe, no escribe vocales, así que las uniones forman
  *   palabras con mucha más facilidad.
  * - Japonés, tailandés y cantonés: no separan palabras con espacios; el
@@ -29,10 +31,16 @@ namespace DefamatoryContentReview;
 final class FusionSupport
 {
     private const LITERAL_FUSION = ['rus', 'ukr', 'bul', 'ell', 'hin', 'kor', 'isl', 'swa', 'tgl'];
+    /** @var array<string,true> cached for O(1) lookup */
+    private static ?array $literalFusionMap = null;
 
     public static function isSupported(string $language): bool
     {
-        return PhoneticFolderRegistry::isSupported($language) || in_array($language, self::LITERAL_FUSION, true);
+        if (PhoneticFolderRegistry::isSupported($language)) {
+            return true;
+        }
+        self::$literalFusionMap ??= array_flip(self::LITERAL_FUSION);
+        return isset(self::$literalFusionMap[$language]);
     }
 
     /** Forma sobre la que se busca la fusión: fonética si el idioma tiene reglas, literal si no. */
@@ -47,9 +55,12 @@ final class FusionSupport
         return preg_replace('/[\s\-\'’]+/u', '', ScriptFolding::fold($text));
     }
 
+    /** @var array<int,string>|null cached merged list */
+    private static ?array $supportedLanguagesCache = null;
+
     /** @return array<int,string> */
     public static function supportedLanguages(): array
     {
-        return array_merge(PhoneticFolderRegistry::supportedLanguages(), self::LITERAL_FUSION);
+        return self::$supportedLanguagesCache ??= array_merge(PhoneticFolderRegistry::supportedLanguages(), self::LITERAL_FUSION);
     }
 }

@@ -18,16 +18,13 @@ namespace DefamatoryContentReview;
  * produciría el mismo tipo de colisión falsa masiva que ya se documentó
  * como límite deliberado para la distancia de edición en español.
  */
-class FinnishPhoneticFolder
+class FinnishPhoneticFolder extends AbstractPhoneticFolder
 {
-    use AccentOnlyPhoneticFolding;
-
     private const ACCENTS = [
         'ä' => 'a', 'ö' => 'o',
     ];
 
-    public static function fold(string $text): string
-    {
-        return self::foldAccentsThenSeparators($text);
-    }
+    protected static function getAccents(): array { return self::ACCENTS; }
+
+    protected static function applyLanguageRules(string $text): string { return $text; }
 }

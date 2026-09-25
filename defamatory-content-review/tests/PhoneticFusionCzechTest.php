@@ -19,7 +19,7 @@ class PhoneticFusionCzechTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'ces');
 
-        $result = $reviewer->validateFullName('Alp', 'Raseson');
+        $result = $reviewer->validateFullName('Alpr', 'Ase');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['prase'], array_column($result->getPhoneticFusionTerms(), 'term'));

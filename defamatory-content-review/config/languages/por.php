@@ -151,7 +151,6 @@ return [
             ['word' => 'surda', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'muda', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'gaga', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'anã', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'deformada', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'paralítica', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'inválida', 'riskType' => 'discapacidad', 'severity' => 'high'],

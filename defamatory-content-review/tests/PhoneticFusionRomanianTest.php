@@ -25,7 +25,7 @@ class PhoneticFusionRomanianTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'ron');
 
-        $result = $reviewer->validateFullName('Alp', 'Orcson');
+        $result = $reviewer->validateFullName('Alpo', 'Rc');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['porc'], array_column($result->getPhoneticFusionTerms(), 'term'));

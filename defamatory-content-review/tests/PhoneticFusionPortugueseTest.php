@@ -51,7 +51,7 @@ class PhoneticFusionPortugueseTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'por');
 
-        $result = $reviewer->validateFullName('Isabu', 'Rroso');
+        $result = $reviewer->validateFullName('Isabu', 'Rro');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['burro'], array_column($result->getPhoneticFusionTerms(), 'term'));

@@ -20,18 +20,18 @@ namespace DefamatoryContentReview;
  * distinto según su posición en la palabra (regla ortográfica, no
  * fonética): se unifican.
  */
-class CzechPhoneticFolder
+class CzechPhoneticFolder extends AbstractPhoneticFolder
 {
-    use AccentOnlyPhoneticFolding;
-
     private const ACCENTS = [
         'á' => 'a', 'é' => 'e', 'ě' => 'e', 'í' => 'i', 'ó' => 'o',
         'ú' => 'u', 'ů' => 'u',
         'ý' => 'i', 'y' => 'i',
     ];
 
-    public static function fold(string $text): string
+    protected static function getAccents(): array { return self::ACCENTS; }
+
+    protected static function applyLanguageRules(string $text): string
     {
-        return self::foldSeparatorsThenAccents($text);
+        return $text;
     }
 }

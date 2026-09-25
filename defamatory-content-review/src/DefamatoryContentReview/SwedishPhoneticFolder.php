@@ -15,16 +15,9 @@ namespace DefamatoryContentReview;
  * No se toca ninguna otra letra: el sueco no tiene una confusión
  * ortográfica sistemática comparable fuera de esas tres vocales.
  */
-class SwedishPhoneticFolder
+class SwedishPhoneticFolder extends AbstractPhoneticFolder
 {
-    use AccentOnlyPhoneticFolding;
+    protected static function getAccents(): array { return CommonPhoneticAccents::NORDIC_VOWELS; }
 
-    private const ACCENTS = [
-        'ä' => 'ae', 'ö' => 'oe', 'å' => 'aa',
-    ];
-
-    public static function fold(string $text): string
-    {
-        return self::foldAccentsThenSeparators($text);
-    }
+    protected static function applyLanguageRules(string $text): string { return $text; }
 }

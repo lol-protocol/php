@@ -15,16 +15,9 @@ namespace DefamatoryContentReview;
  * regular fuera de esos tres caracteres, y no hay una ambigüedad
  * ortográfica sistemática adicional que valga la pena plegar.
  */
-class NorwegianPhoneticFolder
+class NorwegianPhoneticFolder extends AbstractPhoneticFolder
 {
-    use AccentOnlyPhoneticFolding;
+    protected static function getAccents(): array { return CommonPhoneticAccents::NORDIC_VOWELS; }
 
-    private const ACCENTS = [
-        'æ' => 'ae', 'ø' => 'oe', 'å' => 'aa',
-    ];
-
-    public static function fold(string $text): string
-    {
-        return self::foldAccentsThenSeparators($text);
-    }
+    protected static function applyLanguageRules(string $text): string { return $text; }
 }

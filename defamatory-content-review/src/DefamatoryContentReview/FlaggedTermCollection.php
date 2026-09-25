@@ -37,6 +37,8 @@ final class FlaggedTermCollection
             'sourceLanguage' => $term['sourceLanguage'] ?? $this->defaultLanguage,
             'confidence' => $term['confidence'] ?? 1.0,
             'detectionMethod' => $term['detectionMethod'] ?? 'literal',
+            'matchedEntry' => $term['original'] ?? null,
+            'fusedFrom' => $term['fusedFrom'] ?? null,
         ];
 
         $this->terms[] = $entry;

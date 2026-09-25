@@ -42,7 +42,7 @@ class PhoneticFusionFrenchTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'fra');
 
-        $result = $reviewer->validateFullName('Aubi', 'Termont');
+        $result = $reviewer->validateFullName('Aubi', 'Te');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['bite'], array_column($result->getPhoneticFusionTerms(), 'term'));
