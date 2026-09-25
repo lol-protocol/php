@@ -2,7 +2,7 @@
 # Corre las pruebas e2e (Playwright) contra el panel ya levantado.
 # Requiere los 3 servicios de ejecutar.sh corriendo (Java, API PHP, panel estático).
 set -uo pipefail
-cd "$(dirname "${BASH_SOURCE[0]}")/.."
+cd "$(dirname "${BASH_SOURCE[0]}")/.." || exit 1
 
 export NODE_PATH="${NODE_PATH:-/opt/node22/lib/node_modules}"
 

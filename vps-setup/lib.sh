@@ -169,7 +169,6 @@ create_nginx_site() {
 
     local site_config="/etc/nginx/sites-available/${domain}"
     local location_block=""
-    local upstream_block=""
 
     case "$config_type" in
         php)
@@ -192,10 +191,9 @@ EOFPHP
 )
             ;;
         python-proxy)
-            upstream_block="upstream gunicorn_app { server 127.0.0.1:8000; }"
             location_block=$(cat <<'EOFPY'
     location / {
-        proxy_pass http://gunicorn_app;
+        proxy_pass http://127.0.0.1:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
@@ -203,10 +201,9 @@ EOFPY
 )
             ;;
         tomcat-proxy)
-            upstream_block="upstream tomcat_app { server 127.0.0.1:8080; }"
             location_block=$(cat <<'EOFTOMCAT'
     location / {
-        proxy_pass http://tomcat_app;
+        proxy_pass http://127.0.0.1:8080;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
