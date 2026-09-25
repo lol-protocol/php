@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación P - Tela Ondeando</title>
+    <link rel="stylesheet" href="../helpers/common.css">
+    <link rel="stylesheet" href="animacion-p.css">
+</head>
+<body class="fullscreen-container">
+    <div class="info-panel">
+        <h2>P) Tela Ondeando al Viento</h2>
+        <p>Una tela se ondula como si estuviera en el viento.</p>
+    </div>
+
+    <div class="fabric-container">
+        <svg viewBox="0 0 400 200" class="fabric">
+            <defs>
+                <linearGradient id="fabricGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#ee5a6f;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <path id="fabricPath" d="M0,100 Q100,50 200,100 T400,100 L400,200 L0,200" fill="url(#fabricGrad)" />
+        </svg>
+    </div>
+
+    <button class="control-btn" onclick="toggle.toggle()">Pausar/Reanudar</button>
+    <script src="../helpers/common.js"></script>
+    <script src="animacion-p.js"></script>
+</body>
+</html>

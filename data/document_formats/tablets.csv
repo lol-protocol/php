@@ -1,0 +1,21 @@
+device_name,release_year,screen_size_inches,width_inches,height_inches,aspect_ratio,resolution_width,resolution_height,ppi,screen_type,notes
+iPad Pro 12.9-inch,2024,12.9,8.46,11.05,4:3,2048,2732,265,Liquid Retina XDR,Apple premium
+iPad Pro 11-inch,2024,11,7.36,10.35,4:3,1668,2388,265,Liquid Retina XDR,Apple compact premium
+iPad Air 11-inch,2024,11,7.36,10.35,4:3,1668,2388,265,Liquid Retina,Apple mid-range large
+iPad Air 10.9-inch,2024,10.9,7.30,10.31,4:3,1640,2360,265,Liquid Retina,Apple mid-range
+iPad 11-inch,2024,11,7.36,10.35,3:2,1668,2388,264,Liquid Retina,Apple standard large
+iPad 10.9-inch,2024,10.9,7.30,10.31,3:2,1640,2360,264,Liquid Retina,Apple entry-level
+iPad mini,2024,8.3,5.50,7.69,4:3,1488,2048,326,Liquid Retina,Apple compact
+Samsung Galaxy Tab S10 Ultra,2024,14.6,10.14,6.55,16:10,3840,2400,326,Dynamic AMOLED 2X,Samsung flagship ultra
+Samsung Galaxy Tab S10+,2024,12.4,8.54,5.40,16:10,2880,1800,266,Dynamic AMOLED 2X,Samsung flagship plus
+Samsung Galaxy Tab S10,2024,11,7.59,4.82,16:10,2560,1600,266,Dynamic AMOLED 2X,Samsung flagship
+Samsung Galaxy Tab A9 Ultra,2023,11.5,7.95,4.99,16:10,2560,1600,243,IPS LCD,Samsung budget
+Samsung Galaxy Tab A9,2023,8.7,6.01,3.81,16:10,1920,1200,278,IPS LCD,Samsung compact budget
+Huawei MatePad Pro 12.2,2024,12.2,8.40,5.91,16:10,2880,1800,279,OLED,Huawei flagship
+Huawei MatePad 11.5,2024,11.5,7.95,4.99,16:10,2560,1600,243,LCD,Huawei mid-range
+Microsoft Surface Pro 10,2024,13,8.53,5.29,3:2,2880,1920,267,LCD,Windows tablet premium
+Microsoft Surface Go 4,2024,10.5,7.25,4.50,3:2,1920,1280,220,LCD,Windows tablet compact
+Lenovo Tab P11 Pro Gen 2,2024,11.5,7.95,4.99,16:10,2560,1600,243,OLED,Lenovo mid-range
+Xiaomi Pad 6 Pro,2023,12.4,8.54,5.40,16:10,2880,1800,266,OLED,Xiaomi flagship
+Apple iPad 12.9 1st Gen,2015,12.9,8.46,11.05,4:3,2048,2732,265,Retina,Legacy reference
+Generic Android 7-inch,2024,7.0,4.83,3.05,16:9,1280,800,216,IPS LCD,Budget 7-inch tablet

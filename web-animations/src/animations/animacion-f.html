@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación F - Morph</title>
+    <link rel="stylesheet" href="../helpers/common.css">
+    <link rel="stylesheet" href="animacion-f.css">
+</head>
+<body class="fullscreen-container">
+    <div class="info-panel">
+        <h2>F) Polígono Metamorfoseando</h2>
+        <p>Una forma se transforma entre círculo, cuadrado, triángulo y hexágono.</p>
+    </div>
+
+    <div class="morph-container">
+        <svg viewBox="0 0 200 200" class="morph-shape">
+            <path d="M100,100 m-80,0 a80,80 0 1,0 160,0 a80,80 0 1,0 -160,0"/>
+        </svg>
+    </div>
+
+    <button class="control-btn" onclick="toggle.toggle()">Pausar/Reanudar</button>
+    <script src="../helpers/common.js"></script>
+    <script src="animacion-f.js"></script>
+</body>
+</html>

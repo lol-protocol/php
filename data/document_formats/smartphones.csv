@@ -1,0 +1,21 @@
+device_name,release_year,screen_size_inches,width_inches,height_inches,aspect_ratio,resolution_width,resolution_height,ppi,screen_type,notes
+iPhone 15 Pro Max,2023,6.7,3.00,6.29,19.5:9,1320,2868,460,Super Retina XDR,Apple flagship
+iPhone 15 Pro,2023,6.1,2.71,5.81,19.5:9,1179,2556,460,Super Retina XDR,Apple compact flagship
+iPhone 15,2023,6.1,2.71,5.81,19.5:9,1179,2556,460,Liquid Retina,Apple standard
+iPhone 15 Plus,2023,6.7,3.00,6.29,19.5:9,1320,2868,460,Liquid Retina,Apple large
+Samsung Galaxy S24 Ultra,2024,6.8,3.08,6.42,20:9,1440,3120,496,Dynamic AMOLED 2X,Samsung flagship
+Samsung Galaxy S24,2024,6.2,2.79,5.83,20:9,1440,3120,505,Dynamic AMOLED 2X,Samsung standard
+Samsung Galaxy A15,2024,6.5,2.91,6.08,20:9,720,1600,270,IPS LCD,Samsung budget
+OnePlus 12,2024,6.7,3.00,6.29,20.1:9,1440,3168,510,Fluid AMOLED,OnePlus flagship
+Google Pixel 8 Pro,2023,6.7,3.00,6.29,20:9,1440,3120,512,OLED,Google flagship
+Google Pixel 8,2023,6.2,2.79,5.83,20:9,1080,2340,429,OLED,Google standard
+Motorola Edge 50,2024,6.55,2.95,6.11,20:9,1440,3060,500,OLED,Motorola flagship
+Xiaomi 14 Ultra,2024,6.73,3.04,6.36,20.1:9,1440,3200,522,AMOLED,Xiaomi flagship
+Nothing Phone 2a,2024,6.7,3.00,6.29,20:9,1440,3120,485,OLED,Nothing flagship
+Samsung Galaxy Z Fold 6,2024,7.6,5.26,6.49,17.4:21.6,2152,2176,374,Dynamic AMOLED 2X,Samsung foldable (inner)
+Samsung Galaxy Z Flip 6,2024,6.7,3.00,6.29,22:9,1440,3120,505,Dynamic AMOLED 2X,Samsung foldable (outer)
+iPhone SE,2022,4.7,2.12,4.69,16:9,750,1334,326,Liquid Retina,Apple budget
+Nokia G24,2023,6.5,2.91,6.08,20:9,720,1600,269,IPS LCD,Budget phone
+Fairphone 5,2023,6.3,2.83,5.94,20:9,1080,2400,409,OLED,Repairable phone
+Pixel 8a,2023,6.1,2.71,5.81,20:9,1080,2340,429,OLED,Google budget
+Realme 12,2024,6.4,2.88,6.00,20:9,1280,2800,405,IPS LCD,Budget phone

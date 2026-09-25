@@ -1,0 +1,29 @@
+
+
+
+.domino-container {
+    display: flex;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    border-radius: var(--radius);
+    perspective: 1000px;
+}
+
+.domino {
+    width: 30px;
+    height: 80px;
+    background: linear-gradient(90deg, #fff9c4, #ffeb3b);
+    border: 1px solid #f57f17;
+    border-radius: 4px;
+    box-shadow: var(--shadow-sm);
+    transform-style: preserve-3d;
+}
+
+@keyframes fallDomino {
+    0% { transform: rotateZ(0deg); }
+    100% { transform: rotateZ(90deg); }
+}
+
+.domino.fall { animation: fallDomino 0.5s ease-in forwards; }
+

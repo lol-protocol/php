@@ -1,0 +1,57 @@
+.hourglass-container {
+    width: 300px;
+    height: 400px;
+    position: relative;
+}
+
+.hourglass-top,
+.hourglass-bottom {
+    position: absolute;
+    width: 120px;
+    height: 100px;
+    background: rgba(200, 150, 100, 0.2);
+    border: 3px solid var(--color-1);
+    border-radius: 8px;
+}
+
+.hourglass-top {
+    top: 0;
+    left: 90px;
+    border-bottom: none;
+}
+
+.hourglass-bottom {
+    bottom: 0;
+    left: 90px;
+    border-top: none;
+}
+
+.hourglass-neck {
+    position: absolute;
+    width: 20px;
+    height: 40px;
+    background: var(--color-1);
+    top: 100px;
+    left: 140px;
+}
+
+.sand-grain {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--color-5);
+    border-radius: 50%;
+    left: 145px;
+    animation: fallSand 3s ease-in infinite;
+}
+
+@keyframes fallSand {
+    0% {
+        top: 90px;
+        opacity: 1;
+    }
+    100% {
+        top: 260px;
+        opacity: 0.3;
+    }
+}

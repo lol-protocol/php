@@ -1,0 +1,20 @@
+monitor_type,size_inches,width_inches,height_inches,aspect_ratio,common_resolution,pixels_width,pixels_height,ppi,use_case,notes
+Desktop Ultrawide,34,47.76,20.08,21:9,3440×1440,3440,1440,110,Professional workstations,Extended horizontal workspace
+Desktop 4K,27,23.50,13.23,16:9,3840×2160,3840,2160,165,Video production,4K editing and design
+Desktop 1440p,27,23.50,13.23,16:9,2560×1440,2560,1440,109,Gaming and work,High-end gaming
+Desktop 1080p Full HD,24,20.92,11.77,16:9,1920×1080,1920,1080,92,Standard office,Most common desktop
+Desktop 1080p Full HD,22,19.29,10.85,16:9,1920×1080,1920,1080,100,Standard office,Older standard
+Desktop 768p,19,16.61,9.35,16:9,1366×768,1366,768,82,Budget office,Entry-level
+Ultrawide Gaming,49,54.14,21.48,32:9,5120×1440,5120,1440,110,Extreme gaming,Triple display equivalent
+Curved Gaming,34,30.70,13.48,21:9,3440×1440,3440,1440,110,Immersive gaming,Wide field of view
+Portable USB,15.6,13.61,7.65,16:9,1920×1080,1920,1080,141,Mobile work,Laptop secondary
+Portable USB,13.3,11.64,6.55,16:9,1920×1080,1920,1080,166,Mobile work,Ultra-portable
+Laptop 15.6,15.6,13.61,7.65,16:9,1920×1080,1920,1080,141,Mobile computing,Standard laptop size
+Laptop 14,14,12.17,6.85,16:9,1920×1080,1920,1080,157,Ultrabook,Compact laptop
+Laptop 13,13,11.36,6.39,16:9,1920×1080,1920,1080,170,Ultrabook,MacBook Air standard
+Laptop 17,17,14.85,8.37,16:9,1920×1080,1920,1080,128,Desktop replacement,Large screen laptop
+CRT Professional,21,16.80,12.60,4:3,1600×1200,1600,1200,102,Legacy systems,Older professional
+Cinema Display,30,25.80,14.53,16:9,2560×1440,2560,1440,99,Professional video,High-end color grading
+Reference Monitor,31.1,27.11,15.25,16:9,4096×2304,4096,2304,141,Broadcast production,DCI-P3 color
+Projection Screen,100,86.60,48.74,16:9,Any resolution,varies,varies,varies,Theater/Classroom,Aspect ratio dependent
+Wall Display,55,48.00,27.00,16:9,3840×2160,3840,2160,80,Commercial signage,4K display wall

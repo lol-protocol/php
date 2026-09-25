@@ -1,0 +1,34 @@
+format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,description
+A0,841,1189,33.1,46.8,1:1.414,International,Largest paper size in A series
+A1,594,841,23.4,33.1,1:1.414,International,Poster size
+A2,420,594,16.5,23.4,1:1.414,International,Large paper size
+A3,297,420,11.7,16.5,1:1.414,International,Ledger size equivalent
+A4,210,297,8.3,11.7,1:1.414,International,Standard office paper
+A5,148,210,5.8,8.3,1:1.414,International,Half A4
+A6,105,148,4.1,5.8,1:1.414,International,Postcard size
+A7,74,105,2.9,4.1,1:1.414,International,Small paper
+A8,52,74,2.0,2.9,1:1.414,International,Very small paper
+A9,37,52,1.5,2.0,1:1.414,International,Tiny paper
+A10,26,37,1.0,1.5,1:1.414,International,Smallest A series
+B0,1000,1414,39.4,55.7,1:1.414,International,Largest B series
+B1,707,1000,27.8,39.4,1:1.414,International,Poster size
+B2,500,707,19.7,27.8,1:1.414,International,Large poster
+B3,353,500,13.9,19.7,1:1.414,International,Poster size
+B4,250,353,9.8,13.9,1:1.414,International,Paper size
+B5,176,250,6.9,9.8,1:1.414,International,Half A4 equivalent
+B6,125,176,4.9,6.9,1:1.414,International,Small paper
+B7,88,125,3.5,4.9,1:1.414,International,Very small paper
+B8,62,88,2.4,3.5,1:1.414,International,Tiny paper
+B9,44,62,1.7,2.4,1:1.414,International,Smallest paper
+B10,31,44,1.2,1.7,1:1.414,International,Postcard size
+C0,917,1297,36.1,51.1,1:1.414,International,Envelope size for A0
+C1,648,917,25.5,36.1,1:1.414,International,Envelope size for A1
+C2,458,648,18.0,25.5,1:1.414,International,Envelope size for A2
+C3,324,458,12.8,18.0,1:1.414,International,Envelope for A3
+C4,229,324,9.0,12.8,1:1.414,International,Envelope for A4
+C5,162,229,6.4,9.0,1:1.414,International,Envelope size
+C6,114,162,4.5,6.4,1:1.414,International,Envelope size
+C7,81,114,3.2,4.5,1:1.414,International,Small envelope
+C8,57,81,2.2,3.2,1:1.414,International,Small envelope
+C9,40,57,1.6,2.2,1:1.414,International,Tiny envelope
+C10,28,40,1.1,1.6,1:1.414,International,Smallest envelope

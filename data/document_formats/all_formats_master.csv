@@ -1,0 +1,37 @@
+format_id,format_name,width_mm,height_mm,width_inches,height_inches,country,category,type,description
+ISO_A0,A0,841,1189,33.1,46.8,International,Standard,Paper,Largest paper size in A series
+ISO_A1,A1,594,841,23.4,33.1,International,Standard,Paper,Poster size
+ISO_A2,A2,420,594,16.5,23.4,International,Standard,Paper,Large paper size
+ISO_A3,A3,297,420,11.7,16.5,International,Standard,Paper,Ledger size equivalent
+ISO_A4,A4,210,297,8.3,11.7,International,Standard,Paper,Standard office paper
+ISO_A5,A5,148,210,5.8,8.3,International,Standard,Paper,Half A4
+ISO_A6,A6,105,148,4.1,5.8,International,Standard,Paper,Postcard size
+ISO_A7,A7,74,105,2.9,4.1,International,Standard,Paper,Small paper
+ISO_A8,A8,52,74,2.0,2.9,International,Standard,Paper,Very small paper
+ISO_A9,A9,37,52,1.5,2.0,International,Standard,Paper,Tiny paper
+ISO_A10,A10,26,37,1.0,1.5,International,Standard,Paper,Smallest A series
+USA_LETTER,Letter,215.9,279.4,8.5,11,USA,Standard,Paper,Equivalent to A4 nearly
+USA_LEGAL,Legal,215.9,355.6,8.5,14,USA,Standard,Paper,Extra length
+USA_TABLOID,Tabloid,279.4,431.8,11,17,USA,Large Format,Paper,Double Letter size
+USA_LEDGER,Ledger,431.8,279.4,17,11,USA,Large Format,Paper,Double Letter landscape
+USA_EXECUTIVE,Executive,184.15,266.7,7.25,10.5,USA,Standard,Paper,Smaller than Letter
+USA_ENVELOPE10,Envelope #10,104.78,241.3,4.125,9.5,USA,Envelope,Envelope,Standard business envelope
+MEX_CARTA,Carta (Letter),215.9,279.4,8.5,11,Mexico,Standard,Paper,Mexican standard office paper
+MEX_OFICIO,Oficio,216,279,8.5,11,Mexico,Standard,Paper,Mexican legal/office size
+JPN_B0,JIS B0,1030,1456,40.6,57.3,Japan,Standard,Paper,Largest B series paper
+JPN_B4,JIS B4,257,364,10.1,14.3,Japan,Standard,Paper,Office paper
+JPN_HAGAKI,Hagaki,100,148,3.94,5.83,Japan,Card,Card,Postcard size
+CHN_16K,16K (Chinese),189,262,7.44,10.31,China,Standard,Paper,Traditional Chinese paper size
+CHN_8K,8K (Chinese),267,389,10.51,15.31,China,Standard,Paper,Larger Chinese format
+BOOK_POCKETBOOK,Pocket Book,102,173,4,6.8,International,Book,Book,Small portable book
+BOOK_TRADE,Trade Paperback,152,228,6,9,International,Book,Book,Standard book size
+BOOK_HARDCOVER,Hardcover Standard,152,229,6,9,International,Book,Book,Standard hardcover
+BOOK_COFFEETABLE,Coffee Table,254,305,10,12,International,Book,Book,Large decorative book
+LEGAL_CONTRACT,Legal Document,215.9,355.6,8.5,14,USA,Legal,Document,U.S. legal document format
+LEGAL_DEED,Deed,215.9,279.4,8.5,11,USA,Legal,Document,Deed format
+LEGAL_INVOICE,Invoice Legal,210,297,8.3,11.7,International,Financial,Document,Invoice legal size
+SPEC_POSTCARD,Postcard Standard,102,152,4,6,International,Card,Card,Standard postcard
+SPEC_BUSINESSCARD,Business Card,90,50,3.54,1.97,International,Card,Card,Standard business card
+SPEC_BROCHURE,Trifold Brochure,89,254,3.5,10,USA,Brochure,Document,Trifold format
+SPEC_FLYER,Flyer Standard,216,280,8.5,11,USA,Flyer,Document,Standard flyer
+SPEC_POSTER,Poster 24x36,610,914,24,36,USA,Poster,Document,Large poster size

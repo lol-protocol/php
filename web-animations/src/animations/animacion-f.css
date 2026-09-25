@@ -1,0 +1,22 @@
+.morph-container {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.morph-shape {
+    width: 200px;
+    height: 200px;
+    fill: url(#gradientMorph);
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+    animation: morphShape 8s ease-in-out infinite;
+}
+
+@keyframes morphShape {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.1) rotate(90deg); }
+    50% { transform: scale(1) rotate(180deg); }
+    75% { transform: scale(1.1) rotate(270deg); }
+}
