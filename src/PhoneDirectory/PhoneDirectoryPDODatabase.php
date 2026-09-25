@@ -2,12 +2,12 @@
 
 namespace PhoneDirectory;
 
-use PhoneDirectory\Database\AbstractPDODatabase;
+use PhoneDirectory\Database\EntityPDODatabase;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 
-class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDirectoryDatabaseInterface
+class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirectoryDatabaseInterface
 {
-    private const TABLE = 'phone_directory';
+    private const TABLE_NAME = 'phone_directory';
 
     private const BASE_COLUMNS = [
         'id' => ['id'],
@@ -38,65 +38,49 @@ class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDire
         'surname_soundex', 'surname_phonetic', 'full_name_folded', 'street_folded',
     ];
 
+    protected function getTableName(): string
+    {
+        return self::TABLE_NAME;
+    }
+
+    protected function ensureConnected(): void
+    {
+        $this->ensureConnection();
+    }
+
     public function createTable(): void
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
-        $this->dialect->ensureTable(self::TABLE, self::BASE_COLUMNS, self::ADDED_COLUMNS, self::INDEXED_COLUMNS);
+        $this->dialect->ensureTable(self::TABLE_NAME, self::BASE_COLUMNS, self::ADDED_COLUMNS, self::INDEXED_COLUMNS);
 
-        // Migration: backfill NULL country_code with default before enforcing NOT NULL constraint
-        $this->pdo->exec("UPDATE " . self::TABLE . " SET country_code = 'US' WHERE country_code IS NULL");
-
+        $this->pdo->exec(sprintf(DatabaseConstants::MIGRATION_NULL_COUNTRY_CODE, self::TABLE_NAME, $this->getDefaultCountryCode()));
         $this->backfillDerivedColumns();
     }
 
     private function backfillDerivedColumns(): void
     {
-        $result = $this->pdo->query(
-            'SELECT id, full_name, street FROM phone_directory WHERE surname_soundex IS NULL OR full_name_folded IS NULL'
-        );
-        if ($result === false) {
-            throw new \RuntimeException('Cannot query phone_directory for backfill: ' . implode(', ', $this->pdo->errorInfo()));
-        }
-        $rows = $result->fetchAll(\PDO::FETCH_ASSOC);
-        if ($rows === []) {
-            return;
-        }
-
-        $stmt = $this->pdo->prepare(<<<SQL
+        $selectQuery = 'SELECT id, full_name, street FROM ' . self::TABLE_NAME . ' WHERE surname_soundex IS NULL OR full_name_folded IS NULL';
+        $updateStmt = <<<SQL
             UPDATE phone_directory
             SET surname_soundex = :surnameSoundex, surname_phonetic = :surnamePhonetic,
                 full_name_folded = :fullNameFolded, street_folded = :streetFolded
             WHERE id = :id
-            SQL);
-        $this->pdo->beginTransaction();
-        try {
-            foreach ($rows as $row) {
-                $entry = new PhoneDirectoryEntry(
-                    fullName: $row['full_name'],
-                    countryCode: 'US',
-                    street: $row['street']
-                );
-                $stmt->execute($this->surnameKeyParams($entry) + $this->foldedSearchParams($entry) + [':id' => $row['id']]);
-            }
-            $this->pdo->commit();
-        } catch (\Throwable $e) {
-            try {
-                $this->pdo->rollBack();
-            } catch (\Throwable $rollbackError) {
-                // Log but do not suppress original error
-            }
-            throw new \RuntimeException("Backfill transaction failed: {$e->getMessage()}", 0, $e);
-        }
+            SQL;
+
+        $this->executeWithBackfill($selectQuery, $updateStmt, function (array $row) {
+            $entry = new PhoneDirectoryEntry(
+                fullName: $row['full_name'],
+                countryCode: $this->getDefaultCountryCode(),
+                street: $row['street']
+            );
+            return $this->surnameKeyParams($entry) + $this->foldedSearchParams($entry) + [':id' => $row['id']];
+        });
     }
 
     public function insert(PhoneDirectoryEntry $entry): int
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
         $sql = <<<SQL
         INSERT INTO phone_directory (full_name, raw_name, language, country_code, zone, city, street, phone_number,
@@ -107,56 +91,24 @@ class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDire
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($this->entryParams($entry) + [
-            ':recordDate' => $entry->getRecordDate()->format('Y-m-d H:i:s'),
+            ':recordDate' => $this->formatDatetime($entry->getRecordDate()),
         ]);
 
-        $id = $this->pdo->lastInsertId();
-        if (!$id || $id === '0' || $id === 0) {
-            throw new \RuntimeException('Failed to get last insert ID from database');
-        }
-        return (int) $id;
+        return $this->validateInsertId($this->pdo->lastInsertId());
     }
 
     public function insertBatch(array $entries): int
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $count = 0;
-        $this->pdo->beginTransaction();
-
-        try {
-            foreach ($entries as $entry) {
-                if ($entry instanceof PhoneDirectoryEntry) {
-                    $this->insert($entry);
-                    $count++;
-                }
+        return $this->insertBatchWithTransaction($entries, function ($entry) {
+            if ($entry instanceof PhoneDirectoryEntry) {
+                $this->insert($entry);
             }
-            $this->pdo->commit();
-        } catch (\Throwable $e) {
-            try {
-                $this->pdo->rollBack();
-            } catch (\Throwable $rollbackError) {
-                // Log but do not suppress original error
-            }
-            throw new \RuntimeException("Batch insert failed: {$e->getMessage()}", 0, $e);
-        }
-
-        return $count;
+        });
     }
 
     public function findById(int $id): ?PhoneDirectoryEntry
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $sql = 'SELECT * FROM phone_directory WHERE id = :id LIMIT 1';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $id]);
-
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $row = $this->findOneById($id);
         return $row ? $this->rowToEntry($row) : null;
     }
 
@@ -188,15 +140,7 @@ class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDire
 
     public function findByPhone(string $phone): ?PhoneDirectoryEntry
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $sql = 'SELECT * FROM phone_directory WHERE phone_number = :phone LIMIT 1';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':phone' => $phone]);
-
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $row = $this->findOneByPhone($phone);
         return $row ? $this->rowToEntry($row) : null;
     }
 
@@ -243,25 +187,13 @@ class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDire
 
     public function getAll(): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $sql = 'SELECT * FROM phone_directory ORDER BY full_name';
-        $stmt = $this->pdo->query($sql);
-
-        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->getAllOrdered('full_name');
     }
 
     public function update(PhoneDirectoryEntry $entry): bool
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        if ($entry->getId() === 0) {
-            throw new \InvalidArgumentException('Cannot update entry without ID');
-        }
+        $this->ensureConnection();
+        $this->validateEntityId($entry->getId());
 
         $sql = <<<SQL
         UPDATE phone_directory
@@ -273,36 +205,19 @@ class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDire
         SQL;
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($this->entryParams($entry) + [
-            ':id' => $entry->getId(),
-        ]);
+        $stmt->execute($this->entryParams($entry) + [':id' => $entry->getId()]);
 
         return $stmt->rowCount() > 0;
     }
 
     public function delete(int $id): bool
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $sql = 'DELETE FROM phone_directory WHERE id = :id';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $id]);
-
-        return $stmt->rowCount() > 0;
+        return $this->deleteById($id);
     }
 
     public function count(): int
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $stmt = $this->pdo->query('SELECT COUNT(*) as count FROM phone_directory');
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-        return (int) ($row['count'] ?? 0);
+        return $this->countAll();
     }
 
     public function search(array $criteria): array
@@ -342,12 +257,12 @@ class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDire
 
     public function clear(): bool
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        return $this->clearTable();
+    }
 
-        $this->pdo->exec('DELETE FROM phone_directory');
-        return true;
+    protected function rowToEntity(array $row): PhoneDirectoryEntry
+    {
+        return $this->rowToEntry($row);
     }
 
     private function entryParams(PhoneDirectoryEntry $entry): array
@@ -386,10 +301,9 @@ class PhoneDirectoryPDODatabase extends AbstractPDODatabase implements PhoneDire
 
     private function rowToEntry(array $row): PhoneDirectoryEntry
     {
-        // Re-parse the original transcription: the normalized full_name loses the comma that marks surnames.
         return new PhoneDirectoryEntry(
             fullName: $row['raw_name'] ?? $row['full_name'],
-            countryCode: $row['country_code'] ?? 'US',
+            countryCode: $row['country_code'] ?? $this->getDefaultCountryCode(),
             street: $row['street'],
             phoneNumber: $row['phone_number'] ?? null,
             zone: $row['zone'] ?? null,

@@ -2,12 +2,12 @@
 
 namespace PhoneDirectory;
 
-use PhoneDirectory\Database\AbstractPDODatabase;
+use PhoneDirectory\Database\EntityPDODatabase;
 use PhoneDirectory\Entity\JuridicalEntity;
 
-class JuridicalEntityPDODatabase extends AbstractPDODatabase implements JuridicalEntityDatabaseInterface
+class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalEntityDatabaseInterface
 {
-    private const TABLE = 'juridical_entities';
+    private const TABLE_NAME = 'juridical_entities';
 
     private const BASE_COLUMNS = [
         'id' => ['id'],
@@ -34,62 +34,44 @@ class JuridicalEntityPDODatabase extends AbstractPDODatabase implements Juridica
         'business_name_folded', 'street_folded',
     ];
 
+    protected function getTableName(): string
+    {
+        return self::TABLE_NAME;
+    }
+
+    protected function ensureConnected(): void
+    {
+        $this->ensureConnection();
+    }
+
     public function createTable(): void
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
-        $this->dialect->ensureTable(self::TABLE, self::BASE_COLUMNS, self::ADDED_COLUMNS, self::INDEXED_COLUMNS);
+        $this->dialect->ensureTable(self::TABLE_NAME, self::BASE_COLUMNS, self::ADDED_COLUMNS, self::INDEXED_COLUMNS);
 
-        // Migration: backfill NULL country_code with default before enforcing NOT NULL constraint
-        $this->pdo->exec("UPDATE " . self::TABLE . " SET country_code = 'US' WHERE country_code IS NULL");
-
+        $this->pdo->exec(sprintf(DatabaseConstants::MIGRATION_NULL_COUNTRY_CODE, self::TABLE_NAME, $this->getDefaultCountryCode()));
         $this->backfillFoldedColumns();
     }
 
     private function backfillFoldedColumns(): void
     {
-        $result = $this->pdo->query(
-            'SELECT id, business_name, street FROM juridical_entities WHERE business_name_folded IS NULL'
-        );
-        if ($result === false) {
-            throw new \RuntimeException('Cannot query juridical_entities for backfill: ' . implode(', ', $this->pdo->errorInfo()));
-        }
-        $rows = $result->fetchAll(\PDO::FETCH_ASSOC);
-        if ($rows === []) {
-            return;
-        }
+        $selectQuery = 'SELECT id, business_name, street FROM ' . self::TABLE_NAME . ' WHERE business_name_folded IS NULL';
+        $updateStmt = 'UPDATE juridical_entities SET business_name_folded = :businessNameFolded, street_folded = :streetFolded WHERE id = :id';
 
-        $stmt = $this->pdo->prepare(
-            'UPDATE juridical_entities SET business_name_folded = :businessNameFolded, street_folded = :streetFolded WHERE id = :id'
-        );
-        $this->pdo->beginTransaction();
-        try {
-            foreach ($rows as $row) {
-                $entity = new JuridicalEntity(
-                    businessName: $row['business_name'],
-                    street: $row['street'],
-                    countryCode: 'US'
-                );
-                $stmt->execute($this->foldedSearchParams($entity) + [':id' => $row['id']]);
-            }
-            $this->pdo->commit();
-        } catch (\Throwable $e) {
-            try {
-                $this->pdo->rollBack();
-            } catch (\Throwable $rollbackError) {
-                // Log but do not suppress original error
-            }
-            throw new \RuntimeException("Backfill transaction failed: {$e->getMessage()}", 0, $e);
-        }
+        $this->executeWithBackfill($selectQuery, $updateStmt, function (array $row) {
+            $entity = new JuridicalEntity(
+                businessName: $row['business_name'],
+                street: $row['street'],
+                countryCode: $this->getDefaultCountryCode()
+            );
+            return $this->foldedSearchParams($entity) + [':id' => $row['id']];
+        });
     }
 
     public function insert(JuridicalEntity $entity): int
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
         $sql = <<<SQL
         INSERT INTO juridical_entities (business_name, legal_name, street, phone_number, business_type, country_code,
@@ -100,56 +82,24 @@ class JuridicalEntityPDODatabase extends AbstractPDODatabase implements Juridica
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($this->entityParams($entity) + [
-            ':recordDate' => $entity->getRecordDate()->format('Y-m-d H:i:s'),
+            ':recordDate' => $this->formatDatetime($entity->getRecordDate()),
         ]);
 
-        $id = $this->pdo->lastInsertId();
-        if (!$id || $id === '0' || $id === 0) {
-            throw new \RuntimeException('Failed to get last insert ID from database');
-        }
-        return (int) $id;
+        return $this->validateInsertId($this->pdo->lastInsertId());
     }
 
     public function insertBatch(array $entities): int
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $count = 0;
-        $this->pdo->beginTransaction();
-
-        try {
-            foreach ($entities as $entity) {
-                if ($entity instanceof JuridicalEntity) {
-                    $this->insert($entity);
-                    $count++;
-                }
+        return $this->insertBatchWithTransaction($entities, function ($entity) {
+            if ($entity instanceof JuridicalEntity) {
+                $this->insert($entity);
             }
-            $this->pdo->commit();
-        } catch (\Throwable $e) {
-            try {
-                $this->pdo->rollBack();
-            } catch (\Throwable $rollbackError) {
-                // Log but do not suppress original error
-            }
-            throw new \RuntimeException("Batch insert failed: {$e->getMessage()}", 0, $e);
-        }
-
-        return $count;
+        });
     }
 
     public function findById(int $id): ?JuridicalEntity
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $sql = 'SELECT * FROM juridical_entities WHERE id = :id LIMIT 1';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $id]);
-
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $row = $this->findOneById($id);
         return $row ? $this->rowToEntity($row) : null;
     }
 
@@ -181,52 +131,26 @@ class JuridicalEntityPDODatabase extends AbstractPDODatabase implements Juridica
 
     public function findByPhone(string $phone): ?JuridicalEntity
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $sql = 'SELECT * FROM juridical_entities WHERE phone_number = :phone LIMIT 1';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':phone' => $phone]);
-
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $row = $this->findOneByPhone($phone);
         return $row ? $this->rowToEntity($row) : null;
     }
 
     public function findByBusinessType(string $type): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('business_type', ':type') . ' ORDER BY business_name';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':type' => $this->dialect->containsValue($type)]);
-
-        return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        $this->ensureConnection();
+        $sql = $this->dialect->containsCondition('business_type', ':type');
+        return $this->findMany($sql, [':type' => $this->dialect->containsValue($type)], 'business_name');
     }
 
     public function getAll(): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $sql = 'SELECT * FROM juridical_entities ORDER BY business_name';
-        $stmt = $this->pdo->query($sql);
-
-        return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->getAllOrdered('business_name');
     }
 
     public function update(JuridicalEntity $entity): bool
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        if ($entity->getId() === 0) {
-            throw new \InvalidArgumentException('Cannot update entity without ID');
-        }
+        $this->ensureConnection();
+        $this->validateEntityId($entity->getId());
 
         $sql = <<<SQL
         UPDATE juridical_entities
@@ -238,36 +162,19 @@ class JuridicalEntityPDODatabase extends AbstractPDODatabase implements Juridica
         SQL;
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($this->entityParams($entity) + [
-            ':id' => $entity->getId(),
-        ]);
+        $stmt->execute($this->entityParams($entity) + [':id' => $entity->getId()]);
 
         return $stmt->rowCount() > 0;
     }
 
     public function delete(int $id): bool
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $sql = 'DELETE FROM juridical_entities WHERE id = :id';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $id]);
-
-        return $stmt->rowCount() > 0;
+        return $this->deleteById($id);
     }
 
     public function count(): int
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $stmt = $this->pdo->query('SELECT COUNT(*) as count FROM juridical_entities');
-        $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-        return (int) ($row['count'] ?? 0);
+        return $this->countAll();
     }
 
     public function search(array $criteria): array
@@ -312,15 +219,10 @@ class JuridicalEntityPDODatabase extends AbstractPDODatabase implements Juridica
 
     public function clear(): bool
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
-
-        $this->pdo->exec('DELETE FROM juridical_entities');
-        return true;
+        return $this->clearTable();
     }
 
-    private function rowToEntity(array $row): JuridicalEntity
+    protected function rowToEntity(array $row): JuridicalEntity
     {
         return new JuridicalEntity(
             businessName: $row['business_name'],
@@ -330,7 +232,7 @@ class JuridicalEntityPDODatabase extends AbstractPDODatabase implements Juridica
             phoneNumber: $row['phone_number'],
             id: (int) $row['id'],
             recordDate: new \DateTime($row['record_date']),
-            countryCode: $row['country_code'] ?? 'US',
+            countryCode: $row['country_code'] ?? $this->getDefaultCountryCode(),
             sourceDirectoryId: $row['source_directory_id'] ?? null,
             sourceLine: isset($row['source_line']) ? (int) $row['source_line'] : null
         );
