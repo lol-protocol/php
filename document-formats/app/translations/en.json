@@ -1,0 +1,116 @@
+{
+  "header": {
+    "title": "Document Format Browser",
+    "subtitle": "Comprehensive Global Document Standards Database",
+    "tagline": "Explore formats across 300+ countries and territories in 30 languages"
+  },
+  "tabs": {
+    "browser": "Browser",
+    "comparison": "Comparison",
+    "converter": "Converter",
+    "statistics": "Statistics",
+    "about": "About"
+  },
+  "search": {
+    "placeholder": "Search format name, country, or use...",
+    "label": "Search:"
+  },
+  "filters": {
+    "country": "Country:",
+    "category": "Category:",
+    "region": "Region:",
+    "allCountries": "All Countries",
+    "allCategories": "All Categories",
+    "allRegions": "All Regions"
+  },
+  "format": {
+    "name": "Format Name",
+    "country": "Country",
+    "size": "Size",
+    "use": "Common Use",
+    "category": "Category",
+    "width": "Width",
+    "height": "Height",
+    "millimeters": "mm",
+    "inches": "in",
+    "aspectRatio": "Aspect Ratio",
+    "measurementSystem": "Measurement System",
+    "standard": "Standard",
+    "notes": "Notes"
+  },
+  "comparison": {
+    "title": "Format Comparison",
+    "selectFirst": "Select first format...",
+    "selectSecond": "Select second format...",
+    "property": "Property",
+    "difference": "Difference",
+    "percentage": "% Similarity"
+  },
+  "converter": {
+    "title": "Format Converter",
+    "from": "From Format:",
+    "to": "To Format:",
+    "equivalence": "Equivalence:",
+    "convertButton": "Convert",
+    "exact": "Exact Match",
+    "similar": "Very Similar",
+    "lowMatch": "Low Match",
+    "conversionTips": "Conversion Tips"
+  },
+  "statistics": {
+    "title": "Database Statistics",
+    "totalFormats": "Total Formats",
+    "totalCountries": "Countries Covered",
+    "totalLanguages": "Languages Supported",
+    "byRegion": "Formats by Region",
+    "byCategory": "Formats by Category",
+    "largestFormat": "Largest Format",
+    "smallestFormat": "Smallest Format",
+    "averageSize": "Average Size",
+    "measurements": "Measurements"
+  },
+  "regions": {
+    "americas": "Americas",
+    "europe": "Europe",
+    "asiaPacific": "Asia-Pacific",
+    "middleEast": "Middle East",
+    "africa": "Africa",
+    "oceania": "Oceania"
+  },
+  "categories": {
+    "standard": "Standard",
+    "book": "Book",
+    "legal": "Legal",
+    "specialty": "Specialty",
+    "photo": "Photo",
+    "business": "Business",
+    "packaging": "Packaging",
+    "label": "Label"
+  },
+  "measurementSystems": {
+    "metric": "Metric",
+    "imperial": "Imperial",
+    "mixed": "Mixed"
+  },
+  "actions": {
+    "select": "Select",
+    "export": "Export",
+    "print": "Print",
+    "view": "View Details",
+    "compare": "Compare",
+    "convert": "Convert",
+    "back": "Back"
+  },
+  "messages": {
+    "loading": "Loading formats...",
+    "noResults": "No formats found matching your criteria",
+    "error": "Error loading data",
+    "success": "Operation completed successfully",
+    "selectTwoFormats": "Please select two formats to compare"
+  },
+  "language": "Language:",
+  "theme": "Theme:",
+  "light": "Light",
+  "dark": "Dark",
+  "auto": "Auto"
+}
