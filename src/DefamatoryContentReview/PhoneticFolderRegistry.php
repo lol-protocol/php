@@ -39,7 +39,7 @@ namespace DefamatoryContentReview;
 final class PhoneticFolderRegistry
 {
     private const FOLDERS = [
-        'spa' => PhoneticFolder::class,
+        'spa' => SpanishPhoneticFolder::class,
         'por' => PortuguesePhoneticFolder::class,
         'ita' => ItalianPhoneticFolder::class,
         'fra' => FrenchPhoneticFolder::class,
