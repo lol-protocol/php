@@ -78,7 +78,13 @@ deploy_files() {
         return 1
     fi
 
-    sudo cp -r "$source_dir"/* "$dest_dir" 2>/dev/null || sudo cp -r "$source_dir" "$dest_dir"
+    # "/." (not "/*") copies the CONTENTS of source_dir, including dotfiles,
+    # and never fails just because the glob matched nothing. The previous
+    # "cp * || cp source_dir dest_dir" fallback nested the whole source_dir
+    # INSIDE dest_dir on any failure (e.g. landing-page/index.html would land
+    # at $dest_dir/landing-page/index.html instead of $dest_dir/index.html),
+    # silently 404-ing Nginx without the script ever reporting an error.
+    sudo cp -r "$source_dir"/. "$dest_dir"/
     sudo find "$dest_dir" -type f -exec chmod 644 {} \;
     sudo find "$dest_dir" -type d -exec chmod 755 {} \;
     sudo chown -R www-data:www-data "$dest_dir"
