@@ -1,27 +1,24 @@
 #!/bin/bash
 set -e
 
+source "$(dirname "$0")/lib.sh"
+
 DOMAIN=${1:-"initech.fun"}
 # Subcarpeta POR DOMINIO -- sin el "/$DOMAIN" al final, dos dominios distintos
 # (ej. conce.com e initech.fun) terminarian compartiendo la misma carpeta y
 # sirviendo el mismo contenido, porque ambos usarian literalmente el mismo path.
 APP_PATH="/var/www/landing-page/$DOMAIN"
 
-echo "========================================"
-echo "[03] Configuracion de Nginx para $DOMAIN"
-echo "========================================"
-echo ""
+print_header "03" "Configuracion de Nginx para $DOMAIN"
 
 # Carpeta donde vivira el sitio y carpeta de logs propia para ese dominio
 # (separar los logs por dominio hace mucho mas facil depurar cuando hay varios sitios)
 sudo mkdir -p $APP_PATH
-sudo mkdir -p /var/log/nginx/$DOMAIN
+setup_nginx_domain_logs "$DOMAIN"
 
 # Copiamos la landing page del repo (carpeta ../landing-page/) al destino real que servira Nginx
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-sudo cp -r $SCRIPT_DIR/../landing-page/* $APP_PATH/
-sudo chown -R www-data:www-data $APP_PATH   # www-data es el usuario con el que corre Nginx/PHP-FPM
-sudo chmod -R 755 $APP_PATH
+deploy_files "$SCRIPT_DIR/../landing-page" "$APP_PATH"
 
 # 'tee' con heredoc escribe el archivo de configuracion completo de una vez.
 # Los '\$' (con backslash) evitan que bash reemplace esas variables de Nginx
