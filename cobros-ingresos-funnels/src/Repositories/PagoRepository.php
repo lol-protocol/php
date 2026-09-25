@@ -40,6 +40,18 @@ final class PagoRepository
         return (int) $stmt->fetchColumn();
     }
 
+    /**
+     * Toma el candado de la fila hasta el fin de la transaccion en curso.
+     * Serializa las operaciones que validan contra el saldo de una boleta y
+     * despues escriben (pagar, editar, anular): sin esto dos pagos
+     * simultaneos pasaban la validacion de saldo y sobrecobraban, y un pago
+     * cargado mientras se anulaba la boleta quedaba fuera de la nota de credito.
+     */
+    public function bloquear(int $id): void
+    {
+        $this->db->prepare('SELECT id FROM pagos WHERE id = :id FOR UPDATE')->execute([':id' => $id]);
+    }
+
     public function porId(int $id): ?array
     {
         $stmt = $this->db->prepare(

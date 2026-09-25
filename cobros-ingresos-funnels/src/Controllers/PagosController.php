@@ -65,49 +65,74 @@ final class PagosController
                 exit;
             }
 
-            $monto = (float) ($_POST['monto'] ?? 0);
+            $monto = round((float) ($_POST['monto'] ?? 0), 2);
             $fechaPago = (string) ($_POST['fecha_pago'] ?? '');
             $metodo = (string) ($_POST['metodo'] ?? '');
             $boletaId = (int) ($_POST['boleta_id'] ?? 0);
 
-            $boleta = $boletaId > 0 ? $boletaRepo->porId($boletaId) : null;
-
             if ($token === null) {
                 $error = EnvioUnico::MENSAJE_SIN_TOKEN;
-            } elseif ($clienteElegido === null) {
-                $error = 'Elegí un cliente valido.';
-            } elseif (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
-                $error = 'Completá todos los campos.';
-            } elseif (!Filtros::esFechaValida($fechaPago)) {
-                $error = 'La fecha de pago no es válida.';
-            } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
-                $error = 'La boleta elegida no es válida para este cliente.';
-            } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {
-                $error = 'La fecha de pago no puede ser anterior a la emisión de la boleta.';
-            } elseif ($boleta !== null && !self::montoNoSuperaElSaldo($monto, $boleta)) {
-                $error = 'El monto supera el saldo pendiente de la boleta.';
             } else {
-                $destino = EnvioUnico::ejecutar($token, static function () use ($boletaId, $clienteId, $monto, $clienteElegido, $fechaPago, $metodo): string {
-                    $id = (new PagoRepository())->crear([
-                        'boleta_id' => $boletaId ?: null,
-                        'cliente_id' => $clienteId,
-                        'monto' => $monto,
-                        'moneda_codigo' => $clienteElegido['moneda_codigo'],
-                        'fecha_pago' => $fechaPago,
-                        'metodo' => $metodo,
-                    ]);
-                    AuditoriaRepository::auditarComoUsuarioActual('crear', 'pago', $id, sprintf(
-                        'Pago #%d de %s: %s%s',
-                        $id,
-                        $clienteElegido['nombre'],
-                        money_moneda($monto, $clienteElegido['moneda_codigo']),
-                        $boletaId ? " (boleta #{$boletaId})" : ' (anticipo)'
-                    ));
+                // La validacion de saldo/anulada y el INSERT van bajo el candado de
+                // la boleta: validar con una lectura previa dejaba sobrecobrar con
+                // dos pagos simultaneos, o colar un pago en una boleta que se
+                // estaba anulando (quedaba fuera de su nota de credito).
+                $resultado = Database::transaccion(function () use ($token, $boletaRepo, $clienteElegido, $clienteId, $boletaId, $monto, $fechaPago, $metodo): array {
+                    $boleta = null;
+                    if ($boletaId > 0) {
+                        $boletaRepo->bloquear($boletaId);
+                        $boleta = $boletaRepo->porId($boletaId);
+                    }
 
-                    return '?page=pagos&creado=' . $id;
+                    // Con el candado tomado, un envio simultaneo del mismo
+                    // formulario ya termino. Si registro el pago, este va a donde
+                    // fue aquel: si no, veria el saldo ya consumido y mostraria
+                    // "el monto supera el saldo" por un pago que si quedo hecho.
+                    $previa = EnvioUnico::redireccionPrevia($token);
+                    if ($previa !== null) {
+                        return ['redireccion' => $previa];
+                    }
+
+                    if ($clienteElegido === null) {
+                        return ['error' => 'Elegí un cliente valido.'];
+                    } elseif (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
+                        return ['error' => 'Completá todos los campos con un monto válido.'];
+                    } elseif (!Filtros::esFechaValida($fechaPago)) {
+                        return ['error' => 'La fecha de pago no es válida.'];
+                    } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
+                        return ['error' => 'La boleta elegida no es válida para este cliente.'];
+                    } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {
+                        return ['error' => 'La fecha de pago no puede ser anterior a la emisión de la boleta.'];
+                    } elseif ($boleta !== null && !self::montoNoSuperaElSaldo($monto, $boleta)) {
+                        return ['error' => 'El monto supera el saldo pendiente de la boleta.'];
+                    }
+
+                    return ['redireccion' => EnvioUnico::ejecutar($token, static function () use ($boletaId, $clienteId, $monto, $clienteElegido, $fechaPago, $metodo): string {
+                        $id = (new PagoRepository())->crear([
+                            'boleta_id' => $boletaId ?: null,
+                            'cliente_id' => $clienteId,
+                            'monto' => $monto,
+                            'moneda_codigo' => $clienteElegido['moneda_codigo'],
+                            'fecha_pago' => $fechaPago,
+                            'metodo' => $metodo,
+                        ]);
+                        AuditoriaRepository::auditarComoUsuarioActual('crear', 'pago', $id, sprintf(
+                            'Pago #%d de %s: %s%s',
+                            $id,
+                            $clienteElegido['nombre'],
+                            money_moneda($monto, $clienteElegido['moneda_codigo']),
+                            $boletaId ? " (boleta #{$boletaId})" : ' (anticipo)'
+                        ));
+
+                        return '?page=pagos&creado=' . $id;
+                    })];
                 });
-                header('Location: ' . $destino);
-                exit;
+
+                if (isset($resultado['redireccion'])) {
+                    header('Location: ' . $resultado['redireccion']);
+                    exit;
+                }
+                $error = $resultado['error'];
             }
         }
 
@@ -191,30 +216,49 @@ final class PagosController
 
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $monto = (float) ($_POST['monto'] ?? 0);
+            $monto = round((float) ($_POST['monto'] ?? 0), 2);
             $fechaPago = (string) ($_POST['fecha_pago'] ?? '');
             $metodo = (string) ($_POST['metodo'] ?? '');
 
-            if (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
-                $error = 'Completá todos los campos.';
-            } elseif (!Filtros::esFechaValida($fechaPago)) {
-                $error = 'La fecha de pago no es válida.';
-            } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {
-                $error = 'La fecha de pago no puede ser anterior a la emisión de la boleta.';
-            } elseif ($boleta !== null && !self::montoNoSuperaElSaldoAlEditar($monto, $boleta, (float) $pago['monto'])) {
-                $error = 'El monto supera el saldo pendiente de la boleta.';
-            } else {
+            // Relectura bajo candado (pago y despues boleta, el mismo orden que
+            // anular()): el $pago/$boleta de arriba pueden estar viejos si otro
+            // proceso anulo el pago, la boleta o cargo otro pago mientras tanto.
+            $resultado = Database::transaccion(function () use ($pagoRepo, $id, $monto, $fechaPago, $metodo): ?string {
+                $pagoRepo->bloquear($id);
+                $pago = $pagoRepo->porId($id);
+                if ($pago === null) {
+                    return 'El pago ya no existe.';
+                }
+                $boletaRepo = new BoletaRepository();
+                if ($pago['boleta_id']) {
+                    $boletaRepo->bloquear((int) $pago['boleta_id']);
+                }
+                $boleta = $pago['boleta_id'] ? $boletaRepo->porId((int) $pago['boleta_id']) : null;
+
+                if ($pago['anulada'] || self::boletaAnuladaCongelaElPago($boleta)) {
+                    return 'El pago o su boleta fueron anulados mientras lo editabas.';
+                } elseif (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
+                    return 'Completá todos los campos con un monto válido.';
+                } elseif (!Filtros::esFechaValida($fechaPago)) {
+                    return 'La fecha de pago no es válida.';
+                } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {
+                    return 'La fecha de pago no puede ser anterior a la emisión de la boleta.';
+                } elseif ($boleta !== null && !self::montoNoSuperaElSaldoAlEditar($monto, $boleta, (float) $pago['monto'])) {
+                    return 'El monto supera el saldo pendiente de la boleta.';
+                }
+
                 $antes = money_moneda((float) $pago['monto'], $pago['moneda_codigo']) . " ({$pago['metodo']})";
                 $despues = money_moneda($monto, $pago['moneda_codigo']) . " ({$metodo})";
+                $pagoRepo->actualizar($id, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
+                AuditoriaRepository::auditarComoUsuarioActual('editar', 'pago', $id, sprintf('Pago #%d: %s -> %s', $id, $antes, $despues));
+                return null;
+            });
 
-                Database::transaccion(static function () use ($pagoRepo, $id, $monto, $fechaPago, $metodo, $antes, $despues): void {
-                    $pagoRepo->actualizar($id, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
-                    AuditoriaRepository::auditarComoUsuarioActual('editar', 'pago', $id, sprintf('Pago #%d: %s -> %s', $id, $antes, $despues));
-                });
+            if ($resultado === null) {
                 header('Location: ?page=pagos&editado=' . $id);
                 exit;
             }
-
+            $error = $resultado;
             $pago = array_merge($pago, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
         }
 
@@ -247,16 +291,31 @@ final class PagosController
             // Atomico por la misma razon que en boletas, y con el chequeo de
             // "todavia estaba activo" dentro de la propia sentencia: si no,
             // dos anulaciones simultaneas duplican la entrada de auditoria.
-            Database::transaccion(function () use ($pagoRepo, $id, $pago): void {
+            // Con la boleta bloqueada, para que no se cruce con su anulacion:
+            // si la nota de credito ya conto este pago, anularlo lo descontaria
+            // dos veces (la guarda de arriba solo vio la boleta antes del POST).
+            $congelado = Database::transaccion(function () use ($pagoRepo, $id, $pago): bool {
+                $pagoRepo->bloquear($id);
+                if ($pago['boleta_id']) {
+                    $boletaRepo = new BoletaRepository();
+                    $boletaRepo->bloquear((int) $pago['boleta_id']);
+                    if (self::boletaAnuladaCongelaElPago($boletaRepo->porId((int) $pago['boleta_id']))) {
+                        return true;
+                    }
+                }
                 if (!$pagoRepo->anularSiEstabaActiva($id)) {
-                    return;
+                    return false;
                 }
                 AuditoriaRepository::auditarComoUsuarioActual('anular', 'pago', $id, sprintf(
                     'Pago #%d (%s)',
                     $id,
                     money_moneda((float) $pago['monto'], $pago['moneda_codigo'])
                 ));
+                return false;
             });
+            if (Peticion::abortarSiConflicto($congelado, 'La boleta de este pago fue anulada y ya tiene su nota de credito: anularlo descontaria la plata dos veces.')) {
+                return;
+            }
             header('Location: ?page=pagos&anulado=' . $id);
             exit;
         }

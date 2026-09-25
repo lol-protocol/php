@@ -94,7 +94,7 @@ final class CobrosController
 
             $clienteId = (int) ($_POST['cliente_id'] ?? 0);
             $concepto = trim((string) ($_POST['concepto'] ?? ''));
-            $monto = (float) ($_POST['monto'] ?? 0);
+            $monto = round((float) ($_POST['monto'] ?? 0), 2);
             $fechaEmision = (string) ($_POST['fecha_emision'] ?? '');
             $fechaVencimiento = (string) ($_POST['fecha_vencimiento'] ?? '');
 
@@ -104,7 +104,7 @@ final class CobrosController
             } elseif ($cliente === null) {
                 $error = 'Elegí un cliente valido.';
             } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
-                $error = 'Completá todos los campos.';
+                $error = 'Completá todos los campos con un monto válido.';
             } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
                 $error = 'La fecha de emisión o de vencimiento no es válida.';
             } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
@@ -158,37 +158,48 @@ final class CobrosController
         $error = null;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $concepto = trim((string) ($_POST['concepto'] ?? ''));
-            $monto = (float) ($_POST['monto'] ?? 0);
+            $monto = round((float) ($_POST['monto'] ?? 0), 2);
             $fechaEmision = (string) ($_POST['fecha_emision'] ?? '');
             $fechaVencimiento = (string) ($_POST['fecha_vencimiento'] ?? '');
 
-            if (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
-                $error = 'Completá todos los campos.';
-            } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
-                $error = 'La fecha de emisión o de vencimiento no es válida.';
-            } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
-                $error = 'El vencimiento no puede ser anterior a la emisión.';
-            } elseif (!self::montoCubreLoYaCobrado($monto, $boleta)) {
-                $error = 'El monto no puede ser menor a lo ya cobrado (' . money_moneda((float) $boleta['pagado'], $boleta['moneda_codigo']) . ').';
-            } elseif (!self::emisionNoPosteriorAlPrimerPago($fechaEmision, $boleta)) {
-                $error = 'La emisión no puede ser posterior al primer pago de la boleta (' . $boleta['primer_pago'] . ').';
-            } else {
+            // Bajo candado: pagado/primer_pago/anulada pueden haber cambiado
+            // desde la lectura de arriba (un pago nuevo haria que el monto
+            // quede por debajo de lo cobrado sin que la validacion lo vea).
+            $resultado = Database::transaccion(function () use ($boletaRepo, $id, $concepto, $monto, $fechaEmision, $fechaVencimiento): ?string {
+                $boletaRepo->bloquear($id);
+                $boleta = $boletaRepo->porId($id);
+
+                if ($boleta === null || $boleta['anulada']) {
+                    return 'La boleta fue anulada mientras la editabas.';
+                } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
+                    return 'Completá todos los campos con un monto válido.';
+                } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
+                    return 'La fecha de emisión o de vencimiento no es válida.';
+                } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
+                    return 'El vencimiento no puede ser anterior a la emisión.';
+                } elseif (!self::montoCubreLoYaCobrado($monto, $boleta)) {
+                    return 'El monto no puede ser menor a lo ya cobrado (' . money_moneda((float) $boleta['pagado'], $boleta['moneda_codigo']) . ').';
+                } elseif (!self::emisionNoPosteriorAlPrimerPago($fechaEmision, $boleta)) {
+                    return 'La emisión no puede ser posterior al primer pago de la boleta (' . $boleta['primer_pago'] . ').';
+                }
+
                 $antes = sprintf('"%s" %s', $boleta['concepto'], money_moneda((float) $boleta['monto'], $boleta['moneda_codigo']));
                 $despues = sprintf('"%s" %s', $concepto, money_moneda($monto, $boleta['moneda_codigo']));
+                $boletaRepo->actualizar($id, [
+                    'concepto' => $concepto,
+                    'monto' => $monto,
+                    'fecha_emision' => $fechaEmision,
+                    'fecha_vencimiento' => $fechaVencimiento,
+                ]);
+                AuditoriaRepository::auditarComoUsuarioActual('editar', 'boleta', $id, sprintf('Boleta #%d: %s -> %s', $id, $antes, $despues));
+                return null;
+            });
 
-                Database::transaccion(static function () use ($boletaRepo, $id, $concepto, $monto, $fechaEmision, $fechaVencimiento, $antes, $despues): void {
-                    $boletaRepo->actualizar($id, [
-                        'concepto' => $concepto,
-                        'monto' => $monto,
-                        'fecha_emision' => $fechaEmision,
-                        'fecha_vencimiento' => $fechaVencimiento,
-                    ]);
-                    AuditoriaRepository::auditarComoUsuarioActual('editar', 'boleta', $id, sprintf('Boleta #%d: %s -> %s', $id, $antes, $despues));
-                });
+            if ($resultado === null) {
                 header('Location: ?page=cobros&editada=' . $id);
                 exit;
             }
-
+            $error = $resultado;
             $boleta = array_merge($boleta, [
                 'concepto' => $concepto,
                 'monto' => $monto,

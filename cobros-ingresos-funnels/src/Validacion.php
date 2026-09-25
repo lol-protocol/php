@@ -21,7 +21,20 @@ final class Validacion
                 return true;
             }
         }
-        return $monto !== null && $monto <= 0;
+        return $monto !== null && !self::montoEnRango($monto);
+    }
+
+    /** Tope de NUMERIC(14, 2): por encima la base rechaza el INSERT con un 500. */
+    public const MONTO_MAXIMO = 999_999_999_999.99;
+
+    /**
+     * La base guarda montos NUMERIC(14, 2) con CHECK (monto > 0): un 0.004
+     * se redondea a 0.00 y viola el CHECK, y un 1e20 o INF desborda la
+     * columna. Ambos terminaban en 500 en vez de en un error de formulario.
+     */
+    public static function montoEnRango(float $monto): bool
+    {
+        return is_finite($monto) && round($monto, 2) >= 0.01 && $monto <= self::MONTO_MAXIMO;
     }
 
     /**
