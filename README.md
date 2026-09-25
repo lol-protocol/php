@@ -110,7 +110,7 @@ Susana Oria   → "susanaoria"  → contiene "zanahoria" (z/s y h muda se pliega
 ```
 
 El módulo lo detecta plegando cada campo a una forma fonética aproximada
-(`PhoneticFolder`: unifica b/v, s/z/c suave, ll/y, h muda, y el sonido de j y
+(`SpanishPhoneticFolder`: unifica b/v, s/z/c suave, ll/y, h muda, y el sonido de j y
 de g suave) y buscando términos del diccionario que **crucen la frontera**
 entre el nombre y el apellido plegados:
 
@@ -150,7 +150,7 @@ $reviewer->validateFullName('Paco', 'Cojes');
 ### Diecisiete idiomas, diecisiete fonéticas distintas
 
 Cubre los 17 idiomas en script latino de los 30 soportados — cada uno con su
-propio folder (`PhoneticFolder`, `PortuguesePhoneticFolder`,
+propio folder (`SpanishPhoneticFolder`, `PortuguesePhoneticFolder`,
 `ItalianPhoneticFolder`, `FrenchPhoneticFolder`, `GermanPhoneticFolder`,
 `CzechPhoneticFolder`, `SlovakPhoneticFolder`, `DanishPhoneticFolder`,
 `NorwegianPhoneticFolder`, `SwedishPhoneticFolder`, `FinnishPhoneticFolder`,
@@ -621,7 +621,7 @@ src/DefamatoryContentReview/
 ├── ScriptFolding.php               Variantes estándar de griego, cirílico, árabe y hebreo
 ├── ScoringPolicy.php               Orquesta pesos/bandas/decisión (configurable)
 ├── ScoringWeights.php / SeverityBands.php / DecisionTable.php   Colaboradores de ScoringPolicy
-├── PhoneticFolder.php              Plegado fonético del español
+├── SpanishPhoneticFolder.php       Plegado fonético del español
 ├── PortuguesePhoneticFolder.php    Plegado fonético del portugués
 ├── ItalianPhoneticFolder.php       Plegado fonético del italiano
 ├── FrenchPhoneticFolder.php        Plegado fonético del francés

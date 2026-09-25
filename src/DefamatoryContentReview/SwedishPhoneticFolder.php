@@ -25,10 +25,6 @@ class SwedishPhoneticFolder
 
     public static function fold(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-
-        return self::stripSeparators($text);
+        return self::foldBase($text, self::ACCENTS);
     }
 }

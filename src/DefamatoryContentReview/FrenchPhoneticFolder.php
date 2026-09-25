@@ -37,10 +37,7 @@ class FrenchPhoneticFolder
 
     public static function fold(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-        $text = self::stripSeparators($text);
+        $text = self::foldBase($text, self::ACCENTS);
 
         // "ch" es un sonido propio ("sh"): se protege antes de tocar la "c" o la "h" sueltas.
         $text = str_replace('ch', "\x01", $text);

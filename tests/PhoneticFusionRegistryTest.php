@@ -4,9 +4,9 @@ namespace Tests;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
 use DefamatoryContentReview\ItalianPhoneticFolder;
-use DefamatoryContentReview\PhoneticFolder;
 use DefamatoryContentReview\PhoneticFolderRegistry;
 use DefamatoryContentReview\PortuguesePhoneticFolder;
+use DefamatoryContentReview\SpanishPhoneticFolder;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -54,7 +54,7 @@ class PhoneticFusionRegistryTest extends TestCase
 
     public function testHyphenIsStrippedNotKeptLiterally(): void
     {
-        $this->assertStringNotContainsString('-', PhoneticFolder::fold('Pérez-García'));
+        $this->assertStringNotContainsString('-', SpanishPhoneticFolder::fold('Pérez-García'));
         $this->assertStringNotContainsString('-', PortuguesePhoneticFolder::fold('Sousa-Lima'));
         $this->assertStringNotContainsString('-', ItalianPhoneticFolder::fold('Rossi-Bianchi'));
     }

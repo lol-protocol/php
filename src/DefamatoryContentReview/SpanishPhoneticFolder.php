@@ -14,7 +14,7 @@ namespace DefamatoryContentReview;
  *
  * Implementación específica del español; no se usa para otros idiomas.
  */
-class PhoneticFolder
+class SpanishPhoneticFolder
 {
     use LeetspeakFolding;
 
@@ -34,10 +34,7 @@ class PhoneticFolder
      */
     public static function fold(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-        $text = self::stripSeparators($text);
+        $text = self::foldBase($text, self::ACCENTS);
 
         // "ch" es un sonido propio: se protege antes de tocar la "c" o la "h" sueltas.
         $text = str_replace('ch', "\x01", $text);
