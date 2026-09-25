@@ -50,11 +50,12 @@ check_dependency() {
     fi
 }
 
-# Create Nginx domain log directories
+# Create Nginx domain log directories.
+# Must stay root-owned: Nginx opens logs as root, so a www-data-writable log dir
+# lets a compromised app symlink its way to root (CVE-2016-1247).
 setup_nginx_domain_logs() {
     local domain=$1
     sudo mkdir -p /var/log/nginx/"$domain"
-    sudo chown -R www-data:www-data /var/log/nginx/"$domain"
 }
 
 # Setup app directories with correct ownership
@@ -63,9 +64,8 @@ setup_app_directories() {
     local domain=$2
 
     sudo mkdir -p "$app_path"
-    sudo mkdir -p /var/log/nginx/"$domain"
     sudo chown -R www-data:www-data "$app_path"
-    sudo chown -R www-data:www-data /var/log/nginx/"$domain"
+    setup_nginx_domain_logs "$domain"
 }
 
 # Deploy landing page or app files
