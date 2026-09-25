@@ -13,7 +13,7 @@ Un módulo para parsear guías telefónicas históricas en varios idiomas, extra
 - **Búsqueda**: por nombre, calle o teléfono, insensible a mayúsculas y acentos en las tres bases de datos
 - **Búsqueda fonética**: encuentra variantes de apellidos (Smith/Smyth, Valdez/Baldez)
 - **Enlace de registros**: propone qué entradas de distintas ediciones son la misma persona
-- **Catálogo histórico**: 20+ guías telefónicas de referencia (1878-2024)
+- **Catálogo histórico**: 16 guías telefónicas de referencia de 10 países (1878-1975)
 - **Manejo de errores**: registra errores de parsing sin detener el proceso
 
 ## Componentes
@@ -22,7 +22,7 @@ Un módulo para parsear guías telefónicas históricas en varios idiomas, extra
 Modelo de una persona natural.
 
 ```php
-use PhoneDirectory\PhoneDirectoryEntry;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
 
 $entry = new PhoneDirectoryEntry(
     fullName: 'SMITH, John',
@@ -48,7 +48,7 @@ $entry->getCountryCode();    // "US"
 Separa un nombre completo en nombre(s), apellido(s) y tratamiento. Lo usa internamente `PhoneDirectoryEntry`, pero también se puede usar solo:
 
 ```php
-use PhoneDirectory\PersonName;
+use PhoneDirectory\Entity\PersonName;
 
 $name = new PersonName('GARCÍA LÓPEZ, José', 'es');
 $name->getFirstName();     // "José"
@@ -69,7 +69,7 @@ Reconoce partículas (de, del, van, von, di, le, la...), conectores según idiom
 Ubicación geográfica de una entrada: país, zona, ciudad y calle.
 
 ```php
-use PhoneDirectory\GeoLocation;
+use PhoneDirectory\Entity\GeoLocation;
 
 $location = new GeoLocation('ES', 'Calle Mayor 12', 'Madrid', 'Madrid');
 $location->getFullAddress();  // "Calle Mayor 12, Madrid, Madrid, ES"
@@ -79,7 +79,7 @@ $location->getFullAddress();  // "Calle Mayor 12, Madrid, Madrid, ES"
 Parser en inglés para un solo idioma/país por instancia.
 
 ```php
-use PhoneDirectory\PhoneDirectoryParser;
+use PhoneDirectory\Parser\PhoneDirectoryParser;
 
 $parser = new PhoneDirectoryParser('US', 'us_1950_comprehensive'); // país y directorio de origen (opcionales)
 $entries = $parser->parseFile('directory.txt');
@@ -114,7 +114,7 @@ $entries = $parser->parseContent($textContent);
 Detecta el idioma del contenido (o lo recibe explícito) y separa personas naturales de empresas.
 
 ```php
-use PhoneDirectory\MultiLanguagePhoneDirectoryParser;
+use PhoneDirectory\Parser\MultiLanguagePhoneDirectoryParser;
 
 $parser = new MultiLanguagePhoneDirectoryParser('ES', 'es_1930_madrid');
 $entries = $parser->parseContent($content); // idioma detectado automáticamente
@@ -142,7 +142,7 @@ Idiomas soportados: español, inglés, francés, portugués, alemán, italiano. 
 Modelo y base de datos para empresas, con la misma estructura de país/procedencia que `PhoneDirectoryEntry`.
 
 ```php
-use PhoneDirectory\JuridicalEntity;
+use PhoneDirectory\Entity\JuridicalEntity;
 
 $entity = new JuridicalEntity(
     businessName: 'Farmacia Central',
@@ -213,7 +213,7 @@ foreach ($links as $link) {
 Los candidatos comparten apellido (por sonido), país, y vienen de directorios distintos; un nombre de pila distinto (no solo una inicial) descarta el enlace. Una dirección distinta baja la puntuación pero no lo impide, ya que las familias se mudaban entre ediciones. El orden `earlier`/`later` usa el año del catálogo cuando el directorio está en él, o el año que aparezca en el propio id del directorio (`"custom_1990_x"`) cuando no lo está.
 
 ### PhoneDirectoryCatalog
-Catálogo de referencia con 20+ guías telefónicas históricas (1878-2024) de varios países.
+Catálogo de referencia con 16 guías telefónicas históricas de 10 países (1878-1975).
 
 ```php
 use PhoneDirectory\PhoneDirectoryCatalog;
@@ -225,52 +225,45 @@ $catalog->getByYearRange(1900, 1950);
 $catalog->getStatistics();
 ```
 
-### PhoneDirectoryManager / PhoneDirectoryManagerV2
-Coordinadores de alto nivel que integran parser y base de datos. `PhoneDirectoryManager` usa `PhoneDirectoryParser` (un idioma); `PhoneDirectoryManagerV2` usa `MultiLanguagePhoneDirectoryParser` y separa personas naturales de empresas en dos bases de datos.
+### PhoneDirectoryManagerV2
+Coordinador de alto nivel que integra `MultiLanguagePhoneDirectoryParser` con dos bases de datos: una para personas naturales y otra para empresas.
 
-```php
-use PhoneDirectory\PhoneDirectoryManager;
-
-$manager = new PhoneDirectoryManager();
-$result = $manager->processFile('directory.txt');
-
-$manager->addEntry($entry);
-$manager->findByName('SMITH');
-$manager->findByStreet('Main Street');
-$manager->findByPhone('555-123-4567');
-$manager->findBySurnameSound('Smith');
-$manager->search(['name' => 'GARCIA', 'street' => 'Street']);
-```
+`PhoneDirectoryManager` (v1, solo inglés y solo personas naturales) sigue existiendo por compatibilidad, pero está marcado `@deprecated`.
 
 ## Uso Básico
 
 ### 1. Instalación
 ```bash
-composer install
+composer install   # enlaza también ../defamatory-content-review como dependencia
 ```
 
 ### 2. Crear base de datos e insertar datos
 ```php
-use PhoneDirectory\PhoneDirectoryManager;
+use PhoneDirectory\JuridicalEntityPDODatabase;
+use PhoneDirectory\Manager\PhoneDirectoryManagerV2;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 
-$db = new PhoneDirectoryPDODatabase('sqlite:genealogy.db');
-$manager = new PhoneDirectoryManager(database: $db);
+$dsn = 'sqlite:genealogy.db';
+$manager = new PhoneDirectoryManagerV2(
+    naturalDatabase: new PhoneDirectoryPDODatabase($dsn),
+    juridicalDatabase: new JuridicalEntityPDODatabase($dsn)
+);
 
-$result = $manager->processFile('sample_directory.txt');
+$result = $manager->processFile('sample_directory.txt');   // idioma detectado automáticamente
 
-echo "Insertadas: {$result['insertedCount']} entradas\n";
+echo "Insertadas: {$result['totalInserted']} entradas\n";
 echo "Errores: {$result['errorCount']}\n";
 ```
 
 ### 3. Buscar información
 ```php
-$entries = $manager->findByName('ANDERSON');
-$entries = $manager->findByStreet('Main Street');
-$entry = $manager->findByPhone('555-123-4567');
-$entries = $manager->findBySurnameSound('Anderson'); // también encuentra variantes fonéticas
+$people = $manager->findNaturalPeopleByName('ANDERSON');
+$people = $manager->findNaturalPeopleBySurnameSound('Anderson'); // también encuentra variantes fonéticas
+$byStreet = $manager->findByStreet('Main Street');   // ['natural' => [...], 'juridical' => [...]]
+$byPhone = $manager->findByPhone('555-123-4567');    // ['natural' => ?entrada, 'juridical' => ?empresa]
+$shops = $manager->findJuridicalEntitiesByType('farmacia');
 
-$results = $manager->search([
+$results = $manager->searchNaturalPeople([
     'name' => 'SMITH',
     'street' => 'Avenue'
 ]);
@@ -278,23 +271,26 @@ $results = $manager->search([
 
 ### 4. Gestionar datos
 ```php
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
+
 $entry = new PhoneDirectoryEntry(
     fullName: 'WILSON, Charles',
     countryCode: 'US',
     street: '913 Oak Street',
     phoneNumber: '555-456-7890'
 );
-$id = $manager->addEntry($entry);
+$id = $manager->addNaturalPerson($entry);
 
 $entry->setId($id);
-$manager->updateEntry($entry);
+$manager->updateNaturalPerson($entry);
 
-$manager->deleteEntry($id);
+$manager->deleteNaturalPerson($id);
 
 echo "Total: {$manager->getTotalCount()}";
-
-$all = $manager->getAllEntries();
+print_r($manager->getStatistics());
 ```
+
+Hay ejemplos completos y ejecutables en `examples/` (los ejecuta `ExamplesRunTest`).
 
 ## Herramienta de línea de comandos
 
@@ -375,7 +371,7 @@ Las columnas `raw_name`/`surname_soundex`/`full_name_folded` (y sus equivalentes
 ## Pruebas
 
 ```bash
-phpunit tests/PhoneDirectory/
+./vendor/bin/phpunit
 ```
 
 Las pruebas cruzadas contra MySQL/MariaDB y PostgreSQL (`CrossDatabaseTest`) se saltan si no hay servidor configurado; para incluirlas:
@@ -384,8 +380,10 @@ Las pruebas cruzadas contra MySQL/MariaDB y PostgreSQL (`CrossDatabaseTest`) se 
 PHONEDIR_PGSQL_DSN="pgsql:host=127.0.0.1;dbname=phonedir_test;user=postgres" \
 PHONEDIR_MYSQL_DSN="mysql:host=127.0.0.1;dbname=phonedir_test;charset=utf8mb4" \
 PHONEDIR_MYSQL_USER=usuario PHONEDIR_MYSQL_PASSWORD=contraseña \
-phpunit tests/PhoneDirectory/
+./vendor/bin/phpunit
 ```
+
+Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`.
 
 ## API Completa
 
@@ -416,9 +414,9 @@ phpunit tests/PhoneDirectory/
 - `search(array): array`
 - `clear(): bool`
 
-### PhoneDirectoryManager
+### PhoneDirectoryManager (obsoleto, usar `PhoneDirectoryManagerV2`)
 
-Interfaz de alto nivel que combina parser y base de datos.
+Interfaz de alto nivel que combina el parser en inglés y la base de datos de personas naturales.
 
 - `processFile(string, bool): array`
 - `addEntry(PhoneDirectoryEntry): int`
@@ -432,9 +430,12 @@ Interfaz de alto nivel que combina parser y base de datos.
 
 ## Consideraciones de Rendimiento
 
+`php bin/benchmark.php [entradas]` mide parseo, inserción y búsquedas; los resultados y proyecciones están en `docs/ESTIMATES_AND_SCALABILITY.md`.
+
 Para directorios telefónicos grandes:
+- `parseFile()` lee el archivo línea a línea, pero devuelve todas las entradas juntas (~1,8 KB de memoria por entrada): partir los archivos de millones de entradas antes de importarlos
 - Usar base de datos en archivo (o MySQL/PostgreSQL) en lugar de SQLite en memoria
-- Usar `insertBatch()` para inserciones masivas
+- Usar `insertBatch()` para inserciones masivas (una transacción y una sentencia preparada para todo el lote)
 - `RecordLinker` agrupa internamente por apellido, país e inicial del nombre antes de comparar pares, para que enlazar apellidos muy comunes siga siendo rápido
 - Considerar particionamiento de datos por período o región
 

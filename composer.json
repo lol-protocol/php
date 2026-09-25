@@ -8,7 +8,12 @@
   "repositories": [
     {
       "type": "path",
-      "url": "defamatory-content-review"
+      "url": "defamatory-content-review",
+      "options": {
+        "versions": {
+          "lol-protocol/defamatory-content-review": "4.3.0"
+        }
+      }
     },
     {
       "type": "path",
@@ -16,7 +21,7 @@
     }
   ],
   "require": {
-    "lol-protocol/defamatory-content-review": "@dev",
+    "lol-protocol/defamatory-content-review": "^4.3",
     "lol-protocol/phone-directory": "@dev"
   }
 }

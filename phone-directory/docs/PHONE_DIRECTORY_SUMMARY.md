@@ -175,7 +175,7 @@ Las columnas de búsqueda llevan índice. El catálogo histórico no está en la
 
 ## Tests
 
-229 tests PHPUnit, que CI ejecuta en PHP 8.1–8.4 contra SQLite y PostgreSQL (MySQL si se define
+231 tests PHPUnit (incluida la ejecución de los ejemplos), que CI ejecuta en PHP 8.1–8.4 contra SQLite y PostgreSQL (MySQL si se define
 `PHONEDIR_MYSQL_DSN`). Los ports a Python y Java tienen sus propios tests. El detalle por archivo está en
 [PROJECT_COMPLETION_REPORT.md](PROJECT_COMPLETION_REPORT.md).
 
@@ -211,4 +211,4 @@ composer install
 
 - PHP 8.1 o superior con `mbstring` y `pdo_sqlite` (o `pdo_mysql` / `pdo_pgsql`)
 - Composer
-- La carpeta hermana `defamatory-content-review/` (se carga desde `../defamatory-content-review/src/`)
+- La carpeta hermana `defamatory-content-review/`: `composer install` la instala como dependencia desde un repositorio `path`

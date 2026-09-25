@@ -13,11 +13,12 @@ Este repositorio contiene múltiples proyectos de la implementación del LOL Pro
 │   └── composer.json
 │
 ├── phone-directory/              # Parser de directorios telefónicos históricos
+│   ├── README.md                 # Guía de uso y API
 │   ├── src/PhoneDirectory/       # Código fuente
 │   ├── tests/PhoneDirectory/     # Pruebas unitarias
 │   ├── bin/                      # CLI (phonedir) y benchmark
 │   ├── examples/                 # Ejemplos de uso
-│   ├── docs/                     # Resumen, estado, estimaciones y análisis de errores
+│   ├── docs/                     # Arquitectura, resumen, estado, estimaciones y análisis de errores
 │   ├── ports/                    # Versiones simplificadas en Python y Java, con sus tests
 │   ├── composer.json             # Dependencias del proyecto
 │   └── phpunit.xml               # Configuración de pruebas
@@ -33,8 +34,9 @@ Este repositorio contiene múltiples proyectos de la implementación del LOL Pro
 ## Dependencias entre proyectos
 
 `phone-directory` usa clases de `defamatory-content-review` (por ejemplo `AccentFolding` y
-`PhoneticFolderRegistry`). Su `composer.json` carga el namespace `DefamatoryContentReview\`
-directamente desde `../defamatory-content-review/src/`, así que ambas carpetas deben estar presentes.
+`PhoneticFolderRegistry`). Su `composer.json` la declara como dependencia (`lol-protocol/defamatory-content-review`
+`^4.3`) desde un repositorio `path` que apunta a `../defamatory-content-review`, así que ambas carpetas deben estar
+presentes; `composer install` en `phone-directory/` la enlaza en su `vendor/`.
 
 El `composer.json` de la raíz declara los dos proyectos como repositorios `path`, así que
 `composer install` en la raíz los enlaza en `vendor/` para usarlos juntos desde otro código.
@@ -53,7 +55,7 @@ php bin/phonedir help
 
 `.github/workflows/tests.yml` tiene un job por proyecto:
 - `phpunit`: tests, PHPStan y benchmark de `defamatory-content-review/`.
-- `phone-directory`: tests de `phone-directory/` contra SQLite y PostgreSQL, los ejemplos y el benchmark.
+- `phone-directory`: tests de `phone-directory/` (incluidos los ejemplos) contra SQLite y PostgreSQL, y el benchmark.
 - `phone-directory-ports`: tests de los ports a Python y Java.
 - `web-animations`: prueba de humo de las animaciones.
 

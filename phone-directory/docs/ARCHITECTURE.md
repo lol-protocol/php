@@ -500,14 +500,14 @@ CREATE INDEX idx_juridical_entities_street_folded ON juridical_entities(street_f
 
 ### 1. **Búsqueda de Antepasados (incluidas variantes ortográficas)**
 ```php
-$results = $manager->findByName('Garcia'); // encuentra "García" también
-$results = $manager->findBySurnameSound('Valdez', 'es'); // encuentra "Baldez" también
+$results = $manager->findNaturalPeopleByName('Garcia'); // encuentra "García" también
+$results = $manager->findNaturalPeopleBySurnameSound('Valdez', 'es'); // encuentra "Baldez" también
 ```
 
 ### 2. **Análisis por Localidad**
 ```php
 $results = $manager->findByStreet('Main Street');
-// Personas que vivían en esa calle
+// ['natural' => personas que vivían en esa calle, 'juridical' => negocios de esa calle]
 ```
 
 ### 3. **Búsqueda de Negocios Familiares**
@@ -518,7 +518,12 @@ $results = $manager->searchJuridicalEntities(['businessName' => 'García']);
 
 ### 4. **Importación Masiva de Directorios**
 ```php
-$parser = MultiLanguagePhoneDirectoryParser::forCatalogDirectory('es_1930_madrid');
+// Toma país e id de origen del catálogo para que las entradas queden asociadas a esa edición.
+$manager = new PhoneDirectoryManagerV2(
+    parser: MultiLanguagePhoneDirectoryParser::forCatalogDirectory('es_1930_madrid'),
+    naturalDatabase: new PhoneDirectoryPDODatabase($dsn),
+    juridicalDatabase: new JuridicalEntityPDODatabase($dsn)
+);
 $result = $manager->processFile('historical_directory_1930.txt');
 echo "Agregadas: {$result['totalInserted']} entradas";
 ```

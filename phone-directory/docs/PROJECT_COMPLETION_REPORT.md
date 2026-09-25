@@ -29,7 +29,9 @@ La descripción funcional está en [PHONE_DIRECTORY_SUMMARY.md](PHONE_DIRECTORY_
 
 ### Ejemplos y documentación
 - `examples/process_phone_directory.php`, `examples/multilingual_example.php`, `examples/sample_phone_directory.txt`.
-- `docs/`: este reporte, el resumen funcional, las estimaciones de escalabilidad y el análisis de errores.
+- `README.md`: guía de uso y API completa.
+- `docs/`: este reporte, el resumen funcional, la arquitectura (`ARCHITECTURE.md`), las estimaciones de
+  escalabilidad y el análisis de errores.
 
 ---
 
@@ -40,7 +42,7 @@ La descripción funcional está en [PHONE_DIRECTORY_SUMMARY.md](PHONE_DIRECTORY_
 | Archivos PHP en `src/` | 35 |
 | Líneas de código PHP (`src/`) | ~4 000 |
 | Líneas de tests PHP (`tests/`) | ~3 200 |
-| Tests PHPUnit | 229 |
+| Tests PHPUnit | 231 |
 | Tests de los ports | 13 (Python) + 12 chequeos (Java) |
 | Idiomas | 6 |
 | Motores de base de datos | SQLite, MySQL/MariaDB, PostgreSQL |
@@ -67,11 +69,13 @@ La descripción funcional está en [PHONE_DIRECTORY_SUMMARY.md](PHONE_DIRECTORY_
 | `SurnameKeysTest` | 6 | Soundex y claves fonéticas |
 | `PhoneDirectoryManagerV2Test` | 4 | Manager actual |
 | `TextFoldingTest` | 2 | Plegado de acentos y validación UTF-8 |
+| `ExamplesRunTest` | 2 | Los ejemplos de `examples/` corren sin errores ni avisos |
 
 La cobertura de código no se mide en CI.
 
 ### Integración continua (`.github/workflows/tests.yml`)
-- `phone-directory / PHP 8.1–8.4`: suite PHPUnit contra SQLite y un PostgreSQL 16 real, y ejecución de los ejemplos.
+- `phone-directory / PHP 8.1–8.4`: suite PHPUnit (incluidos los ejemplos) contra SQLite y un PostgreSQL 16 real, y una corrida corta de
+  `bin/benchmark.php`.
 - `phone-directory / Python and Java ports`: tests de los dos ports.
 
 ---

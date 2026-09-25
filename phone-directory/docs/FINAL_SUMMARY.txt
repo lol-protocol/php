@@ -27,7 +27,7 @@ CIFRAS
 ------
 Archivos PHP en src/          35
 Líneas de código (src/)       ~4 000
-Tests PHPUnit                 229 (CI: PHP 8.1-8.4, SQLite y PostgreSQL)
+Tests PHPUnit                 231 (CI: PHP 8.1-8.4, SQLite y PostgreSQL)
 Ports                         Python (13 tests) y Java (12 chequeos), simplificados
 
 Rendimiento medido (bin/benchmark.php, 100 000 entradas, 1 proceso, SQLite):
@@ -48,7 +48,9 @@ USO RÁPIDO
 
 DOCUMENTACIÓN (phone-directory/docs/)
 -------------------------------------
+../README.md                    Guía de uso y API completa
 PHONE_DIRECTORY_SUMMARY.md      Descripción funcional, uso y esquema de base de datos
+ARCHITECTURE.md                 Diagramas de arquitectura y flujo
 PROJECT_COMPLETION_REPORT.md    Estado del proyecto, tests y pendientes
 ESTIMATES_AND_SCALABILITY.md    Rendimiento medido y proyecciones de volumen
 ERRORES_ENCONTRADOS.md          Los 14 errores de la revisión estática y su estado

@@ -86,9 +86,6 @@ jobs:
           PHONEDIR_PGSQL_DSN: pgsql:host=127.0.0.1;port=5432;dbname=phonedir_test;user=postgres;password=postgres
         run: ./vendor/bin/phpunit
 
-      - name: Run examples
-        run: for f in examples/*.php; do echo "$f"; php "$f" > /dev/null; done
-
       - name: Benchmark smoke run
         run: php bin/benchmark.php 2000
 
