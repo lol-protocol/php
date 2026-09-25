@@ -1,30 +1,17 @@
 {
-    "name": "lol-protocol/defamatory-content-review",
-    "description": "Module for reviewing and detecting defamatory content in genealogical platform",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "LOL Protocol Team"
-        }
-    ],
-    "require": {
-        "php": ">=8.1"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^10.0"
-    },
-    "bin": [
-        "bin/phonedir"
-    ],
-    "autoload": {
-        "psr-4": {
-            "DefamatoryContentReview\\": "src/DefamatoryContentReview/",
-            "PhoneDirectory\\": "src/PhoneDirectory/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
+  "name": "lol-protocol/php",
+  "description": "lol protocol implemented in PHP",
+  "type": "library",
+  "require-dev": {
+    "phpunit/phpunit": "^10.5"
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "phone-directory"
     }
+  ],
+  "require": {
+    "lol-protocol/phone-directory": "*"
+  }
 }

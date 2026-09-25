@@ -1,6 +1,9 @@
 /vendor/
+vendor/
 /.phpunit.cache/
+*/.phpunit.cache/
 /coverage/
+coverage/
 .DS_Store
 *.swp
 *.swo

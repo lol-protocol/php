@@ -42,9 +42,11 @@ jobs:
           coverage: none
 
       - name: Install dependencies
+        working-directory: phone-directory
         run: composer install --prefer-dist --no-progress
 
       - name: Run tests
+        working-directory: phone-directory
         env:
           PHONEDIR_PGSQL_DSN: pgsql:host=127.0.0.1;port=5432;dbname=phonedir_test;user=postgres;password=postgres
         run: ./vendor/bin/phpunit
