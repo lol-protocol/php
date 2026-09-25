@@ -26,9 +26,7 @@ class IndonesianPhoneticFolder
 
     public static function fold(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = self::stripSeparators($text);
+        $text = self::foldBase($text);
 
         $text = str_replace('oe', 'u', $text); // grafía Van Ophuijsen: "oe" = /u/
 

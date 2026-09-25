@@ -36,10 +36,7 @@ class PortuguesePhoneticFolder
 
     public static function fold(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-        $text = self::stripSeparators($text);
+        $text = self::foldBase($text, self::ACCENTS);
 
         // Dígrafos con sonido propio: se protegen antes de tocar sus letras sueltas.
         $text = str_replace(['lh', 'nh', 'ch'], ["\x01", "\x02", "\x03"], $text);
