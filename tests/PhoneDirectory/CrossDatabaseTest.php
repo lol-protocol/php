@@ -4,9 +4,9 @@ namespace Tests\PhoneDirectory;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use PhoneDirectory\JuridicalEntity;
+use PhoneDirectory\Entity\JuridicalEntity;
 use PhoneDirectory\JuridicalEntityPDODatabase;
-use PhoneDirectory\PhoneDirectoryEntry;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 
 /**

@@ -3,8 +3,8 @@
 namespace Tests\PhoneDirectory;
 
 use PHPUnit\Framework\TestCase;
-use PhoneDirectory\MultiLanguagePhoneDirectoryParser;
-use PhoneDirectory\PhoneDirectoryEntry;
+use PhoneDirectory\Parser\MultiLanguagePhoneDirectoryParser;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 
 /**
@@ -44,7 +44,7 @@ class PotentialErrorsTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/cannot be empty/i');
 
-        new \PhoneDirectory\PersonName('   ');
+        new \PhoneDirectory\Entity\PersonName('   ');
     }
 
     /**

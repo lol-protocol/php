@@ -3,6 +3,7 @@
 namespace PhoneDirectory;
 
 use PhoneDirectory\Database\AbstractPDODatabase;
+use PhoneDirectory\Entity\JuridicalEntity;
 
 class JuridicalEntityPDODatabase extends AbstractPDODatabase implements JuridicalEntityDatabaseInterface
 {

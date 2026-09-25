@@ -1,6 +1,6 @@
 <?php
 
-namespace PhoneDirectory;
+namespace PhoneDirectory\Parser;
 
 /**
  * Phone formats recognized across both parsers: standard digit groups (555-123-4567, 5551234567) and the

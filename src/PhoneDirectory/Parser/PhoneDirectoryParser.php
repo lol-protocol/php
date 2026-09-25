@@ -1,6 +1,9 @@
 <?php
 
-namespace PhoneDirectory;
+namespace PhoneDirectory\Parser;
+
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
+use PhoneDirectory\PhoneDirectoryCatalog;
 
 class PhoneDirectoryParser
 {

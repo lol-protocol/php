@@ -4,6 +4,7 @@ namespace PhoneDirectory;
 
 use DefamatoryContentReview\AccentFolding;
 use DefamatoryContentReview\PhoneticFolderRegistry;
+use PhoneDirectory\Entity\PersonName;
 
 /**
  * Phonetic keys for finding spelling variants of a surname.

@@ -3,7 +3,7 @@
 namespace Tests\PhoneDirectory;
 
 use PHPUnit\Framework\TestCase;
-use PhoneDirectory\PersonName;
+use PhoneDirectory\Entity\PersonName;
 
 class PersonNameTest extends TestCase
 {

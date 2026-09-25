@@ -1,6 +1,10 @@
 <?php
 
-namespace PhoneDirectory;
+namespace PhoneDirectory\Manager;
+
+use PhoneDirectory\Parser\PhoneDirectoryParser;
+use PhoneDirectory\PhoneDirectoryDatabaseInterface;
+use PhoneDirectory\PhoneDirectoryPDODatabase;
 
 class PhoneDirectoryManager
 {

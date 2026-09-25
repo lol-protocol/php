@@ -1,8 +1,12 @@
 <?php
 
-namespace PhoneDirectory;
+namespace PhoneDirectory\Parser;
 
 use PhoneDirectory\Validation\InputValidator;
+use PhoneDirectory\Entity\JuridicalEntity;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
+use PhoneDirectory\Entity\PersonName;
+use PhoneDirectory\PhoneDirectoryCatalog;
 
 class MultiLanguagePhoneDirectoryParser
 {

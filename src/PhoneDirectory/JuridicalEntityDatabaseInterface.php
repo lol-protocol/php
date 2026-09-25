@@ -2,6 +2,8 @@
 
 namespace PhoneDirectory;
 
+use PhoneDirectory\Entity\JuridicalEntity;
+
 interface JuridicalEntityDatabaseInterface
 {
     public function connect(): void;

@@ -1,6 +1,6 @@
 <?php
 
-namespace PhoneDirectory;
+namespace PhoneDirectory\Parser;
 
 /**
  * Splits a single "NAME ... STREET ... PHONE" line, the layout most historical directories actually use

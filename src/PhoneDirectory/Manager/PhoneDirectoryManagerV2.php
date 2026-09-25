@@ -1,6 +1,12 @@
 <?php
 
-namespace PhoneDirectory;
+namespace PhoneDirectory\Manager;
+
+use PhoneDirectory\Parser\MultiLanguagePhoneDirectoryParser;
+use PhoneDirectory\PhoneDirectoryDatabaseInterface;
+use PhoneDirectory\JuridicalEntityDatabaseInterface;
+use PhoneDirectory\PhoneDirectoryPDODatabase;
+use PhoneDirectory\JuridicalEntityPDODatabase;
 
 class PhoneDirectoryManagerV2
 {

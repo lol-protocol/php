@@ -3,7 +3,7 @@
 namespace Tests\PhoneDirectory;
 
 use PHPUnit\Framework\TestCase;
-use PhoneDirectory\GeoLocation;
+use PhoneDirectory\Entity\GeoLocation;
 
 class GeoLocationTest extends TestCase
 {

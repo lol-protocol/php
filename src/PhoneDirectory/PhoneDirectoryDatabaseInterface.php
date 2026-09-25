@@ -2,6 +2,8 @@
 
 namespace PhoneDirectory;
 
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
+
 interface PhoneDirectoryDatabaseInterface
 {
     public function connect(): void;

@@ -3,7 +3,7 @@
 namespace Tests\PhoneDirectory;
 
 use PHPUnit\Framework\TestCase;
-use PhoneDirectory\PhoneDirectoryParser;
+use PhoneDirectory\Parser\PhoneDirectoryParser;
 
 class PhoneDirectoryParserTest extends TestCase
 {

@@ -3,9 +3,9 @@
 namespace Tests\PhoneDirectory;
 
 use PHPUnit\Framework\TestCase;
-use PhoneDirectory\JuridicalEntity;
-use PhoneDirectory\PhoneDirectoryEntry;
-use PhoneDirectory\PhoneDirectoryManagerV2;
+use PhoneDirectory\Entity\JuridicalEntity;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
+use PhoneDirectory\Manager\PhoneDirectoryManagerV2;
 
 class PhoneDirectoryManagerV2Test extends TestCase
 {

@@ -3,8 +3,8 @@
 namespace Tests\PhoneDirectory;
 
 use PHPUnit\Framework\TestCase;
-use PhoneDirectory\PhoneDirectoryEntry;
-use PhoneDirectory\PhoneDirectoryManager;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
+use PhoneDirectory\Manager\PhoneDirectoryManager;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 
 class PhoneDirectoryManagerTest extends TestCase

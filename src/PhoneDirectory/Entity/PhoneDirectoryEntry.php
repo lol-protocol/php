@@ -1,6 +1,6 @@
 <?php
 
-namespace PhoneDirectory;
+namespace PhoneDirectory\Entity;
 
 class PhoneDirectoryEntry
 {

@@ -3,7 +3,7 @@
 namespace Tests\PhoneDirectory;
 
 use PHPUnit\Framework\TestCase;
-use PhoneDirectory\PhoneDirectoryEntry;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 use PhoneDirectory\JuridicalEntityPDODatabase;
 
