@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Formats Database - Interactive Browser</title>
+    <link rel="icon" href="data:,">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+            --bg: #f9fafb;
+            --card-bg: #ffffff;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text: #f3f4f6;
+                --text-light: #d1d5db;
+                --border: #374151;
+                --bg: #111827;
+                --card-bg: #1f2937;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: var(--text);
+            background-color: var(--bg);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .control-group input,
+        .control-group select {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--bg);
+            color: var(--text);
+            transition: all 0.2s ease;
+        }
+
+        .control-group input:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .formats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .format-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .format-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .format-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .format-card-header h3 {
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            white-space: nowrap;
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .badge-standard { background: var(--primary); color: white; }
+        .badge-book { background: var(--success); color: white; }
+        .badge-legal { background: var(--danger); color: white; }
+        .badge-photo { background: var(--warning); color: white; }
+
+        .format-info {
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .info-value {
+            color: var(--text-light);
+        }
+
+        .format-preview {
+            background: var(--bg);
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+        }
+
+        .format-preview svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+            opacity: 0.8;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .comparison-table thead {
+            background: var(--primary);
+            color: white;
+        }
+
+        .comparison-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table tr:hover {
+            background: var(--bg);
+        }
+
+        .converter-section {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+        }
+
+        .converter-group {
+            margin-bottom: 20px;
+        }
+
+        .converter-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .converter-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .conversion-result {
+            background: var(--bg);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .conversion-result.show {
+            display: block;
+        }
+
+        .equivalence-bar {
+            height: 30px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .equivalence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            transition: width 0.3s ease;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+
+        .no-results-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .formats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                gap: 5px;
+            }
+
+            .tab-btn {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📄 Document Formats Database</h1>
+        <p>Browse, search, and compare paper and document formats by country</p>
+    </div>
+
+    <div class="container">
+        <!-- Statistics -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="number" id="total-formats">0</div>
+                <div class="label">Total Formats</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="total-countries">0</div>
+                <div class="label">Countries</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="total-categories">0</div>
+                <div class="label">Categories</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="browser">Browser</button>
+            <button class="tab-btn" data-tab="comparison">Comparison</button>
+            <button class="tab-btn" data-tab="converter">Converter</button>
+            <button class="tab-btn" data-tab="about">About</button>
+        </div>
+
+        <!-- Browser Tab -->
+        <div id="browser" class="tab-content active">
+            <div class="controls">
+                <div class="control-group">
+                    <label>Search</label>
+                    <input type="text" id="search-input" placeholder="Search formats...">
+                </div>
+                <div class="control-group">
+                    <label>Country</label>
+                    <select id="country-filter">
+                        <option value="">All Countries</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Category</label>
+                    <select id="category-filter">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Region</label>
+                    <select id="region-filter">
+                        <option value="">All Regions</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>&nbsp;</label>
+                    <button class="btn btn-secondary" id="reset-btn">Reset Filters</button>
+                </div>
+            </div>
+
+            <div id="formats-container" class="formats-grid"></div>
+        </div>
+
+        <!-- Comparison Tab -->
+        <div id="comparison" class="tab-content">
+            <div class="controls">
+                <div class="control-group" style="grid-column: 1 / -1;">
+                    <label>Compare Formats</label>
+                    <input type="text" id="compare-search" placeholder="Type format names to compare...">
+                </div>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="comparison-table" id="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Format</th>
+                            <th>Country</th>
+                            <th>Width (mm)</th>
+                            <th>Height (mm)</th>
+                            <th>Aspect Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparison-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Converter Tab -->
+        <div id="converter" class="tab-content">
+            <div class="converter-section">
+                <h3>Format Converter</h3>
+                <div class="converter-group">
+                    <label>From Format</label>
+                    <select id="from-format">
+                        <option value="">Select format...</option>
+                    </select>
+                </div>
+
+                <div class="converter-group">
+                    <label>To Format</label>
+                    <select id="to-format">
+                        <option value="">Select format...</option>
+                    </select>
+                </div>
+
+                <div class="conversion-result" id="conversion-result">
+                    <div id="conversion-info"></div>
+                    <div class="equivalence-bar">
+                        <div class="equivalence-fill" id="equivalence-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Tab -->
+        <div id="about" class="tab-content">
+            <div style="background: var(--card-bg); padding: 25px; border-radius: 8px; box-shadow: var(--shadow);">
+                <h2>About This Database</h2>
+                <p>This comprehensive document format database includes:</p>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li><strong id="about-formats">…</strong> formats across multiple categories</li>
+                    <li><strong id="about-countries">…</strong> countries and regions with local and international standards</li>
+                    <li><strong>Dual measurements</strong> in both metric and imperial units</li>
+                    <li><strong>Technical specifications</strong> for printing and design</li>
+                    <li><strong>Format conversions</strong> showing international equivalents</li>
+                </ul>
+                <p style="margin-top: 15px; color: var(--text-light);">
+                    Data sourced from ISO 216, ANSI, JIS, and GB/T standards.
+                    Last updated: <span id="about-updated">…</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Document Formats Database v2.0 | Built with HTML5, CSS3, and JavaScript</p>
+    </div>
+
+    <script src="document-formats.js"></script>
+    <script>
+        class FormatBrowser {
+            constructor(formats) {
+                this.formats = formats;
+                this.converter = new FormatConverter(formats);
+                this.cacheElements();
+                this.setupEventListeners();
+                this.populateFilters();
+                this.updateStats();
+                this.renderFormats(this.formats);
+            }
+
+            cacheElements() {
+                this.els = {
+                    search: document.getElementById('search-input'),
+                    countryFilter: document.getElementById('country-filter'),
+                    categoryFilter: document.getElementById('category-filter'),
+                    regionFilter: document.getElementById('region-filter'),
+                    resetBtn: document.getElementById('reset-btn'),
+                    tabBtns: document.querySelectorAll('.tab-btn'),
+                    tabContents: document.querySelectorAll('.tab-content'),
+                    fromFormat: document.getElementById('from-format'),
+                    toFormat: document.getElementById('to-format'),
+                    container: document.getElementById('formats-container'),
+                    compareSearch: document.getElementById('compare-search'),
+                    compareBody: document.getElementById('comparison-body'),
+                    totalFormats: document.getElementById('total-formats'),
+                    totalCountries: document.getElementById('total-countries'),
+                    totalCategories: document.getElementById('total-categories')
+                };
+            }
+
+            setupEventListeners() {
+                const {search, countryFilter, categoryFilter, regionFilter, resetBtn, fromFormat, toFormat, compareSearch} = this.els;
+
+                document.addEventListener('change', (e) => {
+                    if (e.target === countryFilter || e.target === categoryFilter || e.target === regionFilter) {
+                        this.filterFormats();
+                    } else if (e.target === fromFormat || e.target === toFormat) {
+                        this.updateConverter();
+                    }
+                });
+
+                document.addEventListener('input', (e) => {
+                    if (e.target === search) this.filterFormats();
+                    else if (e.target === compareSearch) this.updateComparison();
+                });
+
+                resetBtn.addEventListener('click', () => {
+                    search.value = '';
+                    countryFilter.value = '';
+                    categoryFilter.value = '';
+                    regionFilter.value = '';
+                    this.filterFormats();
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('tab-btn')) {
+                        this.switchTab(e.target.dataset.tab);
+                    }
+                });
+            }
+
+            populateFilters() {
+                const unique = (values) => [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
+                const addOptions = (select, entries) => {
+                    for (const [value, label] of entries) {
+                        const option = document.createElement('option');
+                        option.value = value;
+                        option.textContent = label;
+                        select.appendChild(option);
+                    }
+                };
+                const {countryFilter, categoryFilter, regionFilter, fromFormat, toFormat} = this.els;
+
+                addOptions(countryFilter, unique(this.formats.map(f => f.country)).map(c => [c, c]));
+                addOptions(categoryFilter, unique(this.formats.map(f => f.category)).map(c => [c, c]));
+                addOptions(regionFilter, unique(this.formats.map(f => f.region)).map(r => [r, r]));
+
+                // Same-named formats in different countries share a size, so one entry per name.
+                const byName = new Map(this.formats.map(f => [f.format_name, f]));
+                const formatOptions = unique([...byName.keys()])
+                    .map(name => [name, `${name} (${byName.get(name).width_mm}×${byName.get(name).height_mm} mm)`]);
+                addOptions(fromFormat, formatOptions);
+                addOptions(toFormat, formatOptions);
+            }
+
+            filterFormats() {
+                const {search, countryFilter, categoryFilter, regionFilter} = this.els;
+                const query = search.value.toLowerCase();
+                const country = countryFilter.value;
+                const category = categoryFilter.value;
+                const region = regionFilter.value;
+
+                const filtered = this.formats.filter(format =>
+                    (!query || [format.format_name, format.description, format.common_use]
+                        .some(text => String(text ?? '').toLowerCase().includes(query))) &&
+                    (!country || format.country === country) &&
+                    (!category || format.category === category) &&
+                    (!region || format.region === region)
+                );
+                this.renderFormats(filtered);
+            }
+
+            renderFormats(formats) {
+                const {container} = this.els;
+
+                if (formats.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-results">
+                            <div class="no-results-icon">🔍</div>
+                            <p>No formats found matching your criteria.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = formats.map(format => `
+                    <div class="format-card">
+                        <div class="format-card-header">
+                            <h3>${escapeHtml(format.format_name)}</h3>
+                            <span class="badge badge-${escapeHtml(String(format.category).toLowerCase())}">${escapeHtml(format.category)}</span>
+                        </div>
+                        <div class="format-info">
+                            <div class="info-row">
+                                <span class="info-label">Country:</span>
+                                <span class="info-value">${escapeHtml(format.country)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Size (mm):</span>
+                                <span class="info-value">${escapeHtml(format.width_mm)} × ${escapeHtml(format.height_mm)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Size (in):</span>
+                                <span class="info-value">${escapeHtml(format.width_inches)}" × ${escapeHtml(format.height_inches)}"</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Aspect Ratio:</span>
+                                <span class="info-value">${escapeHtml(format.aspect_ratio)}</span>
+                            </div>
+                        </div>
+                        <div class="format-preview">
+                            ${this.generatePreviewSVG(format)}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            generatePreviewSVG(format) {
+                // Sizes run from 24 mm slides to 1.4 m posters: draw every sheet with its longest side at 100.
+                const scale = 100 / Math.max(format.width_mm, format.height_mm);
+                const w = format.width_mm * scale;
+                const h = format.height_mm * scale;
+
+                return `
+                    <svg viewBox="0 0 ${w} ${h}" style="height: 120px; max-width: 100%;" role="img" aria-label="${escapeHtml(format.format_name)} proportions">
+                        <rect x="1" y="1" width="${w - 2}" height="${h - 2}"
+                              fill="white" stroke="#999" stroke-width="1"/>
+                    </svg>
+                `;
+            }
+
+            updateStats() {
+                const {totalFormats, totalCountries, totalCategories} = this.els;
+                totalFormats.textContent = this.formats.length;
+                totalCountries.textContent = new Set(this.formats.map(f => f.country)).size;
+                totalCategories.textContent = new Set(this.formats.map(f => f.category)).size;
+            }
+
+            switchTab(tabName) {
+                const {tabContents, tabBtns} = this.els;
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                tabBtns.forEach(btn => btn.classList.remove('active'));
+
+                document.getElementById(tabName).classList.add('active');
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            }
+
+            updateComparison() {
+                const terms = this.els.compareSearch.value.toLowerCase().split(',').map(t => t.trim()).filter(Boolean);
+                const matches = terms.length === 0 ? [] : this.formats.filter(format =>
+                    terms.some(term => format.format_name.toLowerCase().includes(term))
+                ).slice(0, 100);
+
+                this.els.compareBody.innerHTML = matches.map(format => `
+                    <tr>
+                        <td>${escapeHtml(format.format_name)}</td>
+                        <td>${escapeHtml(format.country)}</td>
+                        <td>${escapeHtml(format.width_mm)}</td>
+                        <td>${escapeHtml(format.height_mm)}</td>
+                        <td>${escapeHtml(format.aspect_ratio)}</td>
+                    </tr>
+                `).join('');
+            }
+
+            updateConverter() {
+                const fromName = this.els.fromFormat.value;
+                const toName = this.els.toFormat.value;
+                const result = document.getElementById('conversion-result');
+
+                const conversion = fromName && toName ? this.converter.convert(fromName, toName) : null;
+                if (!conversion) {
+                    result.classList.remove('show');
+                    return;
+                }
+
+                document.getElementById('conversion-info').innerHTML = `
+                    <p><strong>${escapeHtml(fromName)}</strong> (${escapeHtml(conversion.fromSize.mm)} mm)
+                        → <strong>${escapeHtml(toName)}</strong> (${escapeHtml(conversion.toSize.mm)} mm)</p>
+                    <p style="font-size: 14px; color: var(--text-light);">
+                        Size similarity: ${conversion.similarity}%
+                    </p>
+                `;
+
+                const fill = document.getElementById('equivalence-fill');
+                fill.style.width = conversion.similarity + '%';
+                fill.textContent = conversion.similarity + '%';
+                result.classList.add('show');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('formats-container');
+            container.innerHTML = '<p class="no-results">Loading formats…</p>';
+
+            let formats, lastModified;
+            try {
+                ({formats, lastModified} = await loadFormatCatalogs());
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <p>Couldn't load the CSV files (${escapeHtml(error.message)}).</p>
+                        <p>Browsers block reading local files from a page opened with a double click.
+                        Serve the folder instead: run <code>python3 -m http.server</code> in
+                        <code>document-formats/</code> and open <code>http://localhost:8000/app/</code>.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            new FormatBrowser(formats);
+            document.getElementById('about-formats').textContent = formats.length;
+            document.getElementById('about-countries').textContent = new Set(formats.map(f => f.country)).size;
+            document.getElementById('about-updated').textContent = lastModified
+                ? lastModified.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})
+                : 'unknown (server sent no Last-Modified header)';
+        });
+    </script>
+</body>
+</html>
