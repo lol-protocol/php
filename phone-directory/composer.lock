@@ -4,8 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c2524f2d2c465a13321c24e6cf01408",
-    "packages": [],
+    "content-hash": "4f5595448fdd81a5e8b0fd1038930e3d",
+    "packages": [
+        {
+            "name": "lol-protocol/defamatory-content-review",
+            "version": "4.3.0",
+            "dist": {
+                "type": "path",
+                "url": "../defamatory-content-review",
+                "reference": "6b657ade743bed8ade025c11921cf683a68c6428"
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DefamatoryContentReview\\": "src/DefamatoryContentReview/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "LOL Protocol Team"
+                }
+            ],
+            "description": "Module for reviewing and detecting defamatory content in genealogical platform",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        }
+    ],
     "packages-dev": [
         {
             "name": "myclabs/deep-copy",

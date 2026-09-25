@@ -2,11 +2,11 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use PhoneDirectory\PhoneDirectoryManagerV2;
+use PhoneDirectory\Manager\PhoneDirectoryManagerV2;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 use PhoneDirectory\JuridicalEntityPDODatabase;
-use PhoneDirectory\PhoneDirectoryEntry;
-use PhoneDirectory\JuridicalEntity;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
+use PhoneDirectory\Entity\JuridicalEntity;
 
 // Crear instancias de base de datos
 $dbPath = sys_get_temp_dir() . '/genealogy_multilingual.db';

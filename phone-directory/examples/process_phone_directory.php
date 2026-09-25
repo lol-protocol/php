@@ -2,9 +2,9 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use PhoneDirectory\PhoneDirectoryManager;
+use PhoneDirectory\Manager\PhoneDirectoryManager;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
-use PhoneDirectory\PhoneDirectoryEntry;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
 
 // Crear una instancia del manager
 $dbPath = sys_get_temp_dir() . '/genealogy_phone_directory.db';
