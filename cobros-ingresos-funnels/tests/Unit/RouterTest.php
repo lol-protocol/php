@@ -39,7 +39,7 @@ final class RouterTest extends TestCase
 
         ob_start();
         $router->dispatch('no-existe');
-        $salida = ob_get_clean();
+        $salida = (string) ob_get_clean();
 
         self::assertSame(404, http_response_code());
         self::assertStringContainsString('404', $salida);
@@ -72,7 +72,7 @@ final class RouterTest extends TestCase
 
         ob_start();
         $router->dispatch('pagina');
-        $salida = ob_get_clean();
+        $salida = (string) ob_get_clean();
 
         self::assertSame(403, http_response_code());
         self::assertNotSame('', $salida);

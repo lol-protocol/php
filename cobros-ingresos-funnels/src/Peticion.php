@@ -30,6 +30,8 @@ final class Peticion
     /**
      * Si $entidad es null, manda un 404 con $mensaje y devuelve true (el
      * caller debe hacer return enseguida). Devuelve false si existe.
+     *
+     * @phpstan-assert-if-false !null $entidad
      */
     public static function abortarSiNoExiste(?array $entidad, string $mensaje): bool
     {

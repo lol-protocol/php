@@ -80,18 +80,7 @@ final class FunnelRepository
 
     public function porRangoEdad(string $desde, string $hasta): array
     {
-        return $this->porDimension(
-            "CASE
-                WHEN (CURRENT_DATE - fecha_nacimiento) / 365.25 < 25 THEN '18-24'
-                WHEN (CURRENT_DATE - fecha_nacimiento) / 365.25 < 35 THEN '25-34'
-                WHEN (CURRENT_DATE - fecha_nacimiento) / 365.25 < 45 THEN '35-44'
-                WHEN (CURRENT_DATE - fecha_nacimiento) / 365.25 < 55 THEN '45-54'
-                WHEN (CURRENT_DATE - fecha_nacimiento) / 365.25 < 65 THEN '55-64'
-                ELSE '65+'
-             END",
-            $desde,
-            $hasta
-        );
+        return $this->porDimension(RangoEdad::expresionSql('fecha_nacimiento'), $desde, $hasta);
     }
 
     /** $expresionSql siempre es fija, definida en este archivo, nunca entrada de usuario. */

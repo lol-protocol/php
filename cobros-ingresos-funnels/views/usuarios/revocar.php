@@ -23,6 +23,7 @@ $reactivando = !$usuario['activo'];
         <p>¿Reactivar el acceso de este usuario? Va a poder volver a entrar al panel con su email y contraseña.</p>
         <form method="post">
             <?= Csrf::campo() ?>
+            <input type="hidden" name="activo" value="1">
             <button type="submit" style="padding:9px 16px;border-radius:6px;cursor:pointer;">Si, reactivar acceso</button>
             <a href="?page=usuarios" style="margin-left:12px;">Cancelar</a>
         </form>
@@ -31,6 +32,7 @@ $reactivando = !$usuario['activo'];
            y deja de poder loguearse, pero su historial en Auditoría se conserva.</p>
         <form method="post">
             <?= Csrf::campo() ?>
+            <input type="hidden" name="activo" value="0">
             <button type="submit" style="background:var(--critical);border-color:var(--critical);color:#fff;padding:9px 16px;border-radius:6px;cursor:pointer;">
                 Si, revocar acceso
             </button>

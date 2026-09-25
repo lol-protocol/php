@@ -7,13 +7,12 @@ namespace App\Tests\Integration;
 use App\Database;
 use App\Repositories\MonedaRepository;
 use App\Repositories\SegmentacionRepository;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. Requiere haber
  * corrido antes `php database/seed.php` (mismas variables) para tener datos.
  */
-final class MonedaYSegmentacionTest extends TestCase
+final class MonedaYSegmentacionTest extends IntegracionTestCase
 {
     public function testSimboloDeMonedaConocida(): void
     {
@@ -75,15 +74,10 @@ final class MonedaYSegmentacionTest extends TestCase
             ':m' => $boleta['moneda_codigo'],
             ':motivo' => 'Nota de prueba ' . uniqid(),
         ]);
-        $notaId = (int) $stmt->fetchColumn();
 
-        try {
-            $despues = $ltvDe($repo->ltvPorCohorte(), $mesCohorte);
-            self::assertNotNull($despues);
-            self::assertLessThan($antes, $despues, 'emitir una nota de credito tiene que bajar el LTV de esa cohorte');
-        } finally {
-            $db->prepare('DELETE FROM notas_credito WHERE id = :id')->execute([':id' => $notaId]);
-        }
+        $despues = $ltvDe($repo->ltvPorCohorte(), $mesCohorte);
+        self::assertNotNull($despues);
+        self::assertLessThan($antes, $despues, 'emitir una nota de credito tiene que bajar el LTV de esa cohorte');
     }
 
     public function testTopPorDimensionEstaOrdenadoDescendentePorFacturacion(): void

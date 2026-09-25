@@ -31,9 +31,11 @@ foreach (SecurityHeaders::listado() as $nombre => $valor) {
 try {
     Database::connection();
 } catch (Throwable $e) {
+    // El detalle (que variable falta, o por que fallo la conexion) va al log
+    // y no a la respuesta: puede nombrar el host o el usuario de la base.
     error_log('No se pudo conectar a la base de datos: ' . $e->getMessage());
     http_response_code(500);
-    echo 'No se pudo conectar a la base de datos. Si es la primera vez, corré: php database/seed.php';
+    echo 'No se pudo conectar a la base de datos. Revisá la configuración (variables DB_*, ver README) y el log de errores de PHP.';
     exit;
 }
 

@@ -86,7 +86,7 @@ final class Auth
             exit;
         }
 
-        $usuario = (new UsuarioSistemaRepository())->porId(self::usuarioActual()['id']);
+        $usuario = (new UsuarioSistemaRepository())->porId((int) (self::usuarioActual()['id'] ?? 0));
         if (!self::sesionSigueValida($usuario)) {
             self::logout();
             header('Location: ?page=login');

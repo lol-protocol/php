@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Database;
+use App\EnvioUnico;
 use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
@@ -15,6 +16,7 @@ use App\Repositories\IngresosRepository;
 use App\Repositories\NotaCreditoRepository;
 use App\Validacion;
 use App\View;
+use LogicException;
 
 final class CobrosController
 {
@@ -81,6 +83,15 @@ final class CobrosController
         $error = null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $token = EnvioUnico::tokenRecibido();
+            $reenvio = $token === null ? null : EnvioUnico::redireccionPrevia($token);
+            if ($reenvio !== null) {
+                // Mismo formulario enviado otra vez (doble clic): la boleta ya
+                // se creo, se redirige igual que la primera vez.
+                header('Location: ' . $reenvio);
+                exit;
+            }
+
             $clienteId = (int) ($_POST['cliente_id'] ?? 0);
             $concepto = trim((string) ($_POST['concepto'] ?? ''));
             $monto = (float) ($_POST['monto'] ?? 0);
@@ -88,7 +99,9 @@ final class CobrosController
             $fechaVencimiento = (string) ($_POST['fecha_vencimiento'] ?? '');
 
             $cliente = $clienteId > 0 ? $clienteRepo->porId($clienteId) : null;
-            if ($cliente === null) {
+            if ($token === null) {
+                $error = EnvioUnico::MENSAJE_SIN_TOKEN;
+            } elseif ($cliente === null) {
                 $error = 'Elegí un cliente valido.';
             } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
                 $error = 'Completá todos los campos.';
@@ -97,22 +110,26 @@ final class CobrosController
             } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
                 $error = 'El vencimiento no puede ser anterior a la emisión.';
             } else {
-                $id = (new BoletaRepository())->crear([
-                    'cliente_id' => $clienteId,
-                    'concepto' => $concepto,
-                    'monto' => $monto,
-                    'moneda_codigo' => $cliente['moneda_codigo'],
-                    'fecha_emision' => $fechaEmision,
-                    'fecha_vencimiento' => $fechaVencimiento,
-                ]);
-                AuditoriaRepository::auditarComoUsuarioActual('crear', 'boleta', $id, sprintf(
-                    'Boleta #%d para %s: "%s" %s',
-                    $id,
-                    $cliente['nombre'],
-                    $concepto,
-                    money_moneda($monto, $cliente['moneda_codigo'])
-                ));
-                header('Location: ?page=cobros&creada=' . $id);
+                $destino = EnvioUnico::ejecutar($token, static function () use ($clienteId, $concepto, $monto, $cliente, $fechaEmision, $fechaVencimiento): string {
+                    $id = (new BoletaRepository())->crear([
+                        'cliente_id' => $clienteId,
+                        'concepto' => $concepto,
+                        'monto' => $monto,
+                        'moneda_codigo' => $cliente['moneda_codigo'],
+                        'fecha_emision' => $fechaEmision,
+                        'fecha_vencimiento' => $fechaVencimiento,
+                    ]);
+                    AuditoriaRepository::auditarComoUsuarioActual('crear', 'boleta', $id, sprintf(
+                        'Boleta #%d para %s: "%s" %s',
+                        $id,
+                        $cliente['nombre'],
+                        $concepto,
+                        money_moneda($monto, $cliente['moneda_codigo'])
+                    ));
+
+                    return '?page=cobros&creada=' . $id;
+                });
+                header('Location: ' . $destino);
                 exit;
             }
         }
@@ -120,7 +137,7 @@ final class CobrosController
         View::render('cobros/nueva', [
             'clientes' => $clienteRepo->paraSelector(),
             'error' => $error,
-            'valores' => $_POST ?? [],
+            'valores' => $_POST,
             'activePage' => 'cobros',
             'titulo' => 'Nueva boleta',
         ]);
@@ -159,13 +176,15 @@ final class CobrosController
                 $antes = sprintf('"%s" %s', $boleta['concepto'], money_moneda((float) $boleta['monto'], $boleta['moneda_codigo']));
                 $despues = sprintf('"%s" %s', $concepto, money_moneda($monto, $boleta['moneda_codigo']));
 
-                $boletaRepo->actualizar($id, [
-                    'concepto' => $concepto,
-                    'monto' => $monto,
-                    'fecha_emision' => $fechaEmision,
-                    'fecha_vencimiento' => $fechaVencimiento,
-                ]);
-                AuditoriaRepository::auditarComoUsuarioActual('editar', 'boleta', $id, sprintf('Boleta #%d: %s -> %s', $id, $antes, $despues));
+                Database::transaccion(static function () use ($boletaRepo, $id, $concepto, $monto, $fechaEmision, $fechaVencimiento, $antes, $despues): void {
+                    $boletaRepo->actualizar($id, [
+                        'concepto' => $concepto,
+                        'monto' => $monto,
+                        'fecha_emision' => $fechaEmision,
+                        'fecha_vencimiento' => $fechaVencimiento,
+                    ]);
+                    AuditoriaRepository::auditarComoUsuarioActual('editar', 'boleta', $id, sprintf('Boleta #%d: %s -> %s', $id, $antes, $despues));
+                });
                 header('Location: ?page=cobros&editada=' . $id);
                 exit;
             }
@@ -209,6 +228,9 @@ final class CobrosController
                 // para que la nota salga por lo efectivamente cobrado y no
                 // por el 'pagado' que se leyo antes de tomar el candado.
                 $boleta = $boletaRepo->porId($id);
+                if ($boleta === null) {
+                    throw new LogicException("La boleta #{$id} se acaba de anular y ya no se encuentra.");
+                }
                 AuditoriaRepository::auditarComoUsuarioActual('anular', 'boleta', $id, sprintf(
                     'Boleta #%d ("%s", %s)',
                     $id,

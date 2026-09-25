@@ -24,7 +24,8 @@ Pequeño sistema en PHP (sin framework) para analizar:
 - **Clientes**: alta manual, buscador y ficha con su historial completo (boletas,
   pagos y su recorrido por el funnel si entró por ahí).
 - **Boletas y pagos**: alta, edición y anulación. Anular es un soft-delete (queda
-  marcada "Anulada" y se excluye de los agregados) para no perder el rastro.
+  marcada "Anulada" y se excluye de los agregados) para no perder el rastro. Un
+  doble clic en "Guardar" no crea un segundo pago ni una segunda boleta.
 - **Auditoría**: quién creó, editó o anuló cada boleta, pago o cliente, con fecha
   y el detalle de qué cambió.
 - **Paginación** en los listados grandes (boletas, pagos, clientes).
@@ -50,11 +51,16 @@ composer install
 export DB_HOST=127.0.0.1 DB_PORT=5432 DB_NAME=cobros_ingresos_funnels \
        DB_USER=cobros_app DB_PASSWORD=cobros_app_dev
 
+# Desarrollo: permite correr el seed y completa con valores por defecto las
+# DB_* que falten. Sin APP_ENV=dev (o sea, en produccion) las credenciales son
+# obligatorias y la app no arranca si falta alguna.
+export APP_ENV=dev
+
 # Crear el rol y la base si todavia no existen:
 psql -h $DB_HOST -U postgres -c "CREATE ROLE $DB_USER LOGIN PASSWORD '$DB_PASSWORD';"
 psql -h $DB_HOST -U postgres -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 
-php database/seed.php      # crea el esquema y carga datos de ejemplo
+php database/seed.php      # arma el esquema con las migraciones y carga datos de ejemplo
 php -S localhost:8000 -t public   # solo para desarrollo, ver "Despliegue en producción"
 ```
 
@@ -62,10 +68,11 @@ Abrí `http://localhost:8000` — te va a mandar a `?page=login`. Credenciales d
 ejemplo (las crea el seed): **admin@ejemplo.com / admin1234** (también
 soporte@ejemplo.com / soporte1234, para probar "Usuarios" con más de una fila).
 
-Volver a correr `php database/seed.php` en cualquier momento reconstruye el esquema
-y regenera los datos de ejemplo desde cero (es reproducible: usa una semilla fija).
-Las mismas variables `DB_*` tienen que estar exportadas cuando corrés el servidor,
-el seed y los tests, para que los tres apunten a la misma base.
+Volver a correr `php database/seed.php` en cualquier momento borra la base, la
+reconstruye con las migraciones de `database/migraciones/` y regenera los datos de
+ejemplo desde cero (es reproducible: usa una semilla fija). Por eso solo corre con
+`APP_ENV=dev`. Las mismas variables tienen que estar exportadas cuando corrés el
+servidor, el seed y los tests, para que los tres apunten a la misma base.
 
 ## Despliegue en producción
 
@@ -112,7 +119,36 @@ Con TLS terminado en nginx, la app detecta HTTPS solo si nginx manda
 `fastcgi_params`) — de eso depende que la cookie de sesión salga con `Secure`
 y que se mande `Strict-Transport-Security` (ver `App\Http::esSegura()`).
 
-Otros dos puntos que la app ya resuelve por su cuenta pero vale saber:
+### Configuración
+
+Todo se lee de variables de entorno (con PHP-FPM, `env[...]` en el pool):
+
+| Variable | Obligatoria | Para qué |
+|---|---|---|
+| `DB_NAME`, `DB_USER`, `DB_PASSWORD` | sí | La conexión a Postgres. Si falta alguna, la app no arranca y el log de errores nombra todas las que faltan. |
+| `DB_HOST`, `DB_PORT` | no (`127.0.0.1`, `5432`) | |
+| `APP_TIMEZONE` | no (`UTC`) | La zona horaria del negocio, en formato IANA (ej. `America/Argentina/Buenos_Aires`). Define qué día es "hoy" para vencimientos, rangos de fechas y notas de crédito, y se aplica a PHP y a Postgres por igual. |
+| `APP_ENV` | no | Solo `dev`, en desarrollo. En producción no se define. |
+
+### Esquema de la base
+
+En cada despliegue: `php database/migrar.php` (o `composer migrar`). Aplica en orden
+las migraciones de `database/migraciones/` que la base todavía no tenga (quedan
+anotadas en `migraciones_aplicadas`) y no hace nada si ya está al día. Nunca borra
+datos. `seed.php`, en cambio, es solo para desarrollo: borra todo, y sin
+`APP_ENV=dev` se niega a correr.
+
+Si la base se creó antes de que existieran las migraciones (con el viejo
+`database/schema.sql`), la primera vez corré `php database/migrar.php --baseline`:
+marca la migración inicial como aplicada sin ejecutarla (esas tablas ya existen) y
+aplica las demás.
+
+Un cambio de esquema nuevo va en un archivo nuevo con el número siguiente
+(`004_descripcion.sql`). Una migración que ya corrió en alguna base no se edita.
+
+### Otros puntos
+
+Dos cosas que la app ya resuelve por su cuenta pero vale saber:
 
 - **Errores**: `public/index.php` fuerza `display_errors=0` y registra un
   manejador global (`App\ErrorHandler`) que manda el detalle de cualquier
@@ -123,14 +159,30 @@ Otros dos puntos que la app ya resuelve por su cuenta pero vale saber:
   como cualquier otra base de Postgres. Con `boletas`/`pagos`/`clientes`
   reales adentro, un backup periódico deja de ser opcional.
 
-## Tests
+## Tests y análisis estático
 
 ```bash
 composer test        # o: ./vendor/bin/phpunit
+composer analyse     # PHPStan, nivel 8
 ```
 
-Hay dos suites (`tests/Unit`, sin base de datos, y `tests/Integration`, que corre
-contra la base de las variables `DB_*` de arriba — corré el seed primero).
+Hay tres suites:
+
+- `tests/Unit`: sin base de datos.
+- `tests/Integration`: contra la base de las variables de arriba (corré el seed
+  primero). Cada test corre dentro de una transacción que se deshace al terminar,
+  así no deja datos ni ve los de otro test.
+- `tests/Http`: levanta la app con `php -S` y la recorre por HTTP como un navegador
+  (login, CSRF, formularios, redirecciones). Cubre lo que los otros no alcanzan: el
+  cableado de `public/index.php` y los controllers. Lo que crea se borra al terminar.
+
+PHPStan corre en nivel 8, el que revisa los nulos (por ejemplo, el resultado de un
+`porId()` usado sin chequear que la entidad exista). Las excepciones están
+explicadas en `phpstan.neon`.
+
+La CI (`.github/workflows/ci.yml`, en la raíz del repositorio) corre en cada push y
+cada pull request: sintaxis, PHPStan, las migraciones sobre una base vacía, el seed
+y las tres suites, contra un Postgres 16.
 
 ## Estructura
 
@@ -147,7 +199,13 @@ src/
                       CRUD y crecía por separado. AuditoriaRepository también
                       concentra el `auditarComoUsuarioActual()` que usan todos
                       los controllers en vez de repetirlo cada uno.
-  Database.php         conexión PDO a PostgreSQL (singleton, config por env vars)
+  Database.php         conexión PDO a PostgreSQL (config por env vars, misma zona
+                        horaria para PHP y Postgres) y transaccion(), anidable
+  Config.php           variables de entorno: obligatorias fuera de desarrollo,
+                        zona horaria IANA validada, testeado
+  Migrador.php          aplica database/migraciones/ y recuerda cuales corrieron
+  EnvioUnico.php        token de un solo uso de los formularios de alta: un doble
+                        clic no crea dos pagos ni dos boletas, testeado
   Auth.php             login/logout, guard de sesión, bloqueo por fuerza bruta
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
   Paginacion.php        helper de paginación (página/offset/total, testeado)
@@ -170,10 +228,13 @@ src/
   Repositories/NotaCreditoRepository.php  devoluciones emitidas al anular
                         una boleta ya cobrada, y su total por rango/mes en
                         USD para netear los cobros de los reportes
-  Router.php, View.php, Filtros.php, Config.php, helpers.php
+  Repositories/RangoEdad.php  el tramo de edad (18-24, 25-34, ...) como expresion
+                        SQL, con age(); lo comparten segmentacion y funnel
+  Router.php, View.php, Filtros.php, helpers.php
 database/
-  schema.sql            esquema de la base
-  seed.php               generador de datos de ejemplo
+  migraciones/          el esquema, en cambios numerados (001 = esquema inicial)
+  migrar.php             aplica las migraciones pendientes (en cada despliegue)
+  seed.php               SOLO desarrollo: rearma la base y carga datos de ejemplo
   paises_monedas.php      catalogo de ~200 paises y sus monedas (ISO 4217)
 views/                  plantillas PHP (una carpeta por sección), con partials
                         compartidos: _filtro_fechas.php, _paginacion.php,
@@ -184,8 +245,11 @@ tests/
   Unit/                 sin base de datos (calculo de estado, filtros, helpers,
                         paginación, CSRF, router, headers de seguridad, deteccion
                         de HTTPS)
-  Integration/           contra la base real (un archivo por repositorio,
-                        auditoría, bloqueo de login, usuario revocado)
+  Integration/           contra la base real, cada test en una transaccion que
+                        se deshace (un archivo por repositorio, migraciones,
+                        auditoría, bloqueo de login, zona horaria)
+  Http/                  la app levantada con php -S, recorrida por HTTP
+phpstan.neon            configuracion del analisis estatico
 ```
 
 ## Modelo de datos
@@ -218,8 +282,18 @@ tests/
   anularlos o editarlos descuadraría la devolución, y la app lo rechaza con un
   409 (la regla simétrica de no poder cargar un pago nuevo contra una boleta
   anulada).
+- `boletas_con_saldo` (vista): cada boleta con `pagado` (la suma de sus pagos no
+  anulados), `saldo` y `primer_pago`. Es la única definición de "cuánto se pagó":
+  la usan todas las consultas en vez de repetir la subconsulta.
 - `auditoria`: un registro por cada alta/edición/anulación (quién, cuándo, sobre
-  qué entidad y el detalle de qué cambió). Es de solo inserción — no se borra.
+  qué entidad y el detalle de qué cambió). Es de solo inserción — no se borra, y
+  cada entrada se escribe en la misma transacción que el cambio que describe.
+- `envios_formulario`: los tokens de un solo uso de los formularios de alta. El
+  primer envío registra su token junto con el cambio; un reenvío del mismo
+  formulario lo encuentra y recibe la misma redirección, sin crear nada. Se
+  purgan a los 7 días.
+- `migraciones_aplicadas`: qué migraciones de `database/migraciones/` ya corrieron
+  en esta base.
 - `intentos_login`: contador de intentos fallidos de login por email y hasta
   cuándo queda bloqueado, para la protección de fuerza bruta.
 

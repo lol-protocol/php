@@ -1,6 +1,7 @@
 <?php
 
 use App\Csrf;
+use App\EnvioUnico;
 
 /** @var array $clientes */
 /** @var string|null $error */
@@ -16,6 +17,7 @@ $vencimientoDefault = date('Y-m-d', strtotime('+30 days'));
 <div class="panel">
     <form class="form-alta" method="post">
         <?= Csrf::campo() ?>
+        <?= EnvioUnico::campo() ?>
         <?php include __DIR__ . '/../_error.php'; ?>
 
         <label for="cliente_id">Cliente</label>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Csrf;
+use App\EnvioUnico;
 
 /** @var array $clientes */
 /** @var array|null $clienteElegido */
@@ -35,6 +36,7 @@ $metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efe
         </p>
         <form class="form-alta" method="post">
             <?= Csrf::campo() ?>
+            <?= EnvioUnico::campo() ?>
             <input type="hidden" name="cliente_id" value="<?= (int) $clienteElegido['id'] ?>">
             <?php include __DIR__ . '/../_error.php'; ?>
 

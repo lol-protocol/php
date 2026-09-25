@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Repositories\FunnelRepository;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. Requiere haber
  * corrido antes `php database/seed.php` (mismas variables) para tener datos.
  */
-final class FunnelRepositoryTest extends TestCase
+final class FunnelRepositoryTest extends IntegracionTestCase
 {
     public function testResumenEtapasNuncaSuperaElTotalDeVisitantes(): void
     {

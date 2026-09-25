@@ -57,17 +57,7 @@ final class SegmentacionRepository
 
     public function topPorRangoEdad(int $limite = 5): array
     {
-        return $this->topPorDimension(
-            "CASE
-                WHEN (CURRENT_DATE - c.fecha_nacimiento) / 365.25 < 25 THEN '18-24'
-                WHEN (CURRENT_DATE - c.fecha_nacimiento) / 365.25 < 35 THEN '25-34'
-                WHEN (CURRENT_DATE - c.fecha_nacimiento) / 365.25 < 45 THEN '35-44'
-                WHEN (CURRENT_DATE - c.fecha_nacimiento) / 365.25 < 55 THEN '45-54'
-                WHEN (CURRENT_DATE - c.fecha_nacimiento) / 365.25 < 65 THEN '55-64'
-                ELSE '65+'
-             END",
-            $limite
-        );
+        return $this->topPorDimension(RangoEdad::expresionSql('c.fecha_nacimiento'), $limite);
     }
 
     /**

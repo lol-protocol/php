@@ -26,7 +26,7 @@ final class ErrorHandlerTest extends TestCase
     {
         ob_start();
         ErrorHandler::manejar(new RuntimeException('contraseña de la base: secreta123'));
-        $salida = ob_get_clean();
+        $salida = (string) ob_get_clean();
 
         self::assertSame(500, http_response_code());
         self::assertStringContainsString('Ocurrió un error', $salida);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Database;
 use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
@@ -75,18 +76,22 @@ final class ClienteController
                 $error = 'La fecha de nacimiento no es válida.';
             } else {
                 try {
-                    $id = (new ClienteRepository())->crear([
-                        'nombre' => $nombre,
-                        'email' => $email,
-                        'segmento' => $segmento,
-                        'fecha_alta' => date('Y-m-d'),
-                        'pais_codigo' => $paisCodigo,
-                        'ciudad' => $ciudad,
-                        'idioma' => $idioma ?: 'Espanol',
-                        'genero' => $genero ?: 'No especifica',
-                        'fecha_nacimiento' => $fechaNacimiento,
-                    ]);
-                    AuditoriaRepository::auditarComoUsuarioActual('crear', 'cliente', $id, "Cliente #{$id}: {$nombre} ({$email})");
+                    $id = Database::transaccion(static function () use ($nombre, $email, $segmento, $paisCodigo, $ciudad, $idioma, $genero, $fechaNacimiento): int {
+                        $id = (new ClienteRepository())->crear([
+                            'nombre' => $nombre,
+                            'email' => $email,
+                            'segmento' => $segmento,
+                            'fecha_alta' => date('Y-m-d'),
+                            'pais_codigo' => $paisCodigo,
+                            'ciudad' => $ciudad,
+                            'idioma' => $idioma ?: 'Espanol',
+                            'genero' => $genero ?: 'No especifica',
+                            'fecha_nacimiento' => $fechaNacimiento,
+                        ]);
+                        AuditoriaRepository::auditarComoUsuarioActual('crear', 'cliente', $id, "Cliente #{$id}: {$nombre} ({$email})");
+
+                        return $id;
+                    });
                     header('Location: ?page=cliente&id=' . $id);
                     exit;
                 } catch (\PDOException $e) {

@@ -3,21 +3,41 @@
 declare(strict_types=1);
 
 /**
- * Reconstruye el esquema (PostgreSQL) y carga datos de ejemplo reproducibles.
- * Uso: php database/seed.php
+ * SOLO DESARROLLO: borra toda la base, la reconstruye con las migraciones y
+ * carga datos de ejemplo reproducibles.
+ * Uso: APP_ENV=dev php database/seed.php
  * Variables de conexion: DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD.
+ *
+ * Para crear o actualizar el esquema de una base con datos reales, sin
+ * tocarlos, esta database/migrar.php.
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/paises_monedas.php';
 
+use App\Config;
 use App\Database;
+use App\Migrador;
+
+// Borra todo lo que haya en la base: que no pueda correr por accidente contra
+// produccion por haberse olvidado de una variable.
+if (!Config::esDesarrollo()) {
+    fwrite(STDERR, "seed.php borra TODA la base y la regenera con datos de ejemplo: solo corre con APP_ENV=dev.\n"
+        . "Para crear o actualizar el esquema sin tocar datos: php database/migrar.php\n");
+    exit(1);
+}
 
 mt_srand(2024);
 
 $pdo = Database::connection();
-$schema = file_get_contents(__DIR__ . '/schema.sql');
-$pdo->exec($schema);
+
+// Todas las tablas del esquema, incluida la de control de migraciones, asi
+// las migraciones vuelven a correr desde la 001 sobre una base vacia. Las
+// vistas caen con el CASCADE de las tablas de las que dependen.
+foreach ($pdo->query("SELECT tablename FROM pg_tables WHERE schemaname = 'public'")->fetchAll(PDO::FETCH_COLUMN) as $tabla) {
+    $pdo->exec('DROP TABLE IF EXISTS "' . str_replace('"', '""', (string) $tabla) . '" CASCADE');
+}
+(new Migrador())->aplicar();
 
 const DIA = 86400;
 $hoy = new DateTimeImmutable('today');
@@ -44,7 +64,7 @@ function eleccionPonderada(array $pesos): string
             return $clave;
         }
     }
-    return array_key_last($pesos);
+    return (string) array_key_last($pesos);   // $pesos nunca viene vacio
 }
 
 // --- 0) Catalogo de referencia: monedas y paises (~200 territorios). ---

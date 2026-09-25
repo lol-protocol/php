@@ -1,16 +1,7 @@
--- Esquema del sistema de cobros, ingresos, pagos y funnel de conversion
--- Motor: PostgreSQL.
-
-DROP TABLE IF EXISTS auditoria;
-DROP TABLE IF EXISTS intentos_login;
-DROP TABLE IF EXISTS notas_credito;
-DROP TABLE IF EXISTS pagos;
-DROP TABLE IF EXISTS boletas;
-DROP TABLE IF EXISTS usuarios_funnel;
-DROP TABLE IF EXISTS clientes;
-DROP TABLE IF EXISTS usuarios_sistema;
-DROP TABLE IF EXISTS paises;
-DROP TABLE IF EXISTS monedas;
+-- 001: esquema inicial del sistema de cobros, ingresos, pagos y funnel de
+-- conversion (PostgreSQL). Es el que antes vivia en database/schema.sql; los
+-- cambios posteriores van en migraciones nuevas numeradas, nunca editando
+-- esta: una base que ya la tiene aplicada no la vuelve a correr.
 
 -- Monedas (ISO 4217). tasa_a_usd = cuantos USD vale 1 unidad de esa moneda,
 -- para poder consolidar montos multi-moneda en los reportes agregados.

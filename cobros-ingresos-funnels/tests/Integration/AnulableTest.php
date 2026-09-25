@@ -6,7 +6,6 @@ namespace App\Tests\Integration;
 
 use App\Database;
 use App\Repositories\BoletaRepository;
-use PDO;
 use PDOException;
 use PHPUnit\Framework\TestCase;
 use Throwable;
@@ -14,7 +13,9 @@ use Throwable;
 /**
  * Corre contra la base configurada por las env vars DB_*. Crea su propia
  * boleta de prueba y la borra en el tearDown: es un dato de laboratorio, no
- * una entidad de negocio a la que corresponda el soft-delete.
+ * una entidad de negocio a la que corresponda el soft-delete. No usa la
+ * transaccion de IntegracionTestCase porque la segunda conexion (el "otro
+ * proceso") no veria una boleta sin commitear.
  */
 final class AnulableTest extends TestCase
 {
@@ -29,23 +30,6 @@ final class AnulableTest extends TestCase
             ->prepare('DELETE FROM boletas WHERE id = :id')
             ->execute([':id' => $this->boletaId]);
         $this->boletaId = null;
-    }
-
-    /** Otra conexion a la misma base, para poder representar a un segundo proceso. */
-    private static function segundaConexion(): PDO
-    {
-        $host = getenv('DB_HOST') ?: '127.0.0.1';
-        $port = getenv('DB_PORT') ?: '5432';
-        $nombre = getenv('DB_NAME') ?: 'cobros_ingresos_funnels';
-
-        $pdo = new PDO(
-            "pgsql:host={$host};port={$port};dbname={$nombre}",
-            getenv('DB_USER') ?: 'cobros_app',
-            getenv('DB_PASSWORD') ?: 'cobros_app_dev'
-        );
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        return $pdo;
     }
 
     private function crearBoletaDePrueba(): int
@@ -92,7 +76,7 @@ final class AnulableTest extends TestCase
         $repo = new BoletaRepository();
         $id = $this->crearBoletaDePrueba();
 
-        $otroProceso = self::segundaConexion();
+        $otroProceso = Database::conectar();
         $otroProceso->exec("SET lock_timeout = '500ms'");
 
         $db = Database::connection();

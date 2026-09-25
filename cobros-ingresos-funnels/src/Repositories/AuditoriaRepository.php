@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Auth;
 use App\Database;
 use App\Paginacion;
+use LogicException;
 use PDO;
 
 final class AuditoriaRepository
@@ -22,9 +23,24 @@ final class AuditoriaRepository
      * Registra la accion atribuida al usuario de la sesion actual (o null si
      * no hay sesion). Punto unico usado por los controllers para no repetir
      * "Auth::usuarioActual() + registrar()" en cada uno.
+     *
+     * Exige estar dentro de Database::transaccion(): la entrada tiene que
+     * quedar en la misma transaccion que el cambio que describe, o un cambio
+     * puede quedar sin auditar si la segunda escritura falla. Asi era en ocho
+     * flujos (altas, ediciones, usuarios); con la exigencia, un flujo nuevo
+     * que se olvide la transaccion falla en los tests en vez de en silencio.
      */
     public static function auditarComoUsuarioActual(string $accion, string $entidad, int $entidadId, string $detalle): void
     {
+        if (!Database::connection()->inTransaction()) {
+            throw new LogicException(sprintf(
+                'La auditoria de "%s %s #%d" tiene que registrarse dentro de Database::transaccion(), junto con el cambio que describe.',
+                $accion,
+                $entidad,
+                $entidadId
+            ));
+        }
+
         $usuario = Auth::usuarioActual();
         (new self())->registrar($usuario['id'] ?? null, $accion, $entidad, $entidadId, $detalle);
     }

@@ -5,35 +5,27 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Repositories\UsuarioSistemaRepository;
-use PHPUnit\Framework\TestCase;
 
 /**
- * Corre contra la base configurada por las env vars DB_*. No hay delete() a
- * proposito (el acceso se revoca via `activo`, no se borra el usuario), asi
- * que estos tests dejan a sus usuarios de prueba desactivados en el tearDown
- * en vez de borrarlos.
+ * Corre contra la base configurada por las env vars DB_*. Los usuarios de
+ * prueba se deshacen con la transaccion de cada test (antes quedaban en la
+ * tabla, desactivados, porque no hay delete() a proposito).
  */
-final class UsuarioSistemaRepositoryTest extends TestCase
+final class UsuarioSistemaRepositoryTest extends IntegracionTestCase
 {
-    private ?int $idCreado = null;
-
-    protected function tearDown(): void
+    /** El usuario, que tiene que existir. */
+    private static function usuario(UsuarioSistemaRepository $repo, int $id): array
     {
-        if ($this->idCreado === null) {
-            return;
-        }
-        $repo = new UsuarioSistemaRepository();
-        $usuario = $repo->porId($this->idCreado);
-        if ($usuario !== null && $usuario['activo']) {
-            $repo->alternarActivo($this->idCreado);
-        }
+        $usuario = $repo->porId($id);
+        self::assertNotNull($usuario, "el usuario #{$id} tendria que existir");
+
+        return $usuario;
     }
 
     private function crearUsuarioDePrueba(UsuarioSistemaRepository $repo, string $password = 'password-original'): array
     {
         $email = 'test-usuario-' . uniqid() . '@example.com';
-        $this->idCreado = $repo->crear('Usuario de Prueba', $email, $password);
-        return [$this->idCreado, $email];
+        return [$repo->crear('Usuario de Prueba', $email, $password), $email];
     }
 
     public function testCrearGuardaElHashNuncaLaContraseñaEnTextoPlano(): void
@@ -41,9 +33,8 @@ final class UsuarioSistemaRepositoryTest extends TestCase
         $repo = new UsuarioSistemaRepository();
         [$id] = $this->crearUsuarioDePrueba($repo, 'password-original');
 
-        $usuario = $repo->porId($id);
+        $usuario = self::usuario($repo, $id);
 
-        self::assertNotNull($usuario);
         self::assertTrue($usuario['activo'], 'un usuario nuevo arranca activo');
         self::assertNotSame('password-original', $usuario['password_hash']);
         self::assertTrue(password_verify('password-original', $usuario['password_hash']));
@@ -72,23 +63,37 @@ final class UsuarioSistemaRepositoryTest extends TestCase
         [$id] = $this->crearUsuarioDePrueba($repo, 'password-original');
 
         $repo->cambiarPassword($id, 'password-nueva');
-        $usuario = $repo->porId($id);
+        $usuario = self::usuario($repo, $id);
 
         self::assertFalse(password_verify('password-original', $usuario['password_hash']));
         self::assertTrue(password_verify('password-nueva', $usuario['password_hash']));
     }
 
-    public function testAlternarActivoInvierteElEstadoYDevuelveElNuevoValor(): void
+    public function testFijarActivoCambiaElEstadoYDiceSiCambioAlgo(): void
     {
         $repo = new UsuarioSistemaRepository();
         [$id] = $this->crearUsuarioDePrueba($repo);
 
-        $nuevoEstado = $repo->alternarActivo($id);
-        self::assertFalse($nuevoEstado);
-        self::assertFalse($repo->porId($id)['activo']);
+        self::assertTrue($repo->fijarActivo($id, false));
+        self::assertFalse(self::usuario($repo, $id)['activo']);
 
-        $otraVez = $repo->alternarActivo($id);
-        self::assertTrue($otraVez);
-        self::assertTrue($repo->porId($id)['activo']);
+        self::assertTrue($repo->fijarActivo($id, true));
+        self::assertTrue(self::usuario($repo, $id)['activo']);
+    }
+
+    /**
+     * Reproduce el doble clic en "Revocar acceso": cuando era un alternar
+     * (activo = NOT activo), el segundo envio del mismo formulario volvia a
+     * dar acceso. Con el estado buscado explicito, el segundo no cambia nada
+     * y el controller sabe que no tiene que auditar otra vez.
+     */
+    public function testRevocarDosVecesSeguidasNoReactivaAlUsuario(): void
+    {
+        $repo = new UsuarioSistemaRepository();
+        [$id] = $this->crearUsuarioDePrueba($repo);
+
+        self::assertTrue($repo->fijarActivo($id, false), 'el primer envio revoca');
+        self::assertFalse($repo->fijarActivo($id, false), 'el segundo no encuentra nada que cambiar');
+        self::assertFalse(self::usuario($repo, $id)['activo'], 'y el usuario sigue revocado');
     }
 }

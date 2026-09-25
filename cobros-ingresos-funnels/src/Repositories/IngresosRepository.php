@@ -75,10 +75,9 @@ final class IngresosRepository
     public function carteraAging(): array
     {
         $rows = $this->db->query(
-            "SELECT b.id, b.fecha_vencimiento, m.tasa_a_usd,
-                    b.monto - COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.boleta_id = b.id AND NOT p.anulada), 0) AS saldo,
+            "SELECT b.id, b.fecha_vencimiento, m.tasa_a_usd, b.saldo,
                     (CURRENT_DATE - b.fecha_vencimiento) AS dias_vencido
-             FROM boletas b
+             FROM boletas_con_saldo b
              JOIN monedas m ON m.codigo = b.moneda_codigo
              WHERE NOT b.anulada"
         )->fetchAll();

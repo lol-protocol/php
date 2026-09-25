@@ -88,7 +88,6 @@ final class PaginacionTest extends TestCase
         $pagina = Paginacion::acotar((int) '9999999999999999999', Paginacion::POR_PAGINA * 4);
 
         self::assertSame(4, $pagina);
-        self::assertIsInt(Paginacion::offset($pagina));
         self::assertSame(Paginacion::POR_PAGINA * 3, Paginacion::offset($pagina));
     }
 }

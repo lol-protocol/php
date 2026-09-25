@@ -6,24 +6,19 @@ namespace App\Tests\Integration;
 
 use App\Database;
 use App\Repositories\IntentoLoginRepository;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. Usa un email
- * dedicado y lo limpia antes/despues de cada test para no interferir con
- * otros datos de la tabla intentos_login.
+ * dedicado y lo limpia al empezar, por si quedo algun intento de antes; lo
+ * que cada test agrega se deshace con su transaccion.
  */
-final class IntentoLoginRepositoryTest extends TestCase
+final class IntentoLoginRepositoryTest extends IntegracionTestCase
 {
     private const EMAIL_PRUEBA = 'test-fuerza-bruta@example.com';
 
     protected function setUp(): void
     {
-        (new IntentoLoginRepository())->limpiar(self::EMAIL_PRUEBA);
-    }
-
-    protected function tearDown(): void
-    {
+        parent::setUp();
         (new IntentoLoginRepository())->limpiar(self::EMAIL_PRUEBA);
     }
 

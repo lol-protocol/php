@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Database;
+use App\Repositories\AuditoriaRepository;
+use LogicException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -60,16 +62,83 @@ final class DatabaseTransaccionTest extends TestCase
     {
         $antes = $this->totalAuditoria();
 
+        $propagada = null;
         try {
             Database::transaccion(function (): void {
                 $this->insertarFilaDeAuditoria('Esta no deberia sobrevivir ' . uniqid());
                 throw new RuntimeException('falla simulada en la segunda escritura');
             });
-            self::fail('la excepcion tenia que propagarse despues del rollback');
         } catch (RuntimeException $e) {
-            self::assertSame('falla simulada en la segunda escritura', $e->getMessage());
+            $propagada = $e;
         }
 
+        self::assertNotNull($propagada, 'la excepcion tenia que propagarse despues del rollback');
+        self::assertSame('falla simulada en la segunda escritura', $propagada->getMessage());
+
         self::assertSame($antes, $this->totalAuditoria(), 'el rollback tiene que dejar la tabla como estaba');
+    }
+
+    public function testDevuelveLoQueDevuelveLaOperacion(): void
+    {
+        self::assertSame(42, Database::transaccion(static fn (): int => 42));
+    }
+
+    /**
+     * Una operacion que llama a otra (o un test que envuelve todo en una
+     * transaccion) no puede hacer dos beginTransaction(): la de adentro se
+     * anida con un SAVEPOINT. Si falla, se deshace solo lo suyo y la de
+     * afuera sigue y commitea lo propio.
+     */
+    public function testUnaAnidadaQueFallaDeshaceSoloLoSuyo(): void
+    {
+        $antes = $this->totalAuditoria();
+
+        Database::transaccion(function (): void {
+            $this->insertarFilaDeAuditoria('De la de afuera ' . uniqid());
+            try {
+                Database::transaccion(function (): void {
+                    $this->insertarFilaDeAuditoria('De la anidada ' . uniqid());
+                    throw new RuntimeException('falla la anidada');
+                });
+            } catch (RuntimeException) {
+                // la de afuera decide seguir
+            }
+        });
+
+        self::assertSame($antes + 1, $this->totalAuditoria(), 'queda la de afuera, no la anidada');
+        self::assertFalse(Database::connection()->inTransaction());
+
+        Database::connection()
+            ->prepare("DELETE FROM auditoria WHERE entidad = 'prueba_transaccion'")
+            ->execute();
+    }
+
+    public function testLoQueHaceUnaAnidadaSeDeshaceSiFallaLaDeAfuera(): void
+    {
+        $antes = $this->totalAuditoria();
+
+        try {
+            Database::transaccion(function (): void {
+                Database::transaccion(function (): void {
+                    $this->insertarFilaDeAuditoria('Anidada que termino bien ' . uniqid());
+                });
+                throw new RuntimeException('falla la de afuera despues');
+            });
+        } catch (RuntimeException) {
+        }
+
+        self::assertSame($antes, $this->totalAuditoria(), 'la anidada no commitea por su cuenta');
+    }
+
+    /**
+     * La auditoria tiene que quedar en la misma transaccion que el cambio
+     * que describe. Un flujo que la registre suelto falla enseguida, en vez
+     * de arriesgar un cambio sin auditar.
+     */
+    public function testAuditarFueraDeUnaTransaccionEsUnError(): void
+    {
+        $this->expectException(LogicException::class);
+
+        AuditoriaRepository::auditarComoUsuarioActual('crear', 'prueba_transaccion', 1, 'Fuera de transaccion');
     }
 }

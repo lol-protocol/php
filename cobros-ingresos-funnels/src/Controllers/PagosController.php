@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Database;
+use App\EnvioUnico;
 use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
@@ -55,6 +56,15 @@ final class PagosController
         $clienteElegido = $clienteId > 0 ? $clienteRepo->porId($clienteId) : null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $token = EnvioUnico::tokenRecibido();
+            $reenvio = $token === null ? null : EnvioUnico::redireccionPrevia($token);
+            if ($reenvio !== null) {
+                // Mismo formulario enviado otra vez (doble clic): el pago ya se
+                // registro. Sin esto se volvia a validar y a crear otro igual.
+                header('Location: ' . $reenvio);
+                exit;
+            }
+
             $monto = (float) ($_POST['monto'] ?? 0);
             $fechaPago = (string) ($_POST['fecha_pago'] ?? '');
             $metodo = (string) ($_POST['metodo'] ?? '');
@@ -62,7 +72,9 @@ final class PagosController
 
             $boleta = $boletaId > 0 ? $boletaRepo->porId($boletaId) : null;
 
-            if ($clienteElegido === null) {
+            if ($token === null) {
+                $error = EnvioUnico::MENSAJE_SIN_TOKEN;
+            } elseif ($clienteElegido === null) {
                 $error = 'Elegí un cliente valido.';
             } elseif (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
                 $error = 'Completá todos los campos.';
@@ -70,27 +82,31 @@ final class PagosController
                 $error = 'La fecha de pago no es válida.';
             } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
                 $error = 'La boleta elegida no es válida para este cliente.';
-            } elseif ($boletaId > 0 && !self::fechaPagoEsValida($fechaPago, $boleta)) {
+            } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {
                 $error = 'La fecha de pago no puede ser anterior a la emisión de la boleta.';
-            } elseif ($boletaId > 0 && !self::montoNoSuperaElSaldo($monto, $boleta)) {
+            } elseif ($boleta !== null && !self::montoNoSuperaElSaldo($monto, $boleta)) {
                 $error = 'El monto supera el saldo pendiente de la boleta.';
             } else {
-                $id = (new PagoRepository())->crear([
-                    'boleta_id' => $boletaId ?: null,
-                    'cliente_id' => $clienteId,
-                    'monto' => $monto,
-                    'moneda_codigo' => $clienteElegido['moneda_codigo'],
-                    'fecha_pago' => $fechaPago,
-                    'metodo' => $metodo,
-                ]);
-                AuditoriaRepository::auditarComoUsuarioActual('crear', 'pago', $id, sprintf(
-                    'Pago #%d de %s: %s%s',
-                    $id,
-                    $clienteElegido['nombre'],
-                    money_moneda($monto, $clienteElegido['moneda_codigo']),
-                    $boletaId ? " (boleta #{$boletaId})" : ' (anticipo)'
-                ));
-                header('Location: ?page=pagos&creado=' . $id);
+                $destino = EnvioUnico::ejecutar($token, static function () use ($boletaId, $clienteId, $monto, $clienteElegido, $fechaPago, $metodo): string {
+                    $id = (new PagoRepository())->crear([
+                        'boleta_id' => $boletaId ?: null,
+                        'cliente_id' => $clienteId,
+                        'monto' => $monto,
+                        'moneda_codigo' => $clienteElegido['moneda_codigo'],
+                        'fecha_pago' => $fechaPago,
+                        'metodo' => $metodo,
+                    ]);
+                    AuditoriaRepository::auditarComoUsuarioActual('crear', 'pago', $id, sprintf(
+                        'Pago #%d de %s: %s%s',
+                        $id,
+                        $clienteElegido['nombre'],
+                        money_moneda($monto, $clienteElegido['moneda_codigo']),
+                        $boletaId ? " (boleta #{$boletaId})" : ' (anticipo)'
+                    ));
+
+                    return '?page=pagos&creado=' . $id;
+                });
+                header('Location: ' . $destino);
                 exit;
             }
         }
@@ -191,8 +207,10 @@ final class PagosController
                 $antes = money_moneda((float) $pago['monto'], $pago['moneda_codigo']) . " ({$pago['metodo']})";
                 $despues = money_moneda($monto, $pago['moneda_codigo']) . " ({$metodo})";
 
-                $pagoRepo->actualizar($id, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
-                AuditoriaRepository::auditarComoUsuarioActual('editar', 'pago', $id, sprintf('Pago #%d: %s -> %s', $id, $antes, $despues));
+                Database::transaccion(static function () use ($pagoRepo, $id, $monto, $fechaPago, $metodo, $antes, $despues): void {
+                    $pagoRepo->actualizar($id, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
+                    AuditoriaRepository::auditarComoUsuarioActual('editar', 'pago', $id, sprintf('Pago #%d: %s -> %s', $id, $antes, $despues));
+                });
                 header('Location: ?page=pagos&editado=' . $id);
                 exit;
             }

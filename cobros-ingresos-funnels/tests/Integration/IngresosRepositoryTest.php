@@ -7,13 +7,12 @@ namespace App\Tests\Integration;
 use App\Database;
 use App\Repositories\IngresosRepository;
 use App\Repositories\NotaCreditoRepository;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. Requiere haber
  * corrido antes `php database/seed.php` (mismas variables) para tener datos.
  */
-final class IngresosRepositoryTest extends TestCase
+final class IngresosRepositoryTest extends IntegracionTestCase
 {
     public function testCarteraAgingSoloSumaSaldosPositivosYCoincideConLaSumaIndependiente(): void
     {
@@ -77,7 +76,7 @@ final class IngresosRepositoryTest extends TestCase
         $boleta = $db->query('SELECT id, cliente_id, moneda_codigo FROM boletas ORDER BY id LIMIT 1')->fetch();
         self::assertNotFalse($boleta, 'este test asume que el seed dejo al menos una boleta');
 
-        $notaId = (new NotaCreditoRepository())->crear([
+        (new NotaCreditoRepository())->crear([
             'boleta_id' => $boleta['id'],
             'cliente_id' => $boleta['cliente_id'],
             'monto' => 1000.00,
@@ -86,22 +85,18 @@ final class IngresosRepositoryTest extends TestCase
             'motivo' => 'Nota de prueba ' . uniqid(),
         ]);
 
-        try {
-            $repo = new IngresosRepository();
-            $filas = $repo->cobrosPorMes('1990-01-01', '1990-12-31');
+        $repo = new IngresosRepository();
+        $filas = $repo->cobrosPorMes('1990-01-01', '1990-12-31');
 
-            self::assertCount(1, $filas, 'el mes con solo devoluciones tiene que aparecer igual');
-            self::assertSame('1990-06', $filas[0]['mes']);
-            self::assertLessThan(0.0, (float) $filas[0]['total'], 'un mes que solo devolvio plata da negativo');
-            self::assertEqualsWithDelta(
-                $repo->kpis('1990-01-01', '1990-12-31')['cobrado'],
-                (float) $filas[0]['total'],
-                0.05,
-                'grafico y KPI tienen que decir lo mismo'
-            );
-        } finally {
-            $db->prepare('DELETE FROM notas_credito WHERE id = :id')->execute([':id' => $notaId]);
-        }
+        self::assertCount(1, $filas, 'el mes con solo devoluciones tiene que aparecer igual');
+        self::assertSame('1990-06', $filas[0]['mes']);
+        self::assertLessThan(0.0, (float) $filas[0]['total'], 'un mes que solo devolvio plata da negativo');
+        self::assertEqualsWithDelta(
+            $repo->kpis('1990-01-01', '1990-12-31')['cobrado'],
+            (float) $filas[0]['total'],
+            0.05,
+            'grafico y KPI tienen que decir lo mismo'
+        );
     }
 
     /**

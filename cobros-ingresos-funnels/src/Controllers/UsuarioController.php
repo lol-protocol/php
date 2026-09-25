@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Auth;
+use App\Database;
 use App\Peticion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\UsuarioSistemaRepository;
@@ -43,13 +44,17 @@ final class UsuarioController
 
             if ($error === null) {
                 try {
-                    $id = (new UsuarioSistemaRepository())->crear($nombre, $email, $password);
-                    AuditoriaRepository::auditarComoUsuarioActual(
-                        'crear',
-                        'usuario',
-                        $id,
-                        "Usuario #{$id}: {$nombre} ({$email})"
-                    );
+                    $id = Database::transaccion(static function () use ($nombre, $email, $password): int {
+                        $id = (new UsuarioSistemaRepository())->crear($nombre, $email, $password);
+                        AuditoriaRepository::auditarComoUsuarioActual(
+                            'crear',
+                            'usuario',
+                            $id,
+                            "Usuario #{$id}: {$nombre} ({$email})"
+                        );
+
+                        return $id;
+                    });
                     header('Location: ?page=usuarios&creado=' . $id);
                     exit;
                 } catch (PDOException $e) {
@@ -81,13 +86,15 @@ final class UsuarioController
             $error = self::validarPassword($password, $confirmar);
 
             if ($error === null) {
-                $repo->cambiarPassword($id, $password);
-                AuditoriaRepository::auditarComoUsuarioActual(
-                    'editar',
-                    'usuario',
-                    $id,
-                    sprintf('Usuario #%d (%s): contraseña actualizada', $id, $usuario['email'])
-                );
+                Database::transaccion(static function () use ($repo, $id, $password, $usuario): void {
+                    $repo->cambiarPassword($id, $password);
+                    AuditoriaRepository::auditarComoUsuarioActual(
+                        'editar',
+                        'usuario',
+                        $id,
+                        sprintf('Usuario #%d (%s): contraseña actualizada', $id, $usuario['email'])
+                    );
+                });
                 header('Location: ?page=usuarios&passwordCambiada=' . $id);
                 exit;
             }
@@ -118,13 +125,22 @@ final class UsuarioController
                 return;
             }
 
-            $nuevoEstado = $repo->alternarActivo($id);
-            AuditoriaRepository::auditarComoUsuarioActual(
-                $nuevoEstado ? 'activar' : 'anular',
-                'usuario',
-                $id,
-                sprintf('Usuario #%d (%s): acceso %s', $id, $usuario['email'], $nuevoEstado ? 'reactivado' : 'revocado')
-            );
+            // El estado buscado viene del formulario y no de invertir el
+            // actual: asi un doble clic en "Revocar" no revoca y reactiva.
+            // Si el campo falta, se revoca: el valor por defecto nunca puede
+            // ser dar acceso.
+            $activar = ($_POST['activo'] ?? '') === '1';
+            Database::transaccion(static function () use ($repo, $id, $usuario, $activar): void {
+                if (!$repo->fijarActivo($id, $activar)) {
+                    return;
+                }
+                AuditoriaRepository::auditarComoUsuarioActual(
+                    $activar ? 'activar' : 'anular',
+                    'usuario',
+                    $id,
+                    sprintf('Usuario #%d (%s): acceso %s', $id, $usuario['email'], $activar ? 'reactivado' : 'revocado')
+                );
+            });
             header('Location: ?page=usuarios');
             exit;
         }

@@ -60,13 +60,23 @@ final class UsuarioSistemaRepository
         $stmt->execute([':id' => $id, ':hash' => password_hash($passwordNueva, PASSWORD_DEFAULT)]);
     }
 
-    /** Prende o apaga el acceso de un usuario (soft-delete). Devuelve el nuevo estado. */
-    public function alternarActivo(int $id): bool
+    /**
+     * Deja el acceso del usuario en $activo (soft-delete) y devuelve si
+     * cambio algo. Antes era un "alternar" (activo = NOT activo): un doble
+     * clic en "Revocar acceso" lo revocaba y enseguida lo volvia a activar,
+     * con dos entradas de auditoria que se contradecian. Con el estado
+     * buscado explicito, el segundo envio no encuentra nada que cambiar.
+     */
+    public function fijarActivo(int $id, bool $activo): bool
     {
         $stmt = $this->db->prepare(
-            'UPDATE usuarios_sistema SET activo = NOT activo WHERE id = :id RETURNING activo'
+            'UPDATE usuarios_sistema SET activo = :activo WHERE id = :id AND activo = :actual RETURNING id'
         );
-        $stmt->execute([':id' => $id]);
-        return (bool) $stmt->fetchColumn();
+        $stmt->bindValue(':activo', $activo, PDO::PARAM_BOOL);
+        $stmt->bindValue(':actual', !$activo, PDO::PARAM_BOOL);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchColumn() !== false;
     }
 }

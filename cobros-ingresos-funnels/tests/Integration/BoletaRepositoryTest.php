@@ -7,7 +7,7 @@ namespace App\Tests\Integration;
 use App\Database;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
-use PHPUnit\Framework\TestCase;
+use App\Repositories\PagoRepository;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. Requiere haber
@@ -15,21 +15,8 @@ use PHPUnit\Framework\TestCase;
  * El reporting de ingresos (kpis/carteraAging/etc.) se prueba en
  * IngresosRepositoryTest.
  */
-final class BoletaRepositoryTest extends TestCase
+final class BoletaRepositoryTest extends IntegracionTestCase
 {
-    /** @var int[] */
-    private array $idsCreados = [];
-
-    protected function tearDown(): void
-    {
-        if ($this->idsCreados === []) {
-            return;
-        }
-        $marcadores = implode(',', array_fill(0, count($this->idsCreados), '?'));
-        $stmt = Database::connection()->prepare("DELETE FROM boletas WHERE id IN ({$marcadores})");
-        $stmt->execute($this->idsCreados);
-    }
-
     public function testListadoFiltradoPorEstadoSoloDevuelveEseEstado(): void
     {
         $repo = new BoletaRepository();
@@ -108,7 +95,7 @@ final class BoletaRepositoryTest extends TestCase
         $cantidad = \App\Paginacion::POR_PAGINA + 5;
         $repo = new BoletaRepository();
         for ($i = 0; $i < $cantidad; $i++) {
-            $this->idsCreados[] = $repo->crear([
+            $repo->crear([
                 'cliente_id' => 1,
                 'concepto' => 'Test empate paginacion',
                 'monto' => 100,
@@ -173,5 +160,38 @@ final class BoletaRepositoryTest extends TestCase
                 $ultima['filas']
             );
         }
+    }
+
+    /**
+     * pagado y saldo salen de la vista boletas_con_saldo, que reemplazo a
+     * cuatro copias de la misma subconsulta. Un pago anulado no cuenta: es la
+     * regla que antes habia que mantener igual en los cuatro lugares.
+     */
+    public function testPagadoYSaldoSoloCuentanLosPagosVigentes(): void
+    {
+        $cliente = (new ClienteRepository())->porId(1);
+        self::assertNotNull($cliente, 'este test asume que el cliente #1 existe (lo trae el seed)');
+
+        $boletas = new BoletaRepository();
+        $id = $boletas->crear([
+            'cliente_id' => 1,
+            'concepto' => 'Boleta de prueba de saldo',
+            'monto' => 1000,
+            'moneda_codigo' => $cliente['moneda_codigo'],
+            'fecha_emision' => '2020-01-01',
+            'fecha_vencimiento' => '2020-02-01',
+        ]);
+        $pagos = new PagoRepository();
+        $datosPago = ['boleta_id' => $id, 'cliente_id' => 1, 'moneda_codigo' => $cliente['moneda_codigo'], 'fecha_pago' => '2020-01-10', 'metodo' => 'tarjeta'];
+        $pagos->crear($datosPago + ['monto' => 300]);
+        $anulado = $pagos->crear($datosPago + ['monto' => 200]);
+        $pagos->anularSiEstabaActiva($anulado);
+
+        $boleta = $boletas->porId($id);
+
+        self::assertNotNull($boleta);
+        self::assertEqualsWithDelta(300.0, (float) $boleta['pagado'], 0.001);
+        self::assertEqualsWithDelta(700.0, $boleta['saldo'], 0.001);
+        self::assertSame('2020-01-10', $boleta['primer_pago']);
     }
 }

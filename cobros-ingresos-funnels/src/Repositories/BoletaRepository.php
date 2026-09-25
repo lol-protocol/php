@@ -44,15 +44,15 @@ final class BoletaRepository
     /**
      * Incluye pagado/saldo (igual que listado()/porCliente()) para poder
      * validar sobrepagos, y primer_pago para no dejar mover la emision por
-     * delante de los pagos que la boleta ya tiene.
+     * delante de los pagos que la boleta ya tiene. Los tres salen de la vista
+     * boletas_con_saldo, la unica definicion de "cuanto se pago" (ver la
+     * migracion 003).
      */
     public function porId(int $id): ?array
     {
         $stmt = $this->db->prepare(
-            "SELECT b.*, c.nombre AS cliente,
-                    COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.boleta_id = b.id AND NOT p.anulada), 0) AS pagado,
-                    (SELECT MIN(p.fecha_pago) FROM pagos p WHERE p.boleta_id = b.id AND NOT p.anulada) AS primer_pago
-             FROM boletas b JOIN clientes c ON c.id = b.cliente_id
+            "SELECT b.*, c.nombre AS cliente
+             FROM boletas_con_saldo b JOIN clientes c ON c.id = b.cliente_id
              WHERE b.id = :id"
         );
         $stmt->execute([':id' => $id]);
@@ -60,7 +60,7 @@ final class BoletaRepository
         if ($row === false) {
             return null;
         }
-        $row['saldo'] = round((float) $row['monto'] - (float) $row['pagado'], 2);
+        $row['saldo'] = round((float) $row['saldo'], 2);
         return $row;
     }
 
@@ -88,9 +88,8 @@ final class BoletaRepository
     public function porCliente(int $clienteId): array
     {
         $stmt = $this->db->prepare(
-            "SELECT b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada,
-                    COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.boleta_id = b.id AND NOT p.anulada), 0) AS pagado
-             FROM boletas b
+            "SELECT b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada, b.pagado
+             FROM boletas_con_saldo b
              WHERE b.cliente_id = :id
              ORDER BY b.fecha_emision DESC"
         );
@@ -123,9 +122,8 @@ final class BoletaRepository
         }
 
         $select = "SELECT b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada,
-                    c.id AS cliente_id, c.nombre AS cliente,
-                    COALESCE((SELECT SUM(p.monto) FROM pagos p WHERE p.boleta_id = b.id AND NOT p.anulada), 0) AS pagado
-             FROM boletas b
+                    c.id AS cliente_id, c.nombre AS cliente, b.pagado
+             FROM boletas_con_saldo b
              JOIN clientes c ON c.id = b.cliente_id
              WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}";
 
@@ -154,7 +152,10 @@ final class BoletaRepository
             ];
         }
 
-        $stmt = $this->db->prepare("{$select} ORDER BY b.fecha_emision DESC");
+        // Mismo desempate por id que el camino SQL: este camino tambien pagina
+        // (cada pagina es una consulta nueva), y sin un orden total dos
+        // boletas del mismo dia podian cambiar de lugar entre la pagina 1 y la 2.
+        $stmt = $this->db->prepare("{$select} ORDER BY b.fecha_emision DESC, b.id DESC");
         $stmt->execute($params);
         $filtradas = array_filter(
             self::conEstadoCalculado($stmt->fetchAll()),

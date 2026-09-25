@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
+use App\Database;
+use App\Paginacion;
 use App\Repositories\AuditoriaRepository;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. La auditoria es de
- * solo insercion (no hay metodo de borrado a proposito), asi que estos tests
- * agregan filas de prueba en vez de limpiar antes/despues.
+ * solo insercion (no hay metodo de borrado a proposito): las filas que agregan
+ * estos tests se deshacen con la transaccion de cada uno.
  */
-final class AuditoriaRepositoryTest extends TestCase
+final class AuditoriaRepositoryTest extends IntegracionTestCase
 {
     public function testRegistrarQuedaPrimeroEnElListadoPorSerElMasReciente(): void
     {
@@ -38,24 +39,45 @@ final class AuditoriaRepositoryTest extends TestCase
         $listado = $repo->listado(1);
 
         self::assertGreaterThanOrEqual(1, $listado['total']);
-        self::assertLessThanOrEqual(\App\Paginacion::POR_PAGINA, count($listado['filas']));
-        self::assertSame(\App\Paginacion::totalPaginas($listado['total']), $listado['totalPaginas']);
+        self::assertLessThanOrEqual(Paginacion::POR_PAGINA, count($listado['filas']));
+        self::assertSame(Paginacion::totalPaginas($listado['total']), $listado['totalPaginas']);
     }
 
+    /**
+     * Este test se salteaba en todas las corridas: dependia de que el seed
+     * dejara mas de una pagina de auditoria, y el seed no audita nada, asi
+     * que la paginacion de Auditoria nunca se habia probado. Ahora se arma
+     * sus propias filas: dos paginas completas, todas con el mismo creado_en
+     * (el now() de la transaccion) para que el unico desempate sea el id.
+     */
     public function testPaginaDosNoRepiteFilasDeLaPaginaUno(): void
     {
         $repo = new AuditoriaRepository();
-        $pagina1 = $repo->listado(1);
-
-        if ($pagina1['totalPaginas'] < 2) {
-            self::markTestSkipped('No hay suficientes filas de auditoria para probar una segunda pagina.');
+        for ($i = 0; $i < 2 * Paginacion::POR_PAGINA; $i++) {
+            $repo->registrar(null, 'crear', 'prueba_paginacion', $i, "Fila de paginacion {$i}");
         }
 
-        $pagina2 = $repo->listado(2);
-
-        self::assertEmpty(
-            array_intersect(array_column($pagina1['filas'], 'detalle'), array_column($pagina2['filas'], 'detalle')),
-            'paginas distintas no deben repetir filas'
+        // El listado no expone el id; entidad#entidad_id es unico entre estas filas.
+        $clavesDe = static fn (array $listado): array => array_map(
+            static fn (array $fila): string => $fila['entidad'] . '#' . $fila['entidad_id'],
+            $listado['filas']
         );
+        $pagina1 = $clavesDe($repo->listado(1));
+        $pagina2 = $clavesDe($repo->listado(2));
+
+        self::assertCount(Paginacion::POR_PAGINA, $pagina1);
+        self::assertCount(Paginacion::POR_PAGINA, $pagina2);
+        self::assertEmpty(array_intersect($pagina1, $pagina2), 'paginas distintas no deben repetir filas');
+    }
+
+    public function testAuditarDentroDeUnaTransaccionRegistraLaFila(): void
+    {
+        $detalle = 'Auditoria en transaccion ' . uniqid();
+
+        AuditoriaRepository::auditarComoUsuarioActual('crear', 'prueba', 1, $detalle);
+
+        $stmt = Database::connection()->prepare('SELECT COUNT(*) FROM auditoria WHERE detalle = :detalle');
+        $stmt->execute([':detalle' => $detalle]);
+        self::assertSame(1, (int) $stmt->fetchColumn());
     }
 }
