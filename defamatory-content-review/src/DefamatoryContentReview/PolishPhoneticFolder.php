@@ -21,29 +21,20 @@ namespace DefamatoryContentReview;
  * son ambigüedades de sonido, así que sólo se les quita el signo como
  * normalización de accesibilidad, igual que en los demás folders.
  */
-class PolishPhoneticFolder
+class PolishPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
-
     private const ACCENTS = [
         'ą' => 'a', 'ć' => 'c', 'ę' => 'e', 'ł' => 'l', 'ń' => 'n', 'ś' => 's', 'ź' => 'z',
     ];
 
-    public static function fold(string $text): string
+    protected static function getAccents(): array { return self::ACCENTS; }
+
+    protected static function applyLanguageRules(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-        $text = self::stripSeparators($text);
-
         $text = str_replace('ż', 'rz', $text);
-
-        // "ch" nativo se protege antes de convertir la "h" suelta, para no
-        // duplicarla ("chleb" no debe pasar a "cchleb").
         $text = str_replace('ch', "\x01", $text);
         $text = str_replace('h', 'ch', $text);
         $text = str_replace("\x01", 'ch', $text);
-
         return str_replace('ó', 'u', $text);
     }
 }

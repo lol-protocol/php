@@ -22,21 +22,16 @@ namespace DefamatoryContentReview;
  * colapsarlos con su vocal corta uniría vocales que en húngaro suenan
  * distinto.
  */
-class HungarianPhoneticFolder
+class HungarianPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
-
     private const ACCENTS = [
         'ő' => 'ö', 'ű' => 'ü',
     ];
 
-    public static function fold(string $text): string
-    {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-        $text = self::stripSeparators($text);
+    protected static function getAccents(): array { return self::ACCENTS; }
 
+    protected static function applyLanguageRules(string $text): string
+    {
         return str_replace('ly', 'j', $text);
     }
 }

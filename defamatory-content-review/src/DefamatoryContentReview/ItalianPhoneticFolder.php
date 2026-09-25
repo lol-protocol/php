@@ -17,20 +17,9 @@ namespace DefamatoryContentReview;
  * sin inventar plegados que no responden a una confusión real y que sólo
  * aumentarían el riesgo de falsos positivos.
  */
-class ItalianPhoneticFolder
+class ItalianPhoneticFolder extends AbstractPhoneticFolder
 {
-    use AccentOnlyPhoneticFolding;
+    protected static function getAccents(): array { return CommonPhoneticAccents::EUROPEAN_VOWELS; }
 
-    private const ACCENTS = [
-        'à' => 'a', 'á' => 'a',
-        'è' => 'e', 'é' => 'e',
-        'ì' => 'i', 'í' => 'i',
-        'ò' => 'o', 'ó' => 'o',
-        'ù' => 'u', 'ú' => 'u',
-    ];
-
-    public static function fold(string $text): string
-    {
-        return self::foldAccentsThenSeparators($text);
-    }
+    protected static function applyLanguageRules(string $text): string { return $text; }
 }

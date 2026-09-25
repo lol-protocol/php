@@ -27,12 +27,19 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: none
+          tools: phpstan:2.1
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
       - name: Run tests
         run: ./vendor/bin/phpunit
+
+      - name: Static analysis
+        run: phpstan analyse --no-progress
+
+      - name: Benchmark smoke run
+        run: php bin/benchmark.php 2000
 
   document-formats:
     name: document-formats (Node)
