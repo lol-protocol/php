@@ -122,4 +122,37 @@ final class AnulableTest extends TestCase
         $stmt->execute([':id' => $id]);
         self::assertFalse($stmt->fetchColumn(), 'ya commiteada la primera, la segunda no aplica y no emite su nota');
     }
+
+    /**
+     * Pagar, editar o anular contra una boleta toma su candado antes de
+     * validar el saldo: un segundo proceso que quiere pagar la misma boleta
+     * espera, y al entrar ve el saldo ya actualizado (sin esto dos pagos
+     * simultaneos pasaban la validacion y sobrecobraban).
+     */
+    public function testBloquearHaceEsperarAOtroProcesoQueQuiereLaMismaBoleta(): void
+    {
+        $repo = new BoletaRepository();
+        $id = $this->crearBoletaDePrueba();
+
+        $otroProceso = self::segundaConexion();
+        $otroProceso->exec("SET lock_timeout = '500ms'");
+
+        $db = Database::connection();
+        $db->beginTransaction();
+        try {
+            $repo->bloquear($id);
+
+            $otroProceso->beginTransaction();
+            try {
+                $otroProceso->prepare('SELECT id FROM boletas WHERE id = :id FOR UPDATE')->execute([':id' => $id]);
+                self::fail('el segundo proceso tendria que haber quedado esperando el candado');
+            } catch (PDOException $e) {
+                self::assertStringContainsString('lock timeout', strtolower($e->getMessage()));
+            } finally {
+                $otroProceso->rollBack();
+            }
+        } finally {
+            $db->rollBack();
+        }
+    }
 }

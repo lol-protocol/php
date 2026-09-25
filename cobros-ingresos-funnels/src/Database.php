@@ -38,13 +38,14 @@ final class Database
      * La excepcion se vuelve a lanzar tras el rollback, para que la maneje
      * el ErrorHandler global.
      */
-    public static function transaccion(callable $operacion): void
+    public static function transaccion(callable $operacion): mixed
     {
         $db = self::connection();
         $db->beginTransaction();
         try {
-            $operacion();
+            $resultado = $operacion();
             $db->commit();
+            return $resultado;
         } catch (\Throwable $e) {
             $db->rollBack();
             throw $e;
