@@ -29,6 +29,21 @@ sino de haber pasado ese filtro. Sin hablantes nativos, los 24 `moderate`
 no pueden subir de nivel de forma responsable, por muchas palabras que se
 añadan.
 
+## Prioridad de revisión
+
+1. **`basic`: islandés (`isl`), swahili (`swa`) y tagalo (`tgl`)**, ~60
+   términos cada uno. Son los más pequeños y los tres tienen fusión literal
+   activa, así que un término mal elegido afecta también a la fusión.
+2. **Árabe (`ara`) e inglés (`eng`)**, para poder activar su fusión (ver
+   «Fusión literal» en el README): hace falta un corpus mayor de nombres
+   reales y decidir qué términos cortos no deben participar en la fusión.
+3. El resto de `moderate`, empezando por los idiomas con más usuarios en la
+   plataforma.
+
+Al revisar un idioma, amplía también su entrada en
+`tests/fixtures/common-names.php` con nombres y apellidos reales frecuentes:
+`CommonNamesFalsePositiveTest` los cruza todos y exige cero detecciones.
+
 ## Cómo revisar un diccionario
 
 1. Abrí `config/languages/<código>.php` (por ejemplo `config/languages/pol.php`
@@ -89,7 +104,7 @@ composer install
 ./vendor/bin/phpunit
 ```
 
-`DictionaryIntegrityTest` corre automáticamente sobre los 30 idiomas y
+`DictionaryIntegrityTest` corre automáticamente sobre los 33 idiomas y
 falla si:
 
 - el conteo de palabras no alcanza el mínimo del `coverage` declarado;

@@ -1,5 +1,81 @@
 # Changelog
 
+## [4.3.0] - 2026-09-25
+
+### Arreglado
+
+- **Falsos positivos con nombres reales comunes en la fusión.** El nuevo
+  `CommonNamesFalsePositiveTest` (12×12 nombres y apellidos reales por
+  idioma) encontró casos que el barrido manual anterior no vio: «Emine
+  Kaya» → «inek», «Barbara Nowak» → «baran», «Katalin Kovács» → «link»,
+  «Siti Kusuma» → «tikus», «José Gomes» → «cego», «Juliana Oliveira» →
+  «anão». Todos iban a `review`. Ahora la fusión exige que el término
+  **toque el principio o el final** del nombre completo y tome **al menos 2
+  letras de cada lado** de la unión: así se leen los chistes reales («Elba
+  Gina», «Felipe Lotas», «Susana Oria» siguen detectándose). Coste: un
+  término enterrado en medio de los dos campos ya no se detecta. Los tests
+  de fusión por idioma usaban nombres sintéticos con el término en medio
+  («Alp Raseson»); se ajustaron para que el término quede anclado,
+  detectando el mismo término que antes.
+- **Todas las «Ana» en portugués iban a revisión.** «anã» (enana) pierde la
+  tilde al normalizarse y queda igual que «Ana», uno de los nombres más
+  comunes del idioma. Se quitó del diccionario; «anão» se mantiene.
+- README y CONTRIBUTING decían 30 idiomas; son 33 (6 `comprehensive`, 24
+  `moderate`, 3 `basic`).
+
+### Añadido
+
+- **Explicaciones legibles**: `ValidationResult::getExplanations()` (también
+  en `toArray()` y `getDetailedReport()`) da una frase por término: qué
+  coincidió, con qué entrada del diccionario, idioma, tipo y severidad, y si
+  es apellido documentado. Cada término trae además `matchedEntry` y, en
+  fusiones, `fusedFrom`. Nueva clase `TermExplanation`.
+- `CommonNamesFalsePositiveTest` + `tests/fixtures/common-names.php`: los 26
+  idiomas con fusión, más inglés y árabe para la búsqueda literal.
+- `FileSizeLimitTest`: la regla de 100 líneas deja de ser convención. Ya
+  encontró una violación (`NameCollisionRegressionTest`, 130 líneas), que se
+  dividió en `EthnicTermsTrackingTest`.
+- `ExamplesRunTest`: los 9 ejemplos se ejecutan en cada corrida y fallan si
+  la API cambia o emiten avisos.
+- PHPStan nivel 5 (`phpstan.neon.dist`), sin errores, en el CI. El nivel 6
+  sólo pide anotar tipos de arrays (118 avisos): siguiente paso posible.
+- `bin/benchmark.php`: nombres validados por segundo, por idioma; corre en
+  CI como prueba de humo.
+
+### Cambiado (refactor sin cambio de comportamiento)
+
+- `AbstractPhoneticFolder` como base de los 17 folders y
+  `CommonPhoneticAccents` con los mapas de acentos compartidos.
+- `FusionSupport`: búsqueda O(1) y caché de la lista de idiomas. Medido con
+  el benchmark nuevo, la validación completa no cambia de forma medible
+  (~25.000 nombres/s antes y después): la mejora es de la microfunción, no
+  del camino completo.
+- Se quitó `StringUtils` (sólo envolvía `mb_strlen(..., 'UTF-8')` en 3
+  llamadas); vuelve a usarse `mb_strlen` directamente.
+- Se borró `_Garbage/` (~84.000 líneas de CSV y generadores que nunca se
+  conectaron al motor); sigue en el historial de git.
+
+### Evaluado y no aplicado
+
+- **Fusión en inglés y árabe.** Con la regla nueva, «Chris Hitt» y
+  «محمد منصور» ya no disparan, pero «Dustin King» → «stinking» sí (anclado,
+  4 letras por lado). El árabe da cero falsos positivos en el corpus, pero
+  144 combinaciones no bastan para un idioma sin vocales escritas. Ambos
+  siguen fuera hasta tener corpus mayor y revisión nativa (CONTRIBUTING).
+
+### Historial del umbral de términos étnicos
+
+Movido desde el comentario de `NameCollisionRegressionTest`. Umbral inicial
+tras corregir oláh, tót, negro, negrão, polak y szwab; subidas posteriores,
+todas con términos revisados como no-apellidos: 162 (cantonés: 黑鬼, 死鬼佬,
+棒子, 阿差, 賓妹, 大陸妹, 北姑), 167 (spa: chola, naca, panchita, charnega,
+maketa), 170 (youpine, zingara, crioula), 172 (Zigeunerin, Negerin), 173
+(țigancă), 181 (rus: негритянка, жидовка, хохлушка, инородка, узкоглазая;
+pol: murzynka, czarnucha, skośnooka), 191 (ces: cikánka, ruska, cizačka;
+slk: negerka, cigánka, šikmooká; ukr: жидівка, вузькоока, кацапка; bul:
+циганка), 192 (γύφτισσα), 195 (heb: צוענייה; ara: زنجية, غجرية).
+
+---
 ## [4.2.0] - 2026-09-23
 
 ### Arreglado

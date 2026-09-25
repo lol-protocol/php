@@ -112,7 +112,12 @@ Susana Oria   → "susanaoria"  → contiene "zanahoria" (z/s y h muda se pliega
 El módulo lo detecta plegando cada campo a una forma fonética aproximada
 (`PhoneticFolder`: unifica b/v, s/z/c suave, ll/y, h muda, y el sonido de j y
 de g suave) y buscando términos del diccionario que **crucen la frontera**
-entre el nombre y el apellido plegados:
+entre el nombre y el apellido plegados. Además, la coincidencia tiene que
+leerse como tal: debe **tocar el principio o el final** del nombre completo y
+tomar **al menos 2 letras de cada lado**. Un término enterrado en medio
+(«Emine Kaya» → «inek», «Siti Kusuma» → «tikus») o que sólo roza la unión
+(«Ana O…» → «anão») no se percibe al leer, y disparaba con nombres reales
+comunes (ver `CommonNamesFalsePositiveTest`):
 
 ```php
 $result = $reviewer->validateFullName('Elba', 'Gina');
@@ -227,8 +232,8 @@ pueden pasarlo:
 
 | Excluido | Motivo |
 |---|---|
-| Inglés | Falsos positivos reales: «Chris Hitt» → «shit», «Dustin King» → «stinking» |
-| Árabe | Falsos positivos reales: «محمد منصور» (Mohammed Mansour) → «مدمن» |
+| Inglés | Falso positivo real que la regla de lectura no evita: «Dustin King» → «stinking» (anclado, 4 letras por lado). «Chris Hitt» → «shit» ya no dispararía |
+| Árabe | «محمد منصور» → «مدمن» ya no dispararía con la regla de lectura, y el corpus de prueba da cero falsos positivos, pero es pequeño (144 combinaciones) para un idioma sin vocales escritas: falta un corpus mayor y revisión nativa |
 | Hebreo | Como el árabe, no escribe vocales: las uniones forman palabras con demasiada facilidad |
 | Japonés, tailandés, cantonés | Sin espacios entre palabras; el umbral de longitud está pensado para alfabetos |
 | Vietnamita | El tono distingue palabras y la normalización colapsa parte de los tonos |
@@ -535,7 +540,16 @@ $reviewer->getLanguagesByCoverage($level);           $reviewer->languages()->byC
 | `getPhoneticFusionTerms()` / `getPhoneticVariantTerms()` | `array` |
 | `getTermsByDetectionMethod(string $m)` | `array` (`'literal'` \| `'phonetic_fusion'` \| `'phonetic_variant'`) |
 | `getLanguagesChecked()` | `array<string,float>` |
-| `toArray()` | `array` |
+| `getExplanations()` | `string[]` — una frase por término: qué coincidió, con qué entrada, idioma, tipo y severidad |
+| `toArray()` | `array` (incluye `explanations`) |
+
+Cada término de `getFlaggedTerms()` trae también `matchedEntry` (la forma del
+diccionario que coincidió) y, en fusiones, `fusedFrom` (el nombre completo):
+
+```php
+$reviewer->validateFullName('Elba', 'Gina')->getExplanations();
+// ['«Elba Gina» leído seguido suena como «vagina» (diccionario spa, tipo ordinario, severidad medium).']
+```
 
 ### `ScoringPolicy`
 
@@ -632,19 +646,24 @@ src/DefamatoryContentReview/
 ├── FusionSupport.php               Qué idiomas tienen fusión (fonética o literal) y por qué no el resto
 ├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
 ├── ValidationResult.php            Resultado con trazabilidad por idioma y método
-└── FlaggedTermCollection.php       Términos marcados y sus consultas — colaborador de ValidationResult
+├── FlaggedTermCollection.php       Términos marcados y sus consultas — colaborador de ValidationResult
+└── TermExplanation.php             Frase legible de por qué se marcó cada término
 
 config/
 ├── risk-categories.php             Los 10 tipos de riesgo
 ├── language-families.php           Familias y afinidades
 └── languages/
     ├── supported-languages.php     Catálogo ISO 639-3 + alias 639-1
-    └── spa.php eng.php por.php …   30 diccionarios
+    └── spa.php eng.php por.php …   33 diccionarios
 
-tests/    examples/
+tests/
+└── fixtures/common-names.php       Nombres reales comunes por idioma (falsos positivos y benchmark)
+examples/                           Ejecutados por ExamplesRunTest
+bin/benchmark.php                   Nombres validados por segundo, por idioma
 ```
 
-Ningún archivo de `src/` o `tests/` supera 100 líneas — cuando una clase
+Ningún archivo de `src/`, `tests/`, `examples/` o `bin/` supera 100 líneas
+(lo verifica `FileSizeLimitTest`) — cuando una clase
 crece más allá de eso, se descompone en colaboradores internos (mismo
 patrón en todo el proyecto: `ScoringPolicy`/`WordList`/`ValidationResult`/
 `LanguageRegistry` conservan su API pública intacta; sólo
@@ -692,8 +711,15 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
 ## Tests
 
 ```bash
-./vendor/bin/phpunit
+./vendor/bin/phpunit          # tests, ejemplos, límite de líneas, falsos positivos
+phpstan analyse               # análisis estático, nivel 5 (phpstan.neon.dist)
+php bin/benchmark.php 10000   # rendimiento: comparar antes/después en la misma máquina
 ```
+
+El CI corre los tres en PHP 8.1–8.4. `CommonNamesFalsePositiveTest` cruza
+nombres y apellidos reales frecuentes de cada idioma con fusión (y de inglés
+y árabe, para la búsqueda literal) y exige cero detecciones: si un término o
+una regla nueva marca un linaje real, falla ahí.
 
 ---
 
@@ -707,11 +733,14 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
 - La fusión cubre 26 de los 33 idiomas: 17 con plegado fonético
   (`PhoneticFolderRegistry`) y 9 con fusión literal (`FusionSupport`).
   Quedan fuera inglés, árabe, hebreo, japonés, tailandés, cantonés y
-  vietnamita (motivos en la sección «Fusión literal»). En coreano la
+  vietnamita (motivos en la sección «Fusión literal»). La fusión exige que
+  el término se lea al principio o al final del nombre completo, así que
+  un chiste con el término en medio no se detecta: es el precio de no
+  marcar nombres reales como «Emine Kaya». En coreano la
   longitud mínima se cuenta en sílabas, así que sólo alcanza a los
   términos más largos. En todos, sólo cubre el cruce entre nombre y
   apellido, no la re-segmentación dentro de un único campo.
-- Ningún diccionario queda en `basic`, pero `moderate` (24 de los 30) sigue
+- `basic` (islandés, swahili, tagalo: ~60 términos) y `moderate` (24 de los 33) siguen
   necesitando revisión de hablante nativo antes de producción — es una base
   verificable, no una traducción exhaustiva.
 - El árabe dialectal y las variedades regionales del chino no están cubiertos.
