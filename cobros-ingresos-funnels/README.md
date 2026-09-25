@@ -27,12 +27,16 @@ Pequeño sistema en PHP (sin framework) para analizar:
   marcada "Anulada" y se excluye de los agregados) para no perder el rastro. Un
   doble clic en "Guardar" no crea un segundo pago ni una segunda boleta.
 - **Auditoría**: quién creó, editó o anuló cada boleta, pago o cliente, con fecha
-  y el detalle de qué cambió.
+  y el detalle de qué cambió. Sin login (ver más abajo), toda entrada nueva queda
+  atribuida a "Sistema".
 - **Paginación** en los listados grandes (boletas, pagos, clientes).
-- **Login** con sesión para no dejar el panel abierto a cualquiera, con bloqueo
-  temporal tras varios intentos fallidos seguidos (protección de fuerza bruta).
-- **Usuarios del sistema**: alta, cambio de contraseña y revocar/reactivar
-  acceso (soft-delete, no se borra a nadie), todo auditado.
+
+> El panel no tiene login: es de acceso libre, sin cuentas de usuario. Había una
+> pantalla de login con sesión, bloqueo por fuerza bruta y gestión de usuarios del
+> sistema (alta, cambio de contraseña, revocar acceso); se sacó de la app y quedó
+> en `_Garbage/` (código completo, no se borró) por si hace falta reactivarla —
+> ver `_Garbage/README.md` para el detalle de qué se movió y qué se tocó en el
+> resto de la app para poder sacarla.
 
 ## Requisitos
 
@@ -64,9 +68,7 @@ php database/seed.php      # arma el esquema con las migraciones y carga datos d
 php -S localhost:8000 -t public   # solo para desarrollo, ver "Despliegue en producción"
 ```
 
-Abrí `http://localhost:8000` — te va a mandar a `?page=login`. Credenciales de
-ejemplo (las crea el seed): **admin@ejemplo.com / admin1234** (también
-soporte@ejemplo.com / soporte1234, para probar "Usuarios" con más de una fila).
+Abrí `http://localhost:8000` — te va a mostrar el Dashboard directo, sin login.
 
 Volver a correr `php database/seed.php` en cualquier momento borra la base, la
 reconstruye con las migraciones de `database/migraciones/` y regenera los datos de
@@ -173,7 +175,7 @@ Hay tres suites:
   primero). Cada test corre dentro de una transacción que se deshace al terminar,
   así no deja datos ni ve los de otro test.
 - `tests/Http`: levanta la app con `php -S` y la recorre por HTTP como un navegador
-  (login, CSRF, formularios, redirecciones). Cubre lo que los otros no alcanzan: el
+  (CSRF, formularios, redirecciones). Cubre lo que los otros no alcanzan: el
   cableado de `public/index.php` y los controllers. Lo que crea se borra al terminar.
 
 PHPStan corre en nivel 8, el que revisa los nulos (por ejemplo, el resultado de un
@@ -191,15 +193,16 @@ las tres suites, contra un Postgres 16.
 public/            front controller (index.php) + CSS
 src/
   Controllers/       un controlador por sección (dashboard, cobros, pagos, funnel,
-                      cohortes, clientes, auditoria, usuarios, login)
-  Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/
-                      UsuarioSistema/...) más IngresosRepository (kpis, ingresos
-                      y cobros por mes, antigüedad de cartera, por método de
-                      pago) y SegmentacionRepository (top país/ciudad/idioma/
-                      género/edad, LTV por cohorte) para el reporting, que no es
-                      CRUD y crecía por separado. AuditoriaRepository también
-                      concentra el `auditarComoUsuarioActual()` que usan todos
-                      los controllers en vez de repetirlo cada uno.
+                      cohortes, clientes, auditoria). Todas las páginas son
+                      públicas, no hay login (ver `_Garbage/README.md`).
+  Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/...) más
+                      IngresosRepository (kpis, ingresos y cobros por mes,
+                      antigüedad de cartera, por método de pago) y
+                      SegmentacionRepository (top país/ciudad/idioma/género/edad,
+                      LTV por cohorte) para el reporting, que no es CRUD y crecía
+                      por separado. AuditoriaRepository también concentra el
+                      `auditarComoUsuarioActual()` que usan todos los controllers
+                      en vez de repetirlo cada uno.
   Database.php         conexión PDO a PostgreSQL (config por env vars, misma zona
                         horaria para PHP y Postgres) y transaccion(), anidable
   Config.php           variables de entorno: obligatorias fuera de desarrollo,
@@ -207,17 +210,17 @@ src/
   Migrador.php          aplica database/migraciones/ y recuerda cuales corrieron
   EnvioUnico.php        token de un solo uso de los formularios de alta: un doble
                         clic no crea dos pagos ni dos boletas, testeado
-  Auth.php             login/logout, guard de sesión, bloqueo por fuerza bruta
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
   Paginacion.php        helper de paginación (página/offset/total, testeado)
-  Csrf.php              token CSRF por sesión, verificado en Router (testeado)
+  Csrf.php              token CSRF por sesión propia (no depende de ningún login),
+                        verificado en Router (testeado)
   Http.php              detecta HTTPS (directo o detras de proxy), testeado
   SecurityHeaders.php   headers de seguridad de cada respuesta, testeado
   ErrorHandler.php      red de seguridad para excepciones no capturadas
                         (loguea el detalle, nunca lo muestra), testeado
   Peticion.php           guard clauses de los controllers: id de la ruta,
-                        404 si no existe, 409 si hay conflicto (anulado,
-                        auto-revocacion), testeado
+                        404 si no existe, 409 si hay conflicto (ej. anulado),
+                        testeado
   Validacion.php         chequeos repetidos entre formularios: campos
                         obligatorios vacios y mensaje de email duplicado
   Repositories/Anulable.php  trait con el soft-delete que comparten
@@ -248,7 +251,7 @@ tests/
                         de HTTPS)
   Integration/           contra la base real, cada test en una transaccion que
                         se deshace (un archivo por repositorio, migraciones,
-                        auditoría, bloqueo de login, zona horaria)
+                        auditoría, zona horaria)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
@@ -258,10 +261,6 @@ phpstan.neon            configuracion del analisis estatico
 - `monedas` / `paises`: catálogo de referencia (código ISO, nombre, símbolo y
   `tasa_a_usd` — cuánto vale 1 unidad de esa moneda en USD, para consolidar
   reportes). Son tasas estáticas de ejemplo, no un feed en vivo.
-- `usuarios_sistema`: quién puede entrar al panel (login), con `activo` para
-  revocar el acceso sin borrar al usuario (mismo patrón soft-delete que
-  boletas/pagos, por la misma razón: no dejar un `usuario_id` colgado en
-  `auditoria`).
 - `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
   perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
   segmentación del dashboard y su moneda de facturación.
@@ -295,8 +294,6 @@ phpstan.neon            configuracion del analisis estatico
   purgan a los 7 días.
 - `migraciones_aplicadas`: qué migraciones de `database/migraciones/` ya corrieron
   en esta base.
-- `intentos_login`: contador de intentos fallidos de login por email y hasta
-  cuándo queda bloqueado, para la protección de fuerza bruta.
 
 El estado de cada boleta (pagada / parcial / pendiente / vencida / **anulada**) se
 calcula dinámicamente (`App\EstadoBoleta`) a partir de sus pagos, la fecha de
@@ -319,12 +316,6 @@ en su moneda original.
   categóricos fijos para series (ingresos/cobros), rampa secuencial para las etapas
   del funnel y las cohortes, y colores de estado reservados para la antigüedad de cartera.
 - Modo oscuro automático vía `prefers-color-scheme`.
-- Login con sesión de PHP nativa (`password_hash`/`password_verify`), sin roles
-  ni permisos — un solo nivel de acceso. Después de loguearse te manda de vuelta
-  a la página que habías pedido (`?next=`), validado contra un patrón fijo para
-  que nunca sea un open redirect. Tras 5 intentos fallidos seguidos con el mismo
-  email, se bloquea 15 minutos (`intentos_login`); el contador se reinicia al
-  loguearse bien.
 - Paginación de 25 filas por página, con `LIMIT`/`OFFSET` en SQL. En Boletas,
   como el estado (pagada/parcial/pendiente/vencida/anulada) se calcula en PHP
   a partir de los pagos aplicados y no se guarda en la base, filtrar por
@@ -336,22 +327,17 @@ en su moneda original.
   correcto y suficiente.
 - Protección CSRF: `App\Csrf` guarda un token fijo por sesión que cada
   `<form method="post">` incluye oculto, y el `Router` lo valida antes de
-  despachar cualquier POST (login incluido) — si falta o no coincide, corta
-  con 403 antes de que el controller toque nada.
+  despachar cualquier POST — si falta o no coincide, corta con 403 antes de
+  que el controller toque nada.
 - Cookie de sesión endurecida: `HttpOnly` (JS no puede leerla — igual no hay
   JS en la app) + `SameSite=Lax` (capa extra contra CSRF, sumada al token) +
   `Secure` cuando el request llega por HTTPS (`App\Http::esSegura()`, que
   tambien mira `X-Forwarded-Proto` si hay un proxy adelante). En HTTP plano
   (dev local) `Secure` queda apagado a proposito, sino el browser descarta
-  la cookie y no se podria loguear.
+  la cookie y se pierde el token CSRF.
 - Headers de seguridad en cada respuesta (`App\SecurityHeaders`):
   `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y una
   `Content-Security-Policy` que bloquea JavaScript por completo
   (`script-src 'none'` — la app no usa JS en ningun lado) y permite estilos
   inline (`style-src 'unsafe-inline'`, que usan los graficos SVG). Con HTTPS
   se suma `Strict-Transport-Security`.
-- Gestión de usuarios sin roles: como es un solo nivel de acceso, cualquier
-  usuario logueado puede crear otros usuarios, cambiarle la contraseña a
-  cualquiera o revocarles el acceso — excepto revocarse a si mismo, bloqueado
-  a proposito (server-side, no solo ocultando el botón) para que siempre
-  quede al menos un usuario activo capaz de loguearse.

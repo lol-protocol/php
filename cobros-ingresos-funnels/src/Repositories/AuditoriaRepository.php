@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Auth;
 use App\Database;
 use App\Paginacion;
 use LogicException;
@@ -20,9 +19,13 @@ final class AuditoriaRepository
     }
 
     /**
-     * Registra la accion atribuida al usuario de la sesion actual (o null si
-     * no hay sesion). Punto unico usado por los controllers para no repetir
-     * "Auth::usuarioActual() + registrar()" en cada uno.
+     * Registra la accion. Punto unico usado por los controllers para no
+     * repetir el registrar() en cada uno.
+     *
+     * Sin login (ver _Garbage/README.md) no existe mas "el usuario de la
+     * sesion actual": todo queda atribuido a usuario_id = NULL, que
+     * listado() muestra como "Sistema". Las entradas de auditoria de antes
+     * de sacar el login, con su usuario_id real, no se tocaron.
      *
      * Exige estar dentro de Database::transaccion(): la entrada tiene que
      * quedar en la misma transaccion que el cambio que describe, o un cambio
@@ -41,8 +44,7 @@ final class AuditoriaRepository
             ));
         }
 
-        $usuario = Auth::usuarioActual();
-        (new self())->registrar($usuario['id'] ?? null, $accion, $entidad, $entidadId, $detalle);
+        (new self())->registrar(null, $accion, $entidad, $entidadId, $detalle);
     }
 
     public function registrar(?int $usuarioId, string $accion, string $entidad, int $entidadId, string $detalle): void

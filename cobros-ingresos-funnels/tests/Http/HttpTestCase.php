@@ -13,9 +13,9 @@ use RuntimeException;
  * de sesion, los tokens sacados del HTML y sin seguir las redirecciones.
  *
  * Es para lo que los tests de adentro no pueden ver: el cableado de
- * public/index.php (router, login obligatorio, normalizacion de parametros) y
- * los controllers, que terminan en header() + exit. Es la verificacion con
- * curl que antes se hacia a mano en cada ronda, ahora automatica.
+ * public/index.php (router, normalizacion de parametros) y los controllers,
+ * que terminan en header() + exit. Es la verificacion con curl que antes se
+ * hacia a mano en cada ronda, ahora automatica.
  *
  * El servidor escribe con su propia conexion, asi que lo que un test crea
  * queda commiteado: cada test registra como borrarlo con alTerminar().
@@ -103,17 +103,6 @@ abstract class HttpTestCase extends TestCase
     protected function post(string $query, array $datos): array
     {
         return $this->pedir($query, $datos);
-    }
-
-    protected function iniciarSesion(): void
-    {
-        $login = $this->get('page=login');
-        $respuesta = $this->post('page=login', [
-            'email' => 'admin@ejemplo.com',
-            'password' => 'admin1234',
-            'csrf_token' => self::campoOculto($login['cuerpo'], 'csrf_token'),
-        ]);
-        $this->assertStatus(302, $respuesta, 'el login con el usuario del seed tiene que funcionar');
     }
 
     /** El value de un <input type="hidden"> del HTML (el token CSRF o el de envio). */

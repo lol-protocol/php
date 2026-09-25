@@ -313,7 +313,7 @@ final class PagosController
                 ));
                 return false;
             });
-            if (Peticion::abortarSiConflicto($congelado, 'La boleta de este pago fue anulada y ya tiene su nota de credito: anularlo descontaria la plata dos veces.')) {
+            if (Peticion::abortarSiConflicto($congelado, 'La boleta de este pago esta anulada y ya tiene su nota de credito: anularlo descontaria la plata dos veces.')) {
                 return;
             }
             header('Location: ?page=pagos&anulado=' . $id);

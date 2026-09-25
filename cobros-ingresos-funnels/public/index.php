@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Auth;
 use App\Controllers\AuditoriaController;
 use App\Controllers\ClienteController;
 use App\Controllers\CobrosController;
 use App\Controllers\CohortesController;
 use App\Controllers\DashboardController;
 use App\Controllers\FunnelController;
-use App\Controllers\LoginController;
 use App\Controllers\PagosController;
-use App\Controllers\UsuarioController;
 use App\Database;
 use App\ErrorHandler;
 use App\Peticion;
@@ -39,13 +36,10 @@ try {
     exit;
 }
 
-Auth::iniciar();
-
 $router = new Router();
-$router->add('login', fn () => (new LoginController())->index());
-$router->add('logout', fn () => (new LoginController())->salir());
 
-$paginasProtegidas = [
+// Sin login: todas las paginas son publicas (ver _Garbage/README.md).
+$paginas = [
     'dashboard' => fn () => (new DashboardController())->index(),
     'cobros' => fn () => (new CobrosController())->index(),
     'boleta-nueva' => fn () => (new CobrosController())->nueva(),
@@ -61,16 +55,9 @@ $paginasProtegidas = [
     'cliente-nuevo' => fn () => (new ClienteController())->nuevo(),
     'cliente' => fn () => (new ClienteController())->ficha(),
     'auditoria' => fn () => (new AuditoriaController())->index(),
-    'usuarios' => fn () => (new UsuarioController())->index(),
-    'usuario-nuevo' => fn () => (new UsuarioController())->nuevo(),
-    'usuario-password' => fn () => (new UsuarioController())->cambiarPassword(),
-    'usuario-revocar' => fn () => (new UsuarioController())->revocar(),
 ];
-foreach ($paginasProtegidas as $pagina => $manejador) {
-    $router->add($pagina, function () use ($manejador) {
-        Auth::requerir();
-        $manejador();
-    });
+foreach ($paginas as $pagina => $manejador) {
+    $router->add($pagina, $manejador);
 }
 
 $page = $_GET['page'] ?? 'dashboard';

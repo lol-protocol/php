@@ -4,23 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Http;
 
-/** Router, login obligatorio y robustez ante URLs raras, contra la app levantada. */
+/** Router y robustez ante URLs raras, contra la app levantada. */
 final class RutasTest extends HttpTestCase
 {
-    public function testSinSesionUnaPantallaRedirigeAlLogin(): void
+    public function testTodasLasPantallasResponden(): void
     {
-        $respuesta = $this->get('page=dashboard');
-
-        $this->assertStatus(302, $respuesta);
-        self::assertStringContainsString('page=login', (string) $respuesta['location']);
-    }
-
-    public function testConSesionTodasLasPantallasResponden(): void
-    {
-        $this->iniciarSesion();
-
-        foreach (['dashboard', 'cobros', 'pagos', 'clientes', 'funnel', 'cohortes', 'auditoria', 'usuarios',
-                  'boleta-nueva', 'pago-nuevo', 'cliente-nuevo', 'usuario-nuevo', 'cliente&id=1'] as $pagina) {
+        foreach (['dashboard', 'cobros', 'pagos', 'clientes', 'funnel', 'cohortes', 'auditoria',
+                  'boleta-nueva', 'pago-nuevo', 'cliente-nuevo', 'cliente&id=1'] as $pagina) {
             $this->assertStatus(200, $this->get("page={$pagina}"), "page={$pagina}");
         }
     }
@@ -32,8 +22,6 @@ final class RutasTest extends HttpTestCase
 
     public function testUnPostSinTokenCsrfDa403(): void
     {
-        $this->iniciarSesion();
-
         $this->assertStatus(403, $this->post('page=boleta-nueva', ['concepto' => 'sin token']));
     }
 
@@ -46,8 +34,6 @@ final class RutasTest extends HttpTestCase
      */
     public function testParametrosRepetidosOPaginasAbsurdasNoRompenNinguna(): void
     {
-        $this->iniciarSesion();
-
         foreach ([
             'page[]=dashboard',
             'page=cobros&estado[]=pendiente',
@@ -63,8 +49,6 @@ final class RutasTest extends HttpTestCase
 
     public function testUnaPaginaFueraDeRangoMuestraLaUltimaReal(): void
     {
-        $this->iniciarSesion();
-
         // Rango amplio para que haya varias paginas sin depender de las fechas del seed.
         $cuerpo = $this->get('page=cobros&desde=2000-01-01&hasta=2100-12-31&pagina=5000')['cuerpo'];
 

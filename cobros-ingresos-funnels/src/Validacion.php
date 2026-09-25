@@ -39,9 +39,7 @@ final class Validacion
 
     /**
      * Mensaje de error para el catch de un alta que puede chocar con un
-     * email duplicado (constraint UNIQUE); usado por ClienteController y
-     * UsuarioController, que tienen el mismo catch salvo el nombre de la
-     * entidad.
+     * email duplicado (constraint UNIQUE); usado por ClienteController.
      */
     public static function mensajeDeConflicto(PDOException $e, string $entidad): string
     {

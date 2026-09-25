@@ -45,7 +45,7 @@ final class Peticion
 
     /**
      * Igual que abortarSiNoExiste() pero con 409, para bloquear una accion
-     * cuando $condicion se cumple (ya anulado, revocarse a uno mismo, etc.).
+     * cuando $condicion se cumple (ej. la boleta o el pago ya esta anulado).
      */
     public static function abortarSiConflicto(bool $condicion, string $mensaje): bool
     {

@@ -9,7 +9,6 @@ use App\EnvioUnico;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\PagoRepository;
-use App\Repositories\UsuarioSistemaRepository;
 
 /**
  * Los flujos que escriben, contra la app levantada. Todo lo que crean -en la
@@ -18,12 +17,6 @@ use App\Repositories\UsuarioSistemaRepository;
 final class EscriturasTest extends HttpTestCase
 {
     private const CLIENTE = 1;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->iniciarSesion();
-    }
 
     /** Una boleta de prueba del cliente 1, commiteada, que se borra (con todo lo que se le cuelgue) al final. */
     private function boletaDePrueba(): int
@@ -195,26 +188,6 @@ final class EscriturasTest extends HttpTestCase
     }
 
     /**
-     * Revocar era un "alternar": el segundo envio del mismo formulario volvia
-     * a dar acceso. Ahora el formulario dice que estado quiere, y el segundo
-     * envio no cambia nada ni audita de nuevo.
-     */
-    public function testRevocarDosVecesNoVuelveADarAcceso(): void
-    {
-        $id = (new UsuarioSistemaRepository())->crear('Usuario HTTP', 'http-' . uniqid() . '@example.com', 'password-de-prueba');
-        $this->alTerminar(static fn () => self::borrarEntidad('usuarios_sistema', 'usuario', $id));
-        $csrf = self::campoOculto($this->get("page=usuario-revocar&id={$id}")['cuerpo'], 'csrf_token');
-
-        $this->assertStatus(302, $this->post("page=usuario-revocar&id={$id}", ['csrf_token' => $csrf, 'activo' => '0']));
-        $this->assertStatus(302, $this->post("page=usuario-revocar&id={$id}", ['csrf_token' => $csrf, 'activo' => '0']));
-
-        $usuario = (new UsuarioSistemaRepository())->porId($id);
-        self::assertNotNull($usuario);
-        self::assertFalse($usuario['activo']);
-        self::assertSame(1, self::contar("SELECT COUNT(*) FROM auditoria WHERE entidad = 'usuario' AND entidad_id = :id", [':id' => $id]));
-    }
-
-    /**
      * Cada flujo que escribe tiene que auditar dentro de una transaccion:
      * AuditoriaRepository lo exige y, si no, el flujo daria un 500. Esto
      * recorre los que no cubren los tests de arriba y verifica que cada uno
@@ -250,18 +223,5 @@ final class EscriturasTest extends HttpTestCase
         $clienteId = self::idDeLaRedireccion($cliente, 'id');
         $this->alTerminar(static fn () => self::borrarEntidad('clientes', 'cliente', $clienteId));
         self::assertSame(1, $auditorias('cliente', $clienteId));
-
-        $usuario = $this->post('page=usuario-nuevo', [
-            'csrf_token' => $csrf, 'nombre' => 'Usuario HTTP', 'email' => 'usuario-http-' . uniqid() . '@example.com',
-            'password' => 'password-de-prueba', 'password_confirmar' => 'password-de-prueba',
-        ]);
-        $this->assertStatus(302, $usuario, 'alta de usuario');
-        $usuarioId = self::idDeLaRedireccion($usuario, 'creado');
-        $this->alTerminar(static fn () => self::borrarEntidad('usuarios_sistema', 'usuario', $usuarioId));
-
-        $this->assertStatus(302, $this->post("page=usuario-password&id={$usuarioId}", [
-            'csrf_token' => $csrf, 'password' => 'otra-password-segura', 'password_confirmar' => 'otra-password-segura',
-        ]), 'cambio de contraseña');
-        self::assertSame(2, $auditorias('usuario', $usuarioId), 'el alta y el cambio de contraseña');
     }
 }
