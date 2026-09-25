@@ -135,19 +135,19 @@ MC,Monaco,A4,Metric,Europe,French,MCO,EUR,ISO 216 standard
 SM,San Marino,A4,Metric,Europe,Italian,SMR,EUR,ISO 216 standard
 VA,Vatican City,A4,Metric,Europe,Italian,VAT,EUR,ISO 216 standard
 AD,Andorra,A4,Metric,Europe,Catalan,AND,EUR,ISO 216 standard
-GE,Georgia,A4,Metric,Asia,Georgian,GEO,GEL,ISO 216 standard
-AM,Armenia,A4,Metric,Asia,Armenian,ARM,AMD,ISO 216 standard
-AZ,Azerbaijan,A4,Metric,Asia,Azerbaijani,AZE,AZN,ISO 216 standard
-KZ,Kazakhstan,A4,Metric,Asia,Kazakh,KAZ,KZT,ISO 216 standard
-KG,Kyrgyzstan,A4,Metric,Asia,Kyrgyz,KGZ,KGS,ISO 216 standard
-TJ,Tajikistan,A4,Metric,Asia,Tajik,TJK,TJS,ISO 216 standard
-TM,Turkmenistan,A4,Metric,Asia,Turkmen,TKM,TMT,ISO 216 standard
-UZ,Uzbekistan,A4,Metric,Asia,Uzbek,UZB,UZS,ISO 216 standard
-AF,Afghanistan,A4,Metric,Asia,Pashto,AFG,AFN,ISO 216 standard
-SL,Sri Lanka,A4,Metric,Asia,Sinhala,LKA,LKR,ISO 216 standard
-NP,Nepal,A4,Metric,Asia,Nepali,NPL,NPR,ISO 216 standard
-BT,Bhutan,A4,Metric,Asia,Dzongkha,BTN,BTN,ISO 216 standard
-MV,Maldives,A4,Metric,Asia,Dhivehi,MDV,MVR,ISO 216 standard
+GE,Georgia,A4,Metric,Asia-Pacific,Georgian,GEO,GEL,ISO 216 standard
+AM,Armenia,A4,Metric,Asia-Pacific,Armenian,ARM,AMD,ISO 216 standard
+AZ,Azerbaijan,A4,Metric,Asia-Pacific,Azerbaijani,AZE,AZN,ISO 216 standard
+KZ,Kazakhstan,A4,Metric,Asia-Pacific,Kazakh,KAZ,KZT,ISO 216 standard
+KG,Kyrgyzstan,A4,Metric,Asia-Pacific,Kyrgyz,KGZ,KGS,ISO 216 standard
+TJ,Tajikistan,A4,Metric,Asia-Pacific,Tajik,TJK,TJS,ISO 216 standard
+TM,Turkmenistan,A4,Metric,Asia-Pacific,Turkmen,TKM,TMT,ISO 216 standard
+UZ,Uzbekistan,A4,Metric,Asia-Pacific,Uzbek,UZB,UZS,ISO 216 standard
+AF,Afghanistan,A4,Metric,Asia-Pacific,Pashto,AFG,AFN,ISO 216 standard
+SL,Sri Lanka,A4,Metric,Asia-Pacific,Sinhala,LKA,LKR,ISO 216 standard
+NP,Nepal,A4,Metric,Asia-Pacific,Nepali,NPL,NPR,ISO 216 standard
+BT,Bhutan,A4,Metric,Asia-Pacific,Dzongkha,BTN,BTN,ISO 216 standard
+MV,Maldives,A4,Metric,Asia-Pacific,Dhivehi,MDV,MVR,ISO 216 standard
 LS,Lesotho,A4,Metric,Africa,Sotho,LSO,LSL,ISO 216 standard
 MG,Madagascar,A4,Metric,Africa,Malagasy,MDG,MGA,ISO 216 standard
 MU,Mauritius,A4,Metric,Africa,English,MUS,MUR,ISO 216 standard

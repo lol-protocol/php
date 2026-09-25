@@ -154,21 +154,53 @@ const FORMAT_CATALOG_FILES = [
     '../formats/specialty_papers.csv'
 ];
 
-// Loads every catalog in parallel; throws if any file can't be fetched.
+// countries/countries_200_complete.csv spells three catalog countries
+// differently, and has no entry at all for two catalog "country" values
+// that aren't really a single country: ISO 216 sizes are used worldwide,
+// and the European catalog names the region rather than a member state.
+const REGION_COUNTRY_ALIASES = { USA: 'United States', UK: 'United Kingdom', UAE: 'United Arab Emirates' };
+const REGION_OVERRIDES = { International: 'International', Europe: 'Europe' };
+
+// Loads every catalog plus the country/region list in parallel, tags each
+// format with its region, and reports the newest Last-Modified header seen
+// (undefined if the server sends none) so a page can show when the data was
+// last changed without hardcoding a date. Throws if any file can't be fetched.
 const loadFormatCatalogs = async (files = FORMAT_CATALOG_FILES) => {
-    const texts = await Promise.all(files.map(async file => {
+    const fetchFile = async (file) => {
         const response = await fetch(file);
         if (!response.ok) throw new Error(`HTTP ${response.status} for ${file}`);
-        return response.text();
-    }));
+        return response;
+    };
+
+    const [catalogResponses, countriesResponse] = await Promise.all([
+        Promise.all(files.map(fetchFile)),
+        fetchFile('../countries/countries_200_complete.csv')
+    ]);
+
+    const lastModified = [...catalogResponses, countriesResponse]
+        .map(r => r.headers.get('last-modified'))
+        .filter(Boolean)
+        .map(text => new Date(text))
+        .reduce((latest, date) => (!latest || date > latest ? date : latest), null);
+
+    const [catalogTexts, countriesText] = await Promise.all([
+        Promise.all(catalogResponses.map(r => r.text())),
+        countriesResponse.text()
+    ]);
+
+    const countryRegions = new Map(parseCSV(countriesText).map(c => [c.country_name, c.region]));
+    const regionOf = (country) =>
+        REGION_OVERRIDES[country] ?? countryRegions.get(REGION_COUNTRY_ALIASES[country] ?? country) ?? 'Other';
 
     const seen = new Set();
-    return texts.flatMap(text => parseCSV(text)).filter(format => {
+    const formats = catalogTexts.flatMap(text => parseCSV(text)).filter(format => {
         const key = [format.format_name, format.country, format.width_mm, format.height_mm].join('|');
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
-    });
+    }).map(format => ({ ...format, region: regionOf(format.country) }));
+
+    return { formats, lastModified };
 };
 
 

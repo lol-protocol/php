@@ -512,6 +512,12 @@
                     </select>
                 </div>
                 <div class="control-group">
+                    <label>Region</label>
+                    <select id="region-filter">
+                        <option value="">All Regions</option>
+                    </select>
+                </div>
+                <div class="control-group">
                     <label>&nbsp;</label>
                     <button class="btn btn-secondary" id="reset-btn">Reset Filters</button>
                 </div>
@@ -586,7 +592,7 @@
                 </ul>
                 <p style="margin-top: 15px; color: var(--text-light);">
                     Data sourced from ISO 216, ANSI, JIS, and GB/T standards.
-                    Last updated: September 24, 2024
+                    Last updated: <span id="about-updated">…</span>
                 </p>
             </div>
         </div>
@@ -614,6 +620,7 @@
                     search: document.getElementById('search-input'),
                     countryFilter: document.getElementById('country-filter'),
                     categoryFilter: document.getElementById('category-filter'),
+                    regionFilter: document.getElementById('region-filter'),
                     resetBtn: document.getElementById('reset-btn'),
                     tabBtns: document.querySelectorAll('.tab-btn'),
                     tabContents: document.querySelectorAll('.tab-content'),
@@ -629,10 +636,10 @@
             }
 
             setupEventListeners() {
-                const {search, countryFilter, categoryFilter, resetBtn, fromFormat, toFormat, compareSearch} = this.els;
+                const {search, countryFilter, categoryFilter, regionFilter, resetBtn, fromFormat, toFormat, compareSearch} = this.els;
 
                 document.addEventListener('change', (e) => {
-                    if (e.target === countryFilter || e.target === categoryFilter) {
+                    if (e.target === countryFilter || e.target === categoryFilter || e.target === regionFilter) {
                         this.filterFormats();
                     } else if (e.target === fromFormat || e.target === toFormat) {
                         this.updateConverter();
@@ -648,6 +655,7 @@
                     search.value = '';
                     countryFilter.value = '';
                     categoryFilter.value = '';
+                    regionFilter.value = '';
                     this.filterFormats();
                 });
 
@@ -668,10 +676,11 @@
                         select.appendChild(option);
                     }
                 };
-                const {countryFilter, categoryFilter, fromFormat, toFormat} = this.els;
+                const {countryFilter, categoryFilter, regionFilter, fromFormat, toFormat} = this.els;
 
                 addOptions(countryFilter, unique(this.formats.map(f => f.country)).map(c => [c, c]));
                 addOptions(categoryFilter, unique(this.formats.map(f => f.category)).map(c => [c, c]));
+                addOptions(regionFilter, unique(this.formats.map(f => f.region)).map(r => [r, r]));
 
                 // Same-named formats in different countries share a size, so one entry per name.
                 const byName = new Map(this.formats.map(f => [f.format_name, f]));
@@ -682,16 +691,18 @@
             }
 
             filterFormats() {
-                const {search, countryFilter, categoryFilter} = this.els;
+                const {search, countryFilter, categoryFilter, regionFilter} = this.els;
                 const query = search.value.toLowerCase();
                 const country = countryFilter.value;
                 const category = categoryFilter.value;
+                const region = regionFilter.value;
 
                 const filtered = this.formats.filter(format =>
                     (!query || [format.format_name, format.description, format.common_use]
                         .some(text => String(text ?? '').toLowerCase().includes(query))) &&
                     (!country || format.country === country) &&
-                    (!category || format.category === category)
+                    (!category || format.category === category) &&
+                    (!region || format.region === region)
                 );
                 this.renderFormats(filtered);
             }
@@ -817,9 +828,9 @@
             const container = document.getElementById('formats-container');
             container.innerHTML = '<p class="no-results">Loading formats…</p>';
 
-            let formats;
+            let formats, lastModified;
             try {
-                formats = await loadFormatCatalogs();
+                ({formats, lastModified} = await loadFormatCatalogs());
             } catch (error) {
                 container.innerHTML = `
                     <div class="no-results">
@@ -835,6 +846,9 @@
             new FormatBrowser(formats);
             document.getElementById('about-formats').textContent = formats.length;
             document.getElementById('about-countries').textContent = new Set(formats.map(f => f.country)).size;
+            document.getElementById('about-updated').textContent = lastModified
+                ? lastModified.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})
+                : 'unknown (server sent no Last-Modified header)';
         });
     </script>
 </body>

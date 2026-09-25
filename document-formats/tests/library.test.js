@@ -11,7 +11,11 @@ globalThis.fetch = async (url) => {
     const file = path.resolve(APP_DIR, url);
     if (!fs.existsSync(file)) return { ok: false, status: 404, text: async () => 'Not found' };
     const text = fs.readFileSync(file, 'utf8');
-    return { ok: true, status: 200, text: async () => text, json: async () => JSON.parse(text) };
+    const mtime = fs.statSync(file).mtime;
+    return {
+        ok: true, status: 200, text: async () => text, json: async () => JSON.parse(text),
+        headers: { get: (name) => name.toLowerCase() === 'last-modified' ? mtime.toUTCString() : null }
+    };
 };
 globalThis.localStorage = { getItem: () => null, setItem: () => {} };
 
@@ -160,12 +164,24 @@ test('the catalog list names every file of sheet sizes', () => {
     }
 });
 
-test('loadFormatCatalogs returns every format once, with a category', async () => {
-    const formats = await loadFormatCatalogs();
+test('loadFormatCatalogs returns every format once, with a category and a region', async () => {
+    const {formats} = await loadFormatCatalogs();
     assert.ok(formats.length > 300, `only ${formats.length} formats`);
     assert.ok(formats.every(f => f.category), 'a format has no category');
     const keys = formats.map(f => [f.format_name, f.country, f.width_mm, f.height_mm].join('|'));
     assert.equal(new Set(keys).size, keys.length);
+
+    const regionless = formats.filter(f => !f.region || f.region === 'Other');
+    assert.deepEqual(regionless, [], 'every format should resolve to a real region');
+    const a4 = formats.find(f => f.format_name === 'A4' && f.country === 'International');
+    assert.equal(a4.region, 'International');
+    const letter = formats.find(f => f.format_name === 'Letter' && f.country === 'USA');
+    assert.equal(letter.region, 'Americas');
+});
+
+test('loadFormatCatalogs reports the newest Last-Modified header', async () => {
+    const {lastModified} = await loadFormatCatalogs();
+    assert.ok(lastModified instanceof Date && !Number.isNaN(lastModified.getTime()));
 });
 
 test('loadFormatCatalogs fails loudly when a file is missing', async () => {

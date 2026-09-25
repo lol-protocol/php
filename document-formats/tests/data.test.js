@@ -30,6 +30,13 @@ const naturalKey = (file, headers) =>
     NATURAL_KEYS[file]
     ?? (headers.includes('format_name') && headers.includes('country') ? ['format_name', 'country'] : [headers[0]]);
 
+test('countries_200_complete.csv only uses the six regions the app knows about', () => {
+    const REGIONS = new Set(['Africa', 'Americas', 'Asia-Pacific', 'Europe', 'Middle East', 'Oceania']);
+    parseCSV(read('countries/countries_200_complete.csv')).forEach((row, i) => {
+        assert.ok(REGIONS.has(row.region), `line ${i + 2}: unknown region "${row.region}" for ${row.country_name}`);
+    });
+});
+
 test('there are data files to check', () => {
     assert.ok(csvFiles.length >= 30, `only found ${csvFiles.length} CSV files`);
 });
