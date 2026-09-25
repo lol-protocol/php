@@ -99,4 +99,25 @@ class ConfigTest extends TestCase
 
         $this->assertSame(['x', 'y'], Config::getArray($key, ['x', 'y']));
     }
+
+    public function testDotEnvFillsUnsetVariablesButRealEnvironmentWins(): void
+    {
+        $unset = $this->uniqueKey('fromfile');
+        $set = $this->uniqueKey('fromenv');
+        putenv("{$set}=real");
+
+        $file = tempnam(sys_get_temp_dir(), 'env');
+        file_put_contents($file, "# comment\n{$unset}=\"from file\"\n{$set}=from file\nDSN_{$unset}=pgsql:host=x;dbname=y\n");
+        $this->envKeysToClean[] = "DSN_{$unset}";
+
+        try {
+            Config::load([], $file);
+        } finally {
+            unlink($file);
+        }
+
+        $this->assertSame('from file', getenv($unset), 'Quotes are stripped');
+        $this->assertSame('real', getenv($set), 'An existing variable is never overwritten');
+        $this->assertSame('pgsql:host=x;dbname=y', getenv("DSN_{$unset}"), 'Values may contain "="');
+    }
 }

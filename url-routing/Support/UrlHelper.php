@@ -52,6 +52,11 @@ class UrlHelper
         return '/' . implode('/', array_map('strtolower', $codes)) . '/';
     }
 
+    public function accionLugar(array $codes, int|string $codigo): string
+    {
+        return rtrim($this->enlaceLugar($codes), '/') . '/' . $codigo . '/';
+    }
+
     public function cuenta(int|string|null $codigo = null): string
     {
         $base = '/' . Router::ACCOUNT_SEGMENT . '/';

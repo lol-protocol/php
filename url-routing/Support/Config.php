@@ -8,12 +8,11 @@ class Config
 {
     private static array $config = [];
 
-    public static function load(array $defaults = []): void
+    public static function load(array $defaults = [], ?string $envFile = null): void
     {
         self::$config = $defaults;
 
-        // Load from .env if exists
-        $envFile = dirname(__DIR__) . '/.env';
+        $envFile ??= dirname(__DIR__) . '/.env';
         if (file_exists($envFile)) {
             $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             foreach ($lines as $line) {
@@ -21,7 +20,12 @@ class Config
                     continue;
                 }
                 [$key, $value] = explode('=', $line, 2);
-                putenv(trim($key) . '=' . trim($value));
+                $key = trim($key);
+                // The real environment wins: .env only fills in what's unset.
+                if (getenv($key) !== false) {
+                    continue;
+                }
+                putenv($key . '=' . trim(trim($value), '"\''));
             }
         }
     }

@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Controllers\POS;
 
 use App\Controllers\BaseController;
+use App\Repositories\POS\CatalogoRepository;
 
-/**
- * Coleccion de productos — identificador numerico de 7 digitos.
- * TODO: cargar el recurso desde la base de datos por $id.
- */
+/** Coleccion (collection / campaign) — 7-digit id. */
 class ColeccionController extends BaseController
 {
     public function show(array $params = []): string
     {
-        return $this->renderById($params, 'pos/coleccion/show', 'coleccion');
+        $repo = new CatalogoRepository($this->db());
+        return $this->renderFound($params, $repo->coleccion(...), 'pos/coleccion/show', 'coleccion',
+            fn(int $id) => ['productos' => $repo->productosDeColeccion($id)]);
     }
 }

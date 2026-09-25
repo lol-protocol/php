@@ -5,69 +5,82 @@ declare(strict_types=1);
 namespace App\Controllers\POS;
 
 use App\Controllers\BaseController;
+use App\Repositories\POS\OrdenRepository;
+use App\Repositories\UsuarioRepository;
 
+/** Account area (/0/) — everything is scoped to the logged-in user. */
 class CuentaController extends BaseController
 {
-    public function index($params = [])
+    private function usuario(): ?array
     {
-        if (!$this->requireAuth()) {
-            return $this->handleUnauthorized('Login required to access account');
-        }
-
-        return view('pos/cuenta/index', ['userId' => $this->getCurrentUserId()]);
+        return (new UsuarioRepository($this->db()))->find($this->getCurrentUserId());
     }
 
-    public function perfil($params = [])
+    public function index(array $params = []): string
     {
         if (!$this->requireAuth()) {
-            return $this->handleUnauthorized('Login required to access profile');
+            return $this->handleUnauthorized('Inicia sesión para ver tu cuenta');
+        }
+        $usuario = $this->usuario();
+        if ($usuario === null) {
+            return $this->handleUnauthorized('La sesión no corresponde a ningún usuario');
         }
 
-        return view('pos/cuenta/perfil', ['userId' => $this->getCurrentUserId()]);
+        return view('pos/cuenta/index', ['usuario' => $usuario]);
     }
 
-    public function ordenes($params = [])
+    public function perfil(array $params = []): string
     {
         if (!$this->requireAuth()) {
-            return $this->handleUnauthorized('Login required to view orders');
+            return $this->handleUnauthorized('Inicia sesión para ver tu perfil');
+        }
+        $usuario = $this->usuario();
+        if ($usuario === null) {
+            return $this->handleUnauthorized('La sesión no corresponde a ningún usuario');
         }
 
-        // TODO: fetch user orders from DB filtered by getCurrentUserId()
-        $ordenes = [];
-
-        return view('pos/cuenta/ordenes', ['ordenes' => $ordenes]);
+        return view('pos/cuenta/perfil', ['usuario' => $usuario]);
     }
 
-    public function deseos($params = [])
+    public function ordenes(array $params = []): string
     {
         if (!$this->requireAuth()) {
-            return $this->handleUnauthorized('Login required to view wishlist');
+            return $this->handleUnauthorized('Inicia sesión para ver tus órdenes');
         }
 
-        // TODO: fetch user wishlist from DB filtered by getCurrentUserId()
-        $deseos = [];
-
-        return view('pos/cuenta/deseos', ['deseos' => $deseos]);
+        return view('pos/cuenta/ordenes', [
+            'ordenes' => (new OrdenRepository($this->db()))->deUsuario($this->getCurrentUserId()),
+        ]);
     }
 
-    public function direcciones($params = [])
+    public function deseos(array $params = []): string
     {
         if (!$this->requireAuth()) {
-            return $this->handleUnauthorized('Login required to manage addresses');
+            return $this->handleUnauthorized('Inicia sesión para ver tu lista de deseos');
         }
 
-        // TODO: fetch user addresses from DB filtered by getCurrentUserId()
-        $direcciones = [];
-
-        return view('pos/cuenta/direcciones', ['direcciones' => $direcciones]);
+        return view('pos/cuenta/deseos', [
+            'deseos' => (new UsuarioRepository($this->db()))->deseos($this->getCurrentUserId()),
+        ]);
     }
 
-    public function preferencias($params = [])
+    public function direcciones(array $params = []): string
     {
         if (!$this->requireAuth()) {
-            return $this->handleUnauthorized('Login required to manage preferences');
+            return $this->handleUnauthorized('Inicia sesión para ver tus direcciones');
         }
 
-        return view('pos/cuenta/preferencias', ['userId' => $this->getCurrentUserId()]);
+        return view('pos/cuenta/direcciones', [
+            'direcciones' => (new UsuarioRepository($this->db()))->direcciones($this->getCurrentUserId()),
+        ]);
+    }
+
+    public function preferencias(array $params = []): string
+    {
+        if (!$this->requireAuth()) {
+            return $this->handleUnauthorized('Inicia sesión para ver tus preferencias');
+        }
+
+        return view('pos/cuenta/preferencias');
     }
 }

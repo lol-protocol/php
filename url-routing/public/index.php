@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Support\Config;
 use App\Support\Container;
+use App\Support\Database;
+use App\Support\Format;
 use App\Support\HealthCheck;
 use App\Support\HostParser;
 use App\Support\Router;
@@ -18,7 +21,11 @@ use App\Support\RateLimiter;
  * Loads the route registry for the current domain and dispatches the request.
  */
 
-require __DIR__ . '/vendor/autoload.php';
+define('APP_ROOT', dirname(__DIR__));
+
+require APP_ROOT . '/vendor/autoload.php';
+
+Config::load();
 
 define('APP_BASE_PATH', '/');
 define('DEBUG_MODE', getenv('DEBUG') === 'true');
@@ -38,9 +45,13 @@ $locale = HostParser::getLocale($host);
 
 $container->singleton('router', function ($c) use ($site) {
     $router = new Router();
-    $router->loadConfig(__DIR__ . "/config/routes/{$site}.php");
+    $router->loadConfig(APP_ROOT . "/config/routes/{$site}.php");
     return $router;
 });
+
+// Each site has its own database; see docs/DATABASE.md for which engine
+// fits which site. The connection opens lazily on the first query.
+$container->singleton('db', fn() => Database::forSite($site));
 
 $container->singleton('url', function ($c) {
     return new UrlHelper($c->get('router'));
@@ -61,7 +72,7 @@ function view(string $name, array $data = []): string
 {
     // Prevent path traversal attacks
     $safeName = preg_replace('/\.\./', '', $name);
-    $file = __DIR__ . '/views/' . $safeName . '.php';
+    $file = APP_ROOT . '/views/' . $safeName . '.php';
 
     if (!file_exists($file)) {
         $logger = ServiceLocator::getInstance()->getLogger();
@@ -108,6 +119,11 @@ function enlaceLugar(array $codes): string
     return ServiceLocator::getInstance()->getUrlHelper()->enlaceLugar($codes);
 }
 
+function accionLugar(array $codes, int|string $codigo): string
+{
+    return ServiceLocator::getInstance()->getUrlHelper()->accionLugar($codes, $codigo);
+}
+
 function cuenta(int|string|null $codigo = null): string
 {
     return ServiceLocator::getInstance()->getUrlHelper()->cuenta($codigo);
@@ -136,4 +152,19 @@ function get_locale(): string
 function get_csrf_token(): string
 {
     return ServiceLocator::getInstance()->getSessionManager()->setCsrfToken();
+}
+
+function fecha(?string $valor): string
+{
+    return Format::fecha($valor, get_locale());
+}
+
+function vida(?string $nacimiento, ?string $defuncion): string
+{
+    return Format::vida($nacimiento, $defuncion);
+}
+
+function dinero(int|string|null $centavos, string $moneda = 'MXN'): string
+{
+    return Format::dinero($centavos, $moneda);
 }

@@ -4,185 +4,176 @@ declare(strict_types=1);
 
 namespace App\Support;
 
-class Database
+/**
+ * Thin PDO wrapper shared by SQLite and PostgreSQL. All SQL in this project
+ * is written to run unchanged on both engines; which one a site uses is a
+ * deployment choice (see docs/DATABASE.md), not something the code knows.
+ *
+ * Errors are not swallowed: a failing query throws, the router logs it and
+ * answers 500 — silently returning "no rows" would render a DB outage as
+ * "not found".
+ */
+final class Database
 {
-    private static ?Database $instance = null;
-    private ?\PDO $connection = null;
-    private string $dsn;
-    private string $user;
-    private string $password;
+    private ?\PDO $pdo = null;
 
-    private function __construct()
-    {
-        $this->dsn = getenv('DB_DSN') ?: 'sqlite:' . sys_get_temp_dir() . '/app.db';
-        $this->user = getenv('DB_USER') ?: '';
-        $this->password = getenv('DB_PASSWORD') ?: '';
+    public function __construct(
+        private readonly string $dsn,
+        private readonly string $user = '',
+        private readonly string $password = '',
+    ) {
     }
 
-    public static function getInstance(): Database
+    /**
+     * Connection for a site: DB_DSN_<SITE> (with DB_USER_<SITE> and
+     * DB_PASSWORD_<SITE>), or a local SQLite file under var/ for development.
+     *
+     * There is deliberately no shared DB_DSN fallback: both sites have tables
+     * with the same names (usuarios, grupos, colecciones), so pointing them at
+     * one database would mix their data.
+     */
+    public static function forSite(string $site): self
     {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
+        $suffix = strtoupper($site);
+        $env = static fn(string $name): string => (string)(getenv("{$name}_{$suffix}") ?: '');
+
+        $dsn = $env('DB_DSN') ?: 'sqlite:' . dirname(__DIR__) . "/var/{$site}.sqlite";
+
+        return new self($dsn, $env('DB_USER'), $env('DB_PASSWORD'));
     }
 
-    public function connect(): bool
+    public function pdo(): \PDO
     {
-        if ($this->connection !== null) {
-            return true;
+        if ($this->pdo !== null) {
+            return $this->pdo;
         }
 
+        if (str_starts_with($this->dsn, 'sqlite:')) {
+            $path = substr($this->dsn, strlen('sqlite:'));
+            if ($path !== ':memory:' && $path !== '' && !is_dir(dirname($path))) {
+                mkdir(dirname($path), 0775, true);
+            }
+        }
+
+        $pdo = new \PDO($this->dsn, $this->user, $this->password, [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+            \PDO::ATTR_EMULATE_PREPARES => false,
+            \PDO::ATTR_STRINGIFY_FETCHES => false,
+        ]);
+
+        if ($this->driver($pdo) === 'sqlite') {
+            // SQLite ignores FOREIGN KEY clauses unless told otherwise; WAL lets
+            // readers proceed while a checkout is writing.
+            $pdo->exec('PRAGMA foreign_keys = ON');
+            $pdo->exec('PRAGMA busy_timeout = 5000');
+            $pdo->exec('PRAGMA journal_mode = WAL');
+        }
+
+        return $this->pdo = $pdo;
+    }
+
+    public function driver(?\PDO $pdo = null): string
+    {
+        return (string)($pdo ?? $this->pdo())->getAttribute(\PDO::ATTR_DRIVER_NAME);
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function fetchAll(string $sql, array $params = []): array
+    {
+        return $this->run($sql, $params)->fetchAll();
+    }
+
+    /** @return array<string, mixed>|null */
+    public function fetchOne(string $sql, array $params = []): ?array
+    {
+        $row = $this->run($sql, $params)->fetch();
+        return $row === false ? null : $row;
+    }
+
+    public function fetchValue(string $sql, array $params = []): mixed
+    {
+        $value = $this->run($sql, $params)->fetchColumn();
+        return $value === false ? null : $value;
+    }
+
+    /** Runs a statement and returns the number of affected rows. */
+    public function execute(string $sql, array $params = []): int
+    {
+        return $this->run($sql, $params)->rowCount();
+    }
+
+    /**
+     * @template T
+     * @param callable(self): T $work
+     * @return T
+     */
+    public function transaction(callable $work): mixed
+    {
+        $pdo = $this->pdo();
+        $pdo->beginTransaction();
         try {
-            $this->connection = new \PDO(
-                $this->dsn,
-                $this->user,
-                $this->password,
-                [
-                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-                    \PDO::ATTR_EMULATE_PREPARES => false,
-                ]
-            );
-            return true;
-        } catch (\PDOException $e) {
-            ServiceLocator::getInstance()->getLogger()->error('Database connection failed', [
-                'error' => $e->getMessage(),
-            ]);
-            return false;
+            $result = $work($this);
+            $pdo->commit();
+            return $result;
+        } catch (\Throwable $e) {
+            $pdo->rollBack();
+            throw $e;
         }
     }
 
-    public function prepare(string $sql): ?\PDOStatement
+    public function insert(string $table, array $data): void
     {
-        if (!$this->connect()) {
-            return null;
-        }
-
-        try {
-            return $this->connection->prepare($sql);
-        } catch (\PDOException $e) {
-            ServiceLocator::getInstance()->getLogger()->error('Prepare statement failed', [
-                'sql' => $sql,
-                'error' => $e->getMessage(),
-            ]);
-            return null;
-        }
-    }
-
-    public function execute(\PDOStatement $stmt, array $params = []): bool
-    {
-        try {
-            return $stmt->execute($params);
-        } catch (\PDOException $e) {
-            ServiceLocator::getInstance()->getLogger()->error('Execute statement failed', [
-                'error' => $e->getMessage(),
-            ]);
-            return false;
-        }
-    }
-
-    public function query(string $sql, array $params = []): array
-    {
-        $stmt = $this->prepare($sql);
-        if ($stmt === null) {
-            return [];
-        }
-
-        if (!$this->execute($stmt, $params)) {
-            return [];
-        }
-
-        return $stmt->fetchAll() ?: [];
-    }
-
-    public function queryOne(string $sql, array $params = []): array|null
-    {
-        $stmt = $this->prepare($sql);
-        if ($stmt === null) {
-            return null;
-        }
-
-        if (!$this->execute($stmt, $params)) {
-            return null;
-        }
-
-        $result = $stmt->fetch();
-        return $result !== false ? $result : null;
-    }
-
-    public function insert(string $table, array $data): int|false
-    {
-        if (empty($data)) {
-            return false;
-        }
-
         $this->assertIdentifiers($table, $data);
-
-        $columns = array_keys($data);
-        $placeholders = array_fill(0, count($columns), '?');
-        $sql = "INSERT INTO {$table} (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $placeholders) . ")";
-
-        $stmt = $this->prepare($sql);
-        if ($stmt === null) {
-            return false;
+        if ($data === []) {
+            throw new \InvalidArgumentException('Nothing to insert');
         }
 
-        if (!$this->execute($stmt, array_values($data))) {
-            return false;
-        }
-
-        $id = $this->connection->lastInsertId();
-        return $id !== false ? (int)$id : false;
+        $columns = implode(', ', array_keys($data));
+        $placeholders = implode(', ', array_fill(0, count($data), '?'));
+        $this->execute("INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})", array_values($data));
     }
 
     public function update(string $table, array $data, array $where): int
     {
-        if (empty($data) || empty($where)) {
-            return 0;
-        }
-
         $this->assertIdentifiers($table, $data, $where);
-
-        $setClauses = array_map(fn($col) => "$col = ?", array_keys($data));
-        $whereClauses = array_map(fn($col) => "$col = ?", array_keys($where));
-
-        $sql = "UPDATE {$table} SET " . implode(', ', $setClauses) . " WHERE " . implode(' AND ', $whereClauses);
-
-        $stmt = $this->prepare($sql);
-        if ($stmt === null) {
-            return 0;
+        if ($data === [] || $where === []) {
+            throw new \InvalidArgumentException('Update needs both data and a WHERE clause');
         }
 
-        $params = array_merge(array_values($data), array_values($where));
-        if (!$this->execute($stmt, $params)) {
-            return 0;
-        }
+        $set = implode(', ', array_map(static fn($c) => "{$c} = ?", array_keys($data)));
+        $cond = implode(' AND ', array_map(static fn($c) => "{$c} = ?", array_keys($where)));
 
-        return $stmt->rowCount();
+        return $this->execute(
+            "UPDATE {$table} SET {$set} WHERE {$cond}",
+            array_merge(array_values($data), array_values($where))
+        );
     }
 
     public function delete(string $table, array $where): int
     {
-        if (empty($where)) {
-            return 0;
-        }
-
         $this->assertIdentifiers($table, $where);
-
-        $whereClauses = array_map(fn($col) => "$col = ?", array_keys($where));
-        $sql = "DELETE FROM {$table} WHERE " . implode(' AND ', $whereClauses);
-
-        $stmt = $this->prepare($sql);
-        if ($stmt === null) {
-            return 0;
+        if ($where === []) {
+            throw new \InvalidArgumentException('Refusing to delete without a WHERE clause');
         }
 
-        if (!$this->execute($stmt, array_values($where))) {
-            return 0;
-        }
+        $cond = implode(' AND ', array_map(static fn($c) => "{$c} = ?", array_keys($where)));
+        return $this->execute("DELETE FROM {$table} WHERE {$cond}", array_values($where));
+    }
 
-        return $stmt->rowCount();
+    private function run(string $sql, array $params): \PDOStatement
+    {
+        $stmt = $this->pdo()->prepare($sql);
+        foreach (array_values($params) as $i => $value) {
+            $stmt->bindValue($i + 1, $value, match (true) {
+                is_int($value) => \PDO::PARAM_INT,
+                is_bool($value) => \PDO::PARAM_BOOL,
+                $value === null => \PDO::PARAM_NULL,
+                default => \PDO::PARAM_STR,
+            });
+        }
+        $stmt->execute();
+        return $stmt;
     }
 
     /**
@@ -205,34 +196,5 @@ class Database
                 throw new \InvalidArgumentException("Invalid SQL identifier: {$name}");
             }
         }
-    }
-
-    public function disconnect(): void
-    {
-        $this->connection = null;
-    }
-
-    public function beginTransaction(): bool
-    {
-        if (!$this->connect()) {
-            return false;
-        }
-        return $this->connection->beginTransaction();
-    }
-
-    public function commit(): bool
-    {
-        if ($this->connection === null) {
-            return false;
-        }
-        return $this->connection->commit();
-    }
-
-    public function rollback(): bool
-    {
-        if ($this->connection === null) {
-            return false;
-        }
-        return $this->connection->rollBack();
     }
 }

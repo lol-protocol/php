@@ -15,6 +15,7 @@
             <directory suffix=".php">Support</directory>
             <directory suffix=".php">Routing</directory>
             <directory suffix=".php">Controllers</directory>
+            <directory suffix=".php">Repositories</directory>
         </include>
     </source>
 

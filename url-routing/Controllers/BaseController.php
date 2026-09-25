@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Support\Database;
 use App\Support\ServiceLocator;
 
 class BaseController
@@ -35,13 +36,19 @@ class BaseController
 
     protected function getCurrentUserId(): int|null
     {
-        return $_SESSION['user_id'] ?? null;
+        return isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
+    }
+
+    /** Whether the logged-in user owns a resource whose owner id came from the DB. */
+    protected function isOwner(int|string|null $resourceOwnerId): bool
+    {
+        $userId = $this->getCurrentUserId();
+        return $userId !== null && $resourceOwnerId !== null && $userId === (int)$resourceOwnerId;
     }
 
     protected function validateResourceOwnership(int|string|null $resourceOwnerId): bool
     {
-        $userId = $this->getCurrentUserId();
-        if ($userId === null || $userId !== $resourceOwnerId) {
+        if (!$this->isOwner($resourceOwnerId)) {
             http_response_code(403);
             return false;
         }
@@ -57,15 +64,43 @@ class BaseController
         return (string)$id;
     }
 
-    /** Validates the numeric id from the route, then renders $view with it. */
-    protected function renderById(array $params, string $view, string $label): string
+    protected function db(): Database
     {
+        return ServiceLocator::getInstance()->getDatabase();
+    }
+
+    /**
+     * The standard read action: validate the route id (400), load the
+     * resource with $find (404 when missing) and render $view with it under
+     * $key, plus whatever $extra returns for that id.
+     *
+     * @param callable(int): ?array $find
+     * @param (callable(int, array): array)|null $extra
+     */
+    protected function renderFound(
+        array $params,
+        callable $find,
+        string $view,
+        string $key,
+        ?callable $extra = null
+    ): string {
         $id = $this->validateId($params['id'] ?? null);
         if ($id === null) {
-            return $this->handleBadRequest("Invalid {$label} ID");
+            return $this->handleBadRequest('Identificador inválido');
         }
 
-        return view($view, ['id' => $id]);
+        $row = $find((int)$id);
+        if ($row === null) {
+            return $this->handleNotFound();
+        }
+
+        return view($view, [$key => $row] + ($extra ? $extra((int)$id, $row) : []));
+    }
+
+    protected function handleNotFound(string $message = 'Página no encontrada'): string
+    {
+        http_response_code(404);
+        return '<h1>404 - ' . htmlspecialchars($message) . '</h1>';
     }
 
     protected function handleUnauthorized(string $message = 'Unauthorized'): string

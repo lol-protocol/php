@@ -5,39 +5,49 @@ declare(strict_types=1);
 namespace App\Controllers\Genealogy;
 
 use App\Controllers\BaseController;
+use App\Repositories\Genealogy\ColeccionRepository;
+use App\Repositories\Genealogy\PersonaRepository;
+use App\Repositories\Genealogy\RegistroRepository;
+use App\Repositories\UsuarioRepository;
 
+/** Account area (/0/) — everything is scoped to the logged-in user. */
 class CuentaController extends BaseController
 {
-    public function index($params = [])
+    public function index(array $params = []): string
     {
         if (!$this->requireAuth()) {
-            return $this->handleUnauthorized('Login required to access account');
+            return $this->handleUnauthorized('Inicia sesión para ver tu cuenta');
         }
 
-        return view('genealogy/cuenta/index', ['userId' => $this->getCurrentUserId()]);
+        $usuario = (new UsuarioRepository($this->db()))->find($this->getCurrentUserId());
+        if ($usuario === null) {
+            return $this->handleUnauthorized('La sesión no corresponde a ningún usuario');
+        }
+
+        return view('genealogy/cuenta/index', ['usuario' => $usuario]);
     }
 
-    public function colecciones($params = [])
+    public function colecciones(array $params = []): string
     {
         if (!$this->requireAuth()) {
-            return $this->handleUnauthorized('Login required to access collections');
+            return $this->handleUnauthorized('Inicia sesión para ver tus colecciones');
         }
 
-        // TODO: fetch user collections from DB filtered by getCurrentUserId()
-        $colecciones = [];
-
-        return view('genealogy/cuenta/colecciones', ['colecciones' => $colecciones]);
+        return view('genealogy/cuenta/colecciones', [
+            'colecciones' => (new ColeccionRepository($this->db()))->deUsuario($this->getCurrentUserId()),
+        ]);
     }
 
-    public function aportes($params = [])
+    public function aportes(array $params = []): string
     {
         if (!$this->requireAuth()) {
-            return $this->handleUnauthorized('Login required to view contributions');
+            return $this->handleUnauthorized('Inicia sesión para ver tus aportes');
         }
 
-        // TODO: fetch user contributions from DB filtered by getCurrentUserId()
-        $aportes = [];
-
-        return view('genealogy/cuenta/aportes', ['aportes' => $aportes]);
+        $usuarioId = $this->getCurrentUserId();
+        return view('genealogy/cuenta/aportes', [
+            'personas' => (new PersonaRepository($this->db()))->aportadasPor($usuarioId),
+            'registros' => (new RegistroRepository($this->db()))->aportadosPor($usuarioId),
+        ]);
     }
 }

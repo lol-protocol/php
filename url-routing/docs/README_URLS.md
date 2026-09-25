@@ -6,8 +6,13 @@ URLs sin palabras de dominio, sin guiones ni guiones bajos. El tipo de recurso s
 
 ```
 url-routing/
-├── index.php                          # Punto de entrada, detecta sitio + idioma
-├── .htaccess                           # Configuración Apache
+├── public/                             # ÚNICA carpeta que expone el servidor web
+│   ├── index.php                       # Punto de entrada, detecta sitio + idioma
+│   └── .htaccess                       # Configuración Apache
+├── bin/migrate.php                     # Migraciones (+ datos de demo con --seed)
+├── database/<sitio>/                   # Migraciones SQL y datos de demostración
+├── Repositories/                       # Consultas por tipo (SQLite y PostgreSQL)
+├── deploy/nginx.conf.example           # Server block para el VPS
 ├── docs/
 │   ├── URL_STRUCTURES.md               # Tabla completa de formatos
 │   └── README_URLS.md                  # Este archivo
@@ -18,8 +23,8 @@ url-routing/
 │   └── Router.php                      # Despacho por forma del segmento
 ├── Routing/                            # Estrategias de matching (dígitos, lugar, literal, order, reservada)
 ├── views/
-│   ├── _layout.php                     # Esqueleto compartido de las vistas provisionales
-│   ├── genealogy/<tipo>/<acción>.php
+│   ├── _layout.php                     # Esqueleto HTML común (cabecera, buscador)
+│   ├── genealogy/<tipo>/<acción>.php   # + _layout.php y _partials/ del sitio
 │   └── pos/<tipo>/<acción>.php
 └── Controllers/
     ├── Genealogy/                      # Persona (10), Suceso (9), Registro (8), Coleccion (7),
@@ -28,13 +33,17 @@ url-routing/
                                         # Grupo (4), Home, Cuenta, Cart, Checkout, Order
 ```
 
-Todos los tipos registrados en `config/routes/*.php` tienen su controlador y
-sus vistas. Por ahora son **provisionales**: validan el id y renderizan
-`views/_layout.php` con los datos recibidos, a la espera de conectar la base de
-datos (los `TODO` en cada controlador). `RouteTargetsExistTest` y
-`ViewsExistTest` fallan si una ruta apunta a un controlador/método inexistente o
-si un controlador referencia una vista sin archivo, así que agregar un tipo
-nuevo sin completar las tres piezas rompe CI en vez de dar un 500 en producción.
+Todos los tipos registrados en `config/routes/*.php` tienen controlador,
+repositorio y vistas conectados a la base de datos (ver
+[`DATABASE.md`](./DATABASE.md)). `RouteTargetsExistTest` y `ViewsExistTest`
+fallan si una ruta apunta a un controlador/método inexistente o si un
+controlador referencia una vista sin archivo, así que agregar un tipo nuevo sin
+completar las piezas rompe CI en vez de dar un 500 en producción.
+
+**Pendiente:** carrito, checkout, edición de colecciones, devoluciones y
+preferencias muestran un aviso de "todavía no disponible" — son flujos de
+escritura que necesitan un inicio de sesión, y el proyecto todavía no tiene
+uno (las páginas de cuenta ya funcionan con `$_SESSION['user_id']`).
 
 ## 🧠 Principio de diseño
 
@@ -46,14 +55,33 @@ nuevo sin completar las tres piezas rompe CI en vez de dar un 500 en producción
 
 ## 🚀 Inicio Rápido
 
-### Apache (mod_rewrite)
-
-El `.htaccess` ya incluido redirige todo a `index.php`:
+Desde `url-routing/` (el proyecto es autocontenido: su propio `composer.json`):
 
 ```bash
-a2enmod rewrite
-systemctl restart apache2
+composer install
+php bin/migrate.php genealogy --seed     # crea var/genealogy.sqlite con datos de demo
+php bin/migrate.php pos --seed           # crea var/pos.sqlite con datos de demo
+php -S spa.tudominio.local:8000 -t public public/index.php
+php -S spa.contrastocolor.local:8001 -t public public/index.php
 ```
+
+Sin configurar nada, cada sitio usa un SQLite local en `var/`. Para
+PostgreSQL y el criterio de qué motor usar en cada sitio, ver
+[`DATABASE.md`](./DATABASE.md).
+
+### Despliegue
+
+**La raíz web debe ser `public/`**, nunca la carpeta del proyecto: fuera de
+`public/` están `.env` (contraseñas), `var/` (las bases SQLite), `bin/` y el
+código, que ninguna URL debe alcanzar.
+
+- **Nginx** (el VPS): ver [`deploy/nginx.conf.example`](../deploy/nginx.conf.example),
+  con `root /var/www/url-routing/public`. Ojo: la plantilla genérica de
+  `vps-setup/06_A-setup-php-app.sh` usa la carpeta de la app como `root`; para
+  este proyecto hay que apuntarla a `public/`.
+- **Apache**: `DocumentRoot /var/www/url-routing/public` con `mod_rewrite`
+  habilitado; el `.htaccess` incluido en `public/` redirige todo a `index.php`
+  y asume que la app vive en la raíz del dominio (`RewriteBase /`).
 
 ### Hosts locales + subdominios de idioma
 
@@ -64,23 +92,16 @@ systemctl restart apache2
 127.0.0.1 eng.contrastocolor.local
 ```
 
-El idioma se toma del subdominio de 3 letras (`determineLocale()` en `index.php`); si no hay uno válido, cae a `spa` por defecto. La ruta (path) es idéntica entre idiomas.
-
-### Servidor local
-
-Desde `url-routing/` (el proyecto es autocontenido: su propio `composer.json`):
-
-```bash
-composer install
-php -S spa.tudominio.local:8000 index.php
-php -S spa.contrastocolor.local:8001 index.php
-```
+El idioma se toma del subdominio de 3 letras; si no hay uno válido, cae a
+`spa` por defecto. La ruta (path) es idéntica entre idiomas.
 
 ### Tests
 
 ```bash
 ./vendor/bin/phpunit
 ```
+
+Con `TEST_PG_DSN` definida corren además contra PostgreSQL (ver `DATABASE.md`).
 
 ## 🔍 Ejemplos de URLs
 
@@ -126,7 +147,13 @@ spa.contrastocolor.local:8001/order/8137204719000/2/   seguimiento
 
 El largo debe ser único dentro del mismo sitio (mismo dominio); no hace falta que coincida entre genealogía y POS, ya que viven en dominios distintos.
 
-### Paso 2: crear el controlador
+### Paso 2: migración, repositorio y controlador
+
+1. Una migración nueva `database/<sitio>/migrations/NNN_nuevo_tipo.sql` con la
+   tabla (llave primaria = id de la URL, con `CHECK` del ancho de dígitos).
+2. Un repositorio en `Repositories/<Sitio>/` con `find()` y una consulta por acción.
+3. El controlador, con `renderFound()`: valida el id (400), carga el registro
+   (404 si no existe) y renderiza la vista.
 
 ```php
 <?php
@@ -136,25 +163,29 @@ declare(strict_types=1);
 namespace App\Controllers\Genealogy;
 
 use App\Controllers\BaseController;
+use App\Repositories\Genealogy\NuevoTipoRepository;
 
 class NuevoTipoController extends BaseController
 {
     public function show(array $params = []): string
     {
-        // valida $params['id'] (400 si no es numérico) y renderiza la vista
-        return $this->renderById($params, 'genealogy/nuevo_tipo/show', 'nuevo_tipo');
+        $repo = new NuevoTipoRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'genealogy/nuevo_tipo/show', 'nuevo_tipo');
     }
 
     public function accion_uno(array $params = []): string
     {
         // llamado en /{id-de-N-digitos}/1/
-        return $this->renderById($params, 'genealogy/nuevo_tipo/accion_uno', 'nuevo_tipo');
+        $repo = new NuevoTipoRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'genealogy/nuevo_tipo/accion_uno', 'nuevo_tipo',
+            fn(int $id) => ['detalle' => $repo->detalle($id)]);
     }
 }
 ```
 
-Y una vista por método en `views/genealogy/nuevo_tipo/` (puede empezar como
-las provisionales: `$title = '…'; include __DIR__ . '/../../_layout.php';`).
+4. Una vista por método en `views/genealogy/nuevo_tipo/`, con el mismo patrón
+   que las existentes (`ob_start()` … `$content = ob_get_clean(); include
+   __DIR__ . '/../_layout.php';`).
 
 ### Paso 3: generar el enlace
 
@@ -168,18 +199,15 @@ las provisionales: `$title = '…'; include __DIR__ . '/../../_layout.php';`).
 
 ### Validar el id antes de consultar la base de datos
 
-```php
-public function show($params = [])
-{
-    $id = $params['id'];
+`renderFound()` (en `BaseController`) ya lo hace: responde 400 si el id no es
+numérico y 404 si no existe. Las consultas usan siempre parámetros enlazados;
+los nombres de tabla y columna que no pueden enlazarse se validan en
+`Database::insert/update/delete`.
 
-    if (!ctype_digit($id)) {
-        http_response_code(400);
-        return 'Id inválido';
-    }
-    // ...
-}
-```
+### Recursos privados
+
+Una colección privada o una orden ajena responden **404, no 403**: los ids son
+secuenciales y un 403 confirmaría cuáles existen.
 
 ### Escapar salida
 
@@ -197,7 +225,7 @@ public function show($params = [])
 
 ## 🐛 Solución de Problemas
 
-**404 en todas las rutas**: verificar `mod_rewrite` habilitado y `.htaccess` presente en la raíz con permisos `644`.
+**404 en todas las rutas**: verificar `mod_rewrite` habilitado, que el `DocumentRoot` sea `public/` y que `public/.htaccess` tenga permisos `644`.
 
 **Un id no despacha al controlador esperado**: contar los dígitos exactos del segmento — un dígito de más o de menos cae en otro tipo (o en ningún tipo, y da 404). Revisar `config/routes/{sitio}.php` → `by_length`.
 

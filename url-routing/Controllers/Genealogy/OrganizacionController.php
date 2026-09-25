@@ -5,25 +5,28 @@ declare(strict_types=1);
 namespace App\Controllers\Genealogy;
 
 use App\Controllers\BaseController;
+use App\Repositories\Genealogy\OrganizacionRepository;
 
-/**
- * Organizacion — identificador numerico de 5 digitos.
- * TODO: cargar el recurso desde la base de datos por $id.
- */
+/** Organizacion (archive, parish...) — 5-digit id. */
 class OrganizacionController extends BaseController
 {
     public function show(array $params = []): string
     {
-        return $this->renderById($params, 'genealogy/organizacion/show', 'organizacion');
+        $repo = new OrganizacionRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'genealogy/organizacion/show', 'organizacion');
     }
 
     public function miembros(array $params = []): string
     {
-        return $this->renderById($params, 'genealogy/organizacion/miembros', 'organizacion');
+        $repo = new OrganizacionRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'genealogy/organizacion/miembros', 'organizacion',
+            fn(int $id) => ['miembros' => $repo->miembros($id)]);
     }
 
     public function registros(array $params = []): string
     {
-        return $this->renderById($params, 'genealogy/organizacion/registros', 'organizacion');
+        $repo = new OrganizacionRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'genealogy/organizacion/registros', 'organizacion',
+            fn(int $id) => ['registros' => $repo->registros($id)]);
     }
 }

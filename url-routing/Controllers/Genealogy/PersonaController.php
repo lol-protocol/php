@@ -5,83 +5,48 @@ declare(strict_types=1);
 namespace App\Controllers\Genealogy;
 
 use App\Controllers\BaseController;
+use App\Repositories\Genealogy\PersonaRepository;
 
-/**
- * Persona — identificador numerico de 10 digitos.
- * El largo del segmento (10) es lo que hace que el router llegue aqui.
- */
+/** Persona — 10-digit id. */
 class PersonaController extends BaseController
 {
-    public function show($params = [])
+    private function repo(): PersonaRepository
     {
-        $id = $this->validateId($params['id'] ?? null);
-        if ($id === null) {
-            return $this->handleBadRequest('Invalid person ID');
-        }
-
-        // TODO: fetch from DB by $id
-        $persona = [];
-
-        return view('genealogy/persona/show', ['persona' => $persona]);
+        return new PersonaRepository($this->db());
     }
 
-    public function ascendencia($params = [])
+    public function show(array $params = []): string
     {
-        $id = $this->validateId($params['id'] ?? null);
-        if ($id === null) {
-            return $this->handleBadRequest('Invalid person ID');
-        }
-
-        $ascendencia = [];
-
-        return view('genealogy/persona/ascendencia', [
-            'id' => $id,
-            'ascendencia' => $ascendencia,
-        ]);
+        $repo = $this->repo();
+        return $this->renderFound($params, $repo->find(...), 'genealogy/persona/show', 'persona',
+            fn(int $id) => ['vinculos' => $repo->vinculos($id), 'cronologia' => $repo->cronologia($id)]);
     }
 
-    public function descendencia($params = [])
+    public function ascendencia(array $params = []): string
     {
-        $id = $this->validateId($params['id'] ?? null);
-        if ($id === null) {
-            return $this->handleBadRequest('Invalid person ID');
-        }
-
-        $descendencia = [];
-
-        return view('genealogy/persona/descendencia', [
-            'id' => $id,
-            'descendencia' => $descendencia,
-        ]);
+        $repo = $this->repo();
+        return $this->renderFound($params, $repo->find(...), 'genealogy/persona/ascendencia', 'persona',
+            fn(int $id) => ['ancestros' => $repo->ascendencia($id)]);
     }
 
-    public function vinculos($params = [])
+    public function descendencia(array $params = []): string
     {
-        $id = $this->validateId($params['id'] ?? null);
-        if ($id === null) {
-            return $this->handleBadRequest('Invalid person ID');
-        }
-
-        $vinculos = [];
-
-        return view('genealogy/persona/vinculos', [
-            'id' => $id,
-            'vinculos' => $vinculos,
-        ]);
+        $repo = $this->repo();
+        return $this->renderFound($params, $repo->find(...), 'genealogy/persona/descendencia', 'persona',
+            fn(int $id) => ['descendientes' => $repo->descendencia($id)]);
     }
 
-    public function cronologia($params = [])
+    public function vinculos(array $params = []): string
     {
-        $id = $this->validateId($params['id'] ?? null);
-        if ($id === null) {
-            return $this->handleBadRequest('Invalid person ID');
-        }
+        $repo = $this->repo();
+        return $this->renderFound($params, $repo->find(...), 'genealogy/persona/vinculos', 'persona',
+            fn(int $id) => ['vinculos' => $repo->vinculos($id)]);
+    }
 
-        $eventos = [];
-
-        return view('genealogy/persona/cronologia', [
-            'id' => $id,
-            'eventos' => $eventos,
-        ]);
+    public function cronologia(array $params = []): string
+    {
+        $repo = $this->repo();
+        return $this->renderFound($params, $repo->find(...), 'genealogy/persona/cronologia', 'persona',
+            fn(int $id) => ['eventos' => $repo->cronologia($id)]);
     }
 }

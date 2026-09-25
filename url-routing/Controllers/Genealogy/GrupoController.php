@@ -5,25 +5,29 @@ declare(strict_types=1);
 namespace App\Controllers\Genealogy;
 
 use App\Controllers\BaseController;
+use App\Repositories\Genealogy\GrupoRepository;
 
-/**
- * Grupo (apellido) — identificador numerico de 6 digitos.
- * TODO: cargar el recurso desde la base de datos por $id.
- */
+/** Grupo (surname) — 6-digit id. */
 class GrupoController extends BaseController
 {
     public function show(array $params = []): string
     {
-        return $this->renderById($params, 'genealogy/grupo/show', 'grupo');
+        $repo = new GrupoRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'genealogy/grupo/show', 'grupo',
+            fn(int $id) => ['dispersion' => $repo->dispersion($id)]);
     }
 
     public function red(array $params = []): string
     {
-        return $this->renderById($params, 'genealogy/grupo/red', 'grupo');
+        $repo = new GrupoRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'genealogy/grupo/red', 'grupo',
+            fn(int $id) => ['personas' => $repo->red($id)]);
     }
 
     public function dispersion(array $params = []): string
     {
-        return $this->renderById($params, 'genealogy/grupo/dispersion', 'grupo');
+        $repo = new GrupoRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'genealogy/grupo/dispersion', 'grupo',
+            fn(int $id) => ['dispersion' => $repo->dispersion($id)]);
     }
 }

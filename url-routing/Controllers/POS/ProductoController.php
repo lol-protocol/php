@@ -5,53 +5,29 @@ declare(strict_types=1);
 namespace App\Controllers\POS;
 
 use App\Controllers\BaseController;
+use App\Repositories\POS\ProductoRepository;
 
-/**
- * Producto — identificador numerico de 8 digitos.
- * El largo del segmento (8) es lo que hace que el router llegue aqui.
- */
+/** Producto — 8-digit id. */
 class ProductoController extends BaseController
 {
-    public function show($params = [])
+    public function show(array $params = []): string
     {
-        $id = $this->validateId($params['id'] ?? null);
-        if ($id === null) {
-            return $this->handleBadRequest('Invalid product ID');
-        }
-
-        // TODO: fetch from DB by $id
-        $producto = [];
-
-        return view('pos/producto/show', ['producto' => $producto]);
+        $repo = new ProductoRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'pos/producto/show', 'producto',
+            fn(int $id) => ['variantes' => $repo->variantes($id), 'etiquetas' => $repo->etiquetas($id)]);
     }
 
-    public function variantes($params = [])
+    public function variantes(array $params = []): string
     {
-        $id = $this->validateId($params['id'] ?? null);
-        if ($id === null) {
-            return $this->handleBadRequest('Invalid product ID');
-        }
-
-        $variantes = [];
-
-        return view('pos/producto/variantes', [
-            'id' => $id,
-            'variantes' => $variantes,
-        ]);
+        $repo = new ProductoRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'pos/producto/variantes', 'producto',
+            fn(int $id) => ['variantes' => $repo->variantes($id)]);
     }
 
-    public function atributos($params = [])
+    public function atributos(array $params = []): string
     {
-        $id = $this->validateId($params['id'] ?? null);
-        if ($id === null) {
-            return $this->handleBadRequest('Invalid product ID');
-        }
-
-        $atributos = [];
-
-        return view('pos/producto/atributos', [
-            'id' => $id,
-            'atributos' => $atributos,
-        ]);
+        $repo = new ProductoRepository($this->db());
+        return $this->renderFound($params, $repo->find(...), 'pos/producto/atributos', 'producto',
+            fn(int $id) => ['atributos' => $repo->atributos($id)]);
     }
 }

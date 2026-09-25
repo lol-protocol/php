@@ -87,6 +87,12 @@ class Router
         return null;
     }
 
+    /** Reverse of typeLength(): the type a digit count selects, if any. */
+    public function typeForLength(int $length): string|null
+    {
+        return $this->config['by_length'][$length]['type'] ?? null;
+    }
+
     public function dispatch(): string
     {
         $match = $this->resolve();
@@ -135,7 +141,10 @@ class Router
 
             return (string)call_user_func([$controller, $method], $match['params']);
         } catch (\Throwable $e) {
-            return $this->handleError("Controller error: " . $e->getMessage());
+            return $this->handleError(
+                "Controller error in {$fullClass}::{$match['method']}: " . $e::class . ': ' . $e->getMessage()
+                    . ' at ' . $e->getFile() . ':' . $e->getLine()
+            );
         }
     }
 
@@ -145,9 +154,16 @@ class Router
         return '<h1>404 - Pagina no encontrada</h1>';
     }
 
-    protected function handleError(string $message): string
+    /**
+     * The detail can carry SQL, class names or connection info: it goes to
+     * the log, and only reaches the response when DEBUG is on.
+     */
+    protected function handleError(string $detail): string
     {
+        Logger::getInstance()->error('Request failed', ['detail' => $detail]);
         http_response_code(500);
-        return '<h1>500 - ' . htmlspecialchars($message) . '</h1>';
+
+        $debug = defined('DEBUG_MODE') && DEBUG_MODE;
+        return '<h1>500 - ' . htmlspecialchars($debug ? $detail : 'Error interno del servidor') . '</h1>';
     }
 }

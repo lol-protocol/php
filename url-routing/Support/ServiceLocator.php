@@ -35,6 +35,11 @@ class ServiceLocator
         return $this->container->get('router');
     }
 
+    public function getDatabase(): Database
+    {
+        return $this->container->get('db');
+    }
+
     public function getUrlHelper(): UrlHelper
     {
         return $this->container->get('url');

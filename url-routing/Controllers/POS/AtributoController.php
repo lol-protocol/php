@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace App\Controllers\POS;
 
 use App\Controllers\BaseController;
+use App\Repositories\POS\CatalogoRepository;
 
-/**
- * Atributo (color, talla...) — identificador numerico de 5 digitos.
- * TODO: cargar el recurso desde la base de datos por $id.
- */
+/** Atributo (color, size, material) — 5-digit id. */
 class AtributoController extends BaseController
 {
     public function show(array $params = []): string
     {
-        return $this->renderById($params, 'pos/atributo/show', 'atributo');
+        $repo = new CatalogoRepository($this->db());
+        return $this->renderFound($params, $repo->atributo(...), 'pos/atributo/show', 'atributo');
     }
 
     public function productos(array $params = []): string
     {
-        return $this->renderById($params, 'pos/atributo/productos', 'atributo');
+        $repo = new CatalogoRepository($this->db());
+        return $this->renderFound($params, $repo->atributo(...), 'pos/atributo/productos', 'atributo',
+            fn(int $id) => ['productos' => $repo->productosConAtributo($id)]);
     }
 }
