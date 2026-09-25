@@ -73,7 +73,8 @@ sistema-nuevo/
 │       ├── ClienteEstadisticas.php    Llama al servicio de estadísticas por HTTP
 │       ├── autenticacion.php          Sesión + CSRF (login/logout, un solo usuario)
 │       ├── AlmacenIntentosLogin.php   Rate limiting de /api/login por IP
-│       ├── credenciales.php           Usuario demo + hash de contraseña (bcrypt)
+│       ├── AlmacenAdministradores.php Lee la tabla administradores (login en vivo)
+│       ├── credenciales.php           Solo semilla: carga admin/hash a la tabla al generar datos
 │       ├── saneador.php               Punto de entrada del saneador (ver saneador/)
 │       ├── saneador/                  primitivas, marca-temporal, accion(-monto/-campos/-ip)
 │       ├── api.php                    Punto de entrada de los endpoints (ver api/)
@@ -168,8 +169,13 @@ esto de forma **proactiva**, sin tener que elegir un usuario primero.
 Sesión simple por cookie (PHP `session`), sin roles ni registro — pensada para un
 prototipo, no para producción.
 
-- Usuario demo: **admin** / **admin123** (hash bcrypt en `credenciales.php`, la
-  contraseña nunca se compara ni se guarda en texto plano).
+- Usuario demo: **admin** / **admin123**. El login valida contra la tabla
+  `administradores` (`AlmacenAdministradores`), no contra un archivo -- `credenciales.php`
+  es solo el dato semilla que carga esa fila una vez al generar los datos (ver "Base
+  de datos"). La contraseña nunca se compara ni se guarda en texto plano (hash bcrypt,
+  `password_verify()`); si el usuario no existe, igual se corre `password_verify()`
+  contra un hash dummy en vez de cortar antes, para que el tiempo de respuesta no
+  filtre qué usuarios existen.
 - Como la interfaz y la API corren en puertos distintos, la cookie de sesión viaja
   entre orígenes: `servidor-php/publico/index.php` responde el preflight CORS (OPTIONS)
   y refleja como único origen permitido `http://localhost:8082` (o
@@ -419,10 +425,13 @@ php pruebas/ejecutar-integracion.php
   `AlmacenAcciones` y `AlmacenDatos` (empate en `marca_temporal`/`nombre` se
   desempata por `id`, para que la paginación no repita/salte filas),
   `AlmacenAlertas` (mismas invariantes que `AlmacenKpis`, tope de 15 en el top,
-  empate en `mismatch_count` también desempatado por `id`) y
+  empate en `mismatch_count` también desempatado por `id`),
   `ClienteEstadisticas` (servicio caído devuelve `null` sin lanzar excepción y
   el reintento no tarda segundos; `statsVarios()` pide varios tipos en paralelo,
-  y con el servicio colgado el lote entero paga un solo timeout, no uno por tipo).
+  y con el servicio colgado el lote entero paga un solo timeout, no uno por tipo) y
+  `AlmacenAdministradores`/`auth_verificar_credenciales` (un admin que solo existe
+  en la tabla, no en `credenciales.php`, autentica igual -- prueba que el login lee
+  de la BD, no del archivo).
 - `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin

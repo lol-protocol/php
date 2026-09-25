@@ -6,7 +6,8 @@ declare(strict_types=1);
 
 function api_login(): void
 {
-    $intentos = new AlmacenIntentosLogin(ConexionBd::obtener());
+    $pdo = ConexionBd::obtener();
+    $intentos = new AlmacenIntentosLogin($pdo);
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'desconocida';
 
     $bloqueadaHasta = $intentos->bloqueadaHasta($ip);
@@ -20,7 +21,7 @@ function api_login(): void
     $username = is_string($body['username'] ?? null) ? $body['username'] : '';
     $password = is_string($body['password'] ?? null) ? $body['password'] : '';
 
-    if ($username === '' || $password === '' || !auth_verificar_credenciales($username, $password)) {
+    if ($username === '' || $password === '' || !auth_verificar_credenciales($pdo, $username, $password)) {
         $bloqueadaAhora = $intentos->registrarFallo($ip);
         if ($bloqueadaAhora !== null) {
             http_response_code(429);
