@@ -47,7 +47,7 @@ const balls = [
 ];
 
 const manager = new AnimationManager(balls);
-const toggle = new AnimationToggle([], true);
+const toggle = new AnimationToggle();
 
 // Bridge AnimationToggle to AnimationManager
 const originalToggle = toggle.toggle.bind(toggle);

@@ -115,7 +115,7 @@ for (let i = 0; i < ${objectCount}; i++) {
 }
 
 const manager = new AnimationManager(objects);
-const toggle = new AnimationToggle([], true);
+const toggle = new AnimationToggle();
 const origToggle = toggle.toggle.bind(toggle);
 toggle.toggle = function() {
     origToggle();
@@ -133,7 +133,7 @@ const toggle = new AnimationToggle('.web-svg');`,
     jsSequenceAnimation: (buildFunctionName, delayMs = 4000) => `
 class SequenceToggle extends AnimationToggle {
     constructor(callback, delay = ${delayMs}) {
-        super([], true);
+        super();
         this.callback = callback;
         this.delay = delay;
         this.timeoutId = null;

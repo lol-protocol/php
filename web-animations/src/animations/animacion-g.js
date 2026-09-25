@@ -56,7 +56,7 @@ for (let i = 0; i < 15; i++) {
 }
 
 const manager = new AnimationManager(particles);
-const toggle = new AnimationToggle([], true);
+const toggle = new AnimationToggle();
 
 const originalToggle = toggle.toggle.bind(toggle);
 toggle.toggle = function() {
