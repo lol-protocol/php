@@ -7,7 +7,7 @@ if (!container) {
 
 class HourglassToggle extends AnimationToggle {
     constructor() {
-        super([], true);
+        super();
         this.fallInterval = null;
         this.startSand();
     }

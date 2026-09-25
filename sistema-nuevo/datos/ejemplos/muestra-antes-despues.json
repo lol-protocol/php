@@ -1,0 +1,181 @@
+[
+    {
+        "crudo": {
+            "id": "a00001",
+            "user_id": "  u001\n",
+            "type": "login",
+            "timestamp": 1786350121000,
+            "duration_ms": "$1,156.75",
+            "path": "\/app\/auth\/iniciar-sesion.php",
+            "ip": "28.95.138.161",
+            "ip_country": "  BE\n",
+            "ip_isp": "Orbital Broadband"
+        },
+        "saneado": {
+            "id": "a00001",
+            "user_id": "u001",
+            "type": "login",
+            "label": "Inicio de sesión",
+            "timestamp": "2026-08-10 08:22:01",
+            "duration_ms": 1157,
+            "path": "\/app\/auth\/iniciar-sesion.php",
+            "amount_local": null,
+            "currency": null,
+            "amount_usd": null,
+            "comment": null,
+            "endpoint": null,
+            "http_status": null,
+            "file_size_kb": null,
+            "ip": "28.95.138.161",
+            "ip_country": "BE",
+            "ip_local_time": "09:22:01",
+            "ip_isp": "Orbital Broadband"
+        }
+    },
+    {
+        "crudo": {
+            "id": "a00231",
+            "user_id": "",
+            "type": "search",
+            "timestamp": 1786705550,
+            "duration_ms": "N\/D",
+            "path": "\/app\/catalogo\/buscar.php",
+            "ip": "180.12.184.128",
+            "ip_country": "SA",
+            "ip_isp": "  Andes NET\n"
+        },
+        "saneado": null
+    },
+    {
+        "crudo": {
+            "id": "a00013",
+            "user_id": "",
+            "type": "  api_call\n",
+            "timestamp": 1785770410,
+            "duration_ms": 189,
+            "path": "\/app\/api\/index.php",
+            "ip": "45.88.87.74",
+            "ip_country": "  es\n",
+            "ip_isp": "  CloudHost Networks\n",
+            "endpoint": "\/api\/carrito",
+            "http_status": 200
+        },
+        "saneado": null
+    },
+    {
+        "crudo": {
+            "id": "a00027",
+            "user_id": "u003",
+            "type": "evento_desconocido",
+            "timestamp": "2026-08-05T17:36:22Z",
+            "duration_ms": " 2959 ",
+            "path": "\/app\/checkout\/iniciar.php",
+            "ip": "198.233.214.142",
+            "ip_country": "CY",
+            "ip_isp": "Nébula Cloud"
+        },
+        "saneado": null
+    },
+    {
+        "crudo": {
+            "id": "a00069",
+            "user_id": "u005",
+            "type": "review_submit",
+            "timestamp": 1787271675000,
+            "duration_ms": " 12060 ",
+            "path": "\/app\/resenas\/enviar.php",
+            "ip": "149.220.129.89",
+            "ip_country": "SE",
+            "ip_isp": "NetConecta S.A.",
+            "comment": "Volvería a comprar sin dudarlo. <img src=x onerror=alert(1)>"
+        },
+        "saneado": {
+            "id": "a00069",
+            "user_id": "u005",
+            "type": "review_submit",
+            "label": "Reseña enviada",
+            "timestamp": "2026-08-21 00:21:15",
+            "duration_ms": 12060,
+            "path": "\/app\/resenas\/enviar.php",
+            "amount_local": null,
+            "currency": null,
+            "amount_usd": null,
+            "comment": "Volvería a comprar sin dudarlo.",
+            "endpoint": null,
+            "http_status": null,
+            "file_size_kb": null,
+            "ip": "149.220.129.89",
+            "ip_country": "SE",
+            "ip_local_time": "01:21:15",
+            "ip_isp": "NetConecta S.A."
+        }
+    },
+    {
+        "crudo": {
+            "id": "a00091",
+            "user_id": "u007",
+            "type": "payment",
+            "timestamp": "2026-08-18T18:42:59+09:00",
+            "duration_ms": 9860,
+            "path": "\/app\/checkout\/pago.php",
+            "ip": "92.205.140.146",
+            "ip_country": "CU",
+            "ip_isp": "Nébula Cloud",
+            "amount": "$3,729.67",
+            "currency": "CUP"
+        },
+        "saneado": {
+            "id": "a00091",
+            "user_id": "u007",
+            "type": "payment",
+            "label": "Pago",
+            "timestamp": "2026-08-18 09:42:59",
+            "duration_ms": 9860,
+            "path": "\/app\/checkout\/pago.php",
+            "amount_local": 3729.67,
+            "currency": "CUP",
+            "amount_usd": 31.08,
+            "comment": null,
+            "endpoint": null,
+            "http_status": null,
+            "file_size_kb": null,
+            "ip": "92.205.140.146",
+            "ip_country": "CU",
+            "ip_local_time": "04:42:59",
+            "ip_isp": "Nébula Cloud"
+        }
+    },
+    {
+        "crudo": {
+            "id": "a00021",
+            "user_id": "  u003\n",
+            "type": "login",
+            "timestamp": "2026-08-05 17:33:05",
+            "duration_ms": "1149",
+            "path": "\/app\/auth\/iniciar-sesion.php",
+            "ip": "198.233.214.142:42804",
+            "ip_country": "cy",
+            "ip_isp": "Nébula Cloud"
+        },
+        "saneado": {
+            "id": "a00021",
+            "user_id": "u003",
+            "type": "login",
+            "label": "Inicio de sesión",
+            "timestamp": "2026-08-05 17:33:05",
+            "duration_ms": 1149,
+            "path": "\/app\/auth\/iniciar-sesion.php",
+            "amount_local": null,
+            "currency": null,
+            "amount_usd": null,
+            "comment": null,
+            "endpoint": null,
+            "http_status": null,
+            "file_size_kb": null,
+            "ip": "198.233.214.142",
+            "ip_country": "CY",
+            "ip_local_time": "19:33:05",
+            "ip_isp": "Nébula Cloud"
+        }
+    }
+]

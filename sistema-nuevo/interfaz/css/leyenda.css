@@ -1,0 +1,51 @@
+/* Leyenda de la barra lateral: cómo leer los badges y los colores por tipo de dato. */
+
+.legend {
+  font-size: 0.82rem;
+}
+
+.legend h3 {
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+}
+
+.legend h3:not(:first-child) {
+  margin-top: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+}
+
+.legend-note {
+  margin: 0.6rem 0 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.legend-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.7rem;
+  margin: 0.6rem 0;
+  font-size: 0.76rem;
+}
+
+.legend-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.legend-swatch::before {
+  content: "";
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--dot-color, var(--text));
+  box-shadow: 0 0 6px var(--dot-color, var(--text));
+}

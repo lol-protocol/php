@@ -1,0 +1,39 @@
+/* Badges de comparación (mejor/peor/≈ promedio que el universo elegido). */
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.badge--good {
+  background: var(--good-soft);
+  border-color: var(--good);
+  color: var(--good);
+  text-shadow: 0 0 6px var(--good);
+}
+
+.badge--bad {
+  background: var(--bad-soft);
+  border-color: var(--bad);
+  color: var(--bad);
+  text-shadow: 0 0 6px var(--bad);
+}
+
+.badge--neutral {
+  background: var(--neutral-soft);
+  border-color: var(--border);
+  color: var(--neutral);
+}
