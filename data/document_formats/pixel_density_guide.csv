@@ -1,0 +1,24 @@
+device_type,use_case,min_ppi,recommended_ppi,max_useful_ppi,screen_size_inches,viewing_distance_cm,clarity_rating,notes
+Smartphone,Reading Text,300,400,600,5.5,20-30,Excellent,Sharp text at normal arm's length
+Smartphone,Photo Viewing,250,350,600,6.0,20-30,Excellent,Vibrant colors smooth transitions
+Smartphone,Gaming,300,400,480,6.5,20-30,Excellent,Fast response smooth graphics
+Tablet,Document Reading,200,300,400,10,30-40,Very Good,Comfortable for extended reading
+Tablet,Photo Editing,220,300,500,11,30-45,Excellent,Professional color work
+Tablet,Drawing/Art,180,250,400,12.9,35-50,Good,Stylus precision acceptable
+Laptop,Document Work,100,150,220,15.6,45-60,Good,Standard office work
+Laptop,Photo Work,140,180,300,15.6,45-60,Excellent,Professional color grading
+Laptop,Video Editing,110,160,280,17,50-70,Very Good,Timeline visibility important
+Monitor,Office Work,90,110,150,24,50-70,Good,Standard work typical
+Monitor,Photo/Video,140,180,250,27,60-80,Excellent,Color accuracy critical
+Monitor,Gaming,90,120,180,27,60-80,Very Good,Refresh rate more important
+Monitor,4K Professional,150,200,300,27,60-80,Excellent,Graphics design video
+E-reader,Text Reading,200,300,400,6.0,30-40,Excellent,Crisp text black and white
+E-reader,Magazine,150,200,300,7.0,30-40,Very Good,Readable color capable
+E-reader,Comics,100,150,250,10.2,40-50,Good,Large panels important
+TV,Movie Watching,30,60,100,55,180-300,Varies,Distance compensates low PPI
+TV,Gaming Console,40,70,120,50,200-300,Good,Fast response refresh rate
+Projection,Presentation,20,40,80,100+,300+,Sufficient,Large size distance high
+VR Headset,Immersive,300,400,800,N/A,Near Eye,Critical,Very close viewing distance
+Desktop Monitor,CAD/3D,120,160,250,30,70-100,Excellent,Precision work scaling
+Portable Display,Mobile Work,140,200,350,15.6,45-60,Very Good,USB-C powered portability
+Touch Screen,Interactive,150,220,400,10,20-40,Excellent,Touch precision important

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación T - Engranajes</title>
+    <link rel="stylesheet" href="../helpers/common.css">
+    <link rel="stylesheet" href="animacion-t.css">
+</head>
+<body class="fullscreen-container">
+    <div class="info-panel">
+        <h2>T) Engranajes Rotando</h2>
+        <p>Engranajes interlocked rotando en conjunto.</p>
+    </div>
+
+    <div class="gears-container">
+        <svg viewBox="0 0 300 300" class="gears-svg">
+            <defs>
+                <linearGradient id="gearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#ff8e72;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#ff4444;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <g id="gear1" class="gear">
+                <circle cx="100" cy="150" r="40" fill="url(#gearGrad)"/>
+                <rect x="95" y="105" width="10" height="15" fill="url(#gearGrad)"/>
+                <rect x="95" y="180" width="10" height="15" fill="url(#gearGrad)"/>
+            </g>
+            <g id="gear2" class="gear">
+                <circle cx="200" cy="150" r="40" fill="url(#gearGrad)"/>
+                <rect x="195" y="105" width="10" height="15" fill="url(#gearGrad)"/>
+                <rect x="195" y="180" width="10" height="15" fill="url(#gearGrad)"/>
+            </g>
+        </svg>
+    </div>
+
+    <button class="control-btn" onclick="toggle.toggle()">Pausar/Reanudar</button>
+    <script src="../helpers/common.js"></script>
+    <script src="animacion-t.js"></script>
+</body>
+</html>

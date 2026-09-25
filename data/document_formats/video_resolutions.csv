@@ -1,0 +1,25 @@
+resolution_name,width_pixels,height_pixels,aspect_ratio,megapixels,category,common_use,fps_standard,bitrate_mbps_min,bitrate_mbps_recommended,notes
+QVGA,320,240,4:3,0.077,SD,Legacy mobile,24-30,0.5,1,Very low resolution obsolete
+VGA,640,480,4:3,0.31,SD,Legacy video,24-30,1,2,Older standard definition
+SVGA,800,600,4:3,0.48,SD,Legacy,24-30,1.5,3,Old computer monitor
+XGA,1024,768,4:3,0.79,SD,Legacy projection,24-30,2,4,Older projectors
+WXGA,1280,720,16:9,0.92,HD,HD minimum standard,24-60,2,4,HD baseline 720p
+HD 720p,1280,720,16:9,0.92,HD,Streaming video,24-60,2.5,5,YouTube standard HD
+Full HD 1080p,1920,1080,16:9,2.07,HD,Standard HD quality,24-60,4,8,Broadcast HD standard
+2K,2048,1080,17.85:9,2.21,2K,DCI cinema digital,24-48,6,12,Digital cinema 2K
+QHD,2560,1440,16:9,3.69,QHD,Gaming streaming,24-144,6,12,1440p high quality
+1440p Gaming,2560,1440,16:9,3.69,QHD,High-end gaming,60-144,6,12,Smooth gaming performance
+4K Ultra HD,3840,2160,16:9,8.29,4K,4K standard streaming,24-60,15,25,Netflix/YouTube 4K standard
+4K DCI,4096,2160,17.85:9,8.85,4K,DCI cinema 4K,24-48,20,40,Professional digital cinema
+5K,5120,2880,16:9,14.75,5K,High-end production,24-60,25,50,Apple iMac 5K standard
+8K Ultra HD,7680,4320,16:9,33.18,8K,Experimental future,24-60,50,100,Bleeding edge resolution
+Ultra Wide 21:9,2560,1080,21:9,2.76,Ultrawide,Gaming ultrawide,60-144,4,8,Immersive gaming
+Ultra Wide 32:9,5120,1440,32:9,7.37,Ultrawide,Triple display,60-144,8,16,Extreme immersive gaming
+Vertical 9:16,1080,1920,9:16,2.07,Vertical,Mobile portrait,24-60,4,8,Portrait orientation
+Square 1:1,1080,1080,1:1,1.17,Square,Social media,24-60,2,4,Instagram TikTok square
+Anamorphic 2.35:1,2560,1090,2.35:1,2.79,Cinema,Letterbox cinema,24,8,15,Movie theater aspect
+IMAX,4096,3160,1.3:1,12.9,IMAX,Large format cinema,24,30,60,Extreme large format
+Mobile SD,800,600,4:3,0.48,SD,Legacy phone,24-30,1,2,Old smartphone
+Mobile HD,1280,720,16:9,0.92,HD,Modern phone HD,24-60,2,4,Older flagship phone
+Foldable Outer,2316,1080,21.5:9,2.5,HD,Samsung Z Flip,24-60,2.5,5,Foldable phone outer
+Foldable Inner,2152,2176,1:1,4.69,2K,Samsung Z Fold,24-60,6,12,Foldable phone inner screen

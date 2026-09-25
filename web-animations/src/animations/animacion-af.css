@@ -1,0 +1,31 @@
+.mandala-container {
+    width: 350px;
+    height: 350px;
+    position: relative;
+    animation: rotateMandala 10s linear infinite;
+}
+
+.mandala-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 3px solid var(--color-1);
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+}
+
+.mandala-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--color-3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+}
+
+@keyframes rotateMandala {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

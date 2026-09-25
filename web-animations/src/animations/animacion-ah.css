@@ -1,0 +1,26 @@
+.star-rain-container {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(20, 20, 40, 0.9), rgba(10, 10, 20, 1));
+    position: relative;
+    overflow: hidden;
+}
+
+.falling-star {
+    position: absolute;
+    color: white;
+    font-size: 24px;
+    animation: fallStar linear forwards;
+    text-shadow: 0 0 10px var(--color-5);
+}
+
+@keyframes fallStar {
+    0% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(400px) rotate(360deg);
+    }
+}
