@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="css/comentarios.css">
   <link rel="stylesheet" href="css/badges.css">
   <link rel="stylesheet" href="css/inactividad.css">
+  <link rel="stylesheet" href="css/modal.css">
   <link rel="stylesheet" href="css/notas.css">
   <link rel="stylesheet" href="css/kpis.css">
   <link rel="stylesheet" href="css/notificaciones.css">

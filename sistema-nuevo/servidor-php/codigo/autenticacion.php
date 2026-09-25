@@ -18,13 +18,19 @@ function auth_iniciar_sesion_php(): void
     session_start();
 }
 
-function auth_verificar_credenciales(string $username, string $password): bool
+/**
+ * Hash bcrypt válido pero que no corresponde a ninguna cuenta real: si el
+ * usuario no existe, auth_verificar_credenciales() igual corre password_verify()
+ * contra esto en vez de cortar antes, para que el tiempo de respuesta no filtre
+ * qué usuarios existen (antes, con el único usuario hardcodeado en credenciales.php,
+ * ese mismo rol lo cumplía comparar el username con hash_equals()).
+ */
+const AUTH_HASH_DUMMY = '$2y$12$5oCNuEG9IhDV77jb03nkXOiEpNTSb2cgl4.G.FvSbzC9t.3au48xC';
+
+function auth_verificar_credenciales(PDO $pdo, string $username, string $password): bool
 {
-    $credenciales = require __DIR__ . '/credenciales.php';
-    if (!hash_equals($credenciales['username'], $username)) {
-        return false;
-    }
-    return password_verify($password, $credenciales['password_hash']);
+    $claveHash = (new AlmacenAdministradores($pdo))->claveHash($username);
+    return password_verify($password, $claveHash ?? AUTH_HASH_DUMMY);
 }
 
 function auth_marcar_autenticado(string $username): void
