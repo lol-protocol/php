@@ -30,3 +30,19 @@ jobs:
 
       - name: Run tests
         run: ./vendor/bin/phpunit
+
+  document-formats:
+    name: document-formats (Node)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run tests
+        run: node --test 'document-formats/tests/*.test.js'
