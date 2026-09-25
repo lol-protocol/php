@@ -1,8 +1,8 @@
 // Utilidades Compartidas
 
 class AnimationToggle {
-    constructor(selector, animationState = true) {
-        this.elements = document.querySelectorAll(selector);
+    constructor(selector = null, animationState = true) {
+        this.elements = selector ? document.querySelectorAll(selector) : [];
         this.isAnimating = animationState;
         this.button = document.querySelector('button');
     }
@@ -35,7 +35,7 @@ class AnimationToggle {
 // Sequence-based toggle for repeated callbacks
 class SequenceToggle extends AnimationToggle {
     constructor(callback, delay = 4000) {
-        super([], true);
+        super();
         this.callback = callback;
         this.delay = delay;
         this.timeoutId = null;
@@ -79,7 +79,7 @@ class SequenceToggle extends AnimationToggle {
 // Particle emitter for spawning/destroying elements on interval
 class ParticleEmitterToggle extends AnimationToggle {
     constructor(emitFn, emitInterval) {
-        super([], true);
+        super();
         this.emitFn = emitFn;
         this.emitInterval = emitInterval;
         this.emitterIntervalId = null;

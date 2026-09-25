@@ -40,3 +40,28 @@ jobs:
 
       - name: Benchmark smoke run
         run: php bin/benchmark.php 2000
+
+  web-animations:
+    name: Web animations (smoke)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web-animations
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Open every animation in a browser
+        run: npm test
