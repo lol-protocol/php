@@ -1,0 +1,116 @@
+{
+  "header": {
+    "title": "文档格式浏览器",
+    "subtitle": "全球文档标准综合数据库",
+    "tagline": "探索200个国家的格式，支持30种语言"
+  },
+  "tabs": {
+    "browser": "浏览器",
+    "comparison": "比较",
+    "converter": "转换器",
+    "statistics": "统计",
+    "about": "关于"
+  },
+  "search": {
+    "placeholder": "搜索格式名称、国家或用途...",
+    "label": "搜索:"
+  },
+  "filters": {
+    "country": "国家:",
+    "category": "类别:",
+    "region": "地区:",
+    "allCountries": "所有国家",
+    "allCategories": "所有类别",
+    "allRegions": "所有地区"
+  },
+  "format": {
+    "name": "格式名称",
+    "country": "国家",
+    "size": "大小",
+    "use": "常见用途",
+    "category": "类别",
+    "width": "宽度",
+    "height": "高度",
+    "millimeters": "mm",
+    "inches": "in",
+    "aspectRatio": "宽高比",
+    "measurementSystem": "测量系统",
+    "standard": "标准",
+    "notes": "备注"
+  },
+  "comparison": {
+    "title": "格式比较",
+    "selectFirst": "选择第一个格式...",
+    "selectSecond": "选择第二个格式...",
+    "property": "属性",
+    "difference": "差异",
+    "percentage": "% 相似度"
+  },
+  "converter": {
+    "title": "格式转换器",
+    "from": "来自格式:",
+    "to": "转换为:",
+    "equivalence": "等价性:",
+    "convertButton": "转换",
+    "exact": "精确匹配",
+    "similar": "非常相似",
+    "lowMatch": "匹配度低",
+    "conversionTips": "转换提示"
+  },
+  "statistics": {
+    "title": "数据库统计",
+    "totalFormats": "总格式数",
+    "totalCountries": "覆盖国家",
+    "totalLanguages": "支持语言",
+    "byRegion": "按地区分类",
+    "byCategory": "按类别分类",
+    "largestFormat": "最大格式",
+    "smallestFormat": "最小格式",
+    "averageSize": "平均大小",
+    "measurements": "测量"
+  },
+  "regions": {
+    "americas": "美洲",
+    "europe": "欧洲",
+    "asiaPacific": "亚太地区",
+    "middleEast": "中东",
+    "africa": "非洲",
+    "oceania": "大洋洲"
+  },
+  "categories": {
+    "standard": "标准",
+    "book": "书籍",
+    "legal": "法律",
+    "specialty": "特殊",
+    "photo": "照片",
+    "business": "商业",
+    "packaging": "包装",
+    "label": "标签"
+  },
+  "measurementSystems": {
+    "metric": "公制",
+    "imperial": "英制",
+    "mixed": "混合"
+  },
+  "actions": {
+    "select": "选择",
+    "export": "导出",
+    "print": "打印",
+    "view": "查看详情",
+    "compare": "比较",
+    "convert": "转换",
+    "back": "返回"
+  },
+  "messages": {
+    "loading": "正在加载格式...",
+    "noResults": "未找到与您的条件匹配的格式",
+    "error": "加载数据时出错",
+    "success": "操作成功完成",
+    "selectTwoFormats": "请选择两个格式进行比较"
+  },
+  "language": "语言:",
+  "theme": "主题:",
+  "light": "浅色",
+  "dark": "深色",
+  "auto": "自动"
+}

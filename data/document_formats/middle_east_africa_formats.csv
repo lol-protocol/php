@@ -1,0 +1,29 @@
+format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,category,description,common_use
+A4 ISO,210,297,8.3,11.7,1:1.414,Turkey,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,Turkey,Standard,ISO A3 size,Large format documents
+Letter,215.9,279.4,8.5,11,8.5:11,Turkey,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,UAE,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,UAE,Standard,ISO A3 size,Large format documents
+Letter,215.9,279.4,8.5,11,8.5:11,UAE,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Saudi Arabia,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,Saudi Arabia,Standard,ISO A3 size,Large format documents
+Letter,215.9,279.4,8.5,11,8.5:11,Saudi Arabia,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Israel,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,Israel,Standard,ISO A3 size,Large format documents
+Letter,215.9,279.4,8.5,11,8.5:11,Israel,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Egypt,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,Egypt,Standard,ISO A3 size,Large format documents
+Letter,215.9,279.4,8.5,11,8.5:11,Egypt,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,South Africa,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,South Africa,Standard,ISO A3 size,Large format documents
+Letter,215.9,279.4,8.5,11,8.5:11,South Africa,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Nigeria,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Nigeria,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Kenya,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Kenya,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Morocco,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Morocco,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Tanzania,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Tanzania,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Pakistan,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Pakistan,Standard,Letter size paper,Office documents

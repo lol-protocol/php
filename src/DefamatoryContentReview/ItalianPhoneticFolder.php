@@ -19,7 +19,7 @@ namespace DefamatoryContentReview;
  */
 class ItalianPhoneticFolder
 {
-    use LeetspeakFolding;
+    use AccentOnlyPhoneticFolding;
 
     private const ACCENTS = [
         'à' => 'a', 'á' => 'a',
@@ -31,6 +31,6 @@ class ItalianPhoneticFolder
 
     public static function fold(string $text): string
     {
-        return self::foldBase($text, self::ACCENTS);
+        return self::foldAccentsThenSeparators($text);
     }
 }

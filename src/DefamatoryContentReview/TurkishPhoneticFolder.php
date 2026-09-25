@@ -21,7 +21,7 @@ namespace DefamatoryContentReview;
  */
 class TurkishPhoneticFolder
 {
-    use LeetspeakFolding;
+    use AccentOnlyPhoneticFolding;
 
     private const ACCENTS = [
         'ı' => 'i', 'ş' => 's', 'ç' => 'c', 'ö' => 'o', 'ü' => 'u', 'ğ' => 'g',
@@ -29,6 +29,6 @@ class TurkishPhoneticFolder
 
     public static function fold(string $text): string
     {
-        return self::foldBase($text, self::ACCENTS);
+        return self::foldAccentsThenSeparators($text);
     }
 }

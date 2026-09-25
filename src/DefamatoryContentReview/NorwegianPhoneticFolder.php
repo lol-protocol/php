@@ -17,7 +17,7 @@ namespace DefamatoryContentReview;
  */
 class NorwegianPhoneticFolder
 {
-    use LeetspeakFolding;
+    use AccentOnlyPhoneticFolding;
 
     private const ACCENTS = [
         'æ' => 'ae', 'ø' => 'oe', 'å' => 'aa',
@@ -25,6 +25,6 @@ class NorwegianPhoneticFolder
 
     public static function fold(string $text): string
     {
-        return self::foldBase($text, self::ACCENTS);
+        return self::foldAccentsThenSeparators($text);
     }
 }

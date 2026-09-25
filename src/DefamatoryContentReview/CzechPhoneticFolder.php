@@ -22,7 +22,7 @@ namespace DefamatoryContentReview;
  */
 class CzechPhoneticFolder
 {
-    use LeetspeakFolding;
+    use AccentOnlyPhoneticFolding;
 
     private const ACCENTS = [
         'á' => 'a', 'é' => 'e', 'ě' => 'e', 'í' => 'i', 'ó' => 'o',
@@ -32,6 +32,6 @@ class CzechPhoneticFolder
 
     public static function fold(string $text): string
     {
-        return self::foldBase($text, self::ACCENTS);
+        return self::foldSeparatorsThenAccents($text);
     }
 }

@@ -6,7 +6,7 @@ use DefamatoryContentReview\SpanishPhoneticFolder;
 use PHPUnit\Framework\TestCase;
 
 /** Reglas de plegado del español, una por una: qué se unifica y qué se protege. */
-class SpanishPhoneticFolderTest extends TestCase
+class SpanishPhoneticFolderRulesTest extends TestCase
 {
     public function testFoldUnifiesBAndV(): void
     {

@@ -20,7 +20,7 @@ namespace DefamatoryContentReview;
  */
 class FinnishPhoneticFolder
 {
-    use LeetspeakFolding;
+    use AccentOnlyPhoneticFolding;
 
     private const ACCENTS = [
         'ä' => 'a', 'ö' => 'o',
@@ -28,6 +28,6 @@ class FinnishPhoneticFolder
 
     public static function fold(string $text): string
     {
-        return self::foldBase($text, self::ACCENTS);
+        return self::foldAccentsThenSeparators($text);
     }
 }

@@ -23,7 +23,7 @@ apellidos de personas, para plataformas de información genealógica.
 composer install
 ```
 
-Requiere PHP >= 8.0 y la extensión `mbstring`.
+Requiere PHP >= 8.1 y la extensión `mbstring`.
 
 ## Uso
 
@@ -149,7 +149,7 @@ $reviewer->validateFullName('Paco', 'Cojes');
 
 ### Diecisiete idiomas, diecisiete fonéticas distintas
 
-Cubre los 17 idiomas en script latino de los 30 soportados — cada uno con su
+Cubre los 17 idiomas en script latino de los 33 soportados — cada uno con su
 propio folder (`SpanishPhoneticFolder`, `PortuguesePhoneticFolder`,
 `ItalianPhoneticFolder`, `FrenchPhoneticFolder`, `GermanPhoneticFolder`,
 `CzechPhoneticFolder`, `SlovakPhoneticFolder`, `DanishPhoneticFolder`,
@@ -243,7 +243,7 @@ FusionSupport::isSupported('ara');                                      // false
 
 - **Transliteración numérica** ("c3rda", "v4g1na"): cubierta. `WordList::normalize()`
   sustituye los dígitos/símbolos de un solo carácter más comunes
-  (`0→o 1→i 3→e 4→a 5→s 7→t 8→b @→a $→s`) antes de comparar, y los tres
+  (`0→o 1→i 3→e 4→a 5→s 7→t 8→b @→a $→s`) antes de comparar, y los 17
   folders fonéticos hacen lo mismo antes de plegar — por eso también se
   detecta combinada con la fusión: `validateFullName('Elb4', 'G1na')` marca
   "vagina" igual que la versión sin dígitos.
@@ -282,24 +282,26 @@ integración existente puede seguir pasando `es` o `pt`.
 
 ```php
 $registry->resolve('es');   // 'spa'
-$registry->resolve('zh');   // 'zho'
+$registry->resolve('zh');   // 'yue'
 $registry->resolve('SPA');  // 'spa'
 ```
 
 | Familia | Idiomas |
 |---|---|
 | Romance | `spa` `por` `fra` `ita` `ron` |
-| Germánica | `eng` `deu` `nld` `swe` `dan` `nor` |
+| Germánica | `eng` `deu` `nld` `swe` `dan` `nor` `isl` |
 | Eslava | `rus` `ukr` `bul` `pol` `ces` `slk` |
 | Urálica | `fin` `hun` |
 | Semítica | `ara` `heb` |
-| Otras | `ell` `tur` `hin` `jpn` `kor` `zho` `tha` `vie` `ind` |
+| Austronesia | `ind` `tgl` |
+| Otras (una familia cada una) | `ell` `tur` `hin` `jpn` `kor` `yue` `tha` `vie` `swa` |
 
 ### Cobertura de los diccionarios
 
 `coverage` no es cosmético: dice dónde hace falta revisión de hablante nativo
-antes de usar el módulo en producción para ese idioma. ~4.800 términos en
-total; ningún idioma queda ya en `basic`.
+antes de usar el módulo en producción para ese idioma. ~6.400 términos en
+total; sólo 3 idiomas (`isl`, `swa`, `tgl` — los últimos en incorporarse)
+siguen en `basic`.
 
 Vive en un único sitio — `meta.coverage` dentro del propio archivo de cada
 idioma — y se consulta a través de `DefamatoryContentReviewer`, no del
@@ -310,8 +312,9 @@ la primera vez que sólo una de ellas se actualizó.
 
 | Nivel | Idiomas | Términos c/u |
 |---|---|---|
-| `comprehensive` | spa, eng, por, fra, ita, deu | 200 – 418 |
-| `moderate` | los 24 restantes (ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, zho, tha, vie, ind) | 120 – 160 |
+| `comprehensive` | spa, eng, por, fra, ita, deu (6) | 200 – 418 |
+| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 120 – 160 |
+| `basic` | isl, swa, tgl (3) | 60 – 119 |
 
 ```php
 $reviewer->languages()->byCoverage('moderate');  // los candidatos a comprehensive
@@ -321,7 +324,7 @@ Un test de integridad (`DictionaryIntegrityTest`) exige que todo idioma
 declarado `moderate` tenga ≥120 términos y `comprehensive` ≥200: subir el
 nivel es responder por un mínimo verificable, no una etiqueta.
 
-Los idiomas sin separación por espacios (`jpn`, `zho`, `tha`) declaran
+Los idiomas sin separación por espacios (`jpn`, `yue`, `tha`) declaran
 `requiresTokenizer`: para texto libre necesitan un segmentador externo
 (MeCab, jieba) antes de consultar el diccionario. Para nombres ya separados en
 campos no hace falta.
@@ -370,7 +373,7 @@ decidir qué diccionarios consultar y cuánto fiarse de lo que encuentren.
 | `eng` ↔ `nld` | 0.63 | `eng` ↔ `deu` | 0.60 |
 
 Se incluyen también pares sin parentesco directo pero con préstamo intenso
-(`jpn`↔`zho`, `ron`↔`bul`, `tur`↔`ell`), con afinidad baja.
+(`jpn`↔`yue`, `ron`↔`bul`, `tur`↔`ell`), con afinidad baja.
 
 ```php
 $registry->getAffinity('spa', 'por');   // 0.89 — simétrico
@@ -617,6 +620,7 @@ src/DefamatoryContentReview/
 ├── LanguageAffinity.php            Afinidad léxica — colaborador de LanguageRegistry
 ├── WordList.php                    Diccionario: carga, normalización, búsqueda
 ├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
+├── WordListScanner.php             Búsqueda de términos en texto — colaborador de WordList
 ├── AccentFolding.php               Plegado de diacríticos compartido por WordList
 ├── ScriptFolding.php               Variantes estándar de griego, cirílico, árabe y hebreo
 ├── ScoringPolicy.php               Orquesta pesos/bandas/decisión (configurable)
@@ -627,6 +631,7 @@ src/DefamatoryContentReview/
 ├── FrenchPhoneticFolder.php        Plegado fonético del francés
 ├── GermanPhoneticFolder.php        Plegado fonético del alemán
 ├── Czech…RomanianPhoneticFolder.php  Los otros 12 idiomas latinos (ver tabla arriba)
+├── AccentOnlyPhoneticFolding.php   Wiring compartido por los folders sin reglas propias además de acentos
 ├── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica compartida por los folders
 ├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
 ├── FusionSupport.php               Qué idiomas tienen fusión (fonética o literal) y por qué no el resto
@@ -635,11 +640,11 @@ src/DefamatoryContentReview/
 └── FlaggedTermCollection.php       Términos marcados y sus consultas — colaborador de ValidationResult
 
 config/
-├── risk-categories.php             Los 10 tipos de riesgo
+├── risk-categories.php             Los 11 tipos de riesgo
 ├── language-families.php           Familias y afinidades
 └── languages/
     ├── supported-languages.php     Catálogo ISO 639-3 + alias 639-1
-    └── spa.php eng.php por.php …   30 diccionarios
+    └── spa.php eng.php por.php …   33 diccionarios
 
 tests/    examples/
 ```
@@ -681,7 +686,7 @@ severidades válidos.
 ## Ampliar un diccionario existente
 
 Añadir entradas en la categoría que corresponda y subir `coverage` cuando el
-idioma quede cubierto en las diez categorías de riesgo. Marcar
+idioma quede cubierto en las once categorías de riesgo. Marcar
 `nameCollision => true` en todo término que también sea nombre o apellido
 documentado — es lo que evita que la lista negra borre linajes reales.
 
@@ -711,15 +716,21 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
   longitud mínima se cuenta en sílabas, así que sólo alcanza a los
   términos más largos. En todos, sólo cubre el cruce entre nombre y
   apellido, no la re-segmentación dentro de un único campo.
-- Ningún diccionario queda en `basic`, pero `moderate` (24 de los 30) sigue
-  necesitando revisión de hablante nativo antes de producción — es una base
-  verificable, no una traducción exhaustiva.
+- 3 diccionarios (`isl`, `swa`, `tgl`) siguen en `basic`, y los 24 en
+  `moderate` siguen necesitando revisión de hablante nativo antes de
+  producción — es una base verificable, no una traducción exhaustiva.
 - El árabe dialectal y las variedades regionales del chino no están cubiertos.
 - La distancia de edición («Cerrda») no está cubierta: ver el docblock de
   `EvasionTest::testEditDistanceEvasionIsADeliberateGap()` para el porqué.
 - Las afinidades son aproximaciones, no medidas.
 - El módulo no decide por la plataforma: `decide()` propone, y los casos
   `review` requieren persona.
+
+## Otros contenidos de este repositorio
+
+[`web-animations/`](web-animations/) es una galería de demostración de 36
+animaciones HTML/CSS/JS, sin relación con este módulo — ver su propio
+[README](web-animations/README.md).
 
 ## Licencia
 
