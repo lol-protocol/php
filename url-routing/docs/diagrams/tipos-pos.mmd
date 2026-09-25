@@ -1,0 +1,16 @@
+flowchart LR
+    seg["Primer segmento\n(solo digitos)"]
+
+    seg -->|8 digitos| producto["producto\nProductoController\n1 variantes · 2 atributos"]
+    seg -->|7 digitos| coleccion["coleccion\nColeccionController\n(sin acciones)"]
+    seg -->|6 digitos| etiqueta["etiqueta\nEtiquetaController\n1 productos"]
+    seg -->|5 digitos| atributo["atributo\nAtributoController\n1 productos"]
+    seg -->|4 digitos| grupo["grupo\nGrupoController\n(sin acciones)"]
+    seg -.->|1-3 digitos| libre["(libre — headroom\npara tipos futuros)"]
+
+    literal["Ruta literal\n(excepcion: ingles, sin guiones)"] --> cart["cart\nCartController"]
+    literal --> checkout["checkout\nCheckoutController\nindex · shipping · payment · confirm"]
+    literal --> order["order/{id}\nOrderController\n1 invoice · 2 track · 3 devolucion"]
+
+    reservado["Ruta exacta"] -->|vacio, con ?t= y ?q=| home["HomeController\nlistado / busqueda"]
+    reservado -->|'0'| cuenta["CuentaController\n1 perfil · 2 ordenes\n3 deseos · 4 direcciones\n5 preferencias"]

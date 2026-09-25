@@ -65,3 +65,68 @@ jobs:
 
       - name: Open every animation in a browser
         run: npm test
+
+  url-routing:
+    name: url-routing / PHP ${{ matrix.php-version }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: url-routing
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.1', '8.2', '8.3', '8.4']
+
+    # The suite runs every database test on SQLite and, via TEST_PG_DSN,
+    # again on PostgreSQL, so SQL that only works on one engine fails CI.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: routing_test
+          POSTGRES_PASSWORD: routing_test
+          POSTGRES_DB: routing_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U routing_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      TEST_PG_DSN: pgsql:host=127.0.0.1;port=5432;dbname=routing_test
+      TEST_PG_USER: routing_test
+      TEST_PG_PASSWORD: routing_test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: pdo_sqlite, pdo_pgsql
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run tests (SQLite + PostgreSQL)
+        run: ./vendor/bin/phpunit
+
+      - name: Migrations apply cleanly on PostgreSQL (one database per site)
+        env:
+          PGPASSWORD: routing_test
+          DB_DSN_GENEALOGY: pgsql:host=127.0.0.1;port=5432;dbname=genealogia
+          DB_USER_GENEALOGY: routing_test
+          DB_PASSWORD_GENEALOGY: routing_test
+          DB_DSN_POS: pgsql:host=127.0.0.1;port=5432;dbname=pos
+          DB_USER_POS: routing_test
+          DB_PASSWORD_POS: routing_test
+        run: |
+          psql -h 127.0.0.1 -U routing_test -d routing_test -c 'CREATE DATABASE genealogia' -c 'CREATE DATABASE pos'
+          php bin/migrate.php genealogy
+          php bin/migrate.php pos
+          php bin/migrate.php genealogy | grep -q 'sin migraciones pendientes'
