@@ -18,7 +18,9 @@ require __DIR__ . '/../codigo/api.php';
 // La interfaz (interfaz/) corre en otro puerto que esta API, así que la cookie de
 // sesión viaja entre orígenes: hay que reflejar un origen conocido puntual (nunca
 // "*") y habilitar credenciales explícitamente, o el navegador descarta la cookie.
-$origenesPermitidos = ['http://localhost:8082'];
+// Configurable por variable de entorno (mismo patrón que ConexionBd.php), con
+// default de desarrollo local para que el sistema funcione sin configurar nada.
+$origenesPermitidos = [getenv('BACKOFFICE_CORS_ORIGEN') ?: 'http://localhost:8082'];
 $origen = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origen, $origenesPermitidos, true)) {
     header('Access-Control-Allow-Origin: ' . $origen);

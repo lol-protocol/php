@@ -172,9 +172,11 @@ prototipo, no para producción.
   contraseña nunca se compara ni se guarda en texto plano).
 - Como la interfaz y la API corren en puertos distintos, la cookie de sesión viaja
   entre orígenes: `servidor-php/publico/index.php` responde el preflight CORS (OPTIONS)
-  y refleja `http://localhost:8082` como único origen permitido con
-  `Access-Control-Allow-Credentials`, en vez de usar `*` (que el navegador rechaza
-  para requests con credenciales, y que sería una configuración CORS abierta).
+  y refleja como único origen permitido `http://localhost:8082` (o
+  `BACKOFFICE_CORS_ORIGEN`, mismo patrón de variable de entorno con default que
+  `BACKOFFICE_BD_*` más abajo) con `Access-Control-Allow-Credentials`, en vez de
+  usar `*` (que el navegador rechaza para requests con credenciales, y que sería
+  una configuración CORS abierta).
 - **CSRF**: `auth_marcar_autenticado()` regenera un token en cada login
   (`bin2hex(random_bytes(32))`, guardado en `$_SESSION`). El frontend lo recibe
   en la respuesta de `/api/login` y `/api/session`, y `postJson`/`deleteJson`
@@ -547,7 +549,9 @@ Abrir http://localhost:8082.
   (`ClienteEstadisticas::statsVarios()`, vía `curl_multi`) en vez de uno por uno:
   si el servicio está colgado (acepta la conexión pero no responde), toda la
   página paga un solo timeout (~3 s) sin importar cuántos tipos distintos tenga,
-  en vez de uno por tipo.
+  en vez de uno por tipo. Su URL sale de `BACKOFFICE_JAVA_URL` o, en su defecto,
+  de `http://localhost:8081` (mismo patrón de variable de entorno con default que
+  `BACKOFFICE_BD_*`, ver "Base de datos").
 - El servicio Java recarga solo `acciones-planas.csv` si cambia su mtime (chequeo
   cada 5 segundos, `CargadorAcciones.iniciarWatcher()`) — no hace falta reiniciarlo
   a mano después de correr `generar-datos-semilla.php` de nuevo.
