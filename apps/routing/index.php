@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Support\Container;
 use App\Support\HealthCheck;
 use App\Support\HostParser;
+use App\Support\Router;
 use App\Support\UrlHelper;
 use App\Support\ServiceLocator;
 use App\Support\Logger;
@@ -17,7 +18,7 @@ use App\Support\RateLimiter;
  * Loads the route registry for the current domain and dispatches the request.
  */
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 define('APP_BASE_PATH', '/');
 define('DEBUG_MODE', getenv('DEBUG') === 'true');
@@ -26,8 +27,6 @@ HealthCheck::handle();
 
 SessionManager::getInstance()->start();
 HttpSecurityHeaders::setSecurityHeaders();
-
-require 'Router.php';
 
 $container = Container::getInstance();
 
@@ -39,7 +38,7 @@ $locale = HostParser::getLocale($host);
 
 $container->singleton('router', function ($c) use ($site) {
     $router = new Router();
-    $router->loadConfig(__DIR__ . "/routes/{$site}.php");
+    $router->loadConfig(__DIR__ . "/config/routes/{$site}.php");
     return $router;
 });
 

@@ -5,15 +5,17 @@ URLs sin palabras de dominio, sin guiones ni guiones bajos. El tipo de recurso s
 ## 📁 Estructura de Archivos
 
 ```
-/php
+apps/routing/
 ├── index.php                          # Punto de entrada, detecta sitio + idioma
-├── Router.php                          # Despacho por forma del segmento
 ├── .htaccess                           # Configuración Apache
-├── URL_STRUCTURES.md                   # Tabla completa de formatos
-├── README_URLS.md                      # Este archivo
-├── routes/
+├── docs/
+│   ├── URL_STRUCTURES.md               # Tabla completa de formatos
+│   └── README_URLS.md                  # Este archivo
+├── config/routes/
 │   ├── genealogy.php                  # Registro de tipos por largo de dígitos
 │   └── pos.php                         # Registro de tipos + flujo transaccional
+├── Support/
+│   └── Router.php                      # Despacho por forma del segmento
 └── Controllers/
     ├── Genealogy/
     │   ├── PersonaController.php       # 10 dígitos
@@ -29,14 +31,14 @@ URLs sin palabras de dominio, sin guiones ni guiones bajos. El tipo de recurso s
         └── OrderController.php         # /order/{id}/...
 ```
 
-**Solo estos ocho controladores están implementados.** `routes/genealogy.php` y `routes/pos.php` también registran `suceso`, `registro`, `coleccion`, `grupo`, `organizacion` (genealogía) y `coleccion`, `etiqueta`, `atributo`, `grupo` (POS) — sus tipos están definidos y sus URLs despachan correctamente, pero como no existe el archivo de controlador correspondiente, esas rutas dan **500 "Controller not found"** hasta que se implementen siguiendo el mismo patrón que `PersonaController`/`LugarController`.
+**Solo estos ocho controladores están implementados.** `config/routes/genealogy.php` y `config/routes/pos.php` también registran `suceso`, `registro`, `coleccion`, `grupo`, `organizacion` (genealogía) y `coleccion`, `etiqueta`, `atributo`, `grupo` (POS) — sus tipos están definidos y sus URLs despachan correctamente, pero como no existe el archivo de controlador correspondiente, esas rutas dan **500 "Controller not found"** hasta que se implementen siguiendo el mismo patrón que `PersonaController`/`LugarController`.
 
 ## 🧠 Principio de diseño
 
 1. **Solo dígitos** → el número de dígitos selecciona el tipo. Más dígitos = mayor cardinalidad esperada de ese catálogo. `persona` es el techo (10 dígitos) en genealogía; `producto` es el techo (8 dígitos) en POS, deliberadamente menor que persona.
 2. **Solo letras** → jerarquía de lugar (país/región/ciudad), porque es una jerarquía de códigos, no una secuencia de registros.
 3. **Palabra exacta reservada** → rutas de sistema fuera del esquema numérico: `cart`, `checkout`, `order` (flujo de compra, en inglés por decisión explícita) y `0` (cuenta, con sus propias sub-acciones por el mismo mecanismo).
-4. Un segundo segmento numérico, cuando existe, selecciona una **acción** sobre el recurso ya resuelto — su significado depende del tipo (está definido en el arreglo `actions` de cada entrada en `routes/*.php`). Un código de acción que no existe en ese arreglo es **404**, nunca un `show` silencioso del recurso base.
+4. Un segundo segmento numérico, cuando existe, selecciona una **acción** sobre el recurso ya resuelto — su significado depende del tipo (está definido en el arreglo `actions` de cada entrada en `config/routes/*.php`). Un código de acción que no existe en ese arreglo es **404**, nunca un `show` silencioso del recurso base.
 5. **Contrato de ids**: todo id numérico se genera relleno con ceros al ancho fijo de su tipo — usa siempre `enlace($tipo, $id)` (nunca concatenes el id a mano), que hace el padding automáticamente vía `Router::typeLength()`.
 
 ## 🚀 Inicio Rápido
@@ -95,7 +97,7 @@ spa.contrastocolor.local:8001/order/8137204719000/2/   seguimiento
 
 ## 📝 Agregar un tipo de recurso nuevo
 
-### Paso 1: elegir un largo de dígitos libre en `routes/{sitio}.php`
+### Paso 1: elegir un largo de dígitos libre en `config/routes/{sitio}.php`
 
 ```php
 'by_length' => [
@@ -176,6 +178,6 @@ public function show($params = [])
 
 **404 en todas las rutas**: verificar `mod_rewrite` habilitado y `.htaccess` presente en la raíz con permisos `644`.
 
-**Un id no despacha al controlador esperado**: contar los dígitos exactos del segmento — un dígito de más o de menos cae en otro tipo (o en ningún tipo, y da 404). Revisar `routes/{sitio}.php` → `by_length`.
+**Un id no despacha al controlador esperado**: contar los dígitos exactos del segmento — un dígito de más o de menos cae en otro tipo (o en ningún tipo, y da 404). Revisar `config/routes/{sitio}.php` → `by_length`.
 
 **Una acción no se ejecuta**: el segundo segmento debe ser un entero que exista como clave en el arreglo `actions` de ese tipo; si no coincide, el router usa `show` por defecto.

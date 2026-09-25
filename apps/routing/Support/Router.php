@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Support;
+
 use App\Routing\LiteralMatchStrategy;
 use App\Routing\OrderMatchStrategy;
 use App\Routing\ReservedMatchStrategy;

@@ -5,18 +5,20 @@
          cacheDirectory=".phpunit.cache"
          colors="true">
     <testsuites>
-        <testsuite name="Unit Tests">
-            <directory>tests</directory>
+        <testsuite name="Content Review">
+            <directory>apps/content-review/tests</directory>
+        </testsuite>
+        <testsuite name="Routing">
+            <directory>apps/routing/tests</directory>
         </testsuite>
     </testsuites>
 
     <source>
         <include>
-            <directory suffix=".php">src</directory>
-            <directory suffix=".php">Support</directory>
-            <directory suffix=".php">Routing</directory>
-            <directory suffix=".php">Controllers</directory>
-            <file>Router.php</file>
+            <directory suffix=".php">apps/content-review/src</directory>
+            <directory suffix=".php">apps/routing/Support</directory>
+            <directory suffix=".php">apps/routing/Routing</directory>
+            <directory suffix=".php">apps/routing/Controllers</directory>
         </include>
     </source>
 

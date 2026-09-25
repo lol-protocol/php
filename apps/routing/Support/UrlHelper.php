@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Support;
 
-// Router is in global namespace (no namespace), so we reference it directly
-use Router;
-
 class UrlHelper
 {
     private Router $router;

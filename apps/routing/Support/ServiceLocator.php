@@ -30,7 +30,7 @@ class ServiceLocator
         return self::$instance;
     }
 
-    public function getRouter(): object
+    public function getRouter(): Router
     {
         return $this->container->get('router');
     }

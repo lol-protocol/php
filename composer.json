@@ -1,6 +1,6 @@
 {
-    "name": "lol-protocol/defamatory-content-review",
-    "description": "Module for reviewing and detecting defamatory content in genealogical platform",
+    "name": "lol-protocol/php",
+    "description": "Monorepo: defamatory content review engine (apps/content-review) and the genealogy/POS URL routing system (apps/routing) for the LOL Protocol platform",
     "license": "MIT",
     "authors": [
         {
@@ -15,13 +15,16 @@
     },
     "autoload": {
         "psr-4": {
-            "DefamatoryContentReview\\": "src/DefamatoryContentReview/",
-            "App\\": "./"
+            "DefamatoryContentReview\\": "apps/content-review/src/DefamatoryContentReview/",
+            "App\\": "apps/routing/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": [
+                "apps/content-review/tests/",
+                "apps/routing/tests/"
+            ]
         }
     }
 }
