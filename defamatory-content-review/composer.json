@@ -1,0 +1,26 @@
+{
+    "name": "lol-protocol/defamatory-content-review",
+    "description": "Module for reviewing and detecting defamatory content in genealogical platform",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "LOL Protocol Team"
+        }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DefamatoryContentReview\\": "src/DefamatoryContentReview/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}

@@ -1,0 +1,31 @@
+.network-svg {
+    width: 400px;
+    height: 400px;
+    filter: drop-shadow(var(--shadow-lg));
+}
+
+.network-line {
+    stroke: var(--color-3);
+    stroke-width: 2px;
+    opacity: 0.6;
+}
+
+.network-node {
+    fill: var(--color-1);
+    animation: pulseNode 2s ease-in-out infinite;
+}
+
+.network-node.active {
+    animation: pulseNode 1s ease-in-out infinite;
+}
+
+@keyframes pulseNode {
+    0%, 100% {
+        r: 6px;
+        opacity: 1;
+    }
+    50% {
+        r: 10px;
+        opacity: 0.6;
+    }
+}

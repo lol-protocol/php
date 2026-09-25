@@ -1,0 +1,33 @@
+.fractal-svg {
+    width: 400px;
+    height: 400px;
+    filter: drop-shadow(var(--shadow-lg));
+}
+
+.ray {
+    stroke: var(--color-1);
+    stroke-width: 2px;
+    stroke-linecap: round;
+    animation: growRay 2s ease-in-out infinite;
+    transform-origin: 200px 200px;
+}
+
+.ray-0 { animation-delay: 0s; }
+.ray-1 { animation-delay: 0.15s; }
+.ray-2 { animation-delay: 0.3s; }
+.ray-3 { animation-delay: 0.45s; }
+.ray-4 { animation-delay: 0.6s; }
+.ray-5 { animation-delay: 0.75s; }
+.ray-6 { animation-delay: 0.9s; }
+.ray-7 { animation-delay: 1.05s; }
+
+@keyframes growRay {
+    0%, 100% {
+        stroke-width: 2px;
+        opacity: 1;
+    }
+    50% {
+        stroke-width: 4px;
+        opacity: 0.7;
+    }
+}

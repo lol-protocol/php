@@ -1,0 +1,58 @@
+.prism-container {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.prism {
+    width: 100px;
+    height: 120px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(200, 200, 255, 0.2));
+    clip-path: polygon(0% 0%, 100% 30%, 100% 70%, 0% 100%);
+    box-shadow: inset -2px 0 10px rgba(100, 150, 255, 0.5), var(--shadow-lg);
+    position: relative;
+}
+
+.light-ray {
+    position: absolute;
+    height: 3px;
+    background: linear-gradient(90deg, rgba(255, 200, 0, 0), rgba(255, 200, 0, 1), rgba(255, 200, 0, 0));
+    filter: drop-shadow(0 0 8px rgba(255, 200, 0, 0.8));
+    animation: refractRay 3s ease-in-out infinite;
+}
+
+.ray-1 {
+    width: 150px;
+    left: -150px;
+    top: 50%;
+    animation-delay: 0s;
+    transform: translateY(-50%);
+}
+
+.ray-2 {
+    width: 150px;
+    right: -150px;
+    top: 30%;
+    animation-delay: 0.5s;
+    transform: translateY(-50%) rotate(-15deg);
+}
+
+.ray-3 {
+    width: 150px;
+    right: -150px;
+    top: 70%;
+    animation-delay: 1s;
+    transform: translateY(-50%) rotate(15deg);
+}
+
+@keyframes refractRay {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
