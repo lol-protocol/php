@@ -16,9 +16,11 @@ namespace DefamatoryContentReview;
  * más largos: cobertura parcial, pero sin riesgo añadido.
  *
  * Quedan fuera, con motivo:
- * - Inglés y árabe: el barrido sí dio falsos positivos con nombres muy
- *   comunes ("Chris Hitt" → "shit", "Dustin King" → "stinking",
- *   "محمد منصور" → "مدمن").
+ * - Inglés y árabe: el barrido dio falsos positivos con nombres muy
+ *   comunes. Con la regla de lectura de PhoneticFusionDetector (anclada y
+ *   2+ letras por lado) "Chris Hitt" y "محمد منصور" ya no disparan, pero
+ *   "Dustin King" → "stinking" sí; el árabe necesita un corpus mayor y
+ *   revisión nativa antes de activarse.
  * - Hebreo: como el árabe, no escribe vocales, así que las uniones forman
  *   palabras con mucha más facilidad.
  * - Japonés, tailandés y cantonés: no separan palabras con espacios; el

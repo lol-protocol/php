@@ -19,7 +19,7 @@ class PhoneticFusionTurkishTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'tur');
 
-        $result = $reviewer->validateFullName('Aldo', 'Muzson');
+        $result = $reviewer->validateFullName('Aldo', 'Muz');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['domuz'], array_column($result->getPhoneticFusionTerms(), 'term'));

@@ -6,9 +6,12 @@ namespace DefamatoryContentReview;
  * Detecta contenido ofensivo que sólo existe en la fusión de nombre y
  * apellido: ninguno por separado es un término del diccionario, pero
  * leídos seguidos —sin la pausa que marca dónde termina uno y empieza el
- * otro— componen otro ("Elba Gina" → "el vagina"). Por eso sólo cuentan las
- * coincidencias que CRUZAN ese punto de unión: "ano" entero dentro de
- * "Mariano" no cuenta, o arrasaría con nombres comunes.
+ * otro— componen otro ("Elba Gina" → "el vagina"). Sólo cuentan las
+ * coincidencias que CRUZAN la unión ("ano" dentro de "Mariano" no) y que
+ * tocan el principio o el final del nombre completo, con al menos 2 letras
+ * a cada lado: así se lee el chiste. Un término enterrado en medio ("Emine
+ * Kaya" → "inek") o que sólo roza la unión ("Ana O…" → "anão") no se
+ * percibe al leer y disparaba con nombres reales comunes.
  *
  * También cubre la variante de un solo campo: un nombre cuya ortografía
  * difiere de la del diccionario pero suena igual ("Cojes" vs. "Coges").
@@ -47,16 +50,17 @@ class PhoneticFusionDetector
         }
 
         $full = $firstFold . $lastFold;
-        $boundary = StringUtils::len($firstFold);
+        $boundary = mb_strlen($firstFold, 'UTF-8');
+        $total = $boundary + mb_strlen($lastFold, 'UTF-8');
         $matches = [];
 
         foreach ($this->wordList->getFusionCandidates($this->minLength) as $candidate) {
             $needle = $candidate['phonetic'];
-            $needleLen = StringUtils::len($needle);
+            $needleLen = mb_strlen($needle, 'UTF-8');
             $searchFrom = 0;
 
             while (($index = self::mbStrpos($full, $needle, $searchFrom)) !== null) {
-                if (self::crossesBoundary($index, $index + $needleLen, $boundary)) {
+                if (self::isReadableFusion($index, $index + $needleLen, $boundary, $total)) {
                     $matches[] = $candidate['data'] + [
                         'found' => $candidate['data']['original'],
                         'detectionMethod' => 'phonetic_fusion',
@@ -70,11 +74,7 @@ class PhoneticFusionDetector
         return $matches;
     }
 
-    /**
-     * Coincidencia fonética exacta de un campo completo (no una fusión de
-     * dos: un único nombre o apellido que suena igual a un término del
-     * diccionario, con otra grafía).
-     */
+    /** Un único campo que suena igual a un término del diccionario con otra grafía ("Cojes"/"Coges"). */
     public function detectVariant(string $word): ?array
     {
         $match = $this->wordList->searchPhoneticExact($word);
@@ -88,13 +88,11 @@ class PhoneticFusionDetector
 
     private static function mbStrpos(string $haystack, string $needle, int $offset): ?int
     {
-        $pos = mb_strpos($haystack, $needle, $offset, 'UTF-8');
-        return $pos === false ? null : $pos;
+        return ($pos = mb_strpos($haystack, $needle, $offset, 'UTF-8')) === false ? null : $pos;
     }
 
-    /** true si el rango [start,end) tiene la unión nombre/apellido estrictamente en su interior. */
-    private static function crossesBoundary(int $start, int $end, int $boundary): bool
+    private static function isReadableFusion(int $start, int $end, int $boundary, int $total): bool
     {
-        return $start < $boundary && $end > $boundary;
+        return $boundary - $start >= 2 && $end - $boundary >= 2 && ($start === 0 || $end === $total);
     }
 }

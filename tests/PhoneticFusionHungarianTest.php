@@ -24,7 +24,7 @@ class PhoneticFusionHungarianTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'hun');
 
-        $result = $reviewer->validateFullName('Aldi', 'Sznóson');
+        $result = $reviewer->validateFullName('Aldi', 'Sznó');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['disznó'], array_column($result->getPhoneticFusionTerms(), 'term'));

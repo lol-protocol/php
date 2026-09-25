@@ -24,7 +24,7 @@ class PhoneticFusionDutchTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'nld');
 
-        $result = $reviewer->validateFullName('Alz', 'Weinson');
+        $result = $reviewer->validateFullName('Alzw', 'Ein');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['zwijn'], array_column($result->getPhoneticFusionTerms(), 'term'));

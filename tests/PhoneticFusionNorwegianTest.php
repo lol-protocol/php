@@ -19,7 +19,7 @@ class PhoneticFusionNorwegianTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'nor');
 
-        $result = $reviewer->validateFullName('Als', 'Vinson');
+        $result = $reviewer->validateFullName('Alsv', 'In');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['svin'], array_column($result->getPhoneticFusionTerms(), 'term'));

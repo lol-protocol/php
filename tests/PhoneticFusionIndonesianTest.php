@@ -29,7 +29,7 @@ class PhoneticFusionIndonesianTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'ind');
 
-        $result = $reviewer->validateFullName('Alb', 'Abison');
+        $result = $reviewer->validateFullName('Alba', 'Bi');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['babi'], array_column($result->getPhoneticFusionTerms(), 'term'));
