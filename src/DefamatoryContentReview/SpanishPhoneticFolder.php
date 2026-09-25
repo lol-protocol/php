@@ -14,7 +14,7 @@ namespace DefamatoryContentReview;
  *
  * Implementación específica del español; no se usa para otros idiomas.
  */
-class PhoneticFolder
+class SpanishPhoneticFolder
 {
     use LeetspeakFolding;
 

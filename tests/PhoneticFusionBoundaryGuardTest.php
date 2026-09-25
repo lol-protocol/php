@@ -60,7 +60,7 @@ class PhoneticFusionBoundaryGuardTest extends TestCase
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'eng');
 
         // Mismos campos que producen una fusión en español: en inglés no se
-        // evalúa (PhoneticFolder es específico del español).
+        // evalúa (SpanishPhoneticFolder es específico del español).
         $result = $reviewer->validateFullName('Elba', 'Gina');
 
         $this->assertTrue($result->isValid());
