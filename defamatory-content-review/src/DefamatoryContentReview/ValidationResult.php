@@ -63,6 +63,9 @@ class ValidationResult
     /** @return array<string,float> */
     public function getLanguagesChecked(): array { return $this->languagesChecked; }
 
+    /** @return array<int,string> una frase por término marcado, para quien revise el caso */
+    public function getExplanations(): array { return array_map([TermExplanation::class, 'of'], $this->getFlaggedTerms()); }
+
     public function toArray(): array
     {
         $termsByRiskType = [];
@@ -84,6 +87,7 @@ class ValidationResult
             'hasNameCollision' => $this->hasNameCollision(),
             'hasOnlyPhoneticDetections' => $this->hasOnlyPhoneticDetections(),
             'totalFlagged' => count($this->getFlaggedTerms()),
+            'explanations' => $this->getExplanations(),
         ];
     }
 }

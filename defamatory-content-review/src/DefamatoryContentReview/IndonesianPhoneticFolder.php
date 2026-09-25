@@ -20,27 +20,19 @@ namespace DefamatoryContentReview;
  * suelta (no parte de "dj") → "y". El orden importa: "dj" se protege antes
  * de que la regla general de "j" suelta la reinterprete como "y".
  */
-class IndonesianPhoneticFolder
+class IndonesianPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
+    protected static function getAccents(): array { return []; }
 
-    public static function fold(string $text): string
+    protected static function applyLanguageRules(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = self::stripSeparators($text);
-
-        $text = str_replace('oe', 'u', $text); // grafía Van Ophuijsen: "oe" = /u/
-
-        // "dj" (grafía antigua de "j") se protege antes de tocar la "j" suelta.
+        $text = str_replace('oe', 'u', $text);
         $text = str_replace('dj', "\x01", $text);
-
         $text = str_replace('tj', 'c', $text);
         $text = str_replace('nj', 'ny', $text);
         $text = str_replace('sj', 'sy', $text);
         $text = str_replace('ch', 'kh', $text);
-        $text = str_replace('j', 'y', $text); // "j" antigua suelta sonaba /y/
-
+        $text = str_replace('j', 'y', $text);
         return str_replace("\x01", 'j', $text);
     }
 }

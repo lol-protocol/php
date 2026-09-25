@@ -19,7 +19,7 @@ class PhoneticFusionFinnishTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'fin');
 
-        $result = $reviewer->validateFullName('Als', 'Ikason');
+        $result = $reviewer->validateFullName('Alsi', 'Ka');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['sika'], array_column($result->getPhoneticFusionTerms(), 'term'));

@@ -55,7 +55,7 @@ final class NameEvaluator
         $added = false;
 
         foreach ($detector->detectFusion($first, $last) as $match) {
-            $result->addFlaggedTerm($match + ['sourceLanguage' => $language, 'confidence' => 1.0]);
+            $result->addFlaggedTerm($match + ['sourceLanguage' => $language, 'confidence' => 1.0, 'fusedFrom' => "$first $last"]);
             $added = true;
         }
 

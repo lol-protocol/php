@@ -36,7 +36,7 @@ class PhoneticFusionGermanTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'deu');
 
-        $result = $reviewer->validateFullName('Konrad', 'Ummerath');
+        $result = $reviewer->validateFullName('Konradu', 'Mm');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['dumm'], array_column($result->getPhoneticFusionTerms(), 'term'));

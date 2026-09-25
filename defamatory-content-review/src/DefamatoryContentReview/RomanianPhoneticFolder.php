@@ -21,20 +21,13 @@ namespace DefamatoryContentReview;
  * No se toca "ă": es una vocal con fonema propio (schwa), no una variante
  * de "a".
  */
-class RomanianPhoneticFolder
+class RomanianPhoneticFolder extends AbstractPhoneticFolder
 {
-    use LeetspeakFolding;
-
     private const NORMALIZE = [
         'î' => 'â', 'ş' => 'ș', 'ţ' => 'ț',
     ];
 
-    public static function fold(string $text): string
-    {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::NORMALIZE);
+    protected static function getAccents(): array { return self::NORMALIZE; }
 
-        return self::stripSeparators($text);
-    }
+    protected static function applyLanguageRules(string $text): string { return $text; }
 }

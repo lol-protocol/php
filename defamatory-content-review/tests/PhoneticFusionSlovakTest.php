@@ -19,7 +19,7 @@ class PhoneticFusionSlovakTest extends TestCase
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'slk');
 
-        $result = $reviewer->validateFullName('Alp', 'Rasason');
+        $result = $reviewer->validateFullName('Alpr', 'Asa');
 
         $this->assertFalse($result->isValid());
         $this->assertSame(['prasa'], array_column($result->getPhoneticFusionTerms(), 'term'));

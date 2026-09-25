@@ -17,18 +17,15 @@ namespace DefamatoryContentReview;
  * en teclados sin diacríticos eslovacos, práctica real y no una invención
  * fonética.
  */
-class SlovakPhoneticFolder
+class SlovakPhoneticFolder extends AbstractPhoneticFolder
 {
-    use AccentOnlyPhoneticFolding;
-
     private const ACCENTS = [
         'á' => 'a', 'ä' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o',
         'ô' => 'o', 'ú' => 'u', 'ĺ' => 'l', 'ŕ' => 'r',
         'ý' => 'i', 'y' => 'i',
     ];
 
-    public static function fold(string $text): string
-    {
-        return self::foldSeparatorsThenAccents($text);
-    }
+    protected static function getAccents(): array { return self::ACCENTS; }
+
+    protected static function applyLanguageRules(string $text): string { return $text; }
 }

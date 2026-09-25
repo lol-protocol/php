@@ -17,16 +17,9 @@ namespace DefamatoryContentReview;
  * grafía alternativa sistemática — intentar plegarlos sería adivinar, no
  * normalizar.
  */
-class DanishPhoneticFolder
+class DanishPhoneticFolder extends AbstractPhoneticFolder
 {
-    use AccentOnlyPhoneticFolding;
+    protected static function getAccents(): array { return CommonPhoneticAccents::NORDIC_VOWELS; }
 
-    private const ACCENTS = [
-        'æ' => 'ae', 'ø' => 'oe', 'å' => 'aa',
-    ];
-
-    public static function fold(string $text): string
-    {
-        return self::foldAccentsThenSeparators($text);
-    }
+    protected static function applyLanguageRules(string $text): string { return $text; }
 }
