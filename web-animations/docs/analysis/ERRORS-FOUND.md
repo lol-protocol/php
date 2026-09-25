@@ -7,7 +7,7 @@
 > |---|---|
 > | 1, 8 | Arreglado — `pause()`/`resume()` detienen y reanudan el emisor |
 > | 2, 3 | Arreglado — null check del contenedor |
-> | 4 | Abierto — `Ball.update()` no aplica gravedad; `data.js` lista "Gravedad" como técnica de `b`. Decidir si es intencional |
+> | 4 | Arreglado — `Ball.update()` aplica `Physics.gravity`. Además los rebotes reflejan la posición en vez de recortarla: con gravedad, el recorte perdía ~2.5% de energía cada 5 s y las bolas terminaban quietas |
 > | 5 | Arreglado — guarda `isStarted` en `AnimationManager.start()` |
 > | 6, 7 | Arreglado — ambos validan su contenedor |
 > | 9 | No era un error — el constructor no usa `this` antes de `super()` |
