@@ -42,12 +42,12 @@ final class NameEvaluator
         return $this->finalizeScore($result, $scores, $policy);
     }
 
-    /** "Elba Gina" ("el vagina"): se suma a lo ya detectado por evaluate(). Sólo idiomas con plegado fonético registrado. */
+    /** "Elba Gina" ("el vagina"): se suma a lo ya detectado por evaluate(). Sólo idiomas de FusionSupport. */
     public function applyPhoneticChecks(ValidationResult $result, string $first, string $last, string $language, ScoringPolicy $policy): void
     {
         $wordList = $this->languages->wordList($language);
 
-        if (!$wordList->supportsPhoneticFolding() || trim($first) === '' || trim($last) === '') {
+        if (!$wordList->supportsFusion() || trim($first) === '' || trim($last) === '') {
             return;
         }
 

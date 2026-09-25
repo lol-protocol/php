@@ -33,13 +33,13 @@ namespace DefamatoryContentReview;
  *   verificable sin una romanización propia — intentarlo sin un hablante
  *   nativo que confirme cada regla sería inventar, no normalizar.
  *
- * Añadir un idioma nuevo a la detección de fusión es añadir su fila aquí,
- * nada más.
+ * Esto es sólo el plegado fonético: varios de estos idiomas sí tienen
+ * fusión nombre+apellido sin reglas fonéticas (ver FusionSupport).
  */
 final class PhoneticFolderRegistry
 {
     private const FOLDERS = [
-        'spa' => PhoneticFolder::class,
+        'spa' => SpanishPhoneticFolder::class,
         'por' => PortuguesePhoneticFolder::class,
         'ita' => ItalianPhoneticFolder::class,
         'fra' => FrenchPhoneticFolder::class,

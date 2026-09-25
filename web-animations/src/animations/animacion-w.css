@@ -1,0 +1,47 @@
+.wave-container {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    background: radial-gradient(circle, rgba(78, 205, 196, 0.1), rgba(78, 205, 196, 0));
+}
+
+.wave-source {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--color-3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: var(--shadow-lg);
+}
+
+.wave {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--color-3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: expandWave 2s ease-out forwards;
+}
+
+@keyframes expandWave {
+    0% {
+        width: 40px;
+        height: 40px;
+        opacity: 1;
+        border-width: 2px;
+    }
+    100% {
+        width: 400px;
+        height: 400px;
+        opacity: 0;
+        border-width: 1px;
+    }
+}

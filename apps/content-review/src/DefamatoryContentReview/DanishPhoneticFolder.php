@@ -19,7 +19,7 @@ namespace DefamatoryContentReview;
  */
 class DanishPhoneticFolder
 {
-    use LeetspeakFolding;
+    use AccentOnlyPhoneticFolding;
 
     private const ACCENTS = [
         'æ' => 'ae', 'ø' => 'oe', 'å' => 'aa',
@@ -27,10 +27,6 @@ class DanishPhoneticFolder
 
     public static function fold(string $text): string
     {
-        $text = mb_strtolower(trim($text), 'UTF-8');
-        $text = self::unleet($text);
-        $text = strtr($text, self::ACCENTS);
-
-        return self::stripSeparators($text);
+        return self::foldAccentsThenSeparators($text);
     }
 }

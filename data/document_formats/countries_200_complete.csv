@@ -1,0 +1,201 @@
+country_code,country_name,primary_format,measurement_system,region,primary_language,iso_3166_alpha3,currency,note
+US,United States,Letter,Imperial,Americas,English,USA,USD,Uses Letter and Legal standards
+MX,Mexico,Carta,Metric,Americas,Spanish,MEX,MXN,Mixed metric and imperial
+CA,Canada,Letter,Imperial,Americas,English,CAN,CAD,Follows USA standards primarily
+BR,Brazil,Carta,Metric,Americas,Portuguese,BRA,BRL,Adopting ISO increasingly
+AR,Argentina,A4,Metric,Americas,Spanish,ARG,ARS,ISO 216 standard
+CL,Chile,A4,Metric,Americas,Spanish,CHL,CLP,ISO 216 standard
+CO,Colombia,Carta,Metric,Americas,Spanish,COL,COP,Mixed standards
+PE,Peru,A4,Metric,Americas,Spanish,PER,PEN,ISO 216 standard
+VE,Venezuela,Carta,Metric,Americas,Spanish,VEN,VES,Mixed standards
+EC,Ecuador,A4,Metric,Americas,Spanish,ECU,USD,ISO 216 standard
+GB,United Kingdom,A4,Metric,Europe,English,GBR,GBP,ISO 216 primarily
+DE,Germany,A4,Metric,Europe,German,DEU,EUR,Strict ISO 216 compliance
+FR,France,A4,Metric,Europe,French,FRA,EUR,Strict ISO 216 compliance
+ES,Spain,A4,Metric,Europe,Spanish,ESP,EUR,ISO 216 standard
+IT,Italy,A4,Metric,Europe,Italian,ITA,EUR,ISO 216 standard
+RU,Russia,A4,Metric,Europe,Russian,RUS,RUB,ISO 216 standard
+TR,Turkey,A4,Metric,Europe,Turkish,TUR,TRY,ISO 216 standard
+PL,Poland,A4,Metric,Europe,Polish,POL,PLN,ISO 216 standard
+NL,Netherlands,A4,Metric,Europe,Dutch,NLD,EUR,ISO 216 standard
+BE,Belgium,A4,Metric,Europe,Dutch,BEL,EUR,ISO 216 standard
+CH,Switzerland,A4,Metric,Europe,German,CHE,CHF,ISO 216 standard
+AT,Austria,A4,Metric,Europe,German,AUT,EUR,ISO 216 standard
+SE,Sweden,A4,Metric,Europe,Swedish,SWE,SEK,ISO 216 standard
+NO,Norway,A4,Metric,Europe,Norwegian,NOR,NOK,ISO 216 standard
+DK,Denmark,A4,Metric,Europe,Danish,DNK,DKK,ISO 216 standard
+FI,Finland,A4,Metric,Europe,Finnish,FIN,EUR,ISO 216 standard
+PT,Portugal,A4,Metric,Europe,Portuguese,PRT,EUR,ISO 216 standard
+GR,Greece,A4,Metric,Europe,Greek,GRC,EUR,ISO 216 standard
+CZ,Czech Republic,A4,Metric,Europe,Czech,CZE,CZK,ISO 216 standard
+SK,Slovakia,A4,Metric,Europe,Slovak,SVK,EUR,ISO 216 standard
+HU,Hungary,A4,Metric,Europe,Hungarian,HUN,HUF,ISO 216 standard
+RO,Romania,A4,Metric,Europe,Romanian,ROU,RON,ISO 216 standard
+BG,Bulgaria,A4,Metric,Europe,Bulgarian,BGR,BGN,ISO 216 standard
+HR,Croatia,A4,Metric,Europe,Croatian,HRV,HRK,ISO 216 standard
+SI,Slovenia,A4,Metric,Europe,Slovenian,SVN,EUR,ISO 216 standard
+IE,Ireland,A4,Metric,Europe,English,IRL,EUR,ISO 216 standard
+UA,Ukraine,A4,Metric,Europe,Ukrainian,UKR,UAH,ISO 216 standard
+BY,Belarus,A4,Metric,Europe,Belarusian,BLR,BYN,ISO 216 standard
+JP,Japan,JIS B4,Metric,Asia-Pacific,Japanese,JPN,JPY,JIS B series primarily
+CN,China,16K,Metric,Asia-Pacific,Chinese,CHN,CNY,Traditional and ISO mixed
+IN,India,A4,Metric,Asia-Pacific,Hindi,IND,INR,ISO 216 standard
+TH,Thailand,A4,Metric,Asia-Pacific,Thai,THA,THB,ISO 216 standard
+VN,Vietnam,A4,Metric,Asia-Pacific,Vietnamese,VNM,VND,ISO 216 standard
+PH,Philippines,A4,Mixed,Asia-Pacific,English,PHL,PHP,Mixed USA and ISO
+SG,Singapore,A4,Metric,Asia-Pacific,English,SGP,SGD,ISO 216 standard
+HK,Hong Kong,A4,Metric,Asia-Pacific,Chinese,HKG,HKD,ISO 216 standard
+MY,Malaysia,A4,Metric,Asia-Pacific,Malay,MYS,MYR,ISO 216 standard
+ID,Indonesia,A4,Metric,Asia-Pacific,Indonesian,IDN,IDR,ISO 216 standard
+PK,Pakistan,A4,Metric,Asia-Pacific,Urdu,PAK,PKR,ISO 216 standard
+BD,Bangladesh,A4,Metric,Asia-Pacific,Bengali,BGD,BDT,ISO 216 standard
+KR,South Korea,A4,Metric,Asia-Pacific,Korean,KOR,KRW,JIS influenced
+TW,Taiwan,B5,Metric,Asia-Pacific,Chinese,TWN,TWD,JIS influenced
+MM,Myanmar,A4,Metric,Asia-Pacific,Burmese,MMR,MMK,ISO 216 standard
+LA,Laos,A4,Metric,Asia-Pacific,Lao,LAO,LAK,ISO 216 standard
+KH,Cambodia,A4,Metric,Asia-Pacific,Khmer,KHM,KHR,ISO 216 standard
+AE,United Arab Emirates,A4,Metric,Middle East,Arabic,ARE,AED,ISO 216 standard
+SA,Saudi Arabia,A4,Metric,Middle East,Arabic,SAU,SAR,ISO 216 standard
+AQ,Qatar,A4,Metric,Middle East,Arabic,QAT,QAR,ISO 216 standard
+KW,Kuwait,A4,Metric,Middle East,Arabic,KWT,KWD,ISO 216 standard
+BH,Bahrain,A4,Metric,Middle East,Arabic,BHR,BHD,ISO 216 standard
+OM,Oman,A4,Metric,Middle East,Arabic,OMN,OMR,ISO 216 standard
+YE,Yemen,A4,Metric,Middle East,Arabic,YEM,YER,ISO 216 standard
+IL,Israel,A4,Metric,Middle East,Hebrew,ISR,ILS,ISO 216 standard
+JO,Jordan,A4,Metric,Middle East,Arabic,JOR,JOD,ISO 216 standard
+LB,Lebanon,A4,Metric,Middle East,Arabic,LBN,LBP,ISO 216 standard
+SY,Syria,A4,Metric,Middle East,Arabic,SYR,SYP,ISO 216 standard
+IQ,Iraq,A4,Metric,Middle East,Arabic,IRQ,IQD,ISO 216 standard
+IR,Iran,A4,Metric,Middle East,Persian,IRN,IRR,ISO 216 standard
+EG,Egypt,A4,Metric,Africa,Arabic,EGY,EGP,ISO 216 standard
+ZA,South Africa,A4,Metric,Africa,English,ZAF,ZAR,ISO 216 standard
+NG,Nigeria,A4,Metric,Africa,English,NGA,NGN,ISO 216 standard
+KE,Kenya,A4,Metric,Africa,English,KEN,KES,ISO 216 standard
+MA,Morocco,A4,Metric,Africa,Arabic,MAR,MAD,ISO 216 standard
+TZ,Tanzania,A4,Metric,Africa,Swahili,TZA,TZS,ISO 216 standard
+UG,Uganda,A4,Metric,Africa,English,UGA,UGX,ISO 216 standard
+GH,Ghana,A4,Metric,Africa,English,GHA,GHS,ISO 216 standard
+CI,Ivory Coast,A4,Metric,Africa,French,CIV,XOF,ISO 216 standard
+CM,Cameroon,A4,Metric,Africa,French,CMR,XAF,ISO 216 standard
+SN,Senegal,A4,Metric,Africa,French,SEN,XOF,ISO 216 standard
+ET,Ethiopia,A4,Metric,Africa,Amharic,ETH,ETB,ISO 216 standard
+AO,Angola,A4,Metric,Africa,Portuguese,AGO,AOA,ISO 216 standard
+MZ,Mozambique,A4,Metric,Africa,Portuguese,MOZ,MZN,ISO 216 standard
+ZM,Zambia,A4,Metric,Africa,English,ZMB,ZMW,ISO 216 standard
+ZW,Zimbabwe,A4,Metric,Africa,English,ZWE,ZWL,ISO 216 standard
+BW,Botswana,A4,Metric,Africa,English,BWA,BWP,ISO 216 standard
+NA,Namibia,A4,Metric,Africa,English,NAM,NAD,ISO 216 standard
+AU,Australia,A4,Metric,Oceania,English,AUS,AUD,Uses both metric and imperial
+NZ,New Zealand,A4,Metric,Oceania,English,NZL,NZD,ISO 216 standard
+FJ,Fiji,A4,Metric,Oceania,English,FJI,FJD,ISO 216 standard
+PG,Papua New Guinea,A4,Metric,Oceania,English,PNG,PGK,ISO 216 standard
+VU,Vanuatu,A4,Metric,Oceania,English,VUT,VUV,ISO 216 standard
+WS,Samoa,A4,Metric,Oceania,Samoan,WSM,WST,ISO 216 standard
+TO,Tonga,A4,Metric,Oceania,Tongan,TON,TOP,ISO 216 standard
+KI,Kiribati,A4,Metric,Oceania,English,KIR,AUD,ISO 216 standard
+MH,Marshall Islands,Letter,Imperial,Oceania,English,MHL,USD,Uses USA standards
+PW,Palau,Letter,Imperial,Oceania,English,PLW,USD,Uses USA standards
+FM,Micronesia,Letter,Imperial,Oceania,English,FSM,USD,Uses USA standards
+MP,Northern Mariana Islands,Letter,Imperial,Oceania,English,MNP,USD,Uses USA standards
+GU,Guam,Letter,Imperial,Oceania,English,GUM,USD,Uses USA standards
+AS,American Samoa,Letter,Imperial,Oceania,English,ASM,USD,Uses USA standards
+VI,Virgin Islands US,Letter,Imperial,Americas,English,VIR,USD,Uses USA standards
+PR,Puerto Rico,Letter,Imperial,Americas,Spanish,PRI,USD,Uses USA standards
+KY,Cayman Islands,A4,Metric,Americas,English,CYM,KYD,ISO 216 standard
+BS,Bahamas,Letter,Imperial,Americas,English,BHS,BSD,Uses USA standards
+JM,Jamaica,A4,Metric,Americas,English,JAM,JMD,ISO 216 standard
+TT,Trinidad and Tobago,A4,Metric,Americas,English,TTO,TTD,ISO 216 standard
+CU,Cuba,A4,Metric,Americas,Spanish,CUB,CUP,ISO 216 standard
+DO,Dominican Republic,A4,Metric,Americas,Spanish,DOM,DOP,ISO 216 standard
+HT,Haiti,A4,Metric,Americas,French,HTI,HTG,ISO 216 standard
+PA,Panama,A4,Metric,Americas,Spanish,PAN,PAB,ISO 216 standard
+CR,Costa Rica,A4,Metric,Americas,Spanish,CRI,CRC,ISO 216 standard
+NI,Nicaragua,A4,Metric,Americas,Spanish,NIC,NIO,ISO 216 standard
+HN,Honduras,A4,Metric,Americas,Spanish,HND,HNL,ISO 216 standard
+SV,El Salvador,A4,Metric,Americas,Spanish,SLV,SVC,ISO 216 standard
+GT,Guatemala,A4,Metric,Americas,Spanish,GTM,GTQ,ISO 216 standard
+BZ,Belize,Letter,Imperial,Americas,English,BLZ,BZD,Uses USA standards
+GP,Guadeloupe,A4,Metric,Americas,French,GLP,EUR,ISO 216 standard
+MQ,Martinique,A4,Metric,Americas,French,MTQ,EUR,ISO 216 standard
+SR,Suriname,A4,Metric,Americas,Dutch,SUR,SRD,ISO 216 standard
+GF,French Guiana,A4,Metric,Americas,French,GUF,EUR,ISO 216 standard
+BO,Bolivia,A4,Metric,Americas,Spanish,BOL,BOB,ISO 216 standard
+PY,Paraguay,A4,Metric,Americas,Spanish,PRY,PYG,ISO 216 standard
+UY,Uruguay,A4,Metric,Americas,Spanish,URY,UYU,ISO 216 standard
+CW,Curacao,A4,Metric,Americas,Dutch,CUW,ANG,ISO 216 standard
+AX,Aland Islands,A4,Metric,Europe,Swedish,ALA,EUR,ISO 216 standard
+FO,Faroe Islands,A4,Metric,Europe,Faroese,FRO,DKK,ISO 216 standard
+GL,Greenland,A4,Metric,Europe,Greenlandic,GRL,DKK,ISO 216 standard
+IS,Iceland,A4,Metric,Europe,Icelandic,ISL,ISK,ISO 216 standard
+MT,Malta,A4,Metric,Europe,Maltese,MLT,EUR,ISO 216 standard
+CY,Cyprus,A4,Metric,Europe,Greek,CYP,EUR,ISO 216 standard
+LU,Luxembourg,A4,Metric,Europe,Luxembourgish,LUX,EUR,ISO 216 standard
+LI,Liechtenstein,A4,Metric,Europe,German,LIE,CHF,ISO 216 standard
+MC,Monaco,A4,Metric,Europe,French,MCO,EUR,ISO 216 standard
+SM,San Marino,A4,Metric,Europe,Italian,SMR,EUR,ISO 216 standard
+VA,Vatican City,A4,Metric,Europe,Italian,VAT,EUR,ISO 216 standard
+AD,Andorra,A4,Metric,Europe,Catalan,AND,EUR,ISO 216 standard
+GE,Georgia,A4,Metric,Asia,Georgian,GEO,GEL,ISO 216 standard
+AM,Armenia,A4,Metric,Asia,Armenian,ARM,AMD,ISO 216 standard
+AZ,Azerbaijan,A4,Metric,Asia,Azerbaijani,AZE,AZN,ISO 216 standard
+KZ,Kazakhstan,A4,Metric,Asia,Kazakh,KAZ,KZT,ISO 216 standard
+KG,Kyrgyzstan,A4,Metric,Asia,Kyrgyz,KGZ,KGS,ISO 216 standard
+TJ,Tajikistan,A4,Metric,Asia,Tajik,TJK,TJS,ISO 216 standard
+TM,Turkmenistan,A4,Metric,Asia,Turkmen,TKM,TMT,ISO 216 standard
+UZ,Uzbekistan,A4,Metric,Asia,Uzbek,UZB,UZS,ISO 216 standard
+AF,Afghanistan,A4,Metric,Asia,Pashto,AFG,AFN,ISO 216 standard
+SL,Sri Lanka,A4,Metric,Asia,Sinhala,LKA,LKR,ISO 216 standard
+NP,Nepal,A4,Metric,Asia,Nepali,NPL,NPR,ISO 216 standard
+BT,Bhutan,A4,Metric,Asia,Dzongkha,BTN,BTN,ISO 216 standard
+MV,Maldives,A4,Metric,Asia,Dhivehi,MDV,MVR,ISO 216 standard
+LS,Lesotho,A4,Metric,Africa,Sotho,LSO,LSL,ISO 216 standard
+MG,Madagascar,A4,Metric,Africa,Malagasy,MDG,MGA,ISO 216 standard
+MU,Mauritius,A4,Metric,Africa,English,MUS,MUR,ISO 216 standard
+SC,Seychelles,A4,Metric,Africa,English,SYC,SCR,ISO 216 standard
+CV,Cape Verde,A4,Metric,Africa,Portuguese,CPV,CVE,ISO 216 standard
+ST,Sao Tome and Principe,A4,Metric,Africa,Portuguese,STP,STN,ISO 216 standard
+GM,Gambia,A4,Metric,Africa,English,GMB,GMD,ISO 216 standard
+GW,Guinea-Bissau,A4,Metric,Africa,Portuguese,GNB,XOF,ISO 216 standard
+GN,Guinea,A4,Metric,Africa,French,GIN,GNF,ISO 216 standard
+ML,Mali,A4,Metric,Africa,French,MLI,XOF,ISO 216 standard
+MR,Mauritania,A4,Metric,Africa,Arabic,MRT,MRU,ISO 216 standard
+DZ,Algeria,A4,Metric,Africa,Arabic,DZA,DZD,ISO 216 standard
+TN,Tunisia,A4,Metric,Africa,Arabic,TUN,TND,ISO 216 standard
+LY,Libya,A4,Metric,Africa,Arabic,LBY,LYD,ISO 216 standard
+SD,Sudan,A4,Metric,Africa,Arabic,SDN,SDG,ISO 216 standard
+SS,South Sudan,A4,Metric,Africa,English,SSD,SSP,ISO 216 standard
+ER,Eritrea,A4,Metric,Africa,Tigrinya,ERI,ERN,ISO 216 standard
+DJ,Djibouti,A4,Metric,Africa,French,DJI,DJF,ISO 216 standard
+SO,Somalia,A4,Metric,Africa,Somali,SOM,SOS,ISO 216 standard
+RW,Rwanda,A4,Metric,Africa,Kinyarwanda,RWA,RWF,ISO 216 standard
+BI,Burundi,A4,Metric,Africa,Kirundi,BDI,BIF,ISO 216 standard
+CD,Democratic Republic of Congo,A4,Metric,Africa,French,COD,CDF,ISO 216 standard
+CG,Republic of Congo,A4,Metric,Africa,French,COG,XAF,ISO 216 standard
+CF,Central African Republic,A4,Metric,Africa,French,CAF,XAF,ISO 216 standard
+TG,Togo,A4,Metric,Africa,French,TGO,XOF,ISO 216 standard
+BJ,Benin,A4,Metric,Africa,French,BEN,XOF,ISO 216 standard
+BF,Burkina Faso,A4,Metric,Africa,French,BFA,XOF,ISO 216 standard
+NE,Niger,A4,Metric,Africa,French,NER,XOF,ISO 216 standard
+TC,Turks and Caicos Islands,Letter,Imperial,Americas,English,TCA,USD,Uses USA standards
+BM,Bermuda,Letter,Imperial,Americas,English,BMU,BMD,Uses USA standards
+AI,Anguilla,A4,Metric,Americas,English,AIA,XCD,ISO 216 standard
+KN,Saint Kitts and Nevis,A4,Metric,Americas,English,KNA,XCD,ISO 216 standard
+LC,Saint Lucia,A4,Metric,Americas,English,LCA,XCD,ISO 216 standard
+VC,Saint Vincent and the Grenadines,A4,Metric,Americas,English,VCT,XCD,ISO 216 standard
+GD,Grenada,A4,Metric,Americas,English,GRD,XCD,ISO 216 standard
+DM,Dominica,A4,Metric,Americas,English,DMA,XCD,ISO 216 standard
+AG,Antigua and Barbuda,A4,Metric,Americas,English,ATG,XCD,ISO 216 standard
+BL,Saint Barthelemy,A4,Metric,Americas,French,BLM,EUR,ISO 216 standard
+MF,Saint Martin,A4,Metric,Americas,French,MAF,EUR,ISO 216 standard
+SX,Sint Maarten,A4,Metric,Americas,Dutch,SXM,ANG,ISO 216 standard
+MO,Macau,A4,Metric,Asia-Pacific,Chinese,MAC,MOP,ISO 216 standard
+PS,Palestinian Territory,A4,Metric,Middle East,Arabic,PSE,ILS,ISO 216 standard
+AW,Aruba,A4,Metric,Americas,Dutch,ABW,AWG,ISO 216 standard
+FK,Falkland Islands,A4,Metric,Americas,English,FLK,FKP,ISO 216 standard
+JE,Jersey,A4,Metric,Europe,English,JEY,GBP,ISO 216 standard
+GG,Guernsey,A4,Metric,Europe,English,GGY,GBP,ISO 216 standard
+IM,Isle of Man,A4,Metric,Europe,English,IMN,GBP,ISO 216 standard
+BV,Bouvet Island,A4,Metric,Oceania,Norwegian,BVT,NOK,ISO 216 standard
+AX,Åland Islands,A4,Metric,Europe,Swedish,ALA,EUR,ISO 216 standard
+HK,Hong Kong,A4,Metric,Asia-Pacific,Chinese,HKG,HKD,ISO 216 standard
+TW,Taiwan,A4,Metric,Asia-Pacific,Chinese,TWN,TWD,ISO 216 standard

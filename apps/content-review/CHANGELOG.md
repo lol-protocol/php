@@ -1,5 +1,40 @@
 # Changelog
 
+## [4.2.0] - 2026-09-23
+
+### Arreglado
+
+- **Variantes ortográficas estándar de scripts no latinos evadían la
+  búsqueda literal.** Verificado con la API pública: «ΜΑΛΑΚΑΣ» (griego en
+  mayúsculas: sin tonos por convención y con sigma medial), «козел» (ruso
+  con «е» en vez de «ё», que es como se escribe casi siempre), «مـدمـن»
+  (árabe con kashida), «مُدْمِن» (harakat), «غبيه» («ه» por «ة»), «احمق»
+  (alef sin hamza) y «מַמְזֵר» (hebreo con niqqud) pasaban como válidos. El
+  caso griego es crítico en genealogía, donde los registros suelen ir en
+  mayúsculas. Nuevo `ScriptFolding`, aplicado en `WordList::normalize()`:
+  sólo equivalencias que los hablantes tratan como la misma palabra. Cero
+  colisiones de claves en los 6 diccionarios afectados y ningún nombre
+  real común nuevo marcado.
+- **«أمية» sin `nameCollision`.** Añadido en 4.1.x como femenino de «أمي»
+  (analfabeto), pero es también Umayya, nombre propio real (Banu Umayya,
+  la dinastía omeya). Ahora va a revisión humana en vez de rechazo.
+
+### Añadido
+
+- **Fusión nombre+apellido en 9 idiomas más** (ruso, ucraniano, búlgaro,
+  griego, hindi, coreano, islandés, swahili, tagalo): cobertura de 17 a 26
+  de 33. La fusión no necesita reglas fonéticas — es unir los dos campos y
+  buscar un término que cruce la unión — así que `FusionSupport` la hace
+  sobre la forma literal normalizada donde no hay folder. Cada idioma
+  entró tras un barrido de combinaciones de nombres reales comunes con
+  cero falsos positivos. Excluidos con motivo documentado: inglés y árabe
+  (falsos positivos reales: «Chris Hitt» → «shit», «محمد منصور» →
+  «مدمن»), hebreo (no escribe vocales, como el árabe), japonés, tailandés
+  y cantonés (sin espacios entre palabras) y vietnamita (tono fonémico).
+- 217 tests (34 nuevos en `ScriptNormalizationTest` y `LiteralFusionTest`;
+  18 de ellos fallan sin los cambios).
+
+---
 ## [4.1.4] - 2026-09-19
 
 ### Arreglado

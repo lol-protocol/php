@@ -48,7 +48,9 @@ return [
             ['word' => 'معتوهة', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'متخلفة', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'جاهلة', 'riskType' => 'intelectual', 'severity' => 'medium'],
-            ['word' => 'أمية', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            // 'Umayya' (أمية) es también un nombre propio real (Banu Umayya,
+            // la dinastía omeya) — nunca debe rechazar en automático.
+            ['word' => 'أمية', 'riskType' => 'intelectual', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'بليدة', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ساذجة', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
