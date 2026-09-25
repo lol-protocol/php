@@ -1,5 +1,22 @@
 # Errores Potenciales Encontrados - Refactorización DRY Phase 2
 
+> **Estado verificado (2026-09-25)** contra el código actual y abriendo cada
+> página en Chromium (`npm test` en `web-animations/`):
+>
+> | # | Estado |
+> |---|---|
+> | 1, 8 | Arreglado — `pause()`/`resume()` detienen y reanudan el emisor |
+> | 2, 3 | Arreglado — null check del contenedor |
+> | 4 | Abierto — `Ball.update()` no aplica gravedad; `data.js` lista "Gravedad" como técnica de `b`. Decidir si es intencional |
+> | 5 | Arreglado — guarda `isStarted` en `AnimationManager.start()` |
+> | 6, 7 | Arreglado — ambos validan su contenedor |
+> | 9 | No era un error — el constructor no usa `this` antes de `super()` |
+>
+> Aparte, el smoke test encontró un bug que este reporte no tenía: 7
+> animaciones (`ah`, `aj`, `b`, `e`, `f`, `g`, `w`) abortaban al cargar porque
+> `super([], true)` ejecutaba `querySelectorAll([])`. Arreglado en
+> `AnimationToggle`.
+
 ## Errores Críticos (Alto Riesgo)
 
 ### 1. **ParticleEmitterToggle - Lifecycle Inconsistency**
