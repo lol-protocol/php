@@ -13,3 +13,6 @@ coverage/
 .idea/
 .vscode/
 *.log
+__pycache__/
+*.class
+phone-directory/ports/java/build/

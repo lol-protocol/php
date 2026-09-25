@@ -2,6 +2,8 @@
 
 namespace PhoneDirectory\Entity;
 
+use PhoneDirectory\Exception\InvalidEncodingException;
+
 class PersonName
 {
     public const PARTICLES = ['de', 'del', 'della', 'di', 'da', 'das', 'do', 'dos', 'du', 'van', 'von', 'der', 'den', 'le', 'la', 'los', 'las'];
@@ -46,11 +48,17 @@ class PersonName
      * @param string|null $language Language code (es, en, fr, pt, de, it) for language-specific parsing rules.
      *                               If not provided, defaults to English rules.
      * @throws \InvalidArgumentException If fullName is empty
+     * @throws InvalidEncodingException If fullName is not valid UTF-8
      */
     public function __construct(string $fullName, ?string $language = null)
     {
         if (empty(trim($fullName))) {
             throw new \InvalidArgumentException('Full name cannot be empty');
+        }
+
+        // The /u regexes used while parsing return false on invalid UTF-8, which would surface as a TypeError.
+        if (!mb_check_encoding($fullName, 'UTF-8')) {
+            throw new InvalidEncodingException('Full name is not valid UTF-8');
         }
 
         $this->firstNames = [];

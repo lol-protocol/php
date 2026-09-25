@@ -1,0 +1,64 @@
+PHONE DIRECTORY PARSER - RESUMEN
+================================
+
+Módulo PHP para parsear guías telefónicas históricas en texto plano y guardarlas en una
+base de datos preparada para búsquedas genealógicas.
+
+Ubicación:     phone-directory/ (repositorio lol-protocol/php)
+Depende de:    defamatory-content-review/ (plegado de acentos y claves fonéticas)
+Requisitos:    PHP 8.1+, mbstring, PDO (SQLite, MySQL/MariaDB o PostgreSQL)
+
+
+QUÉ HACE
+--------
+- Parsea directorios en 6 idiomas (es, en, fr, pt, de, it) y detecta el idioma solo.
+- Lee entradas de una línea o en bloques; los registros ilegibles quedan como errores
+  de parseo sin detener el archivo.
+- Separa personas naturales de empresas.
+- Descompone nombres (apellidos por idioma, partículas, títulos, viudas) y direcciones.
+- Guarda en SQLite, MySQL/MariaDB o PostgreSQL, migrando esquemas antiguos.
+- Busca sin acentos, por teléfono, por sonido del apellido y por tipo de empresa.
+- Propone qué entradas de distintos directorios son la misma persona (RecordLinker).
+- Incluye un catálogo de 16 directorios históricos (1878-1975, 10 países).
+- CLI: bin/phonedir import | search | stats | link | catalog
+
+
+CIFRAS
+------
+Archivos PHP en src/          35
+Líneas de código (src/)       ~4 000
+Tests PHPUnit                 229 (CI: PHP 8.1-8.4, SQLite y PostgreSQL)
+Ports                         Python (13 tests) y Java (12 chequeos), simplificados
+
+Rendimiento medido (bin/benchmark.php, 100 000 entradas, 1 proceso, SQLite):
+  parseo                      ~39 000 entradas/s
+  inserción por lotes         ~34 000 filas/s
+  base de datos               ~336 bytes por fila
+  memoria al parsear          ~1,8 KB por entrada (se acumulan todas las entradas)
+
+
+USO RÁPIDO
+----------
+  cd phone-directory
+  composer install
+  ./vendor/bin/phpunit
+  php bin/phonedir import examples/sample_phone_directory.txt --dsn=sqlite:demo.sqlite
+  php bin/phonedir search --name=garcia --dsn=sqlite:demo.sqlite
+
+
+DOCUMENTACIÓN (phone-directory/docs/)
+-------------------------------------
+PHONE_DIRECTORY_SUMMARY.md      Descripción funcional, uso y esquema de base de datos
+PROJECT_COMPLETION_REPORT.md    Estado del proyecto, tests y pendientes
+ESTIMATES_AND_SCALABILITY.md    Rendimiento medido y proyecciones de volumen
+ERRORES_ENCONTRADOS.md          Los 14 errores de la revisión estática y su estado
+POTENTIAL_ERRORS_ANALYSIS.md    Análisis detallado de esos 14 errores
+
+
+PENDIENTES
+----------
+- parseFile() acumula todas las entradas en memoria: los archivos muy grandes hay que
+  partirlos antes de importarlos.
+- Config/ParserConfig y Logger/* existen pero no están conectados a nada.
+- Manager/PhoneDirectoryManager (v1) está obsoleto; usar PhoneDirectoryManagerV2.
+- Los ports a Python y Java no clasifican empresas ni tienen RecordLinker.

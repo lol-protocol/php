@@ -8,10 +8,15 @@
   "repositories": [
     {
       "type": "path",
+      "url": "defamatory-content-review"
+    },
+    {
+      "type": "path",
       "url": "phone-directory"
     }
   ],
   "require": {
-    "lol-protocol/phone-directory": "*"
+    "lol-protocol/defamatory-content-review": "@dev",
+    "lol-protocol/phone-directory": "@dev"
   }
 }

@@ -13,18 +13,18 @@ from dataclasses import dataclass
 
 @dataclass
 class PersonName:
-    """Parse and decompose personal names into components."""
+    """Parse and decompose personal names into components (same rules as the PHP PersonName)."""
 
-    LAST_NAME_PARTICLES = {
-        'es': ['de', 'del', 'di', 'da', 'y'],
-        'en': ['von', 'van', 'de'],
-        'fr': ['de', 'du', 'le', 'la'],
-        'de': ['von', 'van'],
-        'it': ['di', 'da'],
-        'pt': ['de', 'da']
-    }
+    PARTICLES = ['de', 'del', 'della', 'di', 'da', 'das', 'do', 'dos', 'du',
+                 'van', 'von', 'der', 'den', 'le', 'la', 'los', 'las']
+
+    # Single-letter connectors collide with middle initials ("John E Smith"), so they only count when the language uses them.
+    LANGUAGE_CONNECTORS = {'es': ['y'], 'pt': ['e'], 'it': ['e']}
+
+    LANGUAGE_SURNAME_COUNT = {'es': 2, 'pt': 2}
 
     full_name: str
+    language: Optional[str] = None
     first_names: List[str] = None
     last_names: List[str] = None
 
@@ -34,28 +34,41 @@ class PersonName:
 
         self._parse_name()
 
-    def _parse_name(self):
-        """Parse full name into components."""
-        parts = self.full_name.split()
+    def _is_particle(self, word: str) -> bool:
+        lower = word.lower()
+        return lower in self.PARTICLES or lower in self.LANGUAGE_CONNECTORS.get(self.language, [])
 
-        if len(parts) < 2:
-            self.first_names = parts
-            self.last_names = []
+    def _normalize_case(self, word: str, is_leading: bool = False) -> str:
+        if not is_leading and self._is_particle(word):
+            return word.lower()
+        return word.lower().title()
+
+    def _parse_name(self):
+        """Parse "LAST, First" or "First Last" into first and last names."""
+        full_name = self.full_name.strip()
+
+        if ',' in full_name:
+            last_part, first_part = full_name.split(',', 1)
+            self.last_names = [self._normalize_case(w) for w in last_part.split()]
+            self.first_names = [self._normalize_case(w, i == 0) for i, w in enumerate(first_part.split())]
             return
 
-        # Try to find name particle
-        split_index = len(parts) // 2
-        particles = []
-        for lang_particles in self.LAST_NAME_PARTICLES.values():
-            particles.extend(lang_particles)
+        parts = [self._normalize_case(w, i == 0) for i, w in enumerate(full_name.split())]
 
-        for i in range(1, len(parts)):
-            if parts[i].lower() in particles:
-                split_index = i
-                break
+        # Walk backwards taking one surname per iteration, pulling in any particles that precede it
+        # ("de la Cruz", "van der Rohe"); the first token always stays a given name.
+        surname_count = self.LANGUAGE_SURNAME_COUNT.get(self.language, 1)
+        last_names = []
+        taken = 0
+        while taken < surname_count and len(parts) > 1:
+            group = [parts.pop()]
+            while len(parts) > 1 and self._is_particle(parts[-1]):
+                group.insert(0, parts.pop())
+            last_names = group + last_names
+            taken += 1
 
-        self.first_names = parts[:split_index]
-        self.last_names = parts[split_index:]
+        self.first_names = parts
+        self.last_names = last_names
 
     @property
     def primary_last_name(self) -> str:
@@ -90,7 +103,7 @@ class GeoLocation:
     city: Optional[str] = None
 
     def __post_init__(self):
-        if len(self.country_code) != 2:
+        if not re.fullmatch(r'[A-Za-z]{2}', self.country_code):
             raise ValueError("Country code must be 2 letters (ISO 3166-1)")
         self.country_code = self.country_code.upper()
 
@@ -118,31 +131,55 @@ class MultiLanguagePhoneDirectoryParser:
     """Parse phone directories in multiple languages."""
 
     STREET_MARKERS = {
-        'es': ['calle', 'avenida', 'av', 'plaza', 'pasaje', 'camino'],
-        'en': ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'lane'],
-        'fr': ['rue', 'avenue', 'allée', 'place', 'boulevard'],
-        'pt': ['rua', 'avenida', 'av', 'praça', 'alameda'],
-        'de': ['straße', 'strasse', 'allee', 'weg', 'platz'],
-        'it': ['via', 'viale', 'corso', 'piazza', 'largo'],
+        'es': ['calle', 'avenida', 'av', 'plaza', 'pasaje', 'camino', 'ruta', 'carrera'],
+        'en': ['street', 'st', 'avenue', 'ave', 'road', 'rd', 'drive', 'dr', 'lane', 'ln',
+               'boulevard', 'blvd', 'circle', 'cir'],
+        'fr': ['rue', 'avenue', 'allée', 'place', 'boulevard', 'bd', 'cours', 'square'],
+        'pt': ['rua', 'avenida', 'av', 'praça', 'alameda', 'estrada', 'largo'],
+        'de': ['ring', 'hof'],
+        'it': ['via', 'viale', 'corso', 'piazza', 'largo', 'strada'],
     }
+
+    # German compounds glue the street type onto the name ("Hauptstraße"), so these match as word endings.
+    STREET_SUFFIXES = {'de': ['straße', 'strasse', 'allee', 'weg', 'platz']}
+
+    # Only vocabulary distinctive enough to override English, the baseline language; words that are also
+    # English ("plaza", "avenue", "via") would otherwise misdetect an English directory.
+    DETECTION_MARKERS = {
+        'es': ['calle', 'avenida', 'pasaje', 'camino', 'ruta', 'carrera'],
+        'fr': ['rue', 'allée', 'cours'],
+        'pt': ['rua', 'avenida', 'praça', 'alameda', 'estrada', 'largo'],
+        'de': [],
+        'it': ['viale', 'corso', 'piazza', 'largo', 'strada'],
+    }
+
+    SEPARATOR_PATTERN = re.compile(r'^(?:[-=_*]\s*){2,}$')
 
     PHONE_PATTERN = r'\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\b\d{10}\b'
 
-    def __init__(self):
+    def __init__(self, country_code: str = 'US'):
+        self.country_code = country_code.upper()
         self.entries = []
         self.errors = []
         self.detected_language = 'en'
 
+    @staticmethod
+    def _words_pattern(words: List[str], suffixes: List[str]) -> Optional['re.Pattern']:
+        parts = []
+        if words:
+            parts.append(r'\b(?:' + '|'.join(re.escape(w) for w in words) + r')\b')
+        parts.extend(re.escape(s) + r'\b' for s in suffixes)
+        return re.compile('|'.join(parts), re.IGNORECASE) if parts else None
+
     def detect_language(self, content: str) -> str:
-        """Auto-detect language based on markers."""
-        scores = {lang: 0 for lang in self.STREET_MARKERS.keys()}
-        lower_content = content.lower()
+        """Auto-detect language from whole-word street vocabulary; defaults to English."""
+        scores = {'en': 0}
+        for lang, words in self.DETECTION_MARKERS.items():
+            pattern = self._words_pattern(words, self.STREET_SUFFIXES.get(lang, []))
+            scores[lang] = len(pattern.findall(content)) if pattern else 0
 
-        for lang, markers in self.STREET_MARKERS.items():
-            for marker in markers:
-                scores[lang] += lower_content.count(marker)
-
-        return max(scores, key=scores.get)
+        best = max(scores, key=scores.get)
+        return best if scores[best] > 0 else 'en'
 
     def parse_file(self, filepath: str, language: Optional[str] = None) -> List[Dict]:
         """Parse phone directory file."""
@@ -160,37 +197,42 @@ class MultiLanguagePhoneDirectoryParser:
         self.entries = []
         self.errors = []
 
-        lines = content.strip().split('\n')
         buffer = []
+        buffer_start = 0
 
-        for i, line in enumerate(lines):
+        # Line numbers are 1-based positions in the original content, so errors point at the real line.
+        for line_number, line in enumerate(content.split('\n'), start=1):
             line = line.strip()
 
-            if not line or re.match(r'^-{2,}|={2,}$', line):
+            if not line or self.SEPARATOR_PATTERN.match(line):
                 if buffer:
-                    self._process_buffer(buffer, i - len(buffer), language)
+                    self._process_buffer(buffer, buffer_start, language)
                     buffer = []
             else:
+                if not buffer:
+                    buffer_start = line_number
                 buffer.append(line)
 
         if buffer:
-            self._process_buffer(buffer, len(lines) - len(buffer), language)
+            self._process_buffer(buffer, buffer_start, language)
 
         return self.entries
 
     def _extract_street(self, line: str, language: str) -> Optional[str]:
-        """Extract street address from line."""
-        markers = self.STREET_MARKERS.get(language, self.STREET_MARKERS['en'])
+        """Extract street address from line, matching street words only as whole words."""
+        pattern = self._words_pattern(
+            self.STREET_MARKERS.get(language, self.STREET_MARKERS['en']),
+            self.STREET_SUFFIXES.get(language, [])
+        )
+        if pattern.search(line):
+            return line
 
-        for marker in markers:
-            if marker in line.lower():
-                return line
+        # A line that is only a phone number is not also a street, even though it starts with digits.
+        if re.fullmatch(r'[\d\s().+-]+', line):
+            return None
 
-        # Try address pattern (number + words)
-        if re.search(r'\d+\s+[\w\s]+', line):
-            return re.search(r'\d+\s+[\w\s]+', line).group()
-
-        return None
+        match = re.search(r'\d+\s+[\w\s]+', line)
+        return match.group() if match else None
 
     def _process_buffer(self, lines: List[str], start_line: int, language: str):
         """Process a buffer of lines into an entry."""
@@ -198,7 +240,7 @@ class MultiLanguagePhoneDirectoryParser:
             'name': None,
             'phone': None,
             'street': None,
-            'country': 'US'  # Default
+            'country': self.country_code,
         }
 
         for line in lines:
@@ -212,7 +254,8 @@ class MultiLanguagePhoneDirectoryParser:
                 if street:
                     data['street'] = street
 
-            if not data['name'] and not self._extract_street(line, language):
+            if not data['name'] and not re.search(self.PHONE_PATTERN, line) \
+                    and not self._extract_street(line, language):
                 data['name'] = line
 
         if not data['name'] or not data['street']:
@@ -226,7 +269,7 @@ class MultiLanguagePhoneDirectoryParser:
         try:
             entry = {
                 'type': 'natural',
-                'person_name': PersonName(data['name']).to_dict(),
+                'person_name': PersonName(data['name'], language).to_dict(),
                 'location': GeoLocation(data['country'], data['street']).to_dict(),
                 'phone': data['phone'],
                 'record_date': datetime.now().isoformat(),
@@ -475,8 +518,11 @@ class PhoneDirectoryManager:
 
 # Example usage
 if __name__ == '__main__':
-    # Create manager
-    manager = PhoneDirectoryManager()
+    import os
+    import tempfile
+
+    workdir = tempfile.mkdtemp()
+    manager = PhoneDirectoryManager(os.path.join(workdir, 'genealogy.db'))
 
     # Create sample directory
     sample_content = """
@@ -489,12 +535,11 @@ if __name__ == '__main__':
     555-9876543
     """
 
-    # Write sample file
-    with open('/tmp/sample_dir.txt', 'w') as f:
+    sample_path = os.path.join(workdir, 'sample_dir.txt')
+    with open(sample_path, 'w', encoding='utf-8') as f:
         f.write(sample_content)
 
-    # Process file
-    result = manager.process_file('/tmp/sample_dir.txt')
+    result = manager.process_file(sample_path)
     print(f"Processed: {result['total_parsed']} entries")
     print(f"Inserted: {result['inserted']} entries")
     print(f"Language: {result['language_detected']}")

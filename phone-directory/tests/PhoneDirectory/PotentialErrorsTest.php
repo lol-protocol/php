@@ -5,7 +5,11 @@ namespace Tests\PhoneDirectory;
 use PHPUnit\Framework\TestCase;
 use PhoneDirectory\Parser\MultiLanguagePhoneDirectoryParser;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
+use PhoneDirectory\Exception\DatabaseException;
+use PhoneDirectory\Exception\InvalidEncodingException;
+use PhoneDirectory\Exception\InvalidLanguageException;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
+use PhoneDirectory\SurnameKeys;
 
 /**
  * Tests for potential errors identified through static code analysis.
@@ -202,5 +206,61 @@ class PotentialErrorsTest extends TestCase
         $formatted = $entry->getFormattedName();
         $this->assertStringContainsString('José', $formatted);
         $this->assertStringContainsString('García', $formatted);
+    }
+
+    /**
+     * ERROR #3: a failure part-way through a batch must roll back the rows already written.
+     */
+    public function testFailedBatchInsertRollsBackEarlierRows(): void
+    {
+        $db = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $db->connect();
+        $db->createTable();
+
+        $failing = new class ('Broken Person', 'US', 'Street 2') extends PhoneDirectoryEntry {
+            public function getFullName(): string
+            {
+                throw new \RuntimeException('simulated failure while writing the second row');
+            }
+        };
+        $entries = [new PhoneDirectoryEntry('Valid Person', 'US', 'Street 1'), $failing];
+
+        try {
+            $db->insertBatch($entries);
+            $this->fail('Expected the batch insert to fail');
+        } catch (DatabaseException $e) {
+            $this->assertSame(0, $db->count());
+        }
+
+        // The connection is usable afterwards: no transaction was left open.
+        $this->assertGreaterThan(0, $db->insert(new PhoneDirectoryEntry('Next Person', 'US', 'Street 3')));
+    }
+
+    /**
+     * ERROR #5: an invalid UTF-8 name is rejected with a clear exception, not a TypeError from a failed /u regex.
+     */
+    public function testInvalidUtf8NameIsRejectedClearly(): void
+    {
+        $this->expectException(InvalidEncodingException::class);
+
+        new PhoneDirectoryEntry("Mu\xF1oz, Juan", 'US', 'Street 1');
+    }
+
+    /**
+     * ERROR #9: an unsupported language is rejected instead of silently falling back to English.
+     */
+    public function testUnsupportedLanguageIsRejected(): void
+    {
+        $this->expectException(InvalidLanguageException::class);
+
+        (new MultiLanguagePhoneDirectoryParser())->parseContent("John Smith\n1 Main Street", 'xx');
+    }
+
+    /**
+     * ERROR #13: surname keys stay a fixed size however long the surname is.
+     */
+    public function testVeryLongSurnameGivesFixedSizeSoundex(): void
+    {
+        $this->assertSame(4, strlen(SurnameKeys::soundex(str_repeat('Smith', 2000))));
     }
 }

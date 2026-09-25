@@ -2,15 +2,18 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use PhoneDirectory\PhoneDirectoryManager;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
+use PhoneDirectory\JuridicalEntityPDODatabase;
+use PhoneDirectory\Manager\PhoneDirectoryManagerV2;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
-use PhoneDirectory\PhoneDirectoryEntry;
 
 // Crear una instancia del manager
 $dbPath = sys_get_temp_dir() . '/genealogy_phone_directory.db';
 $dsn = 'sqlite:' . $dbPath;
-$database = new PhoneDirectoryPDODatabase($dsn);
-$manager = new PhoneDirectoryManager(database: $database);
+$manager = new PhoneDirectoryManagerV2(
+    naturalDatabase: new PhoneDirectoryPDODatabase($dsn),
+    juridicalDatabase: new JuridicalEntityPDODatabase($dsn)
+);
 
 // Procesar archivo de ejemplo
 $sampleFile = __DIR__ . '/sample_phone_directory.txt';
@@ -21,7 +24,7 @@ $result = $manager->processFile($sampleFile, clearExisting: true);
 
 echo "Processing Results:\n";
 echo "  Total entries parsed: {$result['totalParsed']}\n";
-echo "  Successfully inserted: {$result['insertedCount']}\n";
+echo "  Successfully inserted: {$result['totalInserted']}\n";
 echo "  Parsing errors: {$result['errorCount']}\n\n";
 
 if (!empty($result['errors'])) {
@@ -38,7 +41,7 @@ echo "==========================\n\n";
 
 // Encontrar por nombre
 echo "1. Searching for entries with surname 'ANDERSON':\n";
-$results = $manager->findByName('ANDERSON');
+$results = $manager->findNaturalPeopleByName('ANDERSON');
 foreach ($results as $entry) {
     echo "   - {$entry->getFullName()}, {$entry->getStreet()}\n";
 }
@@ -46,16 +49,16 @@ echo "\n";
 
 // Encontrar por calle
 echo "2. Searching for entries on 'Street':\n";
-$results = $manager->findByStreet('Street');
+$results = $manager->findNaturalPeopleByStreet('Street');
 echo "   Found " . count($results) . " entries on streets named 'Street'\n";
 echo "\n";
 
 // Obtener todas las entradas
-echo "3. Total entries in database: {$manager->getTotalCount()}\n\n";
+echo "3. Total entries in database: {$manager->getTotalNaturalPeopleCount()}\n\n";
 
 // Mostrar todas las entradas
 echo "4. All entries in database:\n";
-$allEntries = $manager->getAllEntries();
+$allEntries = $manager->getAllNaturalPeople();
 foreach ($allEntries as $entry) {
     $phone = $entry->getPhoneNumber() ? " ({$entry->getPhoneNumber()})" : '';
     echo "   - {$entry->getFullName()}, {$entry->getStreet()}{$phone}\n";
@@ -70,13 +73,13 @@ $newEntry = new PhoneDirectoryEntry(
     street: '555 Family Lane',
     phoneNumber: '555-999-0000'
 );
-$newId = $manager->addEntry($newEntry);
+$newId = $manager->addNaturalPerson($newEntry);
 echo "   Entry added with ID: {$newId}\n";
-echo "   New total count: {$manager->getTotalCount()}\n\n";
+echo "   New total count: {$manager->getTotalNaturalPeopleCount()}\n\n";
 
 // Buscar la entrada agregada
 echo "6. Retrieving the newly added entry:\n";
-$entry = $manager->getEntry($newId);
+$entry = $manager->getNaturalPerson($newId);
 if ($entry) {
     echo "   ID: {$entry->getId()}\n";
     echo "   Name: {$entry->getFullName()}\n";
@@ -88,7 +91,7 @@ echo "\n";
 
 // Búsqueda avanzada
 echo "7. Advanced search (by criteria):\n";
-$searchResults = $manager->search([
+$searchResults = $manager->searchNaturalPeople([
     'name' => 'GARCIA'
 ]);
 echo "   Found " . count($searchResults) . " entries with surname 'GARCIA'\n";

@@ -86,6 +86,44 @@ jobs:
           PHONEDIR_PGSQL_DSN: pgsql:host=127.0.0.1;port=5432;dbname=phonedir_test;user=postgres;password=postgres
         run: ./vendor/bin/phpunit
 
+      - name: Run examples
+        run: for f in examples/*.php; do echo "$f"; php "$f" > /dev/null; done
+
+      - name: Benchmark smoke run
+        run: php bin/benchmark.php 2000
+
+  phone-directory-ports:
+    name: phone-directory / Python and Java ports
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: phone-directory/ports
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Python port tests
+        working-directory: phone-directory/ports/python
+        run: python -m unittest -v
+
+      - name: Java port checks
+        working-directory: phone-directory/ports/java
+        run: |
+          javac -encoding UTF-8 -d build *.java
+          java -cp build PhoneDirectoryParserTest
+
   web-animations:
     name: Web animations (smoke)
     runs-on: ubuntu-latest

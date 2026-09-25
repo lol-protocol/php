@@ -14,50 +14,97 @@ import java.util.regex.*;
  */
 class PersonName {
     private final String fullName;
+    private final String language;
     private List<String> firstNames;
     private List<String> lastNames;
 
-    private static final Map<String, List<String>> LAST_NAME_PARTICLES =
-        Map.ofEntries(
-            Map.entry("es", List.of("de", "del", "di", "da", "y")),
-            Map.entry("en", List.of("von", "van", "de")),
-            Map.entry("fr", List.of("de", "du", "le", "la")),
-            Map.entry("de", List.of("von", "van")),
-            Map.entry("it", List.of("di", "da")),
-            Map.entry("pt", List.of("de", "da"))
-        );
+    // Same rules as the PHP PersonName.
+    private static final Set<String> PARTICLES = Set.of(
+        "de", "del", "della", "di", "da", "das", "do", "dos", "du",
+        "van", "von", "der", "den", "le", "la", "los", "las"
+    );
+
+    // Single-letter connectors collide with middle initials ("John E Smith"), so they only count when the language uses them.
+    private static final Map<String, Set<String>> LANGUAGE_CONNECTORS = Map.of(
+        "es", Set.of("y"),
+        "pt", Set.of("e"),
+        "it", Set.of("e")
+    );
+
+    private static final Map<String, Integer> LANGUAGE_SURNAME_COUNT = Map.of("es", 2, "pt", 2);
 
     public PersonName(String fullName) {
+        this(fullName, null);
+    }
+
+    public PersonName(String fullName, String language) {
         if (fullName == null || fullName.trim().isEmpty()) {
             throw new IllegalArgumentException("Full name cannot be empty");
         }
         this.fullName = fullName;
+        this.language = language;
         parseName();
     }
 
-    private void parseName() {
-        String[] parts = fullName.trim().split("\\s+");
+    private boolean isParticle(String word) {
+        String lower = word.toLowerCase();
+        // Immutable Map.of() maps reject null keys even in getOrDefault(), hence the explicit check.
+        return PARTICLES.contains(lower)
+            || (language != null && LANGUAGE_CONNECTORS.getOrDefault(language, Set.of()).contains(lower));
+    }
 
-        if (parts.length < 2) {
-            firstNames = new ArrayList<>(Arrays.asList(parts));
+    private String normalizeCase(String word, boolean isLeading) {
+        if (!isLeading && isParticle(word)) {
+            return word.toLowerCase();
+        }
+        String lower = word.toLowerCase();
+        return lower.isEmpty() ? lower : Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
+    }
+
+    private List<String> normalizeAll(String text) {
+        List<String> words = new ArrayList<>();
+        for (String w : text.trim().split("\\s+")) {
+            if (!w.isEmpty()) {
+                words.add(normalizeCase(w, words.isEmpty()));
+            }
+        }
+        return words;
+    }
+
+    private void parseName() {
+        String name = fullName.trim();
+
+        if (name.contains(",")) {
+            int comma = name.indexOf(',');
             lastNames = new ArrayList<>();
+            for (String w : name.substring(0, comma).trim().split("\\s+")) {
+                if (!w.isEmpty()) {
+                    lastNames.add(normalizeCase(w, false));
+                }
+            }
+            firstNames = normalizeAll(name.substring(comma + 1));
             return;
         }
 
-        // Find name particle
-        int splitIndex = parts.length / 2;
-        Set<String> particles = new HashSet<>();
-        LAST_NAME_PARTICLES.values().forEach(particles::addAll);
+        List<String> parts = normalizeAll(name);
 
-        for (int i = 1; i < parts.length; i++) {
-            if (particles.contains(parts[i].toLowerCase())) {
-                splitIndex = i;
-                break;
+        // Walk backwards taking one surname per iteration, pulling in any particles that precede it
+        // ("de la Cruz", "van der Rohe"); the first token always stays a given name.
+        int surnameCount = language == null ? 1 : LANGUAGE_SURNAME_COUNT.getOrDefault(language, 1);
+        LinkedList<String> surnames = new LinkedList<>();
+        int taken = 0;
+        while (taken < surnameCount && parts.size() > 1) {
+            LinkedList<String> group = new LinkedList<>();
+            group.addFirst(parts.remove(parts.size() - 1));
+            while (parts.size() > 1 && isParticle(parts.get(parts.size() - 1))) {
+                group.addFirst(parts.remove(parts.size() - 1));
             }
+            surnames.addAll(0, group);
+            taken++;
         }
 
-        firstNames = new ArrayList<>(Arrays.asList(parts).subList(0, splitIndex));
-        lastNames = new ArrayList<>(Arrays.asList(parts).subList(splitIndex, parts.length));
+        firstNames = parts;
+        lastNames = new ArrayList<>(surnames);
     }
 
     public List<String> getFirstNames() {
@@ -119,7 +166,7 @@ class GeoLocation {
     private final String city;
 
     public GeoLocation(String countryCode, String street, String zone, String city) {
-        if (countryCode == null || countryCode.length() != 2) {
+        if (countryCode == null || !countryCode.matches("[A-Za-z]{2}")) {
             throw new IllegalArgumentException("Country code must be 2 letters");
         }
         this.countryCode = countryCode.toUpperCase();
@@ -165,51 +212,86 @@ class MultiLanguagePhoneDirectoryParser {
 
     private static final Map<String, List<String>> STREET_MARKERS =
         Map.ofEntries(
-            Map.entry("es", List.of("calle", "avenida", "av", "plaza", "pasaje")),
-            Map.entry("en", List.of("street", "st", "avenue", "ave", "road", "drive")),
-            Map.entry("fr", List.of("rue", "avenue", "allée", "place", "boulevard")),
-            Map.entry("pt", List.of("rua", "avenida", "av", "praça", "alameda")),
-            Map.entry("de", List.of("straße", "allee", "weg", "platz")),
-            Map.entry("it", List.of("via", "viale", "corso", "piazza"))
+            Map.entry("es", List.of("calle", "avenida", "av", "plaza", "pasaje", "camino", "ruta", "carrera")),
+            Map.entry("en", List.of("street", "st", "avenue", "ave", "road", "rd", "drive", "dr",
+                                    "lane", "ln", "boulevard", "blvd", "circle", "cir")),
+            Map.entry("fr", List.of("rue", "avenue", "allée", "place", "boulevard", "bd", "cours", "square")),
+            Map.entry("pt", List.of("rua", "avenida", "av", "praça", "alameda", "estrada", "largo")),
+            Map.entry("de", List.of("ring", "hof")),
+            Map.entry("it", List.of("via", "viale", "corso", "piazza", "largo", "strada"))
         );
 
-    private static final String PHONE_PATTERN =
-        "\\b\\d{3}[-.]?\\d{3}[-.]?\\d{4}\\b|\\b\\d{10}\\b";
+    // German compounds glue the street type onto the name ("Hauptstraße"), so these match as word endings.
+    private static final Map<String, List<String>> STREET_SUFFIXES =
+        Map.of("de", List.of("straße", "strasse", "allee", "weg", "platz"));
 
+    // Only vocabulary distinctive enough to override English, the baseline language; words that are also
+    // English ("plaza", "avenue", "via") would otherwise misdetect an English directory.
+    private static final Map<String, List<String>> DETECTION_MARKERS =
+        Map.of(
+            "es", List.of("calle", "avenida", "pasaje", "camino", "ruta", "carrera"),
+            "fr", List.of("rue", "allée", "cours"),
+            "pt", List.of("rua", "avenida", "praça", "alameda", "estrada", "largo"),
+            "de", List.of(),
+            "it", List.of("viale", "corso", "piazza", "largo", "strada")
+        );
+
+    // Fixed order so ties resolve the same way on every run (Map.of has no defined iteration order).
+    private static final List<String> DETECTION_ORDER = List.of("es", "fr", "pt", "de", "it");
+
+    private static final Pattern SEPARATOR = Pattern.compile("^(?:[-=_*]\\s*){2,}$");
+
+    private static final Pattern PHONE_PATTERN =
+        Pattern.compile("\\b\\d{3}[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b|\\b\\d{10}\\b");
+
+    private final String countryCode;
     private List<Map<String, Object>> entries;
     private List<Map<String, Object>> errors;
     private String detectedLanguage;
 
     public MultiLanguagePhoneDirectoryParser() {
+        this("US");
+    }
+
+    public MultiLanguagePhoneDirectoryParser(String countryCode) {
+        this.countryCode = countryCode.toUpperCase();
         this.entries = new ArrayList<>();
         this.errors = new ArrayList<>();
         this.detectedLanguage = "en";
     }
 
-    public String detectLanguage(String content) {
-        String lowerContent = content.toLowerCase();
-        Map<String, Integer> scores = new HashMap<>();
-
-        for (String lang : STREET_MARKERS.keySet()) {
-            int score = 0;
-            for (String marker : STREET_MARKERS.get(lang)) {
-                score += countOccurrences(lowerContent, marker);
-            }
-            scores.put(lang, score);
+    /** Whole-word matcher for $words plus word-ending $suffixes; null when both are empty. */
+    private static Pattern wordsPattern(List<String> words, List<String> suffixes) {
+        List<String> parts = new ArrayList<>();
+        if (!words.isEmpty()) {
+            List<String> quoted = new ArrayList<>();
+            words.forEach(w -> quoted.add(Pattern.quote(w)));
+            parts.add("\\b(?:" + String.join("|", quoted) + ")\\b");
         }
-
-        return Collections.max(scores.entrySet(), Map.Entry.comparingByValue())
-                          .getKey();
+        suffixes.forEach(s -> parts.add(Pattern.quote(s) + "\\b"));
+        return parts.isEmpty()
+            ? null
+            : Pattern.compile(String.join("|", parts),
+                Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.UNICODE_CHARACTER_CLASS);
     }
 
-    private int countOccurrences(String text, String pattern) {
-        int count = 0;
-        int index = 0;
-        while ((index = text.indexOf(pattern, index)) != -1) {
-            count++;
-            index += pattern.length();
+    public String detectLanguage(String content) {
+        String best = "en";
+        int bestScore = 0;
+
+        for (String lang : DETECTION_ORDER) {
+            Pattern p = wordsPattern(DETECTION_MARKERS.get(lang), STREET_SUFFIXES.getOrDefault(lang, List.of()));
+            if (p == null) {
+                continue;
+            }
+            int score = (int) p.matcher(content).results().count();
+            if (score > bestScore) {
+                best = lang;
+                bestScore = score;
+            }
         }
-        return count;
+
+        return best;
     }
 
     public List<Map<String, Object>> parseContent(String content, String language) {
@@ -220,24 +302,29 @@ class MultiLanguagePhoneDirectoryParser {
         entries.clear();
         errors.clear();
 
-        String[] lines = content.split("\n");
+        String[] lines = content.split("\n", -1);
         List<String> buffer = new ArrayList<>();
+        int bufferStart = 0;
 
+        // Line numbers are 1-based positions in the original content, so errors point at the real line.
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i].trim();
 
-            if (line.isEmpty() || line.matches("^-{2,}|={2,}$")) {
+            if (line.isEmpty() || SEPARATOR.matcher(line).matches()) {
                 if (!buffer.isEmpty()) {
-                    processBuffer(new ArrayList<>(buffer), i - buffer.size(), language);
+                    processBuffer(new ArrayList<>(buffer), bufferStart, language);
                     buffer.clear();
                 }
             } else {
+                if (buffer.isEmpty()) {
+                    bufferStart = i + 1;
+                }
                 buffer.add(line);
             }
         }
 
         if (!buffer.isEmpty()) {
-            processBuffer(buffer, lines.length - buffer.size(), language);
+            processBuffer(buffer, bufferStart, language);
         }
 
         return entries;
@@ -248,25 +335,21 @@ class MultiLanguagePhoneDirectoryParser {
         data.put("name", null);
         data.put("phone", null);
         data.put("street", null);
-        data.put("country", "US");
+        data.put("country", countryCode);
 
         for (String line : lines) {
-            if (data.get("phone") == null) {
-                Pattern p = Pattern.compile(PHONE_PATTERN);
-                Matcher m = p.matcher(line);
-                if (m.find()) {
-                    data.put("phone", m.group());
-                }
+            Matcher phone = PHONE_PATTERN.matcher(line);
+            boolean hasPhone = phone.find();
+            if (data.get("phone") == null && hasPhone) {
+                data.put("phone", phone.group());
             }
 
-            if (data.get("street") == null) {
-                String street = extractStreet(line, language);
-                if (street != null) {
-                    data.put("street", street);
-                }
+            String street = extractStreet(line, language);
+            if (data.get("street") == null && street != null) {
+                data.put("street", street);
             }
 
-            if (data.get("name") == null && extractStreet(line, language) == null) {
+            if (data.get("name") == null && !hasPhone && street == null) {
                 data.put("name", line);
             }
         }
@@ -283,7 +366,7 @@ class MultiLanguagePhoneDirectoryParser {
         try {
             Map<String, Object> entry = new HashMap<>();
             entry.put("type", "natural");
-            entry.put("person_name", new PersonName(data.get("name")).toMap());
+            entry.put("person_name", new PersonName(data.get("name"), language).toMap());
             entry.put("location", new GeoLocation(
                 data.get("country"),
                 data.get("street")
@@ -302,17 +385,20 @@ class MultiLanguagePhoneDirectoryParser {
     }
 
     private String extractStreet(String line, String language) {
-        List<String> markers = STREET_MARKERS.getOrDefault(language,
-            STREET_MARKERS.get("en"));
-
-        String lowerLine = line.toLowerCase();
-        for (String marker : markers) {
-            if (lowerLine.contains(marker)) {
-                return line;
-            }
+        Pattern markers = wordsPattern(
+            STREET_MARKERS.getOrDefault(language, STREET_MARKERS.get("en")),
+            STREET_SUFFIXES.getOrDefault(language, List.of())
+        );
+        if (markers.matcher(line).find()) {
+            return line;
         }
 
-        Pattern p = Pattern.compile("\\d+\\s+[\\w\\s]+");
+        // A line that is only a phone number is not also a street, even though it starts with digits.
+        if (line.matches("[\\d\\s().+-]+")) {
+            return null;
+        }
+
+        Pattern p = Pattern.compile("\\d+\\s+[\\w\\s]+", Pattern.UNICODE_CHARACTER_CLASS);
         Matcher m = p.matcher(line);
         if (m.find()) {
             return m.group();
