@@ -45,24 +45,26 @@ Tú puedes copiar (fast) o hacer bien (slow).
 Market leader suele ganar. Pero...
 
 ```
-CASO 1: Social network años 90
-- ICQ llegó primero
-- Facebook hizo it better
-- Facebook ganó (better UX > first)
+CASO 1: Redes sociales
+- Friendster (2002) y MySpace (2003) llegaron primero
+- Facebook (2004) llegó después
+- Facebook ganó
 
-CASO 2: Search
-- Altavista llegó primero
-- Google fue clean + fast
+CASO 2: Buscadores
+- AltaVista (1995) llegó primero
+- Google (1998) fue más limpio y más rápido
 - Google ganó
 
-CASO 3: Video platform
-- MySpace llegó primero
-- YouTube hizo it clean
-- YouTube ganó
+CASO 3: Smartphones
+- BlackBerry y Palm llegaron primero
+- iPhone (2007) llegó después con otra propuesta
+- iPhone ganó
 
 PATRÓN:
-First mover loses if product is bad.
-Second mover with ethics wins if 10x better UX.
+Llegar primero no garantiza ganar. En estos casos
+ganó quien hizo un producto claramente mejor, no quien
+copió más rápido. (Ninguno de estos casos es sobre
+ética: muestran que copiar no es la única forma de competir.)
 
 DECISIÓN:
 No copies competitors. Hace 10x mejor.
@@ -147,12 +149,14 @@ OPCIÓN C: LEGALLY PROPER
 - Publish transparency report
 - Legal fight if overreach
 
-REAL EXAMPLE:
-Apple refused FBI unlock (iPhone)
-- Got public support
-- Fought legally
-- Won case
-- Brand reputation ↑↑↑
+EJEMPLO REAL (2016):
+Apple se negó a crear software para desbloquear
+el iPhone del tiroteo de San Bernardino
+- Lo impugnó en tribunales
+- Recibió apoyo público de gran parte de la industria
+- No hubo sentencia: el FBI retiró la demanda
+  tras desbloquear el teléfono con ayuda de un tercero
+- Apple reforzó su posición pública sobre privacidad
 
 DECISIÓN:
 Legal + transparent + fight back.
@@ -343,9 +347,9 @@ PANIC MODE:
 "We need to be more aggressive!"
 
 REALITY CHECK:
-- Their unsustainable (will crash)
-- But might take 2-3 years
-- Your users might leave
+- Their model may be unsustainable (not guaranteed)
+- Even if it is, it could take years to show
+- Your users might leave in the meantime
 
 OPTION A: Match them
 - You lose your differentiation
@@ -363,16 +367,16 @@ OPTION C: DOUBLE DOWN ON ETHICS
 - Show long-term value
 - Target users who care (not price-sensitive)
 - Educate market on hidden costs of cheap unethical
-- Wait for competitor to crash (2-3 years)
-- Win sustainable market
+- Compete on long-term value, not on who crashes first
 
-DATA:
-Users who see value in ethics
-spend 2-3x more
-and stay 3x longer
+HIPÓTESIS A MEDIR (no es un dato):
+¿Los usuarios que valoran la ética gastan más
+y se quedan más tiempo? Medilo en TU producto
+(LTV y retención por segmento) antes de apostar a eso.
 
 DECISION:
-Double down. They'll crash, you'll win.
+Double down, and measure whether it's working.
+Don't count on the competitor crashing.
 ```
 
 ---

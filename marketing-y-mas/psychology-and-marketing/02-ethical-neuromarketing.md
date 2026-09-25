@@ -231,8 +231,8 @@ Inviertes en diseño hermoso pero producto malo
 
 #### ✅ Ético:
 ```
-Diseño hermoso = buen producto hermoso
-Si no puedes respaldar con calidad, no lo hizo
+Diseño hermoso respaldado por un buen producto
+Si no puedes respaldarlo con calidad, no lo hagas
 Confianza porque funciona, no porque se ve bien
 ```
 

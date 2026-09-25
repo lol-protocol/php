@@ -85,20 +85,16 @@ ARGUMENTO:
 Competencia hace X (dark patterns, data sales).
 Nosotros hacemos NOT-X (transparency, privacy).
 
-Resultado 3 años:
-- Their churn: 20%, lifetime value: $100
-- Ours: 8%, lifetime value: $250
+[Reemplazá esto con TUS números — churn, LTV,
+ costo del cambio — no con cifras genéricas.]
 
-Por eso ellos crecen 30% → caen 50%.
-Nosotros crecemos 15% → crecemos 50% más años.
+Estructura del argumento:
+- Nuestro churn hoy es X%, el LTV $Y
+- El cambio cuesta $Z
+- Si el churn baja N puntos, el LTV sube a $W
+- El cambio se paga en M meses
 
-A 10 años: son broke, somos market leader.
-
-Cost de cambio: $200k hoy
-Benefit: $10M en diferenciación de brand
-ROI: 50x
-
-¿Eso es buena inversión? Sí."
+¿Eso es buena inversión? Que lo digan los números."
 ```
 
 ### 2.2 Alineación de Incentivos
@@ -130,13 +126,13 @@ Equipo vuelve creativo: "¿Cómo logro ambos?"
 Comunica internamente:
 ```
 "Hemos estado asumiendo que privacy es costo.
- Pero data muestra:
- - Apps con privacy clara: 2x retention
- - Brands with trust: 3x recommendation
- - Products ethical: higher NPS
+ Vamos a medirlo en vez de suponerlo:
+ - Retención de usuarios antes/después de cambios de privacidad
+ - NPS y tasa de recomendación
+ - Motivos de churn relacionados con confianza
 
- Así que privacidad no es costo.
- Es feature. Y es competitive advantage."
+ Si los datos lo confirman, privacidad no es costo:
+ es feature y ventaja competitiva."
 ```
 
 ---
@@ -392,8 +388,8 @@ ACCIÓN:
 
 ```
 RESPUESTA:
-"Wrong. They care when they understand.
- We tested: 75% prefer ethical when they see alternatives."
+"Let's test that instead of assuming it.
+ Show users the alternatives and measure what they choose."
 
 ACCIÓN:
 - Do research (survey + interviews)

@@ -81,28 +81,27 @@ MASLOW (jerarquía de necesidades):
 
 PERO MASLOW NO EXPLICA ENGAGEMENT.
 
-DECI & RYAN (motivación intrínseca):
+DECI & RYAN (Teoría de la Autodeterminación):
+Tres necesidades psicológicas básicas.
 
 AUTONOMÍA:
 "¿Puedo elegir cómo usar esto?"
-Usuarios con autonomía: 80% retention
-Usuarios sin: 30% retention
+Sin ella, el uso se siente impuesto.
 
 COMPETENCIA:
 "¿Siento que mejoro?"
-Usuarios que ven progreso: 2x más engagement
-Usuarios sin feedback: abandonan
+Sin feedback de progreso, la motivación se apaga.
 
-PROPÓSITO:
-"¿Por qué importa esto?"
-Usuarios con propósito claro: 3x lifetime value
-Usuarios sin: transaccional
+VÍNCULO (relatedness):
+"¿Me conecta con otros?"
+Sin él, la relación con el producto es puramente transaccional.
 
 CONCLUSIÓN:
-Si un app ofrece: Autonomía + Competencia + Propósito
-→ Engagement genuino
-→ Retención alta
-→ Zero churn pressure
+Un producto que satisface las tres tiende a
+generar motivación intrínseca, más duradera
+que la que depende de recompensas o presión.
+(Cuánto mejora la retención en TU producto
+es algo que hay que medir, no suponer.)
 ```
 
 ### 2.2 Motivación Intrínseca vs Extrínseca
@@ -330,32 +329,35 @@ DONT ship and ghost.
 
 ### 6.1 Por Qué Se Van Los Usuarios
 
+Cinco razones frecuentes. Cuánto pesa cada una varía mucho entre
+productos — medí la distribución real en el tuyo (encuesta de salida).
+
 ```
-RAZÓN #1: No entienden valor (40% de churn)
+RAZÓN #1: No entienden valor
 - App es confuso
 - Features no se ven
 - Copy no explica beneficio
 - Solution: Onboarding más claro
 
-RAZÓN #2: Mejor alternativa (30% de churn)
+RAZÓN #2: Mejor alternativa
 - Competencia ofrece más
 - UX es mejor
 - Cuesta menos
 - Solution: Diferencial claro
 
-RAZÓN #3: Cambios sin consulta (15% de churn)
+RAZÓN #3: Cambios sin consulta
 - Precios subieron
 - Features que usaban, borradas
 - Privacidad cambiada
 - Solution: Comunicar anticipadamente
 
-RAZÓN #4: Mala experiencia (10% de churn)
+RAZÓN #4: Mala experiencia
 - Bug que no se arregla
 - Support que no responde
 - Feeling de no importar
 - Solution: Care genuino
 
-RAZÓN #5: Otro (5% de churn)
+RAZÓN #5: Otro
 - Circunstancia de vida
 - Presupuesto
 - Cambio de trabajo
@@ -419,7 +421,7 @@ RESULTADO:
 
 VALOR:
 Cada "churn reason" = hipótesis para mejorar
-Arreglar top 3 razones = 20% reducción en churn
+Atacar las razones más frecuentes es donde más churn se puede recuperar
 ```
 
 ---
@@ -501,8 +503,8 @@ Retention si: X sigue siendo relevante OR comunidad me retiene
 Churn si: Abandono comunidad también
 
 EFECTO:
-Usuarios en comunidad: 4x más likely quedarse
-Incluso si feature no es perfecta
+Tiene dos razones para quedarse en vez de una,
+incluso si alguna feature no es perfecta
 
 IMPLICACIÓN:
 Si tu app tiene comunidad:
@@ -549,7 +551,7 @@ CÓMO CONSTRUIR:
 
 RESULTADO:
 Belonging → Longer retention
-Belonging → 2x word-of-mouth
+Belonging → More word-of-mouth
 Belonging → User becomes advocate
 ```
 

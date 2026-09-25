@@ -391,7 +391,7 @@ APPROACH 3: Long-term ambassador (best)
 DISCLOSURE FORMAT:
 "[Ad] Este post es patrocinado"
 OR
-"Recebo comisión de estos links"
+"Recibo comisión por estos links"
 OR
 "Soy embajador, pero genuinamente amo esto"
 

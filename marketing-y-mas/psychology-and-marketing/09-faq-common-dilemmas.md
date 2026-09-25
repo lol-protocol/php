@@ -188,7 +188,7 @@ La mayoría cambia de opinión cuando entiende.
 
 ---
 
-### P8: "¿Es okay guardá datos indefinidamente si están encriptados?"
+### P8: "¿Está bien guardar datos indefinidamente si están encriptados?"
 
 **R:** No. Encriptación ≠ Retención ilimitada.
 
