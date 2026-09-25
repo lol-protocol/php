@@ -74,7 +74,7 @@ final class NameEvaluator
 
         if ($added) {
             $scores = array_map(
-                fn(array $term) => $policy->scoreOf($term) * ($term['confidence'] ?? 1.0),
+                fn(array $term) => $policy->scoreOf($term) * $term['confidence'],
                 $result->getFlaggedTerms()
             );
             $this->finalizeScore($result, $scores, $policy);

@@ -4,19 +4,18 @@ namespace DefamatoryContentReview;
 
 use InvalidArgumentException;
 
-/**
- * Resuelve códigos de idioma (ISO 639-3; los de dos letras se aceptan como
- * alias) y modela el parentesco entre ellos. La afinidad en sí vive en
- * `LanguageAffinity` — esta clase es sólo identidad más los métodos que
- * la usan.
- */
+/** Resuelve códigos de idioma (ISO 639-3; los de dos letras se aceptan como alias) y modela
+ * el parentesco entre ellos. La afinidad en sí vive en `LanguageAffinity` — esta clase es
+ * sólo identidad más los métodos que la usan. */
 class LanguageRegistry
 {
-    private array $languages;
-    private array $families;
-    private array $aliases = [];
+    /** @var array<string,array<string,mixed>> */ private array $languages;
+    /** @var array<string,array<string,mixed>> */ private array $families;
+    /** @var array<string,string> */ private array $aliases = [];
     private LanguageAffinity $affinity;
 
+    /** @param array<string,array<string,mixed>> $languages
+     * @param array<string,mixed> $familiesConfig */
     public function __construct(array $languages, array $familiesConfig)
     {
         $this->languages = $languages;
@@ -63,13 +62,17 @@ class LanguageRegistry
         return isset($this->languages[$code]) || isset($this->aliases[$code]);
     }
 
+    /** @return array<string,mixed> */
     public function getMetadata(string $code): array { return $this->languages[$this->resolve($code)]; }
+    /** @return array<string,array<string,mixed>> */
     public function getAll(): array { return $this->languages; }
+    /** @return array<int,string> */
     public function getCodes(): array { return array_keys($this->languages); }
     public function getFamily(string $code): string { return $this->getMetadata($code)['family']; }
+    /** @return array<string,array<string,mixed>> */
     public function getFamilies(): array { return $this->families; }
 
-    /** Idiomas de la misma rama genealógica, excluido el propio. */
+    /** @return array<int,string> Idiomas de la misma rama genealógica, excluido el propio. */
     public function getFamilyMembers(string $code): array
     {
         $resolved = $this->resolve($code);
@@ -84,10 +87,10 @@ class LanguageRegistry
         return $this->affinity->between($this->resolve($a), $this->resolve($b));
     }
 
-    /** Idiomas asociados, de mayor a menor afinidad. threshold null usa la del config. @return array<string,float> */
+    /** @return array<string,float> Idiomas asociados, de mayor a menor afinidad. threshold null usa la del config. */
     public function getRelated(string $code, ?float $threshold = null): array { return $this->affinity->relatedTo($this->resolve($code), $threshold); }
 
-    /** El idioma consultado más sus asociados — arma el conjunto de una validación cruzada. @return array<string,float> */
+    /** @return array<string,float> El idioma consultado más sus asociados — arma el conjunto de una validación cruzada. */
     public function getValidationSet(string $code, ?float $threshold = null): array
     {
         $resolved = $this->resolve($code);

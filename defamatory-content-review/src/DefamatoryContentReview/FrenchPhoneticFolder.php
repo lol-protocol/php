@@ -23,6 +23,7 @@ namespace DefamatoryContentReview;
  */
 class FrenchPhoneticFolder extends AbstractPhoneticFolder
 {
+    /** @return array<string,string> */
     protected static function getAccents(): array
     {
         return CommonPhoneticAccents::withExtras(['ÿ' => 'y', 'œ' => 'oe', 'æ' => 'ae']);

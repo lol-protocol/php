@@ -2,15 +2,20 @@
 
 namespace DefamatoryContentReview;
 
-/** Diccionario de un idioma: carga, normalización, búsqueda literal y fonética. Delega en WordListIndex/WordListPhonetics sin cambiar la API. */
+/**
+ * Diccionario de un idioma: carga, normalización, búsqueda literal y fonética. Delega en WordListIndex/WordListPhonetics sin cambiar la API.
+ *
+ * @phpstan-import-type WordEntry from WordListIndex
+ */
 class WordList
 {
     private WordListIndex $index;
     private WordListPhonetics $phonetics;
+    /** @var array<string,mixed> */
     private array $meta = [];
     private string $language;
 
-    /** $config: ['meta'=>[...], 'words'=>[...]] (o el formato plano heredado: categoría => términos). meta.code manda sobre $language. */
+    /** @param array<string,mixed> $config $config: ['meta'=>[...], 'words'=>[...]] (o el formato plano heredado: categoría => términos). meta.code manda sobre $language. */
     public function __construct(array $config, string $language = 'spa')
     {
         $this->meta = $config['meta'] ?? [];
@@ -21,6 +26,7 @@ class WordList
     }
     public static function fromLanguageFile(string $path, string $language = 'spa'): self { return new self(require $path, $language); }
 
+    /** @param array<string,mixed> $categories */
     private function loadWords(array $categories): void
     {
         foreach ($categories as $category => $terms) {
@@ -33,6 +39,7 @@ class WordList
         }
     }
 
+    /** @param array<string,mixed> $data */
     private function addWord(array $data, string $category): void
     {
         $term = $data['word'] ?? '';
@@ -55,17 +62,25 @@ class WordList
         $word = preg_replace('/\s+/u', ' ', mb_strtolower(trim($word), 'UTF-8'));
         return ScriptFolding::fold(AccentFolding::fold(Leetspeak::unleet(WordListScanner::stripInsideWord($word))));
     }
+    /** @return WordEntry|null */
     public function search(string $word): ?array { return $this->index->get($this->normalize($word)); }
-    /** Todos los términos presentes en un texto: ventanas de 1-3 palabras y la palabra sin separadores intercalados. Ver WordListScanner. */
+    /** @return array<int,array<string,mixed>> Todos los términos presentes en un texto: ventanas de 1-3 palabras y la palabra sin separadores intercalados. Ver WordListScanner. */
     public function findInText(string $text): array { return WordListScanner::scan($text, fn(string $phrase) => $this->search($phrase)); }
+    /** @return array<string,WordEntry> */
     public function getByRiskType(string $riskType): array { return $this->index->byRiskType($riskType); }
+    /** @return array<string,WordEntry> */
     public function getByCategory(string $category): array { return $this->index->byCategory($category); }
+    /** @return array<string,WordEntry> */
     public function getBySeverity(string $severity): array { return $this->index->bySeverity($severity); }
+    /** @return array<string,WordEntry> */
     public function getNameCollisions(): array { return $this->index->nameCollisions(); }
+    /** @return array<string,WordEntry> */
     public function getAllWords(): array { return $this->index->all(); }
     public function getWordCount(): int { return $this->index->count(); }
+    /** @return array<string,mixed> */
     public function getStatistics(): array { return $this->index->statistics($this->language, $this->getCoverage()); }
     public function getLanguage(): string { return $this->language; }
+    /** @return array<string,mixed> */
     public function getMeta(): array { return $this->meta; }
     public function getCoverage(): string { return $this->meta['coverage'] ?? 'basic'; }
     /** Idiomas sin separación por espacios que necesitan segmentador externo. */
@@ -74,12 +89,12 @@ class WordList
     public function supportsPhoneticFolding(): bool { return $this->phonetics->supports(); }
     /** Pliega un texto con las reglas fonéticas; sin cambios si el idioma no tiene reglas registradas. */
     public function fold(string $text): string { return $this->phonetics->fold($text); }
-    /** Coincidencia fonética exacta de un término completo. Null si el idioma no tiene reglas de plegado. */
+    /** @return WordEntry|null Coincidencia fonética exacta de un término completo. Null si el idioma no tiene reglas de plegado. */
     public function searchPhoneticExact(string $word): ?array { return $this->phonetics->searchExact($word, $this->index->all()); }
     /** Si este idioma tiene detección de fusión nombre+apellido (ver FusionSupport). */
     public function supportsFusion(): bool { return $this->phonetics->supportsFusion(); }
     /** Forma sobre la que se busca la fusión: fonética o literal según FusionSupport. */
     public function fusionFold(string $text): string { return $this->phonetics->fusionFold($text); }
-    /** Candidatos para fusiones nombre+apellido. Vacío si el idioma no tiene detección de fusión. */
+    /** @return array<int,array{phonetic:string,data:WordEntry}> Candidatos para fusiones nombre+apellido. Vacío si el idioma no tiene detección de fusión. */
     public function getFusionCandidates(int $minLength = 4): array { return $this->phonetics->fusionCandidates($this->index->all(), $minLength); }
 }

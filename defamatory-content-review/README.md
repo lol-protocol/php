@@ -717,7 +717,7 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
 
 ```bash
 ./vendor/bin/phpunit          # tests, ejemplos, límite de líneas, falsos positivos
-phpstan analyse               # análisis estático, nivel 5 (phpstan.neon.dist)
+phpstan analyse               # análisis estático, nivel 6 (phpstan.neon.dist)
 php bin/benchmark.php 10000   # rendimiento: comparar antes/después en la misma máquina
 ```
 

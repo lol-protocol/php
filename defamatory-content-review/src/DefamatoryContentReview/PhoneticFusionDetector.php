@@ -31,11 +31,7 @@ class PhoneticFusionDetector
         $this->minLength = $minLength;
     }
 
-    /**
-     * @return array<int,array> coincidencias, cada una con los datos del
-     *                          término del diccionario más 'found' y
-     *                          'detectionMethod' => 'phonetic_fusion'
-     */
+    /** @return array<int,array<string,mixed>> coincidencias, cada una con los datos del término del diccionario más 'found' y 'detectionMethod' => 'phonetic_fusion' */
     public function detectFusion(string $firstName, string $lastName): array
     {
         if (!$this->wordList->supportsFusion()) {
@@ -74,7 +70,7 @@ class PhoneticFusionDetector
         return $matches;
     }
 
-    /** Un único campo que suena igual a un término del diccionario con otra grafía ("Cojes"/"Coges"). */
+    /** @return array<string,mixed>|null Un único campo que suena igual a un término del diccionario con otra grafía ("Cojes"/"Coges"). */
     public function detectVariant(string $word): ?array
     {
         $match = $this->wordList->searchPhoneticExact($word);

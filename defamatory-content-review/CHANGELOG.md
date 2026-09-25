@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.3.1] - 2026-09-25
+
+### Cambiado (refactor sin cambio de comportamiento)
+
+- **PHPStan nivel 6**, sin errores (era nivel 5). Cerró los 118 avisos de
+  tipado de arrays que quedaron documentados como "siguiente paso posible"
+  en el 4.3.0: `@param`/`@return`/`@var` con forma de valor en todos los
+  métodos y propiedades que devuelven o reciben arrays, más un
+  `@phpstan-type` para el shape de un término del diccionario (`WordEntry`,
+  en `WordListIndex`) y otro para un término ya marcado (`FlaggedEntry`, en
+  `FlaggedTermCollection`), reutilizados con `@phpstan-import-type` en vez
+  de repetir la forma en cada archivo. El tipado más preciso encontró un
+  `?? 1.0` en `NameEvaluator::applyPhoneticChecks()` que ya nunca podía
+  dispararse (`confidence` siempre está presente en un `FlaggedEntry`); se
+  quitó.
+- 358 tests, 21.232 aserciones, sin cambios de comportamiento.
+
 ## [4.3.0] - 2026-09-25
 
 ### Arreglado

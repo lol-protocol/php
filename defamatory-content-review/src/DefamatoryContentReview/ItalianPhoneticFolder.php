@@ -19,6 +19,7 @@ namespace DefamatoryContentReview;
  */
 class ItalianPhoneticFolder extends AbstractPhoneticFolder
 {
+    /** @return array<string,string> */
     protected static function getAccents(): array { return CommonPhoneticAccents::EUROPEAN_VOWELS; }
 
     protected static function applyLanguageRules(string $text): string { return $text; }

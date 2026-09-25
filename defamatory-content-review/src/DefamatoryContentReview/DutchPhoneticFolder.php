@@ -19,6 +19,7 @@ namespace DefamatoryContentReview;
  */
 class DutchPhoneticFolder extends AbstractPhoneticFolder
 {
+    /** @return array<string,string> */
     protected static function getAccents(): array { return []; }
 
     protected static function applyLanguageRules(string $text): string

@@ -28,6 +28,7 @@ class HungarianPhoneticFolder extends AbstractPhoneticFolder
         'ő' => 'ö', 'ű' => 'ü',
     ];
 
+    /** @return array<string,string> */
     protected static function getAccents(): array { return self::ACCENTS; }
 
     protected static function applyLanguageRules(string $text): string

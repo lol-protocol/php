@@ -7,7 +7,10 @@ abstract class AbstractPhoneticFolder
 {
     use LeetspeakFolding;
 
-    /** Accent/diacritic mappings for this language. */
+    /**
+     * Accent/diacritic mappings for this language.
+     * @return array<string,string>
+     */
     abstract protected static function getAccents(): array;
 
     /** Apply language-specific phonetic rules. Input is already normalized (lowercase, unleetified, accents reduced). */

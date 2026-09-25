@@ -25,6 +25,7 @@ class TurkishPhoneticFolder extends AbstractPhoneticFolder
         'ı' => 'i', 'ş' => 's', 'ç' => 'c', 'ö' => 'o', 'ü' => 'u', 'ğ' => 'g',
     ];
 
+    /** @return array<string,string> */
     protected static function getAccents(): array { return self::ACCENTS; }
 
     protected static function applyLanguageRules(string $text): string { return $text; }

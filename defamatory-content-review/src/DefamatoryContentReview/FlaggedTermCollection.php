@@ -7,25 +7,22 @@ namespace DefamatoryContentReview;
  * (por tipo de riesgo, idioma, método de detección, colisión de nombre).
  * Colaborador interno — ValidationResult expone los mismos métodos de
  * siempre, delegando aquí.
+ *
+ * @phpstan-type FlaggedEntry array{term: string, category: string, riskType: string, severity: string, nameCollision: bool, sourceLanguage: string, confidence: float, detectionMethod: string, matchedEntry: string|null, fusedFrom: string|null}
  */
 final class FlaggedTermCollection
 {
-    /** @var array<int,array> */
-    private array $terms = [];
-    private array $categories = [];
-    private array $riskTypes = [];
+    /** @var array<int,FlaggedEntry> */ private array $terms = [];
+    /** @var array<int,string> */ private array $categories = [];
+    /** @var array<int,string> */ private array $riskTypes = [];
 
     public function __construct(private readonly string $defaultLanguage)
     {
     }
 
-    /**
-     * @param array $term Datos del término tal como los devuelve WordList,
-     *                    más `sourceLanguage`/`confidence` si viene de un
-     *                    idioma asociado, y `detectionMethod` ('literal'
-     *                    por defecto; 'phonetic_fusion'/'phonetic_variant'
-     *                    si viene de PhoneticFusionDetector).
-     */
+    /** @param array<string,mixed> $term Datos del término tal como los devuelve WordList, más
+     * `sourceLanguage`/`confidence` si viene de un idioma asociado, y `detectionMethod`
+     * ('literal' por defecto; 'phonetic_fusion'/'phonetic_variant' si viene de PhoneticFusionDetector). */
     public function add(array $term): void
     {
         $entry = [
@@ -52,14 +49,15 @@ final class FlaggedTermCollection
         }
     }
 
-    public function all(): array { return $this->terms; }
-    public function categories(): array { return $this->categories; }
-    public function riskTypes(): array { return $this->riskTypes; }
+    /** @return array<int,FlaggedEntry> */ public function all(): array { return $this->terms; }
+    /** @return array<int,string> */ public function categories(): array { return $this->categories; }
+    /** @return array<int,string> */ public function riskTypes(): array { return $this->riskTypes; }
 
-    public function byRiskType(string $riskType): array { return $this->filterBy('riskType', $riskType); }
-    public function byLanguage(string $language): array { return $this->filterBy('sourceLanguage', $language); }
-    public function byDetectionMethod(string $method): array { return $this->filterBy('detectionMethod', $method); }
+    /** @return array<int,FlaggedEntry> */ public function byRiskType(string $riskType): array { return $this->filterBy('riskType', $riskType); }
+    /** @return array<int,FlaggedEntry> */ public function byLanguage(string $language): array { return $this->filterBy('sourceLanguage', $language); }
+    /** @return array<int,FlaggedEntry> */ public function byDetectionMethod(string $method): array { return $this->filterBy('detectionMethod', $method); }
 
+    /** @return array<int,FlaggedEntry> */
     private function filterBy(string $field, string $value): array
     {
         return array_values(array_filter($this->terms, fn(array $t) => $t[$field] === $value));
@@ -77,7 +75,7 @@ final class FlaggedTermCollection
         return false;
     }
 
-    public function nameCollisionTerms(): array { return array_values(array_filter($this->terms, fn(array $t) => $t['nameCollision'])); }
+    /** @return array<int,FlaggedEntry> */ public function nameCollisionTerms(): array { return array_values(array_filter($this->terms, fn(array $t) => $t['nameCollision'])); }
 
     /** Todo lo marcado viene sólo de inferencia fonética, nada literal: la señal de menor certeza. */
     public function hasOnlyPhoneticDetections(): bool
