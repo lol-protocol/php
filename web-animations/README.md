@@ -35,7 +35,8 @@ web-animations/
 │   ├── guides/                        Patrones DRY y módulos compartidos
 │   ├── analysis/                      Reportes de errores y su estado actual
 │   └── testing/                       Guías de testing, accesibilidad y rendimiento
-└── legacy/                            Versión monolítica original, ya reemplazada
+└── _Garbage/                          Archivos obsoletos que ninguna página carga
+                                       (ver su README)
 ```
 
 ## Crear una animación

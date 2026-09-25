@@ -6,7 +6,7 @@
 > | # | Estado |
 > |---|---|
 > | 1, 5, 6 | Arreglado — null check del contenedor/SVG |
-> | 2–4, 7–10, 12–15 | Sin efecto — describen `animacion-{d,l,o,q}.js`, que ningún HTML carga (esas páginas usan un `<script>` inline con `AnimationToggle`) |
+> | 2–4, 7–10, 12–15 | Sin efecto — describen `animacion-{d,l,o,q}.js`, que ningún HTML cargaba (esas páginas usan un `<script>` inline con `AnimationToggle`). Movidos a `web-animations/_Garbage/` |
 > | 11, 16, 18 | Arreglado — `HourglassToggle` extiende `AnimationToggle` y limpia su intervalo |
 > | 17 | No es una fuga — el listener de `resize` vive lo mismo que la página |
 
