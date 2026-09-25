@@ -2,6 +2,6 @@
 
 namespace PhoneDirectory\Exception;
 
-class InvalidEncodingException extends PhoneDirectoryException
+class InvalidEncodingException extends \InvalidArgumentException
 {
 }

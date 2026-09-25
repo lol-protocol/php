@@ -7,6 +7,10 @@ use PhoneDirectory\PhoneDirectoryDatabaseInterface;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 
+/**
+ * @deprecated Use PhoneDirectoryManagerV2 instead, which also supports juridical entities.
+ *     This class is kept only for backward compatibility and is not used by the CLI or examples.
+ */
 class PhoneDirectoryManager
 {
     private PhoneDirectoryParser $parser;

@@ -3,6 +3,7 @@
 namespace PhoneDirectory\Database;
 
 use PhoneDirectory\DatabaseConstants;
+use PhoneDirectory\Exception\DatabaseException;
 
 abstract class EntityPDODatabase extends AbstractPDODatabase
 {
@@ -19,16 +20,25 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
         }
     }
 
-    protected function insertBatchWithTransaction(array $entities, callable $insertFn): int
+    /**
+     * Insert entities in a single transaction, preparing the statement once and reusing it for
+     * every row instead of re-preparing per row. $typeGuard skips entities of the wrong type so
+     * the returned count reflects rows actually inserted, not loop iterations.
+     */
+    protected function insertManyWithTransaction(array $entities, string $sql, callable $typeGuard, callable $paramMapperFn): int
     {
         $this->ensureConnection();
 
         $count = 0;
+        $stmt = $this->pdo->prepare($sql);
         $this->pdo->beginTransaction();
 
         try {
             foreach ($entities as $entity) {
-                $insertFn($entity);
+                if (!$typeGuard($entity)) {
+                    continue;
+                }
+                $stmt->execute($paramMapperFn($entity));
                 $count++;
             }
             $this->pdo->commit();
@@ -38,7 +48,7 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
             } catch (\Throwable $rollbackError) {
                 // Log but do not suppress original error
             }
-            throw new \RuntimeException(sprintf(DatabaseConstants::ERROR_BATCH_INSERT_FAILED, $e->getMessage()), 0, $e);
+            throw new DatabaseException(sprintf(DatabaseConstants::ERROR_BATCH_INSERT_FAILED, $e->getMessage()), 0, $e);
         }
 
         return $count;
@@ -126,7 +136,7 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
     protected function validateInsertId($id): int
     {
         if (!$id || $id === '0' || $id === 0) {
-            throw new \RuntimeException(DatabaseConstants::ERROR_NO_LAST_INSERT_ID);
+            throw new DatabaseException(DatabaseConstants::ERROR_NO_LAST_INSERT_ID);
         }
         return (int) $id;
     }
@@ -144,7 +154,7 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
 
         $result = $this->pdo->query($selectQuery);
         if ($result === false) {
-            throw new \RuntimeException(sprintf(
+            throw new DatabaseException(sprintf(
                 DatabaseConstants::SQL_BACKFILL_NOT_NULL_ERROR,
                 $this->getTableName(),
                 implode(', ', $this->pdo->errorInfo())
@@ -169,8 +179,42 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
             } catch (\Throwable $rollbackError) {
                 // Log but do not suppress original error
             }
-            throw new \RuntimeException(sprintf(DatabaseConstants::ERROR_BACKFILL_TRANSACTION_FAILED, $e->getMessage()), 0, $e);
+            throw new DatabaseException(sprintf(DatabaseConstants::ERROR_BACKFILL_TRANSACTION_FAILED, $e->getMessage()), 0, $e);
         }
+    }
+
+    /**
+     * Build a parameterized WHERE clause from search criteria, skipping empty ones.
+     *
+     * $fieldMap maps a criteria key to ['column' => string, 'contains' => bool, 'fold' => bool].
+     * 'contains' uses the dialect's substring match instead of equality; 'fold' applies accent/case
+     * folding to the value before comparing it against a *_folded column.
+     *
+     * @return array{0: string[], 1: array<string, mixed>} [$whereClauses, $params]
+     */
+    protected function buildSearchWhere(array $criteria, array $fieldMap): array
+    {
+        $where = [];
+        $params = [];
+
+        foreach ($fieldMap as $criteriaKey => $spec) {
+            if (empty($criteria[$criteriaKey])) {
+                continue;
+            }
+
+            $placeholder = ':' . $criteriaKey;
+            $value = ($spec['fold'] ?? false) ? $this->fold($criteria[$criteriaKey]) : $criteria[$criteriaKey];
+
+            if ($spec['contains'] ?? false) {
+                $where[] = $this->dialect->containsCondition($spec['column'], $placeholder);
+                $params[$placeholder] = $this->dialect->containsValue($value);
+            } else {
+                $where[] = $spec['column'] . ' = ' . $placeholder;
+                $params[$placeholder] = $value;
+            }
+        }
+
+        return [$where, $params];
     }
 
     protected function getDefaultCountryCode(): string

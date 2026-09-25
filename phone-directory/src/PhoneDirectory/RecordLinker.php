@@ -4,6 +4,7 @@ namespace PhoneDirectory;
 
 use DefamatoryContentReview\AccentFolding;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
+use PhoneDirectory\Exception\InvalidEncodingException;
 
 /**
  * Proposes which entries in different directories are probably the same person.
@@ -151,13 +152,13 @@ final class RecordLinker
         $lower = mb_strtolower($text ?? '', 'UTF-8');
 
         if (!mb_check_encoding($lower, 'UTF-8')) {
-            throw new \InvalidArgumentException('Invalid UTF-8 encoding in text after mb_strtolower');
+            throw new InvalidEncodingException('Invalid UTF-8 encoding in text after mb_strtolower');
         }
 
         $folded = AccentFolding::fold($lower);
 
         if (!mb_check_encoding($folded, 'UTF-8')) {
-            throw new \InvalidArgumentException('Invalid UTF-8 encoding in text after accent folding');
+            throw new InvalidEncodingException('Invalid UTF-8 encoding in text after accent folding');
         }
 
         return preg_replace('/[^a-z0-9]/', '', $folded);

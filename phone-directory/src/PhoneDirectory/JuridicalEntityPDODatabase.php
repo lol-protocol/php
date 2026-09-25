@@ -69,32 +69,41 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         });
     }
 
-    public function insert(JuridicalEntity $entity): int
+    private function insertSql(): string
     {
-        $this->ensureConnection();
-
-        $sql = <<<SQL
+        return <<<SQL
         INSERT INTO juridical_entities (business_name, legal_name, street, phone_number, business_type, country_code,
             source_directory_id, source_line, business_name_folded, street_folded, record_date)
         VALUES (:businessName, :legalName, :street, :phoneNumber, :businessType, :countryCode,
             :sourceDirectoryId, :sourceLine, :businessNameFolded, :streetFolded, :recordDate)
         SQL;
+    }
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($this->entityParams($entity) + [
+    private function insertParams(JuridicalEntity $entity): array
+    {
+        return $this->entityParams($entity) + [
             ':recordDate' => $this->formatDatetime($entity->getRecordDate()),
-        ]);
+        ];
+    }
+
+    public function insert(JuridicalEntity $entity): int
+    {
+        $this->ensureConnection();
+
+        $stmt = $this->pdo->prepare($this->insertSql());
+        $stmt->execute($this->insertParams($entity));
 
         return $this->validateInsertId($this->pdo->lastInsertId());
     }
 
     public function insertBatch(array $entities): int
     {
-        return $this->insertBatchWithTransaction($entities, function ($entity) {
-            if ($entity instanceof JuridicalEntity) {
-                $this->insert($entity);
-            }
-        });
+        return $this->insertManyWithTransaction(
+            $entities,
+            $this->insertSql(),
+            fn ($entity) => $entity instanceof JuridicalEntity,
+            fn (JuridicalEntity $entity) => $this->insertParams($entity)
+        );
     }
 
     public function findById(int $id): ?JuridicalEntity
@@ -105,9 +114,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
 
     public function findByBusinessName(string $name): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
         $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('business_name_folded', ':name') . ' ORDER BY business_name';
         $stmt = $this->pdo->prepare($sql);
@@ -118,9 +125,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
 
     public function findByStreet(string $street): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
         $sql = 'SELECT * FROM juridical_entities WHERE ' . $this->dialect->containsCondition('street_folded', ':street') . ' ORDER BY street, business_name';
         $stmt = $this->pdo->prepare($sql);
@@ -179,32 +184,14 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
 
     public function search(array $criteria): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
-        $where = [];
-        $params = [];
-
-        if (!empty($criteria['businessName'])) {
-            $where[] = $this->dialect->containsCondition('business_name_folded', ':businessName');
-            $params[':businessName'] = $this->dialect->containsValue($this->fold($criteria['businessName']));
-        }
-
-        if (!empty($criteria['street'])) {
-            $where[] = $this->dialect->containsCondition('street_folded', ':street');
-            $params[':street'] = $this->dialect->containsValue($this->fold($criteria['street']));
-        }
-
-        if (!empty($criteria['phone'])) {
-            $where[] = 'phone_number = :phone';
-            $params[':phone'] = $criteria['phone'];
-        }
-
-        if (!empty($criteria['businessType'])) {
-            $where[] = $this->dialect->containsCondition('business_type', ':businessType');
-            $params[':businessType'] = $this->dialect->containsValue($criteria['businessType']);
-        }
+        [$where, $params] = $this->buildSearchWhere($criteria, [
+            'businessName' => ['column' => 'business_name_folded', 'contains' => true, 'fold' => true],
+            'street' => ['column' => 'street_folded', 'contains' => true, 'fold' => true],
+            'phone' => ['column' => 'phone_number'],
+            'businessType' => ['column' => 'business_type', 'contains' => true],
+        ]);
 
         if (empty($where)) {
             return $this->getAll();

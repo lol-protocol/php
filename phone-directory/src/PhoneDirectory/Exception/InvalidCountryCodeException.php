@@ -2,6 +2,6 @@
 
 namespace PhoneDirectory\Exception;
 
-class InvalidCountryCodeException extends PhoneDirectoryException
+class InvalidCountryCodeException extends \InvalidArgumentException
 {
 }

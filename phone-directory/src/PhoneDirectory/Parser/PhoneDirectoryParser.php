@@ -4,9 +4,12 @@ namespace PhoneDirectory\Parser;
 
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryCatalog;
+use PhoneDirectory\Validation\InputValidator;
 
 class PhoneDirectoryParser
 {
+    use InputValidator;
+
     private array $entries = [];
     private array $parseErrors = [];
     private string $countryCode;
@@ -15,9 +18,7 @@ class PhoneDirectoryParser
 
     public function __construct(string $countryCode = 'US', ?string $sourceDirectoryId = null)
     {
-        if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
-            throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
-        }
+        $this->validateCountryCode($countryCode);
 
         $this->countryCode = strtoupper($countryCode);
         $this->sourceDirectoryId = $sourceDirectoryId;

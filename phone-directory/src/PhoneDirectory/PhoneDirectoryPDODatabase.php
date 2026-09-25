@@ -78,32 +78,41 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         });
     }
 
-    public function insert(PhoneDirectoryEntry $entry): int
+    private function insertSql(): string
     {
-        $this->ensureConnection();
-
-        $sql = <<<SQL
+        return <<<SQL
         INSERT INTO phone_directory (full_name, raw_name, language, country_code, zone, city, street, phone_number,
             source_directory_id, source_line, surname_soundex, surname_phonetic, full_name_folded, street_folded, record_date)
         VALUES (:fullName, :rawName, :language, :countryCode, :zone, :city, :street, :phoneNumber,
             :sourceDirectoryId, :sourceLine, :surnameSoundex, :surnamePhonetic, :fullNameFolded, :streetFolded, :recordDate)
         SQL;
+    }
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($this->entryParams($entry) + [
+    private function insertParams(PhoneDirectoryEntry $entry): array
+    {
+        return $this->entryParams($entry) + [
             ':recordDate' => $this->formatDatetime($entry->getRecordDate()),
-        ]);
+        ];
+    }
+
+    public function insert(PhoneDirectoryEntry $entry): int
+    {
+        $this->ensureConnection();
+
+        $stmt = $this->pdo->prepare($this->insertSql());
+        $stmt->execute($this->insertParams($entry));
 
         return $this->validateInsertId($this->pdo->lastInsertId());
     }
 
     public function insertBatch(array $entries): int
     {
-        return $this->insertBatchWithTransaction($entries, function ($entry) {
-            if ($entry instanceof PhoneDirectoryEntry) {
-                $this->insert($entry);
-            }
-        });
+        return $this->insertManyWithTransaction(
+            $entries,
+            $this->insertSql(),
+            fn ($entity) => $entity instanceof PhoneDirectoryEntry,
+            fn (PhoneDirectoryEntry $entry) => $this->insertParams($entry)
+        );
     }
 
     public function findById(int $id): ?PhoneDirectoryEntry
@@ -114,9 +123,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
 
     public function findByName(string $name): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
         $sql = 'SELECT * FROM phone_directory WHERE ' . $this->dialect->containsCondition('full_name_folded', ':name') . ' ORDER BY full_name';
         $stmt = $this->pdo->prepare($sql);
@@ -127,9 +134,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
 
     public function findByStreet(string $street): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
         $sql = 'SELECT * FROM phone_directory WHERE ' . $this->dialect->containsCondition('street_folded', ':street') . ' ORDER BY street, full_name';
         $stmt = $this->pdo->prepare($sql);
@@ -146,9 +151,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
 
     public function findBySurnameSound(string $surname, ?string $language = null): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
         $root = SurnameKeys::root($surname);
         $soundex = SurnameKeys::soundex($root);
@@ -175,9 +178,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
 
     public function findBySourceDirectory(string $sourceDirectoryId): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
         $stmt = $this->pdo->prepare('SELECT * FROM phone_directory WHERE source_directory_id = :source ORDER BY source_line, id');
         $stmt->execute([':source' => $sourceDirectoryId]);
@@ -222,27 +223,13 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
 
     public function search(array $criteria): array
     {
-        if (!$this->isConnected()) {
-            $this->connect();
-        }
+        $this->ensureConnection();
 
-        $where = [];
-        $params = [];
-
-        if (!empty($criteria['name'])) {
-            $where[] = $this->dialect->containsCondition('full_name_folded', ':name');
-            $params[':name'] = $this->dialect->containsValue($this->fold($criteria['name']));
-        }
-
-        if (!empty($criteria['street'])) {
-            $where[] = $this->dialect->containsCondition('street_folded', ':street');
-            $params[':street'] = $this->dialect->containsValue($this->fold($criteria['street']));
-        }
-
-        if (!empty($criteria['phone'])) {
-            $where[] = 'phone_number = :phone';
-            $params[':phone'] = $criteria['phone'];
-        }
+        [$where, $params] = $this->buildSearchWhere($criteria, [
+            'name' => ['column' => 'full_name_folded', 'contains' => true, 'fold' => true],
+            'street' => ['column' => 'street_folded', 'contains' => true, 'fold' => true],
+            'phone' => ['column' => 'phone_number'],
+        ]);
 
         if (empty($where)) {
             return $this->getAll();

@@ -2,8 +2,12 @@
 
 namespace PhoneDirectory\Entity;
 
+use PhoneDirectory\Validation\InputValidator;
+
 class JuridicalEntity
 {
+    use InputValidator;
+
     private int $id;
     private string $businessName;
     private ?string $legalName;
@@ -27,9 +31,7 @@ class JuridicalEntity
         ?string $sourceDirectoryId = null,
         ?int $sourceLine = null
     ) {
-        if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
-            throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
-        }
+        $this->validateCountryCode($countryCode);
 
         $this->id = $id ?? 0;
         $this->businessName = $businessName;

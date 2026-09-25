@@ -2,16 +2,18 @@
 
 namespace PhoneDirectory\Validation;
 
+use PhoneDirectory\Exception\InvalidCountryCodeException;
+
 trait InputValidator
 {
     protected function validateCountryCode(string $countryCode): void
     {
         if (empty(trim($countryCode))) {
-            throw new \InvalidArgumentException('Country code cannot be empty');
+            throw new InvalidCountryCodeException('Country code cannot be empty');
         }
 
         if (!preg_match('/^[A-Za-z]{2}$/', $countryCode)) {
-            throw new \InvalidArgumentException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
+            throw new InvalidCountryCodeException("Country code must be 2 letters (ISO 3166-1 alpha-2): {$countryCode}");
         }
     }
 

@@ -3,6 +3,7 @@
 namespace PhoneDirectory\Parser;
 
 use PhoneDirectory\Validation\InputValidator;
+use PhoneDirectory\Exception\InvalidLanguageException;
 use PhoneDirectory\Entity\JuridicalEntity;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\Entity\PersonName;
@@ -125,7 +126,7 @@ class MultiLanguagePhoneDirectoryParser
         }
 
         if (!in_array($language, self::SUPPORTED_LANGUAGES, true)) {
-            throw new \InvalidArgumentException("Unsupported language: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
+            throw new InvalidLanguageException("Unsupported language: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
         }
 
         $this->detectedLanguage = $language;
@@ -355,7 +356,7 @@ class MultiLanguagePhoneDirectoryParser
     {
         if (!isset($this->streetPatternCache[$language])) {
             if (!isset(self::LANGUAGE_STREET_MARKERS[$language])) {
-                throw new \InvalidArgumentException("Unsupported language for street pattern: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
+                throw new InvalidLanguageException("Unsupported language for street pattern: {$language}. Supported languages: " . implode(', ', self::SUPPORTED_LANGUAGES));
             }
 
             $words = implode('|', array_map(fn($m) => preg_quote($m, '/'), self::LANGUAGE_STREET_MARKERS[$language]));

@@ -2,6 +2,8 @@
 
 namespace PhoneDirectory;
 
+use PhoneDirectory\Exception\DatabaseException;
+
 /**
  * The SQL that differs between SQLite, MySQL/MariaDB and PostgreSQL.
  *
@@ -60,7 +62,7 @@ final class SqlDialect
         try {
             return new \PDO($dsn, $username, $password, $options);
         } catch (\PDOException $e) {
-            throw new \RuntimeException("Database connection failed: {$e->getMessage()}");
+            throw new DatabaseException("Database connection failed: {$e->getMessage()}");
         }
     }
 
