@@ -431,7 +431,7 @@ localStorage.removeItem('preferredLanguage');
     <h1 id="title" data-translate="header.title"></h1>
     <div id="app"></div>
 
-    <script src="examples.js"></script>
+    <script src="../app/examples.js"></script>
     <script>
         const i18n = new LocalizationManager('translations');
 

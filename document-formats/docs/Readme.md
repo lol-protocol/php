@@ -6,59 +6,59 @@ Complete collection of document, paper, and book size formats organized by count
 
 ### Main Files
 
-- **iso_216_series.csv** - International ISO 216 standard paper sizes
+- **../specs/iso_216_series.csv** - International ISO 216 standard paper sizes
   - A series (A0-A10)
   - B series (B0-B10)
   - C series (C0-C10) - Envelope sizes
   - Columns: format_name, width_mm, height_mm, width_inches, height_inches, aspect_ratio, country, description
 
-- **usa_formats.csv** - United States standard document formats
+- **../countries/usa_formats.csv** - United States standard document formats
   - Letter, Legal, Junior Legal
   - Tabloid, Ledger, Executive
   - Envelopes, Index Cards, Business Cards
   - Columns: format_name, width_inches, height_inches, width_mm, height_mm, aspect_ratio, country, category, description, common_use
 
-- **mexico_formats.csv** - Mexican standard document formats
+- **../countries/mexico_formats.csv** - Mexican standard document formats
   - Carta, Oficio, Oficio Extendido
   - Media Carta, A4 ISO, A3 ISO
   - Envelopes, Business Cards, Forms
   - Columns: format_name, width_mm, height_mm, width_inches, height_inches, aspect_ratio, country, category, description, common_use
 
-- **europe_formats.csv** - European standard document formats (primarily ISO 216)
+- **../countries/europe_formats.csv** - European standard document formats (primarily ISO 216)
   - A series (A0-A6)
   - B series (B4, B5)
   - C series (C4, C5, C6) - Envelopes
   - DL and E4 envelopes
   - Columns: format_name, width_mm, height_mm, width_inches, height_inches, aspect_ratio, country, category, description, common_use
 
-- **japan_formats.csv** - Japanese standard document formats
+- **../countries/japan_formats.csv** - Japanese standard document formats
   - JIS B series (JIS B0-JIS B6)
   - ISO A4
   - Japanese cards (Shiroku Ban, Hagaki, Oufuku Hagaki)
   - Business cards (Meishi)
   - Columns: format_name, width_mm, height_mm, width_inches, height_inches, aspect_ratio, country, category, description, common_use
 
-- **china_formats.csv** - Chinese standard document formats
+- **../countries/china_formats.csv** - Chinese standard document formats
   - ISO A3, A4
   - Chinese formats (16K, 8K, 32K)
   - Business cards, Envelopes, Invoices
   - Columns: format_name, width_mm, height_mm, width_inches, height_inches, aspect_ratio, country, category, description, common_use
 
-- **book_formats.csv** - International book size standards
+- **../formats/book_formats.csv** - International book size standards
   - Pocket Book, Mass Market, Trade Paperback
   - Digest, Royal, Demy, Crown
   - Large Print, Hardcover variants
   - Coffee Table, A4, A5, B5 sizes
   - Columns: format_name, width_mm, height_mm, width_inches, height_inches, aspect_ratio, country, category, description, common_use
 
-- **legal_documents.csv** - Legal document formats
+- **../formats/legal_documents.csv** - Legal document formats
   - Legal Document, Pleading Paper, Deed
   - Contract, Government Document, Declaration
   - Notary, Affidavit, Power of Attorney
   - Will/Testament, Invoice, Receipt
   - Columns: format_name, width_mm, height_mm, width_inches, height_inches, aspect_ratio, country, category, description, common_use
 
-- **specialty_papers.csv** - Specialty paper and marketing formats
+- **../formats/specialty_papers.csv** - Specialty paper and marketing formats
   - Cards (Announcement, Greeting, Postcard, etc.)
   - Booklets (8.5x5.5, 5x8.5)
   - Brochures (Trifold, Bifold)
@@ -66,7 +66,7 @@ Complete collection of document, paper, and book size formats organized by count
   - Posters, Banners, Roll Papers
   - Columns: format_name, width_mm, height_mm, width_inches, height_inches, aspect_ratio, country, category, description, common_use
 
-- **all_formats_master.csv** - Consolidated master file with all formats
+- **../formats/all_formats_master.csv** - Consolidated master file with all formats
   - Contains representative samples from all files
   - Includes format_id for easy reference
   - Includes type field (Paper, Card, Document, Book, Envelope, etc.)

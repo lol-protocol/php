@@ -27,10 +27,10 @@ Step-by-step guides for using the document formats database in different scenari
 </head>
 <body>
     <div id="formats"></div>
-    <script src="examples.js"></script>
+    <script src="../app/examples.js"></script>
     <script>
         // Load formats
-        const loader = new FormatLoader('all_formats_master.csv');
+        const loader = new FormatLoader('../formats/all_formats_master.csv');
         loader.load().then(formats => {
             const html = formats.map(f => `
                 <div class="format">
@@ -132,7 +132,7 @@ class FormatSelector {
 }
 
 // Usage
-const loader = new FormatLoader('all_formats_master.csv');
+const loader = new FormatLoader('../formats/all_formats_master.csv');
 new FormatSelector(loader);
 ```
 
@@ -309,7 +309,7 @@ class DocumentFormat {
 // API Endpoint
 header('Content-Type: application/json');
 
-$formats = new DocumentFormat('all_formats_master.csv');
+$formats = new DocumentFormat('../formats/all_formats_master.csv');
 
 if ($_GET['action'] === 'search') {
     $results = $formats->search($_GET['q']);
@@ -335,7 +335,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load data
-formats = pd.read_csv('all_formats_master.csv')
+formats = pd.read_csv('../formats/all_formats_master.csv')
 
 # Basic statistics
 print(f"Total formats: {len(formats)}")
@@ -510,4 +510,4 @@ class FormatCache {
 
 ---
 
-For more examples, see `examples.js` and the interactive `index.html`.
+For more examples, see `examples.js` and the interactive `index.html` in `../app/`.

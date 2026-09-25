@@ -52,7 +52,7 @@ class NameCollisionRegressionTest extends TestCase
      * propia naturaleza, más propenso a coincidir con un gentilicio o
      * apellido real que el resto de categorías (animal, ordinario...).
      * Esta prueba no exige que todos estén marcados — eso depende de
-     * revisión nativa (ver CONTRIBUTING.md) — pero documenta cuántos
+     * revisión nativa (ver Contributing.md) — pero documenta cuántos
      * quedan sin marcar, para que crecer esa lista sin querer no pase
      * desapercibido.
      */

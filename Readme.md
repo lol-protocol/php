@@ -686,7 +686,7 @@ idioma quede cubierto en las diez categorías de riesgo. Marcar
 documentado — es lo que evita que la lista negra borre linajes reales.
 
 Los 24 diccionarios en nivel `moderate` necesitan sobre todo revisión de
-hablantes nativos, no más palabras — ver [`CONTRIBUTING.md`](CONTRIBUTING.md)
+hablantes nativos, no más palabras — ver [`Contributing.md`](Contributing.md)
 para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
 
 ## Tests

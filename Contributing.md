@@ -107,6 +107,6 @@ lingüístico sólo lo pueda validar un hablante nativo.
 
 ## Añadir un idioma nuevo
 
-Ver la sección "Añadir un idioma" en el `README.md` — cubre el archivo de
+Ver la sección "Añadir un idioma" en el `Readme.md` — cubre el archivo de
 diccionario, el registro en el catálogo y las afinidades de familia
 lingüística.

@@ -293,7 +293,7 @@ milímetro.
   evaluado (160 al momento de escribir esto) — no falla si crece, pero deja
   el número visible para que agregar uno nuevo sin pensar en la colisión no
   pase desapercibido. El resto de esa lista no se tocó: requiere la misma
-  revisión por hablante nativo que ya documenta `CONTRIBUTING.md`, no
+  revisión por hablante nativo que ya documenta `Contributing.md`, no
   conjeturas sobre idiomas que este proyecto no habla con certeza.
 
 ### Verificado
@@ -401,7 +401,7 @@ milímetro.
 
 ### Añadido
 
-- **`CONTRIBUTING.md`**: documenta el proceso de revisión por hablante
+- **`Contributing.md`**: documenta el proceso de revisión por hablante
   nativo para los 24 diccionarios en nivel `moderate` — qué revisar en cada
   entrada (`word`, `riskType`, `severity`, `nameCollision`), la tabla de
   mínimos de palabras por nivel de `coverage` (basic 60 / moderate 120 /
@@ -676,7 +676,7 @@ Cambio incompatible: los idiomas pasan a identificarse por ISO 639-3.
 - `config/defamatory-words.php` — sustituido por `config/languages/spa.php`.
 - Los 30 archivos de idioma con nombre de dos letras.
 - `README_v2.md` y `USAGE_GUIDE.md` — documentaban la API de la v1 con ejemplos
-  que ya no funcionan; su contenido vigente está en `README.md`.
+  que ya no funcionan; su contenido vigente está en `Readme.md`.
 
 ### Tests
 

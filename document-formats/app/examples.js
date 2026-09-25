@@ -30,13 +30,50 @@ const groupBy = (items, keyFn) => {
     return groups;
 };
 
+// Splits one CSV line respecting double-quoted fields, so a quoted value
+// like "Cyprus, Northern" or an escaped "" isn't torn apart on its comma.
+const splitCSVLine = (line) => {
+    const values = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+
+        if (inQuotes) {
+            if (char === '"' && line[i + 1] === '"') {
+                current += '"';
+                i++;
+            } else if (char === '"') {
+                inQuotes = false;
+            } else {
+                current += char;
+            }
+        } else if (char === '"') {
+            inQuotes = true;
+        } else if (char === ',') {
+            values.push(current);
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+    values.push(current);
+    return values;
+};
+
 // CSV Parser - shared across all managers with smart type conversion
-const NUMERIC_FIELDS = new Set(['width_mm', 'height_mm', 'width_inches', 'height_inches', 'ppi', 'cost_factor', 'durability_rating', 'page_range_min', 'page_range_max', 'year']);
+const NUMERIC_FIELDS = new Set([
+    'width_mm', 'height_mm', 'width_inches', 'height_inches', 'ppi', 'cost_factor',
+    'durability_rating', 'page_range_min', 'page_range_max', 'year',
+    'size_inches', 'screen_size_inches', 'pixels_width', 'pixels_height',
+    'resolution_width', 'resolution_height', 'release_year', 'refresh_hz'
+]);
 const parseCSV = (text, numericFields = NUMERIC_FIELDS) => {
     const lines = text.trim().split('\n');
-    const headers = lines[0].split(',').map(h => h.trim());
+    const headers = splitCSVLine(lines[0]).map(h => h.trim());
     return lines.slice(1).map(line => {
-        const values = line.split(',');
+        const values = splitCSVLine(line);
         const obj = {};
         headers.forEach((header, i) => {
             const value = values[i]?.trim() || '';
@@ -70,7 +107,7 @@ class FormatLoader {
 }
 
 // Usage:
-// const loader = new FormatLoader('all_formats_master.csv');
+// const loader = new FormatLoader('../formats/all_formats_master.csv');
 // const formats = await loader.load();
 
 
@@ -792,7 +829,7 @@ class BookMarginManager {
         this.margins = margins;
     }
 
-    async load(csvPath = 'book_margins.csv') {
+    async load(csvPath = '../formats/book_margins.csv') {
         try {
             const response = await fetch(csvPath);
             const text = await response.text();
@@ -833,7 +870,7 @@ class BookMarginManager {
 
 // Usage:
 // const bookMargins = new BookMarginManager([]);
-// await bookMargins.load('book_margins.csv');
+// await bookMargins.load('../formats/book_margins.csv');
 // const tradeMargins = bookMargins.getMargins('Trade Paperback');
 // const printable = bookMargins.calculatePrintableArea('Trade Paperback', 152, 228);
 
@@ -876,19 +913,19 @@ class ScreenDeviceManager {
         });
     }
 
-    async loadMonitors(csvPath = 'monitors.csv') {
+    async loadMonitors(csvPath = '../devices/monitors.csv') {
         await this.loadDeviceType(csvPath, 'monitors');
     }
 
-    async loadSmartphones(csvPath = 'smartphones.csv') {
+    async loadSmartphones(csvPath = '../devices/smartphones.csv') {
         await this.loadDeviceType(csvPath, 'smartphones');
     }
 
-    async loadTablets(csvPath = 'tablets.csv') {
+    async loadTablets(csvPath = '../devices/tablets.csv') {
         await this.loadDeviceType(csvPath, 'tablets');
     }
 
-    async loadEReaders(csvPath = 'ereaders.csv') {
+    async loadEReaders(csvPath = '../devices/ereaders.csv') {
         await this.loadDeviceType(csvPath, 'ereaders');
     }
 
@@ -896,20 +933,7 @@ class ScreenDeviceManager {
         try {
             const response = await fetch(csvPath);
             const text = await response.text();
-            const lines = text.trim().split('\n');
-            const headers = lines[0].split(',').map(h => h.trim());
-
-            const devices = lines.slice(1).map(line => {
-                const values = line.split(',');
-                const obj = {};
-                headers.forEach((header, i) => {
-                    const value = values[i] ? values[i].trim() : '';
-                    obj[header] = isNaN(value) || value === '' ? value : parseFloat(value);
-                });
-                return obj;
-            });
-
-            this[type] = devices;
+            this[type] = parseCSV(text);
         } catch (error) {
             console.error(`Error loading ${type}:`, error);
         }
@@ -948,7 +972,7 @@ class ScreenDeviceManager {
 
 // Usage:
 // const devices = new ScreenDeviceManager();
-// await devices.loadAllDevices('monitors.csv', 'smartphones.csv', 'tablets.csv', 'ereaders.csv');
+// await devices.loadAllDevices('../devices/monitors.csv', '../devices/smartphones.csv', '../devices/tablets.csv', '../devices/ereaders.csv');
 // const iphone = devices.getDevice('iPhone 15 Pro Max');
 // const tablets7to10 = devices.getDevicesBySize(7, 10, 'tablet');
 
@@ -958,16 +982,16 @@ class ScreenDeviceManager {
 // ============================================
 class SpecificationManager {
     static SPECS = {
-        bindingStyles: { file: 'binding_styles.csv', key: 'binding_style' },
-        foldCompatibility: { file: 'fold_compatibility.csv', key: 'source_format' },
-        pixelDensity: { file: 'pixel_density_guide.csv', key: 'device_type' },
-        videoResolutions: { file: 'video_resolutions.csv', key: 'resolution_name' },
-        colorSpaces: { file: 'color_spaces.csv', key: 'color_space' },
-        fontSizes: { file: 'minimum_font_sizes.csv', key: 'format' },
-        wcagContrast: { file: 'wcag_contrast.csv', key: 'element_type' },
-        formatEquivalence: { file: 'format_equivalence_matrix.csv', key: 'source_format' },
-        regionalCompatibility: { file: 'regional_compatibility.csv', key: 'region' },
-        standardsReference: { file: 'standards_reference.csv', key: 'format_name' }
+        bindingStyles: { file: '../specs/binding_styles.csv', key: 'binding_style' },
+        foldCompatibility: { file: '../specs/fold_compatibility.csv', key: 'source_format' },
+        pixelDensity: { file: '../devices/pixel_density_guide.csv', key: 'device_type' },
+        videoResolutions: { file: '../devices/video_resolutions.csv', key: 'resolution_name' },
+        colorSpaces: { file: '../specs/color_spaces.csv', key: 'color_space' },
+        fontSizes: { file: '../specs/minimum_font_sizes.csv', key: 'format' },
+        wcagContrast: { file: '../specs/wcag_contrast.csv', key: 'element_type' },
+        formatEquivalence: { file: '../specs/format_equivalence_matrix.csv', key: 'source_format' },
+        regionalCompatibility: { file: '../specs/regional_compatibility.csv', key: 'region' },
+        standardsReference: { file: '../specs/standards_reference.csv', key: 'format_name' }
     };
 
     constructor() {

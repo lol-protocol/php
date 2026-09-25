@@ -30,45 +30,45 @@ This expanded database includes:
 
 ### Core Files (Original)
 
-1. **iso_216_series.csv** - International ISO 216 standard sizes
-2. **usa_formats.csv** - USA standard formats (Letter, Legal, etc.)
-3. **mexico_formats.csv** - Mexican standards (Carta, Oficio)
-4. **europe_formats.csv** - European ISO 216 formats
-5. **japan_formats.csv** - Japanese JIS standards
-6. **china_formats.csv** - Chinese formats and standards
-7. **book_formats.csv** - International book size standards
-8. **legal_documents.csv** - Legal document formats
-9. **specialty_papers.csv** - Marketing and specialty formats
-10. **other_countries_formats.csv** - Canada, Australia, India, Brazil, UK, Russia
+1. **../specs/iso_216_series.csv** - International ISO 216 standard sizes
+2. **../countries/usa_formats.csv** - USA standard formats (Letter, Legal, etc.)
+3. **../countries/mexico_formats.csv** - Mexican standards (Carta, Oficio)
+4. **../countries/europe_formats.csv** - European ISO 216 formats
+5. **../countries/japan_formats.csv** - Japanese JIS standards
+6. **../countries/china_formats.csv** - Chinese formats and standards
+7. **../formats/book_formats.csv** - International book size standards
+8. **../formats/legal_documents.csv** - Legal document formats
+9. **../formats/specialty_papers.csv** - Marketing and specialty formats
+10. **../countries/other_countries_formats.csv** - Canada, Australia, India, Brazil, UK, Russia
 
 ### Extended Files (New)
 
-11. **asia_pacific_formats.csv** - India, Thailand, Vietnam, Philippines, Singapore, Hong Kong, Malaysia, Indonesia, Pakistan, Bangladesh
+11. **../countries/asia_pacific_formats.csv** - India, Thailand, Vietnam, Philippines, Singapore, Hong Kong, Malaysia, Indonesia, Pakistan, Bangladesh
 
-12. **middle_east_africa_formats.csv** - Turkey, UAE, Saudi Arabia, Israel, Egypt, South Africa, Nigeria, Kenya, Morocco, Tanzania
+12. **../countries/middle_east_africa_formats.csv** - Turkey, UAE, Saudi Arabia, Israel, Egypt, South Africa, Nigeria, Kenya, Morocco, Tanzania
 
-13. **photo_print_formats.csv** - Photography print sizes (4x6, 5x7, 8x10, 11x14, etc.), instant film, slides, digital formats
+13. **../formats/photo_print_formats.csv** - Photography print sizes (4x6, 5x7, 8x10, 11x14, etc.), instant film, slides, digital formats
 
-14. **labels_stickers_formats.csv** - Label sizes (1x1, 2x3, 4x6, etc.), sticker formats, barcode labels, round/oval options
+14. **../formats/labels_stickers_formats.csv** - Label sizes (1x1, 2x3, 4x6, etc.), sticker formats, barcode labels, round/oval options
 
-15. **corporate_stationery_formats.csv** - Letterhead, business cards (standard/thick/oversized), envelopes, folders, memos, tabs, certificates, notebooks
+15. **../formats/corporate_stationery_formats.csv** - Letterhead, business cards (standard/thick/oversized), envelopes, folders, memos, tabs, certificates, notebooks
 
 16. **packaging_box_formats.csv** - Box sizes for various products: mailer boxes, corrugated boxes, gift boxes, pizza boxes, bakery boxes, wine boxes, jewelry boxes
 
-17. **technical_specifications.csv** - Paper weight (gsm) ranges, recommended DPI, finish types, best use cases
+17. **../specs/technical_specifications.csv** - Paper weight (gsm) ranges, recommended DPI, finish types, best use cases
 
 18. **format_conversions.csv** - Format equivalences between countries and standards, conversion percentages
 
-19. **country_compatibility_guide.csv** - Country-by-country compatibility analysis, measurement systems, challenges, adoption notes
+19. **../countries/country_compatibility_guide.csv** - Country-by-country compatibility analysis, measurement systems, challenges, adoption notes
 
 ### Database & API Files
 
-20. **database_schema.sql** - Complete MySQL/MariaDB relational schema
-21. **api_reference.json** - RESTful API endpoint documentation
+20. **../database_schema.sql** - Complete MySQL/MariaDB relational schema
+21. **../api_reference.json** - RESTful API endpoint documentation
 
 ### Documentation
 
-22. **README.md** - Original documentation (still valid)
+22. **Readme.md** - Original documentation (still valid)
 23. **README_EXPANDED.md** - This comprehensive guide
 
 ## 🌍 Country Coverage (30+ Countries)
@@ -200,7 +200,7 @@ This expanded database includes:
 
 ## 💾 Database Schema
 
-Complete relational MySQL schema included in `database_schema.sql`:
+Complete relational MySQL schema included in `../database_schema.sql`:
 
 ### Main Tables
 - **countries** - Country information and standards
@@ -225,7 +225,7 @@ Complete relational MySQL schema included in `database_schema.sql`:
 
 ## 🔌 API Reference
 
-Full REST API documentation included in `api_reference.json`:
+Full REST API documentation included in `../api_reference.json`:
 
 ### Key Endpoints
 
@@ -315,16 +315,16 @@ WHERE cc.measurement_system = 'Metric';
 
 ```bash
 # Get all USA formats
-grep "USA" usa_formats.csv
+grep "USA" countries/usa_formats.csv
 
 # Get legal document formats
-grep "Legal" legal_documents.csv
+grep "Legal" formats/legal_documents.csv
 
 # Find formats around A4 size
-awk -F',' '$3>200 && $3<220 && $4>270 && $4<310 {print}' iso_216_series.csv
+awk -F',' '$3>200 && $3<220 && $4>270 && $4<310 {print}' specs/iso_216_series.csv
 
 # Get photography sizes
-grep "Photo" photo_print_formats.csv
+grep "Photo" formats/photo_print_formats.csv
 ```
 
 ### Python Integration
@@ -333,7 +333,7 @@ grep "Photo" photo_print_formats.csv
 import pandas as pd
 
 # Load all formats
-formats = pd.read_csv('all_formats_master.csv')
+formats = pd.read_csv('formats/all_formats_master.csv')
 
 # Filter by country
 usa_formats = formats[formats['country'] == 'USA']
@@ -356,7 +356,7 @@ by_country = formats.groupby('country').size()
 
 ### As Database
 1. Create MySQL database
-2. Import `database_schema.sql`
+2. Import `../database_schema.sql`
 3. Import CSV files into appropriate tables
 4. Set up API layer (PHP, Node.js, Python, etc.)
 
