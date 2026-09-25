@@ -1,5 +1,24 @@
 # Changelog
 
+## [4.3.1] - 2026-09-25
+
+### Arreglado
+
+- **Un término compartido por idiomas emparentados se contaba dos veces.**
+  `NameEvaluator` deduplicaba por el índice del hallazgo en la lista de cada
+  idioma, y ese índice se corre cuando un idioma encuentra un término que
+  otro no tiene. Con `related()->validate('Cerdo Idiota')`, «cerdo» sólo está
+  en español, así que «idiota» era el 2.º hallazgo en español y el 1.º en
+  portugués: las claves no coincidían y se marcaba dos veces. Con agregación
+  `sum` el puntaje daba 5.78 en vez de 4.0; con `max` (por defecto) el
+  puntaje era correcto, pero el informe contaba términos de más. Ahora la
+  clave es la n-ésima aparición del término, estable entre idiomas, y las
+  repeticiones reales («Idiota Idiota») siguen contando dos veces. Nuevo
+  `RelatedLanguageDedupTest`. Arreglo encontrado en la rama de la guía de
+  psicología (lol-protocol/php#9), que lo había aplicado sobre una copia
+  vieja de la librería.
+
+---
 ## [4.3.0] - 2026-09-25
 
 ### Arreglado
