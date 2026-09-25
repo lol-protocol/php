@@ -301,10 +301,10 @@ node animation-validation.js || exit 1
 
 ## 📚 Recursos Adicionales
 
-- [DRY-GUIDE.md](../guides/DRY-GUIDE.md) - Patrones de código DRY
-- [MODULOS.md](../guides/MODULOS.md) - Documentación de módulos
-- [ACCESSIBILITY.md](./ACCESSIBILITY.md) - Guía de accesibilidad
-- [README.md](../../README.md) - Documentación general
+- [DryGuide.md](../guides/DryGuide.md) - Patrones de código DRY
+- [Modulos.md](../guides/Modulos.md) - Documentación de módulos
+- [Accessibility.md](./Accessibility.md) - Guía de accesibilidad
+- [Readme.md](../../Readme.md) - Documentación general
 
 ## 💡 Mejoras Futuras
 

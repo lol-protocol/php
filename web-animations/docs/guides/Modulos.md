@@ -270,8 +270,8 @@ project/
 ├── index.html          (Galería principal)
 ├── common.css          (Variables y estilos base)
 ├── common.js           (Utilidades compartidas)
-├── README.md           (Documentación)
-├── MODULOS.md          (Esta guía)
+├── Readme.md           (Documentación)
+├── Modulos.md          (Esta guía)
 │
 └── animaciones/
     ├── animacion-a.html

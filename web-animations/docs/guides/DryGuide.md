@@ -344,7 +344,7 @@ SVGPatterns.createRadialWeb(svg, 200, 200, 5, 8);
 - `common.css` - Variables y clases base
 - `common.js` - Clases y helpers (ahora con PhysicsObject, AnimationManager, SVGPatterns, SequenceToggle)
 - `animation-templates.js` - Plantillas incluyendo física, SVG, secuencias
-- `DRY-GUIDE.md` - Esta guía
+- `DryGuide.md` - Esta guía
 
 ---
 

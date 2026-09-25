@@ -11,7 +11,7 @@ tests/
 ├── accessibility-tests.js      # Suite de tests de accesibilidad
 ├── test-results.html          # Resultados generados
 ├── test-results.json          # Resultados en JSON
-└── README.md                  # Este archivo
+└── Readme.md                  # Este archivo
 ```
 
 ## 🚀 Inicio Rápido
@@ -174,10 +174,10 @@ console.log(suite.exportJSON());
 
 ## 📋 Documentación Relacionada
 
-- **[TEST-GUIDE.md](../docs/testing/TEST-GUIDE.md)** - Guía completa de testing
-- **[ACCESSIBILITY.md](../docs/testing/ACCESSIBILITY.md)** - Estándares de accesibilidad
-- **[DRY-GUIDE.md](../docs/guides/DRY-GUIDE.md)** - Patrones DRY
-- **[README.md](../README.md)** - Documentación general
+- **[TestGuide.md](../docs/testing/TestGuide.md)** - Guía completa de testing
+- **[Accessibility.md](../docs/testing/Accessibility.md)** - Estándares de accesibilidad
+- **[DryGuide.md](../docs/guides/DryGuide.md)** - Patrones DRY
+- **[Readme.md](../Readme.md)** - Documentación general
 
 ## 🚨 Troubleshooting
 

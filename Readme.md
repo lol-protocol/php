@@ -730,7 +730,7 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
 
 [`web-animations/`](web-animations/) es una galería de demostración de 36
 animaciones HTML/CSS/JS, sin relación con este módulo — ver su propio
-[README](web-animations/README.md).
+[Readme](web-animations/Readme.md).
 
 ## Licencia
 
