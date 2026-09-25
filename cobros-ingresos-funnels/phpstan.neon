@@ -1,0 +1,30 @@
+# Analisis estatico: composer analyse (o vendor/bin/phpstan analyse). Lo corre la CI.
+#
+# Nivel 8 porque es el que revisa los nulos: un ?array (ej. el resultado de un
+# porId()) usado sin chequear antes que no sea null. Las vistas (views/) no
+# entran: son plantillas que reciben sus variables desde View::render() y
+# PHPStan las veria todas como indefinidas.
+parameters:
+    level: 8
+    paths:
+        - src
+        - public
+        - database
+        - tests
+    ignoreErrors:
+        # Las filas de la base viajan como arrays en todo el codigo. Exigir el
+        # tipo de cada valor en cada firma (array<string, mixed>, list<...>)
+        # seria mucho ruido para poca proteccion extra.
+        -
+            identifier: missingType.iterableValue
+        # Database::conectar() pone PDO::ERRMODE_EXCEPTION: query() y
+        # prepare() tiran una excepcion en vez de devolver false, cosa que
+        # PHPStan no puede saber mirando solo la firma de PDO.
+        -
+            message: '#^Cannot call method \w+\(\) on PDOStatement\|false\.$#'
+            identifier: method.nonObject
+        # Un test afirma a proposito cosas que a veces ya se deducen del codigo
+        # (ej. que pagina() da 1 con ?pagina=-5): documentan el comportamiento.
+        -
+            identifier: staticMethod.alreadyNarrowedType
+            path: tests/*

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true">
+    <php>
+        <!-- Los tests siempre son desarrollo: habilita los valores por defecto
+             de las DB_* (ver Config::variableObligatoria). No pisa un APP_ENV
+             que ya venga del entorno. -->
+        <env name="APP_ENV" value="dev"/>
+    </php>
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+        <!-- Levanta la app con php -S y la recorre por HTTP (ver tests/Http/HttpTestCase.php). -->
+        <testsuite name="http">
+            <directory>tests/Http</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
