@@ -15,8 +15,9 @@ document-formats/
 ├── specs/         Standards, production and accessibility specs
 ├── app/           Interactive demo (index.html), JS library (document-formats.js), translations/
 ├── docs/          Tutorials, frontend guide, localization guide
-├── tests/         Node tests for the JS library and the CSV data
+├── tests/         Node tests (library, CSV data) and the database check
 ├── database_schema.sql
+├── import_database.php   Loads the CSV files into database_schema.sql
 └── api_reference.json
 ```
 
@@ -151,12 +152,24 @@ See `docs/Tutorials.md` for step-by-step examples and
 
 ### As a database
 
-`database_schema.sql` defines 14 MySQL/MariaDB tables (countries, formats,
-technical specs, conversions, compatibility, paper weights, finishes,
-variants, margins, standards, suppliers, prices…) and three views:
-`v_formats_detailed`, `v_formats_by_measurement` and `v_format_equivalents`.
-The CSV files fill the format and specification tables; the supplier and
-price tables are schema only, with no data shipped.
+`database_schema.sql` defines 14 MySQL/MariaDB tables and three views
+(`v_formats_detailed`, `v_formats_by_measurement`, `v_format_equivalents`).
+`import_database.php` creates them and loads the CSV files:
+
+```bash
+export DB_DSN='mysql:host=127.0.0.1;dbname=formats;charset=utf8mb4' DB_USER=... DB_PASSWORD=...
+php document-formats/import_database.php --create-schema   # on an empty database
+php document-formats/import_database.php                   # later: reloads the data
+```
+
+It fills countries (plus two regions, International `XI` and Europe `XE`,
+since every format needs a country), categories, `document_formats`, the
+conversions from the equivalence matrix, technical specifications, book
+margins, per-country compatibility and standard references. Rows that name
+something other than a format, such as a product type ("Vinyl Banner") or a
+book genre ("Poetry"), are skipped and listed. The supplier, price,
+paper-weight, finish and variant tables have no CSV behind them and stay
+empty. Tested on MySQL 8.0 and MariaDB 10.11.
 
 ```sql
 SELECT df1.format_name AS from_fmt, df2.format_name AS to_fmt, fc.equivalence_percentage
@@ -195,7 +208,9 @@ comparison table, and a converter that shows how similar two sizes are.
 node --test 'document-formats/tests/*.test.js'
 ```
 
-Run from the repository root with Node 22; CI runs the same command. Covers
+Run from the repository root with Node 22; CI runs the same command, and
+also imports everything into MySQL 8 and checks it with
+`tests/database_check.php`. The Node tests cover
 the CSV parser, HTML escaping, the loaders and converters in `document-formats.js`,
 and checks every CSV file for rows with the wrong number of fields (usually
 an unquoted comma), duplicate entries, and mm/inch values that disagree.

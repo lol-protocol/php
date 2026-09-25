@@ -46,3 +46,46 @@ jobs:
 
       - name: Run tests
         run: node --test 'document-formats/tests/*.test.js'
+
+  document-formats-database:
+    name: document-formats (MySQL import)
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: formats
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      DB_DSN: mysql:host=127.0.0.1;port=3306;dbname=formats;charset=utf8mb4
+      DB_USER: root
+      DB_PASSWORD: root
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql
+          coverage: none
+
+      - name: Create the schema and import the CSV files
+        run: php document-formats/import_database.php --create-schema
+
+      - name: Import again, to check re-runs don't duplicate rows
+        run: php document-formats/import_database.php
+
+      - name: Check the database against the CSV files
+        run: php document-formats/tests/database_check.php

@@ -16,19 +16,19 @@ Tabloid,N/A,N/A,ANSI Y14.1,ANSI Y14.1,N/A,N/A,N/A,N/A,N/A,N/A,USA ledger equival
 Executive,N/A,N/A,ANSI Y14.1,ANSI Y14.1,N/A,N/A,N/A,N/A,N/A,N/A,USA executive paper size,1961,50+
 JIS B4,N/A,N/A,N/A,N/A,JIS B4,JIS X 0202,N/A,N/A,N/A,N/A,Japanese B series large,1951,Japan
 JIS B5,N/A,N/A,N/A,N/A,JIS B5,JIS X 0202,N/A,N/A,N/A,N/A,Japanese B series book size,1951,Japan
-Hagaki Postcard,N/A,N/A,N/A,N/A,Hagaki,JIS X 0303,N/A,N/A,N/A,N/A,Japanese postcard standard,1899,Japan
-16K,N/A,N/A,N/A,N/A,N/A,N/A,16K,GB/T 1999,N/A,N/A,Chinese book size 16K,1999,China
-32K,N/A,N/A,N/A,N/A,N/A,N/A,32K,GB/T 1999,N/A,N/A,Chinese book size 32K,1999,China
-Carta,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Mexican equivalent Letter size,Unknown,Mexico
+Hagaki,N/A,N/A,N/A,N/A,Hagaki,JIS X 0303,N/A,N/A,N/A,N/A,Japanese postcard standard,1899,Japan
+16K (Chinese),N/A,N/A,N/A,N/A,N/A,N/A,16K,GB/T 1999,N/A,N/A,Chinese book size 16K,1999,China
+32K (Chinese),N/A,N/A,N/A,N/A,N/A,N/A,32K,GB/T 1999,N/A,N/A,Chinese book size 32K,1999,China
+Carta (Letter),N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Mexican equivalent Letter size,Unknown,Mexico
 Oficio,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Mexican legal size (216x340 mm); shorter than US Legal,Unknown,Mexico
 Crown,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,British book size traditional,1900,UK
 Demy,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,British book size traditional,1900,UK
 Royal,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,British book size traditional,1900,UK
 Trade Paperback,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Standard book publishing size,1970,Publishing
-Mass Market Paperback,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Pocket book format standard,1950,Publishing
-4x6 Photo,N/A,N/A,ANSI Photo,Photo Standard,N/A,N/A,N/A,N/A,N/A,N/A,Standard photo print size,1960,Photography
-5x7 Photo,N/A,N/A,ANSI Photo,Photo Standard,N/A,N/A,N/A,N/A,N/A,N/A,Medium photo print size,1960,Photography
-8x10 Photo,N/A,N/A,ANSI Photo,Photo Standard,N/A,N/A,N/A,N/A,N/A,N/A,Large photo print size,1960,Photography
-Business Card,ISO 216-2,ISO 216-2,N/A,N/A,N/A,N/A,N/A,N/A,DIN 476,DIN 476-3,Standard business card size,1975,150+
+Mass Market,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,Pocket book format standard,1950,Publishing
+4x6,N/A,N/A,ANSI Photo,Photo Standard,N/A,N/A,N/A,N/A,N/A,N/A,Standard photo print size,1960,Photography
+5x7,N/A,N/A,ANSI Photo,Photo Standard,N/A,N/A,N/A,N/A,N/A,N/A,Medium photo print size,1960,Photography
+8x10,N/A,N/A,ANSI Photo,Photo Standard,N/A,N/A,N/A,N/A,N/A,N/A,Large photo print size,1960,Photography
+Business Card Standard,ISO 216-2,ISO 216-2,N/A,N/A,N/A,N/A,N/A,N/A,DIN 476,DIN 476-3,Standard business card size,1975,150+
 DL Envelope,ISO 216-2,ISO 216-2,N/A,N/A,N/A,N/A,N/A,N/A,DIN 476,DIN 476-3,Standard DL envelope,1975,150+
-#10 Envelope,N/A,N/A,ANSI X 4.27,ANSI X 4.27,N/A,N/A,N/A,N/A,N/A,N/A,USA standard business envelope,1961,50+
+Envelope #10,N/A,N/A,ANSI X 4.27,ANSI X 4.27,N/A,N/A,N/A,N/A,N/A,N/A,USA standard business envelope,1961,50+

@@ -115,6 +115,13 @@ test('the equivalence matrix only names catalog formats and its percentages matc
     });
 });
 
+test('the standards reference only names catalog formats', () => {
+    const sizes = catalog();
+    parseCSV(read('specs/standards_reference.csv')).forEach((row, i) => {
+        assert.ok(sizes.has(row.format_name), `line ${i + 2}: no catalog format called "${row.format_name}"`);
+    });
+});
+
 test('every master-file row copies a row from another catalog', () => {
     const sizes = catalog();
     parseCSV(read('formats/all_formats_master.csv')).forEach((row, i) => {
