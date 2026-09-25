@@ -18,7 +18,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "DefamatoryContentReview\\": "src/DefamatoryContentReview/",
+            "DefamatoryContentReview\\": "../defamatory-content-review/src/DefamatoryContentReview/",
             "PhoneDirectory\\": "src/PhoneDirectory/"
         }
     },

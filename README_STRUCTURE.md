@@ -1,32 +1,38 @@
 # LOL Protocol - PHP Implementation
 
-Este repositorio contiene múltiples proyectos PHP de la implementación del LOL Protocol.
+Este repositorio contiene múltiples proyectos PHP de la implementación del LOL Protocol, cada uno en su propia carpeta.
 
 ## Estructura del Repositorio
 
 ```
 .
-├── phone-directory/              # Proyecto PhoneDirectory (ubicación actual del desarrollo)
-│   ├── src/                      # Código fuente
-│   ├── tests/                    # Pruebas unitarias
+├── defamatory-content-review/    # Librería de revisión de contenido difamatorio
+│   ├── src/DefamatoryContentReview/
+│   ├── config/                   # Diccionarios y familias de idiomas
+│   ├── tests/
+│   └── composer.json
+│
+├── phone-directory/              # Parser de directorios telefónicos históricos
+│   ├── src/PhoneDirectory/       # Código fuente
+│   ├── tests/PhoneDirectory/     # Pruebas unitarias
 │   ├── bin/                      # Ejecutables CLI
-│   ├── config/                   # Configuración
 │   ├── examples/                 # Ejemplos de uso
 │   ├── composer.json             # Dependencias del proyecto
-│   ├── phpunit.xml               # Configuración de pruebas
-│   └── vendor/                   # Dependencias instaladas
+│   └── phpunit.xml               # Configuración de pruebas
 │
+├── web-animations/               # Animaciones web
+├── data/                         # Datos compartidos
 ├── composer.json                 # Configuración del monorepo
-├── .github/                      # CI/CD workflows
-├── CHANGELOG.md                  # Histórico de cambios
-├── CONTRIBUTING.md               # Guía de contribución
-├── README.md                     # Documentación principal
-└── [Otros archivos de documentación]
+└── .github/                      # CI/CD workflows
 ```
 
-## Desarrollo
+## Dependencias entre proyectos
 
-Para trabajar con el proyecto PhoneDirectory:
+`phone-directory` usa clases de `defamatory-content-review` (por ejemplo `AccentFolding` y
+`PhoneticFolderRegistry`). Su `composer.json` carga el namespace `DefamatoryContentReview\`
+directamente desde `../defamatory-content-review/src/`, así que ambas carpetas deben estar presentes.
+
+## Desarrollo
 
 ```bash
 cd phone-directory
@@ -37,12 +43,5 @@ php bin/phonedir help
 
 ## CI/CD
 
-Los workflows están configurados en `.github/workflows/tests.yml` y ejecutan las pruebas automáticamente en la carpeta `phone-directory/`.
-
-## Proyectos Incluidos
-
-### PhoneDirectory
-- **Ubicación**: `phone-directory/`
-- **Descripción**: Parser de directorios telefónicos históricos con soporte para múltiples idiomas
-- **Tests**: 383 pruebas unitarias
-- **PHP**: 8.1+
+`.github/workflows/tests.yml` tiene un job por proyecto: `phpunit` (tests, PHPStan y benchmark de
+`defamatory-content-review/`) y `phone-directory` (tests de `phone-directory/`, incluidos los de PostgreSQL).

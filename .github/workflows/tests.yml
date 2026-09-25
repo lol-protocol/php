@@ -10,6 +10,43 @@ jobs:
   phpunit:
     name: PHP ${{ matrix.php-version }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: defamatory-content-review
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.1', '8.2', '8.3', '8.4']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+          tools: phpstan:2.1
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run tests
+        run: ./vendor/bin/phpunit
+
+      - name: Static analysis
+        run: phpstan analyse --no-progress
+
+      - name: Benchmark smoke run
+        run: php bin/benchmark.php 2000
+
+  phone-directory:
+    name: phone-directory / PHP ${{ matrix.php-version }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: phone-directory
     strategy:
       fail-fast: false
       matrix:
@@ -42,11 +79,9 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        working-directory: phone-directory
         run: composer install --prefer-dist --no-progress
 
       - name: Run tests
-        working-directory: phone-directory
         env:
           PHONEDIR_PGSQL_DSN: pgsql:host=127.0.0.1;port=5432;dbname=phonedir_test;user=postgres;password=postgres
         run: ./vendor/bin/phpunit
