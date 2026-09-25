@@ -18,25 +18,27 @@ final class NameEvaluator
         $result = new ValidationResult($name, true, $primaryLanguage);
         $result->setLanguagesChecked($languageSet);
 
-        $scores = [];
-        $seen = [];
+        $best = [];
 
         foreach ($languageSet as $code => $confidence) {
-            foreach (array_values($this->languages->wordList($code)->findInText($name)) as $i => $match) {
-                // El mismo término, en la misma posición de aparición, puede
-                // estar en varios diccionarios de una familia; se conserva la
-                // aparición de mayor confianza. La posición entra en la clave
-                // para no colapsar dos apariciones distintas del mismo
-                // término dentro de un único idioma (p. ej. "puta puta").
-                $key = $i . '|' . $match['found'] . '|' . $match['riskType'];
-                if (isset($seen[$key]) && $seen[$key] >= $confidence) {
-                    continue;
-                }
-                $seen[$key] = $confidence;
+            $occurrence = [];
 
-                $result->addFlaggedTerm($match + ['sourceLanguage' => $code, 'confidence' => $confidence]);
-                $scores[] = $policy->scoreOf($match) * $confidence;
+            foreach ($this->languages->wordList($code)->findInText($name) as $match) {
+                // Clave: n-ésima aparición del término, no su índice en la lista
+                // de cada idioma (se corre si otro idioma no tiene un término).
+                $base = $match['found'] . '|' . $match['riskType'];
+                $key = $base . '|' . ($occurrence[$base] = ($occurrence[$base] ?? -1) + 1);
+
+                if (!isset($best[$key]) || $best[$key]['confidence'] < $confidence) {
+                    $best[$key] = $match + ['sourceLanguage' => $code, 'confidence' => $confidence];
+                }
             }
+        }
+
+        $scores = [];
+        foreach ($best as $term) {
+            $result->addFlaggedTerm($term);
+            $scores[] = $policy->scoreOf($term) * $term['confidence'];
         }
 
         return $this->finalizeScore($result, $scores, $policy);
