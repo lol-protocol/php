@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Support\Router;
+
 /**
  * Genealogy site — resource type is inferred from the shape of the
  * first path segment, never from words:
@@ -77,7 +79,7 @@ return [
     // for future low-cardinality types without renumbering anything above.
     'reserved' => [
         '' => ['controller' => 'Genealogy\HomeController', 'method' => 'index'],
-        '0' => [
+        Router::ACCOUNT_SEGMENT => [
             'controller' => 'Genealogy\CuentaController',
             'method' => 'index',
             'actions' => [

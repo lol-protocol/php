@@ -6,6 +6,8 @@ namespace App\Routing;
 
 class ByLengthMatchStrategy implements MatchStrategy
 {
+    use ResolvesActions;
+
     public function matches(array $segments, array $config): bool
     {
         return !empty($segments) && ctype_digit($segments[0]);
@@ -25,7 +27,7 @@ class ByLengthMatchStrategy implements MatchStrategy
         }
 
         $actionCode = $segments[1] ?? null;
-        $method = $this->resolveAction($entry['actions'] ?? [], $actionCode);
+        $method = $this->resolveAction($entry['actions'] ?? [], $actionCode, 'show');
 
         if ($method === null) {
             return null;
@@ -36,18 +38,5 @@ class ByLengthMatchStrategy implements MatchStrategy
             'method' => $method,
             'params' => ['id' => $id],
         ];
-    }
-
-    private function resolveAction(array $actions, string|null $code, string $default = 'show'): string|null
-    {
-        if ($code === null) {
-            return $default;
-        }
-
-        if (!ctype_digit($code)) {
-            return null;
-        }
-
-        return $actions[(int) $code] ?? null;
     }
 }

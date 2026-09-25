@@ -6,6 +6,8 @@ namespace App\Routing;
 
 class PlaceMatchStrategy implements MatchStrategy
 {
+    use ResolvesActions;
+
     public function matches(array $segments, array $config): bool
     {
         if (!isset($config['place']) || empty($segments)) {
@@ -36,7 +38,7 @@ class PlaceMatchStrategy implements MatchStrategy
             }
         }
 
-        $method = $this->resolveAction($entry['actions'] ?? [], $actionCode);
+        $method = $this->resolveAction($entry['actions'] ?? [], $actionCode, 'show');
 
         if ($method === null) {
             return null;
@@ -47,18 +49,5 @@ class PlaceMatchStrategy implements MatchStrategy
             'method' => $method,
             'params' => ['codes' => $codes],
         ];
-    }
-
-    private function resolveAction(array $actions, string|null $code, string $default = 'show'): string|null
-    {
-        if ($code === null) {
-            return $default;
-        }
-
-        if (!ctype_digit($code)) {
-            return null;
-        }
-
-        return $actions[(int) $code] ?? null;
     }
 }

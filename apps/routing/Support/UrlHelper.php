@@ -54,7 +54,8 @@ class UrlHelper
 
     public function cuenta(int|string|null $codigo = null): string
     {
-        return $codigo === null ? '/0/' : "/0/{$codigo}/";
+        $base = '/' . Router::ACCOUNT_SEGMENT . '/';
+        return $codigo === null ? $base : "{$base}{$codigo}/";
     }
 
     public function esc(mixed $text): string

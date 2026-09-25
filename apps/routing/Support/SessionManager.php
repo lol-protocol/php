@@ -99,7 +99,6 @@ class SessionManager
 
     private function isSecure(): bool
     {
-        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
-               $_SERVER['SERVER_PORT'] === 443;
+        return HttpSecurityHeaders::isHttps();
     }
 }

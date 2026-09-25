@@ -117,6 +117,8 @@ class Database
             return false;
         }
 
+        $this->assertIdentifiers($table, $data);
+
         $columns = array_keys($data);
         $placeholders = array_fill(0, count($columns), '?');
         $sql = "INSERT INTO {$table} (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $placeholders) . ")";
@@ -139,6 +141,8 @@ class Database
         if (empty($data) || empty($where)) {
             return 0;
         }
+
+        $this->assertIdentifiers($table, $data, $where);
 
         $setClauses = array_map(fn($col) => "$col = ?", array_keys($data));
         $whereClauses = array_map(fn($col) => "$col = ?", array_keys($where));
@@ -164,6 +168,8 @@ class Database
             return 0;
         }
 
+        $this->assertIdentifiers($table, $where);
+
         $whereClauses = array_map(fn($col) => "$col = ?", array_keys($where));
         $sql = "DELETE FROM {$table} WHERE " . implode(' AND ', $whereClauses);
 
@@ -177,6 +183,28 @@ class Database
         }
 
         return $stmt->rowCount();
+    }
+
+    /**
+     * Values are bound as parameters, but table and column names can't be —
+     * they're interpolated into the SQL. Reject anything that isn't a plain
+     * identifier so a caller passing request data (e.g. $_POST) as $data
+     * can't inject SQL through the array keys.
+     */
+    private function assertIdentifiers(string $table, array ...$columnSets): void
+    {
+        $names = [$table];
+        foreach ($columnSets as $set) {
+            foreach (array_keys($set) as $column) {
+                $names[] = (string)$column;
+            }
+        }
+
+        foreach ($names as $name) {
+            if (preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $name) !== 1) {
+                throw new \InvalidArgumentException("Invalid SQL identifier: {$name}");
+            }
+        }
     }
 
     public function disconnect(): void

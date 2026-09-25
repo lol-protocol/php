@@ -35,6 +35,9 @@ use App\Routing\ConfigValidator;
 
 class Router
 {
+    /** First path segment reserved for the account area on every site. */
+    public const ACCOUNT_SEGMENT = '0';
+
     protected $config = [];
     protected $segments = [];
     protected $strategies = [];

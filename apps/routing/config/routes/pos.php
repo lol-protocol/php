@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Support\Router;
+
 /**
  * POS site (Contrastocolor) — same dispatch principle as genealogy:
  * digit count of the first segment selects the type. The purchase
@@ -66,7 +68,7 @@ return [
     // future low-cardinality types without renumbering anything above.
     'reserved' => [
         '' => ['controller' => 'POS\HomeController', 'method' => 'index'],
-        '0' => [
+        Router::ACCOUNT_SEGMENT => [
             'controller' => 'POS\CuentaController',
             'method' => 'index',
             'actions' => [

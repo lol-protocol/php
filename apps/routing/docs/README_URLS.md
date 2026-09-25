@@ -16,22 +16,25 @@ apps/routing/
 │   └── pos.php                         # Registro de tipos + flujo transaccional
 ├── Support/
 │   └── Router.php                      # Despacho por forma del segmento
+├── Routing/                            # Estrategias de matching (dígitos, lugar, literal, order, reservada)
+├── views/
+│   ├── _layout.php                     # Esqueleto compartido de las vistas provisionales
+│   ├── genealogy/<tipo>/<acción>.php
+│   └── pos/<tipo>/<acción>.php
 └── Controllers/
-    ├── Genealogy/
-    │   ├── PersonaController.php       # 10 dígitos
-    │   ├── LugarController.php         # jerarquía país/región/ciudad
-    │   ├── HomeController.php          # raíz, listado/búsqueda
-    │   └── CuentaController.php        # ruta reservada "0"
-    └── POS/
-        ├── ProductoController.php      # 8 dígitos
-        ├── HomeController.php
-        ├── CuentaController.php
-        ├── CartController.php          # /cart/
-        ├── CheckoutController.php      # /checkout/...
-        └── OrderController.php         # /order/{id}/...
+    ├── Genealogy/                      # Persona (10), Suceso (9), Registro (8), Coleccion (7),
+    │                                   # Grupo (6), Organizacion (5), Lugar, Home, Cuenta
+    └── POS/                            # Producto (8), Coleccion (7), Etiqueta (6), Atributo (5),
+                                        # Grupo (4), Home, Cuenta, Cart, Checkout, Order
 ```
 
-**Solo estos ocho controladores están implementados.** `config/routes/genealogy.php` y `config/routes/pos.php` también registran `suceso`, `registro`, `coleccion`, `grupo`, `organizacion` (genealogía) y `coleccion`, `etiqueta`, `atributo`, `grupo` (POS) — sus tipos están definidos y sus URLs despachan correctamente, pero como no existe el archivo de controlador correspondiente, esas rutas dan **500 "Controller not found"** hasta que se implementen siguiendo el mismo patrón que `PersonaController`/`LugarController`.
+Todos los tipos registrados en `config/routes/*.php` tienen su controlador y
+sus vistas. Por ahora son **provisionales**: validan el id y renderizan
+`views/_layout.php` con los datos recibidos, a la espera de conectar la base de
+datos (los `TODO` en cada controlador). `RouteTargetsExistTest` y
+`ViewsExistTest` fallan si una ruta apunta a un controlador/método inexistente o
+si un controlador referencia una vista sin archivo, así que agregar un tipo
+nuevo sin completar las tres piezas rompe CI en vez de dar un 500 en producción.
 
 ## 🧠 Principio de diseño
 
@@ -119,21 +122,30 @@ El largo debe ser único dentro del mismo sitio (mismo dominio); no hace falta q
 ```php
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers\Genealogy;
 
-class NuevoTipoController
+use App\Controllers\BaseController;
+
+class NuevoTipoController extends BaseController
 {
-    public function show($params = [])
+    public function show(array $params = []): string
     {
-        // $params['id'] trae el identificador numérico completo
+        // valida $params['id'] (400 si no es numérico) y renderiza la vista
+        return $this->renderById($params, 'genealogy/nuevo_tipo/show', 'nuevo_tipo');
     }
 
-    public function accion_uno($params = [])
+    public function accion_uno(array $params = []): string
     {
         // llamado en /{id-de-N-digitos}/1/
+        return $this->renderById($params, 'genealogy/nuevo_tipo/accion_uno', 'nuevo_tipo');
     }
 }
 ```
+
+Y una vista por método en `views/genealogy/nuevo_tipo/` (puede empezar como
+las provisionales: `$title = '…'; include __DIR__ . '/../../_layout.php';`).
 
 ### Paso 3: generar el enlace
 

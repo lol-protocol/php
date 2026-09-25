@@ -73,6 +73,11 @@ function view(string $name, array $data = []): string
     try {
         (function() use ($file, $data): void {
             foreach ($data as $key => $value) {
+                // $file and $data are this scope's own variables; letting a
+                // data key overwrite $file would change which file gets included.
+                if ($key === 'file' || $key === 'data') {
+                    continue;
+                }
                 ${$key} = $value;
             }
             include $file;

@@ -63,20 +63,38 @@ class RateLimiter
         }
     }
 
+    /**
+     * Client-supplied headers (X-Forwarded-For, Client-IP) are only honored
+     * when the direct peer is a proxy listed in TRUSTED_PROXIES; otherwise any
+     * client could send a fresh fake IP per request and never hit the limit.
+     */
     public function getClientIp(): string
     {
-        $ip = $_SERVER['HTTP_CLIENT_IP'] ??
-              $_SERVER['HTTP_X_FORWARDED_FOR'] ??
-              $_SERVER['REMOTE_ADDR'] ??
-              'unknown';
+        $remote = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        $trusted = $this->trustedProxies();
 
-        // Handle multiple IPs in X-Forwarded-For
-        if (strpos($ip, ',') !== false) {
-            $ips = explode(',', $ip);
-            $ip = trim($ips[0]);
+        if (!in_array($remote, $trusted, true)) {
+            return $remote;
         }
 
-        return $ip;
+        $forwarded = array_map('trim', explode(',', (string)($_SERVER['HTTP_X_FORWARDED_FOR'] ?? '')));
+
+        // Walk right to left: the rightmost hop not added by one of our own
+        // proxies is the first address we can't have been lied to about.
+        foreach (array_reverse($forwarded) as $ip) {
+            if ($ip !== '' && !in_array($ip, $trusted, true)) {
+                return $ip;
+            }
+        }
+
+        return $remote;
+    }
+
+    /** @return string[] */
+    private function trustedProxies(): array
+    {
+        $raw = (string)getenv('TRUSTED_PROXIES');
+        return array_values(array_filter(array_map('trim', explode(',', $raw)), fn($ip) => $ip !== ''));
     }
 
     public function checkLimit(int $maxRequests = 100, int $windowSeconds = 60): bool

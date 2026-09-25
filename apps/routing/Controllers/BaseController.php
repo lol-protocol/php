@@ -57,6 +57,17 @@ class BaseController
         return (string)$id;
     }
 
+    /** Validates the numeric id from the route, then renders $view with it. */
+    protected function renderById(array $params, string $view, string $label): string
+    {
+        $id = $this->validateId($params['id'] ?? null);
+        if ($id === null) {
+            return $this->handleBadRequest("Invalid {$label} ID");
+        }
+
+        return view($view, ['id' => $id]);
+    }
+
     protected function handleUnauthorized(string $message = 'Unauthorized'): string
     {
         http_response_code(401);

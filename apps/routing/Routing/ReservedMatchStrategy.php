@@ -6,6 +6,8 @@ namespace App\Routing;
 
 class ReservedMatchStrategy implements MatchStrategy
 {
+    use ResolvesActions;
+
     public function matches(array $segments, array $config): bool
     {
         return !empty($segments) && isset($config['reserved'][$segments[0]]) && count($segments) <= 2;
@@ -27,18 +29,5 @@ class ReservedMatchStrategy implements MatchStrategy
             'method' => $method,
             'params' => [],
         ];
-    }
-
-    private function resolveAction(array $actions, $code, $default = 'index')
-    {
-        if ($code === null) {
-            return $default;
-        }
-
-        if (!ctype_digit($code)) {
-            return null;
-        }
-
-        return $actions[(int) $code] ?? null;
     }
 }

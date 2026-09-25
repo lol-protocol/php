@@ -6,6 +6,8 @@ namespace App\Routing;
 
 class OrderMatchStrategy implements MatchStrategy
 {
+    use ResolvesActions;
+
     public function matches(array $segments, array $config): bool
     {
         return isset($config['order']) && !empty($segments) && $segments[0] === 'order';
@@ -25,7 +27,7 @@ class OrderMatchStrategy implements MatchStrategy
 
         $entry = $config['order'];
         $actionCode = $segments[2] ?? null;
-        $method = $this->resolveAction($entry['actions'] ?? [], $actionCode);
+        $method = $this->resolveAction($entry['actions'] ?? [], $actionCode, 'show');
 
         if ($method === null) {
             return null;
@@ -36,18 +38,5 @@ class OrderMatchStrategy implements MatchStrategy
             'method' => $method,
             'params' => ['id' => $id],
         ];
-    }
-
-    private function resolveAction(array $actions, $code, $default = 'show')
-    {
-        if ($code === null) {
-            return $default;
-        }
-
-        if (!ctype_digit($code)) {
-            return null;
-        }
-
-        return $actions[(int) $code] ?? null;
     }
 }

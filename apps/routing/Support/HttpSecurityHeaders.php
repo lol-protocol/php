@@ -23,10 +23,16 @@ class HttpSecurityHeaders
         }
     }
 
+    public static function isHttps(): bool
+    {
+        // SERVER_PORT arrives as a string, so it must be cast before comparing.
+        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
+               (int)($_SERVER['SERVER_PORT'] ?? 0) === 443;
+    }
+
     private static function setSecurityPolicies(): void
     {
-        $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
-                   $_SERVER['SERVER_PORT'] === 443;
+        $isSecure = self::isHttps();
 
         header('X-Content-Type-Options: nosniff');
         header('X-Frame-Options: DENY');
