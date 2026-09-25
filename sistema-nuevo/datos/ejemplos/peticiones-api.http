@@ -1,0 +1,46 @@
+### Ejemplos de uso de la API del backoffice.
+### Formato estándar .http (extensión "REST Client" de VS Code, o el cliente
+### HTTP de JetBrains) — cada bloque se ejecuta por separado; la cookie de
+### sesión se guarda sola entre bloques dentro del mismo archivo.
+### Requiere el backend PHP corriendo (ver README.md, sección "Cómo correrlo").
+
+@baseUrl = http://localhost:8000
+@origin = http://localhost:8082
+
+### 1. Sin sesión: debe devolver 401
+GET {{baseUrl}}/api/users
+Origin: {{origin}}
+
+### 2. Iniciar sesión (guarda la cookie para los siguientes bloques)
+POST {{baseUrl}}/api/login
+Origin: {{origin}}
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### 3. Confirmar sesión activa
+GET {{baseUrl}}/api/session
+Origin: {{origin}}
+
+### 4. Listar usuarios (para el selector)
+GET {{baseUrl}}/api/users
+Origin: {{origin}}
+
+### 5. Presets de país + catálogo de países
+GET {{baseUrl}}/api/groups
+Origin: {{origin}}
+
+### 6. Timeline de un usuario, comparado contra LATAM, 18-65 años, todos los géneros
+GET {{baseUrl}}/api/timeline?user_id=u001&scope=preset:latam&age_min=18&age_max=65&gender=all
+Origin: {{origin}}
+
+### 7. Mismo timeline, ahora comparado contra un país específico
+GET {{baseUrl}}/api/timeline?user_id=u001&scope=country:DE&age_min=18&age_max=65&gender=all
+Origin: {{origin}}
+
+### 8. Cerrar sesión
+POST {{baseUrl}}/api/logout
+Origin: {{origin}}

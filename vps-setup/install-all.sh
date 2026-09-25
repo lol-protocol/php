@@ -1,0 +1,108 @@
+#!/bin/bash
+set -e
+
+DOMAIN=${1:-"initech.fun"}
+EMAIL=${2:-"admin@$DOMAIN"}
+
+# Source shared functions
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+source lib.sh
+
+echo ""
+echo "╔════════════════════════════════════════════════════════════╗"
+echo "║   VPS Setup Completo - Ubuntu 24 LTS                      ║"
+echo "║   Dominio: $DOMAIN"
+echo "║   Email: $EMAIL"
+echo "╚════════════════════════════════════════════════════════════╝"
+echo ""
+
+# Only prompt if stdin is a TTY (interactive mode)
+if [ -t 0 ]; then
+    read -p "¿Continuar? (s/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Ss]$ ]]; then
+        exit 1
+    fi
+else
+    # Non-interactive: assume yes
+    echo "Modo no-interactivo detectado. Continuando sin confirmacion..."
+fi
+
+chmod +x *.sh
+
+# Pasos con letra (02_A..02_J) son independientes entre si: el orden
+# dentro del mismo numero no importa, solo que terminen antes del
+# siguiente numero. Instala el stack COMPLETO de lenguajes/servicios
+# soportados (Java, PHP, Python, PostgreSQL, Nginx, Certbot, Webmin), no
+# solo lo que usa la landing page estatica -- si solo necesitas la landing
+# page por HTTPS, corre a mano 01, 02_E, 02_F, 03, 04 y 05. Los extras
+# realmente opcionales (MariaDB, Tomcat, Whisper, apps adicionales, DNS
+# propio) se corren aparte cuando se necesiten (ver el mensaje final de
+# este script).
+STEPS=(
+    "01-system-update.sh"
+    "02_A-install-java.sh"
+    "02_B-install-php.sh"
+    "02_C-install-python.sh"
+    "02_D-install-postgresql.sh"
+    "02_E-install-nginx.sh"
+    "02_F-install-certbot.sh"
+    "02_J-install-webmin.sh"
+    "03-configure-nginx-site.sh:$DOMAIN"
+    "04-setup-ssl.sh:$DOMAIN $EMAIL"
+    "05-deploy-landing-page.sh:$DOMAIN"
+)
+
+# Cada entrada de STEPS es "script.sh" o "script.sh:argumentos". El ":" separa
+# el nombre del script de los argumentos que necesita (ej. el dominio y el
+# email para 03/04). Aqui los separamos para poder llamar cada script con
+# sus propios argumentos dentro del mismo bucle:
+#   STEP="${ENTRY%%:*}"  -> todo ANTES del primer ":"  (el nombre del script)
+#   ARGS="${ENTRY#*:}"   -> todo DESPUES del primer ":" (sus argumentos)
+TOTAL=${#STEPS[@]}
+for i in "${!STEPS[@]}"; do
+    ENTRY="${STEPS[$i]}"
+    STEP="${ENTRY%%:*}"
+    if [[ "$ENTRY" == *:* ]]; then
+        ARGS="${ENTRY#*:}"
+    else
+        ARGS=""
+    fi
+
+    echo ""
+    echo "╔════════════════════════════════════════════════════════════╗"
+    printf "║ [%d/%d] %-52s ║\n" "$((i+1))" "$TOTAL" "$STEP"
+    echo "╚════════════════════════════════════════════════════════════╝"
+    echo ""
+    bash "./$STEP" $ARGS
+done
+
+echo ""
+echo "╔════════════════════════════════════════════════════════════╗"
+echo "║  ✓ SETUP COMPLETADO EXITOSAMENTE                          ║"
+echo "╚════════════════════════════════════════════════════════════╝"
+echo ""
+echo "Tu landing page esta disponible en:"
+echo "  🔗 https://$DOMAIN"
+echo "  🔗 https://www.$DOMAIN"
+echo ""
+sudo certbot certificates -d $DOMAIN 2>/dev/null || echo "Verificando certificado..."
+echo ""
+echo "Logs de Nginx:"
+echo "  Access: /var/log/nginx/$DOMAIN/access.log"
+echo "  Error:  /var/log/nginx/$DOMAIN/error.log"
+echo ""
+echo "Panel de administracion (Webmin):"
+IP=$(get_public_ip)  # Usa IP cacheada de 02_J (evita duplicate fetch)
+echo "  🔗 https://$IP:10000  (usuario/contraseña: los mismos que por SSH)"
+echo ""
+echo "Pasos opcionales (independientes entre si):"
+echo "  - MariaDB:            bash ./02_G-install-mariadb.sh"
+echo "  - Java + Tomcat:      bash ./02_A-install-java.sh && bash ./02_H-install-tomcat.sh"
+echo "  - Whisper (audio):    bash ./02_I-install-python-whisper.sh"
+echo "  - Aplicacion PHP:     bash ./06_A-setup-php-app.sh nombre-app dominio.com"
+echo "  - Aplicacion Python:  bash ./06_B-setup-python-app.sh nombre-app dominio.com"
+echo "  - Servidor DNS propio (solo si tu registrador no tiene DNS Management): bash ./06_C-setup-dns-server.sh dominio.com IP"
+echo "  - App Java (Tomcat) con su propio dominio: bash ./06_D-setup-tomcat-app.sh dominio.com mi-app"
+echo ""

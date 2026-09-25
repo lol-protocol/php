@@ -1,178 +1,125 @@
-# 🎬 Animaciones Web - Galería Completa
+# Animaciones Web
 
-Colección de **22 animaciones web** modularizadas con HTML, CSS y JavaScript separados.
+Galería de 36 animaciones en HTML, CSS y JavaScript sin dependencias ni paso de
+build. Cada animación es una página independiente que comparte estilos y
+utilidades comunes.
 
-## 📁 Estructura de Archivos
+## Ver la galería
 
-### Archivos Comunes (Módulos Reutilizables)
+Abrir [`src/animations/index.html`](src/animations/index.html) en un navegador.
+Tiene búsqueda, filtros por grupo y categoría, y por cada animación un botón
+para copiar el código de inserción y otro con sus detalles técnicos.
+
+Cada animación también se puede abrir sola, por ejemplo
+`src/animations/animacion-k.html`.
+
+## Estructura
 
 ```
-common.css      → Variables CSS, estilos base, animaciones compartidas
-common.js       → Utilidades, clases reutilizables, helpers
-index.html      → Página de inicio con galería de enlaces
+web-animations/
+├── src/
+│   ├── animations/
+│   │   ├── index.html                 Galería
+│   │   ├── dashboard-interactive.js   Copiar código y modal de detalles
+│   │   ├── data.js                    Metadatos de las 36 animaciones
+│   │   └── animacion-<id>.{html,css,js}
+│   └── helpers/
+│       ├── common.css                 Variables, clases base y keyframes compartidos
+│       ├── common.js                  AnimationToggle, AnimationManager, helpers
+│       └── animation-templates.js     Plantillas para generar animaciones nuevas
+├── tests/
+│   ├── smoke.mjs                      Test automático (corre en CI)
+│   └── index.html                     Tests manuales en navegador: validación,
+│                                      accesibilidad y rendimiento
+├── docs/
+│   ├── guides/                        Patrones DRY y módulos compartidos
+│   ├── analysis/                      Reportes de errores y su estado actual
+│   └── testing/                       Guías de testing, accesibilidad y rendimiento
+└── _Garbage/                          Archivos obsoletos que ninguna página carga
+                                       (ver su README)
 ```
 
-### Animaciones (A-V)
+## Crear una animación
 
-Cada animación está compuesta por 3 archivos:
-```
-animacion-X.html  → Estructura HTML
-animacion-X.css   → Estilos específicos
-animacion-X.js    → Lógica/interactividad
-```
-
-## 🎨 Arquitectura de Módulos
-
-### `common.css`
-Define variables CSS globales y clases reutilizables:
-- **Variables**: colores, sombras, gradientes, transiciones
-- **Clases Base**: `.info-panel`, `.control-btn`, `.fullscreen-container`
-- **Gradientes 3D**: presets para efectos visuales
-- **Animaciones**: keyframes reutilizables
-
-### `common.js`
-Proporciona utilidades y clases para reducir duplicación:
-
-```javascript
-// Clase para pausar/reanudar animaciones
-const toggle = new AnimationToggle('.elemento-animado');
-toggle.toggle(); // Alterna pausa/reanudar
-
-// Colores predefinidos
-Colors.RED.main      // '#ff6b6b'
-Colors.TEAL.accent   // '#44a0a0'
-
-// Helpers
-createDiv(className, innerHTML)
-generateCascadeDelay(index, maxIndex)
-ViewportSize.getWidth()
-```
-
-## 🚀 Cómo Usar
-
-### Opción 1: Abrir una Animación Directamente
-```bash
-# Abre cualquier animación
-animacion-a.html
-animacion-k.html
-```
-
-### Opción 2: Galería Interactiva
-```bash
-# Abre la página de inicio
-index.html
-```
-
-### Opción 3: Crear Nueva Animación Usando Módulos
+Una página nueva enlaza los helpers con rutas relativas a
+`src/animations/`:
 
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="common.css">
-</head>
-<body>
-    <div class="info-panel">
-        <h2>Mi Animación</h2>
-    </div>
-    <div class="mi-animacion"></div>
-    <button onclick="toggle.toggle()">Pausar/Reanudar</button>
-    
-    <script src="common.js"></script>
-    <script>
-        const toggle = new AnimationToggle('.mi-animacion');
-    </script>
-</body>
-</html>
+<link rel="stylesheet" href="../helpers/common.css">
+<link rel="stylesheet" href="animacion-ak.css">
+...
+<button class="control-btn" onclick="toggle.toggle()">Pausar/Reanudar</button>
+<script src="../helpers/common.js"></script>
+<script src="animacion-ak.js"></script>
 ```
 
-## 📊 Categorías de Animaciones
+Y en su `.js`, un `AnimationToggle` con el selector de los elementos
+animados por CSS:
 
-| Categoría | Animaciones | Descripción |
-|-----------|-------------|-------------|
-| 🎲 Geometría & 3D | A, C, D, E, F | Transformaciones 3D, formas, cubos |
-| 💫 Movimiento & Física | B, G, H, I, J | Física realista, rebotes, caídas |
-| 〰️ Patrones & Ondas | K, L, M, N | Ondas, grillas, patrones |
-| ✨ Efectos Especiales | O, P, Q, R | Tinta, tela, aurora, matriz |
-| ⚙️ Mecánicos | S, T, U, V | Dominó, engranajes, reloj, brújula |
-
-## 🎯 Ventajas de la Modularización
-
-✅ **DRY (Don't Repeat Yourself)**
-- Variables CSS compartidas
-- Clases reutilizables
-- Funciones comunes
-
-✅ **Mantenimiento Fácil**
-- Cambiar un color: editar `common.css`
-- Actualizar lógica común: editar `common.js`
-
-✅ **Escalabilidad**
-- Agregar nuevas animaciones rápidamente
-- Reutilizar componentes
-
-✅ **Legibilidad**
-- Código más limpio
-- Menos repetición
-- Mejor organización
-
-## 🔧 Variables CSS Disponibles
-
-```css
---primary-gradient   /* Gradiente de fondo */
---color-1 a --color-6 /* Paleta de colores */
---shadow-sm/md/lg    /* Sombras predefinidas */
---radius             /* Radio de bordes */
---transition         /* Transiciones suave */
+```js
+const toggle = new AnimationToggle('.mi-elemento');
 ```
 
-## 📦 Reutilización en Tus Proyectos
+Para animaciones que no se pausan por CSS (loops de física, emisores de
+partículas, secuencias) hay subclases en `common.js`: `ParticleEmitterToggle`
+y `SequenceToggle`, o `AnimationToggle()` sin selector combinado con un
+`AnimationManager`. Después, agregar la entrada en `data.js` para que aparezca
+en la galería.
 
-```html
-<!-- Importa los módulos comunes -->
-<link rel="stylesheet" href="common.css">
-<script src="common.js"></script>
+## Tests
 
-<!-- Usa las clases y utilidades -->
-<div class="fullscreen-container">
-    <div class="info-panel">...</div>
-    <button class="control-btn">...</button>
-</div>
+```bash
+npm ci
+npm test
 ```
 
-## 📝 Notas Técnicas
+`npm test` abre las 37 páginas en Chromium y falla si alguna tiene un error
+de JavaScript, un recurso que no carga, `common.css`/`common.js` sin aplicar,
+o un botón de pausa que no responde. Corre en CI en cada push.
 
-- **Decimales**: Nunca usa 3 decimales (1, 2, 4 o 5)
-- **Gradientes Radiales**: Para efecto 3D en círculos
-- **Animaciones CSS**: Prefer CSS animations over JavaScript when possible
-- **Responsive**: Designs adapt to mobile screens
-- **Navegadores**: Requiere soporte para CSS 3D y animaciones
+`tests/index.html` tiene además suites manuales (validación, accesibilidad
+WCAG 2.1 AA, rendimiento) — ver [`tests/README.md`](tests/README.md).
 
-## 🎬 Lista Completa de Animaciones
+## Animaciones
 
-1. **A** - Vuelo 3D
-2. **B** - DVD Bouncing
-3. **C** - Página Volteándose
-4. **D** - Cubo 3D
-5. **E** - Pirámide
-6. **F** - Polígono Morphing
-7. **G** - Lluvia Partículas
-8. **H** - Hoja Cayendo
-9. **I** - Péndulo
-10. **J** - Bola en Laberinto
-11. **K** - Onda Sinusoidal
-12. **L** - Círculos Concéntricos
-13. **M** - Grid Deformándose
-14. **N** - Espiral Hipnótica
-15. **O** - Tinta Derramándose
-16. **P** - Tela Ondeando
-17. **Q** - Aurora Boreal
-18. **R** - Efecto Matriz
-19. **S** - Dominó Cayendo
-20. **T** - Engranajes
-21. **U** - Reloj Analógico
-22. **V** - Brújula
+| Grupo | ID | Animación | Categoría |
+|---|---|---|---|
+| Iniciales | A | Vuelo 3D | 3D |
+| | B | Círculos Rebotadores | Física |
+| | C | Página Volteándose | 3D |
+| | D | Cubo 3D | 3D |
+| | E | Pirámide Construyéndose | Patrones |
+| | F | Polígono Morphing | Patrones |
+| | G | Lluvia Partículas | Física |
+| | H | Hoja Cayendo | Física |
+| | I | Péndulo | Mecánico |
+| | J | Onda Sinusoidal | Patrones |
+| | K | Barras Ecualizador | Patrones |
+| | L | Círculos Concéntricos | Patrones |
+| | M | Burbujas | Física |
+| | N | Fractales | Patrones |
+| | O | Tinta Derramándose | Efectos |
+| | P | Galaxia | Patrones |
+| | Q | Aurora Boreal | Efectos |
+| | R | Cascada Rectángulos | Patrones |
+| | S | Ondas Ripple | Efectos |
+| | T | Torbellino | Movimiento |
+| | U | Universo | Patrones |
+| | V | Vortex | Movimiento |
+| Extended | W | Lava Flow | Efectos |
+| | X | Matrix Rain | Efectos |
+| | Y | Nebula | Patrones |
+| | Z | Zen Garden | Patrones |
+| Complex | AA | Möbius Strip | 3D |
+| | AB | Kaleidoscope | Patrones |
+| | AC | Mandelbrot Set | Patrones |
+| | AD | Swarm Intelligence | Movimiento |
+| | AE | Network Graph | Patrones |
+| | AF | Crystal Growth | Patrones |
+| | AG | Magnetic Field | Efectos |
+| | AH | Traffic Flow | Movimiento |
+| | AI | Clock Tower | Mecánico |
+| | AJ | Arena Cayendo | Física |
 
----
-
-**Total**: 22 Animaciones | 66 Archivos de Animación | 3 Archivos Comunes | 1 Página Index
+Respetan `prefers-reduced-motion`: con esa preferencia activa, las
+animaciones se reducen a un solo ciclo casi instantáneo.

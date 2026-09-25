@@ -7,6 +7,14 @@ if (!container || !ball1 || !ball2) {
     throw new Error('Animation setup failed: missing elements');
 }
 
+// Refleja lo que atravesó la pared en vez de recortarlo: recortar le quita
+// altura en cada rebote y, con gravedad, las bolas terminan quietas en el piso.
+function reflect(pos, vel, min, max) {
+    if (pos < min) return [2 * min - pos, Math.abs(vel)];
+    if (pos > max) return [2 * max - pos, -Math.abs(vel)];
+    return [pos, vel];
+}
+
 class Ball extends PhysicsObject {
     constructor(element, bounds, radius) {
         super(element, {
@@ -22,17 +30,12 @@ class Ball extends PhysicsObject {
     }
 
     checkBounds() {
-        if (this.x < this.radius || this.x + this.radius > this.bounds.width) {
-            this.vx = -this.vx;
-            this.x = Math.max(this.radius, Math.min(this.bounds.width - this.radius, this.x));
-        }
-        if (this.y < this.radius || this.y + this.radius > this.bounds.height) {
-            this.vy = -this.vy;
-            this.y = Math.max(this.radius, Math.min(this.bounds.height - this.radius, this.y));
-        }
+        [this.x, this.vx] = reflect(this.x, this.vx, this.radius, this.bounds.width - this.radius);
+        [this.y, this.vy] = reflect(this.y, this.vy, this.radius, this.bounds.height - this.radius);
     }
 
     update() {
+        this.vy += Physics.gravity;
         this.x += this.vx;
         this.y += this.vy;
         this.checkBounds();
@@ -47,7 +50,7 @@ const balls = [
 ];
 
 const manager = new AnimationManager(balls);
-const toggle = new AnimationToggle([], true);
+const toggle = new AnimationToggle();
 
 // Bridge AnimationToggle to AnimationManager
 const originalToggle = toggle.toggle.bind(toggle);

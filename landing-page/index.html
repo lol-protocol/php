@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initech</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .content {
+            flex: 1;
+            min-width: 300px;
+            color: white;
+            text-align: center;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .svg-container {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        svg {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+        }
+
+        .cube {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .cube:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .cube:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Initech</h1>
+            <p class="subtitle">Soluciones innovadoras para tu negocio digital</p>
+            <a href="mailto:admin@initech.fun" class="cta-button">Contactanos</a>
+        </div>
+
+        <div class="svg-container">
+            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Cubo 1 -->
+                <g class="cube">
+                    <!-- Cara frontal -->
+                    <polygon points="50,100 150,50 150,150 50,200" fill="#FF6B6B" opacity="0.9"/>
+                    <!-- Cara superior -->
+                    <polygon points="150,50 250,50 200,20 100,20" fill="#FFD93D" opacity="0.95"/>
+                    <!-- Cara lateral -->
+                    <polygon points="150,50 200,20 200,120 150,150" fill="#4ECDC4" opacity="0.85"/>
+                </g>
+
+                <!-- Cubo 2 -->
+                <g class="cube">
+                    <!-- Cara frontal -->
+                    <polygon points="200,150 300,100 300,200 200,250" fill="#A8E6CF" opacity="0.9"/>
+                    <!-- Cara superior -->
+                    <polygon points="300,100 400,100 350,70 250,70" fill="#FF8B94" opacity="0.95"/>
+                    <!-- Cara lateral -->
+                    <polygon points="300,100 350,70 350,170 300,200" fill="#FFD3B6" opacity="0.85"/>
+                </g>
+
+                <!-- Cubo 3 -->
+                <g class="cube">
+                    <!-- Cara frontal -->
+                    <polygon points="125,220 225,170 225,270 125,320" fill="#FFAAA5" opacity="0.9"/>
+                    <!-- Cara superior -->
+                    <polygon points="225,170 325,170 275,140 175,140" fill="#FF8B94" opacity="0.95"/>
+                    <!-- Cara lateral -->
+                    <polygon points="225,170 275,140 275,240 225,270" fill="#74B9FF" opacity="0.85"/>
+                </g>
+            </svg>
+        </div>
+    </div>
+</body>
+</html>
