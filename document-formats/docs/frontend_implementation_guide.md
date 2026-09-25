@@ -678,4 +678,4 @@ api.searchFormats('A4').then(results => {
 
 ---
 
-For more examples, see `index.html` and `examples.js` in `../app/`.
+For more examples, see `index.html` and `document-formats.js` in `../app/`.

@@ -1,4 +1,4 @@
-monitor_type,size_inches,width_inches,height_inches,aspect_ratio,common_resolution,pixels_width,pixels_height,ppi,use_case,notes
+monitor_type,screen_size_inches,width_inches,height_inches,aspect_ratio,common_resolution,resolution_width,resolution_height,ppi,use_case,notes
 Desktop Ultrawide,34,47.76,20.08,21:9,3440×1440,3440,1440,110,Professional workstations,Extended horizontal workspace
 Desktop 4K,27,23.50,13.23,16:9,3840×2160,3840,2160,165,Video production,4K editing and design
 Desktop 1440p,27,23.50,13.23,16:9,2560×1440,2560,1440,109,Gaming and work,High-end gaming

@@ -17,7 +17,7 @@ USA_LEDGER,Ledger,431.8,279.4,17,11,USA,Large Format,Paper,Double Letter landsca
 USA_EXECUTIVE,Executive,184.15,266.7,7.25,10.5,USA,Standard,Paper,Smaller than Letter
 USA_ENVELOPE10,Envelope #10,104.78,241.3,4.125,9.5,USA,Envelope,Envelope,Standard business envelope
 MEX_CARTA,Carta (Letter),215.9,279.4,8.5,11,Mexico,Standard,Paper,Mexican standard office paper
-MEX_OFICIO,Oficio,216,279,8.5,11,Mexico,Standard,Paper,Mexican legal/office size
+MEX_OFICIO,Oficio,216,340,8.5,13.39,Mexico,Standard,Paper,Mexican legal/office size
 JPN_B0,JIS B0,1030,1456,40.6,57.3,Japan,Standard,Paper,Largest B series paper
 JPN_B4,JIS B4,257,364,10.1,14.3,Japan,Standard,Paper,Office paper
 JPN_HAGAKI,Hagaki,100,148,3.94,5.83,Japan,Card,Card,Postcard size
@@ -31,7 +31,7 @@ LEGAL_CONTRACT,Legal Document,215.9,355.6,8.5,14,USA,Legal,Document,U.S. legal d
 LEGAL_DEED,Deed,215.9,279.4,8.5,11,USA,Legal,Document,Deed format
 LEGAL_INVOICE,Invoice Legal,210,297,8.3,11.7,International,Financial,Document,Invoice legal size
 SPEC_POSTCARD,Postcard Standard,102,152,4,6,International,Card,Card,Standard postcard
-SPEC_BUSINESSCARD,Business Card,90,50,3.54,1.97,International,Card,Card,Standard business card
+SPEC_BUSINESSCARD,Business Card Standard,90,50,3.54,1.97,International,Card,Card,Standard business card
 SPEC_BROCHURE,Trifold Brochure,89,254,3.5,10,USA,Brochure,Document,Trifold format
 SPEC_FLYER,Flyer Standard,216,280,8.5,11,USA,Flyer,Document,Standard flyer
 SPEC_POSTER,Poster 24x36,610,914,24,36,USA,Poster,Document,Large poster size

@@ -1,6 +1,7 @@
 /**
- * Document Formats Database - JavaScript Examples
- * Complete examples of how to use the format data programmatically
+ * Document Formats Database - JavaScript library
+ * Loaders, search, conversion and validation over the CSV files. Works in the
+ * browser (as a classic script) and in Node (via require).
  */
 
 // ============================================
@@ -67,11 +68,24 @@ const splitCSVLine = (line) => {
     return values;
 };
 
+// How alike two sheet sizes are, 0-100: the average percentage difference
+// of their short sides and of their long sides. Orientation doesn't count,
+// so Ledger and Tabloid (the same sheet turned) score 100.
+const sizeSimilarity = (a, b) => {
+    const [aShort, aLong] = [a.width_mm, a.height_mm].sort((x, y) => x - y);
+    const [bShort, bLong] = [b.width_mm, b.height_mm].sort((x, y) => x - y);
+    if (!(aShort > 0 && bShort > 0)) return 0;
+
+    const shortDiff = Math.abs(aShort - bShort) / Math.max(aShort, bShort) * 100;
+    const longDiff = Math.abs(aLong - bLong) / Math.max(aLong, bLong) * 100;
+    return 100 - (shortDiff + longDiff) / 2;
+};
+
 // CSV Parser - shared across all managers with smart type conversion
 const NUMERIC_FIELDS = new Set([
     'width_mm', 'height_mm', 'width_inches', 'height_inches', 'ppi', 'cost_factor',
     'durability_rating', 'page_range_min', 'page_range_max', 'year',
-    'size_inches', 'screen_size_inches', 'pixels_width', 'pixels_height',
+    'screen_size_inches',
     'resolution_width', 'resolution_height', 'release_year', 'refresh_hz',
     'top_mm', 'bottom_mm', 'inner_mm', 'outer_mm',
     'top_inches', 'bottom_inches', 'inner_inches', 'outer_inches'
@@ -227,17 +241,7 @@ class FormatConverter {
         const f1 = this.formats[this.formatMap.get(f1Name)];
         const f2 = this.formats[this.formatMap.get(f2Name)];
         if (!f1 || !f2) return 0;
-
-        const w1 = f1.width_mm || 0;
-        const h1 = f1.height_mm || 0;
-        const w2 = f2.width_mm || 0;
-        const h2 = f2.height_mm || 0;
-
-        if (w1 === 0 || h1 === 0 || w2 === 0 || h2 === 0) return 0;
-
-        const widthDiff = Math.abs(w1 - w2) / Math.max(w1, w2) * 100;
-        const heightDiff = Math.abs(h1 - h2) / Math.max(h1, h2) * 100;
-        return Math.round(100 - ((widthDiff + heightDiff) / 2));
+        return Math.round(sizeSimilarity(f1, f2));
     }
 
     findEquivalents(formatName, threshold = 90) {
@@ -492,17 +496,7 @@ class FormatValidator {
         const idx2 = this.formatMap.get(format2Name);
         if (idx1 === undefined || idx2 === undefined) return { compatible: false };
 
-        const f1 = this.formats[idx1];
-        const f2 = this.formats[idx2];
-
-        const w1 = f1.width_mm || 0;
-        const h1 = f1.height_mm || 0;
-        const w2 = f2.width_mm || 0;
-        const h2 = f2.height_mm || 0;
-
-        const widthDiff = Math.abs(w1 - w2) / Math.max(w1, w2) * 100;
-        const heightDiff = Math.abs(h1 - h2) / Math.max(h1, h2) * 100;
-        const compatibility = 100 - ((widthDiff + heightDiff) / 2);
+        const compatibility = sizeSimilarity(this.formats[idx1], this.formats[idx2]);
 
         return {
             compatible: compatibility > 90,
@@ -960,7 +954,7 @@ class ScreenDeviceManager {
         ScreenDeviceManager.TYPE_CONFIG.forEach(({list, type: t}) => {
             if (type !== 'all' && type !== t) return;
             this[list].forEach(d => {
-                const size = parseFloat(d.screen_size_inches || d.size_inches);
+                const size = d.screen_size_inches;
                 if (size >= minInches && size <= maxInches) results.push(d);
             });
         });
@@ -1091,6 +1085,7 @@ class SpecificationManager {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         escapeHtml,
+        sizeSimilarity,
         splitCSVLine,
         parseCSV,
         FormatLoader,

@@ -16,7 +16,7 @@ const {
     escapeHtml, splitCSVLine, parseCSV,
     FormatConverter, FormatValidator, FormatBatchProcessor, DocumentGenerator,
     BookMarginManager, ScreenDeviceManager, SpecificationManager, LocalizationManager,
-} = require('../app/examples.js');
+} = require('../app/document-formats.js');
 
 const quiet = async (fn) => {
     const log = console.log;

@@ -1,6 +1,6 @@
 format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,category,description,common_use
 Carta (Letter),215.9,279.4,8.5,11,8.5:11,Mexico,Standard,Mexican standard office paper,"Office documents, correspondence"
-Oficio,216,279,8.5,11,8.5:11,Mexico,Standard,Mexican legal/office size,"Contracts, official documents"
+Oficio,216,340,8.5,13.39,8.5:13.4,Mexico,Standard,Mexican legal/office size,"Contracts, official documents"
 Oficio Extendido,216,356,8.5,14,8.5:14,Mexico,Legal,Extended office document,"Extended contracts, documents"
 Media Carta (Half Letter),139.7,215.9,5.5,8.5,5.5:8.5,Mexico,Small,Memo size,"Memos, notes"
 A4 ISO,210,297,8.3,11.7,1:1.414,Mexico,Standard,ISO 216 A4 size,International documents

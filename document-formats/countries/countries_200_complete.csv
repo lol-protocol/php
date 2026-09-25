@@ -1,4 +1,4 @@
-country_code,country_name,primary_format,measurement_system,region,primary_language,iso_3166_alpha3,currency,note
+country_code,country_name,primary_format,measurement_system,region,primary_language,iso_3166_alpha3,currency,notes
 US,United States,Letter,Imperial,Americas,English,USA,USD,Uses Letter and Legal standards
 MX,Mexico,Carta,Metric,Americas,Spanish,MEX,MXN,Mixed metric and imperial
 CA,Canada,Letter,Imperial,Americas,English,CAN,CAD,Follows USA standards primarily

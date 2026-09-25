@@ -27,7 +27,7 @@ Step-by-step guides for using the document formats database in different scenari
 </head>
 <body>
     <div id="formats"></div>
-    <script src="../app/examples.js"></script>
+    <script src="../app/document-formats.js"></script>
     <script>
         // Load formats
         const loader = new FormatLoader('../formats/all_formats_master.csv');
@@ -510,4 +510,4 @@ class FormatCache {
 
 ---
 
-For more examples, see `examples.js` and the interactive `index.html` in `../app/`.
+For more examples, see `document-formats.js` and the interactive `index.html` in `../app/`.

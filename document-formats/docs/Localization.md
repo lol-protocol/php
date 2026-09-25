@@ -431,7 +431,7 @@ localStorage.removeItem('preferredLanguage');
     <h1 id="title" data-translate="header.title"></h1>
     <div id="app"></div>
 
-    <script src="../app/examples.js"></script>
+    <script src="../app/document-formats.js"></script>
     <script>
         const i18n = new LocalizationManager('translations');
 
@@ -477,7 +477,7 @@ localStorage.removeItem('preferredLanguage');
 For additional help with the localization system:
 
 1. Check the translation files in `translations/` directory
-2. Review the `LocalizationManager` class in `examples.js`
+2. Review the `LocalizationManager` class in `document-formats.js`
 3. See the `TUTORIALS.md` for practical examples
 4. Refer to the `frontend_implementation_guide.md` for integration patterns
 

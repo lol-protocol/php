@@ -13,7 +13,7 @@ document-formats/
 ├── formats/       Formats grouped by document type
 ├── devices/       Screen sizes and resolutions
 ├── specs/         Standards, production and accessibility specs
-├── app/           Interactive demo (index.html), JS library (examples.js), translations/
+├── app/           Interactive demo (index.html), JS library (document-formats.js), translations/
 ├── docs/          Tutorials, frontend guide, localization guide
 ├── tests/         Node tests for the JS library and the CSV data
 ├── database_schema.sql
@@ -68,7 +68,7 @@ document-formats/
 | `iso_216_series.csv` | 33 | ISO 216 A0–A10, B0–B10, C0–C10 |
 | `standards_reference.csv` | 33 | ISO, ANSI, JIS, GB/T and DIN standard numbers per format |
 | `technical_specifications.csv` | 33 | Paper weight (gsm), recommended DPI, finishes |
-| `format_equivalence_matrix.csv` | 40 | Format pairs with similarity %, and whether rotating/folding/trimming converts one into the other |
+| `format_equivalence_matrix.csv` | 34 | How close two formats are, and whether one folds, trims or fits into the other (see below) |
 | `fold_compatibility.csv` | 20 | Which formats fold into which (A4 → A5, Letter → half-letter…) |
 | `binding_styles.csv` | 15 | Binding methods with cost factor, durability and page range |
 | `color_spaces.csv` | 20 | sRGB, Adobe RGB, DCI-P3, Rec. 2020, CMYK… with gamut coverage |
@@ -88,8 +88,26 @@ Most format files share these columns:
 - `description`, `common_use`
 
 `all_formats_master.csv` adds `format_id` and `type` (Paper, Card, Book,
-Document, Envelope…). Files are UTF-8; any value containing a comma is wrapped
-in double quotes.
+Document, Envelope…); every one of its rows is a copy of a row in another
+file. Files are UTF-8; any value containing a comma is wrapped in double
+quotes.
+
+### The equivalence matrix
+
+Each row of `specs/format_equivalence_matrix.csv` pairs two formats from the
+catalogs above:
+
+- `similarity_percent` — how alike the two sheet sizes are, 0–100: the
+  average percentage difference of their short sides and of their long
+  sides, ignoring orientation. It's the same number `FormatConverter`
+  computes, so Ledger and Tabloid score 100 and A4 → A5 scores 71.
+- `can_rotate` — one is portrait and the other landscape.
+- `can_fold` — folding the source (in half, or in thirds for a DL envelope)
+  gives the target.
+- `can_trim` — the source is larger on both sides, so it can be cut down to
+  the target.
+- `compatibility_level` — `Contains` (an envelope that holds the target),
+  `Folded`, `Direct` (95% or more), `Similar` (85–94%) or `Different`.
 
 ## Using the data
 
@@ -113,7 +131,7 @@ near_a4 = formats[formats['height_mm'].between(277, 317)]
 
 ### From JavaScript
 
-`app/examples.js` has loaders and helpers for every file: `FormatLoader`,
+`app/document-formats.js` has loaders and helpers for every file: `FormatLoader`,
 `FormatSearcher`, `FormatConverter` (similarity between two formats),
 `FormatValidator`, `DocumentGenerator` (HTML and print CSS for a given
 page size), `ScreenDeviceManager`, `BookMarginManager`,
@@ -160,7 +178,7 @@ side-by-side comparison and a converter showing how close two formats are.
 It runs on five built-in sample formats rather than loading the CSV files.
 
 `app/translations/` holds UI strings in 30 languages for
-`LocalizationManager` in `examples.js`; see `docs/Localization.md`.
+`LocalizationManager` in `document-formats.js`; see `docs/Localization.md`.
 
 ## Tests
 
@@ -169,7 +187,7 @@ node --test 'document-formats/tests/*.test.js'
 ```
 
 Run from the repository root with Node 22; CI runs the same command. Covers
-the CSV parser, HTML escaping, the loaders and converters in `examples.js`,
+the CSV parser, HTML escaping, the loaders and converters in `document-formats.js`,
 and checks every CSV file for rows with the wrong number of fields (usually
 an unquoted comma), duplicate entries, and mm/inch values that disagree.
 
@@ -182,8 +200,8 @@ an unquoted comma), duplicate entries, and mm/inch values that disagree.
 - **Japan's JIS B series** differs slightly from ISO B: JIS B5 is 182×257 mm,
   ISO B5 is 176×250 mm.
 - **China** uses ISO sizes alongside the traditional 8K, 16K and 32K.
-- **Mexico** mixes ISO with Carta (Letter) and Oficio, common for legal
-  documents.
+- **Mexico** mixes ISO with Carta (Letter) and Oficio (216×340 mm, shorter
+  than US Legal), common for legal documents.
 
 1 inch = 25.4 mm.
 

@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const { splitCSVLine, parseCSV } = require('../app/examples.js');
+const { splitCSVLine, parseCSV, sizeSimilarity } = require('../app/document-formats.js');
 
 const ROOT = path.join(__dirname, '..');
 const DATA_DIRS = ['countries', 'formats', 'devices', 'specs'];
@@ -15,7 +15,7 @@ const NATURAL_KEYS = {
     'specs/format_equivalence_matrix.csv': ['source_format', 'target_format'],
     'specs/minimum_font_sizes.csv': ['format', 'device_type', 'content_type'],
     'devices/pixel_density_guide.csv': ['device_type', 'use_case'],
-    'devices/monitors.csv': ['monitor_type', 'size_inches'],
+    'devices/monitors.csv': ['monitor_type', 'screen_size_inches'],
 };
 
 const csvFiles = DATA_DIRS.flatMap(dir =>
@@ -76,6 +76,54 @@ for (const file of csvFiles) {
         });
     });
 }
+
+// Every sheet size in the catalogs, by name. The master file only repeats
+// rows from the others, and book_margins.csv isn't a sheet size.
+const catalog = () => {
+    const sizes = new Map();
+    for (const file of csvFiles) {
+        if (/all_formats_master|book_margins/.test(file)) continue;
+        const rows = parseCSV(read(file));
+        if (!('width_mm' in rows[0])) continue;
+        for (const row of rows) {
+            if (!sizes.has(row.format_name)) sizes.set(row.format_name, []);
+            sizes.get(row.format_name).push(row);
+        }
+    }
+    return sizes;
+};
+
+test('the equivalence matrix only names catalog formats and its percentages match their sizes', () => {
+    const sizes = catalog();
+    parseCSV(read('specs/format_equivalence_matrix.csv')).forEach((row, i) => {
+        const where = `line ${i + 2} (${row.source_format} → ${row.target_format})`;
+        const source = sizes.get(row.source_format);
+        const target = sizes.get(row.target_format);
+        assert.ok(source, `${where}: no catalog format called "${row.source_format}"`);
+        assert.ok(target, `${where}: no catalog format called "${row.target_format}"`);
+
+        // The same name can appear with sizes a millimetre apart (139.7 vs 140).
+        const possible = source.flatMap(s => target.map(t => Math.round(sizeSimilarity(s, t))));
+        const percent = Number(row.similarity_percent);
+        assert.ok(percent <= 100, `${where}: ${percent}% is over 100`);
+        assert.ok(possible.some(p => Math.abs(p - percent) <= 1),
+            `${where}: says ${percent}%, the sizes give ${[...new Set(possible)].join('/')}%`);
+
+        if (row.compatibility_level === 'Folded') {
+            assert.equal(row.can_fold, 'Yes', `${where}: a Folded pair must have can_fold=Yes`);
+        }
+    });
+});
+
+test('every master-file row copies a row from another catalog', () => {
+    const sizes = catalog();
+    parseCSV(read('formats/all_formats_master.csv')).forEach((row, i) => {
+        const matches = (sizes.get(row.format_name) ?? [])
+            .filter(r => r.width_mm === row.width_mm && r.height_mm === row.height_mm);
+        assert.ok(matches.length > 0,
+            `line ${i + 2}: "${row.format_name}" ${row.width_mm}×${row.height_mm} mm is in no other file`);
+    });
+});
 
 test('format catalogs have positive numeric dimensions', () => {
     for (const file of csvFiles) {
