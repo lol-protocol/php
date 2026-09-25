@@ -407,7 +407,7 @@ class FormatConverter {
     }
     
     loadConversions() {
-        // This would load from format_conversions.csv
+        // This would load from ../specs/format_equivalence_matrix.csv
         this.conversions.set('Letter-A4', {
             equivalence: 95,
             level: 'Very Similar',

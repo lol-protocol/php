@@ -732,6 +732,11 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
 animaciones HTML/CSS/JS, sin relación con este módulo — ver su propio
 [Readme](web-animations/Readme.md).
 
+[`document-formats/`](document-formats/) es una base de datos en CSV de
+tamaños de papel, documentos, libros y pantallas por país, también
+independiente de este módulo — ver su propio
+[Readme](document-formats/Readme.md).
+
 ## Licencia
 
 MIT
