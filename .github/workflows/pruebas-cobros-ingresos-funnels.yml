@@ -1,16 +1,31 @@
-name: CI
+name: Pruebas cobros, ingresos y funnels
 
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
 on:
   push:
+    branches: [master]
+    paths:
+      - "cobros-ingresos-funnels/**"
+      - ".github/workflows/pruebas-cobros-ingresos-funnels.yml"
   pull_request:
+    paths:
+      - "cobros-ingresos-funnels/**"
+      - ".github/workflows/pruebas-cobros-ingresos-funnels.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   tests:
     name: Lint, PHPStan, migraciones y tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: cobros-ingresos-funnels

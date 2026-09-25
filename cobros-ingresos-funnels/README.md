@@ -180,9 +180,10 @@ PHPStan corre en nivel 8, el que revisa los nulos (por ejemplo, el resultado de 
 `porId()` usado sin chequear que la entidad exista). Las excepciones están
 explicadas en `phpstan.neon`.
 
-La CI (`.github/workflows/ci.yml`, en la raíz del repositorio) corre en cada push y
-cada pull request: sintaxis, PHPStan, las migraciones sobre una base vacía, el seed
-y las tres suites, contra un Postgres 16.
+La CI (`.github/workflows/pruebas-cobros-ingresos-funnels.yml`, en la raíz del
+repositorio) corre en los pull requests y en `master` cada vez que cambia algo de
+este proyecto: sintaxis, PHPStan, las migraciones sobre una base vacía, el seed y
+las tres suites, contra un Postgres 16.
 
 ## Estructura
 
