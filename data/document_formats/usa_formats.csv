@@ -1,14 +1,14 @@
 format_name,width_inches,height_inches,width_mm,height_mm,aspect_ratio,country,category,description,common_use
-Letter,8.5,11,215.9,279.4,8.5:11,USA,Standard,Equivalent to A4 nearly,Office documents, letters, reports
-Legal,8.5,14,215.9,355.6,8.5:14,USA,Standard,Extra length,Contracts, legal documents
-Junior Legal,5,8,127,203.2,5:8,USA,Standard,Smaller legal size,Forms, notes
-Tabloid,11,17,279.4,431.8,11:17,USA,Large Format,Double Letter size,Newspapers, large documents
+Letter,8.5,11,215.9,279.4,8.5:11,USA,Standard,Equivalent to A4 nearly,"Office documents, letters, reports"
+Legal,8.5,14,215.9,355.6,8.5:14,USA,Standard,Extra length,"Contracts, legal documents"
+Junior Legal,5,8,127,203.2,5:8,USA,Standard,Smaller legal size,"Forms, notes"
+Tabloid,11,17,279.4,431.8,11:17,USA,Large Format,Double Letter size,"Newspapers, large documents"
 Ledger,17,11,431.8,279.4,17:11,USA,Large Format,Double Letter landscape,Accounting sheets
 Executive,7.25,10.5,184.15,266.7,7.25:10.5,USA,Standard,Smaller than Letter,Executive stationery
-Half Letter,5.5,8.5,139.7,215.9,5.5:8.5,USA,Small,Memo pad size,Memos, notes
+Half Letter,5.5,8.5,139.7,215.9,5.5:8.5,USA,Small,Memo pad size,"Memos, notes"
 Government Letter,8,10.5,203.2,266.7,8:10.5,USA,Standard,U.S. government standard,Government documents
 Envelope #10,4.125,9.5,104.78,241.3,4.125:9.5,USA,Envelope,Standard business envelope,Business mail
 Envelope #6.75,3.625,6.5,92.075,165.1,3.625:6.5,USA,Envelope,Personal envelope,Personal mail
-Index Card 3x5,3,5,76.2,127,3:5,USA,Card,Small card size,Index cards, notes
-Index Card 4x6,4,6,101.6,152.4,4:6,USA,Card,Medium card size,Recipe cards, index cards
+Index Card 3x5,3,5,76.2,127,3:5,USA,Card,Small card size,"Index cards, notes"
+Index Card 4x6,4,6,101.6,152.4,4:6,USA,Card,Medium card size,"Recipe cards, index cards"
 Business Card,3.5,2,88.9,50.8,3.5:2,USA,Card,Standard business card,Business cards

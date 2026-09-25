@@ -1,11 +1,11 @@
 format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,category,description,common_use
-Carta (Letter),215.9,279.4,8.5,11,8.5:11,Mexico,Standard,Mexican standard office paper,Office documents, correspondence
-Oficio,216,279,8.5,11,8.5:11,Mexico,Standard,Mexican legal/office size,Contracts, official documents
-Oficio Extendido,216,356,8.5,14,8.5:14,Mexico,Legal,Extended office document,Extended contracts, documents
-Media Carta (Half Letter),139.7,215.9,5.5,8.5,5.5:8.5,Mexico,Small,Memo size,Memos, notes
+Carta (Letter),215.9,279.4,8.5,11,8.5:11,Mexico,Standard,Mexican standard office paper,"Office documents, correspondence"
+Oficio,216,279,8.5,11,8.5:11,Mexico,Standard,Mexican legal/office size,"Contracts, official documents"
+Oficio Extendido,216,356,8.5,14,8.5:14,Mexico,Legal,Extended office document,"Extended contracts, documents"
+Media Carta (Half Letter),139.7,215.9,5.5,8.5,5.5:8.5,Mexico,Small,Memo size,"Memos, notes"
 A4 ISO,210,297,8.3,11.7,1:1.414,Mexico,Standard,ISO 216 A4 size,International documents
-A3 ISO,297,420,11.7,16.5,1:1.414,Mexico,Large,ISO 216 A3 size,Large documents, posters
+A3 ISO,297,420,11.7,16.5,1:1.414,Mexico,Large,ISO 216 A3 size,"Large documents, posters"
 Sobre #10,104.78,241.3,4.125,9.5,4.125:9.5,Mexico,Envelope,Standard envelope size,Business mail
 Sobre A4,110,220,4.3,8.7,110:220,Mexico,Envelope,Envelope for A4 documents,Business correspondence
 Tarjeta de Presentación,90,50,3.54,1.97,90:50,Mexico,Card,Business card Mexican standard,Business cards
-Boleta,100,150,3.94,5.91,100:150,Mexico,Form,Receipt/ticket size,Receipts, tickets
+Boleta,100,150,3.94,5.91,100:150,Mexico,Form,Receipt/ticket size,"Receipts, tickets"

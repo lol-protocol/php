@@ -1,15 +1,15 @@
 format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,category,description,common_use
 A0,841,1189,33.1,46.8,1:1.414,Europe,Standard,Largest paper size in A series,Large format printing
-A1,594,841,23.4,33.1,1:1.414,Europe,Standard,Poster size,Posters, large documents
+A1,594,841,23.4,33.1,1:1.414,Europe,Standard,Poster size,"Posters, large documents"
 A2,420,594,16.5,23.4,1:1.414,Europe,Standard,Large document size,Large documents
-A3,297,420,11.7,16.5,1:1.414,Europe,Standard,Ledger equivalent,Brochures, large documents
-A4,210,297,8.3,11.7,1:1.414,Europe,Standard,Standard office paper,Office documents, letters
-A5,148,210,5.8,8.3,1:1.414,Europe,Small,Notepad size,Notepads, booklets
-A6,105,148,4.1,5.8,1:1.414,Europe,Small,Postcard size,Postcards, greeting cards
-B4,250,353,9.8,13.9,1:1.414,Europe,Standard,Intermediate size,Documents, brochures
-B5,176,250,6.9,9.8,1:1.414,Europe,Small,Book size,Books, booklets
+A3,297,420,11.7,16.5,1:1.414,Europe,Standard,Ledger equivalent,"Brochures, large documents"
+A4,210,297,8.3,11.7,1:1.414,Europe,Standard,Standard office paper,"Office documents, letters"
+A5,148,210,5.8,8.3,1:1.414,Europe,Small,Notepad size,"Notepads, booklets"
+A6,105,148,4.1,5.8,1:1.414,Europe,Small,Postcard size,"Postcards, greeting cards"
+B4,250,353,9.8,13.9,1:1.414,Europe,Standard,Intermediate size,"Documents, brochures"
+B5,176,250,6.9,9.8,1:1.414,Europe,Small,Book size,"Books, booklets"
 C4,229,324,9.0,12.8,1:1.414,Europe,Envelope,Standard envelope,Business mail
 C5,162,229,6.4,9.0,1:1.414,Europe,Envelope,Envelope for A4,Correspondence
 C6,114,162,4.5,6.4,1:1.414,Europe,Envelope,Small envelope,Small documents
-DL,110,220,4.3,8.7,110:220,Europe,Envelope,Long envelope,Bills, correspondence
+DL,110,220,4.3,8.7,110:220,Europe,Envelope,Long envelope,"Bills, correspondence"
 E4,280,400,11.0,15.7,280:400,Europe,Envelope,Large envelope,Large documents
