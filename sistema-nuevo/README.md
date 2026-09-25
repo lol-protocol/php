@@ -25,8 +25,14 @@ instalado, sin sumar paquetes nuevos — ver "Pruebas automatizadas" más abajo)
 Nombres en español simple; se mantienen en inglés los nombres de lenguaje
 (php/java/css/js) y las convenciones estándar que el propio tooling espera
 literalmente (`index.php`, `README.md`, `public/`→`publico/` es la excepción que sí
-se tradujo, `src/`→`codigo/` también). Ningún archivo de código pasa las 100 líneas —
-todo está modularizado en piezas chicas y enfocadas.
+se tradujo, `src/`→`codigo/` también). La mayoría de los archivos de código no pasan
+las 100 líneas — el objetivo es que cada uno sea una pieza chica y enfocada, no un
+número exacto. Los pocos que sí las pasan son casos donde partirlos sería peor:
+un diccionario i18n plano (`es.js`/`en.js`), hojas de estilo de un solo componente
+(`alertas.css`, `topbar.css`), un cliente HTTP cohesivo con un solo estado interno
+compartido (`ClienteEstadisticas.php`) o una suite e2e ya acotada a un tema
+(`panel-nuevas-features.e2e.cjs`) — fragmentarlos solo para bajar el número
+cambiaría "piezas enfocadas" por "piezas dispersas".
 
 ```
 sistema-nuevo/
