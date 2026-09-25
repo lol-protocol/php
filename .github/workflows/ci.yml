@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Lint, PHPStan, migraciones y tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cobros-ingresos-funnels
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: cobros_app
+          POSTGRES_PASSWORD: cobros_app_dev
+          POSTGRES_DB: cobros_ingresos_funnels
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U cobros_app -d cobros_ingresos_funnels"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    # Las DB_* explicitas y sin APP_ENV: las migraciones corren igual que en
+    # produccion, con la configuracion estricta. El seed y PHPUnit (que lo
+    # fija en phpunit.xml) si son desarrollo.
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: '5432'
+      DB_NAME: cobros_ingresos_funnels
+      DB_USER: cobros_app
+      DB_PASSWORD: cobros_app_dev
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, curl
+          coverage: none
+
+      - name: Dependencias
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Sintaxis (php -l, vistas incluidas)
+        run: |
+          errores=0
+          for archivo in $(find src public database tests views -name '*.php'); do
+            php -l "$archivo" > /tmp/lint.txt 2>&1 || { cat /tmp/lint.txt; errores=1; }
+          done
+          exit $errores
+
+      - name: Analisis estatico (PHPStan)
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+
+      - name: Migraciones sobre una base vacia (como en un despliegue nuevo)
+        run: php database/migrar.php
+
+      - name: Datos de ejemplo
+        run: php database/seed.php
+        env:
+          APP_ENV: dev
+
+      - name: Tests (unit, integracion y HTTP)
+        run: vendor/bin/phpunit
