@@ -94,17 +94,26 @@ final class IngresosRepository
             if ($saldoUsd <= 0.01) {
                 continue;
             }
-            $dias = (int) $row['dias_vencido'];
-            $bucket = match (true) {
-                $dias < 0 => 'Al dia',
-                $dias <= 30 => '1-30 dias',
-                $dias <= 60 => '31-60 dias',
-                default => '61+ dias',
-            };
-            $buckets[$bucket] += $saldoUsd;
+            $buckets[self::tramoDeAntiguedad((int) $row['dias_vencido'])] += $saldoUsd;
         }
 
         return $buckets;
+    }
+
+    /**
+     * Una boleta que vence hoy todavia esta al dia: es la misma regla que
+     * EstadoBoleta (vencida recien cuando el vencimiento < hoy). Con "< 0" se
+     * la contaba como vencida en la cartera mientras el listado la mostraba
+     * pendiente.
+     */
+    public static function tramoDeAntiguedad(int $diasVencido): string
+    {
+        return match (true) {
+            $diasVencido <= 0 => 'Al dia',
+            $diasVencido <= 30 => '1-30 dias',
+            $diasVencido <= 60 => '31-60 dias',
+            default => '61+ dias',
+        };
     }
 
     /**

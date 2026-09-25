@@ -119,7 +119,7 @@ $coloresSegmento = [
 
 <div class="panel">
     <h2>Segmentacion de clientes por facturacion</h2>
-    <p class="subtitulo">Que paises, ciudades, idiomas, generos y rangos de edad generan mas ingresos (top 5 de cada uno).</p>
+    <p class="subtitulo">Que paises, ciudades, idiomas, generos y rangos de edad generan mas ingresos (top 5 de cada uno). Histórico completo: no aplica el filtro de fechas.</p>
     <div class="grid grid-segmentos">
         <?php foreach ($segmentacion as $titulo => $filas): ?>
             <div class="subpanel">

@@ -107,12 +107,17 @@ final class PagosController
                         return ['error' => 'El monto supera el saldo pendiente de la boleta.'];
                     }
 
-                    return ['redireccion' => EnvioUnico::ejecutar($token, static function () use ($boletaId, $clienteId, $monto, $clienteElegido, $fechaPago, $metodo): string {
+                    // El saldo se valido en la moneda de la boleta: el pago tiene que
+                    // quedar en esa misma moneda, no en la que hoy tenga el pais
+                    // del cliente (si cambiara, se restarian monedas distintas).
+                    $moneda = $boleta !== null ? $boleta['moneda_codigo'] : $clienteElegido['moneda_codigo'];
+
+                    return ['redireccion' => EnvioUnico::ejecutar($token, static function () use ($boletaId, $clienteId, $monto, $moneda, $clienteElegido, $fechaPago, $metodo): string {
                         $id = (new PagoRepository())->crear([
                             'boleta_id' => $boletaId ?: null,
                             'cliente_id' => $clienteId,
                             'monto' => $monto,
-                            'moneda_codigo' => $clienteElegido['moneda_codigo'],
+                            'moneda_codigo' => $moneda,
                             'fecha_pago' => $fechaPago,
                             'metodo' => $metodo,
                         ]);
@@ -120,7 +125,7 @@ final class PagosController
                             'Pago #%d de %s: %s%s',
                             $id,
                             $clienteElegido['nombre'],
-                            money_moneda($monto, $clienteElegido['moneda_codigo']),
+                            money_moneda($monto, $moneda),
                             $boletaId ? " (boleta #{$boletaId})" : ' (anticipo)'
                         ));
 
