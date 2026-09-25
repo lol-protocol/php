@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e
 
-echo "========================================"
-echo "[02_A] Instalacion de Java"
-echo "========================================"
-echo ""
+source "$(dirname "$0")/lib.sh"
+
+print_header "02_A" "Instalacion de Java"
 
 # OpenJDK 21 es la version LTS (soporte largo) mas reciente al momento de escribir esto.
 # "jdk" (no solo "jre") incluye el compilador javac, necesario para compilar

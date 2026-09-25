@@ -1,22 +1,17 @@
 #!/bin/bash
 set -e
 
-echo "========================================"
-echo "[02_E] Instalacion de Nginx"
-echo "========================================"
-echo ""
+source "$(dirname "$0")/lib.sh"
+
+print_header "02_E" "Instalacion de Nginx"
 
 sudo apt-get install -y nginx
 
-sudo systemctl start nginx
-sudo systemctl enable nginx   # Arranca automaticamente si el VPS se reinicia
+service_start_enable nginx
 
 # 'Nginx Full' es un perfil de UFW que abre los puertos 80 (HTTP) y 443 (HTTPS)
 # a la vez -- sin esto, aunque Nginx funcione, el firewall bloquearia el trafico externo.
-# El "|| true" evita que el script aborte si UFW no esta instalado o ya tiene la regla.
-if command -v ufw &> /dev/null; then
-    sudo ufw allow 'Nginx Full' || true
-fi
+ufw_allow "Nginx Full"
 
 echo ""
 echo "✓ Nginx instalado"

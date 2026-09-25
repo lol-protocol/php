@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e
 
-echo "========================================"
-echo "[02_C] Instalacion de Python 3"
-echo "========================================"
-echo ""
+source "$(dirname "$0")/lib.sh"
+
+print_header "02_C" "Instalacion de Python 3"
 
 # python3-pip: gestor de paquetes de Python (pip install ...)
 # python3-venv: permite crear entornos virtuales aislados (python3 -m venv);

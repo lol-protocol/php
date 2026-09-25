@@ -1,23 +1,19 @@
 #!/bin/bash
 set -e
 
+source "$(dirname "$0")/lib.sh"
+
 APP_NAME=${1:-"python-app"}
 DOMAIN=${2:-"py.initech.cl"}
 APP_PATH="/var/www/$APP_NAME"
 VENV_PATH="$APP_PATH/venv"
 
-echo "========================================"
-echo "[06_B] Configurando Aplicacion Python: $APP_NAME"
-echo "Dominio: $DOMAIN"
-echo "========================================"
-echo ""
+print_header "06_B" "Configurando Aplicacion Python: $APP_NAME (Dominio: $DOMAIN)"
 
 echo "Creando directorios..."
-sudo mkdir -p $APP_PATH
 # Carpeta de logs propia de este dominio -- si no existe, "nginx -t" falla mas
 # abajo porque Nginx no crea directorios el solo, solo los archivos dentro.
-sudo mkdir -p /var/log/nginx/$DOMAIN
-sudo chown -R www-data:www-data $APP_PATH   # www-data va a ejecutar la app (via systemd, ver abajo)
+setup_app_directories "$APP_PATH" "$DOMAIN"
 
 # Entorno virtual propio de esta app: aisla sus dependencias (Flask, etc.) del
 # resto del sistema. Obligatorio en Ubuntu 24.04 (PEP 668 bloquea pip a nivel de sistema).
@@ -74,8 +70,7 @@ EOFSERVICE
 
 echo "Iniciando servicio..."
 sudo systemctl daemon-reload   # necesario cada vez que se crea/modifica un archivo .service
-sudo systemctl start $APP_NAME
-sudo systemctl enable $APP_NAME   # arranca automaticamente si el VPS se reinicia
+service_start_enable "$APP_NAME"
 
 # Nginx no ejecuta Python: solo reenvia ("proxy_pass") las peticiones del
 # dominio publico hacia el puerto local 8000 donde escucha gunicorn

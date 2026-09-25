@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e
 
-echo "========================================"
-echo "[02_F] Instalacion de Certbot (SSL)"
-echo "========================================"
-echo ""
+source "$(dirname "$0")/lib.sh"
+
+print_header "02_F" "Instalacion de Certbot (SSL)"
 
 # certbot: cliente oficial de Let's Encrypt, pide y renueva certificados SSL gratis.
 # python3-certbot-nginx: el "plugin" que le permite a Certbot editar la configuracion

@@ -22,6 +22,17 @@ Los archivos se numeran `NN` o `NN_LETRA`:
 
 Ejemplo: `02_A-install-java.sh` y `02_B-install-php.sh` pueden ejecutarse en cualquier orden entre sí, pero ambos deben completarse antes de `03-configure-nginx-site.sh`.
 
+## 🧰 `lib.sh`
+
+Todos los scripts (excepto `01-system-update.sh`, que activa UFW antes de que
+exista un firewall al que aplicarle reglas) sourcean `lib.sh`, que centraliza
+patrones repetidos: `print_header`, `service_start_enable`, `ufw_allow`
+(agrega una regla solo si UFW está realmente activo), `check_dependency`,
+`setup_app_directories`, `deploy_files` (copia + permisos correctos),
+`get_public_ip` (cacheada por sesión) y `verify_dns_resolution` (un solo
+`dig` para dominio + www). Si corres un script suelto, `lib.sh` debe estar
+en la misma carpeta.
+
 ## 🚀 Uso Rápido
 
 ### Opción 1: Instalación Automática (Recomendado)

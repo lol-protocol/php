@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e
 
-echo "========================================"
-echo "[02_B] Instalacion de PHP 8.3"
-echo "========================================"
-echo ""
+source "$(dirname "$0")/lib.sh"
+
+print_header "02_B" "Instalacion de PHP 8.3"
 
 # php8.3-fpm: el proceso que realmente ejecuta el codigo PHP (Nginx solo le reenvia
 #             las peticiones .php via socket unix, no lo ejecuta el mismo).
@@ -19,8 +18,7 @@ sudo apt-get install -y \
     php8.3-curl php8.3-json php8.3-zip \
     php8.3-mbstring php8.3-xml php8.3-bcmath
 
-sudo systemctl enable php8.3-fpm   # Arranca automaticamente si el VPS se reinicia
-sudo systemctl start php8.3-fpm
+service_start_enable php8.3-fpm
 
 echo ""
 echo "✓ PHP instalado"

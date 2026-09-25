@@ -1,22 +1,19 @@
 #!/bin/bash
 set -e
 
+source "$(dirname "$0")/lib.sh"
+
 DOMAIN=${1:-"app.initech.fun"}
 CONTEXT_PATH=${2:-""}
 
-echo "========================================"
-echo "[06_D] Configurando Nginx -> Tomcat"
-echo "Dominio: $DOMAIN"
-echo "Context path: /${CONTEXT_PATH}"
-echo "========================================"
-echo ""
+print_header "06_D" "Configurando Nginx -> Tomcat (Dominio: $DOMAIN, Context path: /${CONTEXT_PATH})"
 
 if ! systemctl is-active --quiet tomcat10; then
     echo "ERROR: Tomcat no esta corriendo. Corre primero: ./02_H-install-tomcat.sh"
     exit 1
 fi
 
-sudo mkdir -p /var/log/nginx/$DOMAIN
+setup_nginx_domain_logs "$DOMAIN"
 
 # Cuando 'proxy_pass' incluye una URI (aunque sea "/"), Nginx reemplaza el
 # prefijo de la location con esa URI y le PEGA el resto de la peticion tal

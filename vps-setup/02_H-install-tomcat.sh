@@ -1,17 +1,13 @@
 #!/bin/bash
 set -e
 
-echo "========================================"
-echo "[02_H] Instalacion de Apache Tomcat"
-echo "========================================"
-echo ""
+source "$(dirname "$0")/lib.sh"
+
+print_header "02_H" "Instalacion de Apache Tomcat"
 echo "NOTA: requiere Java ya instalado (script 02_A-install-java.sh)."
 echo ""
 
-if ! command -v java &> /dev/null; then
-    echo "ERROR: Java no esta instalado. Corre primero: ./02_A-install-java.sh"
-    exit 1
-fi
+check_dependency java "./02_A-install-java.sh"
 
 # tomcat10: servidor de aplicaciones Java -- ejecuta archivos .war (servlets/webapps).
 #           Nginx no puede correr Java directamente, por eso Tomcat corre aparte
@@ -19,8 +15,7 @@ fi
 # tomcat10-admin: paneles web de administracion (manager/host-manager) de Tomcat
 sudo apt-get install -y tomcat10 tomcat10-admin
 
-sudo systemctl start tomcat10
-sudo systemctl enable tomcat10   # Arranca automaticamente si el VPS se reinicia
+service_start_enable tomcat10
 
 # NO abrimos el 8080 en UFW: el trafico de loopback (127.0.0.1) no pasa por
 # el firewall, asi que "curl http://127.0.0.1:8080" funciona igual sin esta
