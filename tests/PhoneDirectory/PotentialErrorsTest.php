@@ -134,7 +134,7 @@ class PotentialErrorsTest extends TestCase
      */
     public function testPhoneNumberPatternIsValid(): void
     {
-        $reflection = new \ReflectionClass('PhoneDirectory\PhonePattern');
+        $reflection = new \ReflectionClass('PhoneDirectory\Parser\PhonePattern');
         $regex = $reflection->getConstant('REGEX');
 
         $this->assertIsString($regex);

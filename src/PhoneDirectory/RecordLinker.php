@@ -3,6 +3,7 @@
 namespace PhoneDirectory;
 
 use DefamatoryContentReview\AccentFolding;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
 
 /**
  * Proposes which entries in different directories are probably the same person.

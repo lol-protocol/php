@@ -5,6 +5,7 @@ namespace PhoneDirectory\Manager;
 use PhoneDirectory\Parser\PhoneDirectoryParser;
 use PhoneDirectory\PhoneDirectoryDatabaseInterface;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
 
 class PhoneDirectoryManager
 {

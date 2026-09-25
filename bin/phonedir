@@ -5,11 +5,11 @@ declare(strict_types=1);
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-use PhoneDirectory\JuridicalEntity;
-use PhoneDirectory\MultiLanguagePhoneDirectoryParser;
+use PhoneDirectory\Entity\JuridicalEntity;
+use PhoneDirectory\Parser\MultiLanguagePhoneDirectoryParser;
 use PhoneDirectory\PhoneDirectoryCatalog;
-use PhoneDirectory\PhoneDirectoryEntry;
-use PhoneDirectory\PhoneDirectoryManagerV2;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
+use PhoneDirectory\Manager\PhoneDirectoryManagerV2;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 use PhoneDirectory\JuridicalEntityPDODatabase;
 use PhoneDirectory\RecordLinker;

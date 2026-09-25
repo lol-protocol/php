@@ -7,6 +7,8 @@ use PhoneDirectory\PhoneDirectoryDatabaseInterface;
 use PhoneDirectory\JuridicalEntityDatabaseInterface;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 use PhoneDirectory\JuridicalEntityPDODatabase;
+use PhoneDirectory\Entity\PhoneDirectoryEntry;
+use PhoneDirectory\Entity\JuridicalEntity;
 
 class PhoneDirectoryManagerV2
 {
