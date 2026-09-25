@@ -85,13 +85,14 @@ sistema-nuevo/
 ├── interfaz/                       Panel de administración (HTML/CSS/JS, sin frameworks)
 │   ├── index.php                      Ensambla partes/*.php + enlaza los .css
 │   ├── partes/                        pantalla-login.php, topbar.php, panel-principal.php
-│   ├── css/                           18 archivos chicos (base, login, topbar, tarjetas,
-│   │                                   paginacion, grafico, alertas...)
+│   ├── css/                           19 archivos chicos (base, login, topbar, tarjetas,
+│   │                                   paginacion, grafico, alertas, modal...)
 │   └── js/                            Módulos ES: nucleo, formato, sesion, selectores,
 │       ├── i18n/es.js, i18n/en.js         tarjeta-usuario, metricas, linea-tiempo, paginacion,
 │       ├── idioma.js, idioma-refrescar.js grafico, alertas, idioma(-refrescar), aplicacion,
 │       └── aplicacion.js, eventos.js      eventos (entry point), configuracion-alertas, filtros,
-│                                           inactividad, kpis, nota-bloque, notas, notificaciones
+│                                           inactividad, modal (prompt/confirm propios, ver abajo),
+│                                           kpis, nota-bloque, notas, notificaciones
 │
 ├── pruebas/                        Pruebas automatizadas, sin dependencias nuevas
 │   ├── marco-pruebas.php / ejecutar-php.php     Framework mínimo + runner (PHP)
@@ -232,7 +233,9 @@ Cualquier combinación de universo/edad/género/tipo se puede nombrar y guardar
 barra superior. El `scope` se guarda tal cual sale de `#scope-select`
 (`country:XX`/`preset:XX`/`all`) — el mismo valor se usa para poblar el selector y
 para reconstruirlo al aplicar el filtro, sin una capa de traducción intermedia que
-pueda desincronizarse.
+pueda desincronizarse. Guardar (nombre) y eliminar (confirmación) usan
+`interfaz/js/modal.js` -- un modal propio con la estética del panel, no los
+`prompt()`/`confirm()` nativos del navegador.
 
 ## Gráfico de evolución temporal
 

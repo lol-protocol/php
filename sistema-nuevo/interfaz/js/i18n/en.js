@@ -102,6 +102,7 @@ export default {
   btn_eliminar_filtro: "Delete",
   filtro_nombre_prompt: "Filter name:",
   filtro_eliminar_confirmar: "Delete this filter?",
+  modal_cancelar: "Cancel",
 
   login_subtitle: "Sign in to continue",
   label_password: "Password",
