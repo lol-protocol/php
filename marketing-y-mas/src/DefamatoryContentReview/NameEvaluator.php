@@ -18,25 +18,34 @@ final class NameEvaluator
         $result = new ValidationResult($name, true, $primaryLanguage);
         $result->setLanguagesChecked($languageSet);
 
-        $scores = [];
-        $seen = [];
+        $best = [];
 
         foreach ($languageSet as $code => $confidence) {
-            foreach (array_values($this->languages->wordList($code)->findInText($name)) as $i => $match) {
-                // El mismo término, en la misma posición de aparición, puede
-                // estar en varios diccionarios de una familia; se conserva la
-                // aparición de mayor confianza. La posición entra en la clave
-                // para no colapsar dos apariciones distintas del mismo
-                // término dentro de un único idioma (p. ej. "puta puta").
-                $key = $i . '|' . $match['found'] . '|' . $match['riskType'];
-                if (isset($seen[$key]) && $seen[$key] >= $confidence) {
+            $occurrence = [];
+
+            foreach ($this->languages->wordList($code)->findInText($name) as $match) {
+                // El mismo término puede estar en varios diccionarios de una
+                // familia: se conserva el de mayor confianza. La clave es la
+                // n-ésima aparición de ese término, no su índice en la lista
+                // de cada idioma — ese índice se corre cuando un idioma
+                // encuentra algo que otro no. Contar apariciones mantiene
+                // separadas las repeticiones reales ("puta puta").
+                $base = $match['found'] . '|' . $match['riskType'];
+                $key = $base . '|' . ($occurrence[$base] = ($occurrence[$base] ?? -1) + 1);
+
+                if (isset($best[$key]) && $best[$key]['confidence'] >= $confidence) {
                     continue;
                 }
-                $seen[$key] = $confidence;
 
-                $result->addFlaggedTerm($match + ['sourceLanguage' => $code, 'confidence' => $confidence]);
-                $scores[] = $policy->scoreOf($match) * $confidence;
+                $best[$key] = $match + ['sourceLanguage' => $code, 'confidence' => $confidence];
             }
+        }
+
+        $scores = [];
+
+        foreach ($best as $term) {
+            $result->addFlaggedTerm($term);
+            $scores[] = $policy->scoreOf($term) * $term['confidence'];
         }
 
         return $this->finalizeScore($result, $scores, $policy);
