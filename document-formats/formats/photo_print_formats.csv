@@ -1,18 +1,18 @@
 format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,category,description,common_use
 Polaroid Square,89,89,3.5,3.5,1:1,International,Photo,Square instant film size,Instant photos
-Wallet,54,86,2.125,3.375,2.125:3.375,International,Photo,Small portrait size,ID photos, wallet prints
-4x6,102,152,4,6,4:6,International,Photo,Standard snapshot size,Family photos, prints
+Wallet,54,86,2.125,3.375,2.125:3.375,International,Photo,Small portrait size,"ID photos, wallet prints"
+4x6,102,152,4,6,4:6,International,Photo,Standard snapshot size,"Family photos, prints"
 5x7,127,178,5,7,5:7,International,Photo,Medium portrait size,Portrait photos
-8x10,203,254,8,10,8:10,International,Photo,Standard print size,Wall prints, portraits
+8x10,203,254,8,10,8:10,International,Photo,Standard print size,"Wall prints, portraits"
 8.5x11,216,279,8.5,11,8.5:11,International,Photo,Standard paper size,Photo prints
-4x5,102,127,4,5,4:5,International,Photo,Small print size,Prints, cards
+4x5,102,127,4,5,4:5,International,Photo,Small print size,"Prints, cards"
 6x8,152,203,6,8,6:8,International,Photo,Medium print size,Photo prints
-11x14,279,356,11,14,11:14,International,Photo,Large print size,Large posters, prints
+11x14,279,356,11,14,11:14,International,Photo,Large print size,"Large posters, prints"
 16x20,406,508,16,20,16:20,International,Photo,Extra large print size,Large wall art
 17x22,432,559,17,22,17:22,International,Photo,Extra large format,Fine art prints
-20x24,508,610,20,24,20:24,International,Photo,Museum size,Fine art, exhibitions
+20x24,508,610,20,24,20:24,International,Photo,Museum size,"Fine art, exhibitions"
 APS-C Crop,23,15,0.9,0.6,0.9:0.6,International,Photo,Digital camera sensor,DSLR photos
-Half Letter,140,216,5.5,8.5,5.5:8.5,International,Photo,Small print size,Small prints, cards
+Half Letter,140,216,5.5,8.5,5.5:8.5,International,Photo,Small print size,"Small prints, cards"
 10x15,254,381,10,15,10:15,International,Photo,Panoramic size,Panoramic prints
 A6 Photo,105,148,4.1,5.8,4.1:5.8,International,Photo,Postcard size,Photo postcards
 A5 Photo,148,210,5.8,8.3,5.8:8.3,International,Photo,Medium photo size,Photo prints

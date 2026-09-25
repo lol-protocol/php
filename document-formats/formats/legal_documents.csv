@@ -1,13 +1,13 @@
 format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,category,description,common_use
-Legal Document,215.9,355.6,8.5,14,8.5:14,USA,Legal,U.S. legal document format,Contracts, legal documents
-Pleading Paper,215.9,355.6,8.5,14,8.5:14,USA,Legal,Legal pleading standard,Court documents, pleadings
-Deed,215.9,279.4,8.5,11,8.5:11,USA,Legal,Deed format,Property documents, deeds
+Legal Document,215.9,355.6,8.5,14,8.5:14,USA,Legal,U.S. legal document format,"Contracts, legal documents"
+Pleading Paper,215.9,355.6,8.5,14,8.5:14,USA,Legal,Legal pleading standard,"Court documents, pleadings"
+Deed,215.9,279.4,8.5,11,8.5:11,USA,Legal,Deed format,"Property documents, deeds"
 Contract A4,210,297,8.3,11.7,1:1.414,Europe,Legal,European contract size,Contracts in Europe
 Government Document,205,318,8.06,12.5,8.06:12.5,USA,Legal,Government standard,Government documents
 Declaration Format,215.9,355.6,8.5,14,8.5:14,International,Legal,Declaration format,Official declarations
 Notary Size,215.9,279.4,8.5,11,8.5:11,International,Legal,Notary document size,Notarized documents
-Affidavit,215.9,355.6,8.5,14,8.5:14,USA,Legal,Legal affidavit format,Affidavits, sworn statements
+Affidavit,215.9,355.6,8.5,14,8.5:14,USA,Legal,Legal affidavit format,"Affidavits, sworn statements"
 Power of Attorney,215.9,279.4,8.5,11,8.5:11,USA,Legal,POA format,Power of attorney documents
-Will/Testament,215.9,279.4,8.5,11,8.5:11,USA,Legal,Last will format,Wills, testaments
+Will/Testament,215.9,279.4,8.5,11,8.5:11,USA,Legal,Last will format,"Wills, testaments"
 Invoice Legal,210,297,8.3,11.7,1:1.414,International,Financial,Invoice legal size,Commercial invoices
-Receipt Voucher,100,150,3.94,5.91,100:150,International,Financial,Receipt format,Receipts, vouchers
+Receipt Voucher,100,150,3.94,5.91,100:150,International,Financial,Receipt format,"Receipts, vouchers"

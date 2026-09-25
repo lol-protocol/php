@@ -50,7 +50,7 @@ ID,Indonesia,A4,Metric,Asia-Pacific,Indonesian,IDN,IDR,ISO 216 standard
 PK,Pakistan,A4,Metric,Asia-Pacific,Urdu,PAK,PKR,ISO 216 standard
 BD,Bangladesh,A4,Metric,Asia-Pacific,Bengali,BGD,BDT,ISO 216 standard
 KR,South Korea,A4,Metric,Asia-Pacific,Korean,KOR,KRW,JIS influenced
-TW,Taiwan,B5,Metric,Asia-Pacific,Chinese,TWN,TWD,JIS influenced
+TW,Taiwan,A4,Metric,Asia-Pacific,Chinese,TWN,TWD,ISO 216 standard
 MM,Myanmar,A4,Metric,Asia-Pacific,Burmese,MMR,MMK,ISO 216 standard
 LA,Laos,A4,Metric,Asia-Pacific,Lao,LAO,LAK,ISO 216 standard
 KH,Cambodia,A4,Metric,Asia-Pacific,Khmer,KHM,KHR,ISO 216 standard
@@ -123,7 +123,7 @@ BO,Bolivia,A4,Metric,Americas,Spanish,BOL,BOB,ISO 216 standard
 PY,Paraguay,A4,Metric,Americas,Spanish,PRY,PYG,ISO 216 standard
 UY,Uruguay,A4,Metric,Americas,Spanish,URY,UYU,ISO 216 standard
 CW,Curacao,A4,Metric,Americas,Dutch,CUW,ANG,ISO 216 standard
-AX,Aland Islands,A4,Metric,Europe,Swedish,ALA,EUR,ISO 216 standard
+AX,Åland Islands,A4,Metric,Europe,Swedish,ALA,EUR,ISO 216 standard
 FO,Faroe Islands,A4,Metric,Europe,Faroese,FRO,DKK,ISO 216 standard
 GL,Greenland,A4,Metric,Europe,Greenlandic,GRL,DKK,ISO 216 standard
 IS,Iceland,A4,Metric,Europe,Icelandic,ISL,ISK,ISO 216 standard
@@ -196,6 +196,3 @@ JE,Jersey,A4,Metric,Europe,English,JEY,GBP,ISO 216 standard
 GG,Guernsey,A4,Metric,Europe,English,GGY,GBP,ISO 216 standard
 IM,Isle of Man,A4,Metric,Europe,English,IMN,GBP,ISO 216 standard
 BV,Bouvet Island,A4,Metric,Oceania,Norwegian,BVT,NOK,ISO 216 standard
-AX,Åland Islands,A4,Metric,Europe,Swedish,ALA,EUR,ISO 216 standard
-HK,Hong Kong,A4,Metric,Asia-Pacific,Chinese,HKG,HKD,ISO 216 standard
-TW,Taiwan,A4,Metric,Asia-Pacific,Chinese,TWN,TWD,ISO 216 standard

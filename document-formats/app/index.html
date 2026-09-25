@@ -594,6 +594,9 @@
     </div>
 
     <script>
+        const HTML_ESCAPES = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
+        const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, char => HTML_ESCAPES[char]);
+
         // Sample format data - in production, load from CSV or API
         const sampleFormats = [
             {
@@ -785,25 +788,25 @@
                 container.innerHTML = formats.map(format => `
                     <div class="format-card">
                         <div class="format-card-header">
-                            <h3>${format.format_name}</h3>
-                            <span class="badge badge-${format.category.toLowerCase()}">${format.category}</span>
+                            <h3>${escapeHtml(format.format_name)}</h3>
+                            <span class="badge badge-${escapeHtml(format.category.toLowerCase())}">${escapeHtml(format.category)}</span>
                         </div>
                         <div class="format-info">
                             <div class="info-row">
                                 <span class="info-label">Country:</span>
-                                <span class="info-value">${format.country}</span>
+                                <span class="info-value">${escapeHtml(format.country)}</span>
                             </div>
                             <div class="info-row">
                                 <span class="info-label">Size (mm):</span>
-                                <span class="info-value">${format.width_mm} × ${format.height_mm}</span>
+                                <span class="info-value">${escapeHtml(format.width_mm)} × ${escapeHtml(format.height_mm)}</span>
                             </div>
                             <div class="info-row">
                                 <span class="info-label">Size (in):</span>
-                                <span class="info-value">${format.width_inches}" × ${format.height_inches}"</span>
+                                <span class="info-value">${escapeHtml(format.width_inches)}" × ${escapeHtml(format.height_inches)}"</span>
                             </div>
                             <div class="info-row">
                                 <span class="info-label">Aspect Ratio:</span>
-                                <span class="info-value">${format.aspect_ratio}</span>
+                                <span class="info-value">${escapeHtml(format.aspect_ratio)}</span>
                             </div>
                         </div>
                         <div class="format-preview">
@@ -825,7 +828,7 @@
                               fill="white" stroke="#999" stroke-width="1"/>
                         <text x="${w/2}" y="${h/2}" text-anchor="middle" dominant-baseline="middle"
                               font-size="10" fill="#666" font-weight="600">
-                            ${format.format_name}
+                            ${escapeHtml(format.format_name)}
                         </text>
                     </svg>
                 `;
@@ -883,7 +886,7 @@
                 const fill = document.getElementById('equivalence-fill');
 
                 info.innerHTML = `
-                    <p><strong>${fromFormat.format_name}</strong> → <strong>${toFormat.format_name}</strong></p>
+                    <p><strong>${escapeHtml(fromFormat.format_name)}</strong> → <strong>${escapeHtml(toFormat.format_name)}</strong></p>
                     <p style="font-size: 14px; color: var(--text-light);">
                         Equivalence: ${equivalence.toFixed(1)}%
                     </p>

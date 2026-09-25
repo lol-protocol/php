@@ -30,8 +30,13 @@ const groupBy = (items, keyFn) => {
     return groups;
 };
 
+const HTML_ESCAPES = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
+const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, char => HTML_ESCAPES[char]);
+
 // Splits one CSV line respecting double-quoted fields, so a quoted value
 // like "Cyprus, Northern" or an escaped "" isn't torn apart on its comma.
+// As in Excel and Python's csv, a quote only opens a quoted field at the
+// start of the field: the inch mark in `Tablet 10"` stays literal.
 const splitCSVLine = (line) => {
     const values = [];
     let current = '';
@@ -49,7 +54,7 @@ const splitCSVLine = (line) => {
             } else {
                 current += char;
             }
-        } else if (char === '"') {
+        } else if (char === '"' && current === '') {
             inQuotes = true;
         } else if (char === ',') {
             values.push(current);
@@ -67,7 +72,9 @@ const NUMERIC_FIELDS = new Set([
     'width_mm', 'height_mm', 'width_inches', 'height_inches', 'ppi', 'cost_factor',
     'durability_rating', 'page_range_min', 'page_range_max', 'year',
     'size_inches', 'screen_size_inches', 'pixels_width', 'pixels_height',
-    'resolution_width', 'resolution_height', 'release_year', 'refresh_hz'
+    'resolution_width', 'resolution_height', 'release_year', 'refresh_hz',
+    'top_mm', 'bottom_mm', 'inner_mm', 'outer_mm',
+    'top_inches', 'bottom_inches', 'inner_inches', 'outer_inches'
 ]);
 const parseCSV = (text, numericFields = NUMERIC_FIELDS) => {
     const lines = text.trim().split('\n');
@@ -77,7 +84,9 @@ const parseCSV = (text, numericFields = NUMERIC_FIELDS) => {
         const obj = {};
         headers.forEach((header, i) => {
             const value = values[i]?.trim() || '';
-            obj[header] = numericFields.has(header) && value ? parseFloat(value) : value;
+            // Placeholders like "N/A" or "100+" stay text instead of becoming NaN.
+            const isNumber = value !== '' && !Number.isNaN(Number(value));
+            obj[header] = numericFields.has(header) && isNumber ? Number(value) : value;
         });
         return obj;
     });
@@ -374,7 +383,7 @@ class DocumentGenerator {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>${title || formatName}</title>
+    <title>${escapeHtml(title || formatName)}</title>
     <style>
         @page {
             size: ${dims.widthCm}cm ${dims.heightCm}cm;
@@ -387,8 +396,8 @@ class DocumentGenerator {
     </style>
 </head>
 <body>
-    <h1>${title}</h1>
-    ${body}
+    <h1>${escapeHtml(title)}</h1>
+    ${body /* caller-supplied markup, inserted as-is */}
 </body>
 </html>
         `;
@@ -617,8 +626,8 @@ class FormatBatchProcessor {
         data.forEach(row => {
             const values = headers.map(h => {
                 const value = row[h];
-                return typeof value === 'string' && value.includes(',')
-                    ? `"${value}"`
+                return typeof value === 'string' && /[",\n]/.test(value)
+                    ? `"${value.replace(/"/g, '""')}"`
                     : value;
             });
             csv.push(values.join(','));
@@ -636,14 +645,14 @@ class FormatBatchProcessor {
         if (data.length > 0) {
             const headers = Object.keys(data[0]);
             headers.forEach(key => {
-                rows.push(`<th>${key}</th>`);
+                rows.push(`<th>${escapeHtml(key)}</th>`);
             });
             rows.push('</tr></thead><tbody>');
 
             data.forEach(row => {
                 rows.push('<tr>');
                 Object.values(row).forEach(value => {
-                    rows.push(`<td>${value}</td>`);
+                    rows.push(`<td>${escapeHtml(value)}</td>`);
                 });
                 rows.push('</tr>');
             });
@@ -1081,6 +1090,9 @@ class SpecificationManager {
 // Export all classes for use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
+        escapeHtml,
+        splitCSVLine,
+        parseCSV,
         FormatLoader,
         FormatSearcher,
         FormatConverter,

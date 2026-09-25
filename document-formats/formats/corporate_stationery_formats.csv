@@ -9,13 +9,13 @@ Envelope A4,110,220,4.3,8.7,110:220,International,Stationery,A4 envelope size,Do
 Envelope A5,89,152,3.5,6,3.5:6,International,Stationery,Small envelope,Small correspondence
 Envelope C6,114,162,4.5,6.4,4.5:6.4,International,Stationery,Postcard envelope,Small documents
 Envelope C5,162,229,6.4,9,6.4:9,International,Stationery,Medium envelope,Medium documents
-Envelope DL,110,220,4.3,8.7,110:220,International,Stationery,Long envelope,Bills, correspondence
+Envelope DL,110,220,4.3,8.7,110:220,International,Stationery,Long envelope,"Bills, correspondence"
 Folder Two Pocket,228,305,9,12,9:12,International,Stationery,Two pocket folder,Document folders
 Folder Fastener,228,305,9,12,9:12,International,Stationery,Folder with fasteners,Secured documents
 Folder Prong,228,305,9,12,9:12,International,Stationery,Folder with prongs,Organized documents
 Presentation Folder,254,305,10,12,10:12,International,Stationery,Custom presentation folder,Professional documents
 Memo Pad 3x5,76,127,3,5,3:5,International,Stationery,Small memo size,Office memos
-Memo Pad 4x6,102,152,4,6,4:6,International,Stationery,Standard memo pad,Memos, notes
+Memo Pad 4x6,102,152,4,6,4:6,International,Stationery,Standard memo pad,"Memos, notes"
 Tab Divider 5-Tab,203,279,8,11,8:11,International,Stationery,Five tab divider,Document organization
 Tab Divider 8-Tab,203,279,8,11,8:11,International,Stationery,Eight tab divider,Document organization
 Index Card 3x5,76,127,3,5,3:5,International,Stationery,Small index card,Reference cards
