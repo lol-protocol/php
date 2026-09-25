@@ -8,6 +8,6 @@ Leaflet,210,297,8.3,11.7,1:1.414,China,Marketing,Brochure size,Promotional mater
 Business Card Chinese,90,50,3.54,1.97,90:50,China,Card,Standard business card,Business cards
 Envelope DL,110,220,4.3,8.7,110:220,China,Envelope,Standard envelope,Business mail
 Envelope #10,104.78,241.3,4.125,9.5,4.125:9.5,China,Envelope,Large envelope,Business correspondence
-Contract Size,210,297,8.3,11.7,1:1.414,China,Legal,Standard contract format,Contracts, legal documents
-Invoice Size,190,270,7.48,10.63,190:270,China,Form,Invoice format,Invoices, receipts
-Receipt Size,75,190,2.95,7.48,75:190,China,Form,Receipt format,Receipts, tickets
+Contract Size,210,297,8.3,11.7,1:1.414,China,Legal,Standard contract format,"Contracts, legal documents"
+Invoice Size,190,270,7.48,10.63,190:270,China,Form,Invoice format,"Invoices, receipts"
+Receipt Size,75,190,2.95,7.48,75:190,China,Form,Receipt format,"Receipts, tickets"
