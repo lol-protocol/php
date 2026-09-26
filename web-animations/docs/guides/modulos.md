@@ -271,7 +271,7 @@ project/
 ├── common.css          (Variables y estilos base)
 ├── common.js           (Utilidades compartidas)
 ├── README.md           (Documentación)
-├── MODULOS.md          (Esta guía)
+├── modulos.md          (Esta guía)
 │
 └── animaciones/
     ├── animacion-a.html

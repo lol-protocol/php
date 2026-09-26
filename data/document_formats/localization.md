@@ -478,6 +478,6 @@ For additional help with the localization system:
 
 1. Check the translation files in `translations/` directory
 2. Review the `LocalizationManager` class in `examples.js`
-3. See the `TUTORIALS.md` for practical examples
+3. See the `tutorials.md` for practical examples
 4. Refer to the `frontend_implementation_guide.md` for integration patterns
 

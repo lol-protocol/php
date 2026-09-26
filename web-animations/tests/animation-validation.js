@@ -192,9 +192,9 @@ class AnimationTestSuite {
     let missingDocs = [];
 
     const docs = [
-      '../docs/guides/DRY-GUIDE.md',
-      '../docs/guides/MODULOS.md',
-      '../docs/analysis/ERRORS-FOUND.md'
+      '../docs/guides/dry-guide.md',
+      '../docs/guides/modulos.md',
+      '../docs/analysis/errors_found.md'
     ];
 
     for (const doc of docs) {

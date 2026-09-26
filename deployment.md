@@ -138,7 +138,7 @@ sudo mkdir -p /var/log/nginx/conce.com /var/log/nginx/initech.cl
 
 # Landing page - conce.com
 sudo nano /etc/nginx/sites-available/conce.com
-# Configurar según DOMAINS.md
+# Configurar según domains.md
 
 sudo ln -sf /etc/nginx/sites-available/conce.com /etc/nginx/sites-enabled/conce.com
 
@@ -202,7 +202,7 @@ source venv/bin/activate
 # Instalar dependencias
 pip install flask flask-cors psycopg2-binary python-dotenv gunicorn
 
-# Crear app.py (ver DOMAINS.md para contenido)
+# Crear app.py (ver domains.md para contenido)
 nano app.py
 
 # Crear requirements.txt
@@ -215,7 +215,7 @@ deactivate
 sudo chown -R www-data:www-data /var/www/contrastocolor.ink
 ```
 
-Configurar Nginx (ver DOMAINS.md) y SSL:
+Configurar Nginx (ver domains.md) y SSL:
 
 ```bash
 sudo mkdir -p /var/log/nginx/contrastocolor.ink
@@ -232,7 +232,7 @@ Crear servicio systemd:
 
 ```bash
 sudo nano /etc/systemd/system/contrastocolor.service
-# (Copiar contenido de DOMAINS.md)
+# (Copiar contenido de domains.md)
 
 sudo systemctl daemon-reload
 sudo systemctl enable contrastocolor
@@ -264,7 +264,7 @@ sudo chown -R www-data:www-data /var/www/wikipedia.cl
 sudo chmod -R 755 /var/www/wikipedia.cl
 ```
 
-Configurar Nginx (ver DOMAINS.md) y SSL:
+Configurar Nginx (ver domains.md) y SSL:
 
 ```bash
 sudo mkdir -p /var/log/nginx/wikipedia.cl
@@ -506,7 +506,7 @@ sudo systemctl reload nginx
 - **Email:** admin@conce.com
 - **Proveedor VPS:** OVHCloud (https://www.ovhcloud.com)
 - **Panel de administración:** Webmin — `https://158.69.222.245:10000` (opcional, mismo login que SSH)
-- **Documentación:** Ver ARCHITECTURE.md, TOOLS-AND-UTILITIES.md, DOMAINS.md
+- **Documentación:** Ver architecture.md, tools_and_utilities.md, domains.md
 
 ---
 

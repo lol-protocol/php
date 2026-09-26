@@ -156,4 +156,4 @@ ls -la /var/www/landing-page/tudominio.com/
 ./06_D-setup-tomcat-app.sh dominio.com mi-app   # App Java (Tomcat) detrás de Nginx
 ```
 
-Ver también: [ARCHITECTURE.md](../ARCHITECTURE.md), [DOMAINS.md](../DOMAINS.md), [DEPLOYMENT.md](../DEPLOYMENT.md), [TOOLS-AND-UTILITIES.md](../TOOLS-AND-UTILITIES.md)
+Ver también: [architecture.md](../architecture.md), [domains.md](../domains.md), [deployment.md](../deployment.md), [tools_and_utilities.md](../tools_and_utilities.md)

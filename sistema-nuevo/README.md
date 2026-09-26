@@ -14,7 +14,7 @@ chino, coreano, cirílico) y se leen bien sin importar el idioma elegido para la
 interfaz.
 
 Sistema independiente del protocolo LoL en PHP que vive en la raíz de este repositorio.
-Para usar el panel día a día, ver `MANUAL-USUARIO.md`; esto de acá es la referencia
+Para usar el panel día a día, ver `manual_usuario.md`; esto de acá es la referencia
 técnica/arquitectura.
 
 ## Arquitectura
@@ -30,7 +30,7 @@ todo está modularizado en piezas chicas y enfocadas.
 
 ```
 sistema-nuevo/
-├── MANUAL-USUARIO.md                Guía de uso del panel (no técnica)
+├── manual_usuario.md                Guía de uso del panel (no técnica)
 │
 ├── datos/                          Datos semilla + generador (modularizado)
 │   ├── generar-datos-semilla.php      Orquesta la generación (requiere generador/*.php)
