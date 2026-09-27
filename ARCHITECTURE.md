@@ -218,15 +218,16 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 
 ## 🚀 Fases de Implementación
 
-### **Fase 1: Setup Base** (ACTUAL)
+### **Fase 1: Setup Base** (completada para `initech.fun`)
 - [x] Instalación de software base
 - [x] Configuración de Nginx
 - [x] Webmin instalado (panel de administración opcional)
-- [ ] Landing pages (conce.com, initech.cl)
-- [ ] SSL/HTTPS (Let's Encrypt vía Certbot)
-- [ ] Configuración DNS
+- [x] Landing page (initech.fun)
+- [x] SSL/HTTPS (Let's Encrypt vía Certbot)
+- [x] Configuración DNS
 
-### **Fase 2: Aplicaciones Web**
+### **Fase 2: Más dominios y aplicaciones web** (ejemplos, no iniciada)
+- [ ] Landing pages de ejemplo (conce.com, initech.cl)
 - [ ] contrastocolor.ink (Aplicación Python)
 - [ ] wikipedia.cl (Aplicación PHP)
 - [ ] Base de datos PostgreSQL
