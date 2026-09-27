@@ -57,10 +57,14 @@ class PhoneticFusionDetector
 
             while (($index = self::mbStrpos($full, $needle, $searchFrom)) !== null) {
                 if (self::isReadableFusion($index, $index + $needleLen, $boundary, $total)) {
-                    $matches[] = $candidate['data'] + [
+                    // riskType pasa a 'fonetico': la fusión es el hallazgo, no el tema del
+                    // término que cruzó la unión (ese sigue disponible en 'category').
+                    $match = $candidate['data'] + [
                         'found' => $candidate['data']['original'],
                         'detectionMethod' => 'phonetic_fusion',
                     ];
+                    $match['riskType'] = 'fonetico';
+                    $matches[] = $match;
                 }
 
                 $searchFrom = $index + 1;

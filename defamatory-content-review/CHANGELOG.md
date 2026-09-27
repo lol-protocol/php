@@ -1,5 +1,25 @@
 # Changelog
 
+## [4.3.2] - 2026-09-27
+
+### Arreglado
+
+- **`riskType => 'fonetico'` era inalcanzable.** Estaba declarado en
+  `config/risk-categories.php` (con nombre, descripción y ejemplos) y
+  descrito de nuevo en `RiskReportBuilder::DESCRIPTIONS`, pero
+  `PhoneticFusionDetector::detectFusion()` heredaba el `riskType` del
+  término del diccionario que cruzaba la unión (`genero`, `ordinario`,
+  etc.), así que la categoría "Fonético" nunca salía en un reporte real.
+  Ahora una fusión detectada sí reporta `riskType => 'fonetico'`; el tema
+  original del término matcheado sigue disponible en `category`, sin
+  cambios. Efecto secundario: `getExplanations()` ahora dice "tipo
+  fonetico" en vez del tema original (p. ej. "tipo ordinario") para estos
+  casos — es coherente con el `riskType` real, pero menos específico
+  sobre qué clase de insulto formó la fusión.
+- 358 tests, sin regresiones. No afecta el puntaje ni la severidad: esos
+  siguen viniendo del campo `severity` del término matcheado, no de
+  `riskType`.
+
 ## [4.3.1] - 2026-09-25
 
 ### Cambiado (refactor sin cambio de comportamiento)
