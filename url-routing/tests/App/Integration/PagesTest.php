@@ -24,7 +24,7 @@ class PagesTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$dir = sys_get_temp_dir() . '/url-routing-pages-' . getmypid();
-        @mkdir(self::$dir . '/sessions', 0777, true);
+        @mkdir(self::$dir, 0777, true);
 
         foreach (['genealogy', 'pos'] as $site) {
             $file = self::$dir . "/{$site}.sqlite";
@@ -41,13 +41,9 @@ class PagesTest extends TestCase
     }
 
     /** @return array{int, string} [status, body] */
-    private function get(string $host, string $uri, ?int $usuario = null): array
+    private function get(string $host, string $uri): array
     {
-        $cmd = [PHP_BINARY, '-d', 'session.save_path=' . self::$dir . '/sessions', '-d', 'display_errors=stderr',
-            dirname(__DIR__, 2) . '/Support/request.php', $host, $uri];
-        if ($usuario !== null) {
-            $cmd[] = (string)$usuario;
-        }
+        $cmd = [PHP_BINARY, '-d', 'display_errors=stderr', dirname(__DIR__, 2) . '/Support/request.php', $host, $uri];
 
         $env = [
             'DB_DSN_GENEALOGY' => 'sqlite:' . self::$dir . '/genealogy.sqlite',
@@ -85,6 +81,12 @@ class PagesTest extends TestCase
             'lugar' => [self::GENEALOGIA, '/mx/jal/', 200, ['Jalisco', 'Tlaquepaque']],
             'lugar personas' => [self::GENEALOGIA, '/mx/jal/tlq/1/', 200, ['Rosa García Hernández']],
             'listado personas' => [self::GENEALOGIA, '/?t=10&q=mart%C3%ADnez', 200, ['Carlos García Martínez', 'Lucía García Martínez']],
+            // No login: every collection is reachable regardless of its "publica" flag.
+            'coleccion privada' => [self::GENEALOGIA, '/1048294/', 200, ['Borrador de Luis']],
+            'editar coleccion' => [self::GENEALOGIA, '/1048293/2/', 200, ['Familia García', 'Visibilidad']],
+            'cuenta' => [self::GENEALOGIA, '/0/', 200, ['Ana Demo']],
+            'cuenta colecciones' => [self::GENEALOGIA, '/0/1/', 200, ['Familia García']],
+            'cuenta pos' => [self::POS, '/0/', 200, ['Ana Demo']],
             'producto' => [self::POS, '/81372047/', 200, ['Camiseta básica', '$199.00 MXN', 'Algodón orgánico', 'Agotado']],
             'producto descontinuado' => [self::POS, '/81372050/', 200, ['descontinuado']],
             'variantes' => [self::POS, '/81372048/1/', 200, ['$749.00 MXN', '$699.00 MXN']],
@@ -114,12 +116,8 @@ class PagesTest extends TestCase
             'persona inexistente' => [self::GENEALOGIA, '/6128473199/', 404],
             'accion inexistente' => [self::GENEALOGIA, '/6128473105/9/', 404],
             'lugar inexistente' => [self::GENEALOGIA, '/zz/', 404],
-            'coleccion privada ajena' => [self::GENEALOGIA, '/1048294/', 404],
             'listado tipo invalido' => [self::GENEALOGIA, '/?t=99', 400],
-            'cuenta sin sesion' => [self::GENEALOGIA, '/0/', 401],
-            'editar sin sesion' => [self::GENEALOGIA, '/1048293/2/', 401],
             'producto inexistente' => [self::POS, '/99999999/', 404],
-            'orden sin sesion' => [self::POS, '/order/8137204719000/', 401],
         ];
     }
 
@@ -138,40 +136,27 @@ class PagesTest extends TestCase
         $this->assertStringContainsString('Sin productos disponibles', $body);
     }
 
-    public function testOwnerSeesPrivateCollection(): void
+    /** No login: any order id is reachable by anyone, not just whoever placed it. */
+    public function testAnyOrderIsReachableWithoutASession(): void
     {
-        [$codigo, $body] = $this->get(self::GENEALOGIA, '/1048294/', usuario: 2);
-
-        $this->assertSame(200, $codigo);
-        $this->assertStringContainsString('Borrador de Luis', $body);
-    }
-
-    public function testOnlyTheAuthorCanOpenEditar(): void
-    {
-        $this->assertSame(200, $this->get(self::GENEALOGIA, '/1048293/2/', usuario: 1)[0]);
-        $this->assertSame(403, $this->get(self::GENEALOGIA, '/1048293/2/', usuario: 2)[0]);
-    }
-
-    public function testOrderIsVisibleOnlyToItsOwner(): void
-    {
-        [$codigo, $body] = $this->get(self::POS, '/order/8137204719000/', usuario: 1);
+        [$codigo, $body] = $this->get(self::POS, '/order/8137204719000/');
         $this->assertSame(200, $codigo);
         $this->assertStringContainsString('$647.00 MXN', $body);
-        $this->assertStringContainsString('MX123456789', $this->get(self::POS, '/order/8137204719000/2/', usuario: 1)[1]);
+        $this->assertStringContainsString('MX123456789', $this->get(self::POS, '/order/8137204719000/2/')[1]);
 
-        // Another user's order is a 404, not a 403: ids are sequential.
-        $this->assertSame(404, $this->get(self::POS, '/order/8137204719000/', usuario: 2)[0]);
+        $this->assertSame(200, $this->get(self::POS, '/order/8137204719001/')[0]);
     }
 
-    public function testAccountPagesAreScopedToTheUser(): void
+    /** No login: the account pages act on a fixed account (BaseController::DEFAULT_USER_ID). */
+    public function testAccountPagesShowTheFixedAccount(): void
     {
-        [, $ordenes] = $this->get(self::POS, '/0/2/', usuario: 1);
+        [, $ordenes] = $this->get(self::POS, '/0/2/');
         $this->assertStringContainsString('8137204719000', $ordenes);
         $this->assertStringNotContainsString('8137204719001', $ordenes);
 
-        [, $aportes] = $this->get(self::GENEALOGIA, '/0/2/', usuario: 2);
-        $this->assertStringContainsString('Carlos García Martínez', $aportes);
-        $this->assertStringNotContainsString('José García Álvarez', $aportes);
+        [, $aportes] = $this->get(self::GENEALOGIA, '/0/2/');
+        $this->assertStringContainsString('José García Álvarez', $aportes);
+        $this->assertStringNotContainsString('Carlos García Martínez', $aportes);
     }
 
     public function testExportIsValidGedcom(): void

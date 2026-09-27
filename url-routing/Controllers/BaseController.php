@@ -9,14 +9,12 @@ use App\Support\ServiceLocator;
 
 class BaseController
 {
-    protected function requireAuth(): bool
-    {
-        if (!isset($_SESSION['user_id'])) {
-            http_response_code(401);
-            return false;
-        }
-        return true;
-    }
+    /**
+     * This app has no login: it's a single-tenant addon, not a
+     * multi-user product, so account pages act on a fixed user
+     * instead of a session identity.
+     */
+    protected const DEFAULT_USER_ID = 1;
 
     protected function validateCsrfToken(): bool
     {
@@ -32,27 +30,6 @@ class BaseController
     protected function getCsrfToken(): string
     {
         return ServiceLocator::getInstance()->getSessionManager()->setCsrfToken();
-    }
-
-    protected function getCurrentUserId(): int|null
-    {
-        return isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : null;
-    }
-
-    /** Whether the logged-in user owns a resource whose owner id came from the DB. */
-    protected function isOwner(int|string|null $resourceOwnerId): bool
-    {
-        $userId = $this->getCurrentUserId();
-        return $userId !== null && $resourceOwnerId !== null && $userId === (int)$resourceOwnerId;
-    }
-
-    protected function validateResourceOwnership(int|string|null $resourceOwnerId): bool
-    {
-        if (!$this->isOwner($resourceOwnerId)) {
-            http_response_code(403);
-            return false;
-        }
-        return true;
     }
 
     protected function validateId(mixed $id): string|null
@@ -101,18 +78,6 @@ class BaseController
     {
         http_response_code(404);
         return '<h1>404 - ' . htmlspecialchars($message) . '</h1>';
-    }
-
-    protected function handleUnauthorized(string $message = 'Unauthorized'): string
-    {
-        http_response_code(401);
-        return '<h1>401 - ' . htmlspecialchars($message) . '</h1>';
-    }
-
-    protected function handleForbidden(string $message = 'Forbidden'): string
-    {
-        http_response_code(403);
-        return '<h1>403 - ' . htmlspecialchars($message) . '</h1>';
     }
 
     protected function handleBadRequest(string $message = 'Bad Request'): string

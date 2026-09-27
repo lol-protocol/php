@@ -40,10 +40,11 @@ fallan si una ruta apunta a un controlador/método inexistente o si un
 controlador referencia una vista sin archivo, así que agregar un tipo nuevo sin
 completar las piezas rompe CI en vez de dar un 500 en producción.
 
-**Pendiente:** carrito, checkout, edición de colecciones, devoluciones y
-preferencias muestran un aviso de "todavía no disponible" — son flujos de
-escritura que necesitan un inicio de sesión, y el proyecto todavía no tiene
-uno (las páginas de cuenta ya funcionan con `$_SESSION['user_id']`).
+**Pendiente:** carrito, checkout, devoluciones y preferencias muestran un
+aviso de "todavía no disponible" — son flujos de escritura sin implementar
+todavía. El proyecto no tiene inicio de sesión (es un addon de un solo
+operador, no un producto multiusuario): la página de cuenta (`0`) y la
+edición de colecciones actúan sobre una cuenta fija en vez de una sesión.
 
 ## 🧠 Principio de diseño
 
