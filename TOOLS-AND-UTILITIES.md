@@ -87,11 +87,12 @@ sudo systemctl restart nginx   # Reiniciar completamente
 sudo systemctl status nginx    # Ver estado
 ```
 
-**Archivos de configuración creados:**
-- `/etc/nginx/sites-available/conce.com`
-- `/etc/nginx/sites-available/initech.cl`
-- `/etc/nginx/sites-available/contrastocolor.ink`
-- `/etc/nginx/sites-available/wikipedia.cl`
+**Archivos de configuración creados** (uno por dominio que hayas configurado con `03-configure-nginx-site.sh`; `initech.fun` es el dominio real, los demás son ejemplos de cómo agregar otro):
+- `/etc/nginx/sites-available/initech.fun` (dominio real)
+- `/etc/nginx/sites-available/conce.com` (ejemplo)
+- `/etc/nginx/sites-available/initech.cl` (ejemplo)
+- `/etc/nginx/sites-available/contrastocolor.ink` (ejemplo)
+- `/etc/nginx/sites-available/wikipedia.cl` (ejemplo)
 
 ### Apache Tomcat 10 *(opcional)*
 **Propósito:** Servidor de aplicaciones para Java (servlets, WAR) — Nginx no ejecuta Java, así que para apps Java se usa Tomcat detrás de Nginx como reverse proxy

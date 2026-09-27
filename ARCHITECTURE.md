@@ -14,12 +14,24 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 
 ## 🌐 Dominios Configurados
 
+**`initech.fun`** es el dominio real, comprado y con la landing page ya
+desplegada — es el que usan por defecto todos los scripts de `vps-setup/`
+(`initech.fun` es el valor default de `$DOMAIN` en cada script) y el que
+referencia `landing-page/index.html`.
+
+Los demás dominios de esta tabla (`conce.com`, `initech.cl`,
+`contrastocolor.ink`, `wikipedia.cl`) son **ejemplos ilustrativos** de cómo
+extender esta misma arquitectura a un segundo/tercer/cuarto dominio en el
+mismo VPS (documentados en detalle en [DOMAINS.md](DOMAINS.md)) — todavía no
+están registrados ni configurados.
+
 | Dominio | Tipo | Propósito | Status |
 |---------|------|----------|--------|
-| **conce.com** | Landing Page | Sitio principal (Conce) | 🔄 Pendiente |
-| **initech.cl** | Landing Page | Sitio corporativo (Initech) | 🔄 Pendiente |
-| **contrastocolor.ink** | Aplicación | Portal de colores/diseño | 🔄 Pendiente |
-| **wikipedia.cl** | Aplicación | Wiki local | 🔄 Pendiente |
+| **initech.fun** | Landing Page | Sitio real (Initech) | ✅ Activo |
+| conce.com | Landing Page | Ejemplo de 2do dominio (Conce) | 🔄 Ejemplo, no registrado |
+| initech.cl | Landing Page | Ejemplo de 2do dominio (Initech) | 🔄 Ejemplo, no registrado |
+| contrastocolor.ink | Aplicación | Ejemplo de app (Portal de colores/diseño) | 🔄 Ejemplo, no registrado |
+| wikipedia.cl | Aplicación | Ejemplo de app (Wiki local) | 🔄 Ejemplo, no registrado |
 
 ---
 
@@ -284,7 +296,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 
 ## 📞 Contacto & Soporte
 
-- **Email:** admin@initech.cl
+- **Email:** admin@initech.fun
 - **Proveedor VPS:** OVHCloud Support
 - **Monitoreo:** Alertas automáticas
 

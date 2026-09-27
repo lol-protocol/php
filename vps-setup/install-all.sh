@@ -9,6 +9,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 source lib.sh
 
+# Obtener y exportar la IP publica UNA sola vez, ANTES de lanzar los scripts
+# hijos: get_public_ip() exporta CACHED_PUBLIC_IP, y una variable exportada
+# SI la heredan los procesos "bash ./script.sh" del loop de abajo (a
+# diferencia de una variable sin exportar). Asi 02_J-install-webmin.sh reusa
+# esta misma IP en vez de volver a consultar ifconfig.me.
+IP=$(get_public_ip)
+
 echo ""
 echo "╔════════════════════════════════════════════════════════════╗"
 echo "║   VPS Setup Completo - Ubuntu 24 LTS                      ║"
@@ -94,7 +101,6 @@ echo "  Access: /var/log/nginx/$DOMAIN/access.log"
 echo "  Error:  /var/log/nginx/$DOMAIN/error.log"
 echo ""
 echo "Panel de administracion (Webmin):"
-IP=$(get_public_ip)  # Usa IP cacheada de 02_J (evita duplicate fetch)
 echo "  🔗 https://$IP:10000  (usuario/contraseña: los mismos que por SSH)"
 echo ""
 echo "Pasos opcionales (independientes entre si):"

@@ -2,6 +2,11 @@
 
 Esta guía te llevará a través de todos los pasos para configurar tu VPS (Ubuntu 24 LTS) con una landing page, SSL/HTTPS y todos los componentes necesarios.
 
+**Nota:** el dominio real ya comprado y desplegado es **`initech.fun`** (ver
+[ARCHITECTURE.md](ARCHITECTURE.md)). Los comandos de abajo usan `initech.cl`
+como ejemplo genérico del proceso — sustituye por `initech.fun` (o el
+dominio que quieras agregar) en cada comando.
+
 ## 📋 Contenido
 
 1. [Requisitos Previos](#requisitos-previos)
@@ -54,7 +59,7 @@ Esta es la forma más rápida. El script ejecuta todos los pasos automáticament
 ```bash
 # En el VPS, ejecuta:
 cd /tmp
-git clone https://github.com/tu-usuario/php.git
+git clone https://github.com/lol-protocol/php.git
 cd php/vps-setup
 ```
 
