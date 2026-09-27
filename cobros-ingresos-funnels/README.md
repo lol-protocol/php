@@ -211,6 +211,9 @@ src/
   EnvioUnico.php        token de un solo uso de los formularios de alta: un doble
                         clic no crea dos pagos ni dos boletas, testeado
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
+  Etiquetas.php         traduce estado de boleta/metodo de pago/canal a su
+                        etiqueta en español, en un solo lugar para no repetir
+                        el mismo array en cada vista que los muestra, testeado
   Paginacion.php        helper de paginación (página/offset/total, testeado)
   Csrf.php              token CSRF por sesión propia (no depende de ningún login),
                         verificado en Router (testeado)

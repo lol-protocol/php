@@ -1,14 +1,12 @@
 <?php
 
+use App\Etiquetas;
+
 /** @var array $cliente */
 /** @var array $boletas */
 /** @var array $pagos */
 /** @var array $notasCredito */
 /** @var array|null $viajeFunnel */
-
-$estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 'Parcial', 'vencida' => 'Vencida', 'anulada' => 'Anulada'];
-$metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efectivo' => 'Efectivo'];
-$canalLabel = ['organico' => 'Organico', 'ads' => 'Ads', 'referido' => 'Referido', 'redes_sociales' => 'Redes sociales', 'email' => 'Email'];
 
 $nacimiento = new DateTimeImmutable($cliente['fecha_nacimiento']);
 $edad = $nacimiento->diff(new DateTimeImmutable('today'))->y;
@@ -42,7 +40,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
 <div class="panel">
     <h2>Recorrido por el funnel</h2>
     <p class="subtitulo">
-        Llego por canal <strong><?= $canalLabel[$viajeFunnel['canal']] ?? htmlspecialchars($viajeFunnel['canal']) ?></strong>.
+        Llego por canal <strong><?= htmlspecialchars(Etiquetas::canal($viajeFunnel['canal'])) ?></strong>.
     </p>
     <div class="perfil-grid">
         <div class="campo"><span class="label">Visita</span><span class="valor"><?= htmlspecialchars($viajeFunnel['fecha_visita']) ?></span></div>
@@ -81,7 +79,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
                     <td><?= htmlspecialchars($b['fecha_vencimiento']) ?></td>
                     <td class="num"><?= money_moneda((float) $b['monto'], $b['moneda_codigo']) ?></td>
                     <td class="num"><?= money_moneda((float) $b['saldo'], $b['moneda_codigo']) ?></td>
-                    <td><span class="badge <?= $b['estado'] ?>"><?= $estadosLabel[$b['estado']] ?></span></td>
+                    <td><span class="badge <?= $b['estado'] ?>"><?= Etiquetas::estadoBoleta($b['estado']) ?></span></td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!$boletas): ?>
@@ -103,7 +101,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
             <?php foreach ($pagos as $p): ?>
                 <tr>
                     <td><?= htmlspecialchars($p['fecha_pago']) ?></td>
-                    <td><?= $metodoLabel[$p['metodo']] ?? htmlspecialchars($p['metodo']) ?></td>
+                    <td><?= htmlspecialchars(Etiquetas::metodoPago($p['metodo'])) ?></td>
                     <td><?= $p['boleta_id'] ? 'Boleta #' . (int) $p['boleta_id'] : 'Anticipo' ?></td>
                     <td class="num"><?= money_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
                     <td>

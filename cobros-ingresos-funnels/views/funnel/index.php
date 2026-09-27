@@ -1,5 +1,7 @@
 <?php
 
+use App\Etiquetas;
+
 /** @var array $resumen */
 /** @var array $porCanal */
 /** @var array $porPais */
@@ -20,7 +22,6 @@ $etapas = [
 ];
 $maxEtapa = max(1, ...array_values($etapas));
 $rampaFunnel = ['var(--seq-250)', 'var(--seq-350)', 'var(--seq-450)', 'var(--seq-600)'];
-$canalLabel = ['organico' => 'Organico', 'ads' => 'Ads', 'referido' => 'Referido', 'redes_sociales' => 'Redes sociales', 'email' => 'Email'];
 
 $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visitantes'] * 100 : 0.0;
 ?>
@@ -110,7 +111,7 @@ $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visi
                 <tbody>
                 <?php foreach ($porCanal as $c): $tasa = $c['visitantes'] > 0 ? $c['clientes'] / $c['visitantes'] * 100 : 0; ?>
                     <tr>
-                        <td><?= $canalLabel[$c['canal']] ?? htmlspecialchars($c['canal']) ?></td>
+                        <td><?= htmlspecialchars(Etiquetas::canal($c['canal'])) ?></td>
                         <td class="num"><?= $c['visitantes'] ?></td>
                         <td class="num"><?= $c['registrados'] ?></td>
                         <td class="num"><?= $c['leads'] ?></td>

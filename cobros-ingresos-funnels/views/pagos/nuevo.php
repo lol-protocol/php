@@ -2,6 +2,7 @@
 
 use App\Csrf;
 use App\EnvioUnico;
+use App\Etiquetas;
 
 /** @var array $clientes */
 /** @var array|null $clienteElegido */
@@ -9,7 +10,6 @@ use App\EnvioUnico;
 /** @var string|null $error */
 
 $hoy = date('Y-m-d');
-$metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efectivo' => 'Efectivo'];
 ?>
 
 <h1>Nuevo pago</h1>
@@ -60,7 +60,7 @@ $metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efe
 
             <label for="metodo">Metodo</label>
             <select name="metodo" id="metodo" required>
-                <?php foreach ($metodoLabel as $clave => $etiqueta): ?>
+                <?php foreach (Etiquetas::metodosPago() as $clave => $etiqueta): ?>
                     <option value="<?= $clave ?>"><?= $etiqueta ?></option>
                 <?php endforeach; ?>
             </select>

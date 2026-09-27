@@ -1,6 +1,7 @@
 <?php
 
 use App\Config;
+use App\Etiquetas;
 
 /** @var array $kpis */
 /** @var float $carteraPendiente */
@@ -16,8 +17,6 @@ use App\Config;
 /** @var bool $personalizado */
 /** @var string $estado */
 /** @var string $cliente */
-
-$estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 'Parcial', 'vencida' => 'Vencida', 'anulada' => 'Anulada'];
 ?>
 
 <h1>Cobros e ingresos</h1>
@@ -35,7 +34,7 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
     <label for="estado">Estado</label>
     <select name="estado" id="estado">
         <option value="">Todos</option>
-        <?php foreach ($estadosLabel as $clave => $etiqueta): ?>
+        <?php foreach (Etiquetas::estadosBoleta() as $clave => $etiqueta): ?>
             <option value="<?= $clave ?>" <?= $estado === $clave ? 'selected' : '' ?>><?= $etiqueta ?></option>
         <?php endforeach; ?>
     </select>
@@ -100,7 +99,7 @@ $estadosLabel = ['pagada' => 'Pagada', 'pendiente' => 'Pendiente', 'parcial' => 
                     <td><?= htmlspecialchars($b['fecha_vencimiento']) ?></td>
                     <td class="num"><?= money_moneda((float) $b['monto'], $b['moneda_codigo']) ?></td>
                     <td class="num"><?= money_moneda((float) $b['saldo'], $b['moneda_codigo']) ?></td>
-                    <td><span class="badge <?= $b['estado'] ?>"><?= $estadosLabel[$b['estado']] ?></span></td>
+                    <td><span class="badge <?= $b['estado'] ?>"><?= Etiquetas::estadoBoleta($b['estado']) ?></span></td>
                     <td class="acciones">
                         <?php if ($b['estado'] !== 'anulada'): ?>
                             <a href="?page=boleta-editar&id=<?= (int) $b['id'] ?>">Editar</a>

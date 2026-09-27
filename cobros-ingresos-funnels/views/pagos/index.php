@@ -1,6 +1,7 @@
 <?php
 
 use App\Config;
+use App\Etiquetas;
 
 /** @var array $cobrosPorMes */
 /** @var array $porMetodo */
@@ -15,7 +16,6 @@ use App\Config;
 /** @var string $cliente */
 
 $coloresMetodo = ['transferencia' => 'var(--series-1)', 'tarjeta' => 'var(--series-2)', 'efectivo' => 'var(--seq-350)'];
-$metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efectivo' => 'Efectivo'];
 $maxMetodo = 1.0;
 foreach ($porMetodo as $fila) {
     $maxMetodo = max($maxMetodo, (float) $fila['total']);
@@ -77,13 +77,13 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
         <h2>Por metodo de pago</h2>
         <?php foreach ($porMetodo as $fila): ?>
             <div class="hbar-row">
-                <span class="hbar-label"><?= $metodoLabel[$fila['metodo']] ?? htmlspecialchars($fila['metodo']) ?></span>
+                <span class="hbar-label"><?= htmlspecialchars(Etiquetas::metodoPago($fila['metodo'])) ?></span>
                 <span class="hbar-track">
                     <?= svg_barra(
                         'hbar-fill',
                         'width:' . pct_altura((float) $fila['total'], $maxMetodo) . '%',
                         $coloresMetodo[$fila['metodo']] ?? 'var(--series-1)',
-                        ($metodoLabel[$fila['metodo']] ?? $fila['metodo']) . ': ' . Config::money((float) $fila['total']) . ' (' . $fila['cantidad'] . ')',
+                        Etiquetas::metodoPago($fila['metodo']) . ': ' . Config::money((float) $fila['total']) . ' (' . $fila['cantidad'] . ')',
                         3
                     ) ?>
                 </span>
@@ -108,7 +108,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
                 <tr>
                     <td><a href="?page=cliente&id=<?= (int) $p['cliente_id'] ?>"><?= htmlspecialchars($p['cliente']) ?></a></td>
                     <td><?= htmlspecialchars($p['fecha_pago']) ?></td>
-                    <td><?= $metodoLabel[$p['metodo']] ?? htmlspecialchars($p['metodo']) ?></td>
+                    <td><?= htmlspecialchars(Etiquetas::metodoPago($p['metodo'])) ?></td>
                     <td><?= $p['boleta_id'] ? 'Boleta #' . (int) $p['boleta_id'] : 'Anticipo' ?></td>
                     <td class="num"><?= money_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
                     <td class="acciones">

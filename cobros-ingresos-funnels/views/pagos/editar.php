@@ -1,11 +1,10 @@
 <?php
 
 use App\Csrf;
+use App\Etiquetas;
 
 /** @var array $pago */
 /** @var string|null $error */
-
-$metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efectivo' => 'Efectivo'];
 ?>
 
 <h1>Editar pago #<?= (int) $pago['id'] ?></h1>
@@ -29,7 +28,7 @@ $metodoLabel = ['transferencia' => 'Transferencia', 'tarjeta' => 'Tarjeta', 'efe
 
         <label for="metodo">Metodo</label>
         <select name="metodo" id="metodo" required>
-            <?php foreach ($metodoLabel as $clave => $etiqueta): ?>
+            <?php foreach (Etiquetas::metodosPago() as $clave => $etiqueta): ?>
                 <option value="<?= $clave ?>" <?= $pago['metodo'] === $clave ? 'selected' : '' ?>><?= $etiqueta ?></option>
             <?php endforeach; ?>
         </select>
