@@ -2,6 +2,17 @@
 
 ## [Sin publicar]
 
+### Añadido
+
+- **Vocabulario ampliado en los 3 diccionarios `basic`**: islandés
+  (60 → 65 términos), swahili (61 → 71) y tagalo (60 → 80). Términos reales
+  nuevos en `animal`, `intelectual`, `fisico`, `discapacidad`, `moral`,
+  `genero`, `ordinario` y `burlesco` (categoría nueva en swahili y tagalo).
+  Ninguno se generó por plantilla ni traducción automática de otro idioma.
+  Sin revisión de hablante nativo todavía (ver `CONTRIBUTING.md`): sigue
+  siendo la prioridad antes de subir cualquiera de los tres a `moderate`.
+  `DictionaryIntegrityTest` y `CommonNamesFalsePositiveTest` verificados.
+
 ### Cambiado
 
 - Se restauró `_Garbage/`, borrado en 4.3.0: la decisión es conservar como
