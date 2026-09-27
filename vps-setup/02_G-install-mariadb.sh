@@ -1,17 +1,15 @@
 #!/bin/bash
 set -e
 
-echo "========================================"
-echo "[02_G] Instalacion de MariaDB"
-echo "========================================"
-echo ""
+source "$(dirname "$0")/lib.sh"
+
+print_header "02_G" "Instalacion de MariaDB"
 
 # mariadb-server: el motor de base de datos (fork de MySQL, compatible casi 1:1)
 # mariadb-client: el comando 'mysql'/'mariadb' para conectarte desde la terminal
 sudo apt-get install -y mariadb-server mariadb-client
 
-sudo systemctl start mariadb
-sudo systemctl enable mariadb   # Arranca automaticamente si el VPS se reinicia
+service_start_enable mariadb
 
 echo ""
 echo "✓ MariaDB instalado"
