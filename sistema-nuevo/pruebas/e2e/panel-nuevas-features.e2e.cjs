@@ -77,11 +77,45 @@ async function intentarLogin(page, password) {
 
   await paso("guardar un filtro con el backend caído muestra un toast de error", async () => {
     await page.route("**/api/filtros", (route) => route.abort("failed"));
-    page.once("dialog", (dialog) => dialog.accept("filtro que va a fallar"));
     await page.click("#btn-guardar-filtro");
+    await page.waitForSelector(".modal-fondo");
+    await page.fill(".modal-caja input", "filtro que va a fallar");
+    await page.click(".modal-btn-confirmar");
     await page.waitForSelector("#toast-error:not([hidden])", { timeout: 2000 });
     assert.equal((await page.textContent("#toast-error")).length > 0, true);
     await page.unroute("**/api/filtros");
+  });
+
+  await paso("guardar/eliminar un filtro por la UI usa el modal propio, no los diálogos nativos del navegador", async () => {
+    ejecutarSql("DELETE FROM filtros_guardados WHERE nombre = 'e2e-test-filtro-modal';"); // por si quedó sucio de una corrida anterior interrumpida
+
+    let aparecioDialogoNativo = false;
+    page.on("dialog", () => { aparecioDialogoNativo = true; });
+
+    await page.click("#btn-guardar-filtro");
+    await page.waitForSelector(".modal-fondo");
+    await page.fill(".modal-caja input", "e2e-test-filtro-modal");
+    await page.click(".modal-btn-confirmar");
+    await page.waitForSelector(".modal-fondo", { state: "detached" });
+    // state: "attached" -- un <option> no es "visible" para Playwright salvo que su <select> esté abierto.
+    await page.waitForSelector("#saved-filters-select option:has-text('e2e-test-filtro-modal')", { state: "attached" });
+
+    // Cancelar el modal de confirmación de borrado no borra nada.
+    await page.selectOption("#saved-filters-select", { label: "e2e-test-filtro-modal" });
+    await page.click("#btn-eliminar-filtro");
+    await page.waitForSelector(".modal-fondo");
+    await page.click(".modal-btn-cancelar");
+    await page.waitForSelector(".modal-fondo", { state: "detached" });
+    assert.equal(await page.locator("#saved-filters-select option:has-text('e2e-test-filtro-modal')").count(), 1);
+
+    // Confirmarlo sí borra (peligroso: true -> botón .modal-btn-peligro, no .modal-btn-confirmar).
+    await page.click("#btn-eliminar-filtro");
+    await page.waitForSelector(".modal-fondo");
+    await page.click(".modal-btn-peligro");
+    await page.waitForSelector("#saved-filters-select option:has-text('e2e-test-filtro-modal')", { state: "detached" });
+
+    assert.equal(aparecioDialogoNativo, false);
+    page.removeAllListeners("dialog");
   });
 
   await paso("cambiar rápido entre 2 filtros guardados aplica el más nuevo, no el que responde último", async () => {

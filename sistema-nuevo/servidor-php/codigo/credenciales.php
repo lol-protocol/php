@@ -3,7 +3,11 @@
 declare(strict_types=1);
 
 /**
- * Credencial demo del backoffice (usuario único, sin roles).
+ * Credencial demo del backoffice (usuario único, sin roles) -- solo semilla:
+ * datos/generador/cargar-postgres-nucleo.php la carga una vez a la tabla
+ * administradores al generar los datos. El login en vivo valida contra esa
+ * tabla (AlmacenAdministradores), no contra este archivo -- para cambiar la
+ * contraseña demo hay que regenerar los datos después de editar esto.
  *
  * Usuario:     admin
  * Contraseña:  admin123
