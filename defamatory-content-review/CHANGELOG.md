@@ -1,5 +1,13 @@
 # Changelog
 
+## [Sin publicar]
+
+### Cambiado
+
+- Se restauró `_Garbage/`, borrado en 4.3.0: la decisión es conservar como
+  referencia lo obsoleto en vez de borrarlo. Su README explica por qué
+  ninguno de esos archivos debe reconectarse al motor.
+
 ## [4.3.0] - 2026-09-25
 
 ### Arreglado

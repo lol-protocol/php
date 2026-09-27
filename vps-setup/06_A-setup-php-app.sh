@@ -1,22 +1,18 @@
 #!/bin/bash
 set -e
 
+source "$(dirname "$0")/lib.sh"
+
 APP_NAME=${1:-"php-app"}
 DOMAIN=${2:-"app.initech.cl"}
 APP_PATH="/var/www/$APP_NAME"
 
-echo "========================================"
-echo "[06_A] Configurando Aplicacion PHP: $APP_NAME"
-echo "Dominio: $DOMAIN"
-echo "========================================"
-echo ""
+print_header "06_A" "Configurando Aplicacion PHP: $APP_NAME (Dominio: $DOMAIN)"
 
 # Carpeta donde vivira esta app (separada de /var/www/landing-page), y su
 # propia carpeta de logs -- si no existe, "nginx -t" falla mas abajo porque
 # Nginx no crea directorios el solo, solo los archivos de log dentro de ellos.
-sudo mkdir -p $APP_PATH
-sudo mkdir -p /var/log/nginx/$DOMAIN
-sudo chown -R www-data:www-data $APP_PATH   # www-data es el usuario con el que corre Nginx/PHP-FPM
+setup_app_directories "$APP_PATH" "$DOMAIN"
 
 # Pagina de prueba minima para confirmar que PHP-FPM + Nginx estan sirviendo
 # correctamente antes de subir el codigo real de la app. A proposito NO usa
