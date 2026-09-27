@@ -139,6 +139,6 @@ final class DatabaseTransaccionTest extends TestCase
     {
         $this->expectException(LogicException::class);
 
-        AuditoriaRepository::auditarComoUsuarioActual('crear', 'prueba_transaccion', 1, 'Fuera de transaccion');
+        AuditoriaRepository::auditar('crear', 'prueba_transaccion', 1, 'Fuera de transaccion');
     }
 }

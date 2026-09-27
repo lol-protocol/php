@@ -121,7 +121,7 @@ final class PagosController
                             'fecha_pago' => $fechaPago,
                             'metodo' => $metodo,
                         ]);
-                        AuditoriaRepository::auditarComoUsuarioActual('crear', 'pago', $id, sprintf(
+                        AuditoriaRepository::auditar('crear', 'pago', $id, sprintf(
                             'Pago #%d de %s: %s%s',
                             $id,
                             $clienteElegido['nombre'],
@@ -255,7 +255,7 @@ final class PagosController
                 $antes = money_moneda((float) $pago['monto'], $pago['moneda_codigo']) . " ({$pago['metodo']})";
                 $despues = money_moneda($monto, $pago['moneda_codigo']) . " ({$metodo})";
                 $pagoRepo->actualizar($id, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
-                AuditoriaRepository::auditarComoUsuarioActual('editar', 'pago', $id, sprintf('Pago #%d: %s -> %s', $id, $antes, $despues));
+                AuditoriaRepository::auditar('editar', 'pago', $id, sprintf('Pago #%d: %s -> %s', $id, $antes, $despues));
                 return null;
             });
 
@@ -311,7 +311,7 @@ final class PagosController
                 if (!$pagoRepo->anularSiEstabaActiva($id)) {
                     return false;
                 }
-                AuditoriaRepository::auditarComoUsuarioActual('anular', 'pago', $id, sprintf(
+                AuditoriaRepository::auditar('anular', 'pago', $id, sprintf(
                     'Pago #%d (%s)',
                     $id,
                     money_moneda((float) $pago['monto'], $pago['moneda_codigo'])

@@ -33,7 +33,7 @@ final class AuditoriaRepository
      * flujos (altas, ediciones, usuarios); con la exigencia, un flujo nuevo
      * que se olvide la transaccion falla en los tests en vez de en silencio.
      */
-    public static function auditarComoUsuarioActual(string $accion, string $entidad, int $entidadId, string $detalle): void
+    public static function auditar(string $accion, string $entidad, int $entidadId, string $detalle): void
     {
         if (!Database::connection()->inTransaction()) {
             throw new LogicException(sprintf(

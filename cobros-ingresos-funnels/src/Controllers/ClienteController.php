@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Database;
+use App\EnvioUnico;
 use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
@@ -61,6 +61,15 @@ final class ClienteController
         $error = null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $token = EnvioUnico::tokenRecibido();
+            $reenvio = $token === null ? null : EnvioUnico::redireccionPrevia($token);
+            if ($reenvio !== null) {
+                // Mismo formulario enviado otra vez (doble clic): el cliente ya
+                // se creo, se redirige igual que la primera vez.
+                header('Location: ' . $reenvio);
+                exit;
+            }
+
             $nombre = trim((string) ($_POST['nombre'] ?? ''));
             $email = trim((string) ($_POST['email'] ?? ''));
             $paisCodigo = (string) ($_POST['pais_codigo'] ?? '');
@@ -70,13 +79,15 @@ final class ClienteController
             $fechaNacimiento = (string) ($_POST['fecha_nacimiento'] ?? '');
             $segmento = (string) ($_POST['segmento'] ?? 'general');
 
-            if (Validacion::faltanCampos([$nombre, $email, $paisCodigo, $ciudad, $fechaNacimiento])) {
+            if ($token === null) {
+                $error = EnvioUnico::MENSAJE_SIN_TOKEN;
+            } elseif (Validacion::faltanCampos([$nombre, $email, $paisCodigo, $ciudad, $fechaNacimiento])) {
                 $error = 'Completá todos los campos obligatorios.';
             } elseif (!Filtros::esFechaValida($fechaNacimiento)) {
                 $error = 'La fecha de nacimiento no es válida.';
             } else {
                 try {
-                    $id = Database::transaccion(static function () use ($nombre, $email, $segmento, $paisCodigo, $ciudad, $idioma, $genero, $fechaNacimiento): int {
+                    $destino = EnvioUnico::ejecutar($token, static function () use ($nombre, $email, $segmento, $paisCodigo, $ciudad, $idioma, $genero, $fechaNacimiento): string {
                         $id = (new ClienteRepository())->crear([
                             'nombre' => $nombre,
                             'email' => $email,
@@ -88,11 +99,11 @@ final class ClienteController
                             'genero' => $genero ?: 'No especifica',
                             'fecha_nacimiento' => $fechaNacimiento,
                         ]);
-                        AuditoriaRepository::auditarComoUsuarioActual('crear', 'cliente', $id, "Cliente #{$id}: {$nombre} ({$email})");
+                        AuditoriaRepository::auditar('crear', 'cliente', $id, "Cliente #{$id}: {$nombre} ({$email})");
 
-                        return $id;
+                        return '?page=cliente&id=' . $id;
                     });
-                    header('Location: ?page=cliente&id=' . $id);
+                    header('Location: ' . $destino);
                     exit;
                 } catch (\PDOException $e) {
                     $error = Validacion::mensajeDeConflicto($e, 'cliente');

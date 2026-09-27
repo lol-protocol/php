@@ -74,7 +74,7 @@ final class AuditoriaRepositoryTest extends IntegracionTestCase
     {
         $detalle = 'Auditoria en transaccion ' . uniqid();
 
-        AuditoriaRepository::auditarComoUsuarioActual('crear', 'prueba', 1, $detalle);
+        AuditoriaRepository::auditar('crear', 'prueba', 1, $detalle);
 
         $stmt = Database::connection()->prepare('SELECT COUNT(*) FROM auditoria WHERE detalle = :detalle');
         $stmt->execute([':detalle' => $detalle]);

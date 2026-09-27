@@ -145,6 +145,42 @@ final class EscriturasTest extends HttpTestCase
         self::assertSame(1, self::contar('SELECT COUNT(*) FROM boletas WHERE concepto = :c', [':c' => $concepto]));
     }
 
+    /**
+     * Regresion: cliente-nuevo era el unico alta sin EnvioUnico. El doble
+     * envio no duplicaba el cliente (el email es UNIQUE) pero el reenvio
+     * chocaba contra esa constraint y mostraba "ya existe" en vez de
+     * redirigir como boleta-nueva y pago-nuevo.
+     */
+    public function testUnDobleEnvioDeNuevoClienteCreaUnoSolo(): void
+    {
+        $formulario = $this->get('page=cliente-nuevo')['cuerpo'];
+        $email = 'cliente-doble-' . uniqid() . '@example.com';
+        $datos = [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => self::campoOculto($formulario, EnvioUnico::CAMPO),
+            'nombre' => 'Cliente doble envio',
+            'email' => $email,
+            'pais_codigo' => 'AR',
+            'ciudad' => 'Rosario',
+            'idioma' => 'Espanol',
+            'genero' => 'No especifica',
+            'fecha_nacimiento' => '1990-05-05',
+            'segmento' => 'general',
+        ];
+        $this->olvidarToken($datos[EnvioUnico::CAMPO]);
+
+        $primero = $this->post('page=cliente-nuevo', $datos);
+        $this->assertStatus(302, $primero);
+        $id = self::idDeLaRedireccion($primero, 'id');
+        $this->alTerminar(static fn () => self::borrarEntidad('clientes', 'cliente', $id));
+
+        $segundo = $this->post('page=cliente-nuevo', $datos);
+
+        $this->assertStatus(302, $segundo);
+        self::assertSame($primero['location'], $segundo['location'], 'el reenvio va a donde fue el primero, no a un error de email duplicado');
+        self::assertSame(1, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+    }
+
     public function testUnAltaSinTokenDeEnvioNoCreaNadaYPideRecargar(): void
     {
         $boletaId = $this->boletaDePrueba();
@@ -188,6 +224,22 @@ final class EscriturasTest extends HttpTestCase
     }
 
     /**
+     * Regresion: boleta/pago/cliente tenian traduccion en la columna Acción
+     * de Auditoria, pero nota_credito (agregada en una ronda posterior) se
+     * quedo afuera del mapa y aparecia como el nombre crudo de la columna.
+     */
+    public function testLaAuditoriaTraduceNotaDeCredito(): void
+    {
+        $boletaId = $this->boletaDePrueba();
+        $this->pagoDePrueba($boletaId);
+        $csrf = self::campoOculto($this->get("page=boleta-anular&id={$boletaId}")['cuerpo'], 'csrf_token');
+
+        $this->assertStatus(302, $this->post("page=boleta-anular&id={$boletaId}", ['csrf_token' => $csrf]));
+
+        self::assertStringContainsString('Nota de crédito', $this->get('page=auditoria')['cuerpo']);
+    }
+
+    /**
      * Cada flujo que escribe tiene que auditar dentro de una transaccion:
      * AuditoriaRepository lo exige y, si no, el flujo daria un 500. Esto
      * recorre los que no cubren los tests de arriba y verifica que cada uno
@@ -197,7 +249,10 @@ final class EscriturasTest extends HttpTestCase
     {
         $boletaId = $this->boletaDePrueba();
         $pagoId = $this->pagoDePrueba($boletaId);
-        $csrf = self::campoOculto($this->get('page=cliente-nuevo')['cuerpo'], 'csrf_token');
+        $formularioCliente = $this->get('page=cliente-nuevo')['cuerpo'];
+        $csrf = self::campoOculto($formularioCliente, 'csrf_token');
+        $envioCliente = self::campoOculto($formularioCliente, EnvioUnico::CAMPO);
+        $this->olvidarToken($envioCliente);
         $auditorias = static fn (string $entidad, int $id): int => self::contar(
             'SELECT COUNT(*) FROM auditoria WHERE entidad = :entidad AND entidad_id = :id',
             [':entidad' => $entidad, ':id' => $id]
@@ -215,7 +270,8 @@ final class EscriturasTest extends HttpTestCase
         self::assertSame(1, $auditorias('pago', $pagoId));
 
         $cliente = $this->post('page=cliente-nuevo', [
-            'csrf_token' => $csrf, 'nombre' => 'Cliente HTTP', 'email' => 'cliente-http-' . uniqid() . '@example.com',
+            'csrf_token' => $csrf, EnvioUnico::CAMPO => $envioCliente,
+            'nombre' => 'Cliente HTTP', 'email' => 'cliente-http-' . uniqid() . '@example.com',
             'pais_codigo' => 'AR', 'ciudad' => 'Rosario', 'idioma' => 'Espanol', 'genero' => 'No especifica',
             'fecha_nacimiento' => '1990-05-05', 'segmento' => 'general',
         ]);

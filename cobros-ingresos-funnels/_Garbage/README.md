@@ -35,11 +35,18 @@ carpeta es hermana de esos, no está adentro) ni `phpunit.xml` (sus
   de PHP; ahora arranca la suya propia (misma cookie endurecida) la primera
   vez que se pide un token. La protección CSRF en sí no tiene que ver con
   login (ya lo decía su propio comentario) y sigue activa en cada POST.
-- `AuditoriaRepository::auditarComoUsuarioActual()`: ya no lee
-  `Auth::usuarioActual()` (no existe más "el usuario logueado"); cada entrada
-  nueva queda atribuida a `usuario_id = NULL` ("Sistema" en el listado). Las
-  entradas viejas, con su `usuario_id` real, no se tocaron.
+- `AuditoriaRepository::auditarComoUsuarioActual()` (renombrado `auditar()` en
+  una ronda posterior, ya no había "usuario actual" que justificara el
+  nombre): ya no lee `Auth::usuarioActual()` (no existe más "el usuario
+  logueado"); cada entrada nueva queda atribuida a `usuario_id = NULL`
+  ("Sistema" en el listado). Las entradas viejas, con su `usuario_id` real, no
+  se tocaron.
 - `database/seed.php`: ya no crea filas en `usuarios_sistema`.
+- `public/assets/style.css`: se le sacaron las clases exclusivas de
+  `login.php` (`.login-wrap`, `.login-card`, `.login-error`), que quedaban
+  como CSS muerta en un archivo que sigue activo. Pasaron a un `<style>`
+  inline en `views/login.php` de acá adentro, así esta pantalla sigue
+  viniendo con su estilo si se reactiva.
 
 ## Qué NO se tocó
 

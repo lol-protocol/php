@@ -6,7 +6,7 @@
 /** @var int $pagina */
 
 $accionLabel = ['crear' => 'Creó', 'editar' => 'Editó', 'anular' => 'Anuló', 'activar' => 'Reactivó'];
-$entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente', 'usuario' => 'Usuario'];
+$entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente', 'nota_credito' => 'Nota de crédito', 'usuario' => 'Usuario'];
 ?>
 
 <h1>Auditoría</h1>

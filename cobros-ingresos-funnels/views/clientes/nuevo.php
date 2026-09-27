@@ -1,6 +1,7 @@
 <?php
 
 use App\Csrf;
+use App\EnvioUnico;
 
 /** @var array $paises */
 /** @var string|null $error */
@@ -15,6 +16,7 @@ $segmentos = ['general', 'starter', 'pro', 'enterprise'];
 <div class="panel">
     <form class="form-alta" method="post">
         <?= Csrf::campo() ?>
+        <?= EnvioUnico::campo() ?>
         <?php include __DIR__ . '/../_error.php'; ?>
 
         <label for="nombre">Nombre</label>

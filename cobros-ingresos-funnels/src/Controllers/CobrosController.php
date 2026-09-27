@@ -119,7 +119,7 @@ final class CobrosController
                         'fecha_emision' => $fechaEmision,
                         'fecha_vencimiento' => $fechaVencimiento,
                     ]);
-                    AuditoriaRepository::auditarComoUsuarioActual('crear', 'boleta', $id, sprintf(
+                    AuditoriaRepository::auditar('crear', 'boleta', $id, sprintf(
                         'Boleta #%d para %s: "%s" %s',
                         $id,
                         $cliente['nombre'],
@@ -191,7 +191,7 @@ final class CobrosController
                     'fecha_emision' => $fechaEmision,
                     'fecha_vencimiento' => $fechaVencimiento,
                 ]);
-                AuditoriaRepository::auditarComoUsuarioActual('editar', 'boleta', $id, sprintf('Boleta #%d: %s -> %s', $id, $antes, $despues));
+                AuditoriaRepository::auditar('editar', 'boleta', $id, sprintf('Boleta #%d: %s -> %s', $id, $antes, $despues));
                 return null;
             });
 
@@ -242,7 +242,7 @@ final class CobrosController
                 if ($boleta === null) {
                     throw new LogicException("La boleta #{$id} se acaba de anular y ya no se encuentra.");
                 }
-                AuditoriaRepository::auditarComoUsuarioActual('anular', 'boleta', $id, sprintf(
+                AuditoriaRepository::auditar('anular', 'boleta', $id, sprintf(
                     'Boleta #%d ("%s", %s)',
                     $id,
                     $boleta['concepto'],
@@ -283,7 +283,7 @@ final class CobrosController
             'motivo' => sprintf('Anulacion de la boleta #%d ("%s")', $boleta['id'], $boleta['concepto']),
         ]);
 
-        AuditoriaRepository::auditarComoUsuarioActual('crear', 'nota_credito', $notaId, sprintf(
+        AuditoriaRepository::auditar('crear', 'nota_credito', $notaId, sprintf(
             'Nota de credito #%d por %s (boleta #%d anulada con pagos)',
             $notaId,
             money_moneda($pagado, $boleta['moneda_codigo']),
