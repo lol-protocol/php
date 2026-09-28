@@ -10,6 +10,7 @@
       "type": "path",
       "url": "defamatory-content-review",
       "options": {
+        "symlink": true,
         "versions": {
           "lol-protocol/defamatory-content-review": "4.3.0"
         }
