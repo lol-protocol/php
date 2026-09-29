@@ -30,6 +30,18 @@
 - 👪 Hoy es un buen día para llamar a un familiar y preguntar.
 - 🔎 Un apellido, mil historias.
 
+## Legado familiar
+- El mejor legado no se hereda: se cuenta.
+- Lo que hoy recuerdas, mañana será herencia.
+- Cada generación es un capítulo; tú decides cómo se cuenta el tuyo.
+- Deja algo más que un apellido: deja una historia.
+- Tus nietos merecen conocer a quienes soñaron antes que ellos.
+- Una foto, un nombre, una fecha: pequeñas piezas de un legado enorme.
+- Preservar la memoria familiar es un acto de amor.
+- Los que se fueron viven en las historias que seguimos contando.
+- Somos el eslabón entre quienes fueron y quienes vendrán.
+- Escribe hoy la historia que tu familia leerá dentro de cien años.
+
 ## Texto largo (manifiesto)
 Todos los seres humanos que han caminado por éste mundo antes que nosotros; tuvieron sueños, amores, miedos, planes y personas que no querían perder. Alguna vez fueron niños imaginando su futuro; después crecieron, lucharon por algo, amaron a alguien… pero un día se convirtieron en recuerdo.
 
