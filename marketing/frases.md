@@ -42,6 +42,18 @@
 - Somos el eslabón entre quienes fueron y quienes vendrán.
 - Escribe hoy la historia que tu familia leerá dentro de cien años.
 
+## Frases para el logo (eslóganes / taglines)
+- Raíces que perduran.
+- Tu historia, tu árbol.
+- Memoria viva.
+- De dónde vienes, quién eres.
+- Cada nombre cuenta.
+- Conectando generaciones.
+- Nuestras raíces, nuestro legado.
+- Recuerda. Conecta. Trasciende.
+- Historias que no se olvidan.
+- El hilo que nos une.
+
 ## Texto largo (manifiesto)
 Todos los seres humanos que han caminado por éste mundo antes que nosotros; tuvieron sueños, amores, miedos, planes y personas que no querían perder. Alguna vez fueron niños imaginando su futuro; después crecieron, lucharon por algo, amaron a alguien… pero un día se convirtieron en recuerdo.
 
