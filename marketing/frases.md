@@ -29,6 +29,18 @@
 - 📜 Un documento antiguo puede cambiarlo todo.
 - 👪 Hoy es un buen día para llamar a un familiar y preguntar.
 - 🔎 Un apellido, mil historias.
+- 🌱 Todo árbol empieza con una raíz. ¿Ya encontraste la tuya?
+- 📸 Esa foto vieja del cajón es un tesoro. Compártela con tu familia.
+- 🧓 Pregúntale hoy a tu abuelo cómo era su infancia. Mañana puede ser tarde.
+- 🗓️ Hace 100 años alguien de tu familia soñaba con su futuro. ¿Sabes quién era?
+- 💌 Las cartas de ayer son la historia de mañana.
+- 🧬 Llevas en ti a cientos de antepasados. Conócelos.
+- 🏡 ¿De qué pueblo eran tus abuelos? Empieza a buscarlo.
+- ✨ Cada nombre en tu árbol es una historia que sigue viva.
+- 👨‍👩‍👧‍👦 Reúne a la familia y cuenten sus historias. Nosotros las guardamos.
+- 📖 Tu apellido tiene un origen. Descúbrelo hoy.
+- 🕰️ El tiempo pasa, los recuerdos permanecen.
+- #MiHistoriaFamiliar #Raíces #Genealogía #Legado
 
 ## Legado familiar
 - El mejor legado no se hereda: se cuenta.
