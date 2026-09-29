@@ -20,11 +20,11 @@
 - El hilo que nos une.
 
 ## Texto largo (manifiesto)
-Todos los seres humanos que han caminado por éste mundo antes que nosotros; tuvieron sueños, amores, miedos, planes y personas que no querían perder. Alguna vez fueron niños imaginando su futuro; después crecieron, lucharon por algo, amaron a alguien… pero un día se convirtieron en recuerdo.
+Todos los seres humanos que han caminado por este mundo antes que nosotros, tuvieron sueños, amores, miedos, planes y personas que no querían perder. Alguna vez fueron niños imaginando su futuro; después crecieron, lucharon por algo, amaron a alguien… pero un día se convirtieron en recuerdo.
 
 Ya han pasado miles de años, millones de historias, y el tiempo nunca se ha detenido por nadie.
 
-Nos toca a nosotros, éste pequeño momento en la eternidad.
+Nos toca a nosotros, este pequeño momento en la eternidad.
 
 Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hacemos con el breve instante que nos tocó existir.
 
@@ -47,13 +47,13 @@ Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hace
 - Escribe hoy la historia que tu familia leerá dentro de cien años.
 
 ## Confianza y respeto
-- Tu historia familiar, protegida y tratada con respeto.
+- Tu historia familiar, tratada con respeto y cuidado.
 - Un espacio seguro donde cada nombre se escribe con dignidad.
-- Tus datos son tuyos; tu legado, de tu familia.
+- Cuidamos tus datos con respeto; tu legado es de tu familia.
 
 ## Llamadas a la acción
-- Empieza tu árbol genealógico gratis hoy.
-- Descubre quiénes fueron tus abuelos en minutos.
+- Empieza tu árbol genealógico hoy.
+- Descubre quiénes fueron tus abuelos.
 - Invita a tu familia y construye con ella su historia.
 - Tu primer antepasado te está esperando.
 
@@ -94,7 +94,7 @@ Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hace
 ### Textos de vista previa
 - Descubre quiénes fueron los que vinieron antes que tú.
 - Cada nombre cuenta. Empieza a escribir el tuyo.
-- Unos minutos hoy, un legado para siempre.
+- Un momento hoy, un legado para siempre.
 
 ### Saludos y aperturas
 - Hola, [Nombre]: detrás de tu apellido hay una historia que merece ser contada.
