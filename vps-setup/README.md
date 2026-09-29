@@ -86,7 +86,7 @@ curl http://initech.fun                     # Prueba SIN SSL primero
    @   → IP del VPS
    www → IP del VPS
    ```
-2. Espera a que propague (15 min - 24h según el registrador)
+2. Espera a que propague (15-60 min, hasta 24-48h según el registrador)
 3. Verifica: `nslookup tudominio.com`
 
 ## 🖥️ Webmin — acceso y uso

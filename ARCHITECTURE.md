@@ -75,18 +75,21 @@ están registrados ni configurados.
 ```
 /var/www/
 ├── landing-page/
-│   ├── conce.com/
+│   ├── initech.fun/          # el dominio real, ya activo
 │   │   └── index.html
-│   └── initech.cl/
+│   ├── conce.com/            # ejemplo, no registrado
+│   │   └── index.html
+│   └── initech.cl/           # ejemplo, no registrado
 │       └── index.html
-├── contrastocolor.ink/
+├── contrastocolor.ink/       # ejemplo, no registrado
 │   ├── venv/
 │   └── app.py
-└── wikipedia.cl/
+└── wikipedia.cl/             # ejemplo, no registrado
     └── public/
 
 /etc/nginx/
 ├── sites-available/
+│   ├── initech.fun
 │   ├── conce.com
 │   ├── initech.cl
 │   ├── contrastocolor.ink
@@ -95,12 +98,14 @@ están registrados ni configurados.
     └── (enlaces simbólicos)
 
 /etc/letsencrypt/live/
+├── initech.fun/
 ├── conce.com/
 ├── initech.cl/
 ├── contrastocolor.ink/
 └── wikipedia.cl/
 
 /var/log/nginx/
+├── initech.fun/
 ├── conce.com/
 ├── initech.cl/
 ├── contrastocolor.ink/
@@ -166,7 +171,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 
 ### Firewall
 - ✅ UFW habilitado (por `01-system-update.sh`, con SSH permitido antes de activarlo)
-- ✅ Puertos abiertos: 22 (SSH), 80 (HTTP, vía `02_E`), 443 (HTTPS, vía `04`)
+- ✅ Puertos abiertos: 22 (SSH), 80 y 443 (HTTP/HTTPS, vía el perfil `Nginx Full` de UFW que abre `02_E`)
 - ⚠️ SSH por contraseña (ningún script configura llaves SSH ni desactiva el login por contraseña -- si quieres esto, es un paso manual aparte: generar un par de llaves, copiar la pública con `ssh-copy-id`, y luego editar `/etc/ssh/sshd_config` para poner `PasswordAuthentication no`)
 
 ### Base de Datos
@@ -181,13 +186,11 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 ```
 ┌─────────────────────────────────────────────────┐
 │           Internet / DNS (Cloudflare)           │
+│                                                   │
+│  initech.fun (real, activo)                      │
+│  conce.com, initech.cl, contrastocolor.ink,      │
+│  wikipedia.cl (ejemplos, no registrados)         │
 └─────────────────────┬───────────────────────────┘
-                      │
-         ┌────────────┼────────────┐
-         │            │            │
-   conce.com   initech.cl   contrastocolor.ink
-         │            │            │
-         └────────────┼────────────┘
                       │ A Record
          ┌────────────▼─────────────┐
          │  158.69.222.245 (VPS)    │
