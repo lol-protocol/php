@@ -66,6 +66,44 @@
 - Historias que no se olvidan.
 - El hilo que nos une.
 
+## Correo electrónico
+
+### Asuntos (subject lines)
+- Tu familia tiene una historia. ¿La conoces?
+- Encontramos nuevas pistas sobre tus antepasados
+- Tu árbol genealógico te está esperando
+- Hay un familiar que aún no conoces
+- Una foto antigua puede cambiarlo todo
+- Empieza hoy: tu primer antepasado está a un clic
+- Tus raíces, más cerca de lo que crees
+- Invita a tu familia a construir su historia juntos
+
+### Textos de vista previa (preheader)
+- Descubre quiénes fueron los que vinieron antes que tú.
+- Cada nombre cuenta. Empieza a escribir el tuyo.
+- Unos minutos hoy, un legado para siempre.
+
+### Saludos y aperturas
+- Hola, [Nombre]: detrás de tu apellido hay una historia que merece ser contada.
+- Hola, [Nombre]: tu familia ha recorrido un largo camino hasta ti.
+- Hola, [Nombre]: hoy es un buen día para conocer a quienes te precedieron.
+
+### Llamadas a la acción (botones)
+- Empezar mi árbol
+- Descubrir mi historia
+- Invitar a mi familia
+- Continuar mi árbol
+- Ver mis hallazgos
+
+### Cierres y despedidas
+- Con cariño, el equipo de [Marca].
+- Porque cada historia merece ser recordada.
+- Tu historia continúa. Nosotros la guardamos.
+- Hasta la próxima generación,
+
+### Pie de correo
+- Tus datos familiares son tuyos. Los tratamos con respeto y cuidado.
+
 ## Texto largo (manifiesto)
 Todos los seres humanos que han caminado por éste mundo antes que nosotros; tuvieron sueños, amores, miedos, planes y personas que no querían perder. Alguna vez fueron niños imaginando su futuro; después crecieron, lucharon por algo, amaron a alguien… pero un día se convirtieron en recuerdo.
 
