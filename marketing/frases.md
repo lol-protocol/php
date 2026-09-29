@@ -29,3 +29,12 @@
 - 📜 Un documento antiguo puede cambiarlo todo.
 - 👪 Hoy es un buen día para llamar a un familiar y preguntar.
 - 🔎 Un apellido, mil historias.
+
+## Texto largo (manifiesto)
+Todos los seres humanos que han caminado por éste mundo antes que nosotros; tuvieron sueños, amores, miedos, planes y personas que no querían perder. Alguna vez fueron niños imaginando su futuro; después crecieron, lucharon por algo, amaron a alguien… pero un día se convirtieron en recuerdo.
+
+Ya han pasado miles de años, millones de historias, y el tiempo nunca se ha detenido por nadie.
+
+Nos toca a nosotros, éste pequeño momento en la eternidad.
+
+Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hacemos con el breve instante que nos tocó existir.
