@@ -69,9 +69,14 @@ run_step() {
         args="${entry#*:}"
     fi
 
+    # Contador y nombre se combinan en un solo campo de ancho fijo (60):
+    # con el numero y el nombre en printfs separados, "[10/11]"/"[11/11]"
+    # (7 caracteres) desalinea el recuadro 1 caracter mas que "[1/11]" (6
+    # caracteres) -- el ancho del %s de abajo no compensaba la diferencia.
+    local label="[$((i+1))/$TOTAL] $step"
     echo ""
     echo "╔════════════════════════════════════════════════════════════╗"
-    printf "║ [%d/%d] %-52s ║\n" "$((i+1))" "$TOTAL" "$step"
+    printf "║ %-58s ║\n" "$label"
     echo "╚════════════════════════════════════════════════════════════╝"
     echo ""
     bash "./$step" $args
