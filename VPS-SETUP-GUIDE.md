@@ -23,7 +23,7 @@ dominio que quieras agregar) en cada comando.
 
 - **VPS con Ubuntu 24 LTS** (nuevo/limpio recomendado)
 - **Dominio** registrado y acceso a sus DNS (initech.cl o conce.com)
-- **Acceso SSH** al VPS (con usuario root o con sudo)
+- **Acceso SSH** al VPS (usuario `ubuntu` con sudo, no root -- ver [DEPLOYMENT.md](DEPLOYMENT.md))
 - **Email** para certificado SSL (ej: admin@initech.cl)
 
 ---
@@ -33,9 +33,7 @@ dominio que quieras agregar) en cada comando.
 Desde tu terminal local:
 
 ```bash
-ssh root@<IP_DEL_VPS>
-# O si tienes usuario específico:
-ssh usuario@<IP_DEL_VPS>
+ssh ubuntu@<IP_DEL_VPS>
 ```
 
 Una vez dentro del VPS:
@@ -85,7 +83,7 @@ Si prefieres más control, ejecuta cada paso manualmente.
 bash 01-system-update.sh       # Actualiza el sistema
 ```
 
-### Paso 2️⃣: Instalaciones independientes entre sí (6 scripts, cualquier orden)
+### Paso 2️⃣: Instalaciones independientes entre sí (7 scripts, cualquier orden)
 
 ```bash
 bash 02_A-install-java.sh        # Java 21

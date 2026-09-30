@@ -45,7 +45,7 @@ están registrados ni configurados.
   - Alternativa a cPanel (de pago), Virtualmin y CloudPanel (que administran el servidor con su propio CLI/base de datos y no resisten bien no tener panel)
 
 ### Servidor Web
-- **Nginx 1.26+** (instalado con `apt`, configurado a mano, un `sites-available/<dominio>` por sitio)
+- **Nginx** (instalado con `apt` sin fijar versión -- usa la que traiga el repo de Ubuntu 24.04, actualmente 1.24.x -- configurado a mano, un `sites-available/<dominio>` por sitio)
   - Reverse proxy
   - Compresión GZIP
   - Cache HTTP
@@ -185,7 +185,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 
 ```
 ┌─────────────────────────────────────────────────┐
-│           Internet / DNS (Cloudflare)           │
+│         Internet / DNS (del registrador)        │
 │                                                   │
 │  initech.fun (real, activo)                      │
 │  conce.com, initech.cl, contrastocolor.ink,      │

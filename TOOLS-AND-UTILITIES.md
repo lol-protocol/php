@@ -56,8 +56,12 @@ sudo systemctl restart webmin
 
 ## 🌐 Servidor Web
 
-### Nginx 1.26+
+### Nginx
 **Propósito:** Servidor web, reverse proxy, balanceo de carga
+
+**Nota de versión:** `02_E-install-nginx.sh` instala el paquete `nginx` sin
+fijar versión ni agregar un repo de terceros, así que usa la que traiga
+Ubuntu 24.04 en ese momento (actualmente 1.24.x, no 1.26+).
 
 **Instalación:**
 ```bash
@@ -603,6 +607,7 @@ Webmin) → `03-configure-nginx-site.sh` → `04-setup-ssl.sh` →
 ## 📋 Checklist de Instalación
 
 - [ ] APT actualizado
+- [ ] Java (OpenJDK) instalado
 - [ ] Nginx instalado y corriendo
 - [ ] PHP 8.3 con extensiones
 - [ ] Python 3 con pip
