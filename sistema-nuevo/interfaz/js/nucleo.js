@@ -1,5 +1,9 @@
-// Backend PHP (API). Cambiar si se corre en otro host/puerto.
-export const API_BASE = "http://localhost:8000";
+// Backend PHP (API): mismo host donde se sirve este panel (no hardcodea
+// "localhost" -- si el panel se abre desde otra IP/hostname, la API se pide
+// ahí también, no en el navegador del cliente). El puerto sí queda fijo: acá
+// no hay build step ni variables de entorno del lado del navegador, así que
+// si el backend corre en otro puerto hay que cambiar esto a mano.
+export const API_BASE = `http://${window.location.hostname}:8000`;
 
 export const ACTION_ICONS = {
   login: "🔐",

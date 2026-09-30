@@ -8,13 +8,13 @@ function api_notas(): void
 {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
-        echo json_encode(['error' => 'método no permitido']);
+        echo json_encode(['error' => 'método no permitido'], JSON_UNESCAPED_UNICODE);
         return;
     }
 
     if (!auth_validar_csrf_header()) {
         http_response_code(403);
-        echo json_encode(['error' => 'token CSRF inválido']);
+        echo json_encode(['error' => 'token CSRF inválido'], JSON_UNESCAPED_UNICODE);
         return;
     }
 
@@ -24,7 +24,7 @@ function api_notas(): void
 
     if ($accionId === '') {
         http_response_code(400);
-        echo json_encode(['error' => 'accion_id es requerido']);
+        echo json_encode(['error' => 'accion_id es requerido'], JSON_UNESCAPED_UNICODE);
         return;
     }
 
@@ -35,10 +35,10 @@ function api_notas(): void
     // -- sin este chequeo, la respuesta sería 200 en vez de 404 solo en ese caso.
     if (!$almacen->accionExiste($accionId)) {
         http_response_code(404);
-        echo json_encode(['error' => 'acción no encontrada']);
+        echo json_encode(['error' => 'acción no encontrada'], JSON_UNESCAPED_UNICODE);
         return;
     }
 
     $almacen->guardar($accionId, $texto);
-    echo json_encode(['ok' => true, 'texto' => trim($texto)]);
+    echo json_encode(['ok' => true, 'texto' => trim($texto)], JSON_UNESCAPED_UNICODE);
 }

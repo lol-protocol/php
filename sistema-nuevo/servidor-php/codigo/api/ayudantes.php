@@ -7,13 +7,13 @@ declare(strict_types=1);
 function api_not_found(): void
 {
     http_response_code(404);
-    echo json_encode(['error' => 'ruta no encontrada']);
+    echo json_encode(['error' => 'ruta no encontrada'], JSON_UNESCAPED_UNICODE);
 }
 
 function api_unauthorized(): void
 {
     http_response_code(401);
-    echo json_encode(['error' => 'no autenticado']);
+    echo json_encode(['error' => 'no autenticado'], JSON_UNESCAPED_UNICODE);
 }
 
 /** @return array{total:int,page:int,per_page:int,total_pages:int} Forma común de paginación de /api/users y /api/timeline. */

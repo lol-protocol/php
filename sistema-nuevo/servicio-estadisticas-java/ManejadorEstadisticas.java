@@ -24,7 +24,7 @@ final class ManejadorEstadisticas implements HttpHandler {
             Map<String, String> params = UtilHttp.parseQuery(exchange.getRequestURI().getRawQuery());
             String type = params.get("type");
             if (type == null || type.isBlank()) {
-                UtilHttp.respond(exchange, 400, new JsonBuilder().put("error", "missing required parameter: type").build());
+                UtilHttp.respond(exchange, 400, new JsonBuilder().put("error", "type es requerido").build());
                 return;
             }
 
