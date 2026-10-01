@@ -43,4 +43,9 @@ class SpanishPhoneticFolderRulesTest extends TestCase
     {
         $this->assertSame(SpanishPhoneticFolder::fold('el gato'), SpanishPhoneticFolder::fold('elgato'));
     }
+
+    public function testDeprecatedPhoneticFolderNameStillWorks(): void
+    {
+        $this->assertSame(SpanishPhoneticFolder::fold('Vaca'), \DefamatoryContentReview\PhoneticFolder::fold('Vaca'));
+    }
 }
