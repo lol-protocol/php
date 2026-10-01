@@ -74,6 +74,19 @@ class CrossLanguageValidationTest extends TestCase
         $this->assertSame('high', $result->getSeverity(), 'Sin descuento: confianza 1.0 en ambos idiomas.');
     }
 
+    public function testSharedTermCountedOnceButRealRepeatsTwice(): void
+    {
+        // "cerdo" no es portugués: "idiota" es el 2º hallazgo en español y el 1º en portugués.
+        $idiota = fn(string $n) => array_values(array_filter(
+            $this->reviewer->related()->validate($n)->getFlaggedTerms(),
+            fn(array $t) => $t['term'] === 'Idiota'
+        ));
+
+        $this->assertCount(1, $idiota('Cerdo Idiota'));
+        $this->assertSame('spa', $idiota('Cerdo Idiota')[0]['sourceLanguage'], 'Gana la de mayor confianza.');
+        $this->assertCount(2, $idiota('Idiota Idiota'));
+    }
+
     public function testSwitchingLanguageChangesTheDictionary(): void
     {
         $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'eng');

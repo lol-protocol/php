@@ -24,12 +24,12 @@ final class NameEvaluator
             $occurrence = [];
 
             foreach ($this->languages->wordList($code)->findInText($name) as $match) {
-                // Clave: n-ésima aparición del término, no su índice en la lista
-                // de cada idioma (se corre si otro idioma no tiene un término).
+                // Mismo término en varios diccionarios de una familia: gana el de mayor confianza.
+                // La clave es su n-ésima aparición (estable entre idiomas, a diferencia del índice
+                // en la lista de cada uno) y separa las repeticiones reales ("puta puta").
                 $base = $match['found'] . '|' . $match['riskType'];
                 $key = $base . '|' . ($occurrence[$base] = ($occurrence[$base] ?? -1) + 1);
-
-                if (!isset($best[$key]) || $best[$key]['confidence'] < $confidence) {
+                if (($best[$key]['confidence'] ?? -1.0) < $confidence) {
                     $best[$key] = $match + ['sourceLanguage' => $code, 'confidence' => $confidence];
                 }
             }

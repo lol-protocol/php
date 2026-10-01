@@ -13,8 +13,17 @@ final class ClienteEstadisticas
     /** Sin respuesta HTTP en el último intento (caído o colgado): corta las llamadas siguientes de esta instancia. */
     private bool $sinRespuesta = false;
 
-    public function __construct(private readonly string $baseUrl = 'http://localhost:8081')
+    private readonly string $baseUrl;
+
+    /**
+     * $baseUrl explícito (usado por las pruebas para apuntar a servidores falsos/colgados)
+     * gana siempre; si no se pasa, sale de BACKOFFICE_JAVA_URL o, en su defecto, del
+     * default de desarrollo local -- mismo patrón que ConexionBd.php. No puede ir como
+     * valor default del parámetro: PHP no permite llamadas a función (getenv) ahí.
+     */
+    public function __construct(?string $baseUrl = null)
     {
+        $this->baseUrl = $baseUrl ?? (getenv('BACKOFFICE_JAVA_URL') ?: 'http://localhost:8081');
     }
 
     /**

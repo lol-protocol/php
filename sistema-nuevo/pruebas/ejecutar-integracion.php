@@ -18,9 +18,11 @@ require __DIR__ . '/../servidor-php/codigo/AlmacenFiltros.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenNotas.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenConfiguracion.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenIntentosLogin.php';
+require __DIR__ . '/../servidor-php/codigo/AlmacenAdministradores.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenKpis.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenAlertas.php';
 require __DIR__ . '/../servidor-php/codigo/ClienteEstadisticas.php';
+require __DIR__ . '/../servidor-php/codigo/autenticacion.php';
 
 $pdo = ConexionBd::obtener();
 

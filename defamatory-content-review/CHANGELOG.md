@@ -1,31 +1,34 @@
 # Changelog
 
-## [4.3.1] - 2026-09-25
+## [Sin publicar]
 
 ### Arreglado
 
-- **Un término compartido por idiomas emparentados se contaba dos veces.**
-  `NameEvaluator` deduplicaba por el índice del hallazgo en la lista de cada
-  idioma, y ese índice se corre cuando un idioma encuentra un término que
-  otro no tiene. Con `related()->validate('Cerdo Idiota')`, «cerdo» sólo está
-  en español, así que «idiota» era el 2.º hallazgo en español y el 1.º en
-  portugués: las claves no coincidían y se marcaba dos veces. Con agregación
-  `sum` el puntaje daba 5.78 en vez de 4.0; con `max` (por defecto) el
-  puntaje era correcto, pero el informe contaba términos de más. Ahora la
-  clave es la n-ésima aparición del término, estable entre idiomas, y las
-  repeticiones reales («Idiota Idiota») siguen contando dos veces. Nuevo
-  `RelatedLanguageDedupTest`. Arreglo encontrado en la rama de la guía de
-  psicología (lol-protocol/php#9), que lo había aplicado sobre una copia
-  vieja de la librería.
-
+- **Un término presente en varios idiomas emparentados se contaba dos
+  veces** en `$reviewer->related()->validate()`. La deduplicación usaba como
+  clave la posición del hallazgo en la lista de cada idioma, que se corre
+  cuando un idioma encuentra algo que otro no: en «Cerdo Idiota», «idiota»
+  es el 2º hallazgo en español pero el 1º en portugués («cerdo» no es
+  portugués), así que quedaba dos veces. Con agregación `sum` el puntaje
+  salía 5.78 en vez de 4.0; con `max` (por defecto) el puntaje era correcto
+  pero el reporte contaba términos e idiomas de más. Ahora la clave es la
+  n-ésima aparición del término, estable entre idiomas; las repeticiones
+  reales («Idiota Idiota») siguen contando dos veces.
+- **`PhoneticFolder` desapareció en 4.3.0 sin aviso.** Se renombró a
+  `SpanishPhoneticFolder` (coherente con los otros 16 folders), pero el
+  cambio no figuraba aquí y rompía a quien usara el nombre viejo. Se
+  restaura `PhoneticFolder` como alias deprecado de `SpanishPhoneticFolder`.
+- Conteos desactualizados en la documentación: `WordListScanner` decía 13
+  idiomas sin reglas fonéticas (son 16); `PhoneticFolderRegistry` no
+  listaba islandés, suajili ni tagalo entre los excluidos y llamaba «chino»
+  al cantonés; el README decía que el plegado cubre «los 17 idiomas en
+  script latino» cuando son 17 de 22.
 
 ### Cambiado
 
 - Se restauró `_Garbage/`, borrado en 4.3.0: la decisión es conservar como
   referencia lo obsoleto en vez de borrarlo. Su README explica por qué
   ninguno de esos archivos debe reconectarse al motor.
-
----
 
 ## [4.3.0] - 2026-09-25
 
