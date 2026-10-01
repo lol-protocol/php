@@ -27,8 +27,12 @@ namespace DefamatoryContentReview;
  *   tonos distinguen palabras distintas) y no hay una grafía alternativa
  *   real para plegar sin colapsar significados — el mismo riesgo que ya
  *   evita la distancia de edición en el resto de idiomas.
+ * - **Islandés, suajili y tagalo**: de script latino, pero sus
+ *   diccionarios están en nivel `basic` y nadie verificó qué grafías
+ *   alternativas son reales en cada uno; plegar sin eso sería inventar
+ *   reglas. Sí tienen fusión literal (ver FusionSupport).
  * - **Árabe, búlgaro, griego, hebreo, hindi, japonés, coreano, ruso,
- *   tailandés, ucraniano y chino**: su script no es latino, y este
+ *   tailandés, ucraniano y cantonés**: su script no es latino, y este
  *   mecanismo (plegar sustituyendo caracteres) no tiene un equivalente
  *   verificable sin una romanización propia — intentarlo sin un hablante
  *   nativo que confirme cada regla sería inventar, no normalizar.

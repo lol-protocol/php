@@ -13,7 +13,7 @@ namespace DefamatoryContentReview;
  *    escribir "pu-ta", "pu.ta" o "pu'ta" evade el filtro: el paso 1 parte
  *    por esos caracteres y busca "pu ta", que no es la clave de nada. Es la
  *    misma evasión que el plegado fonético ya cerraba, pero el camino
- *    literal —el único que tienen los 13 idiomas sin reglas fonéticas— la
+ *    literal —el único que tienen los 16 idiomas sin reglas fonéticas— la
  *    seguía teniendo abierta.
  */
 final class WordListScanner
