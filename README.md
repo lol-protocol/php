@@ -1,16 +1,48 @@
 # lol-protocol/php
 
-Este repositorio aloja varios proyectos independientes, cada uno en su propia
-carpeta con su propio README:
+Este repositorio aloja varios proyectos independientes, cada uno en su propia carpeta:
 
 | Proyecto | Qué es |
 |---|---|
-| [`defamatory-content-review/`](defamatory-content-review/) | Librería PHP — detección de insultos y ridiculización en nombres para plataformas genealógicas. El proyecto principal del repositorio. |
-| [`web-animations/`](web-animations/) | Galería de demostración de 36 animaciones HTML/CSS/JS. |
+| [`defamatory-content-review/`](defamatory-content-review/) | Librería PHP — detección de insultos y ridiculización en nombres para plataformas genealógicas. |
+| [`phone-directory/`](phone-directory/) | Parser de directorios telefónicos históricos (6 idiomas) para registros genealógicos. |
+| [`sistema-nuevo/`](sistema-nuevo/) | Backoffice de actividad de usuarios (PHP + Java + JS). |
+| [`vps-setup/`](vps-setup/) | Scripts para configurar un VPS Ubuntu 24 LTS (Nginx, PHP, Java, Python, PostgreSQL). |
+| [`web-animations/`](web-animations/) | Galería de 36 animaciones HTML/CSS/JS sin dependencias. |
 | [`data/document_formats/`](data/document_formats/) | Base de datos de formatos de documento y papel por país. |
+| `landing-page/` | Página estática de una sola vista (`index.html`). |
 
-Cada carpeta es autocontenida: su propio código, tests y documentación no
-dependen de las otras. Ver el README de cada una para instalación y uso.
+Cada carpeta tiene su propio código, tests y README con instrucciones de instalación y uso
+(salvo `landing-page/`, que es un solo archivo). La única dependencia entre proyectos es:
+**`phone-directory/` requiere `defamatory-content-review/`** (usa sus clases de plegado de
+acentos y claves fonéticas) — su `composer.json` la declara como dependencia Composer
+(`lol-protocol/defamatory-content-review`, repositorio `path` a `../defamatory-content-review`),
+así que ambas carpetas deben estar presentes. El resto de proyectos no depende de ningún otro.
+
+## Desarrollo
+
+Cada proyecto se instala y se prueba desde su propia carpeta:
+
+```bash
+cd phone-directory        # o defamatory-content-review, sistema-nuevo, vps-setup...
+composer install          # o npm install, según el proyecto
+./vendor/bin/phpunit
+```
+
+El `composer.json` de la raíz es opcional: declara `defamatory-content-review/` y
+`phone-directory/` como repositorios `path` para instalar los dos juntos desde código externo
+al monorepo. No sustituye al `composer install` de cada carpeta (Composer no instala las
+`require-dev` — y por tanto los tests — de una dependencia `path`).
+
+## CI/CD
+
+`.github/workflows/tests.yml` tiene un job por proyecto:
+- `phpunit`: tests, PHPStan y benchmark de `defamatory-content-review/`.
+- `phone-directory`: tests de `phone-directory/` (incluidos los ejemplos) contra SQLite y PostgreSQL, y el benchmark.
+- `phone-directory-ports`: tests de los ports de `phone-directory/` a Python y Java.
+- `web-animations`: prueba de humo de las animaciones.
+
+`sistema-nuevo/` tiene su propio workflow (`pruebas-backoffice.yml`).
 
 ## Licencia
 
