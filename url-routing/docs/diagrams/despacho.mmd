@@ -1,0 +1,39 @@
+flowchart TD
+    A[Request URI] --> B{Segmentos vacios?}
+    B -->|si| C["reserved[''] -> Home"]
+    B -->|no| D{Coincide ruta literal exacta?}
+    D -->|si cart, checkout...| E[Controlador literal]
+    D -->|no| F{Primer segmento es 'order'?}
+
+    F -->|si| G{Segundo segmento es id numerico?}
+    G -->|no| Z1[404]
+    G -->|si| H{Maximo 3 segmentos?}
+    H -->|no| Z1
+    H -->|si| I{3er segmento existe?}
+    I -->|no| J[OrderController show]
+    I -->|si, mapea en actions| K[OrderController accion]
+    I -->|si, no mapea| Z1
+
+    F -->|no| L{Primer segmento en reserved\ny maximo 2 segmentos?}
+    L -->|si| M{2do segmento null o mapea en actions?}
+    M -->|si| N[Controlador reservado]
+    M -->|no mapea| Z1
+
+    L -->|no| O{Primer segmento solo digitos?}
+    O -->|si| P{Maximo 2 segmentos?}
+    P -->|no| Z1
+    P -->|si| Q{Largo existe en by_length?}
+    Q -->|no| Z1
+    Q -->|si| R{2do segmento null o mapea en actions?}
+    R -->|si, null| S[Controlador tipo: show]
+    R -->|si, mapea| T[Controlador tipo: accion]
+    R -->|no mapea| Z1
+
+    O -->|no| U{Solo letras y 'place' configurado?}
+    U -->|no| Z1
+    U -->|si| V[Separar ultimo segmento\nsi es digito -> codigo de accion]
+    V --> W{Quedan 1-3 codigos,\ntodos alfabeticos?}
+    W -->|no| Z1
+    W -->|si| X{Codigo de accion null\no mapea en actions?}
+    X -->|no mapea| Z1
+    X -->|si| Y[LugarController]

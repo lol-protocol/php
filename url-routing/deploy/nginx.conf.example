@@ -1,0 +1,47 @@
+# Nginx server block for url-routing, following the conventions of
+# vps-setup/06_A-setup-php-app.sh (PHP 8.3 FPM socket, per-domain logs).
+#
+# The one difference that matters: `root` points at public/, NOT at the
+# project folder. Pointing it at the project would let anyone download .env
+# (database passwords), var/*.sqlite (the whole POS database) and run any
+# .php under it, e.g. bin/migrate.php.
+#
+# Copy to /etc/nginx/sites-available/url-routing, adjust server_name, then:
+#   sudo ln -sf /etc/nginx/sites-available/url-routing /etc/nginx/sites-enabled/
+#   sudo nginx -t && sudo systemctl reload nginx
+
+server {
+    listen 80;
+    listen [::]:80;
+    # Genealogy and POS are the same app: the Host header selects the site
+    # (POS_DOMAINS), and the 3-letter subdomain selects the language.
+    server_name tudominio.com *.tudominio.com contrastocolor.com *.contrastocolor.com;
+
+    root /var/www/url-routing/public;
+    index index.php;
+
+    access_log /var/log/nginx/url-routing/access.log;
+    error_log /var/log/nginx/url-routing/error.log;
+
+    # Every URL goes through the front controller; there are no other
+    # PHP entry points to expose.
+    location / {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location = /index.php {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # Any other .php request is a probe, not a page.
+    location ~ \.php$ {
+        return 404;
+    }
+
+    location ~ /\. {
+        deny all;
+    }
+}
