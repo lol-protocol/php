@@ -22,6 +22,17 @@ Los archivos se numeran `NN` o `NN_LETRA`:
 
 Ejemplo: `02_A-install-java.sh` y `02_B-install-php.sh` pueden ejecutarse en cualquier orden entre sí, pero ambos deben completarse antes de `03-configure-nginx-site.sh`.
 
+## 🧰 `lib.sh`
+
+Todos los scripts (excepto `01-system-update.sh`, que activa UFW antes de que
+exista un firewall al que aplicarle reglas) sourcean `lib.sh`, que centraliza
+patrones repetidos: `print_header`, `service_start_enable`, `ufw_allow`
+(agrega una regla solo si UFW está realmente activo), `check_dependency`,
+`setup_app_directories`, `deploy_files` (copia + permisos correctos),
+`get_public_ip` (cacheada por sesión) y `verify_dns_resolution` (un solo
+`dig` para dominio + www). Si corres un script suelto, `lib.sh` debe estar
+en la misma carpeta.
+
 ## 🚀 Uso Rápido
 
 ### Opción 1: Instalación Automática (Recomendado)
@@ -75,7 +86,7 @@ curl http://initech.fun                     # Prueba SIN SSL primero
    @   → IP del VPS
    www → IP del VPS
    ```
-2. Espera a que propague (15 min - 24h según el registrador)
+2. Espera a que propague (15-60 min, hasta 24-48h según el registrador)
 3. Verifica: `nslookup tudominio.com`
 
 ## 🖥️ Webmin — acceso y uso
@@ -156,4 +167,4 @@ ls -la /var/www/landing-page/tudominio.com/
 ./06_D-setup-tomcat-app.sh dominio.com mi-app   # App Java (Tomcat) detrás de Nginx
 ```
 
-Ver también: [ARCHITECTURE.md](../ARCHITECTURE.md), [DOMAINS.md](../DOMAINS.md), [DEPLOYMENT.md](../DEPLOYMENT.md), [TOOLS-AND-UTILITIES.md](../TOOLS-AND-UTILITIES.md)
+Ver también: [ARCHITECTURE.md](ARCHITECTURE.md), [DOMAINS.md](DOMAINS.md), [DEPLOYMENT.md](DEPLOYMENT.md), [TOOLS-AND-UTILITIES.md](TOOLS-AND-UTILITIES.md)

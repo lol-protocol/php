@@ -26,7 +26,10 @@ sudo apt-get install -y --install-recommends webmin
 echo "[3/3] Abriendo el puerto 10000 en el firewall..."
 ufw_allow "10000/tcp"
 
-IP=$(get_public_ip)  # Usa IP cacheada (evita duplicate fetch si install-all.sh ya la obtuvo)
+# Si install-all.sh llamo a este script, hereda su CACHED_PUBLIC_IP (variable
+# exportada) y no vuelve a consultar ifconfig.me; si este script corre solo,
+# get_public_ip() lo consulta normalmente.
+IP=$(get_public_ip)
 
 echo ""
 echo "✓ Webmin instalado"

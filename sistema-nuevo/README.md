@@ -25,8 +25,14 @@ instalado, sin sumar paquetes nuevos — ver "Pruebas automatizadas" más abajo)
 Nombres en español simple; se mantienen en inglés los nombres de lenguaje
 (php/java/css/js) y las convenciones estándar que el propio tooling espera
 literalmente (`index.php`, `README.md`, `public/`→`publico/` es la excepción que sí
-se tradujo, `src/`→`codigo/` también). Ningún archivo de código pasa las 100 líneas —
-todo está modularizado en piezas chicas y enfocadas.
+se tradujo, `src/`→`codigo/` también). La mayoría de los archivos de código no pasan
+las 100 líneas — el objetivo es que cada uno sea una pieza chica y enfocada, no un
+número exacto. Los pocos que sí las pasan son casos donde partirlos sería peor:
+un diccionario i18n plano (`es.js`/`en.js`), hojas de estilo de un solo componente
+(`alertas.css`, `topbar.css`), un cliente HTTP cohesivo con un solo estado interno
+compartido (`ClienteEstadisticas.php`) o una suite e2e ya acotada a un tema
+(`panel-nuevas-features.e2e.cjs`) — fragmentarlos solo para bajar el número
+cambiaría "piezas enfocadas" por "piezas dispersas".
 
 ```
 sistema-nuevo/
@@ -73,7 +79,8 @@ sistema-nuevo/
 │       ├── ClienteEstadisticas.php    Llama al servicio de estadísticas por HTTP
 │       ├── autenticacion.php          Sesión + CSRF (login/logout, un solo usuario)
 │       ├── AlmacenIntentosLogin.php   Rate limiting de /api/login por IP
-│       ├── credenciales.php           Usuario demo + hash de contraseña (bcrypt)
+│       ├── AlmacenAdministradores.php Lee la tabla administradores (login en vivo)
+│       ├── credenciales.php           Solo semilla: carga admin/hash a la tabla al generar datos
 │       ├── saneador.php               Punto de entrada del saneador (ver saneador/)
 │       ├── saneador/                  primitivas, marca-temporal, accion(-monto/-campos/-ip)
 │       ├── api.php                    Punto de entrada de los endpoints (ver api/)
@@ -84,13 +91,14 @@ sistema-nuevo/
 ├── interfaz/                       Panel de administración (HTML/CSS/JS, sin frameworks)
 │   ├── index.php                      Ensambla partes/*.php + enlaza los .css
 │   ├── partes/                        pantalla-login.php, topbar.php, panel-principal.php
-│   ├── css/                           18 archivos chicos (base, login, topbar, tarjetas,
-│   │                                   paginacion, grafico, alertas...)
+│   ├── css/                           19 archivos chicos (base, login, topbar, tarjetas,
+│   │                                   paginacion, grafico, alertas, modal...)
 │   └── js/                            Módulos ES: nucleo, formato, sesion, selectores,
 │       ├── i18n/es.js, i18n/en.js         tarjeta-usuario, metricas, linea-tiempo, paginacion,
 │       ├── idioma.js, idioma-refrescar.js grafico, alertas, idioma(-refrescar), aplicacion,
 │       └── aplicacion.js, eventos.js      eventos (entry point), configuracion-alertas, filtros,
-│                                           inactividad, kpis, nota-bloque, notas, notificaciones
+│                                           inactividad, modal (prompt/confirm propios, ver abajo),
+│                                           kpis, nota-bloque, notas, notificaciones
 │
 ├── pruebas/                        Pruebas automatizadas, sin dependencias nuevas
 │   ├── marco-pruebas.php / ejecutar-php.php     Framework mínimo + runner (PHP)
@@ -168,13 +176,20 @@ esto de forma **proactiva**, sin tener que elegir un usuario primero.
 Sesión simple por cookie (PHP `session`), sin roles ni registro — pensada para un
 prototipo, no para producción.
 
-- Usuario demo: **admin** / **admin123** (hash bcrypt en `credenciales.php`, la
-  contraseña nunca se compara ni se guarda en texto plano).
+- Usuario demo: **admin** / **admin123**. El login valida contra la tabla
+  `administradores` (`AlmacenAdministradores`), no contra un archivo -- `credenciales.php`
+  es solo el dato semilla que carga esa fila una vez al generar los datos (ver "Base
+  de datos"). La contraseña nunca se compara ni se guarda en texto plano (hash bcrypt,
+  `password_verify()`); si el usuario no existe, igual se corre `password_verify()`
+  contra un hash dummy en vez de cortar antes, para que el tiempo de respuesta no
+  filtre qué usuarios existen.
 - Como la interfaz y la API corren en puertos distintos, la cookie de sesión viaja
   entre orígenes: `servidor-php/publico/index.php` responde el preflight CORS (OPTIONS)
-  y refleja `http://localhost:8082` como único origen permitido con
-  `Access-Control-Allow-Credentials`, en vez de usar `*` (que el navegador rechaza
-  para requests con credenciales, y que sería una configuración CORS abierta).
+  y refleja como único origen permitido `http://localhost:8082` (o
+  `BACKOFFICE_CORS_ORIGEN`, mismo patrón de variable de entorno con default que
+  `BACKOFFICE_BD_*` más abajo) con `Access-Control-Allow-Credentials`, en vez de
+  usar `*` (que el navegador rechaza para requests con credenciales, y que sería
+  una configuración CORS abierta).
 - **CSRF**: `auth_marcar_autenticado()` regenera un token en cada login
   (`bin2hex(random_bytes(32))`, guardado en `$_SESSION`). El frontend lo recibe
   en la respuesta de `/api/login` y `/api/session`, y `postJson`/`deleteJson`
@@ -224,7 +239,9 @@ Cualquier combinación de universo/edad/género/tipo se puede nombrar y guardar
 barra superior. El `scope` se guarda tal cual sale de `#scope-select`
 (`country:XX`/`preset:XX`/`all`) — el mismo valor se usa para poblar el selector y
 para reconstruirlo al aplicar el filtro, sin una capa de traducción intermedia que
-pueda desincronizarse.
+pueda desincronizarse. Guardar (nombre) y eliminar (confirmación) usan
+`interfaz/js/modal.js` -- un modal propio con la estética del panel, no los
+`prompt()`/`confirm()` nativos del navegador.
 
 ## Gráfico de evolución temporal
 
@@ -417,10 +434,13 @@ php pruebas/ejecutar-integracion.php
   `AlmacenAcciones` y `AlmacenDatos` (empate en `marca_temporal`/`nombre` se
   desempata por `id`, para que la paginación no repita/salte filas),
   `AlmacenAlertas` (mismas invariantes que `AlmacenKpis`, tope de 15 en el top,
-  empate en `mismatch_count` también desempatado por `id`) y
+  empate en `mismatch_count` también desempatado por `id`),
   `ClienteEstadisticas` (servicio caído devuelve `null` sin lanzar excepción y
   el reintento no tarda segundos; `statsVarios()` pide varios tipos en paralelo,
-  y con el servicio colgado el lote entero paga un solo timeout, no uno por tipo).
+  y con el servicio colgado el lote entero paga un solo timeout, no uno por tipo) y
+  `AlmacenAdministradores`/`auth_verificar_credenciales` (un admin que solo existe
+  en la tabla, no en `credenciales.php`, autentica igual -- prueba que el login lee
+  de la BD, no del archivo).
 - `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
@@ -547,7 +567,9 @@ Abrir http://localhost:8082.
   (`ClienteEstadisticas::statsVarios()`, vía `curl_multi`) en vez de uno por uno:
   si el servicio está colgado (acepta la conexión pero no responde), toda la
   página paga un solo timeout (~3 s) sin importar cuántos tipos distintos tenga,
-  en vez de uno por tipo.
+  en vez de uno por tipo. Su URL sale de `BACKOFFICE_JAVA_URL` o, en su defecto,
+  de `http://localhost:8081` (mismo patrón de variable de entorno con default que
+  `BACKOFFICE_BD_*`, ver "Base de datos").
 - El servicio Java recarga solo `acciones-planas.csv` si cambia su mtime (chequeo
   cada 5 segundos, `CargadorAcciones.iniciarWatcher()`) — no hace falta reiniciarlo
   a mano después de correr `generar-datos-semilla.php` de nuevo.
