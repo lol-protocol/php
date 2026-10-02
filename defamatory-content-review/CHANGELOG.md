@@ -2,6 +2,13 @@
 
 ## [Sin publicar]
 
+### Añadido
+
+- **`ChatLineReviewer`**: revisa una línea de chat y dice si censurarla,
+  clasificando lo encontrado como `difamatorio`, `burlesco`, `sexual` o
+  `belico`, con decisión (`approve`/`review`/`reject`) y la línea censurada.
+  Listas de temas en `config/chat-topics/` para español e inglés.
+
 ### Arreglado
 
 - **Un término presente en varios idiomas emparentados se contaba dos
