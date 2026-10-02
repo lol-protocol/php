@@ -49,7 +49,8 @@ final class ChatLineReviewer
         return new ChatLineResult($line, $matches, $this->decisionFor($matches));
     }
 
-    /** La decisión la fija el término más grave: high bloquea, medium va a revisión, low sólo se informa. */
+    /** La decisión la fija el término más grave: high bloquea, medium va a revisión, low sólo se informa. @param array<int,array<string,mixed>> $matches */
+    /** @param array<int,array<string,mixed>> $matches */
     private function decisionFor(array $matches): string
     {
         $severities = array_column($matches, 'severity');

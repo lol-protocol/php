@@ -5,7 +5,7 @@ namespace DefamatoryContentReview;
 /** Resultado de ChatLineReviewer::review(): qué se encontró, la decisión y la línea ya censurada. */
 final class ChatLineResult
 {
-    /** @param array<int,array> $matches cada uno con found, riskType, severity y contentType */
+    /** @param array<int,array<string,mixed>> $matches cada uno con found, riskType, severity y contentType */
     public function __construct(
         private readonly string $line,
         private readonly array $matches,
@@ -13,6 +13,7 @@ final class ChatLineResult
     ) { }
 
     public function getLine(): string { return $this->line; }
+    /** @return array<int,array<string,mixed>> */
     public function getMatches(): array { return $this->matches; }
     /** 'approve', 'review' o 'reject'. */
     public function getDecision(): string { return $this->decision; }
@@ -39,6 +40,7 @@ final class ChatLineResult
         return $line;
     }
 
+    /** @return array<string,mixed> */
     public function toArray(): array
     {
         return [
