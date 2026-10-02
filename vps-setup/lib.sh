@@ -104,8 +104,9 @@ get_public_ip() {
         ip="TU_IP_PUBLICA"
     fi
 
-    # Cache for this session
-    CACHED_PUBLIC_IP="$ip"
+    # export (not just assign) so child processes started with "bash script.sh"
+    # inherit the cached value instead of re-fetching it themselves
+    export CACHED_PUBLIC_IP="$ip"
     echo "$ip"
 }
 

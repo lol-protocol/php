@@ -86,7 +86,7 @@ curl http://initech.fun                     # Prueba SIN SSL primero
    @   → IP del VPS
    www → IP del VPS
    ```
-2. Espera a que propague (15 min - 24h según el registrador)
+2. Espera a que propague (15-60 min, hasta 24-48h según el registrador)
 3. Verifica: `nslookup tudominio.com`
 
 ## 🖥️ Webmin — acceso y uso
@@ -167,4 +167,4 @@ ls -la /var/www/landing-page/tudominio.com/
 ./06_D-setup-tomcat-app.sh dominio.com mi-app   # App Java (Tomcat) detrás de Nginx
 ```
 
-Ver también: [ARCHITECTURE.md](../ARCHITECTURE.md), [DOMAINS.md](../DOMAINS.md), [DEPLOYMENT.md](../DEPLOYMENT.md), [TOOLS-AND-UTILITIES.md](../TOOLS-AND-UTILITIES.md)
+Ver también: [ARCHITECTURE.md](ARCHITECTURE.md), [DOMAINS.md](DOMAINS.md), [DEPLOYMENT.md](DEPLOYMENT.md), [TOOLS-AND-UTILITIES.md](TOOLS-AND-UTILITIES.md)

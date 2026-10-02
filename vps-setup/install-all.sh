@@ -60,22 +60,48 @@ STEPS=(
 # sus propios argumentos dentro del mismo bucle:
 #   STEP="${ENTRY%%:*}"  -> todo ANTES del primer ":"  (el nombre del script)
 #   ARGS="${ENTRY#*:}"   -> todo DESPUES del primer ":" (sus argumentos)
-TOTAL=${#STEPS[@]}
-for i in "${!STEPS[@]}"; do
-    ENTRY="${STEPS[$i]}"
-    STEP="${ENTRY%%:*}"
-    if [[ "$ENTRY" == *:* ]]; then
-        ARGS="${ENTRY#*:}"
-    else
-        ARGS=""
+run_step() {
+    local i=$1
+    local entry=$2
+    local step="${entry%%:*}"
+    local args=""
+    if [[ "$entry" == *:* ]]; then
+        args="${entry#*:}"
     fi
 
+    # Contador y nombre se combinan en un solo campo de ancho fijo (60):
+    # con el numero y el nombre en printfs separados, "[10/11]"/"[11/11]"
+    # (7 caracteres) desalinea el recuadro 1 caracter mas que "[1/11]" (6
+    # caracteres) -- el ancho del %s de abajo no compensaba la diferencia.
+    local label="[$((i+1))/$TOTAL] $step"
     echo ""
     echo "╔════════════════════════════════════════════════════════════╗"
-    printf "║ [%d/%d] %-52s ║\n" "$((i+1))" "$TOTAL" "$STEP"
+    printf "║ %-58s ║\n" "$label"
     echo "╚════════════════════════════════════════════════════════════╝"
     echo ""
-    bash "./$STEP" $ARGS
+    bash "./$step" $args
+}
+
+TOTAL=${#STEPS[@]}
+
+# 01 corre SIEMPRE primero y por separado del resto del loop, porque instala
+# curl entre otras cosas -- y get_public_ip() (usada justo despues) depende
+# de curl. Si el fetch de la IP corriera antes de este paso en un VPS recien
+# creado sin curl preinstalado, cachearia el placeholder "TU_IP_PUBLICA" y
+# ese valor malo quedaria exportado (y por lo tanto "atascado") para el
+# resto de esta ejecucion, incluido el mensaje final de Webmin.
+run_step 0 "${STEPS[0]}"
+
+# Obtener y exportar la IP publica UNA sola vez, ahora que 01 ya garantizo
+# curl instalado. get_public_ip() exporta CACHED_PUBLIC_IP, y una variable
+# exportada SI la heredan los procesos "bash ./script.sh" del resto del loop
+# (a diferencia de una variable sin exportar). Asi 02_J-install-webmin.sh
+# reusa esta misma IP en vez de volver a consultar ifconfig.me.
+IP=$(get_public_ip)
+
+for i in "${!STEPS[@]}"; do
+    [ "$i" -eq 0 ] && continue   # 01 ya corrio arriba
+    run_step "$i" "${STEPS[$i]}"
 done
 
 echo ""
@@ -94,7 +120,6 @@ echo "  Access: /var/log/nginx/$DOMAIN/access.log"
 echo "  Error:  /var/log/nginx/$DOMAIN/error.log"
 echo ""
 echo "Panel de administracion (Webmin):"
-IP=$(get_public_ip)  # Usa IP cacheada de 02_J (evita duplicate fetch)
 echo "  🔗 https://$IP:10000  (usuario/contraseña: los mismos que por SSH)"
 echo ""
 echo "Pasos opcionales (independientes entre si):"
