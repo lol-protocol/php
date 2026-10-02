@@ -28,6 +28,7 @@ class CzechPhoneticFolder extends AbstractPhoneticFolder
         'ý' => 'i', 'y' => 'i',
     ];
 
+    /** @return array<string,string> */
     protected static function getAccents(): array { return self::ACCENTS; }
 
     protected static function applyLanguageRules(string $text): string

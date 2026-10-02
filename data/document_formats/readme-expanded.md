@@ -69,7 +69,7 @@ This expanded database includes:
 ### Documentation
 
 22. **README.md** - Original documentation (still valid)
-23. **README_EXPANDED.md** - This comprehensive guide
+23. **readme-expanded.md** - This comprehensive guide
 
 ## 🌍 Country Coverage (30+ Countries)
 
