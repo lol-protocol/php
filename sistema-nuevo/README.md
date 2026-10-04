@@ -109,7 +109,8 @@ sistema-nuevo/
 │   ├── js/                                      Unit tests de formato.js, idioma.js y alertas.js
 │   ├── ejecutar-e2e.sh                          Runner e2e (Playwright, ya instalado)
 │   └── e2e/                                     Login, timeline, paginación, filtros,
-│                                                 gráfico, alertas, idioma — panel completo
+│                                                 gráfico, alertas, idioma — panel completo;
+│                                                 y los ejemplos .http contra la API real
 │
 └── ejecutar.sh                     Levanta PostgreSQL + carga datos + los 3 servicios
 ```
@@ -458,7 +459,10 @@ php pruebas/ejecutar-integracion.php
   que responde último) y el rate limiting (5 fallos + bloqueo con la contraseña
   correcta) — este último limpia `intentos_login` con `psql` en un `finally`,
   para no dejar la IP del test runner bloqueada 15 minutos si algo falla a
-  mitad de camino.
+  mitad de camino. Aparte, `peticiones-api.e2e.cjs` (sin navegador) reproduce
+  `datos/ejemplos/peticiones-api.http` bloque por bloque contra la API real
+  (login, token CSRF reusado en los POST/DELETE, cada código HTTP esperado) y
+  exige que el archivo tenga un ejemplo de cada ruta de `index.php`.
 
 Las pruebas e2e usan `require()` (CommonJS) en vez de `import`, a propósito: Node
 solo resuelve paquetes globales (Playwright no tiene `node_modules` propio acá) vía
@@ -477,9 +481,13 @@ algo falla, el último paso imprime los logs de Java, la API y el panel.
   para mostrar cada tipo de inconsistencia (fecha en epoch, monto con símbolo,
   usuario vacío, tipo desconocido, HTML inseguro en comentario, IP con puerto)
   junto a cómo queda cada uno después del saneador (o `null` si se descarta).
-- `peticiones-api.http`: ejemplos de todos los endpoints, en formato `.http`
-  (extensión "REST Client" de VS Code, o el cliente HTTP de JetBrains) — login,
-  timeline con distintos `scope`, logout.
+- `peticiones-api.http`: un ejemplo de cada endpoint, en formato `.http`
+  (extensión "REST Client" de VS Code, o el cliente HTTP de JetBrains) — login, los
+  GET de catálogos/KPIs/alertas, timeline con distintos `scope` y `type`, y los
+  POST/DELETE (configuración de alertas, filtros guardados, notas, logout) con el
+  `X-CSRF-Token` que devuelve el login. `pruebas/e2e/peticiones-api.e2e.cjs` lo
+  reproduce entero contra la API real y falla si algún bloque deja de andar o si
+  alguna ruta de `index.php` queda sin ejemplo.
 
 ## Cómo correrlo
 
