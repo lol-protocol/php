@@ -51,14 +51,21 @@ const { assert, paso, resumenPasos, iniciarSesion } = require("./ayudante-e2e.cj
     // (renderFiltrosDropdown): si no lleva data-i18n, queda en el idioma viejo.
     const placeholderFiltros = page.locator("#saved-filters-select option[value='']");
 
+    // El resumen de filtros no puede mezclar idiomas: "todos los países" lo pone el
+    // frontend (t("scope_all_countries")), no el backend.
     await page.click('.lang-button[data-lang="en"]');
     await page.waitForTimeout(300);
     assert.equal(await page.textContent("#logout-button"), "Log out");
     assert.equal(await placeholderFiltros.textContent(), "-- Load saved filter --");
+    const resumenEn = await page.textContent("#filter-summary");
+    assert.equal(resumenEn.includes("All countries"), true);
+    assert.equal(resumenEn.includes("Todos los países"), false);
+
     await page.click('.lang-button[data-lang="es"]');
     await page.waitForTimeout(300);
     assert.equal(await page.textContent("#logout-button"), "Cerrar sesión");
     assert.equal(await placeholderFiltros.textContent(), "-- Cargar filtro guardado --");
+    assert.equal((await page.textContent("#filter-summary")).includes("Todos los países"), true);
   });
 
   await paso("cambiar de idioma no pisa una nota recién tipeada", async () => {

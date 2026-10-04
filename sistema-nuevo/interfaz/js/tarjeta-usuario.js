@@ -24,7 +24,7 @@ export function renderFilterSummary(filters, itemCount) {
   const genderLabel = filters.gender === "all" ? t("filter_all_genders") : etiquetaGenero(filters.gender);
   const typeSuffix = filters.type === "all" ? "" : t("filter_summary_type_suffix", { type: t(`action_${filters.type}`) });
   box.textContent = t("filter_summary", {
-    scope: filters.scope_label,
+    scope: filters.scope_label ?? t("scope_all_countries"), // null = sin filtro de país (ver api_scope_label)
     age: t("common_years", { n: ageLabel }),
     gender: genderLabel,
     typeSuffix,
