@@ -102,7 +102,7 @@ sistema-nuevo/
 │
 ├── pruebas/                        Pruebas automatizadas, sin dependencias nuevas
 │   ├── marco-pruebas.php / ejecutar-php.php     Framework mínimo + runner (PHP)
-│   ├── php/                                     Unit tests del saneador
+│   ├── php/                                     Unit tests del saneador, api_scope_label y la muestra
 │   ├── ejecutar-integracion.php                 Runner de integración (Almacen*.php, PostgreSQL real)
 │   ├── php-integracion/                         Unit tests de Almacen*.php y ClienteEstadisticas.php
 │   ├── ejecutar-js.sh                           Runner (node:test, ya viene con Node)
@@ -409,7 +409,7 @@ Sin sumar dependencias nuevas: PHP y Node ya estaban, y Playwright ya viene
 instalado globalmente en este entorno.
 
 ```bash
-# Unit tests del saneador (framework propio en pruebas/marco-pruebas.php, sin BD)
+# Unit tests en PHP puro: saneador y helpers de la API (framework propio en pruebas/marco-pruebas.php, sin BD)
 php pruebas/ejecutar-php.php
 
 # Integración: Almacen*.php contra PostgreSQL real -- requiere el servicio arriba
@@ -427,7 +427,10 @@ php pruebas/ejecutar-integracion.php
   `codigo_http`/`ip`/`codigo_pais` (primitivas), `saneador_marca_temporal`/
   `duracion_ms` (fechas), y `saneador_accion()` de punta a punta (registro válido,
   campo esencial faltante, usuario inexistente, comentario con HTML, moneda
-  inválida cae al país del usuario, hora local derivada de la IP).
+  inválida cae al país del usuario, hora local derivada de la IP), más
+  `api_scope_label()` (etiqueta del universo de comparación: `null` cuando no hay
+  filtro de país, coherente con `api_resolve_scope_countries()`; así "todos los
+  países" lo traduce el frontend) y los 7 registros de `muestra-antes-despues.json`.
 - `pruebas/php-integracion/`: `AlmacenFiltros` (CRUD completo, age_min=0/null no se
   pierde), `AlmacenNotas` (guardar es upsert, texto vacío borra la fila),
   `AlmacenConfiguracion` (default habilitado si no hay fila, guardar/leer umbral),
@@ -482,10 +485,14 @@ algo falla, el último paso imprime los logs de Java, la API y el panel.
 ## Ejemplos
 
 `datos/ejemplos/`:
-- `muestra-antes-despues.json`: 7 registros reales del log crudo, elegidos a mano
-  para mostrar cada tipo de inconsistencia (fecha en epoch, monto con símbolo,
-  usuario vacío, tipo desconocido, HTML inseguro en comentario, IP con puerto)
-  junto a cómo queda cada uno después del saneador (o `null` si se descarta).
+- `muestra-antes-despues.json`: 7 registros del log crudo (de una corrida anterior
+  del generador: sus `id` ya no coinciden con los de `acciones-crudas.json`),
+  elegidos a mano para mostrar cada tipo de inconsistencia (fecha en epoch, monto
+  con símbolo, usuario vacío, tipo desconocido, HTML inseguro en comentario, IP con
+  puerto) junto a cómo queda cada uno después del saneador (o `null` si se
+  descarta). `pruebas/php/muestra-antes-despues-test.php` corre el saneador real
+  sobre cada `crudo` y exige el `saneado` documentado: si el saneador cambia, el
+  ejemplo no puede quedar mintiendo sin que falle esa prueba.
 - `peticiones-api.http`: un ejemplo de cada endpoint, en formato `.http`
   (extensión "REST Client" de VS Code, o el cliente HTTP de JetBrains) — login, los
   GET de catálogos/KPIs/alertas, timeline con distintos `scope` y `type`, y los
