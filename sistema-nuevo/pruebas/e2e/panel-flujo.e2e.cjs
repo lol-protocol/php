@@ -47,12 +47,18 @@ const { assert, paso, resumenPasos, iniciarSesion } = require("./ayudante-e2e.cj
   });
 
   await paso("el selector de idioma traduce la interfaz sin recargar", async () => {
+    // El placeholder del desplegable de filtros guardados se arma una sola vez
+    // (renderFiltrosDropdown): si no lleva data-i18n, queda en el idioma viejo.
+    const placeholderFiltros = page.locator("#saved-filters-select option[value='']");
+
     await page.click('.lang-button[data-lang="en"]');
     await page.waitForTimeout(300);
     assert.equal(await page.textContent("#logout-button"), "Log out");
+    assert.equal(await placeholderFiltros.textContent(), "-- Load saved filter --");
     await page.click('.lang-button[data-lang="es"]');
     await page.waitForTimeout(300);
     assert.equal(await page.textContent("#logout-button"), "Cerrar sesión");
+    assert.equal(await placeholderFiltros.textContent(), "-- Cargar filtro guardado --");
   });
 
   await paso("cambiar de idioma no pisa una nota recién tipeada", async () => {
