@@ -50,7 +50,7 @@ sistema-nuevo/
 │   ├── monedas.json                   Moneda por país + cotización fija frente al USD
 │   ├── esquema.sql                    DDL PostgreSQL: catálogos (monedas, países, grupos, tipos)
 │   ├── esquema-nucleo.sql             DDL PostgreSQL: usuarios, administradores, acciones
-│   ├── esquema-datos-ejemplo.sql      Filas de ejemplo standalone (no las carga el sistema)
+│   ├── esquema-datos-ejemplo.sql      Filas de ejemplo, van después de esquema*.sql (no las carga el sistema)
 │   └── ejemplos/                      muestra-antes-despues.json, peticiones-api.http
 │
 ├── preparar-postgres.sh            Deja PostgreSQL listo (servicio, rol, base) — idempotente
@@ -353,9 +353,12 @@ correrlo de nuevo). Variables de entorno (con default si no están seteadas):
 `BACKOFFICE_BD_NOMBRE` (`backoffice`), `BACKOFFICE_BD_USUARIO` (`backoffice_app`),
 `BACKOFFICE_BD_CLAVE` (`backoffice_dev_2026`).
 
-`datos/esquema-datos-ejemplo.sql` es aparte: un puñado de INSERT de ejemplo
-standalone, para mirar el esquema con datos sin correr el generador completo — el
-sistema no lo carga automáticamente.
+`datos/esquema-datos-ejemplo.sql` es aparte: un puñado de INSERT de ejemplo, para
+mirar el esquema con datos sin correr el generador completo — el sistema no lo
+carga automáticamente. Va después de `esquema.sql` y `esquema-nucleo.sql`, en ese
+orden (tiene INSERT en tablas de los dos; solo con `esquema.sql` falla):
+`pruebas/php-integracion/esquema-datos-ejemplo-test.php` lo carga así en un schema
+descartable, dentro de una transacción que siempre se revierte.
 
 Ojo si se agrega una tabla nueva con FK hacia `acciones` o `usuarios`: el
 `DROP TABLE ... CASCADE` de esas dos en `esquema.sql` borra la *constraint* de FK
@@ -441,7 +444,9 @@ php pruebas/ejecutar-integracion.php
   y con el servicio colgado el lote entero paga un solo timeout, no uno por tipo) y
   `AlmacenAdministradores`/`auth_verificar_credenciales` (un admin que solo existe
   en la tabla, no en `credenciales.php`, autentica igual -- prueba que el login lee
-  de la BD, no del archivo).
+  de la BD, no del archivo). Además, `esquema-datos-ejemplo.sql` se carga (junto
+  con `esquema.sql` y `esquema-nucleo.sql`) en un schema descartable dentro de una
+  transacción que siempre se revierte, para que los ejemplos no se rompan sin avisar.
 - `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
