@@ -14,14 +14,14 @@ function api_alertas_config(): void
                 'cambio_pais' => $almacen->esAlertaHabilitada('cambio_pais'),
             ],
             'umbral' => $almacen->obtenerUmbral(),
-        ]);
+        ], JSON_UNESCAPED_UNICODE);
         return;
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!auth_validar_csrf_header()) {
             http_response_code(403);
-            echo json_encode(['error' => 'token CSRF inválido']);
+            echo json_encode(['error' => 'token CSRF inválido'], JSON_UNESCAPED_UNICODE);
             return;
         }
 
@@ -41,10 +41,10 @@ function api_alertas_config(): void
             $almacen->guardar('umbral_sensibilidad', (string)$umbral);
         }
 
-        echo json_encode(['ok' => true]);
+        echo json_encode(['ok' => true], JSON_UNESCAPED_UNICODE);
         return;
     }
 
     http_response_code(405);
-    echo json_encode(['error' => 'método no permitido']);
+    echo json_encode(['error' => 'método no permitido'], JSON_UNESCAPED_UNICODE);
 }

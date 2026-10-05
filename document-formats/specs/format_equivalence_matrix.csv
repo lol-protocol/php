@@ -1,0 +1,35 @@
+source_format,target_format,similarity_percent,can_rotate,can_fold,can_trim,compatibility_level,notes
+A4,Letter,96,No,No,No,Direct,Nearly the same size: 210×297 mm vs 215.9×279.4 mm
+A4,A5,71,No,Yes,Yes,Folded,A4 folded in half gives A5
+A3,A4,71,No,Yes,Yes,Folded,A3 folded in half gives A4
+A3,Tabloid,96,No,No,No,Direct,Nearly the same size: 297×420 mm vs 279.4×431.8 mm
+Letter,A4,96,No,No,No,Direct,Nearly the same size: 215.9×279.4 mm vs 210×297 mm
+Letter,Half Letter,71,No,Yes,Yes,Folded,Letter folded in half gives Half Letter
+Legal,Oficio,98,No,No,Yes,Direct,Nearly the same size: 215.9×355.6 mm vs 216×340 mm
+Carta (Letter),Letter,100,No,No,No,Direct,Same size (215.9×279.4 mm)
+Oficio,Legal,98,No,No,No,Direct,Nearly the same size: 216×340 mm vs 215.9×355.6 mm
+Tabloid,A3,96,No,No,No,Direct,Nearly the same size: 279.4×431.8 mm vs 297×420 mm
+Executive,A5,80,No,No,Yes,Different,Different sizes: 184.15×266.7 mm vs 148×210 mm
+A6,Postcard Standard,97,No,No,No,Direct,Nearly the same size: 105×148 mm vs 102×152 mm
+Ledger,A3,96,Yes,No,No,Direct,Nearly the same size: 431.8×279.4 mm vs 297×420 mm; one is turned sideways
+B5,A5,84,No,No,Yes,Different,Different sizes: 176×250 mm vs 148×210 mm
+Crown,A4,64,No,No,No,Different,Different sizes: 127×203 mm vs 210×297 mm
+Demy,A4,69,No,No,No,Different,Different sizes: 139×216 mm vs 210×297 mm
+Royal,A3,53,No,No,No,Different,Different sizes: 152×229 mm vs 297×420 mm
+JIS B4,A3,87,No,No,No,Similar,Close in size: 257×364 mm vs 297×420 mm
+JIS B5,A5,82,No,No,Yes,Different,Different sizes: 182×257 mm vs 148×210 mm
+A2,Poster 18x24,95,No,No,No,Direct,Nearly the same size: 420×594 mm vs 457×610 mm
+A1,Poster 24x36,95,No,No,No,Direct,Nearly the same size: 594×841 mm vs 610×914 mm
+C4,A4,92,No,No,No,Contains,Envelope for A4 (210×297 mm) unfolded
+C5,A5,92,No,No,No,Contains,Envelope for A5 (148×210 mm) unfolded
+DL,A4,63,No,Yes,No,Contains,Envelope for A4 folded in thirds (210×99 mm)
+A6 Postcard,Greeting Card,83,No,No,No,Different,Different sizes: 105×148 mm vs 127×178 mm
+4x6,Postcard Standard,100,No,No,No,Direct,Same size (102×152 mm)
+Business Card Standard,A8,89,Yes,No,No,Similar,Close in size: 90×50 mm vs 52×74 mm; one is turned sideways
+Trade Paperback,A4,75,No,No,No,Different,Different sizes: 152×228 mm vs 210×297 mm
+Mass Market,A6,93,No,No,Yes,Similar,Close in size: 106×171 mm vs 105×148 mm
+Digest,Letter,70,No,No,No,Different,Different sizes: 139×210 mm vs 215.9×279.4 mm
+Hagaki,Postcard Standard,98,No,No,No,Direct,Nearly the same size: 100×148 mm vs 102×152 mm
+Index Card 3x5,Postcard Standard,79,No,No,No,Different,Different sizes: 76.2×127 mm vs 102×152 mm
+Label 4x6,Postcard Standard,100,No,No,No,Direct,Same size (102×152 mm)
+Label 8.5x11,Letter,100,No,No,No,Direct,Same size (216×279 mm)

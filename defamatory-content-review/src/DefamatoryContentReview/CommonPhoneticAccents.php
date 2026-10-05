@@ -19,7 +19,11 @@ final class CommonPhoneticAccents
         'ä' => 'ae', 'ö' => 'oe', 'å' => 'aa',
     ];
 
-    /** Merge base European vowels with language-specific additions (e.g., Spanish ñ). */
+    /**
+     * Merge base European vowels with language-specific additions (e.g., Spanish ñ).
+     * @param array<string,string> ...$extras
+     * @return array<string,string>
+     */
     public static function withExtras(array ...$extras): array
     {
         $result = self::EUROPEAN_VOWELS;

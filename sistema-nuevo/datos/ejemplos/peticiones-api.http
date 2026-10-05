@@ -1,17 +1,30 @@
-### Ejemplos de uso de la API del backoffice.
-### Formato estándar .http (extensión "REST Client" de VS Code, o el cliente
-### HTTP de JetBrains) — cada bloque se ejecuta por separado; la cookie de
-### sesión se guarda sola entre bloques dentro del mismo archivo.
-### Requiere el backend PHP corriendo (ver README.md, sección "Cómo correrlo").
+# Ejemplos de uso de la API del backoffice -- todos los endpoints, en orden.
+# Formato estándar .http (extensión "REST Client" de VS Code, o el cliente
+# HTTP de JetBrains). Cada bloque se ejecuta por separado; la cookie de
+# sesión se guarda sola entre bloques dentro del mismo archivo.
+# Requiere el backend PHP corriendo (ver README.md, sección "Cómo correrlo").
+#
+# Los POST/DELETE exigen el header X-CSRF-Token (protección CSRF). El token
+# viene en la respuesta del login (bloque con "# @name login") y se reusa más
+# abajo con {{login.response.body.$.csrf_token}}: es la sintaxis de REST Client;
+# si tu cliente no soporta referencias entre bloques, pegá a mano el
+# "csrf_token" de la respuesta del login en esos headers.
+#
+# "# esperado: N" es el código HTTP que devuelve cada bloque (sin esa línea,
+# 200). pruebas/e2e/peticiones-api.e2e.cjs reproduce este archivo entero contra
+# la API real y exige que cubra todas las rutas de index.php, para que no se
+# desactualice sin avisar.
 
 @baseUrl = http://localhost:8000
 @origin = http://localhost:8082
 
 ### 1. Sin sesión: debe devolver 401
+# esperado: 401
 GET {{baseUrl}}/api/users
 Origin: {{origin}}
 
-### 2. Iniciar sesión (guarda la cookie para los siguientes bloques)
+### 2. Iniciar sesión (guarda la cookie y devuelve el csrf_token para los POST/DELETE)
+# @name login
 POST {{baseUrl}}/api/login
 Origin: {{origin}}
 Content-Type: application/json
@@ -26,21 +39,111 @@ GET {{baseUrl}}/api/session
 Origin: {{origin}}
 
 ### 4. Listar usuarios (para el selector)
-GET {{baseUrl}}/api/users
+GET {{baseUrl}}/api/users?page=1&per_page=20&search=
 Origin: {{origin}}
 
 ### 5. Presets de país + catálogo de países
 GET {{baseUrl}}/api/groups
 Origin: {{origin}}
 
-### 6. Timeline de un usuario, comparado contra LATAM, 18-65 años, todos los géneros
+### 6. Catálogo de tipos de acción
+GET {{baseUrl}}/api/action-types
+Origin: {{origin}}
+
+### 7. KPIs agregados de todo el sistema
+GET {{baseUrl}}/api/kpis
+Origin: {{origin}}
+
+### 8. Alertas proactivas (IP fuera del país declarado, cambios de país imposibles)
+GET {{baseUrl}}/api/alerts
+Origin: {{origin}}
+
+### 9. Configuración de alertas (qué tipos están habilitados + sensibilidad)
+GET {{baseUrl}}/api/alerts-config
+Origin: {{origin}}
+
+### 10. Guardar la configuración de alertas (acá, los mismos valores por defecto)
+POST {{baseUrl}}/api/alerts-config
+Origin: {{origin}}
+Content-Type: application/json
+X-CSRF-Token: {{login.response.body.$.csrf_token}}
+
+{
+  "alertas": { "ip_pais": true, "cambio_pais": true },
+  "umbral": 50
+}
+
+### 11. Timeline de un usuario, comparado contra LATAM, 18-65 años, todos los géneros
 GET {{baseUrl}}/api/timeline?user_id=u001&scope=preset:latam&age_min=18&age_max=65&gender=all
 Origin: {{origin}}
 
-### 7. Mismo timeline, ahora comparado contra un país específico
+### 12. Mismo timeline, ahora comparado contra un país específico
 GET {{baseUrl}}/api/timeline?user_id=u001&scope=country:DE&age_min=18&age_max=65&gender=all
 Origin: {{origin}}
 
-### 8. Cerrar sesión
+### 13. Solo los pagos del usuario, de a 5 por página
+GET {{baseUrl}}/api/timeline?user_id=u001&scope=all&type=payment&page=1&per_page=5
+Origin: {{origin}}
+
+### 14. Filtros guardados: listar
+GET {{baseUrl}}/api/filtros
+Origin: {{origin}}
+
+### 15. Filtros guardados: guardar uno (devuelve el id)
+# @name crearFiltro
+POST {{baseUrl}}/api/filtros
+Origin: {{origin}}
+Content-Type: application/json
+X-CSRF-Token: {{login.response.body.$.csrf_token}}
+
+{
+  "nombre": "ejemplo-http",
+  "scope": "preset:latam",
+  "age_min": 18,
+  "age_max": 65,
+  "gender": null,
+  "tipo_accion": null
+}
+
+### 16. Filtros guardados: eliminar el que se acaba de guardar
+DELETE {{baseUrl}}/api/filtros/{{crearFiltro.response.body.$.id}}
+Origin: {{origin}}
+X-CSRF-Token: {{login.response.body.$.csrf_token}}
+
+### 17. Nota sobre una acción: guardar
+POST {{baseUrl}}/api/notes
+Origin: {{origin}}
+Content-Type: application/json
+X-CSRF-Token: {{login.response.body.$.csrf_token}}
+
+{
+  "accion_id": "a00001",
+  "texto": "revisado, es un falso positivo"
+}
+
+### 18. Nota sobre una acción: texto vacío la borra
+POST {{baseUrl}}/api/notes
+Origin: {{origin}}
+Content-Type: application/json
+X-CSRF-Token: {{login.response.body.$.csrf_token}}
+
+{
+  "accion_id": "a00001",
+  "texto": ""
+}
+
+### 19. Un POST sin X-CSRF-Token se rechaza aunque haya sesión válida: 403
+# esperado: 403
+POST {{baseUrl}}/api/notes
+Origin: {{origin}}
+Content-Type: application/json
+
+{
+  "accion_id": "a00001",
+  "texto": "esto no se guarda"
+}
+
+### 20. Cerrar sesión (también exige el token CSRF)
 POST {{baseUrl}}/api/logout
 Origin: {{origin}}
+X-CSRF-Token: {{login.response.body.$.csrf_token}}

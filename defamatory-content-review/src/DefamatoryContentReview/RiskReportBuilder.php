@@ -24,6 +24,7 @@ final class RiskReportBuilder
         'fonetico' => 'Fusión fonética entre nombre y apellido',
     ];
 
+    /** @return array<string,mixed> */
     public function build(ValidationResult $result, string $decision, ScoringPolicy $policy): array
     {
         return $result->toArray() + [
@@ -33,11 +34,7 @@ final class RiskReportBuilder
         ];
     }
 
-    /**
-     * Un término que además es apellido documentado nunca se rechaza solo:
-     * baja a revisión humana. Lo mismo para una fusión fonética — es
-     * inferencia, no coincidencia literal.
-     */
+    /** Un término que además es apellido documentado nunca se rechaza solo: baja a revisión humana. Lo mismo para una fusión fonética — es inferencia, no coincidencia literal. */
     private function recommendationFor(string $decision, ValidationResult $result): string
     {
         $types = implode(', ', $result->getFlaggedRiskTypes());
@@ -56,6 +53,7 @@ final class RiskReportBuilder
         };
     }
 
+    /** @return array<string,array<string,mixed>> */
     private function analyzeRisks(ValidationResult $result, ScoringPolicy $policy): array
     {
         $analysis = [];

@@ -2,13 +2,9 @@
 
 namespace DefamatoryContentReview;
 
-/**
- * Motor de validación: nombre completo dentro, ValidationResult con
- * severidad y decisión fuera. Delega en cuatro colaboradores, cada uno
- * documentado en su archivo: `NameEvaluator`, `RiskReportBuilder`,
- * `LanguageAccess` (vía `languages()`), `RelatedLanguageValidator` (vía
- * `related()`).
- */
+/** Motor de validación: nombre completo dentro, ValidationResult con severidad y decisión fuera.
+ * Delega en cuatro colaboradores, cada uno documentado en su archivo: `NameEvaluator`,
+ * `RiskReportBuilder`, `LanguageAccess` (vía `languages()`), `RelatedLanguageValidator` (vía `related()`). */
 class DefamatoryContentReviewer
 {
     private LanguageRegistry $registry;
@@ -65,16 +61,20 @@ class DefamatoryContentReviewer
         return $result;
     }
 
-    /** @param array<int,string> $names @return array<int,ValidationResult> */
+    /** @param array<int,string> $names
+     * @return array<int,ValidationResult> */
     public function batchValidateNames(array $names): array { return array_map(fn(string $n) => $this->validateName($n), $names); }
 
-    /** Separa por el primer espacio para detectar fusión fonética como validateFullName(). @param array<int,string> $fullNames @return array<int,ValidationResult> */
+    /** Separa por el primer espacio para detectar fusión fonética como validateFullName().
+     * @param array<int,string> $fullNames
+     * @return array<int,ValidationResult> */
     public function batchValidateFullNames(array $fullNames): array
     {
         return array_map(fn(string $n) => $this->validateFullName(...array_pad(explode(' ', trim($n), 2), 2, '')), $fullNames);
     }
 
-    /** Idiomas explícitos, cada uno con confianza 1.0 — sin depender del modelo de parentesco. @param array<int,string> $languages */
+    /** Idiomas explícitos, cada uno con confianza 1.0 — sin depender del modelo de parentesco.
+     * @param array<int,string> $languages */
     public function validateInLanguages(string $name, array $languages): ValidationResult
     {
         $set = [];
@@ -91,7 +91,7 @@ class DefamatoryContentReviewer
         return $this->policy->decisionFor($result->getSeverity(), $result->hasNameCollision(), $result->hasOnlyPhoneticDetections());
     }
 
-    public function getDetailedReport(ValidationResult $result): array
+    /** @return array<string,mixed> */ public function getDetailedReport(ValidationResult $result): array
     {
         return $this->reports->build($result, $this->decide($result), $this->policy);
     }

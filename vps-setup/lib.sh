@@ -29,15 +29,6 @@ ufw_allow() {
     sudo ufw allow "$rule" || echo "WARNING: Failed to add UFW rule: $rule"
 }
 
-# Verify UFW is actually enabled, not just installed
-ufw_check_enabled() {
-    if ! sudo ufw status | grep -q "^Status: active"; then
-        echo "ERROR: UFW firewall is not active. Did 01-system-update.sh run first?"
-        return 1
-    fi
-    return 0
-}
-
 # Check if a required command/package is installed
 check_dependency() {
     local command=$1
@@ -104,8 +95,9 @@ get_public_ip() {
         ip="TU_IP_PUBLICA"
     fi
 
-    # Cache for this session
-    CACHED_PUBLIC_IP="$ip"
+    # export (not just assign) so child processes started with "bash script.sh"
+    # inherit the cached value instead of re-fetching it themselves
+    export CACHED_PUBLIC_IP="$ip"
     echo "$ip"
 }
 

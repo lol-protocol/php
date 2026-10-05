@@ -1,0 +1,314 @@
+# 🏗️ Arquitectura del Proyecto - Initech VPS
+
+## 📋 Resumen Ejecutivo
+
+Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVHCloud. Soporta múltiples sitios web, aplicaciones PHP y Python, con base de datos PostgreSQL centralizada y SSL/HTTPS automático.
+
+**VPS Principal:**
+- **Proveedor:** OVHCloud (Beauharnois, Canadá)
+- **IP:** 158.69.222.245
+- **SO:** Ubuntu 24.04 LTS
+- **Estado:** Activo
+
+---
+
+## 🌐 Dominios Configurados
+
+**`initech.fun`** es el dominio real, comprado y con la landing page ya
+desplegada — es el que usan por defecto todos los scripts de `vps-setup/`
+(`initech.fun` es el valor default de `$DOMAIN` en cada script) y el que
+referencia `landing-page/index.html`.
+
+Los demás dominios de esta tabla (`conce.com`, `initech.cl`,
+`contrastocolor.ink`, `wikipedia.cl`) son **ejemplos ilustrativos** de cómo
+extender esta misma arquitectura a un segundo/tercer/cuarto dominio en el
+mismo VPS (documentados en detalle en [DOMAINS.md](DOMAINS.md)) — todavía no
+están registrados ni configurados.
+
+| Dominio | Tipo | Propósito | Status |
+|---------|------|----------|--------|
+| **initech.fun** | Landing Page | Sitio real (Initech) | ✅ Activo |
+| conce.com | Landing Page | Ejemplo de 2do dominio (Conce) | 🔄 Ejemplo, no registrado |
+| initech.cl | Landing Page | Ejemplo de 2do dominio (Initech) | 🔄 Ejemplo, no registrado |
+| contrastocolor.ink | Aplicación | Ejemplo de app (Portal de colores/diseño) | 🔄 Ejemplo, no registrado |
+| wikipedia.cl | Aplicación | Ejemplo de app (Wiki local) | 🔄 Ejemplo, no registrado |
+
+---
+
+## 🛠️ Stack Tecnológico
+
+### Panel de Administración
+- **Webmin** (gratis, opcional)
+  - GUI que **edita los archivos de configuración nativos** (Nginx, cron, usuarios, UFW) — no tiene base de datos propia ni convención de carpetas propietaria
+  - Si se desinstala, nada dejar de funcionar: todo sigue siendo Nginx/Certbot/systemd estándar
+  - Interfaz web (`:10000`), mismo usuario/contraseña que SSH
+  - Alternativa a cPanel (de pago), Virtualmin y CloudPanel (que administran el servidor con su propio CLI/base de datos y no resisten bien no tener panel)
+
+### Servidor Web
+- **Nginx** (instalado con `apt` sin fijar versión -- usa la que traiga el repo de Ubuntu 24.04, actualmente 1.24.x -- configurado a mano, un `sites-available/<dominio>` por sitio)
+  - Reverse proxy
+  - Compresión GZIP
+  - Cache HTTP
+
+### Lenguajes & Frameworks
+- **PHP 8.3** - Backend web (PHP-FPM, instalación única para todo el servidor)
+- **Python 3.12** - Scripts, apps Flask/FastAPI y Whisper
+- **Java 21** - Apps empresariales, vía Apache Tomcat detrás de un reverse-proxy de Nginx
+
+### Base de Datos
+- **PostgreSQL 16+** - Base de datos principal
+- **MariaDB** - Opcional, para software que exija específicamente ese motor
+
+### SSL/TLS
+- **Let's Encrypt** - Vía Certbot (`certbot run --nginx`)
+- Renovación automática con `certbot.timer`
+
+### Monitoreo & Logging
+- **Nginx Logs** - Access & error logs por dominio, también visibles desde Webmin; rotados a diario (14 archivos) por `07_D`
+- **vps-monitor** (opcional, `09_A`) - cada 15 min revisa disco, RAM, carga, certificados y servicios; alerta por webhook/correo solo cuando cambia el estado
+- **Healthcheck** - `08-healthcheck.sh` (solo lectura) verifica servicios, UFW, puertos, DNS, HTTPS, certificado y headers
+- **Syslog** - Sistema centralizado (futuro)
+- **Prometheus** - Métricas (futuro)
+
+---
+
+## 📁 Estructura de Directorios
+
+```
+/var/www/
+├── landing-page/
+│   ├── initech.fun/          # el dominio real, ya activo
+│   │   └── index.html
+│   ├── conce.com/            # ejemplo, no registrado
+│   │   └── index.html
+│   └── initech.cl/           # ejemplo, no registrado
+│       └── index.html
+├── contrastocolor.ink/       # ejemplo, no registrado
+│   ├── venv/
+│   └── app.py
+└── wikipedia.cl/             # ejemplo, no registrado
+    └── public/
+
+/etc/nginx/
+├── sites-available/
+│   ├── initech.fun
+│   ├── conce.com
+│   ├── initech.cl
+│   ├── contrastocolor.ink
+│   └── wikipedia.cl
+└── sites-enabled/
+    └── (enlaces simbólicos)
+
+/etc/letsencrypt/live/
+├── initech.fun/
+├── conce.com/
+├── initech.cl/
+├── contrastocolor.ink/
+└── wikipedia.cl/
+
+/var/log/nginx/
+├── initech.fun/
+├── conce.com/
+├── initech.cl/
+├── contrastocolor.ink/
+└── wikipedia.cl/
+
+/var/lib/postgresql/
+└── (datos de PostgreSQL)
+
+/opt/venvs/whisper/
+└── (entorno virtual de Python + Whisper, si se instaló)
+
+/etc/webmin/
+└── (configuración de Webmin, si se instaló — no interfiere con lo anterior)
+
+/home/backups/
+├── daily/
+├── weekly/
+└── monthly/
+```
+
+---
+
+## 🔄 Flujo de Solicitudes
+
+```
+Usuario (Internet)
+        ↓
+   [Firewall]
+        ↓
+  158.69.222.245:80/443
+        ↓
+  [Nginx - Reverse Proxy, un vhost por sitio en /etc/nginx/sites-available/]
+        ↓
+   ┌─────────────────────────────────────┐
+   │                                     │
+   v                                     v
+HTML/CSS/JS                         [PHP-FPM 8.3]
+Landing Pages                       o [Python Apps] o [Tomcat via reverse-proxy]
+   │                                     │
+   ↓                                     ↓
+/var/www/landing-page/{dominio}/     /var/www/{app}/
+   │                                     │
+   └─────────────────────────────────────┘
+           ↓
+    [PostgreSQL 16] o [MariaDB, opcional]
+```
+
+Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta misma configuración — no está en el camino de las peticiones de los usuarios finales.
+
+---
+
+## 🔐 Seguridad
+
+### SSL/TLS
+- ✅ Certificados Let's Encrypt (gratis)
+- ✅ Renovación automática (Certbot)
+- ✅ HTTPS obligatorio (redirección automática, la agrega Certbot al instalar el certificado)
+- ✅ Headers de seguridad (`Strict-Transport-Security`, `X-Frame-Options`,
+  `X-Content-Type-Options`, `Referrer-Policy`) -- los agrega
+  `07_B-nginx-security-headers.sh` en `/etc/nginx/conf.d/security-headers.conf`
+  para todos los dominios. No incluye `X-XSS-Protection` (obsoleto) ni
+  `Content-Security-Policy` (hay que ajustarla a cada sitio).
+
+### Firewall y endurecimiento
+- ✅ fail2ban con jail de SSH (por `07_A`): banea 1h tras 5 intentos fallidos en 10 min
+- ✅ Parches de seguridad automáticos (`unattended-upgrades`, por `07_A`); no reinicia el servidor solo
+- ✅ UFW habilitado (por `01-system-update.sh`, con SSH permitido antes de activarlo)
+- ✅ Puertos abiertos: 22 (SSH), 80 y 443 (HTTP/HTTPS, vía el perfil `Nginx Full` de UFW que abre `02_E`)
+- ⚠️ SSH por contraseña **hasta que corras `07_C-harden-ssh.sh`** (opcional, no va en `install-all.sh` porque necesita tu llave pública y que compruebes el login por llave antes: autoriza la llave y desactiva contraseña y login de root; `--revert` lo deshace)
+
+### Base de Datos
+- ✅ PostgreSQL sin acceso externo
+- ✅ Autenticación local (UNIX socket)
+- ✅ Usuarios con permisos limitados
+
+---
+
+## 📊 Diagrama de Arquitectura
+
+```
+┌─────────────────────────────────────────────────┐
+│         Internet / DNS (del registrador)        │
+│                                                   │
+│  initech.fun (real, activo)                      │
+│  conce.com, initech.cl, contrastocolor.ink,      │
+│  wikipedia.cl (ejemplos, no registrados)         │
+└─────────────────────┬───────────────────────────┘
+                      │ A Record
+         ┌────────────▼─────────────┐
+         │  158.69.222.245 (VPS)    │
+         │   OVHCloud - Canadá      │
+         └────────────┬─────────────┘
+                      │
+         ┌────────────▼─────────────┐
+         │  Nginx (Reverse Proxy)   │
+         │  + Webmin :10000 (admin) │
+         └────────────┬─────────────┘
+                      │
+        ┌─────────────┼─────────────┐
+        │             │             │
+   ┌────▼────┐  ┌────▼────┐  ┌─────▼──┐
+   │ Landing │  │ PHP-FPM │  │ Python │
+   │ Pages   │  │  8.3    │  │  3.12  │
+   │ (HTML)  │  │         │  │        │
+   └─────────┘  └────┬────┘  └────┬───┘
+                     │            │
+                 ┌───▼────────────▼───┐
+                 │ PostgreSQL 16      │
+                 │ + MariaDB          │
+                 │ (opcional)         │
+                 └────────────────────┘
+```
+
+---
+
+## 🚀 Fases de Implementación
+
+### **Fase 1: Setup Base** (completada para `initech.fun`)
+- [x] Instalación de software base
+- [x] Configuración de Nginx
+- [x] Webmin instalado (panel de administración opcional)
+- [x] Landing page (initech.fun)
+- [x] SSL/HTTPS (Let's Encrypt vía Certbot)
+- [x] Configuración DNS
+
+### **Fase 2: Más dominios y aplicaciones web** (ejemplos, no iniciada)
+- [ ] Landing pages de ejemplo (conce.com, initech.cl)
+- [ ] contrastocolor.ink (Aplicación Python)
+- [ ] wikipedia.cl (Aplicación PHP)
+- [ ] Base de datos PostgreSQL
+
+### **Fase 3: Optimización**
+- [ ] Cache HTTP (Varnish)
+- [ ] CDN (Cloudflare)
+- [ ] Compresión (Brotli)
+- [ ] HTTP/2 optimizado
+
+### **Fase 4: Monitoreo & Backups**
+- [ ] Logs centralizados
+- [ ] Monitoreo de performance
+- [ ] Backups automáticos
+- [ ] Alertas
+
+---
+
+## 📊 Requisitos de Recursos
+
+| Recurso | Especificación | Uso Estimado |
+|---------|----------------|--------------|
+| **CPU** | 2-4 cores | 20-40% (en reposo) |
+| **RAM** | 4-8 GB | 40-60% (normal) |
+| **Disco** | 50+ GB | 30% (con margen) |
+| **Ancho de banda** | Ilimitado (OVHCloud) | 100 GB/mes (est.) |
+
+---
+
+## 🔍 Monitoreo
+
+### Métricas a Rastrear
+- **Uptime:** > 99.5%
+- **Latencia:** < 200ms (P95)
+- **Errores HTTP:** < 1% (5xx)
+- **CPU:** < 80%
+- **RAM:** < 80%
+- **Disco:** < 85%
+
+### Logs
+- **Access Log:** `/var/log/nginx/[dominio]/access.log`
+- **Error Log:** `/var/log/nginx/[dominio]/error.log`
+- También visibles desde Webmin (módulo Nginx Webserver), si está instalado
+- **Syslog:** `/var/log/syslog`
+
+---
+
+## 🔄 Mantenimiento
+
+### Diario
+- Monitorear logs de error
+- Verificar espacio en disco
+- Verificar uptime
+
+### Semanal
+- Revisar uso de recursos (CPU, RAM)
+- Validar backups
+- Revisar seguridad (fail2ban)
+
+### Mensual
+- Actualizar sistema (`apt update && apt upgrade`)
+- Revisar certificados SSL
+- Auditoría de seguridad
+- Optimizar bases de datos
+
+---
+
+## 📞 Contacto & Soporte
+
+- **Email:** admin@initech.fun
+- **Proveedor VPS:** OVHCloud Support
+- **Monitoreo:** Alertas automáticas
+
+---
+
+**Última actualización:** 2026-09-20
+**Versión:** 2.0.0
