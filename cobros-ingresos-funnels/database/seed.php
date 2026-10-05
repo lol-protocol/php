@@ -304,6 +304,8 @@ for ($i = 0; $i < 320; $i++) {
 // Cada boleta y sus pagos quedan en la moneda del pais del cliente.
 $boletaIds = [];
 $pagoIds = [];
+/** @var array<int, int|null> $boletaDelPago id del pago => id de su boleta (null: anticipo) */
+$boletaDelPago = [];
 foreach ($clientesInfo as $cliente) {
     $altaCliente = new DateTimeImmutable($cliente['fecha_alta']);
     if ($altaCliente >= $hoy) {
@@ -351,7 +353,9 @@ foreach ($clientesInfo as $cliente) {
                     ':fecha_pago' => fecha($fPago),
                     ':metodo' => eleccionPonderada($metodoPesos),
                 ]);
-                $pagoIds[] = (int) $insPago->fetchColumn();
+                $pagoId = (int) $insPago->fetchColumn();
+                $pagoIds[] = $pagoId;
+                $boletaDelPago[$pagoId] = $boletaId;
             }
         }
 
@@ -362,7 +366,11 @@ foreach ($clientesInfo as $cliente) {
 // 4) Un puñado de anticipos / pagos sueltos no ligados a una boleta puntual.
 for ($i = 0; $i < 10; $i++) {
     $cliente = $clientesInfo[array_rand($clientesInfo)];
-    $fPago = diasAleatorios($hoy->modify('-90 days'), 90);
+    // Desde 90 dias atras, pero nunca antes de que el cliente exista: con las
+    // boletas ya se respeta (se emiten desde su alta) y los anticipos
+    // aparecian fechados hasta 84 dias antes de que el cliente se diera de alta.
+    $desde = max($hoy->modify('-90 days'), new DateTimeImmutable($cliente['fecha_alta']));
+    $fPago = diasAleatorios($desde, (int) $desde->diff($hoy)->days);
     $insPago->execute([
         ':boleta_id' => null,
         ':cliente_id' => $cliente['id'],
@@ -371,7 +379,9 @@ for ($i = 0; $i < 10; $i++) {
         ':fecha_pago' => fecha($fPago),
         ':metodo' => eleccionPonderada($metodoPesos),
     ]);
-    $pagoIds[] = (int) $insPago->fetchColumn();
+    $pagoId = (int) $insPago->fetchColumn();
+    $pagoIds[] = $pagoId;
+    $boletaDelPago[$pagoId] = null;
 }
 
 // 5) Anular un par de boletas y pagos de ejemplo, para poder ver la insignia
@@ -389,7 +399,8 @@ $insNota = $pdo->prepare(
     'INSERT INTO notas_credito (boleta_id, cliente_id, monto, moneda_codigo, fecha, motivo)
      VALUES (:boleta_id, :cliente_id, :monto, :moneda_codigo, :fecha, :motivo)'
 );
-foreach (array_slice($boletaIds, 4, 2) as $id) {
+$idsBoletasAAnular = array_slice($boletaIds, 4, 2);
+foreach ($idsBoletasAAnular as $id) {
     $cobradoDe->execute([':id' => $id]);
     $datos = $cobradoDe->fetch();
     $anulBoleta->execute([':id' => $id]);
@@ -405,8 +416,16 @@ foreach (array_slice($boletaIds, 4, 2) as $id) {
         ]);
     }
 }
+// Los pagos de una boleta anulada quedan congelados (la app responde 409 si se
+// intenta anularlos despues) y su devolucion ya la cubre la nota de credito:
+// anularlos tambien los descontaria dos veces. Por eso solo se anulan pagos de
+// boletas que siguen vigentes y anticipos.
+$pagosAnulables = array_values(array_filter(
+    $pagoIds,
+    static fn (int $id): bool => !in_array($boletaDelPago[$id], $idsBoletasAAnular, true)
+));
 $anulPago = $pdo->prepare('UPDATE pagos SET anulada = TRUE WHERE id = :id');
-foreach (array_slice($pagoIds, 4, 2) as $id) {
+foreach (array_slice($pagosAnulables, 4, 2) as $id) {
     $anulPago->execute([':id' => $id]);
 }
 
