@@ -249,8 +249,10 @@ src/
   Repositories/NotaCreditoRepository.php  devoluciones emitidas al anular
                         una boleta ya cobrada, y su total por rango/mes en
                         USD para netear los cobros de los reportes
-  Repositories/RangoEdad.php  el tramo de edad (18-24, 25-34, ...) como expresion
-                        SQL, con age(); lo comparten segmentacion y funnel
+  Repositories/RangoEdad.php  el tramo de edad (Menor de 18, 18-24, 25-34, ...)
+                        como expresion SQL, con age(); lo comparten
+                        segmentacion y funnel. Una fecha de nacimiento
+                        posterior a hoy sale como "Fecha inválida"
   Router.php, View.php, Filtros.php, helpers.php
 database/
   migraciones/          el esquema, en cambios numerados (001 = esquema inicial)

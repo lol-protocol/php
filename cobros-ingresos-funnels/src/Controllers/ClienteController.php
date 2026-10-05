@@ -32,6 +32,16 @@ final class ClienteController
         return in_array($segmento, ClienteRepository::SEGMENTOS, true);
     }
 
+    /**
+     * Nadie nacio despues de hoy. Las dos fechas son Y-m-d y ya validadas, asi
+     * que alcanza con compararlas como texto. No se pone piso de edad: un
+     * menor es un cliente posible y los reportes lo muestran en su tramo.
+     */
+    public static function nacimientoNoEsFuturo(string $fechaNacimiento, string $hoy): bool
+    {
+        return $fechaNacimiento <= $hoy;
+    }
+
     public function index(): void
     {
         $q = trim((string) ($_GET['q'] ?? ''));
@@ -100,6 +110,8 @@ final class ClienteController
                 $error = 'Completá todos los campos obligatorios.';
             } elseif (!Filtros::esFechaValida($fechaNacimiento)) {
                 $error = 'La fecha de nacimiento no es válida.';
+            } elseif (!self::nacimientoNoEsFuturo($fechaNacimiento, date('Y-m-d'))) {
+                $error = 'La fecha de nacimiento no puede ser posterior a hoy.';
             } elseif (!self::generoEsValido($genero)) {
                 $error = 'Elegí un género válido.';
             } elseif (!self::segmentoEsValido($segmento)) {

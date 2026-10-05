@@ -48,7 +48,7 @@ use App\EnvioUnico;
         </select>
 
         <label for="fecha_nacimiento">Fecha de nacimiento</label>
-        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required value="<?= htmlspecialchars($_POST['fecha_nacimiento'] ?? '') ?>">
+        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required max="<?= date('Y-m-d') ?>" value="<?= htmlspecialchars($_POST['fecha_nacimiento'] ?? '') ?>">
 
         <label for="segmento">Segmento</label>
         <select name="segmento" id="segmento">

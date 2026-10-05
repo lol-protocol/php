@@ -39,6 +39,21 @@ final class ClienteControllerTest extends TestCase
         }
     }
 
+    /** Antes el alta aceptaba cualquier fecha real, futura incluida, y los reportes la contaban como "18-24". */
+    public function testElNacimientoNoPuedeSerPosteriorAHoy(): void
+    {
+        self::assertTrue(ClienteController::nacimientoNoEsFuturo('1990-05-05', '2026-10-05'));
+        self::assertTrue(ClienteController::nacimientoNoEsFuturo('2026-10-05', '2026-10-05'), 'nacer hoy es posible');
+        self::assertFalse(ClienteController::nacimientoNoEsFuturo('2026-10-06', '2026-10-05'), 'mañana');
+        self::assertFalse(ClienteController::nacimientoNoEsFuturo('2030-01-01', '2026-10-05'));
+    }
+
+    /** No hay piso de edad: un menor es un cliente posible y los reportes lo muestran en su propio tramo. */
+    public function testUnMenorDeEdadSiPuedeSerCliente(): void
+    {
+        self::assertTrue(ClienteController::nacimientoNoEsFuturo('2015-03-01', '2026-10-05'));
+    }
+
     /** El valor por defecto de la base ('general') y el que usa el alta sin elegir tienen que estar en la lista. */
     public function testLosValoresPorDefectoEstanEnLasListas(): void
     {

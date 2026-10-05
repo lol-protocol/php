@@ -349,6 +349,46 @@ final class EscriturasTest extends HttpTestCase
     }
 
     /**
+     * Regresion: el alta aceptaba cualquier fecha de nacimiento real, futura
+     * incluida, y la segmentacion por edad la contaba como "18-24". Un menor
+     * de edad, en cambio, es un cliente posible: se acepta y sale en su tramo.
+     * Futuro es "+2 dias" y no "manana" para no depender de la zona horaria
+     * de quien corre el test frente a la de la app.
+     */
+    public function testNuevoClienteRechazaUnNacimientoFuturoPeroAceptaAUnMenor(): void
+    {
+        $formulario = $this->get('page=cliente-nuevo')['cuerpo'];
+        $email = 'cliente-nacimiento-' . uniqid() . '@example.com';
+        $this->alTerminar(static function () use ($email): void {
+            $db = Database::connection();
+            $db->prepare("DELETE FROM auditoria WHERE entidad = 'cliente' AND entidad_id IN (SELECT id FROM clientes WHERE email = :e)")->execute([':e' => $email]);
+            $db->prepare('DELETE FROM clientes WHERE email = :e')->execute([':e' => $email]);
+        });
+        $datos = [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => self::campoOculto($formulario, EnvioUnico::CAMPO),
+            'nombre' => 'Cliente con nacimiento raro',
+            'email' => $email,
+            'pais_codigo' => 'AR',
+            'ciudad' => 'Rosario',
+            'idioma' => 'Espanol',
+            'genero' => 'No especifica',
+            'fecha_nacimiento' => date('Y-m-d', strtotime('+2 days')),
+            'segmento' => 'general',
+        ];
+        $this->olvidarToken($datos[EnvioUnico::CAMPO]);
+
+        $futuro = $this->post('page=cliente-nuevo', $datos);
+        $this->assertStatus(200, $futuro);
+        self::assertStringContainsString('La fecha de nacimiento no puede ser posterior a hoy.', $futuro['cuerpo']);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+
+        $menor = $this->post('page=cliente-nuevo', ['fecha_nacimiento' => date('Y-m-d', strtotime('-16 years'))] + $datos);
+        $this->assertStatus(302, $menor);
+        self::assertSame(1, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+    }
+
+    /**
      * Regresion de la ronda anterior: con la boleta anulada (y su nota de
      * credito emitida), tocar el pago descontaba la plata dos veces.
      */

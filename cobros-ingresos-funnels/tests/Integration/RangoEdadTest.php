@@ -40,4 +40,21 @@ final class RangoEdadTest extends IntegracionTestCase
         self::assertSame('65+', self::tramo(65));
         self::assertSame('55-64', self::tramo(65, 1));
     }
+
+    /** "18-24" no tenia cota inferior: un menor de edad se contaba como adulto joven. */
+    public function testUnMenorDeEdadNoCaeEnElPrimerTramoDeAdultos(): void
+    {
+        self::assertSame('Menor de 18', self::tramo(17));
+        self::assertSame('Menor de 18', self::tramo(0), 'nacio hoy');
+        self::assertSame('Menor de 18', self::tramo(18, 1), 'cumple 18 manana: todavia tiene 17');
+        self::assertSame('18-24', self::tramo(18), 'cumple 18 hoy');
+    }
+
+    /** Una fecha posterior a hoy no es una edad: antes caia en "18-24" porque el anio de age() da 0 o negativo. */
+    public function testUnaFechaDeNacimientoFuturaSeSeparaComoInvalida(): void
+    {
+        self::assertSame('Fecha inválida', self::tramo(0, 1), 'manana');
+        self::assertSame('Fecha inválida', self::tramo(-1), 'dentro de un anio');
+        self::assertSame('Fecha inválida', self::tramo(-30));
+    }
 }
