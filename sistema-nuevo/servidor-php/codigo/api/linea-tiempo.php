@@ -9,7 +9,7 @@ function api_timeline(): void
     $userId = $_GET['user_id'] ?? '';
     if ($userId === '') {
         http_response_code(400);
-        echo json_encode(['error' => 'user_id es requerido']);
+        echo json_encode(['error' => 'user_id es requerido'], JSON_UNESCAPED_UNICODE);
         return;
     }
 
@@ -20,7 +20,7 @@ function api_timeline(): void
     $user = $datos->userById($userId);
     if ($user === null) {
         http_response_code(404);
-        echo json_encode(['error' => 'usuario no encontrado']);
+        echo json_encode(['error' => 'usuario no encontrado'], JSON_UNESCAPED_UNICODE);
         return;
     }
 

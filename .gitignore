@@ -7,3 +7,10 @@
 .idea/
 .vscode/
 *.log
+
+# Credenciales y llaves: nunca al repo
+vps-setup/vps.env
+*.pem
+id_rsa*
+id_ed25519*
+id_ecdsa*

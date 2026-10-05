@@ -39,6 +39,9 @@ return [
             ['word' => 'carogna', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'asina', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'somara', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'iena', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'sciacallo', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'scarafaggio', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
 
         'intelletto' => [
@@ -74,6 +77,8 @@ return [
             ['word' => 'zuccona', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'testona', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'incolta', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'ebete', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'balordo', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
 
         'fisico' => [
@@ -114,6 +119,8 @@ return [
             ['word' => 'pelata', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'sdentata', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'sudicia', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'spilungone', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'quattrocchi', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
 
         'disabilita' => [
@@ -213,6 +220,8 @@ return [
             ['word' => 'fannullona', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'ubriacona', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'drogata', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'voltagabbana', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'approfittatore', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
 
         'genere' => [
@@ -259,6 +268,8 @@ return [
             ['word' => 'sega', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'vaffanculo', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'porcodio', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'cazzone', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'testa di cazzo', 'riskType' => 'ordinario', 'severity' => 'high'],
         ],
 
         'derisione' => [
@@ -295,6 +306,7 @@ return [
             ['word' => 'ridicola', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'patetica', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'sfigata', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'fallito', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
 
         'etnico' => [

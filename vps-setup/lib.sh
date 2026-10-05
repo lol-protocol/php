@@ -29,15 +29,6 @@ ufw_allow() {
     sudo ufw allow "$rule" || echo "WARNING: Failed to add UFW rule: $rule"
 }
 
-# Verify UFW is actually enabled, not just installed
-ufw_check_enabled() {
-    if ! sudo ufw status | grep -q "^Status: active"; then
-        echo "ERROR: UFW firewall is not active. Did 01-system-update.sh run first?"
-        return 1
-    fi
-    return 0
-}
-
 # Check if a required command/package is installed
 check_dependency() {
     local command=$1

@@ -1,9 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-// idioma.js lee localStorage al importarse (para recordar el idioma elegido);
-// Node no trae esa API del navegador, así que se la simula antes del import.
+// idioma.js lee localStorage al importarse (para recordar el idioma elegido)
+// y nucleo.js lee window.location.hostname (para armar API_BASE); Node no
+// trae esas APIs del navegador, así que se simulan antes del import.
 globalThis.localStorage = { getItem: () => null, setItem: () => {} };
+globalThis.window = { location: { hostname: "localhost" } };
 
 const { t, etiquetaGenero } = await import("../../interfaz/js/idioma.js");
 const { state } = await import("../../interfaz/js/nucleo.js");

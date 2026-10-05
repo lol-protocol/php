@@ -1,7 +1,9 @@
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -21,6 +23,14 @@ public class ServicioEstadisticas {
     private static final long INTERVALO_WATCHER_SEGUNDOS = 5;
 
     public static void main(String[] args) throws IOException {
+        // El charset de consola por default depende del entorno (locale del SO):
+        // en uno sin locale configurado (ej. este contenedor), System.out con
+        // caracteres acentuados ("í", "ó"...) imprime "?" en vez de la letra --
+        // no afecta al JSON de /stats (UtilHttp.respond ya fuerza UTF-8 ahí),
+        // pero sí a cualquier log de este proceso.
+        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
+        System.setErr(new PrintStream(System.err, true, StandardCharsets.UTF_8));
+
         Path csvPath = resolveCsvPath(args.length > 0 ? args[0] : null);
         int port = args.length > 1 ? Integer.parseInt(args[1]) : 8081;
 
@@ -34,7 +44,7 @@ public class ServicioEstadisticas {
         server.createContext("/stats", new ManejadorEstadisticas(accionesRef));
         server.setExecutor(Executors.newFixedThreadPool(8));
         server.start();
-        System.out.println("Stats service escuchando en http://localhost:" + port + "/stats");
+        System.out.println("Servicio de estadísticas escuchando en http://localhost:" + port + "/stats");
     }
 
     private static Path resolveCsvPath(String override) {
