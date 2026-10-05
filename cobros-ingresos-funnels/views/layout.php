@@ -35,6 +35,6 @@ $paginas = [
 <main>
     <?= $content ?>
 </main>
-<footer>Datos de ejemplo generados localmente &middot; <?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></footer>
+<footer><?= Config::esDesarrollo() ? 'Datos de ejemplo generados localmente &middot; ' : '' ?><?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></footer>
 </body>
 </html>

@@ -36,7 +36,8 @@ Pequeño sistema en PHP (sin framework) para analizar:
 > sistema (alta, cambio de contraseña, revocar acceso); se sacó de la app y quedó
 > en `_Garbage/` (código completo, no se borró) por si hace falta reactivarla —
 > ver `_Garbage/README.md` para el detalle de qué se movió y qué se tocó en el
-> resto de la app para poder sacarla.
+> resto de la app para poder sacarla. Para publicarlo en internet, leé antes el
+> aviso de acceso en "Despliegue en producción".
 
 ## Requisitos
 
@@ -84,6 +85,13 @@ mono-proceso, sin tuning de rendimiento ni manejo serio de concurrencia). Para
 correr esto de verdad hace falta **PHP-FPM + un servidor web** (nginx, Caddy o
 Apache) delante.
 
+> **Antes de exponerlo: el panel no tiene login.** Quien llegue a la URL puede ver
+> todos los datos —incluidos el email, la ciudad y la edad de cada cliente— y crear,
+> editar y anular boletas, pagos y clientes. Ponelo detrás de algún control de acceso
+> que resuelva el servidor web o la red: autenticación básica en nginx (en el
+> ejemplo de abajo), una lista de IPs permitidas o una VPN. Por qué no tiene login y
+> cómo reactivarlo: `_Garbage/README.md`.
+
 Ejemplo mínimo con nginx (asumiendo php-fpm escuchando en `127.0.0.1:9000`):
 
 ```nginx
@@ -94,6 +102,12 @@ server {
     index index.php;
 
     # TLS: certificado real (ej. Let's Encrypt/certbot) va acá.
+
+    # Control de acceso: la app no tiene login propio, así que sin esto cualquiera
+    # con la URL lee y modifica todo. Autenticación básica como mínimo (el archivo
+    # se crea con `htpasswd -c /etc/nginx/.htpasswd usuario`, de apache2-utils).
+    auth_basic "Panel de cobros";
+    auth_basic_user_file /etc/nginx/.htpasswd;
 
     location / {
         try_files $uri /index.php?$query_string;
