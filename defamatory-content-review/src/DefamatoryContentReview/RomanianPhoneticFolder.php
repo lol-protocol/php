@@ -27,6 +27,7 @@ class RomanianPhoneticFolder extends AbstractPhoneticFolder
         'î' => 'â', 'ş' => 'ș', 'ţ' => 'ț',
     ];
 
+    /** @return array<string,string> */
     protected static function getAccents(): array { return self::NORMALIZE; }
 
     protected static function applyLanguageRules(string $text): string { return $text; }

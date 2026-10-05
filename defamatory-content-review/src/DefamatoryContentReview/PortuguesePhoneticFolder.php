@@ -24,6 +24,7 @@ namespace DefamatoryContentReview;
  */
 class PortuguesePhoneticFolder extends AbstractPhoneticFolder
 {
+    /** @return array<string,string> */
     protected static function getAccents(): array
     {
         return CommonPhoneticAccents::withExtras(['ü' => 'u']);

@@ -47,6 +47,7 @@ final class LanguageAccess
         return $this->dictionaries[$code];
     }
 
+    /** @return array<string,mixed> */
     public function statistics(string $code): array
     {
         return $this->wordList($code)->getStatistics();

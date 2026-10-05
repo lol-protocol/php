@@ -174,9 +174,9 @@ console.log(suite.exportJSON());
 
 ## 📋 Documentación Relacionada
 
-- **[TEST-GUIDE.md](../docs/testing/TEST-GUIDE.md)** - Guía completa de testing
-- **[ACCESSIBILITY.md](../docs/testing/ACCESSIBILITY.md)** - Estándares de accesibilidad
-- **[DRY-GUIDE.md](../docs/guides/DRY-GUIDE.md)** - Patrones DRY
+- **[test-guide.md](../docs/testing/test-guide.md)** - Guía completa de testing
+- **[accessibility.md](../docs/testing/accessibility.md)** - Estándares de accesibilidad
+- **[dry-guide.md](../docs/guides/dry-guide.md)** - Patrones DRY
 - **[README.md](../README.md)** - Documentación general
 
 ## 🚨 Troubleshooting
