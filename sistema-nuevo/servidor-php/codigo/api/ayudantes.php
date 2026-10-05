@@ -4,16 +4,26 @@ declare(strict_types=1);
 
 /** Funciones de apoyo compartidas por los endpoints: errores, deltas, presets de país. */
 
+/**
+ * Respuesta de error de la API. `error` es el texto en español, para quien lee la respuesta a mano
+ * (datos/ejemplos/peticiones-api.http); `codigo` es un identificador estable que la interfaz traduce
+ * al idioma elegido (claves err_<codigo> en interfaz/js/i18n/). $extra suma datos propios del error,
+ * p. ej. retry_after. Todo error de la API sale por acá: pruebas/php/api-error-test.php lo exige.
+ */
+function api_error(int $status, string $codigo, string $mensaje, array $extra = []): void
+{
+    http_response_code($status);
+    echo json_encode(['error' => $mensaje, 'codigo' => $codigo] + $extra, JSON_UNESCAPED_UNICODE);
+}
+
 function api_not_found(): void
 {
-    http_response_code(404);
-    echo json_encode(['error' => 'ruta no encontrada'], JSON_UNESCAPED_UNICODE);
+    api_error(404, 'ruta_no_encontrada', 'ruta no encontrada');
 }
 
 function api_unauthorized(): void
 {
-    http_response_code(401);
-    echo json_encode(['error' => 'no autenticado'], JSON_UNESCAPED_UNICODE);
+    api_error(401, 'no_autenticado', 'no autenticado');
 }
 
 /** @return array{total:int,page:int,per_page:int,total_pages:int} Forma común de paginación de /api/users y /api/timeline. */

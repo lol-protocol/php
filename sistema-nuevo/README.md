@@ -88,7 +88,7 @@ sistema-nuevo/
 │       ├── api.php                    Punto de entrada de los endpoints (ver api/)
 │       └── api/                       sesion, usuarios (+ groups, action-types), alertas(-config),
 │                                       linea-tiempo (+ linea-tiempo-cohortes), filtros, kpis,
-│                                       notas, ayudantes
+│                                       notas, ayudantes (api_error, delta %, scopes)
 │
 ├── interfaz/                       Panel de administración (HTML/CSS/JS, sin frameworks)
 │   ├── index.php                      Ensambla partes/*.php + enlaza los .css
@@ -97,7 +97,7 @@ sistema-nuevo/
 │   │                                   paginacion, grafico, alertas, modal...)
 │   └── js/                            Módulos ES: nucleo, formato, sesion, selectores,
 │       ├── i18n/es.js, i18n/en.js         tarjeta-usuario, metricas, linea-tiempo, paginacion,
-│       ├── idioma.js, idioma-refrescar.js grafico, alertas, idioma(-refrescar), aplicacion,
+│       ├── idioma.js, idioma-refrescar.js grafico, alertas, idioma(-refrescar), errores, aplicacion,
 │       └── aplicacion.js, eventos.js      eventos (entry point), configuracion-alertas, filtros,
 │                                           inactividad, modal (prompt/confirm propios, ver abajo),
 │                                           kpis, nota-bloque, notas, notificaciones
@@ -337,7 +337,11 @@ visitas. Alcance deliberado:
 - **Se traduce**: toda la interfaz fija (etiquetas, botones, leyenda, mensajes) y el
   contenido armado por el frontend (badges, resumen de filtros, paginación, gráfico,
   alertas, tipos de acción como título de cada tarjeta) — se re-renderiza al vuelo,
-  sin volver a pedirle datos al backend.
+  sin volver a pedirle datos al backend. También los **errores del backend**: la API
+  manda un `codigo` estable con cada error y la interfaz muestra su traducción
+  (`err_<codigo>` en los diccionarios, vía `mensajeDeError()` en `errores.js`); un
+  código sin traducir cae al texto en español del servidor. Una prueba exige que
+  cada código que manda el backend esté en los dos idiomas, y ninguno de más.
 - **No se traduce** (es dato, no interfaz): nombres de usuario y de país, presets de
   grupo de países, proveedor de IP, rutas/endpoints del backend — igual que un
   nombre propio no se traduce al cambiar de idioma. Los nombres en japonés/árabe/
@@ -462,7 +466,9 @@ php pruebas/ejecutar-integracion.php
   da `null`) y `api_timeline_con_cohortes()` contra un servicio de estadísticas
   falso (`estadisticas-falsas-router.php`) con números conocidos: deltas de
   duración y monto, universo vacío, un tipo que falla, y qué universo le llega al
-  servicio (países, edad, género y la exclusión del propio usuario).
+  servicio (países, edad, género y la exclusión del propio usuario). Y
+  `api_error()`: todo error lleva su texto y su `codigo`, y ningún endpoint arma el
+  suyo a mano (se recorre el código de `servidor-php/` buscándolos).
 - `pruebas/php-integracion/`: `AlmacenFiltros` (CRUD completo, age_min=0/null no se
   pierde), `AlmacenNotas` (guardar es upsert, texto vacío borra la fila),
   `AlmacenConfiguracion` (default habilitado si no hay fila, guardar/leer umbral),
@@ -489,12 +495,16 @@ php pruebas/ejecutar-integracion.php
 - `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje, y
   `classifyDelta`, que decide verde/rojo/gris de cada badge: franja "en el
   promedio" de ±10% con el borde incluido, medida sobre el porcentaje que se
-  muestra, y un delta que redondea a cero es "0%", no "-0%"), `idioma.js`
+  muestra, y un delta que redondea a cero es "0%", no "-0%"), `errores.js`
+  (`mensajeDeError`: gana la traducción del código, si no el texto del servidor, si
+  no el genérico; y cada código que manda el backend está traducido al español y
+  al inglés, sin sobrantes), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
   resultados no dibuja una sección vacía, sin ninguna alerta real el panel
   entero queda oculto).
-- `pruebas/e2e/`: login (credenciales incorrectas/correctas, logout), cookie de
+- `pruebas/e2e/`: login (credenciales incorrectas/correctas, también el error de
+  credenciales y el bloqueo del 429 con la interfaz en inglés, logout), cookie de
   sesión `HttpOnly` (el JS de la página no la puede leer), POST sin token CSRF o
   con uno inválido → 403, elegir usuario, paginación, filtro por tipo, gráfico,
   alertas (clic salta de usuario) e idioma; más, en `panel-nuevas-features.e2e.cjs`:
@@ -603,6 +613,18 @@ compartidos, no en memoria de un proceso.
 Abrir http://localhost:8082.
 
 ## API (backend PHP)
+
+**Errores.** Toda respuesta de error (4xx/5xx) es `{"error": "<texto en español>",
+"codigo": "<identificador>"}`, más datos propios del error si los hay (`retry_after`
+en el 429 de `/api/login`). Salen siempre por `api_error()` (`api/ayudantes.php`;
+`pruebas/php/api-error-test.php` exige que ningún endpoint arme el suyo a mano).
+`error` es para quien lee la respuesta a mano; `codigo` es estable y es lo que la
+interfaz traduce (ver "Idioma de la interfaz"): `no_autenticado` (401),
+`credenciales_invalidas` (401), `csrf_invalido` (403), `ruta_no_encontrada`,
+`usuario_no_encontrado`, `filtro_no_encontrado` y `accion_no_encontrada` (404),
+`metodo_no_permitido` (405), `demasiados_intentos` (429), `user_id_requerido`,
+`accion_id_requerido`, `filtro_nombre_requerido` y `filtro_nombre_largo` (400) y
+`error_interno` (500).
 
 - `POST /api/login` — `{"username": "...", "password": "..."}` → inicia sesión,
   responde con `csrf_token`. 429 tras 5 fallos consecutivos de esa IP (bloqueo de

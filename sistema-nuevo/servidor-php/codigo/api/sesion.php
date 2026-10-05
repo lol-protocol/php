@@ -12,8 +12,7 @@ function api_login(): void
 
     $bloqueadaHasta = $intentos->bloqueadaHasta($ip);
     if ($bloqueadaHasta !== null) {
-        http_response_code(429);
-        echo json_encode(['error' => 'demasiados intentos fallidos, probá de nuevo más tarde', 'retry_after' => $bloqueadaHasta], JSON_UNESCAPED_UNICODE);
+        api_error(429, 'demasiados_intentos', 'demasiados intentos fallidos, probá de nuevo más tarde', ['retry_after' => $bloqueadaHasta]);
         return;
     }
 
@@ -24,12 +23,10 @@ function api_login(): void
     if ($username === '' || $password === '' || !auth_verificar_credenciales($pdo, $username, $password)) {
         $bloqueadaAhora = $intentos->registrarFallo($ip);
         if ($bloqueadaAhora !== null) {
-            http_response_code(429);
-            echo json_encode(['error' => 'demasiados intentos fallidos, probá de nuevo más tarde', 'retry_after' => $bloqueadaAhora], JSON_UNESCAPED_UNICODE);
+            api_error(429, 'demasiados_intentos', 'demasiados intentos fallidos, probá de nuevo más tarde', ['retry_after' => $bloqueadaAhora]);
             return;
         }
-        http_response_code(401);
-        echo json_encode(['error' => 'usuario o contraseña incorrectos'], JSON_UNESCAPED_UNICODE);
+        api_error(401, 'credenciales_invalidas', 'usuario o contraseña incorrectos');
         return;
     }
 
@@ -45,8 +42,7 @@ function api_login(): void
 function api_logout(): void
 {
     if (!auth_validar_csrf_header()) {
-        http_response_code(403);
-        echo json_encode(['error' => 'token CSRF inválido'], JSON_UNESCAPED_UNICODE);
+        api_error(403, 'csrf_invalido', 'token CSRF inválido');
         return;
     }
 

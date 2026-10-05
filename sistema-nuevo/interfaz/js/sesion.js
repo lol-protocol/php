@@ -1,5 +1,6 @@
 import { API_BASE, state } from "./nucleo.js";
 import { t } from "./idioma.js";
+import { mensajeDeError } from "./errores.js";
 import { iniciarMonitorInactividad, detenerMonitorInactividad } from "./inactividad.js";
 
 /**
@@ -20,7 +21,7 @@ async function pedir(path, options = {}) {
   }
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(data.error || t("error_http", { status: response.status, path }));
+    throw new Error(mensajeDeError(data, t("error_http", { status: response.status, path })));
   }
   return data;
 }

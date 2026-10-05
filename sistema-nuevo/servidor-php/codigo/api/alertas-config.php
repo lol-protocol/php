@@ -20,8 +20,7 @@ function api_alertas_config(): void
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!auth_validar_csrf_header()) {
-            http_response_code(403);
-            echo json_encode(['error' => 'token CSRF inválido'], JSON_UNESCAPED_UNICODE);
+            api_error(403, 'csrf_invalido', 'token CSRF inválido');
             return;
         }
 
@@ -45,6 +44,5 @@ function api_alertas_config(): void
         return;
     }
 
-    http_response_code(405);
-    echo json_encode(['error' => 'método no permitido'], JSON_UNESCAPED_UNICODE);
+    api_error(405, 'metodo_no_permitido', 'método no permitido');
 }

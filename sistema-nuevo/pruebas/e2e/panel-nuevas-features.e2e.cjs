@@ -155,6 +155,16 @@ async function intentarLogin(page, password) {
       await page2.waitForSelector("#login-error:not([hidden])");
       assert.match(await page2.textContent("#login-error"), /intentos/i);
       assert.equal(await page2.isHidden("#app"), true);
+
+      // El mismo bloqueo (sigue activo) con la interfaz en inglés: el mensaje sale traducido.
+      const contextoEn = await browser2.newContext();
+      await contextoEn.addInitScript(() => localStorage.setItem("backoffice_idioma", "en"));
+      const paginaEn = await contextoEn.newPage();
+      await paginaEn.goto(BASE_URL);
+      assert.equal((await intentarLogin(paginaEn, "admin123")).status(), 429);
+      await paginaEn.waitForSelector("#login-error:not([hidden])");
+      assert.equal(await paginaEn.textContent("#login-error"), "too many failed attempts, try again later");
+      await contextoEn.close();
     });
 
     await browser2.close();

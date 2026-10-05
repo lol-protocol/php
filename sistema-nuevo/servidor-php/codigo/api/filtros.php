@@ -12,8 +12,7 @@ function api_filtros(): void
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!auth_validar_csrf_header()) {
-            http_response_code(403);
-            echo json_encode(['error' => 'token CSRF inválido'], JSON_UNESCAPED_UNICODE);
+            api_error(403, 'csrf_invalido', 'token CSRF inválido');
             return;
         }
 
@@ -27,13 +26,11 @@ function api_filtros(): void
         $tipoAccion = $body['tipo_accion'] ?? null;
 
         if ($nombre === '') {
-            http_response_code(400);
-            echo json_encode(['error' => 'falta nombre del filtro'], JSON_UNESCAPED_UNICODE);
+            api_error(400, 'filtro_nombre_requerido', 'falta nombre del filtro');
             return;
         }
         if (mb_strlen($nombre) > 100) {
-            http_response_code(400);
-            echo json_encode(['error' => 'el nombre no puede superar los 100 caracteres'], JSON_UNESCAPED_UNICODE);
+            api_error(400, 'filtro_nombre_largo', 'el nombre no puede superar los 100 caracteres');
             return;
         }
 
@@ -43,21 +40,18 @@ function api_filtros(): void
         return;
     }
 
-    http_response_code(405);
-    echo json_encode(['error' => 'método no permitido'], JSON_UNESCAPED_UNICODE);
+    api_error(405, 'metodo_no_permitido', 'método no permitido');
 }
 
 function api_filtros_delete(int $id): void
 {
     if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
-        http_response_code(405);
-        echo json_encode(['error' => 'método no permitido'], JSON_UNESCAPED_UNICODE);
+        api_error(405, 'metodo_no_permitido', 'método no permitido');
         return;
     }
 
     if (!auth_validar_csrf_header()) {
-        http_response_code(403);
-        echo json_encode(['error' => 'token CSRF inválido'], JSON_UNESCAPED_UNICODE);
+        api_error(403, 'csrf_invalido', 'token CSRF inválido');
         return;
     }
 
@@ -65,7 +59,6 @@ function api_filtros_delete(int $id): void
     if ($almacen->eliminar($id)) {
         echo json_encode(['ok' => true], JSON_UNESCAPED_UNICODE);
     } else {
-        http_response_code(404);
-        echo json_encode(['error' => 'filtro no encontrado'], JSON_UNESCAPED_UNICODE);
+        api_error(404, 'filtro_no_encontrado', 'filtro no encontrado');
     }
 }

@@ -7,14 +7,12 @@ declare(strict_types=1);
 function api_notas(): void
 {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        http_response_code(405);
-        echo json_encode(['error' => 'método no permitido'], JSON_UNESCAPED_UNICODE);
+        api_error(405, 'metodo_no_permitido', 'método no permitido');
         return;
     }
 
     if (!auth_validar_csrf_header()) {
-        http_response_code(403);
-        echo json_encode(['error' => 'token CSRF inválido'], JSON_UNESCAPED_UNICODE);
+        api_error(403, 'csrf_invalido', 'token CSRF inválido');
         return;
     }
 
@@ -23,8 +21,7 @@ function api_notas(): void
     $texto = is_string($body['texto'] ?? null) ? $body['texto'] : '';
 
     if ($accionId === '') {
-        http_response_code(400);
-        echo json_encode(['error' => 'accion_id es requerido'], JSON_UNESCAPED_UNICODE);
+        api_error(400, 'accion_id_requerido', 'accion_id es requerido');
         return;
     }
 
@@ -34,8 +31,7 @@ function api_notas(): void
     // con texto vacío deriva a un DELETE, que no falla aunque accion_id no exista
     // -- sin este chequeo, la respuesta sería 200 en vez de 404 solo en ese caso.
     if (!$almacen->accionExiste($accionId)) {
-        http_response_code(404);
-        echo json_encode(['error' => 'acción no encontrada'], JSON_UNESCAPED_UNICODE);
+        api_error(404, 'accion_no_encontrada', 'acción no encontrada');
         return;
     }
 

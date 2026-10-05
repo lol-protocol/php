@@ -90,6 +90,5 @@ try {
     }
 } catch (Throwable $e) {
     error_log($e->getMessage());
-    http_response_code(500);
-    echo json_encode(['error' => 'error interno del servidor'], JSON_UNESCAPED_UNICODE);
+    api_error(500, 'error_interno', 'error interno del servidor');
 }

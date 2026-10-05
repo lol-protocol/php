@@ -15,6 +15,19 @@ const { assert, paso, resumenPasos, iniciarSesion, BASE_URL } = require("./ayuda
     assert.equal(await page.isHidden("#app"), true);
   });
 
+  await paso("con la interfaz en inglés, el error de credenciales sale en inglés (no el texto en español del backend)", async () => {
+    const contextoEn = await browser.newContext();
+    await contextoEn.addInitScript(() => localStorage.setItem("backoffice_idioma", "en"));
+    const paginaEn = await contextoEn.newPage();
+    await paginaEn.goto(BASE_URL);
+    await paginaEn.fill("#login-username", "admin");
+    await paginaEn.fill("#login-password", "clave-incorrecta");
+    await paginaEn.click("#login-form button[type=submit]");
+    await paginaEn.waitForSelector("#login-error:not([hidden])");
+    assert.equal(await paginaEn.textContent("#login-error"), "wrong username or password");
+    await contextoEn.close();
+  });
+
   await paso("credenciales correctas entran al panel y muestran el usuario conectado", async () => {
     await iniciarSesion(page);
     assert.equal(await page.isHidden("#app"), false);
@@ -45,6 +58,9 @@ const { assert, paso, resumenPasos, iniciarSesion, BASE_URL } = require("./ayuda
     const cuerpo = await tokenInvalido.text();
     assert.equal(cuerpo.includes("inválido"), true);
     assert.equal(cuerpo.includes("\\u00e1"), false);
+
+    // Además del texto (para quien lee la respuesta a mano), un código estable que la interfaz traduce.
+    assert.equal(JSON.parse(cuerpo).codigo, "csrf_invalido");
   });
 
   await paso("cerrar sesión vuelve a la pantalla de login", async () => {
