@@ -64,7 +64,9 @@ están registrados ni configurados.
 - Renovación automática con `certbot.timer`
 
 ### Monitoreo & Logging
-- **Nginx Logs** - Access & error logs por dominio, también visibles desde Webmin
+- **Nginx Logs** - Access & error logs por dominio, también visibles desde Webmin; rotados a diario (14 archivos) por `07_D`
+- **vps-monitor** (opcional, `09_A`) - cada 15 min revisa disco, RAM, carga, certificados y servicios; alerta por webhook/correo solo cuando cambia el estado
+- **Healthcheck** - `08-healthcheck.sh` (solo lectura) verifica servicios, UFW, puertos, DNS, HTTPS, certificado y headers
 - **Syslog** - Sistema centralizado (futuro)
 - **Prometheus** - Métricas (futuro)
 
@@ -174,7 +176,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 - ✅ Parches de seguridad automáticos (`unattended-upgrades`, por `07_A`); no reinicia el servidor solo
 - ✅ UFW habilitado (por `01-system-update.sh`, con SSH permitido antes de activarlo)
 - ✅ Puertos abiertos: 22 (SSH), 80 y 443 (HTTP/HTTPS, vía el perfil `Nginx Full` de UFW que abre `02_E`)
-- ⚠️ SSH por contraseña (ningún script configura llaves SSH ni desactiva el login por contraseña -- si quieres esto, es un paso manual aparte: generar un par de llaves, copiar la pública con `ssh-copy-id`, y luego editar `/etc/ssh/sshd_config` para poner `PasswordAuthentication no`)
+- ⚠️ SSH por contraseña **hasta que corras `07_C-harden-ssh.sh`** (opcional, no va en `install-all.sh` porque necesita tu llave pública y que compruebes el login por llave antes: autoriza la llave y desactiva contraseña y login de root; `--revert` lo deshace)
 
 ### Base de Datos
 - ✅ PostgreSQL sin acceso externo

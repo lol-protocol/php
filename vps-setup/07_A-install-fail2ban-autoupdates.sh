@@ -5,6 +5,10 @@ source "$(dirname "$0")/lib.sh"
 
 print_header "07_A" "fail2ban + actualizaciones automaticas de seguridad"
 
+# Rutas reemplazables por variables de entorno (se usan en los tests).
+FAIL2BAN_JAIL=${FAIL2BAN_JAIL:-/etc/fail2ban/jail.local}
+APT_AUTO_CONF=${APT_AUTO_CONF:-/etc/apt/apt.conf.d/20auto-upgrades}
+
 # fail2ban: lee los logs de intentos fallidos y banea (via iptables/UFW) a las IP que
 #           fallan demasiadas veces. Con login SSH por contrasena es la defensa minima
 #           contra fuerza bruta.
@@ -16,7 +20,7 @@ sudo apt-get install -y fail2ban unattended-upgrades
 # (/var/log/nginx/<dominio>/), asi que ese archivo no existe y fail2ban fallaria.
 # backend=systemd: en Ubuntu 24.04 SSH loguea en el journal, no en /var/log/auth.log.
 # jail.local (no jail.conf) para que una actualizacion del paquete no pise esto.
-sudo tee /etc/fail2ban/jail.local > /dev/null <<'EOJAIL'
+sudo tee "$FAIL2BAN_JAIL" > /dev/null <<'EOJAIL'
 [DEFAULT]
 bantime  = 1h
 findtime = 10m
@@ -35,7 +39,7 @@ sudo systemctl restart fail2ban   # aplica jail.local si el servicio ya estaba c
 # defecto en 50unattended-upgrades. NO se reinicia el servidor solo
 # (Automatic-Reboot esta en "false" por defecto): si un parche del kernel lo
 # pide, el reinicio lo decides tu.
-sudo tee /etc/apt/apt.conf.d/20auto-upgrades > /dev/null <<'EOAPT'
+sudo tee "$APT_AUTO_CONF" > /dev/null <<'EOAPT'
 APT::Periodic::Update-Package-Lists "1";
 APT::Periodic::Unattended-Upgrade "1";
 EOAPT

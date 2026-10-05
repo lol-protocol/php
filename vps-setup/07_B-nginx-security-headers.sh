@@ -5,6 +5,9 @@ source "$(dirname "$0")/lib.sh"
 
 print_header "07_B" "Headers de seguridad en Nginx"
 
+# Ruta reemplazable por variable de entorno (se usa en los tests).
+HEADERS_CONF=${HEADERS_CONF:-/etc/nginx/conf.d/security-headers.conf}
+
 # Un solo archivo en conf.d/ se carga dentro del bloque http{}, asi que aplica a
 # TODOS los dominios (presentes y futuros) sin editar cada vhost ni pelear con
 # las lineas que Certbot agrega a cada uno. Es idempotente: re-correr el script
@@ -22,7 +25,7 @@ print_header "07_B" "Headers de seguridad en Nginx"
 # No se agrega X-XSS-Protection (obsoleto, los navegadores modernos lo ignoran) ni
 # Content-Security-Policy (requiere ajustarse a cada sitio; una CSP generica
 # romperia el CSS inline de la landing page).
-sudo tee /etc/nginx/conf.d/security-headers.conf > /dev/null <<'EONGINX'
+sudo tee "$HEADERS_CONF" > /dev/null <<'EONGINX'
 add_header Strict-Transport-Security "max-age=15552000" always;
 add_header X-Frame-Options "SAMEORIGIN" always;
 add_header X-Content-Type-Options "nosniff" always;

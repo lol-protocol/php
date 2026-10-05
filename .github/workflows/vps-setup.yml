@@ -1,0 +1,35 @@
+name: vps-setup
+
+on:
+  push:
+    branches: ['**']
+    paths: ['vps-setup/**', '.github/workflows/vps-setup.yml']
+  pull_request:
+    branches: ['**']
+    paths: ['vps-setup/**', '.github/workflows/vps-setup.yml']
+
+jobs:
+  scripts:
+    name: Scripts (syntax, ShellCheck, bats)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Syntax check (bash -n)
+        run: |
+          for f in vps-setup/*.sh vps-setup/monitoring/*.sh; do
+            bash -n "$f"
+          done
+
+      # -S warning: avisos y errores. Los avisos de estilo (comillas en variables
+      # que a proposito se dividen, etc.) no bloquean.
+      - name: ShellCheck
+        run: shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh
+
+      - name: Install bats and logrotate
+        run: sudo apt-get update && sudo apt-get install -y bats logrotate
+
+      - name: Tests (bats)
+        run: bats vps-setup/tests

@@ -127,14 +127,53 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 05 | `05-deploy-landing-page.sh` | (Re)copia los archivos de la landing page |
 | 07_A | `07_A-install-fail2ban-autoupdates.sh` | Instala fail2ban (jail de SSH) y actualizaciones automáticas de seguridad (sin reinicio automático) |
 | 07_B | `07_B-nginx-security-headers.sh` | Agrega HSTS, X-Frame-Options, X-Content-Type-Options y Referrer-Policy a todos los dominios (un solo archivo en `conf.d/`) |
+| 07_C | `07_C-harden-ssh.sh` | *(Opcional, requiere tu llave pública)* Autoriza tu llave y desactiva login por contraseña y de root. Exige confirmar que ya probaste la llave; `--revert` lo deshace |
+| 07_D | `07_D-setup-logrotate.sh` | Rota los logs de Nginx por dominio (`/var/log/nginx/<dominio>/*.log`), que el logrotate del paquete no cubre |
 | 08 | `08-healthcheck.sh` | Solo lectura: revisa servicios, UFW, puertos, DNS, HTTPS, certificado y headers. Sale con código 1 si algo falla. Uso: `./08-healthcheck.sh tudominio.com` |
+| 09_A | `09_A-setup-monitoring.sh` | *(Opcional)* Monitoreo cada 15 min (disco, RAM, carga, certificados, servicios) con alertas a webhook (Slack/Discord/Mattermost) y/o correo. Solo avisa cuando cambia el estado |
 | 06_A | `06_A-setup-php-app.sh` | *(Opcional)* Configura una app PHP adicional |
 | 06_B | `06_B-setup-python-app.sh` | *(Opcional)* Configura una app Python (Flask + Gunicorn) |
 | 06_C | `06_C-setup-dns-server.sh` | *(Opcional)* Instala BIND9 como servidor DNS propio — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
 | 06_D | `06_D-setup-tomcat-app.sh` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio — requiere `02_H` ya hecho |
-| — | `install-all.sh` | Ejecuta 01 → 02_A..F+J → 03 → 04 → 05 → 07_A → 07_B en orden y termina corriendo 08 |
+| — | `remote-run.sh` | Desde TU equipo: sube `vps-setup/` por SSH (solo llave) y ejecuta un script en el VPS. Config en `vps.env` (ver `vps.env.example`) |
+| — | `install-all.sh` | Ejecuta 01 → 02_A..F+J → 03 → 04 → 05 → 07_A → 07_B → 07_D en orden y termina corriendo 08. Admite `--dry-run`, `--resume` y `--yes` |
 
 Los pasos `02_G`/`02_H`/`02_I` y todos los `06_*` son opcionales e independientes entre sí — instala solo los que necesites. Las notas "requiere X ya hecho" son las únicas excepciones a "cualquier orden": son dependencias reales de software, no de orden de ejecución arbitrario.
+
+## 🔁 `install-all.sh`: dry-run y reanudación
+
+```bash
+./install-all.sh initech.fun admin@initech.fun --dry-run   # muestra el plan, no ejecuta nada
+./install-all.sh initech.fun admin@initech.fun --yes       # sin confirmación
+./install-all.sh initech.fun admin@initech.fun --resume    # tras un fallo: salta lo ya hecho
+```
+
+El avance se guarda por dominio en `~/.local/state/vps-setup/install-all.state`. Si un paso falla, el script
+imprime el comando exacto para retomar. Sin `--resume`, una corrida nueva empieza de cero.
+
+## 🔑 Cuando el VPS exista (checklist)
+
+1. Genera una llave en TU equipo: `ssh-keygen -t ed25519` (la privada nunca sale de tu equipo ni va al repo).
+2. Entra una vez con la contraseña inicial que da el proveedor y autoriza la llave (`ssh-copy-id`), o pásala a `07_C`.
+3. Copia `vps.env.example` a `vps.env` y completa `VPS_HOST`/`VPS_USER`/`VPS_KEY` (`vps.env` está en `.gitignore`).
+4. `./remote-run.sh install-all.sh tudominio.com tu@email.com --dry-run`, y luego sin `--dry-run`.
+5. `./remote-run.sh 07_C-harden-ssh.sh "$(cat ~/.ssh/id_ed25519.pub)"` **después** de comprobar el login con llave desde otra terminal.
+6. `./remote-run.sh 09_A-setup-monitoring.sh <webhook-url>` y `./remote-run.sh 08-healthcheck.sh tudominio.com`.
+
+Nunca pegues contraseñas ni llaves privadas en el chat, en commits ni en `vps.env`: usa llave SSH. Si se comparte
+una contraseña por error, hay que rotarla.
+
+## 🧪 Tests y CI
+
+```bash
+bats vps-setup/tests                                  # 70+ tests (usa stubs: no tocan el sistema real)
+shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh
+```
+
+Los tests cubren `lib.sh`, el orquestador (`--dry-run`/`--resume`/fallos/IP heredada), el healthcheck, el monitor y
+los scripts 07_*/09_A, con `sudo`, `systemctl`, `curl`, etc. simulados. El workflow `.github/workflows/vps-setup.yml`
+corre `bash -n`, ShellCheck y bats en cada PR que toque `vps-setup/`. Lo que **no** cubren: comportamiento real de
+apt, systemd, Nginx o sshd — eso solo se valida en un VPS.
 
 ## ✅ Verificación Post-Instalación
 
