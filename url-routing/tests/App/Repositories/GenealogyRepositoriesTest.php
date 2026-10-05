@@ -193,11 +193,12 @@ class GenealogyRepositoriesTest extends TestCase
     }
 
     #[DataProvider('drivers')]
-    public function testOnlyPublicColeccionesAreSearchable(string $driver): void
+    public function testSearchFindsBothPublicAndPrivateColecciones(string $driver): void
     {
         $repo = new ColeccionRepository($this->db($driver));
 
-        $this->assertSame([1048293], self::ids($repo->buscar('')));
+        // No login: there's no owner to hide a private coleccion from.
+        $this->assertEqualsCanonicalizing([1048293, 1048294], self::ids($repo->buscar('')));
         $this->assertSame([1048294], self::ids($repo->deUsuario(2)));
     }
 

@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace App\Controllers\POS;
 
-class CheckoutController
+use App\Controllers\BaseController;
+
+class CheckoutController extends BaseController
 {
-    public function index($params = [])
+    public function index(array $params = []): string
     {
         return view('pos/checkout/index');
     }
 
-    public function shipping($params = [])
+    public function shipping(array $params = []): string
     {
         return view('pos/checkout/shipping');
     }
 
-    public function payment($params = [])
+    public function payment(array $params = []): string
     {
         return view('pos/checkout/payment');
     }
 
-    public function confirm($params = [])
+    public function confirm(array $params = []): string
     {
         return view('pos/checkout/confirm');
     }
