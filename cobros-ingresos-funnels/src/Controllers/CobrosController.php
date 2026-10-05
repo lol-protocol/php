@@ -52,6 +52,7 @@ final class CobrosController
     {
         $filtros = Filtros::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
+        $filtros['avisos'] = [...Avisos::confirmaciones('cobros'), ...$filtros['avisos']];
         $estado = (string) ($_GET['estado'] ?? '');
         if ($estado !== '' && !array_key_exists($estado, Etiquetas::estadosBoleta())) {
             // Antes un estado inventado daba la tabla vacia con el selector en "Todos".

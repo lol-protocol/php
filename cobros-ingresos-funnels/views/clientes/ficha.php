@@ -20,6 +20,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
 
 <h1><?= htmlspecialchars($cliente['nombre']) ?></h1>
 <p class="subtitulo"><a href="?page=clientes">&larr; Volver a Clientes</a></p>
+<?php include __DIR__ . '/../_avisos.php'; ?>
 
 <div class="panel">
     <h2>Perfil</h2>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Avisos;
 use App\EnvioUnico;
 use App\Filtros;
 use App\Paginacion;
@@ -73,6 +74,7 @@ final class ClienteController
             'pagos' => (new PagoRepository())->porCliente($id),
             'notasCredito' => (new NotaCreditoRepository())->porCliente($id),
             'viajeFunnel' => (new FunnelRepository())->viajeDeCliente($id),
+            'avisos' => Avisos::confirmaciones('cliente'),
             'activePage' => 'clientes',
             'titulo' => $cliente['nombre'],
         ]);
@@ -132,7 +134,7 @@ final class ClienteController
                         ]);
                         AuditoriaRepository::auditar('crear', 'cliente', $id, "Cliente #{$id}: {$nombre} ({$email})");
 
-                        return '?page=cliente&id=' . $id;
+                        return '?page=cliente&id=' . $id . '&creado=1';
                     });
                     header('Location: ' . $destino);
                     exit;

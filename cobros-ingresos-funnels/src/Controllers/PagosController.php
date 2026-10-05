@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Avisos;
 use App\Database;
 use App\EnvioUnico;
 use App\Etiquetas;
@@ -25,6 +26,7 @@ final class PagosController
     {
         $filtros = Filtros::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
+        $filtros['avisos'] = [...Avisos::confirmaciones('pagos'), ...$filtros['avisos']];
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
 

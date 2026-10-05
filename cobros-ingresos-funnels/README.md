@@ -262,7 +262,9 @@ src/
                         se pidio por URL y no se pudo respetar (un periodo que
                         no existe, un rango al reves) se avisa, testeado
   Avisos.php             los mensajes cortos de arriba de una pantalla
-                        (views/_avisos.php), testeado
+                        (views/_avisos.php): los avisos de filtro y la
+                        confirmación de lo que acaba de hacerse, que llega por
+                        la redirección (?creada=ID, ?creado=ID...), testeado
   Router.php, View.php, helpers.php
 database/
   migraciones/          el esquema, en cambios numerados (001 = esquema inicial)

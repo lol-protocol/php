@@ -468,4 +468,92 @@ final class EscriturasTest extends HttpTestCase
         $this->alTerminar(static fn () => self::borrarEntidad('clientes', 'cliente', $clienteId));
         self::assertSame(1, $auditorias('cliente', $clienteId));
     }
+
+    /**
+     * Regresion: las redirecciones de las altas, ediciones y anulaciones
+     * llevaban el id (?creada=ID, ?creado=ID...) pero ninguna pantalla lo
+     * leia, asi que nada confirmaba que se habia hecho. Recorre cada flujo y
+     * sigue la redireccion como lo haria el navegador.
+     */
+    public function testCadaAltaEdicionYAnulacionSeConfirmaEnLaPantallaDeDestino(): void
+    {
+        $seguir = fn (array $respuesta): string => $this->get(substr((string) $respuesta['location'], 1))['cuerpo'];
+        $formulario = $this->get('page=boleta-nueva')['cuerpo'];
+        $csrf = self::campoOculto($formulario, 'csrf_token');
+        $envioBoleta = self::campoOculto($formulario, EnvioUnico::CAMPO);
+        $this->olvidarToken($envioBoleta);
+
+        // Boleta: alta, edicion y anulacion.
+        $alta = $this->post('page=boleta-nueva', [
+            'csrf_token' => $csrf, EnvioUnico::CAMPO => $envioBoleta, 'cliente_id' => self::CLIENTE,
+            'concepto' => 'Boleta de confirmaciones ' . uniqid(), 'monto' => '500.00',
+            'fecha_emision' => '2020-03-01', 'fecha_vencimiento' => '2020-04-01',
+        ]);
+        $this->assertStatus(302, $alta);
+        $boletaId = self::idDeLaRedireccion($alta, 'creada');
+        $this->alTerminar(static fn () => self::borrarBoletaConTodo($boletaId));
+        self::assertStringContainsString("Boleta #{$boletaId} creada.", $seguir($alta));
+
+        $edicion = $this->post("page=boleta-editar&id={$boletaId}", [
+            'csrf_token' => $csrf, 'concepto' => 'Boleta editada', 'monto' => '450.00',
+            'fecha_emision' => '2020-03-01', 'fecha_vencimiento' => '2020-04-01',
+        ]);
+        $this->assertStatus(302, $edicion);
+        self::assertStringContainsString("Boleta #{$boletaId} actualizada.", $seguir($edicion));
+
+        // Pago: edicion y anulacion (el alta pasa por el formulario con su token de envio, mas abajo).
+        $pagoId = $this->pagoDePrueba($boletaId);
+        $edicionPago = $this->post("page=pago-editar&id={$pagoId}", [
+            'csrf_token' => $csrf, 'monto' => '120.00', 'fecha_pago' => '2020-03-05', 'metodo' => 'efectivo',
+        ]);
+        $this->assertStatus(302, $edicionPago);
+        self::assertStringContainsString("Pago #{$pagoId} actualizado.", $seguir($edicionPago));
+
+        $anulacionPago = $this->post("page=pago-anular&id={$pagoId}", ['csrf_token' => $csrf]);
+        $this->assertStatus(302, $anulacionPago);
+        self::assertStringContainsString("Pago #{$pagoId} anulado.", $seguir($anulacionPago));
+
+        $anulacion = $this->post("page=boleta-anular&id={$boletaId}", ['csrf_token' => $csrf]);
+        $this->assertStatus(302, $anulacion);
+        self::assertStringContainsString("Boleta #{$boletaId} anulada.", $seguir($anulacion));
+    }
+
+    public function testElAltaDeUnPagoYDeUnClienteSeConfirmanEnSuPantalla(): void
+    {
+        $seguir = fn (array $respuesta): string => $this->get(substr((string) $respuesta['location'], 1))['cuerpo'];
+        $boletaId = $this->boletaDePrueba();
+
+        $formularioPago = $this->get('page=pago-nuevo&cliente_id=' . self::CLIENTE)['cuerpo'];
+        $envioPago = self::campoOculto($formularioPago, EnvioUnico::CAMPO);
+        $this->olvidarToken($envioPago);
+        $pago = $this->post('page=pago-nuevo&cliente_id=' . self::CLIENTE, [
+            'csrf_token' => self::campoOculto($formularioPago, 'csrf_token'), EnvioUnico::CAMPO => $envioPago,
+            'cliente_id' => self::CLIENTE, 'boleta_id' => $boletaId, 'monto' => '100.00',
+            'fecha_pago' => '2020-01-20', 'metodo' => 'tarjeta',
+        ]);
+        $this->assertStatus(302, $pago);
+        $pagoId = self::idDeLaRedireccion($pago, 'creado');
+        self::assertStringContainsString("Pago #{$pagoId} registrado.", $seguir($pago));
+
+        $formularioCliente = $this->get('page=cliente-nuevo')['cuerpo'];
+        $envioCliente = self::campoOculto($formularioCliente, EnvioUnico::CAMPO);
+        $this->olvidarToken($envioCliente);
+        $cliente = $this->post('page=cliente-nuevo', [
+            'csrf_token' => self::campoOculto($formularioCliente, 'csrf_token'), EnvioUnico::CAMPO => $envioCliente,
+            'nombre' => 'Cliente confirmado', 'email' => 'cliente-confirmado-' . uniqid() . '@example.com',
+            'pais_codigo' => 'AR', 'ciudad' => 'Rosario', 'idioma' => 'Espanol', 'genero' => 'No especifica',
+            'fecha_nacimiento' => '1990-05-05', 'segmento' => 'general',
+        ]);
+        $this->assertStatus(302, $cliente);
+        $clienteId = self::idDeLaRedireccion($cliente, 'id');
+        $this->alTerminar(static fn () => self::borrarEntidad('clientes', 'cliente', $clienteId));
+        self::assertStringContainsString('Cliente creado.', $seguir($cliente));
+    }
+
+    public function testUnaPantallaSinRedireccionNoMuestraConfirmaciones(): void
+    {
+        foreach (['page=cobros', 'page=pagos', 'page=cliente&id=' . self::CLIENTE] as $query) {
+            self::assertStringNotContainsString('class="aviso', $this->get($query)['cuerpo'], $query);
+        }
+    }
 }
