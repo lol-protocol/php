@@ -268,7 +268,8 @@ tests/
                         de HTTPS)
   Integration/           contra la base real, cada test en una transaccion que
                         se deshace (un archivo por repositorio, migraciones,
-                        auditoría, zona horaria)
+                        auditoría, zona horaria, y que los datos de ejemplo
+                        del seed cumplan las reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
