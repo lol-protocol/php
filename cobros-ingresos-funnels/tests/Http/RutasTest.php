@@ -54,4 +54,31 @@ final class RutasTest extends HttpTestCase
 
         self::assertMatchesRegularExpression('/Página (\d+) de \1\b/u', $cuerpo, 'tiene que quedar parado en la ultima pagina, no en la 5000');
     }
+
+    /**
+     * Regresion: View::render le pasaba al layout el scope entero de la vista, y
+     * las dos pantallas que reasignan $titulo (el foreach de segmentacion del
+     * Dashboard y las tablas de conversion del Funnel) terminaban con el <title>
+     * de una de sus secciones ("Rango de edad", "Conversion por rango de edad").
+     */
+    public function testElTituloDeLaPestanaEsElDeLaPantalla(): void
+    {
+        foreach ([
+            'dashboard' => 'Dashboard',
+            'cobros' => 'Cobros e ingresos',
+            'pagos' => 'Pagos',
+            'funnel' => 'Funnel de conversion',
+            'cohortes' => 'Cohortes de conversion',
+            'clientes' => 'Clientes',
+            'auditoria' => 'Auditoría',
+        ] as $pagina => $titulo) {
+            $cuerpo = $this->get("page={$pagina}")['cuerpo'];
+
+            // El primer <title> es el de la pagina; los siguientes son tooltips de los graficos SVG.
+            if (preg_match('~<title>([^<]*)</title>~', $cuerpo, $coincidencia) !== 1) {
+                self::fail("page={$pagina} no tiene <title>");
+            }
+            self::assertStringStartsWith($titulo . ' · ', html_entity_decode($coincidencia[1]), "page={$pagina}");
+        }
+    }
 }
