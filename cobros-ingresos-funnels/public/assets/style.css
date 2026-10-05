@@ -336,6 +336,9 @@ footer {
     padding: 30px 24px;
 }
 
+/* ---------- Acciones de la ficha de un cliente ---------- */
+.acciones-ficha { display: flex; gap: 16px; margin: 0 0 16px; font-size: 13px; }
+
 /* ---------- Formularios de alta ---------- */
 .form-alta {
     display: flex;
@@ -369,6 +372,7 @@ footer {
 }
 
 .form-alta .error { color: var(--critical); font-size: 13px; margin: 0 0 8px; }
+.form-alta .nota { color: var(--text-muted); font-size: 12px; margin: 2px 0 6px; }
 
 /* ---------- Cohortes (heatmap) ---------- */
 .cohorte-celda {

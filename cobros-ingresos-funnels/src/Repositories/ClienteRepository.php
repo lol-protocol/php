@@ -11,6 +11,9 @@ use PDO;
 /** CRUD de clientes. La segmentacion/LTV vive en SegmentacionRepository. */
 final class ClienteRepository
 {
+    /** Cuantos clientes caben en los desplegables de los formularios de alta (ver paraSelector()). */
+    public const LIMITE_SELECTOR = 500;
+
     /** Valores que ofrece el formulario de alta. La base no los restringe: los valida ClienteController. */
     public const GENEROS = ['Femenino', 'Masculino', 'No especifica'];
     public const SEGMENTOS = ['general', 'starter', 'pro', 'enterprise'];
@@ -78,15 +81,30 @@ final class ClienteRepository
         ];
     }
 
-    /** Lista plana (sin paginar) para poblar el <select> de los formularios de alta. */
-    public function paraSelector(int $limite = 500): array
+    /**
+     * Lista plana (sin paginar) para poblar el <select> de los formularios de
+     * alta: los primeros LIMITE_SELECTOR por nombre, mas $incluir (el cliente ya
+     * elegido, ej. el de ?cliente_id=) si quedo afuera, para que el formulario
+     * pueda mostrarlo seleccionado. Si hay mas clientes que el limite, el resto
+     * no aparece: superaElLimiteDelSelector() lo dice para avisarlo.
+     */
+    public function paraSelector(?int $incluir = null): array
     {
         $stmt = $this->db->prepare(
-            'SELECT id, nombre, email FROM clientes ORDER BY nombre LIMIT :limite'
+            'SELECT id, nombre, email FROM clientes
+             WHERE id IN (SELECT id FROM clientes ORDER BY nombre, id LIMIT :limite) OR id = :incluir
+             ORDER BY nombre, id'
         );
-        $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
+        $stmt->bindValue(':limite', self::LIMITE_SELECTOR, PDO::PARAM_INT);
+        $stmt->bindValue(':incluir', $incluir ?? 0, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    /** true si hay mas clientes de los que entran en el desplegable de los formularios de alta. */
+    public function superaElLimiteDelSelector(): bool
+    {
+        return (int) $this->db->query('SELECT COUNT(*) FROM clientes')->fetchColumn() > self::LIMITE_SELECTOR;
     }
 
     /** Alta manual de un cliente. Devuelve el id creado. */

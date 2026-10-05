@@ -22,7 +22,9 @@ Pequeño sistema en PHP (sin framework) para analizar:
 - **Multi-moneda**: cada cliente factura y paga en la moneda de su país (catálogo
   de ~200 países/territorios); los totales y gráficos agregados se consolidan a USD.
 - **Clientes**: alta manual, buscador y ficha con su historial completo (boletas,
-  pagos y su recorrido por el funnel si entró por ahí).
+  pagos y su recorrido por el funnel si entró por ahí). Desde la ficha se carga una
+  boleta o un pago con el cliente ya elegido. Los desplegables de "Nueva boleta" y
+  "Nuevo pago" muestran los primeros 500 clientes por nombre y avisan si hay más.
 - **Boletas y pagos**: alta, edición y anulación. Anular es un soft-delete (queda
   marcada "Anulada" y se excluye de los agregados) para no perder el rastro. Un
   doble clic en "Guardar" no crea un segundo pago ni una segunda boleta.

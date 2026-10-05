@@ -130,4 +130,24 @@ final class RutasTest extends HttpTestCase
             self::assertStringNotContainsString('class="aviso', $this->get($query)['cuerpo'], $query);
         }
     }
+
+    /**
+     * El desplegable de clientes se corta en un limite, y el unico camino a
+     * los demas es la ficha: tiene que ofrecer cargar la boleta o el pago con
+     * el cliente ya elegido, y los dos formularios tienen que respetarlo.
+     */
+    public function testLaFichaOfreceCargarBoletaYPagoConElClienteYaElegido(): void
+    {
+        $ficha = $this->get('page=cliente&id=1')['cuerpo'];
+        self::assertStringContainsString('href="?page=boleta-nueva&amp;cliente_id=1"', $ficha);
+        self::assertStringContainsString('href="?page=pago-nuevo&amp;cliente_id=1"', $ficha);
+
+        $boleta = $this->get('page=boleta-nueva&cliente_id=1');
+        $this->assertStatus(200, $boleta);
+        self::assertMatchesRegularExpression('/<option value="1"\s+selected/', $boleta['cuerpo'], 'la boleta nueva ya trae al cliente elegido');
+
+        $pago = $this->get('page=pago-nuevo&cliente_id=1');
+        $this->assertStatus(200, $pago);
+        self::assertStringContainsString('cambiar cliente', $pago['cuerpo'], 'el pago nuevo salta directo al formulario del cliente');
+    }
 }

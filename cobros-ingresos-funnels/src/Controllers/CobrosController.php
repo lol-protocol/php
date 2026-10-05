@@ -139,10 +139,15 @@ final class CobrosController
             }
         }
 
+        // El cliente elegido llega por POST (al reenviar con un error) o por ?cliente_id=
+        // (el enlace "Nueva boleta" de su ficha); se incluye aunque quede fuera del limite del selector.
+        $clienteElegido = (int) ($_POST['cliente_id'] ?? $_GET['cliente_id'] ?? 0);
+
         View::render('cobros/nueva', [
-            'clientes' => $clienteRepo->paraSelector(),
+            'clientes' => $clienteRepo->paraSelector($clienteElegido > 0 ? $clienteElegido : null),
+            'clientesTruncados' => $clienteRepo->superaElLimiteDelSelector(),
             'error' => $error,
-            'valores' => $_POST,
+            'valores' => $_POST + ['cliente_id' => $clienteElegido],
             'activePage' => 'cobros',
             'titulo' => 'Nueva boleta',
         ]);

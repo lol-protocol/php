@@ -556,4 +556,30 @@ final class EscriturasTest extends HttpTestCase
             self::assertStringNotContainsString('class="aviso', $this->get($query)['cuerpo'], $query);
         }
     }
+
+    /**
+     * Regresion: con mas clientes que el limite del desplegable, "Nueva boleta"
+     * y "Nuevo pago" mostraban solo los primeros sin decirlo. Ahora lo avisan,
+     * y el cliente de ?cliente_id= aparece elegido aunque quede fuera.
+     */
+    public function testElSelectorDeClientesAvisaCuandoNoMuestraATodos(): void
+    {
+        $db = Database::connection();
+        $this->alTerminar(static fn () => $db->exec("DELETE FROM clientes WHERE email LIKE 'zzzz-selector-http-%@example.com'"));
+        $db->prepare(
+            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
+             SELECT 'ZZZZ Selector ' || lpad(g::text, 4, '0'), 'zzzz-selector-http-' || g || '@example.com', 'general',
+                    CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', DATE '1990-01-01'
+             FROM generate_series(1, :cuantos) g"
+        )->execute([':cuantos' => ClienteRepository::LIMITE_SELECTOR + 1]);
+        $ultimo = self::contar("SELECT id FROM clientes WHERE nombre = 'ZZZZ Selector 0501'", []);
+
+        $aviso = 'Se muestran los primeros ' . ClienteRepository::LIMITE_SELECTOR . ' clientes por nombre.';
+        self::assertStringContainsString($aviso, $this->get('page=boleta-nueva')['cuerpo']);
+        self::assertStringContainsString($aviso, $this->get('page=pago-nuevo')['cuerpo']);
+
+        $conElegido = $this->get("page=boleta-nueva&cliente_id={$ultimo}")['cuerpo'];
+        self::assertMatchesRegularExpression('/<option value="' . $ultimo . '"\s+selected/', $conElegido, 'el elegido se ve aunque el limite lo deje afuera');
+        self::assertDoesNotMatchRegularExpression('/<option value="' . $ultimo . '"[\s>]/', $this->get('page=boleta-nueva')['cuerpo'], 'sin elegirlo, queda afuera');
+    }
 }

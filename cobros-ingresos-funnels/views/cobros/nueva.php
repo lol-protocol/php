@@ -2,8 +2,10 @@
 
 use App\Csrf;
 use App\EnvioUnico;
+use App\Repositories\ClienteRepository;
 
 /** @var array $clientes */
+/** @var bool $clientesTruncados */
 /** @var string|null $error */
 /** @var array $valores */
 
@@ -29,6 +31,9 @@ $vencimientoDefault = date('Y-m-d', strtotime('+30 days'));
                 </option>
             <?php endforeach; ?>
         </select>
+        <?php if ($clientesTruncados): ?>
+            <p class="nota">Se muestran los primeros <?= ClienteRepository::LIMITE_SELECTOR ?> clientes por nombre. Para cargar una boleta a otro, buscalo en <a href="?page=clientes">Clientes</a> y usá «Nueva boleta» desde su ficha.</p>
+        <?php endif; ?>
 
         <label for="concepto">Concepto</label>
         <input type="text" name="concepto" id="concepto" required value="<?= htmlspecialchars($valores['concepto'] ?? '') ?>" placeholder="Ej: Suscripcion mensual">

@@ -145,6 +145,7 @@ final class PagosController
 
         View::render('pagos/nuevo', [
             'clientes' => $clienteRepo->paraSelector(),
+            'clientesTruncados' => $clienteRepo->superaElLimiteDelSelector(),
             'clienteElegido' => $clienteElegido,
             'boletasCliente' => $clienteElegido ? $boletaRepo->porCliente($clienteId) : [],
             'error' => $error,
