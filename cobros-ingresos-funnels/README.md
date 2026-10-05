@@ -41,7 +41,7 @@ Pequeño sistema en PHP (sin framework) para analizar:
 
 ## Requisitos
 
-- PHP >= 8.1 con `pdo_pgsql`
+- PHP >= 8.2 con `pdo_pgsql` (lo exige PHPUnit 11; la CI corre en 8.2 y 8.4)
 - PostgreSQL (cualquier versión reciente)
 - Composer
 
@@ -199,7 +199,7 @@ explicadas en `phpstan.neon`.
 La CI (`.github/workflows/pruebas-cobros-ingresos-funnels.yml`, en la raíz del
 repositorio) corre en los pull requests y en `master` cada vez que cambia algo de
 este proyecto: sintaxis, PHPStan, las migraciones sobre una base vacía, el seed y
-las tres suites, contra un Postgres 16.
+las tres suites, contra un Postgres 16, en PHP 8.2 (el mínimo) y en 8.4.
 
 ## Estructura
 
