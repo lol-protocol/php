@@ -76,7 +76,8 @@ Abrí `http://localhost:8000` — te va a mostrar el Dashboard directo, sin logi
 
 Volver a correr `php database/seed.php` en cualquier momento borra la base, la
 reconstruye con las migraciones de `database/migraciones/` y regenera los datos de
-ejemplo desde cero (es reproducible: usa una semilla fija). Por eso solo corre con
+ejemplo desde cero (es reproducible: usa una semilla fija, así que el mismo día da
+siempre los mismos datos; las fechas son relativas a hoy). Por eso solo corre con
 `APP_ENV=dev`. Las mismas variables tienen que estar exportadas cuando corrés el
 servidor, el seed y los tests, para que los tres apunten a la misma base.
 

@@ -27,6 +27,10 @@ if (!Config::esDesarrollo()) {
     exit(1);
 }
 
+// Todo el azar del seed sale de mt_rand() y sus derivados (array_rand, shuffle):
+// mt_srand() los hace repetibles, asi que la misma fecha da siempre los mismos
+// clientes, boletas y pagos. random_int() y random_bytes() no se pueden sembrar
+// y romperian eso sin avisar (lo vigila tests/Unit/SeedReproducibleTest.php).
 mt_srand(2024);
 
 $pdo = Database::connection();
@@ -49,7 +53,7 @@ function fecha(DateTimeImmutable $d): string
 
 function diasAleatorios(DateTimeImmutable $desde, int $maxDias): DateTimeImmutable
 {
-    return $desde->modify('+' . random_int(0, max(0, $maxDias)) . ' days');
+    return $desde->modify('+' . mt_rand(0, max(0, $maxDias)) . ' days');
 }
 
 /** @param array<string,float> $pesos */
@@ -179,8 +183,8 @@ $monedaPorPais = array_map(static fn ($p) => $p['moneda'], $catalogo['paises']);
 function perfilAleatorio(array $paisPesos, array $ciudadesPorPais, array $idiomaPorPais, array $monedaPorPais, array $generoPesos, DateTimeImmutable $hoy): array
 {
     $paisCodigo = eleccionPonderada($paisPesos);
-    $edad = random_int(18, 68);
-    $nacimiento = $hoy->modify("-{$edad} years")->modify('-' . random_int(0, 364) . ' days');
+    $edad = mt_rand(18, 68);
+    $nacimiento = $hoy->modify("-{$edad} years")->modify('-' . mt_rand(0, 364) . ' days');
     $ciudades = $ciudadesPorPais[$paisCodigo];
 
     return [
@@ -311,7 +315,7 @@ foreach ($clientesInfo as $cliente) {
     if ($altaCliente >= $hoy) {
         continue;
     }
-    $numBoletas = random_int(1, 6);
+    $numBoletas = mt_rand(1, 6);
     $cursor = $altaCliente;
 
     for ($f = 0; $f < $numBoletas; $f++) {
@@ -359,7 +363,7 @@ foreach ($clientesInfo as $cliente) {
             }
         }
 
-        $cursor = $emision->modify('+' . random_int(20, 45) . ' days');
+        $cursor = $emision->modify('+' . mt_rand(20, 45) . ' days');
     }
 }
 
