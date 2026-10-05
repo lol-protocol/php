@@ -4,10 +4,9 @@ use App\Csrf;
 use App\EnvioUnico;
 
 /** @var array $paises */
+/** @var array $generos */
+/** @var array $segmentos */
 /** @var string|null $error */
-
-$generos = ['Femenino', 'Masculino', 'No especifica'];
-$segmentos = ['general', 'starter', 'pro', 'enterprise'];
 ?>
 
 <h1>Nuevo cliente</h1>
@@ -44,7 +43,7 @@ $segmentos = ['general', 'starter', 'pro', 'enterprise'];
         <label for="genero">Genero</label>
         <select name="genero" id="genero">
             <?php foreach ($generos as $g): ?>
-                <option value="<?= $g ?>"><?= $g ?></option>
+                <option value="<?= $g ?>" <?= ($_POST['genero'] ?? '') === $g ? 'selected' : '' ?>><?= $g ?></option>
             <?php endforeach; ?>
         </select>
 
@@ -54,7 +53,7 @@ $segmentos = ['general', 'starter', 'pro', 'enterprise'];
         <label for="segmento">Segmento</label>
         <select name="segmento" id="segmento">
             <?php foreach ($segmentos as $s): ?>
-                <option value="<?= $s ?>"><?= $s ?></option>
+                <option value="<?= $s ?>" <?= ($_POST['segmento'] ?? '') === $s ? 'selected' : '' ?>><?= $s ?></option>
             <?php endforeach; ?>
         </select>
 

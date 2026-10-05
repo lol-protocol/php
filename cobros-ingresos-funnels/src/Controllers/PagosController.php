@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Database;
 use App\EnvioUnico;
+use App\Etiquetas;
 use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
@@ -97,6 +98,8 @@ final class PagosController
                         return ['error' => 'Elegí un cliente valido.'];
                     } elseif (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
                         return ['error' => 'Completá todos los campos con un monto válido.'];
+                    } elseif (!self::metodoEsValido($metodo)) {
+                        return ['error' => 'Elegí un método de pago válido.'];
                     } elseif (!Filtros::esFechaValida($fechaPago)) {
                         return ['error' => 'La fecha de pago no es válida.'];
                     } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
@@ -146,6 +149,7 @@ final class PagosController
             'clienteElegido' => $clienteElegido,
             'boletasCliente' => $clienteElegido ? $boletaRepo->porCliente($clienteId) : [],
             'error' => $error,
+            'valores' => $_POST,
             'activePage' => 'pagos',
             'titulo' => 'Nuevo pago',
         ]);
@@ -199,6 +203,12 @@ final class PagosController
         return self::montoNoSuperaElSaldo($montoNuevo, ['saldo' => (float) $boleta['saldo'] + $montoViejo]);
     }
 
+    /** El metodo tiene que ser uno de los que ofrece el formulario: la base no lo restringe. */
+    public static function metodoEsValido(string $metodo): bool
+    {
+        return array_key_exists($metodo, Etiquetas::metodosPago());
+    }
+
     public function editar(): void
     {
         $id = Peticion::id();
@@ -244,6 +254,8 @@ final class PagosController
                     return 'El pago o su boleta fueron anulados mientras lo editabas.';
                 } elseif (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
                     return 'Completá todos los campos con un monto válido.';
+                } elseif (!self::metodoEsValido($metodo)) {
+                    return 'Elegí un método de pago válido.';
                 } elseif (!Filtros::esFechaValida($fechaPago)) {
                     return 'La fecha de pago no es válida.';
                 } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {

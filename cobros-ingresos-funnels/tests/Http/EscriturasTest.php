@@ -201,6 +201,154 @@ final class EscriturasTest extends HttpTestCase
     }
 
     /**
+     * Regresion: tras un error de validacion, "Nuevo pago" devolvia el formulario
+     * vacio y la boleta elegida volvia a "Anticipo": quien corregia solo el
+     * monto y reenviaba registraba el pago sin boleta, sin ningun aviso.
+     */
+    public function testUnErrorEnNuevoPagoConservaLoQueElUsuarioElegio(): void
+    {
+        $boletaId = $this->boletaDePrueba();
+        $formulario = $this->get('page=pago-nuevo&cliente_id=' . self::CLIENTE)['cuerpo'];
+
+        $respuesta = $this->post('page=pago-nuevo&cliente_id=' . self::CLIENTE, [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => self::campoOculto($formulario, EnvioUnico::CAMPO),
+            'cliente_id' => self::CLIENTE,
+            'boleta_id' => $boletaId,
+            'monto' => '999999.00',
+            'fecha_pago' => '2020-03-05',
+            'metodo' => 'tarjeta',
+        ]);
+
+        $this->assertStatus(200, $respuesta);
+        $cuerpo = $respuesta['cuerpo'];
+        self::assertStringContainsString('El monto supera el saldo pendiente de la boleta.', $cuerpo);
+        self::assertMatchesRegularExpression('/<option value="' . $boletaId . '"\s+selected/', $cuerpo, 'la boleta elegida sigue elegida');
+        self::assertMatchesRegularExpression('/name="monto"[^>]*value="999999.00"/', $cuerpo);
+        self::assertMatchesRegularExpression('/name="fecha_pago"[^>]*value="2020-03-05"/', $cuerpo);
+        self::assertMatchesRegularExpression('/<option value="tarjeta"\s+selected/', $cuerpo);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM pagos WHERE boleta_id = :id', [':id' => $boletaId]));
+    }
+
+    /**
+     * Regresion: "Nuevo cliente" repoblaba los campos de texto y el pais, pero
+     * genero y segmento volvian a la primera opcion: corregir solo la ciudad y
+     * reenviar guardaba al cliente con un genero y un segmento que no eligio.
+     */
+    public function testUnErrorEnNuevoClienteConservaGeneroYSegmento(): void
+    {
+        $formulario = $this->get('page=cliente-nuevo')['cuerpo'];
+
+        $respuesta = $this->post('page=cliente-nuevo', [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => self::campoOculto($formulario, EnvioUnico::CAMPO),
+            'nombre' => 'Cliente con error',
+            'email' => 'cliente-error-' . uniqid() . '@example.com',
+            'pais_codigo' => 'AR',
+            'ciudad' => '',
+            'idioma' => 'Espanol',
+            'genero' => 'Masculino',
+            'fecha_nacimiento' => '1990-05-05',
+            'segmento' => 'enterprise',
+        ]);
+
+        $this->assertStatus(200, $respuesta);
+        self::assertStringContainsString('Completá todos los campos obligatorios.', $respuesta['cuerpo']);
+        self::assertMatchesRegularExpression('/<option value="Masculino"\s+selected/', $respuesta['cuerpo']);
+        self::assertMatchesRegularExpression('/<option value="enterprise"\s+selected/', $respuesta['cuerpo']);
+    }
+
+    /**
+     * Regresion: el metodo de pago solo lo restringia el <select> del navegador.
+     * Un POST con "bitcoin" se guardaba y aparecia como una barra mas en Pagos.
+     */
+    public function testNuevoPagoRechazaUnMetodoFueraDeLaLista(): void
+    {
+        $formulario = $this->get('page=pago-nuevo&cliente_id=' . self::CLIENTE)['cuerpo'];
+        $token = self::campoOculto($formulario, EnvioUnico::CAMPO);
+        $this->olvidarToken($token);
+        // Si la validacion faltara, el pago queda commiteado: se borra igual.
+        $this->alTerminar(static function (): void {
+            $db = Database::connection();
+            $db->exec("DELETE FROM auditoria WHERE entidad = 'pago' AND entidad_id IN (SELECT id FROM pagos WHERE metodo = 'bitcoin')");
+            $db->exec("DELETE FROM pagos WHERE metodo = 'bitcoin'");
+        });
+
+        $respuesta = $this->post('page=pago-nuevo&cliente_id=' . self::CLIENTE, [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => $token,
+            'cliente_id' => self::CLIENTE,
+            'boleta_id' => '',
+            'monto' => '12.34',
+            'fecha_pago' => '2020-04-01',
+            'metodo' => 'bitcoin',
+        ]);
+
+        $this->assertStatus(200, $respuesta);
+        self::assertStringContainsString('Elegí un método de pago válido.', $respuesta['cuerpo']);
+        self::assertSame(0, self::contar("SELECT COUNT(*) FROM pagos WHERE metodo = 'bitcoin'", []));
+    }
+
+    public function testEditarPagoRechazaUnMetodoFueraDeLaLista(): void
+    {
+        $pagoId = $this->pagoDePrueba($this->boletaDePrueba());
+        $formulario = $this->get("page=pago-editar&id={$pagoId}")['cuerpo'];
+
+        $respuesta = $this->post("page=pago-editar&id={$pagoId}", [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            'monto' => '100.00',
+            'fecha_pago' => '2020-01-15',
+            'metodo' => 'bitcoin',
+        ]);
+
+        $this->assertStatus(200, $respuesta);
+        self::assertStringContainsString('Elegí un método de pago válido.', $respuesta['cuerpo']);
+        $pago = (new PagoRepository())->porId($pagoId);
+        self::assertNotNull($pago);
+        self::assertSame('tarjeta', $pago['metodo'], 'el pago quedo como estaba');
+    }
+
+    /** Regresion: genero y segmento solo los restringia el <select>; un POST con "Alienigena" o "vip" se guardaba. */
+    public function testNuevoClienteRechazaGeneroYSegmentoFueraDeLaLista(): void
+    {
+        $formulario = $this->get('page=cliente-nuevo')['cuerpo'];
+        $email = 'cliente-lista-' . uniqid() . '@example.com';
+        $this->alTerminar(static function () use ($email): void {
+            $db = Database::connection();
+            $db->prepare("DELETE FROM auditoria WHERE entidad = 'cliente' AND entidad_id IN (SELECT id FROM clientes WHERE email = :e)")->execute([':e' => $email]);
+            $db->prepare('DELETE FROM clientes WHERE email = :e')->execute([':e' => $email]);
+        });
+        $datos = [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => self::campoOculto($formulario, EnvioUnico::CAMPO),
+            'nombre' => 'Cliente fuera de lista',
+            'email' => $email,
+            'pais_codigo' => 'AR',
+            'ciudad' => 'Rosario',
+            'idioma' => 'Espanol',
+            'genero' => 'Alienigena',
+            'fecha_nacimiento' => '1990-05-05',
+            'segmento' => 'general',
+        ];
+        $this->olvidarToken($datos[EnvioUnico::CAMPO]);
+
+        $generoMalo = $this->post('page=cliente-nuevo', $datos);
+        $this->assertStatus(200, $generoMalo);
+        self::assertStringContainsString('Elegí un género válido.', $generoMalo['cuerpo']);
+
+        // "0" es falso en PHP: tampoco puede colarse como "no eligio" y quedar con el valor por defecto.
+        $generoCero = $this->post('page=cliente-nuevo', ['genero' => '0'] + $datos);
+        $this->assertStatus(200, $generoCero);
+        self::assertStringContainsString('Elegí un género válido.', $generoCero['cuerpo']);
+
+        $segmentoMalo = $this->post('page=cliente-nuevo', ['genero' => 'Masculino', 'segmento' => 'vip'] + $datos);
+        $this->assertStatus(200, $segmentoMalo);
+        self::assertStringContainsString('Elegí un segmento válido.', $segmentoMalo['cuerpo']);
+
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+    }
+
+    /**
      * Regresion de la ronda anterior: con la boleta anulada (y su nota de
      * credito emitida), tocar el pago descontaba la plata dos veces.
      */

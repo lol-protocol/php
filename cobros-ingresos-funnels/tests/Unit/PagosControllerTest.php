@@ -121,4 +121,19 @@ final class PagosControllerTest extends TestCase
     {
         self::assertFalse(PagosController::boletaAnuladaCongelaElPago(null));
     }
+
+    public function testLosMetodosQueOfreceElFormularioSonValidos(): void
+    {
+        foreach (['transferencia', 'tarjeta', 'efectivo'] as $metodo) {
+            self::assertTrue(PagosController::metodoEsValido($metodo), $metodo);
+        }
+    }
+
+    /** Antes solo lo impedia el <select> del navegador: un POST a mano guardaba cualquier texto. */
+    public function testUnMetodoFueraDeLaListaNoEsValido(): void
+    {
+        foreach (['bitcoin', '', 'Tarjeta', 'tarjeta ', 'transferencia;'] as $metodo) {
+            self::assertFalse(PagosController::metodoEsValido($metodo), "'{$metodo}'");
+        }
+    }
 }

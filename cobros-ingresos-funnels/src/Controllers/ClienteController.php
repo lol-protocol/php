@@ -20,6 +20,18 @@ use App\View;
 
 final class ClienteController
 {
+    /** El genero tiene que ser uno de los que ofrece el formulario: la base no lo restringe. */
+    public static function generoEsValido(string $genero): bool
+    {
+        return in_array($genero, ClienteRepository::GENEROS, true);
+    }
+
+    /** El segmento tiene que ser uno de los que ofrece el formulario: la base no lo restringe. */
+    public static function segmentoEsValido(string $segmento): bool
+    {
+        return in_array($segmento, ClienteRepository::SEGMENTOS, true);
+    }
+
     public function index(): void
     {
         $q = trim((string) ($_GET['q'] ?? ''));
@@ -75,9 +87,12 @@ final class ClienteController
             $paisCodigo = (string) ($_POST['pais_codigo'] ?? '');
             $ciudad = trim((string) ($_POST['ciudad'] ?? ''));
             $idioma = trim((string) ($_POST['idioma'] ?? ''));
-            $genero = (string) ($_POST['genero'] ?? '');
+            $genero = trim((string) ($_POST['genero'] ?? ''));
             $fechaNacimiento = (string) ($_POST['fecha_nacimiento'] ?? '');
-            $segmento = (string) ($_POST['segmento'] ?? 'general');
+            $segmento = trim((string) ($_POST['segmento'] ?? ''));
+            // Vacio = no eligio: se usa el valor por defecto. Cualquier otro texto tiene que estar en la lista.
+            $genero = $genero === '' ? 'No especifica' : $genero;
+            $segmento = $segmento === '' ? 'general' : $segmento;
 
             if ($token === null) {
                 $error = EnvioUnico::MENSAJE_SIN_TOKEN;
@@ -85,6 +100,10 @@ final class ClienteController
                 $error = 'Completá todos los campos obligatorios.';
             } elseif (!Filtros::esFechaValida($fechaNacimiento)) {
                 $error = 'La fecha de nacimiento no es válida.';
+            } elseif (!self::generoEsValido($genero)) {
+                $error = 'Elegí un género válido.';
+            } elseif (!self::segmentoEsValido($segmento)) {
+                $error = 'Elegí un segmento válido.';
             } else {
                 try {
                     $destino = EnvioUnico::ejecutar($token, static function () use ($nombre, $email, $segmento, $paisCodigo, $ciudad, $idioma, $genero, $fechaNacimiento): string {
@@ -96,7 +115,7 @@ final class ClienteController
                             'pais_codigo' => $paisCodigo,
                             'ciudad' => $ciudad,
                             'idioma' => $idioma ?: 'Espanol',
-                            'genero' => $genero ?: 'No especifica',
+                            'genero' => $genero,
                             'fecha_nacimiento' => $fechaNacimiento,
                         ]);
                         AuditoriaRepository::auditar('crear', 'cliente', $id, "Cliente #{$id}: {$nombre} ({$email})");
@@ -113,6 +132,8 @@ final class ClienteController
 
         View::render('clientes/nuevo', [
             'paises' => (new PaisRepository())->listado(),
+            'generos' => ClienteRepository::GENEROS,
+            'segmentos' => ClienteRepository::SEGMENTOS,
             'error' => $error,
             'activePage' => 'clientes',
             'titulo' => 'Nuevo cliente',

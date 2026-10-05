@@ -11,6 +11,10 @@ use PDO;
 /** CRUD de clientes. La segmentacion/LTV vive en SegmentacionRepository. */
 final class ClienteRepository
 {
+    /** Valores que ofrece el formulario de alta. La base no los restringe: los valida ClienteController. */
+    public const GENEROS = ['Femenino', 'Masculino', 'No especifica'];
+    public const SEGMENTOS = ['general', 'starter', 'pro', 'enterprise'];
+
     private PDO $db;
 
     public function __construct()

@@ -8,6 +8,7 @@ use App\Etiquetas;
 /** @var array|null $clienteElegido */
 /** @var array $boletasCliente */
 /** @var string|null $error */
+/** @var array $valores */
 
 $hoy = date('Y-m-d');
 ?>
@@ -45,7 +46,7 @@ $hoy = date('Y-m-d');
                 <option value="">Anticipo / sin boleta asociada</option>
                 <?php foreach ($boletasCliente as $b): ?>
                     <?php if ($b['anulada'] || $b['saldo'] <= 0.01): continue; endif; ?>
-                    <option value="<?= (int) $b['id'] ?>">
+                    <option value="<?= (int) $b['id'] ?>" <?= (string) ($valores['boleta_id'] ?? '') === (string) $b['id'] ? 'selected' : '' ?>>
                         #<?= (int) $b['id'] ?> · <?= htmlspecialchars($b['concepto']) ?> ·
                         <?= money_moneda((float) $b['saldo'], $b['moneda_codigo']) ?> pendiente
                     </option>
@@ -53,15 +54,15 @@ $hoy = date('Y-m-d');
             </select>
 
             <label for="monto">Monto (en <?= htmlspecialchars($clienteElegido['moneda_codigo']) ?>)</label>
-            <input type="number" name="monto" id="monto" required min="0.01" step="0.01">
+            <input type="number" name="monto" id="monto" required min="0.01" step="0.01" value="<?= htmlspecialchars($valores['monto'] ?? '') ?>">
 
             <label for="fecha_pago">Fecha de pago</label>
-            <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= $hoy ?>">
+            <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= htmlspecialchars($valores['fecha_pago'] ?? $hoy) ?>">
 
             <label for="metodo">Metodo</label>
             <select name="metodo" id="metodo" required>
                 <?php foreach (Etiquetas::metodosPago() as $clave => $etiqueta): ?>
-                    <option value="<?= $clave ?>"><?= $etiqueta ?></option>
+                    <option value="<?= $clave ?>" <?= ($valores['metodo'] ?? '') === $clave ? 'selected' : '' ?>><?= $etiqueta ?></option>
                 <?php endforeach; ?>
             </select>
 
