@@ -22,10 +22,11 @@ function buildDeltaBadge(deltaPct, { betterWhenLower = true, goodLabel, badLabel
 }
 
 function buildStatsTooltip(median, p90, formatter) {
-  if (median === null && p90 === null) return "";
   const parts = [];
-  if (median !== null) parts.push(t("stats_median", { value: formatter(median) }));
-  if (p90 !== null) parts.push(t("stats_p90", { value: formatter(p90) }));
+  // Number.isFinite descarta null (universo sin acciones) y undefined (sin cohorte: el servicio de
+  // estadísticas no respondió); antes ese caso daba "mediana: NaN m NaN s".
+  if (Number.isFinite(median)) parts.push(t("stats_median", { value: formatter(median) }));
+  if (Number.isFinite(p90)) parts.push(t("stats_p90", { value: formatter(p90) }));
   return parts.join(" · ");
 }
 

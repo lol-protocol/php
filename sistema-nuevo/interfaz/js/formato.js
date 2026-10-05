@@ -23,9 +23,13 @@ export function formatFileSize(kb) {
   return kb >= 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb.toFixed(1)} KB`;
 }
 
+// El porcentaje tal como se muestra: entero, con la mitad redondeada hacia afuera. Number() normaliza
+// el "-0" de toFixed (un -0.3 daba "-0%"): -0 se imprime como "0".
+const redondearPct = (pct) => Number(pct.toFixed(0));
+
 export function formatPct(pct) {
-  const sign = pct > 0 ? "+" : "";
-  return `${sign}${pct.toFixed(0)}%`;
+  const entero = redondearPct(pct);
+  return `${entero > 0 ? "+" : ""}${entero}%`;
 }
 
 // Un delta dentro de esta franja (inclusive, en ambos sentidos) cuenta como "en el promedio":
@@ -35,10 +39,12 @@ const DELTA_PROMEDIO_PCT = 10;
 /**
  * Cómo se clasifica un delta % contra el promedio del universo: "none" sin comparación (null),
  * "avg" dentro de ±10%, y si no "good" o "bad" según convenga que el valor sea menor (duración
- * y monto, que es el caso de hoy) o mayor.
+ * y monto, que es el caso de hoy) o mayor. Se mide sobre el porcentaje que se muestra (ver
+ * formatPct): un badge que dice "+10%" tiene que ser "en el promedio", no rojo.
  */
 export function classifyDelta(deltaPct, betterWhenLower = true) {
   if (deltaPct === null) return "none";
-  if (Math.abs(deltaPct) <= DELTA_PROMEDIO_PCT) return "avg";
-  return (betterWhenLower ? deltaPct < 0 : deltaPct > 0) ? "good" : "bad";
+  const mostrado = redondearPct(deltaPct);
+  if (Math.abs(mostrado) <= DELTA_PROMEDIO_PCT) return "avg";
+  return (betterWhenLower ? mostrado < 0 : mostrado > 0) ? "good" : "bad";
 }

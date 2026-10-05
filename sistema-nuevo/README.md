@@ -277,7 +277,14 @@ la **mediana** y el **percentil 90** de duración y monto del universo elegido
 `null`-safe si el cohort está vacío o no tiene montos). El promedio se puede
 distorsionar con pocos valores extremos; la mediana no. El frontend los muestra
 como tooltip (`title`) al pasar el mouse por el badge de comparación, sin agregar
-otro elemento visual a la tarjeta.
+otro elemento visual a la tarjeta (sin cohorte, porque el servicio de estadísticas
+no respondió, el badge dice "Sin datos de comparación" y no lleva tooltip).
+
+El badge sale del delta % de la acción contra el promedio (`api_delta_pct()`, en
+`api/ayudantes.php`; `null` si no hay promedio útil): gris dentro de ±10%, verde si es
+menor (más rápido, más barato) y rojo si es mayor. La franja se mide sobre el porcentaje
+**tal como se muestra** (entero, `formatPct`/`classifyDelta` en `formato.js`), así un
+badge que dice "+10%" nunca es rojo, ni uno que dice "0%" lleva signo.
 
 ## Notas por acción
 
@@ -481,7 +488,8 @@ php pruebas/ejecutar-integracion.php
   distingue, en un schema descartable, base vacía, sin acciones, sembrada y esquema viejo.
 - `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje, y
   `classifyDelta`, que decide verde/rojo/gris de cada badge: franja "en el
-  promedio" de ±10% con el borde incluido), `idioma.js`
+  promedio" de ±10% con el borde incluido, medida sobre el porcentaje que se
+  muestra, y un delta que redondea a cero es "0%", no "-0%"), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
   resultados no dibuja una sección vacía, sin ninguna alerta real el panel
@@ -508,7 +516,9 @@ php pruebas/ejecutar-integracion.php
   servicio Java (promedio/mediana/p90 de cada tipo, con filtros de país, edad y
   género, sin el propio usuario, con universos de 1 a 3 acciones y con universos
   vacíos), `/api/timeline` (el universo de cada acción y su delta %) y las
-  tarjetas del panel (porcentaje, texto y color de cada badge).
+  tarjetas del panel (porcentaje, texto y color de cada badge), y esas mismas
+  tarjetas sin servicio de estadísticas (aviso visible, "Sin datos de comparación"
+  y ningún tooltip con `NaN`).
 
 Las pruebas e2e usan `require()` (CommonJS) en vez de `import`, a propósito: Node
 solo resuelve paquetes globales (Playwright no tiene `node_modules` propio acá) vía

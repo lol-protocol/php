@@ -121,11 +121,13 @@ async function verificarBadge(badge, delta, etiquetaBuena, etiquetaMala, etiquet
     esperadaClase = "badge--neutral";
     esperadoTexto = "Sin datos de comparación";
   } else {
-    const pct = `${delta > 0 ? "+" : ""}${delta.toFixed(0)}%`;
-    if (Math.abs(delta) <= 10) {
+    // Lo que el manual llama "±10%" se mide sobre el porcentaje entero que se ve (2.5 -> 3, -0.3 -> 0).
+    const entero = Number(delta.toFixed(0));
+    const pct = `${entero > 0 ? "+" : ""}${entero}%`;
+    if (Math.abs(entero) <= 10) {
       esperadaClase = "badge--neutral";
       esperadoTexto = `≈ promedio (${pct})`;
-    } else if (delta < 0) {
+    } else if (entero < 0) {
       esperadaClase = "badge--good";
       esperadoTexto = `${pct} ${etiquetaBuena}`;
     } else {
@@ -140,6 +142,13 @@ async function verificarBadge(badge, delta, etiquetaBuena, etiquetaMala, etiquet
     `${etiqueta}: un badge no puede tener dos colores ("${clase}")`
   );
   assert.equal(texto, esperadoTexto, `${etiqueta}: delta ${delta}`);
+}
+
+/** La respuesta de /api/timeline que el panel pide para ese usuario (y ese filtro de tipo). */
+function esperarTimeline(page, usuario, fragmento) {
+  return page.waitForResponse(
+    (r) => r.url().includes("/api/timeline") && r.url().includes(`user_id=${usuario}`) && r.url().includes(fragmento) && r.status() === 200
+  );
 }
 
 /** Compara cada tarjeta del panel con la respuesta de /api/timeline que la dibujó. */
@@ -281,23 +290,59 @@ async function verificarTooltip(badge, mediana, etiqueta) {
     try {
       const page = await browser.newPage();
       await iniciarSesion(page);
-      const esperarTimeline = (usuario, fragmento) =>
-        page.waitForResponse((r) => r.url().includes("/api/timeline") && r.url().includes(`user_id=${usuario}`) && r.url().includes(fragmento) && r.status() === 200);
-
       // Vista 1: todas las acciones del usuario más activo (las duraciones).
       const actual = await page.inputValue("#user-select");
       const usuario = masActivos.find((u) => u !== actual);
-      const [r1] = await Promise.all([esperarTimeline(usuario, "type=all"), page.selectOption("#user-select", usuario)]);
+      const [r1] = await Promise.all([esperarTimeline(page, usuario, "type=all"), page.selectOption("#user-select", usuario)]);
       const vista1 = await verificarTarjetas(page, await r1.json());
       // Para que no pase "en vacío": hay tarjetas fuera del ±10%, o sea verdes y rojas, que comprobar.
       assert.ok(vista1.fueraDelPromedio >= 3, `tarjetas fuera del ±10%: ${vista1.fueraDelPromedio}`);
 
       // Vista 2: solo los pagos y reembolsos de quien más tiene (los montos, que es el segundo badge).
-      const [r2] = await Promise.all([esperarTimeline(conPagos, "type=all"), page.selectOption("#user-select", conPagos)]);
+      const [r2] = await Promise.all([esperarTimeline(page, conPagos, "type=all"), page.selectOption("#user-select", conPagos)]);
       await r2.json();
-      const [r3] = await Promise.all([esperarTimeline(conPagos, "type=payment"), page.selectOption("#type-select", "payment")]);
+      const [r3] = await Promise.all([esperarTimeline(page, conPagos, "type=payment"), page.selectOption("#type-select", "payment")]);
       const vista2 = await verificarTarjetas(page, await r3.json());
       assert.ok(vista2.conMonto >= 1, `tarjetas con monto: ${vista2.conMonto}`);
+    } finally {
+      await browser.close();
+    }
+  });
+
+  await paso("sin el servicio de estadísticas: aviso en pantalla y badges 'Sin datos de comparación', sin tooltips con NaN", async () => {
+    const conPagos = consultarSql(
+      "SELECT usuario_id FROM acciones WHERE tipo_clave = 'payment' AND monto_usd IS NOT NULL GROUP BY 1 ORDER BY count(*) DESC, 1 LIMIT 1"
+    )[0][0];
+    const browser = await chromium.launch();
+    try {
+      const page = await browser.newPage();
+      await iniciarSesion(page);
+      // Lo que devuelve la API cuando el servicio de estadísticas no responde (linea-tiempo-cohortes-test.php
+      // comprueba esa respuesta del lado de PHP): sin cohorte, sin deltas y stats_service_available en false.
+      await page.route("**/api/timeline*", async (route) => {
+        const respuesta = await route.fetch();
+        const datos = await respuesta.json();
+        datos.stats_service_available = false;
+        datos.timeline = datos.timeline.map((it) => ({ ...it, cohort: null, duration_delta_pct: null, amount_delta_pct: null }));
+        await route.fulfill({ response: respuesta, json: datos });
+      });
+      await Promise.all([esperarTimeline(page, conPagos, "type=all"), page.selectOption("#user-select", conPagos)]);
+      const [respuesta] = await Promise.all([esperarTimeline(page, conPagos, "type=payment"), page.selectOption("#type-select", "payment")]);
+      const datos = await respuesta.json();
+      await page.waitForFunction((n) => document.querySelectorAll(".timeline-item").length === n, datos.timeline.length);
+
+      assert.equal(await page.isHidden("#status-message"), false, "el aviso de servicio no disponible tiene que verse");
+      assert.match(await page.textContent("#status-message"), /El servicio de estadísticas \(Java\) no respondió/);
+
+      const badges = page.locator(".timeline-item .badge");
+      const cantidad = await badges.count();
+      assert.ok(cantidad >= 2, `badges en pantalla: ${cantidad}`);
+      for (let i = 0; i < cantidad; i++) {
+        const badge = badges.nth(i);
+        assert.equal((await badge.textContent()).trim(), "Sin datos de comparación", `badge ${i}`);
+        assert.ok((await badge.getAttribute("class")).split(" ").includes("badge--neutral"), `badge ${i}: color`);
+        assert.equal(await badge.getAttribute("title"), null, `badge ${i}: sin estadísticas no hay tooltip (no "mediana: NaN")`);
+      }
     } finally {
       await browser.close();
     }
