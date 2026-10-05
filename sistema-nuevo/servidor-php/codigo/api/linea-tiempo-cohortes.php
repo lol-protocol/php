@@ -33,7 +33,7 @@ function api_timeline_con_cohortes(
                 ? null
                 : api_delta_pct($action['amount_usd'], $cohort['avg_amount_usd'] ?? null),
             // La IP no siempre coincide con el país declarado del usuario (VPN/proxy/viaje).
-            'ip_mismatch' => $action['ip_country'] !== null && $action['ip_country'] !== $userCountry,
+            'ip_mismatch' => AlmacenAlertas::esIpFueraDelPais($action['ip_country'], $userCountry),
         ];
     }
 

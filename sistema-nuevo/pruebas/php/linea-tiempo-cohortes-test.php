@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../servidor-php/codigo/ClienteEstadisticas.php';
+require_once __DIR__ . '/../../servidor-php/codigo/AlmacenAlertas.php';
 require_once __DIR__ . '/../../servidor-php/codigo/api/ayudantes.php';
 require_once __DIR__ . '/../../servidor-php/codigo/api/linea-tiempo-cohortes.php';
 

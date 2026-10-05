@@ -30,7 +30,8 @@ las 100 líneas — el objetivo es que cada uno sea una pieza chica y enfocada, 
 número exacto. Los pocos que sí las pasan son casos donde partirlos sería peor:
 un diccionario i18n plano (`es.js`/`en.js`), hojas de estilo de un solo componente
 (`alertas.css`, `topbar.css`), un cliente HTTP cohesivo con un solo estado interno
-compartido (`ClienteEstadisticas.php`) o una suite e2e ya acotada a un tema
+compartido (`ClienteEstadisticas.php`), las dos reglas de alerta con sus
+consultas (`AlmacenAlertas.php`) o una suite e2e ya acotada a un tema
 (`panel-nuevas-features.e2e.cjs`) — fragmentarlos solo para bajar el número
 cambiaría "piezas enfocadas" por "piezas dispersas".
 
@@ -73,7 +74,8 @@ sistema-nuevo/
 │       ├── AlmacenDatos.php           Usuarios (paginado/buscable) y grupos de países
 │       ├── AlmacenAcciones.php        Acciones de un usuario: paginado, filtro por tipo,
 │       │                               resumen diario para el gráfico
-│       ├── AlmacenAlertas.php         Detección proactiva: IPs fuera del país declarado
+│       ├── AlmacenAlertas.php         Las dos reglas de alerta (IP fuera del país, cambio de país
+│       │                               imposible): las usan el panel de alertas y el KPI
 │       ├── AlmacenConfiguracion.php   Config de alertas (habilitadas/umbral), clave-valor
 │       ├── AlmacenFiltros.php         CRUD de combinaciones de filtro guardadas
 │       ├── AlmacenKpis.php            Métricas agregadas del dashboard inicial
@@ -316,7 +318,15 @@ cualquiera de la lista selecciona ese usuario y carga su timeline.
   acciones consecutivas del mismo usuario en países distintos separadas por menos
   tiempo del que tomaría viajar entre ellos. La ventana de tiempo que cuenta como
   "imposible" no es fija: sale de la **sensibilidad** configurable (ver debajo),
-  interpolada linealmente entre 0.5h (sensibilidad 0) y 4h (sensibilidad 100).
+  interpolada linealmente entre 0.5h (sensibilidad 0) y 4h (sensibilidad 100); el
+  hueco tiene que ser estrictamente menor que la ventana.
+
+Las dos reglas viven solo en `AlmacenAlertas` (constantes SQL y `ventanaHoras()`):
+el KPI del dashboard las reutiliza con `usuariosConIpFueraDelPais()` y
+`usuariosConCambioPaisImposible()`, que cuentan usuarios sin armar el top, y el
+`ip_mismatch` de cada tarjeta usa `esIpFueraDelPais()`, la misma regla de IP para
+una acción ya leída. Antes `AlmacenKpis` tenía su propia copia de la consulta y de
+la fórmula del umbral, con un comentario que pedía cambiar las dos a la vez.
 
 ### Configuración de alertas
 
@@ -479,7 +489,12 @@ php pruebas/ejecutar-integracion.php
   `AlmacenAcciones` y `AlmacenDatos` (empate en `marca_temporal`/`nombre` se
   desempata por `id`, para que la paginación no repita/salte filas),
   `AlmacenAlertas` (mismas invariantes que `AlmacenKpis`, tope de 15 en el top,
-  empate en `mismatch_count` también desempatado por `id`),
+  empate en `mismatch_count` también desempatado por `id`; y sus reglas con datos
+  controlados, `alertas-reglas-test.php`: tres usuarios nuevos con huecos de 0.4 h,
+  2.25 h exactas y 3.9 h dentro de una transacción que se revierte, para fijar la
+  ventana de 0.5 h a 4 h y el borde estricto, que el KPI cuente lo mismo que las
+  alertas con cada tipo habilitado y cada umbral, y que la regla de IP en PHP y la
+  de SQL coincidan),
   `ClienteEstadisticas` (servicio caído devuelve `null` sin lanzar excepción y
   el reintento no tarda segundos; `statsVarios()` pide varios tipos en paralelo,
   y con el servicio colgado el lote entero paga un solo timeout, no uno por tipo) y
