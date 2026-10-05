@@ -21,13 +21,13 @@ use App\View;
 
 final class ClienteController
 {
-    /** El genero tiene que ser uno de los que ofrece el formulario: la base no lo restringe. */
+    /** El genero tiene que ser uno de los que ofrece el formulario: lo valida la app y lo restringe la base (migracion 004). */
     public static function generoEsValido(string $genero): bool
     {
         return in_array($genero, ClienteRepository::GENEROS, true);
     }
 
-    /** El segmento tiene que ser uno de los que ofrece el formulario: la base no lo restringe. */
+    /** El segmento tiene que ser uno de los que ofrece el formulario: lo valida la app y lo restringe la base (migracion 004). */
     public static function segmentoEsValido(string $segmento): bool
     {
         return in_array($segmento, ClienteRepository::SEGMENTOS, true);

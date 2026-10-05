@@ -14,7 +14,7 @@ final class ClienteRepository
     /** Cuantos clientes caben en los desplegables de los formularios de alta (ver paraSelector()). */
     public const LIMITE_SELECTOR = 500;
 
-    /** Valores que ofrece el formulario de alta. La base no los restringe: los valida ClienteController. */
+    /** Valores que ofrece el formulario de alta. Los valida ClienteController y los restringe la migracion 004 (ValoresCerradosTest compara las listas). */
     public const GENEROS = ['Femenino', 'Masculino', 'No especifica'];
     public const SEGMENTOS = ['general', 'starter', 'pro', 'enterprise'];
 

@@ -203,7 +203,7 @@ final class PagosController
         return self::montoNoSuperaElSaldo($montoNuevo, ['saldo' => (float) $boleta['saldo'] + $montoViejo]);
     }
 
-    /** El metodo tiene que ser uno de los que ofrece el formulario: la base no lo restringe. */
+    /** El metodo tiene que ser uno de los que ofrece el formulario: lo valida la app y lo restringe la base (migracion 004). */
     public static function metodoEsValido(string $metodo): bool
     {
         return array_key_exists($metodo, Etiquetas::metodosPago());

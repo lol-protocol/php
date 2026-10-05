@@ -164,7 +164,7 @@ marca la migración inicial como aplicada sin ejecutarla (esas tablas ya existen
 aplica las demás.
 
 Un cambio de esquema nuevo va en un archivo nuevo con el número siguiente
-(`004_descripcion.sql`). Una migración que ya corrió en alguna base no se edita.
+(`005_descripcion.sql`). Una migración que ya corrió en alguna base no se edita.
 
 ### Otros puntos
 
@@ -313,6 +313,11 @@ phpstan.neon            configuracion del analisis estatico
   vencimiento, `anulada`) — no son facturas fiscales.
 - `pagos`: cobros reales del usuario, opcionalmente ligados a una boleta
   (`boleta_id` puede ser `NULL` para anticipos/pagos sueltos) y con `anulada`.
+  `pagos.metodo`, `clientes.genero` y `clientes.segmento` solo admiten las listas
+  que ofrecen los formularios: la app las valida en el servidor y la base las
+  restringe con `CHECK` (migración 004, `NOT VALID`: rigen para filas nuevas o
+  modificadas y no revisan las que ya existían; el comentario de la migración
+  explica cómo encontrarlas y validarlas).
 - `notas_credito`: devoluciones. Al anular una boleta que ya tenía pagos, los
   pagos **no** se tocan (la plata entró de verdad y tiene que seguir en el
   historial de caja): se emite una nota de crédito por lo cobrado, que queda
