@@ -187,6 +187,21 @@ form.filtros button {
 
 form.filtros button:hover { opacity: 0.9; }
 
+/* ---------- Avisos: confirmaciones y filtros corregidos (views/_avisos.php) ---------- */
+.aviso {
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+}
+.aviso-ok { background: rgba(12, 163, 12, 0.10); border-color: rgba(12, 163, 12, 0.30); color: var(--good); }
+.aviso-atencion { background: rgba(250, 178, 25, 0.14); border-color: rgba(250, 178, 25, 0.40); color: #9a6a00; }
+
+@media (prefers-color-scheme: dark) {
+    .aviso-atencion { color: var(--warning); }
+}
+
 /* ---------- Stat tiles ---------- */
 .stat-tile { display: flex; flex-direction: column; gap: 6px; }
 .stat-tile .label { color: var(--text-secondary); font-size: 13px; }

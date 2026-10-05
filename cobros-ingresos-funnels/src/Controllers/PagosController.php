@@ -23,18 +23,15 @@ final class PagosController
 {
     public function index(): void
     {
-        ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
+        $filtros = Filtros::rangoActivo();
+        ['desde' => $desde, 'hasta' => $hasta] = $filtros;
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
 
         $ingresosRepo = new IngresosRepository();
         $listado = (new PagoRepository())->listado($desde, $hasta, $cliente ?: null, $pagina);
 
-        View::render('pagos/index', [
-            'meses' => $meses,
-            'desde' => $desde,
-            'hasta' => $hasta,
-            'personalizado' => $personalizado,
+        View::render('pagos/index', $filtros + [
             'cliente' => $cliente,
             'pagina' => $listado['pagina'],
             'cobrosPorMes' => $ingresosRepo->cobrosPorMes($desde, $hasta),

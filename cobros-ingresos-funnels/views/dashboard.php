@@ -38,15 +38,10 @@ $coloresSegmento = [
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="dashboard">
-    <label for="meses">Periodo</label>
-    <select name="meses" id="meses">
-        <option value="3" <?= $meses === 3 ? 'selected' : '' ?>>Ultimos 3 meses</option>
-        <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
-        <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
-    </select>
     <?php include __DIR__ . '/_filtro_fechas.php'; ?>
     <button type="submit">Aplicar</button>
 </form>
+<?php include __DIR__ . '/_avisos.php'; ?>
 <p class="subtitulo">Si completás "Desde" y "Hasta" se usa ese rango exacto en vez del período de arriba.</p>
 
 <div class="grid grid-kpis">

@@ -257,14 +257,23 @@ src/
                         como expresion SQL, con age(); lo comparten
                         segmentacion y funnel. Una fecha de nacimiento
                         posterior a hoy sale como "Fecha inválida"
-  Router.php, View.php, Filtros.php, helpers.php
+  Filtros.php            el periodo y el rango Desde/Hasta de las pantallas con
+                        filtro de fechas: una sola lista de periodos, y lo que
+                        se pidio por URL y no se pudo respetar (un periodo que
+                        no existe, un rango al reves) se avisa, testeado
+  Avisos.php             los mensajes cortos de arriba de una pantalla
+                        (views/_avisos.php), testeado
+  Router.php, View.php, helpers.php
 database/
   migraciones/          el esquema, en cambios numerados (001 = esquema inicial)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   seed.php               SOLO desarrollo: rearma la base y carga datos de ejemplo
   paises_monedas.php      catalogo de ~200 paises y sus monedas (ISO 4217)
 views/                  plantillas PHP (una carpeta por sección), con partials
-                        compartidos: _filtro_fechas.php, _paginacion.php,
+                        compartidos: _filtro_fechas.php (el período y el rango
+                        Desde/Hasta de las cinco pantallas con filtro),
+                        _avisos.php (los avisos de arriba de la pantalla),
+                        _paginacion.php,
                         _error.php (el aviso de error de los formularios),
                         _accion_confirmar.php (el pie de las pantallas de
                         confirmar anulación), _grafico_aging.php y

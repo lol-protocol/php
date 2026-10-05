@@ -4,12 +4,23 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit;
 
+use App\Avisos;
 use App\Filtros;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 final class FiltrosTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $_GET = [];
+    }
+
+    protected function tearDown(): void
+    {
+        $_GET = [];
+    }
+
     public function testMesesSoloAceptaValoresPermitidos(): void
     {
         $_GET['meses'] = '12';
@@ -188,5 +199,87 @@ final class FiltrosTest extends TestCase
                 - (((int) substr($desde, 0, 4) * 12) + (int) substr($desde, 5, 2));
             self::assertSame($meses, $mesesDeDiferencia, "rango({$meses}) tiene que abarcar {$meses} meses exactos");
         }
+    }
+
+    /** Una sola lista de periodos: la que valida meses() es la misma que dibuja el selector de las cinco pantallas. */
+    public function testLasOpcionesDeMesesSonLaUnicaFuenteDeLosValoresValidos(): void
+    {
+        self::assertArrayHasKey(Filtros::MESES_POR_DEFECTO, Filtros::OPCIONES_MESES, 'el default tiene que ser una opcion que exista');
+
+        foreach (range(0, 24) as $meses) {
+            $_GET['meses'] = (string) $meses;
+            $esperado = array_key_exists($meses, Filtros::OPCIONES_MESES) ? $meses : Filtros::MESES_POR_DEFECTO;
+
+            self::assertSame($esperado, Filtros::meses(), "meses={$meses}");
+        }
+    }
+
+    /** Antes meses=7 volvia a 6 sin decir nada: quien lo habia pedido veia otro periodo creyendo ver el suyo. */
+    public function testUnPeriodoQueNoExisteSeAvisaYCaeAlDefault(): void
+    {
+        foreach (['7', '999', 'abc', '6abc', '-3', '3.5'] as $pedido) {
+            $_GET['meses'] = $pedido;
+
+            self::assertSame(Filtros::MESES_POR_DEFECTO, Filtros::meses(), "meses={$pedido}");
+            self::assertSame(
+                ['El período pedido no es válido; se muestran los últimos 6 meses.'],
+                array_column(Filtros::avisos(), 'texto'),
+                "meses={$pedido}"
+            );
+        }
+    }
+
+    public function testUnPeriodoValidoOAusenteNoAvisaNada(): void
+    {
+        foreach ([null, '', ' ', '3', '6', '12', '06'] as $pedido) {
+            unset($_GET['meses']);
+            if ($pedido !== null) {
+                $_GET['meses'] = $pedido;
+            }
+
+            self::assertSame([], Filtros::avisos(), var_export($pedido, true));
+        }
+    }
+
+    /**
+     * Un rango que no se puede usar (incompleto, con una fecha imposible o al
+     * reves) se explica, y lo tipeado vuelve al formulario para corregirlo:
+     * antes se descartaba en silencio y los campos quedaban vacios.
+     */
+    public function testUnRangoQueSeIgnoraSeExplicaYConservaLoTipeado(): void
+    {
+        $casos = [
+            'solo desde' => [['desde' => '2026-01-01'], 'Para usar un rango exacto completá «Desde» y «Hasta»'],
+            'solo hasta' => [['hasta' => '2026-01-01'], 'Para usar un rango exacto completá «Desde» y «Hasta»'],
+            'texto en vez de fecha' => [['desde' => 'ayer', 'hasta' => '2026-01-01'], '«Desde» y «Hasta» tienen que ser fechas válidas'],
+            'fecha imposible' => [['desde' => '2026-02-30', 'hasta' => '2026-03-01'], '«Desde» y «Hasta» tienen que ser fechas válidas'],
+            'al reves' => [['desde' => '2026-05-01', 'hasta' => '2026-01-01'], '«Desde» no puede ser posterior a «Hasta»'],
+        ];
+
+        foreach ($casos as $nombre => [$get, $motivo]) {
+            $_GET = $get;
+            $activo = Filtros::rangoActivo();
+
+            self::assertFalse($activo['personalizado'], $nombre);
+            self::assertSame([$motivo . '; mientras tanto se muestra el período elegido.'], array_column($activo['avisos'], 'texto'), $nombre);
+            self::assertSame($get['desde'] ?? '', $activo['desdeIngresado'], "{$nombre}: no borra lo tipeado en Desde");
+            self::assertSame($get['hasta'] ?? '', $activo['hastaIngresado'], "{$nombre}: no borra lo tipeado en Hasta");
+        }
+    }
+
+    public function testUnRangoValidoOVacioNoAvisaNada(): void
+    {
+        foreach ([[], ['desde' => '', 'hasta' => ''], ['desde' => '2026-01-01', 'hasta' => '2026-01-01'], ['desde' => '2026-01-01', 'hasta' => '2026-02-20']] as $get) {
+            $_GET = $get;
+
+            self::assertSame([], Filtros::avisos(), (string) json_encode($get));
+        }
+    }
+
+    public function testLosAvisosDeFiltroSonDeTipoAtencion(): void
+    {
+        $_GET['meses'] = '7';
+
+        self::assertSame(Avisos::ATENCION, Filtros::avisos()[0]['tipo']);
     }
 }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Avisos;
 use App\Database;
 use App\EnvioUnico;
+use App\Etiquetas;
 use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
@@ -48,8 +50,14 @@ final class CobrosController
 
     public function index(): void
     {
-        ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
-        $estado = $_GET['estado'] ?? '';
+        $filtros = Filtros::rangoActivo();
+        ['desde' => $desde, 'hasta' => $hasta] = $filtros;
+        $estado = (string) ($_GET['estado'] ?? '');
+        if ($estado !== '' && !array_key_exists($estado, Etiquetas::estadosBoleta())) {
+            // Antes un estado inventado daba la tabla vacia con el selector en "Todos".
+            $filtros['avisos'][] = Avisos::atencion('El estado pedido no existe; se muestran las boletas de todos los estados.');
+            $estado = '';
+        }
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
 
@@ -57,11 +65,7 @@ final class CobrosController
         $aging = $ingresosRepo->carteraAging();
         $listado = (new BoletaRepository())->listado($desde, $hasta, $estado ?: null, $cliente ?: null, $pagina);
 
-        View::render('cobros/index', [
-            'meses' => $meses,
-            'desde' => $desde,
-            'hasta' => $hasta,
-            'personalizado' => $personalizado,
+        View::render('cobros/index', $filtros + [
             'estado' => $estado,
             'cliente' => $cliente,
             'pagina' => $listado['pagina'],

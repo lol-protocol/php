@@ -30,18 +30,13 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="pagos">
-    <label for="meses">Periodo</label>
-    <select name="meses" id="meses">
-        <option value="3" <?= $meses === 3 ? 'selected' : '' ?>>Ultimos 3 meses</option>
-        <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
-        <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
-    </select>
     <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <label for="cliente">Cliente</label>
     <input type="search" name="cliente" id="cliente" placeholder="Buscar por nombre..." value="<?= htmlspecialchars($cliente) ?>">
     <button type="submit">Aplicar</button>
     <a href="?page=pago-nuevo" style="margin-left:auto;">+ Nuevo pago</a>
 </form>
+<?php include __DIR__ . '/../_avisos.php'; ?>
 
 <div class="grid grid-kpis">
     <div class="panel stat-tile">

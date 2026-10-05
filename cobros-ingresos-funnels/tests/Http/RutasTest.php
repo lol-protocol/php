@@ -81,4 +81,53 @@ final class RutasTest extends HttpTestCase
             self::assertStringStartsWith($titulo . ' · ', html_entity_decode($coincidencia[1]), "page={$pagina}");
         }
     }
+
+    /**
+     * Regresion: cada filtro invalido se resolvia a su manera y todos en
+     * silencio (meses=7 volvia a 6, un estado inventado daba la tabla vacia con
+     * el selector en "Todos", un rango al reves se ignoraba y borraba lo
+     * tipeado). Ahora se usa el valor por defecto y se avisa en pantalla.
+     */
+    public function testUnPeriodoQueNoExisteSeAvisaEnLasCincoPantallasConFiltro(): void
+    {
+        foreach (['dashboard', 'cobros', 'pagos', 'funnel', 'cohortes'] as $pagina) {
+            $cuerpo = $this->get("page={$pagina}&meses=7")['cuerpo'];
+
+            self::assertStringContainsString('El período pedido no es válido; se muestran los últimos 6 meses.', $cuerpo, $pagina);
+            self::assertMatchesRegularExpression('/<option value="6"\s+selected/', $cuerpo, "{$pagina}: queda el periodo por defecto");
+        }
+    }
+
+    public function testUnRangoAlRevesOIncompletoSeAvisaYConservaLoTipeado(): void
+    {
+        foreach (['dashboard', 'cobros', 'pagos', 'funnel', 'cohortes'] as $pagina) {
+            $alReves = $this->get("page={$pagina}&desde=2026-05-01&hasta=2026-01-01")['cuerpo'];
+            self::assertStringContainsString('«Desde» no puede ser posterior a «Hasta»', $alReves, $pagina);
+            self::assertMatchesRegularExpression('/name="desde"[^>]*value="2026-05-01"/', $alReves, "{$pagina}: conserva Desde");
+            self::assertMatchesRegularExpression('/name="hasta"[^>]*value="2026-01-01"/', $alReves, "{$pagina}: conserva Hasta");
+
+            $incompleto = $this->get("page={$pagina}&desde=2026-01-01")['cuerpo'];
+            self::assertStringContainsString('Para usar un rango exacto completá «Desde» y «Hasta»', $incompleto, $pagina);
+            self::assertMatchesRegularExpression('/name="desde"[^>]*value="2026-01-01"/', $incompleto, "{$pagina}: conserva Desde");
+        }
+    }
+
+    public function testUnEstadoQueNoExisteSeAvisaYMuestraTodasLasBoletas(): void
+    {
+        $rango = 'desde=2000-01-01&hasta=2100-12-31';
+        $sinFiltro = $this->get("page=cobros&{$rango}")['cuerpo'];
+        $inventado = $this->get("page=cobros&{$rango}&estado=inventado")['cuerpo'];
+
+        self::assertStringContainsString('El estado pedido no existe; se muestran las boletas de todos los estados.', $inventado);
+        self::assertStringNotContainsString('No hay boletas para este filtro.', $inventado, 'antes daba la tabla vacia');
+        self::assertSame(substr_count($sinFiltro, '<tr>'), substr_count($inventado, '<tr>'), 'las mismas filas que sin filtrar');
+        self::assertStringNotContainsString('El estado pedido no existe', $sinFiltro);
+    }
+
+    public function testUnFiltroValidoNoMuestraNingunAviso(): void
+    {
+        foreach (['page=dashboard&meses=12', 'page=cobros&estado=pagada&desde=2026-01-01&hasta=2026-02-01', 'page=pagos&meses=3'] as $query) {
+            self::assertStringNotContainsString('class="aviso', $this->get($query)['cuerpo'], $query);
+        }
+    }
 }

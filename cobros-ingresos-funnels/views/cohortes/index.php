@@ -15,15 +15,10 @@ use App\Config;
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="cohortes">
-    <label for="meses">Periodo</label>
-    <select name="meses" id="meses">
-        <option value="3" <?= $meses === 3 ? 'selected' : '' ?>>Ultimos 3 meses</option>
-        <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
-        <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
-    </select>
     <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <button type="submit">Aplicar</button>
 </form>
+<?php include __DIR__ . '/../_avisos.php'; ?>
 
 <div class="panel">
     <h2>Conversion acumulada por cohorte</h2>
