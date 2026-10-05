@@ -495,9 +495,10 @@ php pruebas/ejecutar-integracion.php
   ventana de 0.5 h a 4 h y el borde estricto, que el KPI cuente lo mismo que las
   alertas con cada tipo habilitado y cada umbral, y que la regla de IP en PHP y la
   de SQL coincidan),
-  `ClienteEstadisticas` (servicio caído devuelve `null` sin lanzar excepción y
-  el reintento no tarda segundos; `statsVarios()` pide varios tipos en paralelo,
-  y con el servicio colgado el lote entero paga un solo timeout, no uno por tipo) y
+  `ClienteEstadisticas` (`statsVarios()`, su único método de pedido: servicio caído
+  devuelve `null` sin lanzar excepción y sin tardar segundos; pide varios tipos en
+  paralelo, y con el servicio colgado el lote entero paga un solo timeout, no uno por
+  tipo, y los pedidos siguientes de la misma instancia ni lo intentan) y
   `AlmacenAdministradores`/`auth_verificar_credenciales` (un admin que solo existe
   en la tabla, no en `credenciales.php`, autentica igual -- prueba que el login lee
   de la BD, no del archivo). Además, `esquema-datos-ejemplo.sql` se carga (junto
