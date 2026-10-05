@@ -10,7 +10,7 @@ $entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente',
 ?>
 
 <h1>Auditoría</h1>
-<p class="subtitulo">Quién hizo qué: <?= $totalRegistros ?> altas, ediciones y anulaciones en total.</p>
+<p class="subtitulo">Historial de cambios: <?= $totalRegistros ?> altas, ediciones y anulaciones en total.</p>
 
 <div class="panel">
     <div class="table-wrap">

@@ -26,9 +26,10 @@ Pequeño sistema en PHP (sin framework) para analizar:
 - **Boletas y pagos**: alta, edición y anulación. Anular es un soft-delete (queda
   marcada "Anulada" y se excluye de los agregados) para no perder el rastro. Un
   doble clic en "Guardar" no crea un segundo pago ni una segunda boleta.
-- **Auditoría**: quién creó, editó o anuló cada boleta, pago o cliente, con fecha
-  y el detalle de qué cambió. Sin login (ver más abajo), toda entrada nueva queda
-  atribuida a "Sistema".
+- **Auditoría**: historial de cada alta, edición y anulación de boletas, pagos y
+  clientes, con fecha y el detalle de qué cambió. Sin login (ver más abajo), el
+  usuario de toda entrada nueva es "Sistema"; las de antes de sacarlo conservan
+  el suyo.
 - **Paginación** en los listados grandes (boletas, pagos, clientes).
 
 > El panel no tiene login: es de acceso libre, sin cuentas de usuario. Había una
@@ -186,8 +187,11 @@ Hay tres suites:
 
 - `tests/Unit`: sin base de datos.
 - `tests/Integration`: contra la base de las variables de arriba (corré el seed
-  primero). Cada test corre dentro de una transacción que se deshace al terminar,
-  así no deja datos ni ve los de otro test.
+  primero). La mayoría corre dentro de una transacción que se deshace al terminar,
+  así no deja datos ni ve los de otro test. Tres no pueden: `AnulableTest` necesita
+  una segunda conexión, que no vería lo que no se commiteó; `ZonaHorariaTest` abre
+  conexiones propias y cambia la zona horaria del proceso; y `DatabaseTransaccionTest`
+  prueba el commit y el rollback de verdad. Los tres dejan todo como estaba al terminar.
 - `tests/Http`: levanta la app con `php -S` y la recorre por HTTP como un navegador
   (CSRF, formularios, redirecciones). Cubre lo que los otros no alcanzan: el
   cableado de `public/index.php` y los controllers. Lo que crea se borra al terminar.
@@ -261,14 +265,17 @@ database/
   paises_monedas.php      catalogo de ~200 paises y sus monedas (ISO 4217)
 views/                  plantillas PHP (una carpeta por sección), con partials
                         compartidos: _filtro_fechas.php, _paginacion.php,
-                        _grafico_aging.php y _grafico_serie_mensual.php (los
-                        dos graficos de barras que se repetian en dashboard,
-                        cobros, pagos y funnel)
+                        _error.php (el aviso de error de los formularios),
+                        _accion_confirmar.php (el pie de las pantallas de
+                        confirmar anulación), _grafico_aging.php y
+                        _grafico_serie_mensual.php (los dos graficos de barras
+                        que se repetian en dashboard, cobros, pagos y funnel);
+                        el funnel tiene además el suyo, funnel/_tabla_dimension.php
 tests/
   Unit/                 sin base de datos (calculo de estado, filtros, helpers,
                         paginación, CSRF, router, headers de seguridad, deteccion
                         de HTTPS)
-  Integration/           contra la base real, cada test en una transaccion que
+  Integration/           contra la base real, casi todos en una transaccion que
                         se deshace (un archivo por repositorio, migraciones,
                         auditoría, zona horaria, y que los datos de ejemplo
                         del seed cumplan las reglas de la app)
@@ -305,9 +312,10 @@ phpstan.neon            configuracion del analisis estatico
 - `boletas_con_saldo` (vista): cada boleta con `pagado` (la suma de sus pagos no
   anulados), `saldo` y `primer_pago`. Es la única definición de "cuánto se pagó":
   la usan todas las consultas en vez de repetir la subconsulta.
-- `auditoria`: un registro por cada alta/edición/anulación (quién, cuándo, sobre
-  qué entidad y el detalle de qué cambió). Es de solo inserción — no se borra, y
-  cada entrada se escribe en la misma transacción que el cambio que describe.
+- `auditoria`: un registro por cada alta/edición/anulación (cuándo, sobre qué
+  entidad, el detalle de qué cambió y el usuario, que sin login es "Sistema"). Es
+  de solo inserción — no se borra, y cada entrada se escribe en la misma
+  transacción que el cambio que describe.
 - `envios_formulario`: los tokens de un solo uso de los formularios de alta. El
   primer envío registra su token junto con el cambio; un reenvío del mismo
   formulario lo encuentra y recibe la misma redirección, sin crear nada. Se
