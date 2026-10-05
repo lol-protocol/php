@@ -25,4 +25,13 @@ final class PaisRepository
              ORDER BY p.nombre'
         )->fetchAll();
     }
+
+    /** true si $codigo es el codigo de un pais del catalogo (el formulario solo ofrece esos). */
+    public function existe(string $codigo): bool
+    {
+        $stmt = $this->db->prepare('SELECT EXISTS (SELECT 1 FROM paises WHERE codigo = :codigo)');
+        $stmt->execute([':codigo' => $codigo]);
+
+        return (bool) $stmt->fetchColumn();
+    }
 }

@@ -25,6 +25,10 @@ Pequeño sistema en PHP (sin framework) para analizar:
   pagos y su recorrido por el funnel si entró por ahí). Desde la ficha se carga una
   boleta o un pago con el cliente ya elegido. Los desplegables de "Nueva boleta" y
   "Nuevo pago" muestran los primeros 500 clientes por nombre y avisan si hay más.
+  El alta valida país, email, fecha de nacimiento y el largo de cada texto; el
+  idioma es libre, pero se guarda normalizado ("INGLES" → "Ingles") y el
+  formulario sugiere los que ya tienen clientes, para que el dashboard no los
+  parta en filas distintas.
 - **Boletas y pagos**: alta, edición y anulación. Anular es un soft-delete (queda
   marcada "Anulada" y se excluye de los agregados) para no perder el rastro. Un
   doble clic en "Guardar" no crea un segundo pago ni una segunda boleta.
@@ -246,7 +250,9 @@ src/
                         404 si no existe, 409 si hay conflicto (ej. anulado),
                         testeado
   Validacion.php         chequeos repetidos entre formularios: campos
-                        obligatorios vacios y mensaje de email duplicado
+                        obligatorios vacios, largos maximos de los textos,
+                        formato de email y mensaje de email duplicado,
+                        testeado
   Repositories/Anulable.php  trait con el soft-delete que comparten
                         BoletaRepository y PagoRepository: un unico
                         UPDATE ... SET anulada = TRUE WHERE id = :id AND NOT

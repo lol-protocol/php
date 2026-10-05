@@ -85,4 +85,23 @@ final class ClienteRepositoryTest extends IntegracionTestCase
             array_column($repo->paraSelector($primero), 'id')
         );
     }
+
+    /** El formulario sugiere los idiomas que ya tienen clientes, del mas usado al menos. */
+    public function testLosIdiomasEnUsoVienenDelMasUsadoAlMenosUsado(): void
+    {
+        $repo = new ClienteRepository();
+        $idiomas = $repo->idiomasEnUso();
+
+        self::assertSame(array_values(array_unique($idiomas)), $idiomas, 'sin repetidos');
+
+        $filas = Database::connection()->query('SELECT idioma, COUNT(*) AS n FROM clientes GROUP BY idioma ORDER BY n DESC, idioma')->fetchAll();
+        self::assertSame(array_column($filas, 'idioma'), $idiomas);
+
+        Database::connection()->exec(
+            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
+             SELECT 'Klingon ' || g, 'klingon-' || g || '@example.com', 'general', CURRENT_DATE, 'AR', 'Rosario', 'Klingon', 'No especifica', DATE '1990-01-01'
+             FROM generate_series(1, 3) g"
+        );
+        self::assertContains('Klingon', $repo->idiomasEnUso(), 'un idioma nuevo aparece apenas tiene un cliente');
+    }
 }

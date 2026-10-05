@@ -110,6 +110,8 @@ final class CobrosController
                 $error = 'Elegí un cliente valido.';
             } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
                 $error = 'Completá todos los campos con un monto válido.';
+            } elseif (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
+                $error = $largo;
             } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
                 $error = 'La fecha de emisión o de vencimiento no es válida.';
             } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
@@ -183,6 +185,8 @@ final class CobrosController
                     return 'La boleta fue anulada mientras la editabas.';
                 } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
                     return 'Completá todos los campos con un monto válido.';
+                } elseif (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
+                    return $largo;
                 } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
                     return 'La fecha de emisión o de vencimiento no es válida.';
                 } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {

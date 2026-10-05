@@ -43,6 +43,19 @@ final class ClienteController
         return $fechaNacimiento <= $hoy;
     }
 
+    /**
+     * El idioma es un conjunto abierto (cualquier texto vale), pero el dashboard
+     * agrupa por el texto exacto: "ingles", "INGLES" y " Ingles " eran tres
+     * filas distintas. Se guarda sin espacios sobrantes y con cada palabra en
+     * mayuscula inicial ("Ingles"), como lo carga el seed. Vacio sigue vacio.
+     */
+    public static function normalizarIdioma(string $idioma): string
+    {
+        $limpio = trim((string) preg_replace('/\s+/u', ' ', $idioma));
+
+        return mb_convert_case($limpio, MB_CASE_TITLE, 'UTF-8');
+    }
+
     public function index(): void
     {
         $q = trim((string) ($_GET['q'] ?? ''));
@@ -98,22 +111,35 @@ final class ClienteController
             $email = trim((string) ($_POST['email'] ?? ''));
             $paisCodigo = (string) ($_POST['pais_codigo'] ?? '');
             $ciudad = trim((string) ($_POST['ciudad'] ?? ''));
-            $idioma = trim((string) ($_POST['idioma'] ?? ''));
+            $idioma = self::normalizarIdioma((string) ($_POST['idioma'] ?? ''));
             $genero = trim((string) ($_POST['genero'] ?? ''));
             $fechaNacimiento = (string) ($_POST['fecha_nacimiento'] ?? '');
             $segmento = trim((string) ($_POST['segmento'] ?? ''));
             // Vacio = no eligio: se usa el valor por defecto. Cualquier otro texto tiene que estar en la lista.
             $genero = $genero === '' ? 'No especifica' : $genero;
             $segmento = $segmento === '' ? 'general' : $segmento;
+            $idioma = $idioma === '' ? 'Espanol' : $idioma;
 
             if ($token === null) {
                 $error = EnvioUnico::MENSAJE_SIN_TOKEN;
             } elseif (Validacion::faltanCampos([$nombre, $email, $paisCodigo, $ciudad, $fechaNacimiento])) {
                 $error = 'Completá todos los campos obligatorios.';
+            } elseif (!Validacion::emailEsValido($email)) {
+                $error = 'El email no es válido.';
+            } elseif (($largo = Validacion::primerTextoLargo([
+                ['El nombre', $nombre, Validacion::MAX_NOMBRE],
+                ['El email', $email, Validacion::MAX_EMAIL],
+                ['La ciudad', $ciudad, Validacion::MAX_CIUDAD],
+                ['El idioma', $idioma, Validacion::MAX_IDIOMA],
+            ])) !== null) {
+                $error = $largo;
             } elseif (!Filtros::esFechaValida($fechaNacimiento)) {
                 $error = 'La fecha de nacimiento no es válida.';
             } elseif (!self::nacimientoNoEsFuturo($fechaNacimiento, date('Y-m-d'))) {
                 $error = 'La fecha de nacimiento no puede ser posterior a hoy.';
+            } elseif (!(new PaisRepository())->existe($paisCodigo)) {
+                // Antes un pais que no existe llegaba hasta la base y volvia como "No se pudo crear el cliente."
+                $error = 'Elegí un país válido.';
             } elseif (!self::generoEsValido($genero)) {
                 $error = 'Elegí un género válido.';
             } elseif (!self::segmentoEsValido($segmento)) {
@@ -128,7 +154,7 @@ final class ClienteController
                             'fecha_alta' => date('Y-m-d'),
                             'pais_codigo' => $paisCodigo,
                             'ciudad' => $ciudad,
-                            'idioma' => $idioma ?: 'Espanol',
+                            'idioma' => $idioma,
                             'genero' => $genero,
                             'fecha_nacimiento' => $fechaNacimiento,
                         ]);
@@ -146,6 +172,7 @@ final class ClienteController
 
         View::render('clientes/nuevo', [
             'paises' => (new PaisRepository())->listado(),
+            'idiomas' => (new ClienteRepository())->idiomasEnUso(),
             'generos' => ClienteRepository::GENEROS,
             'segmentos' => ClienteRepository::SEGMENTOS,
             'error' => $error,

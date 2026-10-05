@@ -101,6 +101,20 @@ final class ClienteRepository
         return $stmt->fetchAll();
     }
 
+    /**
+     * Los idiomas que ya tienen clientes, del mas usado al menos: el formulario
+     * de alta los sugiere. El idioma es un conjunto abierto (cualquier texto
+     * vale), pero el dashboard agrupa por el texto exacto, y sin sugerencias
+     * "Ingles", "ingles" e "Inglés" terminaban como tres filas.
+     * @return list<string>
+     */
+    public function idiomasEnUso(): array
+    {
+        return array_values(array_map('strval', $this->db->query(
+            'SELECT idioma FROM clientes GROUP BY idioma ORDER BY COUNT(*) DESC, idioma'
+        )->fetchAll(PDO::FETCH_COLUMN)));
+    }
+
     /** true si hay mas clientes de los que entran en el desplegable de los formularios de alta. */
     public function superaElLimiteDelSelector(): bool
     {

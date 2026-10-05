@@ -150,4 +150,20 @@ final class RutasTest extends HttpTestCase
         $this->assertStatus(200, $pago);
         self::assertStringContainsString('cambiar cliente', $pago['cuerpo'], 'el pago nuevo salta directo al formulario del cliente');
     }
+
+    /**
+     * Los topes de largo y las sugerencias de idioma tienen que llegar al
+     * navegador: el servidor valida, pero el campo tiene que avisar antes.
+     */
+    public function testLosFormulariosLimitanLosTextosYElDeClienteSugiereLosIdiomasEnUso(): void
+    {
+        $cliente = $this->get('page=cliente-nuevo')['cuerpo'];
+        foreach (['nombre' => 120, 'email' => 254, 'ciudad' => 100, 'idioma' => 40] as $campo => $maximo) {
+            self::assertMatchesRegularExpression('/name="' . $campo . '"[^>]*maxlength="' . $maximo . '"/', $cliente, $campo);
+        }
+        self::assertMatchesRegularExpression('/name="idioma"[^>]*list="idiomas"/', $cliente);
+        self::assertMatchesRegularExpression('~<datalist id="idiomas">.*<option value="Espanol">.*</datalist>~s', $cliente, 'sugiere los idiomas que ya tienen clientes (el seed deja Espanol)');
+
+        self::assertMatchesRegularExpression('/name="concepto"[^>]*maxlength="200"/', $this->get('page=boleta-nueva')['cuerpo']);
+    }
 }

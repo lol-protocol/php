@@ -60,4 +60,15 @@ final class ClienteControllerTest extends TestCase
         self::assertContains('general', ClienteRepository::SEGMENTOS);
         self::assertContains('No especifica', ClienteRepository::GENEROS);
     }
+
+    /** "ingles", "INGLES" y " Ingles " eran tres filas distintas en el dashboard. */
+    public function testElIdiomaSeNormalizaAMayusculaInicialSinEspaciosSobrantes(): void
+    {
+        self::assertSame('Ingles', ClienteController::normalizarIdioma('ingles'));
+        self::assertSame('Ingles', ClienteController::normalizarIdioma('INGLES'));
+        self::assertSame('Ingles', ClienteController::normalizarIdioma("   Ingles \t"));
+        self::assertSame('Portugues De Brasil', ClienteController::normalizarIdioma("portugues   de\n brasil"));
+        self::assertSame('Inglés', ClienteController::normalizarIdioma('inglés'), 'las tildes se respetan');
+        self::assertSame('', ClienteController::normalizarIdioma("  \t "), 'vacio sigue vacio (el alta usa el valor por defecto)');
+    }
 }

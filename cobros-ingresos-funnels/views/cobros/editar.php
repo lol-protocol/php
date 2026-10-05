@@ -1,6 +1,7 @@
 <?php
 
 use App\Csrf;
+use App\Validacion;
 
 /** @var array $boleta */
 /** @var string|null $error */
@@ -16,7 +17,7 @@ use App\Csrf;
         <?php include __DIR__ . '/../_error.php'; ?>
 
         <label for="concepto">Concepto</label>
-        <input type="text" name="concepto" id="concepto" required value="<?= htmlspecialchars($boleta['concepto']) ?>">
+        <input type="text" name="concepto" id="concepto" required maxlength="<?= Validacion::MAX_CONCEPTO ?>" value="<?= htmlspecialchars($boleta['concepto']) ?>">
 
         <label for="monto">Monto (<?= htmlspecialchars($boleta['moneda_codigo']) ?>)</label>
         <input type="number" name="monto" id="monto" required min="0.01" step="0.01" value="<?= htmlspecialchars((string) $boleta['monto']) ?>">

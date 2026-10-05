@@ -2,8 +2,10 @@
 
 use App\Csrf;
 use App\EnvioUnico;
+use App\Validacion;
 
 /** @var array $paises */
+/** @var list<string> $idiomas */
 /** @var array $generos */
 /** @var array $segmentos */
 /** @var string|null $error */
@@ -19,10 +21,10 @@ use App\EnvioUnico;
         <?php include __DIR__ . '/../_error.php'; ?>
 
         <label for="nombre">Nombre</label>
-        <input type="text" name="nombre" id="nombre" required value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>">
+        <input type="text" name="nombre" id="nombre" required maxlength="<?= Validacion::MAX_NOMBRE ?>" value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>">
 
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+        <input type="email" name="email" id="email" required maxlength="<?= Validacion::MAX_EMAIL ?>" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
 
         <label for="pais_codigo">Pais</label>
         <select name="pais_codigo" id="pais_codigo" required>
@@ -35,10 +37,15 @@ use App\EnvioUnico;
         </select>
 
         <label for="ciudad">Ciudad</label>
-        <input type="text" name="ciudad" id="ciudad" required value="<?= htmlspecialchars($_POST['ciudad'] ?? '') ?>">
+        <input type="text" name="ciudad" id="ciudad" required maxlength="<?= Validacion::MAX_CIUDAD ?>" value="<?= htmlspecialchars($_POST['ciudad'] ?? '') ?>">
 
         <label for="idioma">Idioma</label>
-        <input type="text" name="idioma" id="idioma" value="<?= htmlspecialchars($_POST['idioma'] ?? 'Espanol') ?>">
+        <input type="text" name="idioma" id="idioma" list="idiomas" maxlength="<?= Validacion::MAX_IDIOMA ?>" value="<?= htmlspecialchars($_POST['idioma'] ?? 'Espanol') ?>">
+        <datalist id="idiomas">
+            <?php foreach ($idiomas as $idioma): ?>
+                <option value="<?= htmlspecialchars($idioma) ?>">
+            <?php endforeach; ?>
+        </datalist>
 
         <label for="genero">Genero</label>
         <select name="genero" id="genero">
