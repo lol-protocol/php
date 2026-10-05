@@ -2,6 +2,28 @@
 
 ## [Sin publicar]
 
+### Añadido
+
+- **`ChatLineReviewer`**: revisa una línea de chat y dice si censurarla,
+  clasificando lo encontrado como `difamatorio`, `burlesco`, `sexual` o
+  `belico`, con decisión (`approve`/`review`/`reject`) y la línea censurada.
+  Listas de temas en `config/chat-topics/` para español e inglés.
+- **Ampliación de los 6 diccionarios `comprehensive`** en los idiomas donde
+  hay confianza real de hablante fluido/nativo — español ya tenía 601
+  términos (el más grande con diferencia) y no se tocó:
+  - Alemán: 258 → 283 (+25)
+  - Inglés: 400 → 416 (+16)
+  - Francés: 298 → 312 (+14)
+  - Italiano: 303 → 315 (+12)
+  - Portugués: 323 → 333 (+10)
+
+  En los cinco, deliberadamente **no** se tocaron las categorías de
+  discapacidad, étnico ni religioso: ya tienen buena cobertura y el costo
+  de categorizar mal uno de esos términos supera el beneficio de sumar uno
+  más sin que un hablante nativo lo confirme. Verificado en cada idioma
+  contra nombres reales comunes (`Hans Müller`, `John Smith`, `Jean
+  Dupont`, `Giuseppe Russo`, `João Silva`, etc.) sin falsos positivos.
+
 ### Arreglado
 
 - **Un término presente en varios idiomas emparentados se contaba dos
@@ -29,6 +51,43 @@
 - Se restauró `_Garbage/`, borrado en 4.3.0: la decisión es conservar como
   referencia lo obsoleto en vez de borrarlo. Su README explica por qué
   ninguno de esos archivos debe reconectarse al motor.
+
+## [4.3.2] - 2026-09-27
+
+### Arreglado
+
+- **`riskType => 'fonetico'` era inalcanzable.** Estaba declarado en
+  `config/risk-categories.php` (con nombre, descripción y ejemplos) y
+  descrito de nuevo en `RiskReportBuilder::DESCRIPTIONS`, pero
+  `PhoneticFusionDetector::detectFusion()` heredaba el `riskType` del
+  término del diccionario que cruzaba la unión (`genero`, `ordinario`,
+  etc.), así que la categoría "Fonético" nunca salía en un reporte real.
+  Ahora una fusión detectada sí reporta `riskType => 'fonetico'`; el tema
+  original del término matcheado sigue disponible en `category`, sin
+  cambios. Efecto secundario: `getExplanations()` ahora dice "tipo
+  fonetico" en vez del tema original (p. ej. "tipo ordinario") para estos
+  casos — es coherente con el `riskType` real, pero menos específico
+  sobre qué clase de insulto formó la fusión.
+- 358 tests, sin regresiones. No afecta el puntaje ni la severidad: esos
+  siguen viniendo del campo `severity` del término matcheado, no de
+  `riskType`.
+
+## [4.3.1] - 2026-09-25
+
+### Cambiado (refactor sin cambio de comportamiento)
+
+- **PHPStan nivel 6**, sin errores (era nivel 5). Cerró los 118 avisos de
+  tipado de arrays que quedaron documentados como "siguiente paso posible"
+  en el 4.3.0: `@param`/`@return`/`@var` con forma de valor en todos los
+  métodos y propiedades que devuelven o reciben arrays, más un
+  `@phpstan-type` para el shape de un término del diccionario (`WordEntry`,
+  en `WordListIndex`) y otro para un término ya marcado (`FlaggedEntry`, en
+  `FlaggedTermCollection`), reutilizados con `@phpstan-import-type` en vez
+  de repetir la forma en cada archivo. El tipado más preciso encontró un
+  `?? 1.0` en `NameEvaluator::applyPhoneticChecks()` que ya nunca podía
+  dispararse (`confidence` siempre está presente en un `FlaggedEntry`); se
+  quitó.
+- 358 tests, 21.232 aserciones, sin cambios de comportamiento.
 
 ## [4.3.0] - 2026-09-25
 

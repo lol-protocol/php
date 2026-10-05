@@ -44,6 +44,12 @@ return [
             ['word' => 'köter', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'eselin', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'äffin', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'drecksau', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'sauhund', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'hyäne', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'schakal', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'wanze', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'kakerlake', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
 
         'verstand' => [
@@ -73,6 +79,12 @@ return [
             ['word' => 'idiotin', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'vollidiotin', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'analphabetin', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'vollpfosten', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'hirnlos', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'dussel', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'spinner', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'hornochse', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'schwachmat', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
 
         'koerper' => [
@@ -100,6 +112,11 @@ return [
             ['word' => 'dreckig', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'vettel', 'riskType' => 'fisico', 'severity' => 'high'],
             ['word' => 'zwergin', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'fettkloß', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'landwal', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'pickelgesicht', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'spargeltarzan', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'wanst', 'riskType' => 'fisico', 'severity' => 'medium'],
         ],
 
         'behinderung' => [
@@ -202,6 +219,10 @@ return [
             ['word' => 'dirne', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'prostituierte', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'jungfer', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'transe', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'flintenweib', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'emanze', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'memme', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
 
         'derb' => [
@@ -227,6 +248,8 @@ return [
             ['word' => 'wichser', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'verdammt', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'verflucht', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'fickfehler', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'hackfresse', 'riskType' => 'ordinario', 'severity' => 'high'],
         ],
 
         'spott' => [
@@ -257,6 +280,8 @@ return [
             ['word' => 'wichtigtuerin', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'angeberin', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'versagerin', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'lusche', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'pfeife', 'riskType' => 'burlesco', 'severity' => 'low'],
         ],
 
         'ethnisch' => [

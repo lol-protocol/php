@@ -46,6 +46,8 @@ return [
             ['word' => 'jumenta', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'asna', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'macaca', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'hiena', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'chacal', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
 
         'intelecto' => [
@@ -80,6 +82,8 @@ return [
             ['word' => 'tapada', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'analfabeta', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'iletrada', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'trouxa', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'bocó', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
 
         'fisico' => [
@@ -120,6 +124,7 @@ return [
             ['word' => 'orelhuda', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'fedorenta', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'imunda', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'quatro-olhos', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
 
         'deficiencia' => [
@@ -218,6 +223,8 @@ return [
             ['word' => 'bêbada', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'drogada', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'viciada', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'cara de pau', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'oportunista', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
 
         'genero' => [
@@ -270,6 +277,8 @@ return [
             ['word' => 'babaca', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'otário', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'escroto', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'cuzão', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'arrombado', 'riskType' => 'ordinario', 'severity' => 'high'],
         ],
 
         'burlesco' => [
@@ -307,6 +316,7 @@ return [
             ['word' => 'ridícula', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'patética', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'chata', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'perdedor', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
 
         'etnico' => [
