@@ -20,7 +20,7 @@
 - El hilo que nos une.
 
 ## Texto largo (manifiesto)
-Todos los seres humanos que han caminado por este mundo antes que nosotros, tuvieron sueños, amores, miedos, planes y personas que no querían perder. Alguna vez fueron niños imaginando su futuro; después crecieron, lucharon por algo, amaron a alguien… pero un día se convirtieron en recuerdo.
+Todos los seres humanos que han caminado por este mundo antes que nosotros tuvieron sueños, amores, miedos, planes y personas que no querían perder. Alguna vez fueron niños imaginando su futuro; después crecieron, lucharon por algo, amaron a alguien… pero un día se convirtieron en recuerdo.
 
 Ya han pasado miles de años, millones de historias, y el tiempo nunca se ha detenido por nadie.
 
