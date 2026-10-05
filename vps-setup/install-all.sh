@@ -66,7 +66,9 @@ if [ "$DRY_RUN" -eq 0 ]; then
     chmod +x ./*.sh
     # Una corrida nueva (sin --resume) empieza de cero para este dominio.
     if [ "$RESUME" -eq 0 ] && [ -f "$STATE_FILE" ]; then
-        grep -vF "$DOMAIN"$'\t' "$STATE_FILE" > "$STATE_FILE.tmp" || true
+        # Coincidencia EXACTA del primer campo: con grep por subcadena, borrar el
+        # estado de initech.fun tambien borraria el de www.initech.fun.
+        awk -F'\t' -v d="$DOMAIN" '$1 != d' "$STATE_FILE" > "$STATE_FILE.tmp" || true
         mv "$STATE_FILE.tmp" "$STATE_FILE"
     fi
 fi

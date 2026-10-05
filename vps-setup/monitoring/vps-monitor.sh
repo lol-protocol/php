@@ -38,21 +38,25 @@ done
 
 HOST=$(hostname)
 PROBLEMS=()
-problem() { PROBLEMS+=("$1"); }
+KEYS=()
+# problem <clave estable> <texto>: la huella de cambio usa SOLO las claves, no los
+# numeros del texto (carga, % de disco, dias), que varian en cada corrida y
+# provocarian un aviso cada 15 minutos mientras el problema siga.
+problem() { KEYS+=("$1"); PROBLEMS+=("$2"); }
 
 check_disk() {
     local m pct
     for m in $MOUNTS; do
         pct=$(df -P "$m" 2>/dev/null | awk 'NR==2{gsub("%","",$5); print $5}')
         [ -z "$pct" ] && continue
-        [ "$pct" -ge "$DISK_WARN" ] && problem "Disco $m al ${pct}% (umbral ${DISK_WARN}%)"
+        [ "$pct" -ge "$DISK_WARN" ] && problem "disk:$m" "Disco $m al ${pct}% (umbral ${DISK_WARN}%)"
     done
 }
 
 check_mem() {
     local pct
     pct=$(free | awk '/^Mem:/{printf "%d", (1 - $7/$2) * 100}')
-    [ -n "$pct" ] && [ "$pct" -ge "$MEM_WARN" ] && problem "RAM al ${pct}% (umbral ${MEM_WARN}%)"
+    [ -n "$pct" ] && [ "$pct" -ge "$MEM_WARN" ] && problem "mem" "RAM al ${pct}% (umbral ${MEM_WARN}%)"
 }
 
 check_load() {
@@ -61,20 +65,23 @@ check_load() {
     cores=$(nproc)
     [ -z "$load" ] && return
     if awk -v l="$load" -v c="$cores" -v f="$LOAD_FACTOR" 'BEGIN{exit !(l > c*f)}'; then
-        problem "Carga alta: $load con $cores nucleo(s) (umbral ${LOAD_FACTOR}x)"
+        problem "load" "Carga alta: $load con $cores nucleo(s) (umbral ${LOAD_FACTOR}x)"
     fi
 }
 
 check_certs() {
-    local cert end days name
+    local cert end secs days name
     for cert in "$CERT_DIR"/*/cert.pem; do
         [ -f "$cert" ] || continue
         name=$(basename "$(dirname "$cert")")
         end=$(openssl x509 -enddate -noout -in "$cert" 2>/dev/null | cut -d= -f2)
-        [ -z "$end" ] && { problem "No se pudo leer el certificado de $name"; continue; }
-        days=$(( ($(date -d "$end" +%s) - $(date +%s)) / 86400 ))
-        if [ "$days" -lt 0 ]; then problem "Certificado de $name VENCIDO"
-        elif [ "$days" -lt "$CERT_WARN_DAYS" ]; then problem "Certificado de $name vence en $days dia(s)"; fi
+        [ -z "$end" ] && { problem "cert-read:$name" "No se pudo leer el certificado de $name"; continue; }
+        # Segundos (no dias enteros): con division entera, un certificado vencido
+        # hace menos de 24 h daria 0 dias y se reportaria como "vence en 0 dias".
+        secs=$(( $(date -d "$end" +%s) - $(date +%s) ))
+        days=$(( secs / 86400 ))
+        if [ "$secs" -lt 0 ]; then problem "cert-expired:$name" "Certificado de $name VENCIDO"
+        elif [ "$days" -lt "$CERT_WARN_DAYS" ]; then problem "cert-soon:$name" "Certificado de $name vence en $days dia(s)"; fi
     done
 }
 
@@ -82,14 +89,18 @@ check_services() {
     local s
     for s in $SERVICES; do
         systemctl list-unit-files "$s.service" 2>/dev/null | grep -q "$s.service" || continue
-        systemctl is-active --quiet "$s" || problem "Servicio $s NO esta activo"
+        systemctl is-active --quiet "$s" || problem "svc:$s" "Servicio $s NO esta activo"
     done
     local failed
     failed=$(systemctl --failed --no-legend 2>/dev/null | awk '{print $1}' | tr '\n' ' ')
-    [ -n "${failed// /}" ] && problem "Unidades systemd fallidas: $failed"
+    [ -n "${failed// /}" ] && problem "failed-units" "Unidades systemd fallidas: $failed"
 }
 
-json_escape() { sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' | awk 'BEGIN{ORS="\\n"}1'; }
+# Escapa \ y ", pasa tabs a espacio y elimina CR y demas caracteres de control:
+# cualquiera de ellos deja el JSON invalido y el webhook rechazaria la alerta.
+json_escape() {
+    tr '\t' ' ' | tr -d '\000-\010\013-\037' | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' | awk 'BEGIN{ORS="\\n"}1'
+}
 
 send_alert() {   # $1=asunto  $2=cuerpo
     logger -t vps-monitor "$1" 2>/dev/null
@@ -106,7 +117,9 @@ send_alert() {   # $1=asunto  $2=cuerpo
 
 if [ "$TEST" -eq 1 ]; then
     send_alert "[$HOST] Alerta de prueba" "Si lees esto, el canal de alertas funciona."
-    echo "Alerta de prueba enviada (email: ${ALERT_EMAIL:-no}, webhook: ${WEBHOOK_URL:+si}${WEBHOOK_URL:-no})"
+    # Solo "si"/"no": la URL del webhook es un secreto y no se imprime.
+    wh=no; [ -n "$WEBHOOK_URL" ] && wh=si
+    echo "Alerta de prueba enviada (email: ${ALERT_EMAIL:-no}, webhook: $wh)"
     exit 0
 fi
 
@@ -124,7 +137,7 @@ fi
 # guarda como "ok" (NO vacia: "read" descartaria el espacio inicial y tomaria la
 # fecha como huella, repitiendo el aviso de "Recuperado" en cada corrida).
 FP=""
-[ "${#PROBLEMS[@]}" -gt 0 ] && FP=$(printf '%s\n' "${PROBLEMS[@]}" | sort | cksum | awk '{print $1}')
+[ "${#PROBLEMS[@]}" -gt 0 ] && FP=$(printf '%s\n' "${KEYS[@]}" | sort | cksum | awk '{print $1}')
 LAST_FP=""; LAST_TS=0
 [ -f "$STATE_FILE" ] && read -r LAST_FP LAST_TS < "$STATE_FILE"
 [ "$LAST_FP" = "ok" ] && LAST_FP=""

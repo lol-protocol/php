@@ -11,7 +11,9 @@ setup() {
     make_stub sshd '
 case "$1" in
     -t) exit "${SSHD_T_RC:-0}";;
-    -T) [ "$SSHD_PW_YES" = 1 ] && echo "passwordauthentication yes" || echo "passwordauthentication no";;
+    -T) [ "$SSHD_PW_YES" = 1 ] && echo "passwordauthentication yes" || echo "passwordauthentication no"
+        [ "$SSHD_PUBKEY_NO" = 1 ] && echo "pubkeyauthentication no" || echo "pubkeyauthentication yes"
+        echo "authorizedkeysfile ${SSHD_AKF:-.ssh/authorized_keys .ssh/authorized_keys2}";;
 esac'
     export SSHD_BIN="$STUB_BIN/sshd"
     KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFakeKeyForTests tester@laptop"
@@ -95,6 +97,32 @@ esac'
     [ "$status" -eq 1 ]
     [ ! -e "$SSHD_CONF_DIR/00-hardening.conf" ]
     ! grep -q "systemctl reload" "$SUDO_LOG"
+}
+
+@test "07_C si PubkeyAuthentication quedaria desactivada: revierte" {
+    SSHD_PUBKEY_NO=1 run bash "$SSH" "$KEY" --yes
+    [ "$status" -eq 1 ]
+    [ ! -e "$SSHD_CONF_DIR/00-hardening.conf" ]
+}
+
+@test "07_C si AuthorizedKeysFile apunta a otro sitio: revierte" {
+    SSHD_AKF="/etc/ssh/keys/%u" run bash "$SSH" "$KEY" --yes
+    [ "$status" -eq 1 ]
+    [ ! -e "$SSHD_CONF_DIR/00-hardening.conf" ]
+    ! grep -q "systemctl reload" "$SUDO_LOG"
+}
+
+@test "07_C se niega si el home es escribible por grupo/otros (StrictModes ignoraria la llave)" {
+    chmod 775 "$SSH_TARGET_HOME"
+    run bash "$SSH" "$KEY" --yes
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"escribible por grupo/otros"* ]]
+    [ ! -e "$SSHD_CONF_DIR/00-hardening.conf" ]
+}
+
+@test "07_C no fija MaxAuthTries (un agente con varias llaves no debe bloquearse)" {
+    bash "$SSH" "$KEY" --yes
+    ! grep -qi "MaxAuthTries" "$SSHD_CONF_DIR/00-hardening.conf"
 }
 
 @test "07_C --revert quita el endurecimiento y recarga" {

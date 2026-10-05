@@ -101,3 +101,9 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
     ia --nada
     [ "$status" -eq 2 ]
 }
+
+@test "reiniciar un dominio NO borra el estado de otro cuyo nombre lo contiene (initech.fun vs www.initech.fun)" {
+    ia www.initech.fun --yes
+    ia initech.fun --yes
+    [ "$(grep -c '^www.initech.fun'$'\t' "$INSTALL_STATE_FILE")" -eq 14 ]
+}

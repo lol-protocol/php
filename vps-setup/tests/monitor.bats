@@ -120,3 +120,30 @@ alerts() { wc -l < "$CALLS" | tr -d ' '; }
     mon --nada
     [ "$status" -eq 2 ]
 }
+
+@test "--test NO imprime la URL del webhook" {
+    mon --test
+    [[ "$output" == *"webhook: si"* ]]
+    [[ "$output" != *"hook.test"* ]]
+}
+
+@test "la huella ignora los numeros: carga/disco cambiantes NO re-alertan" {
+    echo "9.50 5 3 1/100 1" > "$LOADAVG_FILE"; DISK=90 mon
+    echo "11.20 5 3 1/100 1" > "$LOADAVG_FILE"; DISK=93 mon
+    [ "$(alerts)" = "1" ]
+}
+
+@test "certificado vencido hace MENOS de un dia se reporta VENCIDO (no 'vence en 0 dias')" {
+    mkdir -p "$CERT_DIR/a.com"; touch "$CERT_DIR/a.com/cert.pem"
+    CERT_WHEN="-5 hours" mon --dry-run
+    [[ "$output" != *"vence en 0"* ]]
+    [[ "$output" == *"VENCIDO"* ]]
+}
+
+@test "el JSON del webhook elimina tabs, CR y caracteres de control" {
+    d=$(printf 'a\tb\r\001.com'); mkdir -p "$CERT_DIR/$d"; touch "$CERT_DIR/$d/cert.pem"
+    CERT_DAYS=1 mon
+    [ "$(alerts)" = "1" ]
+    ! grep -qP '[\x00-\x08\x0b-\x1f]' "$CALLS"
+    grep -q 'a b.com' "$CALLS"
+}

@@ -8,6 +8,7 @@
 #       ./remote-run.sh 08-healthcheck.sh initech.fun
 # Config: vps.env junto a este script (ver vps.env.example), o VPS_ENV=/otra/ruta.
 set -e
+set -o pipefail   # que un fallo de tar (lado local) no pase inadvertido en "tar | ssh"
 
 DRY_RUN=0
 if [ "$1" = "--dry-run" ]; then DRY_RUN=1; shift; fi
@@ -47,7 +48,7 @@ fi
 
 echo "Subiendo scripts a $TARGET:~/$REMOTE_DIR ..."
 tar -C "$HERE/.." --exclude='vps-setup/vps.env' --exclude='vps-setup/tests' -czf - vps-setup landing-page \
-    | ssh "${SSH_OPTS[@]}" "$TARGET" "mkdir -p $REMOTE_DIR && tar -xzf - -C $REMOTE_DIR"
+    | ssh "${SSH_OPTS[@]}" "$TARGET" "mkdir -p $REMOTE_DIR && rm -rf $REMOTE_DIR/vps-setup $REMOTE_DIR/landing-page && tar -xzf - -C $REMOTE_DIR"
 
 echo "Ejecutando $SCRIPT en el VPS ..."
 ssh -t "${SSH_OPTS[@]}" "$TARGET" "$REMOTE_CMD"

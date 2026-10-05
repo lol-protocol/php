@@ -7,6 +7,8 @@
 # ADVERTENCIA: si desactivas la contrasena sin que la llave funcione, te quedas
 # fuera del VPS (solo recuperable por la consola de rescate del proveedor). Por eso
 # el script exige confirmar que ya probaste entrar con la llave desde OTRA terminal.
+# --yes SALTA esa confirmacion (por ejemplo al correrlo con remote-run.sh): usalo
+# solo si ya comprobaste el login con llave tu mismo.
 set -e
 
 source "$(dirname "$0")/lib.sh"
@@ -95,6 +97,14 @@ for k in "${VALID_KEYS[@]}"; do
         echo "  Llave agregada: ${k:0:30}..."
     fi
 done
+# sshd (StrictModes) ignora authorized_keys si el home es escribible por otros:
+# la llave "estaria bien" pero no funcionaria, y sin contrasena quedarias fuera.
+HOME_MODE=$(stat -c %a "$TARGET_HOME")
+if [ $((8#$HOME_MODE & 8#022)) -ne 0 ]; then
+    echo "ERROR: $TARGET_HOME es escribible por grupo/otros (modo $HOME_MODE): sshd ignoraria tu llave."
+    echo "Corrige con: chmod go-w $TARGET_HOME   y vuelve a correr este script."
+    exit 1
+fi
 sudo chmod 700 "$SSH_DIR"
 sudo chmod 600 "$AUTH"
 sudo chown -R "$TARGET_USER:$TARGET_USER" "$SSH_DIR"
@@ -119,7 +129,6 @@ PasswordAuthentication no
 KbdInteractiveAuthentication no
 PermitRootLogin no
 PubkeyAuthentication yes
-MaxAuthTries 3
 EOSSH
 
 # Valida TODA la configuracion antes de recargar; si falla, quita lo nuestro.
@@ -129,9 +138,17 @@ if ! sudo "$SSHD_BIN" -t; then
     exit 1
 fi
 # Comprueba el valor EFECTIVO (otro archivo podria estar ganando).
-if ! sudo "$SSHD_BIN" -T | grep -qi '^passwordauthentication no'; then
+EFFECTIVE=$(sudo "$SSHD_BIN" -T)
+if ! grep -qi '^passwordauthentication no' <<< "$EFFECTIVE" \
+    || ! grep -qi '^pubkeyauthentication yes' <<< "$EFFECTIVE"; then
     sudo rm -f "$CONF_FILE"
-    echo "ERROR: PasswordAuthentication sigue activo por otra directiva; se revirtio el cambio."
+    echo "ERROR: la configuracion efectiva no es 'sin contrasena + con llave' (otra directiva gana); se revirtio."
+    exit 1
+fi
+# Si AuthorizedKeysFile apunta a otro sitio, la llave que acabamos de agregar no se leeria.
+if ! grep -i '^authorizedkeysfile' <<< "$EFFECTIVE" | grep -q '\.ssh/authorized_keys'; then
+    sudo rm -f "$CONF_FILE"
+    echo "ERROR: sshd no lee ~/.ssh/authorized_keys (AuthorizedKeysFile personalizado); se revirtio."
     exit 1
 fi
 reload_ssh

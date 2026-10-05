@@ -44,5 +44,5 @@ esac
 exit 0'
     make_stub ss 'p=$(echo "$2" | grep -o "[0-9]*"); [[ " $NOPORT " == *" $p "* ]] && exit 0; echo LISTEN'
     make_stub openssl '
-if [ "$1" = s_client ]; then cat > /dev/null; else echo "notAfter=$(date -d "+${CERT_DAYS:-40} days" "+%b %d %T %Y GMT")"; fi'
+if [ "$1" = s_client ]; then cat > /dev/null; else echo "notAfter=$(date -d "${CERT_WHEN:-+${CERT_DAYS:-40} days}" "+%b %d %T %Y GMT")"; fi'
 }
