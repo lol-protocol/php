@@ -6,17 +6,16 @@ function api_filtros(): void
 {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $almacen = new AlmacenFiltros(ConexionBd::obtener());
-        echo json_encode($almacen->obtenerTodos(), JSON_UNESCAPED_UNICODE);
+        api_responder($almacen->obtenerTodos());
         return;
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if (!auth_validar_csrf_header()) {
-            api_error(403, 'csrf_invalido', 'token CSRF inválido');
+        if (!api_exigir_csrf()) {
             return;
         }
 
-        $body = json_decode(file_get_contents('php://input') ?: '{}', true) ?? [];
+        $body = api_cuerpo_json();
 
         $nombre = is_string($body['nombre'] ?? null) ? trim($body['nombre']) : '';
         $scope = $body['scope'] ?? 'all_countries';
@@ -36,28 +35,22 @@ function api_filtros(): void
 
         $almacen = new AlmacenFiltros(ConexionBd::obtener());
         $id = $almacen->crear($nombre, $scope, $ageMin, $ageMax, $gender, $tipoAccion);
-        echo json_encode(['id' => $id, 'ok' => true], JSON_UNESCAPED_UNICODE);
+        api_responder(['id' => $id, 'ok' => true]);
         return;
     }
 
-    api_error(405, 'metodo_no_permitido', 'método no permitido');
+    api_metodo_no_permitido();
 }
 
 function api_filtros_delete(int $id): void
 {
-    if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
-        api_error(405, 'metodo_no_permitido', 'método no permitido');
-        return;
-    }
-
-    if (!auth_validar_csrf_header()) {
-        api_error(403, 'csrf_invalido', 'token CSRF inválido');
+    if (!api_exigir_metodo('DELETE') || !api_exigir_csrf()) {
         return;
     }
 
     $almacen = new AlmacenFiltros(ConexionBd::obtener());
     if ($almacen->eliminar($id)) {
-        echo json_encode(['ok' => true], JSON_UNESCAPED_UNICODE);
+        api_responder(['ok' => true]);
     } else {
         api_error(404, 'filtro_no_encontrado', 'filtro no encontrado');
     }

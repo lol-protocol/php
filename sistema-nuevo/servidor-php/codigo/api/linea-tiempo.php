@@ -41,7 +41,7 @@ function api_timeline(): void
         $paginaAcciones['items'], $userId, $user['country'], $countries, $ageMin, $ageMax, $gender
     );
 
-    echo json_encode([
+    api_responder([
         'user' => $user + ['country_name' => $groups['countries'][$user['country']] ?? $user['country']],
         'filters' => [
             'scope' => $scope,
@@ -55,5 +55,5 @@ function api_timeline(): void
         'chart' => $acciones->resumenDiario($userId, $tipo),
         'stats_service_available' => $cohortes['stats_service_available'],
         'timeline' => $cohortes['timeline'],
-    ], JSON_UNESCAPED_UNICODE);
+    ]);
 }

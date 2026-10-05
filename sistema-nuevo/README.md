@@ -90,7 +90,7 @@ sistema-nuevo/
 │       ├── api.php                    Punto de entrada de los endpoints (ver api/)
 │       └── api/                       sesion, usuarios (+ groups, action-types), alertas(-config),
 │                                       linea-tiempo (+ linea-tiempo-cohortes), filtros, kpis,
-│                                       notas, ayudantes (api_error, delta %, scopes)
+│                                       notas, ayudantes (api_responder/api_error, CSRF, delta %)
 │
 ├── interfaz/                       Panel de administración (HTML/CSS/JS, sin frameworks)
 │   ├── index.php                      Ensambla partes/*.php + enlaza los .css
@@ -478,7 +478,10 @@ php pruebas/ejecutar-integracion.php
   duración y monto, universo vacío, un tipo que falla, y qué universo le llega al
   servicio (países, edad, género y la exclusión del propio usuario). Y
   `api_error()`: todo error lleva su texto y su `codigo`, y ningún endpoint arma el
-  suyo a mano (se recorre el código de `servidor-php/` buscándolos).
+  suyo a mano (se recorre el código de `servidor-php/` buscándolos). Y los helpers de
+  los endpoints (`api_responder`, `api_cuerpo_json`, `api_exigir_metodo`,
+  `api_exigir_csrf`): su comportamiento, y el mismo recorrido para que la
+  serialización, la lectura del cuerpo y el chequeo CSRF existan en un solo lugar.
 - `pruebas/php-integracion/`: `AlmacenFiltros` (CRUD completo, age_min=0/null no se
   pierde), `AlmacenNotas` (guardar es upsert, texto vacío borra la fila),
   `AlmacenConfiguracion` (default habilitado si no hay fila, guardar/leer umbral),
@@ -629,6 +632,14 @@ compartidos, no en memoria de un proceso.
 Abrir http://localhost:8082.
 
 ## API (backend PHP)
+
+**Piezas compartidas** (`api/ayudantes.php`, un solo lugar cada una): `api_responder()`
+serializa toda respuesta (JSON con el UTF-8 crudo; una bandera de `json_encode` olvidada
+en un endpoint ya fue una inconsistencia real), `api_cuerpo_json()` lee el cuerpo del
+pedido y devuelve siempre un array (vacío, mal formado o un JSON que no es un objeto dan
+`[]`), y `api_exigir_metodo()` / `api_exigir_csrf()` responden 405 / 403 y devuelven
+`false` para que el endpoint corte. `pruebas/php/api-helpers-test.php` las prueba y
+recorre `servidor-php/` para que ningún endpoint vuelva a armar lo suyo.
 
 **Errores.** Toda respuesta de error (4xx/5xx) es `{"error": "<texto en español>",
 "codigo": "<identificador>"}`, más datos propios del error si los hay (`retry_after`

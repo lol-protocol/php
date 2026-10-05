@@ -37,19 +37,9 @@ assert_igual([401, 'no_autenticado'], [$r['estado'], json_decode($r['crudo'], tr
 
 // Que ningún endpoint arme su error a mano (sin codigo): ni un 'error' => suelto ni un http_response_code(4xx/5xx)
 // fuera de api_error(). Si alguien lo agrega, la interfaz volvería a mostrar ese error solo en español.
-$raiz = realpath(__DIR__ . '/../../servidor-php');
-$sueltos = [];
-foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($raiz, FilesystemIterator::SKIP_DOTS)) as $archivo) {
-    if ($archivo->getExtension() !== 'php') {
-        continue;
-    }
-    $fuente = (string) file_get_contents($archivo->getPathname());
-    if ($archivo->getFilename() === 'ayudantes.php') {
-        // El cuerpo de api_error() es el único lugar donde se arma la respuesta de error.
-        $fuente = (string) preg_replace('/function api_error\(.*?\n}\n/s', '', $fuente);
-    }
-    if (preg_match('/[\'"]error[\'"]\s*=>|http_response_code\(\s*[45]\d\d/', $fuente)) {
-        $sueltos[] = substr($archivo->getPathname(), strlen($raiz) + 1);
-    }
-}
+$sueltos = archivos_con_patron(
+    fuentes_php(realpath(__DIR__ . '/../../servidor-php')),
+    '/[\'"]error[\'"]\s*=>|http_response_code\(\s*[45]\d\d/',
+    ['api_error'] // el cuerpo de api_error() es el único lugar donde se arma la respuesta de error
+);
 assert_igual([], $sueltos, 'api: toda respuesta de error sale por api_error() (con su codigo), ninguna armada a mano');

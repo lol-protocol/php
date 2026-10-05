@@ -16,7 +16,7 @@ function api_login(): void
         return;
     }
 
-    $body = json_decode(file_get_contents('php://input') ?: '[]', true) ?? [];
+    $body = api_cuerpo_json();
     $username = is_string($body['username'] ?? null) ? $body['username'] : '';
     $password = is_string($body['password'] ?? null) ? $body['password'] : '';
 
@@ -32,29 +32,28 @@ function api_login(): void
 
     $intentos->limpiar($ip);
     auth_marcar_autenticado($username);
-    echo json_encode([
+    api_responder([
         'authenticated' => true,
         'username' => $username,
         'csrf_token' => auth_obtener_csrf_token(),
-    ], JSON_UNESCAPED_UNICODE);
+    ]);
 }
 
 function api_logout(): void
 {
-    if (!auth_validar_csrf_header()) {
-        api_error(403, 'csrf_invalido', 'token CSRF inválido');
+    if (!api_exigir_csrf()) {
         return;
     }
 
     auth_cerrar_sesion();
-    echo json_encode(['authenticated' => false], JSON_UNESCAPED_UNICODE);
+    api_responder(['authenticated' => false]);
 }
 
 function api_session(): void
 {
-    echo json_encode([
+    api_responder([
         'authenticated' => auth_esta_autenticado(),
         'username' => auth_usuario_actual(),
         'csrf_token' => auth_esta_autenticado() ? auth_obtener_csrf_token() : null,
-    ], JSON_UNESCAPED_UNICODE);
+    ]);
 }
