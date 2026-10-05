@@ -52,6 +52,8 @@ STEPS=(
     "03-configure-nginx-site.sh:$DOMAIN"
     "04-setup-ssl.sh:$DOMAIN $EMAIL"
     "05-deploy-landing-page.sh:$DOMAIN"
+    "07_A-install-fail2ban-autoupdates.sh"
+    "07_B-nginx-security-headers.sh"
 )
 
 # Cada entrada de STEPS es "script.sh" o "script.sh:argumentos". El ":" separa
@@ -103,6 +105,11 @@ for i in "${!STEPS[@]}"; do
     [ "$i" -eq 0 ] && continue   # 01 ya corrio arriba
     run_step "$i" "${STEPS[$i]}"
 done
+
+# El healthcheck NO esta en STEPS: sale con error si algo falla, y con "set -e"
+# eso abortaria antes del resumen final. Aqui un fallo solo se avisa (por
+# ejemplo, el DNS puede seguir propagando aunque la instalacion este bien).
+bash ./08-healthcheck.sh "$DOMAIN" || echo "AVISO: el healthcheck reporto fallas (ver arriba); la instalacion termino pero revisalas."
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════╗"

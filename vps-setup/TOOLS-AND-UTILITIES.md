@@ -593,7 +593,8 @@ chmod +x *.sh
 Esto corre, en orden: `01-system-update.sh` (incluye activar UFW) →
 `02_A`..`02_F` + `02_J` (Java, PHP, Python, PostgreSQL, Nginx, Certbot,
 Webmin) → `03-configure-nginx-site.sh` → `04-setup-ssl.sh` →
-`05-deploy-landing-page.sh`.
+`05-deploy-landing-page.sh` → `07_A` (fail2ban + parches automáticos) →
+`07_B` (headers de seguridad) y, al final, `08-healthcheck.sh`.
 
 **Extras opcionales, uno por uno:**
 ```bash

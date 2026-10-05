@@ -125,15 +125,21 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 03 | `03-configure-nginx-site.sh` | Crea el virtual host de Nginx y copia la landing page |
 | 04 | `04-setup-ssl.sh` | Obtiene certificado SSL (verifica DNS antes) |
 | 05 | `05-deploy-landing-page.sh` | (Re)copia los archivos de la landing page |
+| 07_A | `07_A-install-fail2ban-autoupdates.sh` | Instala fail2ban (jail de SSH) y actualizaciones automáticas de seguridad (sin reinicio automático) |
+| 07_B | `07_B-nginx-security-headers.sh` | Agrega HSTS, X-Frame-Options, X-Content-Type-Options y Referrer-Policy a todos los dominios (un solo archivo en `conf.d/`) |
+| 08 | `08-healthcheck.sh` | Solo lectura: revisa servicios, UFW, puertos, DNS, HTTPS, certificado y headers. Sale con código 1 si algo falla. Uso: `./08-healthcheck.sh tudominio.com` |
 | 06_A | `06_A-setup-php-app.sh` | *(Opcional)* Configura una app PHP adicional |
 | 06_B | `06_B-setup-python-app.sh` | *(Opcional)* Configura una app Python (Flask + Gunicorn) |
 | 06_C | `06_C-setup-dns-server.sh` | *(Opcional)* Instala BIND9 como servidor DNS propio — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
 | 06_D | `06_D-setup-tomcat-app.sh` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio — requiere `02_H` ya hecho |
-| — | `install-all.sh` | Ejecuta 01 → 02_A..F+J → 03 → 04 → 05 en orden |
+| — | `install-all.sh` | Ejecuta 01 → 02_A..F+J → 03 → 04 → 05 → 07_A → 07_B en orden y termina corriendo 08 |
 
 Los pasos `02_G`/`02_H`/`02_I` y todos los `06_*` son opcionales e independientes entre sí — instala solo los que necesites. Las notas "requiere X ya hecho" son las únicas excepciones a "cualquier orden": son dependencias reales de software, no de orden de ejecución arbitrario.
 
 ## ✅ Verificación Post-Instalación
+
+Lo más rápido: `./08-healthcheck.sh tudominio.com` hace todo lo de abajo (y más) de una vez.
+`install-all.sh` ya lo corre al final. A mano:
 
 ```bash
 # Servicios
