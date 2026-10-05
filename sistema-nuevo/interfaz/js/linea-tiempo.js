@@ -1,18 +1,19 @@
 import { el, ACTION_ICONS } from "./nucleo.js";
 import { t } from "./idioma.js";
-import { formatPct, formatDuration, formatMoney } from "./formato.js";
+import { formatPct, formatDuration, formatMoney, classifyDelta } from "./formato.js";
 import { buildMetricNodes } from "./metricas.js";
 import { buildNoteBlock } from "./nota-bloque.js";
 
 function buildDeltaBadge(deltaPct, { betterWhenLower = true, goodLabel, badLabel, tooltip = "" }) {
   const props = tooltip ? { title: tooltip } : {};
-  if (deltaPct === null) {
+  const kind = classifyDelta(deltaPct, betterWhenLower);
+  if (kind === "none") {
     return el("span", { class: "badge badge--neutral", text: t("badge_no_comparison"), ...props });
   }
-  if (Math.abs(deltaPct) <= 10) {
+  if (kind === "avg") {
     return el("span", { class: "badge badge--neutral", text: t("badge_avg", { pct: formatPct(deltaPct) }), ...props });
   }
-  const isGood = betterWhenLower ? deltaPct < 0 : deltaPct > 0;
+  const isGood = kind === "good";
   return el("span", {
     class: `badge ${isGood ? "badge--good" : "badge--bad"}`,
     text: `${formatPct(deltaPct)} ${isGood ? goodLabel : badLabel}`,

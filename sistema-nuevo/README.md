@@ -112,7 +112,8 @@ sistema-nuevo/
 │   ├── ejecutar-e2e.sh                          Runner e2e (Playwright, ya instalado)
 │   └── e2e/                                     Login, timeline, paginación, filtros,
 │                                                 gráfico, alertas, idioma — panel completo;
-│                                                 y los ejemplos .http contra la API real
+│                                                 los ejemplos .http contra la API real y los
+│                                                 valores de comparación contra PostgreSQL
 │
 └── ejecutar.sh                     Levanta PostgreSQL, siembra los datos si faltan y los 3
                                     servicios (--regenerar: recrea los datos desde cero)
@@ -449,7 +450,12 @@ php pruebas/ejecutar-integracion.php
   También `ejecutar.sh`, corrido con `php`/`java`/`javac` falsos que solo anotan cómo los
   llamaron: sin opciones siembra con `sembrar-si-falta.php` (no con el script destructivo),
   `--regenerar` con `generar-datos-semilla.php` y avisa que borra, y una opción
-  desconocida es un error de uso en vez de ignorarse.
+  desconocida es un error de uso en vez de ignorarse. Y la comparación de cada
+  badge: `api_delta_pct()` (el % se saca contra el promedio, y sin promedio útil
+  da `null`) y `api_timeline_con_cohortes()` contra un servicio de estadísticas
+  falso (`estadisticas-falsas-router.php`) con números conocidos: deltas de
+  duración y monto, universo vacío, un tipo que falla, y qué universo le llega al
+  servicio (países, edad, género y la exclusión del propio usuario).
 - `pruebas/php-integracion/`: `AlmacenFiltros` (CRUD completo, age_min=0/null no se
   pierde), `AlmacenNotas` (guardar es upsert, texto vacío borra la fila),
   `AlmacenConfiguracion` (default habilitado si no hay fila, guardar/leer umbral),
@@ -473,7 +479,9 @@ php pruebas/ejecutar-integracion.php
   filtro guardado y un umbral de alertas puestos encima, no los toca (la prueba que
   habría fallado mientras `ejecutar.sh` sembraba en cada arranque); `motivo_para_sembrar()`
   distingue, en un schema descartable, base vacía, sin acciones, sembrada y esquema viejo.
-- `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje), `idioma.js`
+- `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje, y
+  `classifyDelta`, que decide verde/rojo/gris de cada badge: franja "en el
+  promedio" de ±10% con el borde incluido), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
   resultados no dibuja una sección vacía, sin ninguna alerta real el panel
@@ -493,7 +501,14 @@ php pruebas/ejecutar-integracion.php
   mitad de camino. Aparte, `peticiones-api.e2e.cjs` (sin navegador) reproduce
   `datos/ejemplos/peticiones-api.http` bloque por bloque contra la API real
   (login, token CSRF reusado en los POST/DELETE, cada código HTTP esperado) y
-  exige que el archivo tenga un ejemplo de cada ruta de `index.php`.
+  exige que el archivo tenga un ejemplo de cada ruta de `index.php`. Y
+  `comparacion-valores.e2e.cjs` contrasta contra PostgreSQL, que es el oráculo
+  (`percentile_cont` usa la misma definición de percentil pero otra implementación,
+  y lee las tablas en vez del CSV de Java), cada eslabón de la comparación: el
+  servicio Java (promedio/mediana/p90 de cada tipo, con filtros de país, edad y
+  género, sin el propio usuario, con universos de 1 a 3 acciones y con universos
+  vacíos), `/api/timeline` (el universo de cada acción y su delta %) y las
+  tarjetas del panel (porcentaje, texto y color de cada badge).
 
 Las pruebas e2e usan `require()` (CommonJS) en vez de `import`, a propósito: Node
 solo resuelve paquetes globales (Playwright no tiene `node_modules` propio acá) vía

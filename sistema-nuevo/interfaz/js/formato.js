@@ -27,3 +27,18 @@ export function formatPct(pct) {
   const sign = pct > 0 ? "+" : "";
   return `${sign}${pct.toFixed(0)}%`;
 }
+
+// Un delta dentro de esta franja (inclusive, en ambos sentidos) cuenta como "en el promedio":
+// ni verde ni rojo.
+const DELTA_PROMEDIO_PCT = 10;
+
+/**
+ * Cómo se clasifica un delta % contra el promedio del universo: "none" sin comparación (null),
+ * "avg" dentro de ±10%, y si no "good" o "bad" según convenga que el valor sea menor (duración
+ * y monto, que es el caso de hoy) o mayor.
+ */
+export function classifyDelta(deltaPct, betterWhenLower = true) {
+  if (deltaPct === null) return "none";
+  if (Math.abs(deltaPct) <= DELTA_PROMEDIO_PCT) return "avg";
+  return (betterWhenLower ? deltaPct < 0 : deltaPct > 0) ? "good" : "bad";
+}
