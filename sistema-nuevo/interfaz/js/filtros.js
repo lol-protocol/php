@@ -2,6 +2,7 @@ import { postJson, deleteJson, fetchJson } from "./sesion.js";
 import { intentar, el } from "./nucleo.js";
 import { t } from "./idioma.js";
 import { mostrarError } from "./notificaciones.js";
+import { modalPrompt, modalConfirmar } from "./modal.js";
 
 let ultimaPeticionFiltro = 0;
 
@@ -19,7 +20,9 @@ function renderFiltrosDropdown(filtros) {
   if (!select) return;
 
   select.innerHTML = "";
-  select.appendChild(el("option", { value: "", text: t("filtro_cargar_placeholder") }));
+  // data-i18n: este desplegable no se re-renderiza al cambiar de idioma
+  // (refrescarIdioma no lo toca), pero aplicarEstatico() sí retraduce esto.
+  select.appendChild(el("option", { value: "", text: t("filtro_cargar_placeholder"), "data-i18n": "filtro_cargar_placeholder" }));
   filtros.forEach((f) => {
     const opt = document.createElement("option");
     opt.value = f.id;
@@ -56,7 +59,7 @@ function parseIntOrNull(value) {
 }
 
 export async function guardarFiltroActual() {
-  const nombre = prompt(t("filtro_nombre_prompt"));
+  const nombre = await modalPrompt(t("filtro_nombre_prompt"), t("btn_guardar_filtro"));
   if (!nombre) return;
 
   const scope = document.getElementById("scope-select").value;
@@ -79,7 +82,8 @@ export async function guardarFiltroActual() {
 }
 
 export async function eliminarFiltroGuardado(filtroId) {
-  if (!confirm(t("filtro_eliminar_confirmar"))) return;
+  const confirmado = await modalConfirmar(t("filtro_eliminar_confirmar"), t("btn_eliminar_filtro"), { peligroso: true });
+  if (!confirmado) return;
 
   await intentar(async () => {
     await deleteJson("/api/filtros/" + filtroId);

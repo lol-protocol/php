@@ -16,3 +16,10 @@ coverage/
 __pycache__/
 *.class
 phone-directory/ports/java/build/
+
+# Credenciales y llaves: nunca al repo
+vps-setup/vps.env
+*.pem
+id_rsa*
+id_ed25519*
+id_ecdsa*

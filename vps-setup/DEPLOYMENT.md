@@ -4,11 +4,16 @@ Guía paso a paso para desplegar todo el sistema en el VPS.
 
 ---
 
+**Nota:** el dominio real ya comprado y desplegado es **`initech.fun`** (ver
+[ARCHITECTURE.md](ARCHITECTURE.md)). Los pasos de abajo usan `conce.com` /
+`initech.cl` como ejemplo genérico del proceso de despliegue — sustituye por
+`initech.fun` (o el dominio que quieras agregar) en cada comando.
+
 ## 📋 Pre-requisitos
 
 - ✅ VPS Ubuntu 24.04 LTS activo (158.69.222.245)
 - ✅ Acceso SSH al VPS (usuario: ubuntu — usa tu propia contraseña o, mejor, una llave SSH; nunca la dejes escrita en este repo)
-- ✅ Dominios registrados (conce.com, initech.cl, contrastocolor.ink, wikipedia.cl)
+- ✅ Dominio(s) registrado(s) (initech.fun ya está comprado; conce.com/initech.cl/contrastocolor.ink/wikipedia.cl son ejemplos de cómo agregar más)
 - ✅ Acceso a panel DNS de cada dominio
 - ✅ Email para certificados SSL (ej: admin@domain.com)
 
@@ -114,7 +119,7 @@ TTL: 3600
 ```
 
 4. Guarda los cambios
-5. **ESPERA 5-15 MINUTOS** para que se propague
+5. **ESPERA 15-60 MINUTOS** (hasta 24-48h según el registrador) para que se propague
 
 ### Paso 2: Verificar propagación DNS
 
@@ -503,7 +508,7 @@ sudo systemctl reload nginx
 
 ## 📞 Contacto & Soporte
 
-- **Email:** admin@conce.com
+- **Email:** admin@initech.fun
 - **Proveedor VPS:** OVHCloud (https://www.ovhcloud.com)
 - **Panel de administración:** Webmin — `https://158.69.222.245:10000` (opcional, mismo login que SSH)
 - **Documentación:** Ver ARCHITECTURE.md, TOOLS-AND-UTILITIES.md, DOMAINS.md

@@ -7,13 +7,13 @@ declare(strict_types=1);
 function api_not_found(): void
 {
     http_response_code(404);
-    echo json_encode(['error' => 'ruta no encontrada']);
+    echo json_encode(['error' => 'ruta no encontrada'], JSON_UNESCAPED_UNICODE);
 }
 
 function api_unauthorized(): void
 {
     http_response_code(401);
-    echo json_encode(['error' => 'no autenticado']);
+    echo json_encode(['error' => 'no autenticado'], JSON_UNESCAPED_UNICODE);
 }
 
 /** @return array{total:int,page:int,per_page:int,total_pages:int} Forma común de paginación de /api/users y /api/timeline. */
@@ -56,11 +56,15 @@ function api_resolve_scope_countries(string $scope, array $groups): ?array
     return null;
 }
 
-function api_scope_label(string $scope, array $groups): string
+/**
+ * Etiqueta legible del universo de comparación, o null si no hay una específica:
+ * justo los casos en que api_resolve_scope_countries() no aplica filtro de país
+ * ("all", vacío, preset desconocido, formato no reconocido). "Todos los países"
+ * es texto de interfaz, no dato: lo pone el frontend en el idioma elegido, así
+ * el resumen de filtros no mezcla español con el resto en inglés.
+ */
+function api_scope_label(string $scope, array $groups): ?string
 {
-    if ($scope === '' || $scope === 'all') {
-        return 'Todos los países';
-    }
     if (str_starts_with($scope, 'preset:')) {
         $key = substr($scope, strlen('preset:'));
         foreach ($groups['presets'] as $preset) {
@@ -70,11 +74,11 @@ function api_scope_label(string $scope, array $groups): string
         }
         // Preset desconocido (ej. borrado después de guardar un filtro con él):
         // mismo criterio que api_resolve_scope_countries, nunca el string crudo.
-        return 'Todos los países';
+        return null;
     }
     if (str_starts_with($scope, 'country:')) {
         $code = substr($scope, strlen('country:'));
         return $groups['countries'][$code] ?? $code;
     }
-    return $scope;
+    return null;
 }

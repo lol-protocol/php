@@ -12,23 +12,23 @@
 }
 
 .inactividad-modal {
-  background: #1a1a1a;
-  border: 2px solid #ff00ff;
+  background: var(--surface);
+  border: 2px solid var(--accent);
   border-radius: 8px;
   padding: 2rem;
   max-width: 400px;
   text-align: center;
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
 }
 
+/* Sin color acá: hereda el h3 { color: var(--accent); text-shadow: ...; } de base.css. */
 .inactividad-modal h3 {
-  color: #ff00ff;
   margin: 0 0 1rem;
   font-size: 1.5rem;
 }
 
 .inactividad-modal p {
-  color: #0ff;
+  color: var(--text);
   margin-bottom: 2rem;
   line-height: 1.5;
 }
@@ -44,27 +44,30 @@
   border: 1px solid;
   border-radius: 4px;
   font-weight: bold;
+  font-family: var(--font-mono);
   cursor: pointer;
   transition: all 0.2s;
   background: transparent;
 }
 
 .inactividad-botones #btn-continuar {
-  border-color: #0f0;
-  color: #0f0;
+  border-color: var(--good);
+  color: var(--good);
+  text-shadow: 0 0 6px var(--good);
 }
 
 .inactividad-botones #btn-continuar:hover {
-  background: rgba(0, 255, 0, 0.1);
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  background: var(--good-soft);
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
 }
 
 .inactividad-botones #btn-logout {
-  border-color: #ff0000;
-  color: #ff0000;
+  border-color: var(--bad);
+  color: var(--bad);
+  text-shadow: 0 0 6px var(--bad);
 }
 
 .inactividad-botones #btn-logout:hover {
-  background: rgba(255, 0, 0, 0.1);
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  background: var(--bad-soft);
+  box-shadow: 0 0 10px rgba(255, 40, 100, 0.5);
 }
