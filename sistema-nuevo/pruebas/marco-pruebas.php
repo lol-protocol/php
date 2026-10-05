@@ -73,6 +73,23 @@ function archivos_con_patron(array $fuentes, string $patron, array $helpers = []
     return $encontrados;
 }
 
+/**
+ * Los textos entre comillas simples o dobles de un código fuente PHP, sin sus comillas y sin mirar los comentarios:
+ * para vigilar que un literal (una ruta, un SQL...) no aparezca fuera del archivo donde debe vivir.
+ *
+ * @return string[]
+ */
+function literales_de_texto(string $fuente): array
+{
+    $literales = [];
+    foreach (token_get_all($fuente) as $token) {
+        if (is_array($token) && $token[0] === T_CONSTANT_ENCAPSED_STRING) {
+            $literales[] = substr($token[1], 1, -1);
+        }
+    }
+    return $literales;
+}
+
 /** @return int Código de salida: 0 si todo pasó, 1 si hubo fallas (para CI). */
 function pruebas_resumen(): int
 {

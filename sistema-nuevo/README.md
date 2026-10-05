@@ -68,7 +68,7 @@ sistema-nuevo/
 │   └── UtilHttp.java                  Parseo de query string, escape JSON, respuesta HTTP
 │
 ├── servidor-php/                   API backend (PHP), lee de PostgreSQL
-│   ├── publico/index.php              Front controller: CORS+cookies, preflight, rutas /api/*
+│   ├── publico/index.php              Front controller: CORS+cookies, preflight, despacha por la tabla de rutas
 │   └── codigo/
 │       ├── ConexionBd.php             Singleton PDO hacia PostgreSQL
 │       ├── AlmacenDatos.php           Usuarios (paginado/buscable) y grupos de países
@@ -88,6 +88,7 @@ sistema-nuevo/
 │       ├── saneador.php               Punto de entrada del saneador (ver saneador/)
 │       ├── saneador/                  primitivas, marca-temporal, accion(-monto/-campos/-ip)
 │       ├── api.php                    Punto de entrada de los endpoints (ver api/)
+│       ├── rutas.php                  La tabla de rutas: qué función atiende cada una y cuáles exigen sesión
 │       └── api/                       sesion, usuarios (+ groups, action-types), alertas(-config),
 │                                       linea-tiempo (+ linea-tiempo-cohortes), filtros, kpis,
 │                                       notas, ayudantes (api_responder/api_error, CSRF, delta %)
@@ -106,7 +107,8 @@ sistema-nuevo/
 │
 ├── pruebas/                        Pruebas automatizadas, sin dependencias nuevas
 │   ├── marco-pruebas.php / ejecutar-php.php     Framework mínimo + runner (PHP)
-│   ├── php/                                     Unit tests del saneador, api_scope_label, la muestra y ejecutar.sh
+│   ├── php/                                     Unit tests del saneador, los helpers y la tabla de rutas de la API,
+│   │                                             la muestra y ejecutar.sh
 │   ├── ejecutar-integracion.php                 Runner de integración (Almacen*.php, PostgreSQL real)
 │   ├── php-integracion/                         Unit tests de Almacen*.php, ClienteEstadisticas.php y la siembra
 │   ├── ejecutar-js.sh                           Runner (node:test, ya viene con Node)
@@ -114,8 +116,8 @@ sistema-nuevo/
 │   ├── ejecutar-e2e.sh                          Runner e2e (Playwright, ya instalado)
 │   └── e2e/                                     Login, timeline, paginación, filtros,
 │                                                 gráfico, alertas, idioma — panel completo;
-│                                                 los ejemplos .http contra la API real y los
-│                                                 valores de comparación contra PostgreSQL
+│                                                 los ejemplos .http contra la API real, las rutas
+│                                                 sin sesión y los valores de comparación contra PostgreSQL
 │
 └── ejecutar.sh                     Levanta PostgreSQL, siembra los datos si faltan y los 3
                                     servicios (--regenerar: recrea los datos desde cero)
@@ -538,7 +540,10 @@ php pruebas/ejecutar-integracion.php
   mitad de camino. Aparte, `peticiones-api.e2e.cjs` (sin navegador) reproduce
   `datos/ejemplos/peticiones-api.http` bloque por bloque contra la API real
   (login, token CSRF reusado en los POST/DELETE, cada código HTTP esperado) y
-  exige que el archivo tenga un ejemplo de cada ruta de `index.php`. Y
+  exige que el archivo tenga un ejemplo de cada ruta de la tabla de rutas
+  (`rutas.php`, que lee con `pruebas/e2e/listar-rutas.php`); con esa misma tabla
+  pide cada ruta sin sesión y exige el 401 en todas menos en las que manejan la
+  sesión por su cuenta. Y
   `comparacion-valores.e2e.cjs` contrasta contra PostgreSQL, que es el oráculo
   (`percentile_cont` usa la misma definición de percentil pero otra implementación,
   y lee las tablas en vez del CSV de Java), cada eslabón de la comparación: el
@@ -576,7 +581,7 @@ algo falla, el último paso imprime los logs de Java, la API y el panel.
   POST/DELETE (configuración de alertas, filtros guardados, notas, logout) con el
   `X-CSRF-Token` que devuelve el login. `pruebas/e2e/peticiones-api.e2e.cjs` lo
   reproduce entero contra la API real y falla si algún bloque deja de andar o si
-  alguna ruta de `index.php` queda sin ejemplo.
+  alguna ruta de la tabla de rutas queda sin ejemplo.
 
 ## Cómo correrlo
 
@@ -632,6 +637,19 @@ compartidos, no en memoria de un proceso.
 Abrir http://localhost:8082.
 
 ## API (backend PHP)
+
+**Rutas** (`codigo/rutas.php`, una sola tabla): cada ruta con la función que la atiende;
+`/api/filtros/{id}` captura el id como entero y se lo pasa a la función. Toda ruta exige
+sesión salvo que la tabla la marque `'sesion'`, y solo lo están `login`, `logout` y
+`session`, que manejan la sesión por su cuenta (por eso no pasan por la barrera de
+autenticación y la dejan abierta para escribirla). Agregar un endpoint sin tocar nada
+más lo deja protegido; antes había que sumarlo a una lista de rutas protegidas y a un
+`if/elseif`, y olvidar la primera lo dejaba abierto. `publico/index.php` solo consulta la
+tabla (`api_resolver_ruta()`): una ruta que no figura da 404, una que exige sesión y no
+la tiene da 401, el resto va a su función. `pruebas/php/rutas-test.php` prueba la
+resolución (y que `/api/users/`, `/api/filtros/abc` o `/api/USERS` no resuelvan), que
+las únicas rutas con `'sesion'` sean esas tres, que cada función exista y reciba justo
+los argumentos de su ruta, y que ningún otro archivo escriba rutas.
 
 **Piezas compartidas** (`api/ayudantes.php`, un solo lugar cada una): `api_responder()`
 serializa toda respuesta (JSON con el UTF-8 crudo; una bandera de `json_encode` olvidada
