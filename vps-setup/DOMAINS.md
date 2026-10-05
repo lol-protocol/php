@@ -2,6 +2,17 @@
 
 Guía completa para configurar y gestionar los múltiples dominios en el VPS.
 
+**Nota:** el dominio real ya comprado y desplegado es **`initech.fun`** (ver
+[ARCHITECTURE.md](ARCHITECTURE.md) y `vps-setup/`, donde es el valor default
+de `$DOMAIN` en todos los scripts). Los dominios de este documento
+(`conce.com`, `initech.cl`, `contrastocolor.ink`, `wikipedia.cl`) son
+**ejemplos ilustrativos** de cómo agregar un segundo/tercer/cuarto dominio a
+la misma arquitectura — todavía no están registrados. También: correr
+`vps-setup/03-configure-nginx-site.sh <dominio>` hace exactamente lo mismo
+que los pasos manuales de abajo (y de forma menos propensa a error) — esta
+guía es útil para entender qué hace el script paso a paso, no un sustituto
+recomendado de correrlo.
+
 ---
 
 ## 📊 Dominios Principales
@@ -40,6 +51,17 @@ server {
 
     location / {
         try_files $uri $uri/ =404;
+    }
+
+    # Por si en el futuro se agregan paginas .php a este mismo sitio
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+    }
+
+    # Bloquea el acceso a archivos ocultos tipo .htaccess/.htpasswd
+    location ~ /\.ht {
+        deny all;
     }
 }
 ```
@@ -102,6 +124,17 @@ server {
 
     location / {
         try_files $uri $uri/ =404;
+    }
+
+    # Por si en el futuro se agregan paginas .php a este mismo sitio
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+    }
+
+    # Bloquea el acceso a archivos ocultos tipo .htaccess/.htpasswd
+    location ~ /\.ht {
+        deny all;
     }
 }
 ```
@@ -222,7 +255,12 @@ sudo systemctl reload nginx
 
 **Systemd Service:**
 ```bash
-sudo tee /etc/systemd/system/contrastocolor.service > /dev/null <<'EOF'
+# (CPU cores * 2) + 1, recomendado por Gunicorn -- igual que hace
+# vps-setup/06_B-setup-python-app.sh. Un numero fijo como "4" desperdicia
+# recursos en un VPS chico o subutiliza uno grande.
+WORKERS=$(($(nproc) * 2 + 1))
+
+sudo tee /etc/systemd/system/contrastocolor.service > /dev/null <<EOF
 [Unit]
 Description=Contrasto Color Flask App
 After=network.target
@@ -233,11 +271,13 @@ User=www-data
 WorkingDirectory=/var/www/contrastocolor.ink
 Environment="PATH=/var/www/contrastocolor.ink/venv/bin"
 ExecStart=/var/www/contrastocolor.ink/venv/bin/gunicorn \
-    --workers 4 \
+    --workers $WORKERS \
     --bind 127.0.0.1:8000 \
     app:app
 Restart=always
 RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=3
 
 [Install]
 WantedBy=multi-user.target

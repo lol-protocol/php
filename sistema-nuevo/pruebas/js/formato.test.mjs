@@ -1,6 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { formatDuration, formatFileSize, formatPct } from "../../interfaz/js/formato.js";
+
+// formato.js importa nucleo.js, que lee window.location.hostname para armar
+// API_BASE; Node no trae esa API del navegador, así que se simula antes del import.
+globalThis.window = { location: { hostname: "localhost" } };
+
+const { formatDuration, formatFileSize, formatPct } = await import("../../interfaz/js/formato.js");
 
 test("formatDuration: milisegundos por debajo de 1s", () => {
   assert.equal(formatDuration(850), "850 ms");

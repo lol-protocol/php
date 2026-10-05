@@ -154,7 +154,7 @@ $reviewer->validateFullName('Paco', 'Cojes');
 
 ### Diecisiete idiomas, diecisiete fonéticas distintas
 
-Cubre los 17 idiomas en script latino de los 33 soportados — cada uno con su
+Cubre 17 de los 22 idiomas en script latino (de 33 soportados) — cada uno con su
 propio folder (`SpanishPhoneticFolder`, `PortuguesePhoneticFolder`,
 `ItalianPhoneticFolder`, `FrenchPhoneticFolder`, `GermanPhoneticFolder`,
 `CzechPhoneticFolder`, `SlovakPhoneticFolder`, `DanishPhoneticFolder`,

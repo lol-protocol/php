@@ -1,17 +1,5 @@
 const { chromium } = require("playwright");
-const { execSync } = require("node:child_process");
-const { assert, paso, resumenPasos, iniciarSesion, BASE_URL } = require("./ayudante-e2e.cjs");
-
-function ejecutarSql(sql) {
-  const env = {
-    ...process.env,
-    PGPASSWORD: process.env.BACKOFFICE_BD_CLAVE || "backoffice_dev_2026",
-  };
-  const host = process.env.BACKOFFICE_BD_HOST || "localhost";
-  const usuario = process.env.BACKOFFICE_BD_USUARIO || "backoffice_app";
-  const nombre = process.env.BACKOFFICE_BD_NOMBRE || "backoffice";
-  execSync(`psql -h ${host} -U ${usuario} -d ${nombre} -c "${sql}"`, { env, stdio: "pipe" });
-}
+const { assert, paso, resumenPasos, iniciarSesion, ejecutarSql, BASE_URL } = require("./ayudante-e2e.cjs");
 
 function limpiarIntentosLogin() {
   ejecutarSql("DELETE FROM intentos_login;");
