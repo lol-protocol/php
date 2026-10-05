@@ -7,7 +7,9 @@ declare(strict_types=1);
  * datos/generador/cargar-postgres-nucleo.php la carga una vez a la tabla
  * administradores al generar los datos. El login en vivo valida contra esa
  * tabla (AlmacenAdministradores), no contra este archivo -- para cambiar la
- * contraseña demo hay que regenerar los datos después de editar esto.
+ * contraseña demo hay que regenerar los datos después de editar esto
+ * (./ejecutar.sh --regenerar, que también borra notas, filtros guardados y
+ * configuración de alertas).
  *
  * Usuario:     admin
  * Contraseña:  admin123

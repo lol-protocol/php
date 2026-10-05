@@ -39,7 +39,9 @@ sistema-nuevo/
 ├── MANUAL-USUARIO.md                Guía de uso del panel (no técnica)
 │
 ├── datos/                          Datos semilla + generador (modularizado)
-│   ├── generar-datos-semilla.php      Orquesta la generación (requiere generador/*.php)
+│   ├── generar-datos-semilla.php      Orquesta la generación (requiere generador/*.php);
+│   │                                   recrea la base desde cero (borra también notas y filtros)
+│   ├── sembrar-si-falta.php           Lo mismo, pero solo si la base no está sembrada
 │   ├── generador/                     Catálogos, generación de flujo/registro, saneo,
 │   │                                   escritura de archivos y carga a PostgreSQL
 │   ├── usuarios.json                  60 usuarios sintéticos (país, edad, género, nombre)
@@ -102,9 +104,9 @@ sistema-nuevo/
 │
 ├── pruebas/                        Pruebas automatizadas, sin dependencias nuevas
 │   ├── marco-pruebas.php / ejecutar-php.php     Framework mínimo + runner (PHP)
-│   ├── php/                                     Unit tests del saneador, api_scope_label y la muestra
+│   ├── php/                                     Unit tests del saneador, api_scope_label, la muestra y ejecutar.sh
 │   ├── ejecutar-integracion.php                 Runner de integración (Almacen*.php, PostgreSQL real)
-│   ├── php-integracion/                         Unit tests de Almacen*.php y ClienteEstadisticas.php
+│   ├── php-integracion/                         Unit tests de Almacen*.php, ClienteEstadisticas.php y la siembra
 │   ├── ejecutar-js.sh                           Runner (node:test, ya viene con Node)
 │   ├── js/                                      Unit tests de formato.js, idioma.js y alertas.js
 │   ├── ejecutar-e2e.sh                          Runner e2e (Playwright, ya instalado)
@@ -112,7 +114,8 @@ sistema-nuevo/
 │                                                 gráfico, alertas, idioma — panel completo;
 │                                                 y los ejemplos .http contra la API real
 │
-└── ejecutar.sh                     Levanta PostgreSQL + carga datos + los 3 servicios
+└── ejecutar.sh                     Levanta PostgreSQL, siembra los datos si faltan y los 3
+                                    servicios (--regenerar: recrea los datos desde cero)
 ```
 
 **Flujo de una request:** el navegador solo habla con el backend PHP. El backend PHP
@@ -353,6 +356,18 @@ correrlo de nuevo). Variables de entorno (con default si no están seteadas):
 `BACKOFFICE_BD_NOMBRE` (`backoffice`), `BACKOFFICE_BD_USUARIO` (`backoffice_app`),
 `BACKOFFICE_BD_CLAVE` (`backoffice_dev_2026`).
 
+**Sembrar es destructivo.** Ese `DROP` alcanza a todas las tablas, también a las que el
+usuario escribe desde el panel (`notas_acciones`, `filtros_guardados`,
+`configuracion_alertas`) y al bloqueo de login (`intentos_login`). Por eso `ejecutar.sh`
+no corre `generar-datos-semilla.php` directamente sino `sembrar-si-falta.php`
+(criterio en `datos/generador/base-sembrada.php`), que solo siembra si la base está
+vacía, si le falta alguna tabla de los esquemas (el esquema cambió desde la última vez;
+no hay migraciones) o si no tiene acciones: así las notas, los filtros guardados y la
+configuración de alertas sobreviven a reiniciar. Recrearlo todo a propósito es
+`./ejecutar.sh --regenerar` (o `php datos/generar-datos-semilla.php`), y hay que hacerlo
+después de cambiar una tabla que ya existe (solo se detectan tablas que faltan, no
+columnas nuevas) o la contraseña demo (`credenciales.php`).
+
 `datos/esquema-datos-ejemplo.sql` es aparte: un puñado de INSERT de ejemplo, para
 mirar el esquema con datos sin correr el generador completo — el sistema no lo
 carga automáticamente. Va después de `esquema.sql` y `esquema-nucleo.sql`, en ese
@@ -431,6 +446,10 @@ php pruebas/ejecutar-integracion.php
   `api_scope_label()` (etiqueta del universo de comparación: `null` cuando no hay
   filtro de país, coherente con `api_resolve_scope_countries()`; así "todos los
   países" lo traduce el frontend) y los 7 registros de `muestra-antes-despues.json`.
+  También `ejecutar.sh`, corrido con `php`/`java`/`javac` falsos que solo anotan cómo los
+  llamaron: sin opciones siembra con `sembrar-si-falta.php` (no con el script destructivo),
+  `--regenerar` con `generar-datos-semilla.php` y avisa que borra, y una opción
+  desconocida es un error de uso en vez de ignorarse.
 - `pruebas/php-integracion/`: `AlmacenFiltros` (CRUD completo, age_min=0/null no se
   pierde), `AlmacenNotas` (guardar es upsert, texto vacío borra la fila),
   `AlmacenConfiguracion` (default habilitado si no hay fila, guardar/leer umbral),
@@ -450,6 +469,10 @@ php pruebas/ejecutar-integracion.php
   de la BD, no del archivo). Además, `esquema-datos-ejemplo.sql` se carga (junto
   con `esquema.sql` y `esquema-nucleo.sql`) en un schema descartable dentro de una
   transacción que siempre se revierte, para que los ejemplos no se rompan sin avisar.
+  Y la siembra: `sembrar-si-falta.php` corrido contra la base real, con una nota, un
+  filtro guardado y un umbral de alertas puestos encima, no los toca (la prueba que
+  habría fallado mientras `ejecutar.sh` sembraba en cada arranque); `motivo_para_sembrar()`
+  distingue, en un schema descartable, base vacía, sin acciones, sembrada y esquema viejo.
 - `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
@@ -512,17 +535,27 @@ el cliente `psql`). Nada más para el sistema en sí (las pruebas usan Node, ver
 ./ejecutar.sh
 ```
 
-Deja PostgreSQL arriba (`preparar-postgres.sh`), genera y carga los datos, y levanta:
+Deja PostgreSQL arriba (`preparar-postgres.sh`), genera y carga los datos **solo si la
+base todavía no los tiene**, y levanta:
 - Panel de administración: http://localhost:8082 (usuario demo: `admin` / `admin123`)
 - API backend (PHP): http://localhost:8000/api/session
 - Stats service (Java): http://localhost:8081/stats?type=login
 
+Las notas, los filtros guardados y la configuración de alertas se guardan en
+PostgreSQL y sobreviven a reiniciar con `./ejecutar.sh`. Para empezar de cero a
+propósito (**borra** todo eso, y también el bloqueo de login):
+
+```bash
+./ejecutar.sh --regenerar
+```
+
 **Manual**, en 3 terminales separadas desde `sistema-nuevo/`:
 
 ```bash
-# 1. PostgreSQL arriba + datos semilla (solo hace falta una vez, o para regenerar)
+# 1. PostgreSQL arriba + datos semilla. sembrar-si-falta.php no toca nada si la base ya
+#    está sembrada; generar-datos-semilla.php la recrea desde cero (borra notas y filtros)
 ./preparar-postgres.sh
-php datos/generar-datos-semilla.php
+php datos/sembrar-si-falta.php
 
 # 2. Microservicio de estadísticas (Java) — son 7 archivos, hay que compilarlos juntos
 cd servicio-estadisticas-java && javac *.java && java ServicioEstadisticas

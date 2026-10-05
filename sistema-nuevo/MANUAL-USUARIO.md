@@ -161,3 +161,9 @@ subila y probá de nuevo.
 correcta, ¿está roto?** No — es la protección contra fuerza bruta: tras 5
 intentos fallidos seguidos, ese acceso queda bloqueado 15 minutos aunque
 pongas la contraseña bien. Esperá y probá de nuevo.
+
+**¿Se pierden mis notas y mis filtros guardados si se reinicia el sistema?** No:
+viven en la base de datos y siguen ahí al volver a arrancar. Solo se borran si quien
+administra el sistema lo recrea a propósito desde cero (`./ejecutar.sh --regenerar`,
+ver `README.md`); en ese caso también se pierde la configuración de alertas que
+hayas cambiado.
