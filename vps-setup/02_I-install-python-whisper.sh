@@ -1,20 +1,16 @@
 #!/bin/bash
 set -e
 
+source "$(dirname "$0")/lib.sh"
+
 VENV_PATH="/opt/venvs/whisper"
 
-echo "========================================"
-echo "[02_I] Python: Whisper + librerias basicas"
-echo "========================================"
-echo ""
+print_header "02_I" "Python: Whisper + librerias basicas"
 echo "NOTA: requiere Python ya instalado (script 02_C-install-python.sh)."
 echo "AVISO: esto descarga PyTorch (~200-500 MB). Puede tardar varios minutos."
 echo ""
 
-if ! command -v python3 &> /dev/null; then
-    echo "ERROR: Python no esta instalado. Corre primero: ./02_C-install-python.sh"
-    exit 1
-fi
+check_dependency python3 "./02_C-install-python.sh"
 
 # ffmpeg es requerido por Whisper para decodificar audio/video
 echo "[1/3] Instalando ffmpeg..."

@@ -39,7 +39,6 @@ export default {
   alerts_title_ip: "⚠ IP outside declared country",
   alerts_title_cambios: "⚠ Impossible country changes",
   alerts_config_title: "Configure alerts",
-  alerts_summary: "{total} actions across {users} users.",
   alerts_last_seen: "Last seen: {date}",
 
   config_alerta_ip_pais: "IP outside declared country",
@@ -102,6 +101,7 @@ export default {
   btn_eliminar_filtro: "Delete",
   filtro_nombre_prompt: "Filter name:",
   filtro_eliminar_confirmar: "Delete this filter?",
+  modal_cancelar: "Cancel",
 
   login_subtitle: "Sign in to continue",
   label_password: "Password",

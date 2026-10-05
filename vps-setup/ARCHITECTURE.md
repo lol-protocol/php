@@ -14,12 +14,24 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 
 ## 🌐 Dominios Configurados
 
+**`initech.fun`** es el dominio real, comprado y con la landing page ya
+desplegada — es el que usan por defecto todos los scripts de `vps-setup/`
+(`initech.fun` es el valor default de `$DOMAIN` en cada script) y el que
+referencia `landing-page/index.html`.
+
+Los demás dominios de esta tabla (`conce.com`, `initech.cl`,
+`contrastocolor.ink`, `wikipedia.cl`) son **ejemplos ilustrativos** de cómo
+extender esta misma arquitectura a un segundo/tercer/cuarto dominio en el
+mismo VPS (documentados en detalle en [DOMAINS.md](DOMAINS.md)) — todavía no
+están registrados ni configurados.
+
 | Dominio | Tipo | Propósito | Status |
 |---------|------|----------|--------|
-| **conce.com** | Landing Page | Sitio principal (Conce) | 🔄 Pendiente |
-| **initech.cl** | Landing Page | Sitio corporativo (Initech) | 🔄 Pendiente |
-| **contrastocolor.ink** | Aplicación | Portal de colores/diseño | 🔄 Pendiente |
-| **wikipedia.cl** | Aplicación | Wiki local | 🔄 Pendiente |
+| **initech.fun** | Landing Page | Sitio real (Initech) | ✅ Activo |
+| conce.com | Landing Page | Ejemplo de 2do dominio (Conce) | 🔄 Ejemplo, no registrado |
+| initech.cl | Landing Page | Ejemplo de 2do dominio (Initech) | 🔄 Ejemplo, no registrado |
+| contrastocolor.ink | Aplicación | Ejemplo de app (Portal de colores/diseño) | 🔄 Ejemplo, no registrado |
+| wikipedia.cl | Aplicación | Ejemplo de app (Wiki local) | 🔄 Ejemplo, no registrado |
 
 ---
 
@@ -33,7 +45,7 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
   - Alternativa a cPanel (de pago), Virtualmin y CloudPanel (que administran el servidor con su propio CLI/base de datos y no resisten bien no tener panel)
 
 ### Servidor Web
-- **Nginx 1.26+** (instalado con `apt`, configurado a mano, un `sites-available/<dominio>` por sitio)
+- **Nginx** (instalado con `apt` sin fijar versión -- usa la que traiga el repo de Ubuntu 24.04, actualmente 1.24.x -- configurado a mano, un `sites-available/<dominio>` por sitio)
   - Reverse proxy
   - Compresión GZIP
   - Cache HTTP
@@ -52,7 +64,9 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 - Renovación automática con `certbot.timer`
 
 ### Monitoreo & Logging
-- **Nginx Logs** - Access & error logs por dominio, también visibles desde Webmin
+- **Nginx Logs** - Access & error logs por dominio, también visibles desde Webmin; rotados a diario (14 archivos) por `07_D`
+- **vps-monitor** (opcional, `09_A`) - cada 15 min revisa disco, RAM, carga, certificados y servicios; alerta por webhook/correo solo cuando cambia el estado
+- **Healthcheck** - `08-healthcheck.sh` (solo lectura) verifica servicios, UFW, puertos, DNS, HTTPS, certificado y headers
 - **Syslog** - Sistema centralizado (futuro)
 - **Prometheus** - Métricas (futuro)
 
@@ -63,18 +77,21 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 ```
 /var/www/
 ├── landing-page/
-│   ├── conce.com/
+│   ├── initech.fun/          # el dominio real, ya activo
 │   │   └── index.html
-│   └── initech.cl/
+│   ├── conce.com/            # ejemplo, no registrado
+│   │   └── index.html
+│   └── initech.cl/           # ejemplo, no registrado
 │       └── index.html
-├── contrastocolor.ink/
+├── contrastocolor.ink/       # ejemplo, no registrado
 │   ├── venv/
 │   └── app.py
-└── wikipedia.cl/
+└── wikipedia.cl/             # ejemplo, no registrado
     └── public/
 
 /etc/nginx/
 ├── sites-available/
+│   ├── initech.fun
 │   ├── conce.com
 │   ├── initech.cl
 │   ├── contrastocolor.ink
@@ -83,12 +100,14 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
     └── (enlaces simbólicos)
 
 /etc/letsencrypt/live/
+├── initech.fun/
 ├── conce.com/
 ├── initech.cl/
 ├── contrastocolor.ink/
 └── wikipedia.cl/
 
 /var/log/nginx/
+├── initech.fun/
 ├── conce.com/
 ├── initech.cl/
 ├── contrastocolor.ink/
@@ -146,16 +165,18 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 - ✅ Certificados Let's Encrypt (gratis)
 - ✅ Renovación automática (Certbot)
 - ✅ HTTPS obligatorio (redirección automática, la agrega Certbot al instalar el certificado)
-- ⚠️ Headers de seguridad (`Strict-Transport-Security`, `X-Frame-Options`,
-  `X-Content-Type-Options`, `X-XSS-Protection`) -- **ningún script los agrega
-  todavía**. Si los quieres, hay que sumarlos a mano en cada
-  `/etc/nginx/sites-available/<dominio>` con `add_header`, dentro del
-  bloque `server` de cada sitio.
+- ✅ Headers de seguridad (`Strict-Transport-Security`, `X-Frame-Options`,
+  `X-Content-Type-Options`, `Referrer-Policy`) -- los agrega
+  `07_B-nginx-security-headers.sh` en `/etc/nginx/conf.d/security-headers.conf`
+  para todos los dominios. No incluye `X-XSS-Protection` (obsoleto) ni
+  `Content-Security-Policy` (hay que ajustarla a cada sitio).
 
-### Firewall
+### Firewall y endurecimiento
+- ✅ fail2ban con jail de SSH (por `07_A`): banea 1h tras 5 intentos fallidos en 10 min
+- ✅ Parches de seguridad automáticos (`unattended-upgrades`, por `07_A`); no reinicia el servidor solo
 - ✅ UFW habilitado (por `01-system-update.sh`, con SSH permitido antes de activarlo)
-- ✅ Puertos abiertos: 22 (SSH), 80 (HTTP, vía `02_E`), 443 (HTTPS, vía `04`)
-- ⚠️ SSH por contraseña (ningún script configura llaves SSH ni desactiva el login por contraseña -- si quieres esto, es un paso manual aparte: generar un par de llaves, copiar la pública con `ssh-copy-id`, y luego editar `/etc/ssh/sshd_config` para poner `PasswordAuthentication no`)
+- ✅ Puertos abiertos: 22 (SSH), 80 y 443 (HTTP/HTTPS, vía el perfil `Nginx Full` de UFW que abre `02_E`)
+- ⚠️ SSH por contraseña **hasta que corras `07_C-harden-ssh.sh`** (opcional, no va en `install-all.sh` porque necesita tu llave pública y que compruebes el login por llave antes: autoriza la llave y desactiva contraseña y login de root; `--revert` lo deshace)
 
 ### Base de Datos
 - ✅ PostgreSQL sin acceso externo
@@ -168,14 +189,12 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 
 ```
 ┌─────────────────────────────────────────────────┐
-│           Internet / DNS (Cloudflare)           │
+│         Internet / DNS (del registrador)        │
+│                                                   │
+│  initech.fun (real, activo)                      │
+│  conce.com, initech.cl, contrastocolor.ink,      │
+│  wikipedia.cl (ejemplos, no registrados)         │
 └─────────────────────┬───────────────────────────┘
-                      │
-         ┌────────────┼────────────┐
-         │            │            │
-   conce.com   initech.cl   contrastocolor.ink
-         │            │            │
-         └────────────┼────────────┘
                       │ A Record
          ┌────────────▼─────────────┐
          │  158.69.222.245 (VPS)    │
@@ -206,15 +225,16 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 
 ## 🚀 Fases de Implementación
 
-### **Fase 1: Setup Base** (ACTUAL)
+### **Fase 1: Setup Base** (completada para `initech.fun`)
 - [x] Instalación de software base
 - [x] Configuración de Nginx
 - [x] Webmin instalado (panel de administración opcional)
-- [ ] Landing pages (conce.com, initech.cl)
-- [ ] SSL/HTTPS (Let's Encrypt vía Certbot)
-- [ ] Configuración DNS
+- [x] Landing page (initech.fun)
+- [x] SSL/HTTPS (Let's Encrypt vía Certbot)
+- [x] Configuración DNS
 
-### **Fase 2: Aplicaciones Web**
+### **Fase 2: Más dominios y aplicaciones web** (ejemplos, no iniciada)
+- [ ] Landing pages de ejemplo (conce.com, initech.cl)
 - [ ] contrastocolor.ink (Aplicación Python)
 - [ ] wikipedia.cl (Aplicación PHP)
 - [ ] Base de datos PostgreSQL
@@ -284,7 +304,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 
 ## 📞 Contacto & Soporte
 
-- **Email:** admin@initech.cl
+- **Email:** admin@initech.fun
 - **Proveedor VPS:** OVHCloud Support
 - **Monitoreo:** Alertas automáticas
 

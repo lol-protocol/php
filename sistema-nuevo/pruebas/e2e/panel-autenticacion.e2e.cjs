@@ -38,6 +38,13 @@ const { assert, paso, resumenPasos, iniciarSesion, BASE_URL } = require("./ayuda
       data: { accion_id: "a00037", texto: "no debería guardarse" },
     });
     assert.equal(tokenInvalido.status(), 403);
+
+    // JSON_UNESCAPED_UNICODE en todos los json_encode(): la tilde viaja como
+    // UTF-8 crudo ("inválido"), no escapada ("á") -- mismo formato de
+    // cable en toda la API, no solo en los endpoints con payloads grandes.
+    const cuerpo = await tokenInvalido.text();
+    assert.equal(cuerpo.includes("inválido"), true);
+    assert.equal(cuerpo.includes("\\u00e1"), false);
   });
 
   await paso("cerrar sesión vuelve a la pantalla de login", async () => {

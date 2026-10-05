@@ -25,8 +25,14 @@ instalado, sin sumar paquetes nuevos — ver "Pruebas automatizadas" más abajo)
 Nombres en español simple; se mantienen en inglés los nombres de lenguaje
 (php/java/css/js) y las convenciones estándar que el propio tooling espera
 literalmente (`index.php`, `README.md`, `public/`→`publico/` es la excepción que sí
-se tradujo, `src/`→`codigo/` también). Ningún archivo de código pasa las 100 líneas —
-todo está modularizado en piezas chicas y enfocadas.
+se tradujo, `src/`→`codigo/` también). La mayoría de los archivos de código no pasan
+las 100 líneas — el objetivo es que cada uno sea una pieza chica y enfocada, no un
+número exacto. Los pocos que sí las pasan son casos donde partirlos sería peor:
+un diccionario i18n plano (`es.js`/`en.js`), hojas de estilo de un solo componente
+(`alertas.css`, `topbar.css`), un cliente HTTP cohesivo con un solo estado interno
+compartido (`ClienteEstadisticas.php`) o una suite e2e ya acotada a un tema
+(`panel-nuevas-features.e2e.cjs`) — fragmentarlos solo para bajar el número
+cambiaría "piezas enfocadas" por "piezas dispersas".
 
 ```
 sistema-nuevo/
@@ -44,7 +50,7 @@ sistema-nuevo/
 │   ├── monedas.json                   Moneda por país + cotización fija frente al USD
 │   ├── esquema.sql                    DDL PostgreSQL: catálogos (monedas, países, grupos, tipos)
 │   ├── esquema-nucleo.sql             DDL PostgreSQL: usuarios, administradores, acciones
-│   ├── esquema-datos-ejemplo.sql      Filas de ejemplo standalone (no las carga el sistema)
+│   ├── esquema-datos-ejemplo.sql      Filas de ejemplo, van después de esquema*.sql (no las carga el sistema)
 │   └── ejemplos/                      muestra-antes-despues.json, peticiones-api.http
 │
 ├── preparar-postgres.sh            Deja PostgreSQL listo (servicio, rol, base) — idempotente
@@ -73,7 +79,8 @@ sistema-nuevo/
 │       ├── ClienteEstadisticas.php    Llama al servicio de estadísticas por HTTP
 │       ├── autenticacion.php          Sesión + CSRF (login/logout, un solo usuario)
 │       ├── AlmacenIntentosLogin.php   Rate limiting de /api/login por IP
-│       ├── credenciales.php           Usuario demo + hash de contraseña (bcrypt)
+│       ├── AlmacenAdministradores.php Lee la tabla administradores (login en vivo)
+│       ├── credenciales.php           Solo semilla: carga admin/hash a la tabla al generar datos
 │       ├── saneador.php               Punto de entrada del saneador (ver saneador/)
 │       ├── saneador/                  primitivas, marca-temporal, accion(-monto/-campos/-ip)
 │       ├── api.php                    Punto de entrada de los endpoints (ver api/)
@@ -84,24 +91,26 @@ sistema-nuevo/
 ├── interfaz/                       Panel de administración (HTML/CSS/JS, sin frameworks)
 │   ├── index.php                      Ensambla partes/*.php + enlaza los .css
 │   ├── partes/                        pantalla-login.php, topbar.php, panel-principal.php
-│   ├── css/                           18 archivos chicos (base, login, topbar, tarjetas,
-│   │                                   paginacion, grafico, alertas...)
+│   ├── css/                           19 archivos chicos (base, login, topbar, tarjetas,
+│   │                                   paginacion, grafico, alertas, modal...)
 │   └── js/                            Módulos ES: nucleo, formato, sesion, selectores,
 │       ├── i18n/es.js, i18n/en.js         tarjeta-usuario, metricas, linea-tiempo, paginacion,
 │       ├── idioma.js, idioma-refrescar.js grafico, alertas, idioma(-refrescar), aplicacion,
 │       └── aplicacion.js, eventos.js      eventos (entry point), configuracion-alertas, filtros,
-│                                           inactividad, kpis, nota-bloque, notas, notificaciones
+│                                           inactividad, modal (prompt/confirm propios, ver abajo),
+│                                           kpis, nota-bloque, notas, notificaciones
 │
 ├── pruebas/                        Pruebas automatizadas, sin dependencias nuevas
 │   ├── marco-pruebas.php / ejecutar-php.php     Framework mínimo + runner (PHP)
-│   ├── php/                                     Unit tests del saneador
+│   ├── php/                                     Unit tests del saneador, api_scope_label y la muestra
 │   ├── ejecutar-integracion.php                 Runner de integración (Almacen*.php, PostgreSQL real)
 │   ├── php-integracion/                         Unit tests de Almacen*.php y ClienteEstadisticas.php
 │   ├── ejecutar-js.sh                           Runner (node:test, ya viene con Node)
 │   ├── js/                                      Unit tests de formato.js, idioma.js y alertas.js
 │   ├── ejecutar-e2e.sh                          Runner e2e (Playwright, ya instalado)
 │   └── e2e/                                     Login, timeline, paginación, filtros,
-│                                                 gráfico, alertas, idioma — panel completo
+│                                                 gráfico, alertas, idioma — panel completo;
+│                                                 y los ejemplos .http contra la API real
 │
 └── ejecutar.sh                     Levanta PostgreSQL + carga datos + los 3 servicios
 ```
@@ -168,13 +177,20 @@ esto de forma **proactiva**, sin tener que elegir un usuario primero.
 Sesión simple por cookie (PHP `session`), sin roles ni registro — pensada para un
 prototipo, no para producción.
 
-- Usuario demo: **admin** / **admin123** (hash bcrypt en `credenciales.php`, la
-  contraseña nunca se compara ni se guarda en texto plano).
+- Usuario demo: **admin** / **admin123**. El login valida contra la tabla
+  `administradores` (`AlmacenAdministradores`), no contra un archivo -- `credenciales.php`
+  es solo el dato semilla que carga esa fila una vez al generar los datos (ver "Base
+  de datos"). La contraseña nunca se compara ni se guarda en texto plano (hash bcrypt,
+  `password_verify()`); si el usuario no existe, igual se corre `password_verify()`
+  contra un hash dummy en vez de cortar antes, para que el tiempo de respuesta no
+  filtre qué usuarios existen.
 - Como la interfaz y la API corren en puertos distintos, la cookie de sesión viaja
   entre orígenes: `servidor-php/publico/index.php` responde el preflight CORS (OPTIONS)
-  y refleja `http://localhost:8082` como único origen permitido con
-  `Access-Control-Allow-Credentials`, en vez de usar `*` (que el navegador rechaza
-  para requests con credenciales, y que sería una configuración CORS abierta).
+  y refleja como único origen permitido `http://localhost:8082` (o
+  `BACKOFFICE_CORS_ORIGEN`, mismo patrón de variable de entorno con default que
+  `BACKOFFICE_BD_*` más abajo) con `Access-Control-Allow-Credentials`, en vez de
+  usar `*` (que el navegador rechaza para requests con credenciales, y que sería
+  una configuración CORS abierta).
 - **CSRF**: `auth_marcar_autenticado()` regenera un token en cada login
   (`bin2hex(random_bytes(32))`, guardado en `$_SESSION`). El frontend lo recibe
   en la respuesta de `/api/login` y `/api/session`, y `postJson`/`deleteJson`
@@ -224,7 +240,9 @@ Cualquier combinación de universo/edad/género/tipo se puede nombrar y guardar
 barra superior. El `scope` se guarda tal cual sale de `#scope-select`
 (`country:XX`/`preset:XX`/`all`) — el mismo valor se usa para poblar el selector y
 para reconstruirlo al aplicar el filtro, sin una capa de traducción intermedia que
-pueda desincronizarse.
+pueda desincronizarse. Guardar (nombre) y eliminar (confirmación) usan
+`interfaz/js/modal.js` -- un modal propio con la estética del panel, no los
+`prompt()`/`confirm()` nativos del navegador.
 
 ## Gráfico de evolución temporal
 
@@ -335,9 +353,12 @@ correrlo de nuevo). Variables de entorno (con default si no están seteadas):
 `BACKOFFICE_BD_NOMBRE` (`backoffice`), `BACKOFFICE_BD_USUARIO` (`backoffice_app`),
 `BACKOFFICE_BD_CLAVE` (`backoffice_dev_2026`).
 
-`datos/esquema-datos-ejemplo.sql` es aparte: un puñado de INSERT de ejemplo
-standalone, para mirar el esquema con datos sin correr el generador completo — el
-sistema no lo carga automáticamente.
+`datos/esquema-datos-ejemplo.sql` es aparte: un puñado de INSERT de ejemplo, para
+mirar el esquema con datos sin correr el generador completo — el sistema no lo
+carga automáticamente. Va después de `esquema.sql` y `esquema-nucleo.sql`, en ese
+orden (tiene INSERT en tablas de los dos; solo con `esquema.sql` falla):
+`pruebas/php-integracion/esquema-datos-ejemplo-test.php` lo carga así en un schema
+descartable, dentro de una transacción que siempre se revierte.
 
 Ojo si se agrega una tabla nueva con FK hacia `acciones` o `usuarios`: el
 `DROP TABLE ... CASCADE` de esas dos en `esquema.sql` borra la *constraint* de FK
@@ -388,7 +409,7 @@ Sin sumar dependencias nuevas: PHP y Node ya estaban, y Playwright ya viene
 instalado globalmente en este entorno.
 
 ```bash
-# Unit tests del saneador (framework propio en pruebas/marco-pruebas.php, sin BD)
+# Unit tests en PHP puro: saneador y helpers de la API (framework propio en pruebas/marco-pruebas.php, sin BD)
 php pruebas/ejecutar-php.php
 
 # Integración: Almacen*.php contra PostgreSQL real -- requiere el servicio arriba
@@ -406,7 +427,10 @@ php pruebas/ejecutar-integracion.php
   `codigo_http`/`ip`/`codigo_pais` (primitivas), `saneador_marca_temporal`/
   `duracion_ms` (fechas), y `saneador_accion()` de punta a punta (registro válido,
   campo esencial faltante, usuario inexistente, comentario con HTML, moneda
-  inválida cae al país del usuario, hora local derivada de la IP).
+  inválida cae al país del usuario, hora local derivada de la IP), más
+  `api_scope_label()` (etiqueta del universo de comparación: `null` cuando no hay
+  filtro de país, coherente con `api_resolve_scope_countries()`; así "todos los
+  países" lo traduce el frontend) y los 7 registros de `muestra-antes-despues.json`.
 - `pruebas/php-integracion/`: `AlmacenFiltros` (CRUD completo, age_min=0/null no se
   pierde), `AlmacenNotas` (guardar es upsert, texto vacío borra la fila),
   `AlmacenConfiguracion` (default habilitado si no hay fila, guardar/leer umbral),
@@ -417,10 +441,15 @@ php pruebas/ejecutar-integracion.php
   `AlmacenAcciones` y `AlmacenDatos` (empate en `marca_temporal`/`nombre` se
   desempata por `id`, para que la paginación no repita/salte filas),
   `AlmacenAlertas` (mismas invariantes que `AlmacenKpis`, tope de 15 en el top,
-  empate en `mismatch_count` también desempatado por `id`) y
+  empate en `mismatch_count` también desempatado por `id`),
   `ClienteEstadisticas` (servicio caído devuelve `null` sin lanzar excepción y
   el reintento no tarda segundos; `statsVarios()` pide varios tipos en paralelo,
-  y con el servicio colgado el lote entero paga un solo timeout, no uno por tipo).
+  y con el servicio colgado el lote entero paga un solo timeout, no uno por tipo) y
+  `AlmacenAdministradores`/`auth_verificar_credenciales` (un admin que solo existe
+  en la tabla, no en `credenciales.php`, autentica igual -- prueba que el login lee
+  de la BD, no del archivo). Además, `esquema-datos-ejemplo.sql` se carga (junto
+  con `esquema.sql` y `esquema-nucleo.sql`) en un schema descartable dentro de una
+  transacción que siempre se revierte, para que los ejemplos no se rompan sin avisar.
 - `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
@@ -430,10 +459,18 @@ php pruebas/ejecutar-integracion.php
   sesión `HttpOnly` (el JS de la página no la puede leer), POST sin token CSRF o
   con uno inválido → 403, elegir usuario, paginación, filtro por tipo, gráfico,
   alertas (clic salta de usuario) e idioma; más, en `panel-nuevas-features.e2e.cjs`:
-  el tile de KPIs de alertas, el indicador visual al guardar una nota, y el rate
-  limiting (5 fallos + bloqueo con la contraseña correcta) — este último limpia
-  `intentos_login` con `psql` en un `finally`, para no dejar la IP del test runner
-  bloqueada 15 minutos si algo falla a mitad de camino.
+  el tile de KPIs de alertas, el indicador visual al guardar una nota, dos
+  guardados de nota superpuestos (gana el último texto escrito, no el que llega
+  primero), guardar un filtro con el backend caído (toast de error), guardar/
+  cancelar-eliminar/eliminar un filtro por la UI real (modal propio, sin diálogos
+  nativos), cambiar rápido entre 2 filtros guardados (gana el más nuevo, no el
+  que responde último) y el rate limiting (5 fallos + bloqueo con la contraseña
+  correcta) — este último limpia `intentos_login` con `psql` en un `finally`,
+  para no dejar la IP del test runner bloqueada 15 minutos si algo falla a
+  mitad de camino. Aparte, `peticiones-api.e2e.cjs` (sin navegador) reproduce
+  `datos/ejemplos/peticiones-api.http` bloque por bloque contra la API real
+  (login, token CSRF reusado en los POST/DELETE, cada código HTTP esperado) y
+  exige que el archivo tenga un ejemplo de cada ruta de `index.php`.
 
 Las pruebas e2e usan `require()` (CommonJS) en vez de `import`, a propósito: Node
 solo resuelve paquetes globales (Playwright no tiene `node_modules` propio acá) vía
@@ -448,13 +485,21 @@ algo falla, el último paso imprime los logs de Java, la API y el panel.
 ## Ejemplos
 
 `datos/ejemplos/`:
-- `muestra-antes-despues.json`: 7 registros reales del log crudo, elegidos a mano
-  para mostrar cada tipo de inconsistencia (fecha en epoch, monto con símbolo,
-  usuario vacío, tipo desconocido, HTML inseguro en comentario, IP con puerto)
-  junto a cómo queda cada uno después del saneador (o `null` si se descarta).
-- `peticiones-api.http`: ejemplos de todos los endpoints, en formato `.http`
-  (extensión "REST Client" de VS Code, o el cliente HTTP de JetBrains) — login,
-  timeline con distintos `scope`, logout.
+- `muestra-antes-despues.json`: 7 registros del log crudo (de una corrida anterior
+  del generador: sus `id` ya no coinciden con los de `acciones-crudas.json`),
+  elegidos a mano para mostrar cada tipo de inconsistencia (fecha en epoch, monto
+  con símbolo, usuario vacío, tipo desconocido, HTML inseguro en comentario, IP con
+  puerto) junto a cómo queda cada uno después del saneador (o `null` si se
+  descarta). `pruebas/php/muestra-antes-despues-test.php` corre el saneador real
+  sobre cada `crudo` y exige el `saneado` documentado: si el saneador cambia, el
+  ejemplo no puede quedar mintiendo sin que falle esa prueba.
+- `peticiones-api.http`: un ejemplo de cada endpoint, en formato `.http`
+  (extensión "REST Client" de VS Code, o el cliente HTTP de JetBrains) — login, los
+  GET de catálogos/KPIs/alertas, timeline con distintos `scope` y `type`, y los
+  POST/DELETE (configuración de alertas, filtros guardados, notas, logout) con el
+  `X-CSRF-Token` que devuelve el login. `pruebas/e2e/peticiones-api.e2e.cjs` lo
+  reproduce entero contra la API real y falla si algún bloque deja de andar o si
+  alguna ruta de `index.php` queda sin ejemplo.
 
 ## Cómo correrlo
 
@@ -547,7 +592,9 @@ Abrir http://localhost:8082.
   (`ClienteEstadisticas::statsVarios()`, vía `curl_multi`) en vez de uno por uno:
   si el servicio está colgado (acepta la conexión pero no responde), toda la
   página paga un solo timeout (~3 s) sin importar cuántos tipos distintos tenga,
-  en vez de uno por tipo.
+  en vez de uno por tipo. Su URL sale de `BACKOFFICE_JAVA_URL` o, en su defecto,
+  de `http://localhost:8081` (mismo patrón de variable de entorno con default que
+  `BACKOFFICE_BD_*`, ver "Base de datos").
 - El servicio Java recarga solo `acciones-planas.csv` si cambia su mtime (chequeo
   cada 5 segundos, `CargadorAcciones.iniciarWatcher()`) — no hace falta reiniciarlo
   a mano después de correr `generar-datos-semilla.php` de nuevo.

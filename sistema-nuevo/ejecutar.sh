@@ -37,9 +37,9 @@ pids+=($!)
 sleep 1
 echo
 echo "Listo:"
-echo "  - Panel de administración: http://localhost:8082 (usuario demo: admin / admin123)"
-echo "  - API backend (PHP):       http://localhost:8000/api/session"
-echo "  - Stats service (Java):    http://localhost:8081/stats?type=login"
+echo "  - Panel de administración:       http://localhost:8082 (usuario demo: admin / admin123)"
+echo "  - API backend (PHP):             http://localhost:8000/api/session"
+echo "  - Servicio de estadísticas (Java): http://localhost:8081/stats?type=login"
 echo
 echo "Ctrl+C para detener todo."
 wait

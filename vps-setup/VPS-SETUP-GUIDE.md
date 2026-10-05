@@ -2,6 +2,11 @@
 
 Esta guía te llevará a través de todos los pasos para configurar tu VPS (Ubuntu 24 LTS) con una landing page, SSL/HTTPS y todos los componentes necesarios.
 
+**Nota:** el dominio real ya comprado y desplegado es **`initech.fun`** (ver
+[ARCHITECTURE.md](ARCHITECTURE.md)). Los comandos de abajo usan `initech.cl`
+como ejemplo genérico del proceso — sustituye por `initech.fun` (o el
+dominio que quieras agregar) en cada comando.
+
 ## 📋 Contenido
 
 1. [Requisitos Previos](#requisitos-previos)
@@ -18,7 +23,7 @@ Esta guía te llevará a través de todos los pasos para configurar tu VPS (Ubun
 
 - **VPS con Ubuntu 24 LTS** (nuevo/limpio recomendado)
 - **Dominio** registrado y acceso a sus DNS (initech.cl o conce.com)
-- **Acceso SSH** al VPS (con usuario root o con sudo)
+- **Acceso SSH** al VPS (usuario `ubuntu` con sudo, no root -- ver [DEPLOYMENT.md](DEPLOYMENT.md))
 - **Email** para certificado SSL (ej: admin@initech.cl)
 
 ---
@@ -28,9 +33,7 @@ Esta guía te llevará a través de todos los pasos para configurar tu VPS (Ubun
 Desde tu terminal local:
 
 ```bash
-ssh root@<IP_DEL_VPS>
-# O si tienes usuario específico:
-ssh usuario@<IP_DEL_VPS>
+ssh ubuntu@<IP_DEL_VPS>
 ```
 
 Una vez dentro del VPS:
@@ -54,7 +57,7 @@ Esta es la forma más rápida. El script ejecuta todos los pasos automáticament
 ```bash
 # En el VPS, ejecuta:
 cd /tmp
-git clone https://github.com/tu-usuario/php.git
+git clone https://github.com/lol-protocol/php.git
 cd php/vps-setup
 ```
 
@@ -80,7 +83,7 @@ Si prefieres más control, ejecuta cada paso manualmente.
 bash 01-system-update.sh       # Actualiza el sistema
 ```
 
-### Paso 2️⃣: Instalaciones independientes entre sí (6 scripts, cualquier orden)
+### Paso 2️⃣: Instalaciones independientes entre sí (7 scripts, cualquier orden)
 
 ```bash
 bash 02_A-install-java.sh        # Java 21
