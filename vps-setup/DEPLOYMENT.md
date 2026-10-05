@@ -4,11 +4,16 @@ Guía paso a paso para desplegar todo el sistema en el VPS.
 
 ---
 
+**Nota:** el dominio real ya comprado y desplegado es **`initech.fun`** (ver
+[ARCHITECTURE.md](ARCHITECTURE.md)). Los pasos de abajo usan `conce.com` /
+`initech.cl` como ejemplo genérico del proceso de despliegue — sustituye por
+`initech.fun` (o el dominio que quieras agregar) en cada comando.
+
 ## 📋 Pre-requisitos
 
 - ✅ VPS Ubuntu 24.04 LTS activo (158.69.222.245)
 - ✅ Acceso SSH al VPS (usuario: ubuntu — usa tu propia contraseña o, mejor, una llave SSH; nunca la dejes escrita en este repo)
-- ✅ Dominios registrados (conce.com, initech.cl, contrastocolor.ink, wikipedia.cl)
+- ✅ Dominio(s) registrado(s) (initech.fun ya está comprado; conce.com/initech.cl/contrastocolor.ink/wikipedia.cl son ejemplos de cómo agregar más)
 - ✅ Acceso a panel DNS de cada dominio
 - ✅ Email para certificados SSL (ej: admin@domain.com)
 
@@ -114,7 +119,7 @@ TTL: 3600
 ```
 
 4. Guarda los cambios
-5. **ESPERA 5-15 MINUTOS** para que se propague
+5. **ESPERA 15-60 MINUTOS** (hasta 24-48h según el registrador) para que se propague
 
 ### Paso 2: Verificar propagación DNS
 
@@ -138,7 +143,7 @@ sudo mkdir -p /var/log/nginx/conce.com /var/log/nginx/initech.cl
 
 # Landing page - conce.com
 sudo nano /etc/nginx/sites-available/conce.com
-# Configurar según domains.md
+# Configurar según DOMAINS.md
 
 sudo ln -sf /etc/nginx/sites-available/conce.com /etc/nginx/sites-enabled/conce.com
 
@@ -202,7 +207,7 @@ source venv/bin/activate
 # Instalar dependencias
 pip install flask flask-cors psycopg2-binary python-dotenv gunicorn
 
-# Crear app.py (ver domains.md para contenido)
+# Crear app.py (ver DOMAINS.md para contenido)
 nano app.py
 
 # Crear requirements.txt
@@ -215,7 +220,7 @@ deactivate
 sudo chown -R www-data:www-data /var/www/contrastocolor.ink
 ```
 
-Configurar Nginx (ver domains.md) y SSL:
+Configurar Nginx (ver DOMAINS.md) y SSL:
 
 ```bash
 sudo mkdir -p /var/log/nginx/contrastocolor.ink
@@ -232,7 +237,7 @@ Crear servicio systemd:
 
 ```bash
 sudo nano /etc/systemd/system/contrastocolor.service
-# (Copiar contenido de domains.md)
+# (Copiar contenido de DOMAINS.md)
 
 sudo systemctl daemon-reload
 sudo systemctl enable contrastocolor
@@ -264,7 +269,7 @@ sudo chown -R www-data:www-data /var/www/wikipedia.cl
 sudo chmod -R 755 /var/www/wikipedia.cl
 ```
 
-Configurar Nginx (ver domains.md) y SSL:
+Configurar Nginx (ver DOMAINS.md) y SSL:
 
 ```bash
 sudo mkdir -p /var/log/nginx/wikipedia.cl
@@ -503,10 +508,10 @@ sudo systemctl reload nginx
 
 ## 📞 Contacto & Soporte
 
-- **Email:** admin@conce.com
+- **Email:** admin@initech.fun
 - **Proveedor VPS:** OVHCloud (https://www.ovhcloud.com)
 - **Panel de administración:** Webmin — `https://158.69.222.245:10000` (opcional, mismo login que SSH)
-- **Documentación:** Ver architecture.md, tools_and_utilities.md, domains.md
+- **Documentación:** Ver ARCHITECTURE.md, TOOLS-AND-UTILITIES.md, DOMAINS.md
 
 ---
 

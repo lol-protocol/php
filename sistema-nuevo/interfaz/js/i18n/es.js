@@ -39,7 +39,6 @@ export default {
   alerts_title_ip: "⚠ IP fuera del país declarado",
   alerts_title_cambios: "⚠ Cambios de país imposibles",
   alerts_config_title: "Configurar alertas",
-  alerts_summary: "{total} acciones en {users} usuarios.",
   alerts_last_seen: "Última vez: {date}",
 
   config_alerta_ip_pais: "IP fuera del país declarado",
