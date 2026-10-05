@@ -8,15 +8,21 @@
   clasificando lo encontrado como `difamatorio`, `burlesco`, `sexual` o
   `belico`, con decisión (`approve`/`review`/`reject`) y la línea censurada.
   Listas de temas en `config/chat-topics/` para español e inglés.
-- **25 términos nuevos en el diccionario alemán** (258 → 283), repartidos
-  en `tier`, `verstand`, `koerper`, `geschlecht`, `derb` y `spott` —las
-  categorías donde podía verificar cada palabra con confianza real (sentido,
-  registro, ortografía). Deliberadamente **no** se tocó `behinderung`,
-  `ethnisch` ni `religioes`: ya tienen buena cobertura y el costo de
-  categorizar mal un término étnico/religioso es mayor que el beneficio de
-  sumar uno más sin un hablante nativo que lo confirme. Verificado contra
-  nombres alemanes reales comunes (`Hans Müller`, `Werner Schmidt`) sin
-  falsos positivos.
+- **Ampliación de los 6 diccionarios `comprehensive`** en los idiomas donde
+  hay confianza real de hablante fluido/nativo — español ya tenía 601
+  términos (el más grande con diferencia) y no se tocó:
+  - Alemán: 258 → 283 (+25)
+  - Inglés: 400 → 416 (+16)
+  - Francés: 298 → 312 (+14)
+  - Italiano: 303 → 315 (+12)
+  - Portugués: 323 → 333 (+10)
+
+  En los cinco, deliberadamente **no** se tocaron las categorías de
+  discapacidad, étnico ni religioso: ya tienen buena cobertura y el costo
+  de categorizar mal uno de esos términos supera el beneficio de sumar uno
+  más sin que un hablante nativo lo confirme. Verificado en cada idioma
+  contra nombres reales comunes (`Hans Müller`, `John Smith`, `Jean
+  Dupont`, `Giuseppe Russo`, `João Silva`, etc.) sin falsos positivos.
 
 ### Arreglado
 
