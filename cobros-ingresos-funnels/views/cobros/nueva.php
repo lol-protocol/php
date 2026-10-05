@@ -37,12 +37,12 @@ $vencimientoDefault = date('Y-m-d', strtotime('+30 days'));
         <?php endif; ?>
 
         <label for="concepto">Concepto</label>
-        <input type="text" name="concepto" id="concepto" required maxlength="<?= Validacion::MAX_CONCEPTO ?>" value="<?= htmlspecialchars($valores['concepto'] ?? '') ?>" placeholder="Ej: Suscripcion mensual">
+        <input type="text" name="concepto" id="concepto" required maxlength="<?= Validacion::MAX_CONCEPTO ?>" value="<?= htmlspecialchars($valores['concepto'] ?? '') ?>" placeholder="Ej: Suscripción mensual">
 
-        <label for="monto">Monto (en la moneda del pais del cliente)</label>
+        <label for="monto">Monto (en la moneda del país del cliente)</label>
         <input type="number" name="monto" id="monto" required min="0.01" step="0.01" value="<?= htmlspecialchars($valores['monto'] ?? '') ?>">
 
-        <label for="fecha_emision">Fecha de emision</label>
+        <label for="fecha_emision">Fecha de emisión</label>
         <input type="date" name="fecha_emision" id="fecha_emision" required value="<?= htmlspecialchars($valores['fecha_emision'] ?? $hoy) ?>">
 
         <label for="fecha_vencimiento">Fecha de vencimiento</label>

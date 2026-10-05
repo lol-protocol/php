@@ -94,7 +94,7 @@ final class PagosController
                     }
 
                     if ($clienteElegido === null) {
-                        return ['error' => 'Elegí un cliente valido.'];
+                        return ['error' => 'Elegí un cliente válido.'];
                     } elseif (Validacion::faltanCampos([$fechaPago, $metodo], $monto)) {
                         return ['error' => 'Completá todos los campos con un monto válido.'];
                     } elseif (!self::metodoEsValido($metodo)) {
@@ -217,14 +217,14 @@ final class PagosController
         if (Peticion::abortarSiNoExiste($pago, 'Pago no encontrado.')) {
             return;
         }
-        if (Peticion::abortarSiConflicto($pago['anulada'], 'El pago esta anulado y no se puede editar.')) {
+        if (Peticion::abortarSiConflicto($pago['anulada'], 'El pago está anulado y no se puede editar.')) {
             return;
         }
 
         $boleta = $pago['boleta_id'] ? (new BoletaRepository())->porId($pago['boleta_id']) : null;
         if (Peticion::abortarSiConflicto(
             self::boletaAnuladaCongelaElPago($boleta),
-            'La boleta de este pago esta anulada y ya tiene su nota de credito: editarlo descuadraria la devolucion.'
+            'La boleta de este pago está anulada y ya tiene su nota de crédito: editarlo descuadraría la devolución.'
         )) {
             return;
         }
@@ -299,7 +299,7 @@ final class PagosController
         $boleta = $pago['boleta_id'] ? (new BoletaRepository())->porId($pago['boleta_id']) : null;
         if (Peticion::abortarSiConflicto(
             self::boletaAnuladaCongelaElPago($boleta),
-            'La boleta de este pago esta anulada y ya tiene su nota de credito: anularlo descontaria la plata dos veces.'
+            'La boleta de este pago está anulada y ya tiene su nota de crédito: anularlo descontaría la plata dos veces.'
         )) {
             return;
         }
@@ -330,7 +330,7 @@ final class PagosController
                 ));
                 return false;
             });
-            if (Peticion::abortarSiConflicto($congelado, 'La boleta de este pago esta anulada y ya tiene su nota de credito: anularlo descontaria la plata dos veces.')) {
+            if (Peticion::abortarSiConflicto($congelado, 'La boleta de este pago está anulada y ya tiene su nota de crédito: anularlo descontaría la plata dos veces.')) {
                 return;
             }
             header('Location: ?page=pagos&anulado=' . $id);

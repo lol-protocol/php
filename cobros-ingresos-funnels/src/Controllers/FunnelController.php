@@ -26,7 +26,7 @@ final class FunnelController
             'serieMensual' => $funnelRepo->serieMensual($desde, $hasta),
             'tiempoPromedioConversion' => $funnelRepo->tiempoPromedioConversionDias(),
             'activePage' => 'funnel',
-            'titulo' => 'Funnel de conversion',
+            'titulo' => 'Funnel de conversión',
         ]);
     }
 }

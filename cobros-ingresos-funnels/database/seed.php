@@ -416,7 +416,7 @@ foreach ($idsBoletasAAnular as $id) {
             ':monto' => $datos['pagado'],
             ':moneda_codigo' => $datos['moneda_codigo'],
             ':fecha' => $hoy->format('Y-m-d'),
-            ':motivo' => sprintf('Anulacion de la boleta #%d ("%s")', $id, $datos['concepto']),
+            ':motivo' => sprintf('Anulación de la boleta #%d ("%s")', $id, $datos['concepto']),
         ]);
     }
 }
@@ -452,4 +452,4 @@ echo "  clientes:        {$totalClientes}\n";
 echo "  usuarios_funnel: {$totalUsuarios}\n";
 echo "  boletas:         {$totalBoletas} ({$boletasAnuladas} anuladas)\n";
 echo "  pagos:           {$totalPagos} ({$pagosAnulados} anulados)\n";
-echo "  notas de credito: {$totalNotas}\n";
+echo "  notas de crédito: {$totalNotas}\n";

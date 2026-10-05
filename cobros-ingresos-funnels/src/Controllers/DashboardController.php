@@ -38,10 +38,10 @@ final class DashboardController
             'serieMensual' => $serieMensual,
             'funnelResumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'segmentacion' => [
-                'Pais' => $segmentacionRepo->topPorPais(),
+                'País' => $segmentacionRepo->topPorPais(),
                 'Ciudad' => $segmentacionRepo->topPorCiudad(),
                 'Idioma' => $segmentacionRepo->topPorIdioma(),
-                'Genero' => $segmentacionRepo->topPorGenero(),
+                'Género' => $segmentacionRepo->topPorGenero(),
                 'Rango de edad' => $segmentacionRepo->topPorRangoEdad(),
             ],
             'activePage' => 'dashboard',

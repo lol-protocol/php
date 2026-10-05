@@ -22,7 +22,7 @@ use App\Validacion;
         <label for="monto">Monto (<?= htmlspecialchars($boleta['moneda_codigo']) ?>)</label>
         <input type="number" name="monto" id="monto" required min="0.01" step="0.01" value="<?= htmlspecialchars((string) $boleta['monto']) ?>">
 
-        <label for="fecha_emision">Fecha de emision</label>
+        <label for="fecha_emision">Fecha de emisión</label>
         <input type="date" name="fecha_emision" id="fecha_emision" required value="<?= htmlspecialchars($boleta['fecha_emision']) ?>">
 
         <label for="fecha_vencimiento">Fecha de vencimiento</label>

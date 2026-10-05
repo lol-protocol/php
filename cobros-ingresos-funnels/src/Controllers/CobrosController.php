@@ -107,7 +107,7 @@ final class CobrosController
             if ($token === null) {
                 $error = EnvioUnico::MENSAJE_SIN_TOKEN;
             } elseif ($cliente === null) {
-                $error = 'Elegí un cliente valido.';
+                $error = 'Elegí un cliente válido.';
             } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
                 $error = 'Completá todos los campos con un monto válido.';
             } elseif (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
@@ -163,7 +163,7 @@ final class CobrosController
         if (Peticion::abortarSiNoExiste($boleta, 'Boleta no encontrada.')) {
             return;
         }
-        if (Peticion::abortarSiConflicto($boleta['anulada'], 'La boleta esta anulada y no se puede editar.')) {
+        if (Peticion::abortarSiConflicto($boleta['anulada'], 'La boleta está anulada y no se puede editar.')) {
             return;
         }
 
@@ -294,11 +294,11 @@ final class CobrosController
             'monto' => $pagado,
             'moneda_codigo' => $boleta['moneda_codigo'],
             'fecha' => date('Y-m-d'),
-            'motivo' => sprintf('Anulacion de la boleta #%d ("%s")', $boleta['id'], $boleta['concepto']),
+            'motivo' => sprintf('Anulación de la boleta #%d ("%s")', $boleta['id'], $boleta['concepto']),
         ]);
 
         AuditoriaRepository::auditar('crear', 'nota_credito', $notaId, sprintf(
-            'Nota de credito #%d por %s (boleta #%d anulada con pagos)',
+            'Nota de crédito #%d por %s (boleta #%d anulada con pagos)',
             $notaId,
             money_moneda($pagado, $boleta['moneda_codigo']),
             $boleta['id']

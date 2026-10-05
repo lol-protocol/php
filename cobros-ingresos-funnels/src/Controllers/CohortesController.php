@@ -20,7 +20,7 @@ final class CohortesController
             'cohortes' => (new FunnelRepository())->cohortes($desde, $hasta),
             'ltvPorCohorte' => (new SegmentacionRepository())->ltvPorCohorte(),
             'activePage' => 'cohortes',
-            'titulo' => 'Cohortes de conversion',
+            'titulo' => 'Cohortes de conversión',
         ]);
     }
 }

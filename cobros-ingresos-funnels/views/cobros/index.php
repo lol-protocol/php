@@ -41,11 +41,11 @@ use App\Etiquetas;
 
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
-        <span class="label">Facturado (periodo)</span>
+        <span class="label">Facturado (período)</span>
         <span class="value"><?= Config::money($kpis['facturado']) ?></span>
     </div>
     <div class="panel stat-tile">
-        <span class="label">Cobrado (periodo)</span>
+        <span class="label">Cobrado (período)</span>
         <span class="value"><?= Config::money($kpis['cobrado']) ?></span>
     </div>
     <div class="panel stat-tile">
@@ -70,7 +70,7 @@ use App\Etiquetas;
     </div>
 
     <div class="panel">
-        <h2>Cartera pendiente por antiguedad (USD)</h2>
+        <h2>Cartera pendiente por antigüedad (USD)</h2>
         <?php include __DIR__ . '/../_grafico_aging.php'; ?>
     </div>
 </div>
@@ -81,7 +81,7 @@ use App\Etiquetas;
         <table>
             <thead>
             <tr>
-                <th>Cliente</th><th>Concepto</th><th>Emision</th><th>Vencimiento</th>
+                <th>Cliente</th><th>Concepto</th><th>Emisión</th><th>Vencimiento</th>
                 <th class="num">Monto</th><th class="num">Saldo</th><th>Estado</th><th>&nbsp;</th>
             </tr>
             </thead>

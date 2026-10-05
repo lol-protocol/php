@@ -23,7 +23,7 @@
     <div class="table-wrap">
         <table>
             <thead>
-            <tr><th>Nombre</th><th>Email</th><th>Pais</th><th>Segmento</th><th>Cliente desde</th></tr>
+            <tr><th>Nombre</th><th>Email</th><th>País</th><th>Segmento</th><th>Cliente desde</th></tr>
             </thead>
             <tbody>
             <?php foreach ($clientes as $c): ?>

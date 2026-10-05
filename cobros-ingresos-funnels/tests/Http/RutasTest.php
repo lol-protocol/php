@@ -67,8 +67,8 @@ final class RutasTest extends HttpTestCase
             'dashboard' => 'Dashboard',
             'cobros' => 'Cobros e ingresos',
             'pagos' => 'Pagos',
-            'funnel' => 'Funnel de conversion',
-            'cohortes' => 'Cohortes de conversion',
+            'funnel' => 'Funnel de conversión',
+            'cohortes' => 'Cohortes de conversión',
             'clientes' => 'Clientes',
             'auditoria' => 'Auditoría',
         ] as $pagina => $titulo) {

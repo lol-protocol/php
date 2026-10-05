@@ -4,7 +4,7 @@
 $anulado = $pago['anulada'];
 $volverHref = '?page=pagos';
 $volverTexto = '&larr; Volver a Pagos';
-$botonTexto = 'Si, anular este pago';
+$botonTexto = 'Sí, anular este pago';
 ?>
 
 <h1>Anular pago #<?= (int) $pago['id'] ?></h1>

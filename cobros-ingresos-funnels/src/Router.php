@@ -19,12 +19,12 @@ final class Router
         $handler = $this->routes[$page] ?? null;
         if ($handler === null) {
             http_response_code(404);
-            echo '404 - pagina no encontrada';
+            echo '404 - página no encontrada';
             return;
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && !Csrf::valido()) {
             http_response_code(403);
-            echo 'Token de seguridad invalido o expirado. Volve atras y probá de nuevo.';
+            echo 'Token de seguridad inválido o expirado. Volvé atrás y probá de nuevo.';
             return;
         }
         $handler();

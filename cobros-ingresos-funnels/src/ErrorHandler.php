@@ -36,7 +36,7 @@ final class ErrorHandler
     public static function formatear(Throwable $e): string
     {
         return sprintf(
-            'Excepcion no capturada: %s en %s:%d',
+            'Excepción no capturada: %s en %s:%d',
             $e->getMessage(),
             $e->getFile(),
             $e->getLine()

@@ -26,9 +26,9 @@ use App\Validacion;
         <label for="email">Email</label>
         <input type="email" name="email" id="email" required maxlength="<?= Validacion::MAX_EMAIL ?>" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
 
-        <label for="pais_codigo">Pais</label>
+        <label for="pais_codigo">País</label>
         <select name="pais_codigo" id="pais_codigo" required>
-            <option value="">Seleccioná un pais...</option>
+            <option value="">Seleccioná un país...</option>
             <?php foreach ($paises as $p): ?>
                 <option value="<?= $p['codigo'] ?>" <?= ($_POST['pais_codigo'] ?? '') === $p['codigo'] ? 'selected' : '' ?>>
                     <?= htmlspecialchars($p['nombre']) ?> (<?= $p['moneda_codigo'] ?>)
@@ -47,7 +47,7 @@ use App\Validacion;
             <?php endforeach; ?>
         </datalist>
 
-        <label for="genero">Genero</label>
+        <label for="genero">Género</label>
         <select name="genero" id="genero">
             <?php foreach ($generos as $g): ?>
                 <option value="<?= $g ?>" <?= ($_POST['genero'] ?? '') === $g ? 'selected' : '' ?>><?= $g ?></option>
