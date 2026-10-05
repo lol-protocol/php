@@ -102,6 +102,8 @@ sistema-nuevo/
 │       ├── i18n/es.js, i18n/en.js         tarjeta-usuario, metricas, linea-tiempo, paginacion,
 │       ├── idioma.js, idioma-refrescar.js grafico, alertas, idioma(-refrescar), errores, aplicacion,
 │       └── aplicacion.js, eventos.js      eventos (entry point), configuracion-alertas, filtros,
+│                                           controles-filtro (los 5 filtros de la barra, por nombre),
+│                                           respuesta-timeline (pinta lo que trae /api/timeline),
 │                                           inactividad, modal (prompt/confirm propios, ver abajo),
 │                                           kpis, nota-bloque, notas, notificaciones
 │
@@ -112,7 +114,8 @@ sistema-nuevo/
 │   ├── ejecutar-integracion.php                 Runner de integración (Almacen*.php, PostgreSQL real)
 │   ├── php-integracion/                         Unit tests de Almacen*.php, ClienteEstadisticas.php y la siembra
 │   ├── ejecutar-js.sh                           Runner (node:test, ya viene con Node)
-│   ├── js/                                      Unit tests de formato.js, idioma.js y alertas.js
+│   ├── js/                                      Unit tests de formato, idioma, errores, alertas, los controles
+│   │                                             de filtro, el aviso y que cada cosa viva en un solo módulo
 │   ├── ejecutar-e2e.sh                          Runner e2e (Playwright, ya instalado)
 │   └── e2e/                                     Login, timeline, paginación, filtros,
 │                                                 gráfico, alertas, idioma — panel completo;
@@ -521,14 +524,25 @@ php pruebas/ejecutar-integracion.php
   no el genérico; y cada código que manda el backend está traducido al español y
   al inglés, sin sobrantes), `idioma.js`
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
-  rompe la interfaz) y `alertas.js` (`renderAlerts`: un tipo habilitado sin
+  rompe la interfaz), `alertas.js` (`renderAlerts`: un tipo habilitado sin
   resultados no dibuja una sección vacía, sin ninguna alerta real el panel
-  entero queda oculto).
+  entero queda oculto), `controles-filtro.js` (leer, escribir y escuchar los cinco
+  filtros por nombre: los desplegables avisan una sola vez y al instante, las edades
+  esperan a que se deje de tipear; escribir no dispara ningún evento; cada id existe
+  en `topbar.php`), `tarjeta-usuario.js` (`mostrarAviso`, el aviso de arriba del
+  timeline) y `un-solo-lugar.test.mjs`, que vigila que los ids de los filtros, el
+  aviso y la secuencia que pinta una respuesta de `/api/timeline` se escriban en un
+  solo módulo cada uno (antes estaban copiados en 5, 3 y 2).
 - `pruebas/e2e/`: login (credenciales incorrectas/correctas, también el error de
   credenciales y el bloqueo del 429 con la interfaz en inglés, logout), cookie de
   sesión `HttpOnly` (el JS de la página no la puede leer), POST sin token CSRF o
   con uno inválido → 403, elegir usuario, paginación, filtro por tipo, gráfico,
-  alertas (clic salta de usuario) e idioma; más, en `panel-nuevas-features.e2e.cjs`:
+  alertas (clic salta de usuario) e idioma; en `panel-filtros.e2e.cjs`: los cinco
+  filtros mandan lo elegido al pedir el timeline (los desplegables al instante, las
+  edades esperando a que se deje de tipear), cambiar de idioma los conserva sin
+  volver a pedir nada, qué se guarda y qué se aplica de un filtro guardado, y el
+  aviso con ⚠ cuando falla el timeline o la carga inicial; más, en
+  `panel-nuevas-features.e2e.cjs`:
   el tile de KPIs de alertas, el indicador visual al guardar una nota, dos
   guardados de nota superpuestos (gana el último texto escrito, no el que llega
   primero), guardar un filtro con el backend caído (toast de error), guardar/
