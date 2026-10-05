@@ -27,10 +27,11 @@ ahora**; si no respondés, se cierra sola.
 
 Arriba a la derecha, los botones **ES**/**EN** cambian el idioma de toda la
 interfaz al instante, sin recargar la página, y se recuerda la próxima vez que
-entrás. Lo que **no** cambia con el idioma: nombres de usuario, nombres de país y
-rutas/endpoints del backend — son datos, no texto de la interfaz, igual que un
-nombre propio no se traduce. Los nombres en japonés, árabe, hebreo u otros
-alfabetos se leen bien elijas el idioma que elijas.
+entrás. Lo que **no** cambia con el idioma: nombres de usuario, nombres de país,
+los grupos de países de "Comparar contra" (OTAN, Zona Euro...), el proveedor de
+internet de cada IP y las rutas/endpoints del backend — son datos, no texto de la
+interfaz, igual que un nombre propio no se traduce. Los nombres en japonés,
+árabe, hebreo u otros alfabetos se leen bien elijas el idioma que elijas.
 
 ## 3. Panel de KPIs
 
@@ -147,9 +148,9 @@ para que sean siempre los mismos — pensado para probar el sistema, no
 información real de usuarios.
 
 **Cambié el idioma a inglés pero algunos textos siguen en español, ¿está
-roto?** No — nombres de usuario, de país y las rutas/endpoints del backend son
-datos, no textos de interfaz, así que se muestran igual sin importar el
-idioma elegido (ver la sección "Idioma" arriba).
+roto?** No — nombres de usuario, de país, los grupos de países, el proveedor de
+IP y las rutas/endpoints del backend son datos, no textos de interfaz, así que se
+muestran igual sin importar el idioma elegido (ver la sección "Idioma" arriba).
 
 **¿Por qué no veo alertas de "cambios de país imposibles" aunque haya viajes
 raros en los datos?** Puede estar apagado en la configuración (⚙ del panel de

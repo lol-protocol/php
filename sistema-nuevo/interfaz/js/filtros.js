@@ -20,7 +20,9 @@ function renderFiltrosDropdown(filtros) {
   if (!select) return;
 
   select.innerHTML = "";
-  select.appendChild(el("option", { value: "", text: t("filtro_cargar_placeholder") }));
+  // data-i18n: este desplegable no se re-renderiza al cambiar de idioma
+  // (refrescarIdioma no lo toca), pero aplicarEstatico() sí retraduce esto.
+  select.appendChild(el("option", { value: "", text: t("filtro_cargar_placeholder"), "data-i18n": "filtro_cargar_placeholder" }));
   filtros.forEach((f) => {
     const opt = document.createElement("option");
     opt.value = f.id;
