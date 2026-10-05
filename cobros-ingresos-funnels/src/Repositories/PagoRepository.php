@@ -42,10 +42,11 @@ final class PagoRepository
 
     /**
      * Toma el candado de la fila hasta el fin de la transaccion en curso.
-     * Serializa las operaciones que validan contra el saldo de una boleta y
-     * despues escriben (pagar, editar, anular): sin esto dos pagos
-     * simultaneos pasaban la validacion de saldo y sobrecobraban, y un pago
-     * cargado mientras se anulaba la boleta quedaba fuera de la nota de credito.
+     * Serializa dos operaciones sobre el mismo pago (editar, anular): cada una
+     * lo relee ya con el candado, asi la segunda ve lo que hizo la primera en
+     * vez de decidir con una lectura vieja. Siempre se toma antes que el de su
+     * boleta (BoletaRepository::bloquear()): el mismo orden en todos los flujos
+     * evita que dos operaciones se esperen entre si.
      */
     public function bloquear(int $id): void
     {
@@ -125,12 +126,16 @@ final class PagoRepository
         ];
     }
 
-    /** Todo el historial de pagos de un cliente puntual (para su ficha), sin filtro de fecha. */
+    /**
+     * Todo el historial de pagos de un cliente puntual (para su ficha), sin
+     * filtro de fecha. Los mas recientes primero; a igual fecha, el de mayor
+     * id (el cargado despues): sin ese desempate el SQL no promete ningun orden.
+     */
     public function porCliente(int $clienteId): array
     {
         $stmt = $this->db->prepare(
             'SELECT id, monto, moneda_codigo, fecha_pago, metodo, boleta_id, anulada
-             FROM pagos WHERE cliente_id = :id ORDER BY fecha_pago DESC'
+             FROM pagos WHERE cliente_id = :id ORDER BY fecha_pago DESC, id DESC'
         );
         $stmt->execute([':id' => $clienteId]);
         return $stmt->fetchAll();

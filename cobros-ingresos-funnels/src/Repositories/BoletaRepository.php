@@ -96,6 +96,8 @@ final class BoletaRepository
     /**
      * Todo el historial de boletas de un cliente puntual (para su ficha), sin
      * filtro de fecha. Incluye las anuladas (quedan marcadas, no se ocultan).
+     * Las mas recientes primero; a igual fecha, la de mayor id (la cargada
+     * despues): sin ese desempate el SQL no promete ningun orden entre ellas.
      */
     public function porCliente(int $clienteId): array
     {
@@ -103,7 +105,7 @@ final class BoletaRepository
             "SELECT b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada, b.pagado
              FROM boletas_con_saldo b
              WHERE b.cliente_id = :id
-             ORDER BY b.fecha_emision DESC"
+             ORDER BY b.fecha_emision DESC, b.id DESC"
         );
         $stmt->execute([':id' => $clienteId]);
 

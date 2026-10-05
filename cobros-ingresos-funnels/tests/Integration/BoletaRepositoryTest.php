@@ -194,4 +194,69 @@ final class BoletaRepositoryTest extends IntegracionTestCase
         self::assertEqualsWithDelta(700.0, $boleta['saldo'], 0.001);
         self::assertSame('2020-01-10', $boleta['primer_pago']);
     }
+
+    /**
+     * La ficha del cliente lista todo su historial, lo mas reciente primero.
+     * Con varias boletas el mismo dia el SQL no promete ningun orden entre
+     * ellas (y puede cambiarlo entre dos cargas): a igual fecha va primero la
+     * de mayor id, la cargada despues, como ya hacen las notas de credito.
+     */
+    public function testLaFichaDesempataPorIdLasBoletasDeLaMismaFecha(): void
+    {
+        $cliente = (new ClienteRepository())->porId(1);
+        self::assertNotNull($cliente, 'este test asume que el cliente #1 existe (lo trae el seed)');
+
+        $fecha = '1901-01-01';
+        $repo = new BoletaRepository();
+        for ($i = 0; $i < 4; $i++) {
+            $repo->crear([
+                'cliente_id' => 1,
+                'concepto' => 'Test desempate de la ficha',
+                'monto' => 100,
+                'moneda_codigo' => $cliente['moneda_codigo'],
+                'fecha_emision' => $fecha,
+                'fecha_vencimiento' => $fecha,
+            ]);
+        }
+
+        $ids = array_values(array_map(
+            static fn (array $b): int => (int) $b['id'],
+            array_filter($repo->porCliente(1), static fn (array $b): bool => $b['fecha_emision'] === $fecha)
+        ));
+        $esperado = $ids;
+        rsort($esperado);
+
+        self::assertCount(4, $ids);
+        self::assertSame($esperado, $ids, 'a igual fecha, la de mayor id primero');
+    }
+
+    /** Lo mismo para los pagos de la ficha: a igual fecha, el de mayor id primero. */
+    public function testLaFichaDesempataPorIdLosPagosDeLaMismaFecha(): void
+    {
+        $cliente = (new ClienteRepository())->porId(1);
+        self::assertNotNull($cliente, 'este test asume que el cliente #1 existe (lo trae el seed)');
+
+        $fecha = '1901-01-01';
+        $repo = new PagoRepository();
+        for ($i = 0; $i < 4; $i++) {
+            $repo->crear([
+                'boleta_id' => null,
+                'cliente_id' => 1,
+                'monto' => 10,
+                'moneda_codigo' => $cliente['moneda_codigo'],
+                'fecha_pago' => $fecha,
+                'metodo' => 'efectivo',
+            ]);
+        }
+
+        $ids = array_values(array_map(
+            static fn (array $p): int => (int) $p['id'],
+            array_filter($repo->porCliente(1), static fn (array $p): bool => $p['fecha_pago'] === $fecha)
+        ));
+        $esperado = $ids;
+        rsort($esperado);
+
+        self::assertCount(4, $ids);
+        self::assertSame($esperado, $ids, 'a igual fecha, el de mayor id primero');
+    }
 }

@@ -22,11 +22,6 @@ final class ClienteRepository
         $this->db = Database::connection();
     }
 
-    public function total(): int
-    {
-        return (int) $this->db->query('SELECT COUNT(*) FROM clientes')->fetchColumn();
-    }
-
     public function porId(int $id): ?array
     {
         $stmt = $this->db->prepare(
