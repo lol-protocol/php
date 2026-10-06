@@ -26,24 +26,19 @@ $rampaFunnel = ['var(--seq-250)', 'var(--seq-350)', 'var(--seq-450)', 'var(--seq
 $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visitantes'] * 100 : 0.0;
 ?>
 
-<h1>Funnel de conversion</h1>
-<p class="subtitulo">De visitante a cliente: donde se pierden usuarios y que tan rapido convierten.</p>
+<h1>Funnel de conversión</h1>
+<p class="subtitulo">De visitante a cliente: dónde se pierden usuarios y qué tan rápido convierten.</p>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="funnel">
-    <label for="meses">Periodo</label>
-    <select name="meses" id="meses">
-        <option value="3" <?= $meses === 3 ? 'selected' : '' ?>>Ultimos 3 meses</option>
-        <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
-        <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
-    </select>
     <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <button type="submit">Aplicar</button>
 </form>
+<?php include __DIR__ . '/../_avisos.php'; ?>
 
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
-        <span class="label">Visitantes (periodo)</span>
+        <span class="label">Visitantes (período)</span>
         <span class="value"><?= $resumen['visitantes'] ?></span>
     </div>
     <div class="panel stat-tile">
@@ -51,13 +46,13 @@ $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visi
         <span class="value"><?= $resumen['clientes'] ?></span>
     </div>
     <div class="panel stat-tile">
-        <span class="label">Conversion global</span>
+        <span class="label">Conversión global</span>
         <span class="value"><?= number_format($tasaGlobal, 1) ?>%</span>
         <span class="delta">Visitante &rarr; cliente</span>
     </div>
     <div class="panel stat-tile">
-        <span class="label">Tiempo promedio de conversion</span>
-        <span class="value"><?= number_format($tiempoPromedioConversion, 1) ?> dias</span>
+        <span class="label">Tiempo promedio de conversión</span>
+        <span class="value"><?= number_format($tiempoPromedioConversion, 1) ?> días</span>
     </div>
 </div>
 
@@ -102,11 +97,11 @@ $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visi
     </div>
 
     <div class="panel">
-        <h2>Conversion por canal de adquisicion</h2>
+        <h2>Conversión por canal de adquisición</h2>
         <div class="table-wrap">
             <table>
                 <thead>
-                <tr><th>Canal</th><th class="num">Visitantes</th><th class="num">Registrados</th><th class="num">Leads</th><th class="num">Clientes</th><th class="num">Conversion</th></tr>
+                <tr><th>Canal</th><th class="num">Visitantes</th><th class="num">Registrados</th><th class="num">Leads</th><th class="num">Clientes</th><th class="num">Conversión</th></tr>
                 </thead>
                 <tbody>
                 <?php foreach ($porCanal as $c): $tasa = $c['visitantes'] > 0 ? $c['clientes'] / $c['visitantes'] * 100 : 0; ?>
@@ -120,7 +115,7 @@ $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visi
                     </tr>
                 <?php endforeach; ?>
                 <?php if (!$porCanal): ?>
-                    <tr><td colspan="6">Sin datos para este periodo.</td></tr>
+                    <tr><td colspan="6">Sin datos para este período.</td></tr>
                 <?php endif; ?>
                 </tbody>
             </table>
@@ -129,9 +124,9 @@ $tasaGlobal = $resumen['visitantes'] > 0 ? $resumen['clientes'] / $resumen['visi
 </div>
 
 <div class="grid grid-2">
-    <?php $titulo = 'Conversion por pais'; $filas = $porPais; include __DIR__ . '/_tabla_dimension.php'; ?>
-    <?php $titulo = 'Conversion por genero'; $filas = $porGenero; include __DIR__ . '/_tabla_dimension.php'; ?>
+    <?php $titulo = 'Conversión por país'; $filas = $porPais; include __DIR__ . '/_tabla_dimension.php'; ?>
+    <?php $titulo = 'Conversión por género'; $filas = $porGenero; include __DIR__ . '/_tabla_dimension.php'; ?>
 </div>
 <div class="grid grid-2">
-    <?php $titulo = 'Conversion por rango de edad'; $filas = $porRangoEdad; include __DIR__ . '/_tabla_dimension.php'; ?>
+    <?php $titulo = 'Conversión por rango de edad'; $filas = $porRangoEdad; include __DIR__ . '/_tabla_dimension.php'; ?>
 </div>

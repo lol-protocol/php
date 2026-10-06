@@ -157,8 +157,16 @@ esac'
     grep -q "^enabled = true" "$FAIL2BAN_JAIL"
     ! grep -q "nginx" "$FAIL2BAN_JAIL"
     grep -q 'Unattended-Upgrade "1"' "$APT_AUTO_CONF"
-    grep -q "apt-get install -y fail2ban unattended-upgrades" "$SUDO_LOG"
+    grep -q "apt-get install -y fail2ban unattended-upgrades python3-systemd" "$SUDO_LOG"
     grep -q "systemctl restart fail2ban" "$SUDO_LOG"
+}
+
+@test "07_A espera a fail2ban (ping) antes de consultar el jail y no aborta si tarda" {
+    export FAIL2BAN_JAIL="$BATS_TEST_TMPDIR/jail.local" APT_AUTO_CONF="$BATS_TEST_TMPDIR/20auto"
+    run bash "$VPS_DIR/07_A-install-fail2ban-autoupdates.sh"
+    ping=$(grep -n "fail2ban-client ping" "$SUDO_LOG" | head -1 | cut -d: -f1)
+    stat=$(grep -n "fail2ban-client status sshd" "$SUDO_LOG" | head -1 | cut -d: -f1)
+    [ -n "$ping" ] && [ "$ping" -lt "$stat" ]
 }
 
 # ---- 07_D: logrotate ----

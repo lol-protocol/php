@@ -7,5 +7,5 @@ declare(strict_types=1);
 function api_kpis(): void
 {
     $almacen = new AlmacenKpis(ConexionBd::obtener());
-    echo json_encode($almacen->resumen(), JSON_UNESCAPED_UNICODE);
+    api_responder($almacen->resumen());
 }

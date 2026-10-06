@@ -8,6 +8,8 @@ declare(strict_types=1);
  * que usa el resto del sistema. La lógica vive modularizada en generador/*.php.
  *
  * Uso: php generar-datos-semilla.php
+ * OJO: recrea la base desde cero -- hace DROP de TODAS las tablas, también notas, filtros
+ * guardados y config de alertas. Para sembrar solo si falta: php sembrar-si-falta.php.
  */
 
 require __DIR__ . '/../servidor-php/codigo/saneador.php';

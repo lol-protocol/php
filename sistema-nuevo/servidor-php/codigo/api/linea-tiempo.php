@@ -8,8 +8,7 @@ function api_timeline(): void
 {
     $userId = $_GET['user_id'] ?? '';
     if ($userId === '') {
-        http_response_code(400);
-        echo json_encode(['error' => 'user_id es requerido'], JSON_UNESCAPED_UNICODE);
+        api_error(400, 'user_id_requerido', 'user_id es requerido');
         return;
     }
 
@@ -19,8 +18,7 @@ function api_timeline(): void
 
     $user = $datos->userById($userId);
     if ($user === null) {
-        http_response_code(404);
-        echo json_encode(['error' => 'usuario no encontrado'], JSON_UNESCAPED_UNICODE);
+        api_error(404, 'usuario_no_encontrado', 'usuario no encontrado');
         return;
     }
 
@@ -43,7 +41,7 @@ function api_timeline(): void
         $paginaAcciones['items'], $userId, $user['country'], $countries, $ageMin, $ageMax, $gender
     );
 
-    echo json_encode([
+    api_responder([
         'user' => $user + ['country_name' => $groups['countries'][$user['country']] ?? $user['country']],
         'filters' => [
             'scope' => $scope,
@@ -57,5 +55,5 @@ function api_timeline(): void
         'chart' => $acciones->resumenDiario($userId, $tipo),
         'stats_service_available' => $cohortes['stats_service_available'],
         'timeline' => $cohortes['timeline'],
-    ], JSON_UNESCAPED_UNICODE);
+    ]);
 }

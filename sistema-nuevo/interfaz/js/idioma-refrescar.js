@@ -1,10 +1,8 @@
 import { state } from "./nucleo.js";
 import { aplicarEstatico } from "./idioma.js";
 import { populateScopeSelect, populateTypeSelect, renderUserOptions } from "./selectores.js";
-import { renderUserCard, renderFilterSummary, renderStatusMessage } from "./tarjeta-usuario.js";
-import { renderTimeline } from "./linea-tiempo.js";
-import { renderPagination } from "./paginacion.js";
-import { renderChart } from "./grafico.js";
+import { leerFiltros, escribirFiltros } from "./controles-filtro.js";
+import { renderRespuestaTimeline } from "./respuesta-timeline.js";
 import { renderAlerts } from "./alertas.js";
 import { renderKpis } from "./kpis.js";
 
@@ -17,15 +15,14 @@ import { renderKpis } from "./kpis.js";
 export function refrescarIdioma(onSelectUser, onPageChange) {
   aplicarEstatico();
 
-  const scopeValue = document.getElementById("scope-select").value;
-  const typeValue = document.getElementById("type-select").value;
+  const { scope, type } = leerFiltros();
   if (state.groups) {
     populateScopeSelect();
-    document.getElementById("scope-select").value = scopeValue;
+    escribirFiltros({ scope });
   }
   if (state.actionTypes.length > 0) {
     populateTypeSelect();
-    document.getElementById("type-select").value = typeValue;
+    escribirFiltros({ type });
   }
   renderUserOptions(document.getElementById("user-search").value, () => {});
 
@@ -39,11 +36,6 @@ export function refrescarIdioma(onSelectUser, onPageChange) {
 
   const data = state.lastTimeline;
   if (data) {
-    renderUserCard(data.user);
-    renderFilterSummary(data.filters, data.pagination.total);
-    renderStatusMessage(data.stats_service_available);
-    renderChart(data.chart);
-
     // Una nota recién tipeada puede no estar guardada todavía (debounce de
     // 600ms): reconstruir el timeline desde el caché de data.timeline la
     // pisaría con el texto viejo, aunque el guardado en curso sí vaya a la
@@ -54,7 +46,6 @@ export function refrescarIdioma(onSelectUser, onPageChange) {
     const timeline = data.timeline.map((item) =>
       notasEnPantalla.has(String(item.id)) ? { ...item, note: notasEnPantalla.get(String(item.id)) } : item
     );
-    renderTimeline(timeline);
-    renderPagination(data.pagination, onPageChange);
+    renderRespuestaTimeline(data, onPageChange, timeline);
   }
 }

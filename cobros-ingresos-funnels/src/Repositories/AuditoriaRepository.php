@@ -37,7 +37,7 @@ final class AuditoriaRepository
     {
         if (!Database::connection()->inTransaction()) {
             throw new LogicException(sprintf(
-                'La auditoria de "%s %s #%d" tiene que registrarse dentro de Database::transaccion(), junto con el cambio que describe.',
+                'La auditoría de "%s %s #%d" tiene que registrarse dentro de Database::transaccion(), junto con el cambio que describe.',
                 $accion,
                 $entidad,
                 $entidadId

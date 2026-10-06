@@ -29,7 +29,7 @@ try {
 
     $aplicadas = $migrador->aplicar();
     echo $aplicadas === []
-        ? "La base ya estaba al dia.\n"
+        ? "La base ya estaba al día.\n"
         : "Migraciones aplicadas:\n  " . implode("\n  ", $aplicadas) . "\n";
 } catch (Throwable $e) {
     fwrite(STDERR, 'Error: ' . $e->getMessage() . "\n");
@@ -37,7 +37,7 @@ try {
     // 42P07 = la tabla ya existe: una base creada antes de las migraciones.
     $previa = $e->getPrevious();
     if ($previa instanceof PDOException && $previa->getCode() === '42P07' && str_contains($e->getMessage(), Migrador::INICIAL)) {
-        fwrite(STDERR, "Si la base se creo con el viejo database/schema.sql, corre una sola vez:\n"
+        fwrite(STDERR, "Si la base se creó con el viejo database/schema.sql, corré una sola vez:\n"
             . "  php database/migrar.php --baseline\n");
     }
     exit(1);

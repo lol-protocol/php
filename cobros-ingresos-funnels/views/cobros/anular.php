@@ -5,7 +5,7 @@ $anulado = $boleta['anulada'];
 $pagado = (float) $boleta['pagado'];
 $volverHref = '?page=cobros';
 $volverTexto = '&larr; Volver a Cobros e ingresos';
-$botonTexto = 'Si, anular esta boleta';
+$botonTexto = 'Sí, anular esta boleta';
 ?>
 
 <h1>Anular boleta #<?= (int) $boleta['id'] ?></h1>
@@ -30,7 +30,7 @@ $botonTexto = 'Si, anular esta boleta';
         <tr><th>Concepto</th><td><?= htmlspecialchars($boleta['concepto']) ?></td></tr>
         <tr><th>Monto</th><td><?= money_moneda((float) $boleta['monto'], $boleta['moneda_codigo']) ?></td></tr>
         <tr><th>Cobrado</th><td><?= money_moneda($pagado, $boleta['moneda_codigo']) ?></td></tr>
-        <tr><th>Emision</th><td><?= htmlspecialchars($boleta['fecha_emision']) ?></td></tr>
+        <tr><th>Emisión</th><td><?= htmlspecialchars($boleta['fecha_emision']) ?></td></tr>
     </table>
     <?php include __DIR__ . '/../_accion_confirmar.php'; ?>
 </div>

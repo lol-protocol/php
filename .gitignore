@@ -1,3 +1,9 @@
+/vendor/
+vendor/
+/.phpunit.cache/
+*/.phpunit.cache/
+/coverage/
+coverage/
 .DS_Store
 *.swp
 *.swo
@@ -7,6 +13,9 @@
 .idea/
 .vscode/
 *.log
+__pycache__/
+*.class
+phone-directory/ports/java/build/
 
 # Credenciales y llaves: nunca al repo
 vps-setup/vps.env

@@ -1,0 +1,15 @@
+flowchart LR
+    seg["Primer segmento\n(solo digitos)"]
+
+    seg -->|10 digitos| persona["persona\nPersonaController\n1 ascendencia · 2 descendencia\n3 vinculos · 4 cronologia"]
+    seg -->|9 digitos| suceso["suceso\nSucesoController\n(sin acciones)"]
+    seg -->|8 digitos| registro["registro\nRegistroController\n1 fuente"]
+    seg -->|7 digitos| coleccion["coleccion\nColeccionController\n1 vista · 2 editar · 3 exportar"]
+    seg -->|6 digitos| grupo["grupo\nGrupoController\n1 red · 2 dispersion"]
+    seg -->|5 digitos| organizacion["organizacion\nOrganizacionController\n1 miembros · 2 registros"]
+    seg -.->|1-4 digitos| libre["(libre — headroom\npara tipos futuros)"]
+
+    letras["Primer segmento\n(solo letras, 1-3 codigos)"] -->|pais/region/ciudad| lugar["lugar\nLugarController\n1 personas · 2 sucesos"]
+
+    reservado["Ruta exacta"] -->|vacio, con ?t= y ?q=| home["HomeController\nlistado / busqueda"]
+    reservado -->|'0'| cuenta["CuentaController\n1 colecciones · 2 aportes"]

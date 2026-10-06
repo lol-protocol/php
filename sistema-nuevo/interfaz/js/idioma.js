@@ -17,6 +17,11 @@ export function t(key, vars = {}) {
   return str;
 }
 
+/** ¿Hay traducción para esta clave en el idioma actual? (t() devuelve la propia clave cuando falta.) */
+export function tieneTraduccion(key) {
+  return Object.hasOwn(DICCIONARIOS[state.lang], key);
+}
+
 export function etiquetaGenero(codigo) {
   return t(CLAVE_GENERO[codigo] ?? codigo);
 }

@@ -84,7 +84,7 @@ final class Migrador
                         $this->registrar($version);
                     });
                 } catch (\Throwable $e) {
-                    throw new RuntimeException("Fallo la migracion {$version}: " . $e->getMessage(), 0, $e);
+                    throw new RuntimeException("Falló la migración {$version}: " . $e->getMessage(), 0, $e);
                 }
                 $aplicadas[] = $version;
             }
@@ -104,7 +104,7 @@ final class Migrador
     public function marcarComoAplicada(string $version): void
     {
         if (!in_array($version, $this->disponibles(), true)) {
-            throw new RuntimeException("No existe la migracion {$version}.");
+            throw new RuntimeException("No existe la migración {$version}.");
         }
         $this->crearTablaDeControl();
         $this->registrar($version);

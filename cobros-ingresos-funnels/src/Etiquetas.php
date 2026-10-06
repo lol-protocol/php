@@ -28,7 +28,7 @@ final class Etiquetas
     ];
 
     private const CANALES = [
-        'organico' => 'Organico',
+        'organico' => 'Orgánico',
         'ads' => 'Ads',
         'referido' => 'Referido',
         'redes_sociales' => 'Redes sociales',

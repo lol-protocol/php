@@ -1,18 +1,19 @@
 import { el, ACTION_ICONS } from "./nucleo.js";
 import { t } from "./idioma.js";
-import { formatPct, formatDuration, formatMoney } from "./formato.js";
+import { formatPct, formatDuration, formatMoney, classifyDelta } from "./formato.js";
 import { buildMetricNodes } from "./metricas.js";
 import { buildNoteBlock } from "./nota-bloque.js";
 
 function buildDeltaBadge(deltaPct, { betterWhenLower = true, goodLabel, badLabel, tooltip = "" }) {
   const props = tooltip ? { title: tooltip } : {};
-  if (deltaPct === null) {
+  const kind = classifyDelta(deltaPct, betterWhenLower);
+  if (kind === "none") {
     return el("span", { class: "badge badge--neutral", text: t("badge_no_comparison"), ...props });
   }
-  if (Math.abs(deltaPct) <= 10) {
+  if (kind === "avg") {
     return el("span", { class: "badge badge--neutral", text: t("badge_avg", { pct: formatPct(deltaPct) }), ...props });
   }
-  const isGood = betterWhenLower ? deltaPct < 0 : deltaPct > 0;
+  const isGood = kind === "good";
   return el("span", {
     class: `badge ${isGood ? "badge--good" : "badge--bad"}`,
     text: `${formatPct(deltaPct)} ${isGood ? goodLabel : badLabel}`,
@@ -21,10 +22,11 @@ function buildDeltaBadge(deltaPct, { betterWhenLower = true, goodLabel, badLabel
 }
 
 function buildStatsTooltip(median, p90, formatter) {
-  if (median === null && p90 === null) return "";
   const parts = [];
-  if (median !== null) parts.push(t("stats_median", { value: formatter(median) }));
-  if (p90 !== null) parts.push(t("stats_p90", { value: formatter(p90) }));
+  // Number.isFinite descarta null (universo sin acciones) y undefined (sin cohorte: el servicio de
+  // estadísticas no respondió); antes ese caso daba "mediana: NaN m NaN s".
+  if (Number.isFinite(median)) parts.push(t("stats_median", { value: formatter(median) }));
+  if (Number.isFinite(p90)) parts.push(t("stats_p90", { value: formatter(p90) }));
   return parts.join(" · ");
 }
 

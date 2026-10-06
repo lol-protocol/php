@@ -61,8 +61,8 @@ final class Config
 
         if ($faltantes !== []) {
             throw new RuntimeException(sprintf(
-                'Faltan variables de entorno: %s. En produccion definilas donde corre PHP '
-                . '(ej. env[DB_PASSWORD] = ... en el pool de PHP-FPM); en desarrollo, exporta '
+                'Faltan variables de entorno: %s. En producción definilas donde corre PHP '
+                . '(ej. env[DB_PASSWORD] = ... en el pool de PHP-FPM); en desarrollo, exportá '
                 . 'APP_ENV=dev para usar los valores por defecto.',
                 implode(', ', $faltantes)
             ));
@@ -91,7 +91,7 @@ final class Config
         $zona = self::variable('APP_TIMEZONE', 'UTC');
         if (!in_array($zona, DateTimeZone::listIdentifiers(DateTimeZone::ALL_WITH_BC), true)) {
             throw new RuntimeException(
-                "APP_TIMEZONE={$zona} no es una zona horaria IANA valida (ej. America/Argentina/Buenos_Aires o UTC)."
+                "APP_TIMEZONE={$zona} no es una zona horaria IANA válida (ej. America/Argentina/Buenos_Aires o UTC)."
             );
         }
 

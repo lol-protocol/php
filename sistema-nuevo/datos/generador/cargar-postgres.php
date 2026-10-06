@@ -11,6 +11,10 @@ require_once __DIR__ . '/cargar-postgres-nucleo.php';
  * y carga en PostgreSQL los mismos datos que se escribieron a JSON/CSV. Se
  * corre una sola vez al final de generar-datos-semilla.php; el backend en
  * vivo (AlmacenDatos.php) después solo lee de acá, ya no de los JSON.
+ *
+ * Destructivo: los DROP alcanzan también a lo que el usuario guarda desde el panel (notas,
+ * filtros guardados, config de alertas). Quien arranca el sistema no debería llegar acá
+ * sin querer: ver base-sembrada.php / sembrar-si-falta.php.
  */
 function cargar_en_postgres(
     array $users,

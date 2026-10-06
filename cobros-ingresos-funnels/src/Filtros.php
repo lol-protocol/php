@@ -8,10 +8,32 @@ use DateTimeImmutable;
 
 final class Filtros
 {
+    /**
+     * Los periodos que ofrece el selector, con el texto que se muestra: la unica
+     * lista, la que lee meses() para validar y la que dibuja views/_filtro_fechas.php
+     * (el <select> estaba copiado en cinco vistas, y los valores validos aparte).
+     */
+    public const OPCIONES_MESES = [3 => 'Últimos 3 meses', 6 => 'Últimos 6 meses', 12 => 'Últimos 12 meses'];
+    public const MESES_POR_DEFECTO = 6;
+
     public static function meses(): int
     {
-        $meses = (int) ($_GET['meses'] ?? 6);
-        return in_array($meses, [3, 6, 12], true) ? $meses : 6;
+        $pedido = self::mesesPedido();
+
+        return $pedido !== null && self::mesesEsValido($pedido) ? (int) $pedido : self::MESES_POR_DEFECTO;
+    }
+
+    /** Lo que vino en ?meses=, o null si no vino (vacio cuenta como que no vino). */
+    private static function mesesPedido(): ?string
+    {
+        $pedido = trim((string) ($_GET['meses'] ?? ''));
+
+        return $pedido === '' ? null : $pedido;
+    }
+
+    private static function mesesEsValido(string $pedido): bool
+    {
+        return ctype_digit($pedido) && array_key_exists((int) $pedido, self::OPCIONES_MESES);
     }
 
     /** @return array{0: string, 1: string} [desde, hasta] en formato Y-m-d */
@@ -76,10 +98,9 @@ final class Filtros
      */
     public static function rangoPersonalizado(): ?array
     {
-        $desde = trim((string) ($_GET['desde'] ?? ''));
-        $hasta = trim((string) ($_GET['hasta'] ?? ''));
+        [$desde, $hasta] = self::rangoIngresado();
 
-        if ($desde === '' || $hasta === '' || !self::esFechaValida($desde) || !self::esFechaValida($hasta) || $desde > $hasta) {
+        if ($desde === '' || $hasta === '' || self::motivoDelRangoIgnorado() !== null) {
             return null;
         }
 
@@ -87,23 +108,87 @@ final class Filtros
     }
 
     /**
+     * Lo que se tipeo en Desde y Hasta, tal cual (sin los espacios de los
+     * bordes), valga o no: el formulario lo vuelve a mostrar para que se
+     * corrija en vez de borrarlo.
+     * @return array{0: string, 1: string}
+     */
+    public static function rangoIngresado(): array
+    {
+        return [trim((string) ($_GET['desde'] ?? '')), trim((string) ($_GET['hasta'] ?? ''))];
+    }
+
+    /**
+     * Por que se ignora lo tipeado en Desde/Hasta, o null si no hay nada que
+     * ignorar: no se tipeo nada, o es un rango completo, valido y en orden.
+     */
+    private static function motivoDelRangoIgnorado(): ?string
+    {
+        [$desde, $hasta] = self::rangoIngresado();
+
+        if ($desde === '' && $hasta === '') {
+            return null;
+        }
+        if ($desde === '' || $hasta === '') {
+            return 'Para usar un rango exacto completá «Desde» y «Hasta»';
+        }
+        if (!self::esFechaValida($desde) || !self::esFechaValida($hasta)) {
+            return '«Desde» y «Hasta» tienen que ser fechas válidas';
+        }
+        if ($desde > $hasta) {
+            return '«Desde» no puede ser posterior a «Hasta»';
+        }
+
+        return null;
+    }
+
+    /**
+     * Lo pedido por URL que no se pudo respetar (un periodo que no existe, un
+     * rango incompleto, invalido o al reves), para decirlo en pantalla: antes
+     * cada caso se resolvia distinto y todos en silencio, y un rango al reves
+     * ademas borraba lo tipeado.
+     * @return list<array{tipo: string, texto: string}>
+     */
+    public static function avisos(): array
+    {
+        $avisos = [];
+
+        $pedido = self::mesesPedido();
+        if ($pedido !== null && !self::mesesEsValido($pedido)) {
+            $avisos[] = Avisos::atencion('El período pedido no es válido; se muestran los últimos ' . self::MESES_POR_DEFECTO . ' meses.');
+        }
+
+        $motivo = self::motivoDelRangoIgnorado();
+        if ($motivo !== null) {
+            $avisos[] = Avisos::atencion($motivo . '; mientras tanto se muestra el período elegido.');
+        }
+
+        return $avisos;
+    }
+
+    /**
      * meses + el rango activo (personalizado si esta presente y es valido,
      * si no el de meses) + si ese rango activo es el personalizado: el combo
      * que Dashboard/Cobros/Pagos/Funnel/Cohortes repetian cada uno por su
-     * cuenta en 3 lineas.
-     * @return array{meses: int, desde: string, hasta: string, personalizado: bool}
+     * cuenta en 3 lineas. Ademas, lo que necesita views/_filtro_fechas.php
+     * (lo tipeado en Desde/Hasta) y los avisos de lo que se ignoro.
+     * @return array{meses: int, desde: string, hasta: string, personalizado: bool, desdeIngresado: string, hastaIngresado: string, avisos: list<array{tipo: string, texto: string}>}
      */
     public static function rangoActivo(): array
     {
         $meses = self::meses();
         $personalizado = self::rangoPersonalizado();
         [$desde, $hasta] = $personalizado ?? self::rango($meses);
+        [$desdeIngresado, $hastaIngresado] = self::rangoIngresado();
 
         return [
             'meses' => $meses,
             'desde' => $desde,
             'hasta' => $hasta,
             'personalizado' => $personalizado !== null,
+            'desdeIngresado' => $desdeIngresado,
+            'hastaIngresado' => $hastaIngresado,
+            'avisos' => self::avisos(),
         ];
     }
 

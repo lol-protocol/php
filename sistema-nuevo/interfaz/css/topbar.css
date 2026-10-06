@@ -49,22 +49,10 @@
   letter-spacing: 0.05em;
 }
 
-.filter-group input,
-.filter-group select {
+/* Los campos de la barra son un poco más compactos que los del login y los modales. */
+.filter-group .campo {
   padding: 0.45rem 0.6rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
   font-size: 0.9rem;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-mono);
-}
-
-.filter-group input:focus,
-.filter-group select:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
 }
 
 .filter-group select#user-select {
@@ -96,7 +84,7 @@
 
 .mini-button:hover {
   background: rgba(0, 240, 255, 0.1);
-  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .saved-filters-actions {

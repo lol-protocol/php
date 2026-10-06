@@ -7,7 +7,7 @@
   <div class="filters">
     <div class="filter-group filter-group--narrow">
       <label for="saved-filters-select" data-i18n="label_saved_filters">Filtro guardado</label>
-      <select id="saved-filters-select"></select>
+      <select id="saved-filters-select" class="campo"></select>
       <div class="saved-filters-actions">
         <button type="button" id="btn-guardar-filtro" class="mini-button" data-i18n="btn_guardar_filtro">Guardar</button>
         <button type="button" id="btn-eliminar-filtro" class="mini-button mini-button--danger" data-i18n="btn_eliminar_filtro">Eliminar</button>
@@ -16,32 +16,32 @@
 
     <div class="filter-group">
       <label for="user-search" data-i18n="label_user">Usuario</label>
-      <input type="text" id="user-search" data-i18n-placeholder="topbar_user_placeholder" placeholder="Buscar por nombre o país...">
-      <select id="user-select" size="1"></select>
+      <input type="text" id="user-search" class="campo" data-i18n-placeholder="topbar_user_placeholder" placeholder="Buscar por nombre o país...">
+      <select id="user-select" class="campo" size="1"></select>
     </div>
 
     <div class="filter-group">
       <label for="scope-select" data-i18n="label_scope">Comparar contra</label>
-      <select id="scope-select"></select>
+      <select id="scope-select" class="campo"></select>
     </div>
 
     <div class="filter-group">
       <label for="type-select" data-i18n="label_type">Tipo de acción</label>
-      <select id="type-select"></select>
+      <select id="type-select" class="campo"></select>
     </div>
 
     <div class="filter-group filter-group--narrow">
       <label data-i18n="label_age">Edad</label>
       <div class="range-inputs">
-        <input type="number" id="age-min" min="0" max="120" value="18">
+        <input type="number" id="age-min" class="campo" min="0" max="120" value="18">
         <span>–</span>
-        <input type="number" id="age-max" min="0" max="120" value="65">
+        <input type="number" id="age-max" class="campo" min="0" max="120" value="65">
       </div>
     </div>
 
     <div class="filter-group filter-group--narrow">
       <label for="gender-select" data-i18n="label_gender">Género</label>
-      <select id="gender-select">
+      <select id="gender-select" class="campo">
         <option value="all" data-i18n="gender_all">Todos</option>
         <option value="M" data-i18n="gender_m">Masculino</option>
         <option value="F" data-i18n="gender_f">Femenino</option>

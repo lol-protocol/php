@@ -27,7 +27,7 @@ final class EtiquetasTest extends TestCase
 
     public function testCanalTraduceLosCincoCanales(): void
     {
-        self::assertSame('Organico', Etiquetas::canal('organico'));
+        self::assertSame('Orgánico', Etiquetas::canal('organico'));
         self::assertSame('Ads', Etiquetas::canal('ads'));
         self::assertSame('Referido', Etiquetas::canal('referido'));
         self::assertSame('Redes sociales', Etiquetas::canal('redes_sociales'));

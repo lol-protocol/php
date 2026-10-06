@@ -14,7 +14,8 @@ final class DashboardController
 {
     public function index(): void
     {
-        ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
+        $filtros = Filtros::rangoActivo();
+        ['desde' => $desde, 'hasta' => $hasta] = $filtros;
 
         $ingresosRepo = new IngresosRepository();
         $funnelRepo = new FunnelRepository();
@@ -28,11 +29,7 @@ final class DashboardController
         [$desdeAnt, $hastaAnt] = Filtros::rangoAnterior($desde, $hasta);
         [$desdeAnio, $hastaAnio] = Filtros::rangoAnioAnterior($desde, $hasta);
 
-        View::render('dashboard', [
-            'meses' => $meses,
-            'desde' => $desde,
-            'hasta' => $hasta,
-            'personalizado' => $personalizado,
+        View::render('dashboard', $filtros + [
             'kpis' => $ingresosRepo->kpis($desde, $hasta),
             'kpisAnterior' => $ingresosRepo->kpis($desdeAnt, $hastaAnt),
             'kpisAnioAnterior' => $ingresosRepo->kpis($desdeAnio, $hastaAnio),
@@ -41,10 +38,10 @@ final class DashboardController
             'serieMensual' => $serieMensual,
             'funnelResumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'segmentacion' => [
-                'Pais' => $segmentacionRepo->topPorPais(),
+                'País' => $segmentacionRepo->topPorPais(),
                 'Ciudad' => $segmentacionRepo->topPorCiudad(),
                 'Idioma' => $segmentacionRepo->topPorIdioma(),
-                'Genero' => $segmentacionRepo->topPorGenero(),
+                'Género' => $segmentacionRepo->topPorGenero(),
                 'Rango de edad' => $segmentacionRepo->topPorRangoEdad(),
             ],
             'activePage' => 'dashboard',

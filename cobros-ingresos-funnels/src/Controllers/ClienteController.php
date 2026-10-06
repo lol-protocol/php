@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Avisos;
 use App\EnvioUnico;
 use App\Filtros;
 use App\Paginacion;
@@ -20,13 +21,13 @@ use App\View;
 
 final class ClienteController
 {
-    /** El genero tiene que ser uno de los que ofrece el formulario: la base no lo restringe. */
+    /** El genero tiene que ser uno de los que ofrece el formulario: lo valida la app y lo restringe la base (migracion 004). */
     public static function generoEsValido(string $genero): bool
     {
         return in_array($genero, ClienteRepository::GENEROS, true);
     }
 
-    /** El segmento tiene que ser uno de los que ofrece el formulario: la base no lo restringe. */
+    /** El segmento tiene que ser uno de los que ofrece el formulario: lo valida la app y lo restringe la base (migracion 004). */
     public static function segmentoEsValido(string $segmento): bool
     {
         return in_array($segmento, ClienteRepository::SEGMENTOS, true);
@@ -40,6 +41,19 @@ final class ClienteController
     public static function nacimientoNoEsFuturo(string $fechaNacimiento, string $hoy): bool
     {
         return $fechaNacimiento <= $hoy;
+    }
+
+    /**
+     * El idioma es un conjunto abierto (cualquier texto vale), pero el dashboard
+     * agrupa por el texto exacto: "ingles", "INGLES" y " Ingles " eran tres
+     * filas distintas. Se guarda sin espacios sobrantes y con cada palabra en
+     * mayuscula inicial ("Ingles"), como lo carga el seed. Vacio sigue vacio.
+     */
+    public static function normalizarIdioma(string $idioma): string
+    {
+        $limpio = trim((string) preg_replace('/\s+/u', ' ', $idioma));
+
+        return mb_convert_case($limpio, MB_CASE_TITLE, 'UTF-8');
     }
 
     public function index(): void
@@ -73,6 +87,7 @@ final class ClienteController
             'pagos' => (new PagoRepository())->porCliente($id),
             'notasCredito' => (new NotaCreditoRepository())->porCliente($id),
             'viajeFunnel' => (new FunnelRepository())->viajeDeCliente($id),
+            'avisos' => Avisos::confirmaciones('cliente'),
             'activePage' => 'clientes',
             'titulo' => $cliente['nombre'],
         ]);
@@ -96,22 +111,35 @@ final class ClienteController
             $email = trim((string) ($_POST['email'] ?? ''));
             $paisCodigo = (string) ($_POST['pais_codigo'] ?? '');
             $ciudad = trim((string) ($_POST['ciudad'] ?? ''));
-            $idioma = trim((string) ($_POST['idioma'] ?? ''));
+            $idioma = self::normalizarIdioma((string) ($_POST['idioma'] ?? ''));
             $genero = trim((string) ($_POST['genero'] ?? ''));
             $fechaNacimiento = (string) ($_POST['fecha_nacimiento'] ?? '');
             $segmento = trim((string) ($_POST['segmento'] ?? ''));
             // Vacio = no eligio: se usa el valor por defecto. Cualquier otro texto tiene que estar en la lista.
             $genero = $genero === '' ? 'No especifica' : $genero;
             $segmento = $segmento === '' ? 'general' : $segmento;
+            $idioma = $idioma === '' ? 'Espanol' : $idioma;
 
             if ($token === null) {
                 $error = EnvioUnico::MENSAJE_SIN_TOKEN;
             } elseif (Validacion::faltanCampos([$nombre, $email, $paisCodigo, $ciudad, $fechaNacimiento])) {
                 $error = 'Completá todos los campos obligatorios.';
+            } elseif (!Validacion::emailEsValido($email)) {
+                $error = 'El email no es válido.';
+            } elseif (($largo = Validacion::primerTextoLargo([
+                ['El nombre', $nombre, Validacion::MAX_NOMBRE],
+                ['El email', $email, Validacion::MAX_EMAIL],
+                ['La ciudad', $ciudad, Validacion::MAX_CIUDAD],
+                ['El idioma', $idioma, Validacion::MAX_IDIOMA],
+            ])) !== null) {
+                $error = $largo;
             } elseif (!Filtros::esFechaValida($fechaNacimiento)) {
                 $error = 'La fecha de nacimiento no es válida.';
             } elseif (!self::nacimientoNoEsFuturo($fechaNacimiento, date('Y-m-d'))) {
                 $error = 'La fecha de nacimiento no puede ser posterior a hoy.';
+            } elseif (!(new PaisRepository())->existe($paisCodigo)) {
+                // Antes un pais que no existe llegaba hasta la base y volvia como "No se pudo crear el cliente."
+                $error = 'Elegí un país válido.';
             } elseif (!self::generoEsValido($genero)) {
                 $error = 'Elegí un género válido.';
             } elseif (!self::segmentoEsValido($segmento)) {
@@ -126,13 +154,13 @@ final class ClienteController
                             'fecha_alta' => date('Y-m-d'),
                             'pais_codigo' => $paisCodigo,
                             'ciudad' => $ciudad,
-                            'idioma' => $idioma ?: 'Espanol',
+                            'idioma' => $idioma,
                             'genero' => $genero,
                             'fecha_nacimiento' => $fechaNacimiento,
                         ]);
                         AuditoriaRepository::auditar('crear', 'cliente', $id, "Cliente #{$id}: {$nombre} ({$email})");
 
-                        return '?page=cliente&id=' . $id;
+                        return '?page=cliente&id=' . $id . '&creado=1';
                     });
                     header('Location: ' . $destino);
                     exit;
@@ -144,6 +172,7 @@ final class ClienteController
 
         View::render('clientes/nuevo', [
             'paises' => (new PaisRepository())->listado(),
+            'idiomas' => (new ClienteRepository())->idiomasEnUso(),
             'generos' => ClienteRepository::GENEROS,
             'segmentos' => ClienteRepository::SEGMENTOS,
             'error' => $error,

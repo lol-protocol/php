@@ -1,0 +1,88 @@
+==================================================
+SAMPLE PHONE DIRECTORY - GENEALOGICAL RECORDS
+==================================================
+
+ANDERSON, John Michael
+123 Main Street
+555-123-4567
+
+BAKER, Sarah Elizabeth
+456 Oak Avenue
+555-234-5678
+
+GARCIA, María Carmen
+789 Maple Road
+555-345-6789
+
+JOHNSON, William David
+321 Pine Drive
+555-456-7890
+
+MARTINEZ, José Antonio
+654 Elm Lane
+555-567-8901
+
+--------------------------------------------------
+
+WILLIAMS, Robert James
+987 Cedar Boulevard
+555-678-9012
+
+BROWN, Patricia Lynn
+246 Birch Circle
+555-789-0123
+
+RODRIGUEZ, Francisco Luis
+135 Walnut Street
+555-890-1234
+
+DAVIS, Jennifer Marie
+579 Spruce Avenue
+555-901-2345
+
+THOMPSON, Thomas Edward
+802 Ash Road
+
+==================================================
+
+MILLER, Betty Ann
+246 Cypress Drive
+555-012-3456
+
+WILSON, Charles Henry
+913 Juniper Lane
+555-123-4567
+
+MOORE, Dorothy Mae
+467 Willow Street
+555-234-5678
+
+TAYLOR, George Albert
+891 Hickory Avenue
+555-345-6789
+
+ANDERSON, Margaret Rose
+234 Chestnut Road
+555-456-7890
+
+--------------------------------------------------
+
+THOMAS, Richard Paul
+567 Locust Boulevard
+555-567-8901
+
+JACKSON, Susan Katherine
+890 Poplar Circle
+555-678-9012
+
+WHITE, Donald Lewis
+123 Sycamore Street
+555-789-0123
+
+HARRIS, Christine Anne
+456 Laurel Avenue
+555-890-1234
+
+MARTIN, Michael Steven
+789 Magnolia Road
+555-901-2345

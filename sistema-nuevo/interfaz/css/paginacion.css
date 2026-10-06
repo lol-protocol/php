@@ -22,7 +22,7 @@
 }
 
 .page-button:hover:not(:disabled) {
-  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .page-button:disabled {

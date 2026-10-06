@@ -164,7 +164,7 @@ if [ "$DRY_RUN" -eq 0 ]; then
     # y el "export" de get_public_ip se perderia ahi, asi que los pasos hijos no
     # heredarian nada y cada uno volveria a consultar ifconfig.me.
     get_public_ip > /dev/null
-    IP=$CACHED_PUBLIC_IP
+    IP=${CACHED_PUBLIC_IP:-TU_IP_PUBLICA}
 fi
 
 for i in "${!STEPS[@]}"; do
