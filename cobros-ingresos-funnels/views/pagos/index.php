@@ -26,33 +26,28 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
 ?>
 
 <h1>Pagos</h1>
-<p class="subtitulo">Efectivo cobrado: cuando entra el dinero y por que medio.</p>
+<p class="subtitulo">Efectivo cobrado: cuándo entra el dinero y por qué medio.</p>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="pagos">
-    <label for="meses">Periodo</label>
-    <select name="meses" id="meses">
-        <option value="3" <?= $meses === 3 ? 'selected' : '' ?>>Ultimos 3 meses</option>
-        <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
-        <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
-    </select>
     <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <label for="cliente">Cliente</label>
     <input type="search" name="cliente" id="cliente" placeholder="Buscar por nombre..." value="<?= htmlspecialchars($cliente) ?>">
     <button type="submit">Aplicar</button>
     <a href="?page=pago-nuevo" style="margin-left:auto;">+ Nuevo pago</a>
 </form>
+<?php include __DIR__ . '/../_avisos.php'; ?>
 
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
-        <span class="label">Cobrado neto (periodo, USD)</span>
+        <span class="label">Cobrado neto (período, USD)</span>
         <span class="value"><?= Config::money($cobradoNeto) ?></span>
         <?php if ($devoluciones > 0.01): ?>
             <span class="delta"><?= Config::money($cobradoBruto) ?> cobrados &minus; <?= Config::money($devoluciones) ?> devueltos</span>
         <?php endif; ?>
     </div>
     <div class="panel stat-tile">
-        <span class="label">Devoluciones (periodo, USD)</span>
+        <span class="label">Devoluciones (período, USD)</span>
         <span class="value"><?= Config::money($devoluciones) ?></span>
         <span class="delta">Notas de crédito por boletas anuladas que ya estaban cobradas</span>
     </div>
@@ -74,7 +69,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
     </div>
 
     <div class="panel">
-        <h2>Por metodo de pago</h2>
+        <h2>Por método de pago</h2>
         <?php foreach ($porMetodo as $fila): ?>
             <div class="hbar-row">
                 <span class="hbar-label"><?= htmlspecialchars(Etiquetas::metodoPago($fila['metodo'])) ?></span>
@@ -91,7 +86,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
             </div>
         <?php endforeach; ?>
         <?php if (!$porMetodo): ?>
-            <p class="subtitulo">Sin pagos en este periodo.</p>
+            <p class="subtitulo">Sin pagos en este período.</p>
         <?php endif; ?>
     </div>
 </div>
@@ -101,7 +96,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
     <div class="table-wrap">
         <table>
             <thead>
-            <tr><th>Cliente</th><th>Fecha</th><th>Metodo</th><th>Origen</th><th class="num">Monto</th><th>&nbsp;</th></tr>
+            <tr><th>Cliente</th><th>Fecha</th><th>Método</th><th>Origen</th><th class="num">Monto</th><th>&nbsp;</th></tr>
             </thead>
             <tbody>
             <?php foreach ($pagos as $p): ?>

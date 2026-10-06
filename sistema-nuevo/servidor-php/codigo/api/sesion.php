@@ -12,53 +12,48 @@ function api_login(): void
 
     $bloqueadaHasta = $intentos->bloqueadaHasta($ip);
     if ($bloqueadaHasta !== null) {
-        http_response_code(429);
-        echo json_encode(['error' => 'demasiados intentos fallidos, probá de nuevo más tarde', 'retry_after' => $bloqueadaHasta], JSON_UNESCAPED_UNICODE);
+        api_error(429, 'demasiados_intentos', 'demasiados intentos fallidos, probá de nuevo más tarde', ['retry_after' => $bloqueadaHasta]);
         return;
     }
 
-    $body = json_decode(file_get_contents('php://input') ?: '[]', true) ?? [];
+    $body = api_cuerpo_json();
     $username = is_string($body['username'] ?? null) ? $body['username'] : '';
     $password = is_string($body['password'] ?? null) ? $body['password'] : '';
 
     if ($username === '' || $password === '' || !auth_verificar_credenciales($pdo, $username, $password)) {
         $bloqueadaAhora = $intentos->registrarFallo($ip);
         if ($bloqueadaAhora !== null) {
-            http_response_code(429);
-            echo json_encode(['error' => 'demasiados intentos fallidos, probá de nuevo más tarde', 'retry_after' => $bloqueadaAhora], JSON_UNESCAPED_UNICODE);
+            api_error(429, 'demasiados_intentos', 'demasiados intentos fallidos, probá de nuevo más tarde', ['retry_after' => $bloqueadaAhora]);
             return;
         }
-        http_response_code(401);
-        echo json_encode(['error' => 'usuario o contraseña incorrectos'], JSON_UNESCAPED_UNICODE);
+        api_error(401, 'credenciales_invalidas', 'usuario o contraseña incorrectos');
         return;
     }
 
     $intentos->limpiar($ip);
     auth_marcar_autenticado($username);
-    echo json_encode([
+    api_responder([
         'authenticated' => true,
         'username' => $username,
         'csrf_token' => auth_obtener_csrf_token(),
-    ], JSON_UNESCAPED_UNICODE);
+    ]);
 }
 
 function api_logout(): void
 {
-    if (!auth_validar_csrf_header()) {
-        http_response_code(403);
-        echo json_encode(['error' => 'token CSRF inválido'], JSON_UNESCAPED_UNICODE);
+    if (!api_exigir_csrf()) {
         return;
     }
 
     auth_cerrar_sesion();
-    echo json_encode(['authenticated' => false], JSON_UNESCAPED_UNICODE);
+    api_responder(['authenticated' => false]);
 }
 
 function api_session(): void
 {
-    echo json_encode([
+    api_responder([
         'authenticated' => auth_esta_autenticado(),
         'username' => auth_usuario_actual(),
         'csrf_token' => auth_esta_autenticado() ? auth_obtener_csrf_token() : null,
-    ], JSON_UNESCAPED_UNICODE);
+    ]);
 }

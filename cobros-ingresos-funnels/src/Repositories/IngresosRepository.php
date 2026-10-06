@@ -83,10 +83,10 @@ final class IngresosRepository
         )->fetchAll();
 
         $buckets = [
-            'Al dia' => 0.0,
-            '1-30 dias' => 0.0,
-            '31-60 dias' => 0.0,
-            '61+ dias' => 0.0,
+            'Al día' => 0.0,
+            '1-30 días' => 0.0,
+            '31-60 días' => 0.0,
+            '61+ días' => 0.0,
         ];
 
         foreach ($rows as $row) {
@@ -109,10 +109,10 @@ final class IngresosRepository
     public static function tramoDeAntiguedad(int $diasVencido): string
     {
         return match (true) {
-            $diasVencido <= 0 => 'Al dia',
-            $diasVencido <= 30 => '1-30 dias',
-            $diasVencido <= 60 => '31-60 dias',
-            default => '61+ dias',
+            $diasVencido <= 0 => 'Al día',
+            $diasVencido <= 30 => '1-30 días',
+            $diasVencido <= 60 => '31-60 días',
+            default => '61+ días',
         };
     }
 

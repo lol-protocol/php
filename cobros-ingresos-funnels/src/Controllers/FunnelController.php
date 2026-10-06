@@ -12,15 +12,12 @@ final class FunnelController
 {
     public function index(): void
     {
-        ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
+        $filtros = Filtros::rangoActivo();
+        ['desde' => $desde, 'hasta' => $hasta] = $filtros;
 
         $funnelRepo = new FunnelRepository();
 
-        View::render('funnel/index', [
-            'meses' => $meses,
-            'desde' => $desde,
-            'hasta' => $hasta,
-            'personalizado' => $personalizado,
+        View::render('funnel/index', $filtros + [
             'resumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'porCanal' => $funnelRepo->porCanal($desde, $hasta),
             'porPais' => $funnelRepo->porPais($desde, $hasta),
@@ -29,7 +26,7 @@ final class FunnelController
             'serieMensual' => $funnelRepo->serieMensual($desde, $hasta),
             'tiempoPromedioConversion' => $funnelRepo->tiempoPromedioConversionDias(),
             'activePage' => 'funnel',
-            'titulo' => 'Funnel de conversion',
+            'titulo' => 'Funnel de conversión',
         ]);
     }
 }

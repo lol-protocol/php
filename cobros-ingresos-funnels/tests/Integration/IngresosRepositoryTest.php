@@ -18,7 +18,7 @@ final class IngresosRepositoryTest extends IntegracionTestCase
     {
         $buckets = (new IngresosRepository())->carteraAging();
 
-        self::assertSame(['Al dia', '1-30 dias', '31-60 dias', '61+ dias'], array_keys($buckets));
+        self::assertSame(['Al día', '1-30 días', '31-60 días', '61+ días'], array_keys($buckets));
         foreach ($buckets as $monto) {
             self::assertGreaterThanOrEqual(0.0, $monto);
         }

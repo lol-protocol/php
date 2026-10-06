@@ -7,7 +7,7 @@
     <div class="table-wrap">
         <table>
             <thead>
-            <tr><th>&nbsp;</th><th class="num">Visitantes</th><th class="num">Registrados</th><th class="num">Leads</th><th class="num">Clientes</th><th class="num">Conversion</th></tr>
+            <tr><th>&nbsp;</th><th class="num">Visitantes</th><th class="num">Registrados</th><th class="num">Leads</th><th class="num">Clientes</th><th class="num">Conversión</th></tr>
             </thead>
             <tbody>
             <?php foreach ($filas as $f): $tasa = $f['visitantes'] > 0 ? $f['clientes'] / $f['visitantes'] * 100 : 0; ?>
@@ -21,7 +21,7 @@
                 </tr>
             <?php endforeach; ?>
             <?php if (!$filas): ?>
-                <tr><td colspan="6">Sin datos para este periodo.</td></tr>
+                <tr><td colspan="6">Sin datos para este período.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>

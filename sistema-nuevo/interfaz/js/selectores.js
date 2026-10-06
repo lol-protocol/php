@@ -1,8 +1,9 @@
 import { state, el } from "./nucleo.js";
 import { t } from "./idioma.js";
+import { controlFiltro } from "./controles-filtro.js";
 
 export function populateScopeSelect() {
-  const select = document.getElementById("scope-select");
+  const select = controlFiltro("scope");
   select.innerHTML = "";
   select.appendChild(el("option", { value: "all", text: t("scope_all_countries") }));
 
@@ -22,7 +23,7 @@ export function populateScopeSelect() {
 }
 
 export function populateTypeSelect() {
-  const select = document.getElementById("type-select");
+  const select = controlFiltro("type");
   select.innerHTML = "";
   select.appendChild(el("option", { value: "all", text: t("type_all") }));
   state.actionTypes.forEach((tipo) => {

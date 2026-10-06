@@ -43,53 +43,28 @@ header('Content-Type: application/json; charset=utf-8');
 auth_iniciar_sesion_php();
 
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
-$rutasProtegidas = ['/api/users', '/api/groups', '/api/action-types', '/api/alerts', '/api/alerts-config', '/api/filtros', '/api/notes', '/api/kpis', '/api/timeline'];
-$esFiltroPorId = (bool) preg_match('#^/api/filtros/\d+$#', $path);
+$ruta = api_resolver_ruta($path);
 
 // Libera el lock del archivo de sesión ni bien terminamos de leerla (auth +
 // CSRF ya solo necesitan lectura de acá en más): si no, cualquier pedido
 // concurrente de la misma pestaña -- aunque sea a otro endpoint -- se
 // serializa esperando este mismo lock, sin importar cuántos workers tenga
-// el server. login/logout/session son la excepción: necesitan la sesión
-// abierta para escribir en ella.
-if (!in_array($path, ['/api/login', '/api/logout', '/api/session'], true)) {
+// el server. Las rutas que manejan la sesión por su cuenta (login, logout,
+// session; ver rutas.php) son la excepción: necesitan la sesión abierta para
+// escribir en ella.
+if ($ruta === null || !$ruta['sesion']) {
     session_write_close();
 }
 
 try {
-    if ((in_array($path, $rutasProtegidas, true) || $esFiltroPorId) && !auth_esta_autenticado()) {
-        api_unauthorized();
-    } elseif ($path === '/api/login') {
-        api_login();
-    } elseif ($path === '/api/logout') {
-        api_logout();
-    } elseif ($path === '/api/session') {
-        api_session();
-    } elseif ($path === '/api/users') {
-        api_users();
-    } elseif ($path === '/api/groups') {
-        api_groups();
-    } elseif ($path === '/api/action-types') {
-        api_action_types();
-    } elseif ($path === '/api/alerts') {
-        api_alerts();
-    } elseif ($path === '/api/alerts-config') {
-        api_alertas_config();
-    } elseif ($path === '/api/filtros') {
-        api_filtros();
-    } elseif (preg_match('#^/api/filtros/(\d+)$#', $path, $m)) {
-        api_filtros_delete((int)$m[1]);
-    } elseif ($path === '/api/notes') {
-        api_notas();
-    } elseif ($path === '/api/kpis') {
-        api_kpis();
-    } elseif ($path === '/api/timeline') {
-        api_timeline();
-    } else {
+    if ($ruta === null) {
         api_not_found();
+    } elseif (!$ruta['sesion'] && !auth_esta_autenticado()) {
+        api_unauthorized();
+    } else {
+        ($ruta['handler'])(...$ruta['args']);
     }
 } catch (Throwable $e) {
     error_log($e->getMessage());
-    http_response_code(500);
-    echo json_encode(['error' => 'error interno del servidor'], JSON_UNESCAPED_UNICODE);
+    api_error(500, 'error_interno', 'error interno del servidor');
 }

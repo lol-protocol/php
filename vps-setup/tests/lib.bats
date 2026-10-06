@@ -104,3 +104,34 @@ run_lib() { run bash -c "source '$VPS_DIR/lib.sh'; $1"; }
     run_lib "deploy_files '$BATS_TEST_TMPDIR/no-existe' '$BATS_TEST_TMPDIR'"
     [ "$status" -eq 1 ]
 }
+
+@test "verify_dns_resolution exige que AMBOS (dominio y www) apunten a la IP: certbot pide los dos" {
+    # apex correcto, www apuntando a otra IP
+    make_stub dig 'if [[ "$*" == *www.* ]]; then echo 9.9.9.9; else echo 203.0.113.9; fi'
+    run_lib 'verify_dns_resolution ejemplo.com 203.0.113.9'
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"www.ejemplo.com"* ]]
+}
+
+@test "verify_dns_resolution falla si www no resuelve aunque el apex si" {
+    make_stub dig 'if [[ "$*" == *www.* ]]; then exit 0; else echo 203.0.113.9; fi'
+    run_lib 'verify_dns_resolution ejemplo.com 203.0.113.9'
+    [ "$status" -eq 1 ]
+}
+
+@test "verify_dns_resolution acepta un CNAME seguido de la IP correcta" {
+    make_stub dig 'printf "lb.ejemplo.net.\n203.0.113.9\n"'
+    run_lib 'verify_dns_resolution ejemplo.com 203.0.113.9'
+    [ "$status" -eq 0 ]
+}
+
+@test "get_public_ip NO cachea el placeholder: un fallo transitorio no envenena el resto de la corrida" {
+    make_stub curl 'exit 7'
+    run bash -c "source '$VPS_DIR/lib.sh'
+        get_public_ip > '$BATS_TEST_TMPDIR/a'
+        echo \"cache=[\$CACHED_PUBLIC_IP]\""
+    [[ "$output" == *"cache=[]"* ]]
+    make_stub curl 'echo 203.0.113.9'
+    run bash -c "source '$VPS_DIR/lib.sh'; get_public_ip; get_public_ip > /dev/null; echo \"cache=[\$CACHED_PUBLIC_IP]\""
+    [[ "$output" == *"cache=[203.0.113.9]"* ]]
+}

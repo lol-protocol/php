@@ -40,4 +40,42 @@ final class ValidacionTest extends TestCase
         self::assertTrue(Validacion::faltanCampos([' '], 10.0));
         self::assertFalse(Validacion::faltanCampos(['x']));
     }
+
+    /** Las columnas son TEXT: sin tope se guardaba un nombre de 100.000 caracteres. */
+    public function testUnTextoQueSePasaDeSuLargoSeRechazaConSuMensaje(): void
+    {
+        self::assertNull(Validacion::primerTextoLargo([['El nombre', str_repeat('a', Validacion::MAX_NOMBRE), Validacion::MAX_NOMBRE]]), 'justo en el maximo entra');
+        self::assertSame(
+            'El nombre no puede superar los 120 caracteres.',
+            Validacion::primerTextoLargo([['El nombre', str_repeat('a', 121), Validacion::MAX_NOMBRE]])
+        );
+    }
+
+    public function testElMensajeEsElDelPrimerCampoQueSePasa(): void
+    {
+        $mensaje = Validacion::primerTextoLargo([
+            ['El nombre', 'Ana', Validacion::MAX_NOMBRE],
+            ['La ciudad', str_repeat('c', Validacion::MAX_CIUDAD + 1), Validacion::MAX_CIUDAD],
+            ['El idioma', str_repeat('i', Validacion::MAX_IDIOMA + 1), Validacion::MAX_IDIOMA],
+        ]);
+
+        self::assertSame('La ciudad no puede superar los 100 caracteres.', $mensaje);
+    }
+
+    /** Se cuentan caracteres, no bytes: 120 "ñ" son 240 bytes y tienen que entrar. */
+    public function testElLargoSeCuentaEnCaracteresNoEnBytes(): void
+    {
+        self::assertNull(Validacion::primerTextoLargo([['El nombre', str_repeat('ñ', 120), 120]]));
+        self::assertNotNull(Validacion::primerTextoLargo([['El nombre', str_repeat('ñ', 121), 120]]));
+    }
+
+    public function testElEmailSeValidaEnElServidor(): void
+    {
+        foreach (['ana@example.com', 'ana.perez+facturas@sub.example.com.ar'] as $valido) {
+            self::assertTrue(Validacion::emailEsValido($valido), $valido);
+        }
+        foreach (['', 'ana', 'ana@', '@example.com', 'ana@@example.com', 'ana perez@example.com', 'ana@example'] as $invalido) {
+            self::assertFalse(Validacion::emailEsValido($invalido), "'{$invalido}'");
+        }
+    }
 }

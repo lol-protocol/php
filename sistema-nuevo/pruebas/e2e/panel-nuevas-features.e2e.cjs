@@ -1,5 +1,4 @@
-const { chromium } = require("playwright");
-const { assert, paso, resumenPasos, iniciarSesion, ejecutarSql, BASE_URL } = require("./ayudante-e2e.cjs");
+const { assert, paso, resumenPasos, conNavegador, enviarLogin, paginaEnIngles, ejecutarSql, BASE_URL } = require("./ayudante-e2e.cjs");
 
 function limpiarIntentosLogin() {
   ejecutarSql("DELETE FROM intentos_login;");
@@ -7,17 +6,11 @@ function limpiarIntentosLogin() {
 
 async function intentarLogin(page, password) {
   const respuesta = page.waitForResponse((r) => r.url().includes("/api/login"));
-  await page.fill("#login-username", "admin");
-  await page.fill("#login-password", password);
-  await page.click("#login-form button[type=submit]");
+  await enviarLogin(page, password);
   return respuesta;
 }
 
-(async () => {
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
-  await iniciarSesion(page);
-
+async function pasosPrincipales({ page }) {
   await paso("dashboard de KPIs incluye el tile de usuarios con alertas", async () => {
     await page.waitForSelector("#kpis-dashboard .kpi-tile");
     const labels = await page.locator(".kpi-label").allTextContents();
@@ -134,30 +127,40 @@ async function intentarLogin(page, password) {
     ejecutarSql("DELETE FROM filtros_guardados WHERE nombre LIKE 'e2e-test-filtro-%';");
   });
 
-  await browser.close();
+}
+
+async function pasoDelBloqueo({ browser, page }) {
+  await paso("5 intentos fallidos de login bloquean con 429 y mensaje claro", async () => {
+    await page.goto(BASE_URL);
+    for (let i = 0; i < 5; i++) {
+      const respuesta = await intentarLogin(page, "clave-mala");
+      assert.equal(respuesta.status(), 401);
+    }
+    // Login #6, ahora con la clave CORRECTA: igual debe rechazarse por el bloqueo.
+    const respuestaBloqueada = await intentarLogin(page, "admin123");
+    assert.equal(respuestaBloqueada.status(), 429);
+    await page.waitForSelector("#login-error:not([hidden])");
+    assert.match(await page.textContent("#login-error"), /intentos/i);
+    assert.equal(await page.isHidden("#app"), true);
+
+    // El mismo bloqueo (sigue activo) con la interfaz en inglés: el mensaje sale traducido.
+    const { page: paginaEn, cerrar } = await paginaEnIngles(browser);
+    await paginaEn.goto(BASE_URL);
+    assert.equal((await intentarLogin(paginaEn, "admin123")).status(), 429);
+    await paginaEn.waitForSelector("#login-error:not([hidden])");
+    assert.equal(await paginaEn.textContent("#login-error"), "too many failed attempts, try again later");
+    await cerrar();
+  });
+}
+
+(async () => {
+  await conNavegador(pasosPrincipales);
 
   // Rate limiting: aparte, en su propia sesión de navegador y SIEMPRE con
   // limpieza al final (try/finally) -- si esto queda bloqueado, toda corrida
   // posterior de la suite (o el uso real del panel) se rompe por 15 minutos.
   try {
-    const browser2 = await chromium.launch();
-    const page2 = await browser2.newPage();
-
-    await paso("5 intentos fallidos de login bloquean con 429 y mensaje claro", async () => {
-      await page2.goto(BASE_URL);
-      for (let i = 0; i < 5; i++) {
-        const respuesta = await intentarLogin(page2, "clave-mala");
-        assert.equal(respuesta.status(), 401);
-      }
-      // Login #6, ahora con la clave CORRECTA: igual debe rechazarse por el bloqueo.
-      const respuestaBloqueada = await intentarLogin(page2, "admin123");
-      assert.equal(respuestaBloqueada.status(), 429);
-      await page2.waitForSelector("#login-error:not([hidden])");
-      assert.match(await page2.textContent("#login-error"), /intentos/i);
-      assert.equal(await page2.isHidden("#app"), true);
-    });
-
-    await browser2.close();
+    await conNavegador(pasoDelBloqueo, { entrar: false });
   } finally {
     limpiarIntentosLogin();
   }

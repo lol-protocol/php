@@ -2,6 +2,7 @@ import { postJson, deleteJson, fetchJson } from "./sesion.js";
 import { intentar, el } from "./nucleo.js";
 import { t } from "./idioma.js";
 import { mostrarError } from "./notificaciones.js";
+import { leerFiltros, escribirFiltros, avisarCambioDeFiltros } from "./controles-filtro.js";
 import { modalPrompt, modalConfirmar } from "./modal.js";
 
 let ultimaPeticionFiltro = 0;
@@ -41,15 +42,17 @@ export async function aplicarFiltroGuardado(filtroId) {
     const filtro = filtros.find((f) => String(f.id) === String(filtroId));
     if (!filtro) return;
 
-    // scope se guarda tal cual viene de #scope-select (ya trae "country:XX"/"preset:XX").
-    document.getElementById("scope-select").value = filtro.scope === "all_countries" ? "all" : filtro.scope;
-    document.getElementById("age-min").value = filtro.age_min ?? 18;
-    document.getElementById("age-max").value = filtro.age_max ?? 65;
-    document.getElementById("gender-select").value = filtro.gender || "all";
-    document.getElementById("type-select").value = filtro.tipo_accion || "all";
+    // scope se guarda tal cual viene del desplegable de país (ya trae "country:XX"/"preset:XX").
+    escribirFiltros({
+      scope: filtro.scope === "all_countries" ? "all" : filtro.scope,
+      ageMin: filtro.age_min ?? 18,
+      ageMax: filtro.age_max ?? 65,
+      gender: filtro.gender || "all",
+      type: filtro.tipo_accion || "all",
+    });
 
     // Disparar evento de cambio para cargar datos
-    document.getElementById("scope-select").dispatchEvent(new Event("change"));
+    avisarCambioDeFiltros();
   }, "Error aplicando filtro:", () => mostrarError(t("toast_error_cargar")));
 }
 
@@ -62,11 +65,12 @@ export async function guardarFiltroActual() {
   const nombre = await modalPrompt(t("filtro_nombre_prompt"), t("btn_guardar_filtro"));
   if (!nombre) return;
 
-  const scope = document.getElementById("scope-select").value;
-  const ageMin = parseIntOrNull(document.getElementById("age-min").value);
-  const ageMax = parseIntOrNull(document.getElementById("age-max").value);
-  const gender = document.getElementById("gender-select").value || null;
-  const tipoAccion = document.getElementById("type-select").value || null;
+  const filtros = leerFiltros();
+  const scope = filtros.scope;
+  const ageMin = parseIntOrNull(filtros.ageMin);
+  const ageMax = parseIntOrNull(filtros.ageMax);
+  const gender = filtros.gender || null;
+  const tipoAccion = filtros.type || null;
 
   await intentar(async () => {
     await postJson("/api/filtros", {

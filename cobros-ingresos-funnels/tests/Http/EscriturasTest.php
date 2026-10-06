@@ -468,4 +468,221 @@ final class EscriturasTest extends HttpTestCase
         $this->alTerminar(static fn () => self::borrarEntidad('clientes', 'cliente', $clienteId));
         self::assertSame(1, $auditorias('cliente', $clienteId));
     }
+
+    /**
+     * Regresion: las redirecciones de las altas, ediciones y anulaciones
+     * llevaban el id (?creada=ID, ?creado=ID...) pero ninguna pantalla lo
+     * leia, asi que nada confirmaba que se habia hecho. Recorre cada flujo y
+     * sigue la redireccion como lo haria el navegador.
+     */
+    public function testCadaAltaEdicionYAnulacionSeConfirmaEnLaPantallaDeDestino(): void
+    {
+        $seguir = fn (array $respuesta): string => $this->get(substr((string) $respuesta['location'], 1))['cuerpo'];
+        $formulario = $this->get('page=boleta-nueva')['cuerpo'];
+        $csrf = self::campoOculto($formulario, 'csrf_token');
+        $envioBoleta = self::campoOculto($formulario, EnvioUnico::CAMPO);
+        $this->olvidarToken($envioBoleta);
+
+        // Boleta: alta, edicion y anulacion.
+        $alta = $this->post('page=boleta-nueva', [
+            'csrf_token' => $csrf, EnvioUnico::CAMPO => $envioBoleta, 'cliente_id' => self::CLIENTE,
+            'concepto' => 'Boleta de confirmaciones ' . uniqid(), 'monto' => '500.00',
+            'fecha_emision' => '2020-03-01', 'fecha_vencimiento' => '2020-04-01',
+        ]);
+        $this->assertStatus(302, $alta);
+        $boletaId = self::idDeLaRedireccion($alta, 'creada');
+        $this->alTerminar(static fn () => self::borrarBoletaConTodo($boletaId));
+        self::assertStringContainsString("Boleta #{$boletaId} creada.", $seguir($alta));
+
+        $edicion = $this->post("page=boleta-editar&id={$boletaId}", [
+            'csrf_token' => $csrf, 'concepto' => 'Boleta editada', 'monto' => '450.00',
+            'fecha_emision' => '2020-03-01', 'fecha_vencimiento' => '2020-04-01',
+        ]);
+        $this->assertStatus(302, $edicion);
+        self::assertStringContainsString("Boleta #{$boletaId} actualizada.", $seguir($edicion));
+
+        // Pago: edicion y anulacion (el alta pasa por el formulario con su token de envio, mas abajo).
+        $pagoId = $this->pagoDePrueba($boletaId);
+        $edicionPago = $this->post("page=pago-editar&id={$pagoId}", [
+            'csrf_token' => $csrf, 'monto' => '120.00', 'fecha_pago' => '2020-03-05', 'metodo' => 'efectivo',
+        ]);
+        $this->assertStatus(302, $edicionPago);
+        self::assertStringContainsString("Pago #{$pagoId} actualizado.", $seguir($edicionPago));
+
+        $anulacionPago = $this->post("page=pago-anular&id={$pagoId}", ['csrf_token' => $csrf]);
+        $this->assertStatus(302, $anulacionPago);
+        self::assertStringContainsString("Pago #{$pagoId} anulado.", $seguir($anulacionPago));
+
+        $anulacion = $this->post("page=boleta-anular&id={$boletaId}", ['csrf_token' => $csrf]);
+        $this->assertStatus(302, $anulacion);
+        self::assertStringContainsString("Boleta #{$boletaId} anulada.", $seguir($anulacion));
+    }
+
+    public function testElAltaDeUnPagoYDeUnClienteSeConfirmanEnSuPantalla(): void
+    {
+        $seguir = fn (array $respuesta): string => $this->get(substr((string) $respuesta['location'], 1))['cuerpo'];
+        $boletaId = $this->boletaDePrueba();
+
+        $formularioPago = $this->get('page=pago-nuevo&cliente_id=' . self::CLIENTE)['cuerpo'];
+        $envioPago = self::campoOculto($formularioPago, EnvioUnico::CAMPO);
+        $this->olvidarToken($envioPago);
+        $pago = $this->post('page=pago-nuevo&cliente_id=' . self::CLIENTE, [
+            'csrf_token' => self::campoOculto($formularioPago, 'csrf_token'), EnvioUnico::CAMPO => $envioPago,
+            'cliente_id' => self::CLIENTE, 'boleta_id' => $boletaId, 'monto' => '100.00',
+            'fecha_pago' => '2020-01-20', 'metodo' => 'tarjeta',
+        ]);
+        $this->assertStatus(302, $pago);
+        $pagoId = self::idDeLaRedireccion($pago, 'creado');
+        self::assertStringContainsString("Pago #{$pagoId} registrado.", $seguir($pago));
+
+        $formularioCliente = $this->get('page=cliente-nuevo')['cuerpo'];
+        $envioCliente = self::campoOculto($formularioCliente, EnvioUnico::CAMPO);
+        $this->olvidarToken($envioCliente);
+        $cliente = $this->post('page=cliente-nuevo', [
+            'csrf_token' => self::campoOculto($formularioCliente, 'csrf_token'), EnvioUnico::CAMPO => $envioCliente,
+            'nombre' => 'Cliente confirmado', 'email' => 'cliente-confirmado-' . uniqid() . '@example.com',
+            'pais_codigo' => 'AR', 'ciudad' => 'Rosario', 'idioma' => 'Espanol', 'genero' => 'No especifica',
+            'fecha_nacimiento' => '1990-05-05', 'segmento' => 'general',
+        ]);
+        $this->assertStatus(302, $cliente);
+        $clienteId = self::idDeLaRedireccion($cliente, 'id');
+        $this->alTerminar(static fn () => self::borrarEntidad('clientes', 'cliente', $clienteId));
+        self::assertStringContainsString('Cliente creado.', $seguir($cliente));
+    }
+
+    public function testUnaPantallaSinRedireccionNoMuestraConfirmaciones(): void
+    {
+        foreach (['page=cobros', 'page=pagos', 'page=cliente&id=' . self::CLIENTE] as $query) {
+            self::assertStringNotContainsString('class="aviso', $this->get($query)['cuerpo'], $query);
+        }
+    }
+
+    /**
+     * Regresion: con mas clientes que el limite del desplegable, "Nueva boleta"
+     * y "Nuevo pago" mostraban solo los primeros sin decirlo. Ahora lo avisan,
+     * y el cliente de ?cliente_id= aparece elegido aunque quede fuera.
+     */
+    public function testElSelectorDeClientesAvisaCuandoNoMuestraATodos(): void
+    {
+        $db = Database::connection();
+        $this->alTerminar(static fn () => $db->exec("DELETE FROM clientes WHERE email LIKE 'zzzz-selector-http-%@example.com'"));
+        $db->prepare(
+            "INSERT INTO clientes (nombre, email, segmento, fecha_alta, pais_codigo, ciudad, idioma, genero, fecha_nacimiento)
+             SELECT 'ZZZZ Selector ' || lpad(g::text, 4, '0'), 'zzzz-selector-http-' || g || '@example.com', 'general',
+                    CURRENT_DATE, 'AR', 'Rosario', 'Espanol', 'No especifica', DATE '1990-01-01'
+             FROM generate_series(1, :cuantos) g"
+        )->execute([':cuantos' => ClienteRepository::LIMITE_SELECTOR + 1]);
+        $ultimo = self::contar("SELECT id FROM clientes WHERE nombre = 'ZZZZ Selector 0501'", []);
+
+        $aviso = 'Se muestran los primeros ' . ClienteRepository::LIMITE_SELECTOR . ' clientes por nombre.';
+        self::assertStringContainsString($aviso, $this->get('page=boleta-nueva')['cuerpo']);
+        self::assertStringContainsString($aviso, $this->get('page=pago-nuevo')['cuerpo']);
+
+        $conElegido = $this->get("page=boleta-nueva&cliente_id={$ultimo}")['cuerpo'];
+        self::assertMatchesRegularExpression('/<option value="' . $ultimo . '"\s+selected/', $conElegido, 'el elegido se ve aunque el limite lo deje afuera');
+        self::assertDoesNotMatchRegularExpression('/<option value="' . $ultimo . '"[\s>]/', $this->get('page=boleta-nueva')['cuerpo'], 'sin elegirlo, queda afuera');
+    }
+
+    /** Un cliente de prueba valido para el formulario, con su token de envio ya olvidado al terminar. */
+    private function datosDeClienteNuevo(string $email): array
+    {
+        $formulario = $this->get('page=cliente-nuevo')['cuerpo'];
+        $this->olvidarToken(self::campoOculto($formulario, EnvioUnico::CAMPO));
+        $this->alTerminar(static function () use ($email): void {
+            $db = Database::connection();
+            $db->prepare("DELETE FROM auditoria WHERE entidad = 'cliente' AND entidad_id IN (SELECT id FROM clientes WHERE email = :e)")->execute([':e' => $email]);
+            $db->prepare('DELETE FROM clientes WHERE email = :e')->execute([':e' => $email]);
+        });
+
+        return [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => self::campoOculto($formulario, EnvioUnico::CAMPO),
+            'nombre' => 'Cliente con validaciones',
+            'email' => $email,
+            'pais_codigo' => 'AR',
+            'ciudad' => 'Rosario',
+            'idioma' => 'Espanol',
+            'genero' => 'No especifica',
+            'fecha_nacimiento' => '1990-05-05',
+            'segmento' => 'general',
+        ];
+    }
+
+    /**
+     * Regresion: un pais que no existe llegaba hasta la base y volvia como "No
+     * se pudo crear el cliente."; el email solo lo revisaba el navegador; y un
+     * nombre o una ciudad de 100.000 caracteres se guardaban sin queja.
+     */
+    public function testNuevoClienteValidaPaisEmailYLargosDeLosTextos(): void
+    {
+        $email = 'cliente-validaciones-' . uniqid() . '@example.com';
+        $datos = $this->datosDeClienteNuevo($email);
+        // Si una validacion se rompiera, el caso del email sin formato guardaria un cliente con ese email: que no quede.
+        $this->alTerminar(static fn () => Database::connection()->exec("DELETE FROM clientes WHERE email = 'no-es-un-email'"));
+
+        $casos = [
+            'pais que no existe' => [['pais_codigo' => 'ZZ'], 'Elegí un país válido.'],
+            'pais demasiado largo' => [['pais_codigo' => 'ZZZZ'], 'Elegí un país válido.'],
+            'email sin formato' => [['email' => 'no-es-un-email'], 'El email no es válido.'],
+            'nombre larguisimo' => [['nombre' => str_repeat('N', 121)], 'El nombre no puede superar los 120 caracteres.'],
+            'ciudad larguisima' => [['ciudad' => str_repeat('C', 101)], 'La ciudad no puede superar los 100 caracteres.'],
+            'idioma larguisimo' => [['idioma' => str_repeat('I', 41)], 'El idioma no puede superar los 40 caracteres.'],
+        ];
+        foreach ($casos as $nombre => [$cambio, $mensaje]) {
+            $respuesta = $this->post('page=cliente-nuevo', $cambio + $datos);
+
+            $this->assertStatus(200, $respuesta, $nombre);
+            self::assertStringContainsString($mensaje, $respuesta['cuerpo'], $nombre);
+        }
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM clientes WHERE email IN (:a, :b)', [':a' => $email, ':b' => 'no-es-un-email']));
+    }
+
+    /** "ingles", "INGLES" y " Ingles " eran tres filas distintas en la segmentacion por idioma. */
+    public function testElIdiomaDeUnClienteNuevoSeGuardaNormalizado(): void
+    {
+        foreach (['  INGLES  ' => 'Ingles', '' => 'Espanol'] as $tipeado => $guardado) {
+            $email = 'cliente-idioma-' . uniqid() . '@example.com';
+            $datos = $this->datosDeClienteNuevo($email);
+
+            $respuesta = $this->post('page=cliente-nuevo', ['idioma' => $tipeado] + $datos);
+
+            $this->assertStatus(302, $respuesta, "idioma '{$tipeado}'");
+            $stmt = Database::connection()->prepare('SELECT idioma FROM clientes WHERE email = :e');
+            $stmt->execute([':e' => $email]);
+            self::assertSame($guardado, $stmt->fetchColumn(), "idioma tipeado '{$tipeado}'");
+        }
+    }
+
+    public function testElConceptoDeUnaBoletaTieneUnLargoMaximoEnElAltaYEnLaEdicion(): void
+    {
+        $formulario = $this->get('page=boleta-nueva')['cuerpo'];
+        $csrf = self::campoOculto($formulario, 'csrf_token');
+        $envio = self::campoOculto($formulario, EnvioUnico::CAMPO);
+        $this->olvidarToken($envio);
+        $demasiado = str_repeat('x', 201);
+        $mensaje = 'El concepto no puede superar los 200 caracteres.';
+        // Si la validacion se rompiera, el alta guardaria esta boleta: que no quede para envenenar la proxima corrida.
+        $this->alTerminar(static function () use ($demasiado): void {
+            $db = Database::connection();
+            $db->prepare("DELETE FROM auditoria WHERE entidad = 'boleta' AND entidad_id IN (SELECT id FROM boletas WHERE concepto = :c)")->execute([':c' => $demasiado]);
+            $db->prepare('DELETE FROM boletas WHERE concepto = :c')->execute([':c' => $demasiado]);
+        });
+
+        $alta = $this->post('page=boleta-nueva', [
+            'csrf_token' => $csrf, EnvioUnico::CAMPO => $envio, 'cliente_id' => self::CLIENTE,
+            'concepto' => $demasiado, 'monto' => '500.00', 'fecha_emision' => '2020-03-01', 'fecha_vencimiento' => '2020-04-01',
+        ]);
+        $this->assertStatus(200, $alta);
+        self::assertStringContainsString($mensaje, $alta['cuerpo']);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM boletas WHERE concepto = :c', [':c' => $demasiado]));
+
+        $boletaId = $this->boletaDePrueba();
+        $edicion = $this->post("page=boleta-editar&id={$boletaId}", [
+            'csrf_token' => $csrf, 'concepto' => $demasiado, 'monto' => '900.00',
+            'fecha_emision' => '2020-01-01', 'fecha_vencimiento' => '2020-02-01',
+        ]);
+        $this->assertStatus(200, $edicion);
+        self::assertStringContainsString($mensaje, $edicion['cuerpo']);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM boletas WHERE id = :id AND concepto = :c', [':id' => $boletaId, ':c' => $demasiado]));
+    }
 }

@@ -5,6 +5,7 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | Proyecto | Qué es |
 |---|---|
 | [`defamatory-content-review/`](defamatory-content-review/) | Librería PHP — detección de insultos y ridiculización en nombres para plataformas genealógicas. El proyecto principal del repositorio. |
+| [`url-routing/`](url-routing/docs/README_URLS.md) | Routing de URLs para los sitios de genealogía y POS (Contrastocolor): el tipo de recurso se infiere de la forma del primer segmento (cantidad de dígitos, letras de lugar), no de palabras. |
 | [`web-animations/`](web-animations/) | Galería de demostración de 36 animaciones HTML/CSS/JS. |
 | [`document-formats/`](document-formats/) | Base de datos de formatos de documento y papel por país. |
 | [`phone-directory/`](phone-directory/) | Parser de directorios telefónicos históricos (6 idiomas) para registros genealógicos. |

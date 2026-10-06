@@ -13,7 +13,8 @@ APT_AUTO_CONF=${APT_AUTO_CONF:-/etc/apt/apt.conf.d/20auto-upgrades}
 #           fallan demasiadas veces. Con login SSH por contrasena es la defensa minima
 #           contra fuerza bruta.
 # unattended-upgrades: instala solos los parches de seguridad de Ubuntu.
-sudo apt-get install -y fail2ban unattended-upgrades
+# python3-systemd: necesario para "backend = systemd" (leer SSH desde el journal).
+sudo apt-get install -y fail2ban unattended-upgrades python3-systemd
 
 # Solo habilitamos el jail de SSH. Los jails de Nginx que trae fail2ban leen
 # /var/log/nginx/error.log, y aqui los logs son por dominio
@@ -46,7 +47,14 @@ EOAPT
 
 echo ""
 echo "✓ fail2ban y actualizaciones automaticas configurados"
-sudo fail2ban-client status sshd
+# Tras el restart, fail2ban tarda unos segundos en abrir su socket; consultarlo de
+# inmediato falla y, con "set -e", abortaria el script (y todo install-all) justo
+# al final, aunque todo lo anterior haya salido bien.
+for _ in $(seq 1 15); do
+    sudo fail2ban-client ping > /dev/null 2>&1 && break
+    sleep 1
+done
+sudo fail2ban-client status sshd || echo "AVISO: fail2ban aun no responde; revisa con: sudo systemctl status fail2ban"
 echo ""
 echo "Ver IPs baneadas:    sudo fail2ban-client status sshd"
 echo "Desbanear una IP:    sudo fail2ban-client set sshd unbanip <IP>"

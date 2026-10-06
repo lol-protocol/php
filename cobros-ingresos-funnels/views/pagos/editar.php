@@ -26,7 +26,7 @@ use App\Etiquetas;
         <label for="fecha_pago">Fecha de pago</label>
         <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= htmlspecialchars($pago['fecha_pago']) ?>">
 
-        <label for="metodo">Metodo</label>
+        <label for="metodo">Método</label>
         <select name="metodo" id="metodo" required>
             <?php foreach (Etiquetas::metodosPago() as $clave => $etiqueta): ?>
                 <option value="<?= $clave ?>" <?= $pago['metodo'] === $clave ? 'selected' : '' ?>><?= $etiqueta ?></option>

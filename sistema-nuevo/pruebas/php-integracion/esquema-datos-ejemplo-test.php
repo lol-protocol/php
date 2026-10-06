@@ -19,12 +19,7 @@ foreach (['esquema.sql', 'esquema-nucleo.sql'] as $requerido) {
     assert_verdadero(str_contains($cabecera, $requerido), "ejemplo SQL: la cabecera nombra $requerido (hay que cargarlo antes)");
 }
 
-$error = null;
-$pdo->beginTransaction();
-try {
-    $pdo->exec('CREATE SCHEMA ejemplo_sql_prueba');
-    $pdo->exec('SET LOCAL search_path TO ejemplo_sql_prueba');
-
+$error = en_schema_descartable($pdo, 'ejemplo_sql_prueba', function () use ($pdo, $datos) {
     foreach (['esquema.sql', 'esquema-nucleo.sql', 'esquema-datos-ejemplo.sql'] as $archivo) {
         $pdo->exec((string) file_get_contents("$datos/$archivo"));
     }
@@ -36,17 +31,9 @@ try {
 
     $hash = (string) $pdo->query("SELECT clave_hash FROM administradores WHERE usuario = 'admin'")->fetchColumn();
     assert_verdadero(password_verify('admin123', $hash), 'ejemplo SQL: el hash del admin de ejemplo es de "admin123", como dice su comentario');
-} catch (PDOException $e) {
-    $error = $e->getMessage();
-} finally {
-    if ($pdo->inTransaction()) {
-        $pdo->rollBack();
-    }
-}
+});
 assert_igual(null, $error, 'ejemplo SQL: esquema.sql + esquema-nucleo.sql + esquema-datos-ejemplo.sql cargan sin error, en ese orden');
-
-$existe = $pdo->query("SELECT COUNT(*) FROM pg_namespace WHERE nspname = 'ejemplo_sql_prueba'")->fetchColumn();
-assert_igual(0, (int) $existe, 'ejemplo SQL: el rollback no deja el schema descartable');
+assert_verdadero(!schema_existe($pdo, 'ejemplo_sql_prueba'), 'ejemplo SQL: el rollback no deja el schema descartable');
 assert_verdadero(
     (int) $pdo->query('SELECT COUNT(*) FROM public.acciones')->fetchColumn() > 0,
     'ejemplo SQL: las tablas reales quedaron intactas'

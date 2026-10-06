@@ -2,11 +2,11 @@
 
 use App\Config;
 
-/** @var array $aging  ['Al dia' => float, '1-30 dias' => float, '31-60 dias' => float, '61+ dias' => float], consolidado a USD */
+/** @var array $aging  ['Al día' => float, '1-30 días' => float, '31-60 días' => float, '61+ días' => float], consolidado a USD */
 
 $maxAging = max(1.0, ...array_values($aging));
-$iconosAging = ['Al dia' => '●', '1-30 dias' => '▲', '31-60 dias' => '◆', '61+ dias' => '■'];
-$coloresAging = ['Al dia' => 'var(--good)', '1-30 dias' => 'var(--warning)', '31-60 dias' => 'var(--serious)', '61+ dias' => 'var(--critical)'];
+$iconosAging = ['Al día' => '●', '1-30 días' => '▲', '31-60 días' => '◆', '61+ días' => '■'];
+$coloresAging = ['Al día' => 'var(--good)', '1-30 días' => 'var(--warning)', '31-60 días' => 'var(--serious)', '61+ días' => 'var(--critical)'];
 ?>
 <div class="chart">
     <?php foreach ($aging as $bucket => $monto): ?>

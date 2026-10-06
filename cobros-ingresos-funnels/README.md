@@ -22,7 +22,13 @@ Pequeño sistema en PHP (sin framework) para analizar:
 - **Multi-moneda**: cada cliente factura y paga en la moneda de su país (catálogo
   de ~200 países/territorios); los totales y gráficos agregados se consolidan a USD.
 - **Clientes**: alta manual, buscador y ficha con su historial completo (boletas,
-  pagos y su recorrido por el funnel si entró por ahí).
+  pagos y su recorrido por el funnel si entró por ahí). Desde la ficha se carga una
+  boleta o un pago con el cliente ya elegido. Los desplegables de "Nueva boleta" y
+  "Nuevo pago" muestran los primeros 500 clientes por nombre y avisan si hay más.
+  El alta valida país, email, fecha de nacimiento y el largo de cada texto; el
+  idioma es libre, pero se guarda normalizado ("INGLES" → "Ingles") y el
+  formulario sugiere los que ya tienen clientes, para que el dashboard no los
+  parta en filas distintas.
 - **Boletas y pagos**: alta, edición y anulación. Anular es un soft-delete (queda
   marcada "Anulada" y se excluye de los agregados) para no perder el rastro. Un
   doble clic en "Guardar" no crea un segundo pago ni una segunda boleta.
@@ -74,7 +80,8 @@ Abrí `http://localhost:8000` — te va a mostrar el Dashboard directo, sin logi
 
 Volver a correr `php database/seed.php` en cualquier momento borra la base, la
 reconstruye con las migraciones de `database/migraciones/` y regenera los datos de
-ejemplo desde cero (es reproducible: usa una semilla fija). Por eso solo corre con
+ejemplo desde cero (es reproducible: usa una semilla fija, así que el mismo día da
+siempre los mismos datos; las fechas son relativas a hoy). Por eso solo corre con
 `APP_ENV=dev`. Las mismas variables tienen que estar exportadas cuando corrés el
 servidor, el seed y los tests, para que los tres apunten a la misma base.
 
@@ -161,7 +168,7 @@ marca la migración inicial como aplicada sin ejecutarla (esas tablas ya existen
 aplica las demás.
 
 Un cambio de esquema nuevo va en un archivo nuevo con el número siguiente
-(`004_descripcion.sql`). Una migración que ya corrió en alguna base no se edita.
+(`005_descripcion.sql`). Una migración que ya corrió en alguna base no se edita.
 
 ### Otros puntos
 
@@ -243,7 +250,9 @@ src/
                         404 si no existe, 409 si hay conflicto (ej. anulado),
                         testeado
   Validacion.php         chequeos repetidos entre formularios: campos
-                        obligatorios vacios y mensaje de email duplicado
+                        obligatorios vacios, largos maximos de los textos,
+                        formato de email y mensaje de email duplicado,
+                        testeado
   Repositories/Anulable.php  trait con el soft-delete que comparten
                         BoletaRepository y PagoRepository: un unico
                         UPDATE ... SET anulada = TRUE WHERE id = :id AND NOT
@@ -257,14 +266,25 @@ src/
                         como expresion SQL, con age(); lo comparten
                         segmentacion y funnel. Una fecha de nacimiento
                         posterior a hoy sale como "Fecha inválida"
-  Router.php, View.php, Filtros.php, helpers.php
+  Filtros.php            el periodo y el rango Desde/Hasta de las pantallas con
+                        filtro de fechas: una sola lista de periodos, y lo que
+                        se pidio por URL y no se pudo respetar (un periodo que
+                        no existe, un rango al reves) se avisa, testeado
+  Avisos.php             los mensajes cortos de arriba de una pantalla
+                        (views/_avisos.php): los avisos de filtro y la
+                        confirmación de lo que acaba de hacerse, que llega por
+                        la redirección (?creada=ID, ?creado=ID...), testeado
+  Router.php, View.php, helpers.php
 database/
   migraciones/          el esquema, en cambios numerados (001 = esquema inicial)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   seed.php               SOLO desarrollo: rearma la base y carga datos de ejemplo
   paises_monedas.php      catalogo de ~200 paises y sus monedas (ISO 4217)
 views/                  plantillas PHP (una carpeta por sección), con partials
-                        compartidos: _filtro_fechas.php, _paginacion.php,
+                        compartidos: _filtro_fechas.php (el período y el rango
+                        Desde/Hasta de las cinco pantallas con filtro),
+                        _avisos.php (los avisos de arriba de la pantalla),
+                        _paginacion.php,
                         _error.php (el aviso de error de los formularios),
                         _accion_confirmar.php (el pie de las pantallas de
                         confirmar anulación), _grafico_aging.php y
@@ -299,6 +319,11 @@ phpstan.neon            configuracion del analisis estatico
   vencimiento, `anulada`) — no son facturas fiscales.
 - `pagos`: cobros reales del usuario, opcionalmente ligados a una boleta
   (`boleta_id` puede ser `NULL` para anticipos/pagos sueltos) y con `anulada`.
+  `pagos.metodo`, `clientes.genero` y `clientes.segmento` solo admiten las listas
+  que ofrecen los formularios: la app las valida en el servidor y la base las
+  restringe con `CHECK` (migración 004, `NOT VALID`: rigen para filas nuevas o
+  modificadas y no revisan las que ya existían; el comentario de la migración
+  explica cómo encontrarlas y validarlas).
 - `notas_credito`: devoluciones. Al anular una boleta que ya tenía pagos, los
   pagos **no** se tocan (la plata entró de verdad y tiene que seguir en el
   historial de caja): se emite una nota de crédito por lo cobrado, que queda

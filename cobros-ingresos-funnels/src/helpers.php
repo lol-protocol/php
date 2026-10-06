@@ -61,7 +61,7 @@ function color_celda_cohorte(float $pct): array
  * pegado al numero tal cual (ej. '%' sin espacio, ' pp' con espacio para
  * puntos porcentuales).
  */
-function delta_badge(?float $pct, bool $subirEsBueno = true, string $etiqueta = 'vs. periodo anterior', string $unidad = '%'): string
+function delta_badge(?float $pct, bool $subirEsBueno = true, string $etiqueta = 'vs. período anterior', string $unidad = '%'): string
 {
     if ($pct === null) {
         return '<span class="delta">Sin datos para comparar (' . htmlspecialchars($etiqueta) . ')</span>';

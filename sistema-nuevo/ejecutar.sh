@@ -1,14 +1,30 @@
 #!/usr/bin/env bash
 # Levanta los 3 componentes del backoffice: microservicio de estadísticas (Java),
 # API backend (PHP) y el panel de administración estático (HTML/CSS/JS).
+#
+# Uso: ./ejecutar.sh [--regenerar]
+#   sin opciones  siembra la base solo si todavía no lo está, así que las notas, los
+#                 filtros guardados y la configuración de alertas sobreviven a cada arranque
+#   --regenerar   recrea los datos semilla desde cero: BORRA esas notas, filtros y
+#                 configuración (y el contador de bloqueo del login)
 set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+case "${1:-}" in
+    "") regenerar=0 ;;
+    --regenerar) regenerar=1 ;;
+    *) echo "Uso: $0 [--regenerar]" >&2; exit 2 ;;
+esac
+
 ./preparar-postgres.sh
 
-echo "Generando datos semilla (crudos -> saneados, cargados en PostgreSQL)..."
-php datos/generar-datos-semilla.php
+if [ "$regenerar" = 1 ]; then
+    echo "Regenerando los datos semilla desde cero (se borran las notas, los filtros guardados y la configuración de alertas)..."
+    php datos/generar-datos-semilla.php
+else
+    php datos/sembrar-si-falta.php
+fi
 
 echo "Compilando el microservicio de estadísticas (Java)..."
 javac servicio-estadisticas-java/*.java

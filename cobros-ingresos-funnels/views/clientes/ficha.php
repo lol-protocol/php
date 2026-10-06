@@ -20,15 +20,20 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
 
 <h1><?= htmlspecialchars($cliente['nombre']) ?></h1>
 <p class="subtitulo"><a href="?page=clientes">&larr; Volver a Clientes</a></p>
+<?php include __DIR__ . '/../_avisos.php'; ?>
+<p class="acciones-ficha">
+    <a href="?page=boleta-nueva&amp;cliente_id=<?= (int) $cliente['id'] ?>">+ Nueva boleta</a>
+    <a href="?page=pago-nuevo&amp;cliente_id=<?= (int) $cliente['id'] ?>">+ Registrar pago</a>
+</p>
 
 <div class="panel">
     <h2>Perfil</h2>
     <div class="perfil-grid">
         <div class="campo"><span class="label">Email</span><span class="valor"><?= htmlspecialchars($cliente['email']) ?></span></div>
-        <div class="campo"><span class="label">Pais</span><span class="valor"><?= htmlspecialchars($cliente['pais_nombre']) ?></span></div>
+        <div class="campo"><span class="label">País</span><span class="valor"><?= htmlspecialchars($cliente['pais_nombre']) ?></span></div>
         <div class="campo"><span class="label">Ciudad</span><span class="valor"><?= htmlspecialchars($cliente['ciudad']) ?></span></div>
         <div class="campo"><span class="label">Idioma</span><span class="valor"><?= htmlspecialchars($cliente['idioma']) ?></span></div>
-        <div class="campo"><span class="label">Genero</span><span class="valor"><?= htmlspecialchars($cliente['genero']) ?></span></div>
+        <div class="campo"><span class="label">Género</span><span class="valor"><?= htmlspecialchars($cliente['genero']) ?></span></div>
         <div class="campo"><span class="label">Edad</span><span class="valor"><?= $edad ?> años</span></div>
         <div class="campo"><span class="label">Segmento</span><span class="valor"><?= htmlspecialchars($cliente['segmento']) ?></span></div>
         <div class="campo"><span class="label">Cliente desde</span><span class="valor"><?= htmlspecialchars($cliente['fecha_alta']) ?></span></div>
@@ -40,13 +45,13 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
 <div class="panel">
     <h2>Recorrido por el funnel</h2>
     <p class="subtitulo">
-        Llego por canal <strong><?= htmlspecialchars(Etiquetas::canal($viajeFunnel['canal'])) ?></strong>.
+        Llegó por canal <strong><?= htmlspecialchars(Etiquetas::canal($viajeFunnel['canal'])) ?></strong>.
     </p>
     <div class="perfil-grid">
         <div class="campo"><span class="label">Visita</span><span class="valor"><?= htmlspecialchars($viajeFunnel['fecha_visita']) ?></span></div>
         <div class="campo"><span class="label">Registro</span><span class="valor"><?= htmlspecialchars($viajeFunnel['fecha_registro'] ?? '—') ?></span></div>
         <div class="campo"><span class="label">Lead</span><span class="valor"><?= htmlspecialchars($viajeFunnel['fecha_lead'] ?? '—') ?></span></div>
-        <div class="campo"><span class="label">Conversion</span><span class="valor"><?= htmlspecialchars($viajeFunnel['fecha_conversion'] ?? '—') ?></span></div>
+        <div class="campo"><span class="label">Conversión</span><span class="valor"><?= htmlspecialchars($viajeFunnel['fecha_conversion'] ?? '—') ?></span></div>
     </div>
 </div>
 <?php endif; ?>
@@ -69,7 +74,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
     <div class="table-wrap">
         <table>
             <thead>
-            <tr><th>Concepto</th><th>Emision</th><th>Vencimiento</th><th class="num">Monto</th><th class="num">Saldo</th><th>Estado</th></tr>
+            <tr><th>Concepto</th><th>Emisión</th><th>Vencimiento</th><th class="num">Monto</th><th class="num">Saldo</th><th>Estado</th></tr>
             </thead>
             <tbody>
             <?php foreach ($boletas as $b): ?>
@@ -83,7 +88,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
                 </tr>
             <?php endforeach; ?>
             <?php if (!$boletas): ?>
-                <tr><td colspan="6">Todavia no tiene boletas.</td></tr>
+                <tr><td colspan="6">Todavía no tiene boletas.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>
@@ -95,7 +100,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
     <div class="table-wrap">
         <table>
             <thead>
-            <tr><th>Fecha</th><th>Metodo</th><th>Origen</th><th class="num">Monto</th><th>Estado</th></tr>
+            <tr><th>Fecha</th><th>Método</th><th>Origen</th><th class="num">Monto</th><th>Estado</th></tr>
             </thead>
             <tbody>
             <?php foreach ($pagos as $p): ?>
@@ -114,7 +119,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
                 </tr>
             <?php endforeach; ?>
             <?php if (!$pagos): ?>
-                <tr><td colspan="5">Todavia no tiene pagos.</td></tr>
+                <tr><td colspan="5">Todavía no tiene pagos.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>

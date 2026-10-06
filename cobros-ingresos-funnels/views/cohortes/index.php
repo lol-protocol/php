@@ -10,23 +10,18 @@ use App\Config;
 /** @var bool $personalizado */
 ?>
 
-<h1>Cohortes de conversion</h1>
-<p class="subtitulo">De cada cohorte (mes de primera visita), que porcentaje convirtio a cliente dentro de 0, 1, 2 o 3 meses desde su llegada.</p>
+<h1>Cohortes de conversión</h1>
+<p class="subtitulo">De cada cohorte (mes de primera visita), qué porcentaje convirtió a cliente dentro de 0, 1, 2 o 3 meses desde su llegada.</p>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="cohortes">
-    <label for="meses">Periodo</label>
-    <select name="meses" id="meses">
-        <option value="3" <?= $meses === 3 ? 'selected' : '' ?>>Ultimos 3 meses</option>
-        <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
-        <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
-    </select>
     <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <button type="submit">Aplicar</button>
 </form>
+<?php include __DIR__ . '/../_avisos.php'; ?>
 
 <div class="panel">
-    <h2>Conversion acumulada por cohorte</h2>
+    <h2>Conversión acumulada por cohorte</h2>
     <div class="table-wrap">
         <table>
             <thead>
@@ -54,17 +49,17 @@ use App\Config;
                 </tr>
             <?php endforeach; ?>
             <?php if (!$cohortes): ?>
-                <tr><td colspan="6">Sin datos para este periodo.</td></tr>
+                <tr><td colspan="6">Sin datos para este período.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>
     </div>
-    <p class="subtitulo" style="margin-top:14px;">"+1 mes", por ejemplo, es el % que ya habia convertido a mas tardar un mes despues de su primera visita (acumulado, no solo ese mes).</p>
+    <p class="subtitulo" style="margin-top:14px;">"+1 mes", por ejemplo, es el % que ya había convertido a más tardar un mes después de su primera visita (acumulado, no solo ese mes).</p>
 </div>
 
 <div class="panel">
     <h2>LTV promedio por cohorte de cliente</h2>
-    <p class="subtitulo">Valor de vida (historico, todos los pagos a la fecha) promedio por cliente, agrupado por el mes en que se dio de alta. No se filtra por el periodo elegido arriba: mezclar cohortes viejas con pocos meses de historia distorsionaria la comparacion.</p>
+    <p class="subtitulo">Valor de vida (histórico, todos los pagos a la fecha) promedio por cliente, agrupado por el mes en que se dio de alta. No se filtra por el período elegido arriba: mezclar cohortes viejas con pocos meses de historia distorsionaría la comparación.</p>
     <div class="table-wrap">
         <table>
             <thead>

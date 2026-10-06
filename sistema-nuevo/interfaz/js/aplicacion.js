@@ -1,10 +1,9 @@
 import { state, PER_PAGE } from "./nucleo.js";
 import { fetchJson } from "./sesion.js";
 import { populateScopeSelect, populateTypeSelect, renderUserOptions } from "./selectores.js";
-import { renderUserCard, renderFilterSummary, renderStatusMessage } from "./tarjeta-usuario.js";
-import { renderTimeline } from "./linea-tiempo.js";
-import { renderPagination } from "./paginacion.js";
-import { renderChart } from "./grafico.js";
+import { mostrarAviso } from "./tarjeta-usuario.js";
+import { leerFiltros } from "./controles-filtro.js";
+import { renderRespuestaTimeline } from "./respuesta-timeline.js";
 import { renderAlerts } from "./alertas.js";
 import { renderKpis } from "./kpis.js";
 
@@ -13,14 +12,10 @@ let ultimaPeticionTimeline = 0;
 async function loadTimeline() {
   if (!state.selectedUserId) return;
 
-  const scope = document.getElementById("scope-select").value;
-  const ageMin = document.getElementById("age-min").value || 0;
-  const ageMax = document.getElementById("age-max").value || 150;
-  const gender = document.getElementById("gender-select").value;
-  const type = document.getElementById("type-select").value;
+  const { scope, ageMin, ageMax, gender, type } = leerFiltros();
 
   const query = new URLSearchParams({
-    user_id: state.selectedUserId, scope, age_min: ageMin, age_max: ageMax, gender, type,
+    user_id: state.selectedUserId, scope, age_min: ageMin || 0, age_max: ageMax || 150, gender, type,
     page: state.page, per_page: PER_PAGE,
   });
   const peticionId = ++ultimaPeticionTimeline;
@@ -29,18 +24,10 @@ async function loadTimeline() {
     const data = await fetchJson(`/api/timeline?${query.toString()}`);
     if (peticionId !== ultimaPeticionTimeline) return; // una respuesta más nueva ya ganó
     state.lastTimeline = data;
-    renderUserCard(data.user);
-    renderFilterSummary(data.filters, data.pagination.total);
-    renderStatusMessage(data.stats_service_available);
-    renderChart(data.chart);
-    renderTimeline(data.timeline);
-    renderPagination(data.pagination, goToPage);
+    renderRespuestaTimeline(data, goToPage);
   } catch (err) {
     if (peticionId !== ultimaPeticionTimeline) return;
-    const box = document.getElementById("status-message");
-    box.hidden = false;
-    box.className = "status-message status-message--warning";
-    box.textContent = `⚠ ${err.message}`;
+    mostrarAviso(`⚠ ${err.message}`);
   }
 }
 
@@ -91,9 +78,6 @@ export async function loadAppData() {
       await loadTimelineFromStart();
     }
   } catch (err) {
-    const box = document.getElementById("status-message");
-    box.hidden = false;
-    box.className = "status-message status-message--warning";
-    box.textContent = `⚠ ${err.message}`;
+    mostrarAviso(`⚠ ${err.message}`);
   }
 }

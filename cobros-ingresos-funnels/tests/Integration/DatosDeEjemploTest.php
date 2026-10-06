@@ -10,8 +10,9 @@ use PDO;
 /**
  * Lo que deja `php database/seed.php` tiene que ser algo que la app podria
  * haber producido por su cuenta: aca se revisa contra las reglas de la app, no
- * contra cifras concretas (el seed es aleatorio). Corre contra la base ya
- * seedeada y no escribe nada. Si falla, ademas de arreglar el seed, volver a
+ * contra cifras concretas. El seed es reproducible (semilla fija: ver
+ * SeedReproducibleTest), asi que el resultado de estos tests no cambia de una
+ * corrida a otra. Corre contra la base ya seedeada y no escribe nada. Si falla, ademas de arreglar el seed, volver a
  * correrlo deja la base limpia: la app permite cargar a mano un pago anterior
  * al alta del cliente, y ese dato tambien haria saltar el segundo test.
  */

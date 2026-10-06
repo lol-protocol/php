@@ -48,53 +48,24 @@ final class AlmacenKpis
      * entre tipos (un usuario con ambas anomalías cuenta dos veces).
      * Aceptable para un KPI de pantalla, no para un total exacto.
      *
-     * OJO: cuenta directo con SELECT COUNT(DISTINCT ...), sin pasar por
-     * AlmacenAlertas::ipMismatches()/cambiosPaisImposibles() -- esos también
-     * arman el 'top' (JOIN de nombre + GROUP BY + ORDER BY + LIMIT) que acá
-     * no hace falta, así que reusarlos pagaría un JOIN y un ORDER BY de más
-     * en cada carga del dashboard solo para tirar el resultado.
+     * Las reglas viven en AlmacenAlertas, el mismo código que arma el panel de
+     * alertas; acá solo se cuentan, sin armar el 'top' (JOIN de nombre + GROUP BY +
+     * ORDER BY + LIMIT) que un KPI no necesita.
      */
     private function usuariosConAlertaActiva(): int
     {
         $config = new AlmacenConfiguracion($this->pdo);
+        $alertas = new AlmacenAlertas($this->pdo);
         $total = 0;
 
         if ($config->esAlertaHabilitada('ip_pais')) {
-            $total += (int) $this->pdo->query(<<<SQL
-                SELECT COUNT(DISTINCT a.usuario_id)
-                FROM acciones a JOIN usuarios u ON u.id = a.usuario_id
-                WHERE a.ip_pais_codigo IS NOT NULL AND a.ip_pais_codigo <> u.pais_codigo
-                SQL)->fetchColumn();
+            $total += $alertas->usuariosConIpFueraDelPais();
         }
 
         if ($config->esAlertaHabilitada('cambio_pais')) {
-            $total += $this->contarUsuariosConCambioPais($config->obtenerUmbral());
+            $total += $alertas->usuariosConCambioPaisImposible($config->obtenerUmbral());
         }
 
         return $total;
-    }
-
-    /** Misma fórmula de horasUmbral que AlmacenAlertas::cambiosPaisImposibles() -- si cambia una, cambia la otra. */
-    private function contarUsuariosConCambioPais(int $umbral): int
-    {
-        $horasUmbral = 0.5 + (max(0, min(100, $umbral)) / 100) * 3.5;
-
-        $stmt = $this->pdo->prepare(<<<SQL
-            WITH cambios AS (
-                SELECT usuario_id,
-                       LAG(ip_pais_codigo) OVER ventana AS pais_anterior, ip_pais_codigo AS pais_actual,
-                       LAG(marca_temporal) OVER ventana AS tiempo_anterior, marca_temporal AS tiempo_actual
-                FROM acciones
-                WHERE ip_pais_codigo IS NOT NULL
-                WINDOW ventana AS (PARTITION BY usuario_id ORDER BY marca_temporal)
-            )
-            SELECT COUNT(DISTINCT usuario_id) FROM cambios
-            WHERE pais_anterior IS NOT NULL AND pais_anterior <> pais_actual
-            AND (EXTRACT(EPOCH FROM (tiempo_actual - tiempo_anterior)) / 3600) < :horas
-            SQL);
-        $stmt->bindValue('horas', $horasUmbral);
-        $stmt->execute();
-
-        return (int) $stmt->fetchColumn();
     }
 }

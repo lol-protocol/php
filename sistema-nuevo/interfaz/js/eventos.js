@@ -1,6 +1,7 @@
-import { state, debounce } from "./nucleo.js";
+import { state } from "./nucleo.js";
 import { postJson, showLogin, showApp, boot } from "./sesion.js";
 import { renderUserOptions } from "./selectores.js";
+import { escucharCambios } from "./controles-filtro.js";
 import { loadAppData, loadTimelineFromStart, selectUser, goToPage, reloadAlerts } from "./aplicacion.js";
 import { establecerIdioma, inicializarIdioma } from "./idioma.js";
 import { refrescarIdioma } from "./idioma-refrescar.js";
@@ -44,11 +45,7 @@ document.getElementById("logout-button").addEventListener("click", async () => {
 
 document.getElementById("user-search").addEventListener("input", (e) => renderUserOptions(e.target.value, loadTimelineFromStart));
 document.getElementById("user-select").addEventListener("change", (e) => selectUser(e.target.value));
-document.getElementById("scope-select").addEventListener("change", loadTimelineFromStart);
-document.getElementById("gender-select").addEventListener("change", loadTimelineFromStart);
-document.getElementById("type-select").addEventListener("change", loadTimelineFromStart);
-document.getElementById("age-min").addEventListener("input", debounce(loadTimelineFromStart, 400));
-document.getElementById("age-max").addEventListener("input", debounce(loadTimelineFromStart, 400));
+escucharCambios(loadTimelineFromStart);
 
 document.getElementById("saved-filters-select").addEventListener("change", (e) => {
   if (e.target.value) {

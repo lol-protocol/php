@@ -32,13 +32,18 @@ export function renderFilterSummary(filters, itemCount) {
   });
 }
 
-export function renderStatusMessage(statsAvailable) {
+/** Muestra un aviso de advertencia arriba del timeline (reemplaza al que hubiera). */
+export function mostrarAviso(texto) {
   const box = document.getElementById("status-message");
-  if (statsAvailable) {
-    box.hidden = true;
-    return;
-  }
   box.hidden = false;
   box.className = "status-message status-message--warning";
-  box.textContent = t("status_stats_unavailable");
+  box.textContent = texto;
+}
+
+export function renderStatusMessage(statsAvailable) {
+  if (statsAvailable) {
+    document.getElementById("status-message").hidden = true;
+    return;
+  }
+  mostrarAviso(t("status_stats_unavailable"));
 }

@@ -19,5 +19,5 @@ function api_alerts(): void
         $alertas['cambios_pais_imposibles'] = $alertasStore->cambiosPaisImposibles($almacen->obtenerUmbral());
     }
 
-    echo json_encode($alertas, JSON_UNESCAPED_UNICODE);
+    api_responder($alertas);
 }

@@ -2,18 +2,73 @@
 
 declare(strict_types=1);
 
-/** Funciones de apoyo compartidas por los endpoints: errores, deltas, presets de país. */
+/** Funciones de apoyo compartidas por los endpoints: respuestas, errores, cuerpo del pedido, CSRF/método, deltas, presets de país. */
+
+/**
+ * Respuesta JSON de la API: el único lugar donde se decide cómo se serializa (UTF-8 crudo, sin escapar).
+ * Un json_encode suelto en un endpoint ya fue una inconsistencia real entre endpoints.
+ */
+function api_responder(mixed $datos): void
+{
+    echo json_encode($datos, JSON_UNESCAPED_UNICODE);
+}
+
+/**
+ * Respuesta de error de la API. `error` es el texto en español, para quien lee la respuesta a mano
+ * (datos/ejemplos/peticiones-api.http); `codigo` es un identificador estable que la interfaz traduce
+ * al idioma elegido (claves err_<codigo> en interfaz/js/i18n/). $extra suma datos propios del error,
+ * p. ej. retry_after. Todo error de la API sale por acá: pruebas/php/api-error-test.php lo exige.
+ */
+function api_error(int $status, string $codigo, string $mensaje, array $extra = []): void
+{
+    http_response_code($status);
+    api_responder(['error' => $mensaje, 'codigo' => $codigo] + $extra);
+}
+
+function api_metodo_no_permitido(): void
+{
+    api_error(405, 'metodo_no_permitido', 'método no permitido');
+}
+
+/** Exige ese método HTTP. Si no es, responde 405 y devuelve false: el endpoint tiene que cortar. */
+function api_exigir_metodo(string $metodo): bool
+{
+    if (($_SERVER['REQUEST_METHOD'] ?? '') === $metodo) {
+        return true;
+    }
+    api_metodo_no_permitido();
+    return false;
+}
+
+/** Exige el token CSRF (header X-CSRF-Token). Si falta o es inválido, responde 403 y devuelve false: hay que cortar. */
+function api_exigir_csrf(): bool
+{
+    if (auth_validar_csrf_header()) {
+        return true;
+    }
+    api_error(403, 'csrf_invalido', 'token CSRF inválido');
+    return false;
+}
+
+/**
+ * El cuerpo JSON del pedido como array: siempre un array, también si viene vacío, mal formado o no es un
+ * objeto (un número, un string). $crudo es para las pruebas; sin él se lee php://input.
+ */
+function api_cuerpo_json(?string $crudo = null): array
+{
+    $crudo ??= file_get_contents('php://input') ?: '';
+    $cuerpo = json_decode($crudo === '' ? '{}' : $crudo, true);
+    return is_array($cuerpo) ? $cuerpo : [];
+}
 
 function api_not_found(): void
 {
-    http_response_code(404);
-    echo json_encode(['error' => 'ruta no encontrada'], JSON_UNESCAPED_UNICODE);
+    api_error(404, 'ruta_no_encontrada', 'ruta no encontrada');
 }
 
 function api_unauthorized(): void
 {
-    http_response_code(401);
-    echo json_encode(['error' => 'no autenticado'], JSON_UNESCAPED_UNICODE);
+    api_error(401, 'no_autenticado', 'no autenticado');
 }
 
 /** @return array{total:int,page:int,per_page:int,total_pages:int} Forma común de paginación de /api/users y /api/timeline. */

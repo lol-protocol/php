@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Avisos;
 use App\Database;
 use App\EnvioUnico;
+use App\Etiquetas;
 use App\Filtros;
 use App\Paginacion;
 use App\Peticion;
@@ -48,8 +50,15 @@ final class CobrosController
 
     public function index(): void
     {
-        ['meses' => $meses, 'desde' => $desde, 'hasta' => $hasta, 'personalizado' => $personalizado] = Filtros::rangoActivo();
-        $estado = $_GET['estado'] ?? '';
+        $filtros = Filtros::rangoActivo();
+        ['desde' => $desde, 'hasta' => $hasta] = $filtros;
+        $filtros['avisos'] = [...Avisos::confirmaciones('cobros'), ...$filtros['avisos']];
+        $estado = (string) ($_GET['estado'] ?? '');
+        if ($estado !== '' && !array_key_exists($estado, Etiquetas::estadosBoleta())) {
+            // Antes un estado inventado daba la tabla vacia con el selector en "Todos".
+            $filtros['avisos'][] = Avisos::atencion('El estado pedido no existe; se muestran las boletas de todos los estados.');
+            $estado = '';
+        }
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
 
@@ -57,11 +66,7 @@ final class CobrosController
         $aging = $ingresosRepo->carteraAging();
         $listado = (new BoletaRepository())->listado($desde, $hasta, $estado ?: null, $cliente ?: null, $pagina);
 
-        View::render('cobros/index', [
-            'meses' => $meses,
-            'desde' => $desde,
-            'hasta' => $hasta,
-            'personalizado' => $personalizado,
+        View::render('cobros/index', $filtros + [
             'estado' => $estado,
             'cliente' => $cliente,
             'pagina' => $listado['pagina'],
@@ -102,9 +107,11 @@ final class CobrosController
             if ($token === null) {
                 $error = EnvioUnico::MENSAJE_SIN_TOKEN;
             } elseif ($cliente === null) {
-                $error = 'Elegí un cliente valido.';
+                $error = 'Elegí un cliente válido.';
             } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
                 $error = 'Completá todos los campos con un monto válido.';
+            } elseif (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
+                $error = $largo;
             } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
                 $error = 'La fecha de emisión o de vencimiento no es válida.';
             } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
@@ -134,10 +141,15 @@ final class CobrosController
             }
         }
 
+        // El cliente elegido llega por POST (al reenviar con un error) o por ?cliente_id=
+        // (el enlace "Nueva boleta" de su ficha); se incluye aunque quede fuera del limite del selector.
+        $clienteElegido = (int) ($_POST['cliente_id'] ?? $_GET['cliente_id'] ?? 0);
+
         View::render('cobros/nueva', [
-            'clientes' => $clienteRepo->paraSelector(),
+            'clientes' => $clienteRepo->paraSelector($clienteElegido > 0 ? $clienteElegido : null),
+            'clientesTruncados' => $clienteRepo->superaElLimiteDelSelector(),
             'error' => $error,
-            'valores' => $_POST,
+            'valores' => $_POST + ['cliente_id' => $clienteElegido],
             'activePage' => 'cobros',
             'titulo' => 'Nueva boleta',
         ]);
@@ -151,7 +163,7 @@ final class CobrosController
         if (Peticion::abortarSiNoExiste($boleta, 'Boleta no encontrada.')) {
             return;
         }
-        if (Peticion::abortarSiConflicto($boleta['anulada'], 'La boleta esta anulada y no se puede editar.')) {
+        if (Peticion::abortarSiConflicto($boleta['anulada'], 'La boleta está anulada y no se puede editar.')) {
             return;
         }
 
@@ -173,6 +185,8 @@ final class CobrosController
                     return 'La boleta fue anulada mientras la editabas.';
                 } elseif (Validacion::faltanCampos([$concepto, $fechaEmision, $fechaVencimiento], $monto)) {
                     return 'Completá todos los campos con un monto válido.';
+                } elseif (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
+                    return $largo;
                 } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
                     return 'La fecha de emisión o de vencimiento no es válida.';
                 } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
@@ -280,11 +294,11 @@ final class CobrosController
             'monto' => $pagado,
             'moneda_codigo' => $boleta['moneda_codigo'],
             'fecha' => date('Y-m-d'),
-            'motivo' => sprintf('Anulacion de la boleta #%d ("%s")', $boleta['id'], $boleta['concepto']),
+            'motivo' => sprintf('Anulación de la boleta #%d ("%s")', $boleta['id'], $boleta['concepto']),
         ]);
 
         AuditoriaRepository::auditar('crear', 'nota_credito', $notaId, sprintf(
-            'Nota de credito #%d por %s (boleta #%d anulada con pagos)',
+            'Nota de crédito #%d por %s (boleta #%d anulada con pagos)',
             $notaId,
             money_moneda($pagado, $boleta['moneda_codigo']),
             $boleta['id']

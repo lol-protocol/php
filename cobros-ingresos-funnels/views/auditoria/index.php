@@ -31,7 +31,7 @@ $entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente',
                 </tr>
             <?php endforeach; ?>
             <?php if (!$registros): ?>
-                <tr><td colspan="4">Todavia no hay movimientos registrados.</td></tr>
+                <tr><td colspan="4">Todavía no hay movimientos registrados.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>
