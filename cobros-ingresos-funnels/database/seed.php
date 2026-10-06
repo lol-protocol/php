@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 /**
  * SOLO DESARROLLO: borra toda la base, la reconstruye con las migraciones y
- * carga datos de ejemplo reproducibles.
+ * carga datos de ejemplo reproducibles. El catalogo de paises y monedas no es
+ * un dato de ejemplo: lo trae la migracion 005, igual que en produccion.
  * Uso: APP_ENV=dev php database/seed.php
  * Variables de conexion: DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD.
  *
@@ -13,7 +14,6 @@ declare(strict_types=1);
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/paises_monedas.php';
 
 use App\Config;
 use App\Database;
@@ -71,26 +71,6 @@ function eleccionPonderada(array $pesos): string
     return (string) array_key_last($pesos);   // $pesos nunca viene vacio
 }
 
-// --- 0) Catalogo de referencia: monedas y paises (~200 territorios). ---
-$catalogo = catalogoPaisesMonedas();
-
-$insMoneda = $pdo->prepare(
-    'INSERT INTO monedas (codigo, nombre, simbolo, tasa_a_usd) VALUES (:codigo, :nombre, :simbolo, :tasa_a_usd)'
-);
-foreach ($catalogo['monedas'] as $codigo => $m) {
-    $insMoneda->execute([
-        ':codigo' => $codigo,
-        ':nombre' => $m['nombre'],
-        ':simbolo' => $m['simbolo'],
-        ':tasa_a_usd' => $m['tasa_a_usd'],
-    ]);
-}
-
-$insPais = $pdo->prepare('INSERT INTO paises (codigo, nombre, moneda_codigo) VALUES (:codigo, :nombre, :moneda)');
-foreach ($catalogo['paises'] as $codigo => $p) {
-    $insPais->execute([':codigo' => $codigo, ':nombre' => $p['nombre'], ':moneda' => $p['moneda']]);
-}
-
 $nombresPila = ['Lucia', 'Mateo', 'Sofia', 'Diego', 'Valentina', 'Santiago', 'Camila', 'Emilio',
     'Martina', 'Nicolas', 'Renata', 'Sebastian', 'Paula', 'Joaquin', 'Daniela', 'Andres',
     'Isabella', 'Gabriel', 'Fernanda', 'Tomas', 'Antonia', 'Rodrigo', 'Carla', 'Ignacio',
@@ -130,7 +110,8 @@ $canalPesos = ['organico' => 35, 'ads' => 25, 'referido' => 20, 'redes_sociales'
 $metodoPesos = ['transferencia' => 50, 'tarjeta' => 35, 'efectivo' => 15];
 
 // Subconjunto de paises usado para generar personas de ejemplo (el catalogo
-// completo de ~200 queda cargado igual para los formularios de alta).
+// completo de ~200 lo carga la migracion 005 y queda disponible igual para los
+// formularios de alta).
 $ciudadesPorPais = [
     'MX' => ['Ciudad de Mexico', 'Guadalajara', 'Monterrey'],
     'CO' => ['Bogota', 'Medellin'],
@@ -177,7 +158,8 @@ $paisPesos = [
     'IN' => 1, 'JP' => 1, 'CN' => 1, 'AU' => 1, 'ZA' => 1, 'NG' => 1, 'PH' => 1,
 ];
 $generoPesos = ['Femenino' => 48, 'Masculino' => 48, 'No especifica' => 4];
-$monedaPorPais = array_map(static fn ($p) => $p['moneda'], $catalogo['paises']);
+// La moneda de cada pais sale del catalogo que dejaron las migraciones.
+$monedaPorPais = $pdo->query('SELECT codigo, moneda_codigo FROM paises')->fetchAll(PDO::FETCH_KEY_PAIR);
 
 /** @return array{pais_codigo:string, ciudad:string, idioma:string, genero:string, fecha_nacimiento:string, moneda:string} */
 function perfilAleatorio(array $paisPesos, array $ciudadesPorPais, array $idiomaPorPais, array $monedaPorPais, array $generoPesos, DateTimeImmutable $hoy): array
