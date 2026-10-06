@@ -210,7 +210,10 @@ prototipo, no para producción.
   403. Cubre logout, filtros, notas y configuración de alertas por igual.
 - **Auto-logout por inactividad**: `interfaz/js/inactividad.js` cierra la sesión
   a los 30 minutos sin clicks/movimiento/teclas/scroll, avisando con un modal
-  ("Continuar activo" / "Cerrar sesión ahora") un minuto antes.
+  ("Continuar activo" / "Cerrar sesión ahora") un minuto antes. Con el aviso
+  abierto, mover el mouse, scrollear o tocar la pantalla no lo cierran, porque así
+  se llega a los botones: antes desaparecía con el primer movimiento y "Cerrar
+  sesión ahora" no se podía pulsar con el mouse.
 - **Rate limiting contra fuerza bruta**: `AlmacenIntentosLogin.php` cuenta
   intentos fallidos por IP (no por usuario: hay uno solo) en la tabla
   `intentos_login`. Al 5to fallo consecutivo, esa IP queda bloqueada 15 minutos
@@ -541,8 +544,11 @@ php pruebas/ejecutar-integracion.php
   filtros mandan lo elegido al pedir el timeline (los desplegables al instante, las
   edades esperando a que se deje de tipear), cambiar de idioma los conserva sin
   volver a pedir nada, qué se guarda y qué se aplica de un filtro guardado, y el
-  aviso con ⚠ cuando falla el timeline o la carga inicial; más, en
-  `panel-nuevas-features.e2e.cjs`:
+  aviso con ⚠ cuando falla el timeline o la carga inicial; en
+  `panel-inactividad.e2e.cjs`, con el reloj falso de Playwright (`page.clock`): el
+  aviso de sesión por expirar a los 29 minutos, que los dos botones se puedan pulsar
+  con el mouse y con una pantalla táctil, el cierre solo a los 30 y el idioma del
+  aviso; más, en `panel-nuevas-features.e2e.cjs`:
   el tile de KPIs de alertas, el indicador visual al guardar una nota, dos
   guardados de nota superpuestos (gana el último texto escrito, no el que llega
   primero), guardar un filtro con el backend caído (toast de error), guardar/

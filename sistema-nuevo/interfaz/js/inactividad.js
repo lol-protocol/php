@@ -7,6 +7,9 @@ const ADVERTENCIA_MINUTOS = 1;
 const TIMEOUT_MS = TIMEOUT_MINUTOS * 60 * 1000;
 const ADVERTENCIA_MS = (TIMEOUT_MINUTOS - ADVERTENCIA_MINUTOS) * 60 * 1000;
 const EVENTOS_ACTIVIDAD = ["click", "mousemove", "keypress", "scroll", "touchstart"];
+// Con el aviso abierto estos no lo cierran: mover el mouse o tocar la pantalla es justo cómo se llega a un botón, y si
+// el aviso desapareciera antes del clic no se podría elegir "Cerrar sesión ahora".
+const EVENTOS_PASIVOS = ["mousemove", "scroll", "touchstart"];
 
 let ultimaActividad = Date.now();
 let timerInactividad = null;
@@ -30,9 +33,12 @@ export function detenerMonitorInactividad() {
   EVENTOS_ACTIVIDAD.forEach((evento) => document.removeEventListener(evento, registrarActividad, true));
 }
 
-function registrarActividad() {
+function registrarActividad(evento) {
+  const avisoAbierto = modalAdvertencia && !modalAdvertencia.hidden;
+  if (avisoAbierto && EVENTOS_PASIVOS.includes(evento?.type)) return;
+
   ultimaActividad = Date.now();
-  if (modalAdvertencia && !modalAdvertencia.hidden) {
+  if (avisoAbierto) {
     cerrarAdvertencia();
   }
 }
