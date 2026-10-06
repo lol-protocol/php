@@ -3,10 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-
-// idioma.js lee localStorage y nucleo.js lee window.location al importarse: se simulan antes.
-globalThis.localStorage = { getItem: () => null, setItem: () => {} };
-globalThis.window = { location: { hostname: "localhost" } };
+import "./navegador-falso.mjs"; // simula localStorage y window.location, que los módulos de interfaz/js/ leen al importarse
 
 const { mensajeDeError } = await import("../../interfaz/js/errores.js");
 const { state } = await import("../../interfaz/js/nucleo.js");

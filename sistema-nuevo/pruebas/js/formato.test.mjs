@@ -1,9 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-
-// formato.js importa nucleo.js, que lee window.location.hostname para armar
-// API_BASE; Node no trae esa API del navegador, así que se simula antes del import.
-globalThis.window = { location: { hostname: "localhost" } };
+import "./navegador-falso.mjs"; // simula localStorage y window.location, que los módulos de interfaz/js/ leen al importarse
 
 const { formatDuration, formatFileSize, formatPct, classifyDelta } = await import("../../interfaz/js/formato.js");
 

@@ -1,9 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-
-// nucleo.js (que importa controles-filtro.js) lee window.location al importarse; Node no lo trae.
-globalThis.window = { location: { hostname: "localhost" } };
+import "./navegador-falso.mjs"; // simula localStorage y window.location, que los módulos de interfaz/js/ leen al importarse
 
 const { IDS_FILTRO, controlFiltro, leerFiltros, escribirFiltros, avisarCambioDeFiltros, escucharCambios } =
   await import("../../interfaz/js/controles-filtro.js");

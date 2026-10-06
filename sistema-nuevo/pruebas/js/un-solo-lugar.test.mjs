@@ -1,11 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
+import "./navegador-falso.mjs"; // simula localStorage y window.location, que los módulos de interfaz/js/ leen al importarse
 
 // Cada cosa de la interfaz que se repetía en varios módulos vive ahora en uno solo, y estas pruebas cuidan que no vuelva
 // a copiarse: los ids de los cinco filtros (estaban en 27 lugares de 5 archivos), el aviso de arriba del timeline
 // (se armaba a mano en 3) y la secuencia que pinta una respuesta de /api/timeline (estaba entera en 2).
-globalThis.window = { location: { hostname: "localhost" } };
 const { IDS_FILTRO } = await import("../../interfaz/js/controles-filtro.js");
 
 const DIR_JS = new URL("../../interfaz/js/", import.meta.url);
@@ -61,4 +61,14 @@ test("todo campo de texto, número o desplegable del login y de la barra lleva l
       assert.match(campo, /class="[^"]*\bcampo\b/, `${parte}: este campo no usa .campo: ${campo}`);
     }
   }
+});
+
+// Y lo mismo con las propias pruebas: el navegador falso (localStorage y window.location) se arma en navegador-falso.mjs.
+test("ninguna prueba JS arma su propio localStorage o window falso: lo hace navegador-falso.mjs", () => {
+  const DIR_PRUEBAS = new URL("./", import.meta.url);
+  const pruebas = readdirSync(DIR_PRUEBAS).filter((archivo) => archivo.endsWith(".test.mjs"));
+  assert.ok(pruebas.length >= 8, `se leyeron solo ${pruebas.length} pruebas`);
+  const armaElSuyo = /globalThis\.(localStorage|window)\s*=/;
+  assert.deepEqual(pruebas.filter((archivo) => armaElSuyo.test(readFileSync(new URL(archivo, DIR_PRUEBAS), "utf8"))), []);
+  assert.ok(armaElSuyo.test(readFileSync(new URL("navegador-falso.mjs", DIR_PRUEBAS), "utf8")), "navegador-falso.mjs ya no simula nada");
 });

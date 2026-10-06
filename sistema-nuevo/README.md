@@ -558,7 +558,9 @@ php pruebas/ejecutar-integracion.php
   aviso y la secuencia que pinta una respuesta de `/api/timeline` se escriban en un
   solo módulo cada uno (antes estaban copiados en 5, 3 y 2); lo mismo para el CSS: el
   brillo del foco y el resplandor de los cuadros solo en `base.css`, y que todo campo del
-  login y de la barra lleve `.campo`. Y `modal.js` (`abrirModal`:
+  login y de la barra lleve `.campo`, y que ninguna prueba arme su propio `localStorage` o
+  `window` falso (lo hace `navegador-falso.mjs`, que Node no trae y los módulos leen al
+  importarse; eran 8 copias). Y `modal.js` (`abrirModal`:
   el valor del botón pulsado; Escape y un clic en el fondo devuelven la opción segura y
   el foco va a ella; un modal nuevo cierra el anterior; no queda ningún listener de
   teclado colgado; `modalPrompt` y `modalConfirmar` sobre eso).

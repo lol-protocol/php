@@ -1,9 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-
-// modal.js importa idioma.js (lee localStorage al importarse) y nucleo.js (lee window.location).
-globalThis.localStorage = { getItem: () => null, setItem: () => {} };
-globalThis.window = { location: { hostname: "localhost" } };
+import "./navegador-falso.mjs"; // simula localStorage y window.location, que los módulos de interfaz/js/ leen al importarse
 
 /** Un nodo de DOM mínimo: hijos, clases, texto, listeners que se pueden disparar a mano, remove() y focus(). */
 class NodoFalso {
