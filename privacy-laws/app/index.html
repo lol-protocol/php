@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Laws by Country</title>
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/search.css" />
+  <link rel="stylesheet" href="styles/comparison.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>🔐 Privacy Laws by Country</h1>
+      <p class="subtitle">
+        Find privacy legislation and regulations for genealogy, compliance, and
+        research
+      </p>
+      <div class="language-switcher">
+        <select id="languageSelect" aria-label="Select language">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="pt">Português</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Search Section -->
+      <section class="search-section">
+        <div class="search-container">
+          <div class="search-row">
+            <div class="search-field">
+              <label for="countrySearch">Country/Region</label>
+              <input
+                type="text"
+                id="countrySearch"
+                placeholder="Search by country name..."
+                autocomplete="off"
+                aria-label="Search countries"
+              />
+              <ul id="countrySuggestions" class="suggestions-list" hidden></ul>
+            </div>
+
+            <div class="search-field">
+              <label for="regionFilter">Region</label>
+              <select id="regionFilter" aria-label="Filter by region">
+                <option value="">All Regions</option>
+                <option value="europe">Europe</option>
+                <option value="americas">Americas</option>
+                <option value="asia_pacific">Asia-Pacific</option>
+                <option value="middle_east_africa">Middle East & Africa</option>
+              </select>
+            </div>
+
+            <div class="search-field">
+              <label for="lawTypeFilter">Law Type</label>
+              <select id="lawTypeFilter" aria-label="Filter by law type">
+                <option value="">All Types</option>
+                <option value="GDPR">GDPR-like</option>
+                <option value="CCPA">CCPA-like</option>
+                <option value="LGPD">LGPD-like</option>
+                <option value="General">General Privacy</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button id="searchBtn" class="btn btn-primary">Search</button>
+            <button id="clearBtn" class="btn btn-secondary">Clear</button>
+            <button id="compareBtn" class="btn btn-info">
+              Compare Selected
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Section -->
+      <section class="results-section">
+        <div class="results-header">
+          <h2 id="resultsTitle">Privacy Laws</h2>
+          <div class="results-meta">
+            <span id="resultCount">0</span>
+            <button id="exportBtn" class="btn btn-sm btn-outline">
+              📥 Export CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="table-container">
+          <table id="lawsTable" class="data-table">
+            <thead>
+              <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    id="selectAll"
+                    aria-label="Select all results"
+                  />
+                </th>
+                <th>Country</th>
+                <th>Law Name</th>
+                <th>Enacted</th>
+                <th>Effective</th>
+                <th>Enforcement Authority</th>
+                <th>Penalties</th>
+                <th>Resources</th>
+              </tr>
+            </thead>
+            <tbody id="lawsTableBody">
+              <tr class="empty-state">
+                <td colspan="8">
+                  Enter search criteria and click "Search" to view privacy laws
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Comparison Section (Hidden by default) -->
+      <section class="comparison-section" id="comparisonSection" hidden>
+        <h2>Law Comparison</h2>
+        <div class="comparison-container">
+          <div id="comparisonResults"></div>
+        </div>
+        <button id="closeComparison" class="btn btn-sm">Close Comparison</button>
+      </section>
+
+      <!-- Timeline Section (Hidden by default) -->
+      <section class="timeline-section" id="timelineSection" hidden>
+        <h2>Implementation Timeline</h2>
+        <div id="timelineResults" class="timeline-container"></div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        Data last updated: <span id="lastUpdate">Loading...</span> | Source:
+        Privacy Laws Database v1.0
+      </p>
+      <p>
+        <small
+          >For genealogy platforms and privacy compliance research. See README
+          for contributing guidelines.</small
+        >
+      </p>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="privacy-laws.js"></script>
+</body>
+</html>
