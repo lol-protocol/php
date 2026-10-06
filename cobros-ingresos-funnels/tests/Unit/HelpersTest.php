@@ -90,7 +90,7 @@ final class HelpersTest extends TestCase
 
     public function testDeltaBadgeUsaEtiquetaPorDefectoSiNoSeIndicaOtra(): void
     {
-        self::assertStringContainsString('vs. periodo anterior', delta_badge(5.0));
+        self::assertStringContainsString('vs. período anterior', delta_badge(5.0));
     }
 
     public function testUrlConParametroPreservaLosDemasParametrosDeLaQuery(): void
@@ -150,7 +150,7 @@ final class HelpersTest extends TestCase
 
     public function testDeltaBadgeUsaLaUnidadIndicada(): void
     {
-        self::assertStringContainsString('+10.0 pp vs. periodo anterior', delta_badge(10.0, etiqueta: 'vs. periodo anterior', unidad: ' pp'));
+        self::assertStringContainsString('+10.0 pp vs. período anterior', delta_badge(10.0, etiqueta: 'vs. período anterior', unidad: ' pp'));
     }
 
     public function testDeltaBadgeUsaPorcentajePorDefecto(): void

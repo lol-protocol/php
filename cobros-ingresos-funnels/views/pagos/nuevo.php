@@ -3,8 +3,10 @@
 use App\Csrf;
 use App\EnvioUnico;
 use App\Etiquetas;
+use App\Repositories\ClienteRepository;
 
 /** @var array $clientes */
+/** @var bool $clientesTruncados */
 /** @var array|null $clienteElegido */
 /** @var array $boletasCliente */
 /** @var string|null $error */
@@ -27,6 +29,9 @@ $hoy = date('Y-m-d');
                     <option value="<?= (int) $c['id'] ?>"><?= htmlspecialchars($c['nombre']) ?> (<?= htmlspecialchars($c['email']) ?>)</option>
                 <?php endforeach; ?>
             </select>
+            <?php if ($clientesTruncados): ?>
+                <p class="nota">Se muestran los primeros <?= ClienteRepository::LIMITE_SELECTOR ?> clientes por nombre. Para registrar el pago de otro, buscalo en <a href="?page=clientes">Clientes</a> y usá «Registrar pago» desde su ficha.</p>
+            <?php endif; ?>
             <button type="submit">Continuar</button>
         </form>
     <?php else: ?>
@@ -59,7 +64,7 @@ $hoy = date('Y-m-d');
             <label for="fecha_pago">Fecha de pago</label>
             <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= htmlspecialchars($valores['fecha_pago'] ?? $hoy) ?>">
 
-            <label for="metodo">Metodo</label>
+            <label for="metodo">Método</label>
             <select name="metodo" id="metodo" required>
                 <?php foreach (Etiquetas::metodosPago() as $clave => $etiqueta): ?>
                     <option value="<?= $clave ?>" <?= ($valores['metodo'] ?? '') === $clave ? 'selected' : '' ?>><?= $etiqueta ?></option>

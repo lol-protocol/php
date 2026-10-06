@@ -25,39 +25,34 @@ $maxEtapa = max(1, ...array_values($etapasFunnel));
 $rampaFunnel = ['var(--seq-250)', 'var(--seq-350)', 'var(--seq-450)', 'var(--seq-600)'];
 
 $coloresSegmento = [
-    'Pais' => 'var(--accent-pais)',
+    'País' => 'var(--accent-pais)',
     'Ciudad' => 'var(--accent-ciudad)',
     'Idioma' => 'var(--accent-idioma)',
-    'Genero' => 'var(--accent-genero)',
+    'Género' => 'var(--accent-genero)',
     'Rango de edad' => 'var(--accent-edad)',
 ];
 ?>
 
 <h1><?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></h1>
-<p class="subtitulo">Vista general de ingresos, cobros y conversion de usuarios a clientes.</p>
+<p class="subtitulo">Vista general de ingresos, cobros y conversión de usuarios a clientes.</p>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="dashboard">
-    <label for="meses">Periodo</label>
-    <select name="meses" id="meses">
-        <option value="3" <?= $meses === 3 ? 'selected' : '' ?>>Ultimos 3 meses</option>
-        <option value="6" <?= $meses === 6 ? 'selected' : '' ?>>Ultimos 6 meses</option>
-        <option value="12" <?= $meses === 12 ? 'selected' : '' ?>>Ultimos 12 meses</option>
-    </select>
     <?php include __DIR__ . '/_filtro_fechas.php'; ?>
     <button type="submit">Aplicar</button>
 </form>
+<?php include __DIR__ . '/_avisos.php'; ?>
 <p class="subtitulo">Si completás "Desde" y "Hasta" se usa ese rango exacto en vez del período de arriba.</p>
 
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
-        <span class="label">Facturado (periodo)</span>
+        <span class="label">Facturado (período)</span>
         <span class="value"><?= Config::money($kpis['facturado']) ?></span>
         <?= delta_badge(delta_pct($kpis['facturado'], $kpisAnterior['facturado'])) ?>
         <?= delta_badge(delta_pct($kpis['facturado'], $kpisAnioAnterior['facturado']), etiqueta: 'vs. año anterior') ?>
     </div>
     <div class="panel stat-tile">
-        <span class="label">Cobrado (periodo)</span>
+        <span class="label">Cobrado (período)</span>
         <span class="value"><?= Config::money($kpis['cobrado']) ?></span>
         <?= delta_badge(delta_pct($kpis['cobrado'], $kpisAnterior['cobrado'])) ?>
         <?= delta_badge(delta_pct($kpis['cobrado'], $kpisAnioAnterior['cobrado']), etiqueta: 'vs. año anterior') ?>
@@ -94,13 +89,13 @@ $coloresSegmento = [
     </div>
 
     <div class="panel">
-        <h2>Cartera pendiente por antiguedad</h2>
+        <h2>Cartera pendiente por antigüedad</h2>
         <?php include __DIR__ . '/_grafico_aging.php'; ?>
     </div>
 </div>
 
 <div class="panel">
-    <h2>Funnel de conversion (periodo)</h2>
+    <h2>Funnel de conversión (período)</h2>
     <div class="chart">
         <?php $i = 0; foreach ($etapasFunnel as $etapa => $valor): ?>
             <div class="grupo">
@@ -118,8 +113,8 @@ $coloresSegmento = [
 </div>
 
 <div class="panel">
-    <h2>Segmentacion de clientes por facturacion</h2>
-    <p class="subtitulo">Que paises, ciudades, idiomas, generos y rangos de edad generan mas ingresos (top 5 de cada uno). Histórico completo: no aplica el filtro de fechas.</p>
+    <h2>Segmentación de clientes por facturación</h2>
+    <p class="subtitulo">Qué países, ciudades, idiomas, géneros y rangos de edad generan más ingresos (top 5 de cada uno). Histórico completo: no aplica el filtro de fechas.</p>
     <div class="grid grid-segmentos">
         <?php foreach ($segmentacion as $titulo => $filas): ?>
             <div class="subpanel">
@@ -141,7 +136,7 @@ $coloresSegmento = [
                     </div>
                 <?php endforeach; ?>
                 <?php if (!$filas): ?>
-                    <p class="subtitulo">Sin datos todavia.</p>
+                    <p class="subtitulo">Sin datos todavía.</p>
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
