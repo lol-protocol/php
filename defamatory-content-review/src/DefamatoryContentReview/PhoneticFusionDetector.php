@@ -31,11 +31,7 @@ class PhoneticFusionDetector
         $this->minLength = $minLength;
     }
 
-    /**
-     * @return array<int,array> coincidencias, cada una con los datos del
-     *                          término del diccionario más 'found' y
-     *                          'detectionMethod' => 'phonetic_fusion'
-     */
+    /** @return array<int,array<string,mixed>> coincidencias, cada una con los datos del término del diccionario más 'found' y 'detectionMethod' => 'phonetic_fusion' */
     public function detectFusion(string $firstName, string $lastName): array
     {
         if (!$this->wordList->supportsFusion()) {
@@ -61,10 +57,14 @@ class PhoneticFusionDetector
 
             while (($index = self::mbStrpos($full, $needle, $searchFrom)) !== null) {
                 if (self::isReadableFusion($index, $index + $needleLen, $boundary, $total)) {
-                    $matches[] = $candidate['data'] + [
+                    // riskType pasa a 'fonetico': la fusión es el hallazgo, no el tema del
+                    // término que cruzó la unión (ese sigue disponible en 'category').
+                    $match = $candidate['data'] + [
                         'found' => $candidate['data']['original'],
                         'detectionMethod' => 'phonetic_fusion',
                     ];
+                    $match['riskType'] = 'fonetico';
+                    $matches[] = $match;
                 }
 
                 $searchFrom = $index + 1;
@@ -74,7 +74,7 @@ class PhoneticFusionDetector
         return $matches;
     }
 
-    /** Un único campo que suena igual a un término del diccionario con otra grafía ("Cojes"/"Coges"). */
+    /** @return array<string,mixed>|null Un único campo que suena igual a un término del diccionario con otra grafía ("Cojes"/"Coges"). */
     public function detectVariant(string $word): ?array
     {
         $match = $this->wordList->searchPhoneticExact($word);

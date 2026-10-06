@@ -491,6 +491,37 @@ cosa, hay que sacarlo explícitamente con `withPhoneticCapLabels([])`.
 
 ---
 
+## Revisar mensajes de chat (`ChatLineReviewer`)
+
+Además de nombres, se puede revisar una línea libre (un mensaje de chat) y
+saber si hay que censurarla y por qué:
+
+```php
+use DefamatoryContentReview\ChatLineReviewer;
+
+$chat = ChatLineReviewer::create(__DIR__ . '/config', 'spa');
+$result = $chat->review('Eres un idiota, mándame nudes');
+
+$result->getDecision();     // 'reject' | 'review' | 'approve'
+$result->shouldCensor();    // true
+$result->getContentTypes(); // ['difamatorio', 'sexual']
+$result->censored();        // 'Eres un ******, mándame *****'
+```
+
+Tipos de contenido:
+
+| Tipo | De dónde sale |
+|---|---|
+| `difamatorio` | Insultos del diccionario del idioma (`config/languages/`) |
+| `burlesco` | Términos `burlesco` de ese mismo diccionario |
+| `sexual` | `config/chat-topics/<código>.php` |
+| `belico` | `config/chat-topics/<código>.php` (guerra, violencia, incitación) |
+
+El término más grave decide: `high` bloquea, `medium` va a revisión y `low`
+sólo se informa (por ejemplo «mi abuelo luchó en la guerra» se aprueba pero
+queda marcado como `belico`). Hay listas de temas para español (`spa`) e
+inglés (`eng`); en los demás idiomas se detectan igual los insultos.
+
 ## API
 
 ### `DefamatoryContentReviewer`
@@ -717,7 +748,7 @@ para el proceso y qué verifica `DictionaryIntegrityTest` en cada cambio.
 
 ```bash
 ./vendor/bin/phpunit          # tests, ejemplos, límite de líneas, falsos positivos
-phpstan analyse               # análisis estático, nivel 5 (phpstan.neon.dist)
+phpstan analyse               # análisis estático, nivel 6 (phpstan.neon.dist)
 php bin/benchmark.php 10000   # rendimiento: comparar antes/después en la misma máquina
 ```
 

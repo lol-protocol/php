@@ -24,6 +24,7 @@ class FinnishPhoneticFolder extends AbstractPhoneticFolder
         'ä' => 'a', 'ö' => 'o',
     ];
 
+    /** @return array<string,string> */
     protected static function getAccents(): array { return self::ACCENTS; }
 
     protected static function applyLanguageRules(string $text): string { return $text; }

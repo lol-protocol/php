@@ -42,6 +42,9 @@ return [
             ['word' => 'clébard', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'cochonne', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'ânesse', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'hyène', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'chacal', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'cafard', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
 
         'intellect' => [
@@ -78,6 +81,8 @@ return [
             ['word' => 'sotte', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'ignorante', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'illettrée', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'couillon', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'cornichon', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
 
         'physique' => [
@@ -118,6 +123,8 @@ return [
             ['word' => 'édentée', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'puante', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'crasseuse', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'ventripotent', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'binoclard', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
 
         'handicap' => [
@@ -208,6 +215,9 @@ return [
             ['word' => 'fainéante', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'poivrote', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'droguée', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'faux-cul', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'enfoiré', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'ripou', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
 
         'genre' => [
@@ -260,6 +270,8 @@ return [
             ['word' => 'merdeuse', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'branleuse', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'enculée', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'pétasse', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'chiant', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
 
         'derision' => [
@@ -294,6 +306,8 @@ return [
             ['word' => 'prétentieuse', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'vantarde', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'ratée', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'ringard', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'loser', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
 
         'ethnique' => [

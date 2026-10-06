@@ -62,6 +62,8 @@ return [
             ['word' => 'hound', 'riskType' => 'animal', 'severity' => 'low'],
             ['word' => 'goat', 'riskType' => 'animal', 'severity' => 'low'],
             ['word' => 'turkey', 'riskType' => 'animal', 'severity' => 'low'],
+            ['word' => 'bottomfeeder', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'scavenger', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
 
         'intellect' => [
@@ -114,6 +116,9 @@ return [
             ['word' => 'dumbo', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'thickheaded', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'muttonhead', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'dingbat', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'bozo', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'goofball', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
 
         'physical' => [
@@ -163,6 +168,8 @@ return [
             ['word' => 'slovenly', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'unkempt', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'bedraggled', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'potbellied', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'cross-eyed', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
 
         'disability' => [
@@ -283,6 +290,9 @@ return [
             ['word' => 'creep', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'pervert', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'deviant', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'sociopath', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'narcissist', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'gaslighter', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
 
         'gender' => [
@@ -313,6 +323,7 @@ return [
             ['word' => 'jezebel', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'nymphomaniac', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'tart', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'fairy', 'riskType' => 'genero', 'severity' => 'high'],
         ],
 
         'vulgar' => [
@@ -355,6 +366,10 @@ return [
             ['word' => 'numpty', 'riskType' => 'ordinario', 'severity' => 'low'],
             ['word' => 'berk', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'prat', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'douche', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'douchebag', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'dickhead', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'shitbag', 'riskType' => 'ordinario', 'severity' => 'high'],
         ],
 
         'ridicule' => [
@@ -394,6 +409,7 @@ return [
             ['word' => 'wannabe', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'copycat', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'show-off', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'try-hard', 'riskType' => 'burlesco', 'severity' => 'low'],
         ],
 
         'ethnic' => [
