@@ -523,12 +523,14 @@ php pruebas/ejecutar-integracion.php
   `AlmacenAcciones` y `AlmacenDatos` (empate en `marca_temporal`/`nombre` se
   desempata por `id`, para que la paginación no repita/salte filas),
   `AlmacenAlertas` (mismas invariantes que `AlmacenKpis`, tope de 15 en el top,
-  empate en `mismatch_count` también desempatado por `id`; y sus reglas con datos
-  controlados, `alertas-reglas-test.php`: tres usuarios nuevos con huecos de 0.4 h,
-  2.25 h exactas y 3.9 h dentro de una transacción que se revierte, para fijar la
-  ventana de 0.5 h a 4 h y el borde estricto, que el KPI cuente lo mismo que las
-  alertas con cada tipo habilitado y cada umbral, y que la regla de IP en PHP y la
-  de SQL coincidan),
+  empate en `event_count` también desempatado por `id`, y que las dos alertas
+  tengan el mismo sobre y las mismas columnas comunes en cada fila; y sus reglas con
+  datos controlados, `alertas-reglas-test.php`: tres usuarios nuevos con huecos de
+  0.4 h, 2.25 h exactas y 3.9 h dentro de una transacción que se revierte, para fijar
+  la ventana de 0.5 h a 4 h y el borde estricto, que cada cambio de país diga de
+  dónde venía el usuario y a dónde fue, que el KPI cuente lo mismo que las alertas
+  con cada tipo habilitado y cada umbral, y que la regla de IP en PHP y la de SQL
+  coincidan),
   `ClienteEstadisticas` (`statsVarios()`, su único método de pedido: servicio caído
   devuelve `null` sin lanzar excepción y sin tardar segundos; pide varios tipos en
   paralelo, y con el servicio colgado el lote entero paga un solo timeout, no uno por
@@ -563,7 +565,9 @@ php pruebas/ejecutar-integracion.php
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz), `alertas.js` (`renderAlerts`: un tipo habilitado sin
   resultados no dibuja una sección vacía, sin ninguna alerta real el panel
-  entero queda oculto), `controles-filtro.js` (leer, escribir y escuchar los cinco
+  entero queda oculto, y los dos tipos se dibujan igual -- cada uno con su título y
+  su país, el declarado o el de donde venía -- y el clic lleva al usuario de esa
+  fila), `controles-filtro.js` (leer, escribir y escuchar los cinco
   filtros por nombre: los desplegables avisan una sola vez y al instante, las edades
   esperan a que se deje de tipear; escribir no dispara ningún evento; cada id existe
   en `topbar.php`), `tarjeta-usuario.js` (`mostrarAviso`, el aviso de arriba del
@@ -753,9 +757,16 @@ interfaz traduce (ver "Idioma de la interfaz"): `no_autenticado` (401),
 - `GET /api/users?page=1&per_page=20&search=` — `{items, pagination}`. **Requiere sesión.**
 - `GET /api/groups` — presets de país + catálogo de países. **Requiere sesión.**
 - `GET /api/action-types` — `[{key, label}]`, catálogo de tipos de acción. **Requiere sesión.**
-- `GET /api/alerts` — `{ip_pais_mismatch?: {...}, cambios_pais_imposibles?: {...}}` (cada
-  clave presente solo si ese tipo está habilitado en la configuración), usuarios con
-  más anomalías de cada tipo. **Requiere sesión.**
+- `GET /api/alerts` — `{ip_pais?: {...}, cambio_pais?: {...}}`: las mismas claves que
+  `/api/alerts-config`, cada una presente solo si ese tipo está habilitado. Los dos tipos
+  tienen la misma forma, `{total_events, total_users_affected, top: [...]}`, y cada fila
+  del `top` (los usuarios con más eventos de ese tipo) empieza por lo común, `user_id`,
+  `user_name`, `event_count` y `last_seen`, y termina con lo propio: `country` (el país
+  que declaró el usuario) en `ip_pais`, y `previous_country`/`current_country` en
+  `cambio_pais`. Antes cada tipo nombraba distinto lo mismo (`total_mismatches` y
+  `total_changes`, `mismatch_count` y `cambio_count`, `country` y `pais_anterior`) y
+  las claves de arriba no coincidían con las de la configuración (`ip_pais_mismatch` y
+  `cambios_pais_imposibles`). **Requiere sesión.**
 - `GET|POST /api/alerts-config` — GET devuelve `{alertas: {ip_pais, cambio_pais},
   umbral}`; POST guarda cualquier subconjunto de esos campos (tipos fuera de la
   whitelist se ignoran). **Requiere sesión.**

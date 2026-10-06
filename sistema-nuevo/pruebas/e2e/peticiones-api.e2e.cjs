@@ -165,6 +165,27 @@ function rutasDeLaApi() {
     assert.deepEqual(faltan, [], `rutas de rutas.php sin ejemplo en peticiones-api.http: ${faltan.join(", ")}`);
   });
 
+  await paso("/api/alerts: cada tipo llega bajo el mismo id que en /api/alerts-config y con el mismo sobre", async () => {
+    const sesion = {};
+    const login = await pedir(
+      { metodo: "POST", url: `${vars.baseUrl}/api/login`, headers: { "Content-Type": "application/json" }, cuerpo: JSON.stringify({ username: "admin", password: "admin123" }) },
+      sesion
+    );
+    assert.equal(login.status, 200);
+    const leer = async (ruta) => (await pedir({ metodo: "GET", url: `${vars.baseUrl}${ruta}`, headers: {}, cuerpo: "" }, sesion)).json;
+    const alertas = await leer("/api/alerts");
+    const habilitadas = Object.entries((await leer("/api/alerts-config")).alertas).filter(([, activa]) => activa).map(([id]) => id);
+    assert.ok(habilitadas.length >= 1, "hay algún tipo de alerta habilitado");
+    assert.deepEqual(Object.keys(alertas).sort(), habilitadas.sort(), "un tipo de alerta por cada uno de los habilitados, con su id de la configuración");
+    for (const id of habilitadas) {
+      assert.deepEqual(Object.keys(alertas[id]), ["total_events", "total_users_affected", "top"], `${id}: el sobre`);
+      for (const fila of alertas[id].top) {
+        assert.deepEqual(Object.keys(fila).slice(0, 4), ["user_id", "user_name", "event_count", "last_seen"], `${id}: las columnas comunes de cada fila`);
+      }
+    }
+    await pedir({ metodo: "POST", url: `${vars.baseUrl}/api/logout`, headers: { "X-CSRF-Token": login.json.csrf_token }, cuerpo: "" }, sesion);
+  });
+
   // Una sesión nueva (sin cookies): la del archivo de ejemplos ya hizo login y logout.
   const pedirSinSesion = (metodo, ruta) => pedir({ metodo, url: vars.baseUrl + ruta.replace("{id}", "1"), headers: {}, cuerpo: "" }, {});
 
