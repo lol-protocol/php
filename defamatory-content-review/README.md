@@ -6,7 +6,7 @@ Detecta insultos, léxico soez y construcciones de ridiculización en nombres y
 apellidos de personas, para plataformas de información genealógica.
 
 - **11 tipos de riesgo** — no sólo *cuánto* ofende un término, sino *de qué modo*.
-- **33 idiomas** identificados por código ISO 639-3, con ~6.400 términos.
+- **33 idiomas** identificados por código ISO 639-3, con ~6.500 términos.
 - **Modelo de parentesco lingüístico** — validación cruzada entre lenguas
   emparentadas, con la coincidencia ponderada por su afinidad léxica.
 - **Protección de apellidos legítimos** — «Cerda», «Moro» o «Savage» son linajes
@@ -52,19 +52,20 @@ no deberían tratarse con el mismo procedimiento.
 
 | Tipo | Qué recoge | Ejemplo (es) |
 |---|---|---|
-| `animal` | Comparación con animales | cerda, burro, sabandija |
-| `intelectual` | Menoscabo de la capacidad mental | idiota, zopenco, subnormal |
-| `fisico` | Menoscabo de la apariencia | adefesio, gordinflón, esperpento |
-| `discapacidad` | Referencia despectiva a discapacidad | tullido, jorobado, cegato |
-| `moral` | Imputación moral o delictiva | bastardo, canalla, estafador |
-| `genero` | Insulto por género u orientación | maricón, furcia, marimacho |
-| `ordinario` | Léxico soez u obsceno | mierda, gilipollas, coño |
-| `burlesco` | Burla y ridiculización | vejestorio, mamarracho, **zurdo** |
-| `etnico` | Insulto étnico o racial | sudaca, negrata, charnego |
-| `religioso` | Insulto religioso | hereje, blasfemo, endemoniado |
-| `fonetico` | Fusión de nombre y apellido en otra palabra | Elba Gina → «el vagina» |
+| `animal` | Comparaciones con animales de forma despectiva | cerda, burro, sabandija |
+| `intelectual` | Insultos sobre inteligencia o capacidad mental | idiota, zopenco, subnormal |
+| `fisico` | Insultos sobre apariencia o características físicas | adefesio, gordinflón, esperpento |
+| `discapacidad` | Insultos relacionados con discapacidades | tullido, jorobado, cegato |
+| `moral` | Insultos sobre moralidad o comportamiento | bastardo, canalla, estafador |
+| `genero` | Insultos basados en género o identidad sexual | maricón, furcia, marimacho |
+| `ordinario` | Palabras vulgares u ordinarias | mierda, gilipollas, coño |
+| `burlesco` | Términos usados para burlarse o ridiculizar | vejestorio, mamarracho, **zurdo** |
+| `etnico` | Insultos basados en etnia u origen | sudaca, negrata, charnego |
+| `religioso` | Insultos relacionados con religión | hereje, blasfemo, endemoniado |
+| `fonetico` | Nombre y apellido, leídos seguidos, componen otra palabra | Elba Gina → «el vagina» |
 
-Las definiciones viven en `config/risk-categories.php`.
+Las definiciones viven en `config/risk-categories.php`: `RiskReportBuilder` las
+lee de ahí para el desglose de `getDetailedReport()`.
 
 ### Severidad y decisión
 
@@ -264,7 +265,7 @@ FusionSupport::isSupported('ara');                                      // false
   literal en la forma plegada y rompía el cálculo de la frontera de fusión).
 - **Variantes por distancia de edición** ("Cerrda", "Certa"): **deliberadamente
   no cubierta**. Colapsar letras dobles cerraría este caso, pero across
-  ~6.400 palabras en 33 idiomas no hay forma de verificar a mano qué
+  ~6.500 palabras en 33 idiomas no hay forma de verificar a mano qué
   colisiones no deseadas produciría — "Serrano" (apellido real) se volvería
   "Serano", y así con cada doble letra en cada idioma. Se documenta como
   límite en vez de implementarse a medias.
@@ -304,7 +305,7 @@ $registry->resolve('SPA');  // 'spa'
 ### Cobertura de los diccionarios
 
 `coverage` no es cosmético: dice dónde hace falta revisión de hablante nativo
-antes de usar el módulo en producción para ese idioma. ~6.400 términos en
+antes de usar el módulo en producción para ese idioma. ~6.500 términos en
 total; sólo 3 idiomas (`isl`, `swa`, `tgl` — los últimos en incorporarse)
 siguen en `basic`.
 
@@ -317,9 +318,9 @@ la primera vez que sólo una de ellas se actualizó.
 
 | Nivel | Idiomas | Términos c/u |
 |---|---|---|
-| `comprehensive` | spa, eng, por, fra, ita, deu (6) | 200 – 418 |
-| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 120 – 160 |
-| `basic` | isl, swa, tgl (3) | 60 – 119 |
+| `comprehensive` | spa, eng, por, fra, ita, deu (6) | 282 – 601 |
+| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 120 – 245 |
+| `basic` | isl, swa, tgl (3) | 65 – 80 |
 
 ```php
 $reviewer->languages()->byCoverage('moderate');  // los candidatos a comprehensive

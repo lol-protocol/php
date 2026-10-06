@@ -19,7 +19,8 @@
 - **Ampliación de los 6 diccionarios `comprehensive`** en los idiomas donde
   hay confianza real de hablante fluido/nativo — español ya tenía 601
   términos (el más grande con diferencia) y no se tocó:
-  - Alemán: 258 → 283 (+25)
+  - Alemán: 258 → 282 (+24; una entrada añadida, `scheisse`, era duplicado
+    normalizado de `scheiße` ya existente — `ß` pliega a `ss` — y se retiró)
   - Inglés: 400 → 416 (+16)
   - Francés: 298 → 312 (+14)
   - Italiano: 303 → 315 (+12)
@@ -53,6 +54,30 @@
   listaba islandés, suajili ni tagalo entre los excluidos y llamaba «chino»
   al cantonés; el README decía que el plegado cubre «los 17 idiomas en
   script latino» cuando son 17 de 22.
+- **Un término corto hallado en OTRA palabra podía apagar uno más grave
+  aquí**, en `WordListScanner::scan()`. El paso de palabra-pegada comparaba
+  texto contra todos los hallazgos del mensaje entero («¿aparece este
+  substring en algún sitio?»), no posición: en «esa rata, ne-grata», «rata»
+  (animal/medium) hallado en otra palabra apagaba a «negrata» (etnico/high)
+  sólo porque su texto es substring de «ne-grata» ya pegada. Ahora compara
+  rango de posiciones en el texto original, no texto libre.
+- **`AccentFolding` colapsaba vocales vietnamitas que no son acentos, sino
+  letras distintas del alfabeto** (`ă`, `â`, `ê`, `ô` son fonemas propios en
+  vietnamita, no variantes de `a`/`e`/`o`). Colisionaba «hói» (calvo) con
+  «hôi» (que huele mal) en la misma clave del índice. El plegado ahora
+  excluye esas cuatro letras sólo para `vie`.
+- `DictionaryIntegrityTest::testNoLanguageHasTheSameWordInTwoCategories`
+  comparaba con `strtolower(trim())` en vez de `WordList::normalize()`, más
+  débil que la clave real del índice: dejaba pasar duplicados por plegado de
+  acentos. Ya destapó uno real: `scheiße`/`scheisse` en alemán (`ß` pliega a
+  `ss`), que se retiró del diccionario.
+- `RiskReportBuilder` mantenía su propia copia de las descripciones de cada
+  `riskType`, ya desincronizada en las 11 categorías de
+  `config/risk-categories.php` pese a que el README decía que las
+  definiciones "viven" ahí. Ahora las lee de ese archivo, única fuente real.
+- Tabla de rangos de términos del README desactualizada tras las últimas
+  ampliaciones: decía `comprehensive: 200–418` (real: 282–601, español tiene
+  601) y `moderate: 120–160` (real: 120–245, varios idiomas la superan).
 
 ### Cambiado
 

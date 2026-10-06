@@ -29,8 +29,24 @@ final class AccentFolding
         'ß' => 'ss', 'æ' => 'ae', 'œ' => 'oe',
     ];
 
-    public static function fold(string $text): string
+    /**
+     * Letras que en el MAP de arriba son variante diacrítica de otra en la
+     * mayoría de idiomas, pero en estos son letra propia del alfabeto: "ô" y
+     * "â" no son acentos de "o"/"a" en vietnamita, son fonemas distintos
+     * ("hói" = calvo, "hôi" = que huele mal). Plegarlas fusionaría palabras
+     * no emparentadas.
+     */
+    private const LANGUAGE_EXCLUSIONS = [
+        'vie' => ['ă', 'â', 'ê', 'ô'],
+    ];
+
+    public static function fold(string $text, string $language = ''): string
     {
-        return strtr($text, self::MAP);
+        $map = self::MAP;
+        foreach (self::LANGUAGE_EXCLUSIONS[$language] ?? [] as $letter) {
+            unset($map[$letter]);
+        }
+
+        return strtr($text, $map);
     }
 }

@@ -60,7 +60,7 @@ class WordList
     public function normalize(string $word): string
     {
         $word = preg_replace('/\s+/u', ' ', mb_strtolower(trim($word), 'UTF-8'));
-        return ScriptFolding::fold(AccentFolding::fold(Leetspeak::unleet(WordListScanner::stripInsideWord($word))));
+        return ScriptFolding::fold(AccentFolding::fold(Leetspeak::unleet(WordListScanner::stripInsideWord($word)), $this->language));
     }
     /** @return WordEntry|null */
     public function search(string $word): ?array { return $this->index->get($this->normalize($word)); }

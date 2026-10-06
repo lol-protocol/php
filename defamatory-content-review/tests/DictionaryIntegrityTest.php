@@ -23,22 +23,24 @@ class DictionaryIntegrityTest extends TestCase
         return array_keys(require self::CONFIG_DIR . '/languages/supported-languages.php');
     }
 
+    /** La clave real del índice es `WordList::normalize()`, no sólo texto: dos palabras distintas que normalizan igual también se pisan. */
     public function testNoLanguageHasTheSameWordInTwoCategories(): void
     {
         foreach ($this->languageCodes() as $code) {
             $config = require self::CONFIG_DIR . "/languages/{$code}.php";
+            $wordList = WordList::fromLanguageFile(self::CONFIG_DIR . "/languages/{$code}.php", $code);
             $seen = [];
 
             foreach ($config['words'] as $category => $terms) {
                 foreach ($terms as $term) {
                     $word = is_array($term) ? $term['word'] : $term;
-                    $key = mb_strtolower(trim($word), 'UTF-8');
+                    $key = $wordList->normalize($word);
                     $firstSeenIn = $seen[$key] ?? '';
 
                     $this->assertArrayNotHasKey(
                         $key,
                         $seen,
-                        "'{$code}': '{$word}' aparece en '{$firstSeenIn}' y otra vez en '{$category}'. " .
+                        "'{$code}': '{$word}' normaliza igual que una entrada ya vista en '{$firstSeenIn}' (categoría '{$category}'). " .
                         "La segunda entrada pisa a la primera en el índice de WordList."
                     );
 
