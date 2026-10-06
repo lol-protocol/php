@@ -1,0 +1,138 @@
+import { readFileSync, writeFileSync, mkdirSync } from "fs";
+import { parse } from "csv-parse/sync";
+import { join } from "path";
+
+const CSV_PATH = "./jurisdictions/copyright_laws_master.csv";
+const JURISDICTIONS_DIR = "./jurisdictions";
+
+// Map of country codes to TLDs
+const countryTlds = {
+  EU: "eu",
+  US: "us",
+  GB: "gb",
+  CA: "ca",
+  BR: "br",
+  JP: "jp",
+  AU: "au",
+  IN: "in",
+  ZA: "za",
+  MX: "mx",
+  CH: "ch",
+  SG: "sg",
+  NZ: "nz",
+  KR: "kr",
+  CL: "cl",
+  TH: "th",
+  NL: "nl",
+  FR: "fr",
+  ES: "es",
+};
+
+const regionMap = {
+  EU: "europe",
+  GB: "europe",
+  CH: "europe",
+  FR: "europe",
+  ES: "europe",
+  NL: "europe",
+  US: "americas",
+  CA: "americas",
+  BR: "americas",
+  MX: "americas",
+  CL: "americas",
+  JP: "asia_pacific",
+  AU: "asia_pacific",
+  SG: "asia_pacific",
+  NZ: "asia_pacific",
+  KR: "asia_pacific",
+  TH: "asia_pacific",
+  IN: "asia_pacific",
+  ZA: "middle_east_africa",
+};
+
+async function reorganizeByJurisdiction() {
+  try {
+    // Read master CSV
+    const csvContent = readFileSync(CSV_PATH, "utf-8");
+    const records = parse(csvContent, {
+      columns: true,
+      skip_empty_lines: true,
+    });
+
+    console.log(`✓ Loaded ${records.length} records from master CSV`);
+
+    // Group by country
+    const byCountry = {};
+    records.forEach((record) => {
+      if (!byCountry[record.country_code]) {
+        byCountry[record.country_code] = [];
+      }
+      byCountry[record.country_code].push(record);
+    });
+
+    console.log(
+      `✓ Grouped into ${Object.keys(byCountry).length} jurisdictions`
+    );
+
+    // Create directories and files per jurisdiction
+    for (const [countryCode, laws] of Object.entries(byCountry)) {
+      const tld = countryTlds[countryCode] || countryCode.toLowerCase();
+      const jurisdictionDir = join(JURISDICTIONS_DIR, tld);
+
+      // Create directory
+      mkdirSync(jurisdictionDir, { recursive: true });
+
+      // Create info.json
+      const jurisdictionInfo = {
+        code: countryCode,
+        name: laws[0].country_name,
+        tld: tld,
+        region: regionMap[countryCode] || "other",
+        lawCount: laws.length,
+        createdAt: new Date().toISOString(),
+      };
+
+      writeFileSync(
+        join(jurisdictionDir, "info.json"),
+        JSON.stringify(jurisdictionInfo, null, 2)
+      );
+
+      // Create laws.csv
+      const headers = Object.keys(laws[0]);
+      let csv = headers.join(",") + "\n";
+      laws.forEach((law) => {
+        csv += headers
+          .map((h) => `"${(law[h] || "").replace(/"/g, '""')}"`)
+          .join(",");
+        csv += "\n";
+      });
+
+      writeFileSync(join(jurisdictionDir, "laws.csv"), csv);
+
+      // Create laws.json
+      writeFileSync(
+        join(jurisdictionDir, "laws.json"),
+        JSON.stringify(laws, null, 2)
+      );
+
+      console.log(
+        `✓ Created ${tld}/ with ${laws.length} law(s): ${laws.map((l) => l.law_name).join(", ")}`
+      );
+    }
+
+    console.log("\n✅ Reorganization complete!");
+    console.log("Structure created:");
+    console.log("  jurisdictions/");
+    Object.entries(countryTlds).forEach(([code, tld]) => {
+      console.log(`    ${tld}/`);
+      console.log(`      ├── info.json`);
+      console.log(`      ├── laws.csv`);
+      console.log(`      └── laws.json`);
+    });
+  } catch (error) {
+    console.error("❌ Error:", error.message);
+    process.exit(1);
+  }
+}
+
+reorganizeByJurisdiction();
