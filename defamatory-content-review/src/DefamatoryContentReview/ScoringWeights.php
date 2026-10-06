@@ -43,7 +43,7 @@ final class ScoringWeights
     }
 
     /**
-     * Peso de un término: el de su severidad (o el respaldo por riskType si
+     * @param array<string,mixed> $match Peso de un término: el de su severidad (o el respaldo por riskType si
      * no declara una reconocida) multiplicado por el peso propio de su
      * riskType (1.0 si no se configuró ninguno).
      */

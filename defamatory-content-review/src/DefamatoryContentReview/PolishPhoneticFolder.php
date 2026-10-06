@@ -27,6 +27,7 @@ class PolishPhoneticFolder extends AbstractPhoneticFolder
         'ą' => 'a', 'ć' => 'c', 'ę' => 'e', 'ł' => 'l', 'ń' => 'n', 'ś' => 's', 'ź' => 'z',
     ];
 
+    /** @return array<string,string> */
     protected static function getAccents(): array { return self::ACCENTS; }
 
     protected static function applyLanguageRules(string $text): string

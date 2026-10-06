@@ -35,8 +35,8 @@ final class WordListScanner
     }
 
     /**
-     * @param callable(string):?array $search normalizado => datos del término
-     * @return array<int,array> cada coincidencia con su 'found'
+     * @param callable(string):(array<string,mixed>|null) $search normalizado => datos del término
+     * @return array<int,array<string,mixed>> cada coincidencia con su 'found'
      */
     public static function scan(string $text, callable $search): array
     {
@@ -63,7 +63,11 @@ final class WordListScanner
         return $matches;
     }
 
-    /** @param array<int,string> $tokens @param callable(string):?array $search */
+    /**
+     * @param array<int,string> $tokens
+     * @param callable(string):(array<string,mixed>|null) $search
+     * @return array<int,array<string,mixed>>
+     */
     private static function scanWindows(array $tokens, callable $search): array
     {
         $matches = [];

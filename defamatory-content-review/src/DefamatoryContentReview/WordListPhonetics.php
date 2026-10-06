@@ -7,13 +7,15 @@ namespace DefamatoryContentReview;
  * para un idioma. Colaborador interno de WordList. La coincidencia exacta
  * sólo aplica a idiomas con reglas en PhoneticFolderRegistry; los
  * candidatos de fusión, a todos los de FusionSupport.
+ *
+ * @phpstan-import-type WordEntry from WordListIndex
  */
 final class WordListPhonetics
 {
-    /** @var array<string,array>|null forma fonética => datos del primer término que la produce */
+    /** @var array<string,WordEntry>|null forma fonética => datos del primer término que la produce */
     private ?array $index = null;
 
-    /** @var array<int,array<int,array{phonetic:string,data:array}>> minLength => candidatos ya filtrados */
+    /** @var array<int,array<int,array{phonetic:string,data:WordEntry}>> minLength => candidatos ya filtrados */
     private array $fusionCandidatesCache = [];
 
     public function __construct(private readonly string $language)
@@ -28,7 +30,8 @@ final class WordListPhonetics
     /**
      * Coincidencia fonética exacta: mismo sonido que un término del
      * diccionario aunque la ortografía sea distinta ("Cojes" vs. "Coges").
-     * @param array<string,array> $words normalizado => datos, del WordList dueño
+     * @param array<string,WordEntry> $words normalizado => datos, del WordList dueño
+     * @return WordEntry|null
      */
     public function searchExact(string $word, array $words): ?array
     {
@@ -38,7 +41,8 @@ final class WordListPhonetics
     /**
      * Forma fonética de cada término, filtrada por longitud mínima para no
      * disparar con fragmentos comunes ("ano" dentro de "Mariano").
-     * @return array<int,array{phonetic:string,data:array}>
+     * @param array<string,WordEntry> $words
+     * @return array<int,array{phonetic:string,data:WordEntry}>
      */
     public function fusionCandidates(array $words, int $minLength): array
     {
@@ -58,6 +62,10 @@ final class WordListPhonetics
         return $this->fusionCandidatesCache[$minLength] = $candidates;
     }
 
+    /**
+     * @param array<string,WordEntry> $words
+     * @return array<string,WordEntry>
+     */
     private function buildIndex(array $words): array
     {
         if (!$this->supportsFusion()) {

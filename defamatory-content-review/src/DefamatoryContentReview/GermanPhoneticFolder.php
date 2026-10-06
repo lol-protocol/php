@@ -23,6 +23,7 @@ namespace DefamatoryContentReview;
  */
 class GermanPhoneticFolder extends AbstractPhoneticFolder
 {
+    /** @return array<string,string> */
     protected static function getAccents(): array
     {
         return CommonPhoneticAccents::withExtras(['ü' => 'ue', 'ß' => 'ss']);

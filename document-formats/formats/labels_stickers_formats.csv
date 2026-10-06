@@ -1,0 +1,26 @@
+format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,category,description,common_use
+Label 1x1,25,25,1,1,1:1,International,Label,Small square label,Product labels
+Label 1.5x2,38,51,1.5,2,1.5:2,International,Label,Small rectangular label,Address labels
+Label 2x3,51,76,2,3,2:3,International,Label,Standard shipping label,Shipping labels
+Label 2.5x4,64,102,2.5,4,2.5:4,International,Label,Medium label,Product labels
+Label 3x4,76,102,3,4,3:4,International,Label,Standard label,Inventory labels
+Label 3.5x5,89,127,3.5,5,3.5:5,International,Label,Medium label,Price tags
+Label 4x6,102,152,4,6,4:6,International,Label,Large label,Shipping labels
+Label 5x8,127,203,5,8,5:8,International,Label,Extra large label,Large labels
+Label 8.5x11,216,279,8.5,11,8.5:11,International,Label,Full page label,Full sheet labels
+Round Label 1,25,25,1,1,1:1,International,Label,Small round sticker,Small stickers
+Round Label 1.5,38,38,1.5,1.5,1.5:1.5,International,Label,Medium round sticker,Medium stickers
+Round Label 2,51,51,2,2,1:1,International,Label,Large round sticker,Large stickers
+Round Label 3,76,76,3,3,1:1,International,Label,Extra large round sticker,Extra large stickers
+Oval Label 1x2,25,51,1,2,1:2,International,Label,Small oval label,Small labels
+Oval Label 2x3,51,76,2,3,2:3,International,Label,Medium oval label,Medium labels
+Oval Label 3x4,76,102,3,4,3:4,International,Label,Large oval label,Large labels
+Barcode Label 1x1.5,25,38,1,1.5,1:1.5,International,Label,Small barcode label,Product barcodes
+Barcode Label 2x3,51,76,2,3,2:3,International,Label,Standard barcode,Product codes
+Barcode Label 3x4,76,102,3,4,3:4,International,Label,Large barcode label,Barcode labels
+Sticker Sheet 8.5x11,216,279,8.5,11,8.5:11,International,Sticker,Full page sticker sheet,Custom stickers
+Sticker 2x2,51,51,2,2,1:1,International,Sticker,Medium square sticker,Custom stickers
+Sticker 3x3,76,76,3,3,1:1,International,Sticker,Large square sticker,Decorative stickers
+Sticker 4x4,102,102,4,4,1:1,International,Sticker,Extra large sticker,Large stickers
+Bumper Sticker,76,203,3,8,3:8,International,Sticker,Long sticker,Vehicle stickers
+Rectangle Sticker 1.5x3,38,76,1.5,3,1.5:3,International,Sticker,Small rectangle,"Labels, stickers"

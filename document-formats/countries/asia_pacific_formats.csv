@@ -1,0 +1,28 @@
+format_name,width_mm,height_mm,width_inches,height_inches,aspect_ratio,country,category,description,common_use
+Letter,215.9,279.4,8.5,11,8.5:11,India,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,India,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,India,Standard,ISO A3 size,Large format documents
+Demy,139,216,5.5,8.5,5.5:8.5,India,Book,Demy format,"Books, textbooks"
+Crown,127,203,5,8,5:8,India,Book,Crown format,"Books, publications"
+Foolscap,215.9,330.2,8.5,13,8.5:13,India,Standard,Indian foolscap size,"Forms, legal documents"
+Visiting Card,90,50,3.54,1.97,90:50,India,Card,Business card,Business cards
+A4 ISO,210,297,8.3,11.7,1:1.414,Thailand,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,Thailand,Standard,ISO A3 size,Large format documents
+Letter,215.9,279.4,8.5,11,8.5:11,Thailand,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Vietnam,Standard,ISO A4 size,Standard office paper
+A3 ISO,297,420,11.7,16.5,1:1.414,Vietnam,Standard,ISO A3 size,Large format documents
+Letter,215.9,279.4,8.5,11,8.5:11,Vietnam,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Philippines,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Philippines,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Singapore,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Singapore,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Hong Kong,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Hong Kong,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Malaysia,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Malaysia,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Indonesia,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Indonesia,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Pakistan,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Pakistan,Standard,Letter size paper,Office documents
+A4 ISO,210,297,8.3,11.7,1:1.414,Bangladesh,Standard,ISO A4 size,Standard office paper
+Letter,215.9,279.4,8.5,11,8.5:11,Bangladesh,Standard,Letter size paper,Office documents
