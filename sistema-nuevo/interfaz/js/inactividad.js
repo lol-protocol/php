@@ -1,20 +1,19 @@
-import { state, API_BASE } from "./nucleo.js";
+import { state } from "./nucleo.js";
 import { postJson, showLogin } from "./sesion.js";
-import { t, aplicarEstatico } from "./idioma.js";
+import { t } from "./idioma.js";
+import { abrirModal } from "./modal.js";
 
 const TIMEOUT_MINUTOS = 30;
 const ADVERTENCIA_MINUTOS = 1;
 const TIMEOUT_MS = TIMEOUT_MINUTOS * 60 * 1000;
 const ADVERTENCIA_MS = (TIMEOUT_MINUTOS - ADVERTENCIA_MINUTOS) * 60 * 1000;
 const EVENTOS_ACTIVIDAD = ["click", "mousemove", "keypress", "scroll", "touchstart"];
-// Con el aviso abierto estos no lo cierran: mover el mouse o tocar la pantalla es justo cómo se llega a un botón, y si
-// el aviso desapareciera antes del clic no se podría elegir "Cerrar sesión ahora".
-const EVENTOS_PASIVOS = ["mousemove", "scroll", "touchstart"];
+const SEGUIR = "seguir";
+const SALIR = "salir";
 
 let ultimaActividad = Date.now();
 let timerInactividad = null;
-let modalAdvertencia = null;
-let timerFinal = null;
+let advertencia = null; // el aviso abierto ahora, si hay uno: el { eleccion, descartar } del modal
 
 export function iniciarMonitorInactividad() {
   if (!state.username) return;
@@ -26,21 +25,16 @@ export function iniciarMonitorInactividad() {
 
 export function detenerMonitorInactividad() {
   if (timerInactividad) clearInterval(timerInactividad);
-  if (timerFinal) clearTimeout(timerFinal);
   timerInactividad = null;
-  timerFinal = null;
-  if (modalAdvertencia) modalAdvertencia.hidden = true;
+  cerrarAdvertencia();
   EVENTOS_ACTIVIDAD.forEach((evento) => document.removeEventListener(evento, registrarActividad, true));
 }
 
-function registrarActividad(evento) {
-  const avisoAbierto = modalAdvertencia && !modalAdvertencia.hidden;
-  if (avisoAbierto && EVENTOS_PASIVOS.includes(evento?.type)) return;
-
+// Con el aviso abierto no se cuenta nada: mover el mouse o tocar la pantalla es como se llega a un botón, y el aviso
+// se contesta solo (sus botones, Escape o un clic afuera). Si no se contesta, verificarInactividad cierra la sesión.
+function registrarActividad() {
+  if (advertencia) return;
   ultimaActividad = Date.now();
-  if (avisoAbierto) {
-    cerrarAdvertencia();
-  }
 }
 
 function verificarInactividad() {
@@ -48,45 +42,37 @@ function verificarInactividad() {
 
   if (msInactivos >= TIMEOUT_MS) {
     logoutAutomatico();
-  } else if (msInactivos >= ADVERTENCIA_MS && (!modalAdvertencia || modalAdvertencia.hidden)) {
+  } else if (msInactivos >= ADVERTENCIA_MS && !advertencia) {
     mostrarAdvertencia();
   }
 }
 
-function mostrarAdvertencia() {
-  if (modalAdvertencia) {
-    modalAdvertencia.hidden = false;
+async function mostrarAdvertencia() {
+  const esta = abrirModal({
+    titulo: t("inactividad_titulo"),
+    mensaje: t("inactividad_mensaje"),
+    botones: [
+      { texto: t("inactividad_continuar"), clase: "modal-btn-confirmar", valor: SEGUIR },
+      { texto: t("inactividad_logout"), clase: "modal-btn-peligro", valor: SALIR },
+    ],
+    alDescartar: SEGUIR,
+  });
+  advertencia = esta;
+
+  const eleccion = await esta.eleccion;
+  if (advertencia !== esta) return; // se cerró desde acá (se detuvo el monitor): no hay nada que decidir
+  advertencia = null;
+  if (eleccion === SALIR) {
+    logoutAutomatico();
   } else {
-    modalAdvertencia = document.createElement("div");
-    modalAdvertencia.id = "inactividad-advertencia";
-    modalAdvertencia.innerHTML = `
-      <div class="inactividad-modal">
-        <h3 data-i18n="inactividad_titulo">Sesión por expirar</h3>
-        <p data-i18n="inactividad_mensaje">Por inactividad, tu sesión se cerrará en ${ADVERTENCIA_MINUTOS} minuto(s).</p>
-        <div class="inactividad-botones">
-          <button id="btn-continuar" data-i18n="inactividad_continuar">Continuar activo</button>
-          <button id="btn-logout" data-i18n="inactividad_logout">Cerrar sesión ahora</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(modalAdvertencia);
-    aplicarEstatico();
-
-    document.getElementById("btn-continuar").addEventListener("click", cerrarAdvertencia);
-    document.getElementById("btn-logout").addEventListener("click", logoutAutomatico);
+    ultimaActividad = Date.now();
   }
-
-  if (timerFinal) clearTimeout(timerFinal);
-  timerFinal = setTimeout(logoutAutomatico, TIMEOUT_MS - ADVERTENCIA_MS);
 }
 
 function cerrarAdvertencia() {
-  if (modalAdvertencia) modalAdvertencia.hidden = true;
-  if (timerFinal) {
-    clearTimeout(timerFinal);
-    timerFinal = null;
-  }
-  ultimaActividad = Date.now();
+  const abierta = advertencia;
+  advertencia = null;
+  abierta?.descartar();
 }
 
 async function logoutAutomatico() {

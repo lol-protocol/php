@@ -96,7 +96,7 @@ sistema-nuevo/
 ├── interfaz/                       Panel de administración (HTML/CSS/JS, sin frameworks)
 │   ├── index.php                      Ensambla partes/*.php + enlaza los .css
 │   ├── partes/                        pantalla-login.php, topbar.php, panel-principal.php
-│   ├── css/                           19 archivos chicos (base, login, topbar, tarjetas,
+│   ├── css/                           18 archivos chicos (base, login, topbar, tarjetas,
 │   │                                   paginacion, grafico, alertas, modal...)
 │   └── js/                            Módulos ES: nucleo, formato, sesion, selectores,
 │       ├── i18n/es.js, i18n/en.js         tarjeta-usuario, metricas, linea-tiempo, paginacion,
@@ -104,7 +104,7 @@ sistema-nuevo/
 │       └── aplicacion.js, eventos.js      eventos (entry point), configuracion-alertas, filtros,
 │                                           controles-filtro (los 5 filtros de la barra, por nombre),
 │                                           respuesta-timeline (pinta lo que trae /api/timeline),
-│                                           inactividad, modal (prompt/confirm propios, ver abajo),
+│                                           inactividad, modal (prompt/confirm/aviso propios, ver abajo),
 │                                           kpis, nota-bloque, notas, notificaciones
 │
 ├── pruebas/                        Pruebas automatizadas, sin dependencias nuevas
@@ -256,7 +256,13 @@ barra superior. El `scope` se guarda tal cual sale de `#scope-select`
 para reconstruirlo al aplicar el filtro, sin una capa de traducción intermedia que
 pueda desincronizarse. Guardar (nombre) y eliminar (confirmación) usan
 `interfaz/js/modal.js` -- un modal propio con la estética del panel, no los
-`prompt()`/`confirm()` nativos del navegador.
+`prompt()`/`confirm()` nativos del navegador. `abrirModal()` es el modal general (título,
+mensaje, campo de texto opcional y los botones que se le pasen; devuelve la elección y un
+`descartar()`), y `modalPrompt()`/`modalConfirmar()` son dos usos. El aviso de inactividad
+es otro: `inactividad.js` lo abre con sus dos botones en vez de tener su propio cuadro y su
+propia hoja de estilos (`inactividad.css`, que tenía 10 líneas iguales a `modal.css`). Como
+a cualquier modal, se lo cierra con Escape o con un clic afuera (en el aviso, eso es "seguir"),
+y abrir uno cierra el que estuviera abierto.
 
 ## Gráfico de evolución temporal
 
@@ -535,7 +541,10 @@ php pruebas/ejecutar-integracion.php
   en `topbar.php`), `tarjeta-usuario.js` (`mostrarAviso`, el aviso de arriba del
   timeline) y `un-solo-lugar.test.mjs`, que vigila que los ids de los filtros, el
   aviso y la secuencia que pinta una respuesta de `/api/timeline` se escriban en un
-  solo módulo cada uno (antes estaban copiados en 5, 3 y 2).
+  solo módulo cada uno (antes estaban copiados en 5, 3 y 2). Y `modal.js` (`abrirModal`:
+  el valor del botón pulsado; Escape y un clic en el fondo devuelven la opción segura y
+  el foco va a ella; un modal nuevo cierra el anterior; no queda ningún listener de
+  teclado colgado; `modalPrompt` y `modalConfirmar` sobre eso).
 - `pruebas/e2e/`: login (credenciales incorrectas/correctas, también el error de
   credenciales y el bloqueo del 429 con la interfaz en inglés, logout), cookie de
   sesión `HttpOnly` (el JS de la página no la puede leer), POST sin token CSRF o
@@ -547,7 +556,8 @@ php pruebas/ejecutar-integracion.php
   aviso con ⚠ cuando falla el timeline o la carga inicial; en
   `panel-inactividad.e2e.cjs`, con el reloj falso de Playwright (`page.clock`): el
   aviso de sesión por expirar a los 29 minutos, que los dos botones se puedan pulsar
-  con el mouse y con una pantalla táctil, el cierre solo a los 30 y el idioma del
+  con el mouse y con una pantalla táctil, el cierre solo a los 30 (sin que mover el
+  mouse lo posponga), Escape y clic afuera, un solo modal a la vez y el idioma del
   aviso; más, en `panel-nuevas-features.e2e.cjs`:
   el tile de KPIs de alertas, el indicador visual al guardar una nota, dos
   guardados de nota superpuestos (gana el último texto escrito, no el que llega

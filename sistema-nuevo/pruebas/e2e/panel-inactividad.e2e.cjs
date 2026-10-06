@@ -100,6 +100,18 @@ const sesionDelServidor = async (page) => (await (await page.request.get(`${API}
     })
   );
 
+  await paso("con el aviso abierto, mover el mouse no posterga el cierre de la sesión", () =>
+    conPanel(browser, async (page) => {
+      await page.clock.runFor("29:30");
+      await page.mouse.move(300, 300);
+      await page.clock.runFor("00:20");
+      await page.mouse.move(500, 400);
+      await page.clock.runFor("00:20"); // 30:10 desde la última actividad real
+      await page.waitForSelector("#login-screen:not([hidden])", { timeout: 3000 });
+      assert.equal(await sesionDelServidor(page), false);
+    })
+  );
+
   await paso("con una pantalla táctil, tocar 'Cerrar sesión ahora' también cierra la sesión", () =>
     conPanel(
       browser,
@@ -112,6 +124,33 @@ const sesionDelServidor = async (page) => (await (await page.request.get(`${API}
       },
       { hasTouch: true }
     )
+  );
+
+  await paso("Escape y un clic afuera del cuadro cierran el aviso y la sesión sigue, como en los demás modales", () =>
+    conPanel(browser, async (page) => {
+      await page.clock.runFor("29:30");
+      assert.equal(await aviso(page).isVisible(), true);
+      await page.keyboard.press("Escape");
+      assert.equal(await aviso(page).isVisible(), false, "Escape");
+      await page.clock.runFor("29:30");
+      assert.equal(await aviso(page).isVisible(), true, "vuelve a avisar 29 minutos después");
+      await page.mouse.click(5, 5);
+      assert.equal(await aviso(page).isVisible(), false, "clic afuera");
+      assert.equal(await page.locator("#app").isVisible(), true);
+      assert.equal(await sesionDelServidor(page), true);
+    })
+  );
+
+  await paso("si hay otro modal abierto cuando llega el aviso, queda uno solo: el del aviso", () =>
+    conPanel(browser, async (page) => {
+      await page.click("#btn-guardar-filtro");
+      await page.waitForSelector(".modal-fondo");
+      await page.clock.runFor("29:30");
+      assert.equal(await aviso(page).isVisible(), true);
+      assert.equal(await page.locator(".modal-fondo").count(), 1, "el modal del filtro se cierra: no quedan dos encimados");
+      await botonContinuar(page).click({ timeout: 3000 });
+      assert.equal(await page.locator(".modal-fondo").count(), 0, "al contestar el aviso no queda ningún modal");
+    })
   );
 
   await browser.close();
