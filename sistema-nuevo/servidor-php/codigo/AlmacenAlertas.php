@@ -54,13 +54,7 @@ final class AlmacenAlertas
         $stmt->bindValue('limite', self::LIMITE_USUARIOS, PDO::PARAM_INT);
         $stmt->execute();
 
-        return [
-            'total_mismatches' => $resumen['total'],
-            'total_users_affected' => $resumen['usuarios'],
-            'top' => array_map(fn ($f) => self::conUsuario($f) + [
-                'country' => $f['pais_codigo'], 'mismatch_count' => (int) $f['cantidad'], 'last_seen' => $f['last_seen'],
-            ], $stmt->fetchAll()),
-        ];
+        return self::alerta($resumen, $stmt->fetchAll(), fn (array $f) => ['country' => $f['pais_codigo']]);
     }
 
     /** @param int $umbral Sensibilidad 0-100: más alto = ventana de tiempo más amplia cuenta como "cambio imposible". */
@@ -89,13 +83,11 @@ final class AlmacenAlertas
         $stmt->bindValue('limite', self::LIMITE_USUARIOS, PDO::PARAM_INT);
         $stmt->execute();
 
-        return [
-            'total_changes' => $resumen['total'],
-            'total_users_affected' => $resumen['usuarios'],
-            'top' => array_map(fn ($f) => self::conUsuario($f) + [
-                'pais_anterior' => $f['pais_anterior'], 'pais_actual' => $f['pais_actual'], 'cambio_count' => (int) $f['cantidad'], 'last_seen' => $f['last_seen'],
-            ], $stmt->fetchAll()),
-        ];
+        return self::alerta(
+            $resumen,
+            $stmt->fetchAll(),
+            fn (array $f) => ['previous_country' => $f['pais_anterior'], 'current_country' => $f['pais_actual']]
+        );
     }
 
     /** Usuarios distintos con alguna IP fuera de su país, sin armar el top (lo usa el KPI del dashboard). */
@@ -141,8 +133,25 @@ final class AlmacenAlertas
         return 0.5 + (max(0, min(100, $umbral)) / 100) * 3.5;
     }
 
-    private static function conUsuario(array $fila): array
+    /**
+     * La forma que comparten las dos alertas: cuántos eventos hay en total y de cuántos usuarios, y el top de usuarios. Cada
+     * fila trae primero lo común (usuario, cantidad de eventos y última vez) y después lo propio de esa alerta ($detalle).
+     *
+     * @param array{total:int, usuarios:int} $resumen
+     * @param array<int,array<string,mixed>> $filas id, nombre, cantidad y last_seen, más lo que lea $detalle
+     * @param callable(array<string,mixed>): array<string,mixed> $detalle
+     */
+    private static function alerta(array $resumen, array $filas, callable $detalle): array
     {
-        return ['user_id' => $fila['id'], 'user_name' => $fila['nombre']];
+        return [
+            'total_events' => $resumen['total'],
+            'total_users_affected' => $resumen['usuarios'],
+            'top' => array_map(
+                fn (array $f) => [
+                    'user_id' => $f['id'], 'user_name' => $f['nombre'], 'event_count' => (int) $f['cantidad'], 'last_seen' => $f['last_seen'],
+                ] + $detalle($f),
+                $filas
+            ),
+        ];
     }
 }

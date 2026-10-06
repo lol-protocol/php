@@ -4,6 +4,23 @@ declare(strict_types=1);
 
 /** Endpoint principal: /api/timeline. Paginado y filtrable por tipo de acción. */
 
+/**
+ * El universo de comparación que pide la query del timeline (?scope=&age_min=&age_max=&gender=): los países del scope, la
+ * edad y el género, sin el usuario que se está mirando ($excluirUsuario).
+ *
+ * @param array<string,mixed> $query
+ */
+function api_universo_desde_query(array $query, array $groups, string $excluirUsuario): Universo
+{
+    return new Universo(
+        api_resolve_scope_countries($query['scope'] ?? 'all', $groups),
+        isset($query['age_min']) ? (int) $query['age_min'] : 0,
+        isset($query['age_max']) ? (int) $query['age_max'] : 150,
+        $query['gender'] ?? 'all',
+        $excluirUsuario
+    );
+}
+
 function api_timeline(): void
 {
     $userId = $_GET['user_id'] ?? '';
@@ -24,11 +41,7 @@ function api_timeline(): void
 
     $groups = $datos->groups();
     $scope = $_GET['scope'] ?? 'all';
-    $countries = api_resolve_scope_countries($scope, $groups);
-
-    $ageMin = isset($_GET['age_min']) ? (int) $_GET['age_min'] : 0;
-    $ageMax = isset($_GET['age_max']) ? (int) $_GET['age_max'] : 150;
-    $gender = $_GET['gender'] ?? 'all';
+    $universo = api_universo_desde_query($_GET, $groups, $userId);
 
     $tipoRaw = trim((string) ($_GET['type'] ?? ''));
     $tipo = ($tipoRaw === '' || $tipoRaw === 'all') ? null : $tipoRaw;
@@ -37,18 +50,16 @@ function api_timeline(): void
     $porPagina = api_por_pagina_desde_query();
 
     $paginaAcciones = $acciones->pagina($userId, $tipo, $pagina, $porPagina);
-    $cohortes = api_timeline_con_cohortes(
-        $paginaAcciones['items'], $userId, $user['country'], $countries, $ageMin, $ageMax, $gender
-    );
+    $cohortes = api_timeline_con_cohortes($paginaAcciones['items'], $user['country'], $universo);
 
     api_responder([
         'user' => $user + ['country_name' => $groups['countries'][$user['country']] ?? $user['country']],
         'filters' => [
             'scope' => $scope,
             'scope_label' => api_scope_label($scope, $groups),
-            'age_min' => $ageMin,
-            'age_max' => $ageMax,
-            'gender' => $gender,
+            'age_min' => $universo->edadMin,
+            'age_max' => $universo->edadMax,
+            'gender' => $universo->genero,
             'type' => $tipo ?? 'all',
         ],
         'pagination' => api_pagination_meta($paginaAcciones['total'], $pagina, $porPagina),

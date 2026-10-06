@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/../../servidor-php/codigo/Universo.php';
 require_once __DIR__ . '/../../servidor-php/codigo/ClienteEstadisticas.php';
 require_once __DIR__ . '/../../servidor-php/codigo/AlmacenAlertas.php';
 require_once __DIR__ . '/../../servidor-php/codigo/api/ayudantes.php';
@@ -36,7 +37,7 @@ try {
         ['id' => 'a4', 'type' => 'vacio', 'duration_ms' => 300, 'amount_usd' => 5.0, 'ip_country' => 'AR'],
         ['id' => 'a5', 'type' => 'roto', 'duration_ms' => 300, 'amount_usd' => null, 'ip_country' => 'AR'],
     ];
-    $resultado = api_timeline_con_cohortes($acciones, 'u007', 'AR', ['AR', 'BR'], 20, 50, 'F');
+    $resultado = api_timeline_con_cohortes($acciones, 'AR', new Universo(['AR', 'BR'], 20, 50, 'F', 'u007'));
     [$a1, $a2, $a3, $a4, $a5] = $resultado['timeline'];
 
     assert_igual(10, $a1['cohort']['count'], 'cohortes: la acción trae la cohorte de SU tipo (payment)');
@@ -69,7 +70,7 @@ try {
 
     // Sin filtro de país (scope "all"): no se manda "countries" y todo responde -> servicio disponible.
     file_put_contents($log, '');
-    $todos = api_timeline_con_cohortes(array_slice($acciones, 0, 3), 'u007', 'AR', null, 0, 150, 'all');
+    $todos = api_timeline_con_cohortes(array_slice($acciones, 0, 3), 'AR', new Universo(null, 0, 150, 'all', 'u007'));
     assert_igual(true, $todos['stats_service_available'], 'cohortes: todos los tipos con respuesta -> servicio disponible');
     $pagosTodos = $pedidos('payment');
     assert_verdadero(!array_key_exists('countries', $pagosTodos[0] ?? ['countries' => 1]), 'cohortes: sin filtro de país no se manda "countries"');

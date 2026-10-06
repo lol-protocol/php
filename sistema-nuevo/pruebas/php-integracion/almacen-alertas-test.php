@@ -12,18 +12,18 @@ declare(strict_types=1);
 $almacen = new AlmacenAlertas($pdo);
 
 $ip = $almacen->ipMismatches();
-assert_verdadero($ip['total_mismatches'] >= 0, 'alertas: ipMismatches total_mismatches nunca negativo');
+assert_verdadero($ip['total_events'] >= 0, 'alertas: ipMismatches total_events nunca negativo');
 assert_verdadero($ip['total_users_affected'] >= 0, 'alertas: ipMismatches total_users_affected nunca negativo');
 assert_verdadero(count($ip['top']) <= 15, 'alertas: ipMismatches top nunca trae más de 15 (LIMITE_USUARIOS)');
 if ($ip['top']) {
     $primero = $ip['top'][0];
     assert_verdadero(
-        isset($primero['user_id'], $primero['user_name'], $primero['country'], $primero['mismatch_count'], $primero['last_seen']),
+        isset($primero['user_id'], $primero['user_name'], $primero['country'], $primero['event_count'], $primero['last_seen']),
         'alertas: cada fila de ipMismatches trae todos los campos esperados'
     );
     for ($i = 1; $i < count($ip['top']); $i++) {
         assert_verdadero(
-            $ip['top'][$i - 1]['mismatch_count'] >= $ip['top'][$i]['mismatch_count'],
+            $ip['top'][$i - 1]['event_count'] >= $ip['top'][$i]['event_count'],
             'alertas: ipMismatches.top viene ordenado de mayor a menor'
         );
     }
@@ -32,16 +32,16 @@ if ($ip['top']) {
 $cambiosSensibilidadBaja = $almacen->cambiosPaisImposibles(0);
 $cambiosSensibilidadAlta = $almacen->cambiosPaisImposibles(100);
 assert_verdadero(
-    $cambiosSensibilidadAlta['total_changes'] >= $cambiosSensibilidadBaja['total_changes'],
+    $cambiosSensibilidadAlta['total_events'] >= $cambiosSensibilidadBaja['total_events'],
     'alertas: más sensibilidad detecta al menos tantos cambios de país como menos sensibilidad (ventana de tiempo más amplia)'
 );
 if ($cambiosSensibilidadAlta['top']) {
     $primero = $cambiosSensibilidadAlta['top'][0];
     assert_verdadero(
-        isset($primero['user_id'], $primero['user_name'], $primero['pais_anterior'], $primero['pais_actual'], $primero['cambio_count'], $primero['last_seen']),
+        isset($primero['user_id'], $primero['user_name'], $primero['previous_country'], $primero['current_country'], $primero['event_count'], $primero['last_seen']),
         'alertas: cada fila de cambiosPaisImposibles trae todos los campos esperados'
     );
-    assert_verdadero($primero['pais_anterior'] !== $primero['pais_actual'], 'alertas: un "cambio" siempre es entre dos países distintos');
+    assert_verdadero($primero['previous_country'] !== $primero['current_country'], 'alertas: un "cambio" siempre es entre dos países distintos');
 }
 
 // LIMITE_USUARIOS limita usuarios distintos, no filas: un usuario con varios
@@ -70,9 +70,29 @@ $pdo->prepare(
      FROM generate_series(1, 20) n, (VALUES ('zA01'), ('zA02')) AS usuarios_prueba(uid)"
 )->execute([$otroPais]);
 
-$ordenEnTop = array_slice(array_column($almacen->ipMismatches()['top'], 'user_id'), 0, 2);
+$empatados = array_slice($almacen->ipMismatches()['top'], 0, 2);
 
 $pdo->exec("DELETE FROM acciones WHERE usuario_id IN ('zA01', 'zA02')");
 $pdo->exec("DELETE FROM usuarios WHERE id IN ('zA01', 'zA02')");
 
-assert_igual(['zA01', 'zA02'], $ordenEnTop, 'alertas: dos usuarios empatados en mismatch_count se ordenan por id');
+assert_igual(['zA01', 'zA02'], array_column($empatados, 'user_id'), 'alertas: dos usuarios empatados en event_count se ordenan por id');
+// Y cada fila trae cuántas acciones tuvo y el país que declaró el usuario (no el de la IP, que es $otroPais).
+assert_igual(
+    [[20, $pais], [20, $pais]],
+    array_map(fn (array $fila) => [$fila['event_count'], $fila['country']], $empatados),
+    'alertas: cada fila de IP fuera del país trae la cantidad de acciones y el país declarado, no el de la IP'
+);
+
+// Las dos alertas hablan el mismo idioma: el mismo sobre y las mismas columnas comunes en cada fila (usuario, cantidad y
+// última vez), con lo propio de cada una aparte y al final. Antes cada una nombraba distinto lo mismo (total_mismatches /
+// total_changes, mismatch_count / cambio_count, country / pais_anterior) y el frontend tenía que adivinar cuál era cuál.
+$ipTop = $almacen->ipMismatches();
+$cambiosTop = $almacen->cambiosPaisImposibles(100);
+assert_igual(['total_events', 'total_users_affected', 'top'], array_keys($ipTop), 'alertas: el sobre de ipMismatches');
+assert_igual(array_keys($ipTop), array_keys($cambiosTop), 'alertas: las dos alertas devuelven el mismo sobre');
+assert_verdadero($ipTop['top'] !== [] && $cambiosTop['top'] !== [], 'alertas: la semilla tiene casos de las dos alertas (si no, lo de abajo no prueba nada)');
+$comunes = ['user_id', 'user_name', 'event_count', 'last_seen'];
+assert_igual($comunes, array_slice(array_keys($ipTop['top'][0]), 0, 4), 'alertas: las filas de ipMismatches empiezan por las columnas comunes');
+assert_igual($comunes, array_slice(array_keys($cambiosTop['top'][0]), 0, 4), 'alertas: las filas de cambiosPaisImposibles empiezan por las mismas columnas comunes');
+assert_igual(['country'], array_slice(array_keys($ipTop['top'][0]), 4), 'alertas: lo propio de una IP fuera del país es el país declarado');
+assert_igual(['previous_country', 'current_country'], array_slice(array_keys($cambiosTop['top'][0]), 4), 'alertas: lo propio de un cambio de país es de dónde y a dónde');

@@ -52,10 +52,13 @@ correrPrueba(async ({ browser, page }) => {
     assert.equal(JSON.parse(cuerpo).codigo, "csrf_invalido");
   });
 
-  await paso("cerrar sesión vuelve a la pantalla de login", async () => {
+  await paso("cerrar sesión vuelve a la pantalla de login, sin mensaje, y cierra la sesión también en el servidor", async () => {
     await page.click("#logout-button");
     await page.waitForSelector("#login-screen:not([hidden])");
     assert.equal(await page.isHidden("#login-screen"), false);
+    assert.equal(await page.isHidden("#login-error"), true, "no hay ningún mensaje");
+    const sesion = await (await page.request.get(`${API_URL}/api/session`)).json();
+    assert.equal(sesion.authenticated, false, "el servidor ya no tiene la sesión");
   });
 
 }, { entrar: false });
