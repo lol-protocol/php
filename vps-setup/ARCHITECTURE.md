@@ -249,7 +249,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 - [ ] Logs centralizados
 - [ ] Monitoreo de performance
 - [ ] Backups automáticos
-- [ ] Alertas
+- [x] Alertas básicas (`09_A`, opcional: webhook/correo)
 
 ---
 
@@ -306,7 +306,7 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 
 - **Email:** admin@initech.fun
 - **Proveedor VPS:** OVHCloud Support
-- **Monitoreo:** Alertas automáticas
+- **Monitoreo:** alertas por webhook/correo con `09_A` (opcional)
 
 ---
 

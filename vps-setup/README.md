@@ -42,7 +42,7 @@ chmod +x *.sh
 ./install-all.sh initech.fun admin@initech.fun
 ```
 
-Instala el stack base (Java, PHP, Python, PostgreSQL, Nginx, Certbot, **Webmin**), configura el sitio, pide SSL y despliega la landing page.
+Instala el stack base (Java, PHP, Python, PostgreSQL, Nginx, Certbot, **Webmin**), configura el sitio, pide SSL, despliega la landing page, activa fail2ban + parches automáticos, headers de seguridad y rotación de logs, y termina con el healthcheck.
 
 ### Opción 2: Paso a Paso (para ver dónde falla algo)
 
@@ -70,6 +70,14 @@ curl http://initech.fun                     # Prueba SIN SSL primero
 
 # --- 05: (re)despliegue de la landing page ---
 ./05-deploy-landing-page.sh initech.fun
+
+# --- 07: endurecimiento y operación (independientes entre sí) ---
+./07_A-install-fail2ban-autoupdates.sh
+./07_B-nginx-security-headers.sh
+./07_D-setup-logrotate.sh
+
+# --- 08: verificación (solo lectura) ---
+./08-healthcheck.sh initech.fun
 
 # --- extras opcionales del grupo 02 (corre solo los que necesites) ---
 ./02_G-install-mariadb.sh          # MariaDB
@@ -166,7 +174,7 @@ una contraseña por error, hay que rotarla.
 ## 🧪 Tests y CI
 
 ```bash
-bats vps-setup/tests                                  # 70+ tests (usa stubs: no tocan el sistema real)
+bats vps-setup/tests                                  # la suite completa (usa stubs: no tocan el sistema real)
 shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh
 ```
 

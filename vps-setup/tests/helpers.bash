@@ -16,7 +16,13 @@ case "$1" in
     ufw) [ "$2" = status ] && echo "Status: ${UFW_STATUS:-active}"; exit 0;;
     chown|systemctl|nginx|apt-get|fail2ban-client|logrotate|certbot|sshd) exit 0;;
 esac
-[ "$SUDO_EXEC" = 1 ] && exec "$@"
+if [ "$SUDO_EXEC" = 1 ]; then
+    # Red de seguridad: con ejecucion real, jamas tocar rutas del sistema.
+    for a in "$@"; do
+        case "$a" in /etc/*|/var/*|/usr/*) echo "BLOQUEADO: sudo $* tocaria el sistema real (falta redirigir la ruta en el test)" >&2; exit 99;; esac
+    done
+    exec "$@"
+fi
 exit 0'
     export PATH="$STUB_BIN:$PATH"
 }

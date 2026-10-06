@@ -92,7 +92,10 @@ get_public_ip() {
     local ip
     ip=$(curl -4 -s --max-time 5 ifconfig.me 2>/dev/null || echo "")
     if [ -z "$ip" ]; then
-        ip="TU_IP_PUBLICA"
+        # Placeholder SIN cachear: un fallo de red momentaneo no debe quedar
+        # "pegado" (y exportado a los pasos hijos) para el resto de la corrida.
+        echo "TU_IP_PUBLICA"
+        return 0
     fi
 
     # export (not just assign) so child processes started with "bash script.sh"
@@ -101,25 +104,25 @@ get_public_ip() {
     echo "$ip"
 }
 
-# Batch DNS lookups (avoid multiple dig calls)
+# Verifica que $1 y www.$1 resuelvan a la IP $2. Hay que comprobar los DOS por
+# separado: certbot pide el certificado para ambos y rechaza TODO si uno falla,
+# asi que "alguno de los dos coincide" no basta.
 verify_dns_resolution() {
     local domain=$1
     local expected_ip=$2
+    local name ips
 
-    # Single dig call to check both domain and www.domain in one go
-    local ips
-    ips=$(dig +short -t A "$domain" www."$domain" 2>/dev/null | sort -u)
-
-    if [ -z "$ips" ]; then
-        echo "WARNING: $domain does not resolve yet. DNS propagation can take 15-60 minutes."
-        return 1
-    fi
-
-    # Check if expected IP is in the results
-    if ! echo "$ips" | grep -q "^${expected_ip}$"; then
-        echo "WARNING: $domain resolves to [$ips], expected $expected_ip"
-        return 1
-    fi
-
+    for name in "$domain" "www.$domain"; do
+        ips=$(dig +short -t A "$name" 2>/dev/null | sort -u)
+        if [ -z "$ips" ]; then
+            echo "WARNING: $name does not resolve yet. DNS propagation can take 15-60 minutes."
+            return 1
+        fi
+        # Con un CNAME, dig +short lista el alias y luego la(s) IP: basta que este la esperada.
+        if ! echo "$ips" | grep -qx "$expected_ip"; then
+            echo "WARNING: $name resolves to [$(echo $ips)], expected $expected_ip"
+            return 1
+        fi
+    done
     return 0
 }
