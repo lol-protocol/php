@@ -17,6 +17,9 @@ return [
             ['word' => 'fisi', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'nyoka', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'mnyama', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'kuku', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'sokwe', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'mbogo', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'akili' => [
             ['word' => 'mjinga', 'riskType' => 'intelectual', 'severity' => 'high'],
@@ -39,6 +42,8 @@ return [
             ['word' => 'dhaifu', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'mchafu', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'jitu', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'mnyonge', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'hafifu', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
         'ulemavu' => [
             ['word' => 'kichaa', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -46,6 +51,7 @@ return [
             ['word' => 'kiwete', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'kipofu', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'kiziwi', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'bubu', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
         'maadili' => [
             ['word' => 'mshenzi', 'riskType' => 'moral', 'severity' => 'high'],
@@ -77,11 +83,19 @@ return [
             ['word' => 'mlegevu', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'mnyanyasaji', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'tapeli', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'mnyang\'anyi', 'riskType' => 'moral', 'severity' => 'high'],
         ],
         'jinsia' => [
             ['word' => 'kahaba', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'malaya', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'mwasherati', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'hawara', 'riskType' => 'genero', 'severity' => 'medium'],
+        ],
+        'lugha_chafu' => [
+            ['word' => 'mavi', 'riskType' => 'ordinario', 'severity' => 'high'],
+        ],
+        'dhihaka' => [
+            ['word' => 'kichekesho', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
     ],
 ];

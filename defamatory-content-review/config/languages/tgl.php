@@ -15,6 +15,10 @@ return [
             ['word' => 'baboy', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'aso', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'ahas', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'unggoy', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'kalabaw', 'riskType' => 'animal', 'severity' => 'low'],
+            ['word' => 'buwaya', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'ulupong', 'riskType' => 'animal', 'severity' => 'high'],
         ],
         'talino' => [
             ['word' => 'tanga', 'riskType' => 'intelectual', 'severity' => 'high'],
@@ -30,6 +34,8 @@ return [
             ['word' => 'engot', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'hangal', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ungas', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'torpe', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'abnoy', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'anyo' => [
             ['word' => 'panget', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -37,6 +43,7 @@ return [
             ['word' => 'mataba', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'payat', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'kalbo', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'pandak', 'riskType' => 'fisico', 'severity' => 'low'],
         ],
         'kapansanan' => [
             ['word' => 'sira ulo', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -44,6 +51,9 @@ return [
             ['word' => 'bulag', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'bingi', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'pilay', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'utal', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'pipi', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'lumpo', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
         'moralidad' => [
             ['word' => 'sinungaling', 'riskType' => 'moral', 'severity' => 'medium'],
@@ -73,16 +83,28 @@ return [
             ['word' => 'tarantado', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'yabang', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'kupal', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'walang utang na loob', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'makapal ang mukha', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'hipokrito', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
         'kasarian' => [
             ['word' => 'puta', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'pokpok', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'malandi', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'patutot', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'kalapating mababa ang lipad', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
         'kaswal' => [
             ['word' => 'putangina', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'leche', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'buwisit', 'riskType' => 'ordinario', 'severity' => 'low'],
+            ['word' => 'punyeta', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'lintik', 'riskType' => 'ordinario', 'severity' => 'medium'],
+        ],
+        'katatawanan' => [
+            ['word' => 'payaso', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'pasaway', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'kalog', 'riskType' => 'burlesco', 'severity' => 'low'],
         ],
     ],
 ];
