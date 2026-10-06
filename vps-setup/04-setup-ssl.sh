@@ -6,6 +6,8 @@ source "$(dirname "$0")/lib.sh"
 
 DOMAIN=${1:-"initech.fun"}
 EMAIL=${2:-"admin@$DOMAIN"}
+require_valid domain "$DOMAIN" "El dominio (argumento 1)"
+require_valid email "$EMAIL" "El email (argumento 2)"
 
 print_header "04" "SSL/HTTPS con Let's Encrypt (Dominio: $DOMAIN)"
 

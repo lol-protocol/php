@@ -33,3 +33,23 @@ jobs:
 
       - name: Tests (bats)
         run: bats vps-setup/tests
+
+  # Pruebas con nginx, logrotate y sshd REALES, directamente en el runner (sin Docker).
+  # Escriben en /etc y /var: el runner es desechable. Solo se activan con REAL_TESTS=1.
+  real-tools:
+    name: Real tools (nginx, logrotate, sshd)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y bats nginx logrotate openssh-server dnsutils
+
+      # Un nginx preinstalado/arrancado en el runner ocuparia el puerto 80.
+      - name: Stop preinstalled services
+        run: sudo systemctl stop nginx apache2 2>/dev/null || true
+
+      - name: Tests con herramientas reales (bats)
+        run: sudo -E env "PATH=$PATH" REAL_TESTS=1 bats vps-setup/tests/real

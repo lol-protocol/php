@@ -4,6 +4,7 @@ set -e
 source "$(dirname "$0")/lib.sh"
 
 DOMAIN=${1:-"initech.fun"}
+require_valid domain "$DOMAIN" "El dominio (argumento 1)"
 # Subcarpeta POR DOMINIO -- sin el "/$DOMAIN" al final, dos dominios distintos
 # (ej. conce.com e initech.fun) terminarian compartiendo la misma carpeta y
 # sirviendo el mismo contenido, porque ambos usarian literalmente el mismo path.

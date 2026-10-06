@@ -175,13 +175,22 @@ una contraseña por error, hay que rotarla.
 
 ```bash
 bats vps-setup/tests                                  # la suite completa (usa stubs: no tocan el sistema real)
+sudo -E REAL_TESTS=1 bats vps-setup/tests/real        # con nginx/logrotate/sshd REALES (escribe en /etc: solo CI o maquina desechable)
 shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh
 ```
 
 Los tests cubren `lib.sh`, el orquestador (`--dry-run`/`--resume`/fallos/IP heredada), el healthcheck, el monitor y
 los scripts 07_*/09_A, con `sudo`, `systemctl`, `curl`, etc. simulados. El workflow `.github/workflows/vps-setup.yml`
 corre `bash -n`, ShellCheck y bats en cada PR que toque `vps-setup/`. Lo que **no** cubren: comportamiento real de
-apt, systemd, Nginx o sshd — eso solo se valida en un VPS.
+apt, systemd, certbot, fail2ban ni ufw — eso solo se valida en un VPS. Las pruebas de `tests/real/` sí ejecutan el Nginx, logrotate y sshd reales (vhosts con `nginx -t` y sirviendo tráfico, rotación forzada de logs, `sshd -t`/`sshd -T`), sin Docker, en el runner de CI.
+
+## 🛡️ Validación de entradas
+
+Los scripts que reciben dominio, email, nombre de app, IP, context path o URL de webhook los validan con listas
+blancas (`validate_*` / `require_valid` en `lib.sh`) **antes de tocar el sistema**: un valor con espacios, `;`,
+`$(...)` o saltos de línea terminaría dentro de archivos de Nginx/systemd/cron o de comandos con `sudo`. Un valor
+inválido sale con código 2 y un mensaje que explica el formato esperado. `remote-run.sh` valida host, usuario,
+puerto y directorio remoto (un host que empiece con `-` se leería como opción de ssh).
 
 ## ✅ Verificación Post-Instalación
 

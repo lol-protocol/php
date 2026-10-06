@@ -126,3 +126,68 @@ verify_dns_resolution() {
     done
     return 0
 }
+
+# ---------------------------------------------------------------------------
+# Validacion de entradas. Dominio, email, nombres de app, etc. terminan dentro de
+# archivos de Nginx/systemd/cron y de comandos con sudo; un valor con espacios,
+# saltos de linea, ";" o "$(...)" romperia la configuracion o ejecutaria cosas.
+# Se valida con listas BLANCAS (solo lo permitido), antes de tocar el sistema.
+# ---------------------------------------------------------------------------
+
+# Dominio en minusculas, sin punto final: etiquetas de 1-63 [a-z0-9-] (sin guion
+# al inicio/fin), al menos un punto y TLD que empieza con letra. Punycode (xn--)
+# vale; los nombres con caracteres Unicode deben pasarse ya convertidos.
+validate_domain() {
+    local d=$1
+    [ "${#d}" -ge 4 ] && [ "${#d}" -le 253 ] || return 1
+    [[ "$d" =~ ^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]([a-z0-9-]{0,61}[a-z0-9])$ ]]
+}
+
+validate_email() {
+    local e=$1 local_part domain
+    [ "${#e}" -le 254 ] || return 1
+    [[ "$e" == *@* ]] || return 1
+    local_part=${e%@*}
+    domain=${e##*@}
+    [[ "$local_part" =~ ^[A-Za-z0-9._%+-]{1,64}$ ]] || return 1
+    validate_domain "${domain,,}"
+}
+
+validate_ipv4() {
+    [[ "$1" =~ ^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$ ]]
+}
+
+# Nombre de app / servicio systemd: minusculas, digitos, "_" y "-".
+validate_name() {
+    [[ "$1" =~ ^[a-z0-9][a-z0-9_-]{0,62}$ ]]
+}
+
+# Ruta de contexto de Tomcat: puede ser vacia (raiz); sin "/" ni "..".
+validate_context_path() {
+    [[ "$1" =~ ^[A-Za-z0-9._-]*$ ]] && [[ "$1" != *..* ]] && [[ "$1" != "." ]]
+}
+
+# URL de webhook que se guarda en un archivo que el monitor "source"-a como shell:
+# no puede contener comillas, "$", "`", "\", espacios ni saltos de linea.
+validate_webhook_url() {
+    [[ "$1" =~ ^https?://[A-Za-z0-9._~:/?#@\!\&,\;=%+-]+$ ]]
+}
+
+# require_valid <tipo> <valor> <etiqueta>: si no valida, explica y sale con 2.
+require_valid() {
+    local kind=$1 value=$2 label=$3 hint
+    if "validate_$kind" "$value"; then
+        return 0
+    fi
+    case "$kind" in
+        domain)       hint="en minusculas, con al menos un punto, sin espacios ni caracteres especiales (ej. ejemplo.com)" ;;
+        email)        hint="formato usuario@dominio.com" ;;
+        ipv4)         hint="una IPv4 como 203.0.113.5" ;;
+        name)         hint="minusculas, digitos, '_' y '-' (max. 63), debe empezar con letra o digito" ;;
+        context_path) hint="letras, digitos, '.', '_' y '-' (sin '/' ni '..'); vacio = raiz" ;;
+        webhook_url)  hint="una URL http(s) sin comillas, espacios, '\$' ni '\`'" ;;
+        *)            hint="" ;;
+    esac
+    printf 'ERROR: %s invalido: %q\n  Debe ser: %s\n' "$label" "${value:0:80}" "$hint" >&2
+    exit 2
+}

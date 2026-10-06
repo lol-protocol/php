@@ -7,6 +7,9 @@ source "$(dirname "$0")/lib.sh"
 DOMAIN=${1:-"initech.fun"}
 VPS_IP=${2:-"158.69.222.245"}
 OVH_SECONDARY=${3:-"sdns2.ovh.ca"}
+require_valid domain "$DOMAIN" "El dominio (argumento 1)"
+require_valid ipv4 "$VPS_IP" "La IP del VPS (argumento 2)"
+require_valid domain "$OVH_SECONDARY" "El servidor secundario (argumento 3)"
 
 print_header "06_C" "Configurando Servidor DNS (BIND9)"
 

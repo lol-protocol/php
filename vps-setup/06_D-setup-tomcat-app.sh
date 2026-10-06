@@ -5,6 +5,8 @@ source "$(dirname "$0")/lib.sh"
 
 DOMAIN=${1:-"app.initech.fun"}
 CONTEXT_PATH=${2:-""}
+require_valid domain "$DOMAIN" "El dominio (argumento 1)"
+require_valid context_path "$CONTEXT_PATH" "El context path (argumento 2)"
 
 print_header "06_D" "Configurando Nginx -> Tomcat (Dominio: $DOMAIN, Context path: /${CONTEXT_PATH})"
 

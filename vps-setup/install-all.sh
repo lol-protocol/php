@@ -32,6 +32,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 source lib.sh
 
+require_valid domain "$DOMAIN" "El dominio (argumento 1)"
+require_valid email "$EMAIL" "El email (argumento 2)"
+
 step_done() { grep -qxF "$DOMAIN"$'\t'"$1" "$STATE_FILE" 2>/dev/null; }
 mark_done() {
     mkdir -p "$(dirname "$STATE_FILE")"
