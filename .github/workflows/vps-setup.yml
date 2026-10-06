@@ -51,5 +51,10 @@ jobs:
       - name: Stop preinstalled services
         run: sudo systemctl stop nginx apache2 2>/dev/null || true
 
+      # Un test saltado (herramienta ausente, puerto 80 ocupado, no root) saldria en
+      # verde sin probar nada: aqui un skip o menos de 12 tests ejecutados es un fallo.
       - name: Tests con herramientas reales (bats)
-        run: sudo -E env "PATH=$PATH" REAL_TESTS=1 bats vps-setup/tests/real
+        run: |
+          sudo -E env "PATH=$PATH" REAL_TESTS=1 bats --tap vps-setup/tests/real | tee real.tap
+          if grep -q '# skip' real.tap; then echo "::error::hay tests reales saltados"; exit 1; fi
+          test "$(grep -c '^ok ' real.tap)" -ge 12
