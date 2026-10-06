@@ -18,6 +18,7 @@ return [
             ['word' => 'hundur', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'asni', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'kvikindi', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'belja', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
         'vitsmunir' => [
             ['word' => 'fífl', 'riskType' => 'intelectual', 'severity' => 'high'],
@@ -31,6 +32,7 @@ return [
             ['word' => 'vitleysingur', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'þorskhaus', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'kúkalabbi', 'riskType' => 'intelectual', 'severity' => 'low'],
+            ['word' => 'þursi', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'likamlegt' => [
             ['word' => 'ljótur', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -42,6 +44,8 @@ return [
             ['word' => 'karlfauskur', 'riskType' => 'fisico', 'severity' => 'high'],
             ['word' => 'gamalmenni', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'sóði', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'fitubelgur', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'gribba', 'riskType' => 'fisico', 'severity' => 'high'],
         ],
         'fotlun' => [
             ['word' => 'aumingi', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -80,6 +84,7 @@ return [
             ['word' => 'skítur', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'andskotinn', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'helvíti', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'fjandinn', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
         'hlaeg' => [
             ['word' => 'aula', 'riskType' => 'burlesco', 'severity' => 'low'],
