@@ -167,8 +167,17 @@ Si la base se creó antes de que existieran las migraciones (con el viejo
 marca la migración inicial como aplicada sin ejecutarla (esas tablas ya existen) y
 aplica las demás.
 
-Un cambio de esquema nuevo va en un archivo nuevo con el número siguiente
-(`005_descripcion.sql`). Una migración que ya corrió en alguna base no se edita.
+**Catálogo de países y monedas.** Lo carga la migración `005` junto con el resto del
+esquema (198 países y 146 monedas), así que una base nueva queda lista para dar de
+alta clientes sin ningún paso aparte. Una base migrada antes de la `005`, que quedó
+sin catálogo, lo recibe en la siguiente corrida de `migrar.php`; y aplicarla sobre
+una base que ya lo tiene no pisa nada. Las `tasa_a_usd` son tasas estáticas de
+ejemplo, no un feed en vivo: antes de confiar en los reportes consolidados en USD,
+reemplazalas por las reales (`UPDATE monedas SET tasa_a_usd = ... WHERE codigo = '...'`).
+
+Un cambio de esquema nuevo —o un país o una moneda nuevos— va en un archivo nuevo
+con el número siguiente (`NNN_descripcion.sql`). Una migración que ya corrió en
+alguna base no se edita.
 
 ### Otros puntos
 
@@ -226,7 +235,7 @@ src/
                       SegmentacionRepository (top país/ciudad/idioma/género/edad,
                       LTV por cohorte) para el reporting, que no es CRUD y crecía
                       por separado. AuditoriaRepository también concentra el
-                      `auditarComoUsuarioActual()` que usan todos los controllers
+                      `auditar()` que usan todos los controllers
                       en vez de repetirlo cada uno.
   Database.php         conexión PDO a PostgreSQL (config por env vars, misma zona
                         horaria para PHP y Postgres) y transaccion(), anidable
@@ -276,10 +285,11 @@ src/
                         la redirección (?creada=ID, ?creado=ID...), testeado
   Router.php, View.php, helpers.php
 database/
-  migraciones/          el esquema, en cambios numerados (001 = esquema inicial)
+  migraciones/          el esquema y el catálogo de ~200 países y sus monedas
+                        (ISO 4217), en cambios numerados (001 = esquema inicial,
+                        005 = catálogo)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   seed.php               SOLO desarrollo: rearma la base y carga datos de ejemplo
-  paises_monedas.php      catalogo de ~200 paises y sus monedas (ISO 4217)
 views/                  plantillas PHP (una carpeta por sección), con partials
                         compartidos: _filtro_fechas.php (el período y el rango
                         Desde/Hasta de las cinco pantallas con filtro),
@@ -297,8 +307,9 @@ tests/
                         de HTTPS)
   Integration/           contra la base real, casi todos en una transaccion que
                         se deshace (un archivo por repositorio, migraciones,
-                        auditoría, zona horaria, y que los datos de ejemplo
-                        del seed cumplan las reglas de la app)
+                        auditoría, zona horaria, que una base solo migrada
+                        traiga el catálogo de países y monedas, y que los datos
+                        de ejemplo del seed cumplan las reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
@@ -307,7 +318,9 @@ phpstan.neon            configuracion del analisis estatico
 
 - `monedas` / `paises`: catálogo de referencia (código ISO, nombre, símbolo y
   `tasa_a_usd` — cuánto vale 1 unidad de esa moneda en USD, para consolidar
-  reportes). Son tasas estáticas de ejemplo, no un feed en vivo.
+  reportes). Son tasas estáticas de ejemplo, no un feed en vivo. Los carga la
+  migración `005` (198 países y 146 monedas), no el seed: una base de producción
+  los tiene apenas se migra (ver "Esquema de la base").
 - `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
   perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
   segmentación del dashboard y su moneda de facturación.

@@ -11,6 +11,7 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`marketing/`](marketing/) | Frases y textos de marketing para un proyecto de genealogía: lemas, eslóganes, redes sociales y correo. |
 | [`phone-directory/`](phone-directory/) | Parser de directorios telefónicos históricos (6 idiomas) para registros genealógicos. |
 | [`sistema-nuevo/`](sistema-nuevo/) | Backoffice para revisar la actividad de un usuario contra el promedio de su universo comparable (PHP + Java + JS). |
+| [`cobros-ingresos-funnels/`](cobros-ingresos-funnels/) | Panel web de cobros, ingresos y funnel de conversión: boletas, pagos, clientes, cohortes y auditoría (PHP + PostgreSQL). |
 | [`vps-setup/`](vps-setup/) | Scripts para configurar desde cero un VPS Ubuntu (Nginx, PHP, Python, PostgreSQL, SSL). |
 | [`landing-page/`](landing-page/) | Landing page estática que despliegan los scripts de `vps-setup/`. |
 
@@ -55,7 +56,7 @@ proyecto.
 - `phone-directory-ports`: tests de los ports de `phone-directory/` a Python y Java.
 - `web-animations`: prueba de humo de las animaciones.
 
-`sistema-nuevo/` y `vps-setup/` tienen sus propios workflows (`pruebas-backoffice.yml` y `vps-setup.yml`).
+`sistema-nuevo/`, `vps-setup/` y `cobros-ingresos-funnels/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml` y `pruebas-cobros-ingresos-funnels.yml`).
 
 ## Licencia
 

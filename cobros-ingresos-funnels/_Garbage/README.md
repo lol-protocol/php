@@ -59,5 +59,6 @@ las escribe), sin romper nada: `AuditoriaRepository::listado()` sigue
 haciendo `LEFT JOIN usuarios_sistema` para las filas históricas.
 
 Si en algún momento se decide que esto no vuelve nunca, lo que sigue es una
-migración `004_...sql` que dropee ambas tablas (y la columna o el `LEFT JOIN`
-en `AuditoriaRepository` si `usuarios_sistema` desaparece del todo).
+migración nueva (con el siguiente número libre de `database/migraciones/`) que
+dropee ambas tablas (y la columna o el `LEFT JOIN` en `AuditoriaRepository` si
+`usuarios_sistema` desaparece del todo).
