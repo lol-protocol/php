@@ -491,13 +491,17 @@ sudo ufw allow 443/tcp     # HTTPS
 sudo ufw status
 ```
 
-### Fail2Ban (futuro)
+### Fail2Ban
+Lo instala y configura `07_A-install-fail2ban-autoupdates.sh` (jail de SSH: 1 h de baneo tras 5 fallos en 10 min).
 ```bash
-sudo apt-get install fail2ban
+sudo fail2ban-client status sshd                 # ver IPs baneadas
+sudo fail2ban-client set sshd unbanip <IP>       # desbanear una IP
 ```
 Protege contra intentos de acceso no autorizados.
 
 ### SSH Key-Based Auth
+Para autorizar tu llave **y** desactivar la contraseña de forma segura (con validación y `--revert`) usa
+`07_C-harden-ssh.sh`. A mano:
 ```bash
 # Generar llave (en cliente)
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/initech

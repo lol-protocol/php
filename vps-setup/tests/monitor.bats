@@ -147,3 +147,14 @@ alerts() { wc -l < "$CALLS" | tr -d ' '; }
     ! grep -qP '[\x00-\x08\x0b-\x1f]' "$CALLS"
     grep -q 'a b.com' "$CALLS"
 }
+
+@test "unidades fallidas: se pide --plain (sin el glifo) y se reporta el nombre real" {
+    make_stub systemctl '
+case "$1" in
+    is-active) exit 0;;
+    list-unit-files) echo "$2 enabled";;
+    --failed) [[ "$*" == *--plain* ]] && echo "foo.service loaded failed failed Foo" || echo "● foo.service loaded failed failed Foo";;
+esac'
+    mon --dry-run
+    [[ "$output" == *"Unidades systemd fallidas: foo.service"* ]]
+}

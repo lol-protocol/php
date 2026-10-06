@@ -92,7 +92,7 @@ check_services() {
         systemctl is-active --quiet "$s" || problem "svc:$s" "Servicio $s NO esta activo"
     done
     local failed
-    failed=$(systemctl --failed --no-legend 2>/dev/null | awk '{print $1}' | tr '\n' ' ')
+    failed=$(systemctl --failed --no-legend --plain 2>/dev/null | awk '{print $1}' | tr '\n' ' ')
     [ -n "${failed// /}" ] && problem "failed-units" "Unidades systemd fallidas: $failed"
 }
 
