@@ -397,7 +397,10 @@ y `filtros_guardados`, que no dependen de `usuarios`/`acciones`) y
 `notas_acciones`, con `CHECK`/`FOREIGN KEY` según el tipo) son el DDL real que
 corre cada vez que se generan los datos —
 `datos/generador/cargar-postgres*.php`, orquestado desde `cargar-postgres.php`, dropea
-y recrea las tablas y carga todo dentro de una transacción. `preparar-postgres.sh`
+y recrea las tablas y carga todo dentro de una transacción. Los siete `cargar_*` arman
+sus filas ("columna => valor", los nombres de las columnas junto a lo que reciben) y las
+insertan con `insertar_filas()` (`generador/insertar-filas.php`), en vez de repetir cada
+uno el `prepare`/bucle/`execute`. `preparar-postgres.sh`
 dejá el servicio arriba y crea el rol/base si hacen falta (idempotente, seguro
 correrlo de nuevo). Variables de entorno (con default si no están seteadas):
 `BACKOFFICE_BD_HOST` (`localhost`), `BACKOFFICE_BD_PUERTO` (`5432`),
@@ -535,7 +538,11 @@ php pruebas/ejecutar-integracion.php
   de la BD, no del archivo). Además, `esquema-datos-ejemplo.sql` se carga (junto
   con `esquema.sql` y `esquema-nucleo.sql`) en un schema descartable dentro de una
   transacción que siempre se revierte, para que los ejemplos no se rompan sin avisar.
-  Y la siembra: `sembrar-si-falta.php` corrido contra la base real, con una nota, un
+  Los `cargar_*` de la siembra (`cargar-postgres-test.php`: cada tabla contra lo que tiene
+  que quedar, con datos mínimos en un schema descartable, incluidos los valores por defecto
+  de un país sin moneda ni huso y lo que queda `NULL`) e `insertar_filas()`
+  (`insertar-filas-test.php`: una fila por elemento, `ON CONFLICT`, y que rechace nombres
+  que no parezcan del esquema). Y la siembra: `sembrar-si-falta.php` corrido contra la base real, con una nota, un
   filtro guardado y un umbral de alertas puestos encima, no los toca (la prueba que
   habría fallado mientras `ejecutar.sh` sembraba en cada arranque); `motivo_para_sembrar()`
   distingue, en un schema descartable, base vacía, sin acciones, sembrada y esquema viejo.
