@@ -1,5 +1,4 @@
-import { state } from "./nucleo.js";
-import { postJson, showLogin, showApp, boot } from "./sesion.js";
+import { postJson, showLogin, showApp, boot, cerrarSesion } from "./sesion.js";
 import { renderUserOptions } from "./selectores.js";
 import { escucharCambios } from "./controles-filtro.js";
 import { loadAppData, loadTimelineFromStart, selectUser, goToPage, reloadAlerts } from "./aplicacion.js";
@@ -31,17 +30,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
   }
 });
 
-document.getElementById("logout-button").addEventListener("click", async () => {
-  try {
-    await postJson("/api/logout");
-  } catch (err) {
-    console.error("Error cerrando sesión:", err);
-  } finally {
-    state.selectedUserId = null;
-    state.csrfToken = null;
-    showLogin();
-  }
-});
+document.getElementById("logout-button").addEventListener("click", () => cerrarSesion());
 
 document.getElementById("user-search").addEventListener("input", (e) => renderUserOptions(e.target.value, loadTimelineFromStart));
 document.getElementById("user-select").addEventListener("change", (e) => selectUser(e.target.value));

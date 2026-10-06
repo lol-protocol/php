@@ -221,7 +221,10 @@ prototipo, no para producción.
   ("Continuar activo" / "Cerrar sesión ahora") un minuto antes. Con el aviso
   abierto, mover el mouse, scrollear o tocar la pantalla no lo cierran, porque así
   se llega a los botones: antes desaparecía con el primer movimiento y "Cerrar
-  sesión ahora" no se podía pulsar con el mouse.
+  sesión ahora" no se podía pulsar con el mouse. Quien elige "Cerrar sesión ahora" ve
+  el login como con el botón "Cerrar sesión" (sin mensaje, los dos usan
+  `cerrarSesion()` de `sesion.js`); solo el cierre automático dice que fue por
+  inactividad.
 - **Rate limiting contra fuerza bruta**: `AlmacenIntentosLogin.php` cuenta
   intentos fallidos por IP (no por usuario: hay uno solo) en la tabla
   `intentos_login`. Al 5to fallo consecutivo, esa IP queda bloqueada 15 minutos
@@ -576,8 +579,9 @@ php pruebas/ejecutar-integracion.php
   `panel-inactividad.e2e.cjs`, con el reloj falso de Playwright (`page.clock`): el
   aviso de sesión por expirar a los 29 minutos, que los dos botones se puedan pulsar
   con el mouse y con una pantalla táctil, el cierre solo a los 30 (sin que mover el
-  mouse lo posponga), Escape y clic afuera, un solo modal a la vez y el idioma del
-  aviso; en `panel-estilos.e2e.cjs`, sin comparar píxeles: el campo del login, el de la
+  mouse lo posponga ni que se repita si el servidor tarda en responder), el mensaje
+  solo cuando fue por inactividad, Escape y clic afuera, un solo modal a la vez y el
+  idioma del aviso; en `panel-estilos.e2e.cjs`, sin comparar píxeles: el campo del login, el de la
   barra y el del modal tienen el mismo aspecto y el mismo brillo al enfocarlos, y la
   tarjeta del login y el cuadro de un modal comparten borde, fondo y resplandor; más, en
   `panel-nuevas-features.e2e.cjs`:
