@@ -1,0 +1,6 @@
+<?xml version="1.0"?><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="s_libreta"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter></defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
+      <path d="M 20 24 L 24 22 L 44 22 L 40 24 L 40 46 L 24 48 L 20 46 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="#991B1B" stroke-width="1.5" filter="url(#s_libreta)"/>
+      <line x1="24" y1="28" x2="40" y2="28" stroke="#991B1B" stroke-width="0.8" opacity="0.5"/>
+    </svg>

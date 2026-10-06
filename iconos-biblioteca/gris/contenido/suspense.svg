@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="s_suspense"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter>
+  </defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
+
+  <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
+        fill="#4A4A4A" stroke="#1F2937" stroke-width="1.5" filter="url(#s_suspense)"/>
+  <path d="M 28 24 L 36 24 L 36 36 L 28 36 Z" fill="none" stroke="#EF4444" stroke-width="2"/>
+  <circle cx="32" cy="30" r="1.5" fill="#EF4444"/>
+  </svg>

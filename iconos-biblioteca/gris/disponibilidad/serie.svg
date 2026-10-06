@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="s_serie"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter>
+  </defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
+  
+    <path d="M 16 22 L 20 20 L 38 20 L 34 22 L 34 44 L 20 46 L 16 44 Z"
+          fill="#7A7A7A" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_serie)"/>
+    <path d="M 30 20 L 34 18 L 48 18 L 44 20 L 44 42 L 34 44 Z"
+          fill="#8B8B8B" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_serie)" opacity="0.8"/>
+    <text x="26" y="35" font-size="6" fill="#FFF" font-weight="bold">Pt1</text>
+    <text x="40" y="33" font-size="6" fill="#FFF" font-weight="bold">Pt2</text>
+    
+</svg>

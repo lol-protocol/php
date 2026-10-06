@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="grad_conectar_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_conectar_2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_conectar_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_conectar">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Sombra -->
+  <ellipse cx="32" cy="55" rx="14" ry="3" fill="#000" opacity="0.15"/>
+
+  <!-- Círculo izquierdo (persona 1) -->
+  <circle cx="20" cy="32" r="8" fill="url(#grad_conectar_1)" stroke="#1E40AF" stroke-width="1.5" filter="url(#shadow_conectar)"/>
+  <circle cx="22" cy="30" r="6" fill="#60A5FA" opacity="0.25"/>
+
+  <!-- Círculo derecho (persona 2) -->
+  <circle cx="44" cy="32" r="8" fill="url(#grad_conectar_2)" stroke="#BE185D" stroke-width="1.5" filter="url(#shadow_conectar)"/>
+  <circle cx="46" cy="30" r="6" fill="#F472B6" opacity="0.25"/>
+
+  <!-- Línea de conexión con flecha -->
+  <line x1="28" y1="32" x2="36" y2="32" stroke="#10B981" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Punta de flecha -->
+  <polygon points="38,32 35,30 35,34" fill="#10B981"/>
+
+  <!-- Punto central de conexión -->
+  <circle cx="32" cy="32" r="2.5" fill="#10B981" filter="url(#shadow_conectar)"/>
+  </svg>

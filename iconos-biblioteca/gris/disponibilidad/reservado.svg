@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="grad_reservado_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B8B8B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7A7A7A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_reservado_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_reservado_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_reservado_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_reservado">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Sombra -->
+  <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
+
+  <!-- Círculo de estado (naranja) 2.5D -->
+  <circle cx="32" cy="32" r="13" fill="#888888" stroke="#92400E" stroke-width="1.5" filter="url(#shadow_reservado)"/>
+
+  <!-- Costado -->
+  <path d="M 45 32 A 13 13 0 0 0 44 38"
+        fill="none" stroke="#92400E" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Brillo -->
+  <ellipse cx="27" cy="26" rx="5" ry="4" fill="#9A9A9A" opacity="0.3"/>
+
+  <!-- Reloj (símbolo de espera) -->
+  <circle cx="32" cy="32" r="6" fill="none" stroke="#FFF" stroke-width="1.5"/>
+  <line x1="32" y1="28" x2="32" y2="32" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="32" y1="32" x2="35" y2="32" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>

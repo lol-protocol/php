@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="s_conyuge"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter>
+    <linearGradient id="g_conyuge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
+
+  <circle cx="26" cy="18" r="6.5" fill="#8B8B8B" stroke="#4A4A4A" stroke-width="1.5"/>
+  <circle cx="38" cy="18" r="6.5" fill="#8B8B8B" stroke="#4A4A4A" stroke-width="1.5"/>
+  <path d="M 18 32 L 23 30 L 41 30 L 46 32 L 45 44 L 19 44 Z"
+        fill="#B0B0B0" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_conyuge)"/>
+  <line x1="26" y1="24" x2="38" y2="24" stroke="#8B8B8B" stroke-width="1.5" opacity="0.5"/>
+  </svg>

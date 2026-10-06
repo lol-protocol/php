@@ -1,0 +1,7 @@
+<?xml version="1.0"?><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="s_abuelo_paterno"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter></defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
+      <circle cx="32" cy="14" r="7" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="#6B7280" stroke-width="1.5"/>
+      <path d="M 20 28 L 26 26 L 42 26 L 48 28 L 46 44 L 24 44 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="#1E40AF" stroke-width="1.5" filter="url(#s_abuelo_paterno)"/>
+      <line x1="32" y1="21" x2="32" y2="26" stroke="#6B7280" stroke-width="0.8" opacity="0.4"/>
+    </svg>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="grad_favorito_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B8B8B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7A7A7A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_favorito_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_favorito_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_favorito_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_favorito">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Sombra -->
+  <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
+
+  <!-- Corazón 2.5D -->
+  <path d="M 32 18 C 32 18 20 24 20 32 C 20 40 32 48 32 48 C 32 48 44 40 44 32 C 44 24 32 18 32 18 Z"
+        fill="url(#grad_favorito_3)" stroke="#4A4A4A" stroke-width="1.5" filter="url(#shadow_favorito)"/>
+
+  <!-- Costado derecho del corazón (profundidad) -->
+  <path d="M 38 28 Q 44 24 44 32 Q 44 38 32 48"
+        fill="none" stroke="#4A4A4A" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Brillo en el corazón -->
+  <ellipse cx="27" cy="26" rx="3" ry="2.5" fill="#B0B0B0" opacity="0.3"/>
+  </svg>

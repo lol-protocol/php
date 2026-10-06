@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="grad_historial_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_historial_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_historial_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_historial_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_historial">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Sombra -->
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
+
+  <!-- Reloj/historial 2.5D -->
+  <circle cx="32" cy="30" r="12" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="2" stroke="#4F46E5" stroke-width="1.5" filter="url(#shadow_historial)"/>
+
+  <!-- Costado del círculo -->
+  <path d="M 44 30 A 12 12 0 0 0 43 36" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Brillo -->
+  <ellipse cx="26" cy="24" rx="5" ry="4" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.3"/>
+
+  <!-- Manecillas del reloj -->
+  <line x1="32" y1="22" x2="32" y2="30" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="32" y1="30" x2="38" y2="30" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Números (12 y 3) -->
+  <circle cx="32" cy="20" r="0.8" fill="none" stroke="#4B5563" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="44" cy="30" r="0.8" fill="none" stroke="#4B5563" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Flecha de retroceso (tiempo) -->
+  <path d="M 22 24 Q 18 28 20 36"
+        stroke="#818CF8" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <polygon points="20,36 18,32 22,33" fill="#818CF8"/>
+  </svg>

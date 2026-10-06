@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="grad_libro_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_libro_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_libro_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_libro_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_libro">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Sombra -->
+  <ellipse cx="32" cy="55" rx="13" ry="4" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
+
+  <!-- Lomo del libro (profundidad) -->
+  <rect x="30" y="16" width="4" height="36" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.6" rx="1"/>
+
+  <!-- Tapa delantera izquierda 2.5D -->
+  <path d="M 14 16 L 18 14 L 30 14 L 26 16 L 26 50 L 18 52 L 14 50 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="2" stroke="#654321" stroke-width="1.5" filter="url(#shadow_libro)"/>
+
+  <!-- Costado de la tapa -->
+  <path d="M 30 14 L 34 12 L 34 48 L 30 50 Z" fill="none" stroke="#4B5563" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Tapa derecha 2.5D -->
+  <path d="M 30 14 L 34 12 L 46 12 L 42 14 L 42 50 L 34 52 L 30 50 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="2" stroke="#654321" stroke-width="1.5" filter="url(#shadow_libro)"/>
+
+  <!-- Decoración (líneas) -->
+  <line x1="18" y1="22" x2="26" y2="22" stroke="#A0522D" stroke-width="0.8" opacity="0.5"/>
+  <line x1="18" y1="30" x2="26" y2="30" stroke="#A0522D" stroke-width="0.8" opacity="0.5"/>
+  <line x1="18" y1="38" x2="26" y2="38" stroke="#A0522D" stroke-width="0.8" opacity="0.5"/>
+  </svg>

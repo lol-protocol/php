@@ -1,0 +1,6 @@
+<?xml version="1.0"?><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="s_suegro"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter></defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
+      <circle cx="32" cy="14" r="6.5" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="#1E40AF" stroke-width="1.5"/>
+      <path d="M 21 28 L 26 26 L 42 26 L 47 28 L 45 44 L 23 44 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="#1E40AF" stroke-width="1.5" filter="url(#s_suegro)"/>
+    </svg>

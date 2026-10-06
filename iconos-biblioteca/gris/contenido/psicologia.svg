@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="s_psicologia"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter>
+  </defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
+
+  <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
+        fill="#A8A8A8" stroke="#4B5563" stroke-width="1.5" filter="url(#s_psicologia)"/>
+  <!-- Cabeza/mente -->
+  <path d="M 26 26 Q 26 22 30 22 Q 34 22 34 26 L 34 34 Q 34 36 32 36 L 28 36 Q 26 36 26 34 Z"
+        fill="none" stroke="#4B5563" stroke-width="1.5"/>
+  <line x1="28" y1="28" x2="32" y2="28" stroke="#4B5563" stroke-width="1" opacity="0.6"/>
+  </svg>

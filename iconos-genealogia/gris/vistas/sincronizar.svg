@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="s_sincronizar"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter>
+  </defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
+  
+    <circle cx="32" cy="32" r="12" fill="none" stroke="#8B8B8B" stroke-width="2"/>
+    <path d="M 22 32 Q 24 20 32 20 Q 40 20 42 32"
+          fill="none" stroke="#8B8B8B" stroke-width="2" stroke-linecap="round"/>
+    <polygon points="42,32 44,30 44,34" fill="#8B8B8B"/>
+    <path d="M 42 32 Q 40 44 32 44 Q 24 44 22 32"
+          fill="none" stroke="#8B8B8B" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    
+</svg>

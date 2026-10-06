@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow_ordenar">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="32" cy="55" rx="12" ry="3" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
+  <!-- Líneas de ordenamiento -->
+  <line x1="18" y1="22" x2="46" y2="22" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/>
+  <line x1="20" y1="32" x2="44" y2="32" stroke="#818CF8" stroke-width="2" stroke-linecap="round"/>
+  <line x1="22" y1="42" x2="42" y2="42" stroke="#818CF8" stroke-width="2" stroke-linecap="round"/>
+  <!-- Flechas de orden -->
+  <polygon points="48,20 50,22 46,22" fill="#10B981"/>
+  <polygon points="48,44 50,42 46,42" fill="#10B981"/>
+  </svg>
