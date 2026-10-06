@@ -1,5 +1,5 @@
 import { state } from "./nucleo.js";
-import { postJson, showLogin } from "./sesion.js";
+import { cerrarSesion } from "./sesion.js";
 import { t } from "./idioma.js";
 import { abrirModal } from "./modal.js";
 
@@ -41,7 +41,7 @@ function verificarInactividad() {
   const msInactivos = Date.now() - ultimaActividad;
 
   if (msInactivos >= TIMEOUT_MS) {
-    logoutAutomatico();
+    cerrarPorInactividad();
   } else if (msInactivos >= ADVERTENCIA_MS && !advertencia) {
     mostrarAdvertencia();
   }
@@ -63,7 +63,8 @@ async function mostrarAdvertencia() {
   if (advertencia !== esta) return; // se cerró desde acá (se detuvo el monitor): no hay nada que decidir
   advertencia = null;
   if (eleccion === SALIR) {
-    logoutAutomatico();
+    detenerMonitorInactividad();
+    cerrarSesion(); // la persona la cerró a propósito: igual que con el botón "Cerrar sesión", sin explicar nada
   } else {
     ultimaActividad = Date.now();
   }
@@ -75,15 +76,7 @@ function cerrarAdvertencia() {
   abierta?.descartar();
 }
 
-async function logoutAutomatico() {
-  detenerMonitorInactividad();
-  try {
-    await postJson("/api/logout");
-  } catch (err) {
-    console.error("Error en logout automático:", err);
-  } finally {
-    state.selectedUserId = null;
-    state.csrfToken = null;
-    showLogin(t("inactividad_sesion_cerrada"));
-  }
+function cerrarPorInactividad() {
+  detenerMonitorInactividad(); // antes del pedido: si tarda, el próximo chequeo no tiene que volver a cerrar
+  return cerrarSesion(t("inactividad_sesion_cerrada"));
 }

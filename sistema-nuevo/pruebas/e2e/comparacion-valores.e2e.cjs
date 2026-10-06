@@ -257,6 +257,12 @@ async function verificarTooltip(badge, mediana, etiqueta) {
       const q = new URLSearchParams({ user_id: usuario, scope: c.scope, age_min: String(c.edadMin), age_max: String(c.edadMax), gender: c.genero });
       const datos = await get(`/api/timeline?${q}`);
       assert.ok(datos.timeline.length > 0, `${etiqueta}: el usuario tiene acciones`);
+      const { scope, age_min, age_max, gender, type } = datos.filters;
+      assert.deepEqual(
+        { scope, age_min, age_max, gender, type },
+        { scope: c.scope, age_min: c.edadMin, age_max: c.edadMax, gender: c.genero, type: "all" },
+        `${etiqueta}: los filtros que /api/timeline dice haber aplicado`
+      );
       const porTipo = new Map();
       for (const item of datos.timeline) {
         if (!porTipo.has(item.type)) {

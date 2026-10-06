@@ -81,6 +81,7 @@ sistema-nuevo/
 │       ├── AlmacenKpis.php            Métricas agregadas del dashboard inicial
 │       ├── AlmacenNotas.php           Notas por acción (guardar es upsert, texto vacío borra)
 │       ├── ClienteEstadisticas.php    Llama al servicio de estadísticas por HTTP
+│       ├── Universo.php               Contra quién se compara: países, edad, género y el usuario excluido
 │       ├── autenticacion.php          Sesión + CSRF (login/logout, un solo usuario)
 │       ├── AlmacenIntentosLogin.php   Rate limiting de /api/login por IP
 │       ├── AlmacenAdministradores.php Lee la tabla administradores (login en vivo)
@@ -131,7 +132,7 @@ sistema-nuevo/
 lee el log de acciones del usuario elegido desde PostgreSQL y, por cada tipo de acción
 distinto que aparece en la página actual del timeline, le pregunta una vez al
 microservicio Java el promedio de ese tipo de acción para el universo de comparación
-actual (país/grupo, edad, género — excluyendo siempre al propio usuario). Con eso arma
+actual (el objeto `Universo`: país/grupo, edad, género — excluyendo siempre al propio usuario). Con eso arma
 el timeline enriquecido con el delta % de cada acción contra ese promedio.
 
 ## Interfaz: fondo negro, colores neón por tipo de dato
@@ -221,7 +222,10 @@ prototipo, no para producción.
   ("Continuar activo" / "Cerrar sesión ahora") un minuto antes. Con el aviso
   abierto, mover el mouse, scrollear o tocar la pantalla no lo cierran, porque así
   se llega a los botones: antes desaparecía con el primer movimiento y "Cerrar
-  sesión ahora" no se podía pulsar con el mouse.
+  sesión ahora" no se podía pulsar con el mouse. Quien elige "Cerrar sesión ahora" ve
+  el login como con el botón "Cerrar sesión" (sin mensaje, los dos usan
+  `cerrarSesion()` de `sesion.js`); solo el cierre automático dice que fue por
+  inactividad.
 - **Rate limiting contra fuerza bruta**: `AlmacenIntentosLogin.php` cuenta
   intentos fallidos por IP (no por usuario: hay uno solo) en la tabla
   `intentos_login`. Al 5to fallo consecutivo, esa IP queda bloqueada 15 minutos
@@ -393,7 +397,10 @@ y `filtros_guardados`, que no dependen de `usuarios`/`acciones`) y
 `notas_acciones`, con `CHECK`/`FOREIGN KEY` según el tipo) son el DDL real que
 corre cada vez que se generan los datos —
 `datos/generador/cargar-postgres*.php`, orquestado desde `cargar-postgres.php`, dropea
-y recrea las tablas y carga todo dentro de una transacción. `preparar-postgres.sh`
+y recrea las tablas y carga todo dentro de una transacción. Los siete `cargar_*` arman
+sus filas ("columna => valor", los nombres de las columnas junto a lo que reciben) y las
+insertan con `insertar_filas()` (`generador/insertar-filas.php`), en vez de repetir cada
+uno el `prepare`/bucle/`execute`. `preparar-postgres.sh`
 dejá el servicio arriba y crea el rol/base si hacen falta (idempotente, seguro
 correrlo de nuevo). Variables de entorno (con default si no están seteadas):
 `BACKOFFICE_BD_HOST` (`localhost`), `BACKOFFICE_BD_PUERTO` (`5432`),
@@ -498,8 +505,10 @@ php pruebas/ejecutar-integracion.php
   da `null`) y `api_timeline_con_cohortes()` contra un servicio de estadísticas
   falso (`estadisticas-falsas-router.php`) con números conocidos: deltas de
   duración y monto, universo vacío, un tipo que falla, y qué universo le llega al
-  servicio (países, edad, género y la exclusión del propio usuario). Y
-  `api_error()`: todo error lleva su texto y su `codigo`, y ningún endpoint arma el
+  servicio (países, edad, género y la exclusión del propio usuario). Y `Universo`
+  (`universo-test.php`: lo que le pide al servicio, `aQuery()`, y cómo sale de la query de
+  `/api/timeline`, `api_universo_desde_query()`: los valores por defecto, el grupo de países,
+  un grupo que ya no existe). Y `api_error()`: todo error lleva su texto y su `codigo`, y ningún endpoint arma el
   suyo a mano (se recorre el código de `servidor-php/` buscándolos). Y los helpers de
   los endpoints (`api_responder`, `api_cuerpo_json`, `api_exigir_metodo`,
   `api_exigir_csrf`): su comportamiento, y el mismo recorrido para que la
@@ -514,12 +523,14 @@ php pruebas/ejecutar-integracion.php
   `AlmacenAcciones` y `AlmacenDatos` (empate en `marca_temporal`/`nombre` se
   desempata por `id`, para que la paginación no repita/salte filas),
   `AlmacenAlertas` (mismas invariantes que `AlmacenKpis`, tope de 15 en el top,
-  empate en `mismatch_count` también desempatado por `id`; y sus reglas con datos
-  controlados, `alertas-reglas-test.php`: tres usuarios nuevos con huecos de 0.4 h,
-  2.25 h exactas y 3.9 h dentro de una transacción que se revierte, para fijar la
-  ventana de 0.5 h a 4 h y el borde estricto, que el KPI cuente lo mismo que las
-  alertas con cada tipo habilitado y cada umbral, y que la regla de IP en PHP y la
-  de SQL coincidan),
+  empate en `event_count` también desempatado por `id`, y que las dos alertas
+  tengan el mismo sobre y las mismas columnas comunes en cada fila; y sus reglas con
+  datos controlados, `alertas-reglas-test.php`: tres usuarios nuevos con huecos de
+  0.4 h, 2.25 h exactas y 3.9 h dentro de una transacción que se revierte, para fijar
+  la ventana de 0.5 h a 4 h y el borde estricto, que cada cambio de país diga de
+  dónde venía el usuario y a dónde fue, que el KPI cuente lo mismo que las alertas
+  con cada tipo habilitado y cada umbral, y que la regla de IP en PHP y la de SQL
+  coincidan),
   `ClienteEstadisticas` (`statsVarios()`, su único método de pedido: servicio caído
   devuelve `null` sin lanzar excepción y sin tardar segundos; pide varios tipos en
   paralelo, y con el servicio colgado el lote entero paga un solo timeout, no uno por
@@ -529,7 +540,11 @@ php pruebas/ejecutar-integracion.php
   de la BD, no del archivo). Además, `esquema-datos-ejemplo.sql` se carga (junto
   con `esquema.sql` y `esquema-nucleo.sql`) en un schema descartable dentro de una
   transacción que siempre se revierte, para que los ejemplos no se rompan sin avisar.
-  Y la siembra: `sembrar-si-falta.php` corrido contra la base real, con una nota, un
+  Los `cargar_*` de la siembra (`cargar-postgres-test.php`: cada tabla contra lo que tiene
+  que quedar, con datos mínimos en un schema descartable, incluidos los valores por defecto
+  de un país sin moneda ni huso y lo que queda `NULL`) e `insertar_filas()`
+  (`insertar-filas-test.php`: una fila por elemento, `ON CONFLICT`, y que rechace nombres
+  que no parezcan del esquema). Y la siembra: `sembrar-si-falta.php` corrido contra la base real, con una nota, un
   filtro guardado y un umbral de alertas puestos encima, no los toca (la prueba que
   habría fallado mientras `ejecutar.sh` sembraba en cada arranque); `motivo_para_sembrar()`
   distingue, en un schema descartable, base vacía, sin acciones, sembrada y esquema viejo.
@@ -550,7 +565,9 @@ php pruebas/ejecutar-integracion.php
   (interpolación de `{variables}`, cambio de diccionario, clave inexistente no
   rompe la interfaz), `alertas.js` (`renderAlerts`: un tipo habilitado sin
   resultados no dibuja una sección vacía, sin ninguna alerta real el panel
-  entero queda oculto), `controles-filtro.js` (leer, escribir y escuchar los cinco
+  entero queda oculto, y los dos tipos se dibujan igual -- cada uno con su título y
+  su país, el declarado o el de donde venía -- y el clic lleva al usuario de esa
+  fila), `controles-filtro.js` (leer, escribir y escuchar los cinco
   filtros por nombre: los desplegables avisan una sola vez y al instante, las edades
   esperan a que se deje de tipear; escribir no dispara ningún evento; cada id existe
   en `topbar.php`), `tarjeta-usuario.js` (`mostrarAviso`, el aviso de arriba del
@@ -576,8 +593,9 @@ php pruebas/ejecutar-integracion.php
   `panel-inactividad.e2e.cjs`, con el reloj falso de Playwright (`page.clock`): el
   aviso de sesión por expirar a los 29 minutos, que los dos botones se puedan pulsar
   con el mouse y con una pantalla táctil, el cierre solo a los 30 (sin que mover el
-  mouse lo posponga), Escape y clic afuera, un solo modal a la vez y el idioma del
-  aviso; en `panel-estilos.e2e.cjs`, sin comparar píxeles: el campo del login, el de la
+  mouse lo posponga ni que se repita si el servidor tarda en responder), el mensaje
+  solo cuando fue por inactividad, Escape y clic afuera, un solo modal a la vez y el
+  idioma del aviso; en `panel-estilos.e2e.cjs`, sin comparar píxeles: el campo del login, el de la
   barra y el del modal tienen el mismo aspecto y el mismo brillo al enfocarlos, y la
   tarjeta del login y el cuadro de un modal comparten borde, fondo y resplandor; más, en
   `panel-nuevas-features.e2e.cjs`:
@@ -595,7 +613,9 @@ php pruebas/ejecutar-integracion.php
   exige que el archivo tenga un ejemplo de cada ruta de la tabla de rutas
   (`rutas.php`, que lee con `pruebas/e2e/listar-rutas.php`); con esa misma tabla
   pide cada ruta sin sesión y exige el 401 en todas menos en las que manejan la
-  sesión por su cuenta. Y
+  sesión por su cuenta, y comprueba que `/api/alerts` entregue cada tipo bajo el
+  mismo id que `/api/alerts-config`, con el mismo sobre y las mismas columnas
+  comunes. Y
   `comparacion-valores.e2e.cjs` contrasta contra PostgreSQL, que es el oráculo
   (`percentile_cont` usa la misma definición de percentil pero otra implementación,
   y lee las tablas en vez del CSV de Java), cada eslabón de la comparación: el
@@ -739,9 +759,16 @@ interfaz traduce (ver "Idioma de la interfaz"): `no_autenticado` (401),
 - `GET /api/users?page=1&per_page=20&search=` — `{items, pagination}`. **Requiere sesión.**
 - `GET /api/groups` — presets de país + catálogo de países. **Requiere sesión.**
 - `GET /api/action-types` — `[{key, label}]`, catálogo de tipos de acción. **Requiere sesión.**
-- `GET /api/alerts` — `{ip_pais_mismatch?: {...}, cambios_pais_imposibles?: {...}}` (cada
-  clave presente solo si ese tipo está habilitado en la configuración), usuarios con
-  más anomalías de cada tipo. **Requiere sesión.**
+- `GET /api/alerts` — `{ip_pais?: {...}, cambio_pais?: {...}}`: las mismas claves que
+  `/api/alerts-config`, cada una presente solo si ese tipo está habilitado. Los dos tipos
+  tienen la misma forma, `{total_events, total_users_affected, top: [...]}`, y cada fila
+  del `top` (los usuarios con más eventos de ese tipo) empieza por lo común, `user_id`,
+  `user_name`, `event_count` y `last_seen`, y termina con lo propio: `country` (el país
+  que declaró el usuario) en `ip_pais`, y `previous_country`/`current_country` en
+  `cambio_pais`. Antes cada tipo nombraba distinto lo mismo (`total_mismatches` y
+  `total_changes`, `mismatch_count` y `cambio_count`, `country` y `pais_anterior`) y
+  las claves de arriba no coincidían con las de la configuración (`ip_pais_mismatch` y
+  `cambios_pais_imposibles`). **Requiere sesión.**
 - `GET|POST /api/alerts-config` — GET devuelve `{alertas: {ip_pais, cambio_pais},
   umbral}`; POST guarda cualquier subconjunto de esos campos (tipos fuera de la
   whitelist se ignoran). **Requiere sesión.**
@@ -772,7 +799,7 @@ interfaz traduce (ver "Idioma de la interfaz"): `no_autenticado` (401),
 - Si el servicio de estadísticas en Java no está corriendo, el backend PHP no rompe:
   cada acción queda sin comparación (`cohort: null`) y el panel lo indica con un aviso.
   Los tipos distintos de la página se piden todos juntos, en paralelo
-  (`ClienteEstadisticas::statsVarios()`, vía `curl_multi`) en vez de uno por uno:
+  (`ClienteEstadisticas::statsVarios($tipos, $universo)`, vía `curl_multi`) en vez de uno por uno:
   si el servicio está colgado (acepta la conexión pero no responde), toda la
   página paga un solo timeout (~3 s) sin importar cuántos tipos distintos tenga,
   en vez de uno por tipo. Su URL sale de `BACKOFFICE_JAVA_URL` o, en su defecto,

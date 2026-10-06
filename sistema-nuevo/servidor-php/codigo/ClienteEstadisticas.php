@@ -32,20 +32,14 @@ final class ClienteEstadisticas
      * (~3s) en vez de uno por cada tipo distinto (ver README, "Notas / alcance").
      *
      * @param string[] $types
-     * @param string[]|null $countries null = sin filtro de país (todos)
+     * @param Universo $universo contra quién se compara (países, edad, género y el usuario que queda afuera)
      * @return array<string, array{type:string,count:int,avg_duration_ms:float,median_duration_ms:?float,
      *         p90_duration_ms:?float,avg_amount_usd:?float,median_amount_usd:?float,p90_amount_usd:?float,
      *         currency:string}|null>
      *         Una entrada por tipo; null si el servicio no respondió para ese tipo (p. ej. no está corriendo).
      */
-    public function statsVarios(
-        array $types,
-        ?array $countries,
-        int $ageMin,
-        int $ageMax,
-        string $gender,
-        ?string $excludeUserId
-    ): array {
+    public function statsVarios(array $types, Universo $universo): array
+    {
         if ($types === []) {
             return [];
         }
@@ -55,7 +49,7 @@ final class ClienteEstadisticas
 
         $urls = [];
         foreach ($types as $type) {
-            $urls[$type] = $this->construirUrl($type, $countries, $ageMin, $ageMax, $gender, $excludeUserId);
+            $urls[$type] = $this->baseUrl . '/stats?' . http_build_query(['type' => $type] + $universo->aQuery());
         }
 
         [$cuerpos, $huboRespuesta] = self::pedirVarios($urls);
@@ -87,24 +81,6 @@ final class ClienteEstadisticas
             $decoded = json_decode($body, true);
             return is_array($decoded) ? $decoded : null;
         }, $cuerpos);
-    }
-
-    private function construirUrl(
-        string $type,
-        ?array $countries,
-        int $ageMin,
-        int $ageMax,
-        string $gender,
-        ?string $excludeUserId
-    ): string {
-        $query = ['type' => $type, 'age_min' => $ageMin, 'age_max' => $ageMax, 'gender' => $gender];
-        if ($countries !== null) {
-            $query['countries'] = implode(',', $countries);
-        }
-        if ($excludeUserId !== null) {
-            $query['exclude'] = $excludeUserId;
-        }
-        return $this->baseUrl . '/stats?' . http_build_query($query);
     }
 
     /**

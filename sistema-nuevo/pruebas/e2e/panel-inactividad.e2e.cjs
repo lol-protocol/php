@@ -60,12 +60,13 @@ correrPrueba(async ({ browser }) => {
     })
   );
 
-  await paso("'Cerrar sesión ahora' cierra la sesión al instante, con el mouse", () =>
+  await paso("'Cerrar sesión ahora' cierra la sesión al instante, con el mouse, y no dice que fue por inactividad", () =>
     conPanel(browser, async (page) => {
       await page.clock.runFor("29:30");
       await botonSalir(page).click({ timeout: 3000 });
       await page.waitForSelector("#login-screen:not([hidden])", { timeout: 3000 });
-      assert.equal(await page.textContent("#login-error"), "Tu sesión fue cerrada por inactividad.");
+      // Quien la cierra a propósito ve el login como con el botón "Cerrar sesión": sin ningún mensaje.
+      assert.equal(await page.isHidden("#login-error"), true, "no hay mensaje de error en el login");
       assert.equal(await sesionDelServidor(page), false, "el servidor también cerró la sesión");
     })
   );
@@ -81,6 +82,29 @@ correrPrueba(async ({ browser }) => {
       assert.equal(await page.textContent("#login-error"), "Tu sesión fue cerrada por inactividad.");
       assert.equal(await aviso(page).isVisible(), false, "el aviso no queda flotando sobre el login");
       assert.equal(await sesionDelServidor(page), false);
+    })
+  );
+
+  await paso("si el servidor tarda en cerrar la sesión, el cierre automático no se repite en cada chequeo", () =>
+    conPanel(browser, async (page) => {
+      let pedidos = 0;
+      let soltar;
+      const retenido = new Promise((resolve) => (soltar = resolve));
+      // Se cuentan los pedidos que salen del navegador, no las veces que corre el route(): Playwright atiende de a uno.
+      page.on("request", (req) => {
+        if (new URL(req.url()).pathname === "/api/logout") pedidos++;
+      });
+      await page.route("**/api/logout", async (route) => {
+        await retenido; // el servidor "tarda": el primer pedido queda colgado mientras el reloj sigue corriendo
+        await route.continue();
+      });
+      await page.clock.runFor("30:05"); // llega al cierre
+      await page.clock.runFor("00:40"); // cuatro chequeos más, con el pedido todavía sin respuesta
+      await page.waitForTimeout(300); // los pedidos que salieron llegan a Playwright un rato después
+      assert.equal(pedidos, 1, "un solo pedido de cierre de sesión");
+      soltar();
+      await page.waitForSelector("#login-screen:not([hidden])", { timeout: 3000 });
+      assert.equal(await page.textContent("#login-error"), "Tu sesión fue cerrada por inactividad.");
     })
   );
 

@@ -7,10 +7,11 @@ declare(strict_types=1);
  * que nadie usa, así que reproduce de forma determinística el caso "el
  * servicio no respondió" sin importar el entorno donde corra esta suite.
  */
+$todos = new Universo(null, 0, 150, 'all', null); // sin filtro de país, de edad ni de género, y sin excluir a nadie
 $clienteInalcanzable = new ClienteEstadisticas('http://localhost:8099');
 
 $inicio = microtime(true);
-$resultado = $clienteInalcanzable->statsVarios(['login'], null, 0, 150, 'all', null);
+$resultado = $clienteInalcanzable->statsVarios(['login'], $todos);
 $duracionMs = (microtime(true) - $inicio) * 1000;
 
 assert_igual(['login' => null], $resultado, 'ClienteEstadisticas: servicio inalcanzable devuelve null (no lanza excepción)');
@@ -27,7 +28,7 @@ $clienteColgado = new ClienteEstadisticas("http://127.0.0.1:$puertoColgado");
 
 $inicio = microtime(true);
 $resultados = array_map(
-    fn (string $tipo) => $clienteColgado->statsVarios([$tipo], null, 0, 150, 'all', null)[$tipo],
+    fn (string $tipo) => $clienteColgado->statsVarios([$tipo], $todos)[$tipo],
     ['login', 'payment', 'search']
 );
 $duracionMs = (microtime(true) - $inicio) * 1000;
@@ -45,7 +46,7 @@ $clienteColgadoLote = new ClienteEstadisticas("http://127.0.0.1:$puertoColgadoLo
 
 $tiposLote = ['login', 'payment', 'search', 'view', 'upload'];
 $inicio = microtime(true);
-$resultadosLote = $clienteColgadoLote->statsVarios($tiposLote, null, 0, 150, 'all', null);
+$resultadosLote = $clienteColgadoLote->statsVarios($tiposLote, $todos);
 $duracionLoteMs = (microtime(true) - $inicio) * 1000;
 fclose($servidorColgadoLote);
 
@@ -64,4 +65,4 @@ assert_verdadero(
     "ClienteEstadisticas: statsVarios() debe pedir todos los tipos en paralelo, no uno por uno (tardó {$duracionLoteMs}ms con 5 tipos)"
 );
 
-assert_igual([], (new ClienteEstadisticas('http://localhost:8099'))->statsVarios([], null, 0, 150, 'all', null), 'ClienteEstadisticas: statsVarios() con lista vacía de tipos devuelve []');
+assert_igual([], (new ClienteEstadisticas('http://localhost:8099'))->statsVarios([], $todos), 'ClienteEstadisticas: statsVarios() con lista vacía de tipos devuelve []');

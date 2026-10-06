@@ -52,7 +52,7 @@ $acciones = [
 // versión en SQL del panel de alertas, sobre todas las acciones de la semilla.
 $paisesPorAccion = $pdo->query('SELECT a.ip_pais_codigo, u.pais_codigo FROM acciones a JOIN usuarios u ON u.id = a.usuario_id')->fetchAll();
 $fueraDelPaisEnPhp = count(array_filter($paisesPorAccion, fn ($f) => AlmacenAlertas::esIpFueraDelPais($f['ip_pais_codigo'], $f['pais_codigo'])));
-assert_igual($alertas->ipMismatches()['total_mismatches'], $fueraDelPaisEnPhp, 'alertas: la regla de IP en PHP (ip_mismatch de la tarjeta) cuenta lo mismo que la de SQL');
+assert_igual($alertas->ipMismatches()['total_events'], $fueraDelPaisEnPhp, 'alertas: la regla de IP en PHP (ip_mismatch de la tarjeta) cuenta lo mismo que la de SQL');
 assert_igual(
     [false, false, true],
     [AlmacenAlertas::esIpFueraDelPais(null, 'AR'), AlmacenAlertas::esIpFueraDelPais('AR', 'AR'), AlmacenAlertas::esIpFueraDelPais('CH', 'AR')],
@@ -80,15 +80,30 @@ try {
         $despues = $alertas->cambiosPaisImposibles($umbral);
         $ventana = 0.5 + $umbral / 100 * 3.5;
         $etiqueta = sprintf('umbral %d (ventana %.3f h)', $umbral, $ventana);
-        assert_igual($usuariosEsperados, $despues['total_changes'] - $antes[$umbral]['total_changes'], "alertas: $etiqueta suma $usuariosEsperados cambio(s) imposible(s)");
+        assert_igual($usuariosEsperados, $despues['total_events'] - $antes[$umbral]['total_events'], "alertas: $etiqueta suma $usuariosEsperados cambio(s) imposible(s)");
         assert_igual($usuariosEsperados, $despues['total_users_affected'] - $antes[$umbral]['total_users_affected'], "alertas: $etiqueta suma $usuariosEsperados usuario(s) afectado(s)");
     }
 
     // IP fuera del país: las tres acciones que terminan en el país B (z90102, z90202, z90302). La de ip NULL y las
     // que coinciden con el país declarado no cuentan.
     $ipDespues = $alertas->ipMismatches();
-    assert_igual(3, $ipDespues['total_mismatches'] - $ipAntes['total_mismatches'], 'alertas: IP fuera del país suma las 3 acciones del país distinto, no la de ip NULL ni las del país declarado');
+    assert_igual(3, $ipDespues['total_events'] - $ipAntes['total_events'], 'alertas: IP fuera del país suma las 3 acciones del país distinto, no la de ip NULL ni las del país declarado');
     assert_igual(3, $ipDespues['total_users_affected'] - $ipAntes['total_users_affected'], 'alertas: IP fuera del país suma los 3 usuarios');
+
+    // Cada fila de un cambio de país dice de dónde venía el usuario y a dónde fue: los tres de prueba pasan del país A al B,
+    // con un solo cambio cada uno (el top de esa alerta tiene lugar de sobra: la semilla aporta 1 o 2 usuarios).
+    $filasDePrueba = [];
+    foreach ($alertas->cambiosPaisImposibles(100)['top'] as $fila) {
+        if (str_starts_with($fila['user_id'], 'z90')) {
+            $filasDePrueba[$fila['user_id']] = [$fila['previous_country'], $fila['current_country'], $fila['event_count']];
+        }
+    }
+    ksort($filasDePrueba);
+    assert_igual(
+        ['z901' => [$paisA, $paisB, 1], 'z902' => [$paisA, $paisB, 1], 'z903' => [$paisA, $paisB, 1]],
+        $filasDePrueba,
+        'alertas: cada cambio de país dice de dónde venía el usuario (previous_country), a dónde fue (current_country) y cuántos cambios tuvo'
+    );
 
     // El KPI "usuarios con alerta" cuenta lo mismo que las alertas, para cada tipo habilitado y cada umbral.
     foreach ([[true, false], [false, true], [true, true], [false, false]] as [$ipActiva, $cambioActiva]) {

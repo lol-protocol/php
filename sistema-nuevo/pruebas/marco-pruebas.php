@@ -91,8 +91,11 @@ function literales_de_texto(string $fuente): array
 }
 
 /**
- * Corre un comando, espera a que termine y devuelve lo que escribió (la salida y la de errores, juntas) y su código de
- * salida. Con $entorno null corre con el del proceso actual.
+ * Corre un comando, espera a que termine y devuelve lo que escribió (la salida y la de errores, juntas y en el orden en
+ * que las escribió) y su código de salida. Con $entorno null corre con el del proceso actual.
+ *
+ * Los errores van a la misma tubería que la salida (['redirect', 1]) y no a una propia: con dos tuberías, leer una
+ * hasta el final mientras el proceso se llena la otra (a los ~64 KB) lo deja esperando y a quien lee también.
  *
  * @param string[] $comando
  * @param array<string,string>|null $entorno
@@ -100,8 +103,8 @@ function literales_de_texto(string $fuente): array
  */
 function ejecutar_proceso(array $comando, ?string $directorio = null, ?array $entorno = null): array
 {
-    $proceso = proc_open($comando, [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $directorio, $entorno);
-    $salida = stream_get_contents($pipes[1]) . stream_get_contents($pipes[2]);
+    $proceso = proc_open($comando, [1 => ['pipe', 'w'], 2 => ['redirect', 1]], $pipes, $directorio, $entorno);
+    $salida = (string) stream_get_contents($pipes[1]);
     return ['salida' => $salida, 'codigo' => proc_close($proceso)];
 }
 

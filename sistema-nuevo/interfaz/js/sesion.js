@@ -58,6 +58,19 @@ export function showLogin(errorMessage = "") {
   }
 }
 
+/** Cierra la sesión en el servidor y vuelve al login, con un mensaje opcional que explique por qué (el cierre por inactividad). */
+export async function cerrarSesion(mensaje = "") {
+  try {
+    await postJson("/api/logout");
+  } catch (err) {
+    console.error("Error cerrando sesión:", err);
+  } finally {
+    state.selectedUserId = null;
+    state.csrfToken = null;
+    showLogin(mensaje);
+  }
+}
+
 export function showApp(username, csrfToken = null) {
   state.username = username;
   if (csrfToken) state.csrfToken = csrfToken;
