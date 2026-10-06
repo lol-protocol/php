@@ -22,6 +22,7 @@ require __DIR__ . '/../servidor-php/codigo/AlmacenIntentosLogin.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenAdministradores.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenKpis.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenAlertas.php';
+require __DIR__ . '/../servidor-php/codigo/Universo.php';
 require __DIR__ . '/../servidor-php/codigo/ClienteEstadisticas.php';
 require __DIR__ . '/../servidor-php/codigo/autenticacion.php';
 

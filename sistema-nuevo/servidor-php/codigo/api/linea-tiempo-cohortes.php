@@ -4,21 +4,14 @@ declare(strict_types=1);
 
 /** Le agrega a cada acción de una página su "guía": comparación contra el universo elegido. */
 
-function api_timeline_con_cohortes(
-    array $acciones,
-    string $userId,
-    string $userCountry,
-    ?array $countries,
-    int $ageMin,
-    int $ageMax,
-    string $gender
-): array {
+function api_timeline_con_cohortes(array $acciones, string $userCountry, Universo $universo): array
+{
     $client = new ClienteEstadisticas();
 
     // Un solo lote en paralelo por los tipos distintos de la página, en vez de
     // una llamada secuencial por tipo (ver ClienteEstadisticas::statsVarios()).
     $tipos = array_values(array_unique(array_column($acciones, 'type')));
-    $statsCache = $client->statsVarios($tipos, $countries, $ageMin, $ageMax, $gender, $userId);
+    $statsCache = $client->statsVarios($tipos, $universo);
 
     $timeline = [];
     foreach ($acciones as $action) {

@@ -81,6 +81,7 @@ sistema-nuevo/
 │       ├── AlmacenKpis.php            Métricas agregadas del dashboard inicial
 │       ├── AlmacenNotas.php           Notas por acción (guardar es upsert, texto vacío borra)
 │       ├── ClienteEstadisticas.php    Llama al servicio de estadísticas por HTTP
+│       ├── Universo.php               Contra quién se compara: países, edad, género y el usuario excluido
 │       ├── autenticacion.php          Sesión + CSRF (login/logout, un solo usuario)
 │       ├── AlmacenIntentosLogin.php   Rate limiting de /api/login por IP
 │       ├── AlmacenAdministradores.php Lee la tabla administradores (login en vivo)
@@ -131,7 +132,7 @@ sistema-nuevo/
 lee el log de acciones del usuario elegido desde PostgreSQL y, por cada tipo de acción
 distinto que aparece en la página actual del timeline, le pregunta una vez al
 microservicio Java el promedio de ese tipo de acción para el universo de comparación
-actual (país/grupo, edad, género — excluyendo siempre al propio usuario). Con eso arma
+actual (el objeto `Universo`: país/grupo, edad, género — excluyendo siempre al propio usuario). Con eso arma
 el timeline enriquecido con el delta % de cada acción contra ese promedio.
 
 ## Interfaz: fondo negro, colores neón por tipo de dato
@@ -501,8 +502,10 @@ php pruebas/ejecutar-integracion.php
   da `null`) y `api_timeline_con_cohortes()` contra un servicio de estadísticas
   falso (`estadisticas-falsas-router.php`) con números conocidos: deltas de
   duración y monto, universo vacío, un tipo que falla, y qué universo le llega al
-  servicio (países, edad, género y la exclusión del propio usuario). Y
-  `api_error()`: todo error lleva su texto y su `codigo`, y ningún endpoint arma el
+  servicio (países, edad, género y la exclusión del propio usuario). Y `Universo`
+  (`universo-test.php`: lo que le pide al servicio, `aQuery()`, y cómo sale de la query de
+  `/api/timeline`, `api_universo_desde_query()`: los valores por defecto, el grupo de países,
+  un grupo que ya no existe). Y `api_error()`: todo error lleva su texto y su `codigo`, y ningún endpoint arma el
   suyo a mano (se recorre el código de `servidor-php/` buscándolos). Y los helpers de
   los endpoints (`api_responder`, `api_cuerpo_json`, `api_exigir_metodo`,
   `api_exigir_csrf`): su comportamiento, y el mismo recorrido para que la
@@ -776,7 +779,7 @@ interfaz traduce (ver "Idioma de la interfaz"): `no_autenticado` (401),
 - Si el servicio de estadísticas en Java no está corriendo, el backend PHP no rompe:
   cada acción queda sin comparación (`cohort: null`) y el panel lo indica con un aviso.
   Los tipos distintos de la página se piden todos juntos, en paralelo
-  (`ClienteEstadisticas::statsVarios()`, vía `curl_multi`) en vez de uno por uno:
+  (`ClienteEstadisticas::statsVarios($tipos, $universo)`, vía `curl_multi`) en vez de uno por uno:
   si el servicio está colgado (acepta la conexión pero no responde), toda la
   página paga un solo timeout (~3 s) sin importar cuántos tipos distintos tenga,
   en vez de uno por tipo. Su URL sale de `BACKOFFICE_JAVA_URL` o, en su defecto,
