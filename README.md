@@ -37,6 +37,17 @@ El `composer.json` de la raíz es opcional: declara `defamatory-content-review/`
 al monorepo. No sustituye al `composer install` de cada carpeta (Composer no instala las
 `require-dev` — y por tanto los tests — de una dependencia `path`).
 
+## Carpetas `_Garbage/`
+
+Cuatro proyectos (`defamatory-content-review/`, `cobros-ingresos-funnels/`, `web-animations/` y
+`vps-setup/`) tienen una carpeta `_Garbage/` con material obsoleto: código que se sacó de uso,
+versiones viejas y restos de iteraciones tempranas. **Se conserva a propósito**: la decisión del
+repositorio es guardar lo obsoleto como referencia en vez de borrarlo (la de
+`defamatory-content-review/` se restauró en #23 después de que #14 la borrara como "peso muerto").
+A cambio, nada la usa: ni el código, ni los tests, ni la CI, ni el análisis estático la cargan, y
+el README de cada una explica qué hay y por qué está ahí. No hace falta tocarlas al limpiar un
+proyecto.
+
 ## CI/CD
 
 `.github/workflows/tests.yml` tiene un job por proyecto:

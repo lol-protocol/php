@@ -28,6 +28,7 @@ web-animations/
 │       ├── common.js                  AnimationToggle, AnimationManager, helpers
 │       └── animation-templates.js     Plantillas para generar animaciones nuevas
 ├── tests/
+│   ├── gallery-metadata.mjs           Test automático: la galería, las páginas y esta tabla cuentan lo mismo
 │   ├── smoke.mjs                      Test automático (corre en CI)
 │   └── index.html                     Tests manuales en navegador: validación,
 │                                      accesibilidad y rendimiento
@@ -73,9 +74,15 @@ npm ci
 npm test
 ```
 
-`npm test` abre las 37 páginas en Chromium y falla si alguna tiene un error
-de JavaScript, un recurso que no carga, `common.css`/`common.js` sin aplicar,
-o un botón de pausa que no responde. Corre en CI en cada push.
+`npm test` corre dos chequeos y falla si alguno falla. Primero
+`tests/gallery-metadata.mjs` (sin navegador): cada animación se nombra en tres
+lugares, la tarjeta de la galería (`data.js`), la propia página (su `<title>`,
+su encabezado y su descripción) y la tabla de más abajo, y los tres tienen que
+hablar de la misma animación; además, la dificultad de cada tarjeta tiene que
+tener color en el modal de detalles. Después `tests/smoke.mjs` abre las 37
+páginas en Chromium y falla si alguna tiene un error de JavaScript, un recurso
+que no carga, `common.css`/`common.js` sin aplicar, o un botón de pausa que no
+responde. Corre en CI en cada push.
 
 `tests/index.html` tiene además suites manuales (validación, accesibilidad
 WCAG 2.1 AA, rendimiento) — ver [`tests/README.md`](tests/README.md).
@@ -85,41 +92,41 @@ WCAG 2.1 AA, rendimiento) — ver [`tests/README.md`](tests/README.md).
 | Grupo | ID | Animación | Categoría |
 |---|---|---|---|
 | Iniciales | A | Vuelo 3D | 3D |
-| | B | Círculos Rebotadores | Física |
-| | C | Página Volteándose | 3D |
-| | D | Cubo 3D | 3D |
-| | E | Pirámide Construyéndose | Patrones |
-| | F | Polígono Morphing | Patrones |
-| | G | Lluvia Partículas | Física |
-| | H | Hoja Cayendo | Física |
-| | I | Péndulo | Mecánico |
-| | J | Onda Sinusoidal | Patrones |
-| | K | Barras Ecualizador | Patrones |
-| | L | Círculos Concéntricos | Patrones |
-| | M | Burbujas | Física |
-| | N | Fractales | Patrones |
-| | O | Tinta Derramándose | Efectos |
-| | P | Galaxia | Patrones |
-| | Q | Aurora Boreal | Efectos |
-| | R | Cascada Rectángulos | Patrones |
-| | S | Ondas Ripple | Efectos |
-| | T | Torbellino | Movimiento |
-| | U | Universo | Patrones |
-| | V | Vortex | Movimiento |
-| Extended | W | Lava Flow | Efectos |
-| | X | Matrix Rain | Efectos |
-| | Y | Nebula | Patrones |
-| | Z | Zen Garden | Patrones |
-| Complex | AA | Möbius Strip | 3D |
-| | AB | Kaleidoscope | Patrones |
-| | AC | Mandelbrot Set | Patrones |
-| | AD | Swarm Intelligence | Movimiento |
-| | AE | Network Graph | Patrones |
-| | AF | Crystal Growth | Patrones |
-| | AG | Magnetic Field | Efectos |
-| | AH | Traffic Flow | Movimiento |
-| | AI | Clock Tower | Mecánico |
-| | AJ | Arena Cayendo | Física |
+|  | B | Círculos Rebotadores | Física |
+|  | C | Página Volteándose | 3D |
+|  | D | Cubo 3D | 3D |
+|  | E | Pirámide Construyéndose | Patrones |
+|  | F | Polígono Morphing | Patrones |
+|  | G | Lluvia Partículas | Física |
+|  | H | Hoja Cayendo | Física |
+|  | I | Péndulo | Mecánico |
+|  | J | Bola Rodando por Laberinto | Movimiento |
+|  | K | Barras Ecualizador | Patrones |
+|  | L | Círculos Concéntricos | Patrones |
+|  | M | Grid de Puntos Deformándose | Patrones |
+|  | N | Espiral Hipnótica Rotando | Patrones |
+|  | O | Tinta Derramándose | Efectos |
+|  | P | Tela Ondeando al Viento | Efectos |
+|  | Q | Aurora Boreal | Efectos |
+|  | R | Efecto Matriz (Código Cayendo) | Efectos |
+|  | S | Dominó Cayendo en Secuencia | 3D |
+|  | T | Engranajes Rotando | Mecánico |
+|  | U | Reloj Analógico Animado | Mecánico |
+|  | V | Brújula Girando | Mecánico |
+| Extended | W | Onda Gravitacional | Efectos |
+|  | X | Rayos Fractal | Patrones |
+|  | Y | Patrón Hexagonal | Patrones |
+|  | Z | Zoom Infinito | Efectos |
+| Complex | AA | Prisma de Luz | Efectos |
+|  | AB | Engranajes Giratorios | Mecánico |
+|  | AC | Nebulosa Estelar | Efectos |
+|  | AD | Espejos Recursivos | 3D |
+|  | AE | Nodo de Red | Patrones |
+|  | AF | Mandala Geométrico | Patrones |
+|  | AG | ADN Helicoidal | 3D |
+|  | AH | Lluvia de Estrellas | Efectos |
+|  | AI | Telaraña Oscilante | Efectos |
+|  | AJ | Arena Cayendo | Física |
 
 Respetan `prefers-reduced-motion`: con esa preferencia activa, las
 animaciones se reducen a un solo ciclo casi instantáneo.
