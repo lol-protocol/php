@@ -13,6 +13,14 @@ $r = ejecutar_proceso([PHP_BINARY, '-r', 'echo getenv("DE_LA_PRUEBA") . "|" . ba
 assert_igual('si|' . basename(sys_get_temp_dir()), $r['salida'], 'ejecutar_proceso: pasa el entorno y corre en el directorio pedido');
 assert_igual(0, ejecutar_proceso([PHP_BINARY, '-r', 'exit(0);'])['codigo'], 'ejecutar_proceso: un proceso que termina bien devuelve 0');
 
+// Con mucha salida por errores no se traba: una tubería se llena a los ~64 KB y el proceso que escribe se queda esperando
+// a que alguien la lea, así que leer primero toda la salida y después los errores era un callejón sin salida. El "timeout 5"
+// es para que, si vuelve a pasar, la prueba falle (código 124) en vez de colgar la suite.
+$r = ejecutar_proceso(['timeout', '5', PHP_BINARY, '-r', 'fwrite(STDERR, str_repeat("e", 300000)); echo "fin";']);
+assert_igual([0, 300003], [$r['codigo'], strlen($r['salida'])], 'ejecutar_proceso: 300 KB por la salida de errores no lo traban');
+$r = ejecutar_proceso([PHP_BINARY, '-r', 'echo "a"; fwrite(STDERR, "b"); echo "c";']);
+assert_igual('abc', $r['salida'], 'ejecutar_proceso: la salida y los errores salen en el orden en que se escribieron');
+
 // puerto_libre y servidor_colgado.
 $puerto = puerto_libre();
 assert_verdadero($puerto > 1023, "puerto_libre: un puerto de usuario ($puerto)");
