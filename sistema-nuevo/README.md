@@ -613,7 +613,9 @@ php pruebas/ejecutar-integracion.php
   exige que el archivo tenga un ejemplo de cada ruta de la tabla de rutas
   (`rutas.php`, que lee con `pruebas/e2e/listar-rutas.php`); con esa misma tabla
   pide cada ruta sin sesión y exige el 401 en todas menos en las que manejan la
-  sesión por su cuenta. Y
+  sesión por su cuenta, y comprueba que `/api/alerts` entregue cada tipo bajo el
+  mismo id que `/api/alerts-config`, con el mismo sobre y las mismas columnas
+  comunes. Y
   `comparacion-valores.e2e.cjs` contrasta contra PostgreSQL, que es el oráculo
   (`percentile_cont` usa la misma definición de percentil pero otra implementación,
   y lee las tablas en vez del CSV de Java), cada eslabón de la comparación: el
