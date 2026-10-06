@@ -17,11 +17,7 @@ assert_igual(null, motivo_para_sembrar($pdo, $datos), 'siembra: la base ya sembr
 // Qué tiene que decir el diagnóstico según lo que falte: en un schema descartable dentro de
 // una transacción que SIEMPRE se revierte (mismo recurso que esquema-datos-ejemplo-test.php).
 $motivos = array_fill_keys(['vacia', 'sin_acciones', 'sembrada', 'esquema_viejo'], 'no calculado');
-$error = null;
-$pdo->beginTransaction();
-try {
-    $pdo->exec('CREATE SCHEMA siembra_prueba');
-    $pdo->exec('SET LOCAL search_path TO siembra_prueba');
+$error = en_schema_descartable($pdo, 'siembra_prueba', function () use ($pdo, $datos, &$motivos) {
     $motivos['vacia'] = motivo_para_sembrar($pdo, $datos);
 
     foreach (['esquema.sql', 'esquema-nucleo.sql'] as $archivo) {
@@ -35,13 +31,7 @@ try {
     // Un esquema de una versión anterior: le falta una tabla que el código de hoy necesita.
     $pdo->exec('DROP TABLE intentos_login');
     $motivos['esquema_viejo'] = motivo_para_sembrar($pdo, $datos);
-} catch (PDOException $e) {
-    $error = $e->getMessage();
-} finally {
-    if ($pdo->inTransaction()) {
-        $pdo->rollBack();
-    }
-}
+});
 assert_igual(null, $error, 'siembra: los esquemas cargan sin error en el schema descartable');
 assert_verdadero(str_contains((string) $motivos['vacia'], 'vacía'), 'siembra: sin tablas, el motivo es que la base está vacía');
 assert_verdadero(str_contains((string) $motivos['sin_acciones'], 'acciones'), 'siembra: con las tablas pero sin acciones, hay que sembrar');
@@ -50,8 +40,7 @@ assert_verdadero(
     str_contains((string) $motivos['esquema_viejo'], 'intentos_login'),
     'siembra: si falta una tabla del esquema, el motivo nombra cuál (el esquema cambió desde la última siembra)'
 );
-$existe = $pdo->query("SELECT COUNT(*) FROM pg_namespace WHERE nspname = 'siembra_prueba'")->fetchColumn();
-assert_igual(0, (int) $existe, 'siembra: el rollback no deja el schema descartable');
+assert_verdadero(!schema_existe($pdo, 'siembra_prueba'), 'siembra: el rollback no deja el schema descartable');
 
 // El comando real, sobre la base real, con trabajo del usuario encima: no lo toca.
 $almacenConfig = new AlmacenConfiguracion($pdo);
@@ -65,16 +54,10 @@ try {
     $pdo->prepare("INSERT INTO filtros_guardados (nombre, scope) VALUES (?, 'all_countries')")->execute([$nombreFiltro]);
     $almacenConfig->guardar('umbral_sensibilidad', '73');
 
-    $proceso = proc_open(
-        [PHP_BINARY, __DIR__ . '/../../datos/sembrar-si-falta.php'],
-        [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
-        $pipes
-    );
-    $salida = stream_get_contents($pipes[1]) . stream_get_contents($pipes[2]);
-    $codigo = proc_close($proceso);
+    $corrida = ejecutar_proceso([PHP_BINARY, __DIR__ . '/../../datos/sembrar-si-falta.php']);
 
-    assert_igual(0, $codigo, 'sembrar-si-falta.php: termina bien con la base ya sembrada');
-    assert_verdadero(str_contains($salida, 'ya están'), 'sembrar-si-falta.php: avisa que no volvió a sembrar');
+    assert_igual(0, $corrida['codigo'], 'sembrar-si-falta.php: termina bien con la base ya sembrada');
+    assert_verdadero(str_contains($corrida['salida'], 'ya están'), 'sembrar-si-falta.php: avisa que no volvió a sembrar');
 
     $stmt = $pdo->prepare('SELECT texto FROM notas_acciones WHERE accion_id = ?');
     $stmt->execute([$accionId]);

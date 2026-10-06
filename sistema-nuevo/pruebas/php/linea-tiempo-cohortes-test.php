@@ -13,28 +13,10 @@ require_once __DIR__ . '/../../servidor-php/codigo/api/linea-tiempo-cohortes.php
 // y se mira también QUÉ le pidió al servicio: el universo (países, edad, género) y, sobre todo, que
 // el usuario que se está mirando quede afuera de su propia comparación.
 $log = tempnam(sys_get_temp_dir(), 'estadisticas-falsas-');
-$socket = stream_socket_server('tcp://127.0.0.1:0');
-$puerto = (int) substr(strrchr(stream_socket_get_name($socket, false), ':'), 1);
-fclose($socket);
-
-$servidor = proc_open(
-    [PHP_BINARY, '-S', "127.0.0.1:$puerto", __DIR__ . '/estadisticas-falsas-router.php'],
-    [0 => ['file', '/dev/null', 'r'], 1 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']],
-    $pipes,
-    null,
-    ['ESTADISTICAS_FALSAS_LOG' => $log, 'PATH' => (string) getenv('PATH')]
-);
+$servidor = levantar_servidor_php(__DIR__ . '/estadisticas-falsas-router.php', ['ESTADISTICAS_FALSAS_LOG' => $log]);
 
 try {
-    for ($i = 0; $i < 50; $i++) {
-        $conexion = @fsockopen('127.0.0.1', $puerto, $codigoError, $mensajeError, 0.2);
-        if ($conexion) {
-            fclose($conexion);
-            break;
-        }
-        usleep(100_000);
-    }
-    putenv("BACKOFFICE_JAVA_URL=http://127.0.0.1:$puerto");
+    putenv("BACKOFFICE_JAVA_URL=http://127.0.0.1:{$servidor['puerto']}");
 
     $pedidos = function (string $tipo) use ($log): array {
         $resultado = [];
@@ -93,8 +75,7 @@ try {
     assert_verdadero(!array_key_exists('countries', $pagosTodos[0] ?? ['countries' => 1]), 'cohortes: sin filtro de país no se manda "countries"');
     assert_igual('u007', $pagosTodos[0]['exclude'] ?? null, 'cohortes: también sin filtro de país se excluye al propio usuario');
 } finally {
-    proc_terminate($servidor);
-    proc_close($servidor);
+    detener_servidor_php($servidor);
     unlink($log);
     putenv('BACKOFFICE_JAVA_URL');
 }

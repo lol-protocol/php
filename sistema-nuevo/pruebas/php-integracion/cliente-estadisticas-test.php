@@ -22,8 +22,7 @@ assert_verdadero($duracionMs < 2000, "ClienteEstadisticas: un servicio caído no
 
 // Colgado (acepta la conexión pero nunca responde) es peor que caído: cada pedido espera el timeout
 // completo. Solo el primero de la instancia debe pagar esa espera; los siguientes cortan de inmediato.
-$servidorColgado = stream_socket_server('tcp://127.0.0.1:0');
-$puertoColgado = (int) substr(strrchr(stream_socket_get_name($servidorColgado, false), ':'), 1);
+[$servidorColgado, $puertoColgado] = servidor_colgado();
 $clienteColgado = new ClienteEstadisticas("http://127.0.0.1:$puertoColgado");
 
 $inicio = microtime(true);
@@ -41,8 +40,7 @@ assert_verdadero($duracionMs < 6000, "ClienteEstadisticas: con el servicio colga
 // Varios tipos a la vez: se piden en un solo lote paralelo (curl_multi) en vez de
 // secuencial -- /api/timeline lo llama una sola vez con los tipos distintos de la
 // página, en vez de una llamada por tipo.
-$servidorColgadoLote = stream_socket_server('tcp://127.0.0.1:0');
-$puertoColgadoLote = (int) substr(strrchr(stream_socket_get_name($servidorColgadoLote, false), ':'), 1);
+[$servidorColgadoLote, $puertoColgadoLote] = servidor_colgado();
 $clienteColgadoLote = new ClienteEstadisticas("http://127.0.0.1:$puertoColgadoLote");
 
 $tiposLote = ['login', 'payment', 'search', 'view', 'upload'];

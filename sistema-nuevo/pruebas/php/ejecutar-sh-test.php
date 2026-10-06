@@ -28,20 +28,16 @@ function correr_ejecutar_sh(string $raiz, array $args): array
         chmod($ruta, 0755);
     }
 
-    $proceso = proc_open(
+    $corrida = ejecutar_proceso(
         array_merge(['timeout', '30', 'bash', "$tmp/ejecutar.sh"], $args),
-        [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
-        $pipes,
         $tmp,
         ['PATH' => "$tmp/bin:" . getenv('PATH'), 'LLAMADAS' => "$tmp/llamadas.log"]
     );
-    $salida = stream_get_contents($pipes[1]) . stream_get_contents($pipes[2]);
-    $codigo = proc_close($proceso);
 
     $llamadas = is_file("$tmp/llamadas.log") ? file("$tmp/llamadas.log", FILE_IGNORE_NEW_LINES) : [];
     exec('rm -rf ' . escapeshellarg($tmp));
 
-    return ['salida' => $salida, 'codigo' => $codigo, 'llamadas' => $llamadas];
+    return $corrida + ['llamadas' => $llamadas];
 }
 
 $siembras = fn (array $r): array => array_values(array_filter($r['llamadas'], fn ($l) => str_starts_with($l, 'php datos/')));

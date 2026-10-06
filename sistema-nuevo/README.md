@@ -108,10 +108,11 @@ sistema-nuevo/
 │                                           kpis, nota-bloque, notas, notificaciones
 │
 ├── pruebas/                        Pruebas automatizadas, sin dependencias nuevas
-│   ├── marco-pruebas.php / ejecutar-php.php     Framework mínimo + runner (PHP)
+│   ├── marco-pruebas.php / ejecutar-php.php     Framework mínimo + ayudantes (procesos, servidores falsos) + runner
 │   ├── php/                                     Unit tests del saneador, los helpers y la tabla de rutas de la API,
 │   │                                             la muestra y ejecutar.sh
 │   ├── ejecutar-integracion.php                 Runner de integración (Almacen*.php, PostgreSQL real)
+│   ├── ayudantes-integracion.php                Schema descartable para probar los esquemas SQL
 │   ├── php-integracion/                         Unit tests de Almacen*.php, ClienteEstadisticas.php y la siembra
 │   ├── ejecutar-js.sh                           Runner (node:test, ya viene con Node)
 │   ├── js/                                      Unit tests de formato, idioma, errores, alertas, los controles
@@ -532,6 +533,13 @@ php pruebas/ejecutar-integracion.php
   filtro guardado y un umbral de alertas puestos encima, no los toca (la prueba que
   habría fallado mientras `ejecutar.sh` sembraba en cada arranque); `motivo_para_sembrar()`
   distingue, en un schema descartable, base vacía, sin acciones, sembrada y esquema viejo.
+  Esas pruebas comparten ayudantes (antes cada una tenía su copia): `en_schema_descartable()`
+  (`ayudantes-integracion.php`: una transacción que siempre se revierte, el error de PostgreSQL
+  vuelve como texto y un nombre de schema raro se rechaza) y, en `marco-pruebas.php`,
+  `ejecutar_proceso()`, `puerto_libre()`, `servidor_colgado()` y
+  `levantar_servidor_php()`/`detener_servidor_php()`. Tienen sus propias pruebas
+  (`marco-pruebas-test.php`, `ayudantes-integracion-test.php`): si uno devolviera "nada" en
+  silencio, las que se apoyan en él pasarían sin probar nada.
 - `pruebas/js/`: `formato.js` (duración/tamaño de archivo/porcentaje, y
   `classifyDelta`, que decide verde/rojo/gris de cada badge: franja "en el
   promedio" de ±10% con el borde incluido, medida sobre el porcentaje que se
