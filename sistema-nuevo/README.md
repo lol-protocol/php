@@ -600,6 +600,12 @@ Las pruebas e2e usan `require()` (CommonJS) en vez de `import`, a propósito: No
 solo resuelve paquetes globales (Playwright no tiene `node_modules` propio acá) vía
 `NODE_PATH` con `require()`, no con `import` bajo ESM.
 
+Las e2e comparten `pruebas/e2e/ayudante-e2e.cjs`: `correrPrueba()` y `conNavegador()` abren
+Chromium, entran al panel (o no, con `{ entrar: false }`) y lo cierran siempre; `enviarLogin()`,
+`paginaEnIngles()`, las URLs del panel, de la API y del servicio Java (`BASE_URL`, `API_URL`,
+`JAVA_URL`) y `ejecutarSql()`/`consultarSql()`. Antes cada archivo repetía el lanzamiento del
+navegador y el login, y las URLs estaban escritas en tres.
+
 En GitHub, `.github/workflows/pruebas-backoffice.yml` (en la raíz del repositorio)
 corre las 4 suites en cada pull request que toque `sistema-nuevo/` y en cada push a
 `master`: PostgreSQL 16 como servicio con las mismas credenciales que los defaults

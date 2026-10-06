@@ -1,7 +1,6 @@
 // Las piezas visuales que comparten el login, los modales y la barra de filtros (.campo y .caja-neon, en base.css): que se
 // vean igual en los tres lugares, sin comparar píxeles. Antes cada lugar tenía su copia y podían irse separando sin aviso.
-const { chromium } = require("playwright");
-const { assert, paso, resumenPasos, BASE_URL } = require("./ayudante-e2e.cjs");
+const { assert, paso, correrPrueba, enviarLogin, BASE_URL } = require("./ayudante-e2e.cjs");
 
 const estilo = (page, selector, propiedades) =>
   page.$eval(
@@ -27,17 +26,13 @@ async function aspectoYFoco(page, selector) {
   return { campo, foco };
 }
 
-(async () => {
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
+correrPrueba(async ({ page }) => {
   await page.goto(BASE_URL);
   await page.waitForSelector("#login-screen:not([hidden])");
 
   const login = { ...(await aspectoYFoco(page, "#login-username")), caja: await estilo(page, ".login-card", CAJA) };
 
-  await page.fill("#login-username", "admin");
-  await page.fill("#login-password", "admin123");
-  await page.click("#login-form button[type=submit]");
+  await enviarLogin(page);
   await page.waitForSelector("#app:not([hidden])");
   await page.waitForTimeout(500);
 
@@ -79,6 +74,4 @@ async function aspectoYFoco(page, selector) {
     assert.deepEqual(modal.caja, login.caja);
   });
 
-  await browser.close();
-  process.exit(resumenPasos());
-})();
+}, { entrar: false });

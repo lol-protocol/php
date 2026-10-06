@@ -4,7 +4,9 @@
 const assert = require("node:assert/strict");
 const { execSync, execFileSync } = require("node:child_process");
 
-const BASE_URL = "http://localhost:8082";
+const BASE_URL = "http://localhost:8082"; // el panel (interfaz/)
+const API_URL = "http://localhost:8000"; // la API PHP
+const JAVA_URL = "http://localhost:8081"; // el servicio de estadísticas
 
 let totalPasos = 0;
 let pasosFallidos = 0;
@@ -27,13 +29,47 @@ function resumenPasos() {
   return pasosFallidos === 0 ? 0 : 1;
 }
 
+/** Llena el formulario de login y lo envía: la página ya tiene que estar en la pantalla de login. */
+async function enviarLogin(page, clave = "admin123") {
+  await page.fill("#login-username", "admin");
+  await page.fill("#login-password", clave);
+  await page.click("#login-form button[type=submit]");
+}
+
 async function iniciarSesion(page) {
   await page.goto(BASE_URL);
-  await page.fill("#login-username", "admin");
-  await page.fill("#login-password", "admin123");
-  await page.click("#login-form button[type=submit]");
+  await enviarLogin(page);
   await page.waitForSelector("#app:not([hidden])");
   await page.waitForTimeout(500);
+}
+
+/**
+ * Abre Chromium, corre cuerpo({ browser, page }) y lo cierra siempre, también si el cuerpo falla. Por defecto la página ya
+ * tiene la sesión iniciada en el panel; con { entrar: false } queda sin abrir, para probar el login mismo.
+ */
+async function conNavegador(cuerpo, { entrar = true } = {}) {
+  const { chromium } = require("playwright"); // acá y no arriba: peticiones-api.e2e.cjs usa este archivo sin navegador
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage();
+    if (entrar) await iniciarSesion(page);
+    return await cuerpo({ browser, page });
+  } finally {
+    await browser.close();
+  }
+}
+
+/** Una prueba e2e entera: conNavegador(cuerpo) y sale con el código de los pasos (0 si todos pasaron). */
+async function correrPrueba(cuerpo, opciones) {
+  await conNavegador(cuerpo, opciones);
+  process.exit(resumenPasos());
+}
+
+/** Una página en un contexto nuevo con la interfaz en inglés (el idioma elegido se guarda en localStorage). */
+async function paginaEnIngles(browser) {
+  const contexto = await browser.newContext();
+  await contexto.addInitScript(() => localStorage.setItem("backoffice_idioma", "en"));
+  return { page: await contexto.newPage(), cerrar: () => contexto.close() };
 }
 
 /** Conexión a PostgreSQL con las mismas variables BACKOFFICE_BD_* (y defaults) que ConexionBd.php. */
@@ -71,4 +107,8 @@ function consultarSql(sql) {
     .map((fila) => fila.split("|").map((celda) => (celda === "NULL" ? null : celda)));
 }
 
-module.exports = { assert, BASE_URL, paso, resumenPasos, iniciarSesion, ejecutarSql, consultarSql };
+module.exports = {
+  assert, BASE_URL, API_URL, JAVA_URL,
+  paso, resumenPasos, enviarLogin, iniciarSesion, conNavegador, correrPrueba, paginaEnIngles,
+  ejecutarSql, consultarSql,
+};

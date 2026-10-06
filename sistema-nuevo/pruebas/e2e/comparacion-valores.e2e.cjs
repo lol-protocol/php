@@ -5,11 +5,8 @@
 // eslabón se contrasta contra PostgreSQL, que sirve de oráculo independiente: percentile_cont()
 // usa la misma definición de percentil (interpolación lineal, rank = p * (n - 1)) pero es otra
 // implementación, y lee las tablas en vez del CSV que lee Java.
-const { chromium } = require("playwright");
-const { assert, paso, resumenPasos, iniciarSesion, consultarSql } = require("./ayudante-e2e.cjs");
+const { assert, paso, resumenPasos, conNavegador, consultarSql, API_URL, JAVA_URL } = require("./ayudante-e2e.cjs");
 
-const JAVA = "http://localhost:8081";
-const API = "http://localhost:8000";
 // El servicio redondea a 1 decimal las duraciones y a 2 los montos en USD.
 const REDONDEO_MS = 0.05;
 const REDONDEO_USD = 0.005;
@@ -56,7 +53,7 @@ async function javaStats({ tipo, paises = null, edadMin, edadMax, genero, exclui
   if (edadMax !== undefined) q.set("age_max", String(edadMax));
   if (genero !== undefined) q.set("gender", genero);
   if (excluir !== undefined && excluir !== null) q.set("exclude", excluir);
-  const r = await fetch(`${JAVA}/stats?${q}`);
+  const r = await fetch(`${JAVA_URL}/stats?${q}`);
   assert.equal(r.status, 200, `GET /stats?${q}`);
   return r.json();
 }
@@ -83,7 +80,7 @@ function compararUniverso(real, sql, etiqueta) {
 
 /** Sesión contra la API real (cookie de sesión a mano): devuelve un GET que parsea el JSON. */
 async function sesionApi() {
-  const r = await fetch(`${API}/api/login`, {
+  const r = await fetch(`${API_URL}/api/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username: "admin", password: "admin123" }),
@@ -91,7 +88,7 @@ async function sesionApi() {
   assert.equal(r.status, 200, "login contra la API");
   const cookie = r.headers.getSetCookie().map((c) => c.split(";")[0]).join("; ");
   return async (ruta) => {
-    const res = await fetch(`${API}${ruta}`, { headers: { Cookie: cookie } });
+    const res = await fetch(`${API_URL}${ruta}`, { headers: { Cookie: cookie } });
     assert.equal(res.status, 200, `GET ${ruta}`);
     return res.json();
   };
@@ -286,10 +283,7 @@ async function verificarTooltip(badge, mediana, etiqueta) {
     const conPagos = consultarSql(
       "SELECT usuario_id FROM acciones WHERE tipo_clave IN ('payment', 'refund') GROUP BY 1 ORDER BY count(*) DESC, 1 LIMIT 1"
     )[0][0];
-    const browser = await chromium.launch();
-    try {
-      const page = await browser.newPage();
-      await iniciarSesion(page);
+    await conNavegador(async ({ page }) => {
       // Vista 1: todas las acciones del usuario más activo (las duraciones).
       const actual = await page.inputValue("#user-select");
       const usuario = masActivos.find((u) => u !== actual);
@@ -304,19 +298,14 @@ async function verificarTooltip(badge, mediana, etiqueta) {
       const [r3] = await Promise.all([esperarTimeline(page, conPagos, "type=payment"), page.selectOption("#type-select", "payment")]);
       const vista2 = await verificarTarjetas(page, await r3.json());
       assert.ok(vista2.conMonto >= 1, `tarjetas con monto: ${vista2.conMonto}`);
-    } finally {
-      await browser.close();
-    }
+    });
   });
 
   await paso("sin el servicio de estadísticas: aviso en pantalla y badges 'Sin datos de comparación', sin tooltips con NaN", async () => {
     const conPagos = consultarSql(
       "SELECT usuario_id FROM acciones WHERE tipo_clave = 'payment' AND monto_usd IS NOT NULL GROUP BY 1 ORDER BY count(*) DESC, 1 LIMIT 1"
     )[0][0];
-    const browser = await chromium.launch();
-    try {
-      const page = await browser.newPage();
-      await iniciarSesion(page);
+    await conNavegador(async ({ page }) => {
       // Lo que devuelve la API cuando el servicio de estadísticas no responde (linea-tiempo-cohortes-test.php
       // comprueba esa respuesta del lado de PHP): sin cohorte, sin deltas y stats_service_available en false.
       await page.route("**/api/timeline*", async (route) => {
@@ -343,9 +332,7 @@ async function verificarTooltip(badge, mediana, etiqueta) {
         assert.ok((await badge.getAttribute("class")).split(" ").includes("badge--neutral"), `badge ${i}: color`);
         assert.equal(await badge.getAttribute("title"), null, `badge ${i}: sin estadísticas no hay tooltip (no "mediana: NaN")`);
       }
-    } finally {
-      await browser.close();
-    }
+    });
   });
 
   process.exit(resumenPasos());

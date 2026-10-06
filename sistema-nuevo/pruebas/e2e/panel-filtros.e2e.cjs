@@ -3,19 +3,14 @@
 // pasa al cambiar de idioma, qué se guarda y qué se aplica de un filtro guardado, y cómo se avisa de un fallo.
 // Son pruebas de comportamiento: no saben en qué módulo vive cada cosa, así que valen igual antes y después de
 // reorganizar el código de la interfaz.
-const { chromium } = require("playwright");
-const { assert, paso, resumenPasos, iniciarSesion, ejecutarSql, consultarSql } = require("./ayudante-e2e.cjs");
+const { assert, paso, correrPrueba, BASE_URL, ejecutarSql, consultarSql } = require("./ayudante-e2e.cjs");
 
 const LIMPIAR = "DELETE FROM filtros_guardados WHERE nombre LIKE 'e2e-controles-%';";
-const CORS = { "Access-Control-Allow-Origin": "http://localhost:8082", "Access-Control-Allow-Credentials": "true" };
+const CORS = { "Access-Control-Allow-Origin": BASE_URL, "Access-Control-Allow-Credentials": "true" };
 
-(async () => {
-  ejecutarSql(LIMPIAR); // por si quedó sucio de una corrida anterior interrumpida
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
+ejecutarSql(LIMPIAR); // por si quedó sucio de una corrida anterior interrumpida
+correrPrueba(async ({ page }) => {
   try {
-    await iniciarSesion(page);
-
     // Los parámetros de cada pedido de /api/timeline que hace la página, en orden.
     const pedidos = [];
     page.on("request", (req) => {
@@ -167,8 +162,6 @@ const CORS = { "Access-Control-Allow-Origin": "http://localhost:8082", "Access-C
       await page.waitForSelector("#app:not([hidden])", { timeout: 30000 });
     });
   } finally {
-    await browser.close();
     ejecutarSql(LIMPIAR);
   }
-  process.exit(resumenPasos());
-})();
+});

@@ -2,10 +2,7 @@
 // botones, y a los 30 la sesión se cierra sola. Se prueba con el reloj falso de Playwright (page.clock), que adelanta
 // el tiempo del navegador sin esperar de verdad. Antes no tenía ninguna prueba. Cada paso arranca con un navegador
 // nuevo y una sesión nueva, para que un paso que falla no arrastre a los demás.
-const { chromium } = require("playwright");
-const { assert, paso, resumenPasos, iniciarSesion } = require("./ayudante-e2e.cjs");
-
-const API = "http://localhost:8000";
+const { assert, paso, correrPrueba, iniciarSesion, API_URL } = require("./ayudante-e2e.cjs");
 
 /** Abre el panel con el reloj falso instalado y la sesión iniciada, corre fn(page) y cierra el navegador. */
 async function conPanel(browser, fn, opciones = {}) {
@@ -23,11 +20,9 @@ async function conPanel(browser, fn, opciones = {}) {
 const aviso = (page) => page.getByText("Sesión por expirar", { exact: true });
 const botonContinuar = (page) => page.getByRole("button", { name: "Continuar activo" });
 const botonSalir = (page) => page.getByRole("button", { name: "Cerrar sesión ahora" });
-const sesionDelServidor = async (page) => (await (await page.request.get(`${API}/api/session`)).json()).authenticated;
+const sesionDelServidor = async (page) => (await (await page.request.get(`${API_URL}/api/session`)).json()).authenticated;
 
-(async () => {
-  const browser = await chromium.launch();
-
+correrPrueba(async ({ browser }) => {
   await paso("a los 28:30 sin actividad todavía no hay aviso; a los 29:30 aparece, con el mensaje y los dos botones", () =>
     conPanel(browser, async (page) => {
       await page.clock.runFor("28:30");
@@ -153,6 +148,4 @@ const sesionDelServidor = async (page) => (await (await page.request.get(`${API}
     })
   );
 
-  await browser.close();
-  process.exit(resumenPasos());
-})();
+}, { entrar: false });
