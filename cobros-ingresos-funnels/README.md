@@ -226,7 +226,7 @@ src/
                       SegmentacionRepository (top país/ciudad/idioma/género/edad,
                       LTV por cohorte) para el reporting, que no es CRUD y crecía
                       por separado. AuditoriaRepository también concentra el
-                      `auditarComoUsuarioActual()` que usan todos los controllers
+                      `auditar()` que usan todos los controllers
                       en vez de repetirlo cada uno.
   Database.php         conexión PDO a PostgreSQL (config por env vars, misma zona
                         horaria para PHP y Postgres) y transaccion(), anidable
