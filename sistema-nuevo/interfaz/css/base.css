@@ -1,4 +1,5 @@
-/* Paleta neón + reset. El resto de los .css importan estas variables. */
+/* Paleta neón, reset y las dos piezas que comparten varios componentes (.caja-neon y .campo).
+   El resto de los .css importan estas variables. */
 
 * {
   box-sizing: border-box;
@@ -18,6 +19,8 @@
 
   --accent: #00f0ff;
   --accent-soft: rgba(0, 240, 255, 0.12);
+  --accent-glow: rgba(0, 240, 255, 0.4); /* el brillo de un control con foco o con el mouse encima */
+  --card-glow: 0 0 24px rgba(0, 240, 255, 0.18), inset 0 0 24px rgba(0, 240, 255, 0.03); /* el resplandor de un cuadro con borde de acento */
   --good: #39ff14;
   --good-soft: rgba(57, 255, 20, 0.12);
   --bad: #ff2864;
@@ -52,4 +55,30 @@ h1, h2, h3 {
   color: var(--accent);
   text-shadow: 0 0 8px var(--accent), 0 0 2px var(--accent);
   margin: 0;
+}
+
+/* Cuadro con borde de acento y resplandor: la tarjeta del login y los modales. */
+.caja-neon {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  box-shadow: var(--card-glow);
+  border-radius: 10px;
+  padding: 2rem;
+}
+
+/* Campo de texto o desplegable: el login, los modales y la barra de filtros. */
+.campo {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+.campo:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
 }

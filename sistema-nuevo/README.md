@@ -152,6 +152,13 @@ barra lateral de la app):
 
 Los badges de comparación (mejor/peor/≈ promedio) usan verde/rojo neón, igual que antes.
 
+Lo que comparten varios componentes vive en `base.css`: las variables del brillo
+(`--accent-glow` para el foco y el mouse encima, `--card-glow` para los cuadros con
+borde de acento) y dos piezas, `.campo` (campo de texto o desplegable: el login, los
+modales y la barra de filtros) y `.caja-neon` (la tarjeta del login y los modales). Antes
+el estilo de los campos estaba escrito tres veces, el brillo del foco cinco y el
+resplandor de los cuadros dos. Un campo nuevo solo tiene que llevar `class="campo"`.
+
 ## Fechas y horas
 
 Formato canónico `Y-m-d H:i:s` (ej. `2026-09-03 19:47:10`), siempre en UTC — mismo
@@ -541,7 +548,9 @@ php pruebas/ejecutar-integracion.php
   en `topbar.php`), `tarjeta-usuario.js` (`mostrarAviso`, el aviso de arriba del
   timeline) y `un-solo-lugar.test.mjs`, que vigila que los ids de los filtros, el
   aviso y la secuencia que pinta una respuesta de `/api/timeline` se escriban en un
-  solo módulo cada uno (antes estaban copiados en 5, 3 y 2). Y `modal.js` (`abrirModal`:
+  solo módulo cada uno (antes estaban copiados en 5, 3 y 2); lo mismo para el CSS: el
+  brillo del foco y el resplandor de los cuadros solo en `base.css`, y que todo campo del
+  login y de la barra lleve `.campo`. Y `modal.js` (`abrirModal`:
   el valor del botón pulsado; Escape y un clic en el fondo devuelven la opción segura y
   el foco va a ella; un modal nuevo cierra el anterior; no queda ningún listener de
   teclado colgado; `modalPrompt` y `modalConfirmar` sobre eso).
@@ -558,7 +567,10 @@ php pruebas/ejecutar-integracion.php
   aviso de sesión por expirar a los 29 minutos, que los dos botones se puedan pulsar
   con el mouse y con una pantalla táctil, el cierre solo a los 30 (sin que mover el
   mouse lo posponga), Escape y clic afuera, un solo modal a la vez y el idioma del
-  aviso; más, en `panel-nuevas-features.e2e.cjs`:
+  aviso; en `panel-estilos.e2e.cjs`, sin comparar píxeles: el campo del login, el de la
+  barra y el del modal tienen el mismo aspecto y el mismo brillo al enfocarlos, y la
+  tarjeta del login y el cuadro de un modal comparten borde, fondo y resplandor; más, en
+  `panel-nuevas-features.e2e.cjs`:
   el tile de KPIs de alertas, el indicador visual al guardar una nota, dos
   guardados de nota superpuestos (gana el último texto escrito, no el que llega
   primero), guardar un filtro con el backend caído (toast de error), guardar/

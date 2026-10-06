@@ -14,11 +14,6 @@
 }
 
 .modal-caja {
-  background: var(--surface);
-  border: 1px solid var(--accent);
-  box-shadow: 0 0 24px rgba(0, 240, 255, 0.18), inset 0 0 24px rgba(0, 240, 255, 0.03);
-  border-radius: 10px;
-  padding: 2rem;
   width: 100%;
   max-width: 360px;
   text-align: center;
@@ -35,22 +30,9 @@
   line-height: 1.5;
 }
 
-.modal-caja input {
+.modal-caja .campo {
   width: 100%;
-  padding: 0.55rem 0.7rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 0.95rem;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-mono);
   margin-bottom: 1.5rem;
-}
-
-.modal-caja input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
 }
 
 /* Los botones no parten su texto: si no entran en una fila (el aviso de inactividad tiene dos largos), pasan a otra. */

@@ -36,3 +36,29 @@ test("las seis piezas de la pantalla del timeline se pintan solo desde respuesta
 test("el pedido de datos y el cambio de idioma pintan con la misma función", () => {
   assert.deepEqual(dondeAparece(/(?<!function\s)renderRespuestaTimeline\(/).sort(), ["aplicacion.js", "idioma-refrescar.js"]);
 });
+
+// Los estilos que comparten el login, los modales y la barra de filtros viven en base.css (variables --accent-glow y
+// --card-glow, y las piezas .campo y .caja-neon): antes el estilo de los campos estaba escrito 3 veces, el brillo del foco
+// 5 y el resplandor de los cuadros 2.
+const DIR_CSS = new URL("../../interfaz/css/", import.meta.url);
+const hojas = readdirSync(DIR_CSS)
+  .filter((archivo) => archivo.endsWith(".css"))
+  .map((archivo) => [archivo, readFileSync(new URL(archivo, DIR_CSS), "utf8")]);
+const hojasCon = (patron) => hojas.filter(([, fuente]) => patron.test(fuente)).map(([archivo]) => archivo);
+
+test("el brillo del foco y el resplandor de los cuadros se escriben solo en base.css", () => {
+  assert.ok(hojas.length >= 15, `se leyeron solo ${hojas.length} hojas de estilo`);
+  assert.deepEqual(hojasCon(/rgba\(0, 240, 255, 0\.4\)/), ["base.css"], "brillo del foco y del mouse encima");
+  assert.deepEqual(hojasCon(/0 0 24px rgba\(0, 240, 255, 0\.18\)/), ["base.css"], "resplandor de los cuadros con borde de acento");
+});
+
+test("todo campo de texto, número o desplegable del login y de la barra lleva la clase .campo", () => {
+  for (const parte of ["pantalla-login.php", "topbar.php"]) {
+    const html = readFileSync(new URL(`../../interfaz/partes/${parte}`, import.meta.url), "utf8");
+    const campos = [...html.matchAll(/<(?:input|select)\b[^>]*>/g)].map((m) => m[0]);
+    assert.ok(campos.length >= 2, `${parte}: no se leyó ningún campo`);
+    for (const campo of campos) {
+      assert.match(campo, /class="[^"]*\bcampo\b/, `${parte}: este campo no usa .campo: ${campo}`);
+    }
+  }
+});

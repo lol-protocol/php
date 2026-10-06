@@ -19,7 +19,7 @@ let modalActivo = null;
 export function abrirModal({ titulo = null, mensaje, conInput = false, botones, alDescartar }) {
   modalActivo?.descartar();
 
-  const inputEl = conInput ? el("input", { type: "text" }) : null;
+  const inputEl = conInput ? el("input", { type: "text", class: "campo" }) : null;
   let resolver;
   const eleccion = new Promise((resolve) => {
     resolver = resolve;
@@ -52,7 +52,7 @@ export function abrirModal({ titulo = null, mensaje, conInput = false, botones, 
   if (inputEl) hijos.push(inputEl);
   hijos.push(el("div", { class: "modal-botones" }, botonesEl));
 
-  const fondo = el("div", { class: "modal-fondo" }, [el("div", { class: "modal-caja" }, hijos)]);
+  const fondo = el("div", { class: "modal-fondo" }, [el("div", { class: "modal-caja caja-neon" }, hijos)]);
   fondo.addEventListener("click", (ev) => {
     if (ev.target === fondo) descartar();
   });
