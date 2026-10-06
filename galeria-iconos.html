@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Iconos 2.5D</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+            color: #333;
+            font-size: 1.5em;
+            font-weight: 600;
+            border-left: 5px solid #667eea;
+        }
+
+        .section:nth-child(2) .section-title {
+            border-left-color: #764ba2;
+        }
+
+        .gallery {
+            background: white;
+            border-radius: 0 0 12px 12px;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .icon-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9ff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .icon-card:hover {
+            background: #e8eaff;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .icon-img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        .icon-name {
+            font-size: 0.85em;
+            color: #555;
+            text-align: center;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .stats {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Galería de Iconos 2.5D</h1>
+        <p class="subtitle">Colección de 100 iconos isométricos para genealogía y biblioteca</p>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">🌳</div>
+                <div class="stat-label">46 Iconos de Genealogía</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">📚</div>
+                <div class="stat-label">54 Iconos de Biblioteca</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">✨</div>
+                <div class="stat-label">100 Iconos Totales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">💾</div>
+                <div class="stat-label">100% SVG Escalable</div>
+            </div>
+        </div>
+
+        <!-- ÁRBOL GENEALÓGICO -->
+        <div class="section">
+            <div class="section-title">🌳 Árbol Genealógico (46 iconos)</div>
+            <div class="gallery" id="genealogy"></div>
+        </div>
+
+        <!-- BIBLIOTECA VIRTUAL -->
+        <div class="section">
+            <div class="section-title">📚 Biblioteca Virtual (54 iconos)</div>
+            <div class="gallery" id="library"></div>
+        </div>
+
+        <footer>
+            <p>Iconos 2.5D con perspectiva isométrica | Formato SVG | Listos para integración en proyectos</p>
+            <p>Creado: 2026 | Acceso: /iconos-genealogia/ y /iconos-biblioteca/</p>
+        </footer>
+    </div>
+
+    <script>
+        // Cargar iconos de genealogía
+        const genealogyIcons = [
+            'base/padre', 'base/madre', 'base/hijo', 'base/hija',
+            'base/soltero', 'base/casado', 'base/divorciado', 'base/viudo',
+            'relaciones/hermano', 'relaciones/hermana', 'relaciones/abuelo', 'relaciones/abuela',
+            'relaciones/pareja', 'relaciones/romantico',
+            'acciones/anadir', 'acciones/editar', 'acciones/eliminar', 'acciones/conectar',
+            'acciones/duplicar', 'acciones/filtro', 'acciones/imprimir',
+            'vistas/arbol', 'vistas/buscar', 'vistas/zoom_in', 'vistas/expandir',
+            'vistas/generaciones', 'vistas/ascendientes', 'vistas/descendientes',
+            'vistas/circular', 'vistas/timeline', 'vistas/sincronizar',
+            'ui/descargar', 'ui/exportar_pdf', 'ui/exportar_csv', 'ui/notas'
+        ];
+
+        const libraryIcons = [
+            'contenido/libro', 'contenido/libro_abierto', 'contenido/ebook', 'contenido/audiobook',
+            'contenido/revista', 'contenido/periodico', 'contenido/manga', 'contenido/articulo',
+            'contenido/poesia', 'contenido/referencia', 'contenido/musica', 'contenido/mapa',
+            'contenido/grafico', 'contenido/idiomas',
+            'generos/ficcion', 'generos/no_ficcion', 'generos/infantil', 'generos/juvenil',
+            'disponibilidad/disponible', 'disponibilidad/reservado', 'disponibilidad/prestado',
+            'disponibilidad/nuevo', 'disponibilidad/popular', 'disponibilidad/recomendado',
+            'disponibilidad/bestseller', 'disponibilidad/ediccion_limitada', 'disponibilidad/lanzamiento_proximo',
+            'disponibilidad/serie', 'disponibilidad/premium', 'disponibilidad/no_disponible',
+            'disponibilidad/privado', 'disponibilidad/publico', 'disponibilidad/critica_positiva',
+            'acciones/favorito', 'acciones/calificar', 'acciones/descargar_libro', 'acciones/compartir',
+            'acciones/resena', 'acciones/leyendo', 'acciones/leido', 'acciones/leer_despues',
+            'acciones/todas_conexiones',
+            'navegacion/buscar_libro', 'navegacion/filtrar', 'navegacion/ordenar',
+            'perfil/perfil', 'perfil/historial', 'perfil/notificaciones', 'perfil/biblioteca_personal',
+            'perfil/coleccion', 'perfil/donacion', 'perfil/multi_lector', 'perfil/controversia',
+            'perfil/traduccion'
+        ];
+
+        function loadGallery(container, icons, folder) {
+            const gallery = document.getElementById(container);
+            icons.forEach(icon => {
+                const [category, name] = icon.split('/');
+                const card = document.createElement('div');
+                card.className = 'icon-card';
+                card.innerHTML = `
+                    <img src="iconos-${folder}/${icon}.svg" alt="${name}" class="icon-img" onerror="this.style.opacity='0.3'">
+                    <span class="icon-name">${name.replace(/_/g, ' ')}</span>
+                `;
+                gallery.appendChild(card);
+            });
+        }
+
+        loadGallery('genealogy', genealogyIcons, 'genealogia');
+        loadGallery('library', libraryIcons, 'biblioteca');
+    </script>
+</body>
+</html>
