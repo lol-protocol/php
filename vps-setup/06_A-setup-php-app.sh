@@ -5,6 +5,8 @@ source "$(dirname "$0")/lib.sh"
 
 APP_NAME=${1:-"php-app"}
 DOMAIN=${2:-"app.initech.cl"}
+require_valid name "$APP_NAME" "El nombre de la app (argumento 1)"
+require_valid domain "$DOMAIN" "El dominio (argumento 2)"
 APP_PATH="/var/www/$APP_NAME"
 
 print_header "06_A" "Configurando Aplicacion PHP: $APP_NAME (Dominio: $DOMAIN)"

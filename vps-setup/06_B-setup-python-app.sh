@@ -5,6 +5,8 @@ source "$(dirname "$0")/lib.sh"
 
 APP_NAME=${1:-"python-app"}
 DOMAIN=${2:-"py.initech.cl"}
+require_valid name "$APP_NAME" "El nombre de la app (argumento 1)"
+require_valid domain "$DOMAIN" "El dominio (argumento 2)"
 APP_PATH="/var/www/$APP_NAME"
 VENV_PATH="$APP_PATH/venv"
 
