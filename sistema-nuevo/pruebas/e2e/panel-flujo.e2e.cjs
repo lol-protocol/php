@@ -1,11 +1,6 @@
-const { chromium } = require("playwright");
-const { assert, paso, resumenPasos, iniciarSesion } = require("./ayudante-e2e.cjs");
+const { assert, paso, correrPrueba } = require("./ayudante-e2e.cjs");
 
-(async () => {
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
-  await iniciarSesion(page);
-
+correrPrueba(async ({ page }) => {
   await paso("elegir un usuario carga su tarjeta y su flujo de acciones", async () => {
     await page.selectOption("#user-select", "u030");
     await page.waitForTimeout(600);
@@ -80,7 +75,4 @@ const { assert, paso, resumenPasos, iniciarSesion } = require("./ayudante-e2e.cj
     await textarea.fill("");
     await page.waitForResponse((r) => r.url().includes("/api/notes"));
   });
-
-  await browser.close();
-  process.exit(resumenPasos());
-})();
+});

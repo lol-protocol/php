@@ -112,6 +112,23 @@ export default {
   error_connection: "No se pudo conectar con el backend PHP en {base}. ({message})",
   error_session_expired: "sesión expirada",
   error_http: "Error {status} al llamar {path}",
+  // Errores de la API: una clave por `codigo` que manda el backend (api_error() en ayudantes.php),
+  // ni una más ni una menos: pruebas/js/errores.test.mjs lo comprueba. Misma redacción que el texto
+  // en español de la respuesta (en minúsculas, como error_session_expired).
+  err_csrf_invalido: "token CSRF inválido",
+  err_metodo_no_permitido: "método no permitido",
+  err_filtro_nombre_requerido: "falta nombre del filtro",
+  err_filtro_nombre_largo: "el nombre no puede superar los 100 caracteres",
+  err_filtro_no_encontrado: "filtro no encontrado",
+  err_accion_id_requerido: "accion_id es requerido",
+  err_accion_no_encontrada: "acción no encontrada",
+  err_demasiados_intentos: "demasiados intentos fallidos, probá de nuevo más tarde",
+  err_credenciales_invalidas: "usuario o contraseña incorrectos",
+  err_user_id_requerido: "user_id es requerido",
+  err_usuario_no_encontrado: "usuario no encontrado",
+  err_ruta_no_encontrada: "ruta no encontrada",
+  err_no_autenticado: "no autenticado",
+  err_error_interno: "error interno del servidor",
 
   toast_error_guardar: "No se pudo guardar. Probá de nuevo.",
   toast_error_eliminar: "No se pudo eliminar. Probá de nuevo.",

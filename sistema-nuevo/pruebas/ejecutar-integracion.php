@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 
 require __DIR__ . '/marco-pruebas.php';
+require __DIR__ . '/ayudantes-integracion.php';
 require __DIR__ . '/../servidor-php/codigo/ConexionBd.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenAcciones.php';
 require __DIR__ . '/../servidor-php/codigo/AlmacenDatos.php';

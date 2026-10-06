@@ -1,8 +1,10 @@
 // Reproduce datos/ejemplos/peticiones-api.http contra la API real (sin navegador):
 // cada bloque tiene que devolver el código HTTP que declara ("# esperado: N", por
-// defecto 200) y el archivo tiene que cubrir todas las rutas de index.php. Así el
-// archivo de ejemplos no se desactualiza sin avisar -- ya pasó: el bloque de
-// logout seguía sin X-CSRF-Token cuando se agregó la protección CSRF, y daba 403.
+// defecto 200) y el archivo tiene que cubrir todas las rutas de la tabla de rutas
+// (servidor-php/codigo/rutas.php). Así el archivo de ejemplos no se desactualiza
+// sin avisar -- ya pasó: el bloque de logout seguía sin X-CSRF-Token cuando se
+// agregó la protección CSRF, y daba 403. Además comprueba, ruta por ruta de esa
+// misma tabla, que sin sesión todas responden 401 salvo las que manejan la sesión.
 //
 // Intérprete mínimo del formato .http: "###" separa bloques, "@var = valor" define
 // variables, "# @name x" nombra una petición, "{{x.response.body.$.campo}}" lee un
@@ -11,12 +13,20 @@
 const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
+const { execFileSync } = require("node:child_process");
 const { assert, paso, resumenPasos, ejecutarSql } = require("./ayudante-e2e.cjs");
 
 const RAIZ = path.join(__dirname, "../..");
 const ARCHIVO_HTTP = path.join(RAIZ, "datos/ejemplos/peticiones-api.http");
-const INDEX_PHP = path.join(RAIZ, "servidor-php/publico/index.php");
+const LISTAR_RUTAS_PHP = path.join(__dirname, "listar-rutas.php");
 const FILTRO_DE_EJEMPLO = "ejemplo-http"; // el nombre que guarda el bloque que crea un filtro
+
+// Las rutas que maneja la sesión por su cuenta se piden sin sesión previa y tienen que llegar a su función (no un 401).
+// /api/login no se pide acá: cada intento fallido suma al bloqueo por IP, y 5 dejan afuera al resto de las pruebas.
+const PEDIDOS_SIN_SESION = {
+  "/api/session": { metodo: "GET", estado: 200 },
+  "/api/logout": { metodo: "POST", estado: 403 }, // llega a api_logout(), que pide el token CSRF y no lo encuentra
+};
 
 /** @return {{vars: Record<string,string>, bloques: Array<object>}} */
 function parsear(texto) {
@@ -106,6 +116,11 @@ function rutaDe(bloque) {
   return ruta.startsWith("/api/filtros/") ? "/api/filtros/{id}" : ruta;
 }
 
+/** La tabla de rutas del router, leída con PHP: {"/api/users": false, "/api/session": true, ...} (true = maneja la sesión). */
+function rutasDeLaApi() {
+  return JSON.parse(execFileSync("php", [LISTAR_RUTAS_PHP], { encoding: "utf8" }));
+}
+
 (async () => {
   const { vars, bloques } = parsear(fs.readFileSync(ARCHIVO_HTTP, "utf8"));
   const cookies = {};
@@ -142,14 +157,37 @@ function rutaDe(bloque) {
     ejecutarSql(`DELETE FROM filtros_guardados WHERE nombre = '${FILTRO_DE_EJEMPLO}';`);
   }
 
-  await paso("el archivo tiene un ejemplo de cada ruta de index.php (README: \"todos los endpoints\")", async () => {
-    const rutasReales = [...fs.readFileSync(INDEX_PHP, "utf8").matchAll(/\$path === '(\/api\/[a-z-]+)'/g)].map((m) => m[1]);
-    assert.equal(rutasReales.length >= 12, true, `index.php: se leyeron solo ${rutasReales.length} rutas (¿cambió el formato del router?)`);
+  await paso("el archivo tiene un ejemplo de cada ruta de la tabla de rutas (README: \"todos los endpoints\")", async () => {
+    const rutasReales = Object.keys(rutasDeLaApi());
+    assert.equal(rutasReales.length >= 12, true, `rutas.php: se leyeron solo ${rutasReales.length} rutas (¿cambió la tabla?)`);
     const cubiertas = new Set(bloques.map(rutaDe));
     const faltan = rutasReales.filter((r) => !cubiertas.has(r));
-    assert.deepEqual(faltan, [], `rutas de index.php sin ejemplo en peticiones-api.http: ${faltan.join(", ")}`);
-    // La ruta con id (regex en index.php, no figura arriba): el DELETE de un filtro.
-    assert.equal(bloques.some((b) => b.metodo === "DELETE" && rutaDe(b) === "/api/filtros/{id}"), true);
+    assert.deepEqual(faltan, [], `rutas de rutas.php sin ejemplo en peticiones-api.http: ${faltan.join(", ")}`);
+  });
+
+  // Una sesión nueva (sin cookies): la del archivo de ejemplos ya hizo login y logout.
+  const pedirSinSesion = (metodo, ruta) => pedir({ metodo, url: vars.baseUrl + ruta.replace("{id}", "1"), headers: {}, cuerpo: "" }, {});
+
+  await paso("sin sesión, toda ruta que no maneja la sesión por su cuenta responde 401 no_autenticado", async () => {
+    const rutas = rutasDeLaApi();
+    const protegidas = Object.keys(rutas).filter((r) => rutas[r] === false);
+    assert.equal(protegidas.length >= 9, true, `rutas.php: solo ${protegidas.length} rutas exigen sesión (¿cambió la tabla?)`);
+    for (const ruta of protegidas) {
+      const res = await pedirSinSesion("GET", ruta);
+      assert.deepEqual([res.status, res.json?.codigo], [401, "no_autenticado"], `GET ${ruta} sin sesión: ${res.status} ${res.texto.slice(0, 120)}`);
+    }
+  });
+
+  await paso("las rutas que manejan la sesión llegan a su función aun sin sesión", async () => {
+    const rutas = rutasDeLaApi();
+    const propias = Object.keys(rutas).filter((r) => rutas[r] === true);
+    const sinCaso = propias.filter((r) => r !== "/api/login" && !(r in PEDIDOS_SIN_SESION));
+    assert.deepEqual(sinCaso, [], `rutas que manejan la sesión sin caso en este archivo: ${sinCaso.join(", ")}`);
+    for (const [ruta, { metodo, estado }] of Object.entries(PEDIDOS_SIN_SESION)) {
+      assert.ok(ruta in rutas && rutas[ruta] === true, `${ruta} ya no figura entre las que manejan la sesión`);
+      const res = await pedirSinSesion(metodo, ruta);
+      assert.equal(res.status, estado, `${metodo} ${ruta} sin sesión: ${res.status} ${res.texto.slice(0, 120)}`);
+    }
   });
 
   process.exit(resumenPasos());

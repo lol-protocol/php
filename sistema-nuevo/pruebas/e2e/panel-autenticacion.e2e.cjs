@@ -1,18 +1,21 @@
-const { chromium } = require("playwright");
-const { assert, paso, resumenPasos, iniciarSesion, BASE_URL } = require("./ayudante-e2e.cjs");
+const { assert, paso, correrPrueba, enviarLogin, iniciarSesion, paginaEnIngles, BASE_URL, API_URL } = require("./ayudante-e2e.cjs");
 
-(async () => {
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
-
+correrPrueba(async ({ browser, page }) => {
   await paso("credenciales incorrectas muestran un error y no entran al panel", async () => {
     await page.goto(BASE_URL);
-    await page.fill("#login-username", "admin");
-    await page.fill("#login-password", "clave-incorrecta");
-    await page.click("#login-form button[type=submit]");
+    await enviarLogin(page, "clave-incorrecta");
     await page.waitForSelector("#login-error:not([hidden])");
     assert.equal(await page.textContent("#login-error"), "usuario o contraseña incorrectos");
     assert.equal(await page.isHidden("#app"), true);
+  });
+
+  await paso("con la interfaz en inglés, el error de credenciales sale en inglés (no el texto en español del backend)", async () => {
+    const { page: paginaEn, cerrar } = await paginaEnIngles(browser);
+    await paginaEn.goto(BASE_URL);
+    await enviarLogin(paginaEn, "clave-incorrecta");
+    await paginaEn.waitForSelector("#login-error:not([hidden])");
+    assert.equal(await paginaEn.textContent("#login-error"), "wrong username or password");
+    await cerrar();
   });
 
   await paso("credenciales correctas entran al panel y muestran el usuario conectado", async () => {
@@ -29,11 +32,10 @@ const { assert, paso, resumenPasos, iniciarSesion, BASE_URL } = require("./ayuda
   });
 
   await paso("un POST sin token CSRF (o con uno inválido) se rechaza pese a tener sesión válida", async () => {
-    const API_BASE = "http://localhost:8000";
-    const sinToken = await page.request.post(`${API_BASE}/api/notes`, { data: { accion_id: "a00037", texto: "no debería guardarse" } });
+    const sinToken = await page.request.post(`${API_URL}/api/notes`, { data: { accion_id: "a00037", texto: "no debería guardarse" } });
     assert.equal(sinToken.status(), 403);
 
-    const tokenInvalido = await page.request.post(`${API_BASE}/api/notes`, {
+    const tokenInvalido = await page.request.post(`${API_URL}/api/notes`, {
       headers: { "X-CSRF-Token": "token-invento-falso" },
       data: { accion_id: "a00037", texto: "no debería guardarse" },
     });
@@ -45,6 +47,9 @@ const { assert, paso, resumenPasos, iniciarSesion, BASE_URL } = require("./ayuda
     const cuerpo = await tokenInvalido.text();
     assert.equal(cuerpo.includes("inválido"), true);
     assert.equal(cuerpo.includes("\\u00e1"), false);
+
+    // Además del texto (para quien lee la respuesta a mano), un código estable que la interfaz traduce.
+    assert.equal(JSON.parse(cuerpo).codigo, "csrf_invalido");
   });
 
   await paso("cerrar sesión vuelve a la pantalla de login", async () => {
@@ -53,6 +58,4 @@ const { assert, paso, resumenPasos, iniciarSesion, BASE_URL } = require("./ayuda
     assert.equal(await page.isHidden("#login-screen"), false);
   });
 
-  await browser.close();
-  process.exit(resumenPasos());
-})();
+}, { entrar: false });

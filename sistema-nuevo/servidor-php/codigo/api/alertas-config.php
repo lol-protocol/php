@@ -8,24 +8,22 @@ function api_alertas_config(): void
 {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $almacen = new AlmacenConfiguracion(ConexionBd::obtener());
-        echo json_encode([
+        api_responder([
             'alertas' => [
                 'ip_pais' => $almacen->esAlertaHabilitada('ip_pais'),
                 'cambio_pais' => $almacen->esAlertaHabilitada('cambio_pais'),
             ],
             'umbral' => $almacen->obtenerUmbral(),
-        ], JSON_UNESCAPED_UNICODE);
+        ]);
         return;
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if (!auth_validar_csrf_header()) {
-            http_response_code(403);
-            echo json_encode(['error' => 'token CSRF inválido'], JSON_UNESCAPED_UNICODE);
+        if (!api_exigir_csrf()) {
             return;
         }
 
-        $body = json_decode(file_get_contents('php://input') ?: '{}', true) ?? [];
+        $body = api_cuerpo_json();
         $almacen = new AlmacenConfiguracion(ConexionBd::obtener());
 
         if (isset($body['alertas'])) {
@@ -41,10 +39,9 @@ function api_alertas_config(): void
             $almacen->guardar('umbral_sensibilidad', (string)$umbral);
         }
 
-        echo json_encode(['ok' => true], JSON_UNESCAPED_UNICODE);
+        api_responder(['ok' => true]);
         return;
     }
 
-    http_response_code(405);
-    echo json_encode(['error' => 'método no permitido'], JSON_UNESCAPED_UNICODE);
+    api_metodo_no_permitido();
 }

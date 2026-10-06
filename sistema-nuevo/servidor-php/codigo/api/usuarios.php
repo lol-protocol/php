@@ -26,18 +26,18 @@ function api_users(): void
 
     $resultado = (new AlmacenDatos(ConexionBd::obtener()))->usersPage($pagina, $porPagina, $busqueda);
 
-    echo json_encode([
+    api_responder([
         'items' => $resultado['items'],
         'pagination' => api_pagination_meta($resultado['total'], $pagina, $porPagina),
-    ], JSON_UNESCAPED_UNICODE);
+    ]);
 }
 
 function api_groups(): void
 {
-    echo json_encode((new AlmacenDatos(ConexionBd::obtener()))->groups(), JSON_UNESCAPED_UNICODE);
+    api_responder((new AlmacenDatos(ConexionBd::obtener()))->groups());
 }
 
 function api_action_types(): void
 {
-    echo json_encode((new AlmacenAcciones(ConexionBd::obtener()))->tipos(), JSON_UNESCAPED_UNICODE);
+    api_responder((new AlmacenAcciones(ConexionBd::obtener()))->tipos());
 }

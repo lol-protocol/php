@@ -1,11 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-
-// alertas.js importa idioma.js (lee localStorage al importarse) y nucleo.js
-// (lee window.location.hostname para armar API_BASE); Node no trae esas
-// APIs del navegador, así que se simulan antes del import.
-globalThis.localStorage = { getItem: () => null, setItem: () => {} };
-globalThis.window = { location: { hostname: "localhost" } };
+import "./navegador-falso.mjs"; // simula localStorage y window.location, que los módulos de interfaz/js/ leen al importarse
 
 /** DOM mínimo, sin dependencias: alcanza con lo que usan el() y renderAlerts(). */
 class ElementoFalso {
