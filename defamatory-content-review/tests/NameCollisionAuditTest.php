@@ -30,6 +30,12 @@ class NameCollisionAuditTest extends TestCase
         'ron' => ['Cioară', 'Negru', 'Țigan', 'Prost', 'Bou', 'Vită', 'Porc'],
         'ell' => ['Κουτσός', 'Καμπούρης', 'Μουγγός', 'Τραυλός', 'Κλέφτης', 'Αράπης', 'Γύφτος', 'Τσιγγάνος', 'Εβραίος', 'Τούρκος', 'Αλβανός', 'Νέγρος', 'Νάνος'],
         'hun' => ['Koca', 'Pina', 'Cici', 'Buzi', 'Néma', 'Béna', 'Sánta', 'Ronda', 'Büdös', 'Tolvaj', 'Cigány', 'Zsidó', 'Néger', 'Ördög', 'Pogány'],
+        'ara' => ['أحدب', 'أعرج', 'يهودي', 'أعجمي', 'نيك', 'بول', 'كلب'],
+        'heb' => ['כלב', 'חמור', 'בור', 'קנאי', 'כופר'],
+        'hin' => ['काला', 'मोटा', 'मुल्ला', 'काना', 'गधा', 'दलाल'],
+        'ind' => ['Negro', 'Tai', 'Babi', 'Kera', 'Bau', 'Buta', 'Gila', 'Tuli', 'Tiran'],
+        'tha' => ['หมู', 'หนู', 'อ้วน', 'นม', 'ลาว', 'ทอม', 'ดี้', 'ลา', 'แขก'],
+        'vie' => ['Ngu'],
         'fin' => ['Peto', 'Mato', 'Sika', 'Akka', 'Varas', 'Pelle', 'Paska', 'Kusi', 'Perse', 'Naida', 'Lutka'],
     ];
 

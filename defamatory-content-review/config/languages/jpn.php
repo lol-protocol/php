@@ -29,6 +29,9 @@ return [
             ['word' => '犬', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => '蛇', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => '蛆虫', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'ゴキブリ', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => '雌豚', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => '豚野郎', 'riskType' => 'animal', 'severity' => 'high'],
         ],
 
         'chinou' => [
@@ -44,6 +47,12 @@ return [
             ['word' => '文盲', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'とんま', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ノロマ', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'ばか', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'あほ', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'うすのろ', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => '脳たりん', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'おたんこなす', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => '馬鹿野郎', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
 
         'karada' => [
@@ -61,6 +70,11 @@ return [
             ['word' => 'ババア', 'riskType' => 'fisico', 'severity' => 'high'],
             ['word' => 'ジジイ', 'riskType' => 'fisico', 'severity' => 'high'],
             ['word' => '巨人', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'でぶ', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'はげ', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'ちび', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'ばばあ', 'riskType' => 'fisico', 'severity' => 'high'],
+            ['word' => 'じじい', 'riskType' => 'fisico', 'severity' => 'high'],
         ],
 
         'shougai' => [
@@ -108,6 +122,12 @@ return [
             ['word' => 'ろくでなし', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => '卑怯者', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => '意気地なし', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'ゴミ', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => '人でなし', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => '悪党', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'ペテン師', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'ごくつぶし', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => '最低', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
 
         'seibetsu' => [
@@ -122,6 +142,9 @@ return [
             ['word' => 'ヤリチン', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => '尻軽', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => '変態', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => '淫乱', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'あばずれ', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'スケベ', 'riskType' => 'genero', 'severity' => 'medium'],
         ],
 
         'gehin' => [
@@ -136,6 +159,13 @@ return [
             ['word' => 'ヤリマン', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => '屁', 'riskType' => 'ordinario', 'severity' => 'low'],
             ['word' => 'アホンダラ', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'くそ', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'うんこ', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'ちんこ', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'まんこ', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => '死ね', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'クソッタレ', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'ちくしょう', 'riskType' => 'ordinario', 'severity' => 'medium'],
         ],
 
         'azakeri' => [
@@ -153,10 +183,16 @@ return [
             ['word' => '哀れ', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => '負け犬', 'riskType' => 'burlesco', 'severity' => 'medium'],
             ['word' => 'ドジ', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => '雑魚', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'ヘタレ', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'カス', 'riskType' => 'burlesco', 'severity' => 'high'],
+            ['word' => 'ポンコツ', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => '能無し', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => '役立たず', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => '無能', 'riskType' => 'burlesco', 'severity' => 'medium'],
         ],
 
         'minzoku' => [
-            ['word' => '黒人', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'チョン', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => '支那人', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => '毛唐', 'riskType' => 'etnico', 'severity' => 'high'],
