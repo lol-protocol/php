@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "VN",
+    "country_name": "Vietnam",
+    "law_name": "Law on Cyber Security",
+    "jurisdiction": "Ministry of Public Security",
+    "enactment_date": "2018-11-12",
+    "effective_date": "2019-01-01",
+    "scope": "Vietnamese Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "Lawful processing",
+    "data_categories": "Personal data",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "Ministry officials",
+    "penalties_range": "Up to VND 100M fine",
+    "exemptions": "Government functions",
+    "website_url": "https://mps.gov.vn/",
+    "language": "Vietnamese",
+    "notes": "Vietnam's cybersecurity law"
+  }
+]

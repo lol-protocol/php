@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "NL",
+    "country_name": "Netherlands",
+    "law_name": "GDPR Implementation Law",
+    "jurisdiction": "Dutch DPA (AP)",
+    "enactment_date": "2018-05-25",
+    "effective_date": "2018-05-25",
+    "scope": "Dutch Residents",
+    "applies_to": "All entities",
+    "key_requirements": "GDPR compliance",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "Dutch Authority for Data Protection",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://www.ap.nl/",
+    "language": "Dutch",
+    "notes": "GDPR implementation"
+  }
+]

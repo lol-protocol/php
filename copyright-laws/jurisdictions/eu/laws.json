@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "EU",
+    "country_name": "European Union",
+    "law_name": "InfoSoc Directive (2001/29/EC)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Reproduction & distribution",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Limited license scheme",
+    "digital_protection": "EUCD compliance",
+    "fair_use_exceptions": "Private use exceptions",
+    "registration_required": "No",
+    "enforcement_body": "National IP Offices & Court System",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://euipo.europa.eu/"
+  }
+]

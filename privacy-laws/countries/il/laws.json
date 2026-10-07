@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "IL",
+    "country_name": "Israel",
+    "law_name": "Privacy Protection Law",
+    "jurisdiction": "Privacy Protection Authority",
+    "enactment_date": "1981-03-31",
+    "effective_date": "1981-05-15",
+    "scope": "Israeli Residents",
+    "applies_to": "All entities",
+    "key_requirements": "Lawful collection & transparency",
+    "data_categories": "Personal data",
+    "retention_period": "As appropriate",
+    "enforcement_authority": "Israeli Authority",
+    "penalties_range": "Fines & compliance orders",
+    "exemptions": "Government functions",
+    "website_url": "https://www.justice.gov.il/",
+    "language": "Hebrew/English",
+    "notes": "Middle East region"
+  }
+]

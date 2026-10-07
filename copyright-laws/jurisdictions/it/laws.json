@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "IT",
+    "country_name": "Italy",
+    "law_name": "Law No. 633/1941",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Collective administration required",
+    "digital_protection": "Copyright protection",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Italian Copyright Office",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.cultura.gov.it/"
+  }
+]

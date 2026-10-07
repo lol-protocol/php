@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "IN",
+    "country_name": "India",
+    "law_name": "Digital Personal Data Protection Act 2023",
+    "jurisdiction": "Ministry of Electronics & IT",
+    "enactment_date": "2023-08-04",
+    "effective_date": "2024-08-04",
+    "scope": "Indian Residents",
+    "applies_to": "Data processors & fiduciaries",
+    "key_requirements": "Consent & lawful processing",
+    "data_categories": "Digital personal data",
+    "retention_period": "Not indefinitely",
+    "enforcement_authority": "Data Protection Board of India",
+    "penalties_range": "Up to ₹250 Cr penalty",
+    "exemptions": "Government functions",
+    "website_url": "https://www.meity.gov.in/",
+    "language": "English",
+    "notes": "Recently passed"
+  }
+]

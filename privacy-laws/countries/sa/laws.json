@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "SA",
+    "country_name": "Saudi Arabia",
+    "law_name": "Personal Data Protection Law",
+    "jurisdiction": "PDPL Authority",
+    "enactment_date": "2021-12-21",
+    "effective_date": "2023-09-23",
+    "scope": "Saudi Residents",
+    "applies_to": "All entities",
+    "key_requirements": "Consent & transparency",
+    "data_categories": "Personal data",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "Saudi PDPL Authority",
+    "penalties_range": "Fines & compliance orders",
+    "exemptions": "Government functions",
+    "website_url": "https://www.pdpl.gov.sa/",
+    "language": "Arabic/English",
+    "notes": "Middle East region"
+  }
+]

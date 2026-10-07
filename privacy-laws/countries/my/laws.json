@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "MY",
+    "country_name": "Malaysia",
+    "law_name": "Personal Data Protection Act (PDPA)",
+    "jurisdiction": "Malaysian DPA",
+    "enactment_date": "2010-11-15",
+    "effective_date": "2012-11-15",
+    "scope": "Malaysian Residents",
+    "applies_to": "Organizations in MY",
+    "key_requirements": "Consent & purpose limitation",
+    "data_categories": "Personal data",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "Malaysian Commissioner",
+    "penalties_range": "Up to MYR 300k fine",
+    "exemptions": "Government functions",
+    "website_url": "https://www.pdp.gov.my/",
+    "language": "English/Malay",
+    "notes": "Southeast Asia region"
+  }
+]

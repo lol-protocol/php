@@ -54,6 +54,10 @@ async function reorganizeByCountry() {
     const records = parse(csvContent, {
       columns: true,
       skip_empty_lines: true,
+      quote: '"',
+      escape: '"',
+      relax: true,
+      relaxColumnCount: true,
     });
 
     console.log(`✓ Loaded ${records.length} records from master CSV`);

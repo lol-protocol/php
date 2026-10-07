@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "ID",
+    "country_name": "Indonesia",
+    "law_name": "Law No. 27 of 2022 (PDP)",
+    "jurisdiction": "Ministry of Communication & IT",
+    "enactment_date": "2022-10-17",
+    "effective_date": "2024-10-17",
+    "scope": "Indonesian Residents",
+    "applies_to": "All entities",
+    "key_requirements": "Consent & transparency",
+    "data_categories": "Personal data",
+    "retention_period": "2 years retention",
+    "enforcement_authority": "Indonesian DPA",
+    "penalties_range": "Up to IDR 5B fine",
+    "exemptions": "Government functions",
+    "website_url": "https://www.digitaltalenta.kemkominfo.go.id/",
+    "language": "Indonesian",
+    "notes": "Southeast Asia region"
+  }
+]
