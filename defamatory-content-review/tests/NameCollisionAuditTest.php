@@ -26,6 +26,11 @@ class NameCollisionAuditTest extends TestCase
         'swe' => ['Ko', 'Kuk', 'Fan', 'Hora', 'Jude'],
         'dan' => ['So', 'Abe', 'Gal', 'Alfons', 'Pik', 'Luder', 'Ko', 'Orm'],
         'nor' => ['Lam', 'Gal', 'Kuk', 'Ku', 'Orm'],
+        'tur' => ['Topal', 'Çolak', 'Kambur', 'Kör', 'Deli', 'Sağır', 'Am', 'Sik', 'Bok', 'Meme', 'Moron', 'Tiran'],
+        'ron' => ['Cioară', 'Negru', 'Țigan', 'Prost', 'Bou', 'Vită', 'Porc'],
+        'ell' => ['Κουτσός', 'Καμπούρης', 'Μουγγός', 'Τραυλός', 'Κλέφτης', 'Αράπης', 'Γύφτος', 'Τσιγγάνος', 'Εβραίος', 'Τούρκος', 'Αλβανός', 'Νέγρος', 'Νάνος'],
+        'hun' => ['Koca', 'Pina', 'Cici', 'Buzi', 'Néma', 'Béna', 'Sánta', 'Ronda', 'Büdös', 'Tolvaj', 'Cigány', 'Zsidó', 'Néger', 'Ördög', 'Pogány'],
+        'fin' => ['Peto', 'Mato', 'Sika', 'Akka', 'Varas', 'Pelle', 'Paska', 'Kusi', 'Perse', 'Naida', 'Lutka'],
     ];
 
     /** @return array<string,array{string,string}> */
