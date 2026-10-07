@@ -93,3 +93,18 @@ EOT
         echo "$output" | grep -q "\[OK\]    $h" || { echo "$output"; return 1; }
     done
 }
+
+@test "10_B: con nginx REAL, quitar un dominio lo archiva, nginx -t sigue OK y el otro dominio sigue sirviendo" {
+    bash "$VPS_DIR/03-configure-nginx-site.sh" $D1 > /dev/null
+    bash "$VPS_DIR/03-configure-nginx-site.sh" $D3 > /dev/null
+    nginx_up
+    run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D1" http://127.0.0.1/;  [ "$output" = "200" ]
+    export REMOVED_DIR="$BATS_TEST_TMPDIR/removed"
+    run bash "$VPS_DIR/10_B-remove-domain.sh" $D1 --yes
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [ ! -e /etc/nginx/sites-enabled/$D1 ] && [ ! -e /etc/nginx/sites-available/$D1 ]
+    d=$(ls -d "$REMOVED_DIR"/$D1-*)
+    [ -f "$d/sites-available/$D1" ] && [ -f "$d/www/landing-page/$D1/index.html" ]
+    nginx -t
+    run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D3" http://127.0.0.1/;  [ "$output" = "200" ]
+}
