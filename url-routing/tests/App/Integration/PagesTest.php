@@ -94,6 +94,12 @@ class PagesTest extends TestCase
         return $this->get($host, $uri, 'POST', $postBody, $sessionId);
     }
 
+    /** Direct access to the shared POS fixture, for tests that need to change catalog state mid-test. */
+    private function posDb(): Database
+    {
+        return new Database('sqlite:' . self::$dir . '/pos.sqlite');
+    }
+
     /** @return array<string, array{string, string, int, list<string>}> */
     public static function paginas(): array
     {
@@ -275,6 +281,81 @@ class PagesTest extends TestCase
         // GET instead of POST, even with a valid token.
         $conToken = http_build_query(['sku' => 'CAM-AZ-M', 'cantidad' => '1', 'csrf_token' => $token]);
         $this->assertSame(403, $this->get(self::POS, '/cart/agregar/', 'GET', $conToken, $sid)[0]);
+    }
+
+    public function testCartMutationsRejectArrayValuedInputsInsteadOfErroring(): void
+    {
+        [$sid, $token] = $this->primeSession();
+
+        // sku[]=... reaches the controller as an array; must 400, not warn/500.
+        $arraySku = 'sku[]=CAM-AZ-M&cantidad=1&csrf_token=' . urlencode($token);
+        $this->assertSame(400, $this->get(self::POS, '/cart/agregar/', 'POST', $arraySku, $sid)[0]);
+
+        // csrf_token[]=... must 403 (SessionManager::validateCsrfToken() takes a string), not 500.
+        $arrayToken = 'sku=CAM-AZ-M&cantidad=1&csrf_token[]=' . urlencode($token);
+        $this->assertSame(403, $this->get(self::POS, '/cart/agregar/', 'POST', $arrayToken, $sid)[0]);
+    }
+
+    public function testDeactivatedProductDropsFromTheCartViewAndFromActualizar(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'SUD-AZ-L', 'cantidad' => '1'], $sid, $token);
+
+        $db = $this->posDb();
+        $db->update('productos', ['activo' => false], ['id' => 81372048]);
+        try {
+            [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+            $this->assertStringContainsString('El carrito está vacío.', $body);
+
+            // Re-add is impossible once inactive, so put the line back directly to test actualizar()'s own guard.
+            $db->update('productos', ['activo' => true], ['id' => 81372048]);
+            $this->post(self::POS, '/cart/agregar/', ['sku' => 'SUD-AZ-L', 'cantidad' => '1'], $sid, $token);
+            $db->update('productos', ['activo' => false], ['id' => 81372048]);
+
+            [$codigo] = $this->post(self::POS, '/cart/actualizar/', ['sku' => 'SUD-AZ-L', 'cantidad' => '2'], $sid, $token);
+            $this->assertSame(303, $codigo);
+            [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+            $this->assertStringContainsString('El carrito está vacío.', $body);
+        } finally {
+            $db->update('productos', ['activo' => true], ['id' => 81372048]);
+        }
+    }
+
+    public function testShowReClampsAndPersistsWhenStockDropsBelowCartQuantity(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        // SUD-AZ-L has 3 in stock (see seed data).
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'SUD-AZ-L', 'cantidad' => '3'], $sid, $token);
+
+        $db = $this->posDb();
+        $db->update('variantes', ['stock' => 1], ['sku' => 'SUD-AZ-L']);
+        try {
+            [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+            $this->assertMatchesRegularExpression('/name="cantidad"[^>]*value="1"/', $body);
+
+            // The clamp was persisted to the session, not just displayed once.
+            [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+            $this->assertMatchesRegularExpression('/name="cantidad"[^>]*value="1"/', $body);
+        } finally {
+            $db->update('variantes', ['stock' => 3], ['sku' => 'SUD-AZ-L']);
+        }
+    }
+
+    public function testAgregarRejectsMixingCurrenciesInTheCart(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $db = $this->posDb();
+        $db->insert('productos', ['id' => 99999901, 'nombre' => 'Producto en USD', 'precio_centavos' => 1000, 'moneda' => 'USD', 'activo' => true]);
+        $db->insert('variantes', ['sku' => 'TEST-USD', 'producto_id' => 99999901, 'nombre' => 'Única', 'stock' => 10]);
+
+        try {
+            $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token); // MXN
+
+            $this->assertSame(400, $this->post(self::POS, '/cart/agregar/', ['sku' => 'TEST-USD', 'cantidad' => '1'], $sid, $token)[0]);
+        } finally {
+            $db->delete('variantes', ['sku' => 'TEST-USD']);
+            $db->delete('productos', ['id' => 99999901]);
+        }
     }
 
     public function testExportIsValidGedcom(): void

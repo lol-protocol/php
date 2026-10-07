@@ -19,7 +19,7 @@ class BaseController
     protected function validateCsrfToken(): bool
     {
         $token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
-        if ($token !== null && ServiceLocator::getInstance()->getSessionManager()->validateCsrfToken($token)) {
+        if (is_string($token) && ServiceLocator::getInstance()->getSessionManager()->validateCsrfToken($token)) {
             return true;
         }
 
