@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use PDO;
+use PDOException;
 use Throwable;
 
 final class Database
@@ -17,13 +18,39 @@ final class Database
     /** La conexion compartida del request (o del proceso de CLI). */
     public static function connection(): PDO
     {
-        return self::$connection ??= self::conectar();
+        return self::$connection ??= self::conectar(self::debeSerPersistente());
+    }
+
+    /**
+     * En la web (PHP-FPM, php -S) la conexion se reutiliza entre peticiones:
+     * abrirla cuesta entre 10 y 20 ms con una base local (mas con una remota),
+     * mas que todo lo demas que hace una pantalla liviana (Auditoria pasa de 14
+     * a 3 ms). En CLI -migraciones, seed y tests- nunca: ahi cada conexion tiene
+     * que ser propia. DB_PERSISTENT=0 la apaga, por ejemplo detras de un pooler
+     * como PgBouncer, o si hay mas procesos de PHP que max_connections en
+     * Postgres (cada uno guarda su conexion abierta).
+     */
+    private static function debeSerPersistente(): bool
+    {
+        return PHP_SAPI !== 'cli' && Config::variable('DB_PERSISTENT', '1') !== '0';
     }
 
     /**
      * Una conexion nueva, independiente de la compartida. La usa connection()
      * la primera vez, y los tests que necesitan hacer de segundo proceso (dos
-     * anulaciones simultaneas, dos envios del mismo formulario).
+     * anulaciones simultaneas, dos envios del mismo formulario): por eso, sin
+     * pedirlo, no es persistente (una persistente devolveria la misma que ya
+     * tienen).
+     *
+     * Con $persistente la conexion queda en el proceso y la siguiente peticion
+     * la reutiliza. Lo que se podia temer -que una peticion que murio a mitad de
+     * una transaccion le deje su estado a la siguiente- no pasa: PDO deshace sola
+     * la transaccion pendiente cuando se la suelta. Lo que si pasa es que la
+     * conexion guardada puede estar muerta (se reinicio Postgres, o corto las
+     * inactivas): el primer comando falla con "SSL connection has been closed
+     * unexpectedly", que sin reintento era un 500 para la primera peticion de
+     * cada proceso. Por eso se reintenta una vez, ya con una conexion nueva
+     * (DatabasePersistenteTest).
      *
      * Tambien fija la zona horaria, la de PHP y la de la sesion de Postgres a
      * la vez y desde el mismo valor: es el unico punto por el que pasan la
@@ -34,7 +61,7 @@ final class Database
      * boleta figuraba vencida en un lado y al dia en el otro durante algunas
      * horas por dia.
      */
-    public static function conectar(): PDO
+    public static function conectar(bool $persistente = false): PDO
     {
         $zona = Config::zonaHoraria();
         date_default_timezone_set($zona);
@@ -48,16 +75,29 @@ final class Database
             'DB_PASSWORD' => 'cobros_app_dev',
         ]);
 
-        $pdo = new PDO(
-            sprintf(
-                'pgsql:host=%s;port=%s;dbname=%s',
-                Config::variable('DB_HOST', '127.0.0.1'),
-                Config::variable('DB_PORT', '5432'),
-                $nombre
-            ),
-            $usuario,
-            $clave
+        $dsn = sprintf(
+            'pgsql:host=%s;port=%s;dbname=%s',
+            Config::variable('DB_HOST', '127.0.0.1'),
+            Config::variable('DB_PORT', '5432'),
+            $nombre
         );
+
+        try {
+            return self::abrir($dsn, $usuario, $clave, $persistente, $zona);
+        } catch (PDOException $e) {
+            if (!$persistente) {
+                throw $e;
+            }
+
+            // La conexion guardada estaba muerta: PDO la descarto al fallar, el segundo intento abre una nueva.
+            // Si la base de verdad no esta, este tambien falla y el error sube igual.
+            return self::abrir($dsn, $usuario, $clave, true, $zona);
+        }
+    }
+
+    private static function abrir(string $dsn, string $usuario, string $clave, bool $persistente, string $zona): PDO
+    {
+        $pdo = new PDO($dsn, $usuario, $clave, [PDO::ATTR_PERSISTENT => $persistente]);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $pdo->exec('SET TIME ZONE ' . $pdo->quote($zona));

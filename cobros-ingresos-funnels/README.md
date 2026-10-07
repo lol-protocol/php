@@ -151,6 +151,7 @@ Todo se lee de variables de entorno (con PHP-FPM, `env[...]` en el pool):
 |---|---|---|
 | `DB_NAME`, `DB_USER`, `DB_PASSWORD` | sí | La conexión a Postgres. Si falta alguna, la app no arranca y el log de errores nombra todas las que faltan. |
 | `DB_HOST`, `DB_PORT` | no (`127.0.0.1`, `5432`) | |
+| `DB_PERSISTENT` | no (`1` en la web) | Si la conexión a Postgres se reutiliza entre peticiones (ahorra entre 10 y 20 ms por petición; en CLI nunca es persistente). Poné `0` detrás de un pooler como PgBouncer, o si hay más procesos de PHP-FPM que `max_connections` en Postgres: cada proceso guarda su conexión abierta, así que `pm.max_children` no debería superarlo. |
 | `APP_TIMEZONE` | no (`UTC`) | La zona horaria del negocio, en formato IANA (ej. `America/Argentina/Buenos_Aires`). Define qué día es "hoy" para vencimientos, rangos de fechas y notas de crédito, y se aplica a PHP y a Postgres por igual. |
 | `APP_ENV` | no | Solo `dev`, en desarrollo. En producción no se define. |
 
@@ -204,10 +205,12 @@ Hay tres suites:
 - `tests/Unit`: sin base de datos.
 - `tests/Integration`: contra la base de las variables de arriba (corré el seed
   primero). La mayoría corre dentro de una transacción que se deshace al terminar,
-  así no deja datos ni ve los de otro test. Tres no pueden: `AnulableTest` necesita
+  así no deja datos ni ve los de otro test. Cuatro no pueden: `AnulableTest` necesita
   una segunda conexión, que no vería lo que no se commiteó; `ZonaHorariaTest` abre
-  conexiones propias y cambia la zona horaria del proceso; y `DatabaseTransaccionTest`
-  prueba el commit y el rollback de verdad. Los tres dejan todo como estaba al terminar.
+  conexiones propias y cambia la zona horaria del proceso; `DatabasePersistenteTest`
+  maneja sus propias conexiones persistentes (comprueba que una transacción abierta
+  no se le filtra a la petición siguiente); y `DatabaseTransaccionTest` prueba el
+  commit y el rollback de verdad. Los cuatro dejan todo como estaba al terminar.
 - `tests/Http`: levanta la app con `php -S` y la recorre por HTTP como un navegador
   (CSRF, formularios, redirecciones). Cubre lo que los otros no alcanzan: el
   cableado de `public/index.php` y los controllers. Lo que crea se borra al terminar.
@@ -307,12 +310,12 @@ tests/
                         de HTTPS)
   Integration/           contra la base real, casi todos en una transaccion que
                         se deshace (un archivo por repositorio, migraciones,
-                        auditoría, zona horaria, que una base solo migrada
-                        traiga el catálogo de países y monedas, que el estado
-                        de una boleta en SQL coincida con el de PHP, que las
-                        pantallas pesadas no traigan miles de filas a PHP, y
-                        que los datos de ejemplo del seed cumplan las reglas
-                        de la app)
+                        auditoría, zona horaria, conexión persistente, que una
+                        base solo migrada traiga el catálogo de países y monedas,
+                        que el estado de una boleta en SQL coincida con el de
+                        PHP, que las pantallas pesadas no traigan miles de filas
+                        a PHP, y que los datos de ejemplo del seed cumplan las
+                        reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
@@ -402,6 +405,11 @@ en su moneda original.
   Medido con 30 mil clientes, 120 mil boletas, 100 mil pagos y 150 mil visitantes
   del funnel (la base y el servidor en la misma máquina), el Dashboard pasó de
   1,7 s a 0,4 s y Cobros de 0,65 s a 0,19 s.
+- La conexión a Postgres es persistente en la web (`DB_PERSISTENT`, ver
+  «Configuración»): abrirla cuesta entre 10 y 20 ms, más que lo que tarda una
+  pantalla liviana en todo lo demás. Si la conexión guardada murió (se reinició
+  Postgres), `Database::conectar()` la reemplaza en la misma petición. En CLI
+  (migraciones, seed, tests) nunca es persistente.
 - Protección CSRF: `App\Csrf` guarda un token fijo por sesión que cada
   `<form method="post">` incluye oculto, y el `Router` lo valida antes de
   despachar cualquier POST — si falta o no coincide, corta con 403 antes de
