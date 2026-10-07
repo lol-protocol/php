@@ -8,14 +8,17 @@ print_header "02_B" "Instalacion de PHP 8.3"
 # php8.3-fpm: el proceso que realmente ejecuta el codigo PHP (Nginx solo le reenvia
 #             las peticiones .php via socket unix, no lo ejecuta el mismo).
 # php8.3-cli: permite correr scripts PHP desde la terminal (util para composer, cron, etc).
-# php8.3-mysql / php8.3-postgresql: drivers para conectar PHP a cada base de datos
-#             (instalamos ambos por si el proyecto usa una u otra).
+# php8.3-mysql / php8.3-pgsql: drivers para conectar PHP a cada base de datos
+#             (instalamos ambos por si el proyecto usa una u otra). OJO con el nombre:
+#             el paquete es "php8.3-pgsql", NO "php8.3-postgresql" (no existe).
+# json: ya viene incluido en PHP 8 (php8.3-common); "php8.3-json" no existe como
+#             paquete aparte y apt fallaria con "Unable to locate package".
 # php8.3-mbstring / php8.3-xml: requeridos por la mayoria de frameworks (Laravel, Symfony)
 #             y por Composer para resolver dependencias.
 sudo apt-get install -y \
     php8.3 php8.3-fpm php8.3-cli php8.3-common \
-    php8.3-mysql php8.3-postgresql php8.3-gd \
-    php8.3-curl php8.3-json php8.3-zip \
+    php8.3-mysql php8.3-pgsql php8.3-gd \
+    php8.3-curl php8.3-zip \
     php8.3-mbstring php8.3-xml php8.3-bcmath
 
 service_start_enable php8.3-fpm
