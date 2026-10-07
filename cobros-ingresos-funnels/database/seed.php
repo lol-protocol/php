@@ -17,6 +17,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Config;
 use App\Database;
+use App\MayoriaDeEdad;
 use App\Migrador;
 
 // Borra todo lo que haya en la base: que no pueda correr por accidente contra
@@ -167,6 +168,11 @@ function perfilAleatorio(array $paisPesos, array $ciudadesPorPais, array $idioma
     $paisCodigo = eleccionPonderada($paisPesos);
     $edad = mt_rand(18, 68);
     $nacimiento = $hoy->modify("-{$edad} years")->modify('-' . mt_rand(0, 364) . ' days');
+    // Un 29 de febrero, restarle 18 anios cae en el 1 de marzo de hace 18 anios: esa persona todavia tiene 17, y el
+    // trigger de la migracion 007 no la deja entrar como cliente. Cualquier otro dia esto no hace nada.
+    while (!MayoriaDeEdad::cumplida(fecha($nacimiento), $hoy)) {
+        $nacimiento = $nacimiento->modify('-1 day');
+    }
     $ciudades = $ciudadesPorPais[$paisCodigo];
 
     return [
