@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="s_padrino"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter></defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
+  
+  <circle cx="32" cy="14" r="7" fill="#888888" stroke="#7A7A7A" stroke-width="1.5"/>
+  <path d="M 20 28 L 26 26 L 42 26 L 48 28 L 46 44 L 24 44 Z"
+        fill="#A8A8A8" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_padrino)"/>
+  <path d="M 18 26 Q 16 28 18 32" stroke="#A8A8A8" stroke-width="1" opacity="0.6"/>
+  
+</svg>

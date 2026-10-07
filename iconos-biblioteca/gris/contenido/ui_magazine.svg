@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="grad_revista_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B8B8B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7A7A7A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_revista_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_revista_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_revista_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_revista">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Sombra -->
+  <ellipse cx="32" cy="55" rx="12" ry="4" fill="#000" opacity="0.15"/>
+
+  <!-- Portada de revista 2.5D -->
+  <path d="M 16 16 L 20 14 L 48 14 L 44 16 L 44 48 L 20 50 L 16 48 Z"
+        fill="url(#grad_revista_3)" stroke="#4A4A4A" stroke-width="1.5" filter="url(#shadow_revista)"/>
+
+  <!-- Costado derecho -->
+  <path d="M 48 14 L 52 12 L 52 46 L 48 48 Z"
+        fill="#4A4A4A" opacity="0.35"/>
+
+  <!-- Título de portada -->
+  <rect x="20" y="18" width="20" height="4" fill="#B0B0B0" opacity="0.6" rx="1"/>
+
+  <!-- Imagen portada -->
+  <rect x="20" y="24" width="20" height="10" fill="#B0B0B0" opacity="0.4" rx="1"/>
+
+  <!-- Líneas de contenido -->
+  <line x1="20" y1="36" x2="40" y2="36" stroke="#B0B0B0" stroke-width="0.8" opacity="0.5"/>
+  <line x1="20" y1="40" x2="40" y2="40" stroke="#B0B0B0" stroke-width="0.8" opacity="0.5"/>
+  <line x1="20" y1="44" x2="36" y2="44" stroke="#B0B0B0" stroke-width="0.8" opacity="0.5"/>
+  </svg>

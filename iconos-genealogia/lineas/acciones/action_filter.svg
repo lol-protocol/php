@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="shadow_filtro">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </filter>
+    <linearGradient id="grad_filtro" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="32" cy="55" rx="12" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+  <path d="M 16 16 L 48 16 L 40 28 L 40 48 L 24 48 L 24 28 Z" fill="none" stroke="#1E40AF" stroke-width="1.5" filter="url(#shadow_filtro)" />
+  <path d="M 40 28 L 44 30 L 44 46 L 40 48 Z" fill="none" opacity="0.3" stroke="#4B5563" stroke-width="1.5" />
+  </svg>

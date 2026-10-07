@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="grad_prestado_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B8B8B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7A7A7A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_prestado_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_prestado_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_prestado_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B0B0B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B8B8B;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_prestado">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Sombra -->
+  <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
+
+  <!-- Círculo de estado (rojo) 2.5D -->
+  <circle cx="32" cy="32" r="13" fill="#777777" stroke="#3A3A3A" stroke-width="1.5" filter="url(#shadow_prestado)"/>
+
+  <!-- Costado -->
+  <path d="M 45 32 A 13 13 0 0 0 44 38"
+        fill="none" stroke="#3A3A3A" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Brillo -->
+  <ellipse cx="27" cy="26" rx="5" ry="4" fill="#BFBFBF" opacity="0.3"/>
+
+  <!-- X (no disponible) -->
+  <line x1="24" y1="24" x2="40" y2="40" stroke="#FFF" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="40" y1="24" x2="24" y2="40" stroke="#FFF" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>

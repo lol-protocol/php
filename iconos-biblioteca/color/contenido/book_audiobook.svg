@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="grad_audiobook_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_audiobook_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_audiobook_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_audiobook_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_audiobook">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Sombra -->
+  <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
+
+  <!-- Banda superior de auriculares 2.5D -->
+  <path d="M 18 20 Q 32 10 46 20"
+        stroke="#6366F1" stroke-width="2.5" fill="none" stroke-linecap="round" filter="url(#shadow_audiobook)"/>
+
+  <!-- Lado izquierdo de banda -->
+  <path d="M 18 20 Q 32 12 46 20"
+        stroke="#4F46E5" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.3"/>
+
+  <!-- Oreja izquierda - Auricular 2.5D -->
+  <circle cx="18" cy="32" r="6" fill="url(#grad_audiobook_2)" stroke="#4F46E5" stroke-width="1.5"/>
+  <!-- Costado auricular -->
+  <path d="M 24 32 A 6 6 0 0 0 23 37"
+        fill="none" stroke="#4F46E5" stroke-width="1.5" opacity="0.3"/>
+  <!-- Brillo -->
+  <circle cx="16" cy="30" r="2" fill="#818CF8" opacity="0.4"/>
+
+  <!-- Oreja derecha - Auricular 2.5D -->
+  <circle cx="46" cy="32" r="6" fill="url(#grad_audiobook_2)" stroke="#4F46E5" stroke-width="1.5"/>
+  <!-- Costado auricular -->
+  <path d="M 52 32 A 6 6 0 0 0 51 37"
+        fill="none" stroke="#4F46E5" stroke-width="1.5" opacity="0.3"/>
+  <!-- Brillo -->
+  <circle cx="48" cy="30" r="2" fill="#818CF8" opacity="0.4"/>
+
+  <!-- Cable central descendente -->
+  <line x1="32" y1="26" x2="32" y2="44" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Control/micrófono -->
+  <circle cx="32" cy="48" r="2.5" fill="#6366F1" stroke="#4F46E5" stroke-width="1"/>
+  </svg>

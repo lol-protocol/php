@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galería de iconos 2.5D</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #333;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+  h1 { color: #fff; text-align: center; margin-bottom: 8px; font-size: 2.2em; text-shadow: 2px 2px 4px rgba(0,0,0,.3); }
+  .subtitle { color: rgba(255,255,255,.9); text-align: center; margin-bottom: 32px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 36px; }
+  .stat-card { background: rgba(255,255,255,.95); border-radius: 10px; padding: 18px; text-align: center; }
+  .stat-number { font-size: 2.2em; font-weight: 700; color: #4c51bf; }
+  .stat-label { font-size: .95em; color: #555; }
+  .set { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 36px; box-shadow: 0 10px 30px rgba(0,0,0,.2); }
+  .set-title { font-size: 1.5em; margin-bottom: 4px; border-left: 5px solid #667eea; padding-left: 12px; }
+  .set-note { color: #666; font-size: .9em; margin: 0 0 16px 17px; }
+  .group-title { font-size: 1.05em; margin: 22px 0 10px; color: #444; }
+  .group-title code { background: #eef; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  .group-title .count { color: #888; font-weight: 400; font-size: .9em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  .icon { background: #f8f9ff; border-radius: 8px; padding: 10px; text-align: center; }
+  .icon:hover { background: #e8eaff; }
+  .variants { display: flex; gap: 4px; justify-content: center; }
+  .variants img { width: 56px; height: 56px; background: #fff; border-radius: 4px; }
+  .icon figcaption { margin-top: 6px; font-size: .78em; color: #555; word-break: break-all; }
+  footer { text-align: center; color: rgba(255,255,255,.85); margin-top: 24px; font-size: .9em; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Galería de iconos 2.5D</h1>
+  <p class="subtitle">Cada icono en tres variantes: color, líneas y gris</p>
+  <div class="stats" id="stats"></div>
+  <div id="sets"></div>
+  <footer>Las rutas son relativas a la raíz del repositorio: abre este archivo desde ahí.</footer>
+</div>
+<script>
+const DATA = [{"key":"genealogia","dir":"iconos-genealogia","title":"Árbol genealógico","groups":[{"id":"person","label":"Personas y parentescos","prefix":"person_*","items":[["base","person_adopted_male"],["base","person_daughter"],["base","person_father"],["base","person_father_young"],["base","person_godfather"],["base","person_godson"],["base","person_grandfather_paternal"],["base","person_grandmother_maternal"],["base","person_great_granddaughter"],["base","person_great_grandson"],["base","person_mother"],["base","person_mother_young"],["base","person_son"],["base","person_stepbrother"],["base","person_tenant"],["base","person_unknown_female"],["base","person_unknown_male"],["relaciones","person_aunt"],["relaciones","person_brother"],["relaciones","person_brother_in_law"],["relaciones","person_cousin"],["relaciones","person_cousin_f"],["relaciones","person_cousin_same_age"],["relaciones","person_cousin_same_age_f"],["relaciones","person_daughter_in_law"],["relaciones","person_daughter_in_law_alt"],["relaciones","person_father_in_law"],["relaciones","person_goddaughter"],["relaciones","person_godmother"],["relaciones","person_grandfather"],["relaciones","person_grandmother"],["relaciones","person_great_grandfather"],["relaciones","person_great_grandmother"],["relaciones","person_mother_in_law"],["relaciones","person_nephew"],["relaciones","person_niece"],["relaciones","person_sister"],["relaciones","person_sister_in_law"],["relaciones","person_son_in_law"],["relaciones","person_spouse"],["relaciones","person_stepfather"],["relaciones","person_stepmother"],["relaciones","person_stepsister"],["relaciones","person_uncle"],["relaciones","person_unknown_female_v2"],["relaciones","person_unknown_male_v2"],["ui","person_unknown_male_alt"]]},{"id":"relationship","label":"Relaciones","prefix":"relationship_*","items":[["base","relationship_distant_ancestor"],["base","relationship_multi_generational_descendant"],["relaciones","relationship_ancestor"],["relaciones","relationship_blood_bond"],["relaciones","relationship_co_brother_in_law"],["relaciones","relationship_co_sister_in_law"],["relaciones","relationship_dissolved"],["relaciones","relationship_family_branch"],["relaciones","relationship_family_reunion"],["relaciones","relationship_generational_arc"],["relaciones","relationship_inheritance_division"],["relaciones","relationship_married"],["relaciones","relationship_partner"],["relaciones","relationship_romantic"],["relaciones","relationship_twins"]]},{"id":"state","label":"Estados civiles","prefix":"state_*","items":[["base","state_divorced"],["base","state_married"],["base","state_single"],["base","state_widowed"]]},{"id":"view","label":"Vistas","prefix":"view_*","items":[["vistas","view_ancestors"],["vistas","view_circular"],["vistas","view_descendants"],["vistas","view_descent_chart"],["vistas","view_generations"],["vistas","view_timeline"],["vistas","view_tree"]]},{"id":"action","label":"Acciones","prefix":"action_*","items":[["acciones","action_add"],["acciones","action_connect"],["acciones","action_delete"],["acciones","action_duplicate"],["acciones","action_edit"],["acciones","action_filter"],["acciones","action_print"],["acciones","action_share_tree"],["vistas","action_collapse"],["vistas","action_download"],["vistas","action_event"],["vistas","action_expand"],["vistas","action_search"],["vistas","action_sync"],["vistas","action_zoom_in"]]},{"id":"ui","label":"Interfaz","prefix":"ui_*","items":[["base","ui_unverified"],["base","ui_verified"],["ui","ui_export_csv"],["ui","ui_export_pdf"],["ui","ui_notes"],["ui","ui_privacy"]]},{"id":"placeholder","label":"Marcadores de posición (3 formas base repetidas en distintos colores)","prefix":"person_variant_NNN","items":[["base","person_variant_001"],["base","person_variant_002"],["base","person_variant_003"],["base","person_variant_004"],["base","person_variant_005"],["base","person_variant_006"],["base","person_variant_007"],["base","person_variant_008"],["base","person_variant_009"],["base","person_variant_010"],["base","person_variant_011"],["base","person_variant_012"],["base","person_variant_013"],["base","person_variant_014"],["base","person_variant_015"],["base","person_variant_016"],["base","person_variant_017"],["base","person_variant_018"],["base","person_variant_019"],["base","person_variant_020"],["base","person_variant_021"],["base","person_variant_022"],["base","person_variant_023"],["base","person_variant_024"],["base","person_variant_025"],["base","person_variant_026"],["base","person_variant_027"],["base","person_variant_028"],["base","person_variant_029"],["base","person_variant_030"],["base","person_variant_031"],["base","person_variant_032"],["base","person_variant_033"],["base","person_variant_034"],["base","person_variant_035"],["base","person_variant_036"],["base","person_variant_037"],["base","person_variant_038"],["base","person_variant_039"],["base","person_variant_040"],["base","person_variant_041"],["base","person_variant_042"],["base","person_variant_043"],["base","person_variant_044"],["base","person_variant_045"],["base","person_variant_046"],["base","person_variant_047"],["base","person_variant_048"],["base","person_variant_049"],["base","person_variant_050"],["base","person_variant_051"],["base","person_variant_052"],["base","person_variant_053"],["base","person_variant_054"],["base","person_variant_055"],["base","person_variant_056"]]}]},{"key":"biblioteca","dir":"iconos-biblioteca","title":"Biblioteca virtual","groups":[{"id":"action","label":"Acciones","prefix":"action_*","items":[["acciones","action_all_connections"],["acciones","action_download_book"],["acciones","action_favorite"],["acciones","action_rate"],["acciones","action_read_later"],["acciones","action_review"],["acciones","action_share"],["navegacion","action_filter"],["navegacion","action_search_book"],["navegacion","action_sort"]]},{"id":"ui","label":"Interfaz","prefix":"ui_*","items":[["contenido","ui_book_open"],["contenido","ui_chart"],["contenido","ui_languages"],["contenido","ui_magazine"],["contenido","ui_map"],["contenido","ui_music"],["contenido","ui_newspaper"],["contenido","ui_reference"],["perfil","ui_collection"],["perfil","ui_history"],["perfil","ui_notifications"],["perfil","ui_personal_library"],["perfil","ui_profile"]]},{"id":"book","label":"Libros y formatos","prefix":"book_*","items":[["contenido","book_ancient_tome"],["contenido","book_audiobook"],["contenido","book_bibliography"],["contenido","book_binding"],["contenido","book_collection"],["contenido","book_digital"],["contenido","book_ebook"],["contenido","book_folded_page"],["contenido","book_index"],["contenido","book_manuscript"],["contenido","book_notebook"],["contenido","book_rare"],["contenido","book_standard"]]},{"id":"genre","label":"Géneros","prefix":"genre_*","items":[["contenido","genre_article"],["contenido","genre_chronicle"],["contenido","genre_comedy"],["contenido","genre_diary"],["contenido","genre_drama"],["contenido","genre_epistle"],["contenido","genre_epistolary"],["contenido","genre_essay"],["contenido","genre_essay_collection"],["contenido","genre_history"],["contenido","genre_literary_fiction"],["contenido","genre_manga"],["contenido","genre_memoir"],["contenido","genre_narrative"],["contenido","genre_philosophy"],["contenido","genre_poetry"],["contenido","genre_psychology"],["contenido","genre_romance"],["contenido","genre_scifi"],["contenido","genre_screenplay"],["contenido","genre_self_help"],["contenido","genre_suspense"],["contenido","genre_treatise"],["disponibilidad","genre_anthology"],["generos","genre_children"],["generos","genre_children_story"],["generos","genre_fiction"],["generos","genre_graphic_novel"],["generos","genre_non_fiction"],["generos","genre_young_adult"]]},{"id":"format","label":"Ediciones","prefix":"format_*","items":[["disponibilidad","format_limited_edition"],["disponibilidad","format_luxury_edition"],["disponibilidad","format_masterpiece"],["disponibilidad","format_series"]]},{"id":"status","label":"Estados","prefix":"status_*","items":[["acciones","status_long_read"],["acciones","status_quick_read"],["acciones","status_read"],["acciones","status_reading"],["disponibilidad","status_available"],["disponibilidad","status_bestseller"],["disponibilidad","status_borrowed"],["disponibilidad","status_new"],["disponibilidad","status_popular"],["disponibilidad","status_recommended"],["disponibilidad","status_reserved"],["disponibilidad","status_unavailable"],["disponibilidad","status_upcoming_release"]]},{"id":"attr","label":"Atributos","prefix":"attr_*","items":[["disponibilidad","attr_critical_praise"],["disponibilidad","attr_premium"],["disponibilidad","attr_private"],["disponibilidad","attr_public"],["perfil","attr_controversial"],["perfil","attr_donation"],["perfil","attr_multi_reader"],["perfil","attr_translation"]]},{"id":"placeholder","label":"Marcadores de posición (3 formas base repetidas en distintos colores)","prefix":"book_title_NNN","items":[["contenido","book_title_001"],["contenido","book_title_002"],["contenido","book_title_003"],["contenido","book_title_004"],["contenido","book_title_005"],["contenido","book_title_006"],["contenido","book_title_007"],["contenido","book_title_008"],["contenido","book_title_009"],["contenido","book_title_010"],["contenido","book_title_011"],["contenido","book_title_012"],["contenido","book_title_013"],["contenido","book_title_014"],["contenido","book_title_015"],["contenido","book_title_016"],["contenido","book_title_017"],["contenido","book_title_018"],["contenido","book_title_019"],["contenido","book_title_020"],["contenido","book_title_021"],["contenido","book_title_022"],["contenido","book_title_023"],["contenido","book_title_024"],["contenido","book_title_025"],["contenido","book_title_026"],["contenido","book_title_027"],["contenido","book_title_028"],["contenido","book_title_029"],["contenido","book_title_030"],["contenido","book_title_031"],["contenido","book_title_032"],["contenido","book_title_033"],["contenido","book_title_034"],["contenido","book_title_035"],["contenido","book_title_036"],["contenido","book_title_037"],["contenido","book_title_038"],["contenido","book_title_039"],["contenido","book_title_040"],["contenido","book_title_041"],["contenido","book_title_042"],["contenido","book_title_043"],["contenido","book_title_044"],["contenido","book_title_045"],["contenido","book_title_046"],["contenido","book_title_047"],["contenido","book_title_048"],["contenido","book_title_049"],["contenido","book_title_050"],["contenido","book_title_051"],["contenido","book_title_052"],["contenido","book_title_053"],["contenido","book_title_054"],["contenido","book_title_055"],["contenido","book_title_056"],["contenido","book_title_057"],["contenido","book_title_058"]]}]}];
+const VARIANTS = ['color', 'lineas', 'gris'];
+
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+
+function total(set) {
+  return set.groups.reduce((sum, g) => sum + g.items.length, 0);
+}
+
+const stats = document.getElementById('stats');
+let all = 0;
+for (const set of DATA) {
+  all += total(set);
+  const card = el('div', 'stat-card');
+  card.append(el('div', 'stat-number', total(set)), el('div', 'stat-label', 'iconos de ' + set.title.toLowerCase()));
+  stats.append(card);
+}
+const files = el('div', 'stat-card');
+files.append(el('div', 'stat-number', all * VARIANTS.length), el('div', 'stat-label', 'archivos SVG en total'));
+stats.append(files);
+
+const sets = document.getElementById('sets');
+for (const set of DATA) {
+  const section = el('section', 'set');
+  section.append(el('h2', 'set-title', set.title + ' (' + total(set) + ' iconos)'));
+  section.append(el('p', 'set-note', set.dir + '/{' + VARIANTS.join(',') + '}/<carpeta>/<nombre>.svg'));
+  for (const group of set.groups) {
+    const title = el('h3', 'group-title');
+    title.append(document.createTextNode(group.label + ' '), el('code', null, group.prefix), el('span', 'count', ' ' + group.items.length));
+    const grid = el('div', 'grid');
+    for (const [folder, name] of group.items) {
+      const card = el('figure', 'icon');
+      const row = el('div', 'variants');
+      for (const variant of VARIANTS) {
+        const img = el('img');
+        img.src = set.dir + '/' + variant + '/' + folder + '/' + name + '.svg';
+        img.alt = name + ' (' + variant + ')';
+        img.title = variant;
+        row.append(img);
+      }
+      card.append(row, el('figcaption', null, name));
+      grid.append(card);
+    }
+    section.append(title, grid);
+  }
+  sets.append(section);
+}
+</script>
+</body>
+</html>

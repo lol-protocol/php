@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="shadow_referencia">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+  <path d="M 18 16 L 22 14 L 46 14 L 42 16 L 42 50 L 22 52 L 18 50 Z" fill="none" stroke="#92400E" stroke-width="1.5" filter="url(#shadow_referencia)" />
+  <path d="M 46 14 L 50 12 L 50 48 L 46 50 Z" fill="none" opacity="0.25" stroke="#4B5563" stroke-width="1.5" />
+  
+  <text x="26" y="32" font-size="8" font-weight="bold" fill="#4B5563">A</text>
+  <line x1="28" y1="36" x2="40" y2="36" stroke="#6B7280" stroke-width="1" opacity="0.6" />
+  <text x="26" y="46" font-size="8" font-weight="bold" fill="#4B5563">Z</text>
+  </svg>

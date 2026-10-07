@@ -1,0 +1,7 @@
+<?xml version="1.0"?><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="s_ensayistica"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter></defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
+      <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
+            fill="#F8F8F8" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_ensayistica)"/>
+      <path d="M 24 26 L 36 26 M 24 32 L 36 32 M 24 38 L 32 38" stroke="#7A7A7A" stroke-width="1" opacity="0.6"/>
+    </svg>

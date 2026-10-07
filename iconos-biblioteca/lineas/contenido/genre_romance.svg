@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="s_romance"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" /></filter>
+  </defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+
+  <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z" fill="none" stroke="#BE185D" stroke-width="1.5" filter="url(#s_romance)" />
+  <path d="M 28 26 C 28 26 26 24 24 26 C 22 28 24 32 28 36 C 32 32 34 28 32 26 C 30 24 28 26 28 26 Z" fill="none" opacity="0.7" stroke="#4B5563" stroke-width="1.5" />
+  </svg>

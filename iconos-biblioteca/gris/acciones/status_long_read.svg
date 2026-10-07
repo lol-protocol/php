@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="s_lectura_larga"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter>
+  </defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
+
+  <path d="M 14 18 L 18 16 L 50 16 L 46 18 L 46 48 L 18 50 L 14 48 Z"
+        fill="#8B8B8B" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_lectura_larga)"/>
+  <!-- Indica grosor -->
+  <line x1="12" y1="32" x2="14" y2="32" stroke="#7A7A7A" stroke-width="2" opacity="0.7"/>
+  </svg>

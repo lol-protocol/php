@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="s_tomo_antiguo"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter></defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
+      <path d="M 17 20 L 21 18 L 45 18 L 41 20 L 41 46 L 21 48 L 17 46 Z"
+            fill="#898989" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_tomo_antiguo)"/>
+      <circle cx="32" cy="32" r="5" fill="none" stroke="#7A7A7A" stroke-width="1" opacity="0.6"/>
+    </svg>

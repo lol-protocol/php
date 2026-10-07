@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="grad_hermana_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_hermana_2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_hermana_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_hermana">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  
+  <ellipse cx="32" cy="55" rx="12" ry="4" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+
+  
+  <path d="M 23 34 L 28 32 L 42 32 L 47 34 L 46 45 L 24 45 Z" fill="none" stroke="#BE185D" stroke-width="1.5" filter="url(#shadow_hermana)" />
+
+  
+  <path d="M 42 32 L 47 34 L 46 45 L 41 43 Z" fill="none" opacity="0.35" stroke="#4B5563" stroke-width="1.5" />
+
+  
+  <path d="M 24 10 Q 32 6 40 10 L 38 18 Q 32 14 26 18 Z" fill="none" opacity="0.7" stroke="#4B5563" stroke-width="1.5" />
+
+  
+  <circle cx="32" cy="18" r="8" fill="none" stroke="#BE185D" stroke-width="1.5" />
+  <circle cx="35" cy="16" r="7" fill="none" opacity="0.3" stroke="#4B5563" stroke-width="1.5" />
+
+  
+  <line x1="25" y1="32" x2="15" y2="32" stroke="#6B7280" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.6" />
+  </svg>

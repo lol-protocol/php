@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="grad_disponible_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_disponible_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_disponible_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_disponible_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_disponible">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  
+  <ellipse cx="32" cy="55" rx="13" ry="4" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+
+  
+  <circle cx="32" cy="32" r="13" fill="none" stroke="#047857" stroke-width="1.5" filter="url(#shadow_disponible)" />
+
+  
+  <path d="M 45 32 A 13 13 0 0 0 44 38" fill="none" stroke="#047857" stroke-width="1.5" opacity="0.3" />
+
+  
+  <ellipse cx="27" cy="26" rx="5" ry="4" fill="none" opacity="0.3" stroke="#4B5563" stroke-width="1" />
+
+  
+  <path d="M 22 32 L 28 38 L 42 24" stroke="#FFF" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
