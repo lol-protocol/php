@@ -228,7 +228,7 @@ return [
         'derb' => [
             ['word' => 'scheiße', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'kacke', 'riskType' => 'ordinario', 'severity' => 'medium'],
-            ['word' => 'mist', 'riskType' => 'ordinario', 'severity' => 'low'],
+            ['word' => 'mist', 'riskType' => 'ordinario', 'severity' => 'low', 'ambiguous' => true],
             ['word' => 'dreck', 'riskType' => 'ordinario', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'pisse', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'furz', 'riskType' => 'ordinario', 'severity' => 'low'],
@@ -241,7 +241,7 @@ return [
             ['word' => 'fotze', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'muschi', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'titten', 'riskType' => 'ordinario', 'severity' => 'medium'],
-            ['word' => 'eier', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'eier', 'riskType' => 'ordinario', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'ficken', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'vögeln', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'wichser', 'riskType' => 'ordinario', 'severity' => 'high'],

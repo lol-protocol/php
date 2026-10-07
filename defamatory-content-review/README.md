@@ -556,7 +556,9 @@ igual que con los nombres. Hay listas de temas para español (`spa`) e inglés
 - **Palabras ambiguas.** «vamos a coger el bus», «está de bomba la fiesta»,
   «techo de paja» no son contenido sexual ni bélico: esas palabras sólo
   cuentan si la misma línea trae algo firme (`medium` o `high`) del mismo
-  tipo («quiero coger, mándame nudes»).
+  tipo («quiero coger, mándame nudes»). No es lo mismo que `'ambiguous' => true`
+  en una entrada de `config/languages/` («leche», «яйца»): esa marca se ignora
+  siempre en el chat, y `validateName()` no la mira.
 
 ### Ampliar las listas de chat
 

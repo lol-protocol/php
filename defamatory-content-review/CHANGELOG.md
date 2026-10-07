@@ -4,6 +4,11 @@
 
 ### Añadido
 
+- **Marca `'ambiguous' => true` en las entradas de los diccionarios**:
+  palabras cotidianas que también son vulgares («яйца», «leche», «כוס»,
+  «butt», «sega»…). `ChatLineReviewer` las ignora —«Купи яйца и хлеб» pasa
+  de `review` a `approve`, «כוס מים» de `reject` a `approve`—; los nombres
+  las siguen marcando. Marcadas ~60 entradas en 15 idiomas.
 - **Auditoría y ampliación de los 27 diccionarios `moderate` y `basic`**
   (~1.500 términos nuevos, ~7.800 en total). Hecha **sin hablante nativo**:
   los idiomas siguen en su nivel y `coverage` no cambia. Protocolo: sólo

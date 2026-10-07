@@ -6,16 +6,17 @@ namespace DefamatoryContentReview;
  * Revisa una línea libre (un mensaje de chat) y dice si hay que censurarla.
  * Cuatro tipos de contenido:
  *
- * - `difamatorio`: cualquier insulto del diccionario del idioma (los mismos
- *   que usa validateName()), salvo los burlescos;
- * - `burlesco`: los términos de riskType `burlesco` de ese diccionario;
+ * - `difamatorio` y `burlesco`: los insultos del diccionario del idioma, los
+ *   mismos de validateName(); son burlescos los de riskType `burlesco`;
  * - `sexual` y `belico` (guerra, violencia y amenazas): listas propias en
- *   config/chat-topics/<código>.php — ver ChatTopics —, porque no son
- *   insultos y no deben afectar la validación de nombres.
+ *   config/chat-topics/<código>.php (ver ChatTopics): no son insultos y no
+ *   deben afectar la validación de nombres.
  *
  * Igual que con los nombres, un término que también es apellido
  * (`nameCollision`: «Savage», «Concha») nunca bloquea solo: baja a revisión.
- * Las letras sueltas («p u t a») se unen antes de buscar.
+ * Las letras sueltas («p u t a») se unen y las repetidas («puuuta») se leen
+ * antes de buscar. Una entrada `'ambiguous' => true` de un diccionario
+ * («яйца», «leche») se ignora aquí: casi siempre es la palabra cotidiana.
  */
 final class ChatLineReviewer
 {
@@ -58,6 +59,7 @@ final class ChatLineReviewer
         $matches = [];
 
         foreach ($topics?->scan($dictionary, $text) ?? $dictionary->findInText($text) as $match) {
+            if ($match['ambiguous'] ?? false) { continue; } // «яйца», «leche»: palabra cotidiana, no insulto en un chat
             $matches[] = [
                 'severity' => $match['nameCollision'] && $match['severity'] === 'high' ? 'medium' : $match['severity'],
                 'contentType' => $match['riskType'] === 'burlesco' ? 'burlesco' : 'difamatorio',

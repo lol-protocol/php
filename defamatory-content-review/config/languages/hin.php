@@ -129,7 +129,7 @@ return [
             ['word' => 'भड़वा', 'riskType' => 'moral', 'severity' => 'high'],
         ],
         'ling' => [
-            ['word' => 'छक्का', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'छक्का', 'riskType' => 'genero', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'हिजड़ा', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'जनखा', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'रंडी', 'riskType' => 'genero', 'severity' => 'high'],
