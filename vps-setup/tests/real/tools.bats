@@ -141,6 +141,7 @@ exec "$@"'
     [ "$status" -eq 0 ] || { echo "$cmd"; echo "$output"; return 1; }
     run bash -c "$cmd --opcion-inventada"
     [ "$status" -ne 0 ]
-    run certbot certify --help       # el subcomando que se uso por error en una version anterior
-    [ "$status" -ne 0 ]
+    # el subcomando "certify" (error de una version anterior) no debe volver; certbot --help
+    # lo trata como tema de ayuda y devuelve 0, por eso se comprueba en el script, no en certbot
+    ! grep -q 'certbot certify' "$VPS_DIR/04-setup-ssl.sh"
 }
