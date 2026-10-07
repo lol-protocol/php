@@ -54,7 +54,7 @@ Vielleicht geht es im Leben deshalb nicht darum, wie viel Zeit wir haben, sonder
 - Beginnen Sie noch heute Ihren Stammbaum.
 - Beginnen Sie zu entdecken, wer Ihre Großeltern waren.
 - Laden Sie Ihre Familie ein und schreiben Sie gemeinsam Ihre Geschichte.
-- Ihr erster Vorfahre wartet darauf, entdeckt zu werden.
+- Ihr erster Vorfahre ist noch zu entdecken.
 
 ## Soziale Medien
 

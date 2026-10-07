@@ -26,7 +26,7 @@ Traducciones de la parte madura de [`../frases.md`](../frases.md) a 15 idiomas (
 
 ## Qué se tradujo y qué no
 
-**Traducido:** lemas, eslóganes del logo, manifiesto, emoción y pertenencia, legado familiar, la frase de confianza «Tu historia familiar, tratada con respeto y cuidado.», llamadas a la acción, redes sociales (15 frases y hashtags) y correo (asuntos, vista previa, saludos, botones y cierres de uso general).
+**Traducido:** lemas, eslóganes del logo, manifiesto, emoción y pertenencia, legado familiar, la frase de confianza «Tu historia familiar, tratada con respeto y cuidado.» (también sujeta a la nota «Antes de usar»: verifica que el producto la cumple antes de publicarla), llamadas a la acción, redes sociales (15 frases y hashtags) y correo (asuntos, vista previa, saludos, botones y cierres de uso general).
 
 **No traducido, a propósito:**
 - La nota «Antes de usar».

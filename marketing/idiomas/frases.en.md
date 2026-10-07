@@ -54,7 +54,7 @@ Perhaps that is why life is not about how much time we have, but about what we d
 - Start your family tree today.
 - Start discovering who your grandparents were.
 - Invite your family and build your story with them.
-- Your first ancestor is waiting to be discovered.
+- Your first ancestor is yet to be discovered.
 
 ## Social media
 

@@ -54,7 +54,7 @@ Może właśnie dlatego życie nie polega na tym, ile mamy czasu, lecz na tym, c
 - Zacznij swoje drzewo genealogiczne już dziś.
 - Zacznij odkrywać, kim byli twoi dziadkowie.
 - Zaproś rodzinę i twórzcie swoją historię razem.
-- Twój pierwszy przodek czeka na odkrycie.
+- Twój pierwszy przodek jest jeszcze do odkrycia.
 
 ## Media społecznościowe
 

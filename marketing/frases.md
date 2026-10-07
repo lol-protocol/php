@@ -1,7 +1,7 @@
 # Frases de marketing — Genealogía
 
 ## Antes de usar
-- Las frases que afirman algo sobre la persona o su árbol (pistas, coincidencias, hallazgos) solo se usan si es cierto para esa persona. Si no, usa una alternativa neutra: están marcadas como «condicionales».
+- Las frases que afirman algo sobre la persona o su árbol (pistas, coincidencias, hallazgos) solo se usan si es cierto para esa persona. Están en secciones marcadas como «condicionales»; en los demás casos, usa una alternativa neutra.
 - No inventes plazos, escasez ni cifras.
 - Las promesas sobre datos, seguridad y privacidad se verifican contra el producto, y contra la normativa de cada mercado, antes de publicarse.
 - Reemplaza `[Nombre]` y `[Marca]` al usar los textos.

@@ -54,7 +54,7 @@ Belki de bu yüzden hayat, ne kadar zamanımız olduğuyla değil, var olmak iç
 - Soyağacını bugün oluşturmaya başla.
 - Büyükanne ve büyükbabalarının kim olduğunu keşfetmeye başla.
 - Aileni davet et ve hikâyenizi birlikte yazın.
-- İlk atan henüz keşfedilmeyi bekliyor.
+- İlk atan henüz keşfedilmedi.
 
 ## Sosyal medya
 
