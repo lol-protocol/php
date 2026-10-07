@@ -50,10 +50,7 @@ class DictionaryAccessTest extends TestCase
     {
         $stats = $this->reviewer->languages()->statistics('spa');
 
-        $expected = [
-            'animal', 'intelectual', 'discapacidad', 'fisico', 'moral',
-            'genero', 'ordinario', 'burlesco', 'etnico', 'religioso',
-        ];
+        $expected = ['animal', 'intelectual', 'discapacidad', 'fisico', 'moral', 'genero', 'ordinario', 'burlesco', 'etnico', 'religioso'];
 
         foreach ($expected as $riskType) {
             $this->assertArrayHasKey($riskType, $stats['byRiskType'], "Falta el tipo '{$riskType}'.");
@@ -63,11 +60,8 @@ class DictionaryAccessTest extends TestCase
     public function testComprehensiveDictionariesAreSubstantial(): void
     {
         foreach ($this->reviewer->languages()->byCoverage('comprehensive') as $code) {
-            $this->assertGreaterThanOrEqual(
-                200,
-                $this->reviewer->languages()->wordList($code)->getWordCount(),
-                "El diccionario '{$code}' se declara comprehensive pero tiene pocos términos."
-            );
+            $count = $this->reviewer->languages()->wordList($code)->getWordCount();
+            $this->assertGreaterThanOrEqual(200, $count, "El diccionario '{$code}' se declara comprehensive pero tiene pocos términos.");
         }
     }
 
@@ -77,11 +71,7 @@ class DictionaryAccessTest extends TestCase
 
         foreach ($this->registry->getCodes() as $code) {
             foreach ($this->reviewer->languages()->wordList($code)->getAllWords() as $word) {
-                $this->assertContains(
-                    $word['riskType'],
-                    $valid,
-                    "'{$word['original']}' ({$code}) declara un tipo de riesgo desconocido."
-                );
+                $this->assertContains($word['riskType'], $valid, "'{$word['original']}' ({$code}) declara un tipo de riesgo desconocido.");
             }
         }
     }
@@ -93,5 +83,15 @@ class DictionaryAccessTest extends TestCase
                 $this->assertContains($word['severity'], ['low', 'medium', 'high']);
             }
         }
+    }
+
+    /** RiskReportBuilder lee la descripción de risk-categories.php: no debe volver a vivir copiada y divergir. */
+    public function testReportDescriptionComesFromRiskCategoriesCatalog(): void
+    {
+        $catalog = require self::CONFIG_DIR . '/risk-categories.php';
+        $result = $this->reviewer->validateName('cerda');
+        $report = $this->reviewer->getDetailedReport($result, $this->reviewer->decide($result));
+
+        $this->assertSame($catalog['animal']['description'], $report['riskAnalysis']['animal']['description']);
     }
 }

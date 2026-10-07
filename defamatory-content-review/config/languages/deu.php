@@ -227,7 +227,6 @@ return [
 
         'derb' => [
             ['word' => 'scheiße', 'riskType' => 'ordinario', 'severity' => 'high'],
-            ['word' => 'scheisse', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'kacke', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'mist', 'riskType' => 'ordinario', 'severity' => 'low'],
             ['word' => 'dreck', 'riskType' => 'ordinario', 'severity' => 'medium'],
