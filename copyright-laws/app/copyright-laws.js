@@ -4,19 +4,55 @@ import { loadTranslations, t } from "./translations/i18n.js";
 class JurisdictionLoader {
   constructor() {
     this.jurisdictions = [];
-    this.rawData = [];
+    this.jurisdictionMap = {};
+    this.dataCache = {};
   }
 
   async load() {
     try {
+      // Load the master CSV to get list of jurisdictions
       const response = await fetch("../jurisdictions/copyright_laws_master.csv");
       const csvText = await response.text();
-      this.rawData = this.parseCSV(csvText);
-      this.jurisdictions = this.buildJurisdictionIndex();
+      const rawData = this.parseCSV(csvText);
+
+      // Build jurisdiction index from CSV
+      const index = {};
+      rawData.forEach((row) => {
+        if (!index[row.country_code]) {
+          index[row.country_code] = {
+            code: row.country_code,
+            name: row.country_name,
+            region: this.getRegion(row.country_code),
+            tld: row.country_code.toLowerCase(),
+            laws: [],
+          };
+        }
+        index[row.country_code].laws.push(row);
+      });
+
+      this.jurisdictions = Object.values(index);
+      this.jurisdictions.forEach((j) => (this.jurisdictionMap[j.code] = j));
+
       return this.jurisdictions;
     } catch (error) {
       console.error("Error loading copyright laws:", error);
       throw error;
+    }
+  }
+
+  async loadJurisdictionData(tld) {
+    try {
+      if (this.dataCache[tld]) return this.dataCache[tld];
+
+      const response = await fetch(`../jurisdictions/${tld}/laws.json`);
+      if (!response.ok) throw new Error(`Failed to load ${tld} data`);
+
+      const laws = await response.json();
+      this.dataCache[tld] = laws;
+      return laws;
+    } catch (error) {
+      console.error(`Error loading jurisdiction data for ${tld}:`, error);
+      return [];
     }
   }
 
@@ -34,22 +70,6 @@ class JurisdictionLoader {
       records.push(obj);
     }
     return records;
-  }
-
-  buildJurisdictionIndex() {
-    const index = {};
-    this.rawData.forEach((row) => {
-      if (!index[row.country_code]) {
-        index[row.country_code] = {
-          code: row.country_code,
-          name: row.country_name,
-          region: this.getRegion(row.country_code),
-          laws: [],
-        };
-      }
-      index[row.country_code].laws.push(row);
-    });
-    return Object.values(index);
   }
 
   getRegion(countryCode) {
