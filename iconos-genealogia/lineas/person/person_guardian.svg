@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="links">
+    <path d="M31 21.2L31 40" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M24.6 13.5L24.6 13.1L24.8 12.8L25 12.4L29.9 7.5L30.3 7.3L30.6 7.2L31 7.1L31.4 7.2L31.7 7.3L32.1 7.5L37 12.4L37.2 12.8L38.9 15L39.1 15.4L39.1 15.8L39.1 16.2L38.9 16.5L38.7 16.8L33.8 21.7L33.5 22L33.1 22.1L32.7 22.2L32.3 22.1L32 22L31.7 21.7L26.8 16.8L26.5 16.5L24.8 14.2L24.6 13.9Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="26" y="8.5" width="9.9" height="9.9" rx="1.5" transform="rotate(45 31 13.5)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M25 52L26.7 54.3A7.5 7.5 0 0 0 38.7 45.3L37 43A7.5 7.5 0 0 0 25 52Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="47.5" r="7.5" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M28.7 47.5a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M27.6 28.5L31 32.7L34.4 28.5" fill="none" stroke="#883307" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

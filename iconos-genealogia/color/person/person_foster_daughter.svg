@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_foster_daughter_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="grad_person_foster_daughter_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.9" cy="59.5" rx="8" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M31 13.5L31 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" stroke-dasharray="0.1 5.2"/>
+  </g>
+  <g class="solids">
+    <g><path d="M25 18L26.7 20.3A7.5 7.5 0 0 0 38.7 11.3L37 9A7.5 7.5 0 0 0 25 18Z" fill="#29313D"/><circle cx="31" cy="13.5" r="7.5" fill="url(#grad_person_foster_daughter_ink)"/></g>
+    <g><path d="M25 52L26.7 54.3A7.5 7.5 0 0 0 38.7 45.3L37 43A7.5 7.5 0 0 0 25 52Z" fill="#883307"/><circle cx="31" cy="47.5" r="7.5" fill="url(#grad_person_foster_daughter_orange)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M28.7 13.5a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+    <path d="M27.8 27.3L34.2 27.3L34.2 33.7L27.8 33.7Z" fill="none" stroke="#EA580C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

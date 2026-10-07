@@ -1,85 +1,85 @@
-# Iconos SVG 2.5D: genealogía y biblioteca
+# Iconos SVG 2.5D abstractos: genealogía y biblioteca
 
-Dos sets de iconos SVG de 64x64 en estilo 2.5D, cada uno en tres variantes. Cada set está en su propia carpeta para poder copiarlo por separado a un proyecto.
+Dos sets de iconos SVG de 64x64 en estilo 2.5D (formas con extrusión y sombra suave), **sin letras ni números**, así que no dependen del idioma. Cada set está en su propia carpeta para poder copiarlo por separado a un proyecto.
 
 | Set | Carpeta | Iconos | Archivos (3 variantes) |
 |---|---|---|---|
-| Árbol genealógico | `iconos-genealogia/` | 150 | 450 |
-| Biblioteca virtual | `iconos-biblioteca/` | 149 | 447 |
+| Árbol genealógico | `iconos-genealogia/` | 172 | 516 |
+| Biblioteca virtual | `iconos-biblioteca/` | 161 | 483 |
 
 Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 
 ## Variantes
 
-- `color/`: versión original, con gradientes y sombra.
-- `lineas/`: solo contornos, sin rellenos. Las etiquetas de texto se dibujan en gris `#4B5563`.
+- `color/`: gradientes, extrusión y sombra.
+- `lineas/`: solo contornos, sin rellenos; las partes tapadas por otra forma no se dibujan.
 - `gris/`: el mismo dibujo en grises neutros que conservan el volumen.
 
-Las tres variantes tienen los mismos nombres y las mismas subcarpetas.
+Las tres variantes tienen exactamente los mismos nombres y carpetas.
 
-## Estructura
+## Estructura y nombres
 
-```
-iconos-genealogia/{color,lineas,gris}/
-    acciones/ (8)   base/ (81)   relaciones/ (42)   ui/ (5)   vistas/ (14)
-
-iconos-biblioteca/{color,lineas,gris}/
-    acciones/ (11)  contenido/ (102)  disponibilidad/ (18)  generos/ (6)  navegacion/ (3)  perfil/ (9)
-```
-
-Las subcarpetas son el reparto temático inicial y no siempre coinciden con el prefijo del nombre (por ejemplo, hay iconos `action_*` en `vistas/`). Para buscar por tipo de icono, usa el prefijo.
-
-## Nombres
-
-`<prefijo>_<descripcion>`: minúsculas, ASCII (sin tildes ni ñ), con guion bajo y en inglés.
+`<variante>/<prefijo>/<prefijo>_<descripcion>.svg`: la carpeta coincide con el prefijo del nombre; los nombres van en minúsculas, ASCII, con guion bajo y en inglés.
 
 ### Genealogía
 
-| Prefijo | Iconos | Significado | Ejemplo |
+| Prefijo | Iconos | Contenido | Ejemplo |
 |---|---|---|---|
-| `person_` | 47 | Personas y parentescos | `person_father`, `person_godmother` |
-| `relationship_` | 15 | Vínculos entre personas | `relationship_married` |
-| `state_` | 4 | Estado civil | `state_widowed` |
-| `view_` | 7 | Formas de ver el árbol | `view_tree` |
-| `action_` | 15 | Acciones del usuario | `action_add` |
-| `ui_` | 6 | Elementos de interfaz | `ui_export_pdf` |
-| `person_variant_NNN` | 56 | Marcadores de posición | `person_variant_001` |
+| `person_` | 79 | Parentescos desde la perspectiva de "tú" | `person_uncle` |
+| `relationship_` | 27 | Vínculos y tipos de familia | `relationship_married` |
+| `state_` | 8 | Estado de una persona | `state_widowed` |
+| `view_` | 12 | Formas de ver el árbol | `view_fan` |
+| `action_` | 32 | Acciones del usuario | `action_add_parent` |
+| `ui_` | 14 | Elementos de interfaz | `ui_dna` |
 
 ### Biblioteca
 
-| Prefijo | Iconos | Significado | Ejemplo |
+| Prefijo | Iconos | Contenido | Ejemplo |
 |---|---|---|---|
-| `book_` | 13 | Tipos y partes de un libro | `book_ebook` |
-| `genre_` | 30 | Géneros literarios | `genre_romance` |
-| `format_` | 4 | Ediciones y series | `format_series` |
-| `status_` | 13 | Disponibilidad y estado de lectura | `status_available` |
-| `action_` | 10 | Acciones del usuario | `action_rate` |
-| `attr_` | 8 | Atributos de un libro | `attr_premium` |
-| `ui_` | 13 | Elementos de interfaz | `ui_map` |
-| `book_title_NNN` | 58 | Marcadores de posición | `book_title_001` |
+| `book_` | 23 | Tipos y partes de un libro | `book_boxset` |
+| `genre_` | 52 | Géneros literarios y temas | `genre_scifi` |
+| `format_` | 7 | Ediciones y formatos | `format_braille` |
+| `status_` | 22 | Disponibilidad y estado de lectura | `status_overdue` |
+| `action_` | 24 | Acciones del usuario | `action_borrow` |
+| `attr_` | 14 | Atributos de un libro | `attr_award` |
+| `ui_` | 19 | Elementos de interfaz | `ui_library_card` |
+
+## Cómo se leen
+
+**Genealogía.** Los parentescos son diagramas: naranja = el familiar, azul oscuro con punto = tú, gris claro = el resto. Cuadrado = hombre, círculo = mujer, rombo = sin especificar. Línea doble = matrimonio, línea cortada = divorcio, discontinua = adopción o parentesco parcial, punteada = acogida; un anillo sobre el enlace indica padrino o madrina. Un anillo discontinuo alrededor de un nodo significa "desconocido" o "sin pareja".
+
+**Biblioteca.** Los libros y géneros son una portada con un motivo geométrico (órbita, arco, ondas...); la disponibilidad y el estado son insignias circulares; las acciones, baldosas de esquinas redondeadas; los atributos, hexágonos. Los glifos de acción son los símbolos habituales (más, cruz, lupa, flechas, corazón, estrella).
+
+Al ser abstractos, conviene acompañar cada icono con su etiqueta en la interfaz.
 
 ## Uso
 
 ```html
-<img src="iconos-genealogia/color/base/person_father.svg" alt="Padre" width="48" height="48">
+<img src="iconos-genealogia/color/person/person_uncle.svg" alt="Tío" width="48" height="48">
 ```
 
 ```css
 .icono-ebook {
-  background: url('iconos-biblioteca/lineas/contenido/book_ebook.svg') center / contain no-repeat;
+  background: url('iconos-biblioteca/lineas/book/book_ebook.svg') center / contain no-repeat;
 }
 ```
 
-Los `id` internos (gradientes y filtros) son únicos entre iconos, pero las tres variantes de un mismo icono comparten los suyos. Si incrustas el SVG en línea, no pongas dos variantes del mismo icono en la misma página; con `<img>` o CSS no hay problema.
+Los `id` internos (los gradientes, con el nombre del icono) son únicos entre iconos, pero las variantes `color` y `gris` de un mismo icono comparten los suyos: si incrustas el SVG en línea, no pongas esas dos variantes del mismo icono en la misma página (con `<img>` o CSS no hay problema).
+
+## Regenerar y validar
+
+Los SVG son salida generada. Se editan en `iconos-tools/` (`genealogia.py` y `biblioteca.py` definen cada icono una sola vez; `lib.py`, `glyphs.py` y `motifs.py` son las piezas comunes) y se regeneran con:
+
+```
+python3 iconos-tools/build.py      # escribe los dos sets y galeria-iconos.html
+python3 iconos-tools/validate.py   # comprueba las reglas de abajo
+```
+
+El validador comprueba que cada SVG esté bien formado, mida 64x64 y no contenga texto; que las tres variantes tengan los mismos archivos y formas; que `gris/` no tenga colores cromáticos y `lineas/` no tenga rellenos; que los nombres sigan la convención y estén en la carpeta de su prefijo; que no haya ids repetidos ni iconos idénticos.
 
 ## Limitaciones conocidas
 
-- **Marcadores de posición.** Los 56 `person_variant_NNN` y los 58 `book_title_NNN` repiten 3 formas base cambiando solo el color. Sin ellos quedan 94 iconos con nombre propio en genealogía y 91 en biblioteca.
-- **Formas repetidas con nombre propio.** Algunas parejas comparten dibujo y se distinguen solo por color (por ejemplo `person_niece` y `person_nephew`). Hay cinco iconos `person_unknown_*` para el mismo concepto, y `person_daughter_in_law` tiene un duplicado `_alt`.
-- **Efecto 2.5D.** En muchos iconos se reduce a una sombra proyectada y una cara lateral más oscura; no todos son isométricos estrictos.
-- **Etiquetas de texto.** Algunas (`PDF`, `CSV`) quedan recortadas por el borde del icono.
-- **Ids internos.** Conservan el nombre original en español (por ejemplo `grad_padre_1`), distinto del nombre del archivo.
-
-## Comprobaciones hechas
-
-Al preparar esta versión se comprobó que los 897 SVG son XML bien formado con `viewBox="0 0 64 64"`, que las tres variantes tienen los mismos archivos, que todos los nombres siguen la convención, que `gris/` no tiene colores cromáticos, que `lineas/` no tiene rellenos y que todos se cargan en Chromium. Todavía no hay una validación automática en el repositorio.
+- Varios pares masculino/femenino (`person_uncle` y `person_aunt`) se distinguen solo por la forma de un nodo, y adopción, acogida y padrinazgo por una pequeña marca sobre el enlace (corazón, cuadrado, anillo).
+- Los motivos de género de la biblioteca son abstractos: no se deducen sin la etiqueta.
+- El efecto 2.5D es una extrusión hacia abajo y a la derecha con sombra proyectada; no es una proyección isométrica estricta.
+- El validador solo detecta iconos idénticos; los casi idénticos se revisaron comparando miniaturas fuera del repositorio.

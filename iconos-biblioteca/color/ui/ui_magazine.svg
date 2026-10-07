@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_ui_magazine_pink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E76CA3"/>
+      <stop offset="1" stop-color="#DB2777"/>
+    </linearGradient>
+    <linearGradient id="grad_ui_magazine_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.2" cy="56.6" rx="15.8" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M14 11.5L14.1 10.6L14.5 9.8L15 9L15.8 8.5L16.6 8.1L17.5 8L42.5 8L43.4 8.1L44.2 8.5L45 9L45.5 9.8L47.9 12.9L48.3 13.8L48.4 14.7L48.4 50.7L48.3 51.6L47.9 52.5L47.4 53.2L46.6 53.7L45.8 54.1L44.9 54.2L19.9 54.2L19 54.1L18.1 53.7L17.4 53.2L16.9 52.5L14.5 49.2L14.1 48.4L14 47.5Z" fill="#FEF3C7"/><rect x="14" y="8" width="32" height="43" rx="3.5" fill="url(#grad_ui_magazine_pink)"/></g>
+    <g><rect x="20" y="24" width="20" height="14" rx="2" fill="url(#grad_ui_magazine_mist)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M20 16L40 16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M20 44L32 44" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  </g>
+</svg>

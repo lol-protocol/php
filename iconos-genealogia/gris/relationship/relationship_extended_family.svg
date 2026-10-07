@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_relationship_extended_family_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E1E1E1"/>
+      <stop offset="1" stop-color="#D3D3D3"/>
+    </linearGradient>
+    <linearGradient id="grad_relationship_extended_family_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A5A5A5"/>
+      <stop offset="1" stop-color="#7B7B7B"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.7" cy="59.5" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M27 8.6L43 8.6M27 12.4L43 12.4" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+    <path d="M35 10.5L35 20.5L19 20.5L19 30.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M35 10.5L35 20.5L51 20.5L51 30.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M19 30.5L19 40.5L11 40.5L11 50.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M19 30.5L19 40.5L27 40.5L27 50.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M51 30.5L51 50.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M21.6 6.7L21.6 6.3L21.8 5.9L22 5.5L22.4 5.3L22.8 5.1L23.2 5.1L30.8 5.1L31.2 5.1L31.6 5.3L32 5.5L32.2 5.9L33.6 7.7L33.8 8.1L33.8 8.5L33.8 16.1L33.8 16.6L33.6 17L33.3 17.3L33 17.5L32.6 17.7L32.2 17.8L24.6 17.8L24.1 17.7L23.7 17.5L23.4 17.3L23.1 17L21.8 15.1L21.6 14.7L21.6 14.3Z" fill="#7B7B7B"/><rect x="21.6" y="5.1" width="10.9" height="10.9" rx="1.6" fill="url(#grad_relationship_extended_family_mist)"/></g>
+    <g><path d="M38.2 14.1L39.6 15.9A6 6 0 0 0 49.2 8.7L47.8 6.9A6 6 0 0 0 38.2 14.1Z" fill="#7B7B7B"/><circle cx="43" cy="10.5" r="6" fill="url(#grad_relationship_extended_family_mist)"/></g>
+    <g><path d="M13.9 30.5L13.9 30.2L14 29.9L14.2 29.7L18.2 25.7L18.4 25.5L18.7 25.4L19 25.4L19.3 25.4L19.6 25.5L19.8 25.7L23.8 29.7L24 29.9L25.3 31.7L25.4 32L25.5 32.3L25.4 32.6L25.3 32.9L25.1 33.2L21.2 37.1L21 37.3L20.7 37.4L20.4 37.4L20.1 37.4L19.8 37.3L19.5 37.1L15.6 33.2L15.4 32.9L14 31.1L13.9 30.8Z" fill="#7B7B7B"/><rect x="15" y="26.5" width="7.9" height="7.9" rx="1.2" transform="rotate(45 19 30.5)" fill="url(#grad_relationship_extended_family_mist)"/></g>
+    <g><path d="M45.9 30.5L45.9 30.2L46 29.9L46.2 29.7L50.2 25.7L50.4 25.5L50.7 25.4L51 25.4L51.3 25.4L51.6 25.5L51.8 25.7L55.8 29.7L56 29.9L57.3 31.7L57.5 32L57.5 32.3L57.5 32.6L57.3 32.9L57.1 33.2L53.2 37.1L53 37.3L52.7 37.4L52.4 37.4L52.1 37.4L51.8 37.3L51.5 37.1L47.6 33.2L47.4 32.9L46 31.1L45.9 30.8Z" fill="#7B7B7B"/><rect x="47" y="26.5" width="7.9" height="7.9" rx="1.2" transform="rotate(45 51 30.5)" fill="url(#grad_relationship_extended_family_mist)"/></g>
+    <g><path d="M5.9 50.5L5.9 50.2L6 49.9L6.2 49.7L10.2 45.7L10.4 45.5L10.7 45.4L11 45.4L11.3 45.4L11.6 45.5L11.8 45.7L15.8 49.7L16 49.9L17.3 51.7L17.4 52L17.5 52.3L17.4 52.6L17.3 52.9L17.1 53.2L13.2 57.1L13 57.3L12.7 57.4L12.4 57.4L12.1 57.4L11.8 57.3L11.5 57.1L7.6 53.2L7.4 52.9L6 51.1L5.9 50.8Z" fill="#474747"/><rect x="7" y="46.5" width="7.9" height="7.9" rx="1.2" transform="rotate(45 11 50.5)" fill="url(#grad_relationship_extended_family_orange)"/></g>
+    <g><path d="M21.9 50.5L21.9 50.2L22 49.9L22.2 49.7L26.2 45.7L26.4 45.5L26.7 45.4L27 45.4L27.3 45.4L27.6 45.5L27.8 45.7L31.8 49.7L32 49.9L33.3 51.7L33.5 52L33.5 52.3L33.5 52.6L33.3 52.9L33.1 53.2L29.2 57.1L29 57.3L28.7 57.4L28.4 57.4L28.1 57.4L27.8 57.3L27.5 57.1L23.6 53.2L23.4 52.9L22 51.1L21.9 50.8Z" fill="#474747"/><rect x="23" y="46.5" width="7.9" height="7.9" rx="1.2" transform="rotate(45 27 50.5)" fill="url(#grad_relationship_extended_family_orange)"/></g>
+    <g><path d="M45.9 50.5L45.9 50.2L46 49.9L46.2 49.7L50.2 45.7L50.4 45.5L50.7 45.4L51 45.4L51.3 45.4L51.6 45.5L51.8 45.7L55.8 49.7L56 49.9L57.3 51.7L57.5 52L57.5 52.3L57.5 52.6L57.3 52.9L57.1 53.2L53.2 57.1L53 57.3L52.7 57.4L52.4 57.4L52.1 57.4L51.8 57.3L51.5 57.1L47.6 53.2L47.4 52.9L46 51.1L45.9 50.8Z" fill="#474747"/><rect x="47" y="46.5" width="7.9" height="7.9" rx="1.2" transform="rotate(45 51 50.5)" fill="url(#grad_relationship_extended_family_orange)"/></g>
+  </g>
+</svg>
