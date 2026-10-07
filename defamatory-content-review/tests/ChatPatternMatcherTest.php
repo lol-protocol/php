@@ -47,4 +47,16 @@ class ChatPatternMatcherTest extends TestCase
     {
         $this->assertSame('te voy a matar', ChatPatternMatcher::find('STRAßE TE VOY A MATAR', [self::THREAT])[0]['found']);
     }
+
+    public function testFoldLowersFoldsAndSpacesOutPunctuation(): void
+    {
+        $this->assertSame('matalos  arbol i ', ChatPatternMatcher::fold('Mátalos, ÁRBOL 1!'));
+    }
+
+    public function testFoldKeepsOnePositionPerCharacter(): void
+    {
+        $line = 'Mañana, ¿qué tal? 😀';
+
+        $this->assertSame(mb_strlen($line), strlen(ChatPatternMatcher::fold($line)));
+    }
 }

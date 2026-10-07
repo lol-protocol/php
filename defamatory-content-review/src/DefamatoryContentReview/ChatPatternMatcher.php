@@ -6,7 +6,7 @@ namespace DefamatoryContentReview;
  * Frases con forma («te voy a matar», «ojalá te mueras») que una lista de
  * palabras no puede expresar: tienen más de tres palabras o dependen de qué
  * las rodea. Cada patrón es una expresión regular, sin delimitadores,
- * escrita contra el texto plegado de ChatLineNormalizer::foldForPatterns():
+ * escrita contra el texto plegado de fold():
  * minúsculas, sin tildes y con espacios en lugar de puntuación.
  */
 final class ChatPatternMatcher
@@ -17,7 +17,7 @@ final class ChatPatternMatcher
      */
     public static function find(string $line, array $patterns): array
     {
-        $folded = ChatLineNormalizer::foldForPatterns($line);
+        $folded = self::fold($line);
         $aligned = strlen($folded) === mb_strlen($line);
         $found = [];
 
@@ -38,5 +38,18 @@ final class ChatPatternMatcher
         }
 
         return $found;
+    }
+
+    /**
+     * Minúsculas, sin tildes, leet resuelto y cada carácter que no sea letra
+     * ni dígito convertido en un espacio. Un carácter por carácter, así la
+     * posición de un hallazgo vale también en la línea original (salvo si
+     * había «ß», «æ» o «œ», que el plegado alarga).
+     */
+    public static function fold(string $line): string
+    {
+        $folded = Leetspeak::unleet(AccentFolding::fold(mb_strtolower($line)));
+
+        return preg_replace('/[^a-z0-9]/u', ' ', $folded) ?? $folded;
     }
 }

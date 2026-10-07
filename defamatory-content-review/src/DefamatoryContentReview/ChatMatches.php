@@ -46,6 +46,22 @@ final class ChatMatches
         return $known;
     }
 
+    /**
+     * Lo que sólo se encontró reduciendo letras dobles («puuta» → «puta») nunca
+     * bloquea solo: puede ser un apellido («Pratt» → «prat»). Lo que era `high`
+     * pasa a `medium`, o sea a revisión.
+     *
+     * @param array<int,array<string,mixed>> $matches
+     * @return array<int,array<string,mixed>>
+     */
+    public static function downgradeDoubled(array $matches): array
+    {
+        return array_map(
+            fn(array $match): array => ($match['repeat'] ?? '') === 'doubled' && $match['severity'] === 'high' ? ['severity' => 'medium'] + $match : $match,
+            $matches
+        );
+    }
+
     /** @param array<string,mixed> $match */
     private static function key(array $match): string
     {

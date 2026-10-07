@@ -14,11 +14,19 @@
  *   del mismo riskType y de severidad medium o high (ver ChatTopics).
  * - 'patterns': frases con forma, como expresión regular sin delimitadores
  *   contra el texto plegado: minúsculas, sin tildes y sin puntuación.
+ * - meta 'collapseRepeats' => true: lee también la línea sin letras repetidas
+ *   («puuuuta»). Sólo se activa en los idiomas cuyos falsos positivos se midieron
+ *   contra una lista de palabras reales: en otros (italiano, finés…) la doble
+ *   letra es parte de la palabra.
+ * - 'legit' => [...]: palabras con letra doble legítima (y apellidos) cuya lectura
+ *   sin repetidas coincide con un insulto: «calle» → «calé». Nunca se leen colapsadas.
+ *   ChatTopicsConfigTest verifica que cada una siga haciendo falta.
  *
  * Severidad: high => bloquear, medium => revisión humana, low => sólo se informa.
  */
 return [
-    'meta' => ['code' => 'spa', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'spa', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['calle', 'morro', 'chollo', 'cholla', 'gorrilla', 'mulla', 'mullo', 'pellon'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high', 'forms' => 'noun'],

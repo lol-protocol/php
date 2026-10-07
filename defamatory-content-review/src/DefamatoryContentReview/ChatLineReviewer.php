@@ -38,35 +38,36 @@ final class ChatLineReviewer
 
     public function review(string $line): ChatLineResult
     {
+        $topics = $this->topicsFor($this->reviewer->getLanguage());
         $matches = [];
-        foreach (ChatLineNormalizer::variants($line) as [$text, $joined]) {
-            $matches = ChatMatches::merge($matches, ChatMatches::restore($this->scan($text, $line), $joined));
+
+        foreach (SpacedLetters::variants($line) as [$text, $joined]) {
+            $matches = ChatMatches::merge($matches, ChatMatches::restore($this->scan($text, $topics), $joined));
         }
 
         return new ChatLineResult($line, $matches, $this->decisionFor($matches));
     }
 
     /**
-     * @param string $text la línea con las letras sueltas unidas
-     * @param string $line la línea original
+     * @param string $text una lectura de la línea (con las letras sueltas unidas)
      * @return array<int,array<string,mixed>>
      */
-    private function scan(string $text, string $line): array
+    private function scan(string $text, ?ChatTopics $topics): array
     {
-        $language = $this->reviewer->getLanguage();
+        $dictionary = $this->reviewer->languages()->wordList($this->reviewer->getLanguage());
         $matches = [];
 
-        foreach ($this->reviewer->languages()->wordList($language)->findInText($text) as $match) {
+        foreach ($topics?->scan($dictionary, $text) ?? $dictionary->findInText($text) as $match) {
             $matches[] = [
                 'severity' => $match['nameCollision'] && $match['severity'] === 'high' ? 'medium' : $match['severity'],
                 'contentType' => $match['riskType'] === 'burlesco' ? 'burlesco' : 'difamatorio',
             ] + $match;
         }
-        foreach ($this->topicsFor($language)?->find($text, $line) ?? [] as $match) {
+        foreach ($topics?->find($text) ?? [] as $match) {
             $matches[] = $match + ['contentType' => $match['riskType']];
         }
 
-        return $matches;
+        return ChatMatches::downgradeDoubled($matches);
     }
 
     /**

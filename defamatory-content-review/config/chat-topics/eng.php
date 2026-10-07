@@ -2,10 +2,12 @@
 
 /**
  * English chat topics — see spa.php for the format ('forms', 'also', the
- * 'ambiguous' category and 'patterns') and the meaning of severity.
+ * 'ambiguous' category, 'patterns', meta 'collapseRepeats' and 'legit') and the
+ * meaning of severity.
  */
 return [
-    'meta' => ['code' => 'eng', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'eng', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['annus', 'bonny', 'curr', 'hogg', 'jaap', 'looser', 'pigg', 'pratt'],
     'words' => [
         'sexual' => [
             ['word' => 'porn', 'riskType' => 'sexual', 'severity' => 'high', 'forms' => 'noun'],

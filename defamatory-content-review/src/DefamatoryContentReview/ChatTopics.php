@@ -19,13 +19,23 @@ final class ChatTopics
     private WordList $words;
     /** @var array<int,array<string,mixed>> */
     private array $patterns;
+    /** @var array<string,true> */
+    private array $legit = [];
+    private bool $collapseRepeats;
 
     /** @param array<string,mixed> $config ['meta' => …, 'words' => categoría => entradas, 'patterns' => …] */
     public function __construct(array $config, string $language)
     {
         $words = TopicInflector::expand($config['words'] ?? [], $language);
         $this->words = new WordList(['meta' => $config['meta'] ?? [], 'words' => $words], $language);
-        $this->patterns = $config['patterns'] ?? [];
+        $this->collapseRepeats = (bool) ($config['meta']['collapseRepeats'] ?? false);
+        foreach ($config['legit'] ?? [] as $word) {
+            $this->legit[RepeatedLetters::key($word)] = true;
+        }
+        $patterns = $config['patterns'] ?? [];
+        $this->patterns = $this->collapseRepeats
+            ? array_map(fn(array $pattern): array => ['pattern' => RepeatedLetters::tolerant($pattern['pattern'])] + $pattern, $patterns)
+            : $patterns;
     }
 
     public static function fromFile(string $path, string $language): ?self
@@ -34,13 +44,27 @@ final class ChatTopics
     }
 
     /**
-     * @param string $text la línea con las letras sueltas ya unidas: lo que lee el diccionario
-     * @param string $line la línea original: los patrones se posicionan sobre ella
+     * Los términos de `$list` en la línea. Donde el idioma lo pide (meta
+     * `collapseRepeats`) también los escritos con letras repetidas
+     * («puuuta»); si sólo hizo falta reducir dobles, el hallazgo trae
+     * `repeat => doubled`. Ver RepeatedLetters.
+     *
      * @return array<int,array<string,mixed>>
      */
-    public function find(string $text, string $line): array
+    public function scan(WordList $list, string $text): array
     {
-        $matches = array_merge($this->words->findInText($text), ChatPatternMatcher::find($line, $this->patterns));
+        return $this->collapseRepeats
+            ? WordListScanner::scan($text, RepeatedLetters::searcher(fn(string $phrase): ?array => $list->search($phrase), $this->legit))
+            : $list->findInText($text);
+    }
+
+    /**
+     * @param string $text una lectura de la línea (ver SpacedLetters::variants())
+     * @return array<int,array<string,mixed>>
+     */
+    public function find(string $text): array
+    {
+        $matches = array_merge($this->scan($this->words, $text), ChatPatternMatcher::find($text, $this->patterns));
         $firm = [];
         foreach ($matches as $match) {
             if ($match['category'] !== self::AMBIGUOUS && $match['severity'] !== 'low') {
