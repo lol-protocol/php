@@ -16,6 +16,9 @@ $lines = [
     'Callate vejestorio',                        // burlesco → revisión
     'Mándame nudes ahora',                       // sexual → bloquear
     'vamos a f o l l a r',                       // las letras sueltas se unen
+    'eres una puuuuta',                          // 3+ iguales: nunca legítimas, bloquea
+    'eres una puuta',                            // 2 iguales: puede ser un apellido → revisión
+    'vivimos en la calle Mayor',                 // «calle» → «calé» se evita con `legit`
     'te voy a matar',                            // amenaza → bloquear
     'ojalá te mueras, hijo de puta',             // deseo de muerte + insulto
 ];

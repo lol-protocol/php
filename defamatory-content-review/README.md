@@ -543,6 +543,16 @@ igual que con los nombres. Hay listas de temas para español (`spa`) e inglés
   se prueba también sin las letras que son palabras («a», «y», «o»…) en los
   extremos. Los separadores intercalados («p-u-t-a», «p.u.t.a») y el leet
   («p0rn0») ya los cubría el diccionario.
+- **Letras repetidas.** «puuuuta», «mmmierda», «te voy a mataaaar». Cada racha
+  de letras iguales se lee como 1 letra o como 2, sin tocar el texto: «follarr»
+  es «follar» (con sus dos «l»), no «folar». Tres o más iguales seguidas no
+  existen en español ni en inglés y conservan su severidad completa (`reject`);
+  dos sí pueden ser legítimas («calle», «Pratt», «looser»), así que lo que
+  sólo se encuentra reduciendo dobles («puuta») baja a `review`. El hallazgo
+  conserva el texto como se escribió y trae `repeat`: `elongated` o `doubled`.
+  Las amenazas (`patterns`) aceptan letras repetidas con su severidad. Sólo
+  se activa en los idiomas con `meta.collapseRepeats` (español e inglés): en
+  otros —italiano, finés…— la doble letra es parte de la palabra.
 - **Palabras ambiguas.** «vamos a coger el bus», «está de bomba la fiesta»,
   «techo de paja» no son contenido sexual ni bélico: esas palabras sólo
   cuentan si la misma línea trae algo firme (`medium` o `high`) del mismo
@@ -557,6 +567,8 @@ igual que con los nombres. Hay listas de temas para español (`spa`) e inglés
 | `'forms' => 'noun' \| 'adj' \| 'verb'` | Genera plurales, géneros o la conjugación regular (con pronombres pegados: «matarlos», «fóllame») en español e inglés. Escribe el sustantivo en singular, el adjetivo en masculino y el verbo en infinitivo. |
 | `'also' => [...]` | Formas irregulares, a mano («degüello»). |
 | categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
+| meta `'collapseRepeats' => true` | Lee también las palabras escritas con letras repetidas. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
+| `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsConfigTest` verifica que cada una siga haciendo falta. |
 | `'patterns'` | Frases con forma: expresión regular sin delimitadores contra el texto plegado (minúsculas, sin tildes ni puntuación, leet resuelto), con `riskType`, `severity` y `label`. |
 
 `ChatTopicsConfigTest` verifica que las entradas estén bien formadas, que
@@ -567,14 +579,50 @@ diccionario de insultos del idioma se marca igual como `difamatorio`; en
 `chat-topics/` sólo hace falta si además debe llevar la etiqueta `sexual` o
 `belico`.
 
+### Validación en el front (`js/limit-repeated-letters.js`)
+
+El servidor lee las letras repetidas porque no puede fiarse de lo que llegue,
+pero el front puede evitar que se escriban: nunca más de **2 letras iguales
+seguidas** (ninguna palabra de español o inglés necesita 3). Sin dependencias;
+funciona como script clásico y con `require` en Node.
+
+```html
+<textarea data-max-repeat></textarea>   <!-- tope 2; data-max-repeat="1" para otro -->
+<script src="js/limit-repeated-letters.js"></script>
+```
+
+Al cargar se engancha solo a los campos con `data-max-repeat`. Recorta lo que
+se escribe o pega («puuuuta» → «puuta»), conserva el cursor, no toca el texto
+mientras un IME compone y avisa con el evento `repeated-letters-limited`
+(`detail.removed`, `detail.max`) para mostrar un mensaje. Mayúsculas y tildes
+cuentan como la misma letra («uúU» son tres); espacios, signos y dígitos cortan
+la racha. Por código:
+
+```js
+const { limitRepeatedLetters, hasTooManyRepeatedLetters, attach } = LimitRepeatedLetters;
+
+limitRepeatedLetters('hooolaaa');            // 'hoolaa'
+hasTooManyRepeatedLetters('puuuta');         // true
+const detach = attach(input, { max: 2, onLimit: ({ removed }) => aviso(removed) });
+```
+
+Cuidado: tampoco deja pasar «III» (Carlos III) ni «www». Si el campo los
+necesita, pásalos en `keep`: `{ keep: [/\b[IVXLCDM]{3,}\b/, /\bwww\b/i] }`.
+`js/example.html` es una página de prueba; los tests corren con
+`node --test 'js/tests/*.test.js'`. El tope del front no sustituye al del
+servidor: quien se salte el front sigue siendo leído.
+
 ### Lo que no cubre
 
 Son listas de arranque, sin revisión de hablantes nativos, y un filtro de
 palabras no entiende contexto:
 
-- Letras repetidas («puuuuta»), otros separadores entre letras sueltas
-  («p - u - t - a») y la sustitución de letras por símbolos fuera de la tabla
-  de `Leetspeak`.
+- Otros separadores entre letras sueltas («p - u - t - a») y entre letras
+  repetidas («pu-uuta»), y la sustitución de letras por símbolos fuera de la
+  tabla de `Leetspeak`.
+- Las letras repetidas sólo se leen en español e inglés; un apellido con doble
+  letra que no esté en `legit` y cuya lectura reducida sea un insulto
+  («Pratt» → «prat» lo estaba) llega a `review`, nunca a `reject`.
 - Un nombre que coincide con un insulto del diccionario («Dick») se marca
   igual; sólo los que declaran `nameCollision` bajan a revisión.
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
@@ -742,7 +790,10 @@ src/DefamatoryContentReview/
 ├── ChatLineReviewer.php            Revisión de mensajes de chat — ver «Revisar mensajes de chat»
 ├── ChatLineResult.php              Decisión, tipos de contenido y línea censurada de un mensaje
 ├── ChatTopics.php                  Lista de temas de un idioma (palabras, ambiguas y patrones) — interno
-├── ChatLineNormalizer.php / ChatMatches.php / ChatPatternMatcher.php   Letras sueltas, hallazgos y frases con forma — internos
+├── SpacedLetters.php               Letras sueltas («p u t a») unidas en una palabra — interno
+├── RepeatedLetters.php             Letras repetidas («puuuta»): búsqueda tolerante y `legit` — interno
+├── RepeatedReadings.php            Cada racha leída como 1 letra o como 2 — interno
+├── ChatMatches.php / ChatPatternMatcher.php   Operaciones sobre los hallazgos y frases con forma — internos
 ├── TopicInflector.php              Expande `forms` en plurales, géneros y conjugaciones — interno
 ├── TopicInflection.php             Contrato por idioma: SpanishInflection (+ SpanishVerbs) y EnglishInflection
 ├── ValidationResult.php            Resultado con trazabilidad por idioma y método
@@ -756,6 +807,11 @@ config/
 └── languages/
     ├── supported-languages.php     Catálogo ISO 639-3 + alias 639-1
     └── spa.php eng.php por.php …   33 diccionarios
+
+js/
+├── limit-repeated-letters.js       Tope de letras iguales seguidas para el front (máx. 2) — sin dependencias
+├── example.html                    Página de prueba
+└── tests/                          node --test
 
 tests/
 └── fixtures/common-names.php       Nombres reales comunes por idioma (falsos positivos y benchmark)

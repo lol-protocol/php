@@ -34,6 +34,18 @@
   en vez de bloquear, igual que con los nombres. `censored()` busca por
   palabra entera sin distinguir mayúsculas acentuadas ni el separador entre
   las palabras de una frase. Ver `examples/10-chat-lines.php`.
+- **Letras repetidas en el chat** («puuuuta», «mmmierda», «te voy a
+  mataaaar»): cada racha de letras iguales se lee como 1 letra o como 2, sin
+  tocar el texto, así «follarr» sigue siendo «follar». Tres o más iguales
+  conservan su severidad; dos sólo bajan a revisión (`repeat => doubled`)
+  porque pueden ser legítimas («calle», «Pratt»). Cada idioma lista en
+  `legit` las palabras que nunca se leen reducidas, medidas contra ~1 millón de
+  palabras reales (0 falsos positivos con tres o más; los pocos restantes con
+  dos son erratas evidentes). Sólo español e inglés (`meta.collapseRepeats`).
+- **`js/limit-repeated-letters.js`**: tope de 2 letras iguales seguidas para
+  los campos de texto del front (nunca 3). Recorta lo que se escribe o pega,
+  conserva el cursor, respeta los IME y se engancha solo a `data-max-repeat`.
+  18 tests con `node --test`, verificado además en Chromium.
 - **Ampliación de los 6 diccionarios `comprehensive`** en los idiomas donde
   hay confianza real de hablante fluido/nativo — español ya tenía 601
   términos (el más grande con diferencia) y no se tocó:

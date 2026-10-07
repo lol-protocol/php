@@ -52,6 +52,7 @@ proyecto.
 
 `.github/workflows/tests.yml` tiene un job por proyecto:
 - `phpunit`: tests, PHPStan y benchmark de `defamatory-content-review/`.
+- `chat-front-guard`: tests en Node del tope de letras repetidas para el front, `defamatory-content-review/js/`.
 - `phone-directory`: tests de `phone-directory/` (incluidos los ejemplos) contra SQLite y PostgreSQL, y el benchmark.
 - `phone-directory-ports`: tests de los ports de `phone-directory/` a Python y Java.
 - `web-animations`: prueba de humo de las animaciones.

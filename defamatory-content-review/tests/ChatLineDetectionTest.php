@@ -69,7 +69,7 @@ class ChatLineDetectionTest extends TestCase
         foreach (['spa', 'eng'] as $language) {
             [$firstNames, $lastNames] = (require __DIR__ . '/fixtures/common-names.php')[$language];
             foreach ($firstNames as $i => $first) {
-                [$decision, $types, $detail] = self::review($language, "Hola $first {$lastNames[$i]}, ¿cómo estás?");
+                [$decision, $types, $detail] = self::review($language, "Hola $first {$lastNames[$i % count($lastNames)]}, ¿cómo estás?");
 
                 $this->assertSame([], $types, $detail);
             }
