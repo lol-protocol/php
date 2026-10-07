@@ -15,7 +15,9 @@ namespace DefamatoryContentReview;
  *
  * Igual que con los nombres, un término que también es apellido
  * (`nameCollision`: «Savage», «Concha») nunca bloquea solo: baja a revisión.
- * Las letras sueltas («p u t a») se unen antes de buscar.
+ * Las letras sueltas («p u t a») se unen antes de buscar. Una entrada
+ * `'ambiguous' => true` de un diccionario («яйца», «leche») se ignora en el
+ * chat porque casi siempre es la palabra cotidiana; los nombres no la ignoran.
  */
 final class ChatLineReviewer
 {
@@ -57,6 +59,7 @@ final class ChatLineReviewer
         $matches = [];
 
         foreach ($this->reviewer->languages()->wordList($language)->findInText($text) as $match) {
+            if ($match['ambiguous'] ?? false) { continue; } // «яйца», «leche»: palabra cotidiana, no insulto en un chat
             $matches[] = [
                 'severity' => $match['nameCollision'] && $match['severity'] === 'high' ? 'medium' : $match['severity'],
                 'contentType' => $match['riskType'] === 'burlesco' ? 'burlesco' : 'difamatorio',

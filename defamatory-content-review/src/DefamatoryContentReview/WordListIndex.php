@@ -8,7 +8,7 @@ namespace DefamatoryContentReview;
  * WordList — separado porque cargar el diccionario y consultar el índice
  * ya cargado son dos momentos distintos.
  *
- * @phpstan-type WordEntry array{original: string, category: string, riskType: string, severity: string, nameCollision: bool}
+ * @phpstan-type WordEntry array{original: string, category: string, riskType: string, severity: string, nameCollision: bool, ambiguous: bool}
  */
 final class WordListIndex
 {

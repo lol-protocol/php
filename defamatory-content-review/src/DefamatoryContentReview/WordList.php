@@ -52,7 +52,7 @@ class WordList
             'category' => $category,
             'riskType' => $data['riskType'] ?? 'ordinario',
             'severity' => $data['severity'] ?? 'medium',
-            'nameCollision' => $data['nameCollision'] ?? false,
+            'nameCollision' => $data['nameCollision'] ?? false, 'ambiguous' => $data['ambiguous'] ?? false,
         ]);
     }
 

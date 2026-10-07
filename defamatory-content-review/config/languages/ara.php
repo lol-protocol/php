@@ -213,7 +213,7 @@ return [
         'badhi' => [
             ['word' => 'خرا', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'براز', 'riskType' => 'ordinario', 'severity' => 'medium'],
-            ['word' => 'بول', 'riskType' => 'ordinario', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'بول', 'riskType' => 'ordinario', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'طيز', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'مؤخرة', 'riskType' => 'ordinario', 'severity' => 'low'],
             ['word' => 'زب', 'riskType' => 'ordinario', 'severity' => 'high'],

@@ -70,6 +70,10 @@ Al revisar un idioma, amplía también su entrada en
    borrar un linaje real solo porque su apellido coincide con un insulto.
    Sin este flag, un término legítimo como apellido quedaría bloqueado sin
    posibilidad de excepción.
+   Si la palabra es, ante todo, una palabra cotidiana («яйца» = huevos,
+   «leche», «כוס» = vaso), agregá `'ambiguous' => true`: `validateName()` la
+   sigue marcando, pero `ChatLineReviewer` la ignora para no censurar
+   «compra huevos y pan».
 4. Corregí, quitá o agregá entradas según haga falta. Un término mal
    clasificado (categoría o severidad equivocada) es tan importante de
    corregir como uno que falta.

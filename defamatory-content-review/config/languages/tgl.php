@@ -72,7 +72,7 @@ return [
             ['word' => 'suplada', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'mayabang', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'pasikat', 'riskType' => 'moral', 'severity' => 'low'],
-            ['word' => 'plastik', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'plastik', 'riskType' => 'moral', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'epal', 'riskType' => 'moral', 'severity' => 'low'],
             ['word' => 'walanghiya', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'walang modo', 'riskType' => 'moral', 'severity' => 'medium'],
@@ -107,7 +107,7 @@ return [
         ],
         'kaswal' => [
             ['word' => 'putangina', 'riskType' => 'ordinario', 'severity' => 'high'],
-            ['word' => 'leche', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'leche', 'riskType' => 'ordinario', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'buwisit', 'riskType' => 'ordinario', 'severity' => 'low'],
             ['word' => 'punyeta', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'lintik', 'riskType' => 'ordinario', 'severity' => 'medium'],
