@@ -145,6 +145,63 @@ final class DescargaDeTasasTest extends TestCase
         DescargaDeTasas::leer("http://127.0.0.1:{$puerto}/ok", 2);
     }
 
+    /**
+     * Algunos servicios piden la clave en la direccion (?app_id=CLAVE, o /v6/CLAVE/latest/USD), y los
+     * errores del comando terminan en el mail de cron y en los logs: ninguno puede traerla. Tampoco el
+     * aviso de PHP, que incluye la URL entera.
+     *
+     * @return iterable<string, array{string}> la ruta del servidor de prueba, con la clave puesta
+     */
+    public static function urlsConClave(): iterable
+    {
+        yield 'la clave en la query, servidor caido' => ['/caido?app_id=SECRETO'];
+        yield 'la clave en la ruta, que no existe' => ['/v6/SECRETO/latest/USD'];
+        yield 'la clave en la query, redireccion' => ['/redirige?app_id=SECRETO'];
+        yield 'la clave en la query, respuesta gigante' => ['/gigante?app_id=SECRETO'];
+    }
+
+    #[DataProvider('urlsConClave')]
+    public function testLosErroresNoMuestranLaClaveDeLaUrl(string $ruta): void
+    {
+        $mensaje = $this->mensajeDe(self::$base . $ruta);
+
+        self::assertStringNotContainsString('SECRETO', $mensaje);
+        self::assertStringContainsString(self::$base, $mensaje, 'dice de que servidor es, sin lo que viene despues');
+    }
+
+    public function testSiNadieContestaElErrorNoMuestraLaClave(): void
+    {
+        $socket = stream_socket_server('tcp://127.0.0.1:0');
+        self::assertNotFalse($socket);
+        $puerto = (int) substr((string) strrchr((string) stream_socket_get_name($socket, false), ':'), 1);
+        fclose($socket);
+
+        $mensaje = $this->mensajeDe("http://127.0.0.1:{$puerto}/ok?app_id=SECRETO", 2);
+
+        self::assertStringContainsString('No se pudo descargar http://127.0.0.1:' . $puerto, $mensaje);
+        self::assertStringNotContainsString('SECRETO', $mensaje, 'ni en el aviso de PHP, que repite la URL entera');
+    }
+
+    public function testUnaUrlQueNoSeAceptaTampocoMuestraLaClave(): void
+    {
+        foreach (['http://ejemplo.com/tasas?app_id=SECRETO', 'ftp://usuario:SECRETO@ejemplo.com/tasas', 'app_id=SECRETO'] as $url) {
+            $mensaje = $this->mensajeDe($url);
+
+            self::assertStringContainsString('tiene que ser https', $mensaje, $url);
+            self::assertStringNotContainsString('SECRETO', $mensaje, $url);
+        }
+    }
+
+    private function mensajeDe(string $url, int $segundosDeEspera = 20): string
+    {
+        try {
+            DescargaDeTasas::leer($url, $segundosDeEspera);
+        } catch (TasasInvalidas $e) {
+            return $e->getMessage();
+        }
+        self::fail("{$url} tenia que fallar");
+    }
+
     /** @return iterable<string, array{string}> */
     public static function urlsQueNoSeAceptan(): iterable
     {

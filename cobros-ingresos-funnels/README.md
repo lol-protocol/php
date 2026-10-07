@@ -197,7 +197,8 @@ Como de estas tasas dependen todos los totales, escribe solo lo que se puede cre
   o de hace más de 7 días, y nombran cuál.
 
 Con otro servicio, se pone su dirección en `TASAS_URL` (algunos piden una clave en la
-URL). Sirve cualquiera que conteste `{"base": "USD", "rates": {"EUR": 0.86, ...}}`
+URL; los mensajes de error muestran solo el servidor, nunca la clave, porque cron los
+manda por mail). Sirve cualquiera que conteste `{"base": "USD", "rates": {"EUR": 0.86, ...}}`
 (o `base_code`): ExchangeRate-API, Open Exchange Rates, Frankfurter. Y
 `--archivo=tasas.json` lee el mismo formato de un archivo, para tasas que vengan de
 otra parte (el banco central, el contador).
