@@ -116,23 +116,60 @@ final class MonedaYSegmentacionTest extends IntegracionTestCase
             'fecha_vencimiento' => $hoy->format('Y-m-d'),
         ]);
 
-        $tramos = array_column((new SegmentacionRepository())->topPorRangoEdad(50), 'etiqueta');
+        $tramos = array_column((new SegmentacionRepository())->topPorDimensiones(50)['rango_edad'], 'etiqueta');
 
         self::assertContains('Menor de 18', $tramos);
     }
 
-    public function testTopPorDimensionEstaOrdenadoDescendentePorFacturacion(): void
+    public function testCadaDimensionVieneOrdenadaDescendentePorFacturacionYConElTopPedido(): void
     {
-        $filas = (new SegmentacionRepository())->topPorPais(5);
+        $porDimension = (new SegmentacionRepository())->topPorDimensiones(3);
 
-        $totales = array_column($filas, 'total_facturado');
-        $ordenados = $totales;
-        rsort($ordenados);
-        self::assertSame($ordenados, $totales, 'debe venir ordenado de mayor a menor facturacion');
+        self::assertSame(['pais', 'ciudad', 'idioma', 'genero', 'rango_edad'], array_keys($porDimension));
+        foreach ($porDimension as $dimension => $filas) {
+            self::assertNotEmpty($filas, "{$dimension} tiene que traer filas");
+            self::assertLessThanOrEqual(3, count($filas), "{$dimension}: no puede pasarse del top pedido");
 
-        foreach ($filas as $fila) {
-            self::assertGreaterThanOrEqual(0.0, (float) $fila['total_facturado']);
-            self::assertGreaterThan(0, (int) $fila['clientes']);
+            $totales = array_map('floatval', array_column($filas, 'total_facturado'));
+            $ordenados = $totales;
+            rsort($ordenados);
+            self::assertSame($ordenados, $totales, "{$dimension}: debe venir ordenado de mayor a menor facturacion");
+
+            foreach ($filas as $fila) {
+                self::assertGreaterThanOrEqual(0.0, (float) $fila['total_facturado']);
+                self::assertGreaterThan(0, (int) $fila['clientes']);
+            }
+        }
+    }
+
+    /**
+     * Las cinco segmentaciones salen de una sola consulta que calcula una vez lo
+     * que facturo cada cliente; sin tope, cada dimension tiene que repartir
+     * exactamente la misma facturacion (la de las boletas vigentes) y contar a
+     * los mismos clientes (los que tienen al menos una). Es la prueba de que
+     * ninguna agrupacion pierde ni duplica filas, con una cuenta hecha aparte.
+     */
+    public function testCadaDimensionRepartePorCompletoLaFacturacionYLosClientes(): void
+    {
+        $esperado = Database::connection()->query(
+            'SELECT COALESCE(SUM(b.monto * m.tasa_a_usd), 0) AS total, COUNT(DISTINCT b.cliente_id) AS clientes
+             FROM boletas b JOIN monedas m ON m.codigo = b.moneda_codigo
+             WHERE NOT b.anulada'
+        )->fetch();
+        self::assertNotFalse($esperado);
+
+        foreach ((new SegmentacionRepository())->topPorDimensiones(1000000) as $dimension => $filas) {
+            self::assertEqualsWithDelta(
+                (float) $esperado['total'],
+                array_sum(array_map('floatval', array_column($filas, 'total_facturado'))),
+                0.05,
+                "{$dimension}: la facturacion repartida no suma la total"
+            );
+            self::assertSame(
+                (int) $esperado['clientes'],
+                array_sum(array_map('intval', array_column($filas, 'clientes'))),
+                "{$dimension}: los clientes repartidos no son todos los que facturaron"
+            );
         }
     }
 }

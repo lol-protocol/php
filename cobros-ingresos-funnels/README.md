@@ -308,8 +308,11 @@ tests/
   Integration/           contra la base real, casi todos en una transaccion que
                         se deshace (un archivo por repositorio, migraciones,
                         auditoría, zona horaria, que una base solo migrada
-                        traiga el catálogo de países y monedas, y que los datos
-                        de ejemplo del seed cumplan las reglas de la app)
+                        traiga el catálogo de países y monedas, que el estado
+                        de una boleta en SQL coincida con el de PHP, que las
+                        pantallas pesadas no traigan miles de filas a PHP, y
+                        que los datos de ejemplo del seed cumplan las reglas
+                        de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
@@ -382,15 +385,23 @@ en su moneda original.
   categóricos fijos para series (ingresos/cobros), rampa secuencial para las etapas
   del funnel y las cohortes, y colores de estado reservados para la antigüedad de cartera.
 - Modo oscuro automático vía `prefers-color-scheme`.
-- Paginación de 25 filas por página, con `LIMIT`/`OFFSET` en SQL. En Boletas,
-  como el estado (pagada/parcial/pendiente/vencida/anulada) se calcula en PHP
-  a partir de los pagos aplicados y no se guarda en la base, filtrar por
-  estado no se puede hacer en el `WHERE`: para ese caso puntual se trae el
-  rango completo, se calcula el estado de cada fila, se filtra y recién ahí
-  se pagina con `array_slice`. Es la única parte del listado que no pagina en
-  SQL — el resto (sin filtro de estado, y el resto de las pantallas) sí lo
-  hace. A la escala de este sistema (cientos de filas, no millones) esto es
-  correcto y suficiente.
+- Paginación de 25 filas por página, con `LIMIT`/`OFFSET` en SQL, también en
+  Boletas con filtro de estado. El estado (pagada/parcial/pendiente/vencida/anulada)
+  no se guarda en la base: el que muestra cada fila lo calcula `App\EstadoBoleta`
+  a partir de los pagos aplicados, y para filtrar y paginar en la base la misma
+  regla está escrita en SQL (`BoletaRepository::ESTADO_SQL`). Son dos copias de
+  una regla, y `EstadoBoletaSqlTest` las compara con todos los bordes: cambiar una
+  sin la otra rompe ese test. (Antes el filtro traía todo el rango a PHP: con unas
+  120 mil boletas y el límite de memoria estándar de 128 MB, la pantalla salía en
+  blanco con un 500.)
+- Las pantallas pesadas calculan en SQL y no traen filas a PHP. La antigüedad de
+  cartera se suma en la base y devuelve 4 filas; las cinco segmentaciones del
+  Dashboard salen de una sola consulta que calcula una vez lo que facturó cada
+  cliente; el LTV por cohorte suma pagos y notas una vez por cliente.
+  `RendimientoAEscalaTest` vigila que no vuelvan a leer miles de boletas en PHP.
+  Medido con 30 mil clientes, 120 mil boletas, 100 mil pagos y 150 mil visitantes
+  del funnel (la base y el servidor en la misma máquina), el Dashboard pasó de
+  1,7 s a 0,4 s y Cobros de 0,65 s a 0,19 s.
 - Protección CSRF: `App\Csrf` guarda un token fijo por sesión que cada
   `<form method="post">` incluye oculto, y el `Router` lo valida antes de
   despachar cualquier POST — si falta o no coincide, corta con 403 antes de

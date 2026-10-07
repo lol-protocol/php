@@ -71,30 +71,50 @@ final class IngresosRepository
         return $stmt->fetchAll();
     }
 
-    /** Saldo pendiente de la cartera (consolidado a USD, sin boletas anuladas), agrupado por antigüedad de vencimiento. */
+    /**
+     * Los tramos de antiguedad de la cartera: etiqueta => ultimo dia de vencida
+     * que incluye (null = sin tope). Es la unica lista: tramoDeAntiguedad() la
+     * recorre y carteraAging() arma de ella el CASE de SQL, asi que las dos
+     * formas de clasificar una boleta no pueden discrepar.
+     */
+    private const TRAMOS = ['Al día' => 0, '1-30 días' => 30, '31-60 días' => 60, '61+ días' => null];
+
+    /**
+     * Saldo pendiente de la cartera (consolidado a USD, sin boletas anuladas),
+     * agrupado por antigüedad de vencimiento.
+     *
+     * Se suma en SQL y responde 4 filas. Antes traia las 117 mil boletas de una
+     * base mediana a PHP y las recorria en un foreach: 668 ms, 58 MB y crecia en
+     * linea recta con las boletas. Lo pagado se agrega una sola vez por boleta
+     * (un hash join) y no con una subconsulta por fila como hace la vista
+     * boletas_con_saldo, que es lo que conviene para pocas boletas pero no para
+     * todas. Un saldo de un centavo o menos no es cartera (puede ser un
+     * redondeo).
+     *
+     * @return array<string, float> etiqueta del tramo => saldo en USD, en el orden de TRAMOS
+     */
     public function carteraAging(): array
     {
-        $rows = $this->db->query(
-            "SELECT b.id, b.fecha_vencimiento, m.tasa_a_usd, b.saldo,
-                    (CURRENT_DATE - b.fecha_vencimiento) AS dias_vencido
-             FROM boletas_con_saldo b
-             JOIN monedas m ON m.codigo = b.moneda_codigo
-             WHERE NOT b.anulada"
-        )->fetchAll();
+        $filas = $this->db->query(
+            'SELECT ' . self::tramoSql('x.dias_vencido') . ' AS tramo, SUM(x.saldo_usd) AS total
+             FROM (
+                 SELECT (CURRENT_DATE - b.fecha_vencimiento) AS dias_vencido,
+                        (b.monto - COALESCE(p.pagado, 0)) * m.tasa_a_usd AS saldo_usd
+                 FROM boletas b
+                 JOIN monedas m ON m.codigo = b.moneda_codigo
+                 LEFT JOIN (SELECT boleta_id, SUM(monto) AS pagado
+                            FROM pagos WHERE NOT anulada AND boleta_id IS NOT NULL
+                            GROUP BY boleta_id) p ON p.boleta_id = b.id
+                 WHERE NOT b.anulada
+             ) x
+             WHERE x.saldo_usd > 0.01
+             GROUP BY 1'
+        )->fetchAll(PDO::FETCH_KEY_PAIR);
 
-        $buckets = [
-            'Al día' => 0.0,
-            '1-30 días' => 0.0,
-            '31-60 días' => 0.0,
-            '61+ días' => 0.0,
-        ];
-
-        foreach ($rows as $row) {
-            $saldoUsd = (float) $row['saldo'] * (float) $row['tasa_a_usd'];
-            if ($saldoUsd <= 0.01) {
-                continue;
-            }
-            $buckets[self::tramoDeAntiguedad((int) $row['dias_vencido'])] += $saldoUsd;
+        $etiquetas = array_keys(self::TRAMOS);
+        $buckets = array_fill_keys($etiquetas, 0.0);
+        foreach ($filas as $tramo => $total) {
+            $buckets[$etiquetas[(int) $tramo]] = (float) $total;
         }
 
         return $buckets;
@@ -108,12 +128,33 @@ final class IngresosRepository
      */
     public static function tramoDeAntiguedad(int $diasVencido): string
     {
-        return match (true) {
-            $diasVencido <= 0 => 'Al día',
-            $diasVencido <= 30 => '1-30 días',
-            $diasVencido <= 60 => '31-60 días',
-            default => '61+ días',
-        };
+        foreach (self::TRAMOS as $etiqueta => $hastaDia) {
+            if ($hastaDia !== null && $diasVencido <= $hastaDia) {
+                return $etiqueta;
+            }
+        }
+
+        return (string) array_key_last(self::TRAMOS);   // el ultimo tramo no tiene tope
+    }
+
+    /**
+     * El CASE de SQL que da el indice del tramo (0, 1, 2...) de una cantidad de
+     * dias vencida, armado de TRAMOS. $dias es siempre una expresion fija del
+     * codigo, nunca entrada de usuario.
+     */
+    private static function tramoSql(string $dias): string
+    {
+        $casos = '';
+        $indice = 0;
+        foreach (self::TRAMOS as $hastaDia) {
+            if ($hastaDia === null) {
+                break;
+            }
+            $casos .= " WHEN {$dias} <= {$hastaDia} THEN {$indice}";
+            $indice++;
+        }
+
+        return "CASE{$casos} ELSE {$indice} END";
     }
 
     /**

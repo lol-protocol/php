@@ -28,6 +28,7 @@ final class DashboardController
 
         [$desdeAnt, $hastaAnt] = Filtros::rangoAnterior($desde, $hasta);
         [$desdeAnio, $hastaAnio] = Filtros::rangoAnioAnterior($desde, $hasta);
+        $segmentacion = $segmentacionRepo->topPorDimensiones();
 
         View::render('dashboard', $filtros + [
             'kpis' => $ingresosRepo->kpis($desde, $hasta),
@@ -38,11 +39,11 @@ final class DashboardController
             'serieMensual' => $serieMensual,
             'funnelResumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'segmentacion' => [
-                'País' => $segmentacionRepo->topPorPais(),
-                'Ciudad' => $segmentacionRepo->topPorCiudad(),
-                'Idioma' => $segmentacionRepo->topPorIdioma(),
-                'Género' => $segmentacionRepo->topPorGenero(),
-                'Rango de edad' => $segmentacionRepo->topPorRangoEdad(),
+                'País' => $segmentacion['pais'],
+                'Ciudad' => $segmentacion['ciudad'],
+                'Idioma' => $segmentacion['idioma'],
+                'Género' => $segmentacion['genero'],
+                'Rango de edad' => $segmentacion['rango_edad'],
             ],
             'activePage' => 'dashboard',
             'titulo' => 'Dashboard',
