@@ -58,3 +58,8 @@ jobs:
           sudo -E env "PATH=$PATH" REAL_TESTS=1 bats --tap vps-setup/tests/real | tee real.tap
           if grep -q '# skip' real.tap; then echo "::error::hay tests reales saltados"; exit 1; fi
           test "$(grep -c '^ok ' real.tap)" -ge 20
+
+      # Se paro systemd-resolved para liberar el puerto 53: sin DNS el runner no puede cerrar el job.
+      - name: Restaurar DNS del runner
+        if: always()
+        run: sudo systemctl start systemd-resolved
