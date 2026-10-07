@@ -48,7 +48,8 @@ Pequeño sistema en PHP (sin framework) para analizar:
 
 ## Requisitos
 
-- PHP >= 8.2 con `pdo_pgsql` (lo exige PHPUnit 11; la CI corre en 8.2 y 8.4)
+- PHP >= 8.3 con `pdo_pgsql` (la CI corre en 8.3, el mínimo, y en 8.4; PHP 8.2
+  deja de recibir parches de seguridad el 31 de diciembre de 2026)
 - PostgreSQL (cualquier versión reciente)
 - Composer
 
@@ -222,7 +223,7 @@ explicadas en `phpstan.neon`.
 La CI (`.github/workflows/pruebas-cobros-ingresos-funnels.yml`, en la raíz del
 repositorio) corre en los pull requests y en `master` cada vez que cambia algo de
 este proyecto: sintaxis, PHPStan, las migraciones sobre una base vacía, el seed y
-las tres suites, contra un Postgres 16, en PHP 8.2 (el mínimo) y en 8.4.
+las tres suites, contra un Postgres 16, en PHP 8.3 (el mínimo) y en 8.4.
 
 ## Estructura
 
@@ -288,9 +289,9 @@ src/
                         la redirección (?creada=ID, ?creado=ID...), testeado
   Router.php, View.php, helpers.php
 database/
-  migraciones/          el esquema y el catálogo de ~200 países y sus monedas
-                        (ISO 4217), en cambios numerados (001 = esquema inicial,
-                        005 = catálogo)
+  migraciones/          el esquema, el catálogo de ~200 países y sus monedas
+                        (ISO 4217) y los índices, en cambios numerados (001 =
+                        esquema inicial, 005 = catálogo, 006 = índices)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   seed.php               SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP (una carpeta por sección), con partials
@@ -314,8 +315,9 @@ tests/
                         base solo migrada traiga el catálogo de países y monedas,
                         que el estado de una boleta en SQL coincida con el de
                         PHP, que las pantallas pesadas no traigan miles de filas
-                        a PHP, y que los datos de ejemplo del seed cumplan las
-                        reglas de la app)
+                        a PHP, que las consultas de clientes y del funnel usen
+                        sus índices, y que los datos de ejemplo del seed
+                        cumplan las reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
@@ -410,6 +412,15 @@ en su moneda original.
   pantalla liviana en todo lo demás. Si la conexión guardada murió (se reinició
   Postgres), `Database::conectar()` la reemplaza en la misma petición. En CLI
   (migraciones, seed, tests) nunca es persistente.
+- Dos índices (migración 006) para cuando las tablas crecen: `usuarios_funnel(cliente_id)`,
+  que usa la ficha de un cliente para buscar su recorrido, y `clientes(nombre, id)`,
+  por el que ordenan el listado y el selector de los formularios. Con 30 mil
+  clientes y 150 mil visitantes del funnel bajan la ficha de 24 a 0,08 ms y el
+  listado de 32 a 0,2 ms (la página 600, de 37 a 9 ms); con los datos del seed no
+  se nota. El buscador de texto (`ILIKE '%…%'`) queda sin índice a propósito:
+  necesitaría `pg_trgm`, una extensión que pide permisos que la base de producción
+  puede no darle a la app, y tarda unos 40 ms con 30 mil clientes. `IndicesTest`
+  vigila que esas consultas sigan pudiendo usar su índice.
 - Protección CSRF: `App\Csrf` guarda un token fijo por sesión que cada
   `<form method="post">` incluye oculto, y el `Router` lo valida antes de
   despachar cualquier POST — si falta o no coincide, corta con 403 antes de

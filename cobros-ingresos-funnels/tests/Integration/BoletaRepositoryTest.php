@@ -67,16 +67,19 @@ final class BoletaRepositoryTest extends IntegracionTestCase
         $repo = new BoletaRepository();
         $listado = $repo->listado('2000-01-01', '2100-01-01', null, null, 1);
 
-        self::assertLessThanOrEqual(\App\Paginacion::POR_PAGINA, count($listado['filas']));
-        self::assertSame($listado['total'], $listado['total']);
-        self::assertGreaterThanOrEqual(1, $listado['totalPaginas']);
+        self::assertGreaterThan(1, $listado['totalPaginas'], 'el seed tiene que dar mas de una pagina de boletas para que esta prueba pruebe algo');
 
-        if ($listado['totalPaginas'] > 1) {
-            $pagina2 = $repo->listado('2000-01-01', '2100-01-01', null, null, 2)['filas'];
-            $idsPagina1 = array_column($listado['filas'], 'id');
-            $idsPagina2 = array_column($pagina2, 'id');
-            self::assertEmpty(array_intersect($idsPagina1, $idsPagina2), 'paginas distintas no deben repetir filas');
+        // Se recorren todas las paginas: cada una trae como maximo POR_PAGINA
+        // filas y, juntas, tienen exactamente el total, sin repetir ninguna.
+        $ids = [];
+        for ($pagina = 1; $pagina <= $listado['totalPaginas']; $pagina++) {
+            $filas = $repo->listado('2000-01-01', '2100-01-01', null, null, $pagina)['filas'];
+            self::assertLessThanOrEqual(\App\Paginacion::POR_PAGINA, count($filas));
+            array_push($ids, ...array_column($filas, 'id'));
         }
+
+        self::assertCount($listado['total'], $ids, 'las paginas, juntas, tienen exactamente el total de filas');
+        self::assertSame($ids, array_values(array_unique($ids)), 'ninguna fila aparece en dos paginas');
     }
 
     /**
