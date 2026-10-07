@@ -147,7 +147,7 @@ const converter = new FormatConverter(loader.formats);
 converter.findEquivalents('A4', 90);
 ```
 
-See `docs/Tutorials.md` for step-by-step examples and
+See `docs/TUTORIALS.md` for step-by-step examples and
 `docs/frontend_implementation_guide.md` for UI patterns.
 
 ### As a database
@@ -200,7 +200,7 @@ and offers a browser with search and country/category filters, a
 comparison table, and a converter that shows how similar two sizes are.
 
 `app/translations/` holds UI strings in 30 languages for
-`LocalizationManager` in `document-formats.js`; see `docs/Localization.md`.
+`LocalizationManager` in `document-formats.js`; see `docs/LOCALIZATION.md`.
 
 ## Tests
 
