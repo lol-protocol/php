@@ -16,6 +16,16 @@
   clasificando lo encontrado como `difamatorio`, `burlesco`, `sexual` o
   `belico`, con decisión (`approve`/`review`/`reject`) y la línea censurada.
   Listas de temas en `config/chat-topics/` para español e inglés.
+  Entiende plurales, géneros y conjugaciones regulares (campo `forms` de las
+  listas: «desnudas», «fóllame», «masturbándose», «they massacred»); amenazas
+  y frases con forma (`patterns`: «te voy a matar», «ojalá te mueras»,
+  «I will kill you», «kill yourself»); letras sueltas («p u t a», «vamos a
+  f o l l a r»); y palabras ambiguas (categoría `ambiguous`: «vamos a coger
+  el bus» o «está de bomba» ya no se marcan, «quiero coger, mándame nudes»
+  sí). Un término que también es apellido (`nameCollision`) baja a revisión
+  en vez de bloquear, igual que con los nombres. `censored()` busca por
+  palabra entera sin distinguir mayúsculas acentuadas ni el separador entre
+  las palabras de una frase. Ver `examples/10-chat-lines.php`.
 - **Ampliación de los 6 diccionarios `comprehensive`** en los idiomas donde
   hay confianza real de hablante fluido/nativo — español ya tenía 601
   términos (el más grande con diferencia) y no se tocó:
