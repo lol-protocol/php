@@ -31,11 +31,11 @@ añadan.
 
 ## Prioridad de revisión
 
-1. **`basic`: islandés (`isl`, 65 términos), swahili (`swa`, 71) y tagalo
-   (`tgl`, 80)**. Siguen siendo los más pequeños del catálogo, y los tres
+1. **`basic`: islandés (`isl`, 85 términos), swahili (`swa`, 86) y tagalo
+   (`tgl`, 101)**. Siguen siendo los más pequeños del catálogo, y los tres
    tienen fusión literal activa, así que un término mal elegido afecta
    también a la fusión. Ampliados sin revisión nativa (ver más abajo);
-   faltan ~40-55 términos cada uno para llegar a `moderate` (120).
+   faltan ~19-35 términos cada uno para llegar a `moderate` (120).
 2. **Árabe (`ara`) e inglés (`eng`)**, para poder activar su fusión (ver
    «Fusión literal» en el README): hace falta un corpus mayor de nombres
    reales y decidir qué términos cortos no deben participar en la fusión.

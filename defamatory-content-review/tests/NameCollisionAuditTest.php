@@ -36,6 +36,8 @@ class NameCollisionAuditTest extends TestCase
         'ind' => ['Negro', 'Tai', 'Babi', 'Kera', 'Bau', 'Buta', 'Gila', 'Tuli', 'Tiran'],
         'tha' => ['หมู', 'หนู', 'อ้วน', 'นม', 'ลาว', 'ทอม', 'ดี้', 'ลา', 'แขก'],
         'vie' => ['Ngu'],
+        'swa' => ['Mbogo', 'Fisi', 'Mavi', 'Kuku', 'Bubu'],
+        'tgl' => ['Aso', 'Bobo', 'Gaga', 'Pipi'],
         'fin' => ['Peto', 'Mato', 'Sika', 'Akka', 'Varas', 'Pelle', 'Paska', 'Kusi', 'Perse', 'Naida', 'Lutka'],
     ];
 

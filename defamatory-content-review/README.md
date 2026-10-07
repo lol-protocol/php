@@ -6,7 +6,7 @@ Detecta insultos, léxico soez y construcciones de ridiculización en nombres y
 apellidos de personas, para plataformas de información genealógica.
 
 - **11 tipos de riesgo** — no sólo *cuánto* ofende un término, sino *de qué modo*.
-- **33 idiomas** identificados por código ISO 639-3, con ~6.500 términos.
+- **33 idiomas** identificados por código ISO 639-3, con ~7.800 términos.
 - **Modelo de parentesco lingüístico** — validación cruzada entre lenguas
   emparentadas, con la coincidencia ponderada por su afinidad léxica.
 - **Protección de apellidos legítimos** — «Cerda», «Moro» o «Savage» son linajes
@@ -265,7 +265,7 @@ FusionSupport::isSupported('ara');                                      // false
   literal en la forma plegada y rompía el cálculo de la frontera de fusión).
 - **Variantes por distancia de edición** ("Cerrda", "Certa"): **deliberadamente
   no cubierta**. Colapsar letras dobles cerraría este caso, pero across
-  ~6.500 palabras en 33 idiomas no hay forma de verificar a mano qué
+  ~7.800 palabras en 33 idiomas no hay forma de verificar a mano qué
   colisiones no deseadas produciría — "Serrano" (apellido real) se volvería
   "Serano", y así con cada doble letra en cada idioma. Se documenta como
   límite en vez de implementarse a medias.
@@ -305,7 +305,7 @@ $registry->resolve('SPA');  // 'spa'
 ### Cobertura de los diccionarios
 
 `coverage` no es cosmético: dice dónde hace falta revisión de hablante nativo
-antes de usar el módulo en producción para ese idioma. ~6.500 términos en
+antes de usar el módulo en producción para ese idioma. ~7.800 términos en
 total; sólo 3 idiomas (`isl`, `swa`, `tgl` — los últimos en incorporarse)
 siguen en `basic`.
 
@@ -319,8 +319,8 @@ la primera vez que sólo una de ellas se actualizó.
 | Nivel | Idiomas | Términos c/u |
 |---|---|---|
 | `comprehensive` | spa, eng, por, fra, ita, deu (6) | 282 – 601 |
-| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 120 – 245 |
-| `basic` | isl, swa, tgl (3) | 65 – 80 |
+| `moderate` | ron, nld, swe, dan, nor, rus, ukr, pol, ces, slk, bul, ell, hun, fin, tur, ara, heb, hin, jpn, kor, yue, tha, vie, ind (24) | 138 – 316 |
+| `basic` | isl, swa, tgl (3) | 85 – 101 |
 
 ```php
 $reviewer->languages()->byCoverage('moderate');  // los candidatos a comprehensive
