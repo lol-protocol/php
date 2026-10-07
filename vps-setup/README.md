@@ -184,6 +184,20 @@ los scripts 07_*/09_A, con `sudo`, `systemctl`, `curl`, etc. simulados. El workf
 corre `bash -n`, ShellCheck y bats en cada PR que toque `vps-setup/`. Lo que **no** cubren: comportamiento real de
 apt, systemd, certbot, fail2ban ni ufw — eso solo se valida en un VPS. Las pruebas de `tests/real/` sí ejecutan el Nginx, logrotate y sshd reales (vhosts con `nginx -t` y sirviendo tráfico, rotación forzada de logs, `sshd -t`/`sshd -T`), sin Docker, en el runner de CI.
 
+## 🌐 Agregar / quitar dominios
+
+```bash
+./10_A-add-domain.sh nuevo.com --ssl --email yo@nuevo.com            # landing + HTTPS + healthcheck
+./10_A-add-domain.sh app.nuevo.com --type php --name tienda          # tambien: python, tomcat (--context RUTA)
+./10_A-add-domain.sh nuevo.com --dry-run                             # muestra los pasos sin ejecutar
+./10_B-remove-domain.sh nuevo.com [--app tienda] [--yes] [--dry-run]
+```
+
+`10_A` encadena los scripts 03/06_A/06_B/06_D, opcionalmente 04 (`--ssl`, el DNS ya debe apuntar al VPS) y 08.
+`10_B` **no borra nada**: mueve el vhost, el sitio, los logs (y con `--app` la app y su unidad systemd) a
+`/var/backups/vps-setup/removed/<dominio>-<fecha>/`, comprueba `nginx -t` antes de archivar (si falla, restaura el
+sitio) y al final indica cómo quitar el certificado y la zona DNS, que no toca.
+
 ## 🛡️ Validación de entradas
 
 Los scripts que reciben dominio, email, nombre de app, IP, context path o URL de webhook los validan con listas

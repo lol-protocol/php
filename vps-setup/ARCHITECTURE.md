@@ -270,9 +270,9 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 - **Uptime:** > 99.5%
 - **Latencia:** < 200ms (P95)
 - **Errores HTTP:** < 1% (5xx)
-- **CPU:** < 80%
-- **RAM:** < 80%
-- **Disco:** < 85%
+- **Carga:** < 2x cores (umbral de `vps-monitor`, ver `09_A`)
+- **RAM:** < 90% (umbral de `vps-monitor`)
+- **Disco:** < 85% (umbral de `vps-monitor`)
 
 ### Logs
 - **Access Log:** `/var/log/nginx/[dominio]/access.log`
