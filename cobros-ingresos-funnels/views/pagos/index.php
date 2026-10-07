@@ -14,6 +14,7 @@ use App\Etiquetas;
 /** @var string $hasta */
 /** @var bool $personalizado */
 /** @var string $cliente */
+/** @var array{ultima: ?DateTimeImmutable, fuente: ?string, pendientes: list<string>} $tasas */
 
 $coloresMetodo = ['transferencia' => 'var(--series-1)', 'tarjeta' => 'var(--series-2)', 'efectivo' => 'var(--seq-350)'];
 $maxMetodo = 1.0;
@@ -27,6 +28,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
 
 <h1>Pagos</h1>
 <p class="subtitulo">Efectivo cobrado: cuándo entra el dinero y por qué medio.</p>
+<?php include __DIR__ . '/../_tasas_de_cambio.php'; ?>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="pagos">

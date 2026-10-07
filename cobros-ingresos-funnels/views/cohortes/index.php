@@ -8,10 +8,12 @@ use App\Config;
 /** @var string $desde */
 /** @var string $hasta */
 /** @var bool $personalizado */
+/** @var array{ultima: ?DateTimeImmutable, fuente: ?string, pendientes: list<string>} $tasas */
 ?>
 
 <h1>Cohortes de conversión</h1>
 <p class="subtitulo">De cada cohorte (mes de primera visita), qué porcentaje convirtió a cliente dentro de 0, 1, 2 o 3 meses desde su llegada.</p>
+<?php include __DIR__ . '/../_tasas_de_cambio.php'; ?>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="cohortes">

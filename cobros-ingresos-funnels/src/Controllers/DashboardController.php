@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Filtros;
 use App\Repositories\FunnelRepository;
 use App\Repositories\IngresosRepository;
+use App\Repositories\MonedaRepository;
 use App\Repositories\SegmentacionRepository;
 use App\View;
 
@@ -31,6 +32,7 @@ final class DashboardController
         $segmentacion = $segmentacionRepo->topPorDimensiones();
 
         View::render('dashboard', $filtros + [
+            'tasas' => MonedaRepository::estadoDeLasTasas(),
             'kpis' => $ingresosRepo->kpis($desde, $hasta),
             'kpisAnterior' => $ingresosRepo->kpis($desdeAnt, $hastaAnt),
             'kpisAnioAnterior' => $ingresosRepo->kpis($desdeAnio, $hastaAnio),

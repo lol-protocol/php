@@ -14,6 +14,7 @@ use App\Config;
 /** @var array $funnelResumen */
 /** @var array $segmentacion */
 /** @var int $meses */
+/** @var array{ultima: ?DateTimeImmutable, fuente: ?string, pendientes: list<string>} $tasas */
 
 $etapasFunnel = [
     'Visitantes' => $funnelResumen['visitantes'],
@@ -35,6 +36,7 @@ $coloresSegmento = [
 
 <h1><?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></h1>
 <p class="subtitulo">Vista general de ingresos, cobros y conversión de usuarios a clientes.</p>
+<?php include __DIR__ . '/_tasas_de_cambio.php'; ?>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="dashboard">

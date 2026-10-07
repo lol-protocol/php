@@ -155,7 +155,58 @@ Todo se lee de variables de entorno (con PHP-FPM, `env[...]` en el pool):
 | `DB_HOST`, `DB_PORT` | no (`127.0.0.1`, `5432`) | |
 | `DB_PERSISTENT` | no (`1` en la web) | Si la conexión a Postgres se reutiliza entre peticiones (ahorra entre 10 y 20 ms por petición; en CLI nunca es persistente). Poné `0` detrás de un pooler como PgBouncer, o si hay más procesos de PHP-FPM que `max_connections` en Postgres: cada proceso guarda su conexión abierta, así que `pm.max_children` no debería superarlo. |
 | `APP_TIMEZONE` | no (`UTC`) | La zona horaria del negocio, en formato IANA (ej. `America/Argentina/Buenos_Aires`). Define qué día es "hoy" para vencimientos, rangos de fechas y notas de crédito, y se aplica a PHP y a Postgres por igual. |
+| `TASAS_URL` | no (`https://open.er-api.com/v6/latest/USD`) | Solo para `database/actualizar_tasas.php`: de dónde baja las tasas de cambio (tiene que ser https). Ver «Tasas de cambio». |
+| `TASAS_FUENTE` | no (el host de `TASAS_URL`) | Solo para ese comando: cómo se llama la fuente en las pantallas y en la auditoría. |
 | `APP_ENV` | no | Solo `dev`, en desarrollo. En producción no se define. |
+
+### Tasas de cambio
+
+Los totales en USD de Dashboard, Cobros, Pagos y Cohortes convierten cada monto con
+`monedas.tasa_a_usd`. La migración `005` las carga con valores de ejemplo, y mientras
+sigan así esas cuatro pantallas lo avisan arriba. Para cargar las reales:
+
+```bash
+php database/actualizar_tasas.php             # baja las tasas y las guarda
+php database/actualizar_tasas.php --simular   # dice qué cambiaría, sin guardar nada
+```
+
+Baja las tasas de `TASAS_URL` (por defecto `https://open.er-api.com/v6/latest/USD`, de
+ExchangeRate-API: gratis, sin clave, unas 160 monedas, una actualización por día;
+revisá sus condiciones de uso, que piden nombrar la fuente: la app la nombra en cada
+pantalla), valida lo que llegó y lo guarda en una transacción, con una entrada en la
+auditoría. Está pensado para cron, una vez por día:
+
+```
+15 6 * * *  cd /ruta/al/proyecto && php database/actualizar_tasas.php >/dev/null
+```
+
+(`>/dev/null` deja pasar solo la salida de errores, que es la que cron manda por mail:
+un error, o una tasa que pide atención.) También está como `composer tasas`.
+
+Como de estas tasas dependen todos los totales, escribe solo lo que se puede creer:
+
+- La fuente tiene que traer al menos la mitad de las monedas del catálogo y datos de
+  menos de 7 días; si no, no escribe nada y termina con error.
+- Una tasa con un valor imposible (cero, texto, o fuera de lo que entra en la base) se
+  deja como estaba y se informa.
+- Una tasa ya real que salta más de 50% de una corrida a otra se deja como estaba y se
+  informa (puede ser una devaluación de verdad o un error de la fuente): `--forzar` la
+  acepta. La primera carga, sobre las de ejemplo, acepta cualquier diferencia.
+- Una moneda que la fuente no trae queda como estaba, con la fecha que tenía.
+- Las pantallas avisan cuando una moneda con boletas o pagos tiene una tasa de ejemplo
+  o de hace más de 7 días, y nombran cuál.
+
+Con otro servicio, se pone su dirección en `TASAS_URL` (algunos piden una clave en la
+URL). Sirve cualquiera que conteste `{"base": "USD", "rates": {"EUR": 0.86, ...}}`
+(o `base_code`): ExchangeRate-API, Open Exchange Rates, Frankfurter. Y
+`--archivo=tasas.json` lee el mismo formato de un archivo, para tasas que vengan de
+otra parte (el banco central, el contador).
+
+**Ojo con la historia.** Todos los totales convierten con la tasa de hoy, también las
+boletas y los pagos de meses anteriores: los de enero cambian cada día que se mueve el
+tipo de cambio. Es un valor actual en USD, no un valor contable. Si hace falta cada
+boleta a la tasa de su día, hay que guardar esa tasa en la boleta y en el pago al
+crearlos, y hoy no se hace.
 
 ### Esquema de la base
 
@@ -174,9 +225,9 @@ aplica las demás.
 esquema (198 países y 146 monedas), así que una base nueva queda lista para dar de
 alta clientes sin ningún paso aparte. Una base migrada antes de la `005`, que quedó
 sin catálogo, lo recibe en la siguiente corrida de `migrar.php`; y aplicarla sobre
-una base que ya lo tiene no pisa nada. Las `tasa_a_usd` son tasas estáticas de
-ejemplo, no un feed en vivo: antes de confiar en los reportes consolidados en USD,
-reemplazalas por las reales (`UPDATE monedas SET tasa_a_usd = ... WHERE codigo = '...'`).
+una base que ya lo tiene no pisa nada. Las `tasa_a_usd` que carga son de ejemplo:
+antes de confiar en los reportes consolidados en USD hay que cargar las reales con
+`php database/actualizar_tasas.php` (ver «Tasas de cambio»).
 
 **Mayoría de edad.** La migración `007` hace que la base rechace a un cliente menor
 de 18 años, tanto al crearlo como al cambiarle la fecha de nacimiento (la app ya lo
@@ -258,6 +309,10 @@ src/
   Config.php           variables de entorno: obligatorias fuera de desarrollo,
                         zona horaria IANA validada, testeado
   Migrador.php          aplica database/migraciones/ y recuerda cuales corrieron
+  Tasas/                las tasas de cambio reales: RespuestaDeTasas lee el JSON
+                        de una fuente, DescargaDeTasas lo baja (solo https, sin
+                        redirecciones) y ActualizadorDeTasas valida y guarda;
+                        todo testeado sin salir a la red
   EnvioUnico.php        token de un solo uso de los formularios de alta: un doble
                         clic no crea dos pagos ni dos boletas, testeado
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
@@ -308,8 +363,11 @@ database/
   migraciones/          el esquema, el catálogo de ~200 países y sus monedas
                         (ISO 4217), los índices y la regla de mayoría de edad,
                         en cambios numerados (001 = esquema inicial, 005 =
-                        catálogo, 006 y 008 = índices, 007 = mayoría de edad)
+                        catálogo, 006 y 008 = índices, 007 = mayoría de edad,
+                        009 = origen de las tasas de cambio)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
+  actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
+                        vez por día)
   seed.php               SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP (una carpeta por sección), con partials
                         compartidos: _filtro_fechas.php (el período y el rango
@@ -336,8 +394,10 @@ tests/
                         PHP, que las pantallas pesadas no traigan miles de filas
                         a PHP, que las consultas de clientes y del funnel usen
                         sus índices, que la app, el trigger y el tramo de edad
-                        coincidan en quién es mayor de edad, y que los datos de
-                        ejemplo del seed cumplan las reglas de la app)
+                        coincidan en quién es mayor de edad, que las tasas de
+                        cambio se actualicen con sus reglas de seguridad (y el
+                        comando que corre cron), y que los datos de ejemplo del
+                        seed cumplan las reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
@@ -346,9 +406,11 @@ phpstan.neon            configuracion del analisis estatico
 
 - `monedas` / `paises`: catálogo de referencia (código ISO, nombre, símbolo y
   `tasa_a_usd` — cuánto vale 1 unidad de esa moneda en USD, para consolidar
-  reportes). Son tasas estáticas de ejemplo, no un feed en vivo. Los carga la
-  migración `005` (198 países y 146 monedas), no el seed: una base de producción
-  los tiene apenas se migra (ver "Esquema de la base").
+  reportes). La migración `005` carga el catálogo (198 países y 146 monedas) con
+  tasas de ejemplo, no el seed: una base de producción lo tiene apenas se migra (ver
+  "Esquema de la base"). `database/actualizar_tasas.php` las reemplaza por las reales
+  y deja en `tasa_actualizada_en` y `tasa_fuente` desde cuándo y de dónde (`NULL` es
+  una tasa de ejemplo; ver «Tasas de cambio»).
 - `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
   perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
   segmentación del dashboard y su moneda de facturación. Solo se admiten mayores de

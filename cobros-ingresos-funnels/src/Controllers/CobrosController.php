@@ -15,6 +15,7 @@ use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\IngresosRepository;
+use App\Repositories\MonedaRepository;
 use App\Repositories\NotaCreditoRepository;
 use App\Validacion;
 use App\View;
@@ -70,6 +71,7 @@ final class CobrosController
             'estado' => $estado,
             'cliente' => $cliente,
             'pagina' => $listado['pagina'],
+            'tasas' => MonedaRepository::estadoDeLasTasas(),
             'kpis' => $ingresosRepo->kpis($desde, $hasta),
             'ingresosPorMes' => $ingresosRepo->ingresosPorMes($desde, $hasta),
             'aging' => $aging,

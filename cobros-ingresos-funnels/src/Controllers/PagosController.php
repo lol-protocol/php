@@ -15,6 +15,7 @@ use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
 use App\Repositories\IngresosRepository;
+use App\Repositories\MonedaRepository;
 use App\Repositories\NotaCreditoRepository;
 use App\Repositories\PagoRepository;
 use App\Validacion;
@@ -36,6 +37,7 @@ final class PagosController
         View::render('pagos/index', $filtros + [
             'cliente' => $cliente,
             'pagina' => $listado['pagina'],
+            'tasas' => MonedaRepository::estadoDeLasTasas(),
             'cobrosPorMes' => $ingresosRepo->cobrosPorMes($desde, $hasta),
             'porMetodo' => $ingresosRepo->porMetodo($desde, $hasta),
             'devoluciones' => (new NotaCreditoRepository())->totalEnRangoUsd($desde, $hasta),

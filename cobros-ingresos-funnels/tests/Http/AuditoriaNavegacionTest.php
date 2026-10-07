@@ -88,6 +88,26 @@ final class AuditoriaNavegacionTest extends HttpTestCase
         self::assertStringContainsString('Estás viendo lo más reciente', $alPrincipio['cuerpo']);
     }
 
+    /**
+     * Regresion del tipo "la entidad nueva sale con el nombre crudo de la tabla": la actualizacion de
+     * las tasas de cambio se audita como la entidad "monedas", y la pantalla la tiene que traducir.
+     */
+    public function testLaAuditoriaTraduceLaActualizacionDeTasas(): void
+    {
+        $detalle = 'Tasas de cambio actualizadas desde prueba-http ' . uniqid();
+        $db = Database::connection();
+        $db->prepare("INSERT INTO auditoria (accion, entidad, entidad_id, detalle, creado_en) VALUES ('editar', 'monedas', 0, :d, now() + interval '31 days')")->execute([':d' => $detalle]);
+        $this->alTerminar(static function () use ($detalle): void {
+            Database::connection()->prepare("DELETE FROM auditoria WHERE entidad = 'monedas' AND detalle = :d")->execute([':d' => $detalle]);
+        });
+
+        $cuerpo = $this->get('page=auditoria')['cuerpo'];
+
+        self::assertStringContainsString($detalle, $cuerpo);
+        self::assertStringContainsString('Editó Tasas de cambio', preg_replace('/\s+/', ' ', $cuerpo) ?? '');
+        self::assertStringNotContainsString('Editó monedas', $cuerpo);
+    }
+
     /** Los links de antes de la paginacion por cursor (?pagina=3) y los cursores rotos no dan error: muestran lo mas reciente. */
     public function testUnaUrlViejaOUnCursorRotoMuestranLoMasReciente(): void
     {

@@ -17,10 +17,12 @@ use App\Etiquetas;
 /** @var bool $personalizado */
 /** @var string $estado */
 /** @var string $cliente */
+/** @var array{ultima: ?DateTimeImmutable, fuente: ?string, pendientes: list<string>} $tasas */
 ?>
 
 <h1>Cobros e ingresos</h1>
 <p class="subtitulo">Ingresos devengados (boletas emitidas) frente al efectivo realmente cobrado, y estado de la cartera. Los totales se consolidan en USD; el detalle muestra la moneda original de cada boleta.</p>
+<?php include __DIR__ . '/../_tasas_de_cambio.php'; ?>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="cobros">
