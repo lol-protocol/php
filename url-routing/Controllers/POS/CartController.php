@@ -19,27 +19,34 @@ class CartController extends BaseController
     public function show(array $params = []): string
     {
         $repo = new ProductoRepository($this->db());
+        $carrito = $this->carrito();
         $lineas = [];
-        $total = 0;
+        $totales = [];
 
-        foreach ($this->carrito()->items() as $sku => $cantidad) {
+        foreach ($carrito->items() as $sku => $cantidad) {
             $variante = $repo->variantePorSku($sku);
-            if ($variante === null) {
-                // Removed from the catalog since it was added; drop it silently.
-                $this->carrito()->quitar($sku);
+            if ($variante === null || !$variante['activo']) {
+                // Removed or deactivated since it was added: it can't be bought anymore.
+                $carrito->quitar($sku);
                 continue;
             }
 
+            if ($cantidad > $variante['stock']) {
+                // Stock dropped since it was added: show (and keep) what can actually be bought.
+                $carrito->actualizar($sku, $variante['stock']);
+                $cantidad = $carrito->cantidadDe($sku);
+                if ($cantidad === 0) {
+                    continue;
+                }
+            }
+
             $subtotal = $variante['precio_centavos'] * $cantidad;
-            $total += $subtotal;
+            // One total per currency: adding centavos of different currencies is meaningless.
+            $totales[$variante['moneda']] = ($totales[$variante['moneda']] ?? 0) + $subtotal;
             $lineas[] = ['cantidad' => $cantidad, 'subtotal_centavos' => $subtotal] + $variante;
         }
 
-        return view('pos/cart/show', [
-            'lineas' => $lineas,
-            'total_centavos' => $total,
-            'moneda' => $lineas[0]['moneda'] ?? 'MXN',
-        ]);
+        return view('pos/cart/show', ['lineas' => $lineas, 'totales' => $totales]);
     }
 
     public function agregar(array $params = []): string
@@ -48,8 +55,8 @@ class CartController extends BaseController
             return $this->handleForbidden();
         }
 
-        $sku = (string)($_POST['sku'] ?? '');
-        $cantidad = max(1, (int)($_POST['cantidad'] ?? 1));
+        $sku = $this->postString('sku');
+        $cantidad = max(1, (int)$this->postString('cantidad', '1'));
 
         $repo = new ProductoRepository($this->db());
         $variante = $repo->variantePorSku($sku);
@@ -69,13 +76,13 @@ class CartController extends BaseController
             return $this->handleForbidden();
         }
 
-        $sku = (string)($_POST['sku'] ?? '');
-        $cantidad = (int)($_POST['cantidad'] ?? 0);
+        $sku = $this->postString('sku');
+        $cantidad = (int)$this->postString('cantidad', '0');
 
         $repo = new ProductoRepository($this->db());
         $variante = $repo->variantePorSku($sku);
-        if ($variante === null) {
-            // Removed from the catalog since it was added; drop the line instead of erroring.
+        if ($variante === null || !$variante['activo']) {
+            // Removed or deactivated since it was added; drop the line instead of erroring.
             $this->carrito()->quitar($sku);
             return $this->redirect('/cart/');
         }
@@ -91,7 +98,7 @@ class CartController extends BaseController
             return $this->handleForbidden();
         }
 
-        $this->carrito()->quitar((string)($_POST['sku'] ?? ''));
+        $this->carrito()->quitar($this->postString('sku'));
 
         return $this->redirect('/cart/');
     }
