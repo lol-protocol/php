@@ -6,6 +6,7 @@
     </filter>
   </defs>
 
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   <!-- Libro abierto -->
   <path d="M 16 24 L 20 22 L 32 22 L 28 24 L 28 44 L 20 46 L 16 44 Z"

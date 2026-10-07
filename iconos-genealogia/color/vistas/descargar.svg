@@ -19,6 +19,7 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <!-- Caja de descarga 2.5D -->
@@ -27,9 +28,13 @@
 
   <!-- Costado derecho -->
   <path d="M 44 24 L 48 26 L 47 42 L 43 40 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#1E40AF" opacity="0.3"/>
 
   <!-- Línea superior (tapa) -->
+
+  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="22" y1="26" x2="42" y2="26" stroke="#60A5FA" stroke-width="1" opacity="0.5"/>
 
   <!-- Flecha de descarga dentro -->

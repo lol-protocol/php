@@ -6,6 +6,7 @@
     </filter>
   </defs>
 
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="12" ry="3" fill="#000" opacity="0.15"/>
   <!-- Líneas de ordenamiento -->
   <line x1="18" y1="22" x2="46" y2="22" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/>

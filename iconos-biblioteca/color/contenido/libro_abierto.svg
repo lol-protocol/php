@@ -23,6 +23,7 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="15" ry="3" fill="#000" opacity="0.15"/>
 
   <!-- Lomo central 2.5D -->
@@ -39,9 +40,13 @@
 
   <!-- Costado páginas -->
   <path d="M 44 12 L 48 14 L 48 50 L 44 48 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#654321" opacity="0.2"/>
 
   <!-- Líneas de texto en página izquierda -->
+
+  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="18" y1="22" x2="26" y2="22" stroke="#6B7280" stroke-width="0.8" opacity="0.6"/>
   <line x1="18" y1="26" x2="26" y2="26" stroke="#6B7280" stroke-width="0.8" opacity="0.6"/>
   <line x1="18" y1="30" x2="24" y2="30" stroke="#6B7280" stroke-width="0.8" opacity="0.6"/>

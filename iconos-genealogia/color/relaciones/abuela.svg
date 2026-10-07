@@ -19,6 +19,7 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Cuerpo (mayor, vestido) -->
@@ -27,8 +28,11 @@
 
   <!-- Costado -->
   <path d="M 43 30 L 49 32 L 48 46 L 42 44 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#BE185D" opacity="0.4"/>
 
+  <!-- ============ BODY: MAIN FIGURE ============ -->
   <!-- Cabello/Cabeza (con canas) -->
   <path d="M 24 10 Q 32 6 40 10 L 38 18 Q 32 14 26 18 Z"
         fill="#D1D5DB" opacity="0.8"/>

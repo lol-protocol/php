@@ -10,9 +10,12 @@
     </linearGradient>
   </defs>
 
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="12" ry="3" fill="#000" opacity="0.15"/>
   <path d="M 16 16 L 48 16 L 40 28 L 40 48 L 24 48 L 24 28 Z"
         fill="#3B82F6" stroke="#1E40AF" stroke-width="1.5" filter="url(#shadow_filtro)"/>
   <path d="M 40 28 L 44 30 L 44 46 L 40 48 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#1E40AF" opacity="0.3"/>
   </svg>

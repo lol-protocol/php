@@ -19,12 +19,16 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="14" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Círculo base rojo 2.5D -->
   <circle cx="32" cy="32" r="13" fill="#EF4444" stroke="#991B1B" stroke-width="1.5" filter="url(#shadow_eliminar)"/>
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
   <circle cx="32" cy="32" r="12" fill="#F87171" opacity="0.3"/>
 
+  <!-- ============ BODY: MAIN FIGURE ============ -->
   <!-- Costado (profundidad) -->
   <path d="M 45 32 A 13 13 0 0 0 44 38"
         fill="none" stroke="#991B1B" stroke-width="1.5" opacity="0.3"/>

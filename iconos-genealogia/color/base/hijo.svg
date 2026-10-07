@@ -19,6 +19,7 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="11" ry="3" fill="#000" opacity="0.15"/>
 
   <!-- Cuerpo pequeño (niño) -->
@@ -27,8 +28,11 @@
 
   <!-- Costado derecho -->
   <path d="M 39 31 L 43 32 L 42 44 L 38 42 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#1E40AF" opacity="0.3"/>
 
+  <!-- ============ BODY: MAIN FIGURE ============ -->
   <!-- Brazos cortos -->
   <line x1="26" y1="34" x2="18" y2="35" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>
   <line x1="38" y1="34" x2="46" y2="35" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>

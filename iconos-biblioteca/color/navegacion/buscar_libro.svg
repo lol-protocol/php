@@ -23,6 +23,7 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="12" ry="3" fill="#000" opacity="0.15"/>
 
   <!-- Lupa 2.5D -->
@@ -30,13 +31,19 @@
 
   <!-- Costado de la lupa -->
   <path d="M 35 26 A 9 9 0 0 0 34 31"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="none" stroke="#4F46E5" stroke-width="1.5" opacity="0.3"/>
 
   <!-- Brillo -->
   <ellipse cx="21" cy="21" rx="3" ry="2.5" fill="#818CF8" opacity="0.3"/>
 
   <!-- Mango de la lupa -->
+
+  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="34" y1="34" x2="44" y2="44" stroke="#6366F1" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- ============ BODY: MAIN FIGURE ============ -->
   <circle cx="44" cy="44" r="1" fill="#6366F1"/>
 
   <!-- Libro pequeño dentro de la lupa -->

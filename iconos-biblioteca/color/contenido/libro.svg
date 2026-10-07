@@ -23,15 +23,19 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Lomo del libro (profundidad) -->
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
   <rect x="30" y="16" width="4" height="36" fill="#654321" opacity="0.6" rx="1"/>
 
   <!-- Tapa delantera izquierda 2.5D -->
   <path d="M 14 16 L 18 14 L 30 14 L 26 16 L 26 50 L 18 52 L 14 50 Z"
         fill="url(#grad_libro_1)" stroke="#654321" stroke-width="1.5" filter="url(#shadow_libro)"/>
 
+  <!-- ============ BODY: MAIN FIGURE ============ -->
   <!-- Costado de la tapa -->
   <path d="M 30 14 L 34 12 L 34 48 L 30 50 Z"
         fill="#654321" opacity="0.4"/>

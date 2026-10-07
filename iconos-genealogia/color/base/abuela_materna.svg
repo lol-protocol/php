@@ -1,8 +1,12 @@
 <?xml version="1.0"?><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <defs><filter id="s_abuela_materna"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter></defs>
+
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
       <circle cx="32" cy="16" r="7" fill="#E5E7EB" stroke="#6B7280" stroke-width="1.5"/>
       <path d="M 20 30 L 26 28 L 42 28 L 48 30 L 46 44 L 24 44 Z"
             fill="#F472B6" stroke="#BE185D" stroke-width="1.5" filter="url(#s_abuela_materna)"/>
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
       <path d="M 24 10 Q 32 6 40 10" fill="#D1D5DB" opacity="0.7"/>
     </svg>

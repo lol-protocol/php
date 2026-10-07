@@ -6,10 +6,13 @@
     </filter>
   </defs>
 
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="11" ry="4" fill="#000" opacity="0.15"/>
   <path d="M 20 22 L 24 20 L 44 20 L 40 22 L 40 48 L 24 50 L 20 48 Z"
         fill="#A78BFA" stroke="#7C3AED" stroke-width="1.5" filter="url(#shadow_juvenil)"/>
   <path d="M 44 20 L 48 18 L 48 46 L 44 48 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#7C3AED" opacity="0.3"/>
   <!-- Símbolo joven: estrella -->
   <polygon points="32,26 35,32 41,32 36,36 38,42 32,38 26,42 28,36 23,32 29,32"

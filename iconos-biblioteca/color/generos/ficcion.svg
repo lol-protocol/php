@@ -23,6 +23,7 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="12" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Libro con marca 2.5D -->
@@ -31,6 +32,8 @@
 
   <!-- Costado -->
   <path d="M 42 16 L 46 14 L 46 46 L 42 48 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#654321" opacity="0.3"/>
 
   <!-- Símbolo de ficción: corazón pequeño en la portada -->
@@ -38,6 +41,8 @@
         fill="#EC4899" opacity="0.7"/>
 
   <!-- Líneas de texto -->
+
+  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="20" y1="35" x2="36" y2="35" stroke="#A0522D" stroke-width="0.8" opacity="0.6"/>
   <line x1="20" y1="40" x2="36" y2="40" stroke="#A0522D" stroke-width="0.8" opacity="0.6"/>
   <line x1="20" y1="45" x2="32" y2="45" stroke="#A0522D" stroke-width="0.8" opacity="0.6"/>

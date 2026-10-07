@@ -6,13 +6,18 @@
     </filter>
   </defs>
 
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="11" ry="4" fill="#000" opacity="0.15"/>
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 48 L 22 50 L 18 48 Z"
         fill="#FEE2E2" stroke="#BE185D" stroke-width="1.5" filter="url(#shadow_poesia)"/>
   <path d="M 46 16 L 50 14 L 50 46 L 46 48 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#BE185D" opacity="0.25"/>
   <!-- Símbolo poético: pluma -->
   <path d="M 28 24 Q 30 18 32 24 Q 34 18 36 24"
+
+  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
         stroke="#EC4899" stroke-width="1.5" fill="none" stroke-linecap="round"/>
   <!-- Líneas de verso -->
   <line x1="24" y1="32" x2="40" y2="32" stroke="#F472B6" stroke-width="0.8" opacity="0.7"/>

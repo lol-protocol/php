@@ -6,11 +6,16 @@
     </filter>
   </defs>
 
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   <!-- Estantería -->
   <rect x="16" y="20" width="32" height="28" fill="none" stroke="#654321" stroke-width="1.5"/>
   <!-- Divisiones -->
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
   <line x1="16" y1="28" x2="48" y2="28" stroke="#654321" stroke-width="1" opacity="0.5"/>
+
+  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="16" y1="36" x2="48" y2="36" stroke="#654321" stroke-width="1" opacity="0.5"/>
   <line x1="16" y1="44" x2="48" y2="44" stroke="#654321" stroke-width="1" opacity="0.5"/>
   <!-- Libros en estantería -->

@@ -19,18 +19,22 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="14" ry="3" fill="#000" opacity="0.15"/>
 
   <!-- Tronco 2.5D -->
   <path d="M 28 40 L 30 38 L 36 38 L 38 40 L 37 52 L 29 52 Z"
         fill="#8B5A2B" stroke="#5C3317" stroke-width="1" filter="url(#shadow_arbol)"/>
   <path d="M 36 38 L 38 40 L 37 52 L 35 50 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#5C3317" opacity="0.4"/>
 
   <!-- Follaje superior (triángulo) 2.5D -->
   <path d="M 32 8 L 22 28 L 42 28 Z"
         fill="url(#grad_arbol_3)" stroke="#047857" stroke-width="1.5" filter="url(#shadow_arbol)"/>
 
+  <!-- ============ BODY: MAIN FIGURE ============ -->
   <!-- Costado derecho del follaje -->
   <path d="M 42 28 L 46 32 L 36 38 L 32 34 Z"
         fill="#047857" opacity="0.3"/>

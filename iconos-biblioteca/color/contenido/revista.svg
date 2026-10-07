@@ -23,6 +23,7 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="12" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Portada de revista 2.5D -->
@@ -31,6 +32,8 @@
 
   <!-- Costado derecho -->
   <path d="M 48 14 L 52 12 L 52 46 L 48 48 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#BE185D" opacity="0.35"/>
 
   <!-- Título de portada -->
@@ -40,6 +43,8 @@
   <rect x="20" y="24" width="20" height="10" fill="#F472B6" opacity="0.4" rx="1"/>
 
   <!-- Líneas de contenido -->
+
+  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="20" y1="36" x2="40" y2="36" stroke="#F472B6" stroke-width="0.8" opacity="0.5"/>
   <line x1="20" y1="40" x2="40" y2="40" stroke="#F472B6" stroke-width="0.8" opacity="0.5"/>
   <line x1="20" y1="44" x2="36" y2="44" stroke="#F472B6" stroke-width="0.8" opacity="0.5"/>

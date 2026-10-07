@@ -19,6 +19,7 @@
   </defs>
 
   <!-- Sombra -->
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Cuerpo (mayor) -->
@@ -27,10 +28,16 @@
 
   <!-- Costado -->
   <path d="M 43 28 L 49 30 L 47 46 L 41 44 Z"
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#1E40AF" opacity="0.4"/>
 
   <!-- Bastón -->
+
+  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="50" y1="35" x2="52" y2="48" stroke="#6B7280" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- ============ BODY: MAIN FIGURE ============ -->
   <circle cx="52" cy="49" r="1.5" fill="#6B7280"/>
 
   <!-- Cabeza (con canas) -->

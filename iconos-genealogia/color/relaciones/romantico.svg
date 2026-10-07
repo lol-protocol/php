@@ -3,10 +3,14 @@
   <defs>
     <filter id="s_romantic"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter>
   </defs>
+
+  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   
   <path d="M 18 32 C 18 26 22 22 26 22 C 28 22 30 24 32 26 C 34 24 36 22 38 22 C 42 22 46 26 46 32 C 46 40 32 48 32 48 C 32 48 18 40 18 32 Z"
         fill="#F472B6" stroke="#BE185D" stroke-width="1.5" filter="url(#s_romantic)"/>
+
+  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
   <line x1="26" y1="48" x2="26" y2="52" stroke="#EC4899" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.6"/>
   <line x1="38" y1="48" x2="38" y2="52" stroke="#EC4899" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.6"/>
 
