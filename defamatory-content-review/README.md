@@ -509,6 +509,9 @@ $result->getContentTypes(); // ['difamatorio', 'sexual']
 $result->censored();        // 'Eres un ******, mándame *****'
 ```
 
+Usa una instancia por idioma y reutilízala: cargar las listas cuesta unos
+milisegundos y revisar una línea, décimas (`examples/10-chat-lines.php`).
+
 Tipos de contenido:
 
 | Tipo | De dónde sale |
@@ -516,12 +519,66 @@ Tipos de contenido:
 | `difamatorio` | Insultos del diccionario del idioma (`config/languages/`) |
 | `burlesco` | Términos `burlesco` de ese mismo diccionario |
 | `sexual` | `config/chat-topics/<código>.php` |
-| `belico` | `config/chat-topics/<código>.php` (guerra, violencia, incitación) |
+| `belico` | `config/chat-topics/<código>.php`: guerra, violencia, **amenazas** e incitación a matar |
 
 El término más grave decide: `high` bloquea, `medium` va a revisión y `low`
 sólo se informa (por ejemplo «mi abuelo luchó en la guerra» se aprueba pero
-queda marcado como `belico`). Hay listas de temas para español (`spa`) e
-inglés (`eng`); en los demás idiomas se detectan igual los insultos.
+queda marcado como `belico`). Un término que también es apellido
+(`nameCollision`: «Savage», «Concha») nunca bloquea solo: baja a revisión,
+igual que con los nombres. Hay listas de temas para español (`spa`) e inglés
+(`eng`); en los demás idiomas se detectan igual los insultos.
+
+### Qué entiende
+
+- **Plurales, géneros y conjugaciones.** «desnudas», «masturbándose»,
+  «fóllame», «bombardearon», «they massacred» se detectan aunque la lista
+  sólo diga «desnudo», «masturbar», «follar», «bombardear» o «massacre»
+  (ver `forms` más abajo).
+- **Amenazas y frases con forma.** «te voy a matar», «ojalá te mueras»,
+  «mátalos a todos», «hay una bomba», «I will kill you», «kill yourself».
+  Las dirigidas a «te» bloquean; incitar a un grupo sin objeto claro
+  («mátalos») va a revisión.
+- **Letras sueltas.** «p u t a» y «vamos a f o l l a r» se leen como «puta» y
+  «follar»: se unen las rachas de 3 o más letras separadas por espacios, y
+  se prueba también sin las letras que son palabras («a», «y», «o»…) en los
+  extremos. Los separadores intercalados («p-u-t-a», «p.u.t.a») y el leet
+  («p0rn0») ya los cubría el diccionario.
+- **Palabras ambiguas.** «vamos a coger el bus», «está de bomba la fiesta»,
+  «techo de paja» no son contenido sexual ni bélico: esas palabras sólo
+  cuentan si la misma línea trae algo firme (`medium` o `high`) del mismo
+  tipo («quiero coger, mándame nudes»).
+
+### Ampliar las listas de chat
+
+`config/chat-topics/<código>.php` usa el formato de los diccionarios, más:
+
+| Campo | Qué hace |
+|---|---|
+| `'forms' => 'noun' \| 'adj' \| 'verb'` | Genera plurales, géneros o la conjugación regular (con pronombres pegados: «matarlos», «fóllame») en español e inglés. Escribe el sustantivo en singular, el adjetivo en masculino y el verbo en infinitivo. |
+| `'also' => [...]` | Formas irregulares, a mano («degüello»). |
+| categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
+| `'patterns'` | Frases con forma: expresión regular sin delimitadores contra el texto plegado (minúsculas, sin tildes ni puntuación, leet resuelto), con `riskType`, `severity` y `label`. |
+
+`ChatTopicsConfigTest` verifica que las entradas estén bien formadas, que
+todos los patrones compilen y que ninguna forma caiga en dos categorías, y
+`ChatLineDetectionTest` corre `tests/fixtures/chat-lines.php`: añade ahí una
+línea que debe marcarse y otra parecida que no. Una palabra que ya está en el
+diccionario de insultos del idioma se marca igual como `difamatorio`; en
+`chat-topics/` sólo hace falta si además debe llevar la etiqueta `sexual` o
+`belico`.
+
+### Lo que no cubre
+
+Son listas de arranque, sin revisión de hablantes nativos, y un filtro de
+palabras no entiende contexto:
+
+- Letras repetidas («puuuuta»), otros separadores entre letras sueltas
+  («p - u - t - a») y la sustitución de letras por símbolos fuera de la tabla
+  de `Leetspeak`.
+- Un nombre que coincide con un insulto del diccionario («Dick») se marca
+  igual; sólo los que declaran `nameCollision` bajan a revisión.
+- Amenazas y burlas sin ninguna de las palabras o frases de la lista.
+- Sólo español e inglés tienen listas de temas; el resto detecta insultos.
 
 ## API
 
@@ -682,11 +739,18 @@ src/DefamatoryContentReview/
 ├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
 ├── FusionSupport.php               Qué idiomas tienen fusión (fonética o literal) y por qué no el resto
 ├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
+├── ChatLineReviewer.php            Revisión de mensajes de chat — ver «Revisar mensajes de chat»
+├── ChatLineResult.php              Decisión, tipos de contenido y línea censurada de un mensaje
+├── ChatTopics.php                  Lista de temas de un idioma (palabras, ambiguas y patrones) — interno
+├── ChatLineNormalizer.php / ChatMatches.php / ChatPatternMatcher.php   Letras sueltas, hallazgos y frases con forma — internos
+├── TopicInflector.php              Expande `forms` en plurales, géneros y conjugaciones — interno
+├── TopicInflection.php             Contrato por idioma: SpanishInflection (+ SpanishVerbs) y EnglishInflection
 ├── ValidationResult.php            Resultado con trazabilidad por idioma y método
 ├── FlaggedTermCollection.php       Términos marcados y sus consultas — colaborador de ValidationResult
 └── TermExplanation.php             Frase legible de por qué se marcó cada término
 
 config/
+├── chat-topics/                    Temas del chat por idioma: spa.php eng.php
 ├── risk-categories.php             Los 11 tipos de riesgo
 ├── language-families.php           Familias y afinidades
 └── languages/
