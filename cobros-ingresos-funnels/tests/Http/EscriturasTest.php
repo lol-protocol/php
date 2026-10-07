@@ -350,12 +350,13 @@ final class EscriturasTest extends HttpTestCase
 
     /**
      * Regresion: el alta aceptaba cualquier fecha de nacimiento real, futura
-     * incluida, y la segmentacion por edad la contaba como "18-24". Un menor
-     * de edad, en cambio, es un cliente posible: se acepta y sale en su tramo.
-     * Futuro es "+2 dias" y no "manana" para no depender de la zona horaria
-     * de quien corre el test frente a la de la app.
+     * incluida, y la segmentacion por edad la contaba como "18-24". Tampoco se
+     * admiten menores de edad (MayoriaDeEdad). Futuro es "+2 dias" y menor es
+     * "17 anios", no "manana" ni "18 anios menos un dia", para no depender de la
+     * zona horaria de quien corre el test frente a la de la app: el borde exacto
+     * lo prueban MayoriaDeEdadTest y ClientesMayoresDeEdadTest.
      */
-    public function testNuevoClienteRechazaUnNacimientoFuturoPeroAceptaAUnMenor(): void
+    public function testNuevoClienteRechazaUnNacimientoFuturoYAUnMenorDeEdad(): void
     {
         $formulario = $this->get('page=cliente-nuevo')['cuerpo'];
         $email = 'cliente-nacimiento-' . uniqid() . '@example.com';
@@ -383,9 +384,31 @@ final class EscriturasTest extends HttpTestCase
         self::assertStringContainsString('La fecha de nacimiento no puede ser posterior a hoy.', $futuro['cuerpo']);
         self::assertSame(0, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
 
-        $menor = $this->post('page=cliente-nuevo', ['fecha_nacimiento' => date('Y-m-d', strtotime('-16 years'))] + $datos);
-        $this->assertStatus(302, $menor);
+        $menor = $this->post('page=cliente-nuevo', ['fecha_nacimiento' => date('Y-m-d', strtotime('-17 years'))] + $datos);
+        $this->assertStatus(200, $menor);
+        self::assertStringContainsString('Solo se admiten clientes mayores de edad (18 años cumplidos).', $menor['cuerpo']);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+
+        $mayor = $this->post('page=cliente-nuevo', ['fecha_nacimiento' => date('Y-m-d', strtotime('-19 years'))] + $datos);
+        $this->assertStatus(302, $mayor);
         self::assertSame(1, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+    }
+
+    /**
+     * El selector de fecha del navegador ya no deja elegir a un menor: el tope es
+     * la fecha mas reciente de un mayor de edad, no hoy. Se comprueba con un
+     * margen de un anio a cada lado por la zona horaria, igual que arriba.
+     */
+    public function testElFormularioDeAltaTopaLaFechaDeNacimientoEnLosDieciochoAnios(): void
+    {
+        $formulario = $this->get('page=cliente-nuevo')['cuerpo'];
+
+        if (preg_match('/name="fecha_nacimiento"[^>]*\smax="(\d{4}-\d{2}-\d{2})"/', $formulario, $m) !== 1) {
+            self::fail('el campo de nacimiento tiene que tener un max');
+        }
+        self::assertLessThanOrEqual(date('Y-m-d', strtotime('-17 years')), $m[1]);
+        self::assertGreaterThanOrEqual(date('Y-m-d', strtotime('-19 years')), $m[1]);
+        self::assertStringContainsString('Solo se admiten clientes mayores de edad (18 años cumplidos).', $formulario, 'el formulario avisa la regla antes de enviar');
     }
 
     /**

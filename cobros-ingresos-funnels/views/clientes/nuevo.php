@@ -2,12 +2,14 @@
 
 use App\Csrf;
 use App\EnvioUnico;
+use App\MayoriaDeEdad;
 use App\Validacion;
 
 /** @var array $paises */
 /** @var list<string> $idiomas */
 /** @var array $generos */
 /** @var array $segmentos */
+/** @var string $nacimientoMasReciente la fecha de nacimiento mas reciente que todavia es de un mayor de edad */
 /** @var string|null $error */
 ?>
 
@@ -55,7 +57,8 @@ use App\Validacion;
         </select>
 
         <label for="fecha_nacimiento">Fecha de nacimiento</label>
-        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required max="<?= date('Y-m-d') ?>" value="<?= htmlspecialchars($_POST['fecha_nacimiento'] ?? '') ?>">
+        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required max="<?= $nacimientoMasReciente ?>" value="<?= htmlspecialchars($_POST['fecha_nacimiento'] ?? '') ?>">
+        <p class="nota">Solo se admiten clientes mayores de edad (<?= MayoriaDeEdad::EDAD ?> años cumplidos).</p>
 
         <label for="segmento">Segmento</label>
         <select name="segmento" id="segmento">

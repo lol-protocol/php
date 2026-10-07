@@ -177,6 +177,17 @@ una base que ya lo tiene no pisa nada. Las `tasa_a_usd` son tasas estáticas de
 ejemplo, no un feed en vivo: antes de confiar en los reportes consolidados en USD,
 reemplazalas por las reales (`UPDATE monedas SET tasa_a_usd = ... WHERE codigo = '...'`).
 
+**Mayoría de edad.** La migración `007` hace que la base rechace a un cliente menor
+de 18 años, tanto al crearlo como al cambiarle la fecha de nacimiento (la app ya lo
+valida antes; el trigger cubre cualquier otro camino: un script, una carga directa).
+No revisa, cambia ni borra a los clientes que ya existían, y mientras nadie les
+toque la fecha de nacimiento siguen pudiendo editarse. Para encontrar a los que hoy
+tengan menos de 18:
+`SELECT id, nombre, fecha_nacimiento FROM clientes WHERE fecha_nacimiento > CURRENT_DATE - INTERVAL '18 years';`
+(el Dashboard también los muestra en el tramo «Menor de 18» de la segmentación por
+edad). Los visitantes del funnel pueden ser menores: un lead no es un cliente, pero
+no puede convertirse.
+
 Un cambio de esquema nuevo —o un país o una moneda nuevos— va en un archivo nuevo
 con el número siguiente (`NNN_descripcion.sql`). Una migración que ya corrió en
 alguna base no se edita.
@@ -249,6 +260,10 @@ src/
   EnvioUnico.php        token de un solo uso de los formularios de alta: un doble
                         clic no crea dos pagos ni dos boletas, testeado
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
+  MayoriaDeEdad.php     la regla de que no se admiten clientes menores de 18 (años
+                        cumplidos, como age() de Postgres) y el tope del campo de
+                        fecha de nacimiento del alta; la base la repite en un
+                        trigger (migración 007), testeado
   Etiquetas.php         traduce estado de boleta/metodo de pago/canal a su
                         etiqueta en español, en un solo lugar para no repetir
                         el mismo array en cada vista que los muestra, testeado
@@ -290,8 +305,9 @@ src/
   Router.php, View.php, helpers.php
 database/
   migraciones/          el esquema, el catálogo de ~200 países y sus monedas
-                        (ISO 4217) y los índices, en cambios numerados (001 =
-                        esquema inicial, 005 = catálogo, 006 = índices)
+                        (ISO 4217), los índices y la regla de mayoría de edad,
+                        en cambios numerados (001 = esquema inicial, 005 =
+                        catálogo, 006 = índices, 007 = mayoría de edad)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   seed.php               SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP (una carpeta por sección), con partials
@@ -316,8 +332,9 @@ tests/
                         que el estado de una boleta en SQL coincida con el de
                         PHP, que las pantallas pesadas no traigan miles de filas
                         a PHP, que las consultas de clientes y del funnel usen
-                        sus índices, y que los datos de ejemplo del seed
-                        cumplan las reglas de la app)
+                        sus índices, que la app, el trigger y el tramo de edad
+                        coincidan en quién es mayor de edad, y que los datos de
+                        ejemplo del seed cumplan las reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
@@ -331,7 +348,11 @@ phpstan.neon            configuracion del analisis estatico
   los tiene apenas se migra (ver "Esquema de la base").
 - `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
   perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
-  segmentación del dashboard y su moneda de facturación.
+  segmentación del dashboard y su moneda de facturación. Solo se admiten mayores de
+  edad (18 años cumplidos): el alta lo valida con un mensaje claro y la base lo
+  exige con un trigger (migración `007`, ver "Esquema de la base"). Que el cliente
+  no esté privado de libertad ni interdicto no es un dato que la app tenga, así que
+  no se puede validar.
 - `usuarios_funnel`: cada visitante que entra al funnel, con el mismo perfil y la
   fecha en que alcanzó cada etapa (`fecha_visita`, `fecha_registro`, `fecha_lead`,
   `fecha_conversion`) y el canal de adquisición. El perfil se genera una sola vez

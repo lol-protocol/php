@@ -72,13 +72,20 @@ final class Validacion
     }
 
     /**
-     * Mensaje de error para el catch de un alta que puede chocar con un
-     * email duplicado (constraint UNIQUE); usado por ClienteController.
+     * Mensaje de error para el catch de un alta que puede chocar con una regla
+     * de la base: un email duplicado (constraint UNIQUE) o, en un cliente, la
+     * mayoria de edad (trigger de la migracion 007; llega hasta aca solo si el
+     * alta se salto la validacion de ClienteController). Usado por ClienteController.
      */
     public static function mensajeDeConflicto(PDOException $e, string $entidad): string
     {
-        return str_contains($e->getMessage(), 'unique')
-            ? "Ya existe un {$entidad} con ese email."
-            : "No se pudo crear el {$entidad}.";
+        if (str_contains($e->getMessage(), 'unique')) {
+            return "Ya existe un {$entidad} con ese email.";
+        }
+        if (str_contains($e->getMessage(), 'mayores de edad')) {
+            return MayoriaDeEdad::mensaje();
+        }
+
+        return "No se pudo crear el {$entidad}.";
     }
 }

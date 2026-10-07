@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Avisos;
 use App\EnvioUnico;
 use App\Filtros;
+use App\MayoriaDeEdad;
 use App\Paginacion;
 use App\Peticion;
 use App\Repositories\AuditoriaRepository;
@@ -18,6 +19,7 @@ use App\Repositories\PagoRepository;
 use App\Repositories\PaisRepository;
 use App\Validacion;
 use App\View;
+use DateTimeImmutable;
 
 final class ClienteController
 {
@@ -35,8 +37,8 @@ final class ClienteController
 
     /**
      * Nadie nacio despues de hoy. Las dos fechas son Y-m-d y ya validadas, asi
-     * que alcanza con compararlas como texto. No se pone piso de edad: un
-     * menor es un cliente posible y los reportes lo muestran en su tramo.
+     * que alcanza con compararlas como texto. Que ademas sea mayor de edad se
+     * revisa aparte (MayoriaDeEdad::cumplida()).
      */
     public static function nacimientoNoEsFuturo(string $fechaNacimiento, string $hoy): bool
     {
@@ -137,6 +139,8 @@ final class ClienteController
                 $error = 'La fecha de nacimiento no es válida.';
             } elseif (!self::nacimientoNoEsFuturo($fechaNacimiento, date('Y-m-d'))) {
                 $error = 'La fecha de nacimiento no puede ser posterior a hoy.';
+            } elseif (!MayoriaDeEdad::cumplida($fechaNacimiento, new DateTimeImmutable('today'))) {
+                $error = MayoriaDeEdad::mensaje();
             } elseif (!(new PaisRepository())->existe($paisCodigo)) {
                 // Antes un pais que no existe llegaba hasta la base y volvia como "No se pudo crear el cliente."
                 $error = 'Elegí un país válido.';
@@ -175,6 +179,7 @@ final class ClienteController
             'idiomas' => (new ClienteRepository())->idiomasEnUso(),
             'generos' => ClienteRepository::GENEROS,
             'segmentos' => ClienteRepository::SEGMENTOS,
+            'nacimientoMasReciente' => MayoriaDeEdad::nacimientoMasReciente(new DateTimeImmutable('today')),
             'error' => $error,
             'activePage' => 'clientes',
             'titulo' => 'Nuevo cliente',
