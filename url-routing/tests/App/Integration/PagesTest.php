@@ -277,6 +277,79 @@ class PagesTest extends TestCase
         $this->assertSame(403, $this->get(self::POS, '/cart/agregar/', 'GET', $conToken, $sid)[0]);
     }
 
+    /** Runs $work with the POS database changed by $sql, then undoes it with $restore. */
+    private function conCambioEnPos(string $sql, string $restore, callable $work): void
+    {
+        $db = new Database('sqlite:' . self::$dir . '/pos.sqlite');
+        $db->execute($sql);
+        try {
+            $work();
+        } finally {
+            $db->execute($restore);
+        }
+    }
+
+    public function testCartTotalsEachCurrencySeparately(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'GOR-AZ', 'cantidad' => '1'], $sid, $token);
+
+        $this->conCambioEnPos(
+            "UPDATE productos SET moneda = 'USD' WHERE id = 81372049",
+            "UPDATE productos SET moneda = 'MXN' WHERE id = 81372049",
+            function () use ($sid): void {
+                [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+                $this->assertStringContainsString('Total MXN', $body);
+                $this->assertStringContainsString('Total USD', $body);
+                $this->assertStringContainsString('$249.00 USD', $body);
+                $this->assertStringNotContainsString('$448.00', $body, '199 MXN + 249 USD must not be added together');
+            }
+        );
+    }
+
+    public function testDeactivatedProductLeavesTheCart(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+
+        $this->conCambioEnPos(
+            'UPDATE productos SET activo = 0 WHERE id = 81372047',
+            'UPDATE productos SET activo = 1 WHERE id = 81372047',
+            function () use ($sid, $token): void {
+                $this->assertSame(303, $this->post(self::POS, '/cart/actualizar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '3'], $sid, $token)[0]);
+                [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+                $this->assertStringContainsString('El carrito está vacío.', $body);
+            }
+        );
+    }
+
+    public function testCartClampsToStockThatDroppedAfterAdding(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '5'], $sid, $token);
+
+        $this->conCambioEnPos(
+            "UPDATE variantes SET stock = 2 WHERE sku = 'CAM-AZ-M'",
+            "UPDATE variantes SET stock = 30 WHERE sku = 'CAM-AZ-M'",
+            function () use ($sid): void {
+                [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+                $this->assertMatchesRegularExpression('/name="cantidad"[^>]*value="2"/', $body);
+                $this->assertStringContainsString('$398.00 MXN', $body); // 2 x $199.00, not 5
+            }
+        );
+    }
+
+    public function testArrayInputsAreRejectedNotErrors(): void
+    {
+        [$sid, $token] = $this->primeSession();
+
+        // get() also fails on any PHP warning, e.g. "Array to string conversion".
+        $tokenArray = http_build_query(['sku' => 'CAM-AZ-M', 'csrf_token' => [$token]]);
+        $this->assertSame(403, $this->get(self::POS, '/cart/agregar/', 'POST', $tokenArray, $sid)[0]);
+        $this->assertSame(400, $this->post(self::POS, '/cart/agregar/', ['sku' => ['CAM-AZ-M']], $sid, $token)[0]);
+    }
+
     public function testExportIsValidGedcom(): void
     {
         [$codigo, $gedcom] = $this->get(self::GENEALOGIA, '/1048293/3/');

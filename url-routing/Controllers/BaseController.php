@@ -19,7 +19,8 @@ class BaseController
     protected function validateCsrfToken(): bool
     {
         $token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
-        if ($token !== null && ServiceLocator::getInstance()->getSessionManager()->validateCsrfToken($token)) {
+        // is_string: "csrf_token[]=x" arrives as an array and must be a 403, not a TypeError.
+        if (is_string($token) && ServiceLocator::getInstance()->getSessionManager()->validateCsrfToken($token)) {
             return true;
         }
 
@@ -84,6 +85,13 @@ class BaseController
     {
         http_response_code(400);
         return '<h1>400 - ' . htmlspecialchars($message) . '</h1>';
+    }
+
+    /** A POST field as a string; '' (or $default) when missing or sent as an array ("sku[]=x"). */
+    protected function postString(string $name, string $default = ''): string
+    {
+        $value = $_POST[$name] ?? $default;
+        return is_string($value) ? $value : $default;
     }
 
     protected function handleForbidden(string $message = 'Forbidden'): string

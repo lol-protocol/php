@@ -31,7 +31,9 @@
 <?php endforeach; ?>
     </tbody>
     <tfoot>
-        <tr><td colspan="3"><strong>Total</strong></td><td class="num"><strong><?= esc(dinero($total_centavos, $moneda)) ?></strong></td><td></td></tr>
+<?php foreach ($totales as $moneda => $centavos): ?>
+        <tr><td colspan="3"><strong>Total<?= count($totales) > 1 ? ' ' . esc($moneda) : '' ?></strong></td><td class="num"><strong><?= esc(dinero($centavos, $moneda)) ?></strong></td><td></td></tr>
+<?php endforeach; ?>
     </tfoot>
 </table>
 <p class="acciones">
