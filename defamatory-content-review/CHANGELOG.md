@@ -60,6 +60,11 @@
   `Çolak`/`Topal` (turco), `Cioară` (rumano), `Горбань` (ucraniano),
   `Alfons` (polaco, danés), `Abe`/`So`/`Lam`/`Tai`/`Pina`… Se marcaron
   ~250 colisiones.
+- **Mismo barrido en los 6 `comprehensive`** (~110 marcas `nameCollision`:
+  «Dick», «Cock», «Hooker», «Coon», «Kraut», «Depp», «Teufel», «Gobbo»,
+  «Troia», «Vacca», «Nègre», «Verdugo»…). Se quitan `ano` (español: «año»
+  se pliega a «ano» por la ñ) y `sarasa`, que disparaba la fusión con
+  «Sara Sánchez/Santos».
 - **Entradas que no eran insultos**: `мамка` (mamá, búlgaro), `ruska`
   (rusa, checo), `top` (pelota, turco), `αδερφή` (hermana, griego),
   `תחת` («debajo», hebreo), `bóng` (pelota, vietnamita), `ममी` (mamá,
