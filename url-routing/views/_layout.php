@@ -66,6 +66,9 @@ $tActual = is_string($_GET['t'] ?? null) ? $_GET['t'] : (string)array_key_first(
             <input type="search" name="q" value="<?= esc($qActual) ?>" placeholder="Buscar…" aria-label="Buscar">
             <button type="submit">Buscar</button>
         </form>
+<?php foreach ($navExtra ?? [] as $enlace): ?>
+        <a href="<?= esc($enlace['href']) ?>"><?= esc($enlace['label']) ?></a>
+<?php endforeach; ?>
         <a href="<?= esc(cuenta()) ?>">Mi cuenta</a>
     </div>
 </header>

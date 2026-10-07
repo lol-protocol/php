@@ -40,10 +40,16 @@ class PagesTest extends TestCase
         exec('rm -rf ' . escapeshellarg(self::$dir));
     }
 
-    /** @return array{int, string} [status, body] */
-    private function get(string $host, string $uri): array
-    {
-        $cmd = [PHP_BINARY, '-d', 'display_errors=stderr', dirname(__DIR__, 2) . '/Support/request.php', $host, $uri];
+    /** @return array{int, string, string} [status, body, sessionId actually used] */
+    private function get(
+        string $host,
+        string $uri,
+        string $method = 'GET',
+        string $postBody = '',
+        ?string $sessionId = null
+    ): array {
+        $cmd = [PHP_BINARY, '-d', 'display_errors=stderr', dirname(__DIR__, 2) . '/Support/request.php',
+            $host, $uri, $method, $postBody, $sessionId ?? ''];
 
         $env = [
             'DB_DSN_GENEALOGY' => 'sqlite:' . self::$dir . '/genealogy.sqlite',
@@ -61,7 +67,31 @@ class PagesTest extends TestCase
         $this->assertStringNotContainsString('Warning', $stderr, "PHP warning on {$uri}: {$stderr}");
         $this->assertStringNotContainsString('Deprecated', $stderr, "PHP deprecation on {$uri}: {$stderr}");
 
-        return [(int)substr($stderr, -3), $body];
+        preg_match('/^SESSION:(.*)$/m', $stderr, $ms);
+
+        return [(int)substr($stderr, -3), $body, $ms[1] ?? ''];
+    }
+
+    /**
+     * Starts a session with a real CSRF token by visiting a page that renders one (a
+     * product's variantes page always has an "agregar al carrito" form), for tests
+     * that need to POST a cart mutation.
+     *
+     * @return array{string, string} [sessionId, csrfToken]
+     */
+    private function primeSession(): array
+    {
+        [, $body, $sid] = $this->get(self::POS, '/81372047/1/');
+        preg_match('/name="csrf_token" value="([^"]+)"/', $body, $m);
+        $this->assertNotEmpty($m, 'Could not read a CSRF token from the primed page');
+
+        return [$sid, $m[1]];
+    }
+
+    private function post(string $host, string $uri, array $params, string $sessionId, string $token): array
+    {
+        $postBody = http_build_query($params + ['csrf_token' => $token]);
+        return $this->get($host, $uri, 'POST', $postBody, $sessionId);
     }
 
     /** @return array<string, array{string, string, int, list<string>}> */
@@ -157,6 +187,94 @@ class PagesTest extends TestCase
         [, $aportes] = $this->get(self::GENEALOGIA, '/0/2/');
         $this->assertStringContainsString('José García Álvarez', $aportes);
         $this->assertStringNotContainsString('Carlos García Martínez', $aportes);
+    }
+
+    public function testCartStartsEmpty(): void
+    {
+        [$codigo, $body] = $this->get(self::POS, '/cart/');
+
+        $this->assertSame(200, $codigo);
+        $this->assertStringContainsString('El carrito está vacío.', $body);
+    }
+
+    public function testAddingToCartShowsItInTheCart(): void
+    {
+        [$sid, $token] = $this->primeSession();
+
+        [$codigo] = $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '2'], $sid, $token);
+        $this->assertSame(303, $codigo); // redirects to /cart/ (not observable here: see Support/request.php)
+
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertStringContainsString('Camiseta básica', $body);
+        $this->assertStringContainsString('CAM-AZ-M', $body);
+        $this->assertStringContainsString('$398.00 MXN', $body); // 2 x $199.00, subtotal and total both
+    }
+
+    public function testAddingTwiceAccumulatesButClampsToStock(): void
+    {
+        [$sid, $token] = $this->primeSession();
+
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '2'], $sid, $token);
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '3'], $sid, $token);
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertMatchesRegularExpression('/name="cantidad"[^>]*value="5"/', $body);
+
+        // CAM-AZ-M has 30 in stock (see seed data); asking for far more clamps instead of erroring.
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '999'], $sid, $token);
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertMatchesRegularExpression('/name="cantidad"[^>]*value="30"/', $body);
+    }
+
+    public function testActualizarChangesQuantityAndQuitarRemovesTheLine(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+
+        [$codigo] = $this->post(self::POS, '/cart/actualizar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '4'], $sid, $token);
+        $this->assertSame(303, $codigo);
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertStringContainsString('$796.00 MXN', $body); // 4 x $199.00
+
+        $this->post(self::POS, '/cart/quitar/', ['sku' => 'CAM-AZ-M'], $sid, $token);
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertStringContainsString('El carrito está vacío.', $body);
+    }
+
+    public function testVaciarEmptiesTheWholeCart(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'GOR-AZ', 'cantidad' => '1'], $sid, $token);
+
+        $this->post(self::POS, '/cart/vaciar/', [], $sid, $token);
+
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertStringContainsString('El carrito está vacío.', $body);
+    }
+
+    public function testAgregarRejectsAnUnknownOrSoldOutSku(): void
+    {
+        [$sid, $token] = $this->primeSession();
+
+        $this->assertSame(400, $this->post(self::POS, '/cart/agregar/', ['sku' => 'NO-EXISTE', 'cantidad' => '1'], $sid, $token)[0]);
+        // CAM-BL-L has 0 in stock.
+        $this->assertSame(400, $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-BL-L', 'cantidad' => '1'], $sid, $token)[0]);
+    }
+
+    public function testCartMutationsRequireAValidCsrfTokenAndPost(): void
+    {
+        // No token at all.
+        $sinToken = http_build_query(['sku' => 'CAM-AZ-M', 'cantidad' => '1']);
+        $this->assertSame(403, $this->get(self::POS, '/cart/agregar/', 'POST', $sinToken)[0]);
+
+        [$sid, $token] = $this->primeSession();
+
+        // Wrong token, valid session and method.
+        $this->assertSame(403, $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, 'no-es-el-token')[0]);
+
+        // GET instead of POST, even with a valid token.
+        $conToken = http_build_query(['sku' => 'CAM-AZ-M', 'cantidad' => '1', 'csrf_token' => $token]);
+        $this->assertSame(403, $this->get(self::POS, '/cart/agregar/', 'GET', $conToken, $sid)[0]);
     }
 
     public function testExportIsValidGedcom(): void

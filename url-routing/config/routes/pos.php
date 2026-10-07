@@ -49,6 +49,10 @@ return [
 
     'literal' => [
         'cart' => ['controller' => 'POS\CartController', 'method' => 'show'],
+        'cart/agregar' => ['controller' => 'POS\CartController', 'method' => 'agregar'],
+        'cart/actualizar' => ['controller' => 'POS\CartController', 'method' => 'actualizar'],
+        'cart/quitar' => ['controller' => 'POS\CartController', 'method' => 'quitar'],
+        'cart/vaciar' => ['controller' => 'POS\CartController', 'method' => 'vaciar'],
         'checkout' => ['controller' => 'POS\CheckoutController', 'method' => 'index'],
         'checkout/shipping' => ['controller' => 'POS\CheckoutController', 'method' => 'shipping'],
         'checkout/payment' => ['controller' => 'POS\CheckoutController', 'method' => 'payment'],
