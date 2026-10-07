@@ -5,6 +5,18 @@ Scripts automáticos, uno por paso, para configurar un VPS Ubuntu 24 LTS con:
 - **Webmin** (panel de administración web, opcional)
 - Extras opcionales: MariaDB, Apache Tomcat, Python + Whisper, servidor DNS propio
 
+## 📚 Mapa de la documentación
+
+| Documento | Para qué sirve |
+|-----------|----------------|
+| `README.md` (este) | Qué hace cada script, cómo usarlos, tests/CI, seguridad y troubleshooting |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Cómo está armado el servidor: stack, directorios, flujo de peticiones, seguridad, mantenimiento |
+| [DEPLOYMENT.md](DEPLOYMENT.md) | Despliegue completo de punta a punta (VPS nuevo → dominios → apps → base de datos) |
+| [DOMAINS.md](DOMAINS.md) | Configuración por dominio: Nginx, DNS, SSL y checklists |
+| [TOOLS-AND-UTILITIES.md](TOOLS-AND-UTILITIES.md) | Referencia de cada herramienta instalada (Nginx, PHP, Python, BD, Certbot, UFW...) |
+
+`_Garbage/` guarda, sin borrarlo, lo que quedó obsoleto (ver su README).
+
 ## 🎛️ ¿Por qué Webmin y no CloudPanel/cPanel/Virtualmin?
 
 - **cPanel**: requiere licencia paga.
@@ -129,20 +141,22 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 02_G | `02_G-install-mariadb.sh` | *(Opcional)* Instala MariaDB |
 | 02_H | `02_H-install-tomcat.sh` | *(Opcional)* Instala Apache Tomcat — requiere que `02_A` (Java) ya haya corrido |
 | 02_I | `02_I-install-python-whisper.sh` | *(Opcional)* Instala Whisper (OpenAI, transcripción de audio) + ffmpeg + librerías Python básicas en un venv en `/opt/venvs/whisper` — requiere que `02_C` (Python) ya haya corrido |
-| 02_J | `02_J-install-webmin.sh` | Instala Webmin (panel de administración web, opcional pero incluido por defecto en `install-all.sh`) |
+| 02_J | `02_J-install-webmin.sh` | Instala Webmin (panel de administración web, opcional pero incluido por defecto en `install-all.sh`). Con `WEBMIN_ALLOW_FROM=<tu IP>` el puerto 10000 solo se abre a esa IP; sin ella queda abierto a todo internet y el script lo avisa |
 | 03 | `03-configure-nginx-site.sh` | Crea el virtual host de Nginx y copia la landing page |
 | 04 | `04-setup-ssl.sh` | Obtiene certificado SSL (verifica DNS antes) |
 | 05 | `05-deploy-landing-page.sh` | (Re)copia los archivos de la landing page |
 | 07_A | `07_A-install-fail2ban-autoupdates.sh` | Instala fail2ban (jail de SSH) y actualizaciones automáticas de seguridad (sin reinicio automático) |
-| 07_B | `07_B-nginx-security-headers.sh` | Agrega HSTS, X-Frame-Options, X-Content-Type-Options y Referrer-Policy a todos los dominios (un solo archivo en `conf.d/`) |
+| 07_B | `07_B-nginx-security-headers.sh` | Agrega HSTS, X-Frame-Options, X-Content-Type-Options y Referrer-Policy a todos los dominios, oculta la versión de Nginx (`server_tokens off`) y define un vhost por defecto que corta el tráfico por IP o con un Host ajeno (archivos en `conf.d/`) |
 | 07_C | `07_C-harden-ssh.sh` | *(Opcional, requiere tu llave pública)* Autoriza tu llave y desactiva login por contraseña y de root. Exige confirmar que ya probaste la llave; `--revert` lo deshace |
 | 07_D | `07_D-setup-logrotate.sh` | Rota los logs de Nginx por dominio (`/var/log/nginx/<dominio>/*.log`), que el logrotate del paquete no cubre |
 | 08 | `08-healthcheck.sh` | Solo lectura: revisa servicios, UFW, puertos, DNS, HTTPS, certificado y headers. Sale con código 1 si algo falla. Uso: `./08-healthcheck.sh tudominio.com` |
 | 09_A | `09_A-setup-monitoring.sh` | *(Opcional)* Monitoreo cada 15 min (disco, RAM, carga, certificados, servicios) con alertas a webhook (Slack/Discord/Mattermost) y/o correo. Solo avisa cuando cambia el estado |
 | 06_A | `06_A-setup-php-app.sh` | *(Opcional)* Configura una app PHP adicional |
 | 06_B | `06_B-setup-python-app.sh` | *(Opcional)* Configura una app Python (Flask + Gunicorn) |
-| 06_C | `06_C-setup-dns-server.sh` | *(Opcional)* Instala BIND9 como servidor DNS propio — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
-| 06_D | `06_D-setup-tomcat-app.sh` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio — requiere `02_H` ya hecho |
+| 06_C | `06_C-setup-dns-server.sh` | *(Opcional)* Instala BIND9 como servidor DNS propio, solo autoritativo (`recursion no`) — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
+| 06_D | `06_D-setup-tomcat-app.sh` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio (con la app en la raíz, `/manager` y `/host-manager` devuelven 404) — requiere `02_H` ya hecho |
+| 10_A | `10_A-add-domain.sh` | Agrega un dominio nuevo (landing/php/python/tomcat, `--ssl` opcional) encadenando los scripts anteriores |
+| 10_B | `10_B-remove-domain.sh` | Quita un dominio **archivando** (no borrando) su vhost, sitio y logs |
 | — | `remote-run.sh` | Desde TU equipo: sube `vps-setup/` por SSH (solo llave) y ejecuta un script en el VPS. Config en `vps.env` (ver `vps.env.example`) |
 | — | `install-all.sh` | Ejecuta 01 → 02_A..F+J → 03 → 04 → 05 → 07_A → 07_B → 07_D en orden y termina corriendo 08. Admite `--dry-run`, `--resume` y `--yes` |
 
@@ -198,6 +212,23 @@ apt, systemd, certbot, fail2ban ni ufw — eso solo se valida en un VPS. Las pru
 `/var/backups/vps-setup/removed/<dominio>-<fecha>/`, comprueba `nginx -t` antes de archivar (si falla, restaura el
 sitio) y al final indica cómo quitar el certificado y la zona DNS, que no toca.
 
+## 🔒 Seguridad
+
+Lo que los scripts endurecen: UFW activo con SSH permitido antes de encenderlo (01), fail2ban en SSH y parches
+automáticos (07_A), headers de seguridad, `server_tokens off` y vhost por defecto (07_B), SSH solo con llave y sin
+root (07_C, opcional), logs rotados (07_D), Tomcat solo en loopback y sin `/manager` público (02_H, 06_D), BIND solo
+autoritativo (06_C), unidades systemd de apps Python con sandbox básico (06_B), descargas a directorios temporales
+privados (02_J), entradas validadas con listas blancas y `remote-run.sh` solo por llave.
+
+Límites conocidos (decisiones de diseño, no bugs):
+- Todas las apps PHP/Python corren como `www-data`: una app comprometida puede leer los archivos de las demás. Para
+  aislarlas hace falta un usuario y un pool de PHP-FPM por app (no incluido).
+- `remote-run.sh` usa `StrictHostKeyChecking=accept-new`: confía en la huella del VPS en la primera conexión. Verifícala
+  con la consola del proveedor si te preocupa un MITM en esa primera vez.
+- Webmin (02_J) y el instalador `setup-repos.sh` se descargan de `raw.githubusercontent.com/.../master` sin verificar
+  firma ni checksum (es el método oficial de Webmin); las librerías de `02_I`/`06_B` se instalan con `pip` sin fijar versiones.
+- Los certificados y la zona DNS no se eliminan al quitar un dominio con `10_B` (se indican los comandos).
+
 ## 🛡️ Validación de entradas
 
 Los scripts que reciben dominio, email, nombre de app, IP, context path o URL de webhook los validan con listas
@@ -243,4 +274,4 @@ ls -la /var/www/landing-page/tudominio.com/
 ./06_D-setup-tomcat-app.sh dominio.com mi-app   # App Java (Tomcat) detrás de Nginx
 ```
 
-Ver también: [ARCHITECTURE.md](ARCHITECTURE.md), [DOMAINS.md](DOMAINS.md), [DEPLOYMENT.md](DEPLOYMENT.md), [TOOLS-AND-UTILITIES.md](TOOLS-AND-UTILITIES.md)
+Más documentación: ver el [mapa de la documentación](#-mapa-de-la-documentación) al inicio.

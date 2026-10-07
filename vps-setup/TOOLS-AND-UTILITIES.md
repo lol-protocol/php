@@ -38,6 +38,8 @@ apt-cache search <pkg> # Buscar paquete
 
 **Panel web:** `https://IP_DEL_VPS:10000` (mismo usuario/contraseña que SSH)
 
+**Seguridad:** el puerto 10000 acepta el login de root/sudo del sistema; para que solo tu IP llegue a él instala con `WEBMIN_ALLOW_FROM=203.0.113.5 ./02_J-install-webmin.sh` (IPv4 o CIDR). Sin esa variable queda abierto a internet.
+
 **Módulos más útiles:**
 - **Nginx Webserver** — edita server blocks, SSL, proxy, gzip sobre `/etc/nginx/` directamente
 - **Users and Groups** — administra cuentas del sistema

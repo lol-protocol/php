@@ -12,7 +12,7 @@ setup() { setup_real; }
 
 teardown() {
     nginx_down
-    rm -f /etc/nginx/conf.d/security-headers.conf /etc/nginx/conf.d/bats-real-*.conf
+    rm -f /etc/nginx/conf.d/security-headers.conf /etc/nginx/conf.d/server-tokens.conf /etc/nginx/conf.d/00-default-server.conf /etc/nginx/conf.d/bats-real-*.conf
     for n in $D1 $APP $D3; do rm -f "/etc/nginx/sites-enabled/$n" "/etc/nginx/sites-available/$n"; done
     rm -rf "/var/www/landing-page/$D1" "/var/www/$APP" "/var/log/nginx/$D1" "/var/log/nginx/$D2" "/var/log/nginx/$D3"
     sed -i "/$D1/d" /etc/hosts 2>/dev/null || true
@@ -57,8 +57,37 @@ teardown() {
     run bash "$VPS_DIR/06_D-setup-tomcat-app.sh" $D3 miapp
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     grep -q "proxy_pass http://127.0.0.1:8080/miapp/;" /etc/nginx/sites-available/$D3
+    ! grep -q 'manager' /etc/nginx/sites-available/$D3     # con context path no hace falta
     run nginx -t
     [ "$status" -eq 0 ]
+}
+
+@test "06_D en la raiz: /manager y /host-manager de Tomcat NO se alcanzan desde internet" {
+    run bash "$VPS_DIR/06_D-setup-tomcat-app.sh" $D3
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    nginx -t
+    nginx_up
+    for p in /manager /manager/html /host-manager/html; do
+        run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D3" "http://127.0.0.1$p"
+        [ "$output" = "404" ] || { echo "$p -> $output"; return 1; }
+    done
+    # lo demas sigue yendo a Tomcat (no esta corriendo aqui: 502, no 404 de nginx)
+    run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D3" "http://127.0.0.1/otra-ruta"
+    [ "$output" = "502" ]
+}
+
+@test "07_B: server_tokens off y el vhost por defecto corta Host ajenos sin romper los dominios propios" {
+    bash "$VPS_DIR/03-configure-nginx-site.sh" $D1 > /dev/null
+    run bash "$VPS_DIR/07_B-nginx-security-headers.sh"; [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    nginx -t
+    nginx_up
+    run curl -s -D - -o /dev/null -H "Host: $D1" http://127.0.0.1/
+    [[ "$output" == *"200"* ]]
+    echo "$output" | grep -i '^server:' | grep -qE '^[Ss]erver: nginx\s*$'      # sin /1.24.0
+    run curl -s -o /dev/null -w '%{http_code}' -H "Host: desconocido.example.net" http://127.0.0.1/
+    [ "$status" -ne 0 ] || [ "$output" = "000" ]                                # 444: conexion cerrada
+    run curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1/                # por IP, sin Host de nuestros dominios
+    [ "$output" = "000" ]
 }
 
 @test "dos dominios conviven (cada uno su vhost y su carpeta)" {

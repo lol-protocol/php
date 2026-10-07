@@ -95,6 +95,16 @@ zone "$DOMAIN" {
 EOF
 fi
 
+# Servidor SOLO autoritativo: sin recursion no puede usarse como resolvedor abierto
+# (amplificacion DNS / abuso) ahora que el puerto 53 queda abierto a internet. El default
+# de BIND ya limita la recursion a localhost/localnets, pero en una subred compartida
+# "localnets" incluye vecinos. Solo se toca si el archivo no define ya 'recursion'.
+NAMED_OPTIONS=${NAMED_OPTIONS:-/etc/bind/named.conf.options}
+if [ -f "$NAMED_OPTIONS" ] && ! sudo grep -qE '^[[:space:]]*recursion[[:space:]]' "$NAMED_OPTIONS"; then
+    sudo sed -i '0,/^options[[:space:]]*{/s//options {\n\trecursion no;\n\tallow-recursion { none; };/' "$NAMED_OPTIONS"
+    echo "  BIND configurado como servidor autoritativo (recursion no)."
+fi
+
 # Valida la sintaxis ANTES de reiniciar -- un error aqui tumbaria la
 # resolucion DNS de TODOS los dominios que dependan de este servidor
 echo "[4/4] Validando configuración..."

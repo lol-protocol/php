@@ -37,6 +37,9 @@ require_valid domain "$DOMAIN" "El dominio"
 DEST="$REMOVED_DIR/$DOMAIN-$(date +%Y%m%d-%H%M%S)"
 VHOST="$NGINX_DIR/sites-available/$DOMAIN"
 LINK="$NGINX_DIR/sites-enabled/$DOMAIN"
+# 06_A y 06_B nombran el vhost como la APP (no como el dominio): con --app hay que
+# desactivar tambien ese, o el sitio seguiria publicado.
+APP_LINK=""; [ -z "$APP" ] || APP_LINK="$NGINX_DIR/sites-enabled/$APP"
 
 # Lista de lo que existe y se archivara: "origen|nombre dentro de DEST"
 ITEMS=()
@@ -45,17 +48,19 @@ add_item "$VHOST" "sites-available/$DOMAIN"
 add_item "$WWW_DIR/landing-page/$DOMAIN" "www/landing-page/$DOMAIN"
 add_item "$NGINX_LOG_DIR/$DOMAIN" "logs/$DOMAIN"
 if [ -n "$APP" ]; then
+    add_item "$NGINX_DIR/sites-available/$APP" "sites-available/$APP"
     add_item "$WWW_DIR/$APP" "www/$APP"
     add_item "$SYSTEMD_DIR/$APP.service" "systemd/$APP.service"
 fi
 
 print_header "10_B" "Quitar dominio $DOMAIN (archivar, no borrar)"
-if [ ${#ITEMS[@]} -eq 0 ] && [ ! -L "$LINK" ]; then
+if [ ${#ITEMS[@]} -eq 0 ] && [ ! -L "$LINK" ] && [ ! -L "$APP_LINK" ]; then
     echo "No hay nada de $DOMAIN en este servidor."
     exit 0
 fi
 echo "Se archivara en: $DEST"
 [ ! -L "$LINK" ] || echo "  - desactivar $LINK"
+[ -z "$APP_LINK" ] || [ ! -L "$APP_LINK" ] || echo "  - desactivar $APP_LINK"
 for it in "${ITEMS[@]}"; do echo "  - ${it%%|*}"; done
 [ -z "$APP" ] || echo "  - detener y deshabilitar el servicio $APP (si existe)"
 
@@ -66,14 +71,16 @@ if [ "$YES" -ne 1 ]; then
 fi
 
 # 1) Desactivar el sitio y comprobar que nginx sigue sano ANTES de mover nada.
-LINK_TARGET=""
-if [ -L "$LINK" ]; then
-    LINK_TARGET=$(readlink "$LINK")
-    sudo rm -f "$LINK"
-fi
+declare -A SAVED_LINKS=()
+for l in "$LINK" "$APP_LINK"; do
+    if [ -n "$l" ] && [ -L "$l" ]; then
+        SAVED_LINKS["$l"]=$(readlink "$l")
+        sudo rm -f "$l"
+    fi
+done
 if ! sudo nginx -t; then
-    echo "ERROR: nginx -t falla sin $DOMAIN; se restaura el sitio y no se archiva nada."
-    [ -z "$LINK_TARGET" ] || sudo ln -s "$LINK_TARGET" "$LINK"
+    echo "ERROR: nginx -t falla sin $DOMAIN; se restauran los sitios y no se archiva nada."
+    for l in "${!SAVED_LINKS[@]}"; do sudo ln -s "${SAVED_LINKS[$l]}" "$l"; done
     exit 1
 fi
 
