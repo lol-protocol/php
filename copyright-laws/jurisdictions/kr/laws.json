@@ -2,6 +2,7 @@
   {
     "country_code": "KR",
     "country_name": "South Korea",
+    "region": "asia_pacific",
     "law_name": "Copyright Act",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",

@@ -2,20 +2,21 @@
   {
     "country_code": "EU",
     "country_name": "European Union",
+    "region": "europe",
     "law_name": "General Data Protection Regulation (GDPR)",
     "jurisdiction": "European Commission",
     "enactment_date": "2016-04-27",
     "effective_date": "2018-05-25",
     "scope": "Residents & Businesses",
     "applies_to": "All companies processing EU residents' data",
-    "key_requirements": "Lawful basis",
-    "data_categories": " consent",
-    "retention_period": " data subject rights",
-    "enforcement_authority": "Biometric data",
-    "penalties_range": "As long as necessary",
-    "exemptions": "European Data Protection Board & National DPAs",
-    "website_url": "Up to €20M or 4% revenue",
-    "language": "Legal obligations",
-    "notes": "https://gdpr-info.eu/"
+    "key_requirements": "Lawful basis, consent, data subject rights",
+    "data_categories": "Biometric data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "European Data Protection Board & National DPAs",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://gdpr-info.eu/",
+    "language": "English",
+    "notes": "Extraterritorial applicability"
   }
 ]

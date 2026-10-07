@@ -2,6 +2,7 @@
   {
     "country_code": "IE",
     "country_name": "Ireland",
+    "region": "europe",
     "law_name": "Data Protection Act",
     "jurisdiction": "Data Protection Commission",
     "enactment_date": "2018-05-25",

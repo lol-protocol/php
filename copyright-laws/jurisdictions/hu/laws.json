@@ -2,6 +2,7 @@
   {
     "country_code": "HU",
     "country_name": "Hungary",
+    "region": "europe",
     "law_name": "Hungarian Copyright Act",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",

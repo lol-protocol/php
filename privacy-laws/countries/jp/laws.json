@@ -2,6 +2,7 @@
   {
     "country_code": "JP",
     "country_name": "Japan",
+    "region": "asia_pacific",
     "law_name": "Act on Protection of Personal Information (APPI)",
     "jurisdiction": "Personal Information Protection Commission",
     "enactment_date": "2017-05-30",

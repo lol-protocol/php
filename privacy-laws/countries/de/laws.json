@@ -2,6 +2,7 @@
   {
     "country_code": "DE",
     "country_name": "Germany",
+    "region": "europe",
     "law_name": "Federal Data Protection Act (BDSG)",
     "jurisdiction": "Federal & State DPAs",
     "enactment_date": "2018-07-01",

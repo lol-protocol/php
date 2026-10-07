@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "Global privacy laws database by country - for genealogy and privacy compliance projects",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "test": "node --test 'tests/**/*.test.js'",
     "validate": "node scripts/validate-csv.js",
-    "lint": "node scripts/lint-data.js"
+    "build": "node scripts/reorganize-by-country.js",
+    "build:check": "node scripts/reorganize-by-country.js --check",
+    "cache:texts": "php scripts/cache-texts.php"
   },
   "keywords": [
     "privacy",

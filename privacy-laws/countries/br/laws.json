@@ -2,6 +2,7 @@
   {
     "country_code": "BR",
     "country_name": "Brazil",
+    "region": "americas",
     "law_name": "Lei Geral de Proteção de Dados Pessoais (LGPD)",
     "jurisdiction": "Agência Nacional",
     "enactment_date": "2018-08-14",

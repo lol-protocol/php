@@ -2,6 +2,7 @@
   {
     "country_code": "IT",
     "country_name": "Italy",
+    "region": "europe",
     "law_name": "Data Protection Code (Codice Della Privacy)",
     "jurisdiction": "Garante Per La Protezione",
     "enactment_date": "2003-06-30",

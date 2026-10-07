@@ -2,6 +2,7 @@
   {
     "country_code": "AU",
     "country_name": "Australia",
+    "region": "asia_pacific",
     "law_name": "Privacy Act 1988",
     "jurisdiction": "Office of the Australian Information Commissioner",
     "enactment_date": "1988-12-21",

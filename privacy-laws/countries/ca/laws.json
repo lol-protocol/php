@@ -2,20 +2,21 @@
   {
     "country_code": "CA",
     "country_name": "Canada",
+    "region": "americas",
     "law_name": "Personal Information Protection and Electronic Documents Act (PIPEDA)",
     "jurisdiction": "Federal",
     "enactment_date": "2000-01-01",
     "effective_date": "2000-04-13",
     "scope": "Canadian Residents",
     "applies_to": "Organizations in private sector",
-    "key_requirements": "Lawful collection",
-    "data_categories": " accuracy",
-    "retention_period": "Personal information",
-    "enforcement_authority": "As needed for purpose",
-    "penalties_range": "Privacy Commissioner of Canada",
-    "exemptions": "Up to $100",
-    "website_url": "000 CAD",
-    "language": "Public institutions",
-    "notes": "https://www.priv.gc.ca/"
+    "key_requirements": "Lawful collection, accuracy",
+    "data_categories": "Personal information",
+    "retention_period": "As needed for purpose",
+    "enforcement_authority": "Privacy Commissioner of Canada",
+    "penalties_range": "Up to $100,000 CAD",
+    "exemptions": "Public institutions",
+    "website_url": "https://www.priv.gc.ca/",
+    "language": "English",
+    "notes": "Private sector national standard"
   }
 ]

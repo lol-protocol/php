@@ -110,7 +110,7 @@ class CopyrightLawsImporter {
                 // Insert jurisdiction if not exists
                 $countryCode = trim($data['country_code']);
                 if (!isset($jurisdictions[$countryCode])) {
-                    $region = $this->getRegion($countryCode);
+                    $region = trim($data['region']);
                     $tld = strtolower($countryCode);
 
                     $jurisdictionStmt->execute([
@@ -121,10 +121,9 @@ class CopyrightLawsImporter {
                     ]);
 
                     // Get jurisdiction_id
-                    $result = $this->pdo->query(
-                        "SELECT jurisdiction_id FROM jurisdictions WHERE code = '$countryCode'"
-                    )->fetch();
-                    $jurisdictions[$countryCode] = $result['jurisdiction_id'];
+                    $idStmt = $this->pdo->prepare("SELECT jurisdiction_id FROM jurisdictions WHERE code = ?");
+                    $idStmt->execute([$countryCode]);
+                    $jurisdictions[$countryCode] = $idStmt->fetch()['jurisdiction_id'];
                 }
 
                 // Insert law
@@ -236,19 +235,6 @@ class CopyrightLawsImporter {
         } catch (Exception $e) {
             $this->error("Validation failed: " . $e->getMessage());
         }
-    }
-
-    /**
-     * Helper: Map country code to region
-     */
-    private function getRegion($code) {
-        $regions = [
-            'EU' => 'europe', 'GB' => 'europe', 'CH' => 'europe', 'FR' => 'europe', 'ES' => 'europe', 'NL' => 'europe',
-            'US' => 'americas', 'CA' => 'americas', 'BR' => 'americas', 'MX' => 'americas', 'CL' => 'americas',
-            'JP' => 'asia_pacific', 'AU' => 'asia_pacific', 'SG' => 'asia_pacific', 'NZ' => 'asia_pacific', 'KR' => 'asia_pacific', 'TH' => 'asia_pacific', 'IN' => 'asia_pacific',
-            'ZA' => 'middle_east_africa',
-        ];
-        return $regions[$code] ?? 'other';
     }
 
     /**

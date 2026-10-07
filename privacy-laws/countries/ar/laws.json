@@ -2,6 +2,7 @@
   {
     "country_code": "AR",
     "country_name": "Argentina",
+    "region": "americas",
     "law_name": "Personal Data Protection Law (LPDP)",
     "jurisdiction": "National Data Protection Authority",
     "enactment_date": "2000-10-27",

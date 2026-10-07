@@ -2,6 +2,7 @@
   {
     "country_code": "AT",
     "country_name": "Austria",
+    "region": "europe",
     "law_name": "Data Protection Act",
     "jurisdiction": "Austrian DPA (DSB)",
     "enactment_date": "2018-05-25",

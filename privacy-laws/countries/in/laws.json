@@ -2,6 +2,7 @@
   {
     "country_code": "IN",
     "country_name": "India",
+    "region": "asia_pacific",
     "law_name": "Digital Personal Data Protection Act 2023",
     "jurisdiction": "Ministry of Electronics & IT",
     "enactment_date": "2023-08-04",
@@ -16,6 +17,6 @@
     "exemptions": "Government functions",
     "website_url": "https://www.meity.gov.in/",
     "language": "English",
-    "notes": "Recently passed"
+    "notes": "Recently passed, enforcement phase"
   }
 ]

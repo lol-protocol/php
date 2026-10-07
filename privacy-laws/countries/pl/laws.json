@@ -2,6 +2,7 @@
   {
     "country_code": "PL",
     "country_name": "Poland",
+    "region": "europe",
     "law_name": "General Data Protection Regulation (GDPR)",
     "jurisdiction": "UODO (Polish DPA)",
     "enactment_date": "2018-05-25",

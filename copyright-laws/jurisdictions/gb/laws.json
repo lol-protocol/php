@@ -2,17 +2,18 @@
   {
     "country_code": "GB",
     "country_name": "United Kingdom",
-    "law_name": "Copyright",
-    "protection_type": " Designs and Patents Act 1988",
-    "term_of_protection": "Copyright",
-    "author_rights": "Author's life + 70 years",
-    "moral_rights": "Exclusive publication rights",
-    "orphan_works": "Paternity & integrity rights",
-    "digital_protection": "Orphan Works scheme active",
-    "fair_use_exceptions": "Copyright compliance",
-    "registration_required": "Fair dealing exceptions",
-    "enforcement_body": "No",
-    "treaties_signatory": "UK Intellectual Property Office",
-    "linked_resources": "Berne/TRIPS/WCT"
+    "region": "europe",
+    "law_name": "Copyright, Designs and Patents Act 1988",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Exclusive publication rights",
+    "moral_rights": "Paternity & integrity rights",
+    "orphan_works": "Orphan Works scheme active",
+    "digital_protection": "Copyright compliance",
+    "fair_use_exceptions": "Fair dealing exceptions",
+    "registration_required": "No",
+    "enforcement_body": "UK Intellectual Property Office",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.gov.uk/topic/intellectual-property"
   }
 ]

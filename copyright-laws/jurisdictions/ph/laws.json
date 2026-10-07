@@ -2,6 +2,7 @@
   {
     "country_code": "PH",
     "country_name": "Philippines",
+    "region": "asia_pacific",
     "law_name": "Intellectual Property Code",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",

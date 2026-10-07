@@ -2,7 +2,6 @@
   "code": "HU",
   "name": "Hungary",
   "tld": "hu",
-  "region": "other",
-  "lawCount": 1,
-  "createdAt": "2026-10-07T00:12:22.076Z"
+  "region": "europe",
+  "lawCount": 1
 }

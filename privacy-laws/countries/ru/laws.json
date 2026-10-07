@@ -2,6 +2,7 @@
   {
     "country_code": "RU",
     "country_name": "Russia",
+    "region": "europe",
     "law_name": "Federal Law on Personal Data",
     "jurisdiction": "Federal Service for Supervision",
     "enactment_date": "2006-07-27",

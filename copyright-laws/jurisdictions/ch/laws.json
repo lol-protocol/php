@@ -2,6 +2,7 @@
   {
     "country_code": "CH",
     "country_name": "Switzerland",
+    "region": "europe",
     "law_name": "Copyright Law (LDA)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",

@@ -2,6 +2,7 @@
   {
     "country_code": "PT",
     "country_name": "Portugal",
+    "region": "europe",
     "law_name": "Data Protection Law",
     "jurisdiction": "Portuguese DPA (CNPD)",
     "enactment_date": "2018-05-25",

@@ -2,6 +2,7 @@
   {
     "country_code": "FR",
     "country_name": "France",
+    "region": "europe",
     "law_name": "General Data Protection Regulation (GDPR)",
     "jurisdiction": "CNIL",
     "enactment_date": "2016-04-27",

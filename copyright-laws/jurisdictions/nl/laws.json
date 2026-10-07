@@ -2,6 +2,7 @@
   {
     "country_code": "NL",
     "country_name": "Netherlands",
+    "region": "europe",
     "law_name": "Copyright Act (Auteurswet)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years (EU harmonized)",

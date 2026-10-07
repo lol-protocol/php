@@ -2,6 +2,7 @@
   {
     "country_code": "SE",
     "country_name": "Sweden",
+    "region": "europe",
     "law_name": "Data Protection Act (Dataskyddslagen)",
     "jurisdiction": "Swedish Data Protection Authority",
     "enactment_date": "2018-05-25",

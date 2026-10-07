@@ -2,6 +2,7 @@
   {
     "country_code": "AR",
     "country_name": "Argentina",
+    "region": "americas",
     "law_name": "Argentine Copyright Law (Ley 11.723)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",

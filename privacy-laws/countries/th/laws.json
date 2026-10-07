@@ -2,6 +2,7 @@
   {
     "country_code": "TH",
     "country_name": "Thailand",
+    "region": "asia_pacific",
     "law_name": "Personal Data Protection Act (PDPA)",
     "jurisdiction": "Thai DPA",
     "enactment_date": "2019-06-27",

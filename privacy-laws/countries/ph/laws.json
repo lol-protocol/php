@@ -2,6 +2,7 @@
   {
     "country_code": "PH",
     "country_name": "Philippines",
+    "region": "asia_pacific",
     "law_name": "Data Privacy Act (DPA)",
     "jurisdiction": "National Privacy Commission",
     "enactment_date": "2012-08-15",

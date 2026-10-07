@@ -2,6 +2,7 @@
   {
     "country_code": "FI",
     "country_name": "Finland",
+    "region": "europe",
     "law_name": "Finnish Copyright Law",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",

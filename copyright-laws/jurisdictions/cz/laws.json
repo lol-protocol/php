@@ -2,6 +2,7 @@
   {
     "country_code": "CZ",
     "country_name": "Czech Republic",
+    "region": "europe",
     "law_name": "Czech Copyright Law",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",

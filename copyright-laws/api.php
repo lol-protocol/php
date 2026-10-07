@@ -1,125 +1,211 @@
 <?php
+declare(strict_types=1);
+
 /**
- * Copyright Laws API
- * Endpoints for accessing copyright laws by jurisdiction
+ * Copyright Laws API (read-only). See API.md.
+ *
+ *   ?action=jurisdictions               jurisdictions with law counts (+ dataset version)
+ *   ?action=bundle                      the whole dataset, same file the web app loads
+ *   ?action=jurisdiction&tld=us         laws of one jurisdiction (JSON)
+ *   ?action=jurisdiction_info&tld=us    jurisdiction metadata
+ *   ?action=jurisdiction_csv&tld=us     laws of one jurisdiction (CSV)
+ *   ?action=texts&tld=us                cached reference texts available for a jurisdiction
+ *   ?action=text&tld=us&slug=...        one cached reference text (Markdown / plain text)
+ *
+ * Every response carries ETag + Last-Modified, so clients revalidate with a
+ * cheap 304 instead of downloading the data again, and is gzip-compressed.
  */
 
-header('Content-Type: application/json');
+const DATA_DIR = __DIR__ . '/jurisdictions';
+const BUNDLE_KEY = 'jurisdictions';
+const CACHE_MAX_AGE = 300;
+const JSON_FLAGS = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: GET, HEAD, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, If-None-Match, If-Modified-Since');
+header('X-Content-Type-Options: nosniff');
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
+function fail(int $status, string $message): never
+{
+    http_response_code($status);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['error' => $message], JSON_FLAGS);
     exit;
 }
 
-$action = $_GET['action'] ?? null;
-$tld = strtolower($_GET['tld'] ?? '');
-
-function sendResponse($data, $statusCode = 200) {
-    http_response_code($statusCode);
-    echo json_encode($data);
-    exit;
-}
-
-function loadJurisdictionsIndex() {
-    $csvPath = __DIR__ . '/jurisdictions/copyright_laws_master.csv';
-    if (!file_exists($csvPath)) {
-        return sendResponse(['error' => 'CSV file not found'], 404);
+function tldParam(): string
+{
+    $tld = strtolower((string) ($_GET['tld'] ?? ''));
+    if (!preg_match('/^[a-z]{2}$/', $tld)) {
+        fail(400, 'tld must be a 2-letter jurisdiction code, e.g. tld=us');
     }
+    return $tld;
+}
 
-    $jurisdictions = [];
-    $file = fopen($csvPath, 'r');
-    $headers = fgetcsv($file);
+function slugParam(): string
+{
+    $slug = (string) ($_GET['slug'] ?? '');
+    if (!preg_match('/^[a-z0-9][a-z0-9-]{0,99}$/', $slug)) {
+        fail(400, 'slug must be lowercase letters, digits and hyphens');
+    }
+    return $slug;
+}
 
-    while (($row = fgetcsv($file)) !== false) {
-        $data = array_combine($headers, $row);
-        $code = trim($data['country_code']);
+function existingFile(string $path, string $notFound): string
+{
+    if (!is_file($path)) {
+        fail(404, $notFound);
+    }
+    return $path;
+}
 
-        if (!isset($jurisdictions[$code])) {
-            $jurisdictions[$code] = [
-                'code' => $code,
-                'name' => trim($data['country_name']),
-                'tld' => strtolower($code),
-                'lawCount' => 0
-            ];
+/** Sends validators and short-circuits with 304 when the client copy is still good. */
+function conditional(string $seed, int $mtime): void
+{
+    $etag = 'W/"' . $seed . '"';
+    header('ETag: ' . $etag);
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $mtime) . ' GMT');
+    header('Cache-Control: public, max-age=' . CACHE_MAX_AGE);
+    header('Vary: Accept-Encoding');
+
+    $fresh = false;
+    $ifNoneMatch = $_SERVER['HTTP_IF_NONE_MATCH'] ?? null;
+    if ($ifNoneMatch !== null) {
+        foreach (explode(',', $ifNoneMatch) as $candidate) {
+            if (preg_replace('#^W/#', '', trim($candidate)) === preg_replace('#^W/#', '', $etag)) {
+                $fresh = true;
+                break;
+            }
         }
-        $jurisdictions[$code]['lawCount']++;
+    } elseif (!empty($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+        $since = strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']);
+        $fresh = $since !== false && $since >= $mtime;
     }
-
-    fclose($file);
-    return array_values($jurisdictions);
+    if ($fresh) {
+        http_response_code(304);
+        exit;
+    }
 }
 
-function loadJurisdictionLaws($tld) {
-    $jsonPath = __DIR__ . "/jurisdictions/{$tld}/laws.json";
-    if (!file_exists($jsonPath)) {
-        return sendResponse(['error' => "Jurisdiction data not found for TLD: {$tld}"], 404);
+/** Sends a file, or a body derived from it (`$prefix . file . $suffix`), with caching + gzip. */
+function sendFile(string $path, string $contentType, string $prefix = '', string $suffix = ''): never
+{
+    $mtime = (int) filemtime($path);
+    conditional(dechex($mtime) . '-' . dechex((int) filesize($path)) . '-' . dechex(crc32($prefix . $suffix)), $mtime);
+    header('Content-Type: ' . $contentType);
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'HEAD') {
+        exit;
     }
-
-    $content = file_get_contents($jsonPath);
-    return json_decode($content, true);
-}
-
-function loadJurisdictionInfo($tld) {
-    $infoPath = __DIR__ . "/jurisdictions/{$tld}/info.json";
-    if (!file_exists($infoPath)) {
-        return sendResponse(['error' => "Jurisdiction info not found for TLD: {$tld}"], 404);
+    if (function_exists('ob_gzhandler')) {
+        ob_start('ob_gzhandler');
     }
-
-    $content = file_get_contents($infoPath);
-    return json_decode($content, true);
-}
-
-function loadJurisdictionCSV($tld) {
-    $csvPath = __DIR__ . "/jurisdictions/{$tld}/laws.csv";
-    if (!file_exists($csvPath)) {
-        return sendResponse(['error' => "Jurisdiction CSV not found for TLD: {$tld}"], 404);
-    }
-
-    return file_get_contents($csvPath);
-}
-
-// Route requests
-if ($action === 'jurisdictions') {
-    $jurisdictions = loadJurisdictionsIndex();
-    sendResponse(['data' => $jurisdictions]);
-}
-elseif ($action === 'jurisdiction') {
-    if (!$tld) {
-        sendResponse(['error' => 'Missing TLD parameter'], 400);
-    }
-
-    $laws = loadJurisdictionLaws($tld);
-    if (!is_array($laws)) {
-        sendResponse(['error' => 'Invalid jurisdiction data'], 500);
-    }
-
-    sendResponse(['data' => $laws]);
-}
-elseif ($action === 'jurisdiction_info') {
-    if (!$tld) {
-        sendResponse(['error' => 'Missing TLD parameter'], 400);
-    }
-
-    $info = loadJurisdictionInfo($tld);
-    if (!is_array($info)) {
-        sendResponse(['error' => 'Invalid jurisdiction info'], 500);
-    }
-
-    sendResponse(['data' => $info]);
-}
-elseif ($action === 'jurisdiction_csv') {
-    if (!$tld) {
-        sendResponse(['error' => 'Missing TLD parameter'], 400);
-    }
-
-    header('Content-Type: text/csv');
-    echo loadJurisdictionCSV($tld);
+    echo $prefix;
+    readfile($path);
+    echo $suffix;
     exit;
 }
-else {
-    sendResponse(['error' => 'Unknown action: ' . ($action ?? 'none')], 400);
+
+function sendJsonFile(string $path): never
+{
+    sendFile($path, 'application/json; charset=utf-8');
 }
-?>
+
+function sendWrappedJsonFile(string $path): never
+{
+    sendFile($path, 'application/json; charset=utf-8', '{"data":', '}');
+}
+
+function sendJsonPayload(string $sourcePath, array $payload): never
+{
+    $mtime = (int) filemtime($sourcePath);
+    conditional(dechex($mtime) . '-' . dechex((int) filesize($sourcePath)) . '-list', $mtime);
+    header('Content-Type: application/json; charset=utf-8');
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'HEAD') {
+        exit;
+    }
+    if (function_exists('ob_gzhandler')) {
+        ob_start('ob_gzhandler');
+    }
+    echo json_encode($payload, JSON_FLAGS);
+    exit;
+}
+
+function bundlePath(): string
+{
+    return existingFile(DATA_DIR . '/index.json', 'Dataset not built yet. Run: npm run build');
+}
+
+$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+if ($method === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
+if ($method !== 'GET' && $method !== 'HEAD') {
+    header('Allow: GET, HEAD, OPTIONS');
+    fail(405, 'Only GET, HEAD and OPTIONS are supported');
+}
+
+$action = (string) ($_GET['action'] ?? '');
+
+switch ($action) {
+    case 'jurisdictions':
+        $path = bundlePath();
+        $bundle = json_decode((string) file_get_contents($path), true);
+        $list = array_map(
+            static fn(array $j): array => [
+                'code' => $j['code'],
+                'name' => $j['name'],
+                'tld' => $j['tld'],
+                'region' => $j['region'],
+                'lawCount' => $j['lawCount'],
+            ],
+            $bundle[BUNDLE_KEY]
+        );
+        sendJsonPayload($path, [
+            'data' => $list,
+            'meta' => ['version' => $bundle['version'], 'generatedAt' => $bundle['generatedAt']],
+        ]);
+
+    case 'bundle':
+        sendJsonFile(bundlePath());
+
+    case 'jurisdiction':
+        $tld = tldParam();
+        sendWrappedJsonFile(existingFile(DATA_DIR . "/$tld/laws.json", "No data for jurisdiction: $tld"));
+
+    case 'jurisdiction_info':
+        $tld = tldParam();
+        sendWrappedJsonFile(existingFile(DATA_DIR . "/$tld/info.json", "No data for jurisdiction: $tld"));
+
+    case 'jurisdiction_csv':
+        $tld = tldParam();
+        sendFile(existingFile(DATA_DIR . "/$tld/laws.csv", "No data for jurisdiction: $tld"), 'text/csv; charset=utf-8');
+
+    case 'texts':
+        $tld = tldParam();
+        $index = DATA_DIR . "/$tld/texts/index.json";
+        if (!is_file($index)) {
+            if (!is_dir(DATA_DIR . "/$tld")) {
+                fail(404, "No data for jurisdiction: $tld");
+            }
+            header('Content-Type: application/json; charset=utf-8');
+            echo '{"data":[]}';
+            exit;
+        }
+        sendFile($index, 'application/json; charset=utf-8', '{"data":', '}');
+
+    case 'text':
+        $tld = tldParam();
+        $slug = slugParam();
+        foreach (['md' => 'text/markdown; charset=utf-8', 'txt' => 'text/plain; charset=utf-8'] as $ext => $type) {
+            $file = DATA_DIR . "/$tld/texts/$slug.$ext";
+            if (is_file($file)) {
+                sendFile($file, $type);
+            }
+        }
+        fail(404, "No cached text for $tld/$slug");
+
+    default:
+        fail(400, 'Unknown action. Use: jurisdictions, bundle, jurisdiction, jurisdiction_info, jurisdiction_csv, texts, text');
+}

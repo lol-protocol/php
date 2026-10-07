@@ -2,6 +2,7 @@
   {
     "country_code": "IN",
     "country_name": "India",
+    "region": "asia_pacific",
     "law_name": "Copyright Act 1957",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 60 years",

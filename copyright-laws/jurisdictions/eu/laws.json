@@ -2,6 +2,7 @@
   {
     "country_code": "EU",
     "country_name": "European Union",
+    "region": "europe",
     "law_name": "InfoSoc Directive (2001/29/EC)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",

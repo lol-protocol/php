@@ -2,6 +2,7 @@
   {
     "country_code": "PT",
     "country_name": "Portugal",
+    "region": "europe",
     "law_name": "Portuguese Copyright Law (Law 63/85)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",

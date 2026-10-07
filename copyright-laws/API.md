@@ -1,162 +1,59 @@
-# Copyright Laws API Documentation
+# Copyright Laws API
 
-## Base URL
-```
-/copyright-laws/api.php
-```
+Read-only HTTP API in [`api.php`](api.php). It serves the generated files in `jurisdictions/`; there is no database involved.
 
-## Endpoints
-
-### List All Jurisdictions
 ```
-GET /copyright-laws/api.php?action=jurisdictions
+GET /copyright-laws/api.php?action=<action>[&tld=<jurisdiction>][&slug=<text>]
 ```
 
-**Response:**
-```json
-{
-  "data": [
-    {
-      "code": "US",
-      "name": "United States",
-      "tld": "us",
-      "lawCount": 1
-    },
-    {
-      "code": "EU",
-      "name": "European Union",
-      "tld": "eu",
-      "lawCount": 1
-    }
-  ]
-}
+| `action` | Parameters | Returns |
+|---|---|---|
+| `jurisdictions` | – | `{ "data": [{ code, name, tld, region, lawCount }], "meta": { version, generatedAt } }` |
+| `bundle` | – | The whole dataset in one JSON file (what the web app loads) |
+| `jurisdiction` | `tld` | `{ "data": [ …laws of that jurisdiction… ] }` |
+| `jurisdiction_info` | `tld` | `{ "data": { code, name, tld, region, lawCount } }` |
+| `jurisdiction_csv` | `tld` | The jurisdiction's laws as CSV (`text/csv`) |
+| `texts` | `tld` | `{ "data": [ …cached reference texts… ] }` (empty list if none) |
+| `text` | `tld`, `slug` | One cached reference text: Markdown (`text/markdown`) or plain text |
+
+`tld` is the jurisdiction's 2-letter folder code (`us`, `eu`, `gb`, `br`…), case-insensitive. `slug` comes from `texts` (lowercase letters, digits, hyphens).
+
+## Examples
+
+```bash
+curl 'http://localhost:8080/copyright-laws/api.php?action=jurisdictions'
+curl 'http://localhost:8080/copyright-laws/api.php?action=jurisdiction&tld=gb'
+curl 'http://localhost:8080/copyright-laws/api.php?action=jurisdiction_csv&tld=us' -o us.csv
+curl 'http://localhost:8080/copyright-laws/api.php?action=text&tld=gb&slug=copyright-designs-and-patents-act-1988'
 ```
 
-### Get Jurisdiction Laws (JSON)
-```
-GET /copyright-laws/api.php?action=jurisdiction&tld={tld}
-```
-
-**Parameters:**
-- `tld` (required): 2-letter jurisdiction code in lowercase (e.g., `us`, `eu`, `br`)
-
-**Response:**
-```json
-{
-  "data": [
-    {
-      "country_code": "US",
-      "country_name": "United States",
-      "law_name": "Copyright Act (17 USC)",
-      "protection_type": "Copyright",
-      "term_of_protection": "Author's life + 70 years or 95 years (works for hire)",
-      "author_rights": "Full economic rights",
-      "moral_rights": "Not explicitly protected",
-      "orphan_works": "Compulsory licensing allowed",
-      "digital_protection": "DMCA anti-circumvention",
-      "fair_use_exceptions": "Fair use doctrine",
-      "registration_required": "No (but beneficial)",
-      "enforcement_body": "U.S. Copyright Office",
-      "treaties_signatory": "Berne/TRIPS/WCT",
-      "linked_resources": "https://www.copyright.gov/"
-    }
-  ]
-}
+```js
+const { data: jurisdictions, meta } = await (await fetch("/copyright-laws/api.php?action=jurisdictions")).json();
+const { data: laws } = await (await fetch("/copyright-laws/api.php?action=jurisdiction&tld=br")).json();
 ```
 
-### Get Jurisdiction Info
-```
-GET /copyright-laws/api.php?action=jurisdiction_info&tld={tld}
-```
+A law object has the columns of `copyright_laws_master.csv` (see the README): `country_code`, `country_name`, `region`, `law_name`, `protection_type`, `term_of_protection`, `author_rights`, `moral_rights`, `orphan_works`, `digital_protection`, `fair_use_exceptions`, `registration_required`, `enforcement_body`, `treaties_signatory`, `linked_resources`.
 
-**Parameters:**
-- `tld` (required): 2-letter jurisdiction code in lowercase
+To filter by treaty or term, download the `bundle` once and filter locally (the web app does exactly that); there is no server-side search.
 
-**Response:**
-```json
-{
-  "data": {
-    "code": "US",
-    "name": "United States",
-    "tld": "us",
-    "region": "americas",
-    "lawCount": 1,
-    "createdAt": "2026-10-07T12:30:00.000Z"
-  }
-}
-```
+## Caching
 
-### Get Jurisdiction Laws (CSV)
-```
-GET /copyright-laws/api.php?action=jurisdiction_csv&tld={tld}
-```
+- Every response has a weak `ETag` and `Last-Modified`, plus `Cache-Control: public, max-age=300`. Send `If-None-Match` / `If-Modified-Since` and you get an empty `304` while the data has not changed.
+- Responses are gzip-compressed when the client sends `Accept-Encoding: gzip` (the full dataset goes from ~30 KB to ~4 KB).
+- `meta.version` (and `version` inside the bundle) is a content hash: it only changes when the data changes, so it is a cheap way to know whether to refresh a local copy.
 
-**Parameters:**
-- `tld` (required): 2-letter jurisdiction code in lowercase
+## Errors
 
-**Response:** CSV file with headers and law data
+Errors are JSON: `{ "error": "message" }`.
 
-## Error Responses
+| Status | When |
+|---|---|
+| 400 | Missing or malformed `tld` / `slug`, or unknown `action` |
+| 404 | Unknown jurisdiction, no cached text for that slug, or the dataset has not been built (`npm run build`) |
+| 405 | Any method other than `GET`, `HEAD`, `OPTIONS` |
 
-### Missing Parameter
-```json
-{
-  "error": "Missing TLD parameter"
-}
-```
-Status: 400
+## Notes
 
-### Not Found
-```json
-{
-  "error": "Jurisdiction data not found for TLD: xx"
-}
-```
-Status: 404
-
-## Usage Examples
-
-### JavaScript
-```javascript
-// Load all jurisdictions
-const response = await fetch('/copyright-laws/api.php?action=jurisdictions');
-const { data: jurisdictions } = await response.json();
-
-// Load laws for US
-const laws = await fetch('/copyright-laws/api.php?action=jurisdiction&tld=us');
-const { data } = await laws.json();
-
-// Get jurisdiction info
-const info = await fetch('/copyright-laws/api.php?action=jurisdiction_info&tld=us');
-const { data: jurisdictionInfo } = await info.json();
-```
-
-## Supported TLDs
-
-All 2-letter ISO 3166-1 alpha-2 country codes are supported:
-- eu (European Union)
-- us (United States)
-- gb (United Kingdom)
-- ca (Canada)
-- br (Brazil)
-- jp (Japan)
-- au (Australia)
-- in (India)
-- za (South Africa)
-- mx (Mexico)
-- ch (Switzerland)
-- sg (Singapore)
-- nz (New Zealand)
-- kr (South Korea)
-- and more...
-
-## CORS
-
-The API supports Cross-Origin Resource Sharing (CORS) for use from web frontends.
-
-## Caching Strategy
-
-The API uses in-memory caching for better performance:
-- File-based data (laws.json) is cached after first access
-- Re-requests for the same TLD return cached data
-- No distributed caching is implemented (add if needed for multi-server deployment)
+- `tld` and `slug` are validated against fixed patterns (`^[a-z]{2}$`, `^[a-z0-9][a-z0-9-]{0,99}$`) before they touch the file system; nothing else from the request is used in a path.
+- CORS is open (`Access-Control-Allow-Origin: *`) because the data is public and read-only.
+- Cached texts exist only after running `npm run cache:texts` (see the README).

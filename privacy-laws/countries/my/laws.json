@@ -2,6 +2,7 @@
   {
     "country_code": "MY",
     "country_name": "Malaysia",
+    "region": "asia_pacific",
     "law_name": "Personal Data Protection Act (PDPA)",
     "jurisdiction": "Malaysian DPA",
     "enactment_date": "2010-11-15",

@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "Global copyright laws database by jurisdiction - for digital libraries and PDF documentation projects",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "test": "node --test 'tests/**/*.test.js'",
     "validate": "node scripts/validate-csv.js",
-    "lint": "node scripts/lint-data.js"
+    "build": "node scripts/reorganize-by-jurisdiction.js",
+    "build:check": "node scripts/reorganize-by-jurisdiction.js --check",
+    "cache:texts": "php scripts/cache-texts.php"
   },
   "keywords": [
     "copyright",

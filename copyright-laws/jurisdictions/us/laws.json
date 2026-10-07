@@ -2,6 +2,7 @@
   {
     "country_code": "US",
     "country_name": "United States",
+    "region": "americas",
     "law_name": "Copyright Act (17 USC)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years or 95 years (works for hire)",

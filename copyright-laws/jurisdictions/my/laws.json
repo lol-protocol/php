@@ -2,6 +2,7 @@
   {
     "country_code": "MY",
     "country_name": "Malaysia",
+    "region": "asia_pacific",
     "law_name": "Copyright Act 1987",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",

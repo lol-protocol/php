@@ -1,152 +1,57 @@
-# Privacy Laws API Documentation
+# Privacy Laws API
 
-## Base URL
-```
-/privacy-laws/api.php
-```
+Read-only HTTP API in [`api.php`](api.php). It serves the generated files in `countries/`; there is no database involved.
 
-## Endpoints
-
-### List All Countries
 ```
-GET /privacy-laws/api.php?action=countries
+GET /privacy-laws/api.php?action=<action>[&tld=<country>][&slug=<text>]
 ```
 
-**Response:**
-```json
-{
-  "data": [
-    {
-      "code": "US",
-      "name": "United States",
-      "tld": "us",
-      "lawCount": 1
-    },
-    {
-      "code": "EU",
-      "name": "European Union",
-      "tld": "eu",
-      "lawCount": 1
-    }
-  ]
-}
+| `action` | Parameters | Returns |
+|---|---|---|
+| `countries` | – | `{ "data": [{ code, name, tld, region, lawCount }], "meta": { version, generatedAt } }` |
+| `bundle` | – | The whole dataset in one JSON file (what the web app loads) |
+| `country` | `tld` | `{ "data": [ …laws of that country… ] }` |
+| `country_info` | `tld` | `{ "data": { code, name, tld, region, lawCount } }` |
+| `country_csv` | `tld` | The country's laws as CSV (`text/csv`) |
+| `texts` | `tld` | `{ "data": [ …cached reference texts… ] }` (empty list if none) |
+| `text` | `tld`, `slug` | One cached reference text: Markdown (`text/markdown`) or plain text |
+
+`tld` is the country's 2-letter folder code (`us`, `eu`, `gb`, `br`…), case-insensitive. `slug` comes from `texts` (lowercase letters, digits, hyphens).
+
+## Examples
+
+```bash
+curl 'http://localhost:8080/privacy-laws/api.php?action=countries'
+curl 'http://localhost:8080/privacy-laws/api.php?action=country&tld=us'
+curl 'http://localhost:8080/privacy-laws/api.php?action=country_csv&tld=eu' -o eu.csv
+curl 'http://localhost:8080/privacy-laws/api.php?action=text&tld=us&slug=california-consumer-privacy-act-ccpa'
 ```
 
-### Get Country Laws (JSON)
-```
-GET /privacy-laws/api.php?action=country&tld={tld}
-```
-
-**Parameters:**
-- `tld` (required): 2-letter country code in lowercase (e.g., `us`, `eu`, `br`)
-
-**Response:**
-```json
-{
-  "data": [
-    {
-      "country_code": "US",
-      "country_name": "United States",
-      "law_name": "California Consumer Privacy Act (CCPA)",
-      "enactment_date": "2018-06-28",
-      "effective_date": "2020-01-01",
-      "enforcement_authority": "California Attorney General",
-      "scope": "California residents",
-      "applies_to": "For-profit businesses",
-      "key_requirements": "Right to know, delete, opt-out",
-      "penalties_range": "$2,500 - $7,500 per violation"
-    }
-  ]
-}
+```js
+const { data: countries, meta } = await (await fetch("/privacy-laws/api.php?action=countries")).json();
+const { data: laws } = await (await fetch("/privacy-laws/api.php?action=country&tld=br")).json();
 ```
 
-### Get Country Info
-```
-GET /privacy-laws/api.php?action=country_info&tld={tld}
-```
+A law object has the columns of `privacy_laws_master.csv` (see the README): `country_code`, `country_name`, `region`, `law_name`, `jurisdiction`, `enactment_date`, `effective_date`, `scope`, `applies_to`, `key_requirements`, `data_categories`, `retention_period`, `enforcement_authority`, `penalties_range`, `exemptions`, `website_url`, `language`, `notes`.
 
-**Parameters:**
-- `tld` (required): 2-letter country code in lowercase
+## Caching
 
-**Response:**
-```json
-{
-  "data": {
-    "code": "US",
-    "name": "United States",
-    "tld": "us",
-    "region": "americas",
-    "lawCount": 1,
-    "createdAt": "2026-10-07T12:30:00.000Z"
-  }
-}
-```
+- Every response has a weak `ETag` and `Last-Modified`, plus `Cache-Control: public, max-age=300`. Send `If-None-Match` / `If-Modified-Since` and you get an empty `304` while the data has not changed.
+- Responses are gzip-compressed when the client sends `Accept-Encoding: gzip` (the full dataset goes from ~34 KB to ~6 KB).
+- `meta.version` (and `version` inside the bundle) is a content hash: it only changes when the data changes, so it is a cheap way to know whether to refresh a local copy.
 
-### Get Country Laws (CSV)
-```
-GET /privacy-laws/api.php?action=country_csv&tld={tld}
-```
+## Errors
 
-**Parameters:**
-- `tld` (required): 2-letter country code in lowercase
+Errors are JSON: `{ "error": "message" }`.
 
-**Response:** CSV file with headers and law data
+| Status | When |
+|---|---|
+| 400 | Missing or malformed `tld` / `slug`, or unknown `action` |
+| 404 | Unknown country, no cached text for that slug, or the dataset has not been built (`npm run build`) |
+| 405 | Any method other than `GET`, `HEAD`, `OPTIONS` |
 
-## Error Responses
+## Notes
 
-### Missing Parameter
-```json
-{
-  "error": "Missing TLD parameter"
-}
-```
-Status: 400
-
-### Not Found
-```json
-{
-  "error": "Country data not found for TLD: xx"
-}
-```
-Status: 404
-
-## Usage Examples
-
-### JavaScript
-```javascript
-// Load all countries
-const response = await fetch('/privacy-laws/api.php?action=countries');
-const { data: countries } = await response.json();
-
-// Load laws for US
-const laws = await fetch('/privacy-laws/api.php?action=country&tld=us');
-const { data } = await laws.json();
-
-// Get country info
-const info = await fetch('/privacy-laws/api.php?action=country_info&tld=us');
-const { data: countryInfo } = await info.json();
-```
-
-## Supported TLDs
-
-All 2-letter ISO 3166-1 alpha-2 country codes are supported:
-- eu (European Union)
-- us (United States)
-- gb (United Kingdom)
-- ca (Canada)
-- br (Brazil)
-- jp (Japan)
-- au (Australia)
-- in (India)
-- za (South Africa)
-- mx (Mexico)
-- ch (Switzerland)
-- sg (Singapore)
-- nz (New Zealand)
-- kr (South Korea)
-- sv (El Salvador)
-- and more...
-
-## CORS
-
-The API supports Cross-Origin Resource Sharing (CORS) for use from web frontends.
+- `tld` and `slug` are validated against fixed patterns (`^[a-z]{2}$`, `^[a-z0-9][a-z0-9-]{0,99}$`) before they touch the file system; nothing else from the request is used in a path.
+- CORS is open (`Access-Control-Allow-Origin: *`) because the data is public and read-only.
+- Cached texts exist only after running `npm run cache:texts` (see the README).

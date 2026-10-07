@@ -2,6 +2,7 @@
   {
     "country_code": "HU",
     "country_name": "Hungary",
+    "region": "europe",
     "law_name": "Data Protection Act",
     "jurisdiction": "Hungarian DPA",
     "enactment_date": "2018-05-25",

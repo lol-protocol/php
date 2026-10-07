@@ -2,6 +2,7 @@
   {
     "country_code": "MX",
     "country_name": "Mexico",
+    "region": "americas",
     "law_name": "Federal Law for the Protection of Copyright (LFDA)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 100 years",

@@ -2,6 +2,7 @@
   {
     "country_code": "AU",
     "country_name": "Australia",
+    "region": "asia_pacific",
     "law_name": "Copyright Act 1968",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",

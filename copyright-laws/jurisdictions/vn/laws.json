@@ -2,6 +2,7 @@
   {
     "country_code": "VN",
     "country_name": "Vietnam",
+    "region": "asia_pacific",
     "law_name": "Law on Intellectual Property",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",

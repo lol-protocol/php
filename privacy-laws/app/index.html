@@ -1,158 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="eng">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Laws by Country</title>
+  <title data-i18n="page.title">Privacy Laws by Country</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%90%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="styles/base.css" />
   <link rel="stylesheet" href="styles/search.css" />
   <link rel="stylesheet" href="styles/comparison.css" />
+  <link rel="stylesheet" href="styles/filters.css" />
+  <link rel="modulepreload" href="privacy-laws.js" />
+  <link rel="modulepreload" href="translations/i18n.js" />
+  <link rel="modulepreload" href="lib/data.js" />
+  <link rel="modulepreload" href="lib/domain.js" />
+  <link rel="modulepreload" href="lib/filters.js" />
+  <link rel="modulepreload" href="lib/chart.js" />
+  <link rel="modulepreload" href="lib/util.js" />
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
     <header class="header">
       <div class="header-top">
         <div>
-          <h1>🔐 Privacy Laws by Country</h1>
-          <p class="subtitle">
-            Find privacy legislation and regulations for genealogy, compliance, and
-            research
+          <h1><span aria-hidden="true">🔐</span> <span data-i18n="page.heading">Privacy Laws by Country</span></h1>
+          <p class="subtitle" data-i18n="page.subtitle">
+            Find privacy legislation and regulations for genealogy, compliance, and research
           </p>
         </div>
-        <div id="languageSelector" data-language-selector></div>
+        <div class="language-switcher">
+          <label for="languageSelect" data-i18n="lang.label">Language</label>
+          <select id="languageSelect"></select>
+        </div>
       </div>
     </header>
 
-    <!-- Main Content -->
     <main class="main-content">
-      <!-- Search Section -->
+      <p id="status" class="empty-state-block" role="alert" hidden></p>
+
       <section class="search-section">
-        <div class="search-container">
+        <form id="searchForm" class="search-container" role="search">
           <div class="search-row">
             <div class="search-field">
-              <label for="countrySearch">Country/Region</label>
+              <label for="q" data-i18n="search.label">Search</label>
               <input
-                type="text"
-                id="countrySearch"
-                placeholder="Search by country name..."
+                type="search"
+                id="q"
+                list="countryList"
                 autocomplete="off"
-                aria-label="Search countries"
+                maxlength="200"
+                data-i18n-placeholder="search.placeholder"
               />
-              <ul id="countrySuggestions" class="suggestions-list" hidden></ul>
+              <datalist id="countryList"></datalist>
+              <small class="field-hint" data-i18n="search.hint"></small>
             </div>
-
             <div class="search-field">
-              <label for="regionFilter">Region</label>
-              <select id="regionFilter" aria-label="Filter by region">
-                <option value="">All Regions</option>
-                <option value="europe">Europe</option>
-                <option value="americas">Americas</option>
-                <option value="asia_pacific">Asia-Pacific</option>
-                <option value="middle_east_africa">Middle East & Africa</option>
-              </select>
-            </div>
-
-            <div class="search-field">
-              <label for="lawTypeFilter">Law Type</label>
-              <select id="lawTypeFilter" aria-label="Filter by law type">
-                <option value="">All Types</option>
-                <option value="GDPR">GDPR-like</option>
-                <option value="CCPA">CCPA-like</option>
-                <option value="LGPD">LGPD-like</option>
-                <option value="General">General Privacy</option>
-              </select>
+              <label for="scope" data-i18n="search.scope">Search in</label>
+              <select id="scope"></select>
             </div>
           </div>
+
+          <details id="advanced" class="advanced-filters">
+            <summary>
+              <span data-i18n="filters.advanced">Advanced filters</span>
+              <span id="filterCount" class="badge" hidden></span>
+            </summary>
+            <div id="facets" class="facets"></div>
+          </details>
+
+          <div id="chips" class="chips" role="group" data-i18n-aria-label="filters.activeLabel" hidden></div>
 
           <div class="button-group">
-            <button id="searchBtn" class="btn btn-primary">Search</button>
-            <button id="clearBtn" class="btn btn-secondary">Clear</button>
-            <button id="compareBtn" class="btn btn-info">
-              Compare Selected
-            </button>
+            <button type="submit" id="searchBtn" class="btn btn-primary" data-i18n="btn.search">Search</button>
+            <button type="button" id="clearBtn" class="btn btn-secondary" data-i18n="btn.clear">Clear</button>
           </div>
-        </div>
+        </form>
       </section>
 
-      <!-- Results Section -->
+      <section id="countryCard" class="country-card" hidden></section>
+
       <section class="results-section">
         <div class="results-header">
-          <h2 id="resultsTitle">Privacy Laws</h2>
+          <div>
+            <h2 id="resultsTitle" data-i18n="results.title">Privacy laws</h2>
+            <p id="resultsSummary" class="results-summary" role="status" aria-live="polite"></p>
+          </div>
           <div class="results-meta">
-            <span id="resultCount">0</span>
-            <button id="exportBtn" class="btn btn-sm btn-outline">
-              📥 Export CSV
-            </button>
+            <button id="compareBtn" type="button" class="btn btn-sm btn-info"></button>
+            <button id="exportBtn" type="button" class="btn btn-sm btn-outline" data-i18n="btn.export">Export CSV</button>
           </div>
         </div>
 
-        <!-- Data Table -->
-        <div class="table-container">
+        <div id="chart" class="viz-host"></div>
+
+        <div id="tableWrap" class="table-container">
           <table id="lawsTable" class="data-table">
+            <caption class="sr-only" data-i18n="table.caption"></caption>
             <thead>
               <tr>
-                <th>
-                  <input
-                    type="checkbox"
-                    id="selectAll"
-                    aria-label="Select all results"
-                  />
+                <th scope="col">
+                  <input type="checkbox" id="selectAll" data-i18n-aria-label="table.selectAll" />
                 </th>
-                <th>Country</th>
-                <th>Law Name</th>
-                <th>Enacted</th>
-                <th>Effective</th>
-                <th>Enforcement Authority</th>
-                <th>Penalties</th>
-                <th>Resources</th>
+                <th scope="col" data-i18n="table.country">Country</th>
+                <th scope="col" data-i18n="table.law">Law</th>
+                <th scope="col" data-i18n="table.enacted">Enacted</th>
+                <th scope="col" data-i18n="table.effective">In force</th>
+                <th scope="col" data-i18n="table.authority">Enforcement authority</th>
+                <th scope="col" data-i18n="table.penalties">Penalties</th>
+                <th scope="col" data-i18n="table.reference">Reference</th>
               </tr>
             </thead>
-            <tbody id="lawsTableBody">
-              <tr class="empty-state">
-                <td colspan="8">
-                  Enter search criteria and click "Search" to view privacy laws
-                </td>
-              </tr>
-            </tbody>
+            <tbody id="lawsTableBody"></tbody>
           </table>
+        </div>
+
+        <div id="emptyState" class="empty-state-block" hidden>
+          <p data-i18n="results.none"></p>
+          <p><small data-i18n="results.noneHint"></small></p>
         </div>
       </section>
 
-      <!-- Metadata Section -->
-      <section class="metadata-section" id="metadataContainer"></section>
-
-      <!-- Comparison Section (Hidden by default) -->
       <section class="comparison-section" id="comparisonSection" hidden>
-        <h2>Law Comparison</h2>
+        <h2 data-i18n="compare.title">Law comparison</h2>
         <div class="comparison-container">
           <div id="comparisonResults"></div>
         </div>
-        <button id="closeComparison" class="btn btn-sm">Close Comparison</button>
-      </section>
-
-      <!-- Timeline Section (Hidden by default) -->
-      <section class="timeline-section" id="timelineSection" hidden>
-        <div id="timelineContainer"></div>
+        <button id="closeComparison" type="button" class="btn btn-sm" data-i18n="btn.close">Close</button>
       </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
-      <p>
-        Data last updated: <span id="lastUpdate">Loading...</span> | Source:
-        Privacy Laws Database v1.0
-      </p>
-      <p>
-        <small
-          >For genealogy platforms and privacy compliance research. See README
-          for contributing guidelines.</small
-        >
-      </p>
+      <p id="footerData"></p>
+      <p><small data-i18n="footer.note"></small></p>
     </footer>
   </div>
 
-  <!-- Scripts -->
   <script type="module" src="privacy-laws.js"></script>
 </body>
 </html>

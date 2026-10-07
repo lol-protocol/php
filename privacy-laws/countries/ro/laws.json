@@ -2,6 +2,7 @@
   {
     "country_code": "RO",
     "country_name": "Romania",
+    "region": "europe",
     "law_name": "Data Protection Law",
     "jurisdiction": "National Supervisory Authority",
     "enactment_date": "2018-05-25",

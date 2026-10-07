@@ -2,6 +2,7 @@
   {
     "country_code": "CO",
     "country_name": "Colombia",
+    "region": "americas",
     "law_name": "Colombian Copyright Law (Law 23 of 1982)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 80 years",

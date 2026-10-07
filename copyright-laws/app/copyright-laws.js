@@ -1,524 +1,485 @@
-import { loadTranslations, t } from "./translations/i18n.js";
-import LanguageSelector from "./translations/language-selector.js";
-import TimelineVisualization from "./timeline.js";
-import MetadataDisplay from "./metadata-display.js";
+import {
+  bindLanguageSelect,
+  formatDate,
+  getLanguage,
+  initLanguage,
+  onLanguageChange,
+  plural,
+  t,
+} from "./translations/i18n.js";
+import { jurisdictionFileUrl, loadBundle } from "./lib/data.js";
+import {
+  buildChartBars,
+  COMPARE_CRITERIA,
+  CONFIG,
+  enrichRow,
+  FACETS,
+  SEARCH_SCOPES,
+  TREATY_ORDER,
+} from "./lib/domain.js";
+import {
+  activeFilters,
+  buildIndex,
+  clearFilters,
+  emptyState,
+  facetOptions,
+  filterRows,
+  pruneState,
+  removeFilter,
+  stateFromParams,
+  stateToParams,
+} from "./lib/filters.js";
+import { renderBarChart } from "./lib/chart.js";
+import { debounce, escapeHtml, safeUrl, toCsv } from "./lib/util.js";
 
-// Data Loaders
-class JurisdictionLoader {
-  constructor() {
-    this.jurisdictions = [];
-    this.jurisdictionMap = {};
-    this.dataCache = {};
+const $ = (id) => document.getElementById(id);
+const esc = escapeHtml;
+
+const app = {
+  data: null,
+  state: emptyState(CONFIG),
+  results: [],
+  chips: [],
+  options: {},
+  selected: new Set(),
+  chartAsTable: false,
+  urlHasLang: new URLSearchParams(location.search).has("lang"),
+};
+
+const regionLabel = (region) => t(`region.${region}`);
+const treatyName = (treaty) => t(`treaty.${treaty}`);
+const termLabel = (bucket) =>
+  bucket === "other" ? t("term.unspecified") : t("term.life", { years: bucket.replace("life-", "") });
+const jurisdictionName = (tld) =>
+  app.data.jurisdictions.find((j) => j.tld === tld)?.name ?? tld.toUpperCase();
+
+/* ---------- Static parts (rebuilt when the language changes) ---------- */
+
+function renderScopeSelect() {
+  $("scope").innerHTML = SEARCH_SCOPES.map(
+    (scope) => `<option value="${esc(scope.id)}">${esc(t(`scope.${scope.id}`))}</option>`
+  ).join("");
+  $("scope").value = app.state.scope;
+}
+
+function renderJurisdictionList() {
+  $("countryList").innerHTML = app.data.jurisdictions
+    .map((jurisdiction) => `<option value="${esc(jurisdiction.name)}"></option>`)
+    .join("");
+}
+
+function checkboxFacet(id, legendKey, options, labelFor, { hintKey, titleFor } = {}) {
+  const items = options
+    .map(
+      ({ value, count }) => `
+      <label class="check"${titleFor ? ` title="${esc(titleFor(value))}"` : ""}>
+        <input type="checkbox" name="${id}" value="${esc(value)}" />
+        <span>${esc(labelFor(value))}</span> <span class="count">(${count})</span>
+      </label>`
+    )
+    .join("");
+  const hint = hintKey ? `<small class="field-hint">${esc(t(hintKey))}</small>` : "";
+  return `
+    <fieldset class="facet" data-facet="${id}">
+      <legend>${esc(t(legendKey))}</legend>${hint}
+      <div class="facet-options">${items}</div>
+    </fieldset>`;
+}
+
+function renderFacets() {
+  const parts = [
+    checkboxFacet("region", "filters.region", app.options.region, regionLabel),
+    checkboxFacet("treaty", "filters.treaty", app.options.treaty, (v) => v, {
+      hintKey: "filters.treatyHint",
+      titleFor: treatyName,
+    }),
+    checkboxFacet("term", "filters.term", app.options.term, termLabel),
+  ];
+  // A filter with a single possible value cannot narrow anything, so it stays hidden
+  // until the dataset has a second protection type (related rights, database rights…).
+  if (app.options.ptype.length > 1) {
+    parts.push(checkboxFacet("ptype", "filters.ptype", app.options.ptype, (v) => v));
   }
+  $("facets").innerHTML = parts.join("");
+  syncFacetControls();
+}
 
-  async load() {
-    try {
-      // Load the master CSV to get list of jurisdictions
-      const response = await fetch("../jurisdictions/copyright_laws_master.csv");
-      const csvText = await response.text();
-      const rawData = this.parseCSV(csvText);
+function renderFooter() {
+  $("footerData").textContent = t("footer.data", {
+    date: formatDate(app.data.meta.generatedAt),
+    version: app.data.meta.version,
+    laws: app.data.rows.length,
+    countries: plural("unit.jurisdiction", app.data.jurisdictions.length),
+  });
+}
 
-      // Build jurisdiction index from CSV
-      const index = {};
-      rawData.forEach((row) => {
-        if (!index[row.country_code]) {
-          index[row.country_code] = {
-            code: row.country_code,
-            name: row.country_name,
-            region: this.getRegion(row.country_code),
-            tld: row.country_code.toLowerCase(),
-            laws: [],
-          };
-        }
-        index[row.country_code].laws.push(row);
-      });
+function renderStatic() {
+  renderScopeSelect();
+  renderFacets();
+  renderFooter();
+}
 
-      this.jurisdictions = Object.values(index);
-      this.jurisdictions.forEach((j) => (this.jurisdictionMap[j.code] = j));
+/* ---------- Dynamic parts (re-rendered on every state change) ---------- */
 
-      return this.jurisdictions;
-    } catch (error) {
-      console.error("Error loading copyright laws:", error);
-      throw error;
+function syncFacetControls() {
+  for (const facet of FACETS) {
+    const selected = app.state.facets[facet.id];
+    for (const input of $("facets").querySelectorAll(`input[name="${facet.id}"]`)) {
+      input.checked = selected.includes(input.value);
     }
   }
+  $("scope").value = app.state.scope;
+}
 
-  async loadJurisdictionData(tld) {
-    try {
-      if (this.dataCache[tld]) return this.dataCache[tld];
-
-      const response = await fetch(`../jurisdictions/${tld}/laws.json`);
-      if (!response.ok) throw new Error(`Failed to load ${tld} data`);
-
-      const laws = await response.json();
-      this.dataCache[tld] = laws;
-      return laws;
-    } catch (error) {
-      console.error(`Error loading jurisdiction data for ${tld}:`, error);
-      return [];
-    }
-  }
-
-  parseCSV(csvText) {
-    const lines = csvText.trim().split("\n");
-    const headers = lines[0].split(",");
-    const records = [];
-
-    for (let i = 1; i < lines.length; i++) {
-      const obj = {};
-      const cols = lines[i].split(",");
-      headers.forEach((header, index) => {
-        obj[header.trim()] = cols[index]?.trim() || "";
-      });
-      records.push(obj);
-    }
-    return records;
-  }
-
-  getRegion(countryCode) {
-    const regions = {
-      EU: "europe",
-      GB: "europe",
-      CH: "europe",
-      FR: "europe",
-      ES: "europe",
-      NL: "europe",
-      US: "americas",
-      CA: "americas",
-      BR: "americas",
-      MX: "americas",
-      CL: "americas",
-      JP: "asia_pacific",
-      AU: "asia_pacific",
-      SG: "asia_pacific",
-      NZ: "asia_pacific",
-      KR: "asia_pacific",
-      TH: "asia_pacific",
-      IN: "asia_pacific",
-      ZA: "middle_east_africa",
-    };
-    return regions[countryCode] || "other";
+function chipLabel(chip) {
+  switch (chip.facet) {
+    case "country":
+      return t("chip.country", { value: jurisdictionName(chip.value) });
+    case "region":
+      return regionLabel(chip.value);
+    case "treaty":
+      return t("chip.treaty", { value: chip.value });
+    case "term":
+      return t("chip.term", { value: termLabel(chip.value) });
+    default:
+      return t("chip.ptype", { value: chip.value });
   }
 }
 
-// Search & Filter
-class CopyrightLawSearcher {
-  constructor(jurisdictions) {
-    this.jurisdictions = jurisdictions;
-    this.results = [];
-  }
-
-  search(query, region = "", materialType = "") {
-    this.results = this.jurisdictions.filter((jurisdiction) => {
-      const matchesQuery =
-        !query ||
-        jurisdiction.name.toLowerCase().includes(query.toLowerCase()) ||
-        jurisdiction.code.toLowerCase().includes(query.toLowerCase());
-
-      const matchesRegion = !region || jurisdiction.region === region;
-
-      const matchesMaterialType =
-        !materialType ||
-        jurisdiction.laws.some((law) =>
-          law.protection_type.toLowerCase().includes(materialType.toLowerCase())
-        );
-
-      return matchesQuery && matchesRegion && matchesMaterialType;
-    });
-    return this.results;
-  }
-
-  getAllLaws() {
-    const laws = [];
-    this.results.forEach((jurisdiction) => {
-      jurisdiction.laws.forEach((law) => {
-        laws.push({ ...law, region: jurisdiction.region });
-      });
-    });
-    return laws;
-  }
-}
-
-// Comparator
-class CopyrightLawComparator {
-  constructor(loader) {
-    this.loader = loader;
-  }
-
-  compareLaws(countryCodes) {
-    const laws = [];
-    countryCodes.forEach((code) => {
-      const jurisdiction = this.loader.jurisdictions.find(
-        (c) => c.code === code
-      );
-      if (jurisdiction) {
-        jurisdiction.laws.forEach((law) => laws.push(law));
-      }
-    });
-    return laws;
-  }
-
-  getComparisonMatrix(countryCodes) {
-    const criteria = [
-      "protection_type",
-      "term_of_protection",
-      "author_rights",
-      "moral_rights",
-      "orphan_works",
-      "digital_protection",
-      "fair_use_exceptions",
-      "registration_required",
-      "treaties_signatory",
-    ];
-
-    const matrix = {};
-    countryCodes.forEach((code) => {
-      const jurisdiction = this.loader.jurisdictions.find(
-        (c) => c.code === code
-      );
-      if (jurisdiction && jurisdiction.laws.length > 0) {
-        const law = jurisdiction.laws[0];
-        matrix[code] = {};
-        criteria.forEach((criterion) => {
-          matrix[code][criterion] = law[criterion] || "N/A";
-        });
-      }
-    });
-    return matrix;
-  }
-
-  getProtectionTermCalculator() {
-    return {
-      calculateExpiration: (enactmentDate, term) => {
-        // Parse term like "Author's life + 70 years" or "95 years (works for hire)"
-        const match = term.match(/(\d+)\s*years?/i);
-        if (!match) return "Unknown";
-        const years = parseInt(match[1]);
-        const date = new Date(enactmentDate);
-        date.setFullYear(date.getFullYear() + years);
-        return date.toLocaleDateString();
-      },
-    };
-  }
-}
-
-// Region Manager
-class RegionManager {
-  static getRegionLabel(region) {
-    const labels = {
-      europe: "Europe",
-      americas: "Americas",
-      asia_pacific: "Asia-Pacific",
-      middle_east_africa: "Middle East & Africa",
-      other: "Other",
-    };
-    return labels[region] || region;
-  }
-
-  static groupByRegion(jurisdictions) {
-    const grouped = {};
-    jurisdictions.forEach((jurisdiction) => {
-      if (!grouped[jurisdiction.region]) {
-        grouped[jurisdiction.region] = [];
-      }
-      grouped[jurisdiction.region].push(jurisdiction);
-    });
-    return grouped;
-  }
-}
-
-// UI Controller
-class UIController {
-  constructor(loader, searcher, comparator) {
-    this.loader = loader;
-    this.searcher = searcher;
-    this.comparator = comparator;
-    this.selectedRows = new Set();
-    this.initializeEventListeners();
-  }
-
-  initializeEventListeners() {
-    document.getElementById("searchBtn").addEventListener("click", () =>
-      this.handleSearch()
-    );
-    document.getElementById("clearBtn").addEventListener("click", () =>
-      this.handleClear()
-    );
-    document.getElementById("compareBtn").addEventListener("click", () =>
-      this.handleCompare()
-    );
-    document.getElementById("exportBtn").addEventListener("click", () =>
-      this.handleExport()
-    );
-    document.getElementById("selectAll").addEventListener("change", (e) =>
-      this.handleSelectAll(e)
-    );
-    document
-      .getElementById("closeComparison")
-      .addEventListener("click", () => this.closeComparison());
-
-    document
-      .getElementById("jurisdictionSearch")
-      .addEventListener("input", (e) => this.showSuggestions(e.target.value));
-  }
-
-  async handleSearch() {
-    const query = document.getElementById("jurisdictionSearch").value;
-    const region = document.getElementById("regionFilter").value;
-    const materialType = document.getElementById("materialTypeFilter").value;
-
-    this.searcher.search(query, region, materialType);
-    this.renderResults();
-  }
-
-  handleClear() {
-    document.getElementById("jurisdictionSearch").value = "";
-    document.getElementById("regionFilter").value = "";
-    document.getElementById("materialTypeFilter").value = "";
-    this.selectedRows.clear();
-    this.renderEmptyResults();
-  }
-
-  handleSelectAll(e) {
-    const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-    checkboxes.forEach((checkbox) => {
-      checkbox.checked = e.target.checked;
-      const rowKey = checkbox.dataset.rowKey;
-      if (e.target.checked) {
-        this.selectedRows.add(rowKey);
-      } else {
-        this.selectedRows.delete(rowKey);
-      }
-    });
-  }
-
-  handleCompare() {
-    if (this.selectedRows.size === 0) {
-      alert("Please select at least 2 jurisdictions to compare");
-      return;
-    }
-
-    const countryCodes = Array.from(this.selectedRows).map(
-      (key) => key.split("_")[0]
-    );
-    const uniqueCodes = [...new Set(countryCodes)];
-
-    if (uniqueCodes.length < 2) {
-      alert("Please select laws from at least 2 different jurisdictions");
-      return;
-    }
-
-    this.renderComparison(uniqueCodes);
-  }
-
-  handleExport() {
-    const laws = this.searcher.getAllLaws();
-    let csv = this.searcherToCSV(laws);
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `copyright-laws-${new Date().toISOString().split("T")[0]}.csv`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  }
-
-  showSuggestions(query) {
-    const suggestionsList = document.getElementById("jurisdictionSuggestions");
-    if (!query) {
-      suggestionsList.hidden = true;
-      return;
-    }
-
-    const matches = this.loader.jurisdictions
-      .filter((c) =>
-        c.name.toLowerCase().includes(query.toLowerCase()) ||
-        c.code.toLowerCase().includes(query.toLowerCase())
-      )
-      .slice(0, 8);
-
-    suggestionsList.innerHTML = matches
-      .map(
-        (c) =>
-          `<li><button data-code="${c.code}">${c.name} (${c.code})</button></li>`
-      )
-      .join("");
-
-    suggestionsList.hidden = matches.length === 0;
-
-    suggestionsList
-      .querySelectorAll("button")
-      .forEach((btn) =>
-        btn.addEventListener("click", () => {
-          document.getElementById("jurisdictionSearch").value =
-            btn.textContent;
-          suggestionsList.hidden = true;
+function renderChips() {
+  app.chips = activeFilters(app.state, CONFIG);
+  const host = $("chips");
+  host.hidden = app.chips.length === 0;
+  host.innerHTML = app.chips.length
+    ? app.chips
+        .map((chip, index) => {
+          const label = chipLabel(chip);
+          return `<span class="chip">${esc(label)}<button type="button" data-chip="${index}" aria-label="${esc(
+            t("chip.remove", { value: label })
+          )}">×</button></span>`;
         })
-      );
+        .join("") +
+      `<button type="button" class="link-button" data-clear-filters>${esc(t("filters.clearAll"))}</button>`
+    : "";
+
+  const panelFilters = app.chips.filter((chip) => chip.facet !== "country").length;
+  const badge = $("filterCount");
+  badge.hidden = panelFilters === 0;
+  badge.textContent = panelFilters ? plural("filters.active", panelFilters) : "";
+}
+
+function renderSummary() {
+  const jurisdictions = new Set(app.results.map((row) => row.tld)).size;
+  $("resultsSummary").textContent = t("results.summary", {
+    shown: app.results.length,
+    total: app.data.rows.length,
+    countries: plural("unit.jurisdiction", jurisdictions),
+  });
+}
+
+function renderChart() {
+  const host = $("chart");
+  if (!app.results.length) {
+    host.replaceChildren();
+    return;
   }
+  const bars = buildChartBars(app.results, app.data.rows).map((bar) => ({
+    ...bar,
+    label: bar.bucket === "other" ? t("term.unspecified") : `+${bar.years}`,
+    name: termLabel(bar.bucket),
+  }));
+  renderBarChart(host, {
+    title: t("chart.title"),
+    subtitle: t("chart.subtitle", { laws: plural("unit.law", app.results.length) }),
+    bars,
+    formatValue: (n) => plural("unit.law", n),
+    labels: {
+      showTable: t("chart.showTable"),
+      showChart: t("chart.showChart"),
+      category: t("chart.colTerm"),
+      value: t("chart.colLaws"),
+      details: t("chart.colDetails"),
+      more: (count) => t("chart.more", { count }),
+    },
+    showTable: app.chartAsTable,
+    onToggle: (isTable) => {
+      app.chartAsTable = isTable;
+    },
+  });
+}
 
-  renderResults() {
-    const laws = this.searcher.getAllLaws();
-    const tbody = document.getElementById("lawsTableBody");
+function rowHtml(row) {
+  const url = safeUrl(row.linked_resources);
+  const checked = app.selected.has(row.id) ? " checked" : "";
+  const label = `${t("table.select")}: ${row.country_name} — ${row.law_name}`;
+  return `
+    <tr>
+      <td><input type="checkbox" data-id="${esc(row.id)}" aria-label="${esc(label)}"${checked} /></td>
+      <td><button type="button" class="link-button" data-country="${esc(row.tld)}" title="${esc(
+        t("table.onlyCountry", { name: row.country_name })
+      )}">${esc(row.country_name)}</button></td>
+      <td>${esc(row.law_name)}</td>
+      <td><small>${esc(row.term_of_protection)}</small></td>
+      <td><small>${esc(row.author_rights)}</small></td>
+      <td><small>${esc(row.moral_rights)}</small></td>
+      <td><small>${esc(row.treaties_signatory || "—")}</small></td>
+      <td>${
+        url
+          ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="${esc(
+              t("table.open")
+            )}" aria-label="${esc(`${t("table.open")}: ${row.law_name}`)}">📖</a>`
+          : "-"
+      }</td>
+    </tr>`;
+}
 
-    if (laws.length === 0) {
-      this.renderEmptyResults();
+function syncSelectAll() {
+  const picked = app.results.filter((row) => app.selected.has(row.id)).length;
+  const box = $("selectAll");
+  box.checked = app.results.length > 0 && picked === app.results.length;
+  box.indeterminate = picked > 0 && picked < app.results.length;
+}
+
+function renderTable() {
+  const empty = app.results.length === 0;
+  $("tableWrap").hidden = empty;
+  $("emptyState").hidden = !empty;
+  $("lawsTableBody").innerHTML = app.results.map(rowHtml).join("");
+  syncSelectAll();
+}
+
+function renderCountryCard() {
+  const host = $("countryCard");
+  const tlds = [...new Set(app.results.map((row) => row.tld))];
+  if (tlds.length !== 1) {
+    host.hidden = true;
+    host.replaceChildren();
+    return;
+  }
+  const jurisdiction = app.data.jurisdictions.find((j) => j.tld === tlds[0]);
+  const treaties = [
+    ...new Set(app.data.rows.filter((row) => row.tld === jurisdiction.tld).flatMap((row) => row.treaties)),
+  ].sort((a, b) => TREATY_ORDER.indexOf(a) - TREATY_ORDER.indexOf(b));
+  const badges = treaties.length
+    ? treaties
+        .map((treaty) => `<span class="badge" title="${esc(treatyName(treaty))}">${esc(treaty)}</span>`)
+        .join("")
+    : "—";
+
+  host.hidden = false;
+  host.innerHTML = `
+    <h2>${esc(jurisdiction.name)} <span class="badge">${esc(jurisdiction.code)}</span></h2>
+    <dl class="card-grid">
+      <div><dt>${esc(t("card.region"))}</dt><dd>${esc(regionLabel(jurisdiction.region))}</dd></div>
+      <div><dt>${esc(t("card.laws"))}</dt><dd>${jurisdiction.lawCount}</dd></div>
+      <div><dt>${esc(t("card.treaties"))}</dt><dd class="badge-list">${badges}</dd></div>
+      <div><dt>${esc(t("card.folder"))}</dt><dd><code>jurisdictions/${esc(jurisdiction.tld)}/</code></dd></div>
+      <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
+    </dl>
+    <p class="card-links">
+      <a href="${esc(jurisdictionFileUrl(jurisdiction.tld, "laws.json"))}" download>${esc(t("card.json"))}</a>
+      <a href="${esc(jurisdictionFileUrl(jurisdiction.tld, "laws.csv"))}" download>${esc(t("card.csv"))}</a>
+    </p>`;
+}
+
+function renderCompareButton() {
+  const count = app.selected.size;
+  $("compareBtn").textContent = count ? t("btn.compareCount", { count }) : t("btn.compare");
+}
+
+function pickedRows() {
+  return app.results.filter((row) => app.selected.has(row.id));
+}
+
+function renderComparison() {
+  const section = $("comparisonSection");
+  if (section.hidden) return;
+  const picked = pickedRows();
+  if (new Set(picked.map((row) => row.tld)).size < 2) {
+    section.hidden = true;
+    return;
+  }
+  const head = picked
+    .map((row) => `<th scope="col">${esc(row.country_name)}<br /><small>${esc(row.law_name)}</small></th>`)
+    .join("");
+  const body = COMPARE_CRITERIA.map(
+    (criterion) => `
+      <tr>
+        <th scope="row">${esc(t(`compare.${criterion}`))}</th>
+        ${picked.map((row) => `<td>${esc(row[criterion] || "—")}</td>`).join("")}
+      </tr>`
+  ).join("");
+  $("comparisonResults").innerHTML = `
+    <table class="comparison-table">
+      <thead><tr><th scope="col">${esc(t("compare.criterion"))}</th>${head}</tr></thead>
+      <tbody>${body}</tbody>
+    </table>`;
+}
+
+function writeUrl() {
+  const params = stateToParams(app.state, CONFIG);
+  if (app.urlHasLang) params.set("lang", getLanguage());
+  const query = params.toString();
+  history.replaceState(null, "", query ? `?${query}` : location.pathname);
+}
+
+function update() {
+  app.state.q = $("q").value;
+  app.results = filterRows(app.data.rows, app.state, CONFIG);
+
+  const visible = new Set(app.results.map((row) => row.id));
+  for (const id of app.selected) if (!visible.has(id)) app.selected.delete(id);
+
+  syncFacetControls();
+  renderChips();
+  renderSummary();
+  renderChart();
+  renderTable();
+  renderCountryCard();
+  renderCompareButton();
+  renderComparison();
+  writeUrl();
+}
+
+/* ---------- Events ---------- */
+
+const scrollBehavior = () =>
+  matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+
+function handleCompare() {
+  const picked = pickedRows();
+  if (new Set(picked.map((row) => row.tld)).size < 2) {
+    alert(t("compare.needTwo"));
+    return;
+  }
+  const section = $("comparisonSection");
+  section.hidden = false;
+  renderComparison();
+  section.scrollIntoView({ block: "start", behavior: scrollBehavior() });
+}
+
+function handleExport() {
+  const csv = `﻿${toCsv(app.data.meta.columns, app.results)}`;
+  const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `copyright-laws-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function bindEvents() {
+  const applyQuery = debounce(update, 150);
+  $("q").addEventListener("input", applyQuery);
+  $("searchForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    applyQuery.flush();
+  });
+  $("scope").addEventListener("change", () => {
+    app.state.scope = $("scope").value;
+    update();
+  });
+
+  $("facets").addEventListener("change", (event) => {
+    const { name } = event.target;
+    if (!app.state.facets[name]) return;
+    app.state.facets[name] = [...$("facets").querySelectorAll(`input[name="${name}"]:checked`)].map(
+      (input) => input.value
+    );
+    update();
+  });
+
+  $("chips").addEventListener("click", (event) => {
+    const remove = event.target.closest("[data-chip]");
+    if (remove) {
+      app.state = removeFilter(app.state, CONFIG, app.chips[Number(remove.dataset.chip)]);
+    } else if (event.target.closest("[data-clear-filters]")) {
+      app.state = clearFilters(app.state, CONFIG);
+    } else {
       return;
     }
+    update();
+  });
 
-    tbody.innerHTML = laws
-      .map(
-        (law, index) => `
-      <tr class="row-${law.country_code}">
-        <td>
-          <input type="checkbox" data-row-key="${law.country_code}_${index}" />
-        </td>
-        <td><strong>${law.country_name}</strong></td>
-        <td>${law.law_name}</td>
-        <td><small>${law.term_of_protection}</small></td>
-        <td><small>${law.author_rights}</small></td>
-        <td><small>${law.moral_rights}</small></td>
-        <td><small>${law.treaties_signatory || "N/A"}</small></td>
-        <td>
-          ${
-            law.linked_resources
-              ? `<a href="${law.linked_resources}" target="_blank">📖</a>`
-              : "-"
-          }
-        </td>
-      </tr>
-    `
-      )
-      .join("");
+  $("clearBtn").addEventListener("click", () => {
+    app.state = emptyState(CONFIG);
+    app.selected.clear();
+    $("q").value = "";
+    update();
+    $("q").focus();
+  });
 
-    document.getElementById("resultCount").textContent = laws.length;
-    document.getElementById("resultsTitle").textContent =
-      `Copyright Laws (${laws.length} results)`;
-
-    // Show timeline visualization
-    this.renderTimeline(laws);
-
-    tbody.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
-      checkbox.addEventListener("change", (e) => {
-        if (e.target.checked) {
-          this.selectedRows.add(e.target.dataset.rowKey);
-        } else {
-          this.selectedRows.delete(e.target.dataset.rowKey);
-        }
-      });
-    });
-  }
-
-  renderTimeline(laws) {
-    const timelineSection = document.getElementById("timelineSection");
-    if (laws.length > 0) {
-      const timeline = new TimelineVisualization(laws, "timelineContainer");
-      timeline.render();
-      timelineSection.hidden = false;
-    } else {
-      timelineSection.hidden = true;
+  $("lawsTableBody").addEventListener("change", (event) => {
+    const box = event.target.closest("input[data-id]");
+    if (!box) return;
+    if (box.checked) app.selected.add(box.dataset.id);
+    else app.selected.delete(box.dataset.id);
+    syncSelectAll();
+    renderCompareButton();
+  });
+  $("lawsTableBody").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-country]");
+    if (!button) return;
+    app.state.country = button.dataset.country;
+    update();
+    $("countryCard").scrollIntoView({ block: "start", behavior: scrollBehavior() });
+  });
+  $("selectAll").addEventListener("change", (event) => {
+    for (const row of app.results) {
+      if (event.target.checked) app.selected.add(row.id);
+      else app.selected.delete(row.id);
     }
-  }
+    for (const box of $("lawsTableBody").querySelectorAll("input[data-id]")) {
+      box.checked = event.target.checked;
+    }
+    syncSelectAll();
+    renderCompareButton();
+  });
 
-  renderEmptyResults() {
-    const tbody = document.getElementById("lawsTableBody");
-    tbody.innerHTML = `
-      <tr class="empty-state">
-        <td colspan="8">Enter search criteria and click "Search" to view copyright laws</td>
-      </tr>
-    `;
-    document.getElementById("resultCount").textContent = "0";
-  }
-
-  renderComparison(countryCodes) {
-    const matrix = this.comparator.getComparisonMatrix(countryCodes);
-    const section = document.getElementById("comparisonSection");
-    const resultsDiv = document.getElementById("comparisonResults");
-
-    let html = `<table class="comparison-table">
-      <thead>
-        <tr>
-          <th>Criteria</th>
-          ${countryCodes.map((code) => `<th>${code}</th>`).join("")}
-        </tr>
-      </thead>
-      <tbody>`;
-
-    const criteria = [
-      "protection_type",
-      "term_of_protection",
-      "author_rights",
-      "moral_rights",
-      "orphan_works",
-      "digital_protection",
-      "fair_use_exceptions",
-      "treaties_signatory",
-    ];
-
-    criteria.forEach((criterion) => {
-      html += `<tr><th>${this.formatCriterion(criterion)}</th>`;
-      countryCodes.forEach((code) => {
-        const value = matrix[code]?.[criterion] || "N/A";
-        html += `<td>${value}</td>`;
-      });
-      html += `</tr>`;
-    });
-
-    html += `</tbody></table>`;
-    resultsDiv.innerHTML = html;
-    section.hidden = false;
-  }
-
-  closeComparison() {
-    document.getElementById("comparisonSection").hidden = true;
-  }
-
-  formatCriterion(criterion) {
-    return criterion
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  }
-
-  searcherToCSV(laws) {
-    const headers = Object.keys(laws[0] || {});
-    let csv = headers.join(",") + "\n";
-    laws.forEach((law) => {
-      csv += headers
-        .map((h) => `"${(law[h] || "").replace(/"/g, '""')}"`)
-        .join(",");
-      csv += "\n";
-    });
-    return csv;
-  }
+  $("compareBtn").addEventListener("click", handleCompare);
+  $("exportBtn").addEventListener("click", handleExport);
+  $("closeComparison").addEventListener("click", () => {
+    $("comparisonSection").hidden = true;
+  });
 }
 
-// Initialize App
-async function initApp() {
+/* ---------- Boot ---------- */
+
+async function init() {
+  initLanguage();
+  bindLanguageSelect($("languageSelect"));
+
   try {
-    // Load preferred language from localStorage or default to eng
-    const preferredLang = localStorage.getItem("preferredLanguage") || "eng";
-    await loadTranslations(preferredLang);
-
-    const loader = new JurisdictionLoader();
-    await loader.load();
-
-    const searcher = new CopyrightLawSearcher(loader.jurisdictions);
-    const comparator = new CopyrightLawComparator(loader);
-    const ui = new UIController(loader, searcher, comparator);
-
-    document.getElementById("lastUpdate").textContent = new Date()
-      .toLocaleDateString();
+    app.data = await loadBundle(enrichRow);
   } catch (error) {
-    console.error("Failed to initialize app:", error);
-    document.body.innerHTML =
-      '<p style="color:red">Error loading copyright laws database. Please refresh.</p>';
+    console.error(error);
+    $("status").textContent = t("status.error");
+    $("status").hidden = false;
+    return;
   }
+
+  buildIndex(app.data.rows, CONFIG);
+  app.options = Object.fromEntries(FACETS.map((facet) => [facet.id, facetOptions(app.data.rows, facet)]));
+  app.state = pruneState(
+    stateFromParams(new URLSearchParams(location.search), CONFIG),
+    CONFIG,
+    app.data.rows
+  );
+
+  $("q").value = app.state.q;
+  renderJurisdictionList();
+  renderStatic();
+  bindEvents();
+  update();
+  $("advanced").open =
+    matchMedia("(min-width: 769px)").matches || activeFilters(app.state, CONFIG).length > 0;
+
+  onLanguageChange(() => {
+    renderStatic();
+    update();
+  });
 }
 
-// Load app when DOM is ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initApp);
-} else {
-  initApp();
-}
+init();

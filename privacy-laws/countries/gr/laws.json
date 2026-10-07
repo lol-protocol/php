@@ -2,6 +2,7 @@
   {
     "country_code": "GR",
     "country_name": "Greece",
+    "region": "europe",
     "law_name": "Data Protection Law (Law 4818/2021)",
     "jurisdiction": "Hellenic Data Protection Authority",
     "enactment_date": "2021-04-01",

@@ -2,6 +2,7 @@
   {
     "country_code": "SV",
     "country_name": "El Salvador",
+    "region": "americas",
     "law_name": "Ley de Protección de Datos Personales",
     "jurisdiction": "Agencia de Protección de Datos",
     "enactment_date": "2007-12-06",

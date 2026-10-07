@@ -2,7 +2,6 @@
   "code": "PE",
   "name": "Peru",
   "tld": "pe",
-  "region": "other",
-  "lawCount": 1,
-  "createdAt": "2026-10-07T00:12:16.446Z"
+  "region": "americas",
+  "lawCount": 1
 }

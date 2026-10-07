@@ -2,6 +2,7 @@
   {
     "country_code": "BE",
     "country_name": "Belgium",
+    "region": "europe",
     "law_name": "Copyright Law (Loi Belge)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",

@@ -2,6 +2,7 @@
   {
     "country_code": "CH",
     "country_name": "Switzerland",
+    "region": "europe",
     "law_name": "Federal Data Protection Act (FADP)",
     "jurisdiction": "Federal Data Protection & Information Commissioner",
     "enactment_date": "2022-09-28",

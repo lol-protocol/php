@@ -2,6 +2,7 @@
   {
     "country_code": "VN",
     "country_name": "Vietnam",
+    "region": "asia_pacific",
     "law_name": "Law on Cyber Security",
     "jurisdiction": "Ministry of Public Security",
     "enactment_date": "2018-11-12",

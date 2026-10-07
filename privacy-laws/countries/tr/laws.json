@@ -2,6 +2,7 @@
   {
     "country_code": "TR",
     "country_name": "Turkey",
+    "region": "europe",
     "law_name": "Law on the Protection of Personal Data (KVKK)",
     "jurisdiction": "Personal Data Protection Board",
     "enactment_date": "2016-04-07",
