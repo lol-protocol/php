@@ -23,3 +23,9 @@ vps-setup/vps.env
 id_rsa*
 id_ed25519*
 id_ecdsa*
+
+# Node.js dependencies
+node_modules/
+*/node_modules/
+package-lock.json
+*/package-lock.json
