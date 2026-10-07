@@ -145,10 +145,10 @@ php8.3-common       # Librerías comunes
 php8.3-fpm          # FastCGI Process Manager
 php8.3-cli          # Interfaz de línea de comandos
 php8.3-mysql        # Soporte MySQL
-php8.3-postgresql   # Soporte PostgreSQL ⭐
+php8.3-pgsql        # Soporte PostgreSQL ⭐ (el paquete se llama pgsql, no postgresql)
 php8.3-gd           # Procesamiento de imágenes
 php8.3-curl         # Cliente HTTP
-php8.3-json         # Soporte JSON
+# (JSON ya viene incluido en PHP 8: no existe un paquete php8.3-json)
 php8.3-zip          # Compresión ZIP
 php8.3-mbstring     # Cadenas multibyte
 php8.3-xml          # Procesamiento XML
