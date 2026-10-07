@@ -1,0 +1,26 @@
+{
+  "name": "copyright-laws",
+  "version": "1.0.0",
+  "description": "Global copyright laws database by jurisdiction - for digital libraries and PDF documentation projects",
+  "type": "module",
+  "scripts": {
+    "test": "node --test 'tests/**/*.test.js'",
+    "validate": "node scripts/validate-csv.js",
+    "lint": "node scripts/lint-data.js"
+  },
+  "keywords": [
+    "copyright",
+    "intellectual-property",
+    "books",
+    "authors-rights",
+    "library",
+    "compliance",
+    "fair-use"
+  ],
+  "author": "lol-protocol",
+  "license": "MIT",
+  "devDependencies": {
+    "csv-parse": "^5.5.0",
+    "axios": "^1.6.0"
+  }
+}

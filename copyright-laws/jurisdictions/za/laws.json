@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "ZA",
+    "country_name": "South Africa",
+    "law_name": "Copyright Act 1978 (amended 2019)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Publishing & production rights",
+    "moral_rights": "Author attribution rights",
+    "orphan_works": "Limited compulsory license",
+    "digital_protection": "Copyright amendments",
+    "fair_use_exceptions": "Educational use allowed",
+    "registration_required": "No",
+    "enforcement_body": "South African IP Commission",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.cipro.gov.za/"
+  }
+]

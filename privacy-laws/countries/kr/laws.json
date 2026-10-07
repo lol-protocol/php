@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "KR",
+    "country_name": "South Korea",
+    "law_name": "Personal Information Protection Act (PIPA)",
+    "jurisdiction": "Korea Internet & Security Agency",
+    "enactment_date": "2011-03-29",
+    "effective_date": "2011-09-30",
+    "scope": "South Korea Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "Purpose limitation & consent",
+    "data_categories": "Personal information",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "KISA & Supervisory Authorities",
+    "penalties_range": "Up to ₩1B fine",
+    "exemptions": "Government security",
+    "website_url": "https://www.kisa.or.kr/",
+    "language": "Korean",
+    "notes": "East Asia comprehensive privacy law"
+  }
+]

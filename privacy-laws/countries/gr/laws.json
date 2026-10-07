@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "GR",
+    "country_name": "Greece",
+    "law_name": "Data Protection Law (Law 4818/2021)",
+    "jurisdiction": "Hellenic Data Protection Authority",
+    "enactment_date": "2021-04-01",
+    "effective_date": "2021-04-01",
+    "scope": "Greek Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "GDPR implementation",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "Greek DPA",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://www.dpa.gr/",
+    "language": "Greek",
+    "notes": "GDPR implementation"
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "RO",
+    "country_name": "Romania",
+    "law_name": "Data Protection Law",
+    "jurisdiction": "National Supervisory Authority",
+    "enactment_date": "2018-05-25",
+    "effective_date": "2018-05-25",
+    "scope": "Romanian Residents",
+    "applies_to": "All entities",
+    "key_requirements": "GDPR compliance",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "Romanian DPA",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://www.dataprotection.ro/",
+    "language": "Romanian",
+    "notes": "GDPR implementation"
+  }
+]

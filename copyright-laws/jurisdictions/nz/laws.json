@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "NZ",
+    "country_name": "New Zealand",
+    "law_name": "Copyright Act 1994",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Orphan works licensing scheme",
+    "digital_protection": "Digital Millennium Act",
+    "fair_use_exceptions": "Fair use copying",
+    "registration_required": "No",
+    "enforcement_body": "IP New Zealand / Courts",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.iponz.govt.nz/"
+  }
+]
