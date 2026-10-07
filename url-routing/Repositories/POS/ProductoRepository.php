@@ -28,6 +28,25 @@ final class ProductoRepository extends Repository
         return $row;
     }
 
+    /** The cart deals in SKUs: a variant plus the product it belongs to. */
+    public function variantePorSku(string $sku): ?array
+    {
+        $row = $this->db->fetchOne(
+            'SELECT v.sku, v.nombre AS variante_nombre, v.stock,
+                    COALESCE(v.precio_centavos, p.precio_centavos) AS precio_centavos, p.moneda,
+                    p.id AS producto_id, p.nombre AS producto_nombre, p.activo
+               FROM variantes v JOIN productos p ON p.id = v.producto_id
+              WHERE v.sku = ?',
+            [$sku]
+        );
+
+        if ($row !== null) {
+            $row['activo'] = (bool)$row['activo'];
+        }
+
+        return $row;
+    }
+
     /** @return list<array> variants with their effective price and stock */
     public function variantes(int $id): array
     {
