@@ -1,16 +1,15 @@
 <?php
 
 /** @var array $registros */
-/** @var int $totalRegistros */
-/** @var int $totalPaginas */
-/** @var int $pagina */
+/** @var string|null $masAntiguas */
+/** @var string|null $masRecientes */
 
 $accionLabel = ['crear' => 'Creó', 'editar' => 'Editó', 'anular' => 'Anuló', 'activar' => 'Reactivó'];
 $entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente', 'nota_credito' => 'Nota de crédito', 'usuario' => 'Usuario'];
 ?>
 
 <h1>Auditoría</h1>
-<p class="subtitulo">Historial de cambios: <?= $totalRegistros ?> altas, ediciones y anulaciones en total.</p>
+<p class="subtitulo">Historial de cambios: altas, ediciones y anulaciones, de la más reciente a la más antigua.</p>
 
 <div class="panel">
     <div class="table-wrap">
@@ -36,5 +35,5 @@ $entidadLabel = ['boleta' => 'Boleta', 'pago' => 'Pago', 'cliente' => 'Cliente',
             </tbody>
         </table>
     </div>
-    <?php include __DIR__ . '/../_paginacion.php'; ?>
+    <?php include __DIR__ . '/../_paginacion_por_cursor.php'; ?>
 </div>

@@ -33,9 +33,10 @@ Pequeño sistema en PHP (sin framework) para analizar:
   marcada "Anulada" y se excluye de los agregados) para no perder el rastro. Un
   doble clic en "Guardar" no crea un segundo pago ni una segunda boleta.
 - **Auditoría**: historial de cada alta, edición y anulación de boletas, pagos y
-  clientes, con fecha y el detalle de qué cambió. Sin login (ver más abajo), el
-  usuario de toda entrada nueva es "Sistema"; las de antes de sacarlo conservan
-  el suyo.
+  clientes, con fecha y el detalle de qué cambió, de la más reciente a la más
+  antigua (se navega con «Más antiguas» y «Más recientes»). Sin login (ver más
+  abajo), el usuario de toda entrada nueva es "Sistema"; las de antes de sacarlo
+  conservan el suyo.
 - **Paginación** en los listados grandes (boletas, pagos, clientes).
 
 > El panel no tiene login: es de acceso libre, sin cuentas de usuario. Había una
@@ -307,14 +308,16 @@ database/
   migraciones/          el esquema, el catálogo de ~200 países y sus monedas
                         (ISO 4217), los índices y la regla de mayoría de edad,
                         en cambios numerados (001 = esquema inicial, 005 =
-                        catálogo, 006 = índices, 007 = mayoría de edad)
+                        catálogo, 006 y 008 = índices, 007 = mayoría de edad)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   seed.php               SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP (una carpeta por sección), con partials
                         compartidos: _filtro_fechas.php (el período y el rango
                         Desde/Hasta de las cinco pantallas con filtro),
                         _avisos.php (los avisos de arriba de la pantalla),
-                        _paginacion.php,
+                        _paginacion.php (Anterior/Siguiente con número de
+                        página) y _paginacion_por_cursor.php (Más recientes/Más
+                        antiguas, la de Auditoría),
                         _error.php (el aviso de error de los formularios),
                         _accion_confirmar.php (el pie de las pantallas de
                         confirmar anulación), _grafico_aging.php y
@@ -412,7 +415,13 @@ en su moneda original.
   del funnel y las cohortes, y colores de estado reservados para la antigüedad de cartera.
 - Modo oscuro automático vía `prefers-color-scheme`.
 - Paginación de 25 filas por página, con `LIMIT`/`OFFSET` en SQL, también en
-  Boletas con filtro de estado. El estado (pagada/parcial/pendiente/vencida/anulada)
+  Boletas con filtro de estado. Auditoría es la excepción: pagina por cursor
+  (`?antes=`/`?despues=` con el `creado_en` y el `id` de la fila donde quedó), porque
+  es la única tabla que solo crece y `OFFSET` más `COUNT(*)` crecían en línea recta
+  con ella. Con 2 millones de entradas la página del fondo pasó de 1,7 s a 2 ms, y
+  la de cualquier profundidad tarda lo mismo que la primera (índice de la migración
+  `008`). A cambio no hay «página 7 de 40» ni un total: se va hacia las más
+  recientes o hacia las más antiguas. El estado (pagada/parcial/pendiente/vencida/anulada)
   no se guarda en la base: el que muestra cada fila lo calcula `App\EstadoBoleta`
   a partir de los pagos aplicados, y para filtrar y paginar en la base la misma
   regla está escrita en SQL (`BoletaRepository::ESTADO_SQL`). Son dos copias de

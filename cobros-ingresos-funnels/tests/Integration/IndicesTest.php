@@ -8,21 +8,21 @@ use App\Database;
 use PDO;
 
 /**
- * La migracion 006 crea dos indices para las consultas que la app hace sobre
- * tablas que crecen: la ficha de un cliente busca su recorrido de funnel, y el
+ * Las migraciones 006 y 008 crean indices para las consultas que la app hace sobre
+ * tablas que crecen: la ficha de un cliente busca su recorrido de funnel, el
  * listado de clientes (y el selector de los formularios) ordena por nombre, id y
- * se queda con una pagina. Con los datos del seed una lectura completa tarda lo
- * mismo, asi que ningun otro test notaria que un indice se perdio o que quedo
- * armado para otra consulta (columnas en otro orden): aca se le pregunta a
- * Postgres si cada consulta puede usarlo.
+ * se queda con una pagina, y Auditoria pide cada pagina por cursor. Con los datos
+ * del seed una lectura completa tarda lo mismo, asi que ningun otro test notaria
+ * que un indice se perdio o que quedo armado para otra consulta (columnas en otro
+ * orden): aca se le pregunta a Postgres si cada consulta puede usarlo.
  *
  * Con enable_seqscan apagado el planificador usa cualquier indice que sirva, sin
  * importar lo chica que sea la tabla; si ninguno sirve, cae a la lectura completa
  * y el test falla. SET LOCAL dura hasta el rollback con el que termina cada test.
  *
- * Las consultas son las de FunnelRepository::viajeDeCliente y
- * ClienteRepository::buscar / paraSelector: si esas cambian, este test cambia
- * con ellas.
+ * Las consultas son las de FunnelRepository::viajeDeCliente,
+ * ClienteRepository::buscar / paraSelector y AuditoriaRepository::pagina: si esas
+ * cambian, este test cambia con ellas.
  */
 final class IndicesTest extends IntegracionTestCase
 {
@@ -56,17 +56,47 @@ final class IndicesTest extends IntegracionTestCase
         self::assertStringNotContainsString('Sort', $plan);
     }
 
-    public function testLosDosIndicesQuedaronValidosEnLaBase(): void
+    /** Las dos formas de pedir una pagina por cursor (hacia las mas antiguas y hacia las mas recientes) leen del mismo indice. */
+    public function testLaPaginaDeAuditoriaPorCursorLeeSoloDelIndice(): void
+    {
+        $haciaLasAntiguas = $this->plan(
+            "SELECT a.id FROM auditoria a
+             WHERE (a.creado_en, a.id) < ('2100-01-01'::timestamp, 1::bigint)
+             ORDER BY a.creado_en DESC, a.id DESC
+             LIMIT 26"
+        );
+        $haciaLasRecientes = $this->plan(
+            "SELECT a.id FROM auditoria a
+             WHERE (a.creado_en, a.id) > ('2000-01-01'::timestamp, 1::bigint)
+             ORDER BY a.creado_en ASC, a.id ASC
+             LIMIT 26"
+        );
+
+        foreach ([$haciaLasAntiguas, $haciaLasRecientes] as $plan) {
+            self::assertStringContainsString('idx_auditoria_creado_en_id', $plan);
+            self::assertStringNotContainsString('Sort', $plan);
+        }
+    }
+
+    public function testLosIndicesQuedaronValidosEnLaBase(): void
     {
         $validos = Database::connection()->query(
             "SELECT c.relname
              FROM pg_index i
              JOIN pg_class c ON c.oid = i.indexrelid
-             WHERE i.indisvalid AND c.relname IN ('idx_funnel_cliente', 'idx_clientes_nombre_id')
+             WHERE i.indisvalid AND c.relname IN ('idx_funnel_cliente', 'idx_clientes_nombre_id', 'idx_auditoria_creado_en_id')
              ORDER BY c.relname"
         )->fetchAll(PDO::FETCH_COLUMN);
 
-        self::assertSame(['idx_clientes_nombre_id', 'idx_funnel_cliente'], $validos);
+        self::assertSame(['idx_auditoria_creado_en_id', 'idx_clientes_nombre_id', 'idx_funnel_cliente'], $validos);
+    }
+
+    /** La 008 reemplazo al indice de solo creado_en: no quedan los dos, que cuestan escritura por lo mismo. */
+    public function testElIndiceViejoDeAuditoriaYaNoExiste(): void
+    {
+        $existe = Database::connection()->query("SELECT to_regclass('idx_auditoria_creado_en') IS NOT NULL")->fetchColumn();
+
+        self::assertFalse((bool) $existe);
     }
 
     private function plan(string $sql): string

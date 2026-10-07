@@ -42,6 +42,9 @@ final class RutasTest extends HttpTestCase
             'page=pagos&pagina=9999999999999999999',
             'page=clientes&pagina=9999999999999999999',
             'page=auditoria&pagina=9999999999999999999',
+            'page=auditoria&antes=basura',
+            'page=auditoria&despues=2026-13-45%2099:99:99,1',
+            'page=auditoria&antes[]=x',
         ] as $query) {
             $this->assertStatus(200, $this->get($query), $query);
         }

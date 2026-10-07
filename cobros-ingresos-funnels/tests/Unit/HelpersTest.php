@@ -114,6 +114,25 @@ final class HelpersTest extends TestCase
         self::assertSame('5', $params['pagina']);
     }
 
+    public function testUrlConParametrosCambiaVariosYSacaLosQueValenNull(): void
+    {
+        $_GET = ['page' => 'auditoria', 'antes' => '2026-01-01 10:00:00,5', 'pagina' => '3'];
+
+        $url = url_con_parametros(['despues' => '2026-01-01 11:00:00,9', 'antes' => null, 'pagina' => null]);
+
+        parse_str(ltrim($url, '?'), $params);
+        self::assertSame(['page' => 'auditoria', 'despues' => '2026-01-01 11:00:00,9'], $params);
+    }
+
+    public function testUrlConParametrosSinCambiosDejaLaQueryIgual(): void
+    {
+        $_GET = ['page' => 'cobros', 'meses' => '6'];
+
+        parse_str(ltrim(url_con_parametros([]), '?'), $params);
+
+        self::assertSame(['page' => 'cobros', 'meses' => '6'], $params);
+    }
+
     public function testSvgBarraIncluyeClaseEstiloColorYTooltip(): void
     {
         $svg = svg_barra('hbar-fill', 'width:50%', 'var(--series-1)', 'Enero: $100');

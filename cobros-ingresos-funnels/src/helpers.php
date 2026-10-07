@@ -75,8 +75,26 @@ function delta_badge(?float $pct, bool $subirEsBueno = true, string $etiqueta = 
 /** URL actual (?page=...&filtro=...) con un parametro reemplazado, para los links de paginacion. */
 function url_con_parametro(string $clave, string|int $valor): string
 {
+    return url_con_parametros([$clave => $valor]);
+}
+
+/**
+ * URL actual con varios parametros cambiados a la vez; el que vale null se
+ * saca. Para los links de la paginacion por cursor, donde pedir "mas antiguas"
+ * es poner un parametro y sacar el otro.
+ *
+ * @param array<string, string|int|null> $cambios
+ */
+function url_con_parametros(array $cambios): string
+{
     $params = $_GET;
-    $params[$clave] = $valor;
+    foreach ($cambios as $clave => $valor) {
+        if ($valor === null) {
+            unset($params[$clave]);
+        } else {
+            $params[$clave] = $valor;
+        }
+    }
     return '?' . http_build_query($params);
 }
 
