@@ -16,9 +16,10 @@ use PDO;
  * que un indice se perdio o que quedo armado para otra consulta (columnas en otro
  * orden): aca se le pregunta a Postgres si cada consulta puede usarlo.
  *
- * Con enable_seqscan apagado el planificador usa cualquier indice que sirva, sin
- * importar lo chica que sea la tabla; si ninguno sirve, cae a la lectura completa
- * y el test falla. SET LOCAL dura hasta el rollback con el que termina cada test.
+ * Con enable_seqscan y enable_bitmapscan apagados el planificador usa cualquier
+ * indice que sirva, sin importar lo chica que sea la tabla; si ninguno sirve, cae a
+ * la lectura completa (o a un Sort) y el test falla. SET LOCAL dura hasta el
+ * rollback con el que termina cada test.
  *
  * Las consultas son las de FunnelRepository::viajeDeCliente,
  * ClienteRepository::buscar / paraSelector y AuditoriaRepository::pagina: si esas
@@ -103,6 +104,9 @@ final class IndicesTest extends IntegracionTestCase
     {
         $db = Database::connection();
         $db->exec('SET LOCAL enable_seqscan = off');
+        // Sin bitmap: en una tabla chica y sin estadisticas (la de auditoria, recien sembrada) Postgres prefiere
+        // un bitmap mas un Sort a recorrer el indice en orden, y el test pregunta justo por el orden.
+        $db->exec('SET LOCAL enable_bitmapscan = off');
 
         return implode("\n", $db->query('EXPLAIN ' . $sql)->fetchAll(PDO::FETCH_COLUMN));
     }
