@@ -1,4 +1,7 @@
 import { loadTranslations, t } from "./translations/i18n.js";
+import LanguageSelector from "./translations/language-selector.js";
+import TimelineVisualization from "./timeline.js";
+import MetadataDisplay from "./metadata-display.js";
 
 // Data Loaders
 class CountryLoader {
@@ -372,6 +375,9 @@ class UIController {
     document.getElementById("resultsTitle").textContent =
       `Privacy Laws (${laws.length} results)`;
 
+    // Show timeline visualization
+    this.renderTimeline(laws);
+
     // Re-attach checkbox listeners
     tbody.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
       checkbox.addEventListener("change", (e) => {
@@ -382,6 +388,17 @@ class UIController {
         }
       });
     });
+  }
+
+  renderTimeline(laws) {
+    const timelineSection = document.getElementById("timelineSection");
+    if (laws.length > 0) {
+      const timeline = new TimelineVisualization(laws, "timelineContainer");
+      timeline.render();
+      timelineSection.hidden = false;
+    } else {
+      timelineSection.hidden = true;
+    }
   }
 
   renderEmptyResults() {
@@ -459,6 +476,10 @@ class UIController {
 // Initialize App
 async function initApp() {
   try {
+    // Load preferred language from localStorage or default to eng
+    const preferredLang = localStorage.getItem("preferredLanguage") || "eng";
+    await loadTranslations(preferredLang);
+
     const loader = new CountryLoader();
     await loader.load();
 
@@ -468,8 +489,6 @@ async function initApp() {
 
     document.getElementById("lastUpdate").textContent = new Date()
       .toLocaleDateString();
-
-    await loadTranslations("en");
   } catch (error) {
     console.error("Failed to initialize app:", error);
     document.body.innerHTML =

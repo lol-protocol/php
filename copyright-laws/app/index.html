@@ -12,19 +12,15 @@
   <div class="container">
     <!-- Header -->
     <header class="header">
-      <h1>⚖️ Copyright Laws by Jurisdiction</h1>
-      <p class="subtitle">
-        Find copyright legislation for digital libraries, authors, and PDF
-        documentation projects
-      </p>
-      <div class="language-switcher">
-        <select id="languageSelect" aria-label="Select language">
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="fr">Français</option>
-          <option value="de">Deutsch</option>
-          <option value="pt">Português</option>
-        </select>
+      <div class="header-top">
+        <div>
+          <h1>⚖️ Copyright Laws by Jurisdiction</h1>
+          <p class="subtitle">
+            Find copyright legislation for digital libraries, authors, and PDF
+            documentation projects
+          </p>
+        </div>
+        <div id="languageSelector" data-language-selector></div>
       </div>
     </header>
 
@@ -127,6 +123,9 @@
         </div>
       </section>
 
+      <!-- Metadata Section -->
+      <section class="metadata-section" id="metadataContainer"></section>
+
       <!-- Comparison Section (Hidden by default) -->
       <section class="comparison-section" id="comparisonSection" hidden>
         <h2>Copyright Protection Comparison</h2>
@@ -136,10 +135,9 @@
         <button id="closeComparison" class="btn btn-sm">Close Comparison</button>
       </section>
 
-      <!-- Material Protection Guide (Hidden by default) -->
-      <section class="material-guide-section" id="materialGuideSection" hidden>
-        <h2>Protection by Material Type</h2>
-        <div id="materialGuideResults" class="material-guide-container"></div>
+      <!-- Timeline Section (Hidden by default) -->
+      <section class="timeline-section" id="timelineSection" hidden>
+        <div id="timelineContainer"></div>
       </section>
     </main>
 

@@ -12,19 +12,15 @@
   <div class="container">
     <!-- Header -->
     <header class="header">
-      <h1>🔐 Privacy Laws by Country</h1>
-      <p class="subtitle">
-        Find privacy legislation and regulations for genealogy, compliance, and
-        research
-      </p>
-      <div class="language-switcher">
-        <select id="languageSelect" aria-label="Select language">
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="fr">Français</option>
-          <option value="de">Deutsch</option>
-          <option value="pt">Português</option>
-        </select>
+      <div class="header-top">
+        <div>
+          <h1>🔐 Privacy Laws by Country</h1>
+          <p class="subtitle">
+            Find privacy legislation and regulations for genealogy, compliance, and
+            research
+          </p>
+        </div>
+        <div id="languageSelector" data-language-selector></div>
       </div>
     </header>
 
@@ -123,6 +119,9 @@
         </div>
       </section>
 
+      <!-- Metadata Section -->
+      <section class="metadata-section" id="metadataContainer"></section>
+
       <!-- Comparison Section (Hidden by default) -->
       <section class="comparison-section" id="comparisonSection" hidden>
         <h2>Law Comparison</h2>
@@ -134,8 +133,7 @@
 
       <!-- Timeline Section (Hidden by default) -->
       <section class="timeline-section" id="timelineSection" hidden>
-        <h2>Implementation Timeline</h2>
-        <div id="timelineResults" class="timeline-container"></div>
+        <div id="timelineContainer"></div>
       </section>
     </main>
 
