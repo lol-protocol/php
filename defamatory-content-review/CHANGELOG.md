@@ -4,6 +4,14 @@
 
 ### Añadido
 
+- **Auditoría y ampliación de los 27 diccionarios `moderate` y `basic`**
+  (~1.500 términos nuevos, ~7.800 en total). Hecha **sin hablante nativo**:
+  los idiomas siguen en su nivel y `coverage` no cambia. Protocolo: sólo
+  términos de alta confianza, ninguno étnico, religioso ni de discapacidad,
+  y cruce contra nombres reales (corpus ampliado a 20×20 o más en los 33
+  idiomas, ahora también heb, jpn, yue, tha, vie). `NameCollisionAuditTest`
+  fija las colisiones auditadas. Ver `CONTRIBUTING.md` para lo que sigue
+  pendiente de revisión nativa.
 - **Vocabulario ampliado en los 3 diccionarios `basic`**: islandés
   (60 → 65 términos), swahili (61 → 71) y tagalo (60 → 80). Términos reales
   nuevos en `animal`, `intelectual`, `fisico`, `discapacidad`, `moral`,
@@ -45,6 +53,26 @@
 
 ### Arreglado
 
+- **Apellidos y nombres reales se rechazaban en automático** por términos
+  de severidad alta sin `nameCollision`. El peor caso: en árabe, `عبد`
+  («Abd», primer elemento de Abdullah, Abdulrahman, Abdulaziz…) rechazaba
+  los nombres más comunes; se quitó. También `כלב` (Kalev, hebreo),
+  `Çolak`/`Topal` (turco), `Cioară` (rumano), `Горбань` (ucraniano),
+  `Alfons` (polaco, danés), `Abe`/`So`/`Lam`/`Tai`/`Pina`… Se marcaron
+  ~250 colisiones.
+- **Mismo barrido en los 6 `comprehensive`** (~110 marcas `nameCollision`:
+  «Dick», «Cock», «Hooker», «Coon», «Kraut», «Depp», «Teufel», «Gobbo»,
+  «Troia», «Vacca», «Nègre», «Verdugo»…). Se quitan `ano` (español: «año»
+  se pliega a «ano» por la ñ) y `sarasa`, que disparaba la fusión con
+  «Sara Sánchez/Santos».
+- **Entradas que no eran insultos**: `мамка` (mamá, búlgaro), `ruska`
+  (rusa, checo), `top` (pelota, turco), `αδερφή` (hermana, griego),
+  `תחת` («debajo», hebreo), `bóng` (pelota, vietnamita), `ममी` (mamá,
+  hindi) y términos neutros de orientación (`лесбиянка`, `homosexual`,
+  `समलैंगिक`, `게이`…), de nacionalidad o de raza (`maďar`, `黒人`, `흑인`).
+  `hawara` (swahili) disparaba la fusión con «Hawa» + «Rashidi».
+- **Vietnamita: `đ` se plegaba a `d`**, así que «Dần» (nombre propio)
+  coincidía con «đần» (tonto). Ahora `đ` es letra propia, como `ă â ê ô`.
 - **Un término presente en varios idiomas emparentados se contaba dos
   veces** en `$reviewer->related()->validate()`. La deduplicación usaba como
   clave la posición del hallazgo en la lista de cada idioma, que se corre
