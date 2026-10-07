@@ -10,13 +10,16 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`document-formats/`](document-formats/) | Base de datos de formatos de documento y papel por país. |
 | [`marketing/`](marketing/) | Frases y textos de marketing para un proyecto de genealogía: lemas, eslóganes, redes sociales y correo. |
 | [`phone-directory/`](phone-directory/) | Parser de directorios telefónicos históricos (6 idiomas) para registros genealógicos. |
+| [`psychology-and-marketing/`](psychology-and-marketing/) | Guía de psicología humana y neuromarketing ético para diseñar productos sin violar la privacidad del usuario. Solo documentos, sin código ni CI. |
 | [`sistema-nuevo/`](sistema-nuevo/) | Backoffice para revisar la actividad de un usuario contra el promedio de su universo comparable (PHP + Java + JS). |
 | [`cobros-ingresos-funnels/`](cobros-ingresos-funnels/) | Panel web de cobros, ingresos y funnel de conversión: boletas, pagos, clientes, cohortes y auditoría (PHP + PostgreSQL). |
 | [`vps-setup/`](vps-setup/) | Scripts para configurar desde cero un VPS Ubuntu (Nginx, PHP, Python, PostgreSQL, SSL). |
 | [`landing-page/`](landing-page/) | Landing page estática que despliegan los scripts de `vps-setup/`. |
 
-Cada carpeta tiene su propio código, tests y README con instrucciones de instalación y uso
-(salvo `landing-page/`, que es un solo archivo). La única dependencia entre proyectos es:
+Cada carpeta tiene su propio README con instrucciones de instalación y uso. La mayoría tiene
+también su propio código y tests; `landing-page/` es un solo archivo, y `marketing/` y
+`psychology-and-marketing/` son solo texto e imágenes, sin código ni CI. La única dependencia
+entre proyectos es:
 **`phone-directory/` requiere `defamatory-content-review/`** (usa sus clases de plegado de
 acentos y claves fonéticas) — su `composer.json` la declara como dependencia Composer
 (`lol-protocol/defamatory-content-review`, repositorio `path` a `../defamatory-content-review`),
@@ -50,10 +53,13 @@ proyecto.
 
 ## CI/CD
 
-`.github/workflows/tests.yml` tiene un job por proyecto:
+`.github/workflows/tests.yml` (nombre interno del workflow: "Pruebas") tiene un job por proyecto:
 - `phpunit`: tests, PHPStan y benchmark de `defamatory-content-review/`.
 - `phone-directory`: tests de `phone-directory/` (incluidos los ejemplos) contra SQLite y PostgreSQL, y el benchmark.
 - `phone-directory-ports`: tests de los ports de `phone-directory/` a Python y Java.
+- `url-routing`: tests de `url-routing/` contra SQLite y PostgreSQL, y que sus migraciones corran limpias en PostgreSQL.
+- `document-formats`: tests en Node de `document-formats/`.
+- `document-formats-database`: importa `document-formats/` a MySQL (dos veces, para comprobar que no duplica filas) y lo valida contra los CSV.
 - `web-animations`: prueba de humo de las animaciones.
 
 `sistema-nuevo/`, `vps-setup/` y `cobros-ingresos-funnels/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml` y `pruebas-cobros-ingresos-funnels.yml`).
