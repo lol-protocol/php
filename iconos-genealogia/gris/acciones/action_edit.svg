@@ -34,10 +34,10 @@
 
   <!-- Punta del lápiz -->
   <polygon points="45,18 48,20 43,23" fill="#000" opacity="0.5"/>
-  <polygon points="44,18 46,20 43,22" fill="#FFD700"/>
+  <polygon points="44,18 46,20 43,22" fill="#CACACA"/>
 
   <!-- Goma de borrar -->
-  <rect x="17" y="46" width="4" height="4" fill="#FFB6C1" stroke="#4A4A4A" stroke-width="0.5" rx="0.5"/>
+  <rect x="17" y="46" width="4" height="4" fill="#CDCDCD" stroke="#4A4A4A" stroke-width="0.5" rx="0.5"/>
 
   <!-- Brillo en el lápiz -->
   <line x1="20" y1="44" x2="42" y2="20" stroke="#B0B0B0" stroke-width="1" opacity="0.4"/>

@@ -7,14 +7,10 @@
       <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
     </linearGradient>
   </defs>
-
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <circle cx="32" cy="18" r="6" fill="#EC4899" stroke="#BE185D" stroke-width="1.5"/>
   <path d="M 24 32 L 29 30 L 39 30 L 44 32 L 43 44 L 25 44 Z"
         fill="#F472B6" stroke="#BE185D" stroke-width="1.5" filter="url(#s_prima)"/>
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
   <line x1="28" y1="42" x2="36" y2="42" stroke="#EC4899" stroke-width="1" opacity="0.5"/>
   </svg>

@@ -6,7 +6,7 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-        fill="#E0E7FF" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_ciencia_ficcion)"/>
+        fill="#E8E8E8" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_ciencia_ficcion)"/>
   <!-- Planeta/estrella -->
   <circle cx="28" cy="28" r="4" fill="none" stroke="#8B8B8B" stroke-width="1.5"/>
   <circle cx="36" cy="32" r="2" fill="#8B8B8B" opacity="0.6"/>

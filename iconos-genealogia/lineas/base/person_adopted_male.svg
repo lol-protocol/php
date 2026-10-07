@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <ns0:defs>
-    <ns0:filter id="s_adoptado"><ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" /></ns0:filter>
-    <ns0:linearGradient id="g_adoptado" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
-    </ns0:linearGradient>
-  </ns0:defs>
-  <ns0:ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="s_adoptado"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" /></filter>
+    <linearGradient id="g_adoptado" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
 
-  <ns0:circle cx="32" cy="16" r="7" fill="none" stroke="#047857" stroke-width="1.5" />
-  <ns0:path d="M 20 30 L 26 28 L 42 28 L 48 30 L 46 44 L 24 44 Z" fill="none" stroke="#047857" stroke-width="1.5" filter="url(#s_adoptado)" />
-  <ns0:circle cx="32" cy="20" r="3" fill="none" stroke="#10B981" stroke-width="1.5" opacity="0.6" />
-  </ns0:svg>
+  <circle cx="32" cy="16" r="7" fill="none" stroke="#047857" stroke-width="1.5" />
+  <path d="M 20 30 L 26 28 L 42 28 L 48 30 L 46 44 L 24 44 Z" fill="none" stroke="#047857" stroke-width="1.5" filter="url(#s_adoptado)" />
+  <circle cx="32" cy="20" r="3" fill="none" stroke="#10B981" stroke-width="1.5" opacity="0.6" />
+  </svg>

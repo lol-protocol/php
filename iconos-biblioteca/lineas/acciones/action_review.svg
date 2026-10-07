@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <ns0:defs>
-    <ns0:linearGradient id="grad_resena_1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
-    </ns0:linearGradient>
-    <ns0:linearGradient id="grad_resena_2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
-    </ns0:linearGradient>
-    <ns0:linearGradient id="grad_resena_3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
-    </ns0:linearGradient>
-    <ns0:linearGradient id="grad_resena_4" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
-    </ns0:linearGradient>
-    <ns0:filter id="shadow_resena">
-      <ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
-    </ns0:filter>
-  </ns0:defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="grad_resena_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_resena_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_resena_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_resena_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_resena">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </filter>
+  </defs>
 
   
-  <ns0:ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
 
   
-  <ns0:path d="M 16 18 L 20 16 L 48 16 L 44 18 L 44 38 L 24 38 L 20 44 L 20 38 L 16 38 Z" fill="none" stroke="#BE185D" stroke-width="1.5" filter="url(#shadow_resena)" />
+  <path d="M 16 18 L 20 16 L 48 16 L 44 18 L 44 38 L 24 38 L 20 44 L 20 38 L 16 38 Z" fill="none" stroke="#BE185D" stroke-width="1.5" filter="url(#shadow_resena)" />
 
   
-  <ns0:path d="M 48 16 L 52 14 L 52 36 L 48 38 L 44 38 L 44 36 Z" fill="none" opacity="0.25" stroke="#4B5563" stroke-width="1.5" />
+  <path d="M 48 16 L 52 14 L 52 36 L 48 38 L 44 38 L 44 36 Z" fill="none" opacity="0.25" stroke="#4B5563" stroke-width="1.5" />
 
   
-  <ns0:line x1="22" y1="24" x2="42" y2="24" stroke="#F472B6" stroke-width="1" opacity="0.7" />
-  <ns0:line x1="22" y1="28" x2="42" y2="28" stroke="#F472B6" stroke-width="1" opacity="0.7" />
-  <ns0:line x1="22" y1="32" x2="38" y2="32" stroke="#F472B6" stroke-width="1" opacity="0.7" />
+  <line x1="22" y1="24" x2="42" y2="24" stroke="#F472B6" stroke-width="1" opacity="0.7" />
+  <line x1="22" y1="28" x2="42" y2="28" stroke="#F472B6" stroke-width="1" opacity="0.7" />
+  <line x1="22" y1="32" x2="38" y2="32" stroke="#F472B6" stroke-width="1" opacity="0.7" />
 
   
-  <ns0:circle cx="20" cy="48" r="1.5" fill="none" stroke="#4B5563" stroke-width="1.5" />
-  </ns0:svg>
+  <circle cx="20" cy="48" r="1.5" fill="none" stroke="#4B5563" stroke-width="1.5" />
+  </svg>

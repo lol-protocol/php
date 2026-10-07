@@ -19,7 +19,6 @@
   </defs>
 
   <!-- Sombra -->
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="16" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Hombre izquierda -->

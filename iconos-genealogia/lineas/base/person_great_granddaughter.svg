@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <ns0:defs><ns0:filter id="s_bisnieta"><ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" /></ns0:filter></ns0:defs>
-  <ns0:ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
-      <ns0:circle cx="32" cy="20" r="5" fill="none" stroke="#BE185D" stroke-width="1.5" />
-      <ns0:path d="M 26 34 L 29 32 L 39 32 L 42 34 L 41 44 L 27 44 Z" fill="none" stroke="#BE185D" stroke-width="1.5" filter="url(#s_bisnieta)" />
-    </ns0:svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs><filter id="s_bisnieta"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" /></filter></defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+      <circle cx="32" cy="20" r="5" fill="none" stroke="#BE185D" stroke-width="1.5" />
+      <path d="M 26 34 L 29 32 L 39 32 L 42 34 L 41 44 L 27 44 Z" fill="none" stroke="#BE185D" stroke-width="1.5" filter="url(#s_bisnieta)" />
+    </svg>

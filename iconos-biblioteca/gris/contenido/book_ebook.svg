@@ -27,7 +27,7 @@
 
   <!-- Marco del dispositivo 2.5D -->
   <path d="M 16 18 L 20 16 L 48 16 L 44 18 L 44 48 L 20 50 L 16 48 Z"
-        fill="#1F2937" stroke="#000" stroke-width="1.5" filter="url(#shadow_ebook)"/>
+        fill="#282828" stroke="#000" stroke-width="1.5" filter="url(#shadow_ebook)"/>
 
   <!-- Costado del dispositivo -->
   <path d="M 48 16 L 52 14 L 52 46 L 48 48 Z"

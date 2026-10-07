@@ -26,14 +26,14 @@
   <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Círculo de estado (rojo) 2.5D -->
-  <circle cx="32" cy="32" r="13" fill="#EF4444" stroke="#7F1D1D" stroke-width="1.5" filter="url(#shadow_prestado)"/>
+  <circle cx="32" cy="32" r="13" fill="#777777" stroke="#3A3A3A" stroke-width="1.5" filter="url(#shadow_prestado)"/>
 
   <!-- Costado -->
   <path d="M 45 32 A 13 13 0 0 0 44 38"
-        fill="none" stroke="#7F1D1D" stroke-width="1.5" opacity="0.3"/>
+        fill="none" stroke="#3A3A3A" stroke-width="1.5" opacity="0.3"/>
 
   <!-- Brillo -->
-  <ellipse cx="27" cy="26" rx="5" ry="4" fill="#FCA5A5" opacity="0.3"/>
+  <ellipse cx="27" cy="26" rx="5" ry="4" fill="#BFBFBF" opacity="0.3"/>
 
   <!-- X (no disponible) -->
   <line x1="24" y1="24" x2="40" y2="40" stroke="#FFF" stroke-width="2.5" stroke-linecap="round"/>

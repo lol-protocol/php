@@ -10,7 +10,6 @@
     </linearGradient>
   </defs>
 
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="12" ry="3" fill="#000" opacity="0.15"/>
   <circle cx="32" cy="20" r="7" fill="#F59E0B" stroke="#1E40AF" stroke-width="1.5"/>
   <path d="M 22 30 L 28 28 L 42 28 L 48 30 L 46 44 L 24 44 Z"

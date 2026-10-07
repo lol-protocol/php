@@ -13,5 +13,5 @@
   <!-- Badajo -->
   <ellipse cx="32" cy="46" rx="3" ry="2" fill="#7A7A7A"/>
   <!-- Punto de notificación -->
-  <circle cx="46" cy="22" r="3" fill="#EF4444" stroke="#FFF" stroke-width="1"/>
+  <circle cx="46" cy="22" r="3" fill="#777777" stroke="#FFF" stroke-width="1"/>
   </svg>

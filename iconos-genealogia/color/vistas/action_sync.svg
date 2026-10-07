@@ -3,8 +3,6 @@
   <defs>
     <filter id="s_sincronizar"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter>
   </defs>
-
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   
     <circle cx="32" cy="32" r="12" fill="none" stroke="#10B981" stroke-width="2"/>
@@ -12,8 +10,6 @@
           fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
     <polygon points="42,32 44,30 44,34" fill="#10B981"/>
     <path d="M 42 32 Q 40 44 32 44 Q 24 44 22 32"
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
           fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
     
 </svg>

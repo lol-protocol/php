@@ -19,7 +19,6 @@
   </defs>
 
   <!-- Sombra -->
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="12" ry="3" fill="#000" opacity="0.15"/>
 
   <!-- Lápiz 2.5D -->
@@ -29,8 +28,6 @@
 
   <!-- Costado del lápiz (profundidad) -->
   <path d="M 43 18 L 45 18 L 46 19 L 44 19 Z"
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#047857" opacity="0.3"/>
   <path d="M 20 48 L 22 49 L 45 19 L 43 18 Z"
         fill="#047857" opacity="0.2"/>
@@ -43,7 +40,5 @@
   <rect x="17" y="46" width="4" height="4" fill="#FFB6C1" stroke="#BE185D" stroke-width="0.5" rx="0.5"/>
 
   <!-- Brillo en el lápiz -->
-
-  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="20" y1="44" x2="42" y2="20" stroke="#34D399" stroke-width="1" opacity="0.4"/>
   </svg>

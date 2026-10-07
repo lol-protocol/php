@@ -6,10 +6,10 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-        fill="#FEE2E2" stroke="#91251E" stroke-width="1.5" filter="url(#s_idiomas)"/>
+        fill="#EAEAEA" stroke="#444444" stroke-width="1.5" filter="url(#s_idiomas)"/>
   <!-- Letras multilingües -->
-  <text x="25" y="28" font-size="6" fill="#91251E" font-weight="bold">A</text>
-  <text x="31" y="28" font-size="6" fill="#91251E" font-weight="bold">日</text>
-  <text x="37" y="28" font-size="6" fill="#91251E" font-weight="bold">α</text>
+  <text x="25" y="28" font-size="6" fill="#444444" font-weight="bold">A</text>
+  <text x="31" y="28" font-size="6" fill="#444444" font-weight="bold">日</text>
+  <text x="37" y="28" font-size="6" fill="#444444" font-weight="bold">α</text>
 
 </svg>

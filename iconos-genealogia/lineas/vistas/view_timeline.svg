@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <ns0:defs>
-    <ns0:filter id="shadow_timeline">
-      <ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
-    </ns0:filter>
-    <ns0:linearGradient id="grad_timeline" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
-    </ns0:linearGradient>
-  </ns0:defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="shadow_timeline">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </filter>
+    <linearGradient id="grad_timeline" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+  </defs>
 
-  <ns0:ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
-  <ns0:circle cx="32" cy="20" r="3" fill="none" stroke="#047857" stroke-width="1" />
-  <ns0:circle cx="32" cy="32" r="3" fill="none" stroke="#047857" stroke-width="1" />
-  <ns0:circle cx="32" cy="44" r="3" fill="none" stroke="#047857" stroke-width="1" />
-  <ns0:line x1="32" y1="23" x2="32" y2="29" stroke="#10B981" stroke-width="2" />
-  <ns0:line x1="32" y1="35" x2="32" y2="41" stroke="#10B981" stroke-width="2" />
-  <ns0:text x="38" y="22" font-size="8" fill="none">1990</ns0:text>
-  <ns0:text x="38" y="34" font-size="8" fill="none">2010</ns0:text>
-  <ns0:text x="38" y="46" font-size="8" fill="none">2030</ns0:text>
-  </ns0:svg>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+  <circle cx="32" cy="20" r="3" fill="none" stroke="#047857" stroke-width="1" />
+  <circle cx="32" cy="32" r="3" fill="none" stroke="#047857" stroke-width="1" />
+  <circle cx="32" cy="44" r="3" fill="none" stroke="#047857" stroke-width="1" />
+  <line x1="32" y1="23" x2="32" y2="29" stroke="#10B981" stroke-width="2" />
+  <line x1="32" y1="35" x2="32" y2="41" stroke="#10B981" stroke-width="2" />
+  <text x="38" y="22" font-size="8" fill="#4B5563">1990</text>
+  <text x="38" y="34" font-size="8" fill="#4B5563">2010</text>
+  <text x="38" y="46" font-size="8" fill="#4B5563">2030</text>
+  </svg>

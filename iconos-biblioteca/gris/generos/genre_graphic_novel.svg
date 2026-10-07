@@ -6,7 +6,7 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-        fill="#E8D5C4" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_novela_grafica)"/>
+        fill="#D9D9D9" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_novela_grafica)"/>
   <rect x="24" y="22" width="16" height="12" fill="#FFF" stroke="#333" stroke-width="0.8" opacity="0.8"/>
   <line x1="24" y1="28" x2="40" y2="28" stroke="#333" stroke-width="0.5" opacity="0.6"/>
   <line x1="24" y1="34" x2="40" y2="34" stroke="#333" stroke-width="0.5" opacity="0.6"/>

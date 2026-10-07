@@ -19,7 +19,6 @@
   </defs>
 
   <!-- Sombra -->
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="14" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Círculo base 2.5D -->
@@ -27,8 +26,6 @@
 
   <!-- Costado del círculo (profundidad) -->
   <path d="M 45 32 A 13 13 0 0 0 44 38"
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="none" stroke="#047857" stroke-width="1.5" opacity="0.3"/>
 
   <!-- Brillo (reflejo) -->
@@ -36,8 +33,6 @@
 
   <!-- Signo + -->
   <!-- Línea vertical -->
-
-  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="32" y1="24" x2="32" y2="40" stroke="#FFF" stroke-width="2.5" stroke-linecap="round"/>
 
   <!-- Línea horizontal -->

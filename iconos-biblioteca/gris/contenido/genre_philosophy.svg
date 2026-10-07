@@ -6,7 +6,7 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-        fill="#E9D5FF" stroke="#5A5A5A" stroke-width="1.5" filter="url(#s_filosofia)"/>
+        fill="#E0E0E0" stroke="#5A5A5A" stroke-width="1.5" filter="url(#s_filosofia)"/>
   <!-- Símbolo de reflexión -->
   <circle cx="32" cy="26" r="2" fill="#5A5A5A"/>
   <path d="M 32 28 Q 28 32 32 36" fill="none" stroke="#5A5A5A" stroke-width="1.5" stroke-linecap="round"/>

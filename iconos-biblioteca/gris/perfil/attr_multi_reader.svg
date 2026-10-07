@@ -10,7 +10,7 @@
         fill="#8B8B8B" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_multi_lector)"/>
   <!-- Segundo libro -->
   <path d="M 28 24 L 32 22 L 44 22 L 40 24 L 40 42 L 32 44 L 28 42 Z"
-        fill="#8B6914" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_multi_lector)"/>
+        fill="#696969" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_multi_lector)"/>
   <!-- Indicador de lector activo -->
   <circle cx="48" cy="28" r="4" fill="#8B8B8B" stroke="#4A4A4A" stroke-width="1"/>
 

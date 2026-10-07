@@ -8,7 +8,7 @@
 
   <ellipse cx="32" cy="55" rx="11" ry="4" fill="#000" opacity="0.15"/>
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 48 L 22 50 L 18 48 Z"
-        fill="#FEE2E2" stroke="#4A4A4A" stroke-width="1.5" filter="url(#shadow_poesia)"/>
+        fill="#EAEAEA" stroke="#4A4A4A" stroke-width="1.5" filter="url(#shadow_poesia)"/>
   <path d="M 46 16 L 50 14 L 50 46 L 46 48 Z"
         fill="#4A4A4A" opacity="0.25"/>
   <!-- Símbolo poético: pluma -->

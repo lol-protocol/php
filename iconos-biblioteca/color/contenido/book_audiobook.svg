@@ -23,7 +23,6 @@
   </defs>
 
   <!-- Sombra -->
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Banda superior de auriculares 2.5D -->
@@ -32,13 +31,9 @@
 
   <!-- Lado izquierdo de banda -->
   <path d="M 18 20 Q 32 12 46 20"
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         stroke="#4F46E5" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.3"/>
 
   <!-- Oreja izquierda - Auricular 2.5D -->
-
-  <!-- ============ BODY: MAIN FIGURE ============ -->
   <circle cx="18" cy="32" r="6" fill="url(#grad_audiobook_2)" stroke="#4F46E5" stroke-width="1.5"/>
   <!-- Costado auricular -->
   <path d="M 24 32 A 6 6 0 0 0 23 37"

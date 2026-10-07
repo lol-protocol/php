@@ -23,7 +23,6 @@
   </defs>
 
   <!-- Sombra -->
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Libro con flecha 2.5D -->
@@ -33,13 +32,9 @@
 
   <!-- Costado del libro -->
   <path d="M 38 20 L 42 18 L 42 40 L 38 42 Z"
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#654321" opacity="0.3"/>
 
   <!-- Flecha de descarga 2.5D -->
-
-  <!-- ============ BODY: MAIN FIGURE ============ -->
   <!-- Cuerpo circular de descarga -->
   <circle cx="40" cy="28" r="8" fill="url(#grad_descargar_libro_2)" stroke="#4F46E5" stroke-width="1.5"/>
   <!-- Costado círculo -->

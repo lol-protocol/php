@@ -23,7 +23,6 @@
   </defs>
 
   <!-- Sombra -->
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Cabeza de usuario 2.5D -->
@@ -31,14 +30,11 @@
 
   <!-- Costado de la cabeza -->
   <path d="M 41 20 A 9 9 0 0 0 40 26"
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="none" stroke="#4F46E5" stroke-width="1.5" opacity="0.3"/>
 
   <!-- Brillo en cabeza -->
   <ellipse cx="28" cy="15" rx="4" ry="3.5" fill="#818CF8" opacity="0.3"/>
 
-  <!-- ============ BODY: MAIN FIGURE ============ -->
   <!-- Cuerpo de usuario 2.5D -->
   <path d="M 20 30 L 24 28 L 40 28 L 44 30 L 43 46 L 21 46 Z"
         fill="url(#grad_perfil_3)" stroke="#BE185D" stroke-width="1.5" filter="url(#shadow_perfil)"/>

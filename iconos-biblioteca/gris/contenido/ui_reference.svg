@@ -8,7 +8,7 @@
 
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   <path d="M 18 16 L 22 14 L 46 14 L 42 16 L 42 50 L 22 52 L 18 50 Z"
-        fill="#FEF3C7" stroke="#7A7A7A" stroke-width="1.5" filter="url(#shadow_referencia)"/>
+        fill="#F1F1F1" stroke="#7A7A7A" stroke-width="1.5" filter="url(#shadow_referencia)"/>
   <path d="M 46 14 L 50 12 L 50 48 L 46 50 Z"
         fill="#7A7A7A" opacity="0.25"/>
   <!-- Índice alfabético: A-Z -->

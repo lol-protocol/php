@@ -6,7 +6,6 @@
     </filter>
   </defs>
 
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   <!-- Campana -->
   <path d="M 20 26 Q 20 20 32 18 Q 44 20 44 26 L 44 38 Q 44 42 40 44 L 24 44 Q 20 42 20 38 Z"

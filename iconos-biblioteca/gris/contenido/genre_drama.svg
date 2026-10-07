@@ -6,7 +6,7 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-        fill="#1F2937" stroke="#000" stroke-width="1.5" filter="url(#s_drama)"/>
+        fill="#282828" stroke="#000" stroke-width="1.5" filter="url(#s_drama)"/>
   <!-- Máscaras de teatro -->
   <circle cx="28" cy="28" r="3" fill="none" stroke="#FFF" stroke-width="1.5"/>
   <circle cx="36" cy="28" r="3" fill="none" stroke="#FFF" stroke-width="1.5"/>

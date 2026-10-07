@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <ns0:defs>
-    <ns0:linearGradient id="grad_descargar_libro_1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
-    </ns0:linearGradient>
-    <ns0:linearGradient id="grad_descargar_libro_2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
-    </ns0:linearGradient>
-    <ns0:linearGradient id="grad_descargar_libro_3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
-    </ns0:linearGradient>
-    <ns0:linearGradient id="grad_descargar_libro_4" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
-    </ns0:linearGradient>
-    <ns0:filter id="shadow_descargar_libro">
-      <ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
-    </ns0:filter>
-  </ns0:defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="grad_descargar_libro_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_descargar_libro_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_descargar_libro_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad_descargar_libro_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow_descargar_libro">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </filter>
+  </defs>
 
   
-  <ns0:ellipse cx="32" cy="55" rx="13" ry="4" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
-
-  
-  
-  <ns0:path d="M 18 22 L 22 20 L 38 20 L 34 22 L 34 42 L 22 44 L 18 42 Z" fill="none" stroke="#654321" stroke-width="1.5" filter="url(#shadow_descargar_libro)" />
-
-  
-  <ns0:path d="M 38 20 L 42 18 L 42 40 L 38 42 Z" fill="none" opacity="0.3" stroke="#4B5563" stroke-width="1.5" />
+  <ellipse cx="32" cy="55" rx="13" ry="4" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
 
   
   
-  <ns0:circle cx="40" cy="28" r="8" fill="none" stroke="#4F46E5" stroke-width="1.5" />
-  
-  <ns0:path d="M 48 28 A 8 8 0 0 0 47 32" fill="none" stroke="#4F46E5" stroke-width="1.5" opacity="0.3" />
+  <path d="M 18 22 L 22 20 L 38 20 L 34 22 L 34 42 L 22 44 L 18 42 Z" fill="none" stroke="#654321" stroke-width="1.5" filter="url(#shadow_descargar_libro)" />
 
   
-  <ns0:line x1="40" y1="22" x2="40" y2="32" stroke="#FFF" stroke-width="2" stroke-linecap="round" />
-  <ns0:polygon points="40,32 37,28 43,28" fill="none" stroke="#4B5563" stroke-width="1.5" />
-  </ns0:svg>
+  <path d="M 38 20 L 42 18 L 42 40 L 38 42 Z" fill="none" opacity="0.3" stroke="#4B5563" stroke-width="1.5" />
+
+  
+  
+  <circle cx="40" cy="28" r="8" fill="none" stroke="#4F46E5" stroke-width="1.5" />
+  
+  <path d="M 48 28 A 8 8 0 0 0 47 32" fill="none" stroke="#4F46E5" stroke-width="1.5" opacity="0.3" />
+
+  
+  <line x1="40" y1="22" x2="40" y2="32" stroke="#FFF" stroke-width="2" stroke-linecap="round" />
+  <polygon points="40,32 37,28 43,28" fill="none" stroke="#4B5563" stroke-width="1.5" />
+  </svg>

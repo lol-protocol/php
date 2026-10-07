@@ -23,7 +23,6 @@
   </defs>
 
   <!-- Sombra -->
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Marco del dispositivo 2.5D -->
@@ -32,8 +31,6 @@
 
   <!-- Costado del dispositivo -->
   <path d="M 48 16 L 52 14 L 52 46 L 48 48 Z"
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#000" opacity="0.3"/>
 
   <!-- Pantalla (interior) 2.5D -->
@@ -41,15 +38,11 @@
         fill="url(#grad_ebook_2)" stroke="#4F46E5" stroke-width="1"/>
 
   <!-- Texto en pantalla (líneas) -->
-
-  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="24" y1="25" x2="40" y2="25" stroke="#FFF" stroke-width="1" opacity="0.8"/>
   <line x1="24" y1="30" x2="40" y2="30" stroke="#FFF" stroke-width="0.8" opacity="0.7"/>
   <line x1="24" y1="35" x2="38" y2="35" stroke="#FFF" stroke-width="0.8" opacity="0.7"/>
   <line x1="24" y1="40" x2="36" y2="40" stroke="#FFF" stroke-width="0.8" opacity="0.7"/>
 
   <!-- Botón home -->
-
-  <!-- ============ BODY: MAIN FIGURE ============ -->
   <circle cx="32" cy="50" r="2" fill="#D1D5DB" stroke="#FFF" stroke-width="0.5"/>
   </svg>

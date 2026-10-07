@@ -15,5 +15,5 @@
   <circle cx="27" cy="29" r="3" fill="#FFF" stroke="#7A7A7A" stroke-width="0.8"/>
   <path d="M 36 36 L 40 32 L 44 36 L 44 40 L 36 40 Z"
         fill="#FFF" stroke="#7A7A7A" stroke-width="0.8"/>
-  <rect x="38" y="37" width="2" height="3" fill="#87CEEB"/>
+  <rect x="38" y="37" width="2" height="3" fill="#BCBCBC"/>
   </svg>

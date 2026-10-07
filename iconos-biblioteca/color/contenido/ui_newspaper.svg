@@ -6,19 +6,14 @@
     </filter>
   </defs>
 
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="12" ry="4" fill="#000" opacity="0.15"/>
   <path d="M 16 16 L 20 14 L 48 14 L 44 16 L 44 48 L 20 50 L 16 48 Z"
         fill="#F3F4F6" stroke="#6B7280" stroke-width="1.5" filter="url(#shadow_periodico)"/>
   <path d="M 48 14 L 52 12 L 52 46 L 48 48 Z"
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="#6B7280" opacity="0.2"/>
   <!-- Titular -->
   <text x="30" y="26" font-size="6" font-weight="bold" fill="#000">NOTICIAS</text>
   <!-- Columnas -->
-
-  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="20" y1="30" x2="44" y2="30" stroke="#6B7280" stroke-width="0.8" opacity="0.6"/>
   <line x1="20" y1="35" x2="32" y2="35" stroke="#6B7280" stroke-width="0.8" opacity="0.6"/>
   <line x1="20" y1="40" x2="44" y2="40" stroke="#6B7280" stroke-width="0.8" opacity="0.6"/>

@@ -6,7 +6,7 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-        fill="#FEF3C7" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_edicion_lujo)"/>
+        fill="#F1F1F1" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_edicion_lujo)"/>
   <!-- Decoración de lujo -->
   <polygon points="32,18 34,22 38,22 35,25 36,29 32,26 28,29 29,25 26,22 30,22" fill="#888888"/>
   </svg>

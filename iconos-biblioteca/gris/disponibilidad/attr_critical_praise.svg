@@ -6,7 +6,7 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   
     <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-          fill="#DBEAFE" stroke="#6B6B6B" stroke-width="1.5" filter="url(#s_critica_positiva)"/>
+          fill="#E8E8E8" stroke="#6B6B6B" stroke-width="1.5" filter="url(#s_critica_positiva)"/>
     <circle cx="42" cy="18" r="4" fill="#8B8B8B" stroke="#4A4A4A" stroke-width="1"/>
     <text x="42" y="21" font-size="6" fill="#FFF" font-weight="bold" text-anchor="middle">+</text>
     

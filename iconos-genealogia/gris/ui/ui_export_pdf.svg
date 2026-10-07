@@ -12,8 +12,8 @@
 
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   <path d="M 18 20 L 22 18 L 44 18 L 40 20 L 40 44 L 24 46 L 18 44 Z"
-        fill="#EF4444" stroke="#7F1D1D" stroke-width="1.5" filter="url(#shadow_exportar_pdf)"/>
+        fill="#777777" stroke="#3A3A3A" stroke-width="1.5" filter="url(#shadow_exportar_pdf)"/>
   <path d="M 44 18 L 48 16 L 48 42 L 44 44 Z"
-        fill="#7F1D1D" opacity="0.3"/>
+        fill="#3A3A3A" opacity="0.3"/>
   <text x="29" y="33" font-size="12" font-weight="bold" fill="#FFF">PDF</text>
   </svg>

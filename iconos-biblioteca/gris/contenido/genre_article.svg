@@ -8,7 +8,7 @@
 
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 48 L 22 50 L 18 48 Z"
-        fill="#E0E7FF" stroke="#4A4A4A" stroke-width="1.5" filter="url(#shadow_articulo)"/>
+        fill="#E8E8E8" stroke="#4A4A4A" stroke-width="1.5" filter="url(#shadow_articulo)"/>
   <path d="M 46 16 L 50 14 L 50 46 L 46 48 Z"
         fill="#4A4A4A" opacity="0.2"/>
   <!-- Título -->

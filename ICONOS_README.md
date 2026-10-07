@@ -1,277 +1,85 @@
-# 🎨 Colección de Iconos SVG 2.5D
+# Iconos SVG 2.5D: genealogía y biblioteca
 
-Dos sets completos de **100 iconos en estilo 2.5D** (isométrico con profundidad), organizados en carpetas separadas para fácil integración en proyectos.
+Dos sets de iconos SVG de 64x64 en estilo 2.5D, cada uno en tres variantes. Cada set está en su propia carpeta para poder copiarlo por separado a un proyecto.
 
----
+| Set | Carpeta | Iconos | Archivos (3 variantes) |
+|---|---|---|---|
+| Árbol genealógico | `iconos-genealogia/` | 150 | 450 |
+| Biblioteca virtual | `iconos-biblioteca/` | 149 | 447 |
 
-## 📊 Estadísticas Finales
+Para verlos todos, abre `galeria-iconos.html` desde la raíz del repositorio.
 
-```
-🌳 ÁRBOL GENEALÓGICO:    46 iconos (Carpeta: iconos-genealogia)
-📚 BIBLIOTECA VIRTUAL:   54 iconos (Carpeta: iconos-biblioteca)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✨ TOTAL:               100 ICONOS 2.5D
-```
+## Variantes
 
----
+- `color/`: versión original, con gradientes y sombra.
+- `lineas/`: solo contornos, sin rellenos. Las etiquetas de texto se dibujan en gris `#4B5563`.
+- `gris/`: el mismo dibujo en grises neutros que conservan el volumen.
 
-## 🌳 Árbol Genealógico (46 iconos)
+Las tres variantes tienen los mismos nombres y las mismas subcarpetas.
 
-### Base (12 iconos)
-Personas fundamentales con estados civiles:
-- `padre.svg` - Figura masculina adulta
-- `madre.svg` - Figura femenina adulta
-- `hijo.svg` - Niño (proporción cabeza mayor)
-- `hija.svg` - Niña
-- `soltero.svg` - Estado civil sin pareja
-- `casado.svg` - Estado civil matrimonio
-- `divorciado.svg` - Estado civil separación
-- `viudo.svg` - Estado civil viudez
-- `anonimo_hombre.svg` - Persona anónima (genérico)
-- `anonima_mujer.svg` - Persona anónima femenina
-- `hombre_anonymo.svg` - Figura con signos de interrogación
-- `gemelos.svg` - Dos hermanos idénticos conectados
-
-### Relaciones (7 iconos)
-Conexiones familiares y románticas:
-- `hermano.svg` - Línea horizontal de conexión
-- `hermana.svg` - Hermana con distintivos
-- `abuelo.svg` - Persona mayor con bastón
-- `abuela.svg` - Abuela con cabello gris
-- `pareja.svg` - Dos personas unidas
-- `romantico.svg` - Corazón compartido
-- `descendencia.svg` - Árbol simple de generaciones
-
-### Acciones (8 iconos)
-Operaciones sobre el árbol:
-- `anadir.svg` - Botón con signo +
-- `editar.svg` - Lápiz de edición
-- `eliminar.svg` - Botón con X
-- `conectar.svg` - Flecha de vinculación
-- `duplicar.svg` - Copiar persona/rama
-- `filtro.svg` - Embudo de filtrado
-- `imprimir.svg` - Icono de impresora
-- `compartir_arbol.svg` - Personas conectadas
-
-### Vistas (14 iconos)
-Formas de visualizar y navegar:
-- `arbol.svg` - Árbol completo
-- `buscar.svg` - Lupa
-- `zoom_in.svg` - Ampliación
-- `expandir.svg` - Expandir vista
-- `contraer.svg` - Contraer ramas
-- `generaciones.svg` - Múltiples niveles
-- `ascendientes.svg` - Árbol hacia arriba
-- `descendientes.svg` - Árbol hacia abajo
-- `circular.svg` - Vista radial/circular
-- `timeline.svg` - Línea temporal
-- `sincronizar.svg` - Sincronización de cambios
-- Más opciones de navegación
-
-### UI/Utilidad (5 iconos)
-Elementos de interfaz:
-- `descargar.svg` - Descarga de datos
-- `exportar_pdf.svg` - Exportación PDF
-- `exportar_csv.svg` - Exportación CSV
-- `notas.svg` - Bloc de notas
-- `privacidad.svg` - Control de privacidad
-
----
-
-## 📚 Biblioteca Virtual (54 iconos)
-
-### Contenido (14 iconos)
-Tipos de medios y formatos:
-- `libro.svg` - Libro físico cerrado
-- `libro_abierto.svg` - Libro abierto con páginas
-- `ebook.svg` - Dispositivo/tablet
-- `audiobook.svg` - Auriculares
-- `revista.svg` - Publicación periódica
-- `periodico.svg` - Periódico con titulares
-- `manga.svg` - Manga/cómic
-- `articulo.svg` - Artículo académico
-- `poesia.svg` - Verso/poesía
-- `referencia.svg` - Diccionario/referencia
-- `musica.svg` - Libro con notas musicales
-- `mapa.svg` - Atlas/geografía
-- `grafico.svg` - Estadísticas/gráficos
-- `idiomas.svg` - Multilingüe
-
-### Géneros (4 iconos)
-Categorías de contenido:
-- `ficcion.svg` - Novela/relato
-- `no_ficcion.svg` - No ficción/ensayo
-- `infantil.svg` - Libro infantil
-- `juvenil.svg` - Literatura juvenil
-
-### Disponibilidad (15 iconos)
-Estado del recurso:
-- `disponible.svg` - En stock ✓
-- `reservado.svg` - En espera ⏰
-- `prestado.svg` - No disponible ✗
-- `nuevo.svg` - Recién llegado NEW
-- `popular.svg` - Trending 🔥
-- `recomendado.svg` - Sugerido ★
-- `bestseller.svg` - Top ventas #1
-- `ediccion_limitada.svg` - Edición especial ED
-- `lanzamiento_proximo.svg` - Próximamente ⏳
-- `serie.svg` - Libro de serie (Pt1, Pt2)
-- `premium.svg` - Acceso exclusivo
-- `no_disponible.svg` - Fuera de catálogo
-- `privado.svg` - Colección privada
-- `publico.svg` - Acceso público
-- `critica_positiva.svg` - Reseña positiva
-
-### Acciones (8 iconos)
-Operaciones del usuario:
-- `favorito.svg` - Corazón/wishlist
-- `calificar.svg` - Estrellas de rating
-- `descargar_libro.svg` - Descarga de archivo
-- `compartir.svg` - Red de usuarios
-- `resena.svg` - Burbuja de opinión
-- `leyendo.svg` - En lectura actual
-- `leido.svg` - Completado ✓
-- `leer_despues.svg` - Marcar para después
-- `todas_conexiones.svg` - Red social
-
-### Navegación (3 iconos)
-Búsqueda y filtrado:
-- `buscar_libro.svg` - Búsqueda de catálogo
-- `filtrar.svg` - Refinar búsqueda
-- `ordenar.svg` - Ordenamiento
-
-### Perfil/Usuario (9 iconos)
-Gestión de cuenta:
-- `perfil.svg` - Avatar de usuario
-- `historial.svg` - Historial de lectura
-- `notificaciones.svg` - Campana de notificaciones
-- `biblioteca_personal.svg` - Estantería personal
-- `coleccion.svg` - Múltiples libros agrupados
-- `donacion.svg` - Regalo/donación
-- `multi_lector.svg` - Usuario activo
-- `controversia.svg` - Libro controversial
-- `traduccion.svg` - Disponible en idiomas
-
----
-
-## 🎨 Características del Estilo 2.5D
-
-Cada icono implementa:
-
-✨ **Perspectiva Isométrica**
-- Ángulos de 30-45° para profundidad
-- Líneas de referencia para volumen
-
-🎯 **Gradientes Direccionales**
-- Transición suave de colores
-- Simulación de luz y sombra
-
-💫 **Efectos de Profundidad**
-- Sombras proyectadas (drop shadow)
-- Costados oscurecidos en formas 3D
-- Brillos/reflejos estratégicos
-
-🌈 **Paletas Coherentes**
-- Genealogía: Azul (personas), Rosa (relaciones), Verde (acciones)
-- Biblioteca: Marrón (libros), Índigo (digital), Rosa (acciones)
-
----
-
-## 📦 Estructura de Carpetas
+## Estructura
 
 ```
-iconos-genealogia/
-├── base/               # Personas fundamentales
-├── relaciones/         # Conexiones familiares
-├── acciones/          # Operaciones
-├── vistas/            # Formas de visualizar
-└── ui/                # Elementos de interfaz
+iconos-genealogia/{color,lineas,gris}/
+    acciones/ (8)   base/ (81)   relaciones/ (42)   ui/ (5)   vistas/ (14)
 
-iconos-biblioteca/
-├── contenido/         # Tipos de medios
-├── generos/          # Categorías literarias
-├── disponibilidad/   # Estados de recurso
-├── acciones/         # Operaciones del usuario
-├── navegacion/       # Búsqueda y filtrado
-└── perfil/           # Gestión de cuenta
+iconos-biblioteca/{color,lineas,gris}/
+    acciones/ (11)  contenido/ (102)  disponibilidad/ (18)  generos/ (6)  navegacion/ (3)  perfil/ (9)
 ```
 
----
+Las subcarpetas son el reparto temático inicial y no siempre coinciden con el prefijo del nombre (por ejemplo, hay iconos `action_*` en `vistas/`). Para buscar por tipo de icono, usa el prefijo.
 
-## 🚀 Cómo Usar
+## Nombres
 
-### Integración en HTML
+`<prefijo>_<descripcion>`: minúsculas, ASCII (sin tildes ni ñ), con guion bajo y en inglés.
+
+### Genealogía
+
+| Prefijo | Iconos | Significado | Ejemplo |
+|---|---|---|---|
+| `person_` | 47 | Personas y parentescos | `person_father`, `person_godmother` |
+| `relationship_` | 15 | Vínculos entre personas | `relationship_married` |
+| `state_` | 4 | Estado civil | `state_widowed` |
+| `view_` | 7 | Formas de ver el árbol | `view_tree` |
+| `action_` | 15 | Acciones del usuario | `action_add` |
+| `ui_` | 6 | Elementos de interfaz | `ui_export_pdf` |
+| `person_variant_NNN` | 56 | Marcadores de posición | `person_variant_001` |
+
+### Biblioteca
+
+| Prefijo | Iconos | Significado | Ejemplo |
+|---|---|---|---|
+| `book_` | 13 | Tipos y partes de un libro | `book_ebook` |
+| `genre_` | 30 | Géneros literarios | `genre_romance` |
+| `format_` | 4 | Ediciones y series | `format_series` |
+| `status_` | 13 | Disponibilidad y estado de lectura | `status_available` |
+| `action_` | 10 | Acciones del usuario | `action_rate` |
+| `attr_` | 8 | Atributos de un libro | `attr_premium` |
+| `ui_` | 13 | Elementos de interfaz | `ui_map` |
+| `book_title_NNN` | 58 | Marcadores de posición | `book_title_001` |
+
+## Uso
+
 ```html
-<img src="iconos-genealogia/base/padre.svg" alt="Padre" width="48" height="48">
+<img src="iconos-genealogia/color/base/person_father.svg" alt="Padre" width="48" height="48">
 ```
 
-### En CSS como background
 ```css
-.genealogy-icon {
-  background-image: url('iconos-genealogia/acciones/anadir.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
+.icono-ebook {
+  background: url('iconos-biblioteca/lineas/contenido/book_ebook.svg') center / contain no-repeat;
 }
 ```
 
-### En React/Vue
-```jsx
-import PadreIcon from './iconos-genealogia/base/padre.svg';
-<img src={PadreIcon} alt="Padre" />
-```
+Los `id` internos (gradientes y filtros) son únicos entre iconos, pero las tres variantes de un mismo icono comparten los suyos. Si incrustas el SVG en línea, no pongas dos variantes del mismo icono en la misma página; con `<img>` o CSS no hay problema.
 
-### Personalización
-Los archivos SVG son editables. Cambia colores en:
-- Atributo `fill` para rellenos
-- Atributo `stroke` para bordes
-- `linearGradient` para gradientes
+## Limitaciones conocidas
 
----
+- **Marcadores de posición.** Los 56 `person_variant_NNN` y los 58 `book_title_NNN` repiten 3 formas base cambiando solo el color. Sin ellos quedan 94 iconos con nombre propio en genealogía y 91 en biblioteca.
+- **Formas repetidas con nombre propio.** Algunas parejas comparten dibujo y se distinguen solo por color (por ejemplo `person_niece` y `person_nephew`). Hay cinco iconos `person_unknown_*` para el mismo concepto, y `person_daughter_in_law` tiene un duplicado `_alt`.
+- **Efecto 2.5D.** En muchos iconos se reduce a una sombra proyectada y una cara lateral más oscura; no todos son isométricos estrictos.
+- **Etiquetas de texto.** Algunas (`PDF`, `CSV`) quedan recortadas por el borde del icono.
+- **Ids internos.** Conservan el nombre original en español (por ejemplo `grad_padre_1`), distinto del nombre del archivo.
 
-## 📋 Resolución y Escalado
+## Comprobaciones hechas
 
-- **ViewBox:** 64x64 (recomendado)
-- **Escalable:** 100% (SVG vectorial)
-- **Uso recomendado:** 32px - 128px
-- **DPI:** Independiente (perfect para retina)
-
----
-
-## 🎯 Casos de Uso
-
-### Árbol Genealógico
-- Plataformas de genealogía
-- Aplicaciones de historia familiar
-- Documentación de linajes
-- Proyectos de investigación
-
-### Biblioteca Virtual
-- Plataformas de e-books
-- Sistemas de gestión de bibliotecas
-- Lectores digitales
-- Catálogos de libros online
-
----
-
-## 📝 Licencia
-
-Estos iconos están listos para ser integrados en tus proyectos. 
-Adaptables y personalizables según necesidad.
-
-**Creado:** 2026 | **Estilo:** 2.5D Isométrico | **Formato:** SVG
-
----
-
-## ✅ Checklist de Integración
-
-- [ ] Copiar carpeta `iconos-genealogia` a proyecto
-- [ ] Copiar carpeta `iconos-biblioteca` a proyecto
-- [ ] Verificar rutas de importación
-- [ ] Ajustar tamaños según UI
-- [ ] Personalizar colores si es necesario
-- [ ] Probar en todos los navegadores
-- [ ] Optimizar para web (opcional: converter a webp)
-
----
-
-**¡Listo para integrar en tus proyectos!** 🎉
+Al preparar esta versión se comprobó que los 897 SVG son XML bien formado con `viewBox="0 0 64 64"`, que las tres variantes tienen los mismos archivos, que todos los nombres siguen la convención, que `gris/` no tiene colores cromáticos, que `lineas/` no tiene rellenos y que todos se cargan en Chromium. Todavía no hay una validación automática en el repositorio.

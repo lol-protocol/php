@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <ns0:defs>
-    <ns0:filter id="s_bisabuelo"><ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" /></ns0:filter>
-    <ns0:linearGradient id="g_bisabuelo" x1="0%" y1="0%" x2="100%" y2="100%">
-      <ns0:stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
-      <ns0:stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
-    </ns0:linearGradient>
-  </ns0:defs>
-  <ns0:ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="s_bisabuelo"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" /></filter>
+    <linearGradient id="g_bisabuelo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
 
-  <ns0:circle cx="32" cy="12" r="6" fill="none" stroke="#6B7280" stroke-width="1.5" />
-  <ns0:path d="M 22 26 L 27 24 L 41 24 L 46 26 L 45 42 L 23 42 Z" fill="none" stroke="#6B7280" stroke-width="1.5" filter="url(#s_bisabuelo)" />
-  <ns0:line x1="30" y1="18" x2="30" y2="24" stroke="#6B7280" stroke-width="1" opacity="0.5" />
-  </ns0:svg>
+  <circle cx="32" cy="12" r="6" fill="none" stroke="#6B7280" stroke-width="1.5" />
+  <path d="M 22 26 L 27 24 L 41 24 L 46 26 L 45 42 L 23 42 Z" fill="none" stroke="#6B7280" stroke-width="1.5" filter="url(#s_bisabuelo)" />
+  <line x1="30" y1="18" x2="30" y2="24" stroke="#6B7280" stroke-width="1" opacity="0.5" />
+  </svg>

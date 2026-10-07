@@ -31,11 +31,11 @@
 
   <!-- Página izquierda -->
   <path d="M 14 16 L 18 14 L 30 14 L 26 16 L 26 50 L 18 52 L 14 50 Z"
-        fill="#F5F3FF" stroke="#4A4A4A" stroke-width="1.5" filter="url(#shadow_libro_abierto)"/>
+        fill="#F5F5F5" stroke="#4A4A4A" stroke-width="1.5" filter="url(#shadow_libro_abierto)"/>
 
   <!-- Página derecha -->
   <path d="M 32 14 L 44 12 L 48 14 L 48 50 L 40 52 L 30 50 Z"
-        fill="#F5F3FF" stroke="#4A4A4A" stroke-width="1.5" filter="url(#shadow_libro_abierto)"/>
+        fill="#F5F5F5" stroke="#4A4A4A" stroke-width="1.5" filter="url(#shadow_libro_abierto)"/>
 
   <!-- Costado páginas -->
   <path d="M 44 12 L 48 14 L 48 50 L 44 48 Z"

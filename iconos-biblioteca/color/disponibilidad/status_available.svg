@@ -23,7 +23,6 @@
   </defs>
 
   <!-- Sombra -->
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Círculo de estado 2.5D -->
@@ -31,8 +30,6 @@
 
   <!-- Costado del círculo -->
   <path d="M 45 32 A 13 13 0 0 0 44 38"
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="none" stroke="#047857" stroke-width="1.5" opacity="0.3"/>
 
   <!-- Brillo -->
@@ -40,7 +37,5 @@
 
   <!-- Check (marca) -->
   <path d="M 22 32 L 28 38 L 42 24"
-
-  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
         stroke="#FFF" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>

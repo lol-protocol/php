@@ -23,7 +23,6 @@
   </defs>
 
   <!-- Sombra -->
-  <!-- ============ SHADOW: BASE SHADOW ============ -->
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <!-- Reloj/historial 2.5D -->
@@ -31,22 +30,16 @@
 
   <!-- Costado del círculo -->
   <path d="M 44 30 A 12 12 0 0 0 43 36"
-
-  <!-- ============ DEPTH: 2.5D EFFECTS ============ -->
         fill="none" stroke="#4F46E5" stroke-width="1.5" opacity="0.3"/>
 
   <!-- Brillo -->
   <ellipse cx="26" cy="24" rx="5" ry="4" fill="#818CF8" opacity="0.3"/>
 
   <!-- Manecillas del reloj -->
-
-  <!-- ============ DETAILS: ACCESSORIES & FEATURES ============ -->
   <line x1="32" y1="22" x2="32" y2="30" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
   <line x1="32" y1="30" x2="38" y2="30" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
 
   <!-- Números (12 y 3) -->
-
-  <!-- ============ BODY: MAIN FIGURE ============ -->
   <circle cx="32" cy="20" r="0.8" fill="#FFF" opacity="0.6"/>
   <circle cx="44" cy="30" r="0.8" fill="#FFF" opacity="0.6"/>
 

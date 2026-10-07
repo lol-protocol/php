@@ -12,5 +12,5 @@
         fill="#8B8B8B" stroke="#4A4A4A" stroke-width="1.5"/>
   <!-- Fuego (popular) -->
   <path d="M 42 14 Q 44 10 46 12 Q 48 8 46 16 Q 47 18 45 20 Q 43 18 42 20 Q 40 18 41 16 Q 39 10 42 14 Z"
-        fill="#FF6B35" stroke="#C41E3A" stroke-width="0.8"/>
+        fill="#919191" stroke="#535353" stroke-width="0.8"/>
   </svg>
