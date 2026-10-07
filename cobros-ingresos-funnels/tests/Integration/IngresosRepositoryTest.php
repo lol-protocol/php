@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Database;
+use App\Repositories\BoletaRepository;
+use App\Repositories\ClienteRepository;
 use App\Repositories\IngresosRepository;
 use App\Repositories\NotaCreditoRepository;
 
@@ -35,6 +37,49 @@ final class IngresosRepositoryTest extends IntegracionTestCase
         )->fetchColumn();
 
         self::assertEqualsWithDelta($sumaIndependiente, $sumaBuckets, 0.05);
+    }
+
+    /**
+     * La cartera se suma en SQL con los mismos tramos que tramoDeAntiguedad()
+     * (los dos salen de la misma lista): una boleta impaga que vence hace N dias
+     * tiene que caer en el tramo que dice esa funcion, bordes incluidos (vence
+     * hoy = al dia; hace 1, 30, 31, 60 y 61 dias).
+     */
+    public function testCadaBoletaImpagaCaeEnElTramoQueDiceTramoDeAntiguedad(): void
+    {
+        $cliente = (new ClienteRepository())->porId(1);
+        self::assertNotNull($cliente, 'este test asume que el cliente #1 existe (lo trae el seed)');
+        $tasa = (float) Database::connection()
+            ->query("SELECT tasa_a_usd FROM monedas WHERE codigo = '{$cliente['moneda_codigo']}'")
+            ->fetchColumn();
+        $repo = new IngresosRepository();
+
+        foreach ([-5, 0, 1, 30, 31, 60, 61, 400] as $diasVencida) {
+            $antes = $repo->carteraAging();
+            (new BoletaRepository())->crear([
+                'cliente_id' => 1,
+                'concepto' => 'Test de tramos de antiguedad',
+                'monto' => 1000,
+                'moneda_codigo' => $cliente['moneda_codigo'],
+                'fecha_emision' => date('Y-m-d', strtotime('-500 days')),
+                'fecha_vencimiento' => date('Y-m-d', strtotime("-{$diasVencida} days")),
+            ]);
+            $despues = $repo->carteraAging();
+
+            $cambios = [];
+            foreach ($antes as $tramo => $total) {
+                if (abs($despues[$tramo] - $total) > 0.005) {
+                    $cambios[$tramo] = $despues[$tramo] - $total;
+                }
+            }
+
+            self::assertSame(
+                [IngresosRepository::tramoDeAntiguedad($diasVencida)],
+                array_keys($cambios),
+                "una boleta que vence hace {$diasVencida} dias tiene que sumar solo en su tramo"
+            );
+            self::assertEqualsWithDelta(1000 * $tasa, reset($cambios), 0.05);
+        }
     }
 
     public function testKpisTasaDeCobranzaEsCoherenteConFacturadoYCobrado(): void

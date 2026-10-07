@@ -21,75 +21,68 @@ final class SegmentacionRepository
         $this->db = Database::connection();
     }
 
-    public function topPorPais(int $limite = 5): array
-    {
-        $stmt = $this->db->prepare(
-            "SELECT p.nombre AS etiqueta,
-                    COUNT(DISTINCT c.id) AS clientes,
-                    COALESCE(SUM(b.monto * m.tasa_a_usd), 0) AS total_facturado
-             FROM clientes c
-             JOIN paises p ON p.codigo = c.pais_codigo
-             JOIN boletas b ON b.cliente_id = c.id AND NOT b.anulada
-             JOIN monedas m ON m.codigo = b.moneda_codigo
-             GROUP BY p.nombre
-             ORDER BY total_facturado DESC
-             LIMIT :limite"
-        );
-        $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
-
-    public function topPorCiudad(int $limite = 5): array
-    {
-        return $this->topPorDimension('c.ciudad', $limite);
-    }
-
-    public function topPorIdioma(int $limite = 5): array
-    {
-        return $this->topPorDimension('c.idioma', $limite);
-    }
-
-    public function topPorGenero(int $limite = 5): array
-    {
-        return $this->topPorDimension('c.genero', $limite);
-    }
-
-    public function topPorRangoEdad(int $limite = 5): array
-    {
-        return $this->topPorDimension(RangoEdad::expresionSql('c.fecha_nacimiento'), $limite);
-    }
-
     /**
-     * Agrupa clientes por una dimension (ciudad, idioma, genero, rango de
-     * edad, etc.) y los ordena por facturacion total en USD, de mayor a menor.
-     * $expresionSql siempre es una expresion fija definida en este archivo,
-     * nunca entrada de usuario.
+     * Las cinco segmentaciones del Dashboard (pais, ciudad, idioma, genero y
+     * rango de edad), cada una con los $limite que mas facturaron en USD, de
+     * mayor a menor, en UNA consulta.
+     *
+     * Antes eran cinco, y cada una recorria todas las boletas de todos los
+     * clientes para sumar lo que facturo cada uno: con 120 mil boletas, 1,6
+     * segundos solo en esto. Ahora se calcula una vez lo que facturo cada
+     * cliente y las cinco agrupaciones parten de ese resultado (285 ms, con los
+     * mismos numeros: cada dimension reparte la misma facturacion y los mismos
+     * clientes, que es lo que comprueba MonedaYSegmentacionTest).
+     *
+     * Los clientes sin boletas vigentes no aparecen: no facturaron. La
+     * etiqueta de cada fila es el valor tal cual esta guardado (el rango de
+     * edad sale de RangoEdad); los titulos que se muestran los pone quien
+     * dibuja.
+     *
+     * @return array<string, list<array{etiqueta: string, clientes: int|string, total_facturado: string}>>
+     *         con las claves 'pais', 'ciudad', 'idioma', 'genero' y 'rango_edad', siempre las cinco
      */
-    private function topPorDimension(string $expresionSql, int $limite): array
+    public function topPorDimensiones(int $limite = 5): array
     {
-        $stmt = $this->db->prepare(
-            "SELECT {$expresionSql} AS etiqueta,
-                    COUNT(DISTINCT c.id) AS clientes,
-                    COALESCE(SUM(b.monto * m.tasa_a_usd), 0) AS total_facturado
-             FROM clientes c
-             JOIN boletas b ON b.cliente_id = c.id AND NOT b.anulada
-             JOIN monedas m ON m.codigo = b.moneda_codigo
-             GROUP BY etiqueta
-             ORDER BY total_facturado DESC
-             LIMIT :limite"
-        );
-        $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $limite = max(0, $limite);   // se interpola: es un entero, nunca entrada de usuario
+        $edad = RangoEdad::expresionSql('base.fecha_nacimiento');
+        $filas = $this->db->query(
+            "WITH f AS MATERIALIZED (
+                 SELECT b.cliente_id, SUM(b.monto * m.tasa_a_usd) AS total
+                 FROM boletas b JOIN monedas m ON m.codigo = b.moneda_codigo
+                 WHERE NOT b.anulada GROUP BY b.cliente_id
+             ), base AS MATERIALIZED (
+                 SELECT c.pais_codigo, c.ciudad, c.idioma, c.genero, c.fecha_nacimiento, f.total
+                 FROM f JOIN clientes c ON c.id = f.cliente_id
+             )
+             (SELECT 'pais' AS dimension, p.nombre AS etiqueta, COUNT(*) AS clientes, SUM(base.total) AS total_facturado
+                FROM base JOIN paises p ON p.codigo = base.pais_codigo
+                GROUP BY p.nombre ORDER BY total_facturado DESC LIMIT {$limite})
+             UNION ALL (SELECT 'ciudad', base.ciudad, COUNT(*), SUM(base.total) AS t FROM base GROUP BY base.ciudad ORDER BY t DESC LIMIT {$limite})
+             UNION ALL (SELECT 'idioma', base.idioma, COUNT(*), SUM(base.total) AS t FROM base GROUP BY base.idioma ORDER BY t DESC LIMIT {$limite})
+             UNION ALL (SELECT 'genero', base.genero, COUNT(*), SUM(base.total) AS t FROM base GROUP BY base.genero ORDER BY t DESC LIMIT {$limite})
+             UNION ALL (SELECT 'rango_edad', {$edad} AS e, COUNT(*), SUM(base.total) AS t FROM base GROUP BY e ORDER BY t DESC LIMIT {$limite})"
+        )->fetchAll();
+
+        $porDimension = ['pais' => [], 'ciudad' => [], 'idioma' => [], 'genero' => [], 'rango_edad' => []];
+        foreach ($filas as $fila) {
+            $dimension = $fila['dimension'];
+            unset($fila['dimension']);
+            $porDimension[$dimension][] = $fila;
+        }
+
+        return $porDimension;
     }
 
     /**
      * LTV (a la fecha) por cohorte de alta: para cada mes en que un grupo de
      * clientes se dio de alta, el promedio de cuanto pago cada uno hasta hoy,
      * neto de sus notas de credito -si le devolvimos la plata no es valor
-     * que el cliente haya dejado-. Las notas van por subconsulta escalar y
-     * no por otro JOIN, para no multiplicar filas contra el join de pagos.
+     * que el cliente haya dejado-.
+     *
+     * Los pagos y las notas se suman cada uno una sola vez por cliente y se
+     * unen despues: ni se multiplican filas entre los dos joins ni hay una
+     * subconsulta de notas por cada cliente, como antes (454 ms con 30 mil
+     * clientes contra 178 ms, con el mismo resultado).
      */
     public function ltvPorCohorte(): array
     {
@@ -97,15 +90,14 @@ final class SegmentacionRepository
             "SELECT cohorte, COUNT(*) AS clientes, AVG(total_cliente) AS ltv_promedio
              FROM (
                  SELECT to_char(c.fecha_alta, 'YYYY-MM') AS cohorte, c.id,
-                        COALESCE(SUM(p.monto * m.tasa_a_usd), 0)
-                          - COALESCE((SELECT SUM(n.monto * mn.tasa_a_usd)
-                                      FROM notas_credito n
-                                      JOIN monedas mn ON mn.codigo = n.moneda_codigo
-                                      WHERE n.cliente_id = c.id), 0) AS total_cliente
+                        COALESCE(pg.total, 0) - COALESCE(nc.total, 0) AS total_cliente
                  FROM clientes c
-                 LEFT JOIN pagos p ON p.cliente_id = c.id AND NOT p.anulada
-                 LEFT JOIN monedas m ON m.codigo = p.moneda_codigo
-                 GROUP BY cohorte, c.id
+                 LEFT JOIN (SELECT p.cliente_id, SUM(p.monto * m.tasa_a_usd) AS total
+                            FROM pagos p JOIN monedas m ON m.codigo = p.moneda_codigo
+                            WHERE NOT p.anulada GROUP BY p.cliente_id) pg ON pg.cliente_id = c.id
+                 LEFT JOIN (SELECT n.cliente_id, SUM(n.monto * mn.tasa_a_usd) AS total
+                            FROM notas_credito n JOIN monedas mn ON mn.codigo = n.moneda_codigo
+                            GROUP BY n.cliente_id) nc ON nc.cliente_id = c.id
              ) sub
              GROUP BY cohorte
              ORDER BY cohorte"

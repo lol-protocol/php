@@ -112,6 +112,37 @@ final class RutasTest extends HttpTestCase
         }
     }
 
+    /**
+     * Con un rango amplio, cada estado elegido responde y entre los cinco se
+     * reparten todas las boletas del rango: lo que dice "Boletas (N)" con cada
+     * filtro suma el N sin filtro. Es el recorrido completo (URL, controlador,
+     * filtro en SQL, vista). Antes ese filtro traia todo el rango a PHP, y con
+     * unas 100 mil boletas agotaba la memoria y la pagina salia en blanco; eso lo
+     * mide RendimientoAEscalaTest, porque el seed tiene demasiado pocas filas.
+     */
+    public function testLosCincoFiltrosDeEstadoSeRepartenTodasLasBoletasDelRango(): void
+    {
+        $rango = 'desde=2000-01-01&hasta=2100-12-31';
+        $totalDeBoletas = function (string $consulta): int {
+            $respuesta = $this->get($consulta);
+            $this->assertStatus(200, $respuesta, $consulta);
+            if (preg_match('~<h2>Boletas \((\d+)\)</h2>~', $respuesta['cuerpo'], $coincidencia) !== 1) {
+                self::fail("{$consulta} no muestra el total de boletas");
+            }
+
+            return (int) $coincidencia[1];
+        };
+
+        $total = $totalDeBoletas("page=cobros&{$rango}");
+        $suma = 0;
+        foreach (['pagada', 'parcial', 'pendiente', 'vencida', 'anulada'] as $estado) {
+            $suma += $totalDeBoletas("page=cobros&{$rango}&estado={$estado}");
+        }
+
+        self::assertGreaterThan(0, $total);
+        self::assertSame($total, $suma, 'los cinco estados tienen que repartirse todas las boletas del rango');
+    }
+
     public function testUnEstadoQueNoExisteSeAvisaYMuestraTodasLasBoletas(): void
     {
         $rango = 'desde=2000-01-01&hasta=2100-12-31';

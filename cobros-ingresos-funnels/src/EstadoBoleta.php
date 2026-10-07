@@ -11,6 +11,10 @@ final class EstadoBoleta
      * vencimiento. No se guarda en la base para que nunca quede desincronizado.
      * Una boleta anulada siempre queda en estado 'anulada', sin importar el saldo.
      *
+     * La misma regla esta escrita en SQL en BoletaRepository::ESTADO_SQL, que es
+     * lo que usa el filtro de estado de Cobros para paginar en la base:
+     * EstadoBoletaSqlTest compara las dos, asi que un cambio aca va con el otro.
+     *
      * @return array{saldo: float, estado: string}
      */
     public static function calcular(float $monto, float $pagado, string $fechaVencimiento, ?string $hoy = null, bool $anulada = false): array

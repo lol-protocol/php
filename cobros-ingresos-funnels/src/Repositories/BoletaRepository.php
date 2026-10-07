@@ -14,6 +14,19 @@ final class BoletaRepository
 {
     use Anulable;
 
+    /**
+     * La regla de EstadoBoleta::calcular() escrita en SQL, para filtrar y
+     * paginar por estado en la base (ver listado()). Es la misma regla dos
+     * veces, asi que EstadoBoletaSqlTest las compara con todos los bordes:
+     * quien cambie una tiene que cambiar la otra o ese test falla. Se aplica
+     * sobre boletas_con_saldo, que es de donde sale b.pagado.
+     */
+    public const ESTADO_SQL = "CASE WHEN b.anulada THEN 'anulada'
+                                    WHEN round(b.monto - b.pagado, 2) <= 0.01 THEN 'pagada'
+                                    WHEN b.fecha_vencimiento < CURRENT_DATE THEN 'vencida'
+                                    WHEN b.pagado > 0 THEN 'parcial'
+                                    ELSE 'pendiente' END";
+
     private PDO $db;
     private string $tablaAnulable = 'boletas';
 
@@ -117,12 +130,13 @@ final class BoletaRepository
      * badge) salvo que se filtre explicitamente por otro estado.
      *
      * El estado (pagada/parcial/pendiente/vencida/anulada) no se guarda en la
-     * base, se calcula en PHP a partir de los pagos aplicados (ver
-     * EstadoBoleta). Sin filtro de estado eso no afecta que filas entran, asi
-     * que se pagina en SQL con LIMIT/OFFSET igual que PagoRepository. Con
-     * filtro de estado no hay forma de paginar en SQL sin duplicar esa logica
-     * en una expresion CASE, asi que ese camino trae el rango completo, lo
-     * filtra en PHP y recien ahi pagina con array_slice.
+     * base: el que muestra cada fila lo calcula EstadoBoleta a partir de los
+     * pagos aplicados. Para filtrar por estado y paginar sin traer todo el rango
+     * a PHP, la misma regla esta escrita en SQL (ESTADO_SQL). Antes ese camino
+     * leia todas las boletas del rango, las filtraba en un array y recien ahi
+     * cortaba la pagina: con 120 mil boletas el limite de memoria de PHP no
+     * alcanzaba y la pantalla salia en blanco con un 500 (lo vigila
+     * RendimientoAEscalaTest).
      *
      * @return array{filas: array, total: int, totalPaginas: int, pagina: int}
      */
@@ -135,51 +149,43 @@ final class BoletaRepository
             $params[':cliente'] = '%' . $cliente . '%';
         }
 
-        $select = "SELECT b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada,
+        // Sin filtro de estado el conteo no necesita los pagos (ni la vista que los suma por boleta).
+        $filtroEstado = '';
+        $tablaDelConteo = 'boletas';
+        if ($estado !== null && $estado !== '') {
+            $filtroEstado = ' AND ' . self::ESTADO_SQL . ' = :estado';
+            $tablaDelConteo = 'boletas_con_saldo';
+            $params[':estado'] = $estado;
+        }
+
+        $stmtTotal = $this->db->prepare(
+            "SELECT COUNT(*) FROM {$tablaDelConteo} b JOIN clientes c ON c.id = b.cliente_id
+             WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}{$filtroEstado}"
+        );
+        $stmtTotal->execute($params);
+        $total = (int) $stmtTotal->fetchColumn();
+        $pagina = Paginacion::acotar($pagina, $total);
+
+        // El desempate por id da un orden total: sin el, dos boletas del mismo dia
+        // podian cambiar de lugar entre la pagina 1 y la 2.
+        $stmt = $this->db->prepare(
+            "SELECT b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada,
                     c.id AS cliente_id, c.nombre AS cliente, b.pagado
              FROM boletas_con_saldo b
              JOIN clientes c ON c.id = b.cliente_id
-             WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}";
-
-        if ($estado === null || $estado === '') {
-            $stmtTotal = $this->db->prepare(
-                "SELECT COUNT(*) FROM boletas b JOIN clientes c ON c.id = b.cliente_id
-                 WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}"
-            );
-            $stmtTotal->execute($params);
-            $total = (int) $stmtTotal->fetchColumn();
-            $pagina = Paginacion::acotar($pagina, $total);
-
-            $stmt = $this->db->prepare("{$select} ORDER BY b.fecha_emision DESC, b.id DESC LIMIT :limite OFFSET :offset");
-            foreach ($params as $clave => $valor) {
-                $stmt->bindValue($clave, $valor);
-            }
-            $stmt->bindValue(':limite', Paginacion::POR_PAGINA, PDO::PARAM_INT);
-            $stmt->bindValue(':offset', Paginacion::offset($pagina), PDO::PARAM_INT);
-            $stmt->execute();
-
-            return [
-                'filas' => self::conEstadoCalculado($stmt->fetchAll()),
-                'total' => $total,
-                'totalPaginas' => Paginacion::totalPaginas($total),
-                'pagina' => $pagina,
-            ];
-        }
-
-        // Mismo desempate por id que el camino SQL: este camino tambien pagina
-        // (cada pagina es una consulta nueva), y sin un orden total dos
-        // boletas del mismo dia podian cambiar de lugar entre la pagina 1 y la 2.
-        $stmt = $this->db->prepare("{$select} ORDER BY b.fecha_emision DESC, b.id DESC");
-        $stmt->execute($params);
-        $filtradas = array_filter(
-            self::conEstadoCalculado($stmt->fetchAll()),
-            static fn (array $fila): bool => $fila['estado'] === $estado
+             WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}{$filtroEstado}
+             ORDER BY b.fecha_emision DESC, b.id DESC
+             LIMIT :limite OFFSET :offset"
         );
-        $total = count($filtradas);
-        $pagina = Paginacion::acotar($pagina, $total);
+        foreach ($params as $clave => $valor) {
+            $stmt->bindValue($clave, $valor);
+        }
+        $stmt->bindValue(':limite', Paginacion::POR_PAGINA, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', Paginacion::offset($pagina), PDO::PARAM_INT);
+        $stmt->execute();
 
         return [
-            'filas' => array_slice($filtradas, Paginacion::offset($pagina), Paginacion::POR_PAGINA),
+            'filas' => self::conEstadoCalculado($stmt->fetchAll()),
             'total' => $total,
             'totalPaginas' => Paginacion::totalPaginas($total),
             'pagina' => $pagina,
