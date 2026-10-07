@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <defs>
-    <linearGradient id="grad_calificar_1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="grad_calificar_2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="grad_calificar_3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="grad_calificar_4" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
-    </linearGradient>
-    <filter id="shadow_calificar">
-      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
-    </filter>
-  </defs>
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ns0:defs>
+    <ns0:linearGradient id="grad_calificar_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:linearGradient id="grad_calificar_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:linearGradient id="grad_calificar_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:linearGradient id="grad_calificar_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:filter id="shadow_calificar">
+      <ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </ns0:filter>
+  </ns0:defs>
 
-  <!-- Sombra -->
-  <ellipse cx="32" cy="55" rx="14" ry="3" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
+  
+  <ns0:ellipse cx="32" cy="55" rx="14" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
 
-  <!-- Estrella 1 (llena) 2.5D -->
-  <path d="M 18 28 L 21 35 L 28 35 L 22 39 L 25 46 L 18 42 L 11 46 L 14 39 L 8 35 L 15 35 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="2" stroke="#047857" stroke-width="1" filter="url(#shadow_calificar)"/>
+  
+  <ns0:path d="M 18 28 L 21 35 L 28 35 L 22 39 L 25 46 L 18 42 L 11 46 L 14 39 L 8 35 L 15 35 Z" fill="none" stroke="#047857" stroke-width="1" filter="url(#shadow_calificar)" />
 
-  <!-- Profundidad estrella 1 -->
-  <path d="M 22 39 L 25 46 L 18 42" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="1" opacity="0.2"/>
+  
+  <ns0:path d="M 22 39 L 25 46 L 18 42" fill="none" stroke="#047857" stroke-width="1" opacity="0.2" />
 
-  <!-- Estrella 2 (llena) -->
-  <path d="M 32 26 L 35 33 L 42 33 L 36 37 L 39 44 L 32 40 L 25 44 L 28 37 L 22 33 L 29 33 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="2" stroke="#047857" stroke-width="1" filter="url(#shadow_calificar)"/>
+  
+  <ns0:path d="M 32 26 L 35 33 L 42 33 L 36 37 L 39 44 L 32 40 L 25 44 L 28 37 L 22 33 L 29 33 Z" fill="none" stroke="#047857" stroke-width="1" filter="url(#shadow_calificar)" />
 
-  <!-- Profundidad estrella 2 -->
-  <path d="M 36 37 L 39 44 L 32 40" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="1" opacity="0.2"/>
+  
+  <ns0:path d="M 36 37 L 39 44 L 32 40" fill="none" stroke="#047857" stroke-width="1" opacity="0.2" />
 
-  <!-- Estrella 3 (llena) -->
-  <path d="M 46 28 L 49 35 L 56 35 L 50 39 L 53 46 L 46 42 L 39 46 L 42 39 L 36 35 L 43 35 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="2" stroke="#047857" stroke-width="1" filter="url(#shadow_calificar)"/>
+  
+  <ns0:path d="M 46 28 L 49 35 L 56 35 L 50 39 L 53 46 L 46 42 L 39 46 L 42 39 L 36 35 L 43 35 Z" fill="none" stroke="#047857" stroke-width="1" filter="url(#shadow_calificar)" />
 
-  <!-- Profundidad estrella 3 -->
-  <path d="M 50 39 L 53 46 L 46 42" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="1" opacity="0.2"/>
-  </svg>
+  
+  <ns0:path d="M 50 39 L 53 46 L 46 42" fill="none" stroke="#047857" stroke-width="1" opacity="0.2" />
+  </ns0:svg>

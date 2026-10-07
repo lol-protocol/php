@@ -7,6 +7,6 @@
   
   <circle cx="32" cy="32" r="14" fill="none" stroke="#888888" stroke-width="2"/>
   <path d="M 32 18 L 38 28 L 48 28 L 40 34 L 44 44 L 32 38 L 20 44 L 24 34 L 16 28 L 26 28 Z"
-        fill="#888888" stroke="#B45309" stroke-width="1.5" filter="url(#s_event)"/>
+        fill="#888888" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_event)"/>
 
 </svg>

@@ -4,7 +4,7 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   
   <circle cx="28" cy="18" r="6" fill="#8B8B8B" stroke="#4A4A4A" stroke-width="1.5"/>
-  <circle cx="36" cy="18" r="6" fill="#888888" stroke="#B45309" stroke-width="1.5"/>
+  <circle cx="36" cy="18" r="6" fill="#888888" stroke="#7A7A7A" stroke-width="1.5"/>
   <path d="M 20 32 L 26 30 L 42 30 L 48 32 L 47 44 L 21 44 Z"
         fill="#B0B0B0" stroke="#4A4A4A" stroke-width="1.5" filter="url(#s_concunada)"/>
   

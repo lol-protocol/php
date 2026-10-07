@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <defs>
-    <linearGradient id="grad_perfil_1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="grad_perfil_2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="grad_perfil_3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="grad_perfil_4" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
-    </linearGradient>
-    <filter id="shadow_perfil">
-      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
-    </filter>
-  </defs>
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ns0:defs>
+    <ns0:linearGradient id="grad_perfil_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:linearGradient id="grad_perfil_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#818CF8;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:linearGradient id="grad_perfil_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:linearGradient id="grad_perfil_4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:filter id="shadow_perfil">
+      <ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </ns0:filter>
+  </ns0:defs>
 
-  <!-- Sombra -->
-  <ellipse cx="32" cy="55" rx="13" ry="4" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
+  
+  <ns0:ellipse cx="32" cy="55" rx="13" ry="4" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
 
-  <!-- Cabeza de usuario 2.5D -->
-  <circle cx="32" cy="20" r="9" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="2" stroke="#4F46E5" stroke-width="1.5" filter="url(#shadow_perfil)"/>
+  
+  <ns0:circle cx="32" cy="20" r="9" fill="none" stroke="#4F46E5" stroke-width="1.5" filter="url(#shadow_perfil)" />
 
-  <!-- Costado de la cabeza -->
-  <path d="M 41 20 A 9 9 0 0 0 40 26" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="1.5" opacity="0.3"/>
+  
+  <ns0:path d="M 41 20 A 9 9 0 0 0 40 26" fill="none" stroke="#4F46E5" stroke-width="1.5" opacity="0.3" />
 
-  <!-- Brillo en cabeza -->
-  <ellipse cx="28" cy="15" rx="4" ry="3.5" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.3"/>
+  
+  <ns0:ellipse cx="28" cy="15" rx="4" ry="3.5" fill="none" opacity="0.3" stroke="#4B5563" stroke-width="1" />
 
-  <!-- Cuerpo de usuario 2.5D -->
-  <path d="M 20 30 L 24 28 L 40 28 L 44 30 L 43 46 L 21 46 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="2" stroke="#BE185D" stroke-width="1.5" filter="url(#shadow_perfil)"/>
+  
+  <ns0:path d="M 20 30 L 24 28 L 40 28 L 44 30 L 43 46 L 21 46 Z" fill="none" stroke="#BE185D" stroke-width="1.5" filter="url(#shadow_perfil)" />
 
-  <!-- Costado del cuerpo -->
-  <path d="M 40 28 L 44 26 L 44 44 L 40 46 Z" fill="none" stroke="#4B5563" stroke-width="1.5" opacity="0.25"/>
+  
+  <ns0:path d="M 40 28 L 44 26 L 44 44 L 40 46 Z" fill="none" opacity="0.25" stroke="#4B5563" stroke-width="1.5" />
 
-  <!-- Brazos -->
-  <line x1="21" y1="33" x2="14" y2="35" stroke="#EC4899" stroke-width="2" stroke-linecap="round"/>
-  <line x1="43" y1="33" x2="50" y2="35" stroke="#EC4899" stroke-width="2" stroke-linecap="round"/>
-  </svg>
+  
+  <ns0:line x1="21" y1="33" x2="14" y2="35" stroke="#EC4899" stroke-width="2" stroke-linecap="round" />
+  <ns0:line x1="43" y1="33" x2="50" y2="35" stroke="#EC4899" stroke-width="2" stroke-linecap="round" />
+  </ns0:svg>

@@ -6,8 +6,8 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   
     <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-          fill="#FEF3C7" stroke="#B45309" stroke-width="1.5" filter="url(#s_premium)"/>
+          fill="#FEF3C7" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_premium)"/>
     <polygon points="32,20 35,28 43,28 37,32 40,40 32,36 24,40 27,32 21,28 29,28"
-             fill="#888888" stroke="#B45309" stroke-width="1"/>
+             fill="#888888" stroke="#7A7A7A" stroke-width="1"/>
     
 </svg>

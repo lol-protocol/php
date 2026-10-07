@@ -8,11 +8,11 @@
 
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   <path d="M 18 16 L 22 14 L 46 14 L 42 16 L 42 50 L 22 52 L 18 50 Z"
-        fill="#FEF3C7" stroke="#92400E" stroke-width="1.5" filter="url(#shadow_referencia)"/>
+        fill="#FEF3C7" stroke="#7A7A7A" stroke-width="1.5" filter="url(#shadow_referencia)"/>
   <path d="M 46 14 L 50 12 L 50 48 L 46 50 Z"
-        fill="#92400E" opacity="0.25"/>
+        fill="#7A7A7A" opacity="0.25"/>
   <!-- Índice alfabético: A-Z -->
-  <text x="26" y="32" font-size="8" font-weight="bold" fill="#92400E">A</text>
+  <text x="26" y="32" font-size="8" font-weight="bold" fill="#7A7A7A">A</text>
   <line x1="28" y1="36" x2="40" y2="36" stroke="#6B6B6B" stroke-width="1" opacity="0.6"/>
-  <text x="26" y="46" font-size="8" font-weight="bold" fill="#92400E">Z</text>
+  <text x="26" y="46" font-size="8" font-weight="bold" fill="#7A7A7A">Z</text>
   </svg>

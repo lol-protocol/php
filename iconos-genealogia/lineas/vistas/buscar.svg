@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <defs>
-    <linearGradient id="grad_buscar_1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="grad_buscar_2" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="grad_buscar_3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
-    </linearGradient>
-    <filter id="shadow_buscar">
-      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
-    </filter>
-  </defs>
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ns0:defs>
+    <ns0:linearGradient id="grad_buscar_1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#60A5FA;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:linearGradient id="grad_buscar_2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#F472B6;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:linearGradient id="grad_buscar_3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </ns0:linearGradient>
+    <ns0:filter id="shadow_buscar">
+      <ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </ns0:filter>
+  </ns0:defs>
 
-  <!-- Sombra -->
-  <ellipse cx="32" cy="55" rx="12" ry="3" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
+  
+  <ns0:ellipse cx="32" cy="55" rx="12" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
 
-  <!-- Círculo de lupa 2.5D -->
-  <circle cx="26" cy="26" r="10" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="2" stroke="#1E40AF" stroke-width="1.5" filter="url(#shadow_buscar)"/>
+  
+  <ns0:circle cx="26" cy="26" r="10" fill="none" stroke="#1E40AF" stroke-width="1.5" filter="url(#shadow_buscar)" />
 
-  <!-- Costado del círculo (profundidad) -->
-  <path d="M 36 26 A 10 10 0 0 0 35 32" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="none" stroke-width="1.5" stroke-width="1.5" opacity="0.3"/>
+  
+  <ns0:path d="M 36 26 A 10 10 0 0 0 35 32" fill="none" stroke="#1E40AF" stroke-width="1.5" opacity="0.3" />
 
-  <!-- Brillo -->
-  <ellipse cx="21" cy="21" rx="4" ry="3" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.3"/>
+  
+  <ns0:ellipse cx="21" cy="21" rx="4" ry="3" fill="none" opacity="0.3" stroke="#4B5563" stroke-width="1" />
 
-  <!-- Mango de la lupa -->
-  <line x1="35" y1="35" x2="46" y2="46" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round"/>
+  
+  <ns0:line x1="35" y1="35" x2="46" y2="46" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" />
 
-  <!-- Punta del mango -->
-  <circle cx="46" cy="46" r="1.5" fill="none" stroke="#4B5563" stroke-width="1.5"/>
+  
+  <ns0:circle cx="46" cy="46" r="1.5" fill="none" stroke="#4B5563" stroke-width="1.5" />
 
-  <!-- Línea de búsqueda (representa resultados) -->
-  <line x1="20" y1="26" x2="32" y2="26" stroke="#FFF" stroke-width="1.5" opacity="0.8"/>
-  </svg>
+  
+  <ns0:line x1="20" y1="26" x2="32" y2="26" stroke="#FFF" stroke-width="1.5" opacity="0.8" />
+  </ns0:svg>

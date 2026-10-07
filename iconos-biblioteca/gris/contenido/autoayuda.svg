@@ -6,10 +6,10 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-        fill="#DBEAFE" stroke="#0369A1" stroke-width="1.5" filter="url(#s_autoayuda)"/>
+        fill="#DBEAFE" stroke="#6B6B6B" stroke-width="1.5" filter="url(#s_autoayuda)"/>
   <!-- Persona con brazo arriba -->
-  <circle cx="32" cy="24" r="2" fill="#0369A1"/>
-  <line x1="32" y1="26" x2="32" y2="34" stroke="#0369A1" stroke-width="1.5"/>
-  <line x1="32" y1="28" x2="28" y2="26" stroke="#0369A1" stroke-width="1.5"/>
-  <line x1="32" y1="28" x2="36" y2="22" stroke="#0369A1" stroke-width="1.5"/>
+  <circle cx="32" cy="24" r="2" fill="#6B6B6B"/>
+  <line x1="32" y1="26" x2="32" y2="34" stroke="#6B6B6B" stroke-width="1.5"/>
+  <line x1="32" y1="28" x2="28" y2="26" stroke="#6B6B6B" stroke-width="1.5"/>
+  <line x1="32" y1="28" x2="36" y2="22" stroke="#6B6B6B" stroke-width="1.5"/>
   </svg>

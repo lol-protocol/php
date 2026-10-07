@@ -9,9 +9,9 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
   <!-- Campana -->
   <path d="M 20 26 Q 20 20 32 18 Q 44 20 44 26 L 44 38 Q 44 42 40 44 L 24 44 Q 20 42 20 38 Z"
-        fill="#888888" stroke="#92400E" stroke-width="1.5" filter="url(#shadow_notificaciones)"/>
+        fill="#888888" stroke="#7A7A7A" stroke-width="1.5" filter="url(#shadow_notificaciones)"/>
   <!-- Badajo -->
-  <ellipse cx="32" cy="46" rx="3" ry="2" fill="#92400E"/>
+  <ellipse cx="32" cy="46" rx="3" ry="2" fill="#7A7A7A"/>
   <!-- Punto de notificación -->
   <circle cx="46" cy="22" r="3" fill="#EF4444" stroke="#FFF" stroke-width="1"/>
   </svg>

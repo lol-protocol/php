@@ -6,10 +6,10 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-        fill="#FEF3C7" stroke="#92400E" stroke-width="1.5" filter="url(#s_historia)"/>
+        fill="#FEF3C7" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_historia)"/>
   <!-- Línea de tiempo -->
-  <line x1="24" y1="26" x2="40" y2="26" stroke="#92400E" stroke-width="1" opacity="0.6"/>
-  <circle cx="26" cy="26" r="1.5" fill="#92400E"/>
-  <circle cx="32" cy="26" r="1.5" fill="#92400E"/>
-  <circle cx="38" cy="26" r="1.5" fill="#92400E"/>
+  <line x1="24" y1="26" x2="40" y2="26" stroke="#7A7A7A" stroke-width="1" opacity="0.6"/>
+  <circle cx="26" cy="26" r="1.5" fill="#7A7A7A"/>
+  <circle cx="32" cy="26" r="1.5" fill="#7A7A7A"/>
+  <circle cx="38" cy="26" r="1.5" fill="#7A7A7A"/>
   </svg>

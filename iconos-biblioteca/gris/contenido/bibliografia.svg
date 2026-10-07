@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="s_bibliografia"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter></defs>
+  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
+      <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
+            fill="#E9D5FF" stroke="#5A5A5A" stroke-width="1.5" filter="url(#s_bibliografia)"/>
+      <line x1="24" y1="22" x2="38" y2="22" stroke="#5A5A5A" stroke-width="0.8" opacity="0.7"/>
+      <line x1="24" y1="27" x2="40" y2="27" stroke="#5A5A5A" stroke-width="0.6" opacity="0.6"/>
+    </svg>

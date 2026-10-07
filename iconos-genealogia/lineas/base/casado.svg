@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <filter id="shadow_casado">
-      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
-    </filter>
-    <linearGradient id="grad_casado" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
-    </linearGradient>
-  </defs>
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ns0:defs>
+    <ns0:filter id="shadow_casado">
+      <ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" />
+    </ns0:filter>
+    <ns0:linearGradient id="grad_casado" x1="0%" y1="0%" x2="100%" y2="100%">
+      <ns0:stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+      <ns0:stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </ns0:linearGradient>
+  </ns0:defs>
 
-  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
-  <circle cx="26" cy="20" r="6" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="#1E40AF" stroke-width="1.5"/>
-  <circle cx="38" cy="20" r="6" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="#BE185D" stroke-width="1.5"/>
-  <path d="M 20 30 L 32 28 L 44 28 L 48 30 L 47 44 L 19 44 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="#1E40AF" stroke-width="1.5"/>
-  <path d="M 32 28 L 45 26 L 48 30 L 47 44 L 41 42 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="#BE185D" stroke-width="1.5"/>
-  <line x1="26" y1="40" x2="38" y2="40" stroke="#EC4899" stroke-width="2" stroke-linecap="round"/>
-  </svg>
+  <ns0:ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
+  <ns0:circle cx="26" cy="20" r="6" fill="none" stroke="#1E40AF" stroke-width="1.5" />
+  <ns0:circle cx="38" cy="20" r="6" fill="none" stroke="#BE185D" stroke-width="1.5" />
+  <ns0:path d="M 20 30 L 32 28 L 44 28 L 48 30 L 47 44 L 19 44 Z" fill="none" stroke="#1E40AF" stroke-width="1.5" />
+  <ns0:path d="M 32 28 L 45 26 L 48 30 L 47 44 L 41 42 Z" fill="none" stroke="#BE185D" stroke-width="1.5" />
+  <ns0:line x1="26" y1="40" x2="38" y2="40" stroke="#EC4899" stroke-width="2" stroke-linecap="round" />
+  </ns0:svg>

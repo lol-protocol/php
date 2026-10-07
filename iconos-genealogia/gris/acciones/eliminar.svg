@@ -22,12 +22,12 @@
   <ellipse cx="32" cy="55" rx="14" ry="4" fill="#000" opacity="0.15"/>
 
   <!-- Círculo base rojo 2.5D -->
-  <circle cx="32" cy="32" r="13" fill="#EF4444" stroke="#991B1B" stroke-width="1.5" filter="url(#shadow_eliminar)"/>
+  <circle cx="32" cy="32" r="13" fill="#EF4444" stroke="#5A5A5A" stroke-width="1.5" filter="url(#shadow_eliminar)"/>
   <circle cx="32" cy="32" r="12" fill="#F87171" opacity="0.3"/>
 
   <!-- Costado (profundidad) -->
   <path d="M 45 32 A 13 13 0 0 0 44 38"
-        fill="none" stroke="#991B1B" stroke-width="1.5" opacity="0.3"/>
+        fill="none" stroke="#5A5A5A" stroke-width="1.5" opacity="0.3"/>
 
   <!-- Brillo -->
   <ellipse cx="28" cy="26" rx="5" ry="4" fill="#FCA5A5" opacity="0.3"/>

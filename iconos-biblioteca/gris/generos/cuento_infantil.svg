@@ -6,7 +6,7 @@
   <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
 
   <path d="M 18 18 L 22 16 L 46 16 L 42 18 L 42 46 L 22 48 L 18 46 Z"
-        fill="#FFE4C4" stroke="#B45309" stroke-width="1.5" filter="url(#s_cuento_infantil)"/>
+        fill="#FFE4C4" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_cuento_infantil)"/>
   <circle cx="30" cy="26" r="3" fill="#FF6B6B"/>
   <circle cx="36" cy="26" r="3" fill="#4ECDC4"/>
   <path d="M 28 34 Q 32 36 36 34" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round"/>

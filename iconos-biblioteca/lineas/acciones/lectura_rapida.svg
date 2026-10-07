@@ -1,12 +1,12 @@
-<?xml version="1.0"?>
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <filter id="s_lectura_rapida"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter>
-  </defs>
-  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" stroke="#4B5563" stroke-width="1" opacity="0.15"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ns0:defs>
+    <ns0:filter id="s_lectura_rapida"><ns0:feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" /></ns0:filter>
+  </ns0:defs>
+  <ns0:ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
 
-  <path d="M 22 22 L 25 20 L 42 20 L 39 22 L 39 44 L 25 46 L 22 44 Z" fill="none" stroke="#4B5563" stroke-width="1.5" stroke="#BE185D" stroke-width="1.5" filter="url(#s_lectura_rapida)"/>
-  <!-- Líneas de velocidad -->
-  <line x1="18" y1="28" x2="21" y2="28" stroke="#EC4899" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="18" y1="35" x2="21" y2="35" stroke="#EC4899" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>
+  <ns0:path d="M 22 22 L 25 20 L 42 20 L 39 22 L 39 44 L 25 46 L 22 44 Z" fill="none" stroke="#BE185D" stroke-width="1.5" filter="url(#s_lectura_rapida)" />
+  
+  <ns0:line x1="18" y1="28" x2="21" y2="28" stroke="#EC4899" stroke-width="1.5" stroke-linecap="round" />
+  <ns0:line x1="18" y1="35" x2="21" y2="35" stroke="#EC4899" stroke-width="1.5" stroke-linecap="round" />
+  </ns0:svg>
