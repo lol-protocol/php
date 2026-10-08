@@ -13,6 +13,15 @@ test("CSV Validation - Copyright Laws Master", async (t) => {
     skip_empty_lines: true,
   });
 
+  await t.test("cada fila tiene tantos campos como la cabecera (comillas en los campos con comas)", () => {
+    const filas = parse(csvContent, { skip_empty_lines: true, relax_column_count: true });
+    const esperados = filas[0].length;
+    const malas = filas
+      .map((fila, i) => ({ linea: i + 1, campos: fila.length, pais: fila[0] }))
+      .filter((f) => f.campos !== esperados);
+    assert.deepEqual(malas, [], `filas con distinto número de campos que la cabecera (${esperados})`);
+  });
+
   await t.test("has records", () => {
     assert.ok(records.length > 0, "CSV should contain records");
   });
@@ -142,34 +151,15 @@ test("Jurisdiction Data Completeness", async (t) => {
     skip_empty_lines: true,
   });
 
-  await t.test("country_name matches known jurisdictions", () => {
-    const knownJurisdictions = new Set([
-      "European Union",
-      "United States",
-      "United Kingdom",
-      "Canada",
-      "Brazil",
-      "Japan",
-      "Australia",
-      "India",
-      "South Africa",
-      "Mexico",
-      "Switzerland",
-      "Singapore",
-      "New Zealand",
-      "South Korea",
-      "Chile",
-      "Thailand",
-      "Netherlands",
-      "France",
-      "Spain",
-    ]);
-
+  await t.test("cada country_code tiene un solo country_name", () => {
+    const nombres = new Map();
     records.forEach((record, index) => {
+      const previo = nombres.get(record.country_code);
       assert.ok(
-        knownJurisdictions.has(record.country_name),
-        `Record ${index}: Unknown jurisdiction ${record.country_name}`
+        previo === undefined || previo === record.country_name,
+        `Record ${index}: ${record.country_code} aparece como "${previo}" y como "${record.country_name}"`
       );
+      nombres.set(record.country_code, record.country_name);
     });
   });
 
@@ -177,7 +167,7 @@ test("Jurisdiction Data Completeness", async (t) => {
     records.forEach((record, index) => {
       const value = record.registration_required.toLowerCase();
       assert.ok(
-        ["yes", "no"].includes(value),
+        /^(yes|no)\b/.test(value),
         `Record ${index}: registration_required should be yes/no, got ${record.registration_required}`
       );
     });

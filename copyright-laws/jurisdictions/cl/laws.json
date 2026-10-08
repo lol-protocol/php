@@ -2,17 +2,17 @@
   {
     "country_code": "CL",
     "country_name": "Chile",
-    "law_name": "Law No. 17",
-    "protection_type": "336",
-    "term_of_protection": "Copyright",
-    "author_rights": "Author's life + 50 years",
-    "moral_rights": "Full economic rights",
-    "orphan_works": "Moral rights (limited duration)",
-    "digital_protection": "Collective administration required",
-    "fair_use_exceptions": "Anti-circumvention rules",
-    "registration_required": "Educational copying allowed",
-    "enforcement_body": "No",
-    "treaties_signatory": "Department of Intellectual Property",
-    "linked_resources": "Berne/TRIPS"
+    "law_name": "Law No. 17,336",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Full economic rights",
+    "moral_rights": "Moral rights (limited duration)",
+    "orphan_works": "Collective administration required",
+    "digital_protection": "Anti-circumvention rules",
+    "fair_use_exceptions": "Educational copying allowed",
+    "registration_required": "No",
+    "enforcement_body": "Department of Intellectual Property",
+    "treaties_signatory": "Berne/TRIPS",
+    "linked_resources": "https://www.dpi.cl/"
   }
 ]

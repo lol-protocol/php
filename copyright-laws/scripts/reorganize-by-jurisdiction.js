@@ -50,6 +50,16 @@ const regionMap = {
   ZA: "middle_east_africa",
 };
 
+// Si la carpeta ya tiene info.json se conserva su createdAt: así volver a generar
+// no cambia ningún archivo cuyos datos no cambiaron.
+function creadoAntes(rutaInfo) {
+  try {
+    return JSON.parse(readFileSync(rutaInfo, "utf-8")).createdAt || new Date().toISOString();
+  } catch {
+    return new Date().toISOString();
+  }
+}
+
 async function reorganizeByJurisdiction() {
   try {
     // Read master CSV
@@ -57,10 +67,6 @@ async function reorganizeByJurisdiction() {
     const records = parse(csvContent, {
       columns: true,
       skip_empty_lines: true,
-      quote: '"',
-      escape: '"',
-      relax: true,
-      relaxColumnCount: true,
     });
 
     console.log(`✓ Loaded ${records.length} records from master CSV`);
@@ -93,7 +99,7 @@ async function reorganizeByJurisdiction() {
         tld: tld,
         region: regionMap[countryCode] || "other",
         lawCount: laws.length,
-        createdAt: new Date().toISOString(),
+        createdAt: creadoAntes(join(jurisdictionDir, "info.json")),
       };
 
       writeFileSync(
