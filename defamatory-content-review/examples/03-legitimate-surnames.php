@@ -9,9 +9,10 @@ use DefamatoryContentReview\DefamatoryContentReviewer;
 $reviewer = DefamatoryContentReviewer::create(__DIR__ . '/../config', 'spa');
 $pad = fn(string $s, int $width) => $s . str_repeat(' ', max(0, $width - mb_strlen($s)));
 
-// "Cerda", "Moro" o "Calvo" son linajes documentados. Una coincidencia grave
-// sobre ellos va a revisión humana, nunca a rechazo automático.
-foreach ([['Juan', 'Moro'], ['Ana', 'Cerda'], ['Luis', 'Bastardo']] as [$first, $last]) {
+// "Cerda", "Moro" o "Bastardo" son linajes documentados. Una coincidencia grave
+// sobre ellos va a revisión humana, nunca a rechazo automático; un insulto grave
+// que no es apellido ("Gilipollas") sí se rechaza.
+foreach ([['Juan', 'Moro'], ['Ana', 'Cerda'], ['Luis', 'Bastardo'], ['Luis', 'Gilipollas']] as [$first, $last]) {
     $result = $reviewer->validateFullName($first, $last);
 
     printf(

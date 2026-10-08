@@ -151,6 +151,15 @@
 
 ### Cambiado
 
+- **`nameCollision` en 30 apellidos y nombres frecuentes**, elegidos con datos
+  de frecuencia y no a ojo: los apellidos ingleses con 1.000 personas o más en
+  el censo de EE. UU. de 2010 (Outlaw, Coward, Dyke, Leech…) y los españoles
+  entre los 8.000 más frecuentes (Chaparro, Payo, Cansino, Rufián, Bastardo…),
+  más Mona e India. Se siguen detectando, pero ya no se rechazan solos ni
+  bloquean un saludo en el chat. Por debajo de esos umbrales no se marcan: cada
+  marca baja también el insulto a revisión. Ver `FrequentSurnameCollisionTest`.
+  Los ejemplos y tests que usaban «Luis Bastardo» como insulto grave que se
+  rechaza pasan a «Luis Gilipollas».
 - Se restauró `_Garbage/`, borrado en 4.3.0: la decisión es conservar como
   referencia lo obsoleto en vez de borrarlo. Su README explica por qué
   ninguno de esos archivos debe reconectarse al motor.
