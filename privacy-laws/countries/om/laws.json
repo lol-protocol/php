@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "OM",
+    "country_name": "Oman",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Law (PDPL)",
+    "jurisdiction": "Ministry of Transport, Communications and Information Technology (MTCIT)",
+    "enactment_date": "2022-02-09",
+    "effective_date": "2023-02-13",
+    "scope": "Individuals in Oman",
+    "applies_to": "Controllers & processors of personal data",
+    "key_requirements": "Consent (guardian consent for children), ministry permit for sensitive data, breach notification, cross-border transfer rules",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Ministry of Transport, Communications and Information Technology (MTCIT)",
+    "penalties_range": "Up to OMR 500k fine (admin fines up to OMR 2k)",
+    "exemptions": "Not specified",
+    "website_url": "https://www.clydeco.com/en/insights/2022/2/data-protection-law-issued-in-oman",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Royal Decree 6/2022; replaced e-Transactions Law ch. 7; Executive Regulation in force 5 Feb 2024"
+  }
+]

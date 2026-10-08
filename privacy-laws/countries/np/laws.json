@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "NP",
+    "country_name": "Nepal",
+    "region": "asia_pacific",
+    "law_name": "Privacy Act 2075 (2018)",
+    "jurisdiction": "Courts & police (no data protection authority)",
+    "enactment_date": "2018-09-18",
+    "effective_date": "2018-09-18",
+    "scope": "Individuals in Nepal",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Consent for collection & use, confidentiality of personal information, compensation for harm",
+    "data_categories": "Personal information; sensitive information",
+    "retention_period": "Not specified",
+    "enforcement_authority": "No dedicated authority yet",
+    "penalties_range": "Up to 3 years prison and/or NPR 30k fine",
+    "exemptions": "Not specified",
+    "website_url": "https://lawcommission.gov.np/content/12261/12261-the-privacy-act-2075/",
+    "language": "Nepali",
+    "frameworks": "",
+    "notes": "Also cited as Individual Privacy Act; Privacy Regulation 2020 supplements it"
+  }
+]

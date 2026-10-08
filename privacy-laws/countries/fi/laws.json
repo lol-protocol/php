@@ -17,6 +17,7 @@
     "exemptions": "Legal obligations",
     "website_url": "https://tietosuoja.fi/",
     "language": "Finnish",
+    "frameworks": "GDPR/CoE-108",
     "notes": "GDPR implementation"
   }
 ]

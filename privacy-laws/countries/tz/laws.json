@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "TZ",
+    "country_name": "Tanzania",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Act 2022 (PDPA)",
+    "jurisdiction": "Personal Data Protection Commission (PDPC)",
+    "enactment_date": "2022-11-27",
+    "effective_date": "2023-05-01",
+    "scope": "Individuals in Tanzania",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Registration with the PDPC, consent, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Personal Data Protection Commission (PDPC)",
+    "penalties_range": "Up to TZS 20M (individuals) or TZS 5B (corporations)",
+    "exemptions": "National security; household use",
+    "website_url": "https://dlapiperdataprotection.com/?c=TZ&t=law",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Commenced 1 May 2023 by notice; registration deadline extended to 30 Apr 2025; assent day from one source"
+  }
+]

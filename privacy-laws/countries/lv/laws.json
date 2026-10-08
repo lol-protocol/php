@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "LV",
+    "country_name": "Latvia",
+    "region": "europe",
+    "law_name": "Personal Data Processing Law (PDL)",
+    "jurisdiction": "Data State Inspectorate",
+    "enactment_date": "2018-06-21",
+    "effective_date": "2018-07-05",
+    "scope": "Individuals in Latvia",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Supplements GDPR, supervisory authority duties, liability of responsible officials",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Data State Inspectorate (Datu valsts inspekcija)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "website_url": "https://www.dlapiperdataprotection.com/index.html?c=LV&t=law",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "Replaced the earlier Personal Data Protection Law; 2021 amendment added fines for officials"
+  }
+]

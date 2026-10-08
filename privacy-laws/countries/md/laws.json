@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "MD",
+    "country_name": "Moldova",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (Law No. 195/2024)",
+    "jurisdiction": "National Center for Personal Data Protection",
+    "enactment_date": "2024-07-25",
+    "effective_date": "2026-08-23",
+    "scope": "Individuals in Moldova",
+    "applies_to": "Public & private controllers and processors",
+    "key_requirements": "GDPR-style lawful basis & consent, data subject rights, 72-hour breach notification, accountability",
+    "data_categories": "Personal data; special categories",
+    "retention_period": "No longer than necessary for the purpose",
+    "enforcement_authority": "National Center for Personal Data Protection (CNPDCP)",
+    "penalties_range": "Up to MDL 2M or 2% turnover",
+    "exemptions": "Household use; crime-prevention processing under Law 160/2026",
+    "website_url": "https://datepersonale.md/en/national-conference-new-era-of-data-protection-implementation-of-gdpr/",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "notes": "Replaced Law 133/2011 (GDPR-aligned); applies since 23 Aug 2026 after 24-month transition"
+  }
+]

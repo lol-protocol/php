@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "DO",
+    "country_name": "Dominican Republic",
+    "region": "americas",
+    "law_name": "Law on Comprehensive Protection of Personal Data (Law No. 172-13)",
+    "jurisdiction": "Courts (habeas data); Superintendency of Banks for credit data",
+    "enactment_date": "2013-12-13",
+    "effective_date": "2013-12-15",
+    "scope": "Individuals (data subjects)",
+    "applies_to": "Public & private entities holding personal data files",
+    "key_requirements": "Lawful & fair processing, consent, data security, habeas data rights (update, rectify, delete)",
+    "data_categories": "Personal data; sensitive data; credit data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "No dedicated authority yet",
+    "penalties_range": "Up to 100x national minimum wage fine; prison 6 months-2 years",
+    "exemptions": "Not specified",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=DO&t=law",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Judicial habeas data enforcement; amendment bill (post TC/0484/16) not confirmed enacted"
+  }
+]

@@ -38,7 +38,7 @@ test("rows with commas inside fields stay aligned (regression: columns used to s
 });
 
 test("an unquoted comma is rejected instead of silently shifting columns", () => {
-  const row = "EU,European Union,europe,GDPR,EC,2016-04-27,2018-05-25,a,b,Lawful basis, consent,c,d,e,f,g,https://x.eu/,English,n";
+  const row = "EU,European Union,europe,GDPR,EC,2016-04-27,2018-05-25,a,b,Lawful basis, consent,c,d,e,f,g,https://x.eu/,English,GDPR,n";
   assert.throws(() => parseMaster(`${COLUMNS.join(",")}\n${row}\n`), /Invalid Record Length/);
 });
 

@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "HR",
+    "country_name": "Croatia",
+    "region": "europe",
+    "law_name": "Act on the Implementation of the General Data Protection Regulation (AIGDPR)",
+    "jurisdiction": "Croatian Personal Data Protection Agency",
+    "enactment_date": "2018-04-27",
+    "effective_date": "2018-05-25",
+    "scope": "Individuals in Croatia",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Supplements GDPR, supervisory authority rules, video surveillance and biometric data rules",
+    "data_categories": "Personal data; sensitive data (incl. genetic & biometric)",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Croatian Personal Data Protection Agency (AZOP)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "website_url": "https://iapp.org/news/a/croatian-gdpr-implementation-law-main-features-and-unanswered-questions",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "Replaced the earlier national data protection act; published in Narodne novine 42/2018"
+  }
+]

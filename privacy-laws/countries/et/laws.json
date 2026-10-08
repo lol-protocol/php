@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "ET",
+    "country_name": "Ethiopia",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Proclamation No. 1321/2024 (PDPP)",
+    "jurisdiction": "Ethiopian Communications Authority (ECA)",
+    "enactment_date": "2024-07-24",
+    "effective_date": "2024-07-24",
+    "scope": "Individuals in Ethiopia",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Authority authorisation before processing, breach notification within 72 hours, cross-border transfer limits",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Ethiopian Communications Authority (ECA)",
+    "penalties_range": "Up to 4% of worldwide turnover (entities); up to 10 years' imprisonment and ETB 300000 fines",
+    "exemptions": "National security; household use",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=ET&t=law",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Parliament passed it 4 Apr 2024; date shown is gazette publication; ECA directives pending"
+  }
+]

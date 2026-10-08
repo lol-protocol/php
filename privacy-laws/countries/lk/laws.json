@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "LK",
+    "country_name": "Sri Lanka",
+    "region": "asia_pacific",
+    "law_name": "Personal Data Protection Act No. 9 of 2022 (PDPA)",
+    "jurisdiction": "Data Protection Authority",
+    "enactment_date": "2022-03-19",
+    "effective_date": "2027-01-01",
+    "scope": "Data subjects in Sri Lanka",
+    "applies_to": "Public & private controllers and processors",
+    "key_requirements": "Lawful & transparent processing, data protection officers, breach reporting, impact assessments",
+    "data_categories": "Personal data; special categories",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Data Protection Authority of Sri Lanka",
+    "penalties_range": "Up to LKR 10M per non-compliance (doubled for repeats)",
+    "exemptions": "Personal or household use; national security",
+    "website_url": "https://dpa.gov.lk/Background.php",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Phased: DPA set up 2023; Parts I & III start 2027-01-01; penalties (Part VII) not yet in force"
+  }
+]

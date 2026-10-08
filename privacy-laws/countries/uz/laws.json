@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "UZ",
+    "country_name": "Uzbekistan",
+    "region": "asia_pacific",
+    "law_name": "Law on Personal Data (ZRU-547)",
+    "jurisdiction": "State Personalization Center",
+    "enactment_date": "2019-07-02",
+    "effective_date": "2019-10-01",
+    "scope": "Individuals in Uzbekistan",
+    "applies_to": "Public & private owners and operators of personal databases",
+    "key_requirements": "Consent, registration of personal databases, local storage of Uzbek citizens' data, data subject rights",
+    "data_categories": "Personal data; biometric & genetic data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "State Personalization Center under the Cabinet of Ministers",
+    "penalties_range": "Administrative fines up to 50 base values; criminal liability for repeat offences",
+    "exemptions": "Household use; state secrets; defence & national security information",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=UZ&t=law",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Localization rule (2021) narrowed by Mar 2026 amendment; adequacy list of 49 countries set Jul 2026"
+  }
+]

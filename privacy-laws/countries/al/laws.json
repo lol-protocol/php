@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "AL",
+    "country_name": "Albania",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (Law No. 124/2024)",
+    "jurisdiction": "Information and Data Protection Commissioner",
+    "enactment_date": "2024-12-19",
+    "effective_date": "2025-02-01",
+    "scope": "Individuals in Albania",
+    "applies_to": "Public & private controllers and processors (incl. foreign firms targeting Albania)",
+    "key_requirements": "Data minimisation & lawful basis, data subject rights, local representative for foreign controllers, DPIA (from 2027)",
+    "data_categories": "Personal data; special categories",
+    "retention_period": "No longer than necessary for the purpose",
+    "enforcement_authority": "Information and Data Protection Commissioner",
+    "penalties_range": "Up to ALL 2 billion or 4% global turnover",
+    "exemptions": "Household use; law-enforcement processing under separate rules",
+    "website_url": "https://idp.al/en/2025/06/17/the-commissioners-office-in-konfindustria-albania-discussions-on-the-new-law-of-personal-data-protection/",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "notes": "Replaced Law 9887/2008; DPIA & prior-consultation rules apply from 17 Jan 2027"
+  }
+]

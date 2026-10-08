@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "QA",
+    "country_name": "Qatar",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Privacy Protection Law (PDPPL)",
+    "jurisdiction": "National Cyber Security Agency (NCSA)",
+    "enactment_date": "2016-11-03",
+    "effective_date": "2016-12-29",
+    "scope": "Individuals in Qatar",
+    "applies_to": "Public & private organizations (QFC has separate rules)",
+    "key_requirements": "Consent or legitimate purpose, data subject rights, breach notification, permit for special-nature data",
+    "data_categories": "Personal data; special-nature data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Cyber Governance and Assurance Affairs within the National Cyber Security Agency (NCSA)",
+    "penalties_range": "Up to QAR 5M fine",
+    "exemptions": "Personal or family use; official statistics",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=QA&t=law",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Law No. 13 of 2016; compliance period extended to 29 Jan 2018; QFC has own regime"
+  }
+]

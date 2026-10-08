@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "LI",
+    "country_name": "Liechtenstein",
+    "region": "europe",
+    "law_name": "Data Protection Act (DSG)",
+    "jurisdiction": "Data Protection Authority",
+    "enactment_date": "2018-10-04",
+    "effective_date": "2019-01-01",
+    "scope": "Individuals in Liechtenstein",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Aligns national law with GDPR, data subject rights, supervisory powers",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Data Protection Authority (Datenschutzstelle)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "website_url": "https://www.linklaters.com/insights/data-protected/data-protected---liechtenstein",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "LGBl. 2018 No. 272; fully revised prior law; GDPR applies in EEA since 20 July 2018"
+  }
+]

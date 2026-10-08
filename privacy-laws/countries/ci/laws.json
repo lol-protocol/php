@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "CI",
+    "country_name": "Côte d'Ivoire",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Law (Law No. 2013-450)",
+    "jurisdiction": "ARTCI",
+    "enactment_date": "2013-06-19",
+    "effective_date": "2013-06-19",
+    "scope": "Individuals in Côte d'Ivoire",
+    "applies_to": "Public & private data controllers",
+    "key_requirements": "Consent, prior authorisation for sensitive data, cross-border transfer limits",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Autorité de régulation des télécommunications/TIC de Côte d'Ivoire (ARTCI)",
+    "penalties_range": "Not specified",
+    "exemptions": "National security; household use",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=CI&t=law",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Entry-into-force day unconfirmed (set to enactment date); ARTCI is designated data protection authority"
+  }
+]

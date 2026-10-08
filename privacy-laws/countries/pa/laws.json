@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "PA",
+    "country_name": "Panama",
+    "region": "americas",
+    "law_name": "Personal Data Protection Law (Law No. 81 of 2019)",
+    "jurisdiction": "ANTAI - National Authority for Transparency and Access to Information",
+    "enactment_date": "2019-03-26",
+    "effective_date": "2021-03-29",
+    "scope": "Individuals (nationals & foreigners) whose data is held in Panama",
+    "applies_to": "Controllers domiciled in Panama or with databases located in Panama",
+    "key_requirements": "Consent, purpose limitation, data subject rights (ARCO & portability), international transfer rules",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Authority for Transparency and Access to Information (ANTAI)",
+    "penalties_range": "Up to USD 10;000 fine; database closure or suspension",
+    "exemptions": "Processing outside Panama (e.g. foreign-hosted cloud)",
+    "website_url": "https://www.organojudicial.gob.pa/uploads/blogs.dir/28/2026/06/913/la-proteccion-de-datos-personales-en-la-republica-de-panama.pdf",
+    "language": "Spanish",
+    "frameworks": "",
+    "notes": "Regulated by Executive Decree 285 of 2021; 2022 reform proposals not confirmed enacted"
+  }
+]

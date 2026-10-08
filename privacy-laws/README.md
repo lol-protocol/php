@@ -2,12 +2,12 @@
 
 A database and search tool for privacy legislation, built for genealogy platforms and privacy-compliance research. It lists, per country, the main privacy law, its authority, key dates, requirements, penalties and a link to the official reference.
 
-> The data is a curated starting point (53 laws, 52 countries). Check the official source before relying on any entry.
+> The data is a curated starting point (102 laws, 101 countries). The 49 countries added in October 2026 and the `frameworks` column were compiled from secondary sources (see [Data provenance](#data-provenance)); check the official source before relying on any entry.
 
 ## What it does
 
 - **Search** across every field, or only names / authorities / requirements / penalties. Accent- and case-insensitive; `"quoted phrases"`; short codes such as `US` or `BR` match whole words only.
-- **Advanced filters** that combine with the search: region (multi-select), year in force (range) and reference language. Active filters show as removable chips.
+- **Advanced filters** that combine with the search: region (multi-select), international frameworks / treaties (GDPR, EU adequacy, Convention 108, APEC CBPR — a country must take part in *every* selected one), year in force (range) and reference language. Active filters show as removable chips.
 - **Chart** of laws entering into force per year (reacts to the filters; also available as a table).
 - **Compare** selected laws side by side, **export** the filtered rows to CSV, and open a **country card** with downloads of that country's JSON/CSV.
 - **Five interface languages**, handled with three-letter ISO 639-2 codes: `eng`, `spa`, `fra`, `deu`, `por`. Law data itself is shown as published.
@@ -50,11 +50,22 @@ Folder names are ISO 3166-1 alpha-2 codes in lowercase (`eu`, `us`, `gb`, `br`�
 
 `countries/privacy_laws_master.csv` — one row per law. Columns:
 
-`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `jurisdiction` · `enactment_date` and `effective_date` (`YYYY-MM-DD`) · `scope` · `applies_to` · `key_requirements` · `data_categories` · `retention_period` · `enforcement_authority` · `penalties_range` · `exemptions` · `website_url` · `language` (`English` or `French/German`) · `notes`
+`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `jurisdiction` · `enactment_date` and `effective_date` (`YYYY-MM-DD`) · `scope` · `applies_to` · `key_requirements` · `data_categories` · `retention_period` · `enforcement_authority` · `penalties_range` · `exemptions` · `website_url` · `language` (`English` or `French/German`) · `frameworks` (optional, `/`-separated subset of `GDPR`, `EU-Adequacy`, `CoE-108`, `APEC-CBPR`) · `notes`
 
 Fields that contain a comma **must be quoted** (`"Up to $7,500 per violation"`). The tooling refuses rows with the wrong number of columns instead of guessing.
 
 Russia and Turkey are filed under `europe`; change `region` in the CSV if you prefer otherwise.
+
+`effective_date` is when the main obligations start to apply. It can lie in the future (Paraguay, Sri Lanka): the table then shows a "Not yet in force" badge.
+
+`frameworks` lists only memberships that were found; **an empty value means "none found", not "confirmed none"**. Meaning of each value:
+
+| Value | Meaning |
+|---|---|
+| `GDPR` | EU/EEA state: the GDPR applies directly (also set on the `EU` row) |
+| `EU-Adequacy` | European Commission adequacy decision in force — may be partial (Canada: commercial organisations, Japan: private sector, US: certified companies only) |
+| `CoE-108` | Party to Council of Europe Convention 108 (not the not-yet-in-force 108+) |
+| `APEC-CBPR` | Participant in the APEC / Global Cross-Border Privacy Rules system (associates such as the UK are not listed) |
 
 ### Adding or changing a law
 
@@ -67,7 +78,7 @@ npm test              # also fails if generated files are out of date
 
 ## Web app notes
 
-URL parameters: `q` (text), `in` (`all|name|authority|requirements|penalties`), `region` (comma separated), `year` (`2018-2024`, `2018-`, `-2010`), `language`, `country` (folder code), `lang` (`eng|spa|fra|deu|por`).
+URL parameters: `q` (text), `in` (`all|name|authority|requirements|penalties`), `region` (comma separated), `framework` (comma separated; all must apply), `year` (`2018-2024`, `2018-`, `-2010`), `language`, `country` (folder code), `lang` (`eng|spa|fra|deu|por`).
 The interface language comes from `?lang=`, then the saved choice, then the browser language.
 
 To add a language, add its code to `LANGUAGES` and a full block to `TRANSLATIONS` in `app/translations/i18n.js`; `npm test` fails until every key is translated.
@@ -91,6 +102,12 @@ php import_database.php --all               # schema + import + validation
 
 The importer reads `region` straight from the CSV.
 
+## Data provenance
+
+- The first 53 rows come from the original curated list.
+- The 49 countries added in October 2026 (HR CY EE LV LT MT SK SI NO IS LI UA RS AL MK BA MD GE AM BY UZ UY EC CR PA PY DO JM NI TW LK NP QA BH OM JO MA GH SN CI UG RW TZ ZM ZW MU BW AO ET) and the `frameworks` column were researched through web search only (no access to the primary texts). `website_url` values are pages that appeared in search results; some point to law-firm guides rather than the regulator.
+- Confidence notes, sources and open doubts per batch are kept in [docs/research-2026-10/](docs/research-2026-10/). Known weak spots: Burkina Faso and Ghana (Convention 108 status unclear, left empty), Russia's Convention 108 status after leaving the Council of Europe, Mexico's APEC CBPR status, and entry-into-force days that two sources disagree on (see each row's `notes`).
+
 ## Tests
 
 `npm test` (Node 22+; PHP-dependent tests are skipped when `php` is missing) covers the data, the filter engine, translations, the API and the text cache.
@@ -98,7 +115,8 @@ The importer reads `region` straight from the CSV.
 ## Pending
 
 - **Better comparison**: richer side-by-side matrices (today it is a plain criteria table).
-- **Treaty / framework filter**: the privacy data has no treaties column (unlike copyright). Adding one (e.g. Convention 108, APEC CBPR, EU adequacy) needs researched data first.
+- **Verify the October 2026 additions against primary sources** (official gazettes and regulators): web search was the only research channel available, so dates, authorities, penalties and `frameworks` are unverified secondary-source data.
+- **Convention 108+** and per-country adequacy review dates are not tracked.
 
 ## License
 

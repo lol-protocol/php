@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "TW",
+    "country_name": "Taiwan",
+    "region": "asia_pacific",
+    "law_name": "Personal Data Protection Act (PDPA)",
+    "jurisdiction": "Industry competent authorities (PDPC pending)",
+    "enactment_date": "2010-05-26",
+    "effective_date": "2012-10-01",
+    "scope": "Individuals in Taiwan",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Purpose limitation, notice & consent, data subject rights, security measures",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Industry central competent authorities (PDPC not yet established)",
+    "penalties_range": "Up to NT$1M fine and 5 years prison; admin fines up to NT$500k",
+    "exemptions": "Personal or household activities; statutory duties",
+    "website_url": "https://law.moj.gov.tw/Eng/LawClass/LawAll.aspx?PCode=I0050021",
+    "language": "English",
+    "frameworks": "APEC-CBPR",
+    "notes": "Renamed 1995 Act; 2025-11-11 amendment (PDPC) awaits Executive Yuan start date"
+  }
+]

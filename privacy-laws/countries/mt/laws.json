@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "MT",
+    "country_name": "Malta",
+    "region": "europe",
+    "law_name": "Data Protection Act (Cap. 586)",
+    "jurisdiction": "Information and Data Protection Commissioner",
+    "enactment_date": "2018-05-28",
+    "effective_date": "2018-05-28",
+    "scope": "Individuals in Malta",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Supplements GDPR, Commissioner's powers, administrative fines and appeals",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Information and Data Protection Commissioner (IDPC)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "website_url": "https://idpc.org.mt/our-office/legislation/",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "Act XX of 2018; repealed Cap. 440; Law Enforcement Directive transposed by S.L. 586.08"
+  }
+]

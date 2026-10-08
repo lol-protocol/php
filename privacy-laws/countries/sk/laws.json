@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "SK",
+    "country_name": "Slovakia",
+    "region": "europe",
+    "law_name": "Act No. 18/2018 Coll. on Personal Data Protection and on Amending and Supplementing Certain Acts",
+    "jurisdiction": "Office for Personal Data Protection",
+    "enactment_date": "2017-11-29",
+    "effective_date": "2018-05-25",
+    "scope": "Individuals in Slovakia",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Mirrors GDPR with national exceptions, Office's powers, administrative fines",
+    "data_categories": "Personal data; sensitive data (incl. genetic/biometric/health)",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Office for Personal Data Protection of the Slovak Republic",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "website_url": "https://dataprotection.gov.sk/files/personal-data-sample/2019_10_03_act_18_2018_on_personal_data_protection_and_amending_and_supplementing_certain_acts.pdf",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "Replaced Act 122/2013; also transposes Law Enforcement Directive; promulgated 30 Jan 2018"
+  }
+]

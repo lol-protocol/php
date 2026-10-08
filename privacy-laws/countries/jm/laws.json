@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "JM",
+    "country_name": "Jamaica",
+    "region": "americas",
+    "law_name": "Data Protection Act, 2020 (DPA)",
+    "jurisdiction": "Office of the Information Commissioner (OIC)",
+    "enactment_date": "2020-07-10",
+    "effective_date": "2023-12-01",
+    "scope": "Individuals (living data subjects)",
+    "applies_to": "Public & private data controllers",
+    "key_requirements": "Data protection standards, controller registration with OIC, data subject rights",
+    "data_categories": "Personal data; sensitive personal data",
+    "retention_period": "As long as necessary for the purpose",
+    "enforcement_authority": "Office of the Information Commissioner (OIC)",
+    "penalties_range": "Up to 4% of annual gross worldwide turnover (bodies corporate)",
+    "exemptions": "Domestic use; national security; journalism & artistic purposes",
+    "website_url": "https://www.dataguidance.com/notes/jamaica-data-protection-overview",
+    "language": "English",
+    "frameworks": "",
+    "notes": "OIC set up Dec 2021; controller duties from 2023-12-01; full enforcement expected only by 2028"
+  }
+]

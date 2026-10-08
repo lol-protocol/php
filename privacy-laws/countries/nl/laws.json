@@ -17,6 +17,7 @@
     "exemptions": "Legal obligations",
     "website_url": "https://www.ap.nl/",
     "language": "Dutch",
+    "frameworks": "GDPR/CoE-108",
     "notes": "GDPR implementation"
   }
 ]

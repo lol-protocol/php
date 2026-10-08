@@ -17,6 +17,7 @@
     "exemptions": "Legal obligations",
     "website_url": "https://uodo.gov.pl/",
     "language": "Polish",
+    "frameworks": "GDPR/CoE-108",
     "notes": "GDPR implementation"
   }
 ]

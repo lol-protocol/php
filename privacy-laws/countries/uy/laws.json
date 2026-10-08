@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "UY",
+    "country_name": "Uruguay",
+    "region": "americas",
+    "law_name": "Personal Data Protection and Habeas Data Act (Law No. 18.331)",
+    "jurisdiction": "Regulatory and Control Unit for Personal Data (URCDP)",
+    "enactment_date": "2008-08-11",
+    "effective_date": "2008-08-18",
+    "scope": "Individuals (and legal entities where applicable)",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Prior informed consent, purpose limitation, data subject rights, database registration",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "As long as necessary for the purpose",
+    "enforcement_authority": "Regulatory and Control Unit for Personal Data (URCDP) within AGESIC",
+    "penalties_range": "Up to 500,000 Indexed Units (UI) fine",
+    "exemptions": "Personal/domestic use; public security, defence & State security",
+    "website_url": "https://www.bps.gub.uy/bps/file/10816/25/ley-18.331---habeas-data.pdf",
+    "language": "Spanish",
+    "frameworks": "EU-Adequacy/CoE-108",
+    "notes": "Regulated by Decree 414/009; territorial scope extended by Law 19.670 (arts 37-40)"
+  }
+]

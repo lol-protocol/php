@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "BY",
+    "country_name": "Belarus",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (Law No. 99-Z)",
+    "jurisdiction": "National Center for Personal Data Protection",
+    "enactment_date": "2021-05-07",
+    "effective_date": "2021-11-15",
+    "scope": "Individuals in Belarus",
+    "applies_to": "State bodies, companies & sole proprietors in Belarus, foreign organizations processing data there",
+    "key_requirements": "Consent as main basis, data subject rights, cross-border transfer limits, operator security duties",
+    "data_categories": "Personal data; special categories",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Center for Personal Data Protection of the Republic of Belarus",
+    "penalties_range": "Criminal / administrative sanctions",
+    "exemptions": "Household use; national security & defence; operational-investigative work",
+    "website_url": "https://petosevic.com/node/4541",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Regulator set up by Presidential Decree No. 422 (28 Oct 2021) after the law took effect"
+  }
+]

@@ -180,22 +180,48 @@ test("hydrate flattens countries into rows with stable ids and derived fields", 
 });
 
 test("privacy filters give the expected counts on the real data", () => {
+  // Expected values are derived from the rows themselves, so adding countries does not break them.
+  const expected = (predicate) => data.rows.filter(predicate).length;
   assert.equal(count(""), data.rows.length);
-  assert.equal(count("region=americas&year=2018-2024"), 2);
-  assert.equal(count("language=Spanish&region=europe"), 1);
+  assert.equal(
+    count("region=americas&year=2018-2024"),
+    expected((r) => r.region === "americas" && r.effectiveYear >= 2018 && r.effectiveYear <= 2024)
+  );
+  assert.equal(
+    count("language=Spanish&region=europe"),
+    expected((r) => r.region === "europe" && r.languages.includes("Spanish"))
+  );
   assert.equal(count("q=us"), 2);
   assert.equal(count("q=br"), 1);
   assert.equal(count("country=us"), 2);
-  assert.equal(count("year=2018-2018&region=europe"), 17);
+  assert.equal(
+    count("year=2018-2018&region=europe"),
+    expected((r) => r.region === "europe" && r.effectiveYear === 2018)
+  );
+  assert.ok(count("year=2018-2018&region=europe") >= 17);
+});
+
+test("the framework facet requires every selected framework", () => {
+  const withAll = (...wanted) => data.rows.filter((r) => wanted.every((f) => r.frameworkList.includes(f))).length;
+  assert.ok(withAll("GDPR") > 0 && withAll("CoE-108") > 0 && withAll("APEC-CBPR") > 0);
+  assert.equal(count("framework=GDPR"), withAll("GDPR"));
+  assert.equal(count("framework=GDPR,CoE-108"), withAll("GDPR", "CoE-108"));
+  assert.ok(withAll("GDPR", "CoE-108") < withAll("GDPR") + withAll("CoE-108"));
+  assert.equal(count("framework=GDPR,APEC-CBPR"), 0, "no country is both an EU/EEA state and an APEC CBPR participant");
+  assert.equal(count("framework=Nonsense"), data.rows.length, "unknown frameworks are ignored, not turned into an empty result");
 });
 
 test("chart bars cover every year in range, including empty ones", () => {
   const bars = buildChartBars(data.rows);
-  assert.equal(bars[0].label, "1981");
-  assert.equal(bars.at(-1).label, "2024");
-  assert.equal(bars.length, 2024 - 1981 + 1);
+  const years = data.rows.map((r) => r.effectiveYear);
+  const [first, last] = [Math.min(...years), Math.max(...years)];
+  assert.equal(bars[0].label, String(first));
+  assert.equal(bars.at(-1).label, String(last));
+  assert.equal(bars.length, last - first + 1);
   assert.equal(bars.reduce((n, b) => n + b.value, 0), data.rows.length);
-  assert.equal(Math.max(...bars.map((b) => b.value)), 17);
+  const perYear = new Map();
+  for (const year of years) perYear.set(year, (perYear.get(year) ?? 0) + 1);
+  assert.equal(Math.max(...bars.map((b) => b.value)), Math.max(...perYear.values()));
   assert.deepEqual(buildChartBars([]), []);
 });
 

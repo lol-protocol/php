@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "ZM",
+    "country_name": "Zambia",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act 2021 (DPA)",
+    "jurisdiction": "Office of the Data Protection Commissioner",
+    "enactment_date": "2021-03-23",
+    "effective_date": "2021-04-01",
+    "scope": "Individuals in Zambia",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Registration of controllers and processors, licensing of data auditors, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Office of the Data Protection Commissioner",
+    "penalties_range": "Up to 500,000 penalty units and/or 5 years' imprisonment",
+    "exemptions": "National security; household use",
+    "website_url": "https://zambialii.org/akn/zm/act/2021/3/eng@2021-03-24",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Commenced by SI 22 of 2021; Office operational only from 2025; registration due 30 Apr 2025"
+  }
+]

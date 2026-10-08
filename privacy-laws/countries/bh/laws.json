@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "BH",
+    "country_name": "Bahrain",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Law (PDPL)",
+    "jurisdiction": "Personal Data Protection Authority",
+    "enactment_date": "2018-07-12",
+    "effective_date": "2019-08-01",
+    "scope": "Individuals in Bahrain",
+    "applies_to": "Organizations in Bahrain & foreign firms using means in Bahrain",
+    "key_requirements": "Consent or lawful grounds, sensitive data rules, notification to the Authority, cross-border transfer limits",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Personal Data Protection Authority (functions held by Ministry of Justice, Islamic Affairs and Waqf)",
+    "penalties_range": "Up to BHD 20k fine; up to 1 year prison",
+    "exemptions": "Not specified",
+    "website_url": "https://www.lloc.gov.bh/FullEn/K3018.docx",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Law No. 30 of 2018; Ministry of Justice exercises Authority functions under a 2019 decree"
+  }
+]

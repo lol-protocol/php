@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "SN",
+    "country_name": "Senegal",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Law (Law No. 2008-12)",
+    "jurisdiction": "Commission de protection des données personnelles (CDP)",
+    "enactment_date": "2008-01-25",
+    "effective_date": "2008-01-25",
+    "scope": "Individuals in Senegal",
+    "applies_to": "Public & private data controllers",
+    "key_requirements": "Prior declaration or authorisation, consent, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Commission de protection des données personnelles (CDP)",
+    "penalties_range": "CDP fines of XOF 1M to 100M; up to 7 years' imprisonment (Penal Code)",
+    "exemptions": "National security; household use",
+    "website_url": "https://www.vie-publique.sn/documents/438/loi-protection-donnees-a-caractere-personnel",
+    "language": "French",
+    "frameworks": "CoE-108",
+    "notes": "Entry-into-force day unconfirmed (set to enactment date); 2019 replacement bill not adopted"
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "NI",
+    "country_name": "Nicaragua",
+    "region": "americas",
+    "law_name": "Personal Data Protection Law (Law No. 787)",
+    "jurisdiction": "Dirección de Protección de Datos Personales (DIPRODAP)",
+    "enactment_date": "2012-03-21",
+    "effective_date": "2012-03-29",
+    "scope": "Natural & legal persons",
+    "applies_to": "Public & private data controllers",
+    "key_requirements": "Consent, data quality & security, data subject rights (access, rectification, objection, deletion)",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Dirección de Protección de Datos Personales (DIPRODAP), not yet operational",
+    "penalties_range": "Not specified",
+    "exemptions": "Not specified",
+    "website_url": "https://nicaragua.justia.com/nacionales/leyes/ley-de-proteccion-de-datos-personales-mar-29-2012/gdoc",
+    "language": "Spanish",
+    "frameworks": "",
+    "notes": "Regulation Decree 36-2012 (published 2012-10-19); DIPRODAP reported non-operational"
+  }
+]

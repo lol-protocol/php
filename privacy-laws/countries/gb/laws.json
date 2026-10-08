@@ -17,6 +17,7 @@
     "exemptions": "Legal obligations",
     "website_url": "https://www.ico.org.uk/",
     "language": "English",
+    "frameworks": "EU-Adequacy/CoE-108",
     "notes": "GDPR principles + additional UK rules"
   }
 ]

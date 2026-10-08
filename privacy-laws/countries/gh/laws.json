@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "GH",
+    "country_name": "Ghana",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act 2012 (Act 843)",
+    "jurisdiction": "Data Protection Commission",
+    "enactment_date": "2012-05-10",
+    "effective_date": "2012-10-16",
+    "scope": "Individuals in Ghana",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Controller registration, data protection principles, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Data Protection Commission",
+    "penalties_range": "Up to 5,000 penalty units and/or 10 years' imprisonment",
+    "exemptions": "National security; household use",
+    "website_url": "https://ghalii.org/akn/gh/act/2012/843",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Registration certificate valid 2 years; a 2025 replacement bill is still only a draft"
+  }
+]

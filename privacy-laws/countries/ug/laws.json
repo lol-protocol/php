@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "UG",
+    "country_name": "Uganda",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection and Privacy Act 2019 (DPPA)",
+    "jurisdiction": "Personal Data Protection Office (PDPO)",
+    "enactment_date": "2019-02-25",
+    "effective_date": "2019-03-01",
+    "scope": "Individuals in Uganda",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Registration with the PDPO, consent, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Personal Data Protection Office (PDPO) within NITA-U",
+    "penalties_range": "Up to 245 currency points or 2% of annual gross turnover (corporations); up to 10 years' imprisonment",
+    "exemptions": "National security; household use",
+    "website_url": "https://ulii.org/en/akn/ug/act/2019/9/eng@2019-05-03",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Gazetted 3 May 2019 (some sources give that as commencement); Regulations 2021"
+  }
+]

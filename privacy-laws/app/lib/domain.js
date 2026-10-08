@@ -2,6 +2,7 @@
 // derived row fields, table columns and the comparison criteria.
 
 export const REGION_ORDER = ["europe", "americas", "asia_pacific", "middle_east_africa"];
+export const FRAMEWORK_ORDER = ["GDPR", "EU-Adequacy", "CoE-108", "APEC-CBPR"];
 
 const TEXT_FIELDS = [
   "country_name",
@@ -19,6 +20,7 @@ const TEXT_FIELDS = [
   "penalties_range",
   "exemptions",
   "language",
+  "frameworks",
   "notes",
 ];
 
@@ -33,10 +35,22 @@ export const SEARCH_SCOPES = [
   { id: "penalties", fields: ["penalties_range"] },
 ];
 
-const byRegionOrder = (a, b) => REGION_ORDER.indexOf(a.value) - REGION_ORDER.indexOf(b.value);
+const rank = (order, value) => {
+  const index = order.indexOf(value);
+  return index < 0 ? order.length : index;
+};
+const byRegionOrder = (a, b) => rank(REGION_ORDER, a.value) - rank(REGION_ORDER, b.value);
 
 export const FACETS = [
   { id: "region", kind: "multi", match: "any", values: (row) => [row.region], order: byRegionOrder },
+  {
+    // A country must take part in *every* selected framework.
+    id: "framework",
+    kind: "multi",
+    match: "all",
+    values: (row) => row.frameworkList,
+    order: (a, b) => rank(FRAMEWORK_ORDER, a.value) - rank(FRAMEWORK_ORDER, b.value),
+  },
   { id: "year", kind: "range", values: (row) => row.effectiveYear },
   { id: "language", kind: "select", values: (row) => row.languages },
 ];
@@ -51,10 +65,17 @@ export const COMPARE_CRITERIA = [
   "retention_period",
   "penalties_range",
   "exemptions",
+  "frameworks",
 ];
 
 export function enrichRow(row) {
   row.effectiveYear = Number(row.effective_date.slice(0, 4));
+  row.frameworkList = row.frameworks
+    ? row.frameworks
+        .split("/")
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [];
   row.languages = row.language
     .split("/")
     .map((s) => s.trim())

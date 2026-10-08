@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "EC",
+    "country_name": "Ecuador",
+    "region": "americas",
+    "law_name": "Organic Law on Personal Data Protection (LOPDP)",
+    "jurisdiction": "Superintendency of Personal Data Protection (SPDP)",
+    "enactment_date": "2021-05-26",
+    "effective_date": "2023-05-26",
+    "scope": "Natural persons",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Lawful basis & consent, data subject rights, security & breach notification",
+    "data_categories": "Personal data; sensitive data; health data; children's data",
+    "retention_period": "As long as necessary for the purpose",
+    "enforcement_authority": "Superintendency of Personal Data Protection (Superintendencia de Protección de Datos Personales)",
+    "penalties_range": "Up to 1% of prior-year annual turnover (private sector)",
+    "exemptions": "Domestic use; journalism; national security",
+    "website_url": "https://nmslaw.com.ec/blog/2023/04/05/lopdp-ecuador/",
+    "language": "Spanish",
+    "frameworks": "",
+    "notes": "In force 2021-05-26; sanctions regime from 2023-05-26; Regulation Decree 904 (Nov 2023)"
+  }
+]

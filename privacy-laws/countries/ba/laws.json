@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "BA",
+    "country_name": "Bosnia and Herzegovina",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (DPL)",
+    "jurisdiction": "Personal Data Protection Agency in Bosnia and Herzegovina",
+    "enactment_date": "2025-01-30",
+    "effective_date": "2025-10-04",
+    "scope": "Individuals in Bosnia and Herzegovina",
+    "applies_to": "Public & private controllers and processors (incl. foreign firms targeting residents)",
+    "key_requirements": "Lawful basis & consent, data subject rights, 72-hour breach notification, video surveillance & biometrics limits",
+    "data_categories": "Personal data; special categories incl. biometric data",
+    "retention_period": "No longer than necessary for the purpose",
+    "enforcement_authority": "Personal Data Protection Agency in Bosnia and Herzegovina (AZLP)",
+    "penalties_range": "Up to BAM 40M or 4% global turnover",
+    "exemptions": "Purely personal or household use",
+    "website_url": "https://www.dlapiperdataprotection.com/index.html?c=BA&t=law",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "notes": "Replaced 2006 law (49/06); in force 8 Mar 2025; 2-year transition for existing processing"
+  }
+]

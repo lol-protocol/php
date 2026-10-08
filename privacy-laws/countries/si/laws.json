@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "SI",
+    "country_name": "Slovenia",
+    "region": "europe",
+    "law_name": "Personal Data Protection Act (ZVOP-2)",
+    "jurisdiction": "Information Commissioner",
+    "enactment_date": "2022-12-15",
+    "effective_date": "2023-01-26",
+    "scope": "Individuals in Slovenia",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Supplements GDPR, video surveillance rules, consent age 15",
+    "data_categories": "Personal data; sensitive data; data of deceased persons",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Information Commissioner of the Republic of Slovenia (Informacijski pooblaščenec)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "website_url": "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2022-01-4187/zakon-o-varstvu-osebnih-podatkov-zvop-2",
+    "language": "Slovenian",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "Replaced ZVOP-1 (2004); published in Official Gazette RS 163/2022 on 27 Dec 2022"
+  }
+]

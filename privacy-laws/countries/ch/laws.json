@@ -17,6 +17,7 @@
     "exemptions": "Public interest exceptions",
     "website_url": "https://www.edoeb.admin.ch/",
     "language": "German/French/Italian",
+    "frameworks": "EU-Adequacy/CoE-108",
     "notes": "GDPR-aligned European standard"
   }
 ]

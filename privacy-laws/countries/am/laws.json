@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "AM",
+    "country_name": "Armenia",
+    "region": "europe",
+    "law_name": "Law on Protection of Personal Data (HO-49-N)",
+    "jurisdiction": "Personal Data Protection Agency (Ministry of Justice)",
+    "enactment_date": "2015-05-18",
+    "effective_date": "2015-07-01",
+    "scope": "Individuals in Armenia",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Lawful basis & consent, data subject rights, notify Agency of biometric or special-category processing",
+    "data_categories": "Personal data; special category data; biometric data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Personal Data Protection Agency of the Ministry of Justice",
+    "penalties_range": "Not specified",
+    "exemptions": "Purely personal or household use",
+    "website_url": "https://translation-centre.am/pdf/Translat/HH_orenk/2015/HO-49-N_18052015_14062023_en.pdf",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "notes": "Replaced 2002 law; EU-backed reform to align with GDPR is being drafted"
+  }
+]

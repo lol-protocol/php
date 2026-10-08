@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "EE",
+    "country_name": "Estonia",
+    "region": "europe",
+    "law_name": "Personal Data Protection Act (PDPA)",
+    "jurisdiction": "Data Protection Inspectorate",
+    "enactment_date": "2018-12-12",
+    "effective_date": "2019-01-15",
+    "scope": "Individuals in Estonia",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Supplements GDPR, national derogations, Law Enforcement Directive rules, supervisory powers",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Data Protection Inspectorate (Andmekaitse Inspektsioon)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "website_url": "https://www.riigiteataja.ee/akt/112072025014.pdf",
+    "language": "Estonian",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "Fines via misdemeanour procedure; Nov 2023 Penal Code change lifted the earlier cap"
+  }
+]

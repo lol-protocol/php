@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "BW",
+    "country_name": "Botswana",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act 2024 (DPA)",
+    "jurisdiction": "Information and Data Protection Commission",
+    "enactment_date": "2024-08-19",
+    "effective_date": "2024-10-29",
+    "scope": "Individuals in Botswana",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Consent, purpose limitation, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Information and Data Protection Commission",
+    "penalties_range": "Up to BWP 50M fine and/or imprisonment",
+    "exemptions": "National security; household use",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=BW&t=law",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Replaced 2018 Act (never operative); start date disputed: 2024-10-29 vs 2025-01-14"
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "IS",
+    "country_name": "Iceland",
+    "region": "europe",
+    "law_name": "Act on Data Protection and the Processing of Personal Data (Act No. 90/2018)",
+    "jurisdiction": "Icelandic Data Protection Authority",
+    "enactment_date": "2018-06-27",
+    "effective_date": "2018-07-15",
+    "scope": "Individuals in Iceland",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Implements GDPR via EEA Agreement, lawful basis and data subject rights, supervision",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Icelandic Data Protection Authority (Persónuvernd)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; broad media exemption",
+    "website_url": "https://personuvernd.is/information-in-english/greinar/nr/437",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "Replaced Act 77/2000; GDPR applies through EEA Agreement Annex XI"
+  }
+]

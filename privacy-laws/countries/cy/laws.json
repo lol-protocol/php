@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "CY",
+    "country_name": "Cyprus",
+    "region": "europe",
+    "law_name": "Law Providing for the Protection of Natural Persons with regard to the Processing of Personal Data and for the Free Movement of such Data (Law 125(I)/2018)",
+    "jurisdiction": "Commissioner for Personal Data Protection",
+    "enactment_date": "2018-07-31",
+    "effective_date": "2018-07-31",
+    "scope": "Individuals in Cyprus",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Supplements GDPR, lawful basis and data subject rights, Commissioner's powers",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Office of the Commissioner for Personal Data Protection",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=CY&t=law",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "Repealed Law 138(I)/2001; dated by Government Gazette publication on 31 July 2018"
+  }
+]

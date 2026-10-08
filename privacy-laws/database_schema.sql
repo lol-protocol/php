@@ -41,6 +41,7 @@ CREATE TABLE privacy_laws (
   exemptions TEXT COMMENT 'Key exemptions or carve-outs',
   website_url VARCHAR(512) COMMENT 'Official resource link',
   language VARCHAR(50) COMMENT 'Language of reference materials',
+  frameworks VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'International frameworks, / separated: GDPR, EU-Adequacy, CoE-108, APEC-CBPR',
   notes TEXT COMMENT 'Additional context or special provisions',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

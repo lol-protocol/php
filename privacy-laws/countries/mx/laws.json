@@ -17,6 +17,7 @@
     "exemptions": "Government agencies",
     "website_url": "https://www.gob.mx/inai/",
     "language": "Spanish",
+    "frameworks": "CoE-108/APEC-CBPR",
     "notes": "GDPR-influenced framework"
   }
 ]

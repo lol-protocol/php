@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "LT",
+    "country_name": "Lithuania",
+    "region": "europe",
+    "law_name": "Law on Legal Protection of Personal Data (Law No. XIII-1426)",
+    "jurisdiction": "State Data Protection Inspectorate",
+    "enactment_date": "2018-06-30",
+    "effective_date": "2018-07-16",
+    "scope": "Individuals in Lithuania",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Applies with GDPR, powers of supervisory authorities, fining procedure",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "State Data Protection Inspectorate (Valstybinė duomenų apsaugos inspekcija)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; journalistic processing (separate supervisor)",
+    "website_url": "https://vdai.lrv.lt/en/legislation/",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "Replaced the 1996 law I-1374; separate Law XIII-1435 covers criminal-justice data"
+  }
+]

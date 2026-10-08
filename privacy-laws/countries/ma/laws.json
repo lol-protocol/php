@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "MA",
+    "country_name": "Morocco",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 09-08 on the Protection of Individuals with regard to the Processing of Personal Data (Law 09-08)",
+    "jurisdiction": "National Commission for the Control of Personal Data Protection (CNDP)",
+    "enactment_date": "2009-02-18",
+    "effective_date": "2009-03-05",
+    "scope": "Individuals in Morocco",
+    "applies_to": "Controllers established in Morocco or using means in Morocco",
+    "key_requirements": "Prior declaration or CNDP authorization, consent, data subject rights, authorization for transfers to non-adequate countries",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Commission for the Control of Personal Data Protection (CNDP)",
+    "penalties_range": "Not specified",
+    "exemptions": "Personal or household use; national security & defense; crime prevention; journalistic/literary/artistic activities",
+    "website_url": "https://cms.law/fr/mar/legal-updates/flash-info-maroc-etat-des-lieux-de-la-protection-des-donnees-a-caractere-personnel-au-maroc-loi-n-09-08",
+    "language": "French",
+    "frameworks": "CoE-108",
+    "notes": "Dahir 1-09-15 of 18 Feb 2009; Bulletin Officiel 5714 of 5 Mar 2009; Decree 2-09-165 implements it"
+  }
+]

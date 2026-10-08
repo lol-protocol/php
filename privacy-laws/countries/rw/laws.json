@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "RW",
+    "country_name": "Rwanda",
+    "region": "middle_east_africa",
+    "law_name": "Law Relating to the Protection of Personal Data and Privacy (Law No. 058/2021)",
+    "jurisdiction": "National Cyber Security Authority (NCSA)",
+    "enactment_date": "2021-10-13",
+    "effective_date": "2021-10-15",
+    "scope": "Individuals in Rwanda",
+    "applies_to": "Public & private controllers and processors",
+    "key_requirements": "Lawful processing principles, DPO and impact assessments, breach notification, cross-border transfer rules",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Cyber Security Authority (NCSA)",
+    "penalties_range": "Admin fine RWF 2M-5M or 1% global turnover; criminal fines up to 5% of turnover; up to 7 years' imprisonment",
+    "exemptions": "National security; household use",
+    "website_url": "https://hoganlovells.com/en/publications/key-features-of-the-new-rwandan-data-protection-law",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Two-year transition for existing controllers ended 15 Oct 2023"
+  }
+]

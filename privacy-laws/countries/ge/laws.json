@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "GE",
+    "country_name": "Georgia",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (Law No. 3144/2023)",
+    "jurisdiction": "Personal Data Protection Service",
+    "enactment_date": "2023-06-14",
+    "effective_date": "2024-03-01",
+    "scope": "Individuals in Georgia",
+    "applies_to": "Public & private controllers and processors",
+    "key_requirements": "Lawful basis & consent, data subject rights, DPO, impact assessment",
+    "data_categories": "Personal data; special categories",
+    "retention_period": "No longer than necessary for the purpose",
+    "enforcement_authority": "Personal Data Protection Service of Georgia",
+    "penalties_range": "Up to GEL 20,000 fine",
+    "exemptions": "Purely personal or household use",
+    "website_url": "https://www.dlapiperdataprotection.com/?t=law&c=GE",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "notes": "Replaced 2011 law (GDPR-modelled); DPO/DPIA duties from 1 Jun 2024; other parts phased later"
+  }
+]

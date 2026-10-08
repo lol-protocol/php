@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "MK",
+    "country_name": "North Macedonia",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (LPDP)",
+    "jurisdiction": "Agency for Personal Data Protection",
+    "enactment_date": "2020-02-16",
+    "effective_date": "2021-08-24",
+    "scope": "Individuals in North Macedonia",
+    "applies_to": "Public & private controllers and processors established in North Macedonia",
+    "key_requirements": "GDPR-style lawful basis & consent, data subject rights, DPO, direct marketing only with consent",
+    "data_categories": "Personal data; special categories",
+    "retention_period": "No longer than necessary for the purpose",
+    "enforcement_authority": "Agency for Personal Data Protection (AZLP)",
+    "penalties_range": "Up to 4% of annual turnover (2% for lesser breaches)",
+    "exemptions": "Purely personal or household use",
+    "website_url": "https://azlp.mk/en/?p=12026",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "notes": "Replaced 2005 law; GDPR-modelled; in force 24 Feb 2020; full application 24 Aug 2021"
+  }
+]

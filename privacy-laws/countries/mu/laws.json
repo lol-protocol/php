@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "MU",
+    "country_name": "Mauritius",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act 2017 (DPA)",
+    "jurisdiction": "Data Protection Office",
+    "enactment_date": "2017-12-22",
+    "effective_date": "2018-01-15",
+    "scope": "Individuals in Mauritius",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "GDPR-aligned principles, controller registration, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Data Protection Office (Data Protection Commissioner)",
+    "penalties_range": "Up to MUR 200000 fine and/or 5 years' imprisonment",
+    "exemptions": "National security; household use",
+    "website_url": "https://www.fscmauritius.org/media/ikoldflp/the-data-protection-act-2017.pdf",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "notes": "Replaced the Data Protection Act 2004; commenced by Proclamation No. 3 of 2018"
+  }
+]

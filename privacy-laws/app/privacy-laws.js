@@ -14,6 +14,7 @@ import {
   CONFIG,
   enrichRow,
   FACETS,
+  FRAMEWORK_ORDER,
   SEARCH_SCOPES,
 } from "./lib/domain.js";
 import {
@@ -46,6 +47,9 @@ const app = {
 };
 
 const regionLabel = (region) => t(`region.${region}`);
+const frameworkName = (framework) => t(`framework.${framework}`);
+// Laws can be enacted with an effective date still ahead (ISO dates compare as strings).
+const TODAY = new Date().toISOString().slice(0, 10);
 const countryName = (tld) => app.data.countries.find((c) => c.tld === tld)?.name ?? tld.toUpperCase();
 
 function formatRange({ from, to }) {
@@ -68,26 +72,41 @@ function renderCountryList() {
     .join("");
 }
 
-function renderFacets() {
-  const regions = app.options.region
+function checkboxFacet(id, legendKey, options, labelFor, { hintKey, titleFor } = {}) {
+  const items = options
     .map(
       ({ value, count }) => `
-      <label class="check">
-        <input type="checkbox" name="region" value="${esc(value)}" />
-        <span>${esc(regionLabel(value))}</span> <span class="count">(${count})</span>
+      <label class="check"${titleFor ? ` title="${esc(titleFor(value))}"` : ""}>
+        <input type="checkbox" name="${id}" value="${esc(value)}" />
+        <span>${esc(labelFor(value))}</span> <span class="count">(${count})</span>
       </label>`
     )
     .join("");
+  const hint = hintKey ? `<small class="field-hint">${esc(t(hintKey))}</small>` : "";
+  return `
+    <fieldset class="facet" data-facet="${id}">
+      <legend>${esc(t(legendKey))}</legend>${hint}
+      <div class="facet-options">${items}</div>
+    </fieldset>`;
+}
+
+function renderFacets() {
   const { min, max } = app.options.year;
   const languages = app.options.language
     .map(({ value, count }) => `<option value="${esc(value)}">${esc(value)} (${count})</option>`)
     .join("");
 
+  // A framework nobody takes part in yet cannot narrow anything, so the filter stays hidden.
+  const frameworks = app.options.framework.length
+    ? checkboxFacet("framework", "filters.framework", app.options.framework, (v) => v, {
+        hintKey: "filters.frameworkHint",
+        titleFor: frameworkName,
+      })
+    : "";
+
   $("facets").innerHTML = `
-    <fieldset class="facet">
-      <legend>${esc(t("filters.region"))}</legend>
-      <div class="facet-options">${regions}</div>
-    </fieldset>
+    ${checkboxFacet("region", "filters.region", app.options.region, regionLabel)}
+    ${frameworks}
     <fieldset class="facet">
       <legend>${esc(t("filters.year"))}</legend>
       <div class="range-inputs">
@@ -126,10 +145,13 @@ function renderStatic() {
 /* ---------- Dynamic parts (re-rendered on every state change) ---------- */
 
 function syncFacetControls() {
-  const { region, year, language } = app.state.facets;
+  const { region, framework, year, language } = app.state.facets;
   const facets = $("facets");
   for (const input of facets.querySelectorAll('input[name="region"]')) {
     input.checked = region.includes(input.value);
+  }
+  for (const input of facets.querySelectorAll('input[name="framework"]')) {
+    input.checked = framework.includes(input.value);
   }
   facets.querySelector('[name="year-from"]').value = year.from ?? "";
   facets.querySelector('[name="year-to"]').value = year.to ?? "";
@@ -143,6 +165,8 @@ function chipLabel(chip) {
       return t("chip.country", { value: countryName(chip.value) });
     case "region":
       return regionLabel(chip.value);
+    case "framework":
+      return t("chip.framework", { value: chip.value });
     case "year":
       return t("chip.year", { value: formatRange(app.state.facets.year) });
     default:
@@ -225,7 +249,9 @@ function rowHtml(row) {
       )}">${esc(row.country_name)}</button></td>
       <td>${esc(row.law_name)}</td>
       <td class="nowrap">${esc(row.enactment_date)}</td>
-      <td class="nowrap">${esc(row.effective_date)}</td>
+      <td class="nowrap">${esc(row.effective_date)}${
+        row.effective_date > TODAY ? ` <span class="badge">${esc(t("table.upcoming"))}</span>` : ""
+      }</td>
       <td>${esc(row.enforcement_authority)}</td>
       <td><small>${esc(row.penalties_range)}</small></td>
       <td>${
@@ -262,12 +288,21 @@ function renderCountryCard() {
     return;
   }
   const country = app.data.countries.find((c) => c.tld === tlds[0]);
+  const frameworks = [
+    ...new Set(app.data.rows.filter((row) => row.tld === country.tld).flatMap((row) => row.frameworkList)),
+  ].sort((a, b) => FRAMEWORK_ORDER.indexOf(a) - FRAMEWORK_ORDER.indexOf(b));
+  const badges = frameworks.length
+    ? frameworks
+        .map((f) => `<span class="badge" title="${esc(frameworkName(f))}">${esc(f)}</span>`)
+        .join("")
+    : "—";
   host.hidden = false;
   host.innerHTML = `
     <h2>${esc(country.name)} <span class="badge">${esc(country.code)}</span></h2>
     <dl class="card-grid">
       <div><dt>${esc(t("card.region"))}</dt><dd>${esc(regionLabel(country.region))}</dd></div>
       <div><dt>${esc(t("card.laws"))}</dt><dd>${country.lawCount}</dd></div>
+      <div><dt>${esc(t("card.frameworks"))}</dt><dd class="badge-list">${badges}</dd></div>
       <div><dt>${esc(t("card.folder"))}</dt><dd><code>countries/${esc(country.tld)}/</code></dd></div>
       <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
     </dl>
@@ -385,8 +420,8 @@ function bindEvents() {
   $("facets").addEventListener("change", (event) => {
     const { name, value } = event.target;
     const { facets } = app.state;
-    if (name === "region") {
-      facets.region = [...$("facets").querySelectorAll('input[name="region"]:checked')].map((i) => i.value);
+    if (name === "region" || name === "framework") {
+      facets[name] = [...$("facets").querySelectorAll(`input[name="${name}"]:checked`)].map((i) => i.value);
     } else if (name === "year-from" || name === "year-to") {
       let from = readYear("year-from");
       let to = readYear("year-to");

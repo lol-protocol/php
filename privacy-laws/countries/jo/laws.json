@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "JO",
+    "country_name": "Jordan",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Law (PDPL)",
+    "jurisdiction": "Personal Data Protection Council",
+    "enactment_date": "2023-09-17",
+    "effective_date": "2024-03-17",
+    "scope": "Individuals in Jordan",
+    "applies_to": "Public & private entities processing personal data",
+    "key_requirements": "Consent, data subject rights, controller and processor duties, warning before penalties",
+    "data_categories": "Personal data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Personal Data Protection Council & Directorate (Ministry of Digital Economy and Entrepreneurship)",
+    "penalties_range": "Up to JOD 10k per violation (doubled if repeated)",
+    "exemptions": "Not specified",
+    "website_url": "https://www.clydeco.com/en/insights/2023/10/jordan-issues-first-personal-data-protection-law",
+    "language": "English",
+    "frameworks": "",
+    "notes": "Law No. 24 of 2023; grace period for existing processing ended Mar 2025"
+  }
+]

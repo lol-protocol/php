@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "CR",
+    "country_name": "Costa Rica",
+    "region": "americas",
+    "law_name": "Law on the Protection of Individuals regarding the Processing of their Personal Data (Law No. 8968)",
+    "jurisdiction": "PRODHAB (Agencia de Protección de Datos de los Habitantes)",
+    "enactment_date": "2011-07-07",
+    "effective_date": "2011-09-05",
+    "scope": "Individuals regardless of nationality or residence",
+    "applies_to": "Public & private database controllers",
+    "key_requirements": "Informed consent, data subject rights, database registration with PRODHAB",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Agencia de Protección de Datos de los Habitantes (PRODHAB)",
+    "penalties_range": "Up to 30 base salaries (salarios base) fine",
+    "exemptions": "Internal/personal/household databases (unless traded)",
+    "website_url": "https://www.sutel.go.cr/sites/default/files/normativas/ley_proteccion_de_la_persona_frente_al_tratamiento_de_sus_ley_8968.pdf",
+    "language": "Spanish",
+    "frameworks": "",
+    "notes": "Regulation: Decree 37554-JP; reform bill 23097 not confirmed enacted"
+  }
+]

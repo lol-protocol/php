@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "UA",
+    "country_name": "Ukraine",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (Law No. 2297-VI)",
+    "jurisdiction": "Parliament Commissioner for Human Rights",
+    "enactment_date": "2010-06-01",
+    "effective_date": "2011-01-01",
+    "scope": "Individuals in Ukraine",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Lawful basis & consent, purpose limitation, data subject rights, notify Ombudsman of high-risk processing",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Ukrainian Parliament Commissioner for Human Rights (Ombudsman)",
+    "penalties_range": "Up to UAH 34000 administrative fine; criminal liability",
+    "exemptions": "Household use; journalism",
+    "website_url": "https://www.dlapiperdataprotection.com/index.html?c=UA&t=law",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "notes": "GDPR-style bill 8153 passed 1st reading only (Nov 2024); 2010 law still applies"
+  }
+]

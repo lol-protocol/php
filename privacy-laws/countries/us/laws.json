@@ -17,6 +17,7 @@
     "exemptions": "B2B exemptions",
     "website_url": "https://oag.ca.gov/privacy/ccpa",
     "language": "English",
+    "frameworks": "EU-Adequacy/APEC-CBPR",
     "notes": "Now CPRA as of Jan 2023"
   },
   {
@@ -37,6 +38,7 @@
     "exemptions": "Educational institutions",
     "website_url": "https://www.ftc.gov/coppa",
     "language": "English",
+    "frameworks": "EU-Adequacy/APEC-CBPR",
     "notes": "Website & app operators"
   }
 ]

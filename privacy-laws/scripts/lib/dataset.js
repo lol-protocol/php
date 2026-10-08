@@ -35,6 +35,7 @@ export const COLUMNS = [
   "exemptions",
   "website_url",
   "language",
+  "frameworks",
   "notes",
 ];
 
@@ -44,6 +45,13 @@ export const REGIONS = [
   "asia_pacific",
   "middle_east_africa",
 ];
+
+// International privacy frameworks a country takes part in (`/`-separated in the CSV).
+//   GDPR         EU/EEA state: the GDPR applies directly
+//   EU-Adequacy  European Commission adequacy decision in force (full or partial)
+//   CoE-108      Party to Council of Europe Convention 108 (or 108+)
+//   APEC-CBPR    Participant in the APEC / Global CBPR system
+export const FRAMEWORKS = ["GDPR", "EU-Adequacy", "CoE-108", "APEC-CBPR"];
 
 const REQUIRED = [
   "country_code",
@@ -161,6 +169,14 @@ export function validateRecords(records, header = COLUMNS) {
 
     if (!isHttpUrl(record.website_url)) {
       fail(`website_url must be an http(s) URL, got ${JSON.stringify(record.website_url)}`);
+    }
+
+    if (record.frameworks) {
+      const listed = record.frameworks.split("/");
+      for (const framework of listed) {
+        if (!FRAMEWORKS.includes(framework)) fail(`unknown framework ${JSON.stringify(framework)} (allowed: ${FRAMEWORKS.join(", ")})`);
+      }
+      if (new Set(listed).size !== listed.length) fail(`frameworks lists the same value twice: ${record.frameworks}`);
     }
 
     if (!/^[A-Z][A-Za-z]+(\/[A-Z][A-Za-z]+)*$/.test(record.language)) {

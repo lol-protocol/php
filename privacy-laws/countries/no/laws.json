@@ -1,0 +1,23 @@
+[
+  {
+    "country_code": "NO",
+    "country_name": "Norway",
+    "region": "europe",
+    "law_name": "Personal Data Act (PDA)",
+    "jurisdiction": "Norwegian Data Protection Authority",
+    "enactment_date": "2018-06-15",
+    "effective_date": "2018-07-20",
+    "scope": "Individuals in Norway",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Incorporates GDPR via EEA Agreement, consent age 13, sensitive data rules",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "No longer than necessary",
+    "enforcement_authority": "Norwegian Data Protection Authority (Datatilsynet)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Household use; national security",
+    "website_url": "https://www.linklaters.com/en/insights/data-protected/data-protected---norway",
+    "language": "English",
+    "frameworks": "GDPR/CoE-108",
+    "notes": "Act of 15 June 2018 no. 38; replaced 2000 Act; in force with EEA Decision 154/2018"
+  }
+]
