@@ -15,11 +15,14 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`cobros-ingresos-funnels/`](cobros-ingresos-funnels/) | Panel web de cobros, ingresos y funnel de conversión: boletas, pagos, clientes, cohortes y auditoría (PHP + PostgreSQL). |
 | [`vps-setup/`](vps-setup/) | Scripts para configurar desde cero un VPS Ubuntu (Nginx, PHP, Python, PostgreSQL, SSL). |
 | [`landing-page/`](landing-page/) | Landing page estática que despliegan los scripts de `vps-setup/`. |
+| [`iconos-genealogia/` y `iconos-biblioteca/`](ICONOS_README.md) | Dos sets de iconos SVG abstractos en 2.5D, sin texto: árbol genealógico (172 iconos) y biblioteca virtual (161), cada uno en 3 variantes. Galería en `galeria-iconos.html`, generador y validador en `iconos-tools/`. |
 
-Cada carpeta tiene su propio README con instrucciones de instalación y uso. La mayoría tiene
-también su propio código y tests; `landing-page/` es un solo archivo, y `marketing/` y
-`psychology-and-marketing/` son solo texto e imágenes, sin código ni CI. La única dependencia
-entre proyectos es:
+Cada carpeta tiene su propio README con instrucciones de instalación y uso, salvo los sets de
+iconos (`iconos-genealogia/`, `iconos-biblioteca/`, `iconos-tools/`), documentados juntos en
+[`ICONOS_README.md`](ICONOS_README.md) en la raíz. La mayoría tiene también su propio código y
+tests; `landing-page/` es un solo archivo; `marketing/` y `psychology-and-marketing/` son solo
+texto e imágenes, sin código ni CI; y los sets de iconos son SVG más un generador/validador en
+Python (`iconos-tools/`) que no corre en CI. La única dependencia entre proyectos es:
 **`phone-directory/` requiere `defamatory-content-review/`** (usa sus clases de plegado de
 acentos y claves fonéticas) — su `composer.json` la declara como dependencia Composer
 (`lol-protocol/defamatory-content-review`, repositorio `path` a `../defamatory-content-review`),
