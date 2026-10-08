@@ -41,7 +41,7 @@
 
 .comparison-table thead {
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
 }
 
 .comparison-table th {

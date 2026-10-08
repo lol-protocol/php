@@ -2,16 +2,17 @@
 :root {
   --color-primary: #0066cc;
   --color-primary-dark: #0052a3;
+  --color-on-primary: #ffffff;
   --color-secondary: #6c757d;
   --color-success: #28a745;
-  --color-info: #17a2b8;
+  --color-info: #117a8b;
   --color-warning: #ffc107;
   --color-danger: #dc3545;
   --color-light: #f8f9fa;
   --color-dark: #212529;
   --color-border: #dee2e6;
   --color-text: #212529;
-  --color-text-muted: #6c757d;
+  --color-text-muted: #5a6268;
 
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -39,8 +40,10 @@
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-primary: #4d94ff;
-    --color-primary-dark: #3d7acc;
+    --color-primary: #6aa7ff;
+    --color-primary-dark: #8bbcff;
+    --color-on-primary: #0b1a2e;
+    --color-info: #17a2b8;
     --color-text: #e9ecef;
     --color-text-muted: #adb5bd;
     --color-light: #2d3436;
@@ -198,7 +201,7 @@ a:hover {
 
 .btn-primary {
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
 }
 
 .btn-primary:hover {
@@ -212,7 +215,7 @@ a:hover {
 
 .btn-info {
   background-color: var(--color-info);
-  color: white;
+  color: var(--color-on-primary);
 }
 
 .btn-outline {
@@ -223,7 +226,7 @@ a:hover {
 
 .btn-outline:hover {
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-on-primary);
 }
 
 .btn-sm {

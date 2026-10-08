@@ -64,10 +64,11 @@ export function renderBarChart(host, spec) {
     grid.append(line);
   }
 
-  const cols = el("ol", "viz-cols");
+  const cols = el("div", "viz-cols");
+  cols.setAttribute("role", "group");
   cols.setAttribute("aria-label", spec.title);
   const columns = spec.bars.map((bar, index) => {
-    const col = el("li", "viz-col");
+    const col = el("div", "viz-col");
     col.tabIndex = index === 0 ? 0 : -1;
     col.setAttribute("role", "img");
     col.setAttribute("aria-label", `${bar.name ?? bar.label}: ${spec.formatValue(bar.value)}`);
