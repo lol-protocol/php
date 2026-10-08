@@ -11,6 +11,7 @@ declare(strict_types=1);
  *   php scripts/cache-texts.php --dry-run          list what would be fetched, no network
  *   php scripts/cache-texts.php --force            refetch even if the page did not change
  *   php scripts/cache-texts.php --format=txt       plain text instead of Markdown
+ *   php scripts/cache-texts.php --allow-private-hosts   also fetch loopback/private addresses (refused by default)
  *   php scripts/cache-texts.php --max-kb=400 --delay=1 --timeout=20
  *   php scripts/cache-texts.php --convert < page.html     HTML on stdin → Markdown on stdout
  *
@@ -27,6 +28,13 @@ if (PHP_SAPI !== 'cli') {
 }
 
 require __DIR__ . '/lib/html_to_text.php';
+
+foreach (['curl', 'dom', 'mbstring', 'intl'] as $extension) {
+    if (!extension_loaded($extension)) {
+        fwrite(STDERR, "Error: the PHP extension \"$extension\" is required (curl, dom, mbstring, intl).\n");
+        exit(2);
+    }
+}
 
 const BUNDLE_KEY = 'jurisdictions';
 const URL_FIELD = 'linked_resources';
@@ -55,10 +63,10 @@ function usage(string $message = ''): never
     exit($message === '' ? 0 : 2);
 }
 
-/** @return array{only: list<string>, dryRun: bool, force: bool, format: string, maxKb: int, delay: float, timeout: int, convert: bool} */
+/** @return array{only: list<string>, dryRun: bool, force: bool, format: string, maxKb: int, delay: float, timeout: int, convert: bool, allowPrivate: bool} */
 function parseOptions(array $argv): array
 {
-    $options = ['only' => [], 'dryRun' => false, 'force' => false, 'format' => 'md', 'maxKb' => 400, 'delay' => 1.0, 'timeout' => 20, 'convert' => false];
+    $options = ['only' => [], 'dryRun' => false, 'force' => false, 'format' => 'md', 'maxKb' => 400, 'delay' => 1.0, 'timeout' => 20, 'convert' => false, 'allowPrivate' => false];
     foreach (array_slice($argv, 1) as $arg) {
         if ($arg === '--help' || $arg === '-h') {
             usage();
@@ -68,6 +76,8 @@ function parseOptions(array $argv): array
             $options['force'] = true;
         } elseif ($arg === '--convert') {
             $options['convert'] = true;
+        } elseif ($arg === '--allow-private-hosts') {
+            $options['allowPrivate'] = true;
         } elseif (preg_match('/^--only=(.+)$/', $arg, $m)) {
             $options['only'] = array_values(array_filter(array_map('strtolower', array_map('trim', explode(',', $m[1])))));
             foreach ($options['only'] as $tld) {
@@ -92,9 +102,8 @@ function parseOptions(array $argv): array
 
 function slugify(string $text): string
 {
-    if (class_exists('Transliterator')) {
-        $text = Transliterator::create('Any-Latin; Latin-ASCII; Lower()')?->transliterate($text) ?: $text;
-    }
+    // Without intl, accented letters would turn into hyphens and file names would differ between hosts.
+    $text = Transliterator::create('Any-Latin; Latin-ASCII; Lower()')?->transliterate($text) ?: $text;
     $slug = trim((string) preg_replace('/[^a-z0-9]+/', '-', strtolower($text)), '-');
     return substr($slug, 0, 80) ?: 'law';
 }
@@ -117,8 +126,8 @@ function writeAtomic(string $path, string $contents): void
     }
 }
 
-/** @return array{status: int, headers: array<string,string>, body: string, error: ?string, finalUrl: string} */
-function fetchUrl(string $url, array $conditional, int $timeout): array
+/** One request, no redirect handling. @return array{status: int, headers: array<string,string>, body: string, error: ?string, finalUrl: string} */
+function fetchOnce(string $url, array $conditional, int $timeout, ?string $pinnedIp): array
 {
     $headers = [];
     $body = '';
@@ -126,10 +135,8 @@ function fetchUrl(string $url, array $conditional, int $timeout): array
 
     $ch = curl_init($url);
     curl_setopt_array($ch, [
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_MAXREDIRS => 5,
+        CURLOPT_FOLLOWLOCATION => false,
         CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-        CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_TIMEOUT => $timeout,
         CURLOPT_USERAGENT => USER_AGENT,
@@ -156,6 +163,12 @@ function fetchUrl(string $url, array $conditional, int $timeout): array
             return strlen($chunk);
         },
     ]);
+    if ($pinnedIp !== null) {
+        // Connect to the address that was just checked, so DNS cannot change its answer in between.
+        $parts = parse_url($url);
+        $port = $parts['port'] ?? (strtolower($parts['scheme'] ?? '') === 'https' ? 443 : 80);
+        curl_setopt($ch, CURLOPT_RESOLVE, ["{$parts['host']}:$port:$pinnedIp"]);
+    }
     $ca = getenv('CURL_CA_BUNDLE') ?: getenv('SSL_CERT_FILE');
     if ($ca && is_readable($ca)) {
         curl_setopt($ch, CURLOPT_CAINFO, $ca);
@@ -171,6 +184,86 @@ function fetchUrl(string $url, array $conditional, int $timeout): array
     ];
     curl_close($ch);
     return $result;
+}
+
+/** Loopback, private, link-local and other reserved addresses. */
+function isPrivateAddress(string $ip): bool
+{
+    return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false;
+}
+
+/** @return list<string> every address the host resolves to */
+function resolveHost(string $host): array
+{
+    $host = trim($host, '[]');
+    if (filter_var($host, FILTER_VALIDATE_IP) !== false) {
+        return [$host];
+    }
+    $ips = [];
+    foreach (@dns_get_record($host, DNS_A | DNS_AAAA) ?: [] as $record) {
+        $ips[] = $record['ip'] ?? $record['ipv6'] ?? '';
+    }
+    foreach (@gethostbynamel($host) ?: [] as $ip) {
+        $ips[] = $ip;
+    }
+    return array_values(array_unique(array_filter($ips)));
+}
+
+/** Absolute URL for a Location header relative to the URL that sent it. */
+function resolveRedirect(string $base, string $location): string
+{
+    if (preg_match('#^[a-z][a-z0-9+.-]*:#i', $location)) {
+        return $location;
+    }
+    $parts = parse_url($base);
+    $origin = ($parts['scheme'] ?? 'http') . '://' . ($parts['host'] ?? '') . (isset($parts['port']) ? ':' . $parts['port'] : '');
+    if (str_starts_with($location, '//')) {
+        return ($parts['scheme'] ?? 'http') . ':' . $location;
+    }
+    if (str_starts_with($location, '/')) {
+        return $origin . $location;
+    }
+    $dir = preg_replace('#/[^/]*$#', '/', $parts['path'] ?? '/');
+    return $origin . $dir . $location;
+}
+
+/**
+ * GET with up to five redirects. Every hop is checked: only http(s), and (unless
+ * allowed) never a loopback/private address, so a reference URL cannot be used to
+ * read internal services and publish the answer through the API.
+ *
+ * @return array{status: int, headers: array<string,string>, body: string, error: ?string, finalUrl: string}
+ */
+function fetchUrl(string $url, array $conditional, int $timeout, bool $allowPrivate = false): array
+{
+    for ($hop = 0; $hop <= 5; $hop++) {
+        $parts = parse_url($url);
+        $scheme = strtolower($parts['scheme'] ?? '');
+        if (!in_array($scheme, ['http', 'https'], true) || empty($parts['host'])) {
+            return ['status' => 0, 'headers' => [], 'body' => '', 'error' => 'only http(s) URLs are fetched', 'finalUrl' => $url];
+        }
+        $pinned = null;
+        if (!$allowPrivate) {
+            $ips = resolveHost($parts['host']);
+            if (!$ips) {
+                return ['status' => 0, 'headers' => [], 'body' => '', 'error' => 'host does not resolve', 'finalUrl' => $url];
+            }
+            foreach ($ips as $ip) {
+                if (isPrivateAddress($ip)) {
+                    return ['status' => 0, 'headers' => [], 'body' => '', 'error' => "refusing to fetch a private address ($ip); use --allow-private-hosts to override", 'finalUrl' => $url];
+                }
+            }
+            $pinned = $ips[0];
+        }
+
+        $response = fetchOnce($url, $conditional, $timeout, $pinned);
+        $location = $response['headers']['location'] ?? '';
+        if ($response['error'] !== null || $location === '' || !in_array($response['status'], [301, 302, 303, 307, 308], true)) {
+            return $response;
+        }
+        $url = resolveRedirect($url, $location);
+    }
+    return ['status' => 0, 'headers' => [], 'body' => '', 'error' => 'too many redirects', 'finalUrl' => $url];
 }
 
 /** @return array{text: string, title: string}|string  the text, or the reason it was skipped */
@@ -212,6 +305,12 @@ function renderFile(string $format, string $text, array $meta): string
         return "{$meta['law']}\nSource: {$meta['source']}\nFetched: {$meta['fetched']}\n\n$plain\n";
     }
     return "---\nsource: {$json($meta['source'])}\nlaw: {$json($meta['law'])}\ntitle: {$json($meta['title'])}\nfetched: {$json($meta['fetched'])}\n---\n\n$text\n";
+}
+
+/** Cached text files are only ever named like `some-slug.md`: never trust a path read from index.json. */
+function isCacheFileName(mixed $name): bool
+{
+    return is_string($name) && preg_match('/\A[a-z0-9][a-z0-9-]*\.(md|txt)\z/', $name) === 1;
 }
 
 /** @return array<string, array<string,mixed>> index entries by slug */
@@ -289,9 +388,11 @@ function main(array $argv): int
             $first = false;
 
             $old = $previous[$slug] ?? null;
-            $haveFile = $old !== null && ($old['status'] ?? '') === 'ok' && is_file("$dir/{$old['file']}");
+            $haveFile = $old !== null && ($old['status'] ?? '') === 'ok' && isCacheFileName($old['file'] ?? null) && is_file("$dir/{$old['file']}");
+            // Validators only make sense for the same URL and the same output file; otherwise a 304 would keep stale text.
+            $reusable = $haveFile && ($old['source'] ?? '') === $url && $old['file'] === "$slug.$ext";
             $conditional = [];
-            if ($haveFile && !$options['force']) {
+            if ($reusable && !$options['force']) {
                 if (!empty($old['etag'])) {
                     $conditional[] = 'If-None-Match: ' . $old['etag'];
                 }
@@ -300,7 +401,7 @@ function main(array $argv): int
                 }
             }
 
-            $response = fetchUrl($url, $conditional, $options['timeout']);
+            $response = fetchUrl($url, $conditional, $options['timeout'], $options['allowPrivate']);
             $stamp = now();
             $failure = null;
             $skipReason = null;
@@ -309,7 +410,7 @@ function main(array $argv): int
 
             if ($response['error'] !== null || $response['status'] === 0) {
                 $failure = $response['error'] ?? 'no response';
-            } elseif ($response['status'] === 304 && $haveFile) {
+            } elseif ($response['status'] === 304 && $reusable) {
                 $entries[$slug] = ['checkedAt' => $stamp] + $old;
                 $totals['unchanged']++;
                 echo "[same] $label  (304 not modified)\n";
@@ -344,7 +445,7 @@ function main(array $argv): int
             $unchanged = $haveFile && ($old['sha256'] ?? '') === $hash && ($old['file'] ?? '') === "$slug.$ext";
             $file = "$slug.$ext";
             if (!$unchanged) {
-                if ($old !== null && isset($old['file']) && $old['file'] !== $file) {
+                if ($old !== null && isCacheFileName($old['file'] ?? null) && $old['file'] !== $file) {
                     @unlink("$dir/{$old['file']}"); // format changed: keep a single file per law
                 }
                 writeAtomic("$dir/$file", renderFile($ext, $text, [
@@ -376,6 +477,16 @@ function main(array $argv): int
             $sorted = array_values($entries);
             usort($sorted, static fn(array $a, array $b): int => strcmp($a['slug'], $b['slug']));
             writeAtomic("$dir/index.json", json_encode($sorted, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "\n");
+
+            // A law that left the dataset must not stay downloadable through the API.
+            $kept = array_column($sorted, 'file');
+            foreach (glob("$dir/*") ?: [] as $path) {
+                $name = basename($path);
+                if (isCacheFileName($name) && !in_array($name, $kept, true)) {
+                    @unlink($path);
+                    echo "[gone] $tld/$name  (no longer in the dataset)\n";
+                }
+            }
         }
     }
 

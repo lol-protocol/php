@@ -63,7 +63,7 @@ test("per-jurisdiction data is served as {data: …} with the requested format",
 });
 
 test("tld is validated: no path traversal, no other module's data", { skip }, async () => {
-  for (const tld of ["../../privacy-laws/countries/us", "us/../gb", "%00us", "u", "usa", "u1", "", "..", "%2e%2e"]) {
+  for (const tld of ["../../privacy-laws/countries/us", "us/../gb", "%00us", "us%0A", "u", "usa", "u1", "", "..", "%2e%2e"]) {
     const response = await get(real, `action=jurisdiction&tld=${tld}`);
     assert.equal(response.status, 400, `tld=${tld}`);
     assert.match((await response.json()).error, /2-letter/);
@@ -84,6 +84,8 @@ test("responses are cacheable: ETag/Last-Modified answer 304", { skip }, async (
     assert.equal(byEtag.status, 304, `${query} If-None-Match`);
     const bySince = await get(real, query, { headers: { "If-Modified-Since": modified } });
     assert.equal(bySince.status, 304, `${query} If-Modified-Since`);
+    const any = await get(real, query, { headers: { "If-None-Match": "*" } });
+    assert.equal(any.status, 304, `${query} If-None-Match: *`);
     const stale = await get(real, query, { headers: { "If-None-Match": 'W/"stale"' } });
     assert.equal(stale.status, 200, `${query} stale etag`);
     await stale.arrayBuffer();

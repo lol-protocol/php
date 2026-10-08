@@ -91,7 +91,7 @@ npm run cache:texts -- --only=us,br         # fetch some countries (one GET per 
 npm run cache:texts -- --format=txt         # plain text instead of Markdown
 ```
 
-Needs PHP with `curl`, `dom`, `mbstring`. For each law it downloads `website_url`, keeps only the readable text (no HTML, scripts, menus or footers) and writes `countries/{tld}/texts/{slug}.md` plus an `index.json` with validators, so re-runs are incremental (`304` or identical text → nothing rewritten). PDFs and pages that need JavaScript are skipped and reported. The folders are git-ignored; remove the two lines in the root `.gitignore` if you want to version them. The API serves them with `action=texts` / `action=text`.
+Needs PHP with `curl`, `dom`, `mbstring` and `intl` (the last one keeps file names identical on every machine). For each law it downloads `website_url`, keeps only the readable text (no HTML, scripts, menus or footers) and writes `countries/{tld}/texts/{slug}.md` plus an `index.json` with validators, so re-runs are incremental (`304` or identical text → nothing rewritten). PDFs and pages that need JavaScript are skipped and reported. The folders are git-ignored; remove the two lines in the root `.gitignore` if you want to version them. The API serves them with `action=texts` / `action=text`. Safety: only public http(s) hosts are fetched (loopback, private and link-local addresses are refused, redirects included; `--allow-private-hosts` overrides this for tests), a law that leaves the dataset has its cached text removed on the next run, and the data validator rejects local/private hosts in the reference URL.
 
 ## Database
 

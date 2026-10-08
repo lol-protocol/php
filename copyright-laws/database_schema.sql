@@ -35,7 +35,7 @@ CREATE TABLE copyright_laws (
   orphan_works TEXT COMMENT 'How orphan works are handled',
   digital_protection VARCHAR(255) COMMENT 'DMCA/DRM protection level',
   fair_use_exceptions TEXT COMMENT 'Permitted exceptions/fair dealing',
-  registration_required VARCHAR(10) COMMENT 'yes/no if registration is mandatory',
+  registration_required VARCHAR(100) COMMENT 'yes/no if registration is mandatory',
   enforcement_body VARCHAR(255),
   treaties_signatory VARCHAR(255) COMMENT 'Treaty memberships (Berne, TRIPS, WCT)',
   linked_resources VARCHAR(512) COMMENT 'Official documentation links',

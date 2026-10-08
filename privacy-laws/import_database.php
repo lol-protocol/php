@@ -87,6 +87,12 @@ class PrivacyLawsImporter {
             }
 
             $headers = fgetcsv($file);
+            if ($headers === false) {
+                $this->error("CSV file is empty: {$this->csvPath}");
+            }
+            // A UTF-8 BOM would otherwise end up in the name of the first column.
+            $headers[0] = preg_replace('/^\xEF\xBB\xBF/', '', $headers[0]);
+            $line = 1;
             $imported = 0;
             $countries = [];
 
@@ -104,6 +110,13 @@ class PrivacyLawsImporter {
 
             // Read and import rows
             while (($row = fgetcsv($file)) !== false) {
+                $line++;
+                if ($row === [null]) {
+                    continue; // blank line (the Node tooling skips these too)
+                }
+                if (count($row) !== count($headers)) {
+                    $this->error("Line $line: expected " . count($headers) . ' columns, got ' . count($row));
+                }
                 $data = array_combine($headers, $row);
 
                 // Insert country if not exists

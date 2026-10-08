@@ -38,7 +38,7 @@
       <p id="status" class="empty-state-block" role="alert" hidden></p>
 
       <section class="search-section">
-        <form id="searchForm" class="search-container" role="search">
+        <form id="searchForm" class="search-container" role="search" novalidate>
           <div class="search-row">
             <div class="search-field">
               <label for="q" data-i18n="search.label">Search</label>
@@ -76,7 +76,7 @@
         </form>
       </section>
 
-      <section id="countryCard" class="country-card" hidden></section>
+      <section id="countryCard" class="country-card" tabindex="-1" hidden></section>
 
       <section class="results-section">
         <div class="results-header">
@@ -102,10 +102,10 @@
                 </th>
                 <th scope="col" data-i18n="table.country">Country</th>
                 <th scope="col" data-i18n="table.law">Law</th>
-                <th scope="col" data-i18n="table.enacted">Enacted</th>
+                <th scope="col" class="col-optional" data-i18n="table.enacted">Enacted</th>
                 <th scope="col" data-i18n="table.effective">In force</th>
                 <th scope="col" data-i18n="table.authority">Enforcement authority</th>
-                <th scope="col" data-i18n="table.penalties">Penalties</th>
+                <th scope="col" class="col-optional" data-i18n="table.penalties">Penalties</th>
                 <th scope="col" data-i18n="table.reference">Reference</th>
               </tr>
             </thead>

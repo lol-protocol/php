@@ -87,6 +87,12 @@ class CopyrightLawsImporter {
             }
 
             $headers = fgetcsv($file);
+            if ($headers === false) {
+                $this->error("CSV file is empty: {$this->csvPath}");
+            }
+            // A UTF-8 BOM would otherwise end up in the name of the first column.
+            $headers[0] = preg_replace('/^\xEF\xBB\xBF/', '', $headers[0]);
+            $line = 1;
             $imported = 0;
             $jurisdictions = [];
 
@@ -105,6 +111,13 @@ class CopyrightLawsImporter {
 
             // Read and import rows
             while (($row = fgetcsv($file)) !== false) {
+                $line++;
+                if ($row === [null]) {
+                    continue; // blank line (the Node tooling skips these too)
+                }
+                if (count($row) !== count($headers)) {
+                    $this->error("Line $line: expected " . count($headers) . ' columns, got ' . count($row));
+                }
                 $data = array_combine($headers, $row);
 
                 // Insert jurisdiction if not exists
@@ -212,15 +225,17 @@ class CopyrightLawsImporter {
                 $this->log("  ✓ {$t['protection_type']}: {$t['count']} laws");
             }
 
-            // Treaty memberships
+            // Treaty memberships (treaties_signatory is a '/'-separated list of up to four values)
             $treaties = $this->pdo->query(
                 "SELECT
                     TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(treaties_signatory, '/', numbers.n), '/', -1)) as treaty,
                     COUNT(*) as count
                 FROM copyright_laws
-                CROSS JOIN (SELECT 1 n UNION SELECT 2 UNION SELECT 3) numbers
-                WHERE treaties_signatory LIKE CONCAT('%', TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(treaties_signatory, '/', numbers.n), '/', -1)), '%')
-                GROUP BY treaty"
+                CROSS JOIN (SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4) numbers
+                WHERE treaties_signatory <> ''
+                  AND numbers.n <= 1 + LENGTH(treaties_signatory) - LENGTH(REPLACE(treaties_signatory, '/', ''))
+                GROUP BY treaty
+                ORDER BY count DESC"
             )->fetchAll();
 
             if (!empty($treaties)) {

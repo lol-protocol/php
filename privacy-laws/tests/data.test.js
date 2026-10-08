@@ -11,6 +11,7 @@ import {
   loadAndValidate,
   parseMaster,
   planWrites,
+  toCsv,
   validateRecords,
 } from "../scripts/lib/dataset.js";
 
@@ -52,6 +53,10 @@ test("validation reports bad data with the line number", () => {
   assert.match(only({ country_code: "usa" })[0], /country_code must be 2 uppercase letters/);
   assert.match(only({ language: "https://shifted.example" })[0], /language must look like/);
   assert.match(only({ website_url: "javascript:alert(1)" })[0], /http\(s\) URL/);
+  for (const host of ["http://127.0.0.1:8080/x", "http://localhost/x", "http://169.254.169.254/latest/", "http://10.0.0.5/", "http://192.168.1.1/", "http://172.20.0.1/", "http://[::1]/", "http://intranet.internal/"]) {
+    assert.match(only({ website_url: host })[0], /public web/, host);
+  }
+  assert.deepEqual(only({ website_url: "https://example.org/172.16.0.1" }), []); // only the host counts
   assert.match(only({ law_name: " padded " })[0], /leading\/trailing whitespace/);
   assert.match(only({ enforcement_authority: "" })[0], /missing required field enforcement_authority/);
 
@@ -108,4 +113,12 @@ test("index.json agrees with the master CSV and the per-country files", () => {
       assert.equal(law.law_name, country.laws[index].law_name);
     });
   }
+});
+
+test("generated CSV files defuse spreadsheet formulas", () => {
+  const csv = toCsv(["a", "b", "c"], [{ a: "=cmd|' /C calc'!A0", b: "@SUM(1+1)", c: "plain, with comma" }, { a: "-1", b: "+1", c: 'say "hi"' }]);
+  assert.equal(
+    csv,
+    `a,b,c\n"'=cmd|' /C calc'!A0","'@SUM(1+1)","plain, with comma"\n"'-1","'+1","say ""hi"""\n`
+  );
 });

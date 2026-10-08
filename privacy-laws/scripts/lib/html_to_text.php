@@ -11,15 +11,22 @@ final class HtmlToText
 {
     private const SKIP_TAGS = [
         'script', 'style', 'noscript', 'template', 'svg', 'canvas', 'iframe', 'object', 'embed',
-        'form', 'button', 'select', 'option', 'input', 'textarea', 'nav', 'header', 'footer',
+        'button', 'select', 'option', 'input', 'textarea', 'nav', 'header', 'footer',
         'aside', 'dialog', 'menu', 'audio', 'video', 'picture', 'img', 'map', 'head',
     ];
     private const SKIP_ROLES = ['banner', 'navigation', 'contentinfo', 'complementary', 'search', 'dialog', 'alertdialog'];
     private const HEADINGS = ['h1' => 1, 'h2' => 2, 'h3' => 3, 'h4' => 4, 'h5' => 5, 'h6' => 6];
     private const BLOCK_TAGS = [
         'html', 'body', 'main', 'article', 'section', 'div', 'p', 'address', 'fieldset', 'details',
-        'summary', 'dl', 'dt', 'dd', 'figure', 'figcaption', 'center', 'li', 'tr', 'td', 'th',
+        'summary', 'dl', 'dt', 'dd', 'figure', 'figcaption', 'center', 'li', 'tr', 'td', 'th', 'form',
     ];
+    /** Elements that start a new line of text even when they sit inside inline content or a table cell. */
+    private const SEPARATING_TAGS = [
+        'ul', 'ol', 'table', 'thead', 'tbody', 'tfoot', 'blockquote', 'pre', 'hr',
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    ];
+    /** A form with at least this much text, or one that wraps <main>/<article>, is the page itself (ASP.NET style). */
+    private const FORM_CONTENT_CHARS = 1000;
     private const MIN_USEFUL_CHARS = 200;
 
     /**
@@ -124,6 +131,9 @@ final class HtmlToText
         if (in_array($name, self::SKIP_TAGS, true)) {
             return true;
         }
+        if ($name === 'form' && !$this->wrapsContent($element)) {
+            return true; // search, login and cookie forms
+        }
         if ($element->hasAttribute('hidden') || strtolower($element->getAttribute('aria-hidden')) === 'true'
             || strtolower($element->getAttribute('aria-modal')) === 'true') {
             return true;
@@ -133,6 +143,13 @@ final class HtmlToText
         }
         $style = strtolower($element->getAttribute('style'));
         return $style !== '' && (bool) preg_match('/(display\s*:\s*none|visibility\s*:\s*hidden)/', $style);
+    }
+
+    private function wrapsContent(DOMElement $form): bool
+    {
+        return $form->getElementsByTagName('main')->length > 0
+            || $form->getElementsByTagName('article')->length > 0
+            || mb_strlen(trim($form->textContent)) >= self::FORM_CONTENT_CHARS;
     }
 
     /** @return list<string> */
@@ -214,7 +231,13 @@ final class HtmlToText
                 if ($this->skipped($child, $name)) {
                     continue;
                 }
-                $out .= $name === 'br' ? "\n" : $this->inlineText($child);
+                if ($name === 'br') {
+                    $out .= "\n";
+                } elseif (in_array($name, self::BLOCK_TAGS, true) || in_array($name, self::SEPARATING_TAGS, true)) {
+                    $out .= ' ' . $this->inlineText($child) . ' '; // keep "Block A" and "Block B" apart
+                } else {
+                    $out .= $this->inlineText($child);
+                }
             }
         }
         return $out;
@@ -239,11 +262,33 @@ final class HtmlToText
         return implode("\n", $items);
     }
 
+    /** Rows of this table only: a nested table's rows belong to the cell that holds it. @return list<DOMElement> */
+    private function tableRows(DOMElement $table): array
+    {
+        $rows = [];
+        foreach ($table->childNodes as $child) {
+            if (!$child instanceof DOMElement) {
+                continue;
+            }
+            $name = strtolower($child->tagName);
+            if ($name === 'tr') {
+                $rows[] = $child;
+            } elseif (in_array($name, ['thead', 'tbody', 'tfoot'], true)) {
+                foreach ($child->childNodes as $tr) {
+                    if ($tr instanceof DOMElement && strtolower($tr->tagName) === 'tr') {
+                        $rows[] = $tr;
+                    }
+                }
+            }
+        }
+        return $rows;
+    }
+
     private function tableBlock(DOMElement $table): string
     {
         $rows = [];
         $headerRow = false;
-        foreach ($table->getElementsByTagName('tr') as $index => $tr) {
+        foreach ($this->tableRows($table) as $tr) {
             $cells = [];
             $hasHeader = false;
             foreach ($tr->childNodes as $cell) {

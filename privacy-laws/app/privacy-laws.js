@@ -248,12 +248,12 @@ function rowHtml(row) {
         t("table.onlyCountry", { name: row.country_name })
       )}">${esc(row.country_name)}</button></td>
       <td>${esc(row.law_name)}</td>
-      <td class="nowrap">${esc(row.enactment_date)}</td>
+      <td class="nowrap col-optional">${esc(row.enactment_date)}</td>
       <td class="nowrap">${esc(row.effective_date)}${
         row.effective_date > TODAY ? ` <span class="badge">${esc(t("table.upcoming"))}</span>` : ""
       }</td>
       <td>${esc(row.enforcement_authority)}</td>
-      <td><small>${esc(row.penalties_range)}</small></td>
+      <td class="col-optional"><small>${esc(row.penalties_range)}</small></td>
       <td>${
         url
           ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="${esc(
@@ -435,14 +435,20 @@ function bindEvents() {
 
   $("chips").addEventListener("click", (event) => {
     const remove = event.target.closest("[data-chip]");
+    let focusTarget;
     if (remove) {
-      app.state = removeFilter(app.state, CONFIG, app.chips[Number(remove.dataset.chip)]);
+      const index = Number(remove.dataset.chip);
+      app.state = removeFilter(app.state, CONFIG, app.chips[index]);
+      // The clicked button is about to be re-rendered: hand focus to the chip that takes its place.
+      focusTarget = () => $("chips").querySelector(`[data-chip="${index}"]`) ?? $("chips").querySelector("[data-clear-filters]") ?? $("q");
     } else if (event.target.closest("[data-clear-filters]")) {
       app.state = clearFilters(app.state, CONFIG);
+      focusTarget = () => $("q");
     } else {
       return;
     }
     update();
+    focusTarget().focus();
   });
 
   $("clearBtn").addEventListener("click", () => {
@@ -466,6 +472,8 @@ function bindEvents() {
     if (!button) return;
     app.state.country = button.dataset.country;
     update();
+    // The button that was clicked is re-rendered, so move focus to the card it opened.
+    $("countryCard").focus({ preventScroll: true });
     $("countryCard").scrollIntoView({ block: "start", behavior: scrollBehavior() });
   });
   $("selectAll").addEventListener("change", (event) => {
@@ -484,6 +492,7 @@ function bindEvents() {
   $("exportBtn").addEventListener("click", handleExport);
   $("closeComparison").addEventListener("click", () => {
     $("comparisonSection").hidden = true;
+    $("compareBtn").focus();
   });
 }
 

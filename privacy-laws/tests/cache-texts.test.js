@@ -76,6 +76,24 @@ test("usage errors exit with status 2", { skip }, () => {
   assert.equal(php(["--help"]).status, 0);
 });
 
+test("--convert keeps cells, nested tables, inline blocks and form-wrapped pages readable", { skip }, () => {
+  const convert = (html) => php(["--convert"], { input: html }).stdout.trim();
+
+  assert.equal(
+    convert("<main><table><tr><td><p>Serious breach.</p><p>Repeated offence.</p></td><td><ul><li>Up to 20M</li><li>or 4 percent</li></ul></td></tr></table></main>"),
+    "| Serious breach. Repeated offence. | Up to 20M or 4 percent |"
+  );
+  // a nested table belongs to its cell: its rows are not emitted a second time
+  assert.equal(
+    convert("<main><table><tr><td><table><tr><td>Inner A</td><td>Inner B</td></tr></table></td><td>Outer</td></tr></table></main>"),
+    "| Inner A Inner B | Outer |"
+  );
+  assert.equal(convert("<main><p>Intro</p><a><div>Block A</div><div>Block B</div></a></main>"), "Intro\n\nBlock A Block B");
+  // ASP.NET-style pages wrap everything in one <form>; small search/login forms are still dropped
+  assert.equal(convert("<html><body><form><main><h1>Law</h1><p>Body of the law.</p></main></form></body></html>"), "# Law\n\nBody of the law.");
+  assert.equal(convert('<html><body><main><p>Law text.</p></main><form><label>Search</label><input></form></body></html>'), "Law text.");
+});
+
 /* ---------- Full flow against a local fixture server ---------- */
 
 let server;
@@ -119,7 +137,7 @@ after(async () => {
   if (workDir) rmSync(workDir, { recursive: true, force: true });
 });
 
-const run = (extra = []) => php(["--delay=0", "--timeout=5", ...extra], { env: { LAWS_DATA_DIR: dataDir } });
+const run = (extra = []) => php(["--delay=0", "--timeout=5", "--allow-private-hosts", ...extra], { env: { LAWS_DATA_DIR: dataDir } });
 const index = (tld) => JSON.parse(readFileSync(join(dataDir, tld, "texts", "index.json"), "utf-8"));
 
 test("--dry-run lists the plan without touching the network or disk", { skip }, () => {
@@ -183,3 +201,69 @@ test("a changed page is updated; --only limits the run; --format=txt writes plai
   assert.match(plain, /^Ley Orgánica Uno\nSource: http:\/\/127\.0\.0\.1:\d+\/law\.html\nFetched: /);
   assert.doesNotMatch(plain, /^#/m);
 });
+
+/* ---------- Regressions found in review ---------- */
+
+test("switching the format without --force rewrites the file instead of keeping a stale 304", { skip }, () => {
+  const md = run(["--only=xa"]); // the previous test left .txt files behind
+  assert.match(md.stdout, /Done: 0 new, 5 updated/);
+  assert.ok(existsSync(join(dataDir, "xa", "texts", "ley-organica-uno.md")));
+  assert.ok(!existsSync(join(dataDir, "xa", "texts", "ley-organica-uno.txt")));
+  assert.deepEqual(index("xa").map((e) => e.file).filter((f) => !f.endsWith(".md")), []);
+});
+
+test("a changed reference URL is refetched, not answered from the old validators", { skip }, () => {
+  const file = join(dataDir, "xa", "texts", "index.json");
+  const entries = JSON.parse(readFileSync(file, "utf-8"));
+  const plain = entries.find((e) => e.slug === "law-plain");
+  const current = plain.source;
+  plain.source = `${current}?old=1`;
+  writeFileSync(file, JSON.stringify(entries));
+  const { stdout } = run(["--only=xa"]);
+  assert.doesNotMatch(stdout, /law-plain {2}\(304/);
+  assert.equal(index("xa").find((e) => e.slug === "law-plain").source, current);
+});
+
+test("a path in index.json is never trusted for deleting files", { skip }, () => {
+  const victim = join(workDir, "victim.txt");
+  writeFileSync(victim, "keep me");
+  const file = join(dataDir, "xa", "texts", "index.json");
+  const entries = JSON.parse(readFileSync(file, "utf-8"));
+  entries.find((e) => e.slug === "law-plain").file = "../../victim.txt";
+  writeFileSync(file, JSON.stringify(entries));
+  run(["--only=xa", "--format=txt", "--force"]);
+  assert.equal(readFileSync(victim, "utf-8"), "keep me");
+});
+
+test("cached text of a law that left the dataset is removed, other files are left alone", { skip }, () => {
+  const dir = join(dataDir, "xa", "texts");
+  writeFileSync(join(dir, "retired-law.md"), "old text");
+  writeFileSync(join(dir, "README-by-hand.docx"), "not ours");
+  const { stdout } = run(["--only=xa"]);
+  assert.match(stdout, /\[gone\] xa\/retired-law\.md/);
+  assert.ok(!existsSync(join(dir, "retired-law.md")));
+  assert.ok(existsSync(join(dir, "README-by-hand.docx")));
+});
+
+test("private and loopback addresses are refused unless explicitly allowed", { skip }, () => {
+  const isolated = mkdtempSync(join(tmpdir(), "laws-ssrf-"));
+  try {
+    const bundle = { countries: [{ code: "XC", tld: "xc", name: "C", region: "europe", lawCount: 3, laws: [
+      { law_name: "Internal", website_url: `${server.url}/law.html` },
+      { law_name: "Metadata", website_url: "http://169.254.169.254/latest/meta-data/" },
+      { law_name: "Other scheme", website_url: "file:///etc/passwd" },
+    ] }] };
+    writeFileSync(join(isolated, "index.json"), JSON.stringify(bundle));
+    const result = php(["--delay=0", "--timeout=5"], { env: { LAWS_DATA_DIR: isolated } });
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /\[fail\] xc\/internal {2}refusing to fetch a private address \(127\.0\.0\.1\)/);
+    assert.match(result.stdout, /\[fail\] xc\/metadata {2}refusing to fetch a private address \(169\.254\.169\.254\)/);
+    assert.doesNotMatch(result.stdout, /xc\/other-scheme/); // not http(s): never even attempted
+    assert.deepEqual(index_of(isolated, "xc").map((e) => e.status), ["error", "error"]);
+    assert.ok(!existsSync(join(isolated, "xc", "texts", "internal.md")));
+  } finally {
+    rmSync(isolated, { recursive: true, force: true });
+  }
+});
+
+const index_of = (dir, tld) => JSON.parse(readFileSync(join(dir, tld, "texts", "index.json"), "utf-8"));

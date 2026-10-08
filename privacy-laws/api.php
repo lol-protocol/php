@@ -37,7 +37,7 @@ function fail(int $status, string $message): never
 function tldParam(): string
 {
     $tld = strtolower((string) ($_GET['tld'] ?? ''));
-    if (!preg_match('/^[a-z]{2}$/', $tld)) {
+    if (!preg_match('/\A[a-z]{2}\z/', $tld)) {
         fail(400, 'tld must be a 2-letter country code, e.g. tld=us');
     }
     return $tld;
@@ -46,7 +46,7 @@ function tldParam(): string
 function slugParam(): string
 {
     $slug = (string) ($_GET['slug'] ?? '');
-    if (!preg_match('/^[a-z0-9][a-z0-9-]{0,99}$/', $slug)) {
+    if (!preg_match('/\A[a-z0-9][a-z0-9-]{0,99}\z/', $slug)) {
         fail(400, 'slug must be lowercase letters, digits and hyphens');
     }
     return $slug;
@@ -73,7 +73,8 @@ function conditional(string $seed, int $mtime): void
     $ifNoneMatch = $_SERVER['HTTP_IF_NONE_MATCH'] ?? null;
     if ($ifNoneMatch !== null) {
         foreach (explode(',', $ifNoneMatch) as $candidate) {
-            if (preg_replace('#^W/#', '', trim($candidate)) === preg_replace('#^W/#', '', $etag)) {
+            $candidate = trim($candidate);
+            if ($candidate === '*' || preg_replace('#^W/#', '', $candidate) === preg_replace('#^W/#', '', $etag)) {
                 $fresh = true;
                 break;
             }

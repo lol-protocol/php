@@ -13,6 +13,7 @@ import {
   loadAndValidate,
   parseMaster,
   planWrites,
+  toCsv,
   validateRecords,
 } from "../scripts/lib/dataset.js";
 
@@ -53,6 +54,10 @@ test("validation reports bad data with the line number", () => {
   assert.match(only({ protection_type: "Patent" })[0], /line 2: protection_type must be one of/);
   assert.match(only({ term_of_protection: "Copyright" })[0], /should state a number of years/);
   assert.match(only({ treaties_signatory: "Berne/Hague" })[0], /unknown treaty "Hague"/);
+  for (const host of ["http://127.0.0.1:8080/x", "http://localhost/x", "http://169.254.169.254/latest/", "http://10.0.0.5/", "http://[::1]/"]) {
+    assert.match(only({ linked_resources: host })[0], /public web/, host);
+  }
+  assert.match(only({ treaties_signatory: "Berne/Berne" })[0], /same treaty twice/);
   assert.match(only({ registration_required: "Fair dealing exceptions" })[0], /registration_required must be/);
   assert.match(only({ linked_resources: "ftp://x" })[0], /http\(s\) URL/);
   assert.match(only({ region: "mars" })[0], /region must be one of/);
@@ -118,4 +123,12 @@ test("index.json agrees with the master CSV and the per-jurisdiction files", () 
       assert.equal(law.law_name, jurisdiction.laws[index].law_name);
     });
   }
+});
+
+test("generated CSV files defuse spreadsheet formulas", () => {
+  const csv = toCsv(["a", "b", "c"], [{ a: "=cmd|' /C calc'!A0", b: "@SUM(1+1)", c: "plain, with comma" }, { a: "-1", b: "+1", c: 'say "hi"' }]);
+  assert.equal(
+    csv,
+    `a,b,c\n"'=cmd|' /C calc'!A0","'@SUM(1+1)","plain, with comma"\n"'-1","'+1","say ""hi"""\n`
+  );
 });

@@ -85,6 +85,23 @@ const isHttpUrl = (value) => {
   }
 };
 
+// Reference URLs are fetched by the text cache and shown as links: keep them pointing at the public web.
+const PRIVATE_IPV4 = /^(0\.|10\.|127\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\.)/;
+const isPrivateHost = (value) => {
+  try {
+    const host = new URL(value).hostname.toLowerCase().replace(/^\[|\]$/g, "");
+    return (
+      host === "localhost" ||
+      /\.(localhost|local|internal|lan)$/.test(host) ||
+      PRIVATE_IPV4.test(host) ||
+      host === "::1" ||
+      /^(fe80|fc|fd)/.test(host)
+    );
+  } catch {
+    return false;
+  }
+};
+
 export function parseMaster(text) {
   const records = parse(text, {
     columns: true,
@@ -170,6 +187,9 @@ export function validateRecords(records, header = COLUMNS) {
     if (!isHttpUrl(record.website_url)) {
       fail(`website_url must be an http(s) URL, got ${JSON.stringify(record.website_url)}`);
     }
+    if (record.website_url && isHttpUrl(record.website_url) && isPrivateHost(record.website_url)) {
+      fail(`website_url must point at the public web, not a local or private host: ${JSON.stringify(record.website_url)}`);
+    }
 
     if (record.frameworks) {
       const listed = record.frameworks.split("/");
@@ -195,8 +215,15 @@ export function loadAndValidate(path = MASTER_CSV) {
 
 const jsonFile = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
+// A cell that starts with =, +, - or @ is read as a formula by spreadsheets: prefix a quote (same rule as the app's CSV export).
+const FORMULA_START = /^[=+\-@\t\r]/;
+
 export function toCsv(columns, rows) {
-  const quote = (value) => `"${String(value ?? "").replace(/"/g, '""')}"`;
+  const quote = (value) => {
+    let text = String(value ?? "");
+    if (FORMULA_START.test(text)) text = `'${text}`;
+    return `"${text.replace(/"/g, '""')}"`;
+  };
   const lines = [columns.join(",")];
   for (const row of rows) lines.push(columns.map((c) => quote(row[c])).join(","));
   return `${lines.join("\n")}\n`;

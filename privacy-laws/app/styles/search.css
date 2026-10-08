@@ -241,13 +241,8 @@
     font-size: 0.75rem;
   }
 
-  .data-table td:nth-child(5),
-  .data-table th:nth-child(5) {
-    display: none;
-  }
-
-  .data-table td:nth-child(7),
-  .data-table th:nth-child(7) {
+  /* Secondary columns give way on small screens; the key data stays visible. */
+  .data-table .col-optional {
     display: none;
   }
 }
