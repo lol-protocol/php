@@ -25,6 +25,18 @@ setup_nginx_domain_logs "$DOMAIN"
 PROXY_TARGET="http://127.0.0.1:8080/${CONTEXT_PATH}"
 [[ "$PROXY_TARGET" != */ ]] && PROXY_TARGET="${PROXY_TARGET}/"
 
+# Con la app en la raiz, "/" tambien alcanzaria /manager y /host-manager de Tomcat
+# (tomcat10-admin) desde internet. Se cortan en Nginx; con context path no hace falta:
+# ahi /manager llega como /<ctx>/manager, que es una ruta de TU app.
+MANAGER_BLOCK=""
+if [ -z "$CONTEXT_PATH" ]; then
+    MANAGER_BLOCK="
+    location ~ ^/(manager|host-manager)(/|\$) {
+        return 404;
+    }
+"
+fi
+
 # Nginx aqui actua puramente como reverse proxy: no sirve archivos propios,
 # solo reenvia todo el trafico del dominio publico hacia Tomcat (puerto 8080
 # local). El $CONTEXT_PATH es la subcarpeta bajo la que Tomcat publica tu
@@ -38,6 +50,7 @@ server {
     access_log /var/log/nginx/$DOMAIN/access.log;
     error_log /var/log/nginx/$DOMAIN/error.log;
 
+$MANAGER_BLOCK
     location / {
         proxy_pass $PROXY_TARGET;
         proxy_set_header Host \$host;

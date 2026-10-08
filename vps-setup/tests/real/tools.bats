@@ -10,6 +10,7 @@ setup() { setup_real; }
 teardown() {
     pkill -x named > /dev/null 2>&1 || true
     [ -f "$BATS_TEST_TMPDIR/named.conf.local.orig" ] && cp "$BATS_TEST_TMPDIR/named.conf.local.orig" /etc/bind/named.conf.local
+    [ -f "$BATS_TEST_TMPDIR/named.conf.options.orig" ] && cp "$BATS_TEST_TMPDIR/named.conf.options.orig" /etc/bind/named.conf.options
     rm -f "/etc/bind/zones/db.$ZD" /etc/fail2ban/jail.local /etc/apt/apt.conf.d/20auto-upgrades
     rm -f "/etc/systemd/system/$APP.service" "/etc/nginx/sites-enabled/$APP" "/etc/nginx/sites-available/$APP"
     rm -rf "/var/www/$APP" "/var/log/nginx/bats-real-py.example.com"
@@ -76,7 +77,10 @@ run_06c() { run bash "$VPS_DIR/06_C-setup-dns-server.sh" $ZD 203.0.113.7 sdns2.o
     command -v named > /dev/null || skip "falta bind9"
     ss -lnu 2>/dev/null | grep -qE ':53\s' && skip "el puerto 53 ya esta en uso"
     dns_stubs; mkdir -p /etc/bind; touch /etc/bind/named.conf.local; cp /etc/bind/named.conf.local "$BATS_TEST_TMPDIR/named.conf.local.orig"
+    cp /etc/bind/named.conf.options "$BATS_TEST_TMPDIR/named.conf.options.orig"
     run_06c; [ "$status" -eq 0 ]
+    grep -q 'recursion no;' /etc/bind/named.conf.options
+    named-checkconf
     mkdir -p /var/cache/bind /run/named; chown bind:bind /var/cache/bind /run/named 2>/dev/null || true
     named -u bind -c /etc/bind/named.conf
     touch "$BATS_TEST_TMPDIR/named.up"
@@ -84,6 +88,9 @@ run_06c() { run bash "$VPS_DIR/06_C-setup-dns-server.sh" $ZD 203.0.113.7 sdns2.o
     run /usr/bin/dig @127.0.0.1 +short $ZD A;          [ "$output" = "203.0.113.7" ]
     run /usr/bin/dig @127.0.0.1 +short www.$ZD A;      [ "$output" = "203.0.113.7" ]
     run /usr/bin/dig @127.0.0.1 +short $ZD NS;         [[ "$output" == *"ns1.$ZD."* ]]; [[ "$output" == *"sdns2.ovh.ca."* ]]
+    # servidor solo autoritativo: no resuelve nombres ajenos (no es un resolvedor abierto)
+    run /usr/bin/dig @127.0.0.1 +time=2 +tries=1 example.org A
+    [[ "$output" == *"REFUSED"* ]]
     run /usr/bin/dig @127.0.0.1 $ZD AXFR               # allow-transfer solo para la IP de OVH
     [[ "$output" == *"Transfer failed"* ]] || [[ "$output" == *"REFUSED"* ]]
 }
