@@ -6,6 +6,25 @@ echo "[01] Actualizacion del Sistema"
 echo "========================================"
 echo ""
 
+# Ajustes de apt para que una instalacion larga (sobre todo por ssh -t, como remote-run.sh) no se
+# quede colgada ni a medias:
+#   Lock::Timeout   recien arrancado el VPS, unattended-upgrades suele tener el lock de apt unos
+#                   minutos; en vez de fallar con "Could not get lock", apt espera hasta 5 min.
+#   force-confold   si un paquete trae un archivo de configuracion nuevo y tu ya lo editaste, se
+#                   conserva el tuyo sin preguntar (la pregunta interactiva bloquearia el script).
+#   needrestart     en Ubuntu 24.04 pregunta que servicios reiniciar tras cada apt y, con un
+#                   terminal, espera una tecla; 'a' los reinicia solo.
+APT_TUNING_CONF=${APT_TUNING_CONF:-/etc/apt/apt.conf.d/90-vps-setup}
+sudo tee "$APT_TUNING_CONF" > /dev/null <<'EOAPT'
+DPkg::Lock::Timeout "300";
+Dpkg::Options { "--force-confdef"; "--force-confold"; };
+EOAPT
+NEEDRESTART_DIR=${NEEDRESTART_DIR:-/etc/needrestart/conf.d}
+if [ -d "$NEEDRESTART_DIR" ] || [ -d "$(dirname "$NEEDRESTART_DIR")" ]; then
+    sudo mkdir -p "$NEEDRESTART_DIR"
+    echo "\$nrconf{restart} = 'a';" | sudo tee "$NEEDRESTART_DIR/50-vps-setup.conf" > /dev/null
+fi
+
 sudo apt-get update       # Refresca el indice de paquetes disponibles
 sudo apt-get upgrade -y   # Instala las actualizaciones pendientes (-y = confirma automaticamente)
 

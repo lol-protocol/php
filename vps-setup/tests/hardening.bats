@@ -223,3 +223,33 @@ esac'
     [ "$status" -eq 2 ]
     ! grep -q "ufw allow" "$SUDO_LOG"
 }
+
+# ---- 07_E: rendimiento ----
+@test "07_E escribe gzip ampliado + open_file_cache SIN repetir 'gzip on;' (duplicado = nginx -t falla)" {
+    export PERF_CONF="$BATS_TEST_TMPDIR/performance.conf"
+    run bash "$VPS_DIR/07_E-nginx-performance.sh"
+    [ "$status" -eq 0 ]
+    grep -q '^gzip_types .*application/json.*image/svg+xml' "$PERF_CONF"
+    grep -q '^gzip_vary on;' "$PERF_CONF" && grep -q '^open_file_cache ' "$PERF_CONF"
+    ! grep -q '^gzip on;' "$PERF_CONF"
+}
+
+@test "07_E si nginx -t falla, quita su archivo y sale con error" {
+    export PERF_CONF="$BATS_TEST_TMPDIR/performance.conf"
+    make_stub sudo 'echo "$*" >> "$SUDO_LOG"; [ "$1 $2" = "nginx -t" ] && exit 1; [ "$1" = rm ] && exec "$@"; [ "$1" = tee ] && exec "$@"; exit 0'
+    run bash "$VPS_DIR/07_E-nginx-performance.sh"
+    [ "$status" -eq 1 ]
+    [ ! -e "$PERF_CONF" ]
+}
+
+# ---- 01: apt robusto ----
+@test "01 configura apt (espera el lock, conserva tus configs) y needrestart automatico" {
+    export APT_TUNING_CONF="$BATS_TEST_TMPDIR/90-vps-setup" NEEDRESTART_DIR="$BATS_TEST_TMPDIR/needrestart/conf.d"
+    mkdir -p "$BATS_TEST_TMPDIR/needrestart"
+    make_stub lsb_release 'echo "Description:	Ubuntu 24.04"'
+    run bash "$VPS_DIR/01-system-update.sh"
+    [ "$status" -eq 0 ]
+    grep -q 'DPkg::Lock::Timeout "300";' "$APT_TUNING_CONF"
+    grep -q -- '--force-confold' "$APT_TUNING_CONF"
+    grep -qF "\$nrconf{restart} = 'a';" "$NEEDRESTART_DIR/50-vps-setup.conf"
+}
