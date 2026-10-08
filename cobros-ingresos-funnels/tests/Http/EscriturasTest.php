@@ -395,6 +395,61 @@ final class EscriturasTest extends HttpTestCase
     }
 
     /**
+     * La edad de mayoria es la del pais del cliente (migracion 010): la misma fecha
+     * de nacimiento entra en Argentina (18) y no en Tailandia (20), y el rechazo
+     * dice cual es la edad y de que pais. Con un pais que no existe, el error es
+     * el del pais aunque la fecha sea de un menor. 19 y 21 anios, no "justo la edad", para no
+     * depender de la zona horaria (el borde exacto: ClientesMayoresDeEdadTest).
+     */
+    public function testNuevoClienteExigeLaEdadDelPaisElegido(): void
+    {
+        $formulario = $this->get('page=cliente-nuevo')['cuerpo'];
+        $email = 'cliente-por-pais-' . uniqid() . '@example.com';
+        $this->alTerminar(static function () use ($email): void {
+            $db = Database::connection();
+            $db->prepare("DELETE FROM auditoria WHERE entidad = 'cliente' AND entidad_id IN (SELECT id FROM clientes WHERE email = :e)")->execute([':e' => $email]);
+            $db->prepare('DELETE FROM clientes WHERE email = :e')->execute([':e' => $email]);
+        });
+        $datos = [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => self::campoOculto($formulario, EnvioUnico::CAMPO),
+            'nombre' => 'Cliente de otro pais',
+            'email' => $email,
+            'pais_codigo' => 'TH',
+            'ciudad' => 'Bangkok',
+            'idioma' => 'Ingles',
+            'genero' => 'No especifica',
+            'fecha_nacimiento' => date('Y-m-d', strtotime('-19 years')),
+            'segmento' => 'general',
+        ];
+        $this->olvidarToken($datos[EnvioUnico::CAMPO]);
+
+        $tailandia = $this->post('page=cliente-nuevo', $datos);
+        $this->assertStatus(200, $tailandia);
+        self::assertStringContainsString('Solo se admiten clientes mayores de edad (en Tailandia, 20 años cumplidos).', $tailandia['cuerpo']);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+
+        $sinPais = $this->post('page=cliente-nuevo', ['pais_codigo' => 'ZZ', 'fecha_nacimiento' => date('Y-m-d', strtotime('-10 years'))] + $datos);
+        $this->assertStatus(200, $sinPais);
+        self::assertStringContainsString('Elegí un país válido.', $sinPais['cuerpo']);
+
+        $argentina = $this->post('page=cliente-nuevo', ['pais_codigo' => 'AR', 'ciudad' => 'Rosario'] + $datos);
+        $this->assertStatus(302, $argentina);
+        self::assertSame(1, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+    }
+
+    public function testElFormularioDeAltaAvisaLasEdadesQueNoSonLaGeneral(): void
+    {
+        $formulario = $this->get('page=cliente-nuevo')['cuerpo'];
+        $texto = (string) preg_replace('/\s+/', ' ', strip_tags($formulario));
+
+        self::assertStringContainsString('Según el país:', $texto);
+        self::assertStringContainsString('20 años en Tailandia;', $texto);
+        self::assertStringContainsString('19 años en Argelia, Canada, Corea del Sur;', $texto);
+        self::assertStringContainsString('el resto, 18.', $texto);
+    }
+
+    /**
      * El selector de fecha del navegador ya no deja elegir a un menor: el tope es
      * la fecha mas reciente de un mayor de edad, no hoy. Se comprueba con un
      * margen de un anio a cada lado por la zona horaria, igual que arriba.

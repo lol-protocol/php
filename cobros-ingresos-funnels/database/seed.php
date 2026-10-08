@@ -161,16 +161,20 @@ $paisPesos = [
 $generoPesos = ['Femenino' => 48, 'Masculino' => 48, 'No especifica' => 4];
 // La moneda de cada pais sale del catalogo que dejaron las migraciones.
 $monedaPorPais = $pdo->query('SELECT codigo, moneda_codigo FROM paises')->fetchAll(PDO::FETCH_KEY_PAIR);
+// Y la edad desde la que se admite un cliente en cada pais (migracion 010): 18 casi siempre, 19 en Canada, 20 en Tailandia...
+$mayoriaPorPais = array_map('intval', $pdo->query('SELECT codigo, mayoria_de_edad FROM paises')->fetchAll(PDO::FETCH_KEY_PAIR));
 
 /** @return array{pais_codigo:string, ciudad:string, idioma:string, genero:string, fecha_nacimiento:string, moneda:string} */
-function perfilAleatorio(array $paisPesos, array $ciudadesPorPais, array $idiomaPorPais, array $monedaPorPais, array $generoPesos, DateTimeImmutable $hoy): array
+function perfilAleatorio(array $paisPesos, array $ciudadesPorPais, array $idiomaPorPais, array $monedaPorPais, array $mayoriaPorPais, array $generoPesos, DateTimeImmutable $hoy): array
 {
     $paisCodigo = eleccionPonderada($paisPesos);
-    $edad = mt_rand(18, 68);
+    // Nadie por debajo de la mayoria de su pais. Para los paises de 18 el sorteo es el de siempre.
+    $mayoria = $mayoriaPorPais[$paisCodigo];
+    $edad = mt_rand(max(18, $mayoria), 68);
     $nacimiento = $hoy->modify("-{$edad} years")->modify('-' . mt_rand(0, 364) . ' days');
     // Un 29 de febrero, restarle 18 anios cae en el 1 de marzo de hace 18 anios: esa persona todavia tiene 17, y el
     // trigger de la migracion 007 no la deja entrar como cliente. Cualquier otro dia esto no hace nada.
-    while (!MayoriaDeEdad::cumplida(fecha($nacimiento), $hoy)) {
+    while (!MayoriaDeEdad::cumplida(fecha($nacimiento), $hoy, $mayoria)) {
         $nacimiento = $nacimiento->modify('-1 day');
     }
     $ciudades = $ciudadesPorPais[$paisCodigo];
@@ -218,7 +222,7 @@ for ($i = 0; $i < 18; $i++) {
     $nombresUsados[$nombre] = true;
     $email = emailUnico($nombre, $dominios, $emailsUsados);
     $altaLegacy = diasAleatorios($inicioLegacy, 150);
-    $perfil = perfilAleatorio($paisPesos, $ciudadesPorPais, $idiomaPorPais, $monedaPorPais, $generoPesos, $hoy);
+    $perfil = perfilAleatorio($paisPesos, $ciudadesPorPais, $idiomaPorPais, $monedaPorPais, $mayoriaPorPais, $generoPesos, $hoy);
     $insCliente->execute([
         ':nombre' => $nombre,
         ':email' => $email,
@@ -243,7 +247,7 @@ for ($i = 0; $i < 320; $i++) {
     $nombresUsados[$nombre] = true;
     $email = emailUnico($nombre, $dominios, $emailsUsados);
     $canal = eleccionPonderada($canalPesos);
-    $perfil = perfilAleatorio($paisPesos, $ciudadesPorPais, $idiomaPorPais, $monedaPorPais, $generoPesos, $hoy);
+    $perfil = perfilAleatorio($paisPesos, $ciudadesPorPais, $idiomaPorPais, $monedaPorPais, $mayoriaPorPais, $generoPesos, $hoy);
 
     $fVisita = diasAleatorios($inicioFunnel, $rangoFunnelDias);
     $fRegistro = $fLead = $fConversion = null;

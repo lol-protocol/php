@@ -9,7 +9,8 @@ use App\Validacion;
 /** @var list<string> $idiomas */
 /** @var array $generos */
 /** @var array $segmentos */
-/** @var string $nacimientoMasReciente la fecha de nacimiento mas reciente que todavia es de un mayor de edad */
+/** @var string $nacimientoMasReciente la fecha de nacimiento mas reciente que todavia es de un mayor de edad en el pais de menor edad */
+/** @var array<int, list<string>> $mayoriaDeEdadPorPais los paises cuya edad no es la general: edad => nombres */
 /** @var string|null $error */
 ?>
 
@@ -58,7 +59,15 @@ use App\Validacion;
 
         <label for="fecha_nacimiento">Fecha de nacimiento</label>
         <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" required max="<?= $nacimientoMasReciente ?>" value="<?= htmlspecialchars($_POST['fecha_nacimiento'] ?? '') ?>">
-        <p class="nota">Solo se admiten clientes mayores de edad (<?= MayoriaDeEdad::EDAD ?> años cumplidos).</p>
+        <p class="nota">Solo se admiten clientes mayores de edad (<?= MayoriaDeEdad::POR_DEFECTO ?> años cumplidos).
+            <?php if ($mayoriaDeEdadPorPais !== []): ?>
+                Según el país:
+                <?php foreach ($mayoriaDeEdadPorPais as $edad => $nombres): ?>
+                    <?= $edad ?> años en <?= htmlspecialchars(implode(', ', $nombres)) ?>;
+                <?php endforeach; ?>
+                el resto, <?= MayoriaDeEdad::POR_DEFECTO ?>.
+            <?php endif; ?>
+        </p>
 
         <label for="segmento">Segmento</label>
         <select name="segmento" id="segmento">

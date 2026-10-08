@@ -37,8 +37,8 @@ final class ClienteController
 
     /**
      * Nadie nacio despues de hoy. Las dos fechas son Y-m-d y ya validadas, asi
-     * que alcanza con compararlas como texto. Que ademas sea mayor de edad se
-     * revisa aparte (MayoriaDeEdad::cumplida()).
+     * que alcanza con compararlas como texto. Que ademas sea mayor de edad, segun
+     * el pais, se revisa aparte (MayoriaDeEdad::cumplida()).
      */
     public static function nacimientoNoEsFuturo(string $fechaNacimiento, string $hoy): bool
     {
@@ -135,15 +135,16 @@ final class ClienteController
                 ['El idioma', $idioma, Validacion::MAX_IDIOMA],
             ])) !== null) {
                 $error = $largo;
+            } elseif (($pais = (new PaisRepository())->mayoriaDeEdad($paisCodigo)) === null) {
+                // Antes un pais que no existe llegaba hasta la base y volvia como "No se pudo crear el cliente."
+                // Va antes que la edad: cuantos anios se piden depende del pais.
+                $error = 'Elegí un país válido.';
             } elseif (!Filtros::esFechaValida($fechaNacimiento)) {
                 $error = 'La fecha de nacimiento no es válida.';
             } elseif (!self::nacimientoNoEsFuturo($fechaNacimiento, date('Y-m-d'))) {
                 $error = 'La fecha de nacimiento no puede ser posterior a hoy.';
-            } elseif (!MayoriaDeEdad::cumplida($fechaNacimiento, new DateTimeImmutable('today'))) {
-                $error = MayoriaDeEdad::mensaje();
-            } elseif (!(new PaisRepository())->existe($paisCodigo)) {
-                // Antes un pais que no existe llegaba hasta la base y volvia como "No se pudo crear el cliente."
-                $error = 'Elegí un país válido.';
+            } elseif (!MayoriaDeEdad::cumplida($fechaNacimiento, new DateTimeImmutable('today'), $pais['mayoria_de_edad'])) {
+                $error = MayoriaDeEdad::mensaje($pais['mayoria_de_edad'], $pais['nombre']);
             } elseif (!self::generoEsValido($genero)) {
                 $error = 'Elegí un género válido.';
             } elseif (!self::segmentoEsValido($segmento)) {
@@ -174,12 +175,16 @@ final class ClienteController
             }
         }
 
+        $paises = new PaisRepository();
+
         View::render('clientes/nuevo', [
-            'paises' => (new PaisRepository())->listado(),
+            'paises' => $paises->listado(),
             'idiomas' => (new ClienteRepository())->idiomasEnUso(),
             'generos' => ClienteRepository::GENEROS,
             'segmentos' => ClienteRepository::SEGMENTOS,
-            'nacimientoMasReciente' => MayoriaDeEdad::nacimientoMasReciente(new DateTimeImmutable('today')),
+            // El selector de fecha no sabe todavia el pais: topa en la edad mas baja, y el servidor exige la del pais elegido.
+            'nacimientoMasReciente' => MayoriaDeEdad::nacimientoMasReciente(new DateTimeImmutable('today'), $paises->menorMayoriaDeEdad()),
+            'mayoriaDeEdadPorPais' => $paises->conMayoriaDeEdadDistinta(),
             'error' => $error,
             'activePage' => 'clientes',
             'titulo' => 'Nuevo cliente',

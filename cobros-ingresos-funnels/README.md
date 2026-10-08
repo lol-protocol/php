@@ -230,16 +230,30 @@ una base que ya lo tiene no pisa nada. Las `tasa_a_usd` que carga son de ejemplo
 antes de confiar en los reportes consolidados en USD hay que cargar las reales con
 `php database/actualizar_tasas.php` (ver «Tasas de cambio»).
 
-**Mayoría de edad.** La migración `007` hace que la base rechace a un cliente menor
-de 18 años, tanto al crearlo como al cambiarle la fecha de nacimiento (la app ya lo
-valida antes; el trigger cubre cualquier otro camino: un script, una carga directa).
-No revisa, cambia ni borra a los clientes que ya existían, y mientras nadie les
-toque la fecha de nacimiento siguen pudiendo editarse. Para encontrar a los que hoy
-tengan menos de 18:
-`SELECT id, nombre, fecha_nacimiento FROM clientes WHERE fecha_nacimiento > CURRENT_DATE - INTERVAL '18 years';`
-(el Dashboard también los muestra en el tramo «Menor de 18» de la segmentación por
-edad). Los visitantes del funnel pueden ser menores: un lead no es un cliente, pero
-no puede convertirse.
+**Mayoría de edad.** La base rechaza a un cliente que no haya cumplido la edad de
+mayoría de **su país**, tanto al crearlo como al cambiarle la fecha de nacimiento o
+el país (la app ya lo valida antes y dice cuál es la edad; el trigger de las
+migraciones `007` y `010` cubre cualquier otro camino: un script, una carga directa).
+La edad es `paises.mayoria_de_edad` (migración `010`): 18 en casi todos, 19 en
+Canadá, Corea del Sur y Argelia, 20 en Tailandia, 21 en Singapur, Egipto, Emiratos
+Árabes Unidos, Kuwait, Bahréin y Honduras. **Esa lista no es asesoría legal**: hay
+países donde la edad depende del acto o de la región, y quedaron en 18, con dudas,
+Estados Unidos (19 en Alabama y Nebraska, 21 en Mississippi), Nueva Zelanda,
+Indonesia, Túnez, Camerún, Nicaragua y Bolivia. Antes de atender clientes de esos
+países hay que revisarlos con quien responda por lo legal; corregirlo es una fila,
+sin tocar código: `UPDATE paises SET mayoria_de_edad = 21 WHERE codigo = 'US';`
+(la base acepta de 16 a 25). El alta nombra al país en el rechazo («en Tailandia,
+20 años cumplidos») y el formulario lista los países que no son de 18; el selector
+de fecha topa en la edad más baja, porque no sabe todavía el país elegido.
+
+Ni esta migración ni cambiar la edad de un país revisan, cambian o borran a los
+clientes que ya existían, y mientras nadie les toque la fecha de nacimiento ni el
+país siguen pudiendo editarse. Para encontrar a los que hoy no llegan a la edad de
+su país:
+`SELECT c.id, c.nombre, c.fecha_nacimiento, p.mayoria_de_edad FROM clientes c JOIN paises p ON p.codigo = c.pais_codigo WHERE c.fecha_nacimiento > CURRENT_DATE - make_interval(years => p.mayoria_de_edad);`
+(el Dashboard también muestra a los menores de 18 en el tramo «Menor de 18» de la
+segmentación por edad). Los visitantes del funnel pueden ser menores: un lead no es
+un cliente, pero no puede convertirse.
 
 Un cambio de esquema nuevo —o un país o una moneda nuevos— va en un archivo nuevo
 con el número siguiente (`NNN_descripcion.sql`). Una migración que ya corrió en
@@ -317,10 +331,11 @@ src/
   EnvioUnico.php        token de un solo uso de los formularios de alta: un doble
                         clic no crea dos pagos ni dos boletas, testeado
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
-  MayoriaDeEdad.php     la regla de que no se admiten clientes menores de 18 (años
-                        cumplidos, como age() de Postgres) y el tope del campo de
-                        fecha de nacimiento del alta; la base la repite en un
-                        trigger (migración 007), testeado
+  MayoriaDeEdad.php     la regla de que no se admiten clientes que no hayan cumplido
+                        la edad de mayoría de su país (años cumplidos, como age()
+                        de Postgres) y el tope del campo de fecha de nacimiento del
+                        alta; la base la repite en un trigger (migraciones 007 y
+                        010), testeado
   Etiquetas.php         traduce estado de boleta/metodo de pago/canal a su
                         etiqueta en español, en un solo lugar para no repetir
                         el mismo array en cada vista que los muestra, testeado
@@ -365,7 +380,8 @@ database/
                         (ISO 4217), los índices y la regla de mayoría de edad,
                         en cambios numerados (001 = esquema inicial, 005 =
                         catálogo, 006 y 008 = índices, 007 = mayoría de edad,
-                        009 = origen de las tasas de cambio)
+                        009 = origen de las tasas de cambio, 010 = mayoría de
+                        edad de cada país)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
                         vez por día)
@@ -395,9 +411,9 @@ tests/
                         PHP, que las pantallas pesadas no traigan miles de filas
                         a PHP, que las consultas de clientes y del funnel usen
                         sus índices, que la app, el trigger y el tramo de edad
-                        coincidan en quién es mayor de edad, que las tasas de
-                        cambio se actualicen con sus reglas de seguridad (y el
-                        comando que corre cron), y que los datos de ejemplo del
+                        coincidan en quién es mayor de edad en cada país, que las
+                        tasas de cambio se actualicen con sus reglas de seguridad
+                        (y el comando que corre cron), y que los datos de ejemplo del
                         seed cumplan las reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
@@ -411,12 +427,14 @@ phpstan.neon            configuracion del analisis estatico
   tasas de ejemplo, no el seed: una base de producción lo tiene apenas se migra (ver
   "Esquema de la base"). `database/actualizar_tasas.php` las reemplaza por las reales
   y deja en `tasa_actualizada_en` y `tasa_fuente` desde cuándo y de dónde (`NULL` es
-  una tasa de ejemplo; ver «Tasas de cambio»).
+  una tasa de ejemplo; ver «Tasas de cambio»). Cada país trae también
+  `mayoria_de_edad` (migración `010`, ver «Mayoría de edad»).
 - `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
   perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
   segmentación del dashboard y su moneda de facturación. Solo se admiten mayores de
-  edad (18 años cumplidos): el alta lo valida con un mensaje claro y la base lo
-  exige con un trigger (migración `007`, ver "Esquema de la base"). Que el cliente
+  edad, con la edad de su país (18 casi siempre): el alta lo valida con un mensaje
+  claro y la base lo exige con un trigger (migraciones `007` y `010`, ver "Esquema
+  de la base"). Que el cliente
   no esté privado de libertad ni interdicto no es un dato que la app tenga, así que
   no se puede validar.
 - `usuarios_funnel`: cada visitante que entra al funnel, con el mismo perfil y la
