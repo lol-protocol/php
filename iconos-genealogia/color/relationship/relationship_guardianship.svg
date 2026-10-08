@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_relationship_guardianship_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="grad_relationship_guardianship_amber" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E5A356"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32" cy="59.5" rx="8" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M31 13.5L31 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M23.5 13.5L23.5 13L23.7 12.6L24 12.3L29.8 6.5L30.1 6.2L30.5 6L31 6L31.5 6L31.9 6.2L32.2 6.5L38 12.3L38.3 12.6L40.2 15.2L40.4 15.6L40.5 16.1L40.4 16.5L40.2 16.9L39.9 17.3L34.2 23.1L33.8 23.4L33.4 23.5L32.9 23.6L32.5 23.5L32 23.4L31.7 23.1L25.9 17.3L25.6 16.9L23.7 14.4L23.5 14Z" fill="#883307"/><rect x="25.2" y="7.7" width="11.7" height="11.7" rx="1.8" transform="rotate(45 31 13.5)" fill="url(#grad_relationship_guardianship_orange)"/></g>
+    <g><path d="M23.5 47.5L23.5 47L23.7 46.6L24 46.3L29.8 40.5L30.1 40.2L30.5 40L31 40L31.5 40L31.9 40.2L32.2 40.5L38 46.3L38.3 46.6L40.2 49.2L40.4 49.6L40.5 50.1L40.4 50.5L40.2 50.9L39.9 51.3L34.2 57.1L33.8 57.4L33.4 57.5L32.9 57.6L32.5 57.5L32 57.4L31.7 57.1L25.9 51.3L25.6 50.9L23.7 48.4L23.5 48Z" fill="#7E4503"/><rect x="25.2" y="41.7" width="11.7" height="11.7" rx="1.8" transform="rotate(45 31 47.5)" fill="url(#grad_relationship_guardianship_amber)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M27.6 28.5L31 32.7L34.4 28.5" fill="none" stroke="#EA580C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

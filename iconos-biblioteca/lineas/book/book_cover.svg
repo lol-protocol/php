@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="solids">
+    <g><path d="M14 12.5L14.1 11.6L14.5 10.8L15 10L15.8 9.5L16.6 9.1L17.5 9L42.5 9L43.4 9.1L44.2 9.5L45 10L45.5 10.8L46.9 12.5L47.2 13.4L47.3 14.3L47.3 49.3L47.2 50.2L46.9 51L46.3 51.7L45.6 52.3L44.7 52.6L43.8 52.8L18.8 52.8L17.9 52.6L17.1 52.3L16.3 51.7L15.8 51L14.5 49.2L14.1 48.4L14 47.5Z" fill="none" stroke="#553822" stroke-width="1.8" stroke-linejoin="round"/><rect x="14" y="9" width="32" height="42" rx="3.5" fill="none" stroke="#553822" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M22 17L38 17L38 32L22 32Z" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M22 40L38 40" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+  </g>
+</svg>

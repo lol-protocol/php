@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="solids">
+    <g><path d="M15 11.5L15.1 10.6L15.5 9.8L16 9L16.8 8.5L17.6 8.1L18.5 8L38.5 8L39.4 8.1L40.2 8.5L41 9L41.5 9.8L44.1 13.1L44.4 14L44.5 14.9L44.5 50.9L44.4 51.8L44.1 52.6L43.5 53.3L42.8 53.9L41.9 54.2L41 54.4L21 54.4L20.1 54.2L19.3 53.9L18.5 53.3L18 52.6L15.5 49.2L15.1 48.4L15 47.5Z" fill="none" stroke="#553822" stroke-width="1.8" stroke-linejoin="round"/><rect x="15" y="8" width="27" height="43" rx="3.5" fill="none" stroke="#553822" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M40 15L40.1 14.5L40.3 14L40.6 13.6L41 13.3L41.5 13.1L42 13L47 13L47.5 13.1L48 13.3L48.4 13.6L48.7 14L49.5 15L49.7 15.4L49.7 16L49.7 20L49.7 20.5L49.5 21L49.1 21.4L48.7 21.7L48.2 21.9L47.7 22L42.7 22L42.2 21.9L41.7 21.7L41.3 21.4L41 21L40.3 20L40.1 19.5L40 19Z" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/><rect x="40" y="13" width="9" height="8" rx="2" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M40 26L40.1 25.5L40.3 25L40.6 24.6L41 24.3L41.5 24.1L42 24L47 24L47.5 24.1L48 24.3L48.4 24.6L48.7 25L49.5 26L49.7 26.4L49.7 27L49.7 31L49.7 31.5L49.5 32L49.1 32.4L48.7 32.7L48.2 32.9L47.7 33L42.7 33L42.2 32.9L41.7 32.7L41.3 32.4L41 32L40.3 31L40.1 30.5L40 30Z" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/><rect x="40" y="24" width="9" height="8" rx="2" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M40 37L40.1 36.5L40.3 36L40.6 35.6L41 35.3L41.5 35.1L42 35L47 35L47.5 35.1L48 35.3L48.4 35.6L48.7 36L49.5 37L49.7 37.4L49.7 38L49.7 42L49.7 42.5L49.5 43L49.1 43.4L48.7 43.7L48.2 43.9L47.7 44L42.7 44L42.2 43.9L41.7 43.7L41.3 43.4L41 43L40.3 42L40.1 41.5L40 41Z" fill="none" stroke="#08564F" stroke-width="1.8" stroke-linejoin="round"/><rect x="40" y="35" width="9" height="8" rx="2" fill="none" stroke="#08564F" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M19.5 13L19.5 46" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+  </g>
+</svg>

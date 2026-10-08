@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_aunt_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="grad_person_aunt_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="grad_person_aunt_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.9" cy="59.5" rx="20.5" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M31 10.5L31 20.5L17 20.5L17 30.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M17 30.5L17 50.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 10.5L31 20.5L45 20.5L45 30.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M24.6 10.5L24.6 10.1L24.8 9.8L25 9.4L29.9 4.5L30.3 4.3L30.6 4.2L31 4.1L31.4 4.2L31.7 4.3L32.1 4.5L37 9.4L37.2 9.8L38.9 12L39.1 12.4L39.1 12.8L39.1 13.2L38.9 13.5L38.7 13.8L33.8 18.7L33.5 19L33.1 19.1L32.7 19.2L32.3 19.1L32 19L31.7 18.7L26.8 13.8L26.5 13.5L24.8 11.2L24.6 10.9Z" fill="#767C82"/><rect x="26" y="5.5" width="9.9" height="9.9" rx="1.5" transform="rotate(45 31 10.5)" fill="url(#grad_person_aunt_mist)"/></g>
+    <g><path d="M10.6 30.5L10.7 30.1L10.8 29.8L11 29.4L15.9 24.5L16.3 24.3L16.6 24.1L17 24.1L17.4 24.1L17.7 24.3L18.1 24.5L23 29.4L23.2 29.8L24.9 32L25.1 32.4L25.1 32.8L25.1 33.2L24.9 33.5L24.7 33.8L19.8 38.7L19.5 39L19.1 39.1L18.7 39.2L18.3 39.1L18 39L17.7 38.7L12.8 33.8L12.5 33.5L10.8 31.2L10.7 30.9Z" fill="#767C82"/><rect x="12" y="25.5" width="9.9" height="9.9" rx="1.5" transform="rotate(45 17 30.5)" fill="url(#grad_person_aunt_mist)"/></g>
+    <g><path d="M11 55L12.7 57.3A7.5 7.5 0 0 0 24.7 48.3L23 46A7.5 7.5 0 0 0 11 55Z" fill="#29313D"/><circle cx="17" cy="50.5" r="7.5" fill="url(#grad_person_aunt_ink)"/></g>
+    <g><path d="M39 35L40.7 37.3A7.5 7.5 0 0 0 52.7 28.3L51 26A7.5 7.5 0 0 0 39 35Z" fill="#883307"/><circle cx="45" cy="30.5" r="7.5" fill="url(#grad_person_aunt_orange)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M14.7 50.5a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

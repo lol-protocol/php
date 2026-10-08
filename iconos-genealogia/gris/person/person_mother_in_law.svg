@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_mother_in_law_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A5A5A5"/>
+      <stop offset="1" stop-color="#7B7B7B"/>
+    </linearGradient>
+    <linearGradient id="grad_person_mother_in_law_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E1E1E1"/>
+      <stop offset="1" stop-color="#D3D3D3"/>
+    </linearGradient>
+    <linearGradient id="grad_person_mother_in_law_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8A8A8A"/>
+      <stop offset="1" stop-color="#535353"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32" cy="59.5" rx="21.9" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M17 45.6L45 45.6M17 49.4L45 49.4" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+    <path d="M45 13.5L45 47.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M38 18.8L39.9 21.3A8.8 8.8 0 0 0 54 10.8L52 8.2A8.8 8.8 0 0 0 38 18.8Z" fill="#474747"/><circle cx="45" cy="13.5" r="8.8" fill="url(#grad_person_mother_in_law_orange)"/></g>
+    <g><path d="M37.5 47.5L37.5 47L37.7 46.6L38 46.3L43.8 40.5L44.1 40.2L44.5 40L45 40L45.5 40L45.9 40.2L46.2 40.5L52 46.3L52.3 46.6L54.2 49.2L54.4 49.6L54.5 50.1L54.4 50.5L54.2 50.9L53.9 51.3L48.2 57.1L47.8 57.4L47.4 57.5L46.9 57.6L46.5 57.5L46 57.4L45.7 57.1L39.9 51.3L39.6 50.9L37.7 48.4L37.5 48Z" fill="#7B7B7B"/><rect x="39.2" y="41.7" width="11.7" height="11.7" rx="1.8" transform="rotate(45 45 47.5)" fill="url(#grad_person_mother_in_law_mist)"/></g>
+    <g><path d="M10 52.8L11.9 55.3A8.8 8.8 0 0 0 26 44.8L24 42.2A8.8 8.8 0 0 0 10 52.8Z" fill="#303030"/><circle cx="17" cy="47.5" r="8.8" fill="url(#grad_person_mother_in_law_ink)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M14.3 47.5a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

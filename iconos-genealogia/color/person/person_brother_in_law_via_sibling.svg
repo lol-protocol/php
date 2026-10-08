@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_brother_in_law_via_sibling_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="grad_person_brother_in_law_via_sibling_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="grad_person_brother_in_law_via_sibling_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.5" cy="59.5" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M31 45.6L51 45.6M31 49.4L51 49.4" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+    <path d="M21 13.5L21 30.5L11 30.5L11 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M21 13.5L21 30.5L31 30.5L31 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M14.6 13.5L14.7 13.1L14.8 12.8L15 12.4L19.9 7.5L20.3 7.3L20.6 7.2L21 7.1L21.4 7.2L21.7 7.3L22.1 7.5L27 12.4L27.2 12.8L28.9 15L29.1 15.4L29.1 15.8L29.1 16.2L28.9 16.5L28.7 16.8L23.8 21.7L23.5 22L23.1 22.1L22.7 22.2L22.3 22.1L22 22L21.7 21.7L16.8 16.8L16.5 16.5L14.8 14.2L14.7 13.9Z" fill="#767C82"/><rect x="16" y="8.5" width="9.9" height="9.9" rx="1.5" transform="rotate(45 21 13.5)" fill="url(#grad_person_brother_in_law_via_sibling_mist)"/></g>
+    <g><path d="M5 52L6.7 54.3A7.5 7.5 0 0 0 18.7 45.3L17 43A7.5 7.5 0 0 0 5 52Z" fill="#29313D"/><circle cx="11" cy="47.5" r="7.5" fill="url(#grad_person_brother_in_law_via_sibling_ink)"/></g>
+    <g><path d="M24.6 47.5L24.6 47.1L24.8 46.8L25 46.4L29.9 41.5L30.3 41.3L30.6 41.1L31 41.1L31.4 41.1L31.7 41.3L32.1 41.5L37 46.4L37.2 46.8L38.9 49L39.1 49.4L39.1 49.8L39.1 50.2L38.9 50.5L38.7 50.8L33.8 55.7L33.5 56L33.1 56.1L32.7 56.2L32.3 56.1L32 56L31.7 55.7L26.8 50.8L26.5 50.5L24.8 48.2L24.6 47.9Z" fill="#767C82"/><rect x="26" y="42.5" width="9.9" height="9.9" rx="1.5" transform="rotate(45 31 47.5)" fill="url(#grad_person_brother_in_law_via_sibling_mist)"/></g>
+    <g><path d="M44.2 42.7L44.3 42.2L44.5 41.7L44.8 41.3L45.2 41L45.7 40.8L46.2 40.7L55.8 40.7L56.3 40.8L56.8 41L57.2 41.3L57.5 41.7L59.2 44L59.4 44.5L59.5 45L59.5 54.5L59.4 55.1L59.2 55.6L58.9 56L58.5 56.3L58 56.5L57.5 56.6L48 56.6L47.4 56.5L46.9 56.3L46.5 56L46.2 55.6L44.5 53.3L44.3 52.8L44.2 52.3Z" fill="#883307"/><rect x="44.2" y="40.7" width="13.6" height="13.6" rx="2" fill="url(#grad_person_brother_in_law_via_sibling_orange)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M8.7 47.5a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

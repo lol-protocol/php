@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_book_page_paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FEF7D9"/>
+      <stop offset="1" stop-color="#FEF3C7"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.2" cy="56.3" rx="16.8" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M14 16.5L14.1 15.9L14.3 15.2L14.7 14.7L15.2 14.3L15.9 14.1L16.5 14L39.5 14L40.1 14.1L40.8 14.3L41.3 14.7L41.7 15.2L43.1 17.2L43.4 17.8L43.4 18.4L43.4 51.4L43.4 52.1L43.1 52.7L42.7 53.2L42.2 53.6L41.6 53.8L40.9 53.9L17.9 53.9L17.3 53.8L16.7 53.6L16.2 53.2L15.8 52.7L14.3 50.8L14.1 50.1L14 49.5Z" fill="#938D73"/><rect x="14" y="14" width="28" height="38" rx="2.5" fill="url(#grad_book_page_paper)"/></g>
+    <g><path d="M21 10.5L21.1 9.9L21.3 9.2L21.7 8.7L22.2 8.3L22.9 8.1L23.5 8L46.5 8L47.1 8.1L47.8 8.3L48.3 8.7L48.7 9.2L50.1 11.2L50.4 11.8L50.4 12.4L50.4 45.4L50.4 46.1L50.1 46.7L49.7 47.2L49.2 47.6L48.6 47.8L47.9 47.9L24.9 47.9L24.3 47.8L23.7 47.6L23.2 47.2L22.8 46.7L21.3 44.8L21.1 44.1L21 43.5Z" fill="#938D73"/><rect x="21" y="8" width="28" height="38" rx="2.5" fill="url(#grad_book_page_paper)"/></g>
+  </g>
+</svg>
