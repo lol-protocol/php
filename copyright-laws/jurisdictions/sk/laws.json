@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "SK",
+    "country_name": "Slovakia",
+    "region": "europe",
+    "law_name": "Copyright Act (Act No. 185/2015 Coll. on Copyright and Related Rights)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous/pseudonymous works: 70 years from lawful publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No",
+    "enforcement_body": "Ministry of Culture of the Slovak Republic",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.culture.gov.sk/wp-content/uploads/2020/02/AZ_eng-2.pdf"
+  }
+]

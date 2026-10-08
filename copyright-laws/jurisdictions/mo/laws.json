@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "MO",
+    "country_name": "Macao",
+    "region": "asia_pacific",
+    "law_name": "Regime of Copyright and Related Rights (Decree-Law No. 43/99/M as amended by Law No. 5/2012)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Economic and Technological Development Bureau (DSEDT)",
+    "treaties_signatory": "TRIPS",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/3052"
+  }
+]

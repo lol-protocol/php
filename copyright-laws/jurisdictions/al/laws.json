@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "AL",
+    "country_name": "Albania",
+    "region": "europe",
+    "law_name": "Law No. 35/2016 on Copyright and Other Related Rights (as amended by Law No. 37/2022)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous/pseudonymous works: 70 years from lawful disclosure)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Orphan works provisions (use procedure, termination of status, fair compensation)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Directorate for Copyright and Related Rights, Ministry of Culture",
+    "treaties_signatory": "Berne/WCT/WPPT",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/21610"
+  }
+]

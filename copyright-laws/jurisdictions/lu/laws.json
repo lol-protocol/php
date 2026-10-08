@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "LU",
+    "country_name": "Luxembourg",
+    "region": "europe",
+    "law_name": "Law of 18 April 2001 on Copyright, Neighbouring Rights and Databases",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous and collective works: 70 years from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity (survive transfer of economic rights; author decides on disclosure)",
+    "orphan_works": "Directive 2012/28/EU implementation (Law of 3 December 2015)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No",
+    "enforcement_body": "Intellectual Property Office, Ministry of the Economy",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/2932"
+  }
+]

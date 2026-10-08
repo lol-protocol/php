@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "UA",
+    "country_name": "Ukraine",
+    "region": "europe",
+    "law_name": "Law of Ukraine on Copyright and Related Rights (No. 2811-IX of 1 December 2022)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Authorship, name & integrity (non-transferable, protected indefinitely)",
+    "orphan_works": "Orphan works use procedures (cultural heritage institutions)",
+    "digital_protection": "Technological protection measures provisions (Art. 53)",
+    "fair_use_exceptions": "Statutory exceptions (incl. text and data mining, cultural heritage institutions)",
+    "registration_required": "No (voluntary state registration available)",
+    "enforcement_body": "Ministry of Economy (state copyright policy and registration); National Office for Intellectual Property and Innovations",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22385"
+  }
+]

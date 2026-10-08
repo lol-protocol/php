@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "MU",
+    "country_name": "Mauritius",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Act 2014 (Act No. 2 of 2014)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (audiovisual works: 50 years from making or first public availability; anonymous and pseudonymous works: 50 years from first release)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity (same term as economic rights)",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No",
+    "enforcement_body": "Ministry of Arts and Culture (with the Attorney General's Office)",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/text/539950"
+  }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "EE",
+    "country_name": "Estonia",
+    "region": "europe",
+    "law_name": "Copyright Act (Autoriõiguse seadus, RT I 1992, 49, 615)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous and collective works: 70 years from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Extensive personal rights (nine; non-transferable, licensable but not waivable)",
+    "orphan_works": "Directive 2012/28/EU implementation",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No",
+    "enforcement_body": "Ministry of Justice and Digital Affairs",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22138"
+  }
+]

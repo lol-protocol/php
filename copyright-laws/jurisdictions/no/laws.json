@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "NO",
+    "country_name": "Norway",
+    "region": "europe",
+    "law_name": "Copyright Act (Act No. 40 of 15 June 2018 relating to copyright in literary, scientific and artistic works)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous works: 70 years from end of year of first publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Attribution & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Anti-circumvention provisions (technological measures and rights-management information)",
+    "fair_use_exceptions": "Extended collective licensing & statutory limitations",
+    "registration_required": "No",
+    "enforcement_body": "Ministry of Culture and Equality (Department of Media and Copyright)",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/18686"
+  }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "TW",
+    "country_name": "Taiwan",
+    "region": "asia_pacific",
+    "law_name": "Copyright Act",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (anonymous & pseudonymous works; photographic & audiovisual works: 50 years from public release)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Anti-circumvention provisions",
+    "fair_use_exceptions": "Fair use & specific exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Taiwan Intellectual Property Office (TIPO)",
+    "treaties_signatory": "TRIPS",
+    "linked_resources": "https://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?pcode=J0070017"
+  }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "MA",
+    "country_name": "Morocco",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2-00 on Copyright and Related Rights (as amended by Laws No. 34-05 and 79-12)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous and pseudonymous works: 70 years from first publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Statutory exceptions (private copying, citation, education, library copying)",
+    "registration_required": "No (voluntary deposit available)",
+    "enforcement_body": "Moroccan Copyright Bureau (BMDA)",
+    "treaties_signatory": "",
+    "linked_resources": "https://wipo.int/wipolex/en/legislation/details/5058"
+  }
+]

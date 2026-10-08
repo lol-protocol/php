@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "GE",
+    "country_name": "Georgia",
+    "region": "europe",
+    "law_name": "Law of Georgia on Copyright and Related Rights (Law No. 2112-IIS of 22 June 1999, as amended)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous/pseudonymous works: 70 years from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity (inalienable)",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (voluntary registration with Sakpatenti available)",
+    "enforcement_body": "National Intellectual Property Center of Georgia (Sakpatenti)",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=8740"
+  }
+]

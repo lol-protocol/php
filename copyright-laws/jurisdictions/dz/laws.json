@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "DZ",
+    "country_name": "Algeria",
+    "region": "middle_east_africa",
+    "law_name": "Ordinance No. 03-05 of 19 July 2003 on Copyright and Related Rights",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (collective, pseudonymous, anonymous, posthumous and audiovisual works: 50 years from end of year of first publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Perpetual & inalienable",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Statutory exceptions (quotation, private copying with levy)",
+    "registration_required": "No (voluntary deposit with ONDA)",
+    "enforcement_body": "Office National des Droits d'Auteur et Droits Voisins (ONDA)",
+    "treaties_signatory": "Berne/WCT/WPPT",
+    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=1194"
+  }
+]

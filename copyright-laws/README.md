@@ -2,12 +2,12 @@
 
 A database and search tool for copyright legislation, built for digital libraries, text repositories and PDF documentation projects. It lists, per jurisdiction, the main copyright law, the term of protection, author and moral rights, orphan-works and fair-use rules, treaty membership and a link to the official reference.
 
-> The data is a curated starting point (50 laws, 50 jurisdictions). Terms are summaries: check the official source before relying on any entry.
+> The data is a curated starting point (123 laws, 123 jurisdictions). Terms are summaries: check the official source before relying on any entry. The 73 jurisdictions added in October 2026 were compiled from secondary sources through web search (see [Data provenance](#data-provenance)).
 
 ## What it does
 
 - **Search** across every field, or only names / rights and exceptions / enforcement body. Accent- and case-insensitive; `"quoted phrases"`; short codes such as `US` or `BR` match whole words only.
-- **Advanced filters** that combine with the search: region (multi-select), **treaties** (Berne, TRIPS, WCT — a jurisdiction must be party to *all* the ones you tick), **protection term** (life + 30 … 100 years) and protection type (appears automatically once the data has more than `Copyright`). Active filters show as removable chips.
+- **Advanced filters** that combine with the search: region (multi-select), **treaties** (Berne, TRIPS, WCT, WPPT — a jurisdiction must be party to *all* the ones you tick), **protection term** (life + 30 … 100 years; the options come from the data) and protection type (appears automatically once the data has more than `Copyright`). Active filters show as removable chips.
 - **Chart** of laws by term of protection (the axis stays put while you filter; also available as a table).
 - **Compare** selected laws side by side, **export** the filtered rows to CSV, and open a **jurisdiction card** (treaty badges, downloads of that jurisdiction's JSON/CSV).
 - **Five interface languages**, handled with three-letter ISO 639-2 codes: `eng`, `spa`, `fra`, `deu`, `por`. Law data itself is shown as published.
@@ -95,9 +95,18 @@ The importer reads `region` straight from the CSV.
 
 `npm test` (Node 22+; PHP-dependent tests are skipped when `php` is missing) covers the data, the filter engine, translations, the API and the text cache.
 
+## Data provenance
+
+- The first 50 rows come from the original curated list.
+- The 73 jurisdictions added in October 2026 (BG HR CY EE LV LT MT SK SI LU NO IS UA RS AL MK BA ME MD GE AM AZ BY KZ UZ UY VE PY CR BO PA JM TT GT EC PK LK NP KH TW MN MO LA MM BD DO SV BN QA KW BH OM JO LB IQ IR MA TN DZ GH SN CI UG RW TZ ZM MW ZW BW AO ET MU CM) were researched through web search only, without access to the statutes themselves. `linked_resources` values are pages that appeared in search results (mostly WIPO Lex).
+- **`treaties_signatory` only lists memberships that were confirmed.** A missing treaty means "not confirmed", not "not a member", so the treaty filter under-counts. Cuba was skipped because its 2022 law's term could not be found.
+- Where sources disagree on the term, the value says so (for example Iran, Oman, Bahrain, Kuwait, Iraq, and Trinidad and Tobago, whose 2026 amendment has no confirmed commencement date). The `EU` row describes the harmonised EU term; it is not a Berne member itself.
+- Per-batch sources, confidence and doubts are kept in [docs/research-2026-10/](docs/research-2026-10/).
+
 ## Pending
 
 - **Better comparison**: richer side-by-side matrices (today it is a plain criteria table).
+- **Verify the October 2026 additions against the statutes** (terms, enforcement bodies, orphan-works and exceptions columns are the weakest; many say `Not specified`) and complete the treaty memberships.
 
 ## License
 

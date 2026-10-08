@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "VE",
+    "country_name": "Venezuela",
+    "region": "americas",
+    "law_name": "Law on Copyright of 1993",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 60 years (anonymous & pseudonymous works: 60 years from publication; audiovisual works & software: 60 years from first publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Servicio Autónomo de la Propiedad Intelectual (SAPI)",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.wipo.int/wipolex/zh/legislation/details/3989"
+  }
+]

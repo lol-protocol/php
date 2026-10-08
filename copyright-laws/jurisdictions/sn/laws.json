@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "SN",
+    "country_name": "Senegal",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2008-09 of 25 January 2008 on Copyright and Related Rights",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous and pseudonymous works: 70 years from publication; posthumous works: 70 years from disclosure)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No",
+    "enforcement_body": "Bureau Sénégalais du Droit d'Auteur (BSDA)",
+    "treaties_signatory": "Berne",
+    "linked_resources": "https://www.wipo.int/wipolex/en/text/498404"
+  }
+]

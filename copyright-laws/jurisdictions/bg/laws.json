@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "BG",
+    "country_name": "Bulgaria",
+    "region": "europe",
+    "law_name": "Copyright and Related Rights Act (1993, as amended)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous/pseudonymous works: 70 years from first lawful publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity (inalienable, perpetual)",
+    "orphan_works": "Directive 2012/28/EU implementation (Art. 71b; libraries, archives, museums, educational and heritage institutions, public broadcaster)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No",
+    "enforcement_body": "Ministry of Culture (Copyright and Related Rights Directorate)",
+    "treaties_signatory": "WCT",
+    "linked_resources": "https://www.wipo.int/wipolex/fr/legislation/details/19460"
+  }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "BO",
+    "country_name": "Bolivia",
+    "region": "americas",
+    "law_name": "Copyright Law (Law No. 1322 of 1992)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (anonymous & pseudonymous works: 50 years from when made known)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Servicio Nacional de Propiedad Intelectual (SENAPI)",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/494"
+  }
+]

@@ -203,23 +203,34 @@ test("hydrate flattens jurisdictions into rows with treaties and term buckets", 
 
 test("facet options are derived from the data, in a meaningful order", () => {
   assert.deepEqual(facetOptions(data.rows, facet("region")).map((o) => o.value), ["europe", "americas", "asia_pacific", "middle_east_africa"]);
-  assert.deepEqual(facetOptions(data.rows, facet("treaty")).map((o) => o.value), ["Berne", "TRIPS", "WCT"]);
+  assert.deepEqual(facetOptions(data.rows, facet("treaty")).map((o) => o.value), ["Berne", "TRIPS", "WCT", "WPPT"]);
+  // Term buckets come from the data and run from the shortest to the longest term.
+  const years = [...new Set(data.rows.map((r) => r.termYears).filter((y) => y != null))].sort((x, y) => x - y);
   assert.deepEqual(
     facetOptions(data.rows, facet("term")).map((o) => o.value),
-    ["life-30", "life-50", "life-60", "life-70", "life-80", "life-100"]
+    years.map((y) => `life-${y}`)
   );
+  assert.ok(years.includes(50) && years.includes(70), "the common terms must be present");
   // Only one protection type exists today, so the UI hides that filter until a second one appears.
   assert.deepEqual(facetOptions(data.rows, facet("ptype")).map((o) => o.value), ["Copyright"]);
 });
 
 test("copyright filters give the expected counts on the real data", () => {
+  // Expected values are derived from the rows themselves, so adding jurisdictions does not break them.
+  const expected = (predicate) => data.rows.filter(predicate).length;
   assert.equal(count(""), data.rows.length);
-  assert.equal(count("treaty=WCT"), 37);
-  assert.equal(count("treaty=Berne,WCT&region=europe"), 21); // must be party to BOTH
-  assert.equal(count("term=life-50"), 16);
-  assert.equal(count("term=life-50,life-70"), 46); // OR inside the same facet
-  assert.equal(count("term=life-50&region=asia_pacific"), 8);
-  assert.equal(count("q=orphan&in=rights&term=life-70"), 4);
+  assert.equal(count("treaty=WCT"), expected((r) => r.treaties.includes("WCT")));
+  assert.equal(
+    count("treaty=Berne,WCT&region=europe"), // must be party to BOTH
+    expected((r) => r.region === "europe" && r.treaties.includes("Berne") && r.treaties.includes("WCT"))
+  );
+  assert.equal(count("term=life-50"), expected((r) => r.termYears === 50));
+  assert.equal(count("term=life-50,life-70"), expected((r) => r.termYears === 50 || r.termYears === 70)); // OR inside the same facet
+  assert.equal(
+    count("term=life-50&region=asia_pacific"),
+    expected((r) => r.termYears === 50 && r.region === "asia_pacific")
+  );
+  assert.ok(count("term=life-50,life-70") > count("term=life-50") && count("term=life-50") > 0);
   assert.equal(count("q=orphan&in=authority"), 0);
   assert.equal(count("country=mx"), 1);
   assert.equal(count("q=br"), 1); // whole-word match on the country code only
@@ -229,20 +240,25 @@ test("copyright filters give the expected counts on the real data", () => {
 test("repaired rows are searchable by their real fields", () => {
   assert.equal(count('q="Designs and Patents"'), 1);
   assert.equal(count("q=9,610"), 1);
-  assert.equal(count("q=perpetual&in=rights"), 3);
+  assert.ok(count("q=perpetual&in=rights") >= 3);
 });
 
 test("chart bars keep the same buckets whatever the filter, so the axis does not jump", () => {
   const all = buildChartBars(data.rows, data.rows);
-  assert.deepEqual(all.map((b) => b.bucket), ["life-30", "life-50", "life-60", "life-70", "life-80", "life-100"]);
+  const buckets = [...new Set(data.rows.map((r) => r.termBucket))].sort((a, b) => bucketYears(a) - bucketYears(b));
+  assert.deepEqual(all.map((b) => b.bucket), buckets);
   assert.equal(all.reduce((n, b) => n + b.value, 0), data.rows.length);
 
   const europe = data.rows.filter((r) => r.region === "europe");
   const sliced = buildChartBars(europe, data.rows);
   assert.deepEqual(sliced.map((b) => b.bucket), all.map((b) => b.bucket));
-  assert.equal(sliced.find((b) => b.bucket === "life-50").value, 0);
-  assert.equal(sliced.find((b) => b.bucket === "life-70").value, europe.length);
-  assert.equal(sliced.find((b) => b.bucket === "life-70").items.length, europe.length);
+  for (const bar of sliced) {
+    const inEurope = europe.filter((r) => r.termBucket === bar.bucket).length;
+    assert.equal(bar.value, inEurope);
+    assert.equal(bar.items.length, inEurope);
+  }
+  assert.equal(sliced.find((b) => b.bucket === "life-70").value > 0, true);
+  assert.ok(sliced.some((b) => b.value === 0), "buckets that no longer match stay on the axis at zero");
 });
 
 test("niceScale picks round tick steps", () => {

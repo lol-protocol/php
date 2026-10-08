@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "AZ",
+    "country_name": "Azerbaijan",
+    "region": "europe",
+    "law_name": "Law on Copyright and Related Rights (Law No. 115-IQ of 5 June 1996, as amended to 2023)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous/pseudonymous works: 70 years from lawful publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (voluntary registration of works available)",
+    "enforcement_body": "Intellectual Property Agency of the Republic of Azerbaijan (CoPAT)",
+    "treaties_signatory": "Berne/WCT/WPPT",
+    "linked_resources": "https://copag.copat.gov.az/en/agentlik-haqqinda"
+  }
+]

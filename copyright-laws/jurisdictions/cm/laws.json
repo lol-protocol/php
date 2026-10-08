@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "CM",
+    "country_name": "Cameroon",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2000/011 of 19 December 2000 on Copyright and Neighbouring Rights",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (collective, audiovisual, applied-art, anonymous and pseudonymous works: 50 years from creation or publication; posthumous works: 50 years from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Disclosure, paternity, integrity & withdrawal",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Statutory exceptions (quotation, teaching, parody, press review, private copying levy)",
+    "registration_required": "No",
+    "enforcement_body": "Ministry of Arts and Culture (MINAC)",
+    "treaties_signatory": "TRIPS",
+    "linked_resources": "https://www.wipo.int/wipolex/es/text/243144"
+  }
+]

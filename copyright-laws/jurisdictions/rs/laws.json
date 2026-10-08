@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "RS",
+    "country_name": "Serbia",
+    "region": "europe",
+    "law_name": "Law on Copyright and Related Rights (Official Gazette of RS No. 104/2009, as amended to 66/2019)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous/pseudonymous works: 70 years from lawful publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Attribution & integrity (heirs may assert after death)",
+    "orphan_works": "Provisions on anonymous and orphan works (2026 draft law would align with Directive 2012/28/EU)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "No (voluntary recording and deposit with IP Office)",
+    "enforcement_body": "Intellectual Property Office of the Republic of Serbia (Copyright and Related Rights Department)",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/19376"
+  }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "country_code": "SV",
+    "country_name": "El Salvador",
+    "region": "americas",
+    "law_name": "Intellectual Property Law (Legislative Decree No. 66 of 2024)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Instituto Salvadoreño de la Propiedad Intelectual (ISPI) / Centro Nacional de Registros (CNR)",
+    "treaties_signatory": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22675"
+  }
+]
