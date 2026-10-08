@@ -2,6 +2,7 @@ import { loadTranslations, t } from "./translations/i18n.js";
 import LanguageSelector from "./translations/language-selector.js";
 import TimelineVisualization from "./timeline.js";
 import MetadataDisplay from "./metadata-display.js";
+import { parseCSV } from "./csv.js";
 
 // Data Loaders
 class JurisdictionLoader {
@@ -60,19 +61,7 @@ class JurisdictionLoader {
   }
 
   parseCSV(csvText) {
-    const lines = csvText.trim().split("\n");
-    const headers = lines[0].split(",");
-    const records = [];
-
-    for (let i = 1; i < lines.length; i++) {
-      const obj = {};
-      const cols = lines[i].split(",");
-      headers.forEach((header, index) => {
-        obj[header.trim()] = cols[index]?.trim() || "";
-      });
-      records.push(obj);
-    }
-    return records;
+    return parseCSV(csvText);
   }
 
   getRegion(countryCode) {
