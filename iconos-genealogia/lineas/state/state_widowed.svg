@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="links">
+    <path d="M23.8 29.1L39 29.1M25 32.9L39 32.9" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M8.5 35.9L10.3 38.3A8.1 8.1 0 0 0 23.3 28.5L21.5 26.1A8.1 8.1 0 0 0 8.5 35.9Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><circle cx="15" cy="31" r="8.1" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M40.5 35.9L42.3 38.3A8.1 8.1 0 0 0 55.3 28.5L53.5 26.1A8.1 8.1 0 0 0 40.5 35.9Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="47" cy="31" r="8.1" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M8 43L24 19" fill="none" stroke="#111822" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M44.5 31a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

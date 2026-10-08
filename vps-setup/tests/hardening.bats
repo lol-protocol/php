@@ -2,7 +2,7 @@
 load helpers
 
 setup() {
-    setup_stubs; setup_system_stubs
+    setup_stubs; setup_system_stubs; export SUDO_EXEC=0
     export SUDO_EXEC=1
     export SSHD_CONF_DIR="$BATS_TEST_TMPDIR/sshd_config.d"
     export SSH_TARGET_USER=tester SSH_TARGET_HOME="$BATS_TEST_TMPDIR/home"
@@ -137,6 +137,7 @@ esac'
 # ---- 07_B: headers ----
 @test "07_B escribe los 4 headers con 'always' y sin directivas obsoletas" {
     export HEADERS_CONF="$BATS_TEST_TMPDIR/security-headers.conf"
+    export TOKENS_CONF="$BATS_TEST_TMPDIR/server-tokens.conf" DEFAULT_CONF="$BATS_TEST_TMPDIR/00-default.conf"
     run bash "$VPS_DIR/07_B-nginx-security-headers.sh"
     [ "$status" -eq 0 ]
     for h in Strict-Transport-Security X-Frame-Options X-Content-Type-Options Referrer-Policy; do
@@ -185,4 +186,70 @@ esac'
     export LOGROTATE_CONF="$BATS_TEST_TMPDIR/nginx-domains"
     bash "$VPS_DIR/07_D-setup-logrotate.sh" > /dev/null
     /usr/sbin/logrotate -d "$LOGROTATE_CONF" > /dev/null 2>&1 || logrotate -d "$LOGROTATE_CONF" > /dev/null 2>&1
+}
+
+@test "07_B oculta la version de Nginx y define un vhost por defecto que corta el trafico ajeno" {
+    export HEADERS_CONF="$BATS_TEST_TMPDIR/h.conf" TOKENS_CONF="$BATS_TEST_TMPDIR/t.conf" DEFAULT_CONF="$BATS_TEST_TMPDIR/d.conf"
+    run bash "$VPS_DIR/07_B-nginx-security-headers.sh"
+    [ "$status" -eq 0 ]
+    grep -q '^server_tokens off;' "$TOKENS_CONF"
+    grep -q 'listen 80 default_server;' "$DEFAULT_CONF" && grep -q 'return 444;' "$DEFAULT_CONF"
+    grep -q 'listen 443 ssl default_server;' "$DEFAULT_CONF" && grep -q 'ssl_reject_handshake on;' "$DEFAULT_CONF"
+}
+
+# ---- 02_J: Webmin ----
+@test "02_J no usa una ruta fija en /tmp para el script que ejecuta como root" {
+    ! grep -q '/tmp/setup-repos' "$VPS_DIR/02_J-install-webmin.sh"
+    grep -q 'mktemp -d' "$VPS_DIR/02_J-install-webmin.sh"
+}
+
+@test "02_J WEBMIN_ALLOW_FROM restringe el puerto 10000 a esa IP; sin ella avisa que queda abierto" {
+    setup_stubs; setup_system_stubs; export SUDO_EXEC=0
+    WEBMIN_ALLOW_FROM=203.0.113.5 run bash "$VPS_DIR/02_J-install-webmin.sh"
+    [ "$status" -eq 0 ]
+    grep -q "ufw allow from 203.0.113.5 to any port 10000 proto tcp" "$SUDO_LOG"
+    ! grep -q "ufw allow 10000/tcp" "$SUDO_LOG"
+    [[ "$output" != *"AVISO DE SEGURIDAD"* ]]
+    : > "$SUDO_LOG"
+    run bash "$VPS_DIR/02_J-install-webmin.sh"
+    [ "$status" -eq 0 ]
+    grep -q "ufw allow 10000/tcp" "$SUDO_LOG"
+    [[ "$output" == *"AVISO DE SEGURIDAD"* ]]
+}
+
+@test "02_J rechaza un WEBMIN_ALLOW_FROM invalido antes de tocar el firewall" {
+    setup_stubs; setup_system_stubs; export SUDO_EXEC=0
+    WEBMIN_ALLOW_FROM='1.2.3.4; rm -rf /' run bash "$VPS_DIR/02_J-install-webmin.sh"
+    [ "$status" -eq 2 ]
+    ! grep -q "ufw allow" "$SUDO_LOG"
+}
+
+# ---- 07_E: rendimiento ----
+@test "07_E escribe gzip ampliado + open_file_cache SIN repetir 'gzip on;' (duplicado = nginx -t falla)" {
+    export PERF_CONF="$BATS_TEST_TMPDIR/performance.conf"
+    run bash "$VPS_DIR/07_E-nginx-performance.sh"
+    [ "$status" -eq 0 ]
+    grep -q '^gzip_types .*application/json.*image/svg+xml' "$PERF_CONF"
+    grep -q '^gzip_vary on;' "$PERF_CONF" && grep -q '^open_file_cache ' "$PERF_CONF"
+    ! grep -q '^gzip on;' "$PERF_CONF"
+}
+
+@test "07_E si nginx -t falla, quita su archivo y sale con error" {
+    export PERF_CONF="$BATS_TEST_TMPDIR/performance.conf"
+    make_stub sudo 'echo "$*" >> "$SUDO_LOG"; [ "$1 $2" = "nginx -t" ] && exit 1; [ "$1" = rm ] && exec "$@"; [ "$1" = tee ] && exec "$@"; exit 0'
+    run bash "$VPS_DIR/07_E-nginx-performance.sh"
+    [ "$status" -eq 1 ]
+    [ ! -e "$PERF_CONF" ]
+}
+
+# ---- 01: apt robusto ----
+@test "01 configura apt (espera el lock, conserva tus configs) y needrestart automatico" {
+    export APT_TUNING_CONF="$BATS_TEST_TMPDIR/90-vps-setup" NEEDRESTART_DIR="$BATS_TEST_TMPDIR/needrestart/conf.d"
+    mkdir -p "$BATS_TEST_TMPDIR/needrestart"
+    make_stub lsb_release 'echo "Description:	Ubuntu 24.04"'
+    run bash "$VPS_DIR/01-system-update.sh"
+    [ "$status" -eq 0 ]
+    grep -q 'DPkg::Lock::Timeout "300";' "$APT_TUNING_CONF"
+    grep -q -- '--force-confold' "$APT_TUNING_CONF"
+    grep -qF "\$nrconf{restart} = 'a';" "$NEEDRESTART_DIR/50-vps-setup.conf"
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="links">
+    <path d="M19 11.6L24 11.6M20.2 15.4L24 15.4" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.6"/>
+    <path d="M39.8 45.6L43.8 45.6M39.8 49.4L43.8 49.4" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.6"/>
+    <path d="M31 22.8L31 40.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6" stroke-dasharray="4 4.5"/>
+  </g>
+  <g class="solids">
+    <g><path d="M5 18L6.7 20.3A7.5 7.5 0 0 0 18.7 11.3L17 9A7.5 7.5 0 0 0 5 18Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><circle cx="11" cy="13.5" r="7.5" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M24.2 8.7L24.3 8.2L24.5 7.7L24.8 7.3L25.2 7L25.7 6.8L26.2 6.7L35.8 6.7L36.3 6.8L36.8 7L37.2 7.3L37.5 7.7L39.2 10L39.4 10.5L39.5 11L39.5 20.5L39.4 21.1L39.2 21.6L38.9 22L38.5 22.3L38 22.5L37.5 22.6L28 22.6L27.4 22.5L26.9 22.3L26.5 22L26.2 21.6L24.5 19.3L24.3 18.8L24.2 18.3Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="24.2" y="6.7" width="13.6" height="13.6" rx="2" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M24.2 42.7L24.3 42.2L24.5 41.7L24.8 41.3L25.2 41L25.7 40.8L26.2 40.7L35.8 40.7L36.3 40.8L36.8 41L37.2 41.3L37.5 41.7L39.2 44L39.4 44.5L39.5 45L39.5 54.5L39.4 55.1L39.2 55.6L38.9 56L38.5 56.3L38 56.5L37.5 56.6L28 56.6L27.4 56.5L26.9 56.3L26.5 56L26.2 55.6L24.5 53.3L24.3 52.8L24.2 52.3Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="24.2" y="40.7" width="13.6" height="13.6" rx="2" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M45 52L46.7 54.3A7.5 7.5 0 0 0 58.7 45.3L57 43A7.5 7.5 0 0 0 45 52Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><circle cx="51" cy="47.5" r="7.5" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+</svg>

@@ -7,6 +7,8 @@ print_header "07_B" "Headers de seguridad en Nginx"
 
 # Ruta reemplazable por variable de entorno (se usa en los tests).
 HEADERS_CONF=${HEADERS_CONF:-/etc/nginx/conf.d/security-headers.conf}
+TOKENS_CONF=${TOKENS_CONF:-/etc/nginx/conf.d/server-tokens.conf}
+DEFAULT_CONF=${DEFAULT_CONF:-/etc/nginx/conf.d/00-default-server.conf}
 
 # Un solo archivo en conf.d/ se carga dentro del bloque http{}, asi que aplica a
 # TODOS los dominios (presentes y futuros) sin editar cada vhost ni pelear con
@@ -31,6 +33,26 @@ add_header X-Frame-Options "SAMEORIGIN" always;
 add_header X-Content-Type-Options "nosniff" always;
 add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 EONGINX
+# server_tokens off: no anuncia la version de Nginx en cabeceras ni paginas de error.
+printf 'server_tokens off;\n' | sudo tee "$TOKENS_CONF" > /dev/null
+
+# Vhost por defecto: una peticion por IP o con un Host que no es de ningun dominio nuestro
+# (escaneos, bots) caeria en el PRIMER vhost y le mostraria su contenido. Con esto se corta
+# la conexion (444) en HTTP y se rechaza el handshake TLS en 443 (nginx >= 1.19.4).
+sudo tee "$DEFAULT_CONF" > /dev/null <<'EODEF'
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    return 444;
+}
+server {
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+    server_name _;
+    ssl_reject_handshake on;
+}
+EODEF
 
 sudo nginx -t              # valida ANTES de recargar, para no tumbar los sitios que ya funcionan
 sudo systemctl reload nginx

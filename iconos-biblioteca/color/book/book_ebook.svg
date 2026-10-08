@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_book_ebook_night" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#666D7A"/>
+      <stop offset="1" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="grad_book_ebook_sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#53ABD9"/>
+      <stop offset="1" stop-color="#0284C7"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="33.1" cy="57.3" rx="13" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M19 11.5L19.2 10.3L19.6 9.2L20.3 8.3L21.2 7.6L22.3 7.2L23.5 7L40.5 7L41.7 7.2L42.8 7.6L43.7 8.3L44.4 9.2L46.6 12.1L47 13.2L47.2 14.4L47.2 50.4L47 51.5L46.6 52.6L45.8 53.6L44.9 54.3L43.8 54.7L42.7 54.9L25.7 54.9L24.5 54.7L23.4 54.3L22.5 53.6L21.8 52.6L19.6 49.8L19.2 48.7L19 47.5Z" fill="#111822"/><rect x="19" y="7" width="26" height="45" rx="4.5" fill="url(#grad_book_ebook_night)"/></g>
+    <g><rect x="23" y="11.5" width="18" height="31" rx="2" fill="url(#grad_book_ebook_sky)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M30.2 48a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

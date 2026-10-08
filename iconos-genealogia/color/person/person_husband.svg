@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_husband_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="grad_person_husband_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.6" cy="44.3" rx="21.5" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M17 28.6L45 28.6M17 32.4L45 32.4" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M10 35.8L11.9 38.3A8.8 8.8 0 0 0 26 27.8L24 25.2A8.8 8.8 0 0 0 10 35.8Z" fill="#29313D"/><circle cx="17" cy="30.5" r="8.8" fill="url(#grad_person_husband_ink)"/></g>
+    <g><path d="M37 24.9L37.1 24.3L37.3 23.7L37.7 23.2L38.2 22.8L38.8 22.6L39.4 22.5L50.6 22.5L51.2 22.6L51.8 22.8L52.3 23.2L52.7 23.7L54.6 26.3L54.8 26.8L54.9 27.5L54.9 38.7L54.8 39.3L54.6 39.9L54.2 40.4L53.7 40.7L53.1 41L52.5 41.1L41.3 41.1L40.7 41L40.1 40.7L39.6 40.4L39.2 39.9L37.3 37.3L37.1 36.7L37 36.1Z" fill="#883307"/><rect x="37" y="22.5" width="16" height="16" rx="2.4" fill="url(#grad_person_husband_orange)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M14.3 30.5a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0Z" fill="#FFFFFF"/>
+    <path d="M22.3 14a5.2 5.2 0 1 0 10.4 0a5.2 5.2 0 1 0 -10.4 0Z" fill="none" stroke="#EA580C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M29.3 14a5.2 5.2 0 1 0 10.4 0a5.2 5.2 0 1 0 -10.4 0Z" fill="none" stroke="#EA580C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

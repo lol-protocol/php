@@ -38,6 +38,8 @@ apt-cache search <pkg> # Buscar paquete
 
 **Panel web:** `https://IP_DEL_VPS:10000` (mismo usuario/contraseña que SSH)
 
+**Seguridad:** el puerto 10000 acepta el login de root/sudo del sistema; para que solo tu IP llegue a él instala con `WEBMIN_ALLOW_FROM=203.0.113.5 ./02_J-install-webmin.sh` (IPv4 o CIDR). Sin esa variable queda abierto a internet.
+
 **Módulos más útiles:**
 - **Nginx Webserver** — edita server blocks, SSL, proxy, gzip sobre `/etc/nginx/` directamente
 - **Users and Groups** — administra cuentas del sistema
@@ -598,7 +600,8 @@ Esto corre, en orden: `01-system-update.sh` (incluye activar UFW) →
 `02_A`..`02_F` + `02_J` (Java, PHP, Python, PostgreSQL, Nginx, Certbot,
 Webmin) → `03-configure-nginx-site.sh` → `04-setup-ssl.sh` →
 `05-deploy-landing-page.sh` → `07_A` (fail2ban + parches automáticos) →
-`07_B` (headers de seguridad) y, al final, `08-healthcheck.sh`.
+`07_B` (headers de seguridad) → `07_D` (logrotate por dominio) y, al final,
+`08-healthcheck.sh`.
 
 **Extras opcionales, uno por uno:**
 ```bash

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_ui_verified_green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#61C084"/>
+      <stop offset="1" stop-color="#16A34A"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.2" cy="55.1" rx="19" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M15.4 41.7L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.6 18.3A19.5 19.5 0 0 0 15.4 41.7Z" fill="#0D5F2B"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_ui_verified_green)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M21.5 30.5L28.1 36.6L40.5 23.4" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

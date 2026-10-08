@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_relationship_generational_arc_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="grad_relationship_generational_arc_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="grad_relationship_generational_arc_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.4" cy="57.2" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M12 48L12.3 46.1L12.7 44.2L13.2 42.4L13.7 40.7L14.2 39L14.8 37.4L15.5 35.8L16.2 34.3L16.9 32.8L17.7 31.4L18.5 30.1L19.4 28.8L20.3 27.6L21.2 26.4L22.2 25.3L23.2 24.2L24.2 23.2L25.3 22.3L26.4 21.4L27.5 20.5L28.6 19.7L29.8 19L31 18.3L32.2 17.6L33.4 17L34.6 16.5L35.8 16L37.1 15.5L38.3 15.2L39.6 14.8L40.8 14.5L42.1 14.3L43.3 14.1L44.6 13.9L45.9 13.8L47.1 13.8L48.3 13.8L49.6 13.8L50.8 13.9L52 14" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" stroke-dasharray="0.1 5.2"/>
+  </g>
+  <g class="solids">
+    <g><path d="M8.1 50.7L9.3 52.3A6.2 6.2 0 0 0 19.1 44.9L17.9 43.3A6.2 6.2 0 0 0 8.1 50.7Z" fill="#29313D"/><circle cx="13" cy="47" r="6.2" fill="url(#grad_relationship_generational_arc_ink)"/></g>
+    <g><path d="M17.3 28L17.3 27.7L17.4 27.4L17.6 27.2L21.2 23.6L21.4 23.4L21.7 23.3L22 23.3L22.3 23.3L22.6 23.4L22.8 23.6L26.4 27.2L26.6 27.4L27.8 29.1L27.9 29.3L27.9 29.6L27.9 29.9L27.8 30.1L27.6 30.4L24 34L23.8 34.2L23.5 34.3L23.2 34.3L22.9 34.3L22.6 34.2L22.4 34L18.8 30.4L18.6 30.1L17.4 28.6L17.3 28.3Z" fill="#767C82"/><rect x="18.4" y="24.4" width="7.3" height="7.3" rx="1.1" transform="rotate(45 22 28)" fill="url(#grad_relationship_generational_arc_mist)"/></g>
+    <g><path d="M31.8 18L31.8 17.7L31.9 17.5L32.1 17.3L35.3 14.1L35.5 13.9L35.7 13.8L36 13.8L36.3 13.8L36.5 13.9L36.7 14.1L39.9 17.3L40.1 17.5L41.3 19.1L41.4 19.3L41.4 19.6L41.4 19.9L41.3 20.1L41.1 20.3L37.9 23.5L37.7 23.7L37.5 23.8L37.2 23.8L36.9 23.8L36.7 23.7L36.5 23.5L33.3 20.3L33.1 20.1L31.9 18.5L31.8 18.3Z" fill="#767C82"/><rect x="32.7" y="14.7" width="6.6" height="6.6" rx="1" transform="rotate(45 36 18)" fill="url(#grad_relationship_generational_arc_mist)"/></g>
+    <g><path d="M47.2 14L47.3 13.8L47.4 13.6L47.5 13.4L50.4 10.5L50.6 10.4L50.8 10.3L51 10.2L51.2 10.3L51.4 10.4L51.6 10.5L54.5 13.4L54.6 13.6L55.8 15.2L55.9 15.4L56 15.6L55.9 15.8L55.8 16L55.7 16.2L52.8 19.1L52.6 19.2L52.4 19.3L52.2 19.4L52 19.3L51.8 19.2L51.6 19.1L48.7 16.2L48.6 16L47.4 14.4L47.3 14.2Z" fill="#883307"/><rect x="48.1" y="11.1" width="5.8" height="5.8" rx="0.9" transform="rotate(45 51 14)" fill="url(#grad_relationship_generational_arc_orange)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M11.1 47a1.9 1.9 0 1 0 3.8 0a1.9 1.9 0 1 0 -3.8 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

@@ -12,7 +12,7 @@ setup() { setup_real; }
 
 teardown() {
     nginx_down
-    rm -f /etc/nginx/conf.d/security-headers.conf /etc/nginx/conf.d/bats-real-*.conf
+    rm -f /etc/nginx/conf.d/security-headers.conf /etc/nginx/conf.d/server-tokens.conf /etc/nginx/conf.d/performance.conf /etc/nginx/conf.d/00-default-server.conf /etc/nginx/conf.d/bats-real-*.conf
     for n in $D1 $APP $D3; do rm -f "/etc/nginx/sites-enabled/$n" "/etc/nginx/sites-available/$n"; done
     rm -rf "/var/www/landing-page/$D1" "/var/www/$APP" "/var/log/nginx/$D1" "/var/log/nginx/$D2" "/var/log/nginx/$D3"
     sed -i "/$D1/d" /etc/hosts 2>/dev/null || true
@@ -57,8 +57,37 @@ teardown() {
     run bash "$VPS_DIR/06_D-setup-tomcat-app.sh" $D3 miapp
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     grep -q "proxy_pass http://127.0.0.1:8080/miapp/;" /etc/nginx/sites-available/$D3
+    ! grep -q 'manager' /etc/nginx/sites-available/$D3     # con context path no hace falta
     run nginx -t
     [ "$status" -eq 0 ]
+}
+
+@test "06_D en la raiz: /manager y /host-manager de Tomcat NO se alcanzan desde internet" {
+    run bash "$VPS_DIR/06_D-setup-tomcat-app.sh" $D3
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    nginx -t
+    nginx_up
+    for p in /manager /manager/html /host-manager/html; do
+        run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D3" "http://127.0.0.1$p"
+        [ "$output" = "404" ] || { echo "$p -> $output"; return 1; }
+    done
+    # lo demas sigue yendo a Tomcat (no esta corriendo aqui: 502, no 404 de nginx)
+    run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D3" "http://127.0.0.1/otra-ruta"
+    [ "$output" = "502" ]
+}
+
+@test "07_B: server_tokens off y el vhost por defecto corta Host ajenos sin romper los dominios propios" {
+    bash "$VPS_DIR/03-configure-nginx-site.sh" $D1 > /dev/null
+    run bash "$VPS_DIR/07_B-nginx-security-headers.sh"; [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    nginx -t
+    nginx_up
+    run curl -s -D - -o /dev/null -H "Host: $D1" http://127.0.0.1/
+    [[ "$output" == *"200"* ]]
+    echo "$output" | grep -i '^server:' | grep -qE '^[Ss]erver: nginx\s*$'      # sin /1.24.0
+    run curl -s -o /dev/null -w '%{http_code}' -H "Host: desconocido.example.net" http://127.0.0.1/
+    [ "$status" -ne 0 ] || [ "$output" = "000" ]                                # 444: conexion cerrada
+    run curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1/                # por IP, sin Host de nuestros dominios
+    [ "$output" = "000" ]
 }
 
 @test "dos dominios conviven (cada uno su vhost y su carpeta)" {
@@ -92,4 +121,36 @@ EOT
     for h in Strict-Transport-Security X-Frame-Options X-Content-Type-Options Referrer-Policy; do
         echo "$output" | grep -q "\[OK\]    $h" || { echo "$output"; return 1; }
     done
+}
+
+@test "10_B: con nginx REAL, quitar un dominio lo archiva, nginx -t sigue OK y el otro dominio sigue sirviendo" {
+    bash "$VPS_DIR/03-configure-nginx-site.sh" $D1 > /dev/null
+    bash "$VPS_DIR/03-configure-nginx-site.sh" $D3 > /dev/null
+    nginx_up
+    run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D1" http://127.0.0.1/;  [ "$output" = "200" ]
+    export REMOVED_DIR="$BATS_TEST_TMPDIR/removed"
+    run bash "$VPS_DIR/10_B-remove-domain.sh" $D1 --yes
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    [ ! -e /etc/nginx/sites-enabled/$D1 ] && [ ! -e /etc/nginx/sites-available/$D1 ]
+    d=$(ls -d "$REMOVED_DIR"/$D1-*)
+    [ -f "$d/sites-available/$D1" ] && [ -f "$d/www/landing-page/$D1/index.html" ]
+    nginx -t
+    run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D3" http://127.0.0.1/;  [ "$output" = "200" ]
+}
+
+@test "07_E: nginx REAL acepta la config, comprime CSS/JSON/SVG con gzip y no rompe el resto" {
+    rm -f /etc/nginx/conf.d/performance.conf
+    bash "$VPS_DIR/03-configure-nginx-site.sh" $D1 > /dev/null
+    run bash "$VPS_DIR/07_E-nginx-performance.sh"; [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    nginx -t
+    printf 'body{color:red}%.0s\n' $(seq 1 200) > /var/www/landing-page/$D1/estilo.css
+    printf '{"a":"%s"}' "$(head -c 600 /dev/zero | tr '\0' x)" > /var/www/landing-page/$D1/datos.json
+    nginx_up
+    for f in estilo.css datos.json; do
+        run curl -s -D - -o /dev/null -H "Accept-Encoding: gzip" -H "Host: $D1" "http://127.0.0.1/$f"
+        echo "$output" | grep -qi '^content-encoding: gzip' || { echo "$f sin gzip: $output"; return 1; }
+        echo "$output" | grep -qi '^vary:.*accept-encoding'
+    done
+    run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D1" http://127.0.0.1/
+    [ "$output" = "200" ]
 }

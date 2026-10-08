@@ -19,12 +19,13 @@ class BaseController
     protected function validateCsrfToken(): bool
     {
         $token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
-        if ($token === null) {
-            http_response_code(403);
-            return false;
+        // is_string: "csrf_token[]=x" arrives as an array and must be a 403, not a TypeError.
+        if (is_string($token) && ServiceLocator::getInstance()->getSessionManager()->validateCsrfToken($token)) {
+            return true;
         }
 
-        return ServiceLocator::getInstance()->getSessionManager()->validateCsrfToken($token);
+        http_response_code(403);
+        return false;
     }
 
     protected function getCsrfToken(): string
@@ -84,5 +85,25 @@ class BaseController
     {
         http_response_code(400);
         return '<h1>400 - ' . htmlspecialchars($message) . '</h1>';
+    }
+
+    /** A POST field as a string; '' (or $default) when missing or sent as an array ("sku[]=x"). */
+    protected function postString(string $name, string $default = ''): string
+    {
+        $value = $_POST[$name] ?? $default;
+        return is_string($value) ? $value : $default;
+    }
+
+    protected function handleForbidden(string $message = 'Forbidden'): string
+    {
+        http_response_code(403);
+        return '<h1>403 - ' . htmlspecialchars($message) . '</h1>';
+    }
+
+    /** 303 so a browser re-fetches the target with GET instead of replaying the POST. */
+    protected function redirect(string $location): string
+    {
+        header("Location: {$location}", true, 303);
+        return '';
     }
 }

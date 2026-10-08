@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galería de iconos 2.5D</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #333;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+  h1 { color: #fff; text-align: center; margin-bottom: 8px; font-size: 2.2em; text-shadow: 2px 2px 4px rgba(0,0,0,.3); }
+  .subtitle { color: rgba(255,255,255,.9); text-align: center; margin-bottom: 32px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 36px; }
+  .stat-card { background: rgba(255,255,255,.95); border-radius: 10px; padding: 18px; text-align: center; }
+  .stat-number { font-size: 2.2em; font-weight: 700; color: #4c51bf; }
+  .stat-label { font-size: .95em; color: #555; }
+  .set { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 36px; box-shadow: 0 10px 30px rgba(0,0,0,.2); }
+  .set-title { font-size: 1.5em; margin-bottom: 4px; border-left: 5px solid #667eea; padding-left: 12px; }
+  .set-note { color: #666; font-size: .9em; margin: 0 0 16px 17px; }
+  .group-title { font-size: 1.05em; margin: 22px 0 10px; color: #444; }
+  .group-title code { background: #eef; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  .group-title .count { color: #888; font-weight: 400; font-size: .9em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  .icon { background: #f8f9ff; border-radius: 8px; padding: 10px; text-align: center; }
+  .icon:hover { background: #e8eaff; }
+  .variants { display: flex; gap: 4px; justify-content: center; }
+  .variants img { width: 56px; height: 56px; background: #fff; border-radius: 4px; }
+  .icon figcaption { margin-top: 6px; font-size: .78em; color: #555; word-break: break-all; }
+  footer { text-align: center; color: rgba(255,255,255,.85); margin-top: 24px; font-size: .9em; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Galería de iconos 2.5D</h1>
+  <p class="subtitle">Formas abstractas, sin letras ni números. Cada icono en tres variantes: color, líneas y gris</p>
+  <div class="stats" id="stats"></div>
+  <div id="sets"></div>
+  <footer>Las rutas son relativas a la raíz del repositorio: abre este archivo desde ahí. Generado por iconos-tools/build.py.</footer>
+</div>
+<script>
+const DATA = [{"key":"genealogia","dir":"iconos-genealogia","title":"Árbol genealógico","groups":[{"id":"person","label":"Personas y parentescos","prefix":"person_*","items":[["person","person_adopted_daughter"],["person","person_adopted_son"],["person","person_adoptive_father"],["person","person_adoptive_mother"],["person","person_aunt"],["person","person_brother"],["person","person_brother_in_law"],["person","person_brother_in_law_via_sibling"],["person","person_child"],["person","person_cousin"],["person","person_cousin_f"],["person","person_cousin_once_removed"],["person","person_cousin_once_removed_f"],["person","person_daughter"],["person","person_daughter_in_law"],["person","person_ex_husband"],["person","person_ex_wife"],["person","person_father"],["person","person_father_in_law"],["person","person_foster_daughter"],["person","person_foster_father"],["person","person_foster_mother"],["person","person_foster_son"],["person","person_goddaughter"],["person","person_godfather"],["person","person_godmother"],["person","person_godson"],["person","person_grandchild"],["person","person_granddaughter"],["person","person_grandfather"],["person","person_grandfather_maternal"],["person","person_grandfather_paternal"],["person","person_grandmother"],["person","person_grandmother_maternal"],["person","person_grandmother_paternal"],["person","person_grandparent"],["person","person_grandson"],["person","person_great_aunt"],["person","person_great_grandchild"],["person","person_great_granddaughter"],["person","person_great_grandfather"],["person","person_great_grandmother"],["person","person_great_grandparent"],["person","person_great_grandson"],["person","person_great_nephew"],["person","person_great_niece"],["person","person_great_uncle"],["person","person_guardian"],["person","person_half_brother"],["person","person_half_sister"],["person","person_husband"],["person","person_mother"],["person","person_mother_in_law"],["person","person_nephew"],["person","person_niece"],["person","person_parent"],["person","person_partner"],["person","person_second_cousin"],["person","person_second_cousin_f"],["person","person_self"],["person","person_sibling"],["person","person_sister"],["person","person_sister_in_law"],["person","person_sister_in_law_via_sibling"],["person","person_son"],["person","person_son_in_law"],["person","person_spouse"],["person","person_stepbrother"],["person","person_stepdaughter"],["person","person_stepfather"],["person","person_stepmother"],["person","person_stepsister"],["person","person_stepson"],["person","person_uncle"],["person","person_unknown"],["person","person_unknown_female"],["person","person_unknown_male"],["person","person_ward"],["person","person_wife"]]},{"id":"relationship","label":"Relaciones","prefix":"relationship_*","items":[["relationship","relationship_adoption"],["relationship","relationship_ancestor"],["relationship","relationship_blood_bond"],["relationship","relationship_co_brother_in_law"],["relationship","relationship_co_sister_in_law"],["relationship","relationship_descendant"],["relationship","relationship_dissolved"],["relationship","relationship_engaged"],["relationship","relationship_extended_family"],["relationship","relationship_family_branch"],["relationship","relationship_family_reunion"],["relationship","relationship_fostering"],["relationship","relationship_generational_arc"],["relationship","relationship_godparenthood"],["relationship","relationship_guardianship"],["relationship","relationship_half_siblings"],["relationship","relationship_inheritance_division"],["relationship","relationship_lineage_maternal"],["relationship","relationship_lineage_paternal"],["relationship","relationship_married"],["relationship","relationship_nuclear_family"],["relationship","relationship_partnership"],["relationship","relationship_romantic"],["relationship","relationship_single_parent_family"],["relationship","relationship_step_family"],["relationship","relationship_triplets"],["relationship","relationship_twins"]]},{"id":"state","label":"Estados","prefix":"state_*","items":[["state","state_deceased"],["state","state_divorced"],["state","state_engaged"],["state","state_living"],["state","state_married"],["state","state_separated"],["state","state_single"],["state","state_widowed"]]},{"id":"view","label":"Vistas","prefix":"view_*","items":[["view","view_ancestors"],["view","view_cards"],["view","view_circular"],["view","view_descendants"],["view","view_family_group"],["view","view_fan"],["view","view_generations"],["view","view_hourglass"],["view","view_list"],["view","view_pedigree"],["view","view_timeline"],["view","view_tree"]]},{"id":"action","label":"Acciones","prefix":"action_*","items":[["action","action_add"],["action","action_add_child"],["action","action_add_parent"],["action","action_add_sibling"],["action","action_add_spouse"],["action","action_collapse"],["action","action_connect"],["action","action_copy"],["action","action_delete"],["action","action_disconnect"],["action","action_download"],["action","action_duplicate"],["action","action_edit"],["action","action_expand"],["action","action_export"],["action","action_filter"],["action","action_import"],["action","action_link"],["action","action_merge"],["action","action_print"],["action","action_redo"],["action","action_save"],["action","action_search"],["action","action_share"],["action","action_share_tree"],["action","action_split"],["action","action_sync"],["action","action_undo"],["action","action_unlink"],["action","action_upload"],["action","action_zoom_in"],["action","action_zoom_out"]]},{"id":"ui","label":"Interfaz","prefix":"ui_*","items":[["ui","ui_calendar"],["ui","ui_dna"],["ui","ui_export_csv"],["ui","ui_export_pdf"],["ui","ui_menu"],["ui","ui_notes"],["ui","ui_photo"],["ui","ui_place"],["ui","ui_privacy"],["ui","ui_profile"],["ui","ui_settings"],["ui","ui_source"],["ui","ui_unverified"],["ui","ui_verified"]]}]},{"key":"biblioteca","dir":"iconos-biblioteca","title":"Biblioteca virtual","groups":[{"id":"action","label":"Acciones","prefix":"action_*","items":[["action","action_add_to_shelf"],["action","action_all_connections"],["action","action_annotate"],["action","action_bookmark"],["action","action_borrow"],["action","action_download_book"],["action","action_favorite"],["action","action_filter"],["action","action_follow"],["action","action_highlight"],["action","action_preview"],["action","action_print"],["action","action_rate"],["action","action_recommend"],["action","action_remove_from_shelf"],["action","action_renew"],["action","action_reserve"],["action","action_return"],["action","action_review"],["action","action_scan"],["action","action_search_book"],["action","action_share"],["action","action_sort"],["action","action_subscribe"]]},{"id":"ui","label":"Interfaz","prefix":"ui_*","items":[["ui","ui_calendar"],["ui","ui_catalog"],["ui","ui_chart"],["ui","ui_collection"],["ui","ui_history"],["ui","ui_home"],["ui","ui_languages"],["ui","ui_library_card"],["ui","ui_magazine"],["ui","ui_map"],["ui","ui_menu"],["ui","ui_music"],["ui","ui_newspaper"],["ui","ui_notifications"],["ui","ui_personal_library"],["ui","ui_profile"],["ui","ui_reference"],["ui","ui_settings"],["ui","ui_shelf"]]},{"id":"book","label":"Libros","prefix":"book_*","items":[["book","book_ancient_tome"],["book","book_audiobook"],["book","book_bibliography"],["book","book_binding"],["book","book_bookmark"],["book","book_boxset"],["book","book_chapter"],["book","book_collection"],["book","book_cover"],["book","book_digital"],["book","book_ebook"],["book","book_folded_page"],["book","book_hardcover"],["book","book_index"],["book","book_manuscript"],["book","book_notebook"],["book","book_open"],["book","book_page"],["book","book_paperback"],["book","book_pocket"],["book","book_rare"],["book","book_spine"],["book","book_standard"]]},{"id":"genre","label":"Géneros","prefix":"genre_*","items":[["genre","genre_adventure"],["genre","genre_anthology"],["genre","genre_art"],["genre","genre_article"],["genre","genre_biography"],["genre","genre_children"],["genre","genre_children_story"],["genre","genre_chronicle"],["genre","genre_comedy"],["genre","genre_cooking"],["genre","genre_diary"],["genre","genre_drama"],["genre","genre_economics"],["genre","genre_education"],["genre","genre_epistle"],["genre","genre_epistolary"],["genre","genre_essay"],["genre","genre_essay_collection"],["genre","genre_fantasy"],["genre","genre_fiction"],["genre","genre_graphic_novel"],["genre","genre_history"],["genre","genre_horror"],["genre","genre_law"],["genre","genre_literary_fiction"],["genre","genre_manga"],["genre","genre_mathematics"],["genre","genre_medicine"],["genre","genre_memoir"],["genre","genre_music"],["genre","genre_mystery"],["genre","genre_narrative"],["genre","genre_nature"],["genre","genre_non_fiction"],["genre","genre_philosophy"],["genre","genre_poetry"],["genre","genre_psychology"],["genre","genre_reference"],["genre","genre_religion"],["genre","genre_romance"],["genre","genre_science"],["genre","genre_scifi"],["genre","genre_screenplay"],["genre","genre_self_help"],["genre","genre_sports"],["genre","genre_suspense"],["genre","genre_technology"],["genre","genre_thriller"],["genre","genre_travel"],["genre","genre_treatise"],["genre","genre_western"],["genre","genre_young_adult"]]},{"id":"format","label":"Ediciones y formatos","prefix":"format_*","items":[["format","format_audio_edition"],["format","format_braille"],["format","format_large_print"],["format","format_limited_edition"],["format","format_luxury_edition"],["format","format_masterpiece"],["format","format_series"]]},{"id":"status","label":"Disponibilidad y lectura","prefix":"status_*","items":[["status","status_archived"],["status","status_available"],["status","status_bestseller"],["status","status_borrowed"],["status","status_damaged"],["status","status_in_transit"],["status","status_long_read"],["status","status_lost"],["status","status_new"],["status","status_on_hold"],["status","status_overdue"],["status","status_popular"],["status","status_quick_read"],["status","status_read"],["status","status_read_later"],["status","status_reading"],["status","status_recommended"],["status","status_renewed"],["status","status_reserved"],["status","status_returned"],["status","status_unavailable"],["status","status_upcoming_release"]]},{"id":"attr","label":"Atributos","prefix":"attr_*","items":[["attr","attr_annotated"],["attr","attr_award"],["attr","attr_bilingual"],["attr","attr_controversial"],["attr","attr_critical_praise"],["attr","attr_donation"],["attr","attr_first_edition"],["attr","attr_illustrated"],["attr","attr_multi_reader"],["attr","attr_premium"],["attr","attr_private"],["attr","attr_public"],["attr","attr_signed"],["attr","attr_translation"]]}]}];
+const VARIANTS = ['color', 'lineas', 'gris'];
+
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+
+function total(set) {
+  return set.groups.reduce((sum, g) => sum + g.items.length, 0);
+}
+
+const stats = document.getElementById('stats');
+let all = 0;
+for (const set of DATA) {
+  all += total(set);
+  const card = el('div', 'stat-card');
+  card.append(el('div', 'stat-number', total(set)), el('div', 'stat-label', 'iconos de ' + set.title.toLowerCase()));
+  stats.append(card);
+}
+const files = el('div', 'stat-card');
+files.append(el('div', 'stat-number', all * VARIANTS.length), el('div', 'stat-label', 'archivos SVG en total'));
+stats.append(files);
+
+const sets = document.getElementById('sets');
+for (const set of DATA) {
+  const section = el('section', 'set');
+  section.append(el('h2', 'set-title', set.title + ' (' + total(set) + ' iconos)'));
+  section.append(el('p', 'set-note', set.dir + '/{' + VARIANTS.join(',') + '}/<prefijo>/<nombre>.svg'));
+  for (const group of set.groups) {
+    const title = el('h3', 'group-title');
+    title.append(document.createTextNode(group.label + ' '), el('code', null, group.prefix), el('span', 'count', ' ' + group.items.length));
+    const grid = el('div', 'grid');
+    for (const [folder, name] of group.items) {
+      const card = el('figure', 'icon');
+      const row = el('div', 'variants');
+      for (const variant of VARIANTS) {
+        const img = el('img');
+        img.src = set.dir + '/' + variant + '/' + folder + '/' + name + '.svg';
+        img.alt = name + ' (' + variant + ')';
+        img.title = variant;
+        row.append(img);
+      }
+      card.append(row, el('figcaption', null, name));
+      grid.append(card);
+    }
+    section.append(title, grid);
+  }
+  sets.append(section);
+}
+</script>
+</body>
+</html>
