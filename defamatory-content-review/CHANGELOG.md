@@ -4,6 +4,30 @@
 
 ### Añadido
 
+- **Listas de temas de chat en los 33 idiomas** (`config/chat-topics/`):
+  `sexual`, `belico`, `ambiguous` y, en 18 idiomas de alfabeto latino y
+  cirílico, `patterns` de amenaza y de amenaza de violación (fra, ita, por,
+  deu, nld, swe, dan, nor, fin, ron, rus, ukr, pol, ces, slk, bul, hun, tur,
+  ind). Antes sólo existían spa y eng: en el resto «te voy a matar» se
+  aprobaba. Los otros 12 (ara, ell, heb, hin, isl, jpn, kor, swa, tgl, tha,
+  vie, yue) no tienen patrones y usan frases literales de hasta 3 palabras.
+  `ChatTopicsCoverageTest` comprueba por idioma una línea sexual (censurada),
+  una amenaza (`reject`) y una cotidiana (`approve`). Escritas **sin hablante nativo**, sólo con forma
+  base y `also` a mano (no hay inflexión fuera de spa/eng), y en jpn, yue y
+  tha sólo reconocen la palabra suelta. Ver «Lo que no cubre» en el README.
+- **Marca `'ambiguous' => true` en las entradas de los diccionarios**:
+  palabras cotidianas que también son vulgares («яйца», «leche», «כוס»,
+  «butt», «sega»…). `ChatLineReviewer` las ignora —«Купи яйца и хлеб» pasa
+  de `review` a `approve`, «כוס מים» de `reject` a `approve`—; los nombres
+  las siguen marcando. Marcadas ~60 entradas en 15 idiomas.
+- **Auditoría y ampliación de los 27 diccionarios `moderate` y `basic`**
+  (~1.500 términos nuevos, ~7.800 en total). Hecha **sin hablante nativo**:
+  los idiomas siguen en su nivel y `coverage` no cambia. Protocolo: sólo
+  términos de alta confianza, ninguno étnico, religioso ni de discapacidad,
+  y cruce contra nombres reales (corpus ampliado a 20×20 o más en los 33
+  idiomas, ahora también heb, jpn, yue, tha, vie). `NameCollisionAuditTest`
+  fija las colisiones auditadas. Ver `CONTRIBUTING.md` para lo que sigue
+  pendiente de revisión nativa.
 - **Vocabulario ampliado en los 3 diccionarios `basic`**: islandés
   (60 → 65 términos), swahili (61 → 71) y tagalo (60 → 80). Términos reales
   nuevos en `animal`, `intelectual`, `fisico`, `discapacidad`, `moral`,
@@ -16,6 +40,28 @@
   clasificando lo encontrado como `difamatorio`, `burlesco`, `sexual` o
   `belico`, con decisión (`approve`/`review`/`reject`) y la línea censurada.
   Listas de temas en `config/chat-topics/` para español e inglés.
+  Entiende plurales, géneros y conjugaciones regulares (campo `forms` de las
+  listas: «desnudas», «fóllame», «masturbándose», «they massacred»); amenazas
+  y frases con forma (`patterns`: «te voy a matar», «ojalá te mueras»,
+  «I will kill you», «kill yourself»); letras sueltas («p u t a», «vamos a
+  f o l l a r»); y palabras ambiguas (categoría `ambiguous`: «vamos a coger
+  el bus» o «está de bomba» ya no se marcan, «quiero coger, mándame nudes»
+  sí). Un término que también es apellido (`nameCollision`) baja a revisión
+  en vez de bloquear, igual que con los nombres. `censored()` busca por
+  palabra entera sin distinguir mayúsculas acentuadas ni el separador entre
+  las palabras de una frase. Ver `examples/10-chat-lines.php`.
+- **Letras repetidas en el chat** («puuuuta», «mmmierda», «te voy a
+  mataaaar»): cada racha de letras iguales se lee como 1 letra o como 2, sin
+  tocar el texto, así «follarr» sigue siendo «follar». Tres o más iguales
+  conservan su severidad; dos sólo bajan a revisión (`repeat => doubled`)
+  porque pueden ser legítimas («calle», «Pratt»). Cada idioma lista en
+  `legit` las palabras que nunca se leen reducidas, medidas contra ~1 millón de
+  palabras reales (0 falsos positivos con tres o más; los pocos restantes con
+  dos son erratas evidentes). Sólo español e inglés (`meta.collapseRepeats`).
+- **`js/limit-repeated-letters.js`**: tope de 2 letras iguales seguidas para
+  los campos de texto del front (nunca 3). Recorta lo que se escribe o pega,
+  conserva el cursor, respeta los IME y se engancha solo a `data-max-repeat`.
+  18 tests con `node --test`, verificado además en Chromium.
 - **Ampliación de los 6 diccionarios `comprehensive`** en los idiomas donde
   hay confianza real de hablante fluido/nativo — español ya tenía 601
   términos (el más grande con diferencia) y no se tocó:
@@ -35,6 +81,30 @@
 
 ### Arreglado
 
+- **`ChatPatternMatcher::fold()` borraba todo lo que no fuera `[a-z0-9]`**,
+  así que ningún patrón en cirílico, griego, árabe, hebreo, CJK, etc. podía
+  coincidir nunca. Ahora sólo sustituye por espacio lo que no es letra ni
+  número.
+- **Apellidos y nombres reales se rechazaban en automático** por términos
+  de severidad alta sin `nameCollision`. El peor caso: en árabe, `عبد`
+  («Abd», primer elemento de Abdullah, Abdulrahman, Abdulaziz…) rechazaba
+  los nombres más comunes; se quitó. También `כלב` (Kalev, hebreo),
+  `Çolak`/`Topal` (turco), `Cioară` (rumano), `Горбань` (ucraniano),
+  `Alfons` (polaco, danés), `Abe`/`So`/`Lam`/`Tai`/`Pina`… Se marcaron
+  ~250 colisiones.
+- **Mismo barrido en los 6 `comprehensive`** (~110 marcas `nameCollision`:
+  «Dick», «Cock», «Hooker», «Coon», «Kraut», «Depp», «Teufel», «Gobbo»,
+  «Troia», «Vacca», «Nègre», «Verdugo»…). Se quitan `ano` (español: «año»
+  se pliega a «ano» por la ñ) y `sarasa`, que disparaba la fusión con
+  «Sara Sánchez/Santos».
+- **Entradas que no eran insultos**: `мамка` (mamá, búlgaro), `ruska`
+  (rusa, checo), `top` (pelota, turco), `αδερφή` (hermana, griego),
+  `תחת` («debajo», hebreo), `bóng` (pelota, vietnamita), `ममी` (mamá,
+  hindi) y términos neutros de orientación (`лесбиянка`, `homosexual`,
+  `समलैंगिक`, `게이`…), de nacionalidad o de raza (`maďar`, `黒人`, `흑인`).
+  `hawara` (swahili) disparaba la fusión con «Hawa» + «Rashidi».
+- **Vietnamita: `đ` se plegaba a `d`**, así que «Dần» (nombre propio)
+  coincidía con «đần» (tonto). Ahora `đ` es letra propia, como `ă â ê ô`.
 - **Un término presente en varios idiomas emparentados se contaba dos
   veces** en `$reviewer->related()->validate()`. La deduplicación usaba como
   clave la posición del hallazgo en la lista de cada idioma, que se corre

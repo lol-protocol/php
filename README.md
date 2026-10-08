@@ -58,6 +58,7 @@ proyecto.
 
 `.github/workflows/tests.yml` (nombre interno del workflow: "Pruebas") tiene un job por proyecto:
 - `phpunit`: tests, PHPStan y benchmark de `defamatory-content-review/`.
+- `chat-front-guard`: tests en Node del tope de letras repetidas para el front, `defamatory-content-review/js/`.
 - `phone-directory`: tests de `phone-directory/` (incluidos los ejemplos) contra SQLite y PostgreSQL, y el benchmark.
 - `phone-directory-ports`: tests de los ports de `phone-directory/` a Python y Java.
 - `url-routing`: tests de `url-routing/` contra SQLite y PostgreSQL, y que sus migraciones corran limpias en PostgreSQL.
