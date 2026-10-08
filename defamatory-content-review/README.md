@@ -525,8 +525,8 @@ El término más grave decide: `high` bloquea, `medium` va a revisión y `low`
 sólo se informa (por ejemplo «mi abuelo luchó en la guerra» se aprueba pero
 queda marcado como `belico`). Un término que también es apellido
 (`nameCollision`: «Savage», «Concha») nunca bloquea solo: baja a revisión,
-igual que con los nombres. Hay listas de temas para español (`spa`) e inglés
-(`eng`); en los demás idiomas se detectan igual los insultos.
+igual que con los nombres. Los 33 idiomas tienen lista de temas; las de
+español e inglés son las completas (ver «Lo que no cubre» para las demás).
 
 ### Qué entiende
 
@@ -628,7 +628,15 @@ palabras no entiende contexto:
 - Un nombre que coincide con un insulto del diccionario («Dick») se marca
   igual; sólo los que declaran `nameCollision` bajan a revisión.
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
-- Sólo español e inglés tienen listas de temas; el resto detecta insultos.
+- Las listas de temas de los otros 31 idiomas son de arranque (10–18 palabras
+  por tema, más `ambiguous`). Las amenazas con forma (`patterns`) sólo están en
+  18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
+  No tienen plurales, géneros ni conjugaciones automáticos —sólo la forma base
+  y las que se añadan a mano con `also`—, ni `collapseRepeats`, y se escribieron
+  sin revisión nativa. En japonés, cantonés y tailandés, que no separan las
+  palabras con espacios, sólo se reconoce la palabra suelta (no dentro de una
+  frase) hasta que haya un segmentador. `ChatTopicsCoverageTest` fija una línea
+  sexual, una amenaza y una cotidiana por idioma.
 
 ## API
 
@@ -803,7 +811,7 @@ src/DefamatoryContentReview/
 └── TermExplanation.php             Frase legible de por qué se marcó cada término
 
 config/
-├── chat-topics/                    Temas del chat por idioma: spa.php eng.php
+├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns), uno por idioma
 ├── risk-categories.php             Los 11 tipos de riesgo
 ├── language-families.php           Familias y afinidades
 └── languages/

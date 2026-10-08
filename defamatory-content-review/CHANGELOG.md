@@ -4,6 +4,17 @@
 
 ### Añadido
 
+- **Listas de temas de chat en los 33 idiomas** (`config/chat-topics/`):
+  `sexual`, `belico`, `ambiguous` y, en 18 idiomas de alfabeto latino y
+  cirílico, `patterns` de amenaza y de amenaza de violación (fra, ita, por,
+  deu, nld, swe, dan, nor, fin, ron, rus, ukr, pol, ces, slk, bul, hun, tur,
+  ind). Antes sólo existían spa y eng: en el resto «te voy a matar» se
+  aprobaba. Los otros 12 (ara, ell, heb, hin, isl, jpn, kor, swa, tgl, tha,
+  vie, yue) no tienen patrones y usan frases literales de hasta 3 palabras.
+  `ChatTopicsCoverageTest` comprueba por idioma una línea sexual (censurada),
+  una amenaza (`reject`) y una cotidiana (`approve`). Escritas **sin hablante nativo**, sólo con forma
+  base y `also` a mano (no hay inflexión fuera de spa/eng), y en jpn, yue y
+  tha sólo reconocen la palabra suelta. Ver «Lo que no cubre» en el README.
 - **Marca `'ambiguous' => true` en las entradas de los diccionarios**:
   palabras cotidianas que también son vulgares («яйца», «leche», «כוס»,
   «butt», «sega»…). `ChatLineReviewer` las ignora —«Купи яйца и хлеб» pasa
@@ -70,6 +81,10 @@
 
 ### Arreglado
 
+- **`ChatPatternMatcher::fold()` borraba todo lo que no fuera `[a-z0-9]`**,
+  así que ningún patrón en cirílico, griego, árabe, hebreo, CJK, etc. podía
+  coincidir nunca. Ahora sólo sustituye por espacio lo que no es letra ni
+  número.
 - **Apellidos y nombres reales se rechazaban en automático** por términos
   de severidad alta sin `nameCollision`. El peor caso: en árabe, `عبد`
   («Abd», primer elemento de Abdullah, Abdulrahman, Abdulaziz…) rechazaba

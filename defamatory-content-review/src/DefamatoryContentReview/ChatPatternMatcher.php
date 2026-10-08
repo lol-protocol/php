@@ -50,6 +50,6 @@ final class ChatPatternMatcher
     {
         $folded = Leetspeak::unleet(AccentFolding::fold(mb_strtolower($line)));
 
-        return preg_replace('/[^a-z0-9]/u', ' ', $folded) ?? $folded;
+        return preg_replace('/[^\p{L}\p{N}]/u', ' ', $folded) ?? $folded;
     }
 }

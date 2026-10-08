@@ -1,0 +1,55 @@
+<?php
+
+/** French chat topics — see spa.php for the format and severity meaning. */
+return [
+    'meta' => ['code' => 'fra', 'kind' => 'chat-topics'],
+    'words' => [
+        'sexual' => [
+            ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],
+            ['word' => 'pornographie', 'riskType' => 'sexual', 'severity' => 'high'],
+            ['word' => 'fellation', 'riskType' => 'sexual', 'severity' => 'high'],
+            ['word' => 'sodomie', 'riskType' => 'sexual', 'severity' => 'high'],
+            ['word' => 'masturbation', 'riskType' => 'sexual', 'severity' => 'high'],
+            ['word' => 'masturber', 'riskType' => 'sexual', 'severity' => 'high'],
+            ['word' => 'orgasme', 'riskType' => 'sexual', 'severity' => 'medium'],
+            ['word' => 'penis', 'riskType' => 'sexual', 'severity' => 'medium'],
+            ['word' => 'vagin', 'riskType' => 'sexual', 'severity' => 'medium'],
+            ['word' => 'seins', 'riskType' => 'sexual', 'severity' => 'medium'],
+            ['word' => 'nichons', 'riskType' => 'sexual', 'severity' => 'medium'],
+            ['word' => 'nudes', 'riskType' => 'sexual', 'severity' => 'high'],
+            ['word' => 'photo intime', 'riskType' => 'sexual', 'severity' => 'high', 'also' => ['photos intimes']],
+            ['word' => 'sexe', 'riskType' => 'sexual', 'severity' => 'low'],
+            ['word' => 'sexe oral', 'riskType' => 'sexual', 'severity' => 'high'],
+            ['word' => 'viol', 'riskType' => 'sexual', 'severity' => 'high'],
+            ['word' => 'violer', 'riskType' => 'sexual', 'severity' => 'high'],
+        ],
+        'belico' => [
+            ['word' => 'guerre', 'riskType' => 'belico', 'severity' => 'low'],
+            ['word' => 'bombardement', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'missile', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'genocide', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'massacre', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'massacrer', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'exterminer', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'terroriste', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'attentat', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'invasion', 'riskType' => 'belico', 'severity' => 'low'],
+            ['word' => 'armee', 'riskType' => 'belico', 'severity' => 'low'],
+            ['word' => 'fusiller', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'egorger', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'nettoyage ethnique', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'guerre sainte', 'riskType' => 'belico', 'severity' => 'high'],
+            ['word' => 'djihad', 'riskType' => 'belico', 'severity' => 'medium'],
+        ],
+        'ambiguous' => [
+            ['word' => 'bombe', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'pipe', 'riskType' => 'sexual', 'severity' => 'medium'],
+            ['word' => 'baiser', 'riskType' => 'sexual', 'severity' => 'medium'],
+            ['word' => 'bander', 'riskType' => 'sexual', 'severity' => 'medium'],
+        ],
+    ],
+    'patterns' => [
+        ['pattern' => '\b(?:je|j)\s*(?:vais\s+)?te\s+(?:tuer|tue|buter|crever|massacrer|egorger)\b', 'riskType' => 'belico', 'severity' => 'high', 'label' => 'menace'],
+        ['pattern' => '\b(?:je|j)\s*(?:vais\s+)?te\s+(?:violer|viole)\b', 'riskType' => 'sexual', 'severity' => 'high', 'label' => 'menace sexuelle'],
+    ],
+];

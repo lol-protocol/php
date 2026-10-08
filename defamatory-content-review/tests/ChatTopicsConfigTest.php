@@ -45,6 +45,7 @@ class ChatTopicsConfigTest extends TestCase
     #[DataProvider('topicFiles')]
     public function testPatternsCompileAndAreWellFormed(string $file): void
     {
+        $this->addToAssertionCount(1);
         foreach ((require $file)['patterns'] as $pattern) {
             $this->assertNotFalse(@preg_match('~' . $pattern['pattern'] . '~u', ''), $pattern['pattern']);
             $this->assertSame($pattern['pattern'], strtolower($pattern['pattern']), 'el texto plegado va en minúsculas');
@@ -87,6 +88,7 @@ class ChatTopicsConfigTest extends TestCase
         $language = $config['meta']['code'];
         $dictionary = DefamatoryContentReviewer::create(dirname($file, 2), $language)->languages()->wordList($language);
         $unexempted = new ChatTopics(['legit' => []] + $config, $language);
+        $this->addToAssertionCount(1);
 
         foreach ($config['legit'] ?? [] as $word) {
             $this->assertSame(strtolower($word), $word, 'en minúsculas');
