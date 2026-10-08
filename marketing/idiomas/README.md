@@ -42,7 +42,7 @@ Traducciones de la parte madura de [`../frases.md`](../frases.md) a 15 idiomas (
 
 ## Antes de publicar
 
-1. **Revisión nativa.** Prioridad: `ar` y `he` (género y registro), luego `ja`, `ko`, `zh-Hans`, `hi`, `tr`, `ru` y `pl`.
+1. **Revisión nativa.** Sigue la [guía de revisión](GUIA-REVISION.md): orden de prioridad, decisiones abiertas por idioma y un brief en inglés listo para enviar.
 2. **Juegos de palabras.** «Cada nombre cuenta» juega con *contar* e *importar*; en algunos idiomas solo conserva uno de los dos sentidos.
 3. **Tratamiento.** Decidir si en francés, alemán y ruso se prefiere el trato informal.
 4. **Escritura de derecha a izquierda.** Probar cómo se ve `ar` y `he` en el canal real (correo, redes, web).
