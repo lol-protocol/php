@@ -39,7 +39,7 @@ No hace falta enviar las frases que quedaron fuera por depender del producto (co
 ## Pendientes conocidos
 
 - **Francés, tipografía.** Hay 11 espacios normales antes de `?`, `!`, `:` y `;`. Lo correcto es un espacio fino insécable. Que lo decida quien revise el francés.
-- **Marca en alfabetos no latinos** (`ru`, `ar`, `he`, `ja`, `ko`, `zh-Hans`, `hi`). Cuando exista el nombre, decidir si se translitera o se deja en alfabeto latino.
+- **Marca en alfabetos no latinos** (`ru`, `ar`, `he`, `ja`, `ko`, `zh-Hans`, `hi`). Cuando exista el nombre, decidir si se translitera o se deja en alfabeto latino; se configura por idioma en `marca_por_idioma` de `../config.json` (ver `../README.md`).
 - **Concordancia con `[Nombre]` y `[Marca]`** en idiomas con casos o género (`ru`, `pl`, `tr`, `ar`, `hi`): comprobar que la frase funciona con cualquier nombre.
 - **Hashtags.** Comprobar que existen y se usan en cada red.
 

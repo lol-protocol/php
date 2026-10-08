@@ -36,7 +36,7 @@ Traducciones de la parte madura de [`../frases.md`](../frases.md) a 15 idiomas (
 ## Convenciones
 
 - Todos los archivos tienen las mismas secciones, el mismo orden y el mismo número de elementos (114 líneas). El elemento N de una sección es el mismo mensaje en todos los idiomas, así que se pueden comparar lado a lado.
-- Los marcadores `[Nombre]` y `[Marca]` son idénticos en todos los idiomas: un solo reemplazo sirve para todos.
+- Los marcadores `[Nombre]` y `[Marca]` son idénticos en todos los idiomas. `[Marca]` se completa desde [`../config.json`](../config.json) con `php marketing/render.php` (una sola vez para todos los idiomas, con la opción de una escritura distinta por idioma); `[Nombre]` es por destinatario.
 - Los emojis de las frases de redes son los mismos en todos los idiomas.
 - Los hashtags están localizados. Conviene comprobar que existen y se usan en cada red antes de adoptarlos.
 
