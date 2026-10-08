@@ -24,8 +24,5 @@ id_rsa*
 id_ed25519*
 id_ecdsa*
 
-# Node.js dependencies
+# Node.js: las dependencias no se versionan, pero sí los package-lock.json (la CI usa npm ci)
 node_modules/
-*/node_modules/
-package-lock.json
-*/package-lock.json

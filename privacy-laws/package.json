@@ -4,9 +4,7 @@
   "description": "Global privacy laws database by country - for genealogy and privacy compliance projects",
   "type": "module",
   "scripts": {
-    "test": "node --test 'tests/**/*.test.js'",
-    "validate": "node scripts/validate-csv.js",
-    "lint": "node scripts/lint-data.js"
+    "test": "node --test 'tests/**/*.test.js'"
   },
   "keywords": [
     "privacy",
@@ -20,7 +18,6 @@
   "author": "lol-protocol",
   "license": "MIT",
   "devDependencies": {
-    "csv-parse": "^5.5.0",
-    "axios": "^1.6.0"
+    "csv-parse": "^7.0.3"
   }
 }
