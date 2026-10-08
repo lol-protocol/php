@@ -12,7 +12,7 @@ setup() { setup_real; }
 
 teardown() {
     nginx_down
-    rm -f /etc/nginx/conf.d/security-headers.conf /etc/nginx/conf.d/server-tokens.conf /etc/nginx/conf.d/00-default-server.conf /etc/nginx/conf.d/bats-real-*.conf
+    rm -f /etc/nginx/conf.d/security-headers.conf /etc/nginx/conf.d/server-tokens.conf /etc/nginx/conf.d/performance.conf /etc/nginx/conf.d/00-default-server.conf /etc/nginx/conf.d/bats-real-*.conf
     for n in $D1 $APP $D3; do rm -f "/etc/nginx/sites-enabled/$n" "/etc/nginx/sites-available/$n"; done
     rm -rf "/var/www/landing-page/$D1" "/var/www/$APP" "/var/log/nginx/$D1" "/var/log/nginx/$D2" "/var/log/nginx/$D3"
     sed -i "/$D1/d" /etc/hosts 2>/dev/null || true
@@ -136,4 +136,21 @@ EOT
     [ -f "$d/sites-available/$D1" ] && [ -f "$d/www/landing-page/$D1/index.html" ]
     nginx -t
     run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D3" http://127.0.0.1/;  [ "$output" = "200" ]
+}
+
+@test "07_E: nginx REAL acepta la config, comprime CSS/JSON/SVG con gzip y no rompe el resto" {
+    rm -f /etc/nginx/conf.d/performance.conf
+    bash "$VPS_DIR/03-configure-nginx-site.sh" $D1 > /dev/null
+    run bash "$VPS_DIR/07_E-nginx-performance.sh"; [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    nginx -t
+    printf 'body{color:red}%.0s\n' $(seq 1 200) > /var/www/landing-page/$D1/estilo.css
+    printf '{"a":"%s"}' "$(head -c 600 /dev/zero | tr '\0' x)" > /var/www/landing-page/$D1/datos.json
+    nginx_up
+    for f in estilo.css datos.json; do
+        run curl -s -D - -o /dev/null -H "Accept-Encoding: gzip" -H "Host: $D1" "http://127.0.0.1/$f"
+        echo "$output" | grep -qi '^content-encoding: gzip' || { echo "$f sin gzip: $output"; return 1; }
+        echo "$output" | grep -qi '^vary:.*accept-encoding'
+    done
+    run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D1" http://127.0.0.1/
+    [ "$output" = "200" ]
 }

@@ -87,6 +87,7 @@ curl http://initech.fun                     # Prueba SIN SSL primero
 ./07_A-install-fail2ban-autoupdates.sh
 ./07_B-nginx-security-headers.sh
 ./07_D-setup-logrotate.sh
+./07_E-nginx-performance.sh
 
 # --- 08: verificación (solo lectura) ---
 ./08-healthcheck.sh initech.fun
@@ -131,7 +132,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 
 | Paso | Script | Qué hace |
 |------|--------|----------|
-| 01 | `01-system-update.sh` | Actualiza APT, instala utilidades base (git, curl, build-essential) y **activa UFW** (con SSH permitido antes de encenderlo) |
+| 01 | `01-system-update.sh` | Actualiza APT, instala utilidades base (git, curl, build-essential) y **activa UFW** (con SSH permitido antes de encenderlo). Ajusta apt para que no se cuelgue: espera el lock hasta 5 min, conserva tus configs y `needrestart` reinicia servicios solo |
 | 02_A | `02_A-install-java.sh` | Instala Java 21 (OpenJDK) |
 | 02_B | `02_B-install-php.sh` | Instala PHP 8.3 + FPM + extensiones comunes |
 | 02_C | `02_C-install-python.sh` | Instala Python 3 + pip + venv |
@@ -149,6 +150,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 07_B | `07_B-nginx-security-headers.sh` | Agrega HSTS, X-Frame-Options, X-Content-Type-Options y Referrer-Policy a todos los dominios, oculta la versión de Nginx (`server_tokens off`) y define un vhost por defecto que corta el tráfico por IP o con un Host ajeno (archivos en `conf.d/`) |
 | 07_C | `07_C-harden-ssh.sh` | *(Opcional, requiere tu llave pública)* Autoriza tu llave y desactiva login por contraseña y de root. Exige confirmar que ya probaste la llave; `--revert` lo deshace |
 | 07_D | `07_D-setup-logrotate.sh` | Rota los logs de Nginx por dominio (`/var/log/nginx/<dominio>/*.log`), que el logrotate del paquete no cubre |
+| 07_E | `07_E-nginx-performance.sh` | Amplía gzip (CSS/JS/JSON/XML/SVG, también respuestas de apps tras proxy) y activa `open_file_cache` para todos los dominios. Si `nginx -t` rechaza la config, quita su archivo |
 | 08 | `08-healthcheck.sh` | Solo lectura: revisa servicios, UFW, puertos, DNS, HTTPS, certificado y headers. Sale con código 1 si algo falla. Uso: `./08-healthcheck.sh tudominio.com` |
 | 09_A | `09_A-setup-monitoring.sh` | *(Opcional)* Monitoreo cada 15 min (disco, RAM, carga, certificados, servicios) con alertas a webhook (Slack/Discord/Mattermost) y/o correo. Solo avisa cuando cambia el estado |
 | 06_A | `06_A-setup-php-app.sh` | *(Opcional)* Configura una app PHP adicional |
@@ -158,7 +160,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 10_A | `10_A-add-domain.sh` | Agrega un dominio nuevo (landing/php/python/tomcat, `--ssl` opcional) encadenando los scripts anteriores |
 | 10_B | `10_B-remove-domain.sh` | Quita un dominio **archivando** (no borrando) su vhost, sitio y logs |
 | — | `remote-run.sh` | Desde TU equipo: sube `vps-setup/` por SSH (solo llave) y ejecuta un script en el VPS. Config en `vps.env` (ver `vps.env.example`) |
-| — | `install-all.sh` | Ejecuta 01 → 02_A..F+J → 03 → 04 → 05 → 07_A → 07_B → 07_D en orden y termina corriendo 08. Admite `--dry-run`, `--resume` y `--yes` |
+| — | `install-all.sh` | Ejecuta 01 → 02_A..F+J → 03 → 04 → 05 → 07_A → 07_B → 07_D → 07_E en orden y termina corriendo 08. Admite `--dry-run`, `--resume` y `--yes` |
 
 Los pasos `02_G`/`02_H`/`02_I` y todos los `06_*` son opcionales e independientes entre sí — instala solo los que necesites. Las notas "requiere X ya hecho" son las únicas excepciones a "cualquier orden": son dependencias reales de software, no de orden de ejecución arbitrario.
 
