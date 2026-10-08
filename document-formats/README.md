@@ -21,6 +21,11 @@ document-formats/
 └── api_reference.json
 ```
 
+File names use mixed case (`Tutorials.md`, `Localization.md`), except the
+standard convention names the rest of the repo also uses as-is (`README.md`,
+`LICENSE`, `CHANGELOG.md`). This has flipped back and forth across a few
+PRs — it's a deliberate choice, not an oversight, so please keep it this way.
+
 ## Data files
 
 ### `countries/`
@@ -147,7 +152,7 @@ const converter = new FormatConverter(loader.formats);
 converter.findEquivalents('A4', 90);
 ```
 
-See `docs/TUTORIALS.md` for step-by-step examples and
+See `docs/Tutorials.md` for step-by-step examples and
 `docs/frontend_implementation_guide.md` for UI patterns.
 
 ### As a database
@@ -200,7 +205,7 @@ and offers a browser with search and country/category filters, a
 comparison table, and a converter that shows how similar two sizes are.
 
 `app/translations/` holds UI strings in 30 languages for
-`LocalizationManager` in `document-formats.js`; see `docs/LOCALIZATION.md`.
+`LocalizationManager` in `document-formats.js`; see `docs/Localization.md`.
 
 ## Tests
 
