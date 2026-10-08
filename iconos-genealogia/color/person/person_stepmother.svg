@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_stepmother_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="grad_person_stepmother_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="grad_person_stepmother_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.9" cy="59.5" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M11 11.6L51 11.6M11 15.4L51 15.4" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+    <path d="M11 13.5L11 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M4.2 8.7L4.3 8.2L4.5 7.7L4.8 7.3L5.2 7L5.7 6.8L6.2 6.7L15.8 6.7L16.3 6.8L16.8 7L17.2 7.3L17.5 7.7L19.2 10L19.4 10.5L19.5 11L19.5 20.5L19.4 21.1L19.2 21.6L18.9 22L18.5 22.3L18 22.5L17.5 22.6L8 22.6L7.4 22.5L6.9 22.3L6.5 22L6.2 21.6L4.5 19.3L4.3 18.8L4.2 18.3Z" fill="#767C82"/><rect x="4.2" y="6.7" width="13.6" height="13.6" rx="2" fill="url(#grad_person_stepmother_mist)"/></g>
+    <g><path d="M45 18L46.7 20.3A7.5 7.5 0 0 0 58.7 11.3L57 9A7.5 7.5 0 0 0 45 18Z" fill="#883307"/><circle cx="51" cy="13.5" r="7.5" fill="url(#grad_person_stepmother_orange)"/></g>
+    <g><path d="M5 52L6.7 54.3A7.5 7.5 0 0 0 18.7 45.3L17 43A7.5 7.5 0 0 0 5 52Z" fill="#29313D"/><circle cx="11" cy="47.5" r="7.5" fill="url(#grad_person_stepmother_ink)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M8.7 47.5a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

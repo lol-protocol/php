@@ -26,7 +26,7 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
     [ "$status" -eq 0 ]
     [ "$(steps_run | head -1)" = "01-system-update.sh" ]
     [ "$(steps_run | tail -1)" = "08-healthcheck.sh" ]
-    [ "$(steps_run | wc -l)" -eq 15 ]
+    [ "$(steps_run | wc -l)" -eq 16 ]
     [[ "$output" == *"SETUP COMPLETADO"* ]]
 }
 
@@ -54,9 +54,9 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
 
 @test "el contador [N/TOTAL] queda alineado para pasos de 1 y 2 cifras" {
     ia ejemplo.com --dry-run
-    [[ "$output" == *"║ [1/14] 01-system-update.sh"* ]]
-    [[ "$output" == *"║ [10/14] 04-setup-ssl.sh"* ]]
-    ancho=$(echo "$output" | grep -E '^║ \[(1|10)/14\]' | python3 -c "import sys; print({len(l.rstrip('\n')) for l in sys.stdin})")
+    [[ "$output" == *"║ [1/15] 01-system-update.sh"* ]]
+    [[ "$output" == *"║ [10/15] 04-setup-ssl.sh"* ]]
+    ancho=$(echo "$output" | grep -E '^║ \[(1|10)/15\]' | python3 -c "import sys; print({len(l.rstrip('\n')) for l in sys.stdin})")
     [ "$ancho" = "{62}" ]
 }
 
@@ -87,7 +87,7 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
     : > "$RUN_LOG"
     ia ejemplo.com a@ejemplo.com --yes
     steps_run | grep -q "01-system-update.sh"
-    [ "$(steps_run | wc -l)" -eq 15 ]
+    [ "$(steps_run | wc -l)" -eq 16 ]
 }
 
 @test "el estado de un dominio no afecta a otro" {
@@ -105,5 +105,5 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
 @test "reiniciar un dominio NO borra el estado de otro cuyo nombre lo contiene (initech.fun vs www.initech.fun)" {
     ia www.initech.fun --yes
     ia initech.fun --yes
-    [ "$(grep -c '^www.initech.fun'$'\t' "$INSTALL_STATE_FILE")" -eq 14 ]
+    [ "$(grep -c '^www.initech.fun'$'\t' "$INSTALL_STATE_FILE")" -eq 15 ]
 }

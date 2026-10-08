@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="links">
+    <path d="M31 22L31 39.2" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M24 13.5L24.1 13.1L24.3 12.7L24.5 12.3L29.8 7L30.2 6.8L30.6 6.6L31 6.5L31.4 6.6L31.8 6.8L32.2 7L37.5 12.3L37.7 12.7L39.6 15.2L39.8 15.6L39.8 16L39.8 16.4L39.6 16.8L39.4 17.1L34 22.5L33.7 22.7L33.3 22.9L32.9 23L32.4 22.9L32.1 22.7L31.7 22.5L26.4 17.1L26.1 16.8L24.3 14.3L24.1 13.9Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="25.6" y="8.1" width="10.8" height="10.8" rx="1.6" transform="rotate(45 31 13.5)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M24.5 52.4L26.4 54.9A8.1 8.1 0 0 0 39.4 45.1L37.5 42.6A8.1 8.1 0 0 0 24.5 52.4Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="47.5" r="8.1" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M28.5 47.5a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

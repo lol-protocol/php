@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_ui_languages_teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9A9A9A"/>
+      <stop offset="1" stop-color="#6A6A6A"/>
+    </linearGradient>
+    <linearGradient id="grad_ui_languages_indigo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8F8F8F"/>
+      <stop offset="1" stop-color="#5B5B5B"/>
+    </linearGradient>
+    <linearGradient id="grad_ui_languages_pink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#979797"/>
+      <stop offset="1" stop-color="#666666"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.6" cy="58.8" rx="20.4" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M12.6 31.3L14.4 33.7A10.5 10.5 0 0 0 31.2 21.1L29.4 18.7A10.5 10.5 0 0 0 12.6 31.3Z" fill="#3E3E3E"/><circle cx="21" cy="25" r="10.5" fill="url(#grad_ui_languages_teal)"/></g>
+    <g><path d="M33 19L33.1 18L33.5 17L34.2 16.2L35 15.5L36 15.1L37 15L49 15L50 15.1L51 15.5L51.8 16.2L52.5 17L54.3 19.4L54.7 20.4L54.8 21.4L54.8 33.4L54.7 34.4L54.3 35.4L53.6 36.2L52.8 36.9L51.8 37.3L50.8 37.4L38.8 37.4L37.8 37.3L36.8 36.9L36 36.2L35.3 35.4L33.5 33L33.1 32L33 31Z" fill="#353535"/><rect x="33" y="15" width="20" height="20" rx="4" fill="url(#grad_ui_languages_indigo)"/></g>
+    <g><path d="M21 51.9L21 51L21.4 50.2L29.9 36.4L30.4 35.8L31.2 35.4L32 35.2L32.8 35.4L33.6 35.8L34.1 36.4L35.9 38.8L44.4 52.6L44.8 53.4L44.8 54.3L44.5 55.1L43.9 55.8L43.2 56.2L42.3 56.4L25.3 56.4L24.4 56.2L23.7 55.8L23.1 55.1L21.3 52.7Z" fill="#3B3B3B"/><path d="M29.9 36.4A2.5 2.5 0 0 1 34.1 36.4L42.6 50.2A2.5 2.5 0 0 1 40.5 54L23.5 54A2.5 2.5 0 0 1 21.4 50.2Z" fill="url(#grad_ui_languages_pink)"/></g>
+  </g>
+</svg>

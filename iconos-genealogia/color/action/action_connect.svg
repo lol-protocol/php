@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_action_connect_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="grad_action_connect_green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#61C084"/>
+      <stop offset="1" stop-color="#16A34A"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.9" cy="43.5" rx="21.7" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M16 31L46 31" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+  </g>
+  <g class="solids">
+    <g><path d="M9.8 35.6L11.6 38A7.7 7.7 0 0 0 24 28.8L22.2 26.4A7.7 7.7 0 0 0 9.8 35.6Z" fill="#767C82"/><circle cx="16" cy="31" r="7.7" fill="url(#grad_action_connect_mist)"/></g>
+    <g><path d="M39.8 35.6L41.6 38A7.7 7.7 0 0 0 54 28.8L52.2 26.4A7.7 7.7 0 0 0 39.8 35.6Z" fill="#767C82"/><circle cx="46" cy="31" r="7.7" fill="url(#grad_action_connect_mist)"/></g>
+    <g><path d="M26 34.7L27.2 36.3A6.2 6.2 0 0 0 37.2 28.9L36 27.3A6.2 6.2 0 0 0 26 34.7Z" fill="#0D5F2B"/><circle cx="31" cy="31" r="6.2" fill="url(#grad_action_connect_green)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M27.8 31H34.2M31 27.8V34.2" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

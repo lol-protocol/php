@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <defs><filter id="s_pagina_doblada"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/></filter></defs>
-  <ellipse cx="32" cy="55" rx="13" ry="3" fill="#000" opacity="0.15"/>
-      <path d="M 20 18 L 40 18 L 40 32 L 48 40 L 48 46 L 20 46 Z"
-            fill="#F1F1F1" stroke="#7A7A7A" stroke-width="1.5" filter="url(#s_pagina_doblada)"/>
-      <path d="M 40 32 L 48 40" stroke="#7A7A7A" stroke-width="1" opacity="0.4"/>
-    </svg>

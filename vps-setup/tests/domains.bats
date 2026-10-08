@@ -19,6 +19,9 @@ setup() {
     echo hola > "$WWW_DIR/landing-page/ejemplo.com/index.html"
     echo log > "$NGINX_LOG_DIR/ejemplo.com/access.log"
     echo unit > "$SYSTEMD_DIR/miapp.service"
+    # 06_A/06_B nombran el vhost como la APP, no como el dominio
+    echo appconf > "$NGINX_DIR/sites-available/miapp"
+    ln -s "$NGINX_DIR/sites-available/miapp" "$NGINX_DIR/sites-enabled/miapp"
     export SUDO_EXEC=1
 }
 
@@ -90,7 +93,7 @@ del() { run bash "$FAKE/10_B-remove-domain.sh" "$@"; }
     [ "$(cat "$d/sites-available/ejemplo.com")" = conf ]
     [ "$(cat "$d/www/landing-page/ejemplo.com/index.html")" = hola ]
     [ "$(cat "$d/logs/ejemplo.com/access.log")" = log ]
-    [ -d "$WWW_DIR/miapp" ]            # la app no se toca sin --app
+    [ -d "$WWW_DIR/miapp" ] && [ -L "$NGINX_DIR/sites-enabled/miapp" ]   # la app no se toca sin --app
     grep -q "nginx -t" "$SUDO_LOG"; grep -q "systemctl reload nginx" "$SUDO_LOG"
     [[ "$output" == *"certbot delete --cert-name ejemplo.com"* ]]
 }
@@ -101,6 +104,8 @@ del() { run bash "$FAKE/10_B-remove-domain.sh" "$@"; }
     d=$(ls -d "$REMOVED_DIR"/ejemplo.com-*)
     [ -d "$d/www/miapp" ] && [ "$(cat "$d/systemd/miapp.service")" = unit ]
     [ ! -e "$WWW_DIR/miapp" ]
+    # el vhost con nombre de app tambien se desactiva y se archiva (si no, el sitio seguiria publicado)
+    [ ! -L "$NGINX_DIR/sites-enabled/miapp" ] && [ "$(cat "$d/sites-available/miapp")" = appconf ]
     grep -q "systemctl disable --now miapp" "$SUDO_LOG"
 }
 
@@ -118,6 +123,8 @@ del() { run bash "$FAKE/10_B-remove-domain.sh" "$@"; }
     [ -L "$NGINX_DIR/sites-enabled/ejemplo.com" ]
     [ -f "$WWW_DIR/landing-page/ejemplo.com/index.html" ]
     [ ! -d "$REMOVED_DIR" ]
+    del ejemplo.com --app miapp --yes     # con --app tambien se restaura el vhost de la app
+    [ -L "$NGINX_DIR/sites-enabled/miapp" ]
 }
 
 @test "10_B sin nada del dominio avisa y sale 0; entradas invalidas -> 2" {

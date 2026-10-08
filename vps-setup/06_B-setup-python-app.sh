@@ -63,6 +63,14 @@ Environment="PATH=$VENV_PATH/bin"
 ExecStart=$VENV_PATH/bin/gunicorn --workers $WORKERS --bind 127.0.0.1:8000 app:app
 Restart=always
 RestartSec=10
+# Sandbox basico: la app corre como www-data y es la parte expuesta a internet.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
 StartLimitInterval=60
 StartLimitBurst=3
 

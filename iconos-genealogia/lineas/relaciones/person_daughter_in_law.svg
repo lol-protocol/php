@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs><filter id="s_yerna"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3" /></filter></defs>
-  <ellipse cx="32" cy="55" rx="13" ry="3" fill="none" opacity="0.15" stroke="#4B5563" stroke-width="1" />
-      <circle cx="32" cy="16" r="7" fill="none" stroke="#BE185D" stroke-width="1.5" />
-      <path d="M 20 30 L 26 28 L 42 28 L 48 30 L 46 44 L 24 44 Z" fill="none" stroke="#BE185D" stroke-width="1.5" filter="url(#s_yerna)" />
-      <circle cx="32" cy="42" r="1.5" fill="none" opacity="0.6" stroke="#4B5563" stroke-width="1.5" />
-    </svg>

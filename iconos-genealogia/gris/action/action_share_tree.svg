@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_action_share_tree_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A5A5A5"/>
+      <stop offset="1" stop-color="#7B7B7B"/>
+    </linearGradient>
+    <linearGradient id="grad_action_share_tree_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E1E1E1"/>
+      <stop offset="1" stop-color="#D3D3D3"/>
+    </linearGradient>
+    <linearGradient id="grad_action_share_tree_green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9D9D9D"/>
+      <stop offset="1" stop-color="#6F6F6F"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.4" cy="58.5" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M22 14L22 24L12 24L12 33" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M22 24L32 24L32 33" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+  <g class="solids">
+    <g><path d="M17.8 17.2L19 18.8A5.3 5.3 0 0 0 27.4 12.4L26.2 10.8A5.3 5.3 0 0 0 17.8 17.2Z" fill="#474747"/><circle cx="22" cy="14" r="5.3" fill="url(#grad_action_share_tree_orange)"/></g>
+    <g><path d="M8.1 38.9L9.3 40.5A4.8 4.8 0 0 0 17.1 34.7L15.9 33.1A4.8 4.8 0 0 0 8.1 38.9Z" fill="#7B7B7B"/><circle cx="12" cy="36" r="4.8" fill="url(#grad_action_share_tree_mist)"/></g>
+    <g><path d="M28.1 38.9L29.3 40.5A4.8 4.8 0 0 0 37.1 34.7L35.9 33.1A4.8 4.8 0 0 0 28.1 38.9Z" fill="#7B7B7B"/><circle cx="32" cy="36" r="4.8" fill="url(#grad_action_share_tree_mist)"/></g>
+    <g><path d="M38 50L39.6 52.1A10 10 0 0 0 55.6 40.1L54 38A10 10 0 0 0 38 50Z" fill="#414141"/><circle cx="46" cy="44" r="10" fill="url(#grad_action_share_tree_green)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M42 44L50 39.5" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 44L50 48.5" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M39.6 44a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="#FFFFFF"/>
+    <path d="M47.6 39.5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="#FFFFFF"/>
+    <path d="M47.6 48.5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

@@ -100,6 +100,7 @@ STEPS=(
     "07_A-install-fail2ban-autoupdates.sh"
     "07_B-nginx-security-headers.sh"
     "07_D-setup-logrotate.sh"
+    "07_E-nginx-performance.sh"
 )
 TOTAL=${#STEPS[@]}
 

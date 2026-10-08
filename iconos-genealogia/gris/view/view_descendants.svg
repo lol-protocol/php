@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_view_descendants_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8A8A8A"/>
+      <stop offset="1" stop-color="#535353"/>
+    </linearGradient>
+    <linearGradient id="grad_view_descendants_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E1E1E1"/>
+      <stop offset="1" stop-color="#D3D3D3"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="29.5" cy="56.2" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M31 12L31 21L12 21L12 30" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 12L31 21L31 21L31 30" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 12L31 21L50 21L50 30" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M12 30L12 39L7 39L7 48" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M12 30L12 39L17 39L17 48" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M50 30L50 39L50 39L50 48" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+  <g class="solids">
+    <g><path d="M26.4 15.4L27.6 17A5.7 5.7 0 0 0 36.8 10.2L35.6 8.6A5.7 5.7 0 0 0 26.4 15.4Z" fill="#303030"/><circle cx="31" cy="12" r="5.7" fill="url(#grad_view_descendants_ink)"/></g>
+    <g><path d="M8 33L9.2 34.6A5.1 5.1 0 0 0 17.2 28.6L16 27A5.1 5.1 0 0 0 8 33Z" fill="#7B7B7B"/><circle cx="12" cy="30" r="5.1" fill="url(#grad_view_descendants_mist)"/></g>
+    <g><path d="M27 33L28.2 34.6A5.1 5.1 0 0 0 36.2 28.6L35 27A5.1 5.1 0 0 0 27 33Z" fill="#7B7B7B"/><circle cx="31" cy="30" r="5.1" fill="url(#grad_view_descendants_mist)"/></g>
+    <g><path d="M46 33L47.2 34.6A5.1 5.1 0 0 0 55.2 28.6L54 27A5.1 5.1 0 0 0 46 33Z" fill="#7B7B7B"/><circle cx="50" cy="30" r="5.1" fill="url(#grad_view_descendants_mist)"/></g>
+    <g><path d="M3.7 50.5L4.9 52.1A4.2 4.2 0 0 0 11.5 47.1L10.3 45.5A4.2 4.2 0 0 0 3.7 50.5Z" fill="#7B7B7B"/><circle cx="7" cy="48" r="4.2" fill="url(#grad_view_descendants_mist)"/></g>
+    <g><path d="M13.7 50.5L14.9 52.1A4.2 4.2 0 0 0 21.5 47.1L20.3 45.5A4.2 4.2 0 0 0 13.7 50.5Z" fill="#7B7B7B"/><circle cx="17" cy="48" r="4.2" fill="url(#grad_view_descendants_mist)"/></g>
+    <g><path d="M46.7 50.5L47.9 52.1A4.2 4.2 0 0 0 54.5 47.1L53.3 45.5A4.2 4.2 0 0 0 46.7 50.5Z" fill="#7B7B7B"/><circle cx="50" cy="48" r="4.2" fill="url(#grad_view_descendants_mist)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M29.2 12a1.8 1.8 0 1 0 3.5 0a1.8 1.8 0 1 0 -3.5 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>
