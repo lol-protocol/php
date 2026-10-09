@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "Vietnamese IP Office",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
-    "linked_resources": "https://www.noip.gov.vn/"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.noip.gov.vn/",
+    "notes": ""
   }
 ]

@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "IP New Zealand / Courts",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
-    "linked_resources": "https://www.iponz.govt.nz/"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.iponz.govt.nz/",
+    "notes": ""
   }
 ]

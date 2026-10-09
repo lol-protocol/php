@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "Taiwan Intellectual Property Office (TIPO)",
     "treaties_signatory": "TRIPS",
-    "linked_resources": "https://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?pcode=J0070017"
+    "treaties_not_party": "Berne",
+    "linked_resources": "https://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?pcode=J0070017",
+    "notes": ""
   }
 ]

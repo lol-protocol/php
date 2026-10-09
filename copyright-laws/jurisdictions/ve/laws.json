@@ -14,6 +14,8 @@
     "registration_required": "No (voluntary registration available)",
     "enforcement_body": "Servicio Autónomo de la Propiedad Intelectual (SAPI)",
     "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.wipo.int/wipolex/zh/legislation/details/3989"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/zh/legislation/details/3989",
+    "notes": ""
   }
 ]

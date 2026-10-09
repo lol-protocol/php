@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { hydrate } from "../../app/lib/data.js";
-import { enrichRow } from "../../app/lib/domain.js";
+import { COMPARE_CRITERIA, enrichRow } from "../../app/lib/domain.js";
 import { focused, newPage, openApp, root, shownCount } from "./browser.js";
 
 const app = await openApp();
@@ -44,6 +44,20 @@ test("a single jurisdiction shows its card with treaty badges", { skip }, async 
   assert.ok(row.includes("Copyright, Designs and Patents Act 1988") && row.includes("Author's life + 70 years"), row);
   assert.match(await page.locator("#countryCard h2").textContent(), /United Kingdom/);
   assert.equal((await page.locator("#countryCard .badge-list .badge").allTextContents()).join(","), gb.treaties.join(","));
+  await page.context().close();
+});
+
+test("the card separates confirmed memberships, confirmed non-memberships and unknowns", { skip }, async () => {
+  const { page } = await newPage(app.browser);
+  await page.goto(url("country=tw"), { waitUntil: "networkidle" });
+  const rowOf = async (label) => page.locator("#countryCard .card-grid > div", { hasText: label }).locator("dd").textContent();
+  assert.equal((await rowOf("Party to")).trim(), "TRIPS");
+  assert.match(await rowOf("Not a party"), /Berne/);
+  const tw = rows.find((r) => r.country_code === "TW");
+  assert.equal((await rowOf("Not confirmed")).trim(), tw.treatiesUnconfirmed.join(", ") || "—");
+
+  await page.goto(url("country=eu"), { waitUntil: "networkidle" });
+  assert.match(await page.locator("#countryCard .card-notes").textContent(), /not a party to the Berne Convention/);
   await page.context().close();
 });
 
@@ -104,7 +118,7 @@ test("comparison, focus return and export of the filtered rows", { skip }, async
   await page.locator('#lawsTableBody input[type="checkbox"]').nth(2).check();
   await page.click("#compareBtn");
   assert.equal(await page.locator("#comparisonResults thead th").count(), 3);
-  assert.equal(await page.locator("#comparisonResults tbody tr").count(), 9);
+  assert.equal(await page.locator("#comparisonResults tbody tr").count(), COMPARE_CRITERIA.length);
   await page.locator("#closeComparison").focus();
   await page.keyboard.press("Enter");
   assert.equal(await focused(page), "BUTTON#compareBtn");

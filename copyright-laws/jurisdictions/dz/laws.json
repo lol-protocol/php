@@ -14,6 +14,8 @@
     "registration_required": "No (voluntary deposit with ONDA)",
     "enforcement_body": "Office National des Droits d'Auteur et Droits Voisins (ONDA)",
     "treaties_signatory": "Berne/WCT/WPPT",
-    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=1194"
+    "treaties_not_party": "TRIPS",
+    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=1194",
+    "notes": ""
   }
 ]

@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "Israeli Patent Office",
     "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.justice.gov.il/"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.justice.gov.il/",
+    "notes": ""
   }
 ]

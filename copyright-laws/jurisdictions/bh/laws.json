@@ -5,7 +5,7 @@
     "region": "middle_east_africa",
     "law_name": "Law No. 22 of 2006 on the Protection of Copyright and Neighboring Rights (as amended up to Law No. 5 of 2014)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 70 years (some sources say life + 50 years)",
+    "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic rights",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified",
@@ -14,6 +14,8 @@
     "registration_required": "No (voluntary registration with the Copyright Protection Office)",
     "enforcement_body": "Copyright Protection Office, Ministry of Information",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
-    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/19867"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/19867",
+    "notes": "Term: some sources give life + 50 (probably the superseded 1993 law); recent summaries give life + 70"
   }
 ]

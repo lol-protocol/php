@@ -14,6 +14,8 @@
     "registration_required": "No (voluntary registration of works available)",
     "enforcement_body": "Intellectual Property Agency of the Republic of Azerbaijan (CoPAT)",
     "treaties_signatory": "Berne/WCT/WPPT",
-    "linked_resources": "https://copag.copat.gov.az/en/agentlik-haqqinda"
+    "treaties_not_party": "TRIPS",
+    "linked_resources": "https://copag.copat.gov.az/en/agentlik-haqqinda",
+    "notes": ""
   }
 ]

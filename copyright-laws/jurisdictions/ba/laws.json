@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "Institute for Intellectual Property of Bosnia and Herzegovina",
     "treaties_signatory": "Berne/WCT/WPPT",
-    "linked_resources": "https://ipr.gov.ba/en/intellectual-property/copyright-and-related-rights/copyright-and-related-rights-protection-procedure-in-bih"
+    "treaties_not_party": "TRIPS",
+    "linked_resources": "https://ipr.gov.ba/en/intellectual-property/copyright-and-related-rights/copyright-and-related-rights-protection-procedure-in-bih",
+    "notes": ""
   }
 ]

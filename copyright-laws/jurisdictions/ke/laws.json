@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "Kenyan IP Office",
     "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.kipo.go.ke/"
+    "treaties_not_party": "WCT/WPPT",
+    "linked_resources": "https://www.kipo.go.ke/",
+    "notes": ""
   }
 ]

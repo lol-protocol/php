@@ -5,7 +5,7 @@
     "region": "middle_east_africa",
     "law_name": "Copyright and Neighboring Rights Law (Royal Decree No. 65/2008)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 70 years (some sources say life + 50 years)",
+    "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic rights",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified",
@@ -14,6 +14,8 @@
     "registration_required": "No (voluntary deposit available)",
     "enforcement_body": "Ministry of Commerce, Industry and Investment Promotion",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
-    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=5832"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=5832",
+    "notes": "Term: some sources (AGIP) give life + 50; the US FTA and other summaries give life + 70"
   }
 ]

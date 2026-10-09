@@ -5,7 +5,7 @@
     "region": "middle_east_africa",
     "law_name": "Law No. 75 of 2019 on Copyright and Related Rights",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years (text of Law No. 75 of 2019 not checked)",
+    "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Moral rights recognised",
     "orphan_works": "Not specified",
@@ -14,6 +14,8 @@
     "registration_required": "No (voluntary deposit available)",
     "enforcement_body": "National Library of Kuwait (previously Ministry of Information)",
     "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/19908"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/19908",
+    "notes": "Term: the text of Law No. 75 of 2019 itself was not checked"
   }
 ]

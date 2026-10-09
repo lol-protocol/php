@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "Department of Intellectual Property (DIP)",
     "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://cdn.nestjs.wipolex.wji.prd.web1.wipo.int/wipolex/en/legislation/details/22624"
+    "treaties_not_party": "",
+    "linked_resources": "https://cdn.nestjs.wipolex.wji.prd.web1.wipo.int/wipolex/en/legislation/details/22624",
+    "notes": ""
   }
 ]

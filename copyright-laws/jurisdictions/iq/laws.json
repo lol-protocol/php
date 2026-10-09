@@ -5,7 +5,7 @@
     "region": "middle_east_africa",
     "law_name": "Copyright Law No. 3 of 1971 (as amended by Coalition Provisional Authority Order No. 83 of 2004)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years (from secondary sources only)",
+    "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Not specified",
     "orphan_works": "Not specified",
@@ -14,6 +14,8 @@
     "registration_required": "No (deposit with Ministry of Culture reported by a secondary source; unconfirmed)",
     "enforcement_body": "Ministry of Culture",
     "treaties_signatory": "",
-    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/10345"
+    "treaties_not_party": "Berne/TRIPS/WCT/WPPT",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/10345",
+    "notes": "Term from secondary sources only; the law is reported as not fully implemented"
   }
 ]

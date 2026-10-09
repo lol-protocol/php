@@ -199,6 +199,13 @@ test("hydrate flattens jurisdictions into rows with treaties and term buckets", 
   assert.equal(gb.termBucket, "life-70");
   const ru = data.rows.find((r) => r.country_code === "RU");
   assert.ok(ru.treaties.includes("Berne") && ru.treaties.includes("TRIPS"));
+  const tw = data.rows.find((r) => r.country_code === "TW");
+  assert.deepEqual(tw.treaties, ["TRIPS"]);
+  assert.ok(tw.treatiesNot.includes("Berne"));
+  for (const r of data.rows) {
+    // every treaty is in exactly one of the three states
+    assert.deepEqual([...r.treaties, ...r.treatiesNot, ...r.treatiesUnconfirmed].sort(), ["Berne", "TRIPS", "WCT", "WPPT"].sort(), r.country_code);
+  }
 });
 
 test("facet options are derived from the data, in a meaningful order", () => {

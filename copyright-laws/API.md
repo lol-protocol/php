@@ -32,7 +32,7 @@ const { data: jurisdictions, meta } = await (await fetch("/copyright-laws/api.ph
 const { data: laws } = await (await fetch("/copyright-laws/api.php?action=jurisdiction&tld=br")).json();
 ```
 
-A law object has the columns of `copyright_laws_master.csv` (see the README): `country_code`, `country_name`, `region`, `law_name`, `protection_type`, `term_of_protection`, `author_rights`, `moral_rights`, `orphan_works`, `digital_protection`, `fair_use_exceptions`, `registration_required`, `enforcement_body`, `treaties_signatory`, `linked_resources`.
+A law object has the columns of `copyright_laws_master.csv` (see the README): `country_code`, `country_name`, `region`, `law_name`, `protection_type`, `term_of_protection`, `author_rights`, `moral_rights`, `orphan_works`, `digital_protection`, `fair_use_exceptions`, `registration_required`, `enforcement_body`, `treaties_signatory`, `treaties_not_party`, `linked_resources`, `notes`.
 
 To filter by treaty or term, download the `bundle` once and filter locally (the web app does exactly that); there is no server-side search.
 

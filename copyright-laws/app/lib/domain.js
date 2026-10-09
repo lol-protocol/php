@@ -19,6 +19,7 @@ const TEXT_FIELDS = [
   "registration_required",
   "enforcement_body",
   "treaties_signatory",
+  "notes",
 ];
 
 export const SEARCH_SCOPES = [
@@ -89,15 +90,23 @@ export const COMPARE_CRITERIA = [
   "fair_use_exceptions",
   "registration_required",
   "treaties_signatory",
+  "treaties_not_party",
+  "notes",
 ];
 
-export function enrichRow(row) {
-  row.treaties = row.treaties_signatory
-    ? row.treaties_signatory
+const splitList = (value) =>
+  value
+    ? value
         .split("/")
         .map((s) => s.trim())
         .filter(Boolean)
     : [];
+
+export function enrichRow(row) {
+  row.treaties = splitList(row.treaties_signatory);
+  row.treatiesNot = splitList(row.treaties_not_party);
+  // Neither confirmed nor ruled out.
+  row.treatiesUnconfirmed = TREATY_ORDER.filter((t) => !row.treaties.includes(t) && !row.treatiesNot.includes(t));
   row.termYears = parseLifeTerm(row.term_of_protection);
   row.termBucket = termBucket(row.termYears);
   return row;

@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "Nigerian Copyright Commission",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
-    "linked_resources": "https://www.ncc.gov.ng/"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.ncc.gov.ng/",
+    "notes": ""
   }
 ]

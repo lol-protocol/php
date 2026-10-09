@@ -5,7 +5,7 @@
     "region": "middle_east_africa",
     "law_name": "Law for the Protection of the Rights of Authors, Composers and Artists (1970, amended 2010)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years (2010 amendment from secondary sources only; WIPO Lex still lists the 1970 text with life + 30 years)",
+    "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Perpetual & non-transferable",
     "orphan_works": "Not specified",
@@ -14,6 +14,8 @@
     "registration_required": "No (voluntary registration available)",
     "enforcement_body": "Ministry of Culture and Islamic Guidance",
     "treaties_signatory": "",
-    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=7708"
+    "treaties_not_party": "Berne/TRIPS/WCT/WPPT",
+    "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=7708",
+    "notes": "Term: the 2010 amendment to life + 50 comes from secondary sources; WIPO Lex still lists the 1970 text (life + 30). Not a Berne party: foreign works are largely unprotected"
   }
 ]

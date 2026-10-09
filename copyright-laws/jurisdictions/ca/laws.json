@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "Canadian Intellectual Property Office",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
-    "linked_resources": "https://www.ic.gc.ca/"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.ic.gc.ca/",
+    "notes": ""
   }
 ]

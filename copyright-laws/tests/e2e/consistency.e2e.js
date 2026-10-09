@@ -56,6 +56,12 @@ for (const colorScheme of ["light", "dark"]) {
       await page.locator("#lawsTableBody [data-country]").first().click();
       await page.waitForTimeout(250);
       await audit("country card");
+      await page.goto(`${app.base}?lang=eng&country=ir`, { waitUntil: "networkidle" });
+      await audit("card with non-memberships and notes");
+      await page.goto(`${app.base}?lang=eng`, { waitUntil: "networkidle" });
+      if (await page.locator("#advanced").evaluate((e) => !e.open)) await page.click("#advanced > summary");
+      await page.check('#facets input[type="checkbox"] >> nth=0');
+      await page.waitForTimeout(250);
       await page.click(".chip button");
       await page.locator('#lawsTableBody input[type="checkbox"]').nth(0).check();
       await page.locator('#lawsTableBody input[type="checkbox"]').nth(3).check();

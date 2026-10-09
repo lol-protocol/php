@@ -260,11 +260,15 @@ function renderCountryCard() {
   const treaties = [
     ...new Set(app.data.rows.filter((row) => row.tld === jurisdiction.tld).flatMap((row) => row.treaties)),
   ].sort((a, b) => TREATY_ORDER.indexOf(a) - TREATY_ORDER.indexOf(b));
-  const badges = treaties.length
-    ? treaties
-        .map((treaty) => `<span class="badge" title="${esc(treatyName(treaty))}">${esc(treaty)}</span>`)
-        .join("")
-    : "—";
+  const laws = app.data.rows.filter((row) => row.tld === jurisdiction.tld);
+  const notParty = TREATY_ORDER.filter((t) => !treaties.includes(t) && laws.some((row) => row.treatiesNot.includes(t)));
+  const unconfirmed = TREATY_ORDER.filter((t) => !treaties.includes(t) && !notParty.includes(t));
+  const badgeList = (list, extraClass = "") =>
+    list.length
+      ? list.map((treaty) => `<span class="badge${extraClass}" title="${esc(treatyName(treaty))}">${esc(treaty)}</span>`).join("")
+      : "—";
+  const badges = badgeList(treaties);
+  const notes = [...new Set(laws.map((row) => row.notes).filter(Boolean))];
 
   host.hidden = false;
   host.innerHTML = `
@@ -273,9 +277,12 @@ function renderCountryCard() {
       <div><dt>${esc(t("card.region"))}</dt><dd>${esc(regionLabel(jurisdiction.region))}</dd></div>
       <div><dt>${esc(t("card.laws"))}</dt><dd>${jurisdiction.lawCount}</dd></div>
       <div><dt>${esc(t("card.treaties"))}</dt><dd class="badge-list">${badges}</dd></div>
+      <div><dt>${esc(t("card.notParty"))}</dt><dd class="badge-list">${badgeList(notParty, " badge-outline")}</dd></div>
+      <div><dt>${esc(t("card.unconfirmed"))}</dt><dd>${unconfirmed.length ? esc(unconfirmed.join(", ")) : "—"}</dd></div>
       <div><dt>${esc(t("card.folder"))}</dt><dd><code>jurisdictions/${esc(jurisdiction.tld)}/</code></dd></div>
       <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
     </dl>
+    ${notes.length ? `<p class="card-notes"><strong>${esc(t("card.notes"))}:</strong> ${esc(notes.join(" · "))}</p>` : ""}
     <p class="card-links">
       <a href="${esc(jurisdictionFileUrl(jurisdiction.tld, "laws.json"))}" download>${esc(t("card.json"))}</a>
       <a href="${esc(jurisdictionFileUrl(jurisdiction.tld, "laws.csv"))}" download>${esc(t("card.csv"))}</a>

@@ -14,6 +14,8 @@
     "registration_required": "No (voluntary registration available)",
     "enforcement_body": "Registro Nacional (Registro de Derechos de Autor y Derechos Conexos)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
-    "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/21963"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/21963",
+    "notes": ""
   }
 ]

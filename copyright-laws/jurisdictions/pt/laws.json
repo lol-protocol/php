@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "Portuguese IGAC",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
-    "linked_resources": "https://www.igac.pt/"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.igac.pt/",
+    "notes": ""
   }
 ]

@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "National Library of Brazil",
     "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.gov.br/"
+    "treaties_not_party": "WCT/WPPT",
+    "linked_resources": "https://www.gov.br/",
+    "notes": ""
   }
 ]

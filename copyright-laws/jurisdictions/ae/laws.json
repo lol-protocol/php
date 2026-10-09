@@ -14,6 +14,8 @@
     "registration_required": "No",
     "enforcement_body": "UAE IP Office",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
-    "linked_resources": "https://www.moir.gov.ae/"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.moir.gov.ae/",
+    "notes": ""
   }
 ]

@@ -32,7 +32,9 @@ export const COLUMNS = [
   "registration_required",
   "enforcement_body",
   "treaties_signatory",
+  "treaties_not_party",
   "linked_resources",
+  "notes",
 ];
 
 export const REGIONS = [
@@ -178,6 +180,16 @@ export function validateRecords(records, header = COLUMNS) {
         }
       }
       if (new Set(listed).size !== listed.length) fail(`treaties_signatory lists the same treaty twice: ${record.treaties_signatory}`);
+    }
+    // Three states per treaty: listed in treaties_signatory (party), in treaties_not_party (confirmed not a party), or in neither (not confirmed).
+    if (record.treaties_not_party) {
+      const listed = record.treaties_not_party.split("/");
+      for (const treaty of listed) {
+        if (!TREATIES.includes(treaty)) fail(`unknown treaty ${JSON.stringify(treaty)} in treaties_not_party (allowed: ${TREATIES.join(", ")})`);
+      }
+      if (new Set(listed).size !== listed.length) fail(`treaties_not_party lists the same treaty twice: ${record.treaties_not_party}`);
+      const both = listed.filter((t) => (record.treaties_signatory || "").split("/").includes(t));
+      if (both.length) fail(`${both.join(", ")} is listed both as party and as not a party`);
     }
 
     if (!/^(Yes|No)( \(.+\))?$/.test(record.registration_required)) {

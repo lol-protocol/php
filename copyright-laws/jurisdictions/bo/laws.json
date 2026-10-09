@@ -14,6 +14,8 @@
     "registration_required": "No (voluntary registration available)",
     "enforcement_body": "Servicio Nacional de Propiedad Intelectual (SENAPI)",
     "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/494"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/494",
+    "notes": ""
   }
 ]

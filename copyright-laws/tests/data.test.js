@@ -58,6 +58,9 @@ test("validation reports bad data with the line number", () => {
     assert.match(only({ linked_resources: host })[0], /public web/, host);
   }
   assert.match(only({ treaties_signatory: "Berne/Berne" })[0], /same treaty twice/);
+  assert.match(only({ treaties_not_party: "Hague" })[0], /unknown treaty "Hague" in treaties_not_party/);
+  assert.match(only({ treaties_not_party: "WCT/WCT" })[0], /treaties_not_party lists the same treaty twice/);
+  assert.match(only({ treaties_signatory: "Berne/TRIPS", treaties_not_party: "TRIPS" })[0], /TRIPS is listed both as party and as not a party/);
   assert.match(only({ registration_required: "Fair dealing exceptions" })[0], /registration_required must be/);
   assert.match(only({ linked_resources: "ftp://x" })[0], /http\(s\) URL/);
   assert.match(only({ region: "mars" })[0], /region must be one of/);
@@ -131,4 +134,18 @@ test("generated CSV files defuse spreadsheet formulas", () => {
     csv,
     `a,b,c\n"'=cmd|' /C calc'!A0","'@SUM(1+1)","plain, with comma"\n"'-1","'+1","say ""hi"""\n`
   );
+});
+
+test("treaty data has three states and the known non-members are recorded", () => {
+  const row = (code) => records.find((r) => r.country_code === code);
+  // The EU is party to TRIPS, the WCT and the WPPT, but not to Berne (its Member States are).
+  assert.ok(!row("EU").treaties_signatory.split("/").includes("Berne"));
+  assert.ok(row("EU").treaties_not_party.split("/").includes("Berne"));
+  assert.match(row("EU").notes, /not a party to the Berne Convention/);
+  // Taiwan is a WTO member but cannot join Berne.
+  assert.equal(row("TW").treaties_signatory, "TRIPS");
+  assert.ok(row("TW").treaties_not_party.includes("Berne"));
+  // Disputed terms keep the plain value; the caveat moved to notes.
+  assert.equal(row("IR").term_of_protection, "Author's life + 50 years");
+  assert.match(row("IR").notes, /life \+ 30/);
 });
