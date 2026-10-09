@@ -70,4 +70,7 @@ echo ""
 if [ "$DRY_RUN" -eq 0 ]; then
     ./08-healthcheck.sh "$DOMAIN" || echo "AVISO: el healthcheck reporto problemas (revisa arriba); el dominio quedo configurado."
 fi
-echo "✓ Dominio $DOMAIN agregado. Para quitarlo: ./10_B-remove-domain.sh $DOMAIN"
+# 06_A/06_B nombran el vhost como la app: sin --app, 10_B no lo desactivaria.
+REMOVE_CMD="./10_B-remove-domain.sh $DOMAIN"
+if [ "$TYPE" = php ] || [ "$TYPE" = python ]; then REMOVE_CMD+=" --app $NAME"; fi
+echo "✓ Dominio $DOMAIN agregado. Para quitarlo: $REMOVE_CMD"
