@@ -52,7 +52,6 @@ class ModerationEndpointTest extends TestCase
     public static function invalidRequests(): array
     {
         $tooLong = json_encode(['text' => str_repeat('a', ModerationEndpoint::MAX_TEXT_CHARS + 1)]);
-
         return [
             'GET' => ['GET', '{"text":"hola"}', 405, 'metodo_no_permitido'],
             'cuerpo enorme' => ['POST', str_repeat(' ', ModerationEndpoint::MAX_BODY_BYTES + 1), 413, 'cuerpo_demasiado_grande'],
@@ -75,6 +74,14 @@ class ModerationEndpointTest extends TestCase
         $this->assertSame($status, $response['status']);
         $this->assertSame($code, $response['body']['error']['code']);
         $this->assertNotSame('', $response['body']['error']['message']);
+    }
+
+    public function testOnlyAcceptsAJsonBody(): void
+    {
+        $types = ['text/plain' => 415, 'application/x-www-form-urlencoded' => 415, '' => 415, 'Application/JSON; charset=utf-8' => 200];
+        foreach ($types as $type => $status) {
+            $this->assertSame($status, $this->endpoint->handle('POST', '{"text":"hola"}', (string) $type)['status'], (string) $type);
+        }
     }
 
     public function testMethodNotAllowedSaysWhichOneIs(): void

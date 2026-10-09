@@ -182,6 +182,16 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Arreglado
 
+- **Endpoint de moderación: revisión de seguridad.** `public/moderar.php`
+  ya no puede mostrar rutas ni trazas: desactiva `display_errors` y ante un
+  fallo responde un 500 genérico (`error_interno`) y deja el detalle en el
+  log. Exige `Content-Type: application/json` (415 si no), así una página
+  de otro origen no puede mandarlo como formulario simple, y añade
+  `Content-Security-Policy: default-src 'none'`. Medido el coste por
+  petición en el peor caso (2.000 caracteres de letras sueltas, repetidas,
+  japonés, tailandés): ≤ 45 ms. El README explica cómo limitar peticiones
+  en nginx, que es lo que el endpoint no puede hacer solo.
+
 - **Falsos positivos del chat en palabras muy usadas**, encontrados con la
   medición de arriba: de 5.368 a 5.159 palabras frecuentes censuradas, y de 213
   a 166 entre las 1.000 más usadas de cada idioma.

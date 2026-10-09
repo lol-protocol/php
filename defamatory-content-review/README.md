@@ -689,13 +689,40 @@ Content-Type: application/json
 ```
 
 `language` es opcional (`spa` por defecto) y acepta el código de tres letras o
-el de dos (`es`). Límites: sólo `POST` (si no, 405 con `Allow: POST`), cuerpo
-de hasta 16 KB (413), JSON en UTF-8 con `text` string (400), texto de hasta
-2.000 caracteres (413) e idioma soportado (400). Los errores responden
-`{"error": {"code": "texto_demasiado_largo", "message": "…"}}`. La lógica vive
+el de dos (`es`). Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
+`Content-Type: application/json` (415), cuerpo de hasta 16 KB (413), JSON en
+UTF-8 con `text` string (400), texto de hasta 2.000 caracteres (413) e idioma
+soportado (400). Los errores responden
+`{"error": {"code": "texto_demasiado_largo", "message": "…"}}`; un fallo
+interno, un 500 genérico (`error_interno`) sin rutas ni trazas, con el detalle
+en el log de PHP. La lógica vive
 en `ModerationEndpoint`, que no toca superglobales: para montarlo en otro
 framework, pásale el método y el cuerpo y emite el `status`, `headers` y
 `body` que devuelve.
+
+**Antes de publicarlo.** El endpoint no guarda nada ni tiene efectos, y no
+envía cabeceras CORS: una página de otro origen no puede leer sus respuestas,
+y exigir `application/json` impide que se lo mande como formulario simple.
+Las respuestas llevan `Cache-Control: no-store`, `nosniff` y
+`Content-Security-Policy: default-src 'none'`. Lo que no hace él y debe hacer
+el servidor web es limitar peticiones por cliente: revisar una línea de 2.000
+caracteres cuesta como mucho unos 45 ms de CPU (medido con letras sueltas,
+repetidas, japonés y tailandés), así que sin límite basta un bucle para
+ocupar los workers. Con nginx:
+
+```nginx
+limit_req_zone $binary_remote_addr zone=moderar:10m rate=10r/s;
+
+location = /moderar.php {
+    limit_req zone=moderar burst=20 nodelay;
+    client_max_body_size 16k;
+    # fastcgi_pass … como el resto de PHP
+}
+```
+
+Si el chat tiene usuarios autenticados, conviene limitar por usuario y no por
+IP. El endpoint tampoco registra el texto revisado: si hace falta auditar,
+mejor guardar la decisión que el mensaje.
 
 La demo junta las dos capas —el tope de letras repetidas del front y la
 decisión del servidor— en una página de chat:
@@ -727,6 +754,10 @@ palabras no entiende contexto:
   cotidiano, que es mucho más frecuente. La medición de falsos positivos es
   por palabra suelta, no por frase: no ve los que sólo aparecen en contexto.
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
+- Letras sueltas que juntan dos palabras («h o l a p u t a», «p u t a p u t a»):
+  la racha se une entera y se busca como una sola palabra. Buscar dentro de
+  la racha la cerraría, pero marcaría también palabras deletreadas que
+  contienen un insulto («c o m p u t a d o r a»).
 - Las listas de temas de los otros 31 idiomas son de arranque (10–18 palabras
   por tema, más `ambiguous`). Portugués, italiano y francés ya generan sus
   formas regulares; los otros 28 no. Las amenazas con forma (`patterns`) sólo están en

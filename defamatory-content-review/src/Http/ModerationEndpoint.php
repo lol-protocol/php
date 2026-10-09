@@ -11,7 +11,9 @@ use DefamatoryContentReview\Language\LanguageRegistry;
  * ChatLineReviewer. public/moderar.php lo conecta a PHP; esta clase no toca
  * superglobales ni cabeceras, así se prueba sin servidor.
  *
- * Límites: sólo POST, cuerpo de hasta MAX_BODY_BYTES, `text` de hasta
+ * Límites: sólo POST con `Content-Type: application/json` (así una página de
+ * otro origen no puede mandarlo como formulario simple: el navegador exige
+ * permiso CORS, que no se da), cuerpo de hasta MAX_BODY_BYTES, `text` de hasta
  * MAX_TEXT_CHARS caracteres y `language` (opcional) un código soportado, de
  * tres letras o su alias de dos («es»). Los errores llevan
  * `{"error": {"code", "message"}}`.
@@ -31,10 +33,13 @@ final class ModerationEndpoint
     }
 
     /** @return array{status:int, headers:array<string,string>, body:array<string,mixed>} */
-    public function handle(string $method, string $body): array
+    public function handle(string $method, string $body, string $contentType = 'application/json'): array
     {
         if (strtoupper($method) !== 'POST') {
             return self::error(405, 'metodo_no_permitido', 'Usa POST.', ['Allow' => 'POST']);
+        }
+        if (strtolower(trim(explode(';', $contentType)[0])) !== 'application/json') {
+            return self::error(415, 'tipo_no_soportado', 'Envía el cuerpo con Content-Type: application/json.');
         }
         if (strlen($body) > self::MAX_BODY_BYTES) {
             return self::error(413, 'cuerpo_demasiado_grande', 'El cuerpo supera ' . self::MAX_BODY_BYTES . ' bytes.');

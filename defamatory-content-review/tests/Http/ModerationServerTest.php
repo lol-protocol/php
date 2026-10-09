@@ -40,7 +40,18 @@ class ModerationServerTest extends TestCase
         $this->assertSame('application/json; charset=utf-8', $headers['content-type']);
         $this->assertSame('no-store', $headers['cache-control']);
         $this->assertSame('nosniff', $headers['x-content-type-options']);
+        $this->assertSame("default-src 'none'; frame-ancestors 'none'", $headers['content-security-policy']);
         $this->assertSame('reject', json_decode($body, true)['decision']);
+    }
+
+    /** Un formulario de otra página llega como text/plain: no se atiende, y nada responde con permisos CORS. */
+    public function testRefusesACrossSiteFormPost(): void
+    {
+        [$status, $headers, $body] = $this->request('POST', '/moderar', '{"text":"hola"}', 'text/plain');
+
+        $this->assertSame(415, $status);
+        $this->assertSame('tipo_no_soportado', json_decode($body, true)['error']['code']);
+        $this->assertArrayNotHasKey('access-control-allow-origin', $headers);
     }
 
     public function testErrorsKeepTheirStatusAndHeaders(): void
@@ -62,11 +73,11 @@ class ModerationServerTest extends TestCase
     }
 
     /** @return array{0:int, 1:array<string,string>, 2:string} */
-    private function request(string $method, string $path, string $body = ''): array
+    private function request(string $method, string $path, string $body = '', string $type = 'application/json'): array
     {
         $socket = stream_socket_client('tcp://127.0.0.1:' . self::$port, $errno, $error, 5);
         $this->assertNotFalse($socket, "El servidor de prueba no responde: $error");
-        fwrite($socket, "$method $path HTTP/1.0\r\nHost: 127.0.0.1\r\nContent-Type: application/json\r\n"
+        fwrite($socket, "$method $path HTTP/1.0\r\nHost: 127.0.0.1\r\nContent-Type: $type\r\n"
             . 'Content-Length: ' . strlen($body) . "\r\n\r\n" . $body);
         [$head, $content] = explode("\r\n\r\n", (string) stream_get_contents($socket), 2) + [1 => ''];
         fclose($socket);
