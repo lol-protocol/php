@@ -212,7 +212,8 @@ apt, systemd, certbot, fail2ban ni ufw — eso solo se valida en un VPS. Las pru
 `10_A` encadena los scripts 03/06_A/06_B/06_D, opcionalmente 04 (`--ssl`, el DNS ya debe apuntar al VPS) y 08.
 `10_B` **no borra nada**: mueve el vhost, el sitio, los logs (y con `--app` la app y su unidad systemd) a
 `/var/backups/vps-setup/removed/<dominio>-<fecha>/`, comprueba `nginx -t` antes de archivar (si falla, restaura el
-sitio) y al final indica cómo quitar el certificado y la zona DNS, que no toca.
+sitio) y al final indica cómo quitar el certificado y la zona DNS, que no toca. Para apps php/python `--app` es
+necesario (su vhost se llama como la app): sin él, `10_B` se niega a archivar los logs que ese vhost sigue usando.
 
 ## 🔒 Seguridad
 
