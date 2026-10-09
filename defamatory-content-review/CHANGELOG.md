@@ -84,6 +84,13 @@
   `review/<código>.csv`): cada término con categoría, severidad, marcas, rango
   de frecuencia y decisión actual del chat, más las palabras frecuentes que se
   censurarían sin ser un término. Ver `review/README.md`.
+- **Endpoint HTTP de moderación** (`public/moderar.php` + `ModerationEndpoint`):
+  `POST {"text", "language"}` → decisión, tipos de contenido, línea censurada y
+  términos encontrados, en JSON. Límites de entrada (sólo POST, 16 KB de cuerpo,
+  2.000 caracteres, idioma soportado) con códigos de error propios. Más una
+  **demo** (`php -S localhost:8000 public/router.php`) que junta el tope de
+  letras repetidas del front con la decisión del servidor.
+  `ModerationEndpointTest` y `ModerationServerTest` (con `php -S`).
 - **Clave `everyday` en `config/chat-topics/`**: palabras cotidianas que sin
   tildes coinciden con un término («moc» → «moč», «katıl» → «katil», «possède»
   → «possédé», «santa» → «sánta») y que, escritas así, el chat no busca

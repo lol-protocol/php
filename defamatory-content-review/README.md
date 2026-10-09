@@ -653,6 +653,47 @@ necesita, pásalos en `keep`: `{ keep: [/\b[IVXLCDM]{3,}\b/, /\bwww\b/i] }`.
 `node --test 'js/tests/*.test.js'`. El tope del front no sustituye al del
 servidor: quien se salte el front sigue siendo leído.
 
+### Endpoint HTTP y demo (`public/`)
+
+`public/moderar.php` expone `ChatLineReviewer` como endpoint JSON, sin
+framework. Publica sólo esa carpeta en el servidor web: `config/`, `src/` y
+`vendor/` quedan fuera.
+
+```http
+POST /moderar.php
+Content-Type: application/json
+
+{"text": "te voy a matar, puta", "language": "spa"}
+```
+
+```json
+{"language": "spa", "decision": "reject", "censor": true,
+ "contentTypes": ["difamatorio", "belico"], "censored": "**************, ****",
+ "matches": [{"found": "puta", "term": "puta", "contentType": "difamatorio", "severity": "high"},
+             {"found": "te voy a matar", "term": "amenaza", "contentType": "belico", "severity": "high"}]}
+```
+
+`language` es opcional (`spa` por defecto) y acepta el código de tres letras o
+el de dos (`es`). Límites: sólo `POST` (si no, 405 con `Allow: POST`), cuerpo
+de hasta 16 KB (413), JSON en UTF-8 con `text` string (400), texto de hasta
+2.000 caracteres (413) e idioma soportado (400). Los errores responden
+`{"error": {"code": "texto_demasiado_largo", "message": "…"}}`. La lógica vive
+en `ModerationEndpoint`, que no toca superglobales: para montarlo en otro
+framework, pásale el método y el cuerpo y emite el `status`, `headers` y
+`body` que devuelve.
+
+La demo junta las dos capas —el tope de letras repetidas del front y la
+decisión del servidor— en una página de chat:
+
+```bash
+php -S localhost:8000 public/router.php   # http://localhost:8000/
+```
+
+`public/router.php` es sólo para desarrollo: sirve la página, el endpoint
+(`/moderar`) y el JS, y responde 404 a todo lo demás. `ModerationEndpointTest`
+cubre la lógica y los límites, y `ModerationServerTest` levanta el router con
+`php -S` y lo prueba de punta a punta.
+
 ### Lo que no cubre
 
 Son listas de arranque, sin revisión de hablantes nativos, y un filtro de
@@ -846,6 +887,8 @@ src/DefamatoryContentReview/
 ├── SpacedLetters.php               Letras sueltas («p u t a») unidas en una palabra — interno
 ├── RepeatedLetters.php             Letras repetidas («puuuta»): búsqueda tolerante y `legit` — interno
 ├── RepeatedReadings.php            Cada racha leída como 1 letra o como 2 — interno
+├── EverydayWords.php               Tapa las palabras de `everyday` antes de buscar — interno
+├── ModerationEndpoint.php          Endpoint JSON del chat, sin superglobales — lo usa public/moderar.php
 ├── ChatMatches.php / ChatPatternMatcher.php   Operaciones sobre los hallazgos y frases con forma — internos
 ├── TopicInflector.php              Expande `forms` en plurales, géneros y conjugaciones — interno
 ├── TopicInflection.php             Contrato por idioma: SpanishInflection (+ SpanishVerbs) y EnglishInflection
@@ -869,6 +912,10 @@ js/
 tests/
 └── fixtures/common-names.php       Nombres reales comunes por idioma (falsos positivos y benchmark)
 examples/                           Ejecutados por ExamplesRunTest
+public/
+├── moderar.php                     Endpoint JSON de moderación de chat (ModerationEndpoint)
+├── router.php                      Servidor de la demo: php -S localhost:8000 public/router.php
+└── demo.html                       Chat de prueba: tope de letras del front + decisión del servidor
 bin/benchmark.php                   Nombres validados por segundo, por idioma
 bin/false-positives.php             Palabras frecuentes de un idioma que el chat censuraría
 bin/review-sheets.php               Planilla CSV de revisión nativa de un idioma
