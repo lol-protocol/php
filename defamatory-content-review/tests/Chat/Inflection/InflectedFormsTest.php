@@ -48,7 +48,7 @@ class InflectedFormsTest extends TestCase
 
     public function testAnotherLanguageOrAnUnknownVerbClassStaysLiteral(): void
     {
-        $this->assertSame(['bomba'], TopicInflector::forms('por', 'bomba', 'noun'));
+        $this->assertSame(['bomba'], TopicInflector::forms('deu', 'bomba', 'noun'));
         $this->assertSame(['xyz'], TopicInflector::forms('spa', 'xyz', 'verb'));
     }
 

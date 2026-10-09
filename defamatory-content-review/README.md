@@ -540,7 +540,8 @@ sólo se informa (por ejemplo «mi abuelo luchó en la guerra» se aprueba pero
 queda marcado como `belico`). Un término que también es apellido
 (`nameCollision`: «Savage», «Concha») nunca bloquea solo: baja a revisión,
 igual que con los nombres. Los 33 idiomas tienen lista de temas; las de
-español e inglés son las completas (ver «Lo que no cubre» para las demás).
+español e inglés son las completas, y portugués, italiano y francés también
+generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 
 ### Qué entiende
 
@@ -580,7 +581,7 @@ español e inglés son las completas (ver «Lo que no cubre» para las demás).
 
 | Campo | Qué hace |
 |---|---|
-| `'forms' => 'noun' \| 'adj' \| 'verb'` | Genera plurales, géneros o la conjugación regular (con pronombres pegados: «matarlos», «fóllame») en español e inglés. Escribe el sustantivo en singular, el adjetivo en masculino y el verbo en infinitivo. |
+| `'forms' => 'noun' \| 'adj' \| 'verb'` | Genera plurales, géneros o la conjugación regular (con pronombres pegados: «matarlos», «fóllame», «matá-lo», «ammazzarti», «baise-moi») en español, inglés, portugués, italiano y francés (`TopicInflector`; los verbos romances comparten `RomanceVerbs`). Escribe el sustantivo en singular, el adjetivo en masculino y el verbo en infinitivo. |
 | `'also' => [...]` | Formas irregulares, a mano («degüello»). |
 | categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
 | meta `'collapseRepeats' => true` | Lee también las palabras escritas con letras repetidas. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
@@ -727,10 +728,12 @@ palabras no entiende contexto:
   por palabra suelta, no por frase: no ve los que sólo aparecen en contexto.
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
 - Las listas de temas de los otros 31 idiomas son de arranque (10–18 palabras
-  por tema, más `ambiguous`). Las amenazas con forma (`patterns`) sólo están en
+  por tema, más `ambiguous`). Portugués, italiano y francés ya generan sus
+  formas regulares; los otros 28 no. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
-  No tienen plurales, géneros ni conjugaciones automáticos —sólo la forma base
-  y las que se añadan a mano con `also`—, ni `collapseRepeats`, y se escribieron
+  Esos 28 no tienen plurales, géneros ni conjugaciones automáticos —sólo la
+  forma base y las que se añadan a mano con `also`—; ninguno de los 31 tiene
+  `collapseRepeats`, y se escribieron
   sin revisión nativa. En japonés, cantonés y tailandés hace falta la
   extensión `intl` para encontrar palabras dentro de una frase (ver «Idiomas
   sin espacios»). `ChatTopicsCoverageTest` fija una línea
@@ -910,8 +913,9 @@ src/                                Namespace DefamatoryContentReview\ (cada car
     ├── SpacedLetters.php           Letras sueltas («p u t a») unidas en una palabra — interno
     ├── RepeatedLetters.php / RepeatedReadings.php   Letras repetidas («puuuta»), leídas como 1 o 2 — internos
     ├── EverydayWords.php           Tapa las palabras de `everyday` antes de buscar — interno
-    └── Inflection/                 TopicInflector (expande `forms`), contrato TopicInflection,
-                                    SpanishInflection (+ SpanishVerbs) y EnglishInflection
+    └── Inflection/                 TopicInflector (expande `forms`), contrato TopicInflection;
+                                    Spanish/Portuguese/Italian/French/EnglishInflection,
+                                    y la conjugación romance común en RomanceVerbs (+ *Verbs)
 
 config/
 ├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns), uno por idioma

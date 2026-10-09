@@ -11,7 +11,10 @@ namespace DefamatoryContentReview\Chat\Inflection;
  */
 final class TopicInflector
 {
-    private const BY_LANGUAGE = ['spa' => SpanishInflection::class, 'eng' => EnglishInflection::class];
+    private const BY_LANGUAGE = [
+        'spa' => SpanishInflection::class, 'eng' => EnglishInflection::class, 'por' => PortugueseInflection::class,
+        'ita' => ItalianInflection::class, 'fra' => FrenchInflection::class,
+    ];
 
     /** @return array<int,string> */
     public static function forms(string $language, string $lemma, string $kind): array

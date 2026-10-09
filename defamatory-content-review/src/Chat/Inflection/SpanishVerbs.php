@@ -6,10 +6,11 @@ namespace DefamatoryContentReview\Chat\Inflection;
  * Conjugación regular del español para SpanishInflection: todos los tiempos
  * simples, participio, gerundio y las formas con pronombre pegado («matarlos»,
  * «fóllame»). Las terminaciones van sin tilde porque WordList las pliega.
+ * La mecánica es la de RomanceVerbs; aquí sólo las tablas y la ortografía.
  */
-final class SpanishVerbs
+final class SpanishVerbs extends RomanceVerbs
 {
-    private const ENDINGS = [
+    protected const ENDINGS = [
         'ar' => [
             'o', 'as', 'a', 'amos', 'ais', 'an', 'e', 'es', 'emos', 'eis', 'en', 'aste', 'asteis', 'aron',
             'aba', 'abas', 'abamos', 'abais', 'aban', 'are', 'aras', 'ara', 'aremos', 'areis', 'aran',
@@ -32,37 +33,15 @@ final class SpanishVerbs
         ],
     ];
     /** Terminaciones que admiten pronombre pegado: infinitivo, gerundio e imperativo. */
-    private const HOSTS = [
+    protected const HOSTS = [
         'ar' => ['ar', 'ando', 'a', 'e', 'en'],
         'er' => ['er', 'iendo', 'e', 'a', 'an'],
         'ir' => ['ir', 'iendo', 'e', 'a', 'an'],
     ];
-    private const CLITICS = ['me', 'te', 'se', 'nos', 'lo', 'la', 'los', 'las', 'le', 'les'];
-
-    /** @return array<int,string> */
-    public static function forms(string $lemma): array
-    {
-        $class = substr($lemma, -2);
-        if (!isset(self::ENDINGS[$class])) {
-            return [$lemma];
-        }
-        $stem = substr($lemma, 0, -2);
-        $forms = [];
-
-        foreach (self::ENDINGS[$class] as $ending) {
-            $forms[] = self::spell($stem, $ending, $class) . $ending;
-        }
-        foreach (self::HOSTS[$class] as $host) {
-            foreach (self::CLITICS as $clitic) {
-                $forms[] = self::spell($stem, $host, $class) . $host . $clitic;
-            }
-        }
-
-        return array_values(array_unique($forms));
-    }
+    protected const CLITICS = ['me', 'te', 'se', 'nos', 'lo', 'la', 'los', 'las', 'le', 'les'];
 
     /** Cambios de ortografía que mantienen el sonido: chingar→chingue, sacar→saque, coger→cojo. */
-    private static function spell(string $stem, string $ending, string $class): string
+    protected static function spell(string $stem, string $ending, string $class): string
     {
         $last = substr($stem, -1);
         if ($class === 'ar' && $ending[0] === 'e') {

@@ -44,6 +44,19 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Plurales, géneros y conjugación en portugués, italiano y francés**
+  (`PortugueseInflection`, `ItalianInflection`, `FrenchInflection`). La
+  mecánica de conjugación por tablas pasa a `RomanceVerbs`, que comparten
+  con `SpanishVerbs` (sin cambio de comportamiento en español). Incluyen los
+  cambios de ortografía regulares (ficar→fique, cercare→cerchi,
+  manger→mangeons) y los pronombres pegados («matá-lo», «ammazzarti»,
+  «baise-moi»). Sus listas de chat declaran `forms` como la española.
+  Medido con las 50.000 palabras más frecuentes de OpenSubtitles: las que
+  se censurarían pasan de 220 a 235 (por), de 208 a 242 (ita) y de 251 a
+  284 (fra), casi todas formas reales («massacraram», «stuprata», «égorgé»).
+  Las cinco que eran palabras cotidianas van a `everyday`: «violent»,
+  «violons», «viola», «fucili», «pôr-nos». `RomanceInflectionTest`.
+
 - **Japonés, cantonés y tailandés se buscan dentro de la frase**
   (`Dictionary\WordSegmenter`, extensión `intl` opcional). ICU parte los
   tramos sin espacios en palabras («お前はバカだ» → お前 | は | バカ | だ) y

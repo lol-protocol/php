@@ -38,7 +38,7 @@ class TopicInflectorTest extends TestCase
 
     public function testALanguageWithoutInflectionKeepsTheLemma(): void
     {
-        $out = TopicInflector::expand(['sexual' => [$this->entry(['forms' => 'noun'])]], 'por');
+        $out = TopicInflector::expand(['sexual' => [$this->entry(['forms' => 'noun'])]], 'deu');
 
         $this->assertSame(['desnudo'], array_column($out['sexual'], 'word'));
     }
