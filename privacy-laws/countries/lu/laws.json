@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "LU",
+    "country_name": "Luxembourg",
+    "law_name": "Data Protection Law",
+    "jurisdiction": "Commission Nationale",
+    "enactment_date": "2018-05-25",
+    "effective_date": "2018-05-25",
+    "scope": "Luxembourg Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "GDPR compliance",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "Luxembourg Authority",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://cnpd.lu/",
+    "language": "French/German/Luxembourgish",
+    "notes": "GDPR implementation"
+  }
+]

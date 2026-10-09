@@ -3,6 +3,7 @@
 /** Slovak chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'slk', 'kind' => 'chat-topics'],
+    'everyday' => ['moc', 'nemá'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

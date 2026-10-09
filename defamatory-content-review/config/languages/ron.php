@@ -114,7 +114,7 @@ return [
             ['word' => 'pitic', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'diform', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'paralitic', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'nebun', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'nebun', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'schiloadă', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'oloagă', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'șchioapă', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -124,7 +124,7 @@ return [
             ['word' => 'pitică', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'diformă', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'paralitică', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'nebună', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'nebună', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
         ],
 
         'moral' => [
@@ -264,10 +264,10 @@ return [
             ['word' => 'cioară', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'bozgor', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'jidan', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'negru', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'negru', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'corcitură', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'țigancă', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'neagră', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'neagră', 'riskType' => 'etnico', 'severity' => 'medium', 'ambiguous' => true],
         ],
 
         'religios' => [

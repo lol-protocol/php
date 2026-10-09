@@ -570,16 +570,55 @@ español e inglés son las completas (ver «Lo que no cubre» para las demás).
 | `'also' => [...]` | Formas irregulares, a mano («degüello»). |
 | categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
 | meta `'collapseRepeats' => true` | Lee también las palabras escritas con letras repetidas. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
-| `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsConfigTest` verifica que cada una siga haciendo falta. |
+| `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
+| `'everyday' => [...]` | Palabras cotidianas que sin tildes coinciden con un término: «possède» → «possédé», «katıl» (únete) → «katil» (asesino), «moc» (mucho) → «moč». Escritas exactamente así (da igual la mayúscula) no se buscan en el chat; «katil» sin tilde sigue marcándose. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
 | `'patterns'` | Frases con forma: expresión regular sin delimitadores contra el texto plegado (minúsculas, sin tildes ni puntuación, leet resuelto), con `riskType`, `severity` y `label`. |
 
 `ChatTopicsConfigTest` verifica que las entradas estén bien formadas, que
 todos los patrones compilen y que ninguna forma caiga en dos categorías, y
-`ChatLineDetectionTest` corre `tests/fixtures/chat-lines-spa-eng.php`: añade ahí una
+`ChatLineDetectionTest` corre `tests/fixtures/chat-lines-detection.php`: añade ahí una
 línea que debe marcarse y otra parecida que no. Una palabra que ya está en el
 diccionario de insultos del idioma se marca igual como `difamatorio`; en
 `chat-topics/` sólo hace falta si además debe llevar la etiqueta `sexual` o
 `belico`.
+
+### Medir falsos positivos
+
+Un insulto rara vez está entre las palabras más usadas de un idioma; una palabra
+cotidiana que el chat confunde con uno, sí. `bin/false-positives.php` pasa por
+`ChatLineReviewer` las 50.000 palabras más usadas de un idioma (listas de
+[FrequencyWords](https://github.com/hermitdave/FrequencyWords), subtítulos de
+OpenSubtitles) y lista las que censuraría:
+
+```bash
+php bin/false-positives.php dan da_50k.txt > dan.csv   # rango,palabra,decision,tipos,termino
+```
+
+Medido en los 32 idiomas con lista, lo que se encontró y cómo se corrigió:
+
+- **Letras propias del alfabeto que el plegado de tildes fusionaba**: danés y
+  noruego «høre» (oír) → «hore», «når» (cuando) → «nar»; sueco «höra» → «hora»,
+  «rätta» (corregir) → «råtta»; finés «tai» (o, la 56.ª palabra más usada) →
+  «täi» (piojo); vietnamita «dài» (largo) → «dái», «đeo» (llevar puesto) → «đéo».
+  En esos 5 idiomas `AccentFolding` ya no pliega esas letras (`æ ø å`, `å ä ö`,
+  y las vocales con tono y `đ` del vietnamita).
+- **Palabras sueltas que sin tildes son un término**: «moc», «katıl», «possède»,
+  «demeure», «sértés»… van a `everyday` (ver la tabla de arriba).
+- **Términos que ante todo son palabras cotidianas**: «crazy», «verrückt»,
+  «fou», «louco», «preto», «kanker» (también «cáncer»), «أمي» (mi madre)… llevan
+  `'ambiguous' => true` en el diccionario: el chat los ignora y los nombres no.
+  Se marcaron 78 entradas en 29 idiomas.
+
+Resultado: de 5.368 a 5.159 palabras frecuentes censuradas, y entre las 1.000
+más usadas de cada idioma, de 213 a 166 —casi todas insultos y palabrotas
+reales («merde», «faen», «kurwa»), que en subtítulos son frecuentes—. Lo que
+queda por decidir se lista en `review/`.
+
+`bin/review-sheets.php` arma con eso una **planilla por idioma para revisión
+nativa** (`review/<código>.csv`): cada término con su categoría, severidad,
+marcas, rango de frecuencia y lo que decide hoy el chat; las excepciones; y las
+palabras frecuentes que se censurarían sin ser un término. El revisor llena
+`correcto` y `comentario`. Ver [`review/README.md`](review/README.md).
 
 ### Validación en el front (`js/limit-repeated-letters.js`)
 
@@ -614,6 +653,47 @@ necesita, pásalos en `keep`: `{ keep: [/\b[IVXLCDM]{3,}\b/, /\bwww\b/i] }`.
 `node --test 'js/tests/*.test.js'`. El tope del front no sustituye al del
 servidor: quien se salte el front sigue siendo leído.
 
+### Endpoint HTTP y demo (`public/`)
+
+`public/moderar.php` expone `ChatLineReviewer` como endpoint JSON, sin
+framework. Publica sólo esa carpeta en el servidor web: `config/`, `src/` y
+`vendor/` quedan fuera.
+
+```http
+POST /moderar.php
+Content-Type: application/json
+
+{"text": "te voy a matar, puta", "language": "spa"}
+```
+
+```json
+{"language": "spa", "decision": "reject", "censor": true,
+ "contentTypes": ["difamatorio", "belico"], "censored": "**************, ****",
+ "matches": [{"found": "puta", "term": "puta", "contentType": "difamatorio", "severity": "high"},
+             {"found": "te voy a matar", "term": "amenaza", "contentType": "belico", "severity": "high"}]}
+```
+
+`language` es opcional (`spa` por defecto) y acepta el código de tres letras o
+el de dos (`es`). Límites: sólo `POST` (si no, 405 con `Allow: POST`), cuerpo
+de hasta 16 KB (413), JSON en UTF-8 con `text` string (400), texto de hasta
+2.000 caracteres (413) e idioma soportado (400). Los errores responden
+`{"error": {"code": "texto_demasiado_largo", "message": "…"}}`. La lógica vive
+en `ModerationEndpoint`, que no toca superglobales: para montarlo en otro
+framework, pásale el método y el cuerpo y emite el `status`, `headers` y
+`body` que devuelve.
+
+La demo junta las dos capas —el tope de letras repetidas del front y la
+decisión del servidor— en una página de chat:
+
+```bash
+php -S localhost:8000 public/router.php   # http://localhost:8000/
+```
+
+`public/router.php` es sólo para desarrollo: sirve la página, el endpoint
+(`/moderar`) y el JS, y responde 404 a todo lo demás. `ModerationEndpointTest`
+cubre la lógica y los límites, y `ModerationServerTest` levanta el router con
+`php -S` y lo prueba de punta a punta.
+
 ### Lo que no cubre
 
 Son listas de arranque, sin revisión de hablantes nativos, y un filtro de
@@ -627,6 +707,10 @@ palabras no entiende contexto:
   («Pratt» → «prat» lo estaba) llega a `review`, nunca a `reject`.
 - Un nombre que coincide con un insulto del diccionario («Dick») se marca
   igual; sólo los que declaran `nameCollision` bajan a revisión.
+- Una palabra de `everyday` se deja pasar escrita así aunque quien la escribe
+  quiera decir el insulto sin tilde («t'es demeure»): se eligió el uso
+  cotidiano, que es mucho más frecuente. La medición de falsos positivos es
+  por palabra suelta, no por frase: no ve los que sólo aparecen en contexto.
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
 - Las listas de temas de los otros 31 idiomas son de arranque (10–18 palabras
   por tema, más `ambiguous`). Las amenazas con forma (`patterns`) sólo están en
@@ -801,6 +885,8 @@ src/                                Namespace DefamatoryContentReview\ (cada car
 │   ├── FlaggedTermCollection.php   Términos marcados y sus consultas — colaborador de ValidationResult
 │   ├── TermExplanation.php         Frase legible de por qué se marcó cada término
 │   └── RiskReportBuilder.php       Arma getDetailedReport() (interno)
+├── Http/
+│   └── ModerationEndpoint.php      Endpoint JSON del chat, sin superglobales — lo usa public/moderar.php
 └── Chat/
     ├── ChatLineReviewer.php        Revisión de mensajes de chat — ver «Revisar mensajes de chat»
     ├── ChatLineResult.php          Decisión, tipos de contenido y línea censurada de un mensaje
@@ -808,6 +894,7 @@ src/                                Namespace DefamatoryContentReview\ (cada car
     ├── ChatMatches.php / ChatPatternMatcher.php   Operaciones sobre los hallazgos y frases con forma — internos
     ├── SpacedLetters.php           Letras sueltas («p u t a») unidas en una palabra — interno
     ├── RepeatedLetters.php / RepeatedReadings.php   Letras repetidas («puuuta»), leídas como 1 o 2 — internos
+    ├── EverydayWords.php           Tapa las palabras de `everyday` antes de buscar — interno
     └── Inflection/                 TopicInflector (expande `forms`), contrato TopicInflection,
                                     SpanishInflection (+ SpanishVerbs) y EnglishInflection
 
@@ -824,14 +911,21 @@ js/
 └── tests/                          node --test
 
 tests/                              Misma división que src/ (namespace Tests\…)
-├── Chat/ Dictionary/ Language/ Normalization/ Phonetic/ Report/ Scoring/
+├── Chat/ Dictionary/ Http/ Language/ Normalization/ Phonetic/ Report/ Scoring/
 ├── PrimaryLanguageValidationTest.php  ExamplesRunTest.php  FileSizeLimitTest.php
 └── fixtures/
     ├── common-names.php            Nombres reales comunes por idioma (falsos positivos y benchmark)
-    ├── chat-lines-spa-eng.php      Líneas de chat que deben marcarse y que no (ChatLineDetectionTest)
-    └── chat-lines-per-language.php Una línea sexual, una amenaza y una cotidiana por idioma
+    ├── chat-lines-detection.php    Líneas de chat que deben marcarse y que no (ChatLineDetectionTest)
+    └── chat-lines-coverage.php     Una línea sexual, una amenaza y una cotidiana por idioma (ChatTopicsCoverageTest)
 examples/                           Ejecutados por ExamplesRunTest
+public/
+├── moderar.php                     Endpoint JSON de moderación de chat (ModerationEndpoint)
+├── router.php                      Servidor de la demo: php -S localhost:8000 public/router.php
+└── demo.html                       Chat de prueba: tope de letras del front + decisión del servidor
 bin/benchmark.php                   Nombres validados por segundo, por idioma
+bin/false-positives.php             Palabras frecuentes de un idioma que el chat censuraría
+bin/review-sheets.php               Planilla CSV de revisión nativa de un idioma
+review/                             Planillas generadas, una por idioma (ver review/README.md)
 ```
 
 Ningún archivo de `src/`, `tests/`, `examples/` o `bin/` supera 100 líneas

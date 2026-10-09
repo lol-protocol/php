@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "KE",
+    "country_name": "Kenya",
+    "law_name": "Data Protection Act",
+    "jurisdiction": "Office of Data Protection Commissioner",
+    "enactment_date": "2019-11-28",
+    "effective_date": "2019-11-28",
+    "scope": "Kenyan Residents",
+    "applies_to": "All entities",
+    "key_requirements": "Lawful collection & transparency",
+    "data_categories": "Personal data",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "ODPC",
+    "penalties_range": "Fines up to KES 1M",
+    "exemptions": "Government functions",
+    "website_url": "https://www.odpc.go.ke/",
+    "language": "English",
+    "notes": "East Africa region"
+  }
+]

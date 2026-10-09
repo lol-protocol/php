@@ -117,7 +117,7 @@ return [
             ['word' => 'заїка', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'спотворений', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'паралізований', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'божевільний', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'божевільний', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'інвалідка', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'кульгава', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'безрука', 'riskType' => 'discapacidad', 'severity' => 'medium'],
@@ -129,7 +129,7 @@ return [
             ['word' => 'німа', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'спотворена', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'паралізована', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'божевільна', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'божевільна', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
         ],
 
         'moral' => [

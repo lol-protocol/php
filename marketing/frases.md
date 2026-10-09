@@ -1,5 +1,12 @@
 # Frases de marketing — Genealogía
 
+## Antes de usar
+- Las frases que afirman algo sobre la persona o su árbol (pistas, coincidencias, hallazgos) solo se usan si es cierto para esa persona. Están en secciones marcadas como «condicionales»; en los demás casos, usa una alternativa neutra.
+- No inventes plazos, escasez ni cifras.
+- Las promesas sobre datos, seguridad y privacidad se verifican contra el producto, y contra la normativa de cada mercado, antes de publicarse.
+- El nombre de la marca no está escrito en las frases: sale de `config.json` al ejecutar `php marketing/render.php` (ver el README). El nombre de cada destinatario lo rellena quien envía el mensaje.
+- Criterio de fondo: `psychology-and-marketing/08-templates-and-checklists.md` (sección 5.3) y `psychology-and-marketing/02-ethical-neuromarketing.md`.
+
 ## Lemas principales
 - Descubre de dónde vienes.
 - Tu historia empieza mucho antes de ti.
@@ -47,15 +54,17 @@ Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hace
 - Escribe hoy la historia que tu familia leerá dentro de cien años.
 
 ## Confianza y respeto
+> Verificar contra el producto antes de publicar (ver «Antes de usar»).
+
 - Tu historia familiar, tratada con respeto y cuidado.
 - Un espacio seguro donde cada nombre se escribe con dignidad.
 - Cuidamos tus datos con respeto; tu legado es de tu familia.
 
 ## Llamadas a la acción
 - Empieza tu árbol genealógico hoy.
-- Descubre quiénes fueron tus abuelos.
+- Empieza a descubrir quiénes fueron tus abuelos.
 - Invita a tu familia y construye con ella su historia.
-- Tu primer antepasado te está esperando.
+- Tu primer antepasado está por descubrir.
 
 ## Redes sociales
 
@@ -66,7 +75,7 @@ Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hace
 - 🔎 Un apellido, mil historias.
 - 🌱 Todo árbol empieza con una raíz. ¿Ya encontraste la tuya?
 - 📸 Esa foto vieja del cajón es un tesoro. Compártela con tu familia.
-- 🧓 Pregúntale hoy a tu abuelo cómo era su infancia. Mañana puede ser tarde.
+- 🧓 Pregúntale hoy a tu abuelo cómo era su infancia. Esas historias merecen quedar guardadas.
 - 🗓️ Hace 100 años alguien de tu familia soñaba con su futuro. ¿Sabes quién era?
 - 💌 Las cartas de ayer son la historia de mañana.
 - 🧬 Llevas en ti a cientos de antepasados. Conócelos.
@@ -83,13 +92,19 @@ Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hace
 
 ### Asuntos
 - Tu familia tiene una historia. ¿La conoces?
-- Encontramos nuevas pistas sobre tus antepasados
 - Tu árbol genealógico te está esperando
-- Hay un familiar que aún no conoces
 - Una foto antigua puede cambiarlo todo
-- Empieza hoy: tu primer antepasado está a un clic
+- Empieza hoy: tu primer paso está a un clic
 - Tus raíces, más cerca de lo que crees
 - Invita a tu familia a construir su historia juntos
+- Tu árbol puede tener pistas por descubrir
+- Quizás hay un familiar que aún no conoces
+
+### Asuntos condicionales
+> Solo enviar si hay datos reales para esa persona.
+
+- Encontramos nuevas pistas sobre tus antepasados
+- Hay un familiar que aún no conoces
 
 ### Textos de vista previa
 - Descubre quiénes fueron los que vinieron antes que tú.
@@ -106,6 +121,11 @@ Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hace
 - Descubrir mi historia
 - Invitar a mi familia
 - Continuar mi árbol
+- Explorar mi árbol
+
+### Llamadas a la acción condicionales (botones)
+> Solo mostrar si hay datos reales para esa persona.
+
 - Ver mis hallazgos
 
 ### Cierres y despedidas
@@ -115,4 +135,6 @@ Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hace
 - Hasta la próxima generación,
 
 ### Pie de correo
+> Verificar contra el producto antes de publicar (ver «Antes de usar»).
+
 - Tus datos familiares son tuyos. Los tratamos con respeto y cuidado.

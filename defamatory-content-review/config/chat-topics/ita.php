@@ -3,6 +3,7 @@
 /** Italian chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'ita', 'kind' => 'chat-topics'],
+    'everyday' => ['mostrò'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

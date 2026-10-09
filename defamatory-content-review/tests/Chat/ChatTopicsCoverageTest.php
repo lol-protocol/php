@@ -18,7 +18,7 @@ class ChatTopicsCoverageTest extends TestCase
     public static function lines(): array
     {
         $cases = [];
-        foreach (require __DIR__ . '/../fixtures/chat-lines-per-language.php' as $lang => $set) {
+        foreach (require __DIR__ . '/../fixtures/chat-lines-coverage.php' as $lang => $set) {
             $cases[$lang] = [$lang, $set];
         }
 

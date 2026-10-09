@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "SA",
+    "country_name": "Saudi Arabia",
+    "law_name": "Saudi Copyright Law",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic rights protected",
+    "moral_rights": "Moral rights limited",
+    "orphan_works": "Collective administration required",
+    "digital_protection": "Copyright enforcement",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Saudi Copyright Office",
+    "treaties_signatory": "Berne",
+    "linked_resources": "https://www.saip.gov.sa/"
+  }
+]

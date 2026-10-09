@@ -227,6 +227,29 @@ jobs:
       - name: Run tests
         run: node --test 'defamatory-content-review/js/tests/*.test.js'
 
+  iconos:
+    name: iconos (validación y generador)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate icon sets
+        run: python3 iconos-tools/validate.py
+
+      - name: Committed icons match the generator
+        run: |
+          python3 iconos-tools/build.py
+          git status --porcelain -- iconos-genealogia iconos-biblioteca galeria-iconos.html
+          git diff --exit-code --stat -- iconos-genealogia iconos-biblioteca galeria-iconos.html
+          test -z "$(git status --porcelain -- iconos-genealogia iconos-biblioteca galeria-iconos.html)"
+
   document-formats:
     name: document-formats (Node)
     runs-on: ubuntu-latest
@@ -285,3 +308,54 @@ jobs:
 
       - name: Check the database against the CSV files
         run: php document-formats/tests/database_check.php
+
+  legal-data:
+    name: ${{ matrix.module }} (data and README)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ matrix.module }}
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [privacy-laws, copyright-laws]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: CSV, per-country files, CSV reader and README
+        run: npm test
+
+      - name: PHP syntax (API and importer)
+        run: |
+          php -l api.php
+          php -l import_database.php
+
+      - name: Every CSV row reads with the header's number of fields (what the importer does)
+        run: |
+          php -r '
+            $csv = glob("{countries,jurisdictions}/*_master.csv", GLOB_BRACE)[0];
+            $f = fopen($csv, "r");
+            $header = fgetcsv($f);
+            $rows = 0;
+            while (($row = fgetcsv($f)) !== false) {
+              array_combine($header, $row);
+              $rows++;
+            }
+            echo "$csv: $rows rows, " . count($header) . " columns\n";
+          '

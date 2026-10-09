@@ -22,7 +22,8 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
   | `ChatLineReviewer`, `ChatLineResult`, `ChatTopics`, `ChatMatches`, `ChatPatternMatcher`, `SpacedLetters`, `RepeatedLetters`, `RepeatedReadings` | `Chat\…` |
   | `TopicInflector`, `TopicInflection`, `SpanishInflection`, `SpanishVerbs`, `EnglishInflection` | `Chat\Inflection\…` |
 
-  Para migrar basta cambiar los `use` (por ejemplo
+  Las clases nuevas de esta versión van en `Chat\EverydayWords` y
+  `Http\ModerationEndpoint`. Para migrar basta cambiar los `use` (por ejemplo
   `use DefamatoryContentReview\Chat\ChatLineReviewer;`). `phone-directory`
   ya está migrado y pide `^5.0`.
 - **Se quita el alias deprecado `PhoneticFolder`** (nombre anterior a 4.3.0
@@ -38,8 +39,8 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
   namespace `Tests\<Carpeta>`). `EdgeCasesValidationTest` pasa a
   `Language/LanguageAffinityFormatTest`, `TopicInflectionTest` a
   `Chat/Inflection/InflectedFormsTest`, y las fixtures `chat-lines.php` y
-  `chat-topics-lines.php` a `chat-lines-spa-eng.php` y
-  `chat-lines-per-language.php`. `FileSizeLimitTest` recorre subcarpetas.
+  `chat-topics-lines.php` a `chat-lines-detection.php` y
+  `chat-lines-coverage.php`, por el test que las usa. `FileSizeLimitTest` recorre subcarpetas.
 
 ### Añadido
 
@@ -117,8 +118,41 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
   más sin que un hablante nativo lo confirme. Verificado en cada idioma
   contra nombres reales comunes (`Hans Müller`, `John Smith`, `Jean
   Dupont`, `Giuseppe Russo`, `João Silva`, etc.) sin falsos positivos.
+- **Medición de falsos positivos del chat** contra las 50.000 palabras más
+  usadas de 32 idiomas (`bin/false-positives.php`, listas de FrequencyWords) y
+  **planillas de revisión nativa** por idioma (`bin/review-sheets.php` →
+  `review/<código>.csv`): cada término con categoría, severidad, marcas, rango
+  de frecuencia y decisión actual del chat, más las palabras frecuentes que se
+  censurarían sin ser un término. Ver `review/README.md`.
+- **Endpoint HTTP de moderación** (`public/moderar.php` + `ModerationEndpoint`):
+  `POST {"text", "language"}` → decisión, tipos de contenido, línea censurada y
+  términos encontrados, en JSON. Límites de entrada (sólo POST, 16 KB de cuerpo,
+  2.000 caracteres, idioma soportado) con códigos de error propios. Más una
+  **demo** (`php -S localhost:8000 public/router.php`) que junta el tope de
+  letras repetidas del front con la decisión del servidor.
+  `ModerationEndpointTest` y `ModerationServerTest` (con `php -S`).
+- **Clave `everyday` en `config/chat-topics/`**: palabras cotidianas que sin
+  tildes coinciden con un término («moc» → «moč», «katıl» → «katil», «possède»
+  → «possédé», «santa» → «sánta») y que, escritas así, el chat no busca
+  (`EverydayWords`). 21 palabras en 9 idiomas; `ChatTopicsExemptionsTest`
+  verifica que cada una siga haciendo falta.
 
 ### Arreglado
+
+- **Falsos positivos del chat en palabras muy usadas**, encontrados con la
+  medición de arriba: de 5.368 a 5.159 palabras frecuentes censuradas, y de 213
+  a 166 entre las 1.000 más usadas de cada idioma.
+  - `AccentFolding` ya no pliega las letras propias del alfabeto en danés y
+    noruego (`æ ø å`), sueco y finés (`å ä ö`) ni vietnamita (vocales con tono
+    y `đ`): «høre» (oír) se leía «hore», «når» (cuando) «nar», «höra» «hora»,
+    «tai» (o) «täi» (piojo), «dài» (largo) «dái». Contrapartida: «hore» escrito
+    «høre» ya no se marca.
+  - `'ambiguous' => true` en 78 términos de 29 diccionarios que ante todo son
+    palabras cotidianas: «crazy», «verrückt», «fou», «louco», «preto», «negro»,
+    «kanker» (también «cáncer»), «أمي» (mi madre), «หนู» (ratón; «yo» al hablar
+    una mujer)… El chat los ignora; `validateName()` los sigue marcando.
+  - búlgaro «гол» (desnudo) pasa a `ambiguous` en los temas de chat: también
+    es «gol».
 
 - **`ChatPatternMatcher::fold()` borraba todo lo que no fuera `[a-z0-9]`**,
   así que ningún patrón en cirílico, griego, árabe, hebreo, CJK, etc. podía
@@ -190,6 +224,15 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Cambiado
 
+- **`nameCollision` en 30 apellidos y nombres frecuentes**, elegidos con datos
+  de frecuencia y no a ojo: los apellidos ingleses con 1.000 personas o más en
+  el censo de EE. UU. de 2010 (Outlaw, Coward, Dyke, Leech…) y los españoles
+  entre los 8.000 más frecuentes (Chaparro, Payo, Cansino, Rufián, Bastardo…),
+  más Mona e India. Se siguen detectando, pero ya no se rechazan solos ni
+  bloquean un saludo en el chat. Por debajo de esos umbrales no se marcan: cada
+  marca baja también el insulto a revisión. Ver `FrequentSurnameCollisionTest`.
+  Los ejemplos y tests que usaban «Luis Bastardo» como insulto grave que se
+  rechaza pasan a «Luis Gilipollas».
 - Se restauró `_Garbage/`, borrado en 4.3.0: la decisión es conservar como
   referencia lo obsoleto en vez de borrarlo. Su README explica por qué
   ninguno de esos archivos debe reconectarse al motor.

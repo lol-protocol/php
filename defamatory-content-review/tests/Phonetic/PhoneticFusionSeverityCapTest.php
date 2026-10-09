@@ -39,7 +39,7 @@ class PhoneticFusionSeverityCapTest extends TestCase
 
     public function testLiteralHighSeverityIsStillRejected(): void
     {
-        $result = $this->reviewer->validateFullName('Luis', 'Bastardo');
+        $result = $this->reviewer->validateFullName('Luis', 'Gilipollas');
 
         $this->assertSame('high', $result->getSeverity());
         $this->assertFalse($result->hasOnlyPhoneticDetections());

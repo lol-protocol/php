@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "PT",
+    "country_name": "Portugal",
+    "law_name": "Portuguese Copyright Law (Law 63/85)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Collective administration required",
+    "digital_protection": "Copyright protection",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Portuguese IGAC",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.igac.pt/"
+  }
+]

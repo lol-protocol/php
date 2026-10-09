@@ -80,7 +80,7 @@ return [
             ['word' => 'nói lắp', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'dị dạng', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'bại liệt', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'điên', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'điên', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
         ],
         'daoduc' => [
             ['word' => 'đồ khốn', 'riskType' => 'moral', 'severity' => 'high'],
@@ -135,7 +135,7 @@ return [
         ],
         'thotuc' => [
             ['word' => 'cứt', 'riskType' => 'ordinario', 'severity' => 'high'],
-            ['word' => 'phân', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'phân', 'riskType' => 'ordinario', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'nước tiểu', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'đánh rắm', 'riskType' => 'ordinario', 'severity' => 'low'],
             ['word' => 'đít', 'riskType' => 'ordinario', 'severity' => 'medium'],
@@ -176,7 +176,7 @@ return [
         ],
         'chungtoc' => [
             ['word' => 'mọi đen', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'mọi', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'mọi', 'riskType' => 'etnico', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'ba tàu', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'chệt', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'tây', 'riskType' => 'etnico', 'severity' => 'low'],

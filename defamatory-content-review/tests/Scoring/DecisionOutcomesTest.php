@@ -28,7 +28,7 @@ class DecisionOutcomesTest extends TestCase
 
     public function testHighSeverityWithoutCollisionIsRejected(): void
     {
-        $result = $this->reviewer->validateFullName('Luis', 'Bastardo');
+        $result = $this->reviewer->validateFullName('Luis', 'Gilipollas');
 
         $this->assertSame('high', $result->getSeverity());
         $this->assertFalse($result->hasNameCollision());

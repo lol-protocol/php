@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "AU",
+    "country_name": "Australia",
+    "law_name": "Copyright Act 1968",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Exclusive rights to publish",
+    "moral_rights": "Moral rights + paternity",
+    "orphan_works": "Orphan works permitted use",
+    "digital_protection": "Digital Agenda laws",
+    "fair_use_exceptions": "Fair dealing (research/education)",
+    "registration_required": "No",
+    "enforcement_body": "IP Australia",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.ipaustralia.gov.au/"
+  }
+]

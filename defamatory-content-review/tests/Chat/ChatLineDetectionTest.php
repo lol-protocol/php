@@ -25,7 +25,7 @@ class ChatLineDetectionTest extends TestCase
     public static function flaggedLines(): array
     {
         $cases = [];
-        foreach (require __DIR__ . '/../fixtures/chat-lines-spa-eng.php' as $language => $lines) {
+        foreach (require __DIR__ . '/../fixtures/chat-lines-detection.php' as $language => $lines) {
             foreach ($lines['flagged'] as $line => [$decision, $types]) {
                 $cases["$language: $line"] = [$language, (string) $line, $decision, $types];
             }
@@ -37,7 +37,7 @@ class ChatLineDetectionTest extends TestCase
     public static function cleanLines(): array
     {
         $cases = [];
-        foreach (require __DIR__ . '/../fixtures/chat-lines-spa-eng.php' as $language => $lines) {
+        foreach (require __DIR__ . '/../fixtures/chat-lines-detection.php' as $language => $lines) {
             foreach ($lines['clean'] as $line) {
                 $cases["$language: $line"] = [$language, $line];
             }
