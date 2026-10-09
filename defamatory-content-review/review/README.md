@@ -26,7 +26,8 @@ Columnas:
 - `decision_chat`: lo que decide hoy el chat con la palabra sola: `approve`,
   `review` (revisión humana) o `reject` (bloqueada).
 - `correcto` y `comentario`: para el revisor. En `correcto` pon `sí`, `no`
-  (sobra, o es falso positivo) u otra severidad (`low`, `medium`, `high`); en
+  (sobra, o es falso positivo), otra severidad (`low`/`medium`/`high`, o
+  `baja`/`media`/`alta`) o una marca (`ambiguous`, `nameCollision`); en
   `comentario`, lo que haga falta (otra ortografía, otra categoría, una palabra
   que falta).
 
@@ -41,6 +42,30 @@ Columnas:
   `AccentFolding::LANGUAGE_EXCLUSIONS`.
 - Cada corrección lleva su línea en `tests/fixtures/chat-lines-detection.php`: la que debe
   marcarse y la cotidiana que no.
+
+## Aplicar una planilla revisada
+
+```bash
+php bin/apply-review.php spa revisada.csv           # muestra el plan, no escribe
+php bin/apply-review.php spa revisada.csv --apply   # lo escribe en config/
+```
+
+| Sección | Respuesta | Cambio |
+|---|---|---|
+| `término` | `no` | se quita del diccionario o de la lista de temas |
+| `término` | `low`/`medium`/`high` | cambia la severidad |
+| `término` (del diccionario) | `ambiguous`, `nameCollision` | añade la marca |
+| `frecuente` | `no` | la palabra va a `everyday` (el chat no la busca) |
+| `excepción` | `no` | sale de `everyday` o `legit` |
+
+Cada cambio toca sólo la línea de esa entrada: comentarios y orden se
+conservan. Los patrones, los comentarios y las marcas en una lista de temas se
+listan para hacerlos a mano. No se aplica nada si hay una respuesta que no se
+entiende o si la planilla es más vieja que `config/` (la entrada ya no está o
+cambió de severidad): en ese caso se regenera y se vuelve a revisar sólo lo
+que cambió. Después: una línea por corrección en
+`tests/fixtures/chat-lines-detection.php`, `./vendor/bin/phpunit` y regenerar
+la planilla.
 
 ## Regenerarlas
 

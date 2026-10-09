@@ -903,6 +903,10 @@ src/                                Namespace DefamatoryContentReview\ (cada car
 │   ├── FlaggedTermCollection.php   Términos marcados y sus consultas — colaborador de ValidationResult
 │   ├── TermExplanation.php         Frase legible de por qué se marcó cada término
 │   └── RiskReportBuilder.php       Arma getDetailedReport() (interno)
+├── Review/                         Planillas de revisión nativa → config/ (bin/apply-review.php)
+│   ├── ReviewSheet.php             Respuestas del revisor → cambios
+│   ├── ReviewApplier.php           Cambios → texto nuevo de cada archivo, con chequeo de planilla vieja
+│   └── ConfigEditor.php            Edita una entrada o lista sin reescribir el archivo
 ├── Http/
 │   └── ModerationEndpoint.php      Endpoint JSON del chat, sin superglobales — lo usa public/moderar.php
 └── Chat/
@@ -930,7 +934,7 @@ js/
 └── tests/                          node --test
 
 tests/                              Misma división que src/ (namespace Tests\…)
-├── Chat/ Dictionary/ Http/ Language/ Normalization/ Phonetic/ Report/ Scoring/
+├── Chat/ Dictionary/ Http/ Language/ Normalization/ Phonetic/ Report/ Review/ Scoring/
 ├── PrimaryLanguageValidationTest.php  ExamplesRunTest.php  FileSizeLimitTest.php
 └── fixtures/
     ├── common-names.php            Nombres reales comunes por idioma (falsos positivos y benchmark)
@@ -944,6 +948,7 @@ public/
 bin/benchmark.php                   Nombres validados por segundo, por idioma
 bin/false-positives.php             Palabras frecuentes de un idioma que el chat censuraría
 bin/review-sheets.php               Planilla CSV de revisión nativa de un idioma
+bin/apply-review.php                Aplica a config/ una planilla revisada (plan; --apply escribe)
 review/                             Planillas generadas, una por idioma (ver review/README.md)
 ```
 

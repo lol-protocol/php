@@ -44,6 +44,18 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **`bin/apply-review.php`: de la planilla revisada a `config/`.** Lee una
+  planilla de `review/` llenada por un hablante nativo y aplica sus
+  respuestas: quitar un término, cambiarle la severidad, marcarlo
+  `ambiguous`/`nameCollision`, mandar una palabra frecuente a `everyday` o
+  sacar una excepción. Sin `--apply` sólo muestra el plan. Edita únicamente
+  la línea de cada entrada (`Review\ConfigEditor`), y no aplica nada si
+  hay respuestas que no entiende o si la planilla es más vieja que
+  `config/`. Patrones y comentarios quedan listados para hacerlos a mano.
+  Las planillas de jpn, tha, yue, por, ita y fra se regeneraron con la
+  segmentación y la inflexión nuevas; `หมู` («cerdo», también «carne de
+  cerdo») pasa a `ambiguous`. `ConfigEditorTest`, `ReviewSheetTest`.
+
 - **Plurales, géneros y conjugación en portugués, italiano y francés**
   (`PortugueseInflection`, `ItalianInflection`, `FrenchInflection`). La
   mecánica de conjugación por tablas pasa a `RomanceVerbs`, que comparten

@@ -15,7 +15,7 @@ return [
     ],
     'words' => [
         'sat' => [
-            ['word' => 'หมู', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'หมู', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'ลา', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'สัตว์', 'riskType' => 'animal', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'เดรัจฉาน', 'riskType' => 'animal', 'severity' => 'high'],
