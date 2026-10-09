@@ -1,10 +1,11 @@
 #!/bin/bash
 # Agrega un dominio nuevo a un VPS ya instalado, encadenando los scripts existentes.
 # Uso: ./10_A-add-domain.sh <dominio> [--type landing|php|python|tomcat] [--name APP]
-#                           [--context RUTA] [--ssl] [--email EMAIL] [--dry-run]
+#                           [--context RUTA] [--port N] [--ssl] [--email EMAIL] [--dry-run]
 #   --type     tipo de sitio (por defecto landing): 03 | 06_A | 06_B | 06_D
 #   --name     nombre de la app (php/python); por defecto el dominio con "-" en vez de "."
 #   --context  context path de Tomcat (solo --type tomcat; vacio = raiz)
+#   --port     puerto local de gunicorn (solo --type python; por defecto 8000, uno por app)
 #   --ssl      pide el certificado con 04-setup-ssl.sh (el DNS ya debe apuntar al VPS)
 #   --email    email para Let's Encrypt (por defecto admin@dominio)
 #   --dry-run  muestra los comandos sin ejecutarlos
@@ -15,18 +16,18 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 source lib.sh
 
-TYPE=landing NAME="" CONTEXT="" SSL=0 EMAIL="" DRY_RUN=0 DOMAIN=""
+TYPE=landing NAME="" CONTEXT="" PORT="" SSL=0 EMAIL="" DRY_RUN=0 DOMAIN=""
 while [ $# -gt 0 ]; do
     case "$1" in
-        --type|--name|--context|--email)
+        --type|--name|--context|--port|--email)
             [ $# -ge 2 ] || { echo "Falta el valor de $1"; exit 2; }
             case "$1" in
-                --type) TYPE=$2 ;; --name) NAME=$2 ;; --context) CONTEXT=$2 ;; --email) EMAIL=$2 ;;
+                --type) TYPE=$2 ;; --name) NAME=$2 ;; --context) CONTEXT=$2 ;; --port) PORT=$2 ;; --email) EMAIL=$2 ;;
             esac
             shift 2 ;;
         --ssl) SSL=1; shift ;;
         --dry-run) DRY_RUN=1; shift ;;
-        -h|--help) sed -n '2,11p' "$0"; exit 0 ;;
+        -h|--help) sed -n '2,12p' "$0"; exit 0 ;;
         -*) echo "Opcion desconocida: $1 (usa --help)"; exit 2 ;;
         *) [ -z "$DOMAIN" ] || { echo "Solo se admite un dominio (sobra: $1)"; exit 2; }
            DOMAIN=$1; shift ;;
@@ -40,12 +41,16 @@ case "$TYPE" in landing|php|python|tomcat) ;; *) echo "--type debe ser landing, 
 EMAIL=${EMAIL:-"admin@$DOMAIN"}
 if [ "$TYPE" = php ] || [ "$TYPE" = python ]; then require_valid name "$NAME" "--name"; fi
 [ "$TYPE" != tomcat ] || require_valid context_path "$CONTEXT" "--context"
+if [ -n "$PORT" ]; then
+    [ "$TYPE" = python ] || { echo "--port solo aplica a --type python"; exit 2; }
+    require_valid port "$PORT" "--port"
+fi
 require_valid email "$EMAIL" "--email"
 
 case "$TYPE" in
     landing) SITE_CMD=(./03-configure-nginx-site.sh "$DOMAIN") ;;
     php)     SITE_CMD=(./06_A-setup-php-app.sh "$NAME" "$DOMAIN") ;;
-    python)  SITE_CMD=(./06_B-setup-python-app.sh "$NAME" "$DOMAIN") ;;
+    python)  SITE_CMD=(./06_B-setup-python-app.sh "$NAME" "$DOMAIN" ${PORT:+"$PORT"}) ;;
     tomcat)  SITE_CMD=(./06_D-setup-tomcat-app.sh "$DOMAIN" "$CONTEXT") ;;
 esac
 
@@ -70,7 +75,8 @@ echo ""
 if [ "$DRY_RUN" -eq 0 ]; then
     ./08-healthcheck.sh "$DOMAIN" || echo "AVISO: el healthcheck reporto problemas (revisa arriba); el dominio quedo configurado."
 fi
-# 06_A/06_B nombran el vhost como la app: sin --app, 10_B no lo desactivaria.
+# El vhost se llama como el dominio; --app hace que 10_B archive tambien la carpeta de la app
+# (/var/www/<app>) y su servicio systemd, que no llevan el nombre del dominio.
 REMOVE_CMD="./10_B-remove-domain.sh $DOMAIN"
 if [ "$TYPE" = php ] || [ "$TYPE" = python ]; then REMOVE_CMD+=" --app $NAME"; fi
 echo "✓ Dominio $DOMAIN agregado. Para quitarlo: $REMOVE_CMD"

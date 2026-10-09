@@ -37,8 +37,8 @@ require_valid domain "$DOMAIN" "El dominio"
 DEST="$REMOVED_DIR/$DOMAIN-$(date +%Y%m%d-%H%M%S)"
 VHOST="$NGINX_DIR/sites-available/$DOMAIN"
 LINK="$NGINX_DIR/sites-enabled/$DOMAIN"
-# 06_A y 06_B nombran el vhost como la APP (no como el dominio): con --app hay que
-# desactivar tambien ese, o el sitio seguiria publicado.
+# Versiones anteriores de 06_A y 06_B nombraban el vhost como la APP (hoy usan el dominio): con --app
+# se desactiva tambien ese, por si quedo alguno asi, o el sitio seguiria publicado.
 APP_LINK=""; [ -z "$APP" ] || APP_LINK="$NGINX_DIR/sites-enabled/$APP"
 
 # Lista de lo que existe y se archivara: "origen|nombre dentro de DEST"

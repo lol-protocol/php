@@ -19,6 +19,61 @@ service_start_enable() {
     sudo systemctl enable "$service"
 }
 
+# Raiz de la configuracion de Nginx (reemplazable en los tests).
+NGINX_DIR=${NGINX_DIR:-/etc/nginx}
+
+# require_arg <valor> <uso>: sin valor, muestra el uso y sale con 2. Los scripts NO usan
+# un dominio por defecto: correr uno sin argumentos en el servidor equivocado configuraria
+# (o pediria certificados para) un dominio que no es el tuyo.
+require_arg() {
+    if [ -z "$1" ]; then
+        echo "Uso: $2" >&2
+        exit 2
+    fi
+}
+
+# claim_nginx_vhost <dominio> <marca>: cada vhost se llama como su DOMINIO y lleva en su
+# primera linea "# vps-setup: <marca>" (script + app). Falla si el dominio ya tiene un vhost
+# con OTRA marca (otro tipo de sitio u otra app) o si otro sitio activo ya declara ese
+# server_name: dos vhosts con el mismo dominio hacen que Nginx ignore uno en silencio.
+# Re-correr el mismo script para el mismo dominio y app si se permite (es idempotente).
+claim_nginx_vhost() {
+    local domain=$1 mark=$2 f other existing re
+    f="$NGINX_DIR/sites-available/$domain"
+    if [ -f "$f" ] && ! grep -qxF "# vps-setup: $mark" "$f"; then
+        existing=$(grep -m1 '^# vps-setup:' "$f" | sed 's/^# vps-setup: //')
+        echo "ERROR: $domain ya tiene un sitio (${existing:-creado a mano}) en $f." >&2
+        echo "Quitalo primero con: ./10_B-remove-domain.sh $domain" >&2
+        exit 1
+    fi
+    re="^[[:space:]]*server_name([[:space:]]+[^[:space:];]+)*[[:space:]]+(www\.)?${domain//./\\.}([[:space:];]|$)"
+    for other in "$NGINX_DIR"/sites-enabled/*; do
+        [ -e "$other" ] || continue
+        [ "$(basename "$other")" = "$domain" ] && continue
+        if grep -qE "$re" "$other"; then
+            echo "ERROR: el sitio activo $(basename "$other") ya responde a $domain (server_name)." >&2
+            echo "Quitalo primero (./10_B-remove-domain.sh ... --app $(basename "$other")) o usa otro dominio." >&2
+            exit 1
+        fi
+    done
+}
+
+# enable_nginx_site <nombre>: activa sites-available/<nombre>, valida con "nginx -t" y recarga.
+# Si nginx rechaza la configuracion, DESACTIVA el sitio nuevo (el archivo queda en
+# sites-available para revisarlo): un enlace roto en sites-enabled impediria que Nginx
+# arranque en el proximo reinicio y tumbaria todos los dominios.
+enable_nginx_site() {
+    local name=$1 link
+    link="$NGINX_DIR/sites-enabled/$name"
+    sudo ln -sf "$NGINX_DIR/sites-available/$name" "$link"
+    if ! sudo nginx -t; then
+        sudo rm -f "$link"
+        echo "ERROR: nginx rechazo la configuracion de $name; se desactivo ese sitio (revisa $NGINX_DIR/sites-available/$name)." >&2
+        return 1
+    fi
+    sudo systemctl reload nginx
+}
+
 # Safe UFW rule (only if ufw is active)
 ufw_allow() {
     local rule=$1
@@ -157,6 +212,16 @@ validate_ipv4() {
     [[ "$1" =~ ^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$ ]]
 }
 
+# Puerto TCP local para una app (fuera del rango privilegiado).
+validate_port() {
+    [[ "$1" =~ ^[0-9]{4,5}$ ]] && [ "$1" -ge 1024 ] && [ "$1" -le 65535 ]
+}
+
+# IPv6 (forma completa o abreviada con "::"); solo hex y ":".
+validate_ipv6() {
+    [[ "$1" =~ ^[0-9a-fA-F:]+$ ]] && [[ "$1" == *:*:* ]] && [ "${#1}" -le 39 ]
+}
+
 # Nombre de app / servicio systemd: minusculas, digitos, "_" y "-".
 validate_name() {
     [[ "$1" =~ ^[a-z0-9][a-z0-9_-]{0,62}$ ]]
@@ -183,6 +248,8 @@ require_valid() {
         domain)       hint="en minusculas, con al menos un punto, sin espacios ni caracteres especiales (ej. ejemplo.com)" ;;
         email)        hint="formato usuario@dominio.com" ;;
         ipv4)         hint="una IPv4 como 203.0.113.5" ;;
+        ipv6)         hint="una IPv6 como 2001:db8::5" ;;
+        port)         hint="un numero entre 1024 y 65535" ;;
         name)         hint="minusculas, digitos, '_' y '-' (max. 63), debe empezar con letra o digito" ;;
         context_path) hint="letras, digitos, '.', '_' y '-' (sin '/' ni '..'); vacio = raiz" ;;
         webhook_url)  hint="una URL http(s) sin comillas, espacios, '\$' ni '\`'" ;;
