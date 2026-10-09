@@ -8,6 +8,8 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`url-routing/`](url-routing/docs/README_URLS.md) | Routing de URLs para los sitios de genealogía y POS (Contrastocolor): el tipo de recurso se infiere de la forma del primer segmento (cantidad de dígitos, letras de lugar), no de palabras. |
 | [`web-animations/`](web-animations/) | Galería de demostración de 36 animaciones HTML/CSS/JS. |
 | [`document-formats/`](document-formats/) | Base de datos de formatos de documento y papel por país. |
+| [`privacy-laws/`](privacy-laws/) | Base de datos de leyes de privacidad por país, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
+| [`copyright-laws/`](copyright-laws/) | Base de datos de leyes de derechos de autor por jurisdicción, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
 | [`marketing/`](marketing/) | Frases y textos de marketing para un proyecto de genealogía: lemas, eslóganes, redes sociales y correo. |
 | [`phone-directory/`](phone-directory/) | Parser de directorios telefónicos históricos (6 idiomas) para registros genealógicos. |
 | [`psychology-and-marketing/`](psychology-and-marketing/) | Guía de psicología humana y neuromarketing ético para diseñar productos sin violar la privacidad del usuario. Solo documentos, sin código ni CI. |
@@ -67,6 +69,7 @@ proyecto.
 - `document-formats-database`: importa `document-formats/` a MySQL (dos veces, para comprobar que no duplica filas) y lo valida contra los CSV.
 - `web-animations`: prueba de humo de las animaciones.
 - `iconos`: valida los dos sets de iconos (`iconos-tools/validate.py`) y que los SVG commiteados sean exactamente los que produce `iconos-tools/build.py`.
+- `legal-data`: pruebas de `privacy-laws/` y `copyright-laws/` (los CSV maestros, los archivos por país, el lector de CSV de la interfaz y que el README diga lo que hay) y la sintaxis de su API y su importador.
 
 `sistema-nuevo/`, `vps-setup/` y `cobros-ingresos-funnels/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml` y `pruebas-cobros-ingresos-funnels.yml`).
 

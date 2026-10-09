@@ -1,0 +1,2 @@
+country_code,country_name,law_name,jurisdiction,enactment_date,effective_date,scope,applies_to,key_requirements,data_categories,retention_period,enforcement_authority,penalties_range,exemptions,website_url,language,notes
+"GR","Greece","Data Protection Law (Law 4818/2021)","Hellenic Data Protection Authority","2021-04-01","2021-04-01","Greek Residents","All organizations","GDPR implementation","Personal data","As long as necessary","Greek DPA","Up to €20M or 4% revenue","Legal obligations","https://www.dpa.gr/","Greek","GDPR implementation"

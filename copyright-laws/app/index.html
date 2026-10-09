@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Copyright Laws by Jurisdiction</title>
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/search.css" />
+  <link rel="stylesheet" href="styles/comparison.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div>
+          <h1>⚖️ Copyright Laws by Jurisdiction</h1>
+          <p class="subtitle">
+            Find copyright legislation for digital libraries, authors, and PDF
+            documentation projects
+          </p>
+        </div>
+        <div id="languageSelector" data-language-selector></div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Search Section -->
+      <section class="search-section">
+        <div class="search-container">
+          <div class="search-row">
+            <div class="search-field">
+              <label for="jurisdictionSearch">Jurisdiction/Country</label>
+              <input
+                type="text"
+                id="jurisdictionSearch"
+                placeholder="Search by jurisdiction..."
+                autocomplete="off"
+                aria-label="Search jurisdictions"
+              />
+              <ul
+                id="jurisdictionSuggestions"
+                class="suggestions-list"
+                hidden
+              ></ul>
+            </div>
+
+            <div class="search-field">
+              <label for="regionFilter">Region</label>
+              <select id="regionFilter" aria-label="Filter by region">
+                <option value="">All Regions</option>
+                <option value="europe">Europe</option>
+                <option value="americas">Americas</option>
+                <option value="asia_pacific">Asia-Pacific</option>
+                <option value="middle_east_africa">Middle East & Africa</option>
+              </select>
+            </div>
+
+            <div class="search-field">
+              <label for="materialTypeFilter">Material Type</label>
+              <select id="materialTypeFilter" aria-label="Filter by material">
+                <option value="">All Materials</option>
+                <option value="books">Books</option>
+                <option value="texts">Texts</option>
+                <option value="compilations">Compilations</option>
+                <option value="derivatives">Derivative Works</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button id="searchBtn" class="btn btn-primary">Search</button>
+            <button id="clearBtn" class="btn btn-secondary">Clear</button>
+            <button id="compareBtn" class="btn btn-info">
+              Compare Selected
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Section -->
+      <section class="results-section">
+        <div class="results-header">
+          <h2 id="resultsTitle">Copyright Laws</h2>
+          <div class="results-meta">
+            <span id="resultCount">0</span>
+            <button id="exportBtn" class="btn btn-sm btn-outline">
+              📥 Export CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="table-container">
+          <table id="lawsTable" class="data-table">
+            <thead>
+              <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    id="selectAll"
+                    aria-label="Select all results"
+                  />
+                </th>
+                <th>Jurisdiction</th>
+                <th>Law Name</th>
+                <th>Protection Term</th>
+                <th>Author Rights</th>
+                <th>Moral Rights</th>
+                <th>Treaties</th>
+                <th>Resources</th>
+              </tr>
+            </thead>
+            <tbody id="lawsTableBody">
+              <tr class="empty-state">
+                <td colspan="8">
+                  Enter search criteria and click "Search" to view copyright laws
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Metadata Section -->
+      <section class="metadata-section" id="metadataContainer"></section>
+
+      <!-- Comparison Section (Hidden by default) -->
+      <section class="comparison-section" id="comparisonSection" hidden>
+        <h2>Copyright Protection Comparison</h2>
+        <div class="comparison-container">
+          <div id="comparisonResults"></div>
+        </div>
+        <button id="closeComparison" class="btn btn-sm">Close Comparison</button>
+      </section>
+
+      <!-- Timeline Section (Hidden by default) -->
+      <section class="timeline-section" id="timelineSection" hidden>
+        <div id="timelineContainer"></div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        Data last updated: <span id="lastUpdate">Loading...</span> | Source:
+        Copyright Laws Database v1.0
+      </p>
+      <p>
+        <small
+          >For digital libraries and literary projects. See README for
+          contributing guidelines.</small
+        >
+      </p>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="copyright-laws.js"></script>
+</body>
+</html>

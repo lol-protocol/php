@@ -1,0 +1,205 @@
+/* Comparison Section */
+.comparison-section {
+  background-color: var(--color-light);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  margin-top: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+  box-shadow: var(--box-shadow);
+}
+
+@media (prefers-color-scheme: dark) {
+  .comparison-section:not([data-theme="light"]) {
+    background-color: #2d3436;
+  }
+}
+
+.comparison-section h2 {
+  margin-top: 0;
+  color: var(--color-primary);
+}
+
+.comparison-container {
+  margin-bottom: var(--spacing-lg);
+  overflow-x: auto;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .comparison-table:not([data-theme="light"]) {
+    background-color: #2d3436;
+  }
+}
+
+.comparison-table thead {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.comparison-table th {
+  padding: var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.comparison-table th:last-child {
+  border-right: none;
+}
+
+.comparison-table td {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.comparison-table td:last-child {
+  border-right: none;
+}
+
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.comparison-table tbody tr:nth-child(odd) {
+  background-color: var(--color-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .comparison-table tbody tr:nth-child(odd):not([data-theme="light"]) {
+    background-color: #3d4451;
+  }
+}
+
+.comparison-table tbody tr:hover {
+  background-color: rgba(0, 102, 204, 0.05);
+}
+
+/* Timeline Section */
+.timeline-section {
+  background-color: var(--color-light);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  margin-top: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+  box-shadow: var(--box-shadow);
+}
+
+@media (prefers-color-scheme: dark) {
+  .timeline-section:not([data-theme="light"]) {
+    background-color: #2d3436;
+  }
+}
+
+.timeline-section h2 {
+  margin-top: 0;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.timeline-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.timeline-item {
+  display: flex;
+  gap: var(--spacing-md);
+  position: relative;
+  padding-left: var(--spacing-lg);
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+@media (prefers-color-scheme: dark) {
+  .timeline-item::before:not([data-theme="light"]) {
+    box-shadow: 0 0 0 1px #495057;
+  }
+}
+
+.timeline-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 20px;
+  width: 0;
+  height: calc(100% + var(--spacing-md));
+  border-left: 2px solid var(--color-border);
+}
+
+.timeline-content {
+  padding: var(--spacing-md);
+  background-color: #ffffff;
+  border-radius: var(--border-radius);
+  border-left: 3px solid var(--color-primary);
+  flex: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .timeline-content:not([data-theme="light"]) {
+    background-color: #3d4451;
+  }
+}
+
+.timeline-date {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--spacing-xs);
+}
+
+.timeline-law {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+}
+
+.timeline-description {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Responsive Comparison */
+@media (max-width: 768px) {
+  .comparison-table th,
+  .comparison-table td {
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+
+  .comparison-table th {
+    font-size: 0.75rem;
+  }
+}
+
+/* Action Buttons */
+#closeComparison {
+  margin-top: var(--spacing-md);
+}
