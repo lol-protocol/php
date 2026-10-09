@@ -439,7 +439,7 @@ Nada de eso está fijo en `DefamatoryContentReviewer`: vive en un objeto
 siempre — no pasar ninguno es idéntico a antes de que esta clase existiera.
 
 ```php
-use DefamatoryContentReview\ScoringPolicy;
+use DefamatoryContentReview\Scoring\ScoringPolicy;
 
 // Pesos por severidad, por defecto none=0 / low=1 / medium=2 / high=3.
 $propia = ScoringPolicy::default()->withSeverityWeights([
@@ -498,7 +498,7 @@ Además de nombres, se puede revisar una línea libre (un mensaje de chat) y
 saber si hay que censurarla y por qué:
 
 ```php
-use DefamatoryContentReview\ChatLineReviewer;
+use DefamatoryContentReview\Chat\ChatLineReviewer;
 
 $chat = ChatLineReviewer::create(__DIR__ . '/config', 'spa');
 $result = $chat->review('Eres un idiota, mándame nudes');
@@ -771,44 +771,45 @@ ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1
 ## Estructura
 
 ```
-src/                                Namespace DefamatoryContentReview\
-├── DefamatoryContentReviewer.php   Facade: construcción y validación en el idioma principal
+src/                                Namespace DefamatoryContentReview\ (cada carpeta es un subnamespace)
+├── DefamatoryContentReviewer.php   Fachada: construcción y validación en el idioma principal
 ├── NameEvaluator.php               Coincidencias literales y fusión fonética (interno)
-├── RiskReportBuilder.php           Arma getDetailedReport() (interno)
-├── LanguageAccess.php              Diccionarios y cobertura — $reviewer->languages()
-├── RelatedLanguageValidator.php    Validación entre idiomas emparentados — $reviewer->related()
-├── LanguageRegistry.php            Identidad de idiomas (códigos, alias, familias)
-├── LanguageAffinity.php            Afinidad léxica — colaborador de LanguageRegistry
-├── WordList.php                    Diccionario: carga, normalización, búsqueda
-├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
-├── WordListScanner.php             Búsqueda de términos en texto — colaborador de WordList
-├── AccentFolding.php               Plegado de diacríticos compartido por WordList
-├── ScriptFolding.php               Variantes estándar de griego, cirílico, árabe y hebreo
-├── ScoringPolicy.php               Orquesta pesos/bandas/decisión (configurable)
-├── ScoringWeights.php / SeverityBands.php / DecisionTable.php   Colaboradores de ScoringPolicy
-├── SpanishPhoneticFolder.php       Plegado fonético del español
-├── PortuguesePhoneticFolder.php    Plegado fonético del portugués
-├── ItalianPhoneticFolder.php       Plegado fonético del italiano
-├── FrenchPhoneticFolder.php        Plegado fonético del francés
-├── GermanPhoneticFolder.php        Plegado fonético del alemán
-├── Czech…RomanianPhoneticFolder.php  Los otros 12 idiomas latinos (ver tabla arriba)
-├── AccentOnlyPhoneticFolding.php   Wiring compartido por los folders sin reglas propias además de acentos
-├── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica compartida por los folders
-├── PhoneticFolderRegistry.php      Qué idioma usa qué folder
-├── FusionSupport.php               Qué idiomas tienen fusión (fonética o literal) y por qué no el resto
-├── PhoneticFusionDetector.php      Fusión nombre+apellido y variantes ortográficas
-├── ChatLineReviewer.php            Revisión de mensajes de chat — ver «Revisar mensajes de chat»
-├── ChatLineResult.php              Decisión, tipos de contenido y línea censurada de un mensaje
-├── ChatTopics.php                  Lista de temas de un idioma (palabras, ambiguas y patrones) — interno
-├── SpacedLetters.php               Letras sueltas («p u t a») unidas en una palabra — interno
-├── RepeatedLetters.php             Letras repetidas («puuuta»): búsqueda tolerante y `legit` — interno
-├── RepeatedReadings.php            Cada racha leída como 1 letra o como 2 — interno
-├── ChatMatches.php / ChatPatternMatcher.php   Operaciones sobre los hallazgos y frases con forma — internos
-├── TopicInflector.php              Expande `forms` en plurales, géneros y conjugaciones — interno
-├── TopicInflection.php             Contrato por idioma: SpanishInflection (+ SpanishVerbs) y EnglishInflection
-├── ValidationResult.php            Resultado con trazabilidad por idioma y método
-├── FlaggedTermCollection.php       Términos marcados y sus consultas — colaborador de ValidationResult
-└── TermExplanation.php             Frase legible de por qué se marcó cada término
+├── Language/
+│   ├── LanguageRegistry.php        Identidad de idiomas (códigos, alias, familias)
+│   ├── LanguageAffinity.php        Afinidad léxica — colaborador de LanguageRegistry
+│   ├── LanguageAccess.php          Diccionarios y cobertura — $reviewer->languages()
+│   └── RelatedLanguageValidator.php  Validación entre idiomas emparentados — $reviewer->related()
+├── Dictionary/
+│   ├── WordList.php                Diccionario: carga, normalización, búsqueda
+│   ├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
+│   └── WordListScanner.php         Búsqueda de términos en texto
+├── Normalization/
+│   ├── AccentFolding.php           Plegado de diacríticos
+│   ├── ScriptFolding.php           Variantes estándar de griego, cirílico, árabe y hebreo
+│   └── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica («c3rda»)
+├── Phonetic/
+│   ├── PhoneticFolderRegistry.php  Qué idioma usa qué folder
+│   ├── AbstractPhoneticFolder.php / CommonPhoneticAccents.php   Base compartida de los folders
+│   ├── FusionSupport.php           Qué idiomas tienen fusión (fonética o literal) y por qué no el resto
+│   ├── PhoneticFusionDetector.php  Fusión nombre+apellido y variantes ortográficas
+│   └── Folders/                    Spanish…TurkishPhoneticFolder.php: 17 idiomas (ver tabla arriba)
+├── Scoring/
+│   ├── ScoringPolicy.php           Orquesta pesos/bandas/decisión (configurable)
+│   └── ScoringWeights.php / SeverityBands.php / DecisionTable.php   Colaboradores de ScoringPolicy
+├── Report/
+│   ├── ValidationResult.php        Resultado con trazabilidad por idioma y método
+│   ├── FlaggedTermCollection.php   Términos marcados y sus consultas — colaborador de ValidationResult
+│   ├── TermExplanation.php         Frase legible de por qué se marcó cada término
+│   └── RiskReportBuilder.php       Arma getDetailedReport() (interno)
+└── Chat/
+    ├── ChatLineReviewer.php        Revisión de mensajes de chat — ver «Revisar mensajes de chat»
+    ├── ChatLineResult.php          Decisión, tipos de contenido y línea censurada de un mensaje
+    ├── ChatTopics.php              Lista de temas de un idioma (palabras, ambiguas y patrones) — interno
+    ├── ChatMatches.php / ChatPatternMatcher.php   Operaciones sobre los hallazgos y frases con forma — internos
+    ├── SpacedLetters.php           Letras sueltas («p u t a») unidas en una palabra — interno
+    ├── RepeatedLetters.php / RepeatedReadings.php   Letras repetidas («puuuta»), leídas como 1 o 2 — internos
+    └── Inflection/                 TopicInflector (expande `forms`), contrato TopicInflection,
+                                    SpanishInflection (+ SpanishVerbs) y EnglishInflection
 
 config/
 ├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns), uno por idioma

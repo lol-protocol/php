@@ -2,8 +2,8 @@
 
 namespace Tests\Chat;
 
-use DefamatoryContentReview\RepeatedLetters;
-use DefamatoryContentReview\RepeatedReadings;
+use DefamatoryContentReview\Chat\RepeatedLetters;
+use DefamatoryContentReview\Chat\RepeatedReadings;
 use PHPUnit\Framework\TestCase;
 
 class RepeatedReadingsTest extends TestCase

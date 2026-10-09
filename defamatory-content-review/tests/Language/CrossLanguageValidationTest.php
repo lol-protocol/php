@@ -3,7 +3,7 @@
 namespace Tests\Language;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\LanguageRegistry;
+use DefamatoryContentReview\Language\LanguageRegistry;
 use PHPUnit\Framework\TestCase;
 
 class CrossLanguageValidationTest extends TestCase

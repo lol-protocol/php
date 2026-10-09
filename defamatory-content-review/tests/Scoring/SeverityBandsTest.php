@@ -2,7 +2,7 @@
 
 namespace Tests\Scoring;
 
-use DefamatoryContentReview\ScoringPolicy;
+use DefamatoryContentReview\Scoring\ScoringPolicy;
 use PHPUnit\Framework\TestCase;
 
 /** Cortes de banda de severidad — SeverityBands, vía ScoringPolicy. */

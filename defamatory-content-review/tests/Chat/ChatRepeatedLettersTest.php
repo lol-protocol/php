@@ -2,8 +2,8 @@
 
 namespace Tests\Chat;
 
-use DefamatoryContentReview\ChatLineResult;
-use DefamatoryContentReview\ChatLineReviewer;
+use DefamatoryContentReview\Chat\ChatLineResult;
+use DefamatoryContentReview\Chat\ChatLineReviewer;
 use PHPUnit\Framework\TestCase;
 
 /** Letras repetidas en el chat: «puuuuta» (3 o más: nunca legítimas) frente a «puuta» (2: pueden serlo). */

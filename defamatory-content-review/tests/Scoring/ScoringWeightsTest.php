@@ -2,7 +2,7 @@
 
 namespace Tests\Scoring;
 
-use DefamatoryContentReview\ScoringPolicy;
+use DefamatoryContentReview\Scoring\ScoringPolicy;
 use PHPUnit\Framework\TestCase;
 
 /** Pesos por severidad y por tipo de riesgo — ScoringWeights, vía ScoringPolicy. */

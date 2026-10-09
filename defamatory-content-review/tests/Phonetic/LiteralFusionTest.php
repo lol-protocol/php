@@ -3,7 +3,7 @@
 namespace Tests\Phonetic;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\FusionSupport;
+use DefamatoryContentReview\Phonetic\FusionSupport;
 use PHPUnit\Framework\TestCase;
 
 /**

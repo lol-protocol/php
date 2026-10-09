@@ -2,8 +2,8 @@
 
 namespace Tests\Chat;
 
-use DefamatoryContentReview\ChatLineResult;
-use DefamatoryContentReview\ChatLineReviewer;
+use DefamatoryContentReview\Chat\ChatLineResult;
+use DefamatoryContentReview\Chat\ChatLineReviewer;
 use PHPUnit\Framework\TestCase;
 
 class ChatLineResultTest extends TestCase

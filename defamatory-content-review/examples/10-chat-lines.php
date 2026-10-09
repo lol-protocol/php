@@ -4,7 +4,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use DefamatoryContentReview\ChatLineReviewer;
+use DefamatoryContentReview\Chat\ChatLineReviewer;
 
 // Una instancia por idioma, reutilizable: cargar las listas cuesta unos milisegundos, revisar una línea, décimas.
 $chat = ChatLineReviewer::create(__DIR__ . '/../config', 'spa');

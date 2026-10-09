@@ -2,6 +2,10 @@
 
 namespace DefamatoryContentReview;
 
+use DefamatoryContentReview\Language\{LanguageAccess, LanguageRegistry, RelatedLanguageValidator};
+use DefamatoryContentReview\Report\{RiskReportBuilder, ValidationResult};
+use DefamatoryContentReview\Scoring\ScoringPolicy;
+
 /** Motor de validación: nombre completo dentro, ValidationResult con severidad y decisión fuera.
  * Delega en cuatro colaboradores, cada uno documentado en su archivo: `NameEvaluator`,
  * `RiskReportBuilder`, `LanguageAccess` (vía `languages()`), `RelatedLanguageValidator` (vía `related()`). */
@@ -30,9 +34,7 @@ class DefamatoryContentReviewer
 
     public static function create(string $configDir, string $language = 'spa', ?ScoringPolicy $policy = null): self
     {
-        $configDir = rtrim($configDir, '/');
-
-        return new self(LanguageRegistry::fromConfigDirectory($configDir), $configDir . '/languages', $language, $policy);
+        return new self(LanguageRegistry::fromConfigDirectory($configDir), rtrim($configDir, '/') . '/languages', $language, $policy);
     }
 
     /** Pesos, bandas, reglas de decisión y agregación. Ver ScoringPolicy. */

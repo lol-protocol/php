@@ -2,7 +2,7 @@
 
 namespace Tests\Chat;
 
-use DefamatoryContentReview\SpacedLetters;
+use DefamatoryContentReview\Chat\SpacedLetters;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

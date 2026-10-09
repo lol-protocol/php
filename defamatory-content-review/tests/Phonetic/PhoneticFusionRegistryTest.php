@@ -3,10 +3,10 @@
 namespace Tests\Phonetic;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\ItalianPhoneticFolder;
-use DefamatoryContentReview\PhoneticFolderRegistry;
-use DefamatoryContentReview\PortuguesePhoneticFolder;
-use DefamatoryContentReview\SpanishPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\ItalianPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\PortuguesePhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\SpanishPhoneticFolder;
+use DefamatoryContentReview\Phonetic\PhoneticFolderRegistry;
 use PHPUnit\Framework\TestCase;
 
 /**

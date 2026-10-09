@@ -3,7 +3,7 @@
 namespace Tests\Language;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\LanguageRegistry;
+use DefamatoryContentReview\Language\LanguageRegistry;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

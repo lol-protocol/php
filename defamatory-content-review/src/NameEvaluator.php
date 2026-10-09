@@ -2,12 +2,13 @@
 
 namespace DefamatoryContentReview;
 
-/**
- * Busca coincidencias literales y de fusión fonética, y traduce lo
- * encontrado a severidad con la ScoringPolicy que se le pase (no se guarda,
- * así `setPolicy()` no exige reconstruir nada). Colaborador interno
- * compartido por `DefamatoryContentReviewer` y `RelatedLanguageValidator`.
- */
+use DefamatoryContentReview\Language\LanguageAccess;
+use DefamatoryContentReview\Phonetic\PhoneticFusionDetector;
+use DefamatoryContentReview\Report\ValidationResult;
+use DefamatoryContentReview\Scoring\ScoringPolicy;
+
+/** Busca coincidencias literales y de fusión fonética y las traduce a severidad con la ScoringPolicy que se le pase (no se
+ * guarda: `setPolicy()` no exige reconstruir nada). Colaborador interno de `DefamatoryContentReviewer` y `RelatedLanguageValidator`. */
 final class NameEvaluator
 {
     public function __construct(private readonly LanguageAccess $languages) { }

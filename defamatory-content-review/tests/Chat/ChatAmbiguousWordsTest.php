@@ -2,7 +2,7 @@
 
 namespace Tests\Chat;
 
-use DefamatoryContentReview\ChatLineReviewer;
+use DefamatoryContentReview\Chat\ChatLineReviewer;
 use DefamatoryContentReview\DefamatoryContentReviewer;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

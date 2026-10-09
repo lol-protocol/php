@@ -2,7 +2,7 @@
 
 namespace Tests\Phonetic;
 
-use DefamatoryContentReview\SpanishPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\SpanishPhoneticFolder;
 use PHPUnit\Framework\TestCase;
 
 /** Reglas de plegado del español, una por una: qué se unifica y qué se protege. */
@@ -42,10 +42,5 @@ class SpanishPhoneticFolderRulesTest extends TestCase
     public function testFoldStripsSpacesForFusion(): void
     {
         $this->assertSame(SpanishPhoneticFolder::fold('el gato'), SpanishPhoneticFolder::fold('elgato'));
-    }
-
-    public function testDeprecatedPhoneticFolderNameStillWorks(): void
-    {
-        $this->assertSame(SpanishPhoneticFolder::fold('Vaca'), \DefamatoryContentReview\PhoneticFolder::fold('Vaca'));
     }
 }

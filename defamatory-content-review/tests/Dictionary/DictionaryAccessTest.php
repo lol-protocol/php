@@ -3,7 +3,7 @@
 namespace Tests\Dictionary;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\LanguageRegistry;
+use DefamatoryContentReview\Language\LanguageRegistry;
 use PHPUnit\Framework\TestCase;
 
 /** WordList a través de $reviewer->languages(): normalización, filtros, estadísticas. */

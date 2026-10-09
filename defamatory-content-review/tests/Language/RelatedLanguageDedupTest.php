@@ -3,7 +3,7 @@
 namespace Tests\Language;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\ScoringPolicy;
+use DefamatoryContentReview\Scoring\ScoringPolicy;
 use PHPUnit\Framework\TestCase;
 
 /**

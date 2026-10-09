@@ -48,7 +48,7 @@ class CommonNamesFalsePositiveTest extends TestCase
     public function testCorpusCoversEveryFusionLanguage(): void
     {
         $corpus = array_keys(require __DIR__ . '/../fixtures/common-names.php');
-        $missing = array_diff(\DefamatoryContentReview\FusionSupport::supportedLanguages(), $corpus);
+        $missing = array_diff(\DefamatoryContentReview\Phonetic\FusionSupport::supportedLanguages(), $corpus);
 
         $this->assertSame([], array_values($missing), 'Idiomas con fusión sin corpus de nombres reales.');
     }

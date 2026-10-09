@@ -2,7 +2,7 @@
 
 namespace Tests\Chat\Inflection;
 
-use DefamatoryContentReview\TopicInflector;
+use DefamatoryContentReview\Chat\Inflection\TopicInflector;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

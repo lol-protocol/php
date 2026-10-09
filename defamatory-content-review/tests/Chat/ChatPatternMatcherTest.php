@@ -2,7 +2,7 @@
 
 namespace Tests\Chat;
 
-use DefamatoryContentReview\ChatPatternMatcher;
+use DefamatoryContentReview\Chat\ChatPatternMatcher;
 use PHPUnit\Framework\TestCase;
 
 class ChatPatternMatcherTest extends TestCase

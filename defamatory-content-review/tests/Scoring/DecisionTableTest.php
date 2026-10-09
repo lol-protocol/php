@@ -2,7 +2,7 @@
 
 namespace Tests\Scoring;
 
-use DefamatoryContentReview\ScoringPolicy;
+use DefamatoryContentReview\Scoring\ScoringPolicy;
 use PHPUnit\Framework\TestCase;
 
 /** Reglas de decisión y tope contra rechazo automático — DecisionTable, vía ScoringPolicy. */

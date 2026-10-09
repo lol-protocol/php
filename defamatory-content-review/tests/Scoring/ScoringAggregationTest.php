@@ -3,7 +3,7 @@
 namespace Tests\Scoring;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\ScoringPolicy;
+use DefamatoryContentReview\Scoring\ScoringPolicy;
 use PHPUnit\Framework\TestCase;
 
 /** Modo de agregación 'max' (por defecto) vs. 'sum' — ScoringPolicy::aggregate(). */

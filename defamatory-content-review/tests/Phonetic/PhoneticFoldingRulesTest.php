@@ -2,21 +2,21 @@
 
 namespace Tests\Phonetic;
 
-use DefamatoryContentReview\CzechPhoneticFolder;
-use DefamatoryContentReview\DanishPhoneticFolder;
-use DefamatoryContentReview\DutchPhoneticFolder;
-use DefamatoryContentReview\FinnishPhoneticFolder;
-use DefamatoryContentReview\FrenchPhoneticFolder;
-use DefamatoryContentReview\GermanPhoneticFolder;
-use DefamatoryContentReview\HungarianPhoneticFolder;
-use DefamatoryContentReview\IndonesianPhoneticFolder;
-use DefamatoryContentReview\NorwegianPhoneticFolder;
-use DefamatoryContentReview\PolishPhoneticFolder;
-use DefamatoryContentReview\PortuguesePhoneticFolder;
-use DefamatoryContentReview\RomanianPhoneticFolder;
-use DefamatoryContentReview\SlovakPhoneticFolder;
-use DefamatoryContentReview\SwedishPhoneticFolder;
-use DefamatoryContentReview\TurkishPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\CzechPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\DanishPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\DutchPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\FinnishPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\FrenchPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\GermanPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\HungarianPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\IndonesianPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\NorwegianPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\PolishPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\PortuguesePhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\RomanianPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\SlovakPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\SwedishPhoneticFolder;
+use DefamatoryContentReview\Phonetic\Folders\TurkishPhoneticFolder;
 use PHPUnit\Framework\TestCase;
 
 /**

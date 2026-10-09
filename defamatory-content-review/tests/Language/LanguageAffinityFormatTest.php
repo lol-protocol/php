@@ -2,7 +2,7 @@
 
 namespace Tests\Language;
 
-use DefamatoryContentReview\LanguageAffinity;
+use DefamatoryContentReview\Language\LanguageAffinity;
 use PHPUnit\Framework\TestCase;
 
 class LanguageAffinityFormatTest extends TestCase

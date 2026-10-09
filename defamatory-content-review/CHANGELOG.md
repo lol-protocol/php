@@ -2,6 +2,45 @@
 
 ## [Sin publicar]
 
+La próxima versión es **5.0.0**: las clases cambian de namespace.
+
+### Cambiado (incompatible)
+
+- **Las clases se agrupan en subnamespaces**, uno por carpeta de `src/`. El
+  nombre de cada clase no cambia; sólo su `use`:
+
+  | Antes (`DefamatoryContentReview\…`) | Ahora (`DefamatoryContentReview\…`) |
+  |---|---|
+  | `DefamatoryContentReviewer`, `NameEvaluator` | sin cambio |
+  | `LanguageRegistry`, `LanguageAffinity`, `LanguageAccess`, `RelatedLanguageValidator` | `Language\…` |
+  | `WordList`, `WordListIndex`, `WordListPhonetics`, `WordListScanner` | `Dictionary\…` |
+  | `AccentFolding`, `ScriptFolding`, `Leetspeak`, `LeetspeakFolding` | `Normalization\…` |
+  | `PhoneticFolderRegistry`, `AbstractPhoneticFolder`, `CommonPhoneticAccents`, `FusionSupport`, `PhoneticFusionDetector` | `Phonetic\…` |
+  | `SpanishPhoneticFolder` … `TurkishPhoneticFolder` (17) | `Phonetic\Folders\…` |
+  | `ScoringPolicy`, `ScoringWeights`, `SeverityBands`, `DecisionTable` | `Scoring\…` |
+  | `ValidationResult`, `FlaggedTermCollection`, `TermExplanation`, `RiskReportBuilder` | `Report\…` |
+  | `ChatLineReviewer`, `ChatLineResult`, `ChatTopics`, `ChatMatches`, `ChatPatternMatcher`, `SpacedLetters`, `RepeatedLetters`, `RepeatedReadings` | `Chat\…` |
+  | `TopicInflector`, `TopicInflection`, `SpanishInflection`, `SpanishVerbs`, `EnglishInflection` | `Chat\Inflection\…` |
+
+  Para migrar basta cambiar los `use` (por ejemplo
+  `use DefamatoryContentReview\Chat\ChatLineReviewer;`). `phone-directory`
+  ya está migrado y pide `^5.0`.
+- **Se quita el alias deprecado `PhoneticFolder`** (nombre anterior a 4.3.0
+  de `SpanishPhoneticFolder`): su ruta vieja deja de existir con los
+  subnamespaces. Usar `Phonetic\Folders\SpanishPhoneticFolder`.
+- **`config/languages/supported-languages.php` pasa a
+  `config/supported-languages.php`**, junto a `language-families.php` y
+  `risk-categories.php`: `languages/` queda sólo con los diccionarios. Quien
+  use su propia copia de `config/` debe mover ese archivo.
+- PSR-4 apunta a `src/` (antes `src/DefamatoryContentReview/`, que repetía
+  el nombre del namespace).
+- `tests/` sigue la misma división (`tests/Chat/`, `tests/Phonetic/`…, con
+  namespace `Tests\<Carpeta>`). `EdgeCasesValidationTest` pasa a
+  `Language/LanguageAffinityFormatTest`, `TopicInflectionTest` a
+  `Chat/Inflection/InflectedFormsTest`, y las fixtures `chat-lines.php` y
+  `chat-topics-lines.php` a `chat-lines-spa-eng.php` y
+  `chat-lines-per-language.php`. `FileSizeLimitTest` recorre subcarpetas.
+
 ### Añadido
 
 - **Listas de temas de chat en los 33 idiomas** (`config/chat-topics/`):

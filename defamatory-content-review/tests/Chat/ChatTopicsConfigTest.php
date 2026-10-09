@@ -2,10 +2,10 @@
 
 namespace Tests\Chat;
 
-use DefamatoryContentReview\ChatTopics;
+use DefamatoryContentReview\Chat\ChatTopics;
+use DefamatoryContentReview\Chat\Inflection\TopicInflector;
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\TopicInflector;
-use DefamatoryContentReview\WordList;
+use DefamatoryContentReview\Dictionary\WordList;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

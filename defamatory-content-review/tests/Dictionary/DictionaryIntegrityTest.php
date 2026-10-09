@@ -2,7 +2,7 @@
 
 namespace Tests\Dictionary;
 
-use DefamatoryContentReview\WordList;
+use DefamatoryContentReview\Dictionary\WordList;
 use PHPUnit\Framework\TestCase;
 
 /**
