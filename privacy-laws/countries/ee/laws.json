@@ -18,6 +18,7 @@
     "website_url": "https://www.riigiteataja.ee/akt/112072025014.pdf",
     "language": "Estonian",
     "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
     "notes": "Fines via misdemeanour procedure; Nov 2023 Penal Code change lifted the earlier cap"
   }
 ]

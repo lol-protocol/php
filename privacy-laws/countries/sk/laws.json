@@ -18,6 +18,7 @@
     "website_url": "https://dataprotection.gov.sk/files/personal-data-sample/2019_10_03_act_18_2018_on_personal_data_protection_and_amending_and_supplementing_certain_acts.pdf",
     "language": "English",
     "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
     "notes": "Replaced Act 122/2013; also transposes Law Enforcement Directive; promulgated 30 Jan 2018"
   }
 ]

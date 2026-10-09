@@ -18,6 +18,7 @@
     "website_url": "https://www.argentina.gob.ar/",
     "language": "Spanish",
     "frameworks": "EU-Adequacy/CoE-108",
+    "frameworks_not": "GDPR",
     "notes": "South America region"
   }
 ]

@@ -18,6 +18,7 @@
     "website_url": "https://www.cnil.fr/",
     "language": "French",
     "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
     "notes": "GDPR + French law 78-17"
   }
 ]

@@ -50,7 +50,7 @@ Folder names are ISO 3166-1 alpha-2 codes in lowercase (`eu`, `us`, `gb`, `br`�
 
 `countries/privacy_laws_master.csv` — one row per law. Columns:
 
-`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `jurisdiction` · `enactment_date` and `effective_date` (`YYYY-MM-DD`) · `scope` · `applies_to` · `key_requirements` · `data_categories` · `retention_period` · `enforcement_authority` · `penalties_range` · `exemptions` · `website_url` · `language` (`English` or `French/German`) · `frameworks` (optional, `/`-separated subset of `GDPR`, `EU-Adequacy`, `CoE-108`, `APEC-CBPR`) · `notes`
+`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `jurisdiction` · `enactment_date` and `effective_date` (`YYYY-MM-DD`) · `scope` · `applies_to` · `key_requirements` · `data_categories` · `retention_period` · `enforcement_authority` · `penalties_range` · `exemptions` · `website_url` · `language` (`English` or `French/German`) · `frameworks` (optional, `/`-separated subset of `GDPR`, `EU-Adequacy`, `CoE-108`, `APEC-CBPR`) · `frameworks_not` (same values, confirmed **not** joined) · `notes`
 
 Fields that contain a comma **must be quoted** (`"Up to $7,500 per violation"`). The tooling refuses rows with the wrong number of columns instead of guessing.
 
@@ -58,7 +58,7 @@ Russia and Turkey are filed under `europe`; change `region` in the CSV if you pr
 
 `effective_date` is when the main obligations start to apply. It can lie in the future (Paraguay, Sri Lanka): the table then shows a "Not yet in force" badge.
 
-`frameworks` lists only memberships that were found; **an empty value means "none found", not "confirmed none"**. Meaning of each value:
+Frameworks have **three states**: listed in `frameworks` (takes part), listed in `frameworks_not` (confirmed not to take part), or in neither (not confirmed). The filter only matches confirmed participation; the country card shows all three. `frameworks_not` was filled only where the research list is complete or reconstructed from official counts (GDPR, EU adequacy, Convention 108). Nobody is recorded as outside APEC/Global CBPR because that roster was only partly retrieved, adequacy is never "no" for EU/EEA states (it does not apply), and the EU row's own Convention 108 status is left unconfirmed. Meaning of each value:
 
 | Value | Meaning |
 |---|---|

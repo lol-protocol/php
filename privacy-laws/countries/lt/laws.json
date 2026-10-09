@@ -18,6 +18,7 @@
     "website_url": "https://vdai.lrv.lt/en/legislation/",
     "language": "English",
     "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
     "notes": "Replaced the 1996 law I-1374; separate Law XIII-1435 covers criminal-justice data"
   }
 ]

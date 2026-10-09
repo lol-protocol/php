@@ -18,6 +18,7 @@
     "website_url": "https://naih.hu/",
     "language": "Hungarian",
     "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
     "notes": "GDPR implementation"
   }
 ]

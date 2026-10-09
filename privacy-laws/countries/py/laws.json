@@ -18,6 +18,7 @@
     "website_url": "https://www.bacn.gov.py/leyes-paraguayas/12924/ley-n-7593-2025-de-protecci-n-de-datos-personales-en-la-rep-blica-del-paraguay",
     "language": "Spanish",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Enacted; main obligations apply 24 months after publication (Nov 2027); regulations pending"
   }
 ]

@@ -18,6 +18,7 @@
     "website_url": "https://www.pdpc.gov.sg/",
     "language": "English",
     "frameworks": "APEC-CBPR",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Asia-Pacific region"
   }
 ]

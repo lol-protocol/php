@@ -18,6 +18,7 @@
     "website_url": "https://www.dataguidance.com/notes/jamaica-data-protection-overview",
     "language": "English",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "OIC set up Dec 2021; controller duties from 2023-12-01; full enforcement expected only by 2028"
   }
 ]

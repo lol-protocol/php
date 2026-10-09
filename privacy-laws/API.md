@@ -32,7 +32,7 @@ const { data: countries, meta } = await (await fetch("/privacy-laws/api.php?acti
 const { data: laws } = await (await fetch("/privacy-laws/api.php?action=country&tld=br")).json();
 ```
 
-A law object has the columns of `privacy_laws_master.csv` (see the README): `country_code`, `country_name`, `region`, `law_name`, `jurisdiction`, `enactment_date`, `effective_date`, `scope`, `applies_to`, `key_requirements`, `data_categories`, `retention_period`, `enforcement_authority`, `penalties_range`, `exemptions`, `website_url`, `language`, `frameworks` (empty, or `/`-separated values from `GDPR`, `EU-Adequacy`, `CoE-108`, `APEC-CBPR`), `notes`.
+A law object has the columns of `privacy_laws_master.csv` (see the README): `country_code`, `country_name`, `region`, `law_name`, `jurisdiction`, `enactment_date`, `effective_date`, `scope`, `applies_to`, `key_requirements`, `data_categories`, `retention_period`, `enforcement_authority`, `penalties_range`, `exemptions`, `website_url`, `language`, `frameworks` (empty, or `/`-separated values from `GDPR`, `EU-Adequacy`, `CoE-108`, `APEC-CBPR`), `frameworks_not` (same values, confirmed **not** joined; one in neither list is unconfirmed), `notes`.
 
 ## Caching
 

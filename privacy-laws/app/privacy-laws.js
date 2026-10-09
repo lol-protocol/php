@@ -291,11 +291,14 @@ function renderCountryCard() {
   const frameworks = [
     ...new Set(app.data.rows.filter((row) => row.tld === country.tld).flatMap((row) => row.frameworkList)),
   ].sort((a, b) => FRAMEWORK_ORDER.indexOf(a) - FRAMEWORK_ORDER.indexOf(b));
-  const badges = frameworks.length
-    ? frameworks
-        .map((f) => `<span class="badge" title="${esc(frameworkName(f))}">${esc(f)}</span>`)
-        .join("")
-    : "—";
+  const laws = app.data.rows.filter((row) => row.tld === country.tld);
+  const notIn = FRAMEWORK_ORDER.filter((f) => !frameworks.includes(f) && laws.some((row) => row.frameworksNot.includes(f)));
+  const unconfirmed = FRAMEWORK_ORDER.filter((f) => !frameworks.includes(f) && !notIn.includes(f));
+  const badgeList = (list, extraClass = "") =>
+    list.length
+      ? list.map((f) => `<span class="badge${extraClass}" title="${esc(frameworkName(f))}">${esc(f)}</span>`).join("")
+      : "—";
+  const badges = badgeList(frameworks);
   host.hidden = false;
   host.innerHTML = `
     <h2>${esc(country.name)} <span class="badge">${esc(country.code)}</span></h2>
@@ -303,6 +306,8 @@ function renderCountryCard() {
       <div><dt>${esc(t("card.region"))}</dt><dd>${esc(regionLabel(country.region))}</dd></div>
       <div><dt>${esc(t("card.laws"))}</dt><dd>${country.lawCount}</dd></div>
       <div><dt>${esc(t("card.frameworks"))}</dt><dd class="badge-list">${badges}</dd></div>
+      <div><dt>${esc(t("card.frameworksNot"))}</dt><dd class="badge-list">${badgeList(notIn, " badge-outline")}</dd></div>
+      <div><dt>${esc(t("card.unconfirmed"))}</dt><dd>${unconfirmed.length ? esc(unconfirmed.join(", ")) : "—"}</dd></div>
       <div><dt>${esc(t("card.folder"))}</dt><dd><code>countries/${esc(country.tld)}/</code></dd></div>
       <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
     </dl>

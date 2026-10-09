@@ -18,6 +18,7 @@
     "website_url": "https://www.dpa.gr/",
     "language": "Greek",
     "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
     "notes": "GDPR implementation"
   }
 ]

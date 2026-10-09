@@ -18,6 +18,7 @@
     "website_url": "https://www.bps.gub.uy/bps/file/10816/25/ley-18.331---habeas-data.pdf",
     "language": "Spanish",
     "frameworks": "EU-Adequacy/CoE-108",
+    "frameworks_not": "GDPR",
     "notes": "Regulated by Decree 414/009; territorial scope extended by Law 19.670 (arts 37-40)"
   }
 ]

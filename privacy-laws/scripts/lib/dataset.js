@@ -36,6 +36,7 @@ export const COLUMNS = [
   "website_url",
   "language",
   "frameworks",
+  "frameworks_not",
   "notes",
 ];
 
@@ -197,6 +198,16 @@ export function validateRecords(records, header = COLUMNS) {
         if (!FRAMEWORKS.includes(framework)) fail(`unknown framework ${JSON.stringify(framework)} (allowed: ${FRAMEWORKS.join(", ")})`);
       }
       if (new Set(listed).size !== listed.length) fail(`frameworks lists the same value twice: ${record.frameworks}`);
+    }
+    // Three states per framework: in frameworks (takes part), in frameworks_not (confirmed not), or in neither (not confirmed).
+    if (record.frameworks_not) {
+      const listed = record.frameworks_not.split("/");
+      for (const framework of listed) {
+        if (!FRAMEWORKS.includes(framework)) fail(`unknown framework ${JSON.stringify(framework)} in frameworks_not (allowed: ${FRAMEWORKS.join(", ")})`);
+      }
+      if (new Set(listed).size !== listed.length) fail(`frameworks_not lists the same value twice: ${record.frameworks_not}`);
+      const both = listed.filter((f) => (record.frameworks || "").split("/").includes(f));
+      if (both.length) fail(`${both.join(", ")} is listed both in frameworks and in frameworks_not`);
     }
 
     if (!/^[A-Z][A-Za-z]+(\/[A-Z][A-Za-z]+)*$/.test(record.language)) {

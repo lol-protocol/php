@@ -18,6 +18,7 @@
     "website_url": "https://www.cac.gov.cn/",
     "language": "Chinese",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "China's privacy law"
   }
 ]

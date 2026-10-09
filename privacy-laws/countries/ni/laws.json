@@ -18,6 +18,7 @@
     "website_url": "https://nicaragua.justia.com/nacionales/leyes/ley-de-proteccion-de-datos-personales-mar-29-2012/gdoc",
     "language": "Spanish",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Regulation Decree 36-2012 (published 2012-10-19); DIPRODAP reported non-operational"
   }
 ]

@@ -66,16 +66,23 @@ export const COMPARE_CRITERIA = [
   "penalties_range",
   "exemptions",
   "frameworks",
+  "frameworks_not",
 ];
 
-export function enrichRow(row) {
-  row.effectiveYear = Number(row.effective_date.slice(0, 4));
-  row.frameworkList = row.frameworks
-    ? row.frameworks
+const splitList = (value) =>
+  value
+    ? value
         .split("/")
         .map((s) => s.trim())
         .filter(Boolean)
     : [];
+
+export function enrichRow(row) {
+  row.effectiveYear = Number(row.effective_date.slice(0, 4));
+  row.frameworkList = splitList(row.frameworks);
+  row.frameworksNot = splitList(row.frameworks_not);
+  // Neither confirmed nor ruled out.
+  row.frameworksUnconfirmed = FRAMEWORK_ORDER.filter((f) => !row.frameworkList.includes(f) && !row.frameworksNot.includes(f));
   row.languages = row.language
     .split("/")
     .map((s) => s.trim())

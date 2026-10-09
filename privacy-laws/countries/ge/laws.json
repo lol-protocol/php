@@ -18,6 +18,7 @@
     "website_url": "https://www.dlapiperdataprotection.com/?t=law&c=GE",
     "language": "English",
     "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced 2011 law (GDPR-modelled); DPO/DPIA duties from 1 Jun 2024; other parts phased later"
   }
 ]

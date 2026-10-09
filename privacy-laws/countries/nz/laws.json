@@ -18,6 +18,7 @@
     "website_url": "https://www.privacy.org.nz/",
     "language": "English",
     "frameworks": "EU-Adequacy",
+    "frameworks_not": "GDPR/CoE-108",
     "notes": "Updated from 1993 Act"
   }
 ]

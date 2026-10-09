@@ -18,6 +18,7 @@
     "website_url": "https://www.priv.gc.ca/",
     "language": "English",
     "frameworks": "EU-Adequacy/APEC-CBPR",
+    "frameworks_not": "GDPR/CoE-108",
     "notes": "Private sector national standard"
   }
 ]

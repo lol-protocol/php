@@ -18,6 +18,7 @@
     "website_url": "https://www.dlapiperdataprotection.com/index.html?c=BA&t=law",
     "language": "English",
     "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced 2006 law (49/06); in force 8 Mar 2025; 2-year transition for existing processing"
   }
 ]

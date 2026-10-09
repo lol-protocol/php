@@ -18,6 +18,7 @@
     "website_url": "https://www.gob.mx/inai/",
     "language": "Spanish",
     "frameworks": "CoE-108/APEC-CBPR",
+    "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "GDPR-influenced framework"
   }
 ]

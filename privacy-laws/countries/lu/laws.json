@@ -18,6 +18,7 @@
     "website_url": "https://cnpd.lu/",
     "language": "French/German/Luxembourgish",
     "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
     "notes": "GDPR implementation"
   }
 ]

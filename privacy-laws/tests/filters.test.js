@@ -201,6 +201,12 @@ test("privacy filters give the expected counts on the real data", () => {
   assert.ok(count("year=2018-2018&region=europe") >= 17);
 });
 
+test("every framework is in exactly one of three states", () => {
+  for (const r of data.rows) {
+    assert.deepEqual([...r.frameworkList, ...r.frameworksNot, ...r.frameworksUnconfirmed].sort(), ["APEC-CBPR", "CoE-108", "EU-Adequacy", "GDPR"], r.country_code);
+  }
+});
+
 test("the framework facet requires every selected framework", () => {
   const withAll = (...wanted) => data.rows.filter((r) => wanted.every((f) => r.frameworkList.includes(f))).length;
   assert.ok(withAll("GDPR") > 0 && withAll("CoE-108") > 0 && withAll("APEC-CBPR") > 0);

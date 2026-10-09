@@ -39,7 +39,7 @@ test("rows with commas inside fields stay aligned (regression: columns used to s
 });
 
 test("an unquoted comma is rejected instead of silently shifting columns", () => {
-  const row = "EU,European Union,europe,GDPR,EC,2016-04-27,2018-05-25,a,b,Lawful basis, consent,c,d,e,f,g,https://x.eu/,English,GDPR,n";
+  const row = "EU,European Union,europe,GDPR,EC,2016-04-27,2018-05-25,a,b,Lawful basis, consent,c,d,e,f,g,https://x.eu/,English,GDPR,,n";
   assert.throws(() => parseMaster(`${COLUMNS.join(",")}\n${row}\n`), /Invalid Record Length/);
 });
 
@@ -53,6 +53,9 @@ test("validation reports bad data with the line number", () => {
   assert.match(only({ country_code: "usa" })[0], /country_code must be 2 uppercase letters/);
   assert.match(only({ language: "https://shifted.example" })[0], /language must look like/);
   assert.match(only({ website_url: "javascript:alert(1)" })[0], /http\(s\) URL/);
+  assert.match(only({ frameworks_not: "Schengen" })[0], /unknown framework "Schengen" in frameworks_not/);
+  assert.match(only({ frameworks_not: "GDPR/GDPR" })[0], /frameworks_not lists the same value twice/);
+  assert.match(only({ frameworks: "CoE-108", frameworks_not: "CoE-108" })[0], /CoE-108 is listed both/);
   for (const host of ["http://127.0.0.1:8080/x", "http://localhost/x", "http://169.254.169.254/latest/", "http://10.0.0.5/", "http://192.168.1.1/", "http://172.20.0.1/", "http://[::1]/", "http://intranet.internal/"]) {
     assert.match(only({ website_url: host })[0], /public web/, host);
   }
@@ -121,4 +124,15 @@ test("generated CSV files defuse spreadsheet formulas", () => {
     csv,
     `a,b,c\n"'=cmd|' /C calc'!A0","'@SUM(1+1)","plain, with comma"\n"'-1","'+1","say ""hi"""\n`
   );
+});
+
+test("framework data has three states and adequacy is never 'no' for EU/EEA states", () => {
+  const row = (code) => records.find((r) => r.country_code === code);
+  assert.equal(row("DE").frameworks_not, "");
+  assert.ok(row("US").frameworks_not.split("/").includes("GDPR"));
+  for (const r of records.filter((x) => x.frameworks.split("/").includes("GDPR"))) {
+    assert.ok(!r.frameworks_not.includes("EU-Adequacy"), `${r.country_code}: adequacy does not apply inside the EU/EEA`);
+  }
+  // The CBPR roster could not be fully retrieved, so nobody is recorded as outside it.
+  assert.ok(records.every((r) => !r.frameworks_not.includes("APEC-CBPR")));
 });

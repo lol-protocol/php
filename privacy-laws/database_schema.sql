@@ -42,6 +42,7 @@ CREATE TABLE privacy_laws (
   website_url VARCHAR(512) COMMENT 'Official resource link',
   language VARCHAR(50) COMMENT 'Language of reference materials',
   frameworks VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'International frameworks, / separated: GDPR, EU-Adequacy, CoE-108, APEC-CBPR',
+  frameworks_not VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'Frameworks confirmed NOT joined; one in neither list is unconfirmed',
   notes TEXT COMMENT 'Additional context or special provisions',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

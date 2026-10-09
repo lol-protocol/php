@@ -18,6 +18,7 @@
     "website_url": "https://oag.ca.gov/privacy/ccpa",
     "language": "English",
     "frameworks": "EU-Adequacy/APEC-CBPR",
+    "frameworks_not": "GDPR/CoE-108",
     "notes": "Now CPRA as of Jan 2023"
   },
   {
@@ -39,6 +40,7 @@
     "website_url": "https://www.ftc.gov/coppa",
     "language": "English",
     "frameworks": "EU-Adequacy/APEC-CBPR",
+    "frameworks_not": "GDPR/CoE-108",
     "notes": "Website & app operators"
   }
 ]

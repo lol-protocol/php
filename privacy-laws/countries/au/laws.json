@@ -18,6 +18,7 @@
     "website_url": "https://www.oaic.gov.au/",
     "language": "English",
     "frameworks": "APEC-CBPR",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "13 Australian Privacy Principles"
   }
 ]

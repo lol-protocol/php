@@ -18,6 +18,7 @@
     "website_url": "https://cms.law/fr/mar/legal-updates/flash-info-maroc-etat-des-lieux-de-la-protection-des-donnees-a-caractere-personnel-au-maroc-loi-n-09-08",
     "language": "French",
     "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Dahir 1-09-15 of 18 Feb 2009; Bulletin Officiel 5714 of 5 Mar 2009; Decree 2-09-165 implements it"
   }
 ]

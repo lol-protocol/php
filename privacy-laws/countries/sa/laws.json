@@ -18,6 +18,7 @@
     "website_url": "https://www.pdpl.gov.sa/",
     "language": "Arabic/English",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Middle East region"
   }
 ]

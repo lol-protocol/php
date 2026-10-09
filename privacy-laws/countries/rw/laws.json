@@ -18,6 +18,7 @@
     "website_url": "https://hoganlovells.com/en/publications/key-features-of-the-new-rwandan-data-protection-law",
     "language": "English",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Two-year transition for existing controllers ended 15 Oct 2023"
   }
 ]

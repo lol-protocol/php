@@ -18,6 +18,7 @@
     "website_url": "https://www.dlapiperdataprotection.com/index.html?c=UA&t=law",
     "language": "English",
     "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "GDPR-style bill 8153 passed 1st reading only (Nov 2024); 2010 law still applies"
   }
 ]

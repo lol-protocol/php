@@ -18,6 +18,7 @@
     "website_url": "https://www.aps.gob.sv/",
     "language": "Spanish",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Central America region"
   }
 ]

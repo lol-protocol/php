@@ -311,6 +311,13 @@ label.check .count {
   margin: 0;
 }
 
+/* "Does not take part" badges: outlined so they never read as a membership. */
+.badge.badge-outline {
+  background-color: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-text-muted);
+}
+
 .badge-list {
   display: flex;
   flex-wrap: wrap;

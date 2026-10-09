@@ -18,6 +18,7 @@
     "website_url": "https://www.sutel.go.cr/sites/default/files/normativas/ley_proteccion_de_la_persona_frente_al_tratamiento_de_sus_ley_8968.pdf",
     "language": "Spanish",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Regulation: Decree 37554-JP; reform bill 23097 not confirmed enacted"
   }
 ]

@@ -18,6 +18,7 @@
     "website_url": "https://pdpc.eg/",
     "language": "Arabic/English",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "North Africa region"
   }
 ]

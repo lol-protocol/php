@@ -18,6 +18,7 @@
     "website_url": "https://www.digitaltalenta.kemkominfo.go.id/",
     "language": "Indonesian",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Southeast Asia region"
   }
 ]

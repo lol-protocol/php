@@ -4,6 +4,7 @@ import { after, test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { COMPARE_CRITERIA } from "../../app/lib/domain.js";
 import { focused, newPage, openApp, root, shownCount } from "./browser.js";
 
 const app = await openApp();
@@ -45,7 +46,7 @@ test("comparison needs two countries; select-all and empty state behave", { skip
   assert.match(await page.locator("#compareBtn").textContent(), /\(2\)/);
   await page.click("#compareBtn");
   assert.equal(await page.locator("#comparisonResults thead th").count(), 3);
-  assert.equal(await page.locator("#comparisonResults tbody tr").count(), 8);
+  assert.equal(await page.locator("#comparisonResults tbody tr").count(), COMPARE_CRITERIA.length);
   await page.locator("#closeComparison").focus();
   await page.keyboard.press("Enter");
   assert.equal(await focused(page), "BUTTON#compareBtn", "closing the comparison returns focus to its button");
@@ -151,6 +152,18 @@ test("language comes from the URL, switches live and stays in the URL", { skip }
   await page.check('input[name="region"][value="europe"]');
   assert.match(await page.locator(".chip").first().textContent(), /^Europa/);
   assert.deepEqual(problems, []);
+  await page.context().close();
+});
+
+test("the card separates frameworks taken part in, ruled out and not confirmed", { skip }, async () => {
+  const { page } = await newPage(app.browser);
+  await page.goto(url("country=us"), { waitUntil: "networkidle" });
+  const rowOf = async (label) => (await page.locator("#countryCard .card-grid > div", { hasText: label }).first().locator("dd").textContent()).trim();
+  const us = laws.find((l) => l.tld === "us");
+  assert.equal(await rowOf("Takes part in"), us.frameworks.split("/").join(""));
+  assert.equal(await rowOf("Does not take part in"), us.frameworks_not.split("/").join(""));
+  const unconfirmed = ["GDPR", "EU-Adequacy", "CoE-108", "APEC-CBPR"].filter((f) => !`${us.frameworks}/${us.frameworks_not}`.split("/").includes(f));
+  assert.equal(await rowOf("Not confirmed"), unconfirmed.join(", ") || "—");
   await page.context().close();
 });
 

@@ -18,6 +18,7 @@
     "website_url": "https://www.vie-publique.sn/documents/438/loi-protection-donnees-a-caractere-personnel",
     "language": "French",
     "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Entry-into-force day unconfirmed (set to enactment date); 2019 replacement bill not adopted"
   }
 ]

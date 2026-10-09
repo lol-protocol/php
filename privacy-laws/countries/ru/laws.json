@@ -18,6 +18,7 @@
     "website_url": "https://rsoc.ru/",
     "language": "Russian",
     "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Russia's data protection law"
   }
 ]

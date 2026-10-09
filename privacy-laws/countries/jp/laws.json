@@ -18,6 +18,7 @@
     "website_url": "https://www.ppc.go.jp/",
     "language": "Japanese",
     "frameworks": "EU-Adequacy/APEC-CBPR",
+    "frameworks_not": "GDPR/CoE-108",
     "notes": "Asia's comprehensive privacy law"
   }
 ]

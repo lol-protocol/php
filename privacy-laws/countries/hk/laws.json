@@ -18,6 +18,7 @@
     "website_url": "https://www.pcpd.org.hk/",
     "language": "English/Chinese",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Asia-specific privacy law"
   }
 ]

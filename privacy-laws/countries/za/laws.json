@@ -18,6 +18,7 @@
     "website_url": "https://www.justice.gov.za/",
     "language": "English",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Africa's comprehensive privacy law"
   }
 ]

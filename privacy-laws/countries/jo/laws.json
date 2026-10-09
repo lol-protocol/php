@@ -18,6 +18,7 @@
     "website_url": "https://www.clydeco.com/en/insights/2023/10/jordan-issues-first-personal-data-protection-law",
     "language": "English",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Law No. 24 of 2023; grace period for existing processing ended Mar 2025"
   }
 ]

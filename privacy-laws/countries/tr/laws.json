@@ -18,6 +18,7 @@
     "website_url": "https://www.kvkk.gov.tr/",
     "language": "Turkish",
     "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Turkey's privacy law"
   }
 ]

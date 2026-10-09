@@ -18,6 +18,7 @@
     "website_url": "https://dpa.gov.lk/Background.php",
     "language": "English",
     "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Phased: DPA set up 2023; Parts I & III start 2027-01-01; penalties (Part VII) not yet in force"
   }
 ]

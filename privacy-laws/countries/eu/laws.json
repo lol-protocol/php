@@ -18,6 +18,7 @@
     "website_url": "https://gdpr-info.eu/",
     "language": "English",
     "frameworks": "GDPR",
+    "frameworks_not": "",
     "notes": "Extraterritorial applicability"
   }
 ]

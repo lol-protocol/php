@@ -18,6 +18,7 @@
     "website_url": "https://www.fscmauritius.org/media/ikoldflp/the-data-protection-act-2017.pdf",
     "language": "English",
     "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced the Data Protection Act 2004; commenced by Proclamation No. 3 of 2018"
   }
 ]

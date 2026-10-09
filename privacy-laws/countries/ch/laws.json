@@ -18,6 +18,7 @@
     "website_url": "https://www.edoeb.admin.ch/",
     "language": "German/French/Italian",
     "frameworks": "EU-Adequacy/CoE-108",
+    "frameworks_not": "GDPR",
     "notes": "GDPR-aligned European standard"
   }
 ]

@@ -18,6 +18,7 @@
     "website_url": "https://azlp.mk/en/?p=12026",
     "language": "English",
     "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced 2005 law; GDPR-modelled; in force 24 Feb 2020; full application 24 Aug 2021"
   }
 ]

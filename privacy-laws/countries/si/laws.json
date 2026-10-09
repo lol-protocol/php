@@ -18,6 +18,7 @@
     "website_url": "https://www.uradni-list.si/glasilo-uradni-list-rs/vsebina/2022-01-4187/zakon-o-varstvu-osebnih-podatkov-zvop-2",
     "language": "Slovenian",
     "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
     "notes": "Replaced ZVOP-1 (2004); published in Official Gazette RS 163/2022 on 27 Dec 2022"
   }
 ]
