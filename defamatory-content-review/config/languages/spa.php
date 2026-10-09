@@ -141,7 +141,7 @@ return [
             ['word' => 'feo', 'riskType' => 'fisico', 'severity' => 'low', 'nameCollision' => true],
             ['word' => 'fea', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'feúcho', 'riskType' => 'fisico', 'severity' => 'low'],
-            ['word' => 'horrible', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'horrible', 'riskType' => 'fisico', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'horroroso', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'espantoso', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'adefesio', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -564,7 +564,7 @@ return [
 
         'etnico' => [
             ['word' => 'negrata', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'negro', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'negro', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'mulato', 'riskType' => 'etnico', 'severity' => 'medium'],
             ['word' => 'mestizo', 'riskType' => 'etnico', 'severity' => 'low'],
             ['word' => 'indio', 'riskType' => 'etnico', 'severity' => 'medium'],

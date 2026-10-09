@@ -3,6 +3,7 @@
 /** Portuguese chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'por', 'kind' => 'chat-topics'],
+    'everyday' => ['louça', 'ver-me'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

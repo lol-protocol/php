@@ -31,13 +31,21 @@ final class AccentFolding
 
     /**
      * Letras que en el MAP de arriba son variante diacrítica de otra en la
-     * mayoría de idiomas, pero en estos son letra propia del alfabeto: "ô",
-     * "â" y "đ" no son acentos de "o"/"a"/"d" en vietnamita, son fonemas
-     * distintos ("hói" = calvo, "hôi" = que huele mal; "đần" = tonto, "Dần"
-     * = nombre propio). Plegarlas fusionaría palabras no emparentadas.
+     * mayoría de idiomas, pero en estos son letra propia del alfabeto, y
+     * plegarlas fusiona palabras no emparentadas. Medido contra las 50.000
+     * palabras más usadas de cada idioma (bin/false-positives.php):
+     * - vie: ă â ê ô đ y los tonos son fonemas («dài» = largo, «dái» = testículos;
+     *   «đeo» = llevar puesto, «đéo» = vulgar);
+     * - dan/nor: æ ø å («høre» = oír, «hore» = prostituta; «når» = cuando, «nar» = tonto);
+     * - swe: å ä ö («höra» = oír, «hora»; «rätta» = corregir, «råtta» = rata);
+     * - fin: å ä ö («tai» = o, la 56.ª palabra más usada; «täi» = piojo).
      */
     private const LANGUAGE_EXCLUSIONS = [
-        'vie' => ['ă', 'â', 'ê', 'ô', 'đ'],
+        'vie' => ['ă', 'â', 'ê', 'ô', 'đ', 'á', 'à', 'ã', 'é', 'è', 'í', 'ì', 'ó', 'ò', 'õ', 'ú', 'ù', 'ý'],
+        'dan' => ['æ', 'ø', 'å'],
+        'nor' => ['æ', 'ø', 'å'],
+        'swe' => ['å', 'ä', 'ö'],
+        'fin' => ['å', 'ä', 'ö'],
     ];
 
     public static function fold(string $text, string $language = ''): string

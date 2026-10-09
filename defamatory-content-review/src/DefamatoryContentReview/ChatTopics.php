@@ -21,6 +21,8 @@ final class ChatTopics
     private array $patterns;
     /** @var array<string,true> */
     private array $legit = [];
+    /** @var array<string,true> */
+    private array $everyday = [];
     private bool $collapseRepeats;
 
     /** @param array<string,mixed> $config ['meta' => …, 'words' => categoría => entradas, 'patterns' => …] */
@@ -31,6 +33,9 @@ final class ChatTopics
         $this->collapseRepeats = (bool) ($config['meta']['collapseRepeats'] ?? false);
         foreach ($config['legit'] ?? [] as $word) {
             $this->legit[RepeatedLetters::key($word)] = true;
+        }
+        foreach ($config['everyday'] ?? [] as $word) {
+            $this->everyday[mb_strtolower($word)] = true;
         }
         $patterns = $config['patterns'] ?? [];
         $this->patterns = $this->collapseRepeats
@@ -47,15 +52,17 @@ final class ChatTopics
      * Los términos de `$list` en la línea. Donde el idioma lo pide (meta
      * `collapseRepeats`) también los escritos con letras repetidas
      * («puuuta»); si sólo hizo falta reducir dobles, el hallazgo trae
-     * `repeat => doubled`. Ver RepeatedLetters.
+     * `repeat => doubled`. Ver RepeatedLetters. Las palabras de `everyday`
+     * («moc», «sık») no se buscan: ver EverydayWords.
      *
      * @return array<int,array<string,mixed>>
      */
     public function scan(WordList $list, string $text): array
     {
-        return $this->collapseRepeats
-            ? WordListScanner::scan($text, RepeatedLetters::searcher(fn(string $phrase): ?array => $list->search($phrase), $this->legit))
-            : $list->findInText($text);
+        $text = EverydayWords::mask($text, $this->everyday);
+        $search = fn(string $phrase): ?array => $list->search($phrase);
+
+        return WordListScanner::scan($text, $this->collapseRepeats ? RepeatedLetters::searcher($search, $this->legit) : $search);
     }
 
     /**

@@ -78,8 +78,34 @@
   más sin que un hablante nativo lo confirme. Verificado en cada idioma
   contra nombres reales comunes (`Hans Müller`, `John Smith`, `Jean
   Dupont`, `Giuseppe Russo`, `João Silva`, etc.) sin falsos positivos.
+- **Medición de falsos positivos del chat** contra las 50.000 palabras más
+  usadas de 32 idiomas (`bin/false-positives.php`, listas de FrequencyWords) y
+  **planillas de revisión nativa** por idioma (`bin/review-sheets.php` →
+  `review/<código>.csv`): cada término con categoría, severidad, marcas, rango
+  de frecuencia y decisión actual del chat, más las palabras frecuentes que se
+  censurarían sin ser un término. Ver `review/README.md`.
+- **Clave `everyday` en `config/chat-topics/`**: palabras cotidianas que sin
+  tildes coinciden con un término («moc» → «moč», «katıl» → «katil», «possède»
+  → «possédé», «santa» → «sánta») y que, escritas así, el chat no busca
+  (`EverydayWords`). 21 palabras en 9 idiomas; `ChatTopicsExemptionsTest`
+  verifica que cada una siga haciendo falta.
 
 ### Arreglado
+
+- **Falsos positivos del chat en palabras muy usadas**, encontrados con la
+  medición de arriba: de 5.368 a 5.159 palabras frecuentes censuradas, y de 213
+  a 166 entre las 1.000 más usadas de cada idioma.
+  - `AccentFolding` ya no pliega las letras propias del alfabeto en danés y
+    noruego (`æ ø å`), sueco y finés (`å ä ö`) ni vietnamita (vocales con tono
+    y `đ`): «høre» (oír) se leía «hore», «når» (cuando) «nar», «höra» «hora»,
+    «tai» (o) «täi» (piojo), «dài» (largo) «dái». Contrapartida: «hore» escrito
+    «høre» ya no se marca.
+  - `'ambiguous' => true` en 78 términos de 29 diccionarios que ante todo son
+    palabras cotidianas: «crazy», «verrückt», «fou», «louco», «preto», «negro»,
+    «kanker» (también «cáncer»), «أمي» (mi madre), «หนู» (ratón; «yo» al hablar
+    una mujer)… El chat los ignora; `validateName()` los sigue marcando.
+  - búlgaro «гол» (desnudo) pasa a `ambiguous` en los temas de chat: también
+    es «gol».
 
 - **`ChatPatternMatcher::fold()` borraba todo lo que no fuera `[a-z0-9]`**,
   así que ningún patrón en cirílico, griego, árabe, hebreo, CJK, etc. podía

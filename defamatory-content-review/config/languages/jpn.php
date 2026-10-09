@@ -127,7 +127,7 @@ return [
             ['word' => '悪党', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'ペテン師', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'ごくつぶし', 'riskType' => 'moral', 'severity' => 'medium'],
-            ['word' => '最低', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => '最低', 'riskType' => 'moral', 'severity' => 'medium', 'ambiguous' => true],
         ],
 
         'seibetsu' => [

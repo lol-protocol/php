@@ -570,7 +570,8 @@ español e inglés son las completas (ver «Lo que no cubre» para las demás).
 | `'also' => [...]` | Formas irregulares, a mano («degüello»). |
 | categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
 | meta `'collapseRepeats' => true` | Lee también las palabras escritas con letras repetidas. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
-| `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsConfigTest` verifica que cada una siga haciendo falta. |
+| `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
+| `'everyday' => [...]` | Palabras cotidianas que sin tildes coinciden con un término: «possède» → «possédé», «katıl» (únete) → «katil» (asesino), «moc» (mucho) → «moč». Escritas exactamente así (da igual la mayúscula) no se buscan en el chat; «katil» sin tilde sigue marcándose. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
 | `'patterns'` | Frases con forma: expresión regular sin delimitadores contra el texto plegado (minúsculas, sin tildes ni puntuación, leet resuelto), con `riskType`, `severity` y `label`. |
 
 `ChatTopicsConfigTest` verifica que las entradas estén bien formadas, que
@@ -580,6 +581,44 @@ línea que debe marcarse y otra parecida que no. Una palabra que ya está en el
 diccionario de insultos del idioma se marca igual como `difamatorio`; en
 `chat-topics/` sólo hace falta si además debe llevar la etiqueta `sexual` o
 `belico`.
+
+### Medir falsos positivos
+
+Un insulto rara vez está entre las palabras más usadas de un idioma; una palabra
+cotidiana que el chat confunde con uno, sí. `bin/false-positives.php` pasa por
+`ChatLineReviewer` las 50.000 palabras más usadas de un idioma (listas de
+[FrequencyWords](https://github.com/hermitdave/FrequencyWords), subtítulos de
+OpenSubtitles) y lista las que censuraría:
+
+```bash
+php bin/false-positives.php dan da_50k.txt > dan.csv   # rango,palabra,decision,tipos,termino
+```
+
+Medido en los 32 idiomas con lista, lo que se encontró y cómo se corrigió:
+
+- **Letras propias del alfabeto que el plegado de tildes fusionaba**: danés y
+  noruego «høre» (oír) → «hore», «når» (cuando) → «nar»; sueco «höra» → «hora»,
+  «rätta» (corregir) → «råtta»; finés «tai» (o, la 56.ª palabra más usada) →
+  «täi» (piojo); vietnamita «dài» (largo) → «dái», «đeo» (llevar puesto) → «đéo».
+  En esos 5 idiomas `AccentFolding` ya no pliega esas letras (`æ ø å`, `å ä ö`,
+  y las vocales con tono y `đ` del vietnamita).
+- **Palabras sueltas que sin tildes son un término**: «moc», «katıl», «possède»,
+  «demeure», «sértés»… van a `everyday` (ver la tabla de arriba).
+- **Términos que ante todo son palabras cotidianas**: «crazy», «verrückt»,
+  «fou», «louco», «preto», «kanker» (también «cáncer»), «أمي» (mi madre)… llevan
+  `'ambiguous' => true` en el diccionario: el chat los ignora y los nombres no.
+  Se marcaron 78 entradas en 29 idiomas.
+
+Resultado: de 5.368 a 5.159 palabras frecuentes censuradas, y entre las 1.000
+más usadas de cada idioma, de 213 a 166 —casi todas insultos y palabrotas
+reales («merde», «faen», «kurwa»), que en subtítulos son frecuentes—. Lo que
+queda por decidir se lista en `review/`.
+
+`bin/review-sheets.php` arma con eso una **planilla por idioma para revisión
+nativa** (`review/<código>.csv`): cada término con su categoría, severidad,
+marcas, rango de frecuencia y lo que decide hoy el chat; las excepciones; y las
+palabras frecuentes que se censurarían sin ser un término. El revisor llena
+`correcto` y `comentario`. Ver [`review/README.md`](review/README.md).
 
 ### Validación en el front (`js/limit-repeated-letters.js`)
 
@@ -627,6 +666,10 @@ palabras no entiende contexto:
   («Pratt» → «prat» lo estaba) llega a `review`, nunca a `reject`.
 - Un nombre que coincide con un insulto del diccionario («Dick») se marca
   igual; sólo los que declaran `nameCollision` bajan a revisión.
+- Una palabra de `everyday` se deja pasar escrita así aunque quien la escribe
+  quiera decir el insulto sin tilde («t'es demeure»): se eligió el uso
+  cotidiano, que es mucho más frecuente. La medición de falsos positivos es
+  por palabra suelta, no por frase: no ve los que sólo aparecen en contexto.
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
 - Las listas de temas de los otros 31 idiomas son de arranque (10–18 palabras
   por tema, más `ambiguous`). Las amenazas con forma (`patterns`) sólo están en
@@ -827,6 +870,9 @@ tests/
 └── fixtures/common-names.php       Nombres reales comunes por idioma (falsos positivos y benchmark)
 examples/                           Ejecutados por ExamplesRunTest
 bin/benchmark.php                   Nombres validados por segundo, por idioma
+bin/false-positives.php             Palabras frecuentes de un idioma que el chat censuraría
+bin/review-sheets.php               Planilla CSV de revisión nativa de un idioma
+review/                             Planillas generadas, una por idioma (ver review/README.md)
 ```
 
 Ningún archivo de `src/`, `tests/`, `examples/` o `bin/` supera 100 líneas

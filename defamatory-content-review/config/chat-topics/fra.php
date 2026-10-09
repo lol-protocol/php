@@ -3,6 +3,7 @@
 /** French chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'fra', 'kind' => 'chat-topics'],
+    'everyday' => ['drogue', 'rate', 'possède', 'demeure'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

@@ -86,7 +86,7 @@ return [
             ['word' => 'מגמגם', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'משותק', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'משוגע', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'מטורף', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'מטורף', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'צולעת', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'עיוורת', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'פוזלת', 'riskType' => 'discapacidad', 'severity' => 'medium'],

@@ -20,7 +20,7 @@ return [
             ['word' => 'สัตว์', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'เดรัจฉาน', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'หนอน', 'riskType' => 'animal', 'severity' => 'medium'],
-            ['word' => 'หนู', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'หนู', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'เหา', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'ปรสิต', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'ลิง', 'riskType' => 'animal', 'severity' => 'high'],

@@ -76,4 +76,133 @@ return [
             'coordinate the committee', 'Hannah and Anna', 'a bonny lass',
         ],
     ],
+    // Falsos positivos medidos con bin/false-positives.php: palabras de uso diario que se plegaban a un
+    // insulto («høre» → «hore», «tai» → «täi») o que son insulto sólo a veces («preto», «kanker», «gek»).
+    'dan' => [
+        'flagged' => [
+            'du er en hore' => ['reject', ['difamatorio']],
+            'dit røvhul' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Hvornår? Når du vil.', 'Jeg vil gerne høre fra dig', 'Er der nogen hjemme?'],
+    ],
+    'nor' => [
+        'flagged' => [
+            'din hore' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Jeg vil høre fra deg', 'Vi må ikke tape kampen'],
+    ],
+    'swe' => [
+        'flagged' => [
+            'din hora' => ['review', ['difamatorio']],
+        ],
+        'clean' => ['Jag vill höra från dig', 'Det är rätt, vi ska rätta det', 'Det var grymt bra!'],
+    ],
+    'fin' => [
+        'flagged' => [
+            'senkin täi' => ['review', ['difamatorio']],
+            'vittu' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Kahvia tai teetä?'],
+    ],
+    'vie' => [
+        'flagged' => [
+            'đồ dái' => ['reject', ['difamatorio']],
+            'đồ ngu' => ['review', ['difamatorio']],
+        ],
+        'clean' => ['Đeo kính vào, tóc dài quá', 'Mọi người khỏe không?'],
+    ],
+    'ces' => [
+        'flagged' => [
+            'moč' => ['review', ['difamatorio']],
+        ],
+        'clean' => ['Moc děkuji, nemá to chybu', 'Mám nové pero'],
+    ],
+    'slk' => [
+        'flagged' => [
+            'ty kurva' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Ďakujem moc, nemá čas'],
+    ],
+    'hun' => [
+        'flagged' => [
+            'te őrült kurva' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Nagyon örült a hírnek', 'Santa hozott ajándékot, ez nem sértés'],
+    ],
+    'tur' => [
+        'flagged' => [
+            'sik' => ['review', ['difamatorio']],
+            'orospu' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Sık sık gelirim, çok şık', 'Bize katıl, Çinli arkadaşım da geliyor'],
+    ],
+    'por' => [
+        'flagged' => [
+            'seu verme' => ['review', ['difamatorio']],
+            'filho da puta' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Vem ver-me amanhã', 'O ônibus está atrasado', 'Comprei um carro preto', 'Vou lavar a louça'],
+    ],
+    'nld' => [
+        'flagged' => [
+            'klootzak' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Mijn opa had kanker', 'Het pad naar huis', 'Doe niet zo gek'],
+    ],
+    'deu' => [
+        'flagged' => [
+            'du arschloch' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Das ist verrückt', 'Wahnsinnig gut!'],
+    ],
+    'fra' => [
+        'flagged' => [
+            'je vais te baiser, salope' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Gros baisers à toute la famille', 'J\'ai raté le train', 'C\'est fou !', 'Il possède une belle demeure'],
+    ],
+    'ita' => [
+        'flagged' => [
+            'sei uno stronzo' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['È un film orribile', 'Mi mostrò la foto'],
+    ],
+    'ron' => [
+        'flagged' => [
+            'ești o curvă' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Am cumpărat o mașină neagră', 'Trebuie să muta mobila'],
+    ],
+    'ara' => [
+        'flagged' => [
+            'يا حمار' => ['review', ['difamatorio']],
+        ],
+        'clean' => ['أمي تحبك'],
+    ],
+    'tha' => [
+        'flagged' => [
+            'ไอ้เหี้ย' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['หนู'],
+    ],
+    'ind' => [
+        'flagged' => [
+            'dasar anjing' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Buang sampah pada tempatnya', 'Bau masakan enak', 'Gila, keren banget!'],
+    ],
+    'tgl' => [
+        'flagged' => [],
+        'clean' => ['May ahas sa bukid', 'Ang hayop sa zoo'],
+    ],
+    'heb' => [
+        'flagged' => [],
+        'clean' => ['מטורף! איזה משחק'],
+    ],
+    'bul' => [
+        'flagged' => [
+            'ти си курва' => ['reject', ['difamatorio']],
+        ],
+        'clean' => ['Гол!'],
+    ],
 ];
