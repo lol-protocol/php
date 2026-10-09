@@ -20,7 +20,7 @@ class DictionaryIntegrityTest extends TestCase
     /** @return array<int,string> */
     private function languageCodes(): array
     {
-        return array_keys(require self::CONFIG_DIR . '/languages/supported-languages.php');
+        return array_keys(require self::CONFIG_DIR . '/supported-languages.php');
     }
 
     /** La clave real del índice es `WordList::normalize()`, no sólo texto: dos palabras distintas que normalizan igual también se pisan. */
@@ -58,7 +58,7 @@ class DictionaryIntegrityTest extends TestCase
      */
     public function testCatalogHasNoDuplicatedCoverageField(): void
     {
-        $catalog = require self::CONFIG_DIR . '/languages/supported-languages.php';
+        $catalog = require self::CONFIG_DIR . '/supported-languages.php';
 
         foreach ($catalog as $code => $meta) {
             $this->assertArrayNotHasKey(

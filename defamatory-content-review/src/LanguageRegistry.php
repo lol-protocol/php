@@ -35,7 +35,7 @@ class LanguageRegistry
     public static function fromConfigDirectory(string $configDir): self
     {
         return new self(
-            require rtrim($configDir, '/') . '/languages/supported-languages.php',
+            require rtrim($configDir, '/') . '/supported-languages.php',
             require rtrim($configDir, '/') . '/language-families.php'
         );
     }

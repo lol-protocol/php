@@ -771,7 +771,7 @@ ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1
 ## Estructura
 
 ```
-src/DefamatoryContentReview/
+src/                                Namespace DefamatoryContentReview\
 ├── DefamatoryContentReviewer.php   Facade: construcción y validación en el idioma principal
 ├── NameEvaluator.php               Coincidencias literales y fusión fonética (interno)
 ├── RiskReportBuilder.php           Arma getDetailedReport() (interno)
@@ -812,11 +812,10 @@ src/DefamatoryContentReview/
 
 config/
 ├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns), uno por idioma
-├── risk-categories.php             Los 11 tipos de riesgo
+├── supported-languages.php         Catálogo ISO 639-3 + alias 639-1
 ├── language-families.php           Familias y afinidades
-└── languages/
-    ├── supported-languages.php     Catálogo ISO 639-3 + alias 639-1
-    └── spa.php eng.php por.php …   33 diccionarios
+├── risk-categories.php             Los 11 tipos de riesgo
+└── languages/                      33 diccionarios: spa.php eng.php por.php …
 
 js/
 ├── limit-repeated-letters.js       Tope de letras iguales seguidas para el front (máx. 2) — sin dependencias
@@ -857,7 +856,7 @@ return [
 ];
 ```
 
-2. Registrarlo en `config/languages/supported-languages.php`.
+2. Registrarlo en `config/supported-languages.php`.
 3. Añadirlo a su familia y declarar afinidades en `config/language-families.php`.
 
 Los tests verifican automáticamente que todo idioma registrado tenga

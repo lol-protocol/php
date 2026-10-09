@@ -27,7 +27,7 @@ class ChatTopicsCoverageTest extends TestCase
 
     public function testEveryLanguageHasATopicsFile(): void
     {
-        $languages = array_keys(require self::CONFIG_DIR . '/languages/supported-languages.php');
+        $languages = array_keys(require self::CONFIG_DIR . '/supported-languages.php');
         $withTopics = array_map(fn(string $f): string => basename($f, '.php'), glob(self::CONFIG_DIR . '/chat-topics/*.php'));
 
         $this->assertSame([], array_values(array_diff($languages, $withTopics)), 'Idiomas sin config/chat-topics/.');

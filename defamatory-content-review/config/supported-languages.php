@@ -9,7 +9,7 @@
  *
  * Este catálogo es sólo identidad y parentesco — nombre, alias, familia. El
  * estado del diccionario (`coverage`) vive únicamente en el propio archivo de
- * cada idioma (`meta.coverage` en `es.php`, `pt.php`...) y se consulta con
+ * cada idioma (`meta.coverage` en `languages/spa.php`, `languages/por.php`...) y se consulta con
  * DefamatoryContentReviewer::languages()->byCoverage(); no se duplica aquí.
  * Guardarlo dos veces fue justamente el bug que motivó este comentario: las
  * dos copias se desincronizaron la primera vez que sólo una de ellas se

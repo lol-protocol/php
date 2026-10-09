@@ -25,10 +25,6 @@ class EthnicTermsTrackingTest extends TestCase
         $unflagged = [];
 
         foreach (glob(__DIR__ . '/../config/languages/*.php') as $file) {
-            if (basename($file) === 'supported-languages.php') {
-                continue;
-            }
-
             $data = require $file;
             foreach ($data['words'] ?? [] as $words) {
                 foreach ($words as $word) {

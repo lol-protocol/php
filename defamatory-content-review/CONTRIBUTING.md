@@ -87,7 +87,7 @@ Al revisar un idioma, amplía también su entrada en
 
 `meta.coverage` de cada archivo de idioma es la única fuente de verdad — no
 se declara en ningún otro lado (ver el aviso al principio de
-`config/languages/supported-languages.php` si hace falta el porqué). Los
+`config/supported-languages.php` si hace falta el porqué). Los
 niveles y sus mínimos de palabras, verificados por
 `DictionaryIntegrityTest::testWordCountMatchesDeclaredCoverageLevel()`:
 

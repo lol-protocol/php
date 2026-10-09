@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "DefamatoryContentReview\\": "src/DefamatoryContentReview/"
+            "DefamatoryContentReview\\": "src/"
         }
     },
     "autoload-dev": {
