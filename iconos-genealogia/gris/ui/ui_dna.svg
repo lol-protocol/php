@@ -13,9 +13,8 @@
     <g><path d="M12 19.5L12.3 17L13.3 14.8L14.8 12.8L16.8 11.3L19 10.3L21.5 10L41.5 10L44 10.3L46.2 11.3L48.2 12.8L49.7 14.8L52.1 17.9L53.1 20.2L53.4 22.7L53.4 42.7L53.1 45.2L52.1 47.5L50.6 49.4L48.6 50.9L46.4 51.9L43.9 52.2L23.9 52.2L21.4 51.9L19.1 50.9L17.2 49.4L15.7 47.5L13.3 44.2L12.3 42L12 39.5Z" fill="#393939"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_ui_dna_violet)"/></g>
   </g>
   <g class="marks">
-    <path d="M26.5 19.5C26.5 26.5 36.5 26.5 36.5 29.5C36.5 32.5 26.5 32.5 26.5 39.5" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M36.5 19.5C36.5 26.5 26.5 26.5 26.5 29.5C26.5 32.5 36.5 32.5 36.5 39.5" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M28.5 23.5L34.5 23.5" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M28.5 35.5L34.5 35.5" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M31.5 15.5L33.6 16.7L35.5 17.8L37.2 19L38.4 20.2L39.2 21.3L39.5 22.5L39.2 23.7L38.4 24.8L37.2 26L35.5 27.2L33.6 28.3L31.5 29.5L29.4 30.7L27.5 31.8L25.8 33L24.6 34.2L23.8 35.3L23.5 36.5L23.8 37.7L24.6 38.8L25.8 40L27.5 41.2L29.4 42.3L31.5 43.5" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M31.5 15.5L29.4 16.7L27.5 17.8L25.8 19L24.6 20.2L23.8 21.3L23.5 22.5L23.8 23.7L24.6 24.8L25.8 26L27.5 27.2L29.4 28.3L31.5 29.5L33.6 30.7L35.5 31.8L37.2 33L38.4 34.2L39.2 35.3L39.5 36.5L39.2 37.7L38.4 38.8L37.2 40L35.5 41.2L33.6 42.3L31.5 43.5" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M23.5 22.5h16M23.5 36.5h16" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

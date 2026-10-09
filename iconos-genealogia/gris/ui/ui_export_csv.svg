@@ -5,25 +5,20 @@
       <stop offset="0" stop-color="#9D9D9D"/>
       <stop offset="1" stop-color="#6F6F6F"/>
     </linearGradient>
-    <linearGradient id="grad_ui_export_csv_paper" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#F6F6F6"/>
-      <stop offset="1" stop-color="#F1F1F1"/>
-    </linearGradient>
     <linearGradient id="grad_ui_export_csv_indigo" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8F8F8F"/>
       <stop offset="1" stop-color="#5B5B5B"/>
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="35.5" cy="59.5" rx="18.8" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="34" cy="59.5" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M15 11.5L15.1 10.6L15.5 9.8L16 9L16.8 8.5L17.6 8.1L18.5 8L33.5 8L34 8L34.5 8.1L34.9 8.3L35.3 8.5L35.7 8.7L36 9L46 19L46.3 19.3L48.4 22.1L48.6 22.5L48.8 22.9L49 23.3L49.1 23.8L49.1 24.2L49.1 50.3L49 51.2L48.6 52L48.1 52.8L47.4 53.3L46.5 53.7L45.6 53.8L20.6 53.8L19.7 53.7L18.9 53.3L18.1 52.8L17.6 52L15.5 49.2L15.1 48.4L15 47.5Z" fill="#414141"/><path d="M15 11.5A3.5 3.5 0 0 1 18.5 8L33.6 8A3.5 3.5 0 0 1 36 9L46 19A3.5 3.5 0 0 1 47 21.4L47 47.5A3.5 3.5 0 0 1 43.5 51L18.5 51A3.5 3.5 0 0 1 15 47.5Z" fill="url(#grad_ui_export_csv_green)"/></g>
-    <g><path d="M35 11.6A1.5 1.5 0 0 1 37.6 10.6L44.4 17.4A1.5 1.5 0 0 1 43.4 20L36.5 20A1.5 1.5 0 0 1 35 18.5Z" fill="url(#grad_ui_export_csv_paper)"/></g>
-    <g><path d="M39.2 52.1L40.6 54A8.5 8.5 0 0 0 54.2 43.8L52.8 41.9A8.5 8.5 0 0 0 39.2 52.1Z" fill="#353535"/><circle cx="46" cy="47" r="8.5" fill="url(#grad_ui_export_csv_indigo)"/></g>
+    <g><path d="M10 16L10.3 13.9L11.1 12L12.3 10.3L14 9.1L15.9 8.3L18 8L42 8L44.1 8.3L46 9.1L47.7 10.3L48.9 12L51.3 15.2L52.1 17.1L52.4 19.2L52.4 45.2L52.1 47.3L51.3 49.2L50.1 50.9L48.4 52.1L46.5 52.9L44.4 53.2L20.4 53.2L18.3 52.9L16.4 52.1L14.7 50.9L13.5 49.2L11.1 46L10.3 44.1L10 42Z" fill="#414141"/><rect x="10" y="8" width="40" height="42" rx="8" fill="url(#grad_ui_export_csv_green)"/></g>
+    <g><path d="M41.2 52.1L42.6 54A8.5 8.5 0 0 0 56.2 43.8L54.8 41.9A8.5 8.5 0 0 0 41.2 52.1Z" fill="#353535"/><circle cx="48" cy="47" r="8.5" fill="url(#grad_ui_export_csv_indigo)"/></g>
   </g>
   <g class="marks">
-    <path d="M21 29H41M21 36H41M21 43H41M31 24V47" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M42.5 50.5L49.5 43.5M49 47.8L49.5 43.5L45.2 44" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M19 22H41M19 31H41M19 40H41M24.5 17V44M35.5 17V44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M45.2 47a2.8 2.8 0 1 0 5.6 0a2.8 2.8 0 1 0 -5.6 0Z" fill="#FFFFFF"/>
   </g>
 </svg>

@@ -7,7 +7,7 @@ linea cortada = divorcio, discontinua = adopcion o parentesco parcial, punteada 
 """
 import math
 
-from glyphs import GLYPHS
+from kit import badge, tile
 from lib import Block, Disc, Icon, RPoly, fmt
 
 def arc_pts(cx, cy, r, a0, a1, n=48):
@@ -35,10 +35,6 @@ ROLE = {'self': 'ink', 'rel': 'orange', 'other': 'mist', 'rel2': 'amber'}
 def reg(ic):
     ICONS.append(ic)
     return ic
-
-
-def g(name):
-    return GLYPHS[name]
 
 
 # ------------------------------------------------------------------ nodos
@@ -128,11 +124,8 @@ class Scene:
                 ic.ring(mx, my, 3.6, tone='orange', ink='orange', w=2.4)
             elif mark == 'arrow':
                 ic.poly([(mx - 3.4, my - 2), (mx, my + 2.2), (mx + 3.4, my - 2)], tone='orange', ink='orange', w=2.6)
-            elif mark == 'heart':
-                k = 0.5
-                ic.mark(f'M{fmt(mx)} {fmt(my + 8 * k)}C{fmt(mx - 12 * k)} {fmt(my - k)} {fmt(mx - 6 * k)} {fmt(my - 10 * k)} {fmt(mx)} {fmt(my - 4 * k)}'
-                        f'C{fmt(mx + 6 * k)} {fmt(my - 10 * k)} {fmt(mx + 12 * k)} {fmt(my - k)} {fmt(mx)} {fmt(my + 8 * k)}Z',
-                        filled=True, tone='rose', ink='rose')
+            elif mark == 'dot':
+                ic.dot(mx, my, 3.4, tone='orange', ink='orange')
             elif mark == 'square':
                 ic.poly([(mx - 3.2, my - 3.2), (mx + 3.2, my - 3.2), (mx + 3.2, my + 3.2), (mx - 3.2, my + 3.2)], True,
                         tone='orange', ink='orange', w=2.2)
@@ -250,8 +243,8 @@ for suffix, gender in (('stepbrother', 'm'), ('stepsister', 'f')):
 
 # adopcion, acogida, padrinos, tutela
 for stem, gender, up, style, mark in (
-    ('person_adoptive_father', 'm', True, 'dashed', 'heart'), ('person_adoptive_mother', 'f', True, 'dashed', 'heart'),
-    ('person_adopted_son', 'm', False, 'dashed', 'heart'), ('person_adopted_daughter', 'f', False, 'dashed', 'heart'),
+    ('person_adoptive_father', 'm', True, 'dashed', 'dot'), ('person_adoptive_mother', 'f', True, 'dashed', 'dot'),
+    ('person_adopted_son', 'm', False, 'dashed', 'dot'), ('person_adopted_daughter', 'f', False, 'dashed', 'dot'),
     ('person_foster_father', 'm', True, 'dotted', 'square'), ('person_foster_mother', 'f', True, 'dotted', 'square'),
     ('person_foster_son', 'm', False, 'dotted', 'square'), ('person_foster_daughter', 'f', False, 'dotted', 'square'),
     ('person_godfather', 'm', True, 'line', 'ring'), ('person_godmother', 'f', True, 'line', 'ring'),
@@ -331,8 +324,9 @@ s.n('a', 'u', 0, 0).n('b', 'u', 1, 0).couple('a', 'b', 'line')
 done(s)
 
 s = scene('relationship_romantic')
-s.n('a', 'm', 0, 0, 'rel2').n('b', 'f', 1, 0, 'rel2').couple('a', 'b', 'line')
-s.decor.append(lambda ic, pos, r: g('heart')(ic, 31, 17.5, tone='rose', ink='rose'))
+s.n('a', 'm', 0, 0, 'rel2').n('b', 'f', 1, 0, 'rel2')
+s.decor.append(lambda ic, pos, r: ic.link([(x, pos['a'][1] + 4.2 * math.sin((x - pos['a'][0]) / (pos['b'][0] - pos['a'][0]) * 3 * math.pi))
+                                          for x in [pos['a'][0] + (pos['b'][0] - pos['a'][0]) * i / 40 for i in range(41)]], w=2.6, hue='rose'))
 done(s)
 
 s = scene('relationship_twins')
@@ -364,14 +358,13 @@ s.desc('a', 'b').desc('b', 'c').desc('c', 'me')
 done(s)
 
 ic = reg(Icon('relationship_blood_bond'))
-ic.link([(15, 30), (47, 30)], w=4.6)
+ic.link([(15, 30), (47, 30)], w=6.4, hue='red')
 node(ic, 'di', 15, 30, 'rel', r=7.4, d=3)
 node(ic, 'di', 47, 30, 'rel', r=7.4, d=3)
-g('drop')(ic, 31, 30, tone='red', ink='red')
 
 s = scene('relationship_adoption')
 s.n('a', 'm', 0, 0).n('b', 'f', 2, 0).n('c', 'u', 1, 1, 'rel')
-s.couple('a', 'b').desc(('a', 'b'), 'c', 'dashed', 'heart')
+s.couple('a', 'b').desc(('a', 'b'), 'c', 'dashed', 'dot')
 done(s)
 
 s = scene('relationship_fostering')
@@ -578,64 +571,157 @@ for y, hue, w in ((14, 'orange', 30), (32, 'mist', 20), (50, 'mist', 26)):
     ic.solid(Block(26, y - 3.3, w, 6.6, r=3.3), hue, d=2)
 
 # ------------------------------------------------------------------ action_
-def disc_badge(stem, hue, fn, **kw):
-    ic = Icon(stem)
-    ic.solid(Disc(31, 30, 19.5), hue, d=4)
-    fn(ic, 31, 30, **kw)
-    return reg(ic)
+# Las acciones son piezas sueltas con movimiento: lo que se ve es de dónde viene y a dónde va, nunca un objeto.
+def pt_on(cx, cy, r, a):
+    return cx + r * math.cos(math.radians(a)), cy + r * math.sin(math.radians(a))
 
 
-def tile(stem, hue, fn, **kw):
-    ic = Icon(stem)
-    ic.solid(Block(12, 10, 39, 39, r=9.5), hue, d=4)
-    fn(ic, 31.5, 29.5, **kw)
-    return reg(ic)
+def new(stem):
+    return reg(Icon(stem))
 
 
-disc_badge('action_add', 'green', g('plus'))
-disc_badge('action_delete', 'red', g('cross'))
-tile('action_edit', 'teal', g('edit'))
-tile('action_search', 'indigo', g('search'))
-tile('action_filter', 'ink', g('filter'))
-tile('action_zoom_in', 'sky', g('zoom_in'))
-tile('action_zoom_out', 'sky', g('zoom_out'))
-tile('action_expand', 'orange', g('expand'))
-tile('action_collapse', 'orange', g('collapse'))
-tile('action_share', 'green', g('share'))
-tile('action_download', 'blue', g('download'))
-tile('action_upload', 'blue', g('upload'))
-tile('action_print', 'slate', g('print'))
-tile('action_sync', 'green', g('refresh'))
-tile('action_import', 'violet', g('arrow_in'))
-tile('action_export', 'violet', g('arrow_out'))
-tile('action_undo', 'amber', g('undo'))
-tile('action_redo', 'amber', g('redo'))
-tile('action_save', 'indigo', g('save'))
-tile('action_link', 'teal', g('link'))
-tile('action_unlink', 'red', g('unlink'))
-tile('action_merge', 'pink', g('merge'))
-tile('action_split', 'pink', g('split'))
-tile('action_copy', 'ink', g('copy'))
+reg(badge('action_add', 'green', lambda ic: ic.plus(31, 30, 10, w=4)))
+reg(badge('action_delete', 'red', lambda ic: ic.cross(31, 30, 8.5, w=4)))
 
-ic = reg(Icon('action_duplicate'))
+ic = new('action_edit')
+ic.solid(Block(13, 26, 38, 10, r=5, rot=-45), 'teal', d=3)
+ic.solid(Disc(15.5, 46, 3.6), 'ink', d=1.6)
+
+ic = new('action_search')
+ic.solid(Disc(43, 43, 5.5), 'indigo', d=2.4)
+ic.ring(27, 26, 12, tone='indigo', ink='indigo', w=4.6)
+
+ic = new('action_filter')
+for x, y, w in ((8, 11, 46), (15, 25, 32), (22, 39, 18)):
+    ic.solid(Block(x, y, w, 9, r=4.5), 'ink', d=2.4)
+
+
+def _lens(stem, r, sign):
+    """Anillo con un punto en diagonal; el tamaño del anillo dice si acerca o aleja."""
+    k = 0.707 * (r + 4.5)
+    cx = 31 - (k + 5.5 - r - 2.3) / 2
+    cy = 30 - (k + 5.5 - r - 2.3) / 2
+    ic = new(stem)
+    ic.solid(Disc(cx + k, cy + k, 5.5), 'sky', d=2.4)
+    ic.ring(cx, cy, r, tone='sky', ink='sky', w=4.6)
+    ic.mark(f'M{fmt(cx - 0.5 * r)} {fmt(cy)}h{fmt(r)}' + (f'M{fmt(cx)} {fmt(cy - 0.5 * r)}v{fmt(r)}' if sign else ''), tone='sky', ink='sky', w=3)
+
+
+_lens('action_zoom_in', 14, True)
+_lens('action_zoom_out', 9.5, False)
+
+
+def _spread(stem, far):
+    ic = new(stem)
+    k = 19 if far else 11.5
+    for dx, dy in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
+        ic.solid(Disc(31 + dx * k, 30 + dy * k, 3.8), 'orange', d=1.8)
+    ic.solid(Disc(31, 30, 7.5), 'orange', d=2.8)
+
+
+_spread('action_expand', True)
+_spread('action_collapse', False)
+
+ic = new('action_share')
+for x, y in ((47, 14), (51, 31), (47, 48)):
+    ic.link([(15, 31), (x, y)], w=2.2)
+ic.solid(Disc(15, 31, 8), 'green', d=3)
+for x, y in ((47, 14), (51, 31), (47, 48)):
+    ic.solid(Disc(x, y, 4.6), 'green', d=2)
+
+ic = new('action_download')
+ic.mark('M23.5 7v4M31 5v4M38.5 7v4', tone='blue', ink='blue', w=2.8)
+ic.solid(Disc(31, 24, 7), 'blue', d=2.6)
+ic.solid(Block(11, 42, 42, 8, r=4), 'ink', d=3)
+
+ic = new('action_upload')
+ic.solid(Disc(31, 14, 7), 'blue', d=2.6)
+ic.mark('M23.5 27v5M31 27v7M38.5 27v5', tone='blue', ink='blue', w=2.8)
+ic.solid(Block(11, 42, 42, 8, r=4), 'ink', d=3)
+
+ic = new('action_print')
+for dx, dy, op, d in ((10, 10, 0.35, 0), (5, 5, 0.6, 0), (0, 0, 1.0, 3.5)):
+    ic.solid(Block(14 + dx, 14 + dy, 26, 26, r=6), 'slate', d=d, op=op)
+
+ic = new('action_sync')
+for a0, a1 in ((-170, -20), (10, 160)):
+    ic.arc(31, 30, 14, a0, a1, tone='green', ink='green', w=4.4)
+    x, y = pt_on(31, 30, 14, a1)
+    ic.solid(Disc(x, y, 3.6), 'green', d=1.4)
+
+ic = new('action_import')
+ic.mark('M7 30h3M12.5 30h3', tone='violet', ink='violet', w=2.8)
+ic.solid(Disc(24, 30, 6), 'violet', d=2.4)
+ic.solid(Block(37, 12, 19, 36, r=6), 'ink', d=3)
+
+ic = new('action_export')
+ic.solid(Block(8, 12, 18, 36, r=6), 'ink', d=3)
+ic.mark('M30 30h4', tone='violet', ink='violet', w=2.8)
+ic.solid(Disc(43, 30, 6), 'violet', d=2.4)
+
+
+def _turn(stem, back):
+    ic = new(stem)
+    a0, a1 = (190, 350) if back else (190, 350)
+    ic.arc(31, 36, 17, a0, a1, tone='amber', ink='amber', w=4.4)
+    x, y = pt_on(31, 36, 17, 190 if back else 350)
+    ic.solid(Disc(x, y, 4.6), 'amber', d=1.8)
+
+
+_turn('action_undo', True)
+_turn('action_redo', False)
+
+ic = new('action_save')
+ic.solid(Block(11, 11, 42, 42, r=9), 'indigo', d=4)
+ic.dot(31.5, 28, 6.5)
+ic.line(23, 42, 40, 42, w=3.4)
+
+ic = new('action_link')
+ic.solid(Disc(23, 30, 12), 'teal', d=3)
+ic.solid(Disc(39, 30, 12), 'teal', d=3)
+
+ic = new('action_unlink')
+ic.solid(Disc(16, 30, 10.5), 'red', d=3)
+ic.solid(Disc(46, 30, 10.5), 'red', d=3)
+ic.mark('M28.5 30h2M33.5 30h2', tone='red', ink='red', w=2.6)
+
+ic = new('action_merge')
+ic.link([(14, 19), (44, 30)], w=2.6)
+ic.link([(14, 41), (44, 30)], w=2.6)
+ic.solid(Disc(14, 19, 5.2), 'pink', d=2)
+ic.solid(Disc(14, 41, 5.2), 'pink', d=2)
+ic.solid(Disc(44, 30, 10), 'pink', d=3)
+
+ic = new('action_split')
+ic.link([(20, 30), (50, 19)], w=2.6)
+ic.link([(20, 30), (50, 41)], w=2.6)
+ic.solid(Disc(20, 30, 10), 'pink', d=3)
+ic.solid(Disc(50, 19, 5.2), 'pink', d=2)
+ic.solid(Disc(50, 41, 5.2), 'pink', d=2)
+
+ic = new('action_copy')
+ic.solid(Block(8, 17, 28, 30, r=6), 'ink', d=0, op=0.45)
+ic.solid(Block(24, 17, 28, 30, r=6), 'ink', d=3.5)
+
+ic = new('action_duplicate')
 node(ic, 'ci', 24, 24, 'other', r=8, d=2.4)
 node(ic, 'ci', 38, 37, 'rel', r=8, d=2.6)
 
-ic = reg(Icon('action_connect'))
+ic = new('action_connect')
 ic.link([(16, 31), (46, 31)], w=3)
 node(ic, 'ci', 16, 31, 'other', r=7, d=3)
 node(ic, 'ci', 46, 31, 'other', r=7, d=3)
 ic.solid(Disc(31, 31, 6.2), 'green', d=2)
 ic.plus(31, 31, 3.2, w=2.4)
 
-ic = reg(Icon('action_disconnect'))
+ic = new('action_disconnect')
 ic.link([(16, 31), (25, 31)], w=3)
 ic.link([(37, 31), (46, 31)], w=3)
 node(ic, 'ci', 16, 31, 'other', r=7, d=3)
 node(ic, 'ci', 46, 31, 'other', r=7, d=3)
 ic.cross(31, 31, 3.6, w=2.6, tone='red', ink='red')
 
-ic = reg(Icon('action_share_tree'))
+ic = new('action_share_tree')
 ic.link([(22, 14), (22, 24), (12, 24), (12, 33)], w=2.2)
 ic.link([(22, 24), (32, 24), (32, 33)], w=2.2)
 node(ic, 'ci', 22, 14, 'rel', r=4.8, d=2)
@@ -673,40 +759,71 @@ _add_rel('action_add_spouse', [lambda ic: ic.link([(14, 28), (36, 28)], 'double'
                                lambda ic: node(ic, 'di', 36, 28, 'rel', r=6.4, d=2.6)])
 
 # ------------------------------------------------------------------ ui_
-ic = Icon('ui_verified')
-ic.solid(Disc(31, 30, 19.5), 'green', d=4)
-ic.check(31, 30, 9.5, w=3.6)
-reg(ic)
+reg(badge('ui_verified', 'green', lambda ic: ic.dot(31, 30, 11.5)))
+reg(badge('ui_unverified', 'slate', lambda ic: ic.ring(31, 30, 11, w=2.6, dash='3 3.5')))
 
-ic = Icon('ui_unverified')
-ic.solid(Disc(31, 30, 19.5), 'slate', d=4)
-ic.ring(31, 30, 11, w=2.6, dash='3 3.5')
-reg(ic)
+reg(tile('ui_notes', 'amber', lambda ic, x, y: ic.bars(x - 11, y - 9.5, [22, 15, 19], 9.5, w=3.2)))
 
-tile('ui_notes', 'amber', g('document'))
-tile('ui_privacy', 'ink', g('shield'))
-tile('ui_settings', 'ink', g('sliders'))
-tile('ui_menu', 'slate', g('menu'))
-tile('ui_photo', 'sky', g('image'))
-tile('ui_place', 'green', g('pin'))
-tile('ui_dna', 'violet', g('dna'))
-tile('ui_source', 'brown', g('tray'))
-tile('ui_calendar', 'red', g('calendar'))
 
-ic = reg(Icon('ui_profile'))
-ic.solid(Disc(31, 18, 9), 'sky', d=3)
-ic.solid(Block(15, 31, 32, 21, r=10.5), 'blue', d=3)
+def _privacy(ic, x, y):
+    ic.poly([(x - 12, y - 12), (x + 12, y - 12), (x + 12, y + 12), (x - 12, y + 12)], True, w=3)
+    ic.dot(x, y, 4.6)
+
+
+reg(tile('ui_privacy', 'ink', _privacy))
+
+
+def _sliders(ic, x, y):
+    for dy, kx in ((-8, -4), (0, 4), (8, -1)):
+        yy = y + dy
+        ic.mark(f'M{fmt(x - 12.5)} {fmt(yy)}H{fmt(x + kx - 3.6)}M{fmt(x + kx + 3.6)} {fmt(yy)}H{fmt(x + 12.5)}', w=2)
+        ic.ring(x + kx, yy, 2.4, w=2)
+
+
+reg(tile('ui_settings', 'ink', _sliders))
+reg(tile('ui_menu', 'slate', lambda ic, x, y: ic.mark(f'M{fmt(x - 9.5)} {fmt(y - 7.5)}h19M{fmt(x - 9.5)} {fmt(y)}h19M{fmt(x - 9.5)} {fmt(y + 7.5)}h19', w=3)))
+
+
+def _photo(ic, x, y):
+    ic.poly([(x - 11, y - 10), (x + 11, y - 10), (x + 11, y + 10), (x - 11, y + 10)], True, w=2.2)
+    ic.poly([(x - 8, y + 7), (x - 3, y), (x + 2, y + 7)], True, filled=True)
+    ic.dot(x + 5.5, y - 4.5, 2.4)
+
+
+reg(tile('ui_photo', 'sky', _photo))
+
+ic = new('ui_place')
+ic.ring(31, 40, 14, tone='green', ink='green', w=3.4)
+ic.solid(Disc(31, 24, 9.5), 'green', d=3)
+
+
+def _helix(ic, x, y):
+    for ph in (0, math.pi):
+        pts = [(x + 8 * math.sin(2 * math.pi * t / 24 + ph), y - 14 + 28 * t / 24) for t in range(25)]
+        ic.poly(pts, w=2.6)
+    ic.mark(f'M{fmt(x - 8)} {fmt(y - 7)}h16M{fmt(x - 8)} {fmt(y + 7)}h16', w=2)
+
+
+reg(tile('ui_dna', 'violet', _helix))
+
+ic = new('ui_source')
+for x, y in ((9, 38), (16, 26), (23, 14)):
+    ic.solid(Block(x, y, 30, 10, r=5), 'brown', d=2.4)
+
+reg(tile('ui_calendar', 'red', lambda ic, x, y: [ic.dot(x - 10 + 10 * (i % 3), y - 9.5 + 9.5 * (i // 3), 2, **({'tone': '#FDE047'} if i == 4 else {})) for i in range(9)]))
+
+ic = new('ui_profile')
+node(ic, 'ci', 31, 30, 'self', r=15, d=4)
 
 
 def _doc(stem, hue, mark):
     ic = Icon(stem)
-    ic.solid(RPoly([(15, 8), (35, 8), (47, 20), (47, 51), (15, 51)], r=3.5), hue, d=3.5)
-    ic.solid(RPoly([(35, 8), (47, 20), (35, 20)], r=1.5), 'paper', d=0)
+    ic.solid(Block(10, 8, 40, 42, r=8), hue, d=4)
     mark(ic)
-    ic.solid(Disc(46, 47, 8.5), 'indigo', d=2.4)
-    ic.arrow(42.5, 50.5, 49.5, 43.5, head=3.4)
+    ic.solid(Disc(48, 47, 8.5), 'indigo', d=2.4)
+    ic.dot(48, 47, 2.8)
     return reg(ic)
 
 
-_doc('ui_export_pdf', 'red', lambda ic: ic.bars(22, 30, [19, 19, 11], 6.5))
-_doc('ui_export_csv', 'green', lambda ic: ic.mark('M21 29H41M21 36H41M21 43H41M31 24V47', w=1.8))
+_doc('ui_export_pdf', 'red', lambda ic: ic.bars(19, 20, [22, 22, 12], 9.5, w=3.2))
+_doc('ui_export_csv', 'green', lambda ic: ic.mark('M19 22H41M19 31H41M19 40H41M24.5 17V44M35.5 17V44', w=2))

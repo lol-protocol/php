@@ -11,13 +11,10 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="30.8" cy="56.8" rx="14.5" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="33.1" cy="56" rx="16.7" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M15 11.5L15.1 10.6L15.5 9.8L16 9L16.8 8.5L17.6 8.1L18.5 8L40.5 8L41.4 8.1L42.2 8.5L43 9L43.5 9.8L46.1 13.1L46.4 14L46.5 14.9L46.5 50.9L46.4 51.8L46.1 52.6L45.5 53.3L44.8 53.9L43.9 54.2L43 54.4L21 54.4L20.1 54.2L19.3 53.9L18.5 53.3L18 52.6L15.5 49.2L15.1 48.4L15 47.5Z" fill="#FEF3C7"/><rect x="15" y="8" width="29" height="43" rx="3.5" fill="url(#grad_book_bookmark_brown)"/></g>
+    <g><path d="M15 16L15.2 14.4L15.8 13L16.8 11.8L18 10.8L19.4 10.2L21 10L41 10L42.6 10.2L44 10.8L45.2 11.8L46.2 13L50.4 18.6L51 20L51.2 21.6L51.2 47.6L51 49.2L50.4 50.6L49.4 51.8L48.2 52.8L46.8 53.4L45.2 53.6L25.2 53.6L23.6 53.4L22.2 52.8L21 51.8L20 50.6L15.8 45L15.2 43.6L15 42Z" fill="#553822"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_bookmark_brown)"/></g>
     <g><path d="M35 7.5A1.2 1.2 0 0 1 36.2 6.3L41.8 6.3A1.2 1.2 0 0 1 43 7.5L43 31.4A1 1 0 0 1 41.2 32L39.9 30.5A1.2 1.2 0 0 0 38 30.5L36.8 32A1 1 0 0 1 35 31.4Z" fill="#801616"/><path d="M34 6.2A1.2 1.2 0 0 1 35.2 5L40.8 5A1.2 1.2 0 0 1 42 6.2L42 30.1A1 1 0 0 1 40.2 30.8L38.9 29.2A1.2 1.2 0 0 0 37.1 29.2L35.8 30.8A1 1 0 0 1 34 30.1Z" fill="url(#grad_book_bookmark_red)"/></g>
-  </g>
-  <g class="marks">
-    <path d="M19.5 13L19.5 46" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
   </g>
 </svg>

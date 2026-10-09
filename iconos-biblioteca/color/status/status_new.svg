@@ -13,6 +13,7 @@
     <g><path d="M15.4 41.7L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.6 18.3A19.5 19.5 0 0 0 15.4 41.7Z" fill="#7E4503"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_new_amber)"/></g>
   </g>
   <g class="marks">
-    <path d="M31 19Q33.2 27.8 42 30Q33.2 32.2 31 41Q28.8 32.2 20 30Q28.8 27.8 31 19Z" fill="#FFFFFF"/>
+    <path d="M20 30a11 11 0 1 0 22 0a11 11 0 1 0 -22 0Z" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M27 30a4 4 0 1 0 8 0a4 4 0 1 0 -8 0Z" fill="#FFFFFF"/>
   </g>
 </svg>

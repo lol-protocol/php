@@ -4,6 +4,6 @@
     <g><path d="M15.4 41.7L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.6 18.3A19.5 19.5 0 0 0 15.4 41.7Z" fill="none" stroke="#482289" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="30" r="19.5" fill="none" stroke="#482289" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M25.5 21L36.5 21L36.5 39L31 34.5L25.5 39Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M20.5 30a10.5 10.5 0 1 0 21 0a10.5 10.5 0 1 0 -21 0Z" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>
