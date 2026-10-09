@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "JP",
+    "country_name": "Japan",
+    "law_name": "Copyright Law (Act No. 48 of 1970)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Adaptation & translation rights",
+    "moral_rights": "Moral rights recognized",
+    "orphan_works": "Compulsory licensing exists",
+    "digital_protection": "DMCA-equivalent",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Japan Patent Office",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.jpo.go.jp/"
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "PE",
+    "country_name": "Peru",
+    "law_name": "Personal Data Protection Law (Law No. 29733)",
+    "jurisdiction": "National Authority (APDP)",
+    "enactment_date": "2011-07-02",
+    "effective_date": "2011-10-01",
+    "scope": "Peruvian Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "Lawful collection & consent",
+    "data_categories": "Personal data",
+    "retention_period": "5 years",
+    "enforcement_authority": "APDP",
+    "penalties_range": "Fines up to PEN 100k",
+    "exemptions": "Government functions",
+    "website_url": "https://www.apdp.gob.pe/",
+    "language": "Spanish",
+    "notes": "South America region"
+  }
+]

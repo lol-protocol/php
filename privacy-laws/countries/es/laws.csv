@@ -1,0 +1,2 @@
+country_code,country_name,law_name,jurisdiction,enactment_date,effective_date,scope,applies_to,key_requirements,data_categories,retention_period,enforcement_authority,penalties_range,exemptions,website_url,language,notes
+"ES","Spain","Organic Law 3/2018 (LOPDGDD)","Spanish Data Protection Authority","2018-12-05","2019-01-01","Spanish Residents","All entities","GDPR implementation","Personal data","As long as necessary","AEPD (Spanish Authority)","Up to €10M or 3% revenue","Legal obligations","https://www.aepd.es/","Spanish","GDPR implementation"

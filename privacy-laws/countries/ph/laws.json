@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "PH",
+    "country_name": "Philippines",
+    "law_name": "Data Privacy Act (DPA)",
+    "jurisdiction": "National Privacy Commission",
+    "enactment_date": "2012-08-15",
+    "effective_date": "2012-08-15",
+    "scope": "Filipino Residents",
+    "applies_to": "All entities",
+    "key_requirements": "Lawful collection & transparency",
+    "data_categories": "Personal data",
+    "retention_period": "3 years after service",
+    "enforcement_authority": "NPC (Philippines)",
+    "penalties_range": "Up to PHP 1M fine",
+    "exemptions": "Government functions",
+    "website_url": "https://www.npc.gov.ph/",
+    "language": "English/Filipino",
+    "notes": "Southeast Asia region"
+  }
+]

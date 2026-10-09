@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "FR",
+    "country_name": "France",
+    "law_name": "General Data Protection Regulation (GDPR)",
+    "jurisdiction": "CNIL",
+    "enactment_date": "2016-04-27",
+    "effective_date": "2018-05-25",
+    "scope": "French Residents",
+    "applies_to": "All companies",
+    "key_requirements": "GDPR + French amendments",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "CNIL (National Commission)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://www.cnil.fr/",
+    "language": "French",
+    "notes": "GDPR + French law 78-17"
+  }
+]

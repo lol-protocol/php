@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "MX",
+    "country_name": "Mexico",
+    "law_name": "Federal Law for the Protection of Copyright (LFDA)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 100 years",
+    "author_rights": "Full economic rights",
+    "moral_rights": "Perpetual moral rights",
+    "orphan_works": "Collective management systems",
+    "digital_protection": "Effective copyright law",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Copyright Institute (INDAUTOR)",
+    "treaties_signatory": "Berne/TRIPS",
+    "linked_resources": "https://www.gob.mx/indautor/"
+  }
+]

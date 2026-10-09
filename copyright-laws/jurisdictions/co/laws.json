@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "CO",
+    "country_name": "Colombia",
+    "law_name": "Colombian Copyright Law (Law 23 of 1982)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 80 years",
+    "author_rights": "Full economic rights",
+    "moral_rights": "Moral rights (perpetual)",
+    "orphan_works": "Collective administration required",
+    "digital_protection": "Copyright protection",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Colombian Copyright Office",
+    "treaties_signatory": "Berne/TRIPS",
+    "linked_resources": "https://www.mincultura.gov.co/"
+  }
+]

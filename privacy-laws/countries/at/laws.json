@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "AT",
+    "country_name": "Austria",
+    "law_name": "Data Protection Act",
+    "jurisdiction": "Austrian DPA (DSB)",
+    "enactment_date": "2018-05-25",
+    "effective_date": "2018-05-25",
+    "scope": "Austrian Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "GDPR + Austrian provisions",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "Austrian Authority",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://www.dsb.at/",
+    "language": "German",
+    "notes": "GDPR implementation"
+  }
+]

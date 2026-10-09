@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "CA",
+    "country_name": "Canada",
+    "law_name": "Copyright Act (R.S.C., 1985)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Reproduction & distribution",
+    "moral_rights": "Moral rights recognized",
+    "orphan_works": "Limited use permitted",
+    "digital_protection": "Copyright Modernization Act",
+    "fair_use_exceptions": "Fair dealing (education)",
+    "registration_required": "No",
+    "enforcement_body": "Canadian Intellectual Property Office",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.ic.gc.ca/"
+  }
+]
