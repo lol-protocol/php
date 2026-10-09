@@ -72,11 +72,17 @@ final class ColeccionRepository extends Repository
         );
     }
 
-    /** @return list<array> */
-    public function buscar(string $texto, int $limit = 50, int $offset = 0): array
+    /**
+     * Private trees (publica = false) are left out unless $incluirPrivadas:
+     * a search must not even reveal that they exist.
+     *
+     * @return list<array>
+     */
+    public function buscar(string $texto, int $limit = 50, int $offset = 0, bool $incluirPrivadas = false): array
     {
         return $this->db->fetchAll(
-            'SELECT id, nombre FROM colecciones WHERE LOWER(nombre)' . self::LIKE_ESCAPED . ' ORDER BY nombre, id'
+            'SELECT id, nombre FROM colecciones WHERE LOWER(nombre)' . self::LIKE_ESCAPED
+                . ($incluirPrivadas ? '' : ' AND publica') . ' ORDER BY nombre, id'
                 . self::page($limit, $offset),
             [self::patron($texto)]
         );

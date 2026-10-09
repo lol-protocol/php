@@ -123,7 +123,7 @@ spa.tudominio.com/0/2/                cuenta: mis aportes
 /order/{id}/3/    devolucion
 ```
 
-El id de `order` es secuencial simple (no requiere inferencia por largo, ya está bajo el prefijo `order`).
+El id de `order` es secuencial simple (no requiere inferencia por largo, ya está bajo el prefijo `order`). Por ser secuencial se puede recorrer, así que los pedidos son solo del propietario (ver [`ACCESO.md`](./ACCESO.md)).
 
 ### Ejemplos
 

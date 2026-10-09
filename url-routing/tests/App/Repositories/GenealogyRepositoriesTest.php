@@ -193,12 +193,21 @@ class GenealogyRepositoriesTest extends TestCase
     }
 
     #[DataProvider('drivers')]
-    public function testSearchFindsBothPublicAndPrivateColecciones(string $driver): void
+    public function testSearchLeavesPrivateColeccionesOutByDefault(string $driver): void
     {
         $repo = new ColeccionRepository($this->db($driver));
 
-        // No login: there's no owner to hide a private coleccion from.
-        $this->assertEqualsCanonicalizing([1048293, 1048294], self::ids($repo->buscar('')));
+        $this->assertSame([1048293], self::ids($repo->buscar('')));
+        $this->assertSame([], self::ids($repo->buscar('Borrador')), 'a private tree must not turn up even when named exactly');
+    }
+
+    #[DataProvider('drivers')]
+    public function testSearchIncludesPrivateColeccionesForTheOwner(string $driver): void
+    {
+        $repo = new ColeccionRepository($this->db($driver));
+
+        $this->assertEqualsCanonicalizing([1048293, 1048294], self::ids($repo->buscar('', incluirPrivadas: true)));
+        $this->assertSame([1048294], self::ids($repo->buscar('Borrador', incluirPrivadas: true)));
         $this->assertSame([1048294], self::ids($repo->deUsuario(2)));
     }
 

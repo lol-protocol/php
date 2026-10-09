@@ -40,7 +40,8 @@ class HomeController extends BaseController
             'persona' => (new PersonaRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
             'suceso' => (new SucesoRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
             'registro' => (new RegistroRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
-            'coleccion' => (new ColeccionRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
+            'coleccion' => (new ColeccionRepository($db))
+                ->buscar($query, self::POR_PAGINA + 1, $offset, incluirPrivadas: $this->esPropietario()),
             'grupo' => (new GrupoRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
             'organizacion' => (new OrganizacionRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
             default => null,
