@@ -575,7 +575,7 @@ español e inglés son las completas (ver «Lo que no cubre» para las demás).
 
 `ChatTopicsConfigTest` verifica que las entradas estén bien formadas, que
 todos los patrones compilen y que ninguna forma caiga en dos categorías, y
-`ChatLineDetectionTest` corre `tests/fixtures/chat-lines.php`: añade ahí una
+`ChatLineDetectionTest` corre `tests/fixtures/chat-lines-spa-eng.php`: añade ahí una
 línea que debe marcarse y otra parecida que no. Una palabra que ya está en el
 diccionario de insultos del idioma se marca igual como `difamatorio`; en
 `chat-topics/` sólo hace falta si además debe llevar la etiqueta `sexual` o
@@ -822,8 +822,13 @@ js/
 ├── example.html                    Página de prueba
 └── tests/                          node --test
 
-tests/
-└── fixtures/common-names.php       Nombres reales comunes por idioma (falsos positivos y benchmark)
+tests/                              Misma división que src/ (namespace Tests\…)
+├── Chat/ Dictionary/ Language/ Normalization/ Phonetic/ Report/ Scoring/
+├── PrimaryLanguageValidationTest.php  ExamplesRunTest.php  FileSizeLimitTest.php
+└── fixtures/
+    ├── common-names.php            Nombres reales comunes por idioma (falsos positivos y benchmark)
+    ├── chat-lines-spa-eng.php      Líneas de chat que deben marcarse y que no (ChatLineDetectionTest)
+    └── chat-lines-per-language.php Una línea sexual, una amenaza y una cotidiana por idioma
 examples/                           Ejecutados por ExamplesRunTest
 bin/benchmark.php                   Nombres validados por segundo, por idioma
 ```
