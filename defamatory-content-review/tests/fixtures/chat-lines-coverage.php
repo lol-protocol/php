@@ -1,7 +1,7 @@
 <?php
 
 // Una línea por tema y idioma para ChatTopicsCoverageTest: [con contenido sexual, con amenaza o violencia, cotidiana].
-// Los idiomas sin espacios (jpn, yue, tha) sólo reconocen la palabra suelta: sin segmentador no hay coincidencia dentro de una frase.
+// En japonés, cantonés y tailandés las líneas son frases enteras: WordSegmenter (extensión intl) las parte en palabras.
 
 return [
     'fra' => ['regarde ce porno', 'je vais te tuer', 'on mange a midi'],
@@ -27,11 +27,11 @@ return [
     'ara' => ['بورنو', 'سأقتلك', 'اليوم نأكل الغداء'],
     'heb' => ['פורנו', 'אני אהרוג אותך', 'היום אוכלים צהריים'],
     'hin' => ['पोर्न', 'मार डालूंगा', 'आज हम खाना खाएंगे'],
-    'jpn' => ['ポルノ', '殺すぞ', '今日は昼ごはんを食べる'],
+    'jpn' => ['ポルノを見たい', 'お前を殺すぞ', '今日は昼ごはんを食べる'],
     'kor' => ['포르노', '죽인다', '오늘 점심을 먹는다'],
     'ind' => ['lihat video porno ini', 'aku akan bunuh kamu', 'hari ini kita makan nasi'],
-    'yue' => ['鹹片', '殺死你', '今日食午飯'],
-    'tha' => ['หนังโป๊', 'ฆ่ามึง', 'วันนี้กินข้าว'],
+    'yue' => ['我想睇鹹片', '我要殺死你', '今日食午飯'],
+    'tha' => ['อยากดูหนังโป๊', 'ฉันจะฆ่าคุณ', 'วันนี้กินข้าว'],
     'vie' => ['phim sex', 'tao giết mày', 'hôm nay ăn cơm'],
     'swa' => ['ponografia', 'nitakuua', 'leo tunakula chakula'],
     'tgl' => ['porn', 'papatayin kita', 'kakain tayo ng tanghalian'],

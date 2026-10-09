@@ -23,7 +23,9 @@ apellidos de personas, para plataformas de información genealógica.
 composer install
 ```
 
-Requiere PHP >= 8.1 y la extensión `mbstring`.
+Requiere PHP >= 8.1 y la extensión `mbstring`. La extensión `intl` es opcional:
+sin ella el japonés, el cantonés y el tailandés sólo se reconocen por palabra
+suelta (ver «Idiomas sin espacios»).
 
 ## Uso
 
@@ -330,10 +332,22 @@ Un test de integridad (`DictionaryIntegrityTest`) exige que todo idioma
 declarado `moderate` tenga ≥120 términos y `comprehensive` ≥200: subir el
 nivel es responder por un mínimo verificable, no una etiqueta.
 
-Los idiomas sin separación por espacios (`jpn`, `yue`, `tha`) declaran
-`requiresTokenizer`: para texto libre necesitan un segmentador externo
-(MeCab, jieba) antes de consultar el diccionario. Para nombres ya separados en
-campos no hace falta.
+### Idiomas sin espacios
+
+El japonés, el cantonés y el tailandés (`requiresTokenizer`) no separan las
+palabras con espacios. Con la extensión `intl`, `WordSegmenter` parte esos
+tramos con el segmentador de ICU antes de buscar, así que «お前はバカだ»
+encuentra «バカ» y «バカンス» no. Las palabras cortadas en varias piezas se
+vuelven a unir («仆|街» → «仆街»), y la censura tapa sólo la palabra. Sin
+`intl` cada tramo sin espacios es una sola palabra, como antes. Para nombres ya
+separados en campos no cambia nada: el corpus de nombres reales sigue sin
+marcas.
+
+Buscar dentro de la frase hizo visibles palabras cotidianas del diccionario
+(«牛» en «牛丼», «ลา» en «ลาก่อน», «adiós»): se marcaron `ambiguous` (el chat
+las ignora, los nombres no). Medido con las 20.000 palabras más frecuentes de
+OpenSubtitles por idioma; `บ้า`, `แขก`, `おし` y `魔女` quedan para revisión
+nativa (discapacidad, étnico y religioso no se tocan sin ella).
 
 ---
 
@@ -717,9 +731,9 @@ palabras no entiende contexto:
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
   No tienen plurales, géneros ni conjugaciones automáticos —sólo la forma base
   y las que se añadan a mano con `also`—, ni `collapseRepeats`, y se escribieron
-  sin revisión nativa. En japonés, cantonés y tailandés, que no separan las
-  palabras con espacios, sólo se reconoce la palabra suelta (no dentro de una
-  frase) hasta que haya un segmentador. `ChatTopicsCoverageTest` fija una línea
+  sin revisión nativa. En japonés, cantonés y tailandés hace falta la
+  extensión `intl` para encontrar palabras dentro de una frase (ver «Idiomas
+  sin espacios»). `ChatTopicsCoverageTest` fija una línea
   sexual, una amenaza y una cotidiana por idioma.
 
 ## API
@@ -866,7 +880,8 @@ src/                                Namespace DefamatoryContentReview\ (cada car
 ├── Dictionary/
 │   ├── WordList.php                Diccionario: carga, normalización, búsqueda
 │   ├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
-│   └── WordListScanner.php         Búsqueda de términos en texto
+│   ├── WordListScanner.php         Búsqueda de términos en texto
+│   └── WordSegmenter.php           Parte en palabras el japonés, cantonés y tailandés (ICU, ext-intl)
 ├── Normalization/
 │   ├── AccentFolding.php           Plegado de diacríticos
 │   ├── ScriptFolding.php           Variantes estándar de griego, cirílico, árabe y hebreo

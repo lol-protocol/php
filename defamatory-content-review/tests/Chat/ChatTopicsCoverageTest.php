@@ -3,6 +3,7 @@
 namespace Tests\Chat;
 
 use DefamatoryContentReview\Chat\ChatLineReviewer;
+use DefamatoryContentReview\Dictionary\WordSegmenter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -37,6 +38,9 @@ class ChatTopicsCoverageTest extends TestCase
     #[DataProvider('lines')]
     public function testSexualThreatAndEverydayLines(string $lang, array $set): void
     {
+        if (in_array($lang, ['jpn', 'yue', 'tha'], true) && !WordSegmenter::available()) {
+            $this->markTestSkipped('Frases sin espacios: hace falta la extensión intl (ver WordSegmenter).');
+        }
         [$sexual, $threat, $everyday] = $set;
         $reviewer = ChatLineReviewer::create(self::CONFIG_DIR, $lang);
 

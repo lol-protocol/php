@@ -2,6 +2,8 @@
 
 namespace DefamatoryContentReview\Chat;
 
+use DefamatoryContentReview\Dictionary\WordSegmenter;
+
 /** Resultado de ChatLineReviewer::review(): qué se encontró, la decisión y la línea ya censurada. */
 final class ChatLineResult
 {
@@ -43,7 +45,11 @@ final class ChatLineResult
             if ($match['severity'] === 'low' || $words === []) {
                 continue;
             }
-            $pattern = '/(?<![\p{L}\p{N}])' . implode(self::SEPARATOR, array_map(fn(string $w): string => preg_quote($w, '/'), $words)) . '(?![\p{L}\p{N}])/iu';
+            // Junto a una escritura sin espacios («お前はバカだ») no hay frontera de palabra que exigir.
+            $edge = fn(string $char, string $guard): string => preg_match('/[' . WordSegmenter::UNSPACED . ']/u', $char) ? '' : $guard;
+            $pattern = '/' . $edge(mb_substr($words[0], 0, 1), '(?<![\p{L}\p{N}])')
+                . implode(self::SEPARATOR, array_map(fn(string $w): string => preg_quote($w, '/'), $words))
+                . $edge(mb_substr(end($words), -1), '(?![\p{L}\p{N}])') . '/iu';
             $line = preg_replace_callback($pattern, fn(array $m): string => str_repeat('*', mb_strlen($m[0])), $line) ?? $line;
         }
 

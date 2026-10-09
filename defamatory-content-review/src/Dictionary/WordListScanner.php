@@ -8,7 +8,7 @@ namespace DefamatoryContentReview\Dictionary;
  * ofensiva de un compuesto ("Jean-Cul" -> "cul"); (2) por palabra entera sin
  * separadores intercalados, para cerrar la evasión "pu-ta"/"pu.ta"/"pu'ta"
  * que el paso 1 no detecta (único camino para los 16 idiomas sin reglas
- * fonéticas).
+ * fonéticas). Las escrituras sin espacios se parten con WordSegmenter.
  */
 final class WordListScanner
 {
@@ -17,12 +17,8 @@ final class WordListScanner
     /** Separador intercalado dentro de una palabra: no parte un término. */
     private const INSIDE_WORD = '/[\-.,_·\'’]+/u';
 
-    /**
-     * Quita los separadores intercalados. Lo usa también
-     * `WordList::normalize()`: si la clave del índice conservara el guion,
-     * la entrada "half-breed" sería inalcanzable porque ninguna búsqueda
-     * produce esa forma.
-     */
+    /** Quita los separadores intercalados. Lo usa también `WordList::normalize()`: si la clave del índice
+     * conservara el guion, ninguna búsqueda llegaría a la entrada "half-breed". */
     public static function stripInsideWord(string $word): string
     {
         return preg_replace(self::INSIDE_WORD, '', $word);
@@ -35,7 +31,8 @@ final class WordListScanner
     public static function scan(string $text, callable $search): array
     {
         $split = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE;
-        $matches = self::scanWindows(preg_split(self::BETWEEN_WORDS, $text, -1, $split) ?: [], $search);
+        $tokens = array_merge([], ...array_map(WordSegmenter::split(...), preg_split(self::BETWEEN_WORDS, $text, -1, $split) ?: []));
+        $matches = self::scanWindows($tokens, $search);
 
         foreach (preg_split('/\s+/u', $text, -1, $split) ?: [] as [$word, $wordStart]) {
             $glued = self::stripInsideWord($word);
@@ -76,7 +73,10 @@ final class WordListScanner
         for ($i = 0; $i < $count; $i++) {
             for ($span = min(3, $count - $i); $span >= 1; $span--) {
                 $slice = array_slice($tokens, $i, $span);
-                $phrase = implode(' ', array_column($slice, 0));
+                $phrase = $slice[0][0];
+                for ($k = 1; $k < $span; $k++) { // pegadas si eran contiguas (japonés, tailandés…), con espacio si no
+                    $phrase .= ($slice[$k - 1][1] + strlen($slice[$k - 1][0]) === $slice[$k][1] ? '' : ' ') . $slice[$k][0];
+                }
                 $found = $search($phrase);
 
                 if ($found !== null) {

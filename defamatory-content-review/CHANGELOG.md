@@ -44,6 +44,24 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Japonés, cantonés y tailandés se buscan dentro de la frase**
+  (`Dictionary\WordSegmenter`, extensión `intl` opcional). ICU parte los
+  tramos sin espacios en palabras («お前はバカだ» → お前 | は | バカ | だ) y
+  las piezas contiguas se vuelven a unir en las ventanas de búsqueda
+  («仆|街» → «仆街»). Antes sólo se reconocía la palabra suelta. La censura
+  ya no exige frontera de palabra junto a esas escrituras. Sin `intl` el
+  comportamiento es el de antes. La CI instala `intl`.
+  Medido con las 20.000 palabras más frecuentes de OpenSubtitles: las que
+  se censurarían pasan de 36 a 60 (jpn), de 49 a 212 (tha) y de 60 a 62
+  (yue), casi todas insultos y amenazas reales que antes no se veían
+  («ฉันจะฆ่าคุณ», «くそ野郎»). Los falsos positivos que aparecieron eran
+  palabras cotidianas del diccionario dentro de otras («牛» en «牛丼», «ลา»
+  en «ลาก่อน», «สัตว์» en «สวนสัตว์»): 18 entradas pasan a `ambiguous` y se
+  añade «ไอ้เลว» para que «ไม่เลว» («no está mal») deje de marcarse.
+  Quedan para revisión nativa `บ้า` (88 de las 212, «loco»), `แขก`, `おし`
+  y `魔女`, de categorías que no se tocan sin ella. Amenazas directas en
+  tailandés («จะฆ่าคุณ»…) como frases `high`. `WordSegmenterTest`.
+
 - **Listas de temas de chat en los 33 idiomas** (`config/chat-topics/`):
   `sexual`, `belico`, `ambiguous` y, en 18 idiomas de alfabeto latino y
   cirílico, `patterns` de amenaza y de amenaza de violación (fra, ita, por,
