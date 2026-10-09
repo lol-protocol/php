@@ -11,7 +11,9 @@
     "validate": "node scripts/validate-csv.js",
     "build": "node scripts/reorganize-by-country.js",
     "build:check": "node scripts/reorganize-by-country.js --check",
-    "cache:texts": "php scripts/cache-texts.php"
+    "cache:texts": "php scripts/cache-texts.php",
+    "test:e2e": "node --test --test-concurrency=1 'tests/e2e/*.e2e.js'",
+    "check:links": "node scripts/check-links.js"
   },
   "keywords": [
     "privacy",
@@ -25,7 +27,8 @@
   "author": "lol-protocol",
   "license": "MIT",
   "devDependencies": {
+    "axe-core": "4.10.3",
     "csv-parse": "^5.5.0",
-    "axios": "^1.6.0"
+    "playwright": "1.56.1"
   }
 }

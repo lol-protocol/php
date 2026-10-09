@@ -19,8 +19,9 @@ declare(strict_types=1);
  *   countries/{tld}/texts/{slug}.md        the text (front matter: source, law, title, fetched)
  *   countries/{tld}/texts/index.json       what is cached + validators for incremental refresh
  *
- * One GET per reference URL, with a pause between requests. Pages that need
- * JavaScript, PDFs and other non-text content are skipped and reported.
+ * One GET per reference URL, with a pause between requests. robots.txt is honoured
+ * (RFC 9309, including Crawl-delay up to 30 s). Pages that need JavaScript, PDFs and
+ * other non-text content are skipped and reported.
  */
 
 if (PHP_SAPI !== 'cli') {
@@ -232,11 +233,19 @@ function resolveRedirect(string $base, string $location): string
  * allowed) never a loopback/private address, so a reference URL cannot be used to
  * read internal services and publish the answer through the API.
  *
- * @return array{status: int, headers: array<string,string>, body: string, error: ?string, finalUrl: string}
+ * @return array{status: int, headers: array<string,string>, body: string, error: ?string, finalUrl: string, blocked?: string}
  */
-function fetchUrl(string $url, array $conditional, int $timeout, bool $allowPrivate = false): array
+function fetchUrl(string $url, array $conditional, int $timeout, bool $allowPrivate = false, ?callable $mayFetch = null): array
 {
     for ($hop = 0; $hop <= 5; $hop++) {
+        // Every hop is asked again: a redirect to another site must follow that site's robots.txt.
+        $denied = $mayFetch !== null ? $mayFetch($url) : null;
+        if (isset($denied['error'])) {
+            return ['status' => 0, 'headers' => [], 'body' => '', 'error' => $denied['error'], 'finalUrl' => $url];
+        }
+        if (isset($denied['blocked'])) {
+            return ['status' => 0, 'headers' => [], 'body' => '', 'error' => null, 'blocked' => $denied['blocked'], 'finalUrl' => $url];
+        }
         $parts = parse_url($url);
         $scheme = strtolower($parts['scheme'] ?? '');
         if (!in_array($scheme, ['http', 'https'], true) || empty($parts['host'])) {
@@ -307,6 +316,115 @@ function renderFile(string $format, string $text, array $meta): string
     return "---\nsource: {$json($meta['source'])}\nlaw: {$json($meta['law'])}\ntitle: {$json($meta['title'])}\nfetched: {$json($meta['fetched'])}\n---\n\n$text\n";
 }
 
+/** Product token sent in the User-Agent and matched against robots.txt groups. */
+function robotsToken(): string
+{
+    return strtolower(strtok(USER_AGENT, '/'));
+}
+
+/**
+ * Rules of the robots.txt group that applies to us (RFC 9309): the groups naming our
+ * product token, merged, or else the `*` groups.
+ *
+ * @return array{rules: list<array{allow: bool, path: string}>, delay: float}
+ */
+function parseRobots(string $body, string $token): array
+{
+    $groups = [];   // list of ['agents' => list<string>, 'rules' => list, 'delay' => float]
+    $current = null;
+    $lastWasAgent = false;
+    foreach (preg_split('/\r\n|\r|\n/', $body) ?: [] as $line) {
+        $line = trim((string) preg_replace('/#.*/', '', $line));
+        if (!preg_match('/^([A-Za-z-]+)\s*:\s*(.*)$/', $line, $m)) {
+            continue;
+        }
+        $field = strtolower($m[1]);
+        $value = trim($m[2]);
+        if ($field === 'user-agent') {
+            if (!$lastWasAgent || $current === null) {
+                $groups[] = ['agents' => [], 'rules' => [], 'delay' => 0.0];
+                $current = array_key_last($groups);
+            }
+            $groups[$current]['agents'][] = strtolower($value);
+            $lastWasAgent = true;
+            continue;
+        }
+        $lastWasAgent = false;
+        if ($current === null) {
+            continue; // rules before any user-agent line belong to no group
+        }
+        if (($field === 'allow' || $field === 'disallow') && $value !== '') {
+            $groups[$current]['rules'][] = ['allow' => $field === 'allow', 'path' => $value];
+        } elseif ($field === 'crawl-delay' && is_numeric($value)) {
+            $groups[$current]['delay'] = max($groups[$current]['delay'], (float) $value);
+        }
+    }
+
+    foreach ([$token, '*'] as $wanted) {
+        $matching = array_filter($groups, static fn(array $g): bool => in_array($wanted, $g['agents'], true));
+        if ($matching) {
+            return [
+                'rules' => array_merge(...array_map(static fn(array $g): array => $g['rules'], array_values($matching))),
+                'delay' => max(array_map(static fn(array $g): float => $g['delay'], $matching)),
+            ];
+        }
+    }
+    return ['rules' => [], 'delay' => 0.0];
+}
+
+/** Longest matching rule wins; on a tie, Allow wins; no match means allowed. */
+function robotsAllows(array $rules, string $path): bool
+{
+    $best = null;
+    foreach ($rules as $rule) {
+        $pattern = $rule['path'];
+        $anchored = str_ends_with($pattern, '$');
+        $regex = '#^' . str_replace('\*', '.*', preg_quote($anchored ? substr($pattern, 0, -1) : $pattern, '#')) . ($anchored ? '$' : '') . '#';
+        if (!preg_match($regex, $path)) {
+            continue;
+        }
+        $length = strlen($pattern);
+        if ($best === null || $length > $best['length'] || ($length === $best['length'] && $rule['allow'])) {
+            $best = ['length' => $length, 'allow' => $rule['allow']];
+        }
+    }
+    return $best === null || $best['allow'];
+}
+
+/**
+ * robots.txt of the URL's site, fetched once per run. A missing file (4xx) allows
+ * everything; an unreachable one (5xx, network error) allows nothing, as RFC 9309 asks.
+ *
+ * @param array<string, array{rules: list, delay: float, unreachable?: bool, error?: string}> $cache
+ * @return array{rules: list, delay: float, unreachable?: bool, error?: string}
+ */
+function robotsFor(string $url, array &$cache, int $timeout, bool $allowPrivate): array
+{
+    $parts = parse_url($url);
+    $origin = strtolower(($parts['scheme'] ?? 'http') . '://' . ($parts['host'] ?? '')) . (isset($parts['port']) ? ':' . $parts['port'] : '');
+    if (!isset($cache[$origin])) {
+        $response = fetchUrl("$origin/robots.txt", [], $timeout, $allowPrivate);
+        if ($response['error'] === null && $response['status'] >= 200 && $response['status'] < 300) {
+            $cache[$origin] = parseRobots(substr($response['body'], 0, 500 * 1024), robotsToken());
+        } elseif ($response['error'] === null && $response['status'] >= 400 && $response['status'] < 500) {
+            $cache[$origin] = ['rules' => [], 'delay' => 0.0];
+        } elseif ($response['error'] !== null || $response['status'] === 0) {
+            // The site itself cannot be reached (or is refused): report that, it is not a robots.txt decision.
+            $cache[$origin] = ['rules' => [], 'delay' => 0.0, 'error' => $response['error'] ?? 'no response'];
+        } else {
+            $cache[$origin] = ['rules' => [], 'delay' => 0.0, 'unreachable' => true];
+        }
+    }
+    return $cache[$origin];
+}
+
+/** Path + query as robots.txt rules see it. */
+function robotsPath(string $url): string
+{
+    $parts = parse_url($url);
+    return ($parts['path'] ?? '/') . (isset($parts['query']) ? '?' . $parts['query'] : '');
+}
+
 /** Cached text files are only ever named like `some-slug.md`: never trust a path read from index.json. */
 function isCacheFileName(mixed $name): bool
 {
@@ -354,6 +472,7 @@ function main(array $argv): int
     $totals = ['new' => 0, 'updated' => 0, 'unchanged' => 0, 'skipped' => 0, 'failed' => 0];
     $problems = [];
     $first = true;
+    $robots = [];
 
     foreach ($bundle[BUNDLE_KEY] as $country) {
         $tld = $country['tld'];
@@ -401,14 +520,35 @@ function main(array $argv): int
                 }
             }
 
-            $response = fetchUrl($url, $conditional, $options['timeout'], $options['allowPrivate']);
+            /** @return array{error?: string, blocked?: string}|null */
+            $mayFetch = static function (string $target) use (&$robots, $options): ?array {
+                $site = robotsFor($target, $robots, $options['timeout'], $options['allowPrivate']);
+                if (isset($site['error'])) {
+                    return ['error' => $site['error']];
+                }
+                if (!empty($site['unreachable'])) {
+                    return ['blocked' => 'robots.txt answered with a server error, so the site is not fetched'];
+                }
+                if (!robotsAllows($site['rules'], robotsPath($target))) {
+                    return ['blocked' => 'disallowed by robots.txt'];
+                }
+                // Crawl-delay asks for more time than --delay: wait the difference (capped at 30 s).
+                $extra = min(30.0, $site['delay']) - $options['delay'];
+                if ($extra > 0) {
+                    usleep((int) ($extra * 1_000_000));
+                }
+                return null;
+            };
+            $response = fetchUrl($url, $conditional, $options['timeout'], $options['allowPrivate'], $mayFetch);
             $stamp = now();
             $failure = null;
             $skipReason = null;
             $text = '';
             $title = '';
 
-            if ($response['error'] !== null || $response['status'] === 0) {
+            if (isset($response['blocked'])) {
+                $skipReason = $response['blocked'];
+            } elseif ($response['error'] !== null || $response['status'] === 0) {
                 $failure = $response['error'] ?? 'no response';
             } elseif ($response['status'] === 304 && $reusable) {
                 $entries[$slug] = ['checkedAt' => $stamp] + $old;

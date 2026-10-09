@@ -1,0 +1,46 @@
+name: Leyes - enlaces de referencia
+
+# Weekly check that the reference URLs of both datasets still answer.
+# A broken link fails the job (GitHub then notifies); the summary lists every problem.
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: ${{ matrix.module }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ matrix.module }}
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [privacy-laws, copyright-laws]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Check reference links
+        run: npm run check:links -- --json=links-report.json
+
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: links-report-${{ matrix.module }}
+          path: ${{ matrix.module }}/links-report.json
+          if-no-files-found: ignore

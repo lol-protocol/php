@@ -91,7 +91,7 @@ npm run cache:texts -- --only=us,br         # fetch some countries (one GET per 
 npm run cache:texts -- --format=txt         # plain text instead of Markdown
 ```
 
-Needs PHP with `curl`, `dom`, `mbstring` and `intl` (the last one keeps file names identical on every machine). For each law it downloads `website_url`, keeps only the readable text (no HTML, scripts, menus or footers) and writes `countries/{tld}/texts/{slug}.md` plus an `index.json` with validators, so re-runs are incremental (`304` or identical text → nothing rewritten). PDFs and pages that need JavaScript are skipped and reported. The folders are git-ignored; remove the two lines in the root `.gitignore` if you want to version them. The API serves them with `action=texts` / `action=text`. Safety: only public http(s) hosts are fetched (loopback, private and link-local addresses are refused, redirects included; `--allow-private-hosts` overrides this for tests), a law that leaves the dataset has its cached text removed on the next run, and the data validator rejects local/private hosts in the reference URL.
+Needs PHP with `curl`, `dom`, `mbstring` and `intl` (the last one keeps file names identical on every machine). For each law it downloads `website_url`, keeps only the readable text (no HTML, scripts, menus or footers) and writes `countries/{tld}/texts/{slug}.md` plus an `index.json` with validators, so re-runs are incremental (`304` or identical text → nothing rewritten). PDFs and pages that need JavaScript are skipped and reported. The folders are git-ignored; remove the two lines in the root `.gitignore` if you want to version them. The API serves them with `action=texts` / `action=text`. It honours `robots.txt` (RFC 9309: our `privacy-laws-text-cache` group, else `*`; `Crawl-delay` up to 30 s; a robots.txt that answers 5xx means the site is not fetched). Safety: only public http(s) hosts are fetched (loopback, private and link-local addresses are refused, redirects included; `--allow-private-hosts` overrides this for tests), a law that leaves the dataset has its cached text removed on the next run, and the data validator rejects local/private hosts in the reference URL.
 
 ## Database
 
@@ -110,7 +110,17 @@ The importer reads `region` straight from the CSV.
 
 ## Tests
 
-`npm test` (Node 22+; PHP-dependent tests are skipped when `php` is missing) covers the data, the filter engine, translations, the API and the text cache.
+`npm test` (Node 22+; PHP-dependent tests are skipped when `php` is missing) covers the data, the filter engine, translations, the API, the text cache and the link checker.
+
+```bash
+npx playwright install chromium   # once
+npm run test:e2e                   # the app in Chromium: filters, URL state, export, focus, languages, axe-core in light/dark and desktop/mobile
+npm run check:links                # does every reference URL still answer? (--only=us,br, --json=report.json)
+```
+
+The browser tests skip themselves when PHP, Playwright or Chromium is missing; set `E2E_REQUIRED=1` to make that an error. `check:links` exits with 1 on broken links (404/410/5xx/DNS/timeouts); 401/403/429 are only warnings because many official sites block automated requests.
+
+CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm test` on PHP 8.1 and 8.4, and the browser tests, on every push that touches either module. `.github/workflows/laws-links.yml` checks the reference links of both datasets every Monday (and on demand) and lists the problems in the run summary.
 
 ## Pending
 

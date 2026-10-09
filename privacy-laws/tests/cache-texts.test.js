@@ -267,3 +267,33 @@ test("private and loopback addresses are refused unless explicitly allowed", { s
 });
 
 const index_of = (dir, tld) => JSON.parse(readFileSync(join(dir, tld, "texts", "index.json"), "utf-8"));
+
+test("robots.txt is honoured: our group wins over *, longest rule wins, every redirect hop is checked", { skip }, async () => {
+  const site = await startPhpServer(pageDir, { router: join(fixtures, "router.php"), env: { FIXTURE_DIR: pageDir, ROBOTS: "rules" } });
+  const broken = await startPhpServer(pageDir, { router: join(fixtures, "router.php"), env: { FIXTURE_DIR: pageDir, ROBOTS: "500" } });
+  const isolated = mkdtempSync(join(tmpdir(), "laws-robots-"));
+  try {
+    const law = (law_name, base, path) => ({ law_name, website_url: `${base}${path}` });
+    const bundle = { countries: [{ code: "XR", tld: "xr", name: "R", region: "europe", lawCount: 6, laws: [
+      law("Open", site.url, "/law.html"),
+      law("Secret", site.url, "/private/secret"),
+      law("Public page", site.url, "/private/public-page"),
+      law("Public page two", site.url, "/private/public-page-2"),
+      law("Via redirect", site.url, "/to-private"),
+      law("Broken robots", broken.url, "/law.html"),
+    ] }] };
+    writeFileSync(join(isolated, "index.json"), JSON.stringify(bundle));
+    const { stdout, status } = php(["--delay=0", "--timeout=5", "--allow-private-hosts"], { env: { LAWS_DATA_DIR: isolated } });
+    assert.equal(status, 0);
+    assert.match(stdout, /\[ok\] xr\/open /); // "User-agent: *" says Disallow: /, but our own group applies
+    assert.match(stdout, /\[skip\] xr\/secret {2}disallowed by robots\.txt/);
+    assert.match(stdout, /\[fail\] xr\/public-page {2}HTTP 404/); // allowed by the longer Allow rule, so it was requested
+    assert.match(stdout, /\[skip\] xr\/public-page-two {2}disallowed by robots\.txt/); // "$" anchors the Allow rule
+    assert.match(stdout, /\[skip\] xr\/via-redirect {2}disallowed by robots\.txt/);
+    assert.match(stdout, /\[skip\] xr\/broken-robots {2}robots\.txt answered with a server error/);
+  } finally {
+    await site.stop();
+    await broken.stop();
+    rmSync(isolated, { recursive: true, force: true });
+  }
+});

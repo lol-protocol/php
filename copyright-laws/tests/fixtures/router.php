@@ -4,7 +4,23 @@
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $dir = getenv('FIXTURE_DIR') ?: __DIR__;
 
+// ROBOTS=rules serves a robots.txt with a group for us and a stricter one for everybody else;
+// ROBOTS=500 makes robots.txt fail. Without ROBOTS there is no robots.txt (404).
+$robots = getenv('ROBOTS') ?: '';
+if ($path === '/robots.txt' && $robots === 'rules') {
+    header('Content-Type: text/plain');
+    echo "User-agent: *\nDisallow: /\n\n# our crawler\nUser-agent: copyright-laws-text-cache\nDisallow: /private/\nAllow: /private/public-page$\n";
+    exit;
+}
+if ($path === '/robots.txt' && $robots === '500') {
+    http_response_code(500);
+    exit;
+}
+
 switch ($path) {
+    case '/to-private':
+        header('Location: /private/secret', true, 302);
+        break;
     case '/law.html':
         $body = file_get_contents("$dir/law-page.html");
         $etag = '"' . md5($body) . '"';
