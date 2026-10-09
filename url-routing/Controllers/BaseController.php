@@ -4,17 +4,53 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Support\AccessPolicy;
 use App\Support\Database;
 use App\Support\ServiceLocator;
 
 class BaseController
 {
     /**
-     * This app has no login: it's a single-tenant addon, not a
+     * This app has no user accounts: it's a single-tenant addon, not a
      * multi-user product, so account pages act on a fixed user
-     * instead of a session identity.
+     * instead of a session identity. Those pages hold that user's
+     * personal data, so they are owner-only (see AccessPolicy).
      */
     protected const DEFAULT_USER_ID = 1;
+
+    /** Whether this request is the owner's (see AccessPolicy). */
+    protected function esPropietario(): bool
+    {
+        return AccessPolicy::esPropietario();
+    }
+
+    /**
+     * Null when the owner is asking; otherwise the response that refuses:
+     * a 404 that hides the page ($ocultar, for private data whose existence
+     * must not be confirmed) or a 401 that asks the browser for the token.
+     */
+    protected function exigirPropietario(bool $ocultar = true): ?string
+    {
+        if (!AccessPolicy::esPropietario()) {
+            return $ocultar ? AccessPolicy::ocultar() : AccessPolicy::pedirCredenciales();
+        }
+
+        AccessPolicy::recordar();
+        AccessPolicy::marcarPrivada();
+        return null;
+    }
+
+    /** Runs $accion only for the owner; anyone else gets a 404, as if the page did not exist. */
+    protected function soloPropietario(callable $accion): string
+    {
+        return $this->exigirPropietario() ?? (string)$accion();
+    }
+
+    /** Runs $accion only for the owner; anyone else is asked to log in (401). */
+    protected function pedirPropietario(callable $accion): string
+    {
+        return $this->exigirPropietario(ocultar: false) ?? (string)$accion();
+    }
 
     protected function validateCsrfToken(): bool
     {
