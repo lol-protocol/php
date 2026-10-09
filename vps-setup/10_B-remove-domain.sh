@@ -37,8 +37,8 @@ require_valid domain "$DOMAIN" "El dominio"
 DEST="$REMOVED_DIR/$DOMAIN-$(date +%Y%m%d-%H%M%S)"
 VHOST="$NGINX_DIR/sites-available/$DOMAIN"
 LINK="$NGINX_DIR/sites-enabled/$DOMAIN"
-# 06_A y 06_B nombran el vhost como la APP (no como el dominio): con --app hay que
-# desactivar tambien ese, o el sitio seguiria publicado.
+# Versiones anteriores de 06_A y 06_B nombraban el vhost como la APP (hoy usan el dominio): con --app
+# se desactiva tambien ese, por si quedo alguno asi, o el sitio seguiria publicado.
 APP_LINK=""; [ -z "$APP" ] || APP_LINK="$NGINX_DIR/sites-enabled/$APP"
 
 # Lista de lo que existe y se archivara: "origen|nombre dentro de DEST"
@@ -78,11 +78,27 @@ for l in "$LINK" "$APP_LINK"; do
         sudo rm -f "$l"
     fi
 done
+restore_links() { for l in "${!SAVED_LINKS[@]}"; do sudo ln -s "${SAVED_LINKS[$l]}" "$l"; done; }
 if ! sudo nginx -t; then
     echo "ERROR: nginx -t falla sin $DOMAIN; se restauran los sitios y no se archiva nada."
-    for l in "${!SAVED_LINKS[@]}"; do sudo ln -s "${SAVED_LINKS[$l]}" "$l"; done
+    restore_links
     exit 1
 fi
+# nginx -t pasa aunque un sitio que sigue activo use algo que se va a archivar, porque las rutas
+# todavia existen; despues de moverlas nginx ya no arrancaria (en el proximo reinicio caen TODOS
+# los sitios). Caso tipico: una app php/python quitada sin --app, cuyo vhost se llama como la app
+# pero escribe sus logs en /var/log/nginx/<dominio>/.
+for it in "${ITEMS[@]}"; do
+    src=${it%%|*}
+    users=$(sudo grep -RlF -e "$src/" -e "$src;" "$NGINX_DIR/sites-enabled/" 2>/dev/null || true)
+    if [ -n "$users" ]; then
+        echo "ERROR: $src lo sigue usando un sitio activo:"
+        echo "$users" | sed 's/^/  - /'
+        echo "Si es una app php/python, repite con --app <nombre de la app>. No se archivo nada."
+        restore_links
+        exit 1
+    fi
+done
 
 # 2) Servicio de la app (si hay)
 if [ -n "$APP" ]; then

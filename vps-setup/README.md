@@ -143,8 +143,8 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 02_H | `02_H-install-tomcat.sh` | *(Opcional)* Instala Apache Tomcat — requiere que `02_A` (Java) ya haya corrido |
 | 02_I | `02_I-install-python-whisper.sh` | *(Opcional)* Instala Whisper (OpenAI, transcripción de audio) + ffmpeg + librerías Python básicas en un venv en `/opt/venvs/whisper` — requiere que `02_C` (Python) ya haya corrido |
 | 02_J | `02_J-install-webmin.sh` | Instala Webmin (panel de administración web, opcional pero incluido por defecto en `install-all.sh`). Con `WEBMIN_ALLOW_FROM=<tu IP>` el puerto 10000 solo se abre a esa IP; sin ella queda abierto a todo internet y el script lo avisa |
-| 03 | `03-configure-nginx-site.sh` | Crea el virtual host de Nginx y copia la landing page |
-| 04 | `04-setup-ssl.sh` | Obtiene certificado SSL (verifica DNS antes) |
+| 03 | `03-configure-nginx-site.sh <dominio>` | Crea el virtual host de Nginx (estático, sin PHP) y copia la landing page |
+| 04 | `04-setup-ssl.sh <dominio> [email] [--force] [--staging]` | Obtiene certificado SSL. Verifica antes que el DNS apunte al VPS; sin terminal y con el DNS mal, **aborta** para no gastar un intento de Let's Encrypt (`--force` lo salta). `--staging` pide un certificado de prueba sin límite semanal |
 | 05 | `05-deploy-landing-page.sh` | (Re)copia los archivos de la landing page |
 | 07_A | `07_A-install-fail2ban-autoupdates.sh` | Instala fail2ban (jail de SSH) y actualizaciones automáticas de seguridad (sin reinicio automático) |
 | 07_B | `07_B-nginx-security-headers.sh` | Agrega HSTS, X-Frame-Options, X-Content-Type-Options y Referrer-Policy a todos los dominios, oculta la versión de Nginx (`server_tokens off`) y define un vhost por defecto que corta el tráfico por IP o con un Host ajeno (archivos en `conf.d/`) |
@@ -153,14 +153,14 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 07_E | `07_E-nginx-performance.sh` | Amplía gzip (CSS/JS/JSON/XML/SVG, también respuestas de apps tras proxy) y activa `open_file_cache` para todos los dominios. Si `nginx -t` rechaza la config, quita su archivo |
 | 08 | `08-healthcheck.sh` | Solo lectura: revisa servicios, UFW, puertos, DNS, HTTPS, certificado y headers. Sale con código 1 si algo falla. Uso: `./08-healthcheck.sh tudominio.com` |
 | 09_A | `09_A-setup-monitoring.sh` | *(Opcional)* Monitoreo cada 15 min (disco, RAM, carga, certificados, servicios) con alertas a webhook (Slack/Discord/Mattermost) y/o correo. Solo avisa cuando cambia el estado |
-| 06_A | `06_A-setup-php-app.sh` | *(Opcional)* Configura una app PHP adicional |
-| 06_B | `06_B-setup-python-app.sh` | *(Opcional)* Configura una app Python (Flask + Gunicorn) |
-| 06_C | `06_C-setup-dns-server.sh` | *(Opcional)* Instala BIND9 como servidor DNS propio, solo autoritativo (`recursion no`) — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
-| 06_D | `06_D-setup-tomcat-app.sh` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio (con la app en la raíz, `/manager` y `/host-manager` devuelven 404) — requiere `02_H` ya hecho |
-| 10_A | `10_A-add-domain.sh` | Agrega un dominio nuevo (landing/php/python/tomcat, `--ssl` opcional) encadenando los scripts anteriores |
+| 06_A | `06_A-setup-php-app.sh <app> <dominio>` | *(Opcional)* Configura una app PHP adicional |
+| 06_B | `06_B-setup-python-app.sh <app> <dominio> [puerto]` | *(Opcional)* Configura una app Python (Flask + Gunicorn). Cada app necesita su propio puerto local (por defecto 8000): el script rechaza uno que ya use otra app |
+| 06_C | `06_C-setup-dns-server.sh <dominio> [ip]` | *(Opcional)* Instala BIND9 como servidor DNS propio, solo autoritativo (`recursion no`), con registro CAA (solo Let's Encrypt) y AAAA si das `VPS_IP6=`. Sin IP usa la pública detectada — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
+| 06_D | `06_D-setup-tomcat-app.sh <dominio> [context]` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio (con la app en la raíz, `/manager` y `/host-manager` devuelven 404) — requiere `02_H` ya hecho |
+| 10_A | `10_A-add-domain.sh` | Agrega un dominio nuevo (landing/php/python/tomcat, `--ssl` y `--port` opcionales) encadenando los scripts anteriores |
 | 10_B | `10_B-remove-domain.sh` | Quita un dominio **archivando** (no borrando) su vhost, sitio y logs |
 | — | `remote-run.sh` | Desde TU equipo: sube `vps-setup/` por SSH (solo llave) y ejecuta un script en el VPS. Config en `vps.env` (ver `vps.env.example`) |
-| — | `install-all.sh` | Ejecuta 01 → 02_A..F+J → 03 → 04 → 05 → 07_A → 07_B → 07_D → 07_E en orden y termina corriendo 08. Admite `--dry-run`, `--resume` y `--yes` |
+| — | `install-all.sh` | Ejecuta 01 → 02_A..F+J → 03 → 04 → 05 → 07_A → 07_B → 07_D → 07_E en orden y termina corriendo 08. Admite `--dry-run`, `--resume` y `--yes`. Guarda un log de cada corrida en `~/.local/state/vps-setup/install-all-<fecha>.log` |
 
 Los pasos `02_G`/`02_H`/`02_I` y todos los `06_*` son opcionales e independientes entre sí — instala solo los que necesites. Las notas "requiere X ya hecho" son las únicas excepciones a "cualquier orden": son dependencias reales de software, no de orden de ejecución arbitrario.
 
@@ -212,7 +212,14 @@ apt, systemd, certbot, fail2ban ni ufw — eso solo se valida en un VPS. Las pru
 `10_A` encadena los scripts 03/06_A/06_B/06_D, opcionalmente 04 (`--ssl`, el DNS ya debe apuntar al VPS) y 08.
 `10_B` **no borra nada**: mueve el vhost, el sitio, los logs (y con `--app` la app y su unidad systemd) a
 `/var/backups/vps-setup/removed/<dominio>-<fecha>/`, comprueba `nginx -t` antes de archivar (si falla, restaura el
-sitio) y al final indica cómo quitar el certificado y la zona DNS, que no toca.
+sitio) y al final indica cómo quitar el certificado y la zona DNS, que no toca. Para apps php/python usa `--app`
+para archivar también la carpeta de la app y su servicio systemd (no llevan el nombre del dominio).
+
+**Un dominio, un sitio.** Todos los scripts nombran el vhost por el dominio (`sites-available/<dominio>`) y le ponen
+una marca `# vps-setup: <tipo> <app>` en la primera línea. Re-correr el mismo script para el mismo dominio vale;
+crear otro tipo de sitio (o otra app) en un dominio que ya tiene uno falla con un mensaje que indica cómo quitar el
+anterior, igual que si otro sitio activo ya declara ese `server_name`. Ningún script usa un dominio por defecto:
+sin argumentos muestran el uso y salen con código 2.
 
 ## 🔒 Seguridad
 

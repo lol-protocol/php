@@ -107,3 +107,16 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
     ia initech.fun --yes
     [ "$(grep -c '^www.initech.fun'$'\t' "$INSTALL_STATE_FILE")" -eq 15 ]
 }
+
+@test "deja un log de la corrida y, si un paso falla, dice donde esta" {
+    FAIL_STEP=04-setup-ssl.sh ia ejemplo.com a@ejemplo.com --yes
+    [ "$status" -ne 0 ]
+    log=$(ls "$(dirname "$INSTALL_STATE_FILE")"/install-all-*.log)
+    [[ "$output" == *"Log completo: $log"* ]]
+    grep -q "ERROR: fallo 04-setup-ssl.sh" "$log"
+}
+
+@test "--dry-run no crea log" {
+    ia ejemplo.com --dry-run
+    ! ls "$(dirname "$INSTALL_STATE_FILE")"/install-all-*.log 2>/dev/null
+}

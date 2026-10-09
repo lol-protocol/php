@@ -3,7 +3,8 @@ set -e
 
 source "$(dirname "$0")/lib.sh"
 
-DOMAIN=${1:-"app.initech.fun"}
+DOMAIN=${1:-}
+require_arg "$DOMAIN" "$0 <dominio> [context-path]   (ej. $0 app.initech.fun miapp)"
 CONTEXT_PATH=${2:-""}
 require_valid domain "$DOMAIN" "El dominio (argumento 1)"
 require_valid context_path "$CONTEXT_PATH" "El context path (argumento 2)"
@@ -15,6 +16,7 @@ if ! systemctl is-active --quiet tomcat10; then
     exit 1
 fi
 
+claim_nginx_vhost "$DOMAIN" "06_D-tomcat ${CONTEXT_PATH:-ROOT}"
 setup_nginx_domain_logs "$DOMAIN"
 
 # Cuando 'proxy_pass' incluye una URI (aunque sea "/"), Nginx reemplaza el
@@ -41,7 +43,8 @@ fi
 # solo reenvia todo el trafico del dominio publico hacia Tomcat (puerto 8080
 # local). El $CONTEXT_PATH es la subcarpeta bajo la que Tomcat publica tu
 # app (el nombre del .war sin la extension, ver el aviso final del script).
-sudo tee /etc/nginx/sites-available/$DOMAIN > /dev/null <<EOF
+sudo tee "$NGINX_DIR/sites-available/$DOMAIN" > /dev/null <<EOF
+# vps-setup: 06_D-tomcat ${CONTEXT_PATH:-ROOT}
 server {
     listen 80;
     listen [::]:80;
@@ -61,11 +64,8 @@ $MANAGER_BLOCK
 }
 EOF
 
-# El enlace en sites-enabled es lo que realmente activa el sitio
-sudo ln -sf /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/$DOMAIN
-
-sudo nginx -t              # valida ANTES de recargar, para no tumbar los sitios que ya funcionan
-sudo systemctl reload nginx
+# Activa el sitio, lo valida con nginx -t (si falla, lo desactiva) y recarga Nginx
+enable_nginx_site "$DOMAIN"
 
 # Si no se paso context path, la app va en la raiz de Tomcat, cuyo archivo
 # se llama ROOT.war (nunca ".war" a secas -- ese nombre no es valido)
