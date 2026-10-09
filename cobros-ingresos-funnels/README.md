@@ -162,8 +162,9 @@ Todo se lee de variables de entorno (con PHP-FPM, `env[...]` en el pool):
 ### Tasas de cambio
 
 Los totales en USD de Dashboard, Cobros, Pagos y Cohortes convierten cada monto con
-`monedas.tasa_a_usd`. La migración `005` las carga con valores de ejemplo, y mientras
-sigan así esas cuatro pantallas lo avisan arriba. Para cargar las reales:
+una tasa de `monedas.tasa_a_usd` (cuál, en «La tasa de cada día», más abajo). La
+migración `005` las carga con valores de ejemplo, y mientras sigan así esas cuatro
+pantallas lo avisan arriba. Para cargar las reales:
 
 ```bash
 php database/actualizar_tasas.php             # baja las tasas y las guarda
@@ -203,11 +204,28 @@ manda por mail). Sirve cualquiera que conteste `{"base": "USD", "rates": {"EUR":
 `--archivo=tasas.json` lee el mismo formato de un archivo, para tasas que vengan de
 otra parte (el banco central, el contador).
 
-**Ojo con la historia.** Todos los totales convierten con la tasa de hoy, también las
-boletas y los pagos de meses anteriores: los de enero cambian cada día que se mueve el
-tipo de cambio. Es un valor actual en USD, no un valor contable. Si hace falta cada
-boleta a la tasa de su día, hay que guardar esa tasa en la boleta y en el pago al
-crearlos, y hoy no se hace.
+**La tasa de cada día.** Cada boleta, pago y nota de crédito guarda la tasa de su
+moneda cuando se crea (`tasa_a_usd`, migración `011`), y los ingresos, los cobros, las
+devoluciones, la segmentación y el LTV suman `monto × tasa` de cada fila. Un mes ya
+cerrado da siempre la misma cifra, aunque la tasa se mueva después: actualizar las tasas
+no toca lo que ya está cargado. Lo único que se valúa a la tasa de hoy es la **cartera
+pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
+
+- Un trigger de la base graba la tasa de `monedas` en cada alta que venga sin una, así
+  que lo mismo da una boleta cargada en la app que un `INSERT` a mano o el seed. Una
+  tasa que se pase explícita se respeta (una importación con su propia cotización).
+- Editar un monto o una fecha no vuelve a cotizar: la moneda no se puede cambiar.
+- La nota de crédito toma el promedio, ponderado por monto, de las tasas de los pagos
+  que devuelve, para que el cobro y la devolución se cancelen en USD aunque la tasa se
+  haya movido; sin pagos, la del día.
+- La primera vez que una moneda recibe una tasa real, las boletas, pagos y notas que se
+  habían grabado con la de ejemplo pasan a esa tasa real (`--simular` dice cuántas
+  filas son). Desde ahí ya no se mueven.
+- **Límite:** la base no guarda un historial de cotizaciones. Una boleta cargada hoy
+  con fecha de hace tres meses queda con la tasa de hoy, no con la de esa fecha, y lo
+  mismo vale para lo que ya existía cuando se aplicó la migración. Si hace falta la
+  tasa exacta de cada fecha, falta una tabla de cotizaciones por día (y una importación
+  que las use: las filas aceptan una tasa explícita).
 
 ### Esquema de la base
 
@@ -381,7 +399,7 @@ database/
                         en cambios numerados (001 = esquema inicial, 005 =
                         catálogo, 006 y 008 = índices, 007 = mayoría de edad,
                         009 = origen de las tasas de cambio, 010 = mayoría de
-                        edad de cada país)
+                        edad de cada país, 011 = la tasa de cambio de cada día)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
                         vez por día)
@@ -413,8 +431,9 @@ tests/
                         sus índices, que la app, el trigger y el tramo de edad
                         coincidan en quién es mayor de edad en cada país, que las
                         tasas de cambio se actualicen con sus reglas de seguridad
-                        (y el comando que corre cron), y que los datos de ejemplo del
-                        seed cumplan las reglas de la app)
+                        (y el comando que corre cron), que cada fila guarde la tasa
+                        de su día y los totales la usen, y que los datos de ejemplo
+                        del seed cumplan las reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
@@ -442,9 +461,11 @@ phpstan.neon            configuracion del analisis estatico
   `fecha_conversion`) y el canal de adquisición. El perfil se genera una sola vez
   por persona y viaja a `clientes` si convierte.
 - `boletas`: ingresos devengados al usuario final (monto, moneda, emisión,
-  vencimiento, `anulada`) — no son facturas fiscales.
+  vencimiento, `anulada`) — no son facturas fiscales. Guarda `tasa_a_usd`, la tasa de
+  su moneda al crearse (ver «La tasa de cada día»).
 - `pagos`: cobros reales del usuario, opcionalmente ligados a una boleta
-  (`boleta_id` puede ser `NULL` para anticipos/pagos sueltos) y con `anulada`.
+  (`boleta_id` puede ser `NULL` para anticipos/pagos sueltos) y con `anulada`. También
+  guarda su `tasa_a_usd`.
   `pagos.metodo`, `clientes.genero` y `clientes.segmento` solo admiten las listas
   que ofrecen los formularios: la app las valida en el servidor y la base las
   restringe con `CHECK` (migración 004, `NOT VALID`: rigen para filas nuevas o
@@ -459,7 +480,7 @@ phpstan.neon            configuracion del analisis estatico
   recalcula, así que una vez anulada la boleta sus pagos quedan congelados:
   anularlos o editarlos descuadraría la devolución, y la app lo rechaza con un
   409 (la regla simétrica de no poder cargar un pago nuevo contra una boleta
-  anulada).
+  anulada). Su `tasa_a_usd` es el promedio de la de los pagos que devuelve.
 - `boletas_con_saldo` (vista): cada boleta con `pagado` (la suma de sus pagos no
   anulados), `saldo` y `primer_pago`. Es la única definición de "cuánto se pagó":
   la usan todas las consultas en vez de repetir la subconsulta.
@@ -481,8 +502,9 @@ desincronizado. Una boleta o pago anulado es un **soft-delete**: la fila queda
 (con su badge "Anulada" en los listados, para trazabilidad) pero se excluye de
 todos los KPIs, gráficos y agregados (`AND NOT anulada` en cada consulta que suma
 montos). Los KPIs y gráficos agregados suman `monto * tasa_a_usd` para consolidar
-en USD; las tablas de detalle (boletas, pagos, ficha de cliente) muestran el monto
-en su moneda original.
+en USD, con la tasa que cada fila guardó al crearse (la cartera pendiente, con la de
+hoy; ver «La tasa de cada día»); las tablas de detalle (boletas, pagos, ficha de
+cliente) muestran el monto en su moneda original.
 
 ## Notas de diseño
 

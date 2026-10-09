@@ -47,8 +47,8 @@ final class SegmentacionRepository
         $edad = RangoEdad::expresionSql('base.fecha_nacimiento');
         $filas = $this->db->query(
             "WITH f AS MATERIALIZED (
-                 SELECT b.cliente_id, SUM(b.monto * m.tasa_a_usd) AS total
-                 FROM boletas b JOIN monedas m ON m.codigo = b.moneda_codigo
+                 SELECT b.cliente_id, SUM(b.monto * b.tasa_a_usd) AS total
+                 FROM boletas b
                  WHERE NOT b.anulada GROUP BY b.cliente_id
              ), base AS MATERIALIZED (
                  SELECT c.pais_codigo, c.ciudad, c.idioma, c.genero, c.fecha_nacimiento, f.total
@@ -92,11 +92,11 @@ final class SegmentacionRepository
                  SELECT to_char(c.fecha_alta, 'YYYY-MM') AS cohorte, c.id,
                         COALESCE(pg.total, 0) - COALESCE(nc.total, 0) AS total_cliente
                  FROM clientes c
-                 LEFT JOIN (SELECT p.cliente_id, SUM(p.monto * m.tasa_a_usd) AS total
-                            FROM pagos p JOIN monedas m ON m.codigo = p.moneda_codigo
+                 LEFT JOIN (SELECT p.cliente_id, SUM(p.monto * p.tasa_a_usd) AS total
+                            FROM pagos p
                             WHERE NOT p.anulada GROUP BY p.cliente_id) pg ON pg.cliente_id = c.id
-                 LEFT JOIN (SELECT n.cliente_id, SUM(n.monto * mn.tasa_a_usd) AS total
-                            FROM notas_credito n JOIN monedas mn ON mn.codigo = n.moneda_codigo
+                 LEFT JOIN (SELECT n.cliente_id, SUM(n.monto * n.tasa_a_usd) AS total
+                            FROM notas_credito n
                             GROUP BY n.cliente_id) nc ON nc.cliente_id = c.id
              ) sub
              GROUP BY cohorte

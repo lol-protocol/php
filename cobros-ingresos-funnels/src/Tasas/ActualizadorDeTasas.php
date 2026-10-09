@@ -29,6 +29,15 @@ use PDO;
  * - Una moneda que la fuente no trae queda como estaba, con la fecha que tenia.
  * - Todo va en una transaccion, con una entrada en la auditoria.
  * - $simular hace las mismas cuentas y dice que haria, sin escribir nada.
+ *
+ * Las boletas, los pagos y las notas de credito guardan la tasa de su dia
+ * (migracion 011), y una actualizacion no los toca: un mes cerrado no se mueve. La
+ * unica vez que si: la primera carga real de una moneda. Las filas que tenia hasta
+ * entonces se grabaron con la tasa de ejemplo, que nunca fue una cotizacion de nadie,
+ * y quedarian asi para siempre; se las vuelve a expresar con la primera tasa real
+ * (las que tienen exactamente la tasa de ejemplo: una grabada a mano con otra, se
+ * respeta). Desde ahi ya no se mueven. Es lo mejor que se puede hacer sin un
+ * historial de cotizaciones.
  */
 final class ActualizadorDeTasas
 {
@@ -58,6 +67,7 @@ final class ActualizadorDeTasas
      *     sinDato: list<string>,
      *     rechazadas: array<string, string>,
      *     sospechosas: array<string, array{anterior: string, propuesta: string}>,
+     *     reexpresadas: array<string, array{boletas: int, pagos: int, notas_credito: int}>,
      *     cuando: DateTimeImmutable,
      *     simulacion: bool
      * }
@@ -93,10 +103,11 @@ final class ActualizadorDeTasas
         }
         $cuando = min($cuando, $ahora);
 
-        $informe = ['actualizadas' => [], 'sinDato' => [], 'rechazadas' => [], 'sospechosas' => [], 'cuando' => $cuando, 'simulacion' => $simular];
+        $informe = ['actualizadas' => [], 'sinDato' => [], 'rechazadas' => [], 'sospechosas' => [], 'reexpresadas' => [], 'cuando' => $cuando, 'simulacion' => $simular];
 
         $decidir = $this->db->prepare(
             "SELECT tasa_a_usd AS anterior,
+                    tasa_actualizada_en IS NULL AS era_de_ejemplo,
                     round(1::numeric / :unidades::numeric, 8) AS propuesta,
                     CASE WHEN tasa_actualizada_en IS NULL OR tasa_a_usd = 0 THEN true
                          ELSE abs(round(1::numeric / :unidades_2::numeric, 8) / tasa_a_usd - 1) <= :maximo::numeric
@@ -109,6 +120,8 @@ final class ActualizadorDeTasas
         );
 
         $trabajo = function () use ($catalogo, $respuesta, $fuente, $simular, $forzar, $cuando, $decidir, $guardar, &$informe): void {
+            /** @var array<string, array{anterior: string, nueva: string}> $primeras las monedas que pasan de la tasa de ejemplo a una real */
+            $primeras = [];
             foreach ($catalogo as $codigo) {
                 if (isset($respuesta->rechazadas[$codigo])) {
                     $informe['rechazadas'][$codigo] = $respuesta->rechazadas[$codigo];
@@ -126,11 +139,14 @@ final class ActualizadorDeTasas
                 }
 
                 $decidir->execute([':unidades' => $unidades, ':unidades_2' => $unidades, ':maximo' => (string) self::CAMBIO_MAXIMO, ':codigo' => $codigo]);
-                /** @var array{anterior: string, propuesta: string, acepta: bool} $fila */
+                /** @var array{anterior: string, era_de_ejemplo: bool, propuesta: string, acepta: bool} $fila */
                 $fila = $decidir->fetch();
                 if (!$fila['acepta'] && !$forzar) {
                     $informe['sospechosas'][$codigo] = ['anterior' => $fila['anterior'], 'propuesta' => $fila['propuesta']];
                     continue;
+                }
+                if ($fila['era_de_ejemplo'] && $fila['anterior'] !== $fila['propuesta']) {
+                    $primeras[$codigo] = ['anterior' => $fila['anterior'], 'nueva' => $fila['propuesta']];
                 }
 
                 if (!$simular) {
@@ -144,9 +160,17 @@ final class ActualizadorDeTasas
                 $informe['actualizadas'][$codigo] = ['anterior' => $fila['anterior'], 'nueva' => $fila['propuesta']];
             }
 
+            $informe['reexpresadas'] = $this->reexpresar($primeras, $simular);
+
             if (!$simular) {
+                $filas = ['boletas' => 0, 'pagos' => 0, 'notas_credito' => 0];
+                foreach ($informe['reexpresadas'] as $cuenta) {
+                    foreach ($cuenta as $tabla => $cantidad) {
+                        $filas[$tabla] += $cantidad;
+                    }
+                }
                 AuditoriaRepository::auditar('editar', 'monedas', 0, sprintf(
-                    'Tasas de cambio actualizadas desde %s (cotización del %s UTC): %d monedas%s',
+                    'Tasas de cambio actualizadas desde %s (cotización del %s UTC): %d monedas%s%s',
                     $fuente,
                     $cuando->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i'),
                     count($informe['actualizadas']),
@@ -157,6 +181,14 @@ final class ActualizadorDeTasas
                             count($informe['sinDato']),
                             count($informe['rechazadas']),
                             count($informe['sospechosas'])
+                        ),
+                    $informe['reexpresadas'] === []
+                        ? ''
+                        : sprintf(
+                            '; filas que pasan de la tasa de ejemplo a la real: %d boletas, %d pagos, %d notas de crédito',
+                            $filas['boletas'],
+                            $filas['pagos'],
+                            $filas['notas_credito']
                         )
                 ));
             }
@@ -170,5 +202,48 @@ final class ActualizadorDeTasas
         }
 
         return $informe;
+    }
+
+    /**
+     * Vuelve a expresar con la tasa real las filas que se grabaron con la de ejemplo
+     * de cada moneda de $primeras: las que tienen exactamente esa tasa anterior. Una
+     * sola consulta por tabla, no una por moneda. Con $simular solo las cuenta.
+     *
+     * @param array<string, array{anterior: string, nueva: string}> $primeras codigo de moneda => tasa de ejemplo y tasa real
+     * @return array<string, array{boletas: int, pagos: int, notas_credito: int}> por moneda, solo las que tenian filas
+     */
+    private function reexpresar(array $primeras, bool $simular): array
+    {
+        if ($primeras === []) {
+            return [];
+        }
+
+        // Los codigos salen del catalogo (tres letras) y las tasas de la base (numeros): el literal del array es seguro.
+        $codigos = '{' . implode(',', array_keys($primeras)) . '}';
+        $anteriores = '{' . implode(',', array_column($primeras, 'anterior')) . '}';
+        $nuevas = '{' . implode(',', array_column($primeras, 'nueva')) . '}';
+        $cambios = 'unnest(:codigos::char(3)[], :anteriores::numeric[], :nuevas::numeric[]) AS r(codigo, anterior, nueva)';
+
+        $porMoneda = [];
+        foreach (['boletas', 'pagos', 'notas_credito'] as $tabla) {   // nombres fijos de tablas, nunca entrada de usuario
+            $sql = $simular
+                ? "SELECT x.moneda_codigo, count(*) FROM {$tabla} x JOIN {$cambios} ON r.codigo = x.moneda_codigo
+                   WHERE x.tasa_a_usd = r.anterior GROUP BY x.moneda_codigo"
+                : "WITH u AS (UPDATE {$tabla} x SET tasa_a_usd = r.nueva FROM {$cambios}
+                              WHERE x.moneda_codigo = r.codigo AND x.tasa_a_usd = r.anterior
+                              RETURNING x.moneda_codigo)
+                   SELECT moneda_codigo, count(*) FROM u GROUP BY moneda_codigo";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([':codigos' => $codigos, ':anteriores' => $anteriores, ':nuevas' => $nuevas]);
+            /** @var array<string, int|string> $cuentas */
+            $cuentas = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+            foreach ($cuentas as $moneda => $cantidad) {
+                $porMoneda[$moneda] ??= ['boletas' => 0, 'pagos' => 0, 'notas_credito' => 0];
+                $porMoneda[$moneda][$tabla] = (int) $cantidad;
+            }
+        }
+        ksort($porMoneda);
+
+        return $porMoneda;
     }
 }

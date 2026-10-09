@@ -20,6 +20,11 @@ declare(strict_types=1);
  *                 que conteste {"base": "USD" o "base_code": "USD", "rates": {"EUR": 0.86, ...}}.
  *   TASAS_FUENTE  como se llama la fuente en la pantalla; por defecto, el host de TASAS_URL.
  *
+ * Cada boleta, pago y nota de credito guarda la tasa de su dia (migracion 011) y esta
+ * actualizacion no la toca: un mes cerrado no cambia. La unica vez que si es la primera
+ * tasa real de una moneda: lo que se habia grabado con la de ejemplo pasa a la real (ver
+ * ActualizadorDeTasas); --simular dice cuantas filas son.
+ *
  * Pensado para correr por cron una vez por dia. Lo normal sale por la salida estandar;
  * lo que pide atencion (una tasa que salto, una que la fuente trae mal, o un error) sale
  * por la de errores, que es la que cron manda por mail. Termina con 1 si no actualizo nada
@@ -98,6 +103,19 @@ printf(
 );
 if ($informe['sinDato'] !== []) {
     printf("Sin dato en la fuente (quedan como estaban): %s\n", implode(', ', $informe['sinDato']));
+}
+if ($informe['reexpresadas'] !== []) {
+    // La primera tasa real de una moneda: lo que se habia grabado con la de ejemplo pasa a la real (despues ya no se mueve;
+    // ver ActualizadorDeTasas).
+    printf(
+        "%s a la primera tasa real de su moneda (hasta ahora tenían la de ejemplo): %s\n",
+        $simular ? 'Se volverían a expresar' : 'Vueltas a expresar',
+        implode('; ', array_map(
+            static fn (string $moneda, array $filas): string => sprintf('%s: %d boletas, %d pagos, %d notas de crédito', $moneda, $filas['boletas'], $filas['pagos'], $filas['notas_credito']),
+            array_keys($informe['reexpresadas']),
+            $informe['reexpresadas']
+        ))
+    );
 }
 
 $atencion = [];

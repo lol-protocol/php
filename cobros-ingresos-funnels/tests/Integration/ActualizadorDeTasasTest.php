@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Database;
+use App\Repositories\BoletaRepository;
+use App\Repositories\ClienteRepository;
+use App\Repositories\NotaCreditoRepository;
+use App\Repositories\PagoRepository;
 use App\Tasas\ActualizadorDeTasas;
 use App\Tasas\RespuestaDeTasas;
 use App\Tasas\TasasInvalidas;
@@ -299,5 +303,174 @@ final class ActualizadorDeTasasTest extends IntegracionTestCase
 
         self::assertSame(0, $this->conFechaEnLaBase(), 'ni las monedas anteriores a CLP (ARS, BOB...) quedaron actualizadas');
         self::assertSame($auditadasAntes, (int) $db->query("SELECT COUNT(*) FROM auditoria WHERE entidad = 'monedas'")->fetchColumn(), 'tampoco la auditoria');
+    }
+
+    // ---- Las filas que se grabaron con la tasa de ejemplo (migracion 011) ----
+
+    /** Una moneda del catalogo sin ninguna boleta, pago ni nota de credito en la base: lo que cargue el test es todo lo que hay. */
+    private function monedaSinMovimientos(): string
+    {
+        $moneda = Database::connection()->query(
+            "SELECT m.codigo FROM monedas m
+             WHERE m.codigo <> 'USD'
+               AND NOT EXISTS (SELECT 1 FROM boletas b WHERE b.moneda_codigo = m.codigo)
+               AND NOT EXISTS (SELECT 1 FROM pagos p WHERE p.moneda_codigo = m.codigo)
+               AND NOT EXISTS (SELECT 1 FROM notas_credito n WHERE n.moneda_codigo = m.codigo)
+             ORDER BY m.codigo LIMIT 1"
+        )->fetchColumn();
+        self::assertIsString($moneda);
+
+        return $moneda;
+    }
+
+    /**
+     * Una boleta, un pago y una nota de credito en $moneda, grabados con la tasa que
+     * tiene ahora (la de ejemplo). Devuelve los ids.
+     *
+     * @return array{boleta: int, pago: int, nota: int}
+     */
+    private function movimientosEn(string $moneda): array
+    {
+        $cliente = (new ClienteRepository())->crear([
+            'nombre' => 'Cliente de las tasas', 'email' => 'tasas-' . uniqid('', true) . '@example.com', 'segmento' => 'general',
+            'fecha_alta' => '2091-02-01', 'pais_codigo' => 'AR', 'ciudad' => 'Rosario', 'idioma' => 'Espanol',
+            'genero' => 'No especifica', 'fecha_nacimiento' => '1990-05-05',
+        ]);
+        $boleta = (new BoletaRepository())->crear([
+            'cliente_id' => $cliente, 'concepto' => 'x', 'monto' => '1000.00', 'moneda_codigo' => $moneda,
+            'fecha_emision' => '2090-03-15', 'fecha_vencimiento' => '2090-04-15',
+        ]);
+        $pago = (new PagoRepository())->crear([
+            'boleta_id' => $boleta, 'cliente_id' => $cliente, 'monto' => '400.00', 'moneda_codigo' => $moneda,
+            'fecha_pago' => '2090-03-20', 'metodo' => 'transferencia',
+        ]);
+        $nota = (new NotaCreditoRepository())->crear([
+            'boleta_id' => $boleta, 'cliente_id' => $cliente, 'monto' => '400.00', 'moneda_codigo' => $moneda,
+            'fecha' => '2090-03-25', 'motivo' => 'x',
+        ]);
+        self::assertSame($this->moneda($moneda)['tasa_a_usd'], $this->tasaDe('boletas', $boleta, 8), 'grabadas con la tasa de ejemplo');
+
+        return ['boleta' => $boleta, 'pago' => $pago, 'nota' => $nota];
+    }
+
+    private function tasaDe(string $tabla, int $id, int $decimales = 8): string
+    {
+        $stmt = Database::connection()->prepare("SELECT round(tasa_a_usd, {$decimales}) FROM {$tabla} WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+
+        return (string) $stmt->fetchColumn();
+    }
+
+    public function testLaPrimeraTasaRealVuelveAExpresarLoQueSeGraboConLaDeEjemplo(): void
+    {
+        $moneda = $this->monedaSinMovimientos();
+        $ids = $this->movimientosEn($moneda);
+
+        $informe = (new ActualizadorDeTasas())->aplicar($this->fuente([$moneda => 100]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        self::assertSame('0.01000000', $this->moneda($moneda)['tasa_a_usd']);
+        self::assertSame('0.01000000', $this->tasaDe('boletas', $ids['boleta']));
+        self::assertSame('0.01000000', $this->tasaDe('pagos', $ids['pago']));
+        self::assertSame('0.01000000', $this->tasaDe('notas_credito', $ids['nota']));
+        self::assertSame([$moneda => ['boletas' => 1, 'pagos' => 1, 'notas_credito' => 1]], array_intersect_key($informe['reexpresadas'], [$moneda => 1]));
+    }
+
+    public function testDespuesDeLaPrimeraCargaLasFilasYaNoSeMueven(): void
+    {
+        $moneda = $this->monedaSinMovimientos();
+        $ids = $this->movimientosEn($moneda);
+        $actualizador = new ActualizadorDeTasas();
+        $actualizador->aplicar($this->fuente([$moneda => 100]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        $segunda = $actualizador->aplicar($this->fuente([$moneda => 125]), 'fuente-de-prueba', ahora: $this->ahora->modify('+1 day'));
+
+        self::assertSame('0.00800000', $this->moneda($moneda)['tasa_a_usd'], 'la moneda si cambio');
+        self::assertArrayNotHasKey($moneda, $segunda['reexpresadas']);
+        self::assertSame('0.01000000', $this->tasaDe('boletas', $ids['boleta']), 'las filas conservan la tasa de su dia');
+        self::assertSame('0.01000000', $this->tasaDe('pagos', $ids['pago']));
+        self::assertSame('0.01000000', $this->tasaDe('notas_credito', $ids['nota']));
+    }
+
+    public function testUnaFilaConOtraTasaGrabadaNoSeToca(): void
+    {
+        $moneda = $this->monedaSinMovimientos();
+        $ids = $this->movimientosEn($moneda);
+        Database::connection()->prepare('UPDATE pagos SET tasa_a_usd = 0.5 WHERE id = :id')->execute([':id' => $ids['pago']]);
+
+        $informe = (new ActualizadorDeTasas())->aplicar($this->fuente([$moneda => 100]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        self::assertSame('0.50000000', $this->tasaDe('pagos', $ids['pago']), 'la que no era la de ejemplo se respeta');
+        self::assertSame('0.01000000', $this->tasaDe('boletas', $ids['boleta']));
+        self::assertSame(['boletas' => 1, 'pagos' => 0, 'notas_credito' => 1], $informe['reexpresadas'][$moneda]);
+    }
+
+    public function testUnaMonedaSinDatoEnLaFuenteConservaSusFilas(): void
+    {
+        $moneda = $this->monedaSinMovimientos();
+        $ids = $this->movimientosEn($moneda);
+        $ejemplo = $this->moneda($moneda)['tasa_a_usd'];
+
+        $informe = (new ActualizadorDeTasas())->aplicar($this->fuente([$moneda => null]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        self::assertArrayNotHasKey($moneda, $informe['reexpresadas']);
+        self::assertSame($ejemplo, $this->tasaDe('boletas', $ids['boleta']));
+    }
+
+    public function testSiLaTasaRealCoincideConLaDeEjemploNoHayNadaQueVolverAExpresar(): void
+    {
+        $moneda = $this->monedaSinMovimientos();
+        $ids = $this->movimientosEn($moneda);
+        $ejemplo = $this->moneda($moneda)['tasa_a_usd'];
+
+        $informe = (new ActualizadorDeTasas())->aplicar($this->fuente([$moneda => 1 / (float) $ejemplo]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        self::assertArrayNotHasKey($moneda, $informe['reexpresadas']);
+        self::assertSame($ejemplo, $this->tasaDe('boletas', $ids['boleta']));
+    }
+
+    public function testSimularCuentaLasFilasSinTocarlas(): void
+    {
+        $moneda = $this->monedaSinMovimientos();
+        $ids = $this->movimientosEn($moneda);
+        $ejemplo = $this->moneda($moneda)['tasa_a_usd'];
+
+        $informe = (new ActualizadorDeTasas())->aplicar($this->fuente([$moneda => 100]), 'fuente-de-prueba', simular: true, ahora: $this->ahora);
+
+        self::assertSame(['boletas' => 1, 'pagos' => 1, 'notas_credito' => 1], $informe['reexpresadas'][$moneda]);
+        self::assertSame($ejemplo, $this->tasaDe('boletas', $ids['boleta']));
+        self::assertSame($ejemplo, $this->tasaDe('pagos', $ids['pago']));
+        self::assertSame($ejemplo, $this->tasaDe('notas_credito', $ids['nota']));
+    }
+
+    public function testLaAuditoriaDiceCuantasFilasSeVolvieronAExpresar(): void
+    {
+        $moneda = $this->monedaSinMovimientos();
+        $this->movimientosEn($moneda);
+
+        (new ActualizadorDeTasas())->aplicar($this->fuente([$moneda => 100]), 'fuente-de-prueba', ahora: $this->ahora);
+
+        $detalle = (string) Database::connection()->query("SELECT detalle FROM auditoria WHERE entidad = 'monedas' ORDER BY id DESC LIMIT 1")->fetchColumn();
+        self::assertMatchesRegularExpression('/filas que pasan de la tasa de ejemplo a la real: \d+ boletas, \d+ pagos, \d+ notas de crédito/', $detalle);
+    }
+
+    /** Si volver a expresar las filas falla, tampoco queda actualizada ninguna moneda. */
+    public function testSiFallaAlVolverAExpresarLasFilasNoQuedaNadaActualizado(): void
+    {
+        $moneda = $this->monedaSinMovimientos();
+        $ids = $this->movimientosEn($moneda);
+        $ejemplo = $this->moneda($moneda)['tasa_a_usd'];
+        Database::connection()->exec('ALTER TABLE boletas ADD CONSTRAINT prueba_tasa CHECK (tasa_a_usd <> 0.01)');
+
+        try {
+            (new ActualizadorDeTasas())->aplicar($this->fuente([$moneda => 100]), 'fuente-de-prueba', ahora: $this->ahora);
+            self::fail('la restriccion tenia que frenar la re-expresion de las boletas');
+        } catch (PDOException $e) {
+            self::assertStringContainsString('prueba_tasa', $e->getMessage());
+        }
+
+        self::assertSame(0, $this->conFechaEnLaBase(), 'ninguna moneda quedo actualizada');
+        self::assertSame($ejemplo, $this->moneda($moneda)['tasa_a_usd']);
+        self::assertSame($ejemplo, $this->tasaDe('boletas', $ids['boleta']));
+        self::assertSame($ejemplo, $this->tasaDe('pagos', $ids['pago']));
     }
 }

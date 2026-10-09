@@ -62,7 +62,7 @@ final class TasasDeCambioPantallasTest extends HttpTestCase
 
             self::assertStringContainsString('Las tasas de cambio son de ejemplo, no reales', $cuerpo, $pantalla);
             self::assertStringContainsString('php database/actualizar_tasas.php', $cuerpo, "{$pantalla} dice como cargar las reales");
-            self::assertStringNotContainsString('Cifras en USD a la tasa de cambio del', $cuerpo, $pantalla);
+            self::assertStringNotContainsString('Cifras en USD:', $cuerpo, $pantalla);
         }
     }
 
@@ -73,9 +73,10 @@ final class TasasDeCambioPantallasTest extends HttpTestCase
         foreach (self::PANTALLAS_EN_USD as $pantalla) {
             $cuerpo = $this->get("page={$pantalla}")['cuerpo'];
 
-            self::assertStringContainsString('Cifras en USD a la tasa de cambio del', $cuerpo, $pantalla);
-            self::assertStringContainsString('(fuente-de-prueba)', $cuerpo, $pantalla);
-            self::assertStringContainsString('también las boletas y los pagos de meses anteriores', $cuerpo, "{$pantalla} avisa que se convierte con la tasa de hoy");
+            self::assertStringContainsString('Cifras en USD: cada boleta, pago y nota de crédito a la tasa de cambio de su día', $cuerpo, $pantalla);
+            self::assertStringContainsString('la cartera pendiente, a la última cotización (', $cuerpo, "{$pantalla} avisa que lo que se debe se valua a la ultima cotizacion");
+            self::assertStringContainsString(', fuente-de-prueba).', $cuerpo, $pantalla);
+            self::assertStringNotContainsString('también las boletas y los pagos de meses anteriores', $cuerpo, "{$pantalla} los meses anteriores ya no se reconvierten");
             self::assertStringNotContainsString('son de ejemplo', $cuerpo, $pantalla);
             self::assertStringNotContainsString('sin actualizarse', $cuerpo, $pantalla);
         }
@@ -91,7 +92,7 @@ final class TasasDeCambioPantallasTest extends HttpTestCase
             $cuerpo = $this->get("page={$pantalla}")['cuerpo'];
 
             self::assertMatchesRegularExpression('/de ejemplo o lleva más de 7 días sin actualizarse: ' . preg_quote($moneda, '/') . '\./', $cuerpo, $pantalla);
-            self::assertStringNotContainsString('Cifras en USD a la tasa de cambio del', $cuerpo, "{$pantalla}: con una moneda pendiente no se afirma que todo este al dia");
+            self::assertStringNotContainsString('Cifras en USD:', $cuerpo, "{$pantalla}: con una moneda pendiente no se afirma que todo este al dia");
         }
     }
 

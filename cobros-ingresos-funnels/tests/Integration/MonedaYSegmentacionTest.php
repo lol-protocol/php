@@ -156,8 +156,8 @@ final class MonedaYSegmentacionTest extends IntegracionTestCase
     public function testCadaDimensionRepartePorCompletoLaFacturacionYLosClientes(): void
     {
         $esperado = Database::connection()->query(
-            'SELECT COALESCE(SUM(b.monto * m.tasa_a_usd), 0) AS total, COUNT(DISTINCT b.cliente_id) AS clientes
-             FROM boletas b JOIN monedas m ON m.codigo = b.moneda_codigo
+            'SELECT COALESCE(SUM(b.monto * b.tasa_a_usd), 0) AS total, COUNT(DISTINCT b.cliente_id) AS clientes
+             FROM boletas b
              WHERE NOT b.anulada'
         )->fetch();
         self::assertNotFalse($esperado);
