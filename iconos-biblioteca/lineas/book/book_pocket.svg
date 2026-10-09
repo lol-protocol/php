@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="solids">
-    <g><path d="M27 28L27.1 27.2L27.4 26.5L27.9 25.9L28.5 25.4L29.2 25.1L30 25L44 25L44.8 25.1L45.5 25.4L46.1 25.9L46.6 26.5L48.5 29.1L48.8 29.8L48.9 30.6L48.9 51.6L48.8 52.3L48.5 53.1L48 53.7L47.4 54.2L46.7 54.5L45.9 54.6L31.9 54.6L31.1 54.5L30.4 54.2L29.8 53.7L29.3 53.1L27.4 50.5L27.1 49.8L27 49Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="27" y="25" width="20" height="27" rx="3" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M26 29L26.1 28L26.5 27L27.2 26.2L28 25.5L29 25.1L30 25L42 25L43 25.1L44 25.5L44.8 26.2L45.5 27L47.4 29.6L47.8 30.5L47.9 31.6L47.9 49.6L47.8 50.6L47.4 51.6L46.7 52.4L45.9 53L45 53.4L43.9 53.6L31.9 53.6L30.9 53.4L29.9 53L29.1 52.4L28.5 51.6L26.5 49L26.1 48L26 47Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="26" y="25" width="20" height="26" rx="4" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
     <path d="M10 6L40 6L40 50L10 50Z" fill="none" stroke="#565F6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.5"/>
-    <path d="M33.7 38a3.8 3.8 0 1 0 7.6 0a3.8 3.8 0 1 0 -7.6 0Z" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

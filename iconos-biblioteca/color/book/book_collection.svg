@@ -15,16 +15,11 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.9" cy="53.8" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="31.9" cy="51.8" rx="20.1" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M9 40.5L9.1 39.9L9.3 39.2L9.7 38.7L10.2 38.3L10.9 38.1L11.5 38L52.5 38L53.1 38.1L53.8 38.3L54.3 38.7L54.7 39.2L56.5 41.6L56.7 42.3L56.8 42.9L56.8 48.9L56.7 49.5L56.5 50.1L56.1 50.7L55.5 51.1L54.9 51.3L54.3 51.4L13.3 51.4L12.7 51.3L12.1 51.1L11.5 50.7L11.1 50.1L9.3 47.8L9.1 47.1L9 46.5Z" fill="#FEF3C7"/><rect x="9" y="38" width="46" height="11" rx="2.5" fill="url(#grad_book_collection_brown)"/></g>
-    <g><path d="M12 29.5L12.1 28.9L12.3 28.2L12.7 27.7L13.2 27.3L13.9 27.1L14.5 27L49.5 27L50.1 27.1L50.8 27.3L51.3 27.7L51.7 28.2L53.5 30.6L53.7 31.3L53.8 31.9L53.8 37.9L53.7 38.5L53.5 39.1L53.1 39.7L52.5 40.1L51.9 40.3L51.3 40.4L16.3 40.4L15.7 40.3L15.1 40.1L14.5 39.7L14.1 39.1L12.3 36.8L12.1 36.1L12 35.5Z" fill="#FEF3C7"/><rect x="12" y="27" width="40" height="11" rx="2.5" fill="url(#grad_book_collection_indigo)"/></g>
-    <g><path d="M10 18.5L10.1 17.9L10.3 17.2L10.7 16.7L11.2 16.3L11.9 16.1L12.5 16L51.5 16L52.1 16.1L52.8 16.3L53.3 16.7L53.7 17.2L55.5 19.6L55.7 20.3L55.8 20.9L55.8 26.9L55.7 27.5L55.5 28.1L55.1 28.7L54.5 29.1L53.9 29.3L53.3 29.4L14.3 29.4L13.7 29.3L13.1 29.1L12.5 28.7L12.1 28.1L10.3 25.8L10.1 25.1L10 24.5Z" fill="#FEF3C7"/><rect x="10" y="16" width="44" height="11" rx="2.5" fill="url(#grad_book_collection_amber)"/></g>
-  </g>
-  <g class="marks">
-    <path d="M14 40.5L14 46.5" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
-    <path d="M17 29.5L17 35.5" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
-    <path d="M15 18.5L15 24.5" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+    <g><path d="M10 40L10.2 38.7L10.7 37.5L11.5 36.5L12.5 35.7L13.7 35.2L15 35L39 35L40.3 35.2L41.5 35.7L42.5 36.5L43.3 37.5L45.1 39.9L45.6 41.1L45.8 42.4L45.8 44.4L45.6 45.7L45.1 46.9L44.3 47.9L43.3 48.7L42.1 49.2L40.8 49.4L16.8 49.4L15.5 49.2L14.3 48.7L13.3 47.9L12.5 46.9L10.7 44.5L10.2 43.3L10 42Z" fill="#553822"/><rect x="10" y="35" width="34" height="12" rx="5" fill="url(#grad_book_collection_brown)"/></g>
+    <g><path d="M14 29L14.2 27.7L14.7 26.5L15.5 25.5L16.5 24.7L17.7 24.2L19 24L43 24L44.3 24.2L45.5 24.7L46.5 25.5L47.3 26.5L49.1 28.9L49.6 30.1L49.8 31.4L49.8 33.4L49.6 34.7L49.1 35.9L48.3 36.9L47.3 37.7L46.1 38.2L44.8 38.4L20.8 38.4L19.5 38.2L18.3 37.7L17.3 36.9L16.5 35.9L14.7 33.5L14.2 32.3L14 31Z" fill="#2E2985"/><rect x="14" y="24" width="34" height="12" rx="5" fill="url(#grad_book_collection_indigo)"/></g>
+    <g><path d="M18 18L18.2 16.7L18.7 15.5L19.5 14.5L20.5 13.7L21.7 13.2L23 13L47 13L48.3 13.2L49.5 13.7L50.5 14.5L51.3 15.5L53.1 17.9L53.6 19.1L53.8 20.4L53.8 22.4L53.6 23.7L53.1 24.9L52.3 25.9L51.3 26.7L50.1 27.2L48.8 27.4L24.8 27.4L23.5 27.2L22.3 26.7L21.3 25.9L20.5 24.9L18.7 22.5L18.2 21.3L18 20Z" fill="#7E4503"/><rect x="18" y="13" width="34" height="12" rx="5" fill="url(#grad_book_collection_amber)"/></g>
   </g>
 </svg>

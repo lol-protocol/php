@@ -5,15 +5,19 @@
       <stop offset="0" stop-color="#949494"/>
       <stop offset="1" stop-color="#626262"/>
     </linearGradient>
+    <linearGradient id="grad_action_import_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8A8A8A"/>
+      <stop offset="1" stop-color="#535353"/>
+    </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.7" cy="54.6" rx="19" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="37.9" cy="52.8" rx="18.3" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M12 19.5L12.3 17L13.3 14.8L14.8 12.8L16.8 11.3L19 10.3L21.5 10L41.5 10L44 10.3L46.2 11.3L48.2 12.8L49.7 14.8L52.1 17.9L53.1 20.2L53.4 22.7L53.4 42.7L53.1 45.2L52.1 47.5L50.6 49.4L48.6 50.9L46.4 51.9L43.9 52.2L23.9 52.2L21.4 51.9L19.1 50.9L17.2 49.4L15.7 47.5L13.3 44.2L12.3 42L12 39.5Z" fill="#393939"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_action_import_violet)"/></g>
+    <g><path d="M19.2 33.6L20.6 35.5A6 6 0 0 0 30.2 28.3L28.8 26.4A6 6 0 0 0 19.2 33.6Z" fill="#393939"/><circle cx="24" cy="30" r="6" fill="url(#grad_action_import_violet)"/></g>
+    <g><path d="M37 18L37.2 16.4L37.8 15L38.8 13.8L40 12.8L41.4 12.2L43 12L50 12L51.6 12.2L53 12.8L54.2 13.8L55.2 15L57 17.4L57.6 18.8L57.8 20.4L57.8 44.4L57.6 46L57 47.4L56 48.6L54.8 49.6L53.4 50.2L51.8 50.4L44.8 50.4L43.2 50.2L41.8 49.6L40.6 48.6L39.6 47.4L37.8 45L37.2 43.6L37 42Z" fill="#303030"/><rect x="37" y="12" width="19" height="36" rx="6" fill="url(#grad_action_import_ink)"/></g>
   </g>
   <g class="marks">
-    <path d="M21.5 29.5L34.5 29.5M29 33.9L34.5 29.5L29 25.1" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M34.5 20.5L40.5 20.5L40.5 38.5L34.5 38.5" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M7 30h3M12.5 30h3" fill="none" stroke="#626262" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>
