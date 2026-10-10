@@ -52,29 +52,39 @@ final class LugarRepository extends Repository
         );
     }
 
-    /** @return list<array> personas born in this place or anywhere below it */
+    /**
+     * Personas born in this place or anywhere below it. Living people are left
+     * out: a hidden row would still say that someone was born here, and when.
+     *
+     * @return list<array>
+     */
     public function personas(string $ruta, int $limit = 200): array
     {
         return $this->db->fetchAll(
             "SELECT DISTINCT p.id, p.nombres, p.apellidos, s.fecha AS nacimiento, l.nombre AS lugar_nombre
                FROM sucesos s
                JOIN suceso_participantes sp ON sp.suceso_id = s.id
-               JOIN personas p ON p.id = sp.persona_id
+               JOIN {$this->privacidad->personas()} p ON p.id = sp.persona_id
                JOIN lugares l ON l.ruta = s.lugar_ruta
-              WHERE s.tipo = 'nacimiento' AND (s.lugar_ruta = ? OR s.lugar_ruta LIKE ?)
+              WHERE s.tipo = 'nacimiento' AND (s.lugar_ruta = ? OR s.lugar_ruta LIKE ?) AND NOT p.oculta
               ORDER BY nacimiento, p.id" . self::page($limit),
             [$ruta, $ruta . '/%']
         );
     }
 
-    /** @return list<array> events that happened in this place or anywhere below it */
+    /**
+     * Events that happened in this place or anywhere below it, except those
+     * with a living participant (see Privacidad::sucesos()).
+     *
+     * @return list<array>
+     */
     public function sucesos(string $ruta, int $limit = 200): array
     {
         return $this->db->fetchAll(
-            'SELECT s.id, s.tipo, s.fecha, s.descripcion, l.nombre AS lugar_nombre
-               FROM sucesos s JOIN lugares l ON l.ruta = s.lugar_ruta
+            "SELECT s.id, s.tipo, s.fecha, s.descripcion, l.nombre AS lugar_nombre
+               FROM {$this->privacidad->sucesos()} s JOIN lugares l ON l.ruta = s.lugar_ruta
               WHERE s.lugar_ruta = ? OR s.lugar_ruta LIKE ?
-              ORDER BY s.fecha, s.id' . self::page($limit),
+              ORDER BY s.fecha, s.id" . self::page($limit),
             [$ruta, $ruta . '/%']
         );
     }

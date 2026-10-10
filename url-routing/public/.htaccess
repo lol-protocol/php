@@ -5,6 +5,12 @@
     # Set base URL (adjust if needed)
     RewriteBase /
 
+    # Hand the Authorization header to PHP: under CGI/FPM Apache drops it, and
+    # AccessPolicy reads it to recognise the owner (docs/ACCESO.md). It must
+    # come before the RewriteCond lines below, which only apply to the rule
+    # that follows them.
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     # Don't rewrite requests for existing files
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

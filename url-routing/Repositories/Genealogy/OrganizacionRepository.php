@@ -18,23 +18,34 @@ final class OrganizacionRepository extends Repository
         );
     }
 
-    /** @return list<array> */
+    /**
+     * Members, except living people: their role and dates would say who they
+     * are even with the name hidden.
+     *
+     * @return list<array>
+     */
     public function miembros(int $id): array
     {
         return $this->db->fetchAll(
-            'SELECT m.rol, m.desde, m.hasta, p.id, p.nombres, p.apellidos
-               FROM organizacion_miembros m JOIN personas p ON p.id = m.persona_id
-              WHERE m.organizacion_id = ?
-              ORDER BY p.apellidos, p.nombres, p.id',
+            "SELECT m.rol, m.desde, m.hasta, p.id, p.nombres, p.apellidos
+               FROM organizacion_miembros m JOIN {$this->privacidad->personas()} p ON p.id = m.persona_id
+              WHERE m.organizacion_id = ? AND NOT p.oculta
+              ORDER BY p.apellidos, p.nombres, p.id",
             [$id]
         );
     }
 
-    /** @return list<array> records held by this organization */
+    /**
+     * Records held by this organization, except those that document an event
+     * with a living participant (see Privacidad::registros()).
+     *
+     * @return list<array>
+     */
     public function registros(int $id): array
     {
         return $this->db->fetchAll(
-            'SELECT id, titulo, tipo, fecha FROM registros WHERE organizacion_id = ? ORDER BY fecha, id',
+            "SELECT r.id, r.titulo, r.tipo, r.fecha FROM {$this->privacidad->registros()} r
+              WHERE r.organizacion_id = ? ORDER BY r.fecha, r.id",
             [$id]
         );
     }

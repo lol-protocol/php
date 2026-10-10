@@ -42,9 +42,11 @@ completar las piezas rompe CI en vez de dar un 500 en producción.
 
 **Pendiente:** carrito, checkout, devoluciones y preferencias muestran un
 aviso de "todavía no disponible" — son flujos de escritura sin implementar
-todavía. El proyecto no tiene inicio de sesión (es un addon de un solo
-operador, no un producto multiusuario): la página de cuenta (`0`) y la
-edición de colecciones actúan sobre una cuenta fija en vez de una sesión.
+todavía. El proyecto no tiene cuentas de usuario (es un addon de un solo
+operador, no un producto multiusuario): la página de cuenta (`0`) actúa sobre
+una cuenta fija en vez de una sesión, y lo privado (colecciones con
+`publica = false`, cuenta, edición y pedidos) exige ser el propietario, que se
+identifica con `OWNER_TOKEN`. Ver [`ACCESO.md`](./ACCESO.md).
 
 ## 🧠 Principio de diseño
 
@@ -207,8 +209,10 @@ los nombres de tabla y columna que no pueden enlazarse se validan en
 
 ### Recursos privados
 
-Una colección privada o una orden ajena responden **404, no 403**: los ids son
-secuenciales y un 403 confirmaría cuáles existen.
+Una colección privada o un pedido responden **404, no 403**, a quien no es el
+propietario: los ids son secuenciales y un 403 confirmaría cuáles existen. Lo
+decide `AccessPolicy` (ver [`ACCESO.md`](./ACCESO.md), que también explica qué
+**no** protege: las personas son un catálogo compartido).
 
 ### Escapar salida
 

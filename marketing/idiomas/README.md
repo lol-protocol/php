@@ -10,7 +10,7 @@ Traducciones de la parte madura de [`../frases.md`](../frases.md) a 15 idiomas (
 |---|---|---|---|
 | `frases.en.md` | English | «you» | |
 | `frases.pt-BR.md` | Português (Brasil) | você | Variante brasileña. |
-| `frases.fr.md` | Français | vous | Formal. Para tutear, cambiar a «tu». |
+| `frases.fr.md` | Français | vous | Formal. Para tutear, cambiar a «tu». Espacio fino insécable (U+202F) antes de `? ! ;` y espacio insécable (U+00A0) antes de `:`. |
 | `frases.de.md` | Deutsch | Sie | Formal. Para tutear, cambiar a «du». |
 | `frases.it.md` | Italiano | tu | |
 | `frases.nl.md` | Nederlands | je / jouw | |

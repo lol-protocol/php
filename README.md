@@ -22,8 +22,9 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 Cada carpeta tiene su propio README con instrucciones de instalación y uso, salvo los sets de
 iconos (`iconos-genealogia/`, `iconos-biblioteca/`, `iconos-tools/`), documentados juntos en
 [`ICONOS_README.md`](ICONOS_README.md) en la raíz. La mayoría tiene también su propio código y
-tests; `landing-page/` es un solo archivo; `marketing/` y `psychology-and-marketing/` son solo
-texto e imágenes, sin código ni CI; y los sets de iconos son SVG más un generador/validador en
+tests; `landing-page/` es un solo archivo; `psychology-and-marketing/` es solo texto; `marketing/`
+es texto e imágenes con dos scripts PHP sueltos (`render.php` e `iconos/vista-previa.php`), sin
+tests ni CI; y los sets de iconos son SVG más un generador/validador en
 Python (`iconos-tools/`) que no corre en CI. La única dependencia entre proyectos es:
 **`phone-directory/` requiere `defamatory-content-review/`** (usa sus clases de plegado de
 acentos y claves fonéticas) — su `composer.json` la declara como dependencia Composer

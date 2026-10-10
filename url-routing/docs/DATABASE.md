@@ -82,6 +82,11 @@ php bin/migrate.php pos --seed         # aplica y carga datos de demostración (
 - **Las fechas de una persona salen de sus sucesos.** Nacimiento y defunción
   son sucesos (`sucesos` + `suceso_participantes`), no columnas duplicadas en
   `personas` que podrían contradecirse.
+- **Si una persona vive se deduce de esas mismas fechas** (sin defunción y
+  nacida hace menos de 110 años) y `personas.viva` (nullable) lo corrige en
+  cualquier sentido; se usa para ocultarla a quien no es el propietario
+  (ver [`ACCESO.md`](./ACCESO.md)). No hay una columna «vive» calculada: se
+  decide al consultar, con las consultas de `Support/Privacidad.php`.
 - **Padre y madre viven en `personas`** (`padre_id`, `madre_id`), así la
   ascendencia y la descendencia son una sola consulta `WITH RECURSIVE`, con un
   tope de generaciones que además protege de ciclos en datos mal cargados.

@@ -8,16 +8,21 @@ use App\Repositories\Repository;
 
 final class RegistroRepository extends Repository
 {
+    /**
+     * A record that documents an event with a living participant is null here,
+     * as if it did not exist: its title and source usually name the person
+     * (see Privacidad::registros()).
+     */
     public function find(int $id): ?array
     {
         return $this->db->fetchOne(
-            'SELECT r.id, r.titulo, r.tipo, r.fecha, r.fuente, r.url,
+            "SELECT r.id, r.titulo, r.tipo, r.fecha, r.fuente, r.url,
                     r.lugar_ruta, l.nombre AS lugar_nombre,
                     r.organizacion_id, o.nombre AS organizacion_nombre
-               FROM registros r
+               FROM {$this->privacidad->registros()} r
                LEFT JOIN lugares l ON l.ruta = r.lugar_ruta
                LEFT JOIN organizaciones o ON o.id = r.organizacion_id
-              WHERE r.id = ?',
+              WHERE r.id = ?",
             [$id]
         );
     }
@@ -26,10 +31,10 @@ final class RegistroRepository extends Repository
     public function sucesos(int $id): array
     {
         return $this->db->fetchAll(
-            'SELECT s.id, s.tipo, s.fecha
-               FROM registro_sucesos rs JOIN sucesos s ON s.id = rs.suceso_id
+            "SELECT s.id, s.tipo, s.fecha
+               FROM registro_sucesos rs JOIN {$this->privacidad->sucesos()} s ON s.id = rs.suceso_id
               WHERE rs.registro_id = ?
-              ORDER BY s.fecha, s.id',
+              ORDER BY s.fecha, s.id",
             [$id]
         );
     }
@@ -38,7 +43,8 @@ final class RegistroRepository extends Repository
     public function aportadosPor(int $usuarioId): array
     {
         return $this->db->fetchAll(
-            'SELECT id, titulo, tipo, fecha FROM registros WHERE aportado_por = ? ORDER BY fecha, id',
+            "SELECT r.id, r.titulo, r.tipo, r.fecha FROM {$this->privacidad->registros()} r
+              WHERE r.aportado_por = ? ORDER BY r.fecha, r.id",
             [$usuarioId]
         );
     }
@@ -47,7 +53,8 @@ final class RegistroRepository extends Repository
     public function buscar(string $texto, int $limit = 50, int $offset = 0): array
     {
         return $this->db->fetchAll(
-            'SELECT id, titulo, tipo, fecha FROM registros WHERE LOWER(titulo)' . self::LIKE_ESCAPED . ' ORDER BY fecha, id'
+            "SELECT r.id, r.titulo, r.tipo, r.fecha FROM {$this->privacidad->registros()} r
+              WHERE LOWER(r.titulo)" . self::LIKE_ESCAPED . ' ORDER BY r.fecha, r.id'
                 . self::page($limit, $offset),
             [self::patron($texto)]
         );
