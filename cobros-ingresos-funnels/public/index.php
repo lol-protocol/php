@@ -5,23 +5,23 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Controllers\AuditoriaController;
-use App\Controllers\ClienteController;
-use App\Controllers\CobrosController;
+use App\Controllers\ClientesController;
+use App\Controllers\BoletasController;
 use App\Controllers\CohortesController;
 use App\Controllers\DashboardController;
 use App\Controllers\FunnelController;
 use App\Controllers\PagosController;
 use App\Database;
-use App\ErrorHandler;
+use App\ManejadorDeErrores;
 use App\Peticion;
 use App\Router;
-use App\SecurityHeaders;
+use App\CabecerasDeSeguridad;
 
 ini_set('display_errors', '0');
-ErrorHandler::registrar();
+ManejadorDeErrores::registrar();
 Peticion::normalizarParametros();
 
-foreach (SecurityHeaders::listado() as $nombre => $valor) {
+foreach (CabecerasDeSeguridad::listado() as $nombre => $valor) {
     header("{$nombre}: {$valor}");
 }
 
@@ -41,19 +41,19 @@ $router = new Router();
 // Sin login: todas las paginas son publicas (ver _Garbage/README.md).
 $paginas = [
     'dashboard' => fn () => (new DashboardController())->index(),
-    'cobros' => fn () => (new CobrosController())->index(),
-    'boleta-nueva' => fn () => (new CobrosController())->nueva(),
-    'boleta-editar' => fn () => (new CobrosController())->editar(),
-    'boleta-anular' => fn () => (new CobrosController())->anular(),
+    'cobros' => fn () => (new BoletasController())->index(),
+    'boleta-nueva' => fn () => (new BoletasController())->nueva(),
+    'boleta-editar' => fn () => (new BoletasController())->editar(),
+    'boleta-anular' => fn () => (new BoletasController())->anular(),
     'pagos' => fn () => (new PagosController())->index(),
     'pago-nuevo' => fn () => (new PagosController())->nuevo(),
     'pago-editar' => fn () => (new PagosController())->editar(),
     'pago-anular' => fn () => (new PagosController())->anular(),
     'funnel' => fn () => (new FunnelController())->index(),
     'cohortes' => fn () => (new CohortesController())->index(),
-    'clientes' => fn () => (new ClienteController())->index(),
-    'cliente-nuevo' => fn () => (new ClienteController())->nuevo(),
-    'cliente' => fn () => (new ClienteController())->ficha(),
+    'clientes' => fn () => (new ClientesController())->index(),
+    'cliente-nuevo' => fn () => (new ClientesController())->nuevo(),
+    'cliente' => fn () => (new ClientesController())->ficha(),
     'auditoria' => fn () => (new AuditoriaController())->index(),
 ];
 foreach ($paginas as $pagina => $manejador) {

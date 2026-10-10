@@ -53,7 +53,7 @@ final class Csrf
                 'path' => '/',
                 'httponly' => true,
                 'samesite' => 'Lax',
-                'secure' => Http::esSegura(),
+                'secure' => ConexionSegura::esHttps(),
             ]);
             session_start();
         }

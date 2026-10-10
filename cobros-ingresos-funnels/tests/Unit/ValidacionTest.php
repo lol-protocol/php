@@ -78,4 +78,22 @@ final class ValidacionTest extends TestCase
             self::assertFalse(Validacion::emailEsValido($invalido), "'{$invalido}'");
         }
     }
+
+    public function testFechaEsValidaAceptaFechasReales(): void
+    {
+        self::assertTrue(Validacion::fechaEsValida('2026-01-15'));
+        self::assertTrue(Validacion::fechaEsValida('2024-02-29'), '2024 es bisiesto');
+    }
+
+    public function testFechaEsValidaRechazaTextoSuelto(): void
+    {
+        self::assertFalse(Validacion::fechaEsValida('esto-no-es-una-fecha'));
+        self::assertFalse(Validacion::fechaEsValida(''));
+    }
+
+    public function testFechaEsValidaRechazaFechasImposiblesAunqueTenganElFormatoCorrecto(): void
+    {
+        self::assertFalse(Validacion::fechaEsValida('2026-13-40'), 'mes 13 no existe');
+        self::assertFalse(Validacion::fechaEsValida('2025-02-29'), '2025 no es bisiesto');
+    }
 }

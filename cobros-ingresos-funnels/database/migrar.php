@@ -12,7 +12,7 @@ declare(strict_types=1);
  *                                        001 como aplicada (sin correrla) y aplica las demas
  *
  * Usa las mismas variables DB_* que la app. No toca datos: para regenerar los
- * datos de ejemplo en desarrollo esta database/seed.php.
+ * datos de ejemplo en desarrollo esta database/recrear_con_datos_de_ejemplo.php.
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';

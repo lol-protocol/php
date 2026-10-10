@@ -1,6 +1,6 @@
 <?php
 
-use App\Filtros;
+use App\FiltroDePeriodo;
 
 /**
  * El periodo y el rango exacto de las pantallas con filtro de fechas
@@ -16,7 +16,7 @@ use App\Filtros;
 ?>
 <label for="meses">Período</label>
 <select name="meses" id="meses">
-    <?php foreach (Filtros::OPCIONES_MESES as $valor => $texto): ?>
+    <?php foreach (FiltroDePeriodo::OPCIONES_MESES as $valor => $texto): ?>
         <option value="<?= $valor ?>" <?= $meses === $valor ? 'selected' : '' ?>><?= $texto ?></option>
     <?php endforeach; ?>
 </select>
