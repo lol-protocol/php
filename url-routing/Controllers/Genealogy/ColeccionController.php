@@ -19,7 +19,7 @@ class ColeccionController extends BaseController
 {
     private function repo(): ColeccionRepository
     {
-        return new ColeccionRepository($this->db());
+        return new ColeccionRepository($this->db(), $this->privacidad());
     }
 
     /**

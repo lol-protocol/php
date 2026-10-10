@@ -26,39 +26,54 @@ final class ColeccionRepository extends Repository
         return $row;
     }
 
-    /** @return list<array> personas in the tree, with parent ids to draw it */
+    /**
+     * Personas in the tree, with parent ids to draw it. A living persona stays
+     * in the tree, hidden (see Privacidad), so the tree keeps its shape.
+     *
+     * @return list<array>
+     */
     public function personas(int $id): array
     {
-        return $this->db->fetchAll(
-            'SELECT p.id, p.nombres, p.apellidos, p.sexo, p.padre_id, p.madre_id
-               FROM coleccion_personas cp JOIN personas p ON p.id = cp.persona_id
+        return array_map(self::normalizar(...), $this->db->fetchAll(
+            "SELECT p.id, p.nombres, p.apellidos, p.sexo, p.padre_id, p.madre_id, p.oculta
+               FROM coleccion_personas cp JOIN {$this->privacidad->personas()} p ON p.id = cp.persona_id
               WHERE cp.coleccion_id = ?
-              ORDER BY p.apellidos, p.nombres, p.id',
+              ORDER BY p.oculta, p.apellidos, p.nombres, p.id",
             [$id]
-        );
+        ));
     }
 
     /**
-     * Everything a GEDCOM export needs: personas with sex and vital dates.
+     * Everything a GEDCOM export needs: personas with sex and vital dates. A
+     * living persona is exported as a hidden one, with no dates or place.
      *
      * @return list<array>
      */
     public function personasParaExportar(int $id): array
     {
-        return $this->db->fetchAll(
-            "SELECT p.id, p.nombres, p.apellidos, p.sexo, p.padre_id, p.madre_id,
-                    (SELECT s.fecha FROM sucesos s JOIN suceso_participantes sp ON sp.suceso_id = s.id
-                      WHERE sp.persona_id = p.id AND s.tipo = 'nacimiento' ORDER BY s.fecha LIMIT 1) AS nacimiento,
-                    (SELECT l.nombre FROM sucesos s JOIN suceso_participantes sp ON sp.suceso_id = s.id
-                       LEFT JOIN lugares l ON l.ruta = s.lugar_ruta
-                      WHERE sp.persona_id = p.id AND s.tipo = 'nacimiento' ORDER BY s.fecha LIMIT 1) AS lugar_nacimiento,
-                    (SELECT s.fecha FROM sucesos s JOIN suceso_participantes sp ON sp.suceso_id = s.id
-                      WHERE sp.persona_id = p.id AND s.tipo = 'defuncion' ORDER BY s.fecha LIMIT 1) AS defuncion
-               FROM coleccion_personas cp JOIN personas p ON p.id = cp.persona_id
+        $evento = static fn(string $campo, string $tipo, string $unir = ''): string => "SELECT {$campo}
+               FROM sucesos s JOIN suceso_participantes sp ON sp.suceso_id = s.id{$unir}
+              WHERE sp.persona_id = p.id AND s.tipo = '{$tipo}' ORDER BY s.fecha LIMIT 1";
+
+        return array_map(self::normalizar(...), $this->db->fetchAll(
+            'SELECT p.id, p.nombres, p.apellidos, p.sexo, p.padre_id, p.madre_id, p.oculta,
+                    ' . $this->privacidad->siVisible($evento('s.fecha', 'nacimiento')) . ' AS nacimiento,
+                    ' . $this->privacidad->siVisible($evento('l.nombre', 'nacimiento', ' LEFT JOIN lugares l ON l.ruta = s.lugar_ruta')) . " AS lugar_nacimiento,
+                    " . $this->privacidad->siVisible($evento('s.fecha', 'defuncion')) . " AS defuncion
+               FROM coleccion_personas cp JOIN {$this->privacidad->personas()} p ON p.id = cp.persona_id
               WHERE cp.coleccion_id = ?
               ORDER BY p.id",
             [$id]
-        );
+        ));
+    }
+
+    /** @param array<string, mixed> $fila */
+    private static function normalizar(array $fila): array
+    {
+        // SQLite returns 0/1 where PostgreSQL returns a real boolean.
+        $fila['oculta'] = (bool)$fila['oculta'];
+
+        return $fila;
     }
 
     /** @return list<array> */

@@ -8,12 +8,13 @@ use App\Repositories\Repository;
 
 final class SucesoRepository extends Repository
 {
+    /** An event with a living participant is null here, as if it did not exist (see Privacidad::sucesos()). */
     public function find(int $id): ?array
     {
         return $this->db->fetchOne(
-            'SELECT s.id, s.tipo, s.fecha, s.descripcion, s.lugar_ruta, l.nombre AS lugar_nombre
-               FROM sucesos s LEFT JOIN lugares l ON l.ruta = s.lugar_ruta
-              WHERE s.id = ?',
+            "SELECT s.id, s.tipo, s.fecha, s.descripcion, s.lugar_ruta, l.nombre AS lugar_nombre
+               FROM {$this->privacidad->sucesos()} s LEFT JOIN lugares l ON l.ruta = s.lugar_ruta
+              WHERE s.id = ?",
             [$id]
         );
     }
@@ -22,22 +23,22 @@ final class SucesoRepository extends Repository
     public function participantes(int $id): array
     {
         return $this->db->fetchAll(
-            'SELECT sp.rol, p.id, p.nombres, p.apellidos
-               FROM suceso_participantes sp JOIN personas p ON p.id = sp.persona_id
+            "SELECT sp.rol, p.id, p.nombres, p.apellidos
+               FROM suceso_participantes sp JOIN {$this->privacidad->personas()} p ON p.id = sp.persona_id
               WHERE sp.suceso_id = ?
-              ORDER BY sp.rol, p.apellidos, p.nombres',
+              ORDER BY sp.rol, p.oculta, p.apellidos, p.nombres, p.id",
             [$id]
         );
     }
 
-    /** @return list<array> records that document this event */
+    /** @return list<array> records that document this event, except those hidden by Privacidad::registros() */
     public function registros(int $id): array
     {
         return $this->db->fetchAll(
-            'SELECT r.id, r.titulo, r.tipo, r.fecha
-               FROM registro_sucesos rs JOIN registros r ON r.id = rs.registro_id
+            "SELECT r.id, r.titulo, r.tipo, r.fecha
+               FROM registro_sucesos rs JOIN {$this->privacidad->registros()} r ON r.id = rs.registro_id
               WHERE rs.suceso_id = ?
-              ORDER BY r.fecha, r.id',
+              ORDER BY r.fecha, r.id",
             [$id]
         );
     }
@@ -47,7 +48,7 @@ final class SucesoRepository extends Repository
     {
         return $this->db->fetchAll(
             "SELECT s.id, s.tipo, s.fecha, l.nombre AS lugar_nombre
-               FROM sucesos s LEFT JOIN lugares l ON l.ruta = s.lugar_ruta
+               FROM {$this->privacidad->sucesos()} s LEFT JOIN lugares l ON l.ruta = s.lugar_ruta
               WHERE LOWER(s.tipo || ' ' || COALESCE(s.descripcion, '') || ' ' || COALESCE(l.nombre, ''))" . self::LIKE_ESCAPED . "
               ORDER BY s.fecha, s.id" . self::page($limit, $offset),
             [self::patron($texto)]

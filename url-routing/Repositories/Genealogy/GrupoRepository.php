@@ -8,12 +8,17 @@ use App\Repositories\Repository;
 
 final class GrupoRepository extends Repository
 {
+    /**
+     * A living persona's surname group is hidden (see Privacidad::personas()),
+     * so living people count in no group, appear in no group's network and
+     * weigh in no group's birthplaces.
+     */
     public function find(int $id): ?array
     {
         return $this->db->fetchOne(
-            'SELECT g.id, g.apellido, g.origen, g.descripcion,
-                    (SELECT COUNT(*) FROM personas p WHERE p.grupo_id = g.id) AS total_personas
-               FROM grupos g WHERE g.id = ?',
+            "SELECT g.id, g.apellido, g.origen, g.descripcion,
+                    (SELECT COUNT(*) FROM {$this->privacidad->personas()} p WHERE p.grupo_id = g.id) AS total_personas
+               FROM grupos g WHERE g.id = ?",
             [$id]
         );
     }
@@ -22,9 +27,9 @@ final class GrupoRepository extends Repository
     public function red(int $id): array
     {
         return $this->db->fetchAll(
-            'SELECT p.id, p.nombres, p.apellidos, p.sexo, p.padre_id, p.madre_id
-               FROM personas p WHERE p.grupo_id = ?
-              ORDER BY p.apellidos, p.nombres, p.id',
+            "SELECT p.id, p.nombres, p.apellidos, p.sexo, p.padre_id, p.madre_id
+               FROM {$this->privacidad->personas()} p WHERE p.grupo_id = ?
+              ORDER BY p.apellidos, p.nombres, p.id",
             [$id]
         );
     }
@@ -38,7 +43,7 @@ final class GrupoRepository extends Repository
     {
         return $this->db->fetchAll(
             "SELECT s.lugar_ruta, l.nombre AS lugar_nombre, COUNT(DISTINCT p.id) AS total
-               FROM personas p
+               FROM {$this->privacidad->personas()} p
                JOIN suceso_participantes sp ON sp.persona_id = p.id
                JOIN sucesos s ON s.id = sp.suceso_id AND s.tipo = 'nacimiento'
                JOIN lugares l ON l.ruta = s.lugar_ruta

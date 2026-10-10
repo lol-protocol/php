@@ -33,15 +33,15 @@ class CuentaController extends BaseController
     public function colecciones(array $params = []): string
     {
         return $this->pedirPropietario(fn() => view('genealogy/cuenta/colecciones', [
-            'colecciones' => (new ColeccionRepository($this->db()))->deUsuario(self::DEFAULT_USER_ID),
+            'colecciones' => (new ColeccionRepository($this->db(), $this->privacidad()))->deUsuario(self::DEFAULT_USER_ID),
         ]));
     }
 
     public function aportes(array $params = []): string
     {
         return $this->pedirPropietario(fn() => view('genealogy/cuenta/aportes', [
-            'personas' => (new PersonaRepository($this->db()))->aportadasPor(self::DEFAULT_USER_ID),
-            'registros' => (new RegistroRepository($this->db()))->aportadosPor(self::DEFAULT_USER_ID),
+            'personas' => (new PersonaRepository($this->db(), $this->privacidad()))->aportadasPor(self::DEFAULT_USER_ID),
+            'registros' => (new RegistroRepository($this->db(), $this->privacidad()))->aportadosPor(self::DEFAULT_USER_ID),
         ]));
     }
 }

@@ -12,14 +12,14 @@ class RegistroController extends BaseController
 {
     public function show(array $params = []): string
     {
-        $repo = new RegistroRepository($this->db());
+        $repo = new RegistroRepository($this->db(), $this->privacidad());
         return $this->renderFound($params, $repo->find(...), 'genealogy/registro/show', 'registro',
             fn(int $id) => ['sucesos' => $repo->sucesos($id)]);
     }
 
     public function fuente(array $params = []): string
     {
-        $repo = new RegistroRepository($this->db());
+        $repo = new RegistroRepository($this->db(), $this->privacidad());
         return $this->renderFound($params, $repo->find(...), 'genealogy/registro/fuente', 'registro');
     }
 }

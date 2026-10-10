@@ -18,6 +18,32 @@ La lógica está en [`Support/AccessPolicy.php`](../Support/AccessPolicy.php) y 
 
 Las páginas públicas no piden nada: una colección con `publica = true`, las personas, los lugares, los grupos, las organizaciones, los sucesos, los registros y todo el catálogo del POS.
 
+## Personas que podrían estar vivas
+
+Quien no es el propietario no ve lo que se sabe de las personas que podrían estar vivas. Una persona se **presume viva** cuando:
+
+- no tiene ningún suceso de defunción, **y**
+- su nacimiento tiene fecha y fue hace menos de **110 años** (`Privacidad::ANIOS_VIVA`).
+
+Una persona sin ninguna fecha **no** se presume viva: nada lo dice, y ocultar a todos los antepasados sin fechas vaciaría el catálogo. Una fecha de nacimiento a exactamente 110 años ya cuenta como antigua.
+
+**Corregir la deducción.** La columna `personas.viva` (migración `002_personas_viva.sql`) manda sobre las fechas: `TRUE` = vive, `FALSE` = ya falleció, `NULL` = deducirlo. Sirve para marcar a quien vive pero no tiene fechas, o a quien ya murió sin que conste su defunción. Hoy se cambia por SQL o al importar datos; la aplicación no tiene pantalla para editarla.
+
+| Dónde aparece | Qué ve un visitante |
+|---|---|
+| La persona (`/{id}/` y sus acciones) | La página existe, para que un enlace desde un árbol no se rompa, pero solo dice «Persona viva»: sin nombre, sexo, apellido, fechas, lugar, familiares ni sucesos. Sus padres también la identificarían |
+| Árboles (colección, ascendencia, descendencia, vínculos) | Aparece como «Persona viva» en su lugar, para que el árbol conserve su forma; va después de los demás y ordenada por id, para que el orden no diga nada de ella |
+| Búsqueda | **No aparece**, y no se puede encontrar por su nombre ni por «persona viva»: si se la encontrara aunque solo se viera la máscara, cualquiera podría comprobar si existe alguien con ese nombre |
+| Apellidos (grupos) | No cuenta, no sale en la red del apellido y no pesa en los lugares de nacimiento |
+| Lugares, miembros de organizaciones | No aparece |
+| Sucesos | Un suceso con **algún** participante vivo no existe para el visitante (404, ni en búsquedas ni en listas ni en la cronología de nadie), porque su fecha, lugar o descripción lo delatarían |
+| Registros | Un registro que documenta un suceso así tampoco existe: su título y su fuente suelen nombrar a la persona |
+| GEDCOM | La persona sale como «Persona viva», sin sexo, fechas ni lugar; la forma del árbol se conserva y todos los punteros siguen resolviendo |
+
+El propietario lo ve todo y sus consultas son las de siempre.
+
+Cómo está hecho: `Privacidad` entrega **expresiones de tabla** (`personas()`, `sucesos()`, `registros()`) que sustituyen a las tablas en cada consulta, así que una consulta no puede olvidarse de ocultar algo: solo ve la versión ya oculta. Los repositorios reciben el `Privacidad` de la petición y, si nadie se lo pasa, usan el del visitante: olvidarse oculta de más, nunca de menos. `PagesTest::testNoPageShowsAVisitorAnythingAboutLivingPeople` recorre todas las páginas que la base de demostración puede producir y falla si una consulta o página nueva olvida a `Privacidad`.
+
 ## Configurar
 
 1. Generar el secreto: `openssl rand -hex 32`.
@@ -42,14 +68,18 @@ La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, 
 
 ## Lo que esto NO cubre
 
-Este cambio hace privados los **objetos** que ya se presentaban como privados. No es una garantía de privacidad de las personas. Antes de afirmar en público algo sobre cuidado de datos, hay que tener presente:
+Esto hace privados los **objetos** que ya se presentaban como privados y oculta a las personas que podrían estar vivas. No es una garantía de privacidad de los datos de todas las personas. Antes de afirmar en público algo sobre cuidado de datos, hay que tener presente:
 
-- **Las personas son un catálogo compartido.** Una persona puede estar en varias colecciones y cualquiera puede abrir `/{id de persona}/` (y sus acciones), encontrarla en la búsqueda o verla en las páginas de lugares, grupos, organizaciones y sucesos. Que una colección sea privada oculta **la colección** (su página, su árbol y su GEDCOM), no a las personas que contiene: si una de ellas figura en otro lugar del catálogo, sigue siendo visible.
-- **No hay protección de personas vivas.** Nombres, fechas y lugares de personas que viven hoy se muestran igual que los de quienes murieron hace siglos.
+- **Las personas fallecidas son un catálogo compartido.** Una persona puede estar en varias colecciones y cualquiera puede abrir `/{id de persona}/` (y sus acciones), encontrarla en la búsqueda o verla en las páginas de lugares, grupos, organizaciones y sucesos. Que una colección sea privada oculta **la colección** (su página, su árbol y su GEDCOM), no a las personas fallecidas que contiene. Si hace falta que un árbol privado oculte también a sus personas, es otra decisión de modelo: hoy no ocurre.
+- **La protección de personas vivas es una deducción, no una certeza.** Cubre a quien tiene fecha de nacimiento reciente y ninguna defunción, o la marca `viva`. No cubre a quien vive pero no tiene fechas ni marca, ni a quien nació hace más de 110 años y vive. Tampoco cubre texto libre: si alguien escribe el nombre de una persona viva en la descripción de un suceso que no la tiene como participante, o en el título de un registro sin sucesos, se verá.
+- **La persona oculta se reconoce por su ausencia.** Su página existe y dice «Persona viva», y sus padres ya muestran que tienen un descendiente oculto. Eso revela la forma del árbol, no a quién pertenece.
+- **El coste crece con el catálogo.** Decidir quién vive son varias consultas por persona. Con millones de personas convendrá guardar el resultado en una columna calculada; hoy no hace falta.
 - **Un solo propietario y un solo secreto.** No hay cuentas por persona ni roles. Quien tenga el token lo ve todo, incluidas las colecciones y los pedidos de otros usuarios de la base de datos. Las páginas de cuenta actúan siempre sobre la cuenta fija (`DEFAULT_USER_ID`).
 - **Los pedidos del POS son solo del propietario.** Las páginas de pago (`/checkout/...`) todavía no crean pedidos. Cuando lo hagan, un pedido tendrá que ligarse a la sesión de quien lo hizo y abrirse también para esa sesión; hoy, ni quien lo hizo lo vería.
 
 ## Pruebas
 
 - `tests/App/Support/AccessPolicyTest.php`: lectura de credenciales (Basic y Bearer), comparación del token, caducidad de la sesión y las dos formas de negar.
-- `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones.
+- `tests/App/Support/PrivacidadTest.php`: el umbral, que el SQL del propietario sea el de siempre y que un alias inválido se rechace antes de llegar al SQL.
+- `tests/App/Repositories/PrivacidadRepositoriesTest.php` (en SQLite y PostgreSQL, con fecha fija): quién se oculta y quién no, el borde exacto de los 110 años, la marca `viva`, y qué ve un visitante en cada repositorio.
+- `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos ni de Lucía (se comprobó que falla si se apaga el enmascarado).

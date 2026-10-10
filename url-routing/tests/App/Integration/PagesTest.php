@@ -152,10 +152,11 @@ class PagesTest extends TestCase
         ];
     }
 
+    /** As the owner, who sees everything: what a visitor sees of living people is tested below. */
     #[DataProvider('paginas')]
     public function testPageRendersFromTheDatabase(string $host, string $uri, int $status, array $esperado): void
     {
-        [$codigo, $body] = $this->get($host, $uri);
+        [$codigo, $body] = $this->getComoPropietario($host, $uri);
 
         $this->assertSame($status, $codigo, $body);
         foreach ($esperado as $texto) {
@@ -608,7 +609,7 @@ class PagesTest extends TestCase
 
     public function testExportIsValidGedcom(): void
     {
-        [$codigo, $gedcom] = $this->get(self::GENEALOGIA, '/1048293/3/');
+        [$codigo, $gedcom] = $this->getComoPropietario(self::GENEALOGIA, '/1048293/3/');
 
         $this->assertSame(200, $codigo);
         $this->assertStringStartsWith("0 HEAD\r\n", $gedcom);
@@ -621,6 +622,144 @@ class PagesTest extends TestCase
         preg_match_all('/^\d (?:FAMS|FAMC|HUSB|WIFE|CHIL) (@\w+@)/m', $gedcom, $usados);
         preg_match_all('/^0 (@\w+@) /m', $gedcom, $definidos);
         $this->assertSame([], array_values(array_diff(array_unique($usados[1]), $definidos[1])));
+    }
+
+    // --- people who may be alive -------------------------------------------------------------------
+    // The demo seed has Carlos (1952) and Lucía (1955), presumed alive until 2062: these tests stick to
+    // them so they don't depend on the day they run. Juan, Rosa and Elena cross the 110-year line in
+    // 2035-2039 and are covered, with a fixed date, by PrivacidadRepositoriesTest.
+
+    private const CARLOS = '/6128473108/';
+
+    /** What must not reach a visitor: every way the demo has of saying who Carlos and Lucía are. */
+    private const DATOS_DE_VIVAS = ['Carlos', 'Lucía', 'García Martínez', '22 mar 1952', '9 ago 1955', '1952–', '1955–'];
+
+    public function testALivingPersonaPageNamesNobodyAndListsNothing(): void
+    {
+        foreach (['', '1/', '2/', '3/', '4/'] as $accion) {
+            [$codigo, $body] = $this->get(self::GENEALOGIA, self::CARLOS . $accion);
+
+            $this->assertSame(200, $codigo, "persona {$accion}");
+            $this->assertStringContainsString('Persona viva', $body);
+            $this->assertStringContainsString('podrían estar vivas', $body);
+            foreach (self::DATOS_DE_VIVAS as $dato) {
+                $this->assertStringNotContainsString($dato, $body, "{$dato} on persona {$accion}");
+            }
+            // Nor who his parents are: that would say who he is.
+            $this->assertStringNotContainsString('Antonio', $body);
+            $this->assertStringNotContainsString('Guadalajara', $body);
+        }
+    }
+
+    public function testADeceasedPersonaStillShowsEverythingButItsLivingRelatives(): void
+    {
+        [, $body] = $this->get(self::GENEALOGIA, '/6128473101/2/');
+
+        $this->assertStringContainsString('Antonio García Fernández', $body);
+        $this->assertStringContainsString('Persona viva', $body, 'living descendants stay in the tree, unnamed');
+        foreach (self::DATOS_DE_VIVAS as $dato) {
+            $this->assertStringNotContainsString($dato, $body, $dato);
+        }
+
+        [, $ficha] = $this->get(self::GENEALOGIA, '/6128473103/');
+        $this->assertStringContainsString('1898', $ficha);
+        $this->assertStringContainsString('Oviedo', $ficha);
+    }
+
+    public function testTheSearchNeverFindsLivingPeople(): void
+    {
+        foreach (['carlos', 'lucía', 'garcía martínez', 'persona viva'] as $q) {
+            [, $body] = $this->get(self::GENEALOGIA, '/?t=10&q=' . rawurlencode($q));
+
+            $this->assertStringContainsString('Sin resultados', $body, $q);
+            $this->assertStringNotContainsString('Persona viva ', $body, $q);
+        }
+
+        [, $todos] = $this->get(self::GENEALOGIA, '/?t=10');
+        $this->assertStringContainsString('José García Álvarez', $todos);
+        $this->assertStringNotContainsString('Carlos', $todos);
+    }
+
+    public function testTheGedcomOfAPublicTreeCarriesNothingAboutLivingPeople(): void
+    {
+        [$codigo, $gedcom] = $this->get(self::GENEALOGIA, '/1048293/3/');
+
+        $this->assertSame(200, $codigo);
+        $this->assertSame(9, substr_count($gedcom, ' INDI'), 'the shape of the tree is kept');
+        $this->assertStringContainsString('1 NAME José /García Álvarez/', $gedcom);
+        foreach (self::DATOS_DE_VIVAS as $dato) {
+            $this->assertStringNotContainsString($dato, $gedcom, $dato);
+        }
+        $this->assertStringContainsString('1 NAME Persona viva', $gedcom);
+    }
+
+    /** @return list<string> every URL the demo database can produce, for an exhaustive crawl */
+    private function urlsDeLaDemo(): array
+    {
+        $db = new Database('sqlite:' . self::$dir . '/genealogy.sqlite');
+        $ids = static fn(string $sql): array => array_column($db->fetchAll($sql), 'id');
+        $urls = ['/'];
+
+        foreach ($ids('SELECT id FROM personas') as $id) {
+            array_push($urls, "/{$id}/", "/{$id}/1/", "/{$id}/2/", "/{$id}/3/", "/{$id}/4/");
+        }
+        foreach ($ids('SELECT id FROM sucesos') as $id) {
+            $urls[] = "/{$id}/";
+        }
+        foreach ($ids('SELECT id FROM registros') as $id) {
+            array_push($urls, "/{$id}/", "/{$id}/1/");
+        }
+        foreach ($ids('SELECT id FROM colecciones') as $id) {
+            array_push($urls, "/{$id}/", "/{$id}/1/", "/{$id}/2/", "/{$id}/3/");
+        }
+        foreach ($ids('SELECT id FROM grupos') as $id) {
+            array_push($urls, "/{$id}/", "/{$id}/1/", "/{$id}/2/");
+        }
+        foreach ($ids('SELECT id FROM organizaciones') as $id) {
+            array_push($urls, "/{$id}/", "/{$id}/1/", "/{$id}/2/");
+        }
+        foreach (array_column($db->fetchAll('SELECT ruta FROM lugares'), 'ruta') as $ruta) {
+            array_push($urls, "/{$ruta}/", "/{$ruta}/1/", "/{$ruta}/2/");
+        }
+        foreach ([10, 9, 8, 7, 6, 5] as $tipo) {
+            $urls[] = "/?t={$tipo}";
+            foreach (['carlos', 'lucía', 'garcía', 'nacimiento', 'acta', 'guadalajara'] as $q) {
+                $urls[] = "/?t={$tipo}&q=" . rawurlencode($q);
+            }
+        }
+
+        return $urls;
+    }
+
+    /**
+     * The safety net: a visitor crawls every page the demo can produce, one by one, and
+     * nothing about Carlos or Lucía may show up anywhere: not in a tree, a list, a place,
+     * an event, a record, a surname page, the search, or the GEDCOM. A new page or query
+     * that forgets Privacidad fails here.
+     */
+    public function testNoPageShowsAVisitorAnythingAboutLivingPeople(): void
+    {
+        $urls = $this->urlsDeLaDemo();
+        $this->assertGreaterThan(100, count($urls));
+
+        foreach ($urls as $uri) {
+            [, $body] = $this->get(self::GENEALOGIA, $uri);
+            foreach (self::DATOS_DE_VIVAS as $dato) {
+                $this->assertStringNotContainsString($dato, $body, "«{$dato}» on {$uri}");
+            }
+        }
+    }
+
+    /** Guards the crawl above against passing because it saw nothing: the owner's view does show them. */
+    public function testTheOwnerCrawlDoesSeeLivingPeople(): void
+    {
+        $vistas = [];
+        foreach (['/6128473108/', '/6128473101/2/', '/1048293/1/', '/?t=10&q=carlos', '/1048293/3/'] as $uri) {
+            [, $body] = $this->getComoPropietario(self::GENEALOGIA, $uri);
+            $vistas[$uri] = str_contains($body, 'Carlos');
+        }
+
+        $this->assertSame(array_fill_keys(array_keys($vistas), true), $vistas);
     }
 
     public function testDatabaseErrorsDoNotLeakDetails(): void

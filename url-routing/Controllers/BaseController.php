@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Support\AccessPolicy;
 use App\Support\Database;
+use App\Support\Privacidad;
 use App\Support\ServiceLocator;
 
 class BaseController
@@ -38,6 +39,21 @@ class BaseController
         AccessPolicy::recordar();
         AccessPolicy::marcarPrivada();
         return null;
+    }
+
+    /**
+     * What this request may see about living people: everything for the owner,
+     * a visitor's view otherwise. The owner's page differs from the visitor's
+     * at the same URL, so no shared cache may keep it.
+     */
+    protected function privacidad(): Privacidad
+    {
+        $privacidad = Privacidad::paraSolicitud();
+        if (!$privacidad->ocultaVivas()) {
+            AccessPolicy::marcarPrivada();
+        }
+
+        return $privacidad;
     }
 
     /** Runs $accion only for the owner; anyone else gets a 404, as if the page did not exist. */
