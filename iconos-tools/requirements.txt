@@ -1,0 +1,3 @@
+# Solo para similares.py; build.py y validate.py no necesitan nada fuera de la biblioteca estándar.
+pillow==12.3.0
+resvg-py==0.5.0
