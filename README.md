@@ -24,7 +24,8 @@ iconos (`iconos-genealogia/`, `iconos-biblioteca/`, `iconos-tools/`), documentad
 [`ICONOS_README.md`](ICONOS_README.md) en la raíz. La mayoría tiene también su propio código y
 tests; `landing-page/` es un solo archivo; `marketing/` y `psychology-and-marketing/` son solo
 texto e imágenes, sin código ni CI; y los sets de iconos son SVG más un generador/validador en
-Python (`iconos-tools/`) que no corre en CI. La única dependencia entre proyectos es:
+Python (`iconos-tools/`); el job `iconos` del CI valida los SVG y comprueba que coincidan con el
+generador. La única dependencia entre proyectos es:
 **`phone-directory/` requiere `defamatory-content-review/`** (usa sus clases de plegado de
 acentos y claves fonéticas) — su `composer.json` la declara como dependencia Composer
 (`lol-protocol/defamatory-content-review`, repositorio `path` a `../defamatory-content-review`),
@@ -67,6 +68,7 @@ proyecto.
 - `document-formats`: tests en Node de `document-formats/`.
 - `document-formats-database`: importa `document-formats/` a MySQL (dos veces, para comprobar que no duplica filas) y lo valida contra los CSV.
 - `web-animations`: prueba de humo de las animaciones.
+- `iconos`: valida los dos sets de iconos (`iconos-tools/validate.py`) y que los SVG commiteados sean exactamente los que produce `iconos-tools/build.py`.
 - `legal-data`: pruebas de `privacy-laws/` y `copyright-laws/` (los CSV maestros, los archivos por país, el lector de CSV de la interfaz y que el README diga lo que hay) y la sintaxis de su API y su importador.
 
 `sistema-nuevo/`, `vps-setup/` y `cobros-ingresos-funnels/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml` y `pruebas-cobros-ingresos-funnels.yml`).

@@ -2,7 +2,109 @@
 
 ## [Sin publicar]
 
+La próxima versión es **5.0.0**: las clases cambian de namespace.
+
+### Cambiado (incompatible)
+
+- **Las clases se agrupan en subnamespaces**, uno por carpeta de `src/`. El
+  nombre de cada clase no cambia; sólo su `use`:
+
+  | Antes (`DefamatoryContentReview\…`) | Ahora (`DefamatoryContentReview\…`) |
+  |---|---|
+  | `DefamatoryContentReviewer`, `NameEvaluator` | sin cambio |
+  | `LanguageRegistry`, `LanguageAffinity`, `LanguageAccess`, `RelatedLanguageValidator` | `Language\…` |
+  | `WordList`, `WordListIndex`, `WordListPhonetics`, `WordListScanner` | `Dictionary\…` |
+  | `AccentFolding`, `ScriptFolding`, `Leetspeak`, `LeetspeakFolding` | `Normalization\…` |
+  | `PhoneticFolderRegistry`, `AbstractPhoneticFolder`, `CommonPhoneticAccents`, `FusionSupport`, `PhoneticFusionDetector` | `Phonetic\…` |
+  | `SpanishPhoneticFolder` … `TurkishPhoneticFolder` (17) | `Phonetic\Folders\…` |
+  | `ScoringPolicy`, `ScoringWeights`, `SeverityBands`, `DecisionTable` | `Scoring\…` |
+  | `ValidationResult`, `FlaggedTermCollection`, `TermExplanation`, `RiskReportBuilder` | `Report\…` |
+  | `ChatLineReviewer`, `ChatLineResult`, `ChatTopics`, `ChatMatches`, `ChatPatternMatcher`, `SpacedLetters`, `RepeatedLetters`, `RepeatedReadings` | `Chat\…` |
+  | `TopicInflector`, `TopicInflection`, `SpanishInflection`, `SpanishVerbs`, `EnglishInflection` | `Chat\Inflection\…` |
+
+  Las clases nuevas de esta versión van en `Chat\EverydayWords` y
+  `Http\ModerationEndpoint`. Para migrar basta cambiar los `use` (por ejemplo
+  `use DefamatoryContentReview\Chat\ChatLineReviewer;`). `phone-directory`
+  ya está migrado y pide `^5.0`.
+- **Se quita el alias deprecado `PhoneticFolder`** (nombre anterior a 4.3.0
+  de `SpanishPhoneticFolder`): su ruta vieja deja de existir con los
+  subnamespaces. Usar `Phonetic\Folders\SpanishPhoneticFolder`.
+- **`config/languages/supported-languages.php` pasa a
+  `config/supported-languages.php`**, junto a `language-families.php` y
+  `risk-categories.php`: `languages/` queda sólo con los diccionarios. Quien
+  use su propia copia de `config/` debe mover ese archivo.
+- PSR-4 apunta a `src/` (antes `src/DefamatoryContentReview/`, que repetía
+  el nombre del namespace).
+- `tests/` sigue la misma división (`tests/Chat/`, `tests/Phonetic/`…, con
+  namespace `Tests\<Carpeta>`). `EdgeCasesValidationTest` pasa a
+  `Language/LanguageAffinityFormatTest`, `TopicInflectionTest` a
+  `Chat/Inflection/InflectedFormsTest`, y las fixtures `chat-lines.php` y
+  `chat-topics-lines.php` a `chat-lines-detection.php` y
+  `chat-lines-coverage.php`, por el test que las usa. `FileSizeLimitTest` recorre subcarpetas.
+
 ### Añadido
+
+- **`บ้า` (tailandés, «loco»), cambio provisional hasta la revisión
+  nativa.** Era el 45 % de las palabras frecuentes que el chat censuraba,
+  casi todas exclamaciones («บ้าจริง», «maldita sea»): el chat lo ignora
+  suelto (`ambiguous`) y sus apelativos (`ไอ้บ้า`, y nuevos `คนบ้า`,
+  `ยัยบ้า`, `อีบ้า`, `นังบ้า`, `medium`) siguen yendo a revisión. Las 20.000
+  palabras más frecuentes censuradas pasan de 212 a 126. `validateName()`
+  no cambia. Planillas cortas en `review/urgente/` (tha: `บ้า`, sus
+  apelativos y `แขก`; jpn: `魔女`, `おし`) con la pregunta concreta y frases
+  reales; `apply-review.php` acepta ahora `sin ambiguous` para revertirlo.
+
+- **Letras sueltas que juntan varias palabras** («h o l a p u t a»,
+  «p u t a p u t a», «p u t a m a d r e»): antes la racha se unía entera y,
+  al no ser una palabra del diccionario, se aprobaba. `SpacedRunTerms`
+  busca dentro de la racha los términos de 4 letras o más (sin solaparse,
+  de más largo a más corto) y los manda a revisión, nunca a bloqueo,
+  porque una palabra deletreada puede contener un insulto («c o m p u t a d o
+  r a»): medido, el 0,7 % de las palabras frecuentes de español e inglés.
+  La racha que es entera un insulto sigue bloqueando. `SpacedRunTermsTest`.
+
+- **`bin/apply-review.php`: de la planilla revisada a `config/`.** Lee una
+  planilla de `review/` llenada por un hablante nativo y aplica sus
+  respuestas: quitar un término, cambiarle la severidad, marcarlo
+  `ambiguous`/`nameCollision`, mandar una palabra frecuente a `everyday` o
+  sacar una excepción. Sin `--apply` sólo muestra el plan. Edita únicamente
+  la línea de cada entrada (`Review\ConfigEditor`), y no aplica nada si
+  hay respuestas que no entiende o si la planilla es más vieja que
+  `config/`. Patrones y comentarios quedan listados para hacerlos a mano.
+  Las planillas de jpn, tha, yue, por, ita y fra se regeneraron con la
+  segmentación y la inflexión nuevas; `หมู` («cerdo», también «carne de
+  cerdo») pasa a `ambiguous`. `ConfigEditorTest`, `ReviewSheetTest`.
+
+- **Plurales, géneros y conjugación en portugués, italiano y francés**
+  (`PortugueseInflection`, `ItalianInflection`, `FrenchInflection`). La
+  mecánica de conjugación por tablas pasa a `RomanceVerbs`, que comparten
+  con `SpanishVerbs` (sin cambio de comportamiento en español). Incluyen los
+  cambios de ortografía regulares (ficar→fique, cercare→cerchi,
+  manger→mangeons) y los pronombres pegados («matá-lo», «ammazzarti»,
+  «baise-moi»). Sus listas de chat declaran `forms` como la española.
+  Medido con las 50.000 palabras más frecuentes de OpenSubtitles: las que
+  se censurarían pasan de 220 a 235 (por), de 208 a 242 (ita) y de 251 a
+  284 (fra), casi todas formas reales («massacraram», «stuprata», «égorgé»).
+  Las cinco que eran palabras cotidianas van a `everyday`: «violent»,
+  «violons», «viola», «fucili», «pôr-nos». `RomanceInflectionTest`.
+
+- **Japonés, cantonés y tailandés se buscan dentro de la frase**
+  (`Dictionary\WordSegmenter`, extensión `intl` opcional). ICU parte los
+  tramos sin espacios en palabras («お前はバカだ» → お前 | は | バカ | だ) y
+  las piezas contiguas se vuelven a unir en las ventanas de búsqueda
+  («仆|街» → «仆街»). Antes sólo se reconocía la palabra suelta. La censura
+  ya no exige frontera de palabra junto a esas escrituras. Sin `intl` el
+  comportamiento es el de antes. La CI instala `intl`.
+  Medido con las 20.000 palabras más frecuentes de OpenSubtitles: las que
+  se censurarían pasan de 36 a 60 (jpn), de 49 a 212 (tha) y de 60 a 62
+  (yue), casi todas insultos y amenazas reales que antes no se veían
+  («ฉันจะฆ่าคุณ», «くそ野郎»). Los falsos positivos que aparecieron eran
+  palabras cotidianas del diccionario dentro de otras («牛» en «牛丼», «ลา»
+  en «ลาก่อน», «สัตว์» en «สวนสัตว์»): 18 entradas pasan a `ambiguous` y se
+  añade «ไอ้เลว» para que «ไม่เลว» («no está mal») deje de marcarse.
+  Quedan para revisión nativa `บ้า` (88 de las 212, «loco»), `แขก`, `おし`
+  y `魔女`, de categorías que no se tocan sin ella. Amenazas directas en
+  tailandés («จะฆ่าคุณ»…) como frases `high`. `WordSegmenterTest`.
 
 - **Listas de temas de chat en los 33 idiomas** (`config/chat-topics/`):
   `sexual`, `belico`, `ambiguous` y, en 18 idiomas de alfabeto latino y
@@ -78,8 +180,51 @@
   más sin que un hablante nativo lo confirme. Verificado en cada idioma
   contra nombres reales comunes (`Hans Müller`, `John Smith`, `Jean
   Dupont`, `Giuseppe Russo`, `João Silva`, etc.) sin falsos positivos.
+- **Medición de falsos positivos del chat** contra las 50.000 palabras más
+  usadas de 32 idiomas (`bin/false-positives.php`, listas de FrequencyWords) y
+  **planillas de revisión nativa** por idioma (`bin/review-sheets.php` →
+  `review/<código>.csv`): cada término con categoría, severidad, marcas, rango
+  de frecuencia y decisión actual del chat, más las palabras frecuentes que se
+  censurarían sin ser un término. Ver `review/README.md`.
+- **Endpoint HTTP de moderación** (`public/moderar.php` + `ModerationEndpoint`):
+  `POST {"text", "language"}` → decisión, tipos de contenido, línea censurada y
+  términos encontrados, en JSON. Límites de entrada (sólo POST, 16 KB de cuerpo,
+  2.000 caracteres, idioma soportado) con códigos de error propios. Más una
+  **demo** (`php -S localhost:8000 public/router.php`) que junta el tope de
+  letras repetidas del front con la decisión del servidor.
+  `ModerationEndpointTest` y `ModerationServerTest` (con `php -S`).
+- **Clave `everyday` en `config/chat-topics/`**: palabras cotidianas que sin
+  tildes coinciden con un término («moc» → «moč», «katıl» → «katil», «possède»
+  → «possédé», «santa» → «sánta») y que, escritas así, el chat no busca
+  (`EverydayWords`). 21 palabras en 9 idiomas; `ChatTopicsExemptionsTest`
+  verifica que cada una siga haciendo falta.
 
 ### Arreglado
+
+- **Endpoint de moderación: revisión de seguridad.** `public/moderar.php`
+  ya no puede mostrar rutas ni trazas: desactiva `display_errors` y ante un
+  fallo responde un 500 genérico (`error_interno`) y deja el detalle en el
+  log. Exige `Content-Type: application/json` (415 si no), así una página
+  de otro origen no puede mandarlo como formulario simple, y añade
+  `Content-Security-Policy: default-src 'none'`. Medido el coste por
+  petición en el peor caso (2.000 caracteres de letras sueltas, repetidas,
+  japonés, tailandés): ≤ 45 ms. El README explica cómo limitar peticiones
+  en nginx, que es lo que el endpoint no puede hacer solo.
+
+- **Falsos positivos del chat en palabras muy usadas**, encontrados con la
+  medición de arriba: de 5.368 a 5.159 palabras frecuentes censuradas, y de 213
+  a 166 entre las 1.000 más usadas de cada idioma.
+  - `AccentFolding` ya no pliega las letras propias del alfabeto en danés y
+    noruego (`æ ø å`), sueco y finés (`å ä ö`) ni vietnamita (vocales con tono
+    y `đ`): «høre» (oír) se leía «hore», «når» (cuando) «nar», «höra» «hora»,
+    «tai» (o) «täi» (piojo), «dài» (largo) «dái». Contrapartida: «hore» escrito
+    «høre» ya no se marca.
+  - `'ambiguous' => true` en 78 términos de 29 diccionarios que ante todo son
+    palabras cotidianas: «crazy», «verrückt», «fou», «louco», «preto», «negro»,
+    «kanker» (también «cáncer»), «أمي» (mi madre), «หนู» (ratón; «yo» al hablar
+    una mujer)… El chat los ignora; `validateName()` los sigue marcando.
+  - búlgaro «гол» (desnudo) pasa a `ambiguous` en los temas de chat: también
+    es «gol».
 
 - **`ChatPatternMatcher::fold()` borraba todo lo que no fuera `[a-z0-9]`**,
   así que ningún patrón en cirílico, griego, árabe, hebreo, CJK, etc. podía
@@ -151,6 +296,15 @@
 
 ### Cambiado
 
+- **`nameCollision` en 30 apellidos y nombres frecuentes**, elegidos con datos
+  de frecuencia y no a ojo: los apellidos ingleses con 1.000 personas o más en
+  el censo de EE. UU. de 2010 (Outlaw, Coward, Dyke, Leech…) y los españoles
+  entre los 8.000 más frecuentes (Chaparro, Payo, Cansino, Rufián, Bastardo…),
+  más Mona e India. Se siguen detectando, pero ya no se rechazan solos ni
+  bloquean un saludo en el chat. Por debajo de esos umbrales no se marcan: cada
+  marca baja también el insulto a revisión. Ver `FrequentSurnameCollisionTest`.
+  Los ejemplos y tests que usaban «Luis Bastardo» como insulto grave que se
+  rechaza pasan a «Luis Gilipollas».
 - Se restauró `_Garbage/`, borrado en 4.3.0: la decisión es conservar como
   referencia lo obsoleto en vez de borrarlo. Su README explica por qué
   ninguno de esos archivos debe reconectarse al motor.

@@ -2,7 +2,7 @@
 
 namespace PhoneDirectory;
 
-use DefamatoryContentReview\AccentFolding;
+use DefamatoryContentReview\Normalization\AccentFolding;
 use PhoneDirectory\Exception\InvalidEncodingException;
 
 final class TextFolding

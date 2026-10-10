@@ -2,7 +2,7 @@
 
 namespace PhoneDirectory;
 
-use DefamatoryContentReview\AccentFolding;
+use DefamatoryContentReview\Normalization\AccentFolding;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\Exception\InvalidEncodingException;
 
