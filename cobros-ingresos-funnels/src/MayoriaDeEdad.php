@@ -14,9 +14,10 @@ use DateTimeImmutable;
  * de libertad o interdictas, pero eso no es un dato que la app tenga y no se puede
  * validar: ClienteController pide en el alta una casilla que lo confirma. La regla
  * vive en tres lugares que tienen que coincidir en el borde -quien cumple la edad
- * hoy ya es mayor, quien la cumple manana todavia no-: esta clase, que valida el alta; el trigger de las migraciones 007 y 010, que la exige
- * en la base para cualquier otro camino; y el primer tramo de adultos de RangoEdad
- * (solo para los 18). ClientesMayoresDeEdadTest compara los tres.
+ * hoy ya es mayor, quien la cumple manana todavia no-: esta clase, que valida el
+ * alta; el trigger de las migraciones 007 y 010, que la exige en la base para
+ * cualquier otro camino; y el primer tramo de adultos de RangoEdad (solo para los
+ * 18). ClientesMayoresDeEdadTest compara los tres.
  *
  * La edad cuenta anios cumplidos, como age() de Postgres: quien nacio un 29 de
  * febrero cumple en un anio comun el 1 de marzo.
