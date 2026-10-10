@@ -165,6 +165,7 @@ final class EscriturasTest extends HttpTestCase
             'idioma' => 'Espanol',
             'genero' => 'No especifica',
             'fecha_nacimiento' => '1990-05-05',
+            'sin_restricciones' => '1',
             'segmento' => 'general',
         ];
         $this->olvidarToken($datos[EnvioUnico::CAMPO]);
@@ -249,6 +250,7 @@ final class EscriturasTest extends HttpTestCase
             'idioma' => 'Espanol',
             'genero' => 'Masculino',
             'fecha_nacimiento' => '1990-05-05',
+            'sin_restricciones' => '1',
             'segmento' => 'enterprise',
         ]);
 
@@ -328,6 +330,7 @@ final class EscriturasTest extends HttpTestCase
             'idioma' => 'Espanol',
             'genero' => 'Alienigena',
             'fecha_nacimiento' => '1990-05-05',
+            'sin_restricciones' => '1',
             'segmento' => 'general',
         ];
         $this->olvidarToken($datos[EnvioUnico::CAMPO]);
@@ -375,6 +378,7 @@ final class EscriturasTest extends HttpTestCase
             'idioma' => 'Espanol',
             'genero' => 'No especifica',
             'fecha_nacimiento' => date('Y-m-d', strtotime('+2 days')),
+            'sin_restricciones' => '1',
             'segmento' => 'general',
         ];
         $this->olvidarToken($datos[EnvioUnico::CAMPO]);
@@ -420,6 +424,7 @@ final class EscriturasTest extends HttpTestCase
             'idioma' => 'Ingles',
             'genero' => 'No especifica',
             'fecha_nacimiento' => date('Y-m-d', strtotime('-19 years')),
+            'sin_restricciones' => '1',
             'segmento' => 'general',
         ];
         $this->olvidarToken($datos[EnvioUnico::CAMPO]);
@@ -436,6 +441,66 @@ final class EscriturasTest extends HttpTestCase
         $argentina = $this->post('page=cliente-nuevo', ['pais_codigo' => 'AR', 'ciudad' => 'Rosario'] + $datos);
         $this->assertStatus(302, $argentina);
         self::assertSame(1, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+    }
+
+    /**
+     * La empresa no atiende a personas privadas de libertad ni interdictas, y la app no
+     * tiene ese dato: lo que hace es exigir que quien da el alta lo confirme (sin la casilla
+     * no hay cliente) y dejarlo escrito en la auditoria.
+     */
+    public function testNuevoClienteExigeConfirmarQueNoEstaPrivadoDeLibertadNiInterdicto(): void
+    {
+        $formulario = $this->get('page=cliente-nuevo')['cuerpo'];
+        self::assertMatchesRegularExpression('/<input type="checkbox" name="sin_restricciones"[^>]*\srequired/', $formulario, 'el navegador tambien la exige');
+        self::assertStringContainsString('no está privada de libertad ni declarada interdicta', $formulario);
+
+        $email = 'cliente-sin-restricciones-' . uniqid() . '@example.com';
+        $this->alTerminar(static function () use ($email): void {
+            $db = Database::connection();
+            $db->prepare("DELETE FROM auditoria WHERE entidad = 'cliente' AND entidad_id IN (SELECT id FROM clientes WHERE email = :e)")->execute([':e' => $email]);
+            $db->prepare('DELETE FROM clientes WHERE email = :e')->execute([':e' => $email]);
+        });
+        $datos = [
+            'csrf_token' => self::campoOculto($formulario, 'csrf_token'),
+            EnvioUnico::CAMPO => self::campoOculto($formulario, EnvioUnico::CAMPO),
+            'nombre' => 'Cliente con declaracion',
+            'email' => $email,
+            'pais_codigo' => 'AR',
+            'ciudad' => 'Rosario',
+            'idioma' => 'Espanol',
+            'genero' => 'No especifica',
+            'fecha_nacimiento' => '1990-05-05',
+            'segmento' => 'general',
+        ];
+        $this->olvidarToken($datos[EnvioUnico::CAMPO]);
+
+        $sin = $this->post('page=cliente-nuevo', $datos);
+        $this->assertStatus(200, $sin);
+        self::assertStringContainsString('Confirmá que la persona no está privada de libertad ni interdicta.', $sin['cuerpo']);
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+
+        // Cualquier otro valor tampoco cuenta como confirmar.
+        foreach (['', '0', 'on', 'si'] as $valor) {
+            $otro = $this->post('page=cliente-nuevo', ['sin_restricciones' => $valor] + $datos);
+            $this->assertStatus(200, $otro);
+            self::assertStringContainsString('Confirmá que la persona', $otro['cuerpo'], "valor '{$valor}'");
+        }
+        self::assertSame(0, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+
+        // Con un error de otro campo, la casilla marcada se conserva.
+        $otroError = $this->post('page=cliente-nuevo', ['sin_restricciones' => '1', 'email' => 'no-es-un-email'] + $datos);
+        $this->assertStatus(200, $otroError);
+        self::assertMatchesRegularExpression('/name="sin_restricciones"[^>]*\schecked/', $otroError['cuerpo']);
+
+        $con = $this->post('page=cliente-nuevo', ['sin_restricciones' => '1'] + $datos);
+        $this->assertStatus(302, $con);
+        self::assertSame(1, self::contar('SELECT COUNT(*) FROM clientes WHERE email = :e', [':e' => $email]));
+        $detalle = Database::connection()->prepare(
+            "SELECT a.detalle FROM auditoria a JOIN clientes c ON c.id = a.entidad_id
+             WHERE a.entidad = 'cliente' AND a.accion = 'crear' AND c.email = :e"
+        );
+        $detalle->execute([':e' => $email]);
+        self::assertStringContainsString('Se confirmó que la persona no está privada de libertad ni interdicta.', (string) $detalle->fetchColumn(), 'la auditoria deja constancia');
     }
 
     public function testElFormularioDeAltaAvisaLasEdadesQueNoSonLaGeneral(): void
@@ -540,6 +605,7 @@ final class EscriturasTest extends HttpTestCase
             'nombre' => 'Cliente HTTP', 'email' => 'cliente-http-' . uniqid() . '@example.com',
             'pais_codigo' => 'AR', 'ciudad' => 'Rosario', 'idioma' => 'Espanol', 'genero' => 'No especifica',
             'fecha_nacimiento' => '1990-05-05', 'segmento' => 'general',
+            'sin_restricciones' => '1',
         ]);
         $this->assertStatus(302, $cliente, 'alta de cliente');
         $clienteId = self::idDeLaRedireccion($cliente, 'id');
@@ -621,6 +687,7 @@ final class EscriturasTest extends HttpTestCase
             'nombre' => 'Cliente confirmado', 'email' => 'cliente-confirmado-' . uniqid() . '@example.com',
             'pais_codigo' => 'AR', 'ciudad' => 'Rosario', 'idioma' => 'Espanol', 'genero' => 'No especifica',
             'fecha_nacimiento' => '1990-05-05', 'segmento' => 'general',
+            'sin_restricciones' => '1',
         ]);
         $this->assertStatus(302, $cliente);
         $clienteId = self::idDeLaRedireccion($cliente, 'id');
@@ -682,6 +749,7 @@ final class EscriturasTest extends HttpTestCase
             'idioma' => 'Espanol',
             'genero' => 'No especifica',
             'fecha_nacimiento' => '1990-05-05',
+            'sin_restricciones' => '1',
             'segmento' => 'general',
         ];
     }

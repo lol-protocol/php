@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\ClienteController;
 use App\Csrf;
 use App\EnvioUnico;
 use App\MayoriaDeEdad;
@@ -75,6 +76,12 @@ use App\Validacion;
                 <option value="<?= $s ?>" <?= ($_POST['segmento'] ?? '') === $s ? 'selected' : '' ?>><?= $s ?></option>
             <?php endforeach; ?>
         </select>
+
+        <label class="casilla" for="sin_restricciones">
+            <input type="checkbox" name="<?= ClienteController::CAMPO_SIN_RESTRICCIONES ?>" id="sin_restricciones" value="1" required <?= ($_POST[ClienteController::CAMPO_SIN_RESTRICCIONES] ?? '') === '1' ? 'checked' : '' ?>>
+            Confirmo que la persona no está privada de libertad ni declarada interdicta.
+        </label>
+        <p class="nota">La empresa no atiende a personas en esa situación. La app no tiene ese dato y no puede verificarlo: queda asentado en la auditoría que se confirmó al dar el alta.</p>
 
         <button type="submit">Crear cliente</button>
     </form>

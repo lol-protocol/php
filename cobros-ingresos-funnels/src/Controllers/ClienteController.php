@@ -23,6 +23,20 @@ use DateTimeImmutable;
 
 final class ClienteController
 {
+    /** El campo de la casilla del formulario de alta (ver MENSAJE_SIN_RESTRICCIONES). */
+    public const CAMPO_SIN_RESTRICCIONES = 'sin_restricciones';
+
+    /**
+     * La empresa no atiende a personas privadas de libertad ni interdictas, pero la app no
+     * tiene ese dato y no puede verificarlo. Lo que si puede es exigir que quien carga al
+     * cliente lo confirme, y dejarlo asentado: sin la casilla marcada no se da el alta, y la
+     * entrada de auditoria del cliente dice que se confirmo.
+     */
+    public const MENSAJE_SIN_RESTRICCIONES = 'Confirmá que la persona no está privada de libertad ni interdicta.';
+
+    /** Lo que queda escrito en la auditoria del alta. */
+    public const DECLARACION_AUDITADA = 'Se confirmó que la persona no está privada de libertad ni interdicta.';
+
     /** El genero tiene que ser uno de los que ofrece el formulario: lo valida la app y lo restringe la base (migracion 004). */
     public static function generoEsValido(string $genero): bool
     {
@@ -117,6 +131,7 @@ final class ClienteController
             $genero = trim((string) ($_POST['genero'] ?? ''));
             $fechaNacimiento = (string) ($_POST['fecha_nacimiento'] ?? '');
             $segmento = trim((string) ($_POST['segmento'] ?? ''));
+            $sinRestricciones = ($_POST[self::CAMPO_SIN_RESTRICCIONES] ?? '') === '1';
             // Vacio = no eligio: se usa el valor por defecto. Cualquier otro texto tiene que estar en la lista.
             $genero = $genero === '' ? 'No especifica' : $genero;
             $segmento = $segmento === '' ? 'general' : $segmento;
@@ -145,6 +160,8 @@ final class ClienteController
                 $error = 'La fecha de nacimiento no puede ser posterior a hoy.';
             } elseif (!MayoriaDeEdad::cumplida($fechaNacimiento, new DateTimeImmutable('today'), $pais['mayoria_de_edad'])) {
                 $error = MayoriaDeEdad::mensaje($pais['mayoria_de_edad'], $pais['nombre']);
+            } elseif (!$sinRestricciones) {
+                $error = self::MENSAJE_SIN_RESTRICCIONES;
             } elseif (!self::generoEsValido($genero)) {
                 $error = 'Elegí un género válido.';
             } elseif (!self::segmentoEsValido($segmento)) {
@@ -163,7 +180,7 @@ final class ClienteController
                             'genero' => $genero,
                             'fecha_nacimiento' => $fechaNacimiento,
                         ]);
-                        AuditoriaRepository::auditar('crear', 'cliente', $id, "Cliente #{$id}: {$nombre} ({$email})");
+                        AuditoriaRepository::auditar('crear', 'cliente', $id, "Cliente #{$id}: {$nombre} ({$email}). " . self::DECLARACION_AUDITADA);
 
                         return '?page=cliente&id=' . $id . '&creado=1';
                     });

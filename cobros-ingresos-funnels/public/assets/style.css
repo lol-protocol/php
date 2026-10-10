@@ -371,6 +371,9 @@ footer {
     align-self: flex-start;
 }
 
+.form-alta label.casilla { display: flex; gap: 8px; align-items: flex-start; margin-top: 14px; }
+.form-alta label.casilla input { margin-top: 2px; padding: 0; }
+
 .form-alta .error { color: var(--critical); font-size: 13px; margin: 0 0 8px; }
 .form-alta .nota { color: var(--text-muted); font-size: 12px; margin: 2px 0 6px; }
 

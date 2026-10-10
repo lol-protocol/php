@@ -12,9 +12,9 @@ use DateTimeImmutable;
  * edad de mayoria de SU pais (paises.mayoria_de_edad: 18 casi en todos, 19 en
  * Canada, 20 en Tailandia, 21 en Singapur...). Tampoco atiende a personas privadas
  * de libertad o interdictas, pero eso no es un dato que la app tenga y no se puede
- * validar. La regla vive en tres lugares que tienen que coincidir en el borde
- * -quien cumple la edad hoy ya es mayor, quien la cumple manana todavia no-: esta
- * clase, que valida el alta; el trigger de las migraciones 007 y 010, que la exige
+ * validar: ClienteController pide en el alta una casilla que lo confirma. La regla
+ * vive en tres lugares que tienen que coincidir en el borde -quien cumple la edad
+ * hoy ya es mayor, quien la cumple manana todavia no-: esta clase, que valida el alta; el trigger de las migraciones 007 y 010, que la exige
  * en la base para cualquier otro camino; y el primer tramo de adultos de RangoEdad
  * (solo para los 18). ClientesMayoresDeEdadTest compara los tres.
  *

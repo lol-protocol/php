@@ -453,9 +453,11 @@ phpstan.neon            configuracion del analisis estatico
   segmentación del dashboard y su moneda de facturación. Solo se admiten mayores de
   edad, con la edad de su país (18 casi siempre): el alta lo valida con un mensaje
   claro y la base lo exige con un trigger (migraciones `007` y `010`, ver "Esquema
-  de la base"). Que el cliente
-  no esté privado de libertad ni interdicto no es un dato que la app tenga, así que
-  no se puede validar.
+  de la base"). Que la persona no esté privada de libertad ni interdicta no es un
+  dato que la app tenga, así que no se puede validar: el alta exige marcar una
+  casilla que lo confirma (sin ella no hay cliente) y la entrada de auditoría del
+  cliente deja asentado que se confirmó. Es una declaración de quien da el alta, no
+  una verificación.
 - `usuarios_funnel`: cada visitante que entra al funnel, con el mismo perfil y la
   fecha en que alcanzó cada etapa (`fecha_visita`, `fecha_registro`, `fecha_lead`,
   `fecha_conversion`) y el canal de adquisición. El perfil se genera una sola vez
