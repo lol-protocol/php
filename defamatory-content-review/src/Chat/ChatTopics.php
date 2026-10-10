@@ -68,6 +68,9 @@ final class ChatTopics
         return WordListScanner::scan($text, $this->collapseRepeats ? RepeatedLetters::searcher($search, $this->legit) : $search);
     }
 
+    /** @return array<string,mixed>|null la entrada de la lista de temas para esa palabra exacta */
+    public function word(string $word): ?array { return $this->words->search($word); }
+
     /**
      * @param string $text una lectura de la línea (ver SpacedLetters::variants())
      * @return array<int,array<string,mixed>>

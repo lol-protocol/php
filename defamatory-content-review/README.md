@@ -556,8 +556,11 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 - **Letras sueltas.** «p u t a» y «vamos a f o l l a r» se leen como «puta» y
   «follar»: se unen las rachas de 3 o más letras separadas por espacios, y
   se prueba también sin las letras que son palabras («a», «y», «o»…) en los
-  extremos. Los separadores intercalados («p-u-t-a», «p.u.t.a») y el leet
-  («p0rn0») ya los cubría el diccionario.
+  extremos. Si la racha junta varias palabras («h o l a p u t a», «p u t a p u t a»),
+  se buscan también los términos de 4 letras o más dentro de ella
+  (`SpacedRunTerms`), pero eso sólo manda a revisión (`spaced => inside`).
+  Los separadores intercalados («p-u-t-a», «p.u.t.a») y el leet («p0rn0») ya
+  los cubría el diccionario.
 - **Letras repetidas.** «puuuuta», «mmmierda», «te voy a mataaaar». Cada racha
   de letras iguales se lee como 1 letra o como 2, sin tocar el texto: «follarr»
   es «follar» (con sus dos «l»), no «folar». Tres o más iguales seguidas no
@@ -754,10 +757,11 @@ palabras no entiende contexto:
   cotidiano, que es mucho más frecuente. La medición de falsos positivos es
   por palabra suelta, no por frase: no ve los que sólo aparecen en contexto.
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
-- Letras sueltas que juntan dos palabras («h o l a p u t a», «p u t a p u t a»):
-  la racha se une entera y se busca como una sola palabra. Buscar dentro de
-  la racha la cerraría, pero marcaría también palabras deletreadas que
-  contienen un insulto («c o m p u t a d o r a»).
+- Letras sueltas que juntan dos palabras («h o l a p u t a») sólo llegan a
+  revisión, nunca a bloqueo: lo encontrado dentro de una racha más larga
+  podría ser una palabra deletreada que lo contiene («c o m p u t a d o r a»;
+  medido: el 0,7 % de las palabras frecuentes de español e inglés,
+  deletreadas, irían a revisión).
 - Las listas de temas de los otros 31 idiomas son de arranque (10–18 palabras
   por tema, más `ambiguous`). Portugués, italiano y francés ya generan sus
   formas regulares; los otros 28 no. Las amenazas con forma (`patterns`) sólo están en
@@ -946,6 +950,7 @@ src/                                Namespace DefamatoryContentReview\ (cada car
     ├── ChatTopics.php              Lista de temas de un idioma (palabras, ambiguas y patrones) — interno
     ├── ChatMatches.php / ChatPatternMatcher.php   Operaciones sobre los hallazgos y frases con forma — internos
     ├── SpacedLetters.php           Letras sueltas («p u t a») unidas en una palabra — interno
+    ├── SpacedRunTerms.php          Términos dentro de una racha más larga («h o l a p u t a») — interno
     ├── RepeatedLetters.php / RepeatedReadings.php   Letras repetidas («puuuta»), leídas como 1 o 2 — internos
     ├── EverydayWords.php           Tapa las palabras de `everyday` antes de buscar — interno
     └── Inflection/                 TopicInflector (expande `forms`), contrato TopicInflection;

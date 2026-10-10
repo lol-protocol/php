@@ -3,6 +3,7 @@
 namespace DefamatoryContentReview\Chat;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
+use DefamatoryContentReview\Dictionary\WordList;
 
 /**
  * Revisa una línea libre (un mensaje de chat) y dice si hay que censurarla.
@@ -17,7 +18,8 @@ use DefamatoryContentReview\DefamatoryContentReviewer;
  * Igual que con los nombres, un término que también es apellido
  * (`nameCollision`: «Savage», «Concha») nunca bloquea solo: baja a revisión.
  * Las letras sueltas («p u t a») se unen y las repetidas («puuuta») se leen
- * antes de buscar. Una entrada `'ambiguous' => true` de un diccionario
+ * antes de buscar; dentro de una racha de letras sueltas más larga
+ * («h o l a p u t a») se busca aparte (ver SpacedRunTerms). Una entrada `'ambiguous' => true` de un diccionario
  * («яйца», «leche») se ignora aquí: casi siempre es la palabra cotidiana.
  */
 final class ChatLineReviewer
@@ -27,10 +29,7 @@ final class ChatLineReviewer
     /** @var array<string,?ChatTopics> idioma => temas (null: el idioma no tiene lista) */
     private array $topics = [];
 
-    public function __construct(
-        private readonly DefamatoryContentReviewer $reviewer,
-        private readonly string $topicsDir
-    ) { }
+    public function __construct(private readonly DefamatoryContentReviewer $reviewer, private readonly string $topicsDir) { }
 
     public static function create(string $configDir, string $language = 'spa'): self
     {
@@ -45,6 +44,7 @@ final class ChatLineReviewer
         foreach (SpacedLetters::variants($line) as [$text, $joined]) {
             $matches = ChatMatches::merge($matches, ChatMatches::restore($this->scan($text, $topics), $joined));
         }
+        $matches = [...$matches, ...SpacedRunTerms::find($line, $this->dictionary(), $topics, $matches)];
 
         return new ChatLineResult($line, $matches, $this->decisionFor($matches));
     }
@@ -55,9 +55,8 @@ final class ChatLineReviewer
      */
     private function scan(string $text, ?ChatTopics $topics): array
     {
-        $dictionary = $this->reviewer->languages()->wordList($this->reviewer->getLanguage());
+        $dictionary = $this->dictionary();
         $matches = [];
-
         foreach ($topics?->scan($dictionary, $text) ?? $dictionary->findInText($text) as $match) {
             if ($match['ambiguous'] ?? false) { continue; } // «яйца», «leche»: palabra cotidiana, no insulto en un chat
             $matches[] = [
@@ -72,11 +71,8 @@ final class ChatLineReviewer
         return ChatMatches::downgradeDoubled($matches);
     }
 
-    /**
-     * La decisión la fija el término más grave: high bloquea, medium va a revisión, low sólo se informa.
-     *
-     * @param array<int,array<string,mixed>> $matches
-     */
+    /** La decisión la fija el término más grave: high bloquea, medium va a revisión, low sólo se informa.
+     * @param array<int,array<string,mixed>> $matches */
     private function decisionFor(array $matches): string
     {
         $severities = array_column($matches, 'severity');
@@ -88,6 +84,8 @@ final class ChatLineReviewer
 
         return 'approve';
     }
+
+    private function dictionary(): WordList { return $this->reviewer->languages()->wordList($this->reviewer->getLanguage()); }
 
     private function topicsFor(string $language): ?ChatTopics
     {

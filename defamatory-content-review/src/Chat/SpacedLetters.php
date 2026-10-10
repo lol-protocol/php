@@ -39,6 +39,14 @@ final class SpacedLetters
         return array_values($variants);
     }
 
+    /** @return array<int,array<int,string>> las letras de cada racha de la línea («p u t a» → p, u, t, a) */
+    public static function runs(string $line): array
+    {
+        preg_match_all(self::RUN, $line, $runs);
+
+        return array_map(fn(string $run): array => preg_split('/[ \t]+/', $run) ?: [], $runs[0]);
+    }
+
     /** @return array{0:string,1:array<string,string>} */
     private static function join(string $line, int $maxLead, int $maxTail): array
     {

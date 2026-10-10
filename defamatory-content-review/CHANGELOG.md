@@ -44,6 +44,15 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Letras sueltas que juntan varias palabras** («h o l a p u t a»,
+  «p u t a p u t a», «p u t a m a d r e»): antes la racha se unía entera y,
+  al no ser una palabra del diccionario, se aprobaba. `SpacedRunTerms`
+  busca dentro de la racha los términos de 4 letras o más (sin solaparse,
+  de más largo a más corto) y los manda a revisión, nunca a bloqueo,
+  porque una palabra deletreada puede contener un insulto («c o m p u t a d o
+  r a»): medido, el 0,7 % de las palabras frecuentes de español e inglés.
+  La racha que es entera un insulto sigue bloqueando. `SpacedRunTermsTest`.
+
 - **`bin/apply-review.php`: de la planilla revisada a `config/`.** Lee una
   planilla de `review/` llenada por un hablante nativo y aplica sus
   respuestas: quitar un término, cambiarle la severidad, marcarlo
