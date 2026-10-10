@@ -13,7 +13,7 @@
             "App\\": "src/"
         },
         "files": [
-            "src/helpers.php"
+            "src/funciones_de_vista.php"
         ]
     },
     "autoload-dev": {

@@ -8,13 +8,13 @@ use App\Avisos;
 use App\Database;
 use App\EnvioUnico;
 use App\Etiquetas;
-use App\Filtros;
+use App\FiltroDePeriodo;
 use App\Paginacion;
 use App\Peticion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
-use App\Repositories\IngresosRepository;
+use App\Repositories\IngresosYCobrosRepository;
 use App\Repositories\MonedaRepository;
 use App\Repositories\NotaCreditoRepository;
 use App\Repositories\PagoRepository;
@@ -25,13 +25,13 @@ final class PagosController
 {
     public function index(): void
     {
-        $filtros = Filtros::rangoActivo();
+        $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
         $filtros['avisos'] = [...Avisos::confirmaciones('pagos'), ...$filtros['avisos']];
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
 
-        $ingresosRepo = new IngresosRepository();
+        $ingresosRepo = new IngresosYCobrosRepository();
         $listado = (new PagoRepository())->listado($desde, $hasta, $cliente ?: null, $pagina);
 
         View::render('pagos/index', $filtros + [
@@ -101,7 +101,7 @@ final class PagosController
                         return ['error' => 'Completá todos los campos con un monto válido.'];
                     } elseif (!self::metodoEsValido($metodo)) {
                         return ['error' => 'Elegí un método de pago válido.'];
-                    } elseif (!Filtros::esFechaValida($fechaPago)) {
+                    } elseif (!Validacion::fechaEsValida($fechaPago)) {
                         return ['error' => 'La fecha de pago no es válida.'];
                     } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
                         return ['error' => 'La boleta elegida no es válida para este cliente.'];
@@ -258,7 +258,7 @@ final class PagosController
                     return 'Completá todos los campos con un monto válido.';
                 } elseif (!self::metodoEsValido($metodo)) {
                     return 'Elegí un método de pago válido.';
-                } elseif (!Filtros::esFechaValida($fechaPago)) {
+                } elseif (!Validacion::fechaEsValida($fechaPago)) {
                     return 'La fecha de pago no es válida.';
                 } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {
                     return 'La fecha de pago no puede ser anterior a la emisión de la boleta.';

@@ -65,6 +65,14 @@ final class Validacion
         return null;
     }
 
+    /** true si $fecha es una fecha real en formato Y-m-d (rechaza "2026-02-30", texto suelto, etc.). */
+    public static function fechaEsValida(string $fecha): bool
+    {
+        $d = \DateTimeImmutable::createFromFormat('Y-m-d', $fecha);
+
+        return $d !== false && $d->format('Y-m-d') === $fecha;
+    }
+
     /** El formato del email: el <input type="email"> solo lo revisa el navegador. */
     public static function emailEsValido(string $email): bool
     {
@@ -75,8 +83,8 @@ final class Validacion
      * Mensaje de error para el catch de un alta que puede chocar con una regla
      * de la base: un email duplicado (constraint UNIQUE) o, en un cliente, la
      * mayoria de edad (trigger de las migraciones 007 y 010; llega hasta aca solo
-     * si el alta se salto la validacion de ClienteController, que si sabe el pais
-     * y lo dice). Usado por ClienteController.
+     * si el alta se salto la validacion de ClientesController, que si sabe el pais
+     * y lo dice). Usado por ClientesController.
      */
     public static function mensajeDeConflicto(PDOException $e, string $entidad): string
     {

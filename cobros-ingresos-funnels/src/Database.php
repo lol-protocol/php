@@ -111,7 +111,7 @@ final class Database
      * escriben mas de una fila relacionada (ej. anular una boleta y emitir su
      * nota de credito, o cualquier cambio junto con su entrada de auditoria).
      * La excepcion se vuelve a lanzar tras el rollback, para que la maneje el
-     * ErrorHandler global.
+     * ManejadorDeErrores global.
      *
      * Si ya hay una transaccion abierta -una operacion que llama a otra, o un
      * test que envuelve todo para deshacerlo al final- se anida con un

@@ -12,7 +12,7 @@ use App\EnvioUnico;
  * prueba escribe una fila de auditoria con un detalle unico, para poder
  * contar cuantas veces se aplico de verdad.
  */
-final class EnvioUnicoTest extends IntegracionTestCase
+final class EnvioUnicoConBaseDeDatosTest extends IntegracionTestCase
 {
     private static function token(): string
     {

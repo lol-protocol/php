@@ -14,7 +14,7 @@ use Throwable;
  * si la app ya esta rota, mostrar el error no puede arriesgarse a romperse
  * tambien.
  */
-final class ErrorHandler
+final class ManejadorDeErrores
 {
     public static function registrar(): void
     {

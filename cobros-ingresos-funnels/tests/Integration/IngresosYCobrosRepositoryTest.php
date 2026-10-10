@@ -7,18 +7,18 @@ namespace App\Tests\Integration;
 use App\Database;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
-use App\Repositories\IngresosRepository;
+use App\Repositories\IngresosYCobrosRepository;
 use App\Repositories\NotaCreditoRepository;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. Requiere haber
- * corrido antes `php database/seed.php` (mismas variables) para tener datos.
+ * corrido antes `php database/recrear_con_datos_de_ejemplo.php` (mismas variables) para tener datos.
  */
-final class IngresosRepositoryTest extends IntegracionTestCase
+final class IngresosYCobrosRepositoryTest extends IntegracionTestCase
 {
     public function testCarteraAgingSoloSumaSaldosPositivosYCoincideConLaSumaIndependiente(): void
     {
-        $buckets = (new IngresosRepository())->carteraAging();
+        $buckets = (new IngresosYCobrosRepository())->carteraAging();
 
         self::assertSame(['Al día', '1-30 días', '31-60 días', '61+ días'], array_keys($buckets));
         foreach ($buckets as $monto) {
@@ -52,7 +52,7 @@ final class IngresosRepositoryTest extends IntegracionTestCase
         $tasa = (float) Database::connection()
             ->query("SELECT tasa_a_usd FROM monedas WHERE codigo = '{$cliente['moneda_codigo']}'")
             ->fetchColumn();
-        $repo = new IngresosRepository();
+        $repo = new IngresosYCobrosRepository();
 
         foreach ([-5, 0, 1, 30, 31, 60, 61, 400] as $diasVencida) {
             $antes = $repo->carteraAging();
@@ -74,7 +74,7 @@ final class IngresosRepositoryTest extends IntegracionTestCase
             }
 
             self::assertSame(
-                [IngresosRepository::tramoDeAntiguedad($diasVencida)],
+                [IngresosYCobrosRepository::tramoDeAntiguedad($diasVencida)],
                 array_keys($cambios),
                 "una boleta que vence hace {$diasVencida} dias tiene que sumar solo en su tramo"
             );
@@ -84,7 +84,7 @@ final class IngresosRepositoryTest extends IntegracionTestCase
 
     public function testKpisTasaDeCobranzaEsCoherenteConFacturadoYCobrado(): void
     {
-        $kpis = (new IngresosRepository())->kpis('2000-01-01', '2100-01-01');
+        $kpis = (new IngresosYCobrosRepository())->kpis('2000-01-01', '2100-01-01');
 
         self::assertGreaterThanOrEqual(0.0, $kpis['facturado']);
         self::assertGreaterThanOrEqual(0.0, $kpis['cobrado']);
@@ -104,7 +104,7 @@ final class IngresosRepositoryTest extends IntegracionTestCase
      */
     public function testLaSumaDeCobrosPorMesCoincideConElKpiDeCobrado(): void
     {
-        $repo = new IngresosRepository();
+        $repo = new IngresosYCobrosRepository();
         $sumaMensual = array_sum(array_column($repo->cobrosPorMes('2000-01-01', '2100-01-01'), 'total'));
 
         self::assertEqualsWithDelta($repo->kpis('2000-01-01', '2100-01-01')['cobrado'], $sumaMensual, 0.05);
@@ -130,7 +130,7 @@ final class IngresosRepositoryTest extends IntegracionTestCase
             'motivo' => 'Nota de prueba ' . uniqid(),
         ]);
 
-        $repo = new IngresosRepository();
+        $repo = new IngresosYCobrosRepository();
         $filas = $repo->cobrosPorMes('1990-01-01', '1990-12-31');
 
         self::assertCount(1, $filas, 'el mes con solo devoluciones tiene que aparecer igual');
@@ -153,7 +153,7 @@ final class IngresosRepositoryTest extends IntegracionTestCase
      */
     public function testPorMetodoEsElBrutoYCobrosPorMesElNetoDeDevoluciones(): void
     {
-        $repo = new IngresosRepository();
+        $repo = new IngresosYCobrosRepository();
         $totalPorMetodo = array_sum(array_column($repo->porMetodo('2000-01-01', '2100-01-01'), 'total'));
         $totalPorMes = array_sum(array_column($repo->cobrosPorMes('2000-01-01', '2100-01-01'), 'total'));
         $devoluciones = (new NotaCreditoRepository())->totalEnRangoUsd('2000-01-01', '2100-01-01');
@@ -163,7 +163,7 @@ final class IngresosRepositoryTest extends IntegracionTestCase
 
     public function testKpisDescuentaLasDevolucionesDelCobradoBruto(): void
     {
-        $kpis = (new IngresosRepository())->kpis('2000-01-01', '2100-01-01');
+        $kpis = (new IngresosYCobrosRepository())->kpis('2000-01-01', '2100-01-01');
 
         self::assertEqualsWithDelta($kpis['cobrado_bruto'] - $kpis['devoluciones'], $kpis['cobrado'], 0.0001);
         self::assertGreaterThanOrEqual(0.0, $kpis['devoluciones']);

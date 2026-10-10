@@ -6,7 +6,7 @@ declare(strict_types=1);
  * SOLO DESARROLLO: borra toda la base, la reconstruye con las migraciones y
  * carga datos de ejemplo reproducibles. El catalogo de paises y monedas no es
  * un dato de ejemplo: lo trae la migracion 005, igual que en produccion.
- * Uso: APP_ENV=dev php database/seed.php
+ * Uso: APP_ENV=dev php database/recrear_con_datos_de_ejemplo.php
  * Variables de conexion: DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD.
  *
  * Para crear o actualizar el esquema de una base con datos reales, sin
@@ -23,7 +23,7 @@ use App\Migrador;
 // Borra todo lo que haya en la base: que no pueda correr por accidente contra
 // produccion por haberse olvidado de una variable.
 if (!Config::esDesarrollo()) {
-    fwrite(STDERR, "seed.php borra TODA la base y la regenera con datos de ejemplo: solo corre con APP_ENV=dev.\n"
+    fwrite(STDERR, "recrear_con_datos_de_ejemplo.php borra TODA la base y la regenera con datos de ejemplo: solo corre con APP_ENV=dev.\n"
         . "Para crear o actualizar el esquema sin tocar datos: php database/migrar.php\n");
     exit(1);
 }

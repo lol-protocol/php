@@ -8,20 +8,20 @@ use App\Avisos;
 use App\Database;
 use App\EnvioUnico;
 use App\Etiquetas;
-use App\Filtros;
+use App\FiltroDePeriodo;
 use App\Paginacion;
 use App\Peticion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
-use App\Repositories\IngresosRepository;
+use App\Repositories\IngresosYCobrosRepository;
 use App\Repositories\MonedaRepository;
 use App\Repositories\NotaCreditoRepository;
 use App\Validacion;
 use App\View;
 use LogicException;
 
-final class CobrosController
+final class BoletasController
 {
     /**
      * Al editar una boleta, el monto no puede bajar de lo que ya se cobro
@@ -51,7 +51,7 @@ final class CobrosController
 
     public function index(): void
     {
-        $filtros = Filtros::rangoActivo();
+        $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
         $filtros['avisos'] = [...Avisos::confirmaciones('cobros'), ...$filtros['avisos']];
         $estado = (string) ($_GET['estado'] ?? '');
@@ -63,7 +63,7 @@ final class CobrosController
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
 
-        $ingresosRepo = new IngresosRepository();
+        $ingresosRepo = new IngresosYCobrosRepository();
         $aging = $ingresosRepo->carteraAging();
         $listado = (new BoletaRepository())->listado($desde, $hasta, $estado ?: null, $cliente ?: null, $pagina);
 
@@ -114,7 +114,7 @@ final class CobrosController
                 $error = 'Completá todos los campos con un monto válido.';
             } elseif (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
                 $error = $largo;
-            } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
+            } elseif (!Validacion::fechaEsValida($fechaEmision) || !Validacion::fechaEsValida($fechaVencimiento)) {
                 $error = 'La fecha de emisión o de vencimiento no es válida.';
             } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
                 $error = 'El vencimiento no puede ser anterior a la emisión.';
@@ -189,7 +189,7 @@ final class CobrosController
                     return 'Completá todos los campos con un monto válido.';
                 } elseif (($largo = Validacion::primerTextoLargo([['El concepto', $concepto, Validacion::MAX_CONCEPTO]])) !== null) {
                     return $largo;
-                } elseif (!Filtros::esFechaValida($fechaEmision) || !Filtros::esFechaValida($fechaVencimiento)) {
+                } elseif (!Validacion::fechaEsValida($fechaEmision) || !Validacion::fechaEsValida($fechaVencimiento)) {
                     return 'La fecha de emisión o de vencimiento no es válida.';
                 } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
                     return 'El vencimiento no puede ser anterior a la emisión.';

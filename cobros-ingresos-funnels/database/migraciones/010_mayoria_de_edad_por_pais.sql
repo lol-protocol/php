@@ -3,7 +3,7 @@
 -- La 007 exigia 18 anios a todos. Pero la mayoria de edad civil depende del pais
 -- (Tailandia 20, Singapur 21...), y la empresa no atiende a menores de edad. Cada
 -- pais guarda ahora la edad desde la que se admite un cliente, y el trigger de la
--- 007 la busca por el pais del cliente. ClienteController hace lo mismo en el alta
+-- 007 la busca por el pais del cliente. ClientesController hace lo mismo en el alta
 -- (MayoriaDeEdad, PaisRepository::mayoriaDeEdad); MayoriaDeEdadTest y
 -- ClientesMayoresDeEdadTest comprueban que las dos coinciden en el borde, pais por
 -- pais.

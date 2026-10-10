@@ -13,7 +13,7 @@ use DateTimeImmutable;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. Requiere haber
- * corrido antes `php database/seed.php` (mismas variables) para tener datos.
+ * corrido antes `php database/recrear_con_datos_de_ejemplo.php` (mismas variables) para tener datos.
  */
 final class MonedaYSegmentacionTest extends IntegracionTestCase
 {

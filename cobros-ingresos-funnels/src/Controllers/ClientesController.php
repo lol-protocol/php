@@ -6,7 +6,6 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\EnvioUnico;
-use App\Filtros;
 use App\MayoriaDeEdad;
 use App\Paginacion;
 use App\Peticion;
@@ -21,7 +20,7 @@ use App\Validacion;
 use App\View;
 use DateTimeImmutable;
 
-final class ClienteController
+final class ClientesController
 {
     /** El campo de la casilla del formulario de alta (ver MENSAJE_SIN_RESTRICCIONES). */
     public const CAMPO_SIN_RESTRICCIONES = 'sin_restricciones';
@@ -154,7 +153,7 @@ final class ClienteController
                 // Antes un pais que no existe llegaba hasta la base y volvia como "No se pudo crear el cliente."
                 // Va antes que la edad: cuantos anios se piden depende del pais.
                 $error = 'Elegí un país válido.';
-            } elseif (!Filtros::esFechaValida($fechaNacimiento)) {
+            } elseif (!Validacion::fechaEsValida($fechaNacimiento)) {
                 $error = 'La fecha de nacimiento no es válida.';
             } elseif (!self::nacimientoNoEsFuturo($fechaNacimiento, date('Y-m-d'))) {
                 $error = 'La fecha de nacimiento no puede ser posterior a hoy.';

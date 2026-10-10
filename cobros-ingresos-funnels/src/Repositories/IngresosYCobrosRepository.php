@@ -18,7 +18,7 @@ use PDO;
  * que usa la tasa de hoy (monedas.tasa_a_usd): es plata por cobrar, y se valua a
  * lo que vale hoy.
  */
-final class IngresosRepository
+final class IngresosYCobrosRepository
 {
     private PDO $db;
 

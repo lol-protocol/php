@@ -115,7 +115,7 @@ final class TextoVisibleTest extends TestCase
         $vista = array_column(self::textosVisibles($raiz . '/views/auditoria/index.php'), 1);
         self::assertContains('Historial de cambios: ', array_map(static fn (string $t): string => substr($t, 0, 22), $vista));
 
-        $mensajes = implode(' ', array_column(self::textosVisibles($raiz . '/src/Controllers/ClienteController.php'), 1));
+        $mensajes = implode(' ', array_column(self::textosVisibles($raiz . '/src/Controllers/ClientesController.php'), 1));
         self::assertStringContainsString('Elegí un país válido.', $mensajes);
     }
 }

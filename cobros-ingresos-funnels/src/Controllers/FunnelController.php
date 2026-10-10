@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Filtros;
+use App\FiltroDePeriodo;
 use App\Repositories\FunnelRepository;
 use App\View;
 
@@ -12,7 +12,7 @@ final class FunnelController
 {
     public function index(): void
     {
-        $filtros = Filtros::rangoActivo();
+        $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
 
         $funnelRepo = new FunnelRepository();

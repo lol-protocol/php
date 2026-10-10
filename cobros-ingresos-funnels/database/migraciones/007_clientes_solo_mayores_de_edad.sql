@@ -1,7 +1,7 @@
 -- 007: no se admiten clientes menores de edad, tampoco en la base.
 --
 -- La empresa no atiende a menores de edad (ni a personas privadas de libertad o
--- interdictas, pero eso no es un dato que la app tenga). ClienteController lo
+-- interdictas, pero eso no es un dato que la app tenga). ClientesController lo
 -- valida en el alta con un mensaje claro; este trigger es la red de seguridad
 -- para cualquier otro camino: un script, una carga directa, un bug nuevo. Es lo
 -- mismo que hizo la 004 con los valores cerrados: lo que la app valida, la base

@@ -16,7 +16,7 @@ use PDOException;
 /**
  * No se admiten clientes menores de edad, con la edad de mayoria de SU pais
  * (paises.mayoria_de_edad, migracion 010). La app lo valida en el alta
- * (ClienteController); la base lo exige con un trigger (migraciones 007 y 010)
+ * (ClientesController); la base lo exige con un trigger (migraciones 007 y 010)
  * para cualquier otro camino. Aca se prueba el trigger, y que MayoriaDeEdad, el
  * trigger y -para los 18- el primer tramo de adultos de RangoEdad coinciden en el
  * borde, con cada edad que usa algun pais: la referencia es age() de Postgres,

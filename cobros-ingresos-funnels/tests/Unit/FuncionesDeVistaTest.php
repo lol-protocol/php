@@ -6,7 +6,7 @@ namespace App\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
-final class HelpersTest extends TestCase
+final class FuncionesDeVistaTest extends TestCase
 {
     public function testMesLabelConvierteFormatoIsoAEspanolCorto(): void
     {

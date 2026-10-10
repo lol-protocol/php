@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\Unit;
 
 use App\Avisos;
-use App\Filtros;
+use App\FiltroDePeriodo;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-final class FiltrosTest extends TestCase
+final class FiltroDePeriodoTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -24,29 +24,29 @@ final class FiltrosTest extends TestCase
     public function testMesesSoloAceptaValoresPermitidos(): void
     {
         $_GET['meses'] = '12';
-        self::assertSame(12, Filtros::meses());
+        self::assertSame(12, FiltroDePeriodo::meses());
 
         $_GET['meses'] = '999';
-        self::assertSame(6, Filtros::meses(), 'un valor no permitido cae al default de 6');
+        self::assertSame(6, FiltroDePeriodo::meses(), 'un valor no permitido cae al default de 6');
 
         unset($_GET['meses']);
-        self::assertSame(6, Filtros::meses(), 'sin parametro tambien cae al default de 6');
+        self::assertSame(6, FiltroDePeriodo::meses(), 'sin parametro tambien cae al default de 6');
     }
 
     public function testRangoTerminaHoyYEmpiezaNMesesAntes(): void
     {
-        [$desde, $hasta] = Filtros::rango(3);
+        [$desde, $hasta] = FiltroDePeriodo::rango(3);
 
         self::assertSame(date('Y-m-d'), $hasta);
         self::assertSame(
-            Filtros::restarMeses(new DateTimeImmutable('today'), 3)->format('Y-m-d'),
+            FiltroDePeriodo::restarMeses(new DateTimeImmutable('today'), 3)->format('Y-m-d'),
             $desde
         );
     }
 
     public function testRangoAnteriorEsInmediatamenteAnteriorYDelMismoLargo(): void
     {
-        [$desdeAnterior, $hastaAnterior] = Filtros::rangoAnterior('2026-06-01', '2026-09-01');
+        [$desdeAnterior, $hastaAnterior] = FiltroDePeriodo::rangoAnterior('2026-06-01', '2026-09-01');
 
         self::assertSame('2026-05-31', $hastaAnterior, 'termina el dia justo antes de que empiece el periodo actual');
         self::assertSame('2026-02-28', $desdeAnterior, 'mismo largo (92 dias) que el periodo actual');
@@ -54,15 +54,15 @@ final class FiltrosTest extends TestCase
 
     public function testRangoAnteriorNoSuperponeConElRangoActual(): void
     {
-        [$desde, $hasta] = Filtros::rango(6);
-        [, $hastaAnterior] = Filtros::rangoAnterior($desde, $hasta);
+        [$desde, $hasta] = FiltroDePeriodo::rango(6);
+        [, $hastaAnterior] = FiltroDePeriodo::rangoAnterior($desde, $hasta);
 
         self::assertLessThan($desde, $hastaAnterior);
     }
 
     public function testRangoAnioAnteriorRestaExactamenteUnAnioCalendario(): void
     {
-        [$desde, $hasta] = Filtros::rangoAnioAnterior('2026-06-01', '2026-09-01');
+        [$desde, $hasta] = FiltroDePeriodo::rangoAnioAnterior('2026-06-01', '2026-09-01');
 
         self::assertSame('2025-06-01', $desde);
         self::assertSame('2025-09-01', $hasta);
@@ -76,7 +76,7 @@ final class FiltrosTest extends TestCase
      */
     public function testRangoAnioAnteriorManeja29DeFebreroEnAnioBisiesto(): void
     {
-        [$desde] = Filtros::rangoAnioAnterior('2024-02-29', '2024-03-01');
+        [$desde] = FiltroDePeriodo::rangoAnioAnterior('2024-02-29', '2024-03-01');
 
         self::assertSame('2023-02-28', $desde);
     }
@@ -84,21 +84,21 @@ final class FiltrosTest extends TestCase
     public function testRangoPersonalizadoNuloSinParametros(): void
     {
         unset($_GET['desde'], $_GET['hasta']);
-        self::assertNull(Filtros::rangoPersonalizado());
+        self::assertNull(FiltroDePeriodo::rangoPersonalizado());
     }
 
     public function testRangoPersonalizadoNuloConFechaInvalida(): void
     {
         $_GET['desde'] = '2026-13-40';
         $_GET['hasta'] = '2026-09-01';
-        self::assertNull(Filtros::rangoPersonalizado());
+        self::assertNull(FiltroDePeriodo::rangoPersonalizado());
     }
 
     public function testRangoPersonalizadoNuloCuandoDesdeEsPosteriorAHasta(): void
     {
         $_GET['desde'] = '2026-09-01';
         $_GET['hasta'] = '2026-06-01';
-        self::assertNull(Filtros::rangoPersonalizado());
+        self::assertNull(FiltroDePeriodo::rangoPersonalizado());
 
         unset($_GET['desde'], $_GET['hasta']);
     }
@@ -108,7 +108,7 @@ final class FiltrosTest extends TestCase
         $_GET['desde'] = '2026-01-15';
         $_GET['hasta'] = '2026-02-20';
 
-        self::assertSame(['2026-01-15', '2026-02-20'], Filtros::rangoPersonalizado());
+        self::assertSame(['2026-01-15', '2026-02-20'], FiltroDePeriodo::rangoPersonalizado());
 
         unset($_GET['desde'], $_GET['hasta']);
     }
@@ -118,7 +118,7 @@ final class FiltrosTest extends TestCase
         $_GET['desde'] = '2026-01-15';
         $_GET['hasta'] = '2026-02-20';
 
-        $contexto = Filtros::rangoActivo();
+        $contexto = FiltroDePeriodo::rangoActivo();
 
         self::assertSame('2026-01-15', $contexto['desde']);
         self::assertSame('2026-02-20', $contexto['hasta']);
@@ -132,31 +132,13 @@ final class FiltrosTest extends TestCase
         unset($_GET['desde'], $_GET['hasta']);
         $_GET['meses'] = '3';
 
-        $contexto = Filtros::rangoActivo();
+        $contexto = FiltroDePeriodo::rangoActivo();
 
         self::assertSame(3, $contexto['meses']);
-        self::assertSame(Filtros::rango(3), [$contexto['desde'], $contexto['hasta']]);
+        self::assertSame(FiltroDePeriodo::rango(3), [$contexto['desde'], $contexto['hasta']]);
         self::assertFalse($contexto['personalizado']);
 
         unset($_GET['meses']);
-    }
-
-    public function testEsFechaValidaAceptaFechasReales(): void
-    {
-        self::assertTrue(Filtros::esFechaValida('2026-01-15'));
-        self::assertTrue(Filtros::esFechaValida('2024-02-29'), '2024 es bisiesto');
-    }
-
-    public function testEsFechaValidaRechazaTextoSuelto(): void
-    {
-        self::assertFalse(Filtros::esFechaValida('esto-no-es-una-fecha'));
-        self::assertFalse(Filtros::esFechaValida(''));
-    }
-
-    public function testEsFechaValidaRechazaFechasImposiblesAunqueTenganElFormatoCorrecto(): void
-    {
-        self::assertFalse(Filtros::esFechaValida('2026-13-40'), 'mes 13 no existe');
-        self::assertFalse(Filtros::esFechaValida('2025-02-29'), '2025 no es bisiesto');
     }
 
     /**
@@ -177,7 +159,7 @@ final class FiltrosTest extends TestCase
         foreach ($casos as [$hoy, $meses, $esperado]) {
             self::assertSame(
                 $esperado,
-                Filtros::restarMeses(new DateTimeImmutable($hoy), $meses)->format('Y-m-d'),
+                FiltroDePeriodo::restarMeses(new DateTimeImmutable($hoy), $meses)->format('Y-m-d'),
                 "{$hoy} menos {$meses} meses"
             );
         }
@@ -185,15 +167,15 @@ final class FiltrosTest extends TestCase
 
     public function testRestarMesesDejaIntactaUnaFechaQueSiExisteEnElMesDestino(): void
     {
-        self::assertSame('2026-03-20', Filtros::restarMeses(new DateTimeImmutable('2026-09-20'), 6)->format('Y-m-d'));
-        self::assertSame('2025-09-20', Filtros::restarMeses(new DateTimeImmutable('2026-09-20'), 12)->format('Y-m-d'));
+        self::assertSame('2026-03-20', FiltroDePeriodo::restarMeses(new DateTimeImmutable('2026-09-20'), 6)->format('Y-m-d'));
+        self::assertSame('2025-09-20', FiltroDePeriodo::restarMeses(new DateTimeImmutable('2026-09-20'), 12)->format('Y-m-d'));
     }
 
     /** El desde de rango() nunca puede caer en un mes posterior al que corresponde. */
     public function testRangoNoAdelantaElMesDeInicio(): void
     {
         foreach ([3, 6, 12] as $meses) {
-            [$desde, $hasta] = Filtros::rango($meses);
+            [$desde, $hasta] = FiltroDePeriodo::rango($meses);
 
             $mesesDeDiferencia = (((int) substr($hasta, 0, 4) * 12) + (int) substr($hasta, 5, 2))
                 - (((int) substr($desde, 0, 4) * 12) + (int) substr($desde, 5, 2));
@@ -204,13 +186,13 @@ final class FiltrosTest extends TestCase
     /** Una sola lista de periodos: la que valida meses() es la misma que dibuja el selector de las cinco pantallas. */
     public function testLasOpcionesDeMesesSonLaUnicaFuenteDeLosValoresValidos(): void
     {
-        self::assertArrayHasKey(Filtros::MESES_POR_DEFECTO, Filtros::OPCIONES_MESES, 'el default tiene que ser una opcion que exista');
+        self::assertArrayHasKey(FiltroDePeriodo::MESES_POR_DEFECTO, FiltroDePeriodo::OPCIONES_MESES, 'el default tiene que ser una opcion que exista');
 
         foreach (range(0, 24) as $meses) {
             $_GET['meses'] = (string) $meses;
-            $esperado = array_key_exists($meses, Filtros::OPCIONES_MESES) ? $meses : Filtros::MESES_POR_DEFECTO;
+            $esperado = array_key_exists($meses, FiltroDePeriodo::OPCIONES_MESES) ? $meses : FiltroDePeriodo::MESES_POR_DEFECTO;
 
-            self::assertSame($esperado, Filtros::meses(), "meses={$meses}");
+            self::assertSame($esperado, FiltroDePeriodo::meses(), "meses={$meses}");
         }
     }
 
@@ -220,10 +202,10 @@ final class FiltrosTest extends TestCase
         foreach (['7', '999', 'abc', '6abc', '-3', '3.5'] as $pedido) {
             $_GET['meses'] = $pedido;
 
-            self::assertSame(Filtros::MESES_POR_DEFECTO, Filtros::meses(), "meses={$pedido}");
+            self::assertSame(FiltroDePeriodo::MESES_POR_DEFECTO, FiltroDePeriodo::meses(), "meses={$pedido}");
             self::assertSame(
                 ['El período pedido no es válido; se muestran los últimos 6 meses.'],
-                array_column(Filtros::avisos(), 'texto'),
+                array_column(FiltroDePeriodo::avisos(), 'texto'),
                 "meses={$pedido}"
             );
         }
@@ -237,7 +219,7 @@ final class FiltrosTest extends TestCase
                 $_GET['meses'] = $pedido;
             }
 
-            self::assertSame([], Filtros::avisos(), var_export($pedido, true));
+            self::assertSame([], FiltroDePeriodo::avisos(), var_export($pedido, true));
         }
     }
 
@@ -258,7 +240,7 @@ final class FiltrosTest extends TestCase
 
         foreach ($casos as $nombre => [$get, $motivo]) {
             $_GET = $get;
-            $activo = Filtros::rangoActivo();
+            $activo = FiltroDePeriodo::rangoActivo();
 
             self::assertFalse($activo['personalizado'], $nombre);
             self::assertSame([$motivo . '; mientras tanto se muestra el período elegido.'], array_column($activo['avisos'], 'texto'), $nombre);
@@ -272,7 +254,7 @@ final class FiltrosTest extends TestCase
         foreach ([[], ['desde' => '', 'hasta' => ''], ['desde' => '2026-01-01', 'hasta' => '2026-01-01'], ['desde' => '2026-01-01', 'hasta' => '2026-02-20']] as $get) {
             $_GET = $get;
 
-            self::assertSame([], Filtros::avisos(), (string) json_encode($get));
+            self::assertSame([], FiltroDePeriodo::avisos(), (string) json_encode($get));
         }
     }
 
@@ -280,6 +262,6 @@ final class FiltrosTest extends TestCase
     {
         $_GET['meses'] = '7';
 
-        self::assertSame(Avisos::ATENCION, Filtros::avisos()[0]['tipo']);
+        self::assertSame(Avisos::ATENCION, FiltroDePeriodo::avisos()[0]['tipo']);
     }
 }

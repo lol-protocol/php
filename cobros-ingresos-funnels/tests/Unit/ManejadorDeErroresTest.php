@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit;
 
-use App\ErrorHandler;
+use App\ManejadorDeErrores;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-final class ErrorHandlerTest extends TestCase
+final class ManejadorDeErroresTest extends TestCase
 {
     public function testFormatearIncluyeMensajeArchivoYLinea(): void
     {
         $e = new RuntimeException('detalle interno de prueba');
         $linea = __LINE__ - 1;
 
-        $log = ErrorHandler::formatear($e);
+        $log = ManejadorDeErrores::formatear($e);
 
         self::assertStringContainsString('detalle interno de prueba', $log);
         self::assertStringContainsString(__FILE__, $log);
@@ -25,7 +25,7 @@ final class ErrorHandlerTest extends TestCase
     public function testManejarPone500YMuestraUnMensajeGenericoSinElDetalleInterno(): void
     {
         ob_start();
-        ErrorHandler::manejar(new RuntimeException('contraseña de la base: secreta123'));
+        ManejadorDeErrores::manejar(new RuntimeException('contraseña de la base: secreta123'));
         $salida = (string) ob_get_clean();
 
         self::assertSame(500, http_response_code());

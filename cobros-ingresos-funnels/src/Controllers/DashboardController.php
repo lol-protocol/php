@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Filtros;
+use App\FiltroDePeriodo;
 use App\Repositories\FunnelRepository;
-use App\Repositories\IngresosRepository;
+use App\Repositories\IngresosYCobrosRepository;
 use App\Repositories\MonedaRepository;
 use App\Repositories\SegmentacionRepository;
 use App\View;
@@ -15,10 +15,10 @@ final class DashboardController
 {
     public function index(): void
     {
-        $filtros = Filtros::rangoActivo();
+        $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
 
-        $ingresosRepo = new IngresosRepository();
+        $ingresosRepo = new IngresosYCobrosRepository();
         $funnelRepo = new FunnelRepository();
         $segmentacionRepo = new SegmentacionRepository();
 
@@ -27,8 +27,8 @@ final class DashboardController
         $serieMensual = self::combinarPorMes($ingresos, $cobros);
         $aging = $ingresosRepo->carteraAging();
 
-        [$desdeAnt, $hastaAnt] = Filtros::rangoAnterior($desde, $hasta);
-        [$desdeAnio, $hastaAnio] = Filtros::rangoAnioAnterior($desde, $hasta);
+        [$desdeAnt, $hastaAnt] = FiltroDePeriodo::rangoAnterior($desde, $hasta);
+        [$desdeAnio, $hastaAnio] = FiltroDePeriodo::rangoAnioAnterior($desde, $hasta);
         $segmentacion = $segmentacionRepo->topPorDimensiones();
 
         View::render('dashboard', $filtros + [

@@ -10,7 +10,7 @@ namespace App;
  * silencioso bajo el SAPI de CLI, con lo que un test no podria verificar
  * nada real); el front controller es el que efectivamente los manda.
  */
-final class SecurityHeaders
+final class CabecerasDeSeguridad
 {
     /** @return array<string,string> nombre de header => valor */
     public static function listado(): array
@@ -27,7 +27,7 @@ final class SecurityHeaders
                 . "script-src 'none'; img-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
         ];
 
-        if (Http::esSegura()) {
+        if (ConexionSegura::esHttps()) {
             $headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
         }
 

@@ -74,13 +74,13 @@ export APP_ENV=dev
 psql -h $DB_HOST -U postgres -c "CREATE ROLE $DB_USER LOGIN PASSWORD '$DB_PASSWORD';"
 psql -h $DB_HOST -U postgres -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 
-php database/seed.php      # arma el esquema con las migraciones y carga datos de ejemplo
+php database/recrear_con_datos_de_ejemplo.php      # arma el esquema con las migraciones y carga datos de ejemplo
 php -S localhost:8000 -t public   # solo para desarrollo, ver "Despliegue en producción"
 ```
 
 Abrí `http://localhost:8000` — te va a mostrar el Dashboard directo, sin login.
 
-Volver a correr `php database/seed.php` en cualquier momento borra la base, la
+Volver a correr `php database/recrear_con_datos_de_ejemplo.php` en cualquier momento borra la base, la
 reconstruye con las migraciones de `database/migraciones/` y regenera los datos de
 ejemplo desde cero (es reproducible: usa una semilla fija, así que el mismo día da
 siempre los mismos datos; las fechas son relativas a hoy). Por eso solo corre con
@@ -143,7 +143,7 @@ server {
 Con TLS terminado en nginx, la app detecta HTTPS solo si nginx manda
 `X-Forwarded-Proto: https` en el `fastcgi_param` (agregalo si no está ya en tu
 `fastcgi_params`) — de eso depende que la cookie de sesión salga con `Secure`
-y que se mande `Strict-Transport-Security` (ver `App\Http::esSegura()`).
+y que se mande `Strict-Transport-Security` (ver `App\ConexionSegura::esHttps()`).
 
 ### Configuración
 
@@ -232,7 +232,7 @@ pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
 En cada despliegue: `php database/migrar.php` (o `composer migrar`). Aplica en orden
 las migraciones de `database/migraciones/` que la base todavía no tenga (quedan
 anotadas en `migraciones_aplicadas`) y no hace nada si ya está al día. Nunca borra
-datos. `seed.php`, en cambio, es solo para desarrollo: borra todo, y sin
+datos. `recrear_con_datos_de_ejemplo.php`, en cambio, es solo para desarrollo: borra todo, y sin
 `APP_ENV=dev` se niega a correr.
 
 Si la base se creó antes de que existieran las migraciones (con el viejo
@@ -282,7 +282,7 @@ alguna base no se edita.
 Dos cosas que la app ya resuelve por su cuenta pero vale saber:
 
 - **Errores**: `public/index.php` fuerza `display_errors=0` y registra un
-  manejador global (`App\ErrorHandler`) que manda el detalle de cualquier
+  manejador global (`App\ManejadorDeErrores`) que manda el detalle de cualquier
   excepción no capturada a `error_log()` — nunca a la respuesta. Dónde
   termina ese log depende de tu `php.ini`/pool de FPM (`error_log` de PHP);
   configuralo a un archivo real en producción en vez del default.
@@ -330,7 +330,7 @@ src/
                       cohortes, clientes, auditoria). Todas las páginas son
                       públicas, no hay login (ver `_Garbage/README.md`).
   Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/...) más
-                      IngresosRepository (kpis, ingresos y cobros por mes,
+                      IngresosYCobrosRepository (kpis, ingresos y cobros por mes,
                       antigüedad de cartera, por método de pago) y
                       SegmentacionRepository (top país/ciudad/idioma/género/edad,
                       LTV por cohorte) para el reporting, que no es CRUD y crecía
@@ -360,17 +360,17 @@ src/
   Paginacion.php        helper de paginación (página/offset/total, testeado)
   Csrf.php              token CSRF por sesión propia (no depende de ningún login),
                         verificado en Router (testeado)
-  Http.php              detecta HTTPS (directo o detras de proxy), testeado
-  SecurityHeaders.php   headers de seguridad de cada respuesta, testeado
-  ErrorHandler.php      red de seguridad para excepciones no capturadas
+  ConexionSegura.php    detecta HTTPS (directo o detras de proxy), testeado
+  CabecerasDeSeguridad.php   headers de seguridad de cada respuesta, testeado
+  ManejadorDeErrores.php      red de seguridad para excepciones no capturadas
                         (loguea el detalle, nunca lo muestra), testeado
   Peticion.php           guard clauses de los controllers: id de la ruta,
                         404 si no existe, 409 si hay conflicto (ej. anulado),
                         testeado
   Validacion.php         chequeos repetidos entre formularios: campos
                         obligatorios vacios, largos maximos de los textos,
-                        formato de email y mensaje de email duplicado,
-                        testeado
+                        formato de email, fechas que existen y mensaje de
+                        email duplicado, testeado
   Repositories/Anulable.php  trait con el soft-delete que comparten
                         BoletaRepository y PagoRepository: un unico
                         UPDATE ... SET anulada = TRUE WHERE id = :id AND NOT
@@ -384,7 +384,7 @@ src/
                         como expresion SQL, con age(); lo comparten
                         segmentacion y funnel. Una fecha de nacimiento
                         posterior a hoy sale como "Fecha inválida"
-  Filtros.php            el periodo y el rango Desde/Hasta de las pantallas con
+  FiltroDePeriodo.php    el periodo y el rango Desde/Hasta de las pantallas con
                         filtro de fechas: una sola lista de periodos, y lo que
                         se pidio por URL y no se pudo respetar (un periodo que
                         no existe, un rango al reves) se avisa, testeado
@@ -392,7 +392,7 @@ src/
                         (views/_avisos.php): los avisos de filtro y la
                         confirmación de lo que acaba de hacerse, que llega por
                         la redirección (?creada=ID, ?creado=ID...), testeado
-  Router.php, View.php, helpers.php
+  Router.php, View.php, funciones_de_vista.php   (los helpers que usan las vistas)
 database/
   migraciones/          el esquema, el catálogo de ~200 países y sus monedas
                         (ISO 4217), los índices y la regla de mayoría de edad,
@@ -403,7 +403,7 @@ database/
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
   actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
                         vez por día)
-  seed.php               SOLO desarrollo: rearma la base y carga datos de ejemplo
+  recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
 views/                  plantillas PHP (una carpeta por sección), con partials
                         compartidos: _filtro_fechas.php (el período y el rango
                         Desde/Hasta de las cinco pantallas con filtro),
@@ -418,7 +418,7 @@ views/                  plantillas PHP (una carpeta por sección), con partials
                         que se repetian en dashboard, cobros, pagos y funnel);
                         el funnel tiene además el suyo, funnel/_tabla_dimension.php
 tests/
-  Unit/                 sin base de datos (calculo de estado, filtros, helpers,
+  Unit/                 sin base de datos (calculo de estado, filtros, funciones de vista,
                         paginación, CSRF, router, headers de seguridad, deteccion
                         de HTTPS)
   Integration/           contra la base real, casi todos en una transaccion que
@@ -562,11 +562,11 @@ cliente) muestran el monto en su moneda original.
   que el controller toque nada.
 - Cookie de sesión endurecida: `HttpOnly` (JS no puede leerla — igual no hay
   JS en la app) + `SameSite=Lax` (capa extra contra CSRF, sumada al token) +
-  `Secure` cuando el request llega por HTTPS (`App\Http::esSegura()`, que
+  `Secure` cuando el request llega por HTTPS (`App\ConexionSegura::esHttps()`, que
   tambien mira `X-Forwarded-Proto` si hay un proxy adelante). En HTTP plano
   (dev local) `Secure` queda apagado a proposito, sino el browser descarta
   la cookie y se pierde el token CSRF.
-- Headers de seguridad en cada respuesta (`App\SecurityHeaders`):
+- Headers de seguridad en cada respuesta (`App\CabecerasDeSeguridad`):
   `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y una
   `Content-Security-Policy` que bloquea JavaScript por completo
   (`script-src 'none'` — la app no usa JS en ningun lado) y permite estilos

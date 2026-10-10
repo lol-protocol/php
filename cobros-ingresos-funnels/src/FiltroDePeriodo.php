@@ -6,7 +6,7 @@ namespace App;
 
 use DateTimeImmutable;
 
-final class Filtros
+final class FiltroDePeriodo
 {
     /**
      * Los periodos que ofrece el selector, con el texto que se muestra: la unica
@@ -132,7 +132,7 @@ final class Filtros
         if ($desde === '' || $hasta === '') {
             return 'Para usar un rango exacto completá «Desde» y «Hasta»';
         }
-        if (!self::esFechaValida($desde) || !self::esFechaValida($hasta)) {
+        if (!Validacion::fechaEsValida($desde) || !Validacion::fechaEsValida($hasta)) {
             return '«Desde» y «Hasta» tienen que ser fechas válidas';
         }
         if ($desde > $hasta) {
@@ -190,12 +190,5 @@ final class Filtros
             'hastaIngresado' => $hastaIngresado,
             'avisos' => self::avisos(),
         ];
-    }
-
-    /** true si $fecha es una fecha real en formato Y-m-d (rechaza "2026-02-30", texto suelto, etc.). */
-    public static function esFechaValida(string $fecha): bool
-    {
-        $d = DateTimeImmutable::createFromFormat('Y-m-d', $fecha);
-        return $d !== false && $d->format('Y-m-d') === $fecha;
     }
 }

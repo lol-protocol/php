@@ -8,7 +8,7 @@ use App\Database;
 use PDO;
 
 /**
- * Lo que deja `php database/seed.php` tiene que ser algo que la app podria
+ * Lo que deja `php database/recrear_con_datos_de_ejemplo.php` tiene que ser algo que la app podria
  * haber producido por su cuenta: aca se revisa contra las reglas de la app, no
  * contra cifras concretas. El seed es reproducible (semilla fija: ver
  * SeedReproducibleTest), asi que el resultado de estos tests no cambia de una

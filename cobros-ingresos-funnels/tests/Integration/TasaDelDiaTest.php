@@ -7,7 +7,7 @@ namespace App\Tests\Integration;
 use App\Database;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
-use App\Repositories\IngresosRepository;
+use App\Repositories\IngresosYCobrosRepository;
 use App\Repositories\NotaCreditoRepository;
 use App\Repositories\PagoRepository;
 use App\Repositories\SegmentacionRepository;
@@ -195,7 +195,7 @@ final class TasaDelDiaTest extends IntegracionTestCase
 
     public function testLosIngresosYLosCobrosDeUnMesCerradoNoSeMuevenConLaTasa(): void
     {
-        $repo = new IngresosRepository();
+        $repo = new IngresosYCobrosRepository();
         $this->fijarTasa('1.25000000');
         $boleta = $this->boleta('1000.00');
         $this->pago($boleta, '400.00', metodo: 'tarjeta');
@@ -221,7 +221,7 @@ final class TasaDelDiaTest extends IntegracionTestCase
 
     public function testCadaMesSeConvierteConLaTasaDeSuMomento(): void
     {
-        $repo = new IngresosRepository();
+        $repo = new IngresosYCobrosRepository();
         $this->fijarTasa('1.00000000');
         $this->boleta('1000.00', '2090-05-10', '2090-06-10');
         $this->fijarTasa('3.00000000');
@@ -236,7 +236,7 @@ final class TasaDelDiaTest extends IntegracionTestCase
     /** La cartera es plata por cobrar: se valua a la tasa de hoy, y es lo unico en USD que se mueve con ella. */
     public function testLaCarteraPendienteSiSeValuaALaTasaDeHoy(): void
     {
-        $repo = new IngresosRepository();
+        $repo = new IngresosYCobrosRepository();
         $this->fijarTasa('1.25000000');
         $boleta = $this->boleta('1000.00', date('Y-m-d'), date('Y-m-d', strtotime('+30 days')));
         $this->pago($boleta, '400.00', date('Y-m-d'));
@@ -262,7 +262,7 @@ final class TasaDelDiaTest extends IntegracionTestCase
      */
     public function testLaNotaDeCreditoTomaElPromedioDeLosPagosQueDevuelve(): void
     {
-        $repo = new IngresosRepository();
+        $repo = new IngresosYCobrosRepository();
         $this->fijarTasa('0.80000000');
         $boleta = $this->boleta('1000.00');
         $this->pago($boleta, '100.00');

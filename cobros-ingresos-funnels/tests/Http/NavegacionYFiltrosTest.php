@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Http;
 
 /** Router y robustez ante URLs raras, contra la app levantada. */
-final class RutasTest extends HttpTestCase
+final class NavegacionYFiltrosTest extends HttpTestCase
 {
     public function testTodasLasPantallasResponden(): void
     {

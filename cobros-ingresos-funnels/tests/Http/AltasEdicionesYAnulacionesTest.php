@@ -14,7 +14,7 @@ use App\Repositories\PagoRepository;
  * Los flujos que escriben, contra la app levantada. Todo lo que crean -en la
  * base de verdad, porque el servidor commitea- se borra al terminar.
  */
-final class EscriturasTest extends HttpTestCase
+final class AltasEdicionesYAnulacionesTest extends HttpTestCase
 {
     private const CLIENTE = 1;
 

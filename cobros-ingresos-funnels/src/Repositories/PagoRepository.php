@@ -8,7 +8,7 @@ use App\Database;
 use App\Paginacion;
 use PDO;
 
-/** CRUD de pagos. El reporting de cobros vive en IngresosRepository. */
+/** CRUD de pagos. El reporting de cobros vive en IngresosYCobrosRepository. */
 final class PagoRepository
 {
     use Anulable;
