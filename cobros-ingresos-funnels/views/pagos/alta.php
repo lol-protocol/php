@@ -53,7 +53,7 @@ $hoy = date('Y-m-d');
                     <?php if ($b['anulada'] || $b['saldo'] <= 0.01): continue; endif; ?>
                     <option value="<?= (int) $b['id'] ?>" <?= (string) ($valores['boleta_id'] ?? '') === (string) $b['id'] ? 'selected' : '' ?>>
                         #<?= (int) $b['id'] ?> · <?= htmlspecialchars($b['concepto']) ?> ·
-                        <?= money_moneda((float) $b['saldo'], $b['moneda_codigo']) ?> pendiente
+                        <?= dinero_en_moneda((float) $b['saldo'], $b['moneda_codigo']) ?> pendiente
                     </option>
                 <?php endforeach; ?>
             </select>

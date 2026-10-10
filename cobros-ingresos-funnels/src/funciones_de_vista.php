@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /** Convierte 'YYYY-MM' a una etiqueta corta en espanol, ej. 'mar 2026'. */
-function mes_label(string $ym): string
+function etiqueta_de_mes(string $ym): string
 {
     static $meses = ['01' => 'ene', '02' => 'feb', '03' => 'mar', '04' => 'abr',
         '05' => 'may', '06' => 'jun', '07' => 'jul', '08' => 'ago',
@@ -13,7 +13,7 @@ function mes_label(string $ym): string
 }
 
 /** Formato compacto para espacios angostos, ej. '$12.3K', '$4.2M', '-$4.2M'. */
-function money_compacta(float $valor): string
+function dinero_compacto(float $valor): string
 {
     $moneda = \App\Config::MONEDA;
     $signo = $valor < 0 ? '-' : '';
@@ -24,18 +24,18 @@ function money_compacta(float $valor): string
     if ($abs >= 1_000) {
         return $signo . $moneda . number_format($abs / 1_000, 1) . 'K';
     }
-    return \App\Config::money($valor);
+    return \App\Config::dinero($valor);
 }
 
 /** Formatea un monto en su moneda original (no convertida), ej. 'MX$1,234.00'. */
-function money_moneda(float $monto, string $codigoMoneda): string
+function dinero_en_moneda(float $monto, string $codigoMoneda): string
 {
     $simbolo = \App\Repositories\MonedaRepository::simbolo($codigoMoneda);
     return ($monto < 0 ? '-' : '') . $simbolo . number_format(abs($monto), 2) . ' ' . $codigoMoneda;
 }
 
 /** % de cambio de anterior a actual, o null si no hay base para comparar. */
-function delta_pct(float $actual, float $anterior): ?float
+function variacion_pct(float $actual, float $anterior): ?float
 {
     if ($anterior <= 0.0) {
         return null;
@@ -61,7 +61,7 @@ function color_celda_cohorte(float $pct): array
  * pegado al numero tal cual (ej. '%' sin espacio, ' pp' con espacio para
  * puntos porcentuales).
  */
-function delta_badge(?float $pct, bool $subirEsBueno = true, string $etiqueta = 'vs. período anterior', string $unidad = '%'): string
+function insignia_de_variacion(?float $pct, bool $subirEsBueno = true, string $etiqueta = 'vs. período anterior', string $unidad = '%'): string
 {
     if ($pct === null) {
         return '<span class="delta">Sin datos para comparar (' . htmlspecialchars($etiqueta) . ')</span>';
@@ -99,7 +99,7 @@ function url_con_parametros(array $cambios): string
 }
 
 /** Altura porcentual para una barra, con un piso visible cuando el valor es > 0. */
-function pct_altura(float $valor, float $max): float
+function altura_en_pct(float $valor, float $max): float
 {
     if ($max <= 0 || $valor <= 0) {
         return 0.0;
@@ -114,7 +114,7 @@ function pct_altura(float $valor, float $max): float
  * que la contiene (igual que un div con border-radius), asi que el tamano
  * lo sigue resolviendo el flexbox existente sin distorsion.
  */
-function svg_barra(string $clase, string $estilo, string $color, string $tooltip, int $radio = 4): string
+function barra_svg(string $clase, string $estilo, string $color, string $tooltip, int $radio = 4): string
 {
     $tituloEsc = htmlspecialchars($tooltip, ENT_QUOTES);
     return '<svg class="' . htmlspecialchars($clase, ENT_QUOTES) . '" style="' . htmlspecialchars($estilo, ENT_QUOTES) . '"'

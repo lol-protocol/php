@@ -25,7 +25,7 @@ final class DashboardController
         $ingresos = $ingresosRepo->ingresosPorMes($desde, $hasta);
         $cobros = $ingresosRepo->cobrosPorMes($desde, $hasta);
         $serieMensual = self::combinarPorMes($ingresos, $cobros);
-        $aging = $ingresosRepo->carteraAging();
+        $antiguedad = $ingresosRepo->carteraPorAntiguedad();
 
         [$desdeAnt, $hastaAnt] = FiltroDePeriodo::rangoAnterior($desde, $hasta);
         [$desdeAnio, $hastaAnio] = FiltroDePeriodo::rangoAnioAnterior($desde, $hasta);
@@ -36,8 +36,8 @@ final class DashboardController
             'kpis' => $ingresosRepo->kpis($desde, $hasta),
             'kpisAnterior' => $ingresosRepo->kpis($desdeAnt, $hastaAnt),
             'kpisAnioAnterior' => $ingresosRepo->kpis($desdeAnio, $hastaAnio),
-            'aging' => $aging,
-            'carteraPendiente' => array_sum($aging),
+            'antiguedad' => $antiguedad,
+            'carteraPendiente' => array_sum($antiguedad),
             'serieMensual' => $serieMensual,
             'funnelResumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'segmentacion' => [

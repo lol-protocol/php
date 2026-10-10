@@ -9,7 +9,7 @@ use App\Config;
 /** @var string $hasta */
 /** @var bool $personalizado */
 /** @var float $carteraPendiente */
-/** @var array $aging */
+/** @var array $antiguedad */
 /** @var array $serieMensual */
 /** @var array $funnelResumen */
 /** @var array $segmentacion */
@@ -49,25 +49,25 @@ $coloresSegmento = [
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
         <span class="label">Facturado (período)</span>
-        <span class="value"><?= Config::money($kpis['facturado']) ?></span>
-        <?= delta_badge(delta_pct($kpis['facturado'], $kpisAnterior['facturado'])) ?>
-        <?= delta_badge(delta_pct($kpis['facturado'], $kpisAnioAnterior['facturado']), etiqueta: 'vs. año anterior') ?>
+        <span class="value"><?= Config::dinero($kpis['facturado']) ?></span>
+        <?= insignia_de_variacion(variacion_pct($kpis['facturado'], $kpisAnterior['facturado'])) ?>
+        <?= insignia_de_variacion(variacion_pct($kpis['facturado'], $kpisAnioAnterior['facturado']), etiqueta: 'vs. año anterior') ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Cobrado (período)</span>
-        <span class="value"><?= Config::money($kpis['cobrado']) ?></span>
-        <?= delta_badge(delta_pct($kpis['cobrado'], $kpisAnterior['cobrado'])) ?>
-        <?= delta_badge(delta_pct($kpis['cobrado'], $kpisAnioAnterior['cobrado']), etiqueta: 'vs. año anterior') ?>
+        <span class="value"><?= Config::dinero($kpis['cobrado']) ?></span>
+        <?= insignia_de_variacion(variacion_pct($kpis['cobrado'], $kpisAnterior['cobrado'])) ?>
+        <?= insignia_de_variacion(variacion_pct($kpis['cobrado'], $kpisAnioAnterior['cobrado']), etiqueta: 'vs. año anterior') ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Tasa de cobranza</span>
         <span class="value"><?= number_format($kpis['tasa_cobranza'] * 100, 1) ?>%</span>
-        <?= delta_badge(($kpis['tasa_cobranza'] - $kpisAnterior['tasa_cobranza']) * 100, unidad: ' pp') ?>
-        <?= delta_badge(($kpis['tasa_cobranza'] - $kpisAnioAnterior['tasa_cobranza']) * 100, etiqueta: 'vs. año anterior', unidad: ' pp') ?>
+        <?= insignia_de_variacion(($kpis['tasa_cobranza'] - $kpisAnterior['tasa_cobranza']) * 100, unidad: ' pp') ?>
+        <?= insignia_de_variacion(($kpis['tasa_cobranza'] - $kpisAnioAnterior['tasa_cobranza']) * 100, etiqueta: 'vs. año anterior', unidad: ' pp') ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Cartera pendiente</span>
-        <span class="value"><?= Config::money($carteraPendiente) ?></span>
+        <span class="value"><?= Config::dinero($carteraPendiente) ?></span>
         <span class="delta <?= $carteraPendiente > 0 ? 'critical' : 'good' ?>">Saldo abierto a hoy</span>
     </div>
 </div>
@@ -85,14 +85,14 @@ $coloresSegmento = [
             ['clave' => 'ingresos', 'etiqueta' => 'Ingresos', 'color' => 'var(--series-1)'],
             ['clave' => 'cobros', 'etiqueta' => 'Cobros', 'color' => 'var(--series-2)'],
         ];
-        $formato = 'money';
+        $formato = 'dinero';
         include __DIR__ . '/../_grafico_serie_mensual.php';
         ?>
     </div>
 
     <div class="panel">
         <h2>Cartera pendiente por antigüedad</h2>
-        <?php include __DIR__ . '/../_grafico_aging.php'; ?>
+        <?php include __DIR__ . '/../_grafico_antiguedad_de_cartera.php'; ?>
     </div>
 </div>
 
@@ -101,7 +101,7 @@ $coloresSegmento = [
     <div class="chart">
         <?php $i = 0; foreach ($etapasFunnel as $etapa => $valor): ?>
             <div class="grupo">
-                <?= svg_barra('bar', 'height:' . pct_altura((float) $valor, $maxEtapa) . '%', $rampaFunnel[$i], $etapa . ': ' . $valor) ?>
+                <?= barra_svg('bar', 'height:' . altura_en_pct((float) $valor, $maxEtapa) . '%', $rampaFunnel[$i], $etapa . ': ' . $valor) ?>
             </div>
             <?php $i++; ?>
         <?php endforeach; ?>
@@ -126,15 +126,15 @@ $coloresSegmento = [
                     <div class="hbar-row compacto">
                         <span class="hbar-label" title="<?= htmlspecialchars($fila['etiqueta']) ?>"><?= htmlspecialchars($fila['etiqueta']) ?></span>
                         <span class="hbar-track">
-                            <?= svg_barra(
+                            <?= barra_svg(
                                 'hbar-fill',
-                                'width:' . pct_altura((float) $fila['total_facturado'], $maxSeg) . '%',
+                                'width:' . altura_en_pct((float) $fila['total_facturado'], $maxSeg) . '%',
                                 $coloresSegmento[$titulo],
-                                $fila['etiqueta'] . ': ' . Config::money((float) $fila['total_facturado']),
+                                $fila['etiqueta'] . ': ' . Config::dinero((float) $fila['total_facturado']),
                                 3
                             ) ?>
                         </span>
-                        <span class="hbar-value" title="<?= number_format((float) $fila['total_facturado'], 2) ?>"><?= money_compacta((float) $fila['total_facturado']) ?></span>
+                        <span class="hbar-value" title="<?= number_format((float) $fila['total_facturado'], 2) ?>"><?= dinero_compacto((float) $fila['total_facturado']) ?></span>
                     </div>
                 <?php endforeach; ?>
                 <?php if (!$filas): ?>

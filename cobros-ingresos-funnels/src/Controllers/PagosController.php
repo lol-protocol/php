@@ -129,7 +129,7 @@ final class PagosController
                             'Pago #%d de %s: %s%s',
                             $id,
                             $clienteElegido['nombre'],
-                            money_moneda($monto, $moneda),
+                            dinero_en_moneda($monto, $moneda),
                             $boletaId ? " (boleta #{$boletaId})" : ' (anticipo)'
                         ));
 
@@ -266,8 +266,8 @@ final class PagosController
                     return 'El monto supera el saldo pendiente de la boleta.';
                 }
 
-                $antes = money_moneda((float) $pago['monto'], $pago['moneda_codigo']) . " ({$pago['metodo']})";
-                $despues = money_moneda($monto, $pago['moneda_codigo']) . " ({$metodo})";
+                $antes = dinero_en_moneda((float) $pago['monto'], $pago['moneda_codigo']) . " ({$pago['metodo']})";
+                $despues = dinero_en_moneda($monto, $pago['moneda_codigo']) . " ({$metodo})";
                 $pagoRepo->actualizar($id, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
                 AuditoriaRepository::auditar('editar', 'pago', $id, sprintf('Pago #%d: %s -> %s', $id, $antes, $despues));
                 return null;
@@ -328,7 +328,7 @@ final class PagosController
                 AuditoriaRepository::auditar('anular', 'pago', $id, sprintf(
                     'Pago #%d (%s)',
                     $id,
-                    money_moneda((float) $pago['monto'], $pago['moneda_codigo'])
+                    dinero_en_moneda((float) $pago['monto'], $pago['moneda_codigo'])
                 ));
                 return false;
             });

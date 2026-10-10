@@ -16,9 +16,9 @@ use App\Repositories\NotaCreditoRepository;
  */
 final class IngresosYCobrosRepositoryTest extends IntegracionTestCase
 {
-    public function testCarteraAgingSoloSumaSaldosPositivosYCoincideConLaSumaIndependiente(): void
+    public function testCarteraPorAntiguedadSoloSumaSaldosPositivosYCoincideConLaSumaIndependiente(): void
     {
-        $buckets = (new IngresosYCobrosRepository())->carteraAging();
+        $buckets = (new IngresosYCobrosRepository())->carteraPorAntiguedad();
 
         self::assertSame(['Al día', '1-30 días', '31-60 días', '61+ días'], array_keys($buckets));
         foreach ($buckets as $monto) {
@@ -55,7 +55,7 @@ final class IngresosYCobrosRepositoryTest extends IntegracionTestCase
         $repo = new IngresosYCobrosRepository();
 
         foreach ([-5, 0, 1, 30, 31, 60, 61, 400] as $diasVencida) {
-            $antes = $repo->carteraAging();
+            $antes = $repo->carteraPorAntiguedad();
             (new BoletaRepository())->crear([
                 'cliente_id' => 1,
                 'concepto' => 'Test de tramos de antiguedad',
@@ -64,7 +64,7 @@ final class IngresosYCobrosRepositoryTest extends IntegracionTestCase
                 'fecha_emision' => date('Y-m-d', strtotime('-500 days')),
                 'fecha_vencimiento' => date('Y-m-d', strtotime("-{$diasVencida} days")),
             ]);
-            $despues = $repo->carteraAging();
+            $despues = $repo->carteraPorAntiguedad();
 
             $cambios = [];
             foreach ($antes as $tramo => $total) {

@@ -5,7 +5,7 @@ use App\Etiquetas;
 
 /** @var array $kpis */
 /** @var float $carteraPendiente */
-/** @var array $aging */
+/** @var array $antiguedad */
 /** @var array $ingresosPorMes */
 /** @var array $boletas */
 /** @var int $totalBoletas */
@@ -44,11 +44,11 @@ use App\Etiquetas;
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
         <span class="label">Facturado (período)</span>
-        <span class="value"><?= Config::money($kpis['facturado']) ?></span>
+        <span class="value"><?= Config::dinero($kpis['facturado']) ?></span>
     </div>
     <div class="panel stat-tile">
         <span class="label">Cobrado (período)</span>
-        <span class="value"><?= Config::money($kpis['cobrado']) ?></span>
+        <span class="value"><?= Config::dinero($kpis['cobrado']) ?></span>
     </div>
     <div class="panel stat-tile">
         <span class="label">Tasa de cobranza</span>
@@ -56,7 +56,7 @@ use App\Etiquetas;
     </div>
     <div class="panel stat-tile">
         <span class="label">Cartera pendiente (a hoy)</span>
-        <span class="value"><?= Config::money($carteraPendiente) ?></span>
+        <span class="value"><?= Config::dinero($carteraPendiente) ?></span>
     </div>
 </div>
 
@@ -66,14 +66,14 @@ use App\Etiquetas;
         <?php
         $filas = $ingresosPorMes;
         $series = [['clave' => 'total', 'etiqueta' => '', 'color' => 'var(--series-1)']];
-        $formato = 'money';
+        $formato = 'dinero';
         include __DIR__ . '/../_grafico_serie_mensual.php';
         ?>
     </div>
 
     <div class="panel">
         <h2>Cartera pendiente por antigüedad (USD)</h2>
-        <?php include __DIR__ . '/../_grafico_aging.php'; ?>
+        <?php include __DIR__ . '/../_grafico_antiguedad_de_cartera.php'; ?>
     </div>
 </div>
 
@@ -94,8 +94,8 @@ use App\Etiquetas;
                     <td><?= htmlspecialchars($b['concepto']) ?></td>
                     <td><?= htmlspecialchars($b['fecha_emision']) ?></td>
                     <td><?= htmlspecialchars($b['fecha_vencimiento']) ?></td>
-                    <td class="num"><?= money_moneda((float) $b['monto'], $b['moneda_codigo']) ?></td>
-                    <td class="num"><?= money_moneda((float) $b['saldo'], $b['moneda_codigo']) ?></td>
+                    <td class="num"><?= dinero_en_moneda((float) $b['monto'], $b['moneda_codigo']) ?></td>
+                    <td class="num"><?= dinero_en_moneda((float) $b['saldo'], $b['moneda_codigo']) ?></td>
                     <td><span class="badge <?= $b['estado'] ?>"><?= Etiquetas::estadoBoleta($b['estado']) ?></span></td>
                     <td class="acciones">
                         <?php if ($b['estado'] !== 'anulada'): ?>

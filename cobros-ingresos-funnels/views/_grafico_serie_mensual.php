@@ -5,13 +5,13 @@ use App\Config;
 /**
  * Grafico de barras verticales por mes, con 1 o mas series superpuestas en
  * cada mes (ej. ingresos vs. cobros). Usado por dashboard, cobros, pagos y
- * funnel para no repetir el mismo par de foreach + svg_barra en cada uno.
+ * funnel para no repetir el mismo par de foreach + barra_svg en cada uno.
  *
  * @var array  $filas   filas con clave 'mes' (YYYY-MM) + una clave numerica por serie
  * @var array  $series  lista de series: cada una ['clave' => string (la clave en $filas),
  *                       'etiqueta' => string (prefijo del tooltip; '' si hay una sola serie),
  *                       'color' => string (css var)]
- * @var string $formato 'money' (Config::money) o 'entero' (numero tal cual), para el tooltip
+ * @var string $formato 'dinero' (Config::dinero) o 'entero' (numero tal cual), para el tooltip
  */
 
 // Se escala por valor absoluto: un mes puede dar negativo (mas devoluciones
@@ -27,8 +27,8 @@ foreach ($filas as $fila) {
     }
 }
 
-$formatearValor = $formato === 'money'
-    ? static fn (float $v): string => Config::money($v)
+$formatearValor = $formato === 'dinero'
+    ? static fn (float $v): string => Config::dinero($v)
     : static fn (float $v): string => (string) $v;
 ?>
 <div class="chart">
@@ -36,12 +36,12 @@ $formatearValor = $formato === 'money'
         <div class="grupo">
             <?php foreach ($series as $serie): ?>
                 <?php $valor = (float) $fila[$serie['clave']]; ?>
-                <?= svg_barra(
+                <?= barra_svg(
                     'bar',
-                    'height:' . pct_altura(abs($valor), $maxValor) . '%',
+                    'height:' . altura_en_pct(abs($valor), $maxValor) . '%',
                     $valor < 0 ? 'var(--critical)' : $serie['color'],
                     ($serie['etiqueta'] !== '' ? $serie['etiqueta'] . ' ' : '')
-                        . mes_label($fila['mes']) . ': ' . $formatearValor($valor)
+                        . etiqueta_de_mes($fila['mes']) . ': ' . $formatearValor($valor)
                 ) ?>
             <?php endforeach; ?>
         </div>
@@ -49,7 +49,7 @@ $formatearValor = $formato === 'money'
 </div>
 <div class="chart-etiquetas">
     <?php foreach ($filas as $fila): ?>
-        <span class="grupo-label"><?= mes_label($fila['mes']) ?></span>
+        <span class="grupo-label"><?= etiqueta_de_mes($fila['mes']) ?></span>
     <?php endforeach; ?>
 </div>
 <?php if ($hayNegativos): ?>

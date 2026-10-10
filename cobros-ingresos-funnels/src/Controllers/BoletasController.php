@@ -64,7 +64,7 @@ final class BoletasController
         $pagina = Paginacion::pagina();
 
         $ingresosRepo = new IngresosYCobrosRepository();
-        $aging = $ingresosRepo->carteraAging();
+        $antiguedad = $ingresosRepo->carteraPorAntiguedad();
         $listado = (new BoletaRepository())->listado($desde, $hasta, $estado ?: null, $cliente ?: null, $pagina);
 
         View::render('boletas/listado', $filtros + [
@@ -74,8 +74,8 @@ final class BoletasController
             'tasas' => MonedaRepository::estadoDeLasTasas(),
             'kpis' => $ingresosRepo->kpis($desde, $hasta),
             'ingresosPorMes' => $ingresosRepo->ingresosPorMes($desde, $hasta),
-            'aging' => $aging,
-            'carteraPendiente' => array_sum($aging),
+            'antiguedad' => $antiguedad,
+            'carteraPendiente' => array_sum($antiguedad),
             'boletas' => $listado['filas'],
             'totalBoletas' => $listado['total'],
             'totalPaginas' => $listado['totalPaginas'],
@@ -133,7 +133,7 @@ final class BoletasController
                         $id,
                         $cliente['nombre'],
                         $concepto,
-                        money_moneda($monto, $cliente['moneda_codigo'])
+                        dinero_en_moneda($monto, $cliente['moneda_codigo'])
                     ));
 
                     return '?page=cobros&creada=' . $id;
@@ -194,13 +194,13 @@ final class BoletasController
                 } elseif (!self::vencimientoNoAnteriorALaEmision($fechaEmision, $fechaVencimiento)) {
                     return 'El vencimiento no puede ser anterior a la emisión.';
                 } elseif (!self::montoCubreLoYaCobrado($monto, $boleta)) {
-                    return 'El monto no puede ser menor a lo ya cobrado (' . money_moneda((float) $boleta['pagado'], $boleta['moneda_codigo']) . ').';
+                    return 'El monto no puede ser menor a lo ya cobrado (' . dinero_en_moneda((float) $boleta['pagado'], $boleta['moneda_codigo']) . ').';
                 } elseif (!self::emisionNoPosteriorAlPrimerPago($fechaEmision, $boleta)) {
                     return 'La emisión no puede ser posterior al primer pago de la boleta (' . $boleta['primer_pago'] . ').';
                 }
 
-                $antes = sprintf('"%s" %s', $boleta['concepto'], money_moneda((float) $boleta['monto'], $boleta['moneda_codigo']));
-                $despues = sprintf('"%s" %s', $concepto, money_moneda($monto, $boleta['moneda_codigo']));
+                $antes = sprintf('"%s" %s', $boleta['concepto'], dinero_en_moneda((float) $boleta['monto'], $boleta['moneda_codigo']));
+                $despues = sprintf('"%s" %s', $concepto, dinero_en_moneda($monto, $boleta['moneda_codigo']));
                 $boletaRepo->actualizar($id, [
                     'concepto' => $concepto,
                     'monto' => $monto,
@@ -262,7 +262,7 @@ final class BoletasController
                     'Boleta #%d ("%s", %s)',
                     $id,
                     $boleta['concepto'],
-                    money_moneda((float) $boleta['monto'], $boleta['moneda_codigo'])
+                    dinero_en_moneda((float) $boleta['monto'], $boleta['moneda_codigo'])
                 ));
                 $this->emitirNotaDeCredito($boleta);
             });
@@ -302,7 +302,7 @@ final class BoletasController
         AuditoriaRepository::auditar('crear', 'nota_credito', $notaId, sprintf(
             'Nota de crédito #%d por %s (boleta #%d anulada con pagos)',
             $notaId,
-            money_moneda($pagado, $boleta['moneda_codigo']),
+            dinero_en_moneda($pagado, $boleta['moneda_codigo']),
             $boleta['id']
         ));
     }

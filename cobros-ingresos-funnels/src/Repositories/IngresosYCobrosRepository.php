@@ -79,7 +79,7 @@ final class IngresosYCobrosRepository
     /**
      * Los tramos de antiguedad de la cartera: etiqueta => ultimo dia de vencida
      * que incluye (null = sin tope). Es la unica lista: tramoDeAntiguedad() la
-     * recorre y carteraAging() arma de ella el CASE de SQL, asi que las dos
+     * recorre y carteraPorAntiguedad() arma de ella el CASE de SQL, asi que las dos
      * formas de clasificar una boleta no pueden discrepar.
      */
     private const TRAMOS = ['Al día' => 0, '1-30 días' => 30, '31-60 días' => 60, '61+ días' => null];
@@ -100,7 +100,7 @@ final class IngresosYCobrosRepository
      *
      * @return array<string, float> etiqueta del tramo => saldo en USD, en el orden de TRAMOS
      */
-    public function carteraAging(): array
+    public function carteraPorAntiguedad(): array
     {
         $filas = $this->db->query(
             'SELECT ' . self::tramoSql('x.dias_vencido') . ' AS tramo, SUM(x.saldo_usd) AS total

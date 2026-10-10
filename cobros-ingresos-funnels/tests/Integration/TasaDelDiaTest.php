@@ -241,9 +241,9 @@ final class TasaDelDiaTest extends IntegracionTestCase
         $boleta = $this->boleta('1000.00', date('Y-m-d'), date('Y-m-d', strtotime('+30 days')));
         $this->pago($boleta, '400.00', date('Y-m-d'));
 
-        $antes = $repo->carteraAging();
+        $antes = $repo->carteraPorAntiguedad();
         $this->fijarTasa('2.00000000');
-        $despues = $repo->carteraAging();
+        $despues = $repo->carteraPorAntiguedad();
 
         self::assertEqualsWithDelta(
             600.0 * (2.0 - 1.25),

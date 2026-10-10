@@ -5,7 +5,7 @@ Pequeño sistema en PHP (sin framework) para analizar:
 - **Ingresos** devengados (boletas emitidas al usuario) vs. **cobros** reales (caja).
   Solo se registran pagos que el usuario nos hace a nosotros — no hay módulo de
   costos ni pagos propios del negocio.
-- **Cartera** pendiente, con antigüedad de saldo (aging: al día / 1-30 / 31-60 / 61+ días).
+- **Cartera** pendiente, con antigüedad de saldo (al día / 1-30 / 31-60 / 61+ días).
 - **Pagos**: por mes y por método (transferencia, tarjeta, efectivo).
 - **Funnel de conversión**: visitante → registrado → lead → cliente, con tasas por
   etapa, por canal de adquisición y por país/género/rango de edad.
@@ -418,7 +418,7 @@ views/                  plantillas PHP: una carpeta por sección o entidad (dash
                         antiguas, la de Auditoría),
                         _error.php (el aviso de error de los formularios),
                         _accion_confirmar.php (el pie de las pantallas de
-                        confirmar anulación), _grafico_aging.php y
+                        confirmar anulación), _grafico_antiguedad_de_cartera.php y
                         _grafico_serie_mensual.php (los dos graficos de barras
                         que se repetian en dashboard, cobros, pagos y funnel);
                         el funnel tiene además el suyo, funnel/_tabla_dimension.php

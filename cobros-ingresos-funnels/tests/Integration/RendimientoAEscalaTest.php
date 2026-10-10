@@ -84,12 +84,12 @@ final class RendimientoAEscalaTest extends IntegracionTestCase
     public function testLaCarteraPorAntiguedadSeSumaEnSqlYNoTraeLasBoletasAPhp(): void
     {
         $repo = new IngresosYCobrosRepository();
-        $antes = $repo->carteraAging();
+        $antes = $repo->carteraPorAntiguedad();
         $moneda = $this->cargarBoletas();
         $despues = [];
 
         $pico = $this->picoDeMemoria(function () use ($repo, &$despues): void {
-            $despues = $repo->carteraAging();
+            $despues = $repo->carteraPorAntiguedad();
         });
 
         $tasa = (float) Database::connection()->query("SELECT tasa_a_usd FROM monedas WHERE codigo = '{$moneda}'")->fetchColumn();

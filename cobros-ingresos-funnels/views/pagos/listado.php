@@ -43,14 +43,14 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
 <div class="grid grid-kpis">
     <div class="panel stat-tile">
         <span class="label">Cobrado neto (período, USD)</span>
-        <span class="value"><?= Config::money($cobradoNeto) ?></span>
+        <span class="value"><?= Config::dinero($cobradoNeto) ?></span>
         <?php if ($devoluciones > 0.01): ?>
-            <span class="delta"><?= Config::money($cobradoBruto) ?> cobrados &minus; <?= Config::money($devoluciones) ?> devueltos</span>
+            <span class="delta"><?= Config::dinero($cobradoBruto) ?> cobrados &minus; <?= Config::dinero($devoluciones) ?> devueltos</span>
         <?php endif; ?>
     </div>
     <div class="panel stat-tile">
         <span class="label">Devoluciones (período, USD)</span>
-        <span class="value"><?= Config::money($devoluciones) ?></span>
+        <span class="value"><?= Config::dinero($devoluciones) ?></span>
         <span class="delta">Notas de crédito por boletas anuladas que ya estaban cobradas</span>
     </div>
     <div class="panel stat-tile">
@@ -65,7 +65,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
         <?php
         $filas = $cobrosPorMes;
         $series = [['clave' => 'total', 'etiqueta' => '', 'color' => 'var(--series-2)']];
-        $formato = 'money';
+        $formato = 'dinero';
         include __DIR__ . '/../_grafico_serie_mensual.php';
         ?>
     </div>
@@ -76,15 +76,15 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
             <div class="hbar-row">
                 <span class="hbar-label"><?= htmlspecialchars(Etiquetas::metodoPago($fila['metodo'])) ?></span>
                 <span class="hbar-track">
-                    <?= svg_barra(
+                    <?= barra_svg(
                         'hbar-fill',
-                        'width:' . pct_altura((float) $fila['total'], $maxMetodo) . '%',
+                        'width:' . altura_en_pct((float) $fila['total'], $maxMetodo) . '%',
                         $coloresMetodo[$fila['metodo']] ?? 'var(--series-1)',
-                        Etiquetas::metodoPago($fila['metodo']) . ': ' . Config::money((float) $fila['total']) . ' (' . $fila['cantidad'] . ')',
+                        Etiquetas::metodoPago($fila['metodo']) . ': ' . Config::dinero((float) $fila['total']) . ' (' . $fila['cantidad'] . ')',
                         3
                     ) ?>
                 </span>
-                <span class="hbar-value"><?= Config::money((float) $fila['total']) ?> (<?= $fila['cantidad'] ?>)</span>
+                <span class="hbar-value"><?= Config::dinero((float) $fila['total']) ?> (<?= $fila['cantidad'] ?>)</span>
             </div>
         <?php endforeach; ?>
         <?php if (!$porMetodo): ?>
@@ -107,7 +107,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
                     <td><?= htmlspecialchars($p['fecha_pago']) ?></td>
                     <td><?= htmlspecialchars(Etiquetas::metodoPago($p['metodo'])) ?></td>
                     <td><?= $p['boleta_id'] ? 'Boleta #' . (int) $p['boleta_id'] : 'Anticipo' ?></td>
-                    <td class="num"><?= money_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
+                    <td class="num"><?= dinero_en_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
                     <td class="acciones">
                         <?php if ($p['anulada']): ?>
                             <span class="badge anulada">Anulado</span>

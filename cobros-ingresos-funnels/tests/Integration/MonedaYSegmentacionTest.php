@@ -29,13 +29,13 @@ final class MonedaYSegmentacionTest extends IntegracionTestCase
 
     public function testMoneyMonedaCombinaSimboloMontoYCodigo(): void
     {
-        $texto = money_moneda(1234.5, 'USD');
+        $texto = dinero_en_moneda(1234.5, 'USD');
         self::assertSame('$1,234.50 USD', $texto);
     }
 
     public function testMoneyMonedaPoneElSignoAntesDelSimbolo(): void
     {
-        self::assertSame('-$1,234.50 USD', money_moneda(-1234.5, 'USD'));
+        self::assertSame('-$1,234.50 USD', dinero_en_moneda(-1234.5, 'USD'));
     }
 
     /**

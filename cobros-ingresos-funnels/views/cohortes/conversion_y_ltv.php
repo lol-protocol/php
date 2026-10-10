@@ -36,7 +36,7 @@ use App\Config;
             <?php foreach ($cohortes as $fila): ?>
                 <?php $total = (int) $fila['total']; ?>
                 <tr>
-                    <td><?= mes_label($fila['cohorte']) ?></td>
+                    <td><?= etiqueta_de_mes($fila['cohorte']) ?></td>
                     <td class="num"><?= $total ?></td>
                     <?php foreach (['m0', 'm1', 'm2', 'm3'] as $col): ?>
                         <?php
@@ -70,9 +70,9 @@ use App\Config;
             <tbody>
             <?php foreach ($ltvPorCohorte as $fila): ?>
                 <tr>
-                    <td><?= mes_label($fila['cohorte']) ?></td>
+                    <td><?= etiqueta_de_mes($fila['cohorte']) ?></td>
                     <td class="num"><?= (int) $fila['clientes'] ?></td>
-                    <td class="num"><?= Config::money((float) $fila['ltv_promedio']) ?></td>
+                    <td class="num"><?= Config::dinero((float) $fila['ltv_promedio']) ?></td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!$ltvPorCohorte): ?>

@@ -20,7 +20,7 @@ $botonTexto = 'Sí, anular este pago';
     <?php endif; ?>
     <table style="margin-bottom:20px;">
         <tr><th>Cliente</th><td><?= htmlspecialchars($pago['cliente']) ?></td></tr>
-        <tr><th>Monto</th><td><?= money_moneda((float) $pago['monto'], $pago['moneda_codigo']) ?></td></tr>
+        <tr><th>Monto</th><td><?= dinero_en_moneda((float) $pago['monto'], $pago['moneda_codigo']) ?></td></tr>
         <tr><th>Fecha</th><td><?= htmlspecialchars($pago['fecha_pago']) ?></td></tr>
         <tr><th>Origen</th><td><?= $pago['boleta_id'] ? 'Boleta #' . (int) $pago['boleta_id'] : 'Anticipo' ?></td></tr>
     </table>
