@@ -14,12 +14,13 @@ final class ConfigEditor
         return self::editEntry($text, $word, $change);
     }
 
-    /** Añade `'flag' => true` antes del corchete que cierra la entrada (si no lo tiene ya). */
-    public static function addFlag(string $text, string $word, string $flag): ?string
+    /** Pone (`$on`) o quita `'flag' => true` en la entrada; al ponerla va antes del corchete que la cierra. */
+    public static function setFlag(string $text, string $word, string $flag, bool $on = true): ?string
     {
-        return self::editEntry($text, $word, fn(string $entry): string => str_contains($entry, "'{$flag}' => true")
-            ? $entry
-            : substr($entry, 0, -1) . ", '{$flag}' => true]");
+        return self::editEntry($text, $word, function (string $entry) use ($flag, $on): string {
+            $entry = str_replace(", '{$flag}' => true", '', $entry);
+            return $on ? substr($entry, 0, -1) . ", '{$flag}' => true]" : $entry;
+        });
     }
 
     /** Quita la entrada con su línea. */

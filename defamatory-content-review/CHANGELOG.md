@@ -44,6 +44,16 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **`บ้า` (tailandés, «loco»), cambio provisional hasta la revisión
+  nativa.** Era el 45 % de las palabras frecuentes que el chat censuraba,
+  casi todas exclamaciones («บ้าจริง», «maldita sea»): el chat lo ignora
+  suelto (`ambiguous`) y sus apelativos (`ไอ้บ้า`, y nuevos `คนบ้า`,
+  `ยัยบ้า`, `อีบ้า`, `นังบ้า`, `medium`) siguen yendo a revisión. Las 20.000
+  palabras más frecuentes censuradas pasan de 212 a 126. `validateName()`
+  no cambia. Planillas cortas en `review/urgente/` (tha: `บ้า`, sus
+  apelativos y `แขก`; jpn: `魔女`, `おし`) con la pregunta concreta y frases
+  reales; `apply-review.php` acepta ahora `sin ambiguous` para revertirlo.
+
 - **Letras sueltas que juntan varias palabras** («h o l a p u t a»,
   «p u t a p u t a», «p u t a m a d r e»): antes la racha se unía entera y,
   al no ser una palabra del diccionario, se aprobaba. `SpacedRunTerms`

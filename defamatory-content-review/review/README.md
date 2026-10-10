@@ -27,7 +27,7 @@ Columnas:
   `review` (revisión humana) o `reject` (bloqueada).
 - `correcto` y `comentario`: para el revisor. En `correcto` pon `sí`, `no`
   (sobra, o es falso positivo), otra severidad (`low`/`medium`/`high`, o
-  `baja`/`media`/`alta`) o una marca (`ambiguous`, `nameCollision`); en
+  `baja`/`media`/`alta`) o una marca (`ambiguous`, `nameCollision`; `sin ambiguous` la quita); en
   `comentario`, lo que haga falta (otra ortografía, otra categoría, una palabra
   que falta).
 
@@ -43,6 +43,20 @@ Columnas:
 - Cada corrección lleva su línea en `tests/fixtures/chat-lines-detection.php`: la que debe
   marcarse y la cotidiana que no.
 
+## Planillas urgentes (`urgente/`)
+
+Las pocas filas que bloquean una decisión, para no pedirle a nadie que revise
+700: `urgente/tha.csv` (`บ้า`, sus apelativos y `แขก`) y `urgente/jpn.csv`
+(`魔女`, `おし`). Mismas columnas que las completas, más `pregunta` (qué hay que
+decidir) y `ejemplos` (frases reales con la decisión actual del chat). Se
+aplican igual: `php bin/apply-review.php tha review/urgente/tha.csv`.
+
+`บ้า` tiene un cambio **provisional** a la espera de esa revisión: el chat lo
+ignora suelto (casi siempre es una exclamación: «บ้าจริง», «maldita sea») y
+sus apelativos (`ไอ้บ้า`, `คนบ้า`, `ยัยบ้า`, `อีบ้า`, `นังบ้า`) van a revisión.
+`validateName()` lo sigue marcando. Si el revisor dice que debe volver a
+marcarse: `sin ambiguous` en su fila.
+
 ## Aplicar una planilla revisada
 
 ```bash
@@ -55,6 +69,7 @@ php bin/apply-review.php spa revisada.csv --apply   # lo escribe en config/
 | `término` | `no` | se quita del diccionario o de la lista de temas |
 | `término` | `low`/`medium`/`high` | cambia la severidad |
 | `término` (del diccionario) | `ambiguous`, `nameCollision` | añade la marca |
+| `término` (del diccionario) | `sin ambiguous`, `-nameCollision` | quita la marca |
 | `frecuente` | `no` | la palabra va a `everyday` (el chat no la busca) |
 | `excepción` | `no` | sale de `everyday` o `legit` |
 

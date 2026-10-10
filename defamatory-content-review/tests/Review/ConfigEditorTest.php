@@ -38,10 +38,11 @@ class ConfigEditorTest extends TestCase
 
     public function testFlagsAnEntryThatSpansSeveralLines(): void
     {
-        $text = ConfigEditor::addFlag(self::FILE, 'degollar', 'ambiguous');
+        $text = ConfigEditor::setFlag(self::FILE, 'degollar', 'ambiguous');
 
         $this->assertStringContainsString("'also' => ['degüello', 'degüella'], 'ambiguous' => true],", $text);
-        $this->assertSame($text, ConfigEditor::addFlag($text, 'degollar', 'ambiguous'), 'una marca no se repite');
+        $this->assertSame($text, ConfigEditor::setFlag($text, 'degollar', 'ambiguous'), 'una marca no se repite');
+        $this->assertSame(self::FILE, ConfigEditor::setFlag($text, 'degollar', 'ambiguous', false), 'quitarla deja la entrada como estaba');
     }
 
     public function testRemovesTheWholeEntryEvenAcrossLines(): void
@@ -78,7 +79,7 @@ class ConfigEditorTest extends TestCase
     {
         foreach ([
             ConfigEditor::setSeverity(self::FILE, 'cerdo', 'low'),
-            ConfigEditor::addFlag(self::FILE, "d'oh", 'nameCollision'),
+            ConfigEditor::setFlag(self::FILE, "d'oh", 'nameCollision'),
             ConfigEditor::remove(self::FILE, 'rata'),
             ConfigEditor::editList(self::FILE, 'legit', 'calle', true),
         ] as $text) {

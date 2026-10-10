@@ -43,11 +43,12 @@ class ReviewSheetTest extends TestCase
             ['frecuente', 'bomberos', 'bomba', 'belico', '', '', '', '900', 'review', 'NO', ''],
             ['término', 'chancho', 'diccionario', 'animal', 'animal', 'medium', '', '', 'review', 'sí', ''],
             ['término', 'puerco', 'diccionario', 'animal', 'animal', 'medium', '', '', 'review', '', ''],
+            ['término', 'marrano', 'diccionario', 'animal', 'animal', 'medium', 'nameCollision', '', 'review', 'sin nameCollision', ''],
         ]);
         $plan = new ReviewApplier($sheet, $this->config, 'spa');
 
         $this->assertSame([], [...$sheet->problems, ...$plan->problems]);
-        $this->assertCount(4, $plan->done);
+        $this->assertCount(5, $plan->done);
         $this->assertSame(1, $sheet->pending);
         foreach ($plan->files as $path => $text) {
             file_put_contents($path, $text);
@@ -57,6 +58,7 @@ class ReviewSheetTest extends TestCase
         $this->assertSame('high', $byWord['cerdo']['severity']);
         $this->assertArrayNotHasKey('marrana', $byWord);
         $this->assertTrue($byWord['cerda']['ambiguous']);
+        $this->assertArrayNotHasKey('nameCollision', $byWord['marrano']);
         $this->assertContains('bomberos', (require "{$this->config}/chat-topics/spa.php")['everyday']);
     }
 

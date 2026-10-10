@@ -44,6 +44,10 @@ return [
             ['word' => 'งี่เง่า', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ไอ้โง่', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'ไอ้บ้า', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'คนบ้า', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'ยัยบ้า', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'อีบ้า', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'นังบ้า', 'riskType' => 'intelectual', 'severity' => 'medium'],
         ],
         'rangkai' => [
             ['word' => 'ขี้เหร่', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -71,7 +75,9 @@ return [
             ['word' => 'เป็นใบ้', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'พูดติดอ่าง', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'อัมพาต', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'บ้า', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            // Provisional hasta la revisión nativa (review/urgente/tha.csv): «บ้า» suelto es casi siempre una
+            // exclamación («บ้าจริง», «maldita sea»), así que el chat lo ignora; dirigido a alguien sigue marcándose.
+            ['word' => 'บ้า', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
         ],
         'sinlatham' => [
             ['word' => 'ไอ้ชั่ว', 'riskType' => 'moral', 'severity' => 'high'],

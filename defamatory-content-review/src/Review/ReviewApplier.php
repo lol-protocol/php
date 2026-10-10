@@ -42,7 +42,8 @@ final class ReviewApplier
         $new = $text === null ? null : match ($change['action']) {
             'remove' => ConfigEditor::remove($text, $change['word']),
             'severity' => ConfigEditor::setSeverity($text, $change['word'], $change['value']),
-            'flag' => ConfigEditor::addFlag($text, $change['word'], $change['value']),
+            'flag' => ConfigEditor::setFlag($text, $change['word'], $change['value']),
+            'flag-off' => ConfigEditor::setFlag($text, $change['word'], $change['value'], false),
             'list-add' => ConfigEditor::editList($text, $change['value'], $change['word'], true),
             'list-remove' => ConfigEditor::editList($text, $change['value'], $change['word'], false),
             default => null,
@@ -56,6 +57,7 @@ final class ReviewApplier
             'remove' => 'se quita',
             'severity' => "severidad {$change['value']}",
             'flag' => "marca {$change['value']}",
+            'flag-off' => "sin marca {$change['value']}",
             'list-add' => "a {$change['value']}",
             default => "fuera de {$change['value']}",
         };

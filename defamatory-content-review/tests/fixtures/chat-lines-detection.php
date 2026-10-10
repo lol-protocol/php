@@ -182,8 +182,10 @@ return [
     'tha' => [
         'flagged' => [
             'ไอ้เหี้ย' => ['reject', ['difamatorio']],
+            'ไอ้บ้าเอ๊ย' => ['review', ['difamatorio']],    // «บ้า» dirigido a alguien (provisional, ver tha.php)
+            'แกมันคนบ้า' => ['review', ['difamatorio']],
         ],
-        'clean' => ['หนู'],
+        'clean' => ['หนู', 'บ้าจริง', 'คุณบ้าไปแล้ว'],  // exclamaciones con «บ้า» («maldita sea», «¿estás loco?»)
     ],
     'ind' => [
         'flagged' => [
