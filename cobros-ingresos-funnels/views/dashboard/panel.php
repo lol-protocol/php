@@ -36,14 +36,14 @@ $coloresSegmento = [
 
 <h1><?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></h1>
 <p class="subtitulo">Vista general de ingresos, cobros y conversión de usuarios a clientes.</p>
-<?php include __DIR__ . '/_tasas_de_cambio.php'; ?>
+<?php include __DIR__ . '/../_tasas_de_cambio.php'; ?>
 
 <form class="filtros" method="get">
     <input type="hidden" name="page" value="dashboard">
-    <?php include __DIR__ . '/_filtro_fechas.php'; ?>
+    <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
     <button type="submit">Aplicar</button>
 </form>
-<?php include __DIR__ . '/_avisos.php'; ?>
+<?php include __DIR__ . '/../_avisos.php'; ?>
 <p class="subtitulo">Si completás "Desde" y "Hasta" se usa ese rango exacto en vez del período de arriba.</p>
 
 <div class="grid grid-kpis">
@@ -86,13 +86,13 @@ $coloresSegmento = [
             ['clave' => 'cobros', 'etiqueta' => 'Cobros', 'color' => 'var(--series-2)'],
         ];
         $formato = 'money';
-        include __DIR__ . '/_grafico_serie_mensual.php';
+        include __DIR__ . '/../_grafico_serie_mensual.php';
         ?>
     </div>
 
     <div class="panel">
         <h2>Cartera pendiente por antigüedad</h2>
-        <?php include __DIR__ . '/_grafico_aging.php'; ?>
+        <?php include __DIR__ . '/../_grafico_aging.php'; ?>
     </div>
 </div>
 

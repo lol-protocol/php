@@ -112,7 +112,7 @@ final class TextoVisibleTest extends TestCase
     {
         $raiz = dirname(__DIR__, 2);
 
-        $vista = array_column(self::textosVisibles($raiz . '/views/auditoria/index.php'), 1);
+        $vista = array_column(self::textosVisibles($raiz . '/views/auditoria/historial.php'), 1);
         self::assertContains('Historial de cambios: ', array_map(static fn (string $t): string => substr($t, 0, 22), $vista));
 
         $mensajes = implode(' ', array_column(self::textosVisibles($raiz . '/src/Controllers/ClientesController.php'), 1));

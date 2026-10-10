@@ -77,7 +77,7 @@ final class ClientesController
         $pagina = Paginacion::pagina();
         $listado = (new ClienteRepository())->buscar($q, $pagina);
 
-        View::render('clientes/index', [
+        View::render('clientes/listado', [
             'q' => $q,
             'pagina' => $listado['pagina'],
             'clientes' => $listado['filas'],
@@ -193,7 +193,7 @@ final class ClientesController
 
         $paises = new PaisRepository();
 
-        View::render('clientes/nuevo', [
+        View::render('clientes/alta', [
             'paises' => $paises->listado(),
             'idiomas' => (new ClienteRepository())->idiomasEnUso(),
             'generos' => ClienteRepository::GENEROS,

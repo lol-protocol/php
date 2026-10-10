@@ -67,7 +67,7 @@ final class BoletasController
         $aging = $ingresosRepo->carteraAging();
         $listado = (new BoletaRepository())->listado($desde, $hasta, $estado ?: null, $cliente ?: null, $pagina);
 
-        View::render('cobros/index', $filtros + [
+        View::render('boletas/listado', $filtros + [
             'estado' => $estado,
             'cliente' => $cliente,
             'pagina' => $listado['pagina'],
@@ -147,7 +147,7 @@ final class BoletasController
         // (el enlace "Nueva boleta" de su ficha); se incluye aunque quede fuera del limite del selector.
         $clienteElegido = (int) ($_POST['cliente_id'] ?? $_GET['cliente_id'] ?? 0);
 
-        View::render('cobros/nueva', [
+        View::render('boletas/alta', [
             'clientes' => $clienteRepo->paraSelector($clienteElegido > 0 ? $clienteElegido : null),
             'clientesTruncados' => $clienteRepo->superaElLimiteDelSelector(),
             'error' => $error,
@@ -224,7 +224,7 @@ final class BoletasController
             ]);
         }
 
-        View::render('cobros/editar', [
+        View::render('boletas/edicion', [
             'boleta' => $boleta,
             'error' => $error,
             'activePage' => 'cobros',
@@ -270,7 +270,7 @@ final class BoletasController
             exit;
         }
 
-        View::render('cobros/anular', [
+        View::render('boletas/anulacion', [
             'boleta' => $boleta,
             'activePage' => 'cobros',
             'titulo' => 'Anular boleta',

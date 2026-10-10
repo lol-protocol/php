@@ -326,9 +326,10 @@ las tres suites, contra un Postgres 16, en PHP 8.3 (el mínimo) y en 8.4.
 ```
 public/            front controller (index.php) + CSS
 src/
-  Controllers/       un controlador por sección (dashboard, cobros, pagos, funnel,
-                      cohortes, clientes, auditoria). Todas las páginas son
-                      públicas, no hay login (ver `_Garbage/README.md`).
+  Controllers/       un controlador por sección (dashboard, boletas —la pantalla
+                      «Cobros e ingresos», `?page=cobros`—, pagos, funnel, cohortes,
+                      clientes, auditoria). Todas las páginas son públicas, no hay
+                      login (ver `_Garbage/README.md`).
   Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/...) más
                       IngresosYCobrosRepository (kpis, ingresos y cobros por mes,
                       antigüedad de cartera, por método de pago) y
@@ -404,7 +405,11 @@ database/
   actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
                         vez por día)
   recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
-views/                  plantillas PHP (una carpeta por sección), con partials
+views/                  plantillas PHP: una carpeta por sección o entidad (dashboard,
+                        boletas, pagos, clientes, funnel, cohortes, auditoria) y en
+                        ella una por pantalla, con el mismo nombre para lo mismo:
+                        listado, alta, edicion y anulacion (boletas y pagos; los
+                        clientes tienen listado, alta y ficha). Con partials
                         compartidos: _filtro_fechas.php (el período y el rango
                         Desde/Hasta de las cinco pantallas con filtro),
                         _avisos.php (los avisos de arriba de la pantalla),

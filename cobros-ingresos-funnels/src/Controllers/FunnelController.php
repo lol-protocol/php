@@ -17,7 +17,7 @@ final class FunnelController
 
         $funnelRepo = new FunnelRepository();
 
-        View::render('funnel/index', $filtros + [
+        View::render('funnel/conversion', $filtros + [
             'resumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'porCanal' => $funnelRepo->porCanal($desde, $hasta),
             'porPais' => $funnelRepo->porPais($desde, $hasta),

@@ -17,7 +17,7 @@ final class CohortesController
         $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
 
-        View::render('cohortes/index', $filtros + [
+        View::render('cohortes/conversion_y_ltv', $filtros + [
             'tasas' => MonedaRepository::estadoDeLasTasas(),
             'cohortes' => (new FunnelRepository())->cohortes($desde, $hasta),
             'ltvPorCohorte' => (new SegmentacionRepository())->ltvPorCohorte(),

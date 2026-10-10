@@ -34,7 +34,7 @@ final class PagosController
         $ingresosRepo = new IngresosYCobrosRepository();
         $listado = (new PagoRepository())->listado($desde, $hasta, $cliente ?: null, $pagina);
 
-        View::render('pagos/index', $filtros + [
+        View::render('pagos/listado', $filtros + [
             'cliente' => $cliente,
             'pagina' => $listado['pagina'],
             'tasas' => MonedaRepository::estadoDeLasTasas(),
@@ -145,7 +145,7 @@ final class PagosController
             }
         }
 
-        View::render('pagos/nuevo', [
+        View::render('pagos/alta', [
             'clientes' => $clienteRepo->paraSelector(),
             'clientesTruncados' => $clienteRepo->superaElLimiteDelSelector(),
             'clienteElegido' => $clienteElegido,
@@ -281,7 +281,7 @@ final class PagosController
             $pago = array_merge($pago, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
         }
 
-        View::render('pagos/editar', [
+        View::render('pagos/edicion', [
             'pago' => $pago,
             'error' => $error,
             'activePage' => 'pagos',
@@ -339,7 +339,7 @@ final class PagosController
             exit;
         }
 
-        View::render('pagos/anular', [
+        View::render('pagos/anulacion', [
             'pago' => $pago,
             'activePage' => 'pagos',
             'titulo' => 'Anular pago',

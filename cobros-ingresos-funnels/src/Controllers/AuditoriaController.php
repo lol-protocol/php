@@ -21,7 +21,7 @@ final class AuditoriaController
             isset($_GET['despues']) ? (string) $_GET['despues'] : null
         );
 
-        View::render('auditoria/index', [
+        View::render('auditoria/historial', [
             'registros' => $pagina['filas'],
             'masAntiguas' => $pagina['masAntiguas'],
             'masRecientes' => $pagina['masRecientes'],

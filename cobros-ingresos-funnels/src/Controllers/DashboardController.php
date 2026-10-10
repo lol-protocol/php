@@ -31,7 +31,7 @@ final class DashboardController
         [$desdeAnio, $hastaAnio] = FiltroDePeriodo::rangoAnioAnterior($desde, $hasta);
         $segmentacion = $segmentacionRepo->topPorDimensiones();
 
-        View::render('dashboard', $filtros + [
+        View::render('dashboard/panel', $filtros + [
             'tasas' => MonedaRepository::estadoDeLasTasas(),
             'kpis' => $ingresosRepo->kpis($desde, $hasta),
             'kpisAnterior' => $ingresosRepo->kpis($desdeAnt, $hastaAnt),
