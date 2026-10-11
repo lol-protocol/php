@@ -1,0 +1,95 @@
+# Marcalibros — plan, decisiones y estado
+
+Documento de traspaso: resume lo acordado en la conversación original para poder continuar desde Claude Code.
+
+## Qué es
+
+**Marcalibros** son marcadores de lectura con diseño propio para Plataforma POS (herramienta de etiquetado NLP sobre textos de Project Gutenberg) y su lector de textos. Este repo contiene el catálogo y el generador que los produce.
+
+## Decisiones tomadas
+
+- **Proporción 7:1.** Hoy es una tira horizontal de 1400×200 (2800×400 para alta densidad). La orientación horizontal es una suposición: confirmar si el lector necesita también una versión vertical (1:7).
+- **1000 marcalibros iniciales** = 10 movimientos literarios × 10 autores × 10 variantes.
+- **Solo 100 en JPG y 900 en SVG.** Regla actual: la variante 01 de cada autor es JPG, el resto SVG.
+- **Generación automática**, no a mano: un generador determinista (misma entrada, misma salida) lee `catalog/taxonomia.yaml`.
+- **Estilos conectados con estilos literarios y autores.**
+- **Marcalibros de usuario:** los usuarios pueden crear los suyos eligiendo imágenes de la biblioteca o subiendo las propias.
+- **Estilo visual:** híbrido. Iconos planos para la interfaz de etiquetado y estética de grabado para el lector y los paisajes.
+- Carpeta y rama llevan la palabra "marcalibros".
+
+## Movimientos y autores propuestos
+
+Solo hay 4 autores por movimiento; faltan 6 en cada uno. Fechas, obras y regiones están sin verificar.
+
+| Movimiento | Autores propuestos |
+|---|---|
+| Romanticismo | Bécquer, Espronceda, Poe, Byron |
+| Realismo | Blest Gana, Galdós, Balzac, Dickens |
+| Naturalismo | Zola, Pardo Bazán, Maupassant, Blasco Ibáñez |
+| Modernismo | Rubén Darío, José Martí, Valle-Inclán, Nervo |
+| Vanguardias | Huidobro, Lorca, Apollinaire, Tzara |
+| Gótico | Mary Shelley, Bram Stoker, Ann Radcliffe, Le Fanu |
+| Barroco | Sor Juana Inés de la Cruz, Quevedo, Góngora, Calderón |
+| Clasicismo | Homero, Virgilio, Racine, Garcilaso |
+| Simbolismo | Baudelaire, Mallarmé, Rimbaud, Verlaine |
+| Realismo mágico | García Márquez, Rulfo, Carpentier, Asturias |
+
+Los nombres de autores se usan solo como metadato e inspiración: sin citas, portadas ni retratos.
+
+## Estado actual
+
+Prototipo de **Romanticismo / Gustavo Adolfo Bécquer**: 10 piezas (1 JPG y 9 SVG). En `taxonomia.yaml` solo existe ese autor.
+
+```
+catalog/taxonomia.yaml   fuente de verdad (movimiento → autor → motivos)
+catalog/svg/             salida del generador (SVG)
+catalog/jpg/             salida del generador (JPG con grano)
+catalog/manifest.json    índice generado
+catalog/revision/        hojas de contacto para revisión humana
+generator/scene.py       modelo de escena compartido (degradado, círculo, polígono)
+generator/plantillas.py  paletas y plantillas por movimiento
+generator/render_svg.py  escena → SVG determinista
+generator/render_raster.py  escena → imagen (2× supersampling, grano opcional)
+generator/qa.py          validaciones, detección de duplicados, hojas de contacto
+generator/build.py       orquestador
+```
+
+Generar: `pip install -r generator/requirements.txt` y luego `python generator/build.py --movimiento romanticismo` (o `--all`).
+
+Verificado:
+- El build es determinista (hashes idénticos al regenerar).
+- Los 9 SVG renderizan en Chromium (vía Playwright) a 1400×200 exactos, con diferencia media de 0,6 sobre 255 por píxel respecto del renderer raster de respaldo.
+- Límites de QA: SVG ≤ 10 KB, JPG ≤ 150 KB, sin referencias externas, sin EXIF.
+
+Nota de entorno: la hoja de contacto de `build.py` rasteriza los SVG con ImageMagick y, si falla, usa el renderer raster como respaldo. Falta integrar Chromium como rasterizador fijo del QA.
+
+## Mejoras pendientes (de la revisión del plan)
+
+**Prioridad alta**
+1. **Variedad insuficiente.** Una simulación de 100 piezas de un movimiento dio 186 de 4.950 pares casi idénticos con el umbral actual (11 con uno más estricto). La métrica es burda, pero indica el riesgo. Causa: 3 paletas × 3–4 motivos sobre la misma composición de colinas. Mejora: más arquetipos de composición, 6 o más paletas por movimiento, ornamentos por capas, y que el detector de duplicados bloquee el build y cambie la semilla en vez de solo avisar.
+2. **El vínculo literario es solo metadato.** Propuesta: que cada variante sea una obra o tema del autor (10 por autor), con motivos tomados de una biblioteca compartida (~40) y una gramática visual por movimiento. Los 1000 registros de obras y fechas deben tratarse como borrador a verificar.
+3. **Enlace con Gutenberg.** Cada autor y obra debería llevar su id de Gutenberg para que el lector sugiera el marcalibro del texto abierto. Riesgo: Gutenberg solo aloja obras de dominio público, así que los autores del Realismo mágico probablemente no tienen textos allí. No se pudo confirmar (el sitio bloquea la consulta automática): verificar a mano y considerar reemplazar ese movimiento.
+
+**Otras**
+- Plan original perdido: marca y logo, iconos de 24×24, ilustraciones de estados vacíos, cabeceras de 1920×1080, previews sociales de 1200×630 y variantes claro y oscuro no están agendados desde el giro a marcalibros. Decidir si son una línea aparte o se descartan.
+- Sacar la paleta del código a un `brand-tokens.yaml`: base de marca más un acento por movimiento, con contraste validado para texto encima.
+- Dar un rol a los 100 JPG: biblioteca de imágenes para marcalibros de usuario, con mayor resolución (por ejemplo 2800×400) para poder recortar.
+- Build: falta la compilación incremental (ya hay hashes en el manifest) y los tests con hashes de referencia. Fijar la versión de Python en CI.
+- Git: regenerar 900 SVG por cada ajuste de plantilla ensucia el historial. Recomendación: versionar taxonomía, generador, manifest y unas pocas muestras, y publicar el catálogo completo como artefacto de CI.
+- Modelo de datos: separar el diseño del marcalibro (catálogo y recetas de usuario) de la marca guardada en un texto (id del texto, rango de caracteres, etiqueta, id del diseño).
+- Subidas de usuario: solo JPG, PNG y WebP; volver a codificar la imagen (no solo quitar EXIF); limitar píxeles (bombas de descompresión); nombres aleatorios; cuota por usuario; moderación; servir como `<img>` desde otro origen; no aceptar SVG subidos.
+
+## Orden propuesto
+
+1. Variedad, bloqueo de duplicados, QA con Chromium y tests, sobre el prototipo.
+2. Taxonomía v2 (obras, biblioteca de motivos, ids de Gutenberg) y completar Romanticismo con 10 autores.
+3. Resto de los movimientos.
+4. Editor de marcalibros de usuario (recetas en JSON: plantilla, imagen, recorte, texto).
+5. Línea de marca base.
+
+## Decisiones abiertas
+
+- Orientación: ¿solo horizontal 7:1 o también vertical?
+- ¿Se reemplaza el Realismo mágico por un movimiento con más obras de dominio público?
+- ¿Catálogo completo versionado en git o publicado como artefacto de CI?
+- ¿Qué se hace con el plan original de marca (logo, iconos, estados vacíos, cabeceras)?

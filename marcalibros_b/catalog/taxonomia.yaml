@@ -1,0 +1,23 @@
+# Taxonomía de marcalibros. Fuente de verdad para generator/build.py.
+# Prototipo: solo Romanticismo / Gustavo Adolfo Bécquer.
+#
+# Regla de formato: la variante 01 de cada autor es JPG (paisaje rasterizado);
+# el resto de variantes son SVG. Con 10 movimientos × 10 autores × 10 variantes
+# el total queda en 100 JPG y 900 SVG.
+
+version: 0.1
+ancho: 1400
+alto: 200
+variante_jpg: 1
+
+movimientos:
+  - id: romanticismo
+    nombre: Romanticismo
+    paletas: [atardecer, amanecer, noche]
+    autores:
+      - id: becquer
+        nombre: Gustavo Adolfo Bécquer
+        epoca: "1836–1870"
+        region: España
+        variantes: 10
+        motivos: [torre, golondrinas, rio, luna]
