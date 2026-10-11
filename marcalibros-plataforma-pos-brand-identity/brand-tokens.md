@@ -40,9 +40,10 @@ Sobre `papel` solo se usan `tinta` y `verde` para eso. `ocre` y `niebla` sobre `
 
 ## Tipografía
 
-- **Títulos:** serif de apoyo al estilo grabado. Propuesta: Source Serif 4, con respaldo en `Georgia, serif`.
-- **Interfaz y texto corrido:** sans-serif. Propuesta: Inter, con respaldo en `system-ui, sans-serif`.
+- **Títulos:** serif de apoyo al estilo grabado. Source Serif 4 (normal y cursiva), con respaldo en `Georgia, serif`.
+- **Interfaz y texto corrido:** sans-serif. Inter, con respaldo en `system-ui, sans-serif`.
 - Ningún SVG de iconos incluye texto. Las fuentes solo se usan en la interfaz de la aplicación.
+- Ambas son variables, con licencia OFL, y viven en `app/public/assets/fuentes/` (solo el subconjunto latino, que cubre el español). La CSP permite `font-src 'self'`.
 
 ## Archivos
 

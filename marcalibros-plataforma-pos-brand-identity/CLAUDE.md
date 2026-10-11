@@ -16,7 +16,7 @@ El estado detallado y los pendientes están en `README.md`; la paleta y las medi
 ## Decisiones de la persona (no las cambies sin preguntar)
 
 - **Realismo mágico se queda** como movimiento propio. Los 10 movimientos literarios se mantienen.
-- Además de los movimientos hay **10 tipos de texto** (manuales, libros sagrados, leyes, cartas, diarios, ciencia, cocina, filosofía, teatro, viajes). Es una propuesta que aún **no confirmó**; los autores de inspiración son solo de los movimientos.
+- Además de los movimientos hay **10 tipos de texto** (manuales, libros sagrados, leyes, cartas, diarios, ciencia, cocina, filosofía, teatro, viajes). Ya están **confirmados** junto con los movimientos y sus autores; los autores de inspiración son solo de los movimientos.
 - Son **1000 marcalibros** en total.
 - La aplicación es **independiente y sin login**. **No la conectes con Plataforma POS** hasta que lo pida; todavía no se sabe dónde vive esa plataforma ni cómo se identificará a las personas.
 - Los libros sagrados no llevan símbolos de una religión concreta.
@@ -41,9 +41,9 @@ Después de regenerar, `git status` no debe mostrar cambios si no tocaste el gen
 - Los SVG del catálogo se sirven con `Content-Security-Policy: sandbox`.
 - Un motivo nuevo del generador debe pasar el límite de 10 KB y no repetirse: usa menos figuras o menos puntos antes que subir el límite.
 
-## Entorno donde se escribió esto (puede cambiar)
+## Entorno y verificación
 
-- Packagist estaba bloqueado por la política de red de la organización: no se pudo instalar PHPUnit ni PHPStan, y no hay `composer.lock`. Las pruebas (95 del módulo y 121 de la aplicación) se ejecutaron con un ejecutor de reemplazo que **no está en el repositorio**. No intentes saltarte el bloqueo; si tienes red a Packagist, corre PHPUnit y PHPStan (nivel 6) y confirma que pasan.
-- Las pruebas de navegador (subida real, rechazos, límite de intentos, borrado, teclado, móvil, sin JavaScript) se hicieron con Playwright a mano y tampoco están en el repositorio. Si agregas una prueba de extremo a extremo, evita `wait_for_function` con texto: la CSP bloquea `eval`.
-- No hay CI para este proyecto. El workflow del repositorio filtra por rutas y no incluye esta carpeta.
-- No hay una fuente de la marca instalada: se ve con Georgia y la fuente del sistema.
+- `composer.lock` de `php/` y `app/` está en el repositorio. En el entorno donde se escribió esto, Packagist respondía pero `github.com` no (403), así que PHPUnit 10.5 se instaló y las pruebas pasaron con PHPUnit real (95 del módulo y 121 de la aplicación; 1 omitida por correr como root y 2 avisos esperados de una prueba que fuerza plantillas faltantes), pero **PHPStan no se pudo instalar ni correr** (su paquete se descarga de GitHub). El CI lo corre en nivel 6: si falla ahí, corrígelo.
+- Las pruebas de navegador (subida real, rechazos, límite de intentos, borrado, teclado, móvil, sin JavaScript) se hicieron con Playwright a mano y no están en el repositorio. Si agregas una prueba de extremo a extremo, evita `wait_for_function` con texto: la CSP bloquea `eval`.
+- CI: `.github/workflows/pruebas-marcalibros.yml` (PHPUnit en PHP 8.1 y 8.3, PHPStan nivel 6, y comprobación de que el generador no cambia el catálogo).
+- Las fuentes (Source Serif 4 e Inter) están incluidas en `app/public/assets/fuentes/`; la CSP lleva `font-src 'self'`. No se comprobó el aspecto en un navegador.

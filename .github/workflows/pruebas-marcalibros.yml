@@ -1,0 +1,75 @@
+name: Pruebas marcalibros
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "marcalibros-plataforma-pos-brand-identity/**"
+      - ".github/workflows/pruebas-marcalibros.yml"
+  pull_request:
+    paths:
+      - "marcalibros-plataforma-pos-brand-identity/**"
+      - ".github/workflows/pruebas-marcalibros.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php:
+    name: ${{ matrix.proyecto }} (PHP ${{ matrix.php }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        proyecto: [php, app]
+        php: ["8.1", "8.3"]
+    defaults:
+      run:
+        working-directory: marcalibros-plataforma-pos-brand-identity/${{ matrix.proyecto }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: fileinfo, gd, mbstring, exif
+          tools: composer:v2
+
+      # app/ enlaza ../php por ruta, así que su lock depende del módulo.
+      - run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: PHPUnit
+        run: ./vendor/bin/phpunit
+
+      - name: PHPStan (nivel 6)
+        run: ./vendor/bin/phpstan analyse --no-progress
+
+  catalogo:
+    name: El generador no cambia el catálogo
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: marcalibros-plataforma-pos-brand-identity
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pillow numpy
+
+      - run: python3 generator/generar_marcalibros.py
+
+      # Solo SVG y manifiesto: los JPG dependen de la versión de Pillow del ejecutor.
+      - name: Sin cambios en los SVG ni en el manifiesto
+        run: git diff --exit-code -- 'catalog/**/*.svg' catalog/manifest.json

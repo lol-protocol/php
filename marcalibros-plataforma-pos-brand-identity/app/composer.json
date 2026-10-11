@@ -30,7 +30,8 @@
         "ext-exif": "Permite corregir la orientación de las fotos tomadas con el celular"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.0"
+        "phpunit/phpunit": "^10.0",
+        "phpstan/phpstan": "^2.0"
     },
     "autoload": {
         "psr-4": {

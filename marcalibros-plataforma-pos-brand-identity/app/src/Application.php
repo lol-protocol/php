@@ -27,7 +27,7 @@ final class Application
     private const RATE_WINDOW = 3600;
 
     private const SECURITY_HEADERS = [
-        'Content-Security-Policy' => "default-src 'none'; img-src 'self' blob:; style-src 'self'; script-src 'self'; "
+        'Content-Security-Policy' => "default-src 'none'; img-src 'self' blob:; font-src 'self'; style-src 'self'; script-src 'self'; "
             . "connect-src 'none'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
         'X-Content-Type-Options' => 'nosniff',
         'X-Frame-Options' => 'DENY',

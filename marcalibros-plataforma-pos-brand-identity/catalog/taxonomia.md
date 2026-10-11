@@ -1,6 +1,6 @@
 # Taxonomía de marcalibros
 
-**Estado: borrador pendiente de confirmación.** Los movimientos, los autores y los **tipos de texto** de esta lista aún no están aprobados. Los 10 movimientos vienen de la primera versión; los 10 tipos de texto son una propuesta nueva a partir de lo que pediste ("manuales, libros sagrados, leyes, etc.") y conviene revisarlos.
+**Estado: confirmada.** Los 10 movimientos, sus autores y los 10 tipos de texto están aprobados por la persona que encarga el proyecto. Los tipos de texto salieron de su pedido ("manuales, libros sagrados, leyes, etc."). Cualquier cambio de categorías se consulta antes.
 
 El catálogo tiene **20 categorías en dos familias** y **50 marcalibros por categoría: 1000 en total**. Cada categoría tiene 4 motivos visuales, así que cada motivo aparece 12 o 13 veces, con colores, posiciones y variaciones distintas (no hay dos SVG idénticos: el generador lo comprueba). El número por categoría se cambia con `--por-categoria` en el generador.
 

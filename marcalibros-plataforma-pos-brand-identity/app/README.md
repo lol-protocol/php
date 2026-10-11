@@ -115,6 +115,5 @@ app/
 
 ## Pendiente
 
-- Las fuentes de la marca (Source Serif 4 e Inter) están declaradas pero no incluidas: sin ellas se usan Georgia y la fuente del sistema. Para incluirlas hay que agregar `font-src 'self'` a la CSP.
 - Sin modo oscuro.
 - El almacenamiento es disco local: sirve para un solo servidor.
