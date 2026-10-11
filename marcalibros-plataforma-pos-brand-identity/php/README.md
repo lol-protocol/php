@@ -56,7 +56,9 @@ Los marcalibros predefinidos se consultan con `Catalog`:
 ```php
 $catalog = new \Marcalibros\Catalog(__DIR__ . '/../catalog/manifest.json');
 $catalog->get('mb-gotico-01');           // lanza BookmarkRejectedException si no existe
-$catalog->byMovement('Gótico');
+$catalog->categories();                  // 20 categorías: movimientos literarios y tipos de texto
+$catalog->byCategory('realismo-magico');
+$catalog->byFamily('tipo de texto');
 ```
 
 ## Qué se valida y por qué

@@ -59,21 +59,65 @@ final class CatalogTest extends ImageTestCase
         }
     }
 
-    public function testFiltersByMovement(): void
+    public function testFiltersByCategory(): void
     {
-        $gothic = $this->catalog->byMovement('Gótico');
+        $gothic = $this->catalog->byCategory('gotico');
 
         $this->assertNotEmpty($gothic);
         foreach ($gothic as $entry) {
-            $this->assertSame('Gótico', $entry['movimiento']);
+            $this->assertSame('Gótico', $entry['categoria']);
+            $this->assertSame('movimiento literario', $entry['familia']);
         }
-        $this->assertSame([], $this->catalog->byMovement('No existe'));
+        $this->assertSame([], $this->catalog->byCategory('no-existe'));
     }
 
-    public function testEveryEntryListsItsInspirationAuthorsOnlyAsMetadata(): void
+    public function testKeepsMagicalRealismAmongTheCategories(): void
     {
-        foreach ($this->catalog->ids() as $id) {
-            $this->assertNotEmpty($this->catalog->get($id)['autores_inspiracion'], $id);
+        $this->assertTrue($this->catalog->hasCategory('realismo-magico'));
+        $this->assertNotEmpty($this->catalog->byCategory('realismo-magico'));
+    }
+
+    public function testHasBothFamiliesOfCategories(): void
+    {
+        $this->assertNotEmpty($this->catalog->byFamily('movimiento literario'));
+        $this->assertNotEmpty($this->catalog->byFamily('tipo de texto'));
+        $this->assertSame($this->catalog->count(), count($this->catalog->byFamily('movimiento literario')) + count($this->catalog->byFamily('tipo de texto')));
+        foreach (['manuales', 'libros-sagrados', 'leyes'] as $slug) {
+            $this->assertTrue($this->catalog->hasCategory($slug), $slug);
+        }
+    }
+
+    public function testEveryEntryBelongsToAListedCategoryAndTotalsMatch(): void
+    {
+        $counts = [];
+        foreach ($this->catalog->all() as $entry) {
+            $this->assertTrue($this->catalog->hasCategory($entry['categoria_slug']), $entry['id']);
+            $counts[$entry['categoria_slug']] = ($counts[$entry['categoria_slug']] ?? 0) + 1;
+        }
+        foreach ($this->catalog->categories() as $category) {
+            $this->assertSame($category['total'], $counts[$category['slug']] ?? 0, $category['slug']);
+        }
+    }
+
+    public function testEveryMotifHasADisplayNameWithAccents(): void
+    {
+        foreach ($this->catalog->all() as $entry) {
+            $name = $this->catalog->motifName($entry['motivo']);
+            $this->assertNotSame('', $name, $entry['id']);
+            $this->assertStringNotContainsString('_', $name, $entry['id']);
+        }
+        $this->assertSame('Árbol solitario', $this->catalog->motifName('arbol_solitario'));
+        $this->assertSame('Motivo nuevo', $this->catalog->motifName('motivo_nuevo'));
+    }
+
+    public function testOnlyLiteraryMovementsListInspirationAuthors(): void
+    {
+        foreach ($this->catalog->all() as $entry) {
+            if ($entry['familia'] === 'movimiento literario') {
+                $this->assertNotEmpty($entry['autores_inspiracion'], $entry['id']);
+            } else {
+                $this->assertArrayNotHasKey('autores_inspiracion', $entry, $entry['id']);
+            }
         }
     }
 
@@ -82,8 +126,9 @@ final class CatalogTest extends ImageTestCase
         $duplicated = $this->put('repetido.json', json_encode(['marcalibros' => [['id' => 'a'], ['id' => 'a']]]));
         $withoutList = $this->put('sin-lista.json', '{"otra":1}');
         $withoutId = $this->put('sin-id.json', json_encode(['marcalibros' => [['nombre' => 'x']]]));
+        $categoryWithoutSlug = $this->put('categoria-sin-slug.json', json_encode(['marcalibros' => [['id' => 'a']], 'categorias' => [['nombre' => 'x']]]));
 
-        foreach ([$duplicated, $withoutList, $withoutId, "$this->dir/no-existe.json"] as $path) {
+        foreach ([$duplicated, $withoutList, $withoutId, $categoryWithoutSlug, "$this->dir/no-existe.json"] as $path) {
             $message = null;
             try {
                 new Catalog($path);

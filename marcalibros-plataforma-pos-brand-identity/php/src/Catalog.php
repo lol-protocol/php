@@ -13,6 +13,12 @@ final class Catalog
     /** @var array<string, array<string, mixed>> */
     private array $entries = [];
 
+    /** @var array<string, array<string, mixed>> */
+    private array $categories = [];
+
+    /** @var array<string, string> */
+    private array $motifNames = [];
+
     public function __construct(string $manifestPath)
     {
         $json = @file_get_contents($manifestPath);
@@ -33,6 +39,19 @@ final class Catalog
                 throw new \RuntimeException('El identificador está repetido en el manifiesto: ' . $entry['id']);
             }
             $this->entries[$entry['id']] = $entry;
+        }
+
+        foreach ($manifest['motivos'] ?? [] as $id => $name) {
+            if (is_string($name)) {
+                $this->motifNames[(string) $id] = $name;
+            }
+        }
+
+        foreach ($manifest['categorias'] ?? [] as $category) {
+            if (!is_array($category) || !isset($category['slug']) || !is_string($category['slug'])) {
+                throw new \RuntimeException('Hay una categoría del manifiesto sin "slug".');
+            }
+            $this->categories[$category['slug']] = $category;
         }
     }
 
@@ -60,13 +79,61 @@ final class Catalog
     }
 
     /**
+     * Las categorías del catálogo (movimientos literarios y tipos de texto), en el orden del manifiesto.
+     *
      * @return list<array<string, mixed>>
      */
-    public function byMovement(string $movement): array
+    public function categories(): array
+    {
+        return array_values($this->categories);
+    }
+
+    /** Nombre de un motivo para mostrarlo ("arbol_solitario" da "Árbol solitario"). */
+    public function motifName(string $motif): string
+    {
+        return $this->motifNames[$motif] ?? ucfirst(str_replace('_', ' ', $motif));
+    }
+
+    public function hasCategory(string $slug): bool
+    {
+        return isset($this->categories[$slug]);
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public function byCategory(string $slug): array
+    {
+        return $this->filter('categoria_slug', $slug);
+    }
+
+    /**
+     * @param string $family "movimiento literario" o "tipo de texto"
+     * @return list<array<string, mixed>>
+     */
+    public function byFamily(string $family): array
+    {
+        return $this->filter('familia', $family);
+    }
+
+    /**
+     * Todos los marcalibros, en el orden del manifiesto.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function all(): array
+    {
+        return array_values($this->entries);
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    private function filter(string $field, string $value): array
     {
         return array_values(array_filter(
             $this->entries,
-            static fn (array $entry): bool => ($entry['movimiento'] ?? null) === $movement
+            static fn (array $entry): bool => ($entry[$field] ?? null) === $value
         ));
     }
 
