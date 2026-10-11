@@ -5,9 +5,11 @@
 //   npm run check:links -- --only=us,br       only these countries
 //   npm run check:links -- --json=report.json also write a machine-readable report
 //
-// HEAD first, GET when a server refuses HEAD. Exit status 1 when a link is broken
-// (404, 410, 5xx, DNS/TLS/timeout errors). 401/403/429 usually mean "bots not welcome",
-// not a dead page: they are reported as warnings and do not fail the run.
+// HEAD first, GET when a server refuses HEAD. Exit status 1 when a link is broken:
+// 404/410/5xx, a host that no longer exists (DNS), an expired or wrong certificate.
+// Warnings do not fail the run: 401/403/429 ("bots not welcome"), timeouts (many
+// government sites throttle or geo-block cloud runners) and an incomplete certificate
+// chain (browsers repair it, Node does not).
 // With GITHUB_STEP_SUMMARY set (GitHub Actions) a Markdown summary is appended to it.
 import { appendFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
@@ -19,7 +21,11 @@ const USER_AGENT = "privacy-laws-link-check/1.0 (+https://github.com/lol-protoco
 const SOFT = new Set([401, 403, 429]);
 
 /** @returns {{status: "ok"|"warning"|"broken", code: number|null, detail: string, finalUrl: string}} */
+// Network failures that say little about whether the page is gone.
+const SOFT_ERRORS = /timeout|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|UND_ERR_SOCKET|ECONNRESET|UNABLE_TO_VERIFY_LEAF_SIGNATURE|UNABLE_TO_GET_ISSUER_CERT/;
+
 export function classify(code, error, finalUrl) {
+  if (error && SOFT_ERRORS.test(error)) return { status: "warning", code: null, detail: `${error} (may work in a browser)`, finalUrl };
   if (error) return { status: "broken", code: null, detail: error, finalUrl };
   if (code >= 200 && code < 400) return { status: "ok", code, detail: "", finalUrl };
   if (SOFT.has(code)) return { status: "warning", code, detail: `HTTP ${code} (the site may block automated checks)`, finalUrl };

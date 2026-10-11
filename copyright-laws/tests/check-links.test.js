@@ -18,6 +18,10 @@ test("status codes are classified: bot walls warn, dead pages fail", () => {
   for (const code of [401, 403, 429]) assert.equal(classify(code, null, "u").status, "warning", String(code));
   for (const code of [404, 410, 500, 503]) assert.equal(classify(code, null, "u").status, "broken", String(code));
   assert.equal(classify(null, "getaddrinfo ENOTFOUND", "u").status, "broken");
+  assert.equal(classify(null, "fetch failed (CERT_HAS_EXPIRED)", "u").status, "broken");
+  for (const soft of ["timeout after 15 s", "fetch failed (UND_ERR_CONNECT_TIMEOUT)", "fetch failed (UNABLE_TO_VERIFY_LEAF_SIGNATURE)", "fetch failed (ECONNRESET)"]) {
+    assert.equal(classify(null, soft, "u").status, "warning", soft);
+  }
 });
 
 test("mapLimit keeps the order and never runs more than the limit at once", async () => {
@@ -60,7 +64,7 @@ test("the CLI checks every URL of the CSV, reports and fails only on broken link
     env: { ...process.env, GITHUB_STEP_SUMMARY: summaryFile },
   });
   assert.equal(run.status, 1, run.stdout + run.stderr);
-  assert.match(run.stdout, /7 URLs: 3 ok, 1 warnings, 3 broken/); // the two /ok rows share one URL
+  assert.match(run.stdout, /7 URLs: 3 ok, 1 warnings, 3 broken/); // a refused connection (port 9) is broken, not a timeout // the two /ok rows share one URL
 
   const { results } = JSON.parse(readFileSync(join(work, "report.json"), "utf-8"));
   const by = (path) => results.find((r) => r.url.endsWith(path));
