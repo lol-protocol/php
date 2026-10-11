@@ -83,7 +83,7 @@ return [
 
         'fisico' => [
             ['word' => 'brutto', 'riskType' => 'fisico', 'severity' => 'low'],
-            ['word' => 'orribile', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'orribile', 'riskType' => 'fisico', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'orrendo', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'ripugnante', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'schifoso', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -140,8 +140,8 @@ return [
             ['word' => 'paralitico', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'invalido', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'handicappato', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'pazzo', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'matto', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'pazzo', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
+            ['word' => 'matto', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'demente', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'storpia', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'zoppa', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -157,7 +157,7 @@ return [
             ['word' => 'paralitica', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'invalida', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'handicappata', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'pazza', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'pazza', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'matta', 'riskType' => 'discapacidad', 'severity' => 'medium'],
         ],
 

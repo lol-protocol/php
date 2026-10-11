@@ -3,6 +3,7 @@
 /** Turkish chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'tur', 'kind' => 'chat-topics'],
+    'everyday' => ['sık', 'şık', 'katıl', 'çinli'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high', 'also' => ['pornolar', 'pornoları', 'pornoya', 'pornoyu', 'pornoyla', 'pornodan']],

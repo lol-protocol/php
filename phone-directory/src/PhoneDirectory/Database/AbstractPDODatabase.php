@@ -2,7 +2,7 @@
 
 namespace PhoneDirectory\Database;
 
-use DefamatoryContentReview\AccentFolding;
+use DefamatoryContentReview\Normalization\AccentFolding;
 use PhoneDirectory\Exception\InvalidEncodingException;
 use PhoneDirectory\SqlDialect;
 use PhoneDirectory\TextFolding;

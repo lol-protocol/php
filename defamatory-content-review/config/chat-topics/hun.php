@@ -3,6 +3,7 @@
 /** Hungarian chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'hun', 'kind' => 'chat-topics'],
+    'everyday' => ['szemet', 'örült', 'santa', 'sértés'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high', 'also' => ['pornót', 'pornók', 'pornóra', 'pornófilm']],

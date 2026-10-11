@@ -124,7 +124,7 @@ return [
             ['word' => 'заика', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'уродец', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'парализованный', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'сумасшедший', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'сумасшедший', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'псих', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'инвалидка', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'хромая', 'riskType' => 'discapacidad', 'severity' => 'medium'],
@@ -136,7 +136,7 @@ return [
             ['word' => 'глухая', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'немая', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'парализованная', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'сумасшедшая', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'сумасшедшая', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'психичка', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
 

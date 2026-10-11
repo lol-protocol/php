@@ -11,10 +11,10 @@ return [
     ],
     'words' => [
         'hayop' => [
-            ['word' => 'hayop', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'hayop', 'riskType' => 'animal', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'baboy', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'aso', 'riskType' => 'animal', 'severity' => 'high', 'nameCollision' => true],
-            ['word' => 'ahas', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'ahas', 'riskType' => 'animal', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'unggoy', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'kalabaw', 'riskType' => 'animal', 'severity' => 'low'],
             ['word' => 'buwaya', 'riskType' => 'animal', 'severity' => 'high'],
@@ -51,7 +51,7 @@ return [
         ],
         'kapansanan' => [
             ['word' => 'sira ulo', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'baliw', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'baliw', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'bulag', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'bingi', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'pilay', 'riskType' => 'discapacidad', 'severity' => 'medium'],

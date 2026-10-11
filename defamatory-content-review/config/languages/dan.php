@@ -49,7 +49,7 @@ return [
             ['word' => 'klaphat', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'fjollet', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'tosset', 'riskType' => 'intelectual', 'severity' => 'low'],
-            ['word' => 'skør', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'skør', 'riskType' => 'intelectual', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'fjog', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'dumrian', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'dumhoved', 'riskType' => 'intelectual', 'severity' => 'medium'],
@@ -98,8 +98,8 @@ return [
             ['word' => 'vanskabt', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'lammet', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'handicappet', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'gal', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true],
-            ['word' => 'sindssyg', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'gal', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
+            ['word' => 'sindssyg', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
         ],
 
         'moral' => [

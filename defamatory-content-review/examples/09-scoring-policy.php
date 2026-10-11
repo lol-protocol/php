@@ -5,7 +5,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
-use DefamatoryContentReview\ScoringPolicy;
+use DefamatoryContentReview\Scoring\ScoringPolicy;
 
 $configDir = __DIR__ . '/../config';
 

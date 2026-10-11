@@ -97,7 +97,7 @@ return [
             ['word' => 'dadogós', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'torzszülött', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'béna', 'riskType' => 'discapacidad', 'severity' => 'high', 'nameCollision' => true],
-            ['word' => 'őrült', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'őrült', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
         ],
 
         'erkolcs' => [

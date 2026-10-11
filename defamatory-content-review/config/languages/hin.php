@@ -33,7 +33,7 @@ return [
             ['word' => 'मूर्ख', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'बेवकूफ', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'गँवार', 'riskType' => 'intelectual', 'severity' => 'high'],
-            ['word' => 'पागल', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'पागल', 'riskType' => 'intelectual', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'मंदबुद्धि', 'riskType' => 'intelectual', 'severity' => 'high'],
             ['word' => 'निरक्षर', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'अनपढ़', 'riskType' => 'intelectual', 'severity' => 'medium'],

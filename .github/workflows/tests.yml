@@ -26,6 +26,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          extensions: intl, mbstring
           coverage: none
           tools: phpstan:2.1
 
@@ -226,6 +227,29 @@ jobs:
 
       - name: Run tests
         run: node --test 'defamatory-content-review/js/tests/*.test.js'
+
+  iconos:
+    name: iconos (validación y generador)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate icon sets
+        run: python3 iconos-tools/validate.py
+
+      - name: Committed icons match the generator
+        run: |
+          python3 iconos-tools/build.py
+          git status --porcelain -- iconos-genealogia iconos-biblioteca galeria-iconos.html
+          git diff --exit-code --stat -- iconos-genealogia iconos-biblioteca galeria-iconos.html
+          test -z "$(git status --porcelain -- iconos-genealogia iconos-biblioteca galeria-iconos.html)"
 
   document-formats:
     name: document-formats (Node)

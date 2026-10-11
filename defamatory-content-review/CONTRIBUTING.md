@@ -83,11 +83,39 @@ Al revisar un idioma, amplía también su entrada en
    error. `DictionaryIntegrityTest::testNoLanguageHasTheSameWordInTwoCategories()`
    lo detecta, pero es mejor no depender de eso.
 
+## Revisar el chat con las planillas de `review/`
+
+`review/<código>.csv` es la forma más rápida de revisar un idioma sin leer PHP:
+una fila por término del diccionario y de los temas de chat, con su rango entre
+las 50.000 palabras más usadas del idioma y lo que decide hoy el chat, más las
+palabras frecuentes que el chat censuraría sin ser un término (las candidatas a
+falso positivo). Llená `correcto` y `comentario` y devolvé la planilla, o abrí un
+PR con los cambios. Qué significa cada columna y cómo se traduce cada corrección
+a la configuración (quitar, `ambiguous`, `everyday`) está en
+[`review/README.md`](review/README.md).
+
+Antes de mandar un idioma a revisar, regenerá su planilla con
+`bin/review-sheets.php` para que refleje el diccionario actual.
+
+Decisiones que la medición dejó abiertas y que no se tomaron sin hablantes
+nativos ni criterio del producto:
+
+- **Discapacidad** («ciego», «blind», «sordo»…): hoy se censuran; también son
+  descripciones neutras.
+- **Animales** («cerdo», «cow», «pig», «köpek»…): insulto o animal según el
+  contexto, que un filtro de palabras no ve.
+- **Identidad** («homo», «Jude», «yahudi», «zsidó», «ทอม», que además
+  es el nombre Tom): hoy se censuran como insulto aunque sean el nombre neutro
+  del grupo.
+- **Brujería** («bruja», «witch», «魔女», «penyihir»): `reject` por defecto.
+- **Palabrotas suaves muy frecuentes** («чёрт», «sakra», «cholera», «verdammt»):
+  hoy van a revisión.
+
 ## Subir de nivel de cobertura
 
 `meta.coverage` de cada archivo de idioma es la única fuente de verdad — no
 se declara en ningún otro lado (ver el aviso al principio de
-`config/languages/supported-languages.php` si hace falta el porqué). Los
+`config/supported-languages.php` si hace falta el porqué). Los
 niveles y sus mínimos de palabras, verificados por
 `DictionaryIntegrityTest::testWordCountMatchesDeclaredCoverageLevel()`:
 

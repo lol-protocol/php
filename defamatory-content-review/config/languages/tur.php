@@ -92,7 +92,7 @@ return [
             ['word' => 'dilsiz', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'kekeme', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'felçli', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'deli', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'deli', 'riskType' => 'discapacidad', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'meczup', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
 
