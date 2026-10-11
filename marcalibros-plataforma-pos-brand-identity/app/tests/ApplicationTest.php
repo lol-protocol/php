@@ -12,6 +12,18 @@ final class ApplicationTest extends AppTestCase
 {
     // ------------------------------------------------------------ cabeceras y rutas
 
+    public function testTheBrandFontsAreAllowedByThePolicyAndExist(): void
+    {
+        $csp = $this->get($this->app(), '/')->headers['Content-Security-Policy'] ?? '';
+        $this->assertStringContainsString("font-src 'self'", $csp);
+
+        $css = (string) file_get_contents(dirname(__DIR__) . '/public/assets/app.css');
+        $this->assertSame(3, preg_match_all('/url\("(fuentes\/[^"]+\.woff2)"\)/', $css, $m));
+        foreach ($m[1] as $file) {
+            $this->assertFileExists(dirname(__DIR__) . '/public/assets/' . $file);
+        }
+    }
+
     public function testEveryResponseCarriesTheSecurityHeaders(): void
     {
         $app = $this->app();

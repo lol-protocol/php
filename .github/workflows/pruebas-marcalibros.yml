@@ -17,7 +17,7 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   php:
@@ -66,10 +66,16 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install pillow numpy
+      - run: pip install -r generator/requirements.txt
 
       - run: python3 generator/generar_marcalibros.py
 
       # Solo SVG y manifiesto: los JPG dependen de la versión de Pillow del ejecutor.
+      # status (no diff) para detectar también archivos nuevos sin versionar.
       - name: Sin cambios en los SVG ni en el manifiesto
-        run: git diff --exit-code -- 'catalog/**/*.svg' catalog/manifest.json
+        run: |
+          cambios="$(git status --porcelain -- catalog/svg catalog/manifest.json)"
+          if [ -n "$cambios" ]; then
+            echo "$cambios"
+            exit 1
+          fi
