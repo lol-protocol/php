@@ -27,18 +27,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SETS = ('iconos-genealogia', 'iconos-biblioteca')
 RENDER, THUMB = 96, 24
 
-# Pares que ya estaban por debajo del mínimo al añadir esta comprobación. Cada uno se distingue solo por un
-# detalle de unos pocos píxeles; lo ideal es rediseñarlos y quitarlos de aquí.
-ACEPTADOS = {
-    frozenset(pair): reason for pair, reason in (
-        (('person_second_cousin', 'person_second_cousin_f'), 'solo cambia la forma de un nodo pequeño'),
-        (('person_great_aunt', 'person_great_uncle'), 'solo cambia la forma de un nodo pequeño'),
-        (('person_foster_mother', 'person_godmother'), 'solo cambia una marca de unos 4 px sobre un enlace corto'),
-        (('person_foster_father', 'person_godfather'), 'solo cambia una marca de unos 4 px sobre un enlace corto'),
-        (('person_foster_son', 'person_godson'), 'solo cambia una marca de unos 4 px sobre un enlace corto'),
-        (('person_foster_daughter', 'person_goddaughter'), 'solo cambia una marca de unos 4 px sobre un enlace corto'),
-    )
-}
+# Pares que pueden quedar por debajo del mínimo a propósito: {frozenset((icono_a, icono_b)): motivo}.
+# Hoy está vacío: si algún día un par debe quedar así, se anota aquí con su motivo en lugar de bajar el mínimo.
+ACEPTADOS = {}
 
 
 def thumbnail(path):

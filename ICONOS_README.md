@@ -46,7 +46,7 @@ Las tres variantes tienen exactamente los mismos nombres y carpetas.
 
 ## Cómo se leen
 
-**Genealogía.** Los parentescos son diagramas: naranja = el familiar, azul oscuro con punto = tú, gris claro = el resto. Cuadrado = hombre, círculo = mujer, rombo = sin especificar. Línea doble = matrimonio, línea cortada = divorcio, discontinua = adopción o parentesco parcial, punteada = acogida; una marca sobre el enlace distingue al padrino (anillo), al adoptante (punto lleno), al acogedor (cuadrado) y al tutor (punta de flecha). Un anillo discontinuo alrededor de un nodo significa "desconocido" o "sin pareja"; una línea ondulada une a una pareja sentimental y una barra gruesa roja, el vínculo de sangre. Las acciones y la interfaz usan la misma gramática que la biblioteca (abajo).
+**Genealogía.** Los parentescos son diagramas: naranja = el familiar, azul oscuro con punto = tú, gris claro = el resto. Cuadrado = hombre, círculo = mujer, rombo = sin especificar. Línea doble = matrimonio, línea cortada = divorcio, discontinua = adopción o parentesco parcial, punteada = acogida; una marca sobre el enlace distingue al padrino (anillo hueco), al adoptante (punto pequeño), al acogedor (cuadrado lleno) y al tutor (punta de flecha). En los diagramas densos (primos segundos, tíos abuelos, sobrinos nietos...) el familiar se dibuja más grande para que se vea su forma. Un anillo discontinuo alrededor de un nodo significa "desconocido" o "sin pareja"; una línea ondulada une a una pareja sentimental y una barra gruesa roja, el vínculo de sangre. Las acciones y la interfaz usan la misma gramática que la biblioteca (abajo).
 
 **Biblioteca.** Cada icono se compone con pocas formas geométricas y se lee por forma, relleno y posición:
 
@@ -86,7 +86,7 @@ python3 iconos-tools/similares.py  # busca iconos casi indistinguibles a 24 px
 
 El validador comprueba que cada SVG esté bien formado, mida 64x64 y no contenga texto; que las tres variantes tengan los mismos archivos y formas; que `gris/` no tenga colores cromáticos y `lineas/` no tenga rellenos; que los nombres sigan la convención y estén en la carpeta de su prefijo; que no haya ids repetidos ni iconos idénticos.
 
-`similares.py` dibuja la variante `gris` de cada icono a 24x24 y compara todos los pares de un mismo set; falla si dos se diferencian en menos de 0,8 (diferencia media por píxel, de 0 a 255; unos dos píxeles totalmente distintos de los 576). Muestra además los pares más cercanos, aunque no fallen. Los pares que ya estaban por debajo de ese límite al añadir la comprobación figuran en `ACEPTADOS`, con el motivo.
+`similares.py` dibuja la variante `gris` de cada icono a 24x24 y compara todos los pares de un mismo set; falla si dos se diferencian en menos de 0,8 (diferencia media por píxel, de 0 a 255; unos dos píxeles totalmente distintos de los 576). Muestra además los pares más cercanos, aunque no fallen. Si un par debe quedar por debajo a propósito, se anota con su motivo en `ACEPTADOS` (hoy está vacío).
 
 El workflow `.github/workflows/iconos.yml` ejecuta los tres pasos en cada cambio de los iconos y falla además si los SVG o la galería versionados no coinciden con lo que genera `build.py` (un archivo editado a mano o un generador cambiado sin regenerar).
 
@@ -95,4 +95,4 @@ El workflow `.github/workflows/iconos.yml` ejecuta los tres pasos en cada cambio
 - Varios pares masculino/femenino (`person_uncle` y `person_aunt`) se distinguen solo por la forma de un nodo, y adopción, acogida y padrinazgo por una pequeña marca sobre el enlace (punto, cuadrado, anillo).
 - Sin pictogramas, los iconos de la biblioteca no se reconocen a primera vista: hay que aprender el código (familia = forma, género = patrón) o acompañarlos de su etiqueta. Dentro de una familia, algunos patrones se parecen a tamaños pequeños (rayas y ondas, anillo y cruz).
 - El efecto 2.5D es una extrusión hacia abajo y a la derecha con sombra proyectada; no es una proyección isométrica estricta.
-- A 24 px hay pares que solo se distinguen por un detalle de unos pocos píxeles: seis de `person_` (`person_foster_mother` y `person_godmother`, `person_great_aunt` y `person_great_uncle`, `person_second_cousin` y `person_second_cousin_f`...) están aceptados de forma explícita en `similares.py`, y muchos pares masculino/femenino quedan apenas por encima del límite.
+- A 24 px los pares masculino/femenino de `person_` son los más cercanos entre sí (distancia de 0,9 a 1,3, frente a 0,8 de límite): `person_great_grandson` y `person_great_granddaughter`, `person_grandfather` y `person_grandmother`... Con los de la biblioteca ocurre algo parecido dentro de una familia de géneros (`genre_self_help` y `genre_travel`, 1,05).
