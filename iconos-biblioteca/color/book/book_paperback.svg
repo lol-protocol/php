@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_book_paperback_teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5AB6AE"/>
+      <stop offset="1" stop-color="#0D9488"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.6" cy="52" rx="13.4" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M17 16L17.2 14.4L17.8 13L18.8 11.8L20 10.8L21.4 10.2L23 10L39 10L40.6 10.2L42 10.8L43.2 11.8L44.2 13L45.4 14.6L46 16L46.2 17.6L46.2 43.6L46 45.2L45.4 46.6L44.4 47.8L43.2 48.8L41.8 49.4L40.2 49.6L24.2 49.6L22.6 49.4L21.2 48.8L20 47.8L19 46.6L17.8 45L17.2 43.6L17 42Z" fill="#08564F"/><rect x="17" y="10" width="28" height="38" rx="6" fill="url(#grad_book_paperback_teal)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M22 14Q26 29 22 44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  </g>
+</svg>

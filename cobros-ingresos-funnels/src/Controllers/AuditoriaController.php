@@ -4,22 +4,27 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Paginacion;
 use App\Repositories\AuditoriaRepository;
 use App\View;
 
 final class AuditoriaController
 {
+    /**
+     * Se pagina por cursor (?antes= pide las mas antiguas que esa fila, ?despues=
+     * las mas recientes): ver AuditoriaRepository::pagina(). Un ?pagina= de los
+     * links de antes de este cambio se ignora y se muestra lo mas reciente.
+     */
     public function index(): void
     {
-        $pagina = Paginacion::pagina();
-        $listado = (new AuditoriaRepository())->listado($pagina);
+        $pagina = (new AuditoriaRepository())->pagina(
+            isset($_GET['antes']) ? (string) $_GET['antes'] : null,
+            isset($_GET['despues']) ? (string) $_GET['despues'] : null
+        );
 
-        View::render('auditoria/index', [
-            'registros' => $listado['filas'],
-            'totalRegistros' => $listado['total'],
-            'totalPaginas' => $listado['totalPaginas'],
-            'pagina' => $listado['pagina'],
+        View::render('auditoria/historial', [
+            'registros' => $pagina['filas'],
+            'masAntiguas' => $pagina['masAntiguas'],
+            'masRecientes' => $pagina['masRecientes'],
             'activePage' => 'auditoria',
             'titulo' => 'Auditoría',
         ]);

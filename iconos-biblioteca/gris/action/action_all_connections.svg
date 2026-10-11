@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_action_all_connections_indigo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8F8F8F"/>
+      <stop offset="1" stop-color="#5B5B5B"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.6" cy="56" rx="21.7" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M31 30L12 12" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 30L50 12" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 30L12 48" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 30L50 48" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+  <g class="solids">
+    <g><path d="M25.4 34.2L27.2 36.6A7 7 0 0 0 38.4 28.2L36.6 25.8A7 7 0 0 0 25.4 34.2Z" fill="#353535"/><circle cx="31" cy="30" r="7" fill="url(#grad_action_all_connections_indigo)"/></g>
+    <g><path d="M8.8 14.4L10 16A4 4 0 0 0 16.4 11.2L15.2 9.6A4 4 0 0 0 8.8 14.4Z" fill="#353535"/><circle cx="12" cy="12" r="4" fill="url(#grad_action_all_connections_indigo)"/></g>
+    <g><path d="M46.8 14.4L48 16A4 4 0 0 0 54.4 11.2L53.2 9.6A4 4 0 0 0 46.8 14.4Z" fill="#353535"/><circle cx="50" cy="12" r="4" fill="url(#grad_action_all_connections_indigo)"/></g>
+    <g><path d="M8.8 50.4L10 52A4 4 0 0 0 16.4 47.2L15.2 45.6A4 4 0 0 0 8.8 50.4Z" fill="#353535"/><circle cx="12" cy="48" r="4" fill="url(#grad_action_all_connections_indigo)"/></g>
+    <g><path d="M46.8 50.4L48 52A4 4 0 0 0 54.4 47.2L53.2 45.6A4 4 0 0 0 46.8 50.4Z" fill="#353535"/><circle cx="50" cy="48" r="4" fill="url(#grad_action_all_connections_indigo)"/></g>
+  </g>
+</svg>

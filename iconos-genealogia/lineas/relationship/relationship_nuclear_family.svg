@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="links">
+    <path d="M19.8 11.6L43.8 11.6M19.8 15.4L43.8 15.4" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="1.6"/>
+    <path d="M31 13.5L31 30.5L21 30.5L21 41" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 13.5L31 30.5L41 30.5L41 41" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M4.2 8.7L4.3 8.2L4.5 7.7L4.8 7.3L5.2 7L5.7 6.8L6.2 6.7L15.8 6.7L16.3 6.8L16.8 7L17.2 7.3L17.5 7.7L19.2 10L19.4 10.5L19.5 11L19.5 20.5L19.4 21.1L19.2 21.6L18.9 22L18.5 22.3L18 22.5L17.5 22.6L8 22.6L7.4 22.5L6.9 22.3L6.5 22L6.2 21.6L4.5 19.3L4.3 18.8L4.2 18.3Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="4.2" y="6.7" width="13.6" height="13.6" rx="2" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M45 18L46.7 20.3A7.5 7.5 0 0 0 58.7 11.3L57 9A7.5 7.5 0 0 0 45 18Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><circle cx="51" cy="13.5" r="7.5" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M14.6 47.5L14.7 47.1L14.8 46.8L15 46.4L19.9 41.5L20.3 41.3L20.6 41.1L21 41.1L21.4 41.1L21.7 41.3L22.1 41.5L27 46.4L27.2 46.8L28.9 49L29.1 49.4L29.1 49.8L29.1 50.2L28.9 50.5L28.7 50.8L23.8 55.7L23.5 56L23.1 56.1L22.7 56.2L22.3 56.1L22 56L21.7 55.7L16.8 50.8L16.5 50.5L14.8 48.2L14.7 47.9Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="16" y="42.5" width="9.9" height="9.9" rx="1.5" transform="rotate(45 21 47.5)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M34.6 47.5L34.6 47.1L34.8 46.8L35 46.4L39.9 41.5L40.3 41.3L40.6 41.1L41 41.1L41.4 41.1L41.7 41.3L42.1 41.5L47 46.4L47.2 46.8L48.9 49L49.1 49.4L49.1 49.8L49.1 50.2L48.9 50.5L48.7 50.8L43.8 55.7L43.5 56L43.1 56.1L42.7 56.2L42.3 56.1L42 56L41.7 55.7L36.8 50.8L36.5 50.5L34.8 48.2L34.6 47.9Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="36" y="42.5" width="9.9" height="9.9" rx="1.5" transform="rotate(45 41 47.5)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+</svg>

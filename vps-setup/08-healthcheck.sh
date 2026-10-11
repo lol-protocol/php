@@ -6,6 +6,7 @@
 source "$(dirname "$0")/lib.sh"
 
 DOMAIN=${1:-""}
+[ -n "$DOMAIN" ] && require_valid domain "$DOMAIN" "El dominio (argumento 1)"
 FAILS=0
 WARNS=0
 

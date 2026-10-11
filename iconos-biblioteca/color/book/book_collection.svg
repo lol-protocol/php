@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_book_collection_brown" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B59479"/>
+      <stop offset="1" stop-color="#92613A"/>
+    </linearGradient>
+    <linearGradient id="grad_book_collection_indigo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8781ED"/>
+      <stop offset="1" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="grad_book_collection_amber" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E5A356"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.9" cy="51.8" rx="20.1" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M10 40L10.2 38.7L10.7 37.5L11.5 36.5L12.5 35.7L13.7 35.2L15 35L39 35L40.3 35.2L41.5 35.7L42.5 36.5L43.3 37.5L45.1 39.9L45.6 41.1L45.8 42.4L45.8 44.4L45.6 45.7L45.1 46.9L44.3 47.9L43.3 48.7L42.1 49.2L40.8 49.4L16.8 49.4L15.5 49.2L14.3 48.7L13.3 47.9L12.5 46.9L10.7 44.5L10.2 43.3L10 42Z" fill="#553822"/><rect x="10" y="35" width="34" height="12" rx="5" fill="url(#grad_book_collection_brown)"/></g>
+    <g><path d="M14 29L14.2 27.7L14.7 26.5L15.5 25.5L16.5 24.7L17.7 24.2L19 24L43 24L44.3 24.2L45.5 24.7L46.5 25.5L47.3 26.5L49.1 28.9L49.6 30.1L49.8 31.4L49.8 33.4L49.6 34.7L49.1 35.9L48.3 36.9L47.3 37.7L46.1 38.2L44.8 38.4L20.8 38.4L19.5 38.2L18.3 37.7L17.3 36.9L16.5 35.9L14.7 33.5L14.2 32.3L14 31Z" fill="#2E2985"/><rect x="14" y="24" width="34" height="12" rx="5" fill="url(#grad_book_collection_indigo)"/></g>
+    <g><path d="M18 18L18.2 16.7L18.7 15.5L19.5 14.5L20.5 13.7L21.7 13.2L23 13L47 13L48.3 13.2L49.5 13.7L50.5 14.5L51.3 15.5L53.1 17.9L53.6 19.1L53.8 20.4L53.8 22.4L53.6 23.7L53.1 24.9L52.3 25.9L51.3 26.7L50.1 27.2L48.8 27.4L24.8 27.4L23.5 27.2L22.3 26.7L21.3 25.9L20.5 24.9L18.7 22.5L18.2 21.3L18 20Z" fill="#7E4503"/><rect x="18" y="13" width="34" height="12" rx="5" fill="url(#grad_book_collection_amber)"/></g>
+  </g>
+</svg>

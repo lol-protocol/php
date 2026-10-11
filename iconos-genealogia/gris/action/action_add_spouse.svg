@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_action_add_spouse_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8A8A8A"/>
+      <stop offset="1" stop-color="#535353"/>
+    </linearGradient>
+    <linearGradient id="grad_action_add_spouse_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A5A5A5"/>
+      <stop offset="1" stop-color="#7B7B7B"/>
+    </linearGradient>
+    <linearGradient id="grad_action_add_spouse_green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9D9D9D"/>
+      <stop offset="1" stop-color="#6F6F6F"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32" cy="58.9" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M14 26.1L36 26.1M14 29.9L36 29.9" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M8.4 32.2L9.9 34.3A7 7 0 0 0 21.2 25.9L19.6 23.8A7 7 0 0 0 8.4 32.2Z" fill="#303030"/><circle cx="14" cy="28" r="7" fill="url(#grad_action_add_spouse_ink)"/></g>
+    <g><path d="M30 28L30 27.6L30.2 27.3L30.4 27L35 22.4L35.3 22.2L35.6 22L36 22L36.4 22L36.7 22.2L37 22.4L41.6 27L41.8 27.3L43.4 29.4L43.5 29.7L43.6 30.1L43.5 30.4L43.4 30.8L43.2 31.1L38.6 35.7L38.3 35.9L37.9 36.1L37.6 36.1L37.2 36.1L36.9 35.9L36.6 35.7L31.9 31.1L31.7 30.8L30.2 28.7L30 28.4Z" fill="#474747"/><rect x="31.3" y="23.3" width="9.3" height="9.3" rx="1.4" transform="rotate(45 36 28)" fill="url(#grad_action_add_spouse_orange)"/></g>
+    <g><path d="M40.1 51.2L41.6 53.1A8.6 8.6 0 0 0 55.3 42.8L53.9 40.8A8.6 8.6 0 0 0 40.1 51.2Z" fill="#414141"/><circle cx="47" cy="46" r="8.6" fill="url(#grad_action_add_spouse_green)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M11.8 28a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0Z" fill="#FFFFFF"/>
+    <path d="M42.8 46H51.2M47 41.8V50.2" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

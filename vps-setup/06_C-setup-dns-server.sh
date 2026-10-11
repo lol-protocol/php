@@ -4,9 +4,18 @@ set -e
 # Source shared functions
 source "$(dirname "$0")/lib.sh"
 
-DOMAIN=${1:-"initech.fun"}
-VPS_IP=${2:-"158.69.222.245"}
+# Uso: ./06_C-setup-dns-server.sh <dominio> [ip-del-vps] [secundario-ovh]
+#   Sin IP se usa la IP publica detectada de este servidor (si no se puede detectar, falla).
+#   VPS_IP6=<ipv6> agrega tambien registros AAAA (solo si el VPS tiene IPv6 publica).
+DOMAIN=${1:-}
+require_arg "$DOMAIN" "$0 <dominio> [ip-del-vps] [secundario-ovh]"
+VPS_IP=${2:-$(get_public_ip)}
 OVH_SECONDARY=${3:-"sdns2.ovh.ca"}
+VPS_IP6=${VPS_IP6:-}
+require_valid domain "$DOMAIN" "El dominio (argumento 1)"
+require_valid ipv4 "$VPS_IP" "La IP del VPS (argumento 2)"
+[ -z "$VPS_IP6" ] || require_valid ipv6 "$VPS_IP6" "VPS_IP6"
+require_valid domain "$OVH_SECONDARY" "El servidor secundario (argumento 3)"
 
 print_header "06_C" "Configurando Servidor DNS (BIND9)"
 
@@ -52,6 +61,13 @@ SERIAL=$(date +%s)
 # \$TTL con backslash: queremos que BIND lea "$TTL" literal (es sintaxis
 # propia de los archivos de zona), no que bash intente sustituir una
 # variable de shell llamada TTL que no existe.
+AAAA_RECORDS=""
+if [ -n "$VPS_IP6" ]; then
+    AAAA_RECORDS="ns1     IN      AAAA    $VPS_IP6
+@       IN      AAAA    $VPS_IP6
+www     IN      AAAA    $VPS_IP6"
+fi
+
 sudo tee /etc/bind/zones/db.$DOMAIN > /dev/null <<EOF
 \$TTL    3600
 @       IN      SOA     ns1.$DOMAIN. admin.$DOMAIN. (
@@ -67,6 +83,10 @@ sudo tee /etc/bind/zones/db.$DOMAIN > /dev/null <<EOF
 ns1     IN      A       $VPS_IP
 @       IN      A       $VPS_IP
 www     IN      A       $VPS_IP
+; CAA: solo Let's Encrypt puede emitir certificados para este dominio (si alguien
+; intentara obtener uno en otra autoridad, esa autoridad debe rechazarlo).
+@       IN      CAA     0 issue "letsencrypt.org"
+${AAAA_RECORDS}
 EOF
 
 # Registra la zona en la configuracion principal de BIND. 'type master' indica
@@ -90,6 +110,16 @@ zone "$DOMAIN" {
     also-notify { $OVH_SECONDARY_IP; };
 };
 EOF
+fi
+
+# Servidor SOLO autoritativo: sin recursion no puede usarse como resolvedor abierto
+# (amplificacion DNS / abuso) ahora que el puerto 53 queda abierto a internet. El default
+# de BIND ya limita la recursion a localhost/localnets, pero en una subred compartida
+# "localnets" incluye vecinos. Solo se toca si el archivo no define ya 'recursion'.
+NAMED_OPTIONS=${NAMED_OPTIONS:-/etc/bind/named.conf.options}
+if [ -f "$NAMED_OPTIONS" ] && ! sudo grep -qE '^[[:space:]]*recursion[[:space:]]' "$NAMED_OPTIONS"; then
+    sudo sed -i '0,/^options[[:space:]]*{/s//options {\n\trecursion no;\n\tallow-recursion { none; };/' "$NAMED_OPTIONS"
+    echo "  BIND configurado como servidor autoritativo (recursion no)."
 fi
 
 # Valida la sintaxis ANTES de reiniciar -- un error aqui tumbaria la

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_format_audio_edition_indigo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8781ED"/>
+      <stop offset="1" stop-color="#4F46E5"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="25.5" cy="54.4" rx="14.3" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M10 20L10.2 18.4L10.8 17L11.8 15.8L13 14.8L14.4 14.2L16 14L32 14L33.6 14.2L35 14.8L36.2 15.8L37.2 17L40.2 21L40.8 22.4L41 24L41 46L40.8 47.6L40.2 49L39.2 50.2L38 51.2L36.6 51.8L35 52L19 52L17.4 51.8L16 51.2L14.8 50.2L13.8 49L10.8 45L10.2 43.6L10 42Z" fill="#2E2985"/><rect x="10" y="14" width="28" height="34" rx="6" fill="url(#grad_format_audio_edition_indigo)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M43.2 23.6A9 9 0 0 1 43.2 38.4" fill="none" stroke="#4F46E5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M47.2 17.9A16 16 0 0 1 47.2 44.1" fill="none" stroke="#4F46E5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

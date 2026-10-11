@@ -76,4 +76,19 @@ class StructuralEvasionTest extends TestCase
             'Las variantes por distancia de edición no están cubiertas (ver el docblock de este test).'
         );
     }
+
+    /**
+     * Un término corto hallado en OTRA palabra del texto no debe apagar uno
+     * más grave aquí sólo porque su texto es, por casualidad, substring del
+     * de esta palabra: "rata" (animal/medium) es substring literal de
+     * "negrata" (etnico/high) una vez pegada "ne-grata".
+     */
+    public function testUnrelatedShortMatchDoesNotSuppressALongerOneElsewhere(): void
+    {
+        $matches = $this->reviewer->languages()->wordList('spa')->findInText('esa rata, ne-grata');
+        $found = array_column($matches, 'found');
+
+        $this->assertContains('rata', $found);
+        $this->assertContains('ne-grata', $found);
+    }
 }

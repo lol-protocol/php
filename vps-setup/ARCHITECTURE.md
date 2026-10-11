@@ -178,6 +178,13 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 - ✅ Puertos abiertos: 22 (SSH), 80 y 443 (HTTP/HTTPS, vía el perfil `Nginx Full` de UFW que abre `02_E`)
 - ⚠️ SSH por contraseña **hasta que corras `07_C-harden-ssh.sh`** (opcional, no va en `install-all.sh` porque necesita tu llave pública y que compruebes el login por llave antes: autoriza la llave y desactiva contraseña y login de root; `--revert` lo deshace)
 
+- ✅ Nginx oculta su versión (`server_tokens off`) y un vhost por defecto corta (444 / handshake TLS rechazado) las peticiones por IP o con Host ajeno (`07_B`)
+- ✅ Tomcat solo en `127.0.0.1:8080`; con la app en la raíz, Nginx devuelve 404 para `/manager` y `/host-manager` (`06_D`)
+- ✅ BIND (si se usa) es solo autoritativo, sin recursión, y solo transfiere la zona a OVH (`06_C`)
+- ✅ Apps Python bajo systemd con `NoNewPrivileges`, `PrivateTmp`, `ProtectSystem=full`, `ProtectHome` (`06_B`)
+- ⚠️ Webmin (puerto 10000) queda abierto a internet salvo que uses `WEBMIN_ALLOW_FROM=<tu IP>` al instalarlo (`02_J`)
+- ⚠️ Las apps comparten el usuario `www-data` (sin aislamiento entre apps); ver "Límites conocidos" en el README
+
 ### Base de Datos
 - ✅ PostgreSQL sin acceso externo
 - ✅ Autenticación local (UNIX socket)
@@ -270,9 +277,9 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
 - **Uptime:** > 99.5%
 - **Latencia:** < 200ms (P95)
 - **Errores HTTP:** < 1% (5xx)
-- **CPU:** < 80%
-- **RAM:** < 80%
-- **Disco:** < 85%
+- **Carga:** < 2x cores (umbral de `vps-monitor`, ver `09_A`)
+- **RAM:** < 90% (umbral de `vps-monitor`)
+- **Disco:** < 85% (umbral de `vps-monitor`)
 
 ### Logs
 - **Access Log:** `/var/log/nginx/[dominio]/access.log`

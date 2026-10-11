@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="solids">
+    <g><path d="M22.8 19.3L22.8 18.5L23.1 17.9L29.3 8.5L29.8 8L30.4 7.7L31 7.6L31.6 7.7L32.2 8L32.7 8.5L34 10.3L40.2 19.7L40.5 20.3L40.6 21L40.3 21.7L39.9 22.3L39.3 22.6L38.6 22.8L26.1 22.8L25.4 22.6L24.7 22.3L24.3 21.7L23 19.9Z" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/><path d="M29.3 8.5A2 2 0 0 1 32.7 8.5L38.9 17.9A2 2 0 0 1 37.3 21L24.7 21A2 2 0 0 1 23.1 17.9Z" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M22.2 45.6L24 48A11 11 0 0 0 41.6 34.8L39.8 32.4A11 11 0 0 0 22.2 45.6Z" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="39" r="11" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+</svg>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_grandfather_paternal_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="grad_person_grandfather_paternal_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="grad_person_grandfather_paternal_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.2" cy="59.5" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M11 28.6L51 28.6M11 32.4L51 32.4" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+    <path d="M31 30.5L31 50.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M11 10.5L11 30.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M4.2 25.7L4.3 25.2L4.5 24.7L4.8 24.3L5.2 24L5.7 23.8L6.2 23.7L15.8 23.7L16.3 23.8L16.8 24L17.2 24.3L17.5 24.7L19.2 27L19.4 27.5L19.5 28L19.5 37.5L19.4 38.1L19.2 38.6L18.9 39L18.5 39.3L18 39.5L17.5 39.6L8 39.6L7.4 39.5L6.9 39.3L6.5 39L6.2 38.6L4.5 36.3L4.3 35.8L4.2 35.3Z" fill="#767C82"/><rect x="4.2" y="23.7" width="13.6" height="13.6" rx="2" fill="url(#grad_person_grandfather_paternal_mist)"/></g>
+    <g><path d="M45 35L46.7 37.3A7.5 7.5 0 0 0 58.7 28.3L57 26A7.5 7.5 0 0 0 45 35Z" fill="#767C82"/><circle cx="51" cy="30.5" r="7.5" fill="url(#grad_person_grandfather_paternal_mist)"/></g>
+    <g><path d="M25 55L26.7 57.3A7.5 7.5 0 0 0 38.7 48.3L37 46A7.5 7.5 0 0 0 25 55Z" fill="#29313D"/><circle cx="31" cy="50.5" r="7.5" fill="url(#grad_person_grandfather_paternal_ink)"/></g>
+    <g><path d="M4.2 5.7L4.3 5.2L4.5 4.7L4.8 4.3L5.2 4L5.7 3.8L6.2 3.7L15.8 3.7L16.3 3.8L16.8 4L17.2 4.3L17.5 4.7L19.2 7L19.4 7.5L19.5 8L19.5 17.5L19.4 18.1L19.2 18.6L18.9 19L18.5 19.3L18 19.5L17.5 19.6L8 19.6L7.4 19.5L6.9 19.3L6.5 19L6.2 18.6L4.5 16.3L4.3 15.8L4.2 15.3Z" fill="#883307"/><rect x="4.2" y="3.7" width="13.6" height="13.6" rx="2" fill="url(#grad_person_grandfather_paternal_orange)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M28.7 50.5a2.3 2.3 0 1 0 4.6 0a2.3 2.3 0 1 0 -4.6 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

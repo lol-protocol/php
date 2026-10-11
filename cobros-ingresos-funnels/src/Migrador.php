@@ -12,7 +12,7 @@ use RuntimeException;
  * database/migraciones es un cambio de esquema, y la tabla
  * migraciones_aplicadas recuerda cuales ya corrieron en esta base.
  *
- * Antes la unica forma de tener el esquema era database/seed.php, que
+ * Antes la unica forma de tener el esquema era database/recrear_con_datos_de_ejemplo.php, que
  * empezaba borrando todas las tablas: no habia manera de llevar un cambio
  * (un CHECK nuevo, la tabla notas_credito) a una base con datos reales sin
  * perderlos.

@@ -3,8 +3,11 @@ set -e
 
 source "$(dirname "$0")/lib.sh"
 
-DOMAIN=${1:-"app.initech.fun"}
+DOMAIN=${1:-}
+require_arg "$DOMAIN" "$0 <dominio> [context-path]   (ej. $0 app.initech.fun miapp)"
 CONTEXT_PATH=${2:-""}
+require_valid domain "$DOMAIN" "El dominio (argumento 1)"
+require_valid context_path "$CONTEXT_PATH" "El context path (argumento 2)"
 
 print_header "06_D" "Configurando Nginx -> Tomcat (Dominio: $DOMAIN, Context path: /${CONTEXT_PATH})"
 
@@ -13,6 +16,7 @@ if ! systemctl is-active --quiet tomcat10; then
     exit 1
 fi
 
+claim_nginx_vhost "$DOMAIN" "06_D-tomcat ${CONTEXT_PATH:-ROOT}"
 setup_nginx_domain_logs "$DOMAIN"
 
 # Cuando 'proxy_pass' incluye una URI (aunque sea "/"), Nginx reemplaza el
@@ -23,11 +27,24 @@ setup_nginx_domain_logs "$DOMAIN"
 PROXY_TARGET="http://127.0.0.1:8080/${CONTEXT_PATH}"
 [[ "$PROXY_TARGET" != */ ]] && PROXY_TARGET="${PROXY_TARGET}/"
 
+# Con la app en la raiz, "/" tambien alcanzaria /manager y /host-manager de Tomcat
+# (tomcat10-admin) desde internet. Se cortan en Nginx; con context path no hace falta:
+# ahi /manager llega como /<ctx>/manager, que es una ruta de TU app.
+MANAGER_BLOCK=""
+if [ -z "$CONTEXT_PATH" ]; then
+    MANAGER_BLOCK="
+    location ~ ^/(manager|host-manager)(/|\$) {
+        return 404;
+    }
+"
+fi
+
 # Nginx aqui actua puramente como reverse proxy: no sirve archivos propios,
 # solo reenvia todo el trafico del dominio publico hacia Tomcat (puerto 8080
 # local). El $CONTEXT_PATH es la subcarpeta bajo la que Tomcat publica tu
 # app (el nombre del .war sin la extension, ver el aviso final del script).
-sudo tee /etc/nginx/sites-available/$DOMAIN > /dev/null <<EOF
+sudo tee "$NGINX_DIR/sites-available/$DOMAIN" > /dev/null <<EOF
+# vps-setup: 06_D-tomcat ${CONTEXT_PATH:-ROOT}
 server {
     listen 80;
     listen [::]:80;
@@ -36,6 +53,7 @@ server {
     access_log /var/log/nginx/$DOMAIN/access.log;
     error_log /var/log/nginx/$DOMAIN/error.log;
 
+$MANAGER_BLOCK
     location / {
         proxy_pass $PROXY_TARGET;
         proxy_set_header Host \$host;
@@ -46,11 +64,8 @@ server {
 }
 EOF
 
-# El enlace en sites-enabled es lo que realmente activa el sitio
-sudo ln -sf /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/$DOMAIN
-
-sudo nginx -t              # valida ANTES de recargar, para no tumbar los sitios que ya funcionan
-sudo systemctl reload nginx
+# Activa el sitio, lo valida con nginx -t (si falla, lo desactiva) y recarga Nginx
+enable_nginx_site "$DOMAIN"
 
 # Si no se paso context path, la app va en la raiz de Tomcat, cuyo archivo
 # se llama ROOT.war (nunca ".war" a secas -- ese nombre no es valido)

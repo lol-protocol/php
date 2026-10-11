@@ -17,8 +17,9 @@ use PHPUnit\Framework\TestCase;
  * mira identificadores, claves ni columnas (los valores guardados como 'organico' o
  * 'Espanol' quedan sin tilde a proposito: son datos), ni una palabra seguida de "("
  * (el metodo Database::transaccion() en un mensaje), ni los datos de ejemplo del
- * seed y del catalogo de paises (database/paises_monedas.php: "Belgica", "Ciudad de
- * Mexico", "Suscripcion mensual"), que se escriben sin tildes en todo el conjunto.
+ * seed y del catalogo de paises (database/migraciones/005_catalogo_de_paises_y_monedas.sql:
+ * "Belgica", "Ciudad de Mexico", "Suscripcion mensual"), que se escriben sin tildes
+ * en todo el conjunto.
  */
 final class TextoVisibleTest extends TestCase
 {
@@ -111,10 +112,10 @@ final class TextoVisibleTest extends TestCase
     {
         $raiz = dirname(__DIR__, 2);
 
-        $vista = array_column(self::textosVisibles($raiz . '/views/auditoria/index.php'), 1);
+        $vista = array_column(self::textosVisibles($raiz . '/views/auditoria/historial.php'), 1);
         self::assertContains('Historial de cambios: ', array_map(static fn (string $t): string => substr($t, 0, 22), $vista));
 
-        $mensajes = implode(' ', array_column(self::textosVisibles($raiz . '/src/Controllers/ClienteController.php'), 1));
+        $mensajes = implode(' ', array_column(self::textosVisibles($raiz . '/src/Controllers/ClientesController.php'), 1));
         self::assertStringContainsString('Elegí un país válido.', $mensajes);
     }
 }

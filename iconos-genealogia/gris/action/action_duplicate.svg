@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_action_duplicate_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E1E1E1"/>
+      <stop offset="1" stop-color="#D3D3D3"/>
+    </linearGradient>
+    <linearGradient id="grad_action_duplicate_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A5A5A5"/>
+      <stop offset="1" stop-color="#7B7B7B"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.8" cy="50.3" rx="15.3" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M17 29.3L18.4 31.2A8.8 8.8 0 0 0 32.5 20.6L31 18.7A8.8 8.8 0 0 0 17 29.3Z" fill="#7B7B7B"/><circle cx="24" cy="24" r="8.8" fill="url(#grad_action_duplicate_mist)"/></g>
+    <g><path d="M31 42.3L32.5 44.4A8.8 8.8 0 0 0 46.6 33.8L45 31.7A8.8 8.8 0 0 0 31 42.3Z" fill="#474747"/><circle cx="38" cy="37" r="8.8" fill="url(#grad_action_duplicate_orange)"/></g>
+  </g>
+</svg>

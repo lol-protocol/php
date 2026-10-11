@@ -211,6 +211,22 @@ jobs:
           php bin/migrate.php pos
           php bin/migrate.php genealogy | grep -q 'sin migraciones pendientes'
 
+  chat-front-guard:
+    name: defamatory-content-review / front guard (Node)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Run tests
+        run: node --test 'defamatory-content-review/js/tests/*.test.js'
+
   document-formats:
     name: document-formats (Node)
     runs-on: ubuntu-latest

@@ -8,7 +8,7 @@ use App\Database;
 use PDO;
 
 /**
- * Lo que deja `php database/seed.php` tiene que ser algo que la app podria
+ * Lo que deja `php database/recrear_con_datos_de_ejemplo.php` tiene que ser algo que la app podria
  * haber producido por su cuenta: aca se revisa contra las reglas de la app, no
  * contra cifras concretas. El seed es reproducible (semilla fija: ver
  * SeedReproducibleTest), asi que el resultado de estos tests no cambia de una
@@ -58,5 +58,24 @@ final class DatosDeEjemploTest extends IntegracionTestCase
         );
 
         self::assertSame([], $pagos, 'ids de pagos con fecha anterior al alta de su cliente');
+    }
+
+    /**
+     * La base no deja crear a un menor, pero el seed tiene que cuidar la edad de
+     * cada pais antes de llegar al INSERT: con la de 18 para todos, un cliente de
+     * 19 en Tailandia (20) haria fallar todo el seed. Y como el catalogo se puede
+     * corregir despues con un UPDATE, tampoco puede quedar nadie cargado por
+     * debajo de la edad de su pais al correr el seed.
+     */
+    public function testNingunClienteTieneMenosEdadQueLaMayoriaDeSuPais(): void
+    {
+        $clientes = $this->ids(
+            'SELECT c.id
+             FROM clientes c JOIN paises p ON p.codigo = c.pais_codigo
+             WHERE c.fecha_nacimiento > CURRENT_DATE - make_interval(years => p.mayoria_de_edad)
+             ORDER BY c.id'
+        );
+
+        self::assertSame([], $clientes, 'ids de clientes que no llegan a la edad de mayoria de su pais');
     }
 }

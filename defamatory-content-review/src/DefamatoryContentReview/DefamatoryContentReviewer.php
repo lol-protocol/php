@@ -25,7 +25,7 @@ class DefamatoryContentReviewer
         $this->policy = $policy ?? ScoringPolicy::default();
         $this->languages = new LanguageAccess($registry, rtrim($languageDir, '/'));
         $this->evaluator = new NameEvaluator($this->languages);
-        $this->reports = new RiskReportBuilder();
+        $this->reports = new RiskReportBuilder(dirname(rtrim($languageDir, '/')) . '/risk-categories.php');
     }
 
     public static function create(string $configDir, string $language = 'spa', ?ScoringPolicy $policy = null): self

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="marks">
+    <path d="M17.8 25.2A14 14 0 0 1 44.2 25.2" fill="none" stroke="#0D5F2B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M44.2 34.8A14 14 0 0 1 17.8 34.8" fill="none" stroke="#0D5F2B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

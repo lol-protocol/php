@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="solids">
+    <g><path d="M36.8 35.4L38.6 37.8A9 9 0 0 0 53 27L51.2 24.6A9 9 0 0 0 36.8 35.4Z" fill="none" stroke="#014D73" stroke-width="1.8" stroke-linejoin="round"/><circle cx="44" cy="30" r="9" fill="none" stroke="#014D73" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M20 14L10 14L10 46L20 46" fill="none" stroke="#014D73" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M24 30L32 30" fill="none" stroke="#014D73" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2.5 3"/>
+  </g>
+</svg>

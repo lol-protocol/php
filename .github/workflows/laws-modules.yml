@@ -46,13 +46,27 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: PHP syntax
         run: find . -name '*.php' -not -path './node_modules/*' -print0 | xargs -0 -n1 php -l
 
       - name: Validate the master CSV
         run: npm run validate
+
+      - name: The PHP importer reads every row with the header's number of fields
+        run: |
+          php -r '
+            $csv = glob("{countries,jurisdictions}/*_master.csv", GLOB_BRACE)[0];
+            $f = fopen($csv, "r");
+            $header = fgetcsv($f);
+            $rows = 0;
+            while (($row = fgetcsv($f)) !== false) {
+              if (count($row) !== count($header)) { fwrite(STDERR, "row " . ($rows + 2) . ": " . count($row) . " fields\n"); exit(1); }
+              $rows++;
+            }
+            echo "$csv: $rows rows, " . count($header) . " columns\n";
+          '
 
       - name: Generated files are up to date
         run: npm run build:check

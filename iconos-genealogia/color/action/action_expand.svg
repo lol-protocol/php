@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_action_expand_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.5" cy="56.6" rx="21.5" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M9 13.3L10 14.7A3.8 3.8 0 0 0 16.1 10.2L15 8.7A3.8 3.8 0 0 0 9 13.3Z" fill="#883307"/><circle cx="12" cy="11" r="3.8" fill="url(#grad_action_expand_orange)"/></g>
+    <g><path d="M47 13.3L48 14.7A3.8 3.8 0 0 0 54.1 10.2L53 8.7A3.8 3.8 0 0 0 47 13.3Z" fill="#883307"/><circle cx="50" cy="11" r="3.8" fill="url(#grad_action_expand_orange)"/></g>
+    <g><path d="M9 51.3L10 52.7A3.8 3.8 0 0 0 16.1 48.2L15 46.7A3.8 3.8 0 0 0 9 51.3Z" fill="#883307"/><circle cx="12" cy="49" r="3.8" fill="url(#grad_action_expand_orange)"/></g>
+    <g><path d="M47 51.3L48 52.7A3.8 3.8 0 0 0 54.1 48.2L53 46.7A3.8 3.8 0 0 0 47 51.3Z" fill="#883307"/><circle cx="50" cy="49" r="3.8" fill="url(#grad_action_expand_orange)"/></g>
+    <g><path d="M25 34.5L26.7 36.7A7.5 7.5 0 0 0 38.7 27.7L37 25.5A7.5 7.5 0 0 0 25 34.5Z" fill="#883307"/><circle cx="31" cy="30" r="7.5" fill="url(#grad_action_expand_orange)"/></g>
+  </g>
+</svg>

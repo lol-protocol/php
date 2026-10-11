@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_relationship_lineage_paternal_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#A5A5A5"/>
+      <stop offset="1" stop-color="#7B7B7B"/>
+    </linearGradient>
+    <linearGradient id="grad_relationship_lineage_paternal_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8A8A8A"/>
+      <stop offset="1" stop-color="#535353"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.6" cy="59.4" rx="8" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M31 10.5L31 23.8" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 23.8L31 37.2" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 37.2L31 50.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M26.5 7.3L26.5 7L26.6 6.6L26.9 6.4L27.1 6.1L27.5 6L27.8 6L34.2 6L34.5 6L34.9 6.1L35.1 6.4L35.4 6.6L36.5 8.2L36.6 8.5L36.7 8.8L36.7 15.2L36.6 15.5L36.5 15.9L36.3 16.2L36 16.4L35.7 16.5L35.3 16.6L29 16.6L28.6 16.5L28.3 16.4L28 16.2L27.8 15.9L26.6 14.4L26.5 14L26.5 13.7Z" fill="#474747"/><rect x="26.5" y="6" width="9.1" height="9.1" rx="1.4" fill="url(#grad_relationship_lineage_paternal_orange)"/></g>
+    <g><path d="M26.5 20.7L26.5 20.3L26.6 20L26.9 19.7L27.1 19.5L27.5 19.3L27.8 19.3L34.2 19.3L34.5 19.3L34.9 19.5L35.1 19.7L35.4 20L36.5 21.5L36.6 21.8L36.7 22.2L36.7 28.5L36.6 28.9L36.5 29.2L36.3 29.5L36 29.7L35.7 29.8L35.3 29.9L29 29.9L28.6 29.8L28.3 29.7L28 29.5L27.8 29.2L26.6 27.7L26.5 27.4L26.5 27Z" fill="#474747"/><rect x="26.5" y="19.3" width="9.1" height="9.1" rx="1.4" fill="url(#grad_relationship_lineage_paternal_orange)"/></g>
+    <g><path d="M26.5 34L26.5 33.6L26.6 33.3L26.9 33L27.1 32.8L27.5 32.7L27.8 32.6L34.2 32.6L34.5 32.7L34.9 32.8L35.1 33L35.4 33.3L36.5 34.8L36.6 35.2L36.7 35.5L36.7 41.9L36.6 42.2L36.5 42.5L36.3 42.8L36 43L35.7 43.2L35.3 43.2L29 43.2L28.6 43.2L28.3 43L28 42.8L27.8 42.5L26.6 41L26.5 40.7L26.5 40.3Z" fill="#474747"/><rect x="26.5" y="32.6" width="9.1" height="9.1" rx="1.4" fill="url(#grad_relationship_lineage_paternal_orange)"/></g>
+    <g><path d="M27 53.5L28.2 55A5 5 0 0 0 36.1 49L35 47.5A5 5 0 0 0 27 53.5Z" fill="#303030"/><circle cx="31" cy="50.5" r="5" fill="url(#grad_relationship_lineage_paternal_ink)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M29.4 50.5a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0 -3.2 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

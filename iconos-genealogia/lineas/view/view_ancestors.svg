@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="links">
+    <path d="M31 44.2L31 41L17 41L17 37.2" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 44.2L31 41L45 41L45 37.2" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M17 27.5L17 23L10 23L10 18.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M17 27.5L17 23L24 23L24 18.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M45 27.5L45 23L38 23L38 18.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M45 27.5L45 23L52 23L52 18.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+  <g class="solids">
+    <g><path d="M26.4 53.4L27.6 55A5.7 5.7 0 0 0 36.8 48.2L35.6 46.6A5.7 5.7 0 0 0 26.4 53.4Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="50" r="5.7" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M12.7 32L12.7 31.7L12.8 31.5L13 31.3L16.3 28L16.5 27.8L16.7 27.7L17 27.7L17.3 27.7L17.5 27.8L17.7 28L21 31.3L21.2 31.5L22.4 33.1L22.5 33.3L22.5 33.6L22.5 33.9L22.4 34.1L22.2 34.3L18.9 37.6L18.7 37.8L18.5 37.9L18.2 37.9L17.9 37.9L17.7 37.8L17.5 37.6L14.2 34.3L14 34.1L12.8 32.5L12.7 32.3Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="13.6" y="28.6" width="6.7" height="6.7" rx="1" transform="rotate(45 17 32)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M40.7 32L40.7 31.7L40.8 31.5L41 31.3L44.3 28L44.5 27.8L44.7 27.7L45 27.7L45.3 27.7L45.5 27.8L45.7 28L49 31.3L49.2 31.5L50.4 33.1L50.5 33.3L50.5 33.6L50.5 33.9L50.4 34.1L50.2 34.3L46.9 37.6L46.7 37.8L46.5 37.9L46.2 37.9L45.9 37.9L45.7 37.8L45.5 37.6L42.2 34.3L42 34.1L40.8 32.5L40.7 32.3Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="41.6" y="28.6" width="6.7" height="6.7" rx="1" transform="rotate(45 45 32)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M6.4 14L6.5 13.8L6.5 13.6L6.7 13.4L9.4 10.7L9.6 10.5L9.8 10.5L10 10.4L10.2 10.5L10.4 10.5L10.6 10.7L13.3 13.4L13.5 13.6L14.7 15.2L14.7 15.4L14.8 15.6L14.7 15.8L14.7 16L14.5 16.2L11.8 18.9L11.6 19.1L11.4 19.1L11.2 19.2L11 19.1L10.8 19.1L10.6 18.9L7.9 16.2L7.7 16L6.5 14.4L6.5 14.2Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="7.2" y="11.2" width="5.5" height="5.5" rx="0.8" transform="rotate(45 10 14)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M20.4 14L20.5 13.8L20.5 13.6L20.7 13.4L23.4 10.7L23.6 10.5L23.8 10.5L24 10.4L24.2 10.5L24.4 10.5L24.6 10.7L27.3 13.4L27.5 13.6L28.7 15.2L28.7 15.4L28.8 15.6L28.7 15.8L28.7 16L28.5 16.2L25.8 18.9L25.6 19.1L25.4 19.1L25.2 19.2L25 19.1L24.8 19.1L24.6 18.9L21.9 16.2L21.7 16L20.5 14.4L20.5 14.2Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="21.2" y="11.2" width="5.5" height="5.5" rx="0.8" transform="rotate(45 24 14)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M34.4 14L34.5 13.8L34.5 13.6L34.7 13.4L37.4 10.7L37.6 10.5L37.8 10.5L38 10.4L38.2 10.5L38.4 10.5L38.6 10.7L41.3 13.4L41.5 13.6L42.7 15.2L42.7 15.4L42.8 15.6L42.7 15.8L42.7 16L42.5 16.2L39.8 18.9L39.6 19.1L39.4 19.1L39.2 19.2L39 19.1L38.8 19.1L38.6 18.9L35.9 16.2L35.7 16L34.5 14.4L34.5 14.2Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="35.2" y="11.2" width="5.5" height="5.5" rx="0.8" transform="rotate(45 38 14)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M48.4 14L48.5 13.8L48.5 13.6L48.7 13.4L51.4 10.7L51.6 10.5L51.8 10.5L52 10.4L52.2 10.5L52.4 10.5L52.6 10.7L55.3 13.4L55.5 13.6L56.7 15.2L56.7 15.4L56.8 15.6L56.7 15.8L56.7 16L56.5 16.2L53.8 18.9L53.6 19.1L53.4 19.1L53.2 19.2L53 19.1L52.8 19.1L52.6 18.9L49.9 16.2L49.7 16L48.5 14.4L48.5 14.2Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="49.2" y="11.2" width="5.5" height="5.5" rx="0.8" transform="rotate(45 52 14)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M29.2 50a1.8 1.8 0 1 0 3.5 0a1.8 1.8 0 1 0 -3.5 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

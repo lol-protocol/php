@@ -1,0 +1,113 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Tests\Integration;
+
+use App\Database;
+use PDO;
+
+/**
+ * Las migraciones 006 y 008 crean indices para las consultas que la app hace sobre
+ * tablas que crecen: la ficha de un cliente busca su recorrido de funnel, el
+ * listado de clientes (y el selector de los formularios) ordena por nombre, id y
+ * se queda con una pagina, y Auditoria pide cada pagina por cursor. Con los datos
+ * del seed una lectura completa tarda lo mismo, asi que ningun otro test notaria
+ * que un indice se perdio o que quedo armado para otra consulta (columnas en otro
+ * orden): aca se le pregunta a Postgres si cada consulta puede usarlo.
+ *
+ * Con enable_seqscan y enable_bitmapscan apagados el planificador usa cualquier
+ * indice que sirva, sin importar lo chica que sea la tabla; si ninguno sirve, cae a
+ * la lectura completa (o a un Sort) y el test falla. SET LOCAL dura hasta el
+ * rollback con el que termina cada test.
+ *
+ * Las consultas son las de FunnelRepository::viajeDeCliente,
+ * ClienteRepository::buscar / paraSelector y AuditoriaRepository::pagina: si esas
+ * cambian, este test cambia con ellas.
+ */
+final class IndicesTest extends IntegracionTestCase
+{
+    public function testLaFichaDelClienteBuscaSuRecorridoDeFunnelPorIndice(): void
+    {
+        $plan = $this->plan('SELECT * FROM usuarios_funnel WHERE cliente_id = 1');
+
+        self::assertStringContainsString('idx_funnel_cliente', $plan);
+        self::assertStringNotContainsString('Seq Scan', $plan);
+    }
+
+    public function testElListadoDeClientesLeeLaPaginaDelIndiceSinOrdenarTodo(): void
+    {
+        $plan = $this->plan(
+            'SELECT c.id, c.nombre, c.email, c.segmento, c.fecha_alta, p.nombre AS pais_nombre
+             FROM clientes c
+             JOIN paises p ON p.codigo = c.pais_codigo
+             ORDER BY c.nombre, c.id
+             LIMIT 25 OFFSET 0'
+        );
+
+        self::assertStringContainsString('idx_clientes_nombre_id', $plan);
+        self::assertStringNotContainsString('Sort', $plan, 'ordenar todos los clientes para devolver una pagina es lo que el indice evita');
+    }
+
+    public function testElSelectorDeLosFormulariosTomaSusPrimerosClientesDelIndice(): void
+    {
+        $plan = $this->plan('SELECT id FROM clientes ORDER BY nombre, id LIMIT 500');
+
+        self::assertStringContainsString('idx_clientes_nombre_id', $plan);
+        self::assertStringNotContainsString('Sort', $plan);
+    }
+
+    /** Las dos formas de pedir una pagina por cursor (hacia las mas antiguas y hacia las mas recientes) leen del mismo indice. */
+    public function testLaPaginaDeAuditoriaPorCursorLeeSoloDelIndice(): void
+    {
+        $haciaLasAntiguas = $this->plan(
+            "SELECT a.id FROM auditoria a
+             WHERE (a.creado_en, a.id) < ('2100-01-01'::timestamp, 1::bigint)
+             ORDER BY a.creado_en DESC, a.id DESC
+             LIMIT 26"
+        );
+        $haciaLasRecientes = $this->plan(
+            "SELECT a.id FROM auditoria a
+             WHERE (a.creado_en, a.id) > ('2000-01-01'::timestamp, 1::bigint)
+             ORDER BY a.creado_en ASC, a.id ASC
+             LIMIT 26"
+        );
+
+        foreach ([$haciaLasAntiguas, $haciaLasRecientes] as $plan) {
+            self::assertStringContainsString('idx_auditoria_creado_en_id', $plan);
+            self::assertStringNotContainsString('Sort', $plan);
+        }
+    }
+
+    public function testLosIndicesQuedaronValidosEnLaBase(): void
+    {
+        $validos = Database::connection()->query(
+            "SELECT c.relname
+             FROM pg_index i
+             JOIN pg_class c ON c.oid = i.indexrelid
+             WHERE i.indisvalid AND c.relname IN ('idx_funnel_cliente', 'idx_clientes_nombre_id', 'idx_auditoria_creado_en_id')
+             ORDER BY c.relname"
+        )->fetchAll(PDO::FETCH_COLUMN);
+
+        self::assertSame(['idx_auditoria_creado_en_id', 'idx_clientes_nombre_id', 'idx_funnel_cliente'], $validos);
+    }
+
+    /** La 008 reemplazo al indice de solo creado_en: no quedan los dos, que cuestan escritura por lo mismo. */
+    public function testElIndiceViejoDeAuditoriaYaNoExiste(): void
+    {
+        $existe = Database::connection()->query("SELECT to_regclass('idx_auditoria_creado_en') IS NOT NULL")->fetchColumn();
+
+        self::assertFalse((bool) $existe);
+    }
+
+    private function plan(string $sql): string
+    {
+        $db = Database::connection();
+        $db->exec('SET LOCAL enable_seqscan = off');
+        // Sin bitmap: en una tabla chica y sin estadisticas (la de auditoria, recien sembrada) Postgres prefiere
+        // un bitmap mas un Sort a recorrer el indice en orden, y el test pregunta justo por el orden.
+        $db->exec('SET LOCAL enable_bitmapscan = off');
+
+        return implode("\n", $db->query('EXPLAIN ' . $sql)->fetchAll(PDO::FETCH_COLUMN));
+    }
+}

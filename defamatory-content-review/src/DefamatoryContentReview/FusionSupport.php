@@ -50,7 +50,7 @@ final class FusionSupport
             return PhoneticFolderRegistry::fold($language, $text);
         }
 
-        $text = AccentFolding::fold(Leetspeak::unleet(mb_strtolower(trim($text), 'UTF-8')));
+        $text = AccentFolding::fold(Leetspeak::unleet(mb_strtolower(trim($text), 'UTF-8')), $language);
 
         return preg_replace('/[\s\-\'’]+/u', '', ScriptFolding::fold($text));
     }

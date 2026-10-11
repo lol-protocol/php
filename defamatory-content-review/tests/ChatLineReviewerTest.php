@@ -73,4 +73,18 @@ class ChatLineReviewerTest extends TestCase
 
         $this->assertTrue($result->hasContentType('difamatorio'));
     }
+
+    public function testAmbiguousWordsOnlyCountNextToSomethingFirm(): void
+    {
+        $this->assertSame('approve', self::reviewer()->review('vamos a coger el bus')->getDecision());
+        $this->assertTrue(self::reviewer()->review('quiero coger, mándame nudes')->hasContentType('sexual'));
+    }
+
+    public function testATermThatIsAlsoASurnameGoesToReviewInsteadOfBlocking(): void
+    {
+        $result = self::reviewer('eng')->review('Hi, I am John Savage');
+
+        $this->assertSame('review', $result->getDecision());
+        $this->assertSame(['difamatorio'], $result->getContentTypes());
+    }
 }

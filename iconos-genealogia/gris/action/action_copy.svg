@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_action_copy_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8A8A8A"/>
+      <stop offset="1" stop-color="#535353"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.1" cy="52.2" rx="21.2" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><rect x="8" y="17" width="28" height="30" rx="6" fill="url(#grad_action_copy_ink)" opacity="0.5"/></g>
+    <g><path d="M24 23L24.2 21.4L24.8 20L25.8 18.8L27 17.8L28.4 17.2L30 17L46 17L47.6 17.2L49 17.8L50.2 18.8L51.2 20L53.3 22.8L53.9 24.2L54.1 25.8L54.1 43.8L53.9 45.4L53.3 46.8L52.3 48L51.1 49L49.7 49.6L48.1 49.8L32.1 49.8L30.5 49.6L29.1 49L27.9 48L26.9 46.8L24.8 44L24.2 42.6L24 41Z" fill="#303030"/><rect x="24" y="17" width="28" height="30" rx="6" fill="url(#grad_action_copy_ink)"/></g>
+  </g>
+</svg>

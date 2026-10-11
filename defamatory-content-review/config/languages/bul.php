@@ -27,6 +27,9 @@ return [
             ['word' => 'жаба', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'пиявица', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'лешояд', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'говедо', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'животно', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'хиена', 'riskType' => 'animal', 'severity' => 'medium'],
         ],
 
         'razum' => [
@@ -55,6 +58,16 @@ return [
             ['word' => 'простачка', 'riskType' => 'intelectual', 'severity' => 'medium'],
             ['word' => 'наивна', 'riskType' => 'intelectual', 'severity' => 'low'],
             ['word' => 'ограничена', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'тъп', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'тъпа', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'глупав', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'тъпанар', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'дръвник', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'олигофрен', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'дегенерат', 'riskType' => 'intelectual', 'severity' => 'high'],
+            ['word' => 'празноглавец', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'мухльо', 'riskType' => 'intelectual', 'severity' => 'medium'],
+            ['word' => 'балама', 'riskType' => 'intelectual', 'severity' => 'low'],
         ],
 
         'tialo' => [
@@ -86,6 +99,13 @@ return [
             ['word' => 'беззъба', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'смрадлива', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'грамадна', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'дебелак', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'шишко', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'грозотия', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'муцуна', 'riskType' => 'fisico', 'severity' => 'medium'],
+            ['word' => 'хилав', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'кльощав', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'плашило', 'riskType' => 'fisico', 'severity' => 'medium'],
         ],
 
         'uvrezhdane' => [
@@ -172,12 +192,22 @@ return [
             ['word' => 'бандитка', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'ласкателка', 'riskType' => 'moral', 'severity' => 'medium'],
             ['word' => 'алчна', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'боклук', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'измет', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'изрод', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'мръсник', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'гадняр', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'подлец', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'лъжльо', 'riskType' => 'moral', 'severity' => 'low'],
+            ['word' => 'измамник', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'разбойник', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'мародер', 'riskType' => 'moral', 'severity' => 'medium'],
+            ['word' => 'пройдоха', 'riskType' => 'moral', 'severity' => 'medium'],
         ],
 
         'pol' => [
             ['word' => 'педал', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'обратен', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'лесбийка', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'курва', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'путка', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'проститутка', 'riskType' => 'genero', 'severity' => 'medium'],
@@ -185,6 +215,10 @@ return [
             ['word' => 'женчо', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'мъжкарана', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'сексист', 'riskType' => 'genero', 'severity' => 'low'],
+            ['word' => 'педераст', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'уличница', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'мръсница', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'блудница', 'riskType' => 'genero', 'severity' => 'high'],
         ],
 
         'vulgarno' => [
@@ -196,8 +230,11 @@ return [
             ['word' => 'кур', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'цици', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'ебавам', 'riskType' => 'ordinario', 'severity' => 'high'],
-            ['word' => 'мамка', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'пръдня', 'riskType' => 'ordinario', 'severity' => 'low'],
+            ['word' => 'лайняр', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'говняр', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'ебан', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'гъзар', 'riskType' => 'ordinario', 'severity' => 'high'],
         ],
 
         'presmehulno' => [
@@ -226,6 +263,14 @@ return [
             ['word' => 'фукла', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'префърцунена', 'riskType' => 'burlesco', 'severity' => 'low'],
             ['word' => 'смахната', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'загубеняк', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'лузър', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'нещастник', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'некадърник', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'бездарник', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'дрънкало', 'riskType' => 'burlesco', 'severity' => 'low'],
+            ['word' => 'смотаняк', 'riskType' => 'burlesco', 'severity' => 'medium'],
+            ['word' => 'тромав', 'riskType' => 'burlesco', 'severity' => 'low'],
         ],
 
         'etnichesko' => [
@@ -233,7 +278,7 @@ return [
             ['word' => 'циганин', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'мангал', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'евреин', 'riskType' => 'etnico', 'severity' => 'medium'],
-            ['word' => 'турчин', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'турчин', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'чужденец', 'riskType' => 'etnico', 'severity' => 'low'],
             ['word' => 'арабин', 'riskType' => 'etnico', 'severity' => 'low'],
             ['word' => 'сърбин', 'riskType' => 'etnico', 'severity' => 'low'],

@@ -12,6 +12,8 @@ print_header "09_A" "Monitoreo y alertas"
 
 WEBHOOK_URL_ARG=${1:-""}
 EMAIL_ARG=${2:-""}
+[ -n "$WEBHOOK_URL_ARG" ] && require_valid webhook_url "$WEBHOOK_URL_ARG" "La URL del webhook (argumento 1)"
+[ -n "$EMAIL_ARG" ] && require_valid email "$EMAIL_ARG" "El email (argumento 2)"
 
 # Rutas reemplazables por variables de entorno (se usan en los tests).
 MONITOR_BIN=${MONITOR_BIN:-/usr/local/bin/vps-monitor}

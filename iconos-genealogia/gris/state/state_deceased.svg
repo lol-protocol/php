@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_state_deceased_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8A8A8A"/>
+      <stop offset="1" stop-color="#535353"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32" cy="48.6" rx="10.6" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M22.6 39.3L24.7 42A10.5 10.5 0 0 0 41.4 29.4L39.4 26.7A10.5 10.5 0 0 0 22.6 39.3Z" fill="#303030"/><circle cx="31" cy="33" r="10.5" fill="url(#grad_state_deceased_ink)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M27.8 33a3.2 3.2 0 1 0 6.5 0a3.2 3.2 0 1 0 -6.5 0Z" fill="#FFFFFF"/>
+    <path d="M15 49L47 17" fill="none" stroke="#282828" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

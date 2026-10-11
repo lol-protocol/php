@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galería de iconos 2.5D</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #333;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+  h1 { color: #fff; text-align: center; margin-bottom: 8px; font-size: 2.2em; text-shadow: 2px 2px 4px rgba(0,0,0,.3); }
+  .subtitle { color: rgba(255,255,255,.9); text-align: center; margin-bottom: 32px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 36px; }
+  .stat-card { background: rgba(255,255,255,.95); border-radius: 10px; padding: 18px; text-align: center; }
+  .stat-number { font-size: 2.2em; font-weight: 700; color: #4c51bf; }
+  .stat-label { font-size: .95em; color: #555; }
+  .set { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 36px; box-shadow: 0 10px 30px rgba(0,0,0,.2); }
+  .set-title { font-size: 1.5em; margin-bottom: 4px; border-left: 5px solid #667eea; padding-left: 12px; }
+  .set-note { color: #666; font-size: .9em; margin: 0 0 16px 17px; }
+  .group-title { font-size: 1.05em; margin: 22px 0 10px; color: #444; }
+  .group-title code { background: #eef; padding: 1px 6px; border-radius: 4px; font-size: .9em; }
+  .group-title .count { color: #888; font-weight: 400; font-size: .9em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  .icon { background: #f8f9ff; border-radius: 8px; padding: 10px; text-align: center; }
+  .icon:hover { background: #e8eaff; }
+  .variants { display: flex; gap: 4px; justify-content: center; }
+  .variants img { width: 56px; height: 56px; background: #fff; border-radius: 4px; }
+  .icon figcaption { margin-top: 6px; font-size: .78em; color: #555; word-break: break-all; }
+  footer { text-align: center; color: rgba(255,255,255,.85); margin-top: 24px; font-size: .9em; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Galería de iconos 2.5D</h1>
+  <p class="subtitle">Formas abstractas, sin letras ni números. Cada icono en tres variantes: color, líneas y gris</p>
+  <div class="stats" id="stats"></div>
+  <div id="sets"></div>
+  <footer>Las rutas son relativas a la raíz del repositorio: abre este archivo desde ahí. Generado por iconos-tools/build.py.</footer>
+</div>
+<script>
+const DATA = __DATA__;
+const VARIANTS = ['color', 'lineas', 'gris'];
+
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+
+function total(set) {
+  return set.groups.reduce((sum, g) => sum + g.items.length, 0);
+}
+
+const stats = document.getElementById('stats');
+let all = 0;
+for (const set of DATA) {
+  all += total(set);
+  const card = el('div', 'stat-card');
+  card.append(el('div', 'stat-number', total(set)), el('div', 'stat-label', 'iconos de ' + set.title.toLowerCase()));
+  stats.append(card);
+}
+const files = el('div', 'stat-card');
+files.append(el('div', 'stat-number', all * VARIANTS.length), el('div', 'stat-label', 'archivos SVG en total'));
+stats.append(files);
+
+const sets = document.getElementById('sets');
+for (const set of DATA) {
+  const section = el('section', 'set');
+  section.append(el('h2', 'set-title', set.title + ' (' + total(set) + ' iconos)'));
+  section.append(el('p', 'set-note', set.dir + '/{' + VARIANTS.join(',') + '}/<prefijo>/<nombre>.svg'));
+  for (const group of set.groups) {
+    const title = el('h3', 'group-title');
+    title.append(document.createTextNode(group.label + ' '), el('code', null, group.prefix), el('span', 'count', ' ' + group.items.length));
+    const grid = el('div', 'grid');
+    for (const [folder, name] of group.items) {
+      const card = el('figure', 'icon');
+      const row = el('div', 'variants');
+      for (const variant of VARIANTS) {
+        const img = el('img');
+        img.src = set.dir + '/' + variant + '/' + folder + '/' + name + '.svg';
+        img.alt = name + ' (' + variant + ')';
+        img.title = variant;
+        row.append(img);
+      }
+      card.append(row, el('figcaption', null, name));
+      grid.append(card);
+    }
+    section.append(title, grid);
+  }
+  sets.append(section);
+}
+</script>
+</body>
+</html>

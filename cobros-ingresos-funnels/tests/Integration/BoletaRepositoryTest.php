@@ -11,9 +11,9 @@ use App\Repositories\PagoRepository;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. Requiere haber
- * corrido antes `php database/seed.php` (mismas variables) para tener datos.
- * El reporting de ingresos (kpis/carteraAging/etc.) se prueba en
- * IngresosRepositoryTest.
+ * corrido antes `php database/recrear_con_datos_de_ejemplo.php` (mismas variables) para tener datos.
+ * El reporting de ingresos (kpis/carteraPorAntiguedad/etc.) se prueba en
+ * IngresosYCobrosRepositoryTest.
  */
 final class BoletaRepositoryTest extends IntegracionTestCase
 {
@@ -67,16 +67,19 @@ final class BoletaRepositoryTest extends IntegracionTestCase
         $repo = new BoletaRepository();
         $listado = $repo->listado('2000-01-01', '2100-01-01', null, null, 1);
 
-        self::assertLessThanOrEqual(\App\Paginacion::POR_PAGINA, count($listado['filas']));
-        self::assertSame($listado['total'], $listado['total']);
-        self::assertGreaterThanOrEqual(1, $listado['totalPaginas']);
+        self::assertGreaterThan(1, $listado['totalPaginas'], 'el seed tiene que dar mas de una pagina de boletas para que esta prueba pruebe algo');
 
-        if ($listado['totalPaginas'] > 1) {
-            $pagina2 = $repo->listado('2000-01-01', '2100-01-01', null, null, 2)['filas'];
-            $idsPagina1 = array_column($listado['filas'], 'id');
-            $idsPagina2 = array_column($pagina2, 'id');
-            self::assertEmpty(array_intersect($idsPagina1, $idsPagina2), 'paginas distintas no deben repetir filas');
+        // Se recorren todas las paginas: cada una trae como maximo POR_PAGINA
+        // filas y, juntas, tienen exactamente el total, sin repetir ninguna.
+        $ids = [];
+        for ($pagina = 1; $pagina <= $listado['totalPaginas']; $pagina++) {
+            $filas = $repo->listado('2000-01-01', '2100-01-01', null, null, $pagina)['filas'];
+            self::assertLessThanOrEqual(\App\Paginacion::POR_PAGINA, count($filas));
+            array_push($ids, ...array_column($filas, 'id'));
         }
+
+        self::assertCount($listado['total'], $ids, 'las paginas, juntas, tienen exactamente el total de filas');
+        self::assertSame($ids, array_values(array_unique($ids)), 'ninguna fila aparece en dos paginas');
     }
 
     /**
@@ -138,8 +141,7 @@ final class BoletaRepositoryTest extends IntegracionTestCase
      * peticion cae en la ultima pagina real, que si trae filas, y el listado
      * informa en que pagina quedo parado para que la vista no mienta.
      *
-     * Vale para los dos caminos de listado(): el que pagina en SQL y el que
-     * filtra por estado en PHP y recien ahi corta con array_slice.
+     * Vale con y sin filtro de estado: en los dos casos listado() pagina en SQL.
      */
     public function testUnaPaginaFueraDeRangoCaeEnLaUltimaQueExiste(): void
     {
@@ -160,6 +162,84 @@ final class BoletaRepositoryTest extends IntegracionTestCase
                 $ultima['filas']
             );
         }
+    }
+
+    /**
+     * El filtro de estado se resuelve en SQL con la misma regla que el estado
+     * que muestra cada fila (EstadoBoleta; EstadoBoletaSqlTest compara las dos en
+     * todos los bordes). Con los cinco estados presentes a la vez, cada filtro
+     * devuelve exactamente las boletas de su estado, pagina bien, se combina con
+     * el filtro por cliente y entre los cinco se reparten todas. Incluye el caso
+     * de precedencia: una boleta con un pago parcial pero ya vencida es "vencida".
+     */
+    public function testCadaFiltroDeEstadoDevuelveExactamenteLasBoletasDeEseEstado(): void
+    {
+        $cliente = (new ClienteRepository())->porId(1);
+        self::assertNotNull($cliente, 'este test asume que el cliente #1 existe (lo trae el seed)');
+
+        $fecha = '1903-03-03';
+        $vencida = '1903-04-02';
+        $futuro = date('Y-m-d', strtotime('+10 days'));
+        $repo = new BoletaRepository();
+        $pagos = new PagoRepository();
+        $crear = static function (string $vencimiento, float $pagado = 0.0, bool $anular = false) use ($repo, $pagos, $cliente, $fecha): void {
+            $id = $repo->crear([
+                'cliente_id' => 1,
+                'concepto' => 'Test de filtro de estado',
+                'monto' => 100,
+                'moneda_codigo' => $cliente['moneda_codigo'],
+                'fecha_emision' => $fecha,
+                'fecha_vencimiento' => $vencimiento,
+            ]);
+            if ($pagado > 0) {
+                $pagos->crear([
+                    'boleta_id' => $id,
+                    'cliente_id' => 1,
+                    'monto' => $pagado,
+                    'moneda_codigo' => $cliente['moneda_codigo'],
+                    'fecha_pago' => $fecha,
+                    'metodo' => 'transferencia',
+                ]);
+            }
+            if ($anular) {
+                $repo->anularSiEstabaActiva($id);
+            }
+        };
+
+        for ($i = 0; $i < 24; $i++) {
+            $crear($vencida);                 // vencida: sin pagos
+        }
+        $crear($vencida, 40.0);               // vencida aunque tenga un pago parcial
+        $crear($vencida, 40.0);
+        for ($i = 0; $i < 3; $i++) {
+            $crear($vencida, 100.0);          // pagada completa, aunque ya haya vencido
+        }
+        $crear($futuro, 40.0);                // parcial: tiene un pago y todavia no vence
+        $crear($futuro, 40.0);
+        for ($i = 0; $i < 4; $i++) {
+            $crear($futuro);                  // pendiente
+        }
+        $crear($futuro, 0.0, true);           // anulada
+
+        $esperado = ['vencida' => 26, 'pagada' => 3, 'parcial' => 2, 'pendiente' => 4, 'anulada' => 1];
+        foreach ($esperado as $estado => $cantidad) {
+            $listado = $repo->listado($fecha, $fecha, $estado);
+            self::assertSame($cantidad, $listado['total'], "total de boletas {$estado}");
+            foreach ($listado['filas'] as $fila) {
+                self::assertSame($estado, $fila['estado'], "una fila de {$estado} muestra otro estado");
+            }
+        }
+        self::assertSame(array_sum($esperado), $repo->listado($fecha, $fecha)['total'], 'los cinco estados se reparten todas las boletas');
+
+        $pagina1 = $repo->listado($fecha, $fecha, 'vencida', null, 1);
+        $pagina2 = $repo->listado($fecha, $fecha, 'vencida', null, 2);
+        self::assertSame(2, $pagina1['totalPaginas']);
+        self::assertCount(\App\Paginacion::POR_PAGINA, $pagina1['filas']);
+        self::assertCount(1, $pagina2['filas']);
+        self::assertEmpty(array_intersect(array_column($pagina1['filas'], 'id'), array_column($pagina2['filas'], 'id')));
+
+        self::assertSame(26, $repo->listado($fecha, $fecha, 'vencida', $cliente['nombre'])['total'], 'estado y cliente a la vez');
+        self::assertSame(0, $repo->listado($fecha, $fecha, 'vencida', 'Nadie se llama asi ' . uniqid())['total']);
     }
 
     /**

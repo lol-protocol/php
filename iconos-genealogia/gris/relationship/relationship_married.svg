@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_relationship_married_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E1E1E1"/>
+      <stop offset="1" stop-color="#D3D3D3"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32.4" cy="44.3" rx="21.5" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M17 28.6L45 28.6M17 32.4L45 32.4" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M9 24.9L9.1 24.3L9.3 23.7L9.7 23.2L10.2 22.8L10.8 22.6L11.4 22.5L22.6 22.5L23.2 22.6L23.8 22.8L24.3 23.2L24.7 23.7L26.6 26.3L26.8 26.8L26.9 27.5L26.9 38.7L26.8 39.3L26.6 39.9L26.2 40.4L25.7 40.7L25.1 41L24.5 41.1L13.3 41.1L12.7 41L12.1 40.7L11.6 40.4L11.2 39.9L9.3 37.3L9.1 36.7L9 36.1Z" fill="#7B7B7B"/><rect x="9" y="22.5" width="16" height="16" rx="2.4" fill="url(#grad_relationship_married_mist)"/></g>
+    <g><path d="M38 35.8L39.9 38.3A8.8 8.8 0 0 0 54 27.8L52 25.2A8.8 8.8 0 0 0 38 35.8Z" fill="#7B7B7B"/><circle cx="45" cy="30.5" r="8.8" fill="url(#grad_relationship_married_mist)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M21.9 15a5.6 5.6 0 1 0 11.2 0a5.6 5.6 0 1 0 -11.2 0Z" fill="none" stroke="#7B7B7B" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M28.9 15a5.6 5.6 0 1 0 11.2 0a5.6 5.6 0 1 0 -11.2 0Z" fill="none" stroke="#7B7B7B" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

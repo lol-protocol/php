@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="solids">
+    <g><path d="M22.1 30L22.1 29.5L22.3 29L22.7 28.5L29.5 21.7L30 21.3L30.5 21.1L31 21.1L31.5 21.1L32 21.3L32.5 21.7L39.3 28.5L39.7 29L41.7 31.7L41.9 32.2L42 32.7L41.9 33.3L41.7 33.8L41.4 34.2L34.5 41L34.1 41.4L33.6 41.6L33 41.7L32.5 41.6L32 41.4L31.6 41L24.7 34.2L24.4 33.8L22.3 31L22.1 30.5Z" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/><rect x="24.1" y="23.1" width="13.9" height="13.9" rx="2.1" transform="rotate(45 31 30)" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M12 30a19 19 0 1 0 38 0a19 19 0 1 0 -38 0Z" fill="none" stroke="#565F6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.6"/>
+  </g>
+</svg>

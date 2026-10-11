@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_relationship_inheritance_division_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="grad_relationship_inheritance_division_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.7" cy="56.7" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M31 12L31 24L13 24L13 38" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 12L31 24L31 24L31 38" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 12L31 24L49 24L49 38" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+  </g>
+  <g class="solids">
+    <g><path d="M25.2 12L25.2 11.6L25.3 11.3L25.6 11L30 6.6L30.3 6.3L30.6 6.2L31 6.2L31.4 6.2L31.7 6.3L32 6.6L36.4 11L36.7 11.3L38.2 13.4L38.3 13.7L38.4 14.1L38.3 14.4L38.2 14.8L38 15L33.5 19.5L33.2 19.7L32.9 19.9L32.6 19.9L32.2 19.9L31.9 19.7L31.6 19.5L27.1 15L26.9 14.8L25.3 12.7L25.2 12.4Z" fill="#883307"/><rect x="26.5" y="7.5" width="9.1" height="9.1" rx="1.4" transform="rotate(45 31 12)" fill="url(#grad_relationship_inheritance_division_orange)"/></g>
+    <g><path d="M8.6 50.3L9.9 52.1A5.5 5.5 0 0 0 18.7 45.5L17.4 43.7A5.5 5.5 0 0 0 8.6 50.3Z" fill="#767C82"/><circle cx="13" cy="47" r="5.5" fill="url(#grad_relationship_inheritance_division_mist)"/></g>
+    <g><path d="M26.6 50.3L27.9 52.1A5.5 5.5 0 0 0 36.7 45.5L35.4 43.7A5.5 5.5 0 0 0 26.6 50.3Z" fill="#767C82"/><circle cx="31" cy="47" r="5.5" fill="url(#grad_relationship_inheritance_division_mist)"/></g>
+    <g><path d="M44.6 50.3L45.9 52.1A5.5 5.5 0 0 0 54.7 45.5L53.4 43.7A5.5 5.5 0 0 0 44.6 50.3Z" fill="#767C82"/><circle cx="49" cy="47" r="5.5" fill="url(#grad_relationship_inheritance_division_mist)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M13 34L13 40M10.1 36.4L13 40L15.9 36.4" fill="none" stroke="#EA580C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M31 34L31 40M28.1 36.4L31 40L33.9 36.4" fill="none" stroke="#EA580C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M49 34L49 40M46.1 36.4L49 40L51.9 36.4" fill="none" stroke="#EA580C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

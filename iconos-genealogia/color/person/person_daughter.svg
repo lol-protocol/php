@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_daughter_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="grad_person_daughter_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="31.9" cy="59.5" rx="8.3" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M31 13.5L31 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+  </g>
+  <g class="solids">
+    <g><path d="M24.5 18.4L26.4 20.9A8.1 8.1 0 0 0 39.4 11.1L37.5 8.6A8.1 8.1 0 0 0 24.5 18.4Z" fill="#29313D"/><circle cx="31" cy="13.5" r="8.1" fill="url(#grad_person_daughter_ink)"/></g>
+    <g><path d="M24.5 52.4L26.4 54.9A8.1 8.1 0 0 0 39.4 45.1L37.5 42.6A8.1 8.1 0 0 0 24.5 52.4Z" fill="#883307"/><circle cx="31" cy="47.5" r="8.1" fill="url(#grad_person_daughter_orange)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M28.5 13.5a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0Z" fill="#FFFFFF"/>
+  </g>
+</svg>

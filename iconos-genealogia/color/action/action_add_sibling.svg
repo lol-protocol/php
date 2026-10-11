@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_action_add_sibling_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="grad_action_add_sibling_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#828B99"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="grad_action_add_sibling_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+    <linearGradient id="grad_action_add_sibling_green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#61C084"/>
+      <stop offset="1" stop-color="#16A34A"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="30.5" cy="58.9" rx="22" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="links">
+    <path d="M22 13L22 21L10 21L10 34" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"/>
+    <path d="M22 21L34 21L34 34" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"/>
+  </g>
+  <g class="solids">
+    <g><path d="M16.9 13L17 12.7L17.1 12.4L17.3 12.2L21.2 8.3L21.4 8.1L21.7 8L22 7.9L22.3 8L22.6 8.1L22.8 8.3L26.7 12.2L26.9 12.4L28.4 14.3L28.5 14.6L28.5 14.9L28.5 15.2L28.4 15.5L28.2 15.8L24.3 19.7L24 19.8L23.7 20L23.4 20L23.1 20L22.8 19.8L22.6 19.7L18.7 15.8L18.5 15.5L17.1 13.6L17 13.3Z" fill="#767C82"/><rect x="18.1" y="9.1" width="7.9" height="7.9" rx="1.2" transform="rotate(45 22 13)" fill="url(#grad_action_add_sibling_mist)"/></g>
+    <g><path d="M5.2 41.6L6.7 43.5A5.9 5.9 0 0 0 16.2 36.4L14.8 34.4A5.9 5.9 0 0 0 5.2 41.6Z" fill="#29313D"/><circle cx="10" cy="38" r="5.9" fill="url(#grad_action_add_sibling_ink)"/></g>
+    <g><path d="M28.9 38L29 37.7L29.1 37.4L29.3 37.2L33.2 33.3L33.4 33.1L33.7 33L34 32.9L34.3 33L34.6 33.1L34.8 33.3L38.7 37.2L38.9 37.4L40.4 39.3L40.5 39.6L40.5 39.9L40.5 40.2L40.4 40.5L40.2 40.8L36.3 44.7L36 44.8L35.7 45L35.4 45L35.1 45L34.8 44.8L34.6 44.7L30.7 40.8L30.5 40.5L29.1 38.6L29 38.3Z" fill="#883307"/><rect x="30.1" y="34.1" width="7.9" height="7.9" rx="1.2" transform="rotate(45 34 38)" fill="url(#grad_action_add_sibling_orange)"/></g>
+    <g><path d="M40.1 51.2L41.6 53.1A8.6 8.6 0 0 0 55.3 42.8L53.9 40.8A8.6 8.6 0 0 0 40.1 51.2Z" fill="#0D5F2B"/><circle cx="47" cy="46" r="8.6" fill="url(#grad_action_add_sibling_green)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M8.2 38a1.8 1.8 0 1 0 3.7 0a1.8 1.8 0 1 0 -3.7 0Z" fill="#FFFFFF"/>
+    <path d="M42.8 46H51.2M47 41.8V50.2" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

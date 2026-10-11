@@ -23,6 +23,15 @@ ENV_FILE=${VPS_ENV:-$HERE/vps.env}
 VPS_USER=${VPS_USER:-ubuntu}
 VPS_PORT=${VPS_PORT:-22}
 REMOTE_DIR=${REMOTE_DIR:-vps-setup-run}
+# Estos valores terminan en la linea de comandos de ssh y en el comando remoto. Un
+# host que empiece con "-" se leeria como OPCION de ssh (ej. -oProxyCommand=...) y
+# ejecutaria comandos locales; REMOTE_DIR y SCRIPT se interpolan sin comillas.
+bad() { echo "ERROR: $1 invalido: $(printf '%q' "${2:0:60}")"; exit 2; }
+[ -z "$VPS_HOST" ] || [[ "$VPS_HOST" =~ ^[A-Za-z0-9][A-Za-z0-9._:-]*$ ]] || bad VPS_HOST "$VPS_HOST"
+[[ "$VPS_USER" =~ ^[a-z_][a-z0-9_-]*$ ]] || bad VPS_USER "$VPS_USER"
+[[ "$VPS_PORT" =~ ^[0-9]{1,5}$ ]] || bad VPS_PORT "$VPS_PORT"
+[[ "$REMOTE_DIR" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]] || bad REMOTE_DIR "$REMOTE_DIR"
+[[ "$SCRIPT" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*\.sh$ ]] || bad "script" "$SCRIPT"
 if [ -z "$VPS_HOST" ]; then
     echo "ERROR: falta VPS_HOST. Crea $ENV_FILE a partir de vps.env.example."
     exit 1

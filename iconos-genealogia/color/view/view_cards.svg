@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_view_cards_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="grad_view_cards_slate" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B6C0CF"/>
+      <stop offset="1" stop-color="#94A3B8"/>
+    </linearGradient>
+    <linearGradient id="grad_view_cards_indigo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8781ED"/>
+      <stop offset="1" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="grad_view_cards_orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F18D5A"/>
+      <stop offset="1" stop-color="#EA580C"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="33.8" cy="56.5" rx="21.9" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M10 17L10.2 15.7L10.7 14.5L11.5 13.5L12.5 12.7L13.7 12.2L15 12L39 12L40.3 12.2L41.5 12.7L42.5 13.5L43.3 14.5L44.8 16.4L45.3 17.6L45.4 18.9L45.4 36.9L45.3 38.2L44.8 39.4L44 40.5L42.9 41.2L41.7 41.8L40.4 41.9L16.4 41.9L15.1 41.8L13.9 41.2L12.9 40.5L12.1 39.4L10.7 37.5L10.2 36.3L10 35Z" fill="#767C82"/><rect x="10" y="12" width="34" height="28" rx="5" fill="url(#grad_view_cards_mist)"/></g>
+    <g><path d="M16 23L16.2 21.7L16.7 20.5L17.5 19.5L18.5 18.7L19.7 18.2L21 18L45 18L46.3 18.2L47.5 18.7L48.5 19.5L49.3 20.5L50.8 22.4L51.3 23.6L51.4 24.9L51.4 42.9L51.3 44.2L50.8 45.4L50 46.5L48.9 47.2L47.7 47.8L46.4 47.9L22.4 47.9L21.1 47.8L19.9 47.2L18.9 46.5L18.1 45.4L16.7 43.5L16.2 42.3L16 41Z" fill="#565F6B"/><rect x="16" y="18" width="34" height="28" rx="5" fill="url(#grad_view_cards_slate)"/></g>
+    <g><path d="M22 29L22.2 27.7L22.7 26.5L23.5 25.5L24.5 24.7L25.7 24.2L27 24L51 24L52.3 24.2L53.5 24.7L54.5 25.5L55.3 26.5L56.9 28.6L57.4 29.8L57.6 31.1L57.6 49.1L57.4 50.4L56.9 51.6L56.1 52.6L55.1 53.4L53.9 53.9L52.6 54.1L28.6 54.1L27.3 53.9L26.1 53.4L25 52.6L24.2 51.6L22.7 49.5L22.2 48.3L22 47Z" fill="#2E2985"/><rect x="22" y="24" width="34" height="28" rx="5" fill="url(#grad_view_cards_indigo)"/></g>
+    <g><circle cx="39" cy="36" r="5.5" fill="url(#grad_view_cards_orange)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M30 47L48 47" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  </g>
+</svg>

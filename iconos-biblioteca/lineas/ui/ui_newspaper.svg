@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g class="solids">
+    <g><path d="M12 11.5L12.1 10.6L12.5 9.8L13 9L13.8 8.5L14.6 8.1L15.5 8L48.5 8L49.4 8.1L50.2 8.5L51 9L51.5 9.8L53.7 12.6L54 13.5L54.2 14.4L54.2 52.4L54 53.3L53.7 54.1L53.1 54.9L52.4 55.4L51.6 55.8L50.7 55.9L17.7 55.9L16.8 55.8L15.9 55.4L15.2 54.9L14.6 54.1L12.5 51.2L12.1 50.4L12 49.5Z" fill="none" stroke="#938D73" stroke-width="1.8" stroke-linejoin="round"/><rect x="12" y="8" width="40" height="45" rx="3.5" fill="none" stroke="#938D73" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><rect x="18" y="24" width="13" height="13" rx="2" fill="none" stroke="#767C82" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M18 17L46 17" fill="none" stroke="#111822" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M35 26h11M35 31h11M35 36h7" fill="none" stroke="#565F6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18 44h28M18 49h20" fill="none" stroke="#565F6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

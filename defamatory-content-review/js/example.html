@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Tope de letras repetidas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Chat</h1>
+    <p>Prueba a escribir «puuuuta» o a pegar «aaaaaa»: nunca quedan 3 letras iguales seguidas.</p>
+
+    <!-- data-max-repeat: tope por campo (vacío = 2). El script lo engancha solo al cargar. -->
+    <textarea id="mensaje" data-max-repeat rows="3" cols="40" placeholder="Escribe un mensaje"></textarea>
+    <p id="aviso" hidden>Máximo 2 letras iguales seguidas.</p>
+
+    <script src="limit-repeated-letters.js"></script>
+    <script>
+        document.getElementById('mensaje').addEventListener('repeated-letters-limited', () => {
+            const aviso = document.getElementById('aviso');
+            aviso.hidden = false;
+            setTimeout(() => { aviso.hidden = true; }, 2000);
+        });
+    </script>
+</body>
+</html>

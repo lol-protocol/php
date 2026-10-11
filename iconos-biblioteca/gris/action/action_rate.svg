@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_action_rate_amber" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#AEAEAE"/>
+      <stop offset="1" stop-color="#878787"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="23.4" cy="42.8" rx="16" ry="2.6" fill="#171717" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M7.6 34.8L9.4 37.2A8 8 0 0 0 22.2 27.6L20.4 25.2A8 8 0 0 0 7.6 34.8Z" fill="#4F4F4F"/><circle cx="14" cy="30" r="8" fill="url(#grad_action_rate_amber)"/></g>
+    <g><path d="M24.6 34.8L26.4 37.2A8 8 0 0 0 39.2 27.6L37.4 25.2A8 8 0 0 0 24.6 34.8Z" fill="#4F4F4F"/><circle cx="31" cy="30" r="8" fill="url(#grad_action_rate_amber)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M40.5 30a7.5 7.5 0 1 0 15 0a7.5 7.5 0 1 0 -15 0Z" fill="none" stroke="#878787" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

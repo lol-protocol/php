@@ -8,13 +8,14 @@ use App\Avisos;
 use App\Database;
 use App\EnvioUnico;
 use App\Etiquetas;
-use App\Filtros;
+use App\FiltroDePeriodo;
 use App\Paginacion;
 use App\Peticion;
 use App\Repositories\AuditoriaRepository;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
-use App\Repositories\IngresosRepository;
+use App\Repositories\IngresosYCobrosRepository;
+use App\Repositories\MonedaRepository;
 use App\Repositories\NotaCreditoRepository;
 use App\Repositories\PagoRepository;
 use App\Validacion;
@@ -24,18 +25,19 @@ final class PagosController
 {
     public function index(): void
     {
-        $filtros = Filtros::rangoActivo();
+        $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
         $filtros['avisos'] = [...Avisos::confirmaciones('pagos'), ...$filtros['avisos']];
         $cliente = trim((string) ($_GET['cliente'] ?? ''));
         $pagina = Paginacion::pagina();
 
-        $ingresosRepo = new IngresosRepository();
+        $ingresosRepo = new IngresosYCobrosRepository();
         $listado = (new PagoRepository())->listado($desde, $hasta, $cliente ?: null, $pagina);
 
-        View::render('pagos/index', $filtros + [
+        View::render('pagos/listado', $filtros + [
             'cliente' => $cliente,
             'pagina' => $listado['pagina'],
+            'tasas' => MonedaRepository::estadoDeLasTasas(),
             'cobrosPorMes' => $ingresosRepo->cobrosPorMes($desde, $hasta),
             'porMetodo' => $ingresosRepo->porMetodo($desde, $hasta),
             'devoluciones' => (new NotaCreditoRepository())->totalEnRangoUsd($desde, $hasta),
@@ -99,7 +101,7 @@ final class PagosController
                         return ['error' => 'Completá todos los campos con un monto válido.'];
                     } elseif (!self::metodoEsValido($metodo)) {
                         return ['error' => 'Elegí un método de pago válido.'];
-                    } elseif (!Filtros::esFechaValida($fechaPago)) {
+                    } elseif (!Validacion::fechaEsValida($fechaPago)) {
                         return ['error' => 'La fecha de pago no es válida.'];
                     } elseif ($boletaId > 0 && !self::boletaEsValidaParaCliente($boleta, $clienteId)) {
                         return ['error' => 'La boleta elegida no es válida para este cliente.'];
@@ -127,7 +129,7 @@ final class PagosController
                             'Pago #%d de %s: %s%s',
                             $id,
                             $clienteElegido['nombre'],
-                            money_moneda($monto, $moneda),
+                            dinero_en_moneda($monto, $moneda),
                             $boletaId ? " (boleta #{$boletaId})" : ' (anticipo)'
                         ));
 
@@ -143,7 +145,7 @@ final class PagosController
             }
         }
 
-        View::render('pagos/nuevo', [
+        View::render('pagos/alta', [
             'clientes' => $clienteRepo->paraSelector(),
             'clientesTruncados' => $clienteRepo->superaElLimiteDelSelector(),
             'clienteElegido' => $clienteElegido,
@@ -256,7 +258,7 @@ final class PagosController
                     return 'Completá todos los campos con un monto válido.';
                 } elseif (!self::metodoEsValido($metodo)) {
                     return 'Elegí un método de pago válido.';
-                } elseif (!Filtros::esFechaValida($fechaPago)) {
+                } elseif (!Validacion::fechaEsValida($fechaPago)) {
                     return 'La fecha de pago no es válida.';
                 } elseif ($boleta !== null && !self::fechaPagoEsValida($fechaPago, $boleta)) {
                     return 'La fecha de pago no puede ser anterior a la emisión de la boleta.';
@@ -264,8 +266,8 @@ final class PagosController
                     return 'El monto supera el saldo pendiente de la boleta.';
                 }
 
-                $antes = money_moneda((float) $pago['monto'], $pago['moneda_codigo']) . " ({$pago['metodo']})";
-                $despues = money_moneda($monto, $pago['moneda_codigo']) . " ({$metodo})";
+                $antes = dinero_en_moneda((float) $pago['monto'], $pago['moneda_codigo']) . " ({$pago['metodo']})";
+                $despues = dinero_en_moneda($monto, $pago['moneda_codigo']) . " ({$metodo})";
                 $pagoRepo->actualizar($id, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
                 AuditoriaRepository::auditar('editar', 'pago', $id, sprintf('Pago #%d: %s -> %s', $id, $antes, $despues));
                 return null;
@@ -279,7 +281,7 @@ final class PagosController
             $pago = array_merge($pago, ['monto' => $monto, 'fecha_pago' => $fechaPago, 'metodo' => $metodo]);
         }
 
-        View::render('pagos/editar', [
+        View::render('pagos/edicion', [
             'pago' => $pago,
             'error' => $error,
             'activePage' => 'pagos',
@@ -326,7 +328,7 @@ final class PagosController
                 AuditoriaRepository::auditar('anular', 'pago', $id, sprintf(
                     'Pago #%d (%s)',
                     $id,
-                    money_moneda((float) $pago['monto'], $pago['moneda_codigo'])
+                    dinero_en_moneda((float) $pago['monto'], $pago['moneda_codigo'])
                 ));
                 return false;
             });
@@ -337,7 +339,7 @@ final class PagosController
             exit;
         }
 
-        View::render('pagos/anular', [
+        View::render('pagos/anulacion', [
             'pago' => $pago,
             'activePage' => 'pagos',
             'titulo' => 'Anular pago',

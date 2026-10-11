@@ -4,7 +4,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-pdo": "*",
         "ext-pdo_pgsql": "*"
     },
@@ -13,7 +13,7 @@
             "App\\": "src/"
         },
         "files": [
-            "src/helpers.php"
+            "src/funciones_de_vista.php"
         ]
     },
     "autoload-dev": {
@@ -28,6 +28,7 @@
     "scripts": {
         "test": "phpunit",
         "analyse": "phpstan analyse --memory-limit=1G",
-        "migrar": "php database/migrar.php"
+        "migrar": "php database/migrar.php",
+        "tasas": "php database/actualizar_tasas.php"
     }
 }

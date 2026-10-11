@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad_person_unknown_male_mist" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DCE2EB"/>
+      <stop offset="1" stop-color="#CBD5E1"/>
+    </linearGradient>
+  </defs>
+  <g class="shadow">
+    <ellipse cx="32" cy="44.6" rx="9.7" ry="2.6" fill="#0F172A" opacity="0.14"/>
+  </g>
+  <g class="solids">
+    <g><path d="M21.5 23.4L21.6 22.6L21.9 21.9L22.3 21.3L22.9 20.9L23.6 20.6L24.4 20.5L37.6 20.5L38.4 20.6L39.1 20.9L39.7 21.3L40.1 21.9L42.2 24.6L42.4 25.3L42.5 26.1L42.5 39.4L42.4 40.1L42.2 40.8L41.7 41.4L41.1 41.8L40.4 42.1L39.7 42.2L26.4 42.2L25.7 42.1L25 41.8L24.4 41.4L23.9 40.8L21.9 38.1L21.6 37.4L21.5 36.6Z" fill="#767C82"/><rect x="21.5" y="20.5" width="19" height="19" rx="2.9" fill="url(#grad_person_unknown_male_mist)"/></g>
+  </g>
+  <g class="marks">
+    <path d="M12 30a19 19 0 1 0 38 0a19 19 0 1 0 -38 0Z" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 3.6"/>
+  </g>
+</svg>

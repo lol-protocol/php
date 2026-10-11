@@ -10,19 +10,19 @@ namespace DefamatoryContentReview;
  */
 final class RiskReportBuilder
 {
-    private const DESCRIPTIONS = [
-        'animal' => 'Comparación con animales',
-        'intelectual' => 'Menoscabo de la capacidad intelectual',
-        'discapacidad' => 'Referencia despectiva a discapacidad',
-        'fisico' => 'Menoscabo de la apariencia física',
-        'moral' => 'Imputación moral o delictiva',
-        'genero' => 'Insulto por género u orientación sexual',
-        'ordinario' => 'Léxico soez u obsceno',
-        'burlesco' => 'Burla o ridiculización',
-        'etnico' => 'Insulto étnico o racial',
-        'religioso' => 'Insulto religioso',
-        'fonetico' => 'Fusión fonética entre nombre y apellido',
-    ];
+    /**
+     * riskType => descripción corta, para el desglose de getDetailedReport().
+     * Antes era una copia propia que divergió en texto de
+     * `config/risk-categories.php` pese a que el README dice que las
+     * definiciones "viven" ahí: ahora lee de ese archivo, única fuente real.
+     * @var array<string,string>
+     */
+    private readonly array $descriptions;
+
+    public function __construct(string $riskCategoriesFile)
+    {
+        $this->descriptions = array_map(static fn(array $c) => $c['description'], require $riskCategoriesFile);
+    }
 
     /** @return array<string,mixed> */
     public function build(ValidationResult $result, string $decision, ScoringPolicy $policy): array
@@ -69,7 +69,7 @@ final class RiskReportBuilder
             }
 
             $analysis[$riskType] = [
-                'description' => self::DESCRIPTIONS[$riskType] ?? $riskType,
+                'description' => $this->descriptions[$riskType] ?? $riskType,
                 'level' => $worst,
                 'isSevere' => $this->isTopWeight($worst, $policy),
                 'termCount' => count($terms),
