@@ -79,3 +79,44 @@ jobs:
             echo "$cambios"
             exit 1
           fi
+
+  navegador:
+    name: Navegador (Playwright)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: marcalibros-plataforma-pos-brand-identity/app
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: fileinfo, gd, mbstring, exif
+          tools: composer:v2
+
+      - run: composer install --no-interaction --prefer-dist --no-progress --no-dev
+
+      - name: Instalar Playwright y Chromium
+        run: |
+          npm install -g playwright@1.56.1
+          playwright install --with-deps chromium
+
+      - name: Levantar la aplicación
+        run: |
+          MARCALIBROS_STORAGE="$RUNNER_TEMP/marcalibros" php -S 127.0.0.1:8080 -t public public/index.php > "$RUNNER_TEMP/app.log" 2>&1 &
+          for _ in $(seq 1 30); do
+            curl -sf -o /dev/null --max-time 2 http://127.0.0.1:8080/ && exit 0
+            sleep 1
+          done
+          echo "La aplicación no levantó a tiempo"
+          exit 1
+
+      - name: Pruebas de navegador
+        run: NODE_PATH="$(npm root -g)" node e2e/navegador.mjs
+
+      - name: Registro del servidor
+        if: failure()
+        run: tail -n 50 "$RUNNER_TEMP/app.log" || true
