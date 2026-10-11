@@ -402,17 +402,21 @@ def nouveau(r, c1, c2, fondo):
 
 
 def mosaico(r, c1, c2, fondo):
-    a, b = 26, 34
-    l1, l2 = [], []
-    for j in range(-1, 7):
+    a = r.choice([26, 30, 36])
+    b = a * r.uniform(1.15, 1.45)
+    desfase = r.randrange(3)
+    l1, l2, puntos = [], [], []
+    for j in range(-1, int(H / b) + 2):
         for i in range(-1, W // (2 * a) + 2):
             cx, cy = i * 2 * a + (j % 2) * a, j * b
-            k = (i + j) % 3
+            k = (i + j + desfase) % 3
             if k == 2:
+                if r.random() < 0.5:
+                    puntos.append(("circle", cx, cy, a * 0.16, c2))
                 continue
             pts = [(cx, cy - b * 0.86), (cx + a * 0.86, cy), (cx, cy + b * 0.86), (cx - a * 0.86, cy)]
             (l1 if k == 0 else l2).append(("poly", pts, c1 if k == 0 else c2))
-    return l1 + l2
+    return l1 + l2 + puntos
 
 
 # --------------------------------------------------------------- Vanguardias

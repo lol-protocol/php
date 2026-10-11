@@ -5,13 +5,19 @@ Cada marcalibro se define como una lista de figuras (ver `motivos.py`). Esa
 misma lista se escribe como SVG y se rasteriza como vista previa JPG, así
 ambas versiones siempre coinciden.
 
-Uso:
-    python3 generator/generar_marcalibros.py                        # 100 marcalibros
-    python3 generator/generar_marcalibros.py --por-movimiento 100   # 1000 marcalibros
+Hay 20 categorías: 10 movimientos literarios y 10 tipos de texto. Cada una tiene
+4 motivos visuales y se reparte en variantes (50 por categoría dan 1000
+marcalibros).
 
-El script termina con error si algún SVG pesa más de 10 KB.
+Uso:
+    python3 generator/generar_marcalibros.py                      # 1000 marcalibros
+    python3 generator/generar_marcalibros.py --por-categoria 10   # 200 marcalibros
+
+El script termina con error si algún SVG pesa más de 10 KB o si dos marcalibros
+salen idénticos.
 """
 import argparse
+import hashlib
 import html
 import json
 import math
@@ -22,9 +28,14 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
 
-from motivos import MOTIVOS, H, W
+from motivos import MOTIVOS as MOTIVOS_LITERARIOS, H, W, espejar
+from motivos_texto import MOTIVOS_TEXTO
 
-SUPERSAMPLE = 2           # se rasteriza al doble y se reduce para suavizar bordes
+assert not set(MOTIVOS_LITERARIOS) & set(MOTIVOS_TEXTO), "un motivo está definido dos veces"
+MOTIVOS = {**MOTIVOS_LITERARIOS, **MOTIVOS_TEXTO}
+
+SUPERSAMPLE = 4           # se rasteriza al cuádruple del tamaño de la vista previa y se reduce
+VISTA_PREVIA = (700, 100)  # la mitad del lienzo: basta para galerías y pesa unos 11 KB
 CALIDAD_JPG = 85
 LIMITE_SVG = 10 * 1024    # bytes
 
@@ -37,38 +48,91 @@ PALETA = {
 }
 RGB = {k: tuple(int(v[i:i + 2], 16) for i in (1, 3, 5)) for k, v in PALETA.items()}
 
-MOVIMIENTOS = [
-    {"slug": "romanticismo", "nombre": "Romanticismo",
+MOVIMIENTO, TIPO_TEXTO = "movimiento literario", "tipo de texto"
+
+CATEGORIAS = [
+    # Movimientos literarios: los autores se guardan solo como metadato de inspiración.
+    {"slug": "romanticismo", "nombre": "Romanticismo", "familia": MOVIMIENTO,
      "motivos": ["amanecer", "arbol_solitario", "nubes", "acantilado_mar"],
      "autores": ["Lord Byron", "John Keats", "Gustavo Adolfo Bécquer"]},
-    {"slug": "realismo", "nombre": "Realismo",
+    {"slug": "realismo", "nombre": "Realismo", "familia": MOVIMIENTO,
      "motivos": ["ciudad", "puente", "farolas", "chimeneas"],
      "autores": ["Gustave Flaubert", "Honoré de Balzac", "Benito Pérez Galdós"]},
-    {"slug": "naturalismo", "nombre": "Naturalismo",
+    {"slug": "naturalismo", "nombre": "Naturalismo", "familia": MOVIMIENTO,
      "motivos": ["bosque", "juncos", "trigo", "rio"],
      "autores": ["Émile Zola", "Guy de Maupassant", "Horacio Quiroga"]},
-    {"slug": "modernismo", "nombre": "Modernismo",
+    {"slug": "modernismo", "nombre": "Modernismo", "familia": MOVIMIENTO,
      "motivos": ["ondas", "ondas_concentricas", "nouveau", "mosaico"],
      "autores": ["Rubén Darío", "Virginia Woolf", "James Joyce"]},
-    {"slug": "vanguardias", "nombre": "Vanguardias",
+    {"slug": "vanguardias", "nombre": "Vanguardias", "familia": MOVIMIENTO,
      "motivos": ["geometria", "constructivista", "caligrama", "collage"],
      "autores": ["Guillaume Apollinaire", "Vicente Huidobro", "Tristan Tzara"]},
-    {"slug": "gotico", "nombre": "Gótico",
+    {"slug": "gotico", "nombre": "Gótico", "familia": MOVIMIENTO,
      "motivos": ["arcos_ojivales", "roseton", "torres", "cementerio"],
      "autores": ["Mary Shelley", "Edgar Allan Poe", "Bram Stoker"]},
-    {"slug": "barroco", "nombre": "Barroco",
+    {"slug": "barroco", "nombre": "Barroco", "familia": MOVIMIENTO,
      "motivos": ["ornamento", "volutas", "drapeado", "perlas"],
      "autores": ["Luis de Góngora", "Francisco de Quevedo", "Pedro Calderón de la Barca"]},
-    {"slug": "clasicismo", "nombre": "Clasicismo",
+    {"slug": "clasicismo", "nombre": "Clasicismo", "familia": MOVIMIENTO,
      "motivos": ["columnas", "fronton", "laurel", "meandro"],
      "autores": ["Jean Racine", "Molière", "Pierre Corneille"]},
-    {"slug": "simbolismo", "nombre": "Simbolismo",
+    {"slug": "simbolismo", "nombre": "Simbolismo", "familia": MOVIMIENTO,
      "motivos": ["luna", "reflejo_lunar", "constelaciones", "lirio"],
      "autores": ["Stéphane Mallarmé", "Paul Verlaine", "Arthur Rimbaud"]},
-    {"slug": "realismo-magico", "nombre": "Realismo mágico",
+    {"slug": "realismo-magico", "nombre": "Realismo mágico", "familia": MOVIMIENTO,
      "motivos": ["espiral", "mariposas", "flores_cayendo", "selva"],
      "autores": ["Gabriel García Márquez", "Juan Rulfo", "Alejo Carpentier"]},
+    # Tipos de texto: no llevan autores, solo el motivo que evoca ese tipo de escrito.
+    {"slug": "manuales", "nombre": "Manuales", "familia": TIPO_TEXTO,
+     "motivos": ["engranajes", "plano_tecnico", "regla", "circuito"]},
+    {"slug": "libros-sagrados", "nombre": "Libros sagrados", "familia": TIPO_TEXTO,
+     "motivos": ["rayos_de_luz", "mandala", "rollos", "velas"]},
+    {"slug": "leyes", "nombre": "Leyes y reglamentos", "familia": TIPO_TEXTO,
+     "motivos": ["balanza", "sellos", "articulos", "mazo"]},
+    {"slug": "cartas", "nombre": "Cartas y epistolares", "familia": TIPO_TEXTO,
+     "motivos": ["sobres", "estampillas", "lacre", "plumas"]},
+    {"slug": "diarios", "nombre": "Diarios y memorias", "familia": TIPO_TEXTO,
+     "motivos": ["calendario", "fases_lunares", "ventana_lluvia", "herbario"]},
+    {"slug": "ciencia", "nombre": "Tratados científicos", "familia": TIPO_TEXTO,
+     "motivos": ["orbitas", "hexagonos", "grafica_datos", "arbol_filogenetico"]},
+    {"slug": "cocina", "nombre": "Recetas y cocina", "familia": TIPO_TEXTO,
+     "motivos": ["especias", "platos", "frutas", "ollas_y_vapor"]},
+    {"slug": "filosofia", "nombre": "Filosofía y ensayo", "familia": TIPO_TEXTO,
+     "motivos": ["laberinto", "esfera_armilar", "puertas", "red_de_ideas"]},
+    {"slug": "teatro", "nombre": "Teatro", "familia": TIPO_TEXTO,
+     "motivos": ["cortinas", "mascaras", "focos", "platea"]},
+    {"slug": "viajes", "nombre": "Viajes y crónicas", "familia": TIPO_TEXTO,
+     "motivos": ["brujula", "mapa_y_ruta", "veleros", "cordillera"]},
 ]
+
+# Motivos con sentido de lectura (texto, letra manuscrita, sellos en una esquina): no se reflejan.
+SIN_ESPEJO = {"plumas", "articulos", "sobres", "rollos"}
+
+# Nombre de cada motivo tal como se muestra a las personas.
+NOMBRES_MOTIVO = {
+    "amanecer": "Amanecer", "arbol_solitario": "Árbol solitario", "nubes": "Nubes", "acantilado_mar": "Acantilado y mar",
+    "ciudad": "Ciudad", "puente": "Puente", "farolas": "Farolas", "chimeneas": "Chimeneas",
+    "bosque": "Bosque", "juncos": "Juncos", "trigo": "Trigo", "rio": "Río",
+    "ondas": "Ondas", "ondas_concentricas": "Ondas concéntricas", "nouveau": "Art nouveau", "mosaico": "Mosaico",
+    "geometria": "Geometría", "constructivista": "Constructivista", "caligrama": "Caligrama", "collage": "Collage",
+    "arcos_ojivales": "Arcos ojivales", "roseton": "Rosetón", "torres": "Torres", "cementerio": "Cementerio",
+    "ornamento": "Ornamento", "volutas": "Volutas", "drapeado": "Drapeado", "perlas": "Perlas",
+    "columnas": "Columnas", "fronton": "Frontón", "laurel": "Laurel", "meandro": "Meandro",
+    "luna": "Luna", "reflejo_lunar": "Reflejo lunar", "constelaciones": "Constelaciones", "lirio": "Lirio",
+    "espiral": "Espiral", "mariposas": "Mariposas", "flores_cayendo": "Flores cayendo", "selva": "Selva",
+    "engranajes": "Engranajes", "plano_tecnico": "Plano técnico", "regla": "Regla", "circuito": "Circuito",
+    "rayos_de_luz": "Rayos de luz", "mandala": "Mandala", "rollos": "Rollos", "velas": "Velas",
+    "balanza": "Balanza", "sellos": "Sellos", "articulos": "Artículos", "mazo": "Mazo",
+    "sobres": "Sobres", "estampillas": "Estampillas", "lacre": "Lacre", "plumas": "Plumas",
+    "calendario": "Calendario", "fases_lunares": "Fases lunares", "ventana_lluvia": "Ventana con lluvia", "herbario": "Herbario",
+    "orbitas": "Órbitas", "hexagonos": "Hexágonos", "grafica_datos": "Gráfica de datos", "arbol_filogenetico": "Árbol filogenético",
+    "especias": "Especias", "platos": "Platos", "frutas": "Frutas", "ollas_y_vapor": "Ollas y vapor",
+    "laberinto": "Laberinto", "esfera_armilar": "Esfera armilar", "puertas": "Puertas", "red_de_ideas": "Red de ideas",
+    "cortinas": "Cortinas", "mascaras": "Máscaras", "focos": "Focos", "platea": "Platea",
+    "brujula": "Brújula", "mapa_y_ruta": "Mapa y ruta", "veleros": "Veleros", "cordillera": "Cordillera",
+}
+assert set(NOMBRES_MOTIVO) == set(MOTIVOS), "cada motivo necesita su nombre (y solo los motivos existentes)"
+assert all(m in MOTIVOS for c in CATEGORIAS for m in c["motivos"]), "una categoría usa un motivo que no existe"
 
 ESCENAS = [
     {"slug": "amanecer", "cielo": ("niebla", "ocre"), "sol": "papel",
@@ -158,8 +222,8 @@ def svg_marcalibro(grupos, titulo):
 
 
 def jpg_marcalibro(grupos, ruta):
-    s = SUPERSAMPLE
-    img = Image.new("RGB", (W * s, H * s), RGB["papel"])
+    s = SUPERSAMPLE * VISTA_PREVIA[0] / W      # escala de dibujo respecto del lienzo de 1400 x 200
+    img = Image.new("RGB", (round(W * s), round(H * s)), RGB["papel"])
     d = ImageDraw.Draw(img)
     for tipo, items, color, grosor in grupos:
         col = RGB[color]
@@ -185,14 +249,14 @@ def jpg_marcalibro(grupos, ruta):
                 for x, y in (pts[0], pts[-1]):   # extremos redondeados, como en el SVG
                     rr = grosor * s / 2
                     d.ellipse([x * s - rr, y * s - rr, x * s + rr, y * s + rr], fill=col)
-    img = img.resize((W, H), Image.Resampling.LANCZOS)
+    img = img.resize(VISTA_PREVIA, Image.Resampling.LANCZOS)
     img.save(ruta, "JPEG", quality=CALIDAD_JPG, optimize=True)
 
 
-def figuras_variante(mov, i):
-    """Devuelve las figuras agrupadas y los datos de la variante i de un movimiento."""
-    r = _rng(mov["slug"], i)
-    motivo = mov["motivos"][(i - 1) % len(mov["motivos"])]
+def figuras_variante(cat, i):
+    """Devuelve las figuras agrupadas y los datos de la variante i de una categoría."""
+    r = _rng(cat["slug"], i)
+    motivo = cat["motivos"][(i - 1) % len(cat["motivos"])]
     fondo = r.choice(["papel", "papel", "papel", "tinta", "tinta"])
     # El color principal siempre contrasta bien con el fondo (razón mayor a 5:1).
     if fondo == "papel":
@@ -201,47 +265,68 @@ def figuras_variante(mov, i):
     else:
         c1 = r.choice(["papel", "ocre"])
         c2 = r.choice([c for c in ("niebla", "ocre", "papel") if c != c1])
-    figuras = [("rect", 0, 0, W, H, fondo)] + MOTIVOS[motivo](r, c1, c2, fondo)
+    figuras = MOTIVOS[motivo](r, c1, c2, fondo)
+    espejado = motivo not in SIN_ESPEJO and _rng(cat["slug"], i, "espejo").random() < 0.5
+    if espejado:
+        figuras = espejar(figuras)
+    figuras = [("rect", 0, 0, W, H, fondo)] + figuras
     return compactar(figuras), {"fondo": fondo, "acentos": [c1, c2], "motivo": motivo}
 
 
-def generar_marcalibros(raiz, por_movimiento):
+def generar_marcalibros(raiz, por_categoria):
+    """Escribe SVG, vista previa y manifiesto. Devuelve (total, pesos, excedidos, repetidos)."""
     carpeta_svg = raiz / "catalog" / "svg"
     carpeta_prev = raiz / "catalog" / "preview"
     carpeta_svg.mkdir(parents=True, exist_ok=True)
     carpeta_prev.mkdir(parents=True, exist_ok=True)
+    for carpeta, ext in ((carpeta_svg, "*.svg"), (carpeta_prev, "*.jpg")):   # sin restos de ejecuciones anteriores
+        for viejo in carpeta.glob(ext):
+            viejo.unlink()
 
-    entradas, pesos, excedidos = [], [], []
-    for mov in MOVIMIENTOS:
-        for i in range(1, por_movimiento + 1):
-            id_ = f"mb-{mov['slug']}-{i:02d}"
-            grupos, datos = figuras_variante(mov, i)
-            svg = svg_marcalibro(grupos, f"Marcalibro {mov['nombre']} {i:02d}")
+    digitos = max(2, len(str(por_categoria)))
+    entradas, pesos, excedidos, vistos, repetidos = [], [], [], {}, []
+    for cat in CATEGORIAS:
+        for i in range(1, por_categoria + 1):
+            id_ = f"mb-{cat['slug']}-{i:0{digitos}d}"
+            grupos, datos = figuras_variante(cat, i)
+            svg = svg_marcalibro(grupos, f"Marcalibro {cat['nombre']} {i:0{digitos}d}")
+            huella = hashlib.sha256(svg.split("</title>", 1)[1].encode("utf-8")).hexdigest()
+            if huella in vistos:
+                repetidos.append((id_, vistos[huella]))
+            vistos[huella] = id_
             (carpeta_svg / f"{id_}.svg").write_text(svg, encoding="utf-8")
             jpg_marcalibro(grupos, carpeta_prev / f"{id_}.jpg")
             peso = len(svg.encode("utf-8"))
             pesos.append(peso)
             if peso > LIMITE_SVG:
                 excedidos.append((id_, peso))
-            entradas.append({
+            entrada = {
                 "id": id_,
-                "movimiento": mov["nombre"],
+                "categoria": cat["nombre"],
+                "categoria_slug": cat["slug"],
+                "familia": cat["familia"],
                 "motivo": datos["motivo"],
                 "fondo": PALETA[datos["fondo"]],
                 "colores": [PALETA[c] for c in datos["acentos"]],
-                "autores_inspiracion": mov["autores"],
-                "svg": f"catalog/svg/{id_}.svg",
-                "vista_previa": f"catalog/preview/{id_}.jpg",
-            })
+            }
+            if "autores" in cat:
+                entrada["autores_inspiracion"] = cat["autores"]
+            entrada["svg"] = f"catalog/svg/{id_}.svg"
+            entrada["vista_previa"] = f"catalog/preview/{id_}.jpg"
+            entradas.append(entrada)
 
     manifest = {
         "total": len(entradas),
         "tamano": {"ancho": W, "alto": H},
+        "vista_previa": {"ancho": VISTA_PREVIA[0], "alto": VISTA_PREVIA[1]},
+        "motivos": NOMBRES_MOTIVO,
+        "categorias": [{"slug": c["slug"], "nombre": c["nombre"], "familia": c["familia"],
+                        "motivos": c["motivos"], "total": por_categoria} for c in CATEGORIAS],
         "marcalibros": entradas,
     }
     (raiz / "catalog" / "manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return len(entradas), pesos, excedidos
+    return len(entradas), pesos, excedidos, repetidos
 
 
 # ------------------------------------------------------------------ paisajes
@@ -300,21 +385,31 @@ def generar_paisajes(raiz):
 
 def main():
     ap = argparse.ArgumentParser(description="Genera marcalibros y paisajes de la marca.")
-    ap.add_argument("--por-movimiento", type=int, default=10,
-                    help="variantes por movimiento (10 da 100 marcalibros; 100 da 1000)")
+    ap.add_argument("--por-categoria", type=int, default=50,
+                    help=f"variantes por categoría (hay {len(CATEGORIAS)}: 50 da 1000 marcalibros)")
     args = ap.parse_args()
+    if args.por_categoria < 1:
+        ap.error("--por-categoria debe ser 1 o más")
 
     raiz = Path(__file__).resolve().parent.parent
-    total, pesos, excedidos = generar_marcalibros(raiz, args.por_movimiento)
+    total, pesos, excedidos, repetidos = generar_marcalibros(raiz, args.por_categoria)
     paisajes = generar_paisajes(raiz)
-    print(f"Marcalibros generados: {total}")
+    print(f"Marcalibros generados: {total} ({len(CATEGORIAS)} categorías x {args.por_categoria})")
     print(f"Paisajes generados: {len(paisajes)}")
     print(f"Peso de los SVG: máximo {max(pesos) / 1024:.1f} KB, mediana {sorted(pesos)[len(pesos) // 2] / 1024:.1f} KB "
           f"(límite {LIMITE_SVG // 1024} KB)")
+    error = False
     if excedidos:
+        error = True
         print(f"ERROR: {len(excedidos)} SVG superan el límite:", file=sys.stderr)
         for id_, peso in excedidos[:15]:
             print(f"  {id_}: {peso / 1024:.1f} KB", file=sys.stderr)
+    if repetidos:
+        error = True
+        print(f"ERROR: {len(repetidos)} marcalibros son idénticos a otro:", file=sys.stderr)
+        for id_, otro in repetidos[:15]:
+            print(f"  {id_} = {otro}", file=sys.stderr)
+    if error:
         sys.exit(1)
 
 

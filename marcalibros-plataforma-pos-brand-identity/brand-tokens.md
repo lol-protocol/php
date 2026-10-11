@@ -35,7 +35,7 @@ Sobre `papel` solo se usan `tinta` y `verde` para eso. `ocre` y `niebla` sobre `
 
 - **Iconos (24×24):** trazo de 2 px, esquinas y extremos redondeados (`stroke-linecap` y `stroke-linejoin` en `round`).
 - **Ilustraciones de estado vacío (64×64):** trazo de 2 px, misma regla de extremos.
-- **Marcalibros (1400×200):** sin texto dentro del SVG. El nombre del autor o del movimiento vive en `catalog/manifest.json`.
+- **Marcalibros (1400×200, proporción 7:1):** sin texto dentro del SVG. La categoría (movimiento literario o tipo de texto), el motivo y, en los movimientos, los autores de inspiración viven en `catalog/manifest.json`.
 - **Grilla base:** 8 px. Los márgenes internos de los iconos son de 2 px.
 
 ## Tipografía
@@ -48,4 +48,5 @@ Sobre `papel` solo se usan `tinta` y `verde` para eso. `ocre` y `niebla` sobre `
 
 - SVG para iconos e ilustraciones (escalan sin pérdida y conservan transparencia). Menos de 10 KB cada uno. El generador comprueba este límite en los marcalibros del catálogo y se detiene si alguno lo supera.
 - JPG para paisajes, calidad 85, sin metadatos EXIF. Menos de 300 KB cada uno.
+- Las vistas previas JPG de los marcalibros del catálogo miden 700×100 (la mitad del tamaño real, 1400×200) y pesan unos 11 KB cada una; el SVG es la versión de referencia.
 - Nombres de archivo en minúsculas, separados por guiones, sin números al inicio.

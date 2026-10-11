@@ -1,10 +1,10 @@
 # Taxonomía de marcalibros
 
-**Estado: borrador pendiente de confirmación.** Los movimientos y autores de esta lista aún no están aprobados.
+**Estado: borrador pendiente de confirmación.** Los movimientos, los autores y los **tipos de texto** de esta lista aún no están aprobados. Los 10 movimientos vienen de la primera versión; los 10 tipos de texto son una propuesta nueva a partir de lo que pediste ("manuales, libros sagrados, leyes, etc.") y conviene revisarlos.
 
-Cada movimiento tiene 4 motivos visuales. Con 10 variantes por movimiento (100 marcalibros) cada motivo aparece 2 o 3 veces, con colores y posiciones distintos. El número de variantes se cambia con `--por-movimiento` en el generador.
+El catálogo tiene **20 categorías en dos familias** y **50 marcalibros por categoría: 1000 en total**. Cada categoría tiene 4 motivos visuales, así que cada motivo aparece 12 o 13 veces, con colores, posiciones y variaciones distintas (no hay dos SVG idénticos: el generador lo comprueba). El número por categoría se cambia con `--por-categoria` en el generador.
 
-## Movimientos
+## Movimientos literarios
 
 | Movimiento       | Motivos visuales                                           | Autores de referencia                                   |
 |------------------|------------------------------------------------------------|---------------------------------------------------------|
@@ -19,17 +19,40 @@ Cada movimiento tiene 4 motivos visuales. Con 10 variantes por movimiento (100 m
 | Simbolismo       | Luna, reflejo lunar, constelaciones, lirio                 | Stéphane Mallarmé, Paul Verlaine, Arthur Rimbaud        |
 | Realismo mágico  | Espiral, mariposas, flores cayendo, selva                  | Gabriel García Márquez, Juan Rulfo, Alejo Carpentier    |
 
-El motivo de cada marcalibro queda registrado en el campo `motivo` de `catalog/manifest.json`. Los motivos se definen en `generator/motivos.py`.
+## Tipos de texto
+
+Pensados para Plataforma POS: el etiquetado gramatical se hace sobre textos de muy distintos registros, y el tipo de texto es tan útil para ubicarse como el movimiento. No llevan autores.
+
+| Tipo de texto        | Motivos visuales                                            | Idea                                                        |
+|----------------------|-------------------------------------------------------------|-------------------------------------------------------------|
+| Manuales             | Engranajes, plano técnico, regla, circuito                  | Instrucciones, guías técnicas, reglamentos de uso           |
+| Libros sagrados      | Rayos de luz, mandala, rollos, velas                        | Textos religiosos y espirituales, sin símbolos de una religión concreta |
+| Leyes y reglamentos  | Balanza, sellos, artículos, mazo                            | Constituciones, códigos, contratos, normas                  |
+| Cartas y epistolares | Sobres, estampillas, lacre, plumas                          | Cartas, correspondencia, telegramas                         |
+| Diarios y memorias   | Calendario, fases lunares, ventana con lluvia, herbario     | Diarios íntimos, memorias, bitácoras                        |
+| Tratados científicos | Órbitas, hexágonos, gráfica de datos, árbol filogenético    | Ensayos y artículos de ciencia                              |
+| Recetas y cocina     | Especias, platos, frutas, ollas y vapor                     | Recetarios y textos gastronómicos                           |
+| Filosofía y ensayo   | Laberinto, esfera armilar, puertas, red de ideas            | Tratados filosóficos, ensayos, pensamiento                  |
+| Teatro               | Cortinas, máscaras, focos, platea                           | Obras dramáticas y guiones                                  |
+| Viajes y crónicas    | Brújula, mapa y ruta, veleros, cordillera                   | Relatos de viaje, crónicas, diarios de expedición           |
+
+## Dónde vive cada dato
+
+- La categoría, su familia y el motivo de cada marcalibro están en `catalog/manifest.json` (`categoria`, `categoria_slug`, `familia`, `motivo`). La lista de categorías y los nombres de los motivos están en `categorias` y `motivos`.
+- Los motivos se definen en `generator/motivos.py` (movimientos) y `generator/motivos_texto.py` (tipos de texto). Los identificadores son `mb-{categoría}-{NN}`, por ejemplo `mb-leyes-07`.
 
 ## Reglas de uso de los autores
 
-- Los nombres aparecen solo como metadatos e inspiración en `catalog/manifest.json`.
+- Solo los movimientos literarios tienen autores. Aparecen como metadatos e inspiración en `catalog/manifest.json` (`autores_inspiracion`).
 - Ningún marcalibro muestra el nombre del autor, citas, portadas de libros ni retratos.
 - Si se agrega un autor vivo, se usa solo su nombre, sin imagen ni fragmentos de obra.
+- Los tipos de texto no citan obras concretas.
 
 ## Notas para revisar
 
 - **"Modernismo"** se usa aquí en sentido amplio. Incluye al modernismo hispanoamericano (Darío) y al modernismo anglosajón (Woolf, Joyce). Puede separarse en dos movimientos si prefieres más precisión.
-- **Realismo mágico** es una etiqueta que algunos críticos aplican solo a parte de la obra de estos autores. Conviene confirmarla.
+- **Realismo mágico** se queda como movimiento propio. Es una etiqueta que algunos críticos aplican solo a parte de la obra de estos autores, y los motivos (espiral, mariposas, flores cayendo, selva) son una interpretación visual.
 - **Barroco** mezcla el culteranismo de Góngora con el conceptismo de Quevedo. Ambos entran en la categoría, pero son escuelas distintas.
-- **Motivos por movimiento:** son una interpretación visual propia, no una norma. Si algún motivo no representa bien a su movimiento, se cambia en `generator/motivos.py` sin tocar el resto.
+- **Libros sagrados** evita a propósito cruces, medias lunas, estrellas de David y símbolos parecidos: los motivos son luz, mandala, rollos y velas. Si prefieres símbolos de una tradición concreta, hay que decidirlo con cuidado y tradición por tradición.
+- **Tipos de texto que podrían sumarse:** cuentos y leyendas, poesía, historia, periodismo, diccionarios y enciclopedias, discursos. Cada uno cuesta 4 motivos nuevos y 50 marcalibros.
+- **Motivos por categoría:** son una interpretación visual propia, no una norma. Si alguno no representa bien a su categoría, se cambia en el generador sin tocar el resto.
