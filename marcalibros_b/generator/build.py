@@ -224,16 +224,16 @@ def main():
 
     errores += fallos
 
-    # Hojas de contacto para revisión humana: una por movimiento
-    for mov_id in sorted(rehechos):
+    # Hojas de contacto para revisión humana: una por autor (10 piezas), no una de 100
+    por_autor = {}
+    for e in generados:
+        por_autor.setdefault((e["movimiento"], e["autor_id"]), []).append(e)
+    for (mov_id, autor_id), grupo in sorted(por_autor.items()):
         piezas = []
-        for e in generados:
-            if e["movimiento"] != mov_id:
-                continue
+        for e in grupo:
             img, metodo = imagen_para_revision(e, esc_por_id[e["id"]], rutas[e["id"]])
-            piezas.append((f"{e['id']}  [{e['formato']}]", img))
-            print(f"  · {e['id']}: revisado con {metodo}")
-        hoja = CATALOGO / "revision" / f"hoja-{mov_id}.jpg"
+            piezas.append((f"{e['id']}  [{e['formato']}]  {e['obra']}", img))
+        hoja = CATALOGO / "revision" / f"hoja-{mov_id}-{autor_id}.jpg"
         hoja_de_contacto(piezas, hoja)
         print(f"  hoja de contacto: {hoja.relative_to(RAIZ)}")
 

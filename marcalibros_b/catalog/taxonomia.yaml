@@ -5,7 +5,7 @@
 # - `motivo` sale de la biblioteca catalog/motivos.yaml (solo los `implementado: true`).
 # - Gutenberg: `gutenberg.estado` es sin_verificar | verificado. Solo se marca
 #   `verificado` con id real, comprobado con generator/verificar_gutenberg.py.
-# - Los 6 autores de Romanticismo tras Poe/Byron son propuesta, no decisión cerrada.
+# - Los 6 autores de Romanticismo tras Poe/Byron y las obras de todos salvo Bécquer son borrador (de memoria, sin verificar).
 # - Regla de formato: la variante 01 de cada autor es JPG; el resto SVG.
 
 version: '0.2'
@@ -110,7 +110,77 @@ movimientos:
     gutenberg_autor:
       id: null
       estado: sin_verificar
-    obras: []
+    obras:
+    - id: cancion-del-pirata
+      titulo: Canción del pirata
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-estudiante-de-salamanca
+      titulo: El estudiante de Salamanca
+      tipo: poema
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-diablo-mundo
+      titulo: El diablo mundo
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: canto-a-teresa
+      titulo: Canto a Teresa
+      tipo: poema
+      motivo: golondrinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-reo-de-muerte
+      titulo: El reo de muerte
+      tipo: poema
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: a-jarifa-en-una-orgia
+      titulo: A Jarifa en una orgía
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sancho-saldana
+      titulo: Sancho Saldaña
+      tipo: novela
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-mendigo
+      titulo: El mendigo
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: himno-al-sol
+      titulo: Himno al sol
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-verdugo
+      titulo: El verdugo
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
   - id: poe
     nombre: Edgar Allan Poe
     epoca: 1809–1849
@@ -118,7 +188,77 @@ movimientos:
     gutenberg_autor:
       id: null
       estado: sin_verificar
-    obras: []
+    obras:
+    - id: el-cuervo
+      titulo: El cuervo
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: annabel-lee
+      titulo: Annabel Lee
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-caida-de-la-casa-usher
+      titulo: La caída de la casa Usher
+      tipo: cuento
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-corazon-delator
+      titulo: El corazón delator
+      tipo: cuento
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-gato-negro
+      titulo: El gato negro
+      tipo: cuento
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ligeia
+      titulo: Ligeia
+      tipo: cuento
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: berenice
+      titulo: Berenice
+      tipo: cuento
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-barril-de-amontillado
+      titulo: El barril de amontillado
+      tipo: cuento
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: lenore
+      titulo: Lenore
+      tipo: poema
+      motivo: golondrinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: un-descenso-al-maelstrom
+      titulo: Un descenso al Maelström
+      tipo: cuento
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
   - id: byron
     nombre: Lord Byron
     epoca: 1788–1824
@@ -126,7 +266,77 @@ movimientos:
     gutenberg_autor:
       id: null
       estado: sin_verificar
-    obras: []
+    obras:
+    - id: la-peregrinacion-de-childe-harold
+      titulo: La peregrinación de Childe Harold
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: don-juan
+      titulo: Don Juan
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: manfred
+      titulo: Manfred
+      tipo: drama
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cain
+      titulo: Caín
+      tipo: drama
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-novia-de-abydos
+      titulo: La novia de Abydos
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-corsario
+      titulo: El corsario
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: lara
+      titulo: Lara
+      tipo: poema
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-prisionero-de-chillon
+      titulo: El prisionero de Chillon
+      tipo: poema
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ella-camina-en-belleza
+      titulo: Ella camina en belleza
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: oscuridad
+      titulo: Oscuridad
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
   - id: rosalia-de-castro
     nombre: Rosalía de Castro
     epoca: 1837–1885
@@ -134,7 +344,77 @@ movimientos:
     gutenberg_autor:
       id: null
       estado: sin_verificar
-    obras: []
+    obras:
+    - id: cantares-gallegos
+      titulo: Cantares gallegos
+      tipo: poema
+      motivo: golondrinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: follas-novas
+      titulo: Follas novas
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: en-las-orillas-del-sar
+      titulo: En las orillas del Sar
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-hija-del-mar
+      titulo: La hija del mar
+      tipo: novela
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: flavio
+      titulo: Flavio
+      tipo: novela
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ruinas
+      titulo: Ruinas
+      tipo: novela
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-caballero-de-las-botas-azules
+      titulo: El caballero de las botas azules
+      tipo: novela
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-primer-loco
+      titulo: El primer loco
+      tipo: novela
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: lieders
+      titulo: Lieders
+      tipo: poema
+      motivo: golondrinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: negra-sombra
+      titulo: Negra sombra
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
   - id: larra
     nombre: Mariano José de Larra
     epoca: 1809–1837
@@ -142,7 +422,77 @@ movimientos:
     gutenberg_autor:
       id: null
       estado: sin_verificar
-    obras: []
+    obras:
+    - id: vuelva-usted-manana
+      titulo: Vuelva usted mañana
+      tipo: artículo
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-castellano-viejo
+      titulo: El castellano viejo
+      tipo: artículo
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: un-reo-de-muerte
+      titulo: Un reo de muerte
+      tipo: artículo
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: dia-de-difuntos-de-1836
+      titulo: Día de difuntos de 1836
+      tipo: artículo
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-nochebuena-de-1836
+      titulo: La nochebuena de 1836
+      tipo: artículo
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-doncel-de-don-enrique-el-doliente
+      titulo: El doncel de don Enrique el Doliente
+      tipo: novela
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: macias
+      titulo: Macías
+      tipo: drama
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: no-mas-mostrador
+      titulo: No más mostrador
+      tipo: artículo
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-barateros
+      titulo: Los barateros
+      tipo: artículo
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: entre-que-gentes-estamos
+      titulo: Entre qué gentes estamos
+      tipo: artículo
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
   - id: hugo
     nombre: Victor Hugo
     epoca: 1802–1885
@@ -150,7 +500,77 @@ movimientos:
     gutenberg_autor:
       id: null
       estado: sin_verificar
-    obras: []
+    obras:
+    - id: nuestra-senora-de-paris
+      titulo: Nuestra Señora de París
+      tipo: novela
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-miserables
+      titulo: Los miserables
+      tipo: novela
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: hernani
+      titulo: Hernani
+      tipo: drama
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-trabajadores-del-mar
+      titulo: Los trabajadores del mar
+      tipo: novela
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-hombre-que-rie
+      titulo: El hombre que ríe
+      tipo: novela
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: noventa-y-tres
+      titulo: Noventa y tres
+      tipo: novela
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cromwell
+      titulo: Cromwell
+      tipo: drama
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-orientales
+      titulo: Las orientales
+      tipo: poema
+      motivo: golondrinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-contemplaciones
+      titulo: Las contemplaciones
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-ultimo-dia-de-un-condenado
+      titulo: El último día de un condenado
+      tipo: novela
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
   - id: keats
     nombre: John Keats
     epoca: 1795–1821
@@ -158,7 +578,77 @@ movimientos:
     gutenberg_autor:
       id: null
       estado: sin_verificar
-    obras: []
+    obras:
+    - id: oda-a-un-ruisenor
+      titulo: Oda a un ruiseñor
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: oda-a-una-urna-griega
+      titulo: Oda a una urna griega
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: endymion
+      titulo: Endymion
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: hiperion
+      titulo: Hiperión
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-vispera-de-santa-ines
+      titulo: La víspera de Santa Inés
+      tipo: poema
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: lamia
+      titulo: Lamia
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-belle-dame-sans-merci
+      titulo: La belle dame sans merci
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: oda-a-psique
+      titulo: Oda a Psique
+      tipo: poema
+      motivo: golondrinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: oda-a-la-melancolia
+      titulo: Oda a la melancolía
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: a-otono
+      titulo: A otoño
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
   - id: shelley-percy
     nombre: Percy Bysshe Shelley
     epoca: 1792–1822
@@ -166,7 +656,77 @@ movimientos:
     gutenberg_autor:
       id: null
       estado: sin_verificar
-    obras: []
+    obras:
+    - id: ozymandias
+      titulo: Ozymandias
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: oda-al-viento-del-oeste
+      titulo: Oda al viento del oeste
+      tipo: poema
+      motivo: golondrinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: prometeo-liberado
+      titulo: Prometeo liberado
+      tipo: drama
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: a-una-alondra
+      titulo: A una alondra
+      tipo: poema
+      motivo: golondrinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: adonais
+      titulo: Adonais
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: alastor
+      titulo: Alastor
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: mont-blanc
+      titulo: Mont Blanc
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-reina-mab
+      titulo: La reina Mab
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-cenci
+      titulo: Los Cenci
+      tipo: drama
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-mascara-de-la-anarquia
+      titulo: La máscara de la anarquía
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
   - id: wordsworth
     nombre: William Wordsworth
     epoca: 1770–1850
@@ -174,4 +734,74 @@ movimientos:
     gutenberg_autor:
       id: null
       estado: sin_verificar
-    obras: []
+    obras:
+    - id: baladas-liricas
+      titulo: Baladas líricas
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: versos-sobre-la-abadia-de-tintern
+      titulo: Versos sobre la abadía de Tintern
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-preludio
+      titulo: El preludio
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: vagaba-solitario-como-una-nube
+      titulo: Vagaba solitario como una nube
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: oda-intimaciones-de-inmortalidad
+      titulo: 'Oda: intimaciones de inmortalidad'
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-excursion
+      titulo: La excursión
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: michael
+      titulo: Michael
+      tipo: poema
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: resolucion-e-independencia
+      titulo: Resolución e independencia
+      tipo: poema
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sobre-el-puente-de-westminster
+      titulo: Sobre el puente de Westminster
+      tipo: poema
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-poemas-de-lucy
+      titulo: Los poemas de Lucy
+      tipo: poema
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar

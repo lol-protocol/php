@@ -111,7 +111,10 @@ def hoja_de_contacto(piezas, salida: Path, columnas: int = 2):
     alto = filas * (ALTO + etiqueta + margen) + margen
     hoja = Image.new("RGB", (ancho, alto), (244, 238, 225))
     dibujo = ImageDraw.Draw(hoja)
-    fuente = ImageFont.load_default()
+    try:  # la fuente por defecto de Pillow no dibuja bien las tildes
+        fuente = ImageFont.truetype("DejaVuSans.ttf", 13)
+    except OSError:
+        fuente = ImageFont.load_default()
     for k, (titulo, img) in enumerate(piezas):
         x = margen + (k % columnas) * (ANCHO + margen)
         y = margen + (k // columnas) * (ALTO + etiqueta + margen)

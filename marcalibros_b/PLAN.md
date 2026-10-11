@@ -72,7 +72,9 @@ Verificado:
 ## Paso 2 en curso (generador 0.3.0)
 
 - Taxonomía v0.2: cada variante es una obra/tema del autor (`obras`), con `motivo` de `catalog/motivos.yaml` y `gutenberg: {id, estado}`. `qa.validar_taxonomia` bloquea motivos inexistentes y `verificado` sin id.
-- Bécquer completo: 10 obras/temas (borrador sin fechas). Los otros 9 autores de Romanticismo están dados de alta sin obras (no se generan); los 6 tras Poe/Byron (Rosalía de Castro, Larra, Hugo, Keats, P. B. Shelley, Wordsworth) son propuesta.
+- Romanticismo completo en borrador: 10 autores × 10 obras/temas = 100 piezas (10 JPG, 90 SVG), 0 errores de validación y 19 reintentos de semilla por duplicado. Las obras de los 9 autores distintos de Bécquer están escritas de memoria, sin fechas y sin verificar; los 6 autores tras Poe/Byron (Rosalía de Castro, Larra, Hugo, Keats, P. B. Shelley, Wordsworth) son propuesta.
+- Hojas de contacto por autor (`catalog/revision/hoja-romanticismo-<autor>.jpg`), no una de 100.
+- Limitación visible: el vínculo obra→imagen sigue siendo débil. Solo cambia el motivo (torre, luna, río, golondrinas) y la paleta es independiente de la obra: «El cuervo» sale con cielo claro y sol naranja. Falta asociar paletas/ánimo a cada obra y ampliar la biblioteca de motivos.
 - **Ids de Gutenberg: sin verificar.** El entorno bloqueó gutenberg.org y gutendex.com. Cuando haya red: `python generator/verificar_gutenberg.py` genera `catalog/revision/gutenberg-candidatos.md` (probado solo con respuesta simulada, no contra la API real).
 - Biblioteca de motivos: 4 motivos + `ninguno`; el objetivo (~40) sigue pendiente.
 
