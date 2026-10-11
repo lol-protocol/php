@@ -1,0 +1,32 @@
+{
+    "name": "lol-protocol/marcalibros-propios",
+    "description": "Marcalibros propios para Plataforma POS: valida imágenes subidas, quita metadatos, recorta a 7:1 y genera los tamaños 1400x200 y 2800x400",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "LOL Protocol Team"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-mbstring": "*"
+    },
+    "suggest": {
+        "ext-exif": "Permite corregir la orientación de las fotos tomadas con el celular"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Marcalibros\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}
