@@ -6,6 +6,12 @@ on:
   schedule:
     - cron: '17 6 * * 1'
   workflow_dispatch:
+  # Also when the check itself changes (workflow_dispatch only works once the file is on the default branch).
+  push:
+    paths:
+      - '.github/workflows/laws-links.yml'
+      - 'privacy-laws/scripts/check-links.js'
+      - 'copyright-laws/scripts/check-links.js'
 
 permissions:
   contents: read
