@@ -122,17 +122,14 @@ final class BookmarkStoreTest extends AppTestCase
     {
         $store = new BookmarkStore($this->bookmarks);
         $bookmark = $this->bookmark();
-        chmod($this->bookmarks, 0555);
-        if (is_writable($this->bookmarks)) {
-            chmod($this->bookmarks, 0755);
-            $this->markTestSkipped('El usuario puede escribir en carpetas de solo lectura (¿root?).');
-        }
+        // Una carpeta en el lugar del JSON hace fallar el rename, también como root.
+        mkdir("$this->bookmarks/mp-0123456789abcdef.json");
         try {
             $store->save($bookmark, $this->now);
             $this->fail('Se esperaba un error al guardar.');
         } catch (\RuntimeException) {
-            chmod($this->bookmarks, 0755);
         }
+        rmdir("$this->bookmarks/mp-0123456789abcdef.json");
         $this->assertSame([], array_values(array_diff(scandir($this->bookmarks) ?: [], ['.', '..'])));
     }
 

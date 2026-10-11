@@ -100,7 +100,7 @@ final class ImageNormalizer
     private function availableMemory(): ?int
     {
         $limit = ini_get('memory_limit');
-        if ($limit === false || $limit === '' || $limit === '-1') {
+        if ($limit === '' || $limit === '-1') {
             return null;
         }
         return max(0, $this->toBytes($limit) - memory_get_usage(true));

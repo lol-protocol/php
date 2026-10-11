@@ -43,7 +43,7 @@ Después de regenerar, `git status` no debe mostrar cambios si no tocaste el gen
 
 ## Entorno y verificación
 
-- `composer.lock` de `php/` y `app/` está en el repositorio. En el entorno donde se escribió esto, Packagist respondía pero `github.com` no (403), así que PHPUnit 10.5 se instaló y las pruebas pasaron con PHPUnit real (95 del módulo y 122 de la aplicación; 1 omitida por correr como root y 2 avisos esperados de una prueba que fuerza plantillas faltantes), pero **PHPStan no se pudo instalar ni correr** (su paquete se descarga de GitHub). El CI lo corre en nivel 6: si falla ahí, corrígelo.
+- `composer.lock` de `php/` y `app/` está en el repositorio. En el entorno donde se escribió esto, Packagist respondía pero `github.com` no (403), así que PHPUnit 10.5 se instaló y las pruebas pasaron con PHPUnit real (95 del módulo y 122 de la aplicación; con avisos esperados de pruebas que fuerzan fallos), pero **PHPStan no se pudo instalar ni correr** (su paquete se descarga de GitHub). El CI lo corre en nivel 6: si falla ahí, corrígelo.
 - Las pruebas de navegador (subida real, rechazos, límite de intentos, borrado, teclado, móvil, sin JavaScript) se hicieron con Playwright a mano y no están en el repositorio. Si agregas una prueba de extremo a extremo, evita `wait_for_function` con texto: la CSP bloquea `eval`.
 - CI: `.github/workflows/pruebas-marcalibros.yml` (PHPUnit en PHP 8.1 y 8.3, PHPStan nivel 6, y comprobación de que el generador no cambia el catálogo).
 - Las fuentes (Source Serif 4 e Inter) están incluidas en `app/public/assets/fuentes/`; la CSP lleva `font-src 'self'`. No se comprobó el aspecto en un navegador.
