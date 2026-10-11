@@ -5,7 +5,7 @@ Pequeño sistema en PHP (sin framework) para analizar:
 - **Ingresos** devengados (boletas emitidas al usuario) vs. **cobros** reales (caja).
   Solo se registran pagos que el usuario nos hace a nosotros — no hay módulo de
   costos ni pagos propios del negocio.
-- **Cartera** pendiente, con antigüedad de saldo (aging: al día / 1-30 / 31-60 / 61+ días).
+- **Cartera** pendiente, con antigüedad de saldo (al día / 1-30 / 31-60 / 61+ días).
 - **Pagos**: por mes y por método (transferencia, tarjeta, efectivo).
 - **Funnel de conversión**: visitante → registrado → lead → cliente, con tasas por
   etapa, por canal de adquisición y por país/género/rango de edad.
@@ -33,9 +33,10 @@ Pequeño sistema en PHP (sin framework) para analizar:
   marcada "Anulada" y se excluye de los agregados) para no perder el rastro. Un
   doble clic en "Guardar" no crea un segundo pago ni una segunda boleta.
 - **Auditoría**: historial de cada alta, edición y anulación de boletas, pagos y
-  clientes, con fecha y el detalle de qué cambió. Sin login (ver más abajo), el
-  usuario de toda entrada nueva es "Sistema"; las de antes de sacarlo conservan
-  el suyo.
+  clientes, con fecha y el detalle de qué cambió, de la más reciente a la más
+  antigua (se navega con «Más antiguas» y «Más recientes»). Sin login (ver más
+  abajo), el usuario de toda entrada nueva es "Sistema"; las de antes de sacarlo
+  conservan el suyo.
 - **Paginación** en los listados grandes (boletas, pagos, clientes).
 
 > El panel no tiene login: es de acceso libre, sin cuentas de usuario. Había una
@@ -73,13 +74,13 @@ export APP_ENV=dev
 psql -h $DB_HOST -U postgres -c "CREATE ROLE $DB_USER LOGIN PASSWORD '$DB_PASSWORD';"
 psql -h $DB_HOST -U postgres -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 
-php database/seed.php      # arma el esquema con las migraciones y carga datos de ejemplo
+php database/recrear_con_datos_de_ejemplo.php      # arma el esquema con las migraciones y carga datos de ejemplo
 php -S localhost:8000 -t public   # solo para desarrollo, ver "Despliegue en producción"
 ```
 
 Abrí `http://localhost:8000` — te va a mostrar el Dashboard directo, sin login.
 
-Volver a correr `php database/seed.php` en cualquier momento borra la base, la
+Volver a correr `php database/recrear_con_datos_de_ejemplo.php` en cualquier momento borra la base, la
 reconstruye con las migraciones de `database/migraciones/` y regenera los datos de
 ejemplo desde cero (es reproducible: usa una semilla fija, así que el mismo día da
 siempre los mismos datos; las fechas son relativas a hoy). Por eso solo corre con
@@ -142,7 +143,7 @@ server {
 Con TLS terminado en nginx, la app detecta HTTPS solo si nginx manda
 `X-Forwarded-Proto: https` en el `fastcgi_param` (agregalo si no está ya en tu
 `fastcgi_params`) — de eso depende que la cookie de sesión salga con `Secure`
-y que se mande `Strict-Transport-Security` (ver `App\Http::esSegura()`).
+y que se mande `Strict-Transport-Security` (ver `App\ConexionSegura::esHttps()`).
 
 ### Configuración
 
@@ -154,14 +155,84 @@ Todo se lee de variables de entorno (con PHP-FPM, `env[...]` en el pool):
 | `DB_HOST`, `DB_PORT` | no (`127.0.0.1`, `5432`) | |
 | `DB_PERSISTENT` | no (`1` en la web) | Si la conexión a Postgres se reutiliza entre peticiones (ahorra entre 10 y 20 ms por petición; en CLI nunca es persistente). Poné `0` detrás de un pooler como PgBouncer, o si hay más procesos de PHP-FPM que `max_connections` en Postgres: cada proceso guarda su conexión abierta, así que `pm.max_children` no debería superarlo. |
 | `APP_TIMEZONE` | no (`UTC`) | La zona horaria del negocio, en formato IANA (ej. `America/Argentina/Buenos_Aires`). Define qué día es "hoy" para vencimientos, rangos de fechas y notas de crédito, y se aplica a PHP y a Postgres por igual. |
+| `TASAS_URL` | no (`https://open.er-api.com/v6/latest/USD`) | Solo para `database/actualizar_tasas.php`: de dónde baja las tasas de cambio (tiene que ser https). Ver «Tasas de cambio». |
+| `TASAS_FUENTE` | no (el host de `TASAS_URL`) | Solo para ese comando: cómo se llama la fuente en las pantallas y en la auditoría. |
 | `APP_ENV` | no | Solo `dev`, en desarrollo. En producción no se define. |
+
+### Tasas de cambio
+
+Los totales en USD de Dashboard, Cobros, Pagos y Cohortes convierten cada monto con
+una tasa de `monedas.tasa_a_usd` (cuál, en «La tasa de cada día», más abajo). La
+migración `005` las carga con valores de ejemplo, y mientras sigan así esas cuatro
+pantallas lo avisan arriba. Para cargar las reales:
+
+```bash
+php database/actualizar_tasas.php             # baja las tasas y las guarda
+php database/actualizar_tasas.php --simular   # dice qué cambiaría, sin guardar nada
+```
+
+Baja las tasas de `TASAS_URL` (por defecto `https://open.er-api.com/v6/latest/USD`, de
+ExchangeRate-API: gratis, sin clave, unas 160 monedas, una actualización por día;
+revisá sus condiciones de uso, que piden nombrar la fuente: la app la nombra en cada
+pantalla), valida lo que llegó y lo guarda en una transacción, con una entrada en la
+auditoría. Está pensado para cron, una vez por día:
+
+```
+15 6 * * *  cd /ruta/al/proyecto && php database/actualizar_tasas.php >/dev/null
+```
+
+(`>/dev/null` deja pasar solo la salida de errores, que es la que cron manda por mail:
+un error, o una tasa que pide atención.) También está como `composer tasas`.
+
+Como de estas tasas dependen todos los totales, escribe solo lo que se puede creer:
+
+- La fuente tiene que traer al menos la mitad de las monedas del catálogo y datos de
+  menos de 7 días; si no, no escribe nada y termina con error.
+- Una tasa con un valor imposible (cero, texto, o fuera de lo que entra en la base) se
+  deja como estaba y se informa.
+- Una tasa ya real que salta más de 50% de una corrida a otra se deja como estaba y se
+  informa (puede ser una devaluación de verdad o un error de la fuente): `--forzar` la
+  acepta. La primera carga, sobre las de ejemplo, acepta cualquier diferencia.
+- Una moneda que la fuente no trae queda como estaba, con la fecha que tenía.
+- Las pantallas avisan cuando una moneda con boletas o pagos tiene una tasa de ejemplo
+  o de hace más de 7 días, y nombran cuál.
+
+Con otro servicio, se pone su dirección en `TASAS_URL` (algunos piden una clave en la
+URL; los mensajes de error muestran solo el servidor, nunca la clave, porque cron los
+manda por mail). Sirve cualquiera que conteste `{"base": "USD", "rates": {"EUR": 0.86, ...}}`
+(o `base_code`): ExchangeRate-API, Open Exchange Rates, Frankfurter. Y
+`--archivo=tasas.json` lee el mismo formato de un archivo, para tasas que vengan de
+otra parte (el banco central, el contador).
+
+**La tasa de cada día.** Cada boleta, pago y nota de crédito guarda la tasa de su
+moneda cuando se crea (`tasa_a_usd`, migración `011`), y los ingresos, los cobros, las
+devoluciones, la segmentación y el LTV suman `monto × tasa` de cada fila. Un mes ya
+cerrado da siempre la misma cifra, aunque la tasa se mueva después: actualizar las tasas
+no toca lo que ya está cargado. Lo único que se valúa a la tasa de hoy es la **cartera
+pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
+
+- Un trigger de la base graba la tasa de `monedas` en cada alta que venga sin una, así
+  que lo mismo da una boleta cargada en la app que un `INSERT` a mano o el seed. Una
+  tasa que se pase explícita se respeta (una importación con su propia cotización).
+- Editar un monto o una fecha no vuelve a cotizar: la moneda no se puede cambiar.
+- La nota de crédito toma el promedio, ponderado por monto, de las tasas de los pagos
+  que devuelve, para que el cobro y la devolución se cancelen en USD aunque la tasa se
+  haya movido; sin pagos, la del día.
+- La primera vez que una moneda recibe una tasa real, las boletas, pagos y notas que se
+  habían grabado con la de ejemplo pasan a esa tasa real (`--simular` dice cuántas
+  filas son). Desde ahí ya no se mueven.
+- **Límite:** la base no guarda un historial de cotizaciones. Una boleta cargada hoy
+  con fecha de hace tres meses queda con la tasa de hoy, no con la de esa fecha, y lo
+  mismo vale para lo que ya existía cuando se aplicó la migración. Si hace falta la
+  tasa exacta de cada fecha, falta una tabla de cotizaciones por día (y una importación
+  que las use: las filas aceptan una tasa explícita).
 
 ### Esquema de la base
 
 En cada despliegue: `php database/migrar.php` (o `composer migrar`). Aplica en orden
 las migraciones de `database/migraciones/` que la base todavía no tenga (quedan
 anotadas en `migraciones_aplicadas`) y no hace nada si ya está al día. Nunca borra
-datos. `seed.php`, en cambio, es solo para desarrollo: borra todo, y sin
+datos. `recrear_con_datos_de_ejemplo.php`, en cambio, es solo para desarrollo: borra todo, y sin
 `APP_ENV=dev` se niega a correr.
 
 Si la base se creó antes de que existieran las migraciones (con el viejo
@@ -173,9 +244,34 @@ aplica las demás.
 esquema (198 países y 146 monedas), así que una base nueva queda lista para dar de
 alta clientes sin ningún paso aparte. Una base migrada antes de la `005`, que quedó
 sin catálogo, lo recibe en la siguiente corrida de `migrar.php`; y aplicarla sobre
-una base que ya lo tiene no pisa nada. Las `tasa_a_usd` son tasas estáticas de
-ejemplo, no un feed en vivo: antes de confiar en los reportes consolidados en USD,
-reemplazalas por las reales (`UPDATE monedas SET tasa_a_usd = ... WHERE codigo = '...'`).
+una base que ya lo tiene no pisa nada. Las `tasa_a_usd` que carga son de ejemplo:
+antes de confiar en los reportes consolidados en USD hay que cargar las reales con
+`php database/actualizar_tasas.php` (ver «Tasas de cambio»).
+
+**Mayoría de edad.** La base rechaza a un cliente que no haya cumplido la edad de
+mayoría de **su país**, tanto al crearlo como al cambiarle la fecha de nacimiento o
+el país (la app ya lo valida antes y dice cuál es la edad; el trigger de las
+migraciones `007` y `010` cubre cualquier otro camino: un script, una carga directa).
+La edad es `paises.mayoria_de_edad` (migración `010`): 18 en casi todos, 19 en
+Canadá, Corea del Sur y Argelia, 20 en Tailandia, 21 en Singapur, Egipto, Emiratos
+Árabes Unidos, Kuwait, Bahréin y Honduras. **Esa lista no es asesoría legal**: hay
+países donde la edad depende del acto o de la región, y quedaron en 18, con dudas,
+Estados Unidos (19 en Alabama y Nebraska, 21 en Mississippi), Nueva Zelanda,
+Indonesia, Túnez, Camerún, Nicaragua y Bolivia. Antes de atender clientes de esos
+países hay que revisarlos con quien responda por lo legal; corregirlo es una fila,
+sin tocar código: `UPDATE paises SET mayoria_de_edad = 21 WHERE codigo = 'US';`
+(la base acepta de 16 a 25). El alta nombra al país en el rechazo («en Tailandia,
+20 años cumplidos») y el formulario lista los países que no son de 18; el selector
+de fecha topa en la edad más baja, porque no sabe todavía el país elegido.
+
+Ni esta migración ni cambiar la edad de un país revisan, cambian o borran a los
+clientes que ya existían, y mientras nadie les toque la fecha de nacimiento ni el
+país siguen pudiendo editarse. Para encontrar a los que hoy no llegan a la edad de
+su país:
+`SELECT c.id, c.nombre, c.fecha_nacimiento, p.mayoria_de_edad FROM clientes c JOIN paises p ON p.codigo = c.pais_codigo WHERE c.fecha_nacimiento > CURRENT_DATE - make_interval(years => p.mayoria_de_edad);`
+(el Dashboard también muestra a los menores de 18 en el tramo «Menor de 18» de la
+segmentación por edad). Los visitantes del funnel pueden ser menores: un lead no es
+un cliente, pero no puede convertirse.
 
 Un cambio de esquema nuevo —o un país o una moneda nuevos— va en un archivo nuevo
 con el número siguiente (`NNN_descripcion.sql`). Una migración que ya corrió en
@@ -186,7 +282,7 @@ alguna base no se edita.
 Dos cosas que la app ya resuelve por su cuenta pero vale saber:
 
 - **Errores**: `public/index.php` fuerza `display_errors=0` y registra un
-  manejador global (`App\ErrorHandler`) que manda el detalle de cualquier
+  manejador global (`App\ManejadorDeErrores`) que manda el detalle de cualquier
   excepción no capturada a `error_log()` — nunca a la respuesta. Dónde
   termina ese log depende de tu `php.ini`/pool de FPM (`error_log` de PHP);
   configuralo a un archivo real en producción en vez del default.
@@ -230,11 +326,12 @@ las tres suites, contra un Postgres 16, en PHP 8.3 (el mínimo) y en 8.4.
 ```
 public/            front controller (index.php) + CSS
 src/
-  Controllers/       un controlador por sección (dashboard, cobros, pagos, funnel,
-                      cohortes, clientes, auditoria). Todas las páginas son
-                      públicas, no hay login (ver `_Garbage/README.md`).
+  Controllers/       un controlador por sección (dashboard, boletas —la pantalla
+                      «Cobros e ingresos», `?page=cobros`—, pagos, funnel, cohortes,
+                      clientes, auditoria). Todas las páginas son públicas, no hay
+                      login (ver `_Garbage/README.md`).
   Repositories/       un repo de CRUD por entidad (Boleta/Pago/Cliente/...) más
-                      IngresosRepository (kpis, ingresos y cobros por mes,
+                      IngresosYCobrosRepository (kpis, ingresos y cobros por mes,
                       antigüedad de cartera, por método de pago) y
                       SegmentacionRepository (top país/ciudad/idioma/género/edad,
                       LTV por cohorte) para el reporting, que no es CRUD y crecía
@@ -246,26 +343,35 @@ src/
   Config.php           variables de entorno: obligatorias fuera de desarrollo,
                         zona horaria IANA validada, testeado
   Migrador.php          aplica database/migraciones/ y recuerda cuales corrieron
+  Tasas/                las tasas de cambio reales: RespuestaDeTasas lee el JSON
+                        de una fuente, DescargaDeTasas lo baja (solo https, sin
+                        redirecciones) y ActualizadorDeTasas valida y guarda;
+                        todo testeado sin salir a la red
   EnvioUnico.php        token de un solo uso de los formularios de alta: un doble
                         clic no crea dos pagos ni dos boletas, testeado
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
+  MayoriaDeEdad.php     la regla de que no se admiten clientes que no hayan cumplido
+                        la edad de mayoría de su país (años cumplidos, como age()
+                        de Postgres) y el tope del campo de fecha de nacimiento del
+                        alta; la base la repite en un trigger (migraciones 007 y
+                        010), testeado
   Etiquetas.php         traduce estado de boleta/metodo de pago/canal a su
                         etiqueta en español, en un solo lugar para no repetir
                         el mismo array en cada vista que los muestra, testeado
   Paginacion.php        helper de paginación (página/offset/total, testeado)
   Csrf.php              token CSRF por sesión propia (no depende de ningún login),
                         verificado en Router (testeado)
-  Http.php              detecta HTTPS (directo o detras de proxy), testeado
-  SecurityHeaders.php   headers de seguridad de cada respuesta, testeado
-  ErrorHandler.php      red de seguridad para excepciones no capturadas
+  ConexionSegura.php    detecta HTTPS (directo o detras de proxy), testeado
+  CabecerasDeSeguridad.php   headers de seguridad de cada respuesta, testeado
+  ManejadorDeErrores.php      red de seguridad para excepciones no capturadas
                         (loguea el detalle, nunca lo muestra), testeado
   Peticion.php           guard clauses de los controllers: id de la ruta,
                         404 si no existe, 409 si hay conflicto (ej. anulado),
                         testeado
   Validacion.php         chequeos repetidos entre formularios: campos
                         obligatorios vacios, largos maximos de los textos,
-                        formato de email y mensaje de email duplicado,
-                        testeado
+                        formato de email, fechas que existen y mensaje de
+                        email duplicado, testeado
   Repositories/Anulable.php  trait con el soft-delete que comparten
                         BoletaRepository y PagoRepository: un unico
                         UPDATE ... SET anulada = TRUE WHERE id = :id AND NOT
@@ -279,7 +385,7 @@ src/
                         como expresion SQL, con age(); lo comparten
                         segmentacion y funnel. Una fecha de nacimiento
                         posterior a hoy sale como "Fecha inválida"
-  Filtros.php            el periodo y el rango Desde/Hasta de las pantallas con
+  FiltroDePeriodo.php    el periodo y el rango Desde/Hasta de las pantallas con
                         filtro de fechas: una sola lista de periodos, y lo que
                         se pidio por URL y no se pudo respetar (un periodo que
                         no existe, un rango al reves) se avisa, testeado
@@ -287,26 +393,37 @@ src/
                         (views/_avisos.php): los avisos de filtro y la
                         confirmación de lo que acaba de hacerse, que llega por
                         la redirección (?creada=ID, ?creado=ID...), testeado
-  Router.php, View.php, helpers.php
+  Router.php, View.php, funciones_de_vista.php   (los helpers que usan las vistas)
 database/
   migraciones/          el esquema, el catálogo de ~200 países y sus monedas
-                        (ISO 4217) y los índices, en cambios numerados (001 =
-                        esquema inicial, 005 = catálogo, 006 = índices)
+                        (ISO 4217), los índices y la regla de mayoría de edad,
+                        en cambios numerados (001 = esquema inicial, 005 =
+                        catálogo, 006 y 008 = índices, 007 = mayoría de edad,
+                        009 = origen de las tasas de cambio, 010 = mayoría de
+                        edad de cada país, 011 = la tasa de cambio de cada día)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
-  seed.php               SOLO desarrollo: rearma la base y carga datos de ejemplo
-views/                  plantillas PHP (una carpeta por sección), con partials
+  actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
+                        vez por día)
+  recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
+views/                  plantillas PHP: una carpeta por sección o entidad (dashboard,
+                        boletas, pagos, clientes, funnel, cohortes, auditoria) y en
+                        ella una por pantalla, con el mismo nombre para lo mismo:
+                        listado, alta, edicion y anulacion (boletas y pagos; los
+                        clientes tienen listado, alta y ficha). Con partials
                         compartidos: _filtro_fechas.php (el período y el rango
                         Desde/Hasta de las cinco pantallas con filtro),
                         _avisos.php (los avisos de arriba de la pantalla),
-                        _paginacion.php,
+                        _paginacion.php (Anterior/Siguiente con número de
+                        página) y _paginacion_por_cursor.php (Más recientes/Más
+                        antiguas, la de Auditoría),
                         _error.php (el aviso de error de los formularios),
                         _accion_confirmar.php (el pie de las pantallas de
-                        confirmar anulación), _grafico_aging.php y
+                        confirmar anulación), _grafico_antiguedad_de_cartera.php y
                         _grafico_serie_mensual.php (los dos graficos de barras
                         que se repetian en dashboard, cobros, pagos y funnel);
                         el funnel tiene además el suyo, funnel/_tabla_dimension.php
 tests/
-  Unit/                 sin base de datos (calculo de estado, filtros, helpers,
+  Unit/                 sin base de datos (calculo de estado, filtros, funciones de vista,
                         paginación, CSRF, router, headers de seguridad, deteccion
                         de HTTPS)
   Integration/           contra la base real, casi todos en una transaccion que
@@ -316,8 +433,12 @@ tests/
                         que el estado de una boleta en SQL coincida con el de
                         PHP, que las pantallas pesadas no traigan miles de filas
                         a PHP, que las consultas de clientes y del funnel usen
-                        sus índices, y que los datos de ejemplo del seed
-                        cumplan las reglas de la app)
+                        sus índices, que la app, el trigger y el tramo de edad
+                        coincidan en quién es mayor de edad en cada país, que las
+                        tasas de cambio se actualicen con sus reglas de seguridad
+                        (y el comando que corre cron), que cada fila guarde la tasa
+                        de su día y los totales la usen, y que los datos de ejemplo
+                        del seed cumplan las reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
@@ -326,20 +447,32 @@ phpstan.neon            configuracion del analisis estatico
 
 - `monedas` / `paises`: catálogo de referencia (código ISO, nombre, símbolo y
   `tasa_a_usd` — cuánto vale 1 unidad de esa moneda en USD, para consolidar
-  reportes). Son tasas estáticas de ejemplo, no un feed en vivo. Los carga la
-  migración `005` (198 países y 146 monedas), no el seed: una base de producción
-  los tiene apenas se migra (ver "Esquema de la base").
+  reportes). La migración `005` carga el catálogo (198 países y 146 monedas) con
+  tasas de ejemplo, no el seed: una base de producción lo tiene apenas se migra (ver
+  "Esquema de la base"). `database/actualizar_tasas.php` las reemplaza por las reales
+  y deja en `tasa_actualizada_en` y `tasa_fuente` desde cuándo y de dónde (`NULL` es
+  una tasa de ejemplo; ver «Tasas de cambio»). Cada país trae también
+  `mayoria_de_edad` (migración `010`, ver «Mayoría de edad»).
 - `clientes`: clientes ya convertidos (vía funnel o cartera preexistente), con
   perfil (`pais_codigo`, `ciudad`, `idioma`, `genero`, `fecha_nacimiento`) para la
-  segmentación del dashboard y su moneda de facturación.
+  segmentación del dashboard y su moneda de facturación. Solo se admiten mayores de
+  edad, con la edad de su país (18 casi siempre): el alta lo valida con un mensaje
+  claro y la base lo exige con un trigger (migraciones `007` y `010`, ver "Esquema
+  de la base"). Que la persona no esté privada de libertad ni interdicta no es un
+  dato que la app tenga, así que no se puede validar: el alta exige marcar una
+  casilla que lo confirma (sin ella no hay cliente) y la entrada de auditoría del
+  cliente deja asentado que se confirmó. Es una declaración de quien da el alta, no
+  una verificación.
 - `usuarios_funnel`: cada visitante que entra al funnel, con el mismo perfil y la
   fecha en que alcanzó cada etapa (`fecha_visita`, `fecha_registro`, `fecha_lead`,
   `fecha_conversion`) y el canal de adquisición. El perfil se genera una sola vez
   por persona y viaja a `clientes` si convierte.
 - `boletas`: ingresos devengados al usuario final (monto, moneda, emisión,
-  vencimiento, `anulada`) — no son facturas fiscales.
+  vencimiento, `anulada`) — no son facturas fiscales. Guarda `tasa_a_usd`, la tasa de
+  su moneda al crearse (ver «La tasa de cada día»).
 - `pagos`: cobros reales del usuario, opcionalmente ligados a una boleta
-  (`boleta_id` puede ser `NULL` para anticipos/pagos sueltos) y con `anulada`.
+  (`boleta_id` puede ser `NULL` para anticipos/pagos sueltos) y con `anulada`. También
+  guarda su `tasa_a_usd`.
   `pagos.metodo`, `clientes.genero` y `clientes.segmento` solo admiten las listas
   que ofrecen los formularios: la app las valida en el servidor y la base las
   restringe con `CHECK` (migración 004, `NOT VALID`: rigen para filas nuevas o
@@ -354,7 +487,7 @@ phpstan.neon            configuracion del analisis estatico
   recalcula, así que una vez anulada la boleta sus pagos quedan congelados:
   anularlos o editarlos descuadraría la devolución, y la app lo rechaza con un
   409 (la regla simétrica de no poder cargar un pago nuevo contra una boleta
-  anulada).
+  anulada). Su `tasa_a_usd` es el promedio de la de los pagos que devuelve.
 - `boletas_con_saldo` (vista): cada boleta con `pagado` (la suma de sus pagos no
   anulados), `saldo` y `primer_pago`. Es la única definición de "cuánto se pagó":
   la usan todas las consultas en vez de repetir la subconsulta.
@@ -376,8 +509,9 @@ desincronizado. Una boleta o pago anulado es un **soft-delete**: la fila queda
 (con su badge "Anulada" en los listados, para trazabilidad) pero se excluye de
 todos los KPIs, gráficos y agregados (`AND NOT anulada` en cada consulta que suma
 montos). Los KPIs y gráficos agregados suman `monto * tasa_a_usd` para consolidar
-en USD; las tablas de detalle (boletas, pagos, ficha de cliente) muestran el monto
-en su moneda original.
+en USD, con la tasa que cada fila guardó al crearse (la cartera pendiente, con la de
+hoy; ver «La tasa de cada día»); las tablas de detalle (boletas, pagos, ficha de
+cliente) muestran el monto en su moneda original.
 
 ## Notas de diseño
 
@@ -391,7 +525,13 @@ en su moneda original.
   del funnel y las cohortes, y colores de estado reservados para la antigüedad de cartera.
 - Modo oscuro automático vía `prefers-color-scheme`.
 - Paginación de 25 filas por página, con `LIMIT`/`OFFSET` en SQL, también en
-  Boletas con filtro de estado. El estado (pagada/parcial/pendiente/vencida/anulada)
+  Boletas con filtro de estado. Auditoría es la excepción: pagina por cursor
+  (`?antes=`/`?despues=` con el `creado_en` y el `id` de la fila donde quedó), porque
+  es la única tabla que solo crece y `OFFSET` más `COUNT(*)` crecían en línea recta
+  con ella. Con 2 millones de entradas la página del fondo pasó de 1,7 s a 2 ms, y
+  la de cualquier profundidad tarda lo mismo que la primera (índice de la migración
+  `008`). A cambio no hay «página 7 de 40» ni un total: se va hacia las más
+  recientes o hacia las más antiguas. El estado (pagada/parcial/pendiente/vencida/anulada)
   no se guarda en la base: el que muestra cada fila lo calcula `App\EstadoBoleta`
   a partir de los pagos aplicados, y para filtrar y paginar en la base la misma
   regla está escrita en SQL (`BoletaRepository::ESTADO_SQL`). Son dos copias de
@@ -427,11 +567,11 @@ en su moneda original.
   que el controller toque nada.
 - Cookie de sesión endurecida: `HttpOnly` (JS no puede leerla — igual no hay
   JS en la app) + `SameSite=Lax` (capa extra contra CSRF, sumada al token) +
-  `Secure` cuando el request llega por HTTPS (`App\Http::esSegura()`, que
+  `Secure` cuando el request llega por HTTPS (`App\ConexionSegura::esHttps()`, que
   tambien mira `X-Forwarded-Proto` si hay un proxy adelante). En HTTP plano
   (dev local) `Secure` queda apagado a proposito, sino el browser descarta
   la cookie y se pierde el token CSRF.
-- Headers de seguridad en cada respuesta (`App\SecurityHeaders`):
+- Headers de seguridad en cada respuesta (`App\CabecerasDeSeguridad`):
   `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` y una
   `Content-Security-Policy` que bloquea JavaScript por completo
   (`script-src 'none'` — la app no usa JS en ningun lado) y permite estilos

@@ -60,12 +60,12 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
     <div class="panel stat-tile">
         <span class="label">Boletas emitidas</span>
         <span class="value"><?= count($boletasVigentes) ?></span>
-        <span class="delta"><?= money_moneda($totalFacturado, $cliente['moneda_codigo']) ?> en total</span>
+        <span class="delta"><?= dinero_en_moneda($totalFacturado, $cliente['moneda_codigo']) ?> en total</span>
     </div>
     <div class="panel stat-tile">
         <span class="label">Pagos recibidos</span>
         <span class="value"><?= count($pagosVigentes) ?></span>
-        <span class="delta"><?= money_moneda($totalCobrado, $cliente['moneda_codigo']) ?> neto<?= $totalDevuelto > 0.01 ? ' (ya descontada la devolución)' : '' ?></span>
+        <span class="delta"><?= dinero_en_moneda($totalCobrado, $cliente['moneda_codigo']) ?> neto<?= $totalDevuelto > 0.01 ? ' (ya descontada la devolución)' : '' ?></span>
     </div>
 </div>
 
@@ -82,8 +82,8 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
                     <td><?= htmlspecialchars($b['concepto']) ?></td>
                     <td><?= htmlspecialchars($b['fecha_emision']) ?></td>
                     <td><?= htmlspecialchars($b['fecha_vencimiento']) ?></td>
-                    <td class="num"><?= money_moneda((float) $b['monto'], $b['moneda_codigo']) ?></td>
-                    <td class="num"><?= money_moneda((float) $b['saldo'], $b['moneda_codigo']) ?></td>
+                    <td class="num"><?= dinero_en_moneda((float) $b['monto'], $b['moneda_codigo']) ?></td>
+                    <td class="num"><?= dinero_en_moneda((float) $b['saldo'], $b['moneda_codigo']) ?></td>
                     <td><span class="badge <?= $b['estado'] ?>"><?= Etiquetas::estadoBoleta($b['estado']) ?></span></td>
                 </tr>
             <?php endforeach; ?>
@@ -108,7 +108,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
                     <td><?= htmlspecialchars($p['fecha_pago']) ?></td>
                     <td><?= htmlspecialchars(Etiquetas::metodoPago($p['metodo'])) ?></td>
                     <td><?= $p['boleta_id'] ? 'Boleta #' . (int) $p['boleta_id'] : 'Anticipo' ?></td>
-                    <td class="num"><?= money_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
+                    <td class="num"><?= dinero_en_moneda((float) $p['monto'], $p['moneda_codigo']) ?></td>
                     <td>
                         <?php if ($p['anulada']): ?>
                             <span class="badge anulada">Anulado</span>
@@ -141,7 +141,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
                     <td><?= htmlspecialchars($n['fecha']) ?></td>
                     <td>Boleta #<?= (int) $n['boleta_id'] ?></td>
                     <td><?= htmlspecialchars($n['motivo']) ?></td>
-                    <td class="num"><?= money_moneda((float) $n['monto'], $n['moneda_codigo']) ?></td>
+                    <td class="num"><?= dinero_en_moneda((float) $n['monto'], $n['moneda_codigo']) ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

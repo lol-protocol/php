@@ -92,7 +92,7 @@ jobs:
         run: php database/migrar.php
 
       - name: Datos de ejemplo
-        run: php database/seed.php
+        run: php database/recrear_con_datos_de_ejemplo.php
         env:
           APP_ENV: dev
 

@@ -9,7 +9,7 @@ use App\EstadoBoleta;
 use App\Paginacion;
 use PDO;
 
-/** CRUD de boletas. El reporting de ingresos vive en IngresosRepository. */
+/** CRUD de boletas. El reporting de ingresos vive en IngresosYCobrosRepository. */
 final class BoletaRepository
 {
     use Anulable;
