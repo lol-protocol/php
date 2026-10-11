@@ -24,13 +24,13 @@ import numpy as np
 import yaml
 from PIL import Image
 
-from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS
+from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
 from qa import UMBRAL_DUPLICADO, validar_taxonomia, hoja_de_contacto, huella_visual, parecido_a, validar_jpg, validar_svg
 from render_raster import a_imagen
 from render_svg import a_svg
 from scene import ALTO, ANCHO
 
-VERSION_GENERADOR = "0.3.0"
+VERSION_GENERADOR = "0.4.0"
 MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
@@ -45,6 +45,10 @@ def semilla(movimiento, autor, variante, intento=0):
     return int(hashlib.sha256(clave.encode("utf-8")).hexdigest()[:12], 16)
 
 
+def cargar_animos():
+    return yaml.safe_load((CATALOGO / "animos.yaml").read_text(encoding="utf-8"))["animos"]
+
+
 def recorrer(config, movimiento=None):
     for mov in config["movimientos"]:
         if movimiento and mov["id"] != movimiento:
@@ -54,18 +58,38 @@ def recorrer(config, movimiento=None):
                 yield mov, autor, v
 
 
-def combinacion(mov, autor, v):
-    """Arquetipo y paleta de la variante v. Cada autor recorre su propia ordenación
-    (determinista) de todos los pares arquetipo×paleta: sus variantes no repiten par
-    y distintos autores arrancan en pares distintos."""
-    pares = [(a, p) for a in NOMBRES_ARQUETIPOS for p in mov["paletas"]]
-    random.Random(f"{mov['id']}/{autor['id']}").shuffle(pares)
-    return pares[(v - 1) % len(pares)]
+def asignar_combinaciones(mov, animos):
+    """{(autor_id, variante): (arquetipo, paleta)} para todo un movimiento.
+    La paleta sale del ánimo de la obra y el arquetipo de su `escena` (o, si no la
+    fija, de una ordenación determinista). Se evita repetir el par arquetipo×paleta
+    dentro de un autor (obligatorio si hay hueco) y se prefiere el menos usado
+    del movimiento, para que obras de distintos autores no salgan casi iguales."""
+    uso, resultado = {}, {}
+    for autor in mov["autores"]:
+        propios = set()
+        for v, obra in enumerate(autor.get("obras", []), 1):
+            escenas = [obra["escena"]] if obra.get("escena") else list(NOMBRES_ARQUETIPOS)
+            if not obra.get("escena"):
+                random.Random(f"{mov['id']}/{autor['id']}/{obra['id']}").shuffle(escenas)
+            paletas = list(animos[obra["animo"]])
+            giro = int(hashlib.sha256(f"{mov['id']}/{autor['id']}/{obra['id']}".encode()).hexdigest()[:6], 16) % len(paletas)
+            paletas = paletas[giro:] + paletas[:giro]  # rota para que no todas empiecen por la misma
+            pares = [(a, p) for a in escenas for p in paletas]
+            libres = [par for par in pares if par not in propios] or pares
+            elegido = min(libres, key=lambda par: uso.get(par, 0))  # min es estable: gana el primero
+            uso[elegido] = uso.get(elegido, 0) + 1
+            propios.add(elegido)
+            resultado[(autor["id"], v)] = elegido
+    return resultado
 
 
-def construir(config, mov, autor, v, intento=0):
+def combinacion(mov, autor, v, animos):
+    return asignar_combinaciones(mov, animos)[(autor["id"], v)]
+
+
+def construir(config, mov, autor, v, intento=0, animos=None):
     s = semilla(mov["id"], autor["id"], v, intento)
-    arquetipo, paleta = combinacion(mov, autor, v)
+    arquetipo, paleta = combinacion(mov, autor, v, animos)
     obra = autor["obras"][v - 1]
     motivo = obra["motivo"]
     formato = "jpg" if v == config["variante_jpg"] else "svg"
@@ -82,6 +106,7 @@ def construir(config, mov, autor, v, intento=0):
         "variante": v,
         "obra_id": obra["id"],
         "obra": obra["titulo"],
+        "animo": obra["animo"],
         "gutenberg_id": obra["gutenberg"]["id"],
         "gutenberg_estado": obra["gutenberg"]["estado"],
         "formato": formato,
@@ -165,7 +190,8 @@ def main():
 
     config = yaml.safe_load((CATALOGO / "taxonomia.yaml").read_text(encoding="utf-8"))
     motivos = yaml.safe_load((CATALOGO / "motivos.yaml").read_text(encoding="utf-8"))
-    problemas = validar_taxonomia(config, motivos)
+    animos = cargar_animos()
+    problemas = validar_taxonomia(config, motivos, animos, set(NOMBRES_ARQUETIPOS), PALETAS)
     for p in problemas:
         print(f"  ✗ taxonomía: {p}")
     if problemas:
@@ -179,7 +205,7 @@ def main():
         # no depende de qué movimientos se generen en la misma ejecución.
         previas = {k: h for k, h in huellas.items() if k.startswith(mov["id"] + "-")}
         for intento in range(MAX_INTENTOS + 1):
-            entrada, esc = construir(config, mov, autor, v, intento)
+            entrada, esc = construir(config, mov, autor, v, intento, animos)
             h = huella_visual(a_imagen(esc))
             parecido = parecido_a(h, previas)
             if parecido is None:

@@ -1,6 +1,6 @@
-version: '0.1'
-nota: Biblioteca compartida de motivos. Objetivo ~40; hoy solo los implementados en
-  generator/plantillas.py.
+version: '0.2'
+nota: 'Biblioteca compartida de motivos. Objetivo ~40; hoy 14 + ''ninguno''. `requiere`
+  limita cuándo un motivo tiene sentido visual: animos (animo de la obra) y/o escena.'
 motivos:
 - id: torre
   nombre: Torre
@@ -14,6 +14,48 @@ motivos:
 - id: luna
   nombre: Luna
   implementado: true
+  requiere:
+    animos:
+    - nocturno
+    - tormentoso
+- id: cuervo
+  nombre: Cuervo
+  implementado: true
+- id: cipres
+  nombre: Cipreses
+  implementado: true
+- id: ruinas
+  nombre: Ruinas
+  implementado: true
+- id: velero
+  nombre: Velero
+  implementado: true
+  requiere:
+    escena: marina
+- id: castillo
+  nombre: Castillo
+  implementado: true
+- id: arbol
+  nombre: Árbol solitario
+  implementado: true
+- id: catedral
+  nombre: Catedral
+  implementado: true
+- id: rayo
+  nombre: Rayo
+  implementado: true
+  requiere:
+    animos:
+    - tormentoso
+- id: cruz
+  nombre: Cruz
+  implementado: true
+- id: estrellas
+  nombre: Estrellas
+  implementado: true
+  requiere:
+    animos:
+    - nocturno
 - id: ninguno
   nombre: Sin motivo (solo paisaje)
   implementado: true

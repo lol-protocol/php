@@ -48,9 +48,9 @@ def validar_jpg(ruta: Path):
 ESTADOS_GUTENBERG = {"sin_verificar", "verificado"}
 
 
-def validar_taxonomia(config, motivos):
-    """Coherencia de taxonomia.yaml con la biblioteca de motivos y el estado de Gutenberg."""
-    usables = {m["id"] for m in motivos["motivos"] if m.get("implementado")}
+def validar_taxonomia(config, motivos, animos, escenas, paletas):
+    """Coherencia de taxonomia.yaml con motivos, ánimos, escenas y estado de Gutenberg."""
+    biblioteca = {m["id"]: m for m in motivos["motivos"] if m.get("implementado")}
     problemas, vistos = [], set()
 
     def revisar_gutenberg(donde, g):
@@ -59,7 +59,15 @@ def validar_taxonomia(config, motivos):
         elif (g["estado"] == "verificado") != (g.get("id") is not None):
             problemas.append(f"{donde}: 'verificado' exige id y un id exige 'verificado'")
 
+    for nombre, lista in animos.items():
+        for p in lista:
+            if p not in paletas:
+                problemas.append(f"ánimo {nombre}: paleta '{p}' no existe")
+
     for mov in config["movimientos"]:
+        for p in mov["paletas"]:
+            if p not in paletas:
+                problemas.append(f"{mov['id']}: paleta '{p}' no existe")
         for autor in mov["autores"]:
             base = f"{mov['id']}/{autor['id']}"
             revisar_gutenberg(base, autor["gutenberg_autor"])
@@ -68,16 +76,30 @@ def validar_taxonomia(config, motivos):
                 if f"{base}/{obra['id']}" in vistos:
                     problemas.append(f"{donde}: obra repetida")
                 vistos.add(f"{base}/{obra['id']}")
-                if obra["motivo"] not in usables:
+                motivo = biblioteca.get(obra["motivo"])
+                if motivo is None:
                     problemas.append(f"{donde}: motivo '{obra['motivo']}' no existe o no está implementado")
+                if obra.get("animo") not in animos:
+                    problemas.append(f"{donde}: ánimo '{obra.get('animo')}' no existe")
+                if obra.get("escena") and obra["escena"] not in escenas:
+                    problemas.append(f"{donde}: escena '{obra['escena']}' no existe")
+                req = (motivo or {}).get("requiere", {})
+                if "animos" in req and obra.get("animo") not in req["animos"]:
+                    problemas.append(f"{donde}: el motivo '{obra['motivo']}' exige ánimo {req['animos']}")
+                if "escena" in req and obra.get("escena") != req["escena"]:
+                    problemas.append(f"{donde}: el motivo '{obra['motivo']}' exige escena '{req['escena']}'")
                 revisar_gutenberg(donde, obra["gutenberg"])
     return problemas
 
 
 def huella_visual(img: Image.Image):
-    """Miniatura en gris 56×8 como vector, para comparar parecido visual."""
-    miniatura = img.convert("L").resize((56, 8), Image.Resampling.BILINEAR)
-    return np.asarray(miniatura, dtype=float).ravel()
+    """Miniatura en color 56×8 como vector, para comparar parecido visual.
+    Con gris, las piezas oscuras de paletas distintas se confunden entre sí."""
+    miniatura = img.convert("RGB").resize((56, 8), Image.Resampling.BILINEAR)
+    v = np.asarray(miniatura, dtype=float).ravel()
+    # Se estira el rango a 0–255: en paletas oscuras todas las capas caen en pocos
+    # valores y, sin esto, dos composiciones distintas parecerían iguales.
+    return (v - v.min()) * (255.0 / max(v.max() - v.min(), 1.0))
 
 
 def parecido_a(huella, otras: dict, umbral: float = UMBRAL_DUPLICADO):

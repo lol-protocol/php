@@ -37,6 +37,22 @@ PALETAS = {
         "cielo_alto": "#14332F", "cielo_bajo": "#9FC9A2", "sol": "#F6F1C9",
         "lejos": "#4F8C73", "cerca": "#1B4237", "figura": "#0B1F1A",
     },
+    "medianoche": {
+        "cielo_alto": "#120E2B", "cielo_bajo": "#4A3F7A", "sol": "#EDE7FF",
+        "lejos": "#2E2A5E", "cerca": "#0F0B22", "figura": "#06040F",
+    },
+    "ceniza": {
+        "cielo_alto": "#6E6A66", "cielo_bajo": "#D9D3C7", "sol": "#FBF7EE",
+        "lejos": "#8F8A82", "cerca": "#4D4944", "figura": "#1F1D1A",
+    },
+    "dorada": {
+        "cielo_alto": "#F2C879", "cielo_bajo": "#FBEFD5", "sol": "#D9772B",
+        "lejos": "#C9A15E", "cerca": "#6B4E2A", "figura": "#2E1F0F",
+    },
+    "tempestad": {
+        "cielo_alto": "#1B2B2A", "cielo_bajo": "#5E7F7A", "sol": "#E6F2EE",
+        "lejos": "#36524F", "cerca": "#12201F", "figura": "#070F0E",
+    },
     "tormenta": {
         "cielo_alto": "#2A2F3D", "cielo_bajo": "#6C7388", "sol": "#D8DCE6",
         "lejos": "#4B5265", "cerca": "#1D212C", "figura": "#0E1016",
@@ -97,6 +113,101 @@ def _rio(esc, rng, p, lejos):
 MOTIVOS = {"torre": _torre, "golondrinas": _golondrinas, "rio": _rio}
 
 
+def _cuervo(esc, rng, p, altura):
+    """Cuervo grande en el cielo, con las alas abiertas."""
+    x, y, s = rng.uniform(0.2, 0.8) * ANCHO, rng.uniform(0.2, 0.4) * ALTO, rng.uniform(26, 34)
+    esc.poligono([(x - s, y - s * 0.55), (x - s * 0.4, y - s * 0.2), (x - s * 0.15, y - s * 0.5),
+                  (x, y - s * 0.05), (x + s * 0.15, y - s * 0.5), (x + s * 0.4, y - s * 0.2),
+                  (x + s, y - s * 0.55), (x + s * 0.55, y + s * 0.1), (x + s * 0.12, y + s * 0.18),
+                  (x + s * 0.2, y + s * 0.32), (x - s * 0.2, y + s * 0.32), (x - s * 0.12, y + s * 0.18),
+                  (x - s * 0.55, y + s * 0.1)], p["figura"])
+
+
+def _cipres(esc, rng, p, altura):
+    """Grupo de cipreses altos y estrechos."""
+    x0 = rng.uniform(0.15, 0.8) * ANCHO
+    for _ in range(rng.randint(2, 4)):
+        x = x0 + rng.uniform(-40, 40)
+        y, h = altura(x) + 6, rng.uniform(48, 70)
+        esc.poligono([(x, y), (x - 6, y - h * 0.4), (x - 4, y - h * 0.8), (x, y - h),
+                      (x + 4, y - h * 0.8), (x + 6, y - h * 0.4)], p["figura"])
+
+
+def _ruinas(esc, rng, p, altura):
+    """Columnas rotas de distinta altura y un resto de dintel."""
+    x0 = rng.uniform(0.2, 0.75) * ANCHO
+    for k in range(4):
+        x, h = x0 + k * 26, rng.uniform(22, 52)
+        y = altura(x) + 4
+        esc.poligono([(x - 6, y), (x - 6, y - h), (x - 3, y - h - 4), (x + 4, y - h + 2), (x + 6, y - h), (x + 6, y)], p["figura"])
+    y = altura(x0 + 39) + 4
+    esc.poligono([(x0 - 8, y - 60), (x0 + 60, y - 62), (x0 + 60, y - 54), (x0 - 8, y - 52)], p["figura"])
+
+
+def _velero(esc, rng, p, altura):
+    """Velero en el agua (solo en escenas marina)."""
+    x = rng.uniform(0.15, 0.85) * ANCHO
+    y = rng.linea + 22
+    esc.poligono([(x - 26, y), (x + 26, y), (x + 18, y + 9), (x - 18, y + 9)], p["figura"])
+    esc.poligono([(x - 1, y - 2), (x - 1, y - 48), (x - 20, y - 4)], p["figura"])
+    esc.poligono([(x + 3, y - 2), (x + 3, y - 38), (x + 20, y - 4)], p["figura"])
+
+
+def _castillo(esc, rng, p, altura):
+    """Castillo con muralla almenada y dos torres."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = altura(x) + 3
+    pts = [(x - 44, y), (x - 44, y - 40), (x - 38, y - 40), (x - 38, y - 34), (x - 32, y - 34), (x - 32, y - 40),
+           (x - 26, y - 40), (x - 26, y - 28), (x - 14, y - 28), (x - 14, y - 58), (x - 8, y - 58), (x - 8, y - 52),
+           (x - 2, y - 52), (x - 2, y - 58), (x + 4, y - 58), (x + 4, y - 28), (x + 26, y - 28), (x + 26, y - 40),
+           (x + 32, y - 40), (x + 32, y - 34), (x + 38, y - 34), (x + 38, y - 40), (x + 44, y - 40), (x + 44, y)]
+    esc.poligono(pts, p["figura"])
+
+
+def _arbol(esc, rng, p, altura):
+    """Árbol solitario de copa redonda."""
+    x = rng.uniform(0.15, 0.85) * ANCHO
+    y, r = altura(x) + 3, rng.uniform(20, 28)
+    esc.poligono([(x - 3, y), (x - 2, y - r * 1.2), (x + 2, y - r * 1.2), (x + 3, y)], p["figura"])
+    esc.circulo(x, y - r * 1.7, r, p["figura"])
+
+
+def _catedral(esc, rng, p, altura):
+    """Fachada gótica con dos torres de remate puntiagudo."""
+    x = rng.uniform(0.25, 0.8) * ANCHO
+    y = altura(x) + 3
+    esc.poligono([(x - 30, y), (x - 30, y - 54), (x - 24, y - 54), (x - 19, y - 78), (x - 14, y - 54),
+                  (x - 8, y - 54), (x - 8, y - 44), (x + 8, y - 44), (x + 8, y - 54), (x + 14, y - 54),
+                  (x + 19, y - 78), (x + 24, y - 54), (x + 30, y - 54), (x + 30, y)], p["figura"])
+
+
+def _rayo(esc, rng, p, altura):
+    """Rayo en zigzag que cae del cielo."""
+    x = rng.uniform(0.15, 0.85) * ANCHO
+    esc.poligono([(x, 0), (x + 10, 0), (x + 3, 34), (x + 14, 34), (x - 8, 92), (x - 2, 46), (x - 12, 46)], p["sol"])
+
+
+def _cruz(esc, rng, p, altura):
+    """Cruz sobre un montículo."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = altura(x) + 3
+    esc.poligono([(x - 2, y), (x - 2, y - 30), (x - 9, y - 30), (x - 9, y - 35), (x - 2, y - 35), (x - 2, y - 46),
+                  (x + 2, y - 46), (x + 2, y - 35), (x + 9, y - 35), (x + 9, y - 30), (x + 2, y - 30), (x + 2, y)], p["figura"])
+
+
+def _estrellas(esc, rng, p, altura):
+    """Estrellas dispersas por el cielo."""
+    for _ in range(rng.randint(14, 24)):
+        esc.circulo(round(rng.uniform(0.02, 0.98) * ANCHO, 1), round(rng.uniform(0.05, 0.5) * ALTO, 1),
+                    round(rng.uniform(0.9, 2.1), 1), p["sol"])
+
+
+MOTIVOS.update({
+    "cuervo": _cuervo, "cipres": _cipres, "ruinas": _ruinas, "velero": _velero, "castillo": _castillo,
+    "arbol": _arbol, "catedral": _catedral, "rayo": _rayo, "cruz": _cruz, "estrellas": _estrellas,
+})
+
+
 # --- Arquetipos de composición -------------------------------------------------
 # Cada uno dibuja el paisaje y devuelve la función altura(x) de la capa lejana,
 # donde se apoyan los motivos (torre, etc.).
@@ -152,6 +263,7 @@ def _arq_llanura(esc, rng, p):
 def _arq_marina(esc, rng, p):
     cabo = _colina(rng, 0.54, 7)
     linea = (0.62 + rng.nivel) * ALTO
+    rng.linea = linea
     esc.poligono([(0, linea), (ANCHO, linea), (ANCHO, ALTO), (0, ALTO)], p["lejos"])
     esc.poligono(_puntos_colina(cabo)[:-2] + [(ANCHO, linea), (0, linea)], p["cerca"])
     # reflejo del sol en el agua: rayas de largo decreciente
@@ -191,7 +303,7 @@ NOMBRES_ARQUETIPOS = list(ARQUETIPOS)
 
 def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas"):
     rng = random.Random(semilla)
-    rng.nivel = rng.uniform(-0.12, 0.12)  # desplaza todo el horizonte: cambia la silueta global
+    rng.nivel = rng.uniform(-0.16, 0.16)  # desplaza todo el horizonte: cambia la silueta global
     p = PALETAS[paleta]
     esc = Escena(semilla=semilla, grano=grano)
     # Cielo claro arriba o abajo: cambia mucho la huella visual sin cambiar la paleta.
