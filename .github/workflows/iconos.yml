@@ -1,0 +1,62 @@
+name: Iconos
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "iconos-genealogia/**"
+      - "iconos-biblioteca/**"
+      - "iconos-tools/**"
+      - "galeria-iconos.html"
+      - ".github/workflows/iconos.yml"
+  pull_request:
+    paths:
+      - "iconos-genealogia/**"
+      - "iconos-biblioteca/**"
+      - "iconos-tools/**"
+      - "galeria-iconos.html"
+      - ".github/workflows/iconos.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  iconos:
+    name: iconos / generar y validar
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      # Los SVG y la galería son salida generada: si lo versionado no coincide con lo que produce el
+      # generador, alguien editó un archivo a mano o cambió el generador sin regenerar.
+      - name: Regenerar y comprobar que no hay diferencias
+        run: |
+          python3 iconos-tools/build.py
+          cambios="$(git status --porcelain -- iconos-genealogia iconos-biblioteca galeria-iconos.html)"
+          if [ -n "$cambios" ]; then
+            echo "::error::Lo versionado no coincide con la salida de iconos-tools/build.py. Ejecuta python3 iconos-tools/build.py y confirma el resultado."
+            echo "$cambios" | head -40
+            exit 1
+          fi
+
+      - name: Validar
+        run: python3 iconos-tools/validate.py
+
+      - name: Instalar dependencias de la comprobación de miniaturas
+        run: pip install -r iconos-tools/requirements.txt
+
+      - name: Buscar iconos casi idénticos
+        run: python3 iconos-tools/similares.py

@@ -79,13 +79,20 @@ Los SVG son salida generada. Se editan en `iconos-tools/` (`genealogia.py` y `bi
 ```
 python3 iconos-tools/build.py      # escribe los dos sets y galeria-iconos.html
 python3 iconos-tools/validate.py   # comprueba las reglas de abajo
+
+pip install -r iconos-tools/requirements.txt   # solo para similares.py
+python3 iconos-tools/similares.py  # busca iconos casi indistinguibles a 24 px
 ```
 
 El validador comprueba que cada SVG esté bien formado, mida 64x64 y no contenga texto; que las tres variantes tengan los mismos archivos y formas; que `gris/` no tenga colores cromáticos y `lineas/` no tenga rellenos; que los nombres sigan la convención y estén en la carpeta de su prefijo; que no haya ids repetidos ni iconos idénticos.
+
+`similares.py` dibuja la variante `gris` de cada icono a 24x24 y compara todos los pares de un mismo set; falla si dos se diferencian en menos de 0,8 (diferencia media por píxel, de 0 a 255; unos dos píxeles totalmente distintos de los 576). Muestra además los pares más cercanos, aunque no fallen. Los pares que ya estaban por debajo de ese límite al añadir la comprobación figuran en `ACEPTADOS`, con el motivo.
+
+El workflow `.github/workflows/iconos.yml` ejecuta los tres pasos en cada cambio de los iconos y falla además si los SVG o la galería versionados no coinciden con lo que genera `build.py` (un archivo editado a mano o un generador cambiado sin regenerar).
 
 ## Limitaciones conocidas
 
 - Varios pares masculino/femenino (`person_uncle` y `person_aunt`) se distinguen solo por la forma de un nodo, y adopción, acogida y padrinazgo por una pequeña marca sobre el enlace (punto, cuadrado, anillo).
 - Sin pictogramas, los iconos de la biblioteca no se reconocen a primera vista: hay que aprender el código (familia = forma, género = patrón) o acompañarlos de su etiqueta. Dentro de una familia, algunos patrones se parecen a tamaños pequeños (rayas y ondas, anillo y cruz).
 - El efecto 2.5D es una extrusión hacia abajo y a la derecha con sombra proyectada; no es una proyección isométrica estricta.
-- El validador solo detecta iconos idénticos; los casi idénticos se revisaron comparando miniaturas fuera del repositorio.
+- A 24 px hay pares que solo se distinguen por un detalle de unos pocos píxeles: seis de `person_` (`person_foster_mother` y `person_godmother`, `person_great_aunt` y `person_great_uncle`, `person_second_cousin` y `person_second_cousin_f`...) están aceptados de forma explícita en `similares.py`, y muchos pares masculino/femenino quedan apenas por encima del límite.
