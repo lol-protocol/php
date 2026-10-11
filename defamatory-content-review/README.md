@@ -577,6 +577,23 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
   tipo («quiero coger, mándame nudes»). No es lo mismo que `'ambiguous' => true`
   en una entrada de `config/languages/` («leche», «яйца»): esa marca se ignora
   siempre en el chat, y `validateName()` no la mira.
+- **Sólo si va dirigido a alguien.** Los animales y la discapacidad («cerdo»,
+  «rata», «cojo») y las entradas `'targeted' => true` (identidad: «Jude»,
+  «homo»; brujería: «bruja»; palabrotas suaves: «чёрт», «cholera») sólo
+  cuentan cuando apuntan a una persona. «Eres un cerdo», «Juan es un cerdo»,
+  «esa rata», «seu porco», «du Schwein», «ты свинья», «dasar babi», «aso ka»
+  van a revisión; «comí cerdo», «vi una rata en la cocina», «mi abuelo es
+  cojo», «das Schwein im Stall» se aprueban: el hallazgo queda en `low` con
+  `context => untargeted`. Cuenta como dirigido si hay una marca del idioma
+  hasta 3 palabras antes («eres», «es un», «ese», «maldito», «you», «seu»,
+  «espèce de», «ты», «يا») o después («de mierda», «ka», «lan»); si la línea
+  es sólo el término («¡cerdo!»); o si la línea ya trae otro insulto firme.
+  Las frases de varias palabras («hijo de perra») y los compuestos marcados
+  `'targeted' => false` («svinehund») cuentan siempre. Las marcas están en la
+  clave `targeted` de 29 idiomas; japonés, coreano, cantonés y tailandés, sin
+  espacios entre palabras, siguen como antes. Ver `TargetContext`.
+- **Signos pegados a la palabra.** «puta!», «¿idiota?», «(rata)», ««imbécil»»
+  se leen igual que sin signos (antes «idiota!» se aprobaba).
 
 ### Ampliar las listas de chat
 
@@ -589,6 +606,7 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 | categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
 | meta `'collapseRepeats' => true` | Lee también las palabras escritas con letras repetidas. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
 | `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
+| `'targeted' => ['types' => [...], 'before' => [...], 'after' => [...]]` | Qué riskTypes sólo cuentan dirigidos a alguien (`animal`, `discapacidad`) y las marcas del idioma que lo indican, antes o después del término (hasta 3 palabras). En un diccionario, `'targeted' => true` suma una entrada suelta a la regla y `'targeted' => false` la saca. `TargetMarkersConfigTest` verifica el formato. |
 | `'everyday' => [...]` | Palabras cotidianas que sin tildes coinciden con un término: «possède» → «possédé», «katıl» (únete) → «katil» (asesino), «moc» (mucho) → «moč». Escritas exactamente así (da igual la mayúscula) no se buscan en el chat; «katil» sin tilde sigue marcándose. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
 | `'patterns'` | Frases con forma: expresión regular sin delimitadores contra el texto plegado (minúsculas, sin tildes ni puntuación, leet resuelto), con `riskType`, `severity` y `label`. |
 

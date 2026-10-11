@@ -169,7 +169,7 @@ return [
 
         'geslacht' => [
             ['word' => 'flikker', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'homo', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'homo', 'riskType' => 'genero', 'severity' => 'medium', 'targeted' => true],
             ['word' => 'nicht', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'verwijfd', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'pot', 'riskType' => 'genero', 'severity' => 'high', 'nameCollision' => true, 'ambiguous' => true],

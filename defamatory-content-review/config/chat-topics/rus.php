@@ -3,6 +3,11 @@
 /** Russian chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'rus', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['ты', 'вы', 'тебя', 'тебе', 'твой', 'твоя', 'сам', 'сама', 'этот', 'эта', 'эти', 'такой', 'такая', 'какой', 'какая', 'грязный', 'грязная', 'тупой', 'тупая', 'жирный', 'жирная', 'старый', 'старая', 'вонючий', 'вонючая'],
+        'after' => ['ты', 'вы', 'поганый', 'поганая', 'вонючий', 'вонючая'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'порно', 'riskType' => 'sexual', 'severity' => 'high'],

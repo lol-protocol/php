@@ -3,6 +3,11 @@
 /** Hindi chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'hin', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['तू', 'तुम', 'आप', 'साला', 'साले', 'साली', 'तेरा', 'तेरी', 'ये', 'यह', 'कमीना', 'कमीने', 'गंदा', 'गंदी'],
+        'after' => ['है तू', 'कहीं का', 'कहीं की'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'पोर्न', 'riskType' => 'sexual', 'severity' => 'high'],

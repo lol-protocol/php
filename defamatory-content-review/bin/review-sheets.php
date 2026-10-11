@@ -43,7 +43,7 @@ foreach ($sources as $source => $file) {
     $topics = $source === 'temas' ? $data : $topics;
     foreach ($data['words'] ?? [] as $category => $entries) {
         foreach ($entries as $entry) {
-            $marks = array_keys(array_filter(array_intersect_key($entry, array_flip(['nameCollision', 'ambiguous']))));
+            $marks = array_keys(array_filter(array_intersect_key($entry, array_flip(['nameCollision', 'ambiguous', 'targeted']))));
             if (isset($entry['forms'])) {
                 $marks[] = 'forms:' . $entry['forms'];
             }

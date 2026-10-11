@@ -3,6 +3,11 @@
 /** Czech chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'ces', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['ty', 'jsi', 'jste', 'vy', 'ten', 'ta', 'ty jsi', 'debilní', 'zasranej', 'zasraná', 'hnusnej', 'hnusná', 'starej', 'stará'],
+        'after' => ['ty', 'jeden', 'jedna', 'jsi'],
+    ],
     'everyday' => ['moc', 'nemá', 'pero'],
     'words' => [
         'sexual' => [

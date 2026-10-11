@@ -21,6 +21,7 @@ use DefamatoryContentReview\Dictionary\WordList;
  * antes de buscar; dentro de una racha de letras sueltas más larga
  * («h o l a p u t a») se busca aparte (ver SpacedRunTerms). Una entrada `'ambiguous' => true` de un diccionario
  * («яйца», «leche») se ignora aquí: casi siempre es la palabra cotidiana.
+ * Animales, discapacidad y `targeted` sólo cuentan dirigidos a alguien (TargetContext).
  */
 final class ChatLineReviewer
 {
@@ -45,6 +46,7 @@ final class ChatLineReviewer
             $matches = ChatMatches::merge($matches, ChatMatches::restore($this->scan($text, $topics), $joined));
         }
         $matches = [...$matches, ...SpacedRunTerms::find($line, $this->dictionary(), $topics, $matches)];
+        $matches = TargetContext::apply($line, $matches, $topics?->targeting() ?? [], $this->reviewer->getLanguage());
 
         return new ChatLineResult($line, $matches, $this->decisionFor($matches));
     }

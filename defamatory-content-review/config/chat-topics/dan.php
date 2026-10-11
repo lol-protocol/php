@@ -3,6 +3,11 @@
 /** Danish chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'dan', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['du', 'du er', 'din', 'dit', 'dine', 'jer', 'dumme', 'fede', 'fucking', 'forbandede', 'klamme', 'ulækre', 'dit lede'],
+        'after' => [],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

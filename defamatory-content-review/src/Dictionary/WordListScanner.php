@@ -12,8 +12,8 @@ namespace DefamatoryContentReview\Dictionary;
  */
 final class WordListScanner
 {
-    /** Frontera entre tokens: espacios y la puntuación que separa palabras. */
-    private const BETWEEN_WORDS = '/[\s\-.,_·]+/u';
+    /** Frontera entre tokens: espacios y la puntuación que separa palabras («¡idiota!», «(rata)», «puta?»). */
+    private const BETWEEN_WORDS = '/[\s\-.,_·!¡?¿;:"“”„«»()\[\]{}…]+/u';
     /** Separador intercalado dentro de una palabra: no parte un término. */
     private const INSIDE_WORD = '/[\-.,_·\'’]+/u';
 

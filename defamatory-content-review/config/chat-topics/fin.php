@@ -3,6 +3,11 @@
 /** Finnish chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'fin', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['sinä', 'sä', 'sää', 'olet', 'oot', 'te', 'ootte', 'senkin', 'sitä', 'saatanan', 'vitun', 'perkeleen', 'likainen', 'lihava', 'tyhmä', 'ruma'],
+        'after' => ['olet', 'oot'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

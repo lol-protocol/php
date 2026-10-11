@@ -3,6 +3,11 @@
 /** Indonesian chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'ind', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['kamu', 'kau', 'lu', 'lo', 'elo', 'loe', 'dasar', 'anda', 'kalian', 'kayak', 'seperti', 'dia'],
+        'after' => ['lu', 'lo', 'kau', 'kamu', 'sialan', 'busuk'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

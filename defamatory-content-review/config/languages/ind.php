@@ -135,7 +135,7 @@ return [
         'gender' => [
             ['word' => 'banci', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'bencong', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'homo', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'homo', 'riskType' => 'genero', 'severity' => 'high', 'targeted' => true],
             ['word' => 'kemayu', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'pelacur', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'lonte', 'riskType' => 'genero', 'severity' => 'high'],
@@ -207,7 +207,7 @@ return [
             ['word' => 'kerasukan', 'riskType' => 'religioso', 'severity' => 'high'],
             ['word' => 'setan', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'iblis', 'riskType' => 'religioso', 'severity' => 'medium'],
-            ['word' => 'penyihir', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'penyihir', 'riskType' => 'religioso', 'severity' => 'high', 'targeted' => true],
             ['word' => 'fanatik', 'riskType' => 'religioso', 'severity' => 'medium'],
         ],
     ],
