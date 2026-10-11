@@ -19,6 +19,9 @@
     "language": "Romanian",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "GDPR implementation"
+    "notes": "GDPR implementation",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

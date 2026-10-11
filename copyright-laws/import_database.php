@@ -105,8 +105,8 @@ class CopyrightLawsImporter {
                 (jurisdiction_id, law_name, protection_type, term_of_protection,
                  author_rights, moral_rights, orphan_works, digital_protection,
                  fair_use_exceptions, registration_required, enforcement_body,
-                 treaties_signatory, treaties_not_party, linked_resources, notes)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                 treaties_signatory, treaties_not_party, linked_resources, notes, data_status, confidence, last_checked)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
 
             // Read and import rows
@@ -155,7 +155,10 @@ class CopyrightLawsImporter {
                     $data['treaties_signatory'],
                     $data['treaties_not_party'] ?? '',
                     $data['linked_resources'],
-                    $data['notes'] ?? ''
+                    $data['notes'] ?? '',
+                    $data['data_status'] ?? 'curated',
+                    $data['confidence'] ?? '',
+                    ($data['last_checked'] ?? '') !== '' ? $data['last_checked'] : null
                 ]);
 
                 $imported++;

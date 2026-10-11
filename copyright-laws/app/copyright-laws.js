@@ -48,6 +48,14 @@ const app = {
 
 const regionLabel = (region) => t(`region.${region}`);
 const treatyName = (treaty) => t(`treaty.${treaty}`);
+const sourceLabel = (status) => t(`source.${status}`);
+/** "Web research (secondary sources) · medium confidence · checked 8 Oct 2026" */
+function sourceDetail(row) {
+  const parts = [sourceLabel(row.data_status)];
+  if (row.confidence) parts.push(t(`confidence.${row.confidence}`));
+  if (row.last_checked) parts.push(t("card.checked", { date: formatDate(row.last_checked) }));
+  return parts.join(" · ");
+}
 const termLabel = (bucket) =>
   bucket === "other" ? t("term.unspecified") : t("term.life", { years: bucket.replace("life-", "") });
 const jurisdictionName = (tld) =>
@@ -94,6 +102,7 @@ function renderFacets() {
       titleFor: treatyName,
     }),
     checkboxFacet("term", "filters.term", app.options.term, termLabel),
+    checkboxFacet("source", "filters.source", app.options.source, sourceLabel, { hintKey: "filters.sourceHint" }),
   ];
   // A filter with a single possible value cannot narrow anything, so it stays hidden
   // until the dataset has a second protection type (related rights, database rights…).
@@ -141,6 +150,8 @@ function chipLabel(chip) {
       return t("chip.treaty", { value: chip.value });
     case "term":
       return t("chip.term", { value: termLabel(chip.value) });
+    case "source":
+      return t("chip.source", { value: sourceLabel(chip.value) });
     default:
       return t("chip.ptype", { value: chip.value });
   }
@@ -218,7 +229,9 @@ function rowHtml(row) {
       <td><button type="button" class="link-button" data-country="${esc(row.tld)}" title="${esc(
         t("table.onlyCountry", { name: row.country_name })
       )}">${esc(row.country_name)}</button></td>
-      <td>${esc(row.law_name)}</td>
+      <td>${esc(row.law_name)}${
+        row.confidence === "low" ? ` <span class="badge badge-outline">${esc(t("table.lowConfidence"))}</span>` : ""
+      }</td>
       <td><small>${esc(row.term_of_protection)}</small></td>
       <td class="col-optional"><small>${esc(row.author_rights)}</small></td>
       <td class="col-optional"><small>${esc(row.moral_rights)}</small></td>
@@ -280,6 +293,7 @@ function renderCountryCard() {
       <div><dt>${esc(t("card.notParty"))}</dt><dd class="badge-list">${badgeList(notParty, " badge-outline")}</dd></div>
       <div><dt>${esc(t("card.unconfirmed"))}</dt><dd>${unconfirmed.length ? esc(unconfirmed.join(", ")) : "—"}</dd></div>
       <div><dt>${esc(t("card.folder"))}</dt><dd><code>jurisdictions/${esc(jurisdiction.tld)}/</code></dd></div>
+      <div><dt>${esc(t("card.source"))}</dt><dd>${laws.map((row) => esc(sourceDetail(row))).join("<br>")}</dd></div>
       <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
     </dl>
     ${notes.length ? `<p class="card-notes"><strong>${esc(t("card.notes"))}:</strong> ${esc(notes.join(" · "))}</p>` : ""}

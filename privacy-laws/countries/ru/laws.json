@@ -15,10 +15,13 @@
     "enforcement_authority": "Roskomnadzor",
     "penalties_range": "Fines & warnings",
     "exemptions": "Government functions",
-    "website_url": "https://rsoc.ru/",
+    "website_url": "https://rkn.gov.ru/",
     "language": "Russian",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "Russia's data protection law"
+    "notes": "Russia's data protection law",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

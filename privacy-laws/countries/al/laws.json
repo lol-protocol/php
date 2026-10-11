@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "Replaced Law 9887/2008; DPIA & prior-consultation rules apply from 17 Jan 2027"
+    "notes": "Replaced Law 9887/2008; DPIA & prior-consultation rules apply from 17 Jan 2027",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

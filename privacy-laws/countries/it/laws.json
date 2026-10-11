@@ -19,6 +19,9 @@
     "language": "Italian",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "GDPR + Italian amendments"
+    "notes": "GDPR + Italian amendments",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

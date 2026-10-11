@@ -19,6 +19,9 @@
     "language": "Spanish",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Regulation Decree 36-2012 (published 2012-10-19); DIPRODAP reported non-operational"
+    "notes": "Regulation Decree 36-2012 (published 2012-10-19); DIPRODAP reported non-operational",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

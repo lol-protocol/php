@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "GDPR-style bill 8153 passed 1st reading only (Nov 2024); 2010 law still applies"
+    "notes": "GDPR-style bill 8153 passed 1st reading only (Nov 2024); 2010 law still applies",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

@@ -12,10 +12,13 @@
     "digital_protection": "Copyright enforcement",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Kenyan IP Office",
+    "enforcement_body": "Kenya Copyright Board (KECOBO)",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "WCT/WPPT",
-    "linked_resources": "https://www.kipo.go.ke/",
-    "notes": ""
+    "linked_resources": "https://copyright.go.ke/",
+    "notes": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

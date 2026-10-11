@@ -19,6 +19,9 @@
     "language": "Spanish",
     "frameworks": "EU-Adequacy/CoE-108",
     "frameworks_not": "GDPR",
-    "notes": "Regulated by Decree 414/009; territorial scope extended by Law 19.670 (arts 37-40)"
+    "notes": "Regulated by Decree 414/009; territorial scope extended by Law 19.670 (arts 37-40)",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Royal Decree 6/2022; replaced e-Transactions Law ch. 7; Executive Regulation in force 5 Feb 2024"
+    "notes": "Royal Decree 6/2022; replaced e-Transactions Law ch. 7; Executive Regulation in force 5 Feb 2024",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
   }
 ]

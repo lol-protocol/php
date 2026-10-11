@@ -19,6 +19,9 @@
     "language": "French",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "Entry-into-force day unconfirmed (set to enactment date); 2019 replacement bill not adopted"
+    "notes": "Entry-into-force day unconfirmed (set to enactment date); 2019 replacement bill not adopted",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

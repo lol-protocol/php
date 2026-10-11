@@ -224,3 +224,21 @@ test("on small screens secondary columns give way and header/body stay aligned",
   assert.equal(cells, headers.length);
   await page.context().close();
 });
+
+test("data status: a facet, a low-confidence badge and the details on the card", { skip }, async () => {
+  const { page, summary } = await newPage(app.browser);
+  await page.goto(url(), { waitUntil: "networkidle" });
+  if (!(await page.evaluate(() => document.querySelector("#advanced").open))) await page.click("#advanced summary");
+  await page.check('input[name="source"][value="researched"]');
+  await page.waitForTimeout(250);
+  const researched = laws.filter((l) => l.data_status === "researched");
+  assert.ok((await summary()).startsWith(`${researched.length} of ${TOTAL}`), await summary());
+  assert.match(await page.locator(".chip").first().textContent(), /^Status: Web research/);
+
+  const low = laws.find((l) => l.confidence === "low");
+  await page.goto(url(`country=${low.tld}`), { waitUntil: "networkidle" });
+  assert.match(await page.locator("#lawsTableBody").textContent(), /Low confidence/);
+  const card = await page.locator("#countryCard .card-grid > div", { hasText: "Data status" }).locator("dd").textContent();
+  assert.match(card, /Web research \(secondary sources\) · low confidence · checked/);
+  await page.context().close();
+});

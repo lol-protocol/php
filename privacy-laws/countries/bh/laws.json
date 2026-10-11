@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Law No. 30 of 2018; Ministry of Justice exercises Authority functions under a 2019 decree"
+    "notes": "Law No. 30 of 2018; Ministry of Justice exercises Authority functions under a 2019 decree",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
   }
 ]

@@ -3,6 +3,7 @@
 
 export const REGION_ORDER = ["europe", "americas", "asia_pacific", "middle_east_africa"];
 export const FRAMEWORK_ORDER = ["GDPR", "EU-Adequacy", "CoE-108", "APEC-CBPR"];
+export const SOURCE_ORDER = ["verified", "researched", "curated"];
 
 const TEXT_FIELDS = [
   "country_name",
@@ -52,6 +53,8 @@ export const FACETS = [
     order: (a, b) => rank(FRAMEWORK_ORDER, a.value) - rank(FRAMEWORK_ORDER, b.value),
   },
   { id: "year", kind: "range", values: (row) => row.effectiveYear },
+  // Verified first: the order in which a reader should trust the rows.
+  { id: "source", kind: "multi", match: "any", values: (row) => [row.data_status], order: (a, b) => rank(SOURCE_ORDER, a.value) - rank(SOURCE_ORDER, b.value) },
   { id: "language", kind: "select", values: (row) => row.languages },
 ];
 

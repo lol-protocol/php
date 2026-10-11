@@ -19,6 +19,9 @@
     "language": "Turkish",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "Turkey's privacy law"
+    "notes": "Turkey's privacy law",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "EU-Adequacy",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "Updated from 1993 Act"
+    "notes": "Updated from 1993 Act",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

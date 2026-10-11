@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "Replaced the earlier Personal Data Protection Law; 2021 amendment added fines for officials"
+    "notes": "Replaced the earlier Personal Data Protection Law; 2021 amendment added fines for officials",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
   }
 ]

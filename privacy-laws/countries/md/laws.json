@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "Replaced Law 133/2011 (GDPR-aligned); applies since 23 Aug 2026 after 24-month transition"
+    "notes": "Replaced Law 133/2011 (GDPR-aligned); applies since 23 Aug 2026 after 24-month transition",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

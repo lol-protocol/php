@@ -50,7 +50,7 @@ Folder names are ISO 3166-1 alpha-2 codes in lowercase (`eu`, `us`, `gb`, `br`�
 
 `countries/privacy_laws_master.csv` — one row per law. Columns:
 
-`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `jurisdiction` · `enactment_date` and `effective_date` (`YYYY-MM-DD`) · `scope` · `applies_to` · `key_requirements` · `data_categories` · `retention_period` · `enforcement_authority` · `penalties_range` · `exemptions` · `website_url` · `language` (`English` or `French/German`) · `frameworks` (optional, `/`-separated subset of `GDPR`, `EU-Adequacy`, `CoE-108`, `APEC-CBPR`) · `frameworks_not` (same values, confirmed **not** joined) · `notes`
+`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `jurisdiction` · `enactment_date` and `effective_date` (`YYYY-MM-DD`) · `scope` · `applies_to` · `key_requirements` · `data_categories` · `retention_period` · `enforcement_authority` · `penalties_range` · `exemptions` · `website_url` · `language` (`English` or `French/German`) · `frameworks` (optional, `/`-separated subset of `GDPR`, `EU-Adequacy`, `CoE-108`, `APEC-CBPR`) · `frameworks_not` (same values, confirmed **not** joined) · `notes` · `data_status` (`curated` original list, `researched` web research from secondary sources, `verified` checked against the official text) · `confidence` (`high`, `medium`, `low` or empty) · `last_checked` (`YYYY-MM-DD`, required unless curated)
 
 Fields that contain a comma **must be quoted** (`"Up to $7,500 per violation"`). The tooling refuses rows with the wrong number of columns instead of guessing.
 
@@ -78,7 +78,7 @@ npm test              # also fails if generated files are out of date
 
 ## Web app notes
 
-URL parameters: `q` (text), `in` (`all|name|authority|requirements|penalties`), `region` (comma separated), `framework` (comma separated; all must apply), `year` (`2018-2024`, `2018-`, `-2010`), `language`, `country` (folder code), `lang` (`eng|spa|fra|deu|por`).
+URL parameters: `q` (text), `in` (`all|name|authority|requirements|penalties`), `region` (comma separated), `framework` (comma separated; all must apply), `year` (`2018-2024`, `2018-`, `-2010`), `language`, `country` (folder code), `source` (`verified,researched,curated`), `lang` (`eng|spa|fra|deu|por`).
 The interface language comes from `?lang=`, then the saved choice, then the browser language.
 
 To add a language, add its code to `LANGUAGES` and a full block to `TRANSLATIONS` in `app/translations/i18n.js`; `npm test` fails until every key is translated.
@@ -103,6 +103,11 @@ php import_database.php --all               # schema + import + validation
 The importer reads `region` straight from the CSV.
 
 ## Data provenance
+
+Each row carries `data_status`, `confidence` and `last_checked`. The app has a "Data status" filter, flags rows with low confidence in the table and shows the details on the country card. No row is `verified` yet: when someone checks a row against the official text, set `data_status=verified` and `last_checked` to that day.
+
+The first real link check (11 Oct 2026, GitHub Actions) found dead links mostly in the original rows; they were replaced, and rows whose content turned out to be wrong were corrected and marked `researched`.
+
 
 - The first 53 rows come from the original curated list.
 - The 49 countries added in October 2026 (HR CY EE LV LT MT SK SI NO IS LI UA RS AL MK BA MD GE AM BY UZ UY EC CR PA PY DO JM NI TW LK NP QA BH OM JO MA GH SN CI UG RW TZ ZM ZW MU BW AO ET) and the `frameworks` column were researched through web search only (no access to the primary texts). `website_url` values are pages that appeared in search results; some point to law-firm guides rather than the regulator.

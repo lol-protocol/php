@@ -16,6 +16,9 @@
     "treaties_signatory": "TRIPS",
     "treaties_not_party": "Berne",
     "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/22939",
-    "notes": ""
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
   }
 ]

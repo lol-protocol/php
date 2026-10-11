@@ -19,6 +19,9 @@
     "language": "French",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "Dahir 1-09-15 of 18 Feb 2009; Bulletin Officiel 5714 of 5 Mar 2009; Decree 2-09-165 implements it"
+    "notes": "Dahir 1-09-15 of 18 Feb 2009; Bulletin Officiel 5714 of 5 Mar 2009; Decree 2-09-165 implements it",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-08"
   }
 ]

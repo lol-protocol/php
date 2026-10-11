@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "OIC set up Dec 2021; controller duties from 2023-12-01; full enforcement expected only by 2028"
+    "notes": "OIC set up Dec 2021; controller duties from 2023-12-01; full enforcement expected only by 2028",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

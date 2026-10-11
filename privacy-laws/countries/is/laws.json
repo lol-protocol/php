@@ -15,10 +15,13 @@
     "enforcement_authority": "Icelandic Data Protection Authority (Persónuvernd)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Household use; broad media exemption",
-    "website_url": "https://personuvernd.is/information-in-english/greinar/nr/437",
+    "website_url": "https://www.personuvernd.is/",
     "language": "English",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "Replaced Act 77/2000; GDPR applies through EEA Agreement Annex XI"
+    "notes": "Replaced Act 77/2000; GDPR applies through EEA Agreement Annex XI",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
   }
 ]

@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "EU-Adequacy/CoE-108",
     "frameworks_not": "GDPR",
-    "notes": "GDPR principles + additional UK rules"
+    "notes": "GDPR principles + additional UK rules",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

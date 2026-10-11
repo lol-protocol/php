@@ -19,6 +19,9 @@
     "language": "English/Chinese",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Asia-specific privacy law"
+    "notes": "Asia-specific privacy law",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

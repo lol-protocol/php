@@ -15,10 +15,13 @@
     "enforcement_authority": "Saudi PDPL Authority",
     "penalties_range": "Fines & compliance orders",
     "exemptions": "Government functions",
-    "website_url": "https://www.pdpl.gov.sa/",
+    "website_url": "https://sdaia.gov.sa/",
     "language": "Arabic/English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Middle East region"
+    "notes": "Middle East region",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

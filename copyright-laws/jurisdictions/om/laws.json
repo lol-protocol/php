@@ -16,6 +16,9 @@
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=5832",
-    "notes": "Term: some sources (AGIP) give life + 50; the US FTA and other summaries give life + 70"
+    "notes": "Term: some sources (AGIP) give life + 50; the US FTA and other summaries give life + 70",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
   }
 ]

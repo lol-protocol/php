@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { FRAMEWORKS, REGIONS } from "../scripts/lib/dataset.js";
+import { CONFIDENCE_LEVELS, DATA_STATUSES, FRAMEWORKS, REGIONS } from "../scripts/lib/dataset.js";
 import { COMPARE_CRITERIA, FRAMEWORK_ORDER, SEARCH_SCOPES } from "../app/lib/domain.js";
 
 // Minimal browser surface so setLanguage()/applyTranslations() can run under Node.
@@ -90,6 +90,8 @@ test("every key used by the page exists, and no key is left unused", () => {
   for (const region of REGIONS) used.add(`region.${region}`);
   for (const scope of SEARCH_SCOPES) used.add(`scope.${scope.id}`);
   for (const criterion of COMPARE_CRITERIA) used.add(`compare.${criterion}`);
+  for (const status of DATA_STATUSES) used.add(`source.${status}`);
+  for (const level of CONFIDENCE_LEVELS) used.add(`confidence.${level}`);
   // The framework vocabulary lives in two places (dataset validation, app ordering): keep them identical.
   assert.deepEqual(FRAMEWORK_ORDER, FRAMEWORKS);
   for (const framework of FRAMEWORKS) used.add(`framework.${framework}`);

@@ -16,6 +16,9 @@
     "treaties_signatory": "Berne/WCT/WPPT",
     "treaties_not_party": "TRIPS",
     "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/19376",
-    "notes": ""
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
   }
 ]

@@ -19,6 +19,9 @@
     "language": "Arabic/English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "UAE privacy law"
+    "notes": "UAE privacy law",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

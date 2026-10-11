@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Localization rule (2021) narrowed by Mar 2026 amendment; adequacy list of 49 countries set Jul 2026"
+    "notes": "Localization rule (2021) narrowed by Mar 2026 amendment; adequacy list of 49 countries set Jul 2026",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

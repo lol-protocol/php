@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Entry-into-force day unconfirmed (set to enactment date); ARTCI is designated data protection authority"
+    "notes": "Entry-into-force day unconfirmed (set to enactment date); ARTCI is designated data protection authority",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

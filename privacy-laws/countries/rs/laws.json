@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "Replaced 2008 law; draft replacement law in consultation to 10 Sep 2026 (not enacted)"
+    "notes": "Replaced 2008 law; draft replacement law in consultation to 10 Sep 2026 (not enacted)",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

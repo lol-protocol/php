@@ -15,10 +15,13 @@
     "enforcement_authority": "NPC (Philippines)",
     "penalties_range": "Up to PHP 1M fine",
     "exemptions": "Government functions",
-    "website_url": "https://www.npc.gov.ph/",
+    "website_url": "https://privacy.gov.ph/",
     "language": "English/Filipino",
     "frameworks": "APEC-CBPR",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Southeast Asia region"
+    "notes": "Southeast Asia region",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

@@ -19,6 +19,9 @@
     "language": "Hebrew/English",
     "frameworks": "EU-Adequacy",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "Middle East region"
+    "notes": "Middle East region",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

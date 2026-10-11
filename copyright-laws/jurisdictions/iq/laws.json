@@ -16,6 +16,9 @@
     "treaties_signatory": "",
     "treaties_not_party": "Berne/TRIPS/WCT/WPPT",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/10345",
-    "notes": "Term from secondary sources only; the law is reported as not fully implemented"
+    "notes": "Term from secondary sources only; the law is reported as not fully implemented",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-08"
   }
 ]

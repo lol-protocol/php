@@ -19,6 +19,9 @@
     "language": "Korean",
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "East Asia comprehensive privacy law"
+    "notes": "East Asia comprehensive privacy law",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

@@ -15,10 +15,13 @@
     "enforcement_authority": "APDP",
     "penalties_range": "Fines up to PEN 100k",
     "exemptions": "Government functions",
-    "website_url": "https://www.apdp.gob.pe/",
+    "website_url": "https://www.gob.pe/anpd",
     "language": "Spanish",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "South America region"
+    "notes": "South America region",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

@@ -149,3 +149,18 @@ test("treaty data has three states and the known non-members are recorded", () =
   assert.equal(row("IR").term_of_protection, "Author's life + 50 years");
   assert.match(row("IR").notes, /life \+ 30/);
 });
+
+test("every row says where its data comes from", () => {
+  const statuses = new Set(records.map((r) => r.data_status));
+  assert.ok(statuses.has("curated") && statuses.has("researched"));
+  for (const r of records.filter((x) => x.data_status !== "curated")) {
+    assert.match(r.last_checked, /^\d{4}-\d{2}-\d{2}$/, r.country_code);
+  }
+  const base = records.find((r) => r.data_status === "researched");
+  const only = (patch) => validateRecords([{ ...base, ...patch }], COLUMNS).errors;
+  assert.match(only({ data_status: "guessed" })[0], /data_status must be one of/);
+  assert.match(only({ confidence: "certain" })[0], /confidence must be empty or one of/);
+  assert.match(only({ last_checked: "2026-02-30" })[0], /last_checked must be a real/);
+  assert.match(only({ last_checked: "" })[0], /last_checked is required/);
+  assert.deepEqual(only({ data_status: "curated", confidence: "", last_checked: "" }), []);
+});

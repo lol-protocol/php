@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "Private sector national standard"
+    "notes": "Private sector national standard",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

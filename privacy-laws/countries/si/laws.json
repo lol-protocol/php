@@ -19,6 +19,9 @@
     "language": "Slovenian",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "Replaced ZVOP-1 (2004); published in Official Gazette RS 163/2022 on 27 Dec 2022"
+    "notes": "Replaced ZVOP-1 (2004); published in Official Gazette RS 163/2022 on 27 Dec 2022",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-08"
   }
 ]

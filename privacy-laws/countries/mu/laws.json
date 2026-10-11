@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "Replaced the Data Protection Act 2004; commenced by Proclamation No. 3 of 2018"
+    "notes": "Replaced the Data Protection Act 2004; commenced by Proclamation No. 3 of 2018",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

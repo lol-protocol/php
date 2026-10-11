@@ -19,6 +19,9 @@
     "language": "Japanese",
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "Asia's comprehensive privacy law"
+    "notes": "Asia's comprehensive privacy law",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

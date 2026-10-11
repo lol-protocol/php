@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "Replaced 2011 law (GDPR-modelled); DPO/DPIA duties from 1 Jun 2024; other parts phased later"
+    "notes": "Replaced 2011 law (GDPR-modelled); DPO/DPIA duties from 1 Jun 2024; other parts phased later",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

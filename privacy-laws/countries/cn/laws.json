@@ -19,6 +19,9 @@
     "language": "Chinese",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "China's privacy law"
+    "notes": "China's privacy law",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

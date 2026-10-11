@@ -19,7 +19,10 @@
     "language": "English",
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "Now CPRA as of Jan 2023"
+    "notes": "Now CPRA as of Jan 2023",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   },
   {
     "country_code": "US",
@@ -41,6 +44,9 @@
     "language": "English",
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "Website & app operators"
+    "notes": "Website & app operators",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

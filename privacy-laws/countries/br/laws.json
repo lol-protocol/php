@@ -19,6 +19,9 @@
     "language": "Portuguese",
     "frameworks": "EU-Adequacy",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "South America's GDPR equivalent"
+    "notes": "South America's GDPR equivalent",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

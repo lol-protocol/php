@@ -19,6 +19,9 @@
     "language": "Vietnamese",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Vietnam's cybersecurity law"
+    "notes": "Vietnam's cybersecurity law",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

@@ -16,6 +16,9 @@
     "treaties_signatory": "Berne/WCT/WPPT",
     "treaties_not_party": "TRIPS",
     "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=1194",
-    "notes": ""
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-08"
   }
 ]

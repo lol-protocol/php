@@ -48,6 +48,14 @@ const app = {
 
 const regionLabel = (region) => t(`region.${region}`);
 const frameworkName = (framework) => t(`framework.${framework}`);
+const sourceLabel = (status) => t(`source.${status}`);
+/** "Web research (secondary sources) · medium confidence · checked 8 Oct 2026" */
+function sourceDetail(row) {
+  const parts = [sourceLabel(row.data_status)];
+  if (row.confidence) parts.push(t(`confidence.${row.confidence}`));
+  if (row.last_checked) parts.push(t("card.checked", { date: formatDate(row.last_checked) }));
+  return parts.join(" · ");
+}
 // Laws can be enacted with an effective date still ahead (ISO dates compare as strings).
 const TODAY = new Date().toISOString().slice(0, 10);
 const countryName = (tld) => app.data.countries.find((c) => c.tld === tld)?.name ?? tld.toUpperCase();
@@ -107,6 +115,7 @@ function renderFacets() {
   $("facets").innerHTML = `
     ${checkboxFacet("region", "filters.region", app.options.region, regionLabel)}
     ${frameworks}
+    ${checkboxFacet("source", "filters.source", app.options.source, sourceLabel, { hintKey: "filters.sourceHint" })}
     <fieldset class="facet">
       <legend>${esc(t("filters.year"))}</legend>
       <div class="range-inputs">
@@ -145,13 +154,16 @@ function renderStatic() {
 /* ---------- Dynamic parts (re-rendered on every state change) ---------- */
 
 function syncFacetControls() {
-  const { region, framework, year, language } = app.state.facets;
+  const { region, framework, source, year, language } = app.state.facets;
   const facets = $("facets");
   for (const input of facets.querySelectorAll('input[name="region"]')) {
     input.checked = region.includes(input.value);
   }
   for (const input of facets.querySelectorAll('input[name="framework"]')) {
     input.checked = framework.includes(input.value);
+  }
+  for (const input of facets.querySelectorAll('input[name="source"]')) {
+    input.checked = source.includes(input.value);
   }
   facets.querySelector('[name="year-from"]').value = year.from ?? "";
   facets.querySelector('[name="year-to"]').value = year.to ?? "";
@@ -167,6 +179,8 @@ function chipLabel(chip) {
       return regionLabel(chip.value);
     case "framework":
       return t("chip.framework", { value: chip.value });
+    case "source":
+      return t("chip.source", { value: sourceLabel(chip.value) });
     case "year":
       return t("chip.year", { value: formatRange(app.state.facets.year) });
     default:
@@ -247,7 +261,9 @@ function rowHtml(row) {
       <td><button type="button" class="link-button" data-country="${esc(row.tld)}" title="${esc(
         t("table.onlyCountry", { name: row.country_name })
       )}">${esc(row.country_name)}</button></td>
-      <td>${esc(row.law_name)}</td>
+      <td>${esc(row.law_name)}${
+        row.confidence === "low" ? ` <span class="badge badge-outline">${esc(t("table.lowConfidence"))}</span>` : ""
+      }</td>
       <td class="nowrap col-optional">${esc(row.enactment_date)}</td>
       <td class="nowrap">${esc(row.effective_date)}${
         row.effective_date > TODAY ? ` <span class="badge">${esc(t("table.upcoming"))}</span>` : ""
@@ -309,6 +325,7 @@ function renderCountryCard() {
       <div><dt>${esc(t("card.frameworksNot"))}</dt><dd class="badge-list">${badgeList(notIn, " badge-outline")}</dd></div>
       <div><dt>${esc(t("card.unconfirmed"))}</dt><dd>${unconfirmed.length ? esc(unconfirmed.join(", ")) : "—"}</dd></div>
       <div><dt>${esc(t("card.folder"))}</dt><dd><code>countries/${esc(country.tld)}/</code></dd></div>
+      <div><dt>${esc(t("card.source"))}</dt><dd>${laws.map((row) => esc(sourceDetail(row))).join("<br>")}</dd></div>
       <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
     </dl>
     <p class="card-links">
@@ -425,7 +442,7 @@ function bindEvents() {
   $("facets").addEventListener("change", (event) => {
     const { name, value } = event.target;
     const { facets } = app.state;
-    if (name === "region" || name === "framework") {
+    if (name === "region" || name === "framework" || name === "source") {
       facets[name] = [...$("facets").querySelectorAll(`input[name="${name}"]:checked`)].map((i) => i.value);
     } else if (name === "year-from" || name === "year-to") {
       let from = readYear("year-from");

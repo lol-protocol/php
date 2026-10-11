@@ -28,7 +28,7 @@ test("initial view: every law, one chart bar per term, data-driven facets", { sk
   assert.equal(await page.locator(".viz-col").count(), YEARS.length);
   assert.equal((await page.locator(".viz-x").allTextContents()).join(" "), YEARS.map((y) => `+${y}`).join(" "));
   assert.equal(await page.locator('input[name="ptype"]').count(), 0, "only 'Copyright' exists, so that facet stays hidden");
-  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), "Region|Treaties|Protection term");
+  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), "Region|Treaties|Protection term|Data status");
   assert.equal(await page.locator('label.check:has(input[value="WCT"])').getAttribute("title"), "WIPO Copyright Treaty (WCT)");
   assert.deepEqual(problems, []);
   await page.context().close();
@@ -155,7 +155,7 @@ test("languages: Portuguese plurals and German labels", { skip }, async () => {
   await page.selectOption("#languageSelect", "por");
   await page.waitForTimeout(150);
   assert.equal(await page.locator(".viz-title").textContent(), "Leis por prazo de proteção");
-  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), "Região|Tratados|Prazo de proteção");
+  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), "Região|Tratados|Prazo de proteção|Situação dos dados");
   assert.equal(await page.locator('label.check:has(input[value="Berne"])').getAttribute("title"), "Convenção de Berna");
   assert.equal(await summary(), `${N} de ${N} leis · ${J} jurisdições`);
   await page.selectOption("#languageSelect", "deu");
@@ -174,5 +174,22 @@ test("on small screens secondary columns give way and the treaties column stays"
   assert.ok(!headers.includes("Author rights") && headers.includes("Treaties"), headers.join(" | "));
   const cells = await page.locator("#lawsTableBody tr").first().locator("td").evaluateAll((tds) => tds.filter((td) => getComputedStyle(td).display !== "none").length);
   assert.equal(cells, headers.length);
+  await page.context().close();
+});
+
+test("data status: a facet, a low-confidence badge and the details on the card", { skip }, async () => {
+  const { page, summary } = await newPage(app.browser);
+  await page.goto(url(), { waitUntil: "networkidle" });
+  await page.check('input[name="source"][value="researched"]');
+  await page.waitForTimeout(250);
+  const researched = rows.filter((r) => r.data_status === "researched");
+  assert.ok((await summary()).startsWith(`${researched.length} of ${N}`), await summary());
+  assert.match(await page.locator(".chip").first().textContent(), /^Status: Web research/);
+
+  const low = rows.find((r) => r.confidence === "low");
+  await page.goto(url(`country=${low.tld}`), { waitUntil: "networkidle" });
+  assert.match(await page.locator("#lawsTableBody").textContent(), /Low confidence/);
+  const card = await page.locator("#countryCard .card-grid > div", { hasText: "Data status" }).locator("dd").textContent();
+  assert.match(card, /Web research \(secondary sources\) · low confidence · checked/);
   await page.context().close();
 });

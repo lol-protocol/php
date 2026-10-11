@@ -4,6 +4,7 @@
 
 export const REGION_ORDER = ["europe", "americas", "asia_pacific", "middle_east_africa"];
 export const TREATY_ORDER = ["Berne", "TRIPS", "WCT", "WPPT"];
+export const SOURCE_ORDER = ["verified", "researched", "curated"];
 
 const TEXT_FIELDS = [
   "country_name",
@@ -76,6 +77,8 @@ export const FACETS = [
     },
   },
   { id: "ptype", kind: "multi", match: "any", values: (row) => [row.protection_type] },
+  // Verified first: the order in which a reader should trust the rows.
+  { id: "source", kind: "multi", match: "any", values: (row) => [row.data_status], order: (a, b) => rank(SOURCE_ORDER, a.value) - rank(SOURCE_ORDER, b.value) },
 ];
 
 export const CONFIG = { searchScopes: SEARCH_SCOPES, facets: FACETS };

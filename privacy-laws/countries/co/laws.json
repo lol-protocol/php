@@ -15,10 +15,13 @@
     "enforcement_authority": "Superintendence of Industry",
     "penalties_range": "Fines up to COP 100M",
     "exemptions": "Government function",
-    "website_url": "https://www.superindustria.gov.co/",
+    "website_url": "https://www.sic.gov.co/",
     "language": "Spanish",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "South America region"
+    "notes": "South America region",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

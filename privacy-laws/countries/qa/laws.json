@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Law No. 13 of 2016; compliance period extended to 29 Jan 2018; QFC has own regime"
+    "notes": "Law No. 13 of 2016; compliance period extended to 29 Jan 2018; QFC has own regime",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
   }
 ]

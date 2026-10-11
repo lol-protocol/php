@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "Replaced the 1996 law I-1374; separate Law XIII-1435 covers criminal-justice data"
+    "notes": "Replaced the 1996 law I-1374; separate Law XIII-1435 covers criminal-justice data",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-08"
   }
 ]

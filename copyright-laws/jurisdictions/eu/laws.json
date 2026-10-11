@@ -16,6 +16,9 @@
     "treaties_signatory": "TRIPS/WCT/WPPT",
     "treaties_not_party": "Berne",
     "linked_resources": "https://euipo.europa.eu/",
-    "notes": "Describes the harmonised EU framework. The EU itself is not a party to the Berne Convention (all its Member States are); it is a party to TRIPS, the WCT and the WPPT"
+    "notes": "Describes the harmonised EU framework. The EU itself is not a party to the Berne Convention (all its Member States are); it is a party to TRIPS, the WCT and the WPPT",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

@@ -50,7 +50,7 @@ Folder names are ISO 3166-1 alpha-2 codes in lowercase (`eu`, `us`, `gb`, `br`�
 
 `jurisdictions/copyright_laws_master.csv` — one row per law. Columns:
 
-`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `protection_type` (`Copyright`, `Related rights`, `Database rights`, `Moral rights`) · `term_of_protection` (should read like `Author's life + 70 years`; the term filter and chart use the *life + N years* part) · `author_rights` · `moral_rights` · `orphan_works` · `digital_protection` · `fair_use_exceptions` · `registration_required` (`No`, `Yes`, optionally followed by a note) · `enforcement_body` · `treaties_signatory` (confirmed memberships, `Berne/TRIPS/WCT`; allowed: Berne, TRIPS, WCT, WPPT) · `treaties_not_party` (treaties confirmed **not** joined, same values; a treaty in neither list is "not confirmed") · `linked_resources` (URL) · `notes` (optional caveats: disputed terms, pending amendments)
+`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `protection_type` (`Copyright`, `Related rights`, `Database rights`, `Moral rights`) · `term_of_protection` (should read like `Author's life + 70 years`; the term filter and chart use the *life + N years* part) · `author_rights` · `moral_rights` · `orphan_works` · `digital_protection` · `fair_use_exceptions` · `registration_required` (`No`, `Yes`, optionally followed by a note) · `enforcement_body` · `treaties_signatory` (confirmed memberships, `Berne/TRIPS/WCT`; allowed: Berne, TRIPS, WCT, WPPT) · `treaties_not_party` (treaties confirmed **not** joined, same values; a treaty in neither list is "not confirmed") · `linked_resources` (URL) · `notes` (optional caveats: disputed terms, pending amendments) · `data_status` (`curated` original list, `researched` web research from secondary sources, `verified` checked against the official text) · `confidence` (`high`, `medium`, `low` or empty) · `last_checked` (`YYYY-MM-DD`, required unless curated)
 
 Fields that contain a comma **must be quoted** (`"Law No. 9,610/1998"`). The tooling refuses rows with the wrong number of columns instead of guessing.
 
@@ -67,7 +67,7 @@ npm test              # also fails if generated files are out of date
 
 ## Web app notes
 
-URL parameters: `q` (text), `in` (`all|name|rights|authority`), `region`, `treaty`, `term` (`life-70`…), `ptype` (all comma separated), `country` (folder code), `lang` (`eng|spa|fra|deu|por`).
+URL parameters: `q` (text), `in` (`all|name|rights|authority`), `region`, `treaty`, `term` (`life-70`…), `ptype` (all comma separated), `country` (folder code), `source` (`verified,researched,curated`), `lang` (`eng|spa|fra|deu|por`).
 The interface language comes from `?lang=`, then the saved choice, then the browser language.
 
 To add a language, add its code to `LANGUAGES` and a full block to `TRANSLATIONS` in `app/translations/i18n.js`; `npm test` fails until every key is translated.
@@ -106,6 +106,11 @@ The browser tests skip themselves when PHP, Playwright or Chromium is missing; s
 CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm test` on PHP 8.1 and 8.4, and the browser tests, on every push that touches either module. `.github/workflows/laws-links.yml` checks the reference links of both datasets every Monday (and on demand) and lists the problems in the run summary.
 
 ## Data provenance
+
+Each row carries `data_status`, `confidence` and `last_checked`. The app has a "Data status" filter, flags rows with low confidence in the table and shows the details on the country card. No row is `verified` yet: when someone checks a row against the official text, set `data_status=verified` and `last_checked` to that day.
+
+The first real link check (11 Oct 2026, GitHub Actions) found dead links mostly in the original rows; they were replaced, and rows whose content turned out to be wrong were corrected and marked `researched`.
+
 
 - The first 50 rows come from the original curated list.
 - The 73 jurisdictions added in October 2026 (BG HR CY EE LV LT MT SK SI LU NO IS UA RS AL MK BA ME MD GE AM AZ BY KZ UZ UY VE PY CR BO PA JM TT GT EC PK LK NP KH TW MN MO LA MM BD DO SV BN QA KW BH OM JO LB IQ IR MA TN DZ GH SN CI UG RW TZ ZM MW ZW BW AO ET MU CM) were researched through web search only, without access to the statutes themselves. `linked_resources` values are pages that appeared in search results (mostly WIPO Lex).

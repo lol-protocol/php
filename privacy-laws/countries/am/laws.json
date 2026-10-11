@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
-    "notes": "Replaced 2002 law; EU-backed reform to align with GDPR is being drafted"
+    "notes": "Replaced 2002 law; EU-backed reform to align with GDPR is being drafted",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Law No. 24 of 2023; grace period for existing processing ended Mar 2025"
+    "notes": "Law No. 24 of 2023; grace period for existing processing ended Mar 2025",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-08"
   }
 ]

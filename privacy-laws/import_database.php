@@ -104,8 +104,8 @@ class PrivacyLawsImporter {
                 "INSERT INTO privacy_laws
                 (country_id, law_name, jurisdiction, enactment_date, effective_date,
                  scope, applies_to, key_requirements, data_categories, retention_period,
-                 enforcement_authority, penalties_range, exemptions, website_url, language, frameworks, frameworks_not, notes)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                 enforcement_authority, penalties_range, exemptions, website_url, language, frameworks, frameworks_not, notes, data_status, confidence, last_checked)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
 
             // Read and import rows
@@ -157,7 +157,10 @@ class PrivacyLawsImporter {
                     $data['language'],
                     $data['frameworks'] ?? '',
                     $data['frameworks_not'] ?? '',
-                    $data['notes'] ?? ''
+                    $data['notes'] ?? '',
+                    $data['data_status'] ?? 'curated',
+                    $data['confidence'] ?? '',
+                    ($data['last_checked'] ?? '') !== '' ? $data['last_checked'] : null
                 ]);
 
                 $imported++;

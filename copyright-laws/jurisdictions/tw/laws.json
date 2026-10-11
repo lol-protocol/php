@@ -16,6 +16,9 @@
     "treaties_signatory": "TRIPS",
     "treaties_not_party": "Berne",
     "linked_resources": "https://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?pcode=J0070017",
-    "notes": ""
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-08"
   }
 ]

@@ -19,6 +19,9 @@
     "language": "French",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "GDPR + French law 78-17"
+    "notes": "GDPR + French law 78-17",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

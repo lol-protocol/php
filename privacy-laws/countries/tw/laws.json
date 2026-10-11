@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "APEC-CBPR",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Renamed 1995 Act; 2025-11-11 amendment (PDPC) awaits Executive Yuan start date"
+    "notes": "Renamed 1995 Act; 2025-11-11 amendment (PDPC) awaits Executive Yuan start date",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
   }
 ]

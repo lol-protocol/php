@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Two-year transition for existing controllers ended 15 Oct 2023"
+    "notes": "Two-year transition for existing controllers ended 15 Oct 2023",
+    "data_status": "researched",
+    "confidence": "",
+    "last_checked": "2026-10-08"
   }
 ]

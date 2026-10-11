@@ -19,6 +19,9 @@
     "language": "Estonian",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "Fines via misdemeanour procedure; Nov 2023 Penal Code change lifted the earlier cap"
+    "notes": "Fines via misdemeanour procedure; Nov 2023 Penal Code change lifted the earlier cap",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
   }
 ]

@@ -38,7 +38,15 @@ export const COLUMNS = [
   "frameworks",
   "frameworks_not",
   "notes",
+  "data_status",
+  "confidence",
+  "last_checked",
 ];
+// Where a row's data comes from: the original curated list, web research from secondary sources
+// (with the researcher's confidence and the date), or a check against the official text.
+export const DATA_STATUSES = ["verified", "researched", "curated"];
+export const CONFIDENCE_LEVELS = ["high", "medium", "low"];
+
 
 export const REGIONS = [
   "europe",
@@ -210,6 +218,18 @@ export function validateRecords(records, header = COLUMNS) {
       if (both.length) fail(`${both.join(", ")} is listed both in frameworks and in frameworks_not`);
     }
 
+    if (!DATA_STATUSES.includes(record.data_status)) {
+      fail(`data_status must be one of ${DATA_STATUSES.join("|")}, got ${JSON.stringify(record.data_status)}`);
+    }
+    if (record.confidence && !CONFIDENCE_LEVELS.includes(record.confidence)) {
+      fail(`confidence must be empty or one of ${CONFIDENCE_LEVELS.join("|")}, got ${JSON.stringify(record.confidence)}`);
+    }
+    if (record.last_checked && !isRealDate(record.last_checked)) {
+      fail(`last_checked must be a real YYYY-MM-DD date, got ${JSON.stringify(record.last_checked)}`);
+    }
+    if (record.data_status !== "curated" && !record.last_checked) {
+      fail(`last_checked is required when data_status is ${record.data_status}`);
+    }
     if (!/^[A-Z][A-Za-z]+(\/[A-Z][A-Za-z]+)*$/.test(record.language)) {
       fail(`language must look like "English" or "French/German", got ${JSON.stringify(record.language)}`);
     }

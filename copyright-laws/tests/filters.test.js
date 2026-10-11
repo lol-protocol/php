@@ -290,3 +290,10 @@ test("escapeHtml, safeUrl, normalize and CSV helpers", () => {
   assert.equal(csvCell(null), '""');
   assert.equal(toCsv(["a", "b"], [{ a: "1", b: "x,y" }]), 'a,b\n"1","x,y"\n');
 });
+
+test("the data-status facet lists the most trustworthy status first and filters by it", () => {
+  const values = facetOptions(data.rows, facet("source")).map((o) => o.value);
+  assert.deepEqual(values, ["verified", "researched", "curated"].filter((v) => values.includes(v)));
+  assert.equal(count("source=researched"), data.rows.filter((r) => r.data_status === "researched").length);
+  assert.equal(count("source=researched,curated"), data.rows.length - data.rows.filter((r) => r.data_status === "verified").length);
+});

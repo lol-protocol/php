@@ -19,6 +19,9 @@
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "Recently passed, enforcement phase"
+    "notes": "Recently passed, enforcement phase",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]
