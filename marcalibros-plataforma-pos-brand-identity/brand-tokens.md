@@ -46,6 +46,6 @@ Sobre `papel` solo se usan `tinta` y `verde` para eso. `ocre` y `niebla` sobre `
 
 ## Archivos
 
-- SVG para iconos e ilustraciones (escalan sin pérdida y conservan transparencia). Menos de 10 KB cada uno.
+- SVG para iconos e ilustraciones (escalan sin pérdida y conservan transparencia). Menos de 10 KB cada uno. El generador comprueba este límite en los marcalibros del catálogo y se detiene si alguno lo supera.
 - JPG para paisajes, calidad 85, sin metadatos EXIF. Menos de 300 KB cada uno.
 - Nombres de archivo en minúsculas, separados por guiones, sin números al inicio.
