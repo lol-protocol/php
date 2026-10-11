@@ -54,6 +54,10 @@ return [
             'send me nudes' => ['reject', ['sexual']],
             'send dick pics' => ['reject', ['difamatorio', 'sexual']],
             'u r a fucking idiot' => ['reject', ['difamatorio', 'sexual']],
+            'shut up you bastards' => ['reject', ['difamatorio']],   // plurales y formas coloquiales del diccionario
+            'you idiots' => ['review', ['difamatorio']],
+            'what a dumbass' => ['review', ['difamatorio']],
+            'fuckin hell' => ['reject', ['difamatorio']],
             'that was a genocide' => ['reject', ['belico']],
             'they massacred the whole village' => ['reject', ['belico']],
             'they were bombing the city' => ['review', ['belico']],

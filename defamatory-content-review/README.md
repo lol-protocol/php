@@ -757,6 +757,11 @@ palabras no entiende contexto:
   cotidiano, que es mucho más frecuente. La medición de falsos positivos es
   por palabra suelta, no por frase: no ve los que sólo aparecen en contexto.
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
+- Los diccionarios de insultos (`config/languages/`) no generan plurales ni
+  otras formas: «idiots» sólo se detecta porque está escrito. El inglés
+  tiene los plurales de sus insultos claros; en los demás idiomas, el plural
+  de un insulto que no esté en la lista pasa en el chat. Las listas de temas
+  sí los generan (`forms`) en español, inglés, portugués, italiano y francés.
 - Letras sueltas que juntan dos palabras («h o l a p u t a») sólo llegan a
   revisión, nunca a bloqueo: lo encontrado dentro de una racha más larga
   podría ser una palabra deletreada que lo contiene («c o m p u t a d o r a»;

@@ -44,6 +44,16 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Diccionario inglés: plurales y formas coloquiales** (46 entradas):
+  «bastards», «idiots», «bitches», «cunts», «retards»… y «fuckin»,
+  «motherfucking», «cocksucker», «dumbass», «dipshit», «bullshit»,
+  «son of a bitch», cada una con la categoría y severidad de su forma base
+  (`dicks` con `nameCollision`, como `dick`). Los plurales pasaban limpios
+  en el chat porque los diccionarios no generan formas. Medido con las
+  50.000 palabras más frecuentes: las 41 nuevas que se censuran son
+  exactamente esas; ninguna palabra cotidiana. Quedan fuera las que tienen
+  otro uso común («pricks», «pussies», «jerky»).
+
 - **`บ้า` (tailandés, «loco»), cambio provisional hasta la revisión
   nativa.** Era el 45 % de las palabras frecuentes que el chat censuraba,
   casi todas exclamaciones («บ้าจริง», «maldita sea»): el chat lo ignora
@@ -200,6 +210,20 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
   verifica que cada una siga haciendo falta.
 
 ### Arreglado
+
+- **Acentos escritos aparte esquivaban el diccionario.** «pu» + «́» + «ta»
+  (la «ú» descompuesta que dejan algunos teclados y el copiar y pegar)
+  pasaba como «púta» sin plegar: se aprobaba en el chat y en
+  `validateName()`. `AccentFolding` compone el texto (NFC, con `intl`; sin
+  ella quita las marcas que siguen a una letra latina) antes de plegar.
+  Los nombres reales escritos así («José García») siguen siendo válidos.
+- **Vocales que son marcas combinantes** (tailandés, hindi, árabe
+  vocalizado): la censura podía tapar media palabra («सूअरों» → «****ों»)
+  porque la frontera de palabra no las contaba como parte de ella;
+  `everyday` no tapaba esas palabras; `ChatPatternMatcher::fold()` las
+  cambiaba por espacios, así que un patrón en hindi nunca habría
+  coincidido; y las letras sueltas no las admitían. Ahora todas cuentan
+  `\p{M}` como parte de la palabra. `CombiningMarksTest`.
 
 - **Endpoint de moderación: revisión de seguridad.** `public/moderar.php`
   ya no puede mostrar rutas ni trazas: desactiva `display_errors` y ante un
