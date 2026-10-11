@@ -1,32 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 200" width="1400" height="200">
-  <title>Marcalibro Clasicismo 06</title>
-  <rect x="0.0" y="0.0" width="1400.0" height="200.0" fill="#F4EEE1"/>
-  <rect x="41.3" y="52.0" width="28.0" height="122.0" fill="#C98B3A"/>
-  <rect x="33.3" y="42.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="33.3" y="174.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="193.6" y="52.0" width="28.0" height="122.0" fill="#C98B3A"/>
-  <rect x="185.6" y="42.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="185.6" y="174.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="346.0" y="52.0" width="28.0" height="122.0" fill="#C98B3A"/>
-  <rect x="338.0" y="42.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="338.0" y="174.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="498.3" y="52.0" width="28.0" height="122.0" fill="#C98B3A"/>
-  <rect x="490.3" y="42.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="490.3" y="174.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="650.7" y="52.0" width="28.0" height="122.0" fill="#C98B3A"/>
-  <rect x="642.7" y="42.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="642.7" y="174.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="803.0" y="52.0" width="28.0" height="122.0" fill="#C98B3A"/>
-  <rect x="795.0" y="42.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="795.0" y="174.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="955.3" y="52.0" width="28.0" height="122.0" fill="#C98B3A"/>
-  <rect x="947.3" y="42.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="947.3" y="174.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="1107.7" y="52.0" width="28.0" height="122.0" fill="#C98B3A"/>
-  <rect x="1099.7" y="42.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="1099.7" y="174.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="1260.0" y="52.0" width="28.0" height="122.0" fill="#C98B3A"/>
-  <rect x="1252.0" y="42.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="1252.0" y="174.0" width="44.0" height="12.0" fill="#1E2A38"/>
-  <rect x="0.0" y="194.0" width="1400.0" height="6.0" fill="#1E2A38"/>
+<title>Marcalibro Clasicismo 06</title>
+<path fill="#F4EEE1" d="M0 0h1400v200h-1400z"/>
+<path fill="#3E5C4A" d="M1177.1 88.9a31.1 31.1 0 1 0 62.3 0a31.1 31.1 0 1 0 -62.3 0z"/>
+<path fill="#1E2A38" d="M450.1 191h436.2v9h-436.2zM462.1 182h412.2v9h-412.2zM474.1 58h14v124h-14zM527.5 58h14v124h-14zM581 58h14v124h-14zM634.4 58h14v124h-14zM687.9 58h14v124h-14zM741.4 58h14v124h-14zM794.8 58h14v124h-14zM848.3 58h14v124h-14zM466.1 46h404.2v12h-404.2z"/>
+<path fill="#1E2A38" d="M460.1 46 668.2 6 876.3 46z"/>
+<path fill="#F4EEE1" d="M494.1 41 668.2 16 842.3 41z"/>
 </svg>

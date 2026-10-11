@@ -11,8 +11,8 @@
       "motivo": "amanecer",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#C98B3A"
+        "#1E2A38",
+        "#3E5C4A"
       ],
       "autores_inspiracion": [
         "Lord Byron",
@@ -25,11 +25,11 @@
     {
       "id": "mb-romanticismo-02",
       "movimiento": "Romanticismo",
-      "motivo": "amanecer",
+      "motivo": "arbol_solitario",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Lord Byron",
@@ -42,11 +42,11 @@
     {
       "id": "mb-romanticismo-03",
       "movimiento": "Romanticismo",
-      "motivo": "amanecer",
+      "motivo": "nubes",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#1E2A38"
+        "#1E2A38",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Lord Byron",
@@ -59,7 +59,7 @@
     {
       "id": "mb-romanticismo-04",
       "movimiento": "Romanticismo",
-      "motivo": "amanecer",
+      "motivo": "acantilado_mar",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -80,7 +80,7 @@
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#F4EEE1"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Lord Byron",
@@ -93,11 +93,11 @@
     {
       "id": "mb-romanticismo-06",
       "movimiento": "Romanticismo",
-      "motivo": "amanecer",
+      "motivo": "arbol_solitario",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#1E2A38"
+        "#1E2A38",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Lord Byron",
@@ -110,11 +110,11 @@
     {
       "id": "mb-romanticismo-07",
       "movimiento": "Romanticismo",
-      "motivo": "amanecer",
+      "motivo": "nubes",
       "fondo": "#F4EEE1",
       "colores": [
         "#1E2A38",
-        "#C98B3A"
+        "#3E5C4A"
       ],
       "autores_inspiracion": [
         "Lord Byron",
@@ -127,11 +127,11 @@
     {
       "id": "mb-romanticismo-08",
       "movimiento": "Romanticismo",
-      "motivo": "amanecer",
+      "motivo": "acantilado_mar",
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#F4EEE1"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Lord Byron",
@@ -161,10 +161,10 @@
     {
       "id": "mb-romanticismo-10",
       "movimiento": "Romanticismo",
-      "motivo": "amanecer",
+      "motivo": "arbol_solitario",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
+        "#1E2A38",
         "#7A9CB0"
       ],
       "autores_inspiracion": [
@@ -181,8 +181,8 @@
       "motivo": "ciudad",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Gustave Flaubert",
@@ -195,11 +195,11 @@
     {
       "id": "mb-realismo-02",
       "movimiento": "Realismo",
-      "motivo": "ciudad",
+      "motivo": "puente",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#3E5C4A"
+        "#3E5C4A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Gustave Flaubert",
@@ -212,11 +212,11 @@
     {
       "id": "mb-realismo-03",
       "movimiento": "Realismo",
-      "motivo": "ciudad",
+      "motivo": "farolas",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Gustave Flaubert",
@@ -229,11 +229,11 @@
     {
       "id": "mb-realismo-04",
       "movimiento": "Realismo",
-      "motivo": "ciudad",
+      "motivo": "chimeneas",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#1E2A38"
+        "#1E2A38",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Gustave Flaubert",
@@ -250,7 +250,7 @@
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#F4EEE1"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Gustave Flaubert",
@@ -263,11 +263,11 @@
     {
       "id": "mb-realismo-06",
       "movimiento": "Realismo",
-      "motivo": "ciudad",
+      "motivo": "puente",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Gustave Flaubert",
@@ -280,11 +280,11 @@
     {
       "id": "mb-realismo-07",
       "movimiento": "Realismo",
-      "motivo": "ciudad",
+      "motivo": "farolas",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#7A9CB0"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Gustave Flaubert",
@@ -297,7 +297,7 @@
     {
       "id": "mb-realismo-08",
       "movimiento": "Realismo",
-      "motivo": "ciudad",
+      "motivo": "chimeneas",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -317,8 +317,8 @@
       "motivo": "ciudad",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#7A9CB0"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Gustave Flaubert",
@@ -331,11 +331,11 @@
     {
       "id": "mb-realismo-10",
       "movimiento": "Realismo",
-      "motivo": "ciudad",
+      "motivo": "puente",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#3E5C4A"
+        "#3E5C4A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Gustave Flaubert",
@@ -351,8 +351,8 @@
       "motivo": "bosque",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#1E2A38"
+        "#1E2A38",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Émile Zola",
@@ -365,11 +365,11 @@
     {
       "id": "mb-naturalismo-02",
       "movimiento": "Naturalismo",
-      "motivo": "bosque",
+      "motivo": "juncos",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#3E5C4A"
+        "#3E5C4A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Émile Zola",
@@ -382,11 +382,11 @@
     {
       "id": "mb-naturalismo-03",
       "movimiento": "Naturalismo",
-      "motivo": "bosque",
+      "motivo": "trigo",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Émile Zola",
@@ -399,11 +399,11 @@
     {
       "id": "mb-naturalismo-04",
       "movimiento": "Naturalismo",
-      "motivo": "bosque",
+      "motivo": "rio",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Émile Zola",
@@ -419,8 +419,8 @@
       "motivo": "bosque",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#7A9CB0"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Émile Zola",
@@ -433,11 +433,11 @@
     {
       "id": "mb-naturalismo-06",
       "movimiento": "Naturalismo",
-      "motivo": "bosque",
+      "motivo": "juncos",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Émile Zola",
@@ -450,11 +450,11 @@
     {
       "id": "mb-naturalismo-07",
       "movimiento": "Naturalismo",
-      "motivo": "bosque",
+      "motivo": "trigo",
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#7A9CB0"
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Émile Zola",
@@ -467,7 +467,7 @@
     {
       "id": "mb-naturalismo-08",
       "movimiento": "Naturalismo",
-      "motivo": "bosque",
+      "motivo": "rio",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -488,7 +488,7 @@
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#F4EEE1"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Émile Zola",
@@ -501,11 +501,11 @@
     {
       "id": "mb-naturalismo-10",
       "movimiento": "Naturalismo",
-      "motivo": "bosque",
+      "motivo": "juncos",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Émile Zola",
@@ -522,7 +522,7 @@
       "fondo": "#F4EEE1",
       "colores": [
         "#1E2A38",
-        "#3E5C4A"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Rubén Darío",
@@ -535,11 +535,11 @@
     {
       "id": "mb-modernismo-02",
       "movimiento": "Modernismo",
-      "motivo": "ondas",
+      "motivo": "ondas_concentricas",
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#F4EEE1"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Rubén Darío",
@@ -552,11 +552,11 @@
     {
       "id": "mb-modernismo-03",
       "movimiento": "Modernismo",
-      "motivo": "ondas",
+      "motivo": "nouveau",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#F4EEE1"
+        "#F4EEE1",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Rubén Darío",
@@ -569,11 +569,11 @@
     {
       "id": "mb-modernismo-04",
       "movimiento": "Modernismo",
-      "motivo": "ondas",
+      "motivo": "mosaico",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#F4EEE1"
+        "#F4EEE1",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Rubén Darío",
@@ -589,8 +589,8 @@
       "motivo": "ondas",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Rubén Darío",
@@ -603,11 +603,11 @@
     {
       "id": "mb-modernismo-06",
       "movimiento": "Modernismo",
-      "motivo": "ondas",
+      "motivo": "ondas_concentricas",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#7A9CB0"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Rubén Darío",
@@ -620,10 +620,10 @@
     {
       "id": "mb-modernismo-07",
       "movimiento": "Modernismo",
-      "motivo": "ondas",
+      "motivo": "nouveau",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
+        "#1E2A38",
         "#7A9CB0"
       ],
       "autores_inspiracion": [
@@ -637,11 +637,11 @@
     {
       "id": "mb-modernismo-08",
       "movimiento": "Modernismo",
-      "motivo": "ondas",
+      "motivo": "mosaico",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Rubén Darío",
@@ -657,8 +657,8 @@
       "motivo": "ondas",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#F4EEE1"
+        "#F4EEE1",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Rubén Darío",
@@ -671,7 +671,7 @@
     {
       "id": "mb-modernismo-10",
       "movimiento": "Modernismo",
-      "motivo": "ondas",
+      "motivo": "ondas_concentricas",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -691,8 +691,8 @@
       "motivo": "geometria",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Guillaume Apollinaire",
@@ -705,11 +705,11 @@
     {
       "id": "mb-vanguardias-02",
       "movimiento": "Vanguardias",
-      "motivo": "geometria",
+      "motivo": "constructivista",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Guillaume Apollinaire",
@@ -722,7 +722,7 @@
     {
       "id": "mb-vanguardias-03",
       "movimiento": "Vanguardias",
-      "motivo": "geometria",
+      "motivo": "caligrama",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -739,11 +739,11 @@
     {
       "id": "mb-vanguardias-04",
       "movimiento": "Vanguardias",
-      "motivo": "geometria",
+      "motivo": "collage",
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#F4EEE1"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Guillaume Apollinaire",
@@ -759,8 +759,8 @@
       "motivo": "geometria",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Guillaume Apollinaire",
@@ -773,11 +773,11 @@
     {
       "id": "mb-vanguardias-06",
       "movimiento": "Vanguardias",
-      "motivo": "geometria",
+      "motivo": "constructivista",
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#F4EEE1"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Guillaume Apollinaire",
@@ -790,11 +790,11 @@
     {
       "id": "mb-vanguardias-07",
       "movimiento": "Vanguardias",
-      "motivo": "geometria",
+      "motivo": "caligrama",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Guillaume Apollinaire",
@@ -807,11 +807,11 @@
     {
       "id": "mb-vanguardias-08",
       "movimiento": "Vanguardias",
-      "motivo": "geometria",
+      "motivo": "collage",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Guillaume Apollinaire",
@@ -841,11 +841,11 @@
     {
       "id": "mb-vanguardias-10",
       "movimiento": "Vanguardias",
-      "motivo": "geometria",
+      "motivo": "constructivista",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#7A9CB0"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Guillaume Apollinaire",
@@ -858,7 +858,7 @@
     {
       "id": "mb-gotico-01",
       "movimiento": "Gótico",
-      "motivo": "arcos",
+      "motivo": "arcos_ojivales",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -875,7 +875,7 @@
     {
       "id": "mb-gotico-02",
       "movimiento": "Gótico",
-      "motivo": "arcos",
+      "motivo": "roseton",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -892,7 +892,7 @@
     {
       "id": "mb-gotico-03",
       "movimiento": "Gótico",
-      "motivo": "arcos",
+      "motivo": "torres",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -909,7 +909,7 @@
     {
       "id": "mb-gotico-04",
       "movimiento": "Gótico",
-      "motivo": "arcos",
+      "motivo": "cementerio",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -926,11 +926,11 @@
     {
       "id": "mb-gotico-05",
       "movimiento": "Gótico",
-      "motivo": "arcos",
+      "motivo": "arcos_ojivales",
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#7A9CB0"
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Mary Shelley",
@@ -943,11 +943,11 @@
     {
       "id": "mb-gotico-06",
       "movimiento": "Gótico",
-      "motivo": "arcos",
+      "motivo": "roseton",
       "fondo": "#F4EEE1",
       "colores": [
         "#1E2A38",
-        "#3E5C4A"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Mary Shelley",
@@ -960,11 +960,11 @@
     {
       "id": "mb-gotico-07",
       "movimiento": "Gótico",
-      "motivo": "arcos",
+      "motivo": "torres",
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#F4EEE1"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Mary Shelley",
@@ -977,11 +977,11 @@
     {
       "id": "mb-gotico-08",
       "movimiento": "Gótico",
-      "motivo": "arcos",
+      "motivo": "cementerio",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Mary Shelley",
@@ -994,11 +994,11 @@
     {
       "id": "mb-gotico-09",
       "movimiento": "Gótico",
-      "motivo": "arcos",
+      "motivo": "arcos_ojivales",
       "fondo": "#F4EEE1",
       "colores": [
         "#1E2A38",
-        "#C98B3A"
+        "#3E5C4A"
       ],
       "autores_inspiracion": [
         "Mary Shelley",
@@ -1011,11 +1011,11 @@
     {
       "id": "mb-gotico-10",
       "movimiento": "Gótico",
-      "motivo": "arcos",
+      "motivo": "roseton",
       "fondo": "#F4EEE1",
       "colores": [
         "#1E2A38",
-        "#7A9CB0"
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Mary Shelley",
@@ -1031,8 +1031,8 @@
       "motivo": "ornamento",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Luis de Góngora",
@@ -1045,11 +1045,11 @@
     {
       "id": "mb-barroco-02",
       "movimiento": "Barroco",
-      "motivo": "ornamento",
+      "motivo": "volutas",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Luis de Góngora",
@@ -1062,11 +1062,11 @@
     {
       "id": "mb-barroco-03",
       "movimiento": "Barroco",
-      "motivo": "ornamento",
+      "motivo": "drapeado",
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#7A9CB0"
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Luis de Góngora",
@@ -1079,11 +1079,11 @@
     {
       "id": "mb-barroco-04",
       "movimiento": "Barroco",
-      "motivo": "ornamento",
+      "motivo": "perlas",
       "fondo": "#F4EEE1",
       "colores": [
         "#1E2A38",
-        "#C98B3A"
+        "#3E5C4A"
       ],
       "autores_inspiracion": [
         "Luis de Góngora",
@@ -1099,7 +1099,7 @@
       "motivo": "ornamento",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
+        "#1E2A38",
         "#7A9CB0"
       ],
       "autores_inspiracion": [
@@ -1113,11 +1113,11 @@
     {
       "id": "mb-barroco-06",
       "movimiento": "Barroco",
-      "motivo": "ornamento",
+      "motivo": "volutas",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Luis de Góngora",
@@ -1130,11 +1130,11 @@
     {
       "id": "mb-barroco-07",
       "movimiento": "Barroco",
-      "motivo": "ornamento",
+      "motivo": "drapeado",
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#F4EEE1"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Luis de Góngora",
@@ -1147,11 +1147,11 @@
     {
       "id": "mb-barroco-08",
       "movimiento": "Barroco",
-      "motivo": "ornamento",
+      "motivo": "perlas",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#1E2A38"
+        "#1E2A38",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Luis de Góngora",
@@ -1167,8 +1167,8 @@
       "motivo": "ornamento",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Luis de Góngora",
@@ -1181,7 +1181,7 @@
     {
       "id": "mb-barroco-10",
       "movimiento": "Barroco",
-      "motivo": "ornamento",
+      "motivo": "volutas",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -1201,8 +1201,8 @@
       "motivo": "columnas",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Jean Racine",
@@ -1215,11 +1215,11 @@
     {
       "id": "mb-clasicismo-02",
       "movimiento": "Clasicismo",
-      "motivo": "columnas",
+      "motivo": "fronton",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#3E5C4A"
+        "#3E5C4A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Jean Racine",
@@ -1232,11 +1232,11 @@
     {
       "id": "mb-clasicismo-03",
       "movimiento": "Clasicismo",
-      "motivo": "columnas",
+      "motivo": "laurel",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#7A9CB0"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Jean Racine",
@@ -1249,7 +1249,7 @@
     {
       "id": "mb-clasicismo-04",
       "movimiento": "Clasicismo",
-      "motivo": "columnas",
+      "motivo": "meandro",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -1269,8 +1269,8 @@
       "motivo": "columnas",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Jean Racine",
@@ -1283,11 +1283,11 @@
     {
       "id": "mb-clasicismo-06",
       "movimiento": "Clasicismo",
-      "motivo": "columnas",
+      "motivo": "fronton",
       "fondo": "#F4EEE1",
       "colores": [
         "#1E2A38",
-        "#C98B3A"
+        "#3E5C4A"
       ],
       "autores_inspiracion": [
         "Jean Racine",
@@ -1300,11 +1300,11 @@
     {
       "id": "mb-clasicismo-07",
       "movimiento": "Clasicismo",
-      "motivo": "columnas",
+      "motivo": "laurel",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#3E5C4A"
+        "#3E5C4A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Jean Racine",
@@ -1317,11 +1317,11 @@
     {
       "id": "mb-clasicismo-08",
       "movimiento": "Clasicismo",
-      "motivo": "columnas",
+      "motivo": "meandro",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#3E5C4A"
+        "#3E5C4A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Jean Racine",
@@ -1338,7 +1338,7 @@
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#7A9CB0"
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Jean Racine",
@@ -1351,7 +1351,7 @@
     {
       "id": "mb-clasicismo-10",
       "movimiento": "Clasicismo",
-      "motivo": "columnas",
+      "motivo": "fronton",
       "fondo": "#1E2A38",
       "colores": [
         "#F4EEE1",
@@ -1371,8 +1371,8 @@
       "motivo": "luna",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Stéphane Mallarmé",
@@ -1385,11 +1385,11 @@
     {
       "id": "mb-simbolismo-02",
       "movimiento": "Simbolismo",
-      "motivo": "luna",
+      "motivo": "reflejo_lunar",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Stéphane Mallarmé",
@@ -1402,11 +1402,11 @@
     {
       "id": "mb-simbolismo-03",
       "movimiento": "Simbolismo",
-      "motivo": "luna",
+      "motivo": "constelaciones",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Stéphane Mallarmé",
@@ -1419,11 +1419,11 @@
     {
       "id": "mb-simbolismo-04",
       "movimiento": "Simbolismo",
-      "motivo": "luna",
+      "motivo": "lirio",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Stéphane Mallarmé",
@@ -1440,7 +1440,7 @@
       "fondo": "#F4EEE1",
       "colores": [
         "#1E2A38",
-        "#3E5C4A"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Stéphane Mallarmé",
@@ -1453,11 +1453,11 @@
     {
       "id": "mb-simbolismo-06",
       "movimiento": "Simbolismo",
-      "motivo": "luna",
+      "motivo": "reflejo_lunar",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Stéphane Mallarmé",
@@ -1470,11 +1470,11 @@
     {
       "id": "mb-simbolismo-07",
       "movimiento": "Simbolismo",
-      "motivo": "luna",
+      "motivo": "constelaciones",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Stéphane Mallarmé",
@@ -1487,11 +1487,11 @@
     {
       "id": "mb-simbolismo-08",
       "movimiento": "Simbolismo",
-      "motivo": "luna",
+      "motivo": "lirio",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#C98B3A"
+        "#1E2A38",
+        "#3E5C4A"
       ],
       "autores_inspiracion": [
         "Stéphane Mallarmé",
@@ -1508,7 +1508,7 @@
       "fondo": "#1E2A38",
       "colores": [
         "#C98B3A",
-        "#7A9CB0"
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Stéphane Mallarmé",
@@ -1521,11 +1521,11 @@
     {
       "id": "mb-simbolismo-10",
       "movimiento": "Simbolismo",
-      "motivo": "luna",
+      "motivo": "reflejo_lunar",
       "fondo": "#F4EEE1",
       "colores": [
         "#1E2A38",
-        "#C98B3A"
+        "#3E5C4A"
       ],
       "autores_inspiracion": [
         "Stéphane Mallarmé",
@@ -1541,8 +1541,8 @@
       "motivo": "espiral",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#7A9CB0"
+        "#3E5C4A",
+        "#1E2A38"
       ],
       "autores_inspiracion": [
         "Gabriel García Márquez",
@@ -1555,11 +1555,11 @@
     {
       "id": "mb-realismo-magico-02",
       "movimiento": "Realismo mágico",
-      "motivo": "espiral",
+      "motivo": "mariposas",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#C98B3A"
+        "#1E2A38",
+        "#3E5C4A"
       ],
       "autores_inspiracion": [
         "Gabriel García Márquez",
@@ -1572,11 +1572,11 @@
     {
       "id": "mb-realismo-magico-03",
       "movimiento": "Realismo mágico",
-      "motivo": "espiral",
+      "motivo": "flores_cayendo",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#C98B3A"
+        "#1E2A38",
+        "#3E5C4A"
       ],
       "autores_inspiracion": [
         "Gabriel García Márquez",
@@ -1589,11 +1589,11 @@
     {
       "id": "mb-realismo-magico-04",
       "movimiento": "Realismo mágico",
-      "motivo": "espiral",
+      "motivo": "selva",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#1E2A38"
+        "#1E2A38",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Gabriel García Márquez",
@@ -1610,7 +1610,7 @@
       "fondo": "#F4EEE1",
       "colores": [
         "#1E2A38",
-        "#3E5C4A"
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Gabriel García Márquez",
@@ -1623,11 +1623,11 @@
     {
       "id": "mb-realismo-magico-06",
       "movimiento": "Realismo mágico",
-      "motivo": "espiral",
+      "motivo": "mariposas",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#F4EEE1"
+        "#F4EEE1",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Gabriel García Márquez",
@@ -1640,11 +1640,11 @@
     {
       "id": "mb-realismo-magico-07",
       "movimiento": "Realismo mágico",
-      "motivo": "espiral",
+      "motivo": "flores_cayendo",
       "fondo": "#F4EEE1",
       "colores": [
-        "#C98B3A",
-        "#1E2A38"
+        "#3E5C4A",
+        "#C98B3A"
       ],
       "autores_inspiracion": [
         "Gabriel García Márquez",
@@ -1657,11 +1657,11 @@
     {
       "id": "mb-realismo-magico-08",
       "movimiento": "Realismo mágico",
-      "motivo": "espiral",
+      "motivo": "selva",
       "fondo": "#1E2A38",
       "colores": [
-        "#7A9CB0",
-        "#C98B3A"
+        "#C98B3A",
+        "#F4EEE1"
       ],
       "autores_inspiracion": [
         "Gabriel García Márquez",
@@ -1677,8 +1677,8 @@
       "motivo": "espiral",
       "fondo": "#F4EEE1",
       "colores": [
-        "#7A9CB0",
-        "#3E5C4A"
+        "#3E5C4A",
+        "#7A9CB0"
       ],
       "autores_inspiracion": [
         "Gabriel García Márquez",
@@ -1691,11 +1691,11 @@
     {
       "id": "mb-realismo-magico-10",
       "movimiento": "Realismo mágico",
-      "motivo": "espiral",
+      "motivo": "mariposas",
       "fondo": "#F4EEE1",
       "colores": [
-        "#3E5C4A",
-        "#C98B3A"
+        "#1E2A38",
+        "#3E5C4A"
       ],
       "autores_inspiracion": [
         "Gabriel García Márquez",

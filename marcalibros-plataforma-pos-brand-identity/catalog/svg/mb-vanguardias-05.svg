@@ -1,13 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 200" width="1400" height="200">
-  <title>Marcalibro Vanguardias 05</title>
-  <rect x="0.0" y="0.0" width="1400.0" height="200.0" fill="#1E2A38"/>
-  <circle cx="887.8" cy="95.1" r="20.5" fill="#7A9CB0"/>
-  <polygon points="668.0,191.1 623.6,133.7 695.5,123.9" fill="#C98B3A"/>
-  <circle cx="818.9" cy="52.5" r="14.1" fill="#C98B3A"/>
-  <polygon points="417.3,35.6 430.5,55.5 410.5,68.8 397.3,48.8" fill="#7A9CB0"/>
-  <polygon points="614.7,118.6 638.6,145.5 611.7,169.4 587.8,142.5" fill="#C98B3A"/>
-  <polygon points="518.9,124.2 559.4,133.8 549.8,174.3 509.3,164.7" fill="#C98B3A"/>
-  <circle cx="490.7" cy="54.0" r="9.7" fill="#C98B3A"/>
-  <polygon points="218.2,154.0 172.4,113.5 230.3,94.1" fill="#C98B3A"/>
-  <polygon points="1243.9,76.8 1259.4,127.1 1208.2,115.4" fill="#7A9CB0"/>
+<title>Marcalibro Vanguardias 05</title>
+<path fill="#1E2A38" d="M0 0h1400v200h-1400z"/>
+<path fill="#F4EEE1" d="M777.7 94.3a83.6 83.6 0 1 0 167.3 0a83.6 83.6 0 1 0 -167.3 0z"/>
+<path fill="#C98B3A" d="M44.5 -40.3 306.4 213 284.6 235.6 22.7 -17.7zM550.9 16.4 891.1 167.1 882.8 185.7 542.6 35zM541.5 44.5 807.4 205.6 797.3 222.1 531.4 61.1zM1048.5 192.6 1367.5 11.4 1378.1 30.2 1059.2 211.4zM1162.6 76.1 1393.6 161.3 1387.1 178.8 1156.1 93.6zM715.3 -9.5 934.7 143.1 924.3 157.9 705 5.4z"/>
+<path fill="#F4EEE1" d="M464.4 52.7 552.5 36.1 522.9 120.7z"/>
+<path fill="#C98B3A" d="M934 35.6 1016.8 42 969.9 110.6zM530.3 99.4 550.9 151.3 495.6 143.2zM448.5 105.9 449 14.3 528.1 60.5z"/>
+<path fill="#F4EEE1" d="M475.5 7.6 530.9 80.2 440.3 91.9z"/>
+<path fill="none" stroke="#C98B3A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M1185.3 0 1239.7 200M169.1 0 541.2 200"/>
 </svg>
