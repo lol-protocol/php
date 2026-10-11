@@ -55,6 +55,24 @@ final class AccentFolding
             unset($map[$letter]);
         }
 
-        return strtr($text, $map);
+        return strtr(self::compose($text), $map);
+    }
+
+    /**
+     * «u» + acento combinante («ú» descompuesta, como la escriben algunos teclados
+     * y el copiar y pegar) pasa a la «ú» de un carácter que MAP sabe plegar; si
+     * no, «pu\u{301}ta» esquivaba el diccionario. Sin la extensión intl se quitan
+     * las marcas que siguen a una letra latina, que es lo que MAP haría después.
+     */
+    private static function compose(string $text): string
+    {
+        if (!preg_match('/\p{M}/u', $text)) {
+            return $text;
+        }
+        if (class_exists(\Normalizer::class)) {
+            return \Normalizer::normalize($text, \Normalizer::FORM_C) ?: $text;
+        }
+
+        return preg_replace('/(?<=[a-zA-Z])\p{Mn}+/u', '', $text) ?? $text;
     }
 }

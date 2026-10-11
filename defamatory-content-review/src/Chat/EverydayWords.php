@@ -12,7 +12,7 @@ namespace DefamatoryContentReview\Chat;
 final class EverydayWords
 {
     /** Palabra entera, con guiones o apóstrofos internos: «ver-me», «l'idiot». */
-    private const WORD = '/(?<![\p{L}\p{N}])[\p{L}\p{N}]+(?:[\-\'’][\p{L}\p{N}]+)*(?![\p{L}\p{N}])/u';
+    private const WORD = '/(?<![\p{L}\p{M}\p{N}])[\p{L}\p{M}\p{N}]+(?:[\-\'’][\p{L}\p{M}\p{N}]+)*(?![\p{L}\p{M}\p{N}])/u';
 
     /**
      * El texto con cada palabra cotidiana tapada por espacios del mismo largo,

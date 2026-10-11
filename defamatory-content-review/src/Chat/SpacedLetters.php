@@ -10,7 +10,7 @@ namespace DefamatoryContentReview\Chat;
 final class SpacedLetters
 {
     /** Racha de 3 o más letras sueltas separadas por espacios: «p u t a». */
-    private const RUN = '/(?<![\p{L}\p{N}])(?:\p{L}[ \t]+){2,}\p{L}(?![\p{L}\p{N}])/u';
+    private const RUN = '/(?<![\p{L}\p{M}\p{N}])(?:\p{L}\p{M}*[ \t]+){2,}\p{L}\p{M}*(?![\p{L}\p{M}\p{N}])/u';
     /** Letras sueltas que también son palabras: la «a» de «vamos a f o l l a r» no es de «follar». */
     private const CONNECTORS = ['a', 'e', 'i', 'o', 'u', 'y'];
 
