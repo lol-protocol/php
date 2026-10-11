@@ -12,28 +12,36 @@ Reglas de formato:
 """
 import argparse
 import hashlib
-import io
 import json
+import os
+import random
+import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
+import numpy as np
 import yaml
 from PIL import Image
 
-from plantillas import CONSTRUCTORES
-from qa import hoja_de_contacto, huella_visual, revisar_duplicados, validar_jpg, validar_svg
+from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS
+from qa import UMBRAL_DUPLICADO, hoja_de_contacto, huella_visual, parecido_a, validar_jpg, validar_svg
 from render_raster import a_imagen
 from render_svg import a_svg
 from scene import ALTO, ANCHO
 
-VERSION_GENERADOR = "0.1.0"
+VERSION_GENERADOR = "0.2.0"
+MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
+MAX_DIF_CHROMIUM = 3.0  # diferencia media tolerada entre Chromium y el renderer raster
 GRANO_JPG = 0.018  # textura suave: sin grano, la variante JPG se confunde con las SVG
 
 
-def semilla(movimiento, autor, variante):
+def semilla(movimiento, autor, variante, intento=0):
     clave = f"{movimiento}/{autor}/{variante:02d}"
+    if intento:
+        clave += f"#{intento}"
     return int(hashlib.sha256(clave.encode("utf-8")).hexdigest()[:12], 16)
 
 
@@ -46,13 +54,22 @@ def recorrer(config, movimiento=None):
                 yield mov, autor, v
 
 
-def construir(config, mov, autor, v):
-    s = semilla(mov["id"], autor["id"], v)
-    paleta = mov["paletas"][(v - 1) % len(mov["paletas"])]
+def combinacion(mov, autor, v):
+    """Arquetipo y paleta de la variante v. Cada autor recorre su propia ordenación
+    (determinista) de todos los pares arquetipo×paleta: sus variantes no repiten par
+    y distintos autores arrancan en pares distintos."""
+    pares = [(a, p) for a in NOMBRES_ARQUETIPOS for p in mov["paletas"]]
+    random.Random(f"{mov['id']}/{autor['id']}").shuffle(pares)
+    return pares[(v - 1) % len(pares)]
+
+
+def construir(config, mov, autor, v, intento=0):
+    s = semilla(mov["id"], autor["id"], v, intento)
+    arquetipo, paleta = combinacion(mov, autor, v)
     motivo = autor["motivos"][(v - 1) % len(autor["motivos"])]
     formato = "jpg" if v == config["variante_jpg"] else "svg"
     grano = GRANO_JPG if formato == "jpg" else 0.0
-    esc = CONSTRUCTORES[mov["id"]](s, paleta, motivo, grano)
+    esc = CONSTRUCTORES[mov["id"]](s, paleta, motivo, grano, arquetipo)
     ident = f"{mov['id']}-{autor['id']}-{v:02d}"
     entrada = {
         "id": ident,
@@ -65,6 +82,8 @@ def construir(config, mov, autor, v):
         "formato": formato,
         "motivo": motivo,
         "paleta": paleta,
+        "arquetipo": arquetipo,
+        "intento": intento,
         "semilla": s,
         "ancho": ANCHO,
         "alto": ALTO,
@@ -85,19 +104,50 @@ def escribir(entrada, esc):
     return ruta
 
 
+def chromium():
+    """Ruta del binario de Chromium: variable CHROMIUM o los nombres habituales."""
+    candidatos = [os.environ.get("CHROMIUM"), "/opt/pw-browsers/chromium"]
+    candidatos += [shutil.which(n) for n in ("chromium", "chromium-browser", "google-chrome", "chrome")]
+    return next((c for c in candidatos if c and Path(c).exists()), None)
+
+
+def rasterizar_svg(ruta):
+    """Rasteriza el SVG real con Chromium headless a ANCHO×ALTO exactos."""
+    binario = chromium()
+    if not binario:
+        raise RuntimeError("no se encontró Chromium (define la variable CHROMIUM)")
+    # El viewport headless es más bajo que --window-size: se pide una ventana mayor
+    # y se recorta. El SVG se carga como <img>, igual que lo servirá el lector.
+    with tempfile.TemporaryDirectory() as tmp:
+        salida = Path(tmp) / "r.png"
+        pagina = Path(tmp) / "p.html"
+        pagina.write_text(
+            '<!doctype html><body style="margin:0;background:#f0f">'
+            f'<img src="{ruta.resolve().as_uri()}" width="{ANCHO}" height="{ALTO}" style="display:block">',
+            encoding="utf-8")
+        subprocess.run(
+            [binario, "--headless", "--no-sandbox", "--disable-gpu", "--hide-scrollbars",
+             f"--window-size={ANCHO},{ALTO + 300}", f"--screenshot={salida}", pagina.as_uri()],
+            capture_output=True, check=True, timeout=60,
+        )
+        img = Image.open(salida).convert("RGB").crop((0, 0, ANCHO, ALTO))
+    if img.size != (ANCHO, ALTO):
+        raise RuntimeError(f"Chromium devolvió {img.size}, esperado {(ANCHO, ALTO)}")
+    return img
+
+
 def imagen_para_revision(entrada, esc, ruta):
-    """JPG: se abre el archivo tal cual. SVG: se rasteriza con ImageMagick para revisar
-    el archivo real; si no está disponible, se usa el renderer raster como respaldo."""
+    """JPG: se abre el archivo tal cual. SVG: se rasteriza con Chromium (QA fijo).
+    Si Chromium no está, el build falla: el renderer raster ya no sirve de respaldo
+    silencioso porque no verifica el archivo SVG real."""
     if entrada["formato"] == "jpg":
         return Image.open(ruta).convert("RGB"), "archivo"
-    try:
-        png = subprocess.run(
-            ["convert", "-background", "none", str(ruta), "-resize", f"{ANCHO}x{ALTO}!", "png:-"],
-            capture_output=True, check=True, timeout=60,
-        ).stdout
-        return Image.open(io.BytesIO(png)).convert("RGB"), "svg vía ImageMagick"
-    except (OSError, subprocess.SubprocessError):
-        return a_imagen(esc), "svg vía respaldo raster"
+    img = rasterizar_svg(ruta)
+    # El SVG real debe parecerse al renderer raster; si no, algo diverge.
+    dif = float(np.abs(np.asarray(img, float) - np.asarray(a_imagen(esc).convert("RGB"), float)).mean())
+    if dif > MAX_DIF_CHROMIUM:
+        raise RuntimeError(f"{entrada['id']}: SVG y renderer raster difieren {dif:.1f}/255")
+    return img, f"svg vía Chromium (dif. {dif:.1f})"
 
 
 def main():
@@ -111,9 +161,25 @@ def main():
     config = yaml.safe_load((CATALOGO / "taxonomia.yaml").read_text(encoding="utf-8"))
     filtro = None if args.all else args.movimiento
 
-    generados, esc_por_id, rutas = [], {}, {}
+    generados, esc_por_id, rutas, huellas = [], {}, {}, {}
+    fallos = 0
     for mov, autor, v in recorrer(config, filtro):
-        entrada, esc = construir(config, mov, autor, v)
+        # Los duplicados se comparan dentro de cada movimiento, así el resultado
+        # no depende de qué movimientos se generen en la misma ejecución.
+        previas = {k: h for k, h in huellas.items() if k.startswith(mov["id"] + "-")}
+        for intento in range(MAX_INTENTOS + 1):
+            entrada, esc = construir(config, mov, autor, v, intento)
+            h = huella_visual(a_imagen(esc))
+            parecido = parecido_a(h, previas)
+            if parecido is None:
+                break
+        else:
+            fallos += 1
+            print(f"  ✗ {entrada['id']}: sigue casi idéntico a {parecido[0]} "
+                  f"tras {MAX_INTENTOS} reintentos de semilla")
+        if intento:
+            print(f"  ↻ {entrada['id']}: semilla cambiada {intento}× por duplicado visual")
+        huellas[entrada["id"]] = h
         rutas[entrada["id"]] = escribir(entrada, esc)
         generados.append(entrada)
         esc_por_id[entrada["id"]] = esc
@@ -145,9 +211,7 @@ def main():
             errores += 1
             print(f"  ✗ {e['id']}: {problema}")
 
-    huellas = {eid: huella_visual(a_imagen(esc)) for eid, esc in esc_por_id.items()}
-    for aviso in revisar_duplicados(huellas):
-        print(f"  ⚠ posible duplicado: {aviso}")
+    errores += fallos
 
     # Hojas de contacto para revisión humana: una por movimiento
     for mov_id in sorted(rehechos):

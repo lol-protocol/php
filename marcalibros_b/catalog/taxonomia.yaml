@@ -13,7 +13,7 @@ variante_jpg: 1
 movimientos:
   - id: romanticismo
     nombre: Romanticismo
-    paletas: [atardecer, amanecer, noche]
+    paletas: [atardecer, amanecer, noche, niebla, otono, tormenta, rosa, esmeralda]
     autores:
       - id: becquer
         nombre: Gustavo Adolfo Bécquer

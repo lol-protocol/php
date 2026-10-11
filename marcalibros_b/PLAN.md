@@ -61,7 +61,13 @@ Verificado:
 - Los 9 SVG renderizan en Chromium (vía Playwright) a 1400×200 exactos, con diferencia media de 0,6 sobre 255 por píxel respecto del renderer raster de respaldo.
 - Límites de QA: SVG ≤ 10 KB, JPG ≤ 150 KB, sin referencias externas, sin EXIF.
 
-Nota de entorno: la hoja de contacto de `build.py` rasteriza los SVG con ImageMagick y, si falla, usa el renderer raster como respaldo. Falta integrar Chromium como rasterizador fijo del QA.
+## Paso 1 hecho (generador 0.2.0)
+
+- **Variedad:** 5 arquetipos de composición (colinas, montañas, llanura, marina, bosque), 8 paletas, desplazamiento aleatorio del horizonte y cielo invertido. Cada autor recorre su propia ordenación de los 40 pares arquetipo×paleta, sin repetir par entre sus 10 variantes.
+- **Duplicados bloquean el build:** si una pieza queda casi idéntica a otra del mismo movimiento, se cambia la semilla (hasta 30 reintentos; el nº de reintento queda en el manifest como `intento`). Si no se resuelve, el build falla. Simulación de 100 piezas de un movimiento con autores de motivos idénticos: 17 reintentos, 0 fallos.
+- **QA con Chromium:** los SVG se rasterizan con Chromium headless (variable `CHROMIUM` o `/opt/pw-browsers/chromium`) y se comparan con el renderer raster (tolerancia 3/255; hoy 0,5–1,5). Sin Chromium el build falla; ya no hay respaldo silencioso.
+- **Tests:** `python -m pytest tests` (determinismo, hashes de referencia, duplicados, pares únicos, archivos del catálogo). Tras un cambio intencional de plantillas: `python tests/test_generador.py --actualizar`.
+- Pendiente de este paso: fijar la versión de Python en CI y compilación incremental. Hay que ajustar con datos reales la métrica de duplicados cuando haya más autores.
 
 ## Mejoras pendientes (de la revisión del plan)
 

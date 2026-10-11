@@ -7,6 +7,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 from scene import ALTO, ANCHO
 
+UMBRAL_DUPLICADO = 6.0  # diferencia media (0–255) bajo la cual dos piezas se consideran casi iguales
 MAX_SVG_BYTES = 10 * 1024
 MAX_JPG_BYTES = 150 * 1024
 NS_SVG = "{http://www.w3.org/2000/svg}"
@@ -50,7 +51,17 @@ def huella_visual(img: Image.Image):
     return np.asarray(miniatura, dtype=float).ravel()
 
 
-def revisar_duplicados(huellas: dict, umbral: float = 6.0):
+def parecido_a(huella, otras: dict, umbral: float = UMBRAL_DUPLICADO):
+    """(id, diferencia) de la pieza más parecida si cae bajo el umbral; si no, None."""
+    if not otras:
+        return None
+    ids = list(otras)
+    d = np.abs(np.stack([otras[i] for i in ids]) - huella).mean(axis=1)
+    k = int(d.argmin())
+    return (ids[k], float(d[k])) if d[k] < umbral else None
+
+
+def revisar_duplicados(huellas: dict, umbral: float = UMBRAL_DUPLICADO):
     ids = list(huellas)
     if len(ids) < 2:
         return []
