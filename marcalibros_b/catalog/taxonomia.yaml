@@ -1,23 +1,177 @@
-# Taxonomía de marcalibros. Fuente de verdad para generator/build.py.
-# Prototipo: solo Romanticismo / Gustavo Adolfo Bécquer.
+# Taxonomía de marcalibros v0.2. Fuente de verdad para generator/build.py.
 #
-# Regla de formato: la variante 01 de cada autor es JPG (paisaje rasterizado);
-# el resto de variantes son SVG. Con 10 movimientos × 10 autores × 10 variantes
-# el total queda en 100 JPG y 900 SVG.
+# - Cada variante de un autor es una obra o tema suyo (`obras`): la variante N usa
+#   la obra N. Un autor sin `obras` aún no se genera (pendiente de rellenar).
+# - `motivo` sale de la biblioteca catalog/motivos.yaml (solo los `implementado: true`).
+# - Gutenberg: `gutenberg.estado` es sin_verificar | verificado. Solo se marca
+#   `verificado` con id real, comprobado con generator/verificar_gutenberg.py.
+# - Los 6 autores de Romanticismo tras Poe/Byron son propuesta, no decisión cerrada.
+# - Regla de formato: la variante 01 de cada autor es JPG; el resto SVG.
 
-version: 0.1
+version: '0.2'
 ancho: 1400
 alto: 200
 variante_jpg: 1
-
 movimientos:
-  - id: romanticismo
-    nombre: Romanticismo
-    paletas: [atardecer, amanecer, noche, niebla, otono, tormenta, rosa, esmeralda]
-    autores:
-      - id: becquer
-        nombre: Gustavo Adolfo Bécquer
-        epoca: "1836–1870"
-        region: España
-        variantes: 10
-        motivos: [torre, golondrinas, rio, luna]
+- id: romanticismo
+  nombre: Romanticismo
+  paletas:
+  - atardecer
+  - amanecer
+  - noche
+  - niebla
+  - otono
+  - tormenta
+  - rosa
+  - esmeralda
+  autores:
+  - id: becquer
+    nombre: Gustavo Adolfo Bécquer
+    epoca: 1836–1870
+    region: España
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: rima-liii
+      titulo: Rima LIII («Volverán las oscuras golondrinas»)
+      tipo: rima
+      motivo: golondrinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: monte-de-las-animas
+      titulo: El monte de las ánimas
+      tipo: leyenda
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: miserere
+      titulo: El miserere
+      tipo: leyenda
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ojos-verdes
+      titulo: Los ojos verdes
+      tipo: leyenda
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: rayo-de-luna
+      titulo: El rayo de luna
+      tipo: leyenda
+      motivo: luna
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ajorca-de-oro
+      titulo: La ajorca de oro
+      tipo: leyenda
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: maese-perez
+      titulo: Maese Pérez el organista
+      tipo: leyenda
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cruz-del-diablo
+      titulo: La cruz del diablo
+      tipo: leyenda
+      motivo: rio
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: desde-mi-celda
+      titulo: Desde mi celda
+      tipo: prosa
+      motivo: ninguno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-beso
+      titulo: El beso
+      tipo: leyenda
+      motivo: torre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: espronceda
+    nombre: José de Espronceda
+    epoca: 1808–1842
+    region: España
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras: []
+  - id: poe
+    nombre: Edgar Allan Poe
+    epoca: 1809–1849
+    region: Estados Unidos
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras: []
+  - id: byron
+    nombre: Lord Byron
+    epoca: 1788–1824
+    region: Reino Unido
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras: []
+  - id: rosalia-de-castro
+    nombre: Rosalía de Castro
+    epoca: 1837–1885
+    region: España
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras: []
+  - id: larra
+    nombre: Mariano José de Larra
+    epoca: 1809–1837
+    region: España
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras: []
+  - id: hugo
+    nombre: Victor Hugo
+    epoca: 1802–1885
+    region: Francia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras: []
+  - id: keats
+    nombre: John Keats
+    epoca: 1795–1821
+    region: Reino Unido
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras: []
+  - id: shelley-percy
+    nombre: Percy Bysshe Shelley
+    epoca: 1792–1822
+    region: Reino Unido
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras: []
+  - id: wordsworth
+    nombre: William Wordsworth
+    epoca: 1770–1850
+    region: Reino Unido
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras: []

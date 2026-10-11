@@ -25,12 +25,12 @@ import yaml
 from PIL import Image
 
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS
-from qa import UMBRAL_DUPLICADO, hoja_de_contacto, huella_visual, parecido_a, validar_jpg, validar_svg
+from qa import UMBRAL_DUPLICADO, validar_taxonomia, hoja_de_contacto, huella_visual, parecido_a, validar_jpg, validar_svg
 from render_raster import a_imagen
 from render_svg import a_svg
 from scene import ALTO, ANCHO
 
-VERSION_GENERADOR = "0.2.0"
+VERSION_GENERADOR = "0.3.0"
 MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
@@ -50,7 +50,7 @@ def recorrer(config, movimiento=None):
         if movimiento and mov["id"] != movimiento:
             continue
         for autor in mov["autores"]:
-            for v in range(1, autor["variantes"] + 1):
+            for v in range(1, len(autor.get("obras", [])) + 1):
                 yield mov, autor, v
 
 
@@ -66,7 +66,8 @@ def combinacion(mov, autor, v):
 def construir(config, mov, autor, v, intento=0):
     s = semilla(mov["id"], autor["id"], v, intento)
     arquetipo, paleta = combinacion(mov, autor, v)
-    motivo = autor["motivos"][(v - 1) % len(autor["motivos"])]
+    obra = autor["obras"][v - 1]
+    motivo = obra["motivo"]
     formato = "jpg" if v == config["variante_jpg"] else "svg"
     grano = GRANO_JPG if formato == "jpg" else 0.0
     esc = CONSTRUCTORES[mov["id"]](s, paleta, motivo, grano, arquetipo)
@@ -79,6 +80,10 @@ def construir(config, mov, autor, v, intento=0):
         "epoca": autor["epoca"],
         "region": autor["region"],
         "variante": v,
+        "obra_id": obra["id"],
+        "obra": obra["titulo"],
+        "gutenberg_id": obra["gutenberg"]["id"],
+        "gutenberg_estado": obra["gutenberg"]["estado"],
         "formato": formato,
         "motivo": motivo,
         "paleta": paleta,
@@ -159,6 +164,12 @@ def main():
         ap.error("indica --all o --movimiento <id>")
 
     config = yaml.safe_load((CATALOGO / "taxonomia.yaml").read_text(encoding="utf-8"))
+    motivos = yaml.safe_load((CATALOGO / "motivos.yaml").read_text(encoding="utf-8"))
+    problemas = validar_taxonomia(config, motivos)
+    for p in problemas:
+        print(f"  ✗ taxonomía: {p}")
+    if problemas:
+        return 1
     filtro = None if args.all else args.movimiento
 
     generados, esc_por_id, rutas, huellas = [], {}, {}, {}

@@ -16,11 +16,12 @@ RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ / "generator"))
 
 import build  # noqa: E402
-from qa import UMBRAL_DUPLICADO, huella_visual, validar_jpg, validar_svg  # noqa: E402
+from qa import UMBRAL_DUPLICADO, validar_taxonomia, huella_visual, validar_jpg, validar_svg  # noqa: E402
 from render_raster import a_imagen  # noqa: E402
 from render_svg import a_svg  # noqa: E402
 
 REFERENCIA = Path(__file__).with_name("hashes_referencia.json")
+MOTIVOS = yaml.safe_load((RAIZ / "catalog" / "motivos.yaml").read_text(encoding="utf-8"))
 CONFIG = yaml.safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
 
 
@@ -70,8 +71,29 @@ def test_sin_duplicados_visuales():
 def test_pares_arquetipo_paleta_unicos_por_autor():
     for mov in CONFIG["movimientos"]:
         for autor in mov["autores"]:
-            pares = [build.combinacion(mov, autor, v) for v in range(1, autor["variantes"] + 1)]
+            pares = [build.combinacion(mov, autor, v) for v in range(1, len(autor["obras"]) + 1)]
             assert len(set(pares)) == len(pares)
+
+
+def test_taxonomia_coherente():
+    assert validar_taxonomia(CONFIG, MOTIVOS) == []
+
+
+def test_taxonomia_rechaza_verificado_sin_id_y_motivo_inexistente():
+    import copy
+    malo = copy.deepcopy(CONFIG)
+    obra = malo["movimientos"][0]["autores"][0]["obras"][0]
+    obra["gutenberg"]["estado"] = "verificado"
+    obra["motivo"] = "dragon"
+    assert len(validar_taxonomia(malo, MOTIVOS)) == 2
+
+
+def test_informe_gutenberg_con_respuesta_simulada():
+    import verificar_gutenberg as vg
+    falso = [{"id": 1, "title": "Rimas", "languages": ["es"],
+              "authors": [{"name": "Bécquer, Gustavo Adolfo", "birth_year": 1836, "death_year": 1870}]}]
+    texto = vg.informe(CONFIG, "romanticismo", buscar=lambda nombre: falso)
+    assert "| 1 | Rimas | es | Bécquer, Gustavo Adolfo (1836–1870) |" in texto
 
 
 def test_archivos_del_catalogo_validos():

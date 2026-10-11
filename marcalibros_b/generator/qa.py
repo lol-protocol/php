@@ -45,6 +45,35 @@ def validar_jpg(ruta: Path):
     return errores
 
 
+ESTADOS_GUTENBERG = {"sin_verificar", "verificado"}
+
+
+def validar_taxonomia(config, motivos):
+    """Coherencia de taxonomia.yaml con la biblioteca de motivos y el estado de Gutenberg."""
+    usables = {m["id"] for m in motivos["motivos"] if m.get("implementado")}
+    problemas, vistos = [], set()
+
+    def revisar_gutenberg(donde, g):
+        if g.get("estado") not in ESTADOS_GUTENBERG:
+            problemas.append(f"{donde}: estado de Gutenberg inválido: {g.get('estado')!r}")
+        elif (g["estado"] == "verificado") != (g.get("id") is not None):
+            problemas.append(f"{donde}: 'verificado' exige id y un id exige 'verificado'")
+
+    for mov in config["movimientos"]:
+        for autor in mov["autores"]:
+            base = f"{mov['id']}/{autor['id']}"
+            revisar_gutenberg(base, autor["gutenberg_autor"])
+            for n, obra in enumerate(autor.get("obras", []), 1):
+                donde = f"{base}/{n:02d} {obra['id']}"
+                if f"{base}/{obra['id']}" in vistos:
+                    problemas.append(f"{donde}: obra repetida")
+                vistos.add(f"{base}/{obra['id']}")
+                if obra["motivo"] not in usables:
+                    problemas.append(f"{donde}: motivo '{obra['motivo']}' no existe o no está implementado")
+                revisar_gutenberg(donde, obra["gutenberg"])
+    return problemas
+
+
 def huella_visual(img: Image.Image):
     """Miniatura en gris 56×8 como vector, para comparar parecido visual."""
     miniatura = img.convert("L").resize((56, 8), Image.Resampling.BILINEAR)

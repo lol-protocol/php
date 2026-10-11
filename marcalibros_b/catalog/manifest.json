@@ -1,5 +1,5 @@
 {
-  "version_generador": "0.2.0",
+  "version_generador": "0.3.0",
   "total": 10,
   "entradas": [
     {
@@ -10,8 +10,12 @@
       "epoca": "1836–1870",
       "region": "España",
       "variante": 1,
+      "obra_id": "rima-liii",
+      "obra": "Rima LIII («Volverán las oscuras golondrinas»)",
+      "gutenberg_id": null,
+      "gutenberg_estado": "sin_verificar",
       "formato": "jpg",
-      "motivo": "torre",
+      "motivo": "golondrinas",
       "paleta": "atardecer",
       "arquetipo": "marina",
       "intento": 0,
@@ -19,8 +23,8 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-becquer-01.jpg",
-      "version_generador": "0.2.0",
-      "sha256": "e0bfa3b8e89a230191c5f74281a383fce254363882016dffd4a558ae163e3e78"
+      "version_generador": "0.3.0",
+      "sha256": "14a79a8be94a12e671baf1868f2577d1db1286366b2de0c140be9360c9a11664"
     },
     {
       "id": "romanticismo-becquer-02",
@@ -30,8 +34,12 @@
       "epoca": "1836–1870",
       "region": "España",
       "variante": 2,
+      "obra_id": "monte-de-las-animas",
+      "obra": "El monte de las ánimas",
+      "gutenberg_id": null,
+      "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "golondrinas",
+      "motivo": "luna",
       "paleta": "niebla",
       "arquetipo": "marina",
       "intento": 0,
@@ -39,8 +47,8 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-02.svg",
-      "version_generador": "0.2.0",
-      "sha256": "3385507ae67e3e079f3b335e0db3ef2a46973615a02c984b202a715d70567126"
+      "version_generador": "0.3.0",
+      "sha256": "2a5ebb5b6aa59cd20dc08b2f8085eb7c04de0d7344463090d85a3b48097080cb"
     },
     {
       "id": "romanticismo-becquer-03",
@@ -50,8 +58,12 @@
       "epoca": "1836–1870",
       "region": "España",
       "variante": 3,
+      "obra_id": "miserere",
+      "obra": "El miserere",
+      "gutenberg_id": null,
+      "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "rio",
+      "motivo": "torre",
       "paleta": "niebla",
       "arquetipo": "colinas",
       "intento": 0,
@@ -59,8 +71,8 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-03.svg",
-      "version_generador": "0.2.0",
-      "sha256": "e960c56a7b46eb1038649c273264312a6be00b313e29e995c31f9bc06b5b00bb"
+      "version_generador": "0.3.0",
+      "sha256": "7027395e1fc4747849695e0458f17e5e6242f17c57771bfcf8b619a4ca8db456"
     },
     {
       "id": "romanticismo-becquer-04",
@@ -70,8 +82,12 @@
       "epoca": "1836–1870",
       "region": "España",
       "variante": 4,
+      "obra_id": "ojos-verdes",
+      "obra": "Los ojos verdes",
+      "gutenberg_id": null,
+      "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "luna",
+      "motivo": "rio",
       "paleta": "noche",
       "arquetipo": "colinas",
       "intento": 0,
@@ -79,8 +95,8 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-04.svg",
-      "version_generador": "0.2.0",
-      "sha256": "c5f9b2ad5fbeebd5a5aa20d4c530ca1bee6237352c0c3d3d97ec1a112108699a"
+      "version_generador": "0.3.0",
+      "sha256": "941091e72e371ef3f39bc6680ec40e9bd8c25103d68a5ccfed0f291420ad2cb7"
     },
     {
       "id": "romanticismo-becquer-05",
@@ -90,8 +106,12 @@
       "epoca": "1836–1870",
       "region": "España",
       "variante": 5,
+      "obra_id": "rayo-de-luna",
+      "obra": "El rayo de luna",
+      "gutenberg_id": null,
+      "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "torre",
+      "motivo": "luna",
       "paleta": "otono",
       "arquetipo": "marina",
       "intento": 0,
@@ -99,8 +119,8 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-05.svg",
-      "version_generador": "0.2.0",
-      "sha256": "8120a3f2ecb8433abbbb2f8163a0cb62a70f70f12446dc47dc069b28898518f0"
+      "version_generador": "0.3.0",
+      "sha256": "749d8a1e66aace0caecd99716720c143db372afc3d918fe52969ce22399c5803"
     },
     {
       "id": "romanticismo-becquer-06",
@@ -110,8 +130,12 @@
       "epoca": "1836–1870",
       "region": "España",
       "variante": 6,
+      "obra_id": "ajorca-de-oro",
+      "obra": "La ajorca de oro",
+      "gutenberg_id": null,
+      "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "golondrinas",
+      "motivo": "torre",
       "paleta": "esmeralda",
       "arquetipo": "bosque",
       "intento": 0,
@@ -119,8 +143,8 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-06.svg",
-      "version_generador": "0.2.0",
-      "sha256": "9461fd894d500f982c6d979e8079d32c7a8a4ba09497a6b8c7bf515c12928886"
+      "version_generador": "0.3.0",
+      "sha256": "80545d5f03f4f2fa8187b962db32f4ea87c6ae85ac4aa1142db69ec80c1407e5"
     },
     {
       "id": "romanticismo-becquer-07",
@@ -130,8 +154,12 @@
       "epoca": "1836–1870",
       "region": "España",
       "variante": 7,
+      "obra_id": "maese-perez",
+      "obra": "Maese Pérez el organista",
+      "gutenberg_id": null,
+      "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "rio",
+      "motivo": "torre",
       "paleta": "esmeralda",
       "arquetipo": "montanas",
       "intento": 0,
@@ -139,8 +167,8 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-07.svg",
-      "version_generador": "0.2.0",
-      "sha256": "87b849d196ccad97ac1c6de2bcf364043b6a378ac46c83bfc5a427e41978be75"
+      "version_generador": "0.3.0",
+      "sha256": "dfe88f47bebbad8bb16859dbe11dd491311f063eba2738d252121406224fb7ff"
     },
     {
       "id": "romanticismo-becquer-08",
@@ -150,8 +178,12 @@
       "epoca": "1836–1870",
       "region": "España",
       "variante": 8,
+      "obra_id": "cruz-del-diablo",
+      "obra": "La cruz del diablo",
+      "gutenberg_id": null,
+      "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "luna",
+      "motivo": "rio",
       "paleta": "amanecer",
       "arquetipo": "montanas",
       "intento": 0,
@@ -159,8 +191,8 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-08.svg",
-      "version_generador": "0.2.0",
-      "sha256": "fabc85979cfb602945ae010bffbcc2d5539d83f3b60a0acfdc1961fc1ab6f338"
+      "version_generador": "0.3.0",
+      "sha256": "b7a631de97c16ce78e0aaf5bd8188939d5f32e464f400891999869ee7e2615e7"
     },
     {
       "id": "romanticismo-becquer-09",
@@ -170,8 +202,12 @@
       "epoca": "1836–1870",
       "region": "España",
       "variante": 9,
+      "obra_id": "desde-mi-celda",
+      "obra": "Desde mi celda",
+      "gutenberg_id": null,
+      "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "torre",
+      "motivo": "ninguno",
       "paleta": "noche",
       "arquetipo": "marina",
       "intento": 0,
@@ -179,8 +215,8 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-09.svg",
-      "version_generador": "0.2.0",
-      "sha256": "49967462bba98c0813b9dd1e13d1282619419a5546021873cbe0db8f0673bd41"
+      "version_generador": "0.3.0",
+      "sha256": "a094d930ad0831d512801d0b88dd2e39e7330e029f31ce926faaa3558568914e"
     },
     {
       "id": "romanticismo-becquer-10",
@@ -190,8 +226,12 @@
       "epoca": "1836–1870",
       "region": "España",
       "variante": 10,
+      "obra_id": "el-beso",
+      "obra": "El beso",
+      "gutenberg_id": null,
+      "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "golondrinas",
+      "motivo": "torre",
       "paleta": "noche",
       "arquetipo": "bosque",
       "intento": 0,
@@ -199,8 +239,8 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-10.svg",
-      "version_generador": "0.2.0",
-      "sha256": "3faf13eed2f567172782bb3acc2438018b35a1aa06c8bdc4456572adb9b72ccb"
+      "version_generador": "0.3.0",
+      "sha256": "b0f7562e0d6aa88cd24db64be6d3d354fa0aea2a27c2d1e28fafdea4b414e90d"
     }
   ]
 }

@@ -1,0 +1,19 @@
+version: '0.1'
+nota: Biblioteca compartida de motivos. Objetivo ~40; hoy solo los implementados en
+  generator/plantillas.py.
+motivos:
+- id: torre
+  nombre: Torre
+  implementado: true
+- id: golondrinas
+  nombre: Golondrinas
+  implementado: true
+- id: rio
+  nombre: Río
+  implementado: true
+- id: luna
+  nombre: Luna
+  implementado: true
+- id: ninguno
+  nombre: Sin motivo (solo paisaje)
+  implementado: true

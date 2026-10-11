@@ -69,6 +69,13 @@ Verificado:
 - **Tests:** `python -m pytest tests` (determinismo, hashes de referencia, duplicados, pares únicos, archivos del catálogo). Tras un cambio intencional de plantillas: `python tests/test_generador.py --actualizar`.
 - Pendiente de este paso: fijar la versión de Python en CI y compilación incremental. Hay que ajustar con datos reales la métrica de duplicados cuando haya más autores.
 
+## Paso 2 en curso (generador 0.3.0)
+
+- Taxonomía v0.2: cada variante es una obra/tema del autor (`obras`), con `motivo` de `catalog/motivos.yaml` y `gutenberg: {id, estado}`. `qa.validar_taxonomia` bloquea motivos inexistentes y `verificado` sin id.
+- Bécquer completo: 10 obras/temas (borrador sin fechas). Los otros 9 autores de Romanticismo están dados de alta sin obras (no se generan); los 6 tras Poe/Byron (Rosalía de Castro, Larra, Hugo, Keats, P. B. Shelley, Wordsworth) son propuesta.
+- **Ids de Gutenberg: sin verificar.** El entorno bloqueó gutenberg.org y gutendex.com. Cuando haya red: `python generator/verificar_gutenberg.py` genera `catalog/revision/gutenberg-candidatos.md` (probado solo con respuesta simulada, no contra la API real).
+- Biblioteca de motivos: 4 motivos + `ninguno`; el objetivo (~40) sigue pendiente.
+
 ## Mejoras pendientes (de la revisión del plan)
 
 **Prioridad alta**
