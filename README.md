@@ -18,6 +18,7 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`vps-setup/`](vps-setup/) | Scripts para configurar desde cero un VPS Ubuntu (Nginx, PHP, Python, PostgreSQL, SSL). |
 | [`landing-page/`](landing-page/) | Landing page estática que despliegan los scripts de `vps-setup/`. |
 | [`iconos-genealogia/` y `iconos-biblioteca/`](ICONOS_README.md) | Dos sets de iconos SVG abstractos en 2.5D, sin texto: árbol genealógico (172 iconos) y biblioteca virtual (161), cada uno en 3 variantes. Galería en `galeria-iconos.html`, generador y validador en `iconos-tools/`. |
+| [`marcalibros-plataforma-pos-brand-identity/`](marcalibros-plataforma-pos-brand-identity/) | Identidad de marca de Marcalibros (marcadores de lectura) para Plataforma POS: tokens de marca, iconos SVG, 100 marcalibros generados con su vista previa JPG, paisajes JPG y el generador en Python. Sin CI. |
 
 Cada carpeta tiene su propio README con instrucciones de instalación y uso, salvo los sets de
 iconos (`iconos-genealogia/`, `iconos-biblioteca/`, `iconos-tools/`), documentados juntos en

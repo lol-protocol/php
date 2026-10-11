@@ -1,0 +1,1709 @@
+{
+  "total": 100,
+  "tamano": {
+    "ancho": 1400,
+    "alto": 200
+  },
+  "marcalibros": [
+    {
+      "id": "mb-romanticismo-01",
+      "movimiento": "Romanticismo",
+      "motivo": "amanecer",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Lord Byron",
+        "John Keats",
+        "Gustavo Adolfo Bécquer"
+      ],
+      "svg": "catalog/svg/mb-romanticismo-01.svg",
+      "vista_previa": "catalog/preview/mb-romanticismo-01.jpg"
+    },
+    {
+      "id": "mb-romanticismo-02",
+      "movimiento": "Romanticismo",
+      "motivo": "amanecer",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Lord Byron",
+        "John Keats",
+        "Gustavo Adolfo Bécquer"
+      ],
+      "svg": "catalog/svg/mb-romanticismo-02.svg",
+      "vista_previa": "catalog/preview/mb-romanticismo-02.jpg"
+    },
+    {
+      "id": "mb-romanticismo-03",
+      "movimiento": "Romanticismo",
+      "motivo": "amanecer",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Lord Byron",
+        "John Keats",
+        "Gustavo Adolfo Bécquer"
+      ],
+      "svg": "catalog/svg/mb-romanticismo-03.svg",
+      "vista_previa": "catalog/preview/mb-romanticismo-03.jpg"
+    },
+    {
+      "id": "mb-romanticismo-04",
+      "movimiento": "Romanticismo",
+      "motivo": "amanecer",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Lord Byron",
+        "John Keats",
+        "Gustavo Adolfo Bécquer"
+      ],
+      "svg": "catalog/svg/mb-romanticismo-04.svg",
+      "vista_previa": "catalog/preview/mb-romanticismo-04.jpg"
+    },
+    {
+      "id": "mb-romanticismo-05",
+      "movimiento": "Romanticismo",
+      "motivo": "amanecer",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Lord Byron",
+        "John Keats",
+        "Gustavo Adolfo Bécquer"
+      ],
+      "svg": "catalog/svg/mb-romanticismo-05.svg",
+      "vista_previa": "catalog/preview/mb-romanticismo-05.jpg"
+    },
+    {
+      "id": "mb-romanticismo-06",
+      "movimiento": "Romanticismo",
+      "motivo": "amanecer",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Lord Byron",
+        "John Keats",
+        "Gustavo Adolfo Bécquer"
+      ],
+      "svg": "catalog/svg/mb-romanticismo-06.svg",
+      "vista_previa": "catalog/preview/mb-romanticismo-06.jpg"
+    },
+    {
+      "id": "mb-romanticismo-07",
+      "movimiento": "Romanticismo",
+      "motivo": "amanecer",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Lord Byron",
+        "John Keats",
+        "Gustavo Adolfo Bécquer"
+      ],
+      "svg": "catalog/svg/mb-romanticismo-07.svg",
+      "vista_previa": "catalog/preview/mb-romanticismo-07.jpg"
+    },
+    {
+      "id": "mb-romanticismo-08",
+      "movimiento": "Romanticismo",
+      "motivo": "amanecer",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Lord Byron",
+        "John Keats",
+        "Gustavo Adolfo Bécquer"
+      ],
+      "svg": "catalog/svg/mb-romanticismo-08.svg",
+      "vista_previa": "catalog/preview/mb-romanticismo-08.jpg"
+    },
+    {
+      "id": "mb-romanticismo-09",
+      "movimiento": "Romanticismo",
+      "motivo": "amanecer",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Lord Byron",
+        "John Keats",
+        "Gustavo Adolfo Bécquer"
+      ],
+      "svg": "catalog/svg/mb-romanticismo-09.svg",
+      "vista_previa": "catalog/preview/mb-romanticismo-09.jpg"
+    },
+    {
+      "id": "mb-romanticismo-10",
+      "movimiento": "Romanticismo",
+      "motivo": "amanecer",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Lord Byron",
+        "John Keats",
+        "Gustavo Adolfo Bécquer"
+      ],
+      "svg": "catalog/svg/mb-romanticismo-10.svg",
+      "vista_previa": "catalog/preview/mb-romanticismo-10.jpg"
+    },
+    {
+      "id": "mb-realismo-01",
+      "movimiento": "Realismo",
+      "motivo": "ciudad",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Gustave Flaubert",
+        "Honoré de Balzac",
+        "Benito Pérez Galdós"
+      ],
+      "svg": "catalog/svg/mb-realismo-01.svg",
+      "vista_previa": "catalog/preview/mb-realismo-01.jpg"
+    },
+    {
+      "id": "mb-realismo-02",
+      "movimiento": "Realismo",
+      "motivo": "ciudad",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Gustave Flaubert",
+        "Honoré de Balzac",
+        "Benito Pérez Galdós"
+      ],
+      "svg": "catalog/svg/mb-realismo-02.svg",
+      "vista_previa": "catalog/preview/mb-realismo-02.jpg"
+    },
+    {
+      "id": "mb-realismo-03",
+      "movimiento": "Realismo",
+      "motivo": "ciudad",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Gustave Flaubert",
+        "Honoré de Balzac",
+        "Benito Pérez Galdós"
+      ],
+      "svg": "catalog/svg/mb-realismo-03.svg",
+      "vista_previa": "catalog/preview/mb-realismo-03.jpg"
+    },
+    {
+      "id": "mb-realismo-04",
+      "movimiento": "Realismo",
+      "motivo": "ciudad",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Gustave Flaubert",
+        "Honoré de Balzac",
+        "Benito Pérez Galdós"
+      ],
+      "svg": "catalog/svg/mb-realismo-04.svg",
+      "vista_previa": "catalog/preview/mb-realismo-04.jpg"
+    },
+    {
+      "id": "mb-realismo-05",
+      "movimiento": "Realismo",
+      "motivo": "ciudad",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Gustave Flaubert",
+        "Honoré de Balzac",
+        "Benito Pérez Galdós"
+      ],
+      "svg": "catalog/svg/mb-realismo-05.svg",
+      "vista_previa": "catalog/preview/mb-realismo-05.jpg"
+    },
+    {
+      "id": "mb-realismo-06",
+      "movimiento": "Realismo",
+      "motivo": "ciudad",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Gustave Flaubert",
+        "Honoré de Balzac",
+        "Benito Pérez Galdós"
+      ],
+      "svg": "catalog/svg/mb-realismo-06.svg",
+      "vista_previa": "catalog/preview/mb-realismo-06.jpg"
+    },
+    {
+      "id": "mb-realismo-07",
+      "movimiento": "Realismo",
+      "motivo": "ciudad",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Gustave Flaubert",
+        "Honoré de Balzac",
+        "Benito Pérez Galdós"
+      ],
+      "svg": "catalog/svg/mb-realismo-07.svg",
+      "vista_previa": "catalog/preview/mb-realismo-07.jpg"
+    },
+    {
+      "id": "mb-realismo-08",
+      "movimiento": "Realismo",
+      "motivo": "ciudad",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Gustave Flaubert",
+        "Honoré de Balzac",
+        "Benito Pérez Galdós"
+      ],
+      "svg": "catalog/svg/mb-realismo-08.svg",
+      "vista_previa": "catalog/preview/mb-realismo-08.jpg"
+    },
+    {
+      "id": "mb-realismo-09",
+      "movimiento": "Realismo",
+      "motivo": "ciudad",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Gustave Flaubert",
+        "Honoré de Balzac",
+        "Benito Pérez Galdós"
+      ],
+      "svg": "catalog/svg/mb-realismo-09.svg",
+      "vista_previa": "catalog/preview/mb-realismo-09.jpg"
+    },
+    {
+      "id": "mb-realismo-10",
+      "movimiento": "Realismo",
+      "motivo": "ciudad",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Gustave Flaubert",
+        "Honoré de Balzac",
+        "Benito Pérez Galdós"
+      ],
+      "svg": "catalog/svg/mb-realismo-10.svg",
+      "vista_previa": "catalog/preview/mb-realismo-10.jpg"
+    },
+    {
+      "id": "mb-naturalismo-01",
+      "movimiento": "Naturalismo",
+      "motivo": "bosque",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Émile Zola",
+        "Guy de Maupassant",
+        "Horacio Quiroga"
+      ],
+      "svg": "catalog/svg/mb-naturalismo-01.svg",
+      "vista_previa": "catalog/preview/mb-naturalismo-01.jpg"
+    },
+    {
+      "id": "mb-naturalismo-02",
+      "movimiento": "Naturalismo",
+      "motivo": "bosque",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Émile Zola",
+        "Guy de Maupassant",
+        "Horacio Quiroga"
+      ],
+      "svg": "catalog/svg/mb-naturalismo-02.svg",
+      "vista_previa": "catalog/preview/mb-naturalismo-02.jpg"
+    },
+    {
+      "id": "mb-naturalismo-03",
+      "movimiento": "Naturalismo",
+      "motivo": "bosque",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Émile Zola",
+        "Guy de Maupassant",
+        "Horacio Quiroga"
+      ],
+      "svg": "catalog/svg/mb-naturalismo-03.svg",
+      "vista_previa": "catalog/preview/mb-naturalismo-03.jpg"
+    },
+    {
+      "id": "mb-naturalismo-04",
+      "movimiento": "Naturalismo",
+      "motivo": "bosque",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Émile Zola",
+        "Guy de Maupassant",
+        "Horacio Quiroga"
+      ],
+      "svg": "catalog/svg/mb-naturalismo-04.svg",
+      "vista_previa": "catalog/preview/mb-naturalismo-04.jpg"
+    },
+    {
+      "id": "mb-naturalismo-05",
+      "movimiento": "Naturalismo",
+      "motivo": "bosque",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Émile Zola",
+        "Guy de Maupassant",
+        "Horacio Quiroga"
+      ],
+      "svg": "catalog/svg/mb-naturalismo-05.svg",
+      "vista_previa": "catalog/preview/mb-naturalismo-05.jpg"
+    },
+    {
+      "id": "mb-naturalismo-06",
+      "movimiento": "Naturalismo",
+      "motivo": "bosque",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Émile Zola",
+        "Guy de Maupassant",
+        "Horacio Quiroga"
+      ],
+      "svg": "catalog/svg/mb-naturalismo-06.svg",
+      "vista_previa": "catalog/preview/mb-naturalismo-06.jpg"
+    },
+    {
+      "id": "mb-naturalismo-07",
+      "movimiento": "Naturalismo",
+      "motivo": "bosque",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Émile Zola",
+        "Guy de Maupassant",
+        "Horacio Quiroga"
+      ],
+      "svg": "catalog/svg/mb-naturalismo-07.svg",
+      "vista_previa": "catalog/preview/mb-naturalismo-07.jpg"
+    },
+    {
+      "id": "mb-naturalismo-08",
+      "movimiento": "Naturalismo",
+      "motivo": "bosque",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Émile Zola",
+        "Guy de Maupassant",
+        "Horacio Quiroga"
+      ],
+      "svg": "catalog/svg/mb-naturalismo-08.svg",
+      "vista_previa": "catalog/preview/mb-naturalismo-08.jpg"
+    },
+    {
+      "id": "mb-naturalismo-09",
+      "movimiento": "Naturalismo",
+      "motivo": "bosque",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Émile Zola",
+        "Guy de Maupassant",
+        "Horacio Quiroga"
+      ],
+      "svg": "catalog/svg/mb-naturalismo-09.svg",
+      "vista_previa": "catalog/preview/mb-naturalismo-09.jpg"
+    },
+    {
+      "id": "mb-naturalismo-10",
+      "movimiento": "Naturalismo",
+      "motivo": "bosque",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Émile Zola",
+        "Guy de Maupassant",
+        "Horacio Quiroga"
+      ],
+      "svg": "catalog/svg/mb-naturalismo-10.svg",
+      "vista_previa": "catalog/preview/mb-naturalismo-10.jpg"
+    },
+    {
+      "id": "mb-modernismo-01",
+      "movimiento": "Modernismo",
+      "motivo": "ondas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Rubén Darío",
+        "Virginia Woolf",
+        "James Joyce"
+      ],
+      "svg": "catalog/svg/mb-modernismo-01.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-01.jpg"
+    },
+    {
+      "id": "mb-modernismo-02",
+      "movimiento": "Modernismo",
+      "motivo": "ondas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Rubén Darío",
+        "Virginia Woolf",
+        "James Joyce"
+      ],
+      "svg": "catalog/svg/mb-modernismo-02.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-02.jpg"
+    },
+    {
+      "id": "mb-modernismo-03",
+      "movimiento": "Modernismo",
+      "motivo": "ondas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Rubén Darío",
+        "Virginia Woolf",
+        "James Joyce"
+      ],
+      "svg": "catalog/svg/mb-modernismo-03.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-03.jpg"
+    },
+    {
+      "id": "mb-modernismo-04",
+      "movimiento": "Modernismo",
+      "motivo": "ondas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Rubén Darío",
+        "Virginia Woolf",
+        "James Joyce"
+      ],
+      "svg": "catalog/svg/mb-modernismo-04.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-04.jpg"
+    },
+    {
+      "id": "mb-modernismo-05",
+      "movimiento": "Modernismo",
+      "motivo": "ondas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Rubén Darío",
+        "Virginia Woolf",
+        "James Joyce"
+      ],
+      "svg": "catalog/svg/mb-modernismo-05.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-05.jpg"
+    },
+    {
+      "id": "mb-modernismo-06",
+      "movimiento": "Modernismo",
+      "motivo": "ondas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Rubén Darío",
+        "Virginia Woolf",
+        "James Joyce"
+      ],
+      "svg": "catalog/svg/mb-modernismo-06.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-06.jpg"
+    },
+    {
+      "id": "mb-modernismo-07",
+      "movimiento": "Modernismo",
+      "motivo": "ondas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Rubén Darío",
+        "Virginia Woolf",
+        "James Joyce"
+      ],
+      "svg": "catalog/svg/mb-modernismo-07.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-07.jpg"
+    },
+    {
+      "id": "mb-modernismo-08",
+      "movimiento": "Modernismo",
+      "motivo": "ondas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Rubén Darío",
+        "Virginia Woolf",
+        "James Joyce"
+      ],
+      "svg": "catalog/svg/mb-modernismo-08.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-08.jpg"
+    },
+    {
+      "id": "mb-modernismo-09",
+      "movimiento": "Modernismo",
+      "motivo": "ondas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Rubén Darío",
+        "Virginia Woolf",
+        "James Joyce"
+      ],
+      "svg": "catalog/svg/mb-modernismo-09.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-09.jpg"
+    },
+    {
+      "id": "mb-modernismo-10",
+      "movimiento": "Modernismo",
+      "motivo": "ondas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Rubén Darío",
+        "Virginia Woolf",
+        "James Joyce"
+      ],
+      "svg": "catalog/svg/mb-modernismo-10.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-10.jpg"
+    },
+    {
+      "id": "mb-vanguardias-01",
+      "movimiento": "Vanguardias",
+      "motivo": "geometria",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Guillaume Apollinaire",
+        "Vicente Huidobro",
+        "Tristan Tzara"
+      ],
+      "svg": "catalog/svg/mb-vanguardias-01.svg",
+      "vista_previa": "catalog/preview/mb-vanguardias-01.jpg"
+    },
+    {
+      "id": "mb-vanguardias-02",
+      "movimiento": "Vanguardias",
+      "motivo": "geometria",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Guillaume Apollinaire",
+        "Vicente Huidobro",
+        "Tristan Tzara"
+      ],
+      "svg": "catalog/svg/mb-vanguardias-02.svg",
+      "vista_previa": "catalog/preview/mb-vanguardias-02.jpg"
+    },
+    {
+      "id": "mb-vanguardias-03",
+      "movimiento": "Vanguardias",
+      "motivo": "geometria",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Guillaume Apollinaire",
+        "Vicente Huidobro",
+        "Tristan Tzara"
+      ],
+      "svg": "catalog/svg/mb-vanguardias-03.svg",
+      "vista_previa": "catalog/preview/mb-vanguardias-03.jpg"
+    },
+    {
+      "id": "mb-vanguardias-04",
+      "movimiento": "Vanguardias",
+      "motivo": "geometria",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Guillaume Apollinaire",
+        "Vicente Huidobro",
+        "Tristan Tzara"
+      ],
+      "svg": "catalog/svg/mb-vanguardias-04.svg",
+      "vista_previa": "catalog/preview/mb-vanguardias-04.jpg"
+    },
+    {
+      "id": "mb-vanguardias-05",
+      "movimiento": "Vanguardias",
+      "motivo": "geometria",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Guillaume Apollinaire",
+        "Vicente Huidobro",
+        "Tristan Tzara"
+      ],
+      "svg": "catalog/svg/mb-vanguardias-05.svg",
+      "vista_previa": "catalog/preview/mb-vanguardias-05.jpg"
+    },
+    {
+      "id": "mb-vanguardias-06",
+      "movimiento": "Vanguardias",
+      "motivo": "geometria",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Guillaume Apollinaire",
+        "Vicente Huidobro",
+        "Tristan Tzara"
+      ],
+      "svg": "catalog/svg/mb-vanguardias-06.svg",
+      "vista_previa": "catalog/preview/mb-vanguardias-06.jpg"
+    },
+    {
+      "id": "mb-vanguardias-07",
+      "movimiento": "Vanguardias",
+      "motivo": "geometria",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Guillaume Apollinaire",
+        "Vicente Huidobro",
+        "Tristan Tzara"
+      ],
+      "svg": "catalog/svg/mb-vanguardias-07.svg",
+      "vista_previa": "catalog/preview/mb-vanguardias-07.jpg"
+    },
+    {
+      "id": "mb-vanguardias-08",
+      "movimiento": "Vanguardias",
+      "motivo": "geometria",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Guillaume Apollinaire",
+        "Vicente Huidobro",
+        "Tristan Tzara"
+      ],
+      "svg": "catalog/svg/mb-vanguardias-08.svg",
+      "vista_previa": "catalog/preview/mb-vanguardias-08.jpg"
+    },
+    {
+      "id": "mb-vanguardias-09",
+      "movimiento": "Vanguardias",
+      "motivo": "geometria",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Guillaume Apollinaire",
+        "Vicente Huidobro",
+        "Tristan Tzara"
+      ],
+      "svg": "catalog/svg/mb-vanguardias-09.svg",
+      "vista_previa": "catalog/preview/mb-vanguardias-09.jpg"
+    },
+    {
+      "id": "mb-vanguardias-10",
+      "movimiento": "Vanguardias",
+      "motivo": "geometria",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Guillaume Apollinaire",
+        "Vicente Huidobro",
+        "Tristan Tzara"
+      ],
+      "svg": "catalog/svg/mb-vanguardias-10.svg",
+      "vista_previa": "catalog/preview/mb-vanguardias-10.jpg"
+    },
+    {
+      "id": "mb-gotico-01",
+      "movimiento": "Gótico",
+      "motivo": "arcos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Mary Shelley",
+        "Edgar Allan Poe",
+        "Bram Stoker"
+      ],
+      "svg": "catalog/svg/mb-gotico-01.svg",
+      "vista_previa": "catalog/preview/mb-gotico-01.jpg"
+    },
+    {
+      "id": "mb-gotico-02",
+      "movimiento": "Gótico",
+      "motivo": "arcos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Mary Shelley",
+        "Edgar Allan Poe",
+        "Bram Stoker"
+      ],
+      "svg": "catalog/svg/mb-gotico-02.svg",
+      "vista_previa": "catalog/preview/mb-gotico-02.jpg"
+    },
+    {
+      "id": "mb-gotico-03",
+      "movimiento": "Gótico",
+      "motivo": "arcos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Mary Shelley",
+        "Edgar Allan Poe",
+        "Bram Stoker"
+      ],
+      "svg": "catalog/svg/mb-gotico-03.svg",
+      "vista_previa": "catalog/preview/mb-gotico-03.jpg"
+    },
+    {
+      "id": "mb-gotico-04",
+      "movimiento": "Gótico",
+      "motivo": "arcos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Mary Shelley",
+        "Edgar Allan Poe",
+        "Bram Stoker"
+      ],
+      "svg": "catalog/svg/mb-gotico-04.svg",
+      "vista_previa": "catalog/preview/mb-gotico-04.jpg"
+    },
+    {
+      "id": "mb-gotico-05",
+      "movimiento": "Gótico",
+      "motivo": "arcos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Mary Shelley",
+        "Edgar Allan Poe",
+        "Bram Stoker"
+      ],
+      "svg": "catalog/svg/mb-gotico-05.svg",
+      "vista_previa": "catalog/preview/mb-gotico-05.jpg"
+    },
+    {
+      "id": "mb-gotico-06",
+      "movimiento": "Gótico",
+      "motivo": "arcos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Mary Shelley",
+        "Edgar Allan Poe",
+        "Bram Stoker"
+      ],
+      "svg": "catalog/svg/mb-gotico-06.svg",
+      "vista_previa": "catalog/preview/mb-gotico-06.jpg"
+    },
+    {
+      "id": "mb-gotico-07",
+      "movimiento": "Gótico",
+      "motivo": "arcos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Mary Shelley",
+        "Edgar Allan Poe",
+        "Bram Stoker"
+      ],
+      "svg": "catalog/svg/mb-gotico-07.svg",
+      "vista_previa": "catalog/preview/mb-gotico-07.jpg"
+    },
+    {
+      "id": "mb-gotico-08",
+      "movimiento": "Gótico",
+      "motivo": "arcos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Mary Shelley",
+        "Edgar Allan Poe",
+        "Bram Stoker"
+      ],
+      "svg": "catalog/svg/mb-gotico-08.svg",
+      "vista_previa": "catalog/preview/mb-gotico-08.jpg"
+    },
+    {
+      "id": "mb-gotico-09",
+      "movimiento": "Gótico",
+      "motivo": "arcos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Mary Shelley",
+        "Edgar Allan Poe",
+        "Bram Stoker"
+      ],
+      "svg": "catalog/svg/mb-gotico-09.svg",
+      "vista_previa": "catalog/preview/mb-gotico-09.jpg"
+    },
+    {
+      "id": "mb-gotico-10",
+      "movimiento": "Gótico",
+      "motivo": "arcos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Mary Shelley",
+        "Edgar Allan Poe",
+        "Bram Stoker"
+      ],
+      "svg": "catalog/svg/mb-gotico-10.svg",
+      "vista_previa": "catalog/preview/mb-gotico-10.jpg"
+    },
+    {
+      "id": "mb-barroco-01",
+      "movimiento": "Barroco",
+      "motivo": "ornamento",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Luis de Góngora",
+        "Francisco de Quevedo",
+        "Pedro Calderón de la Barca"
+      ],
+      "svg": "catalog/svg/mb-barroco-01.svg",
+      "vista_previa": "catalog/preview/mb-barroco-01.jpg"
+    },
+    {
+      "id": "mb-barroco-02",
+      "movimiento": "Barroco",
+      "motivo": "ornamento",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Luis de Góngora",
+        "Francisco de Quevedo",
+        "Pedro Calderón de la Barca"
+      ],
+      "svg": "catalog/svg/mb-barroco-02.svg",
+      "vista_previa": "catalog/preview/mb-barroco-02.jpg"
+    },
+    {
+      "id": "mb-barroco-03",
+      "movimiento": "Barroco",
+      "motivo": "ornamento",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Luis de Góngora",
+        "Francisco de Quevedo",
+        "Pedro Calderón de la Barca"
+      ],
+      "svg": "catalog/svg/mb-barroco-03.svg",
+      "vista_previa": "catalog/preview/mb-barroco-03.jpg"
+    },
+    {
+      "id": "mb-barroco-04",
+      "movimiento": "Barroco",
+      "motivo": "ornamento",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Luis de Góngora",
+        "Francisco de Quevedo",
+        "Pedro Calderón de la Barca"
+      ],
+      "svg": "catalog/svg/mb-barroco-04.svg",
+      "vista_previa": "catalog/preview/mb-barroco-04.jpg"
+    },
+    {
+      "id": "mb-barroco-05",
+      "movimiento": "Barroco",
+      "motivo": "ornamento",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Luis de Góngora",
+        "Francisco de Quevedo",
+        "Pedro Calderón de la Barca"
+      ],
+      "svg": "catalog/svg/mb-barroco-05.svg",
+      "vista_previa": "catalog/preview/mb-barroco-05.jpg"
+    },
+    {
+      "id": "mb-barroco-06",
+      "movimiento": "Barroco",
+      "motivo": "ornamento",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Luis de Góngora",
+        "Francisco de Quevedo",
+        "Pedro Calderón de la Barca"
+      ],
+      "svg": "catalog/svg/mb-barroco-06.svg",
+      "vista_previa": "catalog/preview/mb-barroco-06.jpg"
+    },
+    {
+      "id": "mb-barroco-07",
+      "movimiento": "Barroco",
+      "motivo": "ornamento",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Luis de Góngora",
+        "Francisco de Quevedo",
+        "Pedro Calderón de la Barca"
+      ],
+      "svg": "catalog/svg/mb-barroco-07.svg",
+      "vista_previa": "catalog/preview/mb-barroco-07.jpg"
+    },
+    {
+      "id": "mb-barroco-08",
+      "movimiento": "Barroco",
+      "motivo": "ornamento",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Luis de Góngora",
+        "Francisco de Quevedo",
+        "Pedro Calderón de la Barca"
+      ],
+      "svg": "catalog/svg/mb-barroco-08.svg",
+      "vista_previa": "catalog/preview/mb-barroco-08.jpg"
+    },
+    {
+      "id": "mb-barroco-09",
+      "movimiento": "Barroco",
+      "motivo": "ornamento",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Luis de Góngora",
+        "Francisco de Quevedo",
+        "Pedro Calderón de la Barca"
+      ],
+      "svg": "catalog/svg/mb-barroco-09.svg",
+      "vista_previa": "catalog/preview/mb-barroco-09.jpg"
+    },
+    {
+      "id": "mb-barroco-10",
+      "movimiento": "Barroco",
+      "motivo": "ornamento",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Luis de Góngora",
+        "Francisco de Quevedo",
+        "Pedro Calderón de la Barca"
+      ],
+      "svg": "catalog/svg/mb-barroco-10.svg",
+      "vista_previa": "catalog/preview/mb-barroco-10.jpg"
+    },
+    {
+      "id": "mb-clasicismo-01",
+      "movimiento": "Clasicismo",
+      "motivo": "columnas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Jean Racine",
+        "Molière",
+        "Pierre Corneille"
+      ],
+      "svg": "catalog/svg/mb-clasicismo-01.svg",
+      "vista_previa": "catalog/preview/mb-clasicismo-01.jpg"
+    },
+    {
+      "id": "mb-clasicismo-02",
+      "movimiento": "Clasicismo",
+      "motivo": "columnas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Jean Racine",
+        "Molière",
+        "Pierre Corneille"
+      ],
+      "svg": "catalog/svg/mb-clasicismo-02.svg",
+      "vista_previa": "catalog/preview/mb-clasicismo-02.jpg"
+    },
+    {
+      "id": "mb-clasicismo-03",
+      "movimiento": "Clasicismo",
+      "motivo": "columnas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Jean Racine",
+        "Molière",
+        "Pierre Corneille"
+      ],
+      "svg": "catalog/svg/mb-clasicismo-03.svg",
+      "vista_previa": "catalog/preview/mb-clasicismo-03.jpg"
+    },
+    {
+      "id": "mb-clasicismo-04",
+      "movimiento": "Clasicismo",
+      "motivo": "columnas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Jean Racine",
+        "Molière",
+        "Pierre Corneille"
+      ],
+      "svg": "catalog/svg/mb-clasicismo-04.svg",
+      "vista_previa": "catalog/preview/mb-clasicismo-04.jpg"
+    },
+    {
+      "id": "mb-clasicismo-05",
+      "movimiento": "Clasicismo",
+      "motivo": "columnas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Jean Racine",
+        "Molière",
+        "Pierre Corneille"
+      ],
+      "svg": "catalog/svg/mb-clasicismo-05.svg",
+      "vista_previa": "catalog/preview/mb-clasicismo-05.jpg"
+    },
+    {
+      "id": "mb-clasicismo-06",
+      "movimiento": "Clasicismo",
+      "motivo": "columnas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Jean Racine",
+        "Molière",
+        "Pierre Corneille"
+      ],
+      "svg": "catalog/svg/mb-clasicismo-06.svg",
+      "vista_previa": "catalog/preview/mb-clasicismo-06.jpg"
+    },
+    {
+      "id": "mb-clasicismo-07",
+      "movimiento": "Clasicismo",
+      "motivo": "columnas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Jean Racine",
+        "Molière",
+        "Pierre Corneille"
+      ],
+      "svg": "catalog/svg/mb-clasicismo-07.svg",
+      "vista_previa": "catalog/preview/mb-clasicismo-07.jpg"
+    },
+    {
+      "id": "mb-clasicismo-08",
+      "movimiento": "Clasicismo",
+      "motivo": "columnas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Jean Racine",
+        "Molière",
+        "Pierre Corneille"
+      ],
+      "svg": "catalog/svg/mb-clasicismo-08.svg",
+      "vista_previa": "catalog/preview/mb-clasicismo-08.jpg"
+    },
+    {
+      "id": "mb-clasicismo-09",
+      "movimiento": "Clasicismo",
+      "motivo": "columnas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Jean Racine",
+        "Molière",
+        "Pierre Corneille"
+      ],
+      "svg": "catalog/svg/mb-clasicismo-09.svg",
+      "vista_previa": "catalog/preview/mb-clasicismo-09.jpg"
+    },
+    {
+      "id": "mb-clasicismo-10",
+      "movimiento": "Clasicismo",
+      "motivo": "columnas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Jean Racine",
+        "Molière",
+        "Pierre Corneille"
+      ],
+      "svg": "catalog/svg/mb-clasicismo-10.svg",
+      "vista_previa": "catalog/preview/mb-clasicismo-10.jpg"
+    },
+    {
+      "id": "mb-simbolismo-01",
+      "movimiento": "Simbolismo",
+      "motivo": "luna",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Stéphane Mallarmé",
+        "Paul Verlaine",
+        "Arthur Rimbaud"
+      ],
+      "svg": "catalog/svg/mb-simbolismo-01.svg",
+      "vista_previa": "catalog/preview/mb-simbolismo-01.jpg"
+    },
+    {
+      "id": "mb-simbolismo-02",
+      "movimiento": "Simbolismo",
+      "motivo": "luna",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Stéphane Mallarmé",
+        "Paul Verlaine",
+        "Arthur Rimbaud"
+      ],
+      "svg": "catalog/svg/mb-simbolismo-02.svg",
+      "vista_previa": "catalog/preview/mb-simbolismo-02.jpg"
+    },
+    {
+      "id": "mb-simbolismo-03",
+      "movimiento": "Simbolismo",
+      "motivo": "luna",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Stéphane Mallarmé",
+        "Paul Verlaine",
+        "Arthur Rimbaud"
+      ],
+      "svg": "catalog/svg/mb-simbolismo-03.svg",
+      "vista_previa": "catalog/preview/mb-simbolismo-03.jpg"
+    },
+    {
+      "id": "mb-simbolismo-04",
+      "movimiento": "Simbolismo",
+      "motivo": "luna",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Stéphane Mallarmé",
+        "Paul Verlaine",
+        "Arthur Rimbaud"
+      ],
+      "svg": "catalog/svg/mb-simbolismo-04.svg",
+      "vista_previa": "catalog/preview/mb-simbolismo-04.jpg"
+    },
+    {
+      "id": "mb-simbolismo-05",
+      "movimiento": "Simbolismo",
+      "motivo": "luna",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Stéphane Mallarmé",
+        "Paul Verlaine",
+        "Arthur Rimbaud"
+      ],
+      "svg": "catalog/svg/mb-simbolismo-05.svg",
+      "vista_previa": "catalog/preview/mb-simbolismo-05.jpg"
+    },
+    {
+      "id": "mb-simbolismo-06",
+      "movimiento": "Simbolismo",
+      "motivo": "luna",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Stéphane Mallarmé",
+        "Paul Verlaine",
+        "Arthur Rimbaud"
+      ],
+      "svg": "catalog/svg/mb-simbolismo-06.svg",
+      "vista_previa": "catalog/preview/mb-simbolismo-06.jpg"
+    },
+    {
+      "id": "mb-simbolismo-07",
+      "movimiento": "Simbolismo",
+      "motivo": "luna",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Stéphane Mallarmé",
+        "Paul Verlaine",
+        "Arthur Rimbaud"
+      ],
+      "svg": "catalog/svg/mb-simbolismo-07.svg",
+      "vista_previa": "catalog/preview/mb-simbolismo-07.jpg"
+    },
+    {
+      "id": "mb-simbolismo-08",
+      "movimiento": "Simbolismo",
+      "motivo": "luna",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Stéphane Mallarmé",
+        "Paul Verlaine",
+        "Arthur Rimbaud"
+      ],
+      "svg": "catalog/svg/mb-simbolismo-08.svg",
+      "vista_previa": "catalog/preview/mb-simbolismo-08.jpg"
+    },
+    {
+      "id": "mb-simbolismo-09",
+      "movimiento": "Simbolismo",
+      "motivo": "luna",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Stéphane Mallarmé",
+        "Paul Verlaine",
+        "Arthur Rimbaud"
+      ],
+      "svg": "catalog/svg/mb-simbolismo-09.svg",
+      "vista_previa": "catalog/preview/mb-simbolismo-09.jpg"
+    },
+    {
+      "id": "mb-simbolismo-10",
+      "movimiento": "Simbolismo",
+      "motivo": "luna",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Stéphane Mallarmé",
+        "Paul Verlaine",
+        "Arthur Rimbaud"
+      ],
+      "svg": "catalog/svg/mb-simbolismo-10.svg",
+      "vista_previa": "catalog/preview/mb-simbolismo-10.jpg"
+    },
+    {
+      "id": "mb-realismo-magico-01",
+      "movimiento": "Realismo mágico",
+      "motivo": "espiral",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Gabriel García Márquez",
+        "Juan Rulfo",
+        "Alejo Carpentier"
+      ],
+      "svg": "catalog/svg/mb-realismo-magico-01.svg",
+      "vista_previa": "catalog/preview/mb-realismo-magico-01.jpg"
+    },
+    {
+      "id": "mb-realismo-magico-02",
+      "movimiento": "Realismo mágico",
+      "motivo": "espiral",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Gabriel García Márquez",
+        "Juan Rulfo",
+        "Alejo Carpentier"
+      ],
+      "svg": "catalog/svg/mb-realismo-magico-02.svg",
+      "vista_previa": "catalog/preview/mb-realismo-magico-02.jpg"
+    },
+    {
+      "id": "mb-realismo-magico-03",
+      "movimiento": "Realismo mágico",
+      "motivo": "espiral",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Gabriel García Márquez",
+        "Juan Rulfo",
+        "Alejo Carpentier"
+      ],
+      "svg": "catalog/svg/mb-realismo-magico-03.svg",
+      "vista_previa": "catalog/preview/mb-realismo-magico-03.jpg"
+    },
+    {
+      "id": "mb-realismo-magico-04",
+      "movimiento": "Realismo mágico",
+      "motivo": "espiral",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Gabriel García Márquez",
+        "Juan Rulfo",
+        "Alejo Carpentier"
+      ],
+      "svg": "catalog/svg/mb-realismo-magico-04.svg",
+      "vista_previa": "catalog/preview/mb-realismo-magico-04.jpg"
+    },
+    {
+      "id": "mb-realismo-magico-05",
+      "movimiento": "Realismo mágico",
+      "motivo": "espiral",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Gabriel García Márquez",
+        "Juan Rulfo",
+        "Alejo Carpentier"
+      ],
+      "svg": "catalog/svg/mb-realismo-magico-05.svg",
+      "vista_previa": "catalog/preview/mb-realismo-magico-05.jpg"
+    },
+    {
+      "id": "mb-realismo-magico-06",
+      "movimiento": "Realismo mágico",
+      "motivo": "espiral",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Gabriel García Márquez",
+        "Juan Rulfo",
+        "Alejo Carpentier"
+      ],
+      "svg": "catalog/svg/mb-realismo-magico-06.svg",
+      "vista_previa": "catalog/preview/mb-realismo-magico-06.jpg"
+    },
+    {
+      "id": "mb-realismo-magico-07",
+      "movimiento": "Realismo mágico",
+      "motivo": "espiral",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#C98B3A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Gabriel García Márquez",
+        "Juan Rulfo",
+        "Alejo Carpentier"
+      ],
+      "svg": "catalog/svg/mb-realismo-magico-07.svg",
+      "vista_previa": "catalog/preview/mb-realismo-magico-07.jpg"
+    },
+    {
+      "id": "mb-realismo-magico-08",
+      "movimiento": "Realismo mágico",
+      "motivo": "espiral",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#7A9CB0",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Gabriel García Márquez",
+        "Juan Rulfo",
+        "Alejo Carpentier"
+      ],
+      "svg": "catalog/svg/mb-realismo-magico-08.svg",
+      "vista_previa": "catalog/preview/mb-realismo-magico-08.jpg"
+    },
+    {
+      "id": "mb-realismo-magico-09",
+      "movimiento": "Realismo mágico",
+      "motivo": "espiral",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#7A9CB0",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Gabriel García Márquez",
+        "Juan Rulfo",
+        "Alejo Carpentier"
+      ],
+      "svg": "catalog/svg/mb-realismo-magico-09.svg",
+      "vista_previa": "catalog/preview/mb-realismo-magico-09.jpg"
+    },
+    {
+      "id": "mb-realismo-magico-10",
+      "movimiento": "Realismo mágico",
+      "motivo": "espiral",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Gabriel García Márquez",
+        "Juan Rulfo",
+        "Alejo Carpentier"
+      ],
+      "svg": "catalog/svg/mb-realismo-magico-10.svg",
+      "vista_previa": "catalog/preview/mb-realismo-magico-10.jpg"
+    }
+  ]
+}
