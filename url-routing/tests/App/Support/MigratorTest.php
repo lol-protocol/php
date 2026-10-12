@@ -35,7 +35,10 @@ class MigratorTest extends TestCase
             $migrator = Migrator::forSite($db, $site);
 
             $this->assertSame([], $migrator->migrate(), "{$site}: nothing pending after the first run");
-            $this->assertSame(["{$site}/001_esquema_inicial"], array_column($db->fetchAll('SELECT version FROM schema_migrations'), 'version'));
+            $esperadas = $site === 'genealogy'
+                ? ['genealogy/001_esquema_inicial', 'genealogy/002_personas_viva']
+                : ["{$site}/001_esquema_inicial"];
+            $this->assertSame($esperadas, array_column($db->fetchAll('SELECT version FROM schema_migrations ORDER BY version'), 'version'));
         }
     }
 

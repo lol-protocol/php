@@ -5,14 +5,23 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Support\Database;
+use App\Support\Privacidad;
 
 abstract class Repository
 {
     /** Use with patron(): both SQLite and PostgreSQL honor ESCAPE. */
     protected const LIKE_ESCAPED = " LIKE ? ESCAPE '!'";
 
-    public function __construct(protected readonly Database $db)
+    /**
+     * What this repository may reveal about living people. Defaults to what a
+     * visitor sees, so a caller that forgets to pass it hides too much rather
+     * than too little; the owner's repositories get Privacidad::propietario().
+     */
+    protected readonly Privacidad $privacidad;
+
+    public function __construct(protected readonly Database $db, ?Privacidad $privacidad = null)
     {
+        $this->privacidad = $privacidad ?? Privacidad::publica();
     }
 
     /**

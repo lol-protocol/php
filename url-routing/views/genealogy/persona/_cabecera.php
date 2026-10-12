@@ -7,6 +7,9 @@
     Apellido <a href="<?= esc(enlace('grupo', $persona['grupo_id'])) ?>"><?= esc($persona['grupo_apellido']) ?></a>
 <?php endif; ?>
 </p>
+<?php if ($persona['oculta']): ?>
+<p class="aviso">La información de las personas que podrían estar vivas es privada.</p>
+<?php endif; ?>
 <nav class="acciones" aria-label="Secciones de la persona">
 <?php foreach ([0 => 'Ficha', 1 => 'Ascendencia', 2 => 'Descendencia', 3 => 'Vínculos', 4 => 'Cronología'] as $codigo => $nombre): ?>
     <a href="<?= esc($codigo === 0 ? enlace('persona', $persona['id']) : accion('persona', $persona['id'], $codigo)) ?>"<?= $codigo === $activa ? ' aria-current="page"' : '' ?>><?= esc($nombre) ?></a>

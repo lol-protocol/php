@@ -12,21 +12,21 @@ class GrupoController extends BaseController
 {
     public function show(array $params = []): string
     {
-        $repo = new GrupoRepository($this->db());
+        $repo = new GrupoRepository($this->db(), $this->privacidad());
         return $this->renderFound($params, $repo->find(...), 'genealogy/grupo/show', 'grupo',
             fn(int $id) => ['dispersion' => $repo->dispersion($id)]);
     }
 
     public function red(array $params = []): string
     {
-        $repo = new GrupoRepository($this->db());
+        $repo = new GrupoRepository($this->db(), $this->privacidad());
         return $this->renderFound($params, $repo->find(...), 'genealogy/grupo/red', 'grupo',
             fn(int $id) => ['personas' => $repo->red($id)]);
     }
 
     public function dispersion(array $params = []): string
     {
-        $repo = new GrupoRepository($this->db());
+        $repo = new GrupoRepository($this->db(), $this->privacidad());
         return $this->renderFound($params, $repo->find(...), 'genealogy/grupo/dispersion', 'grupo',
             fn(int $id) => ['dispersion' => $repo->dispersion($id)]);
     }

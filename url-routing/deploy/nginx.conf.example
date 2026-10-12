@@ -6,6 +6,11 @@
 # (database passwords), var/*.sqlite (the whole POS database) and run any
 # .php under it, e.g. bin/migrate.php.
 #
+# The owner proves who they are with OWNER_TOKEN in the Authorization header
+# (docs/ACCESO.md), so serve this site over HTTPS in production. nginx hands
+# that header to PHP-FPM on its own (fastcgi_pass_request_headers is on by
+# default): do not add a fastcgi_param that blanks it.
+#
 # Copy to /etc/nginx/sites-available/url-routing, adjust server_name, then:
 #   sudo ln -sf /etc/nginx/sites-available/url-routing /etc/nginx/sites-enabled/
 #   sudo nginx -t && sudo systemctl reload nginx

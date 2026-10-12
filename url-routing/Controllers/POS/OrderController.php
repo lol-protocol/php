@@ -7,13 +7,19 @@ namespace App\Controllers\POS;
 use App\Controllers\BaseController;
 use App\Repositories\POS\OrdenRepository;
 
-/** /order/{id}/ — there is no login, so any order id is reachable by anyone with the link. */
+/**
+ * /order/{id}/ — an order holds the shipping address and what was bought, and
+ * nothing here ties an order to the browser that placed it (the checkout pages
+ * create none), so a link alone must not open it: orders are owner-only.
+ */
 class OrderController extends BaseController
 {
     private function render(array $params, string $view, callable $extra): string
     {
-        $repo = new OrdenRepository($this->db());
-        return $this->renderFound($params, $repo->find(...), $view, 'orden', $extra);
+        return $this->soloPropietario(function () use ($params, $view, $extra): string {
+            $repo = new OrdenRepository($this->db());
+            return $this->renderFound($params, $repo->find(...), $view, 'orden', $extra);
+        });
     }
 
     public function show(array $params = []): string

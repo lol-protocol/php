@@ -6,13 +6,14 @@ declare(strict_types=1);
  * Runs one request through the real front controller, in its own process
  * (index.php defines functions and calls exit, so it can't share PHPUnit's).
  *
- *   php tests/Support/request.php <host> <uri> [<method> [<postBody> [<sessionId>]]]
+ *   php tests/Support/request.php <host> <uri> [<method> [<postBody> [<sessionId> [<authorization>]]]]
  *
  * <postBody> is a urlencoded query string (e.g. "sku=X&cantidad=2"), used
  * only when <method> is POST. <sessionId>, when given, is reused as the PHP
  * session id so a later call can see session state a previous call wrote
  * (e.g. a cart) — PHP's default session storage is a file under the system
- * temp dir, shared across these per-request processes.
+ * temp dir, shared across these per-request processes. <authorization>, when
+ * given, is sent as the request's Authorization header (see AccessPolicy).
  *
  * The body goes to stdout; the status code and session id are written to
  * stderr on shutdown (so they're captured even when the app exits), as
@@ -32,6 +33,7 @@ declare(strict_types=1);
 $method = $argv[3] ?? 'GET';
 $postBody = $argv[4] ?? '';
 $sessionId = $argv[5] ?? null;
+$autorizacion = ($argv[6] ?? '') !== '' ? $argv[6] : null;
 
 if ($sessionId !== null) {
     session_id($sessionId);
@@ -41,6 +43,9 @@ $_SERVER['HTTP_HOST'] = $host;
 $_SERVER['REQUEST_URI'] = $uri;
 $_SERVER['REQUEST_METHOD'] = $method;
 $_SERVER['SERVER_PORT'] = '80';
+if ($autorizacion !== null) {
+    $_SERVER['HTTP_AUTHORIZATION'] = $autorizacion;
+}
 // Unique per process so the rate limiter never throttles a test run.
 $_SERVER['REMOTE_ADDR'] = '203.0.113.' . random_int(1, 254) . '-' . getmypid();
 

@@ -35,14 +35,16 @@ class HomeController extends BaseController
         $pagina = max(1, (int)(is_string($_GET['p'] ?? null) && ctype_digit($_GET['p']) ? $_GET['p'] : 1));
         $offset = ($pagina - 1) * self::POR_PAGINA;
         $db = $this->db();
+        $privacidad = $this->privacidad();
 
         $resultados = match ($tipo) {
-            'persona' => (new PersonaRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
-            'suceso' => (new SucesoRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
-            'registro' => (new RegistroRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
-            'coleccion' => (new ColeccionRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
-            'grupo' => (new GrupoRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
-            'organizacion' => (new OrganizacionRepository($db))->buscar($query, self::POR_PAGINA + 1, $offset),
+            'persona' => (new PersonaRepository($db, $privacidad))->buscar($query, self::POR_PAGINA + 1, $offset),
+            'suceso' => (new SucesoRepository($db, $privacidad))->buscar($query, self::POR_PAGINA + 1, $offset),
+            'registro' => (new RegistroRepository($db, $privacidad))->buscar($query, self::POR_PAGINA + 1, $offset),
+            'coleccion' => (new ColeccionRepository($db, $privacidad))
+                ->buscar($query, self::POR_PAGINA + 1, $offset, incluirPrivadas: $this->esPropietario()),
+            'grupo' => (new GrupoRepository($db, $privacidad))->buscar($query, self::POR_PAGINA + 1, $offset),
+            'organizacion' => (new OrganizacionRepository($db, $privacidad))->buscar($query, self::POR_PAGINA + 1, $offset),
             default => null,
         };
         if ($resultados === null) {

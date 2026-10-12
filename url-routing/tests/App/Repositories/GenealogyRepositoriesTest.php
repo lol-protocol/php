@@ -12,13 +12,15 @@ use App\Repositories\Genealogy\PersonaRepository;
 use App\Repositories\Genealogy\RegistroRepository;
 use App\Repositories\Genealogy\SucesoRepository;
 use App\Support\Database;
+use App\Support\Privacidad;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Tests\Support\TestDatabases;
 
 /**
  * Runs against the demo seed (database/genealogy/seeds) on every available
- * engine. Family used throughout:
+ * engine, as the owner (Privacidad::propietario()), who sees everything: what a
+ * visitor sees is in PrivacidadRepositoriesTest. Family used throughout:
  *
  *   José (…101) + María (…102)
  *     └ Antonio (…103) + Carmen (…104)
@@ -54,7 +56,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testFindPersonaTakesDatesFromEvents(string $driver): void
     {
-        $juan = (new PersonaRepository($this->db($driver)))->find(self::JUAN);
+        $juan = (new PersonaRepository($this->db($driver), Privacidad::propietario()))->find(self::JUAN);
 
         $this->assertSame('Juan', $juan['nombres']);
         $this->assertSame('1925-02-14', $juan['nacimiento']);
@@ -66,13 +68,13 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testFindMissingPersonaIsNull(string $driver): void
     {
-        $this->assertNull((new PersonaRepository($this->db($driver)))->find(9999999999));
+        $this->assertNull((new PersonaRepository($this->db($driver), Privacidad::propietario()))->find(9999999999));
     }
 
     #[DataProvider('drivers')]
     public function testAscendenciaWalksAllGenerations(string $driver): void
     {
-        $rows = (new PersonaRepository($this->db($driver)))->ascendencia(self::CARLOS);
+        $rows = (new PersonaRepository($this->db($driver), Privacidad::propietario()))->ascendencia(self::CARLOS);
 
         $porGeneracion = [];
         foreach ($rows as $r) {
@@ -90,7 +92,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testAscendenciaRespectsGenerationCap(string $driver): void
     {
-        $rows = (new PersonaRepository($this->db($driver)))->ascendencia(self::CARLOS, 1);
+        $rows = (new PersonaRepository($this->db($driver), Privacidad::propietario()))->ascendencia(self::CARLOS, 1);
 
         $this->assertSame([1], array_values(array_unique(array_map(static fn($r) => (int)$r['generacion'], $rows))));
     }
@@ -98,7 +100,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testDescendenciaFromTheRoot(string $driver): void
     {
-        $rows = (new PersonaRepository($this->db($driver)))->descendencia(self::JOSE);
+        $rows = (new PersonaRepository($this->db($driver), Privacidad::propietario()))->descendencia(self::JOSE);
         $ids = self::ids($rows);
         sort($ids);
 
@@ -108,7 +110,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testVinculosCoversEveryRelationKind(string $driver): void
     {
-        $rows = (new PersonaRepository($this->db($driver)))->vinculos(self::JUAN);
+        $rows = (new PersonaRepository($this->db($driver), Privacidad::propietario()))->vinculos(self::JUAN);
 
         $relaciones = [];
         foreach ($rows as $r) {
@@ -126,7 +128,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testVinculosFindsLinksInBothDirections(string $driver): void
     {
-        $repo = new PersonaRepository($this->db($driver));
+        $repo = new PersonaRepository($this->db($driver), Privacidad::propietario());
 
         $deCarlos = array_column($repo->vinculos(self::CARLOS), 'relacion', 'id');
         $deRosa = array_column($repo->vinculos(self::ROSA), 'relacion', 'id');
@@ -138,7 +140,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testCronologiaIsInDateOrder(string $driver): void
     {
-        $rows = (new PersonaRepository($this->db($driver)))->cronologia(self::ANTONIO);
+        $rows = (new PersonaRepository($this->db($driver), Privacidad::propietario()))->cronologia(self::ANTONIO);
 
         $this->assertSame(
             ['nacimiento', 'migracion', 'matrimonio', 'defuncion'],
@@ -150,7 +152,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testBuscarPersonaIsCaseInsensitive(string $driver): void
     {
-        $rows = (new PersonaRepository($this->db($driver)))->buscar('GARCÍA martínez');
+        $rows = (new PersonaRepository($this->db($driver), Privacidad::propietario()))->buscar('GARCÍA martínez');
 
         $this->assertSame([self::CARLOS, 6128473109], self::ids($rows));
     }
@@ -158,13 +160,13 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testBuscarTreatsLikeWildcardsLiterally(string $driver): void
     {
-        $this->assertSame([], (new PersonaRepository($this->db($driver)))->buscar('%%%__'));
+        $this->assertSame([], (new PersonaRepository($this->db($driver), Privacidad::propietario()))->buscar('%%%__'));
     }
 
     #[DataProvider('drivers')]
     public function testSucesoWithParticipantsAndRecords(string $driver): void
     {
-        $repo = new SucesoRepository($this->db($driver));
+        $repo = new SucesoRepository($this->db($driver), Privacidad::propietario());
 
         $this->assertSame('matrimonio', $repo->find(412000006)['tipo']);
         $this->assertEqualsCanonicalizing([self::ANTONIO, 6128473104], self::ids($repo->participantes(412000006)));
@@ -174,7 +176,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testRegistroWithSourceAndEvents(string $driver): void
     {
-        $repo = new RegistroRepository($this->db($driver));
+        $repo = new RegistroRepository($this->db($driver), Privacidad::propietario());
         $registro = $repo->find(81372001);
 
         $this->assertSame('Parroquia de San José de Analco', $registro['organizacion_nombre']);
@@ -185,7 +187,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testColeccionNormalisesBooleanAcrossEngines(string $driver): void
     {
-        $repo = new ColeccionRepository($this->db($driver));
+        $repo = new ColeccionRepository($this->db($driver), Privacidad::propietario());
 
         $this->assertTrue($repo->find(1048293)['publica']);
         $this->assertFalse($repo->find(1048294)['publica']);
@@ -193,19 +195,28 @@ class GenealogyRepositoriesTest extends TestCase
     }
 
     #[DataProvider('drivers')]
-    public function testSearchFindsBothPublicAndPrivateColecciones(string $driver): void
+    public function testSearchLeavesPrivateColeccionesOutByDefault(string $driver): void
     {
-        $repo = new ColeccionRepository($this->db($driver));
+        $repo = new ColeccionRepository($this->db($driver), Privacidad::propietario());
 
-        // No login: there's no owner to hide a private coleccion from.
-        $this->assertEqualsCanonicalizing([1048293, 1048294], self::ids($repo->buscar('')));
+        $this->assertSame([1048293], self::ids($repo->buscar('')));
+        $this->assertSame([], self::ids($repo->buscar('Borrador')), 'a private tree must not turn up even when named exactly');
+    }
+
+    #[DataProvider('drivers')]
+    public function testSearchIncludesPrivateColeccionesForTheOwner(string $driver): void
+    {
+        $repo = new ColeccionRepository($this->db($driver), Privacidad::propietario());
+
+        $this->assertEqualsCanonicalizing([1048293, 1048294], self::ids($repo->buscar('', incluirPrivadas: true)));
+        $this->assertSame([1048294], self::ids($repo->buscar('Borrador', incluirPrivadas: true)));
         $this->assertSame([1048294], self::ids($repo->deUsuario(2)));
     }
 
     #[DataProvider('drivers')]
     public function testGrupoDispersionCountsBirthplaces(string $driver): void
     {
-        $rows = (new GrupoRepository($this->db($driver)))->dispersion(582317);
+        $rows = (new GrupoRepository($this->db($driver), Privacidad::propietario()))->dispersion(582317);
 
         $this->assertSame(
             ['mx/jal/gdl' => 3, 'es/ast/ovi' => 2, 'mx/jal/tlq' => 1],
@@ -216,7 +227,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testOrganizacionMembersAndRecords(string $driver): void
     {
-        $repo = new OrganizacionRepository($this->db($driver));
+        $repo = new OrganizacionRepository($this->db($driver), Privacidad::propietario());
 
         $this->assertEqualsCanonicalizing([self::JUAN, 6128473107], self::ids($repo->miembros(10232)));
         $this->assertSame([81372001], self::ids($repo->registros(10232)));
@@ -225,7 +236,7 @@ class GenealogyRepositoriesTest extends TestCase
     #[DataProvider('drivers')]
     public function testLugarIncludesEverythingBelowIt(string $driver): void
     {
-        $repo = new LugarRepository($this->db($driver));
+        $repo = new LugarRepository($this->db($driver), Privacidad::propietario());
 
         $this->assertSame(['mx', 'mx/jal', 'mx/jal/gdl'], array_column($repo->jerarquia('mx/jal/gdl'), 'ruta'));
         $this->assertSame(['mx/jal/gdl', 'mx/jal/tlq'], array_column($repo->hijos('mx/jal'), 'ruta'));
@@ -244,6 +255,6 @@ class GenealogyRepositoriesTest extends TestCase
     {
         // "mx/jal" must not pick up a hypothetical "mx/jalx" — the LIKE pattern
         // requires the separator.
-        $this->assertSame([], (new LugarRepository($this->db($driver)))->personas('mx/ja'));
+        $this->assertSame([], (new LugarRepository($this->db($driver), Privacidad::propietario()))->personas('mx/ja'));
     }
 }

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 624 276" width="624" height="276" role="img" aria-label="Vista previa de los íconos">
+  <style>
+    .i { color: #1f2937; }
+    .t { fill: #4b5563; font: 12px system-ui, -apple-system, "Segoe UI", sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      .i { color: #e5e7eb; }
+      .t { fill: #9ca3af; }
+    }
+  </style>
+  <svg class="i" x="28" y="8" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9s10 4 10 9M8.5 5.5h7M8.5 18.5h7"/></svg>
+  <text class="t" x="52" y="80" text-anchor="middle">adn</text>
+  <svg class="i" x="132" y="8" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V12M12 12L6.5 8.8M12 12l5.5-3.2M12 12V5.8"/><circle cx="6.5" cy="7" r="1.8"/><circle cx="17.5" cy="7" r="1.8"/><circle cx="12" cy="4" r="1.8"/></svg>
+  <text class="t" x="156" y="80" text-anchor="middle">arbol</text>
+  <svg class="i" x="236" y="8" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+  <text class="t" x="260" y="80" text-anchor="middle">busqueda</text>
+  <svg class="i" x="340" y="8" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+  <text class="t" x="364" y="80" text-anchor="middle">calendario</text>
+  <svg class="i" x="444" y="8" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+  <text class="t" x="468" y="80" text-anchor="middle">carta</text>
+  <svg class="i" x="548" y="8" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8M5 10v10h14V10M10 20v-6h4v6"/></svg>
+  <text class="t" x="572" y="80" text-anchor="middle">casa</text>
+  <svg class="i" x="28" y="100" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="12" r="3"/><path d="M9 12h6"/></svg>
+  <text class="t" x="52" y="172" text-anchor="middle">conexion</text>
+  <svg class="i" x="132" y="100" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/></svg>
+  <text class="t" x="156" y="172" text-anchor="middle">corazon</text>
+  <svg class="i" x="236" y="100" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>
+  <text class="t" x="260" y="172" text-anchor="middle">documento</text>
+  <svg class="i" x="340" y="100" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M3 20v-1a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v1"/><circle cx="17" cy="8" r="2.5"/><path d="M17 13.5a4 4 0 0 1 4 4V19"/></svg>
+  <text class="t" x="364" y="172" text-anchor="middle">familia</text>
+  <svg class="i" x="444" y="100" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M3 17l5-4 4 3 3-2 6 4"/></svg>
+  <text class="t" x="468" y="172" text-anchor="middle">foto</text>
+  <svg class="i" x="548" y="100" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v8M12 11l-5 5-2 5M12 11l5 5 2 5M12 11v10"/></svg>
+  <text class="t" x="572" y="172" text-anchor="middle">raiz</text>
+  <svg class="i" x="28" y="192" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+  <text class="t" x="52" y="264" text-anchor="middle">reloj</text>
+</svg>
