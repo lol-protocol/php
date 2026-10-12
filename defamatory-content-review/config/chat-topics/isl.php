@@ -3,6 +3,11 @@
 /** Icelandic chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'isl', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['þú', 'þú ert', 'þið', 'helvítis', 'andskotans', 'ógeðslega', 'feita', 'heimska'],
+        'after' => [],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'klám', 'riskType' => 'sexual', 'severity' => 'high'],

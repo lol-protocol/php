@@ -3,6 +3,11 @@
 /** Vietnamese chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'vie', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['mày', 'mi', 'mầy', 'đồ', 'thằng', 'con mẹ', 'bọn', 'lũ', 'cái thằng', 'đúng là'],
+        'after' => ['mày', 'kia', 'này'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'phim sex', 'riskType' => 'sexual', 'severity' => 'high'],

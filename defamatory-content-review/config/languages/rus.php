@@ -248,7 +248,7 @@ return [
             ['word' => 'трахать', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'мудак', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'козёл', 'riskType' => 'ordinario', 'severity' => 'high', 'nameCollision' => true],
-            ['word' => 'чёрт', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'чёрт', 'riskType' => 'ordinario', 'severity' => 'medium', 'targeted' => true],
             ['word' => 'залупа', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'блять', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'срань', 'riskType' => 'ordinario', 'severity' => 'medium'],

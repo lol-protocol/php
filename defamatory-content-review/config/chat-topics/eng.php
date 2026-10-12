@@ -7,6 +7,11 @@
  */
 return [
     'meta' => ['code' => 'eng', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['you', 'you\'re', 'youre', 'ur', 'u', 'he\'s', 'she\'s', 'he is', 'she is', 'they\'re', 'they are', 'such a', 'what a', 'fucking', 'fuckin', 'stupid', 'dirty', 'filthy', 'fat', 'ugly', 'damn', 'bloody', 'son of a'],
+        'after' => ['you are', 'ass'],
+    ],
     'legit' => ['annus', 'bonny', 'curr', 'hogg', 'jaap', 'looser', 'pigg', 'pratt'],
     'words' => [
         'sexual' => [

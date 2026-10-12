@@ -25,7 +25,7 @@ return [
             ['word' => 'padde', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'kryp', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'kreatur', 'riskType' => 'animal', 'severity' => 'high'],
-            ['word' => 'svinehund', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'svinehund', 'riskType' => 'animal', 'severity' => 'high', 'targeted' => false],
             ['word' => 'slange', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'hyene', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'parasitt', 'riskType' => 'animal', 'severity' => 'medium'],

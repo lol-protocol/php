@@ -28,7 +28,7 @@ return [
             ['word' => 'kackerlacka', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'parasit', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'hyena', 'riskType' => 'animal', 'severity' => 'medium'],
-            ['word' => 'svinhund', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'svinhund', 'riskType' => 'animal', 'severity' => 'high', 'targeted' => false],
         ],
 
         'forstand' => [
@@ -233,7 +233,7 @@ return [
             ['word' => 'svartskalle', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'zigenare', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'snedögd', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'jude', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'jude', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true, 'targeted' => true],
             ['word' => 'utlänning', 'riskType' => 'etnico', 'severity' => 'low'],
         ],
 

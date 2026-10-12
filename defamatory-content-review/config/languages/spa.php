@@ -622,7 +622,7 @@ return [
             ['word' => 'diabólico', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'endiablado', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'brujo', 'riskType' => 'religioso', 'severity' => 'medium'],
-            ['word' => 'bruja', 'riskType' => 'religioso', 'severity' => 'high'],
+            ['word' => 'bruja', 'riskType' => 'religioso', 'severity' => 'high', 'targeted' => true],
             ['word' => 'hechicero', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'nigromante', 'riskType' => 'religioso', 'severity' => 'medium'],
             ['word' => 'mojigato', 'riskType' => 'religioso', 'severity' => 'low'],

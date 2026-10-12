@@ -19,7 +19,7 @@ Columnas:
 
 - `marcas`: `nameCollision` (también es nombre o apellido: va a revisión, no se
   bloquea), `ambiguous` (palabra cotidiana: el chat la ignora, los nombres no),
-  `forms:noun|adj|verb` (se generan plurales, géneros o conjugación).
+  `targeted` (en el chat sólo cuenta dirigida a alguien), `forms:noun|adj|verb` (se generan plurales, géneros o conjugación).
 - `rango`: posición de la palabra entre las 50.000 más usadas del idioma (1 = la
   más usada). Una palabra ofensiva rara vez está muy arriba; si lo está, mira si
   tiene otro sentido cotidiano.
@@ -27,7 +27,7 @@ Columnas:
   `review` (revisión humana) o `reject` (bloqueada).
 - `correcto` y `comentario`: para el revisor. En `correcto` pon `sí`, `no`
   (sobra, o es falso positivo), otra severidad (`low`/`medium`/`high`, o
-  `baja`/`media`/`alta`) o una marca (`ambiguous`, `nameCollision`; `sin ambiguous` la quita); en
+  `baja`/`media`/`alta`) o una marca (`ambiguous`, `nameCollision`, `targeted`; `sin ambiguous` la quita); en
   `comentario`, lo que haga falta (otra ortografía, otra categoría, una palabra
   que falta).
 

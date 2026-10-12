@@ -3,6 +3,11 @@
 /** Bulgarian chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'bul', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['ти', 'ти си', 'вие', 'тоя', 'тая', 'този', 'тази', 'такъв', 'такава', 'мръсен', 'мръсна', 'тъп', 'тъпа', 'дебел', 'дебела'],
+        'after' => ['такъв', 'такава', 'ти', 'мръсен', 'мръсна'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'порно', 'riskType' => 'sexual', 'severity' => 'high'],

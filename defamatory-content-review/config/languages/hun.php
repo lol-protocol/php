@@ -215,7 +215,7 @@ return [
         'etnikai' => [
             ['word' => 'néger', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'cigány', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
-            ['word' => 'zsidó', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'zsidó', 'riskType' => 'etnico', 'severity' => 'medium', 'nameCollision' => true, 'targeted' => true],
             ['word' => 'ferdeszemű', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'oláh', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'tót', 'riskType' => 'etnico', 'severity' => 'high', 'nameCollision' => true],

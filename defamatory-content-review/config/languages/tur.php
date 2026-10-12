@@ -212,7 +212,7 @@ return [
         'etnik' => [
             ['word' => 'zenci', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'çingene', 'riskType' => 'etnico', 'severity' => 'high'],
-            ['word' => 'yahudi', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'yahudi', 'riskType' => 'etnico', 'severity' => 'medium', 'targeted' => true],
             ['word' => 'çekik gözlü', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'gavur', 'riskType' => 'etnico', 'severity' => 'high'],
             ['word' => 'yabancı', 'riskType' => 'etnico', 'severity' => 'low'],

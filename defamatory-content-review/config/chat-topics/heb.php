@@ -3,6 +3,11 @@
 /** Hebrew chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'heb', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['אתה', 'אתם', 'אתן', 'יא', 'ממש', 'איזה', 'איזו', 'מסריח', 'מסריחה', 'מטומטם', 'מטומטמת'],
+        'after' => ['אתה', 'מסריח', 'מסריחה'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'פורנו', 'riskType' => 'sexual', 'severity' => 'high'],

@@ -27,6 +27,8 @@ final class ChatTopics
     /** @var array<string,true> */
     private array $everyday = [];
     private bool $collapseRepeats;
+    /** @var array{types?:list<string>, before?:list<string>, after?:list<string>} */
+    private array $targeting;
 
     /** @param array<string,mixed> $config ['meta' => …, 'words' => categoría => entradas, 'patterns' => …] */
     public function __construct(array $config, string $language)
@@ -40,6 +42,7 @@ final class ChatTopics
         foreach ($config['everyday'] ?? [] as $word) {
             $this->everyday[mb_strtolower($word)] = true;
         }
+        $this->targeting = $config['targeted'] ?? [];
         $patterns = $config['patterns'] ?? [];
         $this->patterns = $this->collapseRepeats
             ? array_map(fn(array $pattern): array => ['pattern' => RepeatedLetters::tolerant($pattern['pattern'])] + $pattern, $patterns)
@@ -67,6 +70,9 @@ final class ChatTopics
 
         return WordListScanner::scan($text, $this->collapseRepeats ? RepeatedLetters::searcher($search, $this->legit) : $search);
     }
+
+    /** @return array{types?:list<string>, before?:list<string>, after?:list<string>} ver TargetContext */
+    public function targeting(): array { return $this->targeting; }
 
     /** @return array<string,mixed>|null la entrada de la lista de temas para esa palabra exacta */
     public function word(string $word): ?array { return $this->words->search($word); }

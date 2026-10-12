@@ -3,6 +3,11 @@
 /** Italian chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'ita', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['sei', 'sei un', 'sei una', 'siete', 'brutto', 'brutta', 'pezzo di', 'maledetto', 'maledetta', 'figlio di', 'figlia di', 'quel', 'quella', 'sporco', 'sporca', 'razza di'],
+        'after' => ['di merda', 'schifoso', 'schifosa', 'che sei'],
+    ],
     'everyday' => ['mostrò', 'fucili'],
     'words' => [
         'sexual' => [

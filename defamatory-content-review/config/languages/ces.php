@@ -229,7 +229,7 @@ return [
             ['word' => 'koule', 'riskType' => 'ordinario', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'mrdat', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'šukat', 'riskType' => 'ordinario', 'severity' => 'high'],
-            ['word' => 'sakra', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'sakra', 'riskType' => 'ordinario', 'severity' => 'medium', 'targeted' => true],
             ['word' => 'kokot', 'riskType' => 'ordinario', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'jebat', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'píčus', 'riskType' => 'ordinario', 'severity' => 'high'],

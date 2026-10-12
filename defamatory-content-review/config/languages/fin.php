@@ -137,7 +137,7 @@ return [
         ],
 
         'sukupuoli' => [
-            ['word' => 'homo', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'homo', 'riskType' => 'genero', 'severity' => 'high', 'targeted' => true],
             ['word' => 'hintti', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'naismainen', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'lesbo', 'riskType' => 'genero', 'severity' => 'medium'],

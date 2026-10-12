@@ -3,6 +3,11 @@
 /** Swahili chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'swa', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['wewe', 'nyinyi', 'mjinga', 'mshenzi', 'huyu', 'hawa'],
+        'after' => ['wewe', 'nyinyi', 'mkubwa'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'ponografia', 'riskType' => 'sexual', 'severity' => 'high'],

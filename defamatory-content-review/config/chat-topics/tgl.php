@@ -3,6 +3,11 @@
 /** Tagalog chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'tgl', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['ikaw', 'kang', 'mukha kang', 'kayo', 'mga', 'putang', 'gago', 'tangina'],
+        'after' => ['ka', 'mo', 'kayo', 'ikaw'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'porn', 'riskType' => 'sexual', 'severity' => 'high'],

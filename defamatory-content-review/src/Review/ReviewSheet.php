@@ -7,7 +7,7 @@ namespace DefamatoryContentReview\Review;
  * cambios (ver review/README.md, «Cómo se convierte la revisión en cambios»):
  *
  * - `término`: `no` lo quita; `low`/`medium`/`high` (o baja/media/alta) le
- *   cambia la severidad; `ambiguous` o `nameCollision` le ponen esa marca, y
+ *   cambia la severidad; `ambiguous`, `nameCollision` o `targeted` le ponen esa marca, y
  *   `sin ambiguous` (o `-ambiguous`) se la quita.
  * - `frecuente`: `no` (no debería censurarse) la añade a `everyday`.
  * - `excepción`: `no` (no es una palabra cotidiana) la quita de su lista.
@@ -20,7 +20,7 @@ final class ReviewSheet
 {
     private const YES = ['sí', 'si', 'yes', 'ok'];
     private const SEVERITY = ['low' => 'low', 'medium' => 'medium', 'high' => 'high', 'baja' => 'low', 'media' => 'medium', 'alta' => 'high'];
-    private const FLAGS = ['ambiguous' => 'ambiguous', 'namecollision' => 'nameCollision'];
+    private const FLAGS = ['ambiguous' => 'ambiguous', 'namecollision' => 'nameCollision', 'targeted' => 'targeted'];
 
     /** @var array<int,array{action:string,file:string,word:string,value:string,was:string,row:int}> */
     public array $changes = [];
