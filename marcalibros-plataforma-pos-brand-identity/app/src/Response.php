@@ -36,7 +36,10 @@ final class Response
         return new self(200, ['Content-Type' => $contentType] + $headers, '', $path);
     }
 
-    /** Agrega cabeceras que la respuesta no haya fijado ella misma. @param array<string, string> $defaults */
+    /**
+     * Agrega cabeceras que la respuesta no haya fijado ella misma.
+     * @param array<string, string> $defaults
+     */
     public function withDefaultHeaders(array $defaults): self
     {
         return new self($this->status, $this->headers + $defaults, $this->body, $this->file);

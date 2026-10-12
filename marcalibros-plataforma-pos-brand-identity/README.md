@@ -64,8 +64,4 @@ Detalles de configuración, seguridad y despliegue en `app/README.md`.
 
 ## Pendiente
 
-- Confirmar la taxonomía en `catalog/taxonomia.md`: los 10 movimientos y autores, y sobre todo los 10 tipos de texto, que son una propuesta nueva.
 - Integrar la aplicación (o solo el módulo PHP) en Plataforma POS cuando se decida: falta saber dónde vive Plataforma POS, y cómo se identificará a las personas (hoy el enlace es la única llave).
-- Ejecutar las pruebas de `php/` y `app/` con PHPUnit real y el análisis con PHPStan (nivel 6), y generar los `composer.lock`. Packagist no era accesible desde el entorno donde se escribió el código, así que las pruebas (95 del módulo y 121 de la aplicación) solo se han ejecutado con un ejecutor propio mínimo, y PHPStan no se ha corrido.
-- Agregar un workflow de CI para `php/` y `app/`, con filtro de rutas como los de los otros proyectos del repositorio.
-- Ajustar la tipografía final: Source Serif 4 e Inter están declaradas pero no incluidas en la aplicación.

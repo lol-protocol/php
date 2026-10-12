@@ -24,7 +24,12 @@ final class Request
     ) {
     }
 
-    /** @param array<string, mixed> $server */
+    /**
+     * @param array<string, mixed> $server
+     * @param array<string, mixed> $get
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $files
+     */
     public static function fromGlobals(Config $config, array $server, array $get, array $post, array $files): self
     {
         $method = strtoupper((string) ($server['REQUEST_METHOD'] ?? 'GET'));
@@ -52,7 +57,7 @@ final class Request
             // La última dirección la agregó nuestro proxy; las anteriores las puede escribir cualquiera.
             $parts = array_map('trim', explode(',', $headers['x-forwarded-for']));
             $last = end($parts);
-            if ($last !== false && filter_var($last, FILTER_VALIDATE_IP) !== false) {
+            if (filter_var($last, FILTER_VALIDATE_IP) !== false) {
                 $ip = $last;
             }
         }

@@ -27,7 +27,7 @@ final class Application
     private const RATE_WINDOW = 3600;
 
     private const SECURITY_HEADERS = [
-        'Content-Security-Policy' => "default-src 'none'; img-src 'self' blob:; style-src 'self'; script-src 'self'; "
+        'Content-Security-Policy' => "default-src 'none'; img-src 'self' blob:; font-src 'self'; style-src 'self'; script-src 'self'; "
             . "connect-src 'none'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
         'X-Content-Type-Options' => 'nosniff',
         'X-Frame-Options' => 'DENY',
@@ -238,7 +238,10 @@ final class Application
         ], $item['motif'] . ' · ' . $item['category'], ['section' => 'catalogo']));
     }
 
-    /** @param array<string, mixed> $entry */
+    /**
+     * @param array<string, mixed> $entry
+     * @return array<string, mixed>
+     */
     private function presentEntry(array $entry): array
     {
         $motif = $this->catalog->motifName((string) $entry['motivo']);
@@ -374,7 +377,7 @@ final class Application
         if ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE) {
             throw new BookmarkRejectedException(RejectionReason::TooLarge);
         }
-        if ($error !== UPLOAD_ERR_OK || $file === null) {
+        if ($error !== UPLOAD_ERR_OK) {
             throw new BookmarkRejectedException(RejectionReason::Unreadable);
         }
         // Solo se procesa lo que PHP recibió como subida: nunca una ruta que mande la persona.
