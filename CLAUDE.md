@@ -37,8 +37,8 @@ Desde la carpeta de cada proyecto, salvo donde diga «desde la raíz» (el detal
 | Proyecto | Pruebas |
 |---|---|
 | `defamatory-content-review/` | `composer install && ./vendor/bin/phpunit` (la CI corre además `phpstan analyse` y `php bin/benchmark.php 2000`) |
-| `phone-directory/` | `composer install && ./vendor/bin/phpunit` (depende de `../defamatory-content-review`) |
-| `cobros-ingresos-funnels/` | con PostgreSQL y `export APP_ENV=dev`: `php database/migrar.php && php database/seed.php`, luego `./vendor/bin/phpunit` (la CI corre además PHPStan) |
+| `phone-directory/` | `composer install && ./vendor/bin/phpunit` (depende de `../defamatory-content-review`; la CI corre además los puertos de `ports/python` y `ports/java`) |
+| `cobros-ingresos-funnels/` | con PostgreSQL y `export APP_ENV=dev`: `composer install && php database/recrear_con_datos_de_ejemplo.php` (borra la base y la rearma con las migraciones y datos de ejemplo), luego `./vendor/bin/phpunit` (la CI corre además PHPStan) |
 | `sistema-nuevo/` | `php pruebas/ejecutar-php.php` y `./pruebas/ejecutar-js.sh`; con PostgreSQL, `php datos/generar-datos-semilla.php && php pruebas/ejecutar-integracion.php`; el e2e (`./pruebas/ejecutar-e2e.sh`) necesita los servicios de `ejecutar.sh` |
 | `url-routing/` | `composer install && ./vendor/bin/phpunit` (la CI lo corre también contra PostgreSQL) |
 | `document-formats/` | `node --test 'tests/*.test.js'` (la CI además importa a MySQL) |
@@ -53,4 +53,4 @@ El resto de proyectos (`privacy-laws/`, `copyright-laws/`, `marketing/`, `marcal
 - PostgreSQL no arranca solo: `service postgresql start`. Cada proyecto espera sus propios roles y bases (están en su README).
 - Composer no logra bajar algunos paquetes desde GitHub (por ejemplo PHPStan). No insistas: el análisis estático lo corre la CI.
 - No hay una CLI `gh` completa: `gh api <ruta REST>` funciona, y las herramientas de GitHub de la sesión cubren PR y comentarios.
-- `.github/workflows/tests.yml` no filtra por rutas: un PR que toca una sola carpeta igual dispara los jobs de todas las demás (entre 30 y 45 checks). Espera a que terminen todos antes de decir que la CI está en verde.
+- `.github/workflows/tests.yml` no filtra por rutas: un PR que toca una sola carpeta igual dispara los jobs de todas las demás (entre 30 y 45 checks). Los workflows propios de cobros, sistema-nuevo, marcalibros, iconos y vps-setup sí filtran por carpeta. Espera a que terminen todos antes de decir que la CI está en verde.
