@@ -29,6 +29,11 @@
  */
 return [
     'meta' => ['code' => 'spa', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['eres', 'sos', 'vos', 'usted', 'ustedes', 'sois', 'pareces', 'es un', 'es una', 'son unos', 'son unas', 'ese', 'esa', 'esos', 'esas', 'maldito', 'maldita', 'malditos', 'malditas', 'pinche', 'pinches', 'puto', 'puta', 'pedazo de', 'cara de', 'estúpido', 'estúpida', 'grandísimo', 'grandísima', 'so', 'hijo de', 'hija de'],
+        'after' => ['eres', 'sos', 'de mierda', 'asqueroso', 'asquerosa', 'inmundo', 'inmunda', 'de los cojones', 'culiao', 'culiado'],
+    ],
     'everyday' => ['mudó', 'moño', 'calló'],
     'legit' => ['calle', 'morro', 'chollo', 'cholla', 'gorrilla', 'mulla', 'mullo', 'pellon'],
     'words' => [

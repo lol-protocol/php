@@ -3,6 +3,11 @@
 /** Polish chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'pol', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['ty', 'jesteś', 'jesteście', 'wy', 'ten', 'ta', 'ci', 'głupi', 'głupia', 'brudny', 'brudna', 'stary', 'stara', 'jebany', 'jebana', 'pierdolony', 'pierdolona', 'zasrany', 'zasrana'],
+        'after' => ['ty', 'jeden', 'jedna', 'jebany', 'jebana', 'pierdolony', 'pierdolona'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

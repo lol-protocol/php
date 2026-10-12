@@ -245,7 +245,7 @@ return [
             ['word' => 'jebać', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'pierdolić', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'skurwiel', 'riskType' => 'ordinario', 'severity' => 'high'],
-            ['word' => 'cholera', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'cholera', 'riskType' => 'ordinario', 'severity' => 'medium', 'targeted' => true],
             ['word' => 'chujowy', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'pierdolony', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'jebany', 'riskType' => 'ordinario', 'severity' => 'high'],

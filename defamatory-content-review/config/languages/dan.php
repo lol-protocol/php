@@ -25,7 +25,7 @@ return [
             ['word' => 'tudse', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'kræ', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'kreatur', 'riskType' => 'animal', 'severity' => 'high'],
-            ['word' => 'svinehund', 'riskType' => 'animal', 'severity' => 'high'],
+            ['word' => 'svinehund', 'riskType' => 'animal', 'severity' => 'high', 'targeted' => false],
             ['word' => 'slange', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'hyæne', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'parasit', 'riskType' => 'animal', 'severity' => 'medium'],

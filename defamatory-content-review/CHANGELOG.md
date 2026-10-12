@@ -44,6 +44,18 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **En el chat, animales, discapacidad, identidad, brujería y palabrotas suaves
+  sólo cuentan dirigidos a alguien** (`TargetContext`): «eres un cerdo», «seu
+  porco», «ты свинья» van a revisión; «comí cerdo», «das Schwein im Stall»,
+  «mi abuelo es cojo» se aprueban, con el hallazgo en `low` y `context =>
+  untargeted`. Marcas por idioma en la clave `targeted` de 29 listas de temas;
+  `'targeted' => true|false` en una entrada del diccionario la suma o la saca
+  de la regla. Una palabra sola, las frases de varias palabras («hijo de
+  perra») y las líneas con otro insulto firme cuentan como antes. Medido con las
+  listas de frecuencia: 28 palabras frecuentes dejan de censurarse («porco-espinho»,
+  «hot-dog», «mù-tạt», «membabi-buta»…) y ninguna palabra sola cambia de decisión.
+  Resuelve las cinco decisiones de criterio que CONTRIBUTING dejaba abiertas.
+
 - **Diccionario inglés: plurales y formas coloquiales** (46 entradas):
   «bastards», «idiots», «bitches», «cunts», «retards»… y «fuckin»,
   «motherfucking», «cocksucker», «dumbass», «dipshit», «bullshit»,
@@ -210,6 +222,11 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
   verifica que cada una siga haciendo falta.
 
 ### Arreglado
+
+- **Un insulto pegado a un signo no se detectaba**: «puta!», «idiota?»,
+  «¡idiota!», «(rata)» y ««imbécil»» se aprobaban, porque `WordListScanner`
+  sólo cortaba palabras en espacios, guiones, puntos y comas. Ahora también en
+  `! ¡ ? ¿ ; : " “ ” „ « » ( ) [ ] { } …`.
 
 - **Acentos escritos aparte esquivaban el diccionario.** «pu» + «́» + «ta»
   (la «ú» descompuesta que dejan algunos teclados y el copiar y pegar)

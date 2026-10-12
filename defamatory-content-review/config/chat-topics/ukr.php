@@ -3,6 +3,11 @@
 /** Ukrainian chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'ukr', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['ти', 'ви', 'тебе', 'твій', 'твоя', 'цей', 'ця', 'такий', 'така', 'тупий', 'тупа', 'брудний', 'брудна', 'смердючий'],
+        'after' => ['ти', 'ви', 'смердючий', 'смердюча'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'порно', 'riskType' => 'sexual', 'severity' => 'high'],

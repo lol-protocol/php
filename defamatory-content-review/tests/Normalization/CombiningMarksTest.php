@@ -35,9 +35,10 @@ class CombiningMarksTest extends TestCase
     public function testCensoringDoesNotCutAWordThatContinuesWithAMark(): void
     {
         // «सूअरों» («cerdos») empieza por «सूअर» («cerdo») y sigue con una vocal que es marca, no letra.
-        $result = ChatLineReviewer::create(self::CONFIG_DIR, 'hin')->review('सूअर और सूअरों');
+        // «तू» («tú») lo dirige a alguien: sin eso un animal no se censura (ver TargetContext).
+        $result = ChatLineReviewer::create(self::CONFIG_DIR, 'hin')->review('तू सूअर और सूअरों');
 
-        $this->assertSame('**** और सूअरों', $result->censored());
+        $this->assertSame('तू **** और सूअरों', $result->censored());
     }
 
     public function testPatternFoldingKeepsTheVowelsOfOtherScripts(): void

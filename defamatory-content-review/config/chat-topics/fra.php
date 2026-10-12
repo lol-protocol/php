@@ -3,6 +3,11 @@
 /** French chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'fra', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['t\'es', 'tu es', 'tu', 'vous êtes', 'espèce de', 'sale', 'sales', 'gros', 'grosse', 'c\'est un', 'c\'est une', 'ce', 'cette', 'pauvre', 'sombre', 'putain de', 'connard de', 'bande de'],
+        'after' => ['de merde', 'va', 'toi'],
+    ],
     'everyday' => ['drogue', 'rate', 'possède', 'demeure', 'violent', 'violons', 'viola'],
     'words' => [
         'sexual' => [

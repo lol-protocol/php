@@ -3,6 +3,11 @@
 /** Norwegian chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'nor', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['du', 'du er', 'din', 'ditt', 'dine', 'dere', 'jævla', 'dumme', 'feite', 'ekle', 'satans'],
+        'after' => [],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high', 'also' => ['pornoen', 'pornofilm']],

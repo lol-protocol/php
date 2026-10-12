@@ -97,19 +97,22 @@ a la configuración (quitar, `ambiguous`, `everyday`) está en
 Antes de mandar un idioma a revisar, regenerá su planilla con
 `bin/review-sheets.php` para que refleje el diccionario actual.
 
-Decisiones que la medición dejó abiertas y que no se tomaron sin hablantes
-nativos ni criterio del producto:
+Las decisiones que la medición dejó abiertas —discapacidad, animales,
+identidad, brujería y palabrotas suaves— se resolvieron con un mismo criterio:
+**sólo cuentan dirigidas a alguien** («eres un cerdo» sí, «comí cerdo» no; ver
+«Sólo si va dirigido a alguien» en el README). Lo que más ayuda revisar como
+hablante nativo:
 
-- **Discapacidad** («ciego», «blind», «sordo»…): hoy se censuran; también son
-  descripciones neutras.
-- **Animales** («cerdo», «cow», «pig», «köpek»…): insulto o animal según el
-  contexto, que un filtro de palabras no ve.
-- **Identidad** («homo», «Jude», «yahudi», «zsidó», «ทอม», que además
-  es el nombre Tom): hoy se censuran como insulto aunque sean el nombre neutro
-  del grupo.
-- **Brujería** («bruja», «witch», «魔女», «penyihir»): `reject` por defecto.
-- **Palabrotas suaves muy frecuentes** («чёрт», «sakra», «cholera», «verdammt»):
-  hoy van a revisión.
+- las marcas de la clave `targeted` de `config/chat-topics/<código>.php`: ¿falta
+  alguna forma de dirigirse a alguien («vos», «ustedes», un vocativo)? ¿sobra
+  alguna que aparezca en frases neutras?
+- las entradas de identidad, brujería o palabrotas suaves de tu idioma que
+  deberían llevar `'targeted' => true` (en la planilla: `targeted` en
+  `correcto`), y los compuestos que son insulto siempre y deberían llevar
+  `'targeted' => false`;
+- japonés, coreano, cantonés y tailandés no tienen marcas (no separan las
+  palabras con espacios): «ทอม» (también el nombre Tom), «魔女» y «บ้า» siguen
+  pendientes en `review/urgente/`.
 
 ## Subir de nivel de cobertura
 

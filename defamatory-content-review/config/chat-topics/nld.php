@@ -3,6 +3,11 @@
 /** Dutch chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'nld', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['jij', 'jou', 'je bent', 'ben je', 'jullie', 'vuile', 'vieze', 'stomme', 'vuil', 'wat een', 'vette', 'dikke', 'kut'],
+        'after' => ['dat je bent'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

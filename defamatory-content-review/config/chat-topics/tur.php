@@ -3,6 +3,11 @@
 /** Turkish chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'tur', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['sen', 'siz', 'sensin', 'seni', 'sana', 'bu', 'pis', 'aptal', 'kokmuş', 'şişko', 'salak', 'lan', 'ulan', 'orospu'],
+        'after' => ['sensin', 'seni', 'lan', 'sen'],
+    ],
     'everyday' => ['sık', 'şık', 'katıl', 'çinli'],
     'words' => [
         'sexual' => [

@@ -3,6 +3,11 @@
 /** Arabic chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'ara', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['انت', 'أنت', 'انتي', 'أنتِ', 'أنتم', 'انتم', 'يا', 'ابن', 'بنت', 'هذا', 'هذه', 'يا ابن'],
+        'after' => ['انت', 'أنت', 'قذر', 'قذرة'],
+    ],
     'words' => [
         'sexual' => [
             ['word' => 'إباحي', 'riskType' => 'sexual', 'severity' => 'high'],

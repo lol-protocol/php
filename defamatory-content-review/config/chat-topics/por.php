@@ -3,6 +3,11 @@
 /** Portuguese chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'por', 'kind' => 'chat-topics'],
+    'targeted' => [
+        'types' => ['animal', 'discapacidad'],
+        'before' => ['você é', 'voce e', 'você', 'és', 'seu', 'sua', 'seus', 'suas', 'sois', 'maldito', 'maldita', 'pedaço de', 'filho de', 'filha de', 'é um', 'é uma', 'esse', 'essa', 'este', 'esta'],
+        'after' => ['de merda', 'nojento', 'nojenta', 'imundo', 'imunda', 'do caralho'],
+    ],
     'everyday' => ['louça', 'ver-me', 'pôr-nos'],
     'words' => [
         'sexual' => [
