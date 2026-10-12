@@ -140,6 +140,26 @@ server {
 }
 ```
 
+En vez de la contraseña (o además), se puede limitar por red: dentro del `server`,
+`allow 203.0.113.10; allow 10.8.0.0/24; deny all;` deja entrar solo a esas direcciones
+(la oficina, la VPN). Cualquiera de las dos cosas tiene que estar puesta **en todo el
+`server`**, no solo en `location /`: así cubre también `/assets/` y cualquier ruta nueva.
+
+**Comprobar que quedó bien puesto**, desde afuera y sin credenciales:
+
+```bash
+php database/comprobar_acceso.php https://tu-dominio.com     # o: composer acceso -- https://tu-dominio.com
+```
+
+Pide siete pantallas con datos sin mandar ninguna credencial. Termina con `0` y dice
+`PROTEGIDO` si todas contestan 401 o 403; con `1` y `ABIERTO` si alguna contesta (hay
+que corregir el servidor antes de usar el panel con datos reales); con `2` si no puede
+afirmar nada (una redirección —probá con la dirección a la que redirige, casi siempre
+la https—, un 404, un 500, o que no pueda conectar). Si el acceso se limita por IP, hay
+que correrlo desde una dirección que **no** esté permitida: desde una permitida el
+panel contesta y parece abierto. Conviene repetirlo después de cada cambio en la
+configuración del servidor web. No necesita la base de datos.
+
 Con TLS terminado en nginx, la app detecta HTTPS solo si nginx manda
 `X-Forwarded-Proto: https` en el `fastcgi_param` (agregalo si no está ya en tu
 `fastcgi_params`) — de eso depende que la cookie de sesión salga con `Secure`
@@ -170,6 +190,24 @@ pantallas lo avisan arriba. Para cargar las reales:
 php database/actualizar_tasas.php             # baja las tasas y las guarda
 php database/actualizar_tasas.php --simular   # dice qué cambiaría, sin guardar nada
 ```
+
+**Primera puesta en marcha, en el servidor:**
+
+1. `php database/migrar.php` (las migraciones no borran datos).
+2. `php database/actualizar_tasas.php --simular`. Lee lo que traería la fuente y no guarda
+   nada: dice cuántas monedas actualizaría, las que la fuente no trae, las que rechaza y,
+   en la primera carga, cuántas boletas, pagos y notas de crédito pasarían de la tasa de
+   ejemplo a la real (por moneda).
+3. Si eso es razonable, la misma orden sin `--simular`, y después abrí el Dashboard: el
+   aviso de tasas de ejemplo tiene que haber desaparecido (queda la fecha y la fuente).
+4. Agregá el cron (más abajo). Si algo falla, el comando termina con error sin escribir
+   nada, y el mensaje dice qué (la dirección que muestra es solo el servidor, nunca la
+   clave).
+
+Si el servidor no tiene salida a internet, o la fuente no es la de siempre,
+`--archivo=tasas.json` lee el mismo formato de un archivo. La descarga usa el
+`allow_url_fopen` de PHP (viene activado por defecto) y la verificación de certificados
+del sistema; si falla por eso, el mensaje lo dice.
 
 Baja las tasas de `TASAS_URL` (por defecto `https://open.er-api.com/v6/latest/USD`, de
 ExchangeRate-API: gratis, sin clave, unas 160 monedas, una actualización por día;
@@ -343,6 +381,9 @@ src/
   Config.php           variables de entorno: obligatorias fuera de desarrollo,
                         zona horaria IANA validada, testeado
   Migrador.php          aplica database/migraciones/ y recuerda cuales corrieron
+  Acceso/               ComprobadorDeAcceso: pide el panel sin credenciales y dice si
+                        el servidor web lo protege (database/comprobar_acceso.php),
+                        testeado con un php -S que hace de panel
   Tasas/                las tasas de cambio reales: RespuestaDeTasas lee el JSON
                         de una fuente, DescargaDeTasas lo baja (solo https, sin
                         redirecciones) y ActualizadorDeTasas valida y guarda;
@@ -402,6 +443,8 @@ database/
                         009 = origen de las tasas de cambio, 010 = mayoría de
                         edad de cada país, 011 = la tasa de cambio de cada día)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
+  comprobar_acceso.php   comprueba desde afuera que el panel pide credenciales
+                        (ver «Antes de exponerlo»)
   actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
                         vez por día)
   recrear_con_datos_de_ejemplo.php   SOLO desarrollo: rearma la base y carga datos de ejemplo
@@ -425,7 +468,7 @@ views/                  plantillas PHP: una carpeta por sección o entidad (dash
 tests/
   Unit/                 sin base de datos (calculo de estado, filtros, funciones de vista,
                         paginación, CSRF, router, headers de seguridad, deteccion
-                        de HTTPS)
+                        de HTTPS, el comprobador de acceso)
   Integration/           contra la base real, casi todos en una transaccion que
                         se deshace (un archivo por repositorio, migraciones,
                         auditoría, zona horaria, conexión persistente, que una
