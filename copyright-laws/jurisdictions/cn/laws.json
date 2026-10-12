@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "CN",
+    "country_name": "China",
+    "law_name": "Copyright Law (2020 Amendment)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic rights protected",
+    "moral_rights": "Moral rights recognized",
+    "orphan_works": "Collective administration required",
+    "digital_protection": "Anti-circumvention rules",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "National Copyright Administration",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.nca.moj.gov.cn/"
+  }
+]

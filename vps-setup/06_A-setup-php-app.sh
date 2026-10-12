@@ -3,8 +3,9 @@ set -e
 
 source "$(dirname "$0")/lib.sh"
 
-APP_NAME=${1:-"php-app"}
-DOMAIN=${2:-"app.initech.cl"}
+APP_NAME=${1:-}
+DOMAIN=${2:-}
+require_arg "$DOMAIN" "$0 <nombre-app> <dominio>   (ej. $0 tienda tienda.initech.fun)"
 require_valid name "$APP_NAME" "El nombre de la app (argumento 1)"
 require_valid domain "$DOMAIN" "El dominio (argumento 2)"
 APP_PATH="/var/www/$APP_NAME"
@@ -14,6 +15,7 @@ print_header "06_A" "Configurando Aplicacion PHP: $APP_NAME (Dominio: $DOMAIN)"
 # Carpeta donde vivira esta app (separada de /var/www/landing-page), y su
 # propia carpeta de logs -- si no existe, "nginx -t" falla mas abajo porque
 # Nginx no crea directorios el solo, solo los archivos de log dentro de ellos.
+claim_nginx_vhost "$DOMAIN" "06_A-php $APP_NAME"
 setup_app_directories "$APP_PATH" "$DOMAIN"
 
 # Pagina de prueba minima para confirmar que PHP-FPM + Nginx estan sirviendo
@@ -32,7 +34,9 @@ sudo chmod 644 $APP_PATH/index.php
 # Igual que en 03-configure-nginx-site.sh: un server{} nuevo, con su propio
 # dominio y sus propios logs, apuntando a esta carpeta en vez de la landing page
 echo "Configurando Nginx para aplicación PHP..."
-sudo tee /etc/nginx/sites-available/$APP_NAME > /dev/null <<EOFNGINX
+# El vhost se llama como el DOMINIO (igual que en 03/06_B/06_D), no como la app.
+sudo tee "$NGINX_DIR/sites-available/$DOMAIN" > /dev/null <<EOFNGINX
+# vps-setup: 06_A-php $APP_NAME
 server {
     listen 80;
     listen [::]:80;
@@ -62,12 +66,8 @@ server {
 }
 EOFNGINX
 
-# El enlace en sites-enabled es lo que realmente activa el sitio
-sudo ln -sf /etc/nginx/sites-available/$APP_NAME /etc/nginx/sites-enabled/$APP_NAME
-
-echo "Validando configuración..."
-sudo nginx -t              # valida ANTES de recargar, para no tumbar los sitios que ya funcionan
-sudo systemctl reload nginx
+# Activa el sitio, lo valida con nginx -t (si falla, lo desactiva) y recarga Nginx
+enable_nginx_site "$DOMAIN"
 
 echo ""
 echo "✓ Aplicación PHP configurada"

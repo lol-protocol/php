@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="solids">
-    <g><path d="M12 19.5L12.3 17L13.3 14.8L14.8 12.8L16.8 11.3L19 10.3L21.5 10L41.5 10L44 10.3L46.2 11.3L48.2 12.8L49.7 14.8L52.1 17.9L53.1 20.2L53.4 22.7L53.4 42.7L53.1 45.2L52.1 47.5L50.6 49.4L48.6 50.9L46.4 51.9L43.9 52.2L23.9 52.2L21.4 51.9L19.1 50.9L17.2 49.4L15.7 47.5L13.3 44.2L12.3 42L12 39.5Z" fill="none" stroke="#2E2985" stroke-width="1.8" stroke-linejoin="round"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="none" stroke="#2E2985" stroke-width="1.8" stroke-linejoin="round"/></g>
-  </g>
-  <g class="marks">
-    <path d="M21.5 29.5L41.5 29.5" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
-    <path d="M21.5 20.5L37.5 20.5" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M21.5 38.5L41.5 38.5" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <g><path d="M8 14.5L8.1 13.9L8.3 13.2L8.7 12.7L9.2 12.3L9.9 12.1L10.5 12L39.5 12L40.1 12.1L40.8 12.3L41.3 12.7L41.7 13.2L42.6 14.5L42.9 15.1L43 15.8L42.9 16.4L42.6 17L42.2 17.5L41.7 17.9L41.1 18.2L40.5 18.3L11.5 18.3L10.8 18.2L10.2 17.9L9.7 17.5L9.3 17L8.3 15.8L8.1 15.1Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><rect x="8" y="12" width="34" height="5" rx="2.5" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><rect x="8" y="24" width="48" height="12" rx="6" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M8 45.5L8.1 44.9L8.3 44.2L8.7 43.7L9.2 43.3L9.9 43.1L10.5 43L53.5 43L54.1 43.1L54.8 43.3L55.3 43.7L55.7 44.2L56.6 45.5L56.9 46.1L57 46.8L56.9 47.4L56.6 48L56.2 48.5L55.7 48.9L55.1 49.2L54.5 49.3L11.5 49.3L10.8 49.2L10.2 48.9L9.7 48.5L9.3 48L8.3 46.8L8.1 46.1Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><rect x="8" y="43" width="48" height="5" rx="2.5" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
 </svg>

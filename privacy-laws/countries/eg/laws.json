@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "EG",
+    "country_name": "Egypt",
+    "law_name": "Personal Data Protection Law",
+    "jurisdiction": "Personal Data Protection Center",
+    "enactment_date": "2020-06-15",
+    "effective_date": "2020-06-15",
+    "scope": "Egyptian Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "Lawful processing",
+    "data_categories": "Personal data",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "PDPC",
+    "penalties_range": "Administrative penalties",
+    "exemptions": "Government functions",
+    "website_url": "https://pdpc.eg/",
+    "language": "Arabic/English",
+    "notes": "North Africa region"
+  }
+]

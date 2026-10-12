@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e   # Si cualquier comando falla, el script se detiene (evita seguir con un sistema a medio actualizar)
 
-echo "========================================"
-echo "[01] Actualizacion del Sistema"
-echo "========================================"
-echo ""
+source "$(dirname "$0")/lib.sh"
+
+print_header "01" "Actualizacion del Sistema"
 
 # Ajustes de apt para que una instalacion larga (sobre todo por ssh -t, como remote-run.sh) no se
 # quede colgada ni a medias:

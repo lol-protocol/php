@@ -7,14 +7,13 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.7" cy="54.6" rx="19" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="33.2" cy="58.6" rx="20.4" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M12 19.5L12.3 17L13.3 14.8L14.8 12.8L16.8 11.3L19 10.3L21.5 10L41.5 10L44 10.3L46.2 11.3L48.2 12.8L49.7 14.8L52.1 17.9L53.1 20.2L53.4 22.7L53.4 42.7L53.1 45.2L52.1 47.5L50.6 49.4L48.6 50.9L46.4 51.9L43.9 52.2L23.9 52.2L21.4 51.9L19.1 50.9L17.2 49.4L15.7 47.5L13.3 44.2L12.3 42L12 39.5Z" fill="#2E2985"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_action_save_indigo)"/></g>
+    <g><path d="M11 20L11.3 17.7L12.2 15.5L13.6 13.6L15.5 12.2L17.7 11.3L20 11L44 11L46.3 11.3L48.5 12.2L50.4 13.6L51.8 15.5L54.2 18.7L55.1 20.9L55.4 23.2L55.4 47.2L55.1 49.5L54.2 51.7L52.8 53.6L50.9 55L48.7 55.9L46.4 56.2L22.4 56.2L20.1 55.9L17.9 55L16 53.6L14.6 51.7L12.2 48.5L11.3 46.3L11 44Z" fill="#2E2985"/><rect x="11" y="11" width="42" height="42" rx="9" fill="url(#grad_action_save_indigo)"/></g>
   </g>
   <g class="marks">
-    <path d="M23.5 20.5L36.5 20.5L40.5 24.5L40.5 38.5L23.5 38.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M27.5 20.5L27.5 26.5L34.5 26.5L34.5 20.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M27.5 38.5L27.5 32.5L35.5 32.5L35.5 38.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M25 28a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0 -13 0Z" fill="#FFFFFF"/>
+    <path d="M23 42L40 42" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

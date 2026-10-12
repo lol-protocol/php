@@ -20,12 +20,16 @@
  *   letra es parte de la palabra.
  * - 'legit' => [...]: palabras con letra doble legítima (y apellidos) cuya lectura
  *   sin repetidas coincide con un insulto: «calle» → «calé». Nunca se leen colapsadas.
- *   ChatTopicsConfigTest verifica que cada una siga haciendo falta.
+ * - 'everyday' => [...]: palabras cotidianas que, escritas exactamente así (da igual
+ *   la mayúscula), no se buscan en el chat porque sin tildes coinciden con un término:
+ *   «moño» → «mono», «calló» → «callo». Ver EverydayWords.
+ *   ChatTopicsExemptionsTest verifica que cada palabra de legit y everyday siga haciendo falta.
  *
  * Severidad: high => bloquear, medium => revisión humana, low => sólo se informa.
  */
 return [
     'meta' => ['code' => 'spa', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'everyday' => ['mudó', 'moño', 'calló'],
     'legit' => ['calle', 'morro', 'chollo', 'cholla', 'gorrilla', 'mulla', 'mullo', 'pellon'],
     'words' => [
         'sexual' => [

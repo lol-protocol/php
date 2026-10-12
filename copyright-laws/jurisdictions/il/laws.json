@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "IL",
+    "country_name": "Israel",
+    "law_name": "Israeli Copyright Law",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic rights protected",
+    "moral_rights": "Moral rights recognized",
+    "orphan_works": "Collective management allowed",
+    "digital_protection": "Copyright compliance",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Israeli Patent Office",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.justice.gov.il/"
+  }
+]

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_genre_economics_green" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#9D9D9D"/>
-      <stop offset="1" stop-color="#6F6F6F"/>
+    <linearGradient id="grad_genre_economics_teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9A9A9A"/>
+      <stop offset="1" stop-color="#6A6A6A"/>
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="30.8" cy="56.8" rx="14.5" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="32.8" cy="56.2" rx="20.1" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M15 11.5L15.1 10.6L15.5 9.8L16 9L16.8 8.5L17.6 8.1L18.5 8L40.5 8L41.4 8.1L42.2 8.5L43 9L43.5 9.8L46.1 13.1L46.4 14L46.5 14.9L46.5 50.9L46.4 51.8L46.1 52.6L45.5 53.3L44.8 53.9L43.9 54.2L43 54.4L21 54.4L20.1 54.2L19.3 53.9L18.5 53.3L18 52.6L15.5 49.2L15.1 48.4L15 47.5Z" fill="#F1F1F1"/><rect x="15" y="8" width="29" height="43" rx="3.5" fill="url(#grad_genre_economics_green)"/></g>
+    <g><path d="M11 18L11.3 15.7L12.2 13.5L13.6 11.6L15.5 10.2L17.7 9.3L20 9L42 9L44.3 9.3L46.5 10.2L48.4 11.6L49.8 13.5L53.4 18.3L54.3 20.5L54.6 22.8L54.6 44.8L54.3 47.1L53.4 49.3L52 51.2L50.1 52.6L47.9 53.5L45.6 53.8L23.6 53.8L21.3 53.5L19.1 52.6L17.2 51.2L15.8 49.3L12.2 44.5L11.3 42.3L11 40Z" fill="#3E3E3E"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_economics_teal)"/></g>
   </g>
   <g class="marks">
-    <path d="M19.5 13L19.5 46" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
-    <path d="M25.5 37.5V31.5M31.5 37.5V26.5M37.5 37.5V20.5" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M44 29L37.2 40.7L23.8 40.7L17 29L23.7 17.3L37.2 17.3Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M25.7 29a4.8 4.8 0 1 0 9.7 0a4.8 4.8 0 1 0 -9.7 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

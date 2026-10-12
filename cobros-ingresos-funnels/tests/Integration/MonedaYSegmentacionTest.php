@@ -13,7 +13,7 @@ use DateTimeImmutable;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. Requiere haber
- * corrido antes `php database/seed.php` (mismas variables) para tener datos.
+ * corrido antes `php database/recrear_con_datos_de_ejemplo.php` (mismas variables) para tener datos.
  */
 final class MonedaYSegmentacionTest extends IntegracionTestCase
 {
@@ -29,13 +29,13 @@ final class MonedaYSegmentacionTest extends IntegracionTestCase
 
     public function testMoneyMonedaCombinaSimboloMontoYCodigo(): void
     {
-        $texto = money_moneda(1234.5, 'USD');
+        $texto = dinero_en_moneda(1234.5, 'USD');
         self::assertSame('$1,234.50 USD', $texto);
     }
 
     public function testMoneyMonedaPoneElSignoAntesDelSimbolo(): void
     {
-        self::assertSame('-$1,234.50 USD', money_moneda(-1234.5, 'USD'));
+        self::assertSame('-$1,234.50 USD', dinero_en_moneda(-1234.5, 'USD'));
     }
 
     /**
@@ -86,8 +86,11 @@ final class MonedaYSegmentacionTest extends IntegracionTestCase
     /**
      * El dashboard agrupa con la misma expresion de RangoEdad: un cliente de
      * 16 anios con una boleta tiene que salir en su propio tramo y no como
-     * adulto de "18-24". El seed no genera menores, asi que el tramo solo
-     * existe porque este test crea al cliente.
+     * adulto de "18-24". Ya no se pueden dar de alta menores (migracion 007),
+     * pero una base anterior a esa regla puede tenerlos, y es donde mas importa
+     * verlos: se simula uno apagando el trigger de altas solo dentro de la
+     * transaccion de este test, que se deshace al terminar. El seed no genera
+     * menores.
      */
     public function testLaSegmentacionPorEdadMuestraAlMenorEnSuPropioTramo(): void
     {
@@ -95,6 +98,7 @@ final class MonedaYSegmentacionTest extends IntegracionTestCase
         $base = $clientes->porId(1);
         self::assertNotNull($base, 'este test asume que el cliente #1 existe (lo trae el seed)');
 
+        Database::connection()->exec('ALTER TABLE clientes DISABLE TRIGGER clientes_mayor_de_edad_alta');
         $hoy = new DateTimeImmutable('today');
         $menorId = $clientes->crear([
             'nombre' => 'Menor de prueba',
@@ -152,8 +156,8 @@ final class MonedaYSegmentacionTest extends IntegracionTestCase
     public function testCadaDimensionRepartePorCompletoLaFacturacionYLosClientes(): void
     {
         $esperado = Database::connection()->query(
-            'SELECT COALESCE(SUM(b.monto * m.tasa_a_usd), 0) AS total, COUNT(DISTINCT b.cliente_id) AS clientes
-             FROM boletas b JOIN monedas m ON m.codigo = b.moneda_codigo
+            'SELECT COALESCE(SUM(b.monto * b.tasa_a_usd), 0) AS total, COUNT(DISTINCT b.cliente_id) AS clientes
+             FROM boletas b
              WHERE NOT b.anulada'
         )->fetch();
         self::assertNotFalse($esperado);

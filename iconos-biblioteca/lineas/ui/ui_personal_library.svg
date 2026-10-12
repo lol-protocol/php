@@ -8,7 +8,4 @@
     <g><path d="M39 16L39.1 15.5L39.3 15L39.6 14.6L40 14.3L40.5 14.1L41 14L46 14L46.5 14.1L47 14.3L47.4 14.6L47.7 15L48.9 16.6L49.1 17.1L49.2 17.6L49.2 40.6L49.1 41.1L48.9 41.6L48.6 42L48.2 42.3L47.7 42.5L47.2 42.6L42.2 42.6L41.7 42.5L41.2 42.3L40.8 42L40.5 41.6L39.3 40L39.1 39.5L39 39Z" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/><rect x="39" y="14" width="9" height="27" rx="2" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/></g>
     <g><path d="M39.2 19.1L40.4 20.7A8.5 8.5 0 0 0 54 10.5L52.8 8.9A8.5 8.5 0 0 0 39.2 19.1Z" fill="none" stroke="#82112A" stroke-width="1.8" stroke-linejoin="round"/><circle cx="46" cy="14" r="8.5" fill="none" stroke="#82112A" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
-  <g class="marks">
-    <path d="M46 18.4C39.4 13.4 42.7 8.5 46 11.8C49.3 8.5 52.6 13.4 46 18.4Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-  </g>
 </svg>

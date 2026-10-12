@@ -60,7 +60,7 @@ return [
             ['word' => 'cebol', 'riskType' => 'fisico', 'severity' => 'high'],
             ['word' => 'pendek', 'riskType' => 'fisico', 'severity' => 'low'],
             ['word' => 'botak', 'riskType' => 'fisico', 'severity' => 'medium'],
-            ['word' => 'bau', 'riskType' => 'fisico', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'bau', 'riskType' => 'fisico', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'kotor', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'nenek tua', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'gembrot', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -83,7 +83,7 @@ return [
             ['word' => 'bisu', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'gagap', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'lumpuh', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'gila', 'riskType' => 'discapacidad', 'severity' => 'high', 'nameCollision' => true],
+            ['word' => 'gila', 'riskType' => 'discapacidad', 'severity' => 'high', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'sinting', 'riskType' => 'discapacidad', 'severity' => 'high'],
         ],
         'moral' => [
@@ -130,7 +130,7 @@ return [
             ['word' => 'bedebah', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'kampret', 'riskType' => 'moral', 'severity' => 'high'],
             ['word' => 'jahanam', 'riskType' => 'moral', 'severity' => 'high'],
-            ['word' => 'sampah', 'riskType' => 'moral', 'severity' => 'high'],
+            ['word' => 'sampah', 'riskType' => 'moral', 'severity' => 'high', 'ambiguous' => true],
         ],
         'gender' => [
             ['word' => 'banci', 'riskType' => 'genero', 'severity' => 'high'],

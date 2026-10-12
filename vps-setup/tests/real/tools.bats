@@ -12,7 +12,7 @@ teardown() {
     [ -f "$BATS_TEST_TMPDIR/named.conf.local.orig" ] && cp "$BATS_TEST_TMPDIR/named.conf.local.orig" /etc/bind/named.conf.local
     [ -f "$BATS_TEST_TMPDIR/named.conf.options.orig" ] && cp "$BATS_TEST_TMPDIR/named.conf.options.orig" /etc/bind/named.conf.options
     rm -f "/etc/bind/zones/db.$ZD" /etc/fail2ban/jail.local /etc/apt/apt.conf.d/20auto-upgrades
-    rm -f "/etc/systemd/system/$APP.service" "/etc/nginx/sites-enabled/$APP" "/etc/nginx/sites-available/$APP"
+    rm -f "/etc/systemd/system/$APP.service" /etc/nginx/sites-enabled/bats-real-py.example.com /etc/nginx/sites-available/bats-real-py.example.com
     rm -rf "/var/www/$APP" "/var/log/nginx/bats-real-py.example.com"
 }
 
@@ -58,6 +58,13 @@ run_06c() { run bash "$VPS_DIR/06_C-setup-dns-server.sh" $ZD 203.0.113.7 sdns2.o
     run named-checkconf;                          [ "$status" -eq 0 ]
     run named-checkzone $ZD /etc/bind/zones/db.$ZD
     [ "$status" -eq 0 ]; [[ "$output" == *"OK"* ]]
+    # CAA (solo Let's Encrypt) siempre; AAAA solo con VPS_IP6
+    named-checkzone -o - $ZD /etc/bind/zones/db.$ZD | grep -qE 'CAA[[:space:]]+0 issue "letsencrypt.org"'
+    ! grep -q AAAA /etc/bind/zones/db.$ZD
+    VPS_IP6=2001:db8::7 run_06c; [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    run named-checkzone -o - $ZD /etc/bind/zones/db.$ZD
+    [ "$status" -eq 0 ]
+    [ "$(echo "$output" | grep -cE 'AAAA[[:space:]]+2001:db8::7')" -eq 3 ]
 }
 
 @test "06_C: re-ejecutar no duplica la zona y el serial SUBE (si no, OVH no vera los cambios)" {
@@ -87,6 +94,7 @@ run_06c() { run bash "$VPS_DIR/06_C-setup-dns-server.sh" $ZD 203.0.113.7 sdns2.o
     for _ in $(seq 1 25); do /usr/bin/dig @127.0.0.1 +short +time=1 +tries=1 $ZD A 2>/dev/null | grep -q . && break; sleep 0.4; done
     run /usr/bin/dig @127.0.0.1 +short $ZD A;          [ "$output" = "203.0.113.7" ]
     run /usr/bin/dig @127.0.0.1 +short www.$ZD A;      [ "$output" = "203.0.113.7" ]
+    run /usr/bin/dig @127.0.0.1 +short $ZD CAA;        [[ "$output" == *'0 issue "letsencrypt.org"'* ]]
     run /usr/bin/dig @127.0.0.1 +short $ZD NS;         [[ "$output" == *"ns1.$ZD."* ]]; [[ "$output" == *"sdns2.ovh.ca."* ]]
     # servidor solo autoritativo: no resuelve nombres ajenos (no es un resolvedor abierto)
     run /usr/bin/dig @127.0.0.1 +time=2 +tries=1 example.org A
@@ -146,6 +154,8 @@ exec "$@"'
     [[ "$cmd" == "certbot run --nginx"* ]]
     run bash -c "$cmd --help"
     [ "$status" -eq 0 ] || { echo "$cmd"; echo "$output"; return 1; }
+    run bash -c "$cmd --test-cert --help"     # lo que agrega 04 --staging
+    [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     run bash -c "$cmd --opcion-inventada"
     [ "$status" -ne 0 ]
     # el subcomando "certify" (error de una version anterior) no debe volver; certbot --help

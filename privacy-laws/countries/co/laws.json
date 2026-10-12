@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "CO",
+    "country_name": "Colombia",
+    "law_name": "Organic Law 1581 of 2012",
+    "jurisdiction": "Superintendencia",
+    "enactment_date": "2012-10-17",
+    "effective_date": "2013-07-01",
+    "scope": "Colombian Residents",
+    "applies_to": "All entities",
+    "key_requirements": "Lawful basis & consent",
+    "data_categories": "Personal data",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "Superintendence of Industry",
+    "penalties_range": "Fines up to COP 100M",
+    "exemptions": "Government function",
+    "website_url": "https://www.superindustria.gov.co/",
+    "language": "Spanish",
+    "notes": "South America region"
+  }
+]

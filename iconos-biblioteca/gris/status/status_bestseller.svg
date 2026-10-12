@@ -13,8 +13,6 @@
     <g><path d="M15.4 41.7L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.6 18.3A19.5 19.5 0 0 0 15.4 41.7Z" fill="#474747"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_bestseller_orange)"/></g>
   </g>
   <g class="marks">
-    <path d="M22.4 39L22.4 31L27.6 31L27.6 39Z" fill="#FFFFFF"/>
-    <path d="M28.4 39L28.4 24L33.6 24L33.6 39Z" fill="#FFFFFF"/>
-    <path d="M34.4 39L34.4 34L39.6 34L39.6 39Z" fill="#FFFFFF"/>
+    <path d="M22 41V35M31 41V24M40 41V30" fill="none" stroke="#FFFFFF" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

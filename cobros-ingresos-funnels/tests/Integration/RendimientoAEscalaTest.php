@@ -7,7 +7,7 @@ namespace App\Tests\Integration;
 use App\Database;
 use App\Repositories\BoletaRepository;
 use App\Repositories\ClienteRepository;
-use App\Repositories\IngresosRepository;
+use App\Repositories\IngresosYCobrosRepository;
 
 /**
  * Lo que tarda una pantalla con 100 mil boletas no se ve con las ~130 que deja
@@ -83,13 +83,13 @@ final class RendimientoAEscalaTest extends IntegracionTestCase
 
     public function testLaCarteraPorAntiguedadSeSumaEnSqlYNoTraeLasBoletasAPhp(): void
     {
-        $repo = new IngresosRepository();
-        $antes = $repo->carteraAging();
+        $repo = new IngresosYCobrosRepository();
+        $antes = $repo->carteraPorAntiguedad();
         $moneda = $this->cargarBoletas();
         $despues = [];
 
         $pico = $this->picoDeMemoria(function () use ($repo, &$despues): void {
-            $despues = $repo->carteraAging();
+            $despues = $repo->carteraPorAntiguedad();
         });
 
         $tasa = (float) Database::connection()->query("SELECT tasa_a_usd FROM monedas WHERE codigo = '{$moneda}'")->fetchColumn();

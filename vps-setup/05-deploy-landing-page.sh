@@ -3,7 +3,8 @@ set -e
 
 source "$(dirname "$0")/lib.sh"
 
-DOMAIN=${1:-"initech.fun"}
+DOMAIN=${1:-}
+require_arg "$DOMAIN" "$0 <dominio>   (ej. $0 initech.fun)"
 require_valid domain "$DOMAIN" "El dominio (argumento 1)"
 # Debe coincidir con el APP_PATH de 03-configure-nginx-site.sh (una carpeta
 # por dominio) -- si no, esto reescribiria la carpeta equivocada o una que

@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "CZ",
+    "country_name": "Czech Republic",
+    "law_name": "Act on Protection of Personal Data",
+    "jurisdiction": "Office for Personal Data Protection",
+    "enactment_date": "2019-02-01",
+    "effective_date": "2021-01-01",
+    "scope": "Czech Residents",
+    "applies_to": "All entities",
+    "key_requirements": "GDPR compliance + amendments",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "Czech DPA",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://www.uoou.cz/",
+    "language": "Czech",
+    "notes": "GDPR implementation"
+  }
+]

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="solids">
-    <g><path d="M23.8 23.4L25.6 25.8A9 9 0 0 0 40 15L38.2 12.6A9 9 0 0 0 23.8 23.4Z" fill="none" stroke="#014D73" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="18" r="9" fill="none" stroke="#014D73" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M15 41.5L15.4 38.8L16.4 36.2L18.1 34.1L20.2 32.4L22.8 31.4L25.5 31L36.5 31L39.2 31.4L41.8 32.4L43.9 34.1L45.6 36.2L47.4 38.6L48.4 41.2L48.8 43.9L48.4 46.6L47.4 49.1L45.7 51.3L43.5 53L41 54L38.3 54.4L27.3 54.4L24.6 54L22.1 53L19.9 51.3L18.2 49.1L16.4 46.8L15.4 44.2Z" fill="none" stroke="#153988" stroke-width="1.8" stroke-linejoin="round"/><rect x="15" y="31" width="32" height="21" rx="10.5" fill="none" stroke="#153988" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M17.8 39.9L20.2 43.1A16.5 16.5 0 0 0 46.6 23.3L44.2 20.1A16.5 16.5 0 0 0 17.8 39.9Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="30" r="16.5" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
+  </g>
+  <g class="marks">
+    <path d="M25.9 30a5.1 5.1 0 1 0 10.2 0a5.1 5.1 0 1 0 -10.2 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "IN",
+    "country_name": "India",
+    "law_name": "Copyright Act 1957",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 60 years",
+    "author_rights": "First owner is author",
+    "moral_rights": "Moral rights recognized",
+    "orphan_works": "Limited orphan works provision",
+    "digital_protection": "Copyright amendment pending",
+    "fair_use_exceptions": "Educational exemptions",
+    "registration_required": "No",
+    "enforcement_body": "Copyright Board of India",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://copyright.gov.in/"
+  }
+]

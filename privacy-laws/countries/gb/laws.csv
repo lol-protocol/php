@@ -1,0 +1,2 @@
+country_code,country_name,law_name,jurisdiction,enactment_date,effective_date,scope,applies_to,key_requirements,data_categories,retention_period,enforcement_authority,penalties_range,exemptions,website_url,language,notes
+"GB","United Kingdom","Data Protection Act 2018 (DPA 2018)","UK ICO","2018-05-23","2018-05-23","UK Residents","All organizations","GDPR-aligned requirements","Personal data","As long as necessary","UK Information Commissioner's Office","Up to £20M or 4% revenue","Legal obligations","https://www.ico.org.uk/","English","GDPR principles + additional UK rules"

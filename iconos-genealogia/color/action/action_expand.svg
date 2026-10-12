@@ -7,15 +7,13 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.7" cy="54.6" rx="19" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="31.5" cy="56.6" rx="21.5" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M12 19.5L12.3 17L13.3 14.8L14.8 12.8L16.8 11.3L19 10.3L21.5 10L41.5 10L44 10.3L46.2 11.3L48.2 12.8L49.7 14.8L52.1 17.9L53.1 20.2L53.4 22.7L53.4 42.7L53.1 45.2L52.1 47.5L50.6 49.4L48.6 50.9L46.4 51.9L43.9 52.2L23.9 52.2L21.4 51.9L19.1 50.9L17.2 49.4L15.7 47.5L13.3 44.2L12.3 42L12 39.5Z" fill="#883307"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_action_expand_orange)"/></g>
-  </g>
-  <g class="marks">
-    <path d="M28.5 20.5L22.5 20.5L22.5 26.5" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M34.5 20.5L40.5 20.5L40.5 26.5" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M28.5 38.5L22.5 38.5L22.5 32.5" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M34.5 38.5L40.5 38.5L40.5 32.5" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <g><path d="M9 13.3L10 14.7A3.8 3.8 0 0 0 16.1 10.2L15 8.7A3.8 3.8 0 0 0 9 13.3Z" fill="#883307"/><circle cx="12" cy="11" r="3.8" fill="url(#grad_action_expand_orange)"/></g>
+    <g><path d="M47 13.3L48 14.7A3.8 3.8 0 0 0 54.1 10.2L53 8.7A3.8 3.8 0 0 0 47 13.3Z" fill="#883307"/><circle cx="50" cy="11" r="3.8" fill="url(#grad_action_expand_orange)"/></g>
+    <g><path d="M9 51.3L10 52.7A3.8 3.8 0 0 0 16.1 48.2L15 46.7A3.8 3.8 0 0 0 9 51.3Z" fill="#883307"/><circle cx="12" cy="49" r="3.8" fill="url(#grad_action_expand_orange)"/></g>
+    <g><path d="M47 51.3L48 52.7A3.8 3.8 0 0 0 54.1 48.2L53 46.7A3.8 3.8 0 0 0 47 51.3Z" fill="#883307"/><circle cx="50" cy="49" r="3.8" fill="url(#grad_action_expand_orange)"/></g>
+    <g><path d="M25 34.5L26.7 36.7A7.5 7.5 0 0 0 38.7 27.7L37 25.5A7.5 7.5 0 0 0 25 34.5Z" fill="#883307"/><circle cx="31" cy="30" r="7.5" fill="url(#grad_action_expand_orange)"/></g>
   </g>
 </svg>

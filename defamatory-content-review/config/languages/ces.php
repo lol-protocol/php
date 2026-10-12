@@ -118,7 +118,7 @@ return [
             ['word' => 'zdeformovaný', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'ochrnutý', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'blázen', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'šílený', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'šílený', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
             ['word' => 'mrzačka', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'kulhavá', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'bezruká', 'riskType' => 'discapacidad', 'severity' => 'medium'],
@@ -132,7 +132,7 @@ return [
             ['word' => 'zdeformovaná', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'ochrnutá', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'bláznice', 'riskType' => 'discapacidad', 'severity' => 'medium'],
-            ['word' => 'šílená', 'riskType' => 'discapacidad', 'severity' => 'high'],
+            ['word' => 'šílená', 'riskType' => 'discapacidad', 'severity' => 'high', 'ambiguous' => true],
         ],
 
         'moral' => [

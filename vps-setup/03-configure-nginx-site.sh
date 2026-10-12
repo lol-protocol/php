@@ -3,7 +3,8 @@ set -e
 
 source "$(dirname "$0")/lib.sh"
 
-DOMAIN=${1:-"initech.fun"}
+DOMAIN=${1:-}
+require_arg "$DOMAIN" "$0 <dominio>   (ej. $0 initech.fun)"
 require_valid domain "$DOMAIN" "El dominio (argumento 1)"
 # Subcarpeta POR DOMINIO -- sin el "/$DOMAIN" al final, dos dominios distintos
 # (ej. conce.com e initech.fun) terminarian compartiendo la misma carpeta y
@@ -11,6 +12,8 @@ require_valid domain "$DOMAIN" "El dominio (argumento 1)"
 APP_PATH="/var/www/landing-page/$DOMAIN"
 
 print_header "03" "Configuracion de Nginx para $DOMAIN"
+
+claim_nginx_vhost "$DOMAIN" "03-landing"
 
 # Carpeta donde vivira el sitio y carpeta de logs propia para ese dominio
 # (separar los logs por dominio hace mucho mas facil depurar cuando hay varios sitios)
@@ -25,7 +28,8 @@ deploy_files "$SCRIPT_DIR/../landing-page" "$APP_PATH"
 # Los '\$' (con backslash) evitan que bash reemplace esas variables de Nginx
 # (que se resuelven en tiempo de peticion, no ahora al crear el archivo) --
 # a diferencia de $DOMAIN, que si queremos que bash reemplace ahora mismo.
-sudo tee /etc/nginx/sites-available/$DOMAIN > /dev/null <<EOF
+sudo tee "$NGINX_DIR/sites-available/$DOMAIN" > /dev/null <<EOF
+# vps-setup: 03-landing
 server {
     listen 80;
     listen [::]:80;
@@ -41,11 +45,9 @@ server {
         try_files \$uri \$uri/ =404;
     }
 
-    # Por si en el futuro se agregan paginas .php a este mismo sitio
-    location ~ \.php\$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
-    }
+    # Sitio estatico: SIN bloque PHP a proposito. Con uno, cualquier .php que terminara en
+    # esta carpeta (un archivo subido por error, una copia de otra app) se EJECUTARIA.
+    # Las apps PHP van en su propio dominio con 06_A-setup-php-app.sh.
 
     # Bloquea el acceso a archivos ocultos tipo .htaccess/.htpasswd
     location ~ /\.ht {
@@ -56,11 +58,9 @@ EOF
 
 # 'sites-available' guarda la config; el enlace en 'sites-enabled' es lo que
 # realmente activa el sitio (Nginx solo lee lo que hay en sites-enabled)
-sudo ln -sf /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/$DOMAIN
-sudo rm -f /etc/nginx/sites-enabled/default   # quita la pagina de bienvenida por defecto de Nginx
-
-sudo nginx -t              # valida la sintaxis ANTES de recargar (si falla, no rompe el Nginx que ya esta corriendo)
-sudo systemctl reload nginx
+sudo rm -f "$NGINX_DIR/sites-enabled/default"   # quita la pagina de bienvenida por defecto de Nginx
+# Activa, valida con nginx -t (si falla, desactiva este sitio) y recarga
+enable_nginx_site "$DOMAIN"
 
 echo ""
 echo "✓ Nginx configurado para $DOMAIN"

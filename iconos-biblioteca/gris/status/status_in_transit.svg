@@ -13,7 +13,8 @@
     <g><path d="M15.4 41.7L17.8 44.9A19.5 19.5 0 0 0 49 21.5L46.6 18.3A19.5 19.5 0 0 0 15.4 41.7Z" fill="#3B3B3B"/><circle cx="31" cy="30" r="19.5" fill="url(#grad_status_in_transit_sky)"/></g>
   </g>
   <g class="marks">
-    <path d="M17 30h3.5M23.5 30h3" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M29 30L45 30M39 34.8L45 30L39 25.2" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17.3 30a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0Z" fill="#FFFFFF"/>
+    <path d="M25.8 30a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0Z" fill="#FFFFFF"/>
+    <path d="M36.6 30a4.4 4.4 0 1 0 8.8 0a4.4 4.4 0 1 0 -8.8 0Z" fill="#FFFFFF"/>
   </g>
 </svg>

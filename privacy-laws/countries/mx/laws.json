@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "MX",
+    "country_name": "Mexico",
+    "law_name": "Federal Law on Protection of Personal Data (LFPDPPP)",
+    "jurisdiction": "Federal Institute for Data Access",
+    "enactment_date": "2010-06-05",
+    "effective_date": "2011-01-01",
+    "scope": "Mexican Residents",
+    "applies_to": "Private organizations",
+    "key_requirements": "Lawful processing & consent",
+    "data_categories": "Sensitive data",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "INAI (Federal Institute)",
+    "penalties_range": "Up to 600k USD fine",
+    "exemptions": "Government agencies",
+    "website_url": "https://www.gob.mx/inai/",
+    "language": "Spanish",
+    "notes": "GDPR-influenced framework"
+  }
+]

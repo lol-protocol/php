@@ -13,7 +13,7 @@
     <g><path d="M12 19.5L12.3 17L13.3 14.8L14.8 12.8L16.8 11.3L19 10.3L21.5 10L41.5 10L44 10.3L46.2 11.3L48.2 12.8L49.7 14.8L52.1 17.9L53.1 20.2L53.4 22.7L53.4 42.7L53.1 45.2L52.1 47.5L50.6 49.4L48.6 50.9L46.4 51.9L43.9 52.2L23.9 52.2L21.4 51.9L19.1 50.9L17.2 49.4L15.7 47.5L13.3 44.2L12.3 42L12 39.5Z" fill="#303030"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_ui_privacy_ink)"/></g>
   </g>
   <g class="marks">
-    <path d="M31.5 19.5L40.5 23.5V30.5Q40.5 36.5 31.5 39.5Q22.5 36.5 22.5 30.5V23.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M27.5 29.7L30.3 32.3L35.5 26.7" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M19.5 17.5L43.5 17.5L43.5 41.5L19.5 41.5Z" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M26.9 29.5a4.6 4.6 0 1 0 9.2 0a4.6 4.6 0 1 0 -9.2 0Z" fill="#FFFFFF"/>
   </g>
 </svg>

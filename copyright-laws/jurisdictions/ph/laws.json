@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "PH",
+    "country_name": "Philippines",
+    "law_name": "Intellectual Property Code",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Moral rights recognized",
+    "orphan_works": "Collective management required",
+    "digital_protection": "Copyright protection",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Philippine IP Office",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.ipophil.gov.ph/"
+  }
+]

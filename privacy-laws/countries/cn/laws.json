@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "CN",
+    "country_name": "China",
+    "law_name": "Personal Information Protection Law (PIPL)",
+    "jurisdiction": "Cyberspace Administration",
+    "enactment_date": "2021-08-20",
+    "effective_date": "2021-11-01",
+    "scope": "Chinese Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "Lawful processing & consent",
+    "data_categories": "Personal data",
+    "retention_period": "Not indefinitely",
+    "enforcement_authority": "CAC (Cyberspace Admin)",
+    "penalties_range": "Administrative penalties",
+    "exemptions": "Government functions",
+    "website_url": "https://www.cac.gov.cn/",
+    "language": "Chinese",
+    "notes": "China's privacy law"
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "AR",
+    "country_name": "Argentina",
+    "law_name": "Argentine Copyright Law (Ley 11.723)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Moral rights recognized",
+    "orphan_works": "Collective administration required",
+    "digital_protection": "Copyright enforcement",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Argentine Copyright Office",
+    "treaties_signatory": "Berne/TRIPS",
+    "linked_resources": "https://www.minplan.gob.ar/"
+  }
+]

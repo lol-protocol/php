@@ -8,6 +8,8 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`url-routing/`](url-routing/docs/README_URLS.md) | Routing de URLs para los sitios de genealogía y POS (Contrastocolor): el tipo de recurso se infiere de la forma del primer segmento (cantidad de dígitos, letras de lugar), no de palabras. |
 | [`web-animations/`](web-animations/) | Galería de demostración de 36 animaciones HTML/CSS/JS. |
 | [`document-formats/`](document-formats/) | Base de datos de formatos de documento y papel por país. |
+| [`privacy-laws/`](privacy-laws/) | Base de datos de leyes de privacidad por país, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
+| [`copyright-laws/`](copyright-laws/) | Base de datos de leyes de derechos de autor por jurisdicción, con buscador web, API PHP y esquema MySQL. Informativa: no es asesoría legal. |
 | [`marketing/`](marketing/) | Frases y textos de marketing para un proyecto de genealogía: lemas, eslóganes, redes sociales y correo. |
 | [`phone-directory/`](phone-directory/) | Parser de directorios telefónicos históricos (6 idiomas) para registros genealógicos. |
 | [`psychology-and-marketing/`](psychology-and-marketing/) | Guía de psicología humana y neuromarketing ético para diseñar productos sin violar la privacidad del usuario. Solo documentos, sin código ni CI. |
@@ -16,6 +18,7 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`vps-setup/`](vps-setup/) | Scripts para configurar desde cero un VPS Ubuntu (Nginx, PHP, Python, PostgreSQL, SSL). |
 | [`landing-page/`](landing-page/) | Landing page estática que despliegan los scripts de `vps-setup/`. |
 | [`iconos-genealogia/` y `iconos-biblioteca/`](ICONOS_README.md) | Dos sets de iconos SVG abstractos en 2.5D, sin texto: árbol genealógico (172 iconos) y biblioteca virtual (161), cada uno en 3 variantes. Galería en `galeria-iconos.html`, generador y validador en `iconos-tools/`. |
+| [`marcalibros-plataforma-pos-brand-identity/`](marcalibros-plataforma-pos-brand-identity/) | Identidad de marca de Marcalibros (marcadores de lectura) para Plataforma POS: tokens de marca, iconos SVG, 1000 marcalibros (10 movimientos literarios y 10 tipos de texto) con su vista previa JPG, paisajes JPG, el generador en Python, un módulo PHP para crear marcalibros propios a partir de imágenes subidas y una aplicación web independiente, sin cuentas, para explorarlos y crearlos. Sin CI. |
 
 Cada carpeta tiene su propio README con instrucciones de instalación y uso, salvo los sets de
 iconos (`iconos-genealogia/`, `iconos-biblioteca/`, `iconos-tools/`), documentados juntos en
@@ -23,7 +26,8 @@ iconos (`iconos-genealogia/`, `iconos-biblioteca/`, `iconos-tools/`), documentad
 tests; `landing-page/` es un solo archivo; `psychology-and-marketing/` es solo texto; `marketing/`
 es texto e imágenes con dos scripts PHP sueltos (`render.php` e `iconos/vista-previa.php`), sin
 tests ni CI; y los sets de iconos son SVG más un generador/validador en
-Python (`iconos-tools/`) que no corre en CI. La única dependencia entre proyectos es:
+Python (`iconos-tools/`); el job `iconos` del CI valida los SVG y comprueba que coincidan con el
+generador. La única dependencia entre proyectos es:
 **`phone-directory/` requiere `defamatory-content-review/`** (usa sus clases de plegado de
 acentos y claves fonéticas) — su `composer.json` la declara como dependencia Composer
 (`lol-protocol/defamatory-content-review`, repositorio `path` a `../defamatory-content-review`),
@@ -66,6 +70,8 @@ proyecto.
 - `document-formats`: tests en Node de `document-formats/`.
 - `document-formats-database`: importa `document-formats/` a MySQL (dos veces, para comprobar que no duplica filas) y lo valida contra los CSV.
 - `web-animations`: prueba de humo de las animaciones.
+- `iconos`: valida los dos sets de iconos (`iconos-tools/validate.py`) y que los SVG commiteados sean exactamente los que produce `iconos-tools/build.py`.
+- `legal-data`: pruebas de `privacy-laws/` y `copyright-laws/` (los CSV maestros, los archivos por país, el lector de CSV de la interfaz y que el README diga lo que hay) y la sintaxis de su API y su importador.
 
 `sistema-nuevo/`, `vps-setup/` y `cobros-ingresos-funnels/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml` y `pruebas-cobros-ingresos-funnels.yml`).
 

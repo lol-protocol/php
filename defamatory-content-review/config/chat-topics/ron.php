@@ -3,6 +3,7 @@
 /** Romanian chat topics — see spa.php for the format and severity meaning. */
 return [
     'meta' => ['code' => 'ron', 'kind' => 'chat-topics'],
+    'everyday' => ['muta'],
     'words' => [
         'sexual' => [
             ['word' => 'porno', 'riskType' => 'sexual', 'severity' => 'high'],

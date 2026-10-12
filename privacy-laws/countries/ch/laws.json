@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "CH",
+    "country_name": "Switzerland",
+    "law_name": "Federal Data Protection Act (FADP)",
+    "jurisdiction": "Federal Data Protection & Information Commissioner",
+    "enactment_date": "2022-09-28",
+    "effective_date": "2023-09-01",
+    "scope": "Swiss Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "Lawful basis & transparency",
+    "data_categories": "Personal data",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "Swiss DPA Commissioner",
+    "penalties_range": "Up to CHF 100k penalty",
+    "exemptions": "Public interest exceptions",
+    "website_url": "https://www.edoeb.admin.ch/",
+    "language": "German/French/Italian",
+    "notes": "GDPR-aligned European standard"
+  }
+]

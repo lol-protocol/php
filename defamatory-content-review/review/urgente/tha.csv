@@ -1,0 +1,8 @@
+seccion,termino,origen,categoria,riskType,severidad,marcas,rango,decision_chat,correcto,comentario,pregunta,ejemplos
+término,บ้า,diccionario,phikan,discapacidad,high,ambiguous,,approve,,,"Provisional: el chat lo ignora suelto. ¿Es casi siempre exclamación? ¿O debe volver a marcarse?","บ้าจริง → approve · บ้าเอ๊ย → approve · คุณบ้าไปแล้ว → approve · บ้าไปแล้ว → approve"
+término,ไอ้บ้า,diccionario,panya,intelectual,medium,,,review,,,"¿Insulto dirigido a alguien? ¿Severidad correcta?","ไอ้บ้าเอ๊ย → review · ไอ้บ้านี่ → review"
+término,คนบ้า,diccionario,panya,intelectual,medium,,,review,,,"Añadido provisionalmente. ¿Insulto o descripción?","แกมันคนบ้า → review · คนบ้า → review"
+término,ยัยบ้า,diccionario,panya,intelectual,medium,,,review,,,"Añadido provisionalmente.","ยัยบ้า → review"
+término,อีบ้า,diccionario,panya,intelectual,medium,,,review,,,"Añadido provisionalmente.","อีบ้า → review"
+término,นังบ้า,diccionario,panya,intelectual,medium,,,review,,,"Añadido provisionalmente.","นังบ้า → review"
+término,แขก,diccionario,chattiphan,etnico,high,nameCollision,,review,,,"«Invitado» y también insulto étnico. ¿Marcarlo ambiguous? Escribe en comentario qué compuestos son despectivos.","เรามีแขก → review · ไอ้แขก → review"

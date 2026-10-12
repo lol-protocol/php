@@ -1,0 +1,45 @@
+{
+    "name": "lol-protocol/marcalibros-app",
+    "description": "Aplicación web independiente de Marcalibros: catálogo de 1000 marcalibros y creación de marcalibros propios, sin cuentas",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "LOL Protocol Team"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../php",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "lol-protocol/marcalibros-propios": "1.0.0"
+                }
+            }
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-mbstring": "*",
+        "lol-protocol/marcalibros-propios": "^1.0"
+    },
+    "suggest": {
+        "ext-exif": "Permite corregir la orientación de las fotos tomadas con el celular"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MarcalibrosApp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MarcalibrosApp\\Tests\\": "tests/"
+        }
+    }
+}

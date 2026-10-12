@@ -1,0 +1,2 @@
+country_code,country_name,law_name,jurisdiction,enactment_date,effective_date,scope,applies_to,key_requirements,data_categories,retention_period,enforcement_authority,penalties_range,exemptions,website_url,language,notes
+"DE","Germany","Federal Data Protection Act (BDSG)","Federal & State DPAs","2018-07-01","2018-07-01","German Residents","All organizations","GDPR + German provisions","Personal data","As long as necessary","German Data Protection Authorities","Up to €20M or 4% revenue","Legal obligations","https://www.bfdi.bund.de/","German","GDPR implementation"

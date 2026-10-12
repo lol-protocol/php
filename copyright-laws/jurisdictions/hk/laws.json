@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "HK",
+    "country_name": "Hong Kong",
+    "law_name": "Copyright Ordinance",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic rights only",
+    "moral_rights": "Limited moral rights",
+    "orphan_works": "Collective management allowed",
+    "digital_protection": "Copyright compliance",
+    "fair_use_exceptions": "Fair use exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Hong Kong IP Department",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.ipd.gov.hk/"
+  }
+]

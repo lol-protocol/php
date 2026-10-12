@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "ES",
+    "country_name": "Spain",
+    "law_name": "Spanish Copyright Act (Law 23/2006)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Full economic rights protected",
+    "moral_rights": "Paternity & integrity (limited)",
+    "orphan_works": "Compulsory licensing exists",
+    "digital_protection": "Copyright protection law",
+    "fair_use_exceptions": "Educational fair use",
+    "registration_required": "No",
+    "enforcement_body": "Spanish Patent and Trademark Office",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.oepm.es/"
+  }
+]

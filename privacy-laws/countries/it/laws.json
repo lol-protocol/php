@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "IT",
+    "country_name": "Italy",
+    "law_name": "Data Protection Code (Codice Della Privacy)",
+    "jurisdiction": "Garante Per La Protezione",
+    "enactment_date": "2003-06-30",
+    "effective_date": "2003-12-01",
+    "scope": "Italian Residents",
+    "applies_to": "Public & private sector",
+    "key_requirements": "GDPR + Italian law",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "Garante (Italian Authority)",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://www.garanteprivacy.it/",
+    "language": "Italian",
+    "notes": "GDPR + Italian amendments"
+  }
+]

@@ -5,14 +5,16 @@
       <stop offset="0" stop-color="#9A9A9A"/>
       <stop offset="1" stop-color="#6A6A6A"/>
     </linearGradient>
+    <linearGradient id="grad_action_review_sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#969696"/>
+      <stop offset="1" stop-color="#656565"/>
+    </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.7" cy="54.6" rx="19" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="32.3" cy="54.5" rx="20.5" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M12 19.5L12.3 17L13.3 14.8L14.8 12.8L16.8 11.3L19 10.3L21.5 10L41.5 10L44 10.3L46.2 11.3L48.2 12.8L49.7 14.8L52.1 17.9L53.1 20.2L53.4 22.7L53.4 42.7L53.1 45.2L52.1 47.5L50.6 49.4L48.6 50.9L46.4 51.9L43.9 52.2L23.9 52.2L21.4 51.9L19.1 50.9L17.2 49.4L15.7 47.5L13.3 44.2L12.3 42L12 39.5Z" fill="#3E3E3E"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_action_review_teal)"/></g>
-  </g>
-  <g class="marks">
-    <path d="M22.5 21.5L40.5 21.5L40.5 32.5L32.5 32.5L27.5 37.5L27.5 32.5L22.5 32.5Z" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <g><path d="M12.8 34.4L14.9 37.2A14 14 0 0 0 37.3 20.4L35.2 17.6A14 14 0 0 0 12.8 34.4Z" fill="#3E3E3E"/><circle cx="24" cy="26" r="14" fill="url(#grad_action_review_teal)"/></g>
+    <g><path d="M38.6 46.8L40.2 48.9A8 8 0 0 0 53 39.3L51.4 37.2A8 8 0 0 0 38.6 46.8Z" fill="#3B3B3B"/><circle cx="45" cy="42" r="8" fill="url(#grad_action_review_sky)"/></g>
   </g>
 </svg>

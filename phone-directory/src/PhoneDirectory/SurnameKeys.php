@@ -2,8 +2,8 @@
 
 namespace PhoneDirectory;
 
-use DefamatoryContentReview\AccentFolding;
-use DefamatoryContentReview\PhoneticFolderRegistry;
+use DefamatoryContentReview\Normalization\AccentFolding;
+use DefamatoryContentReview\Phonetic\PhoneticFolderRegistry;
 use PhoneDirectory\Entity\PersonName;
 
 /**

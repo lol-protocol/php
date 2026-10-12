@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "AT",
+    "country_name": "Austria",
+    "law_name": "Austrian Copyright Act",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Full economic rights",
+    "moral_rights": "Strong moral rights",
+    "orphan_works": "Collective management required",
+    "digital_protection": "Copyright enforcement",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Austrian Patent Office",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.patentamt.at/"
+  }
+]

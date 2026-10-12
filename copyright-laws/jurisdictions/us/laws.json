@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "US",
+    "country_name": "United States",
+    "law_name": "Copyright Act (17 USC)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years or 95 years (works for hire)",
+    "author_rights": "Full economic rights",
+    "moral_rights": "Not explicitly protected",
+    "orphan_works": "Compulsory licensing allowed",
+    "digital_protection": "DMCA anti-circumvention",
+    "fair_use_exceptions": "Fair use doctrine",
+    "registration_required": "No (but beneficial)",
+    "enforcement_body": "U.S. Copyright Office",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.copyright.gov/"
+  }
+]

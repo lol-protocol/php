@@ -12,7 +12,7 @@
       "options": {
         "symlink": true,
         "versions": {
-          "lol-protocol/defamatory-content-review": "4.3.0"
+          "lol-protocol/defamatory-content-review": "5.0.0"
         }
       }
     },
@@ -22,7 +22,7 @@
     }
   ],
   "require": {
-    "lol-protocol/defamatory-content-review": "^4.3",
+    "lol-protocol/defamatory-content-review": "^5.0",
     "lol-protocol/phone-directory": "@dev"
   }
 }

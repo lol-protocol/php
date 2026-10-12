@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "JP",
+    "country_name": "Japan",
+    "law_name": "Act on Protection of Personal Information (APPI)",
+    "jurisdiction": "Personal Information Protection Commission",
+    "enactment_date": "2017-05-30",
+    "effective_date": "2020-04-01",
+    "scope": "Japanese Residents",
+    "applies_to": "Business operators",
+    "key_requirements": "Lawful purpose notice",
+    "data_categories": "Personal information",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "Personal Information Protection Commission",
+    "penalties_range": "Up to ¥1M penalty",
+    "exemptions": "Public institutions",
+    "website_url": "https://www.ppc.go.jp/",
+    "language": "Japanese",
+    "notes": "Asia's comprehensive privacy law"
+  }
+]

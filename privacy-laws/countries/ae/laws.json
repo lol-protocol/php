@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "AE",
+    "country_name": "United Arab Emirates",
+    "law_name": "Federal Law No. 45/2021",
+    "jurisdiction": "DPA Authority",
+    "enactment_date": "2021-11-02",
+    "effective_date": "2022-01-01",
+    "scope": "UAE Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "Lawful processing",
+    "data_categories": "Personal data",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "UAE DPA",
+    "penalties_range": "Fines up to AED 500k",
+    "exemptions": "Government functions",
+    "website_url": "https://www.dpa.ae/",
+    "language": "Arabic/English",
+    "notes": "UAE privacy law"
+  }
+]

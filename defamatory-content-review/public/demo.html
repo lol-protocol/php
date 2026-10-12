@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Moderación de chat</title>
+    <style>
+        :root { --bg: #f6f7f9; --panel: #fff; --text: #1d2330; --muted: #5f6878; --line: #d9dde4;
+                --approve: #1f7a3f; --review: #a35c00; --reject: #b3261e; }
+        @media (prefers-color-scheme: dark) {
+            :root { --bg: #14171c; --panel: #1d2128; --text: #e8eaee; --muted: #9aa3b2; --line: #343a45;
+                    --approve: #5cc583; --review: #f0a53a; --reject: #ff7b72; }
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, sans-serif; }
+        main { max-width: 42rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+        h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
+        p { margin: 0 0 1rem; color: var(--muted); }
+        form, #registro { background: var(--panel); border: 1px solid var(--line); border-radius: .75rem; padding: 1rem; }
+        label { display: block; font-weight: 600; margin-bottom: .25rem; }
+        select, textarea, button { font: inherit; color: inherit; }
+        select, textarea { width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: .5rem; padding: .5rem; }
+        textarea { resize: vertical; margin-bottom: .5rem; }
+        .fila { display: flex; gap: .75rem; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+        button { background: var(--text); color: var(--panel); border: 0; border-radius: .5rem; padding: .5rem 1.25rem; cursor: pointer; }
+        #estado { margin: .75rem 0 0; min-height: 1.5rem; }
+        .decision { font-weight: 700; }
+        .approve { color: var(--approve); } .review { color: var(--review); } .reject { color: var(--reject); }
+        #registro { margin-top: 1rem; list-style: none; }
+        #registro li { padding: .5rem 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+        #registro li:last-child { border-bottom: 0; }
+        #registro:empty::before { content: "Todavía no hay mensajes."; color: var(--muted); }
+        small { color: var(--muted); }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Moderación de chat</h1>
+    <p>El front no deja escribir más de 2 letras iguales seguidas; el servidor
+        (<code>POST moderar</code>) decide si el mensaje se publica, va a revisión o se bloquea.</p>
+
+    <form id="chat" data-endpoint="moderar">
+        <label for="idioma">Idioma</label>
+        <select id="idioma">
+                <option value="spa" selected>Español</option>
+                <option value="eng">English</option>
+                <option value="por">Português</option>
+                <option value="fra">Français</option>
+                <option value="ita">Italiano</option>
+                <option value="deu">Deutsch</option>
+                <option value="ron">Română</option>
+                <option value="nld">Nederlands</option>
+                <option value="swe">Svenska</option>
+                <option value="dan">Dansk</option>
+                <option value="nor">Norsk</option>
+                <option value="rus">Русский</option>
+                <option value="ukr">Українська</option>
+                <option value="pol">Polski</option>
+                <option value="ces">Čeština</option>
+                <option value="slk">Slovenčina</option>
+                <option value="bul">Български</option>
+                <option value="ell">Ελληνικά</option>
+                <option value="hun">Magyar</option>
+                <option value="fin">Suomi</option>
+                <option value="tur">Türkçe</option>
+                <option value="ara">العربية</option>
+                <option value="heb">עברית</option>
+                <option value="hin">हिन्दी</option>
+                <option value="jpn">日本語</option>
+                <option value="kor">한국어</option>
+                <option value="yue">廣東話</option>
+                <option value="tha">ไทย</option>
+                <option value="vie">Tiếng Việt</option>
+                <option value="ind">Bahasa Indonesia</option>
+                <option value="isl">Íslenska</option>
+                <option value="swa">Kiswahili</option>
+                <option value="tgl">Tagalog</option>
+        </select>
+        <label for="mensaje" style="margin-top:.75rem">Mensaje</label>
+        <textarea id="mensaje" rows="3" maxlength="2000" data-max-repeat placeholder="Prueba «hola», «puuuuta» o «te voy a matar»"></textarea>
+        <div class="fila">
+            <small id="aviso" aria-live="polite"></small>
+            <button type="submit">Enviar</button>
+        </div>
+        <div id="estado" aria-live="polite"></div>
+    </form>
+
+    <ul id="registro" aria-label="Mensajes enviados"></ul>
+</main>
+
+<script src="limit-repeated-letters.js"></script>
+<script>
+(() => {
+    const form = document.getElementById('chat');
+    const mensaje = document.getElementById('mensaje');
+    const idioma = document.getElementById('idioma');
+    const estado = document.getElementById('estado');
+    const aviso = document.getElementById('aviso');
+    const registro = document.getElementById('registro');
+    const textos = { approve: 'Se publica', review: 'Va a revisión humana', reject: 'Bloqueado' };
+    let espera, avisoEspera, turno = 0; // turno: sólo se muestra la respuesta a la última consulta
+
+    async function moderar(texto) {
+        const respuesta = await fetch(form.dataset.endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: texto, language: idioma.value }),
+        });
+        const datos = await respuesta.json();
+        if (!respuesta.ok) throw new Error(datos.error ? datos.error.message : 'Error ' + respuesta.status);
+        return datos;
+    }
+
+    function mostrar(resultado) {
+        estado.replaceChildren();
+        if (!resultado) return;
+        const decision = document.createElement('span');
+        decision.className = 'decision ' + resultado.decision;
+        decision.textContent = textos[resultado.decision];
+        estado.append(decision);
+        if (resultado.contentTypes.length) estado.append(' · ' + resultado.contentTypes.join(', '));
+        if (resultado.censor) estado.append(' · «' + resultado.censored + '»');
+    }
+
+    function fallo(error) {
+        estado.replaceChildren();
+        estado.textContent = 'No se pudo revisar: ' + error.message;
+    }
+
+    mensaje.addEventListener('input', () => {
+        clearTimeout(espera);
+        const texto = mensaje.value.trim();
+        if (!texto) { turno++; mostrar(null); return; }
+        const mio = ++turno;
+        espera = setTimeout(() => moderar(texto).then(
+            (resultado) => { if (mio === turno) mostrar(resultado); },
+            (error) => { if (mio === turno) fallo(error); }
+        ), 350);
+    });
+    idioma.addEventListener('change', () => mensaje.dispatchEvent(new Event('input')));
+
+    mensaje.addEventListener('repeated-letters-limited', (event) => {
+        aviso.textContent = 'Máximo ' + event.detail.max + ' letras iguales seguidas.';
+        clearTimeout(avisoEspera);
+        avisoEspera = setTimeout(() => { aviso.textContent = ''; }, 2500);
+    });
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const texto = mensaje.value.trim();
+        if (!texto) return;
+        clearTimeout(espera);
+        turno++;
+        try {
+            const resultado = await moderar(texto);
+            mostrar(resultado);
+            if (resultado.decision === 'reject') return;
+            const item = document.createElement('li');
+            item.textContent = resultado.decision === 'review' ? resultado.censored : texto;
+            if (resultado.decision === 'review') {
+                const nota = document.createElement('small');
+                nota.textContent = ' (pendiente de revisión: sólo lo ves tú)';
+                item.append(nota);
+            }
+            registro.append(item);
+            mensaje.value = '';
+        } catch (error) {
+            fallo(error);
+        }
+    });
+})();
+</script>
+</body>
+</html>

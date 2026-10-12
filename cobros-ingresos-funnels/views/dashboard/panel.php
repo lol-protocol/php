@@ -1,0 +1,146 @@
+<?php
+
+use App\Config;
+
+/** @var array $kpis */
+/** @var array $kpisAnterior */
+/** @var array $kpisAnioAnterior */
+/** @var string $desde */
+/** @var string $hasta */
+/** @var bool $personalizado */
+/** @var float $carteraPendiente */
+/** @var array $antiguedad */
+/** @var array $serieMensual */
+/** @var array $funnelResumen */
+/** @var array $segmentacion */
+/** @var int $meses */
+/** @var array{ultima: ?DateTimeImmutable, fuente: ?string, pendientes: list<string>} $tasas */
+
+$etapasFunnel = [
+    'Visitantes' => $funnelResumen['visitantes'],
+    'Registrados' => $funnelResumen['registrados'],
+    'Leads' => $funnelResumen['leads'],
+    'Clientes' => $funnelResumen['clientes'],
+];
+$maxEtapa = max(1, ...array_values($etapasFunnel));
+$rampaFunnel = ['var(--seq-250)', 'var(--seq-350)', 'var(--seq-450)', 'var(--seq-600)'];
+
+$coloresSegmento = [
+    'País' => 'var(--accent-pais)',
+    'Ciudad' => 'var(--accent-ciudad)',
+    'Idioma' => 'var(--accent-idioma)',
+    'Género' => 'var(--accent-genero)',
+    'Rango de edad' => 'var(--accent-edad)',
+];
+?>
+
+<h1><?= htmlspecialchars(Config::NOMBRE_SISTEMA) ?></h1>
+<p class="subtitulo">Vista general de ingresos, cobros y conversión de usuarios a clientes.</p>
+<?php include __DIR__ . '/../_tasas_de_cambio.php'; ?>
+
+<form class="filtros" method="get">
+    <input type="hidden" name="page" value="dashboard">
+    <?php include __DIR__ . '/../_filtro_fechas.php'; ?>
+    <button type="submit">Aplicar</button>
+</form>
+<?php include __DIR__ . '/../_avisos.php'; ?>
+<p class="subtitulo">Si completás "Desde" y "Hasta" se usa ese rango exacto en vez del período de arriba.</p>
+
+<div class="grid grid-kpis">
+    <div class="panel stat-tile">
+        <span class="label">Facturado (período)</span>
+        <span class="value"><?= Config::dinero($kpis['facturado']) ?></span>
+        <?= insignia_de_variacion(variacion_pct($kpis['facturado'], $kpisAnterior['facturado'])) ?>
+        <?= insignia_de_variacion(variacion_pct($kpis['facturado'], $kpisAnioAnterior['facturado']), etiqueta: 'vs. año anterior') ?>
+    </div>
+    <div class="panel stat-tile">
+        <span class="label">Cobrado (período)</span>
+        <span class="value"><?= Config::dinero($kpis['cobrado']) ?></span>
+        <?= insignia_de_variacion(variacion_pct($kpis['cobrado'], $kpisAnterior['cobrado'])) ?>
+        <?= insignia_de_variacion(variacion_pct($kpis['cobrado'], $kpisAnioAnterior['cobrado']), etiqueta: 'vs. año anterior') ?>
+    </div>
+    <div class="panel stat-tile">
+        <span class="label">Tasa de cobranza</span>
+        <span class="value"><?= number_format($kpis['tasa_cobranza'] * 100, 1) ?>%</span>
+        <?= insignia_de_variacion(($kpis['tasa_cobranza'] - $kpisAnterior['tasa_cobranza']) * 100, unidad: ' pp') ?>
+        <?= insignia_de_variacion(($kpis['tasa_cobranza'] - $kpisAnioAnterior['tasa_cobranza']) * 100, etiqueta: 'vs. año anterior', unidad: ' pp') ?>
+    </div>
+    <div class="panel stat-tile">
+        <span class="label">Cartera pendiente</span>
+        <span class="value"><?= Config::dinero($carteraPendiente) ?></span>
+        <span class="delta <?= $carteraPendiente > 0 ? 'critical' : 'good' ?>">Saldo abierto a hoy</span>
+    </div>
+</div>
+
+<div class="grid grid-2">
+    <div class="panel">
+        <h2>Ingresos vs. cobros por mes</h2>
+        <div class="legend">
+            <span class="item"><span class="swatch" style="background:var(--series-1)"></span>Ingresos (facturado)</span>
+            <span class="item"><span class="swatch" style="background:var(--series-2)"></span>Cobros (caja)</span>
+        </div>
+        <?php
+        $filas = $serieMensual;
+        $series = [
+            ['clave' => 'ingresos', 'etiqueta' => 'Ingresos', 'color' => 'var(--series-1)'],
+            ['clave' => 'cobros', 'etiqueta' => 'Cobros', 'color' => 'var(--series-2)'],
+        ];
+        $formato = 'dinero';
+        include __DIR__ . '/../_grafico_serie_mensual.php';
+        ?>
+    </div>
+
+    <div class="panel">
+        <h2>Cartera pendiente por antigüedad</h2>
+        <?php include __DIR__ . '/../_grafico_antiguedad_de_cartera.php'; ?>
+    </div>
+</div>
+
+<div class="panel">
+    <h2>Funnel de conversión (período)</h2>
+    <div class="chart">
+        <?php $i = 0; foreach ($etapasFunnel as $etapa => $valor): ?>
+            <div class="grupo">
+                <?= barra_svg('bar', 'height:' . altura_en_pct((float) $valor, $maxEtapa) . '%', $rampaFunnel[$i], $etapa . ': ' . $valor) ?>
+            </div>
+            <?php $i++; ?>
+        <?php endforeach; ?>
+    </div>
+    <div class="chart-etiquetas">
+        <?php foreach ($etapasFunnel as $etapa => $valor): ?>
+            <span class="grupo-label"><?= $etapa ?><br><strong><?= $valor ?></strong></span>
+        <?php endforeach; ?>
+    </div>
+    <p class="subtitulo" style="margin-top:14px;"><a href="?page=funnel">Ver funnel completo &rarr;</a></p>
+</div>
+
+<div class="panel">
+    <h2>Segmentación de clientes por facturación</h2>
+    <p class="subtitulo">Qué países, ciudades, idiomas, géneros y rangos de edad generan más ingresos (top 5 de cada uno). Histórico completo: no aplica el filtro de fechas.</p>
+    <div class="grid grid-segmentos">
+        <?php foreach ($segmentacion as $titulo => $filas): ?>
+            <div class="subpanel">
+                <h3><?= htmlspecialchars($titulo) ?></h3>
+                <?php $maxSeg = $filas ? max(1.0, ...array_column($filas, 'total_facturado')) : 1.0; ?>
+                <?php foreach ($filas as $fila): ?>
+                    <div class="hbar-row compacto">
+                        <span class="hbar-label" title="<?= htmlspecialchars($fila['etiqueta']) ?>"><?= htmlspecialchars($fila['etiqueta']) ?></span>
+                        <span class="hbar-track">
+                            <?= barra_svg(
+                                'hbar-fill',
+                                'width:' . altura_en_pct((float) $fila['total_facturado'], $maxSeg) . '%',
+                                $coloresSegmento[$titulo],
+                                $fila['etiqueta'] . ': ' . Config::dinero((float) $fila['total_facturado']),
+                                3
+                            ) ?>
+                        </span>
+                        <span class="hbar-value" title="<?= number_format((float) $fila['total_facturado'], 2) ?>"><?= dinero_compacto((float) $fila['total_facturado']) ?></span>
+                    </div>
+                <?php endforeach; ?>
+                <?php if (!$filas): ?>
+                    <p class="subtitulo">Sin datos todavía.</p>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

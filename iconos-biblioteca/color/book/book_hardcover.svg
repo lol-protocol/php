@@ -7,14 +7,12 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.3" cy="58.2" rx="15" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="34" cy="58.4" rx="17.5" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M15 11.5L15.1 10.6L15.5 9.8L16 9L16.8 8.5L17.6 8.1L18.5 8L40.5 8L41.4 8.1L42.2 8.5L43 9L43.5 9.8L47.1 14.6L47.5 15.4L47.6 16.3L47.6 52.3L47.5 53.2L47.1 54L46.6 54.8L45.9 55.3L45 55.7L44.1 55.8L22.1 55.8L21.2 55.7L20.4 55.3L19.6 54.8L19.1 54L15.5 49.2L15.1 48.4L15 47.5Z" fill="#FEF3C7"/><rect x="15" y="8" width="29" height="43" rx="3.5" fill="url(#grad_book_hardcover_brown)"/></g>
+    <g><path d="M15 16L15.2 14.4L15.8 13L16.8 11.8L18 10.8L19.4 10.2L21 10L41 10L42.6 10.2L44 10.8L45.2 11.8L46.2 13L52.2 21L52.8 22.4L53 24L53 50L52.8 51.6L52.2 53L51.2 54.2L50 55.2L48.6 55.8L47 56L27 56L25.4 55.8L24 55.2L22.8 54.2L21.8 53L15.8 45L15.2 43.6L15 42Z" fill="#553822"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_hardcover_brown)"/></g>
   </g>
   <g class="marks">
-    <path d="M20.5 11L20.5 48" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
-    <path d="M24 14L40 14L40 45L24 45Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
-    <path d="M28.4 29.5a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M21 16L41 16L41 42L21 42Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
   </g>
 </svg>

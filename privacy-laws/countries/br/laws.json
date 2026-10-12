@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "BR",
+    "country_name": "Brazil",
+    "law_name": "Lei Geral de Proteção de Dados Pessoais (LGPD)",
+    "jurisdiction": "Agência Nacional",
+    "enactment_date": "2018-08-14",
+    "effective_date": "2020-09-28",
+    "scope": "Brazilian Residents & Businesses",
+    "applies_to": "All companies processing Brazilian data",
+    "key_requirements": "Lawful basis & consent",
+    "data_categories": "Sensitive personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "National Data Protection Authority",
+    "penalties_range": "Up to 50M BRL or 2% revenue",
+    "exemptions": "Public safety exceptions",
+    "website_url": "https://www.gov.br/cidadania/pt-br/acesso-a-informacao/lgpd",
+    "language": "Portuguese",
+    "notes": "South America's GDPR equivalent"
+  }
+]

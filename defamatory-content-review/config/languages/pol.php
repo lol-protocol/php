@@ -130,7 +130,7 @@ return [
             ['word' => 'zdeformowany', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'sparaliżowany', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'wariat', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'szalony', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'szalony', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
             ['word' => 'kulawa', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'bezręka', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'garbuska', 'riskType' => 'discapacidad', 'severity' => 'high'],
@@ -142,7 +142,7 @@ return [
             ['word' => 'zdeformowana', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'sparaliżowana', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'wariatka', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'szalona', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'szalona', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
         ],
 
         'moral' => [

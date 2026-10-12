@@ -11,7 +11,7 @@ $reviewer = DefamatoryContentReviewer::create(__DIR__ . '/../config', 'spa');
 // printf cuenta bytes, no caracteres: con acentos las columnas se desalinean.
 $pad = fn(string $s, int $width) => $s . str_repeat(' ', max(0, $width - mb_strlen($s)));
 
-foreach ([['Zoila', 'Cerda'], ['Juan', 'Pérez'], ['Zurdo', 'Diestro'], ['Luis', 'Bastardo']] as [$first, $last]) {
+foreach ([['Zoila', 'Cerda'], ['Juan', 'Pérez'], ['Zurdo', 'Diestro'], ['Luis', 'Gilipollas']] as [$first, $last]) {
     $report = $reviewer->getDetailedReport($reviewer->validateFullName($first, $last));
 
     printf("%s %s\n", $first, $last);

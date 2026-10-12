@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "SV",
+    "country_name": "El Salvador",
+    "law_name": "Ley de Protección de Datos Personales",
+    "jurisdiction": "Agencia de Protección de Datos",
+    "enactment_date": "2007-12-06",
+    "effective_date": "2008-12-06",
+    "scope": "El Salvador Residents",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Lawful processing & consent",
+    "data_categories": "Personal data",
+    "retention_period": "30 years maximum",
+    "enforcement_authority": "Data Protection Agency",
+    "penalties_range": "Up to USD 3k fine",
+    "exemptions": "Government functions",
+    "website_url": "https://www.aps.gob.sv/",
+    "language": "Spanish",
+    "notes": "Central America region"
+  }
+]

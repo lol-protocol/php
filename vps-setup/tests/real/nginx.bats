@@ -13,7 +13,7 @@ setup() { setup_real; }
 teardown() {
     nginx_down
     rm -f /etc/nginx/conf.d/security-headers.conf /etc/nginx/conf.d/server-tokens.conf /etc/nginx/conf.d/performance.conf /etc/nginx/conf.d/00-default-server.conf /etc/nginx/conf.d/bats-real-*.conf
-    for n in $D1 $APP $D3; do rm -f "/etc/nginx/sites-enabled/$n" "/etc/nginx/sites-available/$n"; done
+    for n in $D1 $D2 $D3 $APP; do rm -f "/etc/nginx/sites-enabled/$n" "/etc/nginx/sites-available/$n"; done
     rm -rf "/var/www/landing-page/$D1" "/var/www/$APP" "/var/log/nginx/$D1" "/var/log/nginx/$D2" "/var/log/nginx/$D3"
     sed -i "/$D1/d" /etc/hosts 2>/dev/null || true
 }
@@ -48,7 +48,7 @@ teardown() {
 @test "06_A: el vhost PHP pasa nginx -t real" {
     run bash "$VPS_DIR/06_A-setup-php-app.sh" $APP $D2
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
-    grep -q "fastcgi_pass unix:/run/php/php8.3-fpm.sock" /etc/nginx/sites-available/$APP
+    grep -q "fastcgi_pass unix:/run/php/php8.3-fpm.sock" /etc/nginx/sites-available/$D2
     run nginx -t
     [ "$status" -eq 0 ]
 }
@@ -153,4 +153,16 @@ EOT
     done
     run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D1" http://127.0.0.1/
     [ "$output" = "200" ]
+}
+
+@test "un dominio, un sitio: 06_A sobre un dominio con landing falla y deja la landing intacta; re-correr 06_D vale" {
+    bash "$VPS_DIR/03-configure-nginx-site.sh" $D1 > /dev/null
+    before=$(md5sum < /etc/nginx/sites-available/$D1)
+    run bash "$VPS_DIR/06_A-setup-php-app.sh" $APP $D1
+    [ "$status" -eq 1 ]; [[ "$output" == *"ya tiene un sitio (03-landing)"* ]]
+    [ "$(md5sum < /etc/nginx/sites-available/$D1)" = "$before" ]
+    [ ! -e /var/www/$APP ]
+    run bash "$VPS_DIR/06_D-setup-tomcat-app.sh" $D3;  [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    run bash "$VPS_DIR/06_D-setup-tomcat-app.sh" $D3;  [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+    nginx -t
 }

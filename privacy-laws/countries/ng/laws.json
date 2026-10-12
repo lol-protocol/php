@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "NG",
+    "country_name": "Nigeria",
+    "law_name": "Nigeria Data Protection Regulation (NDPR)",
+    "jurisdiction": "National Information Technology Development Agency",
+    "enactment_date": "2019-01-25",
+    "effective_date": "2019-01-25",
+    "scope": "Nigerian Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "Lawful processing & consent",
+    "data_categories": "Personal data",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "NITDA",
+    "penalties_range": "Fines & sanctions",
+    "exemptions": "Government functions",
+    "website_url": "https://www.nitda.gov.ng/",
+    "language": "English",
+    "notes": "Africa region"
+  }
+]

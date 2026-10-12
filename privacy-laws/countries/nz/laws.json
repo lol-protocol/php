@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "NZ",
+    "country_name": "New Zealand",
+    "law_name": "Privacy Act 2020",
+    "jurisdiction": "Office of the Privacy Commissioner",
+    "enactment_date": "2020-12-01",
+    "effective_date": "2020-12-01",
+    "scope": "New Zealand Residents",
+    "applies_to": "Public & private sector",
+    "key_requirements": "Privacy Principles",
+    "data_categories": "Personal information",
+    "retention_period": "Necessary period",
+    "enforcement_authority": "Privacy Commissioner NZ",
+    "penalties_range": "Up to NZD 200k penalty",
+    "exemptions": "Government functions",
+    "website_url": "https://www.privacy.org.nz/",
+    "language": "English",
+    "notes": "Updated from 1993 Act"
+  }
+]

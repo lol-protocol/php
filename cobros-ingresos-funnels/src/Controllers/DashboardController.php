@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Filtros;
+use App\FiltroDePeriodo;
 use App\Repositories\FunnelRepository;
-use App\Repositories\IngresosRepository;
+use App\Repositories\IngresosYCobrosRepository;
+use App\Repositories\MonedaRepository;
 use App\Repositories\SegmentacionRepository;
 use App\View;
 
@@ -14,28 +15,29 @@ final class DashboardController
 {
     public function index(): void
     {
-        $filtros = Filtros::rangoActivo();
+        $filtros = FiltroDePeriodo::rangoActivo();
         ['desde' => $desde, 'hasta' => $hasta] = $filtros;
 
-        $ingresosRepo = new IngresosRepository();
+        $ingresosRepo = new IngresosYCobrosRepository();
         $funnelRepo = new FunnelRepository();
         $segmentacionRepo = new SegmentacionRepository();
 
         $ingresos = $ingresosRepo->ingresosPorMes($desde, $hasta);
         $cobros = $ingresosRepo->cobrosPorMes($desde, $hasta);
         $serieMensual = self::combinarPorMes($ingresos, $cobros);
-        $aging = $ingresosRepo->carteraAging();
+        $antiguedad = $ingresosRepo->carteraPorAntiguedad();
 
-        [$desdeAnt, $hastaAnt] = Filtros::rangoAnterior($desde, $hasta);
-        [$desdeAnio, $hastaAnio] = Filtros::rangoAnioAnterior($desde, $hasta);
+        [$desdeAnt, $hastaAnt] = FiltroDePeriodo::rangoAnterior($desde, $hasta);
+        [$desdeAnio, $hastaAnio] = FiltroDePeriodo::rangoAnioAnterior($desde, $hasta);
         $segmentacion = $segmentacionRepo->topPorDimensiones();
 
-        View::render('dashboard', $filtros + [
+        View::render('dashboard/panel', $filtros + [
+            'tasas' => MonedaRepository::estadoDeLasTasas(),
             'kpis' => $ingresosRepo->kpis($desde, $hasta),
             'kpisAnterior' => $ingresosRepo->kpis($desdeAnt, $hastaAnt),
             'kpisAnioAnterior' => $ingresosRepo->kpis($desdeAnio, $hastaAnio),
-            'aging' => $aging,
-            'carteraPendiente' => array_sum($aging),
+            'antiguedad' => $antiguedad,
+            'carteraPendiente' => array_sum($antiguedad),
             'serieMensual' => $serieMensual,
             'funnelResumen' => $funnelRepo->resumenEtapas($desde, $hasta),
             'segmentacion' => [

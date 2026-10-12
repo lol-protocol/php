@@ -53,6 +53,15 @@ del() { run bash "$FAKE/10_B-remove-domain.sh" "$@"; }
     grep -q "06_D-setup-tomcat-app.sh ejemplo.com app1$" "$RUN_LOG"
 }
 
+@test "10_A sugiere quitar con --app solo para php/python (su vhost se llama como la app)" {
+    add ejemplo.com --type php --name tienda
+    [[ "$output" == *"10_B-remove-domain.sh ejemplo.com --app tienda"* ]]
+    add ejemplo.com --type python
+    [[ "$output" == *"10_B-remove-domain.sh ejemplo.com --app ejemplo-com"* ]]
+    add ejemplo.com
+    [[ "$output" == *"10_B-remove-domain.sh ejemplo.com"* ]] && [[ "$output" != *"--app"* ]]
+}
+
 @test "10_A --dry-run no ejecuta nada" {
     add ejemplo.com --type php --ssl --dry-run
     [ "$status" -eq 0 ]
@@ -125,6 +134,29 @@ del() { run bash "$FAKE/10_B-remove-domain.sh" "$@"; }
     [ ! -d "$REMOVED_DIR" ]
     del ejemplo.com --app miapp --yes     # con --app tambien se restaura el vhost de la app
     [ -L "$NGINX_DIR/sites-enabled/miapp" ]
+}
+
+@test "10_B no archiva lo que un sitio activo sigue usando (app sin --app) y restaura todo" {
+    # como 06_A/06_B: vhost llamado como la app, logs en la carpeta del dominio
+    printf 'server { access_log %s/ejemplo.com/access.log; }\n' "$NGINX_LOG_DIR" > "$NGINX_DIR/sites-available/miapp"
+    del ejemplo.com --yes
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"--app"* ]] && [[ "$output" == *"miapp"* ]]
+    [ -L "$NGINX_DIR/sites-enabled/ejemplo.com" ]          # se restauro el enlace
+    [ -f "$NGINX_LOG_DIR/ejemplo.com/access.log" ] && [ ! -d "$REMOVED_DIR" ]
+    del ejemplo.com --app miapp --yes                       # con --app si procede
+    [ "$status" -eq 0 ]
+    [ ! -L "$NGINX_DIR/sites-enabled/miapp" ] && [ ! -e "$NGINX_LOG_DIR/ejemplo.com" ]
+}
+
+@test "10_B no confunde un dominio con otro que lo contiene como prefijo" {
+    mkdir -p "$NGINX_LOG_DIR/ejemplo.com.ar"
+    printf 'server { access_log %s/ejemplo.com.ar/access.log; root %s/landing-page/ejemplo.com.ar; }\n' \
+        "$NGINX_LOG_DIR" "$WWW_DIR" > "$NGINX_DIR/sites-available/ejemplo.com.ar"
+    ln -s "$NGINX_DIR/sites-available/ejemplo.com.ar" "$NGINX_DIR/sites-enabled/ejemplo.com.ar"
+    del ejemplo.com --yes
+    [ "$status" -eq 0 ]
+    [ -L "$NGINX_DIR/sites-enabled/ejemplo.com.ar" ] && [ -d "$NGINX_LOG_DIR/ejemplo.com.ar" ]
 }
 
 @test "10_B sin nada del dominio avisa y sale 0; entradas invalidas -> 2" {

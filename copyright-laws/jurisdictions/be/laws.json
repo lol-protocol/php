@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "BE",
+    "country_name": "Belgium",
+    "law_name": "Copyright Law (Loi Belge)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Reproduction & distribution",
+    "moral_rights": "Paternity & integrity rights",
+    "orphan_works": "Collective societies manage",
+    "digital_protection": "Copyright compliance",
+    "fair_use_exceptions": "Fair use exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Belgian Copyright Office",
+    "treaties_signatory": "Berne/TRIPS/WCT",
+    "linked_resources": "https://www.belgium.be/"
+  }
+]

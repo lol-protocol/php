@@ -7,7 +7,7 @@ namespace App\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 
 /**
- * database/seed.php promete "datos de ejemplo reproducibles" y arranca con
+ * database/recrear_con_datos_de_ejemplo.php promete "datos de ejemplo reproducibles" y arranca con
  * mt_srand(2024), pero random_int() y random_bytes() no se pueden sembrar: con
  * cinco llamadas a random_int() cada corrida daba clientes, boletas y pagos
  * distintos, y un test que dependia de esos datos podia pasar o fallar segun
@@ -22,7 +22,7 @@ final class SeedReproducibleTest extends TestCase
 
     private static function codigoDelSeed(): string
     {
-        return (string) file_get_contents(dirname(__DIR__, 2) . '/database/seed.php');
+        return (string) file_get_contents(dirname(__DIR__, 2) . '/database/recrear_con_datos_de_ejemplo.php');
     }
 
     public function testElSeedSoloUsaAzarQueSePuedeSembrar(): void

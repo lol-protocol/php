@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "HK",
+    "country_name": "Hong Kong",
+    "law_name": "Personal Data (Privacy) Ordinance",
+    "jurisdiction": "Privacy Commissioner",
+    "enactment_date": "2013-10-18",
+    "effective_date": "2021-10-18",
+    "scope": "Hong Kong Residents",
+    "applies_to": "Organizations in HK",
+    "key_requirements": "Lawful collection & transparency",
+    "data_categories": "Personal data",
+    "retention_period": "Not indefinitely",
+    "enforcement_authority": "Hong Kong PCPD",
+    "penalties_range": "Up to HKD 1M fine",
+    "exemptions": "Government functions",
+    "website_url": "https://www.pcpd.org.hk/",
+    "language": "English/Chinese",
+    "notes": "Asia-specific privacy law"
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "IE",
+    "country_name": "Ireland",
+    "law_name": "Data Protection Act",
+    "jurisdiction": "Data Protection Commission",
+    "enactment_date": "2018-05-25",
+    "effective_date": "2018-05-25",
+    "scope": "Irish Residents",
+    "applies_to": "All entities",
+    "key_requirements": "GDPR compliance",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "Irish DPC",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://www.dataprotection.ie/",
+    "language": "English",
+    "notes": "GDPR implementation"
+  }
+]

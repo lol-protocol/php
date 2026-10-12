@@ -4,8 +4,6 @@
     <g><path d="M12 19.5L12.3 17L13.3 14.8L14.8 12.8L16.8 11.3L19 10.3L21.5 10L41.5 10L44 10.3L46.2 11.3L48.2 12.8L49.7 14.8L52.1 17.9L53.1 20.2L53.4 22.7L53.4 42.7L53.1 45.2L52.1 47.5L50.6 49.4L48.6 50.9L46.4 51.9L43.9 52.2L23.9 52.2L21.4 51.9L19.1 50.9L17.2 49.4L15.7 47.5L13.3 44.2L12.3 42L12 39.5Z" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="none" stroke="#7E4503" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M24.5 19.5L33.5 19.5L39.5 25.5L39.5 39.5L24.5 39.5Z" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M33.5 19.5L33.5 25.5L39.5 25.5" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M28.5 30.5h7M28.5 35h7" fill="none" stroke="#29313D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M20.5 20h22M20.5 29.5h15M20.5 39h19" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

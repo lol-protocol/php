@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_download_book_blue" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#939393"/>
-      <stop offset="1" stop-color="#606060"/>
+    <linearGradient id="grad_action_download_book_brown" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9B9B9B"/>
+      <stop offset="1" stop-color="#6B6B6B"/>
+    </linearGradient>
+    <linearGradient id="grad_action_download_book_ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8A8A8A"/>
+      <stop offset="1" stop-color="#535353"/>
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.7" cy="54.6" rx="19" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="32.9" cy="56.8" rx="20.1" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M12 19.5L12.3 17L13.3 14.8L14.8 12.8L16.8 11.3L19 10.3L21.5 10L41.5 10L44 10.3L46.2 11.3L48.2 12.8L49.7 14.8L52.1 17.9L53.1 20.2L53.4 22.7L53.4 42.7L53.1 45.2L52.1 47.5L50.6 49.4L48.6 50.9L46.4 51.9L43.9 52.2L23.9 52.2L21.4 51.9L19.1 50.9L17.2 49.4L15.7 47.5L13.3 44.2L12.3 42L12 39.5Z" fill="#373737"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="url(#grad_action_download_book_blue)"/></g>
+    <g><path d="M23 10L23.1 9L23.5 8L24.2 7.2L25 6.5L26 6.1L27 6L37 6L38 6.1L39 6.5L39.8 7.2L40.5 8L42.3 10.4L42.7 11.4L42.8 12.4L42.8 26.4L42.7 27.4L42.3 28.4L41.6 29.2L40.8 29.9L39.8 30.3L38.8 30.4L28.8 30.4L27.8 30.3L26.8 29.9L26 29.2L25.3 28.4L23.5 26L23.1 25L23 24Z" fill="#3E3E3E"/><rect x="23" y="6" width="18" height="22" rx="4" fill="url(#grad_action_download_book_brown)"/></g>
+    <g><path d="M11 48L11.1 47L11.5 46L12.2 45.2L13 44.5L14 44.1L15 44L49 44L50 44.1L51 44.5L51.8 45.2L52.5 46L54.3 48.4L54.7 49.4L54.8 50.4L54.7 51.4L54.3 52.4L53.6 53.2L52.8 53.9L51.8 54.3L50.8 54.4L16.8 54.4L15.8 54.3L14.8 53.9L14 53.2L13.3 52.4L11.5 50L11.1 49Z" fill="#303030"/><rect x="11" y="44" width="42" height="8" rx="4" fill="url(#grad_action_download_book_ink)"/></g>
   </g>
   <g class="marks">
-    <path d="M31.5 20.5L31.5 32.5M27.5 27.5L31.5 32.5L35.5 27.5" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M22.5 32.5L22.5 38.5L40.5 38.5L40.5 32.5" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M31 33v4M24 35v3M38 35v3" fill="none" stroke="#6B6B6B" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

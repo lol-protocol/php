@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "PL",
+    "country_name": "Poland",
+    "law_name": "General Data Protection Regulation (GDPR)",
+    "jurisdiction": "UODO (Polish DPA)",
+    "enactment_date": "2018-05-25",
+    "effective_date": "2018-05-25",
+    "scope": "Polish Residents",
+    "applies_to": "All organizations",
+    "key_requirements": "GDPR compliance",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "UODO",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://uodo.gov.pl/",
+    "language": "Polish",
+    "notes": "GDPR implementation"
+  }
+]

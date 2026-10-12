@@ -89,7 +89,7 @@ return [
             ['word' => 'änkyttäjä', 'riskType' => 'discapacidad', 'severity' => 'medium'],
             ['word' => 'epämuodostunut', 'riskType' => 'discapacidad', 'severity' => 'high'],
             ['word' => 'halvaantunut', 'riskType' => 'discapacidad', 'severity' => 'high'],
-            ['word' => 'hullu', 'riskType' => 'discapacidad', 'severity' => 'medium'],
+            ['word' => 'hullu', 'riskType' => 'discapacidad', 'severity' => 'medium', 'ambiguous' => true],
         ],
 
         'moraali' => [

@@ -4,8 +4,24 @@ set -e
 # Source shared functions
 source "$(dirname "$0")/lib.sh"
 
-DOMAIN=${1:-"initech.fun"}
-EMAIL=${2:-"admin@$DOMAIN"}
+# Uso: ./04-setup-ssl.sh <dominio> [email] [--force] [--staging]
+#   --force    sigue aunque el DNS aun no apunte a este VPS (sin preguntar)
+#   --staging  certificado de PRUEBA de Let's Encrypt (no confiable en navegadores, pero
+#              sin el limite semanal): util para probar el flujo sin gastar intentos reales
+FORCE=0
+STAGING=0
+POSITIONAL=()
+for arg in "$@"; do
+    case "$arg" in
+        --force) FORCE=1 ;;
+        --staging) STAGING=1 ;;
+        -*) echo "Opcion desconocida: $arg"; exit 2 ;;
+        *) POSITIONAL+=("$arg") ;;
+    esac
+done
+DOMAIN=${POSITIONAL[0]:-}
+require_arg "$DOMAIN" "$0 <dominio> [email] [--force] [--staging]"
+EMAIL=${POSITIONAL[1]:-"admin@$DOMAIN"}
 require_valid domain "$DOMAIN" "El dominio (argumento 1)"
 require_valid email "$EMAIL" "El email (argumento 2)"
 
@@ -31,15 +47,21 @@ if ! verify_dns_resolution "$DOMAIN" "$MY_IP"; then
     echo "ADVERTENCIA: el DNS de $DOMAIN y/o www.$DOMAIN todavia no apunta a este VPS."
     echo "Espera a que propague antes de continuar (puede tardar hasta 24-48h)."
 
-    # Solo prompt si es interactivo
-    if [ -t 0 ]; then
+    # Let's Encrypt limita los intentos fallidos por semana: sin DNS correcto, certbot
+    # fallaria y gastaria uno. Sin terminal no hay a quien preguntar, asi que se aborta
+    # salvo --force (antes se asumia que "ya propago" y se gastaba el intento).
+    if [ "$FORCE" -eq 1 ]; then
+        echo "--force: se continua sin esperar al DNS."
+    elif [ -t 0 ]; then
         read -p "¿Continuar de todas formas? (s/n) " -n 1 -r
         echo
         if [[ ! $REPLY =~ ^[Ss]$ ]]; then
             exit 1
         fi
     else
-        echo "Modo no-interactivo: asumiendo que el DNS ya propago..."
+        echo "Modo no interactivo: se aborta para no gastar un intento de Let's Encrypt."
+        echo "Reintenta cuando el DNS propague, o usa --force (o --staging para probar)."
+        exit 1
     fi
 fi
 
@@ -49,7 +71,9 @@ fi
 # sin tocar Nginx) -- "certify" no existe en Certbot, es un error comun.
 # --agree-tos / --no-eff-email / --non-interactive: evita que el comando se
 #          detenga pidiendo confirmacion interactiva (necesario para automatizacion)
-sudo certbot run --nginx \
+CERTBOT_EXTRA=()
+[ "$STAGING" -eq 1 ] && CERTBOT_EXTRA+=(--test-cert)
+sudo certbot run --nginx "${CERTBOT_EXTRA[@]}" \
     --agree-tos \
     --no-eff-email \
     --non-interactive \

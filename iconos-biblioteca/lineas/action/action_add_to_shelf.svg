@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="solids">
-    <g><path d="M12 19.5L12.3 17L13.3 14.8L14.8 12.8L16.8 11.3L19 10.3L21.5 10L41.5 10L44 10.3L46.2 11.3L48.2 12.8L49.7 14.8L52.1 17.9L53.1 20.2L53.4 22.7L53.4 42.7L53.1 45.2L52.1 47.5L50.6 49.4L48.6 50.9L46.4 51.9L43.9 52.2L23.9 52.2L21.4 51.9L19.1 50.9L17.2 49.4L15.7 47.5L13.3 44.2L12.3 42L12 39.5Z" fill="none" stroke="#0D5F2B" stroke-width="1.8" stroke-linejoin="round"/><rect x="12" y="10" width="39" height="39" rx="9.5" fill="none" stroke="#0D5F2B" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M8 46.5L8.1 45.9L8.3 45.2L8.7 44.7L9.2 44.3L9.9 44.1L10.5 44L53.5 44L54.1 44.1L54.8 44.3L55.3 44.7L55.7 45.2L56.9 46.9L57.1 47.5L57.2 48.1L57.1 48.7L56.9 49.4L56.5 49.9L56 50.3L55.3 50.5L54.7 50.6L11.7 50.6L11.1 50.5L10.4 50.3L9.9 49.9L9.5 49.4L8.3 47.8L8.1 47.1Z" fill="none" stroke="#553822" stroke-width="1.8" stroke-linejoin="round"/><rect x="8" y="44" width="48" height="5" rx="2.5" fill="none" stroke="#553822" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M12 24L12.1 23.5L12.3 23L12.6 22.6L13 22.3L13.5 22.1L14 22L18 22L18.5 22.1L19 22.3L19.4 22.6L19.7 23L20.9 24.6L21.1 25.1L21.2 25.6L21.2 43.6L21.1 44.1L20.9 44.6L20.6 45L20.2 45.3L19.7 45.5L19.2 45.6L15.2 45.6L14.7 45.5L14.2 45.3L13.8 45L13.5 44.6L12.3 43L12.1 42.5L12 42Z" fill="none" stroke="#2E2985" stroke-width="1.8" stroke-linejoin="round"/><rect x="12" y="22" width="8" height="22" rx="2" fill="none" stroke="#2E2985" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M22 19L22.1 18.5L22.3 18L22.6 17.6L23 17.3L23.5 17.1L24 17L28 17L28.5 17.1L29 17.3L29.4 17.6L29.7 18L30.9 19.6L31.1 20.1L31.2 20.6L31.2 43.6L31.1 44.1L30.9 44.6L30.6 45L30.2 45.3L29.7 45.5L29.2 45.6L25.2 45.6L24.7 45.5L24.2 45.3L23.8 45L23.5 44.6L22.3 43L22.1 42.5L22 42Z" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/><rect x="22" y="17" width="8" height="27" rx="2" fill="none" stroke="#7F1745" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M32 26L32.1 25.5L32.3 25L32.6 24.6L33 24.3L33.5 24.1L34 24L38 24L38.5 24.1L39 24.3L39.4 24.6L39.7 25L40.9 26.6L41.1 27.1L41.2 27.6L41.2 43.6L41.1 44.1L40.9 44.6L40.6 45L40.2 45.3L39.7 45.5L39.2 45.6L35.2 45.6L34.7 45.5L34.2 45.3L33.8 45L33.5 44.6L32.3 43L32.1 42.5L32 42Z" fill="none" stroke="#08564F" stroke-width="1.8" stroke-linejoin="round"/><rect x="32" y="24" width="8" height="20" rx="2" fill="none" stroke="#08564F" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M43.2 17.6L44.4 19.2A6 6 0 0 0 54 12L52.8 10.4A6 6 0 0 0 43.2 17.6Z" fill="none" stroke="#0D5F2B" stroke-width="1.8" stroke-linejoin="round"/><circle cx="48" cy="14" r="6" fill="none" stroke="#0D5F2B" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M21.5 39.5L41.5 39.5" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M23.5 37.5L23.5 26.5L27.1 26.5L27.1 37.5Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M28.5 37.5L28.5 22.5L32.1 22.5L32.1 37.5Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M33.5 37.5L33.5 28.5L37.1 28.5L37.1 37.5Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M35.1 25.5H43.9M39.5 21.1V29.9" fill="none" stroke="#29313D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M48 22v4" fill="none" stroke="#0D5F2B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

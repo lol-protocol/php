@@ -1,0 +1,21 @@
+[
+  {
+    "country_code": "PT",
+    "country_name": "Portugal",
+    "law_name": "Data Protection Law",
+    "jurisdiction": "Portuguese DPA (CNPD)",
+    "enactment_date": "2018-05-25",
+    "effective_date": "2018-05-25",
+    "scope": "Portuguese Residents",
+    "applies_to": "All entities",
+    "key_requirements": "GDPR compliance",
+    "data_categories": "Personal data",
+    "retention_period": "As long as necessary",
+    "enforcement_authority": "Portuguese CNPD",
+    "penalties_range": "Up to €20M or 4% revenue",
+    "exemptions": "Legal obligations",
+    "website_url": "https://www.cnpd.pt/",
+    "language": "Portuguese",
+    "notes": "GDPR implementation"
+  }
+]

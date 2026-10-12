@@ -1,0 +1,18 @@
+[
+  {
+    "country_code": "TH",
+    "country_name": "Thailand",
+    "law_name": "Copyright Act B.E. 2537 (1994)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "First owner is author",
+    "moral_rights": "Paternity & integrity rights",
+    "orphan_works": "Public domain deposit scheme",
+    "digital_protection": "Copyright enforcement law",
+    "fair_use_exceptions": "Educational exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Department of Intellectual Property",
+    "treaties_signatory": "Berne/TRIPS",
+    "linked_resources": "https://www.ipthailand.go.th/"
+  }
+]

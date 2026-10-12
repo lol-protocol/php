@@ -1,0 +1,40 @@
+[
+  {
+    "country_code": "US",
+    "country_name": "United States",
+    "law_name": "California Consumer Privacy Act (CCPA)",
+    "jurisdiction": "California",
+    "enactment_date": "2018-06-28",
+    "effective_date": "2020-01-01",
+    "scope": "California Residents",
+    "applies_to": "Businesses collecting CA resident data",
+    "key_requirements": "Disclosure, opt-out rights",
+    "data_categories": "Consumer data",
+    "retention_period": "As specified",
+    "enforcement_authority": "California Attorney General",
+    "penalties_range": "Up to $7,500 per violation",
+    "exemptions": "B2B exemptions",
+    "website_url": "https://oag.ca.gov/privacy/ccpa",
+    "language": "English",
+    "notes": "Now CPRA as of Jan 2023"
+  },
+  {
+    "country_code": "US",
+    "country_name": "United States",
+    "law_name": "Children's Online Privacy Protection Act (COPPA)",
+    "jurisdiction": "Federal Trade Commission",
+    "enactment_date": "1998-10-21",
+    "effective_date": "2000-04-21",
+    "scope": "Children under 13",
+    "applies_to": "Online services collecting children's data",
+    "key_requirements": "Parental consent required",
+    "data_categories": "Child identifiers",
+    "retention_period": "Limited to purpose",
+    "enforcement_authority": "FTC & State AGs",
+    "penalties_range": "Up to $43,280 per violation",
+    "exemptions": "Educational institutions",
+    "website_url": "https://www.ftc.gov/coppa",
+    "language": "English",
+    "notes": "Website & app operators"
+  }
+]
