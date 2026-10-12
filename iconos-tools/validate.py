@@ -77,7 +77,7 @@ def main():
         if not base.is_dir():
             fail(f'{folder}: no existe')
             continue
-        extra = sorted(p.name for p in base.iterdir() if p.name not in VARIANTS)
+        extra = sorted(p.name for p in base.iterdir() if p.name not in VARIANTS and p.name != 'README.md')
         if extra:
             fail(f'{folder}: elementos fuera de las variantes: {extra}')
         files = {v: {p.relative_to(base / v).as_posix() for p in (base / v).rglob('*') if p.is_file()} for v in VARIANTS}

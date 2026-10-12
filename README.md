@@ -17,17 +17,17 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`cobros-ingresos-funnels/`](cobros-ingresos-funnels/) | Panel web de cobros, ingresos y funnel de conversión: boletas, pagos, clientes, cohortes y auditoría (PHP + PostgreSQL). |
 | [`vps-setup/`](vps-setup/) | Scripts para configurar desde cero un VPS Ubuntu (Nginx, PHP, Python, PostgreSQL, SSL). |
 | [`landing-page/`](landing-page/) | Landing page estática que despliegan los scripts de `vps-setup/`. |
-| [`iconos-genealogia/` y `iconos-biblioteca/`](ICONOS_README.md) | Dos sets de iconos SVG abstractos en 2.5D, sin texto: árbol genealógico (172 iconos) y biblioteca virtual (151), cada uno en 3 variantes. Galería en `galeria-iconos.html`, generador y validador en `iconos-tools/`. |
+| [`iconos-genealogia/`](iconos-genealogia/) | Set de iconos SVG abstractos en 2.5D, sin texto, para árbol genealógico: 172 iconos en 3 variantes. |
+| [`iconos-biblioteca/`](iconos-biblioteca/) | Set de iconos SVG abstractos en 2.5D, sin texto, para biblioteca virtual: 151 iconos en 3 variantes. |
+| [`iconos-tools/`](iconos-tools/) | Generador y validador en Python de los dos sets de iconos y de la galería compartida `galeria-iconos.html`. |
 | [`marcalibros-plataforma-pos-brand-identity/`](marcalibros-plataforma-pos-brand-identity/) | Identidad de marca de Marcalibros (marcadores de lectura) para Plataforma POS: tokens de marca, iconos SVG, 1000 marcalibros (10 movimientos literarios y 10 tipos de texto) con su vista previa JPG, paisajes JPG, el generador en Python, un módulo PHP para crear marcalibros propios a partir de imágenes subidas y una aplicación web independiente, sin cuentas, para explorarlos y crearlos. |
 
-Cada carpeta tiene su propio README con instrucciones de instalación y uso, salvo los sets de
-iconos (`iconos-genealogia/`, `iconos-biblioteca/`, `iconos-tools/`), documentados juntos en
-[`ICONOS_README.md`](ICONOS_README.md) en la raíz. La mayoría tiene también su propio código y
-tests; `landing-page/` es un solo archivo; `psychology-and-marketing/` es solo texto; `marketing/`
-es texto e imágenes con dos scripts PHP sueltos (`render.php` e `iconos/vista-previa.php`), sin
-tests ni CI; y los sets de iconos son SVG más un generador/validador en
-Python (`iconos-tools/`); el job `iconos` del CI valida los SVG y comprueba que coincidan con el
-generador. La única dependencia entre proyectos es:
+Cada carpeta tiene su propio README con instrucciones de instalación y uso. La mayoría tiene
+también su propio código y tests; `landing-page/` es un solo archivo; `psychology-and-marketing/`
+es solo texto; `marketing/` es texto e imágenes con dos scripts PHP sueltos (`render.php` e
+`iconos/vista-previa.php`), sin tests ni CI; y los sets de iconos son SVG más el
+generador/validador de `iconos-tools/` (ver "CI/CD" más abajo). La única dependencia entre
+proyectos es:
 **`phone-directory/` requiere `defamatory-content-review/`** (usa sus clases de plegado de
 acentos y claves fonéticas) — su `composer.json` la declara como dependencia Composer
 (`lol-protocol/defamatory-content-review`, repositorio `path` a `../defamatory-content-review`),

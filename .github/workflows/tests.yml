@@ -7,6 +7,29 @@ on:
     branches: ['**']
 
 jobs:
+  readme-projects:
+    name: README raíz lista todas las carpetas de proyecto
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Cada carpeta de proyecto en la raíz del repo debe tener una fila en la
+      # tabla de README.md (un link "](<carpeta>/..."); si no, la tabla quedó
+      # desincronizada tras agregar o renombrar un proyecto.
+      - name: Comparar carpetas reales contra la tabla del README
+        run: |
+          faltantes=""
+          for d in */; do
+            d="${d%/}"
+            grep -q "](${d}/" README.md || faltantes="$faltantes $d"
+          done
+          if [ -n "$faltantes" ]; then
+            echo "::error::Carpetas sin fila en la tabla de README.md:$faltantes"
+            exit 1
+          fi
+
   phpunit:
     name: PHP ${{ matrix.php-version }}
     runs-on: ubuntu-latest
