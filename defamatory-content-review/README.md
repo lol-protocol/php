@@ -991,6 +991,7 @@ bin/false-positives.php             Palabras frecuentes de un idioma que el chat
 bin/review-sheets.php               Planilla CSV de revisión nativa de un idioma
 bin/apply-review.php                Aplica a config/ una planilla revisada (plan; --apply escribe)
 review/                             Planillas generadas, una por idioma (ver review/README.md)
+_Garbage/                           Obsoleto, conservado sin borrar (ver su README)
 ```
 
 Ningún archivo de `src/`, `tests/`, `examples/` o `bin/` supera 100 líneas
