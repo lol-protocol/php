@@ -63,7 +63,7 @@ La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, 
 - **HTTPS, obligatorio en producción.** El token viaja en la cabecera `Authorization`. Sin HTTPS lo ve cualquiera en la red.
 - **Nginx:** pasa la cabecera a PHP-FPM por defecto; no hace falta nada. Ver [`deploy/nginx.conf.example`](../deploy/nginx.conf.example).
 - **Apache:** `public/.htaccess` incluye la regla que entrega la cabecera a PHP (CGI/FPM la descartan). **No se probó en un Apache real**: comprobarlo con `curl -u x:<token> https://tudominio/0/` (debe dar 200).
-- **Cachés compartidas (CDN, proxy inverso):** las respuestas que dependen de quién pregunta llevan `Cache-Control: private, no-store` y `Vary: Authorization`. La caché no debe quitarlas ni guardar esas respuestas.
+- **Cachés compartidas (CDN, proxy inverso):** las respuestas del propietario, que dependen de quién pregunta, llevan `Cache-Control: private, no-store` y `Vary: Authorization`. La caché no debe quitarlas ni guardar esas respuestas. Lo que se le niega a un visitante es, en cambio, un 404 **sin cabeceras propias**, igual al de una página que no existe: una cabecera que solo tuviera el 404 de lo privado delataría qué ids existen. Si la caché añade o cambia cabeceras, tiene que hacerlo igual en los dos.
 - **Fuerza bruta:** un token de 32 bytes aleatorios no es adivinable. El único freno es el limitador global (100 peticiones por minuto y por IP, `RateLimiter`).
 
 ## Lo que esto NO cubre
@@ -82,4 +82,5 @@ Esto hace privados los **objetos** que ya se presentaban como privados y oculta 
 - `tests/App/Support/AccessPolicyTest.php`: lectura de credenciales (Basic y Bearer), comparación del token, caducidad de la sesión y las dos formas de negar.
 - `tests/App/Support/PrivacidadTest.php`: el umbral, que el SQL del propietario sea el de siempre y que un alias inválido se rechace antes de llegar al SQL.
 - `tests/App/Repositories/PrivacidadRepositoriesTest.php` (en SQLite y PostgreSQL, con fecha fija): quién se oculta y quién no, el borde exacto de los 110 años, la marca `viva`, y qué ve un visitante en cada repositorio.
+- `tests/App/Integration/ResponseHeadersTest.php`: contra el servidor integrado de PHP, porque `PagesTest` no ve cabeceras (en la CLI `header()` no hace nada): que lo oculto responda con el mismo estado, cuerpo y cabeceras que lo que no existe, que las páginas del propietario salgan `private, no-store` y que el área de cuenta pida credenciales.
 - `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos ni de Lucía (se comprobó que falla si se apaga el enmascarado).
