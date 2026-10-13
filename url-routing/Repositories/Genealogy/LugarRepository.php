@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories\Genealogy;
 
 use App\Repositories\Repository;
+use App\Support\Privacidad;
 
 /**
  * Places are addressed by their code path ("mx/jal/gdl"). Queries about a
@@ -63,7 +64,7 @@ final class LugarRepository extends Repository
         return $this->db->fetchAll(
             "SELECT DISTINCT p.id, p.nombres, p.apellidos, s.fecha AS nacimiento, l.nombre AS lugar_nombre
                FROM sucesos s
-               JOIN suceso_participantes sp ON sp.suceso_id = s.id
+               JOIN suceso_participantes sp ON sp.suceso_id = s.id AND sp.rol = '" . Privacidad::ROL_PRINCIPAL . "'
                JOIN {$this->privacidad->personas()} p ON p.id = sp.persona_id
                JOIN lugares l ON l.ruta = s.lugar_ruta
               WHERE s.tipo = 'nacimiento' AND (s.lugar_ruta = ? OR s.lugar_ruta LIKE ?) AND NOT p.oculta

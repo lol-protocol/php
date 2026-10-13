@@ -117,6 +117,43 @@ class PrivacidadTest extends TestCase
         Privacidad::publica()->siVisible('SELECT 1', $alias);
     }
 
+    #[DataProvider('aliasInvalidos')]
+    public function testSqlEventoDeRejectsInvalidAliasesToo(string $alias): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Privacidad::publica()->sqlEventoDe($alias, 'nacimiento', 'fecha');
+    }
+
+    /** @return array<string, array{string, string}> [tipo, campo] */
+    public static function eventosInvalidos(): array
+    {
+        return [
+            'tipo vacío' => ['', 'fecha'],
+            'tipo con comilla' => ["nacimiento' OR 1=1 --", 'fecha'],
+            'tipo con espacio' => ['naci miento', 'fecha'],
+            'campo desconocido' => ['nacimiento', 'descripcion'],
+            'campo con inyección' => ['nacimiento', 'fecha; DROP TABLE sucesos'],
+        ];
+    }
+
+    #[DataProvider('eventosInvalidos')]
+    public function testSqlEventoDeRejectsWhatIsNotAPlainEventTypeAndKnownField(string $tipo, string $campo): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Privacidad::publica()->sqlEventoDe('p', $tipo, $campo);
+    }
+
+    /** Being a parent or a witness at someone's birth or death is not being born or dying. */
+    public function testOnlyEventsThePersonaIsThePrincipalOfAreHers(): void
+    {
+        foreach ([Privacidad::publica(), Privacidad::propietario()] as $privacidad) {
+            $this->assertStringContainsString("sp.rol = 'principal'", $privacidad->sqlEventoDe('p', 'defuncion', 'fecha'));
+        }
+        $this->assertStringContainsString("x_dp.rol = 'principal'", Privacidad::publica()->sqlViva('x'), 'her own death, not one she registered');
+    }
+
     public function testTheRequestsViewFollowsWhoAsks(): void
     {
         $this->assertTrue(Privacidad::paraSolicitud()->ocultaVivas(), 'an anonymous request sees the visitor\'s view');

@@ -22,10 +22,12 @@ Las páginas públicas no piden nada: una colección con `publica = true`, las p
 
 Quien no es el propietario no ve lo que se sabe de las personas que podrían estar vivas. Una persona se **presume viva** cuando:
 
-- no tiene ningún suceso de defunción, **y**
+- no tiene un suceso de defunción **propio**, **y**
 - su nacimiento tiene fecha y fue hace menos de **110 años** (`Privacidad::ANIOS_VIVA`).
 
 Una persona sin ninguna fecha **no** se presume viva: nada lo dice, y ocultar a todos los antepasados sin fechas vaciaría el catálogo. Una fecha de nacimiento a exactamente 110 años ya cuenta como antigua.
+
+**Qué sucesos cuentan como suyos.** Un nacimiento o una defunción es de quien figura en él con el rol `principal` (`Privacidad::ROL_PRINCIPAL`). Registrar una defunción (`declarante`), ser madre, padre o padrino en un nacimiento, o ser testigo, es estar presente, no morir ni nacer: quien firmó la defunción de otra persona sigue presumiéndose viva, y en su ficha, en los lugares de nacimiento y en los apellidos solo cuentan su propio nacimiento y su propia defunción. Una defunción registrada con otro rol no da por fallecida a la persona: si nació hace menos de 110 años queda oculta (de más, no de menos); se corrige poniéndole el rol `principal` o `viva = FALSE`. Hay una excepción, a propósito: quien no tiene nacimiento propio se toma por no más joven que su hijo, así que queda oculta mientras el hijo lo esté.
 
 **Corregir la deducción.** La columna `personas.viva` (migración `002_personas_viva.sql`) manda sobre las fechas: `TRUE` = vive, `FALSE` = ya falleció, `NULL` = deducirlo. Sirve para marcar a quien vive pero no tiene fechas, o a quien ya murió sin que conste su defunción. Hoy se cambia por SQL o al importar datos; la aplicación no tiene pantalla para editarla.
 
