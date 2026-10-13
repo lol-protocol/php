@@ -2,6 +2,7 @@
 
 namespace DefamatoryContentReview\Dictionary;
 
+use DefamatoryContentReview\Chat\Inflection\TopicInflector;
 use DefamatoryContentReview\Normalization\{AccentFolding, EvasionCleaner, Leetspeak, ScriptFolding};
 
 /** Diccionario de un idioma: carga, normalización, búsqueda literal y fonética. Delega en WordListIndex/WordListPhonetics sin cambiar la API.
@@ -25,15 +26,13 @@ class WordList
     }
     public static function fromLanguageFile(string $path, string $language = 'spa'): self { return new self(require $path, $language); }
 
-    /** @param array<string,mixed> $categories */
+    /** @param array<string,mixed> $categories Las entradas con `forms` se expanden (ver TopicInflector); lo generado sin `by` llega como mucho a medium. */
     private function loadWords(array $categories): void
     {
-        foreach ($categories as $category => $terms) {
-            if (!is_array($terms)) {
-                continue;
-            }
+        $entries = array_map(fn(array $terms): array => array_map(fn($t): array => is_array($t) ? $t : ['word' => $t], $terms), array_filter($categories, 'is_array'));
+        foreach (TopicInflector::expand($entries, $this->language, true) as $category => $terms) {
             foreach ($terms as $term) {
-                $this->addWord(is_array($term) ? $term : ['word' => $term], (string) $category);
+                $this->addWord($term, (string) $category);
             }
         }
     }

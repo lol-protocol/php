@@ -21,8 +21,10 @@ return [
 
     'words' =>[
         'animal' => [
+            // «cerdo» suena mal; «cerda», horrible: el femenino es el insulto sexualizado («cerdas» se bloquea, ver `by`).
+            // «Cerda» singular queda en medium porque también es apellido: con nameCollision no pasaría de revisión igual.
             ['word' => 'cerda', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
-            ['word' => 'cerdo', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'cerdo', 'riskType' => 'animal', 'severity' => 'medium', 'forms' => 'adj', 'by' => ['f' => 'high']],
             ['word' => 'marrano', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'marrana', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'chancho', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -30,7 +32,7 @@ return [
             ['word' => 'puerca', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'cochino', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'cochina', 'riskType' => 'animal', 'severity' => 'medium'],
-            ['word' => 'guarro', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'guarro', 'riskType' => 'animal', 'severity' => 'medium', 'forms' => 'adj', 'by' => ['f' => 'high']],
             ['word' => 'guarra', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => 'asno', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'burro', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -417,13 +419,13 @@ return [
             ['word' => 'bollera', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'machorra', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'marimacho', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'puta', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'puta', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
             ['word' => 'putón', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'ramera', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'meretriz', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'furcia', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'zorra', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'perra', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'zorra', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
+            ['word' => 'perra', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
             ['word' => 'golfa', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'pendón', 'riskType' => 'genero', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'buscona', 'riskType' => 'genero', 'severity' => 'high'],

@@ -63,6 +63,27 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 - **`docs/ORIGEN.md`** (por qué existe la librería) y **`docs/RIESGOS.md`**
   (qué cubre, qué no y qué tiene que hacer la plataforma, con el marco legal
   chileno a título orientativo).
+- **Severidad por forma: el plural y el femenino no ofenden lo mismo.**
+  «Cerdo» suena mal y «cerda» horrible; «zorros» son animales; «¡cojones!»
+  es una interjección. Hasta ahora, de los pares masculino/femenino de los
+  diccionarios, 166 de 168 tenían la misma severidad en español (96/97 en
+  portugués, 80/81 en italiano, 48/48 en francés), y las listas de chat
+  copiaban la severidad de la base a todas sus formas. Ahora:
+  - cada forma generada lleva sus rasgos (`m.sg`, `f.pl`, `sg`, `pl`…) y
+    la entrada le da su severidad con `by` (`FormSeverity`; gana el más
+    específico, `none` la deja fuera);
+  - lo escrito manda: una forma que ya es entrada propia no se genera;
+  - las formas generadas no heredan `nameCollision` («Cerda» es apellido,
+    «cerdas» no);
+  - los diccionarios también aceptan `forms`, y lo generado sin `by` llega
+    como mucho a `medium`: lo que nadie revisó lo ve una persona.
+  En español: «cerdas» y «guarras» se bloquean y «cerdos»/«guarros» van a
+  revisión; «putas», «zorras», «perras» ya no pasan limpias. Medido con las
+  50.000 palabras más frecuentes: cambian exactamente esas cinco. Las
+  planillas de revisión traen una fila por forma (`forma`), y
+  `apply-review.php` escribe la respuesta en el `by` de la entrada
+  (`FormEditor`). `review/urgente/spa-genero.csv`: 22 decisiones de género
+  y número para un hablante nativo. `AsymmetricFormsTest`, `FormReviewTest`.
 
 - **En el chat, animales, discapacidad, identidad, brujería y palabrotas suaves
   sólo cuentan dirigidos a alguien** (`TargetContext`): «eres un cerdo», «seu
