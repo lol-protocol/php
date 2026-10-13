@@ -44,6 +44,22 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Evasión con la forma del texto** (`LayoutEvasionTest`):
+  - frases del diccionario escritas pegadas: «hijodeputa», «putamadre», «siegheil»;
+  - sílabas sueltas: «hi jo de pu ta», «pu   ta», «pu» y «ta» en dos líneas. Con
+    sólo dos trozos separados por un espacio no se unen: «la mer de Chine» no es «merde»;
+  - letras sueltas separadas por saltos de línea («p⏎u⏎t⏎a»);
+  - etiquetas y entidades HTML («pu<b></b>ta», «pu&#116;a»);
+  - letras en cuadros e indicadores regionales («🅿🆄🆃🅰», «🇵🇺🇹🇦»);
+  - texto forzado de derecha a izquierda («\u202Eatup» se ve «puta») y texto
+    cabeza abajo («ɐʇnd», `UpsideDown`);
+  - la «İ» turca: «İBNE» en minúsculas dejaba un punto combinante.
+
+  El chat hace una segunda pasada con la línea entera limpia, que sólo suma lo
+  que la primera no vio: así el texto censurado sigue siendo el que se escribió.
+- **Insultos de otros países hispanohablantes** (categoría `latinoamericanos`):
+  «careverga», «gonorrea» (sólo dirigido), «conchatumadre», «mamaguevo»,
+  «comemierda», «chinga tu madre», «cojudo», «forro» (sólo dirigido)…
 - **Siglas y consignas de odio en los 33 idiomas**: «nazi» en la forma de
   cada idioma («nazist», «natsi», «náci», «нацист», «ναζί», «נאצי», «نازي»,
   «नाज़ी», «phát xít», «mnazi»…, con vocativos como «nazisto» o «nazisin»),

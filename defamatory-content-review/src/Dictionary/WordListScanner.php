@@ -34,7 +34,7 @@ final class WordListScanner
     {
         $split = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE;
         $tokens = array_merge([], ...array_map(WordSegmenter::split(...), preg_split(self::BETWEEN_WORDS, $text, -1, $split) ?: []));
-        $matches = self::scanWindows($tokens, $search);
+        $matches = self::scanWindows($tokens, $search, $text);
 
         $matches = WholeWords::apply($text, $search, $matches);
 
@@ -46,7 +46,7 @@ final class WordListScanner
      * @param callable(string):(array<string,mixed>|null) $search
      * @return array<int,array<string,mixed>> cada coincidencia incluye 'start' y 'end' (posición en el texto original)
      */
-    private static function scanWindows(array $tokens, callable $search): array
+    private static function scanWindows(array $tokens, callable $search, string $text): array
     {
         $matches = [];
         $count = count($tokens);
@@ -58,7 +58,7 @@ final class WordListScanner
                 for ($k = 1; $k < $span; $k++) { // pegadas si eran contiguas (japonés, tailandés…), con espacio si no
                     $phrase .= ($slice[$k - 1][1] + strlen($slice[$k - 1][0]) === $slice[$k][1] ? '' : ' ') . $slice[$k][0];
                 }
-                $found = $search($phrase);
+                $found = $search($phrase) ?? self::searchSyllables($slice, $search, $text);
 
                 if ($found !== null) {
                     $last = $slice[count($slice) - 1];
@@ -74,5 +74,24 @@ final class WordListScanner
         }
 
         return $matches;
+    }
+
+    /**
+     * Una palabra partida en sílabas: «hi jo de pu ta», «pu\nta», «pu   ta». Trozos de 2 o 3 letras, alguno
+     * de 2; si son sólo dos, separados por algo más que un espacio: «la mer de Chine» no es «merde».
+     *
+     * @param array<int,array{0:string,1:int}> $slice
+     * @param callable(string):(array<string,mixed>|null) $search
+     * @return array<string,mixed>|null
+     */
+    private static function searchSyllables(array $slice, callable $search, string $text): ?array
+    {
+        $lengths = array_map(fn(array $token): int => mb_strlen($token[0]), $slice);
+        if (count($slice) < 2 || max($lengths) > 3 || min($lengths) !== 2) {
+            return null;
+        }
+        $gap = substr($text, $slice[0][1] + strlen($slice[0][0]), $slice[1][1] - $slice[0][1] - strlen($slice[0][0]));
+
+        return count($slice) > 2 || $gap !== ' ' ? $search(implode('', array_column($slice, 0))) : null;
     }
 }

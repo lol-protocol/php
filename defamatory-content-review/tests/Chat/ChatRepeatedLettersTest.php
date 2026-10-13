@@ -45,7 +45,7 @@ class ChatRepeatedLettersTest extends TestCase
 
     public function testCensorsTheRepeatedSpelling(): void
     {
-        $this->assertSame('Eres una ******* madre', self::review('Eres una puuuuta madre')->censored());
+        $this->assertSame('Eres una ******* y punto', self::review('Eres una puuuuta y punto')->censored());
     }
 
     public function testThreatsAcceptRepeatedLettersWithFullSeverity(): void

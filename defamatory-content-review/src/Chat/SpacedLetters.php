@@ -15,9 +15,9 @@ final class SpacedLetters
      * carácter es una letra, un dígito o un símbolo de leet («@», «$», «!», «|»).
      */
     private const RUN = '/(?<![\p{L}\p{M}\p{N}])(?:[\p{L}\p{N}@$!|]\p{M}*' . self::SEP . '){2,}[\p{L}\p{N}@$!|]\p{M}*(?![\p{L}\p{M}\p{N}])/u';
-    /** Entre dos caracteres sueltos: espacios, o símbolos de separación con algún espacio. */
-    private const SEP = '(?:[ \t]*[\-–—_.·~\/+=•…:;,][ \t]*(?=[^ \t])|[ \t]+)';
-    private const SEPARATOR = '(?:[ \t]*[\-–—_.·~\/+=•…:;,][ \t]*|[ \t]+)';
+    /** Entre dos caracteres sueltos: espacios o saltos de línea, o símbolos de separación con algún espacio. */
+    private const SEP = '(?:\s*[\-–—_.·~\/+=•…:;,]\s*(?=\S)|\s+)';
+    private const SEPARATOR = '(?:\s*[\-–—_.·~\/+=•…:;,]\s*|\s+)';
     private const SPLIT = '/' . self::SEPARATOR . '/u';
     /** Letras sueltas que también son palabras: la «a» de «vamos a f o l l a r» no es de «follar». */
     private const CONNECTORS = ['a', 'e', 'i', 'o', 'u', 'y'];

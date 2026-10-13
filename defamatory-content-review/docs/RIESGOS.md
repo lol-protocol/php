@@ -31,6 +31,9 @@ que hacer la plataforma por fuera del código. El porqué está en
 | «p~u~t~a», «p|u|t|a», «p - u - t - a», «p|_|ta», «1d!0t4», «€stúpido» | se detectan (`SymbolEvasionTest`) |
 | «nazi», «N.A.Z.I», «N.4.Z.|», «KKK», «ACAB», «sieg heil», «14/88»: no estaban en ningún diccionario | `review` o `reject` en los 33 idiomas; «mi abuelo luchó contra los nazis» se aprueba (`HateTermsTest`) |
 | «Elba Gіna» (con «і» cirílica) o un espacio invisible en el apellido: la fusión «el vagina» no se veía | se ve (`UnicodeEvasionTest`) |
+| «hijodeputa», «putamadre», «hi jo de pu ta», «pu⏎ta», «p⏎u⏎t⏎a» | se detectan (`LayoutEvasionTest`) |
+| «pu<b></b>ta», «pu&#116;a», «🅿🆄🆃🅰», «🇵🇺🇹🇦», texto invertido con U+202E, «ɐʇnd» (cabeza abajo), «İBNE» en turco | se detectan (`LayoutEvasionTest`) |
+| «careverga», «conchatumadre», «mamaguevo», «comemierda», «eres un gonorrea» | marcados; «el forro del abrigo» y «la gonorrea es una infección» se aprueban |
 
 ## Flancos abiertos
 
@@ -46,6 +49,12 @@ siguiente es lo que los cubre.
 - **Imágenes y archivos**: una foto con texto, un PDF o un audio no pasan por el filtro.
 - **Evasión fonética y jerga nueva**: «pvta» (v por u), abreviaturas nuevas,
   palabras inventadas. El diccionario hay que mantenerlo vivo (ver `review/`).
+- **Una frase entera pegada con el insulto adentro**: «eresunidiota». Buscar
+  insultos dentro de palabras largas marcaría «computadora» por «puta».
+- **Dos sílabas separadas por un solo espacio**: «pu ta». Unirlas marcaría
+  frases corrientes («la mer de Chine» en francés daría «merde»).
+- **«puto»** no está en el diccionario: en España es también un intensificador
+  («los putos deberes») y espera la revisión nativa de `review/urgente/spa-genero.csv`.
 - **Falsos positivos**: «la película trata de un ladrón de bancos» va a revisión
   y «un asesino de la época» se bloquea. Es el precio de no dejar pasar las acusaciones.
 
