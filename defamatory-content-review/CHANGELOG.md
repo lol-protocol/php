@@ -44,6 +44,17 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Datos personales en el chat** (tipo `privado`, `PersonalData`): un RUT con
+  dígito verificador válido, un correo, un teléfono con prefijo o anunciado
+  («fono», «llámalo al») y una dirección anunciada («vive en la calle…») van
+  a revisión, en cualquier idioma. Las fechas («1939-1945») no. `PersonalDataTest`.
+- **Más datos sensibles y vida privada** (español e inglés): orientación sexual
+  («era homosexual», «salió del clóset»), filiación («es hijo ilegítimo», «fue
+  adoptada», «no es hijo de»), suicidio, violencia en la familia («le pega a su
+  señora») e internación psiquiátrica. Van a revisión. `SensitiveDataPatternsTest`.
+- **Letras tachadas, subrayadas, zalgo, con punto y versalitas**: «p̶u̶t̶a̶»,
+  «ṗụṭạ», «ᴘᴜᴛᴀ» (`StyledLetters`; `AccentFolding` lleva el latín extendido
+  adicional a su letra base, salvo en vietnamita). `MarkEvasionTest`.
 - **Evasión con la forma del texto** (`LayoutEvasionTest`):
   - frases del diccionario escritas pegadas: «hijodeputa», «putamadre», «siegheil»;
   - sílabas sueltas: «hi jo de pu ta», «pu   ta», «pu» y «ta» en dos líneas. Con
@@ -299,6 +310,9 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Arreglado
 
+- **Un byte UTF-8 inválido aprobaba la línea entera**: «eres una puta \xff»
+  hacía fallar todas las expresiones regulares y no se encontraba nada. Lo mismo
+  con los nombres. Ahora el texto pasa por `mb_scrub` antes de revisarse.
 - **La fusión de nombre y apellido se evadía con Unicode**: «Elba Gіna» (con
   «і» cirílica), un espacio de ancho cero o letras de ancho completo dejaban
   pasar «el vagina». `NameEvaluator::applyPhoneticChecks()` limpia nombre y

@@ -8,13 +8,13 @@ use DefamatoryContentReview\Normalization\EvasionCleaner;
 
 /**
  * Revisa una línea libre (un mensaje de chat) y dice si hay que censurarla.
- * Cuatro tipos de contenido:
+ * Cinco tipos de contenido:
  *
  * - `difamatorio` y `burlesco`: los insultos del diccionario del idioma, los
  *   mismos de validateName(); son burlescos los de riskType `burlesco`;
  * - `sexual` y `belico` (guerra, violencia y amenazas): listas propias en
- *   config/chat-topics/<código>.php (ver ChatTopics): no son insultos y no
- *   deben afectar la validación de nombres.
+ *   config/chat-topics/<código>.php (ver ChatTopics); `privado`: RUT, correo,
+ *   teléfono o dirección de alguien (PersonalData), en cualquier idioma.
  *
  * Un término que también es apellido (`nameCollision`) nunca bloquea solo: baja a revisión.
  * Una segunda pasada con la línea entera limpia (EvasionCleaner) ve «pu&#116;a» y el texto
@@ -36,6 +36,7 @@ final class ChatLineReviewer
 
     public function review(string $line): ChatLineResult
     {
+        $line = mb_scrub($line, 'UTF-8'); // un byte inválido hacía fallar todas las expresiones regulares: se aprobaba
         $topics = $this->topicsFor($language = $this->reviewer->getLanguage());
         $targeting = $topics?->targeting() ?? [];
         $matches = TargetContext::apply($line, $this->find($line, $topics), $targeting, $language);
@@ -44,6 +45,7 @@ final class ChatLineReviewer
             $extra = array_filter($this->find($clean, $topics), fn(array $m): bool => !in_array($m['original'] ?? $m['found'], $seen, true));
             $matches = [...$matches, ...TargetContext::apply($clean, array_values($extra), $targeting, $language)];
         }
+        $matches = [...$matches, ...PersonalData::find($line)];
 
         return new ChatLineResult($line, $matches, ChatMatches::decision($matches));
     }

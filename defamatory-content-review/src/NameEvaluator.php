@@ -17,7 +17,7 @@ final class NameEvaluator
     /** @param array<string,float> $languageSet código => confianza (1.0 = idioma principal) */
     public function evaluate(string $name, array $languageSet, ScoringPolicy $policy, string $primaryLanguage): ValidationResult
     {
-        $result = new ValidationResult($name, true, $primaryLanguage);
+        $result = new ValidationResult($name = mb_scrub($name, 'UTF-8'), true, $primaryLanguage);
         $result->setLanguagesChecked($languageSet);
 
         $best = [];

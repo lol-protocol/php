@@ -55,7 +55,17 @@ final class AccentFolding
             unset($map[$letter]);
         }
 
-        return strtr(self::compose($text), $map);
+        $text = strtr(self::compose($text), $map);
+        if ($language === 'vie' || !class_exists(\Normalizer::class) || preg_match('/[\x{1E00}-\x{1EFF}]/u', $text) !== 1) {
+            return $text;
+        }
+
+        // Latín extendido adicional («ṗụṭạ»): sólo el vietnamita lo usa para escribir; a la letra base.
+        return preg_replace_callback('/[\x{1E00}-\x{1EFF}]/u', function (array $m): string {
+            $base = preg_replace('/\p{Mn}+/u', '', (string) \Normalizer::normalize($m[0], \Normalizer::FORM_D));
+
+            return is_string($base) && preg_match('/^[a-zA-Z]$/', $base) === 1 ? $base : $m[0];
+        }, $text) ?? $text;
     }
 
     /**

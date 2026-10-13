@@ -13,7 +13,8 @@ que hacer la plataforma por fuera del código. El porqué está en
 |---|---|---|
 | Insultos del diccionario (33 idiomas) | «idiota», «hijo de puta», chilenismos («conchetumare», «aweonao») | `reject` o `review` según la gravedad |
 | Evasión | letras sueltas («p u t a»), repetidas («puuuta»), leet («1d10t4»), signos pegados («puta!»), asteriscos («p*ta»), letras cirílicas o griegas camufladas, caracteres invisibles, ancho completo, negrita matemática y emoji en medio de la palabra | igual que el término; los asteriscos van a lo sumo a `review` |
-| Acusaciones (español e inglés) | delitos («estafó a», «fue condenado», «es narco»), salud («tiene sida»), vida privada («le pone los cuernos»), funas | siempre `review`: una persona verifica |
+| Acusaciones (español e inglés) | delitos («estafó a», «fue condenado», «es narco»), salud («tiene sida»), vida privada («le pone los cuernos»), orientación sexual, filiación («es hijo ilegítimo»), suicidio, funas | siempre `review`: una persona verifica |
+| Datos personales (cualquier idioma) | RUT válido, correo, teléfono, dirección («vive en la calle…») | `review` (tipo `privado`) |
 | Amenazas y contenido sexual | «te voy a matar», «mándame nudes» | `reject` o `review` |
 | Contexto | animales, discapacidad, identidad: sólo si van dirigidos a alguien («eres un cerdo» sí, «comí cerdo» no) | `review`, o `approve` informado |
 | Idioma | el endpoint revisa el idioma pedido y además los de la plataforma (`spa` y `eng` por defecto) | la más grave |
@@ -33,6 +34,10 @@ que hacer la plataforma por fuera del código. El porqué está en
 | «Elba Gіna» (con «і» cirílica) o un espacio invisible en el apellido: la fusión «el vagina» no se veía | se ve (`UnicodeEvasionTest`) |
 | «hijodeputa», «putamadre», «hi jo de pu ta», «pu⏎ta», «p⏎u⏎t⏎a» | se detectan (`LayoutEvasionTest`) |
 | «pu<b></b>ta», «pu&#116;a», «🅿🆄🆃🅰», «🇵🇺🇹🇦», texto invertido con U+202E, «ɐʇnd» (cabeza abajo), «İBNE» en turco | se detectan (`LayoutEvasionTest`) |
+| «eres una puta \xff» (un byte UTF-8 inválido): ninguna expresión regular encontraba nada | `reject` (`MarkEvasionTest`) |
+| «p̶u̶t̶a̶», «p̲u̲t̲a̲», zalgo, «ṗụṭạ», «ᴘᴜᴛᴀ» | se detectan (`MarkEvasionTest`) |
+| «su RUT es 12.345.678-5», «fono: 9 8765 4321», «vive en la calle Maipú 123» | `review` (`PersonalDataTest`) |
+| «era homosexual», «es hijo ilegítimo», «se suicidó», «le pega a su señora» | `review` (`SensitiveDataPatternsTest`) |
 | «careverga», «conchatumadre», «mamaguevo», «comemierda», «eres un gonorrea» | marcados; «el forro del abrigo» y «la gonorrea es una infección» se aprueban |
 
 ## Flancos abiertos
@@ -57,6 +62,8 @@ siguiente es lo que los cubre.
   («los putos deberes») y espera la revisión nativa de `review/urgente/spa-genero.csv`.
 - **Falsos positivos**: «la película trata de un ladrón de bancos» va a revisión
   y «un asesino de la época» se bloquea. Es el precio de no dejar pasar las acusaciones.
+  En genealogía, «fue adoptada» o «se suicidó en 1920» también irán a revisión:
+  son datos sensibles de una familia, y quien revisa decide si se publican.
 
 ## Lo que tiene que hacer la plataforma (fuera del código)
 

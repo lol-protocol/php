@@ -552,6 +552,7 @@ Tipos de contenido:
 | `burlesco` | Términos `burlesco` de ese mismo diccionario |
 | `sexual` | `config/chat-topics/<código>.php` |
 | `belico` | `config/chat-topics/<código>.php`: guerra, violencia, **amenazas** e incitación a matar |
+| `privado` | `PersonalData`, en cualquier idioma: RUT válido, correo, teléfono o dirección de alguien. Siempre a revisión |
 
 El término más grave decide: `high` bloquea, `medium` va a revisión y `low`
 sólo se informa (por ejemplo «mi abuelo luchó en la guerra» se aprueba pero
