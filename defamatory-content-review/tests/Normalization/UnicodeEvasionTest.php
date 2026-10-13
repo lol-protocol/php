@@ -45,6 +45,16 @@ class UnicodeEvasionTest extends TestCase
         $this->assertFalse(DefamatoryContentReviewer::create(self::CONFIG_DIR, 'spa')->validateName($word)->isValid(), $word);
     }
 
+    public function testNameFusionSeesThroughTheDisguise(): void
+    {
+        $reviewer = DefamatoryContentReviewer::create(self::CONFIG_DIR, 'spa');
+
+        foreach ([["Elba", "G\u{0456}na"], ["Elba", "Gi\u{200B}na"], ['Ｅｌｂａ', 'Ｇｉｎａ']] as [$first, $last]) {
+            $this->assertFalse($reviewer->validateFullName($first, $last)->isValid(), "{$first} {$last}");
+        }
+        $this->assertTrue($reviewer->validateFullName('José', 'Muñoz')->isValid());
+    }
+
     public function testOtherScriptsAreLeftAlone(): void
     {
         $this->assertSame('свинья', EvasionCleaner::clean('свинья', 'rus'), 'ruso no se pasa a latín');

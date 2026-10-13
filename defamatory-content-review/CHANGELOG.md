@@ -264,6 +264,15 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Arreglado
 
+- **La fusión de nombre y apellido se evadía con Unicode**: «Elba Gіna» (con
+  «і» cirílica), un espacio de ancho cero o letras de ancho completo dejaban
+  pasar «el vagina». `NameEvaluator::applyPhoneticChecks()` limpia nombre y
+  apellido con `EvasionCleaner` antes de buscar fusiones.
+- `PRIVACIDAD-Y-HONRA.md` en la raíz del repositorio: por qué la privacidad y
+  la honra son la condición del proyecto, qué está resuelto y los cabos sueltos
+  (`url-routing` sin filtro cuando haya escritura, personas vivas en
+  `phone-directory`, denuncia y registro). Enlazado desde los README.
+
 - **Un insulto se colaba eligiendo otro idioma**: el endpoint revisaba sólo el
   `language` que manda quien escribe, así que «Fulano es un estafador, hijo de
   puta» con `"eng"` se aprobaba. Ahora revisa además los idiomas de la

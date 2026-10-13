@@ -20,7 +20,8 @@ apellidos de personas, para plataformas de información genealógica.
 
 Por qué existe esta librería: [`docs/ORIGEN.md`](docs/ORIGEN.md). Qué protege y
 qué no, y qué tiene que hacer la plataforma por fuera del código:
-[`docs/RIESGOS.md`](docs/RIESGOS.md).
+[`docs/RIESGOS.md`](docs/RIESGOS.md). Por qué la privacidad y la honra importan
+en todo el proyecto: [`../PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md).
 
 ---
 
@@ -256,6 +257,10 @@ FusionSupport::isSupported('ara');                                      // false
 
 ### Evasión cubierta y no cubierta
 
+- **Disfraces de Unicode** («рuta» con «р» cirílica, «pu​ta» con un espacio de
+  ancho cero, «ｐｕｔａ», «𝐩𝐮𝐭𝐚», «pu🙂ta»): cubiertos, también en nombres.
+  `EvasionCleaner` corre dentro de `WordList::normalize()`, así que vale para
+  `validateName()` y para el chat (`UnicodeEvasionTest`).
 - **Transliteración numérica** ("c3rda", "v4g1na"): cubierta. `WordList::normalize()`
   sustituye los dígitos/símbolos de un solo carácter más comunes
   (`0→o 1→i 3→e 4→a 5→s 7→t 8→b @→a $→s`) antes de comparar, y los 17
@@ -1132,7 +1137,7 @@ una regla nueva marca un linaje real, falla ahí.
   producción — es una base verificable, no una traducción exhaustiva.
 - El árabe dialectal y las variedades regionales del chino no están cubiertos.
 - La distancia de edición («Cerrda») no está cubierta: ver el docblock de
-  `EvasionTest::testEditDistanceEvasionIsADeliberateGap()` para el porqué.
+  `StructuralEvasionTest::testEditDistanceEvasionIsADeliberateGap()` para el porqué.
 - Las afinidades son aproximaciones, no medidas.
 - El módulo no decide por la plataforma: `decide()` propone, y los casos
   `review` requieren persona.

@@ -43,3 +43,7 @@ plataforma estaba siendo usada para difamarlo.
 | Un insulto disfrazado sigue siendo un insulto | `EvasionCleaner` (letras cirílicas, invisibles, ancho completo, emoji), `MaskedTerms` («p*ta») |
 | El idioma no es una puerta trasera | `ModerationEndpoint` revisa siempre también en los idiomas de la plataforma |
 | Lo que el filtro no ve, lo ve el proceso | [`RIESGOS.md`](RIESGOS.md): revisión de todo texto libre, denuncia, retiro y registro |
+
+Qué significan la honra, el honor y la vida privada en el proyecto completo, y
+qué cabos sueltos quedan fuera de esta librería:
+[`../../PRIVACIDAD-Y-HONRA.md`](../../PRIVACIDAD-Y-HONRA.md).

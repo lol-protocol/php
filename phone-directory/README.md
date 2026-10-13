@@ -2,6 +2,11 @@
 
 Un módulo para parsear guías telefónicas históricas en varios idiomas, extraer personas naturales y jurídicas con sus datos geográficos, y almacenarlas en una base de datos relacional (SQLite, MySQL/MariaDB o PostgreSQL) con fines genealógicos.
 
+> **Privacidad.** El catálogo llega hasta 1975: muchas de las personas de esas
+> guías viven, con su nombre, dirección y teléfono. Antes de publicar algo de
+> esta base, aplica la regla de las personas vivas (ver
+> [`../PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md), «Cabos sueltos»).
+
 ## Características
 
 - **Dos parsers**: `PhoneDirectoryParser` (inglés, un solo formato) y `MultiLanguagePhoneDirectoryParser` (detecta el idioma y separa personas de empresas)

@@ -3,7 +3,9 @@
 Un filtro automático baja el riesgo, pero no lo elimina. Este documento dice qué
 cubre el código, qué flancos se cerraron y cuáles siguen abiertos, y qué tiene
 que hacer la plataforma por fuera del código. El porqué está en
-[`ORIGEN.md`](ORIGEN.md).
+[`ORIGEN.md`](ORIGEN.md), y lo que significa para el proyecto completo (incluidos
+`url-routing` y `phone-directory`), en
+[`../../PRIVACIDAD-Y-HONRA.md`](../../PRIVACIDAD-Y-HONRA.md).
 
 ## Qué cubre hoy
 
@@ -26,6 +28,7 @@ que hacer la plataforma por fuera del código. El porqué está en
 | «conchetumare», «ctm», «weón culiao», «aweonao» | marcados; «hola weón» sigue aprobándose (`ChileanVocabularyTest`) |
 | Las 7 entradas de más de 3 palabras («concha de tu madre», «son of a bitch») y las 3 con guion («lèche-cul») | se detectan enteras; ahora un test exige que cada entrada se encuentre a sí misma (`DictionarySelfDetectionTest`) |
 | Un insulto en español enviado con `"language": "eng"` | el endpoint lo revisa también en español (`ModerationLanguagesTest`) |
+| «Elba Gіna» (con «і» cirílica) o un espacio invisible en el apellido: la fusión «el vagina» no se veía | se ve (`UnicodeEvasionTest`) |
 
 ## Flancos abiertos
 
