@@ -25,7 +25,11 @@ namespace App\Support;
  *    surname groups, birthplace lists and organization members;
  *  - sucesos() leaves out any event that has a living participant, and
  *    registros() any record that documents one, because their dates, places and
- *    descriptions would otherwise give the person away.
+ *    descriptions would otherwise give the person away. What a persona who is
+ *    visible shows of such an event is only its year (sqlEventoDe()): her own
+ *    birth or death is still hers to state, but not the day or the place, which
+ *    would point at the living person who was there. Lists of births by place
+ *    leave it out altogether, since the place is what they list.
  *
  * The methods return SQL table expressions that REPLACE the tables, so a query
  * cannot forget to hide something: it only ever sees the hidden version. For
@@ -134,9 +138,23 @@ final class Privacidad
             return 'sucesos';
         }
 
-        return '(SELECT e.* FROM sucesos e WHERE NOT EXISTS ('
-            . 'SELECT 1 FROM suceso_participantes ep JOIN personas eq ON eq.id = ep.persona_id'
-            . ' WHERE ep.suceso_id = e.id AND ' . $this->sqlViva('eq') . '))';
+        return '(SELECT e.* FROM sucesos e WHERE ' . $this->sqlSucesoVisible('e') . ')';
+    }
+
+    /**
+     * SQL boolean: the event aliased $q has no living participant, so all of it
+     * may be seen. sucesos() is exactly the events for which this holds.
+     */
+    public function sqlSucesoVisible(string $q): string
+    {
+        self::alias($q);
+
+        if (!$this->ocultaVivas) {
+            return 'TRUE';
+        }
+
+        return "NOT EXISTS (SELECT 1 FROM suceso_participantes {$q}_vp JOIN personas {$q}_vq ON {$q}_vq.id = {$q}_vp.persona_id"
+            . " WHERE {$q}_vp.suceso_id = {$q}.id AND " . $this->sqlViva("{$q}_vq") . ')';
     }
 
     /** registros, without any record that documents an event with a living participant. */
@@ -171,23 +189,49 @@ final class Privacidad
      * 'lugar_ruta' or 'lugar_nombre' (the place's name).
      *
      * Only an event she is the ROL_PRINCIPAL of counts, so a persona's summary
-     * shows her own birth and death and never one she merely took part in. Wrap
-     * it in siVisible(): a persona who is herself hidden gets NULL.
+     * shows her own birth and death and never one she merely took part in. If
+     * the event has a living participant (see sucesos()) the date comes back as
+     * its year alone and the place as NULL. Wrap it in siVisible(): a persona
+     * who is herself hidden gets NULL.
      */
     public function sqlEventoDe(string $alias, string $tipo, string $campo): string
     {
         self::alias($alias);
         self::palabra($tipo, 'tipo de suceso');
         [$valor, $unir] = match ($campo) {
-            'fecha' => ['s.fecha', ''],
-            'lugar_ruta' => ['s.lugar_ruta', ''],
-            'lugar_nombre' => ['l.nombre', ' LEFT JOIN lugares l ON l.ruta = s.lugar_ruta'],
+            'fecha' => [$this->fechaVisible('s'), ''],
+            'lugar_ruta' => [$this->soloSiVisible('s', 's.lugar_ruta'), ''],
+            'lugar_nombre' => [$this->soloSiVisible('s', 'l.nombre'), ' LEFT JOIN lugares l ON l.ruta = s.lugar_ruta'],
             default => throw new \InvalidArgumentException("Campo de suceso inválido: {$campo}"),
         };
 
         return "SELECT {$valor} FROM sucesos s JOIN suceso_participantes sp ON sp.suceso_id = s.id{$unir}"
             . " WHERE sp.persona_id = {$alias}.id AND sp.rol = '" . self::ROL_PRINCIPAL . "' AND s.tipo = '{$tipo}'"
             . ' ORDER BY s.fecha LIMIT 1';
+    }
+
+    /**
+     * The date of the event aliased $q: whole when the event may be seen, only
+     * its year (as text) when a living participant hides it. Cast to text on
+     * both sides so PostgreSQL, which will not mix a date and a text in one
+     * CASE, and SQLite agree.
+     */
+    private function fechaVisible(string $q): string
+    {
+        if (!$this->ocultaVivas) {
+            return "{$q}.fecha";
+        }
+
+        return 'CASE WHEN ' . $this->sqlSucesoVisible($q) . " THEN CAST({$q}.fecha AS TEXT)"
+            . " ELSE SUBSTR(CAST({$q}.fecha AS TEXT), 1, 4) END";
+    }
+
+    /** $expresion when the event aliased $q may be seen, NULL when a living participant hides it. */
+    private function soloSiVisible(string $q, string $expresion): string
+    {
+        return $this->ocultaVivas
+            ? 'CASE WHEN ' . $this->sqlSucesoVisible($q) . " THEN {$expresion} END"
+            : $expresion;
     }
 
     private static function alias(string $alias): void

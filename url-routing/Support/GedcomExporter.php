@@ -107,6 +107,9 @@ final class GedcomExporter
         $l[] = "1 {$tag}";
         if ($fecha !== null && preg_match('/^(\d{4})-(\d{2})-(\d{2})/', $fecha, $m) === 1) {
             $l[] = '2 DATE ' . (int)$m[3] . ' ' . self::MESES[(int)$m[2] - 1] . ' ' . $m[1];
+        } elseif ($fecha !== null && preg_match('/^\d{4}$/', $fecha) === 1) {
+            // Only the year is known, or may be shown: GEDCOM takes a date without day or month.
+            $l[] = '2 DATE ' . $fecha;
         }
         if ($lugar !== null && $lugar !== '') {
             $l[] = '2 PLAC ' . self::valor($lugar);

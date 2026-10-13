@@ -145,6 +145,38 @@ class PrivacidadTest extends TestCase
         Privacidad::publica()->sqlEventoDe('p', $tipo, $campo);
     }
 
+    public function testAnEventIsVisibleToTheOwnerAlwaysAndToAVisitorWhenNoOneInItLives(): void
+    {
+        $this->assertSame('TRUE', Privacidad::propietario()->sqlSucesoVisible('e'));
+
+        $sql = Privacidad::publica()->sqlSucesoVisible('e');
+        $this->assertStringStartsWith('NOT EXISTS', $sql);
+        $this->assertStringContainsString('e_vp.suceso_id = e.id', $sql);
+        $this->assertStringContainsString('COALESCE(e_vq.viva', $sql, 'a participant counts as alive by the same rule as everywhere else');
+    }
+
+    #[DataProvider('aliasInvalidos')]
+    public function testSqlSucesoVisibleRejectsInvalidAliasesToo(string $alias): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Privacidad::publica()->sqlSucesoVisible($alias);
+    }
+
+    /** The owner's SQL is the plain columns; a visitor's keeps the year of a hidden event and drops its place. */
+    public function testAHiddenEventsPlaceAndDayAreWhatSqlEventoDeTakesAway(): void
+    {
+        $propietario = Privacidad::propietario();
+        $this->assertStringContainsString('SELECT s.fecha FROM sucesos s', $propietario->sqlEventoDe('p', 'nacimiento', 'fecha'));
+        $this->assertStringContainsString('SELECT s.lugar_ruta FROM sucesos s', $propietario->sqlEventoDe('p', 'nacimiento', 'lugar_ruta'));
+        $this->assertStringNotContainsString('SUBSTR', $propietario->sqlEventoDe('p', 'nacimiento', 'fecha'));
+
+        $visita = Privacidad::publica();
+        $this->assertStringContainsString('ELSE SUBSTR(CAST(s.fecha AS TEXT), 1, 4) END', $visita->sqlEventoDe('p', 'nacimiento', 'fecha'));
+        $this->assertStringContainsString('THEN s.lugar_ruta END', $visita->sqlEventoDe('p', 'nacimiento', 'lugar_ruta'));
+        $this->assertStringContainsString('THEN l.nombre END', $visita->sqlEventoDe('p', 'nacimiento', 'lugar_nombre'));
+    }
+
     /** Being a parent or a witness at someone's birth or death is not being born or dying. */
     public function testOnlyEventsThePersonaIsThePrincipalOfAreHers(): void
     {

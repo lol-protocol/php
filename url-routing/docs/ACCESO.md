@@ -36,11 +36,11 @@ Una persona sin ninguna fecha **no** se presume viva: nada lo dice, y ocultar a 
 | La persona (`/{id}/` y sus acciones) | La página existe, para que un enlace desde un árbol no se rompa, pero solo dice «Persona viva»: sin nombre, sexo, apellido, fechas, lugar, familiares ni sucesos. Sus padres también la identificarían |
 | Árboles (colección, ascendencia, descendencia, vínculos) | Aparece como «Persona viva» en su lugar, para que el árbol conserve su forma; va después de los demás y ordenada por id, para que el orden no diga nada de ella |
 | Búsqueda | **No aparece**, y no se puede encontrar por su nombre ni por «persona viva»: si se la encontrara aunque solo se viera la máscara, cualquiera podría comprobar si existe alguien con ese nombre |
-| Apellidos (grupos) | No cuenta, no sale en la red del apellido y no pesa en los lugares de nacimiento |
-| Lugares, miembros de organizaciones | No aparece |
-| Sucesos | Un suceso con **algún** participante vivo no existe para el visitante (404, ni en búsquedas ni en listas ni en la cronología de nadie), porque su fecha, lugar o descripción lo delatarían |
+| Apellidos (grupos) | No cuenta, no sale en la red del apellido y no pesa en los lugares de nacimiento. Tampoco pesa un nacimiento con un participante vivo |
+| Lugares, miembros de organizaciones | No aparece. La lista de nacidos en un lugar tampoco incluye los nacimientos con un participante vivo: el lugar es justo lo que la delataría |
+| Sucesos | Un suceso con **algún** participante vivo no existe para el visitante (404, ni en búsquedas ni en listas ni en la cronología de nadie), porque su fecha, lugar o descripción lo delatarían. Lo único que sobrevive es **el año**, en la ficha de la persona fallecida a quien pertenece el suceso (su nacimiento o su defunción): `1950`, nunca el día ni el lugar |
 | Registros | Un registro que documenta un suceso así tampoco existe: su título y su fuente suelen nombrar a la persona |
-| GEDCOM | La persona sale como «Persona viva», sin sexo, fechas ni lugar; la forma del árbol se conserva y todos los punteros siguen resolviendo |
+| GEDCOM | La persona sale como «Persona viva», sin sexo, fechas ni lugar; la forma del árbol se conserva y todos los punteros siguen resolviendo. De un suceso oculto, el GEDCOM lleva solo el año (`2 DATE 1950`) y ningún `PLAC` |
 
 El propietario lo ve todo y sus consultas son las de siempre.
 
@@ -82,7 +82,8 @@ Esto hace privados los **objetos** que ya se presentaban como privados y oculta 
 ## Pruebas
 
 - `tests/App/Support/AccessPolicyTest.php`: lectura de credenciales (Basic y Bearer), comparación del token, caducidad de la sesión y las dos formas de negar.
+- `tests/App/Support/GedcomExporterTest.php`: fecha completa, solo el año y lugar.
 - `tests/App/Support/PrivacidadTest.php`: el umbral, que el SQL del propietario sea el de siempre y que un alias inválido se rechace antes de llegar al SQL.
-- `tests/App/Repositories/PrivacidadRepositoriesTest.php` (en SQLite y PostgreSQL, con fecha fija): quién se oculta y quién no, el borde exacto de los 110 años, la marca `viva`, y qué ve un visitante en cada repositorio.
+- `tests/App/Repositories/PrivacidadRepositoriesTest.php` (en SQLite y PostgreSQL, con fecha fija): quién se oculta y quién no, el borde exacto de los 110 años, la marca `viva`, el rol de cada participante (firmar una defunción no es morir), el año que deja un suceso oculto y qué ve un visitante en cada repositorio.
 - `tests/App/Integration/ResponseHeadersTest.php`: contra el servidor integrado de PHP, porque `PagesTest` no ve cabeceras (en la CLI `header()` no hace nada): que lo oculto responda con el mismo estado, cuerpo y cabeceras que lo que no existe, que las páginas del propietario salgan `private, no-store` y que el área de cuenta pida credenciales.
 - `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos ni de Lucía (se comprobó que falla si se apaga el enmascarado).
