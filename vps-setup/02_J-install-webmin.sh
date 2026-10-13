@@ -6,6 +6,13 @@ source "$(dirname "$0")/lib.sh"
 
 print_header "02_J" "Instalacion de Webmin"
 
+# Se valida ANTES de descargar/instalar nada (antes se validaba al final, con Webmin ya instalado).
+WEBMIN_ALLOW_FROM=${WEBMIN_ALLOW_FROM:-}
+if [ -n "$WEBMIN_ALLOW_FROM" ] && ! [[ "$WEBMIN_ALLOW_FROM" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){3}(/[0-9]{1,2})?$ ]]; then
+    echo "ERROR: WEBMIN_ALLOW_FROM debe ser una IPv4 o CIDR (ej. 203.0.113.5 o 203.0.113.0/24)"
+    exit 2
+fi
+
 echo "Webmin es una GUI que edita los archivos de configuracion nativos"
 echo "de Linux (Nginx, cron, usuarios, firewall, etc). No reemplaza ni"
 echo "controla nada por su cuenta: si lo desinstalas, todo sigue"
@@ -22,7 +29,17 @@ echo "[1/3] Agregando el repositorio oficial de Webmin..."
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 curl -fsS -o "$TMP_DIR/setup-repos.sh" https://raw.githubusercontent.com/webmin/webmin/master/setup-repos.sh
-sudo bash "$TMP_DIR/setup-repos.sh"
+# --force: el instalador PREGUNTA "Setup Webmin stable repository? (y/N)". Sin terminal
+# toma la "N" (y no agrega nada); por ssh -t (remote-run.sh) se queda esperando una tecla.
+# OJO: setup-repos.sh es un envoltorio que descarga webmin-setup-repo.sh y sale SIEMPRE con 0,
+# aunque falle (verificado: con la descarga de la llave bloqueada devolvio 0). Por eso se
+# comprueba a continuacion que el paquete quedo disponible, en vez de confiar en su codigo.
+sudo sh "$TMP_DIR/setup-repos.sh" --force < /dev/null
+if ! apt-cache show webmin > /dev/null 2>&1; then
+    echo "ERROR: el repositorio de Webmin no quedo configurado (el paquete 'webmin' no aparece en apt)." >&2
+    echo "Revisa la salida de arriba (descarga de la llave en download.webmin.com, conexion)." >&2
+    exit 1
+fi
 
 echo "[2/3] Instalando Webmin..."
 sudo apt-get install -y --install-recommends webmin
@@ -31,10 +48,7 @@ sudo apt-get install -y --install-recommends webmin
 # fuerza bruta (fail2ban solo vigila SSH). Con WEBMIN_ALLOW_FROM=<tu IP> (o CIDR) solo
 # esa direccion llega al puerto; sin ella queda abierto y se avisa al final.
 echo "[3/3] Abriendo el puerto 10000 en el firewall..."
-WEBMIN_ALLOW_FROM=${WEBMIN_ALLOW_FROM:-}
 if [ -n "$WEBMIN_ALLOW_FROM" ]; then
-    [[ "$WEBMIN_ALLOW_FROM" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){3}(/[0-9]{1,2})?$ ]] \
-        || { echo "ERROR: WEBMIN_ALLOW_FROM debe ser una IPv4 o CIDR (ej. 203.0.113.5 o 203.0.113.0/24)"; exit 2; }
     if sudo ufw status | grep -q "Status: active"; then
         sudo ufw allow from "$WEBMIN_ALLOW_FROM" to any port 10000 proto tcp
     else

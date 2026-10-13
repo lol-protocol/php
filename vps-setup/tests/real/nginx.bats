@@ -36,6 +36,10 @@ teardown() {
     echo "$output" | grep -qi '^X-Frame-Options:'
     run curl -s -o /dev/null -w '%{http_code}' -H "Host: $D1" http://127.0.0.1/.htaccess
     [ "$output" = "403" ]
+    # un .php en la landing ni se ejecuta ni se sirve su codigo: 404
+    echo '<?php echo "EJECUTADO"; // clave=secreta' > /var/www/landing-page/$D1/t.php
+    run curl -s -w ' %{http_code}' -H "Host: $D1" http://127.0.0.1/t.php
+    [[ "$output" == *" 404" ]]; [[ "$output" != *"clave"* ]]
 }
 
 @test "03 no deja el vhost anidado: index.html esta en la raiz del dominio (deploy_files real)" {

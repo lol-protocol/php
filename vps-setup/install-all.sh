@@ -73,7 +73,10 @@ if [ "$DRY_RUN" -eq 0 ]; then
     mkdir -p "$(dirname "$LOG_FILE")"
     exec > >(tee -a "$LOG_FILE") 2>&1
     echo "Log de esta corrida: $LOG_FILE"
-    chmod +x ./*.sh
+    # Solo los pasos numerados (por si el repo llego sin permisos, ej. un .zip). lib.sh se
+    # "source"-a, no se ejecuta: si se le diera +x, git veria el checkout del VPS como
+    # modificado y un "git pull" posterior podria negarse a actualizar.
+    chmod +x ./[0-9]*.sh
     # Una corrida nueva (sin --resume) empieza de cero para este dominio.
     if [ "$RESUME" -eq 0 ] && [ -f "$STATE_FILE" ]; then
         # Coincidencia EXACTA del primer campo: con grep por subcadena, borrar el
@@ -193,12 +196,22 @@ fi
 # El healthcheck NO esta en STEPS: sale con error si algo falla, y con "set -e"
 # eso abortaria antes del resumen final. Aqui un fallo solo se avisa (por
 # ejemplo, el DNS puede seguir propagando aunque la instalacion este bien).
-bash ./08-healthcheck.sh "$DOMAIN" || echo "AVISO: el healthcheck reporto fallas (ver arriba); la instalacion termino pero revisalas."
+HEALTH_OK=1
+bash ./08-healthcheck.sh "$DOMAIN" || HEALTH_OK=0
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║  ✓ SETUP COMPLETADO EXITOSAMENTE                          ║"
+if [ "$HEALTH_OK" -eq 1 ]; then
+    echo "║  ✓ SETUP COMPLETADO EXITOSAMENTE                          ║"
+else
+    # Todos los pasos terminaron, pero algo no responde como deberia (ej. el DNS aun propaga):
+    # decir "exitosamente" aqui escondia las [FALLA] del healthcheck, justo encima.
+    echo "║  ⚠ SETUP COMPLETADO CON FALLAS EN EL HEALTHCHECK           ║"
+fi
 echo "╚════════════════════════════════════════════════════════════╝"
+if [ "$HEALTH_OK" -eq 0 ]; then
+    echo "Revisa las lineas [FALLA] de arriba; cuando las corrijas: ./08-healthcheck.sh $DOMAIN"
+fi
 echo ""
 echo "Tu landing page esta disponible en:"
 echo "  🔗 https://$DOMAIN"

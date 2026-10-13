@@ -177,6 +177,7 @@ imprime el comando exacto para retomar. Sin `--resume`, una corrida nueva empiez
 
 ## 🔑 Cuando el VPS exista (checklist)
 
+0. Al crear el VPS elige la imagen **Ubuntu 24.04 LTS**. `01` se niega a correr en otra versión (Ubuntu 26.04 trae PHP 8.5 y los paquetes `php8.3-*` no existen); `ALLOW_UNSUPPORTED_OS=1` lo salta bajo tu riesgo.
 1. Genera una llave en TU equipo: `ssh-keygen -t ed25519` (la privada nunca sale de tu equipo ni va al repo).
 2. Entra una vez con la contraseña inicial que da el proveedor y autoriza la llave (`ssh-copy-id`), o pásala a `07_C`.
 3. Copia `vps.env.example` a `vps.env` y completa `VPS_HOST`/`VPS_USER`/`VPS_KEY` (`vps.env` está en `.gitignore`).
