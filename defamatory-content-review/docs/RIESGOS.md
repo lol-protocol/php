@@ -28,6 +28,8 @@ que hacer la plataforma por fuera del código. El porqué está en
 | «conchetumare», «ctm», «weón culiao», «aweonao» | marcados; «hola weón» sigue aprobándose (`ChileanVocabularyTest`) |
 | Las 7 entradas de más de 3 palabras («concha de tu madre», «son of a bitch») y las 3 con guion («lèche-cul») | se detectan enteras; ahora un test exige que cada entrada se encuentre a sí misma (`DictionarySelfDetectionTest`) |
 | Un insulto en español enviado con `"language": "eng"` | el endpoint lo revisa también en español (`ModerationLanguagesTest`) |
+| «p~u~t~a», «p|u|t|a», «p - u - t - a», «p|_|ta», «1d!0t4», «€stúpido» | se detectan (`SymbolEvasionTest`) |
+| «nazi», «N.A.Z.I», «N.4.Z.|», «KKK», «ACAB», «sieg heil», «14/88»: no estaban en ningún diccionario | `review` o `reject`; «mi abuelo luchó contra los nazis» se aprueba (`HateTermsTest`) |
 | «Elba Gіna» (con «і» cirílica) o un espacio invisible en el apellido: la fusión «el vagina» no se veía | se ve (`UnicodeEvasionTest`) |
 
 ## Flancos abiertos

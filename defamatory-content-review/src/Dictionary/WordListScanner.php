@@ -6,9 +6,9 @@ namespace DefamatoryContentReview\Dictionary;
  * Busca términos del diccionario en un texto, en dos pasos: (1) por ventanas
  * de 1 a 5 tokens, para entradas multipalabra ("hijo de puta") y la parte
  * ofensiva de un compuesto ("Jean-Cul" -> "cul"); (2) por palabra entera sin
- * separadores intercalados, para cerrar la evasión "pu-ta"/"pu.ta"/"pu'ta"
- * que el paso 1 no detecta (único camino para los 16 idiomas sin reglas
- * fonéticas). Las escrituras sin espacios se parten con WordSegmenter.
+ * separadores intercalados ni símbolos de hacker ("pu-ta", "p~u~t~a",
+ * "1d!0t4"), en WholeWords: el paso 1 no los ve (y es el único camino para
+ * los 16 idiomas sin reglas fonéticas). Las escrituras sin espacios se parten con WordSegmenter.
  */
 final class WordListScanner
 {
@@ -36,28 +36,7 @@ final class WordListScanner
         $tokens = array_merge([], ...array_map(WordSegmenter::split(...), preg_split(self::BETWEEN_WORDS, $text, -1, $split) ?: []));
         $matches = self::scanWindows($tokens, $search);
 
-        foreach (preg_split('/\s+/u', $text, -1, $split) ?: [] as [$word, $wordStart]) {
-            $wordStart += strlen($word) - strlen($word = ltrim($word, '-.,_')); // «rata,» es «rata»: sólo cuenta lo de adentro
-            $glued = self::stripInsideWord($word = rtrim($word, '-.,_'));
-            if ($glued === $word || ($found = $search($glued)) === null) {
-                continue;
-            }
-            $wordEnd = $wordStart + strlen($word);
-
-            // Lo que el paso 1 marcó dentro de esta palabra es una parte de ella:
-            // la palabra entera gana («lèche-cul», no «cul»). Si una frase más
-            // larga ya la cubre, se queda la frase. Se compara por posición, no
-            // por texto: «rata» en «esa rata» no apaga «negrata» en «ne-grata».
-            $overlapping = array_filter($matches, fn(array $m): bool => $m['start'] < $wordEnd && $m['end'] > $wordStart);
-            foreach ($overlapping as $match) {
-                if ($match['start'] < $wordStart || $match['end'] > $wordEnd) {
-                    continue 2;
-                }
-            }
-            $matches = array_diff_key($matches, $overlapping);
-
-            $matches[] = $found + ['found' => $word, 'start' => $wordStart, 'end' => $wordEnd];
-        }
+        $matches = WholeWords::apply($text, $search, $matches);
 
         return array_map(static fn(array $match) => array_diff_key($match, ['start' => true, 'end' => true]), $matches);
     }

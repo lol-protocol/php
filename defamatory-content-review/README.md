@@ -257,6 +257,12 @@ FusionSupport::isSupported('ara');                                      // false
 
 ### Evasión cubierta y no cubierta
 
+- **Separadores y símbolos de hacker** («p~u~t~a», «p|u|t|a», «p - u - t - a»,
+  «p|_|ta», «1d!0t4», «€stúpido», «N.4.Z.|»): cubiertos. `WholeWords` lee cada
+  palabra entera sin separadores o con las letras que dibujan los símbolos
+  (`HackerSpelling`); `SpacedLetters` une rachas de caracteres sueltos separados
+  por espacios o símbolos («N 4 Z 1»). «¡hola!», «1 2 3 4», «c/u» o «págs. 14-88»
+  no se tocan (`SymbolEvasionTest`).
 - **Disfraces de Unicode** («рuta» con «р» cirílica, «pu​ta» con un espacio de
   ancho cero, «ｐｕｔａ», «𝐩𝐮𝐭𝐚», «pu🙂ta»): cubiertos, también en nombres.
   `EvasionCleaner` corre dentro de `WordList::normalize()`, así que vale para
@@ -567,6 +573,11 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
   van a **revisión**, nunca se bloquean ni se aprueban solas: pueden ser
   ciertas, y eso lo decide una persona con una fuente a la vista. «El robo del
   banco fue en 1920» y «murió de cáncer» no se marcan.
+- **Siglas y consignas de odio.** «nazi», «facho», «KKK», «ACAB», «sieg heil»,
+  «heil hitler», «white power», «14/88», también camufladas («N.A.Z.I»,
+  «N.4.Z.|», «S1eg H3il»). «Nazi» sólo cuenta dirigido a alguien («eres un
+  nazi»): la historia familiar habla de los nazis («mi abuelo luchó contra los
+  nazis») y eso se aprueba; las consignas cuentan siempre (`HateTermsTest`).
 - **Disfraces de Unicode y asteriscos.** «рuta» con «р» cirílica, «pu​ta» con
   un espacio de ancho cero, «ｐｕｔａ», «𝐩𝐮𝐭𝐚», «pu🙂ta» se leen como «puta»
   (`EvasionCleaner`, también al validar nombres). «p*ta», «m*erda»: cada
@@ -976,10 +987,12 @@ src/                                Namespace DefamatoryContentReview\ (cada car
 │   ├── WordList.php                Diccionario: carga, normalización, búsqueda
 │   ├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
 │   ├── WordListScanner.php         Búsqueda de términos en texto
+│   ├── WholeWords.php              Segundo paso: la palabra entera sin separadores o leída con símbolos de hacker
 │   └── WordSegmenter.php           Parte en palabras el japonés, cantonés y tailandés (ICU, ext-intl)
 ├── Normalization/
 │   ├── AccentFolding.php           Plegado de diacríticos
 │   ├── EvasionCleaner.php          Deshace disfraces de Unicode: cirílico camuflado, invisibles, ancho completo, emoji
+│   ├── HackerSpelling.php          Lecturas de una palabra con símbolos: «p|_|ta», «1d!0t4», «N.4.Z.|»
 │   ├── ScriptFolding.php           Variantes estándar de griego, cirílico, árabe y hebreo
 │   └── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica («c3rda»)
 ├── Phonetic/

@@ -44,6 +44,19 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Siglas y consignas de odio** en spa, eng, por, fra, ita y deu: «nazi»,
+  «neonazi», «KKK», «ACAB», «sieg heil», «heil hitler», «white power», «14/88»
+  (y «facho», «poder blanco», «poder branco»). «Nazi» lleva `targeted`: «eres un
+  nazi» va a revisión, «mi abuelo luchó contra los nazis» se aprueba. «14 88»
+  con espacio o guion no se marca: es un rango de páginas en una cita.
+  `HateTermsTest`.
+- **Separadores y símbolos de hacker**: «p~u~t~a», «p|u|t|a», «p(u)t(a)»,
+  «p|_|ta», «1d!0t4», «€stúpido», «N.4.Z.|» (`HackerSpelling` en el nuevo paso
+  `WholeWords` de `WordListScanner`), y rachas de caracteres sueltos separados
+  por espacios o símbolos: «p - u - t - a», «N 4 Z 1», «N. A. Z. I»
+  (`SpacedLetters`). «!» y «|» sólo se leen como letras dentro de una palabra.
+  `SymbolEvasionTest`.
+
 - **Acusaciones contra una persona en el chat** (español e inglés): «Fulano
   estafó a mi familia», «fue condenado por…», «es narco», «tiene sida», «le pone
   los cuernos», «funen a ese tipo». Antes se aprobaban: no traen palabrotas.
