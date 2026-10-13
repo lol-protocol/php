@@ -13,6 +13,7 @@ una foto del momento: después de cambiar un diccionario, vuelve a generarlas
 | `término` | palabra del diccionario (`origen` = `diccionario`) o de los temas de chat (`temas`) | que sea ofensiva hoy, con esa ortografía, esa `categoria`/`riskType` y esa `severidad` |
 | `patrón` | frase con forma de `patterns` (`termino` = etiqueta, `origen` = expresión regular) | que la amenaza esté bien escrita y no atrape frases inocentes |
 | `excepción` | palabra de `everyday` o `legit`, que el chat deja pasar a propósito | que de verdad sea una palabra cotidiana |
+| `forma` | plural o femenino generado de una entrada con `forms` (`marcas` = `forma:f.pl de:cerdo`), con su severidad efectiva | que ofenda lo que dice `severidad`: «cerdos» no es «cerdas» |
 | `frecuente` | palabra **frecuente** del idioma que el chat censuraría sin ser un término de la lista (`origen` = término que la marcó) | si es un falso positivo: la candidata más probable |
 
 Columnas:
@@ -51,6 +52,10 @@ Las pocas filas que bloquean una decisión, para no pedirle a nadie que revise
 decidir) y `ejemplos` (frases reales con la decisión actual del chat). Se
 aplican igual: `php bin/apply-review.php tha review/urgente/tha.csv`.
 
+`urgente/spa-genero.csv` reúne 22 decisiones de género y número del español
+(cerdos/cerdas, putas, vaca, mona, «¡cojones!», «los putos deberes»,
+diminutivos…): para quien hable español, unos 15 minutos.
+
 `บ้า` tiene un cambio **provisional** a la espera de esa revisión: el chat lo
 ignora suelto (casi siempre es una exclamación: «บ้าจริง», «maldita sea») y
 sus apelativos (`ไอ้บ้า`, `คนบ้า`, `ยัยบ้า`, `อีบ้า`, `นังบ้า`) van a revisión.
@@ -72,6 +77,8 @@ php bin/apply-review.php spa revisada.csv --apply   # lo escribe en config/
 | `término` (del diccionario) | `sin ambiguous`, `-nameCollision` | quita la marca |
 | `frecuente` | `no` | la palabra va a `everyday` (el chat no la busca) |
 | `excepción` | `no` | sale de `everyday` o `legit` |
+| `forma` | otra severidad, o `no` (no ofende) | va al `by` de su entrada: «cerdas → alta» es `'by' => ['f.pl' => 'high']` |
+| `propuesta` | cualquiera | palabra que no está: se lista para añadirla a mano |
 
 Cada cambio toca sólo la línea de esa entrada: comentarios y orden se
 conservan. Los patrones, los comentarios y las marcas en una lista de temas se

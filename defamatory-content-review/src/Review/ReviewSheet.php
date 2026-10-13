@@ -11,6 +11,8 @@ namespace DefamatoryContentReview\Review;
  *   `sin ambiguous` (o `-ambiguous`) se la quita.
  * - `frecuente`: `no` (no debería censurarse) la añade a `everyday`.
  * - `excepción`: `no` (no es una palabra cotidiana) la quita de su lista.
+ * - `forma` (plural o femenino generado): otra severidad, o `no` (no ofende),
+ *   va al `by` de su entrada: «cerdas → alta» es `'by' => ['f.pl' => 'high']`.
  *
  * Lo que no se puede aplicar solo —un patrón, un comentario, una marca en una
  * lista de temas— va a `manual`; un valor desconocido, a `problems`. `sí` o la
@@ -67,12 +69,14 @@ final class ReviewSheet
             $row['seccion'] === 'término' && isset(self::FLAGS[$off]) && $file === 'languages' => ['flag-off', $file, self::FLAGS[$off]],
             $row['seccion'] === 'frecuente' && $answer === 'no' => ['list-add', 'chat-topics', 'everyday'],
             $row['seccion'] === 'excepción' && $answer === 'no' => ['list-remove', 'chat-topics', $row['categoria']],
+            $row['seccion'] === 'forma' && ($answer === 'no' || isset(self::SEVERITY[$answer]))
+                && preg_match('/forma:(\S+) de:(.+)$/u', $row['marcas'], $m) => ['by', $file, $m[1] . '=' . (self::SEVERITY[$answer] ?? 'none'), $m[2]],
             default => null,
         };
         if ($change !== null) {
-            $this->changes[] = ['action' => $change[0], 'file' => $change[1], 'word' => $row['termino'], 'value' => $change[2],
+            $this->changes[] = ['action' => $change[0], 'file' => $change[1], 'word' => $change[3] ?? $row['termino'], 'value' => $change[2],
                 'was' => $row['seccion'] === 'término' ? $row['severidad'] : '', 'row' => $line];
-        } elseif ($row['seccion'] === 'patrón' || isset(self::FLAGS[$off])) {
+        } elseif (in_array($row['seccion'], ['patrón', 'propuesta'], true) || isset(self::FLAGS[$off])) {
             $this->manual[] = "{$where}: «{$row['correcto']}» se aplica a mano";
         } else {
             $this->problems[] = "{$where}: «{$row['correcto']}» no es una respuesta válida (sí, no, low/medium/high, ambiguous, nameCollision, sin ambiguous…)";
