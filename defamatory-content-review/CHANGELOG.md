@@ -44,12 +44,18 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
-- **Siglas y consignas de odio** en spa, eng, por, fra, ita y deu: «nazi»,
-  «neonazi», «KKK», «ACAB», «sieg heil», «heil hitler», «white power», «14/88»
-  (y «facho», «poder blanco», «poder branco»). «Nazi» lleva `targeted`: «eres un
+- **Siglas y consignas de odio en los 33 idiomas**: «nazi» en la forma de
+  cada idioma («nazist», «natsi», «náci», «нацист», «ναζί», «נאצי», «نازي»,
+  «नाज़ी», «phát xít», «mnazi»…, con vocativos como «nazisto» o «nazisin»),
+  «neonazi», «KKK», «ACAB», «sieg heil», «heil hitler», «white power», «14/88»,
+  consignas locales («зиг хайль», «biała siła», «witte macht»), y «facho»,
+  «poder blanco», «poder branco». En japonés, coreano, cantonés y tailandés
+  sólo las consignas: sin espacios no se sabe si «nazi» va dirigido a alguien.
+  «Nazi» y «Náci» (hipocorístico húngaro de Ignác) llevan `nameCollision`. «Nazi» lleva `targeted`: «eres un
   nazi» va a revisión, «mi abuelo luchó contra los nazis» se aprueba. «14 88»
   con espacio o guion no se marca: es un rango de páginas en una cita.
-  `HateTermsTest`.
+  `HateTermsTest`. `EthnicTermsTrackingTest` deja de contar las frases (una
+  consigna no es un apellido) y su umbral baja de 195 a 165.
 - **Separadores y símbolos de hacker**: «p~u~t~a», «p|u|t|a», «p(u)t(a)»,
   «p|_|ta», «1d!0t4», «€stúpido», «N.4.Z.|» (`HackerSpelling` en el nuevo paso
   `WholeWords` de `WordListScanner`), y rachas de caracteres sueltos separados

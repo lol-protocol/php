@@ -15,10 +15,11 @@ class EthnicTermsTrackingTest extends TestCase
     /**
      * Umbral revisado. Cada subida anterior (162 → 195) añadió formas
      * femeninas o jerga comprobadas una a una como no-apellidos; el detalle
-     * está en el CHANGELOG. Antes de subirlo, revisa las entradas nuevas y
-     * anota el motivo en el CHANGELOG.
+     * está en el CHANGELOG. Desde que las frases (consignas como «heil
+     * hitler», «14/88») no cuentan —una frase no es un apellido—, son 165.
+     * Antes de subirlo, revisa las entradas nuevas y anota el motivo en el CHANGELOG.
      */
-    private const REVIEWED_THRESHOLD = 195;
+    private const REVIEWED_THRESHOLD = 165;
 
     public function testHighSeverityEthnicTermsWithoutNameCollisionIsTracked(): void
     {
@@ -32,6 +33,7 @@ class EthnicTermsTrackingTest extends TestCase
                         ($word['riskType'] ?? '') === 'etnico'
                         && ($word['severity'] ?? '') === 'high'
                         && empty($word['nameCollision'])
+                        && preg_match('~[\s/]~u', $word['word']) !== 1 // «heil hitler», «14/88»: una frase no es un apellido
                     ) {
                         $unflagged[] = basename($file, '.php') . ':' . $word['word'];
                     }

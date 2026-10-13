@@ -573,9 +573,11 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
   van a **revisión**, nunca se bloquean ni se aprueban solas: pueden ser
   ciertas, y eso lo decide una persona con una fuente a la vista. «El robo del
   banco fue en 1920» y «murió de cáncer» no se marcan.
-- **Siglas y consignas de odio.** «nazi», «facho», «KKK», «ACAB», «sieg heil»,
-  «heil hitler», «white power», «14/88», también camufladas («N.A.Z.I»,
-  «N.4.Z.|», «S1eg H3il»). «Nazi» sólo cuenta dirigido a alguien («eres un
+- **Siglas y consignas de odio, en los 33 idiomas.** «nazi» en la forma de cada
+  idioma («nazist», «natsi», «нацист», «ναζί», «נאצי», «نازي»…), «facho», «KKK»,
+  «ACAB», «sieg heil», «heil hitler», «white power», «14/88», también camufladas
+  («N.A.Z.I», «N.4.Z.|», «S1eg H3il»). En japonés, coreano, cantonés y
+  tailandés sólo las consignas. «Nazi» sólo cuenta dirigido a alguien («eres un
   nazi»): la historia familiar habla de los nazis («mi abuelo luchó contra los
   nazis») y eso se aprueba; las consignas cuentan siempre (`HateTermsTest`).
 - **Disfraces de Unicode y asteriscos.** «рuta» con «р» cirílica, «pu​ta» con

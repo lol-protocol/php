@@ -14,6 +14,16 @@ return [
         'requiresTokenizer' => true,
     ],
     'words' => [
+        // Odio y extremismo: sólo las consignas. Sin espacios entre palabras no se sabe
+        // si «nazi» va dirigido a alguien, y marcaría la historia. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'sat' => [
             ['word' => 'หมู', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],
             ['word' => 'ลา', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true, 'ambiguous' => true],

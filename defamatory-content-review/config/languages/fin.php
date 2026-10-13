@@ -8,6 +8,20 @@ return [
         'nativeName' => 'Suomi', 'family' => 'uralic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'natsi', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'natsit', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'uusnatsi', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'uusnatsit', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'elain' => [
             ['word' => 'sika', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'possu', 'riskType' => 'animal', 'severity' => 'low'],

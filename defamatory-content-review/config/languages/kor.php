@@ -8,6 +8,16 @@ return [
         'nativeName' => '한국어', 'family' => 'koreanic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: sólo las consignas. Sin espacios entre palabras no se sabe
+        // si «nazi» va dirigido a alguien, y marcaría la historia. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'dongmul' => [
             ['word' => '돼지', 'riskType' => 'animal', 'severity' => 'high'],
             ['word' => '당나귀', 'riskType' => 'animal', 'severity' => 'medium'],

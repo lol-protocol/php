@@ -8,6 +8,23 @@ return [
         'nativeName' => 'Русский', 'family' => 'slavic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'нацист', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'нацистка', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'нацисты', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'неонацист', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'неонацисты', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'зиг хайль', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'хайль гитлер', 'riskType' => 'etnico', 'severity' => 'high'],
+        ],
         'zhivotnoe' => [
             ['word' => 'свинья', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'боров', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],

@@ -7,8 +7,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Siglas y consignas de odio, también camufladas («N.A.Z.I», «N.4.Z.|»). «Nazi»
- * sólo cuenta dirigido a alguien: la historia familiar habla de los nazis.
+ * Siglas y consignas de odio en los 33 idiomas, también camufladas («N.A.Z.I»,
+ * «N.4.Z.|»). «Nazi» sólo cuenta dirigido a alguien: la historia familiar habla
+ * de los nazis. En japonés, coreano, cantonés y tailandés, sin espacios entre
+ * palabras, sólo están las consignas.
  */
 class HateTermsTest extends TestCase
 {
@@ -34,6 +36,24 @@ class HateTermsTest extends TestCase
             'historia' => ['spa', 'mi abuelo luchó contra los nazis', 'approve'],
             'historia en alemán' => ['deu', 'Die Nazis besetzten Polen', 'approve'],
             'historia en inglés' => ['eng', 'my grandfather fought the nazis', 'approve'],
+            'danés' => ['dan', 'du er en nazist', 'review'],
+            'polaco vocativo' => ['pol', 'ty nazisto', 'review'],
+            'turco' => ['tur', 'sen nazisin', 'review'],
+            'húngaro' => ['hun', 'te náci', 'review'],
+            'húngaro, apodo de Ignác' => ['hun', 'Náci bácsi', 'approve'],
+            'finés' => ['fin', 'senkin natsi', 'review'],
+            'ruso' => ['rus', 'ты нацист', 'review'],
+            'ruso, historia' => ['rus', 'нацисты напали на СССР', 'approve'],
+            'ruso, consigna' => ['rus', 'зиг хайль', 'reject'],
+            'griego' => ['ell', 'είσαι ναζί', 'review'],
+            'hebreo' => ['heb', 'אתה נאצי', 'review'],
+            'hebreo, historia' => ['heb', 'הנאצים כבשו את פולין', 'approve'],
+            'árabe' => ['ara', 'يا نازي', 'review'],
+            'vietnamita' => ['vie', 'mày là đồ phát xít', 'review'],
+            'vietnamita, historia' => ['vie', 'phát xít Đức xâm lược Ba Lan', 'approve'],
+            'suajili' => ['swa', 'wewe ni mnazi', 'review'],
+            'japonés, consigna' => ['jpn', 'sieg heil', 'reject'],
+            'japonés, historia' => ['jpn', 'ナチスがポーランドに侵攻した', 'approve'],
         ];
     }
 

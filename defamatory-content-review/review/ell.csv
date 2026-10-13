@@ -1,4 +1,12 @@
 seccion,termino,origen,categoria,riskType,severidad,marcas,rango,decision_chat,correcto,comentario
+término,ναζί,diccionario,odio,moral,medium,targeted,4738,review,,
+término,νεοναζί,diccionario,odio,moral,medium,targeted,,review,,
+término,kkk,diccionario,odio,etnico,medium,,,review,,
+término,acab,diccionario,odio,ordinario,medium,,,review,,
+término,"heil hitler",diccionario,odio,etnico,high,,,reject,,
+término,"sieg heil",diccionario,odio,etnico,high,,,reject,,
+término,"white power",diccionario,odio,etnico,high,,,reject,,
+término,14/88,diccionario,odio,etnico,medium,,,review,,
 término,γουρούνι,diccionario,zoo,animal,medium,,2759,review,,
 término,χοίρος,diccionario,zoo,animal,medium,,,review,,
 término,γάιδαρος,diccionario,zoo,animal,medium,,17918,review,,

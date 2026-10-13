@@ -1,4 +1,13 @@
 seccion,termino,origen,categoria,riskType,severidad,marcas,rango,decision_chat,correcto,comentario
+término,nasisti,diccionario,odio,moral,medium,targeted,16858,review,,
+término,nasistar,diccionario,odio,moral,medium,targeted,15673,review,,
+término,nýnasisti,diccionario,odio,moral,medium,targeted,,review,,
+término,kkk,diccionario,odio,etnico,medium,,,review,,
+término,acab,diccionario,odio,ordinario,medium,,,review,,
+término,"heil hitler",diccionario,odio,etnico,high,,,reject,,
+término,"sieg heil",diccionario,odio,etnico,high,,,reject,,
+término,"white power",diccionario,odio,etnico,high,,,reject,,
+término,14/88,diccionario,odio,etnico,medium,,,review,,
 término,svín,diccionario,dyr,animal,high,,2859,reject,,
 término,skepna,diccionario,dyr,animal,high,,2928,reject,,
 término,rotta,diccionario,dyr,animal,medium,,7450,review,,
