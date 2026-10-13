@@ -1,4 +1,10 @@
 seccion,termino,origen,categoria,riskType,severidad,marcas,rango,decision_chat,correcto,comentario
+término,kkk,diccionario,odio,etnico,medium,,,review,,
+término,acab,diccionario,odio,ordinario,medium,,,review,,
+término,"heil hitler",diccionario,odio,etnico,high,,,reject,,
+término,"sieg heil",diccionario,odio,etnico,high,,,reject,,
+término,"white power",diccionario,odio,etnico,high,,,reject,,
+término,14/88,diccionario,odio,etnico,medium,,,review,,
 término,돼지,diccionario,dongmul,animal,high,,2842,reject,,
 término,당나귀,diccionario,dongmul,animal,medium,,39970,review,,
 término,짐승,diccionario,dongmul,animal,high,,11575,reject,,

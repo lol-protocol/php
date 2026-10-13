@@ -8,6 +8,21 @@ return [
         'nativeName' => 'Čeština', 'family' => 'slavic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'nacisto', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nacista', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nacisti', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'neonacista', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'neonacisti', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'zvire' => [
             ['word' => 'prase', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'svině', 'riskType' => 'animal', 'severity' => 'high'],

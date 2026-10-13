@@ -15,7 +15,7 @@ class SpacedRunTermsTest extends TestCase
         return [
             'saludo + insulto' => ['spa', 'h o l a p u t a', 'review', 'h o l a *******'],
             'insulto repetido' => ['spa', 'p u t a p u t a', 'review', '******* *******'],
-            'insulto + palabra' => ['spa', 'p u t a m a d r e', 'review', '******* m a d r e'],
+            'insulto + palabra' => ['spa', 'p u t a c a s a', 'review', '******* c a s a'],
             'palabra deletreada que lo contiene: revisión, nunca bloqueo' => ['spa', 'c o m p u t a d o r a', 'review', 'c o m ******* d o r a'],
             'la racha entera sigue bloqueando' => ['spa', 'eres una p u t a', 'reject', 'eres una *******'],
             'con conectora delante sigue bloqueando' => ['spa', 'a p u t a', 'reject', 'a *******'],

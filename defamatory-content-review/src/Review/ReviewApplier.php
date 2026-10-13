@@ -46,6 +46,7 @@ final class ReviewApplier
             'flag-off' => ConfigEditor::setFlag($text, $change['word'], $change['value'], false),
             'list-add' => ConfigEditor::editList($text, $change['value'], $change['word'], true),
             'list-remove' => ConfigEditor::editList($text, $change['value'], $change['word'], false),
+            'by' => FormEditor::setBy($text, $change['word'], ...explode('=', $change['value'], 2)),
             default => null,
         };
         if ($new === null) {
@@ -59,6 +60,7 @@ final class ReviewApplier
             'flag' => "marca {$change['value']}",
             'flag-off' => "sin marca {$change['value']}",
             'list-add' => "a {$change['value']}",
+            'by' => 'forma ' . str_replace('=', ' → ', $change['value']),
             default => "fuera de {$change['value']}",
         };
     }

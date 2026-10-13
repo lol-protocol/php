@@ -5,6 +5,22 @@ namespace DefamatoryContentReview\Chat;
 /** Operaciones sobre la lista de hallazgos de una línea de chat. Colaborador interno de ChatLineReviewer. */
 final class ChatMatches
 {
+    private const DECISION_BY_SEVERITY = ['high' => 'reject', 'medium' => 'review', 'low' => 'approve'];
+
+    /** La decisión la fija el término más grave: high bloquea, medium va a revisión, low sólo se informa.
+     * @param array<int,array<string,mixed>> $matches */
+    public static function decision(array $matches): string
+    {
+        $severities = array_column($matches, 'severity');
+        foreach (self::DECISION_BY_SEVERITY as $severity => $decision) {
+            if (in_array($severity, $severities, true)) {
+                return $decision;
+            }
+        }
+
+        return 'approve';
+    }
+
     /**
      * Devuelve a `found` el texto original de las rachas de letras sueltas
      * que ChatLineNormalizer unió: «puta» pasa a ser «p u t a».

@@ -14,11 +14,19 @@ final class WordListIndex
 {
     /** @var array<string,WordEntry> */
     private array $words = [];
+    /** @var array<string,WordEntry> las entradas de varias palabras, escritas pegadas («hijodeputa») */
+    private array $glued = [];
 
     /** @param WordEntry $data */
-    public function set(string $key, array $data): void { $this->words[$key] = $data; }
-    /** @return WordEntry|null */
-    public function get(string $key): ?array { return $this->words[$key] ?? null; }
+    public function set(string $key, array $data): void
+    {
+        $this->words[$key] = $data;
+        if (str_contains($key, ' ')) {
+            $this->glued[str_replace(' ', '', $key)] ??= $data;
+        }
+    }
+    /** @return WordEntry|null la entrada, o la de varias palabras que se escribe así pegada */
+    public function get(string $key): ?array { return $this->words[$key] ?? $this->glued[$key] ?? null; }
     /** @return array<string,WordEntry> */
     public function all(): array { return $this->words; }
     public function count(): int { return count($this->words); }

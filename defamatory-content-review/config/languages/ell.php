@@ -8,6 +8,18 @@ return [
         'nativeName' => 'Ελληνικά', 'family' => 'hellenic', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'ναζί', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'νεοναζί', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'zoo' => [
             ['word' => 'γουρούνι', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'χοίρος', 'riskType' => 'animal', 'severity' => 'medium'],

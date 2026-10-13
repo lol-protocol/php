@@ -8,6 +8,20 @@ return [
         'nativeName' => 'Română', 'family' => 'romance', 'coverage' => 'moderate',
     ],
     'words' => [
+        // Odio y extremismo: los «nazi» sólo cuentan dirigidos a alguien (la historia
+        // familiar habla de los nazis); las consignas cuentan siempre. Ver HateTermsTest.
+        'odio' => [
+            ['word' => 'nazist', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'nazistă', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'naziști', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'neonazist', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+        ],
         'animal' => [
             ['word' => 'porc', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'scroafă', 'riskType' => 'animal', 'severity' => 'high'],

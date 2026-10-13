@@ -9,8 +9,16 @@ namespace DefamatoryContentReview\Chat;
  */
 final class SpacedLetters
 {
-    /** Racha de 3 o más letras sueltas separadas por espacios: «p u t a». */
-    private const RUN = '/(?<![\p{L}\p{M}\p{N}])(?:\p{L}\p{M}*[ \t]+){2,}\p{L}\p{M}*(?![\p{L}\p{M}\p{N}])/u';
+    /**
+     * Racha de 3 o más caracteres sueltos separados por espacios o por símbolos con
+     * espacios alrededor: «p u t a», «p - u - t - a», «N. A. Z. I», «N 4 Z 1». Un
+     * carácter es una letra, un dígito o un símbolo de leet («@», «$», «!», «|»).
+     */
+    private const RUN = '/(?<![\p{L}\p{M}\p{N}])(?:[\p{L}\p{N}@$!|]\p{M}*' . self::SEP . '){2,}[\p{L}\p{N}@$!|]\p{M}*(?![\p{L}\p{M}\p{N}])/u';
+    /** Entre dos caracteres sueltos: espacios o saltos de línea, o símbolos de separación con algún espacio. */
+    private const SEP = '(?:\s*[\-–—_.·~\/+=•…:;,]\s*(?=\S)|\s+)';
+    private const SEPARATOR = '(?:\s*[\-–—_.·~\/+=•…:;,]\s*|\s+)';
+    private const SPLIT = '/' . self::SEPARATOR . '/u';
     /** Letras sueltas que también son palabras: la «a» de «vamos a f o l l a r» no es de «follar». */
     private const CONNECTORS = ['a', 'e', 'i', 'o', 'u', 'y'];
 
@@ -44,7 +52,9 @@ final class SpacedLetters
     {
         preg_match_all(self::RUN, $line, $runs);
 
-        return array_map(fn(string $run): array => preg_split('/[ \t]+/', $run) ?: [], $runs[0]);
+        $runs = array_filter($runs[0], fn(string $run): bool => preg_match('/\p{L}/u', $run) === 1);
+
+        return array_values(array_map(fn(string $run): array => preg_split(self::SPLIT, $run) ?: [], $runs));
     }
 
     /** @return array{0:string,1:array<string,string>} */
@@ -52,7 +62,10 @@ final class SpacedLetters
     {
         $joined = [];
         $text = preg_replace_callback(self::RUN, function (array $run) use (&$joined, $maxLead, $maxTail): string {
-            $parts = preg_split('/([ \t]+)/', $run[0], -1, PREG_SPLIT_DELIM_CAPTURE); // letra, espacio, letra…
+            if (preg_match('/\p{L}/u', $run[0]) !== 1) {
+                return $run[0]; // «1 2 3 4» no es una palabra camuflada
+            }
+            $parts = preg_split('/(' . self::SEPARATOR . ')/u', $run[0], -1, PREG_SPLIT_DELIM_CAPTURE); // letra, separador, letra…
             $lead = $tail = '';
             for ($i = 0; $i < $maxLead && count($parts) > 5 && self::isConnector($parts[0]); $i++) {
                 $lead .= array_shift($parts) . array_shift($parts);
@@ -61,7 +74,7 @@ final class SpacedLetters
                 $tail = implode('', array_splice($parts, -2)) . $tail;
             }
             $core = implode('', $parts);
-            $word = preg_replace('/[ \t]+/', '', $core);
+            $word = preg_replace(self::SPLIT, '', $core);
             $joined[$word] ??= $core;
 
             return $lead . $word . $tail;

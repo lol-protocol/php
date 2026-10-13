@@ -1,4 +1,12 @@
 seccion,termino,origen,categoria,riskType,severidad,marcas,rango,decision_chat,correcto,comentario
+término,nazi,diccionario,odio,moral,medium,"nameCollision targeted",4248,review,,
+término,neonazi,diccionario,odio,moral,medium,targeted,,review,,
+término,kkk,diccionario,odio,etnico,medium,,,review,,
+término,acab,diccionario,odio,ordinario,medium,,,review,,
+término,"heil hitler",diccionario,odio,etnico,high,,,reject,,
+término,"sieg heil",diccionario,odio,etnico,high,,,reject,,
+término,"white power",diccionario,odio,etnico,high,,,reject,,
+término,14/88,diccionario,odio,etnico,medium,,,review,,
 término,babi,diccionario,hewan,animal,high,nameCollision,1379,review,,
 término,keledai,diccionario,hewan,animal,medium,,4192,review,,
 término,binatang,diccionario,hewan,animal,high,,1064,reject,,

@@ -44,6 +44,93 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Datos personales en el chat** (tipo `privado`, `PersonalData`): un RUT con
+  dígito verificador válido, un correo, un teléfono con prefijo o anunciado
+  («fono», «llámalo al») y una dirección anunciada («vive en la calle…») van
+  a revisión, en cualquier idioma. Las fechas («1939-1945») no. `PersonalDataTest`.
+- **Más datos sensibles y vida privada** (español e inglés): orientación sexual
+  («era homosexual», «salió del clóset»), filiación («es hijo ilegítimo», «fue
+  adoptada», «no es hijo de»), suicidio, violencia en la familia («le pega a su
+  señora») e internación psiquiátrica. Van a revisión. `SensitiveDataPatternsTest`.
+- **Letras tachadas, subrayadas, zalgo, con punto y versalitas**: «p̶u̶t̶a̶»,
+  «ṗụṭạ», «ᴘᴜᴛᴀ» (`StyledLetters`; `AccentFolding` lleva el latín extendido
+  adicional a su letra base, salvo en vietnamita). `MarkEvasionTest`.
+- **Evasión con la forma del texto** (`LayoutEvasionTest`):
+  - frases del diccionario escritas pegadas: «hijodeputa», «putamadre», «siegheil»;
+  - sílabas sueltas: «hi jo de pu ta», «pu   ta», «pu» y «ta» en dos líneas. Con
+    sólo dos trozos separados por un espacio no se unen: «la mer de Chine» no es «merde»;
+  - letras sueltas separadas por saltos de línea («p⏎u⏎t⏎a»);
+  - etiquetas y entidades HTML («pu<b></b>ta», «pu&#116;a»);
+  - letras en cuadros e indicadores regionales («🅿🆄🆃🅰», «🇵🇺🇹🇦»);
+  - texto forzado de derecha a izquierda («\u202Eatup» se ve «puta») y texto
+    cabeza abajo («ɐʇnd», `UpsideDown`);
+  - la «İ» turca: «İBNE» en minúsculas dejaba un punto combinante.
+
+  El chat hace una segunda pasada con la línea entera limpia, que sólo suma lo
+  que la primera no vio: así el texto censurado sigue siendo el que se escribió.
+- **Insultos de otros países hispanohablantes** (categoría `latinoamericanos`):
+  «careverga», «gonorrea» (sólo dirigido), «conchatumadre», «mamaguevo»,
+  «comemierda», «chinga tu madre», «cojudo», «forro» (sólo dirigido)…
+- **Siglas y consignas de odio en los 33 idiomas**: «nazi» en la forma de
+  cada idioma («nazist», «natsi», «náci», «нацист», «ναζί», «נאצי», «نازي»,
+  «नाज़ी», «phát xít», «mnazi»…, con vocativos como «nazisto» o «nazisin»),
+  «neonazi», «KKK», «ACAB», «sieg heil», «heil hitler», «white power», «14/88»,
+  consignas locales («зиг хайль», «biała siła», «witte macht»), y «facho»,
+  «poder blanco», «poder branco». En japonés, coreano, cantonés y tailandés
+  sólo las consignas: sin espacios no se sabe si «nazi» va dirigido a alguien.
+  «Nazi» y «Náci» (hipocorístico húngaro de Ignác) llevan `nameCollision`. «Nazi» lleva `targeted`: «eres un
+  nazi» va a revisión, «mi abuelo luchó contra los nazis» se aprueba. «14 88»
+  con espacio o guion no se marca: es un rango de páginas en una cita.
+  `HateTermsTest`. `EthnicTermsTrackingTest` deja de contar las frases (una
+  consigna no es un apellido) y su umbral baja de 195 a 165.
+- **Separadores y símbolos de hacker**: «p~u~t~a», «p|u|t|a», «p(u)t(a)»,
+  «p|_|ta», «1d!0t4», «€stúpido», «N.4.Z.|» (`HackerSpelling` en el nuevo paso
+  `WholeWords` de `WordListScanner`), y rachas de caracteres sueltos separados
+  por espacios o símbolos: «p - u - t - a», «N 4 Z 1», «N. A. Z. I»
+  (`SpacedLetters`). «!» y «|» sólo se leen como letras dentro de una palabra.
+  `SymbolEvasionTest`.
+
+- **Acusaciones contra una persona en el chat** (español e inglés): «Fulano
+  estafó a mi familia», «fue condenado por…», «es narco», «tiene sida», «le pone
+  los cuernos», «funen a ese tipo». Antes se aprobaban: no traen palabrotas.
+  Ahora son `difamatorio` con etiqueta `acusación de delito`, `dato sensible
+  (salud)`, `vida privada` o `funa o escrache`, y van siempre a revisión humana
+  (pueden ser ciertas). `AccusationPatternsTest`.
+- **Chilenismos** en el diccionario español: «conchetumare», «concha de tu
+  madre», «culiao», «aweonao», «saco de wea», «maraco», «flaite»… «weón»,
+  «huevón», «boludo» y «ctm» también son trato de confianza o exclamación: en
+  el chat sólo cuentan dirigidos a alguien («eres un weón» sí, «hola weón» no),
+  y «huevón» y «boludo» bajan de `high` a `medium`. `ChileanVocabularyTest`.
+- **`EvasionCleaner`**: letras cirílicas o griegas camufladas («рuta»), espacios
+  de ancho cero, guion blando, ancho completo («ｐｕｔａ»), negrita matemática
+  («𝐩𝐮𝐭𝐚»), emoji en medio («pu🙂ta») y selectores de variante ya no esconden
+  un insulto, ni en el chat ni en los nombres. `UnicodeEvasionTest`.
+- **`MaskedTerms`**: «p*ta», «m*erda», «c*brón» van a revisión. `MaskedTermsTest`.
+- **`docs/ORIGEN.md`** (por qué existe la librería) y **`docs/RIESGOS.md`**
+  (qué cubre, qué no y qué tiene que hacer la plataforma, con el marco legal
+  chileno a título orientativo).
+- **Severidad por forma: el plural y el femenino no ofenden lo mismo.**
+  «Cerdo» suena mal y «cerda» horrible; «zorros» son animales; «¡cojones!»
+  es una interjección. Hasta ahora, de los pares masculino/femenino de los
+  diccionarios, 166 de 168 tenían la misma severidad en español (96/97 en
+  portugués, 80/81 en italiano, 48/48 en francés), y las listas de chat
+  copiaban la severidad de la base a todas sus formas. Ahora:
+  - cada forma generada lleva sus rasgos (`m.sg`, `f.pl`, `sg`, `pl`…) y
+    la entrada le da su severidad con `by` (`FormSeverity`; gana el más
+    específico, `none` la deja fuera);
+  - lo escrito manda: una forma que ya es entrada propia no se genera;
+  - las formas generadas no heredan `nameCollision` («Cerda» es apellido,
+    «cerdas» no);
+  - los diccionarios también aceptan `forms`, y lo generado sin `by` llega
+    como mucho a `medium`: lo que nadie revisó lo ve una persona.
+  En español: «cerdas» y «guarras» se bloquean y «cerdos»/«guarros» van a
+  revisión; «putas», «zorras», «perras» ya no pasan limpias. Medido con las
+  50.000 palabras más frecuentes: cambian exactamente esas cinco. Las
+  planillas de revisión traen una fila por forma (`forma`), y
+  `apply-review.php` escribe la respuesta en el `by` de la entrada
+  (`FormEditor`). `review/urgente/spa-genero.csv`: 22 decisiones de género
+  y número para un hablante nativo. `AsymmetricFormsTest`, `FormReviewTest`.
+
 - **En el chat, animales, discapacidad, identidad, brujería y palabrotas suaves
   sólo cuentan dirigidos a alguien** (`TargetContext`): «eres un cerdo», «seu
   porco», «ты свинья» van a revisión; «comí cerdo», «das Schwein im Stall»,
@@ -222,6 +309,30 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
   verifica que cada una siga haciendo falta.
 
 ### Arreglado
+
+- **Un byte UTF-8 inválido aprobaba la línea entera**: «eres una puta \xff»
+  hacía fallar todas las expresiones regulares y no se encontraba nada. Lo mismo
+  con los nombres. Ahora el texto pasa por `mb_scrub` antes de revisarse.
+- **La fusión de nombre y apellido se evadía con Unicode**: «Elba Gіna» (con
+  «і» cirílica), un espacio de ancho cero o letras de ancho completo dejaban
+  pasar «el vagina». `NameEvaluator::applyPhoneticChecks()` limpia nombre y
+  apellido con `EvasionCleaner` antes de buscar fusiones.
+- `PRIVACIDAD-Y-HONRA.md` en la raíz del repositorio: por qué la privacidad y
+  la honra son la condición del proyecto, qué está resuelto y los cabos sueltos
+  (`url-routing` sin filtro cuando haya escritura, personas vivas en
+  `phone-directory`, denuncia y registro). Enlazado desde los README.
+
+- **Un insulto se colaba eligiendo otro idioma**: el endpoint revisaba sólo el
+  `language` que manda quien escribe, así que «Fulano es un estafador, hijo de
+  puta» con `"eng"` se aprobaba. Ahora revisa además los idiomas de la
+  plataforma (`spa` y `eng` por defecto) y responde `checkedLanguages`
+  (`CombinedReview`, `ModerationLanguagesTest`).
+- **Entradas que nunca se detectaban enteras**: las de más de 3 palabras
+  («concha de tu madre», «son of a bitch», «walang utang na loob») y las de
+  guion («lèche-cul», «puxa-saco», de las que sólo se veía «cul» o «saco»).
+  `WordListScanner` busca frases de hasta 5 palabras y, en una palabra con
+  guion, la palabra entera gana a su parte. `DictionarySelfDetectionTest` exige
+  que cada entrada de los 33 diccionarios se encuentre a sí misma.
 
 - **Un insulto pegado a un signo no se detectaba**: «puta!», «idiota?»,
   «¡idiota!», «(rata)» y ««imbécil»» se aprobaban, porque `WordListScanner`

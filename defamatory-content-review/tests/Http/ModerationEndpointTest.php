@@ -33,7 +33,7 @@ class ModerationEndpointTest extends TestCase
         $response = $this->post(['text' => 'Hola, ¿vamos a coger el bus?']);
 
         $this->assertSame(200, $response['status']);
-        $this->assertSame(['language' => 'spa', 'decision' => 'approve', 'censor' => false, 'contentTypes' => [],
+        $this->assertSame(['language' => 'spa', 'checkedLanguages' => ['spa', 'eng'], 'decision' => 'approve', 'censor' => false, 'contentTypes' => [],
             'censored' => 'Hola, ¿vamos a coger el bus?', 'matches' => []], $response['body']);
     }
 

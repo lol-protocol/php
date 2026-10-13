@@ -4,29 +4,26 @@ namespace DefamatoryContentReview\Chat;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
 use DefamatoryContentReview\Dictionary\WordList;
+use DefamatoryContentReview\Normalization\EvasionCleaner;
 
 /**
  * Revisa una línea libre (un mensaje de chat) y dice si hay que censurarla.
- * Cuatro tipos de contenido:
+ * Cinco tipos de contenido:
  *
  * - `difamatorio` y `burlesco`: los insultos del diccionario del idioma, los
  *   mismos de validateName(); son burlescos los de riskType `burlesco`;
  * - `sexual` y `belico` (guerra, violencia y amenazas): listas propias en
- *   config/chat-topics/<código>.php (ver ChatTopics): no son insultos y no
- *   deben afectar la validación de nombres.
+ *   config/chat-topics/<código>.php (ver ChatTopics); `privado`: RUT, correo,
+ *   teléfono o dirección de alguien (PersonalData), en cualquier idioma.
  *
- * Igual que con los nombres, un término que también es apellido
- * (`nameCollision`: «Savage», «Concha») nunca bloquea solo: baja a revisión.
- * Las letras sueltas («p u t a») se unen y las repetidas («puuuta») se leen
- * antes de buscar; dentro de una racha de letras sueltas más larga
- * («h o l a p u t a») se busca aparte (ver SpacedRunTerms). Una entrada `'ambiguous' => true` de un diccionario
- * («яйца», «leche») se ignora aquí: casi siempre es la palabra cotidiana.
- * Animales, discapacidad y `targeted` sólo cuentan dirigidos a alguien (TargetContext).
+ * Un término que también es apellido (`nameCollision`) nunca bloquea solo: baja a revisión.
+ * Una segunda pasada con la línea entera limpia (EvasionCleaner) ve «pu&#116;a» y el texto
+ * invertido. Las letras sueltas («p u t a») se unen y las repetidas («puuuta») se leen antes de buscar; las rachas largas («h o l a p u t a») van aparte (SpacedRunTerms), y
+ * «p*ta» también (MaskedTerms). Una entrada `'ambiguous' => true` («яйца», «leche») se
+ * ignora aquí. Animales, discapacidad y `targeted` sólo cuentan dirigidos a alguien (TargetContext).
  */
 final class ChatLineReviewer
 {
-    private const DECISION_BY_SEVERITY = ['high' => 'reject', 'medium' => 'review', 'low' => 'approve'];
-
     /** @var array<string,?ChatTopics> idioma => temas (null: el idioma no tiene lista) */
     private array $topics = [];
 
@@ -39,16 +36,29 @@ final class ChatLineReviewer
 
     public function review(string $line): ChatLineResult
     {
-        $topics = $this->topicsFor($this->reviewer->getLanguage());
-        $matches = [];
+        $line = mb_scrub($line, 'UTF-8'); // un byte inválido hacía fallar todas las expresiones regulares: se aprobaba
+        $topics = $this->topicsFor($language = $this->reviewer->getLanguage());
+        $targeting = $topics?->targeting() ?? [];
+        $matches = TargetContext::apply($line, $this->find($line, $topics), $targeting, $language);
+        if (($clean = EvasionCleaner::clean($line, $language)) !== $line) { // lo que sólo se ve con la línea entera limpia
+            $seen = array_map(fn(array $m): string => $m['original'] ?? $m['found'], $matches);
+            $extra = array_filter($this->find($clean, $topics), fn(array $m): bool => !in_array($m['original'] ?? $m['found'], $seen, true));
+            $matches = [...$matches, ...TargetContext::apply($clean, array_values($extra), $targeting, $language)];
+        }
+        $matches = [...$matches, ...PersonalData::find($line)];
 
+        return new ChatLineResult($line, $matches, ChatMatches::decision($matches));
+    }
+
+    /** @return array<int,array<string,mixed>> */
+    private function find(string $line, ?ChatTopics $topics): array
+    {
+        $matches = [];
         foreach (SpacedLetters::variants($line) as [$text, $joined]) {
             $matches = ChatMatches::merge($matches, ChatMatches::restore($this->scan($text, $topics), $joined));
         }
-        $matches = [...$matches, ...SpacedRunTerms::find($line, $this->dictionary(), $topics, $matches)];
-        $matches = TargetContext::apply($line, $matches, $topics?->targeting() ?? [], $this->reviewer->getLanguage());
 
-        return new ChatLineResult($line, $matches, $this->decisionFor($matches));
+        return [...$matches, ...SpacedRunTerms::find($line, $this->dictionary(), $topics, $matches), ...MaskedTerms::find($line, $this->dictionary())];
     }
 
     /**
@@ -71,20 +81,6 @@ final class ChatLineReviewer
         }
 
         return ChatMatches::downgradeDoubled($matches);
-    }
-
-    /** La decisión la fija el término más grave: high bloquea, medium va a revisión, low sólo se informa.
-     * @param array<int,array<string,mixed>> $matches */
-    private function decisionFor(array $matches): string
-    {
-        $severities = array_column($matches, 'severity');
-        foreach (self::DECISION_BY_SEVERITY as $severity => $decision) {
-            if (in_array($severity, $severities, true)) {
-                return $decision;
-            }
-        }
-
-        return 'approve';
     }
 
     private function dictionary(): WordList { return $this->reviewer->languages()->wordList($this->reviewer->getLanguage()); }

@@ -4,6 +4,7 @@
 // - «término»: cada palabra del diccionario (config/languages) y de los temas de
 //   chat (config/chat-topics), con su categoría, riskType, severidad y marcas;
 // - «patrón»: las frases con forma de los temas de chat;
+// - «forma»: cada plural o femenino generado (`forms`), con su severidad efectiva;
 // - «excepción»: las palabras de `everyday` y `legit` de los temas de chat;
 // - «frecuente»: las palabras frecuentes que el chat censuraría y que no son un
 //   término de la lista, las candidatas más probables a falso positivo (ver
@@ -18,6 +19,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use DefamatoryContentReview\Chat\ChatLineReviewer;
+use DefamatoryContentReview\Chat\Inflection\{FormSeverity, TopicInflector};
 
 [$language, $list] = [$argv[1] ?? '', $argv[2] ?? ''];
 $config = __DIR__ . '/../config';
@@ -41,6 +43,7 @@ $sources = ['diccionario' => "$config/languages/$language.php", 'temas' => "$con
 foreach ($sources as $source => $file) {
     $data = is_file($file) ? require $file : [];
     $topics = $source === 'temas' ? $data : $topics;
+    $written = array_flip(array_map('mb_strtolower', array_column(array_merge([], ...array_values($data['words'] ?? [])), 'word')));
     foreach ($data['words'] ?? [] as $category => $entries) {
         foreach ($entries as $entry) {
             $marks = array_keys(array_filter(array_intersect_key($entry, array_flip(['nameCollision', 'ambiguous', 'targeted']))));
@@ -51,6 +54,14 @@ foreach ($sources as $source => $file) {
             $listed[mb_strtolower($word)] = true;
             fputcsv($out, ['término', $word, $source, $category, $entry['riskType'], $entry['severity'],
                 implode(' ', $marks), $ranks[mb_strtolower($word)] ?? '', $chat->review($word)->getDecision(), '', '']);
+            // «forma»: cada plural/femenino generado con su severidad efectiva; la respuesta va al `by` de la entrada.
+            foreach (in_array($entry['forms'] ?? 'verb', ['noun', 'adj'], true) ? TopicInflector::tagged($language, $word, $entry['forms']) : [] as $form => $tag) {
+                if ($form !== $word && !isset($written[mb_strtolower($form)])) {
+                    $listed[mb_strtolower($form)] = true;
+                    fputcsv($out, ['forma', $form, $source, $category, $entry['riskType'], FormSeverity::of($tag, $entry['by'] ?? [], $entry['severity'], $source === 'diccionario'),
+                        "forma:{$tag} de:{$word}", $ranks[mb_strtolower($form)] ?? '', $chat->review($form)->getDecision(), '', '']);
+                }
+            }
         }
     }
 }

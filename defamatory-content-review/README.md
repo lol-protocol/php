@@ -14,6 +14,14 @@ apellidos de personas, para plataformas de información genealógica.
 - **Detección de fusión fonética** — «Elba Gina» → «el vagina», «Felipe Lotas»
   → «Feli-pelotas»: nombre y apellido, ninguno ofensivo por separado, que al
   leerse seguidos componen otra palabra.
+- **Chat y textos libres**: insultos, amenazas, contenido sexual y
+  **acusaciones contra personas** («Fulano estafó a mi familia», «fue
+  condenado», «tiene sida»), que van a revisión humana.
+
+Por qué existe esta librería: [`docs/ORIGEN.md`](docs/ORIGEN.md). Qué protege y
+qué no, y qué tiene que hacer la plataforma por fuera del código:
+[`docs/RIESGOS.md`](docs/RIESGOS.md). Por qué la privacidad y la honra importan
+en todo el proyecto: [`../PRIVACIDAD-Y-HONRA.md`](../PRIVACIDAD-Y-HONRA.md).
 
 ---
 
@@ -249,6 +257,16 @@ FusionSupport::isSupported('ara');                                      // false
 
 ### Evasión cubierta y no cubierta
 
+- **Separadores y símbolos de hacker** («p~u~t~a», «p|u|t|a», «p - u - t - a»,
+  «p|_|ta», «1d!0t4», «€stúpido», «N.4.Z.|»): cubiertos. `WholeWords` lee cada
+  palabra entera sin separadores o con las letras que dibujan los símbolos
+  (`HackerSpelling`); `SpacedLetters` une rachas de caracteres sueltos separados
+  por espacios o símbolos («N 4 Z 1»). «¡hola!», «1 2 3 4», «c/u» o «págs. 14-88»
+  no se tocan (`SymbolEvasionTest`).
+- **Disfraces de Unicode** («рuta» con «р» cirílica, «pu​ta» con un espacio de
+  ancho cero, «ｐｕｔａ», «𝐩𝐮𝐭𝐚», «pu🙂ta»): cubiertos, también en nombres.
+  `EvasionCleaner` corre dentro de `WordList::normalize()`, así que vale para
+  `validateName()` y para el chat (`UnicodeEvasionTest`).
 - **Transliteración numérica** ("c3rda", "v4g1na"): cubierta. `WordList::normalize()`
   sustituye los dígitos/símbolos de un solo carácter más comunes
   (`0→o 1→i 3→e 4→a 5→s 7→t 8→b @→a $→s`) antes de comparar, y los 17
@@ -534,6 +552,7 @@ Tipos de contenido:
 | `burlesco` | Términos `burlesco` de ese mismo diccionario |
 | `sexual` | `config/chat-topics/<código>.php` |
 | `belico` | `config/chat-topics/<código>.php`: guerra, violencia, **amenazas** e incitación a matar |
+| `privado` | `PersonalData`, en cualquier idioma: RUT válido, correo, teléfono o dirección de alguien. Siempre a revisión |
 
 El término más grave decide: `high` bloquea, `medium` va a revisión y `low`
 sólo se informa (por ejemplo «mi abuelo luchó en la guerra» se aprueba pero
@@ -545,6 +564,28 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 
 ### Qué entiende
 
+- **Acusaciones contra una persona.** Difamar no es sólo insultar: «Fulano
+  estafó a mi familia», «Mengano fue condenado por violación», «es narco»,
+  «tiene sida», «le pone los cuernos a su señora», «funen a ese tipo». No
+  traen palabrotas y son lo que más daña en una plataforma de genealogía (ver
+  [`docs/ORIGEN.md`](docs/ORIGEN.md)). Los patrones de `config/chat-topics/spa.php`
+  y `eng.php` las marcan como `difamatorio`, con la etiqueta `acusación de
+  delito`, `dato sensible (salud)`, `vida privada` o `funa o escrache`. Siempre
+  van a **revisión**, nunca se bloquean ni se aprueban solas: pueden ser
+  ciertas, y eso lo decide una persona con una fuente a la vista. «El robo del
+  banco fue en 1920» y «murió de cáncer» no se marcan.
+- **Siglas y consignas de odio, en los 33 idiomas.** «nazi» en la forma de cada
+  idioma («nazist», «natsi», «нацист», «ναζί», «נאצי», «نازي»…), «facho», «KKK»,
+  «ACAB», «sieg heil», «heil hitler», «white power», «14/88», también camufladas
+  («N.A.Z.I», «N.4.Z.|», «S1eg H3il»). En japonés, coreano, cantonés y
+  tailandés sólo las consignas. «Nazi» sólo cuenta dirigido a alguien («eres un
+  nazi»): la historia familiar habla de los nazis («mi abuelo luchó contra los
+  nazis») y eso se aprueba; las consignas cuentan siempre (`HateTermsTest`).
+- **Disfraces de Unicode y asteriscos.** «рuta» con «р» cirílica, «pu​ta» con
+  un espacio de ancho cero, «ｐｕｔａ», «𝐩𝐮𝐭𝐚», «pu🙂ta» se leen como «puta»
+  (`EvasionCleaner`, también al validar nombres). «p*ta», «m*erda»: cada
+  asterisco vale por una letra y, si completa un término, va a revisión
+  (`MaskedTerms`); «5*3» o «**importante**» no se tocan.
 - **Plurales, géneros y conjugaciones.** «desnudas», «masturbándose»,
   «fóllame», «bombardearon», «they massacred» se detectan aunque la lista
   sólo diga «desnudo», «masturbar», «follar», «bombardear» o «massacre»
@@ -603,6 +644,7 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 |---|---|
 | `'forms' => 'noun' \| 'adj' \| 'verb'` | Genera plurales, géneros o la conjugación regular (con pronombres pegados: «matarlos», «fóllame», «matá-lo», «ammazzarti», «baise-moi») en español, inglés, portugués, italiano y francés (`TopicInflector`; los verbos romances comparten `RomanceVerbs`). Escribe el sustantivo en singular, el adjetivo en masculino y el verbo en infinitivo. |
 | `'also' => [...]` | Formas irregulares, a mano («degüello»). |
+| `'by' => ['f' => 'high', 'm.pl' => 'none']` | Severidad por forma: la ofensa no es simétrica («cerdo» suena mal, «cerda» horrible; «zorros» son animales). Rasgos: `sg`, `pl`, `m`, `f`, `m.sg`, `m.pl`, `f.sg`, `f.pl`; gana el más específico, y `none` deja fuera esa forma. Una forma que ya está escrita como entrada propia no se genera (lo escrito manda), y las generadas no heredan `nameCollision`. |
 | categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
 | meta `'collapseRepeats' => true` | Lee también las palabras escritas con letras repetidas. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
 | `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
@@ -703,14 +745,17 @@ Content-Type: application/json
 ```
 
 ```json
-{"language": "spa", "decision": "reject", "censor": true,
+{"language": "spa", "checkedLanguages": ["spa", "eng"], "decision": "reject", "censor": true,
  "contentTypes": ["difamatorio", "belico"], "censored": "**************, ****",
  "matches": [{"found": "puta", "term": "puta", "contentType": "difamatorio", "severity": "high"},
              {"found": "te voy a matar", "term": "amenaza", "contentType": "belico", "severity": "high"}]}
 ```
 
 `language` es opcional (`spa` por defecto) y acepta el código de tres letras o
-el de dos (`es`). Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
+el de dos (`es`). Como lo elige quien escribe, el texto se revisa además en los
+idiomas de la plataforma (`spa` y `eng`, tercer argumento de
+`ModerationEndpoint`) y manda la decisión más grave: mandar un insulto en
+español como `"eng"` no lo cuela. `checkedLanguages` dice en cuáles se revisó. Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
 `Content-Type: application/json` (415), cuerpo de hasta 16 KB (413), JSON en
 UTF-8 con `text` string (400), texto de hasta 2.000 caracteres (413) e idioma
 soportado (400). Los errores responden
@@ -775,8 +820,11 @@ palabras no entiende contexto:
   cotidiano, que es mucho más frecuente. La medición de falsos positivos es
   por palabra suelta, no por frase: no ve los que sólo aparecen en contexto.
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
-- Los diccionarios de insultos (`config/languages/`) no generan plurales ni
-  otras formas: «idiots» sólo se detecta porque está escrito. El inglés
+- Los diccionarios de insultos (`config/languages/`) sólo generan formas en
+  las entradas que declaran `forms` (como «cerdo», «puta», «zorra», «perra»
+  en español), y lo generado sin `by` llega como mucho a revisión: nadie
+  decidió todavía cuánto ofende esa forma. El resto no genera nada: «idiots»
+  sólo se detecta porque está escrito. El inglés
   tiene los plurales de sus insultos claros; en los demás idiomas, el plural
   de un insulto que no esté en la lista pasa en el chat. Las listas de temas
   sí los generan (`forms`) en español, inglés, portugués, italiano y francés.
@@ -910,7 +958,7 @@ ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1
 
 ### `WordList`
 
-`search()`, `findInText()` (detecta frases de hasta 3 palabras),
+`search()`, `findInText()` (detecta frases de hasta 5 palabras),
 `getByRiskType()`, `getByCategory()`, `getBySeverity()`, `getNameCollisions()`,
 `getStatistics()`, `requiresTokenizer()`, `getCoverage()`,
 `supportsPhoneticFolding()`, `fold()`, `searchPhoneticExact()`,
@@ -942,9 +990,12 @@ src/                                Namespace DefamatoryContentReview\ (cada car
 │   ├── WordList.php                Diccionario: carga, normalización, búsqueda
 │   ├── WordListIndex.php / WordListPhonetics.php   Colaboradores de WordList (almacén, plegado)
 │   ├── WordListScanner.php         Búsqueda de términos en texto
+│   ├── WholeWords.php              Segundo paso: la palabra entera sin separadores o leída con símbolos de hacker
 │   └── WordSegmenter.php           Parte en palabras el japonés, cantonés y tailandés (ICU, ext-intl)
 ├── Normalization/
 │   ├── AccentFolding.php           Plegado de diacríticos
+│   ├── EvasionCleaner.php          Deshace disfraces de Unicode: cirílico camuflado, invisibles, ancho completo, emoji
+│   ├── HackerSpelling.php          Lecturas de una palabra con símbolos: «p|_|ta», «1d!0t4», «N.4.Z.|»
 │   ├── ScriptFolding.php           Variantes estándar de griego, cirílico, árabe y hebreo
 │   └── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica («c3rda»)
 ├── Phonetic/
@@ -976,12 +1027,19 @@ src/                                Namespace DefamatoryContentReview\ (cada car
     ├── SpacedRunTerms.php          Términos dentro de una racha más larga («h o l a p u t a») — interno
     ├── RepeatedLetters.php / RepeatedReadings.php   Letras repetidas («puuuta»), leídas como 1 o 2 — internos
     ├── EverydayWords.php           Tapa las palabras de `everyday` antes de buscar — interno
+    ├── TargetContext.php / TargetWindow.php   Sólo cuenta si va dirigido a alguien («eres un cerdo») — internos
+    ├── MaskedTerms.php             Insultos con asteriscos («p*ta») — interno
+    ├── CombinedReview.php          La misma línea en varios idiomas: manda la decisión más grave
     └── Inflection/                 TopicInflector (expande `forms`), contrato TopicInflection;
                                     Spanish/Portuguese/Italian/French/EnglishInflection,
                                     y la conjugación romance común en RomanceVerbs (+ *Verbs)
 
+docs/
+├── ORIGEN.md                       Por qué existe esta librería
+└── RIESGOS.md                      Qué protege, qué no, y qué tiene que hacer la plataforma
+
 config/
-├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns), uno por idioma
+├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns, acusaciones), uno por idioma
 ├── supported-languages.php         Catálogo ISO 639-3 + alias 639-1
 ├── language-families.php           Familias y afinidades
 ├── risk-categories.php             Los 11 tipos de riesgo
@@ -1075,7 +1133,7 @@ una regla nueva marca un linaje real, falla ahí.
 
 ## Limitaciones
 
-- La detección literal es por término completo o frase de hasta tres palabras;
+- La detección literal es por término completo o frase de hasta cinco palabras;
   no encuentra palabras incrustadas dentro de una sola palabra sin cruce de
   frontera (ver la sección de fusión fonética más arriba). La transliteración
   numérica de un solo carácter sí se cubre (ver «Evasión cubierta y no
@@ -1095,7 +1153,7 @@ una regla nueva marca un linaje real, falla ahí.
   producción — es una base verificable, no una traducción exhaustiva.
 - El árabe dialectal y las variedades regionales del chino no están cubiertos.
 - La distancia de edición («Cerrda») no está cubierta: ver el docblock de
-  `EvasionTest::testEditDistanceEvasionIsADeliberateGap()` para el porqué.
+  `StructuralEvasionTest::testEditDistanceEvasionIsADeliberateGap()` para el porqué.
 - Las afinidades son aproximaciones, no medidas.
 - El módulo no decide por la plataforma: `decide()` propone, y los casos
   `review` requieren persona.

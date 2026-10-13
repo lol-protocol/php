@@ -83,3 +83,12 @@ Esto hace privados los **objetos** que ya se presentaban como privados y oculta 
 - `tests/App/Support/PrivacidadTest.php`: el umbral, que el SQL del propietario sea el de siempre y que un alias inválido se rechace antes de llegar al SQL.
 - `tests/App/Repositories/PrivacidadRepositoriesTest.php` (en SQLite y PostgreSQL, con fecha fija): quién se oculta y quién no, el borde exacto de los 110 años, la marca `viva`, y qué ve un visitante en cada repositorio.
 - `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos ni de Lucía (se comprobó que falla si se apaga el enmascarado).
+
+## Texto que escriban los usuarios
+
+Hoy la aplicación no tiene formularios de genealogía: los datos entran por
+semillas e importaciones. El día que se pueda escribir (descripciones, notas,
+nombres de colecciones, importaciones GEDCOM), **todo texto libre tiene que
+pasar por `defamatory-content-review` antes de publicarse**, y lo que quede en
+`review` no se muestra hasta que alguien lo apruebe. El porqué, y el resto de
+lo que falta, está en [`../../PRIVACIDAD-Y-HONRA.md`](../../PRIVACIDAD-Y-HONRA.md).

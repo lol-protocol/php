@@ -1,4 +1,10 @@
 seccion,termino,origen,categoria,riskType,severidad,marcas,rango,decision_chat,correcto,comentario
+término,kkk,diccionario,odio,etnico,medium,,,review,,
+término,acab,diccionario,odio,ordinario,medium,,,review,,
+término,"heil hitler",diccionario,odio,etnico,high,,,reject,,
+término,"sieg heil",diccionario,odio,etnico,high,,,reject,,
+término,"white power",diccionario,odio,etnico,high,,,reject,,
+término,14/88,diccionario,odio,etnico,medium,,,review,,
 término,豬,diccionario,dungmat,animal,high,,7175,reject,,
 término,死豬,diccionario,dungmat,animal,high,,,reject,,
 término,蠢驢,diccionario,dungmat,animal,medium,,,review,,

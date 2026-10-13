@@ -51,6 +51,19 @@ return [
         ],
     ],
     'patterns' => [
+        // Accusations against a person (defamation by stating facts, not by insulting).
+        // They may be true (court records, a biography): never block, go to human review.
+        ['pattern' => '\b(stole|steals|embezzled|embezzles|defrauded|defrauds|scammed|scams|swindled|swindles|molested|molests|abused|abuses|raped|rapes|murdered|extorted|bribed)\s+(from|his|her|their|my|your|our|kids|children|minors|money|people|clients|(a|an|the)\s+(child|kid|girl|boy|woman|man|minor|company|church|money))\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'accusation of a crime'],
+        ['pattern' => '\b(was|got|has\s+been|have\s+been|is|been)\s+(convicted|arrested|jailed|imprisoned|indicted|sentenced|charged\s+with)\b|\b(is|was|been)\s+(in\s+jail|in\s+prison|behind\s+bars)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'accusation of a crime'],
+        ['pattern' => '\b(is|was|he\s+is|she\s+is|hes|shes|they\s+are|are)\s+(a\s+|an\s+)?(drug\s+dealer|pedophile|paedophile|child\s+molester|molester|rapist|fraudster|scammer|con\s+artist|thief|crook|criminal|murderer|embezzler|pimp)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'accusation of a crime'],
+        ['pattern' => '\b(has|had|got|caught)\s+(aids|hiv|syphilis|gonorrhea|herpes|chlamydia|hepatitis|schizophrenia)\b|\bis\s+(schizophrenic|hiv\s+positive)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'sensitive data (health)'],
+        // Sensitive data and private life of a third party, even if true: sexual orientation,
+        // parentage, suicide, domestic violence.
+        ['pattern' => '\b(is|was|he\s+is|she\s+is|hes|shes|he\s+s|she\s+s)\s+(gay|a\s+lesbian|lesbian|homosexual|bisexual|transgender|a\s+transsexual)\b|\bcame\s+out\s+(as\s+gay|as\s+lesbian|of\s+the\s+closet)\b|\bis\s+in\s+the\s+closet\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'sensitive data (sexual orientation)'],
+        ['pattern' => '\b(is|was)\s+(an\s+|a\s+)?(illegitimate|adopted|bastard\s+child|love\s+child)\b|\b(isnt|is\s+not|wasnt|was\s+not|isn\s+t|wasn\s+t)\s+(his|her|their)\s+(real\s+|biological\s+)?(father|mother|dad|mom|son|daughter)\b|\b(his|her|their)\s+(real|biological)\s+father\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'private life (parentage)'],
+        ['pattern' => '\b(committed|attempted)\s+suicide\b|\b(killed|hanged|shot)\s+(himself|herself|themselves)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'sensitive data (suicide)'],
+        ['pattern' => '\b(beats|beat|hits|hit|abuses|abused)\s+(his|her|their)\s+(wife|husband|kids|children|son|daughter|partner|girlfriend|boyfriend|mother|father)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'accusation of a crime'],
+        ['pattern' => '\b(is\s+cheating|cheats|cheated)\s+on\s+(his|her|their)\b|\bhas\s+(a|an)\s+(mistress|affair)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'private life'],
         ['pattern' => '\b(ll|will|gonna|going\s+to|ima|imma)\s+(kill|murder|shoot|stab|strangle|behead)\s+(you|u|ya|them|everyone)\b', 'riskType' => 'belico', 'severity' => 'high', 'label' => 'threat'],
         ['pattern' => '\b(ll|will|gonna|going\s+to|ima|imma)\s+rape\s+(you|u|her|them)\b', 'riskType' => 'sexual', 'severity' => 'high', 'label' => 'sexual threat'],
         ['pattern' => '\b(kill\s+(your\s*self|urself)|kys|go\s+die|hope\s+you\s+(die|burn|rot))\b', 'riskType' => 'belico', 'severity' => 'high', 'label' => 'incitement to suicide'],

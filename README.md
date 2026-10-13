@@ -1,10 +1,15 @@
 # lol-protocol/php
 
-Este repositorio aloja varios proyectos independientes, cada uno en su propia carpeta:
+Este repositorio aloja varios proyectos independientes, cada uno en su propia carpeta.
+
+> **Antes de tocar cualquier cosa que muestre datos de personas**, lee
+> [`PRIVACIDAD-Y-HONRA.md`](PRIVACIDAD-Y-HONRA.md): por qué la privacidad y la
+> honra son la condición para que este proyecto exista, qué ya está resuelto y
+> qué cabos sueltos quedan.
 
 | Proyecto | Qué es |
 |---|---|
-| [`defamatory-content-review/`](defamatory-content-review/) | Librería PHP — detección de insultos y ridiculización en nombres para plataformas genealógicas. El proyecto principal del repositorio. |
+| [`defamatory-content-review/`](defamatory-content-review/) | Librería PHP — detección de insultos y ridiculización en nombres, y de insultos, amenazas y acusaciones contra personas en textos libres, para plataformas genealógicas. El proyecto principal del repositorio. |
 | [`url-routing/`](url-routing/docs/README_URLS.md) | Routing de URLs para los sitios de genealogía y POS (Contrastocolor): el tipo de recurso se infiere de la forma del primer segmento (cantidad de dígitos, letras de lugar), no de palabras. |
 | [`web-animations/`](web-animations/) | Galería de demostración de 36 animaciones HTML/CSS/JS. |
 | [`document-formats/`](document-formats/) | Base de datos de formatos de documento y papel por país. |

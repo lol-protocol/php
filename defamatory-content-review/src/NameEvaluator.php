@@ -3,6 +3,7 @@
 namespace DefamatoryContentReview;
 
 use DefamatoryContentReview\Language\LanguageAccess;
+use DefamatoryContentReview\Normalization\EvasionCleaner;
 use DefamatoryContentReview\Phonetic\PhoneticFusionDetector;
 use DefamatoryContentReview\Report\ValidationResult;
 use DefamatoryContentReview\Scoring\ScoringPolicy;
@@ -16,7 +17,7 @@ final class NameEvaluator
     /** @param array<string,float> $languageSet código => confianza (1.0 = idioma principal) */
     public function evaluate(string $name, array $languageSet, ScoringPolicy $policy, string $primaryLanguage): ValidationResult
     {
-        $result = new ValidationResult($name, true, $primaryLanguage);
+        $result = new ValidationResult($name = mb_scrub($name, 'UTF-8'), true, $primaryLanguage);
         $result->setLanguagesChecked($languageSet);
 
         $best = [];
@@ -45,11 +46,10 @@ final class NameEvaluator
         return $this->finalizeScore($result, $scores, $policy);
     }
 
-    /** "Elba Gina" ("el vagina"): se suma a lo ya detectado por evaluate(). Sólo idiomas de FusionSupport. */
+    /** "Elba Gina" ("el vagina"): se suma a lo ya detectado por evaluate(). Sólo idiomas de FusionSupport. Sin disfraces de Unicode («Gіna» con «і» cirílica). */
     public function applyPhoneticChecks(ValidationResult $result, string $first, string $last, string $language, ScoringPolicy $policy): void
     {
-        $wordList = $this->languages->wordList($language);
-
+        [$first, $last, $wordList] = [EvasionCleaner::clean($first, $language), EvasionCleaner::clean($last, $language), $this->languages->wordList($language)];
         if (!$wordList->supportsFusion() || trim($first) === '' || trim($last) === '') {
             return;
         }

@@ -16,6 +16,21 @@ return [
     ],
 
     'words' => [
+        // Odio y extremismo: «nazi» sólo cuenta dirigido a alguien («eres un nazi»), no en la
+        // historia («mi abuelo luchó contra los nazis»); las consignas cuentan siempre.
+        'odio' => [
+            ['word' => 'nazi', 'riskType' => 'moral', 'severity' => 'medium', 'nameCollision' => true, 'targeted' => true],
+            ['word' => 'nazis', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'neonazi', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'neonazis', 'riskType' => 'moral', 'severity' => 'medium', 'targeted' => true],
+            ['word' => 'kkk', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'acab', 'riskType' => 'ordinario', 'severity' => 'medium'],
+            ['word' => 'heil hitler', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'sieg heil', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => 'white power', 'riskType' => 'etnico', 'severity' => 'high'],
+            ['word' => '14/88', 'riskType' => 'etnico', 'severity' => 'medium'],
+            ['word' => 'poder branco', 'riskType' => 'etnico', 'severity' => 'high'],
+        ],
         'animal' => [
             ['word' => 'porco', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'porca', 'riskType' => 'animal', 'severity' => 'medium'],
