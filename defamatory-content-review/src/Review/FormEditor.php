@@ -12,13 +12,17 @@ final class FormEditor
 {
     public static function setBy(string $text, string $word, string $tag, string $severity): ?string
     {
+        // Los dos van tal cual al archivo: sólo lo que FormSeverity entiende (`pl`, `f.pl`…; `none` es «no ofende»).
+        if (preg_match(SheetVocabulary::TAG, $tag) !== 1 || !in_array($severity, ['low', 'medium', 'high', 'none'], true)) {
+            return null;
+        }
         $entry = ConfigEditor::entry($text, $word);
         if ($entry === null || !str_contains($entry, "'forms' => ")) {
             return null;
         }
         $pair = "'{$tag}' => '{$severity}'";
         $new = match (true) {
-            (bool) preg_match("/'{$tag}' => '\\w+'/", $entry) && str_contains($entry, "'by' => [")
+            (bool) preg_match("/'" . preg_quote($tag, '/') . "' => '\\w+'/", $entry) && str_contains($entry, "'by' => [")
                 => (string) preg_replace("/'" . preg_quote($tag, '/') . "' => '\\w+'/", $pair, $entry, 1),
             str_contains($entry, "'by' => [") => str_replace("'by' => [", "'by' => [{$pair}, ", $entry),
             default => substr($entry, 0, -1) . ", 'by' => [{$pair}]]",

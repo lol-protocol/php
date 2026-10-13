@@ -65,17 +65,34 @@ final class ReviewApplier
         };
     }
 
+    /**
+     * El texto resultante tiene que ser PHP válido y sólo datos (ConfigData) antes de evaluarlo
+     * para ver su forma: una planilla viene de fuera, y nada de lo que escribió debe correr, ni
+     * siquiera aquí, en la vista previa.
+     */
     private function checkParses(string $path, string $text): void
     {
+        $name = basename(dirname($path)) . '/' . basename($path);
+        try {
+            $foreign = ConfigData::foreign($text);
+        } catch (\ParseError $e) {
+            $this->problems[] = "{$name}: el resultado no es PHP válido ({$e->getMessage()})";
+            return;
+        }
+        if ($foreign !== null) {
+            $this->problems[] = "{$name}: el resultado trae algo que no es un dato ({$foreign}) y no se aplica";
+            return;
+        }
+
         $tmp = tempnam(sys_get_temp_dir(), 'review');
         file_put_contents($tmp, $text);
         try {
-            $data = require $tmp;
+            $data = require $tmp; // sólo literales: ConfigData lo acaba de comprobar
             if (!is_array($data) || !isset($data['words'])) {
-                $this->problems[] = basename(dirname($path)) . '/' . basename($path) . ': el resultado no devuelve un diccionario';
+                $this->problems[] = "{$name}: el resultado no devuelve un diccionario";
             }
-        } catch (\ParseError $e) {
-            $this->problems[] = basename(dirname($path)) . '/' . basename($path) . ": el resultado no es PHP válido ({$e->getMessage()})";
+        } catch (\Throwable $e) {
+            $this->problems[] = "{$name}: el resultado no se pudo leer ({$e->getMessage()})";
         } finally {
             unlink($tmp);
         }
