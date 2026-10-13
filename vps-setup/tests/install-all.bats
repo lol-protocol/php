@@ -120,3 +120,18 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
     ia ejemplo.com --dry-run
     ! ls "$(dirname "$INSTALL_STATE_FILE")"/install-all-*.log 2>/dev/null
 }
+
+@test "si el healthcheck falla, el final NO dice 'EXITOSAMENTE' (antes escondia las [FALLA])" {
+    FAIL_STEP=08-healthcheck.sh ia ejemplo.com a@ejemplo.com --yes
+    [ "$status" -eq 0 ]
+    [[ "$output" != *"COMPLETADO EXITOSAMENTE"* ]]
+    [[ "$output" == *"COMPLETADO CON FALLAS EN EL HEALTHCHECK"* ]]
+    ia ejemplo.com a@ejemplo.com --yes
+    [[ "$output" == *"COMPLETADO EXITOSAMENTE"* ]]
+}
+
+@test "solo da +x a los pasos numerados: lib.sh no cambia de modo (el checkout queda limpio)" {
+    chmod 644 "$FAKE/lib.sh"
+    ia ejemplo.com a@ejemplo.com --yes
+    [ "$(stat -c %a "$FAKE/lib.sh")" = "644" ]
+}
