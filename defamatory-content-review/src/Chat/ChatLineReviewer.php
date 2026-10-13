@@ -18,10 +18,9 @@ use DefamatoryContentReview\Dictionary\WordList;
  * Igual que con los nombres, un término que también es apellido
  * (`nameCollision`: «Savage», «Concha») nunca bloquea solo: baja a revisión.
  * Las letras sueltas («p u t a») se unen y las repetidas («puuuta») se leen
- * antes de buscar; dentro de una racha de letras sueltas más larga
- * («h o l a p u t a») se busca aparte (ver SpacedRunTerms). Una entrada `'ambiguous' => true` de un diccionario
- * («яйца», «leche») se ignora aquí: casi siempre es la palabra cotidiana.
- * Animales, discapacidad y `targeted` sólo cuentan dirigidos a alguien (TargetContext).
+ * antes de buscar; las rachas largas («h o l a p u t a») van aparte (SpacedRunTerms), y
+ * «p*ta» también (MaskedTerms). Una entrada `'ambiguous' => true` («яйца», «leche») se
+ * ignora aquí. Animales, discapacidad y `targeted` sólo cuentan dirigidos a alguien (TargetContext).
  */
 final class ChatLineReviewer
 {
@@ -45,7 +44,7 @@ final class ChatLineReviewer
         foreach (SpacedLetters::variants($line) as [$text, $joined]) {
             $matches = ChatMatches::merge($matches, ChatMatches::restore($this->scan($text, $topics), $joined));
         }
-        $matches = [...$matches, ...SpacedRunTerms::find($line, $this->dictionary(), $topics, $matches)];
+        $matches = [...$matches, ...SpacedRunTerms::find($line, $this->dictionary(), $topics, $matches), ...MaskedTerms::find($line, $this->dictionary())];
         $matches = TargetContext::apply($line, $matches, $topics?->targeting() ?? [], $this->reviewer->getLanguage());
 
         return new ChatLineResult($line, $matches, $this->decisionFor($matches));

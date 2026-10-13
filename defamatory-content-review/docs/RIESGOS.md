@@ -1,0 +1,79 @@
+# Mapa de riesgos: qué protege esta librería y qué no
+
+Un filtro automático baja el riesgo, pero no lo elimina. Este documento dice qué
+cubre el código, qué flancos se cerraron y cuáles siguen abiertos, y qué tiene
+que hacer la plataforma por fuera del código. El porqué está en
+[`ORIGEN.md`](ORIGEN.md).
+
+## Qué cubre hoy
+
+| Capa | Qué detecta | Decisión |
+|---|---|---|
+| Insultos del diccionario (33 idiomas) | «idiota», «hijo de puta», chilenismos («conchetumare», «aweonao») | `reject` o `review` según la gravedad |
+| Evasión | letras sueltas («p u t a»), repetidas («puuuta»), leet («1d10t4»), signos pegados («puta!»), asteriscos («p*ta»), letras cirílicas o griegas camufladas, caracteres invisibles, ancho completo, negrita matemática y emoji en medio de la palabra | igual que el término; los asteriscos van a lo sumo a `review` |
+| Acusaciones (español e inglés) | delitos («estafó a», «fue condenado», «es narco»), salud («tiene sida»), vida privada («le pone los cuernos»), funas | siempre `review`: una persona verifica |
+| Amenazas y contenido sexual | «te voy a matar», «mándame nudes» | `reject` o `review` |
+| Contexto | animales, discapacidad, identidad: sólo si van dirigidos a alguien («eres un cerdo» sí, «comí cerdo» no) | `review`, o `approve` informado |
+| Idioma | el endpoint revisa el idioma pedido y además los de la plataforma (`spa` y `eng` por defecto) | la más grave |
+
+## Flancos cerrados en la revisión de octubre de 2026
+
+| Antes se aprobaba | Ahora |
+|---|---|
+| «рuta» (p cirílica), «pu​ta» (ancho cero), «ｐｕｔａ», «𝐩𝐮𝐭𝐚», «pu🙂ta», «puta️» | se detectan como «puta» (`UnicodeEvasionTest`) |
+| «p*ta», «m*erda», «c*brón» | `review` (`MaskedTermsTest`) |
+| «Fulano estafó a mi familia», «fue condenado por…», «tiene sida», «es narco» | `review` (`AccusationPatternsTest`) |
+| «conchetumare», «ctm», «weón culiao», «aweonao» | marcados; «hola weón» sigue aprobándose (`ChileanVocabularyTest`) |
+| Las 7 entradas de más de 3 palabras («concha de tu madre», «son of a bitch») y las 3 con guion («lèche-cul») | se detectan enteras; ahora un test exige que cada entrada se encuentre a sí misma (`DictionarySelfDetectionTest`) |
+| Un insulto en español enviado con `"language": "eng"` | el endpoint lo revisa también en español (`ModerationLanguagesTest`) |
+
+## Flancos abiertos
+
+Ningún filtro de palabras los cierra del todo; el proceso de la sección
+siguiente es lo que los cubre.
+
+- **Acusaciones sin las palabras de la lista**: «se quedó con la herencia de sus
+  hermanos», «todos saben lo que hizo en 1985», la ironía y las indirectas.
+- **Acusaciones en otros idiomas**: los patrones están en español e inglés. Los
+  otros 31 idiomas sólo detectan insultos.
+- **Personas identificables sin nombre**: «el decano de Ingeniería», «el
+  carnicero de la calle Maipú».
+- **Imágenes y archivos**: una foto con texto, un PDF o un audio no pasan por el filtro.
+- **Evasión fonética y jerga nueva**: «pvta» (v por u), abreviaturas nuevas,
+  palabras inventadas. El diccionario hay que mantenerlo vivo (ver `review/`).
+- **Falsos positivos**: «la película trata de un ladrón de bancos» va a revisión
+  y «un asesino de la época» se bloquea. Es el precio de no dejar pasar las acusaciones.
+
+## Lo que tiene que hacer la plataforma (fuera del código)
+
+1. **Pasar por la revisión todo texto libre**, no sólo el chat: biografías,
+   notas, comentarios, pies de foto, nombres de árboles y de grupos.
+2. **Cola de revisión con plazo**: lo que el filtro manda a `review` no se publica
+   hasta que alguien lo mire. Para una acusación, quien revisa pide fuente
+   pública (sentencia firme, prensa) y comprueba si la persona vive.
+3. **Botón de denuncia visible y retiro rápido**: quien se sienta afectado debe
+   poder pedir el retiro sin crear cuenta. Conviene comprometer un plazo (por
+   ejemplo, ocultar en 24 horas mientras se revisa).
+4. **Registro**: quién publicó qué, cuándo, qué decidió el filtro y quién revisó.
+   Sin eso no hay cómo responder a un reclamo ni identificar al autor real.
+5. **Personas vivas privadas por defecto**: sus fichas no se muestran a quien no
+   es el propietario del árbol (ver `url-routing/`) y no se indexan en buscadores.
+6. **Términos de uso** que prohíban imputar hechos a terceros y publicar sus
+   datos sensibles (salud, vida sexual, antecedentes penales), y que digan qué
+   pasa con quien lo haga.
+
+## Marco legal chileno (orientativo)
+
+Esto no es asesoría legal: conviene revisarlo con un abogado antes de abrir la plataforma.
+
+- **Constitución, art. 19 N° 4**: protege la honra y la vida privada de las personas.
+- **Código Penal, arts. 412 a 431**: la **calumnia** es imputar un delito
+  determinado que es falso y que puede perseguirse de oficio; la **injuria**,
+  toda expresión que deshonre o menosprecie. La calumnia es justamente el
+  tipo de mensaje que motivó este proyecto.
+- **Ley 19.628** (protección de la vida privada): los datos sobre salud y vida
+  sexual son **datos sensibles**. Publicarlos sobre un tercero sin su
+  consentimiento es un riesgo en sí mismo, aunque sean ciertos.
+- **Ley 21.719**, que reemplaza a la 19.628 con más obligaciones y sanciones para
+  quien trata datos personales, debería regir desde diciembre de 2026: hay que
+  confirmar la fecha y lo que exige a una plataforma con fichas de personas vivas.

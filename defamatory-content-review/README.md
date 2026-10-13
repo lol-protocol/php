@@ -14,6 +14,13 @@ apellidos de personas, para plataformas de información genealógica.
 - **Detección de fusión fonética** — «Elba Gina» → «el vagina», «Felipe Lotas»
   → «Feli-pelotas»: nombre y apellido, ninguno ofensivo por separado, que al
   leerse seguidos componen otra palabra.
+- **Chat y textos libres**: insultos, amenazas, contenido sexual y
+  **acusaciones contra personas** («Fulano estafó a mi familia», «fue
+  condenado», «tiene sida»), que van a revisión humana.
+
+Por qué existe esta librería: [`docs/ORIGEN.md`](docs/ORIGEN.md). Qué protege y
+qué no, y qué tiene que hacer la plataforma por fuera del código:
+[`docs/RIESGOS.md`](docs/RIESGOS.md).
 
 ---
 
@@ -545,6 +552,21 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 
 ### Qué entiende
 
+- **Acusaciones contra una persona.** Difamar no es sólo insultar: «Fulano
+  estafó a mi familia», «Mengano fue condenado por violación», «es narco»,
+  «tiene sida», «le pone los cuernos a su señora», «funen a ese tipo». No
+  traen palabrotas y son lo que más daña en una plataforma de genealogía (ver
+  [`docs/ORIGEN.md`](docs/ORIGEN.md)). Los patrones de `config/chat-topics/spa.php`
+  y `eng.php` las marcan como `difamatorio`, con la etiqueta `acusación de
+  delito`, `dato sensible (salud)`, `vida privada` o `funa o escrache`. Siempre
+  van a **revisión**, nunca se bloquean ni se aprueban solas: pueden ser
+  ciertas, y eso lo decide una persona con una fuente a la vista. «El robo del
+  banco fue en 1920» y «murió de cáncer» no se marcan.
+- **Disfraces de Unicode y asteriscos.** «рuta» con «р» cirílica, «pu​ta» con
+  un espacio de ancho cero, «ｐｕｔａ», «𝐩𝐮𝐭𝐚», «pu🙂ta» se leen como «puta»
+  (`EvasionCleaner`, también al validar nombres). «p*ta», «m*erda»: cada
+  asterisco vale por una letra y, si completa un término, va a revisión
+  (`MaskedTerms`); «5*3» o «**importante**» no se tocan.
 - **Plurales, géneros y conjugaciones.** «desnudas», «masturbándose»,
   «fóllame», «bombardearon», «they massacred» se detectan aunque la lista
   sólo diga «desnudo», «masturbar», «follar», «bombardear» o «massacre»
@@ -703,14 +725,17 @@ Content-Type: application/json
 ```
 
 ```json
-{"language": "spa", "decision": "reject", "censor": true,
+{"language": "spa", "checkedLanguages": ["spa", "eng"], "decision": "reject", "censor": true,
  "contentTypes": ["difamatorio", "belico"], "censored": "**************, ****",
  "matches": [{"found": "puta", "term": "puta", "contentType": "difamatorio", "severity": "high"},
              {"found": "te voy a matar", "term": "amenaza", "contentType": "belico", "severity": "high"}]}
 ```
 
 `language` es opcional (`spa` por defecto) y acepta el código de tres letras o
-el de dos (`es`). Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
+el de dos (`es`). Como lo elige quien escribe, el texto se revisa además en los
+idiomas de la plataforma (`spa` y `eng`, tercer argumento de
+`ModerationEndpoint`) y manda la decisión más grave: mandar un insulto en
+español como `"eng"` no lo cuela. `checkedLanguages` dice en cuáles se revisó. Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
 `Content-Type: application/json` (415), cuerpo de hasta 16 KB (413), JSON en
 UTF-8 con `text` string (400), texto de hasta 2.000 caracteres (413) e idioma
 soportado (400). Los errores responden
@@ -910,7 +935,7 @@ ScoringPolicy::default(): self   // pesos none=0/low=1/medium=2/high=3, cortes 1
 
 ### `WordList`
 
-`search()`, `findInText()` (detecta frases de hasta 3 palabras),
+`search()`, `findInText()` (detecta frases de hasta 5 palabras),
 `getByRiskType()`, `getByCategory()`, `getBySeverity()`, `getNameCollisions()`,
 `getStatistics()`, `requiresTokenizer()`, `getCoverage()`,
 `supportsPhoneticFolding()`, `fold()`, `searchPhoneticExact()`,
@@ -945,6 +970,7 @@ src/                                Namespace DefamatoryContentReview\ (cada car
 │   └── WordSegmenter.php           Parte en palabras el japonés, cantonés y tailandés (ICU, ext-intl)
 ├── Normalization/
 │   ├── AccentFolding.php           Plegado de diacríticos
+│   ├── EvasionCleaner.php          Deshace disfraces de Unicode: cirílico camuflado, invisibles, ancho completo, emoji
 │   ├── ScriptFolding.php           Variantes estándar de griego, cirílico, árabe y hebreo
 │   └── Leetspeak.php / LeetspeakFolding.php   Sustitución numérica («c3rda»)
 ├── Phonetic/
@@ -976,12 +1002,19 @@ src/                                Namespace DefamatoryContentReview\ (cada car
     ├── SpacedRunTerms.php          Términos dentro de una racha más larga («h o l a p u t a») — interno
     ├── RepeatedLetters.php / RepeatedReadings.php   Letras repetidas («puuuta»), leídas como 1 o 2 — internos
     ├── EverydayWords.php           Tapa las palabras de `everyday` antes de buscar — interno
+    ├── TargetContext.php / TargetWindow.php   Sólo cuenta si va dirigido a alguien («eres un cerdo») — internos
+    ├── MaskedTerms.php             Insultos con asteriscos («p*ta») — interno
+    ├── CombinedReview.php          La misma línea en varios idiomas: manda la decisión más grave
     └── Inflection/                 TopicInflector (expande `forms`), contrato TopicInflection;
                                     Spanish/Portuguese/Italian/French/EnglishInflection,
                                     y la conjugación romance común en RomanceVerbs (+ *Verbs)
 
+docs/
+├── ORIGEN.md                       Por qué existe esta librería
+└── RIESGOS.md                      Qué protege, qué no, y qué tiene que hacer la plataforma
+
 config/
-├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns), uno por idioma
+├── chat-topics/                    Temas del chat (sexual, belico, ambiguous, patterns, acusaciones), uno por idioma
 ├── supported-languages.php         Catálogo ISO 639-3 + alias 639-1
 ├── language-families.php           Familias y afinidades
 ├── risk-categories.php             Los 11 tipos de riesgo
@@ -1075,7 +1108,7 @@ una regla nueva marca un linaje real, falla ahí.
 
 ## Limitaciones
 
-- La detección literal es por término completo o frase de hasta tres palabras;
+- La detección literal es por término completo o frase de hasta cinco palabras;
   no encuentra palabras incrustadas dentro de una sola palabra sin cruce de
   frontera (ver la sección de fusión fonética más arriba). La transliteración
   numérica de un solo carácter sí se cubre (ver «Evasión cubierta y no

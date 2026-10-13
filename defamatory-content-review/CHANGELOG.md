@@ -44,6 +44,26 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Acusaciones contra una persona en el chat** (español e inglés): «Fulano
+  estafó a mi familia», «fue condenado por…», «es narco», «tiene sida», «le pone
+  los cuernos», «funen a ese tipo». Antes se aprobaban: no traen palabrotas.
+  Ahora son `difamatorio` con etiqueta `acusación de delito`, `dato sensible
+  (salud)`, `vida privada` o `funa o escrache`, y van siempre a revisión humana
+  (pueden ser ciertas). `AccusationPatternsTest`.
+- **Chilenismos** en el diccionario español: «conchetumare», «concha de tu
+  madre», «culiao», «aweonao», «saco de wea», «maraco», «flaite»… «weón»,
+  «huevón», «boludo» y «ctm» también son trato de confianza o exclamación: en
+  el chat sólo cuentan dirigidos a alguien («eres un weón» sí, «hola weón» no),
+  y «huevón» y «boludo» bajan de `high` a `medium`. `ChileanVocabularyTest`.
+- **`EvasionCleaner`**: letras cirílicas o griegas camufladas («рuta»), espacios
+  de ancho cero, guion blando, ancho completo («ｐｕｔａ»), negrita matemática
+  («𝐩𝐮𝐭𝐚»), emoji en medio («pu🙂ta») y selectores de variante ya no esconden
+  un insulto, ni en el chat ni en los nombres. `UnicodeEvasionTest`.
+- **`MaskedTerms`**: «p*ta», «m*erda», «c*brón» van a revisión. `MaskedTermsTest`.
+- **`docs/ORIGEN.md`** (por qué existe la librería) y **`docs/RIESGOS.md`**
+  (qué cubre, qué no y qué tiene que hacer la plataforma, con el marco legal
+  chileno a título orientativo).
+
 - **En el chat, animales, discapacidad, identidad, brujería y palabrotas suaves
   sólo cuentan dirigidos a alguien** (`TargetContext`): «eres un cerdo», «seu
   porco», «ты свинья» van a revisión; «comí cerdo», «das Schwein im Stall»,
@@ -222,6 +242,18 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
   verifica que cada una siga haciendo falta.
 
 ### Arreglado
+
+- **Un insulto se colaba eligiendo otro idioma**: el endpoint revisaba sólo el
+  `language` que manda quien escribe, así que «Fulano es un estafador, hijo de
+  puta» con `"eng"` se aprobaba. Ahora revisa además los idiomas de la
+  plataforma (`spa` y `eng` por defecto) y responde `checkedLanguages`
+  (`CombinedReview`, `ModerationLanguagesTest`).
+- **Entradas que nunca se detectaban enteras**: las de más de 3 palabras
+  («concha de tu madre», «son of a bitch», «walang utang na loob») y las de
+  guion («lèche-cul», «puxa-saco», de las que sólo se veía «cul» o «saco»).
+  `WordListScanner` busca frases de hasta 5 palabras y, en una palabra con
+  guion, la palabra entera gana a su parte. `DictionarySelfDetectionTest` exige
+  que cada entrada de los 33 diccionarios se encuentre a sí misma.
 
 - **Un insulto pegado a un signo no se detectaba**: «puta!», «idiota?»,
   «¡idiota!», «(rata)» y ««imbécil»» se aprobaban, porque `WordListScanner`

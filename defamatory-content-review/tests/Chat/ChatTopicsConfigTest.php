@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 /** Integridad de config/chat-topics/*.php, como DictionaryIntegrityTest lo hace con los diccionarios. */
 class ChatTopicsConfigTest extends TestCase
 {
-    private const TYPES = ['sexual', 'belico'];
+    private const TYPES = ['sexual', 'belico', 'difamatorio'];
     private const SEVERITIES = ['low', 'medium', 'high'];
 
     public static function topicFiles(): array

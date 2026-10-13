@@ -82,6 +82,16 @@ return [
         ],
     ],
     'patterns' => [
+        // Acusaciones contra una persona (difamación por imputar hechos, no por insultar):
+        // «X estafó a mi familia», «fue condenado por…», «tiene sida», «le pone los cuernos».
+        // Pueden ser ciertas (un registro judicial, una biografía): nunca bloquean, van a
+        // revisión humana para verificar fuente y si la persona vive. Ver docs/RIESGOS.md.
+        ['pattern' => '(?:^|\b(?!(?:el|un|la|una|los|del|al)\b)\w+\s+)(robo|robaba|robaron|roba|estafo|estafa|estafaba|estafaron|defraudo|defrauda|defraudaba|asesino|mato|violo|abuso|abusa|abusaba|abusaron|golpea|golpeaba|golpeo|maltrata|maltrataba|maltrato|secuestro|extorsiona|extorsiono|soborno|coimeo|malverso)\s+(a|al|la|los|las|de|del|mi|mis|tu|tus|su|sus|plata|dinero|ninos|ninas|menores|fondos|gente|clientes)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'acusación de delito'],
+        ['pattern' => '\b(fue|ha\s+sido|esta|estuvo|estaba|quedo|salio|anda)\s+(condenad[oa]s?|pres[oa]s?|detenid[oa]s?|procesad[oa]s?|formalizad[oa]s?|imputad[oa]s?|encarcelad[oa]s?|arrestad[oa]s?)\b|\b(lo|la|los|las)\s+(condenaron|detuvieron|arrestaron|formalizaron|procesaron|metieron\s+pres[oa]s?)\b|\b(esta|estuvo|estaba|salio|paso)\s+(en|de|por)\s+(la\s+)?(carcel|cana|prision|penitenciaria)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'acusación de delito'],
+        ['pattern' => '\b(es|era|son|eran|fue)\s+((un|una|unos|unas|el|la)\s+)?(narco|narcos|narcotraficante|narcotraficantes|traficante|traficantes|proxeneta|cafiche|sicario|coimero|coimera|ratero|ratera|abusador|abusadora|violador|violadora|pedofilo|pedofila|estafador|estafadora|defraudador|defraudadora|delincuente|delincuentes|criminal|corrupto|corrupta|asesino|asesina|ladron|ladrona|reo)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'acusación de delito'],
+        ['pattern' => '\b(tiene|tenia|tuvo|le\s+dio|contagio|contagiad[oa]\s+de|enferm[oa]\s+de|portador[a]?\s+de)\s+(el\s+)?(sida|vih|sifilis|gonorrea|herpes|clamidia|hepatitis|esquizofrenia|tuberculosis)\b|\bes\s+(esquizofrenic[oa]|bipolar|sidos[oa])\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'dato sensible (salud)'],
+        ['pattern' => '\b(le\s+)?(pone|ponia|puso|pusieron)\s+(el\s+gorro|los\s+cuernos)\b|\b(le\s+)?(es|fue|era)\s+infiel\b|\b(engana|enganaba|engano)\s+a\s+su\s+(esposa|esposo|mujer|marido|senora|pareja|novia|novio)\b|\btiene\s+(una|un)\s+amante\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'vida privada'],
+        ['pattern' => '\b(funa|funar|funemos|funen|funenlo|funenla|escrache|escrachar|escrachemos|no\s+confien\s+en|no\s+le\s+crean\s+a)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'funa o escrache'],
         // Amenazas dirigidas a «te»: siempre bloquean.
         ['pattern' => '\bte\s+(voy|vamos|van|vas)\s+a\s+(matar|asesinar|degollar|reventar|destripar|apunalar)\b', 'riskType' => 'belico', 'severity' => 'high', 'label' => 'amenaza'],
         ['pattern' => '\bte\s+(mato|matare|matamos|asesino|asesinare|reviento|reventare|destripo)\b', 'riskType' => 'belico', 'severity' => 'high', 'label' => 'amenaza'],

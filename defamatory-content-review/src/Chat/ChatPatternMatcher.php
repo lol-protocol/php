@@ -2,7 +2,7 @@
 
 namespace DefamatoryContentReview\Chat;
 
-use DefamatoryContentReview\Normalization\{AccentFolding, Leetspeak};
+use DefamatoryContentReview\Normalization\{AccentFolding, EvasionCleaner, Leetspeak};
 
 /**
  * Frases con forma («te voy a matar», «ojalá te mueras») que una lista de
@@ -50,7 +50,7 @@ final class ChatPatternMatcher
      */
     public static function fold(string $line): string
     {
-        $folded = Leetspeak::unleet(AccentFolding::fold(mb_strtolower($line)));
+        $folded = Leetspeak::unleet(AccentFolding::fold(mb_strtolower(EvasionCleaner::clean($line))));
 
         return preg_replace('/[^\p{L}\p{M}\p{N}]/u', ' ', $folded) ?? $folded;
     }

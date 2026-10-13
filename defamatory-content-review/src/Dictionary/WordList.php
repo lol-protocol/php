@@ -2,7 +2,7 @@
 
 namespace DefamatoryContentReview\Dictionary;
 
-use DefamatoryContentReview\Normalization\{AccentFolding, Leetspeak, ScriptFolding};
+use DefamatoryContentReview\Normalization\{AccentFolding, EvasionCleaner, Leetspeak, ScriptFolding};
 
 /** Diccionario de un idioma: carga, normalización, búsqueda literal y fonética. Delega en WordListIndex/WordListPhonetics sin cambiar la API.
  * @phpstan-import-type WordEntry from WordListIndex */
@@ -59,7 +59,7 @@ class WordList
     /** Minúsculas + diacríticos + leet + separadores intercalados + variantes de script ("ΜΑΛΑΚΑΣ", "козел", "مـدمـن"), para que todas lleguen a la misma clave. Conserva espacios internos (entradas multipalabra). */
     public function normalize(string $word): string
     {
-        $word = preg_replace('/\s+/u', ' ', mb_strtolower(trim($word), 'UTF-8'));
+        $word = preg_replace('/\s+/u', ' ', mb_strtolower(trim(EvasionCleaner::clean($word, $this->language)), 'UTF-8'));
         return ScriptFolding::fold(AccentFolding::fold(Leetspeak::unleet(WordListScanner::stripInsideWord($word)), $this->language));
     }
     /** @return WordEntry|null */

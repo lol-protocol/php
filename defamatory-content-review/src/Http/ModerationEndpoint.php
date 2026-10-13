@@ -2,7 +2,7 @@
 
 namespace DefamatoryContentReview\Http;
 
-use DefamatoryContentReview\Chat\{ChatLineResult, ChatLineReviewer};
+use DefamatoryContentReview\Chat\{ChatLineResult, ChatLineReviewer, CombinedReview};
 use DefamatoryContentReview\Language\LanguageRegistry;
 
 /**
@@ -15,8 +15,9 @@ use DefamatoryContentReview\Language\LanguageRegistry;
  * otro origen no puede mandarlo como formulario simple: el navegador exige
  * permiso CORS, que no se da), cuerpo de hasta MAX_BODY_BYTES, `text` de hasta
  * MAX_TEXT_CHARS caracteres y `language` (opcional) un código soportado, de
- * tres letras o su alias de dos («es»). Los errores llevan
- * `{"error": {"code", "message"}}`.
+ * tres letras o su alias de dos («es»). Además del pedido, el texto se revisa
+ * siempre en `$alwaysLanguages` (los de la plataforma): el idioma lo elige quien
+ * escribe, y no debe servir para colar nada. Errores: `{"error": {"code", "message"}}`.
  */
 final class ModerationEndpoint
 {
@@ -27,7 +28,8 @@ final class ModerationEndpoint
     /** @var array<string,ChatLineReviewer> */
     private array $reviewers = [];
 
-    public function __construct(private readonly string $configDir, private readonly string $defaultLanguage = 'spa')
+    /** @param list<string> $alwaysLanguages */
+    public function __construct(private readonly string $configDir, private readonly string $defaultLanguage = 'spa', private readonly array $alwaysLanguages = ['spa', 'eng'])
     {
         $this->registry = LanguageRegistry::fromConfigDirectory($configDir);
     }
@@ -55,9 +57,10 @@ final class ModerationEndpoint
         if (!is_string($language) || !$this->registry->isSupported($language)) {
             return self::error(400, 'idioma_no_soportado', 'Usa un código de idioma soportado, como "spa" o "es".');
         }
-        $language = $this->registry->resolve($language);
+        $checked = array_values(array_unique([$language = $this->registry->resolve($language), ...$this->alwaysLanguages]));
+        $result = CombinedReview::of($input['text'], array_map(fn(string $code): ChatLineResult => $this->reviewer($code)->review($input['text']), $checked));
 
-        return ['status' => 200, 'headers' => [], 'body' => self::present($this->reviewer($language)->review($input['text']), $language)];
+        return ['status' => 200, 'headers' => [], 'body' => ['language' => $language, 'checkedLanguages' => $checked] + self::present($result)];
     }
 
     private function reviewer(string $language): ChatLineReviewer
@@ -66,10 +69,9 @@ final class ModerationEndpoint
     }
 
     /** @return array<string,mixed> */
-    private static function present(ChatLineResult $result, string $language): array
+    private static function present(ChatLineResult $result): array
     {
         return [
-            'language' => $language,
             'decision' => $result->getDecision(),
             'censor' => $result->shouldCensor(),
             'contentTypes' => $result->getContentTypes(),

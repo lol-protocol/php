@@ -4,7 +4,7 @@ namespace DefamatoryContentReview\Dictionary;
 
 /**
  * Busca términos del diccionario en un texto, en dos pasos: (1) por ventanas
- * de 1 a 3 tokens, para entradas multipalabra ("hijo de puta") y la parte
+ * de 1 a 5 tokens, para entradas multipalabra ("hijo de puta") y la parte
  * ofensiva de un compuesto ("Jean-Cul" -> "cul"); (2) por palabra entera sin
  * separadores intercalados, para cerrar la evasión "pu-ta"/"pu.ta"/"pu'ta"
  * que el paso 1 no detecta (único camino para los 16 idiomas sin reglas
@@ -14,6 +14,8 @@ final class WordListScanner
 {
     /** Frontera entre tokens: espacios y la puntuación que separa palabras («¡idiota!», «(rata)», «puta?»). */
     private const BETWEEN_WORDS = '/[\s\-.,_·!¡?¿;:"“”„«»()\[\]{}…]+/u';
+    /** Largo máximo de una entrada multipalabra («hijo de la gran puta»). */
+    private const MAX_WORDS = 5;
     /** Separador intercalado dentro de una palabra: no parte un término. */
     private const INSIDE_WORD = '/[\-.,_·\'’]+/u';
 
@@ -35,24 +37,24 @@ final class WordListScanner
         $matches = self::scanWindows($tokens, $search);
 
         foreach (preg_split('/\s+/u', $text, -1, $split) ?: [] as [$word, $wordStart]) {
-            $glued = self::stripInsideWord($word);
-
+            $wordStart += strlen($word) - strlen($word = ltrim($word, '-.,_')); // «rata,» es «rata»: sólo cuenta lo de adentro
+            $glued = self::stripInsideWord($word = rtrim($word, '-.,_'));
             if ($glued === $word || ($found = $search($glued)) === null) {
                 continue;
             }
-
             $wordEnd = $wordStart + strlen($word);
 
-            // Si el paso 1 ya marcó algo que se solapa por posición con esta
-            // palabra, es la misma señal contada dos veces. Comparar por
-            // posición (no por texto) evita que un término corto de OTRA
-            // palabra apague por casualidad de texto uno más grave aquí
-            // (p. ej. "rata" en "esa rata" vs. "negrata" en "ne-grata").
-            foreach ($matches as $match) {
-                if ($match['start'] < $wordEnd && $match['end'] > $wordStart) {
+            // Lo que el paso 1 marcó dentro de esta palabra es una parte de ella:
+            // la palabra entera gana («lèche-cul», no «cul»). Si una frase más
+            // larga ya la cubre, se queda la frase. Se compara por posición, no
+            // por texto: «rata» en «esa rata» no apaga «negrata» en «ne-grata».
+            $overlapping = array_filter($matches, fn(array $m): bool => $m['start'] < $wordEnd && $m['end'] > $wordStart);
+            foreach ($overlapping as $match) {
+                if ($match['start'] < $wordStart || $match['end'] > $wordEnd) {
                     continue 2;
                 }
             }
+            $matches = array_diff_key($matches, $overlapping);
 
             $matches[] = $found + ['found' => $word, 'start' => $wordStart, 'end' => $wordEnd];
         }
@@ -71,7 +73,7 @@ final class WordListScanner
         $count = count($tokens);
 
         for ($i = 0; $i < $count; $i++) {
-            for ($span = min(3, $count - $i); $span >= 1; $span--) {
+            for ($span = min(self::MAX_WORDS, $count - $i); $span >= 1; $span--) {
                 $slice = array_slice($tokens, $i, $span);
                 $phrase = $slice[0][0];
                 for ($k = 1; $k < $span; $k++) { // pegadas si eran contiguas (japonés, tailandés…), con espacio si no
