@@ -11,7 +11,7 @@ on:
 jobs:
   scripts:
     name: Scripts (syntax, ShellCheck, bats)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # = version del VPS objetivo (ubuntu-latest pasa a 26.04 con PHP 8.5)
 
     steps:
       - name: Checkout
@@ -38,7 +38,7 @@ jobs:
   # Escriben en /etc y /var: el runner es desechable. Solo se activan con REAL_TESTS=1.
   real-tools:
     name: Real tools (nginx, sshd, BIND, fail2ban, certbot)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # = version del VPS objetivo (ubuntu-latest pasa a 26.04 con PHP 8.5)
 
     steps:
       - name: Checkout

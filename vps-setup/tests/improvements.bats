@@ -142,3 +142,12 @@ setup() {
     run bash "$VPS_DIR/10_A-add-domain.sh" blog.ejemplo.com --type python --port 99 --dry-run
     [ "$status" -eq 2 ]
 }
+
+# ---- 06_C: mensaje cuando no resuelve el secundario ----
+@test "06_C: si dig esta pero no resuelve, NO pide instalar dnsutils (era engañoso)" {
+    make_stub dig 'exit 0'               # dig instalado, sin respuesta
+    run bash "$VPS_DIR/06_C-setup-dns-server.sh" ejemplo.com 203.0.113.7 < /dev/null
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"no se pudo resolver sdns2.ovh.ca"* ]]
+    [[ "$output" != *"apt-get install -y dnsutils"* ]]
+}
