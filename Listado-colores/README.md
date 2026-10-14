@@ -1,0 +1,194 @@
+# Listado de colores con nombre y su significado
+
+Tabla de los colores con nombre estándar, con su equivalente en español, su valor hexadecimal y dos columnas de significado: el **psicológico** (asociaciones culturales frecuentes) y el **místico o simbólico** (lo que dicen algunas tradiciones). Está pensada como léxico de apoyo para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y esta tabla da la lista cerrada de nombres a reconocer.
+
+## Alcance
+
+- **Fuente de los nombres:** los 148 nombres de color de CSS (*CSS Color Module Level 4*). Es el conjunto estándar más citado y reproducible. No incluye los nombres de catálogos comerciales (Pantone, RAL, Crayola, etc.) ni los más extensos de listas enciclopédicas; se pueden añadir como filas nuevas en `colores.csv`.
+- **Duplicados a propósito:** `gray`/`grey`, `aqua`/`cyan`, `fuchsia`/`magenta` y otros aparecen por separado, porque para un etiquetador son palabras distintas. Comparten hex y significado.
+- **`rebeccapurple`** se añadió a CSS en 2014 en memoria de Rebecca Meyer, hija de Eric Meyer.
+- **Nombres en español:** son una propuesta de traducción usada en este listado, no una norma oficial de la RAE.
+
+## Sobre los significados
+
+- **Psicológicos:** asociaciones culturales habituales en diseño y marketing. La evidencia científica sobre cómo un color afecta de verdad a una persona es limitada y varía según la cultura y el contexto. Describen asociaciones frecuentes, no efectos comprobados.
+- **Místicos o simbólicos:** resumen simbolismos de tradiciones como la alquimia, los chakras, el simbolismo cristiano, el mediterráneo popular o la cultura china. Describen creencias y simbolismos, no propiedades comprobables.
+- Los textos son resúmenes escritos para este listado; no citan fuentes concretas.
+
+## Archivos
+
+- `colores.csv`: los datos. Es la fuente de verdad. Columnas: `nombre_ingles`, `nombre_espanol`, `hex`, `significado_psicologico`, `significado_mistico`.
+- `generar-tabla.py`: valida `colores.csv` y regenera la tabla de este README.
+- `README.md`: este documento. La tabla va entre dos líneas que son marcadores HTML de inicio y fin (`tabla:inicio` y `tabla:fin`); no la edites a mano.
+
+## Uso
+
+Requiere Python 3. No usa dependencias externas.
+
+```bash
+cd Listado-colores
+python3 generar-tabla.py                # tras editar colores.csv: valida y regenera la tabla
+python3 generar-tabla.py --comprobar    # solo comprueba: datos válidos y README al día
+```
+
+Para añadir o corregir un color, edita `colores.csv` respetando estas reglas (el generador las comprueba):
+
+- `nombre_ingles` en minúsculas, sin espacios, único.
+- `hex` en formato `#RRGGBB`, en mayúsculas.
+- Ningún campo puede llevar `|` ni saltos de línea.
+- Las filas van ordenadas por `nombre_ingles`.
+
+## Tabla
+
+<!-- tabla:inicio -->
+| Nombre (inglés) | Nombre (español) | Hex | Significado psicológico | Significado místico |
+|---|---|---|---|---|
+| `aliceblue` | azul alicia | `#F0F8FF` | Calma, frescura y limpieza; sensación de ligereza y amplitud. | Pureza celestial y serenidad; asociado al cielo despejado y a la comunicación clara. |
+| `antiquewhite` | blanco antiguo | `#FAEBD7` | Nostalgia, tradición y calidez suave; evoca lo vintage. | Memoria y sabiduría de lo pasado; pureza envejecida y ciclos antiguos. |
+| `aqua` | aqua | `#00FFFF` | Frescura, claridad, energía y sensación de agua limpia. | Agua viva y purificación; flujo de la intuición y de la comunicación con lo sutil. |
+| `aquamarine` | aguamarina | `#7FFFD4` | Frescura relajante, calma y optimismo ligero. | Piedra de los marineros: protección en los viajes, valor y claridad emocional. |
+| `azure` | azur | `#F0FFFF` | Cielo despejado, apertura, libertad y serenidad. | Altura espiritual y pureza del cielo; lo celestial y la mente abierta. |
+| `beige` | beis | `#F5F5DC` | Neutralidad, sencillez, estabilidad y discreción. | Tierra y humildad; equilibrio sin extremos, la vida cotidiana y el arraigo. |
+| `bisque` | bizcocho | `#FFE4C4` | Calidez suave, cercanía y sensación doméstica. | Abundancia y nutrición; hospitalidad y placeres sencillos. |
+| `black` | negro | `#000000` | Elegancia, poder, formalidad y misterio; en muchas culturas, luto. | Vacío primordial, noche y lo oculto; protección y transformación (la nigredo alquímica). |
+| `blanchedalmond` | almendra pálido | `#FFEBCD` | Suavidad, dulzura y calidez delicada. | Dulzura pura y lo sencillo; dones modestos y cuidados. |
+| `blue` | azul | `#0000FF` | Confianza, calma, estabilidad, racionalidad y profesionalismo. | Verdad y lo espiritual; cielo y mar. En varias tradiciones protege del mal de ojo. |
+| `blueviolet` | violeta azulado | `#8A2BE2` | Creatividad, ambición e individualidad; carácter intenso. | Intuición y conexión con lo psíquico; vínculo entre la mente terrenal y lo espiritual. |
+| `brown` | marrón | `#A52A2A` | Estabilidad, seguridad, rusticidad y confiabilidad. | Tierra, arraigo y paciencia; conexión con el hogar y con lo material. |
+| `burlywood` | madera clara | `#DEB887` | Calidez terrosa, confort y naturalidad. | Madera y naturaleza trabajada; el ciclo del crecimiento y la paciencia de la tierra. |
+| `cadetblue` | azul cadete | `#5F9EA0` | Calma, serenidad, equilibrio y sobriedad. | Mar y serenidad; disciplina tranquila y pensamiento claro. |
+| `chartreuse` | chartreuse | `#7FFF00` | Energía, vitalidad, novedad y un toque llamativo; también inquietud. | Renovación y primavera; juventud, crecimiento y energía vital. |
+| `chocolate` | chocolate | `#D2691E` | Calidez, indulgencia, confort y sensación de hogar. | Abundancia y placer terrenal; tierra fértil y sensualidad moderada. |
+| `coral` | coral | `#FF7F50` | Cordialidad, alegría, calidez social y optimismo. | Vida marina y protección; en la tradición mediterránea, amuleto contra el mal de ojo. |
+| `cornflowerblue` | azul aciano | `#6495ED` | Amabilidad, confianza, serenidad y apertura. | Fidelidad y comunicación sincera; espiritualidad tranquila. |
+| `cornsilk` | seda de maíz | `#FFF8DC` | Suavidad, calidez, inocencia y sencillez. | Cosecha y ternura del campo; abundancia humilde y pureza. |
+| `crimson` | carmesí | `#DC143C` | Pasión, intensidad, valor, urgencia y poder. | Sangre, vida y sacrificio; fuerza vital y amor apasionado, también advertencia. |
+| `cyan` | cian | `#00FFFF` | Frescura, claridad, calma y comunicación; asociado a lo digital y moderno. | Agua y purificación; claridad mental y flujo de la comunicación. |
+| `darkblue` | azul oscuro | `#00008B` | Profundidad, seriedad, fiabilidad y autoridad. | Noche profunda y sabiduría; lo inconsciente y la introspección. |
+| `darkcyan` | cian oscuro | `#008B8B` | Calma profunda, equilibrio y sobriedad. | Agua profunda y sanación; equilibrio entre mente y emociones. |
+| `darkgoldenrod` | dorado oscuro | `#B8860B` | Riqueza antigua, madurez y prestigio sobrio. | Oro envejecido: sabiduría adquirida, cosecha y poder terrenal. |
+| `darkgray` | gris oscuro | `#A9A9A9` | Seriedad, neutralidad, distancia emocional y conservadurismo. | Neutralidad y transición; lo indefinido entre la luz y la sombra. |
+| `darkgreen` | verde oscuro | `#006400` | Estabilidad, seguridad, naturaleza profunda y tradición. | Vida vegetal y renovación oculta; crecimiento silencioso y fertilidad. |
+| `darkgrey` | gris oscuro | `#A9A9A9` | Seriedad, neutralidad, distancia emocional y conservadurismo. | Neutralidad y transición; lo indefinido entre la luz y la sombra. |
+| `darkkhaki` | caqui oscuro | `#BDB76B` | Sobriedad, prudencia y modestia; a veces apatía o pasividad. | Tierra seca y paciencia; humildad ante los ciclos. |
+| `darkmagenta` | magenta oscuro | `#8B008B` | Misterio, sofisticación, creatividad intensa y pasión contenida. | Transmutación y magia; vínculo entre el deseo y el espíritu. |
+| `darkolivegreen` | verde oliva oscuro | `#556B2F` | Calma, naturaleza, estabilidad y discreción. | Paz de los bosques y longevidad; sabiduría de la tierra y tranquilidad. |
+| `darkorange` | naranja oscuro | `#FF8C00` | Energía cálida, entusiasmo y creatividad con vigor. | Fuego controlado y cosecha; fortaleza vital y estímulo a la acción. |
+| `darkorchid` | orquídea oscuro | `#9932CC` | Misterio, espiritualidad, creatividad y ambición refinada. | Sabiduría oculta y transformación; vínculo con lo sagrado. |
+| `darkred` | rojo oscuro | `#8B0000` | Intensidad, seriedad y poder contenido; también peligro o tensión. | Sangre y fuerza vital; sacrificio, pasión y autoridad. |
+| `darksalmon` | salmón oscuro | `#E9967A` | Calidez suave, sensibilidad y acogida moderada. | Sol que se pone: transición y dulzura de la despedida. |
+| `darkseagreen` | verde mar oscuro | `#8FBC8F` | Calma natural, equilibrio, sencillez y bienestar. | Mar y bosque; crecimiento tranquilo, equilibrio y paciencia. |
+| `darkslateblue` | azul pizarra oscuro | `#483D8B` | Introspección, sabiduría, seriedad y reserva. | Pensamiento profundo, intuición y visiones; espiritualidad contemplativa. |
+| `darkslategray` | gris pizarra oscuro | `#2F4F4F` | Sobriedad, reserva, seguridad y precaución. | Piedra y montaña; lo oculto y la protección de lo que está dentro. |
+| `darkslategrey` | gris pizarra oscuro | `#2F4F4F` | Sobriedad, reserva, seguridad y precaución. | Piedra y montaña; lo oculto y la protección de lo que está dentro. |
+| `darkturquoise` | turquesa oscuro | `#00CED1` | Equilibrio entre calma y energía; comunicación clara. | Agua y cielo; sanación, protección y pureza de la mente. |
+| `darkviolet` | violeta oscuro | `#9400D3` | Misterio, lujo, creatividad y ambición intensa. | Espiritualidad, magia y lo trascendente; transformación interior. |
+| `deeppink` | rosa profundo | `#FF1493` | Pasión intensa, afecto, energía juvenil y audacia. | Amor y deseo vital; ternura apasionada. |
+| `deepskyblue` | azul cielo profundo | `#00BFFF` | Vitalidad, libertad, confianza y energía serena. | Cielo y agua profunda; apertura, inspiración y comunicación con lo alto. |
+| `dimgray` | gris tenue | `#696969` | Melancolía, neutralidad, reserva y sobriedad. | Niebla y transición; lo no revelado y el paso del tiempo. |
+| `dimgrey` | gris tenue | `#696969` | Melancolía, neutralidad, reserva y sobriedad. | Niebla y transición; lo no revelado y el paso del tiempo. |
+| `dodgerblue` | azul Dodger | `#1E90FF` | Confianza, dinamismo, modernidad y energía. | Cielo despejado y comunicación; mensajero, claridad y acción. |
+| `firebrick` | ladrillo | `#B22222` | Fuerza, determinación, calidez intensa y tensión. | Fuego de la forja y del hogar; esfuerzo, sacrificio y trabajo. |
+| `floralwhite` | blanco floral | `#FFFAF0` | Suavidad, delicadeza, pureza y ligereza. | Flor blanca: inocencia, comienzos y bendición de la primavera. |
+| `forestgreen` | verde bosque | `#228B22` | Naturaleza, equilibrio, salud, calma y crecimiento. | Bosque sagrado: vida, renovación y conexión con la tierra. |
+| `fuchsia` | fucsia | `#FF00FF` | Audacia, creatividad, excentricidad y energía lúdica. | Transformación y magia; vínculo entre lo material y lo espiritual. |
+| `gainsboro` | gris Gainsboro | `#DCDCDC` | Neutralidad elegante, limpieza y calma. | Estado intermedio y de equilibrio, sin carga. |
+| `ghostwhite` | blanco fantasma | `#F8F8FF` | Ligereza, misterio sutil y frialdad luminosa. | Lo etéreo y lo espectral; presencia sutil entre dos mundos. |
+| `gold` | oro | `#FFD700` | Éxito, riqueza, prestigio, optimismo y calidez. | Sol y perfección; iluminación, poder, sabiduría y lo divino en muchas tradiciones. |
+| `goldenrod` | vara de oro | `#DAA520` | Riqueza cálida, confianza y prestigio amable. | Cosecha y abundancia; sabiduría alcanzada y fruto del trabajo. |
+| `gray` | gris | `#808080` | Neutralidad, equilibrio, seriedad y ambigüedad; también melancolía. | Transición entre luz y sombra; mediación, reflexión y lo intermedio. |
+| `green` | verde | `#008000` | Naturaleza, equilibrio, crecimiento, salud y calma; también esperanza. | Vida, renovación y sanación; en la tradición de los chakras, asociado al corazón (anahata). |
+| `greenyellow` | verde amarillento | `#ADFF2F` | Energía fresca, juventud, vitalidad y novedad. | Primavera y brote; comienzo, vitalidad y crecimiento. |
+| `grey` | gris | `#808080` | Neutralidad, equilibrio, seriedad y ambigüedad; también melancolía. | Transición entre luz y sombra; mediación, reflexión y lo intermedio. |
+| `honeydew` | rocío de miel | `#F0FFF0` | Frescura suave, ligereza, pureza y calma. | Rocío sagrado de la mañana; bendición, renovación y pureza. |
+| `hotpink` | rosa fuerte | `#FF69B4` | Alegría, juego, ternura y energía afectuosa. | Amor del corazón; ternura, afecto y alegría de vivir. |
+| `indianred` | rojo indio | `#CD5C5C` | Tensión contenida, calidez intensa, apego emocional y protección. | Sangre y tierra ocre; fuerza ancestral y protección del hogar. |
+| `indigo` | índigo | `#4B0082` | Introspección, misterio, sabiduría y ambición tranquila. | En la tradición de los chakras, asociado al tercer ojo (ajna): intuición y visión interior. |
+| `ivory` | marfil | `#FFFFF0` | Pureza, elegancia, calma y suavidad. | Pureza y tiempo: lo noble, lo perdurable y lo sagrado. |
+| `khaki` | caqui | `#F0E68C` | Sencillez, prudencia, neutralidad y practicidad. | Tierra seca y paciencia; la vida sencilla y el equilibrio. |
+| `lavender` | lavanda | `#E6E6FA` | Calma, suavidad, nostalgia, delicadeza y bienestar. | Purificación y protección; sueño, paz y lo espiritual sutil. |
+| `lavenderblush` | rubor de lavanda | `#FFF0F5` | Delicadeza, ternura, romanticismo y suavidad. | Pureza amorosa; dulzura de los comienzos. |
+| `lawngreen` | verde césped | `#7CFC00` | Frescura, vitalidad, optimismo y juventud. | Primavera y campo verde; vida que brota y renovación. |
+| `lemonchiffon` | gasa de limón | `#FFFACD` | Alegría suave, frescura y optimismo gentil. | Luz del sol matinal; claridad y comienzo amable. |
+| `lightblue` | azul claro | `#ADD8E6` | Calma, serenidad, confianza y ligereza. | Cielo y agua en calma; paz, sueños y claridad. |
+| `lightcoral` | coral claro | `#F08080` | Calidez suave, afecto, cercanía y sensibilidad. | Amor y protección; vitalidad suave del mar. |
+| `lightcyan` | cian claro | `#E0FFFF` | Frescura ligera, claridad y calma. | Agua clara y aire puro; pureza de pensamiento. |
+| `lightgoldenrodyellow` | amarillo dorado claro | `#FAFAD2` | Suavidad luminosa, optimismo tranquilo y calidez. | Luz dorada suave; iluminación gentil y bendiciones. |
+| `lightgray` | gris claro | `#D3D3D3` | Neutralidad, calma, limpieza y espacio para respirar. | Transición entre lo visible y lo que no se ve; lo intermedio. |
+| `lightgreen` | verde claro | `#90EE90` | Calma, frescura, renovación y bienestar. | Brote y esperanza; crecimiento tierno y sanación suave. |
+| `lightgrey` | gris claro | `#D3D3D3` | Neutralidad, calma, limpieza y espacio para respirar. | Transición entre lo visible y lo que no se ve; lo intermedio. |
+| `lightpink` | rosa claro | `#FFB6C1` | Ternura, dulzura, inocencia y afecto suave. | Amor delicado y pureza; comienzos románticos. |
+| `lightsalmon` | salmón claro | `#FFA07A` | Calidez alegre, cercanía y energía amable. | Sol de la mañana; amabilidad y generosidad. |
+| `lightseagreen` | verde mar claro | `#20B2AA` | Calma, equilibrio, frescura y comunicación. | Mar y sanación; equilibrio entre emoción y mente. |
+| `lightskyblue` | azul cielo claro | `#87CEFA` | Ligereza, libertad, serenidad y optimismo. | Cielo abierto; inspiración, paz y aspiraciones elevadas. |
+| `lightslategray` | gris pizarra claro | `#778899` | Neutralidad, calma reflexiva y sobriedad. | Transición entre luz y noche; reflexión y paciencia. |
+| `lightslategrey` | gris pizarra claro | `#778899` | Neutralidad, calma reflexiva y sobriedad. | Transición entre luz y noche; reflexión y paciencia. |
+| `lightsteelblue` | azul acero claro | `#B0C4DE` | Calma, sobriedad, confianza y elegancia. | Metal y cielo; disciplina serena y claridad. |
+| `lightyellow` | amarillo claro | `#FFFFE0` | Luz suave, optimismo, claridad y ligereza. | Luz del alba; comienzo, iluminación y conocimiento suave. |
+| `lime` | lima | `#00FF00` | Energía, frescura, vitalidad y actividad; a veces, señal de alerta. | Brote y crecimiento; renovación y fuerza vital. |
+| `limegreen` | verde lima | `#32CD32` | Energía, juventud, optimismo y dinamismo. | Vida que brota; renovación, salud y primavera. |
+| `linen` | lino | `#FAF0E6` | Sencillez, calma, naturalidad y pureza suave. | Lino de los templos y de las vestiduras sagradas; pureza y humildad. |
+| `magenta` | magenta | `#FF00FF` | Creatividad, audacia, intensidad y energía vibrante. | Transformación y espiritualidad; conexión entre lo material y lo sutil. |
+| `maroon` | granate | `#800000` | Seriedad, poder, tradición, elegancia y pasión contenida. | Sangre y tierra; vitalidad, sacrificio y arraigo. |
+| `mediumaquamarine` | aguamarina medio | `#66CDAA` | Calma, frescura, armonía y bienestar. | Agua de sanación; equilibrio y fluidez emocional. |
+| `mediumblue` | azul medio | `#0000CD` | Confianza, serenidad, profundidad y seriedad. | Noche estrellada y verdad; introspección y guía. |
+| `mediumorchid` | orquídea medio | `#BA55D3` | Creatividad, sensibilidad, elegancia y misterio. | Espiritualidad y transformación; intuición y sabiduría oculta. |
+| `mediumpurple` | púrpura medio | `#9370DB` | Creatividad, sensibilidad, sofisticación y calma. | Realeza espiritual y visión; intuición y conexión con lo sutil. |
+| `mediumseagreen` | verde mar medio | `#3CB371` | Calma, equilibrio, bienestar y crecimiento. | Mar y renovación; armonía, fertilidad y sanación. |
+| `mediumslateblue` | azul pizarra medio | `#7B68EE` | Creatividad, imaginación, libertad y ligereza mental. | Inspiración y visión; conexión con lo celestial. |
+| `mediumspringgreen` | verde primavera medio | `#00FA9A` | Frescura, vitalidad, optimismo y renovación. | Primavera y crecimiento; nueva vida y esperanza. |
+| `mediumturquoise` | turquesa medio | `#48D1CC` | Calma, claridad, frescura y comunicación. | Agua y cielo; protección, sanación y pureza. |
+| `mediumvioletred` | rojo violeta medio | `#C71585` | Pasión, intensidad, ternura apasionada y ambición. | Deseo y vitalidad; amor intenso y fuerza emocional. |
+| `midnightblue` | azul medianoche | `#191970` | Profundidad, seriedad, misterio y confianza. | Noche, sueño y conocimiento oculto; introspección y lo desconocido. |
+| `mintcream` | crema menta | `#F5FFFA` | Frescura suave, pureza, calma y limpieza. | Menta: purificación, renovación y claridad mental. |
+| `mistyrose` | rosa brumoso | `#FFE4E1` | Delicadeza, nostalgia, suavidad y romanticismo. | Amanecer brumoso; sueño, recuerdo y lo que se desvanece. |
+| `moccasin` | mocasín | `#FFE4B5` | Calidez suave, sencillez, confort y amabilidad. | Tierra y camino; viaje, humildad y hogar. |
+| `navajowhite` | blanco navajo | `#FFDEAD` | Calidez terrosa, sencillez y confort. | Arena y cosecha; sencillez y abundancia humilde. |
+| `navy` | azul marino | `#000080` | Autoridad, confianza, seriedad y profesionalismo. | Mar profundo y noche; disciplina, sabiduría y lealtad. |
+| `oldlace` | encaje antiguo | `#FDF5E6` | Nostalgia, delicadeza, calidez y tradición. | Memoria y ternura de lo antiguo; pureza envejecida y cuidado. |
+| `olive` | oliva | `#808000` | Paz, naturaleza, moderación y estabilidad; también cansancio. | Olivo: paz, sabiduría, victoria tranquila y fertilidad. |
+| `olivedrab` | verde oliva | `#6B8E23` | Naturaleza, practicidad, estabilidad y sobriedad. | Campo y vida silvestre; perseverancia y arraigo. |
+| `orange` | naranja | `#FFA500` | Entusiasmo, creatividad, calidez, energía y sociabilidad. | En la tradición de los chakras, asociado al chakra sacro: vitalidad, creatividad y placer. |
+| `orangered` | naranja rojizo | `#FF4500` | Energía intensa, impulso, entusiasmo y urgencia. | Fuego y ardor; acción, valor y transformación. |
+| `orchid` | orquídea | `#DA70D6` | Elegancia, sensibilidad, romanticismo y creatividad. | Belleza y transformación; espiritualidad refinada. |
+| `palegoldenrod` | vara de oro pálido | `#EEE8AA` | Suavidad, serenidad, calidez y optimismo tranquilo. | Luz de cosecha; abundancia gentil y bendición. |
+| `palegreen` | verde pálido | `#98FB98` | Calma, frescura, renovación y bienestar. | Brote tierno; esperanza, sanación y crecimiento suave. |
+| `paleturquoise` | turquesa pálido | `#AFEEEE` | Calma, ligereza, frescura y claridad. | Agua tranquila y cielo; pureza, sanación y paz. |
+| `palevioletred` | rojo violeta pálido | `#DB7093` | Ternura, afecto, sensibilidad y nostalgia. | Amor delicado; sensibilidad y vínculos afectivos. |
+| `papayawhip` | crema de papaya | `#FFEFD5` | Calidez suave, dulzura, confort y alegría tropical. | Fruta del sol y abundancia; hospitalidad y placer sencillo. |
+| `peachpuff` | melocotón | `#FFDAB9` | Calidez, ternura, cercanía y bienestar. | En China, el melocotón simboliza longevidad e inmortalidad; dulzura y buena fortuna. |
+| `peru` | perú | `#CD853F` | Calidez terrosa, confianza, arraigo y estabilidad. | Tierra y cosecha; arraigo, trabajo y abundancia. |
+| `pink` | rosa | `#FFC0CB` | Ternura, dulzura, romanticismo, calma y afecto. | Amor, compasión y pureza; corazón abierto. |
+| `plum` | ciruela | `#DDA0DD` | Sofisticación, delicadeza, creatividad y nostalgia. | Fruta de otoño y abundancia; dulzura madura, sabiduría y amor refinado. |
+| `powderblue` | azul polvo | `#B0E0E6` | Calma, delicadeza, limpieza y serenidad. | Cielo suave y agua clara; paz, pureza y sueños. |
+| `purple` | púrpura | `#800080` | Realeza, lujo, espiritualidad, creatividad y misterio. | Realeza y lo espiritual; en algunas tradiciones, asociado al chakra corona: conexión con lo divino. |
+| `rebeccapurple` | púrpura Rebecca | `#663399` | Creatividad, profundidad, misterio y elegancia contenida. | Espiritualidad profunda; sabiduría, meditación y el umbral de lo invisible. |
+| `red` | rojo | `#FF0000` | Pasión, energía, urgencia, peligro y acción. | En la tradición de los chakras, el primero (raíz) es rojo: arraigo, supervivencia y vitalidad. |
+| `rosybrown` | marrón rosado | `#BC8F8F` | Calidez suave, nostalgia, sensibilidad y sencillez. | Tierra y amor sereno; ternura de lo cotidiano. |
+| `royalblue` | azul real | `#4169E1` | Autoridad, confianza, lealtad, prestigio y serenidad. | Realeza y lealtad; justicia, sabiduría y dignidad. |
+| `saddlebrown` | marrón silla | `#8B4513` | Robustez, tradición, confort y arraigo. | Tierra fértil y trabajo; hogar, estabilidad y resistencia. |
+| `salmon` | salmón | `#FA8072` | Calidez, cercanía, alegría y sensibilidad. | Sol y mar; vitalidad, afecto y transición. |
+| `sandybrown` | marrón arena | `#F4A460` | Calidez, cordialidad, naturalidad y calma. | Desierto y arena; paciencia, tiempo y transformación. |
+| `seagreen` | verde mar | `#2E8B57` | Calma, equilibrio, naturaleza y estabilidad. | Mar y vida; sanación, abundancia y renovación. |
+| `seashell` | concha marina | `#FFF5EE` | Suavidad, pureza, delicadeza y calma. | Concha: símbolo de nacimiento y fertilidad (la Venus que emerge del mar) y de protección. |
+| `sienna` | siena | `#A0522D` | Tierra, arraigo, calidez robusta y confiabilidad. | Tierra roja y fuerza ancestral; arraigo, fertilidad y raíces. |
+| `silver` | plata | `#C0C0C0` | Modernidad, sofisticación, neutralidad elegante y prestigio. | Luna y reflejo; en la alquimia, la plata corresponde a la Luna: intuición y cambio. |
+| `skyblue` | azul cielo | `#87CEEB` | Calma, apertura, libertad y frescura. | Cielo y aire; inspiración, paz y elevación. |
+| `slateblue` | azul pizarra | `#6A5ACD` | Creatividad, imaginación, misterio y serenidad. | Visión y espiritualidad; intuición y conexión con lo elevado. |
+| `slategray` | gris pizarra | `#708090` | Neutralidad, seriedad, sobriedad y calma. | Piedra y tiempo; firmeza, paciencia y lo estable. |
+| `slategrey` | gris pizarra | `#708090` | Neutralidad, seriedad, sobriedad y calma. | Piedra y tiempo; firmeza, paciencia y lo estable. |
+| `snow` | nieve | `#FFFAFA` | Pureza, limpieza, calma y frialdad. | Pureza absoluta, silencio y renovación del invierno. |
+| `springgreen` | verde primavera | `#00FF7F` | Frescura, vitalidad, optimismo y renovación. | Primavera: brote, comienzo y esperanza. |
+| `steelblue` | azul acero | `#4682B4` | Confianza, disciplina, fuerza y estabilidad. | Metal y cielo; fortaleza, determinación y claridad. |
+| `tan` | bronceado | `#D2B48C` | Calidez terrosa, sencillez, naturalidad y confort. | Tierra y sol; arraigo, cuidado y lo cotidiano. |
+| `teal` | verde azulado | `#008080` | Equilibrio, calma, profesionalismo y creatividad. | Agua y cielo; equilibrio entre emoción y razón, sanación y paz. |
+| `thistle` | cardo | `#D8BFD8` | Suavidad, nostalgia, delicadeza y calma. | Planta de protección; defensa y dulzura. |
+| `tomato` | tomate | `#FF6347` | Energía, calidez, pasión, apetito y alerta. | Fruto del sol y de la vida; vitalidad, amor y generosidad. |
+| `turquoise` | turquesa | `#40E0D0` | Calma, claridad, frescura y comunicación. | Piedra de protección y sanación; amuleto para el viajero y guía contra el mal. |
+| `violet` | violeta | `#EE82EE` | Creatividad, espiritualidad, misterio y sensibilidad. | En la tradición de los chakras, asociado al chakra corona: conexión con lo trascendente. |
+| `wheat` | trigo | `#F5DEB3` | Sencillez, calidez, abundancia tranquila y confort. | Cosecha y pan; fertilidad, abundancia y gratitud. |
+| `white` | blanco | `#FFFFFF` | Pureza, limpieza, paz, inocencia y comienzos; en otras culturas, luto. | Pureza, luz y lo sagrado; renacimiento y unión con lo divino (la albedo alquímica). |
+| `whitesmoke` | humo blanco | `#F5F5F5` | Neutralidad suave, limpieza, calma y sencillez. | Humo sutil: lo intangible, la transición y la plegaria que se eleva. |
+| `yellow` | amarillo | `#FFFF00` | Alegría, optimismo, energía, claridad mental y atención; también precaución. | En la tradición de los chakras, asociado al plexo solar: iluminación, voluntad y conocimiento. |
+| `yellowgreen` | verde amarillo | `#9ACD32` | Frescura, vitalidad, juventud y calma. | Primavera y crecimiento; vida nueva y renovación. |
+<!-- tabla:fin -->
