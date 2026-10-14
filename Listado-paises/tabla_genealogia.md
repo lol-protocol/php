@@ -1,9 +1,8 @@
-# Listado de países
+# Listado de países: genealogía
 
-> Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano.
-> Cifras de población, IDH y PIB pc **sin contrastar** con las fuentes oficiales; ver `README.md`, sección «Estado de los datos».
+> Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Cifras de población, IDH y PIB pc **sin contrastar**; ver `README.md`, «Estado de los datos».
 
-| País | Tipo | Región | Población (M) | Población histórica acumulada | IDH | PIB pc (USD) | Genealogía (IG) | Operabilidad (IO) | Prioridad | Excluido | Comentarios |
+| País | Tipo | Región | Población (M) | Población histórica acumulada (M) | IDH | PIB pc (USD) | Genealogía (IG) | Operabilidad (IO) | Prioridad | Excluido | Comentarios |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Australia | estado | Oceanía | 27.4 | pendiente | 0.946 | 65000 | 5 | 5 | 25 | no | Registros británicos muy buenos; inglés; regulación de privacidad madura |
 | Canadá | estado | América | 41.3 | pendiente | 0.935 | 56000 | 5 | 5 | 25 | no | Registros civiles y de inmigración muy buenos; inglés y francés; leyes de privacidad fuertes (PIPEDA) |
@@ -62,6 +61,7 @@
 | Taiwán | entidad disputada | Asia | 23.4 | pendiente | 0.929 | 34000 | 3 | 4 | 12 | no | Registros familiares tradicionales muy estructurados; chino tradicional; reconocimiento internacional limitado |
 | Trinidad y Tobago | estado | América | 1.4 | pendiente | 0.810 | 17000 | 3 | 4 | 12 | no | Inglés; diáspora india y africana; registros coloniales británicos y franceses |
 | Uruguay | estado | América | 3.4 | pendiente | 0.830 | 22000 | 3 | 4 | 12 | no | Registros civiles digitalizados; diáspora europea; español; estable |
+| China | estado | Asia | 1410 | pendiente | 0.797 | 13000 | 5 | 2 | 10 | no | Gran tradición de jiapu, pero cortafuegos, licencias y localización obligatoria de datos; difícil de operar |
 | Liechtenstein | estado | Europa | 0.04 | pendiente | — | — | 2 | 5 | 10 | no | Muy pequeño; alemán; sistema bancario muy regulado; RGPD |
 | Mónaco | estado | Europa | 0.04 | pendiente | — | — | 2 | 5 | 10 | no | Muy pequeño; francés; sistema bancario muy regulado |
 | Armenia | estado | Asia | 2.8 | pendiente | 0.786 | 7000 | 3 | 3 | 9 | no | Diáspora grande; registros dispersos; mercado pequeño; ruso e inglés muy usados |
@@ -93,6 +93,7 @@
 | Seychelles | estado | África | 0.12 | pendiente | 0.800 | 15000 | 2 | 4 | 8 | no | Muy pequeño; inglés y francés; sector financiero con regulación propia |
 | Albania | estado | Europa | 2.4 | pendiente | 0.798 | 8000 | 2 | 3 | 6 | no | Registros parroquiales dispersos; mercado pequeño; diáspora grande en Italia, Grecia y EE. UU. |
 | Angola | estado | África | 37.9 | pendiente | 0.591 | 2600 | 2 | 3 | 6 | no | Diáspora portuguesa histórica; registros civiles de acceso irregular; restricciones cambiarias |
+| Bolivia | estado | América | 12.4 | pendiente | 0.698 | 3500 | 3 | 2 | 6 | no | Crisis de divisas y control del tipo de cambio; español y quechua |
 | Costa de Marfil | estado | África | 31.5 | pendiente | 0.534 | 2700 | 2 | 3 | 6 | no | Economía estable; francés; registros civiles con poca digitalización |
 | Ecuador | estado | América | 18.5 | pendiente | 0.740 | 6500 | 2 | 3 | 6 | no | Dolarizado desde 2000; inseguridad creciente; registros civiles en digitalización; español |
 | Egipto | estado | África | 115.6 | pendiente | 0.754 | 3500 | 2 | 3 | 6 | no | Mucho patrimonio documental antiguo, pero poco digitalizado y accesible; control de internet y medios; árabe |
@@ -108,6 +109,7 @@
 | Kosovo | entidad disputada | Europa | 1.6 | pendiente | — | 7000 | 2 | 3 | 6 | no | No reconocido por todos los países y fuera de la ONU; albanés y serbio; usa el euro |
 | Lesoto | estado | África | 2.3 | pendiente | 0.514 | 1000 | 2 | 3 | 6 | no | Enclave dentro de Sudáfrica; inglés y sesoto; economía dependiente del rand |
 | Liberia | estado | África | 5.6 | pendiente | 0.481 | 700 | 2 | 3 | 6 | no | Inglés; diáspora afroamericana con interés en su linaje; registros dispersos |
+| Líbano | estado | Asia | 5.5 | pendiente | 0.706 | 5000 | 3 | 2 | 6 | no | Colapso económico desde 2019; control de capital de facto; diáspora muy grande; árabe, francés e inglés |
 | Macao | territorio | Asia | 0.7 | pendiente | — | — | 2 | 3 | 6 | no | Región administrativa especial de China; portugués y chino; regulación de internet alineada con China |
 | Macedonia del Norte | estado | Europa | 1.8 | pendiente | 0.770 | 9700 | 2 | 3 | 6 | no | Registros otomanos y civiles en transición; macedonio y albanés; nombre del país resuelto en 2019 |
 | Malaui | estado | África | 21.8 | pendiente | 0.508 | 600 | 2 | 3 | 6 | no | Inglés; crisis de divisas; registros civiles limitados |
@@ -123,10 +125,21 @@
 | Surinam | estado | América | 0.63 | pendiente | 0.729 | 7000 | 2 | 3 | 6 | no | Neerlandés; registros civiles coloniales; diáspora en Países Bajos |
 | Tailandia | estado | Asia | 71.7 | pendiente | 0.803 | 7700 | 2 | 3 | 6 | no | Leyes estrictas de lesa majestad y de delitos informáticos; tailandés e inglés |
 | Turquía | estado | Asia | 85.9 | pendiente | 0.855 | 14000 | 2 | 3 | 6 | no | Inflación alta y control de cuentas; restricciones a redes sociales en episodios de crisis; turco |
+| Ucrania | estado | Europa | 36.6 | pendiente | 0.734 | 5000 | 3 | 2 | 6 | no | Guerra con Rusia desde 2022; registros civiles en papel dañados; ucraniano y ruso |
+| Vietnam | estado | Asia | 101.3 | pendiente | 0.726 | 4800 | 3 | 2 | 6 | no | Control estatal de internet y de medios; localización obligatoria de datos; vietnamita; interés cultural por los registros familiares |
 | Zambia | estado | África | 21.7 | pendiente | 0.591 | 1300 | 2 | 3 | 6 | no | Crisis de deuda y sequía en 2024; inglés; registros civiles en digitalización |
+| Argelia | estado | África | 46.2 | pendiente | 0.763 | 5300 | 2 | 2 | 4 | no | Control estatal fuerte de medios e internet; restricciones a pagos y al cambio de divisas |
+| Azerbaiyán | estado | Asia | 10.4 | pendiente | 0.760 | 7800 | 2 | 2 | 4 | no | Restricciones a medios y ONG desde 2024; registros soviéticos y civiles de acceso limitado; azerí y ruso |
+| Camboya | estado | Asia | 17.8 | pendiente | 0.598 | 2000 | 2 | 2 | 4 | no | Control político y de medios; litigios sobre tierras; poca infraestructura de pagos; jemer e inglés |
+| Camerún | estado | África | 31.4 | pendiente | 0.576 | 1800 | 2 | 2 | 4 | no | Crisis anglófona en el oeste; restricciones de internet en episodios de protesta; francés e inglés |
 | Catar | estado | Asia | 2.7 | pendiente | 0.875 | 80000 | 1 | 4 | 4 | no | Muy rico y estable; registros poco públicos; árabe e inglés |
+| Etiopía | estado | África | 131.0 | pendiente | 0.497 | 1000 | 2 | 2 | 4 | no | Conflicto en Tigré y Amhara; control cambiario; restricciones de internet en episodios de crisis; amárico |
+| Honduras | estado | América | 10.6 | pendiente | 0.621 | 3000 | 2 | 2 | 4 | no | Violencia y crimen organizado; crisis política y fiscal; registros civiles en digitalización; español |
 | Kuwait | estado | Asia | 4.9 | pendiente | 0.820 | 33000 | 1 | 4 | 4 | no | Estable y solvente; sin registros civiles públicos de acceso abierto; árabe e inglés |
 | Omán | estado | Asia | 5.6 | pendiente | 0.840 | 20000 | 1 | 4 | 4 | no | Estable; restricciones a contenidos en línea; árabe e inglés |
+| Pakistán | estado | Asia | 251.7 | pendiente | 0.544 | 1600 | 2 | 2 | 4 | no | Restricciones de internet y de medios; crisis de divisas; registros civiles limitados; urdu e inglés |
+| Túnez | estado | África | 12.5 | pendiente | 0.732 | 3900 | 2 | 2 | 4 | no | Deterioro de libertades desde 2021; restricciones a ONG y prensa; francés y árabe |
+| Zimbabue | estado | África | 17.4 | pendiente | 0.593 | 1800 | 2 | 2 | 4 | no | Inestabilidad monetaria y control cambiario; sanciones de EE. UU. selectivas; inglés |
 | Bangladés | estado | Asia | 175.7 | pendiente | 0.685 | 2800 | 1 | 3 | 3 | no | Mercado enorme; registros civiles en papel; control de redes sociales en episodios de crisis; bengalí |
 | Baréin | estado | Asia | 1.6 | pendiente | 0.888 | 31000 | 1 | 3 | 3 | no | Reino pequeño; árabe e inglés; registros poco públicos |
 | Benín | estado | África | 14.4 | pendiente | 0.559 | 1500 | 1 | 3 | 3 | no | Francés; registros civiles con baja digitalización |
@@ -149,43 +162,29 @@
 | Uzbekistán | estado | Asia | 37.4 | pendiente | 0.730 | 3000 | 1 | 3 | 3 | no | Reformas económicas recientes; control de medios; uzbeko y ruso |
 | Vanuatu | estado | Oceanía | 0.34 | pendiente | 0.62 | 3500 | 1 | 3 | 3 | no | Muy pequeño; bislama, inglés y francés; conectividad limitada |
 | Yibuti | estado | África | 1.2 | pendiente | 0.547 | 3600 | 1 | 3 | 3 | no | Base militar extranjera; pequeño mercado; francés y árabe |
-| China | estado | Asia | 1410 | pendiente | 0.797 | 13000 | 5 | 2 | 10 | sí | Gran tradición de jiapu, pero cortafuegos, licencias y localización obligatoria de datos; difícil de operar |
-| Bolivia | estado | América | 12.4 | pendiente | 0.698 | 3500 | 3 | 2 | 6 | sí | Crisis de divisas y control del tipo de cambio; español y quechua |
-| Líbano | estado | Asia | 5.5 | pendiente | 0.706 | 5000 | 3 | 2 | 6 | sí | Colapso económico desde 2019; control de capital de facto; diáspora muy grande; árabe, francés e inglés |
-| Ucrania | estado | Europa | 36.6 | pendiente | 0.734 | 5000 | 3 | 2 | 6 | sí | Guerra con Rusia desde 2022; registros civiles en papel dañados; ucraniano y ruso |
-| Vietnam | estado | Asia | 101.3 | pendiente | 0.726 | 4800 | 3 | 2 | 6 | sí | Control estatal de internet y de medios; localización obligatoria de datos; vietnamita; interés cultural por los registros familiares |
-| Argelia | estado | África | 46.2 | pendiente | 0.763 | 5300 | 2 | 2 | 4 | sí | Control estatal fuerte de medios e internet; restricciones a pagos y al cambio de divisas |
-| Azerbaiyán | estado | Asia | 10.4 | pendiente | 0.760 | 7800 | 2 | 2 | 4 | sí | Restricciones a medios y ONG desde 2024; registros soviéticos y civiles de acceso limitado; azerí y ruso |
-| Camboya | estado | Asia | 17.8 | pendiente | 0.598 | 2000 | 2 | 2 | 4 | sí | Control político y de medios; litigios sobre tierras; poca infraestructura de pagos; jemer e inglés |
-| Camerún | estado | África | 31.4 | pendiente | 0.576 | 1800 | 2 | 2 | 4 | sí | Crisis anglófona en el oeste; restricciones de internet en episodios de protesta; francés e inglés |
+| Burundi | estado | África | 14.8 | pendiente | 0.426 | 300 | 1 | 2 | 2 | no | Restricciones a la prensa y a las ONG; crisis económica y de divisas; francés y kirundi |
+| Chad | estado | África | 19.5 | pendiente | 0.394 | 800 | 1 | 2 | 2 | no | Transición militar desde 2021; inestabilidad; conectividad baja; francés y árabe |
+| Congo | estado | África | 6.1 | pendiente | 0.589 | 2300 | 1 | 2 | 2 | no | Régimen con control político fuerte; registros civiles limitados; francés |
+| Guinea | estado | África | 14.5 | pendiente | 0.465 | 1200 | 1 | 2 | 2 | no | Golpe militar en 2021; restricciones a la prensa; francés |
+| Guinea Ecuatorial | estado | África | 1.7 | pendiente | 0.605 | 7000 | 1 | 2 | 2 | no | Régimen de larga duración; petróleo; español y francés; registros civiles poco accesibles |
+| Guinea-Bisáu | estado | África | 2.2 | pendiente | 0.483 | 800 | 1 | 2 | 2 | no | Inestabilidad política recurrente; portugués; registros poco digitalizados |
+| Irak | estado | Asia | 46.5 | pendiente | 0.674 | 6000 | 1 | 2 | 2 | no | Conflictos recientes; control cambiario; registros civiles dispersos; árabe y kurdo |
+| Kirguistán | estado | Asia | 7.4 | pendiente | 0.637 | 1800 | 1 | 2 | 2 | no | Leyes recientes restrictivas para medios y ONG; ruso y kirguís |
+| Kiribati | estado | Oceanía | 0.13 | pendiente | 0.63 | 2000 | 1 | 2 | 2 | no | Muy aislado; conexión y pagos limitados; inglés y gilbertés |
+| Laos | estado | Asia | 7.6 | pendiente | 0.617 | 2100 | 1 | 2 | 2 | no | Partido único; control de internet y de medios; registros poco accesibles; lao |
+| Madagascar | estado | África | 31.6 | pendiente | 0.487 | 550 | 1 | 2 | 2 | no | Inestabilidad política reciente; registros civiles limitados; malgache y francés |
+| Mozambique | estado | África | 34.0 | pendiente | 0.468 | 500 | 1 | 2 | 2 | no | Insurgencia en Cabo Delgado; crisis poselectoral 2024-2025; portugués |
+| Nepal | estado | Asia | 30.9 | pendiente | 0.601 | 1400 | 1 | 2 | 2 | no | Inestabilidad política y bloqueos de redes sociales en episodios recientes; nepalí e inglés |
+| Tanzania | estado | África | 68.1 | pendiente | 0.567 | 1300 | 1 | 2 | 2 | no | Restricciones de internet y medios en episodios de protesta o elección; inglés y suajili |
+| Tayikistán | estado | Asia | 10.4 | pendiente | 0.692 | 1300 | 1 | 2 | 2 | no | Control estatal de medios e internet; tayiko y ruso; diáspora en Rusia |
+| Togo | estado | África | 9.6 | pendiente | 0.551 | 1000 | 1 | 2 | 2 | no | Protestas y restricciones de internet en episodios recientes; francés |
+| Uganda | estado | África | 50.3 | pendiente | 0.532 | 1000 | 1 | 2 | 2 | no | Restricciones de internet y prensa; elecciones con controles; inglés y suajili |
 | Cuba | estado | América | 9.7 | pendiente | 0.660 | — | 4 | 1 | 4 | sí | Embargo de EE. UU.; control estatal de internet y de medios; pagos casi imposibles; registros coloniales valiosos pero de acceso restringido |
-| Etiopía | estado | África | 131.0 | pendiente | 0.497 | 1000 | 2 | 2 | 4 | sí | Conflicto en Tigré y Amhara; control cambiario; restricciones de internet en episodios de crisis; amárico |
-| Honduras | estado | América | 10.6 | pendiente | 0.621 | 3000 | 2 | 2 | 4 | sí | Violencia y crimen organizado; crisis política y fiscal; registros civiles en digitalización; español |
-| Pakistán | estado | Asia | 251.7 | pendiente | 0.544 | 1600 | 2 | 2 | 4 | sí | Restricciones de internet y de medios; crisis de divisas; registros civiles limitados; urdu e inglés |
 | Rusia | estado | Europa | 146.2 | pendiente | 0.822 | 14000 | 4 | 1 | 4 | sí | Sanciones amplias de EE. UU. y UE; bloqueo de pagos y de plataformas; registros soviéticos valiosos pero inoperables |
-| Túnez | estado | África | 12.5 | pendiente | 0.732 | 3900 | 2 | 2 | 4 | sí | Deterioro de libertades desde 2021; restricciones a ONG y prensa; francés y árabe |
-| Zimbabue | estado | África | 17.4 | pendiente | 0.593 | 1800 | 2 | 2 | 4 | sí | Inestabilidad monetaria y control cambiario; sanciones de EE. UU. selectivas; inglés |
 | Bielorrusia | estado | Europa | 9.1 | pendiente | 0.802 | 8000 | 2 | 1 | 2 | sí | Sanciones de EE. UU. y UE; control político y de medios; ruso y bielorruso |
-| Burundi | estado | África | 14.8 | pendiente | 0.426 | 300 | 1 | 2 | 2 | sí | Restricciones a la prensa y a las ONG; crisis económica y de divisas; francés y kirundi |
-| Chad | estado | África | 19.5 | pendiente | 0.394 | 800 | 1 | 2 | 2 | sí | Transición militar desde 2021; inestabilidad; conectividad baja; francés y árabe |
-| Congo | estado | África | 6.1 | pendiente | 0.589 | 2300 | 1 | 2 | 2 | sí | Régimen con control político fuerte; registros civiles limitados; francés |
-| Guinea | estado | África | 14.5 | pendiente | 0.465 | 1200 | 1 | 2 | 2 | sí | Golpe militar en 2021; restricciones a la prensa; francés |
-| Guinea Ecuatorial | estado | África | 1.7 | pendiente | 0.605 | 7000 | 1 | 2 | 2 | sí | Régimen de larga duración; petróleo; español y francés; registros civiles poco accesibles |
-| Guinea-Bisáu | estado | África | 2.2 | pendiente | 0.483 | 800 | 1 | 2 | 2 | sí | Inestabilidad política recurrente; portugués; registros poco digitalizados |
-| Irak | estado | Asia | 46.5 | pendiente | 0.674 | 6000 | 1 | 2 | 2 | sí | Conflictos recientes; control cambiario; registros civiles dispersos; árabe y kurdo |
 | Irán | estado | Asia | 91.6 | pendiente | 0.774 | 3800 | 2 | 1 | 2 | sí | Sanciones amplias de EE. UU. y UE; cortes frecuentes de internet; pagos internacionales casi imposibles; persa |
-| Kirguistán | estado | Asia | 7.4 | pendiente | 0.637 | 1800 | 1 | 2 | 2 | sí | Leyes recientes restrictivas para medios y ONG; ruso y kirguís |
-| Kiribati | estado | Oceanía | 0.13 | pendiente | 0.63 | 2000 | 1 | 2 | 2 | sí | Muy aislado; conexión y pagos limitados; inglés y gilbertés |
-| Laos | estado | Asia | 7.6 | pendiente | 0.617 | 2100 | 1 | 2 | 2 | sí | Partido único; control de internet y de medios; registros poco accesibles; lao |
-| Madagascar | estado | África | 31.6 | pendiente | 0.487 | 550 | 1 | 2 | 2 | sí | Inestabilidad política reciente; registros civiles limitados; malgache y francés |
-| Mozambique | estado | África | 34.0 | pendiente | 0.468 | 500 | 1 | 2 | 2 | sí | Insurgencia en Cabo Delgado; crisis poselectoral 2024-2025; portugués |
-| Nepal | estado | Asia | 30.9 | pendiente | 0.601 | 1400 | 1 | 2 | 2 | sí | Inestabilidad política y bloqueos de redes sociales en episodios recientes; nepalí e inglés |
 | Nicaragua | estado | América | 7.4 | pendiente | 0.667 | 3200 | 2 | 1 | 2 | sí | Represión de medios y ONG; sanciones de EE. UU.; control de internet; español |
 | Palestina | entidad disputada | Asia | 5.5 | pendiente | — | — | 2 | 1 | 2 | sí | Conflicto y ocupación; guerra en Gaza desde 2023; registros otomanos y británicos; árabe |
-| Tanzania | estado | África | 68.1 | pendiente | 0.567 | 1300 | 1 | 2 | 2 | sí | Restricciones de internet y medios en episodios de protesta o elección; inglés y suajili |
-| Tayikistán | estado | Asia | 10.4 | pendiente | 0.692 | 1300 | 1 | 2 | 2 | sí | Control estatal de medios e internet; tayiko y ruso; diáspora en Rusia |
-| Togo | estado | África | 9.6 | pendiente | 0.551 | 1000 | 1 | 2 | 2 | sí | Protestas y restricciones de internet en episodios recientes; francés |
-| Uganda | estado | África | 50.3 | pendiente | 0.532 | 1000 | 1 | 2 | 2 | sí | Restricciones de internet y prensa; elecciones con controles; inglés y suajili |
 | Venezuela | estado | América | 28.4 | pendiente | 0.699 | 4000 | 2 | 1 | 2 | sí | Sanciones de EE. UU.; crisis económica y control cambiario; pagos casi inviables; español |
 | Afganistán | estado | Asia | 43.8 | pendiente | 0.462 | 400 | 1 | 1 | 1 | sí | Gobierno talibán desde 2021; sanciones internacionales; sin registros civiles accesibles en línea |
 | Burkina Faso | estado | África | 23.9 | pendiente | 0.438 | 1000 | 1 | 1 | 1 | sí | Gobierno militar desde 2022; amplias zonas fuera de control estatal por grupos armados |
