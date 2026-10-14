@@ -10,3 +10,7 @@ Treat it as a to-do list for verification, not as verified data.
 | `P1-eu-eea-notes.md`, `P4-asia-pacific-notes.md`, `P5-mena-notes.md` | Sources and confidence for the new law rows (EU/EEA, Asia-Pacific, Middle East). |
 
 The batches for wider Europe/Central Asia, the Americas and Africa have no per-row notes file: those rows carry their caveats in the `notes` column of the master CSV.
+
+## Authority names (14 Oct 2026)
+
+`authorities-verified.csv`: the regulator / copyright body names of the original rows, checked with web search (source URL and confidence per row). Vague names were replaced by official ones and wrong ones corrected (for example Argentina: AAIP, not Spain's AEPD; copyright handled by culture or justice ministries rather than patent offices). Only the name was checked, so those rows keep `data_status=curated`.

@@ -1,0 +1,51 @@
+module,code,current,proposed,conf,source,note
+P,SG,PDPC Singapore,Personal Data Protection Commission (PDPC),high,https://pdpc.gov.sg/Who-We-Are/About-Us,
+P,BE,Belgian DPA,Belgian Data Protection Authority (APD/GBA),high,https://noyb.eu/en/node/494,
+P,SE,Swedish Authority,Swedish Authority for Privacy Protection (IMY),high,https://www.imy.se/en/about-us/swedish-authority-for-privacy-protections-assignment/,Renamed from Datainspektionen on 2021-01-01
+P,PL,UODO,Personal Data Protection Office (UODO),high,https://cms.law/en/lux/publication/gdpr-enforcement-tracker-report/poland,Formally the President of the UODO
+P,CZ,Czech DPA,Office for Personal Data Protection (ÚOOÚ),high,https://edpb.europa.eu/about-edpb/our-members_en,Acronym from own knowledge; English name per EDPB
+P,HU,Hungarian Authority,Hungarian National Authority for Data Protection and Freedom of Information (NAIH),high,https://edpb.europa.eu/about-edpb/our-members_en,
+P,RO,Romanian DPA,National Supervisory Authority for Personal Data Processing (ANSPDCP),high,https://edpb.europa.eu/about-edpb/our-members_en,
+P,GR,Greek DPA,Hellenic Data Protection Authority (HDPA),high,https://edpb.europa.eu/about-edpb/our-members_en,
+P,PT,Portuguese CNPD,National Data Protection Commission (CNPD),high,https://edpb.europa.eu/about-edpb/our-members_en,Comissão Nacional de Proteção de Dados
+P,AT,Austrian Authority,Austrian Data Protection Authority (Datenschutzbehörde; DSB),high,https://edpb.europa.eu/about-edpb/our-members_en,
+P,DK,Danish Authority,Danish Data Protection Agency (Datatilsynet),medium,https://iptiq.com/european-data-protection-authorities.html,English rendering not confirmed on datatilsynet.dk in results
+P,FI,Finnish Authority,Office of the Data Protection Ombudsman (Tietosuojavaltuutetun toimisto),high,https://edpb.europa.eu/about-edpb/our-members_en,
+P,LU,Luxembourg Authority,National Commission for Data Protection (CNPD),medium,https://cnpd.public.lu/en/commission-nationale/activites-eur-inter.html,Commission nationale pour la protection des données
+P,MY,Malaysian Commissioner,Personal Data Protection Commissioner / Department of Personal Data Protection (JPDP),high,https://www.malaysia.gov.my/en/quick-links/protection-of-personal-data,Commissioner heads the JPDP under the Ministry of Digital/Communications
+P,ID,Indonesian DPA,Ministry of Communication and Digital Affairs (Komdigi),medium,https://www.hbtlaw.com/insights/2026-08/indonesia-personal-data-protection-and-cybersecurity-quarterly-update-august-2026,PDP Agency under Law 27/2022 still not established as of Aug 2026; Komdigi acts in interim
+P,VN,Ministry officials,Ministry of Public Security (MPS) - Department of Cybersecurity and High-Tech Crime Prevention (A05),medium,https://www.uniconsent.com/vietnam-pdpl,Law name in dataset is Cyber Security Law; PDP now under Law 91/2025/QH15 (eff. 2026-01-01) replacing Decree 13/2023
+P,RU,Roskomnadzor,"Federal Service for Supervision of Communications, Information Technology and Mass Media (Roskomnadzor)",high,https://presencis.com/regulations/ru-rkn/article-overview/,
+P,TR,KVKK Board,Personal Data Protection Authority (KVKK),high,https://ksandk.com/privacy-review/map/turkey/,Kişisel Verileri Koruma Kurumu; decisions by the Personal Data Protection Board (Kurul)
+P,AE,UAE DPA,UAE Data Office,medium,https://securiti.ai/uae-personal-data-protection-law/,Created by Federal Decree-Law 44/2021; operational status/executive regulations still unclear
+P,IL,Israeli Authority,Privacy Protection Authority (PPA),high,https://www.pearlcohen.com/major-amendment-to-israeli-privacy-law-set-to-take-effect/,Under Ministry of Justice
+P,NG,NITDA,Nigeria Data Protection Commission (NDPC),medium,https://ndpc.gov.ng/?p=6674,NDPR was issued by NITDA; NDPC under the NDPA 2023 now enforces - consider updating law name to Nigeria Data Protection Act 2023
+P,KE,ODPC,Office of the Data Protection Commissioner (ODPC),high,https://www.odpc.go.ke/?p=3323,
+P,AR,AEPD (Argentina),Agency for Access to Public Information (AAIP),high,https://www.coe.int/web/data-protection/argentina,AEPD is Spain's regulator; AAIP enforces Law 25.326 since Decree 746/2017
+P,PE,APDP,National Authority for Personal Data Protection (ANPD),medium,https://smartsuite.com/framework/peru-personal-data-protection-law-no-29733,Part of Ministry of Justice and Human Rights; single secondary source
+P,PH,NPC (Philippines),National Privacy Commission (NPC),high,https://privacy.gov.ph/wp-content/uploads/2025/05/NPC_CC-2025-1st-Edition.pdf,
+P,IE,Irish DPC,Data Protection Commission (DPC),medium,https://edpb.europa.eu/about-edpb/our-members_en,Current value already correct; dedicated search returned no Irish result
+C,JP,Japan Patent Office,Agency for Cultural Affairs (Bunkacho),high,https://www.bunka.go.jp/english/policy/copyright/,JPO handles industrial property only; Commissioner of Bunkacho handles copyright registration
+C,KR,Korean Intellectual Property Office,"Ministry of Culture, Sports and Tourism (MCST)",high,https://www.mcst.go.kr/english/policy/pressView.jsp?pSeq=524,Registration via Korea Copyright Commission (KCC) under MCST
+C,NL,Netherlands Patent Office,Ministry of Justice and Security (Ministerie van Justitie en Veiligheid),medium,https://internetconsultatie.nl/acr2/document/8899,Copyright bills tabled by Minister for Legal Protection; no registration body
+C,DE,German Patent Office,Federal Ministry of Justice and Consumer Protection (BMJV),medium,https://www.lobbyregister.bundestag.de/inhalte-der-interessenvertretung/regelungsvorhabensuche/RV0027623/506429,Name reverted from BMJ to BMJV in 2025; DPMA only supervises collecting societies
+C,IT,Italian Copyright Office,Ministry of Culture (MiC) - Directorate General for Libraries and Copyright,high,https://biblioteche.cultura.gov.it/it/documenti/2025-26/Guida_depositoRPGenerale-opere_protette_01_09_25.pdf,Keeps the Registro Pubblico Generale delle opere protette
+C,BE,Belgian Copyright Office,Federal Public Service Economy (FPS Economy / SPF Economie),medium,https://legalblogs.wolterskluwer.com/copyright-blog/copyright-in-the-new-belgian-code-of-economic-law-codification-and-new-regulation/,Copyright regulated in Code of Economic Law; internal unit (Intellectual Property Office) not confirmed in results
+C,SE,Swedish Patent Office,Ministry of Justice (Justitiedepartementet),medium,https://www.wipo.int/wipolex/en/legislation/details/10375,PRV handles patents/registrations not copyright; source is a 2006 regulation
+C,PL,Polish Patent Office,Ministry of Culture and National Heritage - Department of Copyright and Film,medium,https://www.gov.pl/web/kultura/departament-prawa-autorskiego-i-filmu,WIPO lists this department as competent authority; ministry name changed several times since 2020
+C,DK,Danish Patent Office,Ministry of Culture (Kulturministeriet),high,https://digitalpolicyalert.org/event/37845-ministry-of-culture-closes-consultation-on-bill-amending-copyright-act-introducing-performance-protection-and-protection-against-digitally-generated-imitations-20250654dk,
+C,FI,Finnish Patent Office,Ministry of Education and Culture (Opetus- ja kulttuuriministeriö),high,https://stm.fi/en/web/okm/copyright,
+C,IE,Irish Patent Office,Intellectual Property Office of Ireland (IPOI),medium,https://ipoi.gov.ie/en/news-events/news-categories/announcements/office-change-of-name/,Patents Office renamed 2019; holds statutory copyright functions but copyright policy sits with Dept of Enterprise Tourism and Employment
+C,GR,Greek Copyright Office,Hellenic Copyright Organization (OPI),high,https://opi.gr/en/hco/about-o-p-i/,Supervised by Ministry of Culture
+C,AT,Austrian Patent Office,Federal Ministry of Justice (BMJ),medium,https://www.urheberrecht.org/events/20190503_Auinger.pdf,Sources dated (2009/2019); current ministry arrangement not confirmed
+C,CZ,Czech Patent Office,Ministry of Culture - Copyright Law Department,high,https://www.wipo.int/en/web/country-profiles/contact?code=CZ,
+C,HU,Hungarian Patent Office,Hungarian Intellectual Property Office (HIPO / SZTNH),high,https://sztnh.gov.hu/en/home/about-us,Covers industrial property and copyright
+C,MY,Malaysian Patent Office,Intellectual Property Corporation of Malaysia (MyIPO),high,https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/295/,Keeps copyright voluntary notification register
+C,ID,Indonesian Patent Office,Directorate General of Intellectual Property (DGIP / DJKI) - Ministry of Law,high,https://www.babelinsight.id/kemenkum-tutup-situs-pelanggaran-hak-cipta,Ministry of Law (Kemenkum) since 2024 split
+C,PH,Philippine IP Office,Intellectual Property Office of the Philippines (IPOPHL) - Bureau of Copyright and Related Rights,high,https://www.ipophil.gov.ph/?p=16643,
+C,RU,Russian Patent Office,Federal Service for Intellectual Property (Rospatent),medium,https://wipo.int/documents/d/copyright/docs-en-registration-replies-russia.pdf,Rospatent only registers software/databases; Ministry of Culture policy role not confirmed in results
+C,TR,Turkish Patent Office,Directorate General of Copyright - Ministry of Culture and Tourism (Telif Hakları Genel Müdürlüğü),high,https://www.wipo.int/en/web/country-profiles/contact?code=TR,
+C,IL,Israeli Patent Office,Ministry of Justice,medium,https://www.mondaq.com/copyright/777358/new-copyright-law-amendment,Justice Ministry drafts copyright amendments; no copyright registration in Israel
+C,SA,Saudi Copyright Office,Saudi Authority for Intellectual Property (SAIP),high,https://gowlingwlg.com/en/insights-resources/articles/2026/saudi-arabia-copyright-law-2026,New Copyright Law in force 2026-08-12; some matters delegated to Ministry of Culture
+C,CO,Colombian Copyright Office,National Directorate of Copyright (DNDA - Dirección Nacional de Derecho de Autor),high,https://gpg-pdf.chambers.com/doing-business-in-2025/662,
+C,PE,Peruvian Copyright Office,INDECOPI - Copyright Directorate (DDA),high,https://gpg-pdf.chambers.com/doing-business-in-2025/663,

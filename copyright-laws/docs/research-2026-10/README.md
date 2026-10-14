@@ -16,3 +16,7 @@ on a `yes`/`no` pair. Jurisdictions still without any confirmed treaty: Iraq, Ir
 
 Weak spots to verify first: Hong Kong and Macao are listed through China's accession; Uzbekistan and Ethiopia are WTO accession
 candidates; the six Berne "no" results (Angola, Ethiopia, Iraq, Iran, Myanmar, Taiwan) rest on absence from lists.
+
+## Authority names (14 Oct 2026)
+
+`authorities-verified.csv`: the regulator / copyright body names of the original rows, checked with web search (source URL and confidence per row). Vague names were replaced by official ones and wrong ones corrected (for example Argentina: AAIP, not Spain's AEPD; copyright handled by culture or justice ministries rather than patent offices). Only the name was checked, so those rows keep `data_status=curated`.
