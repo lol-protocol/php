@@ -66,7 +66,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "torre",
+      "motivo": "arco",
       "paleta": "tempestad",
       "arquetipo": "montanas",
       "intento": 0,
@@ -75,7 +75,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-03.svg",
       "version_generador": "0.4.0",
-      "sha256": "406bd58d6c78735d4cdbe4a0e27fd6a02ec4458927fd4477453814bb268fa96b"
+      "sha256": "648ba8454a8a0e0b879ced8484b4ae0bfcfef01356573bee98aa5a1bab5d222c"
     },
     {
       "id": "romanticismo-becquer-04",
@@ -91,7 +91,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "rio",
+      "motivo": "fuente",
       "paleta": "niebla",
       "arquetipo": "bosque",
       "intento": 0,
@@ -100,7 +100,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-04.svg",
       "version_generador": "0.4.0",
-      "sha256": "3989af0b26d121d4d5b5153c2f3eaf3f347ff6386d5104bed9fb15148ddff608"
+      "sha256": "e770d431af013f6bbdfe35f5d16c5e345310779088851b265c785182129592f1"
     },
     {
       "id": "romanticismo-becquer-05",
@@ -166,7 +166,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "torre",
+      "motivo": "organo",
       "paleta": "medianoche",
       "arquetipo": "bosque",
       "intento": 0,
@@ -175,7 +175,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-07.svg",
       "version_generador": "0.4.0",
-      "sha256": "6e750ea9afc26807fb7b95de3e0cc4db07ddc305afd0c22ded33caf29f13bd31"
+      "sha256": "32d110b4ffa29b0fb922e688284df0c5b74c42ecc03d10d84c69e03adf9ad7e8"
     },
     {
       "id": "romanticismo-becquer-08",
@@ -191,7 +191,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "castillo",
+      "motivo": "puente",
       "paleta": "noche",
       "arquetipo": "montanas",
       "intento": 0,
@@ -200,7 +200,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-08.svg",
       "version_generador": "0.4.0",
-      "sha256": "b20b390c79a4d668f06f9217bad0d7c70c7ef5b125982a625806f2ce76a27eec"
+      "sha256": "5f44ff0aea749f3bc43e9e0ffda3293f07e7740b6332bf11421d2cb6f2145134"
     },
     {
       "id": "romanticismo-becquer-09",
@@ -216,7 +216,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "arbol",
+      "motivo": "vela",
       "paleta": "amanecer",
       "arquetipo": "montanas",
       "intento": 0,
@@ -225,7 +225,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-09.svg",
       "version_generador": "0.4.0",
-      "sha256": "58d77d82a3cd6b404ecd12a7f5cdf477dab8ee564770b133fe0a414dc597bf98"
+      "sha256": "3ec73f285ade9b048a41efa6f5e77fe51794c9df66743fbf57a5f1aa3d0bbf65"
     },
     {
       "id": "romanticismo-becquer-10",
@@ -241,7 +241,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "estrellas",
+      "motivo": "espada",
       "paleta": "tormenta",
       "arquetipo": "bosque",
       "intento": 0,
@@ -250,7 +250,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-10.svg",
       "version_generador": "0.4.0",
-      "sha256": "6cfef6c3461981318ed38e88c9601f55c5e25b538c3ff9eaab1fed376b695b78"
+      "sha256": "1596d0d6f00b16f4000cc3784be50134a79eab935e309e9972004186a797caa9"
     },
     {
       "id": "romanticismo-byron-01",
@@ -416,7 +416,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "castillo",
+      "motivo": "espada",
       "paleta": "ceniza",
       "arquetipo": "colinas",
       "intento": 0,
@@ -425,7 +425,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-byron-07.svg",
       "version_generador": "0.4.0",
-      "sha256": "e1b63152eb9d6d80ec9da11be00309ea3ae67a15b5da68d904c2b85bd70b5a6d"
+      "sha256": "3612ce867d31b19e4a47015972203bef869b216c0ded728d1bb7f29ccc834273"
     },
     {
       "id": "romanticismo-byron-08",
@@ -591,7 +591,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "golondrinas",
+      "motivo": "rosa",
       "paleta": "rosa",
       "arquetipo": "marina",
       "intento": 0,
@@ -600,7 +600,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-04.svg",
       "version_generador": "0.4.0",
-      "sha256": "c4c5c38a5170764cbb12946d67a59421a432fb9be953f73783b866d3fbb97cbc"
+      "sha256": "a1aa14a91b945193de65661a3b952209e3d133917f8f946b53d5f820dc9d87ed"
     },
     {
       "id": "romanticismo-espronceda-05",
@@ -616,7 +616,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "cruz",
+      "motivo": "horca",
       "paleta": "niebla",
       "arquetipo": "llanura",
       "intento": 0,
@@ -625,7 +625,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-05.svg",
       "version_generador": "0.4.0",
-      "sha256": "383caf778c13b0667cc5727378c99f28b8d891fee53ae14cdcdd0b12f6d95e34"
+      "sha256": "47653db3a2e7c2a691e04291df5801142ccb12f741413f7cbe4de9cd76e0da13"
     },
     {
       "id": "romanticismo-espronceda-06",
@@ -791,7 +791,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "luna",
+      "motivo": "barricada",
       "paleta": "medianoche",
       "arquetipo": "colinas",
       "intento": 0,
@@ -800,7 +800,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-02.svg",
       "version_generador": "0.4.0",
-      "sha256": "6f768ab490bf1cebe8ea1798f249a9ead9e39a114bd581016aa72fbd3b5991f8"
+      "sha256": "774763e6baacdfc5f72262078e3f78d7dfa4ab842dee701cb5e6c41dd170da71"
     },
     {
       "id": "romanticismo-hugo-03",
@@ -841,7 +841,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "velero",
+      "motivo": "faro",
       "paleta": "tormenta",
       "arquetipo": "marina",
       "intento": 0,
@@ -850,7 +850,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-04.svg",
       "version_generador": "0.4.0",
-      "sha256": "83889371885ceb1a4995fdb4166262d2900f809eb9e9523acd19551926f02562"
+      "sha256": "150a5424b3edcd4b3b5da64d2c84be9df12e7139a9e409d14d2f8cec1e8e0457"
     },
     {
       "id": "romanticismo-hugo-05",
@@ -916,7 +916,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "torre",
+      "motivo": "corona",
       "paleta": "ceniza",
       "arquetipo": "bosque",
       "intento": 0,
@@ -925,7 +925,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-07.svg",
       "version_generador": "0.4.0",
-      "sha256": "f67389c82676fefb491cb0ad9b6b9ed2cc25633857baee3f3c3f1240ba3c35f6"
+      "sha256": "33774a471ba10bc9b027b110e96f82d218e2add8bdb8d6f6e602f6545d03f0b2"
     },
     {
       "id": "romanticismo-hugo-08",
@@ -1041,7 +1041,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ruinas",
+      "motivo": "urna",
       "paleta": "dorada",
       "arquetipo": "marina",
       "intento": 0,
@@ -1050,7 +1050,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-02.svg",
       "version_generador": "0.4.0",
-      "sha256": "d5dafaa02d8aae42f9e067bc6a881268c0c3a166a4f7861cd61fc2b80a92b957"
+      "sha256": "e5d25f516ac0d45e27ac3affe95cc1af4011be1b4eb63f2fa33ee025dcf45f21"
     },
     {
       "id": "romanticismo-keats-03",
@@ -1091,7 +1091,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ruinas",
+      "motivo": "estatua",
       "paleta": "ceniza",
       "arquetipo": "montanas",
       "intento": 0,
@@ -1100,7 +1100,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-04.svg",
       "version_generador": "0.4.0",
-      "sha256": "f64fde73691457dfcdb454df0575ae858bb0de58089d5448350f9e07dca031ae"
+      "sha256": "50d09f82fe152de53d5ad070b24d2389b4343e9814da73f8d11d48067e803005"
     },
     {
       "id": "romanticismo-keats-05",
@@ -1116,7 +1116,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "castillo",
+      "motivo": "vela",
       "paleta": "tormenta",
       "arquetipo": "colinas",
       "intento": 0,
@@ -1125,7 +1125,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-05.svg",
       "version_generador": "0.4.0",
-      "sha256": "e35e6f20701479d293f58ca78679a52997c7bab9afb1872f885e046b0f519ff0"
+      "sha256": "475fc202a7c0c737602586f30d4b0f468fdbfdd143dcd373ad848631d71f65b7"
     },
     {
       "id": "romanticismo-keats-06",
@@ -1141,7 +1141,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "rio",
+      "motivo": "serpiente",
       "paleta": "esmeralda",
       "arquetipo": "bosque",
       "intento": 0,
@@ -1150,7 +1150,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-06.svg",
       "version_generador": "0.4.0",
-      "sha256": "9047e6c3fc69f54aef65997ba8ad0c72f413cca25d9dd1376d0802463ad4dffe"
+      "sha256": "05f1f9cf13cd1e5aff1f9bf16f390f518dddb95093a6fa565ad58803f35fd27c"
     },
     {
       "id": "romanticismo-keats-07",
@@ -1191,7 +1191,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "arbol",
+      "motivo": "lira",
       "paleta": "rosa",
       "arquetipo": "bosque",
       "intento": 0,
@@ -1200,7 +1200,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-08.svg",
       "version_generador": "0.4.0",
-      "sha256": "754ff0c41f18d255db0315de4213cad3919e35ac04090248e436ac6fe264e759"
+      "sha256": "e8b3fc563392d4f6f82afb5314e1aaed8806675a1e278e1e6ef7ed28f0f2d062"
     },
     {
       "id": "romanticismo-keats-09",
@@ -1241,7 +1241,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "arbol",
+      "motivo": "hojas",
       "paleta": "dorada",
       "arquetipo": "llanura",
       "intento": 0,
@@ -1250,7 +1250,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-10.svg",
       "version_generador": "0.4.0",
-      "sha256": "d1174854bfc9793524eea06a1e2e3a64be931a81a61f7f2545e0c0270fea11a9"
+      "sha256": "871e92aaed7475323e9bfd4e176ba76e0b57ae03f39c33827db9579fb9209810"
     },
     {
       "id": "romanticismo-larra-01",
@@ -1266,7 +1266,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "jpg",
-      "motivo": "ninguno",
+      "motivo": "reloj",
       "paleta": "dorada",
       "arquetipo": "llanura",
       "intento": 0,
@@ -1275,7 +1275,7 @@
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-larra-01.jpg",
       "version_generador": "0.4.0",
-      "sha256": "c8b9a9a6679a456357d8784f30e77a75c086a983e6c0279d01a364087b238bd1"
+      "sha256": "cdbbcf6929795fd09e5d06b9514caa3c8cc20aa4caae4eff3c7c2cf8f18e418d"
     },
     {
       "id": "romanticismo-larra-02",
@@ -1316,7 +1316,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "cruz",
+      "motivo": "horca",
       "paleta": "niebla",
       "arquetipo": "llanura",
       "intento": 0,
@@ -1325,7 +1325,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-03.svg",
       "version_generador": "0.4.0",
-      "sha256": "a4ac44da9c60900a9eb27926616c49dff75f706e8b5cb13c19a017c38356573e"
+      "sha256": "09c99bc9b22d59216a84a6bf1eac0666dc52a8ec01ce0729479330af2f1d609b"
     },
     {
       "id": "romanticismo-larra-04",
@@ -1341,7 +1341,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "cipres",
+      "motivo": "lapidas",
       "paleta": "tormenta",
       "arquetipo": "montanas",
       "intento": 0,
@@ -1350,7 +1350,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-04.svg",
       "version_generador": "0.4.0",
-      "sha256": "98260040188233691f0aa75ef33fa629518075883378b195ba2605e1289eaeab"
+      "sha256": "50ed2560ad1ee6d9b6a399b72eda663a78355470f74a70931406f4429a7a4f0f"
     },
     {
       "id": "romanticismo-larra-05",
@@ -1416,7 +1416,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "torre",
+      "motivo": "lira",
       "paleta": "rosa",
       "arquetipo": "colinas",
       "intento": 0,
@@ -1425,7 +1425,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-07.svg",
       "version_generador": "0.4.0",
-      "sha256": "c1b046aec3bb007468951cf5f1ab7c19e16a2605ce898d794e9b4bfdf4af7ed7"
+      "sha256": "3fc0cff8c8872c6b557736785694d4f8f8a37cad3d8a8810d6565063a910c0b8"
     },
     {
       "id": "romanticismo-larra-08",
@@ -1591,7 +1591,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "luna",
+      "motivo": "corazon",
       "paleta": "medianoche",
       "arquetipo": "montanas",
       "intento": 0,
@@ -1600,7 +1600,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-04.svg",
       "version_generador": "0.4.0",
-      "sha256": "da6f4dcfd5c1b764335846fac18d7fdc8bff2388192ed46ad772997d6c77b8d4"
+      "sha256": "83bf09279382808d4b5013f470ed6568202e64335d4520db87a274306554c855"
     },
     {
       "id": "romanticismo-poe-05",
@@ -1616,7 +1616,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "gato",
       "paleta": "otono",
       "arquetipo": "bosque",
       "intento": 0,
@@ -1625,7 +1625,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-05.svg",
       "version_generador": "0.4.0",
-      "sha256": "a837bb9a0585420f0d022b03a18f19ba944824551f3352a194a51b9c08c0967d"
+      "sha256": "d6c8ec289371732fe99851a77f056c20c7556ce6cfc4837c868972a261c4ad9c"
     },
     {
       "id": "romanticismo-poe-06",
@@ -1666,7 +1666,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "cipres",
+      "motivo": "lapidas",
       "paleta": "tormenta",
       "arquetipo": "llanura",
       "intento": 0,
@@ -1675,7 +1675,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-07.svg",
       "version_generador": "0.4.0",
-      "sha256": "938b8478fef92150324d180cd0049e897a8538b19486188169af61e29d23c4d8"
+      "sha256": "ba81a4fc5cb38639086f3e937251829b6b9e813322a4c2355cd5b78f6c6b71d4"
     },
     {
       "id": "romanticismo-poe-08",
@@ -1691,7 +1691,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ruinas",
+      "motivo": "ataud",
       "paleta": "noche",
       "arquetipo": "llanura",
       "intento": 0,
@@ -1700,7 +1700,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-08.svg",
       "version_generador": "0.4.0",
-      "sha256": "2863e2cd4e8a2026ad69313c27fc439a302cad8743f34d861888c2cce15a4dbd"
+      "sha256": "b21442c8a03cacceb8bba9a1a0fc45fdfc9d5b26f554bceea1e485cdb22df86d"
     },
     {
       "id": "romanticismo-poe-09",
@@ -1741,7 +1741,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "velero",
+      "motivo": "olas",
       "paleta": "tormenta",
       "arquetipo": "marina",
       "intento": 0,
@@ -1750,7 +1750,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-10.svg",
       "version_generador": "0.4.0",
-      "sha256": "bc9bb126d50168d566047a90d57bcaea5ac3dbb57b60b60220cf823210eaaed0"
+      "sha256": "e32edbe2316c35938698676bf882302ffed3691bdc1baa764c4833aef5624344"
     },
     {
       "id": "romanticismo-rosalia-de-castro-01",
@@ -1766,7 +1766,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "jpg",
-      "motivo": "golondrinas",
+      "motivo": "horreo",
       "paleta": "esmeralda",
       "arquetipo": "llanura",
       "intento": 0,
@@ -1775,7 +1775,7 @@
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-rosalia-de-castro-01.jpg",
       "version_generador": "0.4.0",
-      "sha256": "7115f28a95c49c4c5f4695163de331415e881800490c1296969daf8974ea90a7"
+      "sha256": "b49df611c369a60faab75f67526237ec902f212678425b177ea98eecf7d3fede"
     },
     {
       "id": "romanticismo-rosalia-de-castro-02",
@@ -1841,7 +1841,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "velero",
+      "motivo": "barca",
       "paleta": "atardecer",
       "arquetipo": "marina",
       "intento": 0,
@@ -1850,7 +1850,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-04.svg",
       "version_generador": "0.4.0",
-      "sha256": "842a9d0ab43fb051d30c92e9f7a73796750c006ca8c8d9da72bd1af4b87e1f49"
+      "sha256": "865deb4fb287b1ba276e697afceca25dd91e0c2cf6b75686b93a01982a16a316"
     },
     {
       "id": "romanticismo-rosalia-de-castro-05",
@@ -1866,7 +1866,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "rosa",
       "paleta": "rosa",
       "arquetipo": "bosque",
       "intento": 0,
@@ -1875,7 +1875,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-05.svg",
       "version_generador": "0.4.0",
-      "sha256": "145ad5f96f29e32402756fef7dbd15d01407e970146056f57627f3b2f6b85735"
+      "sha256": "fdc59fcce5ec5b11e61b289a560a9eb85fabc74a7fe734008f85bc08d7a68188"
     },
     {
       "id": "romanticismo-rosalia-de-castro-06",
@@ -2016,7 +2016,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "jpg",
-      "motivo": "ruinas",
+      "motivo": "estatua",
       "paleta": "rosa",
       "arquetipo": "llanura",
       "intento": 0,
@@ -2025,7 +2025,7 @@
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-shelley-percy-01.jpg",
       "version_generador": "0.4.0",
-      "sha256": "47b56f9816cef85e1c3499f7fad3ea95ef2390b3e2df4cbb09b83f74d85fdfd7"
+      "sha256": "887d5e7294dba6f4534b29c58707b27740b90b66ceb7b431b1b8c8542fd89b63"
     },
     {
       "id": "romanticismo-shelley-percy-02",
@@ -2166,7 +2166,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "nube",
       "paleta": "niebla",
       "arquetipo": "montanas",
       "intento": 0,
@@ -2175,7 +2175,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-shelley-percy-07.svg",
       "version_generador": "0.4.0",
-      "sha256": "35c3fd4c19710860d7fecf0cf59efc904480559e06b6b24b883c3c744aa13b38"
+      "sha256": "328a5a46e21c3e01e2266cdd0cf64cc24e38f8e36de84ff7ee088d8886e30057"
     },
     {
       "id": "romanticismo-shelley-percy-08",
@@ -2291,7 +2291,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ruinas",
+      "motivo": "arco",
       "paleta": "dorada",
       "arquetipo": "bosque",
       "intento": 0,
@@ -2300,7 +2300,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-02.svg",
       "version_generador": "0.4.0",
-      "sha256": "da538333a05ecaabd0ef020df13fa391950c28b900356443d6595534082bb759"
+      "sha256": "681eee3919f9f81cebcfe88aa5db3515ffad09b5f61678beb0c40da965d985e3"
     },
     {
       "id": "romanticismo-wordsworth-03",
@@ -2316,7 +2316,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "nube",
       "paleta": "dorada",
       "arquetipo": "montanas",
       "intento": 0,
@@ -2325,7 +2325,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-03.svg",
       "version_generador": "0.4.0",
-      "sha256": "bb0962faddbc1fe07c8ea69d042b1164ead943f68342e9bb8866923fa47500d4"
+      "sha256": "9e95a3716e27a694e81b62a7147044486b6a46c71af76b6c01bf94f65a29f866"
     },
     {
       "id": "romanticismo-wordsworth-04",
@@ -2341,7 +2341,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "arbol",
+      "motivo": "narcisos",
       "paleta": "niebla",
       "arquetipo": "colinas",
       "intento": 0,
@@ -2350,7 +2350,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-04.svg",
       "version_generador": "0.4.0",
-      "sha256": "e8e6a7871102dec0feea88beddcbceb6013b077dc0a54dd55740b71b66c86f5c"
+      "sha256": "d89880283c8ad5444bb10d5efd1b35e036a0fb276c61ec20cca4e145806e9585"
     },
     {
       "id": "romanticismo-wordsworth-05",
@@ -2466,7 +2466,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "catedral",
+      "motivo": "puente",
       "paleta": "amanecer",
       "arquetipo": "llanura",
       "intento": 0,
@@ -2475,7 +2475,7 @@
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-09.svg",
       "version_generador": "0.4.0",
-      "sha256": "cd075b0babc8249dc89d71bb0d9c8f973632b0d2a7ac11d8693080ed89b99cf3"
+      "sha256": "957d6b33ba019de4152a1ac505beb267d229014ff248e78934387e6207ed2d0b"
     },
     {
       "id": "romanticismo-wordsworth-10",

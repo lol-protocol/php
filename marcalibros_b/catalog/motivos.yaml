@@ -1,6 +1,5 @@
-version: '0.2'
-nota: 'Biblioteca compartida de motivos. Objetivo ~40; hoy 14 + ''ninguno''. `requiere`
-  limita cuándo un motivo tiene sentido visual: animos (animo de la obra) y/o escena.'
+version: '0.3'
+nota: 'Biblioteca compartida de motivos: 40 + ninguno. requiere limita cuándo un motivo tiene sentido visual: animos (ánimo de la obra) y/o escena.'
 motivos:
 - id: torre
   nombre: Torre
@@ -56,6 +55,96 @@ motivos:
   requiere:
     animos:
     - nocturno
+- id: organo
+  nombre: Órgano
+  implementado: true
+- id: fuente
+  nombre: Fuente
+  implementado: true
+- id: puente
+  nombre: Puente
+  implementado: true
+- id: faro
+  nombre: Faro
+  implementado: true
+  requiere:
+    escena: marina
+- id: rosa
+  nombre: Rosa
+  implementado: true
+- id: lira
+  nombre: Lira
+  implementado: true
+- id: urna
+  nombre: Urna griega
+  implementado: true
+- id: estatua
+  nombre: Coloso caído
+  implementado: true
+- id: horca
+  nombre: Horca
+  implementado: true
+- id: gato
+  nombre: Gato negro
+  implementado: true
+- id: corazon
+  nombre: Corazón
+  implementado: true
+- id: reloj
+  nombre: Reloj
+  implementado: true
+- id: ataud
+  nombre: Ataúd
+  implementado: true
+- id: lapidas
+  nombre: Lápidas
+  implementado: true
+- id: vela
+  nombre: Vela
+  implementado: true
+- id: olas
+  nombre: Olas
+  implementado: true
+  requiere:
+    escena: marina
+- id: nube
+  nombre: Nube
+  implementado: true
+- id: narcisos
+  nombre: Narcisos
+  implementado: true
+  requiere:
+    animos:
+    - pastoral
+- id: hojas
+  nombre: Hojas que caen
+  implementado: true
+  requiere:
+    animos:
+    - otonal
+- id: serpiente
+  nombre: Serpiente
+  implementado: true
+- id: espada
+  nombre: Espada
+  implementado: true
+- id: corona
+  nombre: Corona
+  implementado: true
+- id: barca
+  nombre: Barca
+  implementado: true
+  requiere:
+    escena: marina
+- id: arco
+  nombre: Arco gótico en ruinas
+  implementado: true
+- id: horreo
+  nombre: Hórreo gallego
+  implementado: true
+- id: barricada
+  nombre: Barricada
+  implementado: true
 - id: ninguno
   nombre: Sin motivo (solo paisaje)
   implementado: true

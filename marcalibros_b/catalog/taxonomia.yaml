@@ -1,4 +1,4 @@
-# Taxonomía de marcalibros v0.3. Fuente de verdad para generator/build.py.
+# Taxonomía de marcalibros v0.4. Fuente de verdad para generator/build.py.
 #
 # - Cada variante de un autor es una obra o tema suyo (`obras`): la variante N usa
 #   la obra N. Un autor sin `obras` aún no se genera (pendiente de rellenar).
@@ -9,7 +9,7 @@
 # - Los 6 autores de Romanticismo tras Poe/Byron y las obras de todos salvo Bécquer son borrador (de memoria, sin verificar).
 # - Regla de formato: la variante 01 de cada autor es JPG; el resto SVG.
 
-version: '0.3'
+version: '0.4'
 ancho: 1400
 alto: 200
 variante_jpg: 1
@@ -58,7 +58,7 @@ movimientos:
     - id: el-miserere
       titulo: El miserere
       tipo: leyenda
-      motivo: torre
+      motivo: arco
       animo: tormentoso
       escena: montanas
       gutenberg:
@@ -67,7 +67,7 @@ movimientos:
     - id: los-ojos-verdes
       titulo: Los ojos verdes
       tipo: leyenda
-      motivo: rio
+      motivo: fuente
       animo: pastoral
       escena: bosque
       gutenberg:
@@ -92,7 +92,7 @@ movimientos:
     - id: maese-perez-el-organista
       titulo: Maese Pérez el organista
       tipo: leyenda
-      motivo: torre
+      motivo: organo
       animo: nocturno
       gutenberg:
         id: null
@@ -100,7 +100,7 @@ movimientos:
     - id: la-cruz-del-diablo
       titulo: La cruz del diablo
       tipo: leyenda
-      motivo: castillo
+      motivo: puente
       animo: tormentoso
       escena: montanas
       gutenberg:
@@ -109,7 +109,7 @@ movimientos:
     - id: desde-mi-celda
       titulo: Desde mi celda
       tipo: prosa
-      motivo: arbol
+      motivo: vela
       animo: pastoral
       escena: montanas
       gutenberg:
@@ -118,7 +118,7 @@ movimientos:
     - id: el-beso
       titulo: El beso
       tipo: leyenda
-      motivo: estrellas
+      motivo: espada
       animo: nocturno
       gutenberg:
         id: null
@@ -159,7 +159,7 @@ movimientos:
     - id: canto-a-teresa
       titulo: Canto a Teresa
       tipo: poema
-      motivo: golondrinas
+      motivo: rosa
       animo: sentimental
       gutenberg:
         id: null
@@ -167,7 +167,7 @@ movimientos:
     - id: el-reo-de-muerte
       titulo: El reo de muerte
       tipo: poema
-      motivo: cruz
+      motivo: horca
       animo: melancolico
       escena: llanura
       gutenberg:
@@ -253,7 +253,7 @@ movimientos:
     - id: el-corazon-delator
       titulo: El corazón delator
       tipo: cuento
-      motivo: luna
+      motivo: corazon
       animo: nocturno
       gutenberg:
         id: null
@@ -261,7 +261,7 @@ movimientos:
     - id: el-gato-negro
       titulo: El gato negro
       tipo: cuento
-      motivo: ninguno
+      motivo: gato
       animo: melancolico
       escena: bosque
       gutenberg:
@@ -278,7 +278,7 @@ movimientos:
     - id: berenice
       titulo: Berenice
       tipo: cuento
-      motivo: cipres
+      motivo: lapidas
       animo: melancolico
       escena: llanura
       gutenberg:
@@ -287,7 +287,7 @@ movimientos:
     - id: el-barril-de-amontillado
       titulo: El barril de amontillado
       tipo: cuento
-      motivo: ruinas
+      motivo: ataud
       animo: nocturno
       gutenberg:
         id: null
@@ -303,7 +303,7 @@ movimientos:
     - id: un-descenso-al-maelstrom
       titulo: Un descenso al Maelström
       tipo: cuento
-      motivo: velero
+      motivo: olas
       animo: tormentoso
       escena: marina
       gutenberg:
@@ -374,7 +374,7 @@ movimientos:
     - id: lara
       titulo: Lara
       tipo: poema
-      motivo: castillo
+      motivo: espada
       animo: melancolico
       gutenberg:
         id: null
@@ -416,7 +416,7 @@ movimientos:
     - id: cantares-gallegos
       titulo: Cantares gallegos
       tipo: poema
-      motivo: golondrinas
+      motivo: horreo
       animo: pastoral
       gutenberg:
         id: null
@@ -442,7 +442,7 @@ movimientos:
     - id: la-hija-del-mar
       titulo: La hija del mar
       tipo: novela
-      motivo: velero
+      motivo: barca
       animo: sentimental
       escena: marina
       gutenberg:
@@ -451,7 +451,7 @@ movimientos:
     - id: flavio
       titulo: Flavio
       tipo: novela
-      motivo: ninguno
+      motivo: rosa
       animo: sentimental
       gutenberg:
         id: null
@@ -509,7 +509,7 @@ movimientos:
     - id: vuelva-usted-manana
       titulo: Vuelva usted mañana
       tipo: artículo
-      motivo: ninguno
+      motivo: reloj
       animo: auroral
       escena: llanura
       gutenberg:
@@ -526,7 +526,7 @@ movimientos:
     - id: un-reo-de-muerte
       titulo: Un reo de muerte
       tipo: artículo
-      motivo: cruz
+      motivo: horca
       animo: melancolico
       escena: llanura
       gutenberg:
@@ -535,7 +535,7 @@ movimientos:
     - id: dia-de-difuntos-de-1836
       titulo: Día de difuntos de 1836
       tipo: artículo
-      motivo: cipres
+      motivo: lapidas
       animo: nocturno
       gutenberg:
         id: null
@@ -561,7 +561,7 @@ movimientos:
     - id: macias
       titulo: Macías
       tipo: drama
-      motivo: torre
+      motivo: lira
       animo: sentimental
       gutenberg:
         id: null
@@ -611,7 +611,7 @@ movimientos:
     - id: los-miserables
       titulo: Los miserables
       tipo: novela
-      motivo: luna
+      motivo: barricada
       animo: nocturno
       gutenberg:
         id: null
@@ -628,7 +628,7 @@ movimientos:
     - id: los-trabajadores-del-mar
       titulo: Los trabajadores del mar
       tipo: novela
-      motivo: velero
+      motivo: faro
       animo: tormentoso
       escena: marina
       gutenberg:
@@ -655,7 +655,7 @@ movimientos:
     - id: cromwell
       titulo: Cromwell
       tipo: drama
-      motivo: torre
+      motivo: corona
       animo: melancolico
       gutenberg:
         id: null
@@ -706,7 +706,7 @@ movimientos:
     - id: oda-a-una-urna-griega
       titulo: Oda a una urna griega
       tipo: poema
-      motivo: ruinas
+      motivo: urna
       animo: pastoral
       gutenberg:
         id: null
@@ -723,7 +723,7 @@ movimientos:
     - id: hiperion
       titulo: Hiperión
       tipo: poema
-      motivo: ruinas
+      motivo: estatua
       animo: sublime
       escena: montanas
       gutenberg:
@@ -732,7 +732,7 @@ movimientos:
     - id: la-vispera-de-santa-ines
       titulo: La víspera de Santa Inés
       tipo: poema
-      motivo: castillo
+      motivo: vela
       animo: nocturno
       gutenberg:
         id: null
@@ -740,7 +740,7 @@ movimientos:
     - id: lamia
       titulo: Lamia
       tipo: poema
-      motivo: rio
+      motivo: serpiente
       animo: pastoral
       escena: bosque
       gutenberg:
@@ -758,7 +758,7 @@ movimientos:
     - id: oda-a-psique
       titulo: Oda a Psique
       tipo: poema
-      motivo: arbol
+      motivo: lira
       animo: sentimental
       escena: bosque
       gutenberg:
@@ -775,7 +775,7 @@ movimientos:
     - id: a-otono
       titulo: A otoño
       tipo: poema
-      motivo: arbol
+      motivo: hojas
       animo: otonal
       escena: llanura
       gutenberg:
@@ -792,7 +792,7 @@ movimientos:
     - id: ozymandias
       titulo: Ozymandias
       tipo: poema
-      motivo: ruinas
+      motivo: estatua
       animo: crepuscular
       escena: llanura
       gutenberg:
@@ -845,7 +845,7 @@ movimientos:
     - id: mont-blanc
       titulo: Mont Blanc
       tipo: poema
-      motivo: ninguno
+      motivo: nube
       animo: sublime
       escena: montanas
       gutenberg:
@@ -897,7 +897,7 @@ movimientos:
     - id: versos-sobre-la-abadia-de-tintern
       titulo: Versos sobre la abadía de Tintern
       tipo: poema
-      motivo: ruinas
+      motivo: arco
       animo: pastoral
       escena: bosque
       gutenberg:
@@ -906,7 +906,7 @@ movimientos:
     - id: el-preludio
       titulo: El preludio
       tipo: poema
-      motivo: ninguno
+      motivo: nube
       animo: auroral
       escena: montanas
       gutenberg:
@@ -915,7 +915,7 @@ movimientos:
     - id: vagaba-solitario-como-una-nube
       titulo: Vagaba solitario como una nube
       tipo: poema
-      motivo: arbol
+      motivo: narcisos
       animo: pastoral
       gutenberg:
         id: null
@@ -958,7 +958,7 @@ movimientos:
     - id: sobre-el-puente-de-westminster
       titulo: Sobre el puente de Westminster
       tipo: poema
-      motivo: catedral
+      motivo: puente
       animo: auroral
       escena: llanura
       gutenberg:

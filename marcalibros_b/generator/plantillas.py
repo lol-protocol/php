@@ -208,6 +208,298 @@ MOTIVOS.update({
 })
 
 
+# --- Biblioteca ampliada (obra a obra) ------------------------------------------
+
+def _suelo(altura, x):
+    return altura(x) + 3
+
+
+def _organo(esc, rng, p, altura):
+    """Tubos de órgano de distinta altura sobre una caja."""
+    x0, y = rng.uniform(0.2, 0.75) * ANCHO, _suelo(altura, 0)
+    y = _suelo(altura, x0)
+    esc.poligono([(x0 - 4, y), (x0 - 4, y - 8), (x0 + 66, y - 8), (x0 + 66, y)], p["figura"])
+    for k in range(8):
+        h = 26 + 7 * abs(3.5 - k) * 1.3 + rng.uniform(0, 6)
+        x = x0 + k * 8.5
+        esc.poligono([(x, y - 8), (x, y - 8 - h), (x + 3.5, y - 12 - h), (x + 7, y - 8 - h), (x + 7, y - 8)], p["figura"])
+
+
+def _fuente(esc, rng, p, altura):
+    """Fuente de pilón con surtidor."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 22, y - 12), (x + 22, y - 12), (x + 14, y - 3), (x + 6, y - 3), (x + 6, y - 14), (x - 6, y - 14),
+                  (x - 6, y - 3), (x - 14, y - 3)], p["figura"])
+    esc.poligono([(x - 1.5, y - 14), (x - 7, y - 44), (x, y - 52), (x + 7, y - 44), (x + 1.5, y - 14)], p["sol"])
+
+
+def _puente(esc, rng, p, altura):
+    """Puente de piedra de tres arcos."""
+    xc = rng.uniform(0.25, 0.75) * ANCHO
+    r, pila, n = 17, 8, 3
+    ancho = n * 2 * r + (n + 1) * pila
+    x0, x1 = xc - ancho / 2, xc + ancho / 2
+    yb = _suelo(altura, xc) + 6
+    yd = yb - 36
+    pts = [(x0, yb), (x0, yd), (x1, yd), (x1, yb)]
+    for k in range(n - 1, -1, -1):
+        cx = x0 + pila + r + k * (2 * r + pila)
+        pts += [(round(cx + r * math.cos(a * math.pi / 8), 1), round(yb - r * 1.1 * math.sin(a * math.pi / 8), 1))
+                for a in range(0, 9)]
+    esc.poligono(pts, p["figura"])
+
+
+def _faro(esc, rng, p, altura):
+    """Faro con haz de luz (solo en escenas marina)."""
+    x = rng.uniform(0.15, 0.85) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 8, y), (x - 5, y - 52), (x + 5, y - 52), (x + 8, y)], p["figura"])
+    esc.poligono([(x - 7, y - 52), (x - 7, y - 60), (x + 7, y - 60), (x + 7, y - 52)], p["sol"])
+    esc.poligono([(x - 9, y - 60), (x, y - 70), (x + 9, y - 60)], p["figura"])
+    esc.poligono([(x + 8, y - 57), (x + 130, y - 76), (x + 130, y - 38)], p["sol"])
+
+
+def _rosa(esc, rng, p, altura):
+    """Rosa de cinco pétalos sobre un tallo."""
+    x = rng.uniform(0.15, 0.85) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 1.2, y), (x - 1.2, y - 40), (x + 1.2, y - 40), (x + 1.2, y)], p["figura"])
+    esc.poligono([(x, y - 18), (x + 14, y - 28), (x + 4, y - 14)], p["figura"])
+    for k in range(5):
+        a = 2 * math.pi * k / 5
+        esc.circulo(round(x + 7 * math.cos(a), 1), round(y - 48 + 7 * math.sin(a), 1), 6, p["sol"])
+    esc.circulo(x, y - 48, 4, p["figura"])
+
+
+def _lira(esc, rng, p, altura):
+    """Lira: dos brazos curvos, travesaño y base."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = _suelo(altura, x)
+    brazo = [(x - 5 - 13 * math.sin(t / 8 * math.pi), y - 8 - t * 6) for t in range(0, 9)]
+    esc.poligono([(x - 11, y), (x - 11, y - 8), (x + 11, y - 8), (x + 11, y)], p["figura"])
+    for sgn in (-1, 1):
+        ext = [(round(a if sgn < 0 else 2 * x - a, 1), round(b, 1)) for a, b in brazo]
+        inte = [(round(a - sgn * 2.6, 1), b) for a, b in ext]
+        esc.poligono(ext + inte[::-1], p["figura"])
+    esc.poligono([(x - 14, y - 52), (x + 14, y - 52), (x + 14, y - 49), (x - 14, y - 49)], p["figura"])
+    for k in (-6, -2, 2, 6):
+        esc.poligono([(x + k - 0.5, y - 10), (x + k - 0.5, y - 50), (x + k + 0.5, y - 50), (x + k + 0.5, y - 10)], p["figura"])
+
+
+def _urna(esc, rng, p, altura):
+    """Ánfora griega."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 8, y), (x - 13, y - 14), (x - 15, y - 28), (x - 9, y - 40), (x - 5, y - 46), (x - 8, y - 52),
+                  (x + 8, y - 52), (x + 5, y - 46), (x + 9, y - 40), (x + 15, y - 28), (x + 13, y - 14), (x + 8, y)], p["figura"])
+    for sgn in (-1, 1):
+        esc.poligono([(x + sgn * 7, y - 46), (x + sgn * 20, y - 40), (x + sgn * 20, y - 30), (x + sgn * 14, y - 28),
+                      (x + sgn * 17, y - 34), (x + sgn * 16, y - 38), (x + sgn * 8, y - 42)], p["figura"])
+
+
+def _estatua(esc, rng, p, altura):
+    """Dos piernas de piedra sin tronco, con la base, como un coloso caído."""
+    x = rng.uniform(0.25, 0.75) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 30, y), (x - 30, y - 6), (x + 30, y - 6), (x + 30, y)], p["figura"])
+    for sgn in (-1, 1):
+        cx = x + sgn * 12
+        esc.poligono([(cx - 8, y - 6), (cx - 7, y - 50), (cx - 3, y - 56), (cx + 7, y - 52), (cx + 8, y - 6)], p["figura"])
+        esc.poligono([(cx - 12, y - 6), (cx - 12, y - 11), (cx + 12, y - 11), (cx + 12, y - 6)], p["figura"])
+
+
+def _horca(esc, rng, p, altura):
+    """Horca con soga."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 2, y), (x - 2, y - 64), (x + 38, y - 64), (x + 38, y - 60), (x + 2, y - 60), (x + 2, y)], p["figura"])
+    esc.poligono([(x + 2, y - 50), (x + 16, y - 61), (x + 16, y - 64), (x + 2, y - 55)], p["figura"])
+    esc.poligono([(x + 33, y - 60), (x + 33, y - 40), (x + 34.5, y - 40), (x + 34.5, y - 60)], p["figura"])
+    esc.circulo(x + 33.8, y - 38, 3.5, p["figura"])
+
+
+def _gato(esc, rng, p, altura):
+    """Gato negro sentado, de perfil."""
+    x = rng.uniform(0.15, 0.85) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 14, y), (x - 11, y - 18), (x - 6, y - 28), (x - 8, y - 38), (x - 5, y - 34), (x - 1, y - 36),
+                  (x + 2, y - 38), (x + 3, y - 32), (x + 3, y - 26), (x + 8, y - 14), (x + 12, y - 6), (x + 22, y - 4),
+                  (x + 24, y - 9), (x + 20, y - 12), (x + 14, y - 14), (x + 12, y)], p["figura"])
+
+
+def _corazon(esc, rng, p, altura):
+    """Corazón grande en el cielo."""
+    x, y, s = rng.uniform(0.2, 0.8) * ANCHO, rng.uniform(0.28, 0.4) * ALTO, 16
+    esc.circulo(x - s * 0.5, y - s * 0.35, s * 0.6, p["sol"])
+    esc.circulo(x + s * 0.5, y - s * 0.35, s * 0.6, p["sol"])
+    esc.poligono([(x - s * 1.06, y - s * 0.1), (x, y + s * 1.2), (x + s * 1.06, y - s * 0.1)], p["sol"])
+
+
+def _reloj(esc, rng, p, altura):
+    """Torre con esfera de reloj."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 14, y), (x - 14, y - 70), (x, y - 82), (x + 14, y - 70), (x + 14, y)], p["figura"])
+    esc.circulo(x, y - 54, 9, p["sol"])
+    esc.poligono([(x - 0.8, y - 54), (x - 0.8, y - 61), (x + 0.8, y - 61), (x + 0.8, y - 54)], p["figura"])
+    esc.poligono([(x, y - 55), (x + 5, y - 52), (x + 5, y - 53.5), (x, y - 54)], p["figura"])
+
+
+def _ataud(esc, rng, p, altura):
+    """Ataúd hexagonal."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 26, y - 8), (x - 20, y - 20), (x + 20, y - 20), (x + 30, y - 12), (x + 20, y - 2), (x - 20, y - 2)], p["figura"])
+
+
+def _lapidas(esc, rng, p, altura):
+    """Hilera de lápidas de cabeza redondeada."""
+    x0 = rng.uniform(0.1, 0.7) * ANCHO
+    for k in range(rng.randint(5, 7)):
+        x, w, h = x0 + k * rng.uniform(22, 30), rng.uniform(10, 14), rng.uniform(14, 28)
+        y = _suelo(altura, x)
+        esc.poligono([(x - w / 2, y), (x - w / 2, y - h + 4), (x - w / 4, y - h), (x + w / 4, y - h),
+                      (x + w / 2, y - h + 4), (x + w / 2, y)], p["figura"])
+
+
+def _vela(esc, rng, p, altura):
+    """Vela con llama y candelero."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 14, y), (x - 10, y - 5), (x + 10, y - 5), (x + 14, y)], p["figura"])
+    esc.poligono([(x - 5, y - 5), (x - 5, y - 44), (x + 5, y - 44), (x + 5, y - 5)], p["figura"])
+    esc.poligono([(x, y - 66), (x + 6, y - 52), (x + 3, y - 45), (x - 3, y - 45), (x - 6, y - 52)], p["sol"])
+
+
+def _olas(esc, rng, p, altura):
+    """Crestas de ola rizadas en la parte baja (solo en escenas marina)."""
+    x = rng.uniform(0, 0.15) * ANCHO
+    while x < ANCHO:
+        y = rng.uniform(0.8, 0.92) * ALTO
+        w = rng.uniform(46, 80)
+        esc.poligono([(x, y), (x + w * 0.35, y - 16), (x + w * 0.62, y - 22), (x + w * 0.8, y - 14),
+                      (x + w * 0.68, y - 15), (x + w * 0.52, y - 9), (x + w * 0.3, y - 2)], p["sol"])
+        x += w + rng.uniform(30, 90)
+
+
+def _nube(esc, rng, p, altura):
+    """Nube de bordes redondeados."""
+    x, y = rng.uniform(0.15, 0.85) * ANCHO, rng.uniform(0.2, 0.32) * ALTO
+    for dx, dy, r in ((-26, 4, 12), (-10, -6, 16), (10, -4, 18), (28, 4, 13), (0, 6, 14)):
+        esc.circulo(round(x + dx, 1), round(y + dy, 1), r, p["sol"])
+    esc.poligono([(x - 36, y + 12), (x - 36, y + 18), (x + 40, y + 18), (x + 40, y + 12)], p["sol"])
+
+
+def _narcisos(esc, rng, p, altura):
+    """Narcisos agrupados al pie del paisaje."""
+    x0 = rng.uniform(0.05, 0.7) * ANCHO
+    for _ in range(rng.randint(9, 14)):
+        x = x0 + rng.uniform(0, 260)
+        y, h = ALTO - 1, rng.uniform(22, 40)
+        esc.poligono([(x - 0.9, y), (x - 0.9, y - h), (x + 0.9, y - h), (x + 0.9, y)], p["figura"])
+        for k in range(6):
+            a = 2 * math.pi * k / 6
+            esc.circulo(round(x + 5 * math.cos(a), 1), round(y - h + 5 * math.sin(a), 1), 3.6, p["sol"])
+        esc.circulo(x, y - h, 3, p["figura"])
+
+
+def _hojas(esc, rng, p, altura):
+    """Hojas que caen."""
+    for _ in range(rng.randint(16, 24)):
+        x, y, s = rng.uniform(0.02, 0.98) * ANCHO, rng.uniform(0.05, 0.8) * ALTO, rng.uniform(4, 7)
+        a = rng.uniform(0, math.pi)
+        c, sn = math.cos(a), math.sin(a)
+        esc.poligono([(round(x + c * s * 1.4, 1), round(y + sn * s * 1.4, 1)),
+                      (round(x - sn * s * 0.7, 1), round(y + c * s * 0.7, 1)),
+                      (round(x - c * s * 1.4, 1), round(y - sn * s * 1.4, 1)),
+                      (round(x + sn * s * 0.7, 1), round(y - c * s * 0.7, 1))], p["sol"])
+
+
+def _serpiente(esc, rng, p, altura):
+    """Serpiente ondulante sobre el suelo."""
+    x0 = rng.uniform(0.1, 0.7) * ANCHO
+    base = _suelo(altura, x0) - 4
+    arriba, abajo = [], []
+    for k in range(0, 41):
+        x = x0 + k * 3.5
+        y = base - 9 * math.sin(k / 3.2) - (7 if k > 36 else 0) * (k - 36) / 4
+        g = 4.2 * (1 - k / 48) + 0.8
+        arriba.append((round(x, 1), round(y - g, 1)))
+        abajo.append((round(x, 1), round(y + g, 1)))
+    esc.poligono(arriba + abajo[::-1], p["figura"])
+
+
+def _espada(esc, rng, p, altura):
+    """Espada clavada en el suelo."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 3, y - 36), (x, y + 2), (x + 3, y - 36)], p["figura"])
+    esc.poligono([(x - 11, y - 36), (x - 11, y - 40), (x + 11, y - 40), (x + 11, y - 36)], p["figura"])
+    esc.poligono([(x - 2, y - 40), (x - 2, y - 56), (x + 2, y - 56), (x + 2, y - 40)], p["figura"])
+    esc.circulo(x, y - 58, 3.4, p["figura"])
+
+
+def _corona(esc, rng, p, altura):
+    """Corona de cinco puntas en el cielo."""
+    x, y = rng.uniform(0.2, 0.8) * ANCHO, rng.uniform(0.3, 0.42) * ALTO
+    esc.poligono([(x - 24, y + 14), (x - 28, y - 14), (x - 14, y - 2), (x - 7, y - 20), (x, y - 4), (x + 7, y - 20),
+                  (x + 14, y - 2), (x + 28, y - 14), (x + 24, y + 14)], p["sol"])
+
+
+def _barca(esc, rng, p, altura):
+    """Barca de remos en el agua (solo en escenas marina)."""
+    x = rng.uniform(0.15, 0.85) * ANCHO
+    y = rng.linea + 24
+    esc.poligono([(x - 26, y - 8), (x + 26, y - 8), (x + 16, y + 2), (x - 14, y + 2)], p["figura"])
+    esc.poligono([(x - 3, y - 6), (x + 20, y - 28), (x + 22, y - 26), (x - 1, y - 4)], p["figura"])
+
+
+def _arco(esc, rng, p, altura):
+    """Arco gótico en ruinas."""
+    x = rng.uniform(0.2, 0.8) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 32, y), (x - 32, y - 52), (x - 24, y - 70), (x - 10, y - 82), (x, y - 86), (x + 10, y - 82),
+                  (x + 24, y - 70), (x + 32, y - 52), (x + 32, y), (x + 20, y), (x + 20, y - 50), (x + 12, y - 64),
+                  (x, y - 72), (x - 12, y - 64), (x - 20, y - 50), (x - 20, y)], p["figura"])
+
+
+def _horreo(esc, rng, p, altura):
+    """Hórreo gallego: caja alargada sobre pies, tejado a dos aguas y cruz."""
+    x = rng.uniform(0.15, 0.8) * ANCHO
+    y = _suelo(altura, x)
+    for dx in (-30, -12, 12, 30):
+        esc.poligono([(x + dx - 2, y), (x + dx - 2, y - 12), (x + dx + 2, y - 12), (x + dx + 2, y)], p["figura"])
+    esc.poligono([(x - 38, y - 12), (x - 38, y - 30), (x + 38, y - 30), (x + 38, y - 12)], p["figura"])
+    esc.poligono([(x - 42, y - 30), (x, y - 46), (x + 42, y - 30)], p["figura"])
+    esc.poligono([(x + 40, y - 38), (x + 40, y - 56), (x + 42, y - 56), (x + 42, y - 38)], p["figura"])
+    esc.poligono([(x + 36, y - 50), (x + 36, y - 52), (x + 46, y - 52), (x + 46, y - 50)], p["figura"])
+
+
+def _barricada(esc, rng, p, altura):
+    """Barricada de tablones y ruedas con una bandera."""
+    x0 = rng.uniform(0.2, 0.7) * ANCHO
+    y = _suelo(altura, x0)
+    pts, x = [(x0, y)], x0
+    while x < x0 + 120:
+        x += rng.uniform(8, 16)
+        pts.append((round(x, 1), round(y - rng.uniform(16, 34), 1)))
+    pts.append((x, y))
+    esc.poligono(pts, p["figura"])
+    px = x0 + 60
+    esc.poligono([(px, y - 30), (px, y - 74), (px + 1.8, y - 74), (px + 1.8, y - 30)], p["figura"])
+    esc.poligono([(px + 1.8, y - 74), (px + 26, y - 68), (px + 1.8, y - 60)], p["sol"])
+
+
+MOTIVOS.update({
+    "organo": _organo, "fuente": _fuente, "puente": _puente, "faro": _faro, "rosa": _rosa, "lira": _lira,
+    "urna": _urna, "estatua": _estatua, "horca": _horca, "gato": _gato, "corazon": _corazon, "reloj": _reloj,
+    "ataud": _ataud, "lapidas": _lapidas, "vela": _vela, "olas": _olas, "nube": _nube, "narcisos": _narcisos,
+    "hojas": _hojas, "serpiente": _serpiente, "espada": _espada, "corona": _corona, "barca": _barca,
+    "arco": _arco, "horreo": _horreo, "barricada": _barricada,
+})
+
+
 # --- Arquetipos de composición -------------------------------------------------
 # Cada uno dibuja el paisaje y devuelve la función altura(x) de la capa lejana,
 # donde se apoyan los motivos (torre, etc.).
