@@ -45,7 +45,8 @@ territorios menores.
 | `poblacion_millones` | Población actual, en millones. **Sin contrastar** (ver «Estado de los datos»). |
 | `poblacion_historica_acumulada` | Personas que han nacido en el país desde la prehistoria, en millones. **Vacía: sin datos** (ver más abajo). |
 | `idh` | Índice de Desarrollo Humano. **Sin contrastar.** |
-| `pib_per_capita_usd` | PIB per cápita nominal en dólares. **Sin contrastar.** |
+| `pib_per_capita_usd` | PIB per cápita **nominal** en dólares. **Sin contrastar.** |
+| `pib_per_capita_ppa_usd` | PIB per cápita en **paridad de poder adquisitivo** (dólares internacionales). **Vacía: sin datos** (ver «Estado de los datos»). |
 | `indice_genealogia` | IG, de 1 a 5. |
 | `indice_operabilidad` | IO, de 1 a 5. |
 | `comentarios` | Motivo de los puntajes de genealogía. |
@@ -55,10 +56,10 @@ territorios menores.
 | Columna | Qué es |
 |---|---|
 | `codigo` | Igual que en `paises.csv`. |
-| `idioma_principal` | Las lenguas en que se escribe la mayoría de los textos. El criterio para puntuar IP está pendiente (ver abajo). |
+| `idioma_principal` | Las lenguas en que se escribe la mayoría de los textos del país. IP usa la que tenga más recursos (ver abajo). |
 | `indice_lectura` | IL, de 1 a 5. |
 | `indice_pos` | IP, de 1 a 5. |
-| `comentarios_pos` | Motivo de los puntajes del etiquetador. |
+| `comentarios_pos` | Motivo de los puntajes del etiquetador. Si el comentario empieza con «IP por …», el puntaje sale de esa lengua. |
 
 ## Genealogía: índices IG e IO
 
@@ -92,9 +93,9 @@ Nicaragua tenía IO = 1 y ahora tiene IO = 2: sus sanciones son parciales y sus 
 de medios e internet) son los mismos que los de Vietnam, que la rúbrica ya marca como «difícil».
 
 Camboya y Vietnam tienen IO = 2 («difícil»): sus índices los marcan como difíciles, no como
-inviables, así que con este umbral **siguen dentro**. Para sacarlos habría que bajar su IO a 1, lo
-que la rúbrica no justifica, o subir el umbral a IO ≤ 2, que deja fuera 55 países. El umbral está
-en `UMBRAL_GENEALOGIA` de `generar_tabla.py`.
+inviables, así que con este umbral **siguen dentro**. Esa fue la decisión tomada. Para sacarlos
+habría que bajar su IO a 1, lo que la rúbrica no justifica, o subir el umbral a IO ≤ 2, que deja
+fuera 55 países. El umbral está en `UMBRAL_GENEALOGIA` de `generar_tabla.py`.
 
 ## Etiquetador POS: índices IL e IP
 
@@ -115,16 +116,25 @@ texto digital utilizable. **No usa sanciones ni política**: eso lo cubre IO.
 - 4: varios recursos moderados.
 - 3: recursos pequeños pero utilizables (un treebank o un corpus limitado).
 - 2: recursos mínimos, casi sin texto digital anotable.
-- 1: sin recursos, o sin acceso a texto digital.
+- 1: sin recursos abiertos en ninguna de las lenguas listadas.
 
-**Prioridad POS** = IL × IP. **Excluido POS** = IP ≤ 1: quedan fuera **8 países**: Burundi,
-Comoras, Corea del Norte, Maldivas, República Centroafricana, Somalia, Sudán del Sur y
-Turkmenistán. El umbral está en `UMBRAL_POS`.
+**Criterio de IP (vigente, elegido por ti):** IP toma la lengua de `idioma_principal` con más
+recursos. Así, en un país con inglés y otra lengua, cuenta el inglés. Los países que cambiaron
+de puntaje llevan el comentario «IP por …» para que se vea de qué lengua sale.
 
-**Criterio de IP, pendiente de decidir.** En la mayoría de los países IP mira la lengua local
-(kirundi, somalí, dhivehi). En varios países multilingües mira, sin decirlo, la lengua con más
-recursos (francés, inglés, ruso). Mezclar los dos criterios hace que países como Togo o Lesotho
-queden bajos sin una razón clara. Hay que elegir uno antes de decidir con esta columna.
+**Consecuencia que hay que conocer:** casi todos los países listan inglés, francés, español o
+portugués, así que el criterio sube a 5 a la mayoría. Hoy **141 de 199** tienen IP = 5, y los
+demás se reparten así: 28 con 4, 17 con 3, 11 con 2 y 2 con 1. Con esta distribución la columna
+distingue poco entre países.
+
+**Prioridad POS** = IL × IP. **Excluido POS** = IP ≤ 1: quedan fuera **2 países**, Maldivas
+(dhivehi) y Turkmenistán (turcomano), los dos únicos cuya lengua listada no tiene recursos
+abiertos. Antes eran 8, pero con el criterio de la lengua con más recursos la mayoría de esos
+países listan también una lengua con recursos (por ejemplo, el francés en Burundi o la República
+Centroafricana). El umbral está en `UMBRAL_POS`.
+
+**Corea del Norte** pasó a IP = 4: su lengua listada (coreano) tiene recursos abiertos. Su acceso
+restringido al texto del país es un problema de IO, no de IP, como dice la definición de arriba.
 
 Los índices IL e IP son de juicio propio, con base en recursos y alfabetización que no se han
 contrastado con fuentes (ver «Estado de los datos»).
@@ -152,11 +162,18 @@ durante casi toda la historia.
 - Si una serie termina antes del año 2000, el país se salta y el script lo lista. No extiende la
   última población hasta 2025 en silencio.
 
+**Fuente elegida: HYDE 3.3 directo.** HYDE publica cuadrículas de 5 minutos de arco (archivos
+ESRI ASCII), no totales por país. Para llegar a un total por país hace falta una máscara de
+fronteras nacionales que sume las celdas de cada país. Esa agregación todavía no existe en el
+repositorio, y el dominio de HYDE no está habilitado en esta sesión. Si la agregación resulta
+demasiado pesada, la alternativa es el producto *Population, 10,000 BCE to 2023* de Our World in
+Data, que ya trae totales por país y se construye a partir de HYDE. Como respaldo está el
+*Maddison Project Database 2023* (desde el año 1; DOI `10.34894/INZBF2`).
+
 **Datos de entrada (no están en el repositorio):**
 
-- `poblacion_larga.csv` (`codigo,anio,poblacion`): la serie larga por país. Fuente propuesta:
-  *Population, 10,000 BCE to 2023*, de Our World in Data (combina HYDE, Gapminder y la ONU). Como
-  respaldo, el *Maddison Project Database 2023* (desde el año 1; DOI `10.34894/INZBF2`).
+- `poblacion_larga.csv` (`codigo,anio,poblacion`): la serie larga por país, con la fuente que se
+  elija arriba.
 - `natalidad.csv` (`codigo,anio,tasa_por_mil`): natalidad anual desde 1950, de la ONU (*World
   Population Prospects*) o del Banco Mundial (`SP.DYN.CBRT.IN`). Si falta un país, usa 0,040.
 
@@ -168,19 +185,25 @@ durante casi toda la historia.
   Hay que verificarla antes de usar las cifras más antiguas.
 - Antes de 1950 la natalidad varió mucho entre épocas y regiones; el 0,040 constante es una
   simplificación.
+- Banco Mundial empieza su natalidad en 1960; los años 1950 a 1959 quedan con 0,040 hasta que
+  haya una fuente que los cubra.
 
 ## Estado de los datos
 
 Léelo antes de usar la tabla para decidir.
 
-- **Población actual, IDH y PIB per cápita: son referencias cargadas de memoria, no consultadas.**
-  No se pudieron abrir las fuentes oficiales desde la sesión donde se generó la tabla: el Banco
-  Mundial y el PNUD devolvían 403 por el proxy, y en otras pruebas no resolvían. Las cifras son
-  aproximadas y redondeadas. Antes de decidir con ellas, contrástalas con:
-  - Banco Mundial: `SP.POP.TOTL` (población) y `NY.GDP.PCAP.CD` (PIB per cápita).
+- **Población actual, IDH y PIB per cápita nominal: son referencias cargadas de memoria, no
+  consultadas.** No se pudieron abrir las fuentes oficiales desde la sesión donde se generó la
+  tabla: el Banco Mundial y el PNUD devolvían 403 por el proxy, y en otras pruebas no resolvían. En
+  la última sesión, todos los hosts de datos (Banco Mundial, PNUD, Our World in Data y PBL) seguían
+  sin responder. Las cifras son aproximadas y redondeadas. Antes de decidir con ellas, contrástalas con:
+  - Banco Mundial: `SP.POP.TOTL` (población) y `NY.GDP.PCAP.CD` (PIB per cápita nominal).
   - ONU, *World Population Prospects* (población).
   - PNUD, *Informe sobre Desarrollo Humano* (IDH).
-  - FMI, *World Economic Outlook* (PIB per cápita).
+  - FMI, *World Economic Outlook* (PIB per cápita nominal).
+- **PIB per cápita PPA: sin datos todavía.** Se llenará desde el Banco Mundial, indicador
+  `NY.GDP.PCAP.PP.CD` (que hay que confirmar al consultarlo). No se han cargado cifras de memoria
+  para esta columna, para no mezclar dos métodos sin fuente.
 - **Celdas vacías (—):** cuando no hay una cifra fiable se deja vacía. Por ejemplo, el IDH de
   Corea del Norte, Palestina, Siria o Nauru, o el PIB per cápita de Cuba o Corea del Norte.
 - **Población histórica acumulada: sin datos todavía.** `historia_poblacion.py` está listo para
@@ -192,15 +215,18 @@ Léelo antes de usar la tabla para decidir.
 
 ## Pendientes
 
-1. **Criterio de IP** (ver arriba): decidir si IP mira la lengua local o la lengua con más recursos.
-   Con la segunda opción, Togo, Benín, Kirguistán, Lesotho y varios países del Pacífico subirían, y
-   la lista de excluidos POS cambiaría.
-2. **Población histórica acumulada:** conseguir `poblacion_larga.csv` (OWID o Maddison) y
-   `natalidad.csv`, y ejecutar `historia_poblacion.py`. Hay que confirmar el dominio desde donde
-   se descarga antes de habilitarlo.
-3. **Contrastar población, IDH y PIB per cápita** con las fuentes oficiales.
-4. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
-5. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
-   55. Camboya y Vietnam siguen dentro hasta que se revise su IO o se suba el umbral.
-6. **Agregar este proyecto a la tabla de `README.md` de la raíz.** Ese archivo es compartido,
+1. **Criterio de IP:** ya está fijado en «la lengua con más recursos», pero con esa regla 141 de
+   199 países quedan en 5. Hay que decidir si se mantiene, si se usa la lengua local o si se
+   agrega un desempate.
+2. **Población histórica acumulada:** decidir si se agrega HYDE por país (con máscara de
+   fronteras) o se usa el producto de Our World in Data. Después, conseguir `poblacion_larga.csv`
+   y `natalidad.csv`, y ejecutar `historia_poblacion.py`. Hay que habilitar el dominio elegido
+   antes de descargar.
+3. **PIB per cápita PPA:** cargar la columna desde el Banco Mundial, con el indicador
+   `NY.GDP.PCAP.PP.CD`.
+4. **Contrastar población, IDH y PIB per cápita nominal** con las fuentes oficiales.
+5. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
+6. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
+   55. Camboya y Vietnam siguen dentro, por decisión tomada.
+7. **Agregar este proyecto a la tabla de `README.md` de la raíz.** Ese archivo es compartido,
    así que el cambio va en un PR aparte.

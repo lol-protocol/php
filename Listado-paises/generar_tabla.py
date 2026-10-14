@@ -18,12 +18,13 @@ SALIDA_POS = AQUI / "tabla_pos.md"
 
 COLUMNAS_PAISES = [
     "codigo", "pais", "tipo", "region", "poblacion_millones",
-    "poblacion_historica_acumulada", "idh", "pib_per_capita_usd",
+    "poblacion_historica_acumulada", "idh", "pib_per_capita_usd", "pib_per_capita_ppa_usd",
     "indice_genealogia", "indice_operabilidad", "comentarios",
 ]
 COLUMNAS_POS = ["codigo", "idioma_principal", "indice_lectura", "indice_pos", "comentarios_pos"]
 TIPOS = {"estado", "territorio", "entidad disputada"}
-NUMERICAS_PAISES = ["poblacion_millones", "poblacion_historica_acumulada", "idh", "pib_per_capita_usd"]
+NUMERICAS_PAISES = ["poblacion_millones", "poblacion_historica_acumulada", "idh",
+                    "pib_per_capita_usd", "pib_per_capita_ppa_usd"]
 ESCALAS_PAISES = ["indice_genealogia", "indice_operabilidad"]
 ESCALAS_POS = ["indice_lectura", "indice_pos"]
 UMBRAL_GENEALOGIA = 1  # IO <= 1: inviable para operar
@@ -108,6 +109,7 @@ def main():
             f["pais"], f["tipo"], f["region"], celda(f["poblacion_millones"]),
             celda(f["poblacion_historica_acumulada"], "pendiente"),
             celda(f["idh"]), celda(f["pib_per_capita_usd"]),
+            celda(f["pib_per_capita_ppa_usd"], "pendiente"),
             str(ig), str(io), str(ig * io), "sí" if excl_gen else "no", f["comentarios"],
         ]))
         filas_pos.append((excl_pos, -il * ip, f["pais"], [
@@ -123,8 +125,8 @@ def main():
         "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Cifras de población, "
         "IDH y PIB pc **sin contrastar**; ver `README.md`, «Estado de los datos».",
         ["País", "Tipo", "Región", "Población (M)", "Población histórica acumulada (M)",
-         "IDH", "PIB pc (USD)", "Genealogía (IG)", "Operabilidad (IO)", "Prioridad",
-         "Excluido", "Comentarios"],
+         "IDH", "PIB pc nominal (USD)", "PIB pc PPA (USD)", "Genealogía (IG)",
+         "Operabilidad (IO)", "Prioridad", "Excluido", "Comentarios"],
         gen_ordenado), encoding="utf-8")
     SALIDA_POS.write_text(tabla_md(
         "Listado de países: etiquetador POS",

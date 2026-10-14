@@ -22,184 +22,184 @@
 | Argentina | español | estado | 4 | 5 | 20 | no | Español con recursos grandes; variedad rioplatense bien cubierta |
 | Bahamas | inglés | estado | 4 | 5 | 20 | no | Inglés con muchos recursos |
 | Barbados | inglés | estado | 4 | 5 | 20 | no | Inglés con muchos recursos |
+| Bielorrusia | ruso; bielorruso | estado | 4 | 5 | 20 | no | IP por ruso (mejor recurso listado). Ruso con recursos grandes; bielorruso casi sin corpus anotados |
 | Brasil | portugués | estado | 4 | 5 | 20 | no | Portugués con treebanks y corpus grandes; mercado editorial amplio |
+| Brunéi | malayo; inglés | estado | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). Malayo con recursos moderados |
 | Chequia | checo | estado | 4 | 5 | 20 | no | Checo con un treebank grande (PDT) y corpus amplios |
 | Chile | español | estado | 4 | 5 | 20 | no | Español con recursos grandes; variedad chilena con corpus propios |
+| Chipre | griego; turco | estado | 4 | 5 | 20 | no | IP por turco (mejor recurso listado). Griego con treebank moderado; el turco de Chipre tiene pocos recursos |
 | Colombia | español | estado | 4 | 5 | 20 | no | Español con recursos grandes; variedad colombiana bien cubierta |
 | Corea del Sur | coreano | estado | 5 | 4 | 20 | no | Mercado editorial grande; coreano con treebanks moderados |
 | Costa Rica | español | estado | 4 | 5 | 20 | no | Español con recursos grandes |
+| Cuba | español | estado | 4 | 5 | 20 | no | IP por español (mejor recurso listado). Español con recursos abiertos; el texto digital cubano es limitado |
 | Dinamarca | danés | estado | 5 | 4 | 20 | no | Danés con treebank (DDT) y corpus moderados |
 | Ecuador | español; quechua | estado | 4 | 5 | 20 | no | Español con recursos grandes; quechua con pocos |
 | España | español; catalán; gallego; euskera | estado | 4 | 5 | 20 | no | Español con recursos muy grandes; catalán, gallego y euskera con recursos moderados |
+| Filipinas | inglés; filipino | estado | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). Inglés con recursos; filipino con corpus y treebanks moderados |
+| Fiyi | inglés; fiyiano | estado | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). Inglés es la lengua de la mayoría de textos digitales; fiyiano con pocos recursos |
 | Francia | francés | estado | 4 | 5 | 20 | no | Francés con treebanks grandes |
 | Granada | inglés | estado | 4 | 5 | 20 | no | Inglés con muchos recursos |
+| Hong Kong | chino cantonés; inglés | territorio | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). Cantonés con pocos corpus anotados; inglés abundante |
 | Italia | italiano | estado | 4 | 5 | 20 | no | Italiano con treebanks grandes |
 | Jamaica | inglés; criollo jamaiquino | estado | 4 | 5 | 20 | no | Inglés con recursos grandes |
+| Kazajistán | kazajo; ruso | estado | 4 | 5 | 20 | no | IP por ruso (mejor recurso listado). Kazajo con un treebank pequeño; ruso con recursos |
 | Liechtenstein | alemán | estado | 4 | 5 | 20 | no | Alemán con recursos grandes; mercado editorial pequeño |
+| Luxemburgo | francés; alemán; luxemburgués | estado | 4 | 5 | 20 | no | IP por francés (mejor recurso listado). Francés y alemán con recursos; el luxemburgués tiene pocos |
+| Macao | chino cantonés; portugués | territorio | 4 | 5 | 20 | no | IP por portugués (mejor recurso listado). Chino con recursos; portugués con recursos moderados |
+| Malasia | malayo; inglés; chino | estado | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). Malayo con recursos moderados; inglés abundante |
+| Malta | maltés; inglés | estado | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). Maltés con un treebank pequeño; inglés abundante |
+| Moldavia | rumano; ruso | estado | 4 | 5 | 20 | no | IP por ruso (mejor recurso listado). Rumano con treebank moderado; ruso con recursos |
 | Mónaco | francés | estado | 4 | 5 | 20 | no | Francés con treebanks grandes; mercado editorial pequeño |
 | Noruega | noruego | estado | 5 | 4 | 20 | no | Noruego con treebanks moderados (bokmål y nynorsk) |
 | Panamá | español | estado | 4 | 5 | 20 | no | Español con recursos grandes |
 | Portugal | portugués | estado | 4 | 5 | 20 | no | Portugués europeo con corpus grandes |
 | Rusia | ruso | estado | 4 | 5 | 20 | no | Ruso con treebanks grandes (SynTagRus) |
 | San Cristóbal y Nieves | inglés | estado | 4 | 5 | 20 | no | Inglés con muchos recursos |
+| San Marino | italiano | estado | 4 | 5 | 20 | no | IP por italiano (mejor recurso listado). Italiano con recursos grandes; mercado editorial pequeño |
+| Seychelles | criollo seychellense; inglés; francés | estado | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). El criollo tiene pocos recursos; inglés y francés con recursos |
 | Singapur | inglés; chino; malayo; tamil | estado | 4 | 5 | 20 | no | Inglés con recursos muy grandes; mandarín con treebanks |
+| Sri Lanka | cingalés; tamil; inglés | estado | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). Cingalés con recursos pequeños; tamil con treebank |
+| Sudáfrica | inglés; afrikáans; zulú; xhosa | estado | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). Inglés y afrikáans con recursos; las lenguas bantúes con pocos |
 | Taiwán | chino tradicional | entidad disputada | 5 | 4 | 20 | no | Chino con corpus y treebanks grandes; la segmentación exige herramientas |
 | Trinidad y Tobago | inglés | estado | 4 | 5 | 20 | no | Inglés con muchos recursos |
 | Turquía | turco | estado | 4 | 5 | 20 | no | Turco con treebanks grandes (IMST y BOUN) |
+| Ucrania | ucraniano; ruso | estado | 4 | 5 | 20 | no | IP por ruso (mejor recurso listado). Ucraniano con treebank moderado |
 | Uruguay | español | estado | 4 | 5 | 20 | no | Español con recursos grandes |
-| Bielorrusia | ruso; bielorruso | estado | 4 | 4 | 16 | no | Ruso con recursos grandes; bielorruso casi sin corpus anotados |
 | Bulgaria | búlgaro | estado | 4 | 4 | 16 | no | Búlgaro con treebank y corpus moderados |
 | China | chino (mandarín) | estado | 4 | 4 | 16 | no | Chino con corpus y treebanks muy grandes; la segmentación de palabras exige herramientas específicas |
-| Chipre | griego; turco | estado | 4 | 4 | 16 | no | Griego con treebank moderado; el turco de Chipre tiene pocos recursos |
 | Croacia | croata | estado | 4 | 4 | 16 | no | Croata con treebank y corpus moderados |
-| Cuba | español | estado | 4 | 4 | 16 | no | Español con recursos abiertos; el texto digital cubano es limitado |
 | Eslovaquia | eslovaco | estado | 4 | 4 | 16 | no | Eslovaco con treebank moderado |
 | Eslovenia | esloveno | estado | 4 | 4 | 16 | no | Esloveno con treebank y corpus moderados |
 | Estonia | estonio | estado | 4 | 4 | 16 | no | Estonio con treebank grande (EDT) |
-| Filipinas | inglés; filipino | estado | 4 | 4 | 16 | no | Inglés con recursos; filipino con corpus y treebanks moderados |
-| Fiyi | inglés; fiyiano | estado | 4 | 4 | 16 | no | Inglés es la lengua de la mayoría de textos digitales; fiyiano con pocos recursos |
 | Grecia | griego | estado | 4 | 4 | 16 | no | Griego con treebank moderado |
 | Hungría | húngaro | estado | 4 | 4 | 16 | no | Húngaro con treebank moderado (Szeged) |
 | Irán | persa | estado | 4 | 4 | 16 | no | Persa con treebank (Seraji) y corpus moderados; mercado editorial grande |
 | Israel | hebreo; árabe | estado | 4 | 4 | 16 | no | Hebreo con treebank (HTB) y corpus moderados |
 | Letonia | letón | estado | 4 | 4 | 16 | no | Letón con treebank moderado (LVTB) |
-| Luxemburgo | francés; alemán; luxemburgués | estado | 4 | 4 | 16 | no | Francés y alemán con recursos; el luxemburgués tiene pocos |
-| Malasia | malayo; inglés; chino | estado | 4 | 4 | 16 | no | Malayo con recursos moderados; inglés abundante |
 | Rumania | rumano | estado | 4 | 4 | 16 | no | Rumano con treebank moderado (RRT) |
-| San Marino | italiano | estado | 4 | 4 | 16 | no | Italiano con recursos grandes; mercado editorial pequeño |
-| Sudáfrica | inglés; afrikáans; zulú; xhosa | estado | 4 | 4 | 16 | no | Inglés y afrikáans con recursos; las lenguas bantúes con pocos |
-| Ucrania | ucraniano; ruso | estado | 4 | 4 | 16 | no | Ucraniano con treebank moderado |
 | Vietnam | vietnamita | estado | 4 | 4 | 16 | no | Vietnamita con treebank (VTB) y corpus moderados; la segmentación exige herramientas |
+| Andorra | catalán; español | estado | 3 | 5 | 15 | no | IP por español (mejor recurso listado). Mercado pequeño; catalán con recursos moderados |
+| Angola | portugués | estado | 3 | 5 | 15 | no | IP por portugués (mejor recurso listado). Alfabetización media; portugués con buenos recursos |
+| Argelia | árabe; francés | estado | 3 | 5 | 15 | no | IP por francés (mejor recurso listado). Árabe estándar con recursos; dialecto argelino y bereber con pocos |
+| Baréin | árabe; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Árabe con recursos; inglés muy usado en textos digitales |
+| Belice | inglés; español | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés y español con recursos; el criollo beliceño casi no tiene |
+| Bolivia | español; quechua; aimara | estado | 3 | 5 | 15 | no | IP por español (mejor recurso listado). Español con recursos; quechua y aimara con pocos corpus anotados |
+| Botsuana | inglés; setsuana | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; setsuana con pocos |
+| Cabo Verde | portugués; criollo caboverdiano | estado | 3 | 5 | 15 | no | IP por portugués (mejor recurso listado). Portugués con recursos; el criollo con corpus pequeños |
+| Camerún | francés; inglés | estado | 3 | 5 | 15 | no | IP por francés (mejor recurso listado). Francés e inglés con recursos; lenguas nacionales sin recursos |
+| Catar | árabe; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Árabe con recursos; mucho texto digital en inglés |
+| Congo | francés; lingala | estado | 3 | 5 | 15 | no | IP por francés (mejor recurso listado). Francés con recursos; lingala con pocos corpus |
+| Dominica | inglés; criollo dominiqués | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; el criollo casi no tiene |
 | El Salvador | español | estado | 3 | 5 | 15 | no | Español con recursos grandes |
+| Emiratos Árabes Unidos | árabe; inglés; urdu | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Árabe con recursos; inglés muy usado en textos digitales |
+| Esuatini | inglés; suazi | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; suazi con pocos |
+| Gabón | francés | estado | 3 | 5 | 15 | no | IP por francés (mejor recurso listado). Francés con recursos; lenguas bantúes sin recursos |
+| Ghana | inglés; twi | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; twi con corpus pequeños |
+| Guatemala | español; lenguas mayas | estado | 3 | 5 | 15 | no | IP por español (mejor recurso listado). Español con recursos; lenguas mayas casi sin corpus |
 | Guinea Ecuatorial | español; francés; fang | estado | 3 | 5 | 15 | no | Español con recursos grandes; el fang no tiene corpus |
 | Guyana | inglés | estado | 3 | 5 | 15 | no | Inglés con recursos |
 | Honduras | español | estado | 3 | 5 | 15 | no | Español con recursos grandes; mucho texto digital de calidad variable |
+| India | hindi; inglés; bengalí | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Hindi con treebank; muchas lenguas con recursos pequeños; inglés abundante |
 | Islandia | islandés | estado | 5 | 3 | 15 | no | Islandés con un treebank pequeño (IcePaHC) |
+| Islas Marshall | inglés; marshalés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés es la lengua de la mayoría de textos digitales; el marshalés casi no tiene |
+| Islas Salomón | inglés; pijin de las Salomón | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; el pijin con pocos |
+| Kenia | suajili; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Suajili con corpus pequeños; inglés con recursos |
+| Kirguistán | kirguís; ruso | estado | 3 | 5 | 15 | no | IP por ruso (mejor recurso listado). Kirguís con recursos mínimos |
+| Kiribati | gilbertés; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Gilbertés sin recursos digitales; inglés con recursos |
+| Kuwait | árabe; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Árabe con recursos; inglés abundante |
+| Lesoto | sesoto; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Sesoto con recursos mínimos; inglés con recursos |
+| Líbano | árabe; francés; inglés | estado | 3 | 5 | 15 | no | IP por francés (mejor recurso listado). Árabe, francés e inglés con recursos; el dialecto libanés con pocos |
+| Madagascar | malgache; francés | estado | 3 | 5 | 15 | no | IP por francés (mejor recurso listado). Malgache con recursos mínimos; francés con recursos |
+| Marruecos | árabe; bereber; francés | estado | 3 | 5 | 15 | no | IP por francés (mejor recurso listado). Árabe estándar con recursos; dialecto marroquí y bereber con pocos |
+| Mauricio | inglés; francés; criollo mauriciano | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés y francés con recursos; el criollo con pocos |
+| Micronesia | inglés; chuukés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; el chuukés con pocos |
 | México | español | estado | 3 | 5 | 15 | no | Español con recursos grandes; lenguas indígenas casi sin corpus |
+| Namibia | inglés; afrikáans; oshiwambo | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés y afrikáans con recursos; el oshiwambo con pocos |
+| Nauru | nauruano; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Nauruano sin recursos digitales; inglés con recursos |
 | Nicaragua | español | estado | 3 | 5 | 15 | no | Español con recursos grandes |
+| Palaos | inglés; palauano | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; el palauano casi no tiene |
+| Paraguay | español; guaraní | estado | 3 | 5 | 15 | no | IP por español (mejor recurso listado). Español con recursos; guaraní con corpus pequeños |
 | Perú | español; quechua | estado | 3 | 5 | 15 | no | Español con recursos grandes; quechua con pocos |
 | Puerto Rico | español; inglés | territorio | 3 | 5 | 15 | no | Español con recursos grandes; el mercado editorial local es pequeño |
+| República Democrática del Congo | francés; lingala; suajili; kikongo | estado | 3 | 5 | 15 | no | IP por francés (mejor recurso listado). Francés con recursos; las lenguas nacionales sin recursos |
 | República Dominicana | español | estado | 3 | 5 | 15 | no | Español con recursos grandes |
+| Ruanda | kinyarwanda; inglés; francés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Kinyarwanda con recursos mínimos; inglés con recursos |
+| Samoa | samoano; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Samoano con recursos mínimos |
+| San Vicente y las Granadinas | inglés; criollo | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; el criollo casi no tiene |
+| Santa Lucía | inglés; criollo santaluceño | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; el criollo casi no tiene |
+| Santo Tomé y Príncipe | portugués; criollo santotomense | estado | 3 | 5 | 15 | no | IP por portugués (mejor recurso listado). Portugués con recursos; el criollo con corpus pequeños |
+| Surinam | neerlandés; sranan tongo | estado | 3 | 5 | 15 | no | IP por neerlandés (mejor recurso listado). Neerlandés con recursos; el sranan con pocos |
+| Tanzania | suajili; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Suajili con corpus pequeños; inglés con recursos |
+| Tonga | tongano; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Tongano con recursos mínimos |
+| Tuvalu | tuvaluano; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Tuvaluano con recursos mínimos |
+| Túnez | árabe tunecino; francés | estado | 3 | 5 | 15 | no | IP por francés (mejor recurso listado). Árabe estándar con recursos; dialecto tunecino con corpus pequeños |
+| Uganda | inglés; luganda; suajili | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; luganda y suajili con corpus pequeños |
+| Vanuatu | bislama; inglés; francés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Bislama con recursos mínimos |
 | Venezuela | español | estado | 3 | 5 | 15 | no | Español con recursos grandes |
-| Angola | portugués | estado | 3 | 4 | 12 | no | Alfabetización media; portugués con buenos recursos |
+| Zambia | inglés; bemba; nyanja | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; bemba y nyanja con corpus pequeños |
+| Zimbabue | inglés; shona; ndebele | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; shona y ndebele con corpus pequeños |
 | Arabia Saudita | árabe | estado | 3 | 4 | 12 | no | Árabe estándar con corpus y treebanks; dialectos con poca cobertura |
 | Azerbaiyán | azerí | estado | 4 | 3 | 12 | no | Azerí con recursos pequeños |
-| Baréin | árabe; inglés | estado | 3 | 4 | 12 | no | Árabe con recursos; inglés muy usado en textos digitales |
-| Belice | inglés; español | estado | 3 | 4 | 12 | no | Inglés y español con recursos; el criollo beliceño casi no tiene |
-| Brunéi | malayo; inglés | estado | 4 | 3 | 12 | no | Malayo con recursos moderados |
-| Catar | árabe; inglés | estado | 3 | 4 | 12 | no | Árabe con recursos; mucho texto digital en inglés |
-| Dominica | inglés; criollo dominiqués | estado | 3 | 4 | 12 | no | Inglés con recursos; el criollo casi no tiene |
-| Emiratos Árabes Unidos | árabe; inglés; urdu | estado | 3 | 4 | 12 | no | Árabe con recursos; inglés muy usado en textos digitales |
+| Bosnia y Herzegovina | bosnio; croata; serbio | estado | 3 | 4 | 12 | no | IP por croata (mejor recurso listado). Croata y serbio con recursos moderados; bosnio limitado |
+| Corea del Norte | coreano | estado | 3 | 4 | 12 | no | IP por el coreano (mejor recurso listado). El acceso a texto de Corea del Norte es un problema de IO, no de IP. |
 | Georgia | georgiano | estado | 4 | 3 | 12 | no | Georgiano con un treebank pequeño |
-| Guatemala | español; lenguas mayas | estado | 3 | 4 | 12 | no | Español con recursos; lenguas mayas casi sin corpus |
-| Hong Kong | chino cantonés; inglés | territorio | 4 | 3 | 12 | no | Cantonés con pocos corpus anotados; inglés abundante |
-| India | hindi; inglés; bengalí | estado | 3 | 4 | 12 | no | Hindi con treebank; muchas lenguas con recursos pequeños; inglés abundante |
 | Indonesia | indonesio | estado | 3 | 4 | 12 | no | Indonesio con treebanks moderados |
-| Islas Marshall | inglés; marshalés | estado | 3 | 4 | 12 | no | Inglés es la lengua de la mayoría de textos digitales; el marshalés casi no tiene |
+| Irak | árabe; kurdo | estado | 3 | 4 | 12 | no | IP por árabe (mejor recurso listado). Árabe con recursos; kurdo con corpus pequeños |
 | Jordania | árabe | estado | 3 | 4 | 12 | no | Árabe con recursos; el dialecto levantino con pocos corpus |
-| Kazajistán | kazajo; ruso | estado | 4 | 3 | 12 | no | Kazajo con un treebank pequeño; ruso con recursos |
-| Kuwait | árabe; inglés | estado | 3 | 4 | 12 | no | Árabe con recursos; inglés abundante |
+| Libia | árabe | estado | 3 | 4 | 12 | no | IP por árabe (mejor recurso listado). Árabe estándar con recursos; dialecto libio con corpus pequeños |
 | Lituania | lituano | estado | 4 | 3 | 12 | no | Lituano con un treebank pequeño |
-| Líbano | árabe; francés; inglés | estado | 3 | 4 | 12 | no | Árabe, francés e inglés con recursos; el dialecto libanés con pocos |
-| Macao | chino cantonés; portugués | territorio | 4 | 3 | 12 | no | Chino con recursos; portugués con recursos moderados |
-| Malta | maltés; inglés | estado | 4 | 3 | 12 | no | Maltés con un treebank pequeño; inglés abundante |
-| Mauricio | inglés; francés; criollo mauriciano | estado | 3 | 4 | 12 | no | Inglés y francés con recursos; el criollo con pocos |
-| Moldavia | rumano; ruso | estado | 4 | 3 | 12 | no | Rumano con treebank moderado; ruso con recursos |
 | Mongolia | mongol | estado | 4 | 3 | 12 | no | Mongol con un treebank pequeño |
-| Namibia | inglés; afrikáans; oshiwambo | estado | 3 | 4 | 12 | no | Inglés y afrikáans con recursos; el oshiwambo con pocos |
 | Omán | árabe | estado | 3 | 4 | 12 | no | Árabe con recursos; dialecto omaní con pocos corpus |
 | Polonia | polaco | estado | 3 | 4 | 12 | no | Polaco con varios treebanks |
-| San Vicente y las Granadinas | inglés; criollo | estado | 3 | 4 | 12 | no | Inglés con recursos; el criollo casi no tiene |
-| Santa Lucía | inglés; criollo santaluceño | estado | 3 | 4 | 12 | no | Inglés con recursos; el criollo casi no tiene |
 | Serbia | serbio | estado | 4 | 3 | 12 | no | Serbio con treebank moderado |
-| Seychelles | criollo seychellense; inglés; francés | estado | 4 | 3 | 12 | no | El criollo tiene pocos recursos; inglés y francés con recursos |
-| Sri Lanka | cingalés; tamil; inglés | estado | 4 | 3 | 12 | no | Cingalés con recursos pequeños; tamil con treebank |
 | Tailandia | tailandés | estado | 4 | 3 | 12 | no | Tailandés con recursos moderados; la segmentación sin espacios exige herramientas |
 | Uzbekistán | uzbeko | estado | 4 | 3 | 12 | no | Uzbeko con un treebank pequeño |
-| Andorra | catalán; español | estado | 3 | 3 | 9 | no | Mercado pequeño; catalán con recursos moderados |
-| Argelia | árabe; francés | estado | 3 | 3 | 9 | no | Árabe estándar con recursos; dialecto argelino y bereber con pocos |
+| Comoras | shikomor; francés; árabe | estado | 2 | 5 | 10 | no | IP por francés (mejor recurso listado). El shikomor no tiene corpus anotados |
+| Costa de Marfil | francés | estado | 2 | 5 | 10 | no | IP por francés (mejor recurso listado). Francés con recursos; lenguas locales sin corpus |
+| Gambia | inglés; mandinga | estado | 2 | 5 | 10 | no | IP por inglés (mejor recurso listado). Inglés con recursos; lenguas nacionales casi sin texto digital |
+| Guinea-Bisáu | portugués; criollo guineense | estado | 2 | 5 | 10 | no | IP por portugués (mejor recurso listado). Portugués con recursos; el criollo con corpus pequeños |
+| Haití | criollo haitiano; francés | estado | 2 | 5 | 10 | no | IP por francés (mejor recurso listado). Criollo con recursos mínimos; francés con recursos |
+| Liberia | inglés | estado | 2 | 5 | 10 | no | IP por inglés (mejor recurso listado). Inglés con recursos; las lenguas locales casi no tienen texto digital |
+| Malaui | chichewa; inglés | estado | 2 | 5 | 10 | no | IP por inglés (mejor recurso listado). Chichewa con corpus pequeños; inglés con recursos |
+| Mauritania | árabe hasanía; francés | estado | 2 | 5 | 10 | no | IP por francés (mejor recurso listado). Árabe con recursos; el hasanía casi sin corpus |
+| Mozambique | portugués; emakhuwa | estado | 2 | 5 | 10 | no | IP por portugués (mejor recurso listado). Portugués con recursos; las lenguas bantúes casi sin corpus |
+| Nigeria | inglés; hausa; yoruba; igbo | estado | 2 | 5 | 10 | no | IP por inglés (mejor recurso listado). Inglés con recursos; hausa y yoruba con corpus pequeños; igbo con muy pocos |
+| Papúa Nueva Guinea | inglés; tok pisin; hiri motu | estado | 2 | 5 | 10 | no | IP por inglés (mejor recurso listado). Inglés con recursos; el tok pisin con corpus mínimos |
+| Senegal | francés; wolof | estado | 2 | 5 | 10 | no | IP por francés (mejor recurso listado). Francés con recursos; wolof con un treebank pequeño |
+| Timor Oriental | tetun; portugués | estado | 2 | 5 | 10 | no | IP por portugués (mejor recurso listado). Tetun con recursos mínimos; portugués con recursos |
+| Togo | francés; ewé; mina | estado | 2 | 5 | 10 | no | IP por francés (mejor recurso listado). Francés con recursos; lenguas nacionales sin recursos |
+| Yibuti | francés; árabe; somalí; afar | estado | 2 | 5 | 10 | no | IP por francés (mejor recurso listado). Francés y árabe con recursos; somalí y afar casi sin |
 | Armenia | armenio | estado | 3 | 3 | 9 | no | Armenio con un treebank pequeño |
 | Bangladés | bengalí | estado | 3 | 3 | 9 | no | Bengalí con corpus medianos y pocos treebanks |
-| Bolivia | español; quechua; aimara | estado | 3 | 3 | 9 | no | Español con recursos; quechua y aimara con pocos corpus anotados |
-| Bosnia y Herzegovina | bosnio; croata; serbio | estado | 3 | 3 | 9 | no | Croata y serbio con recursos moderados; bosnio limitado |
-| Botsuana | inglés; setsuana | estado | 3 | 3 | 9 | no | Inglés con recursos; setsuana con pocos |
-| Cabo Verde | portugués; criollo caboverdiano | estado | 3 | 3 | 9 | no | Portugués con recursos; el criollo con corpus pequeños |
-| Camerún | francés; inglés | estado | 3 | 3 | 9 | no | Francés e inglés con recursos; lenguas nacionales sin recursos |
 | Egipto | árabe egipcio | estado | 3 | 3 | 9 | no | Árabe estándar con recursos; dialecto egipcio con corpus pequeños |
-| Esuatini | inglés; suazi | estado | 3 | 3 | 9 | no | Inglés con recursos; suazi con pocos |
-| Gabón | francés | estado | 3 | 3 | 9 | no | Francés con recursos; lenguas bantúes sin recursos |
-| Ghana | inglés; twi | estado | 3 | 3 | 9 | no | Inglés con recursos; twi con corpus pequeños |
-| Irak | árabe; kurdo | estado | 3 | 3 | 9 | no | Árabe con recursos; kurdo con corpus pequeños |
-| Islas Salomón | inglés; pijin de las Salomón | estado | 3 | 3 | 9 | no | Inglés con recursos; el pijin con pocos |
-| Kenia | suajili; inglés | estado | 3 | 3 | 9 | no | Suajili con corpus pequeños; inglés con recursos |
-| Libia | árabe | estado | 3 | 3 | 9 | no | Árabe estándar con recursos; dialecto libio con corpus pequeños |
-| Marruecos | árabe; bereber; francés | estado | 3 | 3 | 9 | no | Árabe estándar con recursos; dialecto marroquí y bereber con pocos |
+| Kosovo | albanés; serbio | entidad disputada | 3 | 3 | 9 | no | IP por serbio (mejor recurso listado). Albanés con pocos recursos; serbio con recursos moderados |
 | Montenegro | montenegrino (serbocroata) | estado | 3 | 3 | 9 | no | Croata y serbio con recursos moderados; la variante montenegrina es pequeña |
 | Nepal | nepalí | estado | 3 | 3 | 9 | no | Nepalí con recursos pequeños |
 | Palestina | árabe palestino | entidad disputada | 3 | 3 | 9 | no | Árabe con recursos; el dialecto palestino con pocos corpus |
-| Paraguay | español; guaraní | estado | 3 | 3 | 9 | no | Español con recursos; guaraní con corpus pequeños |
-| Santo Tomé y Príncipe | portugués; criollo santotomense | estado | 3 | 3 | 9 | no | Portugués con recursos; el criollo con corpus pequeños |
 | Siria | árabe sirio | estado | 3 | 3 | 9 | no | Árabe con recursos; el dialecto sirio con pocos corpus |
-| Surinam | neerlandés; sranan tongo | estado | 3 | 3 | 9 | no | Neerlandés con recursos; el sranan con pocos |
-| Tanzania | suajili; inglés | estado | 3 | 3 | 9 | no | Suajili con corpus pequeños; inglés con recursos |
-| Túnez | árabe tunecino; francés | estado | 3 | 3 | 9 | no | Árabe estándar con recursos; dialecto tunecino con corpus pequeños |
-| Uganda | inglés; luganda; suajili | estado | 3 | 3 | 9 | no | Inglés con recursos; luganda y suajili con corpus pequeños |
-| Zambia | inglés; bemba; nyanja | estado | 3 | 3 | 9 | no | Inglés con recursos; bemba y nyanja con corpus pequeños |
-| Zimbabue | inglés; shona; ndebele | estado | 3 | 3 | 9 | no | Inglés con recursos; shona y ndebele con corpus pequeños |
-| Liberia | inglés | estado | 2 | 4 | 8 | no | Inglés con recursos; las lenguas locales casi no tienen texto digital |
+| Eritrea | tigriña; árabe | estado | 2 | 4 | 8 | no | IP por árabe (mejor recurso listado). El tigriña casi no tiene texto digital anotable |
 | Macedonia del Norte | macedonio; albanés | estado | 4 | 2 | 8 | no | Macedonio con recursos mínimos |
 | Tayikistán | tayiko | estado | 4 | 2 | 8 | no | Tayiko con recursos mínimos |
 | Albania | albanés | estado | 3 | 2 | 6 | no | Alfabetización alta; pocos recursos anotados en albanés |
 | Bután | dzongkha | estado | 3 | 2 | 6 | no | Dzongkha casi sin corpus digitales |
 | Camboya | jemer | estado | 3 | 2 | 6 | no | Jemer con pocos recursos anotados y poco texto digital |
-| Congo | francés; lingala | estado | 3 | 2 | 6 | no | Francés con recursos; lingala con pocos corpus |
-| Costa de Marfil | francés | estado | 2 | 3 | 6 | no | Francés con recursos; lenguas locales sin corpus |
-| Gambia | inglés; mandinga | estado | 2 | 3 | 6 | no | Inglés con recursos; lenguas nacionales casi sin texto digital |
-| Guinea-Bisáu | portugués; criollo guineense | estado | 2 | 3 | 6 | no | Portugués con recursos; el criollo con corpus pequeños |
-| Kirguistán | kirguís; ruso | estado | 3 | 2 | 6 | no | Kirguís con recursos mínimos |
-| Kiribati | gilbertés; inglés | estado | 3 | 2 | 6 | no | Gilbertés sin recursos digitales; inglés con recursos |
-| Kosovo | albanés; serbio | entidad disputada | 3 | 2 | 6 | no | Albanés con pocos recursos; serbio con recursos moderados |
 | Laos | lao | estado | 3 | 2 | 6 | no | Lao con recursos mínimos |
-| Lesoto | sesoto; inglés | estado | 3 | 2 | 6 | no | Sesoto con recursos mínimos; inglés con recursos |
-| Madagascar | malgache; francés | estado | 3 | 2 | 6 | no | Malgache con recursos mínimos; francés con recursos |
-| Malaui | chichewa; inglés | estado | 2 | 3 | 6 | no | Chichewa con corpus pequeños; inglés con recursos |
-| Micronesia | inglés; chuukés | estado | 3 | 2 | 6 | no | Inglés con recursos; el chuukés con pocos |
-| Mozambique | portugués; emakhuwa | estado | 2 | 3 | 6 | no | Portugués con recursos; las lenguas bantúes casi sin corpus |
 | Myanmar | birmano | estado | 3 | 2 | 6 | no | Birmano con recursos mínimos; poco texto digital abierto |
-| Nauru | nauruano; inglés | estado | 3 | 2 | 6 | no | Nauruano sin recursos digitales; inglés con recursos |
-| Nigeria | inglés; hausa; yoruba; igbo | estado | 2 | 3 | 6 | no | Inglés con recursos; hausa y yoruba con corpus pequeños; igbo con muy pocos |
 | Pakistán | urdu; punyabí; pastún | estado | 2 | 3 | 6 | no | Urdu con un treebank pequeño; punyabí y pastún con muy pocos recursos |
-| Palaos | inglés; palauano | estado | 3 | 2 | 6 | no | Inglés con recursos; el palauano casi no tiene |
-| República Democrática del Congo | francés; lingala; suajili; kikongo | estado | 3 | 2 | 6 | no | Francés con recursos; las lenguas nacionales sin recursos |
-| Ruanda | kinyarwanda; inglés; francés | estado | 3 | 2 | 6 | no | Kinyarwanda con recursos mínimos; inglés con recursos |
-| Samoa | samoano; inglés | estado | 3 | 2 | 6 | no | Samoano con recursos mínimos |
-| Senegal | francés; wolof | estado | 2 | 3 | 6 | no | Francés con recursos; wolof con un treebank pequeño |
-| Tonga | tongano; inglés | estado | 3 | 2 | 6 | no | Tongano con recursos mínimos |
-| Tuvalu | tuvaluano; inglés | estado | 3 | 2 | 6 | no | Tuvaluano con recursos mínimos |
-| Vanuatu | bislama; inglés; francés | estado | 3 | 2 | 6 | no | Bislama con recursos mínimos |
-| Eritrea | tigriña; árabe | estado | 2 | 2 | 4 | no | El tigriña casi no tiene texto digital anotable |
+| Benín | francés | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización baja; francés con recursos; lenguas nacionales sin recursos |
+| Burkina Faso | francés; moré | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; el moré casi no tiene recursos |
+| Burundi | kirundi; francés | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). El kirundi no tiene corpus anotados; el francés sí tiene recursos |
+| Chad | árabe chadiano; francés | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja y casi sin recursos digitales |
+| Guinea | francés; susu; pular | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; lenguas nacionales casi sin recursos |
+| Malí | francés; bambara | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; el bambara casi no tiene recursos |
+| Níger | francés; hausa; zarma | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; hausa y zarma casi sin recursos |
+| República Centroafricana | sango; francés | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; el sango no tiene recursos digitales |
+| Sierra Leona | inglés; krio | estado | 1 | 5 | 5 | no | IP por inglés (mejor recurso listado). Alfabetización baja; el krio tiene pocos textos digitales |
+| Sudán del Sur | inglés; árabe juba | estado | 1 | 5 | 5 | no | IP por inglés (mejor recurso listado). Alfabetización muy baja; sin recursos anotados |
 | Etiopía | amárico | estado | 2 | 2 | 4 | no | Amárico con corpus pequeños |
-| Haití | criollo haitiano; francés | estado | 2 | 2 | 4 | no | Criollo con recursos mínimos; francés con recursos |
-| Mauritania | árabe hasanía; francés | estado | 2 | 2 | 4 | no | Árabe con recursos; el hasanía casi sin corpus |
-| Papúa Nueva Guinea | inglés; tok pisin; hiri motu | estado | 2 | 2 | 4 | no | Inglés con recursos; el tok pisin con corpus mínimos |
+| Somalia | somalí; árabe | estado | 1 | 4 | 4 | no | IP por árabe (mejor recurso listado). El somalí no tiene corpus anotados |
 | Sudán | árabe sudanés | estado | 2 | 2 | 4 | no | Árabe sudanés con pocos corpus |
-| Timor Oriental | tetun; portugués | estado | 2 | 2 | 4 | no | Tetun con recursos mínimos; portugués con recursos |
-| Togo | francés; ewé; mina | estado | 2 | 2 | 4 | no | Francés con recursos; lenguas nacionales sin recursos |
 | Yemen | árabe yemení | estado | 2 | 2 | 4 | no | Árabe con recursos; el dialecto yemení con pocos corpus |
-| Yibuti | francés; árabe; somalí; afar | estado | 2 | 2 | 4 | no | Francés y árabe con recursos; somalí y afar casi sin |
-| Benín | francés | estado | 1 | 3 | 3 | no | Alfabetización baja; francés con recursos; lenguas nacionales sin recursos |
 | Afganistán | dari; pastún | estado | 1 | 2 | 2 | no | Alfabetización muy baja; el dari tiene pocos corpus anotados y el pastún casi ninguno |
-| Burkina Faso | francés; moré | estado | 1 | 2 | 2 | no | Alfabetización muy baja; el moré casi no tiene recursos |
-| Chad | árabe chadiano; francés | estado | 1 | 2 | 2 | no | Alfabetización muy baja y casi sin recursos digitales |
-| Guinea | francés; susu; pular | estado | 1 | 2 | 2 | no | Alfabetización muy baja; lenguas nacionales casi sin recursos |
-| Malí | francés; bambara | estado | 1 | 2 | 2 | no | Alfabetización muy baja; el bambara casi no tiene recursos |
-| Níger | francés; hausa; zarma | estado | 1 | 2 | 2 | no | Alfabetización muy baja; hausa y zarma casi sin recursos |
-| Sierra Leona | inglés; krio | estado | 1 | 2 | 2 | no | Alfabetización baja; el krio tiene pocos textos digitales |
 | Maldivas | dhivehi | estado | 4 | 1 | 4 | sí | El dhivehi no tiene corpus anotados |
-| Corea del Norte | coreano | estado | 3 | 1 | 3 | sí | Sin acceso a texto digital abierto; el coreano tiene recursos fuera del país |
 | Turkmenistán | turcomano | estado | 3 | 1 | 3 | sí | El turcomano no tiene corpus anotados ni texto digital abierto |
-| Comoras | shikomor; francés; árabe | estado | 2 | 1 | 2 | sí | El shikomor no tiene corpus anotados |
-| Burundi | kirundi; francés | estado | 1 | 1 | 1 | sí | El kirundi no tiene corpus anotados; el francés sí tiene recursos |
-| República Centroafricana | sango; francés | estado | 1 | 1 | 1 | sí | Alfabetización muy baja; el sango no tiene recursos digitales |
-| Somalia | somalí; árabe | estado | 1 | 1 | 1 | sí | El somalí no tiene corpus anotados |
-| Sudán del Sur | inglés; árabe juba | estado | 1 | 1 | 1 | sí | Alfabetización muy baja; sin recursos anotados |
