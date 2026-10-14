@@ -265,6 +265,61 @@ pendiente** (lo que todavía se debe), que es plata por cobrar. Cómo se llena:
   tasa exacta de cada fecha, falta una tabla de cotizaciones por día (y una importación
   que las use: las filas aceptan una tasa explícita).
 
+### Respaldos
+
+Con `boletas`, `pagos` y clientes reales adentro, la base no se puede perder. El respaldo es
+un comando pensado para cron, una vez por día:
+
+```bash
+php database/respaldar.php                           # o: composer respaldar
+php database/respaldar.php --carpeta=/var/backups/cobros --dias=30
+```
+
+```
+30 3 * * *  cd /ruta/al/proyecto && php database/respaldar.php >/dev/null
+```
+
+(`>/dev/null` deja pasar solo la salida de errores, que es la que cron manda por mail.) Hace un
+`pg_dump -Fc` (el formato propio de Postgres, comprimido) en `RESPALDOS_CARPETA` (por defecto,
+`respaldos/` del proyecto, que git ignora; conviene una carpeta fuera del proyecto) con el
+nombre `base-AAAAMMDD-HHMMSS.dump` (hora UTC). Usa las mismas `DB_*` que la app, y necesita el
+cliente de PostgreSQL (`pg_dump` y `pg_restore`, de una versión igual o mayor que la del
+servidor; si no están en el `PATH`, `PG_DUMP` y `PG_RESTORE` dicen dónde).
+
+Se cuida de lo que sale mal en silencio:
+
+- El archivo se escribe como `.parcial` y recién se renombra cuando `pg_restore --list` lo
+  puede leer y trae datos de tablas. Un fallo no deja un archivo a medias que parezca un
+  respaldo; el comando termina con error (y cron manda el mail).
+- Los respaldos viejos (más de `--dias`, 14 por defecto) se borran **solo después de un
+  respaldo nuevo bueno**: si `pg_dump` falla durante semanas, no se van comiendo los anteriores.
+  Solo se borran archivos con este nombre y de esta misma base, nunca un enlace ni algo de otra
+  base.
+- Si el respaldo nuevo pesa menos de la mitad que el anterior, el comando lo avisa por la
+  salida de errores: puede ser una base vacía o dañada que se está «respaldando» bien.
+- La carpeta queda en `0700` y los archivos en `0600` (tienen todos los datos), y la clave viaja
+  en el entorno de `pg_dump`, no en su línea de comandos ni en ningún mensaje.
+
+**Esto no alcanza solo:** un respaldo en el mismo servidor no sirve si el servidor se pierde. Hay
+que copiar la carpeta a **otra máquina o a otro disco**, por ejemplo con otro cron que corra un
+poco después (`rsync -a --ignore-existing /var/backups/cobros/ usuario@otra-maquina:/copias/cobros/`)
+o con el almacenamiento externo que ya uses. Y un respaldo que nunca se restauró no es un respaldo:
+probalo de vez en cuando.
+
+**Restaurar** (probado: en una base nueva quedan los mismos datos, las 11 migraciones anotadas, los
+triggers, `migrar.php` dice «La base ya estaba al día» y las pantallas cargan):
+
+```bash
+# como superusuario de Postgres:
+createdb -O cobros_app cobros_restaurada
+# con el usuario de la app:
+pg_restore --no-owner --host=127.0.0.1 --username=cobros_app --dbname=cobros_restaurada ARCHIVO.dump
+```
+
+Después se apunta la app a esa base (`DB_NAME`) o se la renombra por la original, con la app parada.
+El respaldo no lleva dueños ni permisos (`--no-owner --no-privileges`): los objetos quedan a nombre
+de quien restaura.
+
 ### Esquema de la base
 
 En cada despliegue: `php database/migrar.php` (o `composer migrar`). Aplica en orden
@@ -324,9 +379,8 @@ Dos cosas que la app ya resuelve por su cuenta pero vale saber:
   excepción no capturada a `error_log()` — nunca a la respuesta. Dónde
   termina ese log depende de tu `php.ini`/pool de FPM (`error_log` de PHP);
   configuralo a un archivo real en producción en vez del default.
-- **Backups**: no hay nada automatizado acá — es un `pg_dump` de la base
-  como cualquier otra base de Postgres. Con `boletas`/`pagos`/`clientes`
-  reales adentro, un backup periódico deja de ser opcional.
+- **Backups**: `database/respaldar.php`, con cron, rotación y comprobación del archivo
+  (ver «Respaldos»). Falta, y es cosa del servidor, copiarlos a otra máquina.
 
 ## Tests y análisis estático
 
@@ -381,6 +435,8 @@ src/
   Config.php           variables de entorno: obligatorias fuera de desarrollo,
                         zona horaria IANA validada, testeado
   Migrador.php          aplica database/migraciones/ y recuerda cuales corrieron
+  Respaldo/             RespaldoDeLaBase: el pg_dump con comprobación y rotación
+                        (database/respaldar.php), testeado con pg_dump de verdad
   Acceso/               ComprobadorDeAcceso: pide el panel sin credenciales y dice si
                         el servidor web lo protege (database/comprobar_acceso.php),
                         testeado con un php -S que hace de panel
@@ -443,6 +499,8 @@ database/
                         009 = origen de las tasas de cambio, 010 = mayoría de
                         edad de cada país, 011 = la tasa de cambio de cada día)
   migrar.php             aplica las migraciones pendientes (en cada despliegue)
+  respaldar.php          respalda la base con pg_dump y borra los viejos (cron, una vez
+                        por día; ver «Respaldos»)
   comprobar_acceso.php   comprueba desde afuera que el panel pide credenciales
                         (ver «Antes de exponerlo»)
   actualizar_tasas.php   baja las tasas de cambio reales y las guarda (cron, una
@@ -480,8 +538,9 @@ tests/
                         coincidan en quién es mayor de edad en cada país, que las
                         tasas de cambio se actualicen con sus reglas de seguridad
                         (y el comando que corre cron), que cada fila guarde la tasa
-                        de su día y los totales la usen, y que los datos de ejemplo
-                        del seed cumplan las reglas de la app)
+                        de su día y los totales la usen, que el respaldo con
+                        pg_dump salga, se pueda leer y rote bien, y que los datos
+                        de ejemplo del seed cumplan las reglas de la app)
   Http/                  la app levantada con php -S, recorrida por HTTP
 phpstan.neon            configuracion del analisis estatico
 ```
