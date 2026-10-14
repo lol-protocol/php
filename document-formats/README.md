@@ -49,7 +49,7 @@ PRs — it's a deliberate choice, not an oversight, so please keep it this way.
 
 | File | Rows | Contents |
 |---|---|---|
-| `all_formats_master.csv` | 36 | Representative sample of every other file, with `format_id` and `type` |
+| `all_formats_master.csv` | 36 | Representative sample of the ISO, USA, Mexico, Japan and China catalogs and of the book, stationery, legal document and specialty paper files (the other regional files, labels and photo prints have no row here), with `format_id` and `type` |
 | `book_formats.csv` | 15 | Mass Market, Trade Paperback, Digest, Royal, Demy, Crown, hardcover, coffee table |
 | `book_margins.csv` | 17 | Typical top/bottom/inner/outer margins per book format |
 | `legal_documents.csv` | 12 | Pleading paper, deeds, contracts, wills, affidavits, powers of attorney |
@@ -93,7 +93,8 @@ Every format catalog (the files under `countries/` and `formats/` with sizes, pl
 - `aspect_ratio` — e.g. "1:1.414" for the A series
 - `country` — country or region, or "International"
 - `category` — Standard, Envelope, Card, Book, Legal, Brochure…
-- `description`, `common_use`
+- `description`, `common_use` (empty in `specs/iso_216_series.csv`, whose
+  `description` says what each size is for)
 
 `all_formats_master.csv` adds `format_id` and `type` (Paper, Card, Book,
 Document, Envelope…); every one of its rows is a copy of a row in another
@@ -113,7 +114,8 @@ catalogs above:
 - `can_fold` — folding the source (in half, or in thirds for a DL envelope)
   gives the target.
 - `can_trim` — the source is larger on both sides, so it can be cut down to
-  the target.
+  the target. It is `No` when the source is an envelope that holds the
+  target (C4 → A4), which is `Contains` instead.
 - `compatibility_level` — `Contains` (an envelope that holds the target),
   `Folded`, `Direct` (95% or more), `Similar` (85–94%) or `Different`.
 
@@ -141,9 +143,11 @@ near_a4 = formats[formats['height_mm'].between(277, 317)]
 
 `app/document-formats.js` has loaders and helpers for every file: `FormatLoader`,
 `FormatSearcher`, `FormatConverter` (similarity between two formats),
-`FormatValidator`, `DocumentGenerator` (HTML and print CSS for a given
-page size), `ScreenDeviceManager`, `BookMarginManager`,
-`SpecificationManager` and `LocalizationManager`. Their default paths assume
+`FormatValidator`, `FormatStatistics` (counts by category and country),
+`FormatBatchProcessor` (filters formats and exports them as CSV, HTML or
+JSON), `DocumentGenerator` (HTML and print CSS for a given page size),
+`ScreenDeviceManager`, `BookMarginManager`, `SpecificationManager` and
+`LocalizationManager`. Their default paths assume
 the page is served from `app/`.
 
 ```javascript

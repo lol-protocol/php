@@ -136,6 +136,38 @@ test('every master-file row copies a row from another catalog', () => {
             .filter(r => r.width_mm === row.width_mm && r.height_mm === row.height_mm);
         assert.ok(matches.length > 0,
             `line ${i + 2}: "${row.format_name}" ${row.width_mm}×${row.height_mm} mm is in no other file`);
+        const copied = ['width_inches', 'height_inches', 'country', 'category', 'description'];
+        assert.ok(matches.some(r => copied.every(column => r[column] === row[column])),
+            `line ${i + 2}: "${row.format_name}" differs from its source in ` +
+            copied.filter(column => matches.every(r => r[column] !== row[column])).join(', '));
+    });
+});
+
+test('fold_compatibility.csv: the folded size is the source divided as the fold says', () => {
+    // Number of parts each side is split into, by fold type. A half or a third folds one
+    // side (either one: the file lists some results upright and some on their side).
+    const parts = { 'Half Vertical': 2, 'Half Horizontal': 2, 'Half': 2, 'Thirds': 3 };
+    const upright = ([a, b]) => [Math.min(a, b), Math.max(a, b)];
+    parseCSV(read('specs/fold_compatibility.csv')).forEach((row, i) => {
+        const w = row.source_mm_w, h = row.source_mm_h;
+        const candidates = row.fold_type === 'Quarters' ? [[w / 2, h / 2]]
+            : parts[row.fold_type] ? [[w / parts[row.fold_type], h], [w, h / parts[row.fold_type]]] : null;
+        assert.ok(candidates, `line ${i + 2}: unknown fold type "${row.fold_type}"`);
+        const got = upright([row.result_mm_w, row.result_mm_h]);
+        // Sizes are rounded to the millimetre (A4 in half is 148.5, listed as 148 or 148.5).
+        assert.ok(candidates.some(c => upright(c).every((v, k) => Math.abs(v - got[k]) <= 1)),
+            `line ${i + 2}: ${row.source_format} "${row.fold_type}" should give ` +
+            `${candidates.map(c => upright(c).map(v => +v.toFixed(2)).join('×')).join(' or ')} mm, the file says ${got.join('×')}`);
+    });
+});
+
+test('video_resolutions.csv: the aspect ratio agrees with the pixel counts', () => {
+    parseCSV(read('devices/video_resolutions.csv')).forEach((row, i) => {
+        const [a, b] = String(row.aspect_ratio).split(':').map(Number);
+        const label = a / b, pixels = row.width_pixels / row.height_pixels;
+        assert.ok(Math.abs(label - pixels) / pixels < 0.04,
+            `line ${i + 2}: ${row.resolution_name} says ${row.aspect_ratio} (${label.toFixed(2)}), ` +
+            `${row.width_pixels}×${row.height_pixels} px is ${pixels.toFixed(2)}`);
     });
 });
 
