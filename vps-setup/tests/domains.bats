@@ -149,6 +149,29 @@ del() { run bash "$FAKE/10_B-remove-domain.sh" "$@"; }
     [ ! -L "$NGINX_DIR/sites-enabled/miapp" ] && [ ! -e "$NGINX_LOG_DIR/ejemplo.com" ]
 }
 
+@test "10_B sin --app toma la app de la marca del vhost (06_A/06_B) y archiva su carpeta y su servicio" {
+    printf '# vps-setup: 06_B-python miapp\nserver { }\n' > "$NGINX_DIR/sites-available/ejemplo.com"
+    del ejemplo.com --yes
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"App detectada en el vhost: miapp"* ]]
+    d=$(ls -d "$REMOVED_DIR"/ejemplo.com-*)
+    [ -d "$d/www/miapp" ] && [ "$(cat "$d/systemd/miapp.service")" = unit ] && [ ! -e "$WWW_DIR/miapp" ]
+    grep -q "systemctl disable --now miapp" "$SUDO_LOG"
+}
+
+@test "10_B no toma como app las marcas de landing ni de Tomcat" {
+    for mark in "03-landing" "06_D-tomcat ROOT"; do
+        rm -rf "$REMOVED_DIR"; : > "$SUDO_LOG"
+        printf '# vps-setup: %s\nserver { }\n' "$mark" > "$NGINX_DIR/sites-available/ejemplo.com"
+        ln -sfn "$NGINX_DIR/sites-available/ejemplo.com" "$NGINX_DIR/sites-enabled/ejemplo.com"
+        mkdir -p "$NGINX_LOG_DIR/ejemplo.com"
+        del ejemplo.com --yes
+        [ "$status" -eq 0 ]
+        [[ "$output" != *"App detectada"* ]]
+        [ -d "$WWW_DIR/miapp" ] && ! grep -q "systemctl disable" "$SUDO_LOG"
+    done
+}
+
 @test "10_B no confunde un dominio con otro que lo contiene como prefijo" {
     mkdir -p "$NGINX_LOG_DIR/ejemplo.com.ar"
     printf 'server { access_log %s/ejemplo.com.ar/access.log; root %s/landing-page/ejemplo.com.ar; }\n' \

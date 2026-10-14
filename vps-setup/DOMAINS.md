@@ -7,11 +7,14 @@ Guía completa para configurar y gestionar los múltiples dominios en el VPS.
 de `$DOMAIN` en todos los scripts). Los dominios de este documento
 (`conce.com`, `initech.cl`, `contrastocolor.ink`, `wikipedia.cl`) son
 **ejemplos ilustrativos** de cómo agregar un segundo/tercer/cuarto dominio a
-la misma arquitectura — todavía no están registrados. También: correr
-`vps-setup/03-configure-nginx-site.sh <dominio>` hace exactamente lo mismo
-que los pasos manuales de abajo (y de forma menos propensa a error) — esta
-guía es útil para entender qué hace el script paso a paso, no un sustituto
-recomendado de correrlo.
+la misma arquitectura — todavía no están registrados.
+
+**Para agregar o quitar un dominio, usa los scripts:** `vps-setup/10_A-add-domain.sh
+<dominio> [--type landing|php|python|tomcat] [--ssl]` y `vps-setup/10_B-remove-domain.sh
+<dominio>`. Los pasos manuales de abajo sirven para entender qué hacen, pero no son
+equivalentes: los scripts marcan cada vhost con una primera línea `# vps-setup: <tipo> <app>`,
+y un vhost creado a mano no la tiene, así que después los scripts se niegan a tocarlo
+("ya tiene un sitio (creado a mano)") y `10_B` no puede detectar su app.
 
 ---
 
