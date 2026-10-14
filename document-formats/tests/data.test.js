@@ -136,6 +136,93 @@ test('every master-file row copies a row from another catalog', () => {
             .filter(r => r.width_mm === row.width_mm && r.height_mm === row.height_mm);
         assert.ok(matches.length > 0,
             `line ${i + 2}: "${row.format_name}" ${row.width_mm}×${row.height_mm} mm is in no other file`);
+        const copied = ['width_inches', 'height_inches', 'country', 'category', 'description'];
+        assert.ok(matches.some(r => copied.every(column => r[column] === row[column])),
+            `line ${i + 2}: "${row.format_name}" differs from its source in ` +
+            copied.filter(column => matches.every(r => r[column] !== row[column])).join(', '));
+    });
+});
+
+test('fold_compatibility.csv: the folded size is the source divided as the fold says', () => {
+    // Number of parts each side is split into, by fold type. A half or a third folds one
+    // side (either one: the file lists some results upright and some on their side).
+    const parts = { 'Half Vertical': 2, 'Half Horizontal': 2, 'Half': 2, 'Thirds': 3 };
+    const upright = ([a, b]) => [Math.min(a, b), Math.max(a, b)];
+    parseCSV(read('specs/fold_compatibility.csv')).forEach((row, i) => {
+        const w = row.source_mm_w, h = row.source_mm_h;
+        const candidates = row.fold_type === 'Quarters' ? [[w / 2, h / 2]]
+            : parts[row.fold_type] ? [[w / parts[row.fold_type], h], [w, h / parts[row.fold_type]]] : null;
+        assert.ok(candidates, `line ${i + 2}: unknown fold type "${row.fold_type}"`);
+        const got = upright([row.result_mm_w, row.result_mm_h]);
+        // Sizes are rounded to the millimetre (A4 in half is 148.5, listed as 148 or 148.5).
+        assert.ok(candidates.some(c => upright(c).every((v, k) => Math.abs(v - got[k]) <= 1)),
+            `line ${i + 2}: ${row.source_format} "${row.fold_type}" should give ` +
+            `${candidates.map(c => upright(c).map(v => +v.toFixed(2)).join('×')).join(' or ')} mm, the file says ${got.join('×')}`);
+    });
+});
+
+test('video_resolutions.csv: the aspect ratio agrees with the pixel counts', () => {
+    parseCSV(read('devices/video_resolutions.csv')).forEach((row, i) => {
+        const [a, b] = String(row.aspect_ratio).split(':').map(Number);
+        const label = a / b, pixels = row.width_pixels / row.height_pixels;
+        assert.ok(Math.abs(label - pixels) / pixels < 0.04,
+            `line ${i + 2}: ${row.resolution_name} says ${row.aspect_ratio} (${label.toFixed(2)}), ` +
+            `${row.width_pixels}×${row.height_pixels} px is ${pixels.toFixed(2)}`);
+    });
+});
+
+// Screens: the numbers of one row have to agree with each other. The size in inches is the
+// physical size of the screen for monitors and of the whole device (its body) for phones,
+// tablets and e-readers; resolutions follow the orientation each maker lists.
+const deviceRows = (name) => parseCSV(read(`devices/${name}.csv`)).filter(row =>
+    ['screen_size_inches', 'resolution_width', 'resolution_height', 'ppi'].every(column => typeof row[column] === 'number'));
+const deviceName = (row) => row.device_name ?? row.monitor_type;
+
+test('devices: ppi agrees with the resolution and the screen size', () => {
+    for (const file of ['smartphones', 'tablets', 'ereaders', 'monitors']) {
+        const rows = deviceRows(file);
+        assert.ok(rows.length > 10, `${file}.csv has only ${rows.length} rows with numbers`);
+        rows.forEach(row => {
+            const computed = Math.hypot(row.resolution_width, row.resolution_height) / row.screen_size_inches;
+            assert.ok(Math.abs(computed - row.ppi) / row.ppi <= 0.015,
+                `${file}.csv "${deviceName(row)}": says ${row.ppi} ppi, ${row.resolution_width}×${row.resolution_height} px on ` +
+                `${row.screen_size_inches}" is ${computed.toFixed(0)}`);
+        });
+    }
+});
+
+test('devices: the aspect ratio agrees with the resolution', () => {
+    for (const file of ['smartphones', 'tablets', 'ereaders', 'monitors']) {
+        deviceRows(file).forEach(row => {
+            const [a, b] = String(row.aspect_ratio).split(':').map(Number);
+            const label = Math.max(a / b, b / a);
+            const pixels = Math.max(row.resolution_width, row.resolution_height) / Math.min(row.resolution_width, row.resolution_height);
+            assert.ok(Math.abs(label - pixels) / pixels <= 0.04,
+                `${file}.csv "${deviceName(row)}": says ${row.aspect_ratio} (${label.toFixed(2)}), ` +
+                `${row.resolution_width}×${row.resolution_height} px is ${pixels.toFixed(2)}`);
+        });
+    }
+});
+
+test('devices: a phone, tablet or e-reader is bigger than its screen and lies like its resolution', () => {
+    for (const file of ['smartphones', 'tablets', 'ereaders']) {
+        deviceRows(file).forEach(row => {
+            const diagonal = Math.hypot(row.width_inches, row.height_inches);
+            assert.ok(diagonal >= row.screen_size_inches,
+                `${file}.csv "${row.device_name}": ${row.width_inches}×${row.height_inches}" is ${diagonal.toFixed(1)}" corner to corner, ` +
+                `smaller than its ${row.screen_size_inches}" screen`);
+            assert.equal(row.width_inches < row.height_inches, row.resolution_width < row.resolution_height,
+                `${file}.csv "${row.device_name}": the size and the resolution are listed in different orientations`);
+        });
+    }
+});
+
+test('monitors: width and height are those of the screen', () => {
+    deviceRows('monitors').forEach(row => {
+        const diagonal = Math.hypot(row.width_inches, row.height_inches);
+        assert.ok(Math.abs(diagonal - row.screen_size_inches) / row.screen_size_inches <= 0.015,
+            `monitors.csv "${row.monitor_type}": ${row.width_inches}×${row.height_inches}" is ${diagonal.toFixed(1)}", ` +
+            `not ${row.screen_size_inches}"`);
     });
 });
 

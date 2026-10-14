@@ -31,7 +31,7 @@ LEGAL_CONTRACT,Legal Document,215.9,355.6,8.5,14,USA,Legal,Document,U.S. legal d
 LEGAL_DEED,Deed,215.9,279.4,8.5,11,USA,Legal,Document,Deed format
 LEGAL_INVOICE,Invoice Legal,210,297,8.3,11.7,International,Financial,Document,Invoice legal size
 SPEC_POSTCARD,Postcard Standard,102,152,4,6,International,Card,Card,Standard postcard
-SPEC_BUSINESSCARD,Business Card Standard,90,50,3.54,1.97,International,Card,Card,Standard business card
+SPEC_BUSINESSCARD,Business Card Standard,90,50,3.54,1.97,International,Stationery,Card,Standard business card
 SPEC_BROCHURE,Trifold Brochure,89,254,3.5,10,USA,Brochure,Document,Trifold format
 SPEC_FLYER,Flyer Standard,216,280,8.5,11,USA,Flyer,Document,Standard flyer
 SPEC_POSTER,Poster 24x36,610,914,24,36,USA,Poster,Document,Large poster size

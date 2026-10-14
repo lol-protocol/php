@@ -1,10 +1,13 @@
 # Localization System (i18n) - Complete Guide
 
-The Document Formats Database includes a comprehensive multi-language localization system supporting **30 languages** across 200 countries.
+The Document Formats Database includes a multi-language localization system with **30 languages**. The country catalog (`countries/countries_200_complete.csv`) covers 197 countries and territories.
 
 ## Supported Languages
 
-The system supports the following 30 languages:
+The system supports the following 30 languages. **Six are complete** (English, Spanish,
+French, German, Chinese and Japanese). The other 24 translate only the page title, the tabs
+and the unit names (`header.*`, `tabs.*`, `format.millimeters`, `format.inches`: 10 of the 88
+strings); any string a language leaves empty or lacks is shown in English.
 
 - **English** (en) - English
 - **Spanish** (es) - Español
@@ -130,7 +133,9 @@ const langs = i18n.getSupportedLanguages();
 
 #### `translate(key, defaultValue = key)`
 
-Translate a key using dot notation. Returns default value if key not found.
+Translate a key using dot notation. Looks the key up in the current language; if it is missing
+or empty, uses the English text; if English doesn't have it either, returns the default value
+(the key itself unless you pass one).
 
 ```javascript
 const text = i18n.translate('header.title');
@@ -252,14 +257,16 @@ To update or add translations:
 
 1. Create a new JSON file: `translations/[langCode].json`
 2. Copy the structure from `en.json`
-3. Add the language code to `supportedLanguages` array in `LocalizationManager`
-4. Translate all strings to the new language
+3. Add the language code and its name to `LocalizationManager.LANGUAGE_NAMES`
+4. Translate the strings. Keep every key (a test checks that each file has exactly the keys of
+   `en.json`); leave a string as `""` if you can't translate it yet and the page will show the
+   English text
 
 Example:
 
 ```bash
-cp translations/en.json translations/pt.json
-# Edit pt.json with Portuguese translations
+cp translations/en.json translations/ga.json
+# Edit ga.json with Irish translations, then add 'ga' to LANGUAGE_NAMES
 ```
 
 ## Web Interface Integration
