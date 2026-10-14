@@ -67,6 +67,7 @@ proyecto.
 ## CI/CD
 
 `.github/workflows/tests.yml` (nombre interno del workflow: "Pruebas") tiene un job por proyecto:
+- `readme-projects`: que la tabla de proyectos de este README liste todas las carpetas de la raíz.
 - `phpunit`: tests, PHPStan y benchmark de `defamatory-content-review/`.
 - `chat-front-guard`: tests en Node del tope de letras repetidas para el front, `defamatory-content-review/js/`.
 - `phone-directory`: tests de `phone-directory/` (incluidos los ejemplos) contra SQLite y PostgreSQL, y el benchmark.
