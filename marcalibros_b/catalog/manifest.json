@@ -1,5 +1,5 @@
 {
-  "version_generador": "0.5.0",
+  "version_generador": "0.6.0",
   "total": 100,
   "entradas": [
     {
@@ -19,13 +19,17 @@
       "motivo": "golondrinas",
       "paleta": "amanecer",
       "arquetipo": "bosque",
-      "intento": 0,
-      "semilla": 268037849006921,
+      "intento": 3,
+      "semilla": 78634454951090,
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-becquer-01.jpg",
-      "version_generador": "0.5.0",
-      "sha256": "aadea9b608260e3a6a0f541fac7e00af93256f559c2989962fb8af436b6f7aa1"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 30,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
+      "sha256": "96f39da2f6247fc8b51f6b02901e73d35bacecfe738bbb1e856ffe5e6fd21e92"
     },
     {
       "id": "romanticismo-becquer-02",
@@ -49,8 +53,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-02.svg",
-      "version_generador": "0.5.0",
-      "sha256": "b4e5f8a94d3fb599bd58ab5d5c89389d1b0fe4c20baa05206d2140baf65494d9"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 389,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.1,
+      "requiere_velo": false,
+      "sha256": "cbc02db84404182c9921310dfc44639e1f2a5cba906074cff78acdfd927d46ab"
     },
     {
       "id": "romanticismo-becquer-03",
@@ -74,8 +82,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-03.svg",
-      "version_generador": "0.5.0",
-      "sha256": "bfdd6a5e640a121265c0718ceba5e757ac241750b09347793568daebebe285e6"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 242,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.9,
+      "requiere_velo": false,
+      "sha256": "94c25edd651b0893460e639e2ea65f4b533b05a9b24c369f61e4162960747e4f"
     },
     {
       "id": "romanticismo-becquer-04",
@@ -99,7 +111,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-04.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 63,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.9,
+      "requiere_velo": true,
       "sha256": "ba42b3e7f6e006f4658eb78c9c57b2aac1890e5a66244464770d3422002a4289"
     },
     {
@@ -124,7 +140,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-05.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.7,
+      "requiere_velo": false,
       "sha256": "070a90778449ebcaf9f1245164c603fce54e400a4afcd4ceda04bc4027ef65f2"
     },
     {
@@ -149,7 +168,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-06.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 400,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
       "sha256": "01f12c1ab9de75be1263962a1aed5aba3153a204452621e8d3cd3a9e7ecda990"
     },
     {
@@ -174,8 +197,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-07.svg",
-      "version_generador": "0.5.0",
-      "sha256": "5e8cf64ab3e447cebd2eb82558513b7a85e9707f8139cc57e225b34e2a9854b1"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 486,
+      "texto_recomendado": "claro",
+      "contraste_texto": 11.3,
+      "requiere_velo": false,
+      "sha256": "348e0e97c1d36204d42486fe82d1d8bdcc846c28ad5d217c49c1b50d917c358e"
     },
     {
       "id": "romanticismo-becquer-08",
@@ -199,8 +226,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-08.svg",
-      "version_generador": "0.5.0",
-      "sha256": "e836578f5aee97c80ae567d392ac488ce4ca5de9b78a872544fd3ae51a498548"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 423,
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.5,
+      "requiere_velo": false,
+      "sha256": "c759d937d80e5356b16072367136a47b26acba3cf5e235b882f5139cb42ec5f9"
     },
     {
       "id": "romanticismo-becquer-09",
@@ -224,7 +255,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-09.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 117,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 6.6,
+      "requiere_velo": false,
       "sha256": "30158ba4fe00f3f1665f9e3cc036d196367332c11581568381ff66737ecffe97"
     },
     {
@@ -249,8 +284,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-becquer-10.svg",
-      "version_generador": "0.5.0",
-      "sha256": "ecb51af883313ad8118e8da47fdebad413615577c97d8b101e795182d0a4420c"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 79,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.7,
+      "requiere_velo": false,
+      "sha256": "0d5197623920cd45c6b17b16a38a10a10b608edcd5657ba2e95ecd352c0ebe28"
     },
     {
       "id": "romanticismo-byron-01",
@@ -274,7 +313,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-byron-01.jpg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 208,
+      "texto_recomendado": "claro",
+      "contraste_texto": 3.4,
+      "requiere_velo": false,
       "sha256": "b5d1e07b316fe4521af3827e691bd813a44802a3c54cd0b9d18ff0ba443a2a63"
     },
     {
@@ -299,7 +342,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-byron-02.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.5,
+      "requiere_velo": true,
       "sha256": "54d23f27786987922ab2cdd0e19b75765c9fc8ced0a51ee642d86290a2eaee12"
     },
     {
@@ -324,7 +370,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-byron-03.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 521,
+      "texto_recomendado": "claro",
+      "contraste_texto": 3.4,
+      "requiere_velo": false,
       "sha256": "a9e131681603b26e907e885bed3a404f970a386920871dc53b184d5d2c274639"
     },
     {
@@ -349,7 +399,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-byron-04.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 50,
+      "texto_recomendado": "claro",
+      "contraste_texto": 10.2,
+      "requiere_velo": false,
       "sha256": "45fa48399a3646e289d5bc464b441ddc2beb6787b38085c2a5e8377dab042296"
     },
     {
@@ -374,7 +428,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-byron-05.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 117,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 5.0,
+      "requiere_velo": false,
       "sha256": "fb6e3e310947ca76e8f7efdf3a32aa429bd33ede253cc6760bbbc13097293cfd"
     },
     {
@@ -399,8 +457,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-byron-06.svg",
-      "version_generador": "0.5.0",
-      "sha256": "e429853dbd44bcd74ad2a00fcb67c28ac770d5a9db5fe63e47c0b8405ea61bc5"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 214,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.3,
+      "requiere_velo": false,
+      "sha256": "fa93f88ad6e7e4e4f4da965fe0e4ebfe8b20f4eee2d47963550806ed551350c9"
     },
     {
       "id": "romanticismo-byron-07",
@@ -424,7 +486,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-byron-07.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 78,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 1.6,
+      "requiere_velo": true,
       "sha256": "707b10438ae2c26a18417cfaaeb799f09e988ab6956d70d557010e833955916f"
     },
     {
@@ -449,7 +515,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-byron-08.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 164,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
       "sha256": "ef17c5bd034e5c3be3a4071f7768f1908da4e9afbf8b0559b4e66db4774d1236"
     },
     {
@@ -474,7 +544,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-byron-09.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 4.5,
+      "requiere_velo": false,
       "sha256": "ace6b11f7e30d49b1082c23f5aa14929b3755207e11a5ee4591db5a41d6428c2"
     },
     {
@@ -499,8 +572,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-byron-10.svg",
-      "version_generador": "0.5.0",
-      "sha256": "73b0fd13772db47b24afcd8ada85a60c06204b53e8d3670bc6e691a836b1a3bd"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 482,
+      "texto_recomendado": "claro",
+      "contraste_texto": 4.1,
+      "requiere_velo": false,
+      "sha256": "4be3cc4c1e9de81aa31de8f5826febb99f063ece84bff436ea87bb5d93724784"
     },
     {
       "id": "romanticismo-espronceda-01",
@@ -524,8 +601,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-espronceda-01.jpg",
-      "version_generador": "0.5.0",
-      "sha256": "6aeef19d4becb53292aba351393a9043d0e71a50c49145a16964fef1d5ef0655"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 188,
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.2,
+      "requiere_velo": false,
+      "sha256": "4cd08e97c784d551e260f3b0e6d518c1088506e7a9fcf292ba6db4c43c003ca8"
     },
     {
       "id": "romanticismo-espronceda-02",
@@ -549,8 +630,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-02.svg",
-      "version_generador": "0.5.0",
-      "sha256": "530395fd42eaab47e6eff894ac75eb0325ce9604dbf2402da3d0534e0a6e7e78"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 329,
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.7,
+      "requiere_velo": false,
+      "sha256": "c66861d021dcf59b8f4c8e8af3218be5d0031a7adb448fb70a152b9b4702c762"
     },
     {
       "id": "romanticismo-espronceda-03",
@@ -574,7 +659,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-03.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 122,
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.5,
+      "requiere_velo": false,
       "sha256": "71db3ae4008a5b168ee047002506ecd33afc5930d112e9fbe09dc031f9b14d98"
     },
     {
@@ -599,7 +688,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-04.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 121,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.3,
+      "requiere_velo": true,
       "sha256": "dc0838aa3973066f5572d54258ffaa9bc3eae9b3f7d929300abd64bf1957c51d"
     },
     {
@@ -624,7 +717,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-05.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 123,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.8,
+      "requiere_velo": true,
       "sha256": "95722d31269af2f7c475d2f4d13095b7424d62aaae6f492275ad98ea72306c1f"
     },
     {
@@ -649,7 +746,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-06.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.5,
+      "requiere_velo": false,
       "sha256": "d0ce676d791161fed1a33231c11b80fb441f48c938b7600b51b09f628a8d13e9"
     },
     {
@@ -674,7 +774,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-07.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 508,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 1.9,
+      "requiere_velo": true,
       "sha256": "48a4814b9cce65db98e2fb1e1fdad86d455545b20c90bc3a95dd9edafd6e887d"
     },
     {
@@ -699,7 +803,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-08.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 349,
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
       "sha256": "e3ed1623b3a5ec3d018266da9fbf28bdd702157627a80cd1fca3ed0fe3b5f813"
     },
     {
@@ -724,7 +832,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-09.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.8,
+      "requiere_velo": true,
       "sha256": "2fb972a11995db7270a5a18fc3fba110a6d0a0619fe183e8ae455d7b9897815e"
     },
     {
@@ -749,8 +860,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-espronceda-10.svg",
-      "version_generador": "0.5.0",
-      "sha256": "76e9331b0c23baa4fe5d79562e49fb63618367f03f4168cbefa79b7a7ca711d4"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 131,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.1,
+      "requiere_velo": false,
+      "sha256": "a50cf2396df672b9e213a888f037e8cc4bbb871a871adbecde278e2d2f41f72e"
     },
     {
       "id": "romanticismo-hugo-01",
@@ -774,7 +889,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-hugo-01.jpg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 390,
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.5,
+      "requiere_velo": true,
       "sha256": "ed941b28078c371bc9b6ad1b9086fc4cbbbc88b31283d169c9f10f4b75fed0ab"
     },
     {
@@ -799,8 +918,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-02.svg",
-      "version_generador": "0.5.0",
-      "sha256": "f86f6b37340e12f69fecac838d8f5968332cd9c365d786ff9861931b0a53b4a1"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 486,
+      "texto_recomendado": "claro",
+      "contraste_texto": 11.1,
+      "requiere_velo": false,
+      "sha256": "5a8cbda3909ecf0576a02a9f35ac91f2dbcc7885fc07b33fa7563de7c27179aa"
     },
     {
       "id": "romanticismo-hugo-03",
@@ -824,7 +947,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-03.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 459,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.1,
+      "requiere_velo": true,
       "sha256": "3f8d32bcdf6850547badbdaff0096c45433f58bd83f57eb04a5e25529f386fbe"
     },
     {
@@ -849,8 +976,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-04.svg",
-      "version_generador": "0.5.0",
-      "sha256": "41b0e9402def8d95cc6908e03c4dd1c0fbf6460bc71d02f0eafd500f2a093f70"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 330,
+      "texto_recomendado": "claro",
+      "contraste_texto": 4.4,
+      "requiere_velo": false,
+      "sha256": "5a0a428c585996ff0dfaecf2190b997e149a4f7427ea1993caf96e47d497ed79"
     },
     {
       "id": "romanticismo-hugo-05",
@@ -874,7 +1005,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-05.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 191,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 4.2,
+      "requiere_velo": false,
       "sha256": "a0fe2eaedbec175edd92167550d7c057ab3ad2e65c9e71d66e6553f3cf40e13f"
     },
     {
@@ -899,8 +1034,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-06.svg",
-      "version_generador": "0.5.0",
-      "sha256": "d4801ce372b2f520bb01faccb203b82f4b709793e85f553e390ef2e598833433"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 440,
+      "texto_recomendado": "claro",
+      "contraste_texto": 4.1,
+      "requiere_velo": false,
+      "sha256": "7cf84378a793e38fb0f69375004be7e251a4658f9cae4072848baa8339e2d3f6"
     },
     {
       "id": "romanticismo-hugo-07",
@@ -924,7 +1063,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-07.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 218,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 1.6,
+      "requiere_velo": true,
       "sha256": "ce8a89d68b5fd857f96ddc9bb3242f797c7a063776760b0b199b421b8129b9c4"
     },
     {
@@ -949,7 +1092,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-08.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 142,
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.7,
+      "requiere_velo": true,
       "sha256": "a7bbbf4036adb9cf36a8148062fa3fcff051051b33032ecfa2e956acb9ffe318"
     },
     {
@@ -974,7 +1121,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-09.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 54,
+      "texto_recomendado": "claro",
+      "contraste_texto": 8.5,
+      "requiere_velo": false,
       "sha256": "1da185b36f51e2c0bbea77bf10c49bdaf15b8025b79960c7cc83d720585efb61"
     },
     {
@@ -999,7 +1150,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-hugo-10.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 64,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.8,
+      "requiere_velo": true,
       "sha256": "0d873eac197ff958600744a92bcd1247143c152e053de9043fca5916fd46405d"
     },
     {
@@ -1024,7 +1179,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-keats-01.jpg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 10.6,
+      "requiere_velo": false,
       "sha256": "b51cf4290159d6bde6e216d28b45b4d4731a3540efee60f6ace5a43772f944ff"
     },
     {
@@ -1049,7 +1207,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-02.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 237,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 4.6,
+      "requiere_velo": false,
       "sha256": "aaacac6dfbde23078780a135a9f7c04efe9da0aebde5c4da9d86a5b6fda9841e"
     },
     {
@@ -1074,7 +1236,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-03.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 32,
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.5,
+      "requiere_velo": false,
       "sha256": "36a51a6cc3e917f9849f0424a6fac7825fd030113b98e3f3a4a75b1de6810aab"
     },
     {
@@ -1099,7 +1265,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-04.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 333,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 1.6,
+      "requiere_velo": true,
       "sha256": "6a5a95baef86cdf2776008340444b54e63bc29f982e27af2aec52863e921d9bf"
     },
     {
@@ -1124,8 +1294,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-05.svg",
-      "version_generador": "0.5.0",
-      "sha256": "971521ea97011c4dfa474296565d0c3dc4e707748dbb6c922857bc790dd3b636"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 132,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.6,
+      "requiere_velo": false,
+      "sha256": "68d7997dfd7a02d73a4b6c2838ab6145fef18316ea119e185d4c684c8bf593dd"
     },
     {
       "id": "romanticismo-keats-06",
@@ -1149,7 +1323,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-06.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 91,
+      "texto_recomendado": "claro",
+      "contraste_texto": 1.9,
+      "requiere_velo": true,
       "sha256": "66954b87b7020d3e969e2eb9281ccf5cb8b4c9b967446941ec03366fa6345102"
     },
     {
@@ -1174,7 +1352,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-07.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 9.9,
+      "requiere_velo": false,
       "sha256": "bd14ed0b409b6a1f9c2a116a28cffa81949829f1825946f64376ea1831d55c93"
     },
     {
@@ -1199,7 +1380,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-08.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 194,
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
       "sha256": "164108ef2a9410e8f4c68040a3002702d70c54fc48f954b82fed2c7968417ab4"
     },
     {
@@ -1224,7 +1409,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-09.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 263,
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.9,
+      "requiere_velo": true,
       "sha256": "52c4102ce5a5851e793e7128c753b932d9d104b69aadac34067bdc83004bb65f"
     },
     {
@@ -1249,7 +1438,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-keats-10.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 110,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 5.8,
+      "requiere_velo": false,
       "sha256": "d73dfe1dd2fbd1f6a1116072f8fb3dca935f32814f2ff0e00a6fe4b17b2933f4"
     },
     {
@@ -1274,7 +1467,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-larra-01.jpg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 217,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 6.1,
+      "requiere_velo": false,
       "sha256": "62bb440b92d084bc9179d51736aa4d39b4113e6b8efba7b4edb91f6efd824051"
     },
     {
@@ -1299,7 +1496,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-02.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 1.9,
+      "requiere_velo": true,
       "sha256": "67eed8a2781daeb0ccd3f48135f18c2cede9723ac357cc409e561abc1b3616af"
     },
     {
@@ -1324,7 +1524,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-03.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 92,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.8,
+      "requiere_velo": true,
       "sha256": "8be82c22060aac4fba74a76fbdcd1741ef073ec367ff545095a87bf6c3b053be"
     },
     {
@@ -1349,8 +1553,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-04.svg",
-      "version_generador": "0.5.0",
-      "sha256": "d2aa9d174b5668ee24b6fca8d48b0fc2a07bbc30068b52cbfe06dd44bd3f6687"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 359,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.7,
+      "requiere_velo": false,
+      "sha256": "c3f66845cccac51470c071cda6fdce8d610d66c3228905ea161a2b9b916b5f15"
     },
     {
       "id": "romanticismo-larra-05",
@@ -1374,7 +1582,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-05.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 62,
+      "texto_recomendado": "claro",
+      "contraste_texto": 8.6,
+      "requiere_velo": false,
       "sha256": "0a1bb65863b190c3dadd3c3d93695cde6746494454895b44caadeeeea10a4cb6"
     },
     {
@@ -1399,7 +1611,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-06.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 508,
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.5,
+      "requiere_velo": true,
       "sha256": "908633148705f0366488d32ba3c61d8a4bb626b584550c8eb50d85d2fba20e5b"
     },
     {
@@ -1424,7 +1640,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-07.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 226,
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
       "sha256": "a0d2bb7d5fefc6f8f267030f5fedcece7aa4f8f40246aa82b97c267b5dc190f6"
     },
     {
@@ -1449,7 +1669,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-08.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.6,
+      "requiere_velo": true,
       "sha256": "431fa73c31f12df576d7ed0c5f1ba1f6dd29c5216910f154209f53b4f1a75f18"
     },
     {
@@ -1474,7 +1697,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-09.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.8,
+      "requiere_velo": false,
       "sha256": "12b6fa711dee609dc7412abc795153a6850a25ef5826e455419856f1443e9388"
     },
     {
@@ -1499,7 +1725,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-larra-10.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 1.6,
+      "requiere_velo": true,
       "sha256": "adbe6ee73e2b7319127a771164de66f5d402a134c91181d6267c7998166eb7f1"
     },
     {
@@ -1524,8 +1753,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-poe-01.jpg",
-      "version_generador": "0.5.0",
-      "sha256": "e046dcdcc694e85ce9be83539bd2816e5d353b960f86147f4df9484dfaf15099"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 103,
+      "texto_recomendado": "claro",
+      "contraste_texto": 11.0,
+      "requiere_velo": false,
+      "sha256": "f002ee2d477b1cdd62aab75647d626f667aba77a21498b0073084aabf4fcbee4"
     },
     {
       "id": "romanticismo-poe-02",
@@ -1549,7 +1782,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-02.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.5,
+      "requiere_velo": false,
       "sha256": "67a10926b68eea183b8c7e66709f41f92f64871f096c5fb21da83927a0ac5617"
     },
     {
@@ -1574,8 +1810,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-03.svg",
-      "version_generador": "0.5.0",
-      "sha256": "0b443e2f2e34cbf73bb0e640f21850920442cecb96484204e43b02f61c4eb7d1"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 527,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.1,
+      "requiere_velo": false,
+      "sha256": "0188148ed146fba813855be4c54fc19efb379240327c9866e7100044087ceb7a"
     },
     {
       "id": "romanticismo-poe-04",
@@ -1599,7 +1839,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-04.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 146,
+      "texto_recomendado": "claro",
+      "contraste_texto": 8.6,
+      "requiere_velo": false,
       "sha256": "77491341a1ba48ad63ab9c45717174963674a74ce3867409d38d63741845e7ee"
     },
     {
@@ -1624,7 +1868,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-05.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 106,
+      "texto_recomendado": "claro",
+      "contraste_texto": 3.5,
+      "requiere_velo": false,
       "sha256": "131e6fcba9ee75106307a043ae7bb0bf020e0ea013d19940ec5ca8f0a99f0556"
     },
     {
@@ -1649,7 +1897,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-06.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 8.6,
+      "requiere_velo": false,
       "sha256": "01d5cbf9724e7cdae6a1f8512bf9409d9986de6a9c036a07663431c8c49a3b6b"
     },
     {
@@ -1674,8 +1925,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-07.svg",
-      "version_generador": "0.5.0",
-      "sha256": "bc18b033b367c76bfb70e5e8167149fc8da68088d9d10b3c99a5793b68012ddf"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 264,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.1,
+      "requiere_velo": false,
+      "sha256": "fc45672fac59343423da33be0505c0b91ce9bd8581d6510bf291413b15cf0bcb"
     },
     {
       "id": "romanticismo-poe-08",
@@ -1699,8 +1954,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-08.svg",
-      "version_generador": "0.5.0",
-      "sha256": "8315515f8d6c836a56b24ad53b91da459d9bf2e40a090cee6aab6901b8215ff7"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 205,
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.5,
+      "requiere_velo": false,
+      "sha256": "cd7df55037989a7995f0a5021d026e0c2b4c6f3775e135903cdc37198c400c85"
     },
     {
       "id": "romanticismo-poe-09",
@@ -1724,7 +1983,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-09.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 145,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 1.6,
+      "requiere_velo": true,
       "sha256": "9be3ca93e666e9bc95b7a4ea1c1379b53a705967cc7d0acb18e7122260f4c436"
     },
     {
@@ -1749,7 +2012,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-poe-10.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 295,
+      "texto_recomendado": "claro",
+      "contraste_texto": 4.4,
+      "requiere_velo": false,
       "sha256": "e32edbe2316c35938698676bf882302ffed3691bdc1baa764c4833aef5624344"
     },
     {
@@ -1774,7 +2041,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-rosalia-de-castro-01.jpg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 357,
+      "texto_recomendado": "claro",
+      "contraste_texto": 3.4,
+      "requiere_velo": false,
       "sha256": "a5b7aef452c8bc5ea752c6e79df6497b2782375df8957220fbde746311244f96"
     },
     {
@@ -1799,7 +2070,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-02.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 396,
+      "texto_recomendado": "claro",
+      "contraste_texto": 3.8,
+      "requiere_velo": false,
       "sha256": "78f3d6e0d2573bc01f5a787bcf60b21e73242abc7ccc96c2bea03f8f0b3287c4"
     },
     {
@@ -1824,8 +2099,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-03.svg",
-      "version_generador": "0.5.0",
-      "sha256": "58f5c024c728d56e28ea0367e8ca3a90737f46ffa1940997c05f496c8e1dd0b4"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 638,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.4,
+      "requiere_velo": true,
+      "sha256": "be5149524d660d13bf6f410b2d637e0841ef2b111242a9c5eac5395cd0080ff1"
     },
     {
       "id": "romanticismo-rosalia-de-castro-04",
@@ -1849,7 +2128,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-04.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 118,
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.5,
+      "requiere_velo": true,
       "sha256": "f34a26b85e01053a9c921dd79d9defbc3cf37a25f5fc3063a3588668d4359fd7"
     },
     {
@@ -1874,7 +2157,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-05.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 113,
+      "texto_recomendado": "claro",
+      "contraste_texto": 3.1,
+      "requiere_velo": false,
       "sha256": "32f57f8399b19bdfff145746bc4ff46b972f9ea5423947c28312f3506a3caec3"
     },
     {
@@ -1899,7 +2186,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-06.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 446,
+      "texto_recomendado": "claro",
+      "contraste_texto": 3.8,
+      "requiere_velo": false,
       "sha256": "359a5868118038c6db2cc409e43f47c7b7b087b50d03010b3fae95147ce1de84"
     },
     {
@@ -1924,7 +2215,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-07.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 549,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
       "sha256": "3a2b2846c1adf0847bf23b7f36ca371de24f557a298c7572957a289761341a35"
     },
     {
@@ -1949,7 +2244,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-08.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.5,
+      "requiere_velo": false,
       "sha256": "c91df1e0c239afc92373f446a211713012ec975ba01a82696d0d42c346ec7406"
     },
     {
@@ -1969,13 +2267,17 @@
       "motivo": "golondrinas",
       "paleta": "amanecer",
       "arquetipo": "llanura",
-      "intento": 0,
-      "semilla": 18847205548049,
+      "intento": 1,
+      "semilla": 172640153083852,
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-09.svg",
-      "version_generador": "0.5.0",
-      "sha256": "a9fe86899c25064a94f75a6dab9151a930f05b08469584af76e535609059b519"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 47,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
+      "sha256": "3a834cb1622c70562cfbe2bc4542079c3058714683ab47564c75d3fac3aadf49"
     },
     {
       "id": "romanticismo-rosalia-de-castro-10",
@@ -1999,8 +2301,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-10.svg",
-      "version_generador": "0.5.0",
-      "sha256": "5e96f40ce98163a94a2efd4a1dbd54e7bad93eebb7d431baf77f95012f77abb0"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 172,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.2,
+      "requiere_velo": false,
+      "sha256": "1a6c36162f5a3c3ffc1c0a2c5e01d02a8e752e408871e838b8891fb67ccf6a98"
     },
     {
       "id": "romanticismo-shelley-percy-01",
@@ -2024,7 +2330,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-shelley-percy-01.jpg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 332,
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
       "sha256": "90ec413eeb34436f9cdfa8d45fa816011d29baaa7d958c83bd8fb0c8b0f223e1"
     },
     {
@@ -2049,7 +2359,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-shelley-percy-02.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 120,
+      "texto_recomendado": "claro",
+      "contraste_texto": 4.2,
+      "requiere_velo": false,
       "sha256": "6ee13513dd0bfb69014010d34ef637d9e7c971e2cc9b8364f07d4e9e80963e04"
     },
     {
@@ -2074,7 +2388,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-shelley-percy-03.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.3,
+      "requiere_velo": true,
       "sha256": "d9b95da0ae58e0c9a67bc3cc9c710bdda6abee86ba187eaac629363bed7c9de7"
     },
     {
@@ -2099,7 +2416,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-shelley-percy-04.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 41,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 6.4,
+      "requiere_velo": false,
       "sha256": "f6cace68991256310ac0d3f0641073290f9964945207c4932d31f87edaa53126"
     },
     {
@@ -2124,7 +2445,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-shelley-percy-05.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 40,
+      "texto_recomendado": "claro",
+      "contraste_texto": 11.0,
+      "requiere_velo": false,
       "sha256": "792d90be896c6608f6c9c4d85627e2e8cccf2c3a259f2fd1a03160e8b71b67be"
     },
     {
@@ -2149,7 +2474,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-shelley-percy-06.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 209,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.7,
+      "requiere_velo": true,
       "sha256": "3f8017751c8fc66781df417c8454e050a6a56eff7f293af57a7b36dad0157fff"
     },
     {
@@ -2174,7 +2503,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-shelley-percy-07.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 118,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.8,
+      "requiere_velo": true,
       "sha256": "b174785cbf7c690b56947e5fb4baeafec1fbf068df4521a179ef5ce3d46706a6"
     },
     {
@@ -2199,7 +2532,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-shelley-percy-08.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 66,
+      "texto_recomendado": "claro",
+      "contraste_texto": 5.3,
+      "requiere_velo": false,
       "sha256": "9d89b37274be3e35fda653fa334178ab49d7806a3b87e90f61429a325c223b9e"
     },
     {
@@ -2224,8 +2561,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-shelley-percy-09.svg",
-      "version_generador": "0.5.0",
-      "sha256": "2ae536cbc202974b6761871ba63a99ca3b0e8ef6e25b56881fb01608a267c60b"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 504,
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.3,
+      "requiere_velo": false,
+      "sha256": "749c6733ccbdbeafaa509af4491b07636d6a2c7c78b81a7d9d1d6d3be997cc79"
     },
     {
       "id": "romanticismo-shelley-percy-10",
@@ -2249,7 +2590,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-shelley-percy-10.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.5,
+      "requiere_velo": true,
       "sha256": "ef7008d78b652fccb0ccabb9d061e76d6434403ceabceb5ceba29367d3e92b4b"
     },
     {
@@ -2274,8 +2618,12 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/jpg/romanticismo-wordsworth-01.jpg",
-      "version_generador": "0.5.0",
-      "sha256": "0b8c8a374e6f98b04364eecf1c8c48edeb76173fc67348110c8068c858fab056"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 558,
+      "texto_recomendado": "claro",
+      "contraste_texto": 3.4,
+      "requiere_velo": false,
+      "sha256": "7e24e2cfb5f8287051a442eab4e302b274141a23d3363b507c13db54fda8a6d9"
     },
     {
       "id": "romanticismo-wordsworth-02",
@@ -2299,7 +2647,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-02.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 230,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 1.9,
+      "requiere_velo": true,
       "sha256": "41f3b889601f0e988adb566dd08464cc85594c9b946b7a8b93cbc9e6a01bb98d"
     },
     {
@@ -2324,7 +2676,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-03.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 342,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 1.9,
+      "requiere_velo": true,
       "sha256": "9c8102e8ea31274709f99f03b2ab0de2c430e34f3ae8ccb8e3cd4a65b211d24d"
     },
     {
@@ -2349,7 +2705,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-04.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 310,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.8,
+      "requiere_velo": true,
       "sha256": "a27b3289787c460492c9d54642a7ee300de89ad66ccfc3da3d067096ffa8829d"
     },
     {
@@ -2374,7 +2734,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-05.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 255,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
       "sha256": "c7d126fc7fb1575efbdde3c51d849f6a425e50949c906543d255d4c9cc333cdd"
     },
     {
@@ -2399,7 +2763,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-06.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 2.7,
+      "requiere_velo": true,
       "sha256": "2010d5c8847a105edf41340cdc70f4da6d1367fdbf742c6c2e66be89393e7439"
     },
     {
@@ -2424,7 +2791,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-07.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 406,
+      "texto_recomendado": "claro",
+      "contraste_texto": 3.9,
+      "requiere_velo": false,
       "sha256": "12f33be316b00447c923f4849a6690f27b277b4994dfa52044f2749bd2fa6020"
     },
     {
@@ -2444,13 +2815,17 @@
       "motivo": "rio",
       "paleta": "dorada",
       "arquetipo": "llanura",
-      "intento": 0,
-      "semilla": 259709010406055,
+      "intento": 1,
+      "semilla": 177757139889565,
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-08.svg",
-      "version_generador": "0.5.0",
-      "sha256": "6b46d26f4d0a79bd85345f4c6548c17608d2ca080d95e9f92a9c06e626559633"
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 625,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 6.0,
+      "requiere_velo": false,
+      "sha256": "ce41924f0ec8ce2c574cebf79183015d25100d9b92d3d8983ce11d0e6d459289"
     },
     {
       "id": "romanticismo-wordsworth-09",
@@ -2474,7 +2849,11 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-09.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "pixeles_motivo": 520,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 2.0,
+      "requiere_velo": true,
       "sha256": "b43a9501538dc894167363f46fd72e59e4b1972cea3a1c27e184199fe2fef5ae"
     },
     {
@@ -2499,7 +2878,10 @@
       "ancho": 1400,
       "alto": 200,
       "archivo": "catalog/svg/romanticismo-wordsworth-10.svg",
-      "version_generador": "0.5.0",
+      "version_generador": "0.6.0",
+      "texto_recomendado": "claro",
+      "contraste_texto": 7.5,
+      "requiere_velo": false,
       "sha256": "4d92ff59f1089e274b0109e6d4a0ba9698bf26d7b0eda1ba58f8d6ed86047fad"
     }
   ]

@@ -60,6 +60,36 @@ PALETAS = {
 }
 
 
+def luminancia(hex_color):
+    """Luminancia relativa WCAG de un color #RRGGBB."""
+    def canal(v):
+        v /= 255
+        return v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4
+    h = hex_color.lstrip("#")
+    r, g, b = (canal(int(h[i:i + 2], 16)) for i in (0, 2, 4))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def contraste(a, b):
+    la, lb = sorted((luminancia(a), luminancia(b)), reverse=True)
+    return (la + 0.05) / (lb + 0.05)
+
+
+MIN_CONTRASTE_FIGURA = 3.0
+
+
+def paleta_legible(nombre):
+    """Paleta con el color de las siluetas (`figura`) ajustado para que se distinga del
+    cielo bajo y de la capa lejana, donde se apoyan los motivos. Si la figura oscura no
+    llega a 3:1 (paletas nocturnas), las siluetas pasan al tono claro de la paleta."""
+    p = dict(PALETAS[nombre])
+    fondo = (p["cielo_bajo"], p["lejos"])
+    peor = lambda c: min(contraste(c, f) for f in fondo)
+    if peor(p["figura"]) < MIN_CONTRASTE_FIGURA and peor(p["sol"]) > peor(p["figura"]):
+        p["figura"] = p["sol"]
+    return p
+
+
 def _colina(rng, base, amp):
     return {
         "base": (base + rng.nivel) * ALTO,
@@ -517,7 +547,7 @@ ESCALAS = {
 }
 # Se dibujan por delante de todas las capas (los demás, entre la lejana y la cercana,
 # de modo que la capa cercana tape su base y queden apoyados en el suelo).
-FRENTE = {"olas", "narcisos", "hojas"}
+FRENTE = {"olas", "narcisos", "hojas", "rio"}  # el río es una franja baja: la capa cercana lo taparía
 
 
 def _limites(prims):
@@ -549,6 +579,9 @@ def _poner_motivo(esc, rng, p, altura, nombre):
         return
     antes = len(esc.primitivas)
     MOTIVOS[nombre](esc, rng, p, altura)
+    if getattr(rng, "ocultar", False):
+        del esc.primitivas[antes:]  # el motivo consume el azar igual, pero no se dibuja
+        return
     if nombre in ESCALAS and len(esc.primitivas) > antes:
         _escalar(esc.primitivas[antes:], *ESCALAS[nombre])
 
@@ -649,10 +682,11 @@ ARQUETIPOS = {
 NOMBRES_ARQUETIPOS = list(ARQUETIPOS)
 
 
-def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas"):
+def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas", ocultar_motivo=False):
     rng = random.Random(semilla)
     rng.nivel = rng.uniform(-0.16, 0.16)  # desplaza todo el horizonte: cambia la silueta global
-    p = PALETAS[paleta]
+    rng.ocultar = ocultar_motivo
+    p = paleta_legible(paleta)
     esc = Escena(semilla=semilla, grano=grano)
     # Cielo claro arriba o abajo: cambia mucho la huella visual sin cambiar la paleta.
     if rng.random() < 0.4:

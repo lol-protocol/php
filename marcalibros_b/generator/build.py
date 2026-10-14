@@ -25,12 +25,14 @@ import yaml
 from PIL import Image
 
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
-from qa import UMBRAL_DUPLICADO, validar_taxonomia, hoja_de_contacto, huella_visual, parecido_a, validar_jpg, validar_svg
+from qa import (ANCHO_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, UMBRAL_DUPLICADO, hoja_de_contacto,
+                hoja_de_miniaturas, huella_visual, mejor_texto, parecido_a, pixeles_de_motivo, validar_jpg,
+                validar_svg, validar_taxonomia)
 from render_raster import a_imagen
 from render_svg import a_svg
 from scene import ALTO, ANCHO
 
-VERSION_GENERADOR = "0.5.0"
+VERSION_GENERADOR = "0.6.0"
 MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
@@ -87,14 +89,14 @@ def combinacion(mov, autor, v, animos):
     return asignar_combinaciones(mov, animos)[(autor["id"], v)]
 
 
-def construir(config, mov, autor, v, intento=0, animos=None):
+def construir(config, mov, autor, v, intento=0, animos=None, ocultar_motivo=False):
     s = semilla(mov["id"], autor["id"], v, intento)
     arquetipo, paleta = combinacion(mov, autor, v, animos)
     obra = autor["obras"][v - 1]
     motivo = obra["motivo"]
     formato = "jpg" if v == config["variante_jpg"] else "svg"
     grano = GRANO_JPG if formato == "jpg" else 0.0
-    esc = CONSTRUCTORES[mov["id"]](s, paleta, motivo, grano, arquetipo)
+    esc = CONSTRUCTORES[mov["id"]](s, paleta, motivo, grano, arquetipo, ocultar_motivo)
     ident = f"{mov['id']}-{autor['id']}-{v:02d}"
     entrada = {
         "id": ident,
@@ -180,6 +182,32 @@ def imagen_para_revision(entrada, esc, ruta):
     return img, f"svg vía Chromium (dif. {dif:.1f})"
 
 
+SIN_COMPROBAR_VISIBILIDAD = {"ninguno", "luna"}  # sin motivo, o la luna: siempre grande
+
+
+def elegir_pieza(config, mov, autor, v, animos, previas):
+    """Primera semilla (intento 0, 1, 2…) cuya pieza no se parezca a las `previas` y cuyo
+    motivo se vea en miniatura. Devuelve (entrada, escena, huella, intento, problema);
+    `problema` es None si salió bien."""
+    problema = None
+    for intento in range(MAX_INTENTOS + 1):
+        entrada, esc = construir(config, mov, autor, v, intento, animos)
+        h = huella_visual(a_imagen(esc))
+        parecido = parecido_a(h, previas)
+        if parecido is not None:
+            problema = f"sigue casi idéntico a {parecido[0]}"
+            continue
+        if entrada["motivo"] not in SIN_COMPROBAR_VISIBILIDAD:
+            _, sin = construir(config, mov, autor, v, intento, animos, ocultar_motivo=True)
+            px = pixeles_de_motivo(a_imagen(esc, ANCHO_MINIATURA), a_imagen(sin, ANCHO_MINIATURA))
+            if px < MIN_PIXELES_MOTIVO:
+                problema = f"el motivo '{entrada['motivo']}' casi no se ve en miniatura ({px} px)"
+                continue
+            entrada["pixeles_motivo"] = px
+        return entrada, esc, h, intento, None
+    return entrada, esc, h, intento, problema
+
+
 def main():
     ap = argparse.ArgumentParser(description="Genera marcalibros desde la taxonomía.")
     ap.add_argument("--all", action="store_true", help="genera todos los movimientos")
@@ -200,22 +228,24 @@ def main():
 
     generados, esc_por_id, rutas, huellas = [], {}, {}, {}
     fallos = 0
+    avisos_texto, miniaturas = [], {}
     for mov, autor, v in recorrer(config, filtro):
         # Los duplicados se comparan dentro de cada movimiento, así el resultado
         # no depende de qué movimientos se generen en la misma ejecución.
         previas = {k: h for k, h in huellas.items() if k.startswith(mov["id"] + "-")}
-        for intento in range(MAX_INTENTOS + 1):
-            entrada, esc = construir(config, mov, autor, v, intento, animos)
-            h = huella_visual(a_imagen(esc))
-            parecido = parecido_a(h, previas)
-            if parecido is None:
-                break
-        else:
+        entrada, esc, h, intento, problema = elegir_pieza(config, mov, autor, v, animos, previas)
+        if problema:
             fallos += 1
-            print(f"  ✗ {entrada['id']}: sigue casi idéntico a {parecido[0]} "
-                  f"tras {MAX_INTENTOS} reintentos de semilla")
+            print(f"  ✗ {entrada['id']}: {problema} tras {MAX_INTENTOS} reintentos de semilla")
         if intento:
-            print(f"  ↻ {entrada['id']}: semilla cambiada {intento}× por duplicado visual")
+            print(f"  ↻ {entrada['id']}: semilla cambiada {intento}× (duplicado visual o motivo invisible)")
+        mini = a_imagen(esc, ANCHO_MINIATURA)
+        texto, ratio = mejor_texto(mini)
+        entrada["texto_recomendado"], entrada["contraste_texto"] = texto, round(ratio, 1)
+        entrada["requiere_velo"] = ratio < MIN_CONTRASTE_TEXTO  # texto sobre la imagen solo con velo detrás
+        if ratio < MIN_CONTRASTE_TEXTO:
+            avisos_texto.append(f"{entrada['id']}: el mejor texto ({texto}) solo llega a {ratio:.1f}:1")
+        miniaturas[entrada["id"]] = mini
         huellas[entrada["id"]] = h
         rutas[entrada["id"]] = escribir(entrada, esc)
         generados.append(entrada)
@@ -262,6 +292,18 @@ def main():
         hoja = CATALOGO / "revision" / f"hoja-{mov_id}-{autor_id}.jpg"
         hoja_de_contacto(piezas, hoja)
         print(f"  hoja de contacto: {hoja.relative_to(RAIZ)}")
+
+    # Miniaturas a tamaño de lectura (350×50), una hoja por movimiento
+    for mov_id in sorted(rehechos):
+        hoja = CATALOGO / "revision" / f"miniaturas-{mov_id}.jpg"
+        hoja_de_miniaturas([(f"{e['id']} · {e['obra']}", miniaturas[e["id"]])
+                            for e in generados if e["movimiento"] == mov_id], hoja)
+        print(f"  miniaturas: {hoja.relative_to(RAIZ)}")
+    if avisos_texto:
+        print(f"  ({len(avisos_texto)} de {len(generados)} piezas no llegan a {MIN_CONTRASTE_TEXTO}:1 con ningún tono de texto: "
+              "el lector debe poner un velo detrás del texto)")
+    for aviso in avisos_texto[:0]:
+        print(f"  ⚠ requiere velo para texto: {aviso}")
 
     jpg = sum(1 for e in generados if e["formato"] == "jpg")
     print(f"\nGenerados: {len(generados)} (jpg: {jpg}, svg: {len(generados) - jpg}). "

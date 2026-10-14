@@ -29,15 +29,12 @@ CONFIG = yaml.safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding
 
 
 def _piezas():
-    """Reproduce la generación completa en memoria, con la misma lógica de duplicados."""
+    """Reproduce la generación completa en memoria, con la misma lógica que el build."""
     huellas, salida = {}, {}
     for mov, autor, v in build.recorrer(CONFIG):
         previas = {k: h for k, h in huellas.items() if k.startswith(mov["id"] + "-")}
-        for intento in range(build.MAX_INTENTOS + 1):
-            entrada, esc = build.construir(CONFIG, mov, autor, v, intento, ANIMOS)
-            h = huella_visual(a_imagen(esc))
-            if build.parecido_a(h, previas) is None:
-                break
+        entrada, esc, h, _, problema = build.elegir_pieza(CONFIG, mov, autor, v, ANIMOS, previas)
+        assert problema is None, f"{entrada['id']}: {problema}"
         huellas[entrada["id"]] = h
         salida[entrada["id"]] = (entrada, esc)
     return salida, huellas
@@ -114,6 +111,29 @@ def test_informe_gutenberg_con_respuesta_simulada():
               "authors": [{"name": "Bécquer, Gustavo Adolfo", "birth_year": 1836, "death_year": 1870}]}]
     texto = vg.informe(CONFIG, "romanticismo", buscar=lambda nombre: falso)
     assert "| 1 | Rimas | es | Bécquer, Gustavo Adolfo (1836–1870) |" in texto
+
+
+def test_paletas_con_siluetas_legibles():
+    import plantillas
+    for nombre in plantillas.PALETAS:
+        p = plantillas.paleta_legible(nombre)
+        peor = min(plantillas.contraste(p["figura"], p[k]) for k in ("cielo_bajo", "lejos"))
+        assert peor >= plantillas.MIN_CONTRASTE_FIGURA, f"{nombre}: figura {peor:.1f}:1"
+
+
+def test_motivos_visibles_en_miniatura():
+    from qa import MIN_PIXELES_MOTIVO
+    manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
+    for e in manifiesto["entradas"]:
+        if e["motivo"] not in build.SIN_COMPROBAR_VISIBILIDAD:
+            assert e["pixeles_motivo"] >= MIN_PIXELES_MOTIVO, f"{e['id']}: {e['motivo']}"
+
+
+def test_recomendacion_de_texto_en_el_manifest():
+    manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
+    for e in manifiesto["entradas"]:
+        assert e["texto_recomendado"] in ("claro", "oscuro")
+        assert e["requiere_velo"] == (e["contraste_texto"] < 3.0)
 
 
 def test_archivos_del_catalogo_validos():

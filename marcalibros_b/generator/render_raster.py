@@ -25,8 +25,11 @@ def _degradado(arriba, abajo, w, h):
     return np.broadcast_to(fila, (h, w, 3)).copy()
 
 
-def a_imagen(esc):
-    w, h = ANCHO * ESCALA, ALTO * ESCALA
+def a_imagen(esc, ancho=ANCHO):
+    """Imagen de la escena. Con `ancho` menor que 1400 devuelve una miniatura dibujada
+    directamente a esa resolución (mucho más barata que reducir la imagen completa)."""
+    f = ancho / ANCHO
+    w, h = round(ANCHO * ESCALA * f), round(ALTO * ESCALA * f)
     base = None
     for prim in esc.primitivas:
         if prim["tipo"] == "degradado":
@@ -40,14 +43,14 @@ def a_imagen(esc):
     for prim in esc.primitivas:
         tipo = prim["tipo"]
         if tipo == "circulo":
-            cx, cy, r = prim["cx"] * ESCALA, prim["cy"] * ESCALA, prim["r"] * ESCALA
+            cx, cy, r = prim["cx"] * ESCALA * f, prim["cy"] * ESCALA * f, prim["r"] * ESCALA * f
             dibujo.ellipse([cx - r, cy - r, cx + r, cy + r], fill=_rgb(prim["color"]))
         elif tipo == "poligono":
-            dibujo.polygon([(x * ESCALA, y * ESCALA) for x, y in prim["puntos"]], fill=_rgb(prim["color"]))
+            dibujo.polygon([(x * ESCALA * f, y * ESCALA * f) for x, y in prim["puntos"]], fill=_rgb(prim["color"]))
 
-    img = lienzo.resize((ANCHO, ALTO), Image.Resampling.LANCZOS)
+    img = lienzo.resize((round(ANCHO * f), round(ALTO * f)), Image.Resampling.LANCZOS)
 
-    if esc.grano:
+    if esc.grano and ancho == ANCHO:
         rng = np.random.default_rng(esc.semilla)
         arr = np.asarray(img, dtype=float)
         arr += rng.normal(0, esc.grano * 255, (ALTO, ANCHO))[..., None]

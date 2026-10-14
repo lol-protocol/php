@@ -92,6 +92,66 @@ def validar_taxonomia(config, motivos, animos, escenas, paletas):
     return problemas
 
 
+ANCHO_MINIATURA = 350  # tamaño real aproximado en el lector (350×50)
+MIN_PIXELES_MOTIVO = 30  # píxeles de la miniatura que el motivo debe cambiar
+UMBRAL_CAMBIO = 40  # diferencia por canal (0–255) para contar un píxel como cambiado
+TONOS_TEXTO = {"claro": "#F4EEE1", "oscuro": "#1E2A38"}
+MIN_CONTRASTE_TEXTO = 3.0  # texto grande WCAG AA
+
+
+def pixeles_de_motivo(con, sin):
+    """Píxeles que cambia el motivo en una miniatura: compara la misma escena dibujada
+    con y sin él. Un motivo con pocos píxeles se pierde al reducir el marcalibros."""
+    d = np.abs(np.asarray(con.convert("RGB"), dtype=int) - np.asarray(sin.convert("RGB"), dtype=int))
+    return int((d.max(axis=2) > UMBRAL_CAMBIO).sum())
+
+
+def _luminancias(img):
+    a = np.asarray(img.convert("RGB"), dtype=float) / 255
+    a = np.where(a <= 0.03928, a / 12.92, ((a + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * a[..., 0] + 0.7152 * a[..., 1] + 0.0722 * a[..., 2]
+
+
+def mejor_texto(img):
+    """Tono de texto ('claro' u 'oscuro') que mejor se lee sobre la imagen y su contraste.
+    El contraste es el que alcanza el 90 % de los píxeles (percentil 10), no el medio:
+    un solo tono medio ya hace ilegible el texto en esa zona."""
+    lum = _luminancias(img)
+    mejor = None
+    for nombre, color in TONOS_TEXTO.items():
+        h = color.lstrip("#")
+        c = [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+        c = [v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4 for v in c]
+        lt = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+        hi, lo = np.maximum(lum, lt), np.minimum(lum, lt)
+        ratio = float(np.percentile((hi + 0.05) / (lo + 0.05), 10))
+        if mejor is None or ratio > mejor[1]:
+            mejor = (nombre, ratio)
+    return mejor
+
+
+def hoja_de_miniaturas(piezas, salida: Path, columnas: int = 4):
+    """Tamaño real de lectura (350×50): para juzgar a ojo qué sobrevive al reducir."""
+    margen, etiqueta = 8, 14
+    ancho_i = piezas[0][1].width
+    alto_i = piezas[0][1].height
+    filas = (len(piezas) + columnas - 1) // columnas
+    hoja = Image.new("RGB", (columnas * (ancho_i + margen) + margen, filas * (alto_i + etiqueta + margen) + margen),
+                     (244, 238, 225))
+    dibujo = ImageDraw.Draw(hoja)
+    try:
+        fuente = ImageFont.truetype("DejaVuSans.ttf", 9)
+    except OSError:
+        fuente = ImageFont.load_default()
+    for k, (titulo, img) in enumerate(piezas):
+        x = margen + (k % columnas) * (ancho_i + margen)
+        y = margen + (k // columnas) * (alto_i + etiqueta + margen)
+        dibujo.text((x, y), titulo, fill=(30, 42, 56), font=fuente)
+        hoja.paste(img.convert("RGB"), (x, y + etiqueta))
+    salida.parent.mkdir(parents=True, exist_ok=True)
+    hoja.save(salida, "JPEG", quality=90)
+
+
 def huella_visual(img: Image.Image):
     """Miniatura en color 56×8 como vector, para comparar parecido visual.
     Con gris, las piezas oscuras de paletas distintas se confunden entre sí."""
