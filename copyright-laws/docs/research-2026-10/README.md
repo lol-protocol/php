@@ -20,3 +20,7 @@ candidates; the six Berne "no" results (Angola, Ethiopia, Iraq, Iran, Myanmar, T
 ## Authority names (14 Oct 2026)
 
 `authorities-verified.csv`: the regulator / copyright body names of the original rows, checked with web search (source URL and confidence per row). Vague names were replaced by official ones and wrong ones corrected (for example Argentina: AAIP, not Spain's AEPD; copyright handled by culture or justice ministries rather than patent offices). Only the name was checked, so those rows keep `data_status=curated`.
+
+## Rights fields (14 Oct 2026)
+
+`fields-europe.csv`, `fields-americas-apac.csv`, `fields-mena-africa.csv`: moral rights, orphan works, digital protection and exceptions for non-EU jurisdictions, researched by web search (value, confidence, source per cell). `UNKNOWN` cells stay "Not specified"; low-confidence values carry "(unconfirmed)". Where nothing was found for a WCT party, `digital_protection` says the treaty requires anti-circumvention protection without claiming the national rule.
