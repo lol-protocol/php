@@ -83,6 +83,7 @@
 | Venezuela | español | estado | 3 | 5 | 15 | no | Español con recursos grandes |
 | Angola | portugués | estado | 3 | 4 | 12 | no | Alfabetización media; portugués con buenos recursos |
 | Arabia Saudita | árabe | estado | 3 | 4 | 12 | no | Árabe estándar con corpus y treebanks; dialectos con poca cobertura |
+| Azerbaiyán | azerí | estado | 4 | 3 | 12 | no | Azerí con recursos pequeños |
 | Baréin | árabe; inglés | estado | 3 | 4 | 12 | no | Árabe con recursos; inglés muy usado en textos digitales |
 | Belice | inglés; español | estado | 3 | 4 | 12 | no | Inglés y español con recursos; el criollo beliceño casi no tiene |
 | Brunéi | malayo; inglés | estado | 4 | 3 | 12 | no | Malayo con recursos moderados |
@@ -134,6 +135,7 @@
 | Libia | árabe | estado | 3 | 3 | 9 | no | Árabe estándar con recursos; dialecto libio con corpus pequeños |
 | Marruecos | árabe; bereber; francés | estado | 3 | 3 | 9 | no | Árabe estándar con recursos; dialecto marroquí y bereber con pocos |
 | Montenegro | montenegrino (serbocroata) | estado | 3 | 3 | 9 | no | Croata y serbio con recursos moderados; la variante montenegrina es pequeña |
+| Nepal | nepalí | estado | 3 | 3 | 9 | no | Nepalí con recursos pequeños |
 | Palestina | árabe palestino | entidad disputada | 3 | 3 | 9 | no | Árabe con recursos; el dialecto palestino con pocos corpus |
 | Paraguay | español; guaraní | estado | 3 | 3 | 9 | no | Español con recursos; guaraní con corpus pequeños |
 | Santo Tomé y Príncipe | portugués; criollo santotomense | estado | 3 | 3 | 9 | no | Portugués con recursos; el criollo con corpus pequeños |
@@ -144,11 +146,11 @@
 | Uganda | inglés; luganda; suajili | estado | 3 | 3 | 9 | no | Inglés con recursos; luganda y suajili con corpus pequeños |
 | Zambia | inglés; bemba; nyanja | estado | 3 | 3 | 9 | no | Inglés con recursos; bemba y nyanja con corpus pequeños |
 | Zimbabue | inglés; shona; ndebele | estado | 3 | 3 | 9 | no | Inglés con recursos; shona y ndebele con corpus pequeños |
-| Azerbaiyán | azerí | estado | 4 | 2 | 8 | no | Azerí con recursos pequeños |
 | Liberia | inglés | estado | 2 | 4 | 8 | no | Inglés con recursos; las lenguas locales casi no tienen texto digital |
 | Macedonia del Norte | macedonio; albanés | estado | 4 | 2 | 8 | no | Macedonio con recursos mínimos |
 | Tayikistán | tayiko | estado | 4 | 2 | 8 | no | Tayiko con recursos mínimos |
 | Albania | albanés | estado | 3 | 2 | 6 | no | Alfabetización alta; pocos recursos anotados en albanés |
+| Bután | dzongkha | estado | 3 | 2 | 6 | no | Dzongkha casi sin corpus digitales |
 | Camboya | jemer | estado | 3 | 2 | 6 | no | Jemer con pocos recursos anotados y poco texto digital |
 | Congo | francés; lingala | estado | 3 | 2 | 6 | no | Francés con recursos; lingala con pocos corpus |
 | Costa de Marfil | francés | estado | 2 | 3 | 6 | no | Francés con recursos; lenguas locales sin corpus |
@@ -165,7 +167,6 @@
 | Mozambique | portugués; emakhuwa | estado | 2 | 3 | 6 | no | Portugués con recursos; las lenguas bantúes casi sin corpus |
 | Myanmar | birmano | estado | 3 | 2 | 6 | no | Birmano con recursos mínimos; poco texto digital abierto |
 | Nauru | nauruano; inglés | estado | 3 | 2 | 6 | no | Nauruano sin recursos digitales; inglés con recursos |
-| Nepal | nepalí | estado | 3 | 2 | 6 | no | Nepalí con recursos pequeños |
 | Nigeria | inglés; hausa; yoruba; igbo | estado | 2 | 3 | 6 | no | Inglés con recursos; hausa y yoruba con corpus pequeños; igbo con muy pocos |
 | Pakistán | urdu; punyabí; pastún | estado | 2 | 3 | 6 | no | Urdu con un treebank pequeño; punyabí y pastún con muy pocos recursos |
 | Palaos | inglés; palauano | estado | 3 | 2 | 6 | no | Inglés con recursos; el palauano casi no tiene |
@@ -176,6 +177,7 @@
 | Tonga | tongano; inglés | estado | 3 | 2 | 6 | no | Tongano con recursos mínimos |
 | Tuvalu | tuvaluano; inglés | estado | 3 | 2 | 6 | no | Tuvaluano con recursos mínimos |
 | Vanuatu | bislama; inglés; francés | estado | 3 | 2 | 6 | no | Bislama con recursos mínimos |
+| Eritrea | tigriña; árabe | estado | 2 | 2 | 4 | no | El tigriña casi no tiene texto digital anotable |
 | Etiopía | amárico | estado | 2 | 2 | 4 | no | Amárico con corpus pequeños |
 | Haití | criollo haitiano; francés | estado | 2 | 2 | 4 | no | Criollo con recursos mínimos; francés con recursos |
 | Mauritania | árabe hasanía; francés | estado | 2 | 2 | 4 | no | Árabe con recursos; el hasanía casi sin corpus |
@@ -188,18 +190,16 @@
 | Benín | francés | estado | 1 | 3 | 3 | no | Alfabetización baja; francés con recursos; lenguas nacionales sin recursos |
 | Afganistán | dari; pastún | estado | 1 | 2 | 2 | no | Alfabetización muy baja; el dari tiene pocos corpus anotados y el pastún casi ninguno |
 | Burkina Faso | francés; moré | estado | 1 | 2 | 2 | no | Alfabetización muy baja; el moré casi no tiene recursos |
+| Chad | árabe chadiano; francés | estado | 1 | 2 | 2 | no | Alfabetización muy baja y casi sin recursos digitales |
 | Guinea | francés; susu; pular | estado | 1 | 2 | 2 | no | Alfabetización muy baja; lenguas nacionales casi sin recursos |
 | Malí | francés; bambara | estado | 1 | 2 | 2 | no | Alfabetización muy baja; el bambara casi no tiene recursos |
 | Níger | francés; hausa; zarma | estado | 1 | 2 | 2 | no | Alfabetización muy baja; hausa y zarma casi sin recursos |
 | Sierra Leona | inglés; krio | estado | 1 | 2 | 2 | no | Alfabetización baja; el krio tiene pocos textos digitales |
 | Maldivas | dhivehi | estado | 4 | 1 | 4 | sí | El dhivehi no tiene corpus anotados |
-| Bután | dzongkha | estado | 3 | 1 | 3 | sí | Dzongkha casi sin corpus digitales |
 | Corea del Norte | coreano | estado | 3 | 1 | 3 | sí | Sin acceso a texto digital abierto; el coreano tiene recursos fuera del país |
 | Turkmenistán | turcomano | estado | 3 | 1 | 3 | sí | El turcomano no tiene corpus anotados ni texto digital abierto |
 | Comoras | shikomor; francés; árabe | estado | 2 | 1 | 2 | sí | El shikomor no tiene corpus anotados |
-| Eritrea | tigriña; árabe | estado | 2 | 1 | 2 | sí | El tigriña casi no tiene texto digital anotable |
 | Burundi | kirundi; francés | estado | 1 | 1 | 1 | sí | El kirundi no tiene corpus anotados; el francés sí tiene recursos |
-| Chad | árabe chadiano; francés | estado | 1 | 1 | 1 | sí | Alfabetización muy baja y casi sin recursos digitales |
 | República Centroafricana | sango; francés | estado | 1 | 1 | 1 | sí | Alfabetización muy baja; el sango no tiene recursos digitales |
 | Somalia | somalí; árabe | estado | 1 | 1 | 1 | sí | El somalí no tiene corpus anotados |
 | Sudán del Sur | inglés; árabe juba | estado | 1 | 1 | 1 | sí | Alfabetización muy baja; sin recursos anotados |

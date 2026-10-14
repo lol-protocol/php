@@ -28,17 +28,22 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 ANIO_FIN = 2025
 ANIO_INICIO_TASAS = 1950
+ANIO_MINIMO_SERIE = 2000  # una serie que termina antes se saltea: no se extiende en silencio
 B_PREINDUSTRIAL = 0.040
 
 
 def cargar_puntos(ruta):
-    """codigo -> [(anio, poblacion), ...] ordenado por año."""
+    """codigo -> [(anio, poblacion), ...] ordenado por año. Falla si un año se repite."""
     puntos = {}
     with ruta.open(encoding="utf-8", newline="") as f:
         for fila in csv.DictReader(f):
             puntos.setdefault(fila["codigo"], []).append((int(fila["anio"]), float(fila["poblacion"])))
-    for lista in puntos.values():
+    for codigo, lista in puntos.items():
         lista.sort()
+        anios = [a for a, _ in lista]
+        if len(set(anios)) != len(anios):
+            repetidos = sorted({a for a in anios if anios.count(a) > 1})
+            raise ValueError(f"{codigo}: años repetidos en poblacion_larga.csv: {repetidos[:5]}")
     return puntos
 
 
@@ -93,11 +98,14 @@ def main(carpeta=AQUI):
         columnas = lector.fieldnames
         filas = list(lector)
 
-    detalle, sin_datos = [], []
+    detalle, sin_datos, incompletas = [], [], []
     for fila in filas:
         codigo = fila["codigo"]
         if codigo not in puntos:
             sin_datos.append(codigo)
+            continue
+        if puntos[codigo][-1][0] < ANIO_MINIMO_SERIE:
+            incompletas.append(codigo)
             continue
         central = nacimientos(puntos[codigo], natal.get(codigo, {}))
         fila["poblacion_historica_acumulada"] = f"{central / 1e6:.2f}"
@@ -114,7 +122,8 @@ def main(carpeta=AQUI):
         for codigo, c, bajo, alto in detalle:
             escritor.writerow([codigo, f"{c / 1e6:.2f}", f"{bajo / 1e6:.2f}", f"{alto / 1e6:.2f}"])
 
-    print(f"{len(detalle)} países calculados; sin datos en la serie larga: {', '.join(sin_datos) or 'ninguno'}")
+    print(f"{len(detalle)} países calculados; sin datos en la serie larga: {', '.join(sin_datos) or 'ninguno'}; "
+          f"serie que termina antes de {ANIO_MINIMO_SERIE} (saltados): {', '.join(incompletas) or 'ninguno'}")
 
 
 if __name__ == "__main__":

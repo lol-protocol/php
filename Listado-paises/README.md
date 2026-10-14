@@ -55,7 +55,7 @@ territorios menores.
 | Columna | Qué es |
 |---|---|
 | `codigo` | Igual que en `paises.csv`. |
-| `idioma_principal` | Las lenguas de la mayoría de los textos escritos. La puntuación se da según la que tenga más recursos digitales. |
+| `idioma_principal` | Las lenguas en que se escribe la mayoría de los textos. El criterio para puntuar IP está pendiente (ver abajo). |
 | `indice_lectura` | IL, de 1 a 5. |
 | `indice_pos` | IP, de 1 a 5. |
 | `comentarios_pos` | Motivo de los puntajes del etiquetador. |
@@ -83,10 +83,13 @@ internet, marco legal de datos personales e idioma.
 
 **Prioridad** = IG × IO (1 a 25). Ordena la tabla; no es un tercer índice.
 
-**Excluido** = IO ≤ 1. Quedan fuera **24 países**, cerca del objetivo de unos 20: Afganistán,
+**Excluido** = IO ≤ 1. Quedan fuera **23 países**, cerca del objetivo de unos 20: Afganistán,
 Bielorrusia, Burkina Faso, Corea del Norte, Cuba, Eritrea, Haití, Irán, Libia, Malí, Myanmar,
-Nicaragua, Níger, República Centroafricana, RD del Congo, Rusia, Siria, Somalia, Sudán, Sudán
-del Sur, Turkmenistán, Venezuela, Yemen y Palestina.
+Níger, República Centroafricana, RD del Congo, Rusia, Siria, Somalia, Sudán, Sudán del Sur,
+Turkmenistán, Venezuela, Yemen y Palestina.
+
+Nicaragua tenía IO = 1 y ahora tiene IO = 2: sus sanciones son parciales y sus factores (control
+de medios e internet) son los mismos que los de Vietnam, que la rúbrica ya marca como «difícil».
 
 Camboya y Vietnam tienen IO = 2 («difícil»): sus índices los marcan como difíciles, no como
 inviables, así que con este umbral **siguen dentro**. Para sacarlos habría que bajar su IO a 1, lo
@@ -114,9 +117,14 @@ texto digital utilizable. **No usa sanciones ni política**: eso lo cubre IO.
 - 2: recursos mínimos, casi sin texto digital anotable.
 - 1: sin recursos, o sin acceso a texto digital.
 
-**Prioridad POS** = IL × IP. **Excluido POS** = IP ≤ 1: quedan fuera **11 países**: Bután,
-Burundi, Chad, Comoras, Corea del Norte, Eritrea, Maldivas, República Centroafricana, Somalia,
-Sudán del Sur y Turkmenistán. El umbral está en `UMBRAL_POS`.
+**Prioridad POS** = IL × IP. **Excluido POS** = IP ≤ 1: quedan fuera **8 países**: Burundi,
+Comoras, Corea del Norte, Maldivas, República Centroafricana, Somalia, Sudán del Sur y
+Turkmenistán. El umbral está en `UMBRAL_POS`.
+
+**Criterio de IP, pendiente de decidir.** En la mayoría de los países IP mira la lengua local
+(kirundi, somalí, dhivehi). En varios países multilingües mira, sin decirlo, la lengua con más
+recursos (francés, inglés, ruso). Mezclar los dos criterios hace que países como Togo o Lesotho
+queden bajos sin una razón clara. Hay que elegir uno antes de decidir con esta columna.
 
 Los índices IL e IP son de juicio propio, con base en recursos y alfabetización que no se han
 contrastado con fuentes (ver «Estado de los datos»).
@@ -137,6 +145,12 @@ durante casi toda la historia.
   0,040 (sociedades preindustriales). Desde 1950, la tasa de natalidad del país para ese año.
 - Banda de sensibilidad: `N` se recalcula con `b` × 0,9 y `b` × 1,1, y el resultado queda en
   `poblacion_historica_detalle.csv`.
+
+**Reglas del cálculo:**
+
+- Si una serie repite un año, el script se detiene con error. No elige uno en silencio.
+- Si una serie termina antes del año 2000, el país se salta y el script lo lista. No extiende la
+  última población hasta 2025 en silencio.
 
 **Datos de entrada (no están en el repositorio):**
 
@@ -161,7 +175,7 @@ Léelo antes de usar la tabla para decidir.
 
 - **Población actual, IDH y PIB per cápita: son referencias cargadas de memoria, no consultadas.**
   No se pudieron abrir las fuentes oficiales desde la sesión donde se generó la tabla: el Banco
-  Mundial y el PNUD devolvían 403 por el proxy, y en otra prueba no resolvían. Las cifras son
+  Mundial y el PNUD devolvían 403 por el proxy, y en otras pruebas no resolvían. Las cifras son
   aproximadas y redondeadas. Antes de decidir con ellas, contrástalas con:
   - Banco Mundial: `SP.POP.TOTL` (población) y `NY.GDP.PCAP.CD` (PIB per cápita).
   - ONU, *World Population Prospects* (población).
@@ -173,15 +187,20 @@ Léelo antes de usar la tabla para decidir.
   calcularla en cuanto existan `poblacion_larga.csv` y, si se quiere, `natalidad.csv`.
 - **IG, IO, IL e IP:** son juicio propio, con las rúbricas de arriba. No son datos oficiales.
   Las alfabetizaciones y la lista de recursos lingüísticos vienen de memoria, sin contrastar.
+  Algunos casos se revisaron contra la rúbrica en una revisión posterior (Bután, Chad, Eritrea,
+  Azerbaiyán, Nepal y Nicaragua), pero siguen siendo juicio.
 
 ## Pendientes
 
-1. **Población histórica acumulada:** conseguir `poblacion_larga.csv` (OWID o Maddison) y
+1. **Criterio de IP** (ver arriba): decidir si IP mira la lengua local o la lengua con más recursos.
+   Con la segunda opción, Togo, Benín, Kirguistán, Lesotho y varios países del Pacífico subirían, y
+   la lista de excluidos POS cambiaría.
+2. **Población histórica acumulada:** conseguir `poblacion_larga.csv` (OWID o Maddison) y
    `natalidad.csv`, y ejecutar `historia_poblacion.py`. Hay que confirmar el dominio desde donde
    se descarga antes de habilitarlo.
-2. **Contrastar población, IDH y PIB per cápita** con las fuentes oficiales.
-3. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
-4. **Umbral de exclusión** de genealogía: con IO ≤ 1 quedan 24 países (vigente); con IO ≤ 2,
+3. **Contrastar población, IDH y PIB per cápita** con las fuentes oficiales.
+4. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
+5. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    55. Camboya y Vietnam siguen dentro hasta que se revise su IO o se suba el umbral.
-5. **Agregar este proyecto a la tabla de `README.md` de la raíz.** Ese archivo es compartido,
+6. **Agregar este proyecto a la tabla de `README.md` de la raíz.** Ese archivo es compartido,
    así que el cambio va en un PR aparte.

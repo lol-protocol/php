@@ -136,6 +136,7 @@
 | Etiopía | estado | África | 131.0 | pendiente | 0.497 | 1000 | 2 | 2 | 4 | no | Conflicto en Tigré y Amhara; control cambiario; restricciones de internet en episodios de crisis; amárico |
 | Honduras | estado | América | 10.6 | pendiente | 0.621 | 3000 | 2 | 2 | 4 | no | Violencia y crimen organizado; crisis política y fiscal; registros civiles en digitalización; español |
 | Kuwait | estado | Asia | 4.9 | pendiente | 0.820 | 33000 | 1 | 4 | 4 | no | Estable y solvente; sin registros civiles públicos de acceso abierto; árabe e inglés |
+| Nicaragua | estado | América | 7.4 | pendiente | 0.667 | 3200 | 2 | 2 | 4 | no | Represión de medios y ONG; sanciones de EE. UU.; control de internet; español |
 | Omán | estado | Asia | 5.6 | pendiente | 0.840 | 20000 | 1 | 4 | 4 | no | Estable; restricciones a contenidos en línea; árabe e inglés |
 | Pakistán | estado | Asia | 251.7 | pendiente | 0.544 | 1600 | 2 | 2 | 4 | no | Restricciones de internet y de medios; crisis de divisas; registros civiles limitados; urdu e inglés |
 | Túnez | estado | África | 12.5 | pendiente | 0.732 | 3900 | 2 | 2 | 4 | no | Deterioro de libertades desde 2021; restricciones a ONG y prensa; francés y árabe |
@@ -183,7 +184,6 @@
 | Rusia | estado | Europa | 146.2 | pendiente | 0.822 | 14000 | 4 | 1 | 4 | sí | Sanciones amplias de EE. UU. y UE; bloqueo de pagos y de plataformas; registros soviéticos valiosos pero inoperables |
 | Bielorrusia | estado | Europa | 9.1 | pendiente | 0.802 | 8000 | 2 | 1 | 2 | sí | Sanciones de EE. UU. y UE; control político y de medios; ruso y bielorruso |
 | Irán | estado | Asia | 91.6 | pendiente | 0.774 | 3800 | 2 | 1 | 2 | sí | Sanciones amplias de EE. UU. y UE; cortes frecuentes de internet; pagos internacionales casi imposibles; persa |
-| Nicaragua | estado | América | 7.4 | pendiente | 0.667 | 3200 | 2 | 1 | 2 | sí | Represión de medios y ONG; sanciones de EE. UU.; control de internet; español |
 | Palestina | entidad disputada | Asia | 5.5 | pendiente | — | — | 2 | 1 | 2 | sí | Conflicto y ocupación; guerra en Gaza desde 2023; registros otomanos y británicos; árabe |
 | Venezuela | estado | América | 28.4 | pendiente | 0.699 | 4000 | 2 | 1 | 2 | sí | Sanciones de EE. UU.; crisis económica y control cambiario; pagos casi inviables; español |
 | Afganistán | estado | Asia | 43.8 | pendiente | 0.462 | 400 | 1 | 1 | 1 | sí | Gobierno talibán desde 2021; sanciones internacionales; sin registros civiles accesibles en línea |
