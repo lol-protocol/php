@@ -61,6 +61,8 @@ export const FACETS = [
 export const CONFIG = { searchScopes: SEARCH_SCOPES, facets: FACETS };
 
 export const COMPARE_CRITERIA = [
+  "enactment_date",
+  "effective_date",
   "scope",
   "applies_to",
   "key_requirements",

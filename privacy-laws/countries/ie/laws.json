@@ -9,7 +9,7 @@
     "effective_date": "2018-05-25",
     "scope": "Irish Residents",
     "applies_to": "All entities",
-    "key_requirements": "GDPR compliance",
+    "key_requirements": "GDPR applies: lawful basis, data subject rights, breach notification",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
     "enforcement_authority": "Irish DPC",

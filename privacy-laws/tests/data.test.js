@@ -35,7 +35,7 @@ test("rows with commas inside fields stay aligned (regression: columns used to s
   assert.equal(find("US", "CCPA").penalties_range, "Up to $7,500 per violation");
   assert.equal(find("US", "COPPA").penalties_range, "Up to $43,280 per violation");
   assert.equal(find("CA", "PIPEDA").penalties_range, "Up to $100,000 CAD");
-  assert.equal(find("IN", "Digital Personal").notes, "Recently passed, enforcement phase");
+  assert.equal(find("IN", "Digital Personal").penalties_range, "Up to ₹250 Cr penalty");
 });
 
 test("an unquoted comma is rejected instead of silently shifting columns", () => {

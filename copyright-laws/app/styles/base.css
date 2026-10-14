@@ -338,3 +338,14 @@ label {
     font-size: var(--font-size-lg);
   }
 }
+
+/* Missing values ("Not specified") recede so real data stands out. */
+.muted {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* The source column shows the site a link leads to. */
+.source-link {
+  font-size: var(--font-size-sm);
+}

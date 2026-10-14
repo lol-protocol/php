@@ -81,7 +81,7 @@ export const TRANSLATIONS = {
     "table.author": "Author rights",
     "table.moral": "Moral rights",
     "table.treaties": "Treaties",
-    "table.reference": "Reference",
+    "table.reference": "Source",
     "table.open": "Open official reference",
     "table.onlyCountry": "Show only {name}",
 
@@ -123,7 +123,7 @@ export const TRANSLATIONS = {
     "card.folder": "Data folder",
     "card.json": "Download JSON",
     "card.csv": "Download CSV",
-    "card.updated": "Data updated",
+    "card.updated": "Dataset built",
 
     "footer.data": "Data updated {date} · version {version} · {laws} laws · {countries}",
     "footer.note": "For digital libraries, text repositories and PDF documentation projects. Terms are summaries: always check the official source before relying on an entry.",
@@ -140,6 +140,8 @@ export const TRANSLATIONS = {
     "table.lowConfidence": "Low confidence",
     "card.source": "Data status",
     "card.checked": "checked {date}",
+    "value.notSpecified": "Not specified",
+    "compare.onlyDiff": "Show only rows that differ ({count})",
   },
 
   spa: {
@@ -207,7 +209,7 @@ export const TRANSLATIONS = {
     "table.author": "Derechos del autor",
     "table.moral": "Derechos morales",
     "table.treaties": "Tratados",
-    "table.reference": "Referencia",
+    "table.reference": "Fuente",
     "table.open": "Abrir la referencia oficial",
     "table.onlyCountry": "Mostrar solo {name}",
 
@@ -249,7 +251,7 @@ export const TRANSLATIONS = {
     "card.folder": "Carpeta de datos",
     "card.json": "Descargar JSON",
     "card.csv": "Descargar CSV",
-    "card.updated": "Datos actualizados",
+    "card.updated": "Datos generados",
 
     "footer.data": "Datos actualizados el {date} · versión {version} · {laws} leyes · {countries}",
     "footer.note": "Para bibliotecas digitales, repositorios de textos y proyectos de documentación PDF. Los plazos son resúmenes: comprueba siempre la fuente oficial antes de basarte en un registro.",
@@ -266,6 +268,8 @@ export const TRANSLATIONS = {
     "table.lowConfidence": "Confianza baja",
     "card.source": "Estado de los datos",
     "card.checked": "revisado el {date}",
+    "value.notSpecified": "No especificado",
+    "compare.onlyDiff": "Mostrar solo las filas que difieren ({count})",
   },
 
   fra: {
@@ -333,7 +337,7 @@ export const TRANSLATIONS = {
     "table.author": "Droits de l'auteur",
     "table.moral": "Droits moraux",
     "table.treaties": "Traités",
-    "table.reference": "Référence",
+    "table.reference": "Source",
     "table.open": "Ouvrir la référence officielle",
     "table.onlyCountry": "Afficher uniquement {name}",
 
@@ -375,7 +379,7 @@ export const TRANSLATIONS = {
     "card.folder": "Dossier de données",
     "card.json": "Télécharger le JSON",
     "card.csv": "Télécharger le CSV",
-    "card.updated": "Données mises à jour",
+    "card.updated": "Jeu de données généré",
 
     "footer.data": "Données mises à jour le {date} · version {version} · {laws} lois · {countries}",
     "footer.note": "Pour les bibliothèques numériques, les dépôts de textes et les projets de documentation PDF. Les durées sont des résumés : vérifiez toujours la source officielle avant de vous appuyer sur une entrée.",
@@ -392,6 +396,8 @@ export const TRANSLATIONS = {
     "table.lowConfidence": "Confiance faible",
     "card.source": "État des données",
     "card.checked": "vérifié le {date}",
+    "value.notSpecified": "Non précisé",
+    "compare.onlyDiff": "Afficher seulement les lignes qui diffèrent ({count})",
   },
 
   deu: {
@@ -501,7 +507,7 @@ export const TRANSLATIONS = {
     "card.folder": "Datenordner",
     "card.json": "JSON herunterladen",
     "card.csv": "CSV herunterladen",
-    "card.updated": "Daten aktualisiert",
+    "card.updated": "Datensatz erstellt",
 
     "footer.data": "Daten aktualisiert am {date} · Version {version} · {laws} Gesetze · {countries}",
     "footer.note": "Für digitale Bibliotheken, Textarchive und PDF-Dokumentationsprojekte. Die Angaben sind Zusammenfassungen: Prüfen Sie stets die offizielle Quelle, bevor Sie sich auf einen Eintrag verlassen.",
@@ -518,6 +524,8 @@ export const TRANSLATIONS = {
     "table.lowConfidence": "Geringe Zuverlässigkeit",
     "card.source": "Datenstand",
     "card.checked": "geprüft am {date}",
+    "value.notSpecified": "Nicht angegeben",
+    "compare.onlyDiff": "Nur abweichende Zeilen zeigen ({count})",
   },
 
   por: {
@@ -585,7 +593,7 @@ export const TRANSLATIONS = {
     "table.author": "Direitos do autor",
     "table.moral": "Direitos morais",
     "table.treaties": "Tratados",
-    "table.reference": "Referência",
+    "table.reference": "Fonte",
     "table.open": "Abrir a referência oficial",
     "table.onlyCountry": "Mostrar apenas {name}",
 
@@ -627,7 +635,7 @@ export const TRANSLATIONS = {
     "card.folder": "Pasta de dados",
     "card.json": "Baixar JSON",
     "card.csv": "Baixar CSV",
-    "card.updated": "Dados atualizados",
+    "card.updated": "Dados gerados",
 
     "footer.data": "Dados atualizados em {date} · versão {version} · {laws} leis · {countries}",
     "footer.note": "Para bibliotecas digitais, repositórios de textos e projetos de documentação em PDF. Os prazos são resumos: confira sempre a fonte oficial antes de confiar em um registro.",
@@ -644,6 +652,8 @@ export const TRANSLATIONS = {
     "table.lowConfidence": "Confiança baixa",
     "card.source": "Situação dos dados",
     "card.checked": "revisado em {date}",
+    "value.notSpecified": "Não especificado",
+    "compare.onlyDiff": "Mostrar só as linhas que diferem ({count})",
   },
 };
 
@@ -692,7 +702,9 @@ export function plural(key, count, params = {}) {
 export function formatDate(iso) {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return String(iso ?? "");
-  return new Intl.DateTimeFormat(BCP47[current], { dateStyle: "medium" }).format(date);
+  // "2018-05-25" is a calendar date: format it in UTC so no time zone moves it to the 24th.
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(String(iso));
+  return new Intl.DateTimeFormat(BCP47[current], { dateStyle: "medium", ...(dateOnly ? { timeZone: "UTC" } : {}) }).format(date);
 }
 
 export function applyTranslations(root = document) {

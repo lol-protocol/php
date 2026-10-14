@@ -118,7 +118,14 @@ test("comparison, focus return and export of the filtered rows", { skip }, async
   await page.locator('#lawsTableBody input[type="checkbox"]').nth(2).check();
   await page.click("#compareBtn");
   assert.equal(await page.locator("#comparisonResults thead th").count(), 3);
-  assert.equal(await page.locator("#comparisonResults tbody tr").count(), COMPARE_CRITERIA.length);
+  // Criteria where every selected law is empty are left out; the rest are marked as differing or not.
+  const rowsShown = await page.locator("#comparisonResults tbody tr").count();
+  assert.ok(rowsShown >= 3 && rowsShown <= COMPARE_CRITERIA.length, `${rowsShown} rows`);
+  const differing = await page.locator("#comparisonResults tbody tr.is-diff").count();
+  assert.ok(differing > 0);
+  await page.check("#onlyDiff");
+  assert.equal(await page.locator("#comparisonResults tbody tr:visible").count(), differing, "only the rows that differ stay visible");
+  await page.uncheck("#onlyDiff");
   await page.locator("#closeComparison").focus();
   await page.keyboard.press("Enter");
   assert.equal(await focused(page), "BUTTON#compareBtn");

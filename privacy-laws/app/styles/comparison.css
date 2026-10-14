@@ -105,3 +105,26 @@
 #closeComparison {
   margin-top: var(--spacing-md);
 }
+
+/* Law names under each country: readable, not shouted. */
+.comparison-table thead small {
+  display: inline-block;
+  margin-top: 2px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+/* Rows where the selected laws differ get an accent; "only differences" hides the rest. */
+.comparison-table tr.is-diff > th {
+  box-shadow: inset 4px 0 0 var(--color-primary);
+}
+
+.comparison-table.only-diff tr.is-same {
+  display: none;
+}
+
+.comparison-tools {
+  margin: 0 0 var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}

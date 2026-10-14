@@ -36,6 +36,7 @@ const $ = (id) => document.getElementById(id);
 const esc = escapeHtml;
 
 const app = {
+  onlyDiff: false,
   data: null,
   state: emptyState(CONFIG),
   results: [],
@@ -48,6 +49,31 @@ const app = {
 
 const regionLabel = (region) => t(`region.${region}`);
 const frameworkName = (framework) => t(`framework.${framework}`);
+// "Not specified" (or an empty cell) is shown muted and in the interface language, so real data stands out.
+const NOT_SPECIFIED = /^(not specified|—|-)?$/i;
+const valueHtml = (value) =>
+  NOT_SPECIFIED.test(String(value ?? "").trim())
+    ? `<span class="muted">${esc(t("value.notSpecified"))}</span>`
+    : esc(value);
+const dateHtml = (iso) => `<time datetime="${esc(iso)}">${esc(formatDate(iso))}</time>`;
+/** "www.example.org" → "example.org": shows where a link leads (official site, WIPO Lex, a law firm…). */
+const hostOf = (url) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+};
+function sourceLink(url, lawName) {
+  return url
+    ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="source-link" title="${esc(t("table.open"))}" aria-label="${esc(
+        `${t("table.open")}: ${lawName} (${hostOf(url)})`
+      )}">${hostOf(url).split(".").map(esc).join(".<wbr>")}<span aria-hidden="true"> ↗</span></a>`
+    : valueHtml("");
+}
+// Comparison rows whose values are lists of treaties/frameworks, shown as badges with full names.
+const LIST_CRITERIA = { frameworks: frameworkName, frameworks_not: frameworkName };
+
 const sourceLabel = (status) => t(`source.${status}`);
 /** "Web research (secondary sources) · medium confidence · checked 8 Oct 2026" */
 function sourceDetail(row) {
@@ -264,19 +290,13 @@ function rowHtml(row) {
       <td>${esc(row.law_name)}${
         row.confidence === "low" ? ` <span class="badge badge-outline">${esc(t("table.lowConfidence"))}</span>` : ""
       }</td>
-      <td class="nowrap col-optional">${esc(row.enactment_date)}</td>
-      <td class="nowrap">${esc(row.effective_date)}${
+      <td class="nowrap col-optional">${dateHtml(row.enactment_date)}</td>
+      <td class="nowrap">${dateHtml(row.effective_date)}${
         row.effective_date > TODAY ? ` <span class="badge">${esc(t("table.upcoming"))}</span>` : ""
       }</td>
       <td>${esc(row.enforcement_authority)}</td>
-      <td class="col-optional"><small>${esc(row.penalties_range)}</small></td>
-      <td>${
-        url
-          ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="${esc(
-              t("table.open")
-            )}" aria-label="${esc(`${t("table.open")}: ${row.law_name}`)}">📖</a>`
-          : "-"
-      }</td>
+      <td class="col-optional"><small>${valueHtml(row.penalties_range)}</small></td>
+      <td class="col-source">${sourceLink(url, row.law_name)}</td>
     </tr>`;
 }
 
@@ -315,6 +335,7 @@ function renderCountryCard() {
       ? list.map((f) => `<span class="badge${extraClass}" title="${esc(frameworkName(f))}">${esc(f)}</span>`).join("")
       : "—";
   const badges = badgeList(frameworks);
+  const notes = [...new Set(laws.map((row) => row.notes).filter(Boolean))];
   host.hidden = false;
   host.innerHTML = `
     <h2>${esc(country.name)} <span class="badge">${esc(country.code)}</span></h2>
@@ -328,6 +349,7 @@ function renderCountryCard() {
       <div><dt>${esc(t("card.source"))}</dt><dd>${laws.map((row) => esc(sourceDetail(row))).join("<br>")}</dd></div>
       <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
     </dl>
+    ${notes.length ? `<p class="card-notes"><strong>${esc(t("card.notes"))}:</strong> ${esc(notes.join(" · "))}</p>` : ""}
     <p class="card-links">
       <a href="${esc(countryFileUrl(country.tld, "laws.json"))}" download>${esc(t("card.json"))}</a>
       <a href="${esc(countryFileUrl(country.tld, "laws.csv"))}" download>${esc(t("card.csv"))}</a>
@@ -354,15 +376,35 @@ function renderComparison() {
   const head = picked
     .map((row) => `<th scope="col">${esc(row.country_name)}<br /><small>${esc(row.law_name)}</small></th>`)
     .join("");
-  const body = COMPARE_CRITERIA.map(
-    (criterion) => `
-      <tr>
+  const cell = (criterion, row) => {
+    const value = row[criterion] ?? "";
+    if (LIST_CRITERIA[criterion]) {
+      const items = value.split("/").filter(Boolean);
+      return items.length
+        ? `<span class="badge-list">${items.map((v) => `<span class="badge${criterion.endsWith("_not") || criterion.endsWith("not_party") ? " badge-outline" : ""}" title="${esc(LIST_CRITERIA[criterion](v))}">${esc(v)}</span>`).join("")}</span>`
+        : valueHtml("");
+    }
+    return /_date$/.test(criterion) && value ? dateHtml(value) : valueHtml(value);
+  };
+  let differing = 0;
+  const body = COMPARE_CRITERIA.map((criterion) => {
+    const values = picked.map((row) => String(row[criterion] ?? "").trim());
+    if (values.every((v) => NOT_SPECIFIED.test(v))) return ""; // nothing to compare
+    const differs = new Set(values.map((v) => v.toLowerCase())).size > 1;
+    if (differs) differing++;
+    return `
+      <tr class="${differs ? "is-diff" : "is-same"}">
         <th scope="row">${esc(t(`compare.${criterion}`))}</th>
-        ${picked.map((row) => `<td>${esc(row[criterion] || "—")}</td>`).join("")}
-      </tr>`
-  ).join("");
+        ${picked.map((row) => `<td>${cell(criterion, row)}</td>`).join("")}
+      </tr>`;
+  }).join("");
   $("comparisonResults").innerHTML = `
-    <table class="comparison-table">
+    <p class="comparison-tools">
+      <label class="check"><input type="checkbox" id="onlyDiff"${app.onlyDiff ? " checked" : ""} /> <span>${esc(
+        t("compare.onlyDiff", { count: differing })
+      )}</span></label>
+    </p>
+    <table class="comparison-table${app.onlyDiff ? " only-diff" : ""}">
       <thead><tr><th scope="col">${esc(t("compare.criterion"))}</th>${head}</tr></thead>
       <tbody>${body}</tbody>
     </table>`;
@@ -512,6 +554,11 @@ function bindEvents() {
 
   $("compareBtn").addEventListener("click", handleCompare);
   $("exportBtn").addEventListener("click", handleExport);
+  $("comparisonResults").addEventListener("change", (event) => {
+    if (event.target.id !== "onlyDiff") return;
+    app.onlyDiff = event.target.checked;
+    $("comparisonResults").querySelector(".comparison-table").classList.toggle("only-diff", app.onlyDiff);
+  });
   $("closeComparison").addEventListener("click", () => {
     $("comparisonSection").hidden = true;
     $("compareBtn").focus();
