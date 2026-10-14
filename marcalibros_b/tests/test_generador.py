@@ -4,6 +4,7 @@ Los hashes de referencia (tests/hashes_referencia.json) fijan la salida byte a b
 Si cambias una plantilla a propósito, regenera con:
     python tests/test_generador.py --actualizar
 """
+import functools
 import hashlib
 import json
 import sys
@@ -28,6 +29,7 @@ ESCENAS = set(NOMBRES_ARQUETIPOS)
 CONFIG = yaml.safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
 
 
+@functools.lru_cache(maxsize=None)
 def _piezas():
     """Reproduce la generación completa en memoria, con la misma lógica que el build."""
     huellas, salida = {}, {}
@@ -48,6 +50,7 @@ def _hash_pieza(entrada, esc):
 
 def test_determinista():
     a, _ = _piezas()
+    _piezas.cache_clear()  # de verdad otra vez, no la copia en caché
     b, _ = _piezas()
     assert {k: _hash_pieza(*v) for k, v in a.items()} == {k: _hash_pieza(*v) for k, v in b.items()}
 

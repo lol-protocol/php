@@ -53,6 +53,34 @@ PALETAS = {
         "cielo_alto": "#1B2B2A", "cielo_bajo": "#5E7F7A", "sol": "#E6F2EE",
         "lejos": "#36524F", "cerca": "#12201F", "figura": "#070F0E",
     },
+    "cripta": {
+        "cielo_alto": "#060A0D", "cielo_bajo": "#1F3A3A", "sol": "#D6EBDD",
+        "lejos": "#14292A", "cerca": "#070F10", "figura": "#030708",
+    },
+    "sangre": {
+        "cielo_alto": "#14040A", "cielo_bajo": "#7A1E2E", "sol": "#F2D8C9",
+        "lejos": "#4A1220", "cerca": "#1A060C", "figura": "#0A0204",
+    },
+    "lunafria": {
+        "cielo_alto": "#1B2740", "cielo_bajo": "#A9BCD6", "sol": "#F4F8FF",
+        "lejos": "#5C7396", "cerca": "#1D2A44", "figura": "#0C1424",
+    },
+    "tropico": {
+        "cielo_alto": "#0E5E5A", "cielo_bajo": "#F4C95D", "sol": "#FFF1C2",
+        "lejos": "#2E9E73", "cerca": "#0B4D3A", "figura": "#062A21",
+    },
+    "cobre": {
+        "cielo_alto": "#5A1E3B", "cielo_bajo": "#F28C4B", "sol": "#FFE9B8",
+        "lejos": "#B5532F", "cerca": "#4A1F2A", "figura": "#230E15",
+    },
+    "polvo": {
+        "cielo_alto": "#8A6A4A", "cielo_bajo": "#EBD5A8", "sol": "#FFF6DD",
+        "lejos": "#B99468", "cerca": "#6B4A2E", "figura": "#2C1B0F",
+    },
+    "aguamarina": {
+        "cielo_alto": "#0B3C5D", "cielo_bajo": "#8ED6CF", "sol": "#FFFBE6",
+        "lejos": "#3A8FA0", "cerca": "#0F4B5E", "figura": "#06222E",
+    },
     "tormenta": {
         "cielo_alto": "#2A2F3D", "cielo_bajo": "#6C7388", "sol": "#D8DCE6",
         "lejos": "#4B5265", "cerca": "#1D212C", "figura": "#0E1016",
@@ -529,6 +557,203 @@ MOTIVOS.update({
 })
 
 
+# --- Motivos del Gótico y del Realismo mágico ------------------------------------------
+
+def _murcielago(esc, x, y, s, color):
+    mitad = [(0, 0), (0.3, -0.35), (0.6, -0.2), (1.0, -0.55), (0.85, 0), (0.6, 0.1), (0.35, 0.05), (0.15, 0.25)]
+    izq = [(round(x - dx * s, 1), round(y + dy * s, 1)) for dx, dy in mitad]
+    der = [(round(x + dx * s, 1), round(y + dy * s, 1)) for dx, dy in reversed(mitad)]
+    esc.poligono(izq + [(x, round(y + 0.1 * s, 1))] + der, color)
+
+
+def _murcielagos(esc, rng, p, altura):
+    """Bandada de murciélagos en el cielo alto."""
+    for _ in range(rng.randint(5, 8)):
+        _murcielago(esc, rng.uniform(0.12, 0.88) * ANCHO, rng.uniform(0.06, 0.27) * ALTO, rng.uniform(13, 24), p["figura"])
+
+
+def _gargola(esc, rng, p, altura):
+    """Gárgola agazapada sobre un pedestal de piedra."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 24, y), (x - 24, y - 12), (x + 24, y - 12), (x + 24, y)], p["figura"])
+    esc.poligono([(x - 18, y - 12), (x - 20, y - 30), (x - 34, y - 46), (x - 22, y - 40), (x - 12, y - 52), (x - 6, y - 40),
+                  (x - 8, y - 56), (x + 2, y - 50), (x + 10, y - 56), (x + 12, y - 44), (x + 22, y - 36), (x + 36, y - 44),
+                  (x + 26, y - 28), (x + 18, y - 12)], p["figura"])
+
+
+def _mansion(esc, rng, p, altura):
+    """Casa encantada: cuerpo con tejado empinado, torre lateral y ventanas encendidas."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 36, y), (x - 36, y - 46), (x - 40, y - 46), (x, y - 92), (x + 40, y - 46), (x + 36, y - 46), (x + 36, y)], p["figura"])
+    esc.poligono([(x - 54, y), (x - 54, y - 70), (x - 60, y - 70), (x - 45, y - 100), (x - 30, y - 70), (x - 36, y - 70), (x - 36, y)], p["figura"])
+    for dx, dy in ((-20, 24), (6, 24), (-48, 48), (-2, 62)):
+        esc.poligono([(x + dx, y - dy), (x + dx, y - dy - 10), (x + dx + 7, y - dy - 10), (x + dx + 7, y - dy)], p["sol"])
+
+
+def _ventana_gotica(esc, rng, p, altura):
+    """Ventana ojival iluminada, con parteluz y rosetón."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 24, y), (x - 24, y - 70), (x - 14, y - 96), (x, y - 112), (x + 14, y - 96), (x + 24, y - 70), (x + 24, y)], p["figura"])
+    esc.poligono([(x - 16, y - 6), (x - 16, y - 68), (x - 9, y - 88), (x, y - 100), (x + 9, y - 88), (x + 16, y - 68), (x + 16, y - 6)], p["sol"])
+    esc.poligono([(x - 1.5, y - 6), (x - 1.5, y - 100), (x + 1.5, y - 100), (x + 1.5, y - 6)], p["figura"])
+    esc.poligono([(x - 16, y - 50), (x + 16, y - 50), (x + 16, y - 47), (x - 16, y - 47)], p["figura"])
+
+
+def _lobo(esc, rng, p, altura):
+    """Lobo aullando a la luna sobre una loma."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 34, y), (x - 30, y - 8), (x - 24, y - 22), (x - 10, y - 28), (x - 2, y - 38), (x + 2, y - 52),
+                  (x + 10, y - 62), (x + 22, y - 66), (x + 12, y - 56), (x + 12, y - 46), (x + 6, y - 36), (x + 8, y - 22),
+                  (x + 10, y), (x + 4, y), (x + 2, y - 12), (x - 6, y - 10), (x - 14, y - 6), (x - 16, y)], p["figura"])
+
+
+def _encapuchado(esc, rng, p, altura):
+    """Figura envuelta en una capa con capucha."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 20, y), (x - 14, y - 34), (x - 11, y - 56), (x - 6, y - 68), (x, y - 72), (x + 6, y - 68),
+                  (x + 11, y - 56), (x + 14, y - 34), (x + 20, y)], p["figura"])
+
+
+def _mariposa(esc, x, y, s, color):
+    esc.poligono([(x, y), (x - s, y - s * 0.9), (x - s * 0.9, y + s * 0.1)], color)
+    esc.poligono([(x, y), (x - s * 0.7, y + s * 0.2), (x - s * 0.5, y + s * 0.9)], color)
+    esc.poligono([(x, y), (x + s, y - s * 0.9), (x + s * 0.9, y + s * 0.1)], color)
+    esc.poligono([(x, y), (x + s * 0.7, y + s * 0.2), (x + s * 0.5, y + s * 0.9)], color)
+
+
+ORO = "#F2C94C"  # el amarillo de las mariposas de Macondo
+
+
+def color_oro(p):
+    """Oro de las mariposas y los pétalos si se distingue del cielo; si no, la silueta."""
+    return ORO if contraste(ORO, p["cielo_bajo"]) >= 1.8 and contraste(ORO, p["cielo_alto"]) >= 1.8 else p["figura"]
+
+
+def _mariposas(esc, rng, p, altura):
+    """Mariposas amarillas a la deriva (ambiente)."""
+    oro = color_oro(p)
+    for _ in range(rng.randint(6, 9)):
+        y = rng.uniform(0.06, 0.28) * ALTO if rng.random() < 0.6 else rng.uniform(0.62, 0.8) * ALTO
+        _mariposa(esc, rng.uniform(0.12, 0.88) * ANCHO, y, rng.uniform(8, 14), oro)
+
+
+def _petalos(esc, rng, p, altura):
+    """Lluvia de flores amarillas (ambiente)."""
+    oro = color_oro(p)
+    for _ in range(rng.randint(34, 48)):
+        x, y, s = rng.uniform(0.04, 0.96) * ANCHO, rng.uniform(0.04, 0.9) * ALTO, rng.uniform(4, 8)
+        a = rng.uniform(0, math.pi)
+        c, sn = math.cos(a), math.sin(a)
+        esc.poligono([(round(x + c * s * 1.5, 1), round(y + sn * s * 1.5, 1)), (round(x - sn * s * 0.8, 1), round(y + c * s * 0.8, 1)),
+                      (round(x - c * s * 1.5, 1), round(y - sn * s * 1.5, 1)), (round(x + sn * s * 0.8, 1), round(y - c * s * 0.8, 1))], oro)
+
+
+def _ceiba(esc, rng, p, altura):
+    """Ceiba: tronco con raíces tabulares y copa ancha y plana."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 30, y), (x - 14, y - 22), (x - 8, y - 60), (x - 7, y - 80), (x + 7, y - 80), (x + 8, y - 60),
+                  (x + 14, y - 22), (x + 30, y)], p["figura"])
+    for dx, dy, r in ((-36, 0, 22), (-14, -10, 26), (12, -8, 26), (34, 2, 22), (0, 8, 24)):
+        esc.circulo(round(x + dx, 1), round(y - 100 + dy, 1), r, p["figura"])
+
+
+def _casa_colonial(esc, rng, p, altura):
+    """Casa colonial baja con tejado, espadaña y portal encendido."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 46, y), (x - 46, y - 34), (x + 46, y - 34), (x + 46, y)], p["figura"])
+    esc.poligono([(x - 54, y - 34), (x - 38, y - 50), (x + 38, y - 50), (x + 54, y - 34)], p["figura"])
+    esc.poligono([(x - 6, y - 50), (x - 6, y - 66), (x - 2, y - 72), (x + 2, y - 72), (x + 6, y - 66), (x + 6, y - 50)], p["figura"])
+    esc.poligono([(x - 8, y), (x - 8, y - 20), (x - 4, y - 25), (x + 4, y - 25), (x + 8, y - 20), (x + 8, y)], p["sol"])
+    for dx in (-30, 24):
+        esc.poligono([(x + dx, y - 14), (x + dx, y - 26), (x + dx + 8, y - 26), (x + dx + 8, y - 14)], p["sol"])
+
+
+def _volcan(esc, rng, p, altura):
+    """Volcán de cono perfecto con un penacho de humo."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 84, y), (x - 14, y - 92), (x - 6, y - 98), (x + 6, y - 98), (x + 14, y - 92), (x + 84, y)], p["figura"])
+    for dx, dy, r in ((4, -112, 8), (-4, -126, 11), (8, -142, 13)):
+        esc.circulo(round(x + dx, 1), round(y + dy, 1), r, p["sol"])
+
+
+def _maiz(esc, rng, p, altura):
+    """Cañas de maíz con mazorcas."""
+    x0 = rng.uniform(0.25, 0.6) * ANCHO
+    for k in range(rng.randint(3, 4)):
+        x, h = x0 + k * rng.uniform(18, 26), rng.uniform(70, 104)
+        y = _suelo(altura, x)
+        esc.poligono([(x - 1.5, y), (x - 1.5, y - h), (x + 1.5, y - h), (x + 1.5, y)], p["figura"])
+        for sgn, dy in ((-1, 0.45), (1, 0.62), (-1, 0.78)):
+            esc.poligono([(x, y - h * dy), (x + sgn * 22, y - h * dy - 14), (x + sgn * 24, y - h * dy - 10)], p["figura"])
+        esc.poligono([(x + 1.5, y - h * 0.55), (x + 8, y - h * 0.62), (x + 5, y - h * 0.4)], color_oro(p))
+
+
+def _pez_dorado(esc, rng, p, altura):
+    """Tres pececillos de oro flotando en el aire."""
+    oro = color_oro(p)
+    x0, y0 = rng.uniform(0.3, 0.7) * ANCHO, rng.uniform(0.14, 0.24) * ALTO
+    for dx, dy, s in ((0, 0, 11), (26, -22, 8), (-24, 20, 9)):
+        x, y = x0 + dx, y0 + dy
+        esc.poligono([(x - s, y), (x - s * 0.2, y - s * 0.5), (x + s * 0.8, y), (x - s * 0.2, y + s * 0.5)], oro)
+        esc.poligono([(x + s * 0.7, y), (x + s * 1.4, y - s * 0.5), (x + s * 1.4, y + s * 0.5)], oro)
+
+
+def _gallo(esc, rng, p, altura):
+    """Gallo sobre un poste."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    esc.poligono([(x - 2, y), (x - 2, y - 24), (x + 2, y - 24), (x + 2, y)], p["figura"])
+    esc.poligono([(x - 22, y - 30), (x - 30, y - 56), (x - 20, y - 48), (x - 20, y - 66), (x - 12, y - 50), (x - 8, y - 38),
+                  (x - 2, y - 42), (x + 2, y - 58), (x + 6, y - 62), (x + 8, y - 70), (x + 12, y - 62), (x + 18, y - 60),
+                  (x + 12, y - 54), (x + 10, y - 44), (x + 14, y - 34), (x + 8, y - 24), (x - 6, y - 24)], p["figura"])
+
+
+def _lluvia(esc, rng, p, altura):
+    """Lluvia oblicua (ambiente)."""
+    for _ in range(rng.randint(60, 84)):
+        x, y, l = rng.uniform(-10, ANCHO) , rng.uniform(0.04, 0.92) * ALTO, rng.uniform(14, 24)
+        esc.poligono([(round(x, 1), round(y, 1)), (round(x + 1.6, 1), round(y, 1)), (round(x + 1.6 - l * 0.25, 1), round(y + l, 1)),
+                      (round(x - l * 0.25, 1), round(y + l, 1))], p["sol"])
+
+
+def _fantasma(esc, rng, p, altura):
+    """Aparecido de sábana ondulante, con ojos."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    pts = [(x - 20, y), (x - 20, y - 40), (x - 14, y - 60), (x, y - 70), (x + 14, y - 60), (x + 20, y - 40), (x + 20, y)]
+    pts += [(x + 20 - k * 8, y + (6 if k % 2 else -4)) for k in range(1, 5)]
+    esc.poligono(pts, p["sol"])
+    esc.circulo(x - 6, y - 50, 3.2, p["figura"])
+    esc.circulo(x + 6, y - 50, 3.2, p["figura"])
+
+
+def _alas(esc, rng, p, altura):
+    """Par de alas enormes de plumas, en el cielo."""
+    x, y = rng.uniform(0.35, 0.65) * ANCHO, rng.uniform(0.12, 0.22) * ALTO
+    for sgn in (-1, 1):
+        pts = [(x + sgn * 4, y + 10), (x + sgn * 20, y - 10)]
+        for k in range(1, 6):
+            pts += [(x + sgn * (20 + 16 * k), y - 12 + 7 * k), (x + sgn * (14 + 16 * k), y - 2 + 7 * k)]
+        pts += [(x + sgn * 6, y + 30)]
+        esc.poligono([(round(a, 1), round(b, 1)) for a, b in pts], p["sol"])
+
+
+MOTIVOS.update({
+    "murcielagos": _murcielagos, "gargola": _gargola, "mansion": _mansion, "ventana_gotica": _ventana_gotica,
+    "lobo": _lobo, "encapuchado": _encapuchado, "mariposas": _mariposas, "petalos": _petalos, "ceiba": _ceiba,
+    "casa_colonial": _casa_colonial, "volcan": _volcan, "maiz": _maiz, "pez_dorado": _pez_dorado, "gallo": _gallo,
+    "lluvia": _lluvia, "fantasma": _fantasma, "alas": _alas,
+})
+
+
 # --- Escalado de motivos ---------------------------------------------------------
 # (factor, ancla): 'suelo' conserva la base del motivo, 'centro' su centro y 'arriba'
 # su borde superior. Sin entrada = tamaño original. Los motivos se diseñaron pequeños
@@ -543,10 +768,13 @@ ESCALAS = {
     "arbol": (1.6, "suelo"), "barricada": (1.5, "suelo"), "velero": (1.6, "suelo"), "barca": (1.8, "suelo"),
     "nube": (1.4, "centro"), "cuervo": (1.5, "centro"), "corazon": (1.6, "centro"), "corona": (1.6, "centro"),
     "rayo": (1.3, "arriba"),
+    "gargola": (1.7, "suelo"), "mansion": (1.3, "suelo"), "ventana_gotica": (1.5, "suelo"), "lobo": (1.8, "suelo"),
+    "encapuchado": (1.6, "suelo"), "ceiba": (1.2, "suelo"), "casa_colonial": (1.5, "suelo"), "volcan": (1.2, "suelo"),
+    "maiz": (1.3, "suelo"), "pez_dorado": (1.6, "centro"), "gallo": (1.7, "suelo"), "fantasma": (1.7, "suelo"), "alas": (1.5, "centro"),
 }
 # Se dibujan por delante de todas las capas (los demás, entre la lejana y la cercana,
 # de modo que la capa cercana tape su base y queden apoyados en el suelo).
-FRENTE = {"olas", "narcisos", "hojas", "rio"}  # el río es una franja baja: la capa cercana lo taparía
+FRENTE = {"olas", "narcisos", "hojas", "rio", "petalos", "lluvia"}  # el río es una franja baja: la capa cercana lo taparía
 
 
 def _limites(prims):
@@ -574,7 +802,7 @@ def _escalar(prims, k, ancla):
 
 
 # Motivos repartidos por todo el lienzo: ni se escalan ni se ajustan al ancho.
-AMBIENTALES = {"estrellas", "golondrinas", "hojas", "olas", "rio", "narcisos"}
+AMBIENTALES = {"estrellas", "golondrinas", "hojas", "olas", "rio", "narcisos", "murcielagos", "mariposas", "petalos", "lluvia"}
 MARGEN_LATERAL = 8
 
 
@@ -725,37 +953,77 @@ def elegir_franja(obstaculos):
     return None
 
 
-def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas", ocultar_motivo=False):
-    rng = random.Random(semilla)
-    rng.nivel = rng.uniform(-0.07, 0.07)  # desplaza todo el horizonte: cambia la silueta global
-    rng.ocultar = ocultar_motivo
-    p = paleta_legible(paleta)
-    esc = Escena(semilla=semilla, grano=grano)
-    # Cielo claro arriba o abajo: cambia mucho la huella visual sin cambiar la paleta.
-    if rng.random() < 0.4:
-        esc.degradado(p["cielo_bajo"], p["cielo_alto"])
-    else:
-        esc.degradado(p["cielo_alto"], p["cielo_bajo"])
+# --- Adornos propios de cada movimiento -----------------------------------------------
+# Se dibujan al final, ya elegida la franja de texto, y la respetan.
 
-    if motivo == "luna":
-        cx, cy, r = rng.uniform(0.3, 0.6) * ANCHO, rng.uniform(0.10, 0.22) * ALTO, 46
-    else:
-        cx, cy, r = rng.uniform(0.3, 0.7) * ANCHO, rng.uniform(0.08, 0.24) * ALTO, rng.uniform(20, 30)
-    esc.circulo(cx, cy, r, p["sol"])
-    obstaculos = [(cy - r, cy + r)]
-
-    suelos = []
-    entre_capas = (lambda altura: suelos.append(altura)) if motivo in FRENTE else (
-        lambda altura: (suelos.append(altura), _poner_motivo(esc, rng, p, altura, motivo)))
-    ARQUETIPOS[arquetipo](esc, rng, p, entre_capas)
-    if motivo in FRENTE:
-        _poner_motivo(esc, rng, p, suelos[0], motivo)
-    bbox = getattr(rng, "bbox_motivo", None)
-    esc.bbox_motivo = bbox
-    if bbox and motivo not in AMBIENTALES:
-        obstaculos.append((bbox[1], bbox[3]))
-    esc.franja = elegir_franja(obstaculos)
-    return esc
+def _adorno_gotico(esc, rng, p, franja, motivo):
+    """Niebla en bandas bajas y arco ojival que enmarca la parte alta, como una ventana."""
+    y = rng.uniform(0.64, 0.7) * ALTO
+    while y < 0.92 * ALTO:
+        alto = rng.uniform(22, 44)
+        esc.velo(0, round(y, 1), ANCHO, round(y + alto, 1), p["sol"], round(rng.uniform(0.10, 0.2), 2), 0)
+        y += alto + rng.uniform(40, 90)
+    # Arco ojival equilátero: dos arcos de radio igual al ancho, con centros en los arranques
+    # opuestos; la clave queda a 173 px sobre el arranque. Se rellenan las enjutas.
+    r, arranque, n = ANCHO, 220, 14
+    izq = [(round(r - r * math.cos(math.radians(60 * k / n)), 1), round(arranque - r * math.sin(math.radians(60 * k / n)), 1))
+           for k in range(n + 1)]  # del arranque izquierdo a la clave
+    der = [(round(ANCHO - x, 1), y) for x, y in izq]  # del arranque derecho a la clave
+    esc.poligono([(0, 0), (ANCHO, 0), (ANCHO, arranque)] + der + list(reversed(izq)), p["cerca"])
 
 
-CONSTRUCTORES = {"romanticismo": _romanticismo}
+def _adorno_magico(esc, rng, p, franja, motivo):
+    """Mariposas amarillas que acompañan a la pieza, fuera de la franja de texto."""
+    if motivo in ("mariposas", "petalos"):
+        return
+    oro = color_oro(p)
+    y0, y1 = (franja[1] - 24, franja[3] + 24) if franja else (-1, -1)
+    for _ in range(rng.randint(4, 6)):
+        y = rng.uniform(0.04, 0.9) * ALTO
+        x = rng.uniform(0.12, 0.88) * ANCHO
+        if y0 <= y <= y1:
+            continue
+        _mariposa(esc, x, y, rng.uniform(8, 13), oro)
+
+
+ADORNOS = {"romanticismo": None, "gotico": _adorno_gotico, "realismo-magico": _adorno_magico}
+
+
+def _paisaje(movimiento):
+    def construir(semilla, paleta, motivo, grano=0.0, arquetipo="colinas", ocultar_motivo=False):
+        rng = random.Random(semilla)
+        rng.nivel = rng.uniform(-0.07, 0.07)  # desplaza todo el horizonte: cambia la silueta global
+        rng.ocultar = ocultar_motivo
+        p = paleta_legible(paleta)
+        esc = Escena(semilla=semilla, grano=grano)
+        # Cielo claro arriba o abajo: cambia mucho la huella visual sin cambiar la paleta.
+        if rng.random() < 0.4:
+            esc.degradado(p["cielo_bajo"], p["cielo_alto"])
+        else:
+            esc.degradado(p["cielo_alto"], p["cielo_bajo"])
+
+        if motivo == "luna":
+            cx, cy, r = rng.uniform(0.3, 0.6) * ANCHO, rng.uniform(0.10, 0.22) * ALTO, 46
+        else:
+            cx, cy, r = rng.uniform(0.3, 0.7) * ANCHO, rng.uniform(0.08, 0.24) * ALTO, rng.uniform(20, 30)
+        esc.circulo(cx, cy, r, p["sol"])
+        obstaculos = [(cy - r, cy + r)]
+
+        suelos = []
+        entre_capas = (lambda altura: suelos.append(altura)) if motivo in FRENTE else (
+            lambda altura: (suelos.append(altura), _poner_motivo(esc, rng, p, altura, motivo)))
+        ARQUETIPOS[arquetipo](esc, rng, p, entre_capas)
+        if motivo in FRENTE:
+            _poner_motivo(esc, rng, p, suelos[0], motivo)
+        bbox = getattr(rng, "bbox_motivo", None)
+        esc.bbox_motivo = bbox
+        if bbox and motivo not in AMBIENTALES:
+            obstaculos.append((bbox[1], bbox[3]))
+        esc.franja = elegir_franja(obstaculos)
+        if ADORNOS[movimiento]:
+            ADORNOS[movimiento](esc, rng, p, esc.franja, motivo)
+        return esc
+    return construir
+
+
+CONSTRUCTORES = {m: _paisaje(m) for m in ADORNOS}

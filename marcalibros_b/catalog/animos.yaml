@@ -1,7 +1,7 @@
 # Ánimo de una obra -> paletas que lo expresan (ver PALETAS en generator/plantillas.py).
 # El generador rota la lista según la obra y elige la primera paleta que ese autor
 # no haya usado ya con la misma escena.
-version: "0.2"
+version: "0.3"
 animos:
   nocturno: [noche, medianoche, tormenta]
   tormentoso: [tormenta, tempestad, noche]
@@ -12,3 +12,9 @@ animos:
   pastoral: [esmeralda, amanecer, niebla, dorada]
   sublime: [tormenta, niebla, esmeralda, tempestad, ceniza]
   otonal: [otono, atardecer, dorada]
+  macabro: [sangre, cripta, tempestad]
+  lugubre: [lunafria, cripta, ceniza, niebla]
+  espectral: [lunafria, niebla, polvo, ceniza]
+  onirico: [tropico, cobre, rosa, aguamarina]
+  exuberante: [tropico, aguamarina, esmeralda, dorada]
+  seco: [polvo, dorada, otono]

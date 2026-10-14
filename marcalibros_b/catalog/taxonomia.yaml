@@ -1,4 +1,4 @@
-# Taxonomía de marcalibros v0.4. Fuente de verdad para generator/build.py.
+# Taxonomía de marcalibros v0.5. Fuente de verdad para generator/build.py.
 #
 # - Cada variante de un autor es una obra o tema suyo (`obras`): la variante N usa
 #   la obra N. Un autor sin `obras` aún no se genera (pendiente de rellenar).
@@ -7,9 +7,11 @@
 # - Gutenberg: `gutenberg.estado` es sin_verificar | verificado. Solo se marca
 #   `verificado` con id real, comprobado con generator/verificar_gutenberg.py.
 # - Los 6 autores de Romanticismo tras Poe/Byron y las obras de todos salvo Bécquer son borrador (de memoria, sin verificar).
+# - `de` (opcional): obra de la que sale un tema, cuando la variante no es la obra entera.
+# - Gótico y Realismo mágico: obras y temas en borrador, de memoria, sin verificar.
 # - Regla de formato: la variante 01 de cada autor es JPG; el resto SVG.
 
-version: '0.4'
+version: '0.5'
 ancho: 200
 alto: 1400
 variante_jpg: 1
@@ -970,6 +972,1896 @@ movimientos:
       motivo: luna
       animo: nocturno
       escena: llanura
+      gutenberg:
+        id: null
+        estado: sin_verificar
+- id: gotico
+  nombre: Gótico
+  paletas:
+  - cripta
+  - sangre
+  - lunafria
+  - noche
+  - medianoche
+  - tormenta
+  - tempestad
+  - niebla
+  - ceniza
+  - otono
+  autores:
+  - id: shelley-mary
+    nombre: Mary Shelley
+    epoca: 1797–1851
+    region: Reino Unido
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: frankenstein-o-el-moderno-prometeo
+      titulo: Frankenstein o el moderno Prometeo
+      tipo: novela
+      motivo: rayo
+      animo: tormentoso
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-laboratorio-de-victor-frankenstein
+      titulo: El laboratorio de Victor Frankenstein
+      tipo: tema
+      de: Frankenstein
+      motivo: torre
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-criatura-en-el-bosque
+      titulo: La criatura en el bosque
+      tipo: tema
+      de: Frankenstein
+      motivo: encapuchado
+      animo: lugubre
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-mar-de-hielo-del-montanvert
+      titulo: El mar de hielo del Montanvert
+      tipo: tema
+      de: Frankenstein
+      motivo: ninguno
+      animo: sublime
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-expedicion-al-artico
+      titulo: La expedición al Ártico
+      tipo: tema
+      de: Frankenstein
+      motivo: velero
+      animo: lugubre
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-ultimo-hombre
+      titulo: El último hombre
+      tipo: novela
+      motivo: ruinas
+      animo: espectral
+      escena: llanura
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: mathilda
+      titulo: Mathilda
+      tipo: novela
+      motivo: cipres
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: valperga
+      titulo: Valperga
+      tipo: novela
+      motivo: castillo
+      animo: crepuscular
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-inmortal-mortal
+      titulo: El inmortal mortal
+      tipo: cuento
+      motivo: reloj
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: transformacion
+      titulo: Transformación
+      tipo: cuento
+      motivo: mansion
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: stoker
+    nombre: Bram Stoker
+    epoca: 1847–1912
+    region: Irlanda
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: dracula
+      titulo: Drácula
+      tipo: novela
+      motivo: castillo
+      animo: macabro
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-castillo-del-conde-dracula
+      titulo: El castillo del conde Drácula
+      tipo: tema
+      de: Drácula
+      motivo: ventana_gotica
+      animo: nocturno
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-travesia-del-demeter
+      titulo: La travesía del Demeter
+      tipo: tema
+      de: Drácula
+      motivo: velero
+      animo: tormentoso
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-lobos-de-los-carpatos
+      titulo: Los lobos de los Cárpatos
+      tipo: tema
+      de: Drácula
+      motivo: lobo
+      animo: nocturno
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-tumba-de-lucy-westenra
+      titulo: La tumba de Lucy Westenra
+      tipo: tema
+      de: Drácula
+      motivo: lapidas
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-invitado-de-dracula
+      titulo: El invitado de Drácula
+      tipo: cuento
+      motivo: encapuchado
+      animo: nocturno
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-joyero-de-las-siete-estrellas
+      titulo: El joyero de las siete estrellas
+      tipo: novela
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-guarida-del-gusano-blanco
+      titulo: La guarida del gusano blanco
+      tipo: novela
+      motivo: serpiente
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-dama-de-la-mortaja
+      titulo: La dama de la mortaja
+      tipo: novela
+      motivo: fantasma
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: bajo-el-crepusculo
+      titulo: Bajo el crepúsculo
+      tipo: cuentos
+      motivo: murcielagos
+      animo: crepuscular
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: radcliffe
+    nombre: Ann Radcliffe
+    epoca: 1764–1823
+    region: Reino Unido
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: los-misterios-de-udolfo
+      titulo: Los misterios de Udolfo
+      tipo: novela
+      motivo: castillo
+      animo: macabro
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-velo-negro
+      titulo: El velo negro
+      tipo: tema
+      de: Los misterios de Udolfo
+      motivo: ventana_gotica
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-pirineos-y-los-apeninos
+      titulo: Los Pirineos y los Apeninos
+      tipo: tema
+      de: Los misterios de Udolfo
+      motivo: ninguno
+      animo: sublime
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-italiano
+      titulo: El italiano
+      tipo: novela
+      motivo: catedral
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-inquisicion-de-roma
+      titulo: La Inquisición de Roma
+      tipo: tema
+      de: El italiano
+      motivo: cruz
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-bosque-o-la-abadia
+      titulo: El bosque o la abadía
+      tipo: novela
+      motivo: arco
+      animo: lugubre
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-misterios-del-castillo-de-athlin-y-d
+      titulo: Los misterios del castillo de Athlin y Dunbayne
+      tipo: novela
+      motivo: torre
+      animo: tormentoso
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: una-novela-siciliana
+      titulo: Una novela siciliana
+      tipo: novela
+      motivo: ruinas
+      animo: crepuscular
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: viaje-a-los-lagos-del-norte-de-inglaterr
+      titulo: Viaje a los lagos del norte de Inglaterra
+      tipo: viaje
+      motivo: rio
+      animo: pastoral
+      escena: colinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: gaston-de-blondeville
+      titulo: Gastón de Blondeville
+      tipo: novela
+      motivo: fantasma
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: le-fanu
+    nombre: Sheridan Le Fanu
+    epoca: 1814–1873
+    region: Irlanda
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: carmilla
+      titulo: Carmilla
+      tipo: novela corta
+      motivo: murcielagos
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-tio-silas
+      titulo: El tío Silas
+      tipo: novela
+      motivo: mansion
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: en-un-espejo-oscuro
+      titulo: En un espejo oscuro
+      tipo: cuentos
+      motivo: vela
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: te-verde
+      titulo: Té verde
+      tipo: cuento
+      motivo: cuervo
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-juez-harbottle
+      titulo: El juez Harbottle
+      tipo: cuento
+      motivo: horca
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-casa-junto-al-cementerio
+      titulo: La casa junto al cementerio
+      tipo: novela
+      motivo: lapidas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-fantasma-de-madame-crowl
+      titulo: El fantasma de Madame Crowl
+      tipo: cuento
+      motivo: fantasma
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-habitacion-del-dragon-volante
+      titulo: La habitación del dragón volante
+      tipo: novela corta
+      motivo: ventana_gotica
+      animo: nocturno
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: schalken-el-pintor
+      titulo: Schalken el pintor
+      tipo: cuento
+      motivo: ataud
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-familiar
+      titulo: El familiar
+      tipo: cuento
+      motivo: encapuchado
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: walpole
+    nombre: Horace Walpole
+    epoca: 1717–1797
+    region: Reino Unido
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-castillo-de-otranto
+      titulo: El castillo de Otranto
+      tipo: novela
+      motivo: castillo
+      animo: tormentoso
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-yelmo-gigante
+      titulo: El yelmo gigante
+      tipo: tema
+      de: El castillo de Otranto
+      motivo: torre
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-retrato-que-desciende
+      titulo: El retrato que desciende
+      tipo: tema
+      de: El castillo de Otranto
+      motivo: ventana_gotica
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-pasadizo-subterraneo
+      titulo: El pasadizo subterráneo
+      tipo: tema
+      de: El castillo de Otranto
+      motivo: arco
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-fantasma-de-alfonso
+      titulo: El fantasma de Alfonso
+      tipo: tema
+      de: El castillo de Otranto
+      motivo: fantasma
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-madre-misteriosa
+      titulo: La madre misteriosa
+      tipo: drama
+      motivo: encapuchado
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: strawberry-hill
+      titulo: Strawberry Hill
+      tipo: tema
+      motivo: mansion
+      animo: crepuscular
+      escena: colinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: dudas-historicas-sobre-ricardo-iii
+      titulo: Dudas históricas sobre Ricardo III
+      tipo: ensayo
+      motivo: corona
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cuentos-jeroglificos
+      titulo: Cuentos jeroglíficos
+      tipo: cuentos
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sobre-la-jardineria-moderna
+      titulo: Sobre la jardinería moderna
+      tipo: ensayo
+      motivo: arbol
+      animo: pastoral
+      escena: colinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: lewis
+    nombre: Matthew Gregory Lewis
+    epoca: 1775–1818
+    region: Reino Unido
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-monje
+      titulo: El monje
+      tipo: novela
+      motivo: catedral
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ambrosio-y-matilde
+      titulo: Ambrosio y Matilde
+      tipo: tema
+      de: El monje
+      motivo: encapuchado
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-monja-sangrienta
+      titulo: La monja sangrienta
+      tipo: tema
+      de: El monje
+      motivo: fantasma
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-subterraneos-del-convento
+      titulo: Los subterráneos del convento
+      tipo: tema
+      de: El monje
+      motivo: ataud
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-espectro-del-castillo
+      titulo: El espectro del castillo
+      tipo: drama
+      motivo: castillo
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: alonzo-el-valiente-y-la-bella-imogene
+      titulo: Alonzo el valiente y la bella Imogene
+      tipo: balada
+      motivo: lapidas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cuentos-de-maravillas
+      titulo: Cuentos de maravillas
+      tipo: antología
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-bravo-de-venecia
+      titulo: El bravo de Venecia
+      tipo: drama
+      motivo: barca
+      animo: crepuscular
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: adelmorn-el-forajido
+      titulo: Adelmorn el forajido
+      tipo: drama
+      motivo: torre
+      animo: tormentoso
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diario-de-un-propietario-en-las-indias-o
+      titulo: Diario de un propietario en las Indias Occidentales
+      tipo: diario
+      motivo: velero
+      animo: crepuscular
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: beckford
+    nombre: William Beckford
+    epoca: 1760–1844
+    region: Reino Unido
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: vathek
+      titulo: Vathek
+      tipo: novela
+      motivo: torre
+      animo: macabro
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-palacio-de-los-cinco-sentidos
+      titulo: El palacio de los cinco sentidos
+      tipo: tema
+      de: Vathek
+      motivo: catedral
+      animo: crepuscular
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-salon-de-eblis
+      titulo: El salón de Eblis
+      tipo: tema
+      de: Vathek
+      motivo: rayo
+      animo: tormentoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: nouronihar
+      titulo: Nouronihar
+      tipo: tema
+      de: Vathek
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-abismo-de-las-llamas
+      titulo: El abismo de las llamas
+      tipo: tema
+      de: Vathek
+      motivo: ruinas
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: fonthill-abbey
+      titulo: Fonthill Abbey
+      tipo: tema
+      motivo: arco
+      animo: lugubre
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: azemia
+      titulo: Azemia
+      tipo: novela
+      motivo: golondrinas
+      animo: sentimental
+      escena: colinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: italia-con-bocetos-de-espana-y-portugal
+      titulo: Italia, con bocetos de España y Portugal
+      tipo: viaje
+      motivo: puente
+      animo: crepuscular
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: recuerdos-de-una-excursion-a-los-monaste
+      titulo: Recuerdos de una excursión a los monasterios de Alcobaça y Batalha
+      tipo: viaje
+      motivo: arco
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: memorias-biograficas-de-pintores-extraor
+      titulo: Memorias biográficas de pintores extraordinarios
+      tipo: ensayo
+      motivo: nube
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: maturin
+    nombre: Charles Maturin
+    epoca: 1780–1824
+    region: Irlanda
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: melmoth-el-errabundo
+      titulo: Melmoth el errabundo
+      tipo: novela
+      motivo: encapuchado
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-pacto-de-melmoth
+      titulo: El pacto de Melmoth
+      tipo: tema
+      de: Melmoth el errabundo
+      motivo: vela
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-manicomio
+      titulo: El manicomio
+      tipo: tema
+      de: Melmoth el errabundo
+      motivo: ventana_gotica
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-inquisicion-de-madrid
+      titulo: La Inquisición de Madrid
+      tipo: tema
+      de: Melmoth el errabundo
+      motivo: cruz
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-isla-del-naufrago
+      titulo: La isla del náufrago
+      tipo: tema
+      de: Melmoth el errabundo
+      motivo: olas
+      animo: tormentoso
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: bertram
+      titulo: Bertram
+      tipo: drama
+      motivo: castillo
+      animo: tormentoso
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-venganza-fatal
+      titulo: La venganza fatal
+      tipo: novela
+      motivo: ataud
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-jefe-milesio
+      titulo: El jefe milesio
+      tipo: novela
+      motivo: torre
+      animo: crepuscular
+      escena: colinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-albigenses
+      titulo: Los albigenses
+      tipo: novela
+      motivo: catedral
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-muchacho-irlandes-salvaje
+      titulo: El muchacho irlandés salvaje
+      tipo: novela
+      motivo: golondrinas
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: stevenson
+    nombre: Robert Louis Stevenson
+    epoca: 1850–1894
+    region: Escocia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-extrano-caso-del-doctor-jekyll-y-mr-h
+      titulo: El extraño caso del doctor Jekyll y Mr. Hyde
+      tipo: novela corta
+      motivo: mansion
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-puerta-de-mr-hyde
+      titulo: La puerta de Mr. Hyde
+      tipo: tema
+      de: El extraño caso del doctor Jekyll y Mr. Hyde
+      motivo: encapuchado
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-niebla-de-londres
+      titulo: La niebla de Londres
+      tipo: tema
+      de: El extraño caso del doctor Jekyll y Mr. Hyde
+      motivo: ninguno
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-ladron-de-cadaveres
+      titulo: El ladrón de cadáveres
+      tipo: cuento
+      motivo: ataud
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: olalla
+      titulo: Olalla
+      tipo: cuento
+      motivo: ventana_gotica
+      animo: lugubre
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: markheim
+      titulo: Markheim
+      tipo: cuento
+      motivo: reloj
+      animo: macabro
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-janet-torcida
+      titulo: La Janet torcida
+      tipo: cuento
+      motivo: cruz
+      animo: macabro
+      escena: colinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-diablo-de-la-botella
+      titulo: El diablo de la botella
+      tipo: cuento
+      motivo: gargola
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-senor-de-ballantrae
+      titulo: El señor de Ballantrae
+      tipo: novela
+      motivo: velero
+      animo: tormentoso
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-flecha-negra
+      titulo: La flecha negra
+      tipo: novela
+      motivo: arbol
+      animo: crepuscular
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: bronte-emily
+    nombre: Emily Brontë
+    epoca: 1818–1848
+    region: Reino Unido
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: cumbres-borrascosas
+      titulo: Cumbres borrascosas
+      tipo: novela
+      motivo: arbol
+      animo: tormentoso
+      escena: colinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-paramos-de-yorkshire
+      titulo: Los páramos de Yorkshire
+      tipo: tema
+      de: Cumbres borrascosas
+      motivo: ninguno
+      animo: sublime
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: thrushcross-grange
+      titulo: Thrushcross Grange
+      tipo: tema
+      de: Cumbres borrascosas
+      motivo: mansion
+      animo: nocturno
+      escena: colinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-fantasma-de-catherine-en-la-ventana
+      titulo: El fantasma de Catherine en la ventana
+      tipo: tema
+      de: Cumbres borrascosas
+      motivo: fantasma
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: heathcliff-y-la-tumba-de-catherine
+      titulo: Heathcliff y la tumba de Catherine
+      tipo: tema
+      de: Cumbres borrascosas
+      motivo: lapidas
+      animo: lugubre
+      escena: colinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-alma-que-no-es-cobarde
+      titulo: El alma que no es cobarde
+      tipo: poema
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: recuerdo
+      titulo: Recuerdo
+      tipo: poema
+      motivo: cipres
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-prisionero
+      titulo: El prisionero
+      tipo: poema
+      motivo: torre
+      animo: lugubre
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-estrellas
+      titulo: Las estrellas
+      tipo: poema
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ensueno
+      titulo: Ensueño
+      tipo: poema
+      motivo: nube
+      animo: auroral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+- id: realismo-magico
+  nombre: Realismo mágico
+  paletas:
+  - tropico
+  - cobre
+  - polvo
+  - aguamarina
+  - esmeralda
+  - dorada
+  - rosa
+  - atardecer
+  - amanecer
+  - niebla
+  nota: 'Autores bajo derechos de autor en su mayoría: previsiblemente sin texto en Gutenberg (estado
+    no_disponible, a comprobar).'
+  autores:
+  - id: garcia-marquez
+    nombre: Gabriel García Márquez
+    epoca: 1927–2014
+    region: Colombia
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: cien-anos-de-soledad
+      titulo: Cien años de soledad
+      tipo: novela
+      motivo: ceiba
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-lluvia-de-flores-amarillas
+      titulo: La lluvia de flores amarillas
+      tipo: tema
+      de: Cien años de soledad
+      motivo: petalos
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-mariposas-amarillas-de-mauricio-babi
+      titulo: Las mariposas amarillas de Mauricio Babilonia
+      tipo: tema
+      de: Cien años de soledad
+      motivo: mariposas
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-cuatro-anos-de-lluvia-en-macondo
+      titulo: Los cuatro años de lluvia en Macondo
+      tipo: tema
+      de: Cien años de soledad
+      motivo: lluvia
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-pescaditos-de-oro-del-coronel-aureli
+      titulo: Los pescaditos de oro del coronel Aureliano Buendía
+      tipo: tema
+      de: Cien años de soledad
+      motivo: pez_dorado
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-coronel-no-tiene-quien-le-escriba
+      titulo: El coronel no tiene quien le escriba
+      tipo: novela corta
+      motivo: gallo
+      animo: seco
+      escena: llanura
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cronica-de-una-muerte-anunciada
+      titulo: Crónica de una muerte anunciada
+      tipo: novela
+      motivo: casa_colonial
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-amor-en-los-tiempos-del-colera
+      titulo: El amor en los tiempos del cólera
+      tipo: novela
+      motivo: rio
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: un-senor-muy-viejo-con-unas-alas-enormes
+      titulo: Un señor muy viejo con unas alas enormes
+      tipo: cuento
+      motivo: alas
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-otono-del-patriarca
+      titulo: El otoño del patriarca
+      tipo: novela
+      motivo: cuervo
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: rulfo
+    nombre: Juan Rulfo
+    epoca: 1917–1986
+    region: México
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: pedro-paramo
+      titulo: Pedro Páramo
+      tipo: novela
+      motivo: casa_colonial
+      animo: espectral
+      escena: llanura
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: comala-el-pueblo-de-los-muertos
+      titulo: Comala, el pueblo de los muertos
+      tipo: tema
+      de: Pedro Páramo
+      motivo: lapidas
+      animo: espectral
+      escena: colinas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-llano-en-llamas
+      titulo: El llano en llamas
+      tipo: cuentos
+      motivo: ninguno
+      animo: seco
+      escena: llanura
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: luvina
+      titulo: Luvina
+      tipo: cuento
+      motivo: arbol
+      animo: seco
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: nos-han-dado-la-tierra
+      titulo: Nos han dado la tierra
+      tipo: cuento
+      motivo: cruz
+      animo: seco
+      escena: llanura
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: diles-que-no-me-maten
+      titulo: Diles que no me maten
+      tipo: cuento
+      motivo: cuervo
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: macario
+      titulo: Macario
+      tipo: cuento
+      motivo: ninguno
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: no-oyes-ladrar-los-perros
+      titulo: No oyes ladrar los perros
+      tipo: cuento
+      motivo: lobo
+      animo: nocturno
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-cuesta-de-las-comadres
+      titulo: La cuesta de las comadres
+      tipo: cuento
+      motivo: arbol
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-gallo-de-oro
+      titulo: El gallo de oro
+      tipo: novela corta
+      motivo: gallo
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: carpentier
+    nombre: Alejo Carpentier
+    epoca: 1904–1980
+    region: Cuba
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: el-reino-de-este-mundo
+      titulo: El reino de este mundo
+      tipo: novela
+      motivo: ruinas
+      animo: exuberante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-ciudadela-de-henri-christophe
+      titulo: La Ciudadela de Henri Christophe
+      tipo: tema
+      de: El reino de este mundo
+      motivo: castillo
+      animo: exuberante
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-pasos-perdidos
+      titulo: Los pasos perdidos
+      tipo: novela
+      motivo: rio
+      animo: exuberante
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-siglo-de-las-luces
+      titulo: El siglo de las luces
+      tipo: novela
+      motivo: velero
+      animo: crepuscular
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: concierto-barroco
+      titulo: Concierto barroco
+      tipo: novela
+      motivo: organo
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: viaje-a-la-semilla
+      titulo: Viaje a la semilla
+      tipo: cuento
+      motivo: reloj
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-acoso
+      titulo: El acoso
+      tipo: novela
+      motivo: catedral
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-consagracion-de-la-primavera
+      titulo: La consagración de la primavera
+      tipo: novela
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-arpa-y-la-sombra
+      titulo: El arpa y la sombra
+      tipo: novela
+      motivo: lira
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ecue-yamba-o
+      titulo: Écue-Yamba-Ó
+      tipo: novela
+      motivo: maiz
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: asturias
+    nombre: Miguel Ángel Asturias
+    epoca: 1899–1974
+    region: Guatemala
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: hombres-de-maiz
+      titulo: Hombres de maíz
+      tipo: novela
+      motivo: maiz
+      animo: exuberante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-senor-presidente
+      titulo: El señor presidente
+      tipo: novela
+      motivo: cuervo
+      animo: tormentoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: leyendas-de-guatemala
+      titulo: Leyendas de Guatemala
+      tipo: cuentos
+      motivo: volcan
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: mulata-de-tal
+      titulo: Mulata de tal
+      tipo: novela
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: viento-fuerte
+      titulo: Viento fuerte
+      tipo: novela
+      motivo: lluvia
+      animo: tormentoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-papa-verde
+      titulo: El papa verde
+      tipo: novela
+      motivo: ceiba
+      animo: exuberante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-ojos-de-los-enterrados
+      titulo: Los ojos de los enterrados
+      tipo: novela
+      motivo: lapidas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: week-end-en-guatemala
+      titulo: Week-end en Guatemala
+      tipo: cuentos
+      motivo: volcan
+      animo: crepuscular
+      escena: montanas
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: maladron
+      titulo: Maladrón
+      tipo: novela
+      motivo: cruz
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: clarivigilia-primaveral
+      titulo: Clarivigilia primaveral
+      tipo: poemas
+      motivo: mariposas
+      animo: auroral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: allende
+    nombre: Isabel Allende
+    epoca: 1942–
+    region: Chile
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: la-casa-de-los-espiritus
+      titulo: La casa de los espíritus
+      tipo: novela
+      motivo: fantasma
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: de-amor-y-de-sombra
+      titulo: De amor y de sombra
+      tipo: novela
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: eva-luna
+      titulo: Eva Luna
+      tipo: novela
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cuentos-de-eva-luna
+      titulo: Cuentos de Eva Luna
+      tipo: cuentos
+      motivo: mariposas
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: paula
+      titulo: Paula
+      tipo: memoria
+      motivo: vela
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: hija-de-la-fortuna
+      titulo: Hija de la fortuna
+      tipo: novela
+      motivo: velero
+      animo: crepuscular
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: retrato-en-sepia
+      titulo: Retrato en sepia
+      tipo: novela
+      motivo: casa_colonial
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-ciudad-de-las-bestias
+      titulo: La ciudad de las bestias
+      tipo: novela
+      motivo: ceiba
+      animo: exuberante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-plan-infinito
+      titulo: El plan infinito
+      tipo: novela
+      motivo: ninguno
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: ines-del-alma-mia
+      titulo: Inés del alma mía
+      tipo: novela
+      motivo: espada
+      animo: crepuscular
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: esquivel
+    nombre: Laura Esquivel
+    epoca: 1950–
+    region: México
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: como-agua-para-chocolate
+      titulo: Como agua para chocolate
+      tipo: novela
+      motivo: rosa
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: las-codornices-en-petalos-de-rosa
+      titulo: Las codornices en pétalos de rosa
+      tipo: tema
+      de: Como agua para chocolate
+      motivo: petalos
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-colcha-de-tita
+      titulo: La colcha de Tita
+      tipo: tema
+      de: Como agua para chocolate
+      motivo: nube
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-pastel-de-bodas
+      titulo: El pastel de bodas
+      tipo: tema
+      de: Como agua para chocolate
+      motivo: lluvia
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-cerillos-y-el-fuego
+      titulo: Los cerillos y el fuego
+      tipo: tema
+      de: Como agua para chocolate
+      motivo: vela
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-ley-del-amor
+      titulo: La ley del amor
+      tipo: novela
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: intimas-suculencias
+      titulo: Íntimas suculencias
+      tipo: ensayo
+      motivo: maiz
+      animo: exuberante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: tan-veloz-como-el-deseo
+      titulo: Tan veloz como el deseo
+      tipo: novela
+      motivo: reloj
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: malinche
+      titulo: Malinche
+      tipo: novela
+      motivo: volcan
+      animo: crepuscular
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-diario-de-tita
+      titulo: El diario de Tita
+      tipo: tema
+      de: Como agua para chocolate
+      motivo: mariposas
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: garro
+    nombre: Elena Garro
+    epoca: 1916–1998
+    region: México
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: los-recuerdos-del-porvenir
+      titulo: Los recuerdos del porvenir
+      tipo: novela
+      motivo: casa_colonial
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-piedra-que-habla
+      titulo: La piedra que habla
+      tipo: tema
+      de: Los recuerdos del porvenir
+      motivo: ruinas
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: un-hogar-solido
+      titulo: Un hogar sólido
+      tipo: cuentos
+      motivo: casa_colonial
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-semana-de-colores
+      titulo: La semana de colores
+      tipo: cuentos
+      motivo: mariposas
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-culpa-es-de-los-tlaxcaltecas
+      titulo: La culpa es de los tlaxcaltecas
+      tipo: cuento
+      motivo: volcan
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-arbol
+      titulo: El árbol
+      tipo: cuento
+      motivo: arbol
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: andamos-huyendo-lola
+      titulo: Andamos huyendo Lola
+      tipo: cuentos
+      motivo: cuervo
+      animo: tormentoso
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: testimonios-sobre-mariana
+      titulo: Testimonios sobre Mariana
+      tipo: novela
+      motivo: fantasma
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: y-matarazo-no-llamo
+      titulo: Y Matarazo no llamó…
+      tipo: cuento
+      motivo: ninguno
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: reencuentro-de-personajes
+      titulo: Reencuentro de personajes
+      tipo: novela
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: uslar-pietri
+    nombre: Arturo Uslar Pietri
+    epoca: 1906–2001
+    region: Venezuela
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: las-lanzas-coloradas
+      titulo: Las lanzas coloradas
+      tipo: novela
+      motivo: espada
+      animo: seco
+      escena: llanura
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-camino-de-el-dorado
+      titulo: El camino de El Dorado
+      tipo: novela
+      motivo: rio
+      animo: exuberante
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: un-retrato-en-la-geografia
+      titulo: Un retrato en la geografía
+      tipo: novela
+      motivo: arbol
+      animo: crepuscular
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: oficio-de-difuntos
+      titulo: Oficio de difuntos
+      tipo: novela
+      motivo: cruz
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-isla-de-robinson
+      titulo: La isla de Róbinson
+      tipo: novela
+      motivo: velero
+      animo: auroral
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: estacion-de-mascaras
+      titulo: Estación de máscaras
+      tipo: novela
+      motivo: reloj
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-visitantes
+      titulo: Los visitantes
+      tipo: novela
+      motivo: ruinas
+      animo: espectral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: treinta-hombres-y-sus-sombras
+      titulo: Treinta hombres y sus sombras
+      tipo: cuentos
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: barrabas-y-otros-relatos
+      titulo: Barrabás y otros relatos
+      tipo: cuentos
+      motivo: cuervo
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: la-lluvia
+      titulo: La lluvia
+      tipo: cuento
+      motivo: lluvia
+      animo: melancolico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: amado
+    nombre: Jorge Amado
+    epoca: 1912–2001
+    region: Brasil
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: dona-flor-y-sus-dos-maridos
+      titulo: Doña Flor y sus dos maridos
+      tipo: novela
+      motivo: fantasma
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: gabriela-clavo-y-canela
+      titulo: Gabriela, clavo y canela
+      tipo: novela
+      motivo: casa_colonial
+      animo: exuberante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: tierras-del-fin-del-mundo
+      titulo: Tierras del fin del mundo
+      tipo: novela
+      motivo: arbol
+      animo: exuberante
+      escena: bosque
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: capitanes-de-la-arena
+      titulo: Capitanes de la arena
+      tipo: novela
+      motivo: velero
+      animo: crepuscular
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: tieta-de-agreste
+      titulo: Tieta de Agreste
+      tipo: novela
+      motivo: catedral
+      animo: auroral
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: jubiaba
+      titulo: Jubiabá
+      tipo: novela
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: cacao
+      titulo: Cacao
+      tipo: novela
+      motivo: arbol
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: mar-muerto
+      titulo: Mar muerto
+      tipo: novela
+      motivo: barca
+      animo: melancolico
+      escena: marina
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: los-pastores-de-la-noche
+      titulo: Los pastores de la noche
+      tipo: novela
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: teresa-batista-cansada-de-guerra
+      titulo: Teresa Batista cansada de guerra
+      tipo: novela
+      motivo: gallo
+      animo: seco
+      gutenberg:
+        id: null
+        estado: sin_verificar
+  - id: belli
+    nombre: Gioconda Belli
+    epoca: 1948–
+    region: Nicaragua
+    gutenberg_autor:
+      id: null
+      estado: sin_verificar
+    obras:
+    - id: la-mujer-habitada
+      titulo: La mujer habitada
+      tipo: novela
+      motivo: arbol
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: sofia-de-los-presagios
+      titulo: Sofía de los presagios
+      tipo: novela
+      motivo: volcan
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: waslala
+      titulo: Waslala
+      tipo: novela
+      motivo: mariposas
+      animo: exuberante
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-pergamino-de-la-seduccion
+      titulo: El pergamino de la seducción
+      tipo: novela
+      motivo: rosa
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-pais-bajo-mi-piel
+      titulo: El país bajo mi piel
+      tipo: memoria
+      motivo: casa_colonial
+      animo: crepuscular
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-infinito-en-la-palma-de-la-mano
+      titulo: El infinito en la palma de la mano
+      tipo: novela
+      motivo: estrellas
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: apogeo
+      titulo: Apogeo
+      tipo: novela
+      motivo: luna
+      animo: nocturno
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: linea-de-fuego
+      titulo: Línea de fuego
+      tipo: poemas
+      motivo: vela
+      animo: sentimental
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: luciernaga
+      titulo: Luciérnaga
+      tipo: poemas
+      motivo: petalos
+      animo: onirico
+      gutenberg:
+        id: null
+        estado: sin_verificar
+    - id: el-taller-de-las-mariposas
+      titulo: El taller de las mariposas
+      tipo: poemas
+      motivo: mariposas
+      animo: auroral
       gutenberg:
         id: null
         estado: sin_verificar

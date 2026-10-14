@@ -112,6 +112,19 @@ Verificado:
 4. Editor de marcalibros de usuario (recetas en JSON: plantilla, imagen, recorte, texto).
 5. Línea de marca base.
 
+## Paso 3 en curso: Gótico y Realismo mágico (generador 0.8)
+
+Hecho: 3 movimientos × 10 autores × 10 obras = **300 piezas** (30 JPG, 270 SVG), 0 errores de validación y 17 tests.
+
+- **Gótico** (Mary Shelley, Stoker, Radcliffe, Le Fanu, Walpole, M. G. Lewis, Beckford, Maturin, Stevenson, Emily Brontë; los 4 primeros del plan original). Gramática visual: arco ojival que enmarca la parte alta, bandas de niebla bajas y paletas frías o rojizas (cripta, sangre, luna fría). Motivos nuevos: murciélagos, gárgola, casa encantada, ventana ojival, lobo, figura encapuchada.
+- **Realismo mágico** (García Márquez, Rulfo, Carpentier, Asturias, Isabel Allende, Laura Esquivel, Elena Garro, Uslar Pietri, Jorge Amado, Gioconda Belli; los 4 primeros del plan original). Gramática visual: paletas cálidas y saturadas (trópico, cobre, polvo, aguamarina) y mariposas que acompañan a cada pieza. Motivos nuevos: mariposas, lluvia de flores amarillas, ceiba, casa colonial, volcán, maíz, pececillos de oro, gallo, lluvia, aparecido, alas.
+- Biblioteca: 57 motivos + «ninguno». Ánimos nuevos: macabro, lúgubre, espectral, onírico, exuberante, seco.
+- Campo `de` opcional en la taxonomía: cuando la variante es un tema de una obra (p. ej. «La lluvia de flores amarillas», de *Cien años de soledad*).
+- **Los 6 + 6 autores añadidos para completar 10 por movimiento son propuesta mía; las 200 obras y temas están escritos de memoria, sin fechas y sin verificar.** Especialmente delicados los de autores vivos o poco conocidos (Belli, Garro, Uslar Pietri, Amado) y los títulos de poemas de Emily Brontë.
+- Realismo mágico y Gutenberg: previsiblemente `no_disponible` (autores bajo derechos), a comprobar cuando haya red.
+- Limitaciones: en paletas cálidas el oro de las mariposas no contrasta con el cielo y se dibujan oscuras (`color_oro`); 100 de las 300 piezas llevan velo en la franja de texto (más que en Romanticismo porque las paletas medias dominan); el alas/lobo/gárgola son siluetas simples. Quedan 7 movimientos: Realismo, Naturalismo, Modernismo, Vanguardias, Barroco, Clasicismo y Simbolismo.
+- Tiempo de build: unos 6 minutos para 300 piezas; con 1000 será necesaria la compilación incremental.
+
 ## Decisiones tomadas en la última ronda
 
 - **Orientación:** solo vertical (200×1400). El generador 0.8 rehízo la composición: cielo en el tercio superior, paisaje en el inferior, franja de texto en el centro. Las piezas horizontales anteriores desaparecen.

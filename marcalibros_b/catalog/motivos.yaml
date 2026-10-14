@@ -1,5 +1,5 @@
-version: '0.3'
-nota: 'Biblioteca compartida de motivos: 40 + ninguno. requiere limita cuándo un motivo tiene sentido visual: animos (ánimo de la obra) y/o escena.'
+version: '0.4'
+nota: 'Biblioteca compartida de motivos: 57 + ninguno. requiere limita cuando un motivo tiene sentido visual.'
 motivos:
 - id: torre
   nombre: Torre
@@ -144,6 +144,57 @@ motivos:
   implementado: true
 - id: barricada
   nombre: Barricada
+  implementado: true
+- id: murcielagos
+  nombre: Murciélagos
+  implementado: true
+- id: gargola
+  nombre: Gárgola
+  implementado: true
+- id: mansion
+  nombre: Casa encantada
+  implementado: true
+- id: ventana_gotica
+  nombre: Ventana ojival
+  implementado: true
+- id: lobo
+  nombre: Lobo aullando
+  implementado: true
+- id: encapuchado
+  nombre: Figura encapuchada
+  implementado: true
+- id: mariposas
+  nombre: Mariposas amarillas
+  implementado: true
+- id: petalos
+  nombre: Lluvia de flores amarillas
+  implementado: true
+- id: ceiba
+  nombre: Ceiba
+  implementado: true
+- id: casa_colonial
+  nombre: Casa colonial
+  implementado: true
+- id: volcan
+  nombre: Volcán
+  implementado: true
+- id: maiz
+  nombre: Maíz
+  implementado: true
+- id: pez_dorado
+  nombre: Pececillos de oro
+  implementado: true
+- id: gallo
+  nombre: Gallo
+  implementado: true
+- id: lluvia
+  nombre: Lluvia
+  implementado: true
+- id: fantasma
+  nombre: Aparecido
+  implementado: true
+- id: alas
+  nombre: Alas enormes
   implementado: true
 - id: ninguno
   nombre: Sin motivo (solo paisaje)
