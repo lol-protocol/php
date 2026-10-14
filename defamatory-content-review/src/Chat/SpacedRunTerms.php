@@ -48,9 +48,26 @@ final class SpacedRunTerms
                     break;
                 }
             }
+            $found = [...$found, ...self::spelledPhrases($letters, $topics)];
         }
 
         return $found;
+    }
+
+    /**
+     * Una frase con forma deletreada entera: «t e v o y a m a t a r». Los patrones
+     * se prueban sobre la racha unida, con los espacios opcionales y sin `\b` (en «iwillkillyou»
+     * no hay fronteras de palabra). Nadie deletrea una amenaza sin querer: esto sí puede bloquear.
+     *
+     * @param list<string> $letters
+     * @return array<int,array<string,mixed>>
+     */
+    private static function spelledPhrases(array $letters, ?ChatTopics $topics): array
+    {
+        $patterns = array_map(fn(array $p): array => ['pattern' => preg_replace(['/\\\\s[+*]?/', '/\\\\b/'], ['\\s*', ''], $p['pattern'])] + $p, $topics?->patterns() ?? []);
+        $found = ChatPatternMatcher::find(implode('', $letters), $patterns);
+
+        return array_map(fn(array $match): array => ['found' => implode(' ', $letters), 'contentType' => $match['riskType'], 'spaced' => 'phrase'] + $match, $found);
     }
 
     /** @return array<int,array<string,mixed>> el término en el diccionario y en los temas, con su tipo y la severidad tope */

@@ -4,7 +4,8 @@
  * Carga las clases de la aplicación y del módulo de marcalibros.
  *
  * Con Composer (`composer install`) se usa su cargador. Sin Composer funciona
- * igual: la aplicación no depende de ningún paquete externo.
+ * igual: la aplicación no depende de ningún paquete externo, sólo del módulo
+ * de marcalibros y de defamatory-content-review, que están en el monorepo.
  */
 
 $autoload = __DIR__ . '/vendor/autoload.php';
@@ -17,6 +18,7 @@ spl_autoload_register(static function (string $class): void {
     $prefixes = [
         'MarcalibrosApp\\' => __DIR__ . '/src/',
         'Marcalibros\\' => dirname(__DIR__) . '/php/src/',
+        'DefamatoryContentReview\\' => dirname(__DIR__, 2) . '/defamatory-content-review/src/',
     ];
     foreach ($prefixes as $prefix => $directory) {
         if (str_starts_with($class, $prefix)) {

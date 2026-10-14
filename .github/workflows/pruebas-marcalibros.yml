@@ -5,10 +5,12 @@ on:
     branches: [master]
     paths:
       - "marcalibros-plataforma-pos-brand-identity/**"
+      - "defamatory-content-review/**"
       - ".github/workflows/pruebas-marcalibros.yml"
   pull_request:
     paths:
       - "marcalibros-plataforma-pos-brand-identity/**"
+      - "defamatory-content-review/**"
       - ".github/workflows/pruebas-marcalibros.yml"
   workflow_dispatch:
 

@@ -37,6 +37,7 @@ Después de regenerar, `git status` no debe mostrar cambios si no tocaste el gen
 - **La cuenta del recorte está duplicada** a propósito: `php/src/ImageNormalizer.php` (servidor) y `app/public/assets/crear.js` (`cropBox`). Si cambias una, cambia la otra y comprueba en un navegador que la franja que se ve al encuadrar es la que se guarda (con una foto vertical y una con orientación EXIF).
 - La **CSP** de la aplicación es estricta (`style-src 'self'`, `script-src 'self'`): ninguna plantilla puede llevar `style=`, `<style>`, scripts ni manejadores `on…` en línea. `ViewTest` lo vigila. Los colores se aplican con clases; los estilos dinámicos se asignan por CSSOM desde un archivo `.js`.
 - Los identificadores que llegan en la dirección se validan con el formato exacto antes de tocar el disco, con `\z` y no `$` (con `$`, un salto de línea final pasa la validación).
+- El texto del marcalibro pasa por `../defamatory-content-review` (`app/src/LabelPolicy.php`; Composer lo instala desde la carpeta vecina y `app/bootstrap.php` lo carga sin Composer). Lo que esa librería no aprueba no se guarda.
 - Todos los intentos de crear un marcalibro gastan del límite por IP, también los fallidos. La IP no se guarda: se usa un HMAC con una clave del servidor.
 - Los SVG del catálogo se sirven con `Content-Security-Policy: sandbox`.
 - Un motivo nuevo del generador debe pasar el límite de 10 KB y no repetirse: usa menos figuras o menos puntos antes que subir el límite.

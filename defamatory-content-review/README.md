@@ -644,7 +644,7 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 |---|---|
 | `'forms' => 'noun' \| 'adj' \| 'verb'` | Genera plurales, géneros o la conjugación regular (con pronombres pegados: «matarlos», «fóllame», «matá-lo», «ammazzarti», «baise-moi») en español, inglés, portugués, italiano y francés (`TopicInflector`; los verbos romances comparten `RomanceVerbs`). Escribe el sustantivo en singular, el adjetivo en masculino y el verbo en infinitivo. |
 | `'also' => [...]` | Formas irregulares, a mano («degüello»). |
-| `'by' => ['f' => 'high', 'm.pl' => 'none']` | Severidad por forma: la ofensa no es simétrica («cerdo» suena mal, «cerda» horrible; «zorros» son animales). Rasgos: `sg`, `pl`, `m`, `f`, `m.sg`, `m.pl`, `f.sg`, `f.pl`; gana el más específico, y `none` deja fuera esa forma. Una forma que ya está escrita como entrada propia no se genera (lo escrito manda), y las generadas no heredan `nameCollision`. |
+| `'by' => ['f' => 'high', 'm.pl' => 'none']` | Severidad por forma: la ofensa no es simétrica («cerdo» suena mal, «cerda» horrible; «zorros» son animales). Rasgos: `sg`, `pl`, `m`, `f`, `m.sg`, `m.pl`, `f.sg`, `f.pl`; gana el más específico, y `none` deja fuera esa forma. Los diminutivos (`dim`, `dim.f`, `dim.pl`…) sólo se generan si `by` los pide, porque cambian el tono en cualquier dirección: «putita» degrada más, «cerdita» es cariñoso (`'by' => ['dim' => 'high']`; reglas en español y portugués, en italiano y francés van en `also`). Una forma que ya está escrita como entrada propia no se genera (lo escrito manda), y las generadas no heredan `nameCollision`. |
 | categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
 | meta `'collapseRepeats' => true` | Lee también las palabras escritas con letras repetidas. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
 | `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
@@ -822,7 +822,8 @@ palabras no entiende contexto:
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
 - Los diccionarios de insultos (`config/languages/`) sólo generan formas en
   las entradas que declaran `forms` (como «cerdo», «puta», «zorra», «perra»
-  en español), y lo generado sin `by` llega como mucho a revisión: nadie
+  en español; también los plurales de los insultos sexualizados en portugués,
+  italiano y francés), y lo generado sin `by` llega como mucho a revisión: nadie
   decidió todavía cuánto ofende esa forma. El resto no genera nada: «idiots»
   sólo se detecta porque está escrito. El inglés
   tiene los plurales de sus insultos claros; en los demás idiomas, el plural
@@ -1032,7 +1033,8 @@ src/                                Namespace DefamatoryContentReview\ (cada car
     ├── CombinedReview.php          La misma línea en varios idiomas: manda la decisión más grave
     └── Inflection/                 TopicInflector (expande `forms`), contrato TopicInflection;
                                     Spanish/Portuguese/Italian/French/EnglishInflection,
-                                    y la conjugación romance común en RomanceVerbs (+ *Verbs)
+                                    y la conjugación romance común en RomanceVerbs (+ *Verbs);
+                                    FormSeverity (severidad por forma, `by`) y Diminutives
 
 docs/
 ├── ORIGEN.md                       Por qué existe esta librería

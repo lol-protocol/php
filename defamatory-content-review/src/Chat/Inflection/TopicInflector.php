@@ -27,7 +27,7 @@ final class TopicInflector
     }
 
     /** @return array<string,string> forma => rasgos: `sg`/`pl` (sustantivo), `m.sg`… `f.pl` (adjetivo), `verb` */
-    public static function tagged(string $language, string $lemma, string $kind): array
+    public static function tagged(string $language, string $lemma, string $kind, bool $diminutives = false): array
     {
         $forms = self::forms($language, $lemma, $kind);
         if ($kind === 'verb') { return array_fill_keys($forms, 'verb'); }
@@ -44,7 +44,7 @@ final class TopicInflector
             };
         }
 
-        return $tags;
+        return $diminutives ? $tags + Diminutives::tagged($language, $lemma, $kind) : $tags;
     }
 
     /**
@@ -64,7 +64,8 @@ final class TopicInflector
         foreach ($categories as $category => $entries) {
             foreach ($entries as $entry) {
                 $base = array_diff_key($entry, ['forms' => 1, 'also' => 1, 'by' => 1]);
-                $tagged = isset($entry['forms']) ? self::tagged($language, $entry['word'], $entry['forms']) : [];
+                $dim = (bool) preg_grep('/^dim/', array_keys($entry['by'] ?? []));
+                $tagged = isset($entry['forms']) ? self::tagged($language, $entry['word'], $entry['forms'], $dim) : [];
                 foreach ($tagged ?: [$entry['word'] => ''] as $form => $tag) {
                     $own = $form === $entry['word'];
                     if (!$own && isset($written[mb_strtolower($form)])) {

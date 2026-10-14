@@ -18,7 +18,7 @@ final class HackerSpelling
         '|_|' => 'u', '|\\|' => 'n', '\\/\\/' => 'w', '\\/' => 'v', '/\\' => 'a', '|<' => 'k', '|)' => 'd',
         '|-|' => 'h', '|3' => 'b', '()' => 'o', '[]' => 'o',
     ];
-    private const SINGLE = ['!' => 'i', '¡' => 'i', '|' => 'i', '€' => 'e', '£' => 'l', '¥' => 'y', '§' => 's'];
+    private const SINGLE = ['!' => 'i', '¡' => 'i', '|' => 'i', '€' => 'e', '£' => 'l', '¥' => 'y', '§' => 's', '+' => 't'];
     /** Lo que no es letra, marca, dígito ni un símbolo que Leetspeak ya lee («@», «$»). */
     private const NOT_LETTER = '/[^\p{L}\p{M}\p{N}@$]+/u';
 

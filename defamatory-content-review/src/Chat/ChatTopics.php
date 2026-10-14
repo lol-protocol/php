@@ -49,10 +49,7 @@ final class ChatTopics
             : $patterns;
     }
 
-    public static function fromFile(string $path, string $language): ?self
-    {
-        return is_file($path) ? new self(require $path, $language) : null;
-    }
+    public static function fromFile(string $path, string $language): ?self { return is_file($path) ? new self(require $path, $language) : null; }
 
     /**
      * Los términos de `$list` en la línea. Donde el idioma lo pide (meta
@@ -76,6 +73,8 @@ final class ChatTopics
 
     /** @return array<string,mixed>|null la entrada de la lista de temas para esa palabra exacta */
     public function word(string $word): ?array { return $this->words->search($word); }
+    /** @return array<int,array<string,mixed>> las frases con forma («te voy a matar»), ver ChatPatternMatcher */
+    public function patterns(): array { return $this->patterns; }
 
     /**
      * @param string $text una lectura de la línea (ver SpacedLetters::variants())
