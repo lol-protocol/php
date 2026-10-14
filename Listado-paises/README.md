@@ -88,9 +88,10 @@ Bielorrusia, Burkina Faso, Corea del Norte, Cuba, Eritrea, Haití, Irán, Libia,
 Nicaragua, Níger, República Centroafricana, RD del Congo, Rusia, Siria, Somalia, Sudán, Sudán
 del Sur, Turkmenistán, Venezuela, Yemen y Palestina.
 
-Camboya y Vietnam tienen IO = 2 («difícil»), así que **no quedan excluidos** con este umbral.
-Si se quieren fuera, el umbral pasa a IO ≤ 2, que deja fuera 55 países, o se marcan a mano.
-El umbral está en `UMBRAL_GENEALOGIA` de `generar_tabla.py`.
+Camboya y Vietnam tienen IO = 2 («difícil»): sus índices los marcan como difíciles, no como
+inviables, así que con este umbral **siguen dentro**. Para sacarlos habría que bajar su IO a 1, lo
+que la rúbrica no justifica, o subir el umbral a IO ≤ 2, que deja fuera 55 países. El umbral está
+en `UMBRAL_GENEALOGIA` de `generar_tabla.py`.
 
 ## Etiquetador POS: índices IL e IP
 
@@ -180,7 +181,7 @@ Léelo antes de usar la tabla para decidir.
    se descarga antes de habilitarlo.
 2. **Contrastar población, IDH y PIB per cápita** con las fuentes oficiales.
 3. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
-4. **Decidir el umbral de exclusión** de genealogía: con IO ≤ 1 quedan 24 países; con IO ≤ 2,
-   55. Y decidir si Camboya y Vietnam deben quedar fuera.
+4. **Umbral de exclusión** de genealogía: con IO ≤ 1 quedan 24 países (vigente); con IO ≤ 2,
+   55. Camboya y Vietnam siguen dentro hasta que se revise su IO o se suba el umbral.
 5. **Agregar este proyecto a la tabla de `README.md` de la raíz.** Ese archivo es compartido,
    así que el cambio va en un PR aparte.
