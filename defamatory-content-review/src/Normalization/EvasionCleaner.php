@@ -33,8 +33,8 @@ final class EvasionCleaner
     private const SYMBOL_INSIDE = '/(?<=\p{L})[\p{So}\p{Sk}\x{200D}]+(?=\p{L})/u';
     /** Etiquetas HTML: dentro de una palabra se quitan («pu<b></b>ta»), entre palabras separan. */
     private const TAG = '/<\/?[a-z][^<>]{0,80}>/i';
-    /** Marcas que siguen en una letra ASCII después de NFKC no forman ninguna letra: «p̶u̶t̶a̶», «p̲u̲t̲a̲», texto zalgo. */
-    private const MARKS_ON_ASCII = '/(?<=[A-Za-z])\p{Mn}+/u';
+    /** Marcas que siguen en una letra ASCII después de NFKC no forman ninguna letra: «p̶u̶t̶a̶», «p̲u̲t̲a̲», «p⃝u⃝t⃝a⃝», zalgo. */
+    private const MARKS_ON_ASCII = '/(?<=[A-Za-z])[\p{Mn}\p{Me}]+/u';
     /** Forzado de derecha a izquierda: «\u{202E}atup» se ve «puta». Vale hasta el cierre o el fin de línea. */
     private const RIGHT_TO_LEFT = '/\x{202E}([^\x{202A}-\x{202E}\x{2066}-\x{2069}\n]*)\x{202C}?/u';
 

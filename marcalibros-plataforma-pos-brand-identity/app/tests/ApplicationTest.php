@@ -272,6 +272,17 @@ final class ApplicationTest extends AppTestCase
         $this->assertStringContainsString('Se borrará solo el 14 de febrero de 2027', $page->body);
     }
 
+    public function testALabelThatAccusesSomeoneIsNotSaved(): void
+    {
+        $app = $this->app();
+        $response = $this->post($app, '/crear', ['fuente' => 'subida', 'nombre' => 'Fulano es un estafador'], $this->upload());
+
+        $this->assertSame(422, $response->status);
+        $this->assertStringContainsString('no publicamos insultos, acusaciones ni datos personales', $response->body);
+        $this->assertStringContainsString('value="Fulano es un estafador"', $response->body, 'el formulario conserva el texto para corregirlo');
+        $this->assertSame(0, (new BookmarkStore($this->dir . '/almacen/marcalibros'))->count());
+    }
+
     public function testTheSavedImagesHaveTheTwoSizes(): void
     {
         $app = $this->app();

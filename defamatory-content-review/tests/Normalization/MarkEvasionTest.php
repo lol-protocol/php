@@ -9,8 +9,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Letras tachadas, subrayadas o con marcas apiladas (zalgo), letras con
- * punto («ṗụṭạ»), versalitas («ᴘᴜᴛᴀ») y bytes UTF-8 inválidos, que antes
+ * Letras tachadas, subrayadas, encerradas o con marcas apiladas (zalgo), letras con
+ * punto («ṗụṭạ»), versalitas («ᴘᴜᴛᴀ»), parecidas de otros alfabetos («putɑ»), «pu+a» y bytes UTF-8 inválidos, que antes
  * apagaban todas las expresiones regulares y dejaban pasar la línea entera.
  */
 class MarkEvasionTest extends TestCase
@@ -27,6 +27,11 @@ class MarkEvasionTest extends TestCase
             'zalgo' => ["p\u{334}\u{321}\u{322}u\u{338}\u{327}t\u{337}\u{330}a\u{335}\u{339}"],
             'con puntos' => ['ṗụṭạ'],
             'versalitas' => ['ᴘᴜᴛᴀ'],
+            'encerradas en círculos' => ["p\u{20DD}u\u{20DD}t\u{20DD}a\u{20DD}"],
+            'teclas' => ["p\u{20E3}u\u{20E3}t\u{20E3}a\u{20E3}"],
+            'alfa latina' => ['putɑ'],
+            'cherokee' => ['ᏢUTA'],
+            'más por t' => ['pu+a'],
             'byte inválido al final' => ["eres una puta \xff"],
             'byte inválido pegado' => ["puta\xc3"],
         ];

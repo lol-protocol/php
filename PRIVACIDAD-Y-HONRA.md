@@ -62,6 +62,7 @@ De ahí salen tres certezas que guían todo lo demás:
 | **Nadie es acusado sin fuente.** Imputar delitos, enfermedades o vida privada va siempre a revisión humana. | `defamatory-content-review`: patrones de acusación (`AccusationPatternsTest`). |
 | **Lo íntimo de un tercero no se publica sin revisión**: orientación sexual, filiación, salud, suicidio. | `defamatory-content-review`: patrones de datos sensibles (`SensitiveDataPatternsTest`). |
 | **Nadie publica el RUT, el teléfono, el correo ni la dirección de otro.** | `defamatory-content-review`: `PersonalData` (tipo `privado`), en cualquier idioma. |
+| **Nada que publique la plataforma escapa al filtro.** | `marcalibros-plataforma-pos-brand-identity/app`: el texto de cada marcalibro (se comparte por enlace) pasa por `LabelPolicy`. |
 | **Un insulto disfrazado sigue siendo un insulto.** | `EvasionCleaner`, `MaskedTerms`, letras sueltas y repetidas, signos. |
 | **Las personas vivas son privadas por defecto.** | `url-routing`: `AccessPolicy` y `Privacidad`. Sin defunción y nacida hace menos de 110 años, se muestra como «Persona viva» (ver `url-routing/docs/ACCESO.md`). |
 | **Un registro que delata a un vivo tampoco se muestra.** | `url-routing`: sucesos y registros con un participante vivo dan 404. |

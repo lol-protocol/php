@@ -44,6 +44,17 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Frases con forma deletreadas**: «t e v o y a m a t a r», «i w i l l k i l l y o u»
+  se bloquean como la amenaza escrita normal (`SpacedRunTerms`).
+- **Más evasión**: letras encerradas («p⃝u⃝t⃝a⃝», «p⃣u⃣t⃣a⃣»), letras parecidas del
+  alfabeto fonético, armenio y cherokee («putɑ», «idiօta», «ᏢUTA») y «+» por «t» («pu+a»).
+- **Más acusaciones y datos sensibles** (español e inglés): a una familia entera
+  («los Pérez son unos ladrones», «esa familia es de delincuentes»), antecedentes
+  penales, deudas («está en DICOM», «no paga la pensión»), enfermedades («tiene
+  cáncer»), aborto y vida privada («se acuesta con su secretaria», «tiene otra familia»).
+- **Marcalibros revisa el texto de cada marcalibro** con esta librería
+  (`marcalibros-plataforma-pos-brand-identity/app/src/LabelPolicy.php`): se comparte
+  por enlace desde el dominio de la plataforma. Lo que no se aprueba no se guarda.
 - **Datos personales en el chat** (tipo `privado`, `PersonalData`): un RUT con
   dígito verificador válido, un correo, un teléfono con prefijo o anunciado
   («fono», «llámalo al») y una dirección anunciada («vive en la calle…») van

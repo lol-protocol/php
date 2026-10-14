@@ -38,6 +38,10 @@ que hacer la plataforma por fuera del código. El porqué está en
 | «p̶u̶t̶a̶», «p̲u̲t̲a̲», zalgo, «ṗụṭạ», «ᴘᴜᴛᴀ» | se detectan (`MarkEvasionTest`) |
 | «su RUT es 12.345.678-5», «fono: 9 8765 4321», «vive en la calle Maipú 123» | `review` (`PersonalDataTest`) |
 | «era homosexual», «es hijo ilegítimo», «se suicidó», «le pega a su señora» | `review` (`SensitiveDataPatternsTest`) |
+| «t e v o y a m a t a r», «i w i l l k i l l y o u» (amenazas deletreadas) | `reject` (`SpacedRunTermsTest`) |
+| «p⃝u⃝t⃝a⃝», «putɑ», «idiօta», «ᏢUTA», «pu+a» | se detectan (`MarkEvasionTest`) |
+| «los Pérez son unos ladrones», «tiene antecedentes penales», «está en DICOM», «tiene cáncer», «se acuesta con su secretaria» | `review` (`SensitiveDataPatternsTest`) |
+| El texto de un marcalibro («Fulano es un estafador») se publicaba por enlace sin revisar | no se guarda (`LabelPolicyTest` en Marcalibros) |
 | «careverga», «conchatumadre», «mamaguevo», «comemierda», «eres un gonorrea» | marcados; «el forro del abrigo» y «la gonorrea es una infección» se aprueban |
 
 ## Flancos abiertos
