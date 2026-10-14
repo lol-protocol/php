@@ -1,0 +1,29 @@
+code,field,value,conf,source
+VN,law_name,Law on Personal Data Protection (PDPL),high,https://thuvienphapluat.vn/van-ban/Bo-may-hanh-chinh/Law-91-2025-QH15-Personal-Data-Protection-665440.aspx
+VN,jurisdiction,Ministry of Public Security (A05),high,https://tilleke.com/insights/vietnams-new-personal-data-protection-law-a-closer-look
+VN,enactment_date,2025-06-26,high,https://sbv.gov.vn/en/w/tri%E1%BB%83n-khai-thi-h%C3%A0nh-lu%E1%BA%ADt-b%E1%BA%A3o-v%E1%BB%87-d%E1%BB%AF-li%E1%BB%87u-c%C3%A1-nh%C3%A2n-1
+VN,effective_date,2026-01-01,high,https://hrspring.vn/van-ban-phap-luat/91-2025-qh15-625628/
+VN,scope,"Processing of personal data in Vietnam and of Vietnamese data subjects, incl. foreign entities",medium,https://www.clym.io/regulations/personal-data-protection-law-pdpl-vietnam
+VN,applies_to,"Domestic and foreign organisations, agencies and individuals processing personal data",medium,https://www.clym.io/regulations/personal-data-protection-law-pdpl-vietnam
+VN,key_requirements,"Consent (explicit for sensitive data); processing and transfer impact assessments (DPIA/TIA); designate DPO/department; cross-border transfer rules",medium,https://www.tilleke.com/insights/new-decree-provides-guidance-for-vietnams-personal-data-protection-law
+VN,data_categories,"Basic and sensitive personal data (e.g. health, biometric, genetic, location)",medium,https://tilleke.com/insights/vietnams-new-personal-data-protection-law-a-closer-look
+VN,retention_period,UNKNOWN,low,
+VN,enforcement_authority,Department of Cybersecurity and High-Tech Crime Prevention (A05) - Ministry of Public Security,high,https://tilleke.com/insights/vietnams-new-personal-data-protection-law-a-closer-look
+VN,penalties_range,"Up to 5% of prior-year revenue (cross-border violations); up to 10x illegal gain (data trading); up to VND 3 billion other",high,https://lsvn.vn/nhung-quy-dinh-dang-chu-y-trong-luat-bao-ve-du-lieu-ca-nhan-2025-a167608.html
+VN,exemptions,"Micro-enterprises/household businesses exempt from DPO and DPIA; 5-year grace for small firms/startups (not if sensitive data, data services or >=100k subjects)",medium,https://www.tilleke.com/insights/new-decree-provides-guidance-for-vietnams-personal-data-protection-law
+VN,website_url,https://thuvienphapluat.vn/van-ban/Bo-may-hanh-chinh/Law-91-2025-QH15-Personal-Data-Protection-665440.aspx,medium,search result (legal database; no official portal URL surfaced)
+VN,notes,Law 91/2025/QH15 replaces Decree 13/2023; guided by Decree 356/2025; sanctions decree 330/2026 from 2026-08-19,medium,https://luatvietnam.vn/bai-viet-lien-quan/luat-91-2025-qh15-405135.html
+NG,law_name,Nigeria Data Protection Act 2023 (NDPA),high,https://kpmg.com/ng/en/insights/2023/06/president-signs-the-nigerian-data-protection-bill--2023-into-law.html
+NG,jurisdiction,NDPC,high,https://pwc.com/ng/en/assets/pdf/regulatory-alert-august-2023.pdf
+NG,enactment_date,2023-06-12,medium,https://kpmg.com/ng/en/insights/2023/06/president-signs-the-nigerian-data-protection-bill--2023-into-law.html
+NG,effective_date,2023-06-12,medium,https://fpf.org/blog/nigerias-new-data-protection-act-explained/
+NG,scope,"Processing of personal data in Nigeria or of data subjects in Nigeria, incl. foreign controllers",medium,https://www.clym.io/regulations/nigeria-data-protection-act-ndpa
+NG,applies_to,"Data controllers and processors; those of major importance must register with NDPC and appoint a DPO",high,https://www.mondaq.com/nigeria/privacy-protection/1389752/a-review-of-the-nigeria-data-protection-act-2023
+NG,key_requirements,"Section 24 processing principles; lawful basis/consent; breach notice to NDPC within 72 hours; registration of major-importance controllers",high,https://lawpavilion.com/blog/safeguarding-privacy-a-descriptive-analysis-of-the-nigeria-data-protection-act-2023
+NG,data_categories,"Personal data and sensitive personal data (extendable by NDPC directive)",medium,https://assets.kpmg.com/content/dam/kpmg/ng/pdf/nigeria-data-protection-act2023_kpmg-review.pdf
+NG,retention_period,Storage limitation principle (s.24); no fixed period found,low,https://www.mondaq.com/nigeria/data-protection/1366934/the-nigerias-data-protection-act-2023-a-look-at-key-provisions
+NG,enforcement_authority,Nigeria Data Protection Commission,high,https://pwc.com/ng/en/assets/pdf/regulatory-alert-august-2023.pdf
+NG,penalties_range,"Up to the higher of NGN 10M or 2% of annual gross revenue (major importance); NGN 2M or 2% for others",high,https://www.templars-law.com/app/uploads/2023/11/Navigating-the-Enforcement-Framework-under-the-Data-Protection-Act-2023.pdf
+NG,exemptions,"Criminal investigation/prosecution, national public health emergencies, national security by competent authorities",medium,https://pwc.com/ng/en/assets/pdf/regulatory-alert-august-2023.pdf
+NG,website_url,https://fpf.org/blog/nigerias-new-data-protection-act-explained/,medium,search result (no ndpc.gov.ng URL surfaced)
+NG,notes,Replaces NDPR 2019; commenced on signing; GAID 2025 directive effective 2025-09-19,medium,https://www.afriwise.com/blog/www-afriwise-com-blog-the-nigeria-data-protection-act-general-application-and-implementation-directive-2025-becomes-effective-today
