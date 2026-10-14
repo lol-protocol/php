@@ -607,6 +607,67 @@ class PagesTest extends TestCase
         $this->assertSame(400, $this->post(self::POS, '/cart/agregar/', ['sku' => ['CAM-AZ-M']], $sid, $token)[0]);
     }
 
+    public function testCheckoutRedirectsWithAFlashWhenTheCartIsEmpty(): void
+    {
+        [$sid] = $this->primeSession();
+
+        [$codigo] = $this->get(self::POS, '/checkout/', 'GET', '', $sid);
+        $this->assertSame(303, $codigo);
+
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertStringContainsString('Tu carrito está vacío.', $body);
+    }
+
+    public function testCheckoutRedirectsWithAFlashWhenTheCartMixesCurrencies(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'GOR-AZ', 'cantidad' => '1'], $sid, $token);
+
+        $this->conCambioEnPos(
+            "UPDATE productos SET moneda = 'USD' WHERE id = 81372049",
+            "UPDATE productos SET moneda = 'MXN' WHERE id = 81372049",
+            function () use ($sid): void {
+                [$codigo] = $this->get(self::POS, '/checkout/', 'GET', '', $sid);
+                $this->assertSame(303, $codigo);
+
+                [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+                $this->assertStringContainsString('distintas monedas', $body);
+            }
+        );
+    }
+
+    public function testCheckoutRendersWhenTheCartHasItemsInOneCurrency(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+
+        [$codigo] = $this->get(self::POS, '/checkout/', 'GET', '', $sid);
+        $this->assertSame(200, $codigo);
+    }
+
+    public function testAgregarFlashesAMessageWhenTheQuantityIsClampedToStock(): void
+    {
+        [$sid, $token] = $this->primeSession();
+
+        // CAM-AZ-M has 30 in stock (see seed data); asking for more clamps and flashes.
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '999'], $sid, $token);
+
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertStringContainsString('no hay suficiente stock', $body);
+    }
+
+    public function testActualizarRejectsANonNumericQuantityInsteadOfSilentlyRemovingTheLine(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+
+        $this->assertSame(400, $this->post(self::POS, '/cart/actualizar/', ['sku' => 'CAM-AZ-M', 'cantidad' => 'abc'], $sid, $token)[0]);
+
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertStringContainsString('CAM-AZ-M', $body); // line was not touched
+    }
+
     public function testExportIsValidGedcom(): void
     {
         [$codigo, $gedcom] = $this->getComoPropietario(self::GENEALOGIA, '/1048293/3/');

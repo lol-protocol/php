@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Support\AccessPolicy;
 use App\Support\Database;
+use App\Support\Flash;
 use App\Support\Privacidad;
 use App\Support\ServiceLocator;
 
@@ -144,6 +145,12 @@ class BaseController
     {
         $value = $_POST[$name] ?? $default;
         return is_string($value) ? $value : $default;
+    }
+
+    /** A one-shot message shown on the next page the user lands on (e.g. after a redirect). */
+    protected function flash(string $mensaje): void
+    {
+        (new Flash())->set($mensaje);
     }
 
     protected function handleForbidden(string $message = 'Forbidden'): string
