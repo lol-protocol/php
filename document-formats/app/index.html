@@ -489,6 +489,7 @@
             <button class="tab-btn active" data-tab="browser">Browser</button>
             <button class="tab-btn" data-tab="comparison">Comparison</button>
             <button class="tab-btn" data-tab="converter">Converter</button>
+            <button class="tab-btn" data-tab="paper-types">Paper Types</button>
             <button class="tab-btn" data-tab="about">About</button>
         </div>
 
@@ -576,6 +577,42 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Paper Types Tab -->
+        <div id="paper-types" class="tab-content">
+            <div class="controls">
+                <div class="control-group">
+                    <label>Search</label>
+                    <input type="text" id="paper-search-input" placeholder="Search paper types...">
+                </div>
+                <div class="control-group">
+                    <label>Category</label>
+                    <select id="paper-category-filter">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Combine with a size</label>
+                    <select id="paper-size-select">
+                        <option value="">Select format...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="paper-combined-section" style="display: none; margin-bottom: 20px;">
+                <h3 id="paper-combined-title"></h3>
+                <div style="overflow-x: auto;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr><th>Paper Type</th><th>Color</th><th>Texture</th><th>Weight (gsm)</th></tr>
+                        </thead>
+                        <tbody id="paper-combined-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="paper-types-container" class="formats-grid"></div>
         </div>
 
         <!-- About Tab -->
@@ -824,6 +861,151 @@
             }
         }
 
+        class PaperTypeBrowser {
+            constructor(paperTypes, formats) {
+                this.paperTypes = paperTypes;
+                this.formats = formats;
+                this.cacheElements();
+                this.setupEventListeners();
+                this.populateFilters();
+                this.render(this.paperTypes);
+            }
+
+            cacheElements() {
+                this.els = {
+                    search: document.getElementById('paper-search-input'),
+                    categoryFilter: document.getElementById('paper-category-filter'),
+                    sizeSelect: document.getElementById('paper-size-select'),
+                    container: document.getElementById('paper-types-container'),
+                    combinedSection: document.getElementById('paper-combined-section'),
+                    combinedTitle: document.getElementById('paper-combined-title'),
+                    combinedBody: document.getElementById('paper-combined-body')
+                };
+            }
+
+            setupEventListeners() {
+                const {search, categoryFilter, sizeSelect} = this.els;
+
+                document.addEventListener('input', (e) => {
+                    if (e.target === search) this.filter();
+                });
+
+                document.addEventListener('change', (e) => {
+                    if (e.target === categoryFilter) this.filter();
+                    else if (e.target === sizeSelect) this.updateCombined();
+                });
+            }
+
+            populateFilters() {
+                const {categoryFilter, sizeSelect} = this.els;
+                const categories = [...new Set(this.paperTypes.map(p => p.category))].sort((a, b) => a.localeCompare(b));
+                for (const category of categories) {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category;
+                    categoryFilter.appendChild(option);
+                }
+
+                // Same-named formats in different countries share a size, so one entry per name.
+                const byName = new Map(this.formats.map(f => [f.format_name, f]));
+                for (const name of [...byName.keys()].sort((a, b) => a.localeCompare(b))) {
+                    const format = byName.get(name);
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = `${name} (${format.width_mm}×${format.height_mm} mm)`;
+                    sizeSelect.appendChild(option);
+                }
+            }
+
+            filter() {
+                const {search, categoryFilter} = this.els;
+                const query = search.value.toLowerCase();
+                const category = categoryFilter.value;
+
+                const filtered = this.paperTypes.filter(p =>
+                    (!query || [p.type_name, p.type_name_en, p.common_use, p.notes]
+                        .some(text => String(text ?? '').toLowerCase().includes(query))) &&
+                    (!category || p.category === category)
+                );
+                this.render(filtered);
+            }
+
+            render(paperTypes) {
+                const {container} = this.els;
+
+                if (paperTypes.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-results">
+                            <div class="no-results-icon">🔍</div>
+                            <p>No paper types found matching your criteria.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const badgeSlug = (category) => String(category).toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+                container.innerHTML = paperTypes.map(p => `
+                    <div class="format-card">
+                        <div class="format-card-header">
+                            <h3>${escapeHtml(p.type_name)}</h3>
+                            <span class="badge badge-${badgeSlug(p.category)}">${escapeHtml(p.category)}</span>
+                        </div>
+                        <div class="format-info">
+                            <div class="info-row">
+                                <span class="info-label">English:</span>
+                                <span class="info-value">${escapeHtml(p.type_name_en)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Color:</span>
+                                <span class="info-value">${escapeHtml(p.color)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Texture:</span>
+                                <span class="info-value">${escapeHtml(p.texture)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Finish:</span>
+                                <span class="info-value">${escapeHtml(p.finish)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Weight (gsm):</span>
+                                <span class="info-value">${escapeHtml(p.weight_gsm_range)}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Common use:</span>
+                                <span class="info-value">${escapeHtml(p.common_use)}</span>
+                            </div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 13px; color: var(--text-light);">${escapeHtml(p.notes)}</p>
+                    </div>
+                `).join('');
+            }
+
+            updateCombined() {
+                const {sizeSelect, combinedSection, combinedTitle, combinedBody} = this.els;
+                const formatName = sizeSelect.value;
+
+                if (!formatName) {
+                    combinedSection.style.display = 'none';
+                    return;
+                }
+
+                const format = this.formats.find(f => f.format_name === formatName);
+                combinedTitle.textContent =
+                    `${formatName} (${format.width_mm}×${format.height_mm} mm) in every paper type`;
+                combinedBody.innerHTML = this.paperTypes.map(p => `
+                    <tr>
+                        <td>${escapeHtml(p.type_name)}</td>
+                        <td>${escapeHtml(p.color)}</td>
+                        <td>${escapeHtml(p.texture)}</td>
+                        <td>${escapeHtml(p.weight_gsm_range)}</td>
+                    </tr>
+                `).join('');
+                combinedSection.style.display = '';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById('formats-container');
             container.innerHTML = '<p class="no-results">Loading formats…</p>';
@@ -849,6 +1031,10 @@
             document.getElementById('about-updated').textContent = lastModified
                 ? lastModified.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})
                 : 'unknown (server sent no Last-Modified header)';
+
+            const specs = new SpecificationManager();
+            await specs.loadAllSpecifications();
+            new PaperTypeBrowser(specs.getAllPaperTypes(), formats);
         });
     </script>
 </body>

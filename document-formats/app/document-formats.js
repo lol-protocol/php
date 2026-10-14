@@ -1064,7 +1064,8 @@ class SpecificationManager {
         wcagContrast: { file: '../specs/wcag_contrast.csv', key: 'element_type' },
         formatEquivalence: { file: '../specs/format_equivalence_matrix.csv', key: 'source_format' },
         regionalCompatibility: { file: '../specs/regional_compatibility.csv', key: 'region' },
-        standardsReference: { file: '../specs/standards_reference.csv', key: 'format_name' }
+        standardsReference: { file: '../specs/standards_reference.csv', key: 'format_name' },
+        paperTypes: { file: '../specs/paper_types.csv', key: 'type_name' }
     };
 
     constructor() {
@@ -1140,6 +1141,9 @@ class SpecificationManager {
     getStandardReference(format) { return this.get('standardsReference', format); }
     getVideoResolutionsByCategory(category) { return this.get('videoResolutions', null, {category}); }
     getColorSpacesByUse(useCase) { return this.get('colorSpaces', null, {best_for: useCase}); }
+    getPaperType(typeName) { return this.get('paperTypes', typeName); }
+    getPaperTypesByCategory(category) { return this.get('paperTypes', null, {category}); }
+    getAllPaperTypes() { return this.specifications.get('paperTypes') || []; }
 }
 
 // Usage:

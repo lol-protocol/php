@@ -138,6 +138,22 @@ test('every specification file loads through its configured path', async () => {
     }
 });
 
+test('paper types can be looked up by name and filtered by category', async () => {
+    const specs = new SpecificationManager();
+    await specs.loadAllSpecifications();
+
+    const roneo = specs.getPaperType('Papel roneo');
+    assert.ok(roneo, 'Papel roneo should be in the catalog');
+    assert.equal(roneo.category, 'Writing/Printing');
+
+    const all = specs.getAllPaperTypes();
+    assert.ok(all.length >= 50, `only ${all.length} paper types`);
+
+    const decorative = specs.getPaperTypesByCategory('Decorative');
+    assert.ok(decorative.length > 0, 'no Decorative paper types found');
+    assert.ok(decorative.every(p => p.category === 'Decorative'));
+});
+
 test('the default language loads from app/translations', async () => {
     const i18n = new LocalizationManager();
     await quiet(() => i18n.init());
