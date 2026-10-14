@@ -3,7 +3,7 @@
     "country_code": "BE",
     "country_name": "Belgium",
     "region": "europe",
-    "law_name": "Copyright Law (Loi Belge)",
+    "law_name": "Code of Economic Law Book XI Title 5 (Copyright and neighbouring rights)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Reproduction & distribution",
@@ -15,10 +15,10 @@
     "enforcement_body": "Federal Public Service Economy (FPS Economy / SPF Economie)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.belgium.be/",
-    "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/19328",
+    "notes": "1994 Copyright Law codified into CEL Book XI from 2015-01-01; substance largely unchanged",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

@@ -3,7 +3,7 @@
     "country_code": "NG",
     "country_name": "Nigeria",
     "region": "middle_east_africa",
-    "law_name": "Nigerian Copyright Act",
+    "law_name": "Copyright Act 2022",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
@@ -12,13 +12,13 @@
     "digital_protection": "Anti-circumvention & rights-management rules (Copyright Act 2022 ss. 50-52)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Nigerian Copyright Commission",
+    "enforcement_body": "Nigerian Copyright Commission (NCC)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.ncc.gov.ng/",
-    "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "linked_resources": "https://aelex.com/wp-content/uploads/2023/06/AN-OVERVIEW-OF-THE-COPYRIGHT-ACT-2022.pdf",
+    "notes": "Act 2022 (eff. 2023-03-17) repealed Cap C28; NCC gets site-blocking and wider enforcement powers",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

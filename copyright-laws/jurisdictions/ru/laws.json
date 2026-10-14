@@ -3,7 +3,7 @@
     "country_code": "RU",
     "country_name": "Russia",
     "region": "europe",
-    "law_name": "Copyright Law",
+    "law_name": "Civil Code of the Russian Federation, Part IV (No. 230-FZ)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full economic rights",
@@ -15,10 +15,10 @@
     "enforcement_body": "Federal Service for Intellectual Property (Rospatent)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
-    "linked_resources": "https://www.rospatent.gov.ru/",
-    "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "linked_resources": "https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=RU",
+    "notes": "Part IV Civil Code (eff. 2008-01-01) replaced the 1993 Law on Copyright and Related Rights",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

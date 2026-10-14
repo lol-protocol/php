@@ -5,8 +5,8 @@
     "region": "americas",
     "law_name": "Personal Information Protection and Electronic Documents Act (PIPEDA)",
     "jurisdiction": "Federal",
-    "enactment_date": "2000-01-01",
-    "effective_date": "2000-04-13",
+    "enactment_date": "2000-04-13",
+    "effective_date": "2001-01-01",
     "scope": "Canadian Residents",
     "applies_to": "Organizations in private sector",
     "key_requirements": "Lawful collection, accuracy",
@@ -20,8 +20,8 @@
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
     "notes": "Private sector national standard",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

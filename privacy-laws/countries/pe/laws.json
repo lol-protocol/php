@@ -9,7 +9,7 @@
     "effective_date": "2011-10-01",
     "scope": "Peruvian Residents",
     "applies_to": "All organizations",
-    "key_requirements": "Lawful collection & consent",
+    "key_requirements": "Appoint Personal Data Officer (staggered); breach notification; registration of databanks; transfer rules",
     "data_categories": "Personal data",
     "retention_period": "5 years",
     "enforcement_authority": "National Authority for Personal Data Protection (ANPD)",
@@ -19,9 +19,9 @@
     "language": "Spanish",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "Law 29733 + new Regulation DS 016-2024-JUS (in force Mar 2025): DPO, breach notification",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

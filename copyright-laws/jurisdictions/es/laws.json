@@ -3,7 +3,7 @@
     "country_code": "ES",
     "country_name": "Spain",
     "region": "europe",
-    "law_name": "Spanish Copyright Act (Law 23/2006)",
+    "law_name": "Royal Legislative Decree 1/1996 (TRLPI)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full economic rights protected",
@@ -17,8 +17,8 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.oepm.es/",
     "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

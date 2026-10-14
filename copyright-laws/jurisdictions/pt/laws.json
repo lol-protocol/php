@@ -3,7 +3,7 @@
     "country_code": "PT",
     "country_name": "Portugal",
     "region": "europe",
-    "law_name": "Portuguese Copyright Law (Law 63/85)",
+    "law_name": "Code of Copyright and Related Rights (Decree-Law 63/85)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
@@ -17,8 +17,8 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.igac.pt/",
     "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

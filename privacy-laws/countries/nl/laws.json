@@ -3,9 +3,9 @@
     "country_code": "NL",
     "country_name": "Netherlands",
     "region": "europe",
-    "law_name": "GDPR Implementation Law",
+    "law_name": "GDPR Implementation Act (Uitvoeringswet AVG, UAVG)",
     "jurisdiction": "Dutch DPA (AP)",
-    "enactment_date": "2018-05-25",
+    "enactment_date": "2018-05-16",
     "effective_date": "2018-05-25",
     "scope": "Dutch Residents",
     "applies_to": "All entities",
@@ -19,9 +19,9 @@
     "language": "Dutch",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "GDPR implementation",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "UAVG amended by Verzamelwet gegevensbescherming 2026; AP must publish fines; in force TBD",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

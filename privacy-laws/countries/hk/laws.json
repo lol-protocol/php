@@ -3,10 +3,10 @@
     "country_code": "HK",
     "country_name": "Hong Kong",
     "region": "asia_pacific",
-    "law_name": "Personal Data (Privacy) Ordinance",
+    "law_name": "Personal Data (Privacy) Ordinance (Cap. 486)",
     "jurisdiction": "Privacy Commissioner",
-    "enactment_date": "2013-10-18",
-    "effective_date": "2021-10-18",
+    "enactment_date": "1995-08-03",
+    "effective_date": "1996-12-20",
     "scope": "Hong Kong Residents",
     "applies_to": "Organizations in HK",
     "key_requirements": "Lawful collection & transparency",
@@ -20,8 +20,8 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Asia-specific privacy law",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

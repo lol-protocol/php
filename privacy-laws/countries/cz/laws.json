@@ -3,10 +3,10 @@
     "country_code": "CZ",
     "country_name": "Czech Republic",
     "region": "europe",
-    "law_name": "Act on Protection of Personal Data",
+    "law_name": "Act No. 110/2019 Coll. on the Processing of Personal Data",
     "jurisdiction": "Office for Personal Data Protection",
     "enactment_date": "2019-02-01",
-    "effective_date": "2021-01-01",
+    "effective_date": "2019-04-24",
     "scope": "Czech Residents",
     "applies_to": "All entities",
     "key_requirements": "GDPR compliance + amendments",
@@ -20,8 +20,8 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

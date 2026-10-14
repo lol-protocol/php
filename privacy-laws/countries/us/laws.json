@@ -3,8 +3,8 @@
     "country_code": "US",
     "country_name": "United States",
     "region": "americas",
-    "law_name": "California Consumer Privacy Act (CCPA)",
-    "jurisdiction": "California",
+    "law_name": "California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA)",
+    "jurisdiction": "CPPA",
     "enactment_date": "2018-06-28",
     "effective_date": "2020-01-01",
     "scope": "California Residents",
@@ -12,17 +12,17 @@
     "key_requirements": "Disclosure, opt-out rights",
     "data_categories": "Consumer data",
     "retention_period": "As specified",
-    "enforcement_authority": "California Attorney General",
-    "penalties_range": "Up to $7,500 per violation",
+    "enforcement_authority": "California Privacy Protection Agency (CalPrivacy) and California Attorney General",
+    "penalties_range": "USD 2,663 per violation; USD 7,988 per intentional violation or involving minors under 16 (inflation-adjusted) (unconfirmed)",
     "exemptions": "B2B exemptions",
     "website_url": "https://oag.ca.gov/privacy/ccpa",
     "language": "English",
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "Now CPRA as of Jan 2023",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "CPRA amendments effective 2023-01-01; ADMT and opt-out-signal rules due 2027-01-01",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-14"
   },
   {
     "country_code": "US",
@@ -44,9 +44,9 @@
     "language": "English",
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "Website & app operators",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "FTC Rule amended 2025: biometrics in PI, retention/security programs; full compliance 2026-04-22",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

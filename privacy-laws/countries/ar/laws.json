@@ -3,7 +3,7 @@
     "country_code": "AR",
     "country_name": "Argentina",
     "region": "americas",
-    "law_name": "Personal Data Protection Law (LPDP)",
+    "law_name": "Personal Data Protection Law No. 25.326",
     "jurisdiction": "National Data Protection Authority",
     "enactment_date": "2000-10-27",
     "effective_date": "2001-08-01",
@@ -20,8 +20,8 @@
     "frameworks": "EU-Adequacy/CoE-108",
     "frameworks_not": "GDPR",
     "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

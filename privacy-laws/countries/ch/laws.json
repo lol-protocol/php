@@ -5,7 +5,7 @@
     "region": "europe",
     "law_name": "Federal Data Protection Act (FADP)",
     "jurisdiction": "Federal Data Protection & Information Commissioner",
-    "enactment_date": "2022-09-28",
+    "enactment_date": "2020-09-25",
     "effective_date": "2023-09-01",
     "scope": "Swiss Residents",
     "applies_to": "All organizations",
@@ -20,8 +20,8 @@
     "frameworks": "EU-Adequacy/CoE-108",
     "frameworks_not": "GDPR",
     "notes": "GDPR-aligned European standard",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

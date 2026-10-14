@@ -19,9 +19,9 @@
     "language": "French",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "GDPR + French law 78-17",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "National complement: Loi n 78-17 Informatique et Libertes (amended 2018); regulator CNIL",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

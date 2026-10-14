@@ -24,3 +24,7 @@ candidates; the six Berne "no" results (Angola, Ethiopia, Iraq, Iran, Myanmar, T
 ## Rights fields (14 Oct 2026)
 
 `fields-europe.csv`, `fields-americas-apac.csv`, `fields-mena-africa.csv`: moral rights, orphan works, digital protection and exceptions for non-EU jurisdictions, researched by web search (value, confidence, source per cell). `UNKNOWN` cells stay "Not specified"; low-confidence values carry "(unconfirmed)". Where nothing was found for a WCT party, `digital_protection` says the treaty requires anti-circumvention protection without claiming the national rule.
+
+## Currency sweep of the original rows (14 Oct 2026)
+
+`sweep-C1.csv`, `sweep-C2.csv`: every original row checked by web search for replaced or amended laws and wrong titles or dates. Fixes were applied to the master CSV; changed rows become `data_status=researched`. Notable: Saudi Arabia (Copyright Law 2026, Royal Decree M/169; term unconfirmed), UAE (Federal Decree-Law 38/2021), Nigeria (Copyright Act 2022), Russia (Civil Code Part IV), Belgium (Code of Economic Law Book XI), Spain (RDL 1/1996); Canada, Singapore, Chile and Israel now life + 70. Caveat: in `sweep-C2.csv` the rows for FI, IE, GR, AT, CZ, HU, RO, CO and CN were marked "current" without a search result behind them; they are unverified and stay `curated`.

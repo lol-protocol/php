@@ -32,7 +32,7 @@ test("rows with commas inside fields stay aligned (regression: columns used to s
   assert.equal(gdpr.enforcement_authority, "European Data Protection Board & National DPAs");
   assert.equal(gdpr.website_url, "https://gdpr-info.eu/");
 
-  assert.equal(find("US", "CCPA").penalties_range, "Up to $7,500 per violation");
+  assert.match(find("US", "CCPA").penalties_range, /^USD 2,663 per violation; USD 7,988 /);
   assert.equal(find("US", "COPPA").penalties_range, "Up to $43,280 per violation");
   assert.equal(find("CA", "PIPEDA").penalties_range, "Up to $100,000 CAD");
   assert.equal(find("IN", "Digital Personal").penalties_range, "Up to ₹250 Cr penalty");

@@ -5,7 +5,7 @@
     "region": "americas",
     "law_name": "Law No. 17,336",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years",
+    "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full economic rights",
     "moral_rights": "Moral rights (limited duration)",
     "orphan_works": "Collective administration required",
@@ -17,8 +17,8 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.dpi.cl/",
     "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

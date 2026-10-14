@@ -5,7 +5,7 @@
     "region": "europe",
     "law_name": "Data Protection Act",
     "jurisdiction": "Data Protection Commission",
-    "enactment_date": "2018-05-25",
+    "enactment_date": "2018-05-24",
     "effective_date": "2018-05-25",
     "scope": "Irish Residents",
     "applies_to": "All entities",
@@ -20,8 +20,8 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

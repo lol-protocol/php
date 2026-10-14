@@ -3,10 +3,10 @@
     "country_code": "AE",
     "country_name": "United Arab Emirates",
     "region": "middle_east_africa",
-    "law_name": "Federal Law No. 45/2021",
+    "law_name": "Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data",
     "jurisdiction": "DPA Authority",
-    "enactment_date": "2021-11-02",
-    "effective_date": "2022-01-01",
+    "enactment_date": "2021-09-20",
+    "effective_date": "2022-01-02",
     "scope": "UAE Residents",
     "applies_to": "All organizations",
     "key_requirements": "Lawful processing",
@@ -20,8 +20,8 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "UAE privacy law",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

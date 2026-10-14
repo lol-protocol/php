@@ -5,11 +5,11 @@
     "region": "asia_pacific",
     "law_name": "Privacy Act 2020",
     "jurisdiction": "Office of the Privacy Commissioner",
-    "enactment_date": "2020-12-01",
+    "enactment_date": "2020-06-30",
     "effective_date": "2020-12-01",
     "scope": "New Zealand Residents",
     "applies_to": "Public & private sector",
-    "key_requirements": "Privacy Principles",
+    "key_requirements": "IPP 3A: notify individuals when personal info collected indirectly (from 2026-05-01)",
     "data_categories": "Personal information",
     "retention_period": "Necessary period",
     "enforcement_authority": "Privacy Commissioner NZ",
@@ -19,9 +19,9 @@
     "language": "English",
     "frameworks": "EU-Adequacy",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "Updated from 1993 Act",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "Amended by Privacy Amendment Act 2025; IPP 3A in force 2026-05-01",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

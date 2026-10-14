@@ -14,3 +14,7 @@ The batches for wider Europe/Central Asia, the Americas and Africa have no per-r
 ## Authority names (14 Oct 2026)
 
 `authorities-verified.csv`: the regulator / copyright body names of the original rows, checked with web search (source URL and confidence per row). Vague names were replaced by official ones and wrong ones corrected (for example Argentina: AAIP, not Spain's AEPD; copyright handled by culture or justice ministries rather than patent offices). Only the name was checked, so those rows keep `data_status=curated`.
+
+## Currency sweep of the original rows (14 Oct 2026)
+
+`sweep-P1.csv`, `sweep-P2.csv`: every original row checked by web search for replaced or amended laws and wrong titles or dates (`module,code,status,field,value,conf,source,note`). Fixes were applied to the master CSV; changed rows become `data_status=researched` with the weakest confidence applied. Low-confidence dates were not applied; low-confidence text carries "(unconfirmed)". Notable: Chile's Law 19.628 is replaced by Law 21.719 (in force 1 Dec 2026); California's row now covers the CCPA as amended by the CPRA, enforced by the CPPA. Pending bills (Canada's new privacy bill, Australia's second tranche, the EU digital omnibus, the BDSG reform) are not law and were not applied.

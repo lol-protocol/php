@@ -3,7 +3,7 @@
     "country_code": "HU",
     "country_name": "Hungary",
     "region": "europe",
-    "law_name": "Data Protection Act",
+    "law_name": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26",
     "jurisdiction": "Hungarian DPA",
     "enactment_date": "2018-05-25",
     "effective_date": "2018-05-25",
@@ -19,9 +19,9 @@
     "language": "Hungarian",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "GDPR implementation",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "Infotv. as amended by Act XXXVIII of 2018 (in force 2018-07-26); regulator NAIH",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

@@ -3,10 +3,10 @@
     "country_code": "RO",
     "country_name": "Romania",
     "region": "europe",
-    "law_name": "Data Protection Law",
+    "law_name": "Law No. 190/2018 implementing the GDPR",
     "jurisdiction": "National Supervisory Authority",
-    "enactment_date": "2018-05-25",
-    "effective_date": "2018-05-25",
+    "enactment_date": "2018-07-26",
+    "effective_date": "2018-07-31",
     "scope": "Romanian Residents",
     "applies_to": "All entities",
     "key_requirements": "GDPR applies: lawful basis, data subject rights, breach notification",
@@ -20,8 +20,8 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

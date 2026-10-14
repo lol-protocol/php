@@ -19,9 +19,9 @@
     "language": "German",
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
-    "notes": "GDPR implementation",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "DSG (ex-DSG 2000) as amended; 2024 novelle added Parliamentary Data Protection Committee",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

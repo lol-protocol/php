@@ -13,15 +13,15 @@
     "data_categories": "Personal data",
     "retention_period": "As appropriate",
     "enforcement_authority": "Privacy Protection Authority (PPA)",
-    "penalties_range": "Up to NIS 320,000 per violation (bill figure; up to NIS 3.2M for >1M sensitive records) (unconfirmed)",
+    "penalties_range": "Administrative fines up to NIS 320,000 per violation (higher if aggravated / per-data-subject based); criminal penalties",
     "exemptions": "Government functions",
     "website_url": "https://www.justice.gov.il/",
     "language": "Hebrew/English",
     "frameworks": "EU-Adequacy",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "Amendment 13 effective 2025-08-14: PPA fining powers, DPO duty, broader definitions",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

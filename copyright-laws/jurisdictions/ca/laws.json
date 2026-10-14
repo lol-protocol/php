@@ -5,7 +5,7 @@
     "region": "americas",
     "law_name": "Copyright Act (R.S.C., 1985)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years",
+    "term_of_protection": "Author's life + 70 years",
     "author_rights": "Reproduction & distribution",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Limited use permitted",
@@ -16,9 +16,9 @@
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
     "linked_resources": "https://www.ic.gc.ca/",
-    "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "Term extended life+50 to life+70 on 2022-12-30 (CUSMA, Bill C-19); no revival of PD works",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

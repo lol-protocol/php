@@ -3,10 +3,10 @@
     "country_code": "GR",
     "country_name": "Greece",
     "region": "europe",
-    "law_name": "Data Protection Law (Law 4818/2021)",
+    "law_name": "Law 4624/2019 (Data Protection Law implementing GDPR)",
     "jurisdiction": "Hellenic Data Protection Authority",
-    "enactment_date": "2021-04-01",
-    "effective_date": "2021-04-01",
+    "enactment_date": "2019-08-29",
+    "effective_date": "2019-08-29",
     "scope": "Greek Residents",
     "applies_to": "All organizations",
     "key_requirements": "GDPR implementation",
@@ -20,8 +20,8 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

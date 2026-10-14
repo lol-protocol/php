@@ -5,8 +5,8 @@
     "region": "asia_pacific",
     "law_name": "Act on Protection of Personal Information (APPI)",
     "jurisdiction": "Personal Information Protection Commission",
-    "enactment_date": "2017-05-30",
-    "effective_date": "2020-04-01",
+    "enactment_date": "2003-05-30",
+    "effective_date": "2005-04-01",
     "scope": "Japanese Residents",
     "applies_to": "Business operators",
     "key_requirements": "Lawful purpose notice",
@@ -19,9 +19,9 @@
     "language": "Japanese",
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
-    "notes": "Asia's comprehensive privacy law",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "2026 amendment adds administrative fines; effective date by cabinet order (<=2 yrs)",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

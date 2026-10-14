@@ -19,9 +19,9 @@
     "language": "Chinese",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
-    "notes": "China's privacy law",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "notes": "PIPL unamended; audit measures (May 2025), cross-border certification (Jan 2026), CSL fines raised Jan 2026",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

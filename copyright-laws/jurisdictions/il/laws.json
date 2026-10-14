@@ -3,9 +3,9 @@
     "country_code": "IL",
     "country_name": "Israel",
     "region": "middle_east_africa",
-    "law_name": "Israeli Copyright Law",
+    "law_name": "Copyright Act, 5768-2007",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years",
+    "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective management allowed",
@@ -17,8 +17,8 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.justice.gov.il/",
     "notes": "",
-    "data_status": "curated",
-    "confidence": "",
-    "last_checked": ""
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]
