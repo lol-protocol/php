@@ -500,16 +500,71 @@ MOTIVOS.update({
 })
 
 
-# --- Arquetipos de composición -------------------------------------------------
-# Cada uno dibuja el paisaje y devuelve la función altura(x) de la capa lejana,
-# donde se apoyan los motivos (torre, etc.).
+# --- Escalado de motivos ---------------------------------------------------------
+# (factor, ancla): 'suelo' conserva la base del motivo, 'centro' su centro y 'arriba'
+# su borde superior. Sin entrada = tamaño original. Los motivos se diseñaron pequeños
+# (30–80 px sobre 200) y así se pierden al reducir el marcalibros.
+ESCALAS = {
+    "torre": (1.2, "suelo"), "catedral": (1.3, "suelo"), "arco": (1.25, "suelo"), "faro": (1.2, "suelo"),
+    "reloj": (1.2, "suelo"), "horca": (1.4, "suelo"), "castillo": (1.5, "suelo"), "organo": (1.4, "suelo"),
+    "horreo": (1.5, "suelo"), "puente": (1.5, "suelo"), "fuente": (1.6, "suelo"), "rosa": (1.6, "suelo"),
+    "lira": (1.6, "suelo"), "urna": (1.6, "suelo"), "gato": (1.7, "suelo"), "vela": (1.5, "suelo"),
+    "ataud": (1.8, "suelo"), "lapidas": (1.7, "suelo"), "serpiente": (1.8, "suelo"), "espada": (1.7, "suelo"),
+    "estatua": (1.6, "suelo"), "ruinas": (1.5, "suelo"), "cruz": (1.7, "suelo"), "cipres": (1.3, "suelo"),
+    "arbol": (1.6, "suelo"), "barricada": (1.5, "suelo"), "velero": (1.6, "suelo"), "barca": (1.8, "suelo"),
+    "nube": (1.4, "centro"), "cuervo": (1.5, "centro"), "corazon": (1.6, "centro"), "corona": (1.6, "centro"),
+    "rayo": (1.3, "arriba"), "narcisos": (1.4, "suelo"),
+}
+# Se dibujan por delante de todas las capas (los demás, entre la lejana y la cercana,
+# de modo que la capa cercana tape su base y queden apoyados en el suelo).
+FRENTE = {"olas", "narcisos", "hojas"}
 
-def _arq_colinas(esc, rng, p):
+
+def _limites(prims):
+    xs, ys = [], []
+    for q in prims:
+        if q["tipo"] == "poligono":
+            xs += [x for x, _ in q["puntos"]]
+            ys += [y for _, y in q["puntos"]]
+        elif q["tipo"] == "circulo":
+            xs += [q["cx"] - q["r"], q["cx"] + q["r"]]
+            ys += [q["cy"] - q["r"], q["cy"] + q["r"]]
+    return min(xs), min(ys), max(xs), max(ys)
+
+
+def _escalar(prims, k, ancla):
+    x0, y0, x1, y1 = _limites(prims)
+    ax = (x0 + x1) / 2
+    ay = {"suelo": y1, "centro": (y0 + y1) / 2, "arriba": y0}[ancla]
+    for q in prims:
+        if q["tipo"] == "poligono":
+            q["puntos"] = [(round(ax + (x - ax) * k, 1), round(ay + (y - ay) * k, 1)) for x, y in q["puntos"]]
+        elif q["tipo"] == "circulo":
+            q["cx"], q["cy"] = round(ax + (q["cx"] - ax) * k, 1), round(ay + (q["cy"] - ay) * k, 1)
+            q["r"] = round(q["r"] * k, 1)
+
+
+def _poner_motivo(esc, rng, p, altura, nombre):
+    if nombre not in MOTIVOS:
+        return
+    antes = len(esc.primitivas)
+    MOTIVOS[nombre](esc, rng, p, altura)
+    if nombre in ESCALAS and len(esc.primitivas) > antes:
+        _escalar(esc.primitivas[antes:], *ESCALAS[nombre])
+
+
+# --- Arquetipos de composición -------------------------------------------------
+# Cada uno dibuja el paisaje y llama a colocar(altura) entre la capa lejana y la
+# cercana. altura(x) es el suelo sobre el que se apoya el motivo: la capa lejana, o
+# en montañas la cordillera cercana, para que no quede sobre una cima.
+
+def _arq_colinas(esc, rng, p, colocar):
     lejos = _colina(rng, 0.66, 14)
     cerca = _colina(rng, 0.80, 18)
     esc.poligono(_puntos_colina(lejos), p["lejos"])
+    altura = lambda x: _altura(lejos, x)
+    colocar(altura)
     esc.poligono(_puntos_colina(cerca), p["cerca"])
-    return lambda x: _altura(lejos, x)
 
 
 def _picos(rng, base, alto_min, alto_max, ancho_min, ancho_max):
@@ -531,32 +586,33 @@ def _interp(puntos, x):
     return puntos[-1][1]
 
 
-def _arq_montanas(esc, rng, p):
+def _arq_montanas(esc, rng, p, colocar):
     lejos = _picos(rng, 0.78 * ALTO, 40, 95, 90, 190)
     cerca = _picos(rng, 0.92 * ALTO, 14, 40, 60, 140)
     esc.poligono(lejos + [(lejos[-1][0], ALTO), (0, ALTO)], p["lejos"])
+    colocar(lambda x: _interp(cerca, x))
     esc.poligono(cerca + [(cerca[-1][0], ALTO), (0, ALTO)], p["cerca"])
-    return lambda x: _interp(lejos, x)
 
 
-def _arq_llanura(esc, rng, p):
+def _arq_llanura(esc, rng, p, colocar):
     lejos = _colina(rng, 0.74, 3)
     cerca = _colina(rng, 0.90, 5)
     esc.poligono(_puntos_colina(lejos), p["lejos"])
-    esc.poligono(_puntos_colina(cerca), p["cerca"])
     # línea de álamos en el horizonte
     for _ in range(rng.randint(5, 9)):
         x = rng.uniform(0.04, 0.96) * ANCHO
         y, h = _altura(lejos, x), rng.uniform(16, 30)
         esc.poligono([(x - 3, y), (x - 4, y - h * 0.5), (x, y - h), (x + 4, y - h * 0.5), (x + 3, y)], p["cerca"])
-    return lambda x: _altura(lejos, x)
+    colocar(lambda x: _altura(lejos, x))
+    esc.poligono(_puntos_colina(cerca), p["cerca"])
 
 
-def _arq_marina(esc, rng, p):
+def _arq_marina(esc, rng, p, colocar):
     cabo = _colina(rng, 0.54, 7)
     linea = (0.62 + rng.nivel) * ALTO
     rng.linea = linea
     esc.poligono([(0, linea), (ANCHO, linea), (ANCHO, ALTO), (0, ALTO)], p["lejos"])
+    colocar(lambda x: _altura(cabo, x))
     esc.poligono(_puntos_colina(cabo)[:-2] + [(ANCHO, linea), (0, linea)], p["cerca"])
     # reflejo del sol en el agua: rayas de largo decreciente
     cx = rng.uniform(0.3, 0.7) * ANCHO
@@ -564,23 +620,23 @@ def _arq_marina(esc, rng, p):
         y = linea + (0.06 + 0.055 * k) * ALTO
         w = 70 - 10 * k
         esc.poligono([(cx - w, y), (cx + w, y), (cx + w, y + 3), (cx - w, y + 3)], p["sol"])
-    return lambda x: _altura(cabo, x)
 
 
-def _arq_bosque(esc, rng, p):
+def _arq_bosque(esc, rng, p, colocar):
     lejos = _colina(rng, 0.70, 12)
     esc.poligono(_puntos_colina(lejos), p["lejos"])
+    base = (0.93 + rng.nivel / 2) * ALTO
+    # El motivo se apoya al pie del bosque: los árboles de delante tapan su base.
+    colocar(lambda x: base - 26)
     x = -10.0
     puntos = [(0, ALTO)]
     while x < ANCHO + 10:
         h = rng.uniform(32, 74)
         a = rng.uniform(9, 16)
-        base = (0.93 + rng.nivel / 2) * ALTO
         puntos += [(x - a, base), (x, base - h), (x + a, base)]
         x += rng.uniform(14, 30)
     puntos.append((ANCHO, ALTO))
     esc.poligono(puntos, p["cerca"])
-    return lambda x: _altura(lejos, x)
 
 
 ARQUETIPOS = {
@@ -609,10 +665,12 @@ def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas"):
     else:
         esc.circulo(rng.uniform(0.3, 0.7) * ANCHO, rng.uniform(0.3, 0.45) * ALTO, rng.uniform(14, 20), p["sol"])
 
-    altura = ARQUETIPOS[arquetipo](esc, rng, p)
-
-    if motivo in MOTIVOS:
-        MOTIVOS[motivo](esc, rng, p, altura)
+    suelos = []
+    entre_capas = (lambda altura: suelos.append(altura)) if motivo in FRENTE else (
+        lambda altura: (suelos.append(altura), _poner_motivo(esc, rng, p, altura, motivo)))
+    ARQUETIPOS[arquetipo](esc, rng, p, entre_capas)
+    if motivo in FRENTE:
+        _poner_motivo(esc, rng, p, suelos[0], motivo)
     return esc
 
 
