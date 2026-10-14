@@ -145,6 +145,45 @@ test('the default language loads from app/translations', async () => {
     assert.notEqual(i18n.t('header.title'), 'header.title');
 });
 
+test('no language ever shows a blank label: empty or missing strings fall back to English', async () => {
+    const english = JSON.parse(fs.readFileSync(path.join(APP_DIR, 'translations', 'en.json'), 'utf8'));
+    const keys = [];
+    const walk = (tree, prefix) => Object.entries(tree).forEach(([k, v]) =>
+        typeof v === 'object' ? walk(v, `${prefix}${k}.`) : keys.push(`${prefix}${k}`));
+    walk(english, '');
+    assert.ok(keys.length > 50, `only ${keys.length} English strings`);
+
+    for (const file of fs.readdirSync(path.join(APP_DIR, 'translations'))) {
+        const code = file.replace(/\.json$/, '');
+        const i18n = new LocalizationManager();
+        await quiet(() => i18n.loadLanguage(code));
+        assert.equal(i18n.getLanguage(), code);
+        const blank = keys.filter(key => i18n.t(key) === '' || i18n.t(key) === key);
+        assert.deepEqual(blank, [], `${code}: these keys show nothing or the raw key`);
+    }
+});
+
+test('a translated string wins over English, and a missing key still returns the default', async () => {
+    const english = new LocalizationManager();
+    await quiet(() => english.loadLanguage('en'));
+    const spanish = new LocalizationManager();
+    await quiet(() => spanish.loadLanguage('es'));
+    assert.notEqual(spanish.t('header.title'), english.t('header.title'));
+    assert.equal(spanish.t('no.such.key', 'Default'), 'Default');
+    assert.equal(spanish.t('no.such.key'), 'no.such.key');
+});
+
+test('every translation file has exactly the keys of en.json', () => {
+    const flat = (tree, prefix = '') => Object.entries(tree).flatMap(([k, v]) =>
+        typeof v === 'object' ? flat(v, `${prefix}${k}.`) : [`${prefix}${k}`]);
+    const dir = path.join(APP_DIR, 'translations');
+    const expected = flat(JSON.parse(fs.readFileSync(path.join(dir, 'en.json'), 'utf8'))).sort();
+    for (const file of fs.readdirSync(dir)) {
+        const keys = flat(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'))).sort();
+        assert.deepEqual(keys, expected, `${file} does not have the same keys as en.json`);
+    }
+});
+
 test('sizeSimilarity ignores orientation', () => {
     const ledger = { width_mm: 431.8, height_mm: 279.4 };
     const tabloid = { width_mm: 279.4, height_mm: 431.8 };

@@ -2,8 +2,10 @@
 
 Paper, document, book and screen sizes, organized by country and by type, as
 plain CSV files. Includes production specs (binding, folding, color spaces,
-accessibility), a SQL schema, a REST API reference, and a browser demo
-translated into 30 languages.
+accessibility), a SQL schema, a REST API reference, a browser demo (in
+English) and a JavaScript library whose interface strings come in 30
+languages (six fully translated; the rest show English for what isn't
+translated yet).
 
 ## Folder structure
 
@@ -205,7 +207,11 @@ and offers a browser with search and country/category filters, a
 comparison table, and a converter that shows how similar two sizes are.
 
 `app/translations/` holds UI strings in 30 languages for
-`LocalizationManager` in `document-formats.js`; see `docs/Localization.md`.
+`LocalizationManager` in `document-formats.js`. The demo doesn't use them (it
+is in English); they are for pages built with the library. German, English,
+Spanish, French, Japanese and Chinese have every string; the other 24
+translate the title, the tabs and the unit names (10 of 88 strings) and show
+English for the rest. See `docs/Localization.md`.
 
 ## Tests
 
