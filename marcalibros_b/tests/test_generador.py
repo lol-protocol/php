@@ -129,11 +129,25 @@ def test_motivos_visibles_en_miniatura():
             assert e["pixeles_motivo"] >= MIN_PIXELES_MOTIVO, f"{e['id']}: {e['motivo']}"
 
 
-def test_recomendacion_de_texto_en_el_manifest():
+def test_franja_de_texto_en_el_manifest():
+    from qa import MIN_CONTRASTE_TEXTO, OPACIDADES_VELO
     manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
     for e in manifiesto["entradas"]:
         assert e["texto_recomendado"] in ("claro", "oscuro")
-        assert e["requiere_velo"] == (e["contraste_texto"] < 3.0)
+        assert e["velo"] in (0.0, *OPACIDADES_VELO)
+        assert len(e["franja"]) == 4
+        if e["velo"] < OPACIDADES_VELO[-1]:  # solo el velo más fuerte puede quedarse corto
+            assert e["contraste_texto"] >= MIN_CONTRASTE_TEXTO, e["id"]
+
+
+def test_motivo_no_invade_la_franja_de_texto():
+    import plantillas
+    piezas, _ = _piezas()
+    for ident, (entrada, esc) in piezas.items():
+        assert esc.franja is not None, ident
+        if esc.bbox_motivo and esc.bbox_motivo[2] - esc.bbox_motivo[0] <= plantillas.MOTIVO_AMBIENTAL:
+            x0, x1 = esc.franja[0], esc.franja[2]
+            assert esc.bbox_motivo[2] < x0 or esc.bbox_motivo[0] > x1, f"{ident}: el motivo pisa la franja"
 
 
 def test_archivos_del_catalogo_validos():

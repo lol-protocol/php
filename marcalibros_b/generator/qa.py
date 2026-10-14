@@ -96,7 +96,8 @@ ANCHO_MINIATURA = 350  # tamaño real aproximado en el lector (350×50)
 MIN_PIXELES_MOTIVO = 30  # píxeles de la miniatura que el motivo debe cambiar
 UMBRAL_CAMBIO = 40  # diferencia por canal (0–255) para contar un píxel como cambiado
 TONOS_TEXTO = {"claro": "#F4EEE1", "oscuro": "#1E2A38"}
-MIN_CONTRASTE_TEXTO = 3.0  # texto grande WCAG AA
+MIN_CONTRASTE_TEXTO = 4.5  # texto normal WCAG AA, medido solo dentro de la franja reservada
+OPACIDADES_VELO = (0.35, 0.5, 0.65, 0.8)
 
 
 def pixeles_de_motivo(con, sin):
@@ -112,22 +113,22 @@ def _luminancias(img):
     return 0.2126 * a[..., 0] + 0.7152 * a[..., 1] + 0.0722 * a[..., 2]
 
 
-def mejor_texto(img):
-    """Tono de texto ('claro' u 'oscuro') que mejor se lee sobre la imagen y su contraste.
-    El contraste es el que alcanza el 90 % de los píxeles (percentil 10), no el medio:
-    un solo tono medio ya hace ilegible el texto en esa zona."""
+def contraste_texto(img, tono):
+    """Contraste que alcanza el 90 % de los píxeles (percentil 10) de `img` con el tono de
+    texto dado. Se usa el percentil, no la media: un solo tono medio ya vuelve ilegible
+    el texto en esa zona."""
     lum = _luminancias(img)
-    mejor = None
-    for nombre, color in TONOS_TEXTO.items():
-        h = color.lstrip("#")
-        c = [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)]
-        c = [v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4 for v in c]
-        lt = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
-        hi, lo = np.maximum(lum, lt), np.minimum(lum, lt)
-        ratio = float(np.percentile((hi + 0.05) / (lo + 0.05), 10))
-        if mejor is None or ratio > mejor[1]:
-            mejor = (nombre, ratio)
-    return mejor
+    h = TONOS_TEXTO[tono].lstrip("#")
+    c = [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+    c = [v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4 for v in c]
+    lt = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+    hi, lo = np.maximum(lum, lt), np.minimum(lum, lt)
+    return float(np.percentile((hi + 0.05) / (lo + 0.05), 10))
+
+
+def mejor_texto(img):
+    """(tono, contraste) del tono de texto, 'claro' u 'oscuro', que mejor se lee sobre `img`."""
+    return max(((n, contraste_texto(img, n)) for n in TONOS_TEXTO), key=lambda t: t[1])
 
 
 def hoja_de_miniaturas(piezas, salida: Path, columnas: int = 4):

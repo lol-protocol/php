@@ -25,14 +25,14 @@ import yaml
 from PIL import Image
 
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
-from qa import (ANCHO_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, UMBRAL_DUPLICADO, hoja_de_contacto,
+from qa import (contraste_texto, ANCHO_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_DUPLICADO, hoja_de_contacto,
                 hoja_de_miniaturas, huella_visual, mejor_texto, parecido_a, pixeles_de_motivo, validar_jpg,
                 validar_svg, validar_taxonomia)
 from render_raster import a_imagen
 from render_svg import a_svg
 from scene import ALTO, ANCHO
 
-VERSION_GENERADOR = "0.6.0"
+VERSION_GENERADOR = "0.7.0"
 MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
@@ -182,6 +182,35 @@ def imagen_para_revision(entrada, esc, ruta):
     return img, f"svg vía Chromium (dif. {dif:.1f})"
 
 
+def _recorte_franja(esc, margen=10):
+    """Miniatura de la franja de texto, sin las esquinas redondeadas del velo."""
+    f = ANCHO_MINIATURA / ANCHO
+    x0, y0, x1, y1 = esc.franja
+    return a_imagen(esc, ANCHO_MINIATURA).crop(
+        (round((x0 + margen) * f), round((y0 + margen) * f), round((x1 - margen) * f), round((y1 - margen) * f)))
+
+
+def reservar_texto(esc):
+    """Elige el tono de texto de la franja y, si ni así llega al contraste mínimo, hornea
+    un velo translúcido solo dentro de la franja (el más suave que lo logre).
+    Devuelve (tono, contraste, opacidad_del_velo)."""
+    tono, ratio = mejor_texto(_recorte_franja(esc))
+    if ratio >= MIN_CONTRASTE_TEXTO:
+        return tono, ratio, 0.0
+    x0, y0, x1, y1 = esc.franja
+    contrario = {"claro": "oscuro", "oscuro": "claro"}
+    for op in OPACIDADES_VELO:
+        pruebas = []
+        for t in TONOS_TEXTO:
+            esc.velo(x0, y0, x1, y1, TONOS_TEXTO[contrario[t]], op)
+            pruebas.append((contraste_texto(_recorte_franja(esc), t), t))
+            esc.primitivas.pop()
+        r, t = max(pruebas)
+        if r >= MIN_CONTRASTE_TEXTO or op == OPACIDADES_VELO[-1]:  # el último se acepta aunque no llegue
+            esc.velo(x0, y0, x1, y1, TONOS_TEXTO[contrario[t]], op)
+            return t, r, op
+
+
 SIN_COMPROBAR_VISIBILIDAD = {"ninguno", "luna"}  # sin motivo, o la luna: siempre grande
 
 
@@ -204,6 +233,12 @@ def elegir_pieza(config, mov, autor, v, animos, previas):
                 problema = f"el motivo '{entrada['motivo']}' casi no se ve en miniatura ({px} px)"
                 continue
             entrada["pixeles_motivo"] = px
+        if esc.franja is None:
+            problema = "no queda hueco para la franja de texto"
+            continue
+        texto, ratio, velo = reservar_texto(esc)  # el velo forma parte de la pieza
+        entrada["franja"] = list(esc.franja)
+        entrada["texto_recomendado"], entrada["contraste_texto"], entrada["velo"] = texto, round(ratio, 1), velo
         return entrada, esc, h, intento, None
     return entrada, esc, h, intento, problema
 
@@ -228,7 +263,7 @@ def main():
 
     generados, esc_por_id, rutas, huellas = [], {}, {}, {}
     fallos = 0
-    avisos_texto, miniaturas = [], {}
+    avisos_texto, con_velo, miniaturas = [], [], {}
     for mov, autor, v in recorrer(config, filtro):
         # Los duplicados se comparan dentro de cada movimiento, así el resultado
         # no depende de qué movimientos se generen en la misma ejecución.
@@ -238,13 +273,12 @@ def main():
             fallos += 1
             print(f"  ✗ {entrada['id']}: {problema} tras {MAX_INTENTOS} reintentos de semilla")
         if intento:
-            print(f"  ↻ {entrada['id']}: semilla cambiada {intento}× (duplicado visual o motivo invisible)")
+            print(f"  ↻ {entrada['id']}: semilla cambiada {intento}× (duplicado visual, motivo invisible o sin hueco para el texto)")
+        if entrada["contraste_texto"] < MIN_CONTRASTE_TEXTO:
+            avisos_texto.append(f"{entrada['id']}: franja a {entrada['contraste_texto']}:1 incluso con velo {entrada['velo']}")
+        if entrada["velo"]:
+            con_velo.append(entrada["id"])
         mini = a_imagen(esc, ANCHO_MINIATURA)
-        texto, ratio = mejor_texto(mini)
-        entrada["texto_recomendado"], entrada["contraste_texto"] = texto, round(ratio, 1)
-        entrada["requiere_velo"] = ratio < MIN_CONTRASTE_TEXTO  # texto sobre la imagen solo con velo detrás
-        if ratio < MIN_CONTRASTE_TEXTO:
-            avisos_texto.append(f"{entrada['id']}: el mejor texto ({texto}) solo llega a {ratio:.1f}:1")
         miniaturas[entrada["id"]] = mini
         huellas[entrada["id"]] = h
         rutas[entrada["id"]] = escribir(entrada, esc)
@@ -299,11 +333,10 @@ def main():
         hoja_de_miniaturas([(f"{e['id']} · {e['obra']}", miniaturas[e["id"]])
                             for e in generados if e["movimiento"] == mov_id], hoja)
         print(f"  miniaturas: {hoja.relative_to(RAIZ)}")
-    if avisos_texto:
-        print(f"  ({len(avisos_texto)} de {len(generados)} piezas no llegan a {MIN_CONTRASTE_TEXTO}:1 con ningún tono de texto: "
-              "el lector debe poner un velo detrás del texto)")
-    for aviso in avisos_texto[:0]:
-        print(f"  ⚠ requiere velo para texto: {aviso}")
+    print(f"  franja de texto: {len(generados) - len(con_velo)} piezas la leen sin velo, "
+          f"{len(con_velo)} con velo horneado en la franja")
+    for aviso in avisos_texto:
+        print(f"  ⚠ {aviso}")
 
     jpg = sum(1 for e in generados if e["formato"] == "jpg")
     print(f"\nGenerados: {len(generados)} (jpg: {jpg}, svg: {len(generados) - jpg}). "

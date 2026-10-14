@@ -26,6 +26,12 @@ def a_svg(esc):
                 f'<circle cx="{prim["cx"]:g}" cy="{prim["cy"]:g}" r="{prim["r"]:g}" '
                 f'fill="{prim["color"]}"/>'
             )
+        elif tipo == "velo":
+            lineas.append(
+                f'<rect x="{prim["x0"]:g}" y="{prim["y0"]:g}" width="{prim["x1"] - prim["x0"]:g}" '
+                f'height="{prim["y1"] - prim["y0"]:g}" rx="{prim["radio"]:g}" fill="{prim["color"]}" '
+                f'fill-opacity="{prim["opacidad"]:g}"/>'
+            )
         elif tipo == "poligono":
             pts = " ".join(f"{x:g},{y:g}" for x, y in prim["puntos"])
             lineas.append(f'<polygon points="{pts}" fill="{prim["color"]}"/>')

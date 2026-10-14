@@ -584,6 +584,8 @@ def _poner_motivo(esc, rng, p, altura, nombre):
         return
     if nombre in ESCALAS and len(esc.primitivas) > antes:
         _escalar(esc.primitivas[antes:], *ESCALAS[nombre])
+    if len(esc.primitivas) > antes:
+        rng.bbox_motivo = _limites(esc.primitivas[antes:])
 
 
 # --- Arquetipos de composición -------------------------------------------------
@@ -682,6 +684,25 @@ ARQUETIPOS = {
 NOMBRES_ARQUETIPOS = list(ARQUETIPOS)
 
 
+# --- Franja reservada para texto -------------------------------------------------
+FRANJA_Y = (56, 144)  # franja central, 88 px de alto
+FRANJA_ANCHO = 500
+FRANJAS_X = ((40, "izquierda"), (450, "centro"), (860, "derecha"))
+MARGEN_FRANJA = 12
+MOTIVO_AMBIENTAL = 700  # un motivo más ancho (estrellas, golondrinas, río…) no se excluye
+
+
+def elegir_franja(obstaculos, semilla):
+    """Primera franja horizontal (izquierda, centro o derecha; el orden rota con la semilla)
+    que no toca ningún obstáculo (x0, x1). None si no cabe."""
+    giro = semilla % len(FRANJAS_X)
+    for x0, _ in FRANJAS_X[giro:] + FRANJAS_X[:giro]:
+        x1 = x0 + FRANJA_ANCHO
+        if all(o1 < x0 - MARGEN_FRANJA or o0 > x1 + MARGEN_FRANJA for o0, o1 in obstaculos):
+            return (x0, FRANJA_Y[0], x1, FRANJA_Y[1])
+    return None
+
+
 def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas", ocultar_motivo=False):
     rng = random.Random(semilla)
     rng.nivel = rng.uniform(-0.16, 0.16)  # desplaza todo el horizonte: cambia la silueta global
@@ -695,9 +716,11 @@ def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas", ocult
         esc.degradado(p["cielo_alto"], p["cielo_bajo"])
 
     if motivo == "luna":
-        esc.circulo(rng.uniform(0.2, 0.35) * ANCHO, rng.uniform(0.2, 0.3) * ALTO, 34, p["sol"])
+        cx, cy, r = rng.uniform(0.2, 0.35) * ANCHO, rng.uniform(0.2, 0.3) * ALTO, 34
     else:
-        esc.circulo(rng.uniform(0.3, 0.7) * ANCHO, rng.uniform(0.3, 0.45) * ALTO, rng.uniform(14, 20), p["sol"])
+        cx, cy, r = rng.uniform(0.3, 0.7) * ANCHO, rng.uniform(0.3, 0.45) * ALTO, rng.uniform(14, 20)
+    esc.circulo(cx, cy, r, p["sol"])
+    obstaculos = [(cx - r, cx + r)]
 
     suelos = []
     entre_capas = (lambda altura: suelos.append(altura)) if motivo in FRENTE else (
@@ -705,6 +728,11 @@ def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas", ocult
     ARQUETIPOS[arquetipo](esc, rng, p, entre_capas)
     if motivo in FRENTE:
         _poner_motivo(esc, rng, p, suelos[0], motivo)
+    bbox = getattr(rng, "bbox_motivo", None)
+    esc.bbox_motivo = bbox
+    if bbox and bbox[2] - bbox[0] <= MOTIVO_AMBIENTAL:
+        obstaculos.append((bbox[0], bbox[2]))
+    esc.franja = elegir_franja(obstaculos, semilla)
     return esc
 
 

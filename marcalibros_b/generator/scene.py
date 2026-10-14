@@ -15,6 +15,8 @@ class Escena:
     semilla: int
     primitivas: list = field(default_factory=list)
     grano: float = 0.0  # solo lo aplica el renderer raster (variantes JPG)
+    franja: tuple = None  # (x0, y0, x1, y1) reservada para texto, o None si no cupo
+    bbox_motivo: tuple = None  # (x0, y0, x1, y1) del motivo dibujado, si lo hay
 
     def degradado(self, arriba, abajo):
         self.primitivas.append({"tipo": "degradado", "arriba": arriba, "abajo": abajo})
@@ -24,3 +26,8 @@ class Escena:
 
     def poligono(self, puntos, color):
         self.primitivas.append({"tipo": "poligono", "puntos": puntos, "color": color})
+
+    def velo(self, x0, y0, x1, y1, color, opacidad, radio=10):
+        """Rectángulo translúcido (se dibuja encima de todo lo anterior)."""
+        self.primitivas.append({"tipo": "velo", "x0": x0, "y0": y0, "x1": x1, "y1": y1,
+                                "color": color, "opacidad": opacidad, "radio": radio})

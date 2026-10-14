@@ -38,17 +38,24 @@ def a_imagen(esc, ancho=ANCHO):
     if base is None:
         raise ValueError("la escena necesita un degradado de fondo")
 
-    lienzo = Image.fromarray(base.astype(np.uint8))
+    lienzo = Image.fromarray(base.astype(np.uint8)).convert("RGBA")
     dibujo = ImageDraw.Draw(lienzo)
     for prim in esc.primitivas:
         tipo = prim["tipo"]
         if tipo == "circulo":
             cx, cy, r = prim["cx"] * ESCALA * f, prim["cy"] * ESCALA * f, prim["r"] * ESCALA * f
             dibujo.ellipse([cx - r, cy - r, cx + r, cy + r], fill=_rgb(prim["color"]))
+        elif tipo == "velo":
+            capa = Image.new("RGBA", lienzo.size, (0, 0, 0, 0))
+            ImageDraw.Draw(capa).rounded_rectangle(
+                [prim["x0"] * ESCALA * f, prim["y0"] * ESCALA * f, prim["x1"] * ESCALA * f, prim["y1"] * ESCALA * f],
+                radius=prim["radio"] * ESCALA * f, fill=_rgb(prim["color"]) + (round(255 * prim["opacidad"]),))
+            lienzo = Image.alpha_composite(lienzo, capa)
+            dibujo = ImageDraw.Draw(lienzo)
         elif tipo == "poligono":
             dibujo.polygon([(x * ESCALA * f, y * ESCALA * f) for x, y in prim["puntos"]], fill=_rgb(prim["color"]))
 
-    img = lienzo.resize((round(ANCHO * f), round(ALTO * f)), Image.Resampling.LANCZOS)
+    img = lienzo.convert("RGB").resize((round(ANCHO * f), round(ALTO * f)), Image.Resampling.LANCZOS)
 
     if esc.grano and ancho == ANCHO:
         rng = np.random.default_rng(esc.semilla)
