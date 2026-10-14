@@ -171,6 +171,61 @@ test('video_resolutions.csv: the aspect ratio agrees with the pixel counts', () 
     });
 });
 
+// Screens: the numbers of one row have to agree with each other. The size in inches is the
+// physical size of the screen for monitors and of the whole device (its body) for phones,
+// tablets and e-readers; resolutions follow the orientation each maker lists.
+const deviceRows = (name) => parseCSV(read(`devices/${name}.csv`)).filter(row =>
+    ['screen_size_inches', 'resolution_width', 'resolution_height', 'ppi'].every(column => typeof row[column] === 'number'));
+const deviceName = (row) => row.device_name ?? row.monitor_type;
+
+test('devices: ppi agrees with the resolution and the screen size', () => {
+    for (const file of ['smartphones', 'tablets', 'ereaders', 'monitors']) {
+        const rows = deviceRows(file);
+        assert.ok(rows.length > 10, `${file}.csv has only ${rows.length} rows with numbers`);
+        rows.forEach(row => {
+            const computed = Math.hypot(row.resolution_width, row.resolution_height) / row.screen_size_inches;
+            assert.ok(Math.abs(computed - row.ppi) / row.ppi <= 0.015,
+                `${file}.csv "${deviceName(row)}": says ${row.ppi} ppi, ${row.resolution_width}×${row.resolution_height} px on ` +
+                `${row.screen_size_inches}" is ${computed.toFixed(0)}`);
+        });
+    }
+});
+
+test('devices: the aspect ratio agrees with the resolution', () => {
+    for (const file of ['smartphones', 'tablets', 'ereaders', 'monitors']) {
+        deviceRows(file).forEach(row => {
+            const [a, b] = String(row.aspect_ratio).split(':').map(Number);
+            const label = Math.max(a / b, b / a);
+            const pixels = Math.max(row.resolution_width, row.resolution_height) / Math.min(row.resolution_width, row.resolution_height);
+            assert.ok(Math.abs(label - pixels) / pixels <= 0.04,
+                `${file}.csv "${deviceName(row)}": says ${row.aspect_ratio} (${label.toFixed(2)}), ` +
+                `${row.resolution_width}×${row.resolution_height} px is ${pixels.toFixed(2)}`);
+        });
+    }
+});
+
+test('devices: a phone, tablet or e-reader is bigger than its screen and lies like its resolution', () => {
+    for (const file of ['smartphones', 'tablets', 'ereaders']) {
+        deviceRows(file).forEach(row => {
+            const diagonal = Math.hypot(row.width_inches, row.height_inches);
+            assert.ok(diagonal >= row.screen_size_inches,
+                `${file}.csv "${row.device_name}": ${row.width_inches}×${row.height_inches}" is ${diagonal.toFixed(1)}" corner to corner, ` +
+                `smaller than its ${row.screen_size_inches}" screen`);
+            assert.equal(row.width_inches < row.height_inches, row.resolution_width < row.resolution_height,
+                `${file}.csv "${row.device_name}": the size and the resolution are listed in different orientations`);
+        });
+    }
+});
+
+test('monitors: width and height are those of the screen', () => {
+    deviceRows('monitors').forEach(row => {
+        const diagonal = Math.hypot(row.width_inches, row.height_inches);
+        assert.ok(Math.abs(diagonal - row.screen_size_inches) / row.screen_size_inches <= 0.015,
+            `monitors.csv "${row.monitor_type}": ${row.width_inches}×${row.height_inches}" is ${diagonal.toFixed(1)}", ` +
+            `not ${row.screen_size_inches}"`);
+    });
+});
+
 test('format catalogs have positive numeric dimensions', () => {
     for (const file of csvFiles) {
         const rows = parseCSV(read(file));

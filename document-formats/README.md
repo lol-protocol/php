@@ -63,11 +63,19 @@ PRs — it's a deliberate choice, not an oversight, so please keep it this way.
 | File | Rows | Contents |
 |---|---|---|
 | `monitors.csv` | 19 | Size, physical width/height, resolution and PPI |
-| `smartphones.csv` | 20 | Screen size, resolution, PPI, panel type |
+| `smartphones.csv` | 20 | Screen size, size of the device, resolution, PPI, panel type |
 | `tablets.csv` | 20 | Same columns as smartphones |
-| `ereaders.csv` | 20 | Same columns plus manufacturer and refresh rate |
+| `ereaders.csv` | 18 | Same columns plus manufacturer and refresh rate (a nominal value, not measured) |
 | `pixel_density_guide.csv` | 23 | Recommended PPI and viewing distance per device and use |
 | `video_resolutions.csv` | 24 | QVGA to 8K, DCI 4K, ultrawide, with bitrate recommendations |
+
+In the phone, tablet and e-reader files `width_inches` and `height_inches` are
+the size of the whole device (its body; for a foldable, unfolded), in the same
+orientation as the resolution. In `monitors.csv` they are the size of the
+screen itself. The figures follow the makers' published specifications (some
+come from retailer spec sheets); `release_year` and `refresh_hz` were not
+re-checked. The tests check that `ppi`, `aspect_ratio` and the sizes agree
+with the resolution and the screen size.
 
 ### `specs/`
 
