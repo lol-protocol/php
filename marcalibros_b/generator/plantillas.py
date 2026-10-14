@@ -95,7 +95,7 @@ def _colina(rng, base, amp):
         "base": (base + rng.nivel) * ALTO,
         "amp": amp,
         "fase": rng.uniform(0, 2 * math.pi),
-        "frec": rng.uniform(1.5, 3.0),
+        "frec": rng.uniform(0.8, 1.6),
     }
 
 
@@ -103,17 +103,17 @@ def _altura(c, x):
     t = 2 * math.pi * x / ANCHO
     return (c["base"]
             + c["amp"] * math.sin(c["frec"] * t + c["fase"])
-            + 0.5 * c["amp"] * math.sin(3.7 * c["frec"] * t))
+            + 0.4 * c["amp"] * math.sin(2.3 * c["frec"] * t))
 
 
 def _puntos_colina(c):
-    puntos = [(x, round(_altura(c, x), 1)) for x in range(0, ANCHO + 1, 14)]
+    puntos = [(x, round(_altura(c, x), 1)) for x in range(0, ANCHO + 1, 5)]
     return puntos + [(ANCHO, ALTO), (0, ALTO)]
 
 
 def _torre(esc, rng, p, lejos):
     """Campanario de iglesia con cuerpo, campanario escalonado y chapitel."""
-    x = rng.uniform(0.62, 0.86) * ANCHO
+    x = rng.uniform(0.25, 0.75) * ANCHO
     y = lejos(x)
     esc.poligono([
         (x - 9, y), (x - 9, y - 50), (x - 12, y - 50), (x - 12, y - 64),
@@ -125,18 +125,18 @@ def _torre(esc, rng, p, lejos):
 
 def _golondrinas(esc, rng, p, lejos):
     """Tres a cinco golondrinas en el cielo, guiño a las Rimas."""
-    for _ in range(rng.randint(3, 5)):
-        x = rng.uniform(0.1, 0.9) * ANCHO
-        y = rng.uniform(0.12, 0.38) * ALTO
-        s = rng.uniform(10, 16)
+    for _ in range(rng.randint(4, 7)):
+        x = rng.uniform(0.15, 0.85) * ANCHO
+        y = rng.uniform(0.12, 0.45) * ALTO
+        s = rng.uniform(14, 22)
         esc.poligono([(x - s, y - s * 0.45), (x, y), (x + s, y - s * 0.45), (x, y - s * 0.25)], p["figura"])
 
 
 def _rio(esc, rng, p, lejos):
     """Banda de orilla de río en la base, con borde ondulado y grosor fijo."""
     fase = rng.uniform(0, 2 * math.pi)
-    arriba = [(x, round(0.93 * ALTO + 2.5 * math.sin(x / 30 + fase), 1)) for x in range(0, ANCHO + 1, 35)]
-    abajo = [(x, round(y + 7, 1)) for x, y in reversed(arriba)]
+    arriba = [(x, round(0.93 * ALTO + 5 * math.sin(x / 20 + fase), 1)) for x in range(0, ANCHO + 1, 20)]
+    abajo = [(x, round(y + 14, 1)) for x, y in reversed(arriba)]
     esc.poligono(arriba + abajo, p["lejos"])
 
 
@@ -145,7 +145,7 @@ MOTIVOS = {"torre": _torre, "golondrinas": _golondrinas, "rio": _rio}
 
 def _cuervo(esc, rng, p, altura):
     """Cuervo grande en el cielo, con las alas abiertas."""
-    x, y, s = rng.uniform(0.2, 0.8) * ANCHO, rng.uniform(0.2, 0.4) * ALTO, rng.uniform(26, 34)
+    x, y, s = rng.uniform(0.2, 0.8) * ANCHO, rng.uniform(0.10, 0.24) * ALTO, rng.uniform(26, 34)
     esc.poligono([(x - s, y - s * 0.55), (x - s * 0.4, y - s * 0.2), (x - s * 0.15, y - s * 0.5),
                   (x, y - s * 0.05), (x + s * 0.15, y - s * 0.5), (x + s * 0.4, y - s * 0.2),
                   (x + s, y - s * 0.55), (x + s * 0.55, y + s * 0.1), (x + s * 0.12, y + s * 0.18),
@@ -227,9 +227,9 @@ def _cruz(esc, rng, p, altura):
 
 def _estrellas(esc, rng, p, altura):
     """Estrellas dispersas por el cielo."""
-    for _ in range(rng.randint(14, 24)):
-        esc.circulo(round(rng.uniform(0.02, 0.98) * ANCHO, 1), round(rng.uniform(0.05, 0.5) * ALTO, 1),
-                    round(rng.uniform(0.9, 2.1), 1), p["sol"])
+    for _ in range(rng.randint(30, 46)):
+        esc.circulo(round(rng.uniform(0.04, 0.96) * ANCHO, 1), round(rng.uniform(0.04, 0.55) * ALTO, 1),
+                    round(rng.uniform(1.2, 2.8), 1), p["sol"])
 
 
 MOTIVOS.update({
@@ -360,7 +360,7 @@ def _gato(esc, rng, p, altura):
 
 def _corazon(esc, rng, p, altura):
     """Corazón grande en el cielo."""
-    x, y, s = rng.uniform(0.2, 0.8) * ANCHO, rng.uniform(0.28, 0.4) * ALTO, 16
+    x, y, s = rng.uniform(0.2, 0.8) * ANCHO, rng.uniform(0.12, 0.24) * ALTO, 16
     esc.circulo(x - s * 0.5, y - s * 0.35, s * 0.6, p["sol"])
     esc.circulo(x + s * 0.5, y - s * 0.35, s * 0.6, p["sol"])
     esc.poligono([(x - s * 1.06, y - s * 0.1), (x, y + s * 1.2), (x + s * 1.06, y - s * 0.1)], p["sol"])
@@ -385,9 +385,9 @@ def _ataud(esc, rng, p, altura):
 
 def _lapidas(esc, rng, p, altura):
     """Hilera de lápidas de cabeza redondeada."""
-    x0 = rng.uniform(0.1, 0.7) * ANCHO
-    for k in range(rng.randint(5, 7)):
-        x, w, h = x0 + k * rng.uniform(22, 30), rng.uniform(10, 14), rng.uniform(14, 28)
+    x0 = rng.uniform(10, 40)
+    for k in range(rng.randint(4, 5)):
+        x, w, h = x0 + k * rng.uniform(22, 30), rng.uniform(12, 16), rng.uniform(16, 30)
         y = _suelo(altura, x)
         esc.poligono([(x - w / 2, y), (x - w / 2, y - h + 4), (x - w / 4, y - h), (x + w / 4, y - h),
                       (x + w / 2, y - h + 4), (x + w / 2, y)], p["figura"])
@@ -403,41 +403,40 @@ def _vela(esc, rng, p, altura):
 
 
 def _olas(esc, rng, p, altura):
-    """Crestas de ola rizadas en la parte baja (solo en escenas marina)."""
-    x = rng.uniform(0, 0.15) * ANCHO
-    while x < ANCHO:
-        y = rng.uniform(0.8, 0.92) * ALTO
-        w = rng.uniform(46, 80)
+    """Crestas de ola rizadas apiladas en el mar (solo en escenas marina)."""
+    y = rng.linea + rng.uniform(60, 110)
+    while y < ALTO - 30:
+        w = rng.uniform(60, 110)
+        x = rng.uniform(4, ANCHO - w - 4)
         esc.poligono([(x, y), (x + w * 0.35, y - 16), (x + w * 0.62, y - 22), (x + w * 0.8, y - 14),
                       (x + w * 0.68, y - 15), (x + w * 0.52, y - 9), (x + w * 0.3, y - 2)], p["sol"])
-        x += w + rng.uniform(30, 90)
+        y += rng.uniform(70, 120)
 
 
 def _nube(esc, rng, p, altura):
     """Nube de bordes redondeados."""
-    x, y = rng.uniform(0.15, 0.85) * ANCHO, rng.uniform(0.2, 0.32) * ALTO
+    x, y = rng.uniform(0.15, 0.85) * ANCHO, rng.uniform(0.10, 0.24) * ALTO
     for dx, dy, r in ((-26, 4, 12), (-10, -6, 16), (10, -4, 18), (28, 4, 13), (0, 6, 14)):
         esc.circulo(round(x + dx, 1), round(y + dy, 1), r, p["sol"])
     esc.poligono([(x - 36, y + 12), (x - 36, y + 18), (x + 40, y + 18), (x + 40, y + 12)], p["sol"])
 
 
 def _narcisos(esc, rng, p, altura):
-    """Narcisos agrupados al pie del paisaje."""
-    x0 = rng.uniform(0.05, 0.7) * ANCHO
-    for _ in range(rng.randint(9, 14)):
-        x = x0 + rng.uniform(0, 260)
-        y, h = ALTO - 1, rng.uniform(22, 40)
-        esc.poligono([(x - 0.9, y), (x - 0.9, y - h), (x + 0.9, y - h), (x + 0.9, y)], p["figura"])
+    """Narcisos al pie del paisaje."""
+    for _ in range(rng.randint(5, 8)):
+        x = rng.uniform(12, ANCHO - 12)
+        y, h = ALTO - 1, rng.uniform(40, 80)
+        esc.poligono([(x - 1.2, y), (x - 1.2, y - h), (x + 1.2, y - h), (x + 1.2, y)], p["figura"])
         for k in range(6):
             a = 2 * math.pi * k / 6
-            esc.circulo(round(x + 5 * math.cos(a), 1), round(y - h + 5 * math.sin(a), 1), 3.6, p["sol"])
-        esc.circulo(x, y - h, 3, p["figura"])
+            esc.circulo(round(x + 6.5 * math.cos(a), 1), round(y - h + 6.5 * math.sin(a), 1), 4.6, p["sol"])
+        esc.circulo(x, y - h, 3.8, p["figura"])
 
 
 def _hojas(esc, rng, p, altura):
     """Hojas que caen."""
-    for _ in range(rng.randint(16, 24)):
-        x, y, s = rng.uniform(0.02, 0.98) * ANCHO, rng.uniform(0.05, 0.8) * ALTO, rng.uniform(4, 7)
+    for _ in range(rng.randint(26, 38)):
+        x, y, s = rng.uniform(0.04, 0.96) * ANCHO, rng.uniform(0.05, 0.85) * ALTO, rng.uniform(5, 9)
         a = rng.uniform(0, math.pi)
         c, sn = math.cos(a), math.sin(a)
         esc.poligono([(round(x + c * s * 1.4, 1), round(y + sn * s * 1.4, 1)),
@@ -448,11 +447,11 @@ def _hojas(esc, rng, p, altura):
 
 def _serpiente(esc, rng, p, altura):
     """Serpiente ondulante sobre el suelo."""
-    x0 = rng.uniform(0.1, 0.7) * ANCHO
+    x0 = rng.uniform(12, 70)
     base = _suelo(altura, x0) - 4
     arriba, abajo = [], []
     for k in range(0, 41):
-        x = x0 + k * 3.5
+        x = x0 + k * 2.2
         y = base - 9 * math.sin(k / 3.2) - (7 if k > 36 else 0) * (k - 36) / 4
         g = 4.2 * (1 - k / 48) + 0.8
         arriba.append((round(x, 1), round(y - g, 1)))
@@ -472,7 +471,7 @@ def _espada(esc, rng, p, altura):
 
 def _corona(esc, rng, p, altura):
     """Corona de cinco puntas en el cielo."""
-    x, y = rng.uniform(0.2, 0.8) * ANCHO, rng.uniform(0.3, 0.42) * ALTO
+    x, y = rng.uniform(0.2, 0.8) * ANCHO, rng.uniform(0.12, 0.24) * ALTO
     esc.poligono([(x - 24, y + 14), (x - 28, y - 14), (x - 14, y - 2), (x - 7, y - 20), (x, y - 4), (x + 7, y - 20),
                   (x + 14, y - 2), (x + 28, y - 14), (x + 24, y + 14)], p["sol"])
 
@@ -543,7 +542,7 @@ ESCALAS = {
     "estatua": (1.6, "suelo"), "ruinas": (1.5, "suelo"), "cruz": (1.7, "suelo"), "cipres": (1.3, "suelo"),
     "arbol": (1.6, "suelo"), "barricada": (1.5, "suelo"), "velero": (1.6, "suelo"), "barca": (1.8, "suelo"),
     "nube": (1.4, "centro"), "cuervo": (1.5, "centro"), "corazon": (1.6, "centro"), "corona": (1.6, "centro"),
-    "rayo": (1.3, "arriba"), "narcisos": (1.4, "suelo"),
+    "rayo": (1.3, "arriba"),
 }
 # Se dibujan por delante de todas las capas (los demás, entre la lejana y la cercana,
 # de modo que la capa cercana tape su base y queden apoyados en el suelo).
@@ -574,6 +573,27 @@ def _escalar(prims, k, ancla):
             q["r"] = round(q["r"] * k, 1)
 
 
+# Motivos repartidos por todo el lienzo: ni se escalan ni se ajustan al ancho.
+AMBIENTALES = {"estrellas", "golondrinas", "hojas", "olas", "rio", "narcisos"}
+MARGEN_LATERAL = 8
+
+
+def _encajar_en_ancho(prims, ancla):
+    """Si el motivo no cabe en el ancho (200 px) se reduce; después se desplaza para que no se corte."""
+    x0, _, x1, _ = _limites(prims)
+    maximo = ANCHO - 2 * MARGEN_LATERAL
+    if x1 - x0 > maximo:
+        _escalar(prims, maximo / (x1 - x0), ancla)
+        x0, _, x1, _ = _limites(prims)
+    dx = MARGEN_LATERAL - x0 if x0 < MARGEN_LATERAL else (ANCHO - MARGEN_LATERAL - x1 if x1 > ANCHO - MARGEN_LATERAL else 0)
+    if dx:
+        for q in prims:
+            if q["tipo"] == "poligono":
+                q["puntos"] = [(round(x + dx, 1), y) for x, y in q["puntos"]]
+            elif q["tipo"] == "circulo":
+                q["cx"] = round(q["cx"] + dx, 1)
+
+
 def _poner_motivo(esc, rng, p, altura, nombre):
     if nombre not in MOTIVOS:
         return
@@ -582,10 +602,13 @@ def _poner_motivo(esc, rng, p, altura, nombre):
     if getattr(rng, "ocultar", False):
         del esc.primitivas[antes:]  # el motivo consume el azar igual, pero no se dibuja
         return
-    if nombre in ESCALAS and len(esc.primitivas) > antes:
-        _escalar(esc.primitivas[antes:], *ESCALAS[nombre])
-    if len(esc.primitivas) > antes:
-        rng.bbox_motivo = _limites(esc.primitivas[antes:])
+    prims = esc.primitivas[antes:]
+    if prims and nombre not in AMBIENTALES:
+        if nombre in ESCALAS:
+            _escalar(prims, *ESCALAS[nombre])
+        _encajar_en_ancho(prims, ESCALAS.get(nombre, (1, "suelo"))[1])
+    if prims:
+        rng.bbox_motivo = _limites(prims)
 
 
 # --- Arquetipos de composición -------------------------------------------------
@@ -594,8 +617,8 @@ def _poner_motivo(esc, rng, p, altura, nombre):
 # en montañas la cordillera cercana, para que no quede sobre una cima.
 
 def _arq_colinas(esc, rng, p, colocar):
-    lejos = _colina(rng, 0.66, 14)
-    cerca = _colina(rng, 0.80, 18)
+    lejos = _colina(rng, 0.76, 34)
+    cerca = _colina(rng, 0.86, 40)
     esc.poligono(_puntos_colina(lejos), p["lejos"])
     altura = lambda x: _altura(lejos, x)
     colocar(altura)
@@ -622,29 +645,29 @@ def _interp(puntos, x):
 
 
 def _arq_montanas(esc, rng, p, colocar):
-    lejos = _picos(rng, 0.78 * ALTO, 40, 95, 90, 190)
-    cerca = _picos(rng, 0.92 * ALTO, 14, 40, 60, 140)
+    lejos = _picos(rng, 0.82 * ALTO, 110, 260, 50, 100)
+    cerca = _picos(rng, 0.93 * ALTO, 40, 110, 40, 80)
     esc.poligono(lejos + [(lejos[-1][0], ALTO), (0, ALTO)], p["lejos"])
     colocar(lambda x: _interp(cerca, x))
     esc.poligono(cerca + [(cerca[-1][0], ALTO), (0, ALTO)], p["cerca"])
 
 
 def _arq_llanura(esc, rng, p, colocar):
-    lejos = _colina(rng, 0.74, 3)
-    cerca = _colina(rng, 0.90, 5)
+    lejos = _colina(rng, 0.80, 8)
+    cerca = _colina(rng, 0.92, 12)
     esc.poligono(_puntos_colina(lejos), p["lejos"])
     # línea de álamos en el horizonte
-    for _ in range(rng.randint(5, 9)):
-        x = rng.uniform(0.04, 0.96) * ANCHO
-        y, h = _altura(lejos, x), rng.uniform(16, 30)
-        esc.poligono([(x - 3, y), (x - 4, y - h * 0.5), (x, y - h), (x + 4, y - h * 0.5), (x + 3, y)], p["cerca"])
+    for _ in range(rng.randint(3, 5)):
+        x = rng.uniform(0.1, 0.9) * ANCHO
+        y, h = _altura(lejos, x), rng.uniform(46, 86)
+        esc.poligono([(x - 5, y), (x - 7, y - h * 0.5), (x, y - h), (x + 7, y - h * 0.5), (x + 5, y)], p["cerca"])
     colocar(lambda x: _altura(lejos, x))
     esc.poligono(_puntos_colina(cerca), p["cerca"])
 
 
 def _arq_marina(esc, rng, p, colocar):
-    cabo = _colina(rng, 0.54, 7)
-    linea = (0.62 + rng.nivel) * ALTO
+    cabo = _colina(rng, 0.72, 20)
+    linea = (0.79 + rng.nivel * 0.5) * ALTO
     rng.linea = linea
     esc.poligono([(0, linea), (ANCHO, linea), (ANCHO, ALTO), (0, ALTO)], p["lejos"])
     colocar(lambda x: _altura(cabo, x))
@@ -652,24 +675,24 @@ def _arq_marina(esc, rng, p, colocar):
     # reflejo del sol en el agua: rayas de largo decreciente
     cx = rng.uniform(0.3, 0.7) * ANCHO
     for k in range(5):
-        y = linea + (0.06 + 0.055 * k) * ALTO
-        w = 70 - 10 * k
-        esc.poligono([(cx - w, y), (cx + w, y), (cx + w, y + 3), (cx - w, y + 3)], p["sol"])
+        y = linea + 50 + 52 * k
+        w = 56 - 9 * k
+        esc.poligono([(cx - w, y), (cx + w, y), (cx + w, y + 4), (cx - w, y + 4)], p["sol"])
 
 
 def _arq_bosque(esc, rng, p, colocar):
-    lejos = _colina(rng, 0.70, 12)
+    lejos = _colina(rng, 0.78, 26)
     esc.poligono(_puntos_colina(lejos), p["lejos"])
-    base = (0.93 + rng.nivel / 2) * ALTO
+    base = (0.94 + rng.nivel / 4) * ALTO
     # El motivo se apoya al pie del bosque: los árboles de delante tapan su base.
-    colocar(lambda x: base - 26)
-    x = -10.0
+    colocar(lambda x: base - 60)
+    x = -12.0
     puntos = [(0, ALTO)]
-    while x < ANCHO + 10:
-        h = rng.uniform(32, 74)
-        a = rng.uniform(9, 16)
+    while x < ANCHO + 12:
+        h = rng.uniform(80, 190)
+        a = rng.uniform(13, 24)
         puntos += [(x - a, base), (x, base - h), (x + a, base)]
-        x += rng.uniform(14, 30)
+        x += rng.uniform(22, 40)
     puntos.append((ANCHO, ALTO))
     esc.poligono(puntos, p["cerca"])
 
@@ -685,27 +708,26 @@ NOMBRES_ARQUETIPOS = list(ARQUETIPOS)
 
 
 # --- Franja reservada para texto -------------------------------------------------
-FRANJA_Y = (56, 144)  # franja central, 88 px de alto
-FRANJA_ANCHO = 500
-FRANJAS_X = ((40, "izquierda"), (450, "centro"), (860, "derecha"))
-MARGEN_FRANJA = 12
-MOTIVO_AMBIENTAL = 700  # un motivo más ancho (estrellas, golondrinas, río…) no se excluye
+FRANJA_X = (16, ANCHO - 16)  # 168 px de ancho
+FRANJA_ALTO = 420
+FRANJAS_Y = ((440, "medio"), (110, "arriba"), (700, "abajo"))  # orden de preferencia
+MARGEN_FRANJA = 20
 
 
-def elegir_franja(obstaculos, semilla):
-    """Primera franja horizontal (izquierda, centro o derecha; el orden rota con la semilla)
-    que no toca ningún obstáculo (x0, x1). None si no cabe."""
-    giro = semilla % len(FRANJAS_X)
-    for x0, _ in FRANJAS_X[giro:] + FRANJAS_X[:giro]:
-        x1 = x0 + FRANJA_ANCHO
-        if all(o1 < x0 - MARGEN_FRANJA or o0 > x1 + MARGEN_FRANJA for o0, o1 in obstaculos):
-            return (x0, FRANJA_Y[0], x1, FRANJA_Y[1])
+def elegir_franja(obstaculos):
+    """Primera franja vertical, por orden de preferencia, que no toca ningún obstáculo
+    (y0, y1). Casi siempre es la central: el cielo y los motivos de cielo quedan arriba y
+    los de suelo abajo. None si no cabe."""
+    for y0, _ in FRANJAS_Y:
+        y1 = y0 + FRANJA_ALTO
+        if all(o1 < y0 - MARGEN_FRANJA or o0 > y1 + MARGEN_FRANJA for o0, o1 in obstaculos):
+            return (FRANJA_X[0], y0, FRANJA_X[1], y1)
     return None
 
 
 def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas", ocultar_motivo=False):
     rng = random.Random(semilla)
-    rng.nivel = rng.uniform(-0.16, 0.16)  # desplaza todo el horizonte: cambia la silueta global
+    rng.nivel = rng.uniform(-0.07, 0.07)  # desplaza todo el horizonte: cambia la silueta global
     rng.ocultar = ocultar_motivo
     p = paleta_legible(paleta)
     esc = Escena(semilla=semilla, grano=grano)
@@ -716,11 +738,11 @@ def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas", ocult
         esc.degradado(p["cielo_alto"], p["cielo_bajo"])
 
     if motivo == "luna":
-        cx, cy, r = rng.uniform(0.2, 0.35) * ANCHO, rng.uniform(0.2, 0.3) * ALTO, 34
+        cx, cy, r = rng.uniform(0.3, 0.6) * ANCHO, rng.uniform(0.10, 0.22) * ALTO, 46
     else:
-        cx, cy, r = rng.uniform(0.3, 0.7) * ANCHO, rng.uniform(0.3, 0.45) * ALTO, rng.uniform(14, 20)
+        cx, cy, r = rng.uniform(0.3, 0.7) * ANCHO, rng.uniform(0.08, 0.24) * ALTO, rng.uniform(20, 30)
     esc.circulo(cx, cy, r, p["sol"])
-    obstaculos = [(cx - r, cx + r)]
+    obstaculos = [(cy - r, cy + r)]
 
     suelos = []
     entre_capas = (lambda altura: suelos.append(altura)) if motivo in FRENTE else (
@@ -730,9 +752,9 @@ def _romanticismo(semilla, paleta, motivo, grano=0.0, arquetipo="colinas", ocult
         _poner_motivo(esc, rng, p, suelos[0], motivo)
     bbox = getattr(rng, "bbox_motivo", None)
     esc.bbox_motivo = bbox
-    if bbox and bbox[2] - bbox[0] <= MOTIVO_AMBIENTAL:
-        obstaculos.append((bbox[0], bbox[2]))
-    esc.franja = elegir_franja(obstaculos, semilla)
+    if bbox and motivo not in AMBIENTALES:
+        obstaculos.append((bbox[1], bbox[3]))
+    esc.franja = elegir_franja(obstaculos)
     return esc
 
 

@@ -25,14 +25,14 @@ import yaml
 from PIL import Image
 
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
-from qa import (contraste_texto, ANCHO_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_DUPLICADO, hoja_de_contacto,
+from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_DUPLICADO, hoja_de_contacto,
                 hoja_de_miniaturas, huella_visual, mejor_texto, parecido_a, pixeles_de_motivo, validar_jpg,
                 validar_svg, validar_taxonomia)
 from render_raster import a_imagen
 from render_svg import a_svg
 from scene import ALTO, ANCHO
 
-VERSION_GENERADOR = "0.7.0"
+VERSION_GENERADOR = "0.8.0"
 MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
@@ -184,9 +184,9 @@ def imagen_para_revision(entrada, esc, ruta):
 
 def _recorte_franja(esc, margen=10):
     """Miniatura de la franja de texto, sin las esquinas redondeadas del velo."""
-    f = ANCHO_MINIATURA / ANCHO
+    f = ESCALA_MINIATURA
     x0, y0, x1, y1 = esc.franja
-    return a_imagen(esc, ANCHO_MINIATURA).crop(
+    return a_imagen(esc, ESCALA_MINIATURA).crop(
         (round((x0 + margen) * f), round((y0 + margen) * f), round((x1 - margen) * f), round((y1 - margen) * f)))
 
 
@@ -228,7 +228,7 @@ def elegir_pieza(config, mov, autor, v, animos, previas):
             continue
         if entrada["motivo"] not in SIN_COMPROBAR_VISIBILIDAD:
             _, sin = construir(config, mov, autor, v, intento, animos, ocultar_motivo=True)
-            px = pixeles_de_motivo(a_imagen(esc, ANCHO_MINIATURA), a_imagen(sin, ANCHO_MINIATURA))
+            px = pixeles_de_motivo(a_imagen(esc, ESCALA_MINIATURA), a_imagen(sin, ESCALA_MINIATURA))
             if px < MIN_PIXELES_MOTIVO:
                 problema = f"el motivo '{entrada['motivo']}' casi no se ve en miniatura ({px} px)"
                 continue
@@ -241,6 +241,20 @@ def elegir_pieza(config, mov, autor, v, animos, previas):
         entrada["texto_recomendado"], entrada["contraste_texto"], entrada["velo"] = texto, round(ratio, 1), velo
         return entrada, esc, h, intento, None
     return entrada, esc, h, intento, problema
+
+
+def copiar_muestras(generados, rutas, por_movimiento=3):
+    """Copia unas pocas piezas (las primeras del primer autor de cada movimiento) a
+    catalog/muestras/, que sí se versiona: el catálogo completo va como artefacto de CI."""
+    for mov_id in sorted({e["movimiento"] for e in generados}):
+        destino = CATALOGO / "muestras" / mov_id
+        destino.mkdir(parents=True, exist_ok=True)
+        for viejo in destino.glob("*"):
+            viejo.unlink()
+        propias = [e for e in generados if e["movimiento"] == mov_id]
+        primero = propias[0]["autor_id"]
+        for e in [x for x in propias if x["autor_id"] == primero][:por_movimiento]:
+            shutil.copy2(rutas[e["id"]], destino / rutas[e["id"]].name)
 
 
 def main():
@@ -278,7 +292,7 @@ def main():
             avisos_texto.append(f"{entrada['id']}: franja a {entrada['contraste_texto']}:1 incluso con velo {entrada['velo']}")
         if entrada["velo"]:
             con_velo.append(entrada["id"])
-        mini = a_imagen(esc, ANCHO_MINIATURA)
+        mini = a_imagen(esc, ESCALA_MINIATURA)
         miniaturas[entrada["id"]] = mini
         huellas[entrada["id"]] = h
         rutas[entrada["id"]] = escribir(entrada, esc)
@@ -322,15 +336,17 @@ def main():
         piezas = []
         for e in grupo:
             img, metodo = imagen_para_revision(e, esc_por_id[e["id"]], rutas[e["id"]])
-            piezas.append((f"{e['id']}  [{e['formato']}]  {e['obra']}", img))
+            piezas.append((f"{e['obra']}  [{e['formato']}]", img))
         hoja = CATALOGO / "revision" / f"hoja-{mov_id}-{autor_id}.jpg"
         hoja_de_contacto(piezas, hoja)
         print(f"  hoja de contacto: {hoja.relative_to(RAIZ)}")
 
+    copiar_muestras(generados, rutas)
+
     # Miniaturas a tamaño de lectura (350×50), una hoja por movimiento
     for mov_id in sorted(rehechos):
         hoja = CATALOGO / "revision" / f"miniaturas-{mov_id}.jpg"
-        hoja_de_miniaturas([(f"{e['id']} · {e['obra']}", miniaturas[e["id"]])
+        hoja_de_miniaturas([(f"{e['autor_id'][:3]}{e['variante']:02d}", miniaturas[e["id"]])
                             for e in generados if e["movimiento"] == mov_id], hoja)
         print(f"  miniaturas: {hoja.relative_to(RAIZ)}")
     print(f"  franja de texto: {len(generados) - len(con_velo)} piezas la leen sin velo, "

@@ -1,4 +1,4 @@
-"""Renderer raster: convierte una Escena en una imagen de 1400×200.
+"""Renderer raster: convierte una Escena en una imagen de 200×1400.
 
 Dibuja al doble de resolución y reduce con LANCZOS para suavizar bordes.
 Las variantes con grano añaden textura de papel, algo que el SVG no hace bien
@@ -25,10 +25,10 @@ def _degradado(arriba, abajo, w, h):
     return np.broadcast_to(fila, (h, w, 3)).copy()
 
 
-def a_imagen(esc, ancho=ANCHO):
-    """Imagen de la escena. Con `ancho` menor que 1400 devuelve una miniatura dibujada
+def a_imagen(esc, escala=1.0):
+    """Imagen de la escena. Con `escala` menor que 1 devuelve una miniatura dibujada
     directamente a esa resolución (mucho más barata que reducir la imagen completa)."""
-    f = ancho / ANCHO
+    f = escala
     w, h = round(ANCHO * ESCALA * f), round(ALTO * ESCALA * f)
     base = None
     for prim in esc.primitivas:
@@ -57,7 +57,7 @@ def a_imagen(esc, ancho=ANCHO):
 
     img = lienzo.convert("RGB").resize((round(ANCHO * f), round(ALTO * f)), Image.Resampling.LANCZOS)
 
-    if esc.grano and ancho == ANCHO:
+    if esc.grano and escala == 1.0:
         rng = np.random.default_rng(esc.semilla)
         arr = np.asarray(img, dtype=float)
         arr += rng.normal(0, esc.grano * 255, (ALTO, ANCHO))[..., None]

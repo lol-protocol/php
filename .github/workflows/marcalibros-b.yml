@@ -1,0 +1,72 @@
+name: Marcalibros (generar catalogo y pruebas)
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master. La rama de trabajo
+# marcalibros_b tambien dispara el flujo para poder revisar el catalogo.
+on:
+  push:
+    branches: [master, marcalibros_b]
+    paths:
+      - "marcalibros_b/**"
+      - ".github/workflows/marcalibros-b.yml"
+  pull_request:
+    paths:
+      - "marcalibros_b/**"
+      - ".github/workflows/marcalibros-b.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  catalogo:
+    name: Generar catalogo completo, pruebas y artefacto
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: marcalibros_b
+    steps:
+      - uses: actions/checkout@v4
+
+      # Version fija: la salida del generador (SVG y hashes de referencia) debe ser
+      # identica en todas las maquinas. Si se sube, se regeneran los hashes.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            marcalibros_b/generator/requirements.txt
+            marcalibros_b/generator/requirements-dev.txt
+
+      - name: Instalar dependencias
+        run: pip install -r generator/requirements.txt -r generator/requirements-dev.txt
+
+      # El QA rasteriza cada SVG con Chromium real; sin el, el build falla a proposito.
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+
+      - name: Generar el catalogo completo
+        env:
+          CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
+        run: python generator/build.py --all
+
+      - name: Pruebas
+        run: python -m pytest -q tests
+
+      # El catalogo completo (SVG, JPG, hojas de revision) no se versiona en git:
+      # se publica aqui, y el manifest y unas pocas muestras si estan versionados.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: marcalibros-catalogo
+          path: |
+            marcalibros_b/catalog/svg
+            marcalibros_b/catalog/jpg
+            marcalibros_b/catalog/revision
+            marcalibros_b/catalog/manifest.json
+          if-no-files-found: error
+          retention-days: 30

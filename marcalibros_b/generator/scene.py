@@ -6,8 +6,8 @@ Así una misma composición puede salir como SVG o como JPG sin divergir.
 """
 from dataclasses import dataclass, field
 
-ANCHO = 1400
-ALTO = 200  # proporción 7:1
+ANCHO = 200
+ALTO = 1400  # proporción 1:7, solo vertical (decisión del plan)
 
 
 @dataclass

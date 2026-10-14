@@ -145,9 +145,32 @@ def test_motivo_no_invade_la_franja_de_texto():
     piezas, _ = _piezas()
     for ident, (entrada, esc) in piezas.items():
         assert esc.franja is not None, ident
-        if esc.bbox_motivo and esc.bbox_motivo[2] - esc.bbox_motivo[0] <= plantillas.MOTIVO_AMBIENTAL:
-            x0, x1 = esc.franja[0], esc.franja[2]
-            assert esc.bbox_motivo[2] < x0 or esc.bbox_motivo[0] > x1, f"{ident}: el motivo pisa la franja"
+        if esc.bbox_motivo and entrada["motivo"] not in plantillas.AMBIENTALES:
+            y0, y1 = esc.franja[1], esc.franja[3]
+            assert esc.bbox_motivo[3] < y0 or esc.bbox_motivo[1] > y1, f"{ident}: el motivo pisa la franja"
+
+
+def test_formato_vertical_1_a_7():
+    from scene import ALTO, ANCHO
+    assert (ANCHO, ALTO) == (200, 1400) and ALTO == 7 * ANCHO
+
+
+def test_motivos_dentro_del_ancho():
+    import plantillas
+    piezas, _ = _piezas()
+    for ident, (entrada, esc) in piezas.items():
+        if esc.bbox_motivo and entrada["motivo"] not in plantillas.AMBIENTALES:
+            assert esc.bbox_motivo[0] >= 0 and esc.bbox_motivo[2] <= 200, f"{ident}: motivo cortado"
+
+
+def test_gutenberg_no_disponible_no_lleva_id():
+    import copy
+    malo = copy.deepcopy(CONFIG)
+    obra = malo["movimientos"][0]["autores"][0]["obras"][0]
+    obra["gutenberg"] = {"id": None, "estado": "no_disponible"}
+    assert validar_taxonomia(malo, MOTIVOS, ANIMOS, ESCENAS, PALETAS) == []
+    obra["gutenberg"] = {"id": 123, "estado": "no_disponible"}
+    assert any("no_disponible" in p for p in validar_taxonomia(malo, MOTIVOS, ANIMOS, ESCENAS, PALETAS))
 
 
 def test_archivos_del_catalogo_validos():

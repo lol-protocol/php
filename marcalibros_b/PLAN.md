@@ -8,7 +8,7 @@ Documento de traspaso: resume lo acordado en la conversación original para pode
 
 ## Decisiones tomadas
 
-- **Proporción 7:1.** Hoy es una tira horizontal de 1400×200 (2800×400 para alta densidad). La orientación horizontal es una suposición: confirmar si el lector necesita también una versión vertical (1:7).
+- **Proporción 1:7, solo vertical (decidido).** 200×1400 px (400×2800 para alta densidad). No habrá versión horizontal. Cada pieza reserva una franja de texto central de 168×420.
 - **1000 marcalibros iniciales** = 10 movimientos literarios × 10 autores × 10 variantes.
 - **Solo 100 en JPG y 900 en SVG.** Regla actual: la variante 01 de cada autor es JPG, el resto SVG.
 - **Generación automática**, no a mano: un generador determinista (misma entrada, misma salida) lee `catalog/taxonomia.yaml`.
@@ -80,8 +80,8 @@ Verificado:
 - **Anclaje y escala (generador 0.5):** los motivos se dibujan entre la capa lejana y la cercana, de modo que la cercana tapa su base. El suelo es la capa lejana (colinas, llanura, marina), la cordillera cercana (montañas) o el pie del bosque. Cada motivo tiene factor de escala propio (`ESCALAS`, ×1,2 a ×1,8); olas, narcisos, hojas y río van por delante.
 - **Legibilidad (generador 0.6):**
   - *Siluetas:* `paleta_legible` ajusta el color de las siluetas para que lleguen a 3:1 contra el cielo bajo y la capa lejana. En las paletas nocturnas (noche, medianoche, tormenta, tempestad) las siluetas pasan al tono claro. Test: las 12 paletas cumplen.
-  - *Miniatura (350×50):* el QA compara la escena con y sin motivo y exige ≥30 píxeles cambiados; si no, cambia la semilla como con los duplicados. Esto detectó que el río quedaba tapado. `hoja-…` sigue siendo la vista grande y `miniaturas-romanticismo.jpg` la de tamaño real.
-  - *Texto encima (generador 0.7):* cada pieza reserva una **franja de texto** de 500×88 px (izquierda, centro o derecha; la elige el generador según dónde queden el sol y el motivo, que nunca la pisan, salvo motivos ambientales más anchos de 700 px como estrellas o golondrinas). Dentro de la franja se mide el contraste (percentil 10) con texto claro y oscuro; si no llega a 4,5:1, se hornea en la propia pieza un **velo translúcido** solo dentro de la franja (opacidad 0,35–0,8, la más suave que lo logre). Manifest: `franja`, `texto_recomendado`, `contraste_texto`, `velo`. Resultado en Romanticismo: 66 piezas la leen sin velo y 34 con velo.
+  - *Miniatura (50×350):* el QA compara la escena con y sin motivo y exige ≥30 píxeles cambiados (miniatura de 50×350); si no, cambia la semilla como con los duplicados. Esto detectó que el río quedaba tapado. `hoja-…` sigue siendo la vista grande y `miniaturas-romanticismo.jpg` la de tamaño real.
+  - *Texto encima (generador 0.7):* cada pieza reserva una **franja de texto** de 500×88 px (izquierda, centro o derecha; la elige el generador según dónde queden el sol y el motivo, que nunca la pisan, salvo motivos ambientales más anchos de 700 px como estrellas o golondrinas). Dentro de la franja se mide el contraste (percentil 10) con texto claro y oscuro; si no llega a 4,5:1, se hornea en la propia pieza un **velo translúcido** solo dentro de la franja (opacidad 0,35–0,8, la más suave que lo logre). Manifest: `franja`, `texto_recomendado`, `contraste_texto`, `velo`. Resultado en Romanticismo (vertical): 75 piezas la leen sin velo y 25 con velo.
   - Limitación: el velo es un recuadro de bordes redondeados duros; se nota como «caja» en las paletas medias. Mejora posible: bordes difuminados o ajustar el degradado de la propia escena en esa zona.
 - **Variantes claro/oscuro: no hechas.** Falta definir qué son (¿adaptar el marcalibros al tema de la interfaz o recolorearlo?). Lo cubre en parte `texto_recomendado`.
 - Limitaciones: en bosque los árboles tapan parte del motivo (la fuente de *Los ojos verdes*); ~25 obras siguen en «ninguno» o con motivo genérico. Sin ilustrar: motivos para los otros 9 movimientos.
@@ -112,9 +112,14 @@ Verificado:
 4. Editor de marcalibros de usuario (recetas en JSON: plantilla, imagen, recorte, texto).
 5. Línea de marca base.
 
+## Decisiones tomadas en la última ronda
+
+- **Orientación:** solo vertical (200×1400). El generador 0.8 rehízo la composición: cielo en el tercio superior, paisaje en el inferior, franja de texto en el centro. Las piezas horizontales anteriores desaparecen.
+- **Catálogo:** artefacto de CI, no git. `.gitignore` excluye `catalog/svg|jpg|revision`; el workflow `.github/workflows/marcalibros-b.yml` (en la raíz del repo, con la misma convención que los otros) genera el catálogo completo con Python 3.13 y Chromium, ejecuta los tests y sube `marcalibros-catalogo` (30 días). En git quedan manifest y `catalog/muestras/`. **El workflow no se ha podido ejecutar desde esta sesión**: hay que lanzarlo una vez (workflow_dispatch) y vigilar que los hashes de referencia coincidan entre máquinas (el seno y coseno de libm podrían diferir en la última cifra).
+- **Realismo mágico: se mantiene** (es un movimiento real e importante). Gutenberg solo aloja obras de dominio público y los autores previstos (García Márquez, Rulfo, Carpentier, Asturias) están bajo derechos de autor en la mayoría de países, así que sus obras serán `gutenberg.estado: no_disponible` una vez comprobado (estado nuevo; hoy todo es `sin_verificar`). Consecuencia: el lector no podrá sugerir marcalibro automáticamente para esos textos; el usuario lo elegirá a mano. Los nombres se usan solo como metadato: sin citas, portadas ni retratos.
+
 ## Decisiones abiertas
 
-- Orientación: ¿solo horizontal 7:1 o también vertical?
-- ¿Se reemplaza el Realismo mágico por un movimiento con más obras de dominio público?
-- ¿Catálogo completo versionado en git o publicado como artefacto de CI?
 - ¿Qué se hace con el plan original de marca (logo, iconos, estados vacíos, cabeceras)?
+- ¿Qué son las variantes claro/oscuro (adaptar al tema de la interfaz o recolorear)?
+- Autores definitivos de Romanticismo (los 6 tras Poe y Byron son propuesta) y de los otros 9 movimientos (hoy 4 por movimiento sin verificar).

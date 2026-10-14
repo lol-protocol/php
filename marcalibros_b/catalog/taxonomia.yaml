@@ -10,8 +10,8 @@
 # - Regla de formato: la variante 01 de cada autor es JPG; el resto SVG.
 
 version: '0.4'
-ancho: 1400
-alto: 200
+ancho: 200
+alto: 1400
 variante_jpg: 1
 movimientos:
 - id: romanticismo
