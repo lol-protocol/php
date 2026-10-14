@@ -11,6 +11,7 @@ Reglas de formato:
 - El resto son SVG.
 """
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -36,6 +37,8 @@ VERSION_GENERADOR = "0.8.0"
 MAX_INTENTOS = 30  # reintentos de semilla para evitar duplicados visuales
 RAIZ = Path(__file__).resolve().parent.parent
 CATALOGO = RAIZ / "catalog"
+ESCALA_REVISION = 0.4  # tamaño de las vistas guardadas en caché para las hojas de contacto
+RESUMEN = {}  # recuento de la última ejecución (reutilizadas / rehechas), para los tests
 MAX_DIF_CHROMIUM = 3.0  # diferencia media tolerada entre Chromium y el renderer raster
 GRANO_JPG = 0.018  # textura suave: sin grano, la variante JPG se confunde con las SVG
 
@@ -85,8 +88,18 @@ def asignar_combinaciones(mov, animos):
     return resultado
 
 
+_ASIGNACIONES = {}
+
+
 def combinacion(mov, autor, v, animos):
-    return asignar_combinaciones(mov, animos)[(autor["id"], v)]
+    """Par (arquetipo, paleta) de la variante v, con la asignación del movimiento en caché
+    (se recalcula solo si cambian sus obras o los ánimos)."""
+    firma = (mov["id"], tuple((a["id"], tuple((o["id"], o["animo"], o.get("escena")) for o in a.get("obras", [])))
+                              for a in mov["autores"]),
+             tuple(sorted((k, tuple(p)) for k, p in animos.items())))
+    if firma not in _ASIGNACIONES:
+        _ASIGNACIONES[firma] = asignar_combinaciones(mov, animos)
+    return _ASIGNACIONES[firma][(autor["id"], v)]
 
 
 def construir(config, mov, autor, v, intento=0, animos=None, ocultar_motivo=False):
@@ -221,7 +234,7 @@ def elegir_pieza(config, mov, autor, v, animos, previas):
     problema = None
     for intento in range(MAX_INTENTOS + 1):
         entrada, esc = construir(config, mov, autor, v, intento, animos)
-        h = huella_visual(a_imagen(esc))
+        h = huella_visual(a_imagen(esc)).astype(np.float32).astype(float)  # igual que la que guarda la caché
         parecido = parecido_a(h, previas)
         if parecido is not None:
             problema = f"sigue casi idéntico a {parecido[0]}"
@@ -257,11 +270,83 @@ def copiar_muestras(generados, rutas, por_movimiento=3):
             shutil.copy2(rutas[e["id"]], destino / rutas[e["id"]].name)
 
 
-def main():
+# --- Compilación incremental -------------------------------------------------------------
+# El resultado de una pieza depende de (1) su configuración en la taxonomía, (2) el código
+# del generador y (3) las huellas de las piezas anteriores de su movimiento, porque la
+# detección de duplicados las compara. La clave de caché reúne las tres cosas: si coincide
+# y los archivos siguen ahí, la pieza se reutiliza sin dibujarla ni pasar por Chromium.
+
+def hash_generador():
+    """Hash del código del generador y de los catálogos que lo parametrizan."""
+    h = hashlib.sha256()
+    for ruta in sorted((RAIZ / "generator").glob("*.py")) + [CATALOGO / "animos.yaml", CATALOGO / "motivos.yaml"]:
+        h.update(ruta.name.encode() + b"\0" + ruta.read_bytes() + b"\0")
+    return h.hexdigest()
+
+
+def _huella_a_texto(h):
+    return base64.b64encode(np.asarray(h, dtype=np.float32).tobytes()).decode()
+
+
+def _huella_de_texto(t):
+    return np.frombuffer(base64.b64decode(t), dtype=np.float32).astype(float)
+
+
+def hash_previas(previas):
+    h = hashlib.sha256()
+    for ident in sorted(previas):
+        h.update(ident.encode() + b"\0" + np.asarray(previas[ident], dtype=np.float32).tobytes())
+    return h.hexdigest()
+
+
+def clave_pieza(gen, config, mov, autor, v, animos, previas):
+    datos = {
+        "gen": gen, "mov": mov["id"], "v": v, "obra": autor["obras"][v - 1],
+        "autor": {k: autor[k] for k in ("id", "nombre", "epoca", "region")},
+        "par": combinacion(mov, autor, v, animos), "variante_jpg": config["variante_jpg"],
+        "previas": hash_previas(previas),
+    }
+    return hashlib.sha256(json.dumps(datos, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
+
+def _rutas_cache(ident):
+    return CATALOGO / ".cache" / "mini" / f"{ident}.png", CATALOGO / ".cache" / "rev" / f"{ident}.png"
+
+
+def cargar_cache():
+    ruta = CATALOGO / ".cache" / "piezas.json"
+    return json.loads(ruta.read_text(encoding="utf-8")) if ruta.exists() else {}
+
+
+def guardar_cache(cache):
+    ruta = CATALOGO / ".cache" / "piezas.json"
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    ruta.write_text(json.dumps(cache, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def _reutilizable(hit, clave):
+    """La entrada de caché sirve si su clave coincide y los archivos que guardó siguen intactos."""
+    if not hit or hit["clave"] != clave:
+        return False
+    ruta = RAIZ / hit["entrada"]["archivo"]
+    mini, rev = _rutas_cache(hit["entrada"]["id"])
+    return (ruta.exists() and mini.exists() and rev.exists()
+            and hashlib.sha256(ruta.read_bytes()).hexdigest() == hit["entrada"]["sha256"])
+
+
+def _movimiento_de(nombre_archivo, ids_movimientos):
+    """Movimiento al que pertenece un archivo: el id más largo que lo prefija (así
+    «realismo» no se come los archivos de «realismo-magico»)."""
+    candidatos = [m for m in ids_movimientos if nombre_archivo.startswith(m + "-")]
+    return max(candidatos, key=len) if candidatos else None
+
+
+def main(argv=None):
     ap = argparse.ArgumentParser(description="Genera marcalibros desde la taxonomía.")
     ap.add_argument("--all", action="store_true", help="genera todos los movimientos")
     ap.add_argument("--movimiento", help="genera solo un movimiento, por id")
-    args = ap.parse_args()
+    ap.add_argument("--forzar", action="store_true", help="ignora la caché y rehace todas las piezas")
+    args = ap.parse_args(argv)
     if not args.all and not args.movimiento:
         ap.error("indica --all o --movimiento <id>")
 
@@ -275,41 +360,61 @@ def main():
         return 1
     filtro = None if args.all else args.movimiento
 
-    generados, esc_por_id, rutas, huellas = [], {}, {}, {}
+    gen = hash_generador()
+    cache = {} if args.forzar else cargar_cache()
+    nueva_cache = {}
+    generados, rutas, huellas = [], {}, {}
+    miniaturas, revisiones, rehechas = {}, {}, []
     fallos = 0
-    avisos_texto, con_velo, miniaturas = [], [], {}
+    avisos_texto, con_velo = [], []
     for mov, autor, v in recorrer(config, filtro):
+        ident = f"{mov['id']}-{autor['id']}-{v:02d}"
         # Los duplicados se comparan dentro de cada movimiento, así el resultado
         # no depende de qué movimientos se generen en la misma ejecución.
         previas = {k: h for k, h in huellas.items() if k.startswith(mov["id"] + "-")}
-        entrada, esc, h, intento, problema = elegir_pieza(config, mov, autor, v, animos, previas)
-        if problema:
-            fallos += 1
-            print(f"  ✗ {entrada['id']}: {problema} tras {MAX_INTENTOS} reintentos de semilla")
-        if intento:
-            print(f"  ↻ {entrada['id']}: semilla cambiada {intento}× (duplicado visual, motivo invisible o sin hueco para el texto)")
+        clave = clave_pieza(gen, config, mov, autor, v, animos, previas)
+        hit = cache.get(ident)
+        mini_ruta, rev_ruta = _rutas_cache(ident)
+        if _reutilizable(hit, clave):
+            entrada, h = hit["entrada"], _huella_de_texto(hit["huella"])
+            miniaturas[ident], revisiones[ident] = Image.open(mini_ruta).copy(), Image.open(rev_ruta).copy()
+            rutas[ident] = RAIZ / entrada["archivo"]
+        else:
+            entrada, esc, h, intento, problema = elegir_pieza(config, mov, autor, v, animos, previas)
+            if problema:
+                fallos += 1
+                print(f"  ✗ {ident}: {problema} tras {MAX_INTENTOS} reintentos de semilla")
+            if intento:
+                print(f"  ↻ {ident}: semilla cambiada {intento}× (duplicado visual, motivo invisible o sin hueco para el texto)")
+            rutas[ident] = escribir(entrada, esc)
+            miniaturas[ident] = a_imagen(esc, ESCALA_MINIATURA)
+            img, _ = imagen_para_revision(entrada, esc, rutas[ident])  # QA con Chromium: solo lo rehecho
+            revisiones[ident] = img.resize((round(ANCHO * ESCALA_REVISION), round(ALTO * ESCALA_REVISION)),
+                                           Image.Resampling.LANCZOS)
+            mini_ruta.parent.mkdir(parents=True, exist_ok=True)
+            rev_ruta.parent.mkdir(parents=True, exist_ok=True)
+            miniaturas[ident].save(mini_ruta)
+            revisiones[ident].save(rev_ruta)
+            rehechas.append(ident)
         if entrada["contraste_texto"] < MIN_CONTRASTE_TEXTO:
-            avisos_texto.append(f"{entrada['id']}: franja a {entrada['contraste_texto']}:1 incluso con velo {entrada['velo']}")
+            avisos_texto.append(f"{ident}: franja a {entrada['contraste_texto']}:1 incluso con velo {entrada['velo']}")
         if entrada["velo"]:
-            con_velo.append(entrada["id"])
-        mini = a_imagen(esc, ESCALA_MINIATURA)
-        miniaturas[entrada["id"]] = mini
-        huellas[entrada["id"]] = h
-        rutas[entrada["id"]] = escribir(entrada, esc)
+            con_velo.append(ident)
+        huellas[ident] = h
         generados.append(entrada)
-        esc_por_id[entrada["id"]] = esc
+        nueva_cache[ident] = {"clave": clave, "huella": _huella_a_texto(h), "entrada": entrada}
 
     if not generados:
         ap.error(f"no hay movimientos con id '{args.movimiento}'")
 
     # El manifest conserva los movimientos que no se regeneraron.
     manifiesto = CATALOGO / "manifest.json"
-    previas = []
+    previas_manifest = []
     if manifiesto.exists():
-        previas = json.loads(manifiesto.read_text(encoding="utf-8"))["entradas"]
+        previas_manifest = json.loads(manifiesto.read_text(encoding="utf-8"))["entradas"]
     rehechos = {e["movimiento"] for e in generados}
     entradas = sorted(
-        [e for e in previas if e["movimiento"] not in rehechos] + generados,
+        [e for e in previas_manifest if e["movimiento"] not in rehechos] + generados,
         key=lambda e: e["id"],
     )
     manifiesto.write_text(
@@ -318,44 +423,61 @@ def main():
         encoding="utf-8",
     )
 
-    # Validaciones
+    # Caché: se conservan los demás movimientos y se sustituyen los regenerados.
+    for ident, hit in cache.items():
+        if hit["entrada"]["movimiento"] not in rehechos:
+            nueva_cache.setdefault(ident, hit)
+    guardar_cache(nueva_cache)
+
+    # Archivos huérfanos (obras quitadas de la taxonomía) de los movimientos regenerados
+    ids_movimientos = [m["id"] for m in config["movimientos"]]
+    vigentes = {e["id"] for e in generados}
+    for sub in ("svg", "jpg"):
+        for f in sorted((CATALOGO / sub).glob("*")) if (CATALOGO / sub).exists() else []:
+            if _movimiento_de(f.stem, ids_movimientos) in rehechos and f.stem not in vigentes:
+                f.unlink()
+                print(f"  - huérfano eliminado: {f.relative_to(RAIZ)}")
+
+    # Validaciones de los archivos (todos, también los reutilizados: es barato)
     errores = 0
     for e in generados:
         ruta = rutas[e["id"]]
         for problema in (validar_svg(ruta) if e["formato"] == "svg" else validar_jpg(ruta)):
             errores += 1
             print(f"  ✗ {e['id']}: {problema}")
-
     errores += fallos
 
-    # Hojas de contacto para revisión humana: una por autor (10 piezas), no una de 100
+    # Hojas de contacto (una por autor) y de miniaturas (una por movimiento): solo si cambió algo
     por_autor = {}
     for e in generados:
         por_autor.setdefault((e["movimiento"], e["autor_id"]), []).append(e)
+    hojas_hechas = 0
     for (mov_id, autor_id), grupo in sorted(por_autor.items()):
-        piezas = []
-        for e in grupo:
-            img, metodo = imagen_para_revision(e, esc_por_id[e["id"]], rutas[e["id"]])
-            piezas.append((f"{e['obra']}  [{e['formato']}]", img))
         hoja = CATALOGO / "revision" / f"hoja-{mov_id}-{autor_id}.jpg"
-        hoja_de_contacto(piezas, hoja)
-        print(f"  hoja de contacto: {hoja.relative_to(RAIZ)}")
+        if hoja.exists() and not any(e["id"] in rehechas for e in grupo):
+            continue
+        hoja_de_contacto([(f"{e['obra']}  [{e['formato']}]", revisiones[e["id"]]) for e in grupo], hoja)
+        hojas_hechas += 1
+    for mov_id in sorted(rehechos):
+        propias = [e for e in generados if e["movimiento"] == mov_id]
+        hoja = CATALOGO / "revision" / f"miniaturas-{mov_id}.jpg"
+        if hoja.exists() and not any(e["id"] in rehechas for e in propias):
+            continue
+        hoja_de_miniaturas([(f"{e['autor_id'][:3]}{e['variante']:02d}", miniaturas[e["id"]]) for e in propias], hoja)
+        hojas_hechas += 1
 
     copiar_muestras(generados, rutas)
 
-    # Miniaturas a tamaño de lectura (350×50), una hoja por movimiento
-    for mov_id in sorted(rehechos):
-        hoja = CATALOGO / "revision" / f"miniaturas-{mov_id}.jpg"
-        hoja_de_miniaturas([(f"{e['autor_id'][:3]}{e['variante']:02d}", miniaturas[e["id"]])
-                            for e in generados if e["movimiento"] == mov_id], hoja)
-        print(f"  miniaturas: {hoja.relative_to(RAIZ)}")
+    RESUMEN.clear()
+    RESUMEN.update(reutilizadas=len(generados) - len(rehechas), rehechas=len(rehechas), ids_rehechas=list(rehechas),
+                   hojas=hojas_hechas)
     print(f"  franja de texto: {len(generados) - len(con_velo)} piezas la leen sin velo, "
           f"{len(con_velo)} con velo horneado en la franja")
     for aviso in avisos_texto:
         print(f"  ⚠ {aviso}")
-
     jpg = sum(1 for e in generados if e["formato"] == "jpg")
-    print(f"\nGenerados: {len(generados)} (jpg: {jpg}, svg: {len(generados) - jpg}). "
+    print(f"\nGenerados: {len(generados)} (jpg: {jpg}, svg: {len(generados) - jpg}): "
+          f"{len(rehechas)} rehechas, {len(generados) - len(rehechas)} reutilizadas de la caché, {hojas_hechas} hojas. "
           f"Errores de validación: {errores}. Manifest total: {len(entradas)}.")
     return 1 if errores else 0
 

@@ -7,3 +7,6 @@ __pycache__/
 catalog/svg/
 catalog/jpg/
 catalog/revision/
+
+# Caché de la compilación incremental (se restaura en CI con actions/cache)
+catalog/.cache/

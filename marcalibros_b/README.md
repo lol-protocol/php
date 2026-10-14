@@ -10,7 +10,7 @@ Marcalibros son los marcadores de lectura con diseño propio (libros en SVG y pa
 - `catalog/manifest.json`: índice generado de todos los marcalibros (versionado).
 - `catalog/muestras/`: unas pocas piezas de ejemplo (versionadas).
 - `catalog/svg/`, `catalog/jpg/`, `catalog/revision/`: **catálogo completo, salida del generador. No está en git**: lo publica el flujo de CI como artefacto `marcalibros-catalogo` (`.github/workflows/marcalibros-b.yml`, en la raíz del repo).
-- `generator/`: generador reproducible. Misma entrada, misma salida.
+- `generator/`: generador reproducible. Misma entrada, misma salida. **Incremental**: solo rehace las piezas cuya configuración, o cuyo código, haya cambiado (caché en `catalog/.cache`, fuera de git).
 - `tests/`: pruebas y hashes de referencia.
 
 ## Generar en local
@@ -18,6 +18,7 @@ Marcalibros son los marcadores de lectura con diseño propio (libros en SVG y pa
     pip install -r generator/requirements.txt -r generator/requirements-dev.txt
     python generator/build.py --movimiento romanticismo     # o --all
     python -m pytest -q tests
+    python generator/build.py --all --forzar              # ignora la caché y lo rehace todo
 
 Requiere Chromium (variable `CHROMIUM` o `/opt/pw-browsers/chromium`): el QA rasteriza cada SVG con un navegador real. Python 3.13.
 
