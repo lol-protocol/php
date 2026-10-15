@@ -26,7 +26,7 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`iconos-biblioteca/`](iconos-biblioteca/) | Set de iconos SVG abstractos en 2.5D, sin texto, para biblioteca virtual: 151 iconos en 3 variantes. |
 | [`iconos-tools/`](iconos-tools/) | Generador y validador en Python de los dos sets de iconos y de la galería compartida `galeria-iconos.html`. |
 | [`marcalibros-plataforma-pos-brand-identity/`](marcalibros-plataforma-pos-brand-identity/) | Identidad de marca de Marcalibros (marcadores de lectura) para Plataforma POS: tokens de marca, iconos SVG, 1000 marcalibros (10 movimientos literarios y 10 tipos de texto) con su vista previa JPG, paisajes JPG, el generador en Python, un módulo PHP para crear marcalibros propios a partir de imágenes subidas y una aplicación web independiente, sin cuentas, para explorarlos y crearlos. |
-| [`Listado-colores/`](Listado-colores/) | Listado de 148 colores con nombre (los de CSS), con su equivalente en español, su valor hexadecimal y dos significados: el psicológico y el místico. Léxico de apoyo para el etiquetado part-of-speech. |
+| [`Listado-colores/`](Listado-colores/) | Léxico de colores con nombre para el etiquetado part-of-speech: una lista completa de 31.935 nombres con su hex (con una marca de buenos nombres) y una tabla anotada de los 148 colores CSS, con sus nombres en 30 idiomas, y dos significados: el psicológico y el místico. |
 
 Cada carpeta tiene su propio README con instrucciones de instalación y uso. La mayoría tiene
 también su propio código y tests; `landing-page/` es un solo archivo; `psychology-and-marketing/`
