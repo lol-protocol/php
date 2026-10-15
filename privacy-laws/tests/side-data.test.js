@@ -20,7 +20,7 @@ import {
   withSideData,
   writeCsv,
 } from "../scripts/lib/dataset.js";
-import { recordChanges } from "../scripts/record-changes.js";
+import { recordChanges, unrecorded } from "../scripts/record-changes.js";
 
 const { records, sources, changes } = loadAndValidate();
 const base = records.find((r) => r.data_status === "researched");
@@ -120,4 +120,16 @@ test("record-changes appends the diff and moves history and sources to a renamed
   ]);
   assert.equal(side.rows[0].law_name, "New Act");
   assert.equal(loadSide(master, "missing.csv", ["a"]).rows.length, 0, "a missing side file is an empty table");
+});
+
+test("--check names the differences that changes.csv does not record", () => {
+  const row = { ...base, country_code: "AA", law_name: "Act", penalties_range: "1" };
+  const edited = [{ ...row, penalties_range: "2" }];
+  const entries = diffRecords([row], edited, "2026-10-15");
+  assert.equal(entries.length, 1);
+  assert.deepEqual(unrecorded(entries, []).map((e) => e.field), ["penalties_range"]);
+  const recorded = [{ date: "2026-10-15", country_code: "AA", law_name: "Act", field: "penalties_range", old_value: "1", new_value: "2" }];
+  assert.deepEqual(unrecorded(entries, recorded), []);
+  // Another value of the same field is not the edit that was made.
+  assert.equal(unrecorded(entries, [{ ...recorded[0], new_value: "3" }]).length, 1);
 });
