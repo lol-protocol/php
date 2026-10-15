@@ -39,8 +39,8 @@ return [
         ],
         'animal' => [
             // «cerdo» suena mal; «cerda», horrible: el femenino es el insulto sexualizado («cerdas» se bloquea, ver `by`).
-            // «Cerda» singular queda en medium porque también es apellido: con nameCollision no pasaría de revisión igual.
-            ['word' => 'cerda', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
+            // «Cerda» también es apellido: sola queda en revisión, pero dirigida («eres una cerda») se bloquea (whenTargeted).
+            ['word' => 'cerda', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true, 'whenTargeted' => 'high'],
             ['word' => 'cerdo', 'riskType' => 'animal', 'severity' => 'medium', 'forms' => 'adj', 'by' => ['f' => 'high']],
             ['word' => 'marrano', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
             ['word' => 'marrana', 'riskType' => 'animal', 'severity' => 'medium'],

@@ -633,6 +633,9 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
   `'targeted' => false` («svinehund») cuentan siempre. Las marcas están en la
   clave `targeted` de 29 idiomas; japonés, coreano, cantonés y tailandés, sin
   espacios entre palabras, siguen como antes. Ver `TargetContext`.
+  Una entrada con `'whenTargeted' => 'high'` sube a esa severidad cuando va
+  dirigida: «cerda» también es apellido (Cerda) y sola no pasa de revisión,
+  pero «eres una cerda» se bloquea (`context => targeted`).
 - **Signos pegados a la palabra.** «puta!», «¿idiota?», «(rata)», ««imbécil»»
   se leen igual que sin signos (antes «idiota!» se aprobaba).
 
