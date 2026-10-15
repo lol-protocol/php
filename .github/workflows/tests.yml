@@ -30,6 +30,20 @@ jobs:
             exit 1
           fi
 
+  listado-colores:
+    name: "Listado-colores: CSV válidos y tabla del README al día"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Valida colores.csv y nombres-completos.csv, y falla si la tabla de
+      # README.md no coincide con colores.csv.
+      - name: Comprobar datos y tabla
+        working-directory: Listado-colores
+        run: python3 generar-tabla.py --comprobar
+
   phpunit:
     name: PHP ${{ matrix.php-version }}
     runs-on: ubuntu-latest
