@@ -46,17 +46,11 @@ Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»
 
 ### Añadido
 
-- **Variantes por país** (`Language\Regions`). «es-MX», «es_AR» o «spa-CL» en
-  `ChatLineReviewer::create()` y en el endpoint aplican la clave `regions` de
-  `config/languages/` y `config/chat-topics/`: cada entrada reemplaza a la de la
-  misma palabra en el idioma base, se suma, o se quita con `'severity' => 'none'`.
-  Español: México («puto» dirigido y «joto» se bloquean; «coger» es sexual sin
-  ayuda), Argentina («puto» dirigido y «trolo»; «boludo» sólo se informa;
-  «coger», «concha», «pija») y Chile («polla» no se censura: es la lotería;
-  «pico» sólo cuenta acompañado). En el endpoint, el país que pide quien escribe
-  sólo suma (el idioma base se revisa igual: pedir `es-CL` no cuela «polla»);
-  para que también rebaje, la plataforma lo pone en sus idiomas
-  (`['es-CL', 'eng']`). `RegionsTest`.
+- **Palabras de varios países en el español base** (el idioma sigue siendo
+  `spa`, sin variantes por país): «puto» (`targeted`: «eres un puto» se bloquea,
+  «los putos deberes» pasa), «joto» y «trolo» se bloquean; «pija» y «pico» se
+  suman a «coger» y «concha» en `ambiguous`, porque en otros países son
+  cotidianas. `RegionalWordsTest`.
 - **`'whenTargeted' => 'high'`** en una entrada: sube a esa severidad cuando va
   dirigida (`TargetContext`, `context => targeted`). «cerda» la usa: sola sigue en
   revisión porque también es apellido, pero «eres una cerda» se bloquea y «María

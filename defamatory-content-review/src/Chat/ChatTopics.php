@@ -50,7 +50,7 @@ final class ChatTopics
             : $patterns;
     }
 
-    public static function fromFile(string $path, string $language, ?string $region = null): ?self { return is_file($path) ? new self(\DefamatoryContentReview\Language\Regions::apply(require $path, $region), $language) : null; }
+    public static function fromFile(string $path, string $language): ?self { return is_file($path) ? new self(require $path, $language) : null; }
 
     /**
      * Los términos de `$list` en la línea, también los escritos con 3 o más

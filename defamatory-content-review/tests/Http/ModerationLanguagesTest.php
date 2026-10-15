@@ -26,25 +26,6 @@ class ModerationLanguagesTest extends TestCase
         $this->assertSame('approve', $body['decision']);
     }
 
-    public function testARequestedCountryAddsItsVariantButCannotRemoveAnything(): void
-    {
-        $endpoint = new ModerationEndpoint(self::CONFIG_DIR);
-        $mx = $this->post($endpoint, 'eres un puto', 'es-MX');
-        $cl = $this->post($endpoint, 'hagamos una polla para el Mundial', 'es-CL');
-
-        $this->assertSame(['spa-MX', 'spa', 'eng'], $mx['checkedLanguages']);
-        $this->assertSame('reject', $mx['decision']);
-        $this->assertSame('reject', $cl['decision'], 'pedir es-CL no cuela «polla»: el español base se revisa igual');
-    }
-
-    public function testThePlatformCountryAppliesItsVariant(): void
-    {
-        $body = $this->post(new ModerationEndpoint(self::CONFIG_DIR, 'es-CL', ['es-CL', 'eng']), 'hagamos una polla para el Mundial', 'es_cl');
-
-        $this->assertSame(['spa-CL', 'eng'], $body['checkedLanguages']);
-        $this->assertSame('approve', $body['decision']);
-    }
-
     public function testOneFindingPerOccurrenceWithAllItsTypes(): void
     {
         $body = $this->post(new ModerationEndpoint(self::CONFIG_DIR), 'quiero follar, puta puta', 'spa');

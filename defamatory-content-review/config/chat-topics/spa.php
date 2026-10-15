@@ -80,6 +80,9 @@ return [
             ['word' => 'coger', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'verb'],
             ['word' => 'paja', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'concha', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
+            // «pija» (Argentina) y «pico» (Chile) son vulgares allá, pero «una pija» (pija = presumida) y «las tres y pico» no: sólo cuentan acompañadas.
+            ['word' => 'pija', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
+            ['word' => 'pico', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'bomba', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
         ],
     ],
@@ -116,30 +119,5 @@ return [
         ['pattern' => '\b(poner|pongo|puse|pusieron|colocar|coloque|colocaron|tirar|tiraron|lanzar|lanzaron|detonar|detonaron|plantar|plantaron)\s+(una\s+|la\s+|unas\s+|las\s+)?bombas?\b|\bhay\s+una\s+bomba\b|\bamenaza\s+de\s+bomba\b', 'riskType' => 'belico', 'severity' => 'high', 'label' => 'bomba'],
         ['pattern' => '\bbombas?\s+(molotov|caseras?|de\s+racimo)\b', 'riskType' => 'belico', 'severity' => 'medium', 'label' => 'bomba'],
         ['pattern' => '\bbombas?\s+(atomicas?|nucleares|nuclear)\b', 'riskType' => 'belico', 'severity' => 'low', 'label' => 'bomba atómica'],
-    ],
-    // Variantes por país (ver Regions y config/languages/spa.php): sólo lo que cambia.
-    'regions' => [
-        // En México y Argentina «coger» no es «tomar el bus»: es sexual sin ayuda de otra palabra.
-        'MX' => [
-            'sexual' => [
-                ['word' => 'coger', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'verb'],
-            ],
-        ],
-        'AR' => [
-            'sexual' => [
-                ['word' => 'coger', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'verb'],
-                ['word' => 'concha', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
-                ['word' => 'pija', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
-            ],
-        ],
-        'CL' => [
-            'sexual' => [
-                ['word' => 'polla', 'riskType' => 'sexual', 'severity' => 'none'],
-            ],
-            'ambiguous' => [
-                // «pico» es vulgar en Chile, pero «a las tres y pico» también se dice: sólo cuenta acompañado.
-                ['word' => 'pico', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
-            ],
-        ],
     ],
 ];

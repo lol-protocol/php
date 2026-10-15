@@ -645,36 +645,21 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 - **Signos pegados a la palabra.** «puta!», «¿idiota?», «(rata)», ««imbécil»»
   se leen igual que sin signos (antes «idiota!» se aprobaba).
 
-### Variantes por país
+### Palabras de cada país
 
-La misma palabra no ofende igual en todas partes. «Puto» es un insulto homófobo
-en México y Argentina, y en España un intensificador («los putos deberes»). En
-Chile, «la Polla» es la lotería. Con país, el chat usa la variante:
+El idioma es uno solo (`spa`, siempre en tres letras): lo que es insulto en un
+país hispanohablante está en el español base, aunque en otro no lo sea. Cuando
+dos países chocan, se elige la regla que sirve a los dos:
 
-```php
-$chat = ChatLineReviewer::create(__DIR__ . '/config', 'es-MX'); // también 'es_MX', 'spa-MX'
-$chat->review('eres un puto')->getDecision();      // reject (con 'spa': approve)
-$chat->review('los putos deberes')->getDecision(); // approve: no va dirigido
-```
+- «puto» (insulto homófobo en México y Argentina, intensificador en España) es
+  `targeted`: «eres un puto» o «¡puto!» se bloquean, «los putos deberes» pasa.
+- «joto» (México) y «trolo» (Argentina) se bloquean siempre.
+- «coger», «concha», «pija» y «pico» son vulgares en unos países y cotidianos en
+  otros («coger el bus», «una concha de mar», «una pija», «las tres y pico»):
+  están en `ambiguous` y sólo cuentan si la línea trae otra palabra sexual.
+- «polla» sigue bloqueándose, aunque en Chile también sea la lotería.
 
-Cada archivo de `config/languages/` y `config/chat-topics/` puede traer
-`'regions' => ['MX' => [categoría => entradas]]`, en el formato de siempre.
-Con ese país, cada entrada reemplaza a la de la misma palabra en el idioma base
-(esté en la categoría que esté) o se suma; `'severity' => 'none'` la quita. Sin
-país, o con uno sin variante (`es-CO`), se usa el idioma tal cual. Hoy hay
-variantes del español:
-
-| País | Cambia |
-|---|---|
-| `MX` | «puto» (dirigido) y «joto» se bloquean; «coger» es sexual sin ayuda de otra palabra |
-| `AR` | «puto» (dirigido) y «trolo» se bloquean; «boludo» sólo se informa; «coger», «concha» y «pija» son sexuales |
-| `CL` | «polla» no se censura (lotería, apuesta); «pico» es sexual sólo acompañado («a las tres y pico» pasa) |
-
-En el endpoint, el país que pide quien escribe sólo suma: el español base se
-revisa igual, así que pedir `es-CL` no cuela «polla». Para que la variante
-también rebaje, ponla en los idiomas de la plataforma:
-`new ModerationEndpoint($config, 'es-CL', ['es-CL', 'eng'])`. `RegionsTest` fija
-lo de esta tabla y verifica el formato de cada variante.
+`RegionalWordsTest` fija estos casos.
 
 ### Ampliar las listas de chat
 
@@ -792,12 +777,10 @@ Content-Type: application/json
 ```
 
 `language` es opcional (`spa` por defecto) y acepta el código de tres letras o
-el de dos (`es`), con país si se quiere (`es-MX`, ver «Variantes por país»). Como
-lo elige quien escribe, el texto se revisa además en los idiomas de la plataforma
-(`spa` y `eng`, tercer argumento de `ModerationEndpoint`; también con país:
-`['es-CL', 'eng']`) y manda la decisión más grave: mandar un insulto en español
-como `"eng"` no lo cuela, y pedir `es-CL` no quita lo que el español base
-bloquea. `checkedLanguages` dice en cuáles se revisó. Cada hallazgo sale una vez
+el de dos (`es`). Como lo elige quien escribe, el texto se revisa además en los
+idiomas de la plataforma (`spa` y `eng`, tercer argumento de
+`ModerationEndpoint`) y manda la decisión más grave: mandar un insulto en
+español como `"eng"` no lo cuela. `checkedLanguages` dice en cuáles se revisó. Cada hallazgo sale una vez
 por aparición: «follar», que es insulto y contenido sexual, trae los dos en
 `contentTypes` (y el primero en `contentType`). Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
 `Content-Type: application/json` (415), cuerpo de hasta 16 KB (413), JSON en

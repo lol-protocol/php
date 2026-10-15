@@ -3,7 +3,7 @@
 namespace DefamatoryContentReview\Http;
 
 use DefamatoryContentReview\Chat\{ChatLineResult, ChatLineReviewer, CombinedReview};
-use DefamatoryContentReview\Language\{LanguageRegistry, Regions};
+use DefamatoryContentReview\Language\LanguageRegistry;
 
 /**
  * Endpoint HTTP de moderación de chat, sin framework: recibe el cuerpo JSON
@@ -15,10 +15,9 @@ use DefamatoryContentReview\Language\{LanguageRegistry, Regions};
  * otro origen no puede mandarlo como formulario simple: el navegador exige
  * permiso CORS, que no se da), cuerpo de hasta MAX_BODY_BYTES, `text` de hasta
  * MAX_TEXT_CHARS caracteres y `language` (opcional) un código soportado, de
- * tres letras o su alias de dos («es»), con país si se quiere («es-MX», ver Regions).
- * Además del pedido, el texto se revisa siempre en `$alwaysLanguages` (los de la
- * plataforma, también con país: «es-CL»): el idioma lo elige quien escribe, y no
- * debe servir para colar nada; un país pedido suma lo de su variante, no lo quita. Errores: `{"error": {"code", "message"}}`.
+ * tres letras o su alias de dos («es»). Además del pedido, el texto se revisa
+ * siempre en `$alwaysLanguages` (los de la plataforma): el idioma lo elige quien
+ * escribe, y no debe servir para colar nada. Errores: `{"error": {"code", "message"}}`.
  */
 final class ModerationEndpoint
 {
@@ -58,8 +57,7 @@ final class ModerationEndpoint
         if (!is_string($language) || !$this->registry->isSupported($language)) {
             return self::error(400, 'idioma_no_soportado', 'Usa un código de idioma soportado, como "spa" o "es".');
         }
-        $code = fn(string $code): string => Regions::join($this->registry->resolve($code), Regions::split($code)[1]);
-        $checked = array_values(array_unique([$language = $code($language), ...array_map($code, $this->alwaysLanguages)]));
+        $checked = array_values(array_unique([$language = $this->registry->resolve($language), ...$this->alwaysLanguages]));
         $result = CombinedReview::of($input['text'], array_map(fn(string $code): ChatLineResult => $this->reviewer($code)->review($input['text']), $checked));
 
         return ['status' => 200, 'headers' => [], 'body' => ['language' => $language, 'checkedLanguages' => $checked] + self::present($result)];

@@ -4,7 +4,6 @@ namespace DefamatoryContentReview\Chat;
 
 use DefamatoryContentReview\DefamatoryContentReviewer;
 use DefamatoryContentReview\Dictionary\WordList;
-use DefamatoryContentReview\Language\Regions;
 use DefamatoryContentReview\Normalization\EvasionCleaner;
 
 /**
@@ -28,14 +27,11 @@ final class ChatLineReviewer
     /** @var array<string,?ChatTopics> idioma => temas (null: el idioma no tiene lista) */
     private array $topics = [];
 
-    /** @param ?string $region país de la variante («MX»): ver Regions */
-    public function __construct(private readonly DefamatoryContentReviewer $reviewer, private readonly string $topicsDir, private readonly ?string $region = null) { }
+    public function __construct(private readonly DefamatoryContentReviewer $reviewer, private readonly string $topicsDir) { }
 
-    /** `$language` puede traer país: «es-MX», «spa-AR». */
     public static function create(string $configDir, string $language = 'spa'): self
     {
-        [$base, $region] = Regions::split($language);
-        return new self(DefamatoryContentReviewer::create($configDir, $base), rtrim($configDir, '/') . '/chat-topics', $region);
+        return new self(DefamatoryContentReviewer::create($configDir, $language), rtrim($configDir, '/') . '/chat-topics');
     }
 
     public function review(string $line): ChatLineResult
@@ -87,12 +83,12 @@ final class ChatLineReviewer
         return ChatMatches::downgradeDoubled($matches);
     }
 
-    private function dictionary(): WordList { return $this->reviewer->languages()->wordList(Regions::join($this->reviewer->getLanguage(), $this->region)); }
+    private function dictionary(): WordList { return $this->reviewer->languages()->wordList($this->reviewer->getLanguage()); }
 
     private function topicsFor(string $language): ?ChatTopics
     {
         if (!array_key_exists($language, $this->topics)) {
-            $this->topics[$language] = ChatTopics::fromFile(rtrim($this->topicsDir, '/') . '/' . $language . '.php', $language, $this->region);
+            $this->topics[$language] = ChatTopics::fromFile(rtrim($this->topicsDir, '/') . '/' . $language . '.php', $language);
         }
 
         return $this->topics[$language];
