@@ -2,7 +2,9 @@
 
 ## [Sin publicar]
 
-La próxima versión es **5.0.0**: las clases cambian de namespace.
+## [5.0.0] - 2026-10-15
+
+Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»).
 
 ### Cambiado (incompatible)
 
