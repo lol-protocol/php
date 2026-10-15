@@ -58,7 +58,7 @@ territorios menores.
 | Columna | Qué es |
 |---|---|
 | `codigo` | Igual que en `paises.csv`. |
-| `idioma_principal` | Las lenguas en que se escribe la mayoría de los textos del país. IP usa la que tenga más recursos (ver abajo). |
+| `idioma_principal` | Las lenguas de uso amplio en textos escritos: la lengua local más las lenguas francas (inglés, ruso, francés, árabe estándar) que el comentario de genealogía ya nombra. IP usa la que tenga más recursos (ver abajo). |
 | `indice_lectura` | IL, de 1 a 5. |
 | `indice_pos` | IP, de 1 a 5. |
 | `comentarios_pos` | Motivo de los puntajes del etiquetador. Si el comentario empieza con «IP por …», el puntaje sale de esa lengua. |
@@ -123,19 +123,23 @@ texto digital utilizable. **No usa sanciones ni política**: eso lo cubre IO.
 **Criterio de IP (vigente, elegido por ti):** IP toma la lengua de `idioma_principal` con más
 recursos. Así, en un país con inglés y otra lengua, cuenta el inglés. Los niveles de cada lengua
 están en `niveles_lenguas.csv`, y `generar_tabla.py` se detiene si un IP no es el máximo de sus
-lenguas o si una lengua no tiene nivel. Los países que cambiaron
-de puntaje llevan el comentario «IP por …» para que se vea de qué lengua sale.
+lenguas o si una lengua no tiene nivel. Los países que cambiaron de puntaje llevan el comentario
+«IP por …» para que se vea de qué lengua sale.
+
+**Qué lenguas se listan (decidido por ti):** todas las de uso amplio en textos escritos. En la
+práctica, se añadió el inglés, el ruso o el árabe estándar donde el comentario de genealogía ya
+los nombra (Omán, Jordania, Uzbekistán, Turkmenistán y otros). Una lengua que ese comentario no
+nombra no se listó, aunque se use.
 
 **Consecuencia que hay que conocer:** casi todos los países listan inglés, francés, español o
-portugués, así que el criterio sube a 5 a la mayoría. Hoy **141 de 199** tienen IP = 5, y los
-demás se reparten así: 28 con 4, 17 con 3, 11 con 2 y 2 con 1. Con esta distribución la columna
-distingue poco entre países.
+portugués, y con «todas las de uso amplio» se añadieron lenguas en 30 países más (22 cambiaron de
+IP). Hoy **160 de 199** tienen IP = 5, y los demás se reparten así: 25 con 4, 7 con 3, 6 con 2
+y 1 con 1. Con esta distribución la columna casi no distingue entre países.
 
-**Prioridad POS** = IL × IP. **Excluido POS** = IP ≤ 1: quedan fuera **2 países**, Maldivas
-(dhivehi) y Turkmenistán (turcomano), los dos únicos cuya lengua listada no tiene recursos
-abiertos. Antes eran 8, pero con el criterio de la lengua con más recursos la mayoría de esos
-países listan también una lengua con recursos (por ejemplo, el francés en Burundi o la República
-Centroafricana). El umbral está en `UMBRAL_POS`.
+**Prioridad POS** = IL × IP. **Excluido POS** = IP ≤ 1: queda fuera **1 país**, Maldivas
+(dhivehi), el único cuya lengua listada no tiene recursos abiertos. Eran 8 con el criterio de la
+lengua local, 2 con el de la lengua con más recursos, y bajó a 1 cuando Turkmenistán pasó a
+listar el ruso. El umbral está en `UMBRAL_POS`.
 
 **Corea del Norte** pasó a IP = 4: su lengua listada (coreano) tiene recursos abiertos. Su acceso
 restringido al texto del país es un problema de IO, no de IP, como dice la definición de arriba.
@@ -222,9 +226,9 @@ Léelo antes de usar la tabla para decidir.
 
 ## Pendientes
 
-1. **Criterio de IP:** ya está fijado en «la lengua con más recursos», pero con esa regla 141 de
-   199 países quedan en 5. Hay que decidir si se mantiene, si se usa la lengua local o si se
-   agrega un desempate.
+1. **Criterio de IP:** fijado en «la lengua con más recursos» y «todas las de uso amplio», pero
+   con esa regla 160 de 199 países quedan en 5. Si la columna debe distinguir entre países, habrá
+   que revisar el criterio, por ejemplo con un desempate que mire la lengua local.
 2. **Población histórica acumulada:** decidir si se agrega HYDE por país (con máscara de
    fronteras) o se usa el producto de Our World in Data. Después, conseguir `poblacion_larga.csv`
    y `natalidad.csv`, y ejecutar `historia_poblacion.py`. Hay que habilitar el dominio elegido
@@ -235,12 +239,10 @@ Léelo antes de usar la tabla para decidir.
 5. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
 6. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    54. Camboya y Vietnam siguen dentro, por decisión tomada.
-7. **Lenguas listadas en `idioma_principal`:** no hay un criterio único. Algunos países listan el
-   inglés o el ruso y otros no, aunque su comentario de genealogía los nombre. Como IP toma la
-   lengua con más recursos, eso cambia el puntaje: Baréin, Kuwait, Catar y Emiratos listan el
-   inglés (IP 5), pero Omán y Jordania no (IP 4); Kazajistán y Kirguistán listan el ruso (IP 5),
-   pero Uzbekistán, Tayikistán, Armenia, Azerbaiyán, Mongolia y Turkmenistán no. Hay que fijar
-   si se listan solo las lenguas oficiales o todas las de uso amplio.
+7. **Lenguas listadas en `idioma_principal`:** el criterio quedó fijado (todas las de uso amplio),
+   pero depende de los comentarios de genealogía: una lengua que ese comentario no nombra no se
+   lista, aunque se use. Es el caso del inglés en Maldivas, el único país excluido de POS. Hay
+   que listar las lenguas con una lista aparte, no con los comentarios.
 8. **Factor de operabilidad sin justificar:** unos 18 países tienen IO 2 o 3 sin que su comentario nombre
    un factor de operabilidad (mercado, pagos, conectividad). Es el caso de varios micro-estados y
    de África occidental (Albania, Armenia, Belice, Benín, Paraguay, República Dominicana, Samoa y

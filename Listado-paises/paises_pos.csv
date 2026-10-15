@@ -8,10 +8,10 @@ AG,inglés,4,5,Inglés con muchos recursos; mercado editorial pequeño
 SA,árabe,3,4,Árabe estándar con corpus y treebanks; dialectos con poca cobertura
 DZ,árabe; francés,3,5,IP por francés (mejor recurso listado). Árabe estándar con recursos; dialecto argelino y bereber con pocos
 AR,español,4,5,Español con recursos grandes; variedad rioplatense bien cubierta
-AM,armenio,3,3,Armenio con un treebank pequeño
+AM,armenio; ruso; inglés,3,5,IP por ruso (mejor recurso listado). Armenio con un treebank pequeño
 AU,inglés,5,5,Inglés con los recursos más grandes del mundo
 AT,alemán,5,5,Alemán con corpus y treebanks abundantes
-AZ,azerí,4,3,Azerí con recursos pequeños
+AZ,azerí; ruso,4,5,IP por ruso (mejor recurso listado). Azerí con recursos pequeños
 BS,inglés,4,5,Inglés con muchos recursos
 BH,árabe; inglés,3,5,IP por inglés (mejor recurso listado). Árabe con recursos; inglés muy usado en textos digitales
 BD,bengalí,3,3,Bengalí con corpus medianos y pocos treebanks
@@ -20,7 +20,7 @@ BY,ruso; bielorruso,4,5,IP por ruso (mejor recurso listado). Ruso con recursos g
 BE,neerlandés; francés; alemán,5,5,Neerlandés y francés con treebanks grandes
 BZ,inglés; español,3,5,IP por inglés (mejor recurso listado). Inglés y español con recursos; el criollo beliceño casi no tiene
 BJ,francés,1,5,IP por francés (mejor recurso listado). Alfabetización muy baja; francés con recursos; lenguas nacionales sin recursos
-BT,dzongkha,3,2,Dzongkha casi sin corpus digitales
+BT,dzongkha; inglés,3,5,IP por inglés (mejor recurso listado). Dzongkha casi sin corpus digitales
 BO,español; quechua; aimara,3,5,IP por español (mejor recurso listado). Español con recursos; quechua y aimara con pocos corpus anotados
 BA,bosnio; croata; serbio,3,4,IP por croata (mejor recurso listado). Croata y serbio con recursos moderados; bosnio limitado
 BW,inglés; setsuana,3,5,IP por inglés (mejor recurso listado). Inglés con recursos; setsuana con pocos
@@ -30,15 +30,15 @@ BG,búlgaro,4,4,Búlgaro con treebank y corpus moderados
 BF,francés; moré,1,5,IP por francés (mejor recurso listado). Alfabetización muy baja; el moré casi no tiene recursos
 BI,kirundi; francés,1,5,IP por francés (mejor recurso listado). El kirundi no tiene corpus anotados; el francés sí tiene recursos
 CV,portugués; criollo caboverdiano,3,5,IP por portugués (mejor recurso listado). Portugués con recursos; el criollo con corpus pequeños
-KH,jemer,3,2,Jemer con pocos recursos anotados y poco texto digital
+KH,jemer; inglés,3,5,IP por inglés (mejor recurso listado). Jemer con pocos recursos anotados y poco texto digital
 CM,francés; inglés,3,5,IP por francés (mejor recurso listado). Francés e inglés con recursos; lenguas nacionales sin recursos
 CA,inglés; francés,5,5,Inglés y francés con recursos muy grandes
 QA,árabe; inglés,3,5,IP por inglés (mejor recurso listado). Árabe con recursos; mucho texto digital en inglés
-TD,árabe chadiano; francés,1,5,IP por francés (mejor recurso listado). Alfabetización muy baja y casi sin recursos digitales
+TD,árabe chadiano; francés; árabe,1,5,IP por francés (mejor recurso listado). Alfabetización muy baja y casi sin recursos digitales
 CZ,checo,4,5,Checo con un treebank grande (PDT) y corpus amplios
 CL,español,4,5,Español con recursos grandes; variedad chilena con corpus propios
 CN,chino (mandarín),4,4,Chino con corpus y treebanks muy grandes; la segmentación de palabras exige herramientas específicas
-CY,griego; turco,4,5,IP por turco (mejor recurso listado). Griego con treebank moderado; el turco de Chipre tiene pocos recursos
+CY,griego; turco; inglés,4,5,IP por turco (mejor recurso listado). Griego con treebank moderado; el turco de Chipre tiene pocos recursos
 CO,español,4,5,Español con recursos grandes; variedad colombiana bien cubierta
 KM,shikomor; francés; árabe,2,5,IP por francés (mejor recurso listado). El shikomor no tiene corpus anotados
 CG,francés; lingala,3,5,IP por francés (mejor recurso listado). Francés con recursos; lingala con pocos corpus
@@ -48,10 +48,10 @@ CI,francés,2,5,IP por francés (mejor recurso listado). Francés con recursos; 
 CR,español,4,5,Español con recursos grandes
 HR,croata,4,4,Croata con treebank y corpus moderados
 CU,español,4,5,IP por español (mejor recurso listado). Español con recursos abiertos; el texto digital cubano es limitado
-DK,danés,5,4,Danés con treebank (DDT) y corpus moderados
+DK,danés; inglés,5,5,IP por inglés (mejor recurso listado). Danés con treebank (DDT) y corpus moderados
 DM,inglés; criollo dominiqués,3,5,IP por inglés (mejor recurso listado). Inglés con recursos; el criollo casi no tiene
 EC,español; quechua,4,5,Español con recursos grandes; quechua con pocos
-EG,árabe egipcio,3,3,Árabe estándar con recursos; dialecto egipcio con corpus pequeños
+EG,árabe egipcio; árabe,3,4,IP por árabe (mejor recurso listado). Árabe estándar con recursos; dialecto egipcio con corpus pequeños
 SV,español,3,5,Español con recursos grandes
 AE,árabe; inglés; urdu,3,5,IP por inglés (mejor recurso listado). Árabe con recursos; inglés muy usado en textos digitales
 ER,tigriña; árabe,2,4,IP por árabe (mejor recurso listado). El tigriña casi no tiene texto digital anotable
@@ -60,11 +60,11 @@ SI,esloveno,4,4,Esloveno con treebank y corpus moderados
 ES,español; catalán; gallego; euskera,4,5,"Español con recursos muy grandes; catalán, gallego y euskera con recursos moderados"
 SZ,inglés; suazi,3,5,IP por inglés (mejor recurso listado). Inglés con recursos; suazi con pocos
 US,inglés,5,5,El corpus anotado más grande en inglés
-EE,estonio,4,4,Estonio con treebank grande (EDT)
+EE,estonio; inglés,4,5,IP por inglés (mejor recurso listado). Estonio con treebank grande (EDT)
 ET,amárico,2,2,Amárico con corpus pequeños
 FJ,inglés; fiyiano,4,5,IP por inglés (mejor recurso listado). Inglés es la lengua de la mayoría de textos digitales; fiyiano con pocos recursos
 PH,inglés; filipino,4,5,IP por inglés (mejor recurso listado). Inglés con recursos; filipino con corpus y treebanks moderados
-FI,finlandés,5,5,Finlandés con treebanks grandes (TDT y FTB)
+FI,finlandés; sueco,5,5,Finlandés con treebanks grandes (TDT y FTB)
 FR,francés,4,5,Francés con treebanks grandes
 GA,francés,3,5,IP por francés (mejor recurso listado). Francés con recursos; lenguas bantúes sin recursos
 GM,inglés; mandinga,2,5,IP por inglés (mejor recurso listado). Inglés con recursos; lenguas nacionales casi sin texto digital
@@ -86,14 +86,14 @@ ID,indonesio,3,4,Indonesio con treebanks moderados
 IQ,árabe; kurdo,3,4,IP por árabe (mejor recurso listado). Árabe con recursos; kurdo con corpus pequeños
 IR,persa,4,4,Persa con treebank (Seraji) y corpus moderados; mercado editorial grande
 IE,inglés; irlandés,5,5,Inglés con recursos grandes; el irlandés tiene pocos
-IS,islandés,5,3,Islandés con un treebank pequeño (IcePaHC)
+IS,islandés; inglés,5,5,IP por inglés (mejor recurso listado). Islandés con un treebank pequeño (IcePaHC)
 MH,inglés; marshalés,3,5,IP por inglés (mejor recurso listado). Inglés es la lengua de la mayoría de textos digitales; el marshalés casi no tiene
 SB,inglés; pijin de las Salomón,3,5,IP por inglés (mejor recurso listado). Inglés con recursos; el pijin con pocos
-IL,hebreo; árabe,4,4,Hebreo con treebank (HTB) y corpus moderados
+IL,hebreo; árabe; inglés,4,5,IP por inglés (mejor recurso listado). Hebreo con treebank (HTB) y corpus moderados
 IT,italiano,4,5,Italiano con treebanks grandes
 JM,inglés; criollo jamaiquino,4,5,Inglés con recursos grandes
 JP,japonés,5,5,Japonés con treebanks grandes; la segmentación de palabras exige herramientas específicas
-JO,árabe,3,4,Árabe con recursos; el dialecto levantino con pocos corpus
+JO,árabe; inglés,3,5,IP por inglés (mejor recurso listado). Árabe con recursos; el dialecto levantino con pocos corpus
 KZ,kazajo; ruso,4,5,IP por ruso (mejor recurso listado). Kazajo con un treebank pequeño; ruso con recursos
 KE,suajili; inglés,3,5,IP por inglés (mejor recurso listado). Suajili con corpus pequeños; inglés con recursos
 KG,kirguís; ruso,3,5,IP por ruso (mejor recurso listado). Kirguís con recursos mínimos
@@ -119,28 +119,28 @@ ML,francés; bambara,1,5,IP por francés (mejor recurso listado). Alfabetizació
 MT,maltés; inglés,4,5,IP por inglés (mejor recurso listado). Maltés con un treebank pequeño; inglés abundante
 MA,árabe; bereber; francés,3,5,IP por francés (mejor recurso listado). Árabe estándar con recursos; dialecto marroquí y bereber con pocos
 MU,inglés; francés; criollo mauriciano,3,5,IP por inglés (mejor recurso listado). Inglés y francés con recursos; el criollo con pocos
-MR,árabe hasanía; francés,2,5,IP por francés (mejor recurso listado). Árabe con recursos; el hasanía casi sin corpus
+MR,árabe hasanía; francés; árabe,2,5,IP por francés (mejor recurso listado). Árabe con recursos; el hasanía casi sin corpus
 MX,español,4,5,Español con recursos grandes; lenguas indígenas casi sin corpus
 FM,inglés; chuukés,3,5,IP por inglés (mejor recurso listado). Inglés con recursos; el chuukés con pocos
 MD,rumano; ruso,4,5,IP por ruso (mejor recurso listado). Rumano con treebank moderado; ruso con recursos
 MC,francés,4,5,Francés con treebanks grandes; mercado editorial pequeño
-MN,mongol,4,3,Mongol con un treebank pequeño
-ME,montenegrino (serbocroata),3,3,Croata y serbio con recursos moderados; la variante montenegrina es pequeña
+MN,mongol; ruso,4,5,IP por ruso (mejor recurso listado). Mongol con un treebank pequeño
+ME,montenegrino (serbocroata); serbio,3,3,Croata y serbio con recursos moderados; la variante montenegrina es pequeña
 MZ,portugués; emakhuwa,2,5,IP por portugués (mejor recurso listado). Portugués con recursos; las lenguas bantúes casi sin corpus
 MM,birmano,3,2,Birmano con recursos mínimos; poco texto digital abierto
 NA,inglés; afrikáans; oshiwambo,3,5,IP por inglés (mejor recurso listado). Inglés y afrikáans con recursos; el oshiwambo con pocos
 NR,nauruano; inglés,3,5,IP por inglés (mejor recurso listado). Nauruano sin recursos digitales; inglés con recursos
-NP,nepalí,3,3,Nepalí con recursos pequeños
+NP,nepalí; inglés,3,5,IP por inglés (mejor recurso listado). Nepalí con recursos pequeños
 NI,español,3,5,Español con recursos grandes
 NE,francés; hausa; zarma,1,5,IP por francés (mejor recurso listado). Alfabetización muy baja; hausa y zarma casi sin recursos
 NG,inglés; hausa; yoruba; igbo,2,5,IP por inglés (mejor recurso listado). Inglés con recursos; hausa y yoruba con corpus pequeños; igbo con muy pocos
-NO,noruego,5,4,Noruego con treebanks moderados (bokmål y nynorsk)
+NO,noruego; inglés,5,5,IP por inglés (mejor recurso listado). Noruego con treebanks moderados (bokmål y nynorsk)
 NZ,inglés; maorí,5,5,Inglés con recursos grandes; maorí con corpus pequeños
-OM,árabe,3,4,Árabe con recursos; dialecto omaní con pocos corpus
-NL,neerlandés,5,5,Neerlandés con treebanks grandes (Alpino y LassySmall)
-PK,urdu; punyabí; pastún,2,3,Urdu con un treebank pequeño; punyabí y pastún con muy pocos recursos
+OM,árabe; inglés,3,5,IP por inglés (mejor recurso listado). Árabe con recursos; dialecto omaní con pocos corpus
+NL,neerlandés; inglés,5,5,Neerlandés con treebanks grandes (Alpino y LassySmall)
+PK,urdu; punyabí; pastún; inglés,2,5,IP por inglés (mejor recurso listado). Urdu con un treebank pequeño; punyabí y pastún con muy pocos recursos
 PW,inglés; palauano,3,5,IP por inglés (mejor recurso listado). Inglés con recursos; el palauano casi no tiene
-PS,árabe palestino,3,3,Árabe con recursos; el dialecto palestino con pocos corpus
+PS,árabe palestino; árabe,3,4,IP por árabe (mejor recurso listado). Árabe con recursos; el dialecto palestino con pocos corpus
 PA,español,4,5,Español con recursos grandes
 PG,inglés; tok pisin; hiri motu,2,5,IP por inglés (mejor recurso listado). Inglés con recursos; el tok pisin con corpus mínimos
 PY,español; guaraní,3,5,IP por español (mejor recurso listado). Español con recursos; guaraní con corpus pequeños
@@ -170,31 +170,31 @@ SY,árabe sirio,3,3,Árabe con recursos; el dialecto sirio con pocos corpus
 SO,somalí; árabe,1,4,IP por árabe (mejor recurso listado). El somalí no tiene corpus anotados
 LK,cingalés; tamil; inglés,4,5,IP por inglés (mejor recurso listado). Cingalés con recursos pequeños; tamil con treebank
 ZA,inglés; afrikáans; zulú; xhosa,4,5,IP por inglés (mejor recurso listado). Inglés y afrikáans con recursos; las lenguas bantúes con pocos
-SD,árabe sudanés,2,2,Árabe sudanés con pocos corpus
+SD,árabe sudanés; árabe; inglés,2,5,IP por inglés (mejor recurso listado). Árabe sudanés con pocos corpus
 SS,inglés; árabe juba,1,5,IP por inglés (mejor recurso listado). Alfabetización muy baja; sin recursos anotados
-SE,sueco,5,5,Sueco con varios treebanks grandes
+SE,sueco; inglés,5,5,Sueco con varios treebanks grandes
 CH,alemán; francés; italiano; romanche,5,5,Alemán y francés con recursos muy grandes
 SR,neerlandés; sranan tongo,3,5,IP por neerlandés (mejor recurso listado). Neerlandés con recursos; el sranan con pocos
-TH,tailandés,4,3,Tailandés con recursos moderados; la segmentación sin espacios exige herramientas
+TH,tailandés; inglés,4,5,IP por inglés (mejor recurso listado). Tailandés con recursos moderados; la segmentación sin espacios exige herramientas
 TW,chino tradicional,5,4,Chino con corpus y treebanks grandes; la segmentación exige herramientas
 TZ,suajili; inglés,3,5,IP por inglés (mejor recurso listado). Suajili con corpus pequeños; inglés con recursos
-TJ,tayiko,4,2,Tayiko con recursos mínimos
+TJ,tayiko; ruso,4,5,IP por ruso (mejor recurso listado). Tayiko con recursos mínimos
 TL,tetun; portugués,2,5,IP por portugués (mejor recurso listado). Tetun con recursos mínimos; portugués con recursos
 TG,francés; ewé; mina,2,5,IP por francés (mejor recurso listado). Francés con recursos; lenguas nacionales sin recursos
 TO,tongano; inglés,3,5,IP por inglés (mejor recurso listado). Tongano con recursos mínimos
 TT,inglés,4,5,Inglés con muchos recursos
-TN,árabe tunecino; francés,3,5,IP por francés (mejor recurso listado). Árabe estándar con recursos; dialecto tunecino con corpus pequeños
-TM,turcomano,3,1,El turcomano no tiene corpus anotados ni texto digital abierto
+TN,árabe tunecino; francés; árabe,3,5,IP por francés (mejor recurso listado). Árabe estándar con recursos; dialecto tunecino con corpus pequeños
+TM,turcomano; ruso,3,5,IP por ruso (mejor recurso listado). El turcomano no tiene corpus anotados ni texto digital abierto
 TR,turco,4,5,Turco con treebanks grandes (IMST y BOUN)
 TV,tuvaluano; inglés,3,5,IP por inglés (mejor recurso listado). Tuvaluano con recursos mínimos
 UA,ucraniano; ruso,4,5,IP por ruso (mejor recurso listado). Ucraniano con treebank moderado
 UG,inglés; luganda; suajili,3,5,IP por inglés (mejor recurso listado). Inglés con recursos; luganda y suajili con corpus pequeños
 UY,español,4,5,Español con recursos grandes
-UZ,uzbeko,4,3,Uzbeko con un treebank pequeño
+UZ,uzbeko; ruso,4,5,IP por ruso (mejor recurso listado). Uzbeko con un treebank pequeño
 VU,bislama; inglés; francés,3,5,IP por inglés (mejor recurso listado). Bislama con recursos mínimos
 VE,español,3,5,Español con recursos grandes
 VN,vietnamita,4,4,Vietnamita con treebank (VTB) y corpus moderados; la segmentación exige herramientas
-YE,árabe yemení,2,2,Árabe con recursos; el dialecto yemení con pocos corpus
+YE,árabe yemení; árabe,2,4,IP por árabe (mejor recurso listado). Árabe con recursos; el dialecto yemení con pocos corpus
 DJ,francés; árabe; somalí; afar,2,5,IP por francés (mejor recurso listado). Francés y árabe con recursos; somalí y afar casi sin
 ZM,inglés; bemba; nyanja,3,5,IP por inglés (mejor recurso listado). Inglés con recursos; bemba y nyanja con corpus pequeños
 ZW,inglés; shona; ndebele,3,5,IP por inglés (mejor recurso listado). Inglés con recursos; shona y ndebele con corpus pequeños
