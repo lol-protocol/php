@@ -880,9 +880,12 @@ palabras no entiende contexto:
   deletreadas, irían a revisión).
 - Las listas de temas de los otros 31 idiomas son de arranque (10–18 palabras
   por tema, más `ambiguous`). Portugués, italiano y francés ya generan sus
-  formas regulares; los otros 28 no. Las amenazas con forma (`patterns`) sólo están en
+  formas regulares; alemán, neerlandés y turco, los plurales y la declinación
+  del adjetivo («Huren», «dumme», «kutten», «domme», «orospular»: ver
+  `GermanInflection`, `DutchInflection`, `TurkishInflection`; en alemán y
+  neerlandés el adjetivo declinado lleva el rasgo `infl`); los otros 25 no. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
-  Esos 28 no tienen plurales, géneros ni conjugaciones automáticos —sólo la
+  Esos 25 no tienen plurales, géneros ni conjugaciones automáticos —sólo la
   forma base y las que se añadan a mano con `also`—, y se escribieron
   sin revisión nativa. En japonés, cantonés y tailandés hace falta la
   extensión `intl` para encontrar palabras dentro de una frase (ver «Idiomas

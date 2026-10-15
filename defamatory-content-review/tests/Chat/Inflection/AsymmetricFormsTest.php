@@ -12,7 +12,7 @@ class AsymmetricFormsTest extends TestCase
 {
     private const CONFIG_DIR = __DIR__ . '/../../../config';
     private const TAGS = [
-        'sg', 'pl', 'm', 'f', 'm.sg', 'm.pl', 'f.sg', 'f.pl', 'verb',
+        'sg', 'pl', 'm', 'f', 'm.sg', 'm.pl', 'f.sg', 'f.pl', 'verb', 'infl',
         'dim', 'dim.sg', 'dim.pl', 'dim.m', 'dim.f', 'dim.m.sg', 'dim.m.pl', 'dim.f.sg', 'dim.f.pl',
     ];
 

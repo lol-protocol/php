@@ -15,8 +15,11 @@ final class TopicInflector
 {
     private const BY_LANGUAGE = [
         'spa' => SpanishInflection::class, 'eng' => EnglishInflection::class, 'por' => PortugueseInflection::class,
-        'ita' => ItalianInflection::class, 'fra' => FrenchInflection::class,
+        'ita' => ItalianInflection::class, 'fra' => FrenchInflection::class, 'deu' => GermanInflection::class,
+        'nld' => DutchInflection::class, 'tur' => TurkishInflection::class,
     ];
+    /** Idiomas cuyo adjetivo se declina sin cambiar de género: «dumme», «domme» llevan el rasgo `infl`. */
+    private const INFLECTED_ADJ = ['deu', 'nld'];
 
     /** @return array<int,string> */
     public static function forms(string $language, string $lemma, string $kind): array
@@ -26,11 +29,12 @@ final class TopicInflector
         return $class === null ? [$lemma] : (new $class())->forms($lemma, $kind);
     }
 
-    /** @return array<string,string> forma => rasgos: `sg`/`pl` (sustantivo), `m.sg`… `f.pl` (adjetivo), `verb` */
+    /** @return array<string,string> forma => rasgos: `sg`/`pl` (sustantivo), `m.sg`… `f.pl` (adjetivo), `infl` (adjetivo declinado), `verb` */
     public static function tagged(string $language, string $lemma, string $kind, bool $diminutives = false): array
     {
         $forms = self::forms($language, $lemma, $kind);
         if ($kind === 'verb') { return array_fill_keys($forms, 'verb'); }
+        if ($kind === 'adj' && in_array($language, self::INFLECTED_ADJ, true)) { return [$lemma => 'sg'] + array_fill_keys($forms, 'infl'); }
         $masculine = $kind === 'adj' ? self::forms($language, $lemma, 'noun') : $forms;
         $feminine = array_values(array_diff($forms, $masculine));
         $gender = $feminine === [] ? '' : 'm.';
