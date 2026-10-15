@@ -15,4 +15,4 @@ if (result.errors.length) {
   result.errors.forEach((e) => console.error(`  - ${e}`));
   process.exit(1);
 }
-console.log(`✔ ${result.records.length} laws valid`);
+console.log(`✔ ${result.records.length} laws valid, ${result.sources.length} field sources, ${result.changes.length} recorded changes`);

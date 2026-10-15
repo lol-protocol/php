@@ -8,8 +8,8 @@
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Attribution & integrity (general waivers void)",
-    "orphan_works": "Not specified",
-    "digital_protection": "Not specified",
+    "orphan_works": "Yes: arts. 12c-12e (added 2016, implementing Dir. 2012/28/EU) allow use of orphan works after diligent search; use ends if rightholder reappears",
+    "digital_protection": "Arts. 50a-50d (added by Act 9/2006): ban on circumventing effective TPMs and trafficking devices (50b); protection of electronic rights-management info",
     "fair_use_exceptions": "Closed list: private copying, quotation (art. 14), libraries/archives/education (art. 12)",
     "registration_required": "No",
     "enforcement_body": "Icelandic ministry responsible for culture (formerly Ministry of Education, Science and Culture)",
@@ -17,8 +17,59 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.althingi.is/lagas/154c/1972073.html",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "orphan_works": {
+        "url": "https://www.althingi.is/altext/145/s/0401.html",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "digital_protection": {
+        "url": "https://www.althingi.is//altext/stjt/2006.009.html",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "fair_use_exceptions": {
+        "url": "https://wipo.int/export/sites/www/copyright/en/docs/limitations/is.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Arts. 50a-50d (added by Act 9/2006): ban on circumventing effective TPMs and trafficking devices (50b); protection of electronic rights-management info"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "Yes: arts. 12c-12e (added 2016, implementing Dir. 2012/28/EU) allow use of orphan works after diligent search; use ends if rightholder reappears"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list: private copying, quotation (art. 14), libraries/archives/education (art. 12)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

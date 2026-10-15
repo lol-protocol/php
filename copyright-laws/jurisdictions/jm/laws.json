@@ -17,8 +17,48 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.jipo.gov.jm/node/25",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "orphan_works": {
+        "url": "https://webiis08.mondaq.com/copyright/710130/the-2015-jamaica-copyright-amendments-major-changes",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://www.iipa.org/files/uploads/2020/02/2020SPEC301JAMAICA.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Offences for TPM circumvention & altering rights-management information (2015)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "Specific orphan-works provisions added by 2015 amendment"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

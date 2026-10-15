@@ -17,8 +17,43 @@
     "treaties_not_party": "WCT/WPPT",
     "linked_resources": "https://copyright.go.ke/",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": ""
+    "last_checked": "",
+    "sources": {
+      "digital_protection": {
+        "url": "https://wipo.int/export/sites/www/copyright/en/docs/limitations/ke.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Anti-circumvention & rights-management info infringement (s. 35(3))"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright enforcement",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "linked_resources",
+        "from": "https://www.kipo.go.ke/",
+        "to": "https://copyright.go.ke/"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "enforcement_body",
+        "from": "Kenyan IP Office",
+        "to": "Kenya Copyright Board (KECOBO)"
+      }
+    ]
   }
 ]

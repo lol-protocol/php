@@ -17,8 +17,70 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/17267",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://malawilii.org/akn/mw/act/2016/26",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "orphan_works": {
+        "url": "https://infojustice.knowledgegov.org/?p=39003",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://infojustice.knowledgegov.org/?p=39003",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "fair_use_exceptions": {
+        "url": "https://eifl.net/system/files/resources/202407/teresa_slides_malico_meeting_july_2024_ed1.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Specific exceptions only (no fair dealing): libraries & archives (s. 48), education etc."
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "TPM & rights-management info protected (s. 86), with library-use safeguard"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "No specific provision"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Moral rights recognised (s. 30)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

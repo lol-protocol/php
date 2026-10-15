@@ -17,8 +17,59 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.peru.gob.pe/",
     "notes": "Amended by DL 1724 (2026-02-07): ISP liability safe harbours; INDECOPI enforces",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.wipo.int/wipolex/es/legislation/details/6493",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_body": {
+        "url": "https://gpg-pdf.chambers.com/doing-business-in-2025/663",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://busquedas.elperuano.pe/dispositivo/NL/2484948-7",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Amended by DL 1724 (2026-02-07): ISP liability safe harbours; INDECOPI enforces"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Protection against circumvention of effective technological measures & RMI (arts. 196A-196D)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Peruvian Copyright Office",
+        "to": "INDECOPI - Copyright Directorate (DDA)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright enforcement",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

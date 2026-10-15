@@ -200,3 +200,21 @@ test("data status: a facet, a low-confidence badge and the details on the card",
   assert.match(card, /Web research \(secondary sources\) · low confidence · checked/);
   await page.context().close();
 });
+
+test("the card lists every field with its source, upcoming changes and the change history", { skip }, async () => {
+  const { page, problems } = await newPage(app.browser);
+  await page.goto(url("country=sa"), { waitUntil: "networkidle" });
+  const card = page.locator("#countryCard");
+  const details = card.locator("details.law-details");
+  assert.equal(await details.evaluate((el) => el.open), true);
+  assert.ok((await details.locator(".detail-grid > div").count()) >= 8);
+  assert.match(await details.locator(".history").textContent(), /Law: Copyright Law 2026.*\(was: Saudi Copyright Law\)/);
+
+  await page.goto(url("country=ug"), { waitUntil: "networkidle" });
+  assert.match(await card.locator(".card-pending").textContent(), /Upcoming change · .*Amendment\) Bill 2025/);
+  assert.match(await page.locator("#lawsTableBody").textContent(), /Change pending/);
+  const sourced = card.locator(".detail-grid a.field-source").first();
+  assert.match(await sourced.getAttribute("aria-label"), /^Source: .+ · (high|medium|low) confidence · checked /);
+  assert.deepEqual(problems, []);
+  await page.context().close();
+});

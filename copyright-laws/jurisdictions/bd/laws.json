@@ -17,8 +17,25 @@
     "treaties_not_party": "WCT/WPPT",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/23028",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

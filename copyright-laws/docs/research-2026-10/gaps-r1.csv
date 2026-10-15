@@ -1,0 +1,27 @@
+code,field,value,conf,source
+KZ,orphan_works,"No specific orphan works provision found; CMOs must take measures to identify rightholders (Art. 46) and non-member rightholders may claim payments (Art. 45(4))",low,https://kodeksy-kz.com/ka/zakon_rk_ob_avtorskom_prave_i_smezhnyh_pravah/46.htm
+UZ,orphan_works,UNKNOWN,UNKNOWN,https://www.lex.uz/acts/1023494
+UY,orphan_works,"No specific orphan works provision (WIPO LatAm study: unregulated in region except Ecuador); 2016 bill proposed one, not enacted",medium,https://www.wipo.int/export/sites/www/ip-development/en/agenda/docs/2_part_2_legal_study_es.pdf
+VE,orphan_works,"No specific orphan works provision found in 1993 Law; CERLALC reports a total legal vacuum on orphan works in Latin America",low,https://www.prensa.com/impresa/vivir/Obras-huerfanas-Latinoamerica_0_3920608049.html
+PY,orphan_works,"No specific orphan works provision found in Law 1328/98; CERLALC reports a total legal vacuum on orphan works in Latin America",low,https://www.prensa.com/impresa/vivir/Obras-huerfanas-Latinoamerica_0_3920608049.html
+PY,digital_protection,"Art. 165: civil actions vs devices/services circumventing encryption or technical protection; Penal Code art. 184a (Law 3440/2008) punishes TPM circumvention",medium,http://www.sice.oas.org/int_prop/nat_leg/Paraguay/L132898c.asp
+CR,orphan_works,"No specific orphan works provision in Law 6683 (WIPO study of AR, BR, CR, EC, PE, UY: orphan works unregulated except Ecuador)",medium,https://www.wipo.int/export/sites/www/ip-development/en/agenda/docs/2_part_2_legal_study_es.pdf
+BO,orphan_works,"No specific orphan works provision found; anonymous works defined (Law 1322 art. 5(d); Reg. DS 23907 art. 2); CERLALC notes LatAm legal vacuum",low,https://www.lexivox.org/norms/BO-RE-DS23907.html
+BO,digital_protection,UNKNOWN,UNKNOWN,https://www.wipo.int/wipolex/es/legislation/details/494
+PA,orphan_works,"No specific orphan works provision found in Law 64/2012; CERLALC (Panama press) reports a total legal vacuum on orphan works in Latin America",low,https://www.prensa.com/impresa/vivir/Obras-huerfanas-Latinoamerica_0_3920608049.html
+TT,orphan_works,"No orphan works licensing scheme found; s.35(3) presumptions apply where author is dead or cannot be identified by reasonable inquiry",low,https://rgd.legalaffairs.gov.tt/laws2/Alphabetical_List/lawspdfs/82.80.pdf
+GT,orphan_works,"No specific orphan works provision found in Decree 33-98 (amended 2006, 2018); CERLALC reports a total legal vacuum in Latin America",low,https://www.prensa.com/impresa/vivir/Obras-huerfanas-Latinoamerica_0_3920608049.html
+EC,orphan_works,"Yes: orphan works regime; COESCCI regulation (SENESCYT-2020-077) requires diligent good-faith search; SENADI keeps orphan works notification register",medium,https://www.wipo.int/wipolex/en/legislation/details/20757
+PK,orphan_works,"No specific orphan works provision found; s.36 compulsory licence via Copyright Board for withheld published works; s.23 term for unknown-author works",low,https://www.wipo.int/wipolex/en/legislation/details/3482
+PK,digital_protection,"No express anti-circumvention or RMI provisions in the Ordinance (Chambers 2026); amendment bill with TPM clause pending in National Assembly",medium,https://practiceguides.chambers.com/practice-guides/trade-marks-copyright-2026/pakistan
+LK,orphan_works,"No orphan works provision found; law provides no non-voluntary/compulsory copyright licensing (Chambers 2026)",low,https://practiceguides.chambers.com/practice-guides/trade-marks-copyright-2026/sri-lanka/trends-and-developments
+LK,digital_protection,"s.23: making/importing devices to circumvent copy-protection and decoding encrypted programmes is unlawful, damages under s.22; no RMI provision found",medium,https://www.nipo.gov.lk/web/images/pdf_downloads/Intellectual_Property_Act_No_36_of_2003.pdf
+NP,orphan_works,UNKNOWN,UNKNOWN,http://www.nepalcopyright.gov.np/downloadfile/The%20Copyright%20Act_1315912777_1573122046.pdf
+NP,digital_protection,"s.25(e): importing, producing or renting devices made to circumvent anti-copying devices is prohibited; no RMI provision found",medium,http://www.nepalcopyright.gov.np/downloadfile/The%20Copyright%20Act_1315912777_1573122046.pdf
+KH,orphan_works,"No orphan works regime found; Art. 14: anonymous/pseudonymous author represented by publisher or person who first disclosed the work",low,https://www.cambodiaip.gov.kh/wp-content/uploads/DocResources/2536fcc7-e801-4855-a157-a8de52f77008_c786a043-b88d-4f64-9429-60a330efdc5f-en.pdf
+MN,orphan_works,UNKNOWN,UNKNOWN,https://legalinfo.mn/en/edtl/16531498267681
+MN,digital_protection,"Art. 53: TPMs defined; breaking/deactivating TPMs is infringement; 53.2 bans making/importing/supplying circumvention tools; RMI provision not confirmed",medium,https://legalinfo.mn/en/edtl/16531498267681
+MO,orphan_works,UNKNOWN,UNKNOWN,https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/mo/mo002en.html
+LA,orphan_works,UNKNOWN,UNKNOWN,https://www.wipo.int/wipolex/en/legislation/details/22624
+LA,digital_protection,"Law 50/NA: exceptions exclude copying needing TPM circumvention or RMI removal; bans circumventing TPMs of performers/phonogram producers; articles unverified",low,https://www.wipo.int/wipolex/en/legislation/details/22624
+NI,penalties_range,"Art. 46: sanctions are warning, temporary suspension of operations, temporary/permanent closure or cancellation of files; law sets no fixed fine amounts",medium,http://legislacion.asamblea.gob.ni/normaweb.nsf/9e314815a08d4a6206257265005d21f9/e5d37e9b4827fc06062579ed0076ce1d

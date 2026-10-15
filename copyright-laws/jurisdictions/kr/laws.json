@@ -17,8 +17,31 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.kipo.go.kr/",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": ""
+    "last_checked": "",
+    "sources": {
+      "enforcement_body": {
+        "url": "https://www.mcst.go.kr/english/policy/pressView.jsp?pSeq=524",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Korean Intellectual Property Office",
+        "to": "Ministry of Culture, Sports and Tourism (MCST)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

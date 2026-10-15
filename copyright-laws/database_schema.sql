@@ -41,6 +41,8 @@ CREATE TABLE copyright_laws (
   treaties_not_party VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Treaties confirmed NOT joined; a treaty in neither list is unconfirmed',
   linked_resources VARCHAR(512) COMMENT 'Official documentation links',
   notes TEXT COMMENT 'Caveats about the data (disputed terms, pending amendments)',
+  pending_change TEXT COMMENT 'A known upcoming change (bill, amendment, entry into force)',
+  pending_date DATE NULL COMMENT 'When the pending change is expected, if known',
   data_status VARCHAR(20) NOT NULL DEFAULT 'curated' COMMENT 'verified | researched | curated',
   confidence VARCHAR(10) NOT NULL DEFAULT '' COMMENT 'high | medium | low (researched rows)',
   last_checked DATE NULL COMMENT 'When the row was last checked',

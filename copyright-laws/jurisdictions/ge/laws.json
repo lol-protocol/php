@@ -9,7 +9,7 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity (inalienable)",
     "orphan_works": "Not specified",
-    "digital_protection": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)",
+    "digital_protection": "Art. 4 defines technological measures and circumvention; circumvention, trafficking in devices and removing electronic RMI are infringements (article no. unverified) (unconfirmed)",
     "fair_use_exceptions": "Closed list: personal copying (art. 21), quotation, criticism, teaching extracts (art. 23)",
     "registration_required": "No (voluntary registration with Sakpatenti available)",
     "enforcement_body": "National Intellectual Property Center of Georgia (Sakpatenti)",
@@ -17,8 +17,54 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=8740",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://matsne.gov.ge/en/document/view/16198",
+        "confidence": "low",
+        "checked": "2026-10-15"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.wipo.int/wipolex/en/text/481370",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)",
+        "to": "Art. 4 defines technological measures and circumvention; circumvention, trafficking in devices and removing electronic RMI are infringements (article no. unverified) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list: personal copying (art. 21), quotation, criticism, teaching extracts (art. 23)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

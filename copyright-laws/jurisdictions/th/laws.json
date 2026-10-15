@@ -17,8 +17,19 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.ipthailand.go.th/",
     "notes": "",
+    "pending_change": "Draft amendment (RCEP/WPPT) had a public hearing in Jun 2025; not enacted",
+    "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": ""
+    "last_checked": "",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS",
+        "to": "Berne/TRIPS/WCT"
+      }
+    ]
   }
 ]

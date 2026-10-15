@@ -17,8 +17,48 @@
     "treaties_not_party": "TRIPS",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/5201",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://review.tsul.uz/index.php/yfa/article/download/443/413/812",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.wipo.org/edocs/mdocs/copyright/en/wipo_cr_tbs_15/wipo_cr_tbs_15_z_ref_uzbekistan.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of free uses with attribution (e.g. quotation, blind, library lending)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Technical means of protection recognised (devices restricting use/copying) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

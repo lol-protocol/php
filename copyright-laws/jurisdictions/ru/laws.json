@@ -17,8 +17,86 @@
     "treaties_not_party": "",
     "linked_resources": "https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=RU",
     "notes": "Part IV Civil Code (eff. 2008-01-01) replaced the 1993 Law on Copyright and Related Rights",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=RU",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=RU",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://merlin.obs.coe.int/article/3163",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "registration_required": {
+        "url": "https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=RU",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_body": {
+        "url": "https://wipo.int/documents/d/copyright/docs-en-registration-replies-russia.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://en.wikipedia.org/wiki/Copyright_law_of_Russia",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Part IV Civil Code (eff. 2008-01-01) replaced the 1993 Law on Copyright and Related Rights"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "linked_resources",
+        "from": "https://www.rospatent.gov.ru/",
+        "to": "https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=RU"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Copyright Law",
+        "to": "Civil Code of the Russian Federation, Part IV (No. 230-FZ)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Technical protection measures & rights-management information (Civil Code arts. 1299-1300)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Russian Patent Office",
+        "to": "Federal Service for Intellectual Property (Rospatent)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright enforcement",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

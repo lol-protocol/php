@@ -28,3 +28,9 @@ candidates; the six Berne "no" results (Angola, Ethiopia, Iraq, Iran, Myanmar, T
 ## Currency sweep of the original rows (14 Oct 2026)
 
 `sweep-C1.csv`, `sweep-C2.csv`: every original row checked by web search for replaced or amended laws and wrong titles or dates. Fixes were applied to the master CSV; changed rows become `data_status=researched`. Notable: Saudi Arabia (Copyright Law 2026, Royal Decree M/169; term unconfirmed), UAE (Federal Decree-Law 38/2021), Nigeria (Copyright Act 2022), Russia (Civil Code Part IV), Belgium (Code of Economic Law Book XI), Spain (RDL 1/1996); Canada, Singapore, Chile and Israel now life + 70. Caveat: in `sweep-C2.csv` the rows for FI, IE, GR, AT, CZ, HU, RO, CO and CN were marked "current" without a search result behind them; they are unverified and stay `curated`.
+
+## Second pass on the remaining gaps (15 Oct 2026)
+
+`gaps-r0.csv` … `gaps-r3.csv`: another web-search pass on the cells still "Not specified" (and on the "WCT party … national rule not checked" placeholders), with value, confidence and source per cell. 46 cells filled (7 low-confidence, marked "(unconfirmed)"). Not applied: 22 `UNKNOWN` cells and 31 low-confidence "no provision found" answers, since no source states the absence. The Nicaragua privacy penalties found in the same pass (`NI,penalties_range` in `gaps-r1.csv`) were applied to the privacy dataset. No full statute text could be opened (search excerpts only).
+
+From 15 Oct 2026, applied values with a source are listed in `jurisdictions/field_sources.csv` (compiled from these files: only values that ended up in the master CSV), and every change to a row is in `jurisdictions/changes.csv`.
