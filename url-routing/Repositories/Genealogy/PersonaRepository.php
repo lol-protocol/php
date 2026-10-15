@@ -17,19 +17,18 @@ final class PersonaRepository extends Repository
     /** Generations walked by ascendencia/descendencia; also a cycle guard. */
     public const MAX_GENERACIONES = 8;
 
-    /** The persona's earliest event of $tipo as a subquery: $campo for the persona aliased p. */
-    private static function evento(string $campo, string $tipo): string
+    /** The persona's own birth or death as a subquery: $campo of her earliest $tipo event, for the persona aliased p. */
+    private function evento(string $campo, string $tipo): string
     {
-        return "SELECT s.{$campo} FROM sucesos s JOIN suceso_participantes sp ON sp.suceso_id = s.id
-                 WHERE sp.persona_id = p.id AND s.tipo = '{$tipo}' ORDER BY s.fecha LIMIT 1";
+        return $this->privacidad->sqlEventoDe('p', $tipo, $campo);
     }
 
     /** Birth and death come from the persona's events, the single source of truth for dates. */
     private function resumen(): string
     {
         return 'p.id, p.nombres, p.apellidos, p.sexo, p.oculta, '
-            . $this->privacidad->siVisible(self::evento('fecha', 'nacimiento')) . ' AS nacimiento, '
-            . $this->privacidad->siVisible(self::evento('fecha', 'defuncion')) . ' AS defuncion';
+            . $this->privacidad->siVisible($this->evento('fecha', 'nacimiento')) . ' AS nacimiento, '
+            . $this->privacidad->siVisible($this->evento('fecha', 'defuncion')) . ' AS defuncion';
     }
 
     /** @param array<string, mixed> $fila */
@@ -45,7 +44,7 @@ final class PersonaRepository extends Repository
     {
         $fila = $this->db->fetchOne(
             'SELECT ' . $this->resumen() . ', '
-                . $this->privacidad->siVisible(self::evento('lugar_ruta', 'nacimiento')) . " AS lugar_nacimiento,
+                . $this->privacidad->siVisible($this->evento('lugar_ruta', 'nacimiento')) . " AS lugar_nacimiento,
                     p.padre_id, p.madre_id, p.grupo_id, g.apellido AS grupo_apellido
                FROM {$this->privacidad->personas()} p
                LEFT JOIN grupos g ON g.id = p.grupo_id
