@@ -51,6 +51,11 @@ Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»
   «los putos deberes» pasa), «joto» y «trolo» se bloquean; «pija» y «pico» se
   suman a «coger» y «concha» en `ambiguous`, porque en otros países son
   cotidianas. `RegionalWordsTest`.
+- **Respuestas de `review/urgente/spa-genero.csv`**: «vaca» y «marrana»
+  dirigidas se bloquean, como «cerda»; «gorda» dirigida va a revisión (antes sólo
+  se informaba); «¡cojones!» baja a `low`, porque es una exclamación común; se añaden
+  «pendeja» (high), «lagarta» (medium) y «pájara» (low). El resto se confirma
+  como estaba.
 - **`'whenTargeted' => 'high'`** en una entrada: sube a esa severidad cuando va
   dirigida (`TargetContext`, `context => targeted`). «cerda» la usa: sola sigue en
   revisión porque también es apellido, pero «eres una cerda» se bloquea y «María
