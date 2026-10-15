@@ -49,6 +49,7 @@
 | Malasia | malayo; inglés; chino | estado | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). Malayo con recursos moderados; inglés abundante |
 | Malta | maltés; inglés | estado | 4 | 5 | 20 | no | IP por inglés (mejor recurso listado). Maltés con un treebank pequeño; inglés abundante |
 | Moldavia | rumano; ruso | estado | 4 | 5 | 20 | no | IP por ruso (mejor recurso listado). Rumano con treebank moderado; ruso con recursos |
+| México | español | estado | 4 | 5 | 20 | no | Español con recursos grandes; lenguas indígenas casi sin corpus |
 | Mónaco | francés | estado | 4 | 5 | 20 | no | Francés con treebanks grandes; mercado editorial pequeño |
 | Noruega | noruego | estado | 5 | 4 | 20 | no | Noruego con treebanks moderados (bokmål y nynorsk) |
 | Panamá | español | estado | 4 | 5 | 20 | no | Español con recursos grandes |
@@ -113,7 +114,6 @@
 | Marruecos | árabe; bereber; francés | estado | 3 | 5 | 15 | no | IP por francés (mejor recurso listado). Árabe estándar con recursos; dialecto marroquí y bereber con pocos |
 | Mauricio | inglés; francés; criollo mauriciano | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés y francés con recursos; el criollo con pocos |
 | Micronesia | inglés; chuukés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés con recursos; el chuukés con pocos |
-| México | español | estado | 3 | 5 | 15 | no | Español con recursos grandes; lenguas indígenas casi sin corpus |
 | Namibia | inglés; afrikáans; oshiwambo | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Inglés y afrikáans con recursos; el oshiwambo con pocos |
 | Nauru | nauruano; inglés | estado | 3 | 5 | 15 | no | IP por inglés (mejor recurso listado). Nauruano sin recursos digitales; inglés con recursos |
 | Nicaragua | español | estado | 3 | 5 | 15 | no | Español con recursos grandes |
@@ -186,7 +186,7 @@
 | Laos | lao | estado | 3 | 2 | 6 | no | Lao con recursos mínimos |
 | Myanmar | birmano | estado | 3 | 2 | 6 | no | Birmano con recursos mínimos; poco texto digital abierto |
 | Pakistán | urdu; punyabí; pastún | estado | 2 | 3 | 6 | no | Urdu con un treebank pequeño; punyabí y pastún con muy pocos recursos |
-| Benín | francés | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización baja; francés con recursos; lenguas nacionales sin recursos |
+| Benín | francés | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; francés con recursos; lenguas nacionales sin recursos |
 | Burkina Faso | francés; moré | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; el moré casi no tiene recursos |
 | Burundi | kirundi; francés | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). El kirundi no tiene corpus anotados; el francés sí tiene recursos |
 | Chad | árabe chadiano; francés | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja y casi sin recursos digitales |
@@ -194,7 +194,7 @@
 | Malí | francés; bambara | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; el bambara casi no tiene recursos |
 | Níger | francés; hausa; zarma | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; hausa y zarma casi sin recursos |
 | República Centroafricana | sango; francés | estado | 1 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; el sango no tiene recursos digitales |
-| Sierra Leona | inglés; krio | estado | 1 | 5 | 5 | no | IP por inglés (mejor recurso listado). Alfabetización baja; el krio tiene pocos textos digitales |
+| Sierra Leona | inglés; krio | estado | 1 | 5 | 5 | no | IP por inglés (mejor recurso listado). Alfabetización muy baja; el krio tiene pocos textos digitales |
 | Sudán del Sur | inglés; árabe juba | estado | 1 | 5 | 5 | no | IP por inglés (mejor recurso listado). Alfabetización muy baja; sin recursos anotados |
 | Etiopía | amárico | estado | 2 | 2 | 4 | no | Amárico con corpus pequeños |
 | Somalia | somalí; árabe | estado | 1 | 4 | 4 | no | IP por árabe (mejor recurso listado). El somalí no tiene corpus anotados |

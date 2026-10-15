@@ -97,7 +97,7 @@ de medios e internet) son los mismos que los de Vietnam, que la rúbrica ya marc
 Camboya y Vietnam tienen IO = 2 («difícil»): sus índices los marcan como difíciles, no como
 inviables, así que con este umbral **siguen dentro**. Esa fue la decisión tomada. Para sacarlos
 habría que bajar su IO a 1, lo que la rúbrica no justifica, o subir el umbral a IO ≤ 2, que deja
-fuera 55 países. El umbral está en `UMBRAL_GENEALOGIA` de `generar_tabla.py`.
+fuera 54 países. El umbral está en `UMBRAL_GENEALOGIA` de `generar_tabla.py`.
 
 ## Etiquetador POS: índices IL e IP
 
@@ -209,7 +209,10 @@ Léelo antes de usar la tabla para decidir.
   `NY.GDP.PCAP.PP.CD` (que hay que confirmar al consultarlo). No se han cargado cifras de memoria
   para esta columna, para no mezclar dos métodos sin fuente.
 - **Celdas vacías (—):** cuando no hay una cifra fiable se deja vacía. Por ejemplo, el IDH de
-  Corea del Norte, Palestina, Siria o Nauru, o el PIB per cápita de Cuba o Corea del Norte.
+  Corea del Norte, Palestina, Siria o Nauru, o el PIB per cápita de Cuba o Corea del Norte. Una
+  revisión posterior también vació nueve IDH que quedaban fuera de su grupo de desarrollo humano:
+  Cuba, Perú, Turkmenistán, Kirguistán, Benín, Tanzania, Libia, Gabón y Cabo Verde. No se
+  reemplazaron por otra cifra de memoria.
 - **Población histórica acumulada: sin datos todavía.** `historia_poblacion.py` está listo para
   calcularla en cuanto existan `poblacion_larga.csv` y, si se quiere, `natalidad.csv`.
 - **IG, IO, IL e IP:** son juicio propio, con las rúbricas de arriba. No son datos oficiales.
@@ -231,6 +234,16 @@ Léelo antes de usar la tabla para decidir.
 4. **Contrastar población, IDH y PIB per cápita nominal** con las fuentes oficiales.
 5. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
 6. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
-   55. Camboya y Vietnam siguen dentro, por decisión tomada.
-7. **Agregar este proyecto a la tabla de `README.md` de la raíz.** Ese archivo es compartido,
+   54. Camboya y Vietnam siguen dentro, por decisión tomada.
+7. **Lenguas listadas en `idioma_principal`:** no hay un criterio único. Algunos países listan el
+   inglés o el ruso y otros no, aunque su comentario de genealogía los nombre. Como IP toma la
+   lengua con más recursos, eso cambia el puntaje: Baréin, Kuwait, Catar y Emiratos listan el
+   inglés (IP 5), pero Omán y Jordania no (IP 4); Kazajistán y Kirguistán listan el ruso (IP 5),
+   pero Uzbekistán, Tayikistán, Armenia, Azerbaiyán, Mongolia y Turkmenistán no. Hay que fijar
+   si se listan solo las lenguas oficiales o todas las de uso amplio.
+8. **Factor de operabilidad sin justificar:** unos 18 países tienen IO 2 o 3 sin que su comentario nombre
+   un factor de operabilidad (mercado, pagos, conectividad). Es el caso de varios micro-estados y
+   de África occidental (Albania, Armenia, Belice, Benín, Paraguay, República Dominicana, Samoa y
+   otros). Hay que añadir el factor al comentario o revisar el puntaje.
+9. **Agregar este proyecto a la tabla de `README.md` de la raíz.** Ese archivo es compartido,
    así que el cambio va en un PR aparte.
