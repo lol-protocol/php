@@ -16,6 +16,8 @@ desde la prehistoria.
 - `paises.csv`: datos generales, una fila por país. Es la fuente de verdad de genealogía.
 - `paises_pos.csv`: campos del etiquetador POS, unidos a `paises.csv` por `codigo`.
 - `generar_tabla.py`: valida los dos CSV y genera `tabla_genealogia.md` y `tabla_pos.md`.
+- `niveles_lenguas.csv`: nivel de recursos de cada lengua (1 a 5). IP de cada país es el máximo
+  de sus lenguas; `generar_tabla.py` comprueba que coincida.
 - `historia_poblacion.py`: calcula la población histórica acumulada y la escribe en `paises.csv`.
   Necesita datos de entrada que todavía no están (ver «Población histórica acumulada»).
 
@@ -74,7 +76,7 @@ parroquiales, digitalizados y accesibles.
 - 1: prácticamente nulo, o sin acceso a los registros.
 
 **IO (operabilidad, 1–5).** Qué tan bueno es operar ahí: estabilidad política, sanciones, pagos e
-internet, marco legal de datos personales e idioma.
+internet y marco legal de datos personales. El idioma no entra en IO: ninguno de sus puntajes lo usa.
 
 - 5: estable, sin sanciones, con pagos y datos sin fricción.
 - 4: operable con fricciones menores (burocracia, regulación de datos exigente).
@@ -86,7 +88,7 @@ internet, marco legal de datos personales e idioma.
 
 **Excluido** = IO ≤ 1. Quedan fuera **23 países**, cerca del objetivo de unos 20: Afganistán,
 Bielorrusia, Burkina Faso, Corea del Norte, Cuba, Eritrea, Haití, Irán, Libia, Malí, Myanmar,
-Níger, República Centroafricana, RD del Congo, Rusia, Siria, Somalia, Sudán, Sudán del Sur,
+Níger, República Centroafricana, República Democrática del Congo, Rusia, Siria, Somalia, Sudán, Sudán del Sur,
 Turkmenistán, Venezuela, Yemen y Palestina.
 
 Nicaragua tenía IO = 1 y ahora tiene IO = 2: sus sanciones son parciales y sus factores (control
@@ -119,7 +121,9 @@ texto digital utilizable. **No usa sanciones ni política**: eso lo cubre IO.
 - 1: sin recursos abiertos en ninguna de las lenguas listadas.
 
 **Criterio de IP (vigente, elegido por ti):** IP toma la lengua de `idioma_principal` con más
-recursos. Así, en un país con inglés y otra lengua, cuenta el inglés. Los países que cambiaron
+recursos. Así, en un país con inglés y otra lengua, cuenta el inglés. Los niveles de cada lengua
+están en `niveles_lenguas.csv`, y `generar_tabla.py` se detiene si un IP no es el máximo de sus
+lenguas o si una lengua no tiene nivel. Los países que cambiaron
 de puntaje llevan el comentario «IP por …» para que se vea de qué lengua sale.
 
 **Consecuencia que hay que conocer:** casi todos los países listan inglés, francés, español o

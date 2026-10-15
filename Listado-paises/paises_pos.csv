@@ -42,7 +42,7 @@ CY,griego; turco,4,5,IP por turco (mejor recurso listado). Griego con treebank m
 CO,español,4,5,Español con recursos grandes; variedad colombiana bien cubierta
 KM,shikomor; francés; árabe,2,5,IP por francés (mejor recurso listado). El shikomor no tiene corpus anotados
 CG,francés; lingala,3,5,IP por francés (mejor recurso listado). Francés con recursos; lingala con pocos corpus
-KP,coreano,3,4,"IP por el coreano (mejor recurso listado). El acceso a texto de Corea del Norte es un problema de IO, no de IP."
+KP,coreano,3,4,"IP por coreano (mejor recurso listado). El acceso a texto de Corea del Norte es un problema de IO, no de IP."
 KR,coreano,5,4,Mercado editorial grande; coreano con treebanks moderados
 CI,francés,2,5,IP por francés (mejor recurso listado). Francés con recursos; lenguas locales sin corpus
 CR,español,4,5,Español con recursos grandes

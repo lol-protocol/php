@@ -5,6 +5,7 @@ Uso: python3 generar_tabla.py   (solo biblioteca estándar de Python 3)
 
 Genealogía (paises.csv):      prioridad = IG x IO;  excluido si IO <= UMBRAL_GENEALOGIA
 Etiquetador POS (paises_pos.csv): prioridad = IL x IP;  excluido si IP <= UMBRAL_POS
+  IP debe ser el máximo de los niveles (niveles_lenguas.csv) de las lenguas de idioma_principal.
 """
 import csv
 import sys
@@ -13,6 +14,7 @@ from pathlib import Path
 AQUI = Path(__file__).resolve().parent
 PAISES = AQUI / "paises.csv"
 POS = AQUI / "paises_pos.csv"
+NIVELES = AQUI / "niveles_lenguas.csv"
 SALIDA_GENEALOGIA = AQUI / "tabla_genealogia.md"
 SALIDA_POS = AQUI / "tabla_pos.md"
 
@@ -79,8 +81,19 @@ def main():
         errores += errores_de("paises.csv", linea, f, ESCALAS_PAISES, NUMERICAS_PAISES)
         if f.get("tipo") not in TIPOS:
             errores.append(f"paises.csv línea {linea} ({f.get('codigo')}): tipo '{f.get('tipo')}' no válido")
+    niveles = {f["lengua"]: int(f["nivel"]) for _, f in leer(NIVELES, ["lengua", "nivel"])}
     for linea, f in pos:
         errores += errores_de("paises_pos.csv", linea, f, ESCALAS_POS, [])
+        langs = [l.strip() for l in f["idioma_principal"].split(";")]
+        sin_nivel = [l for l in langs if l not in niveles]
+        if sin_nivel:
+            errores.append(f"paises_pos.csv línea {linea} ({f['codigo']}): "
+                           f"lenguas sin nivel en niveles_lenguas.csv: {sin_nivel}")
+        elif f["indice_pos"] in {"1", "2", "3", "4", "5"}:
+            esperado = max(niveles[l] for l in langs)
+            if int(f["indice_pos"]) != esperado:
+                errores.append(f"paises_pos.csv línea {linea} ({f['codigo']}): "
+                               f"IP {f['indice_pos']} debería ser {esperado} (máximo de sus lenguas)")
 
     codigos_paises = [f["codigo"] for _, f in paises]
     codigos_pos = [f["codigo"] for _, f in pos]

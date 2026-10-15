@@ -141,7 +141,7 @@
 | Arabia Saudita | árabe | estado | 3 | 4 | 12 | no | Árabe estándar con corpus y treebanks; dialectos con poca cobertura |
 | Azerbaiyán | azerí | estado | 4 | 3 | 12 | no | Azerí con recursos pequeños |
 | Bosnia y Herzegovina | bosnio; croata; serbio | estado | 3 | 4 | 12 | no | IP por croata (mejor recurso listado). Croata y serbio con recursos moderados; bosnio limitado |
-| Corea del Norte | coreano | estado | 3 | 4 | 12 | no | IP por el coreano (mejor recurso listado). El acceso a texto de Corea del Norte es un problema de IO, no de IP. |
+| Corea del Norte | coreano | estado | 3 | 4 | 12 | no | IP por coreano (mejor recurso listado). El acceso a texto de Corea del Norte es un problema de IO, no de IP. |
 | Georgia | georgiano | estado | 4 | 3 | 12 | no | Georgiano con un treebank pequeño |
 | Indonesia | indonesio | estado | 3 | 4 | 12 | no | Indonesio con treebanks moderados |
 | Irak | árabe; kurdo | estado | 3 | 4 | 12 | no | IP por árabe (mejor recurso listado). Árabe con recursos; kurdo con corpus pequeños |
