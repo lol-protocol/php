@@ -2,7 +2,7 @@
 
 /** Hungarian chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'hun', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'hun', 'kind' => 'chat-topics', 'collapseRepeats' => true],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['te', 'ti', 'vagy', 'vagytok', 'te hülye', 'te mocskos', 'mocskos', 'büdös', 'kövér', 'hülye', 'rohadt', 'vén', 'ez a'],

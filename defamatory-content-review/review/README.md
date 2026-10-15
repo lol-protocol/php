@@ -52,9 +52,10 @@ Las pocas filas que bloquean una decisión, para no pedirle a nadie que revise
 decidir) y `ejemplos` (frases reales con la decisión actual del chat). Se
 aplican igual: `php bin/apply-review.php tha review/urgente/tha.csv`.
 
-`urgente/spa-genero.csv` reúne 22 decisiones de género y número del español
+`urgente/spa-genero.csv` reunía 22 decisiones de género y número del español
 (cerdos/cerdas, putas, vaca, mona, «¡cojones!», «los putos deberes»,
-diminutivos…): para quien hable español, unos 15 minutos.
+diminutivos…). Ya están respondidas y aplicadas: la columna `comentario` dice qué
+se hizo con cada una.
 
 `บ้า` tiene un cambio **provisional** a la espera de esa revisión: el chat lo
 ignora suelto (casi siempre es una exclamación: «บ้าจริง», «maldita sea») y

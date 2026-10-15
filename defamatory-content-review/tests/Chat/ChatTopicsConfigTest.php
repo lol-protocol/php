@@ -73,8 +73,8 @@ class ChatTopicsConfigTest extends TestCase
     {
         $config = require $file;
 
-        if (!($config['meta']['collapseRepeats'] ?? false)) {
-            $this->assertSame([], $config['legit'] ?? [], 'legit sólo se usa con meta.collapseRepeats');
+        if (($config['meta']['collapseRepeats'] ?? 'elongated') !== true) {
+            $this->assertSame([], $config['legit'] ?? [], 'legit sólo se usa con meta.collapseRepeats => true (las dobles)');
         }
         $this->assertTrue(true);
     }

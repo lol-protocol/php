@@ -12,8 +12,8 @@ final class SheetVocabulary
 {
     /** Las listas de una línea que bin/review-sheets.php pone en la columna `categoria` de las filas `excepción`. */
     public const LISTS = ['everyday', 'legit'];
-    /** Los rasgos de una forma generada (ver FormSeverity): `pl`, `f`, `m.sg`, `f.pl`. */
-    public const TAG = '/^[a-z]+(?:\.[a-z]+)?$/';
+    /** Los rasgos de una forma generada (ver FormSeverity): `pl`, `f`, `m.sg`, `f.pl`, y los diminutivos `dim.sg`, `dim.f.pl`. */
+    public const TAG = '/^(?:dim(?:\.[a-z]+){0,2}|[a-z]+(?:\.[a-z]+)?)$/';
 
     /**
      * Por qué la fila trae un nombre que el generador no escribe, o null si está bien. Sólo mira las
@@ -27,7 +27,7 @@ final class SheetVocabulary
             return "la lista «{$row['categoria']}» no es una de las que se pueden tocar (" . implode(', ', self::LISTS) . ')';
         }
         if ($row['seccion'] === 'forma' && preg_match('/forma:(\S+) de:/u', $row['marcas'], $form) === 1 && preg_match(self::TAG, $form[1]) !== 1) {
-            return "«{$form[1]}» no es una etiqueta de forma (m.sg, f.pl, pl, f…)";
+            return "«{$form[1]}» no es una etiqueta de forma (m.sg, f.pl, pl, f, dim.f.sg…)";
         }
 
         return null;

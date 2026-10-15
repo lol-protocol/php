@@ -2,7 +2,9 @@
 
 ## [Sin publicar]
 
-La próxima versión es **5.0.0**: las clases cambian de namespace.
+## [5.0.0] - 2026-10-15
+
+Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»).
 
 ### Cambiado (incompatible)
 
@@ -43,6 +45,58 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
   `chat-lines-coverage.php`, por el test que las usa. `FileSizeLimitTest` recorre subcarpetas.
 
 ### Añadido
+
+- **Palabras de varios países en el español base** (el idioma sigue siendo
+  `spa`, sin variantes por país): «puto» (`targeted`: «eres un puto» se bloquea,
+  «los putos deberes» pasa), «joto» y «trolo» se bloquean; «pija» y «pico» se
+  suman a «coger» y «concha» en `ambiguous`, porque en otros países son
+  cotidianas. `RegionalWordsTest`.
+- **Respuestas de `review/urgente/spa-genero.csv`**: «vaca» y «marrana»
+  dirigidas se bloquean, como «cerda»; «gorda» dirigida va a revisión (antes sólo
+  se informaba); «¡cojones!» baja a `low`, porque es una exclamación común; se añaden
+  «pendeja» (high), «lagarta» (medium) y «pájara» (low). El resto se confirma
+  como estaba.
+- **`'whenTargeted' => 'high'`** en una entrada: sube a esa severidad cuando va
+  dirigida (`TargetContext`, `context => targeted`). «cerda» la usa: sola sigue en
+  revisión porque también es apellido, pero «eres una cerda» se bloquea y «María
+  Cerda» se aprueba.
+- **Letras repetidas en todos los idiomas.** Las rachas de 3 o más («cazzzo»,
+  «Arschloooch», «сууука») se leen siempre: contra las 50 000 palabras más
+  frecuentes de 26 idiomas, ningún falso positivo nuevo. Reducir las dobles
+  («puuta», a revisión) pasa de español e inglés a 18 idiomas más (portugués,
+  alemán, ruso, polaco, turco, árabe, sueco, danés, rumano, indonesio, checo,
+  eslovaco, húngaro, búlgaro, ucraniano, griego, coreano, vietnamita), donde la
+  misma medición casi no cambia; lo legítimo que apareció («Pollack», «Scott»,
+  «sesaat», «للعين») va a `legit`. Italiano, francés, neerlandés, noruego, finés,
+  islandés y hebreo no reducen dobles: ahí son parte de la palabra («anno» →
+  «ano», «penne» → «pene»). `meta.collapseRepeats` acepta ahora `true`, el
+  valor por defecto (sólo rachas de 3 o más) o `false`.
+- **Plurales y declinación en alemán, neerlandés y turco** (`GermanInflection`,
+  `DutchInflection`, `TurkishInflection`): «Huren», «Idioten», «dumme/dummer…»,
+  «kutten», «apen», «domme», «orospular», «salaklar». En alemán y neerlandés el
+  adjetivo declinado lleva el rasgo `infl`. `forms` en 470 entradas, fuera de
+  etnia, religión y discapacidad y sin las que chocan con palabras comunes
+  («pik» → «pikken», «nicht» → «nichten»); lo generado llega como mucho a
+  revisión. Las formas nuevas que aparecen en las listas de frecuencia son
+  todas declinaciones de términos que ya se detectaban.
+
+- **Diminutivos y plurales de insultos sexualizados en portugués, italiano
+  y francés** (#91). `Diminutives` genera los diminutivos regulares del
+  español (-ito/-ita, -cito/-cita) y del portugués (-inho/-inha,
+  -zinho/-zinha) con sus rasgos (`dim.sg`, `dim.f.pl`…). Cambian el tono en
+  cualquier dirección («putita» degrada más, «cerdita» es cariñoso), así
+  que sólo se generan si `by` lo pide con una clave `dim`. Español: putita,
+  zorrita. Portugués: putas, putinha, vagabundas, rameiras. Italiano:
+  puttane, troie, zoccole, mignotte, baldracche y el femenino de `porco`.
+  Francés: putes, putains, salopes, garces, catins. Quedan fuera los
+  plurales con otro uso cotidiano (piranhas, galinhas, vacche, traînées).
+  `PortugueseInflection` reconoce «-ão» con tilde («ladrões»). Medido con
+  las 50.000 palabras más frecuentes de cada idioma: cambian exactamente
+  las formas declaradas. Las planillas de revisión traen ahora también las
+  filas de diminutivo (`forma:dim.sg de:puta`), y `SheetVocabulary` acepta
+  esas etiquetas al aplicarlas (antes sólo admitía rasgos de un punto, así
+  que una respuesta sobre «putitas» se habría rechazado). Planillas de spa,
+  por, ita y fra regeneradas.
 
 - **Frases con forma deletreadas**: «t e v o y a m a t a r», «i w i l l k i l l y o u»
   se bloquean como la amenaza escrita normal (`SpacedRunTerms`).
@@ -320,6 +374,14 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
   verifica que cada una siga haciendo falta.
 
 ### Arreglado
+
+- **Hallazgos duplicados por letras sueltas**: en «p u t a, eres una puta» la
+  «puta» escrita normal también se rotulaba como deletreada, y salían tres
+  hallazgos (uno «p u ta»). `ChatMatches::restore` devuelve el texto deletreado
+  sólo tantas veces como rachas se unieron, y sólo a palabras enteras.
+- **El endpoint mostraba dos veces una palabra que es de dos tipos**: «follar»
+  (insulto y contenido sexual) salía una vez por tipo. Ahora sale una por
+  aparición, con `contentTypes` (y el primero en `contentType`, como antes).
 
 - **Un byte UTF-8 inválido aprobaba la línea entera**: «eres una puta \xff»
   hacía fallar todas las expresiones regulares y no se encontraba nada. Lo mismo

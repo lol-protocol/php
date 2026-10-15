@@ -14,10 +14,12 @@
  *   del mismo riskType y de severidad medium o high (ver ChatTopics).
  * - 'patterns': frases con forma, como expresión regular sin delimitadores
  *   contra el texto plegado: minúsculas, sin tildes y sin puntuación.
- * - meta 'collapseRepeats' => true: lee también la línea sin letras repetidas
- *   («puuuuta»). Sólo se activa en los idiomas cuyos falsos positivos se midieron
- *   contra una lista de palabras reales: en otros (italiano, finés…) la doble
- *   letra es parte de la palabra.
+ * - meta 'collapseRepeats': todos los idiomas leen 3 o más letras iguales como
+ *   una o dos («puuuuta», «cazzzo»): eso nadie lo escribe sin querer. Con `true`
+ *   también reduce las dobles («puuta»; lo hallado así va a revisión). Sólo en los
+ *   idiomas cuyos falsos positivos se midieron contra una lista de palabras reales:
+ *   en otros (italiano, finés…) la doble letra es parte de la palabra («anno» → «ano»).
+ *   `false` apaga las dos.
  * - 'legit' => [...]: palabras con letra doble legítima (y apellidos) cuya lectura
  *   sin repetidas coincide con un insulto: «calle» → «calé». Nunca se leen colapsadas.
  * - 'everyday' => [...]: palabras cotidianas que, escritas exactamente así (da igual
@@ -78,6 +80,9 @@ return [
             ['word' => 'coger', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'verb'],
             ['word' => 'paja', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'concha', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
+            // «pija» (Argentina) y «pico» (Chile) son vulgares allá, pero «una pija» (pija = presumida) y «las tres y pico» no: sólo cuentan acompañadas.
+            ['word' => 'pija', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
+            ['word' => 'pico', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'bomba', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
         ],
     ],
