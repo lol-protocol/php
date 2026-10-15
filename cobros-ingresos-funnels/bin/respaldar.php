@@ -6,10 +6,10 @@ declare(strict_types=1);
  * Hace un respaldo de la base con pg_dump y borra los viejos. Pensado para cron, una vez por dia.
  *
  * Uso:
- *   php database/respaldar.php                        respalda en RESPALDOS_CARPETA (por defecto, respaldos/ del proyecto)
- *   php database/respaldar.php --carpeta=/var/backups/cobros
- *   php database/respaldar.php --dias=30              cuantos dias conservar los respaldos (14 por defecto)
- *   php database/respaldar.php --ayuda
+ *   php bin/respaldar.php                        respalda en RESPALDOS_CARPETA (por defecto, respaldos/ del proyecto)
+ *   php bin/respaldar.php --carpeta=/var/backups/cobros
+ *   php bin/respaldar.php --dias=30              cuantos dias conservar los respaldos (14 por defecto)
+ *   php bin/respaldar.php --ayuda
  *
  * Variables: las DB_* de la app, y ademas RESPALDOS_CARPETA, PG_DUMP y PG_RESTORE (la ruta de esos
  * dos programas, si no estan en el PATH).
@@ -28,10 +28,10 @@ use App\Respaldo\RespaldoFallido;
 
 const USO = <<<'TEXTO'
 Uso:
-  php database/respaldar.php                        respalda en RESPALDOS_CARPETA (por defecto, respaldos/ del proyecto)
-  php database/respaldar.php --carpeta=/var/backups/cobros
-  php database/respaldar.php --dias=30              cuantos dias conservar los respaldos (14 por defecto)
-  php database/respaldar.php --ayuda
+  php bin/respaldar.php                        respalda en RESPALDOS_CARPETA (por defecto, respaldos/ del proyecto)
+  php bin/respaldar.php --carpeta=/var/backups/cobros
+  php bin/respaldar.php --dias=30              cuantos dias conservar los respaldos (14 por defecto)
+  php bin/respaldar.php --ayuda
 
 TEXTO;
 

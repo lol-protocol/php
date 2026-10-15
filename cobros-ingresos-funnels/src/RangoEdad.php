@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App;
 
 /**
  * El tramo de edad de una persona, como expresion SQL. Lo usan la

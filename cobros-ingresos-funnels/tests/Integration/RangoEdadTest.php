@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use App\Database;
-use App\Repositories\RangoEdad;
+use App\RangoEdad;
 
 /** Corre contra la base configurada por las env vars DB_* (la expresion es SQL). */
 final class RangoEdadTest extends IntegracionTestCase

@@ -7,7 +7,7 @@ namespace App\Tests\Integration;
 use App\Database;
 use App\MayoriaDeEdad;
 use App\Repositories\ClienteRepository;
-use App\Repositories\RangoEdad;
+use App\RangoEdad;
 use App\Validacion;
 use DateTimeImmutable;
 use PDO;

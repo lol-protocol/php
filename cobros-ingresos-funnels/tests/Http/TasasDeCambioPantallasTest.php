@@ -61,7 +61,7 @@ final class TasasDeCambioPantallasTest extends HttpTestCase
             $cuerpo = $this->get("page={$pantalla}")['cuerpo'];
 
             self::assertStringContainsString('Las tasas de cambio son de ejemplo, no reales', $cuerpo, $pantalla);
-            self::assertStringContainsString('php database/actualizar_tasas.php', $cuerpo, "{$pantalla} dice como cargar las reales");
+            self::assertStringContainsString('php bin/actualizar_tasas.php', $cuerpo, "{$pantalla} dice como cargar las reales");
             self::assertStringNotContainsString('Cifras en USD:', $cuerpo, $pantalla);
         }
     }
