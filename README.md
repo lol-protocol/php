@@ -76,6 +76,7 @@ proyecto.
 - `document-formats`: tests en Node de `document-formats/`.
 - `document-formats-database`: importa `document-formats/` a MySQL (dos veces, para comprobar que no duplica filas) y lo valida contra los CSV.
 - `web-animations`: prueba de humo de las animaciones.
+- `listado-colores`: valida los CSV de `Listado-colores/` y que la tabla del README y `colores-por-idioma.md` estén al día (`python3 generar-tabla.py --comprobar`).
 
 `sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`).
 
