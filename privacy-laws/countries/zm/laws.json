@@ -11,7 +11,7 @@
     "applies_to": "Public & private data controllers and processors",
     "key_requirements": "Registration of controllers and processors, licensing of data auditors, data subject rights",
     "data_categories": "Personal data; sensitive data",
-    "retention_period": "Not specified",
+    "retention_period": "s.12 principles: stored in a form permitting identification no longer than necessary for the purposes of processing",
     "enforcement_authority": "Office of the Data Protection Commissioner",
     "penalties_range": "Up to 500,000 penalty units and/or 5 years' imprisonment",
     "exemptions": "National security; household use",
@@ -20,8 +20,36 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Commenced by SI 22 of 2021; Office operational only from 2025; registration due 30 Apr 2025",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "low",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://zambialii.org/akn/zm/act/2021/3/eng@2021-03-24",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://bowmanslaw.com/insights/zambia-employers-obligations-under-the-data-protection-act/",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "s.12 principles: stored in a form permitting identification no longer than necessary for the purposes of processing"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

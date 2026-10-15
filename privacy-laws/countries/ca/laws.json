@@ -20,8 +20,25 @@
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
     "notes": "Private sector national standard",
+    "pending_change": "Bill C-36 (Protecting Privacy and Consumer Data Act), tabled 15 Jun 2026, would replace PIPEDA Part 1; not enacted",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2000-04-13",
+        "to": "2001-01-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2000-01-01",
+        "to": "2000-04-13"
+      }
+    ]
   }
 ]

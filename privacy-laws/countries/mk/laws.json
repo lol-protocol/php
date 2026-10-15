@@ -20,8 +20,25 @@
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced 2005 law; GDPR-modelled; in force 24 Feb 2020; full application 24 Aug 2021",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "high",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.karanovicpartners.com/news/in-the-data-protection-crosshairs-new-legislation-in-north-macedonia/",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

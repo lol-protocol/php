@@ -20,8 +20,53 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.Datatilsynet.dk/media/7753/danish-data-protection-act.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.dataguidance.com/legal-research/act-no-502-23-may-2018-supplementary-0",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://iptiq.com/european-data-protection-authorities.html",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2018-05-23"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Law",
+        "to": "Data Protection Act (Act No. 502 of 23 May 2018)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Danish Authority",
+        "to": "Danish Data Protection Agency (Datatilsynet)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

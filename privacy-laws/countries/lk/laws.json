@@ -11,7 +11,7 @@
     "applies_to": "Public & private controllers and processors",
     "key_requirements": "Lawful & transparent processing, data protection officers, breach reporting, impact assessments",
     "data_categories": "Personal data; special categories",
-    "retention_period": "Not specified",
+    "retention_period": "s.9 limit on retention period: identifiable data kept only as long as necessary for purposes; archiving/research exceptions (Part I not yet in force)",
     "enforcement_authority": "Data Protection Authority of Sri Lanka",
     "penalties_range": "Up to LKR 10M per non-compliance (doubled for repeats)",
     "exemptions": "Personal or household use; national security",
@@ -20,8 +20,31 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Phased: DPA set up 2023; Parts I & III start 2027-01-01; penalties (Part VII) not yet in force",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "retention_period": {
+        "url": "https://documents.gov.lk/view/acts/2022/3/09-2022_E.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "s.9 limit on retention period: identifiable data kept only as long as necessary for purposes; archiving/research exceptions (Part I not yet in force)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

@@ -20,8 +20,64 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.jonesday.com/en/insights/2018/09/belgium-publishes-data-protection-laws-implementin",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.jonesday.com/en/insights/2018/09/belgium-publishes-data-protection-laws-implementin",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.jonesday.com/en/insights/2018/09/belgium-publishes-data-protection-laws-implementin",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://noyb.eu/en/node/494",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2018-07-01",
+        "to": "2018-09-05"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-07-01",
+        "to": "2018-07-30"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Law",
+        "to": "Law of 30 July 2018 on the protection of natural persons with regard to the processing of personal data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Belgian DPA",
+        "to": "Belgian Data Protection Authority (APD/GBA)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

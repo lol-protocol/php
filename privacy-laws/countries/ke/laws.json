@@ -20,8 +20,64 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "",
+    "pending_change": "Data Protection (Amendment) Bill 2025 pending; not enacted",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.odpc.go.ke/wp-content/uploads/2024/02/TheDataProtectionAct__No24of2019.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.odpc.go.ke/wp-content/uploads/2024/02/TheDataProtectionAct__No24of2019.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.odpc.go.ke/wp-content/uploads/2024/02/TheDataProtectionAct__No24of2019.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://www.odpc.go.ke/?p=3323",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2019-11-28",
+        "to": "2019-11-25"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2019-11-28",
+        "to": "2019-11-08"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Act",
+        "to": "Data Protection Act, 2019 (No. 24 of 2019)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "ODPC",
+        "to": "Office of the Data Protection Commissioner (ODPC)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "East Africa region",
+        "to": ""
+      }
+    ]
   }
 ]

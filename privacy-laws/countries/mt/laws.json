@@ -20,8 +20,19 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "Act XX of 2018; repealed Cap. 440; Law Enforcement Directive transposed by S.L. 586.08",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

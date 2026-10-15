@@ -11,7 +11,7 @@
     "applies_to": "Public & private data controllers",
     "key_requirements": "Prior declaration or authorisation, consent, data subject rights",
     "data_categories": "Personal data; sensitive data",
-    "retention_period": "Not specified",
+    "retention_period": "Art. 35: data kept no longer than necessary for the purposes for which collected or processed",
     "enforcement_authority": "Commission de protection des données personnelles (CDP)",
     "penalties_range": "CDP fines of XOF 1M to 100M; up to 7 years' imprisonment (Penal Code)",
     "exemptions": "National security; household use",
@@ -20,8 +20,36 @@
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Entry-into-force day unconfirmed (set to enactment date); 2019 replacement bill not adopted",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "medium",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://osiris.sn/loi-no-2008-12-du-25-janvier-2008-sur-la-protection-des-donnees-a-caractere.html",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://www.memoireonline.com/12/21/12572/m_L-encadrement-juridique-de-la-prospection-directe-dans-les-transactions-lectroniques11.html",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 35: data kept no longer than necessary for the purposes for which collected or processed"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

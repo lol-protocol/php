@@ -20,8 +20,64 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.vda.pt/xms/files/05_Publicacoes/2019/Flashes_Newsletters/Flash_VdA_-_Publicacao_da_Lei_de_Execucao_do_RGPD_na_ordem_Juridica_Nacional.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.agefe.pt/uploads/new_documents/Circular102019sobreLeideExecuoNacionaldoRegulamentoGeraldeProteodeDadosRGPD.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.garrigues.com/pt/pt-PT/news/nova-lei-de-protecao-de-dados-pessoais",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2018-05-25",
+        "to": "2019-08-09"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2019-08-08"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Law",
+        "to": "Law No. 58/2019 (GDPR execution law)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Portuguese CNPD",
+        "to": "National Data Protection Commission (CNPD)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

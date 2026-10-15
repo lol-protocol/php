@@ -20,8 +20,25 @@
     "frameworks": "EU-Adequacy/CoE-108",
     "frameworks_not": "GDPR",
     "notes": "Regulated by Decree 414/009; territorial scope extended by Law 19.670 (arts 37-40)",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "high",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.gub.uy/unidad-reguladora-control-datos-personales/comunicacion/noticias/dia-internacional-proteccion-datos-personales-1",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

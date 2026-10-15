@@ -20,8 +20,19 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "Replaced ZVOP-1 (2004); published in Official Gazette RS 163/2022 on 27 Dec 2022",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

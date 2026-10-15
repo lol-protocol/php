@@ -20,8 +20,42 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "D.lgs. 196/2003 as amended by D.lgs. 101/2018 (GDPR adaptation, in force 2018-09-19)",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "effective_date": {
+        "url": "https://www.studiocataldi.it/normativa/codice-della-privacy/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.diritto.it/codice-protezione-dati-personali-privacy-gdpr/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR + Italian amendments",
+        "to": "D.lgs. 196/2003 as amended by D.lgs. 101/2018 (GDPR adaptation, in force 2018-09-19)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2003-12-01",
+        "to": "2004-01-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Code (Codice Della Privacy)",
+        "to": "Personal Data Protection Code (Legislative Decree 196/2003, Codice privacy)"
+      }
+    ]
   }
 ]

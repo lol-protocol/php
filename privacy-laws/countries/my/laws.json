@@ -20,8 +20,64 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Amended by PDP (Amendment) Act 2024, phased in during 2025 (DPO, breach notice, RM1M fines)",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "key_requirements": {
+        "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://www.malaysia.gov.my/en/quick-links/protection-of-personal-data",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "penalties_range": {
+        "url": "https://www.americanlegalblogger.com/2025/01/new-horizons-in-data-protection-malaysias-personal-data-protection-amendment-act-2024/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Amended by PDP (Amendment) Act 2024, phased in during 2025 (DPO, breach notice, RM1M fines)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Up to MYR 300k fine",
+        "to": "Up to RM1,000,000 fine and/or up to 3 years' imprisonment"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "Consent & purpose limitation",
+        "to": "Appoint DPO (thresholds); notify breaches to Commissioner and data subjects; data portability; processor security duties"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Malaysian Commissioner",
+        "to": "Personal Data Protection Commissioner / Department of Personal Data Protection (JPDP)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Southeast Asia region",
+        "to": ""
+      }
+    ]
   }
 ]

@@ -20,8 +20,58 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://dpa.gr/sites/default/files/2020-08/LAW 4624_2019_EN_TRANSLATED BY THE HDPA.PDF",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.pwc.com/gr/en/media-centre/tax-legal-news/Legal%20Flash%20-%20GDPR_eng.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.privacylaws.com/reports-gateway/articles/int163/int163greece/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2021-04-01",
+        "to": "2019-08-29"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2021-04-01",
+        "to": "2019-08-29"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Law (Law 4818/2021)",
+        "to": "Law 4624/2019 (Data Protection Law implementing GDPR)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Greek DPA",
+        "to": "Hellenic Data Protection Authority (HDPA)"
+      }
+    ]
   }
 ]
