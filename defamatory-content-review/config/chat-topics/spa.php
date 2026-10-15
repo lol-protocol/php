@@ -117,4 +117,29 @@ return [
         ['pattern' => '\bbombas?\s+(molotov|caseras?|de\s+racimo)\b', 'riskType' => 'belico', 'severity' => 'medium', 'label' => 'bomba'],
         ['pattern' => '\bbombas?\s+(atomicas?|nucleares|nuclear)\b', 'riskType' => 'belico', 'severity' => 'low', 'label' => 'bomba atómica'],
     ],
+    // Variantes por país (ver Regions y config/languages/spa.php): sólo lo que cambia.
+    'regions' => [
+        // En México y Argentina «coger» no es «tomar el bus»: es sexual sin ayuda de otra palabra.
+        'MX' => [
+            'sexual' => [
+                ['word' => 'coger', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'verb'],
+            ],
+        ],
+        'AR' => [
+            'sexual' => [
+                ['word' => 'coger', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'verb'],
+                ['word' => 'concha', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
+                ['word' => 'pija', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
+            ],
+        ],
+        'CL' => [
+            'sexual' => [
+                ['word' => 'polla', 'riskType' => 'sexual', 'severity' => 'none'],
+            ],
+            'ambiguous' => [
+                // «pico» es vulgar en Chile, pero «a las tres y pico» también se dice: sólo cuenta acompañado.
+                ['word' => 'pico', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
+            ],
+        ],
+    ],
 ];

@@ -31,21 +31,24 @@ final class LanguageAccess
         return $this->registry;
     }
 
+    /** Con país («spa-MX»), el diccionario con la variante de ese país aplicada (ver Regions). */
     public function wordList(string $code): WordList
     {
+        $region = Regions::split($code)[1];
         $code = $this->registry->resolve($code);
+        $key = Regions::join($code, $region);
 
-        if (!isset($this->dictionaries[$code])) {
+        if (!isset($this->dictionaries[$key])) {
             $path = "{$this->languageDir}/{$code}.php";
 
             if (!is_file($path)) {
                 throw new RuntimeException("No existe diccionario para el idioma '{$code}' en {$path}.");
             }
 
-            $this->dictionaries[$code] = WordList::fromLanguageFile($path, $code);
+            $this->dictionaries[$key] = new WordList(Regions::apply(require $path, $region), $code);
         }
 
-        return $this->dictionaries[$code];
+        return $this->dictionaries[$key];
     }
 
     /** @return array<string,mixed> */

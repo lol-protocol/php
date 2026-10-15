@@ -645,6 +645,37 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 - **Signos pegados a la palabra.** «puta!», «¿idiota?», «(rata)», ««imbécil»»
   se leen igual que sin signos (antes «idiota!» se aprobaba).
 
+### Variantes por país
+
+La misma palabra no ofende igual en todas partes. «Puto» es un insulto homófobo
+en México y Argentina, y en España un intensificador («los putos deberes»). En
+Chile, «la Polla» es la lotería. Con país, el chat usa la variante:
+
+```php
+$chat = ChatLineReviewer::create(__DIR__ . '/config', 'es-MX'); // también 'es_MX', 'spa-MX'
+$chat->review('eres un puto')->getDecision();      // reject (con 'spa': approve)
+$chat->review('los putos deberes')->getDecision(); // approve: no va dirigido
+```
+
+Cada archivo de `config/languages/` y `config/chat-topics/` puede traer
+`'regions' => ['MX' => [categoría => entradas]]`, en el formato de siempre.
+Con ese país, cada entrada reemplaza a la de la misma palabra en el idioma base
+(esté en la categoría que esté) o se suma; `'severity' => 'none'` la quita. Sin
+país, o con uno sin variante (`es-CO`), se usa el idioma tal cual. Hoy hay
+variantes del español:
+
+| País | Cambia |
+|---|---|
+| `MX` | «puto» (dirigido) y «joto» se bloquean; «coger» es sexual sin ayuda de otra palabra |
+| `AR` | «puto» (dirigido) y «trolo» se bloquean; «boludo» sólo se informa; «coger», «concha» y «pija» son sexuales |
+| `CL` | «polla» no se censura (lotería, apuesta); «pico» es sexual sólo acompañado («a las tres y pico» pasa) |
+
+En el endpoint, el país que pide quien escribe sólo suma: el español base se
+revisa igual, así que pedir `es-CL` no cuela «polla». Para que la variante
+también rebaje, ponla en los idiomas de la plataforma:
+`new ModerationEndpoint($config, 'es-CL', ['es-CL', 'eng'])`. `RegionsTest` fija
+lo de esta tabla y verifica el formato de cada variante.
+
 ### Ampliar las listas de chat
 
 `config/chat-topics/<código>.php` usa el formato de los diccionarios, más:
@@ -756,15 +787,19 @@ Content-Type: application/json
 ```json
 {"language": "spa", "checkedLanguages": ["spa", "eng"], "decision": "reject", "censor": true,
  "contentTypes": ["difamatorio", "belico"], "censored": "**************, ****",
- "matches": [{"found": "puta", "term": "puta", "contentType": "difamatorio", "severity": "high"},
-             {"found": "te voy a matar", "term": "amenaza", "contentType": "belico", "severity": "high"}]}
+ "matches": [{"found": "puta", "term": "puta", "contentType": "difamatorio", "contentTypes": ["difamatorio"], "severity": "high"},
+             {"found": "te voy a matar", "term": "amenaza", "contentType": "belico", "contentTypes": ["belico"], "severity": "high"}]}
 ```
 
 `language` es opcional (`spa` por defecto) y acepta el código de tres letras o
-el de dos (`es`). Como lo elige quien escribe, el texto se revisa además en los
-idiomas de la plataforma (`spa` y `eng`, tercer argumento de
-`ModerationEndpoint`) y manda la decisión más grave: mandar un insulto en
-español como `"eng"` no lo cuela. `checkedLanguages` dice en cuáles se revisó. Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
+el de dos (`es`), con país si se quiere (`es-MX`, ver «Variantes por país»). Como
+lo elige quien escribe, el texto se revisa además en los idiomas de la plataforma
+(`spa` y `eng`, tercer argumento de `ModerationEndpoint`; también con país:
+`['es-CL', 'eng']`) y manda la decisión más grave: mandar un insulto en español
+como `"eng"` no lo cuela, y pedir `es-CL` no quita lo que el español base
+bloquea. `checkedLanguages` dice en cuáles se revisó. Cada hallazgo sale una vez
+por aparición: «follar», que es insulto y contenido sexual, trae los dos en
+`contentTypes` (y el primero en `contentType`). Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
 `Content-Type: application/json` (415), cuerpo de hasta 16 KB (413), JSON en
 UTF-8 con `text` string (400), texto de hasta 2.000 caracteres (413) e idioma
 soportado (400). Los errores responden

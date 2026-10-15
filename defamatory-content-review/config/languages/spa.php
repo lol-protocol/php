@@ -739,4 +739,31 @@ return [
         ],
 
     ],
+    // Variantes por país (ver Regions; ChatLineReviewer::create($dir, 'es-MX')): sólo lo que cambia.
+    'regions' => [
+        // «puto»: insulto homófobo en México y Argentina; en España, un intensificador («los putos
+        // deberes»), por eso no está arriba. Dirigido («eres un puto», «¡puto!») se bloquea; si no, se informa.
+        'MX' => [
+            'genero' => [
+                ['word' => 'puto', 'riskType' => 'genero', 'severity' => 'high', 'targeted' => true, 'forms' => 'noun', 'by' => ['pl' => 'high']],
+                ['word' => 'joto', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
+            ],
+        ],
+        'AR' => [
+            'genero' => [
+                ['word' => 'puto', 'riskType' => 'genero', 'severity' => 'high', 'targeted' => true, 'forms' => 'noun', 'by' => ['pl' => 'high']],
+                ['word' => 'trolo', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
+            ],
+            'ordinario' => [
+                // «che, boludo» es un vocativo entre amigos: sólo se informa.
+                ['word' => 'boludo', 'riskType' => 'ordinario', 'severity' => 'low'],
+            ],
+        ],
+        'CL' => [
+            'ordinario' => [
+                // «la Polla» es la lotería; «hagamos una polla para el Mundial», una apuesta.
+                ['word' => 'polla', 'riskType' => 'ordinario', 'severity' => 'none'],
+            ],
+        ],
+    ],
 ];

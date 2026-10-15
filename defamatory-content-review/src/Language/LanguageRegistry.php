@@ -41,9 +41,10 @@ class LanguageRegistry
     }
 
     /** Normaliza cualquier código aceptado a ISO 639-3. */
+    /** Acepta también un país («es-MX»): devuelve el idioma, «spa». Ver Regions. */
     public function resolve(string $code): string
     {
-        $code = strtolower(trim($code));
+        $code = strtolower(trim(Regions::split($code)[0]));
 
         if (isset($this->languages[$code])) {
             return $code;
@@ -58,7 +59,7 @@ class LanguageRegistry
 
     public function isSupported(string $code): bool
     {
-        $code = strtolower(trim($code));
+        $code = strtolower(trim(Regions::split($code)[0]));
         return isset($this->languages[$code]) || isset($this->aliases[$code]);
     }
 
