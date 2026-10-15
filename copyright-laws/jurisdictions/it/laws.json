@@ -2,17 +2,23 @@
   {
     "country_code": "IT",
     "country_name": "Italy",
+    "region": "europe",
     "law_name": "Law No. 633/1941",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright protection",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Italian Copyright Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.cultura.gov.it/"
+    "enforcement_body": "Ministry of Culture (MiC) - Directorate General for Libraries and Copyright",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.cultura.gov.it/",
+    "notes": "Amended by Law 132/2025 (from 2025-10-10): human authorship only, AI TDM rules (art.70-septies), new TDM offence",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

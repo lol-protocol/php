@@ -1,0 +1,58 @@
+module,code,status,field,value,conf,source,note
+C,FI,status,status,current,medium,,"Copyright Act 404/1961 still in force; DSM amendments 2023 do not replace it (not re-searched)"
+C,IE,status,status,current,medium,,"CRRA 2000 still in force; amended 2019 and DSM 2021 (not re-searched)"
+C,GR,status,status,current,medium,,"Law 2121/1993 still in force; DSM via Law 4996/2022 (not re-searched)"
+C,PT,status,status,current,high,https://diariodarepublica.pt/dr/detalhe/decreto-lei/47-2023-214524782,"CDADC amended by DL 47/2023 (DSM transposition, in force 2023-07-04); not replaced"
+C,PT,fix,law_name,"Code of Copyright and Related Rights (Decree-Law 63/85)",medium,https://abreuadvogados.com/wp-content/uploads/2023/07/Legal-Insight-Transposicao-Portuguesa-da-Diretiva-do-Mercado-Unico-Digital-13.07.2023.pdf,"Instrument is a Decree-Law (CDADC), not 'Law 63/85'"
+C,AT,status,status,current,medium,,"UrhG 1936 still in force; DSM amendment 2021 (not re-searched)"
+C,CZ,status,status,current,medium,,"Act 121/2000 still in force (not re-searched)"
+C,HU,status,status,current,medium,,"Act LXXVI of 1999 still in force (not re-searched)"
+C,RO,status,status,current,medium,,"Law 8/1996 still in force; DSM via Law 69/2022 (not re-searched)"
+C,HK,status,status,current,high,https://www.scmp.com/news/hong-kong/society/article/3368913/hong-kong-delays-ai-copyright-law-focus-guidelines-first,"Cap 528 in force; Copyright (Amendment) Bill 2025 (TDM exception) postponed, not enacted"
+C,MY,status,status,current,medium,,"Copyright Act 1987 in force; 2022 amendment did not replace it (no 2025-26 change found)"
+C,ID,status,status,current,medium,,"Law 28/2014 still in force; no replacement found"
+C,VN,status,status,amended,high,https://www.bakermckenzie.com/en/insight/publications/alerts/2025/12/vietnam-2025-ip-law-overhaul,"Law 131/2025/QH15 (passed 2025-12-10, eff. 2026-04-01) amends IP Law: AI/TDM, software, online enforcement; term unchanged"
+C,VN,amended,notes,"Amended by Law 131/2025/QH15 (eff. 2026-04-01): AI/data-mining rules, software, online enforcement",high,https://www.tilleke.com/insights/vietnam-enacts-landmark-ip-law-amendments/?page=5,
+C,PH,status,status,current,medium,https://www.worldtrademarkreview.com/article/philippines-bills-eye-non-traditional-marks-and-stronger-site-blocking-powers,"RA 8293 in force; site-blocking amendment bills pending, none signed per results"
+C,CN,status,status,current,high,,"Copyright Law as amended 2020 (eff. 2021-06-01) still in force"
+C,RU,status,status,replaced,high,https://en.wikipedia.org/wiki/Copyright_law_of_the_Russian_Federation,"1993 Law on Copyright repealed; Civil Code Part IV in force since 2008-01-01"
+C,RU,replaced,law_name,"Civil Code of the Russian Federation, Part IV (No. 230-FZ)",high,https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=RU,
+C,RU,replaced,term_of_protection,"Author's life + 70 years",high,https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=RU,"counted from 1 Jan after death; +4 yrs for some WWII authors"
+C,RU,replaced,enforcement_body,UNKNOWN,low,,"Courts (incl. IP Court); not confirmed in results"
+C,RU,replaced,registration_required,No,high,https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=RU,"optional registration only for software/databases (Rospatent) - from knowledge"
+C,RU,replaced,linked_resources,https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=RU,high,,
+C,RU,replaced,notes,"Part IV Civil Code (eff. 2008-01-01) replaced the 1993 Law on Copyright and Related Rights",high,https://en.wikipedia.org/wiki/Copyright_law_of_Russia,
+C,TR,status,status,current,medium,,"Law 5846 (1951) on Intellectual and Artistic Works still in force; no replacement found"
+C,IL,status,status,current,high,https://law.co.il/en/articles/2007/12/25/the_new_israeli_copyright_law_of_2007,"Copyright Act 2007 (eff. 2008-05-25) in force"
+C,IL,fix,law_name,"Copyright Act, 5768-2007",high,https://law.co.il/en/articles/2007/12/25/the_new_israeli_copyright_law_of_2007,
+C,IL,fix,term_of_protection,"Author's life + 70 years",high,https://c.enwp.org/wiki/Commons:CRT/Israel,"s.38 Copyright Act 2007; listed +50 is wrong"
+C,SA,status,status,replaced,high,https://www.bakermckenzie.com/en/insight/publications/2026/07/saudi-arabia-new-copyright-law-modernises-ksa-ip-framework,"New Copyright Law (Royal Decree M/169), gazetted 2026-02-13, in force 2026-08-12, replaces 2003 law (M/41)"
+C,SA,replaced,law_name,"Copyright Law 2026 (Royal Decree No. M/169)",high,https://www.bakermckenzie.com/en/insight/publications/2026/07/saudi-arabia-new-copyright-law-modernises-ksa-ip-framework,
+C,SA,replaced,term_of_protection,"Author's life + 50 years",low,https://www.mondaq.com/saudiarabia/licensing-syndication/1802198/saudi-arabias-new-copyright-law-key-changes-and-implications,"No source states the new law's term; 'updates duration rules' (Baker McKenzie); +50 is old-law value"
+C,SA,replaced,enforcement_body,"Saudi Authority for Intellectual Property (SAIP)",high,https://connectontech.bakermckenzie.com/saudi-arabia-new-copyright-law-modernises-ksa-ip-framework/,
+C,SA,replaced,registration_required,"No (optional SAIP registration; gives rebuttable presumption of ownership)",medium,https://www.bakermckenzie.com/en/insight/publications/2026/07/saudi-arabia-new-copyright-law-modernises-ksa-ip-framework,
+C,SA,replaced,linked_resources,https://gowlingwlg.com/insights-resources/articles/2026/saudi-arabia-copyright-law-implementing-regulations,high,,
+C,SA,replaced,notes,"M/169 in force 2026-08-12 with SAIP Implementing Regs (2026-07-31); AI, platforms, higher penalties",high,https://gowlingwlg.com/insights-resources/articles/2026/saudi-arabia-copyright-law-implementing-regulations,
+C,AE,status,status,replaced,high,https://uaelegislation.gov.ae/en/legislations/1534/download,"Federal Decree-Law 38/2021 replaced Federal Law 7/2002; in force 2022-01-02"
+C,AE,replaced,law_name,"Federal Decree-Law No. 38 of 2021 on Copyright and Neighbouring Rights",high,https://uaelegislation.gov.ae/en/legislations/1534/download,
+C,AE,replaced,term_of_protection,"Author's life + 50 years",medium,https://www.agip.com/Agip-Country-Service/en/10/c/1,"50 yrs from publication for films, corporate and posthumous works"
+C,AE,replaced,enforcement_body,"Ministry of Economy (Copyright Department)",high,https://www.wam.ae/en/article/hszrezo1-ministry-economy-reviews-executive-regulation,
+C,AE,replaced,registration_required,"No (voluntary deposit with Ministry of Economy)",low,https://www.agip.com/Agip-Country-Service/en/10/c,"sources conflict on whether deposit is needed; Berne member so not a condition"
+C,AE,replaced,linked_resources,https://uaelegislation.gov.ae/en/legislations/1534/download,high,,
+C,AE,replaced,notes,"Decree-Law 38/2021 (eff. 2022-01-02) repealed Law 7/2002; Executive Regulation issued by MoE",high,https://www.arabianbusiness.com/industries/media/uae-issues-new-executive-regulation-on-copyright-and-neighbouring-rights,
+C,NG,status,status,replaced,high,https://www.mondaq.com/nigeria/copyright/1332056/an-overview-of-the-copyright-act-2022,"Copyright Act 2022 (signed/eff. 2023-03-17) repealed Cap C28 LFN 2004"
+C,NG,replaced,law_name,"Copyright Act 2022",high,https://aelex.com/wp-content/uploads/2023/06/AN-OVERVIEW-OF-THE-COPYRIGHT-ACT-2022.pdf,
+C,NG,replaced,term_of_protection,"Author's life + 70 years",medium,https://www.mondaq.com/nigeria/copyright/1356178/a-review-of-the-nigerian-copyright-act-2022,"literary/musical/artistic; films, photos, sound recordings 50 yrs from publication"
+C,NG,replaced,enforcement_body,"Nigerian Copyright Commission (NCC)",high,https://www.mondaq.com/nigeria/copyright/1332056/an-overview-of-the-copyright-act-2022,
+C,NG,replaced,registration_required,No,medium,,"voluntary notification scheme with NCC (from knowledge)"
+C,NG,replaced,linked_resources,https://aelex.com/wp-content/uploads/2023/06/AN-OVERVIEW-OF-THE-COPYRIGHT-ACT-2022.pdf,high,,
+C,NG,replaced,notes,"Act 2022 (eff. 2023-03-17) repealed Cap C28; NCC gets site-blocking and wider enforcement powers",high,https://www.mondaq.com/nigeria/copyright/1332056/an-overview-of-the-copyright-act-2022,
+C,KE,status,status,current,high,https://ipkitten.blogspot.com/2019/10/kenya-amends-its-copyright-act-to.html,"Copyright Act No. 12 of 2001 in force; amended 2017/2019; no 2024-25 law found"
+C,EG,status,status,current,medium,https://commons.wikimedia.org/wiki/Template:PD_Egypt,"Law 82/2002 still main law; no replacement found"
+C,EG,fix,law_name,"Law No. 82 of 2002 on the Protection of Intellectual Property Rights",high,https://erp.id.com.eg/vufind/Record/oai:dspace.id.com.eg:123456789-1473/Details?lng=en,
+C,EG,fix,term_of_protection,"Author's life + 50 years",high,https://www.agip.com/Agip-Country-Service/en/30/C,"Art. 160; listed +30 is wrong"
+C,AR,status,status,current,high,https://www.wipo.int/wipolex/en/legislation/details/7088,"Ley 11.723 in force (consolidated to Ley 26.570)"
+C,AR,fix,term_of_protection,"Author's life + 70 years",high,https://isfdyt48-bue.infd.edu.ar/sitio/wp-content/uploads/2021/09/LEY-11.723-y-modificatorias-REGIMEN-LEGAL-DE-LA-PROPIEDAD-INTELECTUAL.pdf,"Art. 5 as amended by Ley 24.870 (1997); listed +50 is wrong"
+C,CO,status,status,current,medium,,"Law 23/1982 in force (amended by Law 1915/2018); life+80 correct; not re-searched"
+C,PE,status,status,amended,medium,https://busquedas.elperuano.pe/dispositivo/NL/2484948-7,"DL 822 amended by DL 1724 (El Peruano 2026-02-07): ISP/online service provider safe harbours; term unchanged"
+C,PE,amended,notes,"Amended by DL 1724 (2026-02-07): ISP liability safe harbours; INDECOPI enforces",medium,https://busquedas.elperuano.pe/dispositivo/NL/2484948-7,

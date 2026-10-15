@@ -2,7 +2,6 @@
   "code": "CN",
   "name": "China",
   "tld": "cn",
-  "region": "other",
-  "lawCount": 1,
-  "createdAt": "2026-10-07T00:12:16.444Z"
+  "region": "asia_pacific",
+  "lawCount": 1
 }

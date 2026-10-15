@@ -2,10 +2,11 @@
   {
     "country_code": "DE",
     "country_name": "Germany",
+    "region": "europe",
     "law_name": "Federal Data Protection Act (BDSG)",
     "jurisdiction": "Federal & State DPAs",
-    "enactment_date": "2018-07-01",
-    "effective_date": "2018-07-01",
+    "enactment_date": "2017-06-30",
+    "effective_date": "2018-05-25",
     "scope": "German Residents",
     "applies_to": "All organizations",
     "key_requirements": "GDPR + German provisions",
@@ -16,6 +17,11 @@
     "exemptions": "Legal obligations",
     "website_url": "https://www.bfdi.bund.de/",
     "language": "German",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

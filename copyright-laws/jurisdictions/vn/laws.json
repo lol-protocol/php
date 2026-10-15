@@ -2,17 +2,23 @@
   {
     "country_code": "VN",
     "country_name": "Vietnam",
+    "region": "asia_pacific",
     "law_name": "Law on Intellectual Property",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright enforcement",
+    "digital_protection": "Circumvention of TPMs, trafficking in tools & RMI removal are infringements (art. 28, 2022)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
     "enforcement_body": "Vietnamese IP Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.noip.gov.vn/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://cov.gov.vn/",
+    "notes": "Amended by Law 131/2025/QH15 (eff. 2026-04-01): AI/data-mining rules, software, online enforcement",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

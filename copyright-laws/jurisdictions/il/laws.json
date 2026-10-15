@@ -2,17 +2,23 @@
   {
     "country_code": "IL",
     "country_name": "Israel",
-    "law_name": "Israeli Copyright Law",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Act, 5768-2007",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years",
+    "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective management allowed",
-    "digital_protection": "Copyright compliance",
+    "digital_protection": "No specific provision (2007 Act has no anti-circumvention rules)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Israeli Patent Office",
+    "enforcement_body": "Ministry of Justice",
     "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.justice.gov.il/"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.justice.gov.il/",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

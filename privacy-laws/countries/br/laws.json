@@ -2,20 +2,26 @@
   {
     "country_code": "BR",
     "country_name": "Brazil",
+    "region": "americas",
     "law_name": "Lei Geral de Proteção de Dados Pessoais (LGPD)",
     "jurisdiction": "Agência Nacional",
     "enactment_date": "2018-08-14",
-    "effective_date": "2020-09-28",
+    "effective_date": "2020-09-18",
     "scope": "Brazilian Residents & Businesses",
     "applies_to": "All companies processing Brazilian data",
     "key_requirements": "Lawful basis & consent",
     "data_categories": "Sensitive personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "National Data Protection Authority",
+    "enforcement_authority": "Agencia Nacional de Protecao de Dados (ANPD) - regulatory agency under Lei 15.352/2026",
     "penalties_range": "Up to 50M BRL or 2% revenue",
     "exemptions": "Public safety exceptions",
     "website_url": "https://www.gov.br/cidadania/pt-br/acesso-a-informacao/lgpd",
     "language": "Portuguese",
-    "notes": "South America's GDPR equivalent"
+    "frameworks": "EU-Adequacy",
+    "frameworks_not": "GDPR/CoE-108",
+    "notes": "Lei 15.352 of 2026-02-25 made ANPD an autonomous regulatory agency; also enforces ECA Digital",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

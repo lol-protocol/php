@@ -2,20 +2,26 @@
   {
     "country_code": "SE",
     "country_name": "Sweden",
-    "law_name": "Data Protection Act (Dataskyddslagen)",
+    "region": "europe",
+    "law_name": "Act (2018:218) with supplementary provisions to the GDPR (Dataskyddslagen)",
     "jurisdiction": "Swedish Data Protection Authority",
-    "enactment_date": "2018-05-25",
+    "enactment_date": "2018-04-18",
     "effective_date": "2018-05-25",
     "scope": "Swedish Residents",
     "applies_to": "All entities",
     "key_requirements": "GDPR + Swedish law",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "Swedish Authority",
+    "enforcement_authority": "Swedish Authority for Privacy Protection (IMY)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
     "website_url": "https://www.imy.se/",
     "language": "Swedish",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

@@ -1,493 +1,605 @@
-import { loadTranslations, t } from "./translations/i18n.js";
-import LanguageSelector from "./translations/language-selector.js";
-import TimelineVisualization from "./timeline.js";
-import MetadataDisplay from "./metadata-display.js";
-import { parseCSV } from "./csv.js";
+import {
+  bindLanguageSelect,
+  formatDate,
+  getLanguage,
+  initLanguage,
+  onLanguageChange,
+  plural,
+  t,
+} from "./translations/i18n.js";
+import { countryFileUrl, loadBundle } from "./lib/data.js";
+import {
+  buildChartBars,
+  COMPARE_CRITERIA,
+  CONFIG,
+  enrichRow,
+  FACETS,
+  FRAMEWORK_ORDER,
+  SEARCH_SCOPES,
+} from "./lib/domain.js";
+import {
+  activeFilters,
+  buildIndex,
+  clearFilters,
+  emptyState,
+  facetOptions,
+  filterRows,
+  pruneState,
+  removeFilter,
+  stateFromParams,
+  stateToParams,
+} from "./lib/filters.js";
+import { renderBarChart } from "./lib/chart.js";
+import { debounce, escapeHtml, safeUrl, toCsv } from "./lib/util.js";
 
-// Data Loaders
-class CountryLoader {
-  constructor() {
-    this.countries = [];
-    this.countryMap = {};
-    this.dataCache = {};
-  }
+const $ = (id) => document.getElementById(id);
+const esc = escapeHtml;
 
-  async load() {
-    try {
-      // Load the master CSV to get list of countries
-      const response = await fetch("../countries/privacy_laws_master.csv");
-      const csvText = await response.text();
-      const rawData = this.parseCSV(csvText);
+const app = {
+  onlyDiff: false,
+  data: null,
+  state: emptyState(CONFIG),
+  results: [],
+  chips: [],
+  options: {},
+  selected: new Set(),
+  chartAsTable: false,
+  urlHasLang: new URLSearchParams(location.search).has("lang"),
+};
 
-      // Build country index from CSV
-      const index = {};
-      rawData.forEach((row) => {
-        if (!index[row.country_code]) {
-          index[row.country_code] = {
-            code: row.country_code,
-            name: row.country_name,
-            region: this.getRegion(row.country_code),
-            tld: row.country_code.toLowerCase(),
-            laws: [],
-          };
-        }
-        index[row.country_code].laws.push(row);
-      });
-
-      this.countries = Object.values(index);
-      this.countries.forEach((c) => (this.countryMap[c.code] = c));
-
-      return this.countries;
-    } catch (error) {
-      console.error("Error loading privacy laws:", error);
-      throw error;
-    }
-  }
-
-  async loadCountryData(tld) {
-    try {
-      if (this.dataCache[tld]) return this.dataCache[tld];
-
-      const response = await fetch(`../countries/${tld}/laws.json`);
-      if (!response.ok) throw new Error(`Failed to load ${tld} data`);
-
-      const laws = await response.json();
-      this.dataCache[tld] = laws;
-      return laws;
-    } catch (error) {
-      console.error(`Error loading country data for ${tld}:`, error);
-      return [];
-    }
-  }
-
-  parseCSV(csvText) {
-    return parseCSV(csvText);
-  }
-
-  getRegion(countryCode) {
-    const regions = {
-      EU: "europe",
-      GB: "europe",
-      CH: "europe",
-      FR: "europe",
-      ES: "europe",
-      NL: "europe",
-      US: "americas",
-      CA: "americas",
-      BR: "americas",
-      MX: "americas",
-      CL: "americas",
-      SV: "americas",
-      JP: "asia_pacific",
-      AU: "asia_pacific",
-      SG: "asia_pacific",
-      NZ: "asia_pacific",
-      KR: "asia_pacific",
-      TH: "asia_pacific",
-      IN: "asia_pacific",
-      ZA: "middle_east_africa",
-    };
-    return regions[countryCode] || "other";
-  }
-}
-
-// Search & Filter
-class PrivacyLawSearcher {
-  constructor(countries) {
-    this.countries = countries;
-    this.results = [];
-  }
-
-  search(query, region = "", lawType = "") {
-    this.results = this.countries.filter((country) => {
-      const matchesQuery =
-        !query ||
-        country.name.toLowerCase().includes(query.toLowerCase()) ||
-        country.code.toLowerCase().includes(query.toLowerCase());
-
-      const matchesRegion = !region || country.region === region;
-
-      const matchesLawType =
-        !lawType ||
-        country.laws.some((law) =>
-          law.law_name.toLowerCase().includes(lawType.toLowerCase())
-        );
-
-      return matchesQuery && matchesRegion && matchesLawType;
-    });
-    return this.results;
-  }
-
-  getAllLaws() {
-    const laws = [];
-    this.results.forEach((country) => {
-      country.laws.forEach((law) => {
-        laws.push({ ...law, region: country.region });
-      });
-    });
-    return laws;
-  }
-}
-
-// Comparator
-class PrivacyLawComparator {
-  constructor(loader) {
-    this.loader = loader;
-  }
-
-  compareLaws(countryCodes) {
-    const laws = [];
-    countryCodes.forEach((code) => {
-      const country = this.loader.countries.find((c) => c.code === code);
-      if (country) {
-        country.laws.forEach((law) => laws.push(law));
-      }
-    });
-    return laws;
-  }
-
-  getComparisonMatrix(countryCodes) {
-    const criteria = [
-      "scope",
-      "applies_to",
-      "key_requirements",
-      "data_categories",
-      "retention_period",
-      "penalties_range",
-      "exemptions",
-    ];
-
-    const matrix = {};
-    countryCodes.forEach((code) => {
-      const country = this.loader.countries.find((c) => c.code === code);
-      if (country && country.laws.length > 0) {
-        const law = country.laws[0];
-        matrix[code] = {};
-        criteria.forEach((criterion) => {
-          matrix[code][criterion] = law[criterion] || "N/A";
-        });
-      }
-    });
-    return matrix;
-  }
-}
-
-// Region Manager
-class RegionManager {
-  static getRegionLabel(region) {
-    const labels = {
-      europe: "Europe",
-      americas: "Americas",
-      asia_pacific: "Asia-Pacific",
-      middle_east_africa: "Middle East & Africa",
-      other: "Other",
-    };
-    return labels[region] || region;
-  }
-
-  static groupByRegion(countries) {
-    const grouped = {};
-    countries.forEach((country) => {
-      if (!grouped[country.region]) {
-        grouped[country.region] = [];
-      }
-      grouped[country.region].push(country);
-    });
-    return grouped;
-  }
-}
-
-// UI Controller
-class UIController {
-  constructor(loader, searcher, comparator) {
-    this.loader = loader;
-    this.searcher = searcher;
-    this.comparator = comparator;
-    this.selectedRows = new Set();
-    this.initializeEventListeners();
-  }
-
-  initializeEventListeners() {
-    document.getElementById("searchBtn").addEventListener("click", () =>
-      this.handleSearch()
-    );
-    document.getElementById("clearBtn").addEventListener("click", () =>
-      this.handleClear()
-    );
-    document.getElementById("compareBtn").addEventListener("click", () =>
-      this.handleCompare()
-    );
-    document.getElementById("exportBtn").addEventListener("click", () =>
-      this.handleExport()
-    );
-    document.getElementById("selectAll").addEventListener("change", (e) =>
-      this.handleSelectAll(e)
-    );
-    document
-      .getElementById("closeComparison")
-      .addEventListener("click", () => this.closeComparison());
-
-    document
-      .getElementById("countrySearch")
-      .addEventListener("input", (e) => this.showSuggestions(e.target.value));
-  }
-
-  async handleSearch() {
-    const query = document.getElementById("countrySearch").value;
-    const region = document.getElementById("regionFilter").value;
-    const lawType = document.getElementById("lawTypeFilter").value;
-
-    this.searcher.search(query, region, lawType);
-    this.renderResults();
-  }
-
-  handleClear() {
-    document.getElementById("countrySearch").value = "";
-    document.getElementById("regionFilter").value = "";
-    document.getElementById("lawTypeFilter").value = "";
-    this.selectedRows.clear();
-    this.renderEmptyResults();
-  }
-
-  handleSelectAll(e) {
-    const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-    checkboxes.forEach((checkbox) => {
-      checkbox.checked = e.target.checked;
-      const rowKey = checkbox.dataset.rowKey;
-      if (e.target.checked) {
-        this.selectedRows.add(rowKey);
-      } else {
-        this.selectedRows.delete(rowKey);
-      }
-    });
-  }
-
-  handleCompare() {
-    if (this.selectedRows.size === 0) {
-      alert("Please select at least 2 countries to compare");
-      return;
-    }
-
-    const countryCodes = Array.from(this.selectedRows).map(
-      (key) => key.split("_")[0]
-    );
-    const uniqueCodes = [...new Set(countryCodes)];
-
-    if (uniqueCodes.length < 2) {
-      alert("Please select laws from at least 2 different countries");
-      return;
-    }
-
-    this.renderComparison(uniqueCodes);
-  }
-
-  handleExport() {
-    const laws = this.searcher.getAllLaws();
-    let csv = this.searcherToCSV(laws);
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `privacy-laws-${new Date().toISOString().split("T")[0]}.csv`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  }
-
-  showSuggestions(query) {
-    const suggestionsList = document.getElementById("countrySuggestions");
-    if (!query) {
-      suggestionsList.hidden = true;
-      return;
-    }
-
-    const matches = this.loader.countries
-      .filter((c) =>
-        c.name.toLowerCase().includes(query.toLowerCase()) ||
-        c.code.toLowerCase().includes(query.toLowerCase())
-      )
-      .slice(0, 8);
-
-    suggestionsList.innerHTML = matches
-      .map(
-        (c) =>
-          `<li><button data-code="${c.code}">${c.name} (${c.code})</button></li>`
-      )
-      .join("");
-
-    suggestionsList.hidden = matches.length === 0;
-
-    suggestionsList
-      .querySelectorAll("button")
-      .forEach((btn) =>
-        btn.addEventListener("click", () => {
-          document.getElementById("countrySearch").value = btn.textContent;
-          suggestionsList.hidden = true;
-        })
-      );
-  }
-
-  renderResults() {
-    const laws = this.searcher.getAllLaws();
-    const tbody = document.getElementById("lawsTableBody");
-
-    if (laws.length === 0) {
-      this.renderEmptyResults();
-      return;
-    }
-
-    tbody.innerHTML = laws
-      .map(
-        (law, index) => `
-      <tr class="row-${law.country_code}">
-        <td>
-          <input type="checkbox" data-row-key="${law.country_code}_${index}" />
-        </td>
-        <td><strong>${law.country_name}</strong></td>
-        <td>${law.law_name}</td>
-        <td>${law.enactment_date}</td>
-        <td>${law.effective_date}</td>
-        <td>${law.enforcement_authority}</td>
-        <td><small>${law.penalties_range}</small></td>
-        <td>
-          ${
-            law.website_url
-              ? `<a href="${law.website_url}" target="_blank">📖</a>`
-              : "-"
-          }
-        </td>
-      </tr>
-    `
-      )
-      .join("");
-
-    document.getElementById("resultCount").textContent = laws.length;
-    document.getElementById("resultsTitle").textContent =
-      `Privacy Laws (${laws.length} results)`;
-
-    // Show timeline visualization
-    this.renderTimeline(laws);
-
-    // Re-attach checkbox listeners
-    tbody.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
-      checkbox.addEventListener("change", (e) => {
-        if (e.target.checked) {
-          this.selectedRows.add(e.target.dataset.rowKey);
-        } else {
-          this.selectedRows.delete(e.target.dataset.rowKey);
-        }
-      });
-    });
-  }
-
-  renderTimeline(laws) {
-    const timelineSection = document.getElementById("timelineSection");
-    if (laws.length > 0) {
-      const timeline = new TimelineVisualization(laws, "timelineContainer");
-      timeline.render();
-      timelineSection.hidden = false;
-    } else {
-      timelineSection.hidden = true;
-    }
-  }
-
-  renderEmptyResults() {
-    const tbody = document.getElementById("lawsTableBody");
-    tbody.innerHTML = `
-      <tr class="empty-state">
-        <td colspan="8">Enter search criteria and click "Search" to view privacy laws</td>
-      </tr>
-    `;
-    document.getElementById("resultCount").textContent = "0";
-  }
-
-  renderComparison(countryCodes) {
-    const matrix = this.comparator.getComparisonMatrix(countryCodes);
-    const section = document.getElementById("comparisonSection");
-    const resultsDiv = document.getElementById("comparisonResults");
-
-    let html = `<table class="comparison-table">
-      <thead>
-        <tr>
-          <th>Criteria</th>
-          ${countryCodes.map((code) => `<th>${code}</th>`).join("")}
-        </tr>
-      </thead>
-      <tbody>`;
-
-    const criteria = [
-      "scope",
-      "applies_to",
-      "key_requirements",
-      "data_categories",
-      "retention_period",
-      "penalties_range",
-      "exemptions",
-    ];
-
-    criteria.forEach((criterion) => {
-      html += `<tr><th>${this.formatCriterion(criterion)}</th>`;
-      countryCodes.forEach((code) => {
-        const value = matrix[code]?.[criterion] || "N/A";
-        html += `<td>${value}</td>`;
-      });
-      html += `</tr>`;
-    });
-
-    html += `</tbody></table>`;
-    resultsDiv.innerHTML = html;
-    section.hidden = false;
-  }
-
-  closeComparison() {
-    document.getElementById("comparisonSection").hidden = true;
-  }
-
-  formatCriterion(criterion) {
-    return criterion
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  }
-
-  searcherToCSV(laws) {
-    const headers = Object.keys(laws[0] || {});
-    let csv = headers.join(",") + "\n";
-    laws.forEach((law) => {
-      csv += headers
-        .map((h) => `"${(law[h] || "").replace(/"/g, '""')}"`)
-        .join(",");
-      csv += "\n";
-    });
-    return csv;
-  }
-}
-
-// Initialize App
-async function initApp() {
+const regionLabel = (region) => t(`region.${region}`);
+const frameworkName = (framework) => t(`framework.${framework}`);
+// "Not specified" (or an empty cell) is shown muted and in the interface language, so real data stands out.
+const NOT_SPECIFIED = /^(not specified|—|-)?$/i;
+const valueHtml = (value) =>
+  NOT_SPECIFIED.test(String(value ?? "").trim())
+    ? `<span class="muted">${esc(t("value.notSpecified"))}</span>`
+    : esc(value);
+const dateHtml = (iso) => `<time datetime="${esc(iso)}">${esc(formatDate(iso))}</time>`;
+/** "www.example.org" → "example.org": shows where a link leads (official site, WIPO Lex, a law firm…). */
+const hostOf = (url) => {
   try {
-    // Load preferred language from localStorage or default to eng
-    const preferredLang = localStorage.getItem("preferredLanguage") || "eng";
-    await loadTranslations(preferredLang);
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+};
+function sourceLink(url, lawName) {
+  return url
+    ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="source-link" title="${esc(t("table.open"))}" aria-label="${esc(
+        `${t("table.open")}: ${lawName} (${hostOf(url)})`
+      )}">${hostOf(url).split(".").map(esc).join(".<wbr>")}<span aria-hidden="true"> ↗</span></a>`
+    : valueHtml("");
+}
+// Comparison rows whose values are lists of treaties/frameworks, shown as badges with full names.
+const LIST_CRITERIA = { frameworks: frameworkName, frameworks_not: frameworkName };
 
-    const loader = new CountryLoader();
-    await loader.load();
+const sourceLabel = (status) => t(`source.${status}`);
+/** "Web research (secondary sources) · medium confidence · checked 8 Oct 2026" */
+function sourceDetail(row) {
+  const parts = [sourceLabel(row.data_status)];
+  if (row.confidence) parts.push(t(`confidence.${row.confidence}`));
+  if (row.last_checked) parts.push(t("card.checked", { date: formatDate(row.last_checked) }));
+  return parts.join(" · ");
+}
+// Laws can be enacted with an effective date still ahead (ISO dates compare as strings).
+const TODAY = new Date().toISOString().slice(0, 10);
+const countryName = (tld) => app.data.countries.find((c) => c.tld === tld)?.name ?? tld.toUpperCase();
 
-    const searcher = new PrivacyLawSearcher(loader.countries);
-    const comparator = new PrivacyLawComparator(loader);
-    const ui = new UIController(loader, searcher, comparator);
+function formatRange({ from, to }) {
+  if (from != null && to != null) return `${from}–${to}`;
+  return from != null ? `≥ ${from}` : `≤ ${to}`;
+}
 
-    document.getElementById("lastUpdate").textContent = new Date()
-      .toLocaleDateString();
-  } catch (error) {
-    console.error("Failed to initialize app:", error);
-    document.body.innerHTML =
-      '<p style="color:red">Error loading privacy laws database. Please refresh.</p>';
+/* ---------- Static parts (rebuilt when the language changes) ---------- */
+
+function renderScopeSelect() {
+  $("scope").innerHTML = SEARCH_SCOPES.map(
+    (scope) => `<option value="${esc(scope.id)}">${esc(t(`scope.${scope.id}`))}</option>`
+  ).join("");
+  $("scope").value = app.state.scope;
+}
+
+function renderCountryList() {
+  $("countryList").innerHTML = app.data.countries
+    .map((country) => `<option value="${esc(country.name)}"></option>`)
+    .join("");
+}
+
+function checkboxFacet(id, legendKey, options, labelFor, { hintKey, titleFor } = {}) {
+  const items = options
+    .map(
+      ({ value, count }) => `
+      <label class="check"${titleFor ? ` title="${esc(titleFor(value))}"` : ""}>
+        <input type="checkbox" name="${id}" value="${esc(value)}" />
+        <span>${esc(labelFor(value))}</span> <span class="count">(${count})</span>
+      </label>`
+    )
+    .join("");
+  const hint = hintKey ? `<small class="field-hint">${esc(t(hintKey))}</small>` : "";
+  return `
+    <fieldset class="facet" data-facet="${id}">
+      <legend>${esc(t(legendKey))}</legend>${hint}
+      <div class="facet-options">${items}</div>
+    </fieldset>`;
+}
+
+function renderFacets() {
+  const { min, max } = app.options.year;
+  const languages = app.options.language
+    .map(({ value, count }) => `<option value="${esc(value)}">${esc(value)} (${count})</option>`)
+    .join("");
+
+  // A framework nobody takes part in yet cannot narrow anything, so the filter stays hidden.
+  const frameworks = app.options.framework.length
+    ? checkboxFacet("framework", "filters.framework", app.options.framework, (v) => v, {
+        hintKey: "filters.frameworkHint",
+        titleFor: frameworkName,
+      })
+    : "";
+
+  $("facets").innerHTML = `
+    ${checkboxFacet("region", "filters.region", app.options.region, regionLabel)}
+    ${frameworks}
+    ${checkboxFacet("source", "filters.source", app.options.source, sourceLabel, { hintKey: "filters.sourceHint" })}
+    <fieldset class="facet">
+      <legend>${esc(t("filters.year"))}</legend>
+      <div class="range-inputs">
+        <label>${esc(t("filters.yearFrom"))}
+          <input type="number" name="year-from" min="${min}" max="${max}" placeholder="${min}" inputmode="numeric" />
+        </label>
+        <label>${esc(t("filters.yearTo"))}
+          <input type="number" name="year-to" min="${min}" max="${max}" placeholder="${max}" inputmode="numeric" />
+        </label>
+      </div>
+    </fieldset>
+    <div class="facet">
+      <label for="f-language">${esc(t("filters.language"))}</label>
+      <select id="f-language" name="language">
+        <option value="">${esc(t("filters.anyLanguage"))}</option>${languages}
+      </select>
+    </div>`;
+  syncFacetControls();
+}
+
+function renderFooter() {
+  $("footerData").textContent = t("footer.data", {
+    date: formatDate(app.data.meta.generatedAt),
+    version: app.data.meta.version,
+    laws: app.data.rows.length,
+    countries: plural("unit.country", app.data.countries.length),
+  });
+}
+
+function renderStatic() {
+  renderScopeSelect();
+  renderFacets();
+  renderFooter();
+}
+
+/* ---------- Dynamic parts (re-rendered on every state change) ---------- */
+
+function syncFacetControls() {
+  const { region, framework, source, year, language } = app.state.facets;
+  const facets = $("facets");
+  for (const input of facets.querySelectorAll('input[name="region"]')) {
+    input.checked = region.includes(input.value);
+  }
+  for (const input of facets.querySelectorAll('input[name="framework"]')) {
+    input.checked = framework.includes(input.value);
+  }
+  for (const input of facets.querySelectorAll('input[name="source"]')) {
+    input.checked = source.includes(input.value);
+  }
+  facets.querySelector('[name="year-from"]').value = year.from ?? "";
+  facets.querySelector('[name="year-to"]').value = year.to ?? "";
+  facets.querySelector('[name="language"]').value = language;
+  $("scope").value = app.state.scope;
+}
+
+function chipLabel(chip) {
+  switch (chip.facet) {
+    case "country":
+      return t("chip.country", { value: countryName(chip.value) });
+    case "region":
+      return regionLabel(chip.value);
+    case "framework":
+      return t("chip.framework", { value: chip.value });
+    case "source":
+      return t("chip.source", { value: sourceLabel(chip.value) });
+    case "year":
+      return t("chip.year", { value: formatRange(app.state.facets.year) });
+    default:
+      return t("chip.language", { value: chip.value });
   }
 }
 
-// Load app when DOM is ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initApp);
-} else {
-  initApp();
+function renderChips() {
+  app.chips = activeFilters(app.state, CONFIG);
+  const host = $("chips");
+  host.hidden = app.chips.length === 0;
+  host.innerHTML = app.chips.length
+    ? app.chips
+        .map((chip, index) => {
+          const label = chipLabel(chip);
+          return `<span class="chip">${esc(label)}<button type="button" data-chip="${index}" aria-label="${esc(
+            t("chip.remove", { value: label })
+          )}">×</button></span>`;
+        })
+        .join("") +
+      `<button type="button" class="link-button" data-clear-filters>${esc(t("filters.clearAll"))}</button>`
+    : "";
+
+  const panelFilters = app.chips.filter((chip) => chip.facet !== "country").length;
+  const badge = $("filterCount");
+  badge.hidden = panelFilters === 0;
+  badge.textContent = panelFilters ? plural("filters.active", panelFilters) : "";
 }
+
+function renderSummary() {
+  const countries = new Set(app.results.map((row) => row.tld)).size;
+  $("resultsSummary").textContent = t("results.summary", {
+    shown: app.results.length,
+    total: app.data.rows.length,
+    countries: plural("unit.country", countries),
+  });
+}
+
+function renderChart() {
+  const host = $("chart");
+  const bars = buildChartBars(app.results);
+  if (!bars.length) {
+    host.replaceChildren();
+    return;
+  }
+  const first = bars[0].label;
+  const last = bars[bars.length - 1].label;
+  renderBarChart(host, {
+    title: t("chart.title"),
+    subtitle: t("chart.subtitle", {
+      laws: plural("unit.law", app.results.length),
+      span: first === last ? first : `${first}–${last}`,
+    }),
+    bars,
+    formatValue: (n) => plural("unit.law", n),
+    labels: {
+      showTable: t("chart.showTable"),
+      showChart: t("chart.showChart"),
+      category: t("chart.colYear"),
+      value: t("chart.colLaws"),
+      details: t("chart.colDetails"),
+      more: (count) => t("chart.more", { count }),
+    },
+    showTable: app.chartAsTable,
+    onToggle: (isTable) => {
+      app.chartAsTable = isTable;
+    },
+  });
+}
+
+function rowHtml(row) {
+  const url = safeUrl(row.website_url);
+  const checked = app.selected.has(row.id) ? " checked" : "";
+  const label = `${t("table.select")}: ${row.country_name} — ${row.law_name}`;
+  return `
+    <tr>
+      <td><input type="checkbox" data-id="${esc(row.id)}" aria-label="${esc(label)}"${checked} /></td>
+      <td><button type="button" class="link-button" data-country="${esc(row.tld)}" title="${esc(
+        t("table.onlyCountry", { name: row.country_name })
+      )}">${esc(row.country_name)}</button></td>
+      <td>${esc(row.law_name)}${
+        row.confidence === "low" ? ` <span class="badge badge-outline">${esc(t("table.lowConfidence"))}</span>` : ""
+      }</td>
+      <td class="nowrap col-optional">${dateHtml(row.enactment_date)}</td>
+      <td class="nowrap">${dateHtml(row.effective_date)}${
+        row.effective_date > TODAY ? ` <span class="badge">${esc(t("table.upcoming"))}</span>` : ""
+      }</td>
+      <td>${esc(row.enforcement_authority)}</td>
+      <td class="col-optional"><small>${valueHtml(row.penalties_range)}</small></td>
+      <td class="col-source">${sourceLink(url, row.law_name)}</td>
+    </tr>`;
+}
+
+function syncSelectAll() {
+  const picked = app.results.filter((row) => app.selected.has(row.id)).length;
+  const box = $("selectAll");
+  box.checked = app.results.length > 0 && picked === app.results.length;
+  box.indeterminate = picked > 0 && picked < app.results.length;
+}
+
+function renderTable() {
+  const empty = app.results.length === 0;
+  $("tableWrap").hidden = empty;
+  $("emptyState").hidden = !empty;
+  $("lawsTableBody").innerHTML = app.results.map(rowHtml).join("");
+  syncSelectAll();
+}
+
+function renderCountryCard() {
+  const host = $("countryCard");
+  const tlds = [...new Set(app.results.map((row) => row.tld))];
+  if (tlds.length !== 1) {
+    host.hidden = true;
+    host.replaceChildren();
+    return;
+  }
+  const country = app.data.countries.find((c) => c.tld === tlds[0]);
+  const frameworks = [
+    ...new Set(app.data.rows.filter((row) => row.tld === country.tld).flatMap((row) => row.frameworkList)),
+  ].sort((a, b) => FRAMEWORK_ORDER.indexOf(a) - FRAMEWORK_ORDER.indexOf(b));
+  const laws = app.data.rows.filter((row) => row.tld === country.tld);
+  const notIn = FRAMEWORK_ORDER.filter((f) => !frameworks.includes(f) && laws.some((row) => row.frameworksNot.includes(f)));
+  const unconfirmed = FRAMEWORK_ORDER.filter((f) => !frameworks.includes(f) && !notIn.includes(f));
+  const badgeList = (list, extraClass = "") =>
+    list.length
+      ? list.map((f) => `<span class="badge${extraClass}" title="${esc(frameworkName(f))}">${esc(f)}</span>`).join("")
+      : "—";
+  const badges = badgeList(frameworks);
+  const notes = [...new Set(laws.map((row) => row.notes).filter(Boolean))];
+  host.hidden = false;
+  host.innerHTML = `
+    <h2>${esc(country.name)} <span class="badge">${esc(country.code)}</span></h2>
+    <dl class="card-grid">
+      <div><dt>${esc(t("card.region"))}</dt><dd>${esc(regionLabel(country.region))}</dd></div>
+      <div><dt>${esc(t("card.laws"))}</dt><dd>${country.lawCount}</dd></div>
+      <div><dt>${esc(t("card.frameworks"))}</dt><dd class="badge-list">${badges}</dd></div>
+      <div><dt>${esc(t("card.frameworksNot"))}</dt><dd class="badge-list">${badgeList(notIn, " badge-outline")}</dd></div>
+      <div><dt>${esc(t("card.unconfirmed"))}</dt><dd>${unconfirmed.length ? esc(unconfirmed.join(", ")) : "—"}</dd></div>
+      <div><dt>${esc(t("card.folder"))}</dt><dd><code>countries/${esc(country.tld)}/</code></dd></div>
+      <div><dt>${esc(t("card.source"))}</dt><dd>${laws.map((row) => esc(sourceDetail(row))).join("<br>")}</dd></div>
+      <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
+    </dl>
+    ${notes.length ? `<p class="card-notes"><strong>${esc(t("card.notes"))}:</strong> ${esc(notes.join(" · "))}</p>` : ""}
+    <p class="card-links">
+      <a href="${esc(countryFileUrl(country.tld, "laws.json"))}" download>${esc(t("card.json"))}</a>
+      <a href="${esc(countryFileUrl(country.tld, "laws.csv"))}" download>${esc(t("card.csv"))}</a>
+    </p>`;
+}
+
+function renderCompareButton() {
+  const count = app.selected.size;
+  $("compareBtn").textContent = count ? t("btn.compareCount", { count }) : t("btn.compare");
+}
+
+function pickedRows() {
+  return app.results.filter((row) => app.selected.has(row.id));
+}
+
+function renderComparison() {
+  const section = $("comparisonSection");
+  if (section.hidden) return;
+  const picked = pickedRows();
+  if (new Set(picked.map((row) => row.tld)).size < 2) {
+    section.hidden = true;
+    return;
+  }
+  const head = picked
+    .map((row) => `<th scope="col">${esc(row.country_name)}<br /><small>${esc(row.law_name)}</small></th>`)
+    .join("");
+  const cell = (criterion, row) => {
+    const value = row[criterion] ?? "";
+    if (LIST_CRITERIA[criterion]) {
+      const items = value.split("/").filter(Boolean);
+      return items.length
+        ? `<span class="badge-list">${items.map((v) => `<span class="badge${criterion.endsWith("_not") || criterion.endsWith("not_party") ? " badge-outline" : ""}" title="${esc(LIST_CRITERIA[criterion](v))}">${esc(v)}</span>`).join("")}</span>`
+        : valueHtml("");
+    }
+    return /_date$/.test(criterion) && value ? dateHtml(value) : valueHtml(value);
+  };
+  let differing = 0;
+  const body = COMPARE_CRITERIA.map((criterion) => {
+    const values = picked.map((row) => String(row[criterion] ?? "").trim());
+    if (values.every((v) => NOT_SPECIFIED.test(v))) return ""; // nothing to compare
+    const differs = new Set(values.map((v) => v.toLowerCase())).size > 1;
+    if (differs) differing++;
+    return `
+      <tr class="${differs ? "is-diff" : "is-same"}">
+        <th scope="row">${esc(t(`compare.${criterion}`))}</th>
+        ${picked.map((row) => `<td>${cell(criterion, row)}</td>`).join("")}
+      </tr>`;
+  }).join("");
+  $("comparisonResults").innerHTML = `
+    <p class="comparison-tools">
+      <label class="check"><input type="checkbox" id="onlyDiff"${app.onlyDiff ? " checked" : ""} /> <span>${esc(
+        t("compare.onlyDiff", { count: differing })
+      )}</span></label>
+    </p>
+    <table class="comparison-table${app.onlyDiff ? " only-diff" : ""}">
+      <thead><tr><th scope="col">${esc(t("compare.criterion"))}</th>${head}</tr></thead>
+      <tbody>${body}</tbody>
+    </table>`;
+}
+
+function writeUrl() {
+  const params = stateToParams(app.state, CONFIG);
+  if (app.urlHasLang) params.set("lang", getLanguage());
+  const query = params.toString();
+  history.replaceState(null, "", query ? `?${query}` : location.pathname);
+}
+
+function update() {
+  app.state.q = $("q").value;
+  app.results = filterRows(app.data.rows, app.state, CONFIG);
+
+  const visible = new Set(app.results.map((row) => row.id));
+  for (const id of app.selected) if (!visible.has(id)) app.selected.delete(id);
+
+  syncFacetControls();
+  renderChips();
+  renderSummary();
+  renderChart();
+  renderTable();
+  renderCountryCard();
+  renderCompareButton();
+  renderComparison();
+  writeUrl();
+}
+
+/* ---------- Events ---------- */
+
+function handleCompare() {
+  const picked = pickedRows();
+  if (new Set(picked.map((row) => row.tld)).size < 2) {
+    alert(t("compare.needTwo"));
+    return;
+  }
+  const section = $("comparisonSection");
+  section.hidden = false;
+  renderComparison();
+  section.scrollIntoView({ block: "start", behavior: scrollBehavior() });
+}
+
+function handleExport() {
+  const csv = `﻿${toCsv(app.data.meta.columns, app.results)}`;
+  const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `privacy-laws-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+const scrollBehavior = () =>
+  matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+
+function readYear(name) {
+  const value = $("facets").querySelector(`[name="${name}"]`).value.trim();
+  return /^\d{4}$/.test(value) ? Number(value) : null;
+}
+
+function bindEvents() {
+  const applyQuery = debounce(update, 150);
+  $("q").addEventListener("input", applyQuery);
+  $("searchForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    applyQuery.flush();
+  });
+  $("scope").addEventListener("change", () => {
+    app.state.scope = $("scope").value;
+    update();
+  });
+
+  $("facets").addEventListener("change", (event) => {
+    const { name, value } = event.target;
+    const { facets } = app.state;
+    if (name === "region" || name === "framework" || name === "source") {
+      facets[name] = [...$("facets").querySelectorAll(`input[name="${name}"]:checked`)].map((i) => i.value);
+    } else if (name === "year-from" || name === "year-to") {
+      let from = readYear("year-from");
+      let to = readYear("year-to");
+      if (from != null && to != null && from > to) [from, to] = [to, from];
+      facets.year = { from, to };
+    } else if (name === "language") {
+      facets.language = value;
+    }
+    update();
+  });
+
+  $("chips").addEventListener("click", (event) => {
+    const remove = event.target.closest("[data-chip]");
+    let focusTarget;
+    if (remove) {
+      const index = Number(remove.dataset.chip);
+      app.state = removeFilter(app.state, CONFIG, app.chips[index]);
+      // The clicked button is about to be re-rendered: hand focus to the chip that takes its place.
+      focusTarget = () => $("chips").querySelector(`[data-chip="${index}"]`) ?? $("chips").querySelector("[data-clear-filters]") ?? $("q");
+    } else if (event.target.closest("[data-clear-filters]")) {
+      app.state = clearFilters(app.state, CONFIG);
+      focusTarget = () => $("q");
+    } else {
+      return;
+    }
+    update();
+    focusTarget().focus();
+  });
+
+  $("clearBtn").addEventListener("click", () => {
+    app.state = emptyState(CONFIG);
+    app.selected.clear();
+    $("q").value = "";
+    update();
+    $("q").focus();
+  });
+
+  $("lawsTableBody").addEventListener("change", (event) => {
+    const box = event.target.closest("input[data-id]");
+    if (!box) return;
+    if (box.checked) app.selected.add(box.dataset.id);
+    else app.selected.delete(box.dataset.id);
+    syncSelectAll();
+    renderCompareButton();
+  });
+  $("lawsTableBody").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-country]");
+    if (!button) return;
+    app.state.country = button.dataset.country;
+    update();
+    // The button that was clicked is re-rendered, so move focus to the card it opened.
+    $("countryCard").focus({ preventScroll: true });
+    $("countryCard").scrollIntoView({ block: "start", behavior: scrollBehavior() });
+  });
+  $("selectAll").addEventListener("change", (event) => {
+    for (const row of app.results) {
+      if (event.target.checked) app.selected.add(row.id);
+      else app.selected.delete(row.id);
+    }
+    for (const box of $("lawsTableBody").querySelectorAll("input[data-id]")) {
+      box.checked = event.target.checked;
+    }
+    syncSelectAll();
+    renderCompareButton();
+  });
+
+  $("compareBtn").addEventListener("click", handleCompare);
+  $("exportBtn").addEventListener("click", handleExport);
+  $("comparisonResults").addEventListener("change", (event) => {
+    if (event.target.id !== "onlyDiff") return;
+    app.onlyDiff = event.target.checked;
+    $("comparisonResults").querySelector(".comparison-table").classList.toggle("only-diff", app.onlyDiff);
+  });
+  $("closeComparison").addEventListener("click", () => {
+    $("comparisonSection").hidden = true;
+    $("compareBtn").focus();
+  });
+}
+
+/* ---------- Boot ---------- */
+
+async function init() {
+  initLanguage();
+  bindLanguageSelect($("languageSelect"));
+
+  try {
+    app.data = await loadBundle(enrichRow);
+  } catch (error) {
+    console.error(error);
+    $("status").textContent = t("status.error");
+    $("status").hidden = false;
+    return;
+  }
+
+  buildIndex(app.data.rows, CONFIG);
+  app.options = Object.fromEntries(FACETS.map((facet) => [facet.id, facetOptions(app.data.rows, facet)]));
+  app.state = pruneState(
+    stateFromParams(new URLSearchParams(location.search), CONFIG),
+    CONFIG,
+    app.data.rows
+  );
+
+  $("q").value = app.state.q;
+  renderCountryList();
+  renderStatic();
+  bindEvents();
+  update();
+  $("advanced").open =
+    matchMedia("(min-width: 769px)").matches || activeFilters(app.state, CONFIG).length > 0;
+
+  onLanguageChange(() => {
+    renderStatic();
+    update();
+  });
+}
+
+init();

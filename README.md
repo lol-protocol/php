@@ -76,7 +76,6 @@ proyecto.
 - `document-formats`: tests en Node de `document-formats/`.
 - `document-formats-database`: importa `document-formats/` a MySQL (dos veces, para comprobar que no duplica filas) y lo valida contra los CSV.
 - `web-animations`: prueba de humo de las animaciones.
-- `legal-data`: pruebas de `privacy-laws/` y `copyright-laws/` (los CSV maestros, los archivos por país, el lector de CSV de la interfaz y que el README diga lo que hay) y la sintaxis de su API y su importador.
 
 `sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`).
 
@@ -85,6 +84,8 @@ proyecto.
 idénticos). Solo corre si cambia algo de `iconos-genealogia/`, `iconos-biblioteca/`,
 `iconos-tools/` o `galeria-iconos.html` — por eso tiene su propio workflow en vez de un job en
 `tests.yml` (que corre en cada push, sin filtrar por carpeta).
+
+`privacy-laws/` y `copyright-laws/` también tienen los suyos: `laws-modules.yml` (validación de los CSV maestros, archivos generados al día, pruebas unitarias, de la API y de la caché de textos en PHP 8.1 y 8.4, y pruebas en navegador con axe-core) y `laws-links.yml` (cada lunes comprueba que los enlaces de referencia sigan respondiendo).
 
 ## Licencia
 

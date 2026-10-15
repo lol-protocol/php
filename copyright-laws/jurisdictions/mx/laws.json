@@ -2,6 +2,7 @@
   {
     "country_code": "MX",
     "country_name": "Mexico",
+    "region": "americas",
     "law_name": "Federal Law for the Protection of Copyright (LFDA)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 100 years",
@@ -12,7 +13,12 @@
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
     "enforcement_body": "Copyright Institute (INDAUTOR)",
-    "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.gob.mx/indautor/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.indautor.gob.mx/",
+    "notes": "Amended DOF 2026-05-14: consent for AI cloning of performers' voice/image (arts 87,118,121)",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

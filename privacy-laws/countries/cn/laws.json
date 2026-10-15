@@ -2,6 +2,7 @@
   {
     "country_code": "CN",
     "country_name": "China",
+    "region": "asia_pacific",
     "law_name": "Personal Information Protection Law (PIPL)",
     "jurisdiction": "Cyberspace Administration",
     "enactment_date": "2021-08-20",
@@ -12,10 +13,15 @@
     "data_categories": "Personal data",
     "retention_period": "Not indefinitely",
     "enforcement_authority": "CAC (Cyberspace Admin)",
-    "penalties_range": "Administrative penalties",
+    "penalties_range": "Up to CNY 50M or 5% of prior-year turnover (serious cases); individuals CNY 100k-1M",
     "exemptions": "Government functions",
     "website_url": "https://www.cac.gov.cn/",
     "language": "Chinese",
-    "notes": "China's privacy law"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "PIPL unamended; audit measures (May 2025), cross-border certification (Jan 2026), CSL fines raised Jan 2026",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

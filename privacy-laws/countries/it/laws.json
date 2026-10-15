@@ -2,10 +2,11 @@
   {
     "country_code": "IT",
     "country_name": "Italy",
-    "law_name": "Data Protection Code (Codice Della Privacy)",
+    "region": "europe",
+    "law_name": "Personal Data Protection Code (Legislative Decree 196/2003, Codice privacy)",
     "jurisdiction": "Garante Per La Protezione",
     "enactment_date": "2003-06-30",
-    "effective_date": "2003-12-01",
+    "effective_date": "2004-01-01",
     "scope": "Italian Residents",
     "applies_to": "Public & private sector",
     "key_requirements": "GDPR + Italian law",
@@ -16,6 +17,11 @@
     "exemptions": "Legal obligations",
     "website_url": "https://www.garanteprivacy.it/",
     "language": "Italian",
-    "notes": "GDPR + Italian amendments"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "D.lgs. 196/2003 as amended by D.lgs. 101/2018 (GDPR adaptation, in force 2018-09-19)",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

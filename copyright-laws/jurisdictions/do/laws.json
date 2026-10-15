@@ -1,0 +1,24 @@
+[
+  {
+    "country_code": "DO",
+    "country_name": "Dominican Republic",
+    "region": "americas",
+    "law_name": "Law No. 65-00 on Copyright",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Detailed technological-measure protection, amended by Law 424-06 (DR-CAFTA) (unconfirmed)",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Oficina Nacional de Derecho de Autor (ONDA)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/1191",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-08"
+  }
+]

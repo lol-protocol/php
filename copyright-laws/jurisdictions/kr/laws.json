@@ -2,6 +2,7 @@
   {
     "country_code": "KR",
     "country_name": "South Korea",
+    "region": "asia_pacific",
     "law_name": "Copyright Act",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
@@ -11,8 +12,13 @@
     "digital_protection": "DMCA-equivalent laws",
     "fair_use_exceptions": "Educational use exceptions",
     "registration_required": "No",
-    "enforcement_body": "Korean Intellectual Property Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.kipo.go.kr/"
+    "enforcement_body": "Ministry of Culture, Sports and Tourism (MCST)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.kipo.go.kr/",
+    "notes": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

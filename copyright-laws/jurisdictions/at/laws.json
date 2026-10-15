@@ -2,17 +2,23 @@
   {
     "country_code": "AT",
     "country_name": "Austria",
+    "region": "europe",
     "law_name": "Austrian Copyright Act",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full economic rights",
     "moral_rights": "Strong moral rights",
     "orphan_works": "Collective management required",
-    "digital_protection": "Copyright enforcement",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Austrian Patent Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.patentamt.at/"
+    "enforcement_body": "Federal Ministry of Justice (BMJ)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.patentamt.at/",
+    "notes": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

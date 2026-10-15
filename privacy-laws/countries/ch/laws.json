@@ -2,9 +2,10 @@
   {
     "country_code": "CH",
     "country_name": "Switzerland",
+    "region": "europe",
     "law_name": "Federal Data Protection Act (FADP)",
     "jurisdiction": "Federal Data Protection & Information Commissioner",
-    "enactment_date": "2022-09-28",
+    "enactment_date": "2020-09-25",
     "effective_date": "2023-09-01",
     "scope": "Swiss Residents",
     "applies_to": "All organizations",
@@ -16,6 +17,11 @@
     "exemptions": "Public interest exceptions",
     "website_url": "https://www.edoeb.admin.ch/",
     "language": "German/French/Italian",
-    "notes": "GDPR-aligned European standard"
+    "frameworks": "EU-Adequacy/CoE-108",
+    "frameworks_not": "GDPR",
+    "notes": "GDPR-aligned European standard",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

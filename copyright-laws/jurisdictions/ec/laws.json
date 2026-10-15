@@ -1,0 +1,24 @@
+[
+  {
+    "country_code": "EC",
+    "country_name": "Ecuador",
+    "region": "americas",
+    "law_name": "Organic Code of the Social Economy of Knowledge, Creativity and Innovation (COESCCI)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Rights holders may implement TPMs; circumvention prohibited (unconfirmed)",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Servicio Nacional de Derechos Intelectuales (SENADI)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.derechosintelectuales.gob.ec/",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
+  }
+]

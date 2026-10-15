@@ -1,0 +1,24 @@
+[
+  {
+    "country_code": "CR",
+    "country_name": "Costa Rica",
+    "region": "americas",
+    "law_name": "Copyright and Related Rights Law (Law No. 6683)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Offences for circumventing effective TPMs, trafficking devices & RMI (Law 8039 arts. 62-63)",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Registro Nacional (Registro de Derechos de Autor y Derechos Conexos)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/21963",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
+  }
+]

@@ -2,17 +2,23 @@
   {
     "country_code": "SE",
     "country_name": "Sweden",
+    "region": "europe",
     "law_name": "Swedish Copyright Act",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity rights",
     "orphan_works": "Collective management required",
-    "digital_protection": "Copyright enforcement",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exemptions",
     "registration_required": "No",
-    "enforcement_body": "Swedish Patent Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.prv.se/"
+    "enforcement_body": "Ministry of Justice (Justitiedepartementet)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.prv.se/",
+    "notes": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

@@ -2,10 +2,11 @@
   {
     "country_code": "TH",
     "country_name": "Thailand",
+    "region": "asia_pacific",
     "law_name": "Personal Data Protection Act (PDPA)",
     "jurisdiction": "Thai DPA",
-    "enactment_date": "2019-06-27",
-    "effective_date": "2020-06-01",
+    "enactment_date": "2019-05-27",
+    "effective_date": "2022-06-01",
     "scope": "Thai Residents",
     "applies_to": "All entities",
     "key_requirements": "Consent & transparency",
@@ -14,8 +15,13 @@
     "enforcement_authority": "Thai National PDPA Committee",
     "penalties_range": "Up to THB 5M fine",
     "exemptions": "Government functions",
-    "website_url": "https://www.dataprotection.go.th/",
+    "website_url": "https://www.pdpc.or.th/",
     "language": "Thai",
-    "notes": "Southeast Asia region"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

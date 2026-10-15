@@ -2,20 +2,26 @@
   {
     "country_code": "TR",
     "country_name": "Turkey",
-    "law_name": "Law on the Protection of Personal Data (KVKK)",
+    "region": "europe",
+    "law_name": "Law No. 6698 on the Protection of Personal Data (KVKK)",
     "jurisdiction": "Personal Data Protection Board",
     "enactment_date": "2016-04-07",
     "effective_date": "2018-04-07",
     "scope": "Turkish Residents",
     "applies_to": "All organizations",
-    "key_requirements": "Lawful basis & consent",
+    "key_requirements": "Expanded grounds for special-category data; tiered cross-border transfers (adequacy / SCCs notified to Board in 5 days / BCRs); VERBIS registration",
     "data_categories": "Personal data",
     "retention_period": "2-5 years",
-    "enforcement_authority": "KVKK Board",
+    "enforcement_authority": "Personal Data Protection Authority (KVKK)",
     "penalties_range": "Up to TRY 1M fine",
     "exemptions": "Government functions",
     "website_url": "https://www.kvkk.gov.tr/",
     "language": "Turkish",
-    "notes": "Turkey's privacy law"
+    "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
+    "notes": "Amended by Law 7499 (in force 2024-06-01): new transfer regime, SCC notification, special categories",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

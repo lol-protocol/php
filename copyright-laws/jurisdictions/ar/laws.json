@@ -2,17 +2,23 @@
   {
     "country_code": "AR",
     "country_name": "Argentina",
+    "region": "americas",
     "law_name": "Argentine Copyright Law (Ley 11.723)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years",
+    "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright enforcement",
+    "digital_protection": "No specific provision: no TPM or rights-management protection in Law 11.723",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Argentine Copyright Office",
-    "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.minplan.gob.ar/"
+    "enforcement_body": "Dirección Nacional del Derecho de Autor (Ministry of Justice)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.argentina.gob.ar/normativa/nacional/42755/normas-modifican",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

@@ -2,20 +2,26 @@
   {
     "country_code": "EG",
     "country_name": "Egypt",
-    "law_name": "Personal Data Protection Law",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Law (Law No. 151 of 2020)",
     "jurisdiction": "Personal Data Protection Center",
-    "enactment_date": "2020-06-15",
-    "effective_date": "2020-06-15",
+    "enactment_date": "2020-07-15",
+    "effective_date": "2020-10-16",
     "scope": "Egyptian Residents",
     "applies_to": "All organizations",
     "key_requirements": "Lawful processing",
     "data_categories": "Personal data",
     "retention_period": "Necessary period",
-    "enforcement_authority": "PDPC",
-    "penalties_range": "Administrative penalties",
+    "enforcement_authority": "Personal Data Protection Center (Ministry of Communications and IT)",
+    "penalties_range": "Up to EGP 5M (plus imprisonment for some offences)",
     "exemptions": "Government functions",
-    "website_url": "https://pdpc.eg/",
+    "website_url": "https://eg.andersen.com/wp-content/uploads/2025/06/Law-No.-151-OF-2020.pdf",
     "language": "Arabic/English",
-    "notes": "North Africa region"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Sources disagree on the exact dates (15/16 Oct 2020 in force); executive regulations issued by MCIT Decree 816 of 2025",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-11"
   }
 ]

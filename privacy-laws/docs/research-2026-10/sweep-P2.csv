@@ -1,0 +1,88 @@
+module,code,status,field,value,conf,source,note
+P,RO,current,status,current,high,https://www.cliffordchance.com/briefings/2018/07/a_new_law_adoptedintheimplementationofth.html,GDPR + Law 190/2018
+P,RO,current,law_name,Law No. 190/2018 implementing the GDPR,high,https://www.linklaters.com/en/insights/data-protected/data-protected---romania,fix: add number
+P,RO,current,enactment_date,2018-07-26,high,https://www.cliffordchance.com/briefings/2018/07/a_new_law_adoptedintheimplementationofth.html,fix: Official Gazette publication
+P,RO,current,effective_date,2018-07-31,high,https://www.linklaters.com/en/insights/data-protected/data-protected---romania,fix: CC + Linklaters agree
+P,GR,current,status,current,high,https://dpa.gr/sites/default/files/2020-08/LAW 4624_2019_EN_TRANSLATED BY THE HDPA.PDF,Main law is Law 4624/2019 (GDPR implementing); listed 'Law 4818/2021' looks wrong
+P,GR,current,law_name,Law 4624/2019 (Data Protection Law implementing GDPR),high,https://dpa.gr/sites/default/files/2020-08/LAW 4624_2019_EN_TRANSLATED BY THE HDPA.PDF,fix: title
+P,GR,current,enactment_date,2019-08-29,high,https://www.pwc.com/gr/en/media-centre/tax-legal-news/Legal%20Flash%20-%20GDPR_eng.pdf,fix: Gazette A 137 published and in force same day
+P,GR,current,effective_date,2019-08-29,high,https://www.privacylaws.com/reports-gateway/articles/int163/int163greece/,fix
+P,PT,current,status,current,high,https://www.garrigues.com/pt/pt-PT/news/nova-lei-de-protecao-de-dados-pessoais,GDPR + Lei 58/2019; CNPD disapplied some articles (Delib. 2019/494)
+P,PT,current,law_name,Law No. 58/2019 (GDPR execution law),high,https://www.vda.pt/xms/files/05_Publicacoes/2019/Flashes_Newsletters/Flash_VdA_-_Publicacao_da_Lei_de_Execucao_do_RGPD_na_ordem_Juridica_Nacional.pdf,fix
+P,PT,current,enactment_date,2019-08-08,high,https://www.agefe.pt/uploads/new_documents/Circular102019sobreLeideExecuoNacionaldoRegulamentoGeraldeProteodeDadosRGPD.pdf,fix: DR publication
+P,PT,current,effective_date,2019-08-09,high,https://www.garrigues.com/pt/pt-PT/news/nova-lei-de-protecao-de-dados-pessoais,fix: AGEFE + Garrigues agree
+P,AT,current,status,current,med,https://www.globallegalpost.com/lawoverborders/data-protection-law-guide-1072382791/austria-579009824,"DSG amended 2019, 2024 (BGBl I 62/2024, 70/2024: parliamentary DP committee from 2025-01-01), 2025 (BGBl I 50/2025) - not replaced"
+P,AT,current,notes,DSG (ex-DSG 2000) as amended; 2024 novelle added Parliamentary Data Protection Committee,med,https://www.globallegalpost.com/lawoverborders/data-protection-law-guide-1072382791/austria-579009824,
+P,DK,current,status,current,high,https://www.linklaters.com/en/insights/data-protected/data-protected---denmark,
+P,DK,current,law_name,Data Protection Act (Act No. 502 of 23 May 2018),high,https://www.Datatilsynet.dk/media/7753/danish-data-protection-act.pdf,fix: add number
+P,DK,current,enactment_date,2018-05-23,high,https://www.dataguidance.com/legal-research/act-no-502-23-may-2018-supplementary-0,fix: act dated 23 May 2018 (effective 2018-05-25 correct)
+P,FI,current,status,current,high,https://www.linklaters.com/en/insights/data-protected/data-protected---finland,
+P,FI,current,law_name,Data Protection Act (1050/2018),high,https://www.linklaters.com/en/insights/data-protected/data-protected---finland,fix: add number
+P,FI,current,effective_date,2019-01-01,med,https://www.linklaters.com/en/insights/data-protected/data-protected---finland,fix: only Linklaters seen; enactment date (Dec 2018) UNKNOWN
+P,IE,current,status,current,high,https://revisedacts.lawreform.ie/eli/2018/act/7/revised/en/html,DPA 2018 (No. 7 of 2018) as amended; only minor SIs (e.g. S.I. 301/2026)
+P,IE,current,enactment_date,2018-05-24,med,https://community.isc2.org/t5/GDPR/New-Irish-Data-Protection-Act-introduced/m-p/10886,fix: signed 24 May 2018; effective 2018-05-25 correct
+P,LU,current,status,current,high,https://www.linklaters.com/en/insights/data-protected/data-protected---luxembourg,
+P,LU,current,law_name,Law of 1 August 2018 on the organisation of the CNPD and the general data protection regime,high,https://elvingerhoss.lu/publications/luxembourg-law-complementing-gdpr,fix
+P,LU,current,enactment_date,2018-08-01,high,https://elvingerhoss.lu/publications/luxembourg-law-complementing-gdpr,fix: published 2018-08-16
+P,LU,current,effective_date,2018-08-20,med,https://www.linklaters.com/en/insights/data-protected/data-protected---luxembourg,fix: only Linklaters seen
+P,HK,current,status,current,high,https://www.pcpd.org.hk/english/data_privacy_law/ordinance_at_a_Glance/ordinance.html,PDPO Cap 486 in force; last major change 2021 anti-doxxing amendment; no replacement found
+P,HK,current,enactment_date,1995-08-03,high,https://www.pcpd.org.hk/english/about_pcpd/our_organisation/facts/key_facts_n_history.html,fix: listed 2013-10-18 wrong; PCPD + LegCo agree
+P,HK,current,effective_date,1996-12-20,high,https://www.pcpd.org.hk/english/about_pcpd/our_organisation/facts/key_facts_n_history.html,fix: listed 2021-10-18 wrong (2021 doxxing amendment took effect 2021-10-08)
+P,HK,current,law_name,Personal Data (Privacy) Ordinance (Cap. 486),high,https://www.pcpd.org.hk/english/data_privacy_law/ordinance_at_a_Glance/ordinance.html,
+P,TH,current,status,current,high,https://www.tilleke.com/insights/thailand-proposes-significant-amendments-to-the-personal-data-protection-act/?page=19,Draft amendment only in consultation (Jul-Aug 2026); not enacted
+P,TH,current,enactment_date,2019-05-27,high,https://lawgazette.com.sg/practice/global-news/thailands-new-personal-data-protection-act/,fix: Royal Gazette publication 2019-05-27 (listed 2019-06-27)
+P,TH,current,effective_date,2022-06-01,high,https://hunton.com/media/legal/75784_full-enforcement-of-pdpa-is-postponed.pdf,fix: operative provisions postponed twice to 2022-06-01 (listed 2020-06-01)
+P,MY,amended,status,amended,high,https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force,"PDP (Amendment) Act 2024 phased in 2025-01-01/04-01/06-01: processor duties, DPO, breach notification, portability, higher fines"
+P,MY,amended,penalties_range,"Up to RM1,000,000 fine and/or up to 3 years' imprisonment",high,https://www.americanlegalblogger.com/2025/01/new-horizons-in-data-protection-malaysias-personal-data-protection-amendment-act-2024/,was RM500k/RM300k pre-amendment
+P,MY,amended,key_requirements,Appoint DPO (thresholds); notify breaches to Commissioner and data subjects; data portability; processor security duties,high,https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force,
+P,MY,amended,notes,"Amended by PDP (Amendment) Act 2024, phased in during 2025 (DPO, breach notice, RM1M fines)",high,https://insightplus.bakermckenzie.com/bm/data-technology/malaysia-personal-data-protection-amendment-act-2024-to-come-into-force,
+P,MY,amended,enactment_date,UNKNOWN,low,UNKNOWN,listed 2010-11-15 doubtful (believed June 2010) - not verified
+P,ID,current,status,current,med,https://www.rsm.global/indonesia/en/node/439,"Law 27/2022 in force; implementing PP 33/2026 promulgated 2026-07-16, effective 2027-01-16; DPA presidential reg pending"
+P,ID,current,notes,Implementing GR 33/2026 effective 2027-01-16; DPA not yet formed (Mar 2026),med,https://www.rsm.global/indonesia/en/node/439,"Law 1/2026 (penal sanction adjustment, eff. 2026-01-02) touches PDP criminal clauses - minor"
+P,ID,current,law_name,Law No. 27 of 2022 on Personal Data Protection (UU PDP),high,https://www.dlapiperdataprotection.com/?c=ID&t=law,"Law 1/2026 (penal adjustment, eff. 2026-01-02) tweaks criminal sanctions across statutes incl. PDP - minor"
+P,PH,current,status,current,med,https://resourcehub.bakermckenzie.com/en/resources/global-data-and-cyber-handbook/asia-pacific/philippines/topics/key-data-and-cybersecurity-laws,"RA 10173 still in force; NPC amendment bills pending, none enacted found"
+P,PH,current,law_name,Data Privacy Act of 2012 (Republic Act No. 10173),high,https://resourcehub.bakermckenzie.com/en/resources/global-data-and-cyber-handbook/asia-pacific/philippines/topics/key-data-and-cybersecurity-laws,
+P,PH,current,effective_date,UNKNOWN,low,UNKNOWN,listed 2012-08-15 is approval date; effectivity believed 2012-09-08 but not confirmed by sources
+P,CN,current,status,current,high,https://cm.twobirds.com/en/insights/2026/china/china-data-protection-and-cybersecurity-annual-review-of-2025-and-outlook-for-2026,No PIPL amendment; new PI compliance-audit measures (2025-05-01) and amended CSL (2026-01-01) sit alongside
+P,CN,current,notes,"PIPL unamended; audit measures (May 2025), cross-border certification (Jan 2026), CSL fines raised Jan 2026",high,https://www.arnoldporter.com/en/perspectives/advisories/2026/02/china-data-privacy-and-cybersecurity-2025-year-in-review,
+P,RU,amended,status,amended,high,https://www.pgplaw.com/upload/iblock/751/hgl87zwhlkewmyezha3za4vwwwjnmi85/Alert_turnover_based-fines-for-personal-data-leakages.pdf,"152-FZ stays; Law 420-FZ (signed 2024-11-30, in force 2025-05-30) adds leak fines incl. turnover-based for repeat leaks"
+P,RU,amended,law_name,Federal Law No. 152-FZ on Personal Data,high,https://presencis.com/regulations/comparisons/gdpr-vs-ru-152fz,fix: add number
+P,RU,amended,penalties_range,Higher fixed fines for leaks (multi-million RUB); turnover-based fines for repeat leaks (Law 420-FZ),med,https://www.advant-beiten.com/fileadmin/beiten/Newsletter/Newsletter_Russia_Unprecedented_increase_in_liability_for_personal_data_leaks.pdf,exact bands not confirmed in results
+P,RU,amended,notes,"Law 420-FZ (in force 2025-05-30) sharply raised leak fines, turnover-based for repeat leaks",high,https://www.pgplaw.com/upload/iblock/751/hgl87zwhlkewmyezha3za4vwwwjnmi85/Alert_turnover_based-fines-for-personal-data-leakages.pdf,
+P,TR,amended,status,amended,high,https://mondaq.co.uk/turkey/data-protection/1440344/changes-in-the-pdpl-was-published-in-the-official-gazette,"Law 7499 (OG 2024-03-12, in force 2024-06-01) rewrote Art.6 special categories and Art.9 transfers"
+P,TR,amended,law_name,Law No. 6698 on the Protection of Personal Data (KVKK),high,https://koksal.av.tr/en/legislation/personal-data-protection-law-kvkk-6698/,fix: add number
+P,TR,amended,key_requirements,Expanded grounds for special-category data; tiered cross-border transfers (adequacy / SCCs notified to Board in 5 days / BCRs); VERBIS registration,high,https://www.mondaq.com/turkey/data-protection/1565750/guide-on-cross-border-transfers-of-personal-data,
+P,TR,amended,notes,"Amended by Law 7499 (in force 2024-06-01): new transfer regime, SCC notification, special categories",high,https://mondaq.co.uk/turkey/data-protection/1440344/changes-in-the-pdpl-was-published-in-the-official-gazette,
+P,SA,current,status,current,high,https://akingump.com/en/insights/alerts/kingdom-of-saudi-arabia-approves-amendments-to-personal-data-protection-law-and-confirms-september-2023-effective-date,Amendments by M/148 (2023) predate listed effective date; PDPL in force
+P,SA,current,enactment_date,2021-09-16,high,https://insightplus.bakermckenzie.com/bm/data-technology/saudi-arabia-new-amendments-have-been-introduced-to-the-personal-data-protection-law,fix: Royal Decree M/19 dated 9/2/1443H = 2021-09-16 (listed 2021-12-21)
+P,SA,current,effective_date,2023-09-14,high,https://akingump.com/en/insights/alerts/kingdom-of-saudi-arabia-approves-amendments-to-personal-data-protection-law-and-confirms-september-2023-effective-date,fix: listed 2023-09-23; enforcement after 1-year grace (2024-09-14)
+P,AE,current,status,current,high,https://www.clydeco.com/en/insights/2021/11/uae-issues-landmark-personal-data-protection-law,
+P,AE,current,law_name,Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data,high,https://tamimi.com/news/uaes-new-federal-data-protection-law,fix: Decree-Law
+P,AE,current,enactment_date,2021-09-20,high,https://www.DataGuidance.com/jurisdiction/uae-federal,fix: listed 2021-11-02; one source says 2021-09-26
+P,AE,current,effective_date,2022-01-02,high,https://www.clydeco.com/en/insights/2021/11/uae-issues-landmark-personal-data-protection-law,fix: listed 2022-01-01
+P,IL,amended,status,amended,high,https://www.pearlcohen.com/major-amendment-to-israeli-privacy-law-set-to-take-effect/,"Amendment 13 in force 2025-08-14: PPA admin fines without court, expanded definitions, DPO"
+P,IL,amended,penalties_range,"Administrative fines up to NIS 320,000 per violation (higher if aggravated / per-data-subject based); criminal penalties",med,https://israeldesks.com/israel-enacts-strict-privacy-reform/,sources disagree on fine mechanics
+P,IL,amended,enforcement_authority,Privacy Protection Authority (PPA),high,https://resourcehub.bakermckenzie.com/en/resources/global-data-and-cyber-handbook/emea/israel/topics/regulators-enforcement-priorities-and-penalties,
+P,IL,amended,notes,"Amendment 13 effective 2025-08-14: PPA fining powers, DPO duty, broader definitions",high,https://www.pearlcohen.com/major-amendment-to-israeli-privacy-law-set-to-take-effect/,
+P,KE,current,status,current,high,https://new.kenyalaw.org/akn/ke/act/2019/24,"Data Protection (Amendment) Bill 2025 pending, not enacted"
+P,KE,current,law_name,"Data Protection Act, 2019 (No. 24 of 2019)",high,https://www.odpc.go.ke/wp-content/uploads/2024/02/TheDataProtectionAct__No24of2019.pdf,
+P,KE,current,enactment_date,2019-11-08,high,https://www.odpc.go.ke/wp-content/uploads/2024/02/TheDataProtectionAct__No24of2019.pdf,fix: date of assent (listed 2019-11-28)
+P,KE,current,effective_date,2019-11-25,high,https://www.odpc.go.ke/wp-content/uploads/2024/02/TheDataProtectionAct__No24of2019.pdf,fix: commencement per official text + secondary DB
+P,AR,current,status,current,high,https://digitalpolicyalert.org/event/42320-chamber-of-deputies-introduced-personal-data-protection-law-bill-no-3397-d-2026-including-data-protection-regulation,"Law 25.326 still in force; replacement bills (2025, 3397-D-2026) pending only"
+P,AR,current,law_name,Personal Data Protection Law No. 25.326,med,https://www.marval.com/publicacion/nuevos-proyectos-de-ley-de-datos-personales-en-argentina-17289?lang=en,fix: add law number
+P,CL,replaced,status,replaced,high,https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/chile,Law 21.719 published 2024-12-13; Ley 19.628 applies until 2026-11-30
+P,CL,replaced,law_name,Law No. 21.719 on the Protection and Processing of Personal Data,high,https://www.az.cl/en/executive-published-new-personal-data-law-in-chile/,formally amends/rewrites Ley 19.628
+P,CL,replaced,jurisdiction,Agencia de Protección de Datos Personales,high,https://www.az.cl/en/executive-published-new-personal-data-law-in-chile/,
+P,CL,replaced,enactment_date,2024-12-13,high,https://www.clydeco.com/en/insights/2025/02/chile-new-data-protection-cybersec-legislation,publication date in Diario Oficial
+P,CL,replaced,effective_date,2026-12-01,high,https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/chile,CMS + lawwwing agree
+P,CL,replaced,enforcement_authority,Personal Data Protection Agency (Agencia de Protección de Datos Personales),high,https://www.az.cl/en/executive-published-new-personal-data-law-in-chile/,
+P,CL,replaced,penalties_range,"Up to 20,000 UTM (~USD 1.3M) for very serious infringements",med,https://lawwwing.com/en/the-new-era-of-data-protection-in-chile-what-changes-with-law-21-719/,higher turnover-based caps for repeat cases not verified
+P,CL,replaced,key_requirements,"Legal bases beyond consent (contract, legitimate interest); portability; breach notification; DPO/compliance model",high,https://www.dlapiperdataprotection.com/?c=CL&t=law,
+P,CL,replaced,website_url,https://www.dlapiperdataprotection.com/?c=CL&t=law,high,https://www.dlapiperdataprotection.com/?c=CL&t=law,
+P,CL,replaced,notes,"Law 21.719 rewrites Ley 19.628, creates new agency; in force 2026-12-01",high,https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/chile,
+P,CO,current,status,current,high,https://allende.com/en/privacy-and-cybersecurity/new-bill-to-amend-colombias-personal-data-protection-law-introduced-in-congress-09-15-2025/,Reform bills 214/2025 & 274/2025 pending in House; not enacted as far as found
+P,CO,current,law_name,Statutory Law 1581 of 2012,high,https://www.mincit.gov.co/prensa/noticias/general/actualizar-normas-proteccion-datos-personales,"fix: 'Statutory' (Ley Estatutaria), not 'Organic'"
+P,PE,amended,status,amended,high,https://lpderecho.pe/reglamento-ley-proteccion-datos-personales-decreto-supremo-016-2024-jus/,"New Regulation DS 016-2024-JUS (pub 2024-11-30, in force ~2025-03-30) replaced DS 003-2013-JUS; adds DPO, breach notif., stronger sanctions"
+P,PE,amended,notes,"Law 29733 + new Regulation DS 016-2024-JUS (in force Mar 2025): DPO, breach notification",high,https://lpderecho.pe/reglamento-ley-proteccion-datos-personales-decreto-supremo-016-2024-jus/,
+P,PE,amended,law_name,Personal Data Protection Law (Law No. 29733),high,https://lpderecho.pe/reglamento-ley-proteccion-datos-personales-decreto-supremo-016-2024-jus/,unchanged
+P,PE,amended,key_requirements,Appoint Personal Data Officer (staggered); breach notification; registration of databanks; transfer rules,med,https://cms.law/en/per/publication/aprueban-nuevo-reglamento-de-la-ley-de-proteccion-de-datos-personales,

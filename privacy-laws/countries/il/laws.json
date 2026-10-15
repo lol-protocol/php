@@ -2,6 +2,7 @@
   {
     "country_code": "IL",
     "country_name": "Israel",
+    "region": "middle_east_africa",
     "law_name": "Privacy Protection Law",
     "jurisdiction": "Privacy Protection Authority",
     "enactment_date": "1981-03-31",
@@ -11,11 +12,16 @@
     "key_requirements": "Lawful collection & transparency",
     "data_categories": "Personal data",
     "retention_period": "As appropriate",
-    "enforcement_authority": "Israeli Authority",
-    "penalties_range": "Fines & compliance orders",
+    "enforcement_authority": "Privacy Protection Authority (PPA)",
+    "penalties_range": "Administrative fines up to NIS 320,000 per violation (higher if aggravated / per-data-subject based); criminal penalties",
     "exemptions": "Government functions",
     "website_url": "https://www.justice.gov.il/",
     "language": "Hebrew/English",
-    "notes": "Middle East region"
+    "frameworks": "EU-Adequacy",
+    "frameworks_not": "GDPR/CoE-108",
+    "notes": "Amendment 13 effective 2025-08-14: PPA fining powers, DPO duty, broader definitions",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]
