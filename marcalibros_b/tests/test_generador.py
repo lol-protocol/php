@@ -138,6 +138,8 @@ def test_franja_de_texto_en_el_manifest():
     for e in manifiesto["entradas"]:
         assert e["texto_recomendado"] in ("claro", "oscuro")
         assert e["velo"] in (0.0, *OPACIDADES_VELO)
+        assert e["calma_cielo"] in (0.0, *build.INTENSIDADES_CALMA)
+        assert not (e["velo"] and e["calma_cielo"]), "o se calma el cielo o se pone velo, no ambas"
         assert len(e["franja"]) == 4
         if e["velo"] < OPACIDADES_VELO[-1]:  # solo el velo más fuerte puede quedarse corto
             assert e["contraste_texto"] >= MIN_CONTRASTE_TEXTO, e["id"]

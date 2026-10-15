@@ -99,7 +99,8 @@ def validar_taxonomia(config, motivos, animos, escenas, paletas):
 ESCALA_MINIATURA = 0.25  # tamaño de lectura aproximado: 50×350
 MIN_PIXELES_MOTIVO = 30  # píxeles de la miniatura que el motivo debe cambiar
 UMBRAL_CAMBIO = 40  # diferencia por canal (0–255) para contar un píxel como cambiado
-TONOS_TEXTO = {"claro": "#F4EEE1", "oscuro": "#1E2A38"}
+# Blanco y casi negro: con los tonos crema y azul de marca hacían falta 121 velos más.
+TONOS_TEXTO = {"claro": "#FFFFFF", "oscuro": "#111111"}
 MIN_CONTRASTE_TEXTO = 4.5  # texto normal WCAG AA, medido solo dentro de la franja reservada
 OPACIDADES_VELO = (0.35, 0.5, 0.65, 0.8)
 

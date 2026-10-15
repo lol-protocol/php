@@ -723,7 +723,7 @@ def _gallo(esc, rng, p, altura):
 
 def _lluvia(esc, rng, p, altura):
     """Lluvia oblicua (ambiente)."""
-    for _ in range(rng.randint(34, 46)):
+    for _ in range(rng.randint(26, 36)):
         x, y, l = rng.uniform(-10, ANCHO) , rng.uniform(0.04, 0.92) * ALTO, rng.uniform(14, 24)
         esc.poligono([(round(x, 1), round(y, 1)), (round(x + 1.6, 1), round(y, 1)), (round(x + 1.6 - l * 0.25, 1), round(y + l, 1)),
                       (round(x - l * 0.25, 1), round(y + l, 1))], p["sol"])

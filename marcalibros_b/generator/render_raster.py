@@ -17,11 +17,12 @@ def _rgb(hex_color):
     return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
 
 
-def _degradado(arriba, abajo, w, h):
-    a = np.array(_rgb(arriba), dtype=float)
-    b = np.array(_rgb(abajo), dtype=float)
-    t = np.linspace(0, 1, h)[:, None, None]
-    fila = a + (b - a) * t  # (h, 1, 3)
+def _degradado(arriba, abajo, w, h, paradas=()):
+    """Degradado vertical; `paradas` son (posición 0–1, color) intermedias, en orden."""
+    pos = [0.0] + [o for o, _ in paradas] + [1.0]
+    cols = np.array([_rgb(arriba)] + [_rgb(c) for _, c in paradas] + [_rgb(abajo)], dtype=float)
+    t = np.linspace(0, 1, h)
+    fila = np.stack([np.interp(t, pos, cols[:, k]) for k in range(3)], axis=1)[:, None, :]  # (h, 1, 3)
     return np.broadcast_to(fila, (h, w, 3)).copy()
 
 
@@ -33,7 +34,7 @@ def a_imagen(esc, escala=1.0):
     base = None
     for prim in esc.primitivas:
         if prim["tipo"] == "degradado":
-            base = _degradado(prim["arriba"], prim["abajo"], w, h)
+            base = _degradado(prim["arriba"], prim["abajo"], w, h, prim.get("paradas", ()))
             break
     if base is None:
         raise ValueError("la escena necesita un degradado de fondo")

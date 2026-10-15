@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 1400" width="200" height="1400">
-<defs><linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9A5A0"/><stop offset="1" stop-color="#4B2E4F"/></linearGradient></defs>
+<defs><linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9A5A0"/><stop offset="0.2571" stop-color="#C0868B"/><stop offset="0.3143" stop-color="#C6999F"/><stop offset="0.6143" stop-color="#A07D8B"/><stop offset="0.6714" stop-color="#7F556A"/><stop offset="1" stop-color="#4B2E4F"/></linearGradient></defs>
 <rect width="200" height="1400" fill="url(#cielo)"/>
 <circle cx="125.386" cy="322.331" r="29.0591" fill="#FFF1DC"/>
 <polygon points="0,1219.56 73.9,1072.1 132.4,1195.3 204.5,1063.2 238.8,1212.6 238.8,1400 0,1400" fill="#8C5A7A"/>
@@ -32,5 +32,4 @@
 <polygon points="162.482,1040.25 173.187,1030.62 172.117,1041.32" fill="#170D1E"/>
 <polygon points="162.482,1040.25 169.976,1042.4 167.835,1049.89" fill="#170D1E"/>
 <polygon points="0,1373.56 48,1313.8 89.4,1370 137.9,1266.7 178.1,1359.3 251.8,1299.9 286.2,1360.5 286.2,1400 0,1400" fill="#2E1B38"/>
-<rect x="16" y="440" width="168" height="420" rx="10" fill="#F4EEE1" fill-opacity="0.35"/>
 </svg>

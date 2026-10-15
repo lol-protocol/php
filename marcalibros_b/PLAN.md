@@ -112,9 +112,20 @@ Verificado:
 4. Editor de marcalibros de usuario (recetas en JSON: plantilla, imagen, recorte, texto).
 5. Línea de marca base.
 
+## Legibilidad del texto sin velos (generador 0.8, octubre)
+
+- Medición previa: con los tonos de texto de marca (crema y azul) 361 de 1000 piezas necesitaban velo; con blanco y casi negro, 240. En 220 de esas 240 el problema era solo que la franja caía en un tono medio uniforme del degradado.
+- Cambios: los tonos de texto pasan a `#FFFFFF` / `#111111`; si aun así la franja no llega a 4,5:1, el generador **calma el cielo** en la franja: añade paradas al degradado que lo oscurecen o aclaran (intensidad 0,1–0,6, la menor que baste) con transiciones de 80 px. Solo si eso no basta, velo (hoy ninguna pieza).
+- Resultado: 760 piezas se leen tal cual, 240 con el cielo calmado (casi todas a 0,1–0,2) y **0 con velo**. Manifest: `calma_cielo`.
+
+## Página de revisión
+
+- `generator/revision_web.py` genera `catalog/revision/web/` (una hoja de miniaturas por movimiento y la página) y se publica como Artifact: https://claude.ai/artifact/RmfFcDftrNTVdqBG7oTTy9 (privado).
+- Permite marcar cada obra y cada autor como «bien» o «corregir» con una nota. Las marcas viven en la base de datos del Artifact (colecciones `revision`, id = id de la pieza, y `autores`, id = `movimiento~autor`) y Claude las lee para aplicar las correcciones a la taxonomía.
+
 ## Paso 3 hecho: los 10 movimientos (generador 0.8)
 
-**1000 piezas** (100 JPG y 900 SVG): 10 movimientos × 10 autores × 10 obras o temas. 0 errores de validación, 23 tests, 639 piezas con la franja de texto legible sin velo y 361 con velo horneado.
+**1000 piezas** (100 JPG y 900 SVG): 10 movimientos × 10 autores × 10 obras o temas. 0 errores de validación y 23 tests. (La legibilidad del texto se rehízo después: ver la sección anterior.)
 
 | Movimiento | Gramática visual (adorno propio) | Paletas nuevas | Motivos nuevos |
 |---|---|---|---|

@@ -17,7 +17,8 @@ def a_svg(esc):
             lineas.append(
                 '<defs><linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">'
                 f'<stop offset="0" stop-color="{prim["arriba"]}"/>'
-                f'<stop offset="1" stop-color="{prim["abajo"]}"/>'
+                + "".join(f'<stop offset="{o:g}" stop-color="{c}"/>' for o, c in prim.get("paradas", ()))
+                + f'<stop offset="1" stop-color="{prim["abajo"]}"/>'
                 "</linearGradient></defs>"
             )
             lineas.append(f'<rect width="{ANCHO}" height="{ALTO}" fill="url(#cielo)"/>')

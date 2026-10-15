@@ -203,13 +203,56 @@ def _recorte_franja(esc, margen=10):
         (round((x0 + margen) * f), round((y0 + margen) * f), round((x1 - margen) * f), round((y1 - margen) * f)))
 
 
+TRANSICION_CALMA = 80  # px que tarda el cielo en volver a su color fuera de la franja
+INTENSIDADES_CALMA = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
+
+
+def _hex(rgb):
+    return "#" + "".join(f"{max(0, min(255, round(v))):02X}" for v in rgb)
+
+
+def _color_en(prim, y):
+    """Color del degradado del cielo a la altura y (sin paradas)."""
+    t = y / ALTO
+    a = np.array([int(prim["arriba"][i:i + 2], 16) for i in (1, 3, 5)], float)
+    z = np.array([int(prim["abajo"][i:i + 2], 16) for i in (1, 3, 5)], float)
+    return a + (z - a) * t
+
+
+def _calmar_cielo(esc, k, tono):
+    """Lleva el cielo de la franja hacia el negro (texto claro) o el blanco (texto oscuro)
+    en una proporción k, con transiciones suaves arriba y abajo: el cielo «se calma» en la
+    zona de lectura en vez de taparse con un recuadro."""
+    prim = next(q for q in esc.primitivas if q["tipo"] == "degradado")
+    _, y0, _, y1 = esc.franja
+    extremo = np.zeros(3) if tono == "claro" else np.full(3, 255.0)
+    paradas = []
+    for y, calma in ((y0 - TRANSICION_CALMA, False), (y0, True), (y1, True), (y1 + TRANSICION_CALMA, False)):
+        y = min(max(y, 1), ALTO - 1)
+        base = _color_en(prim, y)
+        paradas.append((round(y / ALTO, 4), _hex(base + (extremo - base) * k if calma else base)))
+    prim["paradas"] = paradas
+
+
 def reservar_texto(esc):
-    """Elige el tono de texto de la franja y, si ni así llega al contraste mínimo, hornea
-    un velo translúcido solo dentro de la franja (el más suave que lo logre).
-    Devuelve (tono, contraste, opacidad_del_velo)."""
+    """Elige el tono de texto de la franja. Si ninguno llega al contraste mínimo, primero
+    calma el cielo en la franja (lo oscurece o aclara con transiciones suaves); solo si eso
+    no basta, hornea un velo translúcido dentro de la franja.
+    Devuelve (tono, contraste, opacidad_del_velo, calma)."""
     tono, ratio = mejor_texto(_recorte_franja(esc))
     if ratio >= MIN_CONTRASTE_TEXTO:
-        return tono, ratio, 0.0
+        return tono, ratio, 0.0, 0.0
+    prim = next(q for q in esc.primitivas if q["tipo"] == "degradado")
+    for k in INTENSIDADES_CALMA:
+        pruebas = []
+        for t in TONOS_TEXTO:
+            _calmar_cielo(esc, k, t)
+            pruebas.append((contraste_texto(_recorte_franja(esc), t), t))
+        r, t = max(pruebas)
+        if r >= MIN_CONTRASTE_TEXTO:
+            _calmar_cielo(esc, k, t)
+            return t, r, 0.0, k
+    prim.pop("paradas", None)  # el problema no es el cielo (hay elementos en la franja): velo
     x0, y0, x1, y1 = esc.franja
     contrario = {"claro": "oscuro", "oscuro": "claro"}
     for op in OPACIDADES_VELO:
@@ -221,7 +264,7 @@ def reservar_texto(esc):
         r, t = max(pruebas)
         if r >= MIN_CONTRASTE_TEXTO or op == OPACIDADES_VELO[-1]:  # el último se acepta aunque no llegue
             esc.velo(x0, y0, x1, y1, TONOS_TEXTO[contrario[t]], op)
-            return t, r, op
+            return t, r, op, 0.0
 
 
 SIN_COMPROBAR_VISIBILIDAD = {"ninguno", "luna"}  # sin motivo, o la luna: siempre grande
@@ -249,9 +292,10 @@ def elegir_pieza(config, mov, autor, v, animos, previas):
         if esc.franja is None:
             problema = "no queda hueco para la franja de texto"
             continue
-        texto, ratio, velo = reservar_texto(esc)  # el velo forma parte de la pieza
+        texto, ratio, velo, calma = reservar_texto(esc)  # la calma y el velo forman parte de la pieza
         entrada["franja"] = list(esc.franja)
         entrada["texto_recomendado"], entrada["contraste_texto"], entrada["velo"] = texto, round(ratio, 1), velo
+        entrada["calma_cielo"] = calma
         return entrada, esc, h, intento, None
     return entrada, esc, h, intento, problema
 
@@ -474,8 +518,9 @@ def main(argv=None):
     RESUMEN.clear()
     RESUMEN.update(reutilizadas=len(generados) - len(rehechas), rehechas=len(rehechas), ids_rehechas=list(rehechas),
                    hojas=hojas_hechas)
-    print(f"  franja de texto: {len(generados) - len(con_velo)} piezas la leen sin velo, "
-          f"{len(con_velo)} con velo horneado en la franja")
+    calmadas = sum(1 for e in generados if e.get("calma_cielo"))
+    print(f"  franja de texto: {len(generados) - len(con_velo) - calmadas} piezas la leen tal cual, "
+          f"{calmadas} con el cielo calmado en la franja y {len(con_velo)} con velo")
     for aviso in avisos_texto:
         print(f"  ⚠ {aviso}")
     jpg = sum(1 for e in generados if e["formato"] == "jpg")
