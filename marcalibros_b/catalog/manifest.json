@@ -1774,8 +1774,8 @@
       "epoca": "1601–1658",
       "region": "España",
       "variante": 10,
-      "obra_id": "el-jardin-de-falsirena",
-      "obra": "El jardín de Falsirena",
+      "obra_id": "la-fuente-de-los-enganos",
+      "obra": "La fuente de los engaños",
       "animo": "fastuoso",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
@@ -9802,7 +9802,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "farola",
       "paleta": "lunafria",
       "arquetipo": "montanas",
       "intento": 0,
@@ -9811,6 +9811,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/gotico-stevenson-03.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 107,
       "franja": [
         16,
         440,
@@ -9821,7 +9822,7 @@
       "contraste_texto": 5.3,
       "velo": 0.0,
       "calma_cielo": 0.2,
-      "sha256": "0ac989832f0d2642e0c8c81c4463e9fc8c500d08f2d4688198fac2d76be43953"
+      "sha256": "f6074a9621204a744c1951f55ce0b44a8641b5f36914dc69abbc9e4336ddb2ac"
     },
     {
       "id": "gotico-stevenson-04",
@@ -11090,33 +11091,33 @@
       "epoca": "1886–1914",
       "region": "Uruguay",
       "variante": 9,
-      "obra_id": "fiesta",
-      "obra": "Fiesta",
-      "animo": "exotico",
+      "obra_id": "lo-inefable",
+      "obra": "Lo inefable",
+      "animo": "elegiaco",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "pavo_real",
-      "paleta": "jade",
-      "arquetipo": "llanura",
-      "intento": 0,
-      "semilla": 96143720091864,
+      "motivo": "lirio",
+      "paleta": "malva",
+      "arquetipo": "colinas",
+      "intento": 1,
+      "semilla": 244736832603676,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-agustini-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 360,
+      "pixeles_motivo": 221,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 5.0,
+      "texto_recomendado": "claro",
+      "contraste_texto": 5.2,
       "velo": 0.0,
-      "calma_cielo": 0.1,
-      "sha256": "b0ebc63ccde4b9837780a120518530a6ea30cbffa3788e0989f94aab1873397c"
+      "calma_cielo": 0.2,
+      "sha256": "d0a8104aa039ff0fb2b8690da48d5afd04f80964f2e4efc237fbe0b23b5d087c"
     },
     {
       "id": "modernismo-agustini-10",
@@ -11342,33 +11343,33 @@
       "epoca": "1863–1893",
       "region": "Cuba",
       "variante": 6,
-      "obra_id": "sourdine",
-      "obra": "Sourdine",
+      "obra_id": "nostalgias",
+      "obra": "Nostalgias",
       "animo": "melancolico",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "lluvia",
-      "paleta": "otono",
-      "arquetipo": "marina",
+      "motivo": "nube",
+      "paleta": "ceniza",
+      "arquetipo": "bosque",
       "intento": 0,
       "semilla": 140353575309193,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-casal-06.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 195,
+      "pixeles_motivo": 252,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "claro",
-      "contraste_texto": 4.6,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 5.8,
       "velo": 0.0,
-      "calma_cielo": 0.1,
-      "sha256": "6daeec47b3a5764de022f2e0fca9b52097d413d006af29e7f23dee4a527800d0"
+      "calma_cielo": 0.0,
+      "sha256": "35a1656a622530b22c3560497681acdc2fac396b405a80f00059f8ee66ff3c04"
     },
     {
       "id": "modernismo-casal-07",
@@ -11421,7 +11422,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "velero",
-      "paleta": "dorada",
+      "paleta": "otono",
       "arquetipo": "marina",
       "intento": 0,
       "semilla": 260751891353331,
@@ -11429,18 +11430,18 @@
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-casal-08.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 120,
+      "pixeles_motivo": 115,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 13.4,
+      "texto_recomendado": "claro",
+      "contraste_texto": 4.6,
       "velo": 0.0,
-      "calma_cielo": 0.0,
-      "sha256": "3b087c17c652f09c216a80ab3ae758f506bfe5270101d7248fdd135ab22101ea"
+      "calma_cielo": 0.1,
+      "sha256": "3768a2deb5eaf6fa427a3e738e51e0d13751c0ba215f5a5782af2694c59d641e"
     },
     {
       "id": "modernismo-casal-09",
@@ -12098,22 +12099,22 @@
       "epoca": "1859–1895",
       "region": "México",
       "variante": 7,
-      "obra_id": "despues-de-la-lluvia",
-      "obra": "Después de la lluvia",
-      "animo": "melancolico",
+      "obra_id": "mis-enlutadas",
+      "obra": "Mis enlutadas",
+      "animo": "elegiaco",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "lluvia",
-      "paleta": "otono",
-      "arquetipo": "montanas",
+      "motivo": "vela",
+      "paleta": "niebla",
+      "arquetipo": "marina",
       "intento": 0,
       "semilla": 265449422811607,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-gutierrez-najera-07.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 191,
+      "pixeles_motivo": 116,
       "franja": [
         16,
         440,
@@ -12121,10 +12122,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 4.7,
+      "contraste_texto": 12.3,
       "velo": 0.0,
-      "calma_cielo": 0.1,
-      "sha256": "8408abda1585dc7e8a3a526fd1199d4446f29d5636f682d41c0db36b226120b0"
+      "calma_cielo": 0.0,
+      "sha256": "84a489b21a3fa9fed4791597f2f31f253203d3ed8760731e693d3605723d4be4"
     },
     {
       "id": "modernismo-gutierrez-najera-08",
@@ -12141,7 +12142,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "mariposas",
-      "paleta": "pavo",
+      "paleta": "jade",
       "arquetipo": "llanura",
       "intento": 0,
       "semilla": 202663881235266,
@@ -12149,18 +12150,18 @@
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-gutierrez-najera-08.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 148,
+      "pixeles_motivo": 145,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "claro",
-      "contraste_texto": 4.5,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 5.0,
       "velo": 0.0,
-      "calma_cielo": 0.0,
-      "sha256": "f494e653df738758cbdca5ed8f0426b5e7ef5d92cc74655359414b362213af31"
+      "calma_cielo": 0.1,
+      "sha256": "37b4b026d4e1be36f19ad1bff558fa4ce7f9d31448bb8a7e823a7851ec9b5284"
     },
     {
       "id": "modernismo-gutierrez-najera-09",
@@ -12205,22 +12206,22 @@
       "epoca": "1859–1895",
       "region": "México",
       "variante": 10,
-      "obra_id": "cronicas-de-la-ciudad-de-mexico",
-      "obra": "Crónicas de la Ciudad de México",
+      "obra_id": "cronicas",
+      "obra": "Crónicas",
       "animo": "urbano",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "skyline",
-      "paleta": "ceniza",
-      "arquetipo": "montanas",
+      "paleta": "papel",
+      "arquetipo": "colinas",
       "intento": 0,
       "semilla": 53720609677409,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-gutierrez-najera-10.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 687,
+      "pixeles_motivo": 1010,
       "franja": [
         16,
         440,
@@ -12228,10 +12229,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 5.8,
+      "contraste_texto": 8.4,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "a662c7149f2b504ad94013d7a5ac2d26071c2b823e919fd0739f50b4909f50c9"
+      "sha256": "166df0fe3c48fc31d04de1343d483f12c858d01aa6fb61f0a597e1cb4d9d1cb4"
     },
     {
       "id": "modernismo-herrera-reissig-01",
@@ -12421,14 +12422,14 @@
       "epoca": "1875–1910",
       "region": "Uruguay",
       "variante": 6,
-      "obra_id": "las-lunas-de-oro",
-      "obra": "Las lunas de oro",
-      "animo": "nocturno",
+      "obra_id": "sonetos-vascos",
+      "obra": "Sonetos vascos",
+      "animo": "pastoral",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "luna",
-      "paleta": "medianoche",
+      "motivo": "arbol",
+      "paleta": "esmeralda",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 257863455633654,
@@ -12436,6 +12437,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-herrera-reissig-06.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 293,
       "franja": [
         16,
         440,
@@ -12443,10 +12445,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 13.1,
+      "contraste_texto": 4.7,
       "velo": 0.0,
-      "calma_cielo": 0.0,
-      "sha256": "4fb64509a12f393972a01cb23c4db2b89b6f71c595a909173ad6f8f123984030"
+      "calma_cielo": 0.1,
+      "sha256": "3150df91e8ec1bb05ce1acddb21deb0942a2bf95468d3a5653bf17dafa6b9b1b"
     },
     {
       "id": "modernismo-herrera-reissig-07",
@@ -12528,33 +12530,32 @@
       "epoca": "1875–1910",
       "region": "Uruguay",
       "variante": 9,
-      "obra_id": "la-vida",
-      "obra": "La vida",
-      "animo": "pastoral",
+      "obra_id": "berceuse-blanca",
+      "obra": "Berceuse blanca",
+      "animo": "nocturno",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "pozo",
-      "paleta": "esmeralda",
-      "arquetipo": "colinas",
+      "motivo": "luna",
+      "paleta": "tormenta",
+      "arquetipo": "bosque",
       "intento": 0,
       "semilla": 222735904595146,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-herrera-reissig-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 219,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 5.3,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.8,
       "velo": 0.0,
-      "calma_cielo": 0.2,
-      "sha256": "3c31b790503d40159342d9ec506c555dada227f9f5a2b1ec0b641cda257533e0"
+      "calma_cielo": 0.0,
+      "sha256": "0805804b0607a3f86aea02890be810e965e88934b12912f715f082e6021e0386"
     },
     {
       "id": "modernismo-herrera-reissig-10",
@@ -12564,22 +12565,22 @@
       "epoca": "1875–1910",
       "region": "Uruguay",
       "variante": 10,
-      "obra_id": "el-regreso",
-      "obra": "El regreso",
-      "animo": "crepuscular",
+      "obra_id": "la-iglesia",
+      "obra": "La iglesia",
+      "animo": "provinciano",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "arbol",
-      "paleta": "otono",
-      "arquetipo": "colinas",
+      "motivo": "torre",
+      "paleta": "polvo",
+      "arquetipo": "montanas",
       "intento": 0,
       "semilla": 243561770053219,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-herrera-reissig-10.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 387,
+      "pixeles_motivo": 145,
       "franja": [
         16,
         440,
@@ -12587,10 +12588,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 4.7,
+      "contraste_texto": 6.8,
       "velo": 0.0,
-      "calma_cielo": 0.1,
-      "sha256": "032a254550aea77b23d6c00c181a4ae4d885fceade67e2dd24b6a5dd2c86f94a"
+      "calma_cielo": 0.0,
+      "sha256": "e766b2b96930a82680aaa6119b05dcf2c7432bb7e138530c36adf328c6817bcc"
     },
     {
       "id": "modernismo-lugones-01",
@@ -14440,15 +14441,15 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "chimeneas",
-      "paleta": "tempestad",
-      "arquetipo": "colinas",
-      "intento": 1,
-      "semilla": 62560021214352,
+      "paleta": "fango",
+      "arquetipo": "montanas",
+      "intento": 0,
+      "semilla": 20002108833805,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-azevedo-02.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 651,
+      "pixeles_motivo": 445,
       "franja": [
         16,
         440,
@@ -14456,10 +14457,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 7.3,
+      "contraste_texto": 4.7,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "485864e399bae866c3beb36f74e6d7c437c4f620eb1f5b476c269ee0a6a9e6df"
+      "sha256": "5b154844684417a3ec6962db8b4be035d34b781e6bb4a24c2a6483afc9ae9fb4"
     },
     {
       "id": "naturalismo-azevedo-03",
@@ -14476,26 +14477,26 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "casa_colonial",
-      "paleta": "fango",
-      "arquetipo": "montanas",
+      "paleta": "ceniza",
+      "arquetipo": "llanura",
       "intento": 0,
       "semilla": 205982530525596,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-azevedo-03.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 596,
+      "pixeles_motivo": 677,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "claro",
-      "contraste_texto": 5.2,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 5.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "467cac52ad8365106bb50552a620e2ed6b868f237910223d357f10b74f299385"
+      "sha256": "007ec86b9e32ae406475da360ae74e38e37257dfdb9f2fac7038528a2440a79a"
     },
     {
       "id": "naturalismo-azevedo-04",
@@ -14584,7 +14585,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "lluvia",
-      "paleta": "otono",
+      "paleta": "tormenta",
       "arquetipo": "colinas",
       "intento": 0,
       "semilla": 229635331510077,
@@ -14592,7 +14593,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-azevedo-06.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 212,
+      "pixeles_motivo": 214,
       "franja": [
         16,
         440,
@@ -14600,10 +14601,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 4.6,
+      "contraste_texto": 7.3,
       "velo": 0.0,
-      "calma_cielo": 0.1,
-      "sha256": "31f2b21c70752189fe6f05072ede992f5a459baed016643c00be7e5cd2ebcb4e"
+      "calma_cielo": 0.0,
+      "sha256": "d578a74bf92f26147f5cfed076c4d44bc507e48ef57d0161081e4cce4dca913c"
     },
     {
       "id": "naturalismo-azevedo-07",
@@ -14620,26 +14621,26 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "gallo",
-      "paleta": "niebla",
-      "arquetipo": "montanas",
+      "paleta": "otono",
+      "arquetipo": "colinas",
       "intento": 0,
       "semilla": 159706325542300,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-azevedo-07.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 234,
+      "pixeles_motivo": 251,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 12.0,
+      "texto_recomendado": "claro",
+      "contraste_texto": 4.6,
       "velo": 0.0,
-      "calma_cielo": 0.0,
-      "sha256": "e4c00e88f9f4ac5d20fdbd8c8c3748b90e49a3af702b2f1251e82a21c6e27b96"
+      "calma_cielo": 0.1,
+      "sha256": "dd1b5ff34aab5bb51d005994c2cdc52c8c2b5d837626204c70fc11a2e3aaf6c1"
     },
     {
       "id": "naturalismo-azevedo-08",
@@ -15441,33 +15442,33 @@
       "epoca": "1843–1889",
       "region": "Argentina",
       "variante": 10,
-      "obra_id": "la-tormenta-en-la-pampa",
-      "obra": "La tormenta en la pampa",
-      "animo": "tormentoso",
+      "obra_id": "la-muerte-de-andrea",
+      "obra": "La muerte de Andrea",
+      "animo": "lugubre",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "rayo",
-      "paleta": "tormenta",
-      "arquetipo": "llanura",
+      "motivo": "ataud",
+      "paleta": "ceniza",
+      "arquetipo": "colinas",
       "intento": 0,
       "semilla": 261727657567508,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-cambaceres-10.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 124,
+      "pixeles_motivo": 196,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "claro",
-      "contraste_texto": 6.8,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 6.4,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "9a76c7ac83c9e14c9982731c16e4c8fb6112d91a733ddc68c28e204c064a21bd"
+      "sha256": "fba23f4a93e332a2e94872e1479d34fb9dbe48d11a7951cb188e8c816b84705a"
     },
     {
       "id": "naturalismo-dreiser-01",
@@ -15592,7 +15593,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "reloj",
-      "paleta": "ceniza",
+      "paleta": "niebla",
       "arquetipo": "llanura",
       "intento": 0,
       "semilla": 204296555455949,
@@ -15600,7 +15601,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-dreiser-04.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 194,
+      "pixeles_motivo": 208,
       "franja": [
         16,
         440,
@@ -15608,10 +15609,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 6.4,
+      "contraste_texto": 12.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "597a68f2fa42ff85ccb4e9d4d5b8be7c0869bbb917c0697394606ad9fd4142b6"
+      "sha256": "fd96ddeef85467539821b77e9a6070559ec9a37d886e38ff89cdd0cfd1ab5123"
     },
     {
       "id": "naturalismo-dreiser-05",
@@ -15628,7 +15629,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "rascacielos",
-      "paleta": "papel",
+      "paleta": "niebla",
       "arquetipo": "montanas",
       "intento": 0,
       "semilla": 77421401966212,
@@ -15636,7 +15637,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-dreiser-05.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 656,
+      "pixeles_motivo": 614,
       "franja": [
         16,
         440,
@@ -15644,10 +15645,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 8.4,
+      "contraste_texto": 12.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "e847d4f65228adcc9230ddee1954f428bb17da098ec9420badfe67aba25edd99"
+      "sha256": "9063323eff99408a6cee5098d801acf8a994cb2c7fdcc3e38eac2285acb970cb"
     },
     {
       "id": "naturalismo-dreiser-06",
@@ -15808,7 +15809,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "tren",
-      "paleta": "niebla",
+      "paleta": "papel",
       "arquetipo": "llanura",
       "intento": 0,
       "semilla": 191255311251814,
@@ -15816,7 +15817,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-dreiser-10.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 440,
+      "pixeles_motivo": 579,
       "franja": [
         16,
         440,
@@ -15824,10 +15825,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 12.0,
+      "contraste_texto": 8.4,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "21bc8cc71cc9d2767e6b527fbe9a2eb99016621940aab9d9e886ce96198d0c29"
+      "sha256": "73f32630879328a1efb8e1e157571ffaaf8a67110d42806ccf92dfc15a0986fb"
     },
     {
       "id": "naturalismo-gamboa-01",
@@ -15880,7 +15881,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "reloj",
-      "paleta": "ceniza",
+      "paleta": "papel",
       "arquetipo": "colinas",
       "intento": 0,
       "semilla": 263443883714302,
@@ -15888,7 +15889,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-gamboa-02.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 219,
+      "pixeles_motivo": 223,
       "franja": [
         16,
         440,
@@ -15896,10 +15897,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 6.4,
+      "contraste_texto": 9.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "fac1eeaa9188bf397c3b9594b69087e94876fa033668ef532f529eb64731edf1"
+      "sha256": "4a6dcfa0412be2fc737bd9bdd49ac4dfd31418109cd9c102bfd2351c109d5044"
     },
     {
       "id": "naturalismo-gamboa-03",
@@ -15916,7 +15917,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "mariposas",
-      "paleta": "papel",
+      "paleta": "hollin",
       "arquetipo": "colinas",
       "intento": 0,
       "semilla": 13376687302098,
@@ -15924,18 +15925,18 @@
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-gamboa-03.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 148,
+      "pixeles_motivo": 154,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 8.4,
+      "texto_recomendado": "claro",
+      "contraste_texto": 8.5,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "52a8e2dc598f56977f037a9475ebc6b792396ac6aca6c80ed50ed655f000710e"
+      "sha256": "ff7d2699ffebb85dc3973860cf5aa4e13a04ae7456f274679200b0f92707f1cf"
     },
     {
       "id": "naturalismo-gamboa-04",
@@ -15988,7 +15989,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "cruz",
-      "paleta": "hollin",
+      "paleta": "tempestad",
       "arquetipo": "colinas",
       "intento": 0,
       "semilla": 219491103083306,
@@ -16004,10 +16005,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 8.5,
+      "contraste_texto": 7.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "0e3d9da23fad2e9c54f4f433af1220a007d8a8b7f3e172a4bfb712a23c8b0536"
+      "sha256": "4f613c6afecd962d51eb1d3ab53309112629b87b704f01c6015ae5588cf10416"
     },
     {
       "id": "naturalismo-gamboa-06",
@@ -16097,14 +16098,14 @@
       "formato": "svg",
       "motivo": "catedral",
       "paleta": "tormenta",
-      "arquetipo": "colinas",
-      "intento": 1,
-      "semilla": 81008219762717,
+      "arquetipo": "llanura",
+      "intento": 0,
+      "semilla": 168975634932505,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-gamboa-08.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 406,
+      "pixeles_motivo": 397,
       "franja": [
         16,
         440,
@@ -16115,7 +16116,7 @@
       "contraste_texto": 7.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "2baf0d64541248eafebc9416405e989fb9a30afbd5cfd887b384c03d5ca0c806"
+      "sha256": "ac68f185d5210a8fc1b37521d1e5deea99687a5a7bf85f203651771c70a22096"
     },
     {
       "id": "naturalismo-gamboa-09",
@@ -16161,33 +16162,33 @@
       "epoca": "1864–1939",
       "region": "México",
       "variante": 10,
-      "obra_id": "el-evangelista",
-      "obra": "El evangelista",
-      "animo": "provinciano",
+      "obra_id": "la-venganza-de-la-gleba",
+      "obra": "La venganza de la gleba",
+      "animo": "crudo",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "cruz",
-      "paleta": "polvo",
-      "arquetipo": "bosque",
+      "motivo": "trigal",
+      "paleta": "barro",
+      "arquetipo": "montanas",
       "intento": 0,
       "semilla": 279891815633664,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-gamboa-10.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 61,
+      "pixeles_motivo": 240,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 6.2,
+      "texto_recomendado": "claro",
+      "contraste_texto": 5.1,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "552e6a7ca16952be63b5ddf0e5b3e3343a16f4c48133a63cc76ae43acfa14985"
+      "sha256": "e62e1b4d678d2d42157f612f61bf82924fae6055a0984d4ecb7a355747832f57"
     },
     {
       "id": "naturalismo-huysmans-01",
@@ -16924,26 +16925,26 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "jpg",
       "motivo": "mina",
-      "paleta": "barro",
-      "arquetipo": "marina",
-      "intento": 3,
-      "semilla": 86676901586248,
+      "paleta": "polvo",
+      "arquetipo": "bosque",
+      "intento": 0,
+      "semilla": 156473917409639,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-norris-01.jpg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 255,
+      "pixeles_motivo": 283,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "claro",
-      "contraste_texto": 5.1,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 6.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "b0ac7886fe4831628b9d3c698bbab2d5a27d8f2ed97892ad5d88d0cbe5c4a715"
+      "sha256": "cb9be0bed49bfeccd07b9f410faaca4071a73bf6de20d4ce3b551a55aa17b20b"
     },
     {
       "id": "naturalismo-norris-02",
@@ -16997,14 +16998,14 @@
       "formato": "svg",
       "motivo": "trigal",
       "paleta": "barro",
-      "arquetipo": "montanas",
+      "arquetipo": "marina",
       "intento": 0,
       "semilla": 86309343976235,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-norris-03.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 153,
+      "pixeles_motivo": 252,
       "franja": [
         16,
         440,
@@ -17015,7 +17016,7 @@
       "contraste_texto": 4.7,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "8d73a54a410a7b1dcdf5d26b84a9703ac01d663e731160e13ac88619cc34bb55"
+      "sha256": "869686a291631645d48ab09da6c30bd556e8f382a0b82e36b45b94674852289a"
     },
     {
       "id": "naturalismo-norris-04",
@@ -21530,7 +21531,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "skyline",
       "paleta": "polvo",
       "arquetipo": "colinas",
       "intento": 0,
@@ -21539,6 +21540,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/realismo-magico-allende-09.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 917,
       "franja": [
         16,
         440,
@@ -21549,7 +21551,7 @@
       "contraste_texto": 6.2,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "b908004a62c2544549f6d854b6a6a0c99e828fe07a22f93f69e7141d84e72d81"
+      "sha256": "742e0eb3c5b2f3717b65bc0d3e8f7785b35c89a4ae0641e60fbafaa554aff16e"
     },
     {
       "id": "realismo-magico-allende-10",
@@ -21602,7 +21604,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "jpg",
       "motivo": "fantasma",
-      "paleta": "cobre",
+      "paleta": "aguamarina",
       "arquetipo": "llanura",
       "intento": 0,
       "semilla": 34632333699628,
@@ -21610,18 +21612,18 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-amado-01.jpg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 471,
+      "pixeles_motivo": 474,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "claro",
+      "texto_recomendado": "oscuro",
       "contraste_texto": 4.9,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "sha256": "e6bb0c22450ab71e32f9b596a4eaf0cff56fd4146ed67e2c506b9654ca83b793"
+      "sha256": "3c2cf0072d472d7650f64fb7aefb8e44b51e002a468398af314ac5f3233ed5b6"
     },
     {
       "id": "realismo-magico-amado-02",
@@ -21667,14 +21669,14 @@
       "epoca": "1912–2001",
       "region": "Brasil",
       "variante": 3,
-      "obra_id": "tierras-del-fin-del-mundo",
-      "obra": "Tierras del fin del mundo",
+      "obra_id": "tierras-del-sinfin",
+      "obra": "Tierras del sinfín",
       "animo": "exuberante",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "arbol",
-      "paleta": "aguamarina",
+      "paleta": "esmeralda",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 215388175490620,
@@ -21689,11 +21691,11 @@
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 5.3,
+      "texto_recomendado": "claro",
+      "contraste_texto": 4.7,
       "velo": 0.0,
-      "calma_cielo": 0.2,
-      "sha256": "5e2ad1ad9161834cb7ce1e43688a50f32fe5b9e540e8f1730f0775e9d6a56084"
+      "calma_cielo": 0.1,
+      "sha256": "c78406cda0019088cdd69fa831263e65b19cb4971ed9ebc795fb2b0a7d6e7963"
     },
     {
       "id": "realismo-magico-amado-04",
@@ -22600,22 +22602,22 @@
       "epoca": "1948–",
       "region": "Nicaragua",
       "variante": 9,
-      "obra_id": "luciernaga",
-      "obra": "Luciérnaga",
+      "obra_id": "sobre-la-grama",
+      "obra": "Sobre la grama",
       "animo": "onirico",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "petalos",
-      "paleta": "aguamarina",
-      "arquetipo": "colinas",
+      "paleta": "tropico",
+      "arquetipo": "llanura",
       "intento": 0,
       "semilla": 190163802095012,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/realismo-magico-belli-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 366,
+      "pixeles_motivo": 419,
       "franja": [
         16,
         440,
@@ -22625,8 +22627,8 @@
       "texto_recomendado": "oscuro",
       "contraste_texto": 4.9,
       "velo": 0.0,
-      "calma_cielo": 0.1,
-      "sha256": "9be7b2cc9e1839b6243235fad37292b61b170c3426273b521930cf3b8bfa7f09"
+      "calma_cielo": 0.0,
+      "sha256": "53a0361d7ca2b155237dfedaa7ccd97f3a85de6d50cdbcf5f883a4ed4419231d"
     },
     {
       "id": "realismo-magico-belli-10",
@@ -23788,14 +23790,14 @@
       "epoca": "1916–1998",
       "region": "México",
       "variante": 2,
-      "obra_id": "la-piedra-que-habla",
-      "obra": "La piedra que habla",
+      "obra_id": "isabel-convertida-en-piedra",
+      "obra": "Isabel convertida en piedra",
       "animo": "onirico",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "ruinas",
-      "paleta": "aguamarina",
+      "paleta": "cobre",
       "arquetipo": "llanura",
       "intento": 0,
       "semilla": 259271337123228,
@@ -23803,18 +23805,18 @@
       "alto": 1400,
       "archivo": "catalog/svg/realismo-magico-garro-02.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 319,
+      "pixeles_motivo": 321,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
+      "texto_recomendado": "claro",
       "contraste_texto": 4.9,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "sha256": "70b2aab93d9fafa3f767ff44a9660a8fd40c5bd309770c1d66dafb85c53feca0"
+      "sha256": "caba2ef73b81a0d5cd6fa7631d3a626b1906207ff3e26ad2671da37eef2cdbb0"
     },
     {
       "id": "realismo-magico-garro-03",
@@ -24046,7 +24048,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "reloj",
       "paleta": "dorada",
       "arquetipo": "colinas",
       "intento": 0,
@@ -24055,6 +24057,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/realismo-magico-garro-09.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 217,
       "franja": [
         16,
         440,
@@ -24065,7 +24068,7 @@
       "contraste_texto": 13.4,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "2631e1ee9f80163349b3a74a7af63cce5913b9a06bb66fa89717273cb433b7ea"
+      "sha256": "b6d6af82c92e60036a57849e2a9a52775adf5f60b8f10b0a2ae67d2010ad81a3"
     },
     {
       "id": "realismo-magico-garro-10",
@@ -24188,7 +24191,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "caballo",
       "paleta": "polvo",
       "arquetipo": "llanura",
       "intento": 0,
@@ -24197,6 +24200,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/realismo-magico-rulfo-03.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 325,
       "franja": [
         16,
         440,
@@ -24207,7 +24211,7 @@
       "contraste_texto": 6.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "0682ad93691d8d36486658b2f1942d967755731edd3612ac85da251bb225406a"
+      "sha256": "4308de9ebc540563445870258cd57def1df8b5878d13619c29bb025f31c40650"
     },
     {
       "id": "realismo-magico-rulfo-04",
@@ -24331,7 +24335,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "pozo",
       "paleta": "tormenta",
       "arquetipo": "colinas",
       "intento": 0,
@@ -24340,6 +24344,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/realismo-magico-rulfo-07.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 304,
       "franja": [
         16,
         440,
@@ -24350,7 +24355,7 @@
       "contraste_texto": 7.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "9d5e145afa2ffd85044ce65c356fb30d341e266bd31238590b0eb1aa1b876e82"
+      "sha256": "8e45a1d215a7c517e8ce7dfcd402821f2f2f6ae1bb7b9cad749a6144c53b512e"
     },
     {
       "id": "realismo-magico-rulfo-08",
@@ -24684,8 +24689,8 @@
       "epoca": "1906–2001",
       "region": "Venezuela",
       "variante": 7,
-      "obra_id": "los-visitantes",
-      "obra": "Los visitantes",
+      "obra_id": "la-visita-en-el-tiempo",
+      "obra": "La visita en el tiempo",
       "animo": "espectral",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
@@ -25589,15 +25594,16 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "barca",
       "paleta": "atardecer",
-      "arquetipo": "llanura",
+      "arquetipo": "marina",
       "intento": 0,
       "semilla": 218450024162383,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-byron-02.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 117,
       "franja": [
         16,
         440,
@@ -25608,7 +25614,7 @@
       "contraste_texto": 5.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "31f6053dbdc0b9dbde6226f8438819d92c5a84787a430d8dc2098d41cdff4658"
+      "sha256": "5f34f560e7b23d5520f44e1238f23b74871ddb67a65b5317ad06276c7901cf01"
     },
     {
       "id": "romanticismo-byron-03",
@@ -26522,7 +26528,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "torre",
-      "paleta": "rosa",
+      "paleta": "atardecer",
       "arquetipo": "llanura",
       "intento": 0,
       "semilla": 19989661056160,
@@ -26530,7 +26536,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-hugo-08.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 77,
+      "pixeles_motivo": 143,
       "franja": [
         16,
         440,
@@ -26538,10 +26544,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 4.8,
+      "contraste_texto": 5.7,
       "velo": 0.0,
-      "calma_cielo": 0.1,
-      "sha256": "feca3a7dbccf13a0cbc92cc89c4a880b2c75c7d212d1de845e53bbc89cfd4386"
+      "calma_cielo": 0.0,
+      "sha256": "25caab2abc0f42f10f505a540c08a363fbbdf79c156fdf0f68de97c3453bedfc"
     },
     {
       "id": "romanticismo-hugo-09",
@@ -26594,7 +26600,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "cruz",
-      "paleta": "niebla",
+      "paleta": "ceniza",
       "arquetipo": "llanura",
       "intento": 0,
       "semilla": 224034716670862,
@@ -26610,10 +26616,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 12.0,
+      "contraste_texto": 5.8,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "5763625842ef91c6f15e56310a84ed44963675e59c3f9792da5d0184ee85f28b"
+      "sha256": "f1447abbc560fb353f07d8fe40f7576da65fe8eae680199c939b7654174f2995"
     },
     {
       "id": "romanticismo-keats-01",
@@ -26809,7 +26815,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "serpiente",
-      "paleta": "esmeralda",
+      "paleta": "dorada",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 46608699170130,
@@ -26817,7 +26823,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-keats-06.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 39,
+      "pixeles_motivo": 50,
       "franja": [
         16,
         440,
@@ -26825,10 +26831,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 5.3,
+      "contraste_texto": 13.7,
       "velo": 0.0,
-      "calma_cielo": 0.2,
-      "sha256": "cdc72c166dba2293de0d03d2363bfa7206cd0e2d11f652dc27f6852f2ad136ba"
+      "calma_cielo": 0.0,
+      "sha256": "ee111dbf7e594fcb1a57d87bfa3c87adfc02ee7b811ed7aab2aa077c1a07143a"
     },
     {
       "id": "romanticismo-keats-07",
@@ -27019,12 +27025,12 @@
       "variante": 2,
       "obra_id": "el-castellano-viejo",
       "obra": "El castellano viejo",
-      "animo": "crepuscular",
+      "animo": "urbano",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
-      "paleta": "dorada",
+      "motivo": "farola",
+      "paleta": "papel",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 175550844855548,
@@ -27032,6 +27038,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-larra-02.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 122,
       "franja": [
         16,
         440,
@@ -27039,10 +27046,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 13.4,
+      "contraste_texto": 8.4,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "9c6d9b65104d081abaa0fe30d71dca47ccc08a257c53b6b8f64e3e57912977c3"
+      "sha256": "141fb6373e1eafef0497de32a331b3af429d085f1673154731aac7b9a09f6441"
     },
     {
       "id": "romanticismo-larra-03",
@@ -27234,12 +27241,12 @@
       "variante": 8,
       "obra_id": "no-mas-mostrador",
       "obra": "No más mostrador",
-      "animo": "crepuscular",
+      "animo": "urbano",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
-      "paleta": "atardecer",
+      "motivo": "carruaje",
+      "paleta": "hollin",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 59570536332455,
@@ -27247,6 +27254,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-larra-08.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 361,
       "franja": [
         16,
         440,
@@ -27254,10 +27262,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 5.0,
+      "contraste_texto": 7.9,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "840a0caced0f936d294546b28cd28be408bed337e33f4fc0e4e9f20a7ab183fd"
+      "sha256": "3a489e688145081886ad31c5906f1443ae7d400bac239f1e13e9ffe0e5f7ca7e"
     },
     {
       "id": "romanticismo-larra-09",
@@ -27273,7 +27281,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "espada",
       "paleta": "tempestad",
       "arquetipo": "colinas",
       "intento": 0,
@@ -27282,6 +27290,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-larra-09.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 92,
       "franja": [
         16,
         440,
@@ -27292,7 +27301,7 @@
       "contraste_texto": 7.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "121c0026ef84bfde8c00917a0f9d09f9a010aecbeaa8f6fefbb0f55f2a23827e"
+      "sha256": "d98f3b8e873c1ce201980df8c762f7fddc5e76dd1a07c98424e3c39d9e8c6e77"
     },
     {
       "id": "romanticismo-larra-10",
@@ -27304,19 +27313,20 @@
       "variante": 10,
       "obra_id": "entre-que-gentes-estamos",
       "obra": "Entre qué gentes estamos",
-      "animo": "melancolico",
+      "animo": "urbano",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
-      "paleta": "ceniza",
+      "motivo": "skyline",
+      "paleta": "papel",
       "arquetipo": "llanura",
-      "intento": 1,
-      "semilla": 204447325851562,
+      "intento": 0,
+      "semilla": 99689372293424,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-larra-10.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 889,
       "franja": [
         16,
         440,
@@ -27324,10 +27334,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 5.8,
+      "contraste_texto": 9.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "33f9943ff47f782466bf4d66a6decc625a2767a90d5c9456fbc1dfa84e64ba72"
+      "sha256": "22ed3730e60d6909e62716112f85868e7c2f7d99dd095a0f187cceaf293bceea"
     },
     {
       "id": "romanticismo-poe-01",
@@ -27482,12 +27492,12 @@
       "variante": 5,
       "obra_id": "el-gato-negro",
       "obra": "El gato negro",
-      "animo": "melancolico",
+      "animo": "macabro",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "gato",
-      "paleta": "otono",
+      "paleta": "tempestad",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 16342238931201,
@@ -27495,7 +27505,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-poe-05.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 57,
+      "pixeles_motivo": 62,
       "franja": [
         16,
         440,
@@ -27503,10 +27513,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 4.6,
+      "contraste_texto": 7.3,
       "velo": 0.0,
-      "calma_cielo": 0.1,
-      "sha256": "b0fcc5aad9387f0db2af9fc8a2e80c722483db5034846637c71f60c939663296"
+      "calma_cielo": 0.0,
+      "sha256": "fa3c401626eed032f86845dedf494c79b7608b7d3e5e79d706408369561ccd08"
     },
     {
       "id": "romanticismo-poe-06",
@@ -27810,7 +27820,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "barca",
-      "paleta": "atardecer",
+      "paleta": "amanecer",
       "arquetipo": "marina",
       "intento": 0,
       "semilla": 44996923709957,
@@ -27818,18 +27828,18 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-rosalia-de-castro-04.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 118,
+      "pixeles_motivo": 119,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "claro",
-      "contraste_texto": 5.7,
+      "texto_recomendado": "oscuro",
+      "contraste_texto": 9.2,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "ecb384c2fa6cd58788d28827b054087a65670dac2094cce694f6007e8ee48212"
+      "sha256": "0cb06d6f1d500c0ee9be5baccfcc78f22f760d870381a7e64e90e4844e17e4f0"
     },
     {
       "id": "romanticismo-rosalia-de-castro-05",
@@ -28097,7 +28107,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "rayo",
-      "paleta": "tempestad",
+      "paleta": "noche",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 183557894559417,
@@ -28105,7 +28115,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-shelley-percy-02.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 124,
+      "pixeles_motivo": 133,
       "franja": [
         16,
         440,
@@ -28113,10 +28123,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 6.7,
+      "contraste_texto": 13.4,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "d5977b4b9973ac2a18e53354647103395e19d0c71d4b1f646d6ea1c39e59adc5"
+      "sha256": "e7549c69845964696696024fbe958f5a338d7cc651cf22992ced626668d3f4a9"
     },
     {
       "id": "romanticismo-shelley-percy-03",
@@ -28128,12 +28138,12 @@
       "variante": 3,
       "obra_id": "prometeo-liberado",
       "obra": "Prometeo liberado",
-      "animo": "sublime",
+      "animo": "tormentoso",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
-      "paleta": "esmeralda",
+      "motivo": "rayo",
+      "paleta": "tempestad",
       "arquetipo": "montanas",
       "intento": 0,
       "semilla": 255956687196432,
@@ -28141,17 +28151,18 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-shelley-percy-03.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 125,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 5.3,
+      "texto_recomendado": "claro",
+      "contraste_texto": 6.7,
       "velo": 0.0,
-      "calma_cielo": 0.2,
-      "sha256": "e350d4f6d3ad5c6d94315d328b58e438da2eb870d02835ffd8b0b5d6e85ac8d8"
+      "calma_cielo": 0.0,
+      "sha256": "b78a89d36ce32cc2300435c4f3e544a164d9f2e0ec8c31c87b99908808f0dc20"
     },
     {
       "id": "romanticismo-shelley-percy-04",
@@ -28204,15 +28215,15 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "estrellas",
-      "paleta": "noche",
-      "arquetipo": "bosque",
+      "paleta": "medianoche",
+      "arquetipo": "montanas",
       "intento": 0,
       "semilla": 88286561419717,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-shelley-percy-05.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 108,
+      "pixeles_motivo": 137,
       "franja": [
         16,
         440,
@@ -28220,10 +28231,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 14.0,
+      "contraste_texto": 13.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "ba1e65cc58723e904be34519bbb8012e0cf298d52cc7fc8814d376fd8d6ae23e"
+      "sha256": "0bcf4885736915fbeb49da9ce4236a3396caca14d5b0c9d99aa4806861ef7a01"
     },
     {
       "id": "romanticismo-shelley-percy-06",
@@ -28348,7 +28359,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "castillo",
-      "paleta": "tempestad",
+      "paleta": "noche",
       "arquetipo": "montanas",
       "intento": 0,
       "semilla": 271771718214290,
@@ -28356,7 +28367,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-shelley-percy-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 191,
+      "pixeles_motivo": 192,
       "franja": [
         16,
         440,
@@ -28364,10 +28375,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 7.3,
+      "contraste_texto": 14.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "d73324e90d567b47a33da7d68342797683a61c4f1f5d35be99b25f3b73900309"
+      "sha256": "93511963144724a9dc0b22e2c04e7fd30296ea78acda8f0c633d9bc2f4c2786b"
     },
     {
       "id": "romanticismo-shelley-percy-10",
@@ -28383,7 +28394,7 @@
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "ninguno",
+      "motivo": "barricada",
       "paleta": "atardecer",
       "arquetipo": "llanura",
       "intento": 0,
@@ -28392,6 +28403,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-shelley-percy-10.svg",
       "version_generador": "0.8.0",
+      "pixeles_motivo": 475,
       "franja": [
         16,
         440,
@@ -28402,7 +28414,7 @@
       "contraste_texto": 5.7,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "783e2d516792869f3daa5778d66add5c40564ca987cb042a18e0be7a93c85164"
+      "sha256": "c0477e5695630caec62c484769d60fc1d6a1025d25c6d1dbd1068c04d6853415"
     },
     {
       "id": "romanticismo-wordsworth-01",
@@ -28455,7 +28467,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "arco",
-      "paleta": "dorada",
+      "paleta": "esmeralda",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 113411722501654,
@@ -28463,7 +28475,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-wordsworth-02.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 244,
+      "pixeles_motivo": 218,
       "franja": [
         16,
         440,
@@ -28471,10 +28483,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 13.7,
+      "contraste_texto": 5.3,
       "velo": 0.0,
-      "calma_cielo": 0.0,
-      "sha256": "3f2b2543e21b889931a89e5265d8d6e91fbd4d1b23b768a515488ba47ecd5cb3"
+      "calma_cielo": 0.2,
+      "sha256": "8fe74b1d56d8c1d61c6f61ffcbb25fe63a6b7f8b3844aef65356b9685c0529d3"
     },
     {
       "id": "romanticismo-wordsworth-03",
@@ -28670,7 +28682,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "rio",
-      "paleta": "dorada",
+      "paleta": "niebla",
       "arquetipo": "llanura",
       "intento": 1,
       "semilla": 177757139889565,
@@ -28678,7 +28690,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-wordsworth-08.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 122,
+      "pixeles_motivo": 84,
       "franja": [
         16,
         440,
@@ -28686,10 +28698,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 13.7,
+      "contraste_texto": 12.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "76d3939c837bb7a187f44785390765f4bbe9c069f4a751e9f3070d8ed2f1d03b"
+      "sha256": "f88fed68a45b6ea7ddb872d52940d1b4b892e6d37c56160222f399d3e37dcb46"
     },
     {
       "id": "romanticismo-wordsworth-09",
@@ -28706,7 +28718,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "puente",
-      "paleta": "amanecer",
+      "paleta": "dorada",
       "arquetipo": "llanura",
       "intento": 0,
       "semilla": 23417629902954,
@@ -28714,7 +28726,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/romanticismo-wordsworth-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 432,
+      "pixeles_motivo": 436,
       "franja": [
         16,
         440,
@@ -28722,10 +28734,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 9.8,
+      "contraste_texto": 13.7,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "0dc6875baa41d28e308d31bd7aa3152334d098abd6e8d72d97a54d5796d7c0e3"
+      "sha256": "9c685c519f2f037276075ce92b627200f5299ab02fb06b4b7b5ed96e0632abe1"
     },
     {
       "id": "romanticismo-wordsworth-10",
@@ -29382,33 +29394,32 @@
       "epoca": "1860–1887",
       "region": "Francia",
       "variante": 8,
-      "obra_id": "complaintes",
-      "obra": "Complaintes",
-      "animo": "elegiaco",
+      "obra_id": "pierrot-fumista",
+      "obra": "Pierrot fumista",
+      "animo": "nocturno",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "lluvia",
-      "paleta": "rosa",
-      "arquetipo": "bosque",
+      "motivo": "luna",
+      "paleta": "tormenta",
+      "arquetipo": "colinas",
       "intento": 0,
       "semilla": 73508164001209,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/simbolismo-laforgue-08.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 234,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 5.4,
+      "texto_recomendado": "claro",
+      "contraste_texto": 5.9,
       "velo": 0.0,
-      "calma_cielo": 0.2,
-      "sha256": "6cc03250c28f1e77b606d0eb0479b6cc2342aa60911c93a98d2c67154d3f276b"
+      "calma_cielo": 0.0,
+      "sha256": "7e4b8b5c9a2205e01be6de0d8d5e24c94bf23861f31d4827a5278841640a9a67"
     },
     {
       "id": "simbolismo-laforgue-09",
@@ -30534,14 +30545,14 @@
       "epoca": "1856–1910",
       "region": "Grecia",
       "variante": 10,
-      "obra_id": "poemas-de-moreas",
-      "obra": "Poemas de Moréas",
-      "animo": "elegiaco",
+      "obra_id": "el-te-en-casa-de-miranda",
+      "obra": "El té en casa de Miranda",
+      "animo": "decadente",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "rosa",
-      "paleta": "rosa",
+      "motivo": "vela",
+      "paleta": "malva",
       "arquetipo": "montanas",
       "intento": 0,
       "semilla": 76537205783769,
@@ -30549,7 +30560,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/simbolismo-moreas-10.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 126,
+      "pixeles_motivo": 111,
       "franja": [
         16,
         440,
@@ -30557,10 +30568,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 4.8,
+      "contraste_texto": 5.2,
       "velo": 0.0,
-      "calma_cielo": 0.1,
-      "sha256": "5e55a319701e77d2c3833fad76ef368523fd82cbe17f4d331142eb8e61c0fb51"
+      "calma_cielo": 0.2,
+      "sha256": "e628377ba78f2461a55e4322e0ddf623308fb4badb9fcb22db4cc819fbcc2f5e"
     },
     {
       "id": "simbolismo-rilke-01",
@@ -30757,7 +30768,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "ataud",
-      "paleta": "niebla",
+      "paleta": "rosa",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 85486094108618,
@@ -30772,11 +30783,11 @@
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 12.0,
+      "texto_recomendado": "claro",
+      "contraste_texto": 4.8,
       "velo": 0.0,
-      "calma_cielo": 0.0,
-      "sha256": "858c9085a600677964ced8f04040c6b70059ca4081243c03857cf0cebd3f3f5a"
+      "calma_cielo": 0.1,
+      "sha256": "e11a3aa988d6640f41348cb132af1434e87e454ffcae2627235fbdcae394012b"
     },
     {
       "id": "simbolismo-rilke-07",
@@ -32125,14 +32136,14 @@
       "formato": "svg",
       "motivo": "vela",
       "paleta": "niebla",
-      "arquetipo": "montanas",
+      "arquetipo": "bosque",
       "intento": 0,
       "semilla": 140309903520806,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/simbolismo-yeats-04.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 95,
+      "pixeles_motivo": 114,
       "franja": [
         16,
         440,
@@ -32143,7 +32154,7 @@
       "contraste_texto": 12.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "e0f03d9867907b3e4253067077aaab38c3cdb97409f02fe17fd12d4a067ac004"
+      "sha256": "4a92a6b2f3dda19806fdac4404e93e88958bbf14c18d8c5ba35507cf4e54457a"
     },
     {
       "id": "simbolismo-yeats-05",
@@ -32160,7 +32171,7 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "torre",
-      "paleta": "malva",
+      "paleta": "cripta",
       "arquetipo": "montanas",
       "intento": 0,
       "semilla": 144180636722624,
@@ -32168,7 +32179,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/simbolismo-yeats-05.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 141,
+      "pixeles_motivo": 146,
       "franja": [
         16,
         440,
@@ -32176,10 +32187,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 5.2,
+      "contraste_texto": 15.9,
       "velo": 0.0,
-      "calma_cielo": 0.2,
-      "sha256": "78300828f551d343132ad708ef5edef102c6b6f7c83343414ede2cfcca04f0c5"
+      "calma_cielo": 0.0,
+      "sha256": "ed9054625c84b0df731e985e14fcd077f71f67623bd38350ac35bd343065a52f"
     },
     {
       "id": "simbolismo-yeats-06",
@@ -32809,14 +32820,14 @@
       "formato": "svg",
       "motivo": "espejo",
       "paleta": "tropico",
-      "arquetipo": "colinas",
+      "arquetipo": "bosque",
       "intento": 0,
       "semilla": 73988490930958,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-breton-03.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 341,
+      "pixeles_motivo": 347,
       "franja": [
         16,
         440,
@@ -32827,7 +32838,7 @@
       "contraste_texto": 5.2,
       "velo": 0.0,
       "calma_cielo": 0.1,
-      "sha256": "bf43ed02fe9350e97c64c2e19af0656eed9ac13f65ecd186b60ad41c3a2eaa95"
+      "sha256": "8f1755cecfe31c97bdc6a38c541d3ab264b28315c45b89196e8417ddd19fbc56"
     },
     {
       "id": "vanguardias-breton-04",
@@ -32844,15 +32855,15 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "fuente",
-      "paleta": "tropico",
-      "arquetipo": "montanas",
-      "intento": 0,
-      "semilla": 122440440428969,
+      "paleta": "dada",
+      "arquetipo": "marina",
+      "intento": 2,
+      "semilla": 194942240565032,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-breton-04.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 84,
+      "pixeles_motivo": 126,
       "franja": [
         16,
         440,
@@ -32860,10 +32871,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 5.2,
+      "contraste_texto": 4.7,
       "velo": 0.0,
-      "calma_cielo": 0.1,
-      "sha256": "81f1275f681055da0a573975572b704c26d3e3d8e94f6869dfd5c12cb87710e0"
+      "calma_cielo": 0.0,
+      "sha256": "16e7066d11ec988b7fda6bd9acff1642902a10c821410b144b06ebd02183a64b"
     },
     {
       "id": "vanguardias-breton-05",
@@ -32880,15 +32891,15 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "estrellas",
-      "paleta": "medianoche",
-      "arquetipo": "bosque",
+      "paleta": "noche",
+      "arquetipo": "montanas",
       "intento": 0,
       "semilla": 278113189186079,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-breton-05.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 117,
+      "pixeles_motivo": 129,
       "franja": [
         16,
         440,
@@ -32896,10 +32907,10 @@
         860
       ],
       "texto_recomendado": "claro",
-      "contraste_texto": 13.1,
+      "contraste_texto": 14.0,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "2a5310ee6beeb65f0dce6c03d2765c1400acc2cb0f6529853d7a77615c24144b"
+      "sha256": "b55b14f2c6298aad1b51f3ce8f853d0f2e32f15702fb83e42956d8a3450526af"
     },
     {
       "id": "vanguardias-breton-06",
@@ -32988,15 +32999,15 @@
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "rosa",
-      "paleta": "primarios",
-      "arquetipo": "llanura",
+      "paleta": "tropico",
+      "arquetipo": "montanas",
       "intento": 0,
       "semilla": 3550654764407,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-breton-08.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 123,
+      "pixeles_motivo": 129,
       "franja": [
         16,
         440,
@@ -33004,10 +33015,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 5.3,
+      "contraste_texto": 5.0,
       "velo": 0.0,
-      "calma_cielo": 0.2,
-      "sha256": "6a5dc8b50afcbcd057213ff51aebe9535d50582107ba621b5fc8a3a7bb89f505"
+      "calma_cielo": 0.0,
+      "sha256": "12a56cdd4820b0ccbbdb45037aecdf4dc835fffd8fcc88bf1a68769da9c6a1ba"
     },
     {
       "id": "vanguardias-breton-09",
@@ -33376,14 +33387,14 @@
       "epoca": "1891–1967",
       "region": "Argentina",
       "variante": 9,
-      "obra_id": "scarabajeo",
-      "obra": "Scarabajeo",
-      "animo": "ludico",
+      "obra_id": "nocturno",
+      "obra": "Nocturno",
+      "animo": "nocturno",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "mariposas",
-      "paleta": "tropico",
+      "motivo": "estrellas",
+      "paleta": "medianoche",
       "arquetipo": "bosque",
       "intento": 0,
       "semilla": 106191587491618,
@@ -33391,18 +33402,18 @@
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-girondo-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 147,
+      "pixeles_motivo": 137,
       "franja": [
         16,
         440,
         184,
         860
       ],
-      "texto_recomendado": "oscuro",
-      "contraste_texto": 5.0,
+      "texto_recomendado": "claro",
+      "contraste_texto": 12.3,
       "velo": 0.0,
       "calma_cielo": 0.0,
-      "sha256": "3d79c30787a11497871341316eca5c82d4a1adf446d1dbaedf6b8b72972be42d"
+      "sha256": "ec70d16f9a36e1c216f937556135ef95fae24243bbc67e8e4201cac2e0731b37"
     },
     {
       "id": "vanguardias-girondo-10",
@@ -33412,22 +33423,22 @@
       "epoca": "1891–1967",
       "region": "Argentina",
       "variante": 10,
-      "obra_id": "dos-cruces",
-      "obra": "Dos cruces",
-      "animo": "frenetico",
+      "obra_id": "exvoto",
+      "obra": "Exvoto",
+      "animo": "ludico",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
       "motivo": "cruz",
-      "paleta": "dada",
-      "arquetipo": "marina",
+      "paleta": "tropico",
+      "arquetipo": "colinas",
       "intento": 0,
       "semilla": 75075116369243,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-girondo-10.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 56,
+      "pixeles_motivo": 64,
       "franja": [
         16,
         440,
@@ -33435,10 +33446,10 @@
         860
       ],
       "texto_recomendado": "oscuro",
-      "contraste_texto": 4.7,
+      "contraste_texto": 5.2,
       "velo": 0.0,
-      "calma_cielo": 0.0,
-      "sha256": "5850621ca7611250127821681fbaacfb7d04b027c93416ab770e6f46f4a7b445"
+      "calma_cielo": 0.1,
+      "sha256": "6d0c97259e7b2a7019024395a7c769084b32a7edc30b3034e23ce27f122b40c2"
     },
     {
       "id": "vanguardias-huidobro-01",
@@ -34850,13 +34861,13 @@
       "epoca": "1876–1944",
       "region": "Italia",
       "variante": 10,
-      "obra_id": "los-ferrocarriles",
-      "obra": "Los ferrocarriles",
+      "obra_id": "destruccion",
+      "obra": "Destrucción",
       "animo": "frenetico",
       "gutenberg_id": null,
       "gutenberg_estado": "sin_verificar",
       "formato": "svg",
-      "motivo": "tren",
+      "motivo": "ruinas",
       "paleta": "primarios",
       "arquetipo": "bosque",
       "intento": 0,
@@ -34865,7 +34876,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-marinetti-10.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 484,
+      "pixeles_motivo": 259,
       "franja": [
         16,
         440,
@@ -34876,7 +34887,7 @@
       "contraste_texto": 5.3,
       "velo": 0.0,
       "calma_cielo": 0.2,
-      "sha256": "6509c2ba4233b1ad123bcedfdd43d5c678321d00acc60aa8439c5781784243b2"
+      "sha256": "d8c1109383d75ef1651a1e8b095dc2a3311028f81d6f67b971cc61d7c33605c8"
     },
     {
       "id": "vanguardias-pessoa-01",

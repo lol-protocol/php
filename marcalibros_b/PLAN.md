@@ -118,6 +118,16 @@ Verificado:
 - Cambios: los tonos de texto pasan a `#FFFFFF` / `#111111`; si aun así la franja no llega a 4,5:1, el generador **calma el cielo** en la franja: añade paradas al degradado que lo oscurecen o aclaran (intensidad 0,1–0,6, la menor que baste) con transiciones de 80 px. Solo si eso no basta, velo (hoy ninguna pieza).
 - Resultado: 760 piezas se leen tal cual, 240 con el cielo calmado (casi todas a 0,1–0,2) y **0 con velo**. Manifest: `calma_cielo`.
 
+## Primera pasada de correcciones (taxonomía v0.7)
+
+Hecha por Claude sin marcas de la página de revisión (no había ninguna guardada). 38 cambios, solo de datos:
+- **Motivos:** 12 obras que estaban en «ninguno» reciben motivo propio (p. ej. *Don Juan* → barca en el mar, por el naufragio; *Los barateros* → navaja/espada; *La máscara de la anarquía* → barricada; *El llano en llamas* → caballo; *Macario* → pozo). Siguen en «ninguno» a propósito 5 paisajes puros (*Himno al sol*, *El mar de hielo del Montanvert*, *Los Pirineos y los Apeninos*, *Los páramos de Yorkshire*, *La excursión*).
+- **Ánimo:** *El gato negro* pasa de melancólico a macabro.
+- **Títulos que no reconocía con seguridad, sustituidos por obras que sí existen:** Belli (*Luciérnaga* → *Sobre la grama*), Garro (tema → *Isabel convertida en piedra*), Uslar Pietri (*Los visitantes* → *La visita en el tiempo*), Amado (*Tierras del sinfín*, su título habitual), Cambaceres (tema inventado → *La muerte de Andrea*), Gamboa (*El evangelista* → *La venganza de la gleba*), Agustini (*Fiesta* → *Lo inefable*), Gutiérrez Nájera (*Después de la lluvia* → *Mis enlutadas*), Herrera y Reissig (*Sonetos vascos*, *Berceuse blanca*, *La iglesia*), Casal (*Nostalgias*), Girondo (*Nocturno*, *Exvoto*), Marinetti (*Destrucción*), Moréas (*El té en casa de Miranda*), Laforgue (*Las lamentaciones* estaba repetida como *Complaintes* → *Pierrot fumista*), Gracián (tema → *La fuente de los engaños*).
+- **Tipos corregidos:** *Apogeo* (poemario), *El taller de las mariposas* (cuento infantil), *Un hogar sólido* y *El árbol* (teatro), *Del natural* (cuentos), *Akëdysséril* (relato), *Y Matarazo no llamó…* (novela).
+- El build incremental rehízo 454 piezas y reutilizó 546: la clave de cada pieza incluye las huellas de las anteriores de su movimiento, así que un cambio arrastra a las siguientes.
+- Sigue siendo borrador: los títulos sustituidos son los que reconozco con más seguridad, no una verificación con fuentes.
+
 ## Página de revisión
 
 - `generator/revision_web.py` genera `catalog/revision/web/` (una hoja de miniaturas por movimiento y la página) y se publica como Artifact: https://claude.ai/artifact/RmfFcDftrNTVdqBG7oTTy9 (privado).

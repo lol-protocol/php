@@ -1,4 +1,4 @@
-# Taxonomía de marcalibros v0.6. Fuente de verdad para generator/build.py.
+# Taxonomía de marcalibros v0.7. Fuente de verdad para generator/build.py.
 #
 # - Cada variante de un autor es una obra o tema suyo (`obras`): la variante N usa
 #   la obra N. Un autor sin `obras` aún no se genera (pendiente de rellenar).
@@ -11,7 +11,7 @@
 # - Todas las obras y temas de todos los movimientos son borrador, escritos de memoria, sin fechas y sin verificar.
 # - Regla de formato: la variante 01 de cada autor es JPG; el resto SVG.
 
-version: '0.6'
+version: '0.7'
 ancho: 200
 alto: 1400
 variante_jpg: 1
@@ -264,7 +264,7 @@ movimientos:
       titulo: El gato negro
       tipo: cuento
       motivo: gato
-      animo: melancolico
+      animo: macabro
       escena: bosque
       gutenberg:
         id: null
@@ -331,9 +331,9 @@ movimientos:
     - id: don-juan
       titulo: Don Juan
       tipo: poema
-      motivo: ninguno
+      motivo: barca
       animo: crepuscular
-      escena: llanura
+      escena: marina
       gutenberg:
         id: null
         estado: sin_verificar
@@ -520,8 +520,8 @@ movimientos:
     - id: el-castellano-viejo
       titulo: El castellano viejo
       tipo: artículo
-      motivo: ninguno
-      animo: crepuscular
+      motivo: farola
+      animo: urbano
       gutenberg:
         id: null
         estado: sin_verificar
@@ -571,8 +571,8 @@ movimientos:
     - id: no-mas-mostrador
       titulo: No más mostrador
       tipo: artículo
-      motivo: ninguno
-      animo: crepuscular
+      motivo: carruaje
+      animo: urbano
       escena: bosque
       gutenberg:
         id: null
@@ -580,7 +580,7 @@ movimientos:
     - id: los-barateros
       titulo: Los barateros
       tipo: artículo
-      motivo: ninguno
+      motivo: espada
       animo: tormentoso
       gutenberg:
         id: null
@@ -588,8 +588,8 @@ movimientos:
     - id: entre-que-gentes-estamos
       titulo: Entre qué gentes estamos
       tipo: artículo
-      motivo: ninguno
-      animo: melancolico
+      motivo: skyline
+      animo: urbano
       escena: llanura
       gutenberg:
         id: null
@@ -812,8 +812,8 @@ movimientos:
     - id: prometeo-liberado
       titulo: Prometeo liberado
       tipo: drama
-      motivo: ninguno
-      animo: sublime
+      motivo: rayo
+      animo: tormentoso
       escena: montanas
       gutenberg:
         id: null
@@ -874,7 +874,7 @@ movimientos:
     - id: la-mascara-de-la-anarquia
       titulo: La máscara de la anarquía
       tipo: poema
-      motivo: ninguno
+      motivo: barricada
       animo: crepuscular
       escena: llanura
       gutenberg:
@@ -1778,7 +1778,7 @@ movimientos:
       titulo: La niebla de Londres
       tipo: tema
       de: El extraño caso del doctor Jekyll y Mr. Hyde
-      motivo: ninguno
+      motivo: farola
       animo: lugubre
       gutenberg:
         id: null
@@ -2078,7 +2078,7 @@ movimientos:
     - id: el-llano-en-llamas
       titulo: El llano en llamas
       tipo: cuentos
-      motivo: ninguno
+      motivo: caballo
       animo: seco
       escena: llanura
       gutenberg:
@@ -2113,7 +2113,7 @@ movimientos:
     - id: macario
       titulo: Macario
       tipo: cuento
-      motivo: ninguno
+      motivo: pozo
       animo: melancolico
       gutenberg:
         id: null
@@ -2400,7 +2400,7 @@ movimientos:
     - id: el-plan-infinito
       titulo: El plan infinito
       tipo: novela
-      motivo: ninguno
+      motivo: skyline
       animo: seco
       gutenberg:
         id: null
@@ -2522,8 +2522,8 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: la-piedra-que-habla
-      titulo: La piedra que habla
+    - id: isabel-convertida-en-piedra
+      titulo: Isabel convertida en piedra
       tipo: tema
       de: Los recuerdos del porvenir
       motivo: ruinas
@@ -2533,7 +2533,7 @@ movimientos:
         estado: sin_verificar
     - id: un-hogar-solido
       titulo: Un hogar sólido
-      tipo: cuentos
+      tipo: teatro
       motivo: casa_colonial
       animo: melancolico
       gutenberg:
@@ -2557,7 +2557,7 @@ movimientos:
         estado: sin_verificar
     - id: el-arbol
       titulo: El árbol
-      tipo: cuento
+      tipo: teatro
       motivo: arbol
       animo: melancolico
       gutenberg:
@@ -2581,8 +2581,8 @@ movimientos:
         estado: sin_verificar
     - id: y-matarazo-no-llamo
       titulo: Y Matarazo no llamó…
-      tipo: cuento
-      motivo: ninguno
+      tipo: novela
+      motivo: reloj
       animo: seco
       gutenberg:
         id: null
@@ -2654,8 +2654,8 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: los-visitantes
-      titulo: Los visitantes
+    - id: la-visita-en-el-tiempo
+      titulo: La visita en el tiempo
       tipo: novela
       motivo: ruinas
       animo: espectral
@@ -2710,8 +2710,8 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: tierras-del-fin-del-mundo
-      titulo: Tierras del fin del mundo
+    - id: tierras-del-sinfin
+      titulo: Tierras del sinfín
       tipo: novela
       motivo: arbol
       animo: exuberante
@@ -2835,7 +2835,7 @@ movimientos:
         estado: sin_verificar
     - id: apogeo
       titulo: Apogeo
-      tipo: novela
+      tipo: poemario
       motivo: luna
       animo: nocturno
       gutenberg:
@@ -2849,9 +2849,9 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: luciernaga
-      titulo: Luciérnaga
-      tipo: poemas
+    - id: sobre-la-grama
+      titulo: Sobre la grama
+      tipo: poemario
       motivo: petalos
       animo: onirico
       gutenberg:
@@ -2859,7 +2859,7 @@ movimientos:
         estado: sin_verificar
     - id: el-taller-de-las-mariposas
       titulo: El taller de las mariposas
-      tipo: poemas
+      tipo: cuento infantil
       motivo: mariposas
       animo: auroral
       gutenberg:
@@ -4231,13 +4231,12 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: la-tormenta-en-la-pampa
-      titulo: La tormenta en la pampa
+    - id: la-muerte-de-andrea
+      titulo: La muerte de Andrea
       tipo: tema
       de: Sin rumbo
-      motivo: rayo
-      animo: tormentoso
-      escena: llanura
+      motivo: ataud
+      animo: lugubre
       gutenberg:
         id: null
         estado: sin_verificar
@@ -4291,7 +4290,7 @@ movimientos:
         estado: sin_verificar
     - id: del-natural
       titulo: Del natural
-      tipo: novela
+      tipo: cuentos
       motivo: skyline
       animo: urbano
       gutenberg:
@@ -4321,11 +4320,11 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: el-evangelista
-      titulo: El evangelista
-      tipo: novela
-      motivo: cruz
-      animo: provinciano
+    - id: la-venganza-de-la-gleba
+      titulo: La venganza de la gleba
+      tipo: teatro
+      motivo: trigal
+      animo: crudo
       gutenberg:
         id: null
         estado: sin_verificar
@@ -5277,10 +5276,10 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: sourdine
-      titulo: Sourdine
+    - id: nostalgias
+      titulo: Nostalgias
       tipo: poema
-      motivo: lluvia
+      motivo: nube
       animo: melancolico
       gutenberg:
         id: null
@@ -5390,11 +5389,11 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: fiesta
-      titulo: Fiesta
+    - id: lo-inefable
+      titulo: Lo inefable
       tipo: poema
-      motivo: pavo_real
-      animo: exotico
+      motivo: lirio
+      animo: elegiaco
       gutenberg:
         id: null
         estado: sin_verificar
@@ -5462,11 +5461,11 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: despues-de-la-lluvia
-      titulo: Después de la lluvia
+    - id: mis-enlutadas
+      titulo: Mis enlutadas
       tipo: poema
-      motivo: lluvia
-      animo: melancolico
+      motivo: vela
+      animo: elegiaco
       gutenberg:
         id: null
         estado: sin_verificar
@@ -5486,8 +5485,8 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: cronicas-de-la-ciudad-de-mexico
-      titulo: Crónicas de la Ciudad de México
+    - id: cronicas
+      titulo: Crónicas
       tipo: ensayo
       motivo: skyline
       animo: urbano
@@ -5543,11 +5542,11 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: las-lunas-de-oro
-      titulo: Las lunas de oro
+    - id: sonetos-vascos
+      titulo: Sonetos vascos
       tipo: poemario
-      motivo: luna
-      animo: nocturno
+      motivo: arbol
+      animo: pastoral
       gutenberg:
         id: null
         estado: sin_verificar
@@ -5567,19 +5566,19 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: la-vida
-      titulo: La vida
+    - id: berceuse-blanca
+      titulo: Berceuse blanca
       tipo: poema
-      motivo: pozo
-      animo: pastoral
+      motivo: luna
+      animo: nocturno
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: el-regreso
-      titulo: El regreso
+    - id: la-iglesia
+      titulo: La iglesia
       tipo: poema
-      motivo: arbol
-      animo: crepuscular
+      motivo: torre
+      animo: provinciano
       gutenberg:
         id: null
         estado: sin_verificar
@@ -6026,10 +6025,10 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: los-ferrocarriles
-      titulo: Los ferrocarriles
-      tipo: poema
-      motivo: tren
+    - id: destruccion
+      titulo: Destrucción
+      tipo: poemario
+      motivo: ruinas
       animo: frenetico
       gutenberg:
         id: null
@@ -6283,19 +6282,19 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: scarabajeo
-      titulo: Scarabajeo
+    - id: nocturno
+      titulo: Nocturno
       tipo: poema
-      motivo: mariposas
-      animo: ludico
+      motivo: estrellas
+      animo: nocturno
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: dos-cruces
-      titulo: Dos cruces
+    - id: exvoto
+      titulo: Exvoto
       tipo: poema
       motivo: cruz
-      animo: frenetico
+      animo: ludico
       gutenberg:
         id: null
         estado: sin_verificar
@@ -7103,8 +7102,8 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: el-jardin-de-falsirena
-      titulo: El jardín de Falsirena
+    - id: la-fuente-de-los-enganos
+      titulo: La fuente de los engaños
       tipo: tema
       de: El criticón
       motivo: fuente
@@ -8813,7 +8812,7 @@ movimientos:
         estado: sin_verificar
     - id: akedysseril
       titulo: Akëdysséril
-      tipo: drama
+      tipo: relato
       motivo: corona
       animo: decadente
       gutenberg:
@@ -8907,11 +8906,11 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: complaintes
-      titulo: Complaintes
-      tipo: poemario
-      motivo: lluvia
-      animo: elegiaco
+    - id: pierrot-fumista
+      titulo: Pierrot fumista
+      tipo: pantomima
+      motivo: luna
+      animo: nocturno
       gutenberg:
         id: null
         estado: sin_verificar
@@ -9013,11 +9012,11 @@ movimientos:
       gutenberg:
         id: null
         estado: sin_verificar
-    - id: poemas-de-moreas
-      titulo: Poemas de Moréas
-      tipo: poemario
-      motivo: rosa
-      animo: elegiaco
+    - id: el-te-en-casa-de-miranda
+      titulo: El té en casa de Miranda
+      tipo: prosa
+      motivo: vela
+      animo: decadente
       gutenberg:
         id: null
         estado: sin_verificar
