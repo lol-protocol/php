@@ -1,24 +1,57 @@
 # Listado de colores con nombre y su significado
 
-Tabla de los colores con nombre estándar, con su equivalente en español, su valor hexadecimal y dos columnas de significado: el **psicológico** (asociaciones culturales frecuentes) y el **místico o simbólico** (lo que dicen algunas tradiciones). Está pensada como léxico de apoyo para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y esta tabla da la lista cerrada de nombres a reconocer.
+Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y este listado da la lista de nombres a reconocer. Tiene dos archivos con alcances distintos:
+
+| Archivo | Qué contiene | Idiomas de cada nombre | Significados |
+|---|---|---|---|
+| `colores.csv` | 148 colores CSS, anotados | 30 (ver lista abajo) | Psicológico y místico |
+| `nombres-completos.csv` | 31.935 nombres de color con su hex, de la lista de `meodai/color-names` | 1: inglés | No tiene |
+
+La lista de los 148 colores en los 30 idiomas está en `colores-por-idioma.md` (una sección por idioma) y en `colores.csv` (una columna por idioma).
+
+## Idiomas
+
+Código y nombre de cada idioma en `colores.csv`. El inglés es la columna `nombre_ingles`; los demás son `nombre_<código>`.
+
+| Código | Idioma | Código | Idioma | Código | Idioma |
+|---|---|---|---|---|---|
+| `en` | Inglés | `pl` | Polaco | `ja` | Japonés |
+| `es` | Español | `cs` | Checo | `ko` | Coreano |
+| `fr` | Francés | `ro` | Rumano | `vi` | Vietnamita |
+| `pt` | Portugués | `hu` | Húngaro | `th` | Tailandés |
+| `it` | Italiano | `el` | Griego | `id` | Indonesio |
+| `de` | Alemán | `ru` | Ruso | `sw` | Suajili |
+| `nl` | Neerlandés | `uk` | Ucraniano | `ar` | Árabe |
+| `sv` | Sueco | `tr` | Turco | `he` | Hebreo |
+| `da` | Danés | `fa` | Persa | `fi` | Finés |
+| `hi` | Hindi | `bn` | Bengalí | `zh` | Chino simplificado |
 
 ## Alcance
 
-- **Fuente de los nombres:** los 148 nombres de color de CSS (*CSS Color Module Level 4*). Es el conjunto estándar más citado y reproducible. No incluye los nombres de catálogos comerciales (Pantone, RAL, Crayola, etc.) ni los más extensos de listas enciclopédicas; se pueden añadir como filas nuevas en `colores.csv`.
-- **Duplicados a propósito:** `gray`/`grey`, `aqua`/`cyan`, `fuchsia`/`magenta` y otros aparecen por separado, porque para un etiquetador son palabras distintas. Comparten hex y significado.
-- **`rebeccapurple`** se añadió a CSS en 2014 en memoria de Rebecca Meyer, hija de Eric Meyer.
-- **Nombres en español:** son una propuesta de traducción usada en este listado, no una norma oficial de la RAE.
+No existe un conjunto cerrado de "todos los colores que tienen nombre": los catálogos comerciales (Pantone, RAL, Crayola) y las listas colaborativas tienen cada uno su propia cifra. Por eso el listado tiene dos capas:
 
-## Sobre los significados
+- **Lista completa** (`nombres-completos.csv`): la colección curada más grande que se pudo verificar y que tiene licencia abierta. Tiene 31.935 nombres únicos. La columna `curada` marca con `x` los 4.966 que sus curadores consideran buenos nombres (por ejemplo, `3AM Latte`); los demás son válidos pero menos típicos.
+- **Tabla anotada** (`colores.csv`): los 148 colores con nombre de la especificación CSS, con sus nombres en 30 idiomas y sus significados. Es el conjunto estándar, verificado contra la fuente oficial.
 
-- **Psicológicos:** asociaciones culturales habituales en diseño y marketing. La evidencia científica sobre cómo un color afecta de verdad a una persona es limitada y varía según la cultura y el contexto. Describen asociaciones frecuentes, no efectos comprobados.
-- **Místicos o simbólicos:** resumen simbolismos de tradiciones como la alquimia, los chakras, el simbolismo cristiano, el mediterráneo popular o la cultura china. Describen creencias y simbolismos, no propiedades comprobables.
-- Los textos son resúmenes escritos para este listado; no citan fuentes concretas.
+La lista completa solo está en inglés. Traducir 31.935 nombres a 30 idiomas sería casi un millón de cadenas, sin fuente que las respalde, y muchos de esos nombres son marcas, nombres propios o términos sin traducción.
+
+Varias palabras de la lista completa son también palabras corrientes en español, como `coral` o `magenta`, y otras son nombres propios o términos técnicos. Para el etiquetado conviene tener en cuenta que la misma palabra puede ser un color o no, según el contexto.
+
+## Fuentes y verificación
+
+- **Nombres en inglés y hex de la tabla anotada:** especificación *CSS Color Module Level 4*, sección de colores con nombre (código fuente en `w3c/csswg-drafts`). Los 148 nombres y sus valores hex coinciden con esa fuente y con una tabla JSON de referencia (`bahamas10/css-color-names`). `rebeccapurple` aparece en la especificación como adición de CSS Color Level 4.
+- **Lista completa:** `meodai/color-names` (archivo `src/colornames.csv`), con licencia MIT, incluida en `LICENCIA-meodai-color-names.txt`. Los 31.935 hex son válidos y los nombres son únicos sin distinguir mayúsculas. No se ha verificado nombre a nombre contra otra fuente.
+- **Traducciones a los 29 idiomas que no son inglés:** propuestas, no revisadas por hablantes nativos. Están en `colores.csv` y se ven en `colores-por-idioma.md`. La calidad puede variar mucho de un idioma a otro, y las de los menos comunes (por ejemplo, bengalí, persa o suajili) son las menos fiables. Antes de usarlas como referencia, conviene una revisión de un hablante nativo por idioma.
+- **Nombres en español:** propuestas de este listado, no una norma oficial de la RAE. Cinco de ellos son idénticos al inglés (`aqua`, `chartreuse`, `chocolate`, `coral`, `magenta`).
+- **Significados:** escritos para este listado. Lo *psicológico* son asociaciones culturales frecuentes en diseño y marketing; la evidencia científica sobre el efecto real de un color en una persona es limitada y varía según la cultura. Lo *místico* resume simbolismos de tradiciones como la alquimia, los chakras, el simbolismo cristiano, el mediterráneo popular o la cultura china. Ambos describen convenciones y creencias, no propiedades comprobables.
 
 ## Archivos
 
-- `colores.csv`: los datos. Es la fuente de verdad. Columnas: `nombre_ingles`, `nombre_espanol`, `hex`, `significado_psicologico`, `significado_mistico`.
-- `generar-tabla.py`: valida `colores.csv` y regenera la tabla de este README.
+- `colores.csv`: tabla anotada. Columnas: `nombre_ingles`, `nombre_es`, `nombre_fr`, `nombre_pt`, `nombre_it`, `nombre_de`, … hasta `nombre_sw` (29 columnas de idioma en total, además del inglés), `hex`, `significado_psicologico`, `significado_mistico`.
+- `colores-por-idioma.md`: la misma lista, una sección por idioma. Generado.
+- `nombres-completos.csv`: lista completa. Columnas: `nombre_ingles`, `hex`, `curada`.
+- `generar-tabla.py`: valida los dos CSV y genera la tabla de este README y `colores-por-idioma.md`.
+- `LICENCIA-meodai-color-names.txt`: licencia MIT de la fuente de la lista completa.
 - `README.md`: este documento. La tabla va entre dos líneas que son marcadores HTML de inicio y fin (`tabla:inicio` y `tabla:fin`); no la edites a mano.
 
 ## Uso
@@ -27,21 +60,19 @@ Requiere Python 3. No usa dependencias externas.
 
 ```bash
 cd Listado-colores
-python3 generar-tabla.py                # tras editar colores.csv: valida y regenera la tabla
-python3 generar-tabla.py --comprobar    # solo comprueba: datos válidos y README al día
+python3 generar-tabla.py                # tras editar colores.csv: valida y regenera README y colores-por-idioma.md
+python3 generar-tabla.py --comprobar    # solo comprueba: datos válidos y archivos generados al día
 ```
 
-Para añadir o corregir un color, edita `colores.csv` respetando estas reglas (el generador las comprueba):
+Reglas para editar los CSV (el generador las comprueba):
 
-- `nombre_ingles` en minúsculas, sin espacios, único.
-- `hex` en formato `#RRGGBB`, en mayúsculas.
-- Ningún campo puede llevar `|` ni saltos de línea.
-- Las filas van ordenadas por `nombre_ingles`.
+- `colores.csv`: `nombre_ingles` en minúsculas, sin espacios y único; `hex` en `#RRGGBB` y en mayúsculas; ningún campo vacío; ningún campo con `|` ni saltos de línea; filas ordenadas por `nombre_ingles`.
+- `nombres-completos.csv`: nombre único sin distinguir mayúsculas; `hex` en `#RRGGBB`; `curada` vacía o `x`; filas ordenadas por nombre sin distinguir mayúsculas. Se generó una vez desde la fuente; el generador solo lo valida.
 
 ## Tabla
 
 <!-- tabla:inicio -->
-| Nombre (inglés) | Nombre (español) | Hex | Significado psicológico | Significado místico |
+| Inglés | Español | Hex | Significado psicológico | Significado místico |
 |---|---|---|---|---|
 | `aliceblue` | azul alicia | `#F0F8FF` | Calma, frescura y limpieza; sensación de ligereza y amplitud. | Pureza celestial y serenidad; asociado al cielo despejado y a la comunicación clara. |
 | `antiquewhite` | blanco antiguo | `#FAEBD7` | Nostalgia, tradición y calidez suave; evoca lo vintage. | Memoria y sabiduría de lo pasado; pureza envejecida y ciclos antiguos. |
