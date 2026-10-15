@@ -2,7 +2,7 @@
 
 /** Portuguese chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'por', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'por', 'kind' => 'chat-topics', 'collapseRepeats' => true],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['você é', 'voce e', 'você', 'és', 'seu', 'sua', 'seus', 'suas', 'sois', 'maldito', 'maldita', 'pedaço de', 'filho de', 'filha de', 'é um', 'é uma', 'esse', 'essa', 'este', 'esta'],

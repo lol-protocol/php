@@ -2,7 +2,8 @@
 
 /** German chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'deu', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'deu', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['pollack'],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['du', 'du bist', 'bist', 'ihr', 'ihr seid', 'dummes', 'dumme', 'dummer', 'blödes', 'blöde', 'blöder', 'dreckiges', 'dreckige', 'dreckiger', 'fettes', 'fette', 'fetter', 'was für ein', 'was für eine', 'so ein', 'so eine', 'alter', 'alte', 'scheiß', 'verdammtes', 'verdammter', 'verdammte'],

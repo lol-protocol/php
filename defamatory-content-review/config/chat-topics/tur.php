@@ -2,7 +2,8 @@
 
 /** Turkish chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'tur', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'tur', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['cahill'],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['sen', 'siz', 'sensin', 'seni', 'sana', 'bu', 'pis', 'aptal', 'kokmuş', 'şişko', 'salak', 'lan', 'ulan', 'orospu'],

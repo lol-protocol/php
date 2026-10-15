@@ -2,7 +2,7 @@
 
 /** Bulgarian chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'bul', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'bul', 'kind' => 'chat-topics', 'collapseRepeats' => true],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['ти', 'ти си', 'вие', 'тоя', 'тая', 'този', 'тази', 'такъв', 'такава', 'мръсен', 'мръсна', 'тъп', 'тъпа', 'дебел', 'дебела'],

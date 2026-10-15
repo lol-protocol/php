@@ -609,9 +609,15 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
   dos sí pueden ser legítimas («calle», «Pratt», «looser»), así que lo que
   sólo se encuentra reduciendo dobles («puuta») baja a `review`. El hallazgo
   conserva el texto como se escribió y trae `repeat`: `elongated` o `doubled`.
-  Las amenazas (`patterns`) aceptan letras repetidas con su severidad. Sólo
-  se activa en los idiomas con `meta.collapseRepeats` (español e inglés): en
-  otros —italiano, finés…— la doble letra es parte de la palabra.
+  Las amenazas (`patterns`) aceptan letras repetidas con su severidad. Las
+  rachas de 3 o más se leen en todos los idiomas («cazzzo», «Arschloooch»,
+  «сууука»): medido contra las 50 000 palabras más frecuentes de 26 idiomas,
+  no añade ningún falso positivo. Reducir las dobles sólo se activa con
+  `meta.collapseRepeats => true`: español, inglés y otros 18 idiomas donde la
+  misma medición casi no cambia nada (portugués, alemán, ruso, polaco, turco,
+  árabe…; lo que apareció, como «Pollack» o «sesaat», va a `legit`). En italiano,
+  francés, neerlandés, noruego, finés, islandés y hebreo la doble letra es parte
+  de la palabra («anno» → «ano», «penne» → «pene»), y ahí no se reduce.
 - **Palabras ambiguas.** «vamos a coger el bus», «está de bomba la fiesta»,
   «techo de paja» no son contenido sexual ni bélico: esas palabras sólo
   cuentan si la misma línea trae algo firme (`medium` o `high`) del mismo
@@ -649,7 +655,7 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 | `'also' => [...]` | Formas irregulares, a mano («degüello»). |
 | `'by' => ['f' => 'high', 'm.pl' => 'none']` | Severidad por forma: la ofensa no es simétrica («cerdo» suena mal, «cerda» horrible; «zorros» son animales). Rasgos: `sg`, `pl`, `m`, `f`, `m.sg`, `m.pl`, `f.sg`, `f.pl`; gana el más específico, y `none` deja fuera esa forma. Los diminutivos (`dim`, `dim.f`, `dim.pl`…) sólo se generan si `by` los pide, porque cambian el tono en cualquier dirección: «putita» degrada más, «cerdita» es cariñoso (`'by' => ['dim' => 'high']`; reglas en español y portugués, en italiano y francés van en `also`). Una forma que ya está escrita como entrada propia no se genera (lo escrito manda), y las generadas no heredan `nameCollision`. |
 | categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
-| meta `'collapseRepeats' => true` | Lee también las palabras escritas con letras repetidas. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
+| meta `'collapseRepeats' => true` | Lee también las palabras con letras dobles reducidas («puuta»); las de 3 o más («puuuta») se leen siempre, salvo con `false`. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
 | `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
 | `'targeted' => ['types' => [...], 'before' => [...], 'after' => [...]]` | Qué riskTypes sólo cuentan dirigidos a alguien (`animal`, `discapacidad`) y las marcas del idioma que lo indican, antes o después del término (hasta 3 palabras). En un diccionario, `'targeted' => true` suma una entrada suelta a la regla y `'targeted' => false` la saca. `TargetMarkersConfigTest` verifica el formato. |
 | `'everyday' => [...]` | Palabras cotidianas que sin tildes coinciden con un término: «possède» → «possédé», «katıl» (únete) → «katil» (asesino), «moc» (mucho) → «moč». Escritas exactamente así (da igual la mayúscula) no se buscan en el chat; «katil» sin tilde sigue marcándose. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
@@ -842,8 +848,7 @@ palabras no entiende contexto:
   formas regulares; los otros 28 no. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
   Esos 28 no tienen plurales, géneros ni conjugaciones automáticos —sólo la
-  forma base y las que se añadan a mano con `also`—; ninguno de los 31 tiene
-  `collapseRepeats`, y se escribieron
+  forma base y las que se añadan a mano con `also`—, y se escribieron
   sin revisión nativa. En japonés, cantonés y tailandés hace falta la
   extensión `intl` para encontrar palabras dentro de una frase (ver «Idiomas
   sin espacios»). `ChatTopicsCoverageTest` fija una línea

@@ -2,7 +2,8 @@
 
 /** Polish chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'pol', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'pol', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['sleepy'],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['ty', 'jesteś', 'jesteście', 'wy', 'ten', 'ta', 'ci', 'głupi', 'głupia', 'brudny', 'brudna', 'stary', 'stara', 'jebany', 'jebana', 'pierdolony', 'pierdolona', 'zasrany', 'zasrana'],
