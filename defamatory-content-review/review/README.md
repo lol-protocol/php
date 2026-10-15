@@ -89,6 +89,15 @@ que cambió. Después: una línea por corrección en
 `tests/fixtures/chat-lines-detection.php`, `./vendor/bin/phpunit` y regenerar
 la planilla.
 
+Una planilla viene de fuera y lo que lleva acaba en un archivo PHP, así que
+`apply-review` sólo la acepta tal como la genera `bin/review-sheets.php`: en
+`excepción`, `categoria` es `everyday` o `legit`; en `forma`, la etiqueta es un
+rasgo como `pl`, `f` o `f.pl`. Cualquier otro valor aparece en «Problemas» y no
+se aplica nada. Además, el texto resultante de cada archivo se comprueba sin
+ejecutarlo: tiene que ser un `return [...]` de textos, números y
+`true`/`false`/`null`, y nada más (`Review\ConfigData`); sólo entonces se lee
+para ver que devuelve un diccionario.
+
 ## Regenerarlas
 
 ```bash

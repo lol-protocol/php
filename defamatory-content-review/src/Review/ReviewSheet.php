@@ -16,7 +16,8 @@ namespace DefamatoryContentReview\Review;
  *
  * Lo que no se puede aplicar solo —un patrón, un comentario, una marca en una
  * lista de temas— va a `manual`; un valor desconocido, a `problems`. `sí` o la
- * celda vacía no cambian nada.
+ * celda vacía no cambian nada. Una planilla viene de fuera: los nombres que
+ * acaban en un archivo (lista, etiqueta) los valida SheetVocabulary.
  */
 final class ReviewSheet
 {
@@ -58,6 +59,10 @@ final class ReviewSheet
         }
         if ($answer === '' || in_array($answer, self::YES, true)) {
             $this->pending += $answer === '' ? 1 : 0;
+            return;
+        }
+        if (($wrong = SheetVocabulary::problem($row, $answer)) !== null) {
+            $this->problems[] = "{$where}: {$wrong}; la planilla no es la que generó bin/review-sheets.php";
             return;
         }
         $file = $row['origen'] === 'diccionario' ? 'languages' : 'chat-topics';

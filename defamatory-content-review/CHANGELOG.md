@@ -456,6 +456,15 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 - Tabla de rangos de términos del README desactualizada tras las últimas
   ampliaciones: decía `comprehensive: 200–418` (real: 282–601, español tiene
   601) y `moderate: 120–160` (real: 120–245, varios idiomas la superan).
+- **Una planilla de `review/` ya no puede escribir en `config/` nada que no
+  sea un dato**: `bin/apply-review.php` pasaba al archivo, sin validar, la lista
+  de una fila `excepción` (`categoria`) y la etiqueta de una fila `forma`, y
+  después leía el resultado con `require`, también en la vista previa. Ahora
+  `categoria` sólo admite `everyday` y `legit`; la etiqueta, sólo rasgos como
+  `pl` o `f.pl`; `ConfigEditor::editList` y `FormEditor::setBy` rechazan lo que
+  no sea un nombre o una severidad conocida; y el resultado se comprueba con el
+  tokenizador (`Review\ConfigData`, una lista de lo permitido que cumplen los 69
+  archivos de `config/`) antes de evaluarlo. Las palabras ya se escapaban.
 
 ### Cambiado
 
