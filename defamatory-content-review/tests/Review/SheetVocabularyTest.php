@@ -69,6 +69,7 @@ class SheetVocabularyTest extends TestCase
             'mayúsculas' => ['F.PL'],
             'punto doble' => ['f..pl'],
             'tres rasgos' => ['m.sg.x'],
+            'diminutivo con cuatro' => ['dim.f.pl.x'],
             'con corchete' => ['f]'],
         ];
     }
@@ -88,9 +89,10 @@ class SheetVocabularyTest extends TestCase
         $sheet = $this->sheet([
             ['forma', 'cerdos', 'diccionario', 'animal', 'animal', 'medium', 'forma:pl de:cerdo', '', 'review', 'alta', ''],
             ['forma', 'cerdas', 'diccionario', 'animal', 'animal', 'medium', 'forma:f.pl de:cerdo', '', 'review', 'no', ''],
+            ['forma', 'putitas', 'diccionario', 'genero', 'genero', 'high', 'forma:dim.f.pl de:puta', '', 'reject', 'media', ''],
         ]);
 
         $this->assertSame([], $sheet->problems);
-        $this->assertSame(['pl=high', 'f.pl=none'], array_column($sheet->changes, 'value'));
+        $this->assertSame(['pl=high', 'f.pl=none', 'dim.f.pl=medium'], array_column($sheet->changes, 'value'));
     }
 }

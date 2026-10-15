@@ -44,6 +44,24 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Diminutivos y plurales de insultos sexualizados en portugués, italiano
+  y francés** (#91). `Diminutives` genera los diminutivos regulares del
+  español (-ito/-ita, -cito/-cita) y del portugués (-inho/-inha,
+  -zinho/-zinha) con sus rasgos (`dim.sg`, `dim.f.pl`…). Cambian el tono en
+  cualquier dirección («putita» degrada más, «cerdita» es cariñoso), así
+  que sólo se generan si `by` lo pide con una clave `dim`. Español: putita,
+  zorrita. Portugués: putas, putinha, vagabundas, rameiras. Italiano:
+  puttane, troie, zoccole, mignotte, baldracche y el femenino de `porco`.
+  Francés: putes, putains, salopes, garces, catins. Quedan fuera los
+  plurales con otro uso cotidiano (piranhas, galinhas, vacche, traînées).
+  `PortugueseInflection` reconoce «-ão» con tilde («ladrões»). Medido con
+  las 50.000 palabras más frecuentes de cada idioma: cambian exactamente
+  las formas declaradas. Las planillas de revisión traen ahora también las
+  filas de diminutivo (`forma:dim.sg de:puta`), y `SheetVocabulary` acepta
+  esas etiquetas al aplicarlas (antes sólo admitía rasgos de un punto, así
+  que una respuesta sobre «putitas» se habría rechazado). Planillas de spa,
+  por, ita y fra regeneradas.
+
 - **Frases con forma deletreadas**: «t e v o y a m a t a r», «i w i l l k i l l y o u»
   se bloquean como la amenaza escrita normal (`SpacedRunTerms`).
 - **Más evasión**: letras encerradas («p⃝u⃝t⃝a⃝», «p⃣u⃣t⃣a⃣»), letras parecidas del
