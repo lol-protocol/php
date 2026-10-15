@@ -16,6 +16,7 @@ class Escena:
     primitivas: list = field(default_factory=list)
     grano: float = 0.0  # solo lo aplica el renderer raster (variantes JPG)
     franja: tuple = None  # (x0, y0, x1, y1) reservada para texto, o None si no cupo
+    sol: tuple = None  # (cx, cy, r) del sol o la luna, por si un adorno lo necesita
     bbox_motivo: tuple = None  # (x0, y0, x1, y1) del motivo dibujado, si lo hay
 
     def degradado(self, arriba, abajo):

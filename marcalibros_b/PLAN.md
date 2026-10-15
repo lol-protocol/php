@@ -112,18 +112,29 @@ Verificado:
 4. Editor de marcalibros de usuario (recetas en JSON: plantilla, imagen, recorte, texto).
 5. Línea de marca base.
 
-## Paso 3 en curso: Gótico y Realismo mágico (generador 0.8)
+## Paso 3 hecho: los 10 movimientos (generador 0.8)
 
-Hecho: 3 movimientos × 10 autores × 10 obras = **300 piezas** (30 JPG, 270 SVG), 0 errores de validación y 17 tests.
+**1000 piezas** (100 JPG y 900 SVG): 10 movimientos × 10 autores × 10 obras o temas. 0 errores de validación, 23 tests, 639 piezas con la franja de texto legible sin velo y 361 con velo horneado.
 
-- **Gótico** (Mary Shelley, Stoker, Radcliffe, Le Fanu, Walpole, M. G. Lewis, Beckford, Maturin, Stevenson, Emily Brontë; los 4 primeros del plan original). Gramática visual: arco ojival que enmarca la parte alta, bandas de niebla bajas y paletas frías o rojizas (cripta, sangre, luna fría). Motivos nuevos: murciélagos, gárgola, casa encantada, ventana ojival, lobo, figura encapuchada.
-- **Realismo mágico** (García Márquez, Rulfo, Carpentier, Asturias, Isabel Allende, Laura Esquivel, Elena Garro, Uslar Pietri, Jorge Amado, Gioconda Belli; los 4 primeros del plan original). Gramática visual: paletas cálidas y saturadas (trópico, cobre, polvo, aguamarina) y mariposas que acompañan a cada pieza. Motivos nuevos: mariposas, lluvia de flores amarillas, ceiba, casa colonial, volcán, maíz, pececillos de oro, gallo, lluvia, aparecido, alas.
-- Biblioteca: 57 motivos + «ninguno». Ánimos nuevos: macabro, lúgubre, espectral, onírico, exuberante, seco.
-- Campo `de` opcional en la taxonomía: cuando la variante es un tema de una obra (p. ej. «La lluvia de flores amarillas», de *Cien años de soledad*).
-- **Los 6 + 6 autores añadidos para completar 10 por movimiento son propuesta mía; las 200 obras y temas están escritos de memoria, sin fechas y sin verificar.** Especialmente delicados los de autores vivos o poco conocidos (Belli, Garro, Uslar Pietri, Amado) y los títulos de poemas de Emily Brontë.
-- Realismo mágico y Gutenberg: previsiblemente `no_disponible` (autores bajo derechos), a comprobar cuando haya red.
-- Limitaciones: en paletas cálidas el oro de las mariposas no contrasta con el cielo y se dibujan oscuras (`color_oro`); 100 de las 300 piezas llevan velo en la franja de texto (más que en Romanticismo porque las paletas medias dominan); el alas/lobo/gárgola son siluetas simples. Quedan 7 movimientos: Realismo, Naturalismo, Modernismo, Vanguardias, Barroco, Clasicismo y Simbolismo.
-- **Compilación incremental (hecha):** cada pieza guarda una clave = hash de (código del generador y catálogos, su configuración en la taxonomía, el par arquetipo×paleta asignado y las huellas de las piezas anteriores de su movimiento, porque la detección de duplicados las compara). Si la clave coincide y los archivos siguen intactos, se reutiliza sin dibujar ni pasar por Chromium; si no, se rehace. La caché (`catalog/.cache`, fuera de git) guarda además las miniaturas y las vistas de las hojas. Medido: 300 piezas, primera pasada ~6 min, segunda 1,2 s. Cambiar una obra rehace solo esa pieza y las siguientes de su movimiento si cambia su huella; cambiar el código del generador rehace todo. Las hojas de contacto solo se regeneran si cambia alguna pieza del autor (o falta la hoja). `--forzar` ignora la caché. Los archivos de obras quitadas de la taxonomía se borran (sin tocar movimientos con prefijo parecido, p. ej. `realismo` y `realismo-magico`). En CI, `actions/cache` restaura `.cache`, `svg`, `jpg` y `revision`; el workflow lo tiene configurado pero **no se ha podido ejecutar desde esta sesión**. 6 tests nuevos en `tests/test_incremental.py` (necesitan Chromium).
+| Movimiento | Gramática visual (adorno propio) | Paletas nuevas | Motivos nuevos |
+|---|---|---|---|
+| Romanticismo | paisajes sin adorno | atardecer, noche, niebla… | torre, luna, golondrinas… |
+| Gótico | arco ojival que enmarca la parte alta + bandas de niebla | cripta, sangre, luna fría | murciélagos, gárgola, casa encantada, ventana ojival, lobo, encapuchado |
+| Realismo mágico | mariposas amarillas | trópico, cobre, polvo, aguamarina | mariposas, flores amarillas, ceiba, casa colonial, volcán, maíz, pececillos de oro, gallo, lluvia, aparecido, alas |
+| Realismo | doble filete de grabado | hollín, papel | chimeneas, farola, carruaje, línea de edificios, tren, molino |
+| Naturalismo | estratos de tierra al pie | barro, azufre, fango | mina, surcos, trigal, pozo |
+| Modernismo | sarmientos art nouveau en los bordes | jade, malva, pavo | cisne, nenúfares, libélula, lirio, pavo real |
+| Vanguardias | collage de formas geométricas planas | primarios, rojo y negro, dadá | biplano, torre Eiffel, guitarra cubista, rascacielos, ojo, engranaje |
+| Barroco | marco dorado con volutas | oro oscuro, carmesí, azul real | calavera, reloj de arena, concha, laúd, cortinaje, columna salomónica |
+| Clasicismo | grecas arriba y abajo | mármol, terracota, laurel, egeo | templo, corona de laurel, caballo, escudo |
+| Simbolismo | aureola translúcida alrededor del sol + filamentos de bruma | místico, ámbar, ópalo | esfinge, espejo, mano, creciente, escalera |
+
+- Biblioteca: 93 motivos + «ninguno»; 40 paletas; 25 ánimos (macabro, lúgubre, espectral, onírico, exuberante, seco, urbano, provinciano, crudo, sórdido, exótico, elegíaco, frenético, lúdico, fastuoso, vanitas, sereno, heroico, trágico, místico, decadente, ensueño… además de los anteriores).
+- **Todos los autores y obras añadidos en esta tanda son propuesta mía y borrador de memoria: sin fechas y sin verificar.** Los autores de los 7 movimientos nuevos distintos de los 4 del plan original (que sí lo eran) los elegí yo para completar 10. Revisar sobre todo los títulos de autores menos conocidos o vivos (Belli, Garro, Uslar Pietri, Amado, Cambaceres, Gamboa) y los poemarios de Delmira Agustini, Gutiérrez Nájera y Herrera y Reissig.
+- Dos cambios de motor: el renderer raster ya no engorda un píxel los filetes finos (diferencia con Chromium del Barroco pasó de 3,3 a 1,9) y el QA del peso SVG detectó trigal y lluvia demasiado pesados (>10 KB), que se aligeraron.
+- Gutenberg: todo sigue `sin_verificar`. Realismo mágico y varios autores modernos/vanguardistas (Allende, Esquivel, Belli, Maiakovski…) serán previsiblemente `no_disponible`; Clasicismo (Homero, Virgilio, Sófocles…) y Gótico probablemente sí estén, en traducciones.
+- Tiempo: construir las 1000 piezas desde cero tarda unos 17 minutos; cualquier cambio de código invalida toda la caché (la clave incluye el hash del generador), un cambio de taxonomía solo rehace las piezas afectadas.
+- Limitaciones: las siluetas (alas, lobo, gárgola, esfinge, mano) son simples; 361 piezas con velo es mucho (36 %), sobre todo en paletas saturadas de las Vanguardias; hay muchas obras con motivo genérico o «ninguno».
 
 ## Decisiones tomadas en la última ronda
 
@@ -135,4 +146,4 @@ Hecho: 3 movimientos × 10 autores × 10 obras = **300 piezas** (30 JPG, 270 SVG
 
 - ¿Qué se hace con el plan original de marca (logo, iconos, estados vacíos, cabeceras)?
 - ¿Qué son las variantes claro/oscuro (adaptar al tema de la interfaz o recolorear)?
-- Autores definitivos de Romanticismo (los 6 tras Poe y Byron son propuesta) y de los otros 9 movimientos (hoy 4 por movimiento sin verificar).
+- Autores definitivos de los 10 movimientos: los 6 por movimiento añadidos para completar 10 son propuesta mía.

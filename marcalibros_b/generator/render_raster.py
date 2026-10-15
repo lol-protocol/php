@@ -47,8 +47,11 @@ def a_imagen(esc, escala=1.0):
             dibujo.ellipse([cx - r, cy - r, cx + r, cy + r], fill=_rgb(prim["color"]))
         elif tipo == "velo":
             capa = Image.new("RGBA", lienzo.size, (0, 0, 0, 0))
+            e = ESCALA * f
+            # Pillow incluye la última coordenada: se resta un píxel para que una línea de
+            # 1 px mida 1 px, como en el SVG (si no, los filetes finos salen más gruesos).
             ImageDraw.Draw(capa).rounded_rectangle(
-                [prim["x0"] * ESCALA * f, prim["y0"] * ESCALA * f, prim["x1"] * ESCALA * f, prim["y1"] * ESCALA * f],
+                [prim["x0"] * e, prim["y0"] * e, max(prim["x0"] * e, prim["x1"] * e - 1), max(prim["y0"] * e, prim["y1"] * e - 1)],
                 radius=prim["radio"] * ESCALA * f, fill=_rgb(prim["color"]) + (round(255 * prim["opacidad"]),))
             lienzo = Image.alpha_composite(lienzo, capa)
             dibujo = ImageDraw.Draw(lienzo)

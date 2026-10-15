@@ -1,5 +1,5 @@
-version: '0.4'
-nota: 'Biblioteca compartida de motivos: 57 + ninguno. requiere limita cuando un motivo tiene sentido visual.'
+version: '0.5'
+nota: 'Biblioteca compartida de motivos: 93 + ninguno. requiere limita cuando un motivo tiene sentido visual.'
 motivos:
 - id: torre
   nombre: Torre
@@ -195,6 +195,114 @@ motivos:
   implementado: true
 - id: alas
   nombre: Alas enormes
+  implementado: true
+- id: chimeneas
+  nombre: Chimeneas de fábrica
+  implementado: true
+- id: farola
+  nombre: Farola de gas
+  implementado: true
+- id: carruaje
+  nombre: Carruaje
+  implementado: true
+- id: skyline
+  nombre: Línea de edificios
+  implementado: true
+- id: tren
+  nombre: Tren de vapor
+  implementado: true
+- id: molino
+  nombre: Molino de viento
+  implementado: true
+- id: mina
+  nombre: Castillete de mina
+  implementado: true
+- id: surcos
+  nombre: Surcos
+  implementado: true
+- id: trigal
+  nombre: Trigal
+  implementado: true
+- id: pozo
+  nombre: Pozo
+  implementado: true
+- id: cisne
+  nombre: Cisne
+  implementado: true
+- id: nenufar
+  nombre: Nenúfares
+  implementado: true
+- id: libelula
+  nombre: Libélula
+  implementado: true
+- id: lirio
+  nombre: Lirio
+  implementado: true
+- id: pavo_real
+  nombre: Pavo real
+  implementado: true
+- id: avion
+  nombre: Biplano
+  implementado: true
+- id: torre_eiffel
+  nombre: Torre Eiffel
+  implementado: true
+- id: guitarra
+  nombre: Guitarra cubista
+  implementado: true
+- id: rascacielos
+  nombre: Rascacielos
+  implementado: true
+- id: ojo
+  nombre: Ojo
+  implementado: true
+- id: engranaje
+  nombre: Engranaje
+  implementado: true
+- id: calavera
+  nombre: Calavera
+  implementado: true
+- id: reloj_arena
+  nombre: Reloj de arena
+  implementado: true
+- id: concha
+  nombre: Concha
+  implementado: true
+- id: laud
+  nombre: Laúd
+  implementado: true
+- id: cortina
+  nombre: Cortinaje
+  implementado: true
+- id: columna
+  nombre: Columna salomónica
+  implementado: true
+- id: templo
+  nombre: Templo griego
+  implementado: true
+- id: laurel
+  nombre: Corona de laurel
+  implementado: true
+- id: caballo
+  nombre: Caballo
+  implementado: true
+- id: escudo
+  nombre: Escudo
+  implementado: true
+- id: esfinge
+  nombre: Esfinge
+  implementado: true
+- id: espejo
+  nombre: Espejo
+  implementado: true
+- id: mano
+  nombre: Mano
+  implementado: true
+- id: creciente
+  nombre: Luna creciente
+  implementado: true
+- id: escalera
+  nombre: Escalera
   implementado: true
 - id: ninguno
   nombre: Sin motivo (solo paisaje)

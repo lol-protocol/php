@@ -396,6 +396,9 @@ def main(argv=None):
             miniaturas[ident].save(mini_ruta)
             revisiones[ident].save(rev_ruta)
             rehechas.append(ident)
+            if len(rehechas) % 25 == 0:  # guardado periódico: una interrupción no pierde lo hecho
+                guardar_cache({**{k: v for k, v in cache.items() if k not in nueva_cache}, **nueva_cache,
+                               ident: {"clave": clave, "huella": _huella_a_texto(h), "entrada": entrada}})
         if entrada["contraste_texto"] < MIN_CONTRASTE_TEXTO:
             avisos_texto.append(f"{ident}: franja a {entrada['contraste_texto']}:1 incluso con velo {entrada['velo']}")
         if entrada["velo"]:

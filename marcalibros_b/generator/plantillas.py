@@ -6,6 +6,8 @@ Todo el azar sale de random.Random(semilla): misma entrada, misma salida.
 import math
 import random
 
+from movimientos import (ADORNOS_NUEVOS, AMBIENTALES_NUEVOS, ESCALAS_NUEVAS, FRENTE_NUEVOS, MOTIVOS_NUEVOS,
+                         PALETAS_NUEVAS)
 from scene import ALTO, ANCHO, Escena
 
 PALETAS = {
@@ -86,6 +88,9 @@ PALETAS = {
         "lejos": "#4B5265", "cerca": "#1D212C", "figura": "#0E1016",
     },
 }
+
+
+PALETAS.update(PALETAS_NUEVAS)
 
 
 def luminancia(hex_color):
@@ -718,7 +723,7 @@ def _gallo(esc, rng, p, altura):
 
 def _lluvia(esc, rng, p, altura):
     """Lluvia oblicua (ambiente)."""
-    for _ in range(rng.randint(60, 84)):
+    for _ in range(rng.randint(34, 46)):
         x, y, l = rng.uniform(-10, ANCHO) , rng.uniform(0.04, 0.92) * ALTO, rng.uniform(14, 24)
         esc.poligono([(round(x, 1), round(y, 1)), (round(x + 1.6, 1), round(y, 1)), (round(x + 1.6 - l * 0.25, 1), round(y + l, 1)),
                       (round(x - l * 0.25, 1), round(y + l, 1))], p["sol"])
@@ -753,6 +758,8 @@ MOTIVOS.update({
     "lluvia": _lluvia, "fantasma": _fantasma, "alas": _alas,
 })
 
+MOTIVOS.update(MOTIVOS_NUEVOS)
+
 
 # --- Escalado de motivos ---------------------------------------------------------
 # (factor, ancla): 'suelo' conserva la base del motivo, 'centro' su centro y 'arriba'
@@ -775,6 +782,8 @@ ESCALAS = {
 # Se dibujan por delante de todas las capas (los demás, entre la lejana y la cercana,
 # de modo que la capa cercana tape su base y queden apoyados en el suelo).
 FRENTE = {"olas", "narcisos", "hojas", "rio", "petalos", "lluvia"}  # el río es una franja baja: la capa cercana lo taparía
+ESCALAS.update(ESCALAS_NUEVAS)
+FRENTE |= FRENTE_NUEVOS
 
 
 def _limites(prims):
@@ -803,6 +812,7 @@ def _escalar(prims, k, ancla):
 
 # Motivos repartidos por todo el lienzo: ni se escalan ni se ajustan al ancho.
 AMBIENTALES = {"estrellas", "golondrinas", "hojas", "olas", "rio", "narcisos", "murcielagos", "mariposas", "petalos", "lluvia"}
+AMBIENTALES |= AMBIENTALES_NUEVOS
 MARGEN_LATERAL = 8
 
 
@@ -987,6 +997,7 @@ def _adorno_magico(esc, rng, p, franja, motivo):
 
 
 ADORNOS = {"romanticismo": None, "gotico": _adorno_gotico, "realismo-magico": _adorno_magico}
+ADORNOS.update(ADORNOS_NUEVOS)
 
 
 def _paisaje(movimiento):
@@ -1007,6 +1018,7 @@ def _paisaje(movimiento):
         else:
             cx, cy, r = rng.uniform(0.3, 0.7) * ANCHO, rng.uniform(0.08, 0.24) * ALTO, rng.uniform(20, 30)
         esc.circulo(cx, cy, r, p["sol"])
+        esc.sol = (cx, cy, r)
         obstaculos = [(cy - r, cy + r)]
 
         suelos = []
