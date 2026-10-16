@@ -249,3 +249,29 @@ test("data status: a facet, a low-confidence badge and the details on the card",
   assert.match(card, /Web research \(secondary sources\) · low confidence · checked/);
   await page.context().close();
 });
+
+test("the card lists every field with its source, upcoming changes and the change history", { skip }, async () => {
+  const { page, problems } = await newPage(app.browser);
+  await page.goto(url("country=cl"), { waitUntil: "networkidle" });
+  const card = page.locator("#countryCard");
+  assert.match(await card.locator(".card-pending").textContent(), /Upcoming change · .*Law 21\.719 takes effect.*\(expected from Dec 1, 2026\)/);
+  const details = card.locator("details.law-details");
+  assert.equal(await details.count(), 1);
+  assert.equal(await details.evaluate((el) => el.open), true, "a single law is shown expanded");
+  const penalties = details.locator(".detail-grid > div", { hasText: "Penalties" });
+  assert.match(await penalties.locator("dd").textContent(), /20,000 UTM/);
+  const source = penalties.locator("a.field-source");
+  assert.match(await source.getAttribute("aria-label"), /^Source: .+ · (high|medium|low) confidence · checked /);
+  assert.equal(await source.getAttribute("rel"), "noopener noreferrer");
+  assert.match(await details.locator(".history").textContent(), /Penalties: Up to 20,000 UTM.*\(was: Fines up to USD 20k\).*… and \d+ earlier changes?/);
+  assert.match(await page.locator("#lawsTableBody").textContent(), /Change pending/);
+
+  // Two laws: both collapsed, each with its own record.
+  await page.goto(url("country=us"), { waitUntil: "networkidle" });
+  assert.equal(await card.locator("details.law-details").count(), 2);
+  assert.equal(await card.locator("details.law-details[open]").count(), 0);
+  await card.locator("details.law-details summary").first().click();
+  assert.ok((await card.locator("details.law-details[open] .detail-grid > div").count()) >= 8);
+  assert.deepEqual(problems, []);
+  await page.context().close();
+});

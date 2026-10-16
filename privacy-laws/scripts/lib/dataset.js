@@ -38,6 +38,8 @@ export const COLUMNS = [
   "frameworks",
   "frameworks_not",
   "notes",
+  "pending_change",
+  "pending_date",
   "data_status",
   "confidence",
   "last_checked",
@@ -46,6 +48,20 @@ export const COLUMNS = [
 // (with the researcher's confidence and the date), or a check against the official text.
 export const DATA_STATUSES = ["verified", "researched", "curated"];
 export const CONFIDENCE_LEVELS = ["high", "medium", "low"];
+// A row whose last check is older than this is due for review (a warning, not an error).
+export const STALE_AFTER_DAYS = 365;
+// Bookkeeping columns: not content, so neither sourced per field nor recorded in the change history.
+export const META_FIELDS = ["data_status", "confidence", "last_checked"];
+
+// Side files next to the master CSV.
+//   field_sources.csv  where one value of one law comes from (law_name may be empty when the country has a single law)
+//   changes.csv        what changed in a row and when (written by `npm run changes`)
+export const SOURCES_FILE = "field_sources.csv";
+export const CHANGES_FILE = "changes.csv";
+export const SOURCE_COLUMNS = ["country_code", "law_name", "field", "url", "confidence", "checked"];
+export const CHANGE_COLUMNS = ["date", "country_code", "law_name", "field", "old_value", "new_value"];
+// `field` of a change that adds or removes a whole row.
+export const ROW_CHANGE = "row";
 
 
 export const REGIONS = [
@@ -84,6 +100,9 @@ const isRealDate = (value) => {
   const d = new Date(`${value}T00:00:00Z`);
   return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === value;
 };
+
+export const todayIso = () => new Date().toISOString().slice(0, 10);
+const daysBetween = (from, to) => (Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000;
 
 const isHttpUrl = (value) => {
   try {
@@ -130,7 +149,7 @@ export function loadMaster(path = MASTER_CSV) {
   }
 }
 
-export function validateRecords(records, header = COLUMNS) {
+export function validateRecords(records, header = COLUMNS, { today = todayIso() } = {}) {
   const errors = [];
   const warnings = [];
 
@@ -145,6 +164,7 @@ export function validateRecords(records, header = COLUMNS) {
   records.forEach((record, index) => {
     const line = index + 2;
     const fail = (message) => errors.push(`line ${line}: ${message}`);
+    const warn = (message) => warnings.push(`line ${line}: ${message}`);
 
     for (const field of COLUMNS) {
       const value = record[field];
@@ -230,6 +250,19 @@ export function validateRecords(records, header = COLUMNS) {
     if (record.data_status !== "curated" && !record.last_checked) {
       fail(`last_checked is required when data_status is ${record.data_status}`);
     }
+    if (record.data_status !== "curated" && !record.confidence) {
+      fail(`confidence is required when data_status is ${record.data_status}`);
+    }
+    if (isRealDate(record.last_checked) && daysBetween(record.last_checked, today) > STALE_AFTER_DAYS) {
+      warn(`${record.country_code} "${record.law_name}" was last checked on ${record.last_checked}: due for review`);
+    }
+    if (record.pending_date && !isRealDate(record.pending_date)) {
+      fail(`pending_date must be empty or a real YYYY-MM-DD date, got ${JSON.stringify(record.pending_date)}`);
+    }
+    if (record.pending_date && !record.pending_change) fail("pending_date is set but pending_change is empty");
+    if (isRealDate(record.pending_date) && record.pending_date <= today) {
+      warn(`${record.country_code} "${record.law_name}": the pending change was due on ${record.pending_date}; update the row`);
+    }
     if (!/^[A-Z][A-Za-z]+(\/[A-Z][A-Za-z]+)*$/.test(record.language)) {
       fail(`language must look like "English" or "French/German", got ${JSON.stringify(record.language)}`);
     }
@@ -238,10 +271,130 @@ export function validateRecords(records, header = COLUMNS) {
   return { errors, warnings };
 }
 
-export function loadAndValidate(path = MASTER_CSV) {
+/** Reads a side file next to the master CSV; a missing file is an empty table. */
+export function loadSide(masterPath, file, columns) {
+  const path = join(dirname(masterPath), file);
+  if (!existsSync(path)) return { rows: [], header: columns, path };
+  const { records, header } = parseMaster(readFileSync(path, "utf-8"));
+  return { rows: records, header: records.length ? header : columns, path };
+}
+
+/** The row a side-file entry belongs to: same law name, or the country's only law when law_name is empty. */
+export function findLaw(records, code, lawName) {
+  const laws = records.filter((r) => r.country_code === code);
+  if (lawName) return laws.find((r) => r.law_name === lawName) ?? null;
+  return laws.length === 1 ? laws[0] : null;
+}
+
+export function validateSources(sources, records, header = SOURCE_COLUMNS) {
+  const errors = [];
+  if (header.join(",") !== SOURCE_COLUMNS.join(",")) return [`${SOURCES_FILE}: header must be exactly: ${SOURCE_COLUMNS.join(",")}`];
+  const seen = new Set();
+  sources.forEach((s, index) => {
+    const fail = (message) => errors.push(`${SOURCES_FILE} line ${index + 2}: ${message}`);
+    const law = findLaw(records, s.country_code, s.law_name);
+    if (!law) fail(`no law ${s.country_code} ${JSON.stringify(s.law_name)} in the master CSV${s.law_name ? "" : " (law_name is required when the country has several laws)"}`);
+    if (!COLUMNS.includes(s.field) || META_FIELDS.includes(s.field) || COUNTRY_FIELDS.includes(s.field)) fail(`field must be a content column, got ${JSON.stringify(s.field)}`);
+    if (!isHttpUrl(s.url) || isPrivateHost(s.url)) fail(`url must be a public http(s) URL, got ${JSON.stringify(s.url)}`);
+    if (s.confidence && !CONFIDENCE_LEVELS.includes(s.confidence)) fail(`confidence must be empty or one of ${CONFIDENCE_LEVELS.join("|")}`);
+    if (!isRealDate(s.checked)) fail(`checked must be a real YYYY-MM-DD date, got ${JSON.stringify(s.checked)}`);
+    const key = `${s.country_code}|${law?.law_name ?? s.law_name}|${s.field}`;
+    if (seen.has(key)) fail(`second source for ${s.country_code} ${s.field}`);
+    seen.add(key);
+  });
+  return errors;
+}
+
+/**
+ * A value that changed after its source was last looked at may no longer be backed by it.
+ * Entries recorded for the day the source was checked are fine: the check came with the edit.
+ */
+export function staleSourceWarnings(sources, records, changes) {
+  const warnings = [];
+  for (const s of sources) {
+    const law = findLaw(records, s.country_code, s.law_name);
+    if (!law || !isRealDate(s.checked)) continue;
+    const later = changes
+      .filter((c) => c.country_code === law.country_code && c.law_name === law.law_name && c.field === s.field && c.date > s.checked)
+      .map((c) => c.date)
+      .sort()
+      .pop();
+    if (later) warnings.push(`${law.country_code} "${law.law_name}" ${s.field}: changed on ${later}, but its source was last checked on ${s.checked}`);
+  }
+  return warnings;
+}
+
+export function validateChanges(changes, header = CHANGE_COLUMNS) {
+  const errors = [];
+  if (header.join(",") !== CHANGE_COLUMNS.join(",")) return [`${CHANGES_FILE}: header must be exactly: ${CHANGE_COLUMNS.join(",")}`];
+  changes.forEach((c, index) => {
+    const fail = (message) => errors.push(`${CHANGES_FILE} line ${index + 2}: ${message}`);
+    if (!isRealDate(c.date)) fail(`date must be a real YYYY-MM-DD date, got ${JSON.stringify(c.date)}`);
+    if (!/^[A-Z]{2}$/.test(c.country_code)) fail(`country_code must be 2 uppercase letters, got ${JSON.stringify(c.country_code)}`);
+    if (!c.law_name) fail("law_name is required");
+    if (c.field !== ROW_CHANGE && !COLUMNS.includes(c.field)) fail(`field must be a column or "${ROW_CHANGE}", got ${JSON.stringify(c.field)}`);
+  });
+  return errors;
+}
+
+export function loadAndValidate(path = MASTER_CSV, options = {}) {
   const { records, header } = loadMaster(path);
-  const { errors, warnings } = validateRecords(records, header);
-  return { records, errors, warnings };
+  const { errors, warnings } = validateRecords(records, header, options);
+  const sources = loadSide(path, SOURCES_FILE, SOURCE_COLUMNS);
+  const changes = loadSide(path, CHANGES_FILE, CHANGE_COLUMNS);
+  if (!errors.length) {
+    errors.push(...validateSources(sources.rows, records, sources.header), ...validateChanges(changes.rows, changes.header));
+    if (!errors.length) warnings.push(...staleSourceWarnings(sources.rows, records, changes.rows));
+  }
+  return { records, errors, warnings, sources: sources.rows, changes: changes.rows };
+}
+
+/**
+ * What changed between two versions of the master CSV, as change-history entries.
+ * Rows are matched by country + law name; a country with one unmatched row on each side is a rename.
+ * Columns missing from either version (added or dropped since) and bookkeeping columns are left out.
+ */
+export function diffRecords(before, after, date) {
+  const entries = [];
+  const key = (r) => `${r.country_code}|${r.law_name}`;
+  const beforeByKey = new Map(before.map((r) => [key(r), r]));
+  const afterKeys = new Set(after.map(key));
+  const pairs = [];
+  const added = [];
+  for (const row of after) {
+    const old = beforeByKey.get(key(row));
+    if (old) pairs.push([old, row]);
+    else added.push(row);
+  }
+  const removed = before.filter((r) => !afterKeys.has(key(r)));
+  for (const row of [...added]) {
+    const sameCountryAdded = added.filter((r) => r.country_code === row.country_code);
+    const sameCountryRemoved = removed.filter((r) => r.country_code === row.country_code);
+    if (sameCountryAdded.length === 1 && sameCountryRemoved.length === 1) {
+      pairs.push([sameCountryRemoved[0], row]);
+      added.splice(added.indexOf(row), 1);
+      removed.splice(removed.indexOf(sameCountryRemoved[0]), 1);
+    }
+  }
+  const fields = COLUMNS.filter((c) => !META_FIELDS.includes(c) && !COUNTRY_FIELDS.includes(c));
+  for (const [old, row] of pairs) {
+    for (const field of fields) {
+      if (!(field in old) || !(field in row) || old[field] === row[field]) continue;
+      entries.push({ date, country_code: row.country_code, law_name: row.law_name, field, old_value: old[field], new_value: row[field] });
+    }
+  }
+  for (const row of added) entries.push({ date, country_code: row.country_code, law_name: row.law_name, field: ROW_CHANGE, old_value: "", new_value: "added" });
+  for (const row of removed) entries.push({ date, country_code: row.country_code, law_name: row.law_name, field: ROW_CHANGE, old_value: "", new_value: "removed" });
+  return entries;
+}
+
+/** CSV with quotes only where needed (the format of the hand-edited master and side files). */
+export function writeCsv(path, columns, rows) {
+  const quote = (value) => {
+    const text = String(value ?? "");
+    return /[",\r\n]/.test(text) || text !== text.trim() ? `"${text.replace(/"/g, '""')}"` : text;
+  };
+  writeFileSync(path, `${[columns.join(","), ...rows.map((r) => columns.map((c) => quote(r[c])).join(","))].join("\n")}\n`);
 }
 
 const jsonFile = (value) => `${JSON.stringify(value, null, 2)}\n`;
@@ -260,9 +413,27 @@ export function toCsv(columns, rows) {
   return `${lines.join("\n")}\n`;
 }
 
-export function buildArtifacts(records) {
+/**
+ * Each law as published: its columns plus `sources` ({field: {url, confidence, checked}})
+ * and `changes` (newest first: {date, field, from, to}).
+ */
+export function withSideData(records, sources = [], changes = []) {
+  return records.map((record) => {
+    const own = (entry) => findLaw(records, entry.country_code, entry.law_name) === record;
+    const law = { ...record, sources: {}, changes: [] };
+    for (const s of sources.filter(own)) law.sources[s.field] = { url: s.url, confidence: s.confidence, checked: s.checked };
+    law.changes = changes
+      .filter((c) => c.country_code === record.country_code && c.law_name === record.law_name)
+      .map((c) => ({ date: c.date, field: c.field, from: c.old_value, to: c.new_value }))
+      .reverse() // the file is in recording order: on the same day, the later entry comes first
+      .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+    return law;
+  });
+}
+
+export function buildArtifacts(records, { sources = [], changes = [] } = {}) {
   const byCode = new Map();
-  for (const record of records) {
+  for (const record of withSideData(records, sources, changes)) {
     if (!byCode.has(record.country_code)) byCode.set(record.country_code, []);
     byCode.get(record.country_code).push(record);
   }

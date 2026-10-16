@@ -12,7 +12,7 @@
     "key_requirements": "Lawful basis & consent, data subject rights, DPO, impact assessment",
     "data_categories": "Personal data; special categories",
     "retention_period": "No longer than necessary for the purpose",
-    "enforcement_authority": "Personal Data Protection Service of Georgia",
+    "enforcement_authority": "State Audit Office of Georgia",
     "penalties_range": "Up to GEL 20,000 fine",
     "exemptions": "Purely personal or household use",
     "website_url": "https://www.dlapiperdataprotection.com/?t=law&c=GE",
@@ -20,8 +20,36 @@
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced 2011 law (GDPR-modelled); DPO/DPIA duties from 1 Jun 2024; other parts phased later",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "low",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://kpmg.com/ge/en/home/insights/2023/07/personal-data-law.html",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "enforcement_authority": {
+        "url": "https://parliament.ge/en/print/news/antikoruftsiuli-biuro-da-personalur-monatsemta-datsvis-samsakhuri-2026-tslis-2-marts-gaukmdeba",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "enforcement_authority",
+        "from": "Personal Data Protection Service of Georgia",
+        "to": "State Audit Office of Georgia"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

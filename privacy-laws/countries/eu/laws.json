@@ -20,8 +20,12 @@
     "frameworks": "GDPR",
     "frameworks_not": "",
     "notes": "Extraterritorial applicability",
+    "pending_change": "Digital Omnibus: GDPR amendments proposed by the Commission on 19 Nov 2025; not adopted",
+    "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": ""
+    "last_checked": "",
+    "sources": {},
+    "changes": []
   }
 ]

@@ -11,7 +11,7 @@
     "applies_to": "Public & private data controllers and processors",
     "key_requirements": "GDPR-aligned principles, controller registration, data subject rights",
     "data_categories": "Personal data; sensitive data",
-    "retention_period": "Not specified",
+    "retention_period": "Duty to destroy/erase personal data once purpose of collection no longer served (s.27 per secondary source); retention period must be disclosed at collection (unconfirmed)",
     "enforcement_authority": "Data Protection Office (Data Protection Commissioner)",
     "penalties_range": "Up to MUR 200000 fine and/or 5 years' imprisonment",
     "exemptions": "National security; household use",
@@ -20,8 +20,36 @@
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced the Data Protection Act 2004; commenced by Proclamation No. 3 of 2018",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "high",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.fscmauritius.org/media/ikoldflp/the-data-protection-act-2017.pdf",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://compliance.theartofservice.com/controls/data-protection-act-2017/mu-dpa17-s27",
+        "confidence": "low",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Duty to destroy/erase personal data once purpose of collection no longer served (s.27 per secondary source); retention period must be disclosed at collection (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

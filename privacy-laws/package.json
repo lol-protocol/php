@@ -13,7 +13,8 @@
     "build:check": "node scripts/reorganize-by-country.js --check",
     "cache:texts": "php scripts/cache-texts.php",
     "test:e2e": "node --test --test-concurrency=1 'tests/e2e/*.e2e.js'",
-    "check:links": "node scripts/check-links.js"
+    "check:links": "node scripts/check-links.js",
+    "changes": "node scripts/record-changes.js"
   },
   "keywords": [
     "privacy",

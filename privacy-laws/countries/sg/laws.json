@@ -20,8 +20,59 @@
     "frameworks": "APEC-CBPR",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Amended 2020 (in force 2021-02-01): mandatory breach notification, higher fines from 2022-10-01",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enforcement_authority": {
+        "url": "https://pdpc.gov.sg/Who-We-Are/About-Us",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "penalties_range": {
+        "url": "https://www.dlapiper.com/insights/publications/2020/10/singapore-imminent-changes-to-the-personal-data-protection-act-2012",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://conventuslaw.com/report/amendments-to-singapores-personal-data-protection/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Amended 2020 (in force 2021-02-01): mandatory breach notification, higher fines from 2022-10-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Up to SGD 1M fine",
+        "to": "Up to 10% of annual Singapore turnover (if >SGD 10m) or SGD 1 million, whichever higher"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2012-07-02",
+        "to": "2012-10-15"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "PDPC Singapore",
+        "to": "Personal Data Protection Commission (PDPC)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Asia-Pacific region",
+        "to": ""
+      }
+    ]
   }
 ]

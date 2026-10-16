@@ -11,7 +11,7 @@
     "applies_to": "Public & private data controllers and processors",
     "key_requirements": "Data controller licensing, consent, data subject rights",
     "data_categories": "Personal data; sensitive data",
-    "retention_period": "Not specified",
+    "retention_period": "s.7 (Quality of data): kept in identifiable form no longer than necessary for purposes of collection or further processing",
     "enforcement_authority": "Postal and Telecommunications Regulatory Authority of Zimbabwe (POTRAZ)",
     "penalties_range": "Fine up to level 11 and/or up to 7 years' imprisonment",
     "exemptions": "National security; household use",
@@ -20,8 +20,31 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Act 5 of 2021 [Chapter 12:07]; gazetted 11 Mar 2022; enactment day from one source; licensing under SI 155/2024",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "low",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "retention_period": {
+        "url": "https://zimlii.org/akn/zw/act/2021/5/eng@2022-03-11/source.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "s.7 (Quality of data): kept in identifiable form no longer than necessary for purposes of collection or further processing"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

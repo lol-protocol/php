@@ -11,7 +11,7 @@
     "applies_to": "Public & private data controllers and processors",
     "key_requirements": "Controller registration, data protection principles, data subject rights",
     "data_categories": "Personal data; sensitive data",
-    "retention_period": "Not specified",
+    "retention_period": "s.24: not retained longer than necessary for purpose unless required by law, lawful function, contract or consent; research/statistics exceptions",
     "enforcement_authority": "Data Protection Commission",
     "penalties_range": "Up to 5,000 penalty units and/or 10 years' imprisonment",
     "exemptions": "National security; household use",
@@ -20,8 +20,36 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Registration certificate valid 2 years; a 2025 replacement bill is still only a draft",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "medium",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.offlist.me/what-is-ghana-data-protection-act",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://ghalii.org/akn/gh/act/2012/843",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "s.24: not retained longer than necessary for purpose unless required by law, lawful function, contract or consent; research/statistics exceptions"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

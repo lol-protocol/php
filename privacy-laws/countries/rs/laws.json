@@ -6,7 +6,7 @@
     "law_name": "Law on Personal Data Protection (PDP Law)",
     "jurisdiction": "Commissioner for Information of Public Importance and Personal Data Protection",
     "enactment_date": "2018-11-09",
-    "effective_date": "2019-08-22",
+    "effective_date": "2019-08-21",
     "scope": "Individuals in Serbia",
     "applies_to": "Public & private controllers and processors (incl. foreign firms targeting Serbia)",
     "key_requirements": "Lawful basis & consent, data subject rights, breach notification, DPO appointment",
@@ -20,8 +20,36 @@
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced 2008 law; draft replacement law in consultation to 10 Sep 2026 (not enacted)",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "high",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/serbia",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "effective_date": {
+        "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/serbia",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "effective_date",
+        "from": "2019-08-22",
+        "to": "2019-08-21"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

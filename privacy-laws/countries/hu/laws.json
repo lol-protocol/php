@@ -20,8 +20,53 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "Infotv. as amended by Act XXXVIII of 2018 (in force 2018-07-26); regulator NAIH",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://schoenherr.eu/content/amendments-to-the-hungarian-data-protection-act",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.dataguidance.com/jurisdiction/hungary",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR implementation",
+        "to": "Infotv. as amended by Act XXXVIII of 2018 (in force 2018-07-26); regulator NAIH"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Act",
+        "to": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Hungarian Authority",
+        "to": "Hungarian National Authority for Data Protection and Freedom of Information (NAIH)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

@@ -14,14 +14,42 @@
     "retention_period": "Not specified",
     "enforcement_authority": "No dedicated authority yet",
     "penalties_range": "Up to 100x national minimum wage fine; prison 6 months-2 years",
-    "exemptions": "Not specified",
+    "exemptions": "Art. 3 excludes: files kept by individuals for exclusively personal/domestic activities; intelligence and investigation agency files; data of deceased persons",
     "website_url": "https://www.dlapiperdataprotection.com/?c=DO&t=law",
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Judicial habeas data enforcement; amendment bill (post TC/0484/16) not confirmed enacted",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "low",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://do.vlex.com/vid/legislacion-dominicana-proteccion-datos-916588345",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "exemptions": {
+        "url": "https://www.studocu.com/latam/document/instituto-nacional-de-formacion-tecnico-profesional/historia-social-dominicana/ley-172-13-sobre-proteccion-de-datos-personales-de-fecha-13-de-diciembre-de-2013/72459014",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "exemptions",
+        "from": "Not specified",
+        "to": "Art. 3 excludes: files kept by individuals for exclusively personal/domestic activities; intelligence and investigation agency files; data of deceased persons"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

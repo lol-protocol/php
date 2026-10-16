@@ -20,8 +20,58 @@
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Amended by Law 7499 (in force 2024-06-01): new transfer regime, SCC notification, special categories",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://koksal.av.tr/en/legislation/personal-data-protection-law-kvkk-6698/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "key_requirements": {
+        "url": "https://www.mondaq.com/turkey/data-protection/1565750/guide-on-cross-border-transfers-of-personal-data",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://ksandk.com/privacy-review/map/turkey/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://mondaq.co.uk/turkey/data-protection/1440344/changes-in-the-pdpl-was-published-in-the-official-gazette",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Turkey's privacy law",
+        "to": "Amended by Law 7499 (in force 2024-06-01): new transfer regime, SCC notification, special categories"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "Lawful basis & consent",
+        "to": "Expanded grounds for special-category data; tiered cross-border transfers (adequacy / SCCs notified to Board in 5 days / BCRs); VERBIS registration"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Law on the Protection of Personal Data (KVKK)",
+        "to": "Law No. 6698 on the Protection of Personal Data (KVKK)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "KVKK Board",
+        "to": "Personal Data Protection Authority (KVKK)"
+      }
+    ]
   }
 ]

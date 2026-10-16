@@ -20,8 +20,37 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "DPDP Rules 2025 notified Nov 2025; DPB established; substantive duties apply ~May 2027",
+    "pending_change": "DPDP Rules 2025 (Nov 2025) bring most obligations into force in phases over 18 months",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "notes": {
+        "url": "https://anantamias.com/current-affairs/dpdp-rules-2025-notified/?pdf=1",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "DPDP Rules 2025 notified Nov 2025; DPB established; substantive duties apply ~May 2027"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2024-08-04",
+        "to": "2025-11-13"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Recently passed, enforcement phase",
+        "to": ""
+      }
+    ]
   }
 ]

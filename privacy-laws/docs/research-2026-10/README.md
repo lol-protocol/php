@@ -18,3 +18,9 @@ The batches for wider Europe/Central Asia, the Americas and Africa have no per-r
 ## Currency sweep of the original rows (14 Oct 2026)
 
 `sweep-P1.csv`, `sweep-P2.csv`: every original row checked by web search for replaced or amended laws and wrong titles or dates (`module,code,status,field,value,conf,source,note`). Fixes were applied to the master CSV; changed rows become `data_status=researched` with the weakest confidence applied. Low-confidence dates were not applied; low-confidence text carries "(unconfirmed)". Notable: Chile's Law 19.628 is replaced by Law 21.719 (in force 1 Dec 2026); California's row now covers the CCPA as amended by the CPRA, enforced by the CPPA. Pending bills (Canada's new privacy bill, Australia's second tranche, the EU digital omnibus, the BDSG reform) are not law and were not applied.
+
+## Confidence check and remaining gaps (15 Oct 2026)
+
+- `noconf-check.csv`: the 30 researched rows that had no confidence level (wider Europe, Americas, Africa batches) were re-checked: a confidence per row (8 high, 12 medium, 10 low) and corrections where a source supported them (Georgia's authority is now the State Audit Office; Uzbekistan's the Personalization Agency; Botswana and Uganda effective dates; Panama penalties). Low-confidence corrections were not applied.
+- `privacy-gaps-r.csv`: retention periods, exemptions and key requirements that said "Not specified": 35 filled (3 low-confidence, marked "(unconfirmed)"); 2 unknown and 2 low-confidence "no rule" answers left as gaps.
+- From this date, applied values with a source are listed in `countries/field_sources.csv`, and every change to a row is in `countries/changes.csv`.

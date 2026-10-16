@@ -20,8 +20,25 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "National complement: Loi n 78-17 Informatique et Libertes (amended 2018); regulator CNIL",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "notes": {
+        "url": "https://www.inc-conso.fr/content/loi-informatique-et-libertes-adaptation-de-la-loi-au-reglement-general-sur-la-protection-des",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR + French law 78-17",
+        "to": "National complement: Loi n 78-17 Informatique et Libertes (amended 2018); regulator CNIL"
+      }
+    ]
   }
 ]

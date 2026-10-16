@@ -11,17 +11,62 @@
     "applies_to": "State bodies, companies & sole proprietors in Belarus, foreign organizations processing data there",
     "key_requirements": "Consent as main basis, data subject rights, cross-border transfer limits, operator security duties",
     "data_categories": "Personal data; special categories",
-    "retention_period": "Not specified",
+    "retention_period": "Art. 4: storage in identifiable form no longer than the declared processing purposes require; specific periods set by legislation or by operator",
     "enforcement_authority": "National Center for Personal Data Protection of the Republic of Belarus",
-    "penalties_range": "Up to 200 base units (unconfirmed)",
+    "penalties_range": "Up to 200 base units administrative fine (Art. 23.7 Code of Administrative Offences); criminal liability also possible",
     "exemptions": "Household use; national security & defence; operational-investigative work",
     "website_url": "https://petosevic.com/node/4541",
     "language": "English",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Regulator set up by Presidential Decree No. 422 (28 Oct 2021) after the law took effect",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "high",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://bnt.eu/?p=56752",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://cpd.by/en/national-regulation/the-belarusian-data-protection-act/",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "penalties_range": {
+        "url": "https://gomelisp.gov.by/otvetstvennost-za-narushenie-zakona-o-personalnyh-dannyh-chto-grozit-narushitelyam/?print=pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "penalties_range",
+        "from": "Up to 200 base units (unconfirmed)",
+        "to": "Up to 200 base units administrative fine (Art. 23.7 Code of Administrative Offences); criminal liability also possible"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 4: storage in identifiable form no longer than the declared processing purposes require; specific periods set by legislation or by operator"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Criminal / administrative sanctions",
+        "to": "Up to 200 base units (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

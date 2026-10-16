@@ -20,9 +20,70 @@
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
     "notes": "CPRA amendments effective 2023-01-01; ADMT and opt-out-signal rules due 2027-01-01",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://usercentrics.com/us/knowledge-hub/california-privacy-rights-act-cpra-enforcement/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "jurisdiction": {
+        "url": "https://usercentrics.com/us/knowledge-hub/california-privacy-rights-act-cpra-enforcement/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://usercentrics.com/us/knowledge-hub/california-privacy-rights-act-cpra-enforcement/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "penalties_range": {
+        "url": "https://usercentrics.com/us/knowledge-hub/california-privacy-rights-act-cpra-enforcement/",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://usercentrics.com/us/knowledge-hub/california-privacy-rights-act-cpra-enforcement/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Now CPRA as of Jan 2023",
+        "to": "CPRA amendments effective 2023-01-01; ADMT and opt-out-signal rules due 2027-01-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Up to $7,500 per violation",
+        "to": "USD 2,663 per violation; USD 7,988 per intentional violation or involving minors under 16 (inflation-adjusted) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "California Attorney General",
+        "to": "California Privacy Protection Agency (CalPrivacy) and California Attorney General"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "jurisdiction",
+        "from": "California",
+        "to": "CPPA"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "California Consumer Privacy Act (CCPA)",
+        "to": "California Consumer Privacy Act as amended by the California Privacy Rights Act (CCPA/CPRA)"
+      }
+    ]
   },
   {
     "country_code": "US",
@@ -45,8 +106,25 @@
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
     "notes": "FTC Rule amended 2025: biometrics in PI, retention/security programs; full compliance 2026-04-22",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "notes": {
+        "url": "https://www.federalregister.gov/documents/2025/04/22/2025-05904/childrens-online-privacy-protection-rule",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Website & app operators",
+        "to": "FTC Rule amended 2025: biometrics in PI, retention/security programs; full compliance 2026-04-22"
+      }
+    ]
   }
 ]

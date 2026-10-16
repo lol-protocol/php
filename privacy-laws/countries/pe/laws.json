@@ -20,8 +20,64 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Law 29733 + new Regulation DS 016-2024-JUS (in force Mar 2025): DPO, breach notification",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://lpderecho.pe/reglamento-ley-proteccion-datos-personales-decreto-supremo-016-2024-jus/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "key_requirements": {
+        "url": "https://cms.law/en/per/publication/aprueban-nuevo-reglamento-de-la-ley-de-proteccion-de-datos-personales",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://smartsuite.com/framework/peru-personal-data-protection-law-no-29733",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://lpderecho.pe/reglamento-ley-proteccion-datos-personales-decreto-supremo-016-2024-jus/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Law 29733 + new Regulation DS 016-2024-JUS (in force Mar 2025): DPO, breach notification"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "Lawful collection & consent",
+        "to": "Appoint Personal Data Officer (staggered); breach notification; registration of databanks; transfer rules"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "APDP",
+        "to": "National Authority for Personal Data Protection (ANPD)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "South America region",
+        "to": ""
+      },
+      {
+        "date": "2026-10-11",
+        "field": "website_url",
+        "from": "https://www.apdp.gob.pe/",
+        "to": "https://www.gob.pe/anpd"
+      }
+    ]
   }
 ]

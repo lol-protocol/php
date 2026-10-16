@@ -11,7 +11,7 @@
     "applies_to": "Public & private data controllers",
     "key_requirements": "Consent, prior authorisation for sensitive data, cross-border transfer limits",
     "data_categories": "Personal data; sensitive data",
-    "retention_period": "Not specified",
+    "retention_period": "Art. 16: data kept only for a period not exceeding that necessary for collection/processing purposes; ARTCI sets case-specific periods in decisions",
     "enforcement_authority": "Autorité de régulation des télécommunications/TIC de Côte d'Ivoire (ARTCI)",
     "penalties_range": "Up to XOF 10M (repeat within 5 years: up to XOF 100M or 5% of pre-tax turnover) (unconfirmed)",
     "exemptions": "National security; household use",
@@ -20,8 +20,47 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Entry-into-force day unconfirmed (set to enactment date); ARTCI is designated data protection authority",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "low",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://digitalmag.ci/protection-des-donnees-a-caractere-personnel-lartci-alerte-les-responsables-de-traitement-et-les-correspondants/?amp=1",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://www.village-justice.com/articles/biometrie-donnees-personnelles-quelles-exigences-legales-pour-les-entreprises,50642.html",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "penalties_range": {
+        "url": "https://www.consentstack.io/regulations/ci-law2013450",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 16: data kept only for a period not exceeding that necessary for collection/processing purposes; ARTCI sets case-specific periods in decisions"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Not specified",
+        "to": "Up to XOF 10M (repeat within 5 years: up to XOF 100M or 5% of pre-tax turnover) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]
