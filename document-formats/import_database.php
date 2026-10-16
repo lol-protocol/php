@@ -12,8 +12,9 @@
  *
  * Filled: countries, format_categories, document_formats,
  * format_conversions, technical_specifications, printing_margins,
- * country_compatibility, standard_references. No CSV feeds the supplier,
- * price, paper-weight, finish or variant tables, so they stay empty.
+ * country_compatibility, standard_references, paper_types. No CSV feeds
+ * the supplier, price, paper-weight-standards, finish or variant tables,
+ * so they stay empty.
  */
 
 const DATA = __DIR__;
@@ -120,6 +121,7 @@ function import(PDO $db): array
     // Rows this script owns; deleting formats cascades to their dependents.
     $db->exec('DELETE FROM country_compatibility');
     $db->exec('DELETE FROM document_formats');
+    $db->exec('DELETE FROM paper_types');
 
     // Countries: upsert on the ISO code, so the schema's sample rows are updated, not duplicated.
     $upsertCountry = $db->prepare(
@@ -209,6 +211,23 @@ function import(PDO $db): array
         $notes = implode('. ', array_filter([nullIfEmpty($spec['uses']), nullIfEmpty($spec['notes'])]));
         $insertSpec->execute([$format, $gsmMin, $gsmMax, $dpi, nullIfEmpty($spec['finish_type']), $notes ?: null]);
         $report['technical_specifications']++;
+    }
+
+    // Named paper stock (color, texture, finish); independent of document_formats.
+    $insertPaperType = $db->prepare(
+        'INSERT INTO paper_types (type_name, type_name_en, category, color, texture, finish,
+             weight_gsm_min, weight_gsm_max, common_use, notes)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    );
+    $report['paper_types'] = 0;
+    foreach (readCsv('specs/paper_types.csv') as $paperType) {
+        [$gsmMin, $gsmMax] = rangeOf($paperType['weight_gsm_range']);
+        $insertPaperType->execute([
+            $paperType['type_name'], $paperType['type_name_en'], $paperType['category'],
+            $paperType['color'], $paperType['texture'], $paperType['finish'],
+            $gsmMin, $gsmMax, $paperType['common_use'], nullIfEmpty($paperType['notes']),
+        ]);
+        $report['paper_types']++;
     }
 
     // Book margins; inner/outer are stored as left/right of a recto page.
