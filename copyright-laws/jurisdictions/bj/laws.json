@@ -1,0 +1,72 @@
+[
+  {
+    "country_code": "BJ",
+    "country_name": "Benin",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouring Rights (repealed Law No. 84-008 of 15 March 1984)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (Art. 52); joint works from last survivor's death (Art. 53); anonymous works and audiovisual works 70 years from publication (Arts. 54-55); applied art 25 years (Art. 56)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "UNKNOWN (articles not seen) (unconfirmed)",
+    "registration_required": "Not specified",
+    "enforcement_body": "Beninese Copyright Office (BUBEDRA)",
+    "treaties_signatory": "TRIPS/WCT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/text/490620",
+    "notes": "Promulgation date varies (5 vs 10 April 2006); WCT accession 16 Jan 2006, in force 16 Apr 2006 (WIPO Lex); TRIPS from WTO membership lists; Berne/WPPT not verified; moral rights, digital protection not found",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/text/490620",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/text/490620",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Benin.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.wipo.int/wipolex/en/text/490620",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://sgg.gouv.bj/doc/decret-2007-115/download",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://wipo.int/wipolex/en/treaties/ShowResults?code=BJ",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

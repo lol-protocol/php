@@ -1,0 +1,87 @@
+[
+  {
+    "country_code": "SL",
+    "country_name": "Sierra Leone",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Act, 2011 (Act No. 8 of 2011)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (s. 21; joint works from death of last surviving author)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Moral rights recognized; exist in perpetuity (secondary summary) (unconfirmed)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Fair dealing model (ss. 9 and 14); private reproduction, quotation, teaching, libraries and archives, computer programs (ss. 27-37)",
+    "registration_required": "Not specified",
+    "enforcement_body": "Office of the Administrator and Registrar General (OARG) - National Registry for Industrial Property and Copyright",
+    "treaties_signatory": "TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/14529",
+    "notes": "Act repeals Copyright Act 1965; Part VIII establishes a collecting society; folklore rights vested in the President in perpetuity (s. 26). Non-membership claims come from an undated US trade guide; WPPT unknown; no WIPO list seen.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/14529",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/14529",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Sierra_Leone.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/14529",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "moral_rights": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Sierra_Leone.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/14529",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "fair_use_exceptions": {
+        "url": "https://dti.eui.eu/database/page/78/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/en/web/country-profiles/contact?code=SL",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://www.trade.gov/country-commercial-guides/sierra-leone-protecting-intellectual-property",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

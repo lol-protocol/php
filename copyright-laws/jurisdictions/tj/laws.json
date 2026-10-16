@@ -1,0 +1,82 @@
+[
+  {
+    "country_code": "TJ",
+    "country_name": "Tajikistan",
+    "region": "asia_pacific",
+    "law_name": "Law on Copyright and Related Rights No. 726 of 13 November 1998 (as amended up to Law No. 1488 of 2 January 2018)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Art. 17 per 2009 version; joint works from death of last co-author; anonymous works 50 years from lawful publication)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "UNKNOWN (Art. 7 excludes official legal texts, state symbols, news facts and folklore from protection) (unconfirmed)",
+    "registration_required": "Not specified",
+    "enforcement_body": "Division on Copyright and Related Rights, Ministry of Culture",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/zh/legislation/details/23537",
+    "notes": "Berne in force 9 Mar 2000; WCT 5 Apr 2009; WPPT 24 Aug 2011; WTO member 2 Mar 2013. No copyright-specific amendment found for 2020-2025; Civil Code (new, in force July 2023) may bear on copyright. Term may differ in post-2009 text (not verified).",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/zh/legislation/details/23537",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/zh/legislation/details/23537",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Tajikistan.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/zh/legislation/details/23537",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/zh/legislation/details/23537",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "fair_use_exceptions": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Tajikistan.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/en/web/country-profiles/contact?code=TJ",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://wipo.int/wipolex/en/treaties/ShowResults?code=TJ",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

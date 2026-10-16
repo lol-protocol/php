@@ -1,0 +1,62 @@
+[
+  {
+    "country_code": "SO",
+    "country_name": "Somalia",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Law No. 66 of 7 September 1977",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 30 years (registered works only, per secondary sources) (unconfirmed)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Yes (law covers only registered works; no registration office reportedly exists; unconfirmed)",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html",
+    "notes": "No implementing regulations reportedly issued; law not widely enforced; no WIPO Lex entry found. WTO: accession working party set up Dec 2016, first meeting scheduled Feb 2025 (not a member, so TRIPS not applicable); Berne not found",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "registration_required": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

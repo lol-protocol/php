@@ -86,6 +86,7 @@
           </div>
           <div class="results-meta">
             <button id="compareBtn" type="button" class="btn btn-sm btn-info"></button>
+            <label class="check export-extra"><input type="checkbox" id="exportExtra" /> <span data-i18n="btn.exportExtra">Include sources and history</span></label>
             <button id="exportBtn" type="button" class="btn btn-sm btn-outline" data-i18n="btn.export">Export CSV</button>
           </div>
         </div>
@@ -117,6 +118,14 @@
           <p data-i18n="results.none"></p>
           <p><small data-i18n="results.noneHint"></small></p>
         </div>
+      </section>
+
+      <section class="news-section" id="newsSection" hidden>
+        <details>
+          <summary data-i18n="news.title">Recent changes</summary>
+          <p class="field-hint" data-i18n="news.hint"></p>
+          <ul id="newsList" class="history"></ul>
+        </details>
       </section>
 
       <section class="comparison-section" id="comparisonSection" hidden>

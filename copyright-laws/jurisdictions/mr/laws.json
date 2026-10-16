@@ -1,0 +1,62 @@
+[
+  {
+    "country_code": "MR",
+    "country_name": "Mauritania",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2012-038 of 17 July 2012 on literary and artistic property (copyright and related rights)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (Art. 53 per Wikimedia Commons summary; text not seen; joint works from death of last surviving author) (unconfirmed)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/text/539946",
+    "notes": "Law also covers collective management and traditional cultural heritage. Berne bound from 6 Feb 1973 (WIPO notification 39); WTO 31 May 1995 (Commons). Implementing regulations reportedly not adopted (WTO via Commons). Bureau Mauritanien du Droit d'Auteur not confirmed. WCT/WPPT not checked.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/19361",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/19361",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Mauritania.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/19361",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -1,0 +1,77 @@
+[
+  {
+    "country_code": "HN",
+    "country_name": "Honduras",
+    "region": "americas",
+    "law_name": "Law on Copyright and Related Rights (Decree No. 4-99-E of 1999, amended by Decree No. 16-2006)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 75 years (joint works: life of last surviving author + 75 years; anonymous/pseudonymous works counted from first lawful publication)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "UNKNOWN (WIPO survey lists a specialized library exception covering preservation; no article numbers seen) (unconfirmed)",
+    "registration_required": "Not specified",
+    "enforcement_body": "Property Institute (Instituto de la Propiedad, IP) - General Directorate of Intellectual Property",
+    "treaties_signatory": "Berne/WCT/WPPT/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/10172",
+    "notes": "Berne in force 25 Jan 1990; WCT 20 May 2002; WPPT accession 2002 (older WIPO/IIPA sources); TRIPS inferred from signing of the WTO Final Act on 15 Apr 1995 (trade.gov) - no WTO list seen. Law promulgated 13 Dec 1999 (WIPO Lex) / in force 20 Jan 2000. Spanish text only; amendments after 2006 not checked.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10172",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10172",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Honduras.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10172",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10172",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "fair_use_exceptions": {
+        "url": "https://Wipo.Int/edocs/mdocs/copyright/en/ompi_da_sdo_19/ompi_da_sdo_19_libraries.pdf",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://www.gtai.de/de/trade/honduras/recht/zentralamerika-gewerblicher-rechtsschutz-1977140",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

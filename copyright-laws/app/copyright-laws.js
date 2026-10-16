@@ -7,7 +7,7 @@ import {
   plural,
   t,
 } from "./translations/i18n.js";
-import { jurisdictionFileUrl, loadBundle } from "./lib/data.js";
+import { jurisdictionFileUrl, loadBundle, loadTranslations } from "./lib/data.js";
 import {
   buildChartBars,
   COMPARE_CRITERIA,
@@ -40,6 +40,7 @@ const esc = escapeHtml;
 const app = {
   onlyDiff: false,
   data: null,
+  translations: {},
   state: emptyState(CONFIG),
   results: [],
   chips: [],
@@ -53,10 +54,19 @@ const regionLabel = (region) => t(`region.${region}`);
 const treatyName = (treaty) => t(`treaty.${treaty}`);
 // "Not specified" (or an empty cell) is shown muted and in the interface language, so real data stands out.
 const NOT_SPECIFIED = /^(not specified|—|-)?$/i;
-const valueHtml = (value) =>
-  NOT_SPECIFIED.test(String(value ?? "").trim())
-    ? `<span class="muted">${esc(t("value.notSpecified"))}</span>`
-    : esc(value);
+const valueHtml = (value) => {
+  const text = String(value ?? "").trim();
+  if (NOT_SPECIFIED.test(text)) return `<span class="muted">${esc(t("value.notSpecified"))}</span>`;
+  // Descriptive values have a machine translation in the interface language: show it, marked, with the original on hover.
+  const translated = app.translations[text];
+  if (!translated) return esc(value);
+  const note = t("value.machineTitle", { original: text });
+  return `${esc(translated)} <span class="mt" role="img" aria-label="${esc(note)}" title="${esc(note)}">${esc(t("value.machineLabel"))}</span>`;
+};
+/** Loads the translations of the current language (none for English). */
+const syncTranslations = async () => {
+  app.translations = await loadTranslations(getLanguage());
+};
 const dateHtml = (iso) => `<time datetime="${esc(iso)}">${esc(formatDate(iso))}</time>`;
 /** "www.example.org" → "example.org": shows where a link leads (official site, WIPO Lex, a law firm…). */
 const hostOf = (url) => {
@@ -77,6 +87,7 @@ function sourceLink(url, lawName) {
 const LIST_CRITERIA = { treaties_signatory: treatyName, treaties_not_party: treatyName };
 
 const sourceLabel = (status) => t(`source.${status}`);
+const flagLabel = (flag) => t(`flag.${flag}`);
 /** "Web research (secondary sources) · medium confidence · checked 8 Oct 2026" */
 function sourceDetail(row) {
   const parts = [sourceLabel(row.data_status)];
@@ -86,6 +97,15 @@ function sourceDetail(row) {
   return parts.join(" · ");
 }
 const TODAY = new Date().toISOString().slice(0, 10);
+
+function completenessText(row) {
+  return t("card.completenessValue", {
+    filled: row.fieldsFilled,
+    total: row.fieldsTotal,
+    percent: Math.round((100 * row.fieldsFilled) / row.fieldsTotal),
+    sourced: row.fieldsSourced,
+  });
+}
 
 // Labels for any column (the change history can name any of them).
 const FIELD_LABEL_KEYS = { law_name: "table.law", enforcement_body: "compare.enforcement_body", linked_resources: "table.reference", notes: "card.notes" };
@@ -124,24 +144,43 @@ function pendingHtml(row) {
   )}: ${esc(row.pending_change)}${when ? ` <span class="nowrap">(${esc(when)})</span>` : ""}</p>`;
 }
 
+/** One recorded change as a list item; `who` prefixes it with the law it belongs to (the recent-changes list). */
+function changeItem(change, who = "") {
+  if (change.field === "row") return `<li>${dateHtml(change.date)} · ${who}${esc(t("card.historyAdded"))}</li>`;
+  const isDate = /_date$/.test(change.field);
+  const was = change.from && !NOT_SPECIFIED.test(change.from.trim())
+    ? ` <span class="muted">(${esc(t("card.historyWas", { value: isDate ? formatDate(change.from) : shorten(change.from, 100) }))})</span>`
+    : "";
+  const now = isDate && change.to ? dateHtml(change.to) : valueHtml(shorten(change.to));
+  return `<li>${dateHtml(change.date)} · ${who}<strong>${esc(fieldLabel(change.field))}</strong>: ${now}${was}</li>`;
+}
+
 const HISTORY_SHOWN = 8;
 function historyHtml(row) {
   if (!row.changes.length) return "";
-  const item = (change) => {
-    if (change.field === "row") return `<li>${dateHtml(change.date)} · ${esc(t("card.historyAdded"))}</li>`;
-    const isDate = /_date$/.test(change.field);
-    const was = change.from && !NOT_SPECIFIED.test(change.from.trim())
-      ? ` <span class="muted">(${esc(t("card.historyWas", { value: isDate ? formatDate(change.from) : shorten(change.from, 100) }))})</span>`
-      : "";
-    const now = isDate && change.to ? dateHtml(change.to) : valueHtml(shorten(change.to));
-    return `<li>${dateHtml(change.date)} · <strong>${esc(fieldLabel(change.field))}</strong>: ${now}${was}</li>`;
-  };
   const more = row.changes.length - HISTORY_SHOWN;
   return `
     <h3 class="history-title">${esc(t("card.history"))}</h3>
-    <ul class="history">${row.changes.slice(0, HISTORY_SHOWN).map(item).join("")}${
+    <ul class="history">${row.changes.slice(0, HISTORY_SHOWN).map((change) => changeItem(change)).join("")}${
       more > 0 ? `<li class="muted">${esc(plural("card.historyMore", more))}</li>` : ""
     }</ul>`;
+}
+
+const NEWS_SHOWN = 15;
+/** The latest recorded changes across the laws currently listed, newest first. */
+function renderNews() {
+  const section = $("newsSection");
+  const entries = app.results
+    .flatMap((row) => row.changes.map((change) => ({ row, change })))
+    .sort((a, b) => (a.change.date < b.change.date ? 1 : a.change.date > b.change.date ? -1 : 0));
+  section.hidden = entries.length === 0;
+  if (!entries.length) return;
+  const who = ({ row }) =>
+    `<button type="button" class="link-button" data-news-country="${esc(row.tld)}" title="${esc(t("table.onlyCountry", { name: row.country_name }))}">${esc(row.country_name)}</button> — ${esc(row.law_name)}: `;
+  const more = entries.length - NEWS_SHOWN;
+  $("newsList").innerHTML =
+    entries.slice(0, NEWS_SHOWN).map((entry) => changeItem(entry.change, who(entry))).join("") +
+    (more > 0 ? `<li class="muted">${esc(plural("news.more", more))}</li>` : "");
 }
 
 function lawDetailsHtml(row, open) {
@@ -209,6 +248,7 @@ function renderFacets() {
     checkboxFacet("term", "filters.term", app.options.term, termLabel),
     checkboxFacet("source", "filters.source", app.options.source, sourceLabel, { hintKey: "filters.sourceHint" }),
   ];
+  if (app.options.flag.length) parts.push(checkboxFacet("flag", "filters.flag", app.options.flag, flagLabel, { hintKey: "filters.flagHint" }));
   // A filter with a single possible value cannot narrow anything, so it stays hidden
   // until the dataset has a second protection type (related rights, database rights…).
   if (app.options.ptype.length > 1) {
@@ -257,6 +297,8 @@ function chipLabel(chip) {
       return t("chip.term", { value: termLabel(chip.value) });
     case "source":
       return t("chip.source", { value: sourceLabel(chip.value) });
+    case "flag":
+      return t("chip.flag", { value: flagLabel(chip.value) });
     default:
       return t("chip.ptype", { value: chip.value });
   }
@@ -393,6 +435,7 @@ function renderCountryCard() {
       <div><dt>${esc(t("card.unconfirmed"))}</dt><dd>${unconfirmed.length ? esc(unconfirmed.join(", ")) : "—"}</dd></div>
       <div><dt>${esc(t("card.folder"))}</dt><dd><code>jurisdictions/${esc(jurisdiction.tld)}/</code></dd></div>
       <div><dt>${esc(t("card.source"))}</dt><dd>${laws.map((row) => esc(sourceDetail(row))).join("<br>")}</dd></div>
+      <div><dt>${esc(t("card.completeness"))}</dt><dd>${laws.map((row) => esc(completenessText(row))).join("<br>")}</dd></div>
       <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
     </dl>
     ${notes.length ? `<p class="card-notes"><strong>${esc(t("card.notes"))}:</strong> ${esc(notes.join(" · "))}</p>` : ""}
@@ -432,7 +475,7 @@ function renderComparison() {
         ? `<span class="badge-list">${items.map((v) => `<span class="badge${criterion.endsWith("_not") || criterion.endsWith("not_party") ? " badge-outline" : ""}" title="${esc(LIST_CRITERIA[criterion](v))}">${esc(v)}</span>`).join("")}</span>`
         : valueHtml("");
     }
-    return /_date$/.test(criterion) && value ? dateHtml(value) : valueHtml(value);
+    return (/_date$/.test(criterion) && value ? dateHtml(value) : valueHtml(value)) + fieldSourceHtml(row.sources[criterion]);
   };
   let differing = 0;
   const body = COMPARE_CRITERIA.map((criterion) => {
@@ -478,6 +521,7 @@ function update() {
   renderChart();
   renderTable();
   renderCountryCard();
+  renderNews();
   renderCompareButton();
   renderComparison();
   writeUrl();
@@ -500,8 +544,22 @@ function handleCompare() {
   section.scrollIntoView({ block: "start", behavior: scrollBehavior() });
 }
 
+/** One cell per law: where each value comes from, and what changed when. */
+function exportExtras(row) {
+  const sources = Object.entries(row.sources)
+    .map(([field, source]) => `${field}: ${source.url}${source.checked ? ` (${source.checked})` : ""}`)
+    .join(" | ");
+  const history = row.changes
+    .map((change) => (change.field === "row" ? `${change.date} ${change.to}` : `${change.date} ${change.field}: ${change.from || "(empty)"} -> ${change.to}`))
+    .join(" | ");
+  return { field_sources: sources, change_history: history };
+}
+
 function handleExport() {
-  const csv = `﻿${toCsv(app.data.meta.columns, app.results)}`;
+  const extra = $("exportExtra").checked;
+  const columns = extra ? [...app.data.meta.columns, "field_sources", "change_history"] : app.data.meta.columns;
+  const rows = extra ? app.results.map((row) => ({ ...row, ...exportExtras(row) })) : app.results;
+  const csv = `﻿${toCsv(columns, rows)}`;
   const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
   const link = document.createElement("a");
   link.href = url;
@@ -576,6 +634,14 @@ function bindEvents() {
     $("countryCard").focus({ preventScroll: true });
     $("countryCard").scrollIntoView({ block: "start", behavior: scrollBehavior() });
   });
+  $("newsList").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-news-country]");
+    if (!button) return;
+    app.state.country = button.dataset.newsCountry;
+    update();
+    $("countryCard").focus({ preventScroll: true });
+    $("countryCard").scrollIntoView({ block: "start", behavior: scrollBehavior() });
+  });
   $("selectAll").addEventListener("change", (event) => {
     for (const row of app.results) {
       if (event.target.checked) app.selected.add(row.id);
@@ -616,6 +682,7 @@ async function init() {
     return;
   }
 
+  await syncTranslations();
   buildIndex(app.data.rows, CONFIG);
   app.options = Object.fromEntries(FACETS.map((facet) => [facet.id, facetOptions(app.data.rows, facet)]));
   app.state = pruneState(
@@ -632,7 +699,8 @@ async function init() {
   $("advanced").open =
     matchMedia("(min-width: 769px)").matches || activeFilters(app.state, CONFIG).length > 0;
 
-  onLanguageChange(() => {
+  onLanguageChange(async () => {
+    await syncTranslations();
     renderStatic();
     update();
   });

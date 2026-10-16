@@ -5,6 +5,7 @@
 export const REGION_ORDER = ["europe", "americas", "asia_pacific", "middle_east_africa"];
 export const TREATY_ORDER = ["Berne", "TRIPS", "WCT", "WPPT"];
 export const SOURCE_ORDER = ["verified", "researched", "curated"];
+export const FLAG_ORDER = ["pending", "review"];
 
 const TEXT_FIELDS = [
   "country_name",
@@ -79,6 +80,8 @@ export const FACETS = [
   { id: "ptype", kind: "multi", match: "any", values: (row) => [row.protection_type] },
   // Verified first: the order in which a reader should trust the rows.
   { id: "source", kind: "multi", match: "any", values: (row) => [row.data_status], order: (a, b) => rank(SOURCE_ORDER, a.value) - rank(SOURCE_ORDER, b.value) },
+  // Rows that need a look: an upcoming change, or a last check over a year old.
+  { id: "flag", kind: "multi", match: "any", values: (row) => row.flags, order: (a, b) => rank(FLAG_ORDER, a.value) - rank(FLAG_ORDER, b.value) },
 ];
 
 export const CONFIG = { searchScopes: SEARCH_SCOPES, facets: FACETS };
@@ -116,13 +119,20 @@ const splitList = (value) =>
         .filter(Boolean)
     : [];
 
-export function enrichRow(row) {
+const isBlank = (value) => /^(not specified|—|-)?$/i.test(String(value ?? "").trim());
+
+export function enrichRow(row, today = new Date().toISOString().slice(0, 10)) {
   row.treaties = splitList(row.treaties_signatory);
   row.treatiesNot = splitList(row.treaties_not_party);
   // Neither confirmed nor ruled out.
   row.treatiesUnconfirmed = TREATY_ORDER.filter((t) => !row.treaties.includes(t) && !row.treatiesNot.includes(t));
   row.sources ??= {};
   row.changes ??= [];
+  row.flags = [row.pending_change ? "pending" : null, isReviewDue(row.last_checked, today) ? "review" : null].filter(Boolean);
+  // How much of the record is filled in, and how much of that has a source.
+  row.fieldsTotal = DETAIL_FIELDS.length;
+  row.fieldsFilled = DETAIL_FIELDS.filter((f) => !isBlank(row[f])).length;
+  row.fieldsSourced = DETAIL_FIELDS.filter((f) => row.sources[f] && !isBlank(row[f])).length;
   row.termYears = parseLifeTerm(row.term_of_protection);
   row.termBucket = termBucket(row.termYears);
   return row;

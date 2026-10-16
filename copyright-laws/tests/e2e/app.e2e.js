@@ -28,7 +28,7 @@ test("initial view: every law, one chart bar per term, data-driven facets", { sk
   assert.equal(await page.locator(".viz-col").count(), YEARS.length);
   assert.equal((await page.locator(".viz-x").allTextContents()).join(" "), YEARS.map((y) => `+${y}`).join(" "));
   assert.equal(await page.locator('input[name="ptype"]').count(), 0, "only 'Copyright' exists, so that facet stays hidden");
-  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), "Region|Treaties|Protection term|Data status");
+  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), "Region|Treaties|Protection term|Data status|Needs attention");
   assert.equal(await page.locator('label.check:has(input[value="WCT"])').getAttribute("title"), "WIPO Copyright Treaty (WCT)");
   assert.deepEqual(problems, []);
   await page.context().close();
@@ -162,7 +162,7 @@ test("languages: Portuguese plurals and German labels", { skip }, async () => {
   await page.selectOption("#languageSelect", "por");
   await page.waitForTimeout(150);
   assert.equal(await page.locator(".viz-title").textContent(), "Leis por prazo de proteção");
-  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), "Região|Tratados|Prazo de proteção|Situação dos dados");
+  assert.equal((await page.locator("#facets legend").allTextContents()).join("|"), "Região|Tratados|Prazo de proteção|Situação dos dados|Requer atenção");
   assert.equal(await page.locator('label.check:has(input[value="Berne"])').getAttribute("title"), "Convenção de Berna");
   assert.equal(await summary(), `${N} de ${N} leis · ${J} jurisdições`);
   await page.selectOption("#languageSelect", "deu");
@@ -216,5 +216,60 @@ test("the card lists every field with its source, upcoming changes and the chang
   const sourced = card.locator(".detail-grid a.field-source").first();
   assert.match(await sourced.getAttribute("aria-label"), /^Source: .+ · (high|medium|low) confidence · checked /);
   assert.deepEqual(problems, []);
+  await page.context().close();
+});
+
+test("rows that need attention have their own filter, and the URL keeps it", { skip }, async () => {
+  const { page, summary, problems } = await newPage(app.browser);
+  const pending = count((r) => r.pending_change);
+  assert.ok(pending > 0);
+  await page.goto(url(), { waitUntil: "networkidle" });
+  assert.match((await page.locator("#facets legend").allTextContents()).join("|"), /Needs attention/);
+  await page.check('input[name="flag"][value="pending"]');
+  assert.ok((await summary()).startsWith(`${pending} of ${N}`), await summary());
+  assert.match(await page.locator(".chip").first().textContent(), /^Flag: Change pending/);
+  assert.match(page.url(), /flag=pending/);
+  await page.goto(url("flag=pending&flag=bogus"), { waitUntil: "networkidle" });
+  assert.equal(await page.locator('input[name="flag"]:checked').count(), 1);
+  assert.deepEqual(problems, []);
+  await page.context().close();
+});
+
+test("the card shows how complete a record is; the list of recent changes opens a jurisdiction", { skip }, async () => {
+  const { page } = await newPage(app.browser);
+  await page.goto(url("country=ug"), { waitUntil: "networkidle" });
+  const filled = await page.locator("#countryCard .card-grid > div", { hasText: "Completeness" }).locator("dd").textContent();
+  assert.match(filled, /^\d+ of \d+ fields filled \(\d+%\) · \d+ with a source$/);
+
+  await page.goto(url("region=europe"), { waitUntil: "networkidle" });
+  const news = page.locator("#newsSection");
+  assert.equal(await news.isVisible(), true);
+  await news.locator("summary").click();
+  const items = await news.locator("#newsList li").count();
+  assert.ok(items >= 2 && items <= 16, `${items} items`);
+  const dates = await news.locator("#newsList li > time:first-of-type").evaluateAll((els) => els.map((el) => el.getAttribute("datetime")));
+  assert.deepEqual([...dates].sort().reverse(), dates, "newest first");
+  const first = news.locator("#newsList [data-news-country]").first();
+  const name = (await first.textContent()).trim();
+  await first.click();
+  assert.match(await page.locator("#countryCard h2").textContent(), new RegExp(name));
+  await page.context().close();
+});
+
+test("the comparison links each value to its source, and the export can include sources and history", { skip }, async () => {
+  const { page } = await newPage(app.browser);
+  await page.goto(url(), { waitUntil: "networkidle" });
+  await page.locator('#lawsTableBody input[aria-label^="Select: Uganda"]').check();
+  await page.locator('#lawsTableBody input[aria-label^="Select: Kenya"]').check();
+  await page.click("#compareBtn");
+  assert.ok((await page.locator("#comparisonResults a.field-source").count()) >= 1, "at least one value shows its source");
+  await page.click("#closeComparison");
+
+  await page.check('input[name="region"][value="middle_east_africa"]');
+  await page.check("#exportExtra");
+  const [download] = await Promise.all([page.waitForEvent("download"), page.click("#exportBtn")]);
+  const text = readFileSync(await download.path(), "utf-8").replace(/^﻿/, "");
+  assert.match(text.split("\n")[0], /,field_sources,change_history$/);
+  assert.match(text, /: https?:\/\//);
   await page.context().close();
 });
