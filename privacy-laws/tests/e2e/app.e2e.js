@@ -268,7 +268,7 @@ test("the card lists every field with its source, upcoming changes and the chang
 
   // Two laws: both collapsed, each with its own record.
   await page.goto(url("country=us"), { waitUntil: "networkidle" });
-  assert.equal(await card.locator("details.law-details").count(), 2);
+  assert.equal(await card.locator("details.law-details").count(), laws.filter((l) => l.tld === "us").length);
   assert.equal(await card.locator("details.law-details[open]").count(), 0);
   await card.locator("details.law-details summary").first().click();
   assert.ok((await card.locator("details.law-details[open] .detail-grid > div").count()) >= 8);

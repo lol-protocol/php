@@ -1,0 +1,131 @@
+code,field,value,conf,source
+PK,status,"NOLAW: No general data-protection law in force; Personal Data Protection Bill (2023 draft) not enacted, only sector rules and PECA 2016/2025 cybercrime provisions",medium,https://www.dlapiperdataprotection.com/?c=PK
+AF,status,NOLAW: No general data-protection law; only constitutional privacy and sectoral telecom/banking confidentiality rules,low,https://proeliumlaw.com/data-protection-regulation-tracker/
+KH,status,NOLAW: No general data-protection law enacted as of Feb 2026; draft Law on Personal Data Protection under MPTC consultation; Sub-Decree 252 (2021) covers only identification data,medium,https://www.dlapiperdataprotection.com/index.html?c=KH&t=law
+BD,law_name,"Personal Data Protection Ordinance, 2025 (Ordinance No. 61 of 2025)",medium,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,jurisdiction,National Data Governance Authority,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,enactment_date,2025-11-06,medium,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,effective_date,UNKNOWN,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,scope,Data subjects (individuals) whose personal data is processed,medium,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,applies_to,Controllers and processors of personal data,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,key_requirements,"Explicit consent before collection, storage, transfer or use of personal data; data-subject ownership/rights; administrative fines, compensation and criminal penalties for violations",medium,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,data_categories,Personal data,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,retention_period,UNKNOWN,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,enforcement_authority,National Data Governance Authority,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,penalties_range,"Administrative fines, compensation and criminal penalties; amounts not confirmed",low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,exemptions,UNKNOWN,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,website_url,https://www.tbsnews.net/node/1281356,medium,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,language,Bengali/English,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,notes,Issued as an ordinance by the interim government; some sections reportedly take effect 18 months after gazette notification (Daily Star); parliamentary ratification unconfirmed,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,deceased_data,UNKNOWN,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,research_exemption,UNKNOWN,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+BD,genetic_data,UNKNOWN,low,https://www.dhakatribune.com/amp/bangladesh/393590/bangladesh-government-approves-personal-data
+KZ,law_name,Law No. 94-V of 21 May 2013 on Personal Data and Their Protection,medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,jurisdiction,"Ministry of Digital Development, Innovation and Aerospace Industry",medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,enactment_date,2013-05-21,medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,effective_date,2013-11-25,medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,scope,Data subjects (individuals) in Kazakhstan,medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,applies_to,"Owners and operators of personal databases, and third parties processing personal data",medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,key_requirements,Consent of the data subject for collection and processing; breach notification to the authority since 1 July 2024 (Law No. 44-VIII of 11 Dec 2023); 2026 amendments add automated-decision limits and breach register,medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,data_categories,Personal data (general and restricted-access); biometric data,medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,retention_period,UNKNOWN,low,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,enforcement_authority,"Ministry of Digital Development, Innovation and Aerospace Industry (MDDIAI)",medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,penalties_range,"Administrative fines under the Code of Administrative Offences in MCI units (reported 100-10,000 MCI); criminal liability including imprisonment up to 5 years",low,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,exemptions,UNKNOWN,low,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,website_url,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026,medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,language,Kazakh/Russian,medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,notes,Amended 2024 and 2026 (definition of personal data from 11 July 2026; breach register from 25 Aug 2026); penalty figures from secondary sources conflict,medium,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,deceased_data,UNKNOWN,low,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,research_exemption,UNKNOWN,low,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KZ,genetic_data,UNKNOWN,low,https://www.morganlewis.com/pubs/2026/07/republic-of-kazakhstan-data-protection-law-amendments-in-2026
+KG,law_name,Law No. 58 of 14 April 2008 on Personal Information,medium,https://www.consentstack.io/regulations/kg-law58
+KG,jurisdiction,State Agency for Personal Data Protection,medium,https://www.consentstack.io/regulations/kg-law58
+KG,enactment_date,2008-04-14,high,https://www.consentstack.io/regulations/kg-law58
+KG,effective_date,2008-04-18,medium,https://www.consentstack.io/regulations/kg-law58
+KG,scope,Data subjects (individuals),medium,https://www.consentstack.io/regulations/kg-law58
+KG,applies_to,Holders (owners) and processors of personal data arrays,medium,https://www.consentstack.io/regulations/kg-law58
+KG,key_requirements,Consent of the subject; mandatory registration of personal data arrays and holders with the State Agency; security of personal data,medium,https://www.consentstack.io/regulations/kg-law58
+KG,data_categories,Personal data; special categories,medium,https://www.consentstack.io/regulations/kg-law58
+KG,retention_period,UNKNOWN,low,https://www.consentstack.io/regulations/kg-law58
+KG,enforcement_authority,State Agency for Personal Data Protection (Personal Data Protection Agency),medium,https://www.consentstack.io/regulations/kg-law58
+KG,penalties_range,"Administrative fines reported from May 2025, unverified",low,https://www.consentstack.io/regulations/kg-law58
+KG,exemptions,UNKNOWN,low,https://www.consentstack.io/regulations/kg-law58
+KG,website_url,https://dpa.gov.kg/en/npa/4,medium,https://www.consentstack.io/regulations/kg-law58
+KG,language,Kyrgyz/Russian,medium,https://www.consentstack.io/regulations/kg-law58
+KG,notes,"Last amendments seen 29 Nov 2021; EUI database says authority not yet established, conflicting with other sources",medium,https://www.consentstack.io/regulations/kg-law58
+KG,deceased_data,UNKNOWN,low,https://www.consentstack.io/regulations/kg-law58
+KG,research_exemption,UNKNOWN,low,https://www.consentstack.io/regulations/kg-law58
+KG,genetic_data,UNKNOWN,low,https://www.consentstack.io/regulations/kg-law58
+TJ,law_name,Law No. 1537 of 3 August 2018 on Personal Data Protection,medium,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,jurisdiction,Agency for Innovation and Digital Technologies,low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,enactment_date,2018-08-03,medium,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,effective_date,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,scope,Data subjects (individuals) in Tajikistan,medium,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,applies_to,Owners and operators of personal data,medium,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,key_requirements,"Collection and processing with data-subject consent; rights of access, clarification, blocking and destruction; information requests answered within 3 working days",low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,data_categories,Personal data,medium,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,retention_period,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,enforcement_authority,"Agency for Innovation and Digital Technologies (designated body, status to verify)",low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,penalties_range,Low administrative penalties; amounts not found,low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,exemptions,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,website_url,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ,medium,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,language,Tajik/Russian,low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,notes,Regulator determined by presidential designation; enforcement reported as minimal,medium,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,deceased_data,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,research_exemption,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+TJ,genetic_data,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ
+AZ,law_name,Law No. 998-IIIQ of 11 May 2010 on Personal Data,medium,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,jurisdiction,"Ministry of Digital Development and Transport (formerly Ministry of Transport, Communications and High Technologies)",low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,enactment_date,2010-05-11,high,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,effective_date,UNKNOWN,low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,scope,Data subjects (individuals),medium,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,applies_to,Owners and operators of personal data information systems,medium,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,key_requirements,Consent for processing; registration of personal data information systems; security requirements (Cabinet Decree No. 161 of 6 Sep 2010; registration rules Decree No. 149 of 17 Aug 2010),medium,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,data_categories,Personal data; confidential/special categories,medium,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,retention_period,UNKNOWN,low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,enforcement_authority,"Ministry of Transport, Communications and High Technologies (regulator per DataGuidance 2023)",low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,penalties_range,UNKNOWN,low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,exemptions,UNKNOWN,low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,website_url,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview,medium,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,language,Azerbaijani,medium,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,frameworks,CoE-108,low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,notes,One unverified secondary source says National Cybersecurity Agency is regulator in 2026 and lists amendments through Law No. 1193-VIQD of 28 June 2024,low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,deceased_data,UNKNOWN,low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,research_exemption,UNKNOWN,low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+AZ,genetic_data,UNKNOWN,low,https://www.dataguidance.com/notes/azerbaijan-data-protection-overview
+MN,law_name,Law on Personal Data Protection (2021),medium,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,jurisdiction,National Human Rights Commission of Mongolia,medium,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,enactment_date,2021-12-17,medium,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,effective_date,2022-05-01,high,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,scope,Data subjects (individuals),medium,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,applies_to,"Individuals, legal entities and organizations collecting or processing personal data in Mongolia, including representative offices and permanent establishments",medium,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,key_requirements,Consent for processing; transfers abroad require data-subject consent unless law or treaty allows; security measures,medium,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,data_categories,Personal data; sensitive personal data,medium,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,retention_period,UNKNOWN,low,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,enforcement_authority,National Human Rights Commission of Mongolia (NHRCM),medium,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,penalties_range,"Fines of MNT 500,000 to MNT 20,000,000 (single compliance-site source)",low,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,exemptions,UNKNOWN,low,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,website_url,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html,medium,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,language,Mongolian,high,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,notes,Replaced the 1995 Law on Personal Secrecy; sources differ on regulator,medium,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,deceased_data,UNKNOWN,low,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,research_exemption,UNKNOWN,low,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+MN,genetic_data,UNKNOWN,low,https://www.pwc.com/mn/en/tax_alerts/tax_alert_02_2022.html
+LA,law_name,Law on Electronic Data Protection No. 25/NA (2017),medium,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,jurisdiction,Ministry of Technology and Communications,low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,enactment_date,2017-05-12,medium,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,effective_date,UNKNOWN,low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,scope,Individuals and organisations whose electronic data is handled in Lao PDR,medium,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,applies_to,"Individuals, organisations and legal entities handling electronic data in Laos, including foreign entities engaged in covered activities",medium,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,key_requirements,"Principles for collection, processing and protection of electronic data; personal data may be accessed, used or disclosed on proper identification",low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,data_categories,General data; personal data (electronic),medium,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,retention_period,UNKNOWN,low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,enforcement_authority,Ministry of Technology and Communications (MTC),low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,penalties_range,UNKNOWN; unverified claim of 10% turnover penalties from 2021 amendments,low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,exemptions,UNKNOWN,low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,website_url,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na,medium,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,language,Lao,medium,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,notes,Covers electronic data only; rest is thin secondary-source information,low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,deceased_data,UNKNOWN,low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,research_exemption,UNKNOWN,low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na
+LA,genetic_data,UNKNOWN,low,https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na

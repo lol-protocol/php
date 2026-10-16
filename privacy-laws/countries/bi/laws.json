@@ -1,0 +1,94 @@
+[
+  {
+    "country_code": "BI",
+    "country_name": "Burundi",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 1/03 of 10 March 2026 on the Protection of Personal Data",
+    "jurisdiction": "Independent oversight authority (not yet confirmed operational)",
+    "enactment_date": "2026-03-10",
+    "effective_date": "2026-03-10",
+    "scope": "Data subjects in Burundi (unconfirmed)",
+    "applies_to": "Public and private bodies and natural persons, for automated and non-automated processing, including controllers using processing means located in Burundi",
+    "key_requirements": "Not specified",
+    "data_categories": "Not specified",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Independent administrative authority created by the law (press: Agency for the Protection of Personal Data; ARCT mentioned by trackers); no operational body confirmed",
+    "penalties_range": "Criminal penalties for violations, amounts not found; Penal Code and ICT-offences law still apply (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.mofo.com/privacy-library/burundi",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "National Assembly adopted the bill unanimously on 15 January 2026; no gazette text seen; language inferred from French-language press coverage",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.mofo.com/privacy-library/burundi",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.osiris.sn/burundi-le-parlement-adopte-une-loi-cle-sur-la-protection-des-donnees.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.mofo.com/privacy-library/burundi",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.offlist.me/what-is-burundi-law-1-03-2026",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.offlist.me/what-is-burundi-law-1-03-2026",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.osiris.sn/burundi-le-parlement-adopte-une-loi-cle-sur-la-protection-des-donnees.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.osiris.sn/burundi-le-parlement-adopte-une-loi-cle-sur-la-protection-des-donnees.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

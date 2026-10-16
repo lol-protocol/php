@@ -1,0 +1,104 @@
+[
+  {
+    "country_code": "CM",
+    "country_name": "Cameroon",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2024/017 of 23 December 2024 on Personal Data Protection",
+    "jurisdiction": "Personal Data Protection Authority (APDP)",
+    "enactment_date": "2024-12-23",
+    "effective_date": "2026-06-23",
+    "scope": "Data subjects in Cameroon (unconfirmed)",
+    "applies_to": "All public and private controllers and processors (unconfirmed)",
+    "key_requirements": "Prior authorisation or declaration to the Authority (arts. 19, 27); transfers abroad only to adequate-protection countries (art. 32); consent rules with no legitimate-interest basis (vendor source) (unconfirmed)",
+    "data_categories": "Personal data; sensitive data (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Autorite de protection des donnees a caractere personnel (APDP) - independent public body (art. 53)",
+    "penalties_range": "Sources conflict: fines up to XAF 1 billion (Afriwise) or XAF 100 million and up to 10 years imprisonment (ConsentStack) (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=CM&t=law",
+    "language": "French/English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "18-month transition ended 23 June 2026; authority creation reported but operational status unclear; Law 2010/012 (cybersecurity and cybercrime) still relevant; draft DPO requirement dropped",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.digitalbusiness.africa/cameroun-lautorite-de-protection-des-donnees-a-caractere-personnel-creee/",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.osiris.sn/la-protection-des-donnees-a-caractere-personnel-au-cameroun-a-la-lecture-de-la.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://cio-mag.com/?p=59861",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/1297-cameroun-la-loi-sur-la-protection-des-donnees-a-caractere-personnel-entre-en-vigueur-ce-23-juin-2026",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.globalcenter.ai/research/data-privacy-and-responsible-ai-adoption-in-cameroon",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.afriwise.com/resources/cameroons-evolving-data-privacy-landscape",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.globalcenter.ai/research/data-privacy-and-responsible-ai-adoption-in-cameroon",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.afriwise.com/resources/cameroons-evolving-data-privacy-landscape",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.osiris.sn/la-protection-des-donnees-a-caractere-personnel-au-cameroun-a-la-lecture-de-la.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.afriwise.com/resources/cameroons-evolving-data-privacy-landscape",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

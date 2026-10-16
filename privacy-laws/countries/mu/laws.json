@@ -33,11 +33,6 @@
         "url": "https://www.fscmauritius.org/media/ikoldflp/the-data-protection-act-2017.pdf",
         "confidence": "high",
         "checked": "2026-10-15"
-      },
-      "retention_period": {
-        "url": "https://compliance.theartofservice.com/controls/data-protection-act-2017/mu-dpa17-s27",
-        "confidence": "low",
-        "checked": "2026-10-15"
       }
     },
     "changes": [

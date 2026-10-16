@@ -29,11 +29,6 @@
     "confidence": "high",
     "last_checked": "2026-10-15",
     "sources": {
-      "enactment_date": {
-        "url": "https://bnt.eu/?p=56752",
-        "confidence": "high",
-        "checked": "2026-10-15"
-      },
       "retention_period": {
         "url": "https://cpd.by/en/national-regulation/the-belarusian-data-protection-act/",
         "confidence": "medium",

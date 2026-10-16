@@ -191,9 +191,9 @@ test("privacy filters give the expected counts on the real data", () => {
     count("language=Spanish&region=europe"),
     expected((r) => r.region === "europe" && r.languages.includes("Spanish"))
   );
-  assert.equal(count("q=us"), 2);
+  assert.equal(count("q=us"), expected((r) => r.country_code === "US"));
   assert.equal(count("q=br"), 1);
-  assert.equal(count("country=us"), 2);
+  assert.equal(count("country=us"), expected((r) => r.tld === "us"));
   assert.equal(
     count("year=2018-2018&region=europe"),
     expected((r) => r.region === "europe" && r.effectiveYear === 2018)

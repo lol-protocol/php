@@ -3,7 +3,7 @@
     "country_code": "HU",
     "country_name": "Hungary",
     "region": "europe",
-    "law_name": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26",
+    "law_name": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)",
     "jurisdiction": "Hungarian DPA",
     "enactment_date": "2018-05-25",
     "effective_date": "2018-05-25",
@@ -29,11 +29,6 @@
     "confidence": "medium",
     "last_checked": "2026-10-14",
     "sources": {
-      "law_name": {
-        "url": "https://schoenherr.eu/content/amendments-to-the-hungarian-data-protection-act",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
       "enforcement_authority": {
         "url": "https://edpb.europa.eu/about-edpb/our-members_en",
         "confidence": "high",
@@ -46,6 +41,24 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "law_name",
+        "from": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26",
+        "to": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "law_name",
+        "from": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26",
+        "to": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "law_name",
+        "from": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26",
+        "to": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",
