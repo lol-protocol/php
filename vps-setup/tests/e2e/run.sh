@@ -13,12 +13,21 @@ APP_PHP=tiendae2e; D_PHP=tienda.$D
 APP_PY=blog; D_PY=blog.$D; PY_PORT=8011
 D_JAVA=java.$D
 export INSTALL_STATE_FILE=/tmp/e2e-state/install-all.state
+mkdir -p /tmp/e2e-state
 FAILS=0
 
 ok()   { echo "  [OK]    $1"; }
 fail() { echo "  [FALLA] $1"; FAILS=$((FAILS + 1)); }
-check() { local desc=$1; shift; if "$@" > /dev/null 2>&1; then ok "$desc"; else fail "$desc"; fi; }
+OUT=/tmp/e2e-state/check.out
+# Si falla, muestra el final de la salida del comando (si no, el error se pierde).
+check() {
+    local desc=$1; shift
+    if "$@" > "$OUT" 2>&1; then ok "$desc"; else fail "$desc"; tail -n 15 "$OUT" | sed 's/^/          | /'; fi
+}
 http()  { curl -s -o /dev/null -m 10 -w '%{http_code}' -H "Host: $1" "http://127.0.0.1$2"; }
+# "nginx reload" es asincrono: justo despues, los workers viejos aun pueden atender con la config
+# anterior. Se espera (hasta ~20 s) a que el Host responda lo esperado antes de comprobar.
+wait_http() { for _ in $(seq 1 20); do [ "$(http "$1" "$2")" = "$3" ] && return 0; sleep 1; done; return 1; }
 step()  { echo; echo "=== $* ==="; }
 
 cd "$VPS_DIR" || exit 2
@@ -48,24 +57,27 @@ check "un Host ajeno no recibe respuesta (444)" test "$(http otro.example.net /)
 
 step "App PHP (06_A)"
 check "06_A termina bien" ./06_A-setup-php-app.sh "$APP_PHP" "$D_PHP"
+wait_http "$D_PHP" / 200
 check "PHP-FPM ejecuta la pagina de prueba" bash -c "curl -s -H 'Host: $D_PHP' http://127.0.0.1/ | grep -q 'PHP-FPM + Nginx funcionando'"
 
 step "App Python (06_B, servicio systemd real en el puerto $PY_PORT)"
 check "06_B termina bien" ./06_B-setup-python-app.sh "$APP_PY" "$D_PY" "$PY_PORT"
 check "servicio $APP_PY activo" systemctl is-active --quiet "$APP_PY"
+wait_http "$D_PY" / 200
 check "gunicorn responde detras de Nginx" bash -c "curl -s -H 'Host: $D_PY' http://127.0.0.1/ | grep -q 'Hello from Python App'"
 check "otra app en el mismo puerto se rechaza" bash -c "! ./06_B-setup-python-app.sh otra otra.$D $PY_PORT < /dev/null"
 
 step "Tomcat (02_H + 06_D en la raiz)"
 check "02_H termina bien" ./02_H-install-tomcat.sh
 check "06_D termina bien" ./06_D-setup-tomcat-app.sh "$D_JAVA"
-for _ in $(seq 1 30); do [ "$(http "$D_JAVA" /)" = 200 ] && break; sleep 2; done
+wait_http "$D_JAVA" / 200
 check "Tomcat responde por Nginx" test "$(http "$D_JAVA" /)" = 200
 check "/manager/html NO se alcanza (404)" test "$(http "$D_JAVA" /manager/html)" = 404
 check "Tomcat no queda expuesto en 8080 desde fuera (UFW sin regla)" bash -c '! ufw status | grep -q 8080'
 
 step "DNS propio (06_C, BIND real; el secundario de OVH se resuelve por internet)"
 check "06_C termina bien" env VPS_IP6=2001:db8::7 ./06_C-setup-dns-server.sh "$D" 203.0.113.7
+check "named habilitado al arranque" systemctl is-enabled --quiet named
 check "BIND responde el registro A" test "$(dig @127.0.0.1 +short "$D" A)" = 203.0.113.7
 check "BIND responde CAA (solo Let's Encrypt)" bash -c "dig @127.0.0.1 +short '$D' CAA | grep -q letsencrypt.org"
 check "BIND responde AAAA" test "$(dig @127.0.0.1 +short "www.$D" AAAA)" = 2001:db8::7
@@ -73,9 +85,10 @@ check "BIND no es resolvedor abierto (REFUSED)" bash -c "dig @127.0.0.1 +time=3 
 
 step "Alta y baja de dominios (10_A / 10_B)"
 check "10_A agrega un dominio" ./10_A-add-domain.sh "nuevo.$D"
+wait_http "nuevo.$D" / 200
 check "el dominio nuevo responde 200" test "$(http "nuevo.$D" /)" = 200
 check "10_B lo archiva" ./10_B-remove-domain.sh "nuevo.$D" --yes
-sleep 2
+wait_http "nuevo.$D" / 000
 check "tras 10_B ya no se sirve" test "$(http "nuevo.$D" /)" = 000
 check "la landing sigue en 200" test "$(http "$D" /)" = 200
 check "nginx -t sigue OK" nginx -t

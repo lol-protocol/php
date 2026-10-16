@@ -133,8 +133,11 @@ echo "[4/4] Validando configuración..."
 sudo named-checkconf
 sudo named-checkzone $DOMAIN /etc/bind/zones/db.$DOMAIN
 
-sudo systemctl restart bind9
-sudo systemctl enable bind9   # arranca automaticamente si el VPS se reinicia
+# La unidad se llama "named" en Ubuntu 24.04; "bind9" es solo un ALIAS, y systemd se niega a
+# hacer "enable" sobre un alias ("Refusing to operate on alias name"): con bind9 el script
+# fallaba al final aunque BIND ya estuviera sirviendo la zona (visto en la prueba e2e real).
+sudo systemctl restart named
+sudo systemctl enable named   # arranca automaticamente si el VPS se reinicia
 
 # El puerto 53 (DNS) usa tanto TCP como UDP -- UDP para consultas normales,
 # TCP para respuestas grandes y para las transferencias de zona (AXFR).

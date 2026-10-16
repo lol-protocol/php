@@ -25,9 +25,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      # El runner trae servidores web preinstalados; ocuparian el puerto 80.
-      - name: Stop preinstalled web servers
-        run: sudo systemctl stop apache2 nginx 2>/dev/null || true
+      # El runner trae servidores web preinstalados (ocuparian el puerto 80) y alguna unidad caida.
+      - name: Preparar el runner (web servers preinstalados, unidades caidas)
+        run: |
+          sudo systemctl stop apache2 nginx 2>/dev/null || true
+          # unidades ya caidas en la imagen del runner (ej. mnt.mount): el monitor las reportaria
+          sudo systemctl reset-failed || true
 
       - name: install-all + apps + comprobaciones
         run: sudo REAL_E2E=1 vps-setup/tests/e2e/run.sh
