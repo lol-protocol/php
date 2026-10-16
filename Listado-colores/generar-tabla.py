@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-"""Valida los CSV de Listado-colores y genera la tabla de README.md y la lista por idioma.
+"""Valida los CSV de Listado-colores y genera la tabla de README.md y las páginas por idioma.
 
-- colores.csv: tabla anotada, 148 colores CSS con nombre en 30 idiomas, hex y significados.
-  Su tabla resumida va en el README y su lista completa por idioma va en colores-por-idioma.md.
+- colores.csv: tabla anotada, 148 colores CSS con nombre en 30 idiomas, hex y significados en español.
+  Su tabla resumida va en el README.
+- significados-idiomas.csv: los significados de esos 148 colores en los otros 29 idiomas.
 - nombres-completos.csv: lista completa de nombres con hex, sin significados. Solo se valida.
+- Por cada idioma se genera por-idioma/<código>.md (nombre, hex y los dos significados en ese idioma)
+  y colores-por-idioma.md, que es el índice de esas páginas.
 
 Uso:
-  python3 generar-tabla.py              valida los CSV y regenera README.md y colores-por-idioma.md
+  python3 generar-tabla.py              valida los CSV y regenera README.md, colores-por-idioma.md y por-idioma/
   python3 generar-tabla.py --comprobar  valida y sale con error si los archivos generados no están al día
 """
 import csv
@@ -17,8 +20,10 @@ from pathlib import Path
 CARPETA = Path(__file__).resolve().parent
 ANOTADA = CARPETA / "colores.csv"
 COMPLETA = CARPETA / "nombres-completos.csv"
+SIGNIFICADOS = CARPETA / "significados-idiomas.csv"
 README = CARPETA / "README.md"
-POR_IDIOMA = CARPETA / "colores-por-idioma.md"
+INDICE = CARPETA / "colores-por-idioma.md"
+DIR_IDIOMAS = CARPETA / "por-idioma"
 INICIO = "<!-- tabla:inicio -->"
 FIN = "<!-- tabla:fin -->"
 
@@ -38,6 +43,7 @@ COLUMNAS_ANOTADA = (
     + ["hex", "significado_psicologico", "significado_mistico"]
 )
 COLUMNAS_COMPLETA = ["nombre_ingles", "hex", "curada"]
+COLUMNAS_SIGNIFICADOS = ["idioma", "nombre_ingles", "significado_psicologico", "significado_mistico"]
 RE_NOMBRE_CSS = re.compile(r"[a-z]+")
 RE_HEX = re.compile(r"#[0-9A-F]{6}")
 
@@ -92,6 +98,39 @@ def validar_completa(filas, errores):
         errores.append("nombres-completos.csv: las filas deben estar ordenadas por nombre")
 
 
+def validar_significados(filas, anotada, errores):
+    """Cada color de colores.csv debe tener su par de significados en cada idioma, salvo el español."""
+    orden = {codigo: n for n, codigo in enumerate(c for c, _ in IDIOMAS if c != "es")}
+    es = {f["nombre_ingles"]: f for f in anotada}
+    vistos = set()
+    for n, fila in enumerate(filas, start=2):
+        idioma, nombre = fila["idioma"], fila["nombre_ingles"]
+        if idioma not in orden:
+            errores.append(f"significados-idiomas.csv línea {n}: idioma desconocido o español: {idioma!r}")
+            continue
+        if nombre not in es:
+            errores.append(f"significados-idiomas.csv línea {n}: {nombre!r} no está en colores.csv")
+            continue
+        if (idioma, nombre) in vistos:
+            errores.append(f"significados-idiomas.csv línea {n}: repetido {idioma}/{nombre}")
+        vistos.add((idioma, nombre))
+        for campo in ("significado_psicologico", "significado_mistico"):
+            valor = fila[campo]
+            if not valor.strip() or valor != valor.strip():
+                errores.append(f"significados-idiomas.csv línea {n}: {campo} vacío o con espacios sobrantes")
+            elif "|" in valor or "\n" in valor:
+                errores.append(f"significados-idiomas.csv línea {n}: {campo} no puede llevar '|' ni saltos de línea")
+            elif valor == es[nombre][campo]:
+                errores.append(f"significados-idiomas.csv línea {n}: {campo} de {idioma}/{nombre} está sin traducir")
+    faltan = [(c, nom) for c in orden for nom in es if (c, nom) not in vistos]
+    if faltan:
+        ejemplo = ", ".join(f"{c}/{nom}" for c, nom in faltan[:5])
+        errores.append(f"significados-idiomas.csv: faltan {len(faltan)} combinaciones idioma/color (por ejemplo {ejemplo})")
+    claves = [(f["nombre_ingles"], orden.get(f["idioma"], -1)) for f in filas]
+    if claves != sorted(claves):
+        errores.append("significados-idiomas.csv: las filas deben ir ordenadas por nombre_ingles y, dentro, por el orden de IDIOMAS en generar-tabla.py")
+
+
 def tabla_readme(filas):
     lineas = [
         "| Inglés | Español | Hex | Significado psicológico | Significado místico |",
@@ -105,58 +144,106 @@ def tabla_readme(filas):
     return "\n".join(lineas)
 
 
-def por_idioma(filas):
+def pagina_idioma(codigo, etiqueta, anotada, significados):
+    """Página con nombre, hex y los dos significados de los 148 colores en un idioma."""
+    es = codigo == "es"
+    con_nombre = codigo != "en"
+    cabecera = "| Inglés |" + (" Nombre |" if con_nombre else "") + " Hex | Significado psicológico | Significado místico |"
+    separador = "|---|" + ("---|" if con_nombre else "") + "---|---|---|"
+    partes = [
+        f"# Colores con nombre en {etiqueta} (`{codigo}`)",
+        "",
+        "Generado por `generar-tabla.py` a partir de `colores.csv`"
+        + ("." if es else " y `significados-idiomas.csv`. No editar a mano."),
+        "",
+        "Las traducciones son propuestas y no están revisadas por hablantes nativos."
+        if not es else "Los nombres y los significados en español son el original de `colores.csv`.",
+        "Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README.md).",
+        "",
+        cabecera,
+        separador,
+    ]
+    for f in anotada:
+        nombre = f["nombre_ingles"]
+        if es:
+            psicologico, mistico = f["significado_psicologico"], f["significado_mistico"]
+        else:
+            psicologico, mistico = significados[(codigo, nombre)]
+        celdas = [f"`{nombre}`"]
+        if con_nombre:
+            celdas.append(f[f"nombre_{codigo}"])
+        celdas += [f"`{f['hex']}`", psicologico, mistico]
+        partes.append("| " + " | ".join(celdas) + " |")
+    partes.append("")
+    return "\n".join(partes)
+
+
+def indice_idiomas(anotada):
     partes = [
         "# Colores con nombre por idioma",
         "",
-        "Generado por `generar-tabla.py` a partir de `colores.csv`. No editar a mano.",
+        "Generado por `generar-tabla.py`. No editar a mano.",
         "",
-        "Cada sección es un idioma. Las traducciones son propuestas y no están revisadas por hablantes nativos.",
+        f"Un archivo por idioma, con los {len(anotada)} colores CSS: su nombre, su valor hex y sus significados "
+        "psicológico y místico en ese idioma. Las traducciones son propuestas y no están revisadas "
+        "por hablantes nativos. La tabla en español está también en el [README](README.md).",
         "",
+        "| Código | Idioma | Archivo |",
+        "|---|---|---|",
     ]
     for codigo, etiqueta in IDIOMAS:
-        partes += [f"## {etiqueta} (`{codigo}`)", "", "| Inglés | Nombre | Hex |", "|---|---|---|"]
-        for f in filas:
-            nombre = f["nombre_ingles"] if codigo == "en" else f[f"nombre_{codigo}"]
-            partes.append(f"| `{f['nombre_ingles']}` | {nombre} | `{f['hex']}` |")
-        partes.append("")
+        partes.append(f"| `{codigo}` | {etiqueta} | [por-idioma/{codigo}.md](por-idioma/{codigo}.md) |")
+    partes.append("")
     return "\n".join(partes)
 
 
 def main():
     anotada = leer(ANOTADA, COLUMNAS_ANOTADA)
     completa = leer(COMPLETA, COLUMNAS_COMPLETA)
+    traducidos = leer(SIGNIFICADOS, COLUMNAS_SIGNIFICADOS)
     errores = []
     validar_anotada(anotada, errores)
     validar_completa(completa, errores)
+    validar_significados(traducidos, anotada, errores)
     if errores:
-        sys.exit("Errores en los CSV:\n  " + "\n  ".join(errores))
+        sobran = f"\n  ... y {len(errores) - 30} errores más" if len(errores) > 30 else ""
+        sys.exit("Errores en los CSV:\n  " + "\n  ".join(errores[:30]) + sobran)
 
     texto = README.read_text(encoding="utf-8")
     # Cada marcador debe ocupar una línea entera: así no coincide con menciones en la prosa.
     patron = re.compile(r"^" + re.escape(INICIO) + r"$.*?^" + re.escape(FIN) + r"$", re.S | re.M)
     if not patron.search(texto):
         sys.exit(f"README.md: faltan los marcadores {INICIO} y {FIN}")
-    nuevo_readme = patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada)}\n{FIN}", texto)
-    nuevo_por_idioma = por_idioma(anotada)
 
-    resumen = f"{len(anotada)} colores anotados en {len(IDIOMAS)} idiomas y {len(completa)} nombres completos"
+    significados = {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"])
+                    for f in traducidos}
+    generados = {
+        README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada)}\n{FIN}", texto),
+        INDICE: indice_idiomas(anotada),
+    }
+    for codigo, etiqueta in IDIOMAS:
+        generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(codigo, etiqueta, anotada, significados)
+    sobrantes = sorted(p for p in DIR_IDIOMAS.glob("*") if p not in generados) if DIR_IDIOMAS.exists() else []
+
+    resumen = (f"{len(anotada)} colores anotados en {len(IDIOMAS)} idiomas, "
+               f"{len(traducidos)} significados traducidos y {len(completa)} nombres completos")
     if "--comprobar" in sys.argv:
-        desfasados = []
-        if nuevo_readme != texto:
-            desfasados.append("README.md")
-        if not POR_IDIOMA.exists() or POR_IDIOMA.read_text(encoding="utf-8") != nuevo_por_idioma:
-            desfasados.append("colores-por-idioma.md")
+        desfasados = [p.relative_to(CARPETA).as_posix() for p, contenido in generados.items()
+                      if not p.exists() or p.read_text(encoding="utf-8") != contenido]
+        desfasados += [f"{p.relative_to(CARPETA).as_posix()} (sobra)" for p in sobrantes]
         if desfasados:
-            print(f"No coinciden con colores.csv: {', '.join(desfasados)}. "
+            print(f"No coinciden con los CSV: {', '.join(desfasados)}. "
                   "Ejecuta python3 generar-tabla.py", file=sys.stderr)
             return 1
         print(f"OK: {resumen}; archivos generados al día.")
         return 0
 
-    README.write_text(nuevo_readme, encoding="utf-8")
-    POR_IDIOMA.write_text(nuevo_por_idioma, encoding="utf-8")
-    print(f"Generados README.md y colores-por-idioma.md: {resumen}.")
+    DIR_IDIOMAS.mkdir(exist_ok=True)
+    for p, contenido in generados.items():
+        p.write_text(contenido, encoding="utf-8")
+    for p in sobrantes:
+        p.unlink()
+    print(f"Generados README.md, colores-por-idioma.md y {len(IDIOMAS)} páginas en por-idioma/: {resumen}.")
     return 0
 
 

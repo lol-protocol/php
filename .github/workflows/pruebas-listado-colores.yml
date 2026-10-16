@@ -31,8 +31,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      # Valida colores.csv y nombres-completos.csv, y falla si la tabla de
-      # README.md no coincide con colores.csv.
+      # Valida colores.csv, significados-idiomas.csv y nombres-completos.csv, y
+      # falla si la tabla de README.md, colores-por-idioma.md o alguna pagina de
+      # por-idioma/ no coincide con lo que generan esos CSV.
       - name: Comprobar datos y tabla
         working-directory: Listado-colores
         run: python3 generar-tabla.py --comprobar
