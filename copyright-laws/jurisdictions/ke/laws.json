@@ -22,13 +22,7 @@
     "data_status": "curated",
     "confidence": "",
     "last_checked": "",
-    "sources": {
-      "digital_protection": {
-        "url": "https://wipo.int/export/sites/www/copyright/en/docs/limitations/ke.pdf",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      }
-    },
+    "sources": {},
     "changes": [
       {
         "date": "2026-10-14",

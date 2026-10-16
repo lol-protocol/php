@@ -22,13 +22,7 @@
     "data_status": "curated",
     "confidence": "",
     "last_checked": "",
-    "sources": {
-      "enforcement_body": {
-        "url": "https://ipoi.gov.ie/en/news-events/news-categories/announcements/office-change-of-name/",
-        "confidence": "medium",
-        "checked": "2026-10-14"
-      }
-    },
+    "sources": {},
     "changes": [
       {
         "date": "2026-10-14",

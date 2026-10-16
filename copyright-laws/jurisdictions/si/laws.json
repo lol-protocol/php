@@ -22,13 +22,7 @@
     "data_status": "researched",
     "confidence": "medium",
     "last_checked": "2026-10-08",
-    "sources": {
-      "moral_rights": {
-        "url": "https://ebooks.uni-lj.si/ZalozbaUL/catalog/download/673/1049/10921?inline=1",
-        "confidence": "medium",
-        "checked": "2026-10-15"
-      }
-    },
+    "sources": {},
     "changes": [
       {
         "date": "2026-10-15",
