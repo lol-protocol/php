@@ -84,4 +84,36 @@ class CartTest extends TestCase
 
         $this->assertSame(5, $carrito->totalArticulos());
     }
+
+    public function testActualizarReturnsTrueAndSucceedsUnderTheLineCap(): void
+    {
+        $carrito = new Cart();
+
+        $this->assertTrue($carrito->actualizar('SKU1', 1));
+    }
+
+    public function testActualizarRejectsANewLineOnceAtTheLineCapButAllowsUpdatingExistingOnes(): void
+    {
+        $carrito = new Cart();
+        for ($i = 0; $i < Cart::MAX_LINEAS; $i++) {
+            $carrito->actualizar("SKU{$i}", 1);
+        }
+
+        $this->assertFalse($carrito->actualizar('SKU-EXTRA', 1));
+        $this->assertSame(Cart::MAX_LINEAS, count($carrito->items()));
+
+        $this->assertTrue($carrito->actualizar('SKU0', 5));
+        $this->assertSame(5, $carrito->cantidadDe('SKU0'));
+    }
+
+    public function testActualizarToZeroAtTheLineCapStillRemovesTheLine(): void
+    {
+        $carrito = new Cart();
+        for ($i = 0; $i < Cart::MAX_LINEAS; $i++) {
+            $carrito->actualizar("SKU{$i}", 1);
+        }
+
+        $this->assertTrue($carrito->actualizar('SKU0', 0));
+        $this->assertSame(Cart::MAX_LINEAS - 1, count($carrito->items()));
+    }
 }

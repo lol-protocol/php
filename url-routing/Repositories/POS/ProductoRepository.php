@@ -47,6 +47,38 @@ final class ProductoRepository extends Repository
         return $row;
     }
 
+    /**
+     * Batched variantePorSku(), for pages that look up several SKUs at once
+     * (the cart) instead of one query per line.
+     *
+     * @param list<string> $skus
+     * @return array<string, array> sku => row, only for SKUs that exist
+     */
+    public function variantesPorSkus(array $skus): array
+    {
+        if ($skus === []) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($skus), '?'));
+        $rows = $this->db->fetchAll(
+            "SELECT v.sku, v.nombre AS variante_nombre, v.stock,
+                    COALESCE(v.precio_centavos, p.precio_centavos) AS precio_centavos, p.moneda,
+                    p.id AS producto_id, p.nombre AS producto_nombre, p.activo
+               FROM variantes v JOIN productos p ON p.id = v.producto_id
+              WHERE v.sku IN ({$placeholders})",
+            $skus
+        );
+
+        $porSku = [];
+        foreach ($rows as $row) {
+            $row['activo'] = (bool)$row['activo'];
+            $porSku[$row['sku']] = $row;
+        }
+
+        return $porSku;
+    }
+
     /** @return list<array> variants with their effective price and stock */
     public function variantes(int $id): array
     {

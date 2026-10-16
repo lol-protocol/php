@@ -16,15 +16,23 @@ class CartController extends BaseController
         return new Cart();
     }
 
+    /** A variant usable for buying: exists and is active; null otherwise. */
+    private function variante(ProductoRepository $repo, string $sku): ?array
+    {
+        $variante = $repo->variantePorSku($sku);
+        return ($variante === null || !$variante['activo']) ? null : $variante;
+    }
+
     public function show(array $params = []): string
     {
         $repo = new ProductoRepository($this->db());
         $carrito = $this->carrito();
+        $variantes = $repo->variantesPorSkus(array_keys($carrito->items()));
         $lineas = [];
         $totales = [];
 
         foreach ($carrito->items() as $sku => $cantidad) {
-            $variante = $repo->variantePorSku($sku);
+            $variante = $variantes[$sku] ?? null;
             if ($variante === null || !$variante['activo']) {
                 // Removed or deactivated since it was added: it can't be bought anymore.
                 $carrito->quitar($sku);
@@ -59,13 +67,22 @@ class CartController extends BaseController
         $cantidad = max(1, (int)$this->postString('cantidad', '1'));
 
         $repo = new ProductoRepository($this->db());
-        $variante = $repo->variantePorSku($sku);
-        if ($variante === null || !$variante['activo'] || $variante['stock'] < 1) {
+        $variante = $this->variante($repo, $sku);
+        if ($variante === null || $variante['stock'] < 1) {
             return $this->handleBadRequest('Variante no disponible');
         }
 
         $carrito = $this->carrito();
-        $carrito->actualizar($sku, min($carrito->cantidadDe($sku) + $cantidad, $variante['stock']));
+        $deseado = $carrito->cantidadDe($sku) + $cantidad;
+        $final = min($deseado, $variante['stock']);
+
+        if (!$carrito->actualizar($sku, $final)) {
+            return $this->handleBadRequest('El carrito ya tiene demasiados productos distintos');
+        }
+
+        if ($final < $deseado) {
+            $this->flash('Se agregó menos de lo pedido: no hay suficiente stock.');
+        }
 
         return $this->redirect('/cart/');
     }
@@ -77,11 +94,15 @@ class CartController extends BaseController
         }
 
         $sku = $this->postString('sku');
-        $cantidad = (int)$this->postString('cantidad', '0');
+        $cantidadRaw = $this->postString('cantidad');
+        if (!ctype_digit($cantidadRaw)) {
+            return $this->handleBadRequest('Cantidad inválida');
+        }
+        $cantidad = (int)$cantidadRaw;
 
         $repo = new ProductoRepository($this->db());
-        $variante = $repo->variantePorSku($sku);
-        if ($variante === null || !$variante['activo']) {
+        $variante = $this->variante($repo, $sku);
+        if ($variante === null) {
             // Removed or deactivated since it was added; drop the line instead of erroring.
             $this->carrito()->quitar($sku);
             return $this->redirect('/cart/');
