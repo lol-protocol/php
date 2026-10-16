@@ -1,6 +1,6 @@
 # Módulo de Revisión de Contenido Difamatorio
 
-[![Tests](https://github.com/lol-protocol/php/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/lol-protocol/php/actions/workflows/tests.yml)
+[![Tests](https://github.com/lol-protocol/php/actions/workflows/pruebas-defamatory-content-review.yml/badge.svg?branch=master)](https://github.com/lol-protocol/php/actions/workflows/pruebas-defamatory-content-review.yml)
 
 Detecta insultos, léxico soez y construcciones de ridiculización en nombres y
 apellidos de personas, para plataformas de información genealógica.
