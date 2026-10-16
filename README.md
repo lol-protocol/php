@@ -26,7 +26,7 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`iconos-biblioteca/`](iconos-biblioteca/) | Set de iconos SVG abstractos en 2.5D, sin texto, para biblioteca virtual: 151 iconos en 3 variantes. |
 | [`iconos-tools/`](iconos-tools/) | Generador y validador en Python de los dos sets de iconos y de la galería compartida `galeria-iconos.html`. |
 | [`marcalibros-plataforma-pos-brand-identity/`](marcalibros-plataforma-pos-brand-identity/) | Identidad de marca de Marcalibros (marcadores de lectura) para Plataforma POS: tokens de marca, iconos SVG, 1000 marcalibros (10 movimientos literarios y 10 tipos de texto) con su vista previa JPG, paisajes JPG, el generador en Python, un módulo PHP para crear marcalibros propios a partir de imágenes subidas y una aplicación web independiente, sin cuentas, para explorarlos y crearlos. |
-| [`Listado-colores/`](Listado-colores/) | Léxico de colores con nombre para el etiquetado part-of-speech: una lista completa de 31.935 nombres con su hex (con una marca de buenos nombres) y una tabla anotada de los 148 colores CSS, con sus nombres en 30 idiomas, y dos significados: el psicológico y el místico. |
+| [`Listado-colores/`](Listado-colores/) | Léxico de colores con nombre para el etiquetado part-of-speech: una lista completa de 31.935 nombres con su hex (con una marca de buenos nombres) y una tabla anotada de los 148 colores CSS, con sus nombres y dos significados (el psicológico y el místico) en 30 idiomas. |
 
 Cada carpeta tiene su propio README con instrucciones de instalación y uso. La mayoría tiene
 también su propio código y tests; `landing-page/` es un solo archivo; `psychology-and-marketing/`
@@ -75,7 +75,7 @@ Cada proyecto tiene su workflow en `.github/workflows/` y solo corre cuando camb
 - `pruebas-url-routing.yml`: tests de `url-routing/` contra SQLite y PostgreSQL, y que sus migraciones corran limpias en PostgreSQL.
 - `pruebas-document-formats.yml`: `document-formats` (tests en Node de `document-formats/`) y `document-formats-database` (importa `document-formats/` a MySQL, dos veces para comprobar que no duplica filas, y lo valida contra los CSV).
 - `pruebas-web-animations.yml`: prueba de humo de las animaciones.
-- `pruebas-listado-colores.yml`: valida los CSV de `Listado-colores/` y que la tabla del README y `colores-por-idioma.md` estén al día (`python3 generar-tabla.py --comprobar`).
+- `pruebas-listado-colores.yml`: valida los CSV de `Listado-colores/` y que la tabla del README, `colores-por-idioma.md` y las páginas de `por-idioma/` estén al día (`python3 generar-tabla.py --comprobar`).
 
 `sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`, que también corre si cambia `defamatory-content-review/`, del que depende).
 
