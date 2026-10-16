@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Valida paises.csv y paises_pos.csv y genera dos tablas ordenadas por prioridad.
 
-Uso: python3 generar_tabla.py   (solo biblioteca estándar de Python 3)
+Uso: python3 generar_tabla.py               valida y escribe las dos tablas
+     python3 generar_tabla.py --comprobar   valida y falla si las tablas no están al día (no escribe)
+     (solo biblioteca estándar de Python 3)
 
 Genealogía (paises.csv):      prioridad = IG x IO;  excluido si IO <= UMBRAL_GENEALOGIA
 Etiquetador POS (paises_pos.csv): prioridad = IL x IP local;  excluido si IP local <= UMBRAL_POS
@@ -74,7 +76,7 @@ def tabla_md(titulo, nota, enc, filas):
     return "\n".join(lineas) + "\n"
 
 
-def main():
+def main(comprobar=False):
     paises = leer(PAISES, COLUMNAS_PAISES)
     pos = leer(POS, COLUMNAS_POS)
 
@@ -139,25 +141,36 @@ def main():
     gen_ordenado = [c for *_, c in sorted(filas_gen, key=lambda x: (x[0], x[1], x[2]))]
     pos_ordenado = [c for *_, c in sorted(filas_pos, key=lambda x: (x[0], x[1], x[2]))]
 
-    SALIDA_GENEALOGIA.write_text(tabla_md(
+    texto_gen = tabla_md(
         "Listado de países: genealogía",
         "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Cifras de población, "
         "IDH y PIB pc **sin contrastar**; ver `README.md`, «Estado de los datos».",
         ["País", "Tipo", "Región", "Población (M)", "Población histórica acumulada (M)",
          "IDH", "PIB pc nominal (USD)", "PIB pc PPA (USD)", "Genealogía (IG)",
          "Operabilidad (IO)", "Prioridad", "Excluido", "Comentarios"],
-        gen_ordenado), encoding="utf-8")
-    SALIDA_POS.write_text(tabla_md(
+        gen_ordenado)
+    texto_pos = tabla_md(
         "Listado de países: etiquetador POS",
         "Generado por `generar_tabla.py` desde `paises.csv` y `paises_pos.csv`. No editar a mano. "
         "Índices de juicio propio; ver `README.md`, «Etiquetador POS».",
         ["País", "Idiomas (local primero)", "Tipo", "Lectura (IL)", "IP (mejor lengua)",
          "IP local", "Prioridad (IL × IP local)", "Excluido", "Comentarios"],
-        pos_ordenado), encoding="utf-8")
+        pos_ordenado)
 
+    if comprobar:
+        desactualizadas = [ruta.name for ruta, texto in ((SALIDA_GENEALOGIA, texto_gen), (SALIDA_POS, texto_pos))
+                           if not ruta.exists() or ruta.read_text(encoding="utf-8") != texto]
+        if desactualizadas:
+            sys.exit(f"No están al día: {', '.join(desactualizadas)}. "
+                     "Ejecuta python3 generar_tabla.py y confirma el resultado.")
+    else:
+        SALIDA_GENEALOGIA.write_text(texto_gen, encoding="utf-8")
+        SALIDA_POS.write_text(texto_pos, encoding="utf-8")
+
+    accion = "al día" if comprobar else "escritas"
     print(f"{len(paises)} países. Genealogía: {excluidos_gen} excluidos ({SALIDA_GENEALOGIA.name}). "
-          f"POS: {excluidos_pos} excluidos ({SALIDA_POS.name}).")
+          f"POS: {excluidos_pos} excluidos ({SALIDA_POS.name}). Tablas {accion}.")
 
 
 if __name__ == "__main__":
-    main()
+    main(comprobar="--comprobar" in sys.argv[1:])

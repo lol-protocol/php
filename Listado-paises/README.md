@@ -21,9 +21,14 @@ desde la prehistoria.
 - `historia_poblacion.py`: calcula la población histórica acumulada y la escribe en `paises.csv`.
   Necesita datos de entrada que todavía no están (ver «Población histórica acumulada»).
 
+- `pruebas.py`: pruebas del proyecto, con series sintéticas de resultado conocido. La CI las corre
+  junto con `generar_tabla.py --comprobar` (`.github/workflows/pruebas-listado-paises.yml`).
+
 ```bash
-python3 generar_tabla.py      # valida y regenera las dos tablas
-python3 historia_poblacion.py # solo hace algo si existe poblacion_larga.csv
+python3 generar_tabla.py              # valida y regenera las dos tablas
+python3 generar_tabla.py --comprobar  # valida y falla si las tablas no están al día (no escribe)
+python3 -m unittest -v pruebas        # pruebas
+python3 historia_poblacion.py         # solo hace algo si existe poblacion_larga.csv
 ```
 
 Ambos scripts usan solo la biblioteca estándar de Python 3. `generar_tabla.py` se detiene con un
