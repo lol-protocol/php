@@ -2,6 +2,7 @@
   {
     "country_code": "IN",
     "country_name": "India",
+    "region": "asia_pacific",
     "law_name": "Copyright Act 1957",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 60 years",
@@ -12,7 +13,12 @@
     "fair_use_exceptions": "Educational exemptions",
     "registration_required": "No",
     "enforcement_body": "Copyright Board of India",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://copyright.gov.in/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://copyright.gov.in/",
+    "notes": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

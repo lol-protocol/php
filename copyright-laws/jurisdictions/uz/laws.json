@@ -1,0 +1,24 @@
+[
+  {
+    "country_code": "UZ",
+    "country_name": "Uzbekistan",
+    "region": "asia_pacific",
+    "law_name": "Law on Copyright and Related Rights (No. 42 of 20 July 2006, as amended to 2021)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Authorship, name & integrity (name and reputation rights without time limit)",
+    "orphan_works": "Not specified",
+    "digital_protection": "Technical means of protection recognised (devices restricting use/copying) (unconfirmed)",
+    "fair_use_exceptions": "Closed list of free uses with attribution (e.g. quotation, blind, library lending)",
+    "registration_required": "No",
+    "enforcement_body": "Intellectual Property Agency under the Ministry of Justice",
+    "treaties_signatory": "Berne/WCT/WPPT",
+    "treaties_not_party": "TRIPS",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/5201",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
+  }
+]

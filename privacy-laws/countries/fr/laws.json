@@ -2,6 +2,7 @@
   {
     "country_code": "FR",
     "country_name": "France",
+    "region": "europe",
     "law_name": "General Data Protection Regulation (GDPR)",
     "jurisdiction": "CNIL",
     "enactment_date": "2016-04-27",
@@ -16,6 +17,11 @@
     "exemptions": "Legal obligations",
     "website_url": "https://www.cnil.fr/",
     "language": "French",
-    "notes": "GDPR + French law 78-17"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "National complement: Loi n 78-17 Informatique et Libertes (amended 2018); regulator CNIL",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

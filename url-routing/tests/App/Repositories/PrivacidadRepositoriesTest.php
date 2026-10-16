@@ -387,7 +387,193 @@ class PrivacidadRepositoriesTest extends TestCase
         $this->assertSame([], array_values(array_diff(array_unique($usados[1]), $definidos[1])), 'every pointer resolves');
     }
 
+    // --- the role a persona has in an event ---------------------------------------------------------
+
+    /**
+     * Only the persona an event is about, its `principal`, is born or dies in it. A
+     * declarant at a death, a parent at a birth or a godparent were there; that is all.
+     */
+    #[DataProvider('drivers')]
+    public function testRegisteringSomeonesDeathDoesNotMakeYouDead(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $db->execute("INSERT INTO personas (id, nombres, apellidos) VALUES (6128479300, 'Abuela', 'Fallecida'), (6128479301, 'Hija', 'Declarante')");
+        $this->suceso($db, 412999300, 'nacimiento', '1940-01-01', [6128479300]);
+        $this->suceso($db, 412999301, 'defuncion', '2020-06-01', [6128479300]);
+        $this->suceso($db, 412999302, 'nacimiento', '1970-05-05', [6128479301]);
+        $this->participa($db, 412999301, 6128479301, 'declarante');
+        $repo = new PersonaRepository($db, self::publica());
+
+        $hija = $repo->find(6128479301);
+
+        $this->assertTrue($hija['oculta'], 'she registered a death; she did not die');
+        $this->assertSame(Privacidad::NOMBRE_OCULTO, $hija['nombres']);
+        $this->assertNull($hija['nacimiento']);
+        $this->assertNull($hija['defuncion'], "nor is the death she registered hers");
+        $this->assertFalse($repo->find(6128479300)['oculta'], 'the one who did die stays visible');
+        $this->assertSame([6128479300], self::ids($repo->buscar('Fallecida')));
+        $this->assertSame([], $repo->buscar('Declarante'), 'and she cannot be found by name');
+    }
+
+    /** A dead persona's summary shows her own death, not an earlier one she took part in. */
+    #[DataProvider('drivers')]
+    public function testASummaryShowsTheDeathOfThePersonaNotOneSheTookPartIn(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $this->participa($db, 412000012, self::ANTONIO, 'declarante'); // he registered his father José's death (1941)
+        $repo = new PersonaRepository($db, self::publica());
+
+        $this->assertSame('1977-01-18', $repo->find(self::ANTONIO)['defuncion']);
+        $this->assertSame('1941-10-05', $repo->find(self::JOSE)['defuncion']);
+
+        $exportada = array_column((new ColeccionRepository($db, self::publica()))->personasParaExportar(1048293), null, 'id');
+        $this->assertSame('1977-01-18', $exportada[self::ANTONIO]['defuncion'], 'the GEDCOM export reads it the same way');
+    }
+
+    /** A parent is not born where her child was: the places list the persona an event is about. */
+    #[DataProvider('drivers')]
+    public function testAParentIsNotBornWhereHerChildWas(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $db->execute("INSERT INTO personas (id, nombres, apellidos) VALUES (6128479310, 'Hijo', 'García Fernández')");
+        $this->suceso($db, 412999310, 'nacimiento', '1895-04-04', [6128479310]);
+        $db->execute("UPDATE sucesos SET lugar_ruta = 'mx/jal/gdl' WHERE id = 412999310");
+        $this->participa($db, 412999310, self::MARIA, 'madre'); // María was born in Oviedo
+        $this->participa($db, 412999310, self::JOSE, 'padre');  // so was José, a García
+        $privacidad = self::publica();
+
+        $this->assertEqualsCanonicalizing(
+            [self::CARMEN, 6128479310],
+            self::ids((new LugarRepository($db, $privacidad))->personas('mx/jal/gdl'))
+        );
+        $this->assertSame(
+            ['es/ast/ovi' => 2],
+            array_map('intval', array_column((new GrupoRepository($db, $privacidad))->dispersion(582317), 'total', 'lugar_ruta')),
+            'José still counts once, where he was born'
+        );
+    }
+
+    /** Deliberate: with no birth of her own, a parent is taken to be no younger than her child. */
+    #[DataProvider('drivers')]
+    public function testAParentWithNoBirthOfHerOwnIsHiddenWhileHerChildIs(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $db->execute("INSERT INTO personas (id, nombres, apellidos) VALUES (6128479320, 'Madre', 'De Carlos'), (6128479321, 'Madre', 'De José')");
+        $this->participa($db, 412000010, 6128479320, 'madre'); // Carlos, born 1952
+        $this->participa($db, 412000001, 6128479321, 'madre'); // José, born 1868
+        $repo = new PersonaRepository($db, self::publica());
+
+        $this->assertTrue($repo->find(6128479320)['oculta']);
+        $this->assertFalse($repo->find(6128479321)['oculta']);
+        $this->assertNull($repo->find(6128479321)['nacimiento'], "and her summary does not borrow her child's birth");
+    }
+
+    // --- an event hidden by a living participant leaves its year ------------------------------------
+
+    /**
+     * Nina died as a child. Her birth names Rosa, who lives, as her mother, so the event is
+     * hidden (see Privacidad::sucesos()): its day and its place would point at Rosa. The
+     * year is Nina's own, though, and she is long dead, so that is what her page keeps.
+     */
+    private function conNacimientoOculto(string $driver): Database
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $db->execute("INSERT INTO personas (id, nombres, apellidos, grupo_id) VALUES (6128479200, 'Nina', 'Fallecida', 582317)");
+        $this->suceso($db, 412999200, 'nacimiento', '1950-03-02', [6128479200]);
+        $db->execute("UPDATE sucesos SET lugar_ruta = 'mx/jal/gdl' WHERE id = 412999200");
+        $this->participa($db, 412999200, self::ROSA, 'madre');
+        $this->suceso($db, 412999201, 'defuncion', '1960-01-01', [6128479200]);
+        $db->execute("UPDATE sucesos SET lugar_ruta = 'mx/jal/gdl' WHERE id = 412999201");
+        $db->execute('INSERT INTO coleccion_personas (coleccion_id, persona_id) VALUES (1048293, 6128479200)');
+
+        return $db;
+    }
+
+    #[DataProvider('drivers')]
+    public function testAHiddenBirthLeavesOnlyItsYearOnThePersonasSummary(string $driver): void
+    {
+        $repo = new PersonaRepository($this->conNacimientoOculto($driver), self::publica());
+
+        $nina = $repo->find(6128479200);
+
+        $this->assertFalse($nina['oculta']);
+        $this->assertSame('1950', $nina['nacimiento'], 'the day is gone, the year stays');
+        $this->assertNull($nina['lugar_nacimiento'], 'and so is the place');
+        $this->assertSame('1960-01-01', $nina['defuncion'], 'her death has no living participant, so it shows whole');
+        $this->assertSame('1950', $repo->buscar('Fallecida')[0]['nacimiento'], 'every list reads it the same way');
+    }
+
+    #[DataProvider('drivers')]
+    public function testAHiddenDeathLeavesOnlyItsYear(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $db->execute("INSERT INTO personas (id, nombres, apellidos) VALUES (6128479301, 'Hija', 'Declarante')");
+        $this->suceso($db, 412999302, 'nacimiento', '1970-05-05', [6128479301]);
+        $this->participa($db, 412000013, 6128479301, 'declarante'); // Antonio's death, 1977-01-18
+
+        $antonio = (new PersonaRepository($db, self::publica()))->find(self::ANTONIO);
+
+        $this->assertSame('1977', $antonio['defuncion']);
+        $this->assertSame('1898-01-20', $antonio['nacimiento'], 'his birth has nobody who lives');
+    }
+
+    #[DataProvider('drivers')]
+    public function testAHiddenEventWithoutADateStaysWithoutOne(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $db->execute("INSERT INTO personas (id, nombres, apellidos) VALUES (6128479330, 'Sin', 'Fecha')");
+        $db->execute("INSERT INTO sucesos (id, tipo) VALUES (412999330, 'defuncion')");
+        $this->participa($db, 412999330, 6128479330, 'principal');
+        $this->participa($db, 412999330, self::ROSA, 'declarante');
+
+        $this->assertNull((new PersonaRepository($db, self::publica()))->find(6128479330)['defuncion']);
+    }
+
+    #[DataProvider('drivers')]
+    public function testThePlaceOfAHiddenBirthCountsInNoPlaceListNorSurnameDispersion(string $driver): void
+    {
+        $db = $this->conNacimientoOculto($driver);
+        $privacidad = self::publica();
+
+        $this->assertSame([self::CARMEN], self::ids((new LugarRepository($db, $privacidad))->personas('mx/jal/gdl')), 'Nina was born in Guadalajara, but nobody can tell');
+        $this->assertSame(
+            ['es/ast/ovi' => 2],
+            array_map('intval', array_column((new GrupoRepository($db, $privacidad))->dispersion(582317), 'total', 'lugar_ruta'))
+        );
+    }
+
+    #[DataProvider('drivers')]
+    public function testTheGedcomKeepsOnlyTheYearOfAHiddenBirth(string $driver): void
+    {
+        $personas = (new ColeccionRepository($this->conNacimientoOculto($driver), self::publica()))->personasParaExportar(1048293);
+        $gedcom = (new GedcomExporter())->export($personas, 'Familia García');
+
+        preg_match('/^0 @I6128479200@ INDI\r\n(?:(?!^0 ).*\r\n)*/m', $gedcom, $bloque);
+        $this->assertStringContainsString("1 BIRT\r\n2 DATE 1950\r\n", $bloque[0]);
+        $this->assertStringContainsString("1 DEAT\r\n2 DATE 1 JAN 1960\r\n", $bloque[0]);
+        $this->assertStringNotContainsString('PLAC', $bloque[0], 'no place for a hidden birth');
+        $this->assertStringNotContainsString('MAR', $bloque[0], 'nor a month');
+    }
+
+    #[DataProvider('drivers')]
+    public function testTheOwnerStillSeesTheWholeHiddenBirth(string $driver): void
+    {
+        $db = $this->conNacimientoOculto($driver);
+        $repo = new PersonaRepository($db, Privacidad::propietario());
+
+        $nina = $repo->find(6128479200);
+
+        $this->assertSame('1950-03-02', $nina['nacimiento']);
+        $this->assertSame('mx/jal/gdl', $nina['lugar_nacimiento']);
+        $this->assertContains(6128479200, self::ids((new LugarRepository($db, Privacidad::propietario()))->personas('mx/jal/gdl')));
+    }
+
     // --- helpers ------------------------------------------------------------------------------------
+
+    private function participa(Database $db, int $suceso, int $persona, string $rol): void
+    {
+        $db->execute('INSERT INTO suceso_participantes (suceso_id, persona_id, rol) VALUES (?, ?, ?)', [$suceso, $persona, $rol]);
+    }
 
     private function nacida(Database $db, int $id, string $fecha): void
     {

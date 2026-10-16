@@ -39,11 +39,11 @@ return [
         ],
         'animal' => [
             // «cerdo» suena mal; «cerda», horrible: el femenino es el insulto sexualizado («cerdas» se bloquea, ver `by`).
-            // «Cerda» singular queda en medium porque también es apellido: con nameCollision no pasaría de revisión igual.
-            ['word' => 'cerda', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
+            // «Cerda» también es apellido: sola queda en revisión, pero dirigida («eres una cerda») se bloquea (whenTargeted).
+            ['word' => 'cerda', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true, 'whenTargeted' => 'high'],
             ['word' => 'cerdo', 'riskType' => 'animal', 'severity' => 'medium', 'forms' => 'adj', 'by' => ['f' => 'high']],
             ['word' => 'marrano', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
-            ['word' => 'marrana', 'riskType' => 'animal', 'severity' => 'medium'],
+            ['word' => 'marrana', 'riskType' => 'animal', 'severity' => 'medium', 'whenTargeted' => 'high'], // como «cerda»
             ['word' => 'chancho', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'puerco', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'puerca', 'riskType' => 'animal', 'severity' => 'medium'],
@@ -70,7 +70,7 @@ return [
             ['word' => 'gorila', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'foca', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'ballena', 'riskType' => 'animal', 'severity' => 'medium'],
-            ['word' => 'vaca', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true],
+            ['word' => 'vaca', 'riskType' => 'animal', 'severity' => 'medium', 'nameCollision' => true, 'whenTargeted' => 'high'], // a una mujer, «gorda»
             ['word' => 'buey', 'riskType' => 'animal', 'severity' => 'medium'],
             ['word' => 'cabra', 'riskType' => 'animal', 'severity' => 'low', 'nameCollision' => true],
             ['word' => 'borrego', 'riskType' => 'animal', 'severity' => 'low', 'nameCollision' => true],
@@ -172,7 +172,7 @@ return [
             ['word' => 'asqueroso', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'nauseabundo', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'gordo', 'riskType' => 'fisico', 'severity' => 'low', 'nameCollision' => true],
-            ['word' => 'gorda', 'riskType' => 'fisico', 'severity' => 'low'],
+            ['word' => 'gorda', 'riskType' => 'fisico', 'severity' => 'low', 'targeted' => true, 'whenTargeted' => 'medium'], // dirigida ofende más que «gordo»
             ['word' => 'gordinflón', 'riskType' => 'fisico', 'severity' => 'medium'],
             ['word' => 'obeso', 'riskType' => 'fisico', 'severity' => 'low', 'nameCollision' => true],
             ['word' => 'tonel', 'riskType' => 'fisico', 'severity' => 'medium'],
@@ -425,6 +425,11 @@ return [
         ],
 
         'genero' => [
+            // Variantes de cada país, fusionadas aquí. «puto»: insulto homófobo en México y Argentina; en
+            // España, un intensificador («los putos deberes»). Dirigido («eres un puto», «¡puto!») se bloquea; si no, se informa.
+            ['word' => 'puto', 'riskType' => 'genero', 'severity' => 'high', 'targeted' => true, 'forms' => 'noun', 'by' => ['pl' => 'high']],
+            ['word' => 'joto', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']], // México
+            ['word' => 'trolo', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']], // Argentina
             ['word' => 'maricón', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'marica', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'mariquita', 'riskType' => 'genero', 'severity' => 'high'],
@@ -436,14 +441,16 @@ return [
             ['word' => 'bollera', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'machorra', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'marimacho', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'puta', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
+            ['word' => 'puta', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['dim' => 'high', 'pl' => 'high']],
             ['word' => 'putón', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'ramera', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'meretriz', 'riskType' => 'genero', 'severity' => 'medium'],
             ['word' => 'furcia', 'riskType' => 'genero', 'severity' => 'high'],
-            ['word' => 'zorra', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
+            ['word' => 'zorra', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['dim' => 'high', 'pl' => 'high']],
             ['word' => 'perra', 'riskType' => 'genero', 'severity' => 'high', 'forms' => 'noun', 'by' => ['pl' => 'high']],
             ['word' => 'golfa', 'riskType' => 'genero', 'severity' => 'high'],
+            ['word' => 'lagarta', 'riskType' => 'genero', 'severity' => 'medium'],
+            ['word' => 'pájara', 'riskType' => 'genero', 'severity' => 'low'],
             ['word' => 'pendón', 'riskType' => 'genero', 'severity' => 'high', 'nameCollision' => true],
             ['word' => 'buscona', 'riskType' => 'genero', 'severity' => 'high'],
             ['word' => 'prostituta', 'riskType' => 'genero', 'severity' => 'medium'],
@@ -499,10 +506,11 @@ return [
             ['word' => 'gilipollas', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'capullo', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'pendejo', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'pendeja', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'pelotudo', 'riskType' => 'ordinario', 'severity' => 'high'],
             ['word' => 'boludo', 'riskType' => 'ordinario', 'severity' => 'medium', 'targeted' => true],
             ['word' => 'huevón', 'riskType' => 'ordinario', 'severity' => 'medium', 'targeted' => true],
-            ['word' => 'cojones', 'riskType' => 'ordinario', 'severity' => 'high'],
+            ['word' => 'cojones', 'riskType' => 'ordinario', 'severity' => 'low'], // «¡cojones!» es una exclamación común: sólo se informa
             ['word' => 'carajo', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'hostia', 'riskType' => 'ordinario', 'severity' => 'medium'],
             ['word' => 'joputa', 'riskType' => 'ordinario', 'severity' => 'high'],

@@ -2,7 +2,8 @@
 
 /** Indonesian chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'ind', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'ind', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['sesaat', 'butta'],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['kamu', 'kau', 'lu', 'lo', 'elo', 'loe', 'dasar', 'anda', 'kalian', 'kayak', 'seperti', 'dia'],

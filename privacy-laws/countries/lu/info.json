@@ -2,7 +2,6 @@
   "code": "LU",
   "name": "Luxembourg",
   "tld": "lu",
-  "region": "other",
-  "lawCount": 1,
-  "createdAt": "2026-10-07T00:12:16.443Z"
+  "region": "europe",
+  "lawCount": 1
 }

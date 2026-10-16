@@ -609,9 +609,15 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
   dos sí pueden ser legítimas («calle», «Pratt», «looser»), así que lo que
   sólo se encuentra reduciendo dobles («puuta») baja a `review`. El hallazgo
   conserva el texto como se escribió y trae `repeat`: `elongated` o `doubled`.
-  Las amenazas (`patterns`) aceptan letras repetidas con su severidad. Sólo
-  se activa en los idiomas con `meta.collapseRepeats` (español e inglés): en
-  otros —italiano, finés…— la doble letra es parte de la palabra.
+  Las amenazas (`patterns`) aceptan letras repetidas con su severidad. Las
+  rachas de 3 o más se leen en todos los idiomas («cazzzo», «Arschloooch»,
+  «сууука»): medido contra las 50 000 palabras más frecuentes de 26 idiomas,
+  no añade ningún falso positivo. Reducir las dobles sólo se activa con
+  `meta.collapseRepeats => true`: español, inglés y otros 18 idiomas donde la
+  misma medición casi no cambia nada (portugués, alemán, ruso, polaco, turco,
+  árabe…; lo que apareció, como «Pollack» o «sesaat», va a `legit`). En italiano,
+  francés, neerlandés, noruego, finés, islandés y hebreo la doble letra es parte
+  de la palabra («anno» → «ano», «penne» → «pene»), y ahí no se reduce.
 - **Palabras ambiguas.** «vamos a coger el bus», «está de bomba la fiesta»,
   «techo de paja» no son contenido sexual ni bélico: esas palabras sólo
   cuentan si la misma línea trae algo firme (`medium` o `high`) del mismo
@@ -633,8 +639,27 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
   `'targeted' => false` («svinehund») cuentan siempre. Las marcas están en la
   clave `targeted` de 29 idiomas; japonés, coreano, cantonés y tailandés, sin
   espacios entre palabras, siguen como antes. Ver `TargetContext`.
+  Una entrada con `'whenTargeted' => 'high'` sube a esa severidad cuando va
+  dirigida: «cerda» también es apellido (Cerda) y sola no pasa de revisión,
+  pero «eres una cerda» se bloquea (`context => targeted`).
 - **Signos pegados a la palabra.** «puta!», «¿idiota?», «(rata)», ««imbécil»»
   se leen igual que sin signos (antes «idiota!» se aprobaba).
+
+### Palabras de cada país
+
+El idioma es uno solo (`spa`, siempre en tres letras): lo que es insulto en un
+país hispanohablante está en el español base, aunque en otro no lo sea. Cuando
+dos países chocan, se elige la regla que sirve a los dos:
+
+- «puto» (insulto homófobo en México y Argentina, intensificador en España) es
+  `targeted`: «eres un puto» o «¡puto!» se bloquean, «los putos deberes» pasa.
+- «joto» (México) y «trolo» (Argentina) se bloquean siempre.
+- «coger», «concha», «pija» y «pico» son vulgares en unos países y cotidianos en
+  otros («coger el bus», «una concha de mar», «una pija», «las tres y pico»):
+  están en `ambiguous` y sólo cuentan si la línea trae otra palabra sexual.
+- «polla» sigue bloqueándose, aunque en Chile también sea la lotería.
+
+`RegionalWordsTest` fija estos casos.
 
 ### Ampliar las listas de chat
 
@@ -644,9 +669,9 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
 |---|---|
 | `'forms' => 'noun' \| 'adj' \| 'verb'` | Genera plurales, géneros o la conjugación regular (con pronombres pegados: «matarlos», «fóllame», «matá-lo», «ammazzarti», «baise-moi») en español, inglés, portugués, italiano y francés (`TopicInflector`; los verbos romances comparten `RomanceVerbs`). Escribe el sustantivo en singular, el adjetivo en masculino y el verbo en infinitivo. |
 | `'also' => [...]` | Formas irregulares, a mano («degüello»). |
-| `'by' => ['f' => 'high', 'm.pl' => 'none']` | Severidad por forma: la ofensa no es simétrica («cerdo» suena mal, «cerda» horrible; «zorros» son animales). Rasgos: `sg`, `pl`, `m`, `f`, `m.sg`, `m.pl`, `f.sg`, `f.pl`; gana el más específico, y `none` deja fuera esa forma. Una forma que ya está escrita como entrada propia no se genera (lo escrito manda), y las generadas no heredan `nameCollision`. |
+| `'by' => ['f' => 'high', 'm.pl' => 'none']` | Severidad por forma: la ofensa no es simétrica («cerdo» suena mal, «cerda» horrible; «zorros» son animales). Rasgos: `sg`, `pl`, `m`, `f`, `m.sg`, `m.pl`, `f.sg`, `f.pl`; gana el más específico, y `none` deja fuera esa forma. Los diminutivos (`dim`, `dim.f`, `dim.pl`…) sólo se generan si `by` los pide, porque cambian el tono en cualquier dirección: «putita» degrada más, «cerdita» es cariñoso (`'by' => ['dim' => 'high']`; reglas en español y portugués, en italiano y francés van en `also`). Una forma que ya está escrita como entrada propia no se genera (lo escrito manda), y las generadas no heredan `nameCollision`. |
 | categoría `ambiguous` | Palabras con otro uso cotidiano: sólo cuentan acompañadas de algo firme del mismo `riskType`. |
-| meta `'collapseRepeats' => true` | Lee también las palabras escritas con letras repetidas. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
+| meta `'collapseRepeats' => true` | Lee también las palabras con letras dobles reducidas («puuta»); las de 3 o más («puuuta») se leen siempre, salvo con `false`. Actívalo sólo en idiomas cuyos falsos positivos midas (ver `legit`). |
 | `'legit' => [...]` | Palabras con letra doble legítima —y apellidos— cuya lectura reducida coincide con un insulto: «calle» → «calé», «morro» → «moro», «Pratt» → «prat». Nunca se leen reducidas. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
 | `'targeted' => ['types' => [...], 'before' => [...], 'after' => [...]]` | Qué riskTypes sólo cuentan dirigidos a alguien (`animal`, `discapacidad`) y las marcas del idioma que lo indican, antes o después del término (hasta 3 palabras). En un diccionario, `'targeted' => true` suma una entrada suelta a la regla y `'targeted' => false` la saca. `TargetMarkersConfigTest` verifica el formato. |
 | `'everyday' => [...]` | Palabras cotidianas que sin tildes coinciden con un término: «possède» → «possédé», «katıl» (únete) → «katil» (asesino), «moc» (mucho) → «moč». Escritas exactamente así (da igual la mayúscula) no se buscan en el chat; «katil» sin tilde sigue marcándose. `ChatTopicsExemptionsTest` verifica que cada una siga haciendo falta. |
@@ -747,15 +772,17 @@ Content-Type: application/json
 ```json
 {"language": "spa", "checkedLanguages": ["spa", "eng"], "decision": "reject", "censor": true,
  "contentTypes": ["difamatorio", "belico"], "censored": "**************, ****",
- "matches": [{"found": "puta", "term": "puta", "contentType": "difamatorio", "severity": "high"},
-             {"found": "te voy a matar", "term": "amenaza", "contentType": "belico", "severity": "high"}]}
+ "matches": [{"found": "puta", "term": "puta", "contentType": "difamatorio", "contentTypes": ["difamatorio"], "severity": "high"},
+             {"found": "te voy a matar", "term": "amenaza", "contentType": "belico", "contentTypes": ["belico"], "severity": "high"}]}
 ```
 
 `language` es opcional (`spa` por defecto) y acepta el código de tres letras o
 el de dos (`es`). Como lo elige quien escribe, el texto se revisa además en los
 idiomas de la plataforma (`spa` y `eng`, tercer argumento de
 `ModerationEndpoint`) y manda la decisión más grave: mandar un insulto en
-español como `"eng"` no lo cuela. `checkedLanguages` dice en cuáles se revisó. Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
+español como `"eng"` no lo cuela. `checkedLanguages` dice en cuáles se revisó. Cada hallazgo sale una vez
+por aparición: «follar», que es insulto y contenido sexual, trae los dos en
+`contentTypes` (y el primero en `contentType`). Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
 `Content-Type: application/json` (415), cuerpo de hasta 16 KB (413), JSON en
 UTF-8 con `text` string (400), texto de hasta 2.000 caracteres (413) e idioma
 soportado (400). Los errores responden
@@ -822,7 +849,8 @@ palabras no entiende contexto:
 - Amenazas y burlas sin ninguna de las palabras o frases de la lista.
 - Los diccionarios de insultos (`config/languages/`) sólo generan formas en
   las entradas que declaran `forms` (como «cerdo», «puta», «zorra», «perra»
-  en español), y lo generado sin `by` llega como mucho a revisión: nadie
+  en español; también los plurales de los insultos sexualizados en portugués,
+  italiano y francés), y lo generado sin `by` llega como mucho a revisión: nadie
   decidió todavía cuánto ofende esa forma. El resto no genera nada: «idiots»
   sólo se detecta porque está escrito. El inglés
   tiene los plurales de sus insultos claros; en los demás idiomas, el plural
@@ -835,11 +863,13 @@ palabras no entiende contexto:
   deletreadas, irían a revisión).
 - Las listas de temas de los otros 31 idiomas son de arranque (10–18 palabras
   por tema, más `ambiguous`). Portugués, italiano y francés ya generan sus
-  formas regulares; los otros 28 no. Las amenazas con forma (`patterns`) sólo están en
+  formas regulares; alemán, neerlandés y turco, los plurales y la declinación
+  del adjetivo («Huren», «dumme», «kutten», «domme», «orospular»: ver
+  `GermanInflection`, `DutchInflection`, `TurkishInflection`; en alemán y
+  neerlandés el adjetivo declinado lleva el rasgo `infl`); los otros 25 no. Las amenazas con forma (`patterns`) sólo están en
   18 idiomas de alfabeto latino y cirílico; en el resto hay frases literales.
-  Esos 28 no tienen plurales, géneros ni conjugaciones automáticos —sólo la
-  forma base y las que se añadan a mano con `also`—; ninguno de los 31 tiene
-  `collapseRepeats`, y se escribieron
+  Esos 25 no tienen plurales, géneros ni conjugaciones automáticos —sólo la
+  forma base y las que se añadan a mano con `also`—, y se escribieron
   sin revisión nativa. En japonés, cantonés y tailandés hace falta la
   extensión `intl` para encontrar palabras dentro de una frase (ver «Idiomas
   sin espacios»). `ChatTopicsCoverageTest` fija una línea
@@ -1032,7 +1062,8 @@ src/                                Namespace DefamatoryContentReview\ (cada car
     ├── CombinedReview.php          La misma línea en varios idiomas: manda la decisión más grave
     └── Inflection/                 TopicInflector (expande `forms`), contrato TopicInflection;
                                     Spanish/Portuguese/Italian/French/EnglishInflection,
-                                    y la conjugación romance común en RomanceVerbs (+ *Verbs)
+                                    y la conjugación romance común en RomanceVerbs (+ *Verbs);
+                                    FormSeverity (severidad por forma, `by`) y Diminutives
 
 docs/
 ├── ORIGEN.md                       Por qué existe esta librería

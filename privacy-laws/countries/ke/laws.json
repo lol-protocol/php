@@ -2,20 +2,26 @@
   {
     "country_code": "KE",
     "country_name": "Kenya",
-    "law_name": "Data Protection Act",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act, 2019 (No. 24 of 2019)",
     "jurisdiction": "Office of Data Protection Commissioner",
-    "enactment_date": "2019-11-28",
-    "effective_date": "2019-11-28",
+    "enactment_date": "2019-11-08",
+    "effective_date": "2019-11-25",
     "scope": "Kenyan Residents",
     "applies_to": "All entities",
     "key_requirements": "Lawful collection & transparency",
     "data_categories": "Personal data",
     "retention_period": "Necessary period",
-    "enforcement_authority": "ODPC",
+    "enforcement_authority": "Office of the Data Protection Commissioner (ODPC)",
     "penalties_range": "Fines up to KES 1M",
     "exemptions": "Government functions",
     "website_url": "https://www.odpc.go.ke/",
     "language": "English",
-    "notes": "East Africa region"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

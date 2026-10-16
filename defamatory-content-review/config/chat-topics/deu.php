@@ -2,7 +2,8 @@
 
 /** German chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'deu', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'deu', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['pollack'],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['du', 'du bist', 'bist', 'ihr', 'ihr seid', 'dummes', 'dumme', 'dummer', 'blödes', 'blöde', 'blöder', 'dreckiges', 'dreckige', 'dreckiger', 'fettes', 'fette', 'fetter', 'was für ein', 'was für eine', 'so ein', 'so eine', 'alter', 'alte', 'scheiß', 'verdammtes', 'verdammter', 'verdammte'],
@@ -20,7 +21,7 @@ return [
             ['word' => 'vagina', 'riskType' => 'sexual', 'severity' => 'medium'],
             ['word' => 'titten', 'riskType' => 'sexual', 'severity' => 'medium'],
             ['word' => 'brüste', 'riskType' => 'sexual', 'severity' => 'medium'],
-            ['word' => 'nackt', 'riskType' => 'sexual', 'severity' => 'medium'],
+            ['word' => 'nackt', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'adj'],
             ['word' => 'nudes', 'riskType' => 'sexual', 'severity' => 'high'],
             ['word' => 'nacktfoto', 'riskType' => 'sexual', 'severity' => 'high', 'also' => ['nacktfotos']],
             ['word' => 'sex', 'riskType' => 'sexual', 'severity' => 'low'],
@@ -32,11 +33,11 @@ return [
         'belico' => [
             ['word' => 'krieg', 'riskType' => 'belico', 'severity' => 'low'],
             ['word' => 'bombardierung', 'riskType' => 'belico', 'severity' => 'medium'],
-            ['word' => 'rakete', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'rakete', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'völkermord', 'riskType' => 'belico', 'severity' => 'high'],
             ['word' => 'massaker', 'riskType' => 'belico', 'severity' => 'high'],
             ['word' => 'ausrotten', 'riskType' => 'belico', 'severity' => 'high'],
-            ['word' => 'terrorist', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'terrorist', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'anschlag', 'riskType' => 'belico', 'severity' => 'medium'],
             ['word' => 'invasion', 'riskType' => 'belico', 'severity' => 'low'],
             ['word' => 'armee', 'riskType' => 'belico', 'severity' => 'low'],
@@ -48,7 +49,7 @@ return [
             ['word' => 'dschihad', 'riskType' => 'belico', 'severity' => 'medium'],
         ],
         'ambiguous' => [
-            ['word' => 'bombe', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'bombe', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
         ],
     ],
     'patterns' => [

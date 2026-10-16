@@ -17,7 +17,7 @@ Sin JavaScript todo sigue funcionando, salvo mover el marco: el marcalibro se re
 ## Requisitos
 
 - PHP 8.1 o superior con las extensiones `gd` (con WebP), `fileinfo` y `mbstring`. `exif` es recomendable: sin ella las fotos del celular pueden quedar de lado.
-- No necesita base de datos ni paquetes externos para funcionar.
+- No necesita base de datos ni paquetes externos para funcionar. Sí necesita la carpeta `defamatory-content-review/` del monorepo junto a `marcalibros-plataforma-pos-brand-identity/`: revisa el texto de cada marcalibro. Al desplegar, copia las dos.
 
 ## Probarla en tu máquina
 
@@ -56,8 +56,9 @@ No hay sesión ni cookies, así que no hay nada que un tercero pueda hacer "en n
 - **Se rechazan las peticiones `POST` de otros sitios** (`Sec-Fetch-Site: cross-site`). No hay token CSRF porque no hay sesión que proteger: lo peor que haría una página ajena es crear un marcalibro que nadie verá y gastar intentos del límite de esa persona. Los navegadores actuales ya lo impiden con esa cabecera.
 - **CSP estricta**: `default-src 'none'`, solo scripts y estilos de este mismo sitio, sin código ni estilos en línea (una prueba lo vigila), sin `connect-src`, sin marcos.
 - Los identificadores y nombres de archivo que llegan en la dirección se comprueban contra el manifiesto o contra el formato exacto antes de tocar el disco.
+- **El texto del marcalibro pasa por `defamatory-content-review`** (`src/LabelPolicy.php`), en español e inglés. El marcalibro se comparte por enlace desde nuestro dominio: un «Fulano es un estafador» sería una difamación publicada por la plataforma (ver `PRIVACIDAD-Y-HONRA.md` en la raíz del repositorio). Como aquí nadie revisa a mano, no se aceptan insultos, acusaciones, datos sensibles ni datos personales (RUT, teléfono, correo, dirección): la persona ve un aviso y puede escribir otro texto.
 
-Lo que **no** hace: HTTPS ni `Strict-Transport-Security` (eso lo ponen el servidor web o el proxy), ni comprobar que la imagen subida sea apropiada.
+Lo que **no** hace: HTTPS ni `Strict-Transport-Security` (eso lo ponen el servidor web o el proxy), ni comprobar que la imagen subida sea apropiada: una foto con texto escrito no pasa por el filtro.
 
 ## Despliegue
 

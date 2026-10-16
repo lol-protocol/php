@@ -18,6 +18,9 @@ namespace DefamatoryContentReview\Chat;
  * Si la misma línea ya trae un insulto firme (medium o high, no contextual),
  * el contexto ya es de insulto y el término cuenta como siempre. Si no,
  * baja a `low`: se informa con `context => untargeted`, pero no se censura.
+ * Una entrada con `'whenTargeted' => 'high'` sube a esa severidad cuando sí hay
+ * marca: «cerda» es también apellido (Cerda) y sola no pasa de revisión, pero
+ * «eres una cerda» se bloquea (`context => targeted`).
  */
 final class TargetContext
 {
@@ -36,27 +39,25 @@ final class TargetContext
         $types = array_flip($rules['types'] ?? []);
         $contextual = fn(array $m): bool => in_array($m['contentType'] ?? '', self::CONTENT_TYPES, true)
             && ($m['targeted'] ?? (isset($types[$m['riskType'] ?? '']) && !str_contains((string) ($m['original'] ?? ''), ' ')));
+        $firm = false; // ya hay un insulto firme en la línea
         foreach ($matches as $match) {
-            if (!$contextual($match) && in_array($match['contentType'] ?? '', self::CONTENT_TYPES, true) && $match['severity'] !== 'low') {
-                return $matches; // ya hay un insulto firme en la línea
-            }
+            $firm = $firm || (!$contextual($match) && in_array($match['contentType'] ?? '', self::CONTENT_TYPES, true) && $match['severity'] !== 'low');
         }
         $tokens = TargetWindow::tokens($line, $language);
         $before = TargetWindow::phrases($rules['before'] ?? [], $language);
         $after = TargetWindow::phrases($rules['after'] ?? [], $language);
 
-        return array_map(function (array $match) use ($contextual, $tokens, $before, $after, $language): array {
-            if (!$contextual($match)) {
-                return $match;
-            }
+        return array_map(function (array $match) use ($contextual, $firm, $tokens, $before, $after, $language): array {
             $found = TargetWindow::tokens((string) $match['found'], $language);
-            if ($found === $tokens) {
+            if (!$contextual($match) || $found === $tokens) {
                 return $match; // la línea es sólo el término: «¡cerdo!»
             }
+            $marked = TargetWindow::marked($tokens, $found, $before, $after);
+            if ($marked === true && isset($match['whenTargeted'])) {
+                return ['severity' => $match['whenTargeted'], 'context' => 'targeted'] + $match;
+            }
             // sin ubicar (letras sueltas unidas…) se cuenta: mejor eso que perderlo
-            return (TargetWindow::marked($tokens, $found, $before, $after) ?? true)
-                ? $match
-                : ['severity' => 'low', 'context' => 'untargeted'] + $match;
+            return $firm || ($marked ?? true) ? $match : ['severity' => 'low', 'context' => 'untargeted'] + $match;
         }, $matches);
     }
 }

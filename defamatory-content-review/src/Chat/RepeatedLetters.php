@@ -30,16 +30,17 @@ final class RepeatedLetters
     /**
      * La misma búsqueda, pero si la frase no está tal cual prueba sus lecturas
      * con las rachas reducidas; el hallazgo trae `repeat`: `elongated` si la
-     * frase tenía una racha de 3 o más, `doubled` si sólo hizo falta reducir dobles.
+     * frase tenía una racha de 3 o más, `doubled` si sólo hizo falta reducir dobles
+     * (con `$doubles` en false, eso no se prueba: el idioma tiene dobles legítimas).
      *
      * @param callable(string):?array<string,mixed> $search
      * @param array<string,true> $legit
      * @return callable(string):?array<string,mixed>
      */
-    public static function searcher(callable $search, array $legit): callable
+    public static function searcher(callable $search, array $legit, bool $doubles = true): callable
     {
-        return function (string $phrase) use ($search, $legit): ?array {
-            if (($entry = $search($phrase)) !== null) {
+        return function (string $phrase) use ($search, $legit, $doubles): ?array {
+            if (($entry = $search($phrase)) !== null || (!$doubles && preg_match('/([\p{L}\p{N}])\1\1/iu', $phrase) !== 1)) {
                 return $entry;
             }
             [$readings, $longest] = RepeatedReadings::of($phrase, $legit);

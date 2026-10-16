@@ -22,10 +22,12 @@ Las páginas públicas no piden nada: una colección con `publica = true`, las p
 
 Quien no es el propietario no ve lo que se sabe de las personas que podrían estar vivas. Una persona se **presume viva** cuando:
 
-- no tiene ningún suceso de defunción, **y**
+- no tiene un suceso de defunción **propio**, **y**
 - su nacimiento tiene fecha y fue hace menos de **110 años** (`Privacidad::ANIOS_VIVA`).
 
 Una persona sin ninguna fecha **no** se presume viva: nada lo dice, y ocultar a todos los antepasados sin fechas vaciaría el catálogo. Una fecha de nacimiento a exactamente 110 años ya cuenta como antigua.
+
+**Qué sucesos cuentan como suyos.** Un nacimiento o una defunción es de quien figura en él con el rol `principal` (`Privacidad::ROL_PRINCIPAL`). Registrar una defunción (`declarante`), ser madre, padre o padrino en un nacimiento, o ser testigo, es estar presente, no morir ni nacer: quien firmó la defunción de otra persona sigue presumiéndose viva, y en su ficha, en los lugares de nacimiento y en los apellidos solo cuentan su propio nacimiento y su propia defunción. Una defunción registrada con otro rol no da por fallecida a la persona: si nació hace menos de 110 años queda oculta (de más, no de menos); se corrige poniéndole el rol `principal` o `viva = FALSE`. Hay una excepción, a propósito: quien no tiene nacimiento propio se toma por no más joven que su hijo, así que queda oculta mientras el hijo lo esté.
 
 **Corregir la deducción.** La columna `personas.viva` (migración `002_personas_viva.sql`) manda sobre las fechas: `TRUE` = vive, `FALSE` = ya falleció, `NULL` = deducirlo. Sirve para marcar a quien vive pero no tiene fechas, o a quien ya murió sin que conste su defunción. Hoy se cambia por SQL o al importar datos; la aplicación no tiene pantalla para editarla.
 
@@ -34,11 +36,11 @@ Una persona sin ninguna fecha **no** se presume viva: nada lo dice, y ocultar a 
 | La persona (`/{id}/` y sus acciones) | La página existe, para que un enlace desde un árbol no se rompa, pero solo dice «Persona viva»: sin nombre, sexo, apellido, fechas, lugar, familiares ni sucesos. Sus padres también la identificarían |
 | Árboles (colección, ascendencia, descendencia, vínculos) | Aparece como «Persona viva» en su lugar, para que el árbol conserve su forma; va después de los demás y ordenada por id, para que el orden no diga nada de ella |
 | Búsqueda | **No aparece**, y no se puede encontrar por su nombre ni por «persona viva»: si se la encontrara aunque solo se viera la máscara, cualquiera podría comprobar si existe alguien con ese nombre |
-| Apellidos (grupos) | No cuenta, no sale en la red del apellido y no pesa en los lugares de nacimiento |
-| Lugares, miembros de organizaciones | No aparece |
-| Sucesos | Un suceso con **algún** participante vivo no existe para el visitante (404, ni en búsquedas ni en listas ni en la cronología de nadie), porque su fecha, lugar o descripción lo delatarían |
+| Apellidos (grupos) | No cuenta, no sale en la red del apellido y no pesa en los lugares de nacimiento. Tampoco pesa un nacimiento con un participante vivo |
+| Lugares, miembros de organizaciones | No aparece. La lista de nacidos en un lugar tampoco incluye los nacimientos con un participante vivo: el lugar es justo lo que la delataría |
+| Sucesos | Un suceso con **algún** participante vivo no existe para el visitante (404, ni en búsquedas ni en listas ni en la cronología de nadie), porque su fecha, lugar o descripción lo delatarían. Lo único que sobrevive es **el año**, en la ficha de la persona fallecida a quien pertenece el suceso (su nacimiento o su defunción): `1950`, nunca el día ni el lugar |
 | Registros | Un registro que documenta un suceso así tampoco existe: su título y su fuente suelen nombrar a la persona |
-| GEDCOM | La persona sale como «Persona viva», sin sexo, fechas ni lugar; la forma del árbol se conserva y todos los punteros siguen resolviendo |
+| GEDCOM | La persona sale como «Persona viva», sin sexo, fechas ni lugar; la forma del árbol se conserva y todos los punteros siguen resolviendo. De un suceso oculto, el GEDCOM lleva solo el año (`2 DATE 1950`) y ningún `PLAC` |
 
 El propietario lo ve todo y sus consultas son las de siempre.
 
@@ -63,7 +65,7 @@ La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, 
 - **HTTPS, obligatorio en producción.** El token viaja en la cabecera `Authorization`. Sin HTTPS lo ve cualquiera en la red.
 - **Nginx:** pasa la cabecera a PHP-FPM por defecto; no hace falta nada. Ver [`deploy/nginx.conf.example`](../deploy/nginx.conf.example).
 - **Apache:** `public/.htaccess` incluye la regla que entrega la cabecera a PHP (CGI/FPM la descartan). **No se probó en un Apache real**: comprobarlo con `curl -u x:<token> https://tudominio/0/` (debe dar 200).
-- **Cachés compartidas (CDN, proxy inverso):** las respuestas que dependen de quién pregunta llevan `Cache-Control: private, no-store` y `Vary: Authorization`. La caché no debe quitarlas ni guardar esas respuestas.
+- **Cachés compartidas (CDN, proxy inverso):** las respuestas del propietario, que dependen de quién pregunta, llevan `Cache-Control: private, no-store` y `Vary: Authorization`. La caché no debe quitarlas ni guardar esas respuestas. Lo que se le niega a un visitante es, en cambio, un 404 **sin cabeceras propias**, igual al de una página que no existe: una cabecera que solo tuviera el 404 de lo privado delataría qué ids existen. Si la caché añade o cambia cabeceras, tiene que hacerlo igual en los dos.
 - **Fuerza bruta:** un token de 32 bytes aleatorios no es adivinable. El único freno es el limitador global (100 peticiones por minuto y por IP, `RateLimiter`).
 
 ## Lo que esto NO cubre
@@ -80,8 +82,10 @@ Esto hace privados los **objetos** que ya se presentaban como privados y oculta 
 ## Pruebas
 
 - `tests/App/Support/AccessPolicyTest.php`: lectura de credenciales (Basic y Bearer), comparación del token, caducidad de la sesión y las dos formas de negar.
+- `tests/App/Support/GedcomExporterTest.php`: fecha completa, solo el año y lugar.
 - `tests/App/Support/PrivacidadTest.php`: el umbral, que el SQL del propietario sea el de siempre y que un alias inválido se rechace antes de llegar al SQL.
-- `tests/App/Repositories/PrivacidadRepositoriesTest.php` (en SQLite y PostgreSQL, con fecha fija): quién se oculta y quién no, el borde exacto de los 110 años, la marca `viva`, y qué ve un visitante en cada repositorio.
+- `tests/App/Repositories/PrivacidadRepositoriesTest.php` (en SQLite y PostgreSQL, con fecha fija): quién se oculta y quién no, el borde exacto de los 110 años, la marca `viva`, el rol de cada participante (firmar una defunción no es morir), el año que deja un suceso oculto y qué ve un visitante en cada repositorio.
+- `tests/App/Integration/ResponseHeadersTest.php`: contra el servidor integrado de PHP, porque `PagesTest` no ve cabeceras (en la CLI `header()` no hace nada): que lo oculto responda con el mismo estado, cuerpo y cabeceras que lo que no existe, que las páginas del propietario salgan `private, no-store` y que el área de cuenta pida credenciales.
 - `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos ni de Lucía (se comprobó que falla si se apaga el enmascarado).
 
 ## Texto que escriban los usuarios

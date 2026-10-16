@@ -4,8 +4,50 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6ead78fcffc3d2f5462491060dbab46",
+    "content-hash": "d8138ef5110d6a3c35c925aa064450cd",
     "packages": [
+        {
+            "name": "lol-protocol/defamatory-content-review",
+            "version": "5.0.0",
+            "dist": {
+                "type": "path",
+                "url": "../../defamatory-content-review",
+                "reference": "1d1e6db9c8010d289cccbb375b812bcab509f44a"
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "suggest": {
+                "ext-intl": "Parte en palabras el japonés, el cantonés y el tailandés (WordSegmenter); sin ella sólo se reconoce la palabra suelta"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DefamatoryContentReview\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "LOL Protocol Team"
+                }
+            ],
+            "description": "Module for reviewing and detecting defamatory content in genealogical platform",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
         {
             "name": "lol-protocol/marcalibros-propios",
             "version": "1.0.0",

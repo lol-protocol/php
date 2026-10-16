@@ -15,8 +15,11 @@ final class TopicInflector
 {
     private const BY_LANGUAGE = [
         'spa' => SpanishInflection::class, 'eng' => EnglishInflection::class, 'por' => PortugueseInflection::class,
-        'ita' => ItalianInflection::class, 'fra' => FrenchInflection::class,
+        'ita' => ItalianInflection::class, 'fra' => FrenchInflection::class, 'deu' => GermanInflection::class,
+        'nld' => DutchInflection::class, 'tur' => TurkishInflection::class,
     ];
+    /** Idiomas cuyo adjetivo se declina sin cambiar de género: «dumme», «domme» llevan el rasgo `infl`. */
+    private const INFLECTED_ADJ = ['deu', 'nld'];
 
     /** @return array<int,string> */
     public static function forms(string $language, string $lemma, string $kind): array
@@ -26,11 +29,12 @@ final class TopicInflector
         return $class === null ? [$lemma] : (new $class())->forms($lemma, $kind);
     }
 
-    /** @return array<string,string> forma => rasgos: `sg`/`pl` (sustantivo), `m.sg`… `f.pl` (adjetivo), `verb` */
-    public static function tagged(string $language, string $lemma, string $kind): array
+    /** @return array<string,string> forma => rasgos: `sg`/`pl` (sustantivo), `m.sg`… `f.pl` (adjetivo), `infl` (adjetivo declinado), `verb` */
+    public static function tagged(string $language, string $lemma, string $kind, bool $diminutives = false): array
     {
         $forms = self::forms($language, $lemma, $kind);
         if ($kind === 'verb') { return array_fill_keys($forms, 'verb'); }
+        if ($kind === 'adj' && in_array($language, self::INFLECTED_ADJ, true)) { return [$lemma => 'sg'] + array_fill_keys($forms, 'infl'); }
         $masculine = $kind === 'adj' ? self::forms($language, $lemma, 'noun') : $forms;
         $feminine = array_values(array_diff($forms, $masculine));
         $gender = $feminine === [] ? '' : 'm.';
@@ -44,7 +48,7 @@ final class TopicInflector
             };
         }
 
-        return $tags;
+        return $diminutives ? $tags + Diminutives::tagged($language, $lemma, $kind) : $tags;
     }
 
     /**
@@ -64,7 +68,8 @@ final class TopicInflector
         foreach ($categories as $category => $entries) {
             foreach ($entries as $entry) {
                 $base = array_diff_key($entry, ['forms' => 1, 'also' => 1, 'by' => 1]);
-                $tagged = isset($entry['forms']) ? self::tagged($language, $entry['word'], $entry['forms']) : [];
+                $dim = (bool) preg_grep('/^dim/', array_keys($entry['by'] ?? []));
+                $tagged = isset($entry['forms']) ? self::tagged($language, $entry['word'], $entry['forms'], $dim) : [];
                 foreach ($tagged ?: [$entry['word'] => ''] as $form => $tag) {
                     $own = $form === $entry['word'];
                     if (!$own && isset($written[mb_strtolower($form)])) {

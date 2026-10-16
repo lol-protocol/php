@@ -2,7 +2,8 @@
 
 /** Turkish chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'tur', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'tur', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['cahill'],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['sen', 'siz', 'sensin', 'seni', 'sana', 'bu', 'pis', 'aptal', 'kokmuş', 'şişko', 'salak', 'lan', 'ulan', 'orospu'],
@@ -18,7 +19,7 @@ return [
             ['word' => 'orgazm', 'riskType' => 'sexual', 'severity' => 'medium'],
             ['word' => 'penis', 'riskType' => 'sexual', 'severity' => 'medium'],
             ['word' => 'vajina', 'riskType' => 'sexual', 'severity' => 'medium'],
-            ['word' => 'çıplak', 'riskType' => 'sexual', 'severity' => 'medium'],
+            ['word' => 'çıplak', 'riskType' => 'sexual', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'çıplak fotoğraf', 'riskType' => 'sexual', 'severity' => 'high'],
             ['word' => 'seks', 'riskType' => 'sexual', 'severity' => 'low'],
             ['word' => 'tecavüz', 'riskType' => 'sexual', 'severity' => 'high'],
@@ -27,10 +28,10 @@ return [
         'belico' => [
             ['word' => 'savaş', 'riskType' => 'belico', 'severity' => 'low'],
             ['word' => 'bombardıman', 'riskType' => 'belico', 'severity' => 'medium'],
-            ['word' => 'füze', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'füze', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'soykırım', 'riskType' => 'belico', 'severity' => 'high'],
             ['word' => 'katliam', 'riskType' => 'belico', 'severity' => 'high'],
-            ['word' => 'terörist', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'terörist', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
             ['word' => 'terör saldırısı', 'riskType' => 'belico', 'severity' => 'medium'],
             ['word' => 'işgal', 'riskType' => 'belico', 'severity' => 'low'],
             ['word' => 'ordu', 'riskType' => 'belico', 'severity' => 'low'],
@@ -41,7 +42,7 @@ return [
             ['word' => 'cihat', 'riskType' => 'belico', 'severity' => 'medium'],
         ],
         'ambiguous' => [
-            ['word' => 'bomba', 'riskType' => 'belico', 'severity' => 'medium'],
+            ['word' => 'bomba', 'riskType' => 'belico', 'severity' => 'medium', 'forms' => 'noun'],
         ],
     ],
     'patterns' => [

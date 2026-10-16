@@ -2,7 +2,8 @@
 
 /** Czech chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'ces', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'ces', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['sleepy'],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['ty', 'jsi', 'jste', 'vy', 'ten', 'ta', 'ty jsi', 'debilní', 'zasranej', 'zasraná', 'hnusnej', 'hnusná', 'starej', 'stará'],

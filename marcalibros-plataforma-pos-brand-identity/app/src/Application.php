@@ -55,6 +55,7 @@ final class Application
         private readonly \Closure $clock,
         private readonly \Closure $isUploadedFile,
         private readonly int $serverUploadLimit = PHP_INT_MAX,
+        private readonly LabelPolicy $labels = new LabelPolicy(),
     ) {
     }
 
@@ -346,6 +347,9 @@ final class Application
         try {
             $crop = CropSettings::fromArray($request->post);
             $label = $request->field('nombre');
+            if (($problem = $this->labels->problem($label)) !== null) {
+                return $this->renderCreate($values, $problem, 422);
+            }
             // Si el campo viene pero no es texto (por ejemplo "fuente[]"), no se adivina: se rechaza.
             $source = array_key_exists('fuente', $request->post) ? ($request->field('fuente') ?? '') : 'subida';
 

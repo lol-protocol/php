@@ -2,17 +2,23 @@
   {
     "country_code": "AE",
     "country_name": "United Arab Emirates",
-    "law_name": "Federal Law No. 7/2002",
+    "region": "middle_east_africa",
+    "law_name": "Federal Decree-Law No. 38 of 2021 on Copyright and Neighbouring Rights",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright protection",
+    "digital_protection": "Dealing in TPM-circumvention devices criminalised (Decree-Law 38/2021, replaced Law 7/2002)",
     "fair_use_exceptions": "Educational exceptions",
-    "registration_required": "No",
-    "enforcement_body": "UAE IP Office",
-    "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.moir.gov.ae/"
+    "registration_required": "No (voluntary deposit with Ministry of Economy) (unconfirmed)",
+    "enforcement_body": "Ministry of Economy (Copyright Department)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://uaelegislation.gov.ae/en/legislations/1534/download",
+    "notes": "Decree-Law 38/2021 (eff. 2022-01-02) repealed Law 7/2002; Executive Regulation issued by MoE",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-14"
   }
 ]

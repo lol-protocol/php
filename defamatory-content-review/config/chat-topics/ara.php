@@ -2,7 +2,8 @@
 
 /** Arabic chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'ara', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'ara', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['للعين'],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['انت', 'أنت', 'انتي', 'أنتِ', 'أنتم', 'انتم', 'يا', 'ابن', 'بنت', 'هذا', 'هذه', 'يا ابن'],

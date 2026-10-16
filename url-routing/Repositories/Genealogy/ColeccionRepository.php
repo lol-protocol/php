@@ -51,15 +51,11 @@ final class ColeccionRepository extends Repository
      */
     public function personasParaExportar(int $id): array
     {
-        $evento = static fn(string $campo, string $tipo, string $unir = ''): string => "SELECT {$campo}
-               FROM sucesos s JOIN suceso_participantes sp ON sp.suceso_id = s.id{$unir}
-              WHERE sp.persona_id = p.id AND s.tipo = '{$tipo}' ORDER BY s.fecha LIMIT 1";
-
         return array_map(self::normalizar(...), $this->db->fetchAll(
             'SELECT p.id, p.nombres, p.apellidos, p.sexo, p.padre_id, p.madre_id, p.oculta,
-                    ' . $this->privacidad->siVisible($evento('s.fecha', 'nacimiento')) . ' AS nacimiento,
-                    ' . $this->privacidad->siVisible($evento('l.nombre', 'nacimiento', ' LEFT JOIN lugares l ON l.ruta = s.lugar_ruta')) . " AS lugar_nacimiento,
-                    " . $this->privacidad->siVisible($evento('s.fecha', 'defuncion')) . " AS defuncion
+                    ' . $this->privacidad->siVisible($this->privacidad->sqlEventoDe('p', 'nacimiento', 'fecha')) . ' AS nacimiento,
+                    ' . $this->privacidad->siVisible($this->privacidad->sqlEventoDe('p', 'nacimiento', 'lugar_nombre')) . " AS lugar_nacimiento,
+                    " . $this->privacidad->siVisible($this->privacidad->sqlEventoDe('p', 'defuncion', 'fecha')) . " AS defuncion
                FROM coleccion_personas cp JOIN {$this->privacidad->personas()} p ON p.id = cp.persona_id
               WHERE cp.coleccion_id = ?
               ORDER BY p.id",

@@ -2,17 +2,23 @@
   {
     "country_code": "FI",
     "country_name": "Finland",
+    "region": "europe",
     "law_name": "Finnish Copyright Law",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full economic rights",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright protection",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Finnish Patent Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.prh.fi/"
+    "enforcement_body": "Ministry of Education and Culture (Opetus- ja kulttuuriministeriö)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.prh.fi/",
+    "notes": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

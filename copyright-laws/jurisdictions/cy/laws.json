@@ -1,0 +1,24 @@
+[
+  {
+    "country_code": "CY",
+    "country_name": "Cyprus",
+    "region": "europe",
+    "law_name": "Copyright Law 1976 (Law No. 59/1976, as amended)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (related rights: 50 years)",
+    "author_rights": "Reproduction, translation & making available to the public",
+    "moral_rights": "Not specified",
+    "orphan_works": "Orphan Works Directive 2012/28/EU: libraries, archives and museums may use them after a diligent search",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
+    "fair_use_exceptions": "Closed list of exceptions (InfoSoc Directive art. 5; DSM Directive 2019/790: text and data mining, teaching, preservation)",
+    "registration_required": "No",
+    "enforcement_body": "Ministry of Commerce and Industry",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/fr/legislation/details/19025",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-08"
+  }
+]

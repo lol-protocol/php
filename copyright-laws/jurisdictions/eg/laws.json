@@ -2,17 +2,23 @@
   {
     "country_code": "EG",
     "country_name": "Egypt",
-    "law_name": "Egyptian Copyright Law",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 82 of 2002 on the Protection of Intellectual Property Rights",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 30 years",
+    "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective management required",
-    "digital_protection": "Copyright protection",
+    "digital_protection": "Not specified",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Egyptian Copyright Office",
-    "treaties_signatory": "Berne",
-    "linked_resources": "https://www.culture.gov.eg/"
+    "enforcement_body": "Copyright Protection Office, Ministry of Culture",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/7762",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

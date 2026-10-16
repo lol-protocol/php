@@ -2,6 +2,7 @@
   {
     "country_code": "EU",
     "country_name": "European Union",
+    "region": "europe",
     "law_name": "General Data Protection Regulation (GDPR)",
     "jurisdiction": "European Commission",
     "enactment_date": "2016-04-27",
@@ -16,6 +17,11 @@
     "exemptions": "Legal obligations",
     "website_url": "https://gdpr-info.eu/",
     "language": "English",
-    "notes": "Extraterritorial applicability"
+    "frameworks": "GDPR",
+    "frameworks_not": "",
+    "notes": "Extraterritorial applicability",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

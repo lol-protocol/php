@@ -2,7 +2,8 @@
   {
     "country_code": "AR",
     "country_name": "Argentina",
-    "law_name": "Personal Data Protection Law (LPDP)",
+    "region": "americas",
+    "law_name": "Personal Data Protection Law No. 25.326",
     "jurisdiction": "National Data Protection Authority",
     "enactment_date": "2000-10-27",
     "effective_date": "2001-08-01",
@@ -11,11 +12,16 @@
     "key_requirements": "Lawful processing & consent",
     "data_categories": "Personal data",
     "retention_period": "Reasonable period",
-    "enforcement_authority": "AEPD (Argentina)",
+    "enforcement_authority": "Agency for Access to Public Information (AAIP)",
     "penalties_range": "Fines up to ARS 1M",
     "exemptions": "Government functions",
     "website_url": "https://www.argentina.gob.ar/",
     "language": "Spanish",
-    "notes": "South America region"
+    "frameworks": "EU-Adequacy/CoE-108",
+    "frameworks_not": "GDPR",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

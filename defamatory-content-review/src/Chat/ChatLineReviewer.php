@@ -55,7 +55,7 @@ final class ChatLineReviewer
     {
         $matches = [];
         foreach (SpacedLetters::variants($line) as [$text, $joined]) {
-            $matches = ChatMatches::merge($matches, ChatMatches::restore($this->scan($text, $topics), $joined));
+            $matches = ChatMatches::merge($matches, ChatMatches::restore($this->scan($text, $topics), $joined, $text, $line));
         }
 
         return [...$matches, ...SpacedRunTerms::find($line, $this->dictionary(), $topics, $matches), ...MaskedTerms::find($line, $this->dictionary())];

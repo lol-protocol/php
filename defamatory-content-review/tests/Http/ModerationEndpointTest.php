@@ -25,7 +25,7 @@ class ModerationEndpointTest extends TestCase
         $this->assertTrue($response['body']['censor']);
         $this->assertSame(['difamatorio', 'belico'], $response['body']['contentTypes']);
         $this->assertSame('**************, ****', $response['body']['censored']);
-        $this->assertSame(['found' => 'puta', 'term' => 'puta', 'contentType' => 'difamatorio', 'severity' => 'high'], $response['body']['matches'][0]);
+        $this->assertSame(['found' => 'puta', 'term' => 'puta', 'contentType' => 'difamatorio', 'contentTypes' => ['difamatorio'], 'severity' => 'high'], $response['body']['matches'][0]);
     }
 
     public function testApprovesAnEverydayLineInTheDefaultLanguage(): void

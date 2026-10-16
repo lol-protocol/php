@@ -2,17 +2,23 @@
   {
     "country_code": "SA",
     "country_name": "Saudi Arabia",
-    "law_name": "Saudi Copyright Law",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Law 2026 (Royal Decree No. M/169)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years",
+    "term_of_protection": "Author's life + 50 years (unconfirmed)",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights limited",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright enforcement",
+    "digital_protection": "TPM & rights-management info protected; circumvention an offence (2026 law art. 47)",
     "fair_use_exceptions": "Educational exceptions",
-    "registration_required": "No",
-    "enforcement_body": "Saudi Copyright Office",
-    "treaties_signatory": "Berne",
-    "linked_resources": "https://www.saip.gov.sa/"
+    "registration_required": "No (optional SAIP registration; gives rebuttable presumption of ownership)",
+    "enforcement_body": "Saudi Authority for Intellectual Property (SAIP)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://gowlingwlg.com/insights-resources/articles/2026/saudi-arabia-copyright-law-implementing-regulations",
+    "notes": "M/169 in force 2026-08-12 with SAIP Implementing Regs (2026-07-31); AI, platforms, higher penalties",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-14"
   }
 ]

@@ -1,0 +1,24 @@
+[
+  {
+    "country_code": "UG",
+    "country_name": "Uganda",
+    "region": "middle_east_africa",
+    "law_name": "Copyright and Neighbouring Rights Act, 2006 (Act No. 19 of 2006)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (corporate-owned and anonymous or pseudonymous works: 50 years from first publication; photographs: 50 years from making)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Attribution & integrity (s. 10)",
+    "orphan_works": "Not specified",
+    "digital_protection": "2006 Act silent on TPMs; 2026 amendment reportedly adds anti-circumvention & RMI rules (unconfirmed)",
+    "fair_use_exceptions": "Fair use (s. 15: private study, teaching, news reporting)",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Uganda Registration Services Bureau (URSB)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/text/585337",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
+  }
+]

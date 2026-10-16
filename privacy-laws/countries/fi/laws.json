@@ -2,20 +2,26 @@
   {
     "country_code": "FI",
     "country_name": "Finland",
-    "law_name": "Data Protection Act",
+    "region": "europe",
+    "law_name": "Data Protection Act (1050/2018)",
     "jurisdiction": "Office of the Data Protection Ombudsman",
     "enactment_date": "2018-05-25",
-    "effective_date": "2018-05-25",
+    "effective_date": "2019-01-01",
     "scope": "Finnish Residents",
     "applies_to": "All organizations",
-    "key_requirements": "GDPR compliance",
+    "key_requirements": "GDPR applies: lawful basis, data subject rights, breach notification",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "Finnish Authority",
+    "enforcement_authority": "Office of the Data Protection Ombudsman (Tietosuojavaltuutetun toimisto)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
     "website_url": "https://tietosuoja.fi/",
     "language": "Finnish",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

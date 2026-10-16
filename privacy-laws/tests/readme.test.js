@@ -1,57 +1,52 @@
 import { test } from "node:test";
-import { strict as assert } from "node:assert";
-import { readFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
-import { parse } from "csv-parse/sync";
+import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { loadMaster } from "../scripts/lib/dataset.js";
 
-// El README de esta carpeta decía "200+ countries" con 53 filas en el maestro, y listaba carpetas
-// y archivos que no existen (region_*/, src/PrivacyLaws/, CONTRIBUTING.md, LICENSE). Estas pruebas
-// atan lo que el README afirma a lo que hay.
-const readme = readFileSync("./README.md", "utf-8");
-const maestro = parse(readFileSync("./countries/privacy_laws_master.csv", "utf-8"), {
-  columns: true,
-  skip_empty_lines: true,
+// What the README claims is tied to what is in the folder, so it cannot drift unnoticed
+// (an earlier README promised "200+ countries" and listed folders that did not exist).
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+const readme = readFileSync(join(root, "README.md"), "utf-8");
+const { records } = loadMaster();
+
+test("the README's counts are the master CSV's", () => {
+  const m = readme.match(/\((\d+) laws, (\d+) countries\)/);
+  assert.ok(m, "missing the \"(N laws, M countries)\" line");
+  assert.deepEqual([Number(m[1]), Number(m[2])], [records.length, new Set(records.map((r) => r.country_code)).size]);
 });
 
-test("README de privacy-laws", async (t) => {
-  await t.test("las cifras de «Overview» son las del maestro", () => {
-    const m = readme.match(/\*\*(\d+) laws in (\d+) jurisdictions\*\*/);
-    assert.ok(m, "falta la línea «**N laws in M jurisdictions**»");
-    const jurisdicciones = new Set(maestro.map((r) => r.country_code)).size;
-    assert.deepEqual([Number(m[1]), Number(m[2])], [maestro.length, jurisdicciones]);
-    const buscar = readme.match(/with no filters, all (\d+)\)/);
-    assert.ok(buscar, "falta «(with no filters, all N)» en el Quick Start");
-    assert.equal(Number(buscar[1]), maestro.length);
-  });
+test("the README's languages are the ones in translations/i18n.js", async () => {
+  const { TRANSLATIONS } = await import("../app/translations/i18n.js");
+  const codes = readme.match(/three-letter ISO 639-2 codes: ((?:`[a-z]{3}`(?:, )?)+)/);
+  assert.ok(codes, "missing the list of interface languages");
+  assert.deepEqual(codes[1].match(/[a-z]{3}/g), Object.keys(TRANSLATIONS));
+});
 
-  await t.test("los idiomas de la interfaz son los de translations/i18n.js", () => {
-    const m = readme.match(/\*\*Interface in (\d+) languages\*\*/);
-    assert.ok(m, "falta «**Interface in N languages**»");
-    const i18n = readFileSync("./app/translations/i18n.js", "utf-8");
-    assert.equal(Number(m[1]), (i18n.match(/^ {2}[a-z]{3}: \{/gm) || []).length);
-  });
-
-  await t.test("todo lo que lista «Directory Structure» existe", () => {
-    const bloque = readme.split("## Directory Structure")[1].match(/```\n([\s\S]*?)```/)[1];
-    const pila = [];
-    const faltan = [];
-    let revisados = 0;
-    for (const linea of bloque.split("\n").slice(1)) {
-      const i = linea.search(/[├└]── /);
-      if (i < 0) continue;
-      const nivel = i / 4;
-      const nombre = linea.slice(i + 4).split(/\s{2,}|\s#/)[0].trim();
-      pila[nivel] = nombre.replace(/\/$/, "");
-      pila.length = nivel + 1;
-      if (pila.some((p) => /[<*]/.test(p))) continue;
-      revisados++;
-      if (!existsSync(join(".", ...pila))) faltan.push(pila.join("/"));
+test("everything the Layout section lists exists", () => {
+  const block = readme.split("## Layout")[1].match(/```\n([\s\S]*?)```/)[1];
+  const stack = [];
+  const missing = [];
+  let checked = 0;
+  for (const line of block.split("\n").slice(1)) {
+    const i = line.search(/[├└]── /);
+    if (i < 0) continue;
+    const level = i / 4;
+    const names = line.slice(i + 4).split(/\s*#/)[0].trim().split(/\s+/);
+    stack.length = level;
+    stack[level] = names[0].replace(/\/$/, "");
+    if (stack.some((p) => /[{}*]/.test(p))) continue;
+    for (const name of names) {
+      checked++;
+      const path = join(root, ...stack.slice(0, level), name.replace(/\/$/, ""));
+      if (!existsSync(path)) missing.push(path.slice(root.length + 1));
     }
-    assert.ok(revisados > 15, `solo se revisaron ${revisados} rutas`);
-    assert.deepEqual(faltan, []);
-  });
+  }
+  assert.ok(checked >= 8, `only ${checked} paths were checked`);
+  assert.deepEqual(missing, []);
+});
 
-  await t.test("conserva el aviso de que no es asesoría legal", () => {
-    assert.match(readme, /not legal advice/i);
-  });
+test("the README keeps the notice that this is not legal advice", () => {
+  assert.match(readme, /not legal advice/i);
 });

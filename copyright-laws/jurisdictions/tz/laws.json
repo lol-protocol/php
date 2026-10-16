@@ -1,0 +1,24 @@
+[
+  {
+    "country_code": "TZ",
+    "country_name": "Tanzania",
+    "region": "middle_east_africa",
+    "law_name": "Copyright and Neighbouring Rights Act, 1999 (Act No. 7 of 1999; Cap. 218)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (anonymous and pseudonymous works: 50 years from creation or publication, whichever is latest; applied art: 25 years from making)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Moral rights recognised (s. 11)",
+    "orphan_works": "Not specified",
+    "digital_protection": "Sanctions for infringing technical protection & rights-management info (Part VI)",
+    "fair_use_exceptions": "Free use provisions (s. 12 et seq.)",
+    "registration_required": "No (voluntary registration with COSOTA)",
+    "enforcement_body": "Copyright Society of Tanzania (COSOTA)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://tanzlii.org/en/akn/tz/act/1999/7/eng@2023-12-31",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
+  }
+]

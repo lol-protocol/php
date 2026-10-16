@@ -176,9 +176,10 @@ final class AccessPolicy
     }
 
     /**
-     * A response that holds owner-only content, or that hides it, must never be
-     * stored by a shared cache: the same URL answers differently depending on
-     * who asks.
+     * A response that holds owner-only content must never be stored by a shared
+     * cache: the same URL answers differently depending on who asks. Only the
+     * owner's responses carry this; what a visitor is refused is a plain 404
+     * (see ocultar()).
      */
     public static function marcarPrivada(): void
     {
@@ -188,10 +189,16 @@ final class AccessPolicy
         }
     }
 
-    /** 404, indistinguishable from a page that does not exist. */
+    /**
+     * 404, indistinguishable from a page that does not exist: the same status,
+     * the same body and no header of its own. It used to call marcarPrivada(),
+     * whose Cache-Control and Vary a missing page does not send, and that alone
+     * told anyone which ids are private pages. Nothing is lost: like every
+     * other response of the session it is already no-store. ResponseHeadersTest
+     * is where this is checked, because PagesTest cannot see headers.
+     */
     public static function ocultar(): string
     {
-        self::marcarPrivada();
         http_response_code(404);
 
         return self::CUERPO_404;

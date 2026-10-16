@@ -2,7 +2,7 @@
 
 /** Korean chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'kor', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'kor', 'kind' => 'chat-topics', 'collapseRepeats' => true],
     'words' => [
         'sexual' => [
             ['word' => '포르노', 'riskType' => 'sexual', 'severity' => 'high'],

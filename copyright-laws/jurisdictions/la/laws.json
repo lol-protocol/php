@@ -1,0 +1,24 @@
+[
+  {
+    "country_code": "LA",
+    "country_name": "Laos",
+    "region": "asia_pacific",
+    "law_name": "Law on Intellectual Property (No. 50/NA of 2023)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No",
+    "enforcement_body": "Department of Intellectual Property (DIP)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22624",
+    "notes": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08"
+  }
+]

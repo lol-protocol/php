@@ -2,17 +2,23 @@
   {
     "country_code": "BR",
     "country_name": "Brazil",
+    "region": "americas",
     "law_name": "Law No. 9,610/1998",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Full economic rights",
     "moral_rights": "Moral rights (perpetual)",
     "orphan_works": "Allowed for public interest",
-    "digital_protection": "Copyright protection",
+    "digital_protection": "Damages for removing technical anti-copy devices, coded signals & rights info (art. 107)",
     "fair_use_exceptions": "Educational copying allowed",
     "registration_required": "No",
     "enforcement_body": "National Library of Brazil",
     "treaties_signatory": "Berne/TRIPS",
-    "linked_resources": "https://www.gov.br/"
+    "treaties_not_party": "WCT/WPPT",
+    "linked_resources": "https://www.gov.br/",
+    "notes": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": ""
   }
 ]

@@ -3,6 +3,7 @@
 namespace Tests\Review;
 
 use DefamatoryContentReview\Review\{FormEditor, ReviewApplier, ReviewSheet};
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /** La respuesta del revisor sobre una forma generada («cerdos», «cerdas») va al `by` de su entrada. */
@@ -22,6 +23,28 @@ class FormReviewTest extends TestCase
         $this->assertStringContainsString("'by' => ['f.pl' => 'medium', 'f' => 'high']", (string) FormEditor::setBy($withBy, 'cerdo', 'f.pl', 'medium'));
         $this->assertStringContainsString("'by' => ['f' => 'low']", (string) FormEditor::setBy($withBy, 'cerdo', 'f', 'low'));
         $this->assertNull(FormEditor::setBy("['word' => 'rata', 'severity' => 'medium'],", 'rata', 'pl', 'high'), 'sin forms, by no haría nada');
+    }
+
+    /** @return array<string,array{string,string}> [tag, severity] */
+    public static function notFormValues(): array
+    {
+        return [
+            'etiqueta con comilla' => ["f'", 'high'],
+            'etiqueta que cierra y abre' => ["pl'], 'x", 'high'],
+            'etiqueta con metacaracteres' => ['.*', 'high'],
+            'etiqueta vacía' => ['', 'high'],
+            'severidad con comilla' => ['pl', "high'"],
+            'severidad desconocida' => ['pl', 'critical'],
+            'severidad con igual' => ['pl', 'y=high'],
+        ];
+    }
+
+    #[DataProvider('notFormValues')]
+    public function testSetByRefusesWhatTheFormatDoesNotAllow(string $tag, string $severity): void
+    {
+        $entry = "['word' => 'cerdo', 'riskType' => 'animal', 'severity' => 'medium', 'forms' => 'adj', 'by' => ['f' => 'high']],";
+
+        $this->assertNull(FormEditor::setBy($entry, 'cerdo', $tag, $severity));
     }
 
     public function testAppliesAFormAnswerFromASheet(): void

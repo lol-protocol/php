@@ -2,6 +2,7 @@
   {
     "country_code": "AU",
     "country_name": "Australia",
+    "region": "asia_pacific",
     "law_name": "Copyright Act 1968",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
@@ -12,7 +13,12 @@
     "fair_use_exceptions": "Fair dealing (research/education)",
     "registration_required": "No",
     "enforcement_body": "IP Australia",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.ipaustralia.gov.au/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.ipaustralia.gov.au/",
+    "notes": "Amended 2026 (orphan works remedies limit, online/physical education); no AI TDM exception",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14"
   }
 ]

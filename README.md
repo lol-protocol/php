@@ -26,6 +26,7 @@ Este repositorio aloja varios proyectos independientes, cada uno en su propia ca
 | [`iconos-biblioteca/`](iconos-biblioteca/) | Set de iconos SVG abstractos en 2.5D, sin texto, para biblioteca virtual: 151 iconos en 3 variantes. |
 | [`iconos-tools/`](iconos-tools/) | Generador y validador en Python de los dos sets de iconos y de la galería compartida `galeria-iconos.html`. |
 | [`marcalibros-plataforma-pos-brand-identity/`](marcalibros-plataforma-pos-brand-identity/) | Identidad de marca de Marcalibros (marcadores de lectura) para Plataforma POS: tokens de marca, iconos SVG, 1000 marcalibros (10 movimientos literarios y 10 tipos de texto) con su vista previa JPG, paisajes JPG, el generador en Python, un módulo PHP para crear marcalibros propios a partir de imágenes subidas y una aplicación web independiente, sin cuentas, para explorarlos y crearlos. |
+| [`Listado-colores/`](Listado-colores/) | Léxico de colores con nombre para el etiquetado part-of-speech: una lista completa de 31.935 nombres con su hex (con una marca de buenos nombres) y una tabla anotada de los 148 colores CSS, con sus nombres en 30 idiomas, y dos significados: el psicológico y el místico. |
 
 Cada carpeta tiene su propio README con instrucciones de instalación y uso. La mayoría tiene
 también su propio código y tests; `landing-page/` es un solo archivo; `psychology-and-marketing/`
@@ -75,7 +76,7 @@ proyecto.
 - `document-formats`: tests en Node de `document-formats/`.
 - `document-formats-database`: importa `document-formats/` a MySQL (dos veces, para comprobar que no duplica filas) y lo valida contra los CSV.
 - `web-animations`: prueba de humo de las animaciones.
-- `legal-data`: pruebas de `privacy-laws/` y `copyright-laws/` (los CSV maestros, los archivos por país, el lector de CSV de la interfaz y que el README diga lo que hay) y la sintaxis de su API y su importador.
+- `listado-colores`: valida los CSV de `Listado-colores/` y que la tabla del README y `colores-por-idioma.md` estén al día (`python3 generar-tabla.py --comprobar`).
 
 `sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`).
 
@@ -84,6 +85,8 @@ proyecto.
 idénticos). Solo corre si cambia algo de `iconos-genealogia/`, `iconos-biblioteca/`,
 `iconos-tools/` o `galeria-iconos.html` — por eso tiene su propio workflow en vez de un job en
 `tests.yml` (que corre en cada push, sin filtrar por carpeta).
+
+`privacy-laws/` y `copyright-laws/` también tienen los suyos: `laws-modules.yml` (validación de los CSV maestros, archivos generados al día, pruebas unitarias, de la API y de la caché de textos en PHP 8.1 y 8.4, y pruebas en navegador con axe-core) y `laws-links.yml` (cada lunes comprueba que los enlaces de referencia sigan respondiendo).
 
 ## Licencia
 
