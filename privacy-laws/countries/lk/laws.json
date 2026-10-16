@@ -15,6 +15,9 @@
     "enforcement_authority": "Data Protection Authority of Sri Lanka",
     "penalties_range": "Up to LKR 10M per non-compliance (doubled for repeats)",
     "exemptions": "Personal or household use; national security",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://dpa.gov.lk/Background.php",
     "language": "English",
     "frameworks": "",
@@ -25,13 +28,7 @@
     "data_status": "researched",
     "confidence": "medium",
     "last_checked": "2026-10-08",
-    "sources": {
-      "retention_period": {
-        "url": "https://documents.gov.lk/view/acts/2022/3/09-2022_E.pdf",
-        "confidence": "medium",
-        "checked": "2026-10-15"
-      }
-    },
+    "sources": {},
     "changes": [
       {
         "date": "2026-10-15",

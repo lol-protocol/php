@@ -1,0 +1,99 @@
+[
+  {
+    "country_code": "GN",
+    "country_name": "Guinea",
+    "region": "middle_east_africa",
+    "law_name": "Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data",
+    "jurisdiction": "None established",
+    "enactment_date": "2016-07-26",
+    "effective_date": "2016-07-28",
+    "scope": "Data subjects in Guinea (unconfirmed)",
+    "applies_to": "Controllers processing personal data (Part 2 of the law, 65 articles) (unconfirmed)",
+    "key_requirements": "Free right to object to processing for prospecting; direct prospecting without prior written consent is punished; restrictions on cross-border transfers (unconfirmed)",
+    "data_categories": "Not specified",
+    "retention_period": "Not specified",
+    "enforcement_authority": "None operational: art. 47 provides for an authority to be set up by regulation but it is not yet established (DLA Piper, dataprotection.africa)",
+    "penalties_range": "Direct prospecting without prior written consent: 1 to 5 years imprisonment and a fine (amount not found)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Dates conflict (26 vs 28 July 2016); ConsentStack claims a CNIL Guinea but this contradicts DLA Piper; 2025 minister mentioned a new personal data bill, not verified as adopted; no official English translation",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://guineenews.org/2023/02/10/loi-sur-la-cybercriminalite-le-cours-magistral-du-juge-mohamed-diawara-aux-journalistes-a-lambassade-des-usa/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.dataguidance.com/jurisdiction/guinea",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://guineenews.org/2023/02/10/loi-sur-la-cybercriminalite-le-cours-magistral-du-juge-mohamed-diawara-aux-journalistes-a-lambassade-des-usa/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://dataprotection.africa/guinea/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.dlapiperdataprotection.com/?c=GN&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -15,6 +15,9 @@
     "enforcement_authority": "National Center for Personal Data Protection of the Republic of Belarus",
     "penalties_range": "Up to 200 base units administrative fine (Art. 23.7 Code of Administrative Offences); criminal liability also possible",
     "exemptions": "Household use; national security & defence; operational-investigative work",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://petosevic.com/node/4541",
     "language": "English",
     "frameworks": "",
@@ -26,11 +29,6 @@
     "confidence": "high",
     "last_checked": "2026-10-15",
     "sources": {
-      "enactment_date": {
-        "url": "https://bnt.eu/?p=56752",
-        "confidence": "high",
-        "checked": "2026-10-15"
-      },
       "retention_period": {
         "url": "https://cpd.by/en/national-regulation/the-belarusian-data-protection-act/",
         "confidence": "medium",

@@ -15,6 +15,9 @@
     "enforcement_authority": "National Authority for Personal Data Protection (ANPD)",
     "penalties_range": "Fines up to PEN 100k",
     "exemptions": "Government functions",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.gob.pe/anpd",
     "language": "Spanish",
     "frameworks": "",
@@ -33,11 +36,6 @@
       },
       "key_requirements": {
         "url": "https://cms.law/en/per/publication/aprueban-nuevo-reglamento-de-la-ley-de-proteccion-de-datos-personales",
-        "confidence": "medium",
-        "checked": "2026-10-14"
-      },
-      "enforcement_authority": {
-        "url": "https://smartsuite.com/framework/peru-personal-data-protection-law-no-29733",
         "confidence": "medium",
         "checked": "2026-10-14"
       },

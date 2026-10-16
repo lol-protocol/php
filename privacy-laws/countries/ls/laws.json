@@ -1,0 +1,124 @@
+[
+  {
+    "country_code": "LS",
+    "country_name": "Lesotho",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection Act, 2011 (Act No. 5 of 2012)",
+    "jurisdiction": "Data Protection Commission (provided by the Act but never established)",
+    "enactment_date": "2012-02-22",
+    "effective_date": "2012-02-22",
+    "scope": "Data subjects (individuals) whose personal information is processed (unconfirmed)",
+    "applies_to": "All data controllers (public and private) (unconfirmed)",
+    "key_requirements": "Consent, purpose limitation, minimisation and integrity; data subject rights of access, correction and objection to direct marketing; prohibition on processing sensitive information unless permitted (s. 29)",
+    "data_categories": "Personal information; sensitive personal information",
+    "retention_period": "Storage limitation principle (section not confirmed) (unconfirmed)",
+    "enforcement_authority": "Data Protection Commission (not yet appointed)",
+    "penalties_range": "Commission cannot impose fines; enforcement through the courts (unconfirmed)",
+    "exemptions": "Personal/household activity, de-identified data, national security and public safety, journalistic/artistic/literary purposes (s. 4)",
+    "deceased_data": "",
+    "research_exemption": "No research exemption among the general exemptions in s. 4 (unconfirmed)",
+    "genetic_data": "Covered as sensitive personal information; processing prohibited unless permitted by the Act (s. 29) (unconfirmed)",
+    "website_url": "https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Cited as the 2011 Act but published as Act 5 of 2012; one aggregator wrongly gives Act No. 31 of 2011; ConsentStack gives 1 January 2012; Commission never established so law largely unenforced.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.dataguidance.com/jurisdiction/lesotho",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://dataprotection.africa/lesotho/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://dataprotection.africa/lesotho/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.dlapiperdataprotection.com/?c=LS&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.dlapiperdataprotection.com/?c=LS&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "retention_period": {
+        "url": "https://www.offlist.me/what-is-lesotho-data-protection-act-2011",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://dataprotection.africa/lesotho/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://dataprotection.africa/lesotho/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://lesotholii.org/akn/ls/act/2012/5",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://lesotholii.org/akn/ls/act/2012/5",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=LS&t=law",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

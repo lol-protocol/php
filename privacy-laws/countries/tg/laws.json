@@ -1,0 +1,109 @@
+[
+  {
+    "country_code": "TG",
+    "country_name": "Togo",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data",
+    "jurisdiction": "IPDCP",
+    "enactment_date": "2019-10-29",
+    "effective_date": "2019-10-29",
+    "scope": "Data subjects (natural persons) in Togo (unconfirmed)",
+    "applies_to": "Public and private controllers (unconfirmed)",
+    "key_requirements": "Consent, transparency and security (ch. II); prior declaration to IPDCP with receipt within one month; prior authorization for genetic, health, criminal or biometric data; rights to information (art. 35), access (art. 39), objection, erasure, rectification",
+    "data_categories": "Personal data; sensitive data incl. genetic, health, criminal, biometric",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Personal Data Protection Authority (IPDCP, Instance de protection des donnees a caractere personnel); launched activities 28 March 2025",
+    "penalties_range": "Unlawful collection or retention of sensitive data without explicit consent: 1 to 5 years prison and fine of CFA 1 to 10 million, same for retention beyond legal periods and fraudulent CCTV (per IPDCP); a secondary tracker gives CFA 1 to 25 million (unconfirmed)",
+    "exemptions": "Some processing exempt from declaration (articles not found) (unconfirmed)",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "Genetic data requires prior authorization from IPDCP; genetic identity is part of the definition of personal data (art. 4)",
+    "website_url": "https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "8 chapters, 96 articles; published Journal officiel no. 26 ter of 29 Oct 2019; effective date not found; one tracker lists Togo as not party to Convention 108; mandatory CCTV declaration began July 2025; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.osiris.sn/protection-des-donnees-personnelles-au-togo-l-ipdcp-entame-sa-mission.html",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.osiris.sn/protection-des-donnees-personnelles-au-togo-l-ipdcp-entame-sa-mission.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://fr.allafrica.com/stories/202512040384.html",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

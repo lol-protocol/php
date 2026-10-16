@@ -128,3 +128,10 @@
   margin: 0 0 var(--spacing-sm);
   font-size: var(--font-size-sm);
 }
+
+/* Highlighted rows of the comparison are lighter than the page: keep source links readable on them. */
+@media (prefers-color-scheme: dark) {
+  .comparison-table:not([data-theme="light"]) .field-source {
+    color: var(--color-primary-dark);
+  }
+}

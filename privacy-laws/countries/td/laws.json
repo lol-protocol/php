@@ -1,0 +1,124 @@
+[
+  {
+    "country_code": "TD",
+    "country_name": "Chad",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 007/PR/2015 on the Protection of Personal Data",
+    "jurisdiction": "Agence nationale de securite informatique et de certification electronique (ANSICE)",
+    "enactment_date": "2015-02-10",
+    "effective_date": "2015-02-10",
+    "scope": "Data subjects in Chad (unconfirmed)",
+    "applies_to": "Controllers and processors operating in Chad (unconfirmed)",
+    "key_requirements": "Written declaration to ANSICE for most processing; prior authorisation for genetic/biometric data, health research, offence records, national ID numbers; data subject rights and security obligations",
+    "data_categories": "Personal data; genetic and biometric data; health data; offence and conviction records",
+    "retention_period": "Data kept only as long as necessary for the purpose (unconfirmed)",
+    "enforcement_authority": "Agence nationale de securite informatique et de certification electronique (ANSICE)",
+    "penalties_range": "Administrative: warning, formal notice, processing ban, fines of XAF 1,000,000 to 10,000,000; criminal: imprisonment of 3 months to 1 year",
+    "exemptions": "National defence or public safety processing excluded (one source; disputed) (unconfirmed)",
+    "deceased_data": "",
+    "research_exemption": "Health research requires prior ANSICE authorisation (no exemption found) (unconfirmed)",
+    "genetic_data": "Processing requires prior authorisation of ANSICE",
+    "website_url": "https://www.dlapiperdataprotection.com/?t=law&c=TD",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Adopted by National Assembly 24 Nov 2014; implementing Decree No. 075/PR/2019 of 21 January 2019 (art. 5 corrected by Decree 1619/PR/2019); sources conflict on DPO and breach notification",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dlapiperdataprotection.com/?t=law&c=TD",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://regulations.clym.io/law-no-007-pr-2015-chad",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.consentstack.io/regulations/td-law007",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.consentstack.io/regulations/td-law007",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.dataguidance.com/jurisdiction/chad",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.dataguidance.com/jurisdiction/chad",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.dlapiperdataprotection.com/?t=law&c=TD",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.dlapiperdataprotection.com/?t=law&c=TD",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "retention_period": {
+        "url": "https://www.dataguidance.com/jurisdiction/chad",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://regulations.clym.io/law-no-007-pr-2015-chad",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://caseguard.com/articles/establecer-una-norma-para-la-proteccion-de-datos-en-chad/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://www.offlist.me/what-is-chad-law-007-pr-2015",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://www.dlapiperdataprotection.com/?t=law&c=TD",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?t=law&c=TD",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

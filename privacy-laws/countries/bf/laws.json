@@ -1,0 +1,104 @@
+[
+  {
+    "country_code": "BF",
+    "country_name": "Burkina Faso",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 001-2021/AN of 30 March 2021 on the Protection of Persons with regard to the Processing of Personal Data",
+    "jurisdiction": "CIL",
+    "enactment_date": "2021-03-30",
+    "effective_date": "2021-04-21",
+    "scope": "Data subjects (natural persons) in Burkina Faso",
+    "applies_to": "Controllers established in Burkina Faso and controllers abroad processing from national territory (art. 3)",
+    "key_requirements": "Prior formalities with CIL before processing; regulated cross-border transfers (contract with foreign recipient with data-return clause, encryption); fuller right to information; health data hosted in Burkina Faso unless CIL exempts",
+    "data_categories": "Personal data; sensitive data; health data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Commission for Informatics and Liberties (CIL)",
+    "penalties_range": "Fixed fines of CFA 5 million to 100 million (per CIL president); other criminal sanctions not verified",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://assembleenationale.bf/storage/Loi/kDsWHXOTUCQFVESChh8BlBdiZnCrdTsOpXe1rzmH.pdf",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Repealed and replaced Law No. 010-2004/AN; adoption by the Assembly 30 March 2021, effective date 21 April 2021 given only by secondary sources (DataGuidance, ConsentStack); ConsentStack turnover-percentage fines unverified and not used; enforcement described as nascent",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://assembleenationale.bf/storage/Loi/kDsWHXOTUCQFVESChh8BlBdiZnCrdTsOpXe1rzmH.pdf",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BF&t=law",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BF&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.DataGuidance.com/jurisdiction/burkina-faso",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BF&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://assembleenationale.bf/storage/Loi/kDsWHXOTUCQFVESChh8BlBdiZnCrdTsOpXe1rzmH.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.DataGuidance.com/jurisdiction/burkina-faso",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BF&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dlapiperdataprotection.com/?c=BF&t=law",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.sidwaya.info/protection-des-donnees-a-caractere-personnel-une-nouvelle-loi-pour-renforcer-le-cadre-legal/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

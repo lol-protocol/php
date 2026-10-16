@@ -34,6 +34,26 @@ export function hydrate(bundle, enrichRow = (row) => row) {
   };
 }
 
+const translationPending = new Map();
+
+/**
+ * The machine translations of the descriptive values for one interface language: { English text: translation }.
+ * English needs none; a language without a file simply has no translations.
+ */
+export function loadTranslations(lang) {
+  if (lang === "eng") return Promise.resolve({});
+  if (!translationPending.has(lang)) {
+    const url = new URL(`../../countries/translations.${lang}.json`, import.meta.url);
+    translationPending.set(
+      lang,
+      fetch(url, { cache: "no-cache" })
+        .then((response) => (response.ok ? response.json() : {}))
+        .catch(() => ({}))
+    );
+  }
+  return translationPending.get(lang);
+}
+
 let pending;
 
 /** The bundle is fetched once per page load; revalidated with the server (cheap 304). */

@@ -15,6 +15,9 @@
     "enforcement_authority": "Nigeria Data Protection Commission",
     "penalties_range": "Up to the higher of NGN 10M or 2% of annual gross revenue (major importance); NGN 2M or 2% for others",
     "exemptions": "Criminal investigation/prosecution, national public health emergencies, national security by competent authorities",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://fpf.org/blog/nigerias-new-data-protection-act-explained/",
     "language": "English",
     "frameworks": "",
@@ -54,16 +57,6 @@
       "applies_to": {
         "url": "https://www.mondaq.com/nigeria/privacy-protection/1389752/a-review-of-the-nigeria-data-protection-act-2023",
         "confidence": "high",
-        "checked": "2026-10-14"
-      },
-      "key_requirements": {
-        "url": "https://lawpavilion.com/blog/safeguarding-privacy-a-descriptive-analysis-of-the-nigeria-data-protection-act-2023",
-        "confidence": "high",
-        "checked": "2026-10-14"
-      },
-      "data_categories": {
-        "url": "https://assets.kpmg.com/content/dam/kpmg/ng/pdf/nigeria-data-protection-act2023_kpmg-review.pdf",
-        "confidence": "medium",
         "checked": "2026-10-14"
       },
       "retention_period": {

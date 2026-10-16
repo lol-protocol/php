@@ -148,10 +148,10 @@ date,country_code,law_name,field,old_value,new_value
 2026-10-14,HK,Personal Data (Privacy) Ordinance (Cap. 486),law_name,Personal Data (Privacy) Ordinance,Personal Data (Privacy) Ordinance (Cap. 486)
 2026-10-14,HK,Personal Data (Privacy) Ordinance (Cap. 486),enactment_date,2013-10-18,1995-08-03
 2026-10-14,HK,Personal Data (Privacy) Ordinance (Cap. 486),effective_date,2021-10-18,1996-12-20
-2026-10-14,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26,key_requirements,GDPR compliance,"GDPR applies: lawful basis, data subject rights, breach notification"
-2026-10-14,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26,enforcement_authority,Hungarian Authority,Hungarian National Authority for Data Protection and Freedom of Information (NAIH)
-2026-10-14,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26,law_name,Data Protection Act,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26
-2026-10-14,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26,notes,GDPR implementation,Infotv. as amended by Act XXXVIII of 2018 (in force 2018-07-26); regulator NAIH
+2026-10-14,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.),key_requirements,GDPR compliance,"GDPR applies: lawful basis, data subject rights, breach notification"
+2026-10-14,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.),enforcement_authority,Hungarian Authority,Hungarian National Authority for Data Protection and Freedom of Information (NAIH)
+2026-10-14,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.),law_name,Data Protection Act,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26
+2026-10-14,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.),notes,GDPR implementation,Infotv. as amended by Act XXXVIII of 2018 (in force 2018-07-26); regulator NAIH
 2026-10-14,ID,Law No. 27 of 2022 on Personal Data Protection (UU PDP),notes,Southeast Asia region,
 2026-10-14,ID,Law No. 27 of 2022 on Personal Data Protection (UU PDP),enforcement_authority,Indonesian DPA,Ministry of Communication and Digital Affairs (Komdigi)
 2026-10-14,ID,Law No. 27 of 2022 on Personal Data Protection (UU PDP),law_name,Law No. 27 of 2022 (PDP),Law No. 27 of 2022 on Personal Data Protection (UU PDP)
@@ -329,3 +329,177 @@ date,country_code,law_name,field,old_value,new_value
 2026-10-15,VN,Law on Personal Data Protection (PDPL),retention_period,Not specified,Art. 3 principles: data stored only for period consistent with processing purpose unless law provides otherwise; delete/de-identify when purpose ends
 2026-10-15,ZM,Data Protection Act 2021 (DPA),retention_period,Not specified,s.12 principles: stored in a form permitting identification no longer than necessary for the purposes of processing
 2026-10-15,ZW,Cyber and Data Protection Act (CDPA),retention_period,Not specified,s.7 (Quality of data): kept in identifiable form no longer than necessary for purposes of collection or further processing
+2026-10-16,AZ,Law No. 998-IIIQ of 11 May 2010 on Personal Data,row,,added
+2026-10-16,AZ,Law No. 998-IIIQ of 11 May 2010 on Personal Data,row,,added
+2026-10-16,AZ,Law No. 998-IIIQ of 11 May 2010 on Personal Data,row,,added
+2026-10-16,BD,"Personal Data Protection Ordinance, 2025 (Ordinance No. 61 of 2025)",row,,added
+2026-10-16,BD,"Personal Data Protection Ordinance, 2025 (Ordinance No. 61 of 2025)",row,,added
+2026-10-16,BD,"Personal Data Protection Ordinance, 2025 (Ordinance No. 61 of 2025)",row,,added
+2026-10-16,BF,Law No. 001-2021/AN of 30 March 2021 on the Protection of Persons with regard to the Processing of Personal Data,row,,added
+2026-10-16,BF,Law No. 001-2021/AN of 30 March 2021 on the Protection of Persons with regard to the Processing of Personal Data,row,,added
+2026-10-16,BF,Law No. 001-2021/AN of 30 March 2021 on the Protection of Persons with regard to the Processing of Personal Data,row,,added
+2026-10-16,BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",row,,added
+2026-10-16,BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",row,,added
+2026-10-16,BG,"Personal Data Protection Act (PDPA), as amended and supplemented in 2019 to implement GDPR (Regulation (EU) 2016/679)",row,,added
+2026-10-16,BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,row,,added
+2026-10-16,BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,row,,added
+2026-10-16,BI,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,row,,added
+2026-10-16,BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",row,,added
+2026-10-16,BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",row,,added
+2026-10-16,BJ,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",row,,added
+2026-10-16,CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",row,,added
+2026-10-16,CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",row,,added
+2026-10-16,CA,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",row,,added
+2026-10-16,CA,"Personal Information Protection Act (SA 2003, c. P-6.5)",row,,added
+2026-10-16,CA,"Personal Information Protection Act (SA 2003, c. P-6.5)",row,,added
+2026-10-16,CA,"Personal Information Protection Act (SA 2003, c. P-6.5)",row,,added
+2026-10-16,CA,"Personal Information Protection Act (SBC 2003, c. 63)",row,,added
+2026-10-16,CA,"Personal Information Protection Act (SBC 2003, c. 63)",row,,added
+2026-10-16,CA,"Personal Information Protection Act (SBC 2003, c. 63)",row,,added
+2026-10-16,CD,"Digital Code (Ordonnance-Loi No. 23/010 of 13 March 2023), Title III on personal data protection",row,,added
+2026-10-16,CD,"Digital Code (Ordonnance-Loi No. 23/010 of 13 March 2023), Title III on personal data protection",row,,added
+2026-10-16,CD,"Digital Code (Ordonnance-Loi No. 23/010 of 13 March 2023), Title III on personal data protection",row,,added
+2026-10-16,CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,row,,added
+2026-10-16,CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,row,,added
+2026-10-16,CM,Law No. 2024/017 of 23 December 2024 on Personal Data Protection,row,,added
+2026-10-16,CU,Law No. 149 of 2022 on Personal Data Protection (Ley 149 De Protección de Datos Personales),row,,added
+2026-10-16,CU,Law No. 149 of 2022 on Personal Data Protection (Ley 149 De Protección de Datos Personales),row,,added
+2026-10-16,CU,Law No. 149 of 2022 on Personal Data Protection (Ley 149 De Protección de Datos Personales),row,,added
+2026-10-16,DZ,"Law No. 18-07 of 10 June 2018 on the Protection of Natural Persons in the Processing of Personal Data, as amended by Law No. 25-11 of 24 July 2025",row,,added
+2026-10-16,DZ,"Law No. 18-07 of 10 June 2018 on the Protection of Natural Persons in the Processing of Personal Data, as amended by Law No. 25-11 of 24 July 2025",row,,added
+2026-10-16,DZ,"Law No. 18-07 of 10 June 2018 on the Protection of Natural Persons in the Processing of Personal Data, as amended by Law No. 25-11 of 24 July 2025",row,,added
+2026-10-16,GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,row,,added
+2026-10-16,GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,row,,added
+2026-10-16,GA,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,row,,added
+2026-10-16,GM,Personal Data Protection and Privacy Act 2025,row,,added
+2026-10-16,GM,Personal Data Protection and Privacy Act 2025,row,,added
+2026-10-16,GM,Personal Data Protection and Privacy Act 2025,row,,added
+2026-10-16,GN,Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data,row,,added
+2026-10-16,GN,Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data,row,,added
+2026-10-16,GN,Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data,row,,added
+2026-10-16,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.),law_name,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)
+2026-10-16,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.),law_name,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)
+2026-10-16,HU,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.),law_name,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26,Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)
+2026-10-16,KG,Law No. 58 of 14 April 2008 on Personal Information,row,,added
+2026-10-16,KG,Law No. 58 of 14 April 2008 on Personal Information,row,,added
+2026-10-16,KG,Law No. 58 of 14 April 2008 on Personal Information,row,,added
+2026-10-16,KZ,Law No. 94-V of 21 May 2013 on Personal Data and Their Protection,row,,added
+2026-10-16,KZ,Law No. 94-V of 21 May 2013 on Personal Data and Their Protection,row,,added
+2026-10-16,KZ,Law No. 94-V of 21 May 2013 on Personal Data and Their Protection,row,,added
+2026-10-16,LA,Law on Electronic Data Protection No. 25/NA (2017),row,,added
+2026-10-16,LA,Law on Electronic Data Protection No. 25/NA (2017),row,,added
+2026-10-16,LA,Law on Electronic Data Protection No. 25/NA (2017),row,,added
+2026-10-16,LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,row,,added
+2026-10-16,LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,row,,added
+2026-10-16,LB,Law No. 81 of 2018 on Electronic Transactions and Personal Data,row,,added
+2026-10-16,LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",row,,added
+2026-10-16,LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",row,,added
+2026-10-16,LS,"Data Protection Act, 2011 (Act No. 5 of 2012)",row,,added
+2026-10-16,ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),row,,added
+2026-10-16,ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),row,,added
+2026-10-16,ML,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),row,,added
+2026-10-16,MN,Law on Personal Data Protection (2021),row,,added
+2026-10-16,MN,Law on Personal Data Protection (2021),row,,added
+2026-10-16,MN,Law on Personal Data Protection (2021),row,,added
+2026-10-16,MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,row,,added
+2026-10-16,MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,row,,added
+2026-10-16,MR,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,row,,added
+2026-10-16,MW,Data Protection Act 2024,row,,added
+2026-10-16,MW,Data Protection Act 2024,row,,added
+2026-10-16,MW,Data Protection Act 2024,row,,added
+2026-10-16,NE,Law No. 2022-59 of 16 December 2022 on the Protection of Personal Data (amended by Law No. 2023-31 of 4 July 2023 and Ordinances 2024-16 and 2024-29),row,,added
+2026-10-16,NE,Law No. 2022-59 of 16 December 2022 on the Protection of Personal Data (amended by Law No. 2023-31 of 4 July 2023 and Ordinances 2024-16 and 2024-29),row,,added
+2026-10-16,NE,Law No. 2022-59 of 16 December 2022 on the Protection of Personal Data (amended by Law No. 2023-31 of 4 July 2023 and Ordinances 2024-16 and 2024-29),row,,added
+2026-10-16,SO,Data Protection Act 2023 (Law No. 005 of 2023),row,,added
+2026-10-16,SO,Data Protection Act 2023 (Law No. 005 of 2023),row,,added
+2026-10-16,SO,Data Protection Act 2023 (Law No. 005 of 2023),row,,added
+2026-10-16,TD,Law No. 007/PR/2015 on the Protection of Personal Data,row,,added
+2026-10-16,TD,Law No. 007/PR/2015 on the Protection of Personal Data,row,,added
+2026-10-16,TD,Law No. 007/PR/2015 on the Protection of Personal Data,row,,added
+2026-10-16,TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,row,,added
+2026-10-16,TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,row,,added
+2026-10-16,TG,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,row,,added
+2026-10-16,TJ,Law No. 1537 of 3 August 2018 on Personal Data Protection,row,,added
+2026-10-16,TJ,Law No. 1537 of 3 August 2018 on Personal Data Protection,row,,added
+2026-10-16,TJ,Law No. 1537 of 3 August 2018 on Personal Data Protection,row,,added
+2026-10-16,TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,row,,added
+2026-10-16,TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,row,,added
+2026-10-16,TN,Organic Law No. 2004-63 of 27 July 2004 on the Protection of Personal Data,row,,added
+2026-10-16,TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",row,,added
+2026-10-16,TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",row,,added
+2026-10-16,TT,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",row,,added
+2026-10-16,US,"Alabama Personal Data Protection Act (House Bill 351, Act 2026-552)",row,,added
+2026-10-16,US,"Alabama Personal Data Protection Act (House Bill 351, Act 2026-552)",row,,added
+2026-10-16,US,"Alabama Personal Data Protection Act (House Bill 351, Act 2026-552)",row,,added
+2026-10-16,US,Biometric Information Privacy Act (740 ILCS 14; Public Act 95-994),row,,added
+2026-10-16,US,Biometric Information Privacy Act (740 ILCS 14; Public Act 95-994),row,,added
+2026-10-16,US,Biometric Information Privacy Act (740 ILCS 14; Public Act 95-994),row,,added
+2026-10-16,US,"Colorado Privacy Act (CPA), SB 21-190, C.R.S. 6-1-1301 et seq.",row,,added
+2026-10-16,US,"Colorado Privacy Act (CPA), SB 21-190, C.R.S. 6-1-1301 et seq.",row,,added
+2026-10-16,US,"Colorado Privacy Act (CPA), SB 21-190, C.R.S. 6-1-1301 et seq.",row,,added
+2026-10-16,US,"Connecticut Data Privacy Act (CTDPA), Public Act 22-15 (SB 6), Conn. Gen. Stat. 42-515 et seq.; amended by Public Act 25-113 (SB 1295)",row,,added
+2026-10-16,US,"Connecticut Data Privacy Act (CTDPA), Public Act 22-15 (SB 6), Conn. Gen. Stat. 42-515 et seq.; amended by Public Act 25-113 (SB 1295)",row,,added
+2026-10-16,US,"Connecticut Data Privacy Act (CTDPA), Public Act 22-15 (SB 6), Conn. Gen. Stat. 42-515 et seq.; amended by Public Act 25-113 (SB 1295)",row,,added
+2026-10-16,US,"Delaware Personal Data Privacy Act (HB 154, 6 Del. C. ch. 12D)",row,,added
+2026-10-16,US,"Delaware Personal Data Privacy Act (HB 154, 6 Del. C. ch. 12D)",row,,added
+2026-10-16,US,"Delaware Personal Data Privacy Act (HB 154, 6 Del. C. ch. 12D)",row,,added
+2026-10-16,US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 2023-201, Laws of Fla.; Fla. Stat. ss. 501.701 et seq.)",row,,added
+2026-10-16,US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 2023-201, Laws of Fla.; Fla. Stat. ss. 501.701 et seq.)",row,,added
+2026-10-16,US,"Florida Digital Bill of Rights (CS/CS/SB 262 'Technology Transparency', Ch. 2023-201, Laws of Fla.; Fla. Stat. ss. 501.701 et seq.)",row,,added
+2026-10-16,US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",row,,added
+2026-10-16,US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",row,,added
+2026-10-16,US,"Indiana Consumer Data Protection Act (INCDPA), Senate Enrolled Act 5 (2023), IC 24-15",row,,added
+2026-10-16,US,"Iowa Consumer Data Protection Act, Senate File 262 (2023), Iowa Code chapter 715D",row,,added
+2026-10-16,US,"Iowa Consumer Data Protection Act, Senate File 262 (2023), Iowa Code chapter 715D",row,,added
+2026-10-16,US,"Iowa Consumer Data Protection Act, Senate File 262 (2023), Iowa Code chapter 715D",row,,added
+2026-10-16,US,"Kentucky Consumer Data Privacy Act (HB 15, 2024 Regular Session)",row,,added
+2026-10-16,US,"Kentucky Consumer Data Privacy Act (HB 15, 2024 Regular Session)",row,,added
+2026-10-16,US,"Kentucky Consumer Data Privacy Act (HB 15, 2024 Regular Session)",row,,added
+2026-10-16,US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",row,,added
+2026-10-16,US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",row,,added
+2026-10-16,US,"Louisiana Data Privacy Act (Senate Bill 386, Act No. 502 of 2026; La. R.S. 51:1780.1-1780.5)",row,,added
+2026-10-16,US,"Maryland Online Data Privacy Act of 2024 (MODPA, HB 567)",row,,added
+2026-10-16,US,"Maryland Online Data Privacy Act of 2024 (MODPA, HB 567)",row,,added
+2026-10-16,US,"Maryland Online Data Privacy Act of 2024 (MODPA, HB 567)",row,,added
+2026-10-16,US,"Minnesota Consumer Data Privacy Act (HF 4757, Minn. Stat. ch. 325M, secs. 325M.10-325M.21)",row,,added
+2026-10-16,US,"Minnesota Consumer Data Privacy Act (HF 4757, Minn. Stat. ch. 325M, secs. 325M.10-325M.21)",row,,added
+2026-10-16,US,"Minnesota Consumer Data Privacy Act (HF 4757, Minn. Stat. ch. 325M, secs. 325M.10-325M.21)",row,,added
+2026-10-16,US,"Montana Consumer Data Privacy Act (MCDPA), SB 384 (2023), Mont. Code Ann. Title 30, ch. 14, part 28; amended by SB 297 (2025)",row,,added
+2026-10-16,US,"Montana Consumer Data Privacy Act (MCDPA), SB 384 (2023), Mont. Code Ann. Title 30, ch. 14, part 28; amended by SB 297 (2025)",row,,added
+2026-10-16,US,"Montana Consumer Data Privacy Act (MCDPA), SB 384 (2023), Mont. Code Ann. Title 30, ch. 14, part 28; amended by SB 297 (2025)",row,,added
+2026-10-16,US,"My Health My Data Act (HB 1155, RCW ch. 19.373)",row,,added
+2026-10-16,US,"My Health My Data Act (HB 1155, RCW ch. 19.373)",row,,added
+2026-10-16,US,"My Health My Data Act (HB 1155, RCW ch. 19.373)",row,,added
+2026-10-16,US,Nebraska Data Privacy Act (LB 1074),row,,added
+2026-10-16,US,Nebraska Data Privacy Act (LB 1074),row,,added
+2026-10-16,US,Nebraska Data Privacy Act (LB 1074),row,,added
+2026-10-16,US,"New Hampshire Privacy Act (SB 255, RSA 507-H)",row,,added
+2026-10-16,US,"New Hampshire Privacy Act (SB 255, RSA 507-H)",row,,added
+2026-10-16,US,"New Hampshire Privacy Act (SB 255, RSA 507-H)",row,,added
+2026-10-16,US,"New Jersey Data Privacy Act (P.L. 2023, c.266, S332; N.J.S.A. 56:8-166.4 et seq.)",row,,added
+2026-10-16,US,"New Jersey Data Privacy Act (P.L. 2023, c.266, S332; N.J.S.A. 56:8-166.4 et seq.)",row,,added
+2026-10-16,US,"New Jersey Data Privacy Act (P.L. 2023, c.266, S332; N.J.S.A. 56:8-166.4 et seq.)",row,,added
+2026-10-16,US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",row,,added
+2026-10-16,US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",row,,added
+2026-10-16,US,"Oklahoma Consumer Data Privacy Act (Senate Bill 546, 2026 Okla. Sess. Laws ch. 8; 75A O.S. ss. 300-320)",row,,added
+2026-10-16,US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",row,,added
+2026-10-16,US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",row,,added
+2026-10-16,US,"Oregon Consumer Privacy Act (OCPA), SB 619 (2023), ORS 646A.570 to 646A.589",row,,added
+2026-10-16,US,"Rhode Island Data Transparency and Privacy Protection Act (H 7787, R.I. Gen. Laws ch. 6-48.1)",row,,added
+2026-10-16,US,"Rhode Island Data Transparency and Privacy Protection Act (H 7787, R.I. Gen. Laws ch. 6-48.1)",row,,added
+2026-10-16,US,"Rhode Island Data Transparency and Privacy Protection Act (H 7787, R.I. Gen. Laws ch. 6-48.1)",row,,added
+2026-10-16,US,"Tennessee Information Protection Act (TIPA), HB 1181/SB 73 (2023), Tenn. Code Ann. 47-18-3201 et seq.",row,,added
+2026-10-16,US,"Tennessee Information Protection Act (TIPA), HB 1181/SB 73 (2023), Tenn. Code Ann. 47-18-3201 et seq.",row,,added
+2026-10-16,US,"Tennessee Information Protection Act (TIPA), HB 1181/SB 73 (2023), Tenn. Code Ann. 47-18-3201 et seq.",row,,added
+2026-10-16,US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",row,,added
+2026-10-16,US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",row,,added
+2026-10-16,US,"Texas Data Privacy and Security Act (TDPSA), HB 4 (2023), Tex. Bus. & Com. Code ch. 541",row,,added
+2026-10-16,US,"Utah Consumer Privacy Act (UCPA), SB 227 (2022), Utah Code 13-61-101 et seq.",row,,added
+2026-10-16,US,"Utah Consumer Privacy Act (UCPA), SB 227 (2022), Utah Code 13-61-101 et seq.",row,,added
+2026-10-16,US,"Utah Consumer Privacy Act (UCPA), SB 227 (2022), Utah Code 13-61-101 et seq.",row,,added
+2026-10-16,US,"Vermont Data Privacy and Online Surveillance Act (S.71, Act 145 of 2026; 9 V.S.A. ch. 61A, ss. 2415a-2415k)",row,,added
+2026-10-16,US,"Vermont Data Privacy and Online Surveillance Act (S.71, Act 145 of 2026; 9 V.S.A. ch. 61A, ss. 2415a-2415k)",row,,added
+2026-10-16,US,"Vermont Data Privacy and Online Surveillance Act (S.71, Act 145 of 2026; 9 V.S.A. ch. 61A, ss. 2415a-2415k)",row,,added
+2026-10-16,US,"Virginia Consumer Data Protection Act (VCDPA), Va. Code 59.1-575 et seq. (2021 Acts ch. 35 and 36; HB 2307/SB 1392)",row,,added
+2026-10-16,US,"Virginia Consumer Data Protection Act (VCDPA), Va. Code 59.1-575 et seq. (2021 Acts ch. 35 and 36; HB 2307/SB 1392)",row,,added
+2026-10-16,US,"Virginia Consumer Data Protection Act (VCDPA), Va. Code 59.1-575 et seq. (2021 Acts ch. 35 and 36; HB 2307/SB 1392)",row,,added

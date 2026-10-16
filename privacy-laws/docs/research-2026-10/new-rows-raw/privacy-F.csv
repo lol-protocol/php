@@ -1,0 +1,75 @@
+code,field,value,conf,source
+CF,law_name,Law No. 24.001 on the Protection of Personal Data,medium,https://www.consentstack.io/regulations/cf-law24001
+CF,jurisdiction,"Agency in charge of personal data protection (not yet set up; Ministry of Digital Economy, Posts and Telecommunications acts as interim overseer)",low,https://www.consentstack.io/regulations/cf-law24001
+CF,enactment_date,UNKNOWN,low,https://arcep.cf/documents/textes/lois/Loi_24_001_portant_protection_des_donnes_a_caractere_personnel.PDF
+CF,effective_date,UNKNOWN,low,https://www.consentstack.io/regulations/cf-law24001
+CF,scope,Data subjects whose data is processed in the Central African Republic or with effects on its territory,medium,https://arcep.cf/documents/textes/lois/Loi_24_001_portant_protection_des_donnes_a_caractere_personnel.PDF
+CF,applies_to,"Public and private controllers and processors (exceptions for public security, defence and criminal procedure)",medium,https://arcep.cf/documents/textes/lois/Loi_24_001_portant_protection_des_donnes_a_caractere_personnel.PDF
+CF,key_requirements,"Lawfulness, purpose limitation and accuracy principles; data subject rights of access, rectification and deletion; security measures and tiered rules for international transfers (CEMAC/ECCAS)",medium,https://www.consentstack.io/regulations/cf-law24001
+CF,data_categories,Personal data; sensitive data (racial origin; political opinions; religion; trade union; genetic and biometric; health; sex life),medium,https://www.mofo.com/privacy-library/central-african-republic
+CF,retention_period,Storage limitation principle (no article found),low,https://www.techhiveadvisory.africa/insights/review-of-the-central-african-republic-data-protection-law
+CF,enforcement_authority,Independent data protection authority provided by law but not operational (12-month deadline missed in January 2025),low,https://www.consentstack.io/regulations/cf-law24001
+CF,penalties_range,"Reported administrative fines up to 5% of annual turnover plus criminal penalties for fraudulent collection, misuse or unlawful retention (secondary sources only)",low,https://www.consentstack.io/regulations/cf-law24001
+CF,exemptions,"Public security, defence and criminal/judicial matters (article not found)",low,https://arcep.cf/documents/textes/lois/Loi_24_001_portant_protection_des_donnes_a_caractere_personnel.PDF
+CF,website_url,https://arcep.cf/documents/textes/lois/Loi_24_001_portant_protection_des_donnes_a_caractere_personnel.PDF,medium,https://arcep.cf/documents/textes/lois/Loi_24_001_portant_protection_des_donnes_a_caractere_personnel.PDF
+CF,language,French,high,https://arcep.cf/documents/textes/lois/Loi_24_001_portant_protection_des_donnes_a_caractere_personnel.PDF
+CF,notes,Adopted January 2024 per secondary sources; exact promulgation date and Journal Officiel issue not found; text takes effect on promulgation.,low,https://www.offlist.me/what-is-central-african-republic-data-protection
+CF,deceased_data,UNKNOWN,low,
+CF,research_exemption,UNKNOWN,low,
+CF,genetic_data,Sensitive data; processing generally prohibited unless an exception applies (consent; vital interests; medical treatment; legal claims),medium,https://www.mofo.com/privacy-library/central-african-republic
+NA,status,NOLAW: no comprehensive data protection law in force; only constitutional privacy (art. 13) and sector rules; Data Protection Bill pending in Parliament,medium,https://www.dlapiperdataprotection.com/?c=NA&t=law
+GM,law_name,Personal Data Protection and Privacy Act 2025,medium,https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025
+GM,jurisdiction,Information Commission (designated National Data Protection Commission),medium,https://law.ungovr.org/ai/gm
+GM,enactment_date,2025-11-07,low,https://law.ungovr.org/ai/gm
+GM,effective_date,2025-11-07,low,https://www.consentstack.io/regulations/gm-pdpp
+GM,scope,Data subjects in The Gambia (extraterritorial: foreign controllers processing data of people in The Gambia),medium,https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025
+GM,applies_to,All public and private controllers and processors; excludes purely personal/household activity and anonymous data,medium,https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025
+GM,key_requirements,"Lawful processing and accountability without prior registration; breach notification to the Commission within 72 hours; impact assessments for high-risk processing",low,https://www.consentstack.io/regulations/gm-pdpp
+GM,data_categories,Personal data; special categories of personal data,low,https://assembly.gm/documents/364
+GM,retention_period,UNKNOWN,low,
+GM,enforcement_authority,Information Commission,medium,https://law.ungovr.org/ai/gm
+GM,penalties_range,"Reported administrative fines up to 4% of global turnover for serious violations; criminal penalties up to 10 years for selling personal data (sources conflict, unverified)",low,https://www.consentstack.io/regulations/gm-pdpp
+GM,exemptions,Purely personal or household activity; anonymous data,medium,https://www.techhiveadvisory.africa/insights/review-of-gambias-personal-data-protection-and-privacy-act-2025
+GM,website_url,https://assembly.gm/documents/364,low,https://assembly.gm/documents/364
+GM,language,English,high,https://assembly.gm/documents/364
+GM,notes,Passed unanimously by National Assembly 29 September 2025; assent reported 7 November 2025 by secondary sources only; no commencement order or gazette found.,low,https://www.techhiveadvisory.africa/insights/bimonthly-update-on-privacy-in-africa-september-october-2025
+GM,deceased_data,UNKNOWN,low,
+GM,research_exemption,UNKNOWN,low,
+GM,genetic_data,UNKNOWN,low,
+GA,law_name,Law No. 001/2011 of 25 September 2011 on the Protection of Personal Data as amended by Law No. 025/2023 of 12 July 2023,high,https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf
+GA,jurisdiction,Authority for the Protection of Personal Data and Privacy (APDPVP),high,https://www.dlapiperdataprotection.com/?c=GA&t=law
+GA,enactment_date,2023-07-12,medium,https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf
+GA,effective_date,2023-07-15,low,https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf
+GA,scope,Data subjects whose personal data is processed in Gabon,medium,https://regulations.clym.io/law-no-025-2023-gabon
+GA,applies_to,All public and private entities processing personal data,medium,https://regulations.clym.io/law-no-025-2023-gabon
+GA,key_requirements,"Declaration/authorisation to the authority; data subject rights of access, correction, erasure and objection (one month to respond); special measures for children's data",medium,https://regulations.clym.io/law-no-025-2023-gabon
+GA,data_categories,Personal data; sensitive data,low,https://regulations.clym.io/law-no-025-2023-gabon
+GA,retention_period,UNKNOWN,low,
+GA,enforcement_authority,Authority for the Protection of Personal Data and Privacy (APDPVP),high,https://www.dlapiperdataprotection.com/?c=GA&t=law
+GA,penalties_range,"Reported fines of CFA 1 million to 100 million (rising for repeat violations), suspension of processing and criminal penalties; secondary sources",low,https://regulations.clym.io/law-no-025-2023-gabon
+GA,exemptions,UNKNOWN,low,
+GA,website_url,https://www.dlapiperdataprotection.com/?c=GA&t=law,medium,https://www.dlapiperdataprotection.com/?c=GA&t=law
+GA,language,French,high,https://www.afapdp.org/wp-content/uploads/2023/12/Gabon-Loi-025-2023-du-12-juillet-2023-portant-modification-de-la-loi-001-2011-du-25-septembre-relative-a-la-protection-des-donnees-a-caractere-personnel.pdf
+GA,notes,Amends Law 001/2011; some sources date the 2023 law 9 July 2023; published in Journal Officiel 15 July 2023; Ordinance 00002/PR/2020 also amended the 2011 law; former regulator CNPDCP replaced by APDPVP.,medium,https://www.dlapiperdataprotection.com/?c=GA&t=law
+GA,deceased_data,UNKNOWN,low,
+GA,research_exemption,UNKNOWN,low,
+GA,genetic_data,UNKNOWN,low,
+LS,law_name,"Data Protection Act, 2011 (Act No. 5 of 2012)",high,https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22
+LS,jurisdiction,Data Protection Commission (provided by the Act but never established),medium,https://www.dataguidance.com/jurisdiction/lesotho
+LS,enactment_date,2012-02-22,medium,https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22
+LS,effective_date,2012-02-22,medium,https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22
+LS,scope,Data subjects (individuals) whose personal information is processed,low,https://dataprotection.africa/lesotho/
+LS,applies_to,All data controllers (public and private),low,https://dataprotection.africa/lesotho/
+LS,key_requirements,"Consent, purpose limitation, minimisation and integrity; data subject rights of access, correction and objection to direct marketing; prohibition on processing sensitive information unless permitted (s. 29)",medium,https://www.dlapiperdataprotection.com/?c=LS&t=law
+LS,data_categories,Personal information; sensitive personal information,medium,https://www.dlapiperdataprotection.com/?c=LS&t=law
+LS,retention_period,Storage limitation principle (section not confirmed),low,https://www.offlist.me/what-is-lesotho-data-protection-act-2011
+LS,enforcement_authority,Data Protection Commission (not yet appointed),medium,https://dataprotection.africa/lesotho/
+LS,penalties_range,Commission cannot impose fines; enforcement through the courts,low,https://dataprotection.africa/lesotho/
+LS,exemptions,"Personal/household activity, de-identified data, national security and public safety, journalistic/artistic/literary purposes (s. 4)",medium,https://lesotholii.org/akn/ls/act/2012/5
+LS,website_url,https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22,high,https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22
+LS,language,English,high,https://lesotholii.org/akn/ls/act/2012/5/eng@2012-02-22
+LS,notes,Cited as the 2011 Act but published as Act 5 of 2012; one aggregator wrongly gives Act No. 31 of 2011; ConsentStack gives 1 January 2012; Commission never established so law largely unenforced.,medium,https://www.consentstack.io/regulations/ls-dpa
+LS,deceased_data,UNKNOWN,low,
+LS,research_exemption,No research exemption among the general exemptions in s. 4,low,https://lesotholii.org/akn/ls/act/2012/5
+LS,genetic_data,Covered as sensitive personal information; processing prohibited unless permitted by the Act (s. 29),low,https://www.dlapiperdataprotection.com/?c=LS&t=law
+GW,status,NOLAW: no general data protection law in force; Law No. 5/2010 on the Information Society does not address data protection; a draft law reportedly in preparation,low,https://consentstack.io/regulations/jurisdiction/guinea-bissau

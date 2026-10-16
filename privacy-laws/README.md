@@ -4,7 +4,7 @@ A database and search tool for privacy legislation, built for genealogy platform
 
 > **Informational only, not legal advice.** The data was compiled without review by a lawyer. Laws change, penalty amounts are adjusted over time, and some entries may be incomplete or out of date. Before relying on any row, check it against the official source (see the `website_url` column and the regulator named in `enforcement_authority`).
 
-> The data is a curated starting point (102 laws, 101 countries). The 49 countries added in October 2026 and the `frameworks` column were compiled from secondary sources (see [Data provenance](#data-provenance)); check the official source before relying on any entry.
+> The data is a curated starting point (159 laws, 130 countries). The countries and states added in October 2026 and the `frameworks` column were compiled from secondary sources (see [Data provenance](#data-provenance)); check the official source before relying on any entry.
 
 ## What it does
 
@@ -55,7 +55,7 @@ Folder names are ISO 3166-1 alpha-2 codes in lowercase (`eu`, `us`, `gb`, `br`�
 
 `countries/privacy_laws_master.csv` — one row per law. Columns:
 
-`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `jurisdiction` · `enactment_date` and `effective_date` (`YYYY-MM-DD`) · `scope` · `applies_to` · `key_requirements` · `data_categories` · `retention_period` · `enforcement_authority` · `penalties_range` · `exemptions` · `website_url` · `language` (`English` or `French/German`) · `frameworks` (optional, `/`-separated subset of `GDPR`, `EU-Adequacy`, `CoE-108`, `APEC-CBPR`) · `frameworks_not` (same values, confirmed **not** joined) · `notes` · `pending_change` (a known upcoming change: bill, amendment, entry into force) · `pending_date` (`YYYY-MM-DD` when it is expected, optional) · `data_status` (`curated` original list, `researched` web research from secondary sources, `verified` checked against the official text) · `confidence` (`high`, `medium` or `low`; required unless curated) · `last_checked` (`YYYY-MM-DD`, required unless curated)
+`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `jurisdiction` · `enactment_date` and `effective_date` (`YYYY-MM-DD`) · `scope` · `applies_to` · `key_requirements` · `data_categories` · `retention_period` · `enforcement_authority` · `penalties_range` · `exemptions` · `deceased_data` (are the data of dead people protected, and for how long) · `research_exemption` (exemption or lighter regime for historical, scientific or genealogical research and archives) · `genetic_data` (how genetic data/DNA is treated) · `website_url` · `language` (`English` or `French/German`) · `frameworks` (optional, `/`-separated subset of `GDPR`, `EU-Adequacy`, `CoE-108`, `APEC-CBPR`) · `frameworks_not` (same values, confirmed **not** joined) · `notes` · `pending_change` (a known upcoming change: bill, amendment, entry into force) · `pending_date` (`YYYY-MM-DD` when it is expected, optional) · `data_status` (`curated` original list, `researched` web research from secondary sources, `verified` checked against the official text) · `confidence` (`high`, `medium` or `low`; required unless curated) · `last_checked` (`YYYY-MM-DD`, required unless curated)
 
 Fields that contain a comma **must be quoted** (`"Up to $7,500 per violation"`). The tooling refuses rows with the wrong number of columns instead of guessing.
 
@@ -125,6 +125,7 @@ The first real link check (11 Oct 2026, GitHub Actions) found dead links mostly 
 
 
 - The first 53 rows come from the original curated list.
+- A second batch (October 2026) added Bulgaria, 25 more countries with a data-protection law, 24 US state laws and three Canadian provincial laws; the places found to have no general law yet are listed in [docs/research-2026-10/new-rows-2026-10-16.md](docs/research-2026-10/new-rows-2026-10-16.md), with the ones still to research. The `deceased_data`, `research_exemption` and `genetic_data` columns (for genealogy use) are filled only where a source was found.
 - The 49 countries added in October 2026 (HR CY EE LV LT MT SK SI NO IS LI UA RS AL MK BA MD GE AM BY UZ UY EC CR PA PY DO JM NI TW LK NP QA BH OM JO MA GH SN CI UG RW TZ ZM ZW MU BW AO ET) and the `frameworks` column were researched through web search only (no access to the primary texts). `website_url` values are pages that appeared in search results; some point to law-firm guides rather than the regulator.
 - Confidence notes, sources and open doubts per batch are kept in [docs/research-2026-10/](docs/research-2026-10/). Known weak spots: Burkina Faso and Ghana (Convention 108 status unclear, left empty), Russia's Convention 108 status after leaving the Council of Europe, Mexico's APEC CBPR status, and entry-into-force days that two sources disagree on (see each row's `notes`).
 
@@ -151,3 +152,7 @@ CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm t
 ## License
 
 MIT
+
+## Traducciones de los valores (`countries/value_translations.csv`)
+
+Los textos descriptivos de cada ley (alcance, sanciones, plazos…) están en inglés en el CSV maestro. `value_translations.csv` guarda su traducción a `spa`, `fra`, `deu` y `por` (columnas `lang,source,text`; `source` es el texto inglés exacto). Son **traducciones automáticas, no revisadas por un jurista**: la app las muestra con la marca «MT» y, si falta una, enseña el inglés. `npm run translations` da la cobertura por idioma; `npm run translations -- --missing=<lang>` lista lo que falta; `--import=<lang>` incorpora un archivo revisado. Cuando cambia un texto inglés, su traducción deja de aplicarse hasta que se actualice.
