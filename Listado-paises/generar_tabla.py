@@ -4,8 +4,9 @@
 Uso: python3 generar_tabla.py   (solo biblioteca estándar de Python 3)
 
 Genealogía (paises.csv):      prioridad = IG x IO;  excluido si IO <= UMBRAL_GENEALOGIA
-Etiquetador POS (paises_pos.csv): prioridad = IL x IP;  excluido si IP <= UMBRAL_POS
+Etiquetador POS (paises_pos.csv): prioridad = IL x IP local;  excluido si IP local <= UMBRAL_POS
   IP debe ser el máximo de los niveles (niveles_lenguas.csv) de las lenguas de idioma_principal.
+  IP local debe ser el nivel de la primera lengua listada (la lengua local).
 """
 import csv
 import sys
@@ -23,14 +24,15 @@ COLUMNAS_PAISES = [
     "poblacion_historica_acumulada", "idh", "pib_per_capita_usd", "pib_per_capita_ppa_usd",
     "indice_genealogia", "indice_operabilidad", "comentarios",
 ]
-COLUMNAS_POS = ["codigo", "idioma_principal", "indice_lectura", "indice_pos", "comentarios_pos"]
+COLUMNAS_POS = ["codigo", "idioma_principal", "indice_lectura", "indice_pos", "indice_pos_local",
+                "comentarios_pos"]
 TIPOS = {"estado", "territorio", "entidad disputada"}
 NUMERICAS_PAISES = ["poblacion_millones", "poblacion_historica_acumulada", "idh",
                     "pib_per_capita_usd", "pib_per_capita_ppa_usd"]
 ESCALAS_PAISES = ["indice_genealogia", "indice_operabilidad"]
-ESCALAS_POS = ["indice_lectura", "indice_pos"]
+ESCALAS_POS = ["indice_lectura", "indice_pos", "indice_pos_local"]
 UMBRAL_GENEALOGIA = 1  # IO <= 1: inviable para operar
-UMBRAL_POS = 1  # IP <= 1: sin recursos para un etiquetador
+UMBRAL_POS = 1  # IP local <= 1: la lengua local no tiene recursos para un etiquetador
 
 
 def leer(ruta, columnas):
@@ -94,6 +96,10 @@ def main():
             if int(f["indice_pos"]) != esperado:
                 errores.append(f"paises_pos.csv línea {linea} ({f['codigo']}): "
                                f"IP {f['indice_pos']} debería ser {esperado} (máximo de sus lenguas)")
+            local = niveles[langs[0]]
+            if f["indice_pos_local"] in {"1", "2", "3", "4", "5"} and int(f["indice_pos_local"]) != local:
+                errores.append(f"paises_pos.csv línea {linea} ({f['codigo']}): IP local "
+                               f"{f['indice_pos_local']} debería ser {local} (nivel de «{langs[0]}»)")
 
     codigos_paises = [f["codigo"] for _, f in paises]
     codigos_pos = [f["codigo"] for _, f in pos]
@@ -114,8 +120,8 @@ def main():
     for _, f in paises:
         ig, io = int(f["indice_genealogia"]), int(f["indice_operabilidad"])
         p = pos_por_codigo[f["codigo"]]
-        il, ip = int(p["indice_lectura"]), int(p["indice_pos"])
-        excl_gen, excl_pos = io <= UMBRAL_GENEALOGIA, ip <= UMBRAL_POS
+        il, ip, ipl = int(p["indice_lectura"]), int(p["indice_pos"]), int(p["indice_pos_local"])
+        excl_gen, excl_pos = io <= UMBRAL_GENEALOGIA, ipl <= UMBRAL_POS
         excluidos_gen += excl_gen
         excluidos_pos += excl_pos
         filas_gen.append((excl_gen, -ig * io, f["pais"], [
@@ -125,9 +131,9 @@ def main():
             celda(f["pib_per_capita_ppa_usd"], "pendiente"),
             str(ig), str(io), str(ig * io), "sí" if excl_gen else "no", f["comentarios"],
         ]))
-        filas_pos.append((excl_pos, -il * ip, f["pais"], [
+        filas_pos.append((excl_pos, -il * ipl, f["pais"], [
             f["pais"], p["idioma_principal"], f["tipo"],
-            str(il), str(ip), str(il * ip), "sí" if excl_pos else "no", p["comentarios_pos"],
+            str(il), str(ip), str(ipl), str(il * ipl), "sí" if excl_pos else "no", p["comentarios_pos"],
         ]))
 
     gen_ordenado = [c for *_, c in sorted(filas_gen, key=lambda x: (x[0], x[1], x[2]))]
@@ -145,8 +151,8 @@ def main():
         "Listado de países: etiquetador POS",
         "Generado por `generar_tabla.py` desde `paises.csv` y `paises_pos.csv`. No editar a mano. "
         "Índices de juicio propio; ver `README.md`, «Etiquetador POS».",
-        ["País", "Idioma principal", "Tipo", "Lectura (IL)", "Etiquetador POS (IP)",
-         "Prioridad", "Excluido", "Comentarios"],
+        ["País", "Idiomas (local primero)", "Tipo", "Lectura (IL)", "IP (mejor lengua)",
+         "IP local", "Prioridad (IL × IP local)", "Excluido", "Comentarios"],
         pos_ordenado), encoding="utf-8")
 
     print(f"{len(paises)} países. Genealogía: {excluidos_gen} excluidos ({SALIDA_GENEALOGIA.name}). "

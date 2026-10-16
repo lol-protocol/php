@@ -36,6 +36,7 @@
 | Argentina | estado | América | 46.6 | pendiente | 0.849 | 13000 | pendiente | 4 | 3 | 12 | no | Diáspora europea muy grande; registros civiles parcialmente digitalizados; controles cambiarios que cambian con frecuencia; español |
 | Bahamas | estado | América | 0.41 | pendiente | 0.82 | 33000 | pendiente | 3 | 4 | 12 | no | Inglés; mercado pequeño; sector financiero con regulación estricta |
 | Barbados | estado | América | 0.28 | pendiente | 0.829 | 20000 | pendiente | 3 | 4 | 12 | no | Inglés; mercado pequeño; registros coloniales británicos de buena calidad |
+| Belice | estado | América | 0.44 | pendiente | 0.70 | 7000 | pendiente | 3 | 4 | 12 | no | Inglés; mercado pequeño; registros de la época colonial británica; diáspora en EE. UU. y Canadá |
 | Brasil | estado | América | 213.4 | pendiente | 0.760 | 10000 | pendiente | 4 | 3 | 12 | no | Diáspora europea, japonesa y árabe muy grande; registros civiles en buena parte digitalizados; impuestos complejos; portugués |
 | Bulgaria | estado | Europa | 6.4 | pendiente | 0.800 | 18000 | pendiente | 3 | 4 | 12 | no | Registros parroquiales y civiles; diáspora en Turquía y EE. UU.; búlgaro; RGPD |
 | Cabo Verde | estado | África | 0.60 | pendiente | — | 4900 | pendiente | 3 | 4 | 12 | no | Diáspora grande en Portugal y EE. UU.; país pequeño y estable; portugués |
@@ -57,6 +58,8 @@
 | México | estado | América | 130.9 | pendiente | 0.781 | 13000 | pendiente | 4 | 3 | 12 | no | Registros parroquiales coloniales muy valiosos; gran diáspora en EE. UU.; inseguridad; español |
 | Namibia | estado | África | 2.8 | pendiente | 0.615 | 5500 | pendiente | 3 | 4 | 12 | no | Inglés y afrikáans; registros civiles con tradición alemana; diáspora alemana y sudafricana |
 | Panamá | estado | América | 4.5 | pendiente | 0.820 | 19000 | pendiente | 3 | 4 | 12 | no | Usa el dólar; registros civiles digitalizados; español; sistema financiero offshore con regulación propia |
+| Paraguay | estado | América | 6.8 | pendiente | 0.734 | 6500 | pendiente | 3 | 4 | 12 | no | Registros civiles parcialmente digitalizados; guaraní y español; diáspora alemana y brasileña |
+| República Dominicana | estado | América | 11.4 | pendiente | 0.766 | 11000 | pendiente | 3 | 4 | 12 | no | Diáspora grande en EE. UU.; registros civiles en avance; español |
 | Rumania | estado | Europa | 19.0 | pendiente | 0.845 | 21000 | pendiente | 3 | 4 | 12 | no | Registros parroquiales húngaros y alemanes muy buenos; rumano; RGPD |
 | Taiwán | entidad disputada | Asia | 23.4 | pendiente | 0.929 | 34000 | pendiente | 3 | 4 | 12 | no | Registros familiares tradicionales muy estructurados; chino tradicional; reconocimiento internacional limitado |
 | Trinidad y Tobago | estado | América | 1.4 | pendiente | 0.810 | 17000 | pendiente | 3 | 4 | 12 | no | Inglés; diáspora india y africana; registros coloniales británicos y franceses |
@@ -64,8 +67,7 @@
 | China | estado | Asia | 1410 | pendiente | 0.797 | 13000 | pendiente | 5 | 2 | 10 | no | Gran tradición de jiapu, pero cortafuegos, licencias y localización obligatoria de datos; difícil de operar |
 | Liechtenstein | estado | Europa | 0.04 | pendiente | — | — | pendiente | 2 | 5 | 10 | no | Muy pequeño; alemán; sistema bancario muy regulado; RGPD |
 | Mónaco | estado | Europa | 0.04 | pendiente | — | — | pendiente | 2 | 5 | 10 | no | Muy pequeño; francés; sistema bancario muy regulado |
-| Armenia | estado | Asia | 2.8 | pendiente | 0.786 | 7000 | pendiente | 3 | 3 | 9 | no | Diáspora grande; registros dispersos; mercado pequeño; ruso e inglés muy usados |
-| Belice | estado | América | 0.44 | pendiente | 0.70 | 7000 | pendiente | 3 | 3 | 9 | no | Inglés; mercado pequeño; registros de la época colonial británica; diáspora en EE. UU. y Canadá |
+| Armenia | estado | Asia | 2.8 | pendiente | 0.786 | 7000 | pendiente | 3 | 3 | 9 | no | Diáspora grande; registros dispersos; mercado pequeño; ruso e inglés muy usados; fronteras cerradas con Turquía y Azerbaiyán |
 | Bosnia y Herzegovina | estado | Europa | 3.2 | pendiente | 0.780 | 9500 | pendiente | 3 | 3 | 9 | no | Estructura política fragmentada; registros otomanos, austrohúngaros y civiles; bosnio, croata y serbio |
 | Colombia | estado | América | 53.1 | pendiente | 0.758 | 7000 | pendiente | 3 | 3 | 9 | no | Registros parroquiales y civiles de buena calidad; violencia en zonas rurales; habeas data (Ley 1581); español |
 | Georgia | estado | Europa | 3.7 | pendiente | 0.802 | 7500 | pendiente | 3 | 3 | 9 | no | Registros eclesiásticos y soviéticos; diáspora en Rusia y EE. UU.; leyes recientes restrictivas para ONG y medios |
@@ -74,10 +76,9 @@
 | Hungría | estado | Europa | 9.6 | pendiente | 0.870 | 23000 | pendiente | 3 | 3 | 9 | no | Diáspora grande en EE. UU. y Rumania; registros parroquiales de buena calidad; restricciones a ONG y medios en años recientes |
 | India | estado | Asia | 1464 | pendiente | 0.685 | 2800 | pendiente | 3 | 3 | 9 | no | Gran interés por el linaje y población enorme; registros fragmentados entre estados y lenguas; licencias de inversión y reglas de localización de datos |
 | Moldavia | estado | Europa | 2.4 | pendiente | 0.767 | 7000 | pendiente | 3 | 3 | 9 | no | Registros soviéticos y rumanos; rumano y ruso; tensiones con Rusia |
-| Paraguay | estado | América | 6.8 | pendiente | 0.734 | 6500 | pendiente | 3 | 3 | 9 | no | Registros civiles parcialmente digitalizados; guaraní y español; diáspora alemana y brasileña |
 | Perú | estado | América | 34.4 | pendiente | — | 8000 | pendiente | 3 | 3 | 9 | no | Registros parroquiales coloniales excelentes; inestabilidad política recurrente; español y quechua |
-| República Dominicana | estado | América | 11.4 | pendiente | 0.766 | 11000 | pendiente | 3 | 3 | 9 | no | Diáspora grande en EE. UU.; registros civiles en avance; español |
 | Serbia | estado | Europa | 6.6 | pendiente | 0.806 | 13000 | pendiente | 3 | 3 | 9 | no | Diáspora en Alemania, Austria y EE. UU.; registros parroquiales y civiles; serbio; protestas recientes |
+| Albania | estado | Europa | 2.4 | pendiente | 0.798 | 8000 | pendiente | 2 | 4 | 8 | no | Registros parroquiales dispersos; mercado pequeño; diáspora grande en Italia, Grecia y EE. UU. |
 | Andorra | estado | Europa | 0.08 | pendiente | 0.88 | 50000 | pendiente | 2 | 4 | 8 | no | Muy pequeño; catalán y español; mercado reducido |
 | Antigua y Barbuda | estado | América | 0.09 | pendiente | 0.83 | 21000 | pendiente | 2 | 4 | 8 | no | Muy pequeño; inglés; sector financiero y de juego offshore con regulación propia |
 | Arabia Saudita | estado | Asia | 36.9 | pendiente | 0.875 | 33000 | pendiente | 2 | 4 | 8 | no | Sin registros civiles públicos de acceso abierto; control de contenido en línea; árabe |
@@ -86,43 +87,42 @@
 | Emiratos Árabes Unidos | estado | Asia | 11.0 | pendiente | 0.940 | 50000 | pendiente | 2 | 4 | 8 | no | Estable y abierto a los negocios; leyes de ciberdelito y de contenido estrictas; árabe e inglés |
 | Granada | estado | América | 0.13 | pendiente | 0.79 | 12000 | pendiente | 2 | 4 | 8 | no | Muy pequeño; inglés; economía de servicios y turismo |
 | Indonesia | estado | Asia | 284.4 | pendiente | 0.713 | 5000 | pendiente | 2 | 4 | 8 | no | Mercado enorme; registros civiles en proceso de digitalización; regulación de datos (UU PDP) y de plataformas |
+| Montenegro | estado | Europa | 0.6 | pendiente | 0.832 | 11000 | pendiente | 2 | 4 | 8 | no | Pequeño; registros parroquiales y civiles limitados; montenegrino y serbio; usa el euro |
 | San Cristóbal y Nieves | estado | América | 0.05 | pendiente | 0.82 | 30000 | pendiente | 2 | 4 | 8 | no | Muy pequeño; inglés; programas de ciudadanía por inversión con controles reforzados |
 | San Marino | estado | Europa | 0.03 | pendiente | — | — | pendiente | 2 | 4 | 8 | no | Muy pequeño; italiano; registros italianos; mercado reducido |
 | San Vicente y las Granadinas | estado | América | 0.10 | pendiente | — | 9000 | pendiente | 2 | 4 | 8 | no | Muy pequeño; inglés; economía de servicios y turismo |
 | Santa Lucía | estado | América | 0.18 | pendiente | 0.74 | 13000 | pendiente | 2 | 4 | 8 | no | Muy pequeño; inglés y criollo; economía de servicios |
 | Seychelles | estado | África | 0.12 | pendiente | 0.800 | 15000 | pendiente | 2 | 4 | 8 | no | Muy pequeño; inglés y francés; sector financiero con regulación propia |
-| Albania | estado | Europa | 2.4 | pendiente | 0.798 | 8000 | pendiente | 2 | 3 | 6 | no | Registros parroquiales dispersos; mercado pequeño; diáspora grande en Italia, Grecia y EE. UU. |
 | Angola | estado | África | 37.9 | pendiente | 0.591 | 2600 | pendiente | 2 | 3 | 6 | no | Diáspora portuguesa histórica; registros civiles de acceso irregular; restricciones cambiarias |
 | Bolivia | estado | América | 12.4 | pendiente | 0.698 | 3500 | pendiente | 3 | 2 | 6 | no | Crisis de divisas y control del tipo de cambio; español y quechua |
-| Costa de Marfil | estado | África | 31.5 | pendiente | 0.534 | 2700 | pendiente | 2 | 3 | 6 | no | Economía estable; francés; registros civiles con poca digitalización |
+| Costa de Marfil | estado | África | 31.5 | pendiente | 0.534 | 2700 | pendiente | 2 | 3 | 6 | no | Economía estable; francés; registros civiles con poca digitalización; infraestructura de pagos limitada (domina el dinero móvil) |
 | Ecuador | estado | América | 18.5 | pendiente | 0.740 | 6500 | pendiente | 2 | 3 | 6 | no | Dolarizado desde 2000; inseguridad creciente; registros civiles en digitalización; español |
 | Egipto | estado | África | 115.6 | pendiente | 0.754 | 3500 | pendiente | 2 | 3 | 6 | no | Mucho patrimonio documental antiguo, pero poco digitalizado y accesible; control de internet y medios; árabe |
 | El Salvador | estado | América | 6.3 | pendiente | 0.675 | 4800 | pendiente | 2 | 3 | 6 | no | Dolarizado; estado de excepción desde 2022; registros civiles con acceso limitado; español |
 | Esuatini | estado | África | 1.2 | pendiente | 0.606 | 3900 | pendiente | 2 | 3 | 6 | no | Monarquía absoluta; mercado pequeño; inglés y suazi; moneda vinculada al rand |
 | Fiyi | estado | Oceanía | 0.93 | pendiente | 0.736 | 6500 | pendiente | 2 | 3 | 6 | no | Inglés; mercado pequeño; golpes militares en 1987, 2000 y 2006 |
-| Gambia | estado | África | 2.8 | pendiente | 0.495 | 1000 | pendiente | 2 | 3 | 6 | no | Inglés; mercado pequeño; registros civiles limitados |
+| Gambia | estado | África | 2.8 | pendiente | 0.495 | 1000 | pendiente | 2 | 3 | 6 | no | Inglés; mercado pequeño; registros civiles limitados; infraestructura de pagos limitada |
 | Ghana | estado | África | 35.1 | pendiente | 0.602 | 2800 | pendiente | 2 | 3 | 6 | no | Inglés; deuda reestructurada tras 2022-2023; registros civiles en proceso de digitalización |
 | Guyana | estado | América | 0.84 | pendiente | 0.724 | 20000 | pendiente | 2 | 3 | 6 | no | Inglés; auge petrolero desde 2020; disputa territorial con Venezuela por el Esequibo |
-| Jordania | estado | Asia | 11.6 | pendiente | 0.720 | 5000 | pendiente | 2 | 3 | 6 | no | Registros civiles digitalizados en buena parte; árabe e inglés; población refugiada numerosa |
+| Jordania | estado | Asia | 11.6 | pendiente | 0.720 | 5000 | pendiente | 2 | 3 | 6 | no | Registros civiles digitalizados en buena parte; árabe e inglés; población refugiada numerosa; riesgo regional por los conflictos vecinos |
 | Kazajistán | estado | Asia | 20.6 | pendiente | 0.811 | 13000 | pendiente | 2 | 3 | 6 | no | Diáspora alemana y rusa histórica; registros soviéticos; ruso y kazajo; control de medios |
 | Kenia | estado | África | 57.4 | pendiente | 0.575 | 2200 | pendiente | 2 | 3 | 6 | no | Inglés y suajili; protestas recientes con restricciones puntuales; mercado digital activo |
 | Kosovo | entidad disputada | Europa | 1.6 | pendiente | — | 7000 | pendiente | 2 | 3 | 6 | no | No reconocido por todos los países y fuera de la ONU; albanés y serbio; usa el euro |
 | Lesoto | estado | África | 2.3 | pendiente | 0.514 | 1000 | pendiente | 2 | 3 | 6 | no | Enclave dentro de Sudáfrica; inglés y sesoto; economía dependiente del rand |
-| Liberia | estado | África | 5.6 | pendiente | 0.481 | 700 | pendiente | 2 | 3 | 6 | no | Inglés; diáspora afroamericana con interés en su linaje; registros dispersos |
+| Liberia | estado | África | 5.6 | pendiente | 0.481 | 700 | pendiente | 2 | 3 | 6 | no | Inglés; diáspora afroamericana con interés en su linaje; registros dispersos; infraestructura de pagos y conectividad limitadas |
 | Líbano | estado | Asia | 5.5 | pendiente | 0.706 | 5000 | pendiente | 3 | 2 | 6 | no | Colapso económico desde 2019; control de capital de facto; diáspora muy grande; árabe, francés e inglés |
 | Macao | territorio | Asia | 0.7 | pendiente | — | — | pendiente | 2 | 3 | 6 | no | Región administrativa especial de China; portugués y chino; regulación de internet alineada con China |
 | Macedonia del Norte | estado | Europa | 1.8 | pendiente | 0.770 | 9700 | pendiente | 2 | 3 | 6 | no | Registros otomanos y civiles en transición; macedonio y albanés; nombre del país resuelto en 2019 |
 | Malaui | estado | África | 21.8 | pendiente | 0.508 | 600 | pendiente | 2 | 3 | 6 | no | Inglés; crisis de divisas; registros civiles limitados |
 | Marruecos | estado | África | 37.8 | pendiente | 0.698 | 3800 | pendiente | 2 | 3 | 6 | no | Francés y árabe; registros civiles en digitalización; restricciones a la prensa; conflicto del Sáhara Occidental |
-| Montenegro | estado | Europa | 0.6 | pendiente | 0.832 | 11000 | pendiente | 2 | 3 | 6 | no | Pequeño; registros parroquiales y civiles limitados; montenegrino y serbio; usa el euro |
 | Nigeria | estado | África | 237.5 | pendiente | 0.548 | 1100 | pendiente | 2 | 3 | 6 | no | Gran mercado y diáspora; inseguridad y control cambiario inestable; inglés |
 | Ruanda | estado | África | 14.3 | pendiente | 0.534 | 1000 | pendiente | 2 | 3 | 6 | no | Estable pero con restricciones a la prensa; registros digitalizados con avance; inglés y francés |
-| Samoa | estado | Oceanía | 0.22 | pendiente | 0.71 | 4500 | pendiente | 2 | 3 | 6 | no | Pequeño; samoano e inglés; diáspora en Nueva Zelanda y EE. UU. |
-| Santo Tomé y Príncipe | estado | África | 0.23 | pendiente | 0.618 | 2500 | pendiente | 2 | 3 | 6 | no | Pequeño país lusófono; registros limitados; diáspora en Portugal |
+| Samoa | estado | Oceanía | 0.22 | pendiente | 0.71 | 4500 | pendiente | 2 | 3 | 6 | no | Pequeño; samoano e inglés; diáspora en Nueva Zelanda y EE. UU.; conectividad y pagos limitados por su aislamiento |
+| Santo Tomé y Príncipe | estado | África | 0.23 | pendiente | 0.618 | 2500 | pendiente | 2 | 3 | 6 | no | Pequeño país lusófono; registros limitados; diáspora en Portugal; pagos y conectividad limitados |
 | Senegal | estado | África | 18.9 | pendiente | 0.517 | 1700 | pendiente | 2 | 3 | 6 | no | Francés; diáspora en Francia y EE. UU.; transición política reciente |
-| Sierra Leona | estado | África | 9.3 | pendiente | 0.458 | 650 | pendiente | 2 | 3 | 6 | no | Inglés y krio; registros civiles limitados |
+| Sierra Leona | estado | África | 9.3 | pendiente | 0.458 | 650 | pendiente | 2 | 3 | 6 | no | Inglés y krio; registros civiles limitados; infraestructura de pagos limitada |
 | Sri Lanka | estado | Asia | 22.0 | pendiente | 0.780 | 4000 | pendiente | 2 | 3 | 6 | no | Crisis de deuda en 2022, ya superada en parte; registros coloniales británicos y holandeses; cingalés, tamil e inglés |
-| Surinam | estado | América | 0.63 | pendiente | 0.729 | 7000 | pendiente | 2 | 3 | 6 | no | Neerlandés; registros civiles coloniales; diáspora en Países Bajos |
+| Surinam | estado | América | 0.63 | pendiente | 0.729 | 7000 | pendiente | 2 | 3 | 6 | no | Neerlandés; registros civiles coloniales; diáspora en Países Bajos; crisis de deuda desde 2020 |
 | Tailandia | estado | Asia | 71.7 | pendiente | 0.803 | 7700 | pendiente | 2 | 3 | 6 | no | Leyes estrictas de lesa majestad y de delitos informáticos; tailandés e inglés |
 | Turquía | estado | Asia | 85.9 | pendiente | 0.855 | 14000 | pendiente | 2 | 3 | 6 | no | Inflación alta y control de cuentas; restricciones a redes sociales en episodios de crisis; turco |
 | Ucrania | estado | Europa | 36.6 | pendiente | 0.734 | 5000 | pendiente | 3 | 2 | 6 | no | Guerra con Rusia desde 2022; registros civiles en papel dañados; ucraniano y ruso |
@@ -143,12 +143,12 @@
 | Túnez | estado | África | 12.5 | pendiente | 0.732 | 3900 | pendiente | 2 | 2 | 4 | no | Deterioro de libertades desde 2021; restricciones a ONG y prensa; francés y árabe |
 | Zimbabue | estado | África | 17.4 | pendiente | 0.593 | 1800 | pendiente | 2 | 2 | 4 | no | Inestabilidad monetaria y control cambiario; sanciones de EE. UU. selectivas; inglés |
 | Bangladés | estado | Asia | 175.7 | pendiente | 0.685 | 2800 | pendiente | 1 | 3 | 3 | no | Mercado enorme; registros civiles en papel; control de redes sociales en episodios de crisis; bengalí |
-| Benín | estado | África | 14.4 | pendiente | — | 1500 | pendiente | 1 | 3 | 3 | no | Francés; registros civiles con baja digitalización |
+| Benín | estado | África | 14.4 | pendiente | — | 1500 | pendiente | 1 | 3 | 3 | no | Francés; registros civiles con baja digitalización; infraestructura de pagos limitada |
 | Brunéi | estado | Asia | 0.46 | pendiente | 0.829 | 32000 | pendiente | 1 | 3 | 3 | no | Monarquía absoluta con código penal islámico desde 2019; mercado muy pequeño |
 | Bután | estado | Asia | 0.78 | pendiente | 0.681 | 3800 | pendiente | 1 | 3 | 3 | no | Controles de turismo y de visados; mercado muy pequeño; dzongkha e inglés |
-| Comoras | estado | África | 0.87 | pendiente | 0.558 | 1600 | pendiente | 1 | 3 | 3 | no | Pequeño archipiélago; registros civiles precarios; francés y árabe |
-| Gabón | estado | África | 2.6 | pendiente | — | 8000 | pendiente | 1 | 3 | 3 | no | Petróleo; francés; registros civiles poco digitalizados |
-| Islas Marshall | estado | Oceanía | 0.04 | pendiente | 0.64 | 4000 | pendiente | 1 | 3 | 3 | no | Estado asociado a EE. UU.; muy pequeño; inglés y marshalés |
+| Comoras | estado | África | 0.87 | pendiente | 0.558 | 1600 | pendiente | 1 | 3 | 3 | no | Pequeño archipiélago; registros civiles precarios; francés y árabe; infraestructura de pagos y conectividad limitadas |
+| Gabón | estado | África | 2.6 | pendiente | — | 8000 | pendiente | 1 | 3 | 3 | no | Petróleo; francés; registros civiles poco digitalizados; golpe militar en 2023 |
+| Islas Marshall | estado | Oceanía | 0.04 | pendiente | 0.64 | 4000 | pendiente | 1 | 3 | 3 | no | Estado asociado a EE. UU.; muy pequeño; inglés y marshalés; conectividad y pagos limitados por su aislamiento |
 | Islas Salomón | estado | Oceanía | 0.73 | pendiente | 0.564 | 2400 | pendiente | 1 | 3 | 3 | no | Pequeño y aislado; inglés; registros civiles escasos |
 | Kiribati | estado | Oceanía | 0.13 | pendiente | 0.63 | 2000 | pendiente | 1 | 3 | 3 | no | Muy aislado; conexión y pagos limitados; inglés y gilbertés |
 | Maldivas | estado | Asia | 0.52 | pendiente | 0.762 | 11000 | pendiente | 1 | 3 | 3 | no | Pequeño y dependiente del turismo; islam como religión oficial con restricciones a la libertad religiosa |

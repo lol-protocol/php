@@ -16,8 +16,8 @@ desde la prehistoria.
 - `paises.csv`: datos generales, una fila por país. Es la fuente de verdad de genealogía.
 - `paises_pos.csv`: campos del etiquetador POS, unidos a `paises.csv` por `codigo`.
 - `generar_tabla.py`: valida los dos CSV y genera `tabla_genealogia.md` y `tabla_pos.md`.
-- `niveles_lenguas.csv`: nivel de recursos de cada lengua (1 a 5). IP de cada país es el máximo
-  de sus lenguas; `generar_tabla.py` comprueba que coincida.
+- `niveles_lenguas.csv`: nivel de recursos de cada lengua (1 a 5). De ahí salen IP (el máximo de
+  las lenguas de un país) e IP local (la primera lengua); `generar_tabla.py` comprueba que coincidan.
 - `historia_poblacion.py`: calcula la población histórica acumulada y la escribe en `paises.csv`.
   Necesita datos de entrada que todavía no están (ver «Población histórica acumulada»).
 
@@ -58,10 +58,11 @@ territorios menores.
 | Columna | Qué es |
 |---|---|
 | `codigo` | Igual que en `paises.csv`. |
-| `idioma_principal` | Las lenguas de uso amplio en textos escritos: la lengua local más las lenguas francas (inglés, ruso, francés, árabe estándar) que el comentario de genealogía ya nombra. IP usa la que tenga más recursos (ver abajo). |
+| `idioma_principal` | Las lenguas de uso amplio en textos escritos, con **la lengua local primero**: la local más las lenguas francas (inglés, ruso, francés, árabe estándar) que el comentario de genealogía ya nombra. |
 | `indice_lectura` | IL, de 1 a 5. |
-| `indice_pos` | IP, de 1 a 5. |
-| `comentarios_pos` | Motivo de los puntajes del etiquetador. Si el comentario empieza con «IP por …», el puntaje sale de esa lengua. |
+| `indice_pos` | IP (mejor lengua), de 1 a 5: el nivel de la lengua con más recursos entre las listadas. |
+| `indice_pos_local` | IP local, de 1 a 5: el nivel de la primera lengua listada, la local. |
+| `comentarios_pos` | Motivo de los puntajes del etiquetador. Si el comentario empieza con «IP por …», IP sale de esa lengua. |
 
 ## Genealogía: índices IG e IO
 
@@ -88,8 +89,8 @@ internet y marco legal de datos personales. El idioma no entra en IO: ninguno de
 
 **Excluido** = IO ≤ 1. Quedan fuera **23 países**, cerca del objetivo de unos 20: Afganistán,
 Bielorrusia, Burkina Faso, Corea del Norte, Cuba, Eritrea, Haití, Irán, Libia, Malí, Myanmar,
-Níger, República Centroafricana, República Democrática del Congo, Rusia, Siria, Somalia, Sudán, Sudán del Sur,
-Turkmenistán, Venezuela, Yemen y Palestina.
+Níger, República Centroafricana, República Democrática del Congo, Rusia, Siria, Somalia, Sudán,
+Sudán del Sur, Turkmenistán, Venezuela, Yemen y Palestina.
 
 Nicaragua tenía IO = 1 y ahora tiene IO = 2: sus sanciones son parciales y sus factores (control
 de medios e internet) son los mismos que los de Vietnam, que la rúbrica ya marca como «difícil».
@@ -98,6 +99,14 @@ Camboya y Vietnam tienen IO = 2 («difícil»): sus índices los marcan como dif
 inviables, así que con este umbral **siguen dentro**. Esa fue la decisión tomada. Para sacarlos
 habría que bajar su IO a 1, lo que la rúbrica no justifica, o subir el umbral a IO ≤ 2, que deja
 fuera 54 países. El umbral está en `UMBRAL_GENEALOGIA` de `generar_tabla.py`.
+
+**IO sin factor en el comentario (resuelto).** Había 18 países con IO 2 o 3 cuyo comentario no
+nombraba ningún factor de operabilidad. En 13 se añadió el factor al comentario y se mantuvo el
+puntaje: pagos o conectividad limitados (Benín, Comoras, Costa de Marfil, Gambia, Liberia, Santo
+Tomé y Príncipe, Sierra Leona, Islas Marshall y Samoa), golpe militar en 2023 (Gabón), riesgo
+regional (Jordania), fronteras cerradas (Armenia) y crisis de deuda (Surinam). Los otros cinco no
+tenían ningún factor y subieron de 3 a 4, como pide la rúbrica: Albania, Belice, Montenegro,
+Paraguay y República Dominicana.
 
 ## Etiquetador POS: índices IL e IP
 
@@ -118,30 +127,41 @@ texto digital utilizable. **No usa sanciones ni política**: eso lo cubre IO.
 - 4: varios recursos moderados.
 - 3: recursos pequeños pero utilizables (un treebank o un corpus limitado).
 - 2: recursos mínimos, casi sin texto digital anotable.
-- 1: sin recursos abiertos en ninguna de las lenguas listadas.
+- 1: sin recursos abiertos en la lengua.
 
-**Criterio de IP (vigente, elegido por ti):** IP toma la lengua de `idioma_principal` con más
-recursos. Así, en un país con inglés y otra lengua, cuenta el inglés. Los niveles de cada lengua
-están en `niveles_lenguas.csv`, y `generar_tabla.py` se detiene si un IP no es el máximo de sus
-lenguas o si una lengua no tiene nivel. Los países que cambiaron de puntaje llevan el comentario
-«IP por …» para que se vea de qué lengua sale.
+Hay **dos versiones**, porque responden a preguntas distintas:
 
-**Qué lenguas se listan (decidido por ti):** todas las de uso amplio en textos escritos. En la
-práctica, se añadió el inglés, el ruso o el árabe estándar donde el comentario de genealogía ya
-los nombra (Omán, Jordania, Uzbekistán, Turkmenistán y otros). Una lengua que ese comentario no
-nombra no se listó, aunque se use.
+- **IP (mejor lengua):** el nivel de la lengua con más recursos entre las listadas en
+  `idioma_principal`. Dice si se puede etiquetar *algún* texto del país con recursos existentes.
+  Casi todos los países listan inglés, francés, español o portugués, así que **160 de 199** tienen
+  IP = 5 (y 25 con 4, 7 con 3, 6 con 2 y 1 con 1). Por eso casi no distingue entre países.
+- **IP local:** el nivel de la primera lengua listada, que es la lengua local. Dice si se puede
+  etiquetar el texto que el país escribe en su propia lengua. Se reparte mejor: 65 países con 5,
+  38 con 4, 33 con 3, 50 con 2 y 13 con 1.
 
-**Consecuencia que hay que conocer:** casi todos los países listan inglés, francés, español o
-portugués, y con «todas las de uso amplio» se añadieron lenguas en 30 países más (22 cambiaron de
-IP). Hoy **160 de 199** tienen IP = 5, y los demás se reparten así: 25 con 4, 7 con 3, 6 con 2
-y 1 con 1. Con esta distribución la columna casi no distingue entre países.
+**La prioridad y la exclusión POS usan IP local** (decisión tomada). **Prioridad POS** =
+IL × IP local. **Excluido POS** = IP local ≤ 1: quedan fuera **13 países**, aquellos cuya lengua
+local no tiene recursos abiertos: Burundi (kirundi), Chad (árabe chadiano), Comoras (shikomor),
+Guinea Ecuatorial (fang), Islas Marshall (marshalés), Kiribati (gilbertés), Maldivas (dhivehi),
+Nauru (nauruano), Palaos (palauano), República Centroafricana (sango), Somalia (somalí),
+Turkmenistán (turcomano) y Yibuti (somalí). El umbral está en `UMBRAL_POS`.
 
-**Prioridad POS** = IL × IP. **Excluido POS** = IP ≤ 1: queda fuera **1 país**, Maldivas
-(dhivehi), el único cuya lengua listada no tiene recursos abiertos. Eran 8 con el criterio de la
-lengua local, 2 con el de la lengua con más recursos, y bajó a 1 cuando Turkmenistán pasó a
-listar el ruso. El umbral está en `UMBRAL_POS`.
+Los niveles de cada lengua están en `niveles_lenguas.csv`. `generar_tabla.py` se detiene si IP no
+es el máximo de las lenguas listadas, si IP local no es el nivel de la primera, o si una lengua no
+tiene nivel. Los países cuyo IP cambió por una lengua franca llevan el comentario «IP por …».
 
-**Corea del Norte** pasó a IP = 4: su lengua listada (coreano) tiene recursos abiertos. Su acceso
+**Qué lenguas se listan (decidido):** todas las de uso amplio en textos escritos. En la práctica,
+se añadió el inglés, el ruso o el árabe estándar donde el comentario de genealogía ya los nombra
+(Omán, Jordania, Uzbekistán, Turkmenistán y otros), en 30 países. Una lengua que ese comentario no
+nombra no se listó, aunque se use. Eso afecta a IP, no a IP local.
+
+**La lengua local** es la primera de cada lista. En 35 países se reordenó la lista para que la
+primera fuera la lengua local y no la lengua franca (por ejemplo, hausa en Nigeria, zulú en
+Sudáfrica, tok pisin en Papúa Nueva Guinea). Donde solo se listó una lengua franca (por ejemplo,
+Benín o Gabón, que listan solo el francés), la lengua local queda sin representar y IP local
+coincide con IP.
+
+**Corea del Norte** tiene IP = 4: su lengua (coreano) tiene recursos abiertos. Su acceso
 restringido al texto del país es un problema de IO, no de IP, como dice la definición de arriba.
 
 Los índices IL e IP son de juicio propio, con base en recursos y alfabetización que no se han
@@ -170,18 +190,16 @@ durante casi toda la historia.
 - Si una serie termina antes del año 2000, el país se salta y el script lo lista. No extiende la
   última población hasta 2025 en silencio.
 
-**Fuente elegida: HYDE 3.3 directo.** HYDE publica cuadrículas de 5 minutos de arco (archivos
-ESRI ASCII), no totales por país. Para llegar a un total por país hace falta una máscara de
-fronteras nacionales que sume las celdas de cada país. Esa agregación todavía no existe en el
-repositorio, y el dominio de HYDE no está habilitado en esta sesión. Si la agregación resulta
-demasiado pesada, la alternativa es el producto *Population, 10,000 BCE to 2023* de Our World in
-Data, que ya trae totales por país y se construye a partir de HYDE. Como respaldo está el
-*Maddison Project Database 2023* (desde el año 1; DOI `10.34894/INZBF2`).
+**Fuente elegida: Our World in Data**, el producto *Population, 10,000 BCE to 2023*. Ya trae
+totales por país desde el 10 000 a. C. y combina HYDE, Gapminder y la ONU, así que evita sumar las
+cuadrículas de HYDE con una máscara de fronteras. Como respaldo está el *Maddison Project Database
+2023* (desde el año 1; DOI `10.34894/INZBF2`). Falta habilitar el dominio y descargar el archivo.
+Esa fuente usa códigos ISO alfa-3 por país, y el repositorio usa alfa-2, así que habrá que
+convertirlos al preparar `poblacion_larga.csv`.
 
 **Datos de entrada (no están en el repositorio):**
 
-- `poblacion_larga.csv` (`codigo,anio,poblacion`): la serie larga por país, con la fuente que se
-  elija arriba.
+- `poblacion_larga.csv` (`codigo,anio,poblacion`): la serie larga por país.
 - `natalidad.csv` (`codigo,anio,tasa_por_mil`): natalidad anual desde 1950, de la ONU (*World
   Population Prospects*) o del Banco Mundial (`SP.DYN.CBRT.IN`). Si falta un país, usa 0,040.
 
@@ -217,35 +235,28 @@ Léelo antes de usar la tabla para decidir.
   revisión posterior también vació nueve IDH que quedaban fuera de su grupo de desarrollo humano:
   Cuba, Perú, Turkmenistán, Kirguistán, Benín, Tanzania, Libia, Gabón y Cabo Verde. No se
   reemplazaron por otra cifra de memoria.
+- **IDH repetidos sin verificar:** 0,946 aparece en Australia, Bélgica, Países Bajos y Singapur;
+  0,802 en Bielorrusia, Georgia y Mauricio. Son sospechosos de ser copias y hay que contrastarlos
+  con la fuente.
 - **Población histórica acumulada: sin datos todavía.** `historia_poblacion.py` está listo para
   calcularla en cuanto existan `poblacion_larga.csv` y, si se quiere, `natalidad.csv`.
 - **IG, IO, IL e IP:** son juicio propio, con las rúbricas de arriba. No son datos oficiales.
   Las alfabetizaciones y la lista de recursos lingüísticos vienen de memoria, sin contrastar.
-  Algunos casos se revisaron contra la rúbrica en una revisión posterior (Bután, Chad, Eritrea,
-  Azerbaiyán, Nepal y Nicaragua), pero siguen siendo juicio.
+  Algunos casos se revisaron contra la rúbrica en una revisión posterior, pero siguen siendo juicio.
 
 ## Pendientes
 
-1. **Criterio de IP:** fijado en «la lengua con más recursos» y «todas las de uso amplio», pero
-   con esa regla 160 de 199 países quedan en 5. Si la columna debe distinguir entre países, habrá
-   que revisar el criterio, por ejemplo con un desempate que mire la lengua local.
-2. **Población histórica acumulada:** decidir si se agrega HYDE por país (con máscara de
-   fronteras) o se usa el producto de Our World in Data. Después, conseguir `poblacion_larga.csv`
-   y `natalidad.csv`, y ejecutar `historia_poblacion.py`. Hay que habilitar el dominio elegido
-   antes de descargar.
-3. **PIB per cápita PPA:** cargar la columna desde el Banco Mundial, con el indicador
+1. **Población histórica acumulada:** habilitar `ourworldindata.org` en una sesión nueva,
+   descargar la serie, convertir los códigos a alfa-2, conseguir `natalidad.csv` y ejecutar
+   `historia_poblacion.py`.
+2. **PIB per cápita PPA:** cargar la columna desde el Banco Mundial, con el indicador
    `NY.GDP.PCAP.PP.CD`.
-4. **Contrastar población, IDH y PIB per cápita nominal** con las fuentes oficiales.
-5. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
-6. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
+3. **Contrastar población, IDH y PIB per cápita nominal** con las fuentes oficiales, incluidos los
+   IDH repetidos de arriba.
+4. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
+5. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    54. Camboya y Vietnam siguen dentro, por decisión tomada.
-7. **Lenguas listadas en `idioma_principal`:** el criterio quedó fijado (todas las de uso amplio),
-   pero depende de los comentarios de genealogía: una lengua que ese comentario no nombra no se
-   lista, aunque se use. Es el caso del inglés en Maldivas, el único país excluido de POS. Hay
-   que listar las lenguas con una lista aparte, no con los comentarios.
-8. **Factor de operabilidad sin justificar:** unos 18 países tienen IO 2 o 3 sin que su comentario nombre
-   un factor de operabilidad (mercado, pagos, conectividad). Es el caso de varios micro-estados y
-   de África occidental (Albania, Armenia, Belice, Benín, Paraguay, República Dominicana, Samoa y
-   otros). Hay que añadir el factor al comentario o revisar el puntaje.
-9. **Agregar este proyecto a la tabla de `README.md` de la raíz.** Ese archivo es compartido,
-   así que el cambio va en un PR aparte.
+6. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
+   listó, aunque se use (el inglés en Maldivas, por ejemplo). Afecta a IP, no a IP local.
+7. **Fila de este proyecto en la tabla de `README.md` de la raíz.** Ese archivo es compartido, así
+   que el cambio va en un PR aparte.
