@@ -41,6 +41,19 @@ test('there are data files to check', () => {
     assert.ok(csvFiles.length >= 30, `only found ${csvFiles.length} CSV files`);
 });
 
+test('paper_types.csv has at least 50 types with a known category and a gsm range', () => {
+    const CATEGORIES = new Set([
+        'Writing/Printing', 'Coated', 'Cardstock', 'Decorative', 'Recycled',
+        'Specialty', 'Technical', 'Photo', 'Packaging',
+    ]);
+    const rows = parseCSV(read('specs/paper_types.csv'));
+    assert.ok(rows.length >= 50, `only ${rows.length} paper types`);
+    rows.forEach((row, i) => {
+        assert.ok(CATEGORIES.has(row.category), `line ${i + 2} (${row.type_name}): unknown category "${row.category}"`);
+        assert.match(row.weight_gsm_range, /^\d+-\d+$/, `line ${i + 2} (${row.type_name}): weight_gsm_range "${row.weight_gsm_range}" isn't "NN-NN"`);
+    });
+});
+
 for (const file of csvFiles) {
     test(`${file}: every row has as many fields as the header`, () => {
         const [header, ...lines] = read(file).trim().split('\n');

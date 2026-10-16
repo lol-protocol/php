@@ -11,7 +11,7 @@
     "applies_to": "Public & private & cooperative sector entities",
     "key_requirements": "APD registration and authorisation, consent, data subject rights",
     "data_categories": "Personal data; sensitive data",
-    "retention_period": "Not specified",
+    "retention_period": "Art. 11: principle of duration of retention period - data kept only for period necessary for processing purposes",
     "enforcement_authority": "Agência de Proteção de Dados (APD)",
     "penalties_range": "Up to USD 150000 fine",
     "exemptions": "National security; household use",
@@ -20,8 +20,36 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Entry-into-force day unconfirmed (set to law date); APD operating since Oct 2019; revision still draft",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "medium",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.offlist.me/what-is-angola-law-22-11",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://angolex.com/paginas/leis/lei-de-protecao-de-dados-pessoais.html",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 11: principle of duration of retention period - data kept only for period necessary for processing purposes"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

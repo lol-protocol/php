@@ -55,7 +55,8 @@ class PagesTest extends TestCase
         string $postBody = '',
         ?string $sessionId = null,
         ?string $tokenConfigurado = null,
-        ?string $autorizacion = null
+        ?string $autorizacion = null,
+        array $entorno = []
     ): array {
         $cmd = [PHP_BINARY, '-d', 'display_errors=stderr', dirname(__DIR__, 2) . '/Support/request.php',
             $host, $uri, $method, $postBody, $sessionId ?? '', $autorizacion ?? ''];
@@ -65,7 +66,7 @@ class PagesTest extends TestCase
             'DB_DSN_POS' => 'sqlite:' . self::$dir . '/pos.sqlite',
             'LOG_FILE' => self::$dir . '/app.log',
             'PATH' => (string)getenv('PATH'),
-        ];
+        ] + $entorno;
         if ($tokenConfigurado !== null) {
             $env['OWNER_TOKEN'] = $tokenConfigurado;
         }
@@ -182,6 +183,37 @@ class PagesTest extends TestCase
         [$codigo] = $this->get($host, $uri);
 
         $this->assertSame($status, $codigo);
+    }
+
+    /** The brand comes from .env, not from the view: the genealogy header and title follow SITE_NAME_GENEALOGY. */
+    public function testTheGenealogyHeaderShowsTheConfiguredBrand(): void
+    {
+        [, $body] = $this->get(self::GENEALOGIA, '/', entorno: ['SITE_NAME_GENEALOGY' => 'conce.com']);
+
+        $this->assertStringContainsString('<a class="marca" href="/">conce.com</a>', $body);
+        $this->assertStringContainsString(' · conce.com</title>', $body);
+    }
+
+    /** Nothing configured (or blank) leaves the plain name of the site; the POS keeps its own name either way. */
+    public function testTheGenealogyHeaderFallsBackWhenNoBrandIsConfigured(): void
+    {
+        foreach ([[], ['SITE_NAME_GENEALOGY' => '  ']] as $entorno) {
+            [, $body] = $this->get(self::GENEALOGIA, '/', entorno: $entorno);
+            $this->assertStringContainsString('<a class="marca" href="/">Genealogía</a>', $body);
+        }
+
+        [, $body] = $this->get(self::POS, '/', entorno: ['SITE_NAME_GENEALOGY' => 'conce.com']);
+        $this->assertStringContainsString('<a class="marca" href="/">Contrastocolor</a>', $body);
+        $this->assertStringNotContainsString('conce.com', $body);
+    }
+
+    /** The brand is text a deployer types: it must come out escaped. */
+    public function testTheConfiguredBrandIsEscaped(): void
+    {
+        [, $body] = $this->get(self::GENEALOGIA, '/', entorno: ['SITE_NAME_GENEALOGY' => '<b>x</b> & "y"']);
+
+        $this->assertStringContainsString('&lt;b&gt;x&lt;/b&gt; &amp; &quot;y&quot;', $body);
+        $this->assertStringNotContainsString('<b>x</b>', $body);
     }
 
     public function testSearchTreatsPercentLiterally(): void
@@ -605,6 +637,67 @@ class PagesTest extends TestCase
         $tokenArray = http_build_query(['sku' => 'CAM-AZ-M', 'csrf_token' => [$token]]);
         $this->assertSame(403, $this->get(self::POS, '/cart/agregar/', 'POST', $tokenArray, $sid)[0]);
         $this->assertSame(400, $this->post(self::POS, '/cart/agregar/', ['sku' => ['CAM-AZ-M']], $sid, $token)[0]);
+    }
+
+    public function testCheckoutRedirectsWithAFlashWhenTheCartIsEmpty(): void
+    {
+        [$sid] = $this->primeSession();
+
+        [$codigo] = $this->get(self::POS, '/checkout/', 'GET', '', $sid);
+        $this->assertSame(303, $codigo);
+
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertStringContainsString('Tu carrito está vacío.', $body);
+    }
+
+    public function testCheckoutRedirectsWithAFlashWhenTheCartMixesCurrencies(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'GOR-AZ', 'cantidad' => '1'], $sid, $token);
+
+        $this->conCambioEnPos(
+            "UPDATE productos SET moneda = 'USD' WHERE id = 81372049",
+            "UPDATE productos SET moneda = 'MXN' WHERE id = 81372049",
+            function () use ($sid): void {
+                [$codigo] = $this->get(self::POS, '/checkout/', 'GET', '', $sid);
+                $this->assertSame(303, $codigo);
+
+                [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+                $this->assertStringContainsString('distintas monedas', $body);
+            }
+        );
+    }
+
+    public function testCheckoutRendersWhenTheCartHasItemsInOneCurrency(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+
+        [$codigo] = $this->get(self::POS, '/checkout/', 'GET', '', $sid);
+        $this->assertSame(200, $codigo);
+    }
+
+    public function testAgregarFlashesAMessageWhenTheQuantityIsClampedToStock(): void
+    {
+        [$sid, $token] = $this->primeSession();
+
+        // CAM-AZ-M has 30 in stock (see seed data); asking for more clamps and flashes.
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '999'], $sid, $token);
+
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertStringContainsString('no hay suficiente stock', $body);
+    }
+
+    public function testActualizarRejectsANonNumericQuantityInsteadOfSilentlyRemovingTheLine(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+
+        $this->assertSame(400, $this->post(self::POS, '/cart/actualizar/', ['sku' => 'CAM-AZ-M', 'cantidad' => 'abc'], $sid, $token)[0]);
+
+        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->assertStringContainsString('CAM-AZ-M', $body); // line was not touched
     }
 
     public function testExportIsValidGedcom(): void

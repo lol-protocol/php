@@ -9,7 +9,7 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Not specified",
-    "digital_protection": "Not specified",
+    "digital_protection": "Law 50/NA: exceptions exclude copying needing TPM circumvention or RMI removal; bans circumventing TPMs of performers/phonogram producers; articles unverified (unconfirmed)",
     "fair_use_exceptions": "Statutory limitations & exceptions",
     "registration_required": "No",
     "enforcement_body": "Department of Intellectual Property (DIP)",
@@ -17,8 +17,43 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22624",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/22624",
+        "confidence": "low",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Law 50/NA: exceptions exclude copying needing TPM circumvention or RMI removal; bans circumventing TPMs of performers/phonogram producers; articles unverified (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "linked_resources",
+        "from": "https://cdn.nestjs.wipolex.wji.prd.web1.wipo.int/wipolex/en/legislation/details/22624",
+        "to": "https://www.wipo.int/wipolex/en/legislation/details/22624"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "TRIPS",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

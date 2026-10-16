@@ -20,8 +20,43 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "UAVG amended by Verzamelwet gegevensbescherming 2026; AP must publish fines; in force TBD",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "notes": {
+        "url": "https://zoek.officielebekendmakingen.nl/stb-2026-154.odt",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR implementation",
+        "to": "UAVG amended by Verzamelwet gegevensbescherming 2026; AP must publish fines; in force TBD"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2018-05-16"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "GDPR Implementation Law",
+        "to": "GDPR Implementation Act (Uitvoeringswet AVG, UAVG)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

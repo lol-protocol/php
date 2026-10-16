@@ -9,7 +9,7 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Not specified",
-    "digital_protection": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)",
+    "digital_protection": "Art. 53: TPMs defined; breaking/deactivating TPMs is infringement; 53.2 bans making/importing/supplying circumvention tools; RMI provision not confirmed",
     "fair_use_exceptions": "Statutory limitations & exceptions",
     "registration_required": "No (voluntary registration available)",
     "enforcement_body": "Intellectual Property Office of Mongolia (IPOM)",
@@ -17,8 +17,43 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22459",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://legalinfo.mn/en/edtl/16531498267681",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)",
+        "to": "Art. 53: TPMs defined; breaking/deactivating TPMs is infringement; 53.2 bans making/importing/supplying circumvention tools; RMI provision not confirmed"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

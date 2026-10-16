@@ -11,7 +11,7 @@
     "applies_to": "Public & private controllers and processors",
     "key_requirements": "Lawful processing principles, DPO and impact assessments, breach notification, cross-border transfer rules",
     "data_categories": "Personal data; sensitive data",
-    "retention_period": "Not specified",
+    "retention_period": "Art. 52: keep data until processing purposes are fulfilled; longer if authorised by law, required by contract or consent; retention schedule required",
     "enforcement_authority": "National Cyber Security Authority (NCSA)",
     "penalties_range": "Admin fine RWF 2M-5M or 1% global turnover; criminal fines up to 5% of turnover; up to 7 years' imprisonment",
     "exemptions": "National security; household use",
@@ -20,8 +20,36 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Two-year transition for existing controllers ended 15 Oct 2023",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "medium",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.dataguidance.com/news/rwanda-data-protection-law-published-official-gazette",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://dpo.gov.rw/faqs",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 52: keep data until processing purposes are fulfilled; longer if authorised by law, required by contract or consent; retention schedule required"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

@@ -17,8 +17,25 @@
     "treaties_not_party": "TRIPS",
     "linked_resources": "https://www.wipo.int/wipolex/en/details.jsp?id=1194",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

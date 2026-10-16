@@ -17,8 +17,54 @@
     "treaties_not_party": "",
     "linked_resources": "https://cov.gov.vn/",
     "notes": "Amended by Law 131/2025/QH15 (eff. 2026-04-01): AI/data-mining rules, software, online enforcement",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.tilleke.com/insights/vietnams-amended-ip-law-will-strengthen-and-modernize-copyright-protection/10/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.tilleke.com/insights/vietnam-enacts-landmark-ip-law-amendments/?page=5",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Amended by Law 131/2025/QH15 (eff. 2026-04-01): AI/data-mining rules, software, online enforcement"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Circumvention of TPMs, trafficking in tools & RMI removal are infringements (art. 28, 2022)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright enforcement",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "linked_resources",
+        "from": "https://www.noip.gov.vn/",
+        "to": "https://cov.gov.vn/"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

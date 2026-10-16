@@ -20,8 +20,25 @@
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced Law 133/2011 (GDPR-aligned); applies since 23 Aug 2026 after 24-month transition",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "low",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.dlapiperdataprotection.com/?c=MD&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

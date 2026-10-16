@@ -17,8 +17,25 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.cipro.gov.za/",
     "notes": "The 2019 Copyright Amendment Bill has not been enacted; the 1978 Act applies",
+    "pending_change": "Copyright Amendment Bill back in Parliament after the Constitutional Court ruling of 26 Jun 2026 ([2026] ZACC 26)",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "The 2019 Copyright Amendment Bill has not been enacted; the 1978 Act applies"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Copyright Act 1978 (amended 2019)",
+        "to": "Copyright Act 98 of 1978"
+      }
+    ]
   }
 ]

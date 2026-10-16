@@ -26,7 +26,7 @@ if (loaded.errors.length) {
   process.exit(1);
 }
 
-const artifacts = buildArtifacts(loaded.records);
+const artifacts = buildArtifacts(loaded.records, loaded);
 const plan = planWrites(artifacts);
 const orphans = findOrphans(artifacts);
 const stale = plan.filter((p) => p.status !== "same");

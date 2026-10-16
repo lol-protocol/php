@@ -91,6 +91,7 @@ with the resolution and the screen size.
 | `minimum_font_sizes.csv` | 29 | Minimum and recommended font sizes per format and device |
 | `wcag_contrast.csv` | 29 | WCAG AA/AAA contrast ratios per UI element |
 | `regional_compatibility.csv` | 29 | Primary, secondary and legal standards per region |
+| `paper_types.csv` | 50 | Named paper stock — color, texture, finish and weight — independent of sheet size (see below) |
 
 ## Columns
 
@@ -126,6 +127,19 @@ catalogs above:
   target (C4 → A4), which is `Contains` instead.
 - `compatibility_level` — `Contains` (an envelope that holds the target),
   `Folded`, `Direct` (95% or more), `Similar` (85–94%) or `Different`.
+
+### Paper types
+
+`specs/paper_types.csv` is a separate catalog of named paper stock — not a
+sheet size, so it's not in `FORMAT_CATALOG_FILES` and doesn't get a region.
+Any of the ~300 formats can in principle be printed on any of its 50 rows;
+the demo's "Paper Types" tab lets you pick a format and see it listed
+against every paper type. Columns: `type_name` (Spanish, including regional
+terms like "Papel roneo" and "Papel chambril" that aren't used everywhere
+Spanish is spoken), `type_name_en`, `category`, `color`, `texture`,
+`finish`, `weight_gsm_range`, `common_use`, `notes`. Weight ranges are
+typical, not a spec any mill is bound to — paper names and grammages vary
+by manufacturer and region more than ISO sheet sizes do.
 
 ## Using the data
 
@@ -171,7 +185,7 @@ See `docs/Tutorials.md` for step-by-step examples and
 
 ### As a database
 
-`database_schema.sql` defines 14 MySQL/MariaDB tables and three views
+`database_schema.sql` defines 15 MySQL/MariaDB tables and three views
 (`v_formats_detailed`, `v_formats_by_measurement`, `v_format_equivalents`).
 `import_database.php` creates them and loads the CSV files:
 
@@ -184,11 +198,12 @@ php document-formats/import_database.php                   # later: reloads the 
 It fills countries (plus two regions, International `XI` and Europe `XE`,
 since every format needs a country), categories, `document_formats`, the
 conversions from the equivalence matrix, technical specifications, book
-margins, per-country compatibility and standard references. Rows that name
-something other than a format, such as a product type ("Vinyl Banner") or a
-book genre ("Poetry"), are skipped and listed. The supplier, price,
-paper-weight, finish and variant tables have no CSV behind them and stay
-empty. Tested on MySQL 8.0 and MariaDB 10.11.
+margins, per-country compatibility, standard references and `paper_types`
+(unrelated to `document_formats` — it has no format or country column).
+Rows that name something other than a format, such as a product type
+("Vinyl Banner") or a book genre ("Poetry"), are skipped and listed. The
+supplier, price, paper-weight-standards, finish and variant tables have no
+CSV behind them and stay empty. Tested on MySQL 8.0 and MariaDB 10.11.
 
 ```sql
 SELECT df1.format_name AS from_fmt, df2.format_name AS to_fmt, fc.equivalence_percentage
@@ -216,7 +231,9 @@ python3 -m http.server
 
 It loads every catalog listed in `FORMAT_CATALOG_FILES` (about 300 formats)
 and offers a browser with search and country/category filters, a
-comparison table, and a converter that shows how similar two sizes are.
+comparison table, a converter that shows how similar two sizes are, and a
+Paper Types tab (the 50 rows of `specs/paper_types.csv`) that can combine
+a chosen size with every paper type at once.
 
 `app/translations/` holds UI strings in 30 languages for
 `LocalizationManager` in `document-formats.js`. The demo doesn't use them (it

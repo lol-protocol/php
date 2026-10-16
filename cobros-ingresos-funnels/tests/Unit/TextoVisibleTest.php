@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  * tilde y a veces sin (periodo / período, valido / válido).
  *
  * Revisa solo texto: el HTML de las vistas y los literales que parecen un mensaje
- * (dos palabras o mas) de las vistas, src/ y los mensajes de database/migrar.php. No
+ * (dos palabras o mas) de las vistas, src/ y los mensajes de bin/migrar.php. No
  * mira identificadores, claves ni columnas (los valores guardados como 'organico' o
  * 'Espanol' quedan sin tilde a proposito: son datos), ni una palabra seguida de "("
  * (el metodo Database::transaccion() en un mensaje), ni los datos de ejemplo del
@@ -51,7 +51,7 @@ final class TextoVisibleTest extends TestCase
             glob($raiz . '/src/*.php') ?: [],
             glob($raiz . '/src/Controllers/*.php') ?: [],
             glob($raiz . '/src/Repositories/*.php') ?: [],
-            [$raiz . '/database/migrar.php'],
+            [$raiz . '/bin/migrar.php'],
         );
         sort($archivos);
 

@@ -13,7 +13,7 @@ que hacer la plataforma por fuera del código. El porqué está en
 |---|---|---|
 | Insultos del diccionario (33 idiomas) | «idiota», «hijo de puta», chilenismos («conchetumare», «aweonao») | `reject` o `review` según la gravedad |
 | Evasión | letras sueltas («p u t a»), repetidas («puuuta»), leet («1d10t4»), signos pegados («puta!»), asteriscos («p*ta»), letras cirílicas o griegas camufladas, caracteres invisibles, ancho completo, negrita matemática y emoji en medio de la palabra | igual que el término; los asteriscos van a lo sumo a `review` |
-| Acusaciones (español e inglés) | delitos («estafó a», «fue condenado», «es narco»), salud («tiene sida»), vida privada («le pone los cuernos»), orientación sexual, filiación («es hijo ilegítimo»), suicidio, funas | siempre `review`: una persona verifica |
+| Acusaciones (español e inglés; lo básico también en portugués, francés, italiano y alemán) | delitos («estafó a», «fue condenado», «es narco»), salud («tiene sida»), vida privada («le pone los cuernos»), orientación sexual, filiación («es hijo ilegítimo»), suicidio, funas | siempre `review`: una persona verifica |
 | Datos personales (cualquier idioma) | RUT válido, correo, teléfono, dirección («vive en la calle…») | `review` (tipo `privado`) |
 | Amenazas y contenido sexual | «te voy a matar», «mándame nudes» | `reject` o `review` |
 | Contexto | animales, discapacidad, identidad: sólo si van dirigidos a alguien («eres un cerdo» sí, «comí cerdo» no) | `review`, o `approve` informado |
@@ -42,6 +42,8 @@ que hacer la plataforma por fuera del código. El porqué está en
 | «p⃝u⃝t⃝a⃝», «putɑ», «idiօta», «ᏢUTA», «pu+a» | se detectan (`MarkEvasionTest`) |
 | «los Pérez son unos ladrones», «tiene antecedentes penales», «está en DICOM», «tiene cáncer», «se acuesta con su secretaria» | `review` (`SensitiveDataPatternsTest`) |
 | El texto de un marcalibro («Fulano es un estafador») se publicaba por enlace sin revisar | no se guarda (`LabelPolicyTest` en Marcalibros) |
+| «la familia era judía», «Fulano es mapuche», «Fulano es comunista» (religión, origen étnico, opinión política) | `review` (`SensitiveDataPatternsTest`) |
+| «Fulano foi condenado», «Fulano a volé de l'argent», «Fulano è un ladro», «Fulano hat Geld gestohlen»: no había patrones fuera de spa/eng | `review` (`AccusationPatternsEuropeanTest`) |
 | «careverga», «conchatumadre», «mamaguevo», «comemierda», «eres un gonorrea» | marcados; «el forro del abrigo» y «la gonorrea es una infección» se aprueban |
 
 ## Flancos abiertos
@@ -51,8 +53,10 @@ siguiente es lo que los cubre.
 
 - **Acusaciones sin las palabras de la lista**: «se quedó con la herencia de sus
   hermanos», «todos saben lo que hizo en 1985», la ironía y las indirectas.
-- **Acusaciones en otros idiomas**: los patrones están en español e inglés. Los
-  otros 31 idiomas sólo detectan insultos.
+- **Acusaciones en otros idiomas**: español e inglés tienen los patrones completos;
+  portugués, francés, italiano y alemán, los básicos (delito, condena, salud, vida
+  privada, orientación sexual), escritos sin revisión de un hablante nativo. Los
+  otros 27 idiomas sólo detectan insultos.
 - **Personas identificables sin nombre**: «el decano de Ingeniería», «el
   carnicero de la calle Maipú».
 - **Imágenes y archivos**: una foto con texto, un PDF o un audio no pasan por el filtro.
@@ -66,7 +70,7 @@ siguiente es lo que los cubre.
   («los putos deberes») y espera la revisión nativa de `review/urgente/spa-genero.csv`.
 - **Falsos positivos**: «la película trata de un ladrón de bancos» va a revisión
   y «un asesino de la época» se bloquea. Es el precio de no dejar pasar las acusaciones.
-  En genealogía, «fue adoptada» o «se suicidó en 1920» también irán a revisión:
+  En genealogía, «fue adoptada», «se suicidó en 1920» o «la familia era judía» también irán a revisión:
   son datos sensibles de una familia, y quien revisa decide si se publican.
 
 ## Lo que tiene que hacer la plataforma (fuera del código)

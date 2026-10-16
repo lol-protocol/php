@@ -97,6 +97,17 @@ export const COMPARE_CRITERIA = [
   "notes",
 ];
 
+// Every content field of a law, in the order the jurisdiction card lists them.
+export const DETAIL_FIELDS = [
+  "enforcement_body",
+  ...COMPARE_CRITERIA.filter((f) => !f.startsWith("treaties") && f !== "notes"),
+];
+
+// A row whose last check is older than this is shown as due for review.
+export const STALE_AFTER_DAYS = 365;
+export const isReviewDue = (lastChecked, today) =>
+  Boolean(lastChecked) && (Date.parse(`${today}T00:00:00Z`) - Date.parse(`${lastChecked}T00:00:00Z`)) / 86_400_000 > STALE_AFTER_DAYS;
+
 const splitList = (value) =>
   value
     ? value
@@ -110,6 +121,8 @@ export function enrichRow(row) {
   row.treatiesNot = splitList(row.treaties_not_party);
   // Neither confirmed nor ruled out.
   row.treatiesUnconfirmed = TREATY_ORDER.filter((t) => !row.treaties.includes(t) && !row.treatiesNot.includes(t));
+  row.sources ??= {};
+  row.changes ??= [];
   row.termYears = parseLifeTerm(row.term_of_protection);
   row.termBucket = termBucket(row.termYears);
   return row;

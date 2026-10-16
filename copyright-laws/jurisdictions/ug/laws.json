@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 50 years (corporate-owned and anonymous or pseudonymous works: 50 years from first publication; photographs: 50 years from making)",
     "author_rights": "Economic rights",
     "moral_rights": "Attribution & integrity (s. 10)",
-    "orphan_works": "Not specified",
+    "orphan_works": "No orphan regime in 2006 Act; 2025 Amendment Bill (passed 17 Mar 2026, assent unconfirmed) allows licensing orphan works if author untraceable",
     "digital_protection": "2006 Act silent on TPMs; 2026 amendment reportedly adds anti-circumvention & RMI rules (unconfirmed)",
     "fair_use_exceptions": "Fair use (s. 15: private study, teaching, news reporting)",
     "registration_required": "No (voluntary registration available)",
@@ -17,8 +17,70 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/text/585337",
     "notes": "",
+    "pending_change": "Copyright (Amendment) Bill 2025 (orphan works licensing) passed 17 Mar 2026; presidential assent not confirmed",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://old.ulii.org/ug/judgment/commercial-court-uganda/2014/107",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "orphan_works": {
+        "url": "https://cipit.strathmore.edu/ugandas-2025-copyright-and-neighbouring-rights-amendment-bill-a-turning-point-for-creators-rights/",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "digital_protection": {
+        "url": "https://globallawexperts.com/copyright-and-neighbouring-rights-act-2026-uganda-or-uganda-copyright-law-2026/",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.cehurd.org/wp-content/uploads/downloads/2013/03/influencing-copyright.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "No orphan regime in 2006 Act; 2025 Amendment Bill (passed 17 Mar 2026, assent unconfirmed) allows licensing orphan works if author untraceable"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Fair use (s. 15: private study, teaching, news reporting)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "2006 Act silent on TPMs; 2026 amendment reportedly adds anti-circumvention & RMI rules (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Attribution & integrity (s. 10)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

@@ -9,19 +9,141 @@
     "effective_date": "2024-11-15",
     "scope": "Individuals in El Salvador",
     "applies_to": "Public & private organizations",
-    "key_requirements": "Not specified",
+    "key_requirements": "Express informed consent (Arts. 5, 27); ARCO-POL rights; privacy officer; transfers only to adequate countries (Art. 44); 72h breach notice (firm summary)",
     "data_categories": "Personal data",
-    "retention_period": "Not specified",
+    "retention_period": "Art. 5(h) temporality principle: keep data only for the period needed to achieve processing purposes; consent must state storage period (Art. 5)",
     "enforcement_authority": "Agencia de Ciberseguridad del Estado (ACE), per Human Rights Watch; another source names the new National Digital Authority",
     "penalties_range": "Up to 40 monthly minimum wages, commerce sector (~USD 14,600) for very serious infractions (unconfirmed)",
-    "exemptions": "Not specified",
+    "exemptions": "Art. 2 excludes: purely family/domestic processing (non-commercial); public security, defence, State security, crime prevention/investigation; public registries",
     "website_url": "https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf",
     "language": "Spanish",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "First general data-protection law (approved 12 Nov 2024); date shown is gazette publication. The earlier row described a law that does not exist",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-11"
+    "last_checked": "2026-10-11",
+    "sources": {
+      "key_requirements": {
+        "url": "https://central-law.com/el-salvador-nueva-ley-de-proteccion-de-datos-personales-claves-para-su-cumplimiento-y-aplicacion/",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://transparencia.mh.gob.sv/downloads/pdf/700-UAIP-LY-2024-14993.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "penalties_range": {
+        "url": "https://www.elsalvador.com/h-opinion/h-editoriales/organizaciones-laborales-/1195558/2025/",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      },
+      "exemptions": {
+        "url": "https://www.jurisprudencia.gob.sv/DocumentosBoveda/D/2/2020-2029/2024/11/10660E.PDF",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "exemptions",
+        "from": "Not specified",
+        "to": "Art. 2 excludes: purely family/domestic processing (non-commercial); public security, defence, State security, crime prevention/investigation; public registries"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 5(h) temporality principle: keep data only for the period needed to achieve processing purposes; consent must state storage period (Art. 5)"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "key_requirements",
+        "from": "Not specified",
+        "to": "Express informed consent (Arts. 5, 27); ARCO-POL rights; privacy officer; transfers only to adequate countries (Art. 44); 72h breach notice (firm summary)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Not specified",
+        "to": "Up to 40 monthly minimum wages, commerce sector (~USD 14,600) for very serious infractions (unconfirmed)"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "notes",
+        "from": "Central America region",
+        "to": "First general data-protection law (approved 12 Nov 2024); date shown is gazette publication. The earlier row described a law that does not exist"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "website_url",
+        "from": "https://www.aps.gob.sv/",
+        "to": "https://www.icnl.org/wp-content/uploads/Ley-para-la-proteccion-de-datos-personales.pdf"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "exemptions",
+        "from": "Government functions",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "penalties_range",
+        "from": "Up to USD 3k fine",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "enforcement_authority",
+        "from": "Data Protection Agency",
+        "to": "Agencia de Ciberseguridad del Estado (ACE), per Human Rights Watch; another source names the new National Digital Authority"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "retention_period",
+        "from": "30 years maximum",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "key_requirements",
+        "from": "Lawful processing & consent",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "scope",
+        "from": "El Salvador Residents",
+        "to": "Individuals in El Salvador"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "effective_date",
+        "from": "2008-12-06",
+        "to": "2024-11-15"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "enactment_date",
+        "from": "2007-12-06",
+        "to": "2024-11-12"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "jurisdiction",
+        "from": "Agencia de Protección de Datos",
+        "to": "Agencia de Ciberseguridad del Estado"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "law_name",
+        "from": "Ley de Protección de Datos Personales",
+        "to": "Personal Data Protection Law (Decree No. 144 of 2024)"
+      }
+    ]
   }
 ]

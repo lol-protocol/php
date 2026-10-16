@@ -9,7 +9,7 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Not specified",
-    "digital_protection": "Not specified",
+    "digital_protection": "No express anti-circumvention or RMI provisions in the Ordinance (Chambers 2026); amendment bill with TPM clause pending in National Assembly",
     "fair_use_exceptions": "Fair dealing exceptions",
     "registration_required": "No (voluntary registration available)",
     "enforcement_body": "Intellectual Property Organization of Pakistan (IPO-Pakistan)",
@@ -17,8 +17,37 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/text/129350",
     "notes": "",
+    "pending_change": "Amendment bill with an anti-circumvention clause pending in the National Assembly",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://practiceguides.chambers.com/practice-guides/trade-marks-copyright-2026/pakistan",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "No express anti-circumvention or RMI provisions in the Ordinance (Chambers 2026); amendment bill with TPM clause pending in National Assembly"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

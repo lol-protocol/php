@@ -20,8 +20,42 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enactment_date": {
+        "url": "https://community.isc2.org/t5/GDPR/New-Irish-Data-Protection-Act-introduced/m-p/10886",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2018-05-24"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Irish DPC",
+        "to": "Data Protection Commission (DPC)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

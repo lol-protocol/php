@@ -20,8 +20,42 @@
     "frameworks": "APEC-CBPR",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Amended by POLA Act 2024 (statutory privacy tort, ADM transparency); Tranche 2 bill in consultation",
+    "pending_change": "Tranche 2 reform: Privacy Amendment (Personal Data Protection) Bill 2026 exposure draft released 31 Aug 2026; not law",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "effective_date": {
+        "url": "https://legislation.gov.au/C2004A03712/asmade/1988-12-14/text/original/pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://mccullough.com.au/2026/08/31/privacy-act-reforms-tranche-2-proposals/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "13 Australian Privacy Principles",
+        "to": "Amended by POLA Act 2024 (statutory privacy tort, ADM transparency); Tranche 2 bill in consultation"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "1989-06-21",
+        "to": "1989-01-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "1988-12-21",
+        "to": "1988-12-14"
+      }
+    ]
   }
 ]

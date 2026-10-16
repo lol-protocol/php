@@ -9,7 +9,7 @@
     "author_rights": "Economic rights",
     "moral_rights": "Moral rights recognised (s. 24)",
     "orphan_works": "Not specified",
-    "digital_protection": "Not specified",
+    "digital_protection": "s.28(2) (as replaced by Act 25/2010): offence to make/import articles designed to circumvent copy-protection devices; no RMI provision found",
     "fair_use_exceptions": "Statutory list of acts not constituting infringement (s. 21)",
     "registration_required": "No (voluntary registration available)",
     "enforcement_body": "Patents and Companies Registration Agency (PACRA)",
@@ -17,8 +17,59 @@
     "treaties_not_party": "",
     "linked_resources": "https://info.pacra.org.zm/how-long-does-my-copyright-protection-last",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/zm/zm070en.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://old.zambialii.org/zm/legislation/act/2010/no-25-2010/copyrights-and-performance-rights-amendment-2010a.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "fair_use_exceptions": {
+        "url": "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/zm/zm070en.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "s.28(2) (as replaced by Act 25/2010): offence to make/import articles designed to circumvent copy-protection devices; no RMI provision found"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Statutory list of acts not constituting infringement (s. 21)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Moral rights recognised (s. 24)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

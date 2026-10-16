@@ -20,8 +20,37 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enforcement_authority": {
+        "url": "https://www.imy.se/en/about-us/swedish-authority-for-privacy-protections-assignment/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2018-04-18"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Act (Dataskyddslagen)",
+        "to": "Act (2018:218) with supplementary provisions to the GDPR (Dataskyddslagen)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Swedish Authority",
+        "to": "Swedish Authority for Privacy Protection (IMY)"
+      }
+    ]
   }
 ]

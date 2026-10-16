@@ -44,6 +44,8 @@ CREATE TABLE privacy_laws (
   frameworks VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'International frameworks, / separated: GDPR, EU-Adequacy, CoE-108, APEC-CBPR',
   frameworks_not VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'Frameworks confirmed NOT joined; one in neither list is unconfirmed',
   notes TEXT COMMENT 'Additional context or special provisions',
+  pending_change TEXT COMMENT 'A known upcoming change (bill, amendment, entry into force)',
+  pending_date DATE NULL COMMENT 'When the pending change is expected, if known',
   data_status VARCHAR(20) NOT NULL DEFAULT 'curated' COMMENT 'verified | researched | curated',
   confidence VARCHAR(10) NOT NULL DEFAULT '' COMMENT 'high | medium | low (researched rows)',
   last_checked DATE NULL COMMENT 'When the row was last checked',

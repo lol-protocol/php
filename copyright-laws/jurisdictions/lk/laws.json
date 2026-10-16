@@ -9,7 +9,7 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Not specified",
-    "digital_protection": "Not specified",
+    "digital_protection": "s.23: making/importing devices to circumvent copy-protection and decoding encrypted programmes is unlawful, damages under s.22; no RMI provision found",
     "fair_use_exceptions": "Statutory limitations & exceptions",
     "registration_required": "No",
     "enforcement_body": "National Intellectual Property Office of Sri Lanka (NIPO)",
@@ -17,8 +17,37 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/es/text/597541",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.nipo.gov.lk/web/images/pdf_downloads/Intellectual_Property_Act_No_36_of_2003.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "s.23: making/importing devices to circumvent copy-protection and decoding encrypted programmes is unlawful, damages under s.22; no RMI provision found"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

@@ -20,8 +20,42 @@
     "frameworks": "EU-Adequacy/CoE-108",
     "frameworks_not": "GDPR",
     "notes": "",
+    "pending_change": "Replacement bills (2025, 3397-D-2026) pending; Law 25.326 still applies",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.marval.com/publicacion/nuevos-proyectos-de-ley-de-datos-personales-en-argentina-17289?lang=en",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://www.coe.int/web/data-protection/argentina",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Personal Data Protection Law (LPDP)",
+        "to": "Personal Data Protection Law No. 25.326"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "AEPD (Argentina)",
+        "to": "Agency for Access to Public Information (AAIP)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "South America region",
+        "to": ""
+      }
+    ]
   }
 ]

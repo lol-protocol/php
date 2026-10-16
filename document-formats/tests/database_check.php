@@ -62,4 +62,9 @@ check($count('SELECT COUNT(*) FROM standard_references') > 0, 'standard referenc
 check($count('SELECT COUNT(*) FROM country_compatibility') === count(readCsv('countries/country_compatibility_guide.csv')),
     'one compatibility row per country in the guide');
 
+check($count('SELECT COUNT(*) FROM paper_types') === count(readCsv('specs/paper_types.csv')),
+    'one paper_types row per specs/paper_types.csv row');
+check($count("SELECT weight_gsm_max FROM paper_types WHERE type_name = 'Papel roneo'") === 55,
+    'Papel roneo tops out at 55 gsm');
+
 exit($failures === 0 ? 0 : 1);

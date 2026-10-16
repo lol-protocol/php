@@ -20,8 +20,48 @@
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "",
+    "pending_change": "Draft amendment in public consultation (Jul-Aug 2026); not enacted",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enactment_date": {
+        "url": "https://lawgazette.com.sg/practice/global-news/thailands-new-personal-data-protection-act/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://hunton.com/media/legal/75784_full-enforcement-of-pdpa-is-postponed.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2020-06-01",
+        "to": "2022-06-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2019-06-27",
+        "to": "2019-05-27"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Southeast Asia region",
+        "to": ""
+      },
+      {
+        "date": "2026-10-11",
+        "field": "website_url",
+        "from": "https://www.dataprotection.go.th/",
+        "to": "https://www.pdpc.or.th/"
+      }
+    ]
   }
 ]

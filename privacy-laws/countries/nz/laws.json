@@ -20,8 +20,42 @@
     "frameworks": "EU-Adequacy",
     "frameworks_not": "GDPR/CoE-108",
     "notes": "Amended by Privacy Amendment Act 2025; IPP 3A in force 2026-05-01",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "key_requirements": {
+        "url": "https://www.bellgully.com/insights/preparing-for-ipp-3a-new-requirements-effective-1-may-2026/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.justice.govt.nz/justice-sector-policy/key-initiatives/enhancing-the-privacy-act",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Updated from 1993 Act",
+        "to": "Amended by Privacy Amendment Act 2025; IPP 3A in force 2026-05-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "Privacy Principles",
+        "to": "IPP 3A: notify individuals when personal info collected indirectly (from 2026-05-01)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2020-12-01",
+        "to": "2020-06-30"
+      }
+    ]
   }
 ]

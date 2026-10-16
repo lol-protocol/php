@@ -17,8 +17,25 @@
     "treaties_not_party": "Berne",
     "linked_resources": "https://euipo.europa.eu/",
     "notes": "Describes the harmonised EU framework. The EU itself is not a party to the Berne Convention (all its Member States are); it is a party to TRIPS, the WCT and the WPPT",
+    "pending_change": "New Commission copyright proposal expected in 2027 (call for evidence May 2026)",
+    "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": ""
+    "last_checked": "",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-09",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT/WPPT",
+        "to": "TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

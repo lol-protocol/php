@@ -17,8 +17,43 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/6639",
     "notes": "Copyright (Amendment) Act 2026 raises the term from life + 50 to life + 70; its commencement date was not confirmed",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://sherloc.unodc.org/cld/uploads/res/document/tto/1997/copyright_act_html/Copyright_Act_last_amended_2008.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Measures against circumvention (s. 34A) & abuses of rights-management information (s. 34B)"
+      },
+      {
+        "date": "2026-10-09",
+        "field": "term_of_protection",
+        "from": "Author's life + 70 years (Copyright (Amendment) Act 2026; commencement not confirmed, earlier term was life + 50 years)",
+        "to": "Author's life + 70 years"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

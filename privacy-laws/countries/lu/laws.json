@@ -20,8 +20,64 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://elvingerhoss.lu/publications/luxembourg-law-complementing-gdpr",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://elvingerhoss.lu/publications/luxembourg-law-complementing-gdpr",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.linklaters.com/en/insights/data-protected/data-protected---luxembourg",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://cnpd.public.lu/en/commission-nationale/activites-eur-inter.html",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2018-05-25",
+        "to": "2018-08-20"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2018-08-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Law",
+        "to": "Law of 1 August 2018 on the organisation of the CNPD and the general data protection regime"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Luxembourg Authority",
+        "to": "National Commission for Data Protection (CNPD)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

@@ -9,7 +9,7 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Not specified",
-    "digital_protection": "Not specified",
+    "digital_protection": "s.25(e): importing, producing or renting devices made to circumvent anti-copying devices is prohibited; no RMI provision found",
     "fair_use_exceptions": "Statutory limitations & exceptions",
     "registration_required": "No (voluntary registration available)",
     "enforcement_body": "Copyright Registrar's Office",
@@ -17,8 +17,37 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/7230",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "http://www.nepalcopyright.gov.np/downloadfile/The%20Copyright%20Act_1315912777_1573122046.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "s.25(e): importing, producing or renting devices made to circumvent anti-copying devices is prohibited; no RMI provision found"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

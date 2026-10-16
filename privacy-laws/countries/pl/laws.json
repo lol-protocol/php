@@ -20,8 +20,48 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enactment_date": {
+        "url": "https://rm.coe.int/belarus-study-visit-may-2019-presentation-krzysztof-krol/1680947923",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://cms.law/en/lux/publication/gdpr-enforcement-tracker-report/poland",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2018-05-10"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "General Data Protection Regulation (GDPR)",
+        "to": "Act of 10 May 2018 on the Protection of Personal Data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "UODO",
+        "to": "Personal Data Protection Office (UODO)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

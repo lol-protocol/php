@@ -20,8 +20,36 @@
     "frameworks": "EU-Adequacy/APEC-CBPR",
     "frameworks_not": "GDPR/CoE-108",
     "notes": "2026 amendment in force 2026-09-11: 10% revenue fines; CEO named ultimately responsible",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "penalties_range": {
+        "url": "https://www.mlex.com/mlex/articles/2450211",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=KR&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "East Asia comprehensive privacy law",
+        "to": "2026 amendment in force 2026-09-11: 10% revenue fines; CEO named ultimately responsible"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Up to ₩1B fine",
+        "to": "Up to 3% of total revenue; up to 10% for repeat intentional/grossly negligent violations, breaches affecting >=10m people, or ignoring PIPC orders"
+      }
+    ]
   }
 ]

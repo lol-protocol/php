@@ -17,8 +17,37 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.minjust.nl/",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": ""
+    "last_checked": "",
+    "sources": {
+      "enforcement_body": {
+        "url": "https://internetconsultatie.nl/acr2/document/8899",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Netherlands Patent Office",
+        "to": "Ministry of Justice and Security (Ministerie van Justitie en Veiligheid)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright compliance",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

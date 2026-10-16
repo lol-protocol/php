@@ -17,8 +17,59 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22365",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://gratanet.com/publications/protection-of-copyright-in-the-digital-environment-in-north-macedonia",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://gratanet.com/publications/protection-of-copyright-in-the-digital-environment-in-north-macedonia",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "fair_use_exceptions": {
+        "url": "https://britishcopyright.org/macedonia_country_report",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of free uses incl. private copying with equitable remuneration (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Technological protection measures & rights-management information"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Authorship, first disclosure, integrity & withdrawal"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

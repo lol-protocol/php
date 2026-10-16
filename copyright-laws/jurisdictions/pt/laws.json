@@ -17,8 +17,37 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.igac.pt/",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://abreuadvogados.com/wp-content/uploads/2023/07/Legal-Insight-Transposicao-Portuguesa-da-Diretiva-do-Mercado-Unico-Digital-13.07.2023.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Portuguese Copyright Law (Law 63/85)",
+        "to": "Code of Copyright and Related Rights (Decree-Law 63/85)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright protection",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

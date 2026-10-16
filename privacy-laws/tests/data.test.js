@@ -15,7 +15,8 @@ import {
   validateRecords,
 } from "../scripts/lib/dataset.js";
 
-const { records, errors } = loadAndValidate();
+const loaded = loadAndValidate();
+const { records, errors } = loaded;
 const readJson = (...parts) => JSON.parse(readFileSync(join(DATA_DIR, ...parts), "utf-8"));
 const validate = (...rows) => validateRecords(rows, COLUMNS).errors;
 
@@ -74,7 +75,7 @@ test("every country belongs to a known region", () => {
 });
 
 test("generated per-country files and index.json are up to date (run `npm run build`)", () => {
-  const artifacts = buildArtifacts(records);
+  const artifacts = buildArtifacts(records, loaded);
   const stale = planWrites(artifacts).filter((item) => item.status !== "same");
   assert.deepEqual(stale.map((item) => `${item.status}: ${item.rel}`), []);
   assert.deepEqual(findOrphans(artifacts), []);

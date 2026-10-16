@@ -7,9 +7,9 @@
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years (anonymous and pseudonymous works: 70 years from end of year of lawful public availability)",
     "author_rights": "Economic rights",
-    "moral_rights": "Not specified",
+    "moral_rights": "Paternity, integrity, disclosure, withdrawal/access; perpetual, inalienable, imprescriptible (cited as Art. 47); performers' moral right Art. 82",
     "orphan_works": "Not specified",
-    "digital_protection": "Not specified",
+    "digital_protection": "Art. 108 (Title IV ch. I): rightholders may use technical measures against unauthorised use, without hindering legitimate uses; RMI article not confirmed",
     "fair_use_exceptions": "Closed list of exceptions incl. private copying (art. 24)",
     "registration_required": "No",
     "enforcement_body": "Bureau Ivoirien du Droit d'Auteur (BURIDA), under the Ministry of Culture and Francophonie",
@@ -17,8 +17,59 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/16840",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://www.droitci.info/files/231.07.16-Loi-du-26-juillet-2016_Droit-d-auteur--2022_09_27-06_08_23-UTC-.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "digital_protection": {
+        "url": "https://agp.africanlii.org/en/akn/ci/act/2016/555/fra@2023-06-30",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.eifl.net/system/files/resources/202012/eifl_recommendations_cote_divoire.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Art. 108 (Title IV ch. I): rightholders may use technical measures against unauthorised use, without hindering legitimate uses; RMI article not confirmed"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Paternity, integrity, disclosure, withdrawal/access; perpetual, inalienable, imprescriptible (cited as Art. 47); performers' moral right Art. 82"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of exceptions incl. private copying (art. 24)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

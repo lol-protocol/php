@@ -17,8 +17,37 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/18686",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "orphan_works": {
+        "url": "https://stortinget.no/no/Saker-og-publikasjoner/Vedtak/Beslutninger/Lovvedtak/2014-2015/vedtak-201415-098/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "Orphan works (hitteverk): libraries, archives, museums, PSBs may use after diligent search"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

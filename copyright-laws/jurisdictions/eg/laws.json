@@ -9,7 +9,7 @@
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective management required",
-    "digital_protection": "Not specified",
+    "digital_protection": "Art. 181(5) bans making/importing devices to circumvent technical protection (e.g. encryption); 181(6) bans bad-faith removal/disabling; no explicit RMI rule found",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
     "enforcement_body": "Copyright Protection Office, Ministry of Culture",
@@ -17,8 +17,71 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/7762",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://erp.id.com.eg/vufind/Record/oai:dspace.id.com.eg:123456789-1473/Details?lng=en",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://www.agip.com/Agip-Country-Service/en/30/C",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://en.wikisource.org/wiki/Egyptian_Copyright_Law",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Art. 181(5) bans making/importing devices to circumvent technical protection (e.g. encryption); 181(6) bans bad-faith removal/disabling; no explicit RMI rule found"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "term_of_protection",
+        "from": "Author's life + 30 years",
+        "to": "Author's life + 50 years"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Egyptian Copyright Law",
+        "to": "Law No. 82 of 2002 on the Protection of Intellectual Property Rights"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright protection",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "linked_resources",
+        "from": "https://www.culture.gov.eg/",
+        "to": "https://www.wipo.int/wipolex/en/legislation/details/7762"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "enforcement_body",
+        "from": "Egyptian Copyright Office",
+        "to": "Copyright Protection Office, Ministry of Culture"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne",
+        "to": "Berne/TRIPS"
+      }
+    ]
   }
 ]

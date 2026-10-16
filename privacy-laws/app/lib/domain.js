@@ -74,6 +74,18 @@ export const COMPARE_CRITERIA = [
   "frameworks_not",
 ];
 
+// Every content field of a law, in the order the country card lists them.
+export const DETAIL_FIELDS = [
+  "jurisdiction",
+  "enforcement_authority",
+  ...COMPARE_CRITERIA.filter((f) => !f.startsWith("frameworks")),
+];
+
+// A row whose last check is older than this is shown as due for review.
+export const STALE_AFTER_DAYS = 365;
+export const isReviewDue = (lastChecked, today) =>
+  Boolean(lastChecked) && (Date.parse(`${today}T00:00:00Z`) - Date.parse(`${lastChecked}T00:00:00Z`)) / 86_400_000 > STALE_AFTER_DAYS;
+
 const splitList = (value) =>
   value
     ? value
@@ -88,6 +100,8 @@ export function enrichRow(row) {
   row.frameworksNot = splitList(row.frameworks_not);
   // Neither confirmed nor ruled out.
   row.frameworksUnconfirmed = FRAMEWORK_ORDER.filter((f) => !row.frameworkList.includes(f) && !row.frameworksNot.includes(f));
+  row.sources ??= {};
+  row.changes ??= [];
   row.languages = row.language
     .split("/")
     .map((s) => s.trim())

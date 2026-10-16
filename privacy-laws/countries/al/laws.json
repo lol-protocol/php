@@ -20,8 +20,25 @@
     "frameworks": "CoE-108",
     "frameworks_not": "GDPR/EU-Adequacy",
     "notes": "Replaced Law 9887/2008; DPIA & prior-consultation rules apply from 17 Jan 2027",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "high",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.karanovicpartners.com/news/albanian-parliament-finally-approves-new-data-protection-law-fully-aligned-with-eu-standards/",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

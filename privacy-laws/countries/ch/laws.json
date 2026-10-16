@@ -20,8 +20,19 @@
     "frameworks": "EU-Adequacy/CoE-108",
     "frameworks_not": "GDPR",
     "notes": "GDPR-aligned European standard",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2022-09-28",
+        "to": "2020-09-25"
+      }
+    ]
   }
 ]

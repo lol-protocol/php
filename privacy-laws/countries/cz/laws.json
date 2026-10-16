@@ -20,8 +20,47 @@
     "frameworks": "GDPR/CoE-108",
     "frameworks_not": "",
     "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.mondaq.com/data-protection/806016/gdpr-adaptation-legislation-becomes-effective",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.mondaq.com/data-protection/806016/gdpr-adaptation-legislation-becomes-effective",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2021-01-01",
+        "to": "2019-04-24"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Act on Protection of Personal Data",
+        "to": "Act No. 110/2019 Coll. on the Processing of Personal Data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Czech DPA",
+        "to": "Office for Personal Data Protection (ÚOOÚ)"
+      }
+    ]
   }
 ]

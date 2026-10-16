@@ -1,10 +1,14 @@
 <?php
+
+use App\Support\Flash;
+
 /**
  * Page shell shared by both sites. Each view renders its body into $content
  * and sets $title; the per-site layout (genealogy/_layout.php,
  * pos/_layout.php) adds $sitio and $tiposBusqueda and includes this file.
  */
 $lang = get_locale() === 'eng' ? 'en' : 'es';
+$flash = (new Flash())->consumir();
 $qActual = is_string($_GET['q'] ?? null) ? $_GET['q'] : '';
 $tActual = is_string($_GET['t'] ?? null) ? $_GET['t'] : (string)array_key_first($tiposBusqueda);
 ?><!DOCTYPE html>
@@ -73,6 +77,9 @@ $tActual = is_string($_GET['t'] ?? null) ? $_GET['t'] : (string)array_key_first(
     </div>
 </header>
 <main>
+<?php if ($flash !== null): ?>
+<p class="aviso"><?= esc($flash) ?></p>
+<?php endif; ?>
 <?= $content ?>
 </main>
 </body>

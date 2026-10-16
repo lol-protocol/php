@@ -17,8 +17,81 @@
     "treaties_not_party": "",
     "linked_resources": "https://aelex.com/wp-content/uploads/2023/06/AN-OVERVIEW-OF-THE-COPYRIGHT-ACT-2022.pdf",
     "notes": "Act 2022 (eff. 2023-03-17) repealed Cap C28; NCC gets site-blocking and wider enforcement powers",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14"
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://aelex.com/wp-content/uploads/2023/06/AN-OVERVIEW-OF-THE-COPYRIGHT-ACT-2022.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://www.mondaq.com/nigeria/copyright/1356178/a-review-of-the-nigerian-copyright-act-2022",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://www.lawglobalhub.com/section-52-nigerian-copyright-act-2022/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_body": {
+        "url": "https://www.mondaq.com/nigeria/copyright/1332056/an-overview-of-the-copyright-act-2022",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.mondaq.com/nigeria/copyright/1332056/an-overview-of-the-copyright-act-2022",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Act 2022 (eff. 2023-03-17) repealed Cap C28; NCC gets site-blocking and wider enforcement powers"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "linked_resources",
+        "from": "https://www.ncc.gov.ng/",
+        "to": "https://aelex.com/wp-content/uploads/2023/06/AN-OVERVIEW-OF-THE-COPYRIGHT-ACT-2022.pdf"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Nigerian Copyright Commission",
+        "to": "Nigerian Copyright Commission (NCC)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Nigerian Copyright Act",
+        "to": "Copyright Act 2022"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Anti-circumvention & rights-management rules (Copyright Act 2022 ss. 50-52)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright protection",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

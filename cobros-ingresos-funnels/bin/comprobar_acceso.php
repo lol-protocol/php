@@ -11,8 +11,8 @@ declare(strict_types=1);
  * configurar el servidor, y de cada cambio en su configuracion.
  *
  * Uso:
- *   php database/comprobar_acceso.php https://panel.ejemplo.com
- *   php database/comprobar_acceso.php --ayuda
+ *   php bin/comprobar_acceso.php https://panel.ejemplo.com
+ *   php bin/comprobar_acceso.php --ayuda
  *
  * Termina con 0 si todas las pantallas piden credenciales (401 o 403), con 1 si alguna
  * contesta (el panel esta abierto) y con 2 si no se puede afirmar nada (una redireccion, un
@@ -27,8 +27,8 @@ use App\Acceso\ComprobadorDeAcceso;
 
 const USO = <<<'TEXTO'
 Uso:
-  php database/comprobar_acceso.php https://panel.ejemplo.com
-  php database/comprobar_acceso.php --ayuda
+  php bin/comprobar_acceso.php https://panel.ejemplo.com
+  php bin/comprobar_acceso.php --ayuda
 
 TEXTO;
 

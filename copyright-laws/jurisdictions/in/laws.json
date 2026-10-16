@@ -17,8 +17,19 @@
     "treaties_not_party": "",
     "linked_resources": "https://copyright.gov.in/",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": ""
+    "last_checked": "",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

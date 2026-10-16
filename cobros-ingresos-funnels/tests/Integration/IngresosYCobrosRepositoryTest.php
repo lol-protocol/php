@@ -12,7 +12,7 @@ use App\Repositories\NotaCreditoRepository;
 
 /**
  * Corre contra la base configurada por las env vars DB_*. Requiere haber
- * corrido antes `php database/recrear_con_datos_de_ejemplo.php` (mismas variables) para tener datos.
+ * corrido antes `php bin/recrear_con_datos_de_ejemplo.php` (mismas variables) para tener datos.
  */
 final class IngresosYCobrosRepositoryTest extends IntegracionTestCase
 {

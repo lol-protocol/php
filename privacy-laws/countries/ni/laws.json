@@ -13,15 +13,49 @@
     "data_categories": "Personal data; sensitive data",
     "retention_period": "Not specified",
     "enforcement_authority": "Dirección de Protección de Datos Personales (DIPRODAP), not yet operational",
-    "penalties_range": "Not specified",
-    "exemptions": "Not specified",
+    "penalties_range": "Art. 46: sanctions are warning, temporary suspension of operations, temporary/permanent closure or cancellation of files; law sets no fixed fine amounts",
+    "exemptions": "Per secondary summary: personal use for private activities; State security/defence agencies handling data for national security (articles not confirmed) (unconfirmed)",
     "website_url": "https://nicaragua.justia.com/nacionales/leyes/ley-de-proteccion-de-datos-personales-mar-29-2012/gdoc",
     "language": "Spanish",
     "frameworks": "",
     "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
     "notes": "Regulation Decree 36-2012 (published 2012-10-19); DIPRODAP reported non-operational",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
-    "confidence": "",
-    "last_checked": "2026-10-08"
+    "confidence": "medium",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://nicaragua.justia.com/nacionales/leyes/ley-de-proteccion-de-datos-personales-mar-29-2012/gdoc",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "exemptions": {
+        "url": "https://www.clym.io/regulations/law-no-787-on-personal-data-protection-nicaragua",
+        "confidence": "low",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "exemptions",
+        "from": "Not specified",
+        "to": "Per secondary summary: personal use for private activities; State security/defence agencies handling data for national security (articles not confirmed) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "penalties_range",
+        "from": "Not specified",
+        "to": "Art. 46: sanctions are warning, temporary suspension of operations, temporary/permanent closure or cancellation of files; law sets no fixed fine amounts"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity (perpetual)",
-    "orphan_works": "Not specified",
+    "orphan_works": "No orphan works provision (per EIFL); s.23: publisher named on anonymous/pseudonymous work presumed to represent the author",
     "digital_protection": "TPM circumvention & removal/alteration of rights-management information prohibited (ch. XV)",
     "fair_use_exceptions": "Statutory limitations & exceptions",
     "registration_required": "No (voluntary registration available)",
@@ -17,8 +17,48 @@
     "treaties_not_party": "Berne",
     "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/22939",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "orphan_works": {
+        "url": "https://www.eifl.net/news/new-era-copyright-myanmar",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "digital_protection": {
+        "url": "https://www.tilleke.com/insights/myanmar-enacts-copyright-law",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "No orphan works provision (per EIFL); s.23: publisher named on anonymous/pseudonymous work presumed to represent the author"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "TPM circumvention & removal/alteration of rights-management information prohibited (ch. XV)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

@@ -10,15 +10,55 @@
     "moral_rights": "Paternity & integrity (same term as economic rights)",
     "orphan_works": "Not specified",
     "digital_protection": "Anti-circumvention, TPM & rights-management info rules (Part VI, ss. 37-39)",
-    "fair_use_exceptions": "Not specified",
+    "fair_use_exceptions": "Part IV: s.16 private copy, quotation, s.19 teaching/research, s.20 libraries/archives, s.23 visually impaired/print-disabled",
     "registration_required": "No",
     "enforcement_body": "Ministry of Arts and Culture (with the Attorney General's Office)",
     "treaties_signatory": "Berne/TRIPS",
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/en/text/539950",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/mu/mu024en.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.mauritiustrade.mu/ressources/pdf/Copyright_Act_2014-1.pdf",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Part IV: s.16 private copy, quotation, s.19 teaching/research, s.20 libraries/archives, s.23 visually impaired/print-disabled"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Anti-circumvention, TPM & rights-management info rules (Part VI, ss. 37-39)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]
