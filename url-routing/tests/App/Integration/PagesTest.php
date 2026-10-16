@@ -55,7 +55,8 @@ class PagesTest extends TestCase
         string $postBody = '',
         ?string $sessionId = null,
         ?string $tokenConfigurado = null,
-        ?string $autorizacion = null
+        ?string $autorizacion = null,
+        array $entorno = []
     ): array {
         $cmd = [PHP_BINARY, '-d', 'display_errors=stderr', dirname(__DIR__, 2) . '/Support/request.php',
             $host, $uri, $method, $postBody, $sessionId ?? '', $autorizacion ?? ''];
@@ -65,7 +66,7 @@ class PagesTest extends TestCase
             'DB_DSN_POS' => 'sqlite:' . self::$dir . '/pos.sqlite',
             'LOG_FILE' => self::$dir . '/app.log',
             'PATH' => (string)getenv('PATH'),
-        ];
+        ] + $entorno;
         if ($tokenConfigurado !== null) {
             $env['OWNER_TOKEN'] = $tokenConfigurado;
         }
@@ -182,6 +183,37 @@ class PagesTest extends TestCase
         [$codigo] = $this->get($host, $uri);
 
         $this->assertSame($status, $codigo);
+    }
+
+    /** The brand comes from .env, not from the view: the genealogy header and title follow SITE_NAME_GENEALOGY. */
+    public function testTheGenealogyHeaderShowsTheConfiguredBrand(): void
+    {
+        [, $body] = $this->get(self::GENEALOGIA, '/', entorno: ['SITE_NAME_GENEALOGY' => 'conce.com']);
+
+        $this->assertStringContainsString('<a class="marca" href="/">conce.com</a>', $body);
+        $this->assertStringContainsString(' · conce.com</title>', $body);
+    }
+
+    /** Nothing configured (or blank) leaves the plain name of the site; the POS keeps its own name either way. */
+    public function testTheGenealogyHeaderFallsBackWhenNoBrandIsConfigured(): void
+    {
+        foreach ([[], ['SITE_NAME_GENEALOGY' => '  ']] as $entorno) {
+            [, $body] = $this->get(self::GENEALOGIA, '/', entorno: $entorno);
+            $this->assertStringContainsString('<a class="marca" href="/">Genealogía</a>', $body);
+        }
+
+        [, $body] = $this->get(self::POS, '/', entorno: ['SITE_NAME_GENEALOGY' => 'conce.com']);
+        $this->assertStringContainsString('<a class="marca" href="/">Contrastocolor</a>', $body);
+        $this->assertStringNotContainsString('conce.com', $body);
+    }
+
+    /** The brand is text a deployer types: it must come out escaped. */
+    public function testTheConfiguredBrandIsEscaped(): void
+    {
+        [, $body] = $this->get(self::GENEALOGIA, '/', entorno: ['SITE_NAME_GENEALOGY' => '<b>x</b> & "y"']);
+
+        $this->assertStringContainsString('&lt;b&gt;x&lt;/b&gt; &amp; &quot;y&quot;', $body);
+        $this->assertStringNotContainsString('<b>x</b>', $body);
     }
 
     public function testSearchTreatsPercentLiterally(): void
