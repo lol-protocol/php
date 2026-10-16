@@ -2,6 +2,15 @@
 
 ## [Sin publicar]
 
+### Añadido
+
+- **Religión, origen étnico y opinión política de alguien** (español e inglés):
+  «la familia era judía», «Fulano es mapuche», «su abuelo era de origen árabe»,
+  «Fulano es comunista», «he's a republican» van a revisión. Son datos sensibles
+  aunque sean ciertos; en genealogía son frecuentes, por eso no se bloquean.
+  «el vino es negro», «la iglesia evangélica de Concepción» o «el partido
+  comunista» se siguen aprobando. `SensitiveDataPatternsTest`.
+
 ## [5.0.0] - 2026-10-15
 
 Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»).

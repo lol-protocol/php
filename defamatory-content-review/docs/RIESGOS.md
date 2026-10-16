@@ -42,6 +42,7 @@ que hacer la plataforma por fuera del código. El porqué está en
 | «p⃝u⃝t⃝a⃝», «putɑ», «idiօta», «ᏢUTA», «pu+a» | se detectan (`MarkEvasionTest`) |
 | «los Pérez son unos ladrones», «tiene antecedentes penales», «está en DICOM», «tiene cáncer», «se acuesta con su secretaria» | `review` (`SensitiveDataPatternsTest`) |
 | El texto de un marcalibro («Fulano es un estafador») se publicaba por enlace sin revisar | no se guarda (`LabelPolicyTest` en Marcalibros) |
+| «la familia era judía», «Fulano es mapuche», «Fulano es comunista» (religión, origen étnico, opinión política) | `review` (`SensitiveDataPatternsTest`) |
 | «careverga», «conchatumadre», «mamaguevo», «comemierda», «eres un gonorrea» | marcados; «el forro del abrigo» y «la gonorrea es una infección» se aprueban |
 
 ## Flancos abiertos
@@ -66,7 +67,7 @@ siguiente es lo que los cubre.
   («los putos deberes») y espera la revisión nativa de `review/urgente/spa-genero.csv`.
 - **Falsos positivos**: «la película trata de un ladrón de bancos» va a revisión
   y «un asesino de la época» se bloquea. Es el precio de no dejar pasar las acusaciones.
-  En genealogía, «fue adoptada» o «se suicidó en 1920» también irán a revisión:
+  En genealogía, «fue adoptada», «se suicidó en 1920» o «la familia era judía» también irán a revisión:
   son datos sensibles de una familia, y quien revisa decide si se publican.
 
 ## Lo que tiene que hacer la plataforma (fuera del código)

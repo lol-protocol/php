@@ -37,6 +37,12 @@ class SensitiveDataPatternsTest extends TestCase
             'moroso' => ['spa', 'Fulano no paga la pensión', 'vida privada (deudas)'],
             'a whole family' => ['eng', 'the Smiths are all crooks', 'accusation of a crime'],
             'abortion' => ['eng', 'she had an abortion', 'sensitive data (health)'],
+            'religión' => ['spa', 'la familia era judía', 'dato sensible (religión)'],
+            'origen étnico' => ['spa', 'Fulano es mapuche', 'dato sensible (origen étnico)'],
+            'de origen' => ['spa', 'su abuelo era de origen árabe', 'dato sensible (origen étnico)'],
+            'opinión política' => ['spa', 'Fulano es comunista', 'dato sensible (opinión política)'],
+            'religion' => ['eng', 'he is jewish', 'sensitive data (religion)'],
+            'politics' => ['eng', "he's a republican", 'sensitive data (political opinion)'],
             'orientation' => ['eng', "he's gay", 'sensitive data (sexual orientation)'],
             'parentage' => ['eng', "he isn't her real father", 'private life (parentage)'],
             'suicide' => ['eng', 'he killed himself', 'sensitive data (suicide)'],
@@ -66,6 +72,11 @@ class SensitiveDataPatternsTest extends TestCase
             'aborto como tema' => ['spa', 'el aborto es un tema difícil'],
             'acostarse' => ['spa', 'se acuesta temprano'],
             'died of' => ['eng', 'he died of cancer'],
+            'color' => ['spa', 'el vino es negro'],
+            'comida' => ['spa', 'me gusta la comida árabe'],
+            'iglesia' => ['spa', 'la iglesia evangélica de Concepción'],
+            'partido' => ['spa', 'el partido comunista'],
+            'community' => ['eng', 'the Jewish community center'],
         ];
     }
 
