@@ -77,6 +77,7 @@ function sourceLink(url, lawName) {
 const LIST_CRITERIA = { frameworks: frameworkName, frameworks_not: frameworkName };
 
 const sourceLabel = (status) => t(`source.${status}`);
+const flagLabel = (flag) => t(`flag.${flag}`);
 /** "Web research (secondary sources) · medium confidence · checked 8 Oct 2026" */
 function sourceDetail(row) {
   const parts = [sourceLabel(row.data_status)];
@@ -84,6 +85,14 @@ function sourceDetail(row) {
   if (row.last_checked) parts.push(t("card.checked", { date: formatDate(row.last_checked) }));
   if (isReviewDue(row.last_checked, TODAY)) parts.push(t("card.reviewDue"));
   return parts.join(" · ");
+}
+function completenessText(row) {
+  return t("card.completenessValue", {
+    filled: row.fieldsFilled,
+    total: row.fieldsTotal,
+    percent: Math.round((100 * row.fieldsFilled) / row.fieldsTotal),
+    sourced: row.fieldsSourced,
+  });
 }
 // Laws can be enacted with an effective date still ahead (ISO dates compare as strings).
 const TODAY = new Date().toISOString().slice(0, 10);
@@ -125,24 +134,43 @@ function pendingHtml(row) {
   )}: ${esc(row.pending_change)}${when ? ` <span class="nowrap">(${esc(when)})</span>` : ""}</p>`;
 }
 
+/** One recorded change as a list item; `who` prefixes it with the law it belongs to (the recent-changes list). */
+function changeItem(change, who = "") {
+  if (change.field === "row") return `<li>${dateHtml(change.date)} · ${who}${esc(t("card.historyAdded"))}</li>`;
+  const isDate = /_date$/.test(change.field);
+  const was = change.from && !NOT_SPECIFIED.test(change.from.trim())
+    ? ` <span class="muted">(${esc(t("card.historyWas", { value: isDate ? formatDate(change.from) : shorten(change.from, 100) }))})</span>`
+    : "";
+  const now = isDate && change.to ? dateHtml(change.to) : valueHtml(shorten(change.to));
+  return `<li>${dateHtml(change.date)} · ${who}<strong>${esc(fieldLabel(change.field))}</strong>: ${now}${was}</li>`;
+}
+
 const HISTORY_SHOWN = 8;
 function historyHtml(row) {
   if (!row.changes.length) return "";
-  const item = (change) => {
-    if (change.field === "row") return `<li>${dateHtml(change.date)} · ${esc(t("card.historyAdded"))}</li>`;
-    const isDate = /_date$/.test(change.field);
-    const was = change.from && !NOT_SPECIFIED.test(change.from.trim())
-      ? ` <span class="muted">(${esc(t("card.historyWas", { value: isDate ? formatDate(change.from) : shorten(change.from, 100) }))})</span>`
-      : "";
-    const now = isDate && change.to ? dateHtml(change.to) : valueHtml(shorten(change.to));
-    return `<li>${dateHtml(change.date)} · <strong>${esc(fieldLabel(change.field))}</strong>: ${now}${was}</li>`;
-  };
   const more = row.changes.length - HISTORY_SHOWN;
   return `
     <h3 class="history-title">${esc(t("card.history"))}</h3>
-    <ul class="history">${row.changes.slice(0, HISTORY_SHOWN).map(item).join("")}${
+    <ul class="history">${row.changes.slice(0, HISTORY_SHOWN).map((change) => changeItem(change)).join("")}${
       more > 0 ? `<li class="muted">${esc(plural("card.historyMore", more))}</li>` : ""
     }</ul>`;
+}
+
+const NEWS_SHOWN = 15;
+/** The latest recorded changes across the laws currently listed, newest first. */
+function renderNews() {
+  const section = $("newsSection");
+  const entries = app.results
+    .flatMap((row) => row.changes.map((change) => ({ row, change })))
+    .sort((a, b) => (a.change.date < b.change.date ? 1 : a.change.date > b.change.date ? -1 : 0));
+  section.hidden = entries.length === 0;
+  if (!entries.length) return;
+  const who = ({ row }) =>
+    `<button type="button" class="link-button" data-news-country="${esc(row.tld)}" title="${esc(t("table.onlyCountry", { name: row.country_name }))}">${esc(row.country_name)}</button> — ${esc(row.law_name)}: `;
+  const more = entries.length - NEWS_SHOWN;
+  $("newsList").innerHTML =
+    entries.slice(0, NEWS_SHOWN).map((entry) => changeItem(entry.change, who(entry))).join("") +
+    (more > 0 ? `<li class="muted">${esc(plural("news.more", more))}</li>` : "");
 }
 
 function lawDetailsHtml(row, open) {
@@ -218,6 +246,7 @@ function renderFacets() {
     ${checkboxFacet("region", "filters.region", app.options.region, regionLabel)}
     ${frameworks}
     ${checkboxFacet("source", "filters.source", app.options.source, sourceLabel, { hintKey: "filters.sourceHint" })}
+    ${app.options.flag.length ? checkboxFacet("flag", "filters.flag", app.options.flag, flagLabel, { hintKey: "filters.flagHint" }) : ""}
     <fieldset class="facet">
       <legend>${esc(t("filters.year"))}</legend>
       <div class="range-inputs">
@@ -256,7 +285,7 @@ function renderStatic() {
 /* ---------- Dynamic parts (re-rendered on every state change) ---------- */
 
 function syncFacetControls() {
-  const { region, framework, source, year, language } = app.state.facets;
+  const { region, framework, source, flag, year, language } = app.state.facets;
   const facets = $("facets");
   for (const input of facets.querySelectorAll('input[name="region"]')) {
     input.checked = region.includes(input.value);
@@ -266,6 +295,9 @@ function syncFacetControls() {
   }
   for (const input of facets.querySelectorAll('input[name="source"]')) {
     input.checked = source.includes(input.value);
+  }
+  for (const input of facets.querySelectorAll('input[name="flag"]')) {
+    input.checked = flag.includes(input.value);
   }
   facets.querySelector('[name="year-from"]').value = year.from ?? "";
   facets.querySelector('[name="year-to"]').value = year.to ?? "";
@@ -283,6 +315,8 @@ function chipLabel(chip) {
       return t("chip.framework", { value: chip.value });
     case "source":
       return t("chip.source", { value: sourceLabel(chip.value) });
+    case "flag":
+      return t("chip.flag", { value: flagLabel(chip.value) });
     case "year":
       return t("chip.year", { value: formatRange(app.state.facets.year) });
     default:
@@ -423,6 +457,7 @@ function renderCountryCard() {
       <div><dt>${esc(t("card.unconfirmed"))}</dt><dd>${unconfirmed.length ? esc(unconfirmed.join(", ")) : "—"}</dd></div>
       <div><dt>${esc(t("card.folder"))}</dt><dd><code>countries/${esc(country.tld)}/</code></dd></div>
       <div><dt>${esc(t("card.source"))}</dt><dd>${laws.map((row) => esc(sourceDetail(row))).join("<br>")}</dd></div>
+      <div><dt>${esc(t("card.completeness"))}</dt><dd>${laws.map((row) => esc(completenessText(row))).join("<br>")}</dd></div>
       <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
     </dl>
     ${notes.length ? `<p class="card-notes"><strong>${esc(t("card.notes"))}:</strong> ${esc(notes.join(" · "))}</p>` : ""}
@@ -462,7 +497,7 @@ function renderComparison() {
         ? `<span class="badge-list">${items.map((v) => `<span class="badge${criterion.endsWith("_not") || criterion.endsWith("not_party") ? " badge-outline" : ""}" title="${esc(LIST_CRITERIA[criterion](v))}">${esc(v)}</span>`).join("")}</span>`
         : valueHtml("");
     }
-    return /_date$/.test(criterion) && value ? dateHtml(value) : valueHtml(value);
+    return (/_date$/.test(criterion) && value ? dateHtml(value) : valueHtml(value)) + fieldSourceHtml(row.sources[criterion]);
   };
   let differing = 0;
   const body = COMPARE_CRITERIA.map((criterion) => {
@@ -508,6 +543,7 @@ function update() {
   renderChart();
   renderTable();
   renderCountryCard();
+  renderNews();
   renderCompareButton();
   renderComparison();
   writeUrl();
@@ -527,8 +563,22 @@ function handleCompare() {
   section.scrollIntoView({ block: "start", behavior: scrollBehavior() });
 }
 
+/** One cell per law: where each value comes from, and what changed when. */
+function exportExtras(row) {
+  const sources = Object.entries(row.sources)
+    .map(([field, source]) => `${field}: ${source.url}${source.checked ? ` (${source.checked})` : ""}`)
+    .join(" | ");
+  const history = row.changes
+    .map((change) => (change.field === "row" ? `${change.date} ${change.to}` : `${change.date} ${change.field}: ${change.from || "(empty)"} -> ${change.to}`))
+    .join(" | ");
+  return { field_sources: sources, change_history: history };
+}
+
 function handleExport() {
-  const csv = `﻿${toCsv(app.data.meta.columns, app.results)}`;
+  const extra = $("exportExtra").checked;
+  const columns = extra ? [...app.data.meta.columns, "field_sources", "change_history"] : app.data.meta.columns;
+  const rows = extra ? app.results.map((row) => ({ ...row, ...exportExtras(row) })) : app.results;
+  const csv = `﻿${toCsv(columns, rows)}`;
   const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
   const link = document.createElement("a");
   link.href = url;
@@ -562,7 +612,7 @@ function bindEvents() {
   $("facets").addEventListener("change", (event) => {
     const { name, value } = event.target;
     const { facets } = app.state;
-    if (name === "region" || name === "framework" || name === "source") {
+    if (name === "region" || name === "framework" || name === "source" || name === "flag") {
       facets[name] = [...$("facets").querySelectorAll(`input[name="${name}"]:checked`)].map((i) => i.value);
     } else if (name === "year-from" || name === "year-to") {
       let from = readYear("year-from");
@@ -615,6 +665,14 @@ function bindEvents() {
     app.state.country = button.dataset.country;
     update();
     // The button that was clicked is re-rendered, so move focus to the card it opened.
+    $("countryCard").focus({ preventScroll: true });
+    $("countryCard").scrollIntoView({ block: "start", behavior: scrollBehavior() });
+  });
+  $("newsList").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-news-country]");
+    if (!button) return;
+    app.state.country = button.dataset.newsCountry;
+    update();
     $("countryCard").focus({ preventScroll: true });
     $("countryCard").scrollIntoView({ block: "start", behavior: scrollBehavior() });
   });
