@@ -1,0 +1,72 @@
+[
+  {
+    "country_code": "GM",
+    "country_name": "Gambia",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Act, 2004 (Act No. 10 of 2004)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Commons cites s. 21(1); section number conflicts with WIPO table of contents, unverified); applied art 25 years; audiovisual, sound recordings, photographs 50 years",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Moral rights recognized (right of authorship; waivable only in writing; articles unconfirmed) (unconfirmed)",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "UNKNOWN (Act s. 79 provides a Collecting Society of The Gambia; no copyright office identified) (unconfirmed)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/9346",
+    "notes": "Berne in force 7 Mar 1993 (WIPO notification 142); WTO since 23 Sep 1996 (Commons). WCT/WPPT absence inferred from a WIPO Lex country listing summary and a Gambian press piece about planned accession; not seen on WCT list. Search budget ran out before exceptions, digital and registration articles were found.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/9346",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/9346",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Gambia.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/9346",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "moral_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/9346",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://www.musicinafrica.net/node/13993",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

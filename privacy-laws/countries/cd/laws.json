@@ -1,0 +1,114 @@
+[
+  {
+    "country_code": "CD",
+    "country_name": "DR Congo",
+    "region": "middle_east_africa",
+    "law_name": "Digital Code (Ordonnance-Loi No. 23/010 of 13 March 2023), Title III on personal data protection",
+    "jurisdiction": "Data Protection Authority (APD) - functions temporarily held by ARPTIC",
+    "enactment_date": "2023-03-13",
+    "effective_date": "2023-03-13",
+    "scope": "Data subjects in the DRC (unconfirmed)",
+    "applies_to": "Controllers and processors of personal data in the DRC (unconfirmed)",
+    "key_requirements": "Prior declaration or authorisation for processing (authorisation for sensitive/genetic data and third-country transfers); data subject rights incl. erasure; prohibition in principle of processing data on racial or ethnic origin and political opinions",
+    "data_categories": "Personal data (art. 183: identification, contact, professional, billing and bank data, family circumstances, court decisions); biometric data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Data Protection Authority (APD); temporarily Autorite de regulation de la poste et des telecommunications / numerique (ARPTIC) by Ministerial Decree of 17 August 2024",
+    "penalties_range": "Fines of CDF 8,000,000 to CDF 200,000,000",
+    "exemptions": "Public security, defence, criminal investigations and sanctions enforcement (unconfirmed)",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "Processing requires prior authorisation of the authority (DLA Piper)",
+    "website_url": "https://www.dlapiperdataprotection.com/?c=CD&t=law",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Law embedded in the Digital Code, not a standalone act; APD not formally created and implementing decrees largely missing; DRC ratified the Malabo Convention in 2023",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dlapiperdataprotection.com/?c=CD&t=law",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://law.ungovr.org/ai/cd",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.consentstack.io/regulations/cd-digital-code",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.consentstack.io/regulations/cd-digital-code",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.dlapiperdataprotection.com/?c=CD&t=law",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.dlapiperdataprotection.com/?c=CD&t=law",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.dlapiperdataprotection.com/?c=CD&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.consentstack.io/regulations/cd-digital-code",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://law.ungovr.org/ai/cd",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.consentstack.io/regulations/cd-digital-code",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://www.offlist.me/what-is-drc-digital-code-2023",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=CD&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

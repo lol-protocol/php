@@ -2,20 +2,64 @@
   {
     "country_code": "NL",
     "country_name": "Netherlands",
-    "law_name": "GDPR Implementation Law",
+    "region": "europe",
+    "law_name": "GDPR Implementation Act (Uitvoeringswet AVG, UAVG)",
     "jurisdiction": "Dutch DPA (AP)",
-    "enactment_date": "2018-05-25",
+    "enactment_date": "2018-05-16",
     "effective_date": "2018-05-25",
     "scope": "Dutch Residents",
     "applies_to": "All entities",
-    "key_requirements": "GDPR compliance",
+    "key_requirements": "GDPR applies: lawful basis, data subject rights, breach notification",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
     "enforcement_authority": "Dutch Authority for Data Protection",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.ap.nl/",
     "language": "Dutch",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "UAVG amended by Verzamelwet gegevensbescherming 2026; AP must publish fines; in force TBD",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "notes": {
+        "url": "https://zoek.officielebekendmakingen.nl/stb-2026-154.odt",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR implementation",
+        "to": "UAVG amended by Verzamelwet gegevensbescherming 2026; AP must publish fines; in force TBD"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2018-05-16"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "GDPR Implementation Law",
+        "to": "GDPR Implementation Act (Uitvoeringswet AVG, UAVG)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

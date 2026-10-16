@@ -76,12 +76,7 @@ final class ModerationEndpoint
             'censor' => $result->shouldCensor(),
             'contentTypes' => $result->getContentTypes(),
             'censored' => $result->censored(),
-            'matches' => array_map(fn(array $match): array => [
-                'found' => $match['found'],
-                'term' => $match['original'],
-                'contentType' => $match['contentType'],
-                'severity' => $match['severity'],
-            ], $result->getMatches()),
+            'matches' => Findings::of($result->getMatches()),
         ];
     }
 

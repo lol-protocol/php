@@ -1,0 +1,71 @@
+[
+  {
+    "country_code": "AM",
+    "country_name": "Armenia",
+    "region": "europe",
+    "law_name": "Law on Copyright and Related Rights (Law HO-142-N of 15 June 2006, as amended to 2013)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous and collective works: from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Authorship, name & integrity (inalienable; right of withdrawal ends at death)",
+    "orphan_works": "No orphan works provision in 2006 law; EU project lists orphan works as a gap for a new draft law",
+    "digital_protection": "Art. 67 bans circumvention of technological measures and trafficking in tools; art. 68 protects electronic rights-management information",
+    "fair_use_exceptions": "Closed list of free uses with attribution (art. 22): quotation, criticism, education, research",
+    "registration_required": "No",
+    "enforcement_body": "Intellectual Property Office of Armenia",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/15942",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "orphan_works": {
+        "url": "https://internationalipcooperation.eu/en/node/1945",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)",
+        "to": "Art. 67 bans circumvention of technological measures and trafficking in tools; art. 68 protects electronic rights-management information"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "No orphan works provision in 2006 law; EU project lists orphan works as a gap for a new draft law"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of free uses with attribution (art. 22): quotation, criticism, education, research"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/WCT/WPPT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -2,20 +2,63 @@
   {
     "country_code": "IE",
     "country_name": "Ireland",
+    "region": "europe",
     "law_name": "Data Protection Act",
     "jurisdiction": "Data Protection Commission",
-    "enactment_date": "2018-05-25",
+    "enactment_date": "2018-05-24",
     "effective_date": "2018-05-25",
     "scope": "Irish Residents",
     "applies_to": "All entities",
-    "key_requirements": "GDPR compliance",
+    "key_requirements": "GDPR applies: lawful basis, data subject rights, breach notification",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "Irish DPC",
+    "enforcement_authority": "Data Protection Commission (DPC)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.dataprotection.ie/",
     "language": "English",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enactment_date": {
+        "url": "https://community.isc2.org/t5/GDPR/New-Irish-Data-Protection-Act-introduced/m-p/10886",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2018-05-24"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Irish DPC",
+        "to": "Data Protection Commission (DPC)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

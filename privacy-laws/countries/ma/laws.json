@@ -1,0 +1,64 @@
+[
+  {
+    "country_code": "MA",
+    "country_name": "Morocco",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 09-08 on the Protection of Individuals with regard to the Processing of Personal Data (Law 09-08)",
+    "jurisdiction": "National Commission for the Control of Personal Data Protection (CNDP)",
+    "enactment_date": "2009-02-18",
+    "effective_date": "2009-03-05",
+    "scope": "Individuals in Morocco",
+    "applies_to": "Controllers established in Morocco or using means in Morocco",
+    "key_requirements": "Prior declaration or CNDP authorization, consent, data subject rights, authorization for transfers to non-adequate countries",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Art. 3: data kept in identifiable form for no longer than necessary for the purposes for which collected and processed (limited retention principle)",
+    "enforcement_authority": "National Commission for the Control of Personal Data Protection (CNDP)",
+    "penalties_range": "Up to MAD 300,000 and/or up to 2 years imprisonment (criminal); CNDP warnings, notices, authorisation withdrawal",
+    "exemptions": "Personal or household use; national security & defense; crime prevention; journalistic/literary/artistic activities",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://cms.law/fr/mar/legal-updates/flash-info-maroc-etat-des-lieux-de-la-protection-des-donnees-a-caractere-personnel-au-maroc-loi-n-09-08",
+    "language": "French",
+    "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
+    "notes": "Dahir 1-09-15 of 18 Feb 2009; Bulletin Officiel 5714 of 5 Mar 2009; Decree 2-09-165 implements it",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "retention_period": {
+        "url": "https://rm.coe.int/16806fdcba",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "penalties_range": {
+        "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/morocco",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 3: data kept in identifiable form for no longer than necessary for the purposes for which collected and processed (limited retention principle)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Not specified",
+        "to": "Up to MAD 300,000 and/or up to 2 years imprisonment (criminal); CNDP warnings, notices, authorisation withdrawal"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

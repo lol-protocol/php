@@ -19,7 +19,8 @@ Varias sesiones trabajan a la vez, y ya pasó que dos hicieron lo mismo o que do
 ## Cómo se parte el trabajo
 
 - **Un PR por carpeta de proyecto.** Si un cambio cruza carpetas, sepáralo.
-- **Los archivos compartidos son los que más chocan:** `README.md` de la raíz (la tabla de proyectos), `.github/workflows/tests.yml`, `.gitignore` y el `composer.json` de la raíz. Cámbialos en un PR chico y aparte, para que se fusione rápido.
+- **Los archivos compartidos son los que más chocan:** `README.md` de la raíz (la tabla de proyectos), `.gitignore` y el `composer.json` de la raíz. Cámbialos en un PR chico y aparte, para que se fusione rápido.
+- **Cada proyecto con pruebas tiene su propio workflow** (`.github/workflows/pruebas-<proyecto>.yml`, con filtro de rutas): cámbialo en el PR del proyecto, no en uno aparte. Un proyecto nuevo con pruebas trae el suyo en vez de agregar jobs al de otro.
 - **Abre los PR en borrador, y no los fusiones por tu cuenta:** fusionar lo decide la persona.
 - **Si ya hay un PR que hace lo mismo,** no abras otro en paralelo: aporta ahí, o cierra el tuyo diciendo por qué.
 - **Migraciones numeradas** (`cobros-ingresos-funnels/database/migraciones/NNN_*.sql`): antes de crear una, mira el último número en `master` y en los PR y ramas abiertos.
@@ -38,13 +39,14 @@ Desde la carpeta de cada proyecto, salvo donde diga «desde la raíz» (el detal
 |---|---|
 | `defamatory-content-review/` | `composer install && ./vendor/bin/phpunit` (la CI corre además `phpstan analyse` y `php bin/benchmark.php 2000`) |
 | `phone-directory/` | `composer install && ./vendor/bin/phpunit` (depende de `../defamatory-content-review`; la CI corre además los puertos de `ports/python` y `ports/java`) |
-| `cobros-ingresos-funnels/` | con PostgreSQL y `export APP_ENV=dev`: `composer install && php database/recrear_con_datos_de_ejemplo.php` (borra la base y la rearma con las migraciones y datos de ejemplo), luego `./vendor/bin/phpunit` (la CI corre además PHPStan) |
+| `cobros-ingresos-funnels/` | con PostgreSQL y `export APP_ENV=dev`: `composer install && php bin/recrear_con_datos_de_ejemplo.php` (borra la base y la rearma con las migraciones y datos de ejemplo), luego `./vendor/bin/phpunit` (la CI corre además PHPStan) |
 | `sistema-nuevo/` | `php pruebas/ejecutar-php.php` y `./pruebas/ejecutar-js.sh`; con PostgreSQL, `php datos/generar-datos-semilla.php && php pruebas/ejecutar-integracion.php`; el e2e (`./pruebas/ejecutar-e2e.sh`) necesita los servicios de `ejecutar.sh` |
 | `url-routing/` | `composer install && ./vendor/bin/phpunit` (la CI lo corre también contra PostgreSQL) |
 | `document-formats/` | `node --test 'tests/*.test.js'` (la CI además importa a MySQL) |
 | `web-animations/` | `npm ci && npm test` (necesita el Chromium de Playwright) |
 | `iconos-genealogia/`, `iconos-biblioteca/` | desde la raíz: `python3 iconos-tools/validate.py`, y `python3 iconos-tools/build.py` no debe dejar cambios en git |
 | `vps-setup/` | desde la raíz: `shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh` y `bats vps-setup/tests` |
+| `Listado-colores/` | `python3 generar-tabla.py --comprobar` (valida `colores.csv`, `significados-idiomas.csv` y `nombres-completos.csv`, y que el README, `colores-por-idioma.md` y `por-idioma/` estén al día) |
 
 El resto de proyectos (`privacy-laws/`, `copyright-laws/`, `marketing/`, `marcalibros-plataforma-pos-brand-identity/`, `psychology-and-marketing/`, `landing-page/`): mira su README y los jobs de `.github/workflows/`.
 
@@ -53,4 +55,4 @@ El resto de proyectos (`privacy-laws/`, `copyright-laws/`, `marketing/`, `marcal
 - PostgreSQL no arranca solo: `service postgresql start`. Cada proyecto espera sus propios roles y bases (están en su README).
 - Composer no logra bajar algunos paquetes desde GitHub (por ejemplo PHPStan). No insistas: el análisis estático lo corre la CI.
 - No hay una CLI `gh` completa: `gh api <ruta REST>` funciona, y las herramientas de GitHub de la sesión cubren PR y comentarios.
-- `.github/workflows/tests.yml` no filtra por rutas: un PR que toca una sola carpeta igual dispara los jobs de todas las demás (entre 30 y 45 checks). Los workflows propios de cobros, sistema-nuevo, marcalibros, iconos y vps-setup sí filtran por carpeta. Espera a que terminen todos antes de decir que la CI está en verde.
+- Cada workflow solo corre si cambia la carpeta de su proyecto, o la de otro que ese proyecto usa: `phone-directory/` y `marcalibros-plataforma-pos-brand-identity/` también corren si cambia `defamatory-content-review/`. Un PR de una sola carpeta dispara pocos checks; `estructura.yml` corre siempre, y `marketing/`, `landing-page/` y `psychology-and-marketing/` no tienen más. Espera a que terminen todos antes de decir que la CI está en verde.

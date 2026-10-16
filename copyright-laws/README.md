@@ -1,119 +1,147 @@
 # Copyright Laws by Jurisdiction
 
-A database and small web tool for looking up copyright legislation by jurisdiction. Meant as a starting point for digital libraries, text repositories and PDF documentation projects.
+A database and search tool for copyright legislation, built for digital libraries, text repositories and PDF documentation projects. It lists, per jurisdiction, the main copyright law, the term of protection, author and moral rights, orphan-works and fair-use rules, treaty membership and a link to the official reference.
 
 > **Informational only, not legal advice.** The data was compiled without review by a lawyer. Copyright terms and exceptions change, and some entries may be incomplete or out of date. Before relying on any row, check it against the official source (see the `linked_resources` column and the body named in `enforcement_body`).
 
-## Overview
+> The data is a curated starting point (147 laws, 147 jurisdictions). Terms are summaries: check the official source before relying on any entry. The 73 jurisdictions added in October 2026 and 24 more added on 16 October (see [docs/research-2026-10/new-rows-2026-10-16.md](docs/research-2026-10/new-rows-2026-10-16.md), which also lists the places still to research) were compiled from secondary sources through web search (see [Data provenance](#data-provenance)).
 
-- **50 laws, one per jurisdiction** (the European Union counts as one).
-- **Search** by country name or code, filtered by region.
-- **Comparison** of selected laws side by side.
-- **Timeline** of when the laws were enacted and how long protection lasts.
-- **Treaty membership** per jurisdiction (Berne, TRIPS, WCT).
-- **Interface in 5 languages** (English, Spanish, French, German, Portuguese). The data itself is in English.
-- **JSON API** (`api.php`, see `API.md`) and a **MySQL schema** with an importer.
+## What it does
 
-The numbers above are checked by `npm test` against `jurisdictions/copyright_laws_master.csv`, so they cannot drift from the data unnoticed.
+- **Search** across every field, or only names / rights and exceptions / enforcement body. Accent- and case-insensitive; `"quoted phrases"`; short codes such as `US` or `BR` match whole words only.
+- **Advanced filters** that combine with the search: region (multi-select), **treaties** (Berne, TRIPS, WCT, WPPT — a jurisdiction must be party to *all* the ones you tick), **protection term** (life + 30 … 100 years; the options come from the data) and protection type (appears automatically once the data has more than `Copyright`). Active filters show as removable chips.
+- **Chart** of laws by term of protection (the axis stays put while you filter; also available as a table).
+- **Compare** selected laws side by side, **export** the filtered rows to CSV, and open a **jurisdiction card** (treaty badges, downloads of that jurisdiction's JSON/CSV).
+- **Five interface languages**, handled with three-letter ISO 639-2 codes: `eng`, `spa`, `fra`, `deu`, `por`. Law data itself is shown as published.
+- **Shareable searches**: the whole state lives in the URL.
+- **HTTP API** ([API.md](API.md)), **MySQL schema + importer**, and an optional **text cache** of the reference pages (Markdown/plain text, never HTML).
 
-## Directory Structure
+## Quick start
+
+The app uses ES modules, so it must be served over HTTP (opening `index.html` from disk does not work):
+
+```bash
+php -S localhost:8080            # from the repository root, or from this folder
+# → http://localhost:8080/copyright-laws/app/    (adjust the path if you serve this folder)
+# → http://localhost:8080/copyright-laws/api.php?action=jurisdictions
+```
+
+Any static server works for the web app; PHP is only needed for the API, the importer and the text cache.
+
+## Layout
 
 ```
 copyright-laws/
 ├── jurisdictions/
-│   ├── copyright_laws_master.csv   # Source of truth: one row per law
-│   └── <tld>/                      # One folder per jurisdiction (eu, us, br, ...), generated from the master
-│       ├── info.json
-│       ├── laws.csv
-│       └── laws.json
-├── app/                            # Web interface (ES modules, no build step)
-│   ├── index.html
-│   ├── copyright-laws.js
-│   ├── csv.js                      # CSV reader used by the interface
-│   ├── metadata-display.js
-│   ├── timeline.js
-│   ├── styles/
-│   └── translations/
-├── scripts/
-│   └── reorganize-by-jurisdiction.js   # Regenerates jurisdictions/<tld>/ from the master
-├── tests/                          # npm test
-├── api.php                         # JSON API
-├── API.md
-├── database_schema.sql             # MySQL schema
-├── import_database.php             # CSV -> MySQL importer
-├── package.json
-└── package-lock.json
+│   ├── copyright_laws_master.csv # source of truth (edit this)
+│   ├── field_sources.csv         # where single values come from (url, confidence, date)
+│   ├── changes.csv               # history of changes per row (npm run changes)
+│   ├── index.json                # generated: whole dataset in one file (what the app loads)
+│   └── {tld}/                    # generated: one folder per jurisdiction, 2-letter lowercase code
+│       ├── info.json  laws.json  laws.csv
+│       └── texts/                # optional, generated by cache-texts.php (git-ignored)
+├── CONTRIBUTING.md               # the workflow for editing data (CSV, sources, history)
+├── app/                          # static web app (index.html, copyright-laws.js, lib/, translations/, styles/)
+├── scripts/                      # validate-csv.js, reorganize-by-jurisdiction.js, cache-texts.php, check-links.js, record-changes.js
+├── tests/                        # node:test suite (tests/e2e: browser tests)
+├── api.php  API.md               # read-only HTTP API
+├── database_schema.sql  import_database.php
+└── package.json
 ```
 
-## Quick Start
+Folder names are ISO 3166-1 alpha-2 codes in lowercase (`eu`, `us`, `gb`, `br`…). The United Kingdom is `gb`, not `uk`.
 
-### Option 1: Web interface (no database)
+## Data
 
-The page uses ES modules and `fetch`, so it must be served over HTTP; opening `app/index.html` straight from disk does not work. Serve the **repository root**, so the module lives at `/copyright-laws/` (the interface calls `/copyright-laws/api.php`):
+`jurisdictions/copyright_laws_master.csv` — one row per law. Columns:
+
+`country_code` (ISO alpha-2, upper case) · `country_name` · `region` (`europe`, `americas`, `asia_pacific`, `middle_east_africa`) · `law_name` · `protection_type` (`Copyright`, `Related rights`, `Database rights`, `Moral rights`) · `term_of_protection` (should read like `Author's life + 70 years`; the term filter and chart use the *life + N years* part) · `author_rights` · `moral_rights` · `orphan_works` · `digital_protection` · `fair_use_exceptions` · `registration_required` (`No`, `Yes` or `Not specified`, optionally followed by a note) · `enforcement_body` · `treaties_signatory` (confirmed memberships, `Berne/TRIPS/WCT`; allowed: Berne, TRIPS, WCT, WPPT) · `treaties_not_party` (treaties confirmed **not** joined, same values; a treaty in neither list is "not confirmed") · `linked_resources` (URL) · `notes` (optional caveats: disputed terms, pending amendments) · `pending_change` (a known upcoming change: bill, amendment, entry into force) · `pending_date` (`YYYY-MM-DD` when it is expected, optional) · `data_status` (`curated` original list, `researched` web research from secondary sources, `verified` checked against the official text) · `confidence` (`high`, `medium` or `low`; required unless curated) · `last_checked` (`YYYY-MM-DD`, required unless curated)
+
+Fields that contain a comma **must be quoted** (`"Law No. 9,610/1998"`). The tooling refuses rows with the wrong number of columns instead of guessing.
+
+Russia and Turkey are filed under `europe`; change `region` in the CSV if you prefer otherwise.
+
+### Adding or changing a law
+
+The full workflow, with the rules for sources and history, is in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ```bash
-php -S localhost:8000          # run from the repository root
-# then open http://localhost:8000/copyright-laws/app/index.html
+$EDITOR jurisdictions/copyright_laws_master.csv
+npm run changes       # records what changed since the last commit in changes.csv
+npm run validate      # strict checks: columns, treaties, types, URLs, regions, duplicates…
+npm run build         # regenerates {tld}/ folders and index.json (idempotent)
+npm test              # also fails if generated files are out of date
 ```
 
-Click **Search** to list the laws (with no filters, all 50).
+### Sources per value, change history and upcoming changes
 
-### Option 2: MySQL
+- `jurisdictions/field_sources.csv` (`country_code,law_name,field,url,confidence,checked`): where one value comes from. `law_name` may be empty when the jurisdiction has a single law. The jurisdiction card links each value to its source; the build adds them to every law as `sources`.
+- `jurisdictions/changes.csv` (`date,country_code,law_name,field,old_value,new_value`): what changed in each row and when, rebuilt from the git history of the master CSV and kept up to date by `npm run changes` (compares with `HEAD`, or `--since=<rev>`; a renamed law keeps its history and sources). The card shows the latest entries; the build adds them as `changes` (newest first). Bookkeeping columns (`data_status`, `confidence`, `last_checked`) are not recorded.
+- `pending_change` / `pending_date`: the table marks the row ("Change pending") and the card says what is expected and when. `npm run validate` warns once the date has passed, and warns about rows last checked more than a year ago (the card then says "due for review").
+
+
+## Web app notes
+
+URL parameters: `q` (text), `in` (`all|name|rights|authority`), `region`, `treaty`, `term` (`life-70`…), `ptype` (all comma separated), `country` (folder code), `source` (`verified,researched,curated`), `lang` (`eng|spa|fra|deu|por`).
+The interface language comes from `?lang=`, then the saved choice, then the browser language.
+
+To add a language, add its code to `LANGUAGES` and a full block to `TRANSLATIONS` in `app/translations/i18n.js`; `npm test` fails until every key is translated.
+
+## Text cache (optional)
 
 ```bash
-php import_database.php --all           # run from this folder
+npm run cache:texts -- --dry-run            # list what would be fetched
+npm run cache:texts -- --only=gb,fr         # fetch some jurisdictions (one GET per URL, 1 s apart)
+npm run cache:texts -- --format=txt         # plain text instead of Markdown
 ```
 
-`--all` creates the schema, imports the master CSV and validates the result. **It drops and recreates the `copyright_laws_db` database first**, so do not point it at a database you want to keep. It connects to `localhost` as `root` without a password; change the constructor defaults in `import_database.php` if yours differ. `--create-schema`, `--import` and `--validate` run each step on its own.
+Needs PHP with `curl`, `dom`, `mbstring` and `intl` (the last one keeps file names identical on every machine). For each law it downloads `linked_resources`, keeps only the readable text (no HTML, scripts, menus or footers) and writes `jurisdictions/{tld}/texts/{slug}.md` plus an `index.json` with validators, so re-runs are incremental (`304` or identical text → nothing rewritten). PDFs and pages that need JavaScript are skipped and reported. The folders are git-ignored; remove the two lines in the root `.gitignore` if you want to version them. The API serves them with `action=texts` / `action=text`. It honours `robots.txt` (RFC 9309: our `copyright-laws-text-cache` group, else `*`; `Crawl-delay` up to 30 s; a robots.txt that answers 5xx means the site is not fetched). Safety: only public http(s) hosts are fetched (loopback, private and link-local addresses are refused, redirects included; `--allow-private-hosts` overrides this for tests), a law that leaves the dataset has its cached text removed on the next run, and the data validator rejects local/private hosts in the reference URL.
 
-## Data Files
-
-### Master file: `jurisdictions/copyright_laws_master.csv`
-
-Columns:
-- `country_code`: ISO 3166-1 alpha-2 (`EU` for the European Union)
-- `country_name`: English name
-- `law_name`: Name of the copyright law
-- `protection_type`: Kind of protection (the tests accept Copyright, Related rights, Database rights, Moral rights)
-- `term_of_protection`: Duration (e.g. "Author's life + 70 years")
-- `author_rights`: Economic rights included
-- `moral_rights`: Moral rights protection
-- `orphan_works`: How orphan works are handled
-- `digital_protection`: DMCA/DRM protection level
-- `fair_use_exceptions`: Permitted exceptions / fair dealing
-- `registration_required`: `Yes` or `No`, optionally followed by a note (e.g. `No (but beneficial)`)
-- `enforcement_body`: Enforcement agency
-- `treaties_signatory`: Treaty memberships separated by `/` (Berne, TRIPS, WCT)
-- `linked_resources`: Official documentation link
-
-**Fields that contain a comma must be wrapped in double quotes** (`"Copyright Act (R.S.C., 1985)"`), and a literal quote is written `""`. A row with a different number of fields than the header is an error: `npm test` reports its line, and the tools fail instead of shifting values into the wrong columns.
-
-### Per-jurisdiction files: `jurisdictions/<tld>/`
-
-`info.json`, `laws.csv` and `laws.json` are generated from the master; do not edit them by hand. See below for how to regenerate them.
-
-## Development
-
-Requires Node 22.
+## Database
 
 ```bash
-npm ci
-npm test
+mysql -u root -p < database_schema.sql      # or: php import_database.php --create-schema
+php import_database.php --all               # schema + import + validation
 ```
 
-### Add or change a law
+The importer reads `region` straight from the CSV.
 
-1. Edit `jurisdictions/copyright_laws_master.csv` (mind the quoting rule above).
-2. Regenerate the per-jurisdiction files: `node scripts/reorganize-by-jurisdiction.js`. A new jurisdiction gets a folder named after its lowercase code; the script keeps the existing `createdAt` of folders that already exist, so only the files whose data changed show up in `git status`.
-3. Run `npm test`. It fails if the per-jurisdiction files no longer match the master.
+## Tests
 
-## Known limitations
+`npm test` (Node 22+; PHP-dependent tests are skipped when `php` is missing) covers the data, the filter engine, translations, the API, the text cache and the link checker.
 
-- The **region filter** only knows the region of 19 jurisdictions (the ones listed in `getRegion` in `app/copyright-laws.js` and `regionMap` in the script); the others show up only with "All Regions".
-- The **material filter** (Books, Texts, Compilations, Derivative Works) compares against `protection_type`, which is `Copyright` in every row, so choosing any material returns no results. There is no per-material data yet.
-- Terms such as "Author's life + 70 years" are free text; the timeline only reads the number of years from them.
-- Figures and terms are a snapshot and are not updated automatically.
+```bash
+npx playwright install chromium   # once
+npm run test:e2e                   # the app in Chromium: filters, URL state, export, focus, languages, axe-core in light/dark and desktop/mobile
+npm run check:links                # does every reference URL still answer? (--only=us,br, --json=report.json)
+```
+
+The browser tests skip themselves when PHP, Playwright or Chromium is missing; set `E2E_REQUIRED=1` to make that an error. `check:links` exits with 1 on broken links (404/410/5xx/DNS/timeouts); 401/403/429 are only warnings because many official sites block automated requests.
+
+CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm test` on PHP 8.1 and 8.4, and the browser tests, on every push that touches either module. `.github/workflows/laws-links.yml` checks the reference links of both datasets every Monday (and on demand) and lists the problems in the run summary.
+
+## Data provenance
+
+Each row carries `data_status`, `confidence` and `last_checked`. The app has a "Data status" filter, flags rows with low confidence in the table and shows the details on the country card. No row is `verified` yet: when someone checks a row against the official text, set `data_status=verified` and `last_checked` to that day.
+
+The first real link check (11 Oct 2026, GitHub Actions) found dead links mostly in the original rows; they were replaced, and rows whose content turned out to be wrong were corrected and marked `researched`.
+
+
+- The first 50 rows come from the original curated list.
+- The 73 jurisdictions added in October 2026 (BG HR CY EE LV LT MT SK SI LU NO IS UA RS AL MK BA ME MD GE AM AZ BY KZ UZ UY VE PY CR BO PA JM TT GT EC PK LK NP KH TW MN MO LA MM BD DO SV BN QA KW BH OM JO LB IQ IR MA TN DZ GH SN CI UG RW TZ ZM MW ZW BW AO ET MU CM) were researched through web search only, without access to the statutes themselves. `linked_resources` values are pages that appeared in search results (mostly WIPO Lex).
+- **Treaties have three states.** `treaties_signatory` lists confirmed memberships (Berne 133, TRIPS 129, WCT 99, WPPT 91 of 147 jurisdictions at the time of writing), `treaties_not_party` confirmed non-memberships (28 cases, e.g. Taiwan and Iran for Berne, WTO observers for TRIPS, Brazil for WCT/WPPT), and anything else is "not confirmed". The treaty filter only matches confirmed memberships, so it under-counts; the jurisdiction card shows all three states. Weak "not a party" answers from old sources (Norway, Iceland, Egypt, Lebanon for WCT/WPPT) were left as "not confirmed". The EU row describes the Union's own memberships: it is not a Berne party itself. The second batch of jurisdictions is thinner than the first: where a term of protection could not be found the jurisdiction was not added.
+- Where sources disagree on the term, the `notes` column says so, and the term keeps the figure most sources give (for example Iran, Oman, Bahrain, Kuwait, Iraq, and Trinidad and Tobago, whose 2026 amendment has no confirmed commencement date).
+- Per-batch sources, confidence and doubts are kept in [docs/research-2026-10/](docs/research-2026-10/).
+
+## Pending
+
+- **Better comparison**: richer side-by-side matrices (today it is a plain criteria table).
+- **Verify the October 2026 additions against the statutes** (terms, enforcement bodies, orphan-works and exceptions columns are the weakest; many say `Not specified`) and complete the treaty memberships.
 
 ## License
 
-MIT, as declared in `package.json`.
+MIT
+
+## Traducciones de los valores (`jurisdictions/value_translations.csv`)
+
+Los textos descriptivos de cada ley (alcance, sanciones, plazos…) están en inglés en el CSV maestro. `value_translations.csv` guarda su traducción a `spa`, `fra`, `deu` y `por` (columnas `lang,source,text`; `source` es el texto inglés exacto). Son **traducciones automáticas, no revisadas por un jurista**: la app las muestra con la marca «MT» y, si falta una, enseña el inglés. `npm run translations` da la cobertura por idioma; `npm run translations -- --missing=<lang>` lista lo que falta; `--import=<lang>` incorpora un archivo revisado. Cuando cambia un texto inglés, su traducción deja de aplicarse hasta que se actualice.

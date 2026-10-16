@@ -2,10 +2,11 @@
   {
     "country_code": "IN",
     "country_name": "India",
+    "region": "asia_pacific",
     "law_name": "Digital Personal Data Protection Act 2023",
     "jurisdiction": "Ministry of Electronics & IT",
     "enactment_date": "2023-08-04",
-    "effective_date": "2024-08-04",
+    "effective_date": "2025-11-13",
     "scope": "Indian Residents",
     "applies_to": "Data processors & fiduciaries",
     "key_requirements": "Consent & lawful processing",
@@ -14,8 +15,45 @@
     "enforcement_authority": "Data Protection Board of India",
     "penalties_range": "Up to ₹250 Cr penalty",
     "exemptions": "Government functions",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.meity.gov.in/",
     "language": "English",
-    "notes": "Recently passed, enforcement phase"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "DPDP Rules 2025 notified Nov 2025; DPB established; substantive duties apply ~May 2027",
+    "pending_change": "DPDP Rules 2025 (Nov 2025) bring most obligations into force in phases over 18 months",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "notes": {
+        "url": "https://anantamias.com/current-affairs/dpdp-rules-2025-notified/?pdf=1",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "DPDP Rules 2025 notified Nov 2025; DPB established; substantive duties apply ~May 2027"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2024-08-04",
+        "to": "2025-11-13"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Recently passed, enforcement phase",
+        "to": ""
+      }
+    ]
   }
 ]

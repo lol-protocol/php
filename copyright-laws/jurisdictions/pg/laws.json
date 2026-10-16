@@ -1,0 +1,82 @@
+[
+  {
+    "country_code": "PG",
+    "country_name": "Papua New Guinea",
+    "region": "asia_pacific",
+    "law_name": "Copyright and Neighbouring Rights Act 2000 (Act No. 21 of 2000)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (s. 17(1); collective, audiovisual and anonymous works 50 years from making/publication, s. 17(3)-(4))",
+    "author_rights": "Economic rights",
+    "moral_rights": "Moral rights recognized (protected with economic rights for life + 50 years, s. 17(1))",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Limitations on protection (s. 25); folklore expressions protected in Part V (unconfirmed)",
+    "registration_required": "No (copyright arises on creation; secondary source; unconfirmed)",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/3427",
+    "notes": "WTO member since 9 Jun 1996. A 2000 WIPO table showed no Berne mark; current Berne/WCT/WPPT status not confirmed. WIPO Lex lists latest version 2002.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/3427",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/3427",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Papua_New_Guinea",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/3427",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "moral_rights": {
+        "url": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Papua_New_Guinea",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/3427",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "registration_required": {
+        "url": "https://blog.ipleaders.in/overview-of-copyright-law-in-papua-new-guinea/",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Papua_New_Guinea",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

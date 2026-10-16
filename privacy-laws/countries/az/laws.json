@@ -1,0 +1,94 @@
+[
+  {
+    "country_code": "AZ",
+    "country_name": "Azerbaijan",
+    "region": "europe",
+    "law_name": "Law No. 998-IIIQ of 11 May 2010 on Personal Data",
+    "jurisdiction": "Ministry of Digital Development and Transport (formerly Ministry of Transport, Communications and High Technologies)",
+    "enactment_date": "2010-05-11",
+    "effective_date": "2010-05-11",
+    "scope": "Data subjects (individuals)",
+    "applies_to": "Owners and operators of personal data information systems",
+    "key_requirements": "Consent for processing; registration of personal data information systems; security requirements (Cabinet Decree No. 161 of 6 Sep 2010; registration rules Decree No. 149 of 17 Aug 2010)",
+    "data_categories": "Personal data; confidential/special categories",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Ministry of Transport, Communications and High Technologies (regulator per DataGuidance 2023)",
+    "penalties_range": "Not specified",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
+    "language": "Azerbaijani",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "One unverified secondary source says National Cybersecurity Agency is regulator in 2026 and lists amendments through Law No. 1193-VIQD of 28 June 2024; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dataguidance.com/notes/azerbaijan-data-protection-overview",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

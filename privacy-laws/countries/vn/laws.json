@@ -2,20 +2,202 @@
   {
     "country_code": "VN",
     "country_name": "Vietnam",
-    "law_name": "Law on Cyber Security",
-    "jurisdiction": "Ministry of Public Security",
-    "enactment_date": "2018-11-12",
-    "effective_date": "2019-01-01",
-    "scope": "Vietnamese Residents",
-    "applies_to": "All organizations",
-    "key_requirements": "Lawful processing",
-    "data_categories": "Personal data",
-    "retention_period": "Necessary period",
-    "enforcement_authority": "Ministry officials",
-    "penalties_range": "Up to VND 100M fine",
-    "exemptions": "Government functions",
-    "website_url": "https://mps.gov.vn/",
+    "region": "asia_pacific",
+    "law_name": "Law on Personal Data Protection (PDPL)",
+    "jurisdiction": "Ministry of Public Security (A05)",
+    "enactment_date": "2025-06-26",
+    "effective_date": "2026-01-01",
+    "scope": "Processing of personal data in Vietnam and of Vietnamese data subjects, incl. foreign entities",
+    "applies_to": "Domestic and foreign organisations, agencies and individuals processing personal data",
+    "key_requirements": "Consent (explicit for sensitive data); processing and transfer impact assessments (DPIA/TIA); designate DPO/department; cross-border transfer rules",
+    "data_categories": "Basic and sensitive personal data (e.g. health, biometric, genetic, location)",
+    "retention_period": "Art. 3 principles: data stored only for period consistent with processing purpose unless law provides otherwise; delete/de-identify when purpose ends",
+    "enforcement_authority": "Department of Cybersecurity and High-Tech Crime Prevention (A05) - Ministry of Public Security",
+    "penalties_range": "Up to 5% of prior-year revenue (cross-border violations); up to 10x illegal gain (data trading); up to VND 3 billion other",
+    "exemptions": "Micro-enterprises/household businesses exempt from DPO and DPIA; 5-year grace for small firms/startups (not if sensitive data, data services or >=100k subjects)",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://thuvienphapluat.vn/van-ban/Bo-may-hanh-chinh/Law-91-2025-QH15-Personal-Data-Protection-665440.aspx",
     "language": "Vietnamese",
-    "notes": "Vietnam's cybersecurity law"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Law 91/2025/QH15 replaces Decree 13/2023; guided by Decree 356/2025; sanctions decree 330/2026 from 2026-08-19",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://thuvienphapluat.vn/van-ban/Bo-may-hanh-chinh/Law-91-2025-QH15-Personal-Data-Protection-665440.aspx",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "jurisdiction": {
+        "url": "https://tilleke.com/insights/vietnams-new-personal-data-protection-law-a-closer-look",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://sbv.gov.vn/en/w/tri%E1%BB%83n-khai-thi-h%C3%A0nh-lu%E1%BA%ADt-b%E1%BA%A3o-v%E1%BB%87-d%E1%BB%AF-li%E1%BB%87u-c%C3%A1-nh%C3%A2n-1",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://hrspring.vn/van-ban-phap-luat/91-2025-qh15-625628/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "scope": {
+        "url": "https://www.clym.io/regulations/personal-data-protection-law-pdpl-vietnam",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "applies_to": {
+        "url": "https://www.clym.io/regulations/personal-data-protection-law-pdpl-vietnam",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "key_requirements": {
+        "url": "https://www.tilleke.com/insights/new-decree-provides-guidance-for-vietnams-personal-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "data_categories": {
+        "url": "https://tilleke.com/insights/vietnams-new-personal-data-protection-law-a-closer-look",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "retention_period": {
+        "url": "https://english.luatvietnam.vn/dan-su/law-on-personal-data-protection-law-no-91-2025-qh15-405135-d1.html",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "enforcement_authority": {
+        "url": "https://tilleke.com/insights/vietnams-new-personal-data-protection-law-a-closer-look",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "penalties_range": {
+        "url": "https://lsvn.vn/nhung-quy-dinh-dang-chu-y-trong-luat-bao-ve-du-lieu-ca-nhan-2025-a167608.html",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "exemptions": {
+        "url": "https://www.tilleke.com/insights/new-decree-provides-guidance-for-vietnams-personal-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://luatvietnam.vn/bai-viet-lien-quan/luat-91-2025-qh15-405135.html",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 3 principles: data stored only for period consistent with processing purpose unless law provides otherwise; delete/de-identify when purpose ends"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Vietnam's cybersecurity law. Personal data is now governed by the Personal Data Protection Law (Law 91/2025/QH15, in force 1 Jan 2026), enforced by the Ministry of Public Security",
+        "to": "Law 91/2025/QH15 replaces Decree 13/2023; guided by Decree 356/2025; sanctions decree 330/2026 from 2026-08-19"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "website_url",
+        "from": "https://mps.gov.vn/",
+        "to": "https://thuvienphapluat.vn/van-ban/Bo-may-hanh-chinh/Law-91-2025-QH15-Personal-Data-Protection-665440.aspx"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "exemptions",
+        "from": "Government functions",
+        "to": "Micro-enterprises/household businesses exempt from DPO and DPIA; 5-year grace for small firms/startups (not if sensitive data, data services or >=100k subjects)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Up to VND 100M fine",
+        "to": "Up to 5% of prior-year revenue (cross-border violations); up to 10x illegal gain (data trading); up to VND 3 billion other"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Ministry of Public Security (MPS) - Department of Cybersecurity and High-Tech Crime Prevention (A05)",
+        "to": "Department of Cybersecurity and High-Tech Crime Prevention (A05) - Ministry of Public Security"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "retention_period",
+        "from": "Necessary period",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "data_categories",
+        "from": "Personal data",
+        "to": "Basic and sensitive personal data (e.g. health, biometric, genetic, location)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "Lawful processing",
+        "to": "Consent (explicit for sensitive data); processing and transfer impact assessments (DPIA/TIA); designate DPO/department; cross-border transfer rules"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "applies_to",
+        "from": "All organizations",
+        "to": "Domestic and foreign organisations, agencies and individuals processing personal data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "scope",
+        "from": "Vietnamese Residents",
+        "to": "Processing of personal data in Vietnam and of Vietnamese data subjects, incl. foreign entities"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2019-01-01",
+        "to": "2026-01-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-11-12",
+        "to": "2025-06-26"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "jurisdiction",
+        "from": "Ministry of Public Security",
+        "to": "Ministry of Public Security (A05)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Law on Cyber Security",
+        "to": "Law on Personal Data Protection (PDPL)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Vietnam's cybersecurity law",
+        "to": "Vietnam's cybersecurity law. Personal data is now governed by the Personal Data Protection Law (Law 91/2025/QH15, in force 1 Jan 2026), enforced by the Ministry of Public Security"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Ministry officials",
+        "to": "Ministry of Public Security (MPS) - Department of Cybersecurity and High-Tech Crime Prevention (A05)"
+      }
+    ]
   }
 ]

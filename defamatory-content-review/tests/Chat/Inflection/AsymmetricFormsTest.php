@@ -11,7 +11,10 @@ use PHPUnit\Framework\TestCase;
 class AsymmetricFormsTest extends TestCase
 {
     private const CONFIG_DIR = __DIR__ . '/../../../config';
-    private const TAGS = ['sg', 'pl', 'm', 'f', 'm.sg', 'm.pl', 'f.sg', 'f.pl', 'verb'];
+    private const TAGS = [
+        'sg', 'pl', 'm', 'f', 'm.sg', 'm.pl', 'f.sg', 'f.pl', 'verb', 'infl',
+        'dim', 'dim.sg', 'dim.pl', 'dim.m', 'dim.f', 'dim.m.sg', 'dim.m.pl', 'dim.f.sg', 'dim.f.pl',
+    ];
 
     public function testTheMostSpecificKeyWins(): void
     {
@@ -76,7 +79,7 @@ class AsymmetricFormsTest extends TestCase
                         $this->assertArrayHasKey('forms', $entry, "{$where}: `by` sin `forms` no hace nada");
                         $this->assertSame([], array_diff(array_keys($entry['by']), self::TAGS), "{$where}: rasgo desconocido en `by`");
                         $this->assertSame([], array_diff($entry['by'], ['low', 'medium', 'high', 'none']), "{$where}: severidad desconocida en `by`");
-                        $used = array_merge(...array_map(fn(string $t): array => [$t, ...explode('.', $t)], array_values(TopicInflector::tagged(basename($file, '.php'), $entry['word'], $entry['forms']))));
+                        $used = array_merge(...array_map(fn(string $t): array => [$t, ...explode('.', $t), ...(str_starts_with($t, 'dim.') ? ['dim.' . explode('.', $t)[1], 'dim.' . substr($t, strrpos($t, '.') + 1)] : [])], array_values(TopicInflector::tagged(basename($file, '.php'), $entry['word'], $entry['forms'], true))));
                         $this->assertSame([], array_diff(array_keys($entry['by']), $used), "{$where}: ninguna forma generada tiene ese rasgo");
                     }
                     $this->assertContains($entry['forms'] ?? 'noun', ['noun', 'adj', 'verb'], $where);

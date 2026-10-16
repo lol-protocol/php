@@ -2,20 +2,74 @@
   {
     "country_code": "DK",
     "country_name": "Denmark",
-    "law_name": "Data Protection Law",
+    "region": "europe",
+    "law_name": "Data Protection Act (Act No. 502 of 23 May 2018)",
     "jurisdiction": "Danish DPA (Datatilsynet)",
-    "enactment_date": "2018-05-25",
+    "enactment_date": "2018-05-23",
     "effective_date": "2018-05-25",
     "scope": "Danish Residents",
     "applies_to": "All entities",
-    "key_requirements": "GDPR compliance",
+    "key_requirements": "GDPR applies: lawful basis, data subject rights, breach notification",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "Danish Authority",
+    "enforcement_authority": "Danish Data Protection Agency (Datatilsynet)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.datatilsynet.dk/",
     "language": "Danish",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.Datatilsynet.dk/media/7753/danish-data-protection-act.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.dataguidance.com/legal-research/act-no-502-23-may-2018-supplementary-0",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://iptiq.com/european-data-protection-authorities.html",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2018-05-23"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Law",
+        "to": "Data Protection Act (Act No. 502 of 23 May 2018)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Danish Authority",
+        "to": "Danish Data Protection Agency (Datatilsynet)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

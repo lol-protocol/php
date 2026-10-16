@@ -1,0 +1,53 @@
+[
+  {
+    "country_code": "CM",
+    "country_name": "Cameroon",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2000/011 of 19 December 2000 on Copyright and Neighbouring Rights",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (collective, audiovisual, applied-art, anonymous and pseudonymous works: 50 years from creation or publication; posthumous works: 50 years from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Disclosure, paternity, integrity & withdrawal",
+    "orphan_works": "Not specified",
+    "digital_protection": "Fraudulent neutralisation of effective technical measures treated as infringement",
+    "fair_use_exceptions": "Statutory exceptions (quotation, teaching, parody, press review, private copying levy)",
+    "registration_required": "No",
+    "enforcement_body": "Ministry of Arts and Culture (MINAC)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/es/text/243144",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.memoireonline.com/03/13/7071/m_La-mise-en-oeuvre-de-la-societe-de-l-information-au-Cameroun-enjeux-et-perspectives-au-regard-de73.html",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Fraudulent neutralisation of effective technical measures treated as infringement"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "TRIPS",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

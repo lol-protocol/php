@@ -1,0 +1,39 @@
+name: Pruebas Listado-colores
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "Listado-colores/**"
+      - ".github/workflows/pruebas-listado-colores.yml"
+  pull_request:
+    paths:
+      - "Listado-colores/**"
+      - ".github/workflows/pruebas-listado-colores.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  listado-colores:
+    name: "Listado-colores: CSV válidos y tabla del README al día"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Valida colores.csv, significados-idiomas.csv y nombres-completos.csv, y
+      # falla si la tabla de README.md, colores-por-idioma.md o alguna pagina de
+      # por-idioma/ no coincide con lo que generan esos CSV.
+      - name: Comprobar datos y tabla
+        working-directory: Listado-colores
+        run: python3 generar-tabla.py --comprobar

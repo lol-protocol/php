@@ -1,0 +1,59 @@
+[
+  {
+    "country_code": "CR",
+    "country_name": "Costa Rica",
+    "region": "americas",
+    "law_name": "Copyright and Related Rights Law (Law No. 6683)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity",
+    "orphan_works": "No specific orphan works provision in Law 6683 (WIPO study of six Latin American countries: orphan works unregulated except in Ecuador)",
+    "digital_protection": "Offences for circumventing effective TPMs, trafficking devices & RMI (Law 8039 arts. 62-63)",
+    "fair_use_exceptions": "Statutory limitations & exceptions",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Registro Nacional (Registro de Derechos de Autor y Derechos Conexos)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/es/legislation/details/21963",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://proyectos.conare.ac.cr/asamblea/16117.htm",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "No specific orphan works provision in Law 6683 (WIPO study of six Latin American countries: orphan works unregulated except in Ecuador)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Offences for circumventing effective TPMs, trafficking devices & RMI (Law 8039 arts. 62-63)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -41,6 +41,7 @@ final class PortugueseInflection implements TopicInflection
         foreach ($singulars as $word) {
             $stem = substr($word, 0, -2);
             array_push($forms, $word, ...match (true) {
+                str_ends_with($word, 'ão') => [mb_substr($word, 0, -2) . 'ões', mb_substr($word, 0, -2) . 'ãos', mb_substr($word, 0, -2) . 'ães'],
                 str_ends_with($word, 'ao') => [$stem . 'oes', $stem . 'aos', $stem . 'aes'],
                 str_ends_with($word, 'm') => [substr($word, 0, -1) . 'ns'],
                 str_ends_with($word, 'il') => [$stem . 'is', $stem . 'eis'],

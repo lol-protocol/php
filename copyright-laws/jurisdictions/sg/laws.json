@@ -2,17 +2,102 @@
   {
     "country_code": "SG",
     "country_name": "Singapore",
-    "law_name": "Copyright Act (Cap. 63)",
+    "region": "asia_pacific",
+    "law_name": "Copyright Act 2021",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years (first publication)",
+    "term_of_protection": "Author's life + 70 years",
     "author_rights": "Author owns copyright",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Permitted archival use",
-    "digital_protection": "Copyright compliance",
+    "digital_protection": "Bans circumventing access controls & dealing in circumvention tools; RMI protected (2021 Act)",
     "fair_use_exceptions": "Educational fair dealing",
-    "registration_required": "No",
+    "registration_required": "No (automatic on expression in tangible form)",
     "enforcement_body": "Intellectual Property Office of Singapore",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.ipos.gov.sg/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://sso.agc.gov.sg/Act/CA2021",
+    "notes": "Copyright Act 2021 replaced Cap.63 from 2021-11-21; plain-English rewrite, new exceptions; CMO rules later",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://sso.agc.gov.sg/Act/CA2021",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ntu.edu.sg/lib-copyright/core-concepts",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://sg.rajahtannasia.com/viewpoints/copyright-regulations-key-changes-to-prescribed-exceptions-for-circumventing-access-control-measures-for-non-infringing-uses/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "registration_required": {
+        "url": "https://intelligence.dlapiper.com/global-expansion-intellectual-property/?c=SG",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.allenandgledhill.com/sg/publication/articles/19712/new-copyright-act-partially-commences-on-21-november-2021-to-strengthen-and-update-singapore-s-copyright-regime",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Copyright Act 2021 replaced Cap.63 from 2021-11-21; plain-English rewrite, new exceptions; CMO rules later"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "linked_resources",
+        "from": "https://www.ipos.gov.sg/",
+        "to": "https://sso.agc.gov.sg/Act/CA2021"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "registration_required",
+        "from": "No",
+        "to": "No (automatic on expression in tangible form)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years (first publication)",
+        "to": "Author's life + 70 years"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Copyright Act (Cap. 63)",
+        "to": "Copyright Act 2021"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Bans circumventing access controls & dealing in circumvention tools; RMI protected (2021 Act)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright compliance",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

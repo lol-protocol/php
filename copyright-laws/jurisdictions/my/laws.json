@@ -2,17 +2,63 @@
   {
     "country_code": "MY",
     "country_name": "Malaysia",
+    "region": "asia_pacific",
     "law_name": "Copyright Act 1987",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights recognized",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright enforcement",
+    "digital_protection": "Circumvention of TPMs & rights management information prohibited (ss. 36A, 36B)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Malaysian Patent Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.myipo.gov.my/"
+    "enforcement_body": "Intellectual Property Corporation of Malaysia (MyIPO)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.myipo.gov.my/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.wipo.int/wipolex/en/text/597931",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_body": {
+        "url": "https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/295/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Circumvention of TPMs & rights management information prohibited (ss. 36A, 36B)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Malaysian Patent Office",
+        "to": "Intellectual Property Corporation of Malaysia (MyIPO)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright enforcement",
+        "to": "Not specified"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

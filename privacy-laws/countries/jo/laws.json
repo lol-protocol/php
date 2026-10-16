@@ -1,0 +1,64 @@
+[
+  {
+    "country_code": "JO",
+    "country_name": "Jordan",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Law (PDPL)",
+    "jurisdiction": "Personal Data Protection Council",
+    "enactment_date": "2023-09-17",
+    "effective_date": "2024-03-17",
+    "scope": "Individuals in Jordan",
+    "applies_to": "Public & private entities processing personal data",
+    "key_requirements": "Consent, data subject rights, controller and processor duties, warning before penalties",
+    "data_categories": "Personal data",
+    "retention_period": "Art. 4(B): processed data not retained after processing purpose is fulfilled, except where authorised by law; processors erase data at end of processing",
+    "enforcement_authority": "Personal Data Protection Council & Directorate (Ministry of Digital Economy and Entrepreneurship)",
+    "penalties_range": "Up to JOD 10k per violation (doubled if repeated)",
+    "exemptions": "Art. 4(A) consent exceptions: research, statistics, national security, public interest, data made public by subject, CBJ entities; personal-purpose use excluded",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.clydeco.com/en/insights/2023/10/jordan-issues-first-personal-data-protection-law",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Law No. 24 of 2023; grace period for existing processing ended Mar 2025",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "retention_period": {
+        "url": "https://www.modee.gov.jo/ebv4.0/root_storage/en/eb_list_page/pdpl.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "exemptions": {
+        "url": "https://www.modee.gov.jo/ebv4.0/root_storage/en/eb_list_page/pdpl.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "exemptions",
+        "from": "Not specified",
+        "to": "Art. 4(A) consent exceptions: research, statistics, national security, public interest, data made public by subject, CBJ entities; personal-purpose use excluded"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 4(B): processed data not retained after processing purpose is fulfilled, except where authorised by law; processors erase data at end of processing"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

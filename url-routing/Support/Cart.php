@@ -12,6 +12,9 @@ final class Cart
 {
     private const MAX_CANTIDAD = 99;
 
+    /** Distinct SKU lines; a cart with lots of different products stops growing instead of becoming unusable. */
+    public const MAX_LINEAS = 20;
+
     /** @return array<string, int> sku => cantidad */
     public function items(): array
     {
@@ -33,15 +36,24 @@ final class Cart
         return $this->items()[$sku] ?? 0;
     }
 
-    /** Sets the absolute quantity for a SKU; 0 or less removes it. */
-    public function actualizar(string $sku, int $cantidad): void
+    /**
+     * Sets the absolute quantity for a SKU; 0 or less removes it.
+     * Returns false, without changing anything, if this would add a new line
+     * past MAX_LINEAS (updating an existing line is always allowed).
+     */
+    public function actualizar(string $sku, int $cantidad): bool
     {
         if ($cantidad <= 0) {
             $this->quitar($sku);
-            return;
+            return true;
+        }
+
+        if (!isset($_SESSION['carrito'][$sku]) && count($this->items()) >= self::MAX_LINEAS) {
+            return false;
         }
 
         $_SESSION['carrito'][$sku] = min($cantidad, self::MAX_CANTIDAD);
+        return true;
     }
 
     public function quitar(string $sku): void

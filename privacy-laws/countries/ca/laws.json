@@ -2,10 +2,11 @@
   {
     "country_code": "CA",
     "country_name": "Canada",
+    "region": "americas",
     "law_name": "Personal Information Protection and Electronic Documents Act (PIPEDA)",
     "jurisdiction": "Federal",
-    "enactment_date": "2000-01-01",
-    "effective_date": "2000-04-13",
+    "enactment_date": "2000-04-13",
+    "effective_date": "2001-01-01",
     "scope": "Canadian Residents",
     "applies_to": "Organizations in private sector",
     "key_requirements": "Lawful collection, accuracy",
@@ -14,8 +15,414 @@
     "enforcement_authority": "Privacy Commissioner of Canada",
     "penalties_range": "Up to $100,000 CAD",
     "exemptions": "Public institutions",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.priv.gc.ca/",
     "language": "English",
-    "notes": "Private sector national standard"
+    "frameworks": "EU-Adequacy/APEC-CBPR",
+    "frameworks_not": "GDPR/CoE-108",
+    "notes": "Private sector national standard",
+    "pending_change": "Bill C-36 (Protecting Privacy and Consumer Data Act), tabled 15 Jun 2026, would replace PIPEDA Part 1; not enacted",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2000-04-13",
+        "to": "2001-01-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2000-01-01",
+        "to": "2000-04-13"
+      }
+    ]
+  },
+  {
+    "country_code": "CA",
+    "country_name": "Canada",
+    "region": "americas",
+    "law_name": "Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",
+    "jurisdiction": "Commission d'accès à l'information du Québec (CAI)",
+    "enactment_date": "2021-09-22",
+    "effective_date": "2023-09-22",
+    "scope": "Individuals in Quebec whose personal information is held by enterprises operating in Quebec",
+    "applies_to": "Private-sector enterprises carrying on an enterprise in Quebec (the Act's s.1), including those outside Quebec handling Quebec residents' data",
+    "key_requirements": "Consent that is clear, free and specific (s.14); rights of access, rectification, portability and de-indexation; privacy impact assessments for projects and cross-border transfers (s.3.3, 17); mandatory reporting of confidentiality incidents to CAI and individuals (s.3.5); designated person in charge of personal information (s.3.1)",
+    "data_categories": "Personal information; sensitive information (medical; biometric or otherwise intimate; s.12)",
+    "retention_period": "Keep only as long as necessary for the purposes; then destroy or anonymize (s.23)",
+    "enforcement_authority": "Commission d'accès à l'information du Québec (CAI)",
+    "penalties_range": "Administrative monetary penalties up to CAD 10M or 2% of worldwide turnover; penal fines up to CAD 25M or 4% of worldwide turnover; private right of action with punitive damages of at least CAD 1,000 for intentional or grave fault",
+    "exemptions": "Journalistic, historical or genealogical material for the legitimate information of the public (s.1); public bodies covered by the public-sector Act; business contact information (s.1)",
+    "deceased_data": "Not generally covered (living individuals); an enterprise may communicate information to a deceased person's spouse or close relatives where it helps their grieving process (added by Law 25) (unconfirmed)",
+    "research_exemption": "Information may be released without consent for study or research purposes after a privacy impact assessment and written agreement (s.21-21.0.2)",
+    "genetic_data": "No specific genetic rule; falls under sensitive information (medical or intimate) requiring express consent (s.12, 12 para 2) (unconfirmed)",
+    "website_url": "https://clym.io/regulations/quebec-law-25",
+    "language": "French/English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Law 25 assented 2021-09-22; phased entry into force: 2022-09-22 (privacy officer, incident reporting, biometrics disclosure), 2023-09-22 (main obligations: consent, privacy policy, PIAs, transparency, automated decisions, private right of action, penalties), 2024-09-22 (data portability). Sources differ on exact phase contents; original Act P-39.1 dates from 1993/1994.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://startwithidentity.com/regulations/canada/quebec-law-25/",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://startwithidentity.com/regulations/canada/quebec-law-25/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://consently.net/blog/quebec-law-25",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "retention_period": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "deceased_data": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://clym.io/regulations/quebec-law-25",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://consently.net/blog/quebec-law-25",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  },
+  {
+    "country_code": "CA",
+    "country_name": "Canada",
+    "region": "americas",
+    "law_name": "Personal Information Protection Act (SA 2003, c. P-6.5)",
+    "jurisdiction": "Office of the Information and Privacy Commissioner of Alberta (OIPC)",
+    "enactment_date": "2003-12-04",
+    "effective_date": "2004-01-01",
+    "scope": "Individuals in Alberta whose personal information is handled by private-sector organizations",
+    "applies_to": "Private-sector organizations in Alberta: corporations, unincorporated associations, trade unions, partnerships, individuals acting in a commercial capacity (s.1)",
+    "key_requirements": "Consent for collection, use and disclosure with reasonable purposes (s.7-8, 11-19); access and correction rights (s.24-25); mandatory notification of the Commissioner of incidents posing a real risk of significant harm (s.34.1)",
+    "data_categories": "Personal information; employee personal information",
+    "retention_period": "Retain only as long as reasonable for legal or business purposes (s.35)",
+    "enforcement_authority": "Office of the Information and Privacy Commissioner of Alberta (OIPC)",
+    "penalties_range": "Offence fines up to CAD 100,000 for organizations and CAD 10,000 for individuals (s.59); Commissioner has binding order-making power but no administrative penalties",
+    "exemptions": "Personal or domestic use, journalistic/artistic/literary purposes, public bodies under FOIP, health information under the Health Information Act (s.4)",
+    "deceased_data": "Not specifically covered; the Act protects identifiable individuals (living); no express deceased rule (unconfirmed)",
+    "research_exemption": "Disclosure without consent allowed for research with conditions (s.22), and for archival purposes (s.21) (unconfirmed)",
+    "genetic_data": "No specific rule (unconfirmed)",
+    "website_url": "https://oipc.ab.ca/",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Legislative committee review of PIPA completed 2025 recommending alignment with global standards and administrative penalties; no replacement private-sector act confirmed as of 2026-10. Bills 33/34 (Dec 2024) replace only the public-sector FOIP Act.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://oipc.ab.ca/?p=16665",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://oipc.ab.ca/?p=16665",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.consentstack.io/regulations/ab-pipa",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://oipc.ab.ca/?p=16665",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.consentstack.io/regulations/ab-pipa",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://oipc.ab.ca/?p=16665",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.consentstack.io/regulations/ab-pipa",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.consentstack.io/regulations/ab-pipa",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "retention_period": {
+        "url": "https://www.consentstack.io/regulations/ab-pipa",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://oipc.ab.ca/?p=16665",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://oipc.ab.ca/?p=16665",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://www.consentstack.io/regulations/ab-pipa",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "deceased_data": {
+        "url": "https://www.consentstack.io/regulations/ab-pipa",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://www.consentstack.io/regulations/ab-pipa",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://www.consentstack.io/regulations/ab-pipa",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  },
+  {
+    "country_code": "CA",
+    "country_name": "Canada",
+    "region": "americas",
+    "law_name": "Personal Information Protection Act (SBC 2003, c. 63)",
+    "jurisdiction": "Office of the Information and Privacy Commissioner for British Columbia (OIPC BC)",
+    "enactment_date": "2003-10-23",
+    "effective_date": "2004-01-01",
+    "scope": "Individuals in British Columbia whose personal information is held by private organizations",
+    "applies_to": "Private organizations (corporations, partnerships, unincorporated associations, trade unions, trusts, not-for-profits) collecting, using or disclosing personal information in BC; federal PIPEDA prevails for federal works",
+    "key_requirements": "Consent and reasonable purposes (s.6-8, 10-12, 14-18); access and correction rights (s.23-24); reasonable security safeguards (s.34); no mandatory breach notification in the current Act",
+    "data_categories": "Personal information; employee personal information",
+    "retention_period": "Retain for at least one year after use for decisions about the individual; destroy or anonymize when no longer needed for legal or business purposes (s.35)",
+    "enforcement_authority": "Office of the Information and Privacy Commissioner for British Columbia (OIPC BC)",
+    "penalties_range": "Offence fines up to CAD 100,000 for organizations and CAD 10,000 for individuals (s.56); Commissioner can investigate, audit and issue binding orders but has no administrative monetary penalty power",
+    "exemptions": "Personal or domestic purposes, journalistic/artistic/literary purposes, public bodies under FOIPPA, business contact information (s.3)",
+    "deceased_data": "Information about a person dead 20 years or more is excluded from the Act (s.3(2)), so deceased persons are covered for about 20 years (unconfirmed)",
+    "research_exemption": "Disclosure without consent allowed for research or statistical purposes under conditions (s.21) and archival or historical purposes (s.20) (unconfirmed)",
+    "genetic_data": "No specific rule (unconfirmed)",
+    "website_url": "https://www.oipc.bc.ca/",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "OIPC and a 2020-21 special committee urged reform (mandatory breach notification, administrative penalties); no replacement act confirmed. Enactment date sources conflict (Royal Assent reported both May and October 2003).",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dataguidance.com/notes/british-columbia-data-protection-overview",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.centraleyes.com/understanding-british-columbias-personal-information-protection-act-pipa/",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.clym.io/regulations/british-columbia-personal-information-protection-act-bc-pipa",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://www.clym.io/regulations/british-columbia-personal-information-protection-act-bc-pipa",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.centraleyes.com/understanding-british-columbias-personal-information-protection-act-pipa/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.clym.io/regulations/british-columbia-personal-information-protection-act-bc-pipa",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.dataguidance.com/notes/british-columbia-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.centraleyes.com/understanding-british-columbias-personal-information-protection-act-pipa/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "retention_period": {
+        "url": "https://www.dataguidance.com/notes/british-columbia-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.centraleyes.com/understanding-british-columbias-personal-information-protection-act-pipa/",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://mccarthy.ca/en/insights/blogs/techlex/bc-privacy-law-reform-update-commissioner-calling-changes-bcs-personal-information-protection-act",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://www.dataguidance.com/notes/british-columbia-data-protection-overview",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "deceased_data": {
+        "url": "https://www.dataguidance.com/notes/british-columbia-data-protection-overview",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "research_exemption": {
+        "url": "https://www.dataguidance.com/notes/british-columbia-data-protection-overview",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://www.dataguidance.com/notes/british-columbia-data-protection-overview",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

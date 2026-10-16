@@ -2,20 +2,63 @@
   {
     "country_code": "GB",
     "country_name": "United Kingdom",
+    "region": "europe",
     "law_name": "Data Protection Act 2018 (DPA 2018)",
     "jurisdiction": "UK ICO",
     "enactment_date": "2018-05-23",
-    "effective_date": "2018-05-23",
+    "effective_date": "2018-05-25",
     "scope": "UK Residents",
     "applies_to": "All organizations",
     "key_requirements": "GDPR-aligned requirements",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "UK Information Commissioner's Office",
+    "enforcement_authority": "Information Commission (successor to the Information Commissioner's Office under DUAA 2025 Part 6)",
     "penalties_range": "Up to £20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.ico.org.uk/",
     "language": "English",
-    "notes": "GDPR principles + additional UK rules"
+    "frameworks": "EU-Adequacy/CoE-108",
+    "frameworks_not": "GDPR",
+    "notes": "Amended by Data (Use and Access) Act 2025; new ICO powers in force 2026-02-05 (SI 2026/82)",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enforcement_authority": {
+        "url": "https://www.scl.org/data-use-and-access-act-2025-commencement-no-1-regulations-2025-made/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://digitalpolicyalert.org/event/37521-data-use-and-access-act-2025-commencement-no-6-and-transitional-and-saving-provisions-regulations-2026-including-data-protection-authority-governance-enter-into-force",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR principles + additional UK rules",
+        "to": "Amended by Data (Use and Access) Act 2025; new ICO powers in force 2026-02-05 (SI 2026/82)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "UK Information Commissioner's Office",
+        "to": "Information Commission (successor to the Information Commissioner's Office under DUAA 2025 Part 6)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2018-05-23",
+        "to": "2018-05-25"
+      }
+    ]
   }
 ]

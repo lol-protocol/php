@@ -2,7 +2,8 @@
 
 /** Russian chat topics — see spa.php for the format and severity meaning. */
 return [
-    'meta' => ['code' => 'rus', 'kind' => 'chat-topics'],
+    'meta' => ['code' => 'rus', 'kind' => 'chat-topics', 'collapseRepeats' => true],
+    'legit' => ['скотт'],
     'targeted' => [
         'types' => ['animal', 'discapacidad'],
         'before' => ['ты', 'вы', 'тебя', 'тебе', 'твой', 'твоя', 'сам', 'сама', 'этот', 'эта', 'эти', 'такой', 'такая', 'какой', 'какая', 'грязный', 'грязная', 'тупой', 'тупая', 'жирный', 'жирная', 'старый', 'старая', 'вонючий', 'вонючая'],

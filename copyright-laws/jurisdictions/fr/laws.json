@@ -2,6 +2,7 @@
   {
     "country_code": "FR",
     "country_name": "France",
+    "region": "europe",
     "law_name": "Intellectual Property Code",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
@@ -12,7 +13,23 @@
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
     "enforcement_body": "INPI (National IP Institute)",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.inpi.fr/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.inpi.fr/",
+    "notes": "",
+    "pending_change": "AI-use presumption bill (new art. L.331-4-1 CPI) passed the Senate 8 Apr 2026; pending in the Assemblée nationale",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

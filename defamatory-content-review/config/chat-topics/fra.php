@@ -55,6 +55,14 @@ return [
         ],
     ],
     'patterns' => [
+        // Accusations contre une personne et données sensibles (santé, vie privée, orientation sexuelle) :
+        // elles peuvent être vraies ; jamais bloquées, elles vont en revue humaine. Voir docs/RIESGOS.md.
+        ['pattern' => '\b(a|ont|avait|avaient)\s+(escroque|arnaque|viole|assassine|tue|detourne|extorque|soudoye|agresse|abuse\s+de)\b|\b(a|ont|avait)\s+vole\s+(de|du|des|l|la|le|les|son|sa|ses|mon|ma|mes|leur|leurs|ton|ta|tes)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'accusation de délit'],
+        ['pattern' => '\b(a\s+ete|est|etait)\s+(condamnee?s?|arretee?s?|incarceree?s?|inculpee?s?|mise?s?\s+en\s+examen|en\s+prison)\b|\ba\s+(un\s+)?casier\s+judiciaire\b|\ba\s+fait\s+de\s+la\s+prison\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'accusation de délit'],
+        ['pattern' => '\b(est|etait|sont|etaient|c\s+est)\s+((un|une|des|tous|toutes)\s+)?(voleur|voleuse|voleurs|escrocs?|arnaqueur|arnaqueuse|arnaqueurs|violeurs?|pedophiles?|assassins?|criminel|criminelle|criminels|dealers?|trafiquants?|corrompue?s?|delinquants?)\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'accusation de délit'],
+        ['pattern' => '\b(a|avait|a\s+eu|a\s+attrape)\s+(le\s+|la\s+|un\s+|une\s+)?(sida|vih|syphilis|gonorrhee|herpes|hepatite|cancer|tuberculose|schizophrenie|depression)\b|\best\s+(seropositif|seropositive|schizophrene|bipolaire)\b|\ba\s+avorte\b|\bs\s+est\s+fait\s+avorter\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'donnée sensible (santé)'],
+        ['pattern' => '\b(trompe|trompait|a\s+trompe)\s+(sa|son)\s+(femme|mari|epouse|copine|copain)\b|\ba\s+(une|un)\s+(maitresse|amant)\b|\best\s+infidele\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'vie privée'],
+        ['pattern' => '\b(est|etait|sont)\s+(gay|gays|lesbienne|lesbiennes|homosexuel|homosexuelle|homosexuels|bisexuel|bisexuelle)\b|\ba\s+fait\s+son\s+coming\s+out\b', 'riskType' => 'difamatorio', 'severity' => 'medium', 'label' => 'donnée sensible (orientation sexuelle)'],
         ['pattern' => '\b(?:je|j)\s*(?:vais\s+)?te\s+(?:tuer|tue|buter|crever|massacrer|egorger)\b', 'riskType' => 'belico', 'severity' => 'high', 'label' => 'menace'],
         ['pattern' => '\b(?:je|j)\s*(?:vais\s+)?te\s+(?:violer|viole)\b', 'riskType' => 'sexual', 'severity' => 'high', 'label' => 'menace sexuelle'],
     ],

@@ -2,17 +2,52 @@
   {
     "country_code": "DK",
     "country_name": "Denmark",
+    "region": "europe",
     "law_name": "Danish Copyright Law",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Collective management required",
-    "digital_protection": "Copyright enforcement",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exemptions",
     "registration_required": "No",
-    "enforcement_body": "Danish Patent Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.dkpto.dk/"
+    "enforcement_body": "Ministry of Culture (Kulturministeriet)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.dkpto.dk/",
+    "notes": "",
+    "pending_change": "Deepfake likeness bill L 49 introduced 8 Oct 2026; intended to take effect 1 Jan 2027",
+    "pending_date": "2027-01-01",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {
+      "enforcement_body": {
+        "url": "https://digitalpolicyalert.org/event/37845-ministry-of-culture-closes-consultation-on-bill-amending-copyright-act-introducing-performance-protection-and-protection-against-digitally-generated-imitations-20250654dk",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Danish Patent Office",
+        "to": "Ministry of Culture (Kulturministeriet)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright enforcement",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

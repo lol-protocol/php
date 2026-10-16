@@ -2,20 +2,85 @@
   {
     "country_code": "BE",
     "country_name": "Belgium",
-    "law_name": "Data Protection Law",
+    "region": "europe",
+    "law_name": "Law of 30 July 2018 on the protection of natural persons with regard to the processing of personal data",
     "jurisdiction": "Belgian Data Protection Authority",
-    "enactment_date": "2018-07-01",
-    "effective_date": "2018-07-01",
+    "enactment_date": "2018-07-30",
+    "effective_date": "2018-09-05",
     "scope": "Belgian Residents",
     "applies_to": "All organizations",
-    "key_requirements": "GDPR compliance",
+    "key_requirements": "GDPR applies: lawful basis, data subject rights, breach notification",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "Belgian DPA",
+    "enforcement_authority": "Belgian Data Protection Authority (APD/GBA)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.autoriteprotectiondonnees.be/",
     "language": "Dutch/French/German",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.jonesday.com/en/insights/2018/09/belgium-publishes-data-protection-laws-implementin",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.jonesday.com/en/insights/2018/09/belgium-publishes-data-protection-laws-implementin",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.jonesday.com/en/insights/2018/09/belgium-publishes-data-protection-laws-implementin",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://noyb.eu/en/node/494",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2018-07-01",
+        "to": "2018-09-05"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-07-01",
+        "to": "2018-07-30"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Law",
+        "to": "Law of 30 July 2018 on the protection of natural persons with regard to the processing of personal data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Belgian DPA",
+        "to": "Belgian Data Protection Authority (APD/GBA)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

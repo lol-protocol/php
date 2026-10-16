@@ -51,7 +51,7 @@ class WordList
             'riskType' => $data['riskType'] ?? 'ordinario',
             'severity' => $data['severity'] ?? 'medium',
             'nameCollision' => $data['nameCollision'] ?? false, 'ambiguous' => $data['ambiguous'] ?? false,
-            'targeted' => $data['targeted'] ?? null, // null: lo decide el riskType (ver TargetContext)
+            'targeted' => $data['targeted'] ?? null, 'whenTargeted' => $data['whenTargeted'] ?? null, // ver TargetContext
         ]);
     }
 

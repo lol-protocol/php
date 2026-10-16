@@ -1,0 +1,45 @@
+code,field,value,conf,source
+MM,status,"NOLAW: No general data protection law; only Electronic Transactions Law (2004, amended 2021), Cybersecurity Law No. 1/2025 (in effect 2025-07-30) and a suspended 2017 Privacy Law; a dedicated draft is not enacted",medium,https://www.dlapiperdataprotection.com/?c=MM&t=law
+PG,status,"NOLAW: No general data protection law; Cybercrime Code Act 2016 has partial provisions; Data Governance and Data Protection Bill 2026 (fifth draft) in public consultation, no evidence of passage as of 2026-10",medium,https://www.ict.gov.pg/draft-bills-2026/
+KP,status,"NOLAW: No general data protection law found; sources describe state-secrecy laws only; one low-quality source claims a 2013 personal information law that could not be verified",low,https://lawgratis.com/blog-detail/privacy-law-at-north-korea
+VE,status,"NOLAW: No comprehensive personal data protection law; protection rests on the Constitution (habeas data) and Supreme Court (TSJ) rulings",medium,https://iapp.org/news/a/venezuela-data-breach-highlights-scattered-privacy-regulation
+BO,status,"NOLAW: No comprehensive law; only constitutional habeas data (art. 130); AGETIC draft law and citizen draft not enacted as of 2026",medium,https://law.ungovr.org/ai/bo
+GT,status,"NOLAW: No comprehensive law; only Access to Public Information Law (Decree 57-2008); initiative 6464 still in committee in July 2026",medium,https://emisorasunidas.com/nacional/2026/07/16/comision-de-asuntos-de-seguridad-analiza-iniciativa-de-ley-de-proteccion-de-datos-personales/
+HN,status,"NOLAW: No comprehensive law; draft bill pending in Congress since at least 2018; only Transparency and Access to Public Information Law (Decree 170-2006) and constitutional habeas data (art. 182)",medium,https://www.elheraldo.hn/honduras/socializan-anteproyecto-ley-proteccion-datos-personales-DC21765161
+HT,status,"NOLAW: No general data protection law or independent authority; only an Arrete on personal data protection (Le Moniteur no. 87, 2018-05-15; thin, no regulator, borderline general instrument - coordinator may review) and Penal Code provisions not in force",low,https://www.offlist.me/what-is-haiti-2018-data-privacy-order
+CU,law_name,"Law No. 149 of 2022 on Personal Data Protection (Ley 149 De Protección de Datos Personales)",high,https://www.mincom.gob.cu/es/print/5823
+CU,jurisdiction,Ministry of Justice (MINJUS),medium,https://www.dataguidance.com/jurisdiction/cuba
+CU,enactment_date,2022-08-25,high,https://www.mincom.gob.cu/es/print/5823
+CU,effective_date,2023-02-21,medium,https://www.dataguidance.com/jurisdiction/cuba
+CU,scope,Natural persons (data subjects) regarding their personal data,medium,https://www.mincom.gob.cu/es/print/5823
+CU,applies_to,Public and private bodies and natural/legal persons that process personal data,medium,https://www.dataguidance.com/jurisdiction/cuba
+CU,key_requirements,"12 data protection principles; consent (express or tacit) with exceptions; data owner rights; security; cross-border transfers authorised by public bodies",medium,https://www.dataguidance.com/jurisdiction/cuba
+CU,data_categories,Personal data; sensitive data,low,https://www.globalcompliancenews.com/2022/09/15/cuba-new-personal-data-protection-law-1509
+CU,retention_period,Default five years where no specific legal rule applies (article not found),medium,https://www.dataguidance.com/jurisdiction/cuba
+CU,enforcement_authority,Ministry of Justice (MINJUS); no new dedicated authority created (older DLA Piper entry names the Ministry of Communications),medium,https://www.dataguidance.com/jurisdiction/cuba
+CU,penalties_range,"Fines reportedly up to CUP 20,000 (single secondary mention; unverified)",low,https://www.globalcompliancenews.com/2022/09/15/cuba-new-personal-data-protection-law-1509
+CU,exemptions,UNKNOWN,low,
+CU,website_url,https://www.mincom.gob.cu/es/print/5823,high,https://www.mincom.gob.cu/es/print/5823
+CU,language,Spanish,high,https://www.mincom.gob.cu/es/print/5823
+CU,notes,"Approved by National Assembly 2022-05-14; published Gaceta Oficial Ordinaria No. 90 of 2022-08-25; entered into force 180 days later with its Regulation; Ministry of Communications Resolution 58/2022 covers electronic data security",medium,https://www.mincom.gob.cu/es/print/5823
+CU,deceased_data,Law reportedly addresses personal data of deceased persons (article and duration not found),low,https://caseguard.com/articles/cuba-passes-new-comprehensive-data-privacy-law/
+CU,research_exemption,UNKNOWN,low,
+CU,genetic_data,UNKNOWN,low,
+TT,law_name,"Data Protection Act, 2011 (Act No. 13 of 2011; Chap. 22:04)",high,https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf
+TT,jurisdiction,Office of the Information Commissioner (not yet established),medium,https://www.dataguidance.com/jurisdiction/trinidad-and-tobago
+TT,enactment_date,2011-06-22,high,https://www.news.gov.tt/archive/E-Gazette/Gazette%202011/Gazette/Gazette%20No.%2083%20of%202011.pdf
+TT,effective_date,2012-01-06,medium,https://news.gov.tt/archive/E-Gazette/Gazette%202012/Legal%20Notice/Legal%20Notice%20No.%202%20of%202012.pdf
+TT,scope,Individuals (personal privacy and sensitive personal information),medium,https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf
+TT,applies_to,Public bodies and private organisations,medium,https://www.dlapiperdataprotection.com/?c=TT&t=law
+TT,key_requirements,"General privacy principles; consent for sensitive personal information; Information Commissioner oversight (most operative provisions not yet proclaimed)",medium,https://www.dlapiperdataprotection.com/?c=TT&t=law
+TT,data_categories,"Personal information (incl. DNA, fingerprints, blood type); sensitive personal information (health, racial/ethnic origin, religion, sexual orientation, criminal/financial records)",medium,https://www.dlapiperdataprotection.com/?c=TT&t=law
+TT,retention_period,UNKNOWN,low,
+TT,enforcement_authority,Office of the Information Commissioner (vacant/not established; Ministry of Digital Transformation responsible),medium,https://www.dataguidance.com/jurisdiction/trinidad-and-tobago
+TT,penalties_range,"Up to TTD 50,000 and 3 years imprisonment reported by one commercial site; penalty Part V not proclaimed",low,https://www.consentstack.io/regulations/tt-dpa
+TT,exemptions,"Court/tribunal proceedings and judges' personal notes (s. 5); law enforcement collection exception",low,https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf
+TT,website_url,https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf,high,https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf
+TT,language,English,high,https://www.central-bank.org.tt/cbtt_storage/pdf/Data-Protection-Act-No-13-2011.pdf
+TT,notes,"Only partially proclaimed: Part I and ss. 7-18, 22, 23, 25(1), 26, 28 by LN 2/2012 (2012-01-06); s. 42(a),(b) by LN 220/2021; remainder not in force as of Feb 2025",high,https://uwi.edu/data-protection/node/39
+TT,deceased_data,UNKNOWN,low,
+TT,research_exemption,"Sensitive information may be processed without consent for research or statistical analysis (section not found); archival/historical disclosure provision in revised text s. 44",low,https://www.consentstack.io/regulations/tt-dpa
+TT,genetic_data,"DNA included in the definition of personal information; no specific genetic rule found",low,https://www.dlapiperdataprotection.com/?c=TT&t=law

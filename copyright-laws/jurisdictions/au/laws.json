@@ -2,6 +2,7 @@
   {
     "country_code": "AU",
     "country_name": "Australia",
+    "region": "asia_pacific",
     "law_name": "Copyright Act 1968",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
@@ -12,7 +13,35 @@
     "fair_use_exceptions": "Fair dealing (research/education)",
     "registration_required": "No",
     "enforcement_body": "IP Australia",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.ipaustralia.gov.au/"
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.ipaustralia.gov.au/",
+    "notes": "Amended 2026 (orphan works remedies limit, online/physical education); no AI TDM exception",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "notes": {
+        "url": "https://www.legislation.gov.au/C1968A00063/2026-04-02/2026-04-02/text/original/epub/OEBPS/document_1/document_1.html",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Amended 2026 (orphan works remedies limit, online/physical education); no AI TDM exception"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

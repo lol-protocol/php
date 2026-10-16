@@ -1,0 +1,99 @@
+[
+  {
+    "country_code": "BJ",
+    "country_name": "Benin",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",
+    "jurisdiction": "APDP",
+    "enactment_date": "2018-04-20",
+    "effective_date": "2018-04-20",
+    "scope": "Data subjects in Benin (unconfirmed)",
+    "applies_to": "Public and private bodies processing personal data by automated or non-automated means",
+    "key_requirements": "APDP oversight of collection, processing, transmission, storage and use of personal data; regulation of sensitive data and international transfers with specified exceptions",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Personal Data Protection Authority (APDP), independent administrative authority",
+    "penalties_range": "Repeat offences within 5 years: up to CFA 100 million or 5% of pre-tax sales, capped at CFA 100 million (secondary source, no article) (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://sgg.gouv.bj/doc/loi-2017-20/download",
+    "language": "French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Parliament adopted 13 June 2017; presidential assent 23 April 2018; Law 2020-35 amended arts 121, 125, 464 (APDP reduced from 11 to 8 members); also Law No. 2009-09 of 22 May 2009; Benin APDP is observer at Convention 108 Committee but accession not confirmed; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.consentstack.io/regulations/bj-code-numerique",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.consentstack.io/regulations/bj-code-numerique",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.consentstack.io/regulations/bj-code-numerique",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

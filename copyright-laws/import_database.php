@@ -87,6 +87,12 @@ class CopyrightLawsImporter {
             }
 
             $headers = fgetcsv($file);
+            if ($headers === false) {
+                $this->error("CSV file is empty: {$this->csvPath}");
+            }
+            // A UTF-8 BOM would otherwise end up in the name of the first column.
+            $headers[0] = preg_replace('/^\xEF\xBB\xBF/', '', $headers[0]);
+            $line = 1;
             $imported = 0;
             $jurisdictions = [];
 
@@ -99,18 +105,25 @@ class CopyrightLawsImporter {
                 (jurisdiction_id, law_name, protection_type, term_of_protection,
                  author_rights, moral_rights, orphan_works, digital_protection,
                  fair_use_exceptions, registration_required, enforcement_body,
-                 treaties_signatory, linked_resources)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                 treaties_signatory, treaties_not_party, linked_resources, notes, pending_change, pending_date, data_status, confidence, last_checked)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
             );
 
             // Read and import rows
             while (($row = fgetcsv($file)) !== false) {
+                $line++;
+                if ($row === [null]) {
+                    continue; // blank line (the Node tooling skips these too)
+                }
+                if (count($row) !== count($headers)) {
+                    $this->error("Line $line: expected " . count($headers) . ' columns, got ' . count($row));
+                }
                 $data = array_combine($headers, $row);
 
                 // Insert jurisdiction if not exists
                 $countryCode = trim($data['country_code']);
                 if (!isset($jurisdictions[$countryCode])) {
-                    $region = $this->getRegion($countryCode);
+                    $region = trim($data['region']);
                     $tld = strtolower($countryCode);
 
                     $jurisdictionStmt->execute([
@@ -121,10 +134,9 @@ class CopyrightLawsImporter {
                     ]);
 
                     // Get jurisdiction_id
-                    $result = $this->pdo->query(
-                        "SELECT jurisdiction_id FROM jurisdictions WHERE code = '$countryCode'"
-                    )->fetch();
-                    $jurisdictions[$countryCode] = $result['jurisdiction_id'];
+                    $idStmt = $this->pdo->prepare("SELECT jurisdiction_id FROM jurisdictions WHERE code = ?");
+                    $idStmt->execute([$countryCode]);
+                    $jurisdictions[$countryCode] = $idStmt->fetch()['jurisdiction_id'];
                 }
 
                 // Insert law
@@ -141,7 +153,14 @@ class CopyrightLawsImporter {
                     $data['registration_required'],
                     $data['enforcement_body'],
                     $data['treaties_signatory'],
-                    $data['linked_resources']
+                    $data['treaties_not_party'] ?? '',
+                    $data['linked_resources'],
+                    $data['notes'] ?? '',
+                    $data['pending_change'] ?? '',
+                    ($data['pending_date'] ?? '') !== '' ? $data['pending_date'] : null,
+                    $data['data_status'] ?? 'curated',
+                    $data['confidence'] ?? '',
+                    ($data['last_checked'] ?? '') !== '' ? $data['last_checked'] : null
                 ]);
 
                 $imported++;
@@ -213,15 +232,17 @@ class CopyrightLawsImporter {
                 $this->log("  ✓ {$t['protection_type']}: {$t['count']} laws");
             }
 
-            // Treaty memberships
+            // Treaty memberships (treaties_signatory is a '/'-separated list of up to four values)
             $treaties = $this->pdo->query(
                 "SELECT
                     TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(treaties_signatory, '/', numbers.n), '/', -1)) as treaty,
                     COUNT(*) as count
                 FROM copyright_laws
-                CROSS JOIN (SELECT 1 n UNION SELECT 2 UNION SELECT 3) numbers
-                WHERE treaties_signatory LIKE CONCAT('%', TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(treaties_signatory, '/', numbers.n), '/', -1)), '%')
-                GROUP BY treaty"
+                CROSS JOIN (SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4) numbers
+                WHERE treaties_signatory <> ''
+                  AND numbers.n <= 1 + LENGTH(treaties_signatory) - LENGTH(REPLACE(treaties_signatory, '/', ''))
+                GROUP BY treaty
+                ORDER BY count DESC"
             )->fetchAll();
 
             if (!empty($treaties)) {
@@ -236,19 +257,6 @@ class CopyrightLawsImporter {
         } catch (Exception $e) {
             $this->error("Validation failed: " . $e->getMessage());
         }
-    }
-
-    /**
-     * Helper: Map country code to region
-     */
-    private function getRegion($code) {
-        $regions = [
-            'EU' => 'europe', 'GB' => 'europe', 'CH' => 'europe', 'FR' => 'europe', 'ES' => 'europe', 'NL' => 'europe',
-            'US' => 'americas', 'CA' => 'americas', 'BR' => 'americas', 'MX' => 'americas', 'CL' => 'americas',
-            'JP' => 'asia_pacific', 'AU' => 'asia_pacific', 'SG' => 'asia_pacific', 'NZ' => 'asia_pacific', 'KR' => 'asia_pacific', 'TH' => 'asia_pacific', 'IN' => 'asia_pacific',
-            'ZA' => 'middle_east_africa',
-        ];
-        return $regions[$code] ?? 'other';
     }
 
     /**

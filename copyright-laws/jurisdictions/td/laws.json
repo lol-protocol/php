@@ -1,0 +1,77 @@
+[
+  {
+    "country_code": "TD",
+    "country_name": "Chad",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 005/PR/2003 of 2 May 2003 on the Protection of Copyright, Neighbouring Rights and Expressions of Folklore",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (Art. 39); joint works from last survivor's death (Art. 40); audiovisual and radio works 50 years (Art. 40)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Folklore uses for profit outside traditional context need BUTDRA authorization against royalty (Arts. 82, 85, 86); other exceptions not seen (unconfirmed)",
+    "registration_required": "Not specified",
+    "enforcement_body": "Chadian Copyright Office (BUTDRA)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/9126",
+    "notes": "Berne: bound from 25 Nov 1971 (Berne Notification 30). TRIPS from WTO membership lists (no date seen). Sources disagree on law number (005/PR/2003 vs 06/PR/2003) and BUTDRA creation (Law 05/PR/2003 of 23 May 2003). Moral rights, digital protection, registration not found",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/fr/legislation/details/9124",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/text/491812",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Chad.html",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/fr/legislation/details/9124",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.wipo.int/wipolex/en/text/491812",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/wipolex/ru/legislation/details/9124",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/wipolex/ru/treaties/parties/remarks/TD/15",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

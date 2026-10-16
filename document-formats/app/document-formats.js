@@ -753,6 +753,8 @@ class LocalizationManager {
         this.translationsPath = translationsPath;
         this.currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
         this.translations = {};
+        // English text, used for any string the current language leaves empty or lacks.
+        this.english = null;
         this.supportedLanguagesSet = new Set(Object.keys(LocalizationManager.LANGUAGE_NAMES));
         this.listeners = new Map();
         this.listenerIdCounter = 0;
@@ -777,6 +779,8 @@ class LocalizationManager {
 
             if (!response.ok) throw new Error(`Failed to load ${langCode}.json`);
             this.translations = await response.json();
+            if (langCode === 'en') this.english = this.translations;
+            else await this.loadEnglish(timeout);
             this.currentLanguage = langCode;
             localStorage.setItem('preferredLanguage', langCode);
             this.notifyListeners();
@@ -785,6 +789,22 @@ class LocalizationManager {
             if (langCode !== 'en') {
                 await this.loadLanguage('en', timeout);
             }
+        }
+    }
+
+    // The English file is only a fallback: if it can't be read, the page still works,
+    // and a missing string shows the key (or the default passed to translate()).
+    async loadEnglish(timeout) {
+        if (this.english) return;
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+            const response = await fetch(`${this.translationsPath}/en.json`, {signal: controller.signal});
+            clearTimeout(timeoutId);
+            if (!response.ok) throw new Error('Failed to load en.json');
+            this.english = await response.json();
+        } catch (error) {
+            console.warn('English fallback not available:', error);
         }
     }
 
@@ -800,19 +820,24 @@ class LocalizationManager {
         return Array.from(this.supportedLanguagesSet);
     }
 
-    translate(key, defaultValue = key) {
-        const keys = key.split('.');
-        let value = this.translations;
-
-        for (const k of keys) {
+    static lookup(tree, key) {
+        let value = tree;
+        for (const k of key.split('.')) {
             if (typeof value === 'object' && value !== null && k in value) {
                 value = value[k];
             } else {
-                return defaultValue;
+                return null;
             }
         }
+        return typeof value === 'string' && value !== '' ? value : null;
+    }
 
-        return typeof value === 'string' ? value : defaultValue;
+    // Order: the current language, then English, then defaultValue. An empty string
+    // counts as missing, so a partly translated file never leaves a blank label.
+    translate(key, defaultValue = key) {
+        return LocalizationManager.lookup(this.translations, key)
+            ?? LocalizationManager.lookup(this.english, key)
+            ?? defaultValue;
     }
 
     t(key, defaultValue = key) {
@@ -1064,7 +1089,8 @@ class SpecificationManager {
         wcagContrast: { file: '../specs/wcag_contrast.csv', key: 'element_type' },
         formatEquivalence: { file: '../specs/format_equivalence_matrix.csv', key: 'source_format' },
         regionalCompatibility: { file: '../specs/regional_compatibility.csv', key: 'region' },
-        standardsReference: { file: '../specs/standards_reference.csv', key: 'format_name' }
+        standardsReference: { file: '../specs/standards_reference.csv', key: 'format_name' },
+        paperTypes: { file: '../specs/paper_types.csv', key: 'type_name' }
     };
 
     constructor() {
@@ -1140,6 +1166,9 @@ class SpecificationManager {
     getStandardReference(format) { return this.get('standardsReference', format); }
     getVideoResolutionsByCategory(category) { return this.get('videoResolutions', null, {category}); }
     getColorSpacesByUse(useCase) { return this.get('colorSpaces', null, {best_for: useCase}); }
+    getPaperType(typeName) { return this.get('paperTypes', typeName); }
+    getPaperTypesByCategory(category) { return this.get('paperTypes', null, {category}); }
+    getAllPaperTypes() { return this.specifications.get('paperTypes') || []; }
 }
 
 // Usage:

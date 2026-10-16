@@ -38,7 +38,7 @@ final class MonedaRepository
      * Que tan reales son las tasas con las que se consolidan los totales en USD:
      *
      * - ultima y fuente: la cotizacion mas reciente que cargo
-     *   database/actualizar_tasas.php y de donde salio. null si nunca corrio: todas
+     *   bin/actualizar_tasas.php y de donde salio. null si nunca corrio: todas
      *   las tasas son las de ejemplo de la migracion 005.
      * - pendientes: las monedas con boletas o pagos cuya tasa sigue siendo la de
      *   ejemplo, o lleva mas de DIAS_DE_VIGENCIA dias sin actualizarse: sus montos

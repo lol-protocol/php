@@ -2,17 +2,63 @@
   {
     "country_code": "IT",
     "country_name": "Italy",
+    "region": "europe",
     "law_name": "Law No. 633/1941",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Paternity & integrity",
     "orphan_works": "Collective administration required",
-    "digital_protection": "Copyright protection",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Educational exceptions",
     "registration_required": "No",
-    "enforcement_body": "Italian Copyright Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.cultura.gov.it/"
+    "enforcement_body": "Ministry of Culture (MiC) - Directorate General for Libraries and Copyright",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.cultura.gov.it/",
+    "notes": "Amended by Law 132/2025 (from 2025-10-10): human authorship only, AI TDM rules (art.70-septies), new TDM offence",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enforcement_body": {
+        "url": "https://biblioteche.cultura.gov.it/it/documenti/2025-26/Guida_depositoRPGenerale-opere_protette_01_09_25.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.ifla.org/news/the-new-italian-ai-law/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Amended by Law 132/2025 (from 2025-10-10): human authorship only, AI TDM rules (art.70-septies), new TDM offence"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Italian Copyright Office",
+        "to": "Ministry of Culture (MiC) - Directorate General for Libraries and Copyright"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright protection",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

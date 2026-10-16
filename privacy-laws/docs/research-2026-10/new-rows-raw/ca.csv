@@ -1,0 +1,58 @@
+code,field,value,conf,source
+CA-QC,law_name,"Act respecting the protection of personal information in the private sector (CQLR c. P-39.1), as amended by Law 25 (S.Q. 2021, c. 25)",high,https://startwithidentity.com/regulations/canada/quebec-law-25/
+CA-QC,jurisdiction,Commission d'accès à l'information du Québec (CAI),high,https://clym.io/regulations/quebec-law-25
+CA-QC,enactment_date,2021-09-22,high,https://clym.io/regulations/quebec-law-25
+CA-QC,effective_date,2023-09-22,medium,https://clym.io/regulations/quebec-law-25
+CA-QC,scope,Individuals in Quebec whose personal information is held by enterprises operating in Quebec,medium,https://clym.io/regulations/quebec-law-25
+CA-QC,applies_to,"Private-sector enterprises carrying on an enterprise in Quebec (the Act's s.1), including those outside Quebec handling Quebec residents' data",medium,https://clym.io/regulations/quebec-law-25
+CA-QC,key_requirements,"Consent that is clear, free and specific (s.14); rights of access, rectification, portability and de-indexation; privacy impact assessments for projects and cross-border transfers (s.3.3, 17); mandatory reporting of confidentiality incidents to CAI and individuals (s.3.5); designated person in charge of personal information (s.3.1)",medium,https://startwithidentity.com/regulations/canada/quebec-law-25/
+CA-QC,data_categories,Personal information; sensitive information (medical; biometric or otherwise intimate; s.12),medium,https://consently.net/blog/quebec-law-25
+CA-QC,retention_period,Keep only as long as necessary for the purposes; then destroy or anonymize (s.23),medium,https://clym.io/regulations/quebec-law-25
+CA-QC,enforcement_authority,Commission d'accès à l'information du Québec (CAI),high,https://clym.io/regulations/quebec-law-25
+CA-QC,penalties_range,"Administrative monetary penalties up to CAD 10M or 2% of worldwide turnover; penal fines up to CAD 25M or 4% of worldwide turnover; private right of action with punitive damages of at least CAD 1,000 for intentional or grave fault",medium,https://clym.io/regulations/quebec-law-25
+CA-QC,exemptions,"Journalistic, historical or genealogical material for the legitimate information of the public (s.1); public bodies covered by the public-sector Act; business contact information (s.1)",medium,https://clym.io/regulations/quebec-law-25
+CA-QC,website_url,https://clym.io/regulations/quebec-law-25,low,https://clym.io/regulations/quebec-law-25
+CA-QC,language,French/English,high,https://clym.io/regulations/quebec-law-25
+CA-QC,frameworks,,low,
+CA-QC,notes,"Law 25 assented 2021-09-22; phased entry into force: 2022-09-22 (privacy officer, incident reporting, biometrics disclosure), 2023-09-22 (main obligations: consent, privacy policy, PIAs, transparency, automated decisions, private right of action, penalties), 2024-09-22 (data portability). Sources differ on exact phase contents; original Act P-39.1 dates from 1993/1994.",medium,https://cookie-script.com/privacy-laws/quebec-s-privacy-act-law-25
+CA-QC,deceased_data,Not generally covered (living individuals); an enterprise may communicate information to a deceased person's spouse or close relatives where it helps their grieving process (added by Law 25),low,https://clym.io/regulations/quebec-law-25
+CA-QC,research_exemption,Information may be released without consent for study or research purposes after a privacy impact assessment and written agreement (s.21-21.0.2),medium,https://clym.io/regulations/quebec-law-25
+CA-QC,genetic_data,"No specific genetic rule; falls under sensitive information (medical or intimate) requiring express consent (s.12, 12 para 2)",low,https://consently.net/blog/quebec-law-25
+CA-AB,law_name,"Personal Information Protection Act (SA 2003, c. P-6.5)",high,https://oipc.ab.ca/?p=16665
+CA-AB,jurisdiction,Office of the Information and Privacy Commissioner of Alberta (OIPC),high,https://oipc.ab.ca/?p=16665
+CA-AB,enactment_date,2003-12-04,low,https://www.consentstack.io/regulations/ab-pipa
+CA-AB,effective_date,2004-01-01,high,https://oipc.ab.ca/?p=16665
+CA-AB,scope,Individuals in Alberta whose personal information is handled by private-sector organizations,medium,https://www.consentstack.io/regulations/ab-pipa
+CA-AB,applies_to,"Private-sector organizations in Alberta: corporations, unincorporated associations, trade unions, partnerships, individuals acting in a commercial capacity (s.1)",high,https://oipc.ab.ca/?p=16665
+CA-AB,key_requirements,"Consent for collection, use and disclosure with reasonable purposes (s.7-8, 11-19); access and correction rights (s.24-25); mandatory notification of the Commissioner of incidents posing a real risk of significant harm (s.34.1)",medium,https://www.consentstack.io/regulations/ab-pipa
+CA-AB,data_categories,Personal information; employee personal information,medium,https://www.consentstack.io/regulations/ab-pipa
+CA-AB,retention_period,Retain only as long as reasonable for legal or business purposes (s.35),medium,https://www.consentstack.io/regulations/ab-pipa
+CA-AB,enforcement_authority,Office of the Information and Privacy Commissioner of Alberta (OIPC),high,https://oipc.ab.ca/?p=16665
+CA-AB,penalties_range,"Offence fines up to CAD 100,000 for organizations and CAD 10,000 for individuals (s.59); Commissioner has binding order-making power but no administrative penalties",medium,https://oipc.ab.ca/?p=16665
+CA-AB,exemptions,"Personal or domestic use, journalistic/artistic/literary purposes, public bodies under FOIP, health information under the Health Information Act (s.4)",medium,https://www.consentstack.io/regulations/ab-pipa
+CA-AB,website_url,https://oipc.ab.ca/,medium,https://oipc.ab.ca/?p=16665
+CA-AB,language,English,high,https://oipc.ab.ca/?p=16665
+CA-AB,frameworks,,low,
+CA-AB,notes,Legislative committee review of PIPA completed 2025 recommending alignment with global standards and administrative penalties; no replacement private-sector act confirmed as of 2026-10. Bills 33/34 (Dec 2024) replace only the public-sector FOIP Act.,medium,https://oipc.ab.ca/?p=16665
+CA-AB,deceased_data,"Not specifically covered; the Act protects identifiable individuals (living); no express deceased rule",low,https://www.consentstack.io/regulations/ab-pipa
+CA-AB,research_exemption,"Disclosure without consent allowed for research with conditions (s.22), and for archival purposes (s.21)",low,https://www.consentstack.io/regulations/ab-pipa
+CA-AB,genetic_data,No specific rule,low,https://www.consentstack.io/regulations/ab-pipa
+CA-BC,law_name,"Personal Information Protection Act (SBC 2003, c. 63)",high,https://www.dataguidance.com/notes/british-columbia-data-protection-overview
+CA-BC,jurisdiction,Office of the Information and Privacy Commissioner for British Columbia (OIPC BC),high,https://www.centraleyes.com/understanding-british-columbias-personal-information-protection-act-pipa/
+CA-BC,enactment_date,2003-10-23,low,https://www.clym.io/regulations/british-columbia-personal-information-protection-act-bc-pipa
+CA-BC,effective_date,2004-01-01,high,https://www.clym.io/regulations/british-columbia-personal-information-protection-act-bc-pipa
+CA-BC,scope,Individuals in British Columbia whose personal information is held by private organizations,medium,https://www.centraleyes.com/understanding-british-columbias-personal-information-protection-act-pipa/
+CA-BC,applies_to,"Private organizations (corporations, partnerships, unincorporated associations, trade unions, trusts, not-for-profits) collecting, using or disclosing personal information in BC; federal PIPEDA prevails for federal works",medium,https://www.clym.io/regulations/british-columbia-personal-information-protection-act-bc-pipa
+CA-BC,key_requirements,"Consent and reasonable purposes (s.6-8, 10-12, 14-18); access and correction rights (s.23-24); reasonable security safeguards (s.34); no mandatory breach notification in the current Act",medium,https://www.dataguidance.com/notes/british-columbia-data-protection-overview
+CA-BC,data_categories,Personal information; employee personal information,medium,https://www.centraleyes.com/understanding-british-columbias-personal-information-protection-act-pipa/
+CA-BC,retention_period,"Retain for at least one year after use for decisions about the individual; destroy or anonymize when no longer needed for legal or business purposes (s.35)",medium,https://www.dataguidance.com/notes/british-columbia-data-protection-overview
+CA-BC,enforcement_authority,Office of the Information and Privacy Commissioner for British Columbia (OIPC BC),high,https://www.centraleyes.com/understanding-british-columbias-personal-information-protection-act-pipa/
+CA-BC,penalties_range,"Offence fines up to CAD 100,000 for organizations and CAD 10,000 for individuals (s.56); Commissioner can investigate, audit and issue binding orders but has no administrative monetary penalty power",medium,https://mccarthy.ca/en/insights/blogs/techlex/bc-privacy-law-reform-update-commissioner-calling-changes-bcs-personal-information-protection-act
+CA-BC,exemptions,"Personal or domestic purposes, journalistic/artistic/literary purposes, public bodies under FOIPPA, business contact information (s.3)",medium,https://www.dataguidance.com/notes/british-columbia-data-protection-overview
+CA-BC,website_url,https://www.oipc.bc.ca/,medium,https://www.centraleyes.com/understanding-british-columbias-personal-information-protection-act-pipa/
+CA-BC,language,English,high,https://www.dataguidance.com/notes/british-columbia-data-protection-overview
+CA-BC,frameworks,,low,
+CA-BC,notes,"OIPC and a 2020-21 special committee urged reform (mandatory breach notification, administrative penalties); no replacement act confirmed. Enactment date sources conflict (Royal Assent reported both May and October 2003).",low,https://mccarthy.ca/en/insights/blogs/techlex/bc-privacy-law-reform-update-commissioner-calling-changes-bcs-personal-information-protection-act
+CA-BC,deceased_data,"Information about a person dead 20 years or more is excluded from the Act (s.3(2)), so deceased persons are covered for about 20 years",low,https://www.dataguidance.com/notes/british-columbia-data-protection-overview
+CA-BC,research_exemption,Disclosure without consent allowed for research or statistical purposes under conditions (s.21) and archival or historical purposes (s.20),low,https://www.dataguidance.com/notes/british-columbia-data-protection-overview
+CA-BC,genetic_data,No specific rule,low,https://www.dataguidance.com/notes/british-columbia-data-protection-overview

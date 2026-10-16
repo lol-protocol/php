@@ -2,10 +2,11 @@
   {
     "country_code": "IT",
     "country_name": "Italy",
-    "law_name": "Data Protection Code (Codice Della Privacy)",
+    "region": "europe",
+    "law_name": "Personal Data Protection Code (Legislative Decree 196/2003, Codice privacy)",
     "jurisdiction": "Garante Per La Protezione",
     "enactment_date": "2003-06-30",
-    "effective_date": "2003-12-01",
+    "effective_date": "2004-01-01",
     "scope": "Italian Residents",
     "applies_to": "Public & private sector",
     "key_requirements": "GDPR + Italian law",
@@ -14,8 +15,50 @@
     "enforcement_authority": "Garante (Italian Authority)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.garanteprivacy.it/",
     "language": "Italian",
-    "notes": "GDPR + Italian amendments"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "D.lgs. 196/2003 as amended by D.lgs. 101/2018 (GDPR adaptation, in force 2018-09-19)",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "effective_date": {
+        "url": "https://www.studiocataldi.it/normativa/codice-della-privacy/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.diritto.it/codice-protezione-dati-personali-privacy-gdpr/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR + Italian amendments",
+        "to": "D.lgs. 196/2003 as amended by D.lgs. 101/2018 (GDPR adaptation, in force 2018-09-19)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2003-12-01",
+        "to": "2004-01-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Code (Codice Della Privacy)",
+        "to": "Personal Data Protection Code (Legislative Decree 196/2003, Codice privacy)"
+      }
+    ]
   }
 ]

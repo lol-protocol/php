@@ -10,7 +10,7 @@ use App\Migrador;
 /**
  * El catalogo de paises y monedas tiene que llegar con las migraciones, no solo
  * con el seed. El seed es de desarrollo (borra toda la base): una base de
- * produccion creada con `php database/migrar.php` quedaba con paises y monedas
+ * produccion creada con `php bin/migrar.php` quedaba con paises y monedas
  * vacios, y como clientes.pais_codigo es NOT NULL y apunta a paises, no se podia
  * dar de alta ni un cliente. La base de los tests ya viene seedeada y no
  * distingue de donde salio el catalogo, asi que aca se corren todas las

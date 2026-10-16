@@ -1,0 +1,114 @@
+[
+  {
+    "country_code": "DZ",
+    "country_name": "Algeria",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 18-07 of 10 June 2018 on the Protection of Natural Persons in the Processing of Personal Data, as amended by Law No. 25-11 of 24 July 2025",
+    "jurisdiction": "ANPDP",
+    "enactment_date": "2018-06-10",
+    "effective_date": "2023-08-10",
+    "scope": "Natural persons whose data is processed in Algeria",
+    "applies_to": "Public and private operators in Algeria, including foreign operators using automated means located in Algeria",
+    "key_requirements": "Explicit consent before collection; ANPDP declaration or authorization for certain processing; transfers abroad need ANPDP authorization and adequate protection (art. 44-45)",
+    "data_categories": "Personal data; sensitive data (art. 9) (unconfirmed)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "National Authority for the Protection of Personal Data (ANPDP)",
+    "penalties_range": "Criminal: up to 5 years imprisonment and fines up to DZD 500,000 (some sources DZD 20,000-1,000,000)",
+    "exemptions": "Art. 45 derogations from transfer rules; state security and criminal-justice processing (not verified in detail) (unconfirmed)",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "Likely sensitive data under art. 9 (not verified) (unconfirmed)",
+    "website_url": "https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/",
+    "language": "Arabic/French",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Law 25-11 of 2025 reportedly adds DPO and DPIA duties; only one vendor page says so, unconfirmed. Main obligations enforceable from 2023 when ANPDP was set up.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=DZ&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?c=DZ&t=law",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "effective_date": {
+        "url": "https://consentstack.io/regulations/dz-law1807",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://www.dlapiperdataprotection.com/?c=DZ&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://www.dlapiperdataprotection.com/?c=DZ&t=law",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://www.gide.com/en/news-insights/protection-of-personal-data-focus-on-algerian-regulations/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "exemptions": {
+        "url": "https://www.dlapiperdataprotection.com/?c=DZ&t=law",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=DZ&t=law",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -52,9 +52,10 @@ Las pocas filas que bloquean una decisión, para no pedirle a nadie que revise
 decidir) y `ejemplos` (frases reales con la decisión actual del chat). Se
 aplican igual: `php bin/apply-review.php tha review/urgente/tha.csv`.
 
-`urgente/spa-genero.csv` reúne 22 decisiones de género y número del español
+`urgente/spa-genero.csv` reunía 22 decisiones de género y número del español
 (cerdos/cerdas, putas, vaca, mona, «¡cojones!», «los putos deberes»,
-diminutivos…): para quien hable español, unos 15 minutos.
+diminutivos…). Ya están respondidas y aplicadas: la columna `comentario` dice qué
+se hizo con cada una.
 
 `บ้า` tiene un cambio **provisional** a la espera de esa revisión: el chat lo
 ignora suelto (casi siempre es una exclamación: «บ้าจริง», «maldita sea») y
@@ -88,6 +89,15 @@ cambió de severidad): en ese caso se regenera y se vuelve a revisar sólo lo
 que cambió. Después: una línea por corrección en
 `tests/fixtures/chat-lines-detection.php`, `./vendor/bin/phpunit` y regenerar
 la planilla.
+
+Una planilla viene de fuera y lo que lleva acaba en un archivo PHP, así que
+`apply-review` sólo la acepta tal como la genera `bin/review-sheets.php`: en
+`excepción`, `categoria` es `everyday` o `legit`; en `forma`, la etiqueta es un
+rasgo como `pl`, `f` o `f.pl`. Cualquier otro valor aparece en «Problemas» y no
+se aplica nada. Además, el texto resultante de cada archivo se comprueba sin
+ejecutarlo: tiene que ser un `return [...]` de textos, números y
+`true`/`false`/`null`, y nada más (`Review\ConfigData`); sólo entonces se lee
+para ver que devuelve un diccionario.
 
 ## Regenerarlas
 

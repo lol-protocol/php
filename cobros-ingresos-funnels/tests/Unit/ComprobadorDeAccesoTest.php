@@ -13,7 +13,7 @@ use RuntimeException;
 /**
  * El comprobador de acceso, de dos maneras: con una funcion que contesta lo que cada test necesita
  * (sin red), y por HTTP de verdad contra un php -S local que hace de panel protegido, abierto, a
- * medias o con redireccion, y el comando database/comprobar_acceso.php corrido en otro proceso.
+ * medias o con redireccion, y el comando bin/comprobar_acceso.php corrido en otro proceso.
  */
 final class ComprobadorDeAccesoTest extends TestCase
 {
@@ -284,7 +284,7 @@ final class ComprobadorDeAccesoTest extends TestCase
     {
         $raiz = dirname(__DIR__, 2);
         $proceso = proc_open(
-            [PHP_BINARY, $raiz . '/database/comprobar_acceso.php', ...$argumentos],
+            [PHP_BINARY, $raiz . '/bin/comprobar_acceso.php', ...$argumentos],
             [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $tuberias,
             $raiz

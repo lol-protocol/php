@@ -2,20 +2,63 @@
   {
     "country_code": "BR",
     "country_name": "Brazil",
+    "region": "americas",
     "law_name": "Lei Geral de Proteção de Dados Pessoais (LGPD)",
     "jurisdiction": "Agência Nacional",
     "enactment_date": "2018-08-14",
-    "effective_date": "2020-09-28",
+    "effective_date": "2020-09-18",
     "scope": "Brazilian Residents & Businesses",
     "applies_to": "All companies processing Brazilian data",
     "key_requirements": "Lawful basis & consent",
     "data_categories": "Sensitive personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "National Data Protection Authority",
+    "enforcement_authority": "Agencia Nacional de Protecao de Dados (ANPD) - regulatory agency under Lei 15.352/2026",
     "penalties_range": "Up to 50M BRL or 2% revenue",
     "exemptions": "Public safety exceptions",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.gov.br/cidadania/pt-br/acesso-a-informacao/lgpd",
     "language": "Portuguese",
-    "notes": "South America's GDPR equivalent"
+    "frameworks": "EU-Adequacy",
+    "frameworks_not": "GDPR/CoE-108",
+    "notes": "Lei 15.352 of 2026-02-25 made ANPD an autonomous regulatory agency; also enforces ECA Digital",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enforcement_authority": {
+        "url": "https://lefosse.com/noticias/anpd-se-torna-agencia-reguladora-e-reforca-sua-capacidade-fiscalizatoria-regulatoria-e-institucional/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.legisweb.com.br/legislacao/?id=491391",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "South America's GDPR equivalent",
+        "to": "Lei 15.352 of 2026-02-25 made ANPD an autonomous regulatory agency; also enforces ECA Digital"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "National Data Protection Authority",
+        "to": "Agencia Nacional de Protecao de Dados (ANPD) - regulatory agency under Lei 15.352/2026"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2020-09-28",
+        "to": "2020-09-18"
+      }
+    ]
   }
 ]

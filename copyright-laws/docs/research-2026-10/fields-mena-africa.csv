@@ -1,0 +1,87 @@
+code,field,value,conf,source
+IL,digital_protection,No specific provision (2007 Act has no anti-circumvention rules),medium,https://www.law.co.il/en/news/2013/09/05/IL-Supreme-court-permits-access-control-circumvention/
+SA,digital_protection,TPM & rights-management info protected; circumvention an offence (2026 law art. 47),medium,https://amlak.net.sa/en/101083/
+NG,digital_protection,Anti-circumvention & rights-management rules (Copyright Act 2022 ss. 50-52),high,https://www.lawglobalhub.com/section-52-nigerian-copyright-act-2022/
+KE,digital_protection,Anti-circumvention & rights-management info infringement (s. 35(3)),high,https://wipo.int/export/sites/www/copyright/en/docs/limitations/ke.pdf
+UG,moral_rights,Attribution & integrity (s. 10),medium,https://old.ulii.org/ug/judgment/commercial-court-uganda/2014/107
+UG,fair_use_exceptions,"Fair use (s. 15: private study, teaching, news reporting)",medium,https://www.cehurd.org/wp-content/uploads/downloads/2013/03/influencing-copyright.pdf
+UG,digital_protection,2006 Act silent on TPMs; 2026 amendment reportedly adds anti-circumvention & RMI rules,low,https://globallawexperts.com/copyright-and-neighbouring-rights-act-2026-uganda-or-uganda-copyright-law-2026/
+GH,fair_use_exceptions,"Closed list of permitted uses (ss. 19-21: personal & teaching use, program backup, libraries)",medium,https://dti.eui.eu/database/page/230/
+TZ,moral_rights,Moral rights recognised (s. 11),medium,https://media.tanzlii.org/media/legislation/322955/source_file/a60fd77847905540/1999-7.pdf
+TZ,fair_use_exceptions,Free use provisions (s. 12 et seq.),medium,https://media.tanzlii.org/media/legislation/322955/source_file/a60fd77847905540/1999-7.pdf
+TZ,digital_protection,Sanctions for infringing technical protection & rights-management info (Part VI),high,https://media.tanzlii.org/media/legislation/322955/source_file/a60fd77847905540/1999-7.pdf
+MW,orphan_works,No specific provision,high,https://infojustice.knowledgegov.org/?p=39003
+MW,digital_protection,"TPM & rights-management info protected (s. 86), with library-use safeguard",high,https://infojustice.knowledgegov.org/?p=39003
+MW,fair_use_exceptions,"Specific exceptions only (no fair dealing): libraries & archives (s. 48), education etc.",medium,https://eifl.net/system/files/resources/202407/teresa_slides_malico_meeting_july_2024_ed1.pdf
+ZM,moral_rights,Moral rights recognised (s. 24),medium,https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/zm/zm070en.pdf
+ZM,fair_use_exceptions,Statutory list of acts not constituting infringement (s. 21),medium,https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/zm/zm070en.pdf
+ZW,fair_use_exceptions,"Fair dealing (private use, research, criticism, review, news reporting)",medium,https://www.uz.ac.zw/images/library/Copyright_Guideline_eLearning.pdf
+BW,digital_protection,Remedies & sanctions for abuse of technical protection & rights-management info (s. 33),high,https://ictpolicyafrica.org/en/document/17uj8n5fwcv?page=2
+BW,fair_use_exceptions,"Closed list: private copying, quotation, teaching, libraries & archives, programs, temporary copies",medium,https://ictpolicyafrica.org/en/document/17uj8n5fwcv?page=2
+MU,digital_protection,"Anti-circumvention, TPM & rights-management info rules (Part VI, ss. 37-39)",high,https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/mu/mu024en.pdf
+ET,moral_rights,Attribution & integrity (against distortion/mutilation),low,https://www.scribd.com/document/877337484/IIP-Assignment
+SN,moral_rights,Moral rights (perpetual) for authors and performers,medium,https://openjicareport.jica.go.jp/pdf/12113965_03.pdf
+SN,fair_use_exceptions,Limited closed list of exceptions (no specific library exception),medium,https://www.eifl.net/system/files/resources/202312/que_peuvent_faire_les_bibliotheques_au_senegal_en_vertu_de_la_loi_de_2008_sur_le_droit_dauteur.pdf
+CI,fair_use_exceptions,Closed list of exceptions incl. private copying (art. 24),medium,https://www.eifl.net/system/files/resources/202012/eifl_recommendations_cote_divoire.pdf
+CM,digital_protection,Fraudulent neutralisation of effective technical measures treated as infringement,medium,https://www.memoireonline.com/03/13/7071/m_La-mise-en-oeuvre-de-la-societe-de-l-information-au-Cameroun-enjeux-et-perspectives-au-regard-de73.html
+MA,digital_protection,Circumvention devices & works stripped of rights-management info treated as infringing (Law 34-05),high,https://ictpolicyafrica.org/en/document/yu9qfo95bqm?page=7
+JO,digital_protection,Anti-circumvention / technological protection rules (art. 55; criticised as incomplete),medium,https://iipa.org/files/uploads/2018/01/IIPA-301-FTA-DISPUTE-SETTLEMENT-JORDAN.pdf
+RW,digital_protection,Prohibits circumventing effective technical measures; copyright-management info protected,high,https://spoor.com/rwanda-new-ip-legislation/
+BH,digital_protection,TPM provisions adopted under US FTA (IIPA flags compliance gaps),low,https://www.iipa.org/files/uploads/2017/12/2007SPEC301BAHRAIN.pdf
+AE,digital_protection,"Dealing in TPM-circumvention devices criminalised (Decree-Law 38/2021, replaced Law 7/2002)",medium,https://arab-digital-economy.org/?p=28026
+EG,digital_protection,UNKNOWN,low,
+QA,orphan_works,UNKNOWN,low,
+QA,digital_protection,UNKNOWN,low,
+QA,fair_use_exceptions,"Closed list: personal use, quotation, teaching illustration, library/education copies (arts 18, 21)",medium,https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/Qatar
+KW,orphan_works,UNKNOWN,low,
+KW,digital_protection,"Circumvention of TPMs penalised (fines up to KD 100,000)",low,https://infojustice.knowledgegov.org/?p=38003
+BH,moral_rights,UNKNOWN,low,
+BH,orphan_works,UNKNOWN,low,
+BH,fair_use_exceptions,UNKNOWN,low,
+OM,moral_rights,"Moral rights perpetual, non-waivable, independent of economic rights",medium,https://en.wikipedia.org/wiki/Copyright_law_of_Oman
+OM,orphan_works,UNKNOWN,low,
+OM,digital_protection,Effective technical measures protected (FTA-driven 2008 amendments),medium,https://en.wikipedia.org/wiki/Copyright_law_of_Oman
+OM,fair_use_exceptions,Statutory list of free uses (art. 20; no freedom of panorama),medium,https://c.enwp.org/wiki/Commons:CRT/Oman
+JO,orphan_works,UNKNOWN,low,
+LB,orphan_works,UNKNOWN,low,
+LB,digital_protection,UNKNOWN,low,
+LB,fair_use_exceptions,"Exhaustive list (arts. 23-34): private copying, teaching, public libraries",medium,https://aub.edu.lb.libguides.com/copyright/Lebanese-Law
+IQ,moral_rights,UNKNOWN,low,
+IQ,orphan_works,UNKNOWN,low,
+IQ,digital_protection,UNKNOWN,low,
+IQ,fair_use_exceptions,Exceptions not specified (only general statements),low,https://journals.uhd.edu.iq/index.php/juhd/article/download/220/111/639
+IR,orphan_works,UNKNOWN,low,
+IR,digital_protection,UNKNOWN,low,
+IR,fair_use_exceptions,"Closed list incl. quotation for literary, scientific, educational & critical purposes (art. 7)",medium,https://www.wipo.int/wipolex/en/text/495363
+MA,orphan_works,UNKNOWN,low,
+TN,orphan_works,UNKNOWN,low,
+TN,digital_protection,UNKNOWN,low,
+DZ,orphan_works,UNKNOWN,low,
+DZ,digital_protection,UNKNOWN,low,
+GH,orphan_works,UNKNOWN,low,
+GH,digital_protection,UNKNOWN,low,
+SN,orphan_works,UNKNOWN,low,
+SN,digital_protection,"TPMs protected; neutralisation penalised (arts. 125, 145)",high,https://www.memoireonline.com/10/12/6258/m_Leffectivite-de-la-protection-des-droits-de-propriete-litteraire-et-artistique17.html
+CI,moral_rights,UNKNOWN,low,
+CI,orphan_works,UNKNOWN,low,
+CI,digital_protection,UNKNOWN,low,
+UG,orphan_works,UNKNOWN,low,
+RW,moral_rights,UNKNOWN,low,
+RW,orphan_works,UNKNOWN,low,
+TZ,orphan_works,UNKNOWN,low,
+ZM,orphan_works,UNKNOWN,low,
+ZM,digital_protection,UNKNOWN,low,
+MW,moral_rights,Moral rights recognised (s. 30),medium,https://malawilii.org/akn/mw/act/2016/26
+ZW,orphan_works,UNKNOWN,low,
+ZW,digital_protection,UNKNOWN,low,
+BW,orphan_works,UNKNOWN,low,
+AO,moral_rights,UNKNOWN,low,
+AO,orphan_works,UNKNOWN,low,
+AO,digital_protection,UNKNOWN,low,
+AO,fair_use_exceptions,UNKNOWN,low,
+ET,orphan_works,UNKNOWN,low,
+ET,digital_protection,UNKNOWN,low,
+ET,fair_use_exceptions,UNKNOWN,low,
+MU,orphan_works,UNKNOWN,low,
+MU,fair_use_exceptions,UNKNOWN,low,
+CM,orphan_works,UNKNOWN,low,

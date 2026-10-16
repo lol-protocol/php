@@ -2,10 +2,11 @@
   {
     "country_code": "ZA",
     "country_name": "South Africa",
+    "region": "middle_east_africa",
     "law_name": "Protection of Personal Information Act (POPIA)",
     "jurisdiction": "Information Regulator",
     "enactment_date": "2013-11-26",
-    "effective_date": "2021-07-01",
+    "effective_date": "2020-07-01",
     "scope": "South Africa Residents",
     "applies_to": "Public & private bodies",
     "key_requirements": "Conditions & consent",
@@ -14,8 +15,27 @@
     "enforcement_authority": "South Africa Information Regulator",
     "penalties_range": "Up to R10M or 10% revenue",
     "exemptions": "Government functions",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.justice.gov.za/",
     "language": "English",
-    "notes": "Africa's comprehensive privacy law"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Africa's comprehensive privacy law",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2021-07-01",
+        "to": "2020-07-01"
+      }
+    ]
   }
 ]

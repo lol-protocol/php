@@ -1,0 +1,69 @@
+[
+  {
+    "country_code": "UG",
+    "country_name": "Uganda",
+    "region": "middle_east_africa",
+    "law_name": "Data Protection and Privacy Act 2019 (DPPA)",
+    "jurisdiction": "Personal Data Protection Office (PDPO)",
+    "enactment_date": "2019-02-25",
+    "effective_date": "2019-05-03",
+    "scope": "Individuals in Uganda",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Registration with the PDPO, consent, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "s.18: not retained longer than necessary for purpose unless required/authorised by law, lawful purpose, contract or data subject consent",
+    "enforcement_authority": "Personal Data Protection Office (PDPO) within NITA-U",
+    "penalties_range": "Up to 245 currency points or 2% of annual gross turnover (corporations); up to 10 years' imprisonment",
+    "exemptions": "National security; household use",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://ulii.org/en/akn/ug/act/2019/9/eng@2019-05-03",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Gazetted 3 May 2019 (some sources give that as commencement); Regulations 2021",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.ulii.org/akn/ug/act/2019/9",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "effective_date": {
+        "url": "https://www.ulii.org/akn/ug/act/2019/9",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://monitor.co.ug/uganda/news/national/does-uber-s-exit-put-personal-data-at-risk--5626822",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "s.18: not retained longer than necessary for purpose unless required/authorised by law, lawful purpose, contract or data subject consent"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "effective_date",
+        "from": "2019-03-01",
+        "to": "2019-05-03"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

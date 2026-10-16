@@ -19,14 +19,14 @@ jobs:
 
       - name: Syntax check (bash -n)
         run: |
-          for f in vps-setup/*.sh vps-setup/monitoring/*.sh; do
+          for f in vps-setup/*.sh vps-setup/monitoring/*.sh vps-setup/tests/e2e/*.sh; do
             bash -n "$f"
           done
 
       # -S warning: avisos y errores. Los avisos de estilo (comillas en variables
       # que a proposito se dividen, etc.) no bloquean.
       - name: ShellCheck
-        run: shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh
+        run: shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh vps-setup/tests/e2e/*.sh
 
       - name: Install bats and logrotate
         run: sudo apt-get update && sudo apt-get install -y bats logrotate

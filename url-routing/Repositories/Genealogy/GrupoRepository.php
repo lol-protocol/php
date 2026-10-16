@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories\Genealogy;
 
 use App\Repositories\Repository;
+use App\Support\Privacidad;
 
 final class GrupoRepository extends Repository
 {
@@ -35,7 +36,8 @@ final class GrupoRepository extends Repository
     }
 
     /**
-     * Where the surname's bearers were born, counted per place.
+     * Where the surname's bearers were born, counted per place. A birth with a
+     * living participant counts nowhere (see Privacidad::sucesos()).
      *
      * @return list<array{lugar_ruta: string, lugar_nombre: string, total: int}>
      */
@@ -44,8 +46,8 @@ final class GrupoRepository extends Repository
         return $this->db->fetchAll(
             "SELECT s.lugar_ruta, l.nombre AS lugar_nombre, COUNT(DISTINCT p.id) AS total
                FROM {$this->privacidad->personas()} p
-               JOIN suceso_participantes sp ON sp.persona_id = p.id
-               JOIN sucesos s ON s.id = sp.suceso_id AND s.tipo = 'nacimiento'
+               JOIN suceso_participantes sp ON sp.persona_id = p.id AND sp.rol = '" . Privacidad::ROL_PRINCIPAL . "'
+               JOIN {$this->privacidad->sucesos()} s ON s.id = sp.suceso_id AND s.tipo = 'nacimiento'
                JOIN lugares l ON l.ruta = s.lugar_ruta
               WHERE p.grupo_id = ?
               GROUP BY s.lugar_ruta, l.nombre

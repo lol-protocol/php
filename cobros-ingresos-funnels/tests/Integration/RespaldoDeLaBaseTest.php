@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * El respaldo con pg_dump de verdad, contra la base de los tests (variables DB_*), y el comando
- * database/respaldar.php corrido en otro proceso. Cada test trabaja en su propia carpeta temporal.
+ * bin/respaldar.php corrido en otro proceso. Cada test trabaja en su propia carpeta temporal.
  * No necesita datos de ejemplo mas alla de que la base tenga las tablas.
  */
 final class RespaldoDeLaBaseTest extends TestCase
@@ -281,7 +281,7 @@ final class RespaldoDeLaBaseTest extends TestCase
     {
         $raiz = dirname(__DIR__, 2);
         $proceso = proc_open(
-            [PHP_BINARY, $raiz . '/database/respaldar.php', ...$argumentos],
+            [PHP_BINARY, $raiz . '/bin/respaldar.php', ...$argumentos],
             [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $tuberias,
             $raiz,

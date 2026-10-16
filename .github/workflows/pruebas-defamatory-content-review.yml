@@ -1,0 +1,75 @@
+name: Pruebas defamatory-content-review
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "defamatory-content-review/**"
+      - ".github/workflows/pruebas-defamatory-content-review.yml"
+  pull_request:
+    paths:
+      - "defamatory-content-review/**"
+      - ".github/workflows/pruebas-defamatory-content-review.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  phpunit:
+    name: PHP ${{ matrix.php-version }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: defamatory-content-review
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.1', '8.2', '8.3', '8.4']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: intl, mbstring
+          coverage: none
+          tools: phpstan:2.1
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run tests
+        run: ./vendor/bin/phpunit
+
+      - name: Static analysis
+        run: phpstan analyse --no-progress
+
+      - name: Benchmark smoke run
+        run: php bin/benchmark.php 2000
+
+  chat-front-guard:
+    name: defamatory-content-review / front guard (Node)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Run tests
+        run: node --test 'defamatory-content-review/js/tests/*.test.js'

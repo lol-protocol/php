@@ -2,7 +2,8 @@
   {
     "country_code": "ZA",
     "country_name": "South Africa",
-    "law_name": "Copyright Act 1978 (amended 2019)",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Act 98 of 1978",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",
     "author_rights": "Publishing & production rights",
@@ -13,6 +14,28 @@
     "registration_required": "No",
     "enforcement_body": "South African IP Commission",
     "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.cipro.gov.za/"
+    "treaties_not_party": "",
+    "linked_resources": "https://www.cipro.gov.za/",
+    "notes": "The 2019 Copyright Amendment Bill has not been enacted; the 1978 Act applies",
+    "pending_change": "Copyright Amendment Bill back in Parliament after the Constitutional Court ruling of 26 Jun 2026 ([2026] ZACC 26)",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "The 2019 Copyright Amendment Bill has not been enacted; the 1978 Act applies"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Copyright Act 1978 (amended 2019)",
+        "to": "Copyright Act 98 of 1978"
+      }
+    ]
   }
 ]

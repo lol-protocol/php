@@ -2,6 +2,7 @@
   {
     "country_code": "IL",
     "country_name": "Israel",
+    "region": "middle_east_africa",
     "law_name": "Privacy Protection Law",
     "jurisdiction": "Privacy Protection Authority",
     "enactment_date": "1981-03-31",
@@ -11,11 +12,70 @@
     "key_requirements": "Lawful collection & transparency",
     "data_categories": "Personal data",
     "retention_period": "As appropriate",
-    "enforcement_authority": "Israeli Authority",
-    "penalties_range": "Fines & compliance orders",
+    "enforcement_authority": "Privacy Protection Authority (PPA)",
+    "penalties_range": "Administrative fines up to NIS 320,000 per violation (higher if aggravated / per-data-subject based); criminal penalties",
     "exemptions": "Government functions",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.justice.gov.il/",
     "language": "Hebrew/English",
-    "notes": "Middle East region"
+    "frameworks": "EU-Adequacy",
+    "frameworks_not": "GDPR/CoE-108",
+    "notes": "Amendment 13 effective 2025-08-14: PPA fining powers, DPO duty, broader definitions",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enforcement_authority": {
+        "url": "https://www.pearlcohen.com/major-amendment-to-israeli-privacy-law-set-to-take-effect/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "penalties_range": {
+        "url": "https://israeldesks.com/israel-enacts-strict-privacy-reform/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.pearlcohen.com/major-amendment-to-israeli-privacy-law-set-to-take-effect/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "Amendment 13 effective 2025-08-14: PPA fining powers, DPO duty, broader definitions"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Up to NIS 320,000 per violation (bill figure; up to NIS 3.2M for >1M sensitive records) (unconfirmed)",
+        "to": "Administrative fines up to NIS 320,000 per violation (higher if aggravated / per-data-subject based); criminal penalties"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Fines & compliance orders",
+        "to": "Up to NIS 320,000 per violation (bill figure; up to NIS 3.2M for >1M sensitive records) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Israeli Authority",
+        "to": "Privacy Protection Authority (PPA)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Middle East region",
+        "to": ""
+      }
+    ]
   }
 ]

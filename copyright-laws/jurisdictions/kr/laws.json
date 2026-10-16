@@ -2,6 +2,7 @@
   {
     "country_code": "KR",
     "country_name": "South Korea",
+    "region": "asia_pacific",
     "law_name": "Copyright Act",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
@@ -11,8 +12,36 @@
     "digital_protection": "DMCA-equivalent laws",
     "fair_use_exceptions": "Educational use exceptions",
     "registration_required": "No",
-    "enforcement_body": "Korean Intellectual Property Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.kipo.go.kr/"
+    "enforcement_body": "Ministry of Culture, Sports and Tourism (MCST)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.kipo.go.kr/",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "curated",
+    "confidence": "",
+    "last_checked": "",
+    "sources": {
+      "enforcement_body": {
+        "url": "https://www.mcst.go.kr/english/policy/pressView.jsp?pSeq=524",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Korean Intellectual Property Office",
+        "to": "Ministry of Culture, Sports and Tourism (MCST)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

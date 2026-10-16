@@ -1,0 +1,58 @@
+[
+  {
+    "country_code": "PY",
+    "country_name": "Paraguay",
+    "region": "americas",
+    "law_name": "Personal Data Protection Law (Law No. 7593/2025)",
+    "jurisdiction": "National Personal Data Protection Agency (ANPDP)",
+    "enactment_date": "2025-11-27",
+    "effective_date": "2027-11-27",
+    "scope": "Individuals in Paraguay",
+    "applies_to": "Public & private organizations (incl. foreign firms targeting Paraguay)",
+    "key_requirements": "Consent & lawful basis, data subject rights, security & transparency duties",
+    "data_categories": "Personal data; sensitive data; children's data",
+    "retention_period": "Art. 4 principles incl. storage-period limitation: keep data only as long as necessary for processing purposes; deadlines may be set by the authority",
+    "enforcement_authority": "National Personal Data Protection Agency (Agencia Nacional de Protección de Datos Personales) under MITIC",
+    "penalties_range": "Up to 10,000 minimum daily wages (jornales mínimos)",
+    "exemptions": "Personal/household use; defence, security & criminal investigation",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.bacn.gov.py/leyes-paraguayas/12924/ley-n-7593-2025-de-protecci-n-de-datos-personales-en-la-rep-blica-del-paraguay",
+    "language": "Spanish",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Enacted; main obligations apply 24 months after publication (Nov 2027); regulations pending",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "high",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.clym.io/regulations/law-no-7593-paraguay",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://www.kiteworks.com/sites/default/files/resources/kiteworks-brief-enables-support-for-paraguays-personal-data-protection-law.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 4 principles incl. storage-period limitation: keep data only as long as necessary for processing purposes; deadlines may be set by the authority"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

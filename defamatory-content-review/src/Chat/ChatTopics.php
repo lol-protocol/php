@@ -26,7 +26,8 @@ final class ChatTopics
     private array $legit = [];
     /** @var array<string,true> */
     private array $everyday = [];
-    private bool $collapseRepeats;
+    /** true: también las dobles («puuta»); 'elongated': sólo rachas de 3 o más («puuuta»); false: nada */
+    private bool|string $collapseRepeats;
     /** @var array{types?:list<string>, before?:list<string>, after?:list<string>} */
     private array $targeting;
 
@@ -35,7 +36,7 @@ final class ChatTopics
     {
         $words = TopicInflector::expand($config['words'] ?? [], $language);
         $this->words = new WordList(['meta' => $config['meta'] ?? [], 'words' => $words], $language);
-        $this->collapseRepeats = (bool) ($config['meta']['collapseRepeats'] ?? false);
+        $this->collapseRepeats = $config['meta']['collapseRepeats'] ?? 'elongated';
         foreach ($config['legit'] ?? [] as $word) {
             $this->legit[RepeatedLetters::key($word)] = true;
         }
@@ -49,16 +50,14 @@ final class ChatTopics
             : $patterns;
     }
 
-    public static function fromFile(string $path, string $language): ?self
-    {
-        return is_file($path) ? new self(require $path, $language) : null;
-    }
+    public static function fromFile(string $path, string $language): ?self { return is_file($path) ? new self(require $path, $language) : null; }
 
     /**
-     * Los términos de `$list` en la línea. Donde el idioma lo pide (meta
-     * `collapseRepeats`) también los escritos con letras repetidas
-     * («puuuta»); si sólo hizo falta reducir dobles, el hallazgo trae
-     * `repeat => doubled`. Ver RepeatedLetters. Las palabras de `everyday`
+     * Los términos de `$list` en la línea, también los escritos con 3 o más
+     * letras iguales seguidas («puuuta», «cazzzo»): eso no lo escribe nadie sin
+     * querer, en ningún idioma. Donde el idioma lo pide (meta `collapseRepeats`
+     * => true) también los de letras dobles («puuta»), con `repeat => doubled`;
+     * con false, ninguno. Ver RepeatedLetters. Las palabras de `everyday`
      * («moc», «sık») no se buscan: ver EverydayWords.
      *
      * @return array<int,array<string,mixed>>
@@ -68,7 +67,7 @@ final class ChatTopics
         $text = EverydayWords::mask($text, $this->everyday);
         $search = fn(string $phrase): ?array => $list->search($phrase);
 
-        return WordListScanner::scan($text, $this->collapseRepeats ? RepeatedLetters::searcher($search, $this->legit) : $search);
+        return WordListScanner::scan($text, $this->collapseRepeats !== false ? RepeatedLetters::searcher($search, $this->legit, $this->collapseRepeats === true) : $search);
     }
 
     /** @return array{types?:list<string>, before?:list<string>, after?:list<string>} ver TargetContext */
@@ -76,6 +75,8 @@ final class ChatTopics
 
     /** @return array<string,mixed>|null la entrada de la lista de temas para esa palabra exacta */
     public function word(string $word): ?array { return $this->words->search($word); }
+    /** @return array<int,array<string,mixed>> las frases con forma («te voy a matar»), ver ChatPatternMatcher */
+    public function patterns(): array { return $this->patterns; }
 
     /**
      * @param string $text una lectura de la línea (ver SpacedLetters::variants())

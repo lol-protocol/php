@@ -2,17 +2,85 @@
   {
     "country_code": "BE",
     "country_name": "Belgium",
-    "law_name": "Copyright Law (Loi Belge)",
+    "region": "europe",
+    "law_name": "Code of Economic Law Book XI Title 5 (Copyright and neighbouring rights)",
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Reproduction & distribution",
     "moral_rights": "Paternity & integrity rights",
     "orphan_works": "Collective societies manage",
-    "digital_protection": "Copyright compliance",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
     "fair_use_exceptions": "Fair use exceptions",
     "registration_required": "No",
-    "enforcement_body": "Belgian Copyright Office",
-    "treaties_signatory": "Berne/TRIPS/WCT",
-    "linked_resources": "https://www.belgium.be/"
+    "enforcement_body": "Federal Public Service Economy (FPS Economy / SPF Economie)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/19328",
+    "notes": "1994 Copyright Law codified into CEL Book XI from 2015-01-01; substance largely unchanged",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://legalblogs.wolterskluwer.com/copyright-blog/copyright-in-the-new-belgian-code-of-economic-law-codification-and-new-regulation/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "term_of_protection": {
+        "url": "https://legalblogs.wolterskluwer.com/copyright-blog/copyright-in-the-new-belgian-code-of-economic-law-codification-and-new-regulation/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "enforcement_body": {
+        "url": "https://legalblogs.wolterskluwer.com/copyright-blog/copyright-in-the-new-belgian-code-of-economic-law-codification-and-new-regulation/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.lexgo.be/en/news-and-articles/2695-intellectual-property-legislation-is-now-integrated-into-the-new-belgian-code-of-economic-law",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "",
+        "to": "1994 Copyright Law codified into CEL Book XI from 2015-01-01; substance largely unchanged"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "linked_resources",
+        "from": "https://www.belgium.be/",
+        "to": "https://www.wipo.int/wipolex/en/legislation/details/19328"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Copyright Law (Loi Belge)",
+        "to": "Code of Economic Law Book XI Title 5 (Copyright and neighbouring rights)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_body",
+        "from": "Belgian Copyright Office",
+        "to": "Federal Public Service Economy (FPS Economy / SPF Economie)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright compliance",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

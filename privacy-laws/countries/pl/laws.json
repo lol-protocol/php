@@ -2,20 +2,69 @@
   {
     "country_code": "PL",
     "country_name": "Poland",
-    "law_name": "General Data Protection Regulation (GDPR)",
+    "region": "europe",
+    "law_name": "Act of 10 May 2018 on the Protection of Personal Data",
     "jurisdiction": "UODO (Polish DPA)",
-    "enactment_date": "2018-05-25",
+    "enactment_date": "2018-05-10",
     "effective_date": "2018-05-25",
     "scope": "Polish Residents",
     "applies_to": "All organizations",
-    "key_requirements": "GDPR compliance",
+    "key_requirements": "GDPR applies: lawful basis, data subject rights, breach notification",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "UODO",
+    "enforcement_authority": "Personal Data Protection Office (UODO)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://uodo.gov.pl/",
     "language": "Polish",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enactment_date": {
+        "url": "https://rm.coe.int/belarus-study-visit-may-2019-presentation-krzysztof-krol/1680947923",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://cms.law/en/lux/publication/gdpr-enforcement-tracker-report/poland",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2018-05-10"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "General Data Protection Regulation (GDPR)",
+        "to": "Act of 10 May 2018 on the Protection of Personal Data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "UODO",
+        "to": "Personal Data Protection Office (UODO)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

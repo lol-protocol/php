@@ -1,0 +1,53 @@
+[
+  {
+    "country_code": "NP",
+    "country_name": "Nepal",
+    "region": "asia_pacific",
+    "law_name": "Privacy Act 2075 (2018)",
+    "jurisdiction": "Courts & police (no data protection authority)",
+    "enactment_date": "2018-09-18",
+    "effective_date": "2018-09-18",
+    "scope": "Individuals in Nepal",
+    "applies_to": "Public & private organizations",
+    "key_requirements": "Consent for collection & use, confidentiality of personal information, compensation for harm",
+    "data_categories": "Personal information; sensitive information",
+    "retention_period": "Not specified",
+    "enforcement_authority": "No dedicated authority yet",
+    "penalties_range": "Up to 3 years prison and/or NPR 30k fine",
+    "exemptions": "Collection/use permitted for national security or peace and order; disclosure on legal demand for national security (section numbers not confirmed) (unconfirmed)",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://lawcommission.gov.np/content/12261/12261-the-privacy-act-2075/",
+    "language": "Nepali",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Also cited as Individual Privacy Act; Privacy Regulation 2020 supplements it",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "exemptions": {
+        "url": "https://hmis.gov.np/media/22/03_The-Privacy-Act-2075-2018.pdf",
+        "confidence": "low",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "exemptions",
+        "from": "Not specified",
+        "to": "Collection/use permitted for national security or peace and order; disclosure on legal demand for national security (section numbers not confirmed) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

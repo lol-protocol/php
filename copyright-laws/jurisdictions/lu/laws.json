@@ -1,0 +1,53 @@
+[
+  {
+    "country_code": "LU",
+    "country_name": "Luxembourg",
+    "region": "europe",
+    "law_name": "Law of 18 April 2001 on Copyright, Neighbouring Rights and Databases",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous and collective works: 70 years from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity (survive transfer of economic rights; author decides on disclosure)",
+    "orphan_works": "Directive 2012/28/EU implementation (Law of 3 December 2015)",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
+    "fair_use_exceptions": "Closed list of exceptions (InfoSoc Directive art. 5; DSM Directive 2019/790: text and data mining, teaching, preservation)",
+    "registration_required": "No",
+    "enforcement_body": "Intellectual Property Office, Ministry of the Economy",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/2932",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of exceptions (InfoSoc Directive art. 5; DSM Directive 2019/790: text and data mining, teaching, preservation)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

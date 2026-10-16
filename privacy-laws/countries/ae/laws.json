@@ -2,20 +2,79 @@
   {
     "country_code": "AE",
     "country_name": "United Arab Emirates",
-    "law_name": "Federal Law No. 45/2021",
+    "region": "middle_east_africa",
+    "law_name": "Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data",
     "jurisdiction": "DPA Authority",
-    "enactment_date": "2021-11-02",
-    "effective_date": "2022-01-01",
+    "enactment_date": "2021-09-20",
+    "effective_date": "2022-01-02",
     "scope": "UAE Residents",
     "applies_to": "All organizations",
     "key_requirements": "Lawful processing",
     "data_categories": "Personal data",
     "retention_period": "Necessary period",
-    "enforcement_authority": "UAE DPA",
+    "enforcement_authority": "UAE Data Office",
     "penalties_range": "Fines up to AED 500k",
     "exemptions": "Government functions",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.dpa.ae/",
     "language": "Arabic/English",
-    "notes": "UAE privacy law"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "UAE privacy law",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://tamimi.com/news/uaes-new-federal-data-protection-law",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.DataGuidance.com/jurisdiction/uae-federal",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.clydeco.com/en/insights/2021/11/uae-issues-landmark-personal-data-protection-law",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://securiti.ai/uae-personal-data-protection-law/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2022-01-01",
+        "to": "2022-01-02"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2021-11-02",
+        "to": "2021-09-20"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Federal Law No. 45/2021",
+        "to": "Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "UAE DPA",
+        "to": "UAE Data Office"
+      }
+    ]
   }
 ]

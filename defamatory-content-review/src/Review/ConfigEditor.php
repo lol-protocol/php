@@ -36,20 +36,10 @@ final class ConfigEditor
         return substr($text, 0, $lineStart === false ? 0 : $lineStart) . substr($text, $lineEnd === false ? strlen($text) : $lineEnd);
     }
 
-    /** Añade o quita una palabra de una lista de una línea (`'everyday' => [...]`, `'legit' => [...]`). */
+    /** Añade o quita una palabra de una lista de una línea (`'everyday' => [...]`, `'legit' => [...]`): ver ListEditor. */
     public static function editList(string $text, string $key, string $word, bool $add): ?string
     {
-        $quoted = self::quote($word);
-        if (!preg_match("/^(\\s*)'{$key}' => \\[(.*)\\],$/mu", $text, $m, PREG_OFFSET_CAPTURE)) {
-            return $add ? preg_replace("/^(\\s*)'words' => \\[$/mu", "\$1'{$key}' => [{$quoted}],\n\$0", $text, 1) : null;
-        }
-        $items = $m[2][0] === '' ? [] : array_map('trim', explode(',', $m[2][0]));
-        if ($add === in_array($quoted, $items, true)) {
-            return $add ? $text : null;
-        }
-        $items = $add ? [...$items, $quoted] : array_values(array_diff($items, [$quoted]));
-
-        return substr_replace($text, "{$m[1][0]}'{$key}' => [" . implode(', ', $items) . '],', $m[0][1], strlen($m[0][0]));
+        return ListEditor::edit($text, $key, $word, $add);
     }
 
     /** El texto de la entrada, o null si no está. */
@@ -93,7 +83,8 @@ final class ConfigEditor
         return null;
     }
 
-    private static function quote(string $word): string
+    /** La palabra como texto entre comillas simples de PHP: `\` y `'` escapados. */
+    public static function quote(string $word): string
     {
         return "'" . str_replace(['\\', "'"], ['\\\\', "\\'"], $word) . "'";
     }

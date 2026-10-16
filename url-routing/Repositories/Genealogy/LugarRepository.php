@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories\Genealogy;
 
 use App\Repositories\Repository;
+use App\Support\Privacidad;
 
 /**
  * Places are addressed by their code path ("mx/jal/gdl"). Queries about a
@@ -54,7 +55,9 @@ final class LugarRepository extends Repository
 
     /**
      * Personas born in this place or anywhere below it. Living people are left
-     * out: a hidden row would still say that someone was born here, and when.
+     * out: a hidden row would still say that someone was born here, and when. So
+     * are births with a living participant (see Privacidad::sucesos()): the place
+     * of one is what points at that person.
      *
      * @return list<array>
      */
@@ -62,8 +65,8 @@ final class LugarRepository extends Repository
     {
         return $this->db->fetchAll(
             "SELECT DISTINCT p.id, p.nombres, p.apellidos, s.fecha AS nacimiento, l.nombre AS lugar_nombre
-               FROM sucesos s
-               JOIN suceso_participantes sp ON sp.suceso_id = s.id
+               FROM {$this->privacidad->sucesos()} s
+               JOIN suceso_participantes sp ON sp.suceso_id = s.id AND sp.rol = '" . Privacidad::ROL_PRINCIPAL . "'
                JOIN {$this->privacidad->personas()} p ON p.id = sp.persona_id
                JOIN lugares l ON l.ruta = s.lugar_ruta
               WHERE s.tipo = 'nacimiento' AND (s.lugar_ruta = ? OR s.lugar_ruta LIKE ?) AND NOT p.oculta

@@ -2,20 +2,85 @@
   {
     "country_code": "PT",
     "country_name": "Portugal",
-    "law_name": "Data Protection Law",
+    "region": "europe",
+    "law_name": "Law No. 58/2019 (GDPR execution law)",
     "jurisdiction": "Portuguese DPA (CNPD)",
-    "enactment_date": "2018-05-25",
-    "effective_date": "2018-05-25",
+    "enactment_date": "2019-08-08",
+    "effective_date": "2019-08-09",
     "scope": "Portuguese Residents",
     "applies_to": "All entities",
-    "key_requirements": "GDPR compliance",
+    "key_requirements": "GDPR applies: lawful basis, data subject rights, breach notification",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "Portuguese CNPD",
+    "enforcement_authority": "National Data Protection Commission (CNPD)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.cnpd.pt/",
     "language": "Portuguese",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "GDPR implementation",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.vda.pt/xms/files/05_Publicacoes/2019/Flashes_Newsletters/Flash_VdA_-_Publicacao_da_Lei_de_Execucao_do_RGPD_na_ordem_Juridica_Nacional.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enactment_date": {
+        "url": "https://www.agefe.pt/uploads/new_documents/Circular102019sobreLeideExecuoNacionaldoRegulamentoGeraldeProteodeDadosRGPD.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "effective_date": {
+        "url": "https://www.garrigues.com/pt/pt-PT/news/nova-lei-de-protecao-de-dados-pessoais",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "2018-05-25",
+        "to": "2019-08-09"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "2018-05-25",
+        "to": "2019-08-08"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Law",
+        "to": "Law No. 58/2019 (GDPR execution law)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Portuguese CNPD",
+        "to": "National Data Protection Commission (CNPD)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

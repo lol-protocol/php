@@ -2,6 +2,7 @@
   {
     "country_code": "CN",
     "country_name": "China",
+    "region": "asia_pacific",
     "law_name": "Personal Information Protection Law (PIPL)",
     "jurisdiction": "Cyberspace Administration",
     "enactment_date": "2021-08-20",
@@ -12,10 +13,46 @@
     "data_categories": "Personal data",
     "retention_period": "Not indefinitely",
     "enforcement_authority": "CAC (Cyberspace Admin)",
-    "penalties_range": "Administrative penalties",
+    "penalties_range": "Up to CNY 50M or 5% of prior-year turnover (serious cases); individuals CNY 100k-1M",
     "exemptions": "Government functions",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.cac.gov.cn/",
     "language": "Chinese",
-    "notes": "China's privacy law"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "PIPL unamended; audit measures (May 2025), cross-border certification (Jan 2026), CSL fines raised Jan 2026",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "penalties_range": {
+        "url": "https://prighter.com/resources/laws/chinese-pipl/articles/article-66",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.arnoldporter.com/en/perspectives/advisories/2026/02/china-data-privacy-and-cybersecurity-2025-year-in-review",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "China's privacy law",
+        "to": "PIPL unamended; audit measures (May 2025), cross-border certification (Jan 2026), CSL fines raised Jan 2026"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "penalties_range",
+        "from": "Administrative penalties",
+        "to": "Up to CNY 50M or 5% of prior-year turnover (serious cases); individuals CNY 100k-1M"
+      }
+    ]
   }
 ]

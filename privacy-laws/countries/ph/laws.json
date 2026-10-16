@@ -2,7 +2,8 @@
   {
     "country_code": "PH",
     "country_name": "Philippines",
-    "law_name": "Data Privacy Act (DPA)",
+    "region": "asia_pacific",
+    "law_name": "Data Privacy Act of 2012 (Republic Act No. 10173)",
     "jurisdiction": "National Privacy Commission",
     "enactment_date": "2012-08-15",
     "effective_date": "2012-08-15",
@@ -11,11 +12,59 @@
     "key_requirements": "Lawful collection & transparency",
     "data_categories": "Personal data",
     "retention_period": "3 years after service",
-    "enforcement_authority": "NPC (Philippines)",
+    "enforcement_authority": "National Privacy Commission (NPC)",
     "penalties_range": "Up to PHP 1M fine",
     "exemptions": "Government functions",
-    "website_url": "https://www.npc.gov.ph/",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://privacy.gov.ph/",
     "language": "English/Filipino",
-    "notes": "Southeast Asia region"
+    "frameworks": "APEC-CBPR",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "",
+    "pending_change": "Amendment bills pending in Congress; none enacted",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://resourcehub.bakermckenzie.com/en/resources/global-data-and-cyber-handbook/asia-pacific/philippines/topics/key-data-and-cybersecurity-laws",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "enforcement_authority": {
+        "url": "https://privacy.gov.ph/wp-content/uploads/2025/05/NPC_CC-2025-1st-Edition.pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Privacy Act (DPA)",
+        "to": "Data Privacy Act of 2012 (Republic Act No. 10173)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "NPC (Philippines)",
+        "to": "National Privacy Commission (NPC)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "Southeast Asia region",
+        "to": ""
+      },
+      {
+        "date": "2026-10-11",
+        "field": "website_url",
+        "from": "https://www.npc.gov.ph/",
+        "to": "https://privacy.gov.ph/"
+      }
+    ]
   }
 ]

@@ -1,0 +1,81 @@
+[
+  {
+    "country_code": "ME",
+    "country_name": "Montenegro",
+    "region": "europe",
+    "law_name": "Law on Copyright and Related Rights (Official Gazette of Montenegro 37/2011, as amended to 100/2024)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous and collective works: 70 years from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Moral rights not transferable by contract",
+    "orphan_works": "Orphan works provisions modelled on Directive 2012/28/EU (2016 amendment; Art. 20, 69e-69f)",
+    "digital_protection": "Technological measures protected under art. 186; circumvention of effective TPMs treated as infringement (2016 amendment); RMI article not confirmed (unconfirmed)",
+    "fair_use_exceptions": "Closed list of free uses incl. TDM (2024), parody/pastiche, accessible-format copies",
+    "registration_required": "No (voluntary deposit and recording available)",
+    "enforcement_body": "Intellectual Property Office of Montenegro; Ministry of Economic Development",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22248",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://wipo.int/documents/d/copyright/docs-en-registration-replies-montenegro.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://members.wto.org/crnattachments/2016/IP/MNE/16_5029_00_e.pdf",
+        "confidence": "low",
+        "checked": "2026-10-15"
+      },
+      "fair_use_exceptions": {
+        "url": "https://bdkadvokati.com/montenegro-amends-the-copyright-act-to-catch-up-with-advances-in-the-digital-era",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)",
+        "to": "Technological measures protected under art. 186; circumvention of effective TPMs treated as infringement (2016 amendment); RMI article not confirmed (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of free uses incl. TDM (2024), parody/pastiche, accessible-format copies"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Moral rights not transferable by contract"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

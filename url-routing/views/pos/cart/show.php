@@ -37,6 +37,7 @@
     </tfoot>
 </table>
 <p class="acciones">
+    <a href="/">Seguir comprando</a>
     <a href="/checkout/">Continuar a pagar</a>
     <form action="/cart/vaciar/" method="post" style="display: inline">
         <input type="hidden" name="csrf_token" value="<?= esc(get_csrf_token()) ?>">

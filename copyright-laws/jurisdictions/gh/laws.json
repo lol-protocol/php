@@ -1,0 +1,76 @@
+[
+  {
+    "country_code": "GH",
+    "country_name": "Ghana",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Act, 2005 (Act 690)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Paternity & integrity (perpetual)",
+    "orphan_works": "No specific orphan works regime (IFLA 2012 report: Ghana relies on international guidance); s.14 sets term for anonymous works",
+    "digital_protection": "s.42(1)(h)-(i) offences: circumventing TPMs and trafficking in circumvention devices/services; s.42 also covers removal/alteration of rights management information",
+    "fair_use_exceptions": "Closed list of permitted uses (ss. 19-21: personal & teaching use, program backup, libraries)",
+    "registration_required": "No (voluntary registration available)",
+    "enforcement_body": "Copyright Office (Copyright Department, Ministry of Justice)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/fr/legislation/details/1789",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.unodc.org/cld/en/legislation/gha/copyright_act_/general_provisions/sections_42_43/section_42-43.html",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "fair_use_exceptions": {
+        "url": "https://dti.eui.eu/database/page/230/",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)",
+        "to": "s.42(1)(h)-(i) offences: circumventing TPMs and trafficking in circumvention devices/services; s.42 also covers removal/alteration of rights management information"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "No specific orphan works regime (IFLA 2012 report: Ghana relies on international guidance); s.14 sets term for anonymous works"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of permitted uses (ss. 19-21: personal & teaching use, program backup, libraries)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "WCT party: anti-circumvention protection required by WCT art. 11 (national rule not checked)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

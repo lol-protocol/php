@@ -1,0 +1,69 @@
+[
+  {
+    "country_code": "BA",
+    "country_name": "Bosnia and Herzegovina",
+    "region": "europe",
+    "law_name": "Law on Copyright and Related Rights (2010)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (collective works: 70 years from lawful publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Personal (moral) rights incl. right of repentance/withdrawal",
+    "orphan_works": "Not specified",
+    "digital_protection": "Protection against circumvention of technological measures (2010 Act)",
+    "fair_use_exceptions": "Closed list of limitations; quotation with source (art. 47); private reproduction with levy; teaching, disabled persons, news reporting, libraries/archives",
+    "registration_required": "No",
+    "enforcement_body": "Institute for Intellectual Property of Bosnia and Herzegovina",
+    "treaties_signatory": "Berne/WCT/WPPT",
+    "treaties_not_party": "TRIPS",
+    "linked_resources": "https://ipr.gov.ba/en/intellectual-property/copyright-and-related-rights/copyright-and-related-rights-protection-procedure-in-bih",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://godisnjak.pravni.ues.rs.ba/st%202010%20en/The%20right%20of%20repentance%20in%20the%20light%20of%20new%20Copyright%20law%20in%20Bosnia%20and%20Herzegovina.aspx",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "digital_protection": {
+        "url": "https://merlin.obs.coe.int/article/5428",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      },
+      "fair_use_exceptions": {
+        "url": "https://cir.unsa.ba/wp-content/uploads/2021/02/Zakon-o-autorskim-i-srodnim-pravima-BiH.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of limitations; quotation with source (art. 47); private reproduction with levy; teaching, disabled persons, news reporting, libraries/archives"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Protection against circumvention of technological measures (2010 Act)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Personal (moral) rights incl. right of repentance/withdrawal"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

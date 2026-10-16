@@ -2,7 +2,8 @@
   {
     "country_code": "CO",
     "country_name": "Colombia",
-    "law_name": "Organic Law 1581 of 2012",
+    "region": "americas",
+    "law_name": "Statutory Law 1581 of 2012",
     "jurisdiction": "Superintendencia",
     "enactment_date": "2012-10-17",
     "effective_date": "2013-07-01",
@@ -14,8 +15,45 @@
     "enforcement_authority": "Superintendence of Industry",
     "penalties_range": "Fines up to COP 100M",
     "exemptions": "Government function",
-    "website_url": "https://www.superindustria.gov.co/",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.sic.gov.co/",
     "language": "Spanish",
-    "notes": "South America region"
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "",
+    "pending_change": "Reform bills 214/2025 and 274/2025 pending in the House; not enacted",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "law_name": {
+        "url": "https://www.mincit.gov.co/prensa/noticias/general/actualizar-normas-proteccion-datos-personales",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Organic Law 1581 of 2012",
+        "to": "Statutory Law 1581 of 2012"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "South America region",
+        "to": ""
+      },
+      {
+        "date": "2026-10-11",
+        "field": "website_url",
+        "from": "https://www.superindustria.gov.co/",
+        "to": "https://www.sic.gov.co/"
+      }
+    ]
   }
 ]

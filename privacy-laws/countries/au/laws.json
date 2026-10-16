@@ -2,10 +2,11 @@
   {
     "country_code": "AU",
     "country_name": "Australia",
+    "region": "asia_pacific",
     "law_name": "Privacy Act 1988",
     "jurisdiction": "Office of the Australian Information Commissioner",
-    "enactment_date": "1988-12-21",
-    "effective_date": "1989-06-21",
+    "enactment_date": "1988-12-14",
+    "effective_date": "1989-01-01",
     "scope": "Australian Residents",
     "applies_to": "All organizations",
     "key_requirements": "Australian Privacy Principles",
@@ -14,8 +15,50 @@
     "enforcement_authority": "Australian Information Commissioner",
     "penalties_range": "Up to AUD $50M",
     "exemptions": "Government agencies",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://www.oaic.gov.au/",
     "language": "English",
-    "notes": "13 Australian Privacy Principles"
+    "frameworks": "APEC-CBPR",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Amended by POLA Act 2024 (statutory privacy tort, ADM transparency); Tranche 2 bill in consultation",
+    "pending_change": "Tranche 2 reform: Privacy Amendment (Personal Data Protection) Bill 2026 exposure draft released 31 Aug 2026; not law",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "effective_date": {
+        "url": "https://legislation.gov.au/C2004A03712/asmade/1988-12-14/text/original/pdf",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://mccullough.com.au/2026/08/31/privacy-act-reforms-tranche-2-proposals/",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "13 Australian Privacy Principles",
+        "to": "Amended by POLA Act 2024 (statutory privacy tort, ADM transparency); Tranche 2 bill in consultation"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "effective_date",
+        "from": "1989-06-21",
+        "to": "1989-01-01"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enactment_date",
+        "from": "1988-12-21",
+        "to": "1988-12-14"
+      }
+    ]
   }
 ]

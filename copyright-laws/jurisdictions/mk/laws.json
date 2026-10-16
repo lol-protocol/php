@@ -1,0 +1,65 @@
+[
+  {
+    "country_code": "MK",
+    "country_name": "North Macedonia",
+    "region": "europe",
+    "law_name": "Law on Copyright and Related Rights (2010, as amended through Official Gazette 27/2016)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous works: 70 years from publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "Authorship, first disclosure, integrity & withdrawal",
+    "orphan_works": "Not specified",
+    "digital_protection": "Technological protection measures & rights-management information",
+    "fair_use_exceptions": "Closed list of free uses incl. private copying with equitable remuneration (unconfirmed)",
+    "registration_required": "No",
+    "enforcement_body": "Ministry of Culture (Normative and Administrative Affairs, Copyright and Related Rights)",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22365",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {
+      "fair_use_exceptions": {
+        "url": "https://britishcopyright.org/macedonia_country_report",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of free uses incl. private copying with equitable remuneration (unconfirmed)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Technological protection measures & rights-management information"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Authorship, first disclosure, integrity & withdrawal"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

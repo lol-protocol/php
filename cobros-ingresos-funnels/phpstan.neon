@@ -9,7 +9,7 @@ parameters:
     paths:
         - src
         - public
-        - database
+        - bin
         - tests
     ignoreErrors:
         # Las filas de la base viajan como arrays en todo el codigo. Exigir el

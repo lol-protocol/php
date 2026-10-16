@@ -1,0 +1,82 @@
+[
+  {
+    "country_code": "CU",
+    "country_name": "Cuba",
+    "region": "americas",
+    "law_name": "Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years from 1 January of the year after death (Decree-Law 156 of 1994; originally 25 years); photographs 25 years",
+    "author_rights": "Not specified",
+    "moral_rights": "Moral rights recognized; perpetual, inalienable and imprescriptible",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Non-profit libraries and archives may copy works from permanent collections to preserve or replace them; other exceptions not seen (unconfirmed)",
+    "registration_required": "Not specified",
+    "enforcement_body": "National Copyright Centre (CENDA; created by Decree 20 of 21 Feb 1978)",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/10651",
+    "notes": "Berne accession 20 Nov 1996, in force 20 Feb 1997 (excludes Art. 33(1) ICJ clause); not-party to WCT/WPPT inferred from absence in WIPO Lex country list; WTO membership from member lists; 2006 draft decree-law to update the regime, status unknown",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10651",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10651",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://www.wipo.int/wipolex/en/text/492017",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "moral_rights": {
+        "url": "https://www.ecured.cu/Derecho_de_Autor_en_Cuba",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://files.sld.cu/bmn/files/2018/05/La-Propiedad-Intelectual.pdf",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "fair_use_exceptions": {
+        "url": "https://files.sld.cu/bmn/files/2018/05/La-Propiedad-Intelectual.pdf",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10650",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/wipolex/en/treaties/parties/remarks/CU/15",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

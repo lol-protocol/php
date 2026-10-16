@@ -54,11 +54,14 @@ foreach ($sources as $source => $file) {
             $listed[mb_strtolower($word)] = true;
             fputcsv($out, ['término', $word, $source, $category, $entry['riskType'], $entry['severity'],
                 implode(' ', $marks), $ranks[mb_strtolower($word)] ?? '', $chat->review($word)->getDecision(), '', '']);
-            // «forma»: cada plural/femenino generado con su severidad efectiva; la respuesta va al `by` de la entrada.
-            foreach (in_array($entry['forms'] ?? 'verb', ['noun', 'adj'], true) ? TopicInflector::tagged($language, $word, $entry['forms']) : [] as $form => $tag) {
+            // «forma»: cada plural/femenino (y diminutivo, si `by` lo pide) generado con su severidad efectiva;
+            // la respuesta va al `by` de la entrada. Las que `by` deja en `none` se listan igual, para poder deshacerlo.
+            $dim = (bool) preg_grep('/^dim/', array_keys($entry['by'] ?? []));
+            foreach (in_array($entry['forms'] ?? 'verb', ['noun', 'adj'], true) ? TopicInflector::tagged($language, $word, $entry['forms'], $dim) : [] as $form => $tag) {
+                $severity = FormSeverity::of($tag, $entry['by'] ?? [], $entry['severity'], $source === 'diccionario');
                 if ($form !== $word && !isset($written[mb_strtolower($form)])) {
                     $listed[mb_strtolower($form)] = true;
-                    fputcsv($out, ['forma', $form, $source, $category, $entry['riskType'], FormSeverity::of($tag, $entry['by'] ?? [], $entry['severity'], $source === 'diccionario'),
+                    fputcsv($out, ['forma', $form, $source, $category, $entry['riskType'], $severity,
                         "forma:{$tag} de:{$word}", $ranks[mb_strtolower($form)] ?? '', $chat->review($form)->getDecision(), '', '']);
                 }
             }

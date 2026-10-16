@@ -1,0 +1,71 @@
+[
+  {
+    "country_code": "SK",
+    "country_name": "Slovakia",
+    "region": "europe",
+    "law_name": "Copyright Act (Act No. 185/2015 Coll. on Copyright and Related Rights)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (anonymous/pseudonymous works: 70 years from lawful publication)",
+    "author_rights": "Economic & moral rights",
+    "moral_rights": "S.18(2): disclosure, attribution, integrity; s.18(3) not waivable or transferable, end at author's death; s.18(5) revocable limited consent to interference",
+    "orphan_works": "Orphan Works Directive 2012/28/EU: libraries, archives and museums may use them after a diligent search",
+    "digital_protection": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)",
+    "fair_use_exceptions": "Closed list of exceptions (InfoSoc Directive art. 5; DSM Directive 2019/790: text and data mining, teaching, preservation)",
+    "registration_required": "No",
+    "enforcement_body": "Ministry of Culture of the Slovak Republic",
+    "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/22748",
+    "notes": "",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-08",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "S.18(2): disclosure, attribution, integrity; s.18(3) not waivable or transferable, end at author's death; s.18(5) revocable limited consent to interference"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list of exceptions (InfoSoc Directive art. 5; DSM Directive 2019/790: text and data mining, teaching, preservation)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "Orphan Works Directive 2012/28/EU: libraries, archives and museums may use them after a diligent search"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Anti-circumvention rules (InfoSoc Directive 2001/29/EC, art. 6)"
+      },
+      {
+        "date": "2026-10-11",
+        "field": "linked_resources",
+        "from": "https://www.culture.gov.sk/wp-content/uploads/2020/02/AZ_eng-2.pdf",
+        "to": "https://www.wipo.int/wipolex/en/legislation/details/22748"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

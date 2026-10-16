@@ -1,0 +1,93 @@
+name: Leyes (privacidad y copyright)
+
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'privacy-laws/**'
+      - 'copyright-laws/**'
+      - '.github/workflows/laws-modules.yml'
+  pull_request:
+    paths:
+      - 'privacy-laws/**'
+      - 'copyright-laws/**'
+      - '.github/workflows/laws-modules.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.module }} / PHP ${{ matrix.php-version }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ matrix.module }}
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [privacy-laws, copyright-laws]
+        php-version: ['8.1', '8.4']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # the change-history check compares with the base branch
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Set up PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: curl, dom, mbstring, intl
+          coverage: none
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: PHP syntax
+        run: find . -name '*.php' -not -path './node_modules/*' -print0 | xargs -0 -n1 php -l
+
+      - name: Validate the master CSV
+        run: npm run validate
+
+      - name: The PHP importer reads every row with the header's number of fields
+        run: |
+          php -r '
+            $csv = glob("{countries,jurisdictions}/*_master.csv", GLOB_BRACE)[0];
+            $f = fopen($csv, "r");
+            $header = fgetcsv($f);
+            $rows = 0;
+            while (($row = fgetcsv($f)) !== false) {
+              if (count($row) !== count($header)) { fwrite(STDERR, "row " . ($rows + 2) . ": " . count($row) . " fields\n"); exit(1); }
+              $rows++;
+            }
+            echo "$csv: $rows rows, " . count($header) . " columns\n";
+          '
+
+      - name: Generated files are up to date
+        run: npm run build:check
+
+      - name: Every edit of the CSV is in the change history
+        if: github.event_name == 'pull_request'
+        run: |
+          # The script exists once the module has the change-history tooling.
+          if [ -f scripts/record-changes.js ]; then
+            npm run changes -- --check --since=origin/${{ github.base_ref }}
+          fi
+
+      - name: Unit, API and text-cache tests
+        run: npm test
+
+      - name: Browser and accessibility tests
+        if: matrix.php-version == '8.4'
+        env:
+          E2E_REQUIRED: '1'
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:e2e

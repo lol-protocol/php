@@ -1,0 +1,147 @@
+code,field,value,conf,source
+NE,law_name,Law No. 2022-59 of 16 December 2022 on the Protection of Personal Data (amended by Law No. 2023-31 of 4 July 2023 and Ordinances 2024-16 and 2024-29),medium,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,jurisdiction,HAPDP,medium,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,enactment_date,2022-12-16,medium,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,effective_date,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,scope,Data subjects (natural persons) whose personal data are processed in Niger,low,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,applies_to,Public and private controllers and processors,low,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,key_requirements,"Data-subject rights: access, rectification/erasure, objection and opposition to direct marketing; controllers report annually to HAPDP on data kept beyond the period HAPDP sets (art. 64)",low,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,data_categories,"Personal data; sensitive data (e.g. health, religion, political affiliation)",medium,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,retention_period,Period fixed by HAPDP; controller reports annually on data kept beyond it (art. 64 per DLA Piper),low,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,enforcement_authority,"High Authority for the Protection of Personal Data (HAPDP), independent administrative authority attached to the Presidency; 11 members (art. 7 as amended)",medium,https://www.dataguidance.com/sites/default/files/loi_ndeg_2023-31_modifiant_la_loi_ndeg_2022-59.pdf
+NE,penalties_range,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,exemptions,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,website_url,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law,medium,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,language,French,high,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,notes,"Replaced Law No. 2017-28; Law 2023-31 amended arts 6, 7, 14, 23, 24 and 111; no official English translation; HAPDP site hapdp.ne reportedly hosts the text but was not verified; promulgation and entry-into-force dates not found",medium,https://law.ungovr.org/ai/ne
+NE,deceased_data,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,research_exemption,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+NE,genetic_data,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=NE&t=law
+BF,law_name,Law No. 001-2021/AN of 30 March 2021 on the Protection of Persons with regard to the Processing of Personal Data,high,https://assembleenationale.bf/storage/Loi/kDsWHXOTUCQFVESChh8BlBdiZnCrdTsOpXe1rzmH.pdf
+BF,jurisdiction,CIL,high,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,enactment_date,2021-03-30,medium,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,effective_date,2021-04-21,low,https://www.DataGuidance.com/jurisdiction/burkina-faso
+BF,scope,Data subjects (natural persons) in Burkina Faso,medium,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,applies_to,Controllers established in Burkina Faso and controllers abroad processing from national territory (art. 3),medium,https://assembleenationale.bf/storage/Loi/kDsWHXOTUCQFVESChh8BlBdiZnCrdTsOpXe1rzmH.pdf
+BF,key_requirements,"Prior formalities with CIL before processing; regulated cross-border transfers (contract with foreign recipient with data-return clause, encryption); fuller right to information; health data hosted in Burkina Faso unless CIL exempts",medium,https://www.DataGuidance.com/jurisdiction/burkina-faso
+BF,data_categories,Personal data; sensitive data; health data,medium,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,retention_period,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,enforcement_authority,Commission for Informatics and Liberties (CIL),high,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,penalties_range,Fixed fines of CFA 5 million to 100 million (per CIL president); other criminal sanctions not verified,medium,https://www.sidwaya.info/protection-des-donnees-a-caractere-personnel-une-nouvelle-loi-pour-renforcer-le-cadre-legal/
+BF,exemptions,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,website_url,https://assembleenationale.bf/storage/Loi/kDsWHXOTUCQFVESChh8BlBdiZnCrdTsOpXe1rzmH.pdf,high,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,language,French,high,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,notes,"Repealed and replaced Law No. 010-2004/AN; adoption by the Assembly 30 March 2021, effective date 21 April 2021 given only by secondary sources (DataGuidance, ConsentStack); ConsentStack turnover-percentage fines unverified and not used; enforcement described as nascent",medium,https://law.ungovr.org/ai/bf
+BF,deceased_data,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,research_exemption,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=BF&t=law
+BF,genetic_data,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=BF&t=law
+ML,law_name,Law No. 2013-015 of 21 May 2013 on the Protection of Personal Data in the Republic of Mali (amended by Law No. 2017-070 of 18 December 2017),medium,https://www.DataGuidance.com/jurisdiction/mali
+ML,jurisdiction,APDP,high,https://www.DataGuidance.com/jurisdiction/mali
+ML,enactment_date,2013-05-21,medium,https://www.DataGuidance.com/jurisdiction/mali
+ML,effective_date,UNKNOWN,low,https://www.DataGuidance.com/jurisdiction/mali
+ML,scope,Data subjects in Mali,low,https://www.DataGuidance.com/jurisdiction/mali
+ML,applies_to,"State, local authorities, public bodies, and private natural and legal persons processing data wholly or partly in Mali",medium,https://dataprotection.africa/?p=1335
+ML,key_requirements,"Free right of access; rights to correct, update, block or delete inaccurate or unlawfully kept data; objection right including before first use for third-party prospecting; controller responds within 30 days; APDP approves transfers",medium,https://dataprotection.africa/?p=1335
+ML,data_categories,Personal data; sensitive data,low,https://www.DataGuidance.com/jurisdiction/mali
+ML,retention_period,UNKNOWN,low,https://www.DataGuidance.com/jurisdiction/mali
+ML,enforcement_authority,Personal Data Protection Authority (APDP),high,https://www.DataGuidance.com/jurisdiction/mali
+ML,penalties_range,"APDP: warnings, formal notices, injunctions, withdrawal of approval; courts: fines of about CFA 2.5 million to 20 million plus imprisonment; obstructing APDP inspections CFA 5 million to 20 million (art. 65(7) as amended). 2025 fine of CFA 5 million on a clinic for undeclared CCTV",medium,https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/1026-mali-lautorite-de-protection-des-donnees-a-caractere-personnel-inflige-une-sanction-pecuniaire-a-la-societe-aminata-konate-sarl-sak
+ML,exemptions,"Purely personal or domestic activity, unless data are systematically shared with third parties for dissemination",low,https://dataprotection.africa/?p=1335
+ML,website_url,https://www.DataGuidance.com/jurisdiction/mali,medium,https://www.DataGuidance.com/jurisdiction/mali
+ML,language,French,high,https://www.DataGuidance.com/jurisdiction/mali
+ML,notes,DataGuidance dates the law 23 May 2013; APDP began operating only in 2016; no official English translation; ConsentStack page contains an ARTCI error and was not used,medium,https://caseguard.com/articles/a-new-legal-basis-for-data-processing-in-mali/
+ML,deceased_data,UNKNOWN,low,https://www.DataGuidance.com/jurisdiction/mali
+ML,research_exemption,UNKNOWN,low,https://www.DataGuidance.com/jurisdiction/mali
+ML,genetic_data,UNKNOWN,low,https://www.DataGuidance.com/jurisdiction/mali
+GN,law_name,Law No. L/2016/037/AN on Cybersecurity and the Protection of Personal Data,high,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,jurisdiction,None established,medium,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,enactment_date,2016-07-26,low,https://guineenews.org/2023/02/10/loi-sur-la-cybercriminalite-le-cours-magistral-du-juge-mohamed-diawara-aux-journalistes-a-lambassade-des-usa/
+GN,effective_date,2016-07-28,low,https://www.dataguidance.com/jurisdiction/guinea
+GN,scope,Data subjects in Guinea,low,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,applies_to,"Controllers processing personal data (Part 2 of the law, 65 articles)",low,https://guineenews.org/2023/02/10/loi-sur-la-cybercriminalite-le-cours-magistral-du-juge-mohamed-diawara-aux-journalistes-a-lambassade-des-usa/
+GN,key_requirements,Free right to object to processing for prospecting; direct prospecting without prior written consent is punished; restrictions on cross-border transfers,low,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,data_categories,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,retention_period,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,enforcement_authority,"None operational: art. 47 provides for an authority to be set up by regulation but it is not yet established (DLA Piper, dataprotection.africa)",medium,https://dataprotection.africa/guinea/
+GN,penalties_range,Direct prospecting without prior written consent: 1 to 5 years imprisonment and a fine (amount not found),medium,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,exemptions,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,website_url,https://www.dlapiperdataprotection.com/?c=GN&t=law,medium,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,language,French,high,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,notes,"Dates conflict (26 vs 28 July 2016); ConsentStack claims a CNIL Guinea but this contradicts DLA Piper; 2025 minister mentioned a new personal data bill, not verified as adopted; no official English translation",medium,https://www.digitalbusiness.africa/guinee-les-grandes-priorites-de-rose-pola-pricemou-pour-renforcer-le-secteur-du-numerique-en-2025/
+GN,deceased_data,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,research_exemption,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=GN&t=law
+GN,genetic_data,UNKNOWN,low,https://www.dlapiperdataprotection.com/?c=GN&t=law
+BI,law_name,Law No. 1/03 of 10 March 2026 on the Protection of Personal Data,medium,https://www.mofo.com/privacy-library/burundi
+BI,jurisdiction,Independent oversight authority (not yet confirmed operational),low,https://www.osiris.sn/burundi-le-parlement-adopte-une-loi-cle-sur-la-protection-des-donnees.html
+BI,enactment_date,2026-03-10,medium,https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf
+BI,effective_date,2026-03-10,medium,https://www.mofo.com/privacy-library/burundi
+BI,scope,Data subjects in Burundi,low,https://www.offlist.me/what-is-burundi-law-1-03-2026
+BI,applies_to,"Public and private bodies and natural persons, for automated and non-automated processing, including controllers using processing means located in Burundi",medium,https://www.offlist.me/what-is-burundi-law-1-03-2026
+BI,key_requirements,UNKNOWN,low,https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf
+BI,data_categories,UNKNOWN,low,https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf
+BI,retention_period,UNKNOWN,low,https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf
+BI,enforcement_authority,Independent administrative authority created by the law (press: Agency for the Protection of Personal Data; ARCT mentioned by trackers); no operational body confirmed,low,https://www.osiris.sn/burundi-le-parlement-adopte-une-loi-cle-sur-la-protection-des-donnees.html
+BI,penalties_range,"Criminal penalties for violations, amounts not found; Penal Code and ICT-offences law still apply",low,https://www.osiris.sn/burundi-le-parlement-adopte-une-loi-cle-sur-la-protection-des-donnees.html
+BI,exemptions,UNKNOWN,low,https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf
+BI,website_url,https://www.mofo.com/privacy-library/burundi,low,https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf
+BI,language,French,low,https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf
+BI,notes,National Assembly adopted the bill unanimously on 15 January 2026; no gazette text seen; language inferred from French-language press coverage,medium,https://www.osiris.sn/burundi-le-parlement-adopte-une-loi-cle-sur-la-protection-des-donnees.html
+BI,deceased_data,UNKNOWN,low,https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf
+BI,research_exemption,UNKNOWN,low,https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf
+BI,genetic_data,UNKNOWN,low,https://www.ktaadvocates.com/wp-content/uploads/2026/04/A-STRATEGIC-GUIDE-TO-DATA-PROTECTION-AND-PRIVACY-IN-EAST-AFRICA-1.pdf
+BJ,law_name,"Law No. 2017-20 of 20 April 2018 on the Digital Code (Book V on personal data protection, arts 379-490), amended by Law No. 2020-35 of 6 January 2021",medium,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,jurisdiction,APDP,high,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,enactment_date,2018-04-20,medium,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,effective_date,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,scope,Data subjects in Benin,low,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,applies_to,Public and private bodies processing personal data by automated or non-automated means,medium,https://www.consentstack.io/regulations/bj-code-numerique
+BJ,key_requirements,"APDP oversight of collection, processing, transmission, storage and use of personal data; regulation of sensitive data and international transfers with specified exceptions",medium,https://www.consentstack.io/regulations/bj-code-numerique
+BJ,data_categories,Personal data; sensitive data,medium,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,retention_period,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,enforcement_authority,"Personal Data Protection Authority (APDP), independent administrative authority",high,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,penalties_range,"Repeat offences within 5 years: up to CFA 100 million or 5% of pre-tax sales, capped at CFA 100 million (secondary source, no article)",low,https://www.consentstack.io/regulations/bj-code-numerique
+BJ,exemptions,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,website_url,https://sgg.gouv.bj/doc/loi-2017-20/download,medium,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,language,French,high,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,notes,"Parliament adopted 13 June 2017; presidential assent 23 April 2018; Law 2020-35 amended arts 121, 125, 464 (APDP reduced from 11 to 8 members); also Law No. 2009-09 of 22 May 2009; Benin APDP is observer at Convention 108 Committee but accession not confirmed",medium,https://www.coe.int/web/data-protection/-/the-personal-data-protection-authority-apdp-of-benin-at-the-committee-of-convention-108-
+BJ,deceased_data,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,research_exemption,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+BJ,genetic_data,UNKNOWN,low,https://www.dlapiperdataprotection.com/index.html?c=BJ&t=law
+TG,law_name,Law No. 2019-014 of 29 October 2019 on the Protection of Personal Data,high,https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf
+TG,jurisdiction,IPDCP,high,https://www.osiris.sn/protection-des-donnees-personnelles-au-togo-l-ipdcp-entame-sa-mission.html
+TG,enactment_date,2019-10-29,high,https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf
+TG,effective_date,UNKNOWN,low,https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf
+TG,scope,Data subjects (natural persons) in Togo,low,https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf
+TG,applies_to,Public and private controllers,low,https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel
+TG,key_requirements,"Consent, transparency and security (ch. II); prior declaration to IPDCP with receipt within one month; prior authorization for genetic, health, criminal or biometric data; rights to information (art. 35), access (art. 39), objection, erasure, rectification",medium,https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel
+TG,data_categories,"Personal data; sensitive data incl. genetic, health, criminal, biometric",medium,https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel
+TG,retention_period,UNKNOWN,low,https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf
+TG,enforcement_authority,"Personal Data Protection Authority (IPDCP, Instance de protection des donnees a caractere personnel); launched activities 28 March 2025",medium,https://www.osiris.sn/protection-des-donnees-personnelles-au-togo-l-ipdcp-entame-sa-mission.html
+TG,penalties_range,"Unlawful collection or retention of sensitive data without explicit consent: 1 to 5 years prison and fine of CFA 1 to 10 million, same for retention beyond legal periods and fraudulent CCTV (per IPDCP); a secondary tracker gives CFA 1 to 25 million",low,https://fr.allafrica.com/stories/202512040384.html
+TG,exemptions,Some processing exempt from declaration (articles not found),low,https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel
+TG,website_url,https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf,high,https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf
+TG,language,French,high,https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf
+TG,notes,"8 chapters, 96 articles; published Journal officiel no. 26 ter of 29 Oct 2019; effective date not found; one tracker lists Togo as not party to Convention 108; mandatory CCTV declaration began July 2025",medium,https://dataprotection.africa/?p=2922
+TG,deceased_data,UNKNOWN,low,https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf
+TG,research_exemption,UNKNOWN,low,https://www.afapdp.org/wp-content/uploads/2020/02/TOGO-JOS_29_10_2019-64E-ANNEE-N°26-TER.pdf
+TG,genetic_data,Genetic data requires prior authorization from IPDCP; genetic identity is part of the definition of personal data (art. 4),medium,https://droitmediasfinance.com/index.php/actualites/droit-tech-fintech/54-togo-que-dit-la-loi-relative-a-la-protection-des-donnees-a-caractere-personnel
+MR,law_name,Law No. 2017-020 of 22 July 2017 on the Protection of Personal Data,medium,https://dti.eui.eu/database/page/157
+MR,jurisdiction,APD,medium,https://dti.eui.eu/database/page/157
+MR,enactment_date,2017-07-22,medium,https://dti.eui.eu/database/page/157
+MR,effective_date,UNKNOWN,low,https://dti.eui.eu/database/page/157
+MR,scope,Data subjects in Mauritania,low,https://dti.eui.eu/database/page/157
+MR,applies_to,"Natural persons, the State, local authorities and public or private legal persons, including controllers established or using processing means in Mauritania",medium,https://www.offlist.me/what-is-mauritania-law-2017-020
+MR,key_requirements,"Access requests (arts 53-58), objection (art. 59), rectification and deletion (arts 61-63) with a one-month controller response; breach notification duties reported",medium,https://www.offlist.me/what-is-mauritania-law-2017-020
+MR,data_categories,Personal data,low,https://dti.eui.eu/database/page/157
+MR,retention_period,UNKNOWN,low,https://dti.eui.eu/database/page/157
+MR,enforcement_authority,"Personal Data Protection Authority (APD), created by art. 64; constituted in February 2022 (decree 2022-013)",medium,https://www.offlist.me/what-is-mauritania-law-2017-020
+MR,penalties_range,UNKNOWN,low,https://dti.eui.eu/database/page/157
+MR,exemptions,UNKNOWN,low,https://dti.eui.eu/database/page/157
+MR,website_url,https://dti.eui.eu/database/page/157,low,https://dti.eui.eu/database/page/157
+MR,language,French,medium,https://dti.eui.eu/database/page/157
+MR,notes,"Published in Journal officiel no. 1400 of 15 November 2017; APD internal rules dated 23 Oct 2023; Malabo ratification claims conflict (9 May 2023 vs 15th ratifier), not used; old DataGuidance entry calling the law a bill is outdated",medium,https://www.offlist.me/what-is-mauritania-law-2017-020
+MR,deceased_data,UNKNOWN,low,https://dti.eui.eu/database/page/157
+MR,research_exemption,UNKNOWN,low,https://dti.eui.eu/database/page/157
+MR,genetic_data,UNKNOWN,low,https://dti.eui.eu/database/page/157
+SL,status,NOLAW: no general data-protection law in force; Data Protection and Right to Access Information Bill 2025 completed national validation 7 Nov 2025 and Cabinet approved a data protection policy and drafting on 21 April 2026; only the Cyber Security and Crime Act 2021 exists,medium,https://moice.gov.sl/moice-concludes-final-national-validation-of-the-data-protection-and-right-to-access-information-bill-2025/
+LR,status,"NOLAW: no general data-protection law enacted; personal-information bill under House Committee on Posts and Telecommunications review (reported 2025), no authority exists; Constitution art. 16 protects privacy",medium,https://www.dlapiperdataprotection.com/?c=LR&t=law

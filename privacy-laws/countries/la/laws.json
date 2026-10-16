@@ -1,0 +1,99 @@
+[
+  {
+    "country_code": "LA",
+    "country_name": "Laos",
+    "region": "asia_pacific",
+    "law_name": "Law on Electronic Data Protection No. 25/NA (2017)",
+    "jurisdiction": "Ministry of Technology and Communications",
+    "enactment_date": "2017-05-12",
+    "effective_date": "2017-05-12",
+    "scope": "Individuals and organisations whose electronic data is handled in Lao PDR",
+    "applies_to": "Individuals, organisations and legal entities handling electronic data in Laos, including foreign entities engaged in covered activities",
+    "key_requirements": "Principles for collection, processing and protection of electronic data; personal data may be accessed, used or disclosed on proper identification (unconfirmed)",
+    "data_categories": "General data; personal data (electronic)",
+    "retention_period": "Not specified",
+    "enforcement_authority": "Ministry of Technology and Communications (MTC)",
+    "penalties_range": "UNKNOWN; unverified claim of 10% turnover penalties from 2021 amendments (unconfirmed)",
+    "exemptions": "Not specified",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
+    "language": "Lao",
+    "frameworks": "",
+    "frameworks_not": "",
+    "notes": "Covers electronic data only; rest is thin secondary-source information; effective_date not found: the enactment date is used",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "jurisdiction": {
+        "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enactment_date": {
+        "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "scope": {
+        "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "applies_to": {
+        "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "key_requirements": {
+        "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "data_categories": {
+        "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_authority": {
+        "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "penalties_range": {
+        "url": "https://dig.watch/resource/laos-law-on-electronic-data-protection-no-25-na",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

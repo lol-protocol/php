@@ -2,7 +2,24 @@
 
 ## [Sin publicar]
 
-La próxima versión es **5.0.0**: las clases cambian de namespace.
+### Añadido
+
+- **Acusaciones y datos sensibles en portugués, francés, italiano y alemán**:
+  delito («roubou dinheiro», «a été condamné», «è un ladro», «hat Geld
+  gestohlen»), salud, vida privada y orientación sexual van a revisión, como en
+  español e inglés. Son los patrones básicos, sin revisión nativa; «pão e café»,
+  «l'oiseau a volé haut» o «er hat Recht» se siguen aprobando.
+  `AccusationPatternsEuropeanTest`.
+- **Religión, origen étnico y opinión política de alguien** (español e inglés):
+  «la familia era judía», «Fulano es mapuche», «su abuelo era de origen árabe»,
+  «Fulano es comunista», «he's a republican» van a revisión. Son datos sensibles
+  aunque sean ciertos; en genealogía son frecuentes, por eso no se bloquean.
+  «el vino es negro», «la iglesia evangélica de Concepción» o «el partido
+  comunista» se siguen aprobando. `SensitiveDataPatternsTest`.
+
+## [5.0.0] - 2026-10-15
+
+Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»).
 
 ### Cambiado (incompatible)
 
@@ -44,6 +61,69 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Añadido
 
+- **Palabras de varios países en el español base** (el idioma sigue siendo
+  `spa`, sin variantes por país): «puto» (`targeted`: «eres un puto» se bloquea,
+  «los putos deberes» pasa), «joto» y «trolo» se bloquean; «pija» y «pico» se
+  suman a «coger» y «concha» en `ambiguous`, porque en otros países son
+  cotidianas. `RegionalWordsTest`.
+- **Respuestas de `review/urgente/spa-genero.csv`**: «vaca» y «marrana»
+  dirigidas se bloquean, como «cerda»; «gorda» dirigida va a revisión (antes sólo
+  se informaba); «¡cojones!» baja a `low`, porque es una exclamación común; se añaden
+  «pendeja» (high), «lagarta» (medium) y «pájara» (low). El resto se confirma
+  como estaba.
+- **`'whenTargeted' => 'high'`** en una entrada: sube a esa severidad cuando va
+  dirigida (`TargetContext`, `context => targeted`). «cerda» la usa: sola sigue en
+  revisión porque también es apellido, pero «eres una cerda» se bloquea y «María
+  Cerda» se aprueba.
+- **Letras repetidas en todos los idiomas.** Las rachas de 3 o más («cazzzo»,
+  «Arschloooch», «сууука») se leen siempre: contra las 50 000 palabras más
+  frecuentes de 26 idiomas, ningún falso positivo nuevo. Reducir las dobles
+  («puuta», a revisión) pasa de español e inglés a 18 idiomas más (portugués,
+  alemán, ruso, polaco, turco, árabe, sueco, danés, rumano, indonesio, checo,
+  eslovaco, húngaro, búlgaro, ucraniano, griego, coreano, vietnamita), donde la
+  misma medición casi no cambia; lo legítimo que apareció («Pollack», «Scott»,
+  «sesaat», «للعين») va a `legit`. Italiano, francés, neerlandés, noruego, finés,
+  islandés y hebreo no reducen dobles: ahí son parte de la palabra («anno» →
+  «ano», «penne» → «pene»). `meta.collapseRepeats` acepta ahora `true`, el
+  valor por defecto (sólo rachas de 3 o más) o `false`.
+- **Plurales y declinación en alemán, neerlandés y turco** (`GermanInflection`,
+  `DutchInflection`, `TurkishInflection`): «Huren», «Idioten», «dumme/dummer…»,
+  «kutten», «apen», «domme», «orospular», «salaklar». En alemán y neerlandés el
+  adjetivo declinado lleva el rasgo `infl`. `forms` en 470 entradas, fuera de
+  etnia, religión y discapacidad y sin las que chocan con palabras comunes
+  («pik» → «pikken», «nicht» → «nichten»); lo generado llega como mucho a
+  revisión. Las formas nuevas que aparecen en las listas de frecuencia son
+  todas declinaciones de términos que ya se detectaban.
+
+- **Diminutivos y plurales de insultos sexualizados en portugués, italiano
+  y francés** (#91). `Diminutives` genera los diminutivos regulares del
+  español (-ito/-ita, -cito/-cita) y del portugués (-inho/-inha,
+  -zinho/-zinha) con sus rasgos (`dim.sg`, `dim.f.pl`…). Cambian el tono en
+  cualquier dirección («putita» degrada más, «cerdita» es cariñoso), así
+  que sólo se generan si `by` lo pide con una clave `dim`. Español: putita,
+  zorrita. Portugués: putas, putinha, vagabundas, rameiras. Italiano:
+  puttane, troie, zoccole, mignotte, baldracche y el femenino de `porco`.
+  Francés: putes, putains, salopes, garces, catins. Quedan fuera los
+  plurales con otro uso cotidiano (piranhas, galinhas, vacche, traînées).
+  `PortugueseInflection` reconoce «-ão» con tilde («ladrões»). Medido con
+  las 50.000 palabras más frecuentes de cada idioma: cambian exactamente
+  las formas declaradas. Las planillas de revisión traen ahora también las
+  filas de diminutivo (`forma:dim.sg de:puta`), y `SheetVocabulary` acepta
+  esas etiquetas al aplicarlas (antes sólo admitía rasgos de un punto, así
+  que una respuesta sobre «putitas» se habría rechazado). Planillas de spa,
+  por, ita y fra regeneradas.
+
+- **Frases con forma deletreadas**: «t e v o y a m a t a r», «i w i l l k i l l y o u»
+  se bloquean como la amenaza escrita normal (`SpacedRunTerms`).
+- **Más evasión**: letras encerradas («p⃝u⃝t⃝a⃝», «p⃣u⃣t⃣a⃣»), letras parecidas del
+  alfabeto fonético, armenio y cherokee («putɑ», «idiօta», «ᏢUTA») y «+» por «t» («pu+a»).
+- **Más acusaciones y datos sensibles** (español e inglés): a una familia entera
+  («los Pérez son unos ladrones», «esa familia es de delincuentes»), antecedentes
+  penales, deudas («está en DICOM», «no paga la pensión»), enfermedades («tiene
+  cáncer»), aborto y vida privada («se acuesta con su secretaria», «tiene otra familia»).
+- **Marcalibros revisa el texto de cada marcalibro** con esta librería
+  (`marcalibros-plataforma-pos-brand-identity/app/src/LabelPolicy.php`): se comparte
+  por enlace desde el dominio de la plataforma. Lo que no se aprueba no se guarda.
 - **Datos personales en el chat** (tipo `privado`, `PersonalData`): un RUT con
   dígito verificador válido, un correo, un teléfono con prefijo o anunciado
   («fono», «llámalo al») y una dirección anunciada («vive en la calle…») van
@@ -310,6 +390,14 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 
 ### Arreglado
 
+- **Hallazgos duplicados por letras sueltas**: en «p u t a, eres una puta» la
+  «puta» escrita normal también se rotulaba como deletreada, y salían tres
+  hallazgos (uno «p u ta»). `ChatMatches::restore` devuelve el texto deletreado
+  sólo tantas veces como rachas se unieron, y sólo a palabras enteras.
+- **El endpoint mostraba dos veces una palabra que es de dos tipos**: «follar»
+  (insulto y contenido sexual) salía una vez por tipo. Ahora sale una por
+  aparición, con `contentTypes` (y el primero en `contentType`, como antes).
+
 - **Un byte UTF-8 inválido aprobaba la línea entera**: «eres una puta \xff»
   hacía fallar todas las expresiones regulares y no se encontraba nada. Lo mismo
   con los nombres. Ahora el texto pasa por `mb_scrub` antes de revisarse.
@@ -445,6 +533,15 @@ La próxima versión es **5.0.0**: las clases cambian de namespace.
 - Tabla de rangos de términos del README desactualizada tras las últimas
   ampliaciones: decía `comprehensive: 200–418` (real: 282–601, español tiene
   601) y `moderate: 120–160` (real: 120–245, varios idiomas la superan).
+- **Una planilla de `review/` ya no puede escribir en `config/` nada que no
+  sea un dato**: `bin/apply-review.php` pasaba al archivo, sin validar, la lista
+  de una fila `excepción` (`categoria`) y la etiqueta de una fila `forma`, y
+  después leía el resultado con `require`, también en la vista previa. Ahora
+  `categoria` sólo admite `everyday` y `legit`; la etiqueta, sólo rasgos como
+  `pl` o `f.pl`; `ConfigEditor::editList` y `FormEditor::setBy` rechazan lo que
+  no sea un nombre o una severidad conocida; y el resultado se comprueba con el
+  tokenizador (`Review\ConfigData`, una lista de lo permitido que cumplen los 69
+  archivos de `config/`) antes de evaluarlo. Las palabras ya se escapaban.
 
 ### Cambiado
 

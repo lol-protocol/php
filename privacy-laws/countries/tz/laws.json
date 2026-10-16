@@ -1,0 +1,58 @@
+[
+  {
+    "country_code": "TZ",
+    "country_name": "Tanzania",
+    "region": "middle_east_africa",
+    "law_name": "Personal Data Protection Act 2022 (PDPA)",
+    "jurisdiction": "Personal Data Protection Commission (PDPC)",
+    "enactment_date": "2022-11-27",
+    "effective_date": "2023-05-01",
+    "scope": "Individuals in Tanzania",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Registration with the PDPC, consent, data subject rights",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "s.5 principles: data kept in identifiable form only for as long as necessary for the purpose of processing",
+    "enforcement_authority": "Personal Data Protection Commission (PDPC)",
+    "penalties_range": "Up to TZS 20M (individuals) or TZS 5B (corporations)",
+    "exemptions": "National security; household use",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://dlapiperdataprotection.com/?c=TZ&t=law",
+    "language": "English",
+    "frameworks": "",
+    "frameworks_not": "GDPR/EU-Adequacy/CoE-108",
+    "notes": "Commenced 1 May 2023 by notice; registration deadline extended to 30 Apr 2025; assent day from one source",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://fpf.org/blog/tanzanias-personal-information-protection-act-overview-key-takeaways-and-context/",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://dlapiperdataprotection.com/?c=TZ&t=law",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "s.5 principles: data kept in identifiable form only for as long as necessary for the purpose of processing"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

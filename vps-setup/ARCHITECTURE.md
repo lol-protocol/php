@@ -15,15 +15,15 @@ Sistema de infraestructura multi-dominio alojado en VPS con Ubuntu 24 LTS en OVH
 ## 🌐 Dominios Configurados
 
 **`initech.fun`** es el dominio real, comprado y con la landing page ya
-desplegada — es el que usan por defecto todos los scripts de `vps-setup/`
-(`initech.fun` es el valor default de `$DOMAIN` en cada script) y el que
-referencia `landing-page/index.html`.
+desplegada, y el que referencia `landing-page/index.html`. Los scripts de
+`vps-setup/` no usan ningún dominio por defecto: hay que pasárselo siempre
+(sin argumento muestran el uso y salen con código 2).
 
 Los demás dominios de esta tabla (`conce.com`, `initech.cl`,
 `contrastocolor.ink`, `wikipedia.cl`) son **ejemplos ilustrativos** de cómo
 extender esta misma arquitectura a un segundo/tercer/cuarto dominio en el
-mismo VPS (documentados en detalle en [DOMAINS.md](DOMAINS.md)) — todavía no
-están registrados ni configurados.
+mismo VPS — todavía no están registrados ni configurados. Cómo agregar uno
+(con `10_A-add-domain.sh`) está en [DOMAINS.md](DOMAINS.md).
 
 | Dominio | Tipo | Propósito | Status |
 |---------|------|----------|--------|

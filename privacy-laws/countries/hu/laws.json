@@ -2,20 +2,87 @@
   {
     "country_code": "HU",
     "country_name": "Hungary",
-    "law_name": "Data Protection Act",
+    "region": "europe",
+    "law_name": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)",
     "jurisdiction": "Hungarian DPA",
     "enactment_date": "2018-05-25",
     "effective_date": "2018-05-25",
     "scope": "Hungarian Residents",
     "applies_to": "All organizations",
-    "key_requirements": "GDPR compliance",
+    "key_requirements": "GDPR applies: lawful basis, data subject rights, breach notification",
     "data_categories": "Personal data",
     "retention_period": "As long as necessary",
-    "enforcement_authority": "Hungarian Authority",
+    "enforcement_authority": "Hungarian National Authority for Data Protection and Freedom of Information (NAIH)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
     "website_url": "https://naih.hu/",
     "language": "Hungarian",
-    "notes": "GDPR implementation"
+    "frameworks": "GDPR/CoE-108",
+    "frameworks_not": "",
+    "notes": "Infotv. as amended by Act XXXVIII of 2018 (in force 2018-07-26); regulator NAIH",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-14",
+    "sources": {
+      "enforcement_authority": {
+        "url": "https://edpb.europa.eu/about-edpb/our-members_en",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "notes": {
+        "url": "https://www.dataguidance.com/jurisdiction/hungary",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "law_name",
+        "from": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26",
+        "to": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "law_name",
+        "from": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26",
+        "to": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "law_name",
+        "from": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26",
+        "to": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "notes",
+        "from": "GDPR implementation",
+        "to": "Infotv. as amended by Act XXXVIII of 2018 (in force 2018-07-26); regulator NAIH"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "law_name",
+        "from": "Data Protection Act",
+        "to": "Act CXII of 2011 on Informational Self-Determination and Freedom of Information (Infotv.); effective_date (of GDPR amendment)=2018-07-26"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "enforcement_authority",
+        "from": "Hungarian Authority",
+        "to": "Hungarian National Authority for Data Protection and Freedom of Information (NAIH)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "key_requirements",
+        "from": "GDPR compliance",
+        "to": "GDPR applies: lawful basis, data subject rights, breach notification"
+      }
+    ]
   }
 ]

@@ -81,6 +81,27 @@ CREATE TABLE technical_specifications (
 );
 
 -- =====================================================================
+-- PAPER TYPES TABLE
+-- =====================================================================
+-- Named paper stock (color, texture, finish), independent of sheet size:
+-- any format can in principle be printed on any of these.
+CREATE TABLE paper_types (
+    paper_type_id INT PRIMARY KEY AUTO_INCREMENT,
+    type_name VARCHAR(100) NOT NULL UNIQUE,
+    type_name_en VARCHAR(100) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    color VARCHAR(100) NOT NULL,
+    texture VARCHAR(100) NOT NULL,
+    finish VARCHAR(100) NOT NULL,
+    weight_gsm_min INT NOT NULL,
+    weight_gsm_max INT NOT NULL,
+    common_use VARCHAR(200) NOT NULL,
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_category (category)
+);
+
+-- =====================================================================
 -- FORMAT CONVERSIONS TABLE
 -- =====================================================================
 CREATE TABLE format_conversions (

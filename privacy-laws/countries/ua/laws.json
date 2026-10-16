@@ -1,0 +1,58 @@
+[
+  {
+    "country_code": "UA",
+    "country_name": "Ukraine",
+    "region": "europe",
+    "law_name": "Law on Personal Data Protection (Law No. 2297-VI)",
+    "jurisdiction": "Parliament Commissioner for Human Rights",
+    "enactment_date": "2010-06-01",
+    "effective_date": "2011-01-01",
+    "scope": "Individuals in Ukraine",
+    "applies_to": "Public & private data controllers and processors",
+    "key_requirements": "Lawful basis & consent, purpose limitation, data subject rights, notify Ombudsman of high-risk processing",
+    "data_categories": "Personal data; sensitive data",
+    "retention_period": "Art. 6(8): kept in identifiable form no longer than necessary for legitimate purposes; further historical/statistical/scientific processing allowed",
+    "enforcement_authority": "Ukrainian Parliament Commissioner for Human Rights (Ombudsman)",
+    "penalties_range": "Up to UAH 34000 administrative fine; criminal liability",
+    "exemptions": "Household use; journalism",
+    "deceased_data": "",
+    "research_exemption": "",
+    "genetic_data": "",
+    "website_url": "https://www.dlapiperdataprotection.com/index.html?c=UA&t=law",
+    "language": "English",
+    "frameworks": "CoE-108",
+    "frameworks_not": "GDPR/EU-Adequacy",
+    "notes": "GDPR-style bill 8153 passed 1st reading only (Nov 2024); 2010 law still applies",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-15",
+    "sources": {
+      "enactment_date": {
+        "url": "https://www.linklaters.com/en/insights/data-protected/data-protected---ukraine",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      },
+      "retention_period": {
+        "url": "https://protocol.ua/ua/pro_zahist_personalnih_danih_stattya_6/",
+        "confidence": "high",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "retention_period",
+        "from": "Not specified",
+        "to": "Art. 6(8): kept in identifiable form no longer than necessary for legitimate purposes; further historical/statistical/scientific processing allowed"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
