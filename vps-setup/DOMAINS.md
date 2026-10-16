@@ -1,576 +1,125 @@
-# 🌐 Configuración de Dominios - VPS Initech
+# 🌐 Dominios: cómo se organizan, agregan y quitan
 
-Guía completa para configurar y gestionar los múltiples dominios en el VPS.
+Un VPS sirve varios dominios a la vez, cada uno con su sitio, sus logs y su certificado. Este
+documento explica cómo quedan organizados y cómo gestionarlos con los scripts. El despliegue
+inicial está en [DEPLOYMENT.md](DEPLOYMENT.md).
 
-**Nota:** el dominio real ya comprado y desplegado es **`initech.fun`** (ver
-[ARCHITECTURE.md](ARCHITECTURE.md) y `vps-setup/`, donde es el valor default
-de `$DOMAIN` en todos los scripts). Los dominios de este documento
-(`conce.com`, `initech.cl`, `contrastocolor.ink`, `wikipedia.cl`) son
-**ejemplos ilustrativos** de cómo agregar un segundo/tercer/cuarto dominio a
-la misma arquitectura — todavía no están registrados.
-
-**Para agregar o quitar un dominio, usa los scripts:** `vps-setup/10_A-add-domain.sh
-<dominio> [--type landing|php|python|tomcat] [--ssl]` y `vps-setup/10_B-remove-domain.sh
-<dominio>`. Los pasos manuales de abajo sirven para entender qué hacen, pero no son
-equivalentes: los scripts marcan cada vhost con una primera línea `# vps-setup: <tipo> <app>`,
-y un vhost creado a mano no la tiene, así que después los scripts se niegan a tocarlo
-("ya tiene un sitio (creado a mano)") y `10_B` no puede detectar su app.
+> La versión anterior (configuraciones de Nginx y systemd para pegar a mano) está en
+> [`_Garbage/DOMAINS-manual.md`](_Garbage/DOMAINS-manual.md). No la sigas: los scripts no
+> reconocen un vhost hecho a mano y se niegan a tocarlo.
 
 ---
 
-## 📊 Dominios Principales
+## Cómo queda cada dominio en el servidor
 
-### 1️⃣ **conce.com**
-**Tipo:** Landing Page  
-**Propósito:** Sitio principal de Conce  
-**Tecnología:** HTML/CSS/SVG estático  
-**Estado:** 🔄 Configuración pendiente
-
-**Archivos:**
-```
-/var/www/landing-page/conce.com/
-└── index.html
-```
-
-**Configuración Nginx (SOLO HTTP -- el bloque HTTPS lo agrega Certbot solo):**
-
-⚠️ Importante: esta config **no incluye** `ssl_certificate` a propósito. Ese
-archivo todavía no existe en este punto (lo crea Certbot en el paso 6) -- si
-pegas una config que ya referencia `/etc/letsencrypt/live/...` antes de
-correr Certbot, `nginx -t` (paso 4) va a fallar porque ese certificado aun
-no existe.
+**Un dominio, un sitio.** Cada dominio tiene un solo vhost en `/etc/nginx/sites-available/<dominio>`,
+con `server_name <dominio> www.<dominio>`. Su primera línea es una marca que dice qué script lo creó:
 
 ```nginx
-server {
-    listen 80;
-    listen [::]:80;
-    server_name conce.com www.conce.com;
-
-    root /var/www/landing-page/conce.com;
-    index index.html;
-
-    access_log /var/log/nginx/conce.com/access.log;
-    error_log /var/log/nginx/conce.com/error.log;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-
-    # Por si en el futuro se agregan paginas .php a este mismo sitio
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
-    }
-
-    # Bloquea el acceso a archivos ocultos tipo .htaccess/.htpasswd
-    location ~ /\.ht {
-        deny all;
-    }
-}
+# vps-setup: 06_A-php tienda
 ```
 
-**Pasos de configuración:**
-```bash
-# 1. Crear directorio (y su carpeta de logs -- Nginx no la crea sola,
-#    si falta "nginx -t" falla mas abajo)
-sudo mkdir -p /var/www/landing-page/conce.com
-sudo mkdir -p /var/log/nginx/conce.com
-sudo cp landing-page/index.html /var/www/landing-page/conce.com/
-
-# 2. Configurar Nginx (SOLO la config HTTP de arriba, sin SSL todavia)
-sudo nano /etc/nginx/sites-available/conce.com
-# (Pegar la config de arriba)
-
-# 3. Habilitar sitio
-sudo ln -sf /etc/nginx/sites-available/conce.com /etc/nginx/sites-enabled/conce.com
-
-# 4. Validar
-sudo nginx -t
-
-# 5. Recargar
-sudo systemctl reload nginx
-
-# 6. Obtener SSL -- esto MODIFICA el archivo que acabas de crear: agrega el
-#    bloque 443, la redireccion HTTP->HTTPS y las lineas ssl_certificate
-#    automaticamente. No hace falta (ni conviene) escribirlas a mano.
-sudo certbot run --nginx -d conce.com -d www.conce.com
-```
-
----
-
-### 2️⃣ **initech.cl**
-**Tipo:** Landing Page  
-**Propósito:** Sitio corporativo de Initech  
-**Tecnología:** HTML/CSS/SVG estático  
-**Estado:** 🔄 Configuración pendiente
-
-**Archivos:**
-```
-/var/www/landing-page/initech.cl/
-└── index.html
-```
-
-**Configuración Nginx (SOLO HTTP -- Certbot agrega el bloque HTTPS solo,
-ver la advertencia en la sección de conce.com sobre por que no se pega el
-bloque SSL antes de correr Certbot):**
-```nginx
-server {
-    listen 80;
-    listen [::]:80;
-    server_name initech.cl www.initech.cl;
-
-    root /var/www/landing-page/initech.cl;
-    index index.html;
-
-    access_log /var/log/nginx/initech.cl/access.log;
-    error_log /var/log/nginx/initech.cl/error.log;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-
-    # Por si en el futuro se agregan paginas .php a este mismo sitio
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
-    }
-
-    # Bloquea el acceso a archivos ocultos tipo .htaccess/.htpasswd
-    location ~ /\.ht {
-        deny all;
-    }
-}
-```
-
-**Pasos de configuración:**
-```bash
-sudo mkdir -p /var/www/landing-page/initech.cl
-sudo mkdir -p /var/log/nginx/initech.cl
-sudo cp landing-page/index.html /var/www/landing-page/initech.cl/
-sudo nano /etc/nginx/sites-available/initech.cl
-sudo ln -sf /etc/nginx/sites-available/initech.cl /etc/nginx/sites-enabled/initech.cl
-sudo nginx -t
-sudo systemctl reload nginx
-sudo certbot run --nginx -d initech.cl -d www.initech.cl
-```
-
----
-
-### 3️⃣ **contrastocolor.ink**
-**Tipo:** Aplicación Web (Python)  
-**Propósito:** Portal de colores y contrastes  
-**Tecnología:** Flask + PostgreSQL  
-**Estado:** 🔄 Desarrollo
-
-**Archivos:**
-```
-/var/www/contrastocolor.ink/
-├── app.py                  # Aplicación principal
-├── config.py               # Configuración
-├── requirements.txt        # Dependencias
-├── static/
-│   ├── css/
-│   ├── js/
-│   └── images/
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   └── ...
-└── venv/                   # Entorno virtual
-```
-
-**Instalación:**
-```bash
-# 1. Crear directorio
-sudo mkdir -p /var/www/contrastocolor.ink
-cd /var/www/contrastocolor.ink
-
-# 2. Entorno virtual
-python3 -m venv venv
-source venv/bin/activate
-
-# 3. Instalar dependencias
-pip install flask flask-cors psycopg2-binary python-dotenv gunicorn
-
-# 4. Crear app.py
-cat > app.py << 'EOF'
-from flask import Flask, render_template, jsonify
-import os
-
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/api/contrast/<color1>/<color2>')
-def calculate_contrast(color1, color2):
-    # Lógica de contraste
-    return jsonify({'contrast': 'resultado'})
-
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8000)
-EOF
-
-# 5. Crear requirements.txt
-pip freeze > requirements.txt
-```
-
-**Configuración Nginx (SOLO HTTP -- Certbot agrega el bloque HTTPS solo,
-ver la advertencia en la sección de conce.com sobre por que no se pega el
-bloque SSL antes de correr Certbot):**
-```nginx
-upstream contrastocolor {
-    server 127.0.0.1:8000;
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name contrastocolor.ink www.contrastocolor.ink;
-
-    access_log /var/log/nginx/contrastocolor.ink/access.log;
-    error_log /var/log/nginx/contrastocolor.ink/error.log;
-
-    location / {
-        proxy_pass http://contrastocolor;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    location /static/ {
-        alias /var/www/contrastocolor.ink/static/;
-    }
-}
-```
-
-**Habilitar el sitio** (la carpeta de logs hay que crearla a mano -- Nginx no
-la crea sola, y sin ella `nginx -t` falla):
-```bash
-sudo mkdir -p /var/log/nginx/contrastocolor.ink
-sudo nano /etc/nginx/sites-available/contrastocolor.ink   # pegar la config de arriba
-sudo ln -sf /etc/nginx/sites-available/contrastocolor.ink /etc/nginx/sites-enabled/contrastocolor.ink
-sudo nginx -t
-sudo systemctl reload nginx
-```
-
-**Systemd Service:**
-```bash
-# (CPU cores * 2) + 1, recomendado por Gunicorn -- igual que hace
-# vps-setup/06_B-setup-python-app.sh. Un numero fijo como "4" desperdicia
-# recursos en un VPS chico o subutiliza uno grande.
-WORKERS=$(($(nproc) * 2 + 1))
-
-sudo tee /etc/systemd/system/contrastocolor.service > /dev/null <<EOF
-[Unit]
-Description=Contrasto Color Flask App
-After=network.target
-
-[Service]
-Type=notify
-User=www-data
-WorkingDirectory=/var/www/contrastocolor.ink
-Environment="PATH=/var/www/contrastocolor.ink/venv/bin"
-ExecStart=/var/www/contrastocolor.ink/venv/bin/gunicorn \
-    --workers $WORKERS \
-    --bind 127.0.0.1:8000 \
-    app:app
-Restart=always
-RestartSec=10
-StartLimitInterval=60
-StartLimitBurst=3
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-sudo systemctl daemon-reload
-sudo systemctl enable contrastocolor
-sudo systemctl start contrastocolor
-```
-
----
-
-### 4️⃣ **wikipedia.cl**
-**Tipo:** Aplicación Web (PHP)  
-**Propósito:** Wiki colaborativa local  
-**Tecnología:** PHP 8.3 + PostgreSQL  
-**Estado:** 🔄 Desarrollo
-
-**Archivos:**
-```
-/var/www/wikipedia.cl/
-├── public/
-│   ├── index.php           # Punto de entrada
-│   ├── css/
-│   └── js/
-├── src/
-│   ├── Controller/
-│   ├── Model/
-│   └── View/
-├── config/
-│   ├── database.php
-│   └── config.php
-├── composer.json
-└── .htaccess
-```
-
-**Configuración Nginx (SOLO HTTP -- Certbot agrega el bloque HTTPS solo,
-ver la advertencia en la sección de conce.com sobre por que no se pega el
-bloque SSL antes de correr Certbot):**
-```nginx
-server {
-    listen 80;
-    listen [::]:80;
-    server_name wikipedia.cl www.wikipedia.cl;
-
-    root /var/www/wikipedia.cl/public;
-    index index.php;
-
-    access_log /var/log/nginx/wikipedia.cl/access.log;
-    error_log /var/log/nginx/wikipedia.cl/error.log;
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
-    }
-
-    location ~ /\.ht {
-        deny all;
-    }
-}
-```
-
-**Instalación:**
-```bash
-sudo mkdir -p /var/www/wikipedia.cl/public
-cd /var/www/wikipedia.cl
-
-# Instalar Composer (si no está)
-composer create-project laravel/laravel . --prefer-dist
-
-# O instalar paquetes existentes
-composer install
-
-# Permisos
-sudo chown -R www-data:www-data .
-sudo chmod -R 755 .
-```
-
-**Habilitar el sitio** (la carpeta de logs hay que crearla a mano -- Nginx no
-la crea sola, y sin ella `nginx -t` falla):
-```bash
-sudo mkdir -p /var/log/nginx/wikipedia.cl
-sudo nano /etc/nginx/sites-available/wikipedia.cl   # pegar la config de arriba
-sudo ln -sf /etc/nginx/sites-available/wikipedia.cl /etc/nginx/sites-enabled/wikipedia.cl
-sudo nginx -t
-sudo systemctl reload nginx
-```
-
----
-
-## 🌍 Configuración DNS
-
-### Registrador de Dominio
-
-Para cada dominio, agrega estos registros **A**:
-
-```
-Tipo: A
-Nombre: @
-Valor: 158.69.222.245
-TTL: 3600
-
----
-
-Tipo: A
-Nombre: www
-Valor: 158.69.222.245
-TTL: 3600
-```
-
-### Proveedores Específicos
-
-#### **conce.com** (Si está en GoDaddy/Namecheap/ISP Chile)
-1. Ingresa a tu panel de control
-2. Busca "DNS Records" o "Manage DNS"
-3. Añade registros A como arriba
-4. Guarda cambios
-5. Espera a que propague -- normalmente 15-60 minutos, aunque algunos registradores (ej. Network Solutions) pueden tardar hasta 24-48h
-
-#### **initech.cl** (Si está en ISP Chile)
-Mismo procedimiento que conce.com
-
-#### **contrastocolor.ink** (Si está en Namecheap/Google Domains)
-1. Panel de control del registrador
-2. Editar DNS
-3. Añadir registros A
-4. Guardar
-
-#### **wikipedia.cl** (Si está en ISP Chile)
-Mismo procedimiento general
-
-### Verificar Propagación DNS
+Re-correr el mismo script para el mismo dominio vale (es idempotente). En cambio, crear otro tipo
+de sitio (u otra app) sobre un dominio que ya tiene uno falla con un mensaje que dice cómo quitar el
+anterior; lo mismo si otro sitio activo ya declara ese `server_name`. También falla si el vhost
+existe pero se hizo a mano (sin marca).
+
+| Tipo | Script | Archivos | Proceso |
+|------|--------|----------|---------|
+| Landing estática | `03` | `/var/www/landing-page/<dominio>/` (copia de `landing-page/` del repo) | Nginx; `.php` responde 404 |
+| App PHP | `06_A <app> <dominio>` | `/var/www/<app>/` | PHP-FPM 8.3 (`/run/php/php8.3-fpm.sock`) |
+| App Python | `06_B <app> <dominio> [puerto]` | `/var/www/<app>/` con su `venv/` | servicio systemd `<app>` (gunicorn en `127.0.0.1:<puerto>`) |
+| App Java | `06_D <dominio> [context]` | `.war` en `/var/lib/tomcat10/webapps/` | Tomcat en `127.0.0.1:8080`; `/manager` da 404 si la app va en la raíz |
+
+Los logs de cada dominio van en `/var/log/nginx/<dominio>/{access,error}.log` y rotan a diario
+(`07_D`). Los headers de seguridad, gzip y el vhost por defecto (que corta peticiones por IP o con un
+Host ajeno) son globales, en `/etc/nginx/conf.d/` (`07_B`, `07_E`): valen para todos los dominios.
+
+Cada app Python necesita **su propio puerto** (por defecto 8000). `06_B` rechaza uno que ya use otra
+app o en el que algo ya escuche.
+
+## Agregar un dominio: `10_A-add-domain.sh`
 
 ```bash
-# Desde tu computadora
-nslookup conce.com
-dig conce.com
-
-# En el VPS
-nslookup conce.com 8.8.8.8
+./10_A-add-domain.sh nuevo.com --ssl --email tu@email.com                    # landing + HTTPS
+./10_A-add-domain.sh tienda.nuevo.com --type php --name tienda --ssl         # app PHP
+./10_A-add-domain.sh api.nuevo.com --type python --name api --port 8001      # app Python, SSL después
+./10_A-add-domain.sh java.nuevo.com --type tomcat --context miapp            # app Java
+./10_A-add-domain.sh nuevo.com --dry-run                                     # muestra los pasos sin ejecutarlos
 ```
 
-**Salida esperada:**
-```
-conce.com    A    158.69.222.245
-```
+Encadena el script del tipo (`03`, `06_A`, `06_B` o `06_D`), luego `04` si pasas `--ssl` y por último
+el healthcheck (`08`). Sin `--name`, la app se llama como el dominio con `-` en vez de `.`.
+**Antes de `--ssl`, el DNS ya debe apuntar al VPS** (ver abajo); si no, deja el `--ssl` y corre `04` después.
 
----
-
-## 🔐 SSL/HTTPS - Certificados
-
-### Obtener Certificados
-
-**Para cada dominio:**
-```bash
-sudo certbot run --nginx \
-    -d conce.com \
-    -d www.conce.com \
-    --email admin@conce.com \
-    --agree-tos \
-    --non-interactive
-
-sudo certbot run --nginx \
-    -d initech.cl \
-    -d www.initech.cl \
-    --email admin@initech.cl \
-    --agree-tos \
-    --non-interactive
-
-sudo certbot run --nginx \
-    -d contrastocolor.ink \
-    -d www.contrastocolor.ink \
-    --email admin@contrastocolor.ink \
-    --agree-tos \
-    --non-interactive
-
-sudo certbot run --nginx \
-    -d wikipedia.cl \
-    -d www.wikipedia.cl \
-    --email admin@wikipedia.cl \
-    --agree-tos \
-    --non-interactive
-```
-
-### Renovación Automática
+## Quitar un dominio: `10_B-remove-domain.sh`
 
 ```bash
-sudo systemctl enable certbot.timer
-sudo systemctl start certbot.timer
-sudo certbot renew --dry-run
+./10_B-remove-domain.sh nuevo.com --dry-run      # qué se archivaría
+./10_B-remove-domain.sh nuevo.com --yes
 ```
 
-### Ver Certificados
+**No borra nada**: mueve el vhost, el sitio y los logs a
+`/var/backups/vps-setup/removed/<dominio>-<fecha>/`. En una app PHP o Python también archiva
+`/var/www/<app>` y detiene y archiva su servicio; la app la detecta por la marca del vhost (o la
+indicas con `--app`). Antes de mover nada comprueba `nginx -t`: si falla, restaura el sitio y no
+archiva. Para restaurar un dominio, mueve las carpetas de vuelta y reactiva el enlace en `sites-enabled`.
+
+`10_B` **no toca** el certificado ni el DNS. Al terminar indica los comandos:
 
 ```bash
-sudo certbot certificates
+sudo certbot delete --cert-name nuevo.com
 ```
 
----
+## DNS
 
-## 📋 Checklist por Dominio
+### En tu registrador (lo normal)
 
-### conce.com
-- [ ] Agregar registros A en DNS
-- [ ] Esperar propagación DNS
-- [ ] Crear directorio `/var/www/landing-page/conce.com/`
-- [ ] Copiar index.html
-- [ ] Configurar Nginx
-- [ ] Obtener SSL con Certbot
-- [ ] Probar acceso a https://conce.com
+Para cada dominio: registros **A** de `@` y `www` hacia la IP del VPS y, recomendado, un **CAA**
+`0 issue "letsencrypt.org"` (solo Let's Encrypt puede emitir certificados para el dominio). La
+tabla y cómo verificar la propagación están en [DEPLOYMENT.md](DEPLOYMENT.md#2-dns-apunta-el-dominio-al-vps).
 
-### initech.cl
-- [ ] Agregar registros A en DNS
-- [ ] Esperar propagación DNS
-- [ ] Crear directorio `/var/www/landing-page/initech.cl/`
-- [ ] Copiar index.html
-- [ ] Configurar Nginx
-- [ ] Obtener SSL con Certbot
-- [ ] Probar acceso a https://initech.cl
+### Servidor DNS propio: `06_C-setup-dns-server.sh`
 
-### contrastocolor.ink
-- [ ] Agregar registros A en DNS
-- [ ] Crear aplicación Flask
-- [ ] Instalar dependencias
-- [ ] Configurar Nginx (upstream)
-- [ ] Crear systemd service
-- [ ] Obtener SSL con Certbot
-- [ ] Probar acceso a https://contrastocolor.ink
-
-### wikipedia.cl
-- [ ] Agregar registros A en DNS
-- [ ] Crear estructura PHP
-- [ ] Instalar Composer
-- [ ] Configurar base de datos
-- [ ] Configurar Nginx (PHP-FPM)
-- [ ] Obtener SSL con Certbot
-- [ ] Probar acceso a https://wikipedia.cl
-
----
-
-## 🔄 Cambiar Configuración de Dominio
-
-### Cambiar servidor de un dominio
+Solo si tu registrador **no** permite editar registros. Monta BIND en el VPS como servidor
+autoritativo del dominio, con OVH como secundario:
 
 ```bash
-# 1. Actualizar DNS en registrador
-# Cambiar A record a nueva IP
-
-# 2. En el nuevo servidor, configurar sitio
-# (Repetir los pasos de configuración de Nginx/SSL)
-
-# 3. Esperar propagación (15-60 min, hasta 24-48h segun el registrador)
+./06_C-setup-dns-server.sh nuevo.com [<IP_DEL_VPS>] [sdns2.ovh.ca]
+VPS_IP6=2001:db8::5 ./06_C-setup-dns-server.sh nuevo.com     # añade también registros AAAA
 ```
 
-### Cambiar propietario de dominio
+Sin IP usa la pública detectada. Crea la zona (`ns1`, `@` y `www` hacia el VPS, CAA de Let's
+Encrypt, AAAA si das `VPS_IP6`) con un serial que siempre sube, la valida con `named-checkzone`,
+solo permite la transferencia de zona al secundario de OVH y deja BIND **sin recursión** (no sirve
+como resolvedor abierto). Al final indica qué registrar en el panel del dominio: el glue record de
+`ns1.<dominio>` y los dos nameservers.
 
-Contacta al registrador para transferencia de dominio.
+## SSL
 
----
+`04-setup-ssl.sh <dominio> [email]` pide un certificado para `<dominio>` y `www.<dominio>` y deja la
+redirección HTTP→HTTPS. Antes comprueba que **los dos** nombres apunten al VPS: certbot rechaza el
+certificado entero si uno falla. Sin terminal y con el DNS mal, aborta en vez de gastar un intento
+(Let's Encrypt limita los intentos fallidos por semana). Opciones: `--force` sigue igualmente y
+`--staging` pide un certificado de prueba (no válido en navegadores) sin ese límite.
 
-## 📊 Status de Dominios
+La renovación es automática (`certbot.timer`). Para comprobarla: `sudo certbot renew --dry-run`; el
+healthcheck y el monitor avisan si un certificado está por vencer.
 
-| Dominio | DNS | Nginx | SSL | Estado |
-|---------|-----|-------|-----|--------|
-| conce.com | ⚠️ Pendiente | ⚠️ Pendiente | ⚠️ Pendiente | Setup |
-| initech.cl | ⚠️ Pendiente | ⚠️ Pendiente | ⚠️ Pendiente | Setup |
-| contrastocolor.ink | ⚠️ Pendiente | ⚠️ Pendiente | ⚠️ Pendiente | Dev |
-| wikipedia.cl | ⚠️ Pendiente | ⚠️ Pendiente | ⚠️ Pendiente | Dev |
+## Mover un dominio a otro servidor
 
----
+1. En el servidor nuevo: `10_A-add-domain.sh <dominio>` (sin `--ssl`) y copia los datos de la app.
+2. Baja el TTL de los registros A unas horas antes y luego cámbialos a la IP nueva.
+3. Cuando el DNS apunte al servidor nuevo: `04-setup-ssl.sh <dominio>` allí.
+4. En el servidor viejo: `10_B-remove-domain.sh <dominio>` y `certbot delete --cert-name <dominio>`.
 
-## 🆘 Troubleshooting
+## Si algo falla
 
-### "Domain name invalid" en Certbot
-**Causa:** DNS no está propagado aún  
-**Solución:** Esperar (15-60 min, hasta 24-48h segun el registrador) y reintentar
-
-### "Connection refused" al acceder al dominio
-**Causa:** DNS no está configurado correctamente  
-**Solución:** Verificar registros A en el registrador
-
-### "403 Forbidden"
-**Causa:** Permisos incorrectos en archivos  
-**Solución:** `sudo chown -R www-data:www-data /var/www/dominio`
-
----
-
-**Última actualización:** 2026-09-20
-**Versión:** 1.0.0
+| Síntoma | Causa probable | Qué hacer |
+|---------|----------------|-----------|
+| `ya tiene un sitio (...)` | El dominio ya tiene otro tipo de sitio u otra app | `10_B-remove-domain.sh <dominio>` y vuelve a crearlo |
+| `ya tiene un sitio (creado a mano)` | El vhost no lleva la marca `# vps-setup:` | Revisa ese archivo; muévelo fuera de `sites-available` si sobra |
+| `el puerto N ya lo usa <app>` | Dos apps Python en el mismo puerto | Pasa otro puerto (`06_B` arg. 3, `10_A --port`) |
+| `04` aborta por el DNS | `dominio` o `www` todavía no apuntan al VPS | `dig +short <dominio>` y `www.<dominio>`; espera y repite |
+| Un dominio quitado responde 404 un momento | El `reload` de Nginx es asíncrono | Espera unos segundos: después corta la conexión como cualquier Host ajeno |
+| 502 en una app | El proceso de la app no responde | `systemctl status <app>` (Python) o `systemctl status tomcat10` (Java) |
