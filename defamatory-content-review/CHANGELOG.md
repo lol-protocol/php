@@ -4,6 +4,12 @@
 
 ### Añadido
 
+- **Acusaciones y datos sensibles en portugués, francés, italiano y alemán**:
+  delito («roubou dinheiro», «a été condamné», «è un ladro», «hat Geld
+  gestohlen»), salud, vida privada y orientación sexual van a revisión, como en
+  español e inglés. Son los patrones básicos, sin revisión nativa; «pão e café»,
+  «l'oiseau a volé haut» o «er hat Recht» se siguen aprobando.
+  `AccusationPatternsEuropeanTest`.
 - **Religión, origen étnico y opinión política de alguien** (español e inglés):
   «la familia era judía», «Fulano es mapuche», «su abuelo era de origen árabe»,
   «Fulano es comunista», «he's a republican» van a revisión. Son datos sensibles
