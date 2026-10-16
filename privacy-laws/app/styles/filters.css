@@ -632,3 +632,15 @@ label.check .count {
   font-size: var(--font-size-sm);
   margin-right: var(--spacing-sm);
 }
+
+/* "MT": the value shown is a machine translation (the original is in the tooltip). */
+.mt {
+  border: 1px solid var(--color-text-muted);
+  border-radius: var(--border-radius);
+  color: var(--color-text-muted);
+  cursor: help;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0 0.3rem;
+  white-space: nowrap;
+}

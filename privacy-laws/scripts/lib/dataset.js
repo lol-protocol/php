@@ -61,6 +61,24 @@ export const META_FIELDS = ["data_status", "confidence", "last_checked"];
 //   changes.csv        what changed in a row and when (written by `npm run changes`)
 export const SOURCES_FILE = "field_sources.csv";
 export const CHANGES_FILE = "changes.csv";
+// Machine translations of the descriptive values (`lang,source,text`): the app shows them in the interface language,
+// marked as machine translations. The key is the exact English text, so an edited value simply loses its translation.
+export const TRANSLATIONS_FILE = "value_translations.csv";
+export const TRANSLATION_COLUMNS = ["lang", "source", "text"];
+export const TRANSLATION_LANGS = ["spa", "fra", "deu", "por"];
+export const TRANSLATED_FIELDS = [
+  "scope",
+  "applies_to",
+  "key_requirements",
+  "data_categories",
+  "retention_period",
+  "penalties_range",
+  "exemptions",
+  "deceased_data",
+  "research_exemption",
+  "genetic_data",
+];
+export const translationFile = (lang) => `translations.${lang}.json`;
 export const SOURCE_COLUMNS = ["country_code", "law_name", "field", "url", "confidence", "checked"];
 export const CHANGE_COLUMNS = ["date", "country_code", "law_name", "field", "old_value", "new_value"];
 // `field` of a change that adds or removes a whole row.
@@ -327,6 +345,53 @@ export function staleSourceWarnings(sources, records, changes) {
   return warnings;
 }
 
+/** The English values that can be translated: every non-empty descriptive value of every law. */
+export function translatableValues(records) {
+  const values = new Set();
+  for (const record of records) {
+    for (const field of TRANSLATED_FIELDS) {
+      const value = (record[field] ?? "").trim();
+      if (value && !/^not specified$/i.test(value)) values.add(value);
+    }
+  }
+  return values;
+}
+
+export function validateTranslations(rows, records, header = TRANSLATION_COLUMNS) {
+  const errors = [];
+  const warnings = [];
+  if (header.join(",") !== TRANSLATION_COLUMNS.join(",")) return { errors: [`${TRANSLATIONS_FILE}: header must be exactly: ${TRANSLATION_COLUMNS.join(",")}`], warnings };
+  const live = translatableValues(records);
+  const seen = new Set();
+  let orphans = 0;
+  rows.forEach((row, index) => {
+    const fail = (message) => errors.push(`${TRANSLATIONS_FILE} line ${index + 2}: ${message}`);
+    if (!TRANSLATION_LANGS.includes(row.lang)) fail(`lang must be one of ${TRANSLATION_LANGS.join("|")}, got ${JSON.stringify(row.lang)}`);
+    if (!row.source || !row.text) fail("source and text are required");
+    if (row.text !== row.text.trim()) fail("text has leading/trailing whitespace");
+    const key = `${row.lang}|${row.source}`;
+    if (seen.has(key)) fail(`second translation of ${JSON.stringify(row.source.slice(0, 60))} into ${row.lang}`);
+    seen.add(key);
+    if (!live.has(row.source)) orphans++;
+  });
+  if (orphans) warnings.push(`${TRANSLATIONS_FILE}: ${orphans} translation(s) no longer match any value (they are not published); remove them or translate the new text`);
+  return { errors, warnings };
+}
+
+/** { lang: { english text: translation } } for the values that still exist. */
+export function translationDictionaries(rows, records) {
+  const live = translatableValues(records);
+  const dictionaries = {};
+  for (const row of rows) {
+    if (!live.has(row.source)) continue;
+    (dictionaries[row.lang] ??= {})[row.source] = row.text;
+  }
+  for (const lang of Object.keys(dictionaries)) {
+    dictionaries[lang] = Object.fromEntries(Object.entries(dictionaries[lang]).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)));
+  }
+  return dictionaries;
+}
+
 export function validateChanges(changes, header = CHANGE_COLUMNS) {
   const errors = [];
   if (header.join(",") !== CHANGE_COLUMNS.join(",")) return [`${CHANGES_FILE}: header must be exactly: ${CHANGE_COLUMNS.join(",")}`];
@@ -345,11 +410,15 @@ export function loadAndValidate(path = MASTER_CSV, options = {}) {
   const { errors, warnings } = validateRecords(records, header, options);
   const sources = loadSide(path, SOURCES_FILE, SOURCE_COLUMNS);
   const changes = loadSide(path, CHANGES_FILE, CHANGE_COLUMNS);
+  const translations = loadSide(path, TRANSLATIONS_FILE, TRANSLATION_COLUMNS);
   if (!errors.length) {
+    const t = validateTranslations(translations.rows, records, translations.header);
+    errors.push(...t.errors);
+    warnings.push(...t.warnings);
     errors.push(...validateSources(sources.rows, records, sources.header), ...validateChanges(changes.rows, changes.header));
     if (!errors.length) warnings.push(...staleSourceWarnings(sources.rows, records, changes.rows));
   }
-  return { records, errors, warnings, sources: sources.rows, changes: changes.rows };
+  return { records, errors, warnings, sources: sources.rows, changes: changes.rows, translations: translations.rows };
 }
 
 /**
@@ -434,7 +503,7 @@ export function withSideData(records, sources = [], changes = []) {
   });
 }
 
-export function buildArtifacts(records, { sources = [], changes = [] } = {}) {
+export function buildArtifacts(records, { sources = [], changes = [], translations = [] } = {}) {
   const byCode = new Map();
   for (const record of withSideData(records, sources, changes)) {
     if (!byCode.has(record.country_code)) byCode.set(record.country_code, []);
@@ -460,6 +529,10 @@ export function buildArtifacts(records, { sources = [], changes = [] } = {}) {
     );
     files.set(`${c.tld}/laws.json`, jsonFile(c.laws));
     files.set(`${c.tld}/laws.csv`, toCsv(COLUMNS, c.laws));
+  }
+
+  for (const [lang, dictionary] of Object.entries(translationDictionaries(translations, records))) {
+    files.set(translationFile(lang), jsonFile(dictionary));
   }
 
   const strip = (law) => {
