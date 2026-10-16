@@ -39,7 +39,7 @@ Desde la carpeta de cada proyecto, salvo donde diga «desde la raíz» (el detal
 |---|---|
 | `defamatory-content-review/` | `composer install && ./vendor/bin/phpunit` (la CI corre además `phpstan analyse` y `php bin/benchmark.php 2000`) |
 | `phone-directory/` | `composer install && ./vendor/bin/phpunit` (depende de `../defamatory-content-review`; la CI corre además los puertos de `ports/python` y `ports/java`) |
-| `cobros-ingresos-funnels/` | con PostgreSQL y `export APP_ENV=dev`: `composer install && php database/recrear_con_datos_de_ejemplo.php` (borra la base y la rearma con las migraciones y datos de ejemplo), luego `./vendor/bin/phpunit` (la CI corre además PHPStan) |
+| `cobros-ingresos-funnels/` | con PostgreSQL y `export APP_ENV=dev`: `composer install && php bin/recrear_con_datos_de_ejemplo.php` (borra la base y la rearma con las migraciones y datos de ejemplo), luego `./vendor/bin/phpunit` (la CI corre además PHPStan) |
 | `sistema-nuevo/` | `php pruebas/ejecutar-php.php` y `./pruebas/ejecutar-js.sh`; con PostgreSQL, `php datos/generar-datos-semilla.php && php pruebas/ejecutar-integracion.php`; el e2e (`./pruebas/ejecutar-e2e.sh`) necesita los servicios de `ejecutar.sh` |
 | `url-routing/` | `composer install && ./vendor/bin/phpunit` (la CI lo corre también contra PostgreSQL) |
 | `document-formats/` | `node --test 'tests/*.test.js'` (la CI además importa a MySQL) |
