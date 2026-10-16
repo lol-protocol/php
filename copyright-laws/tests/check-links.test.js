@@ -5,8 +5,8 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { classify, mapLimit } from "../scripts/check-links.js";
-import { COLUMNS, loadMaster, toCsv } from "../scripts/lib/dataset.js";
+import { classify, collectUrls, mapLimit } from "../scripts/check-links.js";
+import { COLUMNS, SOURCE_COLUMNS, loadMaster, toCsv } from "../scripts/lib/dataset.js";
 import { hasPhp, startPhpServer } from "./helpers/php-server.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -84,4 +84,25 @@ test("the CLI checks every URL of the CSV, reports and fails only on broken link
   assert.equal(only.status, 0, only.stdout);
   assert.match(only.stdout, /2 URLs: 2 ok/);
   assert.equal(spawnSync(process.execPath, [join(root, "scripts", "check-links.js"), "--nope"], { encoding: "utf-8" }).status, 2);
+});
+
+test("per-value sources are checked too, labelled with the value they back", () => {
+  const template = loadMaster().records[0];
+  const records = [
+    { ...template, country_code: "AA", law_name: "Law A", linked_resources: "https://example.org/a" },
+    { ...template, country_code: "BB", law_name: "Law B1", linked_resources: "https://example.org/b" },
+    { ...template, country_code: "BB", law_name: "Law B2", linked_resources: "https://example.org/b" },
+  ];
+  const sources = [
+    { country_code: "AA", law_name: "", field: "penalties_range", url: "https://example.org/a", confidence: "high", checked: "2026-10-15" },
+    { country_code: "AA", law_name: "", field: "exemptions", url: "https://example.org/s", confidence: "low", checked: "2026-10-15" },
+    { country_code: "BB", law_name: "Law B2", field: "notes", url: "https://example.org/s", confidence: "low", checked: "2026-10-15" },
+    { country_code: "ZZ", law_name: "", field: "notes", url: "https://example.org/orphan", confidence: "low", checked: "2026-10-15" },
+  ];
+  const byUrl = collectUrls(records, sources);
+  assert.deepEqual([...byUrl.keys()].sort(), ["https://example.org/a", "https://example.org/b", "https://example.org/s"]);
+  assert.deepEqual(byUrl.get("https://example.org/a"), ["AA Law A", "AA Law A (source of penalties_range)"]);
+  assert.deepEqual(byUrl.get("https://example.org/s"), ["AA Law A (source of exemptions)", "BB Law B2 (source of notes)"]);
+  assert.deepEqual([...collectUrls(records, sources, ["bb"]).keys()].sort(), ["https://example.org/b", "https://example.org/s"]);
+  assert.equal(SOURCE_COLUMNS.length, 6);
 });

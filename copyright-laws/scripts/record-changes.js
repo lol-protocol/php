@@ -4,6 +4,8 @@
 //   npm run changes                         compare with the last commit (HEAD)
 //   npm run changes -- --since=origin/master compare with another git revision
 //   npm run changes -- --date=2026-10-15    date the entries (default: today)
+//   npm run changes -- --check --since=origin/master   record nothing; fail when the CSV differs from the
+//                                                      revision in ways changes.csv does not mention (CI)
 //
 // Run it after editing the master CSV and before committing. A renamed law keeps its history:
 // older entries (and its field sources) are moved to the new name.
@@ -27,10 +29,11 @@ import {
 } from "./lib/dataset.js";
 
 function parseArgs(argv) {
-  const options = { since: "HEAD", date: todayIso() };
+  const options = { since: "HEAD", date: todayIso(), check: false };
   for (const arg of argv) {
     let m;
-    if ((m = arg.match(/^--since=(.+)$/))) options.since = m[1];
+    if (arg === "--check") options.check = true;
+    else if ((m = arg.match(/^--since=(.+)$/))) options.since = m[1];
     else if ((m = arg.match(/^--date=(\d{4}-\d{2}-\d{2})$/))) options.date = m[1];
     else throw new Error(`unknown option ${arg}`);
   }
@@ -46,6 +49,17 @@ export function followRenames(entries, side, nameField = "law_name") {
     }
   }
   return side;
+}
+
+const sameChange = (entry, recorded) =>
+  recorded.country_code === entry.country_code &&
+  recorded.law_name === entry.law_name &&
+  recorded.field === entry.field &&
+  recorded.new_value === entry.new_value;
+
+/** Differences between the revision and the CSV that no entry of changes.csv describes. */
+export function unrecorded(entries, recorded) {
+  return entries.filter((entry) => !recorded.some((r) => sameChange(entry, r)));
 }
 
 export function recordChanges({ since, date, masterPath = MASTER_CSV, gitShow }) {
@@ -66,6 +80,17 @@ export function main(argv = process.argv.slice(2)) {
   const options = parseArgs(argv);
   const gitShow = (rev, path) => execFileSync("git", ["show", `${rev}:./${path}`], { cwd: ROOT, encoding: "utf-8", maxBuffer: 64 * 1024 * 1024 });
   const { entries, all, changes, sources } = recordChanges({ ...options, gitShow });
+  if (options.check) {
+    const missing = unrecorded(entries, changes.rows);
+    if (!missing.length) {
+      console.log(`✔ every change since ${options.since} is in ${CHANGES_FILE} (${entries.length} compared)`);
+      return 0;
+    }
+    console.error(`✖ ${missing.length} change(s) since ${options.since} are not in ${CHANGES_FILE}. Run: npm run changes -- --since=${options.since}`);
+    for (const m of missing.slice(0, 15)) console.error(`  - ${m.country_code} ${m.law_name}: ${m.field}`);
+    if (missing.length > 15) console.error(`  … and ${missing.length - 15} more`);
+    return 1;
+  }
   if (!entries.length) {
     console.log(`✔ no changes since ${options.since}`);
     return 0;

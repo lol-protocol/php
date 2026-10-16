@@ -301,6 +301,25 @@ export function validateSources(sources, records, header = SOURCE_COLUMNS) {
   return errors;
 }
 
+/**
+ * A value that changed after its source was last looked at may no longer be backed by it.
+ * Entries recorded for the day the source was checked are fine: the check came with the edit.
+ */
+export function staleSourceWarnings(sources, records, changes) {
+  const warnings = [];
+  for (const s of sources) {
+    const law = findLaw(records, s.country_code, s.law_name);
+    if (!law || !isRealDate(s.checked)) continue;
+    const later = changes
+      .filter((c) => c.country_code === law.country_code && c.law_name === law.law_name && c.field === s.field && c.date > s.checked)
+      .map((c) => c.date)
+      .sort()
+      .pop();
+    if (later) warnings.push(`${law.country_code} "${law.law_name}" ${s.field}: changed on ${later}, but its source was last checked on ${s.checked}`);
+  }
+  return warnings;
+}
+
 export function validateChanges(changes, header = CHANGE_COLUMNS) {
   const errors = [];
   if (header.join(",") !== CHANGE_COLUMNS.join(",")) return [`${CHANGES_FILE}: header must be exactly: ${CHANGE_COLUMNS.join(",")}`];
@@ -321,6 +340,7 @@ export function loadAndValidate(path = MASTER_CSV, options = {}) {
   const changes = loadSide(path, CHANGES_FILE, CHANGE_COLUMNS);
   if (!errors.length) {
     errors.push(...validateSources(sources.rows, records, sources.header), ...validateChanges(changes.rows, changes.header));
+    if (!errors.length) warnings.push(...staleSourceWarnings(sources.rows, records, changes.rows));
   }
   return { records, errors, warnings, sources: sources.rows, changes: changes.rows };
 }
