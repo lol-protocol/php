@@ -7,7 +7,7 @@ import {
   plural,
   t,
 } from "./translations/i18n.js";
-import { jurisdictionFileUrl, loadBundle } from "./lib/data.js";
+import { jurisdictionFileUrl, loadBundle, loadTranslations } from "./lib/data.js";
 import {
   buildChartBars,
   COMPARE_CRITERIA,
@@ -40,6 +40,7 @@ const esc = escapeHtml;
 const app = {
   onlyDiff: false,
   data: null,
+  translations: {},
   state: emptyState(CONFIG),
   results: [],
   chips: [],
@@ -53,10 +54,19 @@ const regionLabel = (region) => t(`region.${region}`);
 const treatyName = (treaty) => t(`treaty.${treaty}`);
 // "Not specified" (or an empty cell) is shown muted and in the interface language, so real data stands out.
 const NOT_SPECIFIED = /^(not specified|—|-)?$/i;
-const valueHtml = (value) =>
-  NOT_SPECIFIED.test(String(value ?? "").trim())
-    ? `<span class="muted">${esc(t("value.notSpecified"))}</span>`
-    : esc(value);
+const valueHtml = (value) => {
+  const text = String(value ?? "").trim();
+  if (NOT_SPECIFIED.test(text)) return `<span class="muted">${esc(t("value.notSpecified"))}</span>`;
+  // Descriptive values have a machine translation in the interface language: show it, marked, with the original on hover.
+  const translated = app.translations[text];
+  if (!translated) return esc(value);
+  const note = t("value.machineTitle", { original: text });
+  return `${esc(translated)} <span class="mt" role="img" aria-label="${esc(note)}" title="${esc(note)}">${esc(t("value.machineLabel"))}</span>`;
+};
+/** Loads the translations of the current language (none for English). */
+const syncTranslations = async () => {
+  app.translations = await loadTranslations(getLanguage());
+};
 const dateHtml = (iso) => `<time datetime="${esc(iso)}">${esc(formatDate(iso))}</time>`;
 /** "www.example.org" → "example.org": shows where a link leads (official site, WIPO Lex, a law firm…). */
 const hostOf = (url) => {
@@ -672,6 +682,7 @@ async function init() {
     return;
   }
 
+  await syncTranslations();
   buildIndex(app.data.rows, CONFIG);
   app.options = Object.fromEntries(FACETS.map((facet) => [facet.id, facetOptions(app.data.rows, facet)]));
   app.state = pruneState(
@@ -688,7 +699,8 @@ async function init() {
   $("advanced").open =
     matchMedia("(min-width: 769px)").matches || activeFilters(app.state, CONFIG).length > 0;
 
-  onLanguageChange(() => {
+  onLanguageChange(async () => {
+    await syncTranslations();
     renderStatic();
     update();
   });

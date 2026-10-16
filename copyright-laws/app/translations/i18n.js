@@ -166,6 +166,8 @@ export const TRANSLATIONS = {
     "card.source": "Data status",
     "card.checked": "checked {date}",
     "value.notSpecified": "Not specified",
+    "value.machineLabel": "MT",
+    "value.machineTitle": "Machine translation from English. Original: {original}",
     "compare.onlyDiff": "Show only rows that differ ({count})",
   },
 
@@ -319,6 +321,8 @@ export const TRANSLATIONS = {
     "card.source": "Estado de los datos",
     "card.checked": "revisado el {date}",
     "value.notSpecified": "No especificado",
+    "value.machineLabel": "TA",
+    "value.machineTitle": "Traducción automática del inglés. Original: {original}",
     "compare.onlyDiff": "Mostrar solo las filas que difieren ({count})",
   },
 
@@ -472,6 +476,8 @@ export const TRANSLATIONS = {
     "card.source": "État des données",
     "card.checked": "vérifié le {date}",
     "value.notSpecified": "Non précisé",
+    "value.machineLabel": "TA",
+    "value.machineTitle": "Traduction automatique de l'anglais. Original : {original}",
     "compare.onlyDiff": "Afficher seulement les lignes qui diffèrent ({count})",
   },
 
@@ -625,6 +631,8 @@ export const TRANSLATIONS = {
     "card.source": "Datenstand",
     "card.checked": "geprüft am {date}",
     "value.notSpecified": "Nicht angegeben",
+    "value.machineLabel": "MÜ",
+    "value.machineTitle": "Maschinelle Übersetzung aus dem Englischen. Original: {original}",
     "compare.onlyDiff": "Nur abweichende Zeilen zeigen ({count})",
   },
 
@@ -778,6 +786,8 @@ export const TRANSLATIONS = {
     "card.source": "Situação dos dados",
     "card.checked": "revisado em {date}",
     "value.notSpecified": "Não especificado",
+    "value.machineLabel": "TA",
+    "value.machineTitle": "Tradução automática do inglês. Original: {original}",
     "compare.onlyDiff": "Mostrar só as linhas que diferem ({count})",
   },
 };
