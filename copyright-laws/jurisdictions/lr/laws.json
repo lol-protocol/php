@@ -1,0 +1,72 @@
+[
+  {
+    "country_code": "LR",
+    "country_name": "Liberia",
+    "region": "middle_east_africa",
+    "law_name": "Liberia Intellectual Property Act, 2016 (Title 24, Liberian Code of Laws Revised; approved 14 June 2016; replaced the 1997 Copyright Law)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (s. 9.20; literary, musical and artistic works other than photographs; joint works from death of last surviving author; audiovisual, sound recordings, anonymous works and broadcasts 50 years)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Liberia Intellectual Property Office (LIPO), Copyright Department",
+    "treaties_signatory": "Berne/TRIPS",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/16994",
+    "notes": "Berne (Paris Act) in force 8 Mar 1989 (WIPO notification 122); WTO member since 14 Jul 2016 (Baker McKenzie). WCT/WPPT status not found. Spoor calls the law 'Industrial Property Act 2014' effective 22 Jul 2016: title/date conflict across sources.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/16994",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/16994",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://c.enwp.org/wiki/Commons:FOP_Liberia",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/16994",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://spoor.com/new-ip-act-in-liberia/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/treaties/en/notifications/berne/treaty_berne_122.html",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

@@ -227,8 +227,8 @@ export function validateRecords(records, header = COLUMNS, { today = todayIso() 
       if (both.length) fail(`${both.join(", ")} is listed both as party and as not a party`);
     }
 
-    if (!/^(Yes|No)( \(.+\))?$/.test(record.registration_required)) {
-      fail(`registration_required must be "Yes"/"No" (optionally followed by a note), got ${JSON.stringify(record.registration_required)}`);
+    if (!/^(Yes|No|Not specified)( \(.+\))?$/.test(record.registration_required)) {
+      fail(`registration_required must be "Yes", "No" or "Not specified" (optionally followed by a note), got ${JSON.stringify(record.registration_required)}`);
     }
 
     if (!DATA_STATUSES.includes(record.data_status)) {

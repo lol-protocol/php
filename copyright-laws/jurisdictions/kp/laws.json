@@ -1,0 +1,77 @@
+[
+  {
+    "country_code": "KP",
+    "country_name": "North Korea",
+    "region": "asia_pacific",
+    "law_name": "Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years; institutional works up to 50 years from publication",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "State management documents and current news excluded from protection (Art. 12), unless commercial purpose pursued (2006 amendment)",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/zh/legislation/details/9722",
+    "notes": "Berne member since 28 April 2003. A 2012 version is claimed on a wiki talk page but unverified.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/zh/legislation/details/9722",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/zh/legislation/details/9722",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://en.wikipedia.org/wiki/Copyright_law_of_North_Korea",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/zh/legislation/details/9722",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/zh/legislation/details/9722",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.nkeconwatch.com/2007/08/02/everything-youve-ever-wanted-to-know-about-the-north-korean-copyright-act/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://www.nkeconwatch.com/2007/08/02/everything-youve-ever-wanted-to-know-about-the-north-korean-copyright-act/",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

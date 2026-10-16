@@ -1,0 +1,67 @@
+[
+  {
+    "country_code": "GW",
+    "country_name": "Guinea-Bissau",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Code approved by Decree-Law No. 46.980 (Portuguese colonial code, 1966; WIPO lists publication 1972)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Commons summary; article not seen) (unconfirmed)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/8448",
+    "notes": "Berne (Paris Act) accession deposited 18 Apr 1991, in force 22 Jul 1991. A 2025 draft copyright law hosted by OAPI exists; no evidence it was enacted. TRIPS/WCT/WPPT not checked.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8448",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8448",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://c.enwp.org/wiki/Commons:CRT/Guinea-Bissau",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/8448",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/treaties/en/notifications/berne/treaty_berne_132.html",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

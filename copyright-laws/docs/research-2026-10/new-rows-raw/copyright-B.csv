@@ -1,0 +1,79 @@
+code,field,value,conf,source
+SY,law_name,"Legislative Decree No. 62 of 2013 on Copyright and Neighbouring Rights (replaced Law No. 12/2001)",high,https://www.wipo.int/wipolex/en/legislation/details/17231
+SY,protection_type,Copyright/Related rights,medium,https://www.agip.com/News/en/news/4680
+SY,term_of_protection,"Author's life + 50 years (Art. 19); joint works from last surviving author's death (Art. 20); audiovisual and collective works 50 years from publication (Art. 21)",medium,https://www.agip.com/Agip-Country-Service/en/160/C
+SY,author_rights,Economic rights,medium,https://www.agip.com/Agip-Country-Service/en/160/C
+SY,moral_rights,"Right to first publication, attribution or pseudonym, to object to mutilation or prejudicial alteration, and to withdraw the work; perpetual (article numbers not seen)",medium,https://en.wikipedia.org/wiki/Copyright_law_of_Syria
+SY,orphan_works,Not specified,low,https://www.agip.com/Agip-Country-Service/en/160/C
+SY,digital_protection,UNKNOWN,low,https://www.agip.com/Agip-Country-Service/en/160/C
+SY,fair_use_exceptions,"Permitted uses without authorization listed in Art. 33 (contents not seen); ideas, methods, laws, court decisions and news not protected (Art. 4)",low,https://www.agip.com/Agip-Country-Service/en/160/C/3
+SY,registration_required,"No - protection is automatic, no formalities (Art. 2)",medium,https://www.agip.com/Agip-Country-Service/en/160/C
+SY,enforcement_body,UNKNOWN (a source names the Ministry of Culture Copyright Office; not confirmed),low,https://en.wikipedia.org/wiki/Copyright_law_of_Syria
+SY,treaties_signatory,Berne,high,https://www.wipo.int/treaties/en/notifications/berne/treaty_berne_229.html
+SY,linked_resources,https://www.wipo.int/wipolex/en/legislation/details/17231,high,https://www.wipo.int/wipolex/en/legislation/details/17231
+SY,notes,"Official text Arabic only; secondary-source summary. Berne accession 11 Mar 2004 (Paris Act 1971), in force 11 Jun 2004. AGIP FAQ cites year 2016 (apparent typo). WCT/WPPT/TRIPS not verified",medium,https://www.wipo.int/wipolex/en/treaties/parties/remarks/SY/15
+TD,law_name,"Law No. 005/PR/2003 of 2 May 2003 on the Protection of Copyright, Neighbouring Rights and Expressions of Folklore",medium,https://www.wipo.int/wipolex/fr/legislation/details/9124
+TD,protection_type,Copyright/Related rights,medium,https://www.wipo.int/wipolex/en/text/491812
+TD,term_of_protection,"Author's life + 70 years (Art. 39); joint works from last survivor's death (Art. 40); audiovisual and radio works 50 years (Art. 40)",medium,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Chad.html
+TD,orphan_works,Not specified,low,https://www.wipo.int/wipolex/fr/legislation/details/9124
+TD,fair_use_exceptions,"Folklore uses for profit outside traditional context need BUTDRA authorization against royalty (Arts. 82, 85, 86); other exceptions not seen",low,https://www.wipo.int/wipolex/en/text/491812
+TD,enforcement_body,Chadian Copyright Office (BUTDRA),high,https://www.wipo.int/wipolex/ru/legislation/details/9124
+TD,treaties_signatory,Berne/TRIPS,medium,https://www.wipo.int/wipolex/ru/treaties/parties/remarks/TD/15
+TD,linked_resources,https://www.wipo.int/wipolex/en/legislation/details/9126,medium,https://wipo.int/wipolex/en/legislation/details/9126
+TD,notes,"Berne: bound from 25 Nov 1971 (Berne Notification 30). TRIPS from WTO membership lists (no date seen). Sources disagree on law number (005/PR/2003 vs 06/PR/2003) and BUTDRA creation (Law 05/PR/2003 of 23 May 2003). Moral rights, digital protection, registration not found",medium,https://tchadinfos.com/2025/01/22/culture-un-bilan-mitige-20-ans-apres-ladoption-de-la-loi-sur-le-droit-dauteur/
+SO,law_name,"Copyright Law No. 66 of 7 September 1977",low,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html
+SO,protection_type,Copyright,low,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html
+SO,term_of_protection,"Author's life + 30 years (registered works only, per secondary sources)",low,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html
+SO,registration_required,"Yes - law covers only registered works; no registration office reportedly exists",low,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Somalia.html
+SO,treaties_not_party,WCT/TRIPS,low,https://dti.eui.eu/database/page/129
+SO,notes,"No implementing regulations reportedly issued; law not widely enforced; no WIPO Lex entry found. WTO: accession working party set up Dec 2016, first meeting scheduled Feb 2025 (not a member, so TRIPS not applicable); Berne not found",low,https://africaarbitration.org/?p=2689
+SS,law_name,"Copyright and Neighbouring Rights Protection Act 1996 (listed by Wikimedia Commons as main law; may be inherited Sudanese law - unverified)",low,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/South_Sudan.html
+SS,notes,"Copyright Bill being fast-tracked by Ministry of Culture (late 2025); no new act found; an undated KEI note lists South Sudan as outside WIPO and Berne; no WIPO Lex or treaty record found for South Sudan",low,https://www.eyeradio.org/culture-ministry-fast-tracks-copyright-bill-to-safeguard-creative-economy/
+GN,law_name,"Law No. L/2019/0028/AN of 7 June 2019 on Literary and Artistic Property (replaced Law 043/APN/CP/80 of 1980); implementing decree of 20 June 2022",high,https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2022-n10/guinee-precision-des-regles-applicables-aux-droits-d-auteurs-et-droits-voisins-DAA201c6
+GN,protection_type,Copyright/Related rights,medium,https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2020-n1/guinee-reforme-du-droit-d-auteur-et-des-droits-voisins-DAA112t3
+GN,term_of_protection,UNKNOWN (duration article not found despite several searches),low,https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2020-n1/guinee-reforme-du-droit-d-auteur-et-des-droits-voisins-DAA112t3
+GN,orphan_works,Not specified,low,https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2020-n1/guinee-reforme-du-droit-d-auteur-et-des-droits-voisins-DAA112t3
+GN,digital_protection,"New offences assimilated to counterfeiting incl. Beijing Treaty provisions (Art. 117)",low,https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2020-n1/guinee-reforme-du-droit-d-auteur-et-des-droits-voisins-DAA112t3
+GN,fair_use_exceptions,"Reproduction of works permanently in public places allowed unless main subject and commercial (Art. 27); private copying regime exists (details not seen); artist resale right 5% of pre-tax price managed by BGDA (2022 decree)",low,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Guinea.html
+GN,enforcement_body,Guinean Copyright Bureau (BGDA),high,https://www.labase-lextenso.fr/l-essentiel-droits-africains-des-affaires/2022-n10/guinee-precision-des-regles-applicables-aux-droits-d-auteurs-et-droits-voisins-DAA201c6
+GN,treaties_signatory,TRIPS/WCT/WPPT,medium,https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_wppt_33
+GN,linked_resources,https://www.wipo.int/wipolex/zh/legislation/details/13654,low,https://www.wipo.int/wipolex/zh/legislation/details/13654
+GN,notes,"WPPT accession 25 Feb 2002, in force 25 May 2002 (WIPO notification WPPT 33); WCT in force 25 May 2002 per WIPO 2002 status list; TRIPS from WTO member list; Berne not verified; OAPI link not verified",medium,https://www.wipo.int/wipolex/en/treaties/notifications/details/treaty_wppt_33
+BI,law_name,"Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights",high,https://www.wipo.int/wipolex/en/details.jsp?id=8323
+BI,protection_type,Copyright/Related rights,high,https://www.wipo.int/wipolex/en/details.jsp?id=8323
+BI,term_of_protection,"Author's life + 50 years (inferred from Art. 58 stamp rule; general article not seen); collective, audiovisual and posthumous works 50 years from first lawful publication; applied art 25 years (Art. 61)",low,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Burundi.html
+BI,moral_rights,"Disclosure, attribution, integrity and withdrawal (Art. 22 covers name, status and integrity)",medium,https://www.memoireonline.com/11/11/4955/m_De-la-protection-des-droits-de-propriete-litteraire-et-artistique-en-droit-positif-burundais3.html
+BI,orphan_works,Not specified,low,https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/bi/bi005en.pdf
+BI,fair_use_exceptions,"Closed list of exceptions in Art. 26, not fair use or fair dealing; Art. 26(4) allows film/TV reproduction of works permanently in public places",medium,https://dti.eui.eu/database/page/258
+BI,treaties_signatory,Berne/TRIPS/WCT,medium,https://www.wipo.int/wipolex/en/treaties/parties/remarks/BI/15
+BI,linked_resources,https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/bi/bi005en.pdf,high,https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/bi/bi005en.pdf
+BI,notes,"WIPO Lex ref BI005. Berne accession 12 Jan 2016, in force 12 Apr 2016 (WIPO party list); WCT claim from Inventa article only; TRIPS from WTO membership lists; enforcement body not found",medium,https://inventa.com/en/news/article/154/burundi-signs-up-to-berne-and-wipo-copyright-treat
+BJ,law_name,"Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouring Rights (repealed Law No. 84-008 of 15 March 1984)",high,https://www.wipo.int/wipolex/en/text/490620
+BJ,protection_type,Copyright/Related rights,high,https://www.wipo.int/wipolex/en/text/490620
+BJ,term_of_protection,"Author's life + 70 years (Art. 52); joint works from last survivor's death (Art. 53); anonymous works and audiovisual works 70 years from publication (Arts. 54-55); applied art 25 years (Art. 56)",medium,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Benin.html
+BJ,fair_use_exceptions,UNKNOWN (articles not seen),low,https://www.wipo.int/wipolex/en/text/490620
+BJ,enforcement_body,Beninese Copyright Office (BUBEDRA),high,https://sgg.gouv.bj/doc/decret-2007-115/download
+BJ,treaties_signatory,TRIPS/WCT,medium,https://wipo.int/wipolex/en/treaties/ShowResults?code=BJ
+BJ,linked_resources,https://www.wipo.int/wipolex/en/text/490620,high,https://www.wipo.int/wipolex/en/text/490620
+BJ,notes,"Promulgation date varies (5 vs 10 April 2006); WCT accession 16 Jan 2006, in force 16 Apr 2006 (WIPO Lex); TRIPS from WTO membership lists; Berne/WPPT not verified; moral rights, digital protection not found",medium,https://wipo.int/wipolex/en/treaties/ShowResults?code=BJ
+HT,law_name,"Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT008)",high,https://www.wipo.int/wipolex/fr/legislation/details/5090
+HT,protection_type,Copyright,medium,https://www.wipo.int/wipolex/fr/legislation/details/5090
+HT,term_of_protection,"Author's life + 60 years; photographic works 25 years",medium,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Haiti.html
+HT,moral_rights,Moral rights recognized by statute in the Decree,medium,https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/166/
+HT,fair_use_exceptions,"Reproduction of works permanently in public places allowed unless main subject and commercial (Art. 15); other exceptions not seen",low,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Haiti.html
+HT,registration_required,"No - protection arises automatically on creation of an original work fixed in tangible form",medium,https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/166/
+HT,enforcement_body,Haitian Copyright Office (BHDA),high,https://www.wipo.int/wipolex/en/details.jsp?id=5091
+HT,treaties_signatory,Berne/TRIPS,medium,https://www.wipo.int/treaties/en/notifications/berne/treaty_berne_172.html
+HT,linked_resources,https://www.wipo.int/wipolex/fr/legislation/details/5090,high,https://www.wipo.int/wipolex/fr/legislation/details/5090
+HT,notes,"BHDA created by separate decree of 12 Oct 2005 as a public body under the Ministry of Culture. Berne accession 11 Oct 1995, in force 11 Jan 1996 (WIPO notification 172); WTO 30 Jan 1996 per Commons only; WCT/WPPT not found in results",medium,https://www.wipo.int/treaties/en/notifications/berne/treaty_berne_172.html
+CU,law_name,"Law No. 14 on Copyright of 28 December 1977, as amended by Decree-Law No. 156 of 1994",medium,https://www.wipo.int/wipolex/en/legislation/details/10651
+CU,protection_type,Copyright,medium,https://www.wipo.int/wipolex/en/legislation/details/10651
+CU,term_of_protection,"Author's life + 50 years from 1 January of the year after death (Decree-Law 156 of 1994; originally 25 years); photographs 25 years",medium,https://www.wipo.int/wipolex/en/text/492017
+CU,moral_rights,"Moral rights recognized; perpetual, inalienable and imprescriptible",medium,https://www.ecured.cu/Derecho_de_Autor_en_Cuba
+CU,orphan_works,Not specified,low,https://files.sld.cu/bmn/files/2018/05/La-Propiedad-Intelectual.pdf
+CU,fair_use_exceptions,"Non-profit libraries and archives may copy works from permanent collections to preserve or replace them; other exceptions not seen",low,https://files.sld.cu/bmn/files/2018/05/La-Propiedad-Intelectual.pdf
+CU,enforcement_body,National Copyright Centre (CENDA; created by Decree 20 of 21 Feb 1978),high,https://www.wipo.int/wipolex/en/legislation/details/10650
+CU,treaties_signatory,Berne/TRIPS,medium,https://www.wipo.int/wipolex/en/treaties/parties/remarks/CU/15
+CU,treaties_not_party,WCT/WPPT,low,https://wipo.int/wipolex/en/treaties/ShowResults?code=CU
+CU,linked_resources,https://www.wipo.int/wipolex/en/legislation/details/10651,high,https://www.wipo.int/wipolex/en/legislation/details/10651
+CU,notes,"Berne accession 20 Nov 1996, in force 20 Feb 1997 (excludes Art. 33(1) ICJ clause); not-party to WCT/WPPT inferred from absence in WIPO Lex country list; WTO membership from member lists; 2006 draft decree-law to update the regime, status unknown",medium,https://www.wipo.int/wipolex/en/treaties/parties/remarks/CU/15

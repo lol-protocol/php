@@ -1,0 +1,92 @@
+[
+  {
+    "country_code": "SY",
+    "country_name": "Syria",
+    "region": "middle_east_africa",
+    "law_name": "Legislative Decree No. 62 of 2013 on Copyright and Neighbouring Rights (replaced Law No. 12/2001)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Art. 19); joint works from last surviving author's death (Art. 20); audiovisual and collective works 50 years from publication (Art. 21)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Right to first publication, attribution or pseudonym, to object to mutilation or prejudicial alteration, and to withdraw the work; perpetual (article numbers not seen)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Permitted uses without authorization listed in Art. 33 (contents not seen); ideas, methods, laws, court decisions and news not protected (Art. 4) (unconfirmed)",
+    "registration_required": "No (protection is automatic, no formalities (Art. 2)",
+    "enforcement_body": "UNKNOWN (a source names the Ministry of Culture Copyright Office; not confirmed) (unconfirmed)",
+    "treaties_signatory": "Berne",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/17231",
+    "notes": "Official text Arabic only; secondary-source summary. Berne accession 11 Mar 2004 (Paris Act 1971), in force 11 Jun 2004. AGIP FAQ cites year 2016 (apparent typo). WCT/WPPT/TRIPS not verified",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-16",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/17231",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      },
+      "protection_type": {
+        "url": "https://www.agip.com/News/en/news/4680",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://www.agip.com/Agip-Country-Service/en/160/C",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "author_rights": {
+        "url": "https://www.agip.com/Agip-Country-Service/en/160/C",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "moral_rights": {
+        "url": "https://en.wikipedia.org/wiki/Copyright_law_of_Syria",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "orphan_works": {
+        "url": "https://www.agip.com/Agip-Country-Service/en/160/C",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "fair_use_exceptions": {
+        "url": "https://www.agip.com/Agip-Country-Service/en/160/C/3",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "registration_required": {
+        "url": "https://www.agip.com/Agip-Country-Service/en/160/C",
+        "confidence": "medium",
+        "checked": "2026-10-16"
+      },
+      "enforcement_body": {
+        "url": "https://en.wikipedia.org/wiki/Copyright_law_of_Syria",
+        "confidence": "low",
+        "checked": "2026-10-16"
+      },
+      "treaties_signatory": {
+        "url": "https://www.wipo.int/treaties/en/notifications/berne/treaty_berne_229.html",
+        "confidence": "high",
+        "checked": "2026-10-16"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      },
+      {
+        "date": "2026-10-16",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
