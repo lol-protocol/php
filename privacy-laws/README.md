@@ -152,3 +152,7 @@ CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm t
 ## License
 
 MIT
+
+## Traducciones de los valores (`countries/value_translations.csv`)
+
+Los textos descriptivos de cada ley (alcance, sanciones, plazos…) están en inglés en el CSV maestro. `value_translations.csv` guarda su traducción a `spa`, `fra`, `deu` y `por` (columnas `lang,source,text`; `source` es el texto inglés exacto). Son **traducciones automáticas, no revisadas por un jurista**: la app las muestra con la marca «MT» y, si falta una, enseña el inglés. `npm run translations` da la cobertura por idioma; `npm run translations -- --missing=<lang>` lista lo que falta; `--import=<lang>` incorpora un archivo revisado. Cuando cambia un texto inglés, su traducción deja de aplicarse hasta que se actualice.
