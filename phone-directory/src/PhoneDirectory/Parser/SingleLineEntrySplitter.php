@@ -17,6 +17,8 @@ namespace PhoneDirectory\Parser;
  *    "SMITH John 12 Oak Street 555-123-4567"). Here the first digit in the line, once any phone number is
  *    removed, is assumed to start the street — true for the number-first convention this covers, since
  *    names in this project's supported languages essentially never contain digits.
+ *
+ * @phpstan-type SplitEntry array{name: string, street: string, phone: string|null}
  */
 final class SingleLineEntrySplitter
 {
@@ -33,7 +35,7 @@ final class SingleLineEntrySplitter
      * read as the surname and the rest as the given name(s). Field splitting doesn't need this: its
      * fields already come out in surname-first order through the comma join in splitByFields().
      *
-     * @return array{name: string, street: string, phone: ?string}|null
+     * @return SplitEntry|null
      */
     public static function split(string $line, callable $looksLikeStreet, int $surnameWordCount = 1): ?array
     {
@@ -72,7 +74,10 @@ final class SingleLineEntrySplitter
         return "{$surname}, {$given}";
     }
 
-    /** @param string[] $fields */
+    /**
+     * @param string[] $fields
+     * @return SplitEntry|null
+     */
     private static function splitByFields(array $fields, callable $looksLikeStreet): ?array
     {
         $phone = null;
@@ -120,6 +125,7 @@ final class SingleLineEntrySplitter
         return $name === '' || $street === '' ? null : ['name' => $name, 'street' => $street, 'phone' => $phone];
     }
 
+    /** @return SplitEntry|null */
     private static function splitByDigitBoundary(string $line, callable $looksLikeStreet): ?array
     {
         $rest = $line;

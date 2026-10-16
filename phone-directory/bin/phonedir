@@ -20,7 +20,10 @@ use PhoneDirectory\RecordLinker;
  * editions -- everything the README shows as PHP snippets, without writing PHP.
  */
 
-/** @return array{command: ?string, args: string[], options: array<string,string|true>} */
+/**
+ * @param list<string> $argv
+ * @return array{command: ?string, args: string[], options: array<string,string|true>}
+ */
 function parseArgv(array $argv): array
 {
     array_shift($argv); // script path
@@ -45,6 +48,7 @@ function parseArgv(array $argv): array
     return ['command' => $command, 'args' => $args, 'options' => $options];
 }
 
+/** @param array<string, string|true> $options */
 function option(array $options, string $key, ?string $default = null): ?string
 {
     $value = $options[$key] ?? $default;
@@ -96,6 +100,7 @@ function printHelp(): void
     TXT;
 }
 
+/** @param array<string, string|true> $options */
 function buildManager(array $options, ?MultiLanguagePhoneDirectoryParser $parser = null): PhoneDirectoryManagerV2
 {
     $dsn = option($options, 'dsn', 'sqlite:phonedirectory.sqlite');
@@ -124,6 +129,10 @@ function formatJuridical(JuridicalEntity $entity): string
     return "  [empresa]  {$entity->getBusinessName()} | {$entity->getStreet()}, {$entity->getCountryCode()}{$phone}";
 }
 
+/**
+ * @param list<string> $args
+ * @param array<string, string|true> $options
+ */
 function commandImport(array $args, array $options): int
 {
     $file = $args[0] ?? fail('uso: phonedir import <archivo> [opciones]');
@@ -164,6 +173,7 @@ function commandImport(array $args, array $options): int
     return 0;
 }
 
+/** @param array<string, string|true> $options */
 function commandSearch(array $options): int
 {
     $manager = buildManager($options);
@@ -205,6 +215,7 @@ function commandSearch(array $options): int
     return 0;
 }
 
+/** @param array<string, string|true> $options */
 function commandStats(array $options): int
 {
     $stats = buildManager($options)->getStatistics();
@@ -217,6 +228,7 @@ function commandStats(array $options): int
     return 0;
 }
 
+/** @param array<string, string|true> $options */
 function commandLink(array $options): int
 {
     $sourcesOption = option($options, 'sources');
@@ -255,6 +267,10 @@ function commandLink(array $options): int
     return 0;
 }
 
+/**
+ * @param list<string> $args
+ * @param array<string, string|true> $options
+ */
 function commandCatalog(array $args, array $options): int
 {
     $catalog = new PhoneDirectoryCatalog();

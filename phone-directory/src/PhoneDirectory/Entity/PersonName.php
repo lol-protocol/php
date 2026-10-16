@@ -4,6 +4,18 @@ namespace PhoneDirectory\Entity;
 
 use PhoneDirectory\Exception\InvalidEncodingException;
 
+/**
+ * @phpstan-type PersonNameData array{
+ *     fullName: string,
+ *     formattedName: string,
+ *     firstName: string,
+ *     firstNames: list<string>,
+ *     middleNames: list<string>,
+ *     lastNames: list<string>,
+ *     primaryLastName: string,
+ *     title: string|null
+ * }
+ */
 class PersonName
 {
     public const PARTICLES = ['de', 'del', 'della', 'di', 'da', 'das', 'do', 'dos', 'du', 'van', 'von', 'der', 'den', 'le', 'la', 'los', 'las'];
@@ -35,7 +47,9 @@ class PersonName
         ['vva', 'de'], ['viuva', 'de'],
     ];
 
+    /** @var list<string> */
     private array $firstNames;
+    /** @var list<string> */
     private array $lastNames;
     private ?string $language;
     private ?string $title = null;
@@ -84,6 +98,7 @@ class PersonName
         return mb_convert_case(mb_strtolower($word, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
     }
 
+    /** @return list<string> */
     private function splitWords(string $text): array
     {
         return preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY);
@@ -94,7 +109,12 @@ class PersonName
         return mb_strtolower(rtrim($word, '.'), 'UTF-8');
     }
 
-    /** Removes a recognized honorific or widow phrase from the front of $words, recording it as the title. */
+    /**
+     * Removes a recognized honorific or widow phrase from the front of $words, recording it as the title.
+     *
+     * @param list<string> $words
+     * @return list<string>
+     */
     private function extractTitle(array $words): array
     {
         if (count($words) >= 2 && in_array(
@@ -114,7 +134,11 @@ class PersonName
         return $words;
     }
 
-    /** Title Case for the first word, lowercase for the rest ("Vda. de", not "Vda. De"). */
+    /**
+     * Title Case for the first word, lowercase for the rest ("Vda. de", not "Vda. De").
+     *
+     * @param list<string> $words
+     */
     private function formatTitle(array $words): string
     {
         $formatted = [mb_convert_case(mb_strtolower($words[0], 'UTF-8'), MB_CASE_TITLE, 'UTF-8')];
@@ -178,6 +202,7 @@ class PersonName
         return $this->title;
     }
 
+    /** @return list<string> */
     public function getFirstNames(): array
     {
         return $this->firstNames;
@@ -188,11 +213,13 @@ class PersonName
         return $this->firstNames[0] ?? '';
     }
 
+    /** @return list<string> */
     public function getMiddleNames(): array
     {
         return array_slice($this->firstNames, 1);
     }
 
+    /** @return list<string> */
     public function getLastNames(): array
     {
         return $this->lastNames;
@@ -233,6 +260,7 @@ class PersonName
         return "{$lastNameStr}, {$firstNameStr}";
     }
 
+    /** @return PersonNameData */
     public function toArray(): array
     {
         return [
