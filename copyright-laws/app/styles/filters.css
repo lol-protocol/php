@@ -375,6 +375,7 @@ label.check .count {
 
 .field-source {
   font-size: var(--font-size-sm);
+  text-decoration: underline; /* a link inside running text must not rely on colour alone */
   white-space: nowrap;
 }
 
@@ -620,4 +621,20 @@ label.check .count {
     forced-color-adjust: none;
     background-color: Highlight;
   }
+}
+
+/* Recent changes list and the export option */
+.news-section {
+  margin: var(--spacing-lg) 0;
+}
+
+.news-section summary {
+  cursor: pointer;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.export-extra {
+  font-size: var(--font-size-sm);
+  margin-right: var(--spacing-sm);
 }
