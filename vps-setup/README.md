@@ -11,8 +11,8 @@ Scripts automáticos, uno por paso, para configurar un VPS Ubuntu 24 LTS con:
 |-----------|----------------|
 | `README.md` (este) | Qué hace cada script, cómo usarlos, tests/CI, seguridad y troubleshooting |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Cómo está armado el servidor: stack, directorios, flujo de peticiones, seguridad, mantenimiento |
-| [DEPLOYMENT.md](DEPLOYMENT.md) | Despliegue completo de punta a punta (VPS nuevo → dominios → apps → base de datos) |
-| [DOMAINS.md](DOMAINS.md) | Configuración por dominio: Nginx, DNS, SSL y checklists |
+| [DEPLOYMENT.md](DEPLOYMENT.md) | Despliegue de punta a punta en orden: VPS nuevo → DNS → `install-all` → endurecer → más dominios → base de datos → mantenimiento |
+| [DOMAINS.md](DOMAINS.md) | Cómo queda cada dominio en el servidor, agregar/quitar (`10_A`/`10_B`), DNS (registrador o BIND propio), SSL y mover un dominio |
 | [TOOLS-AND-UTILITIES.md](TOOLS-AND-UTILITIES.md) | Referencia de cada herramienta instalada (Nginx, PHP, Python, BD, Certbot, UFW...) |
 
 `_Garbage/` guarda, sin borrarlo, lo que quedó obsoleto (ver su README).

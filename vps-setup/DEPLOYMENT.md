@@ -1,531 +1,156 @@
-# 🚀 Guía de Despliegue - VPS Initech
+# 🚀 Despliegue de punta a punta
 
-Guía paso a paso para desplegar todo el sistema en el VPS.
+Cómo pasar de un VPS recién creado a los sitios funcionando, usando los scripts de esta carpeta.
+Qué hace cada script está en el [README](README.md); aquí está el **orden** y lo que haces tú.
 
----
+> La versión anterior de este documento (pasos manuales con `nano`/`ln -sf`/`certbot`) está en
+> [`_Garbage/DEPLOYMENT-manual.md`](_Garbage/DEPLOYMENT-manual.md). No la sigas: los vhosts creados
+> a mano no llevan la marca `# vps-setup:` y después los scripts se niegan a tocarlos.
 
-**Nota:** el dominio real ya comprado y desplegado es **`initech.fun`** (ver
-[ARCHITECTURE.md](ARCHITECTURE.md)). Los pasos de abajo usan `conce.com` /
-`initech.cl` como ejemplo genérico del proceso de despliegue — sustituye por
-`initech.fun` (o el dominio que quieras agregar) en cada comando.
-
-## 📋 Pre-requisitos
-
-- ✅ VPS Ubuntu 24.04 LTS activo (158.69.222.245)
-- ✅ Acceso SSH al VPS (usuario: ubuntu — usa tu propia contraseña o, mejor, una llave SSH; nunca la dejes escrita en este repo)
-- ✅ Dominio(s) registrado(s) (initech.fun ya está comprado; conce.com/initech.cl/contrastocolor.ink/wikipedia.cl son ejemplos de cómo agregar más)
-- ✅ Acceso a panel DNS de cada dominio
-- ✅ Email para certificados SSL (ej: admin@domain.com)
+En los comandos, `<IP_DEL_VPS>`, `tudominio.com` y `tu@email.com` son tuyos.
 
 ---
 
-## 🔧 Fase 1: Setup Inicial del VPS
+## 1. Antes de crear nada
 
-### Paso 1: Conectarse al VPS
+- **VPS con Ubuntu 24.04 LTS.** Es la única versión soportada: `01` se niega a correr en otra
+  (Ubuntu 26.04 trae PHP 8.5 y los paquetes `php8.3-*` no existen allí).
+- **Una llave SSH en tu equipo:** `ssh-keygen -t ed25519`. La privada nunca sale de tu equipo ni va al repo.
+- **El dominio** y acceso al panel DNS de tu registrador.
+- **Un email** para Let's Encrypt (avisos de caducidad).
 
-```bash
-ssh ubuntu@158.69.222.245
-# Te pedirá la contraseña del usuario ubuntu (no la guardes en texto plano en ningún repo)
-```
+## 2. DNS: apunta el dominio al VPS
 
-### Paso 2: Descargar Scripts de Instalación
+En el panel de tu registrador, para cada dominio:
 
-```bash
-cd /tmp
-git clone https://github.com/lol-protocol/php.git
-cd php/vps-setup
-```
+| Tipo | Nombre | Valor | TTL |
+|------|--------|-------|-----|
+| A | `@` | `<IP_DEL_VPS>` | 3600 |
+| A | `www` | `<IP_DEL_VPS>` | 3600 |
+| CAA *(recomendado)* | `@` | `0 issue "letsencrypt.org"` | 3600 |
 
-### Paso 3: Ejecutar Instalación Base
+El registro CAA hace que solo Let's Encrypt pueda emitir certificados para tu dominio. Si tu
+registrador no permite editar registros, `06_C` monta un DNS propio con BIND (ver [DOMAINS.md](DOMAINS.md)).
 
-**Opción A: Automática (Recomendado)**
-```bash
-chmod +x install-all.sh
-./install-all.sh conce.com admin@conce.com
-```
-
-**Opción B: Manual (Más Control)**
-```bash
-chmod +x *.sh
-
-# 01: prerequisito único
-./01-system-update.sh
-
-# 02_A..02_F, 02_J: instalaciones independientes entre sí (cualquier orden)
-./02_A-install-java.sh
-./02_B-install-php.sh
-./02_C-install-python.sh
-./02_D-install-postgresql.sh
-./02_E-install-nginx.sh
-./02_F-install-certbot.sh
-./02_J-install-webmin.sh   # Panel de administración (opcional): https://IP:10000
-
-# 03: configurar Nginx (cambiar dominio según necesidad)
-./03-configure-nginx-site.sh conce.com
-
-# Esperar propagación DNS antes de siguiente paso
-# ...
-
-# 04: configurar SSL
-./04-setup-ssl.sh conce.com admin@conce.com
-
-# 05: desplegar landing page
-./05-deploy-landing-page.sh conce.com
-```
-
-### Paso 4: Verificar Instalación
+La propagación suele tardar de 15 a 60 minutos (hasta 24–48 h según el registrador). Compruébala
+desde tu equipo, **los dos nombres**: certbot pide el certificado para ambos y rechaza todo si uno falla.
 
 ```bash
-# Verificar servicios
-sudo systemctl status nginx
-sudo systemctl status php8.3-fpm
-sudo systemctl status postgresql
-sudo systemctl status webmin 2>/dev/null   # si se instaló
-
-# Verificar software instalado
-java -version
-php -v
-python3 --version
-psql --version
-nginx -v
+dig +short tudominio.com A
+dig +short www.tudominio.com A      # los dos deben devolver <IP_DEL_VPS>
 ```
 
----
+No hace falta esperar a que propague para instalar: usa `--skip-ssl` (paso 4) y pide el certificado después.
 
-## 🌐 Fase 2: Configurar Dominios
-
-### Paso 1: Configurar DNS para cada dominio
-
-**En tu registrador de dominio (GoDaddy, Namecheap, ISP Chile, etc.):**
-
-Para cada dominio (conce.com, initech.cl, etc.):
-
-1. Accede al panel de control
-2. Busca "DNS" o "Nameservers"
-3. Agrega registros **A**:
-
-```
-Tipo: A
-Nombre: @ (o déjalo en blanco)
-Valor: 158.69.222.245
-TTL: 3600 (o la que sugiera el registrador)
-
----
-
-Tipo: A
-Nombre: www
-Valor: 158.69.222.245
-TTL: 3600
-```
-
-4. Guarda los cambios
-5. **ESPERA 15-60 MINUTOS** (hasta 24-48h según el registrador) para que se propague
-
-### Paso 2: Verificar propagación DNS
+## 3. Acceso: desde tu equipo con `remote-run.sh`
 
 ```bash
-# En tu computadora (no en el VPS)
-nslookup conce.com
-dig conce.com
-
-# Salida esperada:
-# conce.com.  3600  IN  A  158.69.222.245
+cd vps-setup
+cp vps.env.example vps.env          # VPS_HOST=<IP_DEL_VPS>, VPS_USER, VPS_KEY (vps.env está en .gitignore)
+ssh-copy-id -i ~/.ssh/id_ed25519.pub ubuntu@<IP_DEL_VPS>   # una vez, con la contraseña inicial del proveedor
 ```
 
-### Paso 3: Configurar sitios en Nginx
+`remote-run.sh <script> [args]` sube `vps-setup/` y `landing-page/` por SSH (solo llave) y ejecuta
+el script en el VPS con terminal, así que los prompts funcionan. También puedes clonar el repo en el
+VPS y correr los scripts allí: los comandos son los mismos, sin el `./remote-run.sh` delante.
 
-En el VPS, para cada dominio:
+## 4. Instalación
 
 ```bash
-# Carpeta de logs de cada dominio -- Nginx no la crea sola; sin ella
-# "nginx -t" falla mas abajo
-sudo mkdir -p /var/log/nginx/conce.com /var/log/nginx/initech.cl
-
-# Landing page - conce.com
-sudo nano /etc/nginx/sites-available/conce.com
-# Configurar según DOMAINS.md
-
-sudo ln -sf /etc/nginx/sites-available/conce.com /etc/nginx/sites-enabled/conce.com
-
-# Landing page - initech.cl
-sudo nano /etc/nginx/sites-available/initech.cl
-sudo ln -sf /etc/nginx/sites-available/initech.cl /etc/nginx/sites-enabled/initech.cl
-
-# Validar
-sudo nginx -t
-sudo systemctl reload nginx
+./remote-run.sh install-all.sh tudominio.com tu@email.com --dry-run     # el plan, sin ejecutar nada
+./remote-run.sh install-all.sh tudominio.com tu@email.com               # de verdad
 ```
 
-### Paso 4: Obtener Certificados SSL
+Opciones útiles: `--skip-ssl` (el DNS aún no apunta), `--with-webmin` (panel web en el puerto 10000),
+`--yes` (sin confirmación) y `--resume` (tras un fallo, salta lo ya hecho).
+
+Cada corrida deja un log en `~/.local/state/vps-setup/install-all-<fecha>.log` del VPS. Si un paso
+falla, el mensaje dice cuál, dónde está el log y cómo retomar con `--resume`. Al final corre el
+healthcheck: si dice **"COMPLETADO CON FALLAS EN EL HEALTHCHECK"**, revisa las líneas `[FALLA]`.
+Con el DNS sin propagar, las de DNS y HTTPS son esperables.
+
+Si usaste `--skip-ssl`, cuando el DNS apunte al VPS:
 
 ```bash
-# Para conce.com
-sudo certbot run --nginx \
-    -d conce.com -d www.conce.com \
-    --email admin@conce.com \
-    --agree-tos \
-    --non-interactive
-
-# Para initech.cl
-sudo certbot run --nginx \
-    -d initech.cl -d www.initech.cl \
-    --email admin@initech.cl \
-    --agree-tos \
-    --non-interactive
-
-# Verificar
-sudo certbot certificates
+./remote-run.sh 04-setup-ssl.sh tudominio.com tu@email.com
 ```
 
-### Paso 5: Probar acceso
+`04` comprueba antes el DNS y, sin terminal y con el DNS mal, **aborta** en vez de gastar un intento
+de Let's Encrypt (hay un límite semanal). `--staging` pide un certificado de prueba sin ese límite.
 
-Desde tu navegador:
-```
-✅ https://conce.com
-✅ https://www.conce.com
-✅ https://initech.cl
-✅ https://www.initech.cl
-```
-
----
-
-## 💻 Fase 3: Configurar Aplicaciones
-
-### 3.1: Aplicación Python (contrastocolor.ink)
-
-En el VPS:
+## 5. Endurecer y vigilar (recomendado)
 
 ```bash
-# Crear directorio
-sudo mkdir -p /var/www/contrastocolor.ink
-cd /var/www/contrastocolor.ink
+# SSH solo con llave y sin root. ANTES comprueba en otra terminal que entras con la llave.
+./remote-run.sh 07_C-harden-ssh.sh "$(cat ~/.ssh/id_ed25519.pub)" --yes
 
-# Crear entorno virtual
-python3 -m venv venv
-source venv/bin/activate
-
-# Instalar dependencias
-pip install flask flask-cors psycopg2-binary python-dotenv gunicorn
-
-# Crear app.py (ver DOMAINS.md para contenido)
-nano app.py
-
-# Crear requirements.txt
-pip freeze > requirements.txt
-
-# Desactivar venv
-deactivate
-
-# Cambiar permisos
-sudo chown -R www-data:www-data /var/www/contrastocolor.ink
+# Alertas cada 15 min (disco, RAM, carga, certificados, servicios caídos) a un webhook y/o email
+./remote-run.sh 09_A-setup-monitoring.sh 'https://hooks.slack.com/...' tu@email.com
 ```
 
-Configurar Nginx (ver DOMAINS.md) y SSL:
+Si instalaste Webmin, restringe el puerto 10000 a tu IP: instálalo con
+`WEBMIN_ALLOW_FROM=<tu IP> ./02_J-install-webmin.sh`, o cambia la regla de UFW (el script lo explica).
+
+## 6. Más dominios y aplicaciones
+
+Todo con `10_A-add-domain.sh` (detalle en [DOMAINS.md](DOMAINS.md)):
 
 ```bash
-sudo mkdir -p /var/log/nginx/contrastocolor.ink
-sudo nano /etc/nginx/sites-available/contrastocolor.ink
-sudo ln -sf /etc/nginx/sites-available/contrastocolor.ink /etc/nginx/sites-enabled/contrastocolor.ink
-sudo nginx -t
-sudo systemctl reload nginx
-
-# Después que DNS propague:
-sudo certbot run --nginx -d contrastocolor.ink
+./remote-run.sh 10_A-add-domain.sh otro.com --ssl --email tu@email.com                   # otra landing
+./remote-run.sh 10_A-add-domain.sh tienda.otro.com --type php --name tienda --ssl         # app PHP
+./remote-run.sh 10_A-add-domain.sh api.otro.com --type python --name api --port 8001 --ssl # app Python
+./remote-run.sh 10_A-add-domain.sh java.otro.com --type tomcat --context miapp --ssl      # app Java (requiere 02_A + 02_H)
 ```
 
-Crear servicio systemd:
+Extras que no instala `install-all`: MariaDB (`02_G`), Tomcat (`02_H`, requiere `02_A`) y
+Whisper (`02_I`, descarga varios GB).
+
+## 7. Base de datos de una app
+
+Los scripts instalan PostgreSQL (y MariaDB con `02_G`), pero no crean bases: cada app necesita la
+suya, con un usuario propio y sin permisos sobre las demás.
 
 ```bash
-sudo nano /etc/systemd/system/contrastocolor.service
-# (Copiar contenido de DOMAINS.md)
-
-sudo systemctl daemon-reload
-sudo systemctl enable contrastocolor
-sudo systemctl start contrastocolor
-sudo systemctl status contrastocolor
+sudo -u postgres createuser --pwprompt tienda      # pide la contraseña: no la escribas en el historial
+sudo -u postgres createdb --owner=tienda tienda
 ```
 
-### 3.2: Aplicación PHP (wikipedia.cl)
+PostgreSQL solo escucha en `localhost`: la app se conecta a `host=localhost dbname=tienda user=tienda`.
+Guarda la contraseña en la configuración de la app (por ejemplo un `.env` fuera de la carpeta
+pública y legible solo por `www-data`), nunca en el repo.
 
-En el VPS:
+## 8. Verificar
 
 ```bash
-# Crear directorio
-sudo mkdir -p /var/www/wikipedia.cl/public
-cd /var/www/wikipedia.cl
-
-# Instalar Composer (si no está)
-curl -sS https://getcomposer.org/installer | php
-sudo mv composer.phar /usr/local/bin/composer
-
-# Crear proyecto (o copiar código existente)
-composer create-project laravel/laravel . --prefer-dist
-
-# O instalar dependencias si tienes un proyecto:
-composer install
-
-# Permisos
-sudo chown -R www-data:www-data /var/www/wikipedia.cl
-sudo chmod -R 755 /var/www/wikipedia.cl
+./remote-run.sh 08-healthcheck.sh tudominio.com
 ```
 
-Configurar Nginx (ver DOMAINS.md) y SSL:
+Revisa servicios, UFW, puertos, DNS (`dominio` y `www`), HTTPS, la redirección HTTP→HTTPS, la
+caducidad del certificado y los headers de seguridad. Sale con código 1 si algo falla.
 
-```bash
-sudo mkdir -p /var/log/nginx/wikipedia.cl
-sudo nano /etc/nginx/sites-available/wikipedia.cl
-sudo ln -sf /etc/nginx/sites-available/wikipedia.cl /etc/nginx/sites-enabled/wikipedia.cl
-sudo nginx -t
-sudo systemctl reload nginx
+## 9. Mantenimiento
 
-# Después que DNS propague:
-sudo certbot run --nginx -d wikipedia.cl
-```
+**Automático** (lo dejan configurado los scripts):
 
----
+- Parches de seguridad diarios (`unattended-upgrades`, `07_A`). No reinicia solo.
+- Renovación de certificados (`certbot.timer`, dos veces al día).
+- Rotación diaria de los logs de cada dominio, 14 días (`07_D`).
+- Monitoreo cada 15 minutos, si corriste `09_A`.
 
-## 🗄️ Fase 4: Configurar Base de Datos
+**A mano:**
 
-En el VPS:
+- Reinicio cuando un parche lo pida: `ls /var/run/reboot-required` (si existe, reinicia en un momento tranquilo).
+- Actualizar la landing tras cambiar `landing-page/`: `./remote-run.sh 05-deploy-landing-page.sh tudominio.com`.
+- Quitar un dominio: `10_B-remove-domain.sh` (archiva, no borra; ver [DOMAINS.md](DOMAINS.md)).
 
-```bash
-# Conectar como usuario postgres
-sudo -u postgres psql
+## 10. Si algo falla
 
-# En PostgreSQL:
-CREATE DATABASE mi_base_datos;
-CREATE USER mi_usuario WITH PASSWORD 'contraseña_segura';
-GRANT ALL PRIVILEGES ON DATABASE mi_base_datos TO mi_usuario;
+| Síntoma | Qué mirar |
+|---------|-----------|
+| `install-all` se detuvo | El mensaje indica el paso y el log; corrige y repite con `--resume` |
+| Un sitio no carga | `sudo nginx -t`, `sudo tail /var/log/nginx/<dominio>/error.log` |
+| App Python caída | `sudo systemctl status <app>`, `sudo journalctl -u <app> -n 50` |
+| Certificado no se emite | DNS de `dominio` **y** `www`: `dig +short`; prueba el flujo con `04 ... --staging` |
+| Te quedaste fuera por SSH | Consola de rescate del proveedor; `./07_C-harden-ssh.sh --revert` |
 
-\q
-```
-
-Desde aplicaciones PHP/Python:
-
-```php
-// PHP
-$dbconn = pg_connect("host=localhost user=mi_usuario password=contraseña_segura dbname=mi_base_datos");
-```
-
-```python
-# Python
-import psycopg2
-conn = psycopg2.connect(
-    host="localhost",
-    user="mi_usuario",
-    password="contraseña_segura",
-    database="mi_base_datos"
-)
-```
-
----
-
-## 📊 Fase 5: Verificación Final
-
-### Checklist de Verificación
-
-```bash
-# 1. Servicios corriendo
-sudo systemctl status nginx
-sudo systemctl status php8.3-fpm
-sudo systemctl status postgresql
-sudo systemctl status contrastocolor
-
-# 2. Certificados SSL
-sudo certbot certificates
-
-# 3. Archivos en su lugar (una carpeta por dominio dentro de landing-page/)
-ls -la /var/www/landing-page/conce.com/
-ls -la /var/www/landing-page/initech.cl/
-ls -la /var/www/contrastocolor.ink/
-ls -la /var/www/wikipedia.cl/
-
-# 4. Permisos correctos
-sudo ls -la /var/www/ | grep www-data
-
-# 5. Logs sin errores
-sudo tail -20 /var/log/nginx/conce.com/error.log
-sudo tail -20 /var/log/nginx/contrastocolor.ink/error.log
-
-# 6. Conectividad a BD
-sudo -u postgres psql -l
-```
-
-### Pruebas en el Navegador
-
-Desde tu computadora:
-
-```
-✅ https://conce.com (landing page)
-✅ https://initech.cl (landing page)
-✅ https://contrastocolor.ink (app Python)
-✅ https://wikipedia.cl (app PHP)
-```
-
-Todos deben:
-- Cargar correctamente
-- Mostrar HTTPS (candado verde)
-- Tener certificado válido
-
----
-
-## 🔄 Mantenimiento Diario
-
-### Monitoreo de Logs
-
-```bash
-# Ver logs en tiempo real
-sudo tail -f /var/log/nginx/conce.com/access.log
-sudo tail -f /var/log/nginx/conce.com/error.log
-
-# Buscar errores
-sudo grep -i error /var/log/nginx/*/error.log | head -20
-```
-
-### Chequeos de Salud
-
-```bash
-# Estado de servicios
-sudo systemctl status nginx php8.3-fpm postgresql
-
-# Uso de recursos
-htop
-
-# Espacio en disco
-df -h
-
-# Conectividad bases de datos
-sudo -u postgres psql -l
-```
-
-### Limpiar Logs (opcional)
-
-```bash
-# Rotar logs manualmente
-sudo logrotate -f /etc/logrotate.conf
-
-# O limpiar logs viejos (cuidado!)
-sudo find /var/log/nginx -name "*.log" -mtime +30 -delete
-```
-
----
-
-## 🔄 Mantenimiento Semanal
-
-### Actualizar Sistema
-
-```bash
-sudo apt-get update
-sudo apt-get upgrade -y
-```
-
-### Renovar Certificados SSL
-
-```bash
-# Probar renovación
-sudo certbot renew --dry-run
-
-# Renovar (generalmente automático)
-sudo certbot renew
-```
-
-### Backup de Base de Datos
-
-```bash
-# Backup completo
-sudo -u postgres pg_dump -Fc mi_base_datos > ~/backups/mi_base_datos_$(date +%Y%m%d).dump
-
-# O todo a la vez
-sudo -u postgres pg_dumpall > ~/backups/all_databases_$(date +%Y%m%d).sql
-```
-
----
-
-## 🆘 Troubleshooting
-
-### Landing page no carga
-
-```bash
-# 1. Verificar que Nginx esté corriendo
-sudo systemctl status nginx
-
-# 2. Verificar archivos
-ls -la /var/www/landing-page/conce.com/
-
-# 3. Chequear configuración
-sudo nginx -t
-
-# 4. Ver error log
-sudo tail /var/log/nginx/conce.com/error.log
-```
-
-### App Python no responde
-
-```bash
-# 1. Verificar servicio
-sudo systemctl status contrastocolor
-
-# 2. Ver logs del servicio
-sudo journalctl -u contrastocolor -n 50
-
-# 3. Reiniciar
-sudo systemctl restart contrastocolor
-
-# 4. Probar conexión
-curl http://127.0.0.1:8000
-```
-
-### Base de datos no responde
-
-```bash
-# 1. Verificar PostgreSQL
-sudo systemctl status postgresql
-
-# 2. Conectar
-sudo -u postgres psql
-
-# 3. Ver bases de datos
-\l
-
-# 4. Si hay problemas, reiniciar
-sudo systemctl restart postgresql
-```
-
-### SSL no funciona
-
-```bash
-# 1. Verificar certificado
-sudo certbot certificates
-
-# 2. Forzar renovación
-sudo certbot renew --force-renewal
-
-# 3. Recargar Nginx
-sudo systemctl reload nginx
-```
-
----
-
-## 📞 Contacto & Soporte
-
-- **Email:** admin@initech.fun
-- **Proveedor VPS:** OVHCloud (https://www.ovhcloud.com)
-- **Panel de administración:** Webmin — `https://158.69.222.245:10000` (opcional, mismo login que SSH)
-- **Documentación:** Ver ARCHITECTURE.md, TOOLS-AND-UTILITIES.md, DOMAINS.md
-
----
-
-## 📅 Próximos Pasos
-
-- [ ] Configurar monitoreo (Prometheus, Grafana)
-- [ ] Implementar CDN (Cloudflare)
-- [ ] Configurar backups automáticos (S3)
-- [ ] Agregar certificados wildcard
-- [ ] Implementar rate limiting
-- [ ] Agregar más aplicaciones
-- [ ] Escalar horizontalmente
-
----
-
-**Última actualización:** 2026-09-20
-**Versión:** 1.0.0
+Más casos en el [README](README.md#-troubleshooting).
