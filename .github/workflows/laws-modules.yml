@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # the change-history check compares with the base branch
 
       - name: Set up Node.js 22
         uses: actions/setup-node@v5
@@ -70,6 +72,14 @@ jobs:
 
       - name: Generated files are up to date
         run: npm run build:check
+
+      - name: Every edit of the CSV is in the change history
+        if: github.event_name == 'pull_request'
+        run: |
+          # The script exists once the module has the change-history tooling.
+          if [ -f scripts/record-changes.js ]; then
+            npm run changes -- --check --since=origin/${{ github.base_ref }}
+          fi
 
       - name: Unit, API and text-cache tests
         run: npm test
