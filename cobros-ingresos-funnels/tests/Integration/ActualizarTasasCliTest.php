@@ -8,7 +8,7 @@ use App\Database;
 use PDO;
 
 /**
- * database/actualizar_tasas.php, el comando que corre cron: los argumentos, lo que
+ * bin/actualizar_tasas.php, el comando que corre cron: los argumentos, lo que
  * imprime y con que codigo termina. Se lo ejecuta de verdad en otro proceso con las
  * mismas variables de entorno que los tests. Solo se prueba lo que no escribe en la
  * base (--simular y los errores): que guarda lo cubre ActualizadorDeTasasTest, y un
@@ -36,7 +36,7 @@ final class ActualizarTasasCliTest extends IntegracionTestCase
     {
         $raiz = dirname(__DIR__, 2);
         $proceso = proc_open(
-            [PHP_BINARY, $raiz . '/database/actualizar_tasas.php', ...$argumentos],
+            [PHP_BINARY, $raiz . '/bin/actualizar_tasas.php', ...$argumentos],
             [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $tuberias,
             $raiz,

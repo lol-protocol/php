@@ -89,10 +89,10 @@ jobs:
         run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
 
       - name: Migraciones sobre una base vacia (como en un despliegue nuevo)
-        run: php database/migrar.php
+        run: php bin/migrar.php
 
       - name: Datos de ejemplo
-        run: php database/recrear_con_datos_de_ejemplo.php
+        run: php bin/recrear_con_datos_de_ejemplo.php
         env:
           APP_ENV: dev
 

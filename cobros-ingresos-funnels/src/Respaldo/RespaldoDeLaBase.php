@@ -10,7 +10,7 @@ use DateTimeZone;
 use InvalidArgumentException;
 
 /**
- * Un respaldo de la base con pg_dump, listo para correr por cron (database/respaldar.php).
+ * Un respaldo de la base con pg_dump, listo para correr por cron (bin/respaldar.php).
  *
  * La base tiene boletas, pagos y datos de clientes: perderla no se arregla despues. Esto
  * hace un volcado en el formato propio de Postgres (-Fc: comprimido, se restaura con

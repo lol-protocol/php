@@ -8,11 +8,11 @@ declare(strict_types=1);
  * migracion 005.
  *
  * Uso:
- *   php database/actualizar_tasas.php                   baja las tasas de TASAS_URL y las guarda
- *   php database/actualizar_tasas.php --simular         hace las mismas cuentas y dice que cambiaria, sin guardar nada
- *   php database/actualizar_tasas.php --forzar          acepta tambien las tasas que saltan mas de 50% de una corrida a otra
- *   php database/actualizar_tasas.php --archivo=R.json  lee las tasas de un archivo (el mismo formato) en vez de la red
- *   php database/actualizar_tasas.php --ayuda
+ *   php bin/actualizar_tasas.php                   baja las tasas de TASAS_URL y las guarda
+ *   php bin/actualizar_tasas.php --simular         hace las mismas cuentas y dice que cambiaria, sin guardar nada
+ *   php bin/actualizar_tasas.php --forzar          acepta tambien las tasas que saltan mas de 50% de una corrida a otra
+ *   php bin/actualizar_tasas.php --archivo=R.json  lee las tasas de un archivo (el mismo formato) en vez de la red
+ *   php bin/actualizar_tasas.php --ayuda
  *
  * Variables (ademas de las DB_* de la app):
  *   TASAS_URL     de donde bajar las tasas, en https; por defecto open.er-api.com (ExchangeRate-API:
@@ -43,11 +43,11 @@ const URL_POR_DEFECTO = 'https://open.er-api.com/v6/latest/USD';
 
 const USO = <<<'TEXTO'
 Uso:
-  php database/actualizar_tasas.php                   baja las tasas de TASAS_URL y las guarda
-  php database/actualizar_tasas.php --simular         hace las mismas cuentas y dice que cambiaria, sin guardar nada
-  php database/actualizar_tasas.php --forzar          acepta tambien las tasas que saltan mas de 50% de una corrida a otra
-  php database/actualizar_tasas.php --archivo=R.json  lee las tasas de un archivo (el mismo formato) en vez de la red
-  php database/actualizar_tasas.php --ayuda
+  php bin/actualizar_tasas.php                   baja las tasas de TASAS_URL y las guarda
+  php bin/actualizar_tasas.php --simular         hace las mismas cuentas y dice que cambiaria, sin guardar nada
+  php bin/actualizar_tasas.php --forzar          acepta tambien las tasas que saltan mas de 50% de una corrida a otra
+  php bin/actualizar_tasas.php --archivo=R.json  lee las tasas de un archivo (el mismo formato) en vez de la red
+  php bin/actualizar_tasas.php --ayuda
 
 TEXTO;
 
