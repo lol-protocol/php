@@ -7,7 +7,7 @@
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 50 years",
     "author_rights": "Economic & moral rights",
-    "moral_rights": "Not specified",
+    "moral_rights": "Art. 7: author alone claims authorship and may prevent deletion/change (integrity); withdrawal for serious moral reasons; dispositions by others void; term unclear",
     "orphan_works": "Not specified",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Exceptions not specified (only general statements) (unconfirmed)",
@@ -17,8 +17,48 @@
     "treaties_not_party": "Berne/TRIPS/WCT/WPPT",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/10345",
     "notes": "Term from secondary sources only; the law is reported as not fully implemented",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10345",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "fair_use_exceptions": {
+        "url": "https://journals.uhd.edu.iq/index.php/juhd/article/download/220/111/639",
+        "confidence": "low",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Art. 7: author alone claims authorship and may prevent deletion/change (integrity); withdrawal for serious moral reasons; dispositions by others void; term unclear"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Exceptions not specified (only general statements) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-09",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years (from secondary sources only)",
+        "to": "Author's life + 50 years"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

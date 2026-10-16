@@ -17,8 +17,48 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.wipo.int/wipolex/fr/legislation/details/548",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "digital_protection": {
+        "url": "https://ictpolicyafrica.org/en/document/17uj8n5fwcv?page=2",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      },
+      "fair_use_exceptions": {
+        "url": "https://ictpolicyafrica.org/en/document/17uj8n5fwcv?page=2",
+        "confidence": "medium",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Closed list: private copying, quotation, teaching, libraries & archives, programs, temporary copies"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Remedies & sanctions for abuse of technical protection & rights-management info (s. 33)"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

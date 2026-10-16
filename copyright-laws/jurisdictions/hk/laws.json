@@ -17,8 +17,31 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.ipd.gov.hk/",
     "notes": "",
+    "pending_change": "Copyright (Amendment) Bill 2025 (text and data mining exception) postponed; not enacted",
+    "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": ""
+    "last_checked": "",
+    "sources": {
+      "digital_protection": {
+        "url": "https://www.wipo.int/wipolex/ru/text/202338",
+        "confidence": "high",
+        "checked": "2026-10-14"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Anti-circumvention of effective technological measures, devices & services (ss. 273-273H)"
+      },
+      {
+        "date": "2026-10-14",
+        "field": "digital_protection",
+        "from": "Copyright compliance",
+        "to": "Not specified"
+      }
+    ]
   }
 ]

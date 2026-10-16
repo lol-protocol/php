@@ -12,8 +12,10 @@ import {
   buildChartBars,
   COMPARE_CRITERIA,
   CONFIG,
+  DETAIL_FIELDS,
   enrichRow,
   FACETS,
+  isReviewDue,
   SEARCH_SCOPES,
   TREATY_ORDER,
 } from "./lib/domain.js";
@@ -80,8 +82,85 @@ function sourceDetail(row) {
   const parts = [sourceLabel(row.data_status)];
   if (row.confidence) parts.push(t(`confidence.${row.confidence}`));
   if (row.last_checked) parts.push(t("card.checked", { date: formatDate(row.last_checked) }));
+  if (isReviewDue(row.last_checked, TODAY)) parts.push(t("card.reviewDue"));
   return parts.join(" · ");
 }
+const TODAY = new Date().toISOString().slice(0, 10);
+
+// Labels for any column (the change history can name any of them).
+const FIELD_LABEL_KEYS = { law_name: "table.law", enforcement_body: "compare.enforcement_body", linked_resources: "table.reference", notes: "card.notes" };
+function fieldLabel(field) {
+  const key = FIELD_LABEL_KEYS[field] ?? `compare.${field}`;
+  const text = t(key);
+  return text === key ? field.replace(/_/g, " ") : text;
+}
+const shorten = (value, max = 140) => {
+  const text = String(value ?? "").trim();
+  return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+};
+
+/** A small link after a value: where that one value comes from. */
+function fieldSourceHtml(source) {
+  const url = source && safeUrl(source.url);
+  if (!url) return "";
+  const detail = [
+    t("card.fieldSource", { host: hostOf(url) }),
+    source.confidence ? t(`confidence.${source.confidence}`) : "",
+    source.checked ? t("card.checked", { date: formatDate(source.checked) }) : "",
+  ]
+    .filter(Boolean)
+    .join(" · ");
+  return ` <a class="field-source" href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="${esc(detail)}" aria-label="${esc(
+    detail
+  )}">${esc(hostOf(url))}<span aria-hidden="true"> ↗</span></a>`;
+}
+
+function pendingHtml(row) {
+  if (!row.pending_change) return "";
+  const date = row.pending_date ? formatDate(row.pending_date) : "";
+  const when = !date ? "" : row.pending_date <= TODAY ? t("card.pendingOverdue", { date }) : t("card.pendingFrom", { date });
+  return `<p class="card-pending${row.pending_date && row.pending_date <= TODAY ? " is-overdue" : ""}"><strong>${esc(t("card.pending"))}</strong> · ${esc(
+    row.law_name
+  )}: ${esc(row.pending_change)}${when ? ` <span class="nowrap">(${esc(when)})</span>` : ""}</p>`;
+}
+
+const HISTORY_SHOWN = 8;
+function historyHtml(row) {
+  if (!row.changes.length) return "";
+  const item = (change) => {
+    if (change.field === "row") return `<li>${dateHtml(change.date)} · ${esc(t("card.historyAdded"))}</li>`;
+    const isDate = /_date$/.test(change.field);
+    const was = change.from && !NOT_SPECIFIED.test(change.from.trim())
+      ? ` <span class="muted">(${esc(t("card.historyWas", { value: isDate ? formatDate(change.from) : shorten(change.from, 100) }))})</span>`
+      : "";
+    const now = isDate && change.to ? dateHtml(change.to) : valueHtml(shorten(change.to));
+    return `<li>${dateHtml(change.date)} · <strong>${esc(fieldLabel(change.field))}</strong>: ${now}${was}</li>`;
+  };
+  const more = row.changes.length - HISTORY_SHOWN;
+  return `
+    <h3 class="history-title">${esc(t("card.history"))}</h3>
+    <ul class="history">${row.changes.slice(0, HISTORY_SHOWN).map(item).join("")}${
+      more > 0 ? `<li class="muted">${esc(plural("card.historyMore", more))}</li>` : ""
+    }</ul>`;
+}
+
+function lawDetailsHtml(row, open) {
+  // The law's name sits in <summary>, where a link is not allowed: its source goes in the list.
+  const fields = row.sources.law_name ? ["law_name", ...DETAIL_FIELDS] : DETAIL_FIELDS;
+  const items = fields.map((field) => {
+    const value = row[field] ?? "";
+    const shown = /_date$/.test(field) && value ? dateHtml(value) : valueHtml(value);
+    return `<div><dt>${esc(fieldLabel(field))}</dt><dd>${shown}${fieldSourceHtml(row.sources[field])}</dd></div>`;
+  }).join("");
+  return `
+    <details class="law-details"${open ? " open" : ""}>
+      <summary>${esc(t("card.details", { law: row.law_name }))}</summary>
+      <dl class="detail-grid">${items}</dl>
+      ${historyHtml(row)}
+    </details>`;
+}
+
+
 const termLabel = (bucket) =>
   bucket === "other" ? t("term.unspecified") : t("term.life", { years: bucket.replace("life-", "") });
 const jurisdictionName = (tld) =>
@@ -257,7 +336,7 @@ function rowHtml(row) {
       )}">${esc(row.country_name)}</button></td>
       <td>${esc(row.law_name)}${
         row.confidence === "low" ? ` <span class="badge badge-outline">${esc(t("table.lowConfidence"))}</span>` : ""
-      }</td>
+      }${row.pending_change ? ` <span class="badge badge-outline" title="${esc(row.pending_change)}">${esc(t("table.pending"))}</span>` : ""}</td>
       <td><small>${esc(row.term_of_protection)}</small></td>
       <td class="col-optional"><small>${valueHtml(row.author_rights)}</small></td>
       <td class="col-optional"><small>${valueHtml(row.moral_rights)}</small></td>
@@ -317,6 +396,8 @@ function renderCountryCard() {
       <div><dt>${esc(t("card.updated"))}</dt><dd>${esc(formatDate(app.data.meta.generatedAt))}</dd></div>
     </dl>
     ${notes.length ? `<p class="card-notes"><strong>${esc(t("card.notes"))}:</strong> ${esc(notes.join(" · "))}</p>` : ""}
+    ${laws.map(pendingHtml).join("")}
+    ${laws.map((row) => lawDetailsHtml(row, laws.length === 1)).join("")}
     <p class="card-links">
       <a href="${esc(jurisdictionFileUrl(jurisdiction.tld, "laws.json"))}" download>${esc(t("card.json"))}</a>
       <a href="${esc(jurisdictionFileUrl(jurisdiction.tld, "laws.csv"))}" download>${esc(t("card.csv"))}</a>

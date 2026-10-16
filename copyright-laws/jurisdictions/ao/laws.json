@@ -7,18 +7,69 @@
     "protection_type": "Copyright",
     "term_of_protection": "Author's life + 70 years",
     "author_rights": "Economic rights",
-    "moral_rights": "Not specified",
+    "moral_rights": "Art. 30 moral rights incl. integrity (oppose harmful alterations); Art. 33 inalienable and non-transferable; Art. 87 sanctions; duration not confirmed",
     "orphan_works": "Not specified",
-    "digital_protection": "Not specified",
-    "fair_use_exceptions": "Not specified",
+    "digital_protection": "Art. 3(14) defines technical protection measures; Art. 88 prohibits their violation/circumvention; RMI provision not confirmed",
+    "fair_use_exceptions": "Arts. 52-58 limits: non-commercial uses, computer programs, ephemeral recordings, public security, teaching and research",
     "registration_required": "No (voluntary registration available)",
     "enforcement_body": "Direcção Nacional dos Direitos de Autor e Conexos - Ministry of Culture",
     "treaties_signatory": "TRIPS",
     "treaties_not_party": "Berne/WCT",
     "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/18642",
     "notes": "",
+    "pending_change": "",
+    "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08"
+    "last_checked": "2026-10-08",
+    "sources": {
+      "moral_rights": {
+        "url": "https://lex.ao/docs/assembleia-nacional/2014/lei-n-o-15-14-de-31-de-julho/",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "digital_protection": {
+        "url": "https://lex.ao/docs/assembleia-nacional/2014/lei-n-o-15-14-de-31-de-julho/",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      },
+      "fair_use_exceptions": {
+        "url": "https://angolex.com/paginas/leis/lei-dos-direitos-de-autor-e-conexos-15a-14a.html",
+        "confidence": "medium",
+        "checked": "2026-10-15"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-15",
+        "field": "fair_use_exceptions",
+        "from": "Not specified",
+        "to": "Arts. 52-58 limits: non-commercial uses, computer programs, ephemeral recordings, public security, teaching and research"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "digital_protection",
+        "from": "Not specified",
+        "to": "Art. 3(14) defines technical protection measures; Art. 88 prohibits their violation/circumvention; RMI provision not confirmed"
+      },
+      {
+        "date": "2026-10-15",
+        "field": "moral_rights",
+        "from": "Not specified",
+        "to": "Art. 30 moral rights incl. integrity (oppose harmful alterations); Art. 33 inalienable and non-transferable; Art. 87 sanctions; duration not confirmed"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "",
+        "to": "TRIPS"
+      },
+      {
+        "date": "2026-10-08",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
   }
 ]

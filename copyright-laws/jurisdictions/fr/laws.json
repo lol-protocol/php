@@ -17,8 +17,19 @@
     "treaties_not_party": "",
     "linked_resources": "https://www.inpi.fr/",
     "notes": "",
+    "pending_change": "AI-use presumption bill (new art. L.331-4-1 CPI) passed the Senate 8 Apr 2026; pending in the Assemblée nationale",
+    "pending_date": "",
     "data_status": "curated",
     "confidence": "",
-    "last_checked": ""
+    "last_checked": "",
+    "sources": {},
+    "changes": [
+      {
+        "date": "2026-10-08",
+        "field": "treaties_signatory",
+        "from": "Berne/TRIPS/WCT",
+        "to": "Berne/TRIPS/WCT/WPPT"
+      }
+    ]
   }
 ]

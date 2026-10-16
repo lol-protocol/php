@@ -32,7 +32,7 @@ const { data: jurisdictions, meta } = await (await fetch("/copyright-laws/api.ph
 const { data: laws } = await (await fetch("/copyright-laws/api.php?action=jurisdiction&tld=br")).json();
 ```
 
-A law object has the columns of `copyright_laws_master.csv` (see the README): `country_code`, `country_name`, `region`, `law_name`, `protection_type`, `term_of_protection`, `author_rights`, `moral_rights`, `orphan_works`, `digital_protection`, `fair_use_exceptions`, `registration_required`, `enforcement_body`, `treaties_signatory`, `treaties_not_party`, `linked_resources`, `notes`, `data_status`, `confidence`, `last_checked`.
+A law object has the columns of `copyright_laws_master.csv` (see the README): `country_code`, `country_name`, `region`, `law_name`, `protection_type`, `term_of_protection`, `author_rights`, `moral_rights`, `orphan_works`, `digital_protection`, `fair_use_exceptions`, `registration_required`, `enforcement_body`, `treaties_signatory`, `treaties_not_party`, `linked_resources`, `notes`, `pending_change`, `pending_date`, `data_status`, `confidence`, `last_checked`. `laws.json` and `index.json` also give each law `sources` (`{field: {url, confidence, checked}}`, where a single value comes from) and `changes` (`[{date, field, from, to}]`, newest first; `field` is `row` when the law was added or removed).
 
 To filter by treaty or term, download the `bundle` once and filter locally (the web app does exactly that); there is no server-side search.
 
