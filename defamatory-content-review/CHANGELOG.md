@@ -2,6 +2,21 @@
 
 ## [Sin publicar]
 
+### Añadido
+
+- **Acusaciones y datos sensibles en portugués, francés, italiano y alemán**:
+  delito («roubou dinheiro», «a été condamné», «è un ladro», «hat Geld
+  gestohlen»), salud, vida privada y orientación sexual van a revisión, como en
+  español e inglés. Son los patrones básicos, sin revisión nativa; «pão e café»,
+  «l'oiseau a volé haut» o «er hat Recht» se siguen aprobando.
+  `AccusationPatternsEuropeanTest`.
+- **Religión, origen étnico y opinión política de alguien** (español e inglés):
+  «la familia era judía», «Fulano es mapuche», «su abuelo era de origen árabe»,
+  «Fulano es comunista», «he's a republican» van a revisión. Son datos sensibles
+  aunque sean ciertos; en genealogía son frecuentes, por eso no se bloquean.
+  «el vino es negro», «la iglesia evangélica de Concepción» o «el partido
+  comunista» se siguen aprobando. `SensitiveDataPatternsTest`.
+
 ## [5.0.0] - 2026-10-15
 
 Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»).
