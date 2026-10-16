@@ -54,7 +54,7 @@ chmod +x *.sh
 ./install-all.sh initech.fun admin@initech.fun
 ```
 
-Instala el stack base (Java, PHP, Python, PostgreSQL, Nginx, Certbot, **Webmin**), configura el sitio, pide SSL, despliega la landing page, activa fail2ban + parches automáticos, headers de seguridad y rotación de logs, y termina con el healthcheck.
+Instala el stack base (Java, PHP, Python, PostgreSQL, Nginx, Certbot; **Webmin solo con `--with-webmin`**), configura el sitio, pide SSL (salvo `--skip-ssl`), despliega la landing page, activa fail2ban + parches automáticos, headers de seguridad y rotación de logs, y termina con el healthcheck.
 
 ### Opción 2: Paso a Paso (para ver dónde falla algo)
 
@@ -142,7 +142,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 02_G | `02_G-install-mariadb.sh` | *(Opcional)* Instala MariaDB |
 | 02_H | `02_H-install-tomcat.sh` | *(Opcional)* Instala Apache Tomcat — requiere que `02_A` (Java) ya haya corrido |
 | 02_I | `02_I-install-python-whisper.sh` | *(Opcional)* Instala Whisper (OpenAI, transcripción de audio) + ffmpeg + librerías Python básicas en un venv en `/opt/venvs/whisper` — requiere que `02_C` (Python) ya haya corrido |
-| 02_J | `02_J-install-webmin.sh` | Instala Webmin (panel de administración web, opcional pero incluido por defecto en `install-all.sh`). Con `WEBMIN_ALLOW_FROM=<tu IP>` el puerto 10000 solo se abre a esa IP; sin ella queda abierto a todo internet y el script lo avisa |
+| 02_J | `02_J-install-webmin.sh` | Instala Webmin (panel de administración web, opcional: `install-all.sh` solo lo instala con `--with-webmin`). Con `WEBMIN_ALLOW_FROM=<tu IP>` el puerto 10000 solo se abre a esa IP; sin ella queda abierto a todo internet y el script lo avisa |
 | 03 | `03-configure-nginx-site.sh <dominio>` | Crea el virtual host de Nginx (estático, sin PHP) y copia la landing page |
 | 04 | `04-setup-ssl.sh <dominio> [email] [--force] [--staging]` | Obtiene certificado SSL. Verifica antes que el DNS apunte al VPS; sin terminal y con el DNS mal, **aborta** para no gastar un intento de Let's Encrypt (`--force` lo salta). `--staging` pide un certificado de prueba sin límite semanal |
 | 05 | `05-deploy-landing-page.sh` | (Re)copia los archivos de la landing page |
@@ -160,7 +160,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 10_A | `10_A-add-domain.sh` | Agrega un dominio nuevo (landing/php/python/tomcat, `--ssl` y `--port` opcionales) encadenando los scripts anteriores |
 | 10_B | `10_B-remove-domain.sh` | Quita un dominio **archivando** (no borrando) su vhost, sitio y logs |
 | — | `remote-run.sh` | Desde TU equipo: sube `vps-setup/` por SSH (solo llave) y ejecuta un script en el VPS. Config en `vps.env` (ver `vps.env.example`) |
-| — | `install-all.sh` | Ejecuta 01 → 02_A..F+J → 03 → 04 → 05 → 07_A → 07_B → 07_D → 07_E en orden y termina corriendo 08. Admite `--dry-run`, `--resume` y `--yes`. Guarda un log de cada corrida en `~/.local/state/vps-setup/install-all-<fecha>.log` |
+| — | `install-all.sh` | Ejecuta 01 → 02_A..F (+02_J con `--with-webmin`) → 03 → 04 (salvo `--skip-ssl`) → 05 → 07_A → 07_B → 07_D → 07_E en orden y termina corriendo 08. Admite `--dry-run`, `--resume`, `--yes`, `--with-webmin` y `--skip-ssl`. Guarda un log de cada corrida en `~/.local/state/vps-setup/install-all-<fecha>.log` |
 
 Los pasos `02_G`/`02_H`/`02_I` y todos los `06_*` son opcionales e independientes entre sí — instala solo los que necesites. Las notas "requiere X ya hecho" son las únicas excepciones a "cualquier orden": son dependencias reales de software, no de orden de ejecución arbitrario.
 
@@ -170,6 +170,8 @@ Los pasos `02_G`/`02_H`/`02_I` y todos los `06_*` son opcionales e independiente
 ./install-all.sh initech.fun admin@initech.fun --dry-run   # muestra el plan, no ejecuta nada
 ./install-all.sh initech.fun admin@initech.fun --yes       # sin confirmación
 ./install-all.sh initech.fun admin@initech.fun --resume    # tras un fallo: salta lo ya hecho
+./install-all.sh initech.fun admin@initech.fun --with-webmin   # incluye el panel Webmin (puerto 10000)
+./install-all.sh initech.fun admin@initech.fun --skip-ssl  # instala todo antes de que el DNS apunte; SSL luego con 04
 ```
 
 El avance se guarda por dominio en `~/.local/state/vps-setup/install-all.state`. Si un paso falla, el script
@@ -193,6 +195,7 @@ una contraseña por error, hay que rotarla.
 ```bash
 bats vps-setup/tests                                  # la suite completa (usa stubs: no tocan el sistema real)
 sudo -E REAL_TESTS=1 bats vps-setup/tests/real        # con nginx/logrotate/sshd REALES (escribe en /etc: solo CI o maquina desechable)
+sudo REAL_E2E=1 vps-setup/tests/e2e/run.sh            # install-all DE VERDAD + apps (Ubuntu 24.04 con systemd, desechable)
 shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh
 ```
 
@@ -200,6 +203,12 @@ Los tests cubren `lib.sh`, el orquestador (`--dry-run`/`--resume`/fallos/IP here
 los scripts 07_*/09_A, con `sudo`, `systemctl`, `curl`, etc. simulados. El workflow `.github/workflows/vps-setup.yml`
 corre `bash -n`, ShellCheck y bats en cada PR que toque `vps-setup/`. Lo que **no** cubren: comportamiento real de
 apt, systemd, certbot, fail2ban ni ufw — eso solo se valida en un VPS. Las pruebas de `tests/real/` sí ejecutan el Nginx, logrotate y sshd reales (vhosts con `nginx -t` y sirviendo tráfico, rotación forzada de logs, `sshd -t`/`sshd -T`), sin Docker, en el runner de CI.
+
+**Prueba de punta a punta (`tests/e2e/run.sh`, workflow `vps-setup-e2e.yml`):** en un runner Ubuntu 24.04 con systemd
+corre `install-all.sh --with-webmin --skip-ssl` con `apt` y servicios reales, y después instala una app PHP, una Python
+(servicio systemd), Tomcat, BIND, alta/baja de dominios y el monitoreo, comprobando cada resultado desde fuera
+(HTTP, headers, gzip, `/manager` 404, BIND sin recursión, etc.). Corre en los PR que cambian scripts, cada lunes y a
+mano. Lo único que no puede probar es emitir el certificado (necesita DNS público).
 
 ## 🌐 Agregar / quitar dominios
 

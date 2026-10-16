@@ -1,0 +1,41 @@
+name: vps-setup e2e
+
+# Instalacion REAL de punta a punta (apt, systemd, servicios) en un Ubuntu 24.04 desechable:
+# lo mas parecido al VPS sin tener uno. Tarda varios minutos, por eso solo corre cuando cambian
+# los scripts, una vez por semana (los repos de Ubuntu/Webmin cambian aunque el codigo no) o a mano.
+on:
+  pull_request:
+    paths:
+      - 'vps-setup/*.sh'
+      - 'vps-setup/monitoring/**'
+      - 'vps-setup/tests/e2e/**'
+      - 'landing-page/**'
+      - '.github/workflows/vps-setup-e2e.yml'
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  install-all:
+    name: install-all real en Ubuntu 24.04 (systemd)
+    runs-on: ubuntu-24.04   # = version del VPS objetivo
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # El runner trae servidores web preinstalados; ocuparian el puerto 80.
+      - name: Stop preinstalled web servers
+        run: sudo systemctl stop apache2 nginx 2>/dev/null || true
+
+      - name: install-all + apps + comprobaciones
+        run: sudo REAL_E2E=1 vps-setup/tests/e2e/run.sh
+
+      - name: Logs para diagnosticar
+        if: failure()
+        run: |
+          sudo sh -c 'tail -n 80 /tmp/e2e-state/install-all-*.log' || true
+          sudo sh -c 'tail -n 30 /var/log/nginx/*/error.log /var/log/nginx/error.log' || true
+          sudo systemctl --failed --no-pager || true
+          sudo journalctl -u blog -u tomcat10 -u named -u webmin -n 40 --no-pager || true
