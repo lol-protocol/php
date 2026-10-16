@@ -19,7 +19,8 @@ Varias sesiones trabajan a la vez, y ya pasó que dos hicieron lo mismo o que do
 ## Cómo se parte el trabajo
 
 - **Un PR por carpeta de proyecto.** Si un cambio cruza carpetas, sepáralo.
-- **Los archivos compartidos son los que más chocan:** `README.md` de la raíz (la tabla de proyectos), `.github/workflows/tests.yml`, `.gitignore` y el `composer.json` de la raíz. Cámbialos en un PR chico y aparte, para que se fusione rápido.
+- **Los archivos compartidos son los que más chocan:** `README.md` de la raíz (la tabla de proyectos), `.gitignore` y el `composer.json` de la raíz. Cámbialos en un PR chico y aparte, para que se fusione rápido.
+- **Cada proyecto con pruebas tiene su propio workflow** (`.github/workflows/pruebas-<proyecto>.yml`, con filtro de rutas): cámbialo en el PR del proyecto, no en uno aparte. Un proyecto nuevo con pruebas trae el suyo en vez de agregar jobs al de otro.
 - **Abre los PR en borrador, y no los fusiones por tu cuenta:** fusionar lo decide la persona.
 - **Si ya hay un PR que hace lo mismo,** no abras otro en paralelo: aporta ahí, o cierra el tuyo diciendo por qué.
 - **Migraciones numeradas** (`cobros-ingresos-funnels/database/migraciones/NNN_*.sql`): antes de crear una, mira el último número en `master` y en los PR y ramas abiertos.
@@ -54,4 +55,4 @@ El resto de proyectos (`privacy-laws/`, `copyright-laws/`, `marketing/`, `marcal
 - PostgreSQL no arranca solo: `service postgresql start`. Cada proyecto espera sus propios roles y bases (están en su README).
 - Composer no logra bajar algunos paquetes desde GitHub (por ejemplo PHPStan). No insistas: el análisis estático lo corre la CI.
 - No hay una CLI `gh` completa: `gh api <ruta REST>` funciona, y las herramientas de GitHub de la sesión cubren PR y comentarios.
-- `.github/workflows/tests.yml` no filtra por rutas: un PR que toca una sola carpeta igual dispara los jobs de todas las demás (entre 30 y 45 checks). Los workflows propios de cobros, sistema-nuevo, marcalibros, iconos y vps-setup sí filtran por carpeta. Espera a que terminen todos antes de decir que la CI está en verde.
+- Cada workflow solo corre si cambia la carpeta de su proyecto, o la de otro que ese proyecto usa: `phone-directory/` y `marcalibros-plataforma-pos-brand-identity/` también corren si cambia `defamatory-content-review/`. Un PR de una sola carpeta dispara pocos checks; `estructura.yml` corre siempre, y `marketing/`, `landing-page/` y `psychology-and-marketing/` no tienen más. Espera a que terminen todos antes de decir que la CI está en verde.

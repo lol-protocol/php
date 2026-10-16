@@ -67,24 +67,22 @@ proyecto.
 
 ## CI/CD
 
-`.github/workflows/tests.yml` (nombre interno del workflow: "Pruebas") tiene un job por proyecto:
-- `phpunit`: tests, PHPStan y benchmark de `defamatory-content-review/`.
-- `chat-front-guard`: tests en Node del tope de letras repetidas para el front, `defamatory-content-review/js/`.
-- `phone-directory`: tests de `phone-directory/` (incluidos los ejemplos) contra SQLite y PostgreSQL, y el benchmark.
-- `phone-directory-ports`: tests de los ports de `phone-directory/` a Python y Java.
-- `url-routing`: tests de `url-routing/` contra SQLite y PostgreSQL, y que sus migraciones corran limpias en PostgreSQL.
-- `document-formats`: tests en Node de `document-formats/`.
-- `document-formats-database`: importa `document-formats/` a MySQL (dos veces, para comprobar que no duplica filas) y lo valida contra los CSV.
-- `web-animations`: prueba de humo de las animaciones.
-- `listado-colores`: valida los CSV de `Listado-colores/` y que la tabla del README y `colores-por-idioma.md` estén al día (`python3 generar-tabla.py --comprobar`).
+Cada proyecto tiene su workflow en `.github/workflows/` y solo corre cuando cambia su carpeta (o el archivo del propio workflow), en los pull requests y en `master`: un PR que toca una sola carpeta dispara solo lo suyo. Si un proyecto usa a otro, su workflow también mira la carpeta del otro. Las carpetas sin workflow (`landing-page/`, `marketing/`, `psychology-and-marketing/`) solo disparan `estructura.yml`, que corre siempre.
 
-`sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`).
+- `estructura.yml`: job `readme-projects`, que la tabla de proyectos de este README liste todas las carpetas de la raíz.
+- `pruebas-defamatory-content-review.yml`: `phpunit` (tests, PHPStan y benchmark de `defamatory-content-review/`) y `chat-front-guard` (tests en Node del tope de letras repetidas para el front, `defamatory-content-review/js/`).
+- `pruebas-phone-directory.yml` (también corre si cambia `defamatory-content-review/`, que `phone-directory/` usa como dependencia): `phone-directory` (tests de `phone-directory/`, incluidos los ejemplos, contra SQLite y PostgreSQL, y el benchmark) y `phone-directory-ports` (tests de sus ports a Python y Java).
+- `pruebas-url-routing.yml`: tests de `url-routing/` contra SQLite y PostgreSQL, y que sus migraciones corran limpias en PostgreSQL.
+- `pruebas-document-formats.yml`: `document-formats` (tests en Node de `document-formats/`) y `document-formats-database` (importa `document-formats/` a MySQL, dos veces para comprobar que no duplica filas, y lo valida contra los CSV).
+- `pruebas-web-animations.yml`: prueba de humo de las animaciones.
+- `pruebas-listado-colores.yml`: valida los CSV de `Listado-colores/` y que la tabla del README y `colores-por-idioma.md` estén al día (`python3 generar-tabla.py --comprobar`).
+
+`sistema-nuevo/`, `vps-setup/`, `cobros-ingresos-funnels/` y `marcalibros-plataforma-pos-brand-identity/` tienen sus propios workflows (`pruebas-backoffice.yml`, `vps-setup.yml`, `pruebas-cobros-ingresos-funnels.yml` y `pruebas-marcalibros.yml`, que también corre si cambia `defamatory-content-review/`, del que depende).
 
 `iconos.yml` valida los dos sets de iconos: que los SVG commiteados coincidan con lo que produce
 `iconos-tools/build.py`, `iconos-tools/validate.py` y `iconos-tools/similares.py` (iconos casi
 idénticos). Solo corre si cambia algo de `iconos-genealogia/`, `iconos-biblioteca/`,
-`iconos-tools/` o `galeria-iconos.html` — por eso tiene su propio workflow en vez de un job en
-`tests.yml` (que corre en cada push, sin filtrar por carpeta).
+`iconos-tools/` o `galeria-iconos.html`.
 
 `privacy-laws/` y `copyright-laws/` también tienen los suyos: `laws-modules.yml` (validación de los CSV maestros, archivos generados al día, pruebas unitarias, de la API y de la caché de textos en PHP 8.1 y 8.4, y pruebas en navegador con axe-core) y `laws-links.yml` (cada lunes comprueba que los enlaces de referencia sigan respondiendo).
 
