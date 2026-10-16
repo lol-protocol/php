@@ -19,6 +19,7 @@ El estado detallado y los pendientes están en `README.md`; la paleta y las medi
 - Además de los movimientos hay **10 tipos de texto** (manuales, libros sagrados, leyes, cartas, diarios, ciencia, cocina, filosofía, teatro, viajes). Ya están **confirmados** junto con los movimientos y sus autores; los autores de inspiración son solo de los movimientos.
 - Son **1000 marcalibros** en total.
 - La aplicación es **independiente y sin login**. **No la conectes con Plataforma POS** hasta que lo pida; todavía no se sabe dónde vive esa plataforma ni cómo se identificará a las personas.
+- La aplicación corre en **un solo VPS**: los marcalibros creados se guardan en el disco local, y así se queda.
 - Los libros sagrados no llevan símbolos de una religión concreta.
 - Formato de la persona (parte está en `README.md`, "Convenciones"): decimales con 1, 2, 4 o 5 cifras (nunca 3); mayúsculas normales salvo siglas (API, POS, SVG, NLP); nombres de archivo en minúsculas, con guiones y sin número al inicio.
 
