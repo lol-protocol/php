@@ -1,9 +1,13 @@
 #!/bin/bash
 # Instalacion completa del VPS.
-# Uso: ./install-all.sh <dominio> [email] [--dry-run] [--resume] [--yes]
-#   --dry-run  muestra el plan (y que pasos ya estan hechos) sin ejecutar nada
-#   --resume   salta los pasos ya completados para este dominio (usalo tras un fallo)
-#   --yes      no pide confirmacion
+# Uso: ./install-all.sh <dominio> [email] [--dry-run] [--resume] [--yes] [--with-webmin] [--skip-ssl]
+#   --dry-run      muestra el plan (y que pasos ya estan hechos) sin ejecutar nada
+#   --resume       salta los pasos ya completados para este dominio (usalo tras un fallo)
+#   --yes          no pide confirmacion
+#   --with-webmin  instala tambien Webmin (02_J): panel web en el puerto 10000 con el login
+#                  de root/sudo. Por defecto NO se instala (menos superficie expuesta)
+#   --skip-ssl     no pide el certificado (04): para instalar todo ANTES de que el DNS apunte
+#                  al VPS; luego corre ./04-setup-ssl.sh <dominio> <email>
 # El avance se guarda en ~/.local/state/vps-setup/install-all.state
 # (INSTALL_STATE_FILE lo reemplaza).
 set -e
@@ -11,13 +15,17 @@ set -e
 DRY_RUN=0
 RESUME=0
 ASSUME_YES=0
+WITH_WEBMIN=0
+SKIP_SSL=0
 POSITIONAL=()
 for arg in "$@"; do
     case "$arg" in
         --dry-run) DRY_RUN=1 ;;
         --resume) RESUME=1 ;;
         --yes|-y) ASSUME_YES=1 ;;
-        -h|--help) sed -n '2,8p' "$0"; exit 0 ;;
+        --with-webmin) WITH_WEBMIN=1 ;;
+        --skip-ssl) SKIP_SSL=1 ;;
+        -h|--help) sed -n '2,12p' "$0"; exit 0 ;;
         --*) echo "Opcion desconocida: $arg (usa --help)"; exit 2 ;;
         *) POSITIONAL+=("$arg") ;;
     esac
@@ -49,6 +57,8 @@ echo "║   Dominio: $DOMAIN"
 echo "║   Email: $EMAIL"
 [ "$DRY_RUN" -eq 1 ] && echo "║   MODO DRY-RUN: no se ejecuta nada"
 [ "$RESUME" -eq 1 ] && echo "║   MODO RESUME: se omiten los pasos ya completados"
+[ "$WITH_WEBMIN" -eq 1 ] && echo "║   Con Webmin (02_J, puerto 10000)"
+[ "$SKIP_SSL" -eq 1 ] && echo "║   SIN certificado SSL (04): pidelo cuando el DNS apunte al VPS"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -89,7 +99,7 @@ fi
 # Pasos con letra (02_A..02_J) son independientes entre si: el orden
 # dentro del mismo numero no importa, solo que terminen antes del
 # siguiente numero. Instala el stack COMPLETO de lenguajes/servicios
-# soportados (Java, PHP, Python, PostgreSQL, Nginx, Certbot, Webmin), no
+# soportados (Java, PHP, Python, PostgreSQL, Nginx, Certbot; Webmin con --with-webmin), no
 # solo lo que usa la landing page estatica -- si solo necesitas la landing
 # page por HTTPS, corre a mano 01, 02_E, 02_F, 03, 04 y 05. Los extras
 # realmente opcionales (MariaDB, Tomcat, Whisper, apps adicionales, DNS
@@ -103,9 +113,11 @@ STEPS=(
     "02_D-install-postgresql.sh"
     "02_E-install-nginx.sh"
     "02_F-install-certbot.sh"
-    "02_J-install-webmin.sh"
-    "03-configure-nginx-site.sh:$DOMAIN"
-    "04-setup-ssl.sh:$DOMAIN $EMAIL"
+)
+[ "$WITH_WEBMIN" -eq 1 ] && STEPS+=("02_J-install-webmin.sh")
+STEPS+=("03-configure-nginx-site.sh:$DOMAIN")
+[ "$SKIP_SSL" -eq 1 ] || STEPS+=("04-setup-ssl.sh:$DOMAIN $EMAIL")
+STEPS+=(
     "05-deploy-landing-page.sh:$DOMAIN"
     "07_A-install-fail2ban-autoupdates.sh"
     "07_B-nginx-security-headers.sh"
@@ -223,8 +235,17 @@ echo "Logs de Nginx:"
 echo "  Access: /var/log/nginx/$DOMAIN/access.log"
 echo "  Error:  /var/log/nginx/$DOMAIN/error.log"
 echo ""
-echo "Panel de administracion (Webmin):"
-echo "  🔗 https://$IP:10000  (usuario/contraseña: los mismos que por SSH)"
+if [ "$SKIP_SSL" -eq 1 ]; then
+    echo "SSL pendiente (--skip-ssl): cuando el DNS apunte a $IP corre:"
+    echo "  ./04-setup-ssl.sh $DOMAIN $EMAIL"
+    echo ""
+fi
+if [ "$WITH_WEBMIN" -eq 1 ]; then
+    echo "Panel de administracion (Webmin):"
+    echo "  🔗 https://$IP:10000  (usuario/contraseña: los mismos que por SSH)"
+else
+    echo "Webmin no se instalo (usa --with-webmin, o luego: bash ./02_J-install-webmin.sh)"
+fi
 echo ""
 echo "Log de la instalacion: $LOG_FILE"
 echo ""
