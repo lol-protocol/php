@@ -31,6 +31,21 @@ Relaciones calculadas entre pares de la paleta:
 Regla: los elementos funcionales (iconos, estados, bordes que transmiten información) necesitan 3:1 como mínimo.
 Sobre `papel` solo se usan `tinta` y `verde` para eso. `ocre` y `niebla` sobre `papel` quedan como relleno decorativo.
 
+## Modo oscuro (aplicación)
+
+La aplicación sigue la preferencia del sistema (`prefers-color-scheme`). En `app/public/assets/app.css` los colores de la marca viven como `--marca-*` (fijos, para las muestras de color) y la interfaz usa papeles (`--tinta` para el texto, `--papel` para el fondo, `--verde` para enlaces y acentos) que el modo oscuro redefine:
+
+| Papel | Claro | Oscuro | Contraste sobre el fondo oscuro |
+|---|---|---|---|
+| Fondo (`--papel`) | `#F4EEE1` | `#1E2A38` (tinta) | — |
+| Texto (`--tinta`) | `#1E2A38` | `#F4EEE1` (papel) | 12.58 |
+| Acento y enlaces (`--verde`) | `#3E5C4A` | `#9CC9A9` | 7.86 |
+| Texto secundario | `#4A5666` | `#C2C9D2` | 8.71 |
+| Bordes | `#6A7482` | `#8995A4` | 4.78 |
+| Error | `#8F2D26` | `#F2A49A` | 7.31 |
+
+El logo tiene trazo tinta, así que en modo oscuro va sobre una placa papel. Los SVG y JPG del catálogo no cambian.
+
 ## Trazos y medidas
 
 - **Iconos (24×24):** trazo de 2 px, esquinas y extremos redondeados (`stroke-linecap` y `stroke-linejoin` en `round`).

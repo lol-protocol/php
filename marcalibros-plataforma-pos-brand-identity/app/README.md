@@ -116,5 +116,4 @@ app/
 
 ## Pendiente
 
-- Sin modo oscuro.
 - El almacenamiento es disco local: sirve para un solo servidor.
