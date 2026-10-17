@@ -186,6 +186,67 @@ class PrivacidadTest extends TestCase
         $this->assertStringContainsString("x_dp.rol = 'principal'", Privacidad::publica()->sqlViva('x'), 'her own death, not one she registered');
     }
 
+    /** A persona is private when she is in some colección and in none that is public. */
+    public function testThePrivateExpressionNeedsACollectionAndNoPublicOne(): void
+    {
+        $sql = Privacidad::publica()->sqlPrivada('x');
+
+        $this->assertStringContainsString('EXISTS (SELECT 1 FROM coleccion_personas x_mp WHERE x_mp.persona_id = x.id)', $sql);
+        $this->assertStringContainsString('NOT EXISTS (SELECT 1 FROM coleccion_personas x_pp JOIN colecciones x_pc', $sql);
+        $this->assertStringContainsString('x_pc.publica', $sql);
+    }
+
+    public function testHiddenMeansAliveOrPrivate(): void
+    {
+        $visita = Privacidad::publica(new \DateTimeImmutable('2026-10-09'));
+        $sql = $visita->sqlOculta('x');
+
+        $this->assertSame('(' . $visita->sqlViva('x') . ' OR ' . $visita->sqlPrivada('x') . ')', $sql);
+    }
+
+    public function testTheVisitorsPersonasNameTheTwoKindsOfMaskApart(): void
+    {
+        $sql = Privacidad::publica(new \DateTimeImmutable('2026-10-09'))->personas();
+
+        $this->assertSame('Persona viva', Privacidad::NOMBRE_OCULTO);
+        $this->assertSame('Persona privada', Privacidad::NOMBRE_PRIVADO);
+        $this->assertStringContainsString("'" . Privacidad::NOMBRE_OCULTO . "'", $sql);
+        $this->assertStringContainsString("'" . Privacidad::NOMBRE_PRIVADO . "'", $sql);
+        $this->assertStringContainsString('x.viva_presunta OR x.privada', $sql);
+    }
+
+    /** Events and records are filtered by the same notion of hidden, not by "alive" alone. */
+    public function testEventsAndRecordsAreHiddenByPrivatePeopleToo(): void
+    {
+        $visita = Privacidad::publica();
+
+        $this->assertStringContainsString('coleccion_personas', $visita->sucesos());
+        $this->assertStringContainsString('coleccion_personas', $visita->registros());
+    }
+
+    /** The owner's SQL never mentions collections: nothing is hidden from her. */
+    public function testTheOwnersSqlIsUnchangedByPrivateCollections(): void
+    {
+        $dueno = Privacidad::propietario();
+
+        $this->assertStringNotContainsString('coleccion_personas', $dueno->personas());
+        $this->assertSame('sucesos', $dueno->sucesos());
+        $this->assertSame('registros', $dueno->registros());
+    }
+
+    #[DataProvider('aliasInvalidos')]
+    public function testThePrivateAndHiddenExpressionsRejectInvalidAliasesToo(string $alias): void
+    {
+        foreach (['sqlPrivada', 'sqlOculta'] as $metodo) {
+            try {
+                Privacidad::publica()->$metodo($alias);
+                $this->fail("{$metodo}('{$alias}') should be rejected");
+            } catch (\InvalidArgumentException) {
+                $this->addToAssertionCount(1);
+            }
+        }
+    }
+
     public function testTheRequestsViewFollowsWhoAsks(): void
     {
         $this->assertTrue(Privacidad::paraSolicitud()->ocultaVivas(), 'an anonymous request sees the visitor\'s view');

@@ -23,7 +23,7 @@ class CuentaController extends BaseController
         return $this->pedirPropietario(function (): string {
             $usuario = (new UsuarioRepository($this->db()))->find(self::DEFAULT_USER_ID);
             if ($usuario === null) {
-                return $this->handleNotFound();
+                return $this->handleNotFound($this->sinUsuario());
             }
 
             return view('genealogy/cuenta/index', ['usuario' => $usuario]);
