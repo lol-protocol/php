@@ -4,158 +4,169 @@ Generado por `generar-tabla.py` a partir de `colores.csv` y `significados-idioma
 
 Las traducciones son propuestas y no están revisadas por hablantes nativos.
 Alias: otros colores CSS con exactamente el mismo hex (`gray` y `grey`; `aqua` y `cyan`; `fuchsia` y `magenta`).
+Base: en qué se apoya cada significado (ver [referencias](../referencias.md) y el README). «Hay estudios» indica que existen estudios sobre ese color, no que el texto resuma sus resultados; «derivado» quiere decir que lo extrapoló el autor.
 Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README.md).
 
-| Inglés | Nombre | Hex | Alias | Significado psicológico | Significado místico |
-|---|---|---|---|---|---|
-| `aliceblue` | アリスブルー | `#F0F8FF` |  | 穏やかさ、爽やかさ、清潔感；軽やかで開放的な感覚。 | 天上の清らかさと静けさ；澄んだ空や明晰なコミュニケーションと結びつく。 |
-| `antiquewhite` | アンティークホワイト | `#FAEBD7` |  | 郷愁、伝統、やわらかな温もり；ヴィンテージを思わせる。 | 過去の記憶と叡智；年月を経た純粋さと古代の循環。 |
-| `aqua` | アクア | `#00FFFF` | `cyan` | 爽やかさ、明晰さ、エネルギー、澄んだ水の感覚。 | 生きた水と浄化；直感の流れと微細なものとの交信。 |
-| `aquamarine` | アクアマリン | `#7FFFD4` |  | くつろぎを与える爽やかさ、穏やかさ、軽やかな楽観。 | 船乗りの石：旅の守護、勇気、感情の明晰さ。 |
-| `azure` | 紺碧 | `#F0FFFF` |  | 晴れた空、開放感、自由、静けさ。 | 精神の高みと空の清らかさ；天上的なものと開かれた心。 |
-| `beige` | ベージュ | `#F5F5DC` |  | 中立、素朴さ、安定、控えめさ。 | 大地と謙虚さ；極端のない均衡、日常の暮らし、根を張ること。 |
-| `bisque` | ビスク | `#FFE4C4` |  | やわらかな温もり、親しみ、家庭的な感覚。 | 豊かさと滋養；もてなしと素朴な楽しみ。 |
-| `black` | 黒 | `#000000` |  | 優雅さ、力、格式、神秘；多くの文化では喪を表す。 | 原初の虚無、夜、隠されたもの；守護と変容（錬金術のニグレド）。 |
-| `blanchedalmond` | ブランチドアーモンド | `#FFEBCD` |  | やわらかさ、甘さ、繊細な温もり。 | 純粋な甘さと素朴さ；ささやかな贈り物と気づかい。 |
-| `blue` | 青 | `#0000FF` |  | 信頼、落ち着き、安定、合理性、プロ意識。 | 真実と精神性；空と海。多くの伝統で邪視から守るとされる。 |
-| `blueviolet` | 青紫 | `#8A2BE2` |  | 創造性、野心、個性；激しい気質。 | 直感と心的なものとのつながり；地上の心と精神性をつなぐ絆。 |
-| `brown` | 茶色 | `#A52A2A` |  | 安定、安心、素朴さ、信頼性。 | 大地、根を張ること、忍耐；家や物質世界とのつながり。 |
-| `burlywood` | バーリーウッド | `#DEB887` |  | 土のような温もり、心地よさ、自然さ。 | 木材と手を加えられた自然；成長の循環と大地の忍耐。 |
-| `cadetblue` | カデットブルー | `#5F9EA0` |  | 落ち着き、静穏、均衡、控えめな重み。 | 海と静けさ；静かな規律と明晰な思考。 |
-| `chartreuse` | シャルトルーズ | `#7FFF00` |  | エネルギー、活力、新鮮さ、目を引くアクセント；落ち着きのなさも。 | 更新と春；若さ、成長、生命力。 |
-| `chocolate` | チョコレート | `#D2691E` |  | 温もり、贅沢、心地よさ、家庭の感覚。 | 豊かさと地上の悦び；肥沃な大地と節度ある官能。 |
-| `coral` | コーラル | `#FF7F50` |  | 親しみやすさ、喜び、社交的な温かさ、楽観。 | 海の生命と守護；地中海の伝統では邪視除けのお守り。 |
-| `cornflowerblue` | コーンフラワーブルー | `#6495ED` |  | 親切さ、信頼、静けさ、開放性。 | 忠誠と誠実な対話；穏やかな精神性。 |
-| `cornsilk` | コーンシルク | `#FFF8DC` |  | やわらかさ、温もり、無垢、素朴さ。 | 収穫と野のやさしさ；慎ましい豊かさと純粋さ。 |
-| `crimson` | クリムゾン | `#DC143C` |  | 情熱、激しさ、勇気、切迫感、力。 | 血、生命、犠牲；生命力と燃える愛、同時に警告も。 |
-| `cyan` | シアン | `#00FFFF` | `aqua` | 爽やかさ、明晰さ、落ち着き、コミュニケーション；デジタルや現代的なものと結びつく。 | 水と浄化；精神の明晰さと対話の流れ。 |
-| `darkblue` | 濃紺 | `#00008B` |  | 深み、真剣さ、信頼性、権威。 | 深い夜と叡智；無意識と内省。 |
-| `darkcyan` | 濃い青緑 | `#008B8B` |  | 深い落ち着き、均衡、控えめな重み。 | 深い水と癒し；心と感情の均衡。 |
-| `darkgoldenrod` | 濃い黄金色 | `#B8860B` |  | 古い富、円熟、抑えた威厳。 | 古びた黄金：得られた知恵、収穫、地上の力。 |
-| `darkgray` | 濃いグレー | `#A9A9A9` | `darkgrey` | 真剣さ、中立、感情的な距離、保守性。 | 中立と移行；光と影のあいだの曖昧さ。 |
-| `darkgreen` | 濃い緑 | `#006400` |  | 安定、安心、深い自然、伝統。 | 植物の生命と隠れた更新；静かな成長と豊穣。 |
-| `darkgrey` | 濃いグレー | `#A9A9A9` | `darkgray` | 真剣さ、中立、感情的な距離、保守性。 | 中立と移行；光と影のあいだの曖昧さ。 |
-| `darkkhaki` | 濃いカーキ | `#BDB76B` |  | 控えめな重み、慎重さ、謙虚さ；ときに無気力や受け身。 | 乾いた大地と忍耐；循環の前での謙虚さ。 |
-| `darkmagenta` | 濃いマゼンタ | `#8B008B` |  | 神秘、洗練、強い創造性、抑えた情熱。 | 変容と魔法；欲望と精神をつなぐ絆。 |
-| `darkolivegreen` | 濃いオリーブグリーン | `#556B2F` |  | 落ち着き、自然、安定、控えめさ。 | 森の平和と長寿；大地の叡智と静けさ。 |
-| `darkorange` | 濃いオレンジ | `#FF8C00` |  | 力強い温かなエネルギー、熱意、活力ある創造性。 | 制御された火と収穫；生命の強さと行動への刺激。 |
-| `darkorchid` | 濃い蘭色 | `#9932CC` |  | 神秘、精神性、創造性、洗練された野心。 | 隠された叡智と変容；聖なるものとのつながり。 |
-| `darkred` | 濃い赤 | `#8B0000` |  | 激しさ、真剣さ、抑えた力；危険や緊張も。 | 血と生命力；犠牲、情熱、権威。 |
-| `darksalmon` | 濃いサーモン | `#E9967A` |  | やわらかな温もり、繊細さ、控えめな歓迎。 | 沈む太陽：移行と別れの甘さ。 |
-| `darkseagreen` | 濃い海緑 | `#8FBC8F` |  | 自然な落ち着き、均衡、素朴さ、心地よさ。 | 海と森；静かな成長、均衡、忍耐。 |
-| `darkslateblue` | 濃いスレートブルー | `#483D8B` |  | 内省、叡智、真剣さ、控えめさ。 | 深い思索、直感、幻視；瞑想的な精神性。 |
-| `darkslategray` | 濃いスレートグレー | `#2F4F4F` | `darkslategrey` | 控えめな重み、寡黙、安心、慎重さ。 | 岩と山；隠されたものと内にあるものの守り。 |
-| `darkslategrey` | 濃いスレートグレー | `#2F4F4F` | `darkslategray` | 控えめな重み、寡黙、安心、慎重さ。 | 岩と山；隠されたものと内にあるものの守り。 |
-| `darkturquoise` | 濃いターコイズ | `#00CED1` |  | 落ち着きとエネルギーの均衡；明晰な対話。 | 水と空；癒し、守護、心の清らかさ。 |
-| `darkviolet` | 濃いバイオレット | `#9400D3` |  | 神秘、豪華さ、創造性、強い野心。 | 精神性、魔法、超越的なもの；内なる変容。 |
-| `deeppink` | 濃いピンク | `#FF1493` |  | 激しい情熱、愛情、若々しいエネルギー、大胆さ。 | 愛と生きる欲望；燃えるようなやさしさ。 |
-| `deepskyblue` | 濃い空色 | `#00BFFF` |  | 活力、自由、信頼、穏やかなエネルギー。 | 空と深い水；開放、インスピレーション、高みとの交信。 |
-| `dimgray` | くすんだグレー | `#696969` | `dimgrey` | 憂い、中立、寡黙、控えめな重み。 | 霧と移行；明かされていないものと時の流れ。 |
-| `dimgrey` | くすんだグレー | `#696969` | `dimgray` | 憂い、中立、寡黙、控えめな重み。 | 霧と移行；明かされていないものと時の流れ。 |
-| `dodgerblue` | ダッジャーブルー | `#1E90FF` |  | 信頼、ダイナミズム、現代性、エネルギー。 | 晴れた空と交信；使者、明晰さ、行動。 |
-| `firebrick` | ファイアブリック | `#B22222` |  | 力、決意、強い温もり、緊張。 | 鍛冶場と炉辺の火；努力、犠牲、仕事。 |
-| `floralwhite` | フローラルホワイト | `#FFFAF0` |  | やわらかさ、繊細さ、清らかさ、軽やかさ。 | 白い花：無垢、始まり、春の祝福。 |
-| `forestgreen` | フォレストグリーン | `#228B22` |  | 自然、均衡、健康、落ち着き、成長。 | 聖なる森：生命、更新、大地とのつながり。 |
-| `fuchsia` | フューシャ | `#FF00FF` | `magenta` | 大胆さ、創造性、風変わり、遊び心のあるエネルギー。 | 変容と魔法；物質と精神をつなぐ絆。 |
-| `gainsboro` | ゲインズボロー | `#DCDCDC` |  | 上品な中立、清潔感、落ち着き。 | 中間の状態と均衡、重さのないもの。 |
-| `ghostwhite` | ゴーストホワイト | `#F8F8FF` |  | 軽やかさ、微かな神秘、輝く冷たさ。 | エーテル的なものと幽玄なもの；二つの世界のあいだの微かな気配。 |
-| `gold` | 金 | `#FFD700` |  | 成功、富、威信、楽観、温もり。 | 太陽と完全性；悟り、力、叡智、多くの伝統で神聖なもの。 |
-| `goldenrod` | ゴールデンロッド | `#DAA520` |  | 温かな富、信頼、親しみやすい威信。 | 収穫と豊かさ；到達した叡智と労働の実り。 |
-| `gray` | グレー | `#808080` | `grey` | 中立、均衡、真剣さ、曖昧さ；憂いも。 | 光と影のあいだの移行；仲介、省察、中間にあるもの。 |
-| `green` | 緑 | `#008000` |  | 自然、均衡、成長、健康、落ち着き；希望も。 | 生命、更新、癒し；チャクラの伝統では心臓（アナーハタ）と結びつく。 |
-| `greenyellow` | グリーンイエロー | `#ADFF2F` |  | 新鮮なエネルギー、若さ、活力、新しさ。 | 春と芽吹き；始まり、活力、成長。 |
-| `grey` | グレー | `#808080` | `gray` | 中立、均衡、真剣さ、曖昧さ；憂いも。 | 光と影のあいだの移行；仲介、省察、中間にあるもの。 |
-| `honeydew` | ハニーデュー | `#F0FFF0` |  | やわらかな爽やかさ、軽やかさ、清らかさ、落ち着き。 | 朝の神聖な露；祝福、更新、清らかさ。 |
-| `hotpink` | ホットピンク | `#FF69B4` |  | 喜び、遊び心、やさしさ、愛情あふれるエネルギー。 | 心の愛；やさしさ、愛情、生きる喜び。 |
-| `indianred` | インディアンレッド | `#CD5C5C` |  | 抑えた緊張、強い温もり、感情的な愛着、守護。 | 血と黄土の大地；祖先の力と家の守り。 |
-| `indigo` | インディゴ | `#4B0082` |  | 内省、神秘、叡智、静かな野心。 | チャクラの伝統では第三の目（アージュニャー）と結びつく：直感と内なる視覚。 |
-| `ivory` | アイボリー | `#FFFFF0` |  | 清らかさ、優雅さ、落ち着き、やわらかさ。 | 清らかさと時間：高貴なもの、永続するもの、神聖なもの。 |
-| `khaki` | カーキ | `#F0E68C` |  | 素朴さ、慎重さ、中立、実用性。 | 乾いた大地と忍耐；簡素な暮らしと均衡。 |
-| `lavender` | ラベンダー | `#E6E6FA` |  | 落ち着き、やわらかさ、郷愁、繊細さ、心地よさ。 | 浄化と守護；眠り、平和、微細な精神性。 |
-| `lavenderblush` | ラベンダーブラッシュ | `#FFF0F5` |  | 繊細さ、やさしさ、ロマンチックさ、やわらかさ。 | 愛に満ちた清らかさ；始まりの甘さ。 |
-| `lawngreen` | ローングリーン | `#7CFC00` |  | 爽やかさ、活力、楽観、若さ。 | 春と緑の野；芽吹く生命と更新。 |
-| `lemonchiffon` | レモンシフォン | `#FFFACD` |  | やわらかな喜び、爽やかさ、穏やかな楽観。 | 朝の陽光；明晰さと心地よい始まり。 |
-| `lightblue` | ライトブルー | `#ADD8E6` |  | 落ち着き、静穏、信頼、軽やかさ。 | 静かな空と水；平和、夢、明晰さ。 |
-| `lightcoral` | ライトコーラル | `#F08080` |  | やわらかな温もり、愛情、親しみ、繊細さ。 | 愛と守護；海のやわらかな生命力。 |
-| `lightcyan` | ライトシアン | `#E0FFFF` |  | 軽い爽やかさ、明晰さ、落ち着き。 | 澄んだ水と清らかな空気；思考の純粋さ。 |
-| `lightgoldenrodyellow` | ライトゴールデンロッドイエロー | `#FAFAD2` |  | 輝くやわらかさ、静かな楽観、温もり。 | やわらかな金色の光；穏やかな悟りと祝福。 |
-| `lightgray` | ライトグレー | `#D3D3D3` | `lightgrey` | 中立、落ち着き、清潔感、息をつける余白。 | 見えるものと見えないもののあいだの移行；中間にあるもの。 |
-| `lightgreen` | ライトグリーン | `#90EE90` |  | 落ち着き、爽やかさ、更新、心地よさ。 | 芽吹きと希望；やわらかな成長と穏やかな癒し。 |
-| `lightgrey` | ライトグレー | `#D3D3D3` | `lightgray` | 中立、落ち着き、清潔感、息をつける余白。 | 見えるものと見えないもののあいだの移行；中間にあるもの。 |
-| `lightpink` | ライトピンク | `#FFB6C1` |  | やさしさ、甘さ、無垢、やわらかな愛情。 | 繊細な愛と清らかさ；ロマンチックな始まり。 |
-| `lightsalmon` | ライトサーモン | `#FFA07A` |  | 明るい温もり、親しみ、穏やかなエネルギー。 | 朝の太陽；やさしさと寛大さ。 |
-| `lightseagreen` | ライトシーグリーン | `#20B2AA` |  | 落ち着き、均衡、爽やかさ、コミュニケーション。 | 海と癒し；感情と心の均衡。 |
-| `lightskyblue` | ライトスカイブルー | `#87CEFA` |  | 軽やかさ、自由、静穏、楽観。 | 開かれた空；インスピレーション、平和、高い志。 |
-| `lightslategray` | ライトスレートグレー | `#778899` | `lightslategrey` | 中立、思索的な落ち着き、控えめな重み。 | 光と夜のあいだの移行；省察と忍耐。 |
-| `lightslategrey` | ライトスレートグレー | `#778899` | `lightslategray` | 中立、思索的な落ち着き、控えめな重み。 | 光と夜のあいだの移行；省察と忍耐。 |
-| `lightsteelblue` | ライトスチールブルー | `#B0C4DE` |  | 落ち着き、控えめな重み、信頼、優雅さ。 | 金属と空；静かな規律と明晰さ。 |
-| `lightyellow` | ライトイエロー | `#FFFFE0` |  | やわらかな光、楽観、明晰さ、軽やかさ。 | 夜明けの光；始まり、悟り、穏やかな知。 |
-| `lime` | ライム | `#00FF00` |  | エネルギー、爽やかさ、活力、活動性；ときに警告のサイン。 | 芽吹きと成長；更新と生命力。 |
-| `limegreen` | ライムグリーン | `#32CD32` |  | エネルギー、若さ、楽観、ダイナミズム。 | 芽吹く生命；更新、健康、春。 |
-| `linen` | リネン | `#FAF0E6` |  | 素朴さ、落ち着き、自然さ、やわらかな清らかさ。 | 神殿と聖衣の亜麻；清らかさと謙虚さ。 |
-| `magenta` | マゼンタ | `#FF00FF` | `fuchsia` | 創造性、大胆さ、激しさ、脈打つエネルギー。 | 変容と精神性；物質と微細なもののつながり。 |
-| `maroon` | マルーン | `#800000` |  | 真剣さ、力、伝統、優雅さ、抑えた情熱。 | 血と大地；活力、犠牲、根を張ること。 |
-| `mediumaquamarine` | ミディアムアクアマリン | `#66CDAA` |  | 落ち着き、爽やかさ、調和、心地よさ。 | 癒しの水；均衡と感情の流れ。 |
-| `mediumblue` | ミディアムブルー | `#0000CD` |  | 信頼、静穏、深み、真剣さ。 | 星降る夜と真実；内省と導き。 |
-| `mediumorchid` | ミディアムオーキッド | `#BA55D3` |  | 創造性、感受性、優雅さ、神秘。 | 精神性と変容；直感と隠された叡智。 |
-| `mediumpurple` | ミディアムパープル | `#9370DB` |  | 創造性、感受性、洗練、落ち着き。 | 精神的な王者の気品と洞察；直感と微細なものとのつながり。 |
-| `mediumseagreen` | ミディアムシーグリーン | `#3CB371` |  | 落ち着き、均衡、心地よさ、成長。 | 海と更新；調和、豊穣、癒し。 |
-| `mediumslateblue` | ミディアムスレートブルー | `#7B68EE` |  | 創造性、想像力、自由、心の軽やかさ。 | インスピレーションと洞察；天上的なものとのつながり。 |
-| `mediumspringgreen` | ミディアムスプリンググリーン | `#00FA9A` |  | 爽やかさ、活力、楽観、更新。 | 春と成長；新しい生命と希望。 |
-| `mediumturquoise` | ミディアムターコイズ | `#48D1CC` |  | 落ち着き、明晰さ、爽やかさ、コミュニケーション。 | 水と空；守護、癒し、清らかさ。 |
-| `mediumvioletred` | ミディアムバイオレットレッド | `#C71585` |  | 情熱、激しさ、燃えるようなやさしさ、野心。 | 欲望と活力；激しい愛と感情の強さ。 |
-| `midnightblue` | ミッドナイトブルー | `#191970` |  | 深み、真剣さ、神秘、信頼。 | 夜、夢、隠された知識；内省と未知。 |
-| `mintcream` | ミントクリーム | `#F5FFFA` |  | やわらかな爽やかさ、清らかさ、落ち着き、清潔感。 | ミント：浄化、更新、精神の明晰さ。 |
-| `mistyrose` | ミスティローズ | `#FFE4E1` |  | 繊細さ、郷愁、やわらかさ、ロマンチックさ。 | 霧がかった夜明け；夢、記憶、消えゆくもの。 |
-| `moccasin` | モカシン | `#FFE4B5` |  | やわらかな温もり、素朴さ、心地よさ、親切さ。 | 大地と道；旅、謙虚さ、家。 |
-| `navajowhite` | ナバホホワイト | `#FFDEAD` |  | 土のような温もり、素朴さ、心地よさ。 | 砂と収穫；素朴さと慎ましい豊かさ。 |
-| `navy` | ネイビー | `#000080` |  | 権威、信頼、真剣さ、プロ意識。 | 深い海と夜；規律、叡智、忠誠。 |
-| `oldlace` | オールドレース | `#FDF5E6` |  | 郷愁、繊細さ、温もり、伝統。 | 古いものの記憶とやさしさ；年月を経た純粋さと気づかい。 |
-| `olive` | オリーブ | `#808000` |  | 平和、自然、節度、安定；疲れも。 | オリーブの木：平和、叡智、静かな勝利、豊穣。 |
-| `olivedrab` | オリーブドラブ | `#6B8E23` |  | 自然、実用性、安定、控えめな重み。 | 野と野生の生命；粘り強さと根を張ること。 |
-| `orange` | オレンジ | `#FFA500` |  | 熱意、創造性、温もり、エネルギー、社交性。 | チャクラの伝統では仙骨のチャクラと結びつく：活力、創造性、悦び。 |
-| `orangered` | オレンジレッド | `#FF4500` |  | 強いエネルギー、推進力、熱意、切迫感。 | 火と熱情；行動、勇気、変容。 |
-| `orchid` | オーキッド | `#DA70D6` |  | 優雅さ、感受性、ロマンチックさ、創造性。 | 美と変容；洗練された精神性。 |
-| `palegoldenrod` | ペールゴールデンロッド | `#EEE8AA` |  | やわらかさ、静けさ、温もり、穏やかな楽観。 | 収穫の光；穏やかな豊かさと祝福。 |
-| `palegreen` | ペールグリーン | `#98FB98` |  | 落ち着き、爽やかさ、更新、心地よさ。 | やわらかな芽；希望、癒し、穏やかな成長。 |
-| `paleturquoise` | ペールターコイズ | `#AFEEEE` |  | 落ち着き、軽やかさ、爽やかさ、明晰さ。 | 静かな水と空；清らかさ、癒し、平和。 |
-| `palevioletred` | ペールバイオレットレッド | `#DB7093` |  | やさしさ、愛情、感受性、郷愁。 | 繊細な愛；感受性と愛情の絆。 |
-| `papayawhip` | パパイヤホイップ | `#FFEFD5` |  | やわらかな温もり、甘さ、心地よさ、南国の喜び。 | 太陽の果実と豊かさ；もてなしと素朴な悦び。 |
-| `peachpuff` | ピーチパフ | `#FFDAB9` |  | 温もり、やさしさ、親しみ、心地よさ。 | 中国では桃は長寿と不死の象徴；甘さと幸運。 |
-| `peru` | ペルー | `#CD853F` |  | 土のような温もり、信頼、根を張ること、安定。 | 大地と収穫；根を張ること、仕事、豊かさ。 |
-| `pink` | ピンク | `#FFC0CB` |  | やさしさ、甘さ、ロマンチックさ、落ち着き、愛情。 | 愛、慈悲、清らかさ；開かれた心。 |
-| `plum` | プラム | `#DDA0DD` |  | 洗練、繊細さ、創造性、郷愁。 | 秋の果実と豊かさ；熟した甘さ、叡智、洗練された愛。 |
-| `powderblue` | パウダーブルー | `#B0E0E6` |  | 落ち着き、繊細さ、清潔感、静穏。 | やわらかな空と澄んだ水；平和、清らかさ、夢。 |
-| `purple` | パープル | `#800080` |  | 王者の気品、豪華さ、精神性、創造性、神秘。 | 王権と精神性；一部の伝統では頭頂のチャクラと結びつく：神聖なものとのつながり。 |
-| `rebeccapurple` | レベッカパープル | `#663399` |  | 創造性、深み、神秘、抑えた優雅さ。 | 深い精神性；叡智、瞑想、目に見えないものの敷居。 |
-| `red` | 赤 | `#FF0000` |  | 情熱、エネルギー、切迫感、危険、行動。 | チャクラの伝統では第一（根）のチャクラは赤：根を張ること、生存、活力。 |
-| `rosybrown` | ロージーブラウン | `#BC8F8F` |  | やわらかな温もり、郷愁、感受性、素朴さ。 | 大地と静かな愛；日々のやさしさ。 |
-| `royalblue` | ロイヤルブルー | `#4169E1` |  | 権威、信頼、忠誠、威信、静穏。 | 王権と忠誠；正義、叡智、尊厳。 |
-| `saddlebrown` | サドルブラウン | `#8B4513` |  | 頑健さ、伝統、心地よさ、根を張ること。 | 肥沃な大地と仕事；家、安定、粘り強さ。 |
-| `salmon` | サーモン | `#FA8072` |  | 温もり、親しみ、喜び、感受性。 | 太陽と海；活力、愛情、移行。 |
-| `sandybrown` | サンディブラウン | `#F4A460` |  | 温もり、親しみやすさ、自然さ、落ち着き。 | 砂漠と砂；忍耐、時間、変容。 |
-| `seagreen` | シーグリーン | `#2E8B57` |  | 落ち着き、均衡、自然、安定。 | 海と生命；癒し、豊かさ、更新。 |
-| `seashell` | シーシェル | `#FFF5EE` |  | やわらかさ、清らかさ、繊細さ、落ち着き。 | 貝殻：誕生と豊穣の象徴（海から現れるヴィーナス）、また守護の象徴。 |
-| `sienna` | シエナ | `#A0522D` |  | 大地、根を張ること、力強い温もり、頼もしさ。 | 赤い大地と祖先の力；根を張ること、豊穣、ルーツ。 |
-| `silver` | シルバー | `#C0C0C0` |  | 現代性、洗練、上品な中立、威信。 | 月と反射；錬金術では銀は月に対応する：直感と変化。 |
-| `skyblue` | スカイブルー | `#87CEEB` |  | 落ち着き、開放、自由、爽やかさ。 | 空と風；インスピレーション、平和、高揚。 |
-| `slateblue` | スレートブルー | `#6A5ACD` |  | 創造性、想像力、神秘、静穏。 | 洞察と精神性；直感と崇高なものとのつながり。 |
-| `slategray` | スレートグレー | `#708090` | `slategrey` | 中立、真剣さ、控えめな重み、落ち着き。 | 石と時間；堅固さ、忍耐、安定したもの。 |
-| `slategrey` | スレートグレー | `#708090` | `slategray` | 中立、真剣さ、控えめな重み、落ち着き。 | 石と時間；堅固さ、忍耐、安定したもの。 |
-| `snow` | スノー | `#FFFAFA` |  | 清らかさ、清潔感、落ち着き、冷たさ。 | 絶対的な清らかさ、沈黙、冬の更新。 |
-| `springgreen` | スプリンググリーン | `#00FF7F` |  | 爽やかさ、活力、楽観、更新。 | 春：芽吹き、始まり、希望。 |
-| `steelblue` | スチールブルー | `#4682B4` |  | 信頼、規律、強さ、安定。 | 金属と空；堅固さ、決意、明晰さ。 |
-| `tan` | タン | `#D2B48C` |  | 土のような温もり、素朴さ、自然さ、心地よさ。 | 大地と太陽；根を張ること、気づかい、日常。 |
-| `teal` | ティール | `#008080` |  | 均衡、落ち着き、プロ意識、創造性。 | 水と空；感情と理性の均衡、癒し、平和。 |
-| `thistle` | シスル | `#D8BFD8` |  | やわらかさ、郷愁、繊細さ、落ち着き。 | 守りの植物；防御と甘さ。 |
-| `tomato` | トマト | `#FF6347` |  | エネルギー、温もり、情熱、食欲、警戒。 | 太陽と生命の果実；活力、愛、寛大さ。 |
-| `turquoise` | ターコイズ | `#40E0D0` |  | 落ち着き、明晰さ、爽やかさ、コミュニケーション。 | 守護と癒しの石；旅人のお守りで、悪に対する導き手。 |
-| `violet` | バイオレット | `#EE82EE` |  | 創造性、精神性、神秘、感受性。 | チャクラの伝統では頭頂のチャクラと結びつく：超越的なものとのつながり。 |
-| `wheat` | 小麦 | `#F5DEB3` |  | 素朴さ、温もり、静かな豊かさ、心地よさ。 | 収穫とパン；豊穣、豊かさ、感謝。 |
-| `white` | 白 | `#FFFFFF` |  | 清らかさ、清潔感、平和、無垢、始まり；他の文化では喪を表す。 | 清らかさ、光、神聖なもの；再生と神的なものとの合一（錬金術のアルベド）。 |
-| `whitesmoke` | ホワイトスモーク | `#F5F5F5` |  | やわらかな中立、清潔感、落ち着き、素朴さ。 | 微かな煙：触れえないもの、移行、昇りゆく祈り。 |
-| `yellow` | 黄 | `#FFFF00` |  | 喜び、楽観、エネルギー、精神の明晰さ、注意；用心も。 | チャクラの伝統では太陽神経叢と結びつく：悟り、意志、知識。 |
-| `yellowgreen` | イエローグリーン | `#9ACD32` |  | 爽やかさ、活力、若さ、落ち着き。 | 春と成長；新しい生命と更新。 |
+| Inglés | Nombre | Hex | Alias | Significado psicológico | Significado místico | Base psicológica | Base mística |
+|---|---|---|---|---|---|---|---|
+| `aliceblue` | アリスブルー | `#F0F8FF` |  | 穏やかさ、爽やかさ、清潔感；軽やかで開放的な感覚。 | 天上の清らかさと静けさ；澄んだ空や明晰なコミュニケーションと結びつく。 | derivado | derivado |
+| `antiquewhite` | アンティークホワイト | `#FAEBD7` |  | 郷愁、伝統、やわらかな温もり；ヴィンテージを思わせる。 | 過去の記憶と叡智；年月を経た純粋さと古代の循環。 | derivado | derivado |
+| `aqua` | アクア | `#00FFFF` | `cyan` | 爽やかさ、明晰さ、エネルギー、澄んだ水の感覚。 | 生きた水と浄化；直感の流れと微細なものとの交信。 | derivado | derivado |
+| `aquamarine` | アクアマリン | `#7FFFD4` |  | くつろぎを与える爽やかさ、穏やかさ、軽やかな楽観。 | 船乗りの石：旅の守護、勇気、感情の明晰さ。 | derivado | tradición ([kunz1913](../referencias.md#kunz1913)) |
+| `azure` | 紺碧 | `#F0FFFF` |  | 晴れた空、開放感、自由、静けさ。 | 精神の高みと空の清らかさ；天上的なものと開かれた心。 | derivado | derivado |
+| `beige` | ベージュ | `#F5F5DC` |  | 中立、素朴さ、安定、控えめさ。 | 大地と謙虚さ；極端のない均衡、日常の暮らし、根を張ること。 | derivado | derivado |
+| `bisque` | ビスク | `#FFE4C4` |  | やわらかな温もり、親しみ、家庭的な感覚。 | 豊かさと滋養；もてなしと素朴な楽しみ。 | derivado | derivado |
+| `black` | 黒 | `#000000` |  | 優雅さ、力、格式、神秘；多くの文化では喪を表す。 | 原初の虚無、夜、隠されたもの；守護と変容（錬金術のニグレド）。 | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [hupka1997](../referencias.md#hupka1997), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición ([abraham1998](../referencias.md#abraham1998)) |
+| `blanchedalmond` | ブランチドアーモンド | `#FFEBCD` |  | やわらかさ、甘さ、繊細な温もり。 | 純粋な甘さと素朴さ；ささやかな贈り物と気づかい。 | derivado | derivado |
+| `blue` | 青 | `#0000FF` |  | 信頼、落ち着き、安定、合理性、プロ意識。 | 真実と精神性；空と海。多くの伝統で邪視から守るとされる。 | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición ([wiki-nazar](../referencias.md#wiki-nazar)) |
+| `blueviolet` | 青紫 | `#8A2BE2` |  | 創造性、野心、個性；激しい気質。 | 直感と心的なものとのつながり；地上の心と精神性をつなぐ絆。 | derivado | derivado |
+| `brown` | 茶色 | `#A52A2A` |  | 安定、安心、素朴さ、信頼性。 | 大地、根を張ること、忍耐；家や物質世界とのつながり。 | hay estudios ([berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | derivado |
+| `burlywood` | バーリーウッド | `#DEB887` |  | 土のような温もり、心地よさ、自然さ。 | 木材と手を加えられた自然；成長の循環と大地の忍耐。 | derivado | derivado |
+| `cadetblue` | カデットブルー | `#5F9EA0` |  | 落ち着き、静穏、均衡、控えめな重み。 | 海と静けさ；静かな規律と明晰な思考。 | derivado | derivado |
+| `chartreuse` | シャルトルーズ | `#7FFF00` |  | エネルギー、活力、新鮮さ、目を引くアクセント；落ち着きのなさも。 | 更新と春；若さ、成長、生命力。 | derivado | derivado |
+| `chocolate` | チョコレート | `#D2691E` |  | 温もり、贅沢、心地よさ、家庭の感覚。 | 豊かさと地上の悦び；肥沃な大地と節度ある官能。 | derivado | derivado |
+| `coral` | コーラル | `#FF7F50` |  | 親しみやすさ、喜び、社交的な温かさ、楽観。 | 海の生命と守護；地中海の伝統では邪視除けのお守り。 | derivado | tradición ([elworthy1895](../referencias.md#elworthy1895)) |
+| `cornflowerblue` | コーンフラワーブルー | `#6495ED` |  | 親切さ、信頼、静けさ、開放性。 | 忠誠と誠実な対話；穏やかな精神性。 | derivado | derivado |
+| `cornsilk` | コーンシルク | `#FFF8DC` |  | やわらかさ、温もり、無垢、素朴さ。 | 収穫と野のやさしさ；慎ましい豊かさと純粋さ。 | derivado | derivado |
+| `crimson` | クリムゾン | `#DC143C` |  | 情熱、激しさ、勇気、切迫感、力。 | 血、生命、犠牲；生命力と燃える愛、同時に警告も。 | derivado | derivado |
+| `cyan` | シアン | `#00FFFF` | `aqua` | 爽やかさ、明晰さ、落ち着き、コミュニケーション；デジタルや現代的なものと結びつく。 | 水と浄化；精神の明晰さと対話の流れ。 | derivado | derivado |
+| `darkblue` | 濃紺 | `#00008B` |  | 深み、真剣さ、信頼性、権威。 | 深い夜と叡智；無意識と内省。 | derivado | derivado |
+| `darkcyan` | 濃い青緑 | `#008B8B` |  | 深い落ち着き、均衡、控えめな重み。 | 深い水と癒し；心と感情の均衡。 | derivado | derivado |
+| `darkgoldenrod` | 濃い黄金色 | `#B8860B` |  | 古い富、円熟、抑えた威厳。 | 古びた黄金：得られた知恵、収穫、地上の力。 | derivado | derivado |
+| `darkgray` | 濃いグレー | `#A9A9A9` | `darkgrey` | 真剣さ、中立、感情的な距離、保守性。 | 中立と移行；光と影のあいだの曖昧さ。 | derivado | derivado |
+| `darkgreen` | 濃い緑 | `#006400` |  | 安定、安心、深い自然、伝統。 | 植物の生命と隠れた更新；静かな成長と豊穣。 | derivado | derivado |
+| `darkgrey` | 濃いグレー | `#A9A9A9` | `darkgray` | 真剣さ、中立、感情的な距離、保守性。 | 中立と移行；光と影のあいだの曖昧さ。 | derivado | derivado |
+| `darkkhaki` | 濃いカーキ | `#BDB76B` |  | 控えめな重み、慎重さ、謙虚さ；ときに無気力や受け身。 | 乾いた大地と忍耐；循環の前での謙虚さ。 | derivado | derivado |
+| `darkmagenta` | 濃いマゼンタ | `#8B008B` |  | 神秘、洗練、強い創造性、抑えた情熱。 | 変容と魔法；欲望と精神をつなぐ絆。 | derivado | derivado |
+| `darkolivegreen` | 濃いオリーブグリーン | `#556B2F` |  | 落ち着き、自然、安定、控えめさ。 | 森の平和と長寿；大地の叡智と静けさ。 | derivado | derivado |
+| `darkorange` | 濃いオレンジ | `#FF8C00` |  | 力強い温かなエネルギー、熱意、活力ある創造性。 | 制御された火と収穫；生命の強さと行動への刺激。 | derivado | derivado |
+| `darkorchid` | 濃い蘭色 | `#9932CC` |  | 神秘、精神性、創造性、洗練された野心。 | 隠された叡智と変容；聖なるものとのつながり。 | derivado | derivado |
+| `darkred` | 濃い赤 | `#8B0000` |  | 激しさ、真剣さ、抑えた力；危険や緊張も。 | 血と生命力；犠牲、情熱、権威。 | derivado | derivado |
+| `darksalmon` | 濃いサーモン | `#E9967A` |  | やわらかな温もり、繊細さ、控えめな歓迎。 | 沈む太陽：移行と別れの甘さ。 | derivado | derivado |
+| `darkseagreen` | 濃い海緑 | `#8FBC8F` |  | 自然な落ち着き、均衡、素朴さ、心地よさ。 | 海と森；静かな成長、均衡、忍耐。 | derivado | derivado |
+| `darkslateblue` | 濃いスレートブルー | `#483D8B` |  | 内省、叡智、真剣さ、控えめさ。 | 深い思索、直感、幻視；瞑想的な精神性。 | derivado | derivado |
+| `darkslategray` | 濃いスレートグレー | `#2F4F4F` | `darkslategrey` | 控えめな重み、寡黙、安心、慎重さ。 | 岩と山；隠されたものと内にあるものの守り。 | derivado | derivado |
+| `darkslategrey` | 濃いスレートグレー | `#2F4F4F` | `darkslategray` | 控えめな重み、寡黙、安心、慎重さ。 | 岩と山；隠されたものと内にあるものの守り。 | derivado | derivado |
+| `darkturquoise` | 濃いターコイズ | `#00CED1` |  | 落ち着きとエネルギーの均衡；明晰な対話。 | 水と空；癒し、守護、心の清らかさ。 | derivado | derivado |
+| `darkviolet` | 濃いバイオレット | `#9400D3` |  | 神秘、豪華さ、創造性、強い野心。 | 精神性、魔法、超越的なもの；内なる変容。 | derivado | derivado |
+| `deeppink` | 濃いピンク | `#FF1493` |  | 激しい情熱、愛情、若々しいエネルギー、大胆さ。 | 愛と生きる欲望；燃えるようなやさしさ。 | derivado | derivado |
+| `deepskyblue` | 濃い空色 | `#00BFFF` |  | 活力、自由、信頼、穏やかなエネルギー。 | 空と深い水；開放、インスピレーション、高みとの交信。 | derivado | derivado |
+| `dimgray` | くすんだグレー | `#696969` | `dimgrey` | 憂い、中立、寡黙、控えめな重み。 | 霧と移行；明かされていないものと時の流れ。 | derivado | derivado |
+| `dimgrey` | くすんだグレー | `#696969` | `dimgray` | 憂い、中立、寡黙、控えめな重み。 | 霧と移行；明かされていないものと時の流れ。 | derivado | derivado |
+| `dodgerblue` | ダッジャーブルー | `#1E90FF` |  | 信頼、ダイナミズム、現代性、エネルギー。 | 晴れた空と交信；使者、明晰さ、行動。 | derivado | derivado |
+| `firebrick` | ファイアブリック | `#B22222` |  | 力、決意、強い温もり、緊張。 | 鍛冶場と炉辺の火；努力、犠牲、仕事。 | derivado | derivado |
+| `floralwhite` | フローラルホワイト | `#FFFAF0` |  | やわらかさ、繊細さ、清らかさ、軽やかさ。 | 白い花：無垢、始まり、春の祝福。 | derivado | derivado |
+| `forestgreen` | フォレストグリーン | `#228B22` |  | 自然、均衡、健康、落ち着き、成長。 | 聖なる森：生命、更新、大地とのつながり。 | derivado | derivado |
+| `fuchsia` | フューシャ | `#FF00FF` | `magenta` | 大胆さ、創造性、風変わり、遊び心のあるエネルギー。 | 変容と魔法；物質と精神をつなぐ絆。 | derivado | derivado |
+| `gainsboro` | ゲインズボロー | `#DCDCDC` |  | 上品な中立、清潔感、落ち着き。 | 中間の状態と均衡、重さのないもの。 | derivado | derivado |
+| `ghostwhite` | ゴーストホワイト | `#F8F8FF` |  | 軽やかさ、微かな神秘、輝く冷たさ。 | エーテル的なものと幽玄なもの；二つの世界のあいだの微かな気配。 | derivado | derivado |
+| `gold` | 金 | `#FFD700` |  | 成功、富、威信、楽観、温もり。 | 太陽と完全性；悟り、力、叡智、多くの伝統で神聖なもの。 | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |
+| `goldenrod` | ゴールデンロッド | `#DAA520` |  | 温かな富、信頼、親しみやすい威信。 | 収穫と豊かさ；到達した叡智と労働の実り。 | derivado | derivado |
+| `gray` | グレー | `#808080` | `grey` | 中立、均衡、真剣さ、曖昧さ；憂いも。 | 光と影のあいだの移行；仲介、省察、中間にあるもの。 | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | derivado |
+| `green` | 緑 | `#008000` |  | 自然、均衡、成長、健康、落ち着き；希望も。 | 生命、更新、癒し；チャクラの伝統では心臓（アナーハタ）と結びつく。 | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `greenyellow` | グリーンイエロー | `#ADFF2F` |  | 新鮮なエネルギー、若さ、活力、新しさ。 | 春と芽吹き；始まり、活力、成長。 | derivado | derivado |
+| `grey` | グレー | `#808080` | `gray` | 中立、均衡、真剣さ、曖昧さ；憂いも。 | 光と影のあいだの移行；仲介、省察、中間にあるもの。 | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | derivado |
+| `honeydew` | ハニーデュー | `#F0FFF0` |  | やわらかな爽やかさ、軽やかさ、清らかさ、落ち着き。 | 朝の神聖な露；祝福、更新、清らかさ。 | derivado | derivado |
+| `hotpink` | ホットピンク | `#FF69B4` |  | 喜び、遊び心、やさしさ、愛情あふれるエネルギー。 | 心の愛；やさしさ、愛情、生きる喜び。 | derivado | derivado |
+| `indianred` | インディアンレッド | `#CD5C5C` |  | 抑えた緊張、強い温もり、感情的な愛着、守護。 | 血と黄土の大地；祖先の力と家の守り。 | derivado | derivado |
+| `indigo` | インディゴ | `#4B0082` |  | 内省、神秘、叡智、静かな野心。 | チャクラの伝統では第三の目（アージュニャー）と結びつく：直感と内なる視覚。 | derivado | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `ivory` | アイボリー | `#FFFFF0` |  | 清らかさ、優雅さ、落ち着き、やわらかさ。 | 清らかさと時間：高貴なもの、永続するもの、神聖なもの。 | derivado | derivado |
+| `khaki` | カーキ | `#F0E68C` |  | 素朴さ、慎重さ、中立、実用性。 | 乾いた大地と忍耐；簡素な暮らしと均衡。 | derivado | derivado |
+| `lavender` | ラベンダー | `#E6E6FA` |  | 落ち着き、やわらかさ、郷愁、繊細さ、心地よさ。 | 浄化と守護；眠り、平和、微細な精神性。 | derivado | derivado |
+| `lavenderblush` | ラベンダーブラッシュ | `#FFF0F5` |  | 繊細さ、やさしさ、ロマンチックさ、やわらかさ。 | 愛に満ちた清らかさ；始まりの甘さ。 | derivado | derivado |
+| `lawngreen` | ローングリーン | `#7CFC00` |  | 爽やかさ、活力、楽観、若さ。 | 春と緑の野；芽吹く生命と更新。 | derivado | derivado |
+| `lemonchiffon` | レモンシフォン | `#FFFACD` |  | やわらかな喜び、爽やかさ、穏やかな楽観。 | 朝の陽光；明晰さと心地よい始まり。 | derivado | derivado |
+| `lightblue` | ライトブルー | `#ADD8E6` |  | 落ち着き、静穏、信頼、軽やかさ。 | 静かな空と水；平和、夢、明晰さ。 | derivado | derivado |
+| `lightcoral` | ライトコーラル | `#F08080` |  | やわらかな温もり、愛情、親しみ、繊細さ。 | 愛と守護；海のやわらかな生命力。 | derivado | derivado |
+| `lightcyan` | ライトシアン | `#E0FFFF` |  | 軽い爽やかさ、明晰さ、落ち着き。 | 澄んだ水と清らかな空気；思考の純粋さ。 | derivado | derivado |
+| `lightgoldenrodyellow` | ライトゴールデンロッドイエロー | `#FAFAD2` |  | 輝くやわらかさ、静かな楽観、温もり。 | やわらかな金色の光；穏やかな悟りと祝福。 | derivado | derivado |
+| `lightgray` | ライトグレー | `#D3D3D3` | `lightgrey` | 中立、落ち着き、清潔感、息をつける余白。 | 見えるものと見えないもののあいだの移行；中間にあるもの。 | derivado | derivado |
+| `lightgreen` | ライトグリーン | `#90EE90` |  | 落ち着き、爽やかさ、更新、心地よさ。 | 芽吹きと希望；やわらかな成長と穏やかな癒し。 | derivado | derivado |
+| `lightgrey` | ライトグレー | `#D3D3D3` | `lightgray` | 中立、落ち着き、清潔感、息をつける余白。 | 見えるものと見えないもののあいだの移行；中間にあるもの。 | derivado | derivado |
+| `lightpink` | ライトピンク | `#FFB6C1` |  | やさしさ、甘さ、無垢、やわらかな愛情。 | 繊細な愛と清らかさ；ロマンチックな始まり。 | derivado | derivado |
+| `lightsalmon` | ライトサーモン | `#FFA07A` |  | 明るい温もり、親しみ、穏やかなエネルギー。 | 朝の太陽；やさしさと寛大さ。 | derivado | derivado |
+| `lightseagreen` | ライトシーグリーン | `#20B2AA` |  | 落ち着き、均衡、爽やかさ、コミュニケーション。 | 海と癒し；感情と心の均衡。 | derivado | derivado |
+| `lightskyblue` | ライトスカイブルー | `#87CEFA` |  | 軽やかさ、自由、静穏、楽観。 | 開かれた空；インスピレーション、平和、高い志。 | derivado | derivado |
+| `lightslategray` | ライトスレートグレー | `#778899` | `lightslategrey` | 中立、思索的な落ち着き、控えめな重み。 | 光と夜のあいだの移行；省察と忍耐。 | derivado | derivado |
+| `lightslategrey` | ライトスレートグレー | `#778899` | `lightslategray` | 中立、思索的な落ち着き、控えめな重み。 | 光と夜のあいだの移行；省察と忍耐。 | derivado | derivado |
+| `lightsteelblue` | ライトスチールブルー | `#B0C4DE` |  | 落ち着き、控えめな重み、信頼、優雅さ。 | 金属と空；静かな規律と明晰さ。 | derivado | derivado |
+| `lightyellow` | ライトイエロー | `#FFFFE0` |  | やわらかな光、楽観、明晰さ、軽やかさ。 | 夜明けの光；始まり、悟り、穏やかな知。 | derivado | derivado |
+| `lime` | ライム | `#00FF00` |  | エネルギー、爽やかさ、活力、活動性；ときに警告のサイン。 | 芽吹きと成長；更新と生命力。 | derivado | derivado |
+| `limegreen` | ライムグリーン | `#32CD32` |  | エネルギー、若さ、楽観、ダイナミズム。 | 芽吹く生命；更新、健康、春。 | derivado | derivado |
+| `linen` | リネン | `#FAF0E6` |  | 素朴さ、落ち着き、自然さ、やわらかな清らかさ。 | 神殿と聖衣の亜麻；清らかさと謙虚さ。 | derivado | tradición |
+| `magenta` | マゼンタ | `#FF00FF` | `fuchsia` | 創造性、大胆さ、激しさ、脈打つエネルギー。 | 変容と精神性；物質と微細なもののつながり。 | derivado | derivado |
+| `maroon` | マルーン | `#800000` |  | 真剣さ、力、伝統、優雅さ、抑えた情熱。 | 血と大地；活力、犠牲、根を張ること。 | derivado | derivado |
+| `mediumaquamarine` | ミディアムアクアマリン | `#66CDAA` |  | 落ち着き、爽やかさ、調和、心地よさ。 | 癒しの水；均衡と感情の流れ。 | derivado | derivado |
+| `mediumblue` | ミディアムブルー | `#0000CD` |  | 信頼、静穏、深み、真剣さ。 | 星降る夜と真実；内省と導き。 | derivado | derivado |
+| `mediumorchid` | ミディアムオーキッド | `#BA55D3` |  | 創造性、感受性、優雅さ、神秘。 | 精神性と変容；直感と隠された叡智。 | derivado | derivado |
+| `mediumpurple` | ミディアムパープル | `#9370DB` |  | 創造性、感受性、洗練、落ち着き。 | 精神的な王者の気品と洞察；直感と微細なものとのつながり。 | derivado | derivado |
+| `mediumseagreen` | ミディアムシーグリーン | `#3CB371` |  | 落ち着き、均衡、心地よさ、成長。 | 海と更新；調和、豊穣、癒し。 | derivado | derivado |
+| `mediumslateblue` | ミディアムスレートブルー | `#7B68EE` |  | 創造性、想像力、自由、心の軽やかさ。 | インスピレーションと洞察；天上的なものとのつながり。 | derivado | derivado |
+| `mediumspringgreen` | ミディアムスプリンググリーン | `#00FA9A` |  | 爽やかさ、活力、楽観、更新。 | 春と成長；新しい生命と希望。 | derivado | derivado |
+| `mediumturquoise` | ミディアムターコイズ | `#48D1CC` |  | 落ち着き、明晰さ、爽やかさ、コミュニケーション。 | 水と空；守護、癒し、清らかさ。 | derivado | derivado |
+| `mediumvioletred` | ミディアムバイオレットレッド | `#C71585` |  | 情熱、激しさ、燃えるようなやさしさ、野心。 | 欲望と活力；激しい愛と感情の強さ。 | derivado | derivado |
+| `midnightblue` | ミッドナイトブルー | `#191970` |  | 深み、真剣さ、神秘、信頼。 | 夜、夢、隠された知識；内省と未知。 | derivado | derivado |
+| `mintcream` | ミントクリーム | `#F5FFFA` |  | やわらかな爽やかさ、清らかさ、落ち着き、清潔感。 | ミント：浄化、更新、精神の明晰さ。 | derivado | derivado |
+| `mistyrose` | ミスティローズ | `#FFE4E1` |  | 繊細さ、郷愁、やわらかさ、ロマンチックさ。 | 霧がかった夜明け；夢、記憶、消えゆくもの。 | derivado | derivado |
+| `moccasin` | モカシン | `#FFE4B5` |  | やわらかな温もり、素朴さ、心地よさ、親切さ。 | 大地と道；旅、謙虚さ、家。 | derivado | derivado |
+| `navajowhite` | ナバホホワイト | `#FFDEAD` |  | 土のような温もり、素朴さ、心地よさ。 | 砂と収穫；素朴さと慎ましい豊かさ。 | derivado | derivado |
+| `navy` | ネイビー | `#000080` |  | 権威、信頼、真剣さ、プロ意識。 | 深い海と夜；規律、叡智、忠誠。 | derivado | derivado |
+| `oldlace` | オールドレース | `#FDF5E6` |  | 郷愁、繊細さ、温もり、伝統。 | 古いものの記憶とやさしさ；年月を経た純粋さと気づかい。 | derivado | derivado |
+| `olive` | オリーブ | `#808000` |  | 平和、自然、節度、安定；疲れも。 | オリーブの木：平和、叡智、静かな勝利、豊穣。 | derivado | tradición |
+| `olivedrab` | オリーブドラブ | `#6B8E23` |  | 自然、実用性、安定、控えめな重み。 | 野と野生の生命；粘り強さと根を張ること。 | derivado | derivado |
+| `orange` | オレンジ | `#FFA500` |  | 熱意、創造性、温もり、エネルギー、社交性。 | チャクラの伝統では仙骨のチャクラと結びつく：活力、創造性、悦び。 | hay estudios ([berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `orangered` | オレンジレッド | `#FF4500` |  | 強いエネルギー、推進力、熱意、切迫感。 | 火と熱情；行動、勇気、変容。 | derivado | derivado |
+| `orchid` | オーキッド | `#DA70D6` |  | 優雅さ、感受性、ロマンチックさ、創造性。 | 美と変容；洗練された精神性。 | derivado | derivado |
+| `palegoldenrod` | ペールゴールデンロッド | `#EEE8AA` |  | やわらかさ、静けさ、温もり、穏やかな楽観。 | 収穫の光；穏やかな豊かさと祝福。 | derivado | derivado |
+| `palegreen` | ペールグリーン | `#98FB98` |  | 落ち着き、爽やかさ、更新、心地よさ。 | やわらかな芽；希望、癒し、穏やかな成長。 | derivado | derivado |
+| `paleturquoise` | ペールターコイズ | `#AFEEEE` |  | 落ち着き、軽やかさ、爽やかさ、明晰さ。 | 静かな水と空；清らかさ、癒し、平和。 | derivado | derivado |
+| `palevioletred` | ペールバイオレットレッド | `#DB7093` |  | やさしさ、愛情、感受性、郷愁。 | 繊細な愛；感受性と愛情の絆。 | derivado | derivado |
+| `papayawhip` | パパイヤホイップ | `#FFEFD5` |  | やわらかな温もり、甘さ、心地よさ、南国の喜び。 | 太陽の果実と豊かさ；もてなしと素朴な悦び。 | derivado | derivado |
+| `peachpuff` | ピーチパフ | `#FFDAB9` |  | 温もり、やさしさ、親しみ、心地よさ。 | 中国では桃は長寿と不死の象徴；甘さと幸運。 | derivado | tradición ([wiki-peaches](../referencias.md#wiki-peaches)) |
+| `peru` | ペルー | `#CD853F` |  | 土のような温もり、信頼、根を張ること、安定。 | 大地と収穫；根を張ること、仕事、豊かさ。 | derivado | derivado |
+| `pink` | ピンク | `#FFC0CB` |  | やさしさ、甘さ、ロマンチックさ、落ち着き、愛情。 | 愛、慈悲、清らかさ；開かれた心。 | hay estudios ([berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | derivado |
+| `plum` | プラム | `#DDA0DD` |  | 洗練、繊細さ、創造性、郷愁。 | 秋の果実と豊かさ；熟した甘さ、叡智、洗練された愛。 | derivado | derivado |
+| `powderblue` | パウダーブルー | `#B0E0E6` |  | 落ち着き、繊細さ、清潔感、静穏。 | やわらかな空と澄んだ水；平和、清らかさ、夢。 | derivado | derivado |
+| `purple` | パープル | `#800080` |  | 王者の気品、豪華さ、精神性、創造性、神秘。 | 王権と精神性；一部の伝統では頭頂のチャクラと結びつく：神聖なものとのつながり。 | hay estudios ([berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `rebeccapurple` | レベッカパープル | `#663399` |  | 創造性、深み、神秘、抑えた優雅さ。 | 深い精神性；叡智、瞑想、目に見えないものの敷居。 | derivado | derivado |
+| `red` | 赤 | `#FF0000` |  | 情熱、エネルギー、切迫感、危険、行動。 | チャクラの伝統では第一（根）のチャクラは赤：根を張ること、生存、活力。 | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [hupka1997](../referencias.md#hupka1997), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `rosybrown` | ロージーブラウン | `#BC8F8F` |  | やわらかな温もり、郷愁、感受性、素朴さ。 | 大地と静かな愛；日々のやさしさ。 | derivado | derivado |
+| `royalblue` | ロイヤルブルー | `#4169E1` |  | 権威、信頼、忠誠、威信、静穏。 | 王権と忠誠；正義、叡智、尊厳。 | derivado | derivado |
+| `saddlebrown` | サドルブラウン | `#8B4513` |  | 頑健さ、伝統、心地よさ、根を張ること。 | 肥沃な大地と仕事；家、安定、粘り強さ。 | derivado | derivado |
+| `salmon` | サーモン | `#FA8072` |  | 温もり、親しみ、喜び、感受性。 | 太陽と海；活力、愛情、移行。 | derivado | derivado |
+| `sandybrown` | サンディブラウン | `#F4A460` |  | 温もり、親しみやすさ、自然さ、落ち着き。 | 砂漠と砂；忍耐、時間、変容。 | derivado | derivado |
+| `seagreen` | シーグリーン | `#2E8B57` |  | 落ち着き、均衡、自然、安定。 | 海と生命；癒し、豊かさ、更新。 | derivado | derivado |
+| `seashell` | シーシェル | `#FFF5EE` |  | やわらかさ、清らかさ、繊細さ、落ち着き。 | 貝殻：誕生と豊穣の象徴（海から現れるヴィーナス）、また守護の象徴。 | derivado | tradición |
+| `sienna` | シエナ | `#A0522D` |  | 大地、根を張ること、力強い温もり、頼もしさ。 | 赤い大地と祖先の力；根を張ること、豊穣、ルーツ。 | derivado | derivado |
+| `silver` | シルバー | `#C0C0C0` |  | 現代性、洗練、上品な中立、威信。 | 月と反射；錬金術では銀は月に対応する：直感と変化。 | derivado | tradición ([abraham1998](../referencias.md#abraham1998)) |
+| `skyblue` | スカイブルー | `#87CEEB` |  | 落ち着き、開放、自由、爽やかさ。 | 空と風；インスピレーション、平和、高揚。 | derivado | derivado |
+| `slateblue` | スレートブルー | `#6A5ACD` |  | 創造性、想像力、神秘、静穏。 | 洞察と精神性；直感と崇高なものとのつながり。 | derivado | derivado |
+| `slategray` | スレートグレー | `#708090` | `slategrey` | 中立、真剣さ、控えめな重み、落ち着き。 | 石と時間；堅固さ、忍耐、安定したもの。 | derivado | derivado |
+| `slategrey` | スレートグレー | `#708090` | `slategray` | 中立、真剣さ、控えめな重み、落ち着き。 | 石と時間；堅固さ、忍耐、安定したもの。 | derivado | derivado |
+| `snow` | スノー | `#FFFAFA` |  | 清らかさ、清潔感、落ち着き、冷たさ。 | 絶対的な清らかさ、沈黙、冬の更新。 | derivado | derivado |
+| `springgreen` | スプリンググリーン | `#00FF7F` |  | 爽やかさ、活力、楽観、更新。 | 春：芽吹き、始まり、希望。 | derivado | derivado |
+| `steelblue` | スチールブルー | `#4682B4` |  | 信頼、規律、強さ、安定。 | 金属と空；堅固さ、決意、明晰さ。 | derivado | derivado |
+| `tan` | タン | `#D2B48C` |  | 土のような温もり、素朴さ、自然さ、心地よさ。 | 大地と太陽；根を張ること、気づかい、日常。 | derivado | derivado |
+| `teal` | ティール | `#008080` |  | 均衡、落ち着き、プロ意識、創造性。 | 水と空；感情と理性の均衡、癒し、平和。 | derivado | derivado |
+| `thistle` | シスル | `#D8BFD8` |  | やわらかさ、郷愁、繊細さ、落ち着き。 | 守りの植物；防御と甘さ。 | derivado | tradición |
+| `tomato` | トマト | `#FF6347` |  | エネルギー、温もり、情熱、食欲、警戒。 | 太陽と生命の果実；活力、愛、寛大さ。 | derivado | derivado |
+| `turquoise` | ターコイズ | `#40E0D0` |  | 落ち着き、明晰さ、爽やかさ、コミュニケーション。 | 守護と癒しの石；旅人のお守りで、悪に対する導き手。 | hay estudios ([jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición ([kunz1913](../referencias.md#kunz1913)) |
+| `violet` | バイオレット | `#EE82EE` |  | 創造性、精神性、神秘、感受性。 | チャクラの伝統では頭頂のチャクラと結びつく：超越的なものとのつながり。 | derivado | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `wheat` | 小麦 | `#F5DEB3` |  | 素朴さ、温もり、静かな豊かさ、心地よさ。 | 収穫とパン；豊穣、豊かさ、感謝。 | derivado | derivado |
+| `white` | 白 | `#FFFFFF` |  | 清らかさ、清潔感、平和、無垢、始まり；他の文化では喪を表す。 | 清らかさ、光、神聖なもの；再生と神的なものとの合一（錬金術のアルベド）。 | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición ([abraham1998](../referencias.md#abraham1998)) |
+| `whitesmoke` | ホワイトスモーク | `#F5F5F5` |  | やわらかな中立、清潔感、落ち着き、素朴さ。 | 微かな煙：触れえないもの、移行、昇りゆく祈り。 | derivado | derivado |
+| `yellow` | 黄 | `#FFFF00` |  | 喜び、楽観、エネルギー、精神の明晰さ、注意；用心も。 | チャクラの伝統では太陽神経叢と結びつく：悟り、意志、知識。 | hay estudios ([adams1973](../referencias.md#adams1973), [berlinkay1969](../referencias.md#berlinkay1969), [jonauskaite2020](../referencias.md#jonauskaite2020)) | tradición moderna ([leland-quest](../referencias.md#leland-quest), [leland2016](../referencias.md#leland2016)) |
+| `yellowgreen` | イエローグリーン | `#9ACD32` |  | 爽やかさ、活力、若さ、落ち着き。 | 春と成長；新しい生命と更新。 | derivado | derivado |
+
+## Matices culturales (Japonés)
+
+Ámbitos asociados a este idioma: Japón. Un idioma no equivale a una cultura, y dentro de cada ámbito hay variación entre regiones, épocas y generaciones. Los matices están en español y la cobertura es parcial.
+
+| Color | Ámbito | Matiz | Solidez | Fuentes |
+|---|---|---|---|---|
+| `pink` | Japón | Color de los cerezos en flor (sakura), ligado a lo efímero de la vida (mono no aware) y a los comienzos: en Japón el año escolar y el fiscal empiezan en abril. | baja | [cambridge-sakura](../referencias.md#cambridge-sakura) |
+| `purple` | Japón | Color de mayor rango en el sistema de gorras y rangos de la corte (603, príncipe Shōtoku); se teñía con la raíz de la planta murasaki. Las fuentes discrepan sobre cuál era la tonalidad más alta. | media | [fun-japan-murasaki](../referencias.md#fun-japan-murasaki), [wiki-shotoku](../referencias.md#wiki-shotoku) |
+| `white` | Japón | No es solo luto: en la boda sintoísta el shiromuku blanco expresa pureza y nuevo comienzo, y se explica que la novia se «tiñe» después con los colores de su nueva familia. El difunto suele vestir un kimono blanco. | media | [wiki-shinto-wedding](../referencias.md#wiki-shinto-wedding), [fun-japan-kimono-blanco](../referencias.md#fun-japan-kimono-blanco) |
 
 ## Léxico básico en Japonés
 

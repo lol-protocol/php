@@ -7,6 +7,9 @@
 - significados-idiomas.csv: los significados de esos 148 colores en los otros 29 idiomas.
 - lexico-basico.csv: términos de color de uso real (blanco, azul claro, granate…) en los 30 idiomas, con
   su forma base, flexiones, sinónimos y variantes.
+- evidencia.csv: en qué se apoya cada significado (hay estudios, tradición, derivado) y con qué fuentes.
+- significados-culturales.csv: matices por ámbito cultural (China, Japón, India…) de algunos colores.
+- referencias.csv: las fuentes citadas por los dos anteriores; se genera referencias.md.
 - nombres-completos.csv: lista completa de nombres con hex. Sus tres primeras columnas son la fuente;
   css_cercano, delta_e y cercania se calculan aquí (color CSS más cercano según CIEDE2000, en colorimetria.py).
 - Por cada idioma se genera por-idioma/<código>.md (nombre, hex y los dos significados en ese idioma)
@@ -30,6 +33,10 @@ ANOTADA = CARPETA / "colores.csv"
 COMPLETA = CARPETA / "nombres-completos.csv"
 SIGNIFICADOS = CARPETA / "significados-idiomas.csv"
 LEXICO = CARPETA / "lexico-basico.csv"
+REFERENCIAS = CARPETA / "referencias.csv"
+EVIDENCIA = CARPETA / "evidencia.csv"
+CULTURALES = CARPETA / "significados-culturales.csv"
+REFS_MD = CARPETA / "referencias.md"
 README = CARPETA / "README.md"
 INDICE = CARPETA / "colores-por-idioma.md"
 DIR_IDIOMAS = CARPETA / "por-idioma"
@@ -56,6 +63,42 @@ COLUMNAS_COMPLETA = COLUMNAS_FUENTE_COMPLETA + ["css_cercano", "delta_e", "cerca
 # Bandas de cercanía por ΔE00 al color CSS más cercano. Son umbrales de este proyecto, no un estándar.
 BANDAS_CERCANIA = [("alta", 3.0), ("media", 8.0)]
 COLUMNAS_SIGNIFICADOS = ["idioma", "nombre_ingles", "significado_psicologico", "significado_mistico"]
+COLUMNAS_REFERENCIAS = ["id", "tipo", "cita", "url", "verificacion"]
+COLUMNAS_EVIDENCIA = ["nombre_ingles", "base_psicologico", "referencias_psicologico", "base_mistico", "referencias_mistico"]
+COLUMNAS_CULTURALES = ["color", "ambito", "matiz", "solidez", "referencias"]
+TIPOS_REFERENCIA = {"articulo": "artículo", "libro": "libro", "web": "página web"}
+# Cuánto se pudo comprobar de cada fuente. Es un dato del proyecto, no una valoración de la fuente.
+VERIFICACION = {
+    "resumen": "la afirmación figura en el resumen (abstract) o en la descripción editorial de la obra",
+    "pagina": "la afirmación figura en esa página web, que puede ser divulgativa o comercial; no se leyó una fuente primaria",
+    "existencia": "se comprobó que la obra existe y de qué trata, pero no se leyó el pasaje concreto",
+}
+BASE_PSICOLOGICO = {"hay_estudios": "hay estudios", "derivado": "derivado"}
+BASE_MISTICO = {"tradicion": "tradición", "tradicion_moderna": "tradición moderna", "derivado": "derivado"}
+# Colores CSS que son (o equivalen a) los 12 términos de color de los estudios transnacionales
+# (Jonauskaite et al., 2020): para ellos existen estudios; para el resto el texto es derivado.
+COLORES_CON_ESTUDIOS = {"black", "white", "gray", "grey", "brown", "red", "orange", "yellow", "green",
+                        "turquoise", "blue", "purple", "pink"}
+SOLIDEZ = ["alta", "media", "baja"]
+# Ámbito cultural: etiqueta y idiomas con los que se muestra. Un idioma no equivale a una cultura:
+# la relación es aproximada y solo decide en qué páginas aparece cada nota.
+AMBITOS = {
+    "occidente": ("Occidente (Europa y Norteamérica)", ["en", "es", "fr", "pt", "it", "de", "nl", "sv", "da", "fi"]),
+    "estados-unidos": ("Estados Unidos", ["en"]),
+    "alemania": ("Alemania", ["de"]),
+    "paises-bajos": ("Países Bajos", ["nl"]),
+    "polonia": ("Polonia", ["pl"]),
+    "rusia": ("Rusia", ["ru"]),
+    "china": ("China", ["zh"]),
+    "japon": ("Japón", ["ja"]),
+    "corea": ("Corea", ["ko"]),
+    "india": ("India", ["hi", "bn"]),
+    "tailandia": ("Tailandia", ["th"]),
+    "budismo-theravada": ("Budismo theravada (Sri Lanka, Camboya, Tailandia)", ["th"]),
+    "mundo-islamico": ("Mundo islámico", ["ar", "fa", "tr", "id"]),
+    "mediterraneo-oriental-y-oriente-medio": ("Mediterráneo oriental y Oriente Medio", ["el", "tr", "ar", "he", "fa"]),
+}
+RE_ID_REFERENCIA = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")
 COLUMNAS_LEXICO = ["concepto", "idioma", "forma", "tipo", "rasgos"]
 # Conceptos del léxico básico: el nombre del color CSS si existe; si no, un nombre de nombres-completos.csv.
 # Los once primeros son los términos básicos de color y deben estar en los 30 idiomas.
@@ -178,6 +221,84 @@ def validar_significados(filas, anotada, errores):
         errores.append("significados-idiomas.csv: las filas deben ir ordenadas por nombre_ingles y, dentro, por el orden de IDIOMAS en generar-tabla.py")
 
 
+def ids_de(campo):
+    return [i for i in campo.split(";") if i]
+
+
+def validar_referencias(filas, errores):
+    ids = []
+    for n, fila in enumerate(filas, start=2):
+        i = fila["id"]
+        if not RE_ID_REFERENCIA.fullmatch(i):
+            errores.append(f"referencias.csv línea {n}: id no válido {i!r}")
+        if i in ids:
+            errores.append(f"referencias.csv línea {n}: id repetido {i!r}")
+        ids.append(i)
+        if fila["tipo"] not in TIPOS_REFERENCIA or fila["verificacion"] not in VERIFICACION:
+            errores.append(f"referencias.csv línea {n}: tipo o verificacion no válidos ({fila['tipo']}, {fila['verificacion']})")
+        if not fila["cita"].strip() or any(c in fila["cita"] for c in "|\n"):
+            errores.append(f"referencias.csv línea {n}: cita vacía o con '|' o saltos de línea")
+        if fila["url"] and not fila["url"].startswith("https://"):
+            errores.append(f"referencias.csv línea {n}: la url debe empezar por https://")
+        if fila["tipo"] == "web" and not fila["url"]:
+            errores.append(f"referencias.csv línea {n}: una página web necesita url")
+    if ids != sorted(ids):
+        errores.append("referencias.csv: las filas deben ir ordenadas por id")
+    return set(ids)
+
+
+def validar_evidencia(filas, anotada, ids, errores, usadas):
+    if [f["nombre_ingles"] for f in filas] != [f["nombre_ingles"] for f in anotada]:
+        errores.append("evidencia.csv: debe tener una fila por color de colores.csv, en el mismo orden")
+        return
+    con_estudios = set()
+    for n, fila in enumerate(filas, start=2):
+        nombre = fila["nombre_ingles"]
+        if fila["base_psicologico"] not in BASE_PSICOLOGICO or fila["base_mistico"] not in BASE_MISTICO:
+            errores.append(f"evidencia.csv línea {n}: base no válida ({fila['base_psicologico']}, {fila['base_mistico']})")
+        if fila["base_psicologico"] == "hay_estudios":
+            con_estudios.add(nombre)
+        for campo in ("referencias_psicologico", "referencias_mistico"):
+            lista = ids_de(fila[campo])
+            if lista != sorted(set(lista)):
+                errores.append(f"evidencia.csv línea {n}: {campo} debe ir ordenado y sin repetidos")
+            for i in lista:
+                usadas.add(i)
+                if i not in ids:
+                    errores.append(f"evidencia.csv línea {n}: referencia desconocida {i!r}")
+        if fila["base_psicologico"] == "hay_estudios" and "jonauskaite2020" not in ids_de(fila["referencias_psicologico"]):
+            errores.append(f"evidencia.csv línea {n}: {nombre} tiene estudios pero no cita jonauskaite2020")
+        if fila["base_psicologico"] == "derivado" and fila["referencias_psicologico"]:
+            errores.append(f"evidencia.csv línea {n}: un significado derivado no lleva referencias psicológicas")
+        if fila["base_mistico"] == "tradicion_moderna" and "leland2016" not in ids_de(fila["referencias_mistico"]):
+            errores.append(f"evidencia.csv línea {n}: {nombre} es tradición moderna pero no cita leland2016")
+        if fila["base_mistico"] == "derivado" and fila["referencias_mistico"]:
+            errores.append(f"evidencia.csv línea {n}: un significado derivado no lleva referencias místicas")
+    if con_estudios != COLORES_CON_ESTUDIOS:
+        errores.append(f"evidencia.csv: los colores con estudios deben ser exactamente {sorted(COLORES_CON_ESTUDIOS)}")
+
+
+def validar_culturales(filas, anotada, ids, errores, usadas):
+    orden = {f["nombre_ingles"]: n for n, f in enumerate(anotada)}
+    claves = []
+    for n, fila in enumerate(filas, start=2):
+        if fila["color"] not in orden or fila["ambito"] not in AMBITOS or fila["solidez"] not in SOLIDEZ:
+            errores.append(f"significados-culturales.csv línea {n}: color, ámbito o solidez no válidos ({fila['color']}, {fila['ambito']}, {fila['solidez']})")
+            continue
+        claves.append((orden[fila["color"]], fila["ambito"]))
+        if not fila["matiz"].strip() or any(c in fila["matiz"] for c in "|\n"):
+            errores.append(f"significados-culturales.csv línea {n}: matiz vacío o con '|' o saltos de línea")
+        lista = ids_de(fila["referencias"])
+        if not lista:
+            errores.append(f"significados-culturales.csv línea {n}: cada matiz necesita al menos una referencia")
+        for i in lista:
+            usadas.add(i)
+            if i not in ids:
+                errores.append(f"significados-culturales.csv línea {n}: referencia desconocida {i!r}")
+    if claves != sorted(claves):
+        errores.append("significados-culturales.csv: las filas deben ir ordenadas por color (orden de colores.csv) y ámbito")
+
+
 def hex_de_concepto(concepto, anotada, completa):
     """Hex de referencia de un concepto: el del color CSS o, si no lo hay, el del nombre de la lista completa."""
     for f in anotada:
@@ -290,17 +411,69 @@ def texto_completa(completa, cercanias):
     return salida.getvalue()
 
 
-def tabla_readme(filas):
+def etiqueta_base(base, referencias, etiquetas, prefijo):
+    """Base de un significado con sus referencias enlazadas a referencias.md."""
+    texto = etiquetas[base]
+    enlaces = ", ".join(f"[{i}]({prefijo}referencias.md#{i})" for i in ids_de(referencias))
+    return f"{texto} ({enlaces})" if enlaces else texto
+
+
+def tabla_readme(filas, evidencia):
     lineas = [
-        "| Inglés | Español | Hex | Significado psicológico | Significado místico |",
-        "|---|---|---|---|---|",
+        "| Inglés | Español | Hex | Significado psicológico | Significado místico | Base psicológica | Base mística |",
+        "|---|---|---|---|---|---|---|",
     ]
     for f in filas:
+        e = evidencia[f["nombre_ingles"]]
         lineas.append(
             f"| `{f['nombre_ingles']}` | {f['nombre_es']} | `{f['hex']}` "
-            f"| {f['significado_psicologico']} | {f['significado_mistico']} |"
+            f"| {f['significado_psicologico']} | {f['significado_mistico']} "
+            f"| {etiqueta_base(e['base_psicologico'], e['referencias_psicologico'], BASE_PSICOLOGICO, '')} "
+            f"| {etiqueta_base(e['base_mistico'], e['referencias_mistico'], BASE_MISTICO, '')} |"
         )
     return "\n".join(lineas)
+
+
+def tabla_culturales(codigo, culturales, prefijo="../"):
+    """Matices culturales de los ámbitos asociados a un idioma (texto en español)."""
+    propios = [f for f in culturales if codigo in AMBITOS[f["ambito"]][1]]
+    if not propios:
+        return "No hay matices culturales registrados para este idioma. La cobertura es parcial: ver el README."
+    ambitos = [AMBITOS[a][0] for a in AMBITOS if codigo in AMBITOS[a][1] and any(f["ambito"] == a for f in propios)]
+    lineas = [
+        f"Ámbitos asociados a este idioma: {', '.join(ambitos)}. Un idioma no equivale a una cultura, y dentro de cada ámbito "
+        "hay variación entre regiones, épocas y generaciones. Los matices están en español y la cobertura es parcial.",
+        "",
+        "| Color | Ámbito | Matiz | Solidez | Fuentes |",
+        "|---|---|---|---|---|",
+    ]
+    for f in propios:
+        enlaces = ", ".join(f"[{i}]({prefijo}referencias.md#{i})" for i in ids_de(f["referencias"]))
+        lineas.append(f"| `{f['color']}` | {AMBITOS[f['ambito']][0]} | {f['matiz']} | {f['solidez']} | {enlaces} |")
+    return "\n".join(lineas)
+
+
+def referencias_md(refs):
+    partes = [
+        "# Referencias",
+        "",
+        "Generado por `generar-tabla.py` a partir de `referencias.csv`. No editar a mano.",
+        "",
+        "Fuentes de `evidencia.csv` y `significados-culturales.csv`. La columna *Verificación* dice cuánto se pudo comprobar de cada una:",
+        "",
+        *[f"- **{nivel}**: {texto}." for nivel, texto in VERIFICACION.items()],
+        "",
+        "Que una obra figure aquí no significa que respalde cada frase de los significados: indica dónde buscar.",
+        "",
+    ]
+    for r in refs:
+        enlace = f" <{r['url']}>" if r["url"] else ""
+        partes += [
+            f"<a id=\"{r['id']}\"></a>",
+            f"**{r['id']}** ({TIPOS_REFERENCIA[r['tipo']]}). {r['cita']}{enlace} Verificación: {r['verificacion']}.",
+            "",
+        ]
+    return "\n".join(partes)
 
 
 def tabla_lexico(codigo, lexico, anotada, completa):
@@ -327,14 +500,15 @@ def tabla_lexico(codigo, lexico, anotada, completa):
     return "\n".join(lineas)
 
 
-def pagina_idioma(codigo, etiqueta, anotada, significados, lexico, completa):
+def pagina_idioma(codigo, etiqueta, anotada, significados, lexico, completa, evidencia, culturales):
     """Página con nombre, hex, alias y los dos significados de los 148 colores en un idioma."""
     es = codigo == "es"
     alias = alias_de(anotada)
     # En inglés la columna de nombre es la forma natural (con espacios); en los demás, la traducción.
     columna_nombre = "Forma natural" if codigo == "en" else "Nombre"
-    cabecera = f"| Inglés | {columna_nombre} | Hex | Alias | Significado psicológico | Significado místico |"
-    separador = "|---|---|---|---|---|---|"
+    cabecera = (f"| Inglés | {columna_nombre} | Hex | Alias | Significado psicológico | Significado místico "
+                "| Base psicológica | Base mística |")
+    separador = "|---|---|---|---|---|---|---|---|"
     partes = [
         f"# Colores con nombre en {etiqueta} (`{codigo}`)",
         "",
@@ -344,6 +518,8 @@ def pagina_idioma(codigo, etiqueta, anotada, significados, lexico, completa):
         "Las traducciones son propuestas y no están revisadas por hablantes nativos."
         if not es else "Los nombres y los significados en español son el original de `colores.csv`.",
         "Alias: otros colores CSS con exactamente el mismo hex (`gray` y `grey`; `aqua` y `cyan`; `fuchsia` y `magenta`).",
+        "Base: en qué se apoya cada significado (ver [referencias](../referencias.md) y el README). «Hay estudios» indica que existen "
+        "estudios sobre ese color, no que el texto resuma sus resultados; «derivado» quiere decir que lo extrapoló el autor.",
         "Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README.md).",
         "",
         cabecera,
@@ -351,6 +527,7 @@ def pagina_idioma(codigo, etiqueta, anotada, significados, lexico, completa):
     ]
     for f in anotada:
         nombre = f["nombre_ingles"]
+        e = evidencia[nombre]
         if es:
             psicologico, mistico = f["significado_psicologico"], f["significado_mistico"]
         else:
@@ -362,9 +539,15 @@ def pagina_idioma(codigo, etiqueta, anotada, significados, lexico, completa):
             ", ".join(f"`{otro}`" for otro, _ in alias[nombre]),
             psicologico,
             mistico,
+            etiqueta_base(e["base_psicologico"], e["referencias_psicologico"], BASE_PSICOLOGICO, "../"),
+            etiqueta_base(e["base_mistico"], e["referencias_mistico"], BASE_MISTICO, "../"),
         ]
         partes.append("| " + " | ".join(celdas) + " |")
     partes += [
+        "",
+        f"## Matices culturales ({etiqueta})",
+        "",
+        tabla_culturales(codigo, culturales),
         "",
         f"## Léxico básico en {etiqueta}",
         "",
@@ -404,11 +587,20 @@ def main():
     completa = leer_completa()
     traducidos = leer(SIGNIFICADOS, COLUMNAS_SIGNIFICADOS)
     lexico = leer(LEXICO, COLUMNAS_LEXICO)
+    referencias = leer(REFERENCIAS, COLUMNAS_REFERENCIAS)
+    evidencia_filas = leer(EVIDENCIA, COLUMNAS_EVIDENCIA)
+    culturales = leer(CULTURALES, COLUMNAS_CULTURALES)
     errores = []
     validar_anotada(anotada, errores)
     validar_completa(completa, errores)
     validar_significados(traducidos, anotada, errores)
     validar_lexico(lexico, anotada, completa, errores)
+    ids = validar_referencias(referencias, errores)
+    usadas = set()
+    validar_evidencia(evidencia_filas, anotada, ids, errores, usadas)
+    validar_culturales(culturales, anotada, ids, errores, usadas)
+    for i in sorted(ids - usadas):
+        errores.append(f"referencias.csv: la referencia {i!r} no la usa ningún otro CSV")
     if errores:
         sobran = f"\n  ... y {len(errores) - 30} errores más" if len(errores) > 30 else ""
         sys.exit("Errores en los CSV:\n  " + "\n  ".join(errores[:30]) + sobran)
@@ -421,17 +613,21 @@ def main():
 
     significados = {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"])
                     for f in traducidos}
+    evidencia = {f["nombre_ingles"]: f for f in evidencia_filas}
     generados = {
-        README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada)}\n{FIN}", texto),
+        README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada, evidencia)}\n{FIN}", texto),
         INDICE: indice_idiomas(anotada),
+        REFS_MD: referencias_md(referencias),
         COMPLETA: texto_completa(completa, calcular_cercanias(completa, anotada)),
     }
     for codigo, etiqueta in IDIOMAS:
-        generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(codigo, etiqueta, anotada, significados, lexico, completa)
+        generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(
+            codigo, etiqueta, anotada, significados, lexico, completa, evidencia, culturales)
     sobrantes = sorted(p for p in DIR_IDIOMAS.glob("*") if p not in generados) if DIR_IDIOMAS.exists() else []
 
     resumen = (f"{len(anotada)} colores anotados en {len(IDIOMAS)} idiomas, "
-               f"{len(traducidos)} significados traducidos, {len(lexico)} formas de léxico básico y {len(completa)} nombres completos")
+               f"{len(traducidos)} significados traducidos, {len(lexico)} formas de léxico básico, "
+               f"{len(culturales)} matices culturales, {len(referencias)} referencias y {len(completa)} nombres completos")
     if "--comprobar" in sys.argv:
         desfasados = [p.relative_to(CARPETA).as_posix() for p, contenido in generados.items()
                       if not p.exists() or p.read_text(encoding="utf-8") != contenido]
