@@ -1,14 +1,15 @@
 # Marcalibros — aplicación web
 
-Aplicación independiente para elegir un marcalibro del catálogo (1000 diseños) o crear uno propio con una imagen. **No tiene cuentas ni inicio de sesión** y no está conectada a Plataforma POS: se puede probar y desplegar sola. La integración queda para después.
+Aplicación independiente para elegir un marcalibro del catálogo (1350 diseños) o crear uno propio con una imagen. **No tiene cuentas ni inicio de sesión** y no está conectada a Plataforma POS: se puede probar y desplegar sola. La integración queda para después.
 
 ## Qué hace
 
 | Pantalla | Dirección | Qué se puede hacer |
 |---|---|---|
-| Catálogo | `/` | Ver muestras de las 20 categorías (10 movimientos literarios y 10 tipos de texto) |
+| Catálogo | `/` | Ver muestras de las 27 categorías (11 movimientos literarios y 16 tipos de texto) |
+| Filtro | `/?motivo=faro&color=ocre` | Buscar por motivo y por color de la paleta, en todo el catálogo o dentro de una categoría |
 | Categoría | `/?categoria=leyes` | Recorrer los 50 marcalibros de una categoría, de a 25 por página |
-| Detalle | `/marcalibro/mb-leyes-07` | Ver uno grande, sus colores, y descargarlo en SVG |
+| Detalle | `/marcalibro/mb-leyes-07` | Ver uno grande, sus colores, y descargarlo en SVG, o en PNG si se generaron (`generator/exportar_png.py`) |
 | Crear | `/crear` | Subir una imagen o elegir un paisaje de la marca, encuadrar en 7:1 y ponerle nombre |
 | Mío | `/mio/mp-…` | Ver y descargar el marcalibro creado (1400×200 y 2800×400), copiar su enlace o borrarlo |
 
@@ -42,6 +43,7 @@ Se hace con variables de entorno. Todas son opcionales.
 | `MARCALIBROS_CREATES_PER_HOUR` | `10` | Intentos de crear por hora y por dirección IP (los fallidos también cuentan) |
 | `MARCALIBROS_MAX_STORED` | `5000` | Tope de marcalibros guardados a la vez; al llegar, no se aceptan más |
 | `MARCALIBROS_TRUST_FORWARDED_FOR` | apagado | Con `1`, la IP de cada persona es la última de `X-Forwarded-For`. Solo detrás de un proxy propio que la ponga |
+| `MARCALIBROS_PUBLIC_URL` | sin valor | Esquema y dominio del sitio (`https://marcalibros.example.com`). Con él, los enlaces compartidos muestran imagen de vista previa (Open Graph). Sin él, solo título y descripción |
 
 ## Cómo se protege sin cuentas
 
@@ -84,6 +86,16 @@ En `php.ini` (o el pool de php-fpm): `upload_max_filesize = 5M` y `post_max_size
 
 Detrás de un proxy, activa `MARCALIBROS_TRUST_FORWARDED_FOR=1` solo si el proxy sobrescribe `X-Forwarded-For`; si no, todos los visitantes parecerán tener la IP del proxy y compartirán el mismo límite.
 
+### PNG del catálogo
+
+Después de cada despliegue que cambie el catálogo, genera los PNG que falten (necesita Python 3 con Pillow y numpy, ver `generator/requirements.txt`):
+
+```bash
+cd /srv/marcalibros && python3 generator/exportar_png.py --faltantes
+```
+
+Sin ellos la aplicación funciona igual: solo no ofrece la descarga en PNG.
+
 ### Limpieza diaria
 
 ```cron
@@ -100,7 +112,7 @@ composer install
 phpstan analyse        # nivel 6
 ```
 
-Las pruebas armen la aplicación con el catálogo real y una carpeta temporal; no necesitan servidor. Incluyen: rutas y cabeceras, las 1000 SVG, subida y recorte (con los valores de zoom y posición aplicados de verdad), rechazos, límite de intentos, tope de almacenamiento, borrado, escape de HTML, y que ninguna plantilla emita estilos o scripts en línea.
+Las pruebas armen la aplicación con el catálogo real y una carpeta temporal; no necesitan servidor. Incluyen: rutas y cabeceras, las 1350 SVG, el filtro por motivo y color, los PNG y las etiquetas para compartir, subida y recorte (con los valores de zoom y posición aplicados de verdad), rechazos, límite de intentos, tope de almacenamiento, borrado, escape de HTML, y que ninguna plantilla emita estilos o scripts en línea.
 
 ## Estructura
 

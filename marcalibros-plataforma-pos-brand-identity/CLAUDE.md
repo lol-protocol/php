@@ -9,15 +9,15 @@ El estado detallado y los pendientes están en `README.md`; la paleta y las medi
 | Carpeta | Qué es |
 |---|---|
 | `generator/` | Python (Pillow y numpy). Genera `catalog/` y `images/`. Determinista: dos ejecuciones dan los mismos archivos |
-| `catalog/` | 1000 marcalibros (20 categorías × 50): SVG, vistas previas JPG 700×100, `manifest.json` |
+| `catalog/` | 1350 marcalibros (27 categorías × 50): SVG, vistas previas JPG 700×100, `manifest.json`. Los PNG van en `catalog/png/`, que git ignora: se generan con `generator/exportar_png.py` |
 | `php/` | Módulo `Marcalibros\`: valida imágenes subidas, recorta a 7:1, lee el catálogo |
 | `app/` | Aplicación web `MarcalibrosApp\`, sin cuentas ni login, que usa el módulo |
 
 ## Decisiones de la persona (no las cambies sin preguntar)
 
-- **Realismo mágico se queda** como movimiento propio. Los 10 movimientos literarios se mantienen.
-- Además de los movimientos hay **10 tipos de texto** (manuales, libros sagrados, leyes, cartas, diarios, ciencia, cocina, filosofía, teatro, viajes). Ya están **confirmados** junto con los movimientos y sus autores; los autores de inspiración son solo de los movimientos.
-- Son **1000 marcalibros** en total.
+- **Realismo mágico se queda** como movimiento propio. El Modernismo se separó en hispanoamericano (conserva el slug `modernismo`) y anglosajón: son 11 movimientos.
+- Además de los movimientos hay **16 tipos de texto** (manuales, libros sagrados, leyes, cartas, diarios, ciencia, cocina, filosofía, teatro, viajes, cuentos y leyendas, poesía, historia, periodismo, diccionarios y enciclopedias, discursos). Están **confirmados** junto con los movimientos y sus autores; los autores de inspiración son solo de los movimientos.
+- Son **1350 marcalibros** en total. Los PNG del catálogo se generan, no se guardan en git.
 - La aplicación es **independiente y sin login**. **No la conectes con Plataforma POS** hasta que lo pida; todavía no se sabe dónde vive esa plataforma ni cómo se identificará a las personas.
 - La aplicación corre en **un solo VPS**: los marcalibros creados se guardan en el disco local, y así se queda.
 - Los libros sagrados no llevan símbolos de una religión concreta.
@@ -26,7 +26,8 @@ El estado detallado y los pendientes están en `README.md`; la paleta y las medi
 ## Comandos
 
 ```bash
-python3 generator/generar_marcalibros.py            # regenera los 1000 (unos 20 s); falla si un SVG pesa 10 KB o más, o si hay duplicados
+python3 generator/generar_marcalibros.py            # regenera los 1350 (unos 30 s); falla si un SVG pesa 10 KB o más, o si hay duplicados
+python3 generator/exportar_png.py --faltantes      # PNG del catálogo en catalog/png/ (ignorada por git)
 cd app && php -S localhost:8080 -t public public/index.php
 cd php && composer install && ./vendor/bin/phpunit  # igual en app/
 ```
