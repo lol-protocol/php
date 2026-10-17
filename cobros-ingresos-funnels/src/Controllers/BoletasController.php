@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\Database;
+use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
 use App\FiltroDePeriodo;
@@ -26,11 +27,13 @@ final class BoletasController
     /**
      * Al editar una boleta, el monto no puede bajar de lo que ya se cobro
      * (dejaria un saldo negativo y la boleta se seguiria mostrando como
-     * "pagada" sin avisar que en realidad se sobrecobro).
+     * "pagada" sin avisar que en realidad se sobrecobro). Ni por un centavo:
+     * se compara en centavos enteros (ver Dinero), sin el margen de un centavo
+     * que antes hacia pasar un monto de 0.01 menos que lo cobrado.
      */
     public static function montoCubreLoYaCobrado(float $monto, array $boleta): bool
     {
-        return $monto >= (float) $boleta['pagado'] - 0.01;
+        return Dinero::centavos($monto) >= Dinero::centavos($boleta['pagado']);
     }
 
     /** Una boleta no puede vencer antes de haber sido emitida. */
