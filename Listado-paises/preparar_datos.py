@@ -4,7 +4,7 @@
 Uso (desde esta carpeta; las rutas apuntan a copias locales de las fuentes, ver README.md):
 
     python3 preparar_datos.py --co2 owid-co2-data.csv --maddison maddison-2020.csv \\
-        --hyde hyde-regiones.csv --natalidad-gapminder natalidad-gapminder.csv \\
+        --hyde hyde-regiones.csv --clio clio-infra.csv --natalidad-gapminder natalidad-gapminder.csv \\
         --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \\
         --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \\
         --pib-bm gdp.csv --poblacion-bm population.csv
@@ -15,11 +15,14 @@ Escribe:
     paises.csv           población 2024, IDH 2023, PIB per cápita nominal 2023 y PPA 2022,
                          alfabetización de adultos y usuarios de internet
 
-Serie larga de cada país (método compuesto):
-    1750-2024    población de OWID (co2-data).
-    año 1-1749   puntos de Maddison 2020 (años 1, 1000, 1500, 1600, 1700...), si los hay.
-    antes        la serie regional de HYDE multiplicada por la cuota del país en su región
-                 en el primer año conocido. Supone que esa cuota fue constante hacia atrás.
+Serie larga de cada país (método compuesto). Cada fuente solo cubre los años anteriores al
+primero de las de arriba:
+    OWID (co2-data)   población anual hasta 2024; empieza en 1850 en la mayoría de los países y
+                      en 1750 en 35.
+    Maddison 2020     puntos desde el año 1 (1, 1000, 1500, 1600, 1700...), si los hay.
+    Clio-Infra        puntos cada 50 años desde 1500, empalmados (ver empalmar).
+    HYDE              la serie regional multiplicada por la cuota del país en su región en el
+                      primer año conocido. Supone que esa cuota fue constante hacia atrás.
 Un país que OWID no tiene (Puerto Rico) usa la población del Banco Mundial desde 1960.
 
 Natalidad (ver natalidad_pais): la tasa bruta de Gapminder (1800-2015) y, hasta ANIO_FIN, la
@@ -50,6 +53,7 @@ ANIO_MINIMO_ALFABETIZACION = 2010  # la UNESCO no publica todos los años, y cas
 ANIO_MINIMO_INTERNET = 2020
 FACTOR_NATALIDAD = 7.0  # tasa bruta por mil ~ 7 x fecundidad total, para países sin tasa
 SUDAMERICA = {"AR", "BO", "BR", "CL", "CO", "EC", "GY", "PY", "PE", "SR", "UY", "VE"}
+EMPALME_MAXIMO = 1.5  # Clio-Infra se descarta si difiere más que esto (o su inversa) en el empalme
 REGION_HYDE = {"África": "Africa", "Asia": "Asia", "Europa": "Europe", "Oceanía": "Oceania"}
 # Nombres que la fuente usa distinto de co2-data.
 ALIAS = {"Czech Republic": "CZE", "Macedonia": "MKD", "Swaziland": "SWZ", "Timor": "TLS",
@@ -136,6 +140,22 @@ def pib_nominal(pib, poblacion):
     return None
 
 
+def empalmar(viejos, conocidos):
+    """Puntos de viejos anteriores al primer año conocido, escalados para coincidir en ese año.
+
+    El factor es población conocida / la de viejos interpolada en ese año. Si no está entre
+    1 / EMPALME_MAXIMO y EMPALME_MAXIMO, las dos fuentes no cuentan lo mismo: devuelve [].
+    """
+    anio0, pob0 = conocidos[0]
+    anteriores = [(a, p) for a, p in viejos if a < anio0]
+    if not anteriores:
+        return []
+    referencia = poblacion_en([a for a, _ in viejos], [p for _, p in viejos], anio0)
+    if referencia <= 0 or not 1 / EMPALME_MAXIMO <= pob0 / referencia <= EMPALME_MAXIMO:
+        return []
+    return [(a, p * pob0 / referencia) for a, p in anteriores]
+
+
 def formato_millones(personas):
     m = personas / 1e6
     return f"{m:.1f}" if m >= 10 else f"{m:.2f}" if m >= 0.1 else f"{m:.3f}"
@@ -143,7 +163,7 @@ def formato_millones(personas):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    for nombre in ("co2", "maddison", "hyde", "natalidad-gapminder", "fecundidad-gapminder", "idh",
+    for nombre in ("co2", "maddison", "hyde", "clio", "natalidad-gapminder", "fecundidad-gapminder", "idh",
                    "alfabetizacion", "internet", "pib-bm", "poblacion-bm"):
         ap.add_argument(f"--{nombre}", required=True)
     args = ap.parse_args()
@@ -152,7 +172,7 @@ def main():
     columnas = list(paises[0].keys())
     owid = {f["codigo"]: f["codigo_owid"] for f in leer(AQUI / "codigos_iso.csv")}
 
-    # co2-data: población 1750-2024 y PIB (Maddison 2023, $ internacionales de 2011).
+    # co2-data: población hasta 2024 y PIB (Maddison 2023, $ internacionales de 2011).
     poblacion, pib = {}, {}
     nombre_a_codigo = dict(ALIAS)
     for f in leer(args.co2):
@@ -170,6 +190,13 @@ def main():
         clave = nombre_a_codigo.get(f["Entity"])
         if clave and f["Population"]:
             maddison.setdefault(clave, {})[int(f["Year"])] = float(f["Population"])
+
+    clio = {}
+    for f in leer(args.clio):
+        clave = nombre_a_codigo.get(f["Entity"])
+        valor = next(v for k, v in f.items() if k.startswith("Population"))
+        if clave and valor:
+            clio.setdefault(clave, []).append((int(f["Year"]), float(valor)))
 
     columna_hyde = "Global Population by Region (HYDE (2016) and UN (2017))"
     hyde = {}
@@ -194,6 +221,7 @@ def main():
                                 if a <= int(ANIO_POBLACION)}
             con_poblacion_bm.append(clave)
 
+    con_clio, clio_descartada = [], []
     filas_larga, filas_natalidad, sin_serie, sin_pob, sin_pib, sin_natalidad = [], [], [], [], [], []
     sin_idh, sin_nominal, nominal_anterior, sin_alfabetizacion, sin_internet = [], [], [], [], []
     for fila in paises:
@@ -202,6 +230,13 @@ def main():
         antiguos = sorted((a, p) for a, p in maddison.get(clave, {}).items()
                           if not modernos or a < modernos[0][0])
         conocidos = antiguos + modernos
+        if conocidos and clave in clio:
+            de_clio = empalmar(sorted(clio[clave]), conocidos)
+            if de_clio:
+                con_clio.append(codigo)
+            elif min(clio[clave])[0] < conocidos[0][0]:
+                clio_descartada.append(codigo)
+            conocidos = de_clio + conocidos
         if conocidos:
             serie = retroproyectar(conocidos, hyde[region_hyde(fila)]) + conocidos
             filas_larga += [(codigo, a, round(p)) for a, p in serie]
@@ -262,7 +297,9 @@ def main():
         w.writeheader()
         w.writerows(paises)
 
-    print(f"poblacion_larga.csv: {len(filas_larga)} filas; sin serie: {', '.join(sin_serie) or 'ninguno'}")
+    print(f"poblacion_larga.csv: {len(filas_larga)} filas; sin serie: {', '.join(sin_serie) or 'ninguno'}; "
+          f"con puntos de Clio-Infra: {len(con_clio)}; Clio-Infra descartada en el empalme: "
+          f"{', '.join(clio_descartada) or 'ninguno'}")
     print(f"natalidad.csv: {len(filas_natalidad)} filas; sin tasa de Gapminder (qué usan): "
           f"{', '.join(sin_natalidad) or 'ninguno'}")
     print(f"paises.csv: población {ANIO_POBLACION} sin dato (se mantiene la anterior): {', '.join(sin_pob) or 'ninguno'}")

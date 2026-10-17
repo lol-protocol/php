@@ -107,6 +107,18 @@ class DatosPreparados(unittest.TestCase):
         self.assertEqual(pd.natalidad_pais({}, {1900: 6.0}), {1900: pd.FACTOR_NATALIDAD * 6.0})
         self.assertEqual(pd.natalidad_pais({}, {}), {})
 
+    def test_empalme_escala_los_puntos_viejos_para_coincidir_en_el_primer_anio_conocido(self):
+        import preparar_datos as pd
+        # La fuente vieja da 100 en 1800 y la conocida 110: sus puntos anteriores se escalan por 1,1.
+        viejos = [(1500, 50.0), (1800, 100.0), (1900, 300.0)]
+        self.assertEqual(pd.empalmar(viejos, [(1800, 110.0)]), [(1500, 55.0)])
+
+    def test_empalme_se_descarta_si_las_fuentes_difieren_demasiado(self):
+        import preparar_datos as pd
+        viejos = [(1500, 50.0), (1800, 100.0)]
+        self.assertEqual(pd.empalmar(viejos, [(1800, 100.0 * pd.EMPALME_MAXIMO * 1.01)]), [])
+        self.assertEqual(pd.empalmar(viejos, [(1500, 50.0)]), [])  # nada anterior al primer año
+
     def test_ultimo_dato_solo_si_es_desde_el_anio_minimo(self):
         import preparar_datos as pd
         self.assertEqual(pd.ultimo_dato({2015: 50.0, 2022: 60.0}, 2010), (2022, 60.0))

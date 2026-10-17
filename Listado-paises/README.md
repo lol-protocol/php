@@ -36,7 +36,7 @@ desde la prehistoria.
 python3 generar_tabla.py              # valida y regenera las dos tablas
 python3 generar_tabla.py --comprobar  # valida y falla si las tablas no están al día (no escribe)
 python3 -m unittest -v pruebas        # pruebas
-python3 preparar_datos.py --co2 ... --maddison ... --hyde ... --natalidad-gapminder ... \
+python3 preparar_datos.py --co2 ... --maddison ... --hyde ... --clio ... --natalidad-gapminder ... \
     --fecundidad-gapminder ... --idh ... --alfabetizacion ... --internet ... \
     --pib-bm ... --poblacion-bm ...   # ver «Fuentes»
 python3 historia_poblacion.py         # recalcula los nacidos en la historia
@@ -201,11 +201,17 @@ Sudamérica, que tuvieron poblaciones muy pequeñas durante casi toda la histori
 - Banda de sensibilidad: `N` se recalcula con `b` × 0,9 y `b` × 1,1, y el resultado queda en
   `poblacion_historica_detalle.csv`.
 
-**Serie larga de cada país** (`preparar_datos.py`, método compuesto, decidido):
+**Serie larga de cada país** (`preparar_datos.py`, método compuesto, decidido). Cada fuente cubre
+solo los años anteriores al primero de las fuentes de arriba:
 
-- **1750 a 2024:** población anual de Our World in Data.
-- **Año 1 a 1700:** los puntos de Maddison 2020 (años 1, 1000, 1500, 1600 y 1700, según el país).
-  165 de los 199 países tienen alguno.
+- **Our World in Data:** población anual hasta 2024. Empieza en 1850 en la mayoría de los países
+  (132) y en 1750 en 35.
+- **Maddison 2020:** sus puntos anteriores (años 1, 1000, 1500, 1600, 1700, 1820…). Aporta en 77
+  países; en 45, alguno anterior a 1750.
+- **Clio-Infra (2016):** puntos cada 50 años desde 1500, en 121 países. Se empalma: se escala para
+  coincidir con la fuente de arriba en su primer año (el factor casi siempre es 1, porque
+  Clio-Infra coincide con Maddison y Our World in Data donde se solapan). Si difieren más de un
+  50 %, se descarta: Bolivia, Chipre, Dominica y Fiyi.
 - **Antes del primer año conocido:** la población de la región del país según HYDE (seis
   regiones), multiplicada por la cuota del país en esa región en su primer año conocido. Supone
   que esa cuota fue constante hacia atrás.
@@ -240,7 +246,10 @@ para comparar países entre sí, no como conteo exacto.**
 
 - La retroproyección con cuota constante es gruesa: un país que antes tuvo más peso en su región
   (por ejemplo, Irak o Egipto frente al resto de Asia y África) queda subestimado, y uno que lo
-  ganó después queda sobreestimado.
+  ganó después queda sobreestimado. Por eso importa que el primer año conocido sea antiguo: con
+  Clio-Infra, la cuota de Argentina o Chile se toma de 1500 y no de 1820, cuando ya reflejaba la
+  conquista y la inmigración, y sus nacidos en la historia bajaron a la mitad (de unos 200 a unos
+  100 millones).
 - La banda de ±10 % solo cubre la natalidad, no las poblaciones de hace miles de años.
 - Antes de 1800 la natalidad varió mucho entre épocas y regiones; el 0,040 constante es una
   simplificación, y es lo que más pesa en el total (ver la comparación con el PRB).
@@ -256,9 +265,10 @@ Gapminder (`open-numbers`) y los de `datasets` (de datahub.io), que copian los i
 Banco Mundial.
 
 - [`owid/co2-data`](https://github.com/owid/co2-data), commit `382ee6c` (2 de junio de 2026),
-  archivo `owid-co2-data.csv`: población por país de 1750 a 2024 y PIB de Maddison 2023.
+  archivo `owid-co2-data.csv`: población por país hasta 2024 y PIB de Maddison 2023.
 - [`owid/owid-datasets`](https://github.com/owid/owid-datasets), commit `6155d4c` (14 de abril de
-  2025): *Maddison Project Database 2020* y *Global Population by Region (HYDE 2016 & UN 2017)*.
+  2025): *Maddison Project Database 2020*, *Global Population by Region (HYDE 2016 & UN 2017)* y
+  *Population (Clio-infra (2016)), with Island of Ireland (Rep. + Northern)*.
 - [`open-numbers/ddf--gapminder--systema_globalis`](https://github.com/open-numbers/ddf--gapminder--systema_globalis),
   commit `ee19060` (7 de mayo de 2026): tasa bruta de natalidad por país de 1800 a 2015
   (`crude_birth_rate_births_per_1000_population`) e IDH del PNUD de 1990 a 2023
@@ -282,6 +292,8 @@ d="owid-datasets"; m="Maddison Project Database 2020 (Bolt and van Zanden (2020)
 h="Global Population by Region with projections - HYDE (2016) & UN (2017)"
 git -C $d show "HEAD:datasets/$m/$m.csv" > maddison-2020.csv
 git -C $d show "HEAD:datasets/$h/$h.csv" > hyde-regiones.csv
+c="Population (Clio-infra (2016)), with Island of Ireland (Rep. + Northern)"
+git -C $d show "HEAD:datasets/$c/$c.csv" > clio-infra.csv
 r=https://raw.githubusercontent.com
 sg=$r/open-numbers/ddf--gapminder--systema_globalis/ee190605fdec9d1c35c38e18e869a400a5818fe6/countries-etc-datapoints
 ft=$r/open-numbers/ddf--gapminder--fasttrack/dee8978535ee563526704d2793497f8537280469/countries_etc_datapoints
@@ -294,7 +306,7 @@ curl -so fecundidad-gapminder.csv $ft/ddf--datapoints--children_per_woman_total_
 curl -sO $r/datasets/gdp/36d761dc5617982d3e50b213e02b9a1b47c4e958/data/gdp.csv
 curl -sO $r/datasets/population/d4b1a4a9a17e2123baf0ef119de05bceced1ab1b/data/population.csv
 python3 preparar_datos.py --co2 co2-data/owid-co2-data.csv --maddison maddison-2020.csv \
-    --hyde hyde-regiones.csv --natalidad-gapminder natalidad-gapminder.csv \
+    --hyde hyde-regiones.csv --clio clio-infra.csv --natalidad-gapminder natalidad-gapminder.csv \
     --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \
     --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \
     --pib-bm gdp.csv --poblacion-bm population.csv
