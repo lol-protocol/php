@@ -5,6 +5,11 @@ namespace PhoneDirectory;
 use PhoneDirectory\Database\EntityPDODatabase;
 use PhoneDirectory\Entity\JuridicalEntity;
 
+/**
+ * @extends EntityPDODatabase<JuridicalEntity>
+ * @phpstan-import-type Row from EntityPDODatabase
+ * @phpstan-import-type SqlParams from EntityPDODatabase
+ */
 class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalEntityDatabaseInterface
 {
     private const TABLE_NAME = 'juridical_entities';
@@ -80,6 +85,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         SQL;
     }
 
+    /** @return SqlParams */
     private function insertParams(JuridicalEntity $entity): array
     {
         return $this->entityParams($entity) + [
@@ -97,6 +103,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         return $this->validateInsertId($this->pdo->lastInsertId());
     }
 
+    /** @param array<JuridicalEntity> $entities */
     public function insertBatch(array $entities): int
     {
         return $this->insertManyWithTransaction(
@@ -113,6 +120,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         return $row ? $this->rowToEntity($row) : null;
     }
 
+    /** @return list<JuridicalEntity> */
     public function findByBusinessName(string $name): array
     {
         $this->ensureConnection();
@@ -124,6 +132,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    /** @return list<JuridicalEntity> */
     public function findByStreet(string $street): array
     {
         $this->ensureConnection();
@@ -141,6 +150,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         return $row ? $this->rowToEntity($row) : null;
     }
 
+    /** @return list<JuridicalEntity> */
     public function findByBusinessType(string $type): array
     {
         $this->ensureConnection();
@@ -148,6 +158,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         return $this->findMany($sql, [':type' => $this->dialect->containsValue($type)], 'business_name');
     }
 
+    /** @return list<JuridicalEntity> */
     public function getAll(): array
     {
         return $this->getAllOrdered('business_name');
@@ -183,6 +194,10 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         return $this->countAll();
     }
 
+    /**
+     * @param array{businessName?: string, street?: string, phone?: string, businessType?: string} $criteria
+     * @return list<JuridicalEntity>
+     */
     public function search(array $criteria): array
     {
         $this->ensureConnection();
@@ -210,6 +225,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         return $this->clearTable();
     }
 
+    /** @param Row $row */
     protected function rowToEntity(array $row): JuridicalEntity
     {
         return new JuridicalEntity(
@@ -226,6 +242,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         );
     }
 
+    /** @return SqlParams */
     private function entityParams(JuridicalEntity $entity): array
     {
         return [
@@ -240,6 +257,7 @@ class JuridicalEntityPDODatabase extends EntityPDODatabase implements JuridicalE
         ] + $this->foldedSearchParams($entity);
     }
 
+    /** @return SqlParams */
     private function foldedSearchParams(JuridicalEntity $entity): array
     {
         return [

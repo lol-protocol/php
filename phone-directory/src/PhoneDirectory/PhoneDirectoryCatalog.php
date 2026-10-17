@@ -2,8 +2,22 @@
 
 namespace PhoneDirectory;
 
+/**
+ * @phpstan-type Directory array{
+ *     title: string,
+ *     year: int,
+ *     country: string,
+ *     zone: string,
+ *     city: string,
+ *     estimatedPages: int,
+ *     estimatedEntries: int,
+ *     archiveUrl: string,
+ *     format: string
+ * }
+ */
 class PhoneDirectoryCatalog
 {
+    /** @var array<string, Directory> */
     private array $directories = [];
 
     public function __construct()
@@ -210,16 +224,19 @@ class PhoneDirectoryCatalog
         ];
     }
 
+    /** @return array<string, Directory> */
     public function getAll(): array
     {
         return $this->directories;
     }
 
+    /** @return Directory|null */
     public function get(string $directoryId): ?array
     {
         return $this->directories[$directoryId] ?? null;
     }
 
+    /** @return array<string, Directory> */
     public function getByCountry(string $countryCode): array
     {
         return array_filter(
@@ -228,6 +245,7 @@ class PhoneDirectoryCatalog
         );
     }
 
+    /** @return array<string, Directory> */
     public function getByYear(int $year): array
     {
         return array_filter(
@@ -236,6 +254,7 @@ class PhoneDirectoryCatalog
         );
     }
 
+    /** @return array<string, Directory> */
     public function getByYearRange(int $startYear, int $endYear): array
     {
         return array_filter(
@@ -244,6 +263,18 @@ class PhoneDirectoryCatalog
         );
     }
 
+    /**
+     * @return array{
+     *     totalDirectories: int,
+     *     totalCountries: int,
+     *     totalYears: int,
+     *     yearsSpan: array{earliest: int, latest: int},
+     *     totalPages: int,
+     *     totalEntries: int,
+     *     averagePagesPerDirectory: int,
+     *     averageEntriesPerDirectory: int
+     * }
+     */
     public function getStatistics(): array
     {
         $totalPages = array_sum(array_column($this->directories, 'estimatedPages'));
@@ -266,6 +297,7 @@ class PhoneDirectoryCatalog
         ];
     }
 
+    /** @return list<string> */
     public function getCountriesList(): array
     {
         $countries = array_unique(array_column($this->directories, 'country'));
@@ -273,6 +305,7 @@ class PhoneDirectoryCatalog
         return $countries;
     }
 
+    /** @return list<int> */
     public function getYearsList(): array
     {
         $years = array_unique(array_column($this->directories, 'year'));

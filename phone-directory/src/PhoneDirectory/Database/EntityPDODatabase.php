@@ -5,6 +5,11 @@ namespace PhoneDirectory\Database;
 use PhoneDirectory\DatabaseConstants;
 use PhoneDirectory\Exception\DatabaseException;
 
+/**
+ * @template TEntity of object
+ * @phpstan-type Row array<string, mixed>
+ * @phpstan-type SqlParams array<string, string|int|null>
+ */
 abstract class EntityPDODatabase extends AbstractPDODatabase
 {
     abstract protected function getTableName(): string;
@@ -12,6 +17,10 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
     /** @deprecated Never called; use ensureConnection(). */
     abstract protected function ensureConnected(): void;
 
+    /**
+     * @param Row $row
+     * @return TEntity
+     */
     abstract protected function rowToEntity(array $row);
 
     protected function ensureConnection(): void
@@ -25,6 +34,8 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
      * Insert entities in a single transaction, preparing the statement once and reusing it for
      * every row instead of re-preparing per row. $typeGuard skips entities of the wrong type so
      * the returned count reflects rows actually inserted, not loop iterations.
+     *
+     * @param array<mixed> $entities
      */
     protected function insertManyWithTransaction(array $entities, string $sql, callable $typeGuard, callable $paramMapperFn): int
     {
@@ -62,6 +73,7 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
         return $updateFn();
     }
 
+    /** @return Row|null */
     protected function findOneById(int $id): ?array
     {
         $this->ensureConnection();
@@ -73,6 +85,7 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
         return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
 
+    /** @return Row|null */
     protected function findOneByPhone(string $phone): ?array
     {
         $this->ensureConnection();
@@ -84,6 +97,10 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
         return $stmt->fetch(\PDO::FETCH_ASSOC) ?: null;
     }
 
+    /**
+     * @param SqlParams $params
+     * @return list<TEntity>
+     */
     protected function findMany(string $condition, array $params, string $orderBy = 'id'): array
     {
         $this->ensureConnection();
@@ -95,6 +112,7 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
         return array_map([$this, 'rowToEntity'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    /** @return list<TEntity> */
     protected function getAllOrdered(string $orderBy = 'id'): array
     {
         $this->ensureConnection();
@@ -135,14 +153,16 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
         return true;
     }
 
+    /** @param string|false $id What PDO::lastInsertId() returned; false, '' and '0' all mean "no id". */
     protected function validateInsertId($id): int
     {
-        if (!$id || $id === '0' || $id === 0) {
+        if (!$id) {
             throw new DatabaseException(DatabaseConstants::ERROR_NO_LAST_INSERT_ID);
         }
         return (int) $id;
     }
 
+    /** @param int $id */
     protected function validateEntityId($id): void
     {
         if ($id === 0) {
@@ -192,6 +212,8 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
      * 'contains' uses the dialect's substring match instead of equality; 'fold' applies accent/case
      * folding to the value before comparing it against a *_folded column.
      *
+     * @param array<string, string> $criteria
+     * @param array<string, array{column: string, contains?: bool, fold?: bool}> $fieldMap
      * @return array{0: string[], 1: array<string, mixed>} [$whereClauses, $params]
      */
     protected function buildSearchWhere(array $criteria, array $fieldMap): array

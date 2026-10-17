@@ -388,6 +388,14 @@ PHONEDIR_MYSQL_USER=usuario PHONEDIR_MYSQL_PASSWORD=contraseña \
 ./vendor/bin/phpunit
 ```
 
+El análisis estático (PHPStan, nivel 6; configuración en `phpstan.neon.dist`) también lo corre la CI, en PHP 8.1 a 8.4:
+
+```bash
+phpstan analyse
+```
+
+PHPStan no es una dependencia del proyecto: se instala aparte (por ejemplo `composer global require phpstan/phpstan:^2.1`) y la CI lo trae con `shivammathur/setup-php`. Revisa `src/`, `bin/` (incluido `bin/phonedir`) y `examples/`, no los tests.
+
 Los ports a Python y Java (`ports/`) tienen sus propios tests; ver `docs/PROJECT_COMPLETION_REPORT.md`.
 
 ## API Completa

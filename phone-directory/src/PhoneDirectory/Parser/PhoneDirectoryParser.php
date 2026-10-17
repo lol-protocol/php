@@ -6,14 +6,22 @@ use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryCatalog;
 use PhoneDirectory\Validation\InputValidator;
 
+/**
+ * @phpstan-type RawEntry array{name: string|null, phone: string|null, street: string|null}
+ * @phpstan-type ParseError array{line: int, reason: string, data: RawEntry}
+ * @phpstan-type Patterns array{line_separator: string, phone_pattern: string, street_marker: string}
+ */
 class PhoneDirectoryParser
 {
     use InputValidator;
 
+    /** @var list<PhoneDirectoryEntry> */
     private array $entries = [];
+    /** @var list<ParseError> */
     private array $parseErrors = [];
     private string $countryCode;
     private ?string $sourceDirectoryId;
+    /** @var Patterns|null */
     private ?array $patterns = null;
 
     public function __construct(string $countryCode = 'US', ?string $sourceDirectoryId = null)
@@ -44,6 +52,7 @@ class PhoneDirectoryParser
         return $this->sourceDirectoryId;
     }
 
+    /** @return Patterns */
     private function getPatterns(): array
     {
         if ($this->patterns !== null) {
@@ -59,6 +68,7 @@ class PhoneDirectoryParser
         return $this->patterns;
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function parseFile(string $filePath): array
     {
         if (!file_exists($filePath)) {
@@ -75,11 +85,16 @@ class PhoneDirectoryParser
         return $this->parseLines(LineReader::read($filePath));
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function parseContent(string $content): array
     {
         return $this->parseLines(explode("\n", $content));
     }
 
+    /**
+     * @param iterable<string> $lines
+     * @return list<PhoneDirectoryEntry>
+     */
     private function parseLines(iterable $lines): array
     {
         $buffer = [];
@@ -128,6 +143,7 @@ class PhoneDirectoryParser
         return $this->entries;
     }
 
+    /** @param list<string> $lines */
     private function processBuffer(array $lines, int $startLine): void
     {
         $data = [
@@ -163,6 +179,7 @@ class PhoneDirectoryParser
         $this->finalizeEntry($data, $startLine);
     }
 
+    /** @param RawEntry $data */
     private function finalizeEntry(array $data, int $startLine): void
     {
         if (!$this->validateEntry($data)) {
@@ -229,16 +246,19 @@ class PhoneDirectoryParser
         return null;
     }
 
+    /** @param RawEntry $data */
     private function validateEntry(array $data): bool
     {
         return !empty($data['name']) && !empty($data['street']);
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function getEntries(): array
     {
         return $this->entries;
     }
 
+    /** @return list<ParseError> */
     public function getErrors(): array
     {
         return $this->parseErrors;
