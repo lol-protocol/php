@@ -55,6 +55,24 @@ final class PersonaRepository extends Repository
         return $fila === null ? null : self::normalizar($fila);
     }
 
+    /**
+     * personas.viva as stored: true = alive, false = dead, null = deduce it from
+     * the dates (see Privacidad). Null as well when there is no such persona.
+     */
+    public function marcaViva(int $id): ?bool
+    {
+        // fetchOne, not fetchValue: PostgreSQL's `false` would come back from fetchValue as "no row".
+        $fila = $this->db->fetchOne('SELECT viva FROM personas WHERE id = ?', [$id]);
+
+        return $fila === null || $fila['viva'] === null ? null : (bool)$fila['viva'];
+    }
+
+    /** Sets personas.viva (null = deduce it again). Returns whether the persona exists. */
+    public function fijarViva(int $id, ?bool $viva): bool
+    {
+        return $this->db->execute('UPDATE personas SET viva = ? WHERE id = ?', [$viva, $id]) > 0;
+    }
+
     /** @return list<array> ancestors with their generation (1 = parents) */
     public function ascendencia(int $id, int $maxGeneraciones = self::MAX_GENERACIONES): array
     {

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Support\AccessPolicy;
 use App\Support\Config;
 use App\Support\Container;
 use App\Support\Database;
@@ -127,6 +128,12 @@ function accionLugar(array $codes, int|string $codigo): string
 function cuenta(int|string|null $codigo = null): string
 {
     return ServiceLocator::getInstance()->getUrlHelper()->cuenta($codigo);
+}
+
+/** Whether this request is the owner's: pages use it to show controls only she can use. */
+function es_propietario(): bool
+{
+    return AccessPolicy::esPropietario();
 }
 
 function esc(mixed $text): string

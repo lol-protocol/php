@@ -843,6 +843,127 @@ class PagesTest extends TestCase
         }
     }
 
+    // --- the owner's page to say who lives -----------------------------------------------------------------
+    // /{persona}/5/ changes personas.viva in the database the whole class shares, so every test that
+    // saves puts the flag back (VIVA_ORIGINAL) before it ends: the crawler and the other pages rely on Carlos
+    // being presumed alive.
+
+    private const PRIVACIDAD_CARLOS = '/6128473108/5/';
+
+    private function marcaVivaDeCarlos(): mixed
+    {
+        $db = new Database('sqlite:' . self::$dir . '/genealogy.sqlite');
+
+        return $db->fetchOne('SELECT viva FROM personas WHERE id = 6128473108')['viva'];
+    }
+
+    private function restaurarMarcaDeCarlos(): void
+    {
+        (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->execute('UPDATE personas SET viva = NULL WHERE id = 6128473108');
+    }
+
+    public function testThePageToMarkWhoLivesIsClosedToVisitors(): void
+    {
+        $this->assertSame(404, $this->get(self::GENEALOGIA, self::PRIVACIDAD_CARLOS)[0], 'no OWNER_TOKEN: closed to everyone');
+
+        [$codigo, $body] = $this->getConTokenConfigurado(self::GENEALOGIA, self::PRIVACIDAD_CARLOS);
+        $this->assertSame(401, $codigo, 'the persona is public, so asking for credentials confirms nothing');
+        $this->assertStringNotContainsString('Carlos', $body);
+
+        $this->assertSame(401, $this->getConTokenConfigurado(self::GENEALOGIA, self::PRIVACIDAD_CARLOS, self::basic('otra-clave-cualquiera-0123'))[0]);
+    }
+
+    public function testAVisitorsPostCannotChangeTheFlag(): void
+    {
+        $codigo = $this->get(self::GENEALOGIA, self::PRIVACIDAD_CARLOS, 'POST', 'viva=no', tokenConfigurado: self::TOKEN)[0];
+
+        $this->assertContains($codigo, [401, 403]);
+        $this->assertNull($this->marcaVivaDeCarlos());
+    }
+
+    public function testTheOwnerSeesTheFormAndTheLinkToIt(): void
+    {
+        [$codigo, $body] = $this->getComoPropietario(self::GENEALOGIA, self::PRIVACIDAD_CARLOS);
+
+        $this->assertSame(200, $codigo);
+        $this->assertStringContainsString('Carlos García Martínez', $body, 'the owner sees the real name');
+        $this->assertStringContainsString('Sin marca: se decide por las fechas', $body);
+        $this->assertStringContainsString('Solo «Persona viva»', $body, 'what a visitor gets');
+        $this->assertMatchesRegularExpression('/name="csrf_token" value="[0-9a-f]{64}"/', $body);
+        foreach (['si', 'no', 'deducir'] as $valor) {
+            $this->assertStringContainsString('name="viva" value="' . $valor . '"', $body);
+        }
+        $this->assertStringContainsString('name="viva" value="deducir" checked', $body);
+
+        $this->assertStringContainsString('/6128473108/5/', $this->getComoPropietario(self::GENEALOGIA, self::CARLOS)[1], 'the persona page links to it');
+        $this->assertStringNotContainsString('/6128473108/5/', $this->get(self::GENEALOGIA, self::CARLOS)[1], 'a visitor is not shown the link');
+    }
+
+    public function testTheOwnerCanMarkAPersonaAsDeceasedAndBackToDeduced(): void
+    {
+        try {
+            $conectar = fn(string $metodo, string $cuerpo, ?string $sid) => $this->get(
+                self::GENEALOGIA, self::PRIVACIDAD_CARLOS, $metodo, $cuerpo, $sid, self::TOKEN, self::basic(self::TOKEN)
+            );
+            [, $pagina, $sid] = $conectar('GET', '', null);
+            preg_match('/name="csrf_token" value="([0-9a-f]+)"/', $pagina, $m);
+            $token = $m[1];
+
+            // Falleció: the visitor now sees the whole ficha.
+            $this->assertSame(303, $conectar('POST', http_build_query(['csrf_token' => $token, 'viva' => 'no']), $sid)[0]);
+            $this->assertEquals(0, $this->marcaVivaDeCarlos());
+            $this->assertNotNull($this->marcaVivaDeCarlos());
+            [$codigo, $visto] = $this->get(self::GENEALOGIA, self::CARLOS);
+            $this->assertSame(200, $codigo);
+            $this->assertStringContainsString('Carlos', $visto);
+            $this->assertStringNotContainsString('podrían estar vivas', $visto);
+            $this->assertStringContainsString('Marcada como fallecida', $conectar('GET', '', $sid)[1]);
+
+            // Vive: hidden again, whatever the dates say.
+            $this->assertSame(303, $conectar('POST', http_build_query(['csrf_token' => $token, 'viva' => 'si']), $sid)[0]);
+            $this->assertEquals(1, $this->marcaVivaDeCarlos());
+            $this->assertStringNotContainsString('Carlos', $this->get(self::GENEALOGIA, self::CARLOS)[1]);
+
+            // Deducir: the flag is cleared.
+            $this->assertSame(303, $conectar('POST', http_build_query(['csrf_token' => $token, 'viva' => 'deducir']), $sid)[0]);
+            $this->assertNull($this->marcaVivaDeCarlos());
+        } finally {
+            $this->restaurarMarcaDeCarlos();
+        }
+    }
+
+    public function testSavingNeedsTheCsrfTokenAndAKnownValue(): void
+    {
+        try {
+            $conectar = fn(string $cuerpo, ?string $sid) => $this->get(
+                self::GENEALOGIA, self::PRIVACIDAD_CARLOS, 'POST', $cuerpo, $sid, self::TOKEN, self::basic(self::TOKEN)
+            );
+            [, $pagina, $sid] = $this->getConSesionDePropietario(self::PRIVACIDAD_CARLOS);
+            preg_match('/name="csrf_token" value="([0-9a-f]+)"/', $pagina, $m);
+
+            $this->assertSame(403, $conectar('viva=no', $sid)[0], 'no token');
+            $this->assertSame(403, $conectar('csrf_token=incorrecto&viva=no', $sid)[0], 'wrong token');
+            $this->assertSame(403, $conectar('csrf_token[]=x&viva=no', $sid)[0], 'token sent as an array');
+            $this->assertSame(400, $conectar(http_build_query(['csrf_token' => $m[1], 'viva' => 'quizas']), $sid)[0], 'unknown value');
+            $this->assertSame(400, $conectar(http_build_query(['csrf_token' => $m[1]]), $sid)[0], 'no value');
+            $this->assertSame(400, $conectar('csrf_token=' . $m[1] . '&viva[]=no', $sid)[0], 'value sent as an array');
+            $this->assertNull($this->marcaVivaDeCarlos(), 'none of them changed anything');
+        } finally {
+            $this->restaurarMarcaDeCarlos();
+        }
+    }
+
+    public function testThePageToMarkWhoLivesAnswers404ForAPersonaThatDoesNotExist(): void
+    {
+        $this->assertSame(404, $this->getComoPropietario(self::GENEALOGIA, '/6128479999/5/')[0]);
+    }
+
+    /** @return array{int, string, string} [status, body, session id] of an owner's GET that starts a session. */
+    private function getConSesionDePropietario(string $uri): array
+    {
+        return $this->get(self::GENEALOGIA, $uri, tokenConfigurado: self::TOKEN, autorizacion: self::basic(self::TOKEN));
+    }
+
     // --- people who are only in private collections ------------------------------------------------------
     // Manuel Ruiz Cano (1870-1944) is dead, and is only in the private collection "Borrador de Luis".
 

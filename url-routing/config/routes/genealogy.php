@@ -26,6 +26,7 @@ return [
                 2 => 'descendencia',
                 3 => 'vinculos',
                 4 => 'cronologia',
+                5 => 'viva',
             ],
         ],
         9 => [

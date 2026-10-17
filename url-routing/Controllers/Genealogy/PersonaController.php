@@ -6,6 +6,7 @@ namespace App\Controllers\Genealogy;
 
 use App\Controllers\BaseController;
 use App\Repositories\Genealogy\PersonaRepository;
+use App\Support\Privacidad;
 
 /**
  * Persona — 10-digit id. A living persona is hidden from anyone but the owner
@@ -15,6 +16,9 @@ use App\Repositories\Genealogy\PersonaRepository;
  */
 class PersonaController extends BaseController
 {
+    /** What the owner's form may send for personas.viva: yes, no, or "deduce it from the dates". */
+    private const MARCAS = ['si' => true, 'no' => false, 'deducir' => null];
+
     private function repo(): PersonaRepository
     {
         return new PersonaRepository($this->db(), $this->privacidad());
@@ -69,5 +73,60 @@ class PersonaController extends BaseController
         $repo = $this->repo();
         return $this->renderFound($params, $repo->find(...), 'genealogy/persona/cronologia', 'persona',
             self::salvoOculta(fn(int $id) => ['eventos' => $repo->cronologia($id)], ['eventos' => []]));
+    }
+
+    /**
+     * The owner's page to say whether a persona is alive (personas.viva): "si" and "no" override
+     * what the dates say, "deducir" goes back to the dates. Anyone else is asked for the
+     * credentials (401), as on a collection's edit page: the persona is public, so asking
+     * confirms nothing. The form posts to this same URL.
+     */
+    public function viva(array $params = []): string
+    {
+        $denegado = $this->exigirPropietario(ocultar: false);
+        if ($denegado !== null) {
+            return $denegado;
+        }
+
+        $id = $this->validateId($params['id'] ?? null);
+        if ($id === null) {
+            return $this->handleBadRequest('Identificador inválido');
+        }
+
+        $repo = $this->repo();
+        $persona = $repo->find((int)$id);
+        if ($persona === null) {
+            return $this->handleNotFound();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            return $this->guardarMarcaViva($repo, (int)$id);
+        }
+
+        return view('genealogy/persona/privacidad', [
+            'persona' => $persona,
+            'marca' => $repo->marcaViva((int)$id),
+            // What a visitor gets for this persona right now, whatever the reason.
+            'comoLaVe' => (new PersonaRepository($this->db(), Privacidad::publica()))->find((int)$id),
+        ]);
+    }
+
+    private function guardarMarcaViva(PersonaRepository $repo, int $id): string
+    {
+        if (!$this->validateCsrfToken()) {
+            return $this->handleForbidden();
+        }
+
+        $valor = $this->postString('viva');
+        if (!array_key_exists($valor, self::MARCAS)) {
+            return $this->handleBadRequest('Valor inválido');
+        }
+
+        $repo->fijarViva($id, self::MARCAS[$valor]);
+        // The id and the new value only: never a name.
+        log_info('personas.viva changed', ['persona_id' => $id, 'viva' => $valor]);
+        $this->flash('Guardado.');
+
+        return $this->redirect(accion('persona', $id, 5));
     }
 }

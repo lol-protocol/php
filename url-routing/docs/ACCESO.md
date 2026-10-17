@@ -13,8 +13,9 @@ La lógica está en [`Support/AccessPolicy.php`](../Support/AccessPolicy.php) y 
 | Página de edición de una colección: `/{id}/2/` | **404** si la colección es privada; **401** si es pública |
 | Área de cuenta, genealogía y POS: `/0/` y sus acciones | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN` |
 | Búsqueda de colecciones (`/?t=7`) | las privadas no aparecen, ni buscándolas por su nombre exacto |
+| Marca de «vive / falleció» de una persona: `/{id de persona}/5/` | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN`. Guardar exige además el token CSRF del formulario |
 
-**Por qué 404 y no 401 o 403.** Los ids son URLs públicas y casi secuenciales: un 401 o un 403 confirmaría cuáles existen. Es lo que la sección «Recursos privados» de `README_URLS.md` ya prometía y el código no cumplía. Lo único que responde 401 es lo que se sabe que existe: el área de cuenta y la edición de una colección pública. El área de cuenta es además el punto de entrada del propietario.
+**Por qué 404 y no 401 o 403.** Los ids son URLs públicas y casi secuenciales: un 401 o un 403 confirmaría cuáles existen. Es lo que la sección «Recursos privados» de `README_URLS.md` ya prometía y el código no cumplía. Lo único que responde 401 es lo que se sabe que existe: el área de cuenta, la edición de una colección pública y la marca de vida de una persona (las personas son públicas, así que pedir la clave no confirma nada). El área de cuenta es además el punto de entrada del propietario.
 
 Las páginas públicas no piden nada: una colección con `publica = true`, las personas, los lugares, los grupos, las organizaciones, los sucesos, los registros y todo el catálogo del POS.
 
@@ -29,7 +30,7 @@ Una persona sin ninguna fecha **no** se presume viva: nada lo dice, y ocultar a 
 
 **Qué sucesos cuentan como suyos.** Un nacimiento o una defunción es de quien figura en él con el rol `principal` (`Privacidad::ROL_PRINCIPAL`). Registrar una defunción (`declarante`), ser madre, padre o padrino en un nacimiento, o ser testigo, es estar presente, no morir ni nacer: quien firmó la defunción de otra persona sigue presumiéndose viva, y en su ficha, en los lugares de nacimiento y en los apellidos solo cuentan su propio nacimiento y su propia defunción. Una defunción registrada con otro rol no da por fallecida a la persona: si nació hace menos de 110 años queda oculta (de más, no de menos); se corrige poniéndole el rol `principal` o `viva = FALSE`. Hay una excepción, a propósito: quien no tiene nacimiento propio se toma por no más joven que su hijo, así que queda oculta mientras el hijo lo esté.
 
-**Corregir la deducción.** La columna `personas.viva` (migración `002_personas_viva.sql`) manda sobre las fechas: `TRUE` = vive, `FALSE` = ya falleció, `NULL` = deducirlo. Sirve para marcar a quien vive pero no tiene fechas, o a quien ya murió sin que conste su defunción. Hoy se cambia por SQL o al importar datos; la aplicación no tiene pantalla para editarla.
+**Corregir la deducción.** La columna `personas.viva` (migración `002_personas_viva.sql`) manda sobre las fechas: `TRUE` = vive, `FALSE` = ya falleció, `NULL` = deducirlo. Sirve para marcar a quien vive pero no tiene fechas, o a quien ya murió sin que conste su defunción. El propietario la cambia en la ficha de la persona, en **Privacidad** (`/{id de persona}/5/`, un enlace que solo ella ve): «Vive», «Falleció» o «Deducirlo de las fechas». Una persona que solo está en colecciones privadas se oculta de todos modos, sea cual sea la marca.
 
 | Dónde aparece | Qué ve un visitante |
 |---|---|
@@ -101,6 +102,7 @@ Esto hace privados los **objetos** que ya se presentaban como privados, oculta a
 - `tests/App/Support/PrivacidadTest.php`: el umbral, que el SQL del propietario sea el de siempre y que un alias inválido se rechace antes de llegar al SQL.
 - `tests/App/Repositories/PrivacidadRepositoriesTest.php` (en SQLite y PostgreSQL, con fecha fija): quién se oculta y quién no, el borde exacto de los 110 años, la marca `viva`, el rol de cada participante (firmar una defunción no es morir), el año que deja un suceso oculto y qué ve un visitante en cada repositorio.
 - `tests/App/Integration/ResponseHeadersTest.php`: contra el servidor integrado de PHP, porque `PagesTest` no ve cabeceras (en la CLI `header()` no hace nada): que lo oculto responda con el mismo estado, cuerpo y cabeceras que lo que no existe, que las páginas del propietario salgan `private, no-store` y que el área de cuenta pida credenciales.
+- `tests/App/Integration/PagesTest.php` también cubre la página de la marca de vida: cerrada a visitantes, formulario y enlace solo para el propietario, y guardar con token CSRF y valores válidos (cada prueba que guarda deja la base como estaba).
 - `tests/App/Repositories/PrivadasRepositoriesTest.php` (en SQLite y PostgreSQL): quién es privado (una colección pública basta, ninguna colección no lo es), qué se oculta de él en cada repositorio y que el propietario lo vea todo.
 - `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos, de Lucía ni de Manuel, que está solo en una colección privada (se comprobó que falla si se apaga el enmascarado).
 
