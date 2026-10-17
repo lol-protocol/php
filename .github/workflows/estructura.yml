@@ -19,7 +19,7 @@ concurrency:
 jobs:
   readme-projects:
     name: README raíz lista todas las carpetas de proyecto
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
