@@ -8,7 +8,7 @@ linea cortada = divorcio, discontinua = adopcion o parentesco parcial, punteada 
 import math
 
 from kit import badge, tile
-from lib import Block, Disc, Icon, RPoly, fmt
+from lib import Block, Disc, Icon, fmt
 
 def arc_pts(cx, cy, r, a0, a1, n=48):
     return [(cx + r * math.cos(math.radians(a0 + (a1 - a0) * i / n)),
@@ -666,8 +666,7 @@ ic.solid(Disc(43, 30, 6), 'violet', d=2.4)
 
 def _turn(stem, back):
     ic = new(stem)
-    a0, a1 = (190, 350) if back else (190, 350)
-    ic.arc(31, 36, 17, a0, a1, tone='amber', ink='amber', w=4.4)
+    ic.arc(31, 36, 17, 190, 350, tone='amber', ink='amber', w=4.4)
     x, y = pt_on(31, 36, 17, 190 if back else 350)
     ic.solid(Disc(x, y, 4.6), 'amber', d=1.8)
 

@@ -5,9 +5,8 @@ Un icono se define una sola vez (solidos con extrusion, enlaces y marcas) y se
 renderiza en tres variantes: color, lineas y gris.
 """
 import math
-from pathlib import Path
 
-VARIANTS = ('color', 'lineas', 'gris')
+from catalogo import VARIANTS
 LIGHT = (0.6, 0.8)  # direccion de la extrusion: abajo a la derecha
 INSET = 0.3  # cuanto se mete el borde trasero de la extrusion bajo la cara frontal (ver exact_sweep)
 
@@ -89,28 +88,11 @@ def circle_path(x, y, r):
     return f'M{fmt(x - r)} {fmt(y)}a{fmt(r)} {fmt(r)} 0 1 0 {fmt(2 * r)} 0a{fmt(r)} {fmt(r)} 0 1 0 {fmt(-2 * r)} 0Z'
 
 
-def ellipse_path(x, y, rx, ry, rot=0):
-    c, s = math.cos(math.radians(rot)), math.sin(math.radians(rot))
-    a = (x - rx * c, y - rx * s)
-    b = (x + rx * c, y + rx * s)
-    return (f'M{pt(a)}A{fmt(rx)} {fmt(ry)} {fmt(rot)} 1 0 {pt(b)}'
-            f'A{fmt(rx)} {fmt(ry)} {fmt(rot)} 1 0 {pt(a)}Z')
-
-
 def arc_path(x, y, r, a0, a1):
     p0 = (x + r * math.cos(math.radians(a0)), y + r * math.sin(math.radians(a0)))
     p1 = (x + r * math.cos(math.radians(a1)), y + r * math.sin(math.radians(a1)))
     large = 1 if (a1 - a0) % 360 > 180 else 0
     return f'M{pt(p0)}A{fmt(r)} {fmt(r)} 0 {large} 1 {pt(p1)}'
-
-
-def star_points(x, y, R, n=5, inner=0.46, rot=-90):
-    out = []
-    for i in range(2 * n):
-        rad = R if i % 2 == 0 else R * inner
-        a = math.radians(rot + i * 180 / n)
-        out.append((x + rad * math.cos(a), y + rad * math.sin(a)))
-    return out
 
 
 # ---------------------------------------------------------------- formas
@@ -215,6 +197,17 @@ def _outline_from(corners, orient):
 
 class Shape:
     convex = True
+    rot = 0
+
+    def light_axis(self):
+        """Eje del degradado de la cara en unidades de su caja: de arriba a la izquierda a abajo a la derecha.
+
+        Una forma girada arrastra su degradado al girar, y un rombo quedaba iluminado de arriba a abajo mientras
+        discos y cuadrados lo estaban en diagonal: el eje se gira de vuelta para que la luz sea la misma."""
+        phi = math.radians(45 - self.rot)
+        c, s = math.cos(phi), math.sin(phi)
+        half = 0.5 / max(abs(c), abs(s))
+        return (0.5 - half * c, 0.5 - half * s, 0.5 + half * c, 0.5 + half * s)
 
     def outline(self):
         """Tramos exactos del contorno (ver exact_sweep), o None si la forma no los da."""
@@ -359,7 +352,7 @@ class RPoly(Shape):
 
     def path(self):
         d = ''
-        for i, (s, e, c, r, sweep) in enumerate(self.corners):
+        for i, (s, e, _, r, sweep) in enumerate(self.corners):
             d += ('M' if i == 0 else 'L') + pt(s)
             if r:
                 d += f'A{fmt(r)} {fmt(r)} 0 0 {sweep} {pt(e)}'
@@ -367,7 +360,7 @@ class RPoly(Shape):
 
     def pts(self, k=6):
         out = []
-        for s, e, c, r, sweep in self.corners:
+        for s, e, c, r, _ in self.corners:
             if not r:
                 out.append(s)
                 continue
@@ -441,17 +434,6 @@ class Icon:
              f'L{fmt(x2 - ux * h - px * h * 0.8)} {fmt(y2 - uy * h - py * h * 0.8)}')
         return self.mark(d, **kw)
 
-    def star(self, x, y, R, n=5, inner=0.46, rot=-90, **kw):
-        return self.mark(poly_path(star_points(x, y, R, n, inner, rot)), filled=True, **kw)
-
-    def spark(self, x, y, R, **kw):
-        k = R * 0.2
-        d = (f'M{fmt(x)} {fmt(y - R)}Q{fmt(x + k)} {fmt(y - k)} {fmt(x + R)} {fmt(y)}'
-             f'Q{fmt(x + k)} {fmt(y + k)} {fmt(x)} {fmt(y + R)}'
-             f'Q{fmt(x - k)} {fmt(y + k)} {fmt(x - R)} {fmt(y)}'
-             f'Q{fmt(x - k)} {fmt(y - k)} {fmt(x)} {fmt(y - R)}Z')
-        return self.mark(d, filled=True, **kw)
-
     # ----- render
     def _bbox(self):
         xs, ys = [], []
@@ -465,11 +447,11 @@ class Icon:
     def render(self, variant):
         assert variant in VARIANTS
         lin = variant == 'lineas'
-        col = (lambda c: gray(c)) if variant == 'gris' else (lambda c: c)
+        col = gray if variant == 'gris' else (lambda c: c)
         grads, out_shadow, out_links, out_solids, out_marks = {}, [], [], [], []
 
         if not lin:
-            x0, y0, x1, y1 = self._bbox()
+            x0, _, x1, y1 = self._bbox()
             cx, cy = (x0 + x1) / 2, min(y1 + 2.4, 59.5)
             rx = max(8.0, min(22.0, (x1 - x0) * 0.46))
             out_shadow.append(f'<ellipse cx="{fmt(cx)}" cy="{fmt(cy)}" rx="{fmt(rx)}" ry="2.6" fill="{col(SHADOW)}" opacity="0.14"/>')
@@ -490,8 +472,9 @@ class Icon:
                 if sweep:
                     dfill = tones(s['depth'])[1] if s['depth'] else dark
                     parts.append(f'<path d="{sweep}" fill="{col(dfill)}"/>')
-                gid = f'grad_{self.stem}_{s["hue"]}'
-                grads[gid] = (col(hi), col(base))
+                turn = f'_r{fmt(s["shape"].rot)}'.replace('-', 'm').replace('.', 'p') if s['shape'].rot else ''
+                gid = f'grad_{self.stem}_{s["hue"]}{turn}'
+                grads[gid] = (col(hi), col(base), s['shape'].light_axis())
                 op = f' opacity="{fmt(s["op"])}"' if s['op'] != 1 else ''
                 parts.append(s['shape'].front(f'fill="url(#{gid})"{op}'))
             out_solids.append('<g>' + ''.join(parts) + '</g>')
@@ -503,8 +486,9 @@ class Icon:
                  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">']
         if grads:
             lines.append('  <defs>')
-            for gid, (c0, c1) in grads.items():
-                lines += [f'    <linearGradient id="{gid}" x1="0" y1="0" x2="1" y2="1">',
+            for gid, (c0, c1, axis) in grads.items():
+                x1, y1, x2, y2 = (fmt(v) for v in axis)
+                lines += [f'    <linearGradient id="{gid}" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}">',
                           f'      <stop offset="0" stop-color="{c0}"/>',
                           f'      <stop offset="1" stop-color="{c1}"/>',
                           '    </linearGradient>']
@@ -566,7 +550,7 @@ class Icon:
         return out
 
     def _render_link(self, ln, variant, col):
-        hi, base, dark = tones(ln['hue'])
+        _, base, dark = tones(ln['hue'])
         lin = variant == 'lineas'
         c = dark if lin else col(base)
         w, p, style = ln['w'], ln['pts'], ln['style']
@@ -631,9 +615,3 @@ class Icon:
             attrs += f' opacity="{fmt(m["op"])}"'
         return f'<path d="{m["d"]}" {attrs}/>'
 
-
-def write(icon, root, folder):
-    for v in VARIANTS:
-        p = Path(root) / v / folder / f'{icon.stem}.svg'
-        p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(icon.render(v), encoding='utf-8')

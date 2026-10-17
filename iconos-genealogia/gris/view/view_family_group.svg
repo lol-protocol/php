@@ -5,7 +5,7 @@
       <stop offset="0" stop-color="#E1E1E1"/>
       <stop offset="1" stop-color="#D3D3D3"/>
     </linearGradient>
-    <linearGradient id="grad_view_family_group_orange" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_view_family_group_orange_r45" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#A5A5A5"/>
       <stop offset="1" stop-color="#7B7B7B"/>
     </linearGradient>
@@ -18,7 +18,7 @@
     <g><path d="M35.6 25.67L36.74 27.19A5.72 5.72 0 0 0 45.9 20.33L44.76 18.81A5.72 5.72 0 0 0 35.6 25.67Z" fill="#7B7B7B"/><circle cx="40" cy="22" r="5.72" fill="url(#grad_view_family_group_mist)"/></g>
     <g><path d="M17.6 41.67L18.74 43.19A5.72 5.72 0 0 0 27.9 36.33L26.76 34.81A5.72 5.72 0 0 0 17.6 41.67Z" fill="#7B7B7B"/><circle cx="22" cy="38" r="5.72" fill="url(#grad_view_family_group_mist)"/></g>
     <g><path d="M46.21 35.18A1.56 1.56 0 0 1 46.52 36.12L46.52 43.4A1.56 1.56 0 0 1 44.96 44.96L37.68 44.96A1.56 1.56 0 0 1 36.43 44.34L35.29 42.82A1.56 1.56 0 0 1 34.98 41.88L34.98 34.6A1.56 1.56 0 0 1 36.54 33.04L43.82 33.04A1.56 1.56 0 0 1 45.07 33.66Z" fill="#7B7B7B"/><rect x="34.8" y="32.8" width="10.4" height="10.4" rx="1.56" fill="url(#grad_view_family_group_mist)"/></g>
-    <g><path d="M36.15 31.02A0.97 0.97 0 0 1 36.06 32.28L32.88 35.46A0.97 0.97 0 0 1 31.52 35.46L28.34 32.28A0.97 0.97 0 0 1 28.25 32.18L27.23 30.82A0.97 0.97 0 0 1 27.32 29.56L30.5 26.38A0.97 0.97 0 0 1 31.86 26.38L35.04 29.56A0.97 0.97 0 0 1 35.13 29.66Z" fill="#474747"/><rect x="27.79" y="26.79" width="6.42" height="6.42" rx="0.97" transform="rotate(45 31 30)" fill="url(#grad_view_family_group_orange)"/></g>
+    <g><path d="M36.15 31.02A0.97 0.97 0 0 1 36.06 32.28L32.88 35.46A0.97 0.97 0 0 1 31.52 35.46L28.34 32.28A0.97 0.97 0 0 1 28.25 32.18L27.23 30.82A0.97 0.97 0 0 1 27.32 29.56L30.5 26.38A0.97 0.97 0 0 1 31.86 26.38L35.04 29.56A0.97 0.97 0 0 1 35.13 29.66Z" fill="#474747"/><rect x="27.79" y="26.79" width="6.42" height="6.42" rx="0.97" transform="rotate(45 31 30)" fill="url(#grad_view_family_group_orange_r45)"/></g>
   </g>
   <g class="marks">
     <path d="M10 30a21 21 0 1 0 42 0a21 21 0 1 0 -42 0Z" fill="none" stroke="#A1A1A1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3.5 3.8"/>

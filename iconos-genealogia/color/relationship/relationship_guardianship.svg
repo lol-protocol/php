@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_relationship_guardianship_orange" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_relationship_guardianship_orange_r45" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#F18D5A"/>
       <stop offset="1" stop-color="#EA580C"/>
     </linearGradient>
-    <linearGradient id="grad_relationship_guardianship_amber" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_relationship_guardianship_amber_r45" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#E5A356"/>
       <stop offset="1" stop-color="#D97706"/>
     </linearGradient>
@@ -17,8 +17,8 @@
     <path d="M31 13.5L31 47.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
-    <g><path d="M40.1 15A1.76 1.76 0 0 1 39.93 17.3L34.16 23.07A1.76 1.76 0 0 1 31.68 23.07L25.91 17.3A1.76 1.76 0 0 1 25.74 17.12L24 14.8A1.76 1.76 0 0 1 24.17 12.5L29.94 6.73A1.76 1.76 0 0 1 32.42 6.73L38.19 12.5A1.76 1.76 0 0 1 38.36 12.68Z" fill="#883307"/><rect x="25.16" y="7.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 31 13.5)" fill="url(#grad_relationship_guardianship_orange)"/></g>
-    <g><path d="M40.1 49A1.76 1.76 0 0 1 39.93 51.3L34.16 57.07A1.76 1.76 0 0 1 31.68 57.07L25.91 51.3A1.76 1.76 0 0 1 25.74 51.12L24 48.8A1.76 1.76 0 0 1 24.17 46.5L29.94 40.73A1.76 1.76 0 0 1 32.42 40.73L38.19 46.5A1.76 1.76 0 0 1 38.36 46.68Z" fill="#7E4503"/><rect x="25.16" y="41.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 31 47.5)" fill="url(#grad_relationship_guardianship_amber)"/></g>
+    <g><path d="M40.1 15A1.76 1.76 0 0 1 39.93 17.3L34.16 23.07A1.76 1.76 0 0 1 31.68 23.07L25.91 17.3A1.76 1.76 0 0 1 25.74 17.12L24 14.8A1.76 1.76 0 0 1 24.17 12.5L29.94 6.73A1.76 1.76 0 0 1 32.42 6.73L38.19 12.5A1.76 1.76 0 0 1 38.36 12.68Z" fill="#883307"/><rect x="25.16" y="7.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 31 13.5)" fill="url(#grad_relationship_guardianship_orange_r45)"/></g>
+    <g><path d="M40.1 49A1.76 1.76 0 0 1 39.93 51.3L34.16 57.07A1.76 1.76 0 0 1 31.68 57.07L25.91 51.3A1.76 1.76 0 0 1 25.74 51.12L24 48.8A1.76 1.76 0 0 1 24.17 46.5L29.94 40.73A1.76 1.76 0 0 1 32.42 40.73L38.19 46.5A1.76 1.76 0 0 1 38.36 46.68Z" fill="#7E4503"/><rect x="25.16" y="41.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 31 47.5)" fill="url(#grad_relationship_guardianship_amber_r45)"/></g>
   </g>
   <g class="marks">
     <path d="M27.6 28.5L31 32.7L34.4 28.5" fill="none" stroke="#EA580C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
