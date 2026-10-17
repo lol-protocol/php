@@ -549,6 +549,245 @@ deu,Personal data; special category data; biometric data,Personenbezogene Daten;
 deu,Personal data; special-nature data,Personenbezogene Daten; Daten besonderer Art
 deu,Personal information,Personenbezogene Informationen
 deu,"Personal information (incl. DNA, fingerprints, blood type); sensitive personal information (health, racial/ethnic origin, religion, sexual orientation, criminal/financial records)","Personenbezogene Informationen (einschließlich DNA, Fingerabdrücke, Blutgruppe); sensible personenbezogene Informationen (Gesundheit, rassische/ethnische Herkunft, Religion, sexuelle Orientierung, Straf-/Finanzregister)"
+deu,"Personal information used for public or peer-reviewed scientific, historical or statistical research in the public interest is not consumer health data; research exemptions in RCW 19.373.100","Personenbezogene Informationen, die für öffentliche oder von Fachkollegen begutachtete wissenschaftliche, historische oder statistische Forschung im öffentlichen Interesse verwendet werden, sind keine Verbrauchergesundheitsdaten; Forschungsausnahmen in RCW 19.373.100"
+deu,Personal information; employee personal information,Personenbezogene Informationen; personenbezogene Informationen von Beschäftigten
+deu,Personal information; sensitive information,Personenbezogene Informationen; sensible Informationen
+deu,Personal information; sensitive information (medical; biometric or otherwise intimate; s.12),Personenbezogene Informationen; sensible Informationen (medizinisch; biometrisch oder anderweitig intim; s.12)
+deu,Personal information; sensitive personal information,Personenbezogene Informationen; sensible personenbezogene Informationen
+deu,"Personal or domestic purposes, journalistic/artistic/literary purposes, public bodies under FOIPPA, business contact information (s.3)","Persönliche oder häusliche Zwecke, journalistische/künstlerische/literarische Zwecke, öffentliche Stellen nach FOIPPA, geschäftliche Kontaktinformationen (s.3)"
+deu,"Personal or domestic use, journalistic/artistic/literary purposes, public bodies under FOIP, health information under the Health Information Act (s.4)","Persönliche oder häusliche Nutzung, journalistische/künstlerische/literarische Zwecke, öffentliche Stellen nach FOIP, Gesundheitsinformationen nach dem Health Information Act (s.4)"
+deu,Personal or family use; official statistics,Persönliche oder familiäre Nutzung; amtliche Statistik
+deu,Personal or household activities; statutory duties,Persönliche oder häusliche Tätigkeiten; gesetzliche Pflichten
+deu,Personal or household use; national security,Persönliche oder häusliche Nutzung; nationale Sicherheit
+deu,Personal or household use; national security & defense; crime prevention; journalistic/literary/artistic activities,Persönliche oder häusliche Nutzung; nationale Sicherheit & Verteidigung; Kriminalprävention; journalistische/literarische/künstlerische Tätigkeiten
+deu,"Personal/domestic use; public security, defence & State security","Persönliche/häusliche Nutzung; öffentliche Sicherheit, Verteidigung & Staatssicherheit"
+deu,"Personal/household activity, de-identified data, national security and public safety, journalistic/artistic/literary purposes (s. 4)","Persönliche/häusliche Tätigkeit, deidentifizierte Daten, nationale Sicherheit und öffentliche Sicherheit, journalistische/künstlerische/literarische Zwecke (s. 4)"
+deu,"Personal/household use; defence, security & criminal investigation","Persönliche/häusliche Nutzung; Verteidigung, Sicherheit & strafrechtliche Ermittlungen"
+deu,"Persons doing business in Alabama or targeting Alabama residents that process personal data of more than 25,000 consumers (excluding payment-only data) or derive more than 25% of gross revenue from selling personal data; businesses under 500 employees and nonprofits under 100 employees exempt unless they sell data","Personen, die in Alabama geschäftlich tätig sind oder sich an Einwohner Alabamas richten und personenbezogene Daten von mehr als 25,000 Verbrauchern verarbeiten (ohne reine Zahlungsdaten) oder mehr als 25% ihres Bruttoumsatzes aus dem Verkauf personenbezogener Daten erzielen; Unternehmen mit weniger als 500 Beschäftigten und gemeinnützige Organisationen mit weniger als 100 Beschäftigten ausgenommen, sofern sie keine Daten verkaufen"
+deu,"Persons doing business in Delaware or targeting Delaware residents that control/process data of 35,000+ consumers, or 10,000+ consumers with over 20% of revenue from sale of personal data","Personen, die in Delaware geschäftlich tätig sind oder sich an Einwohner Delawares richten und Daten von 35,000+ Verbrauchern kontrollieren/verarbeiten, oder von 10,000+ Verbrauchern bei über 20% des Umsatzes aus dem Verkauf personenbezogener Daten"
+deu,"Persons doing business in Indiana or targeting residents that control/process data of 100,000+ consumers, or 25,000+ consumers with over 50% revenue from sale of personal data","Personen, die in Indiana geschäftlich tätig sind oder sich an Einwohner richten und Daten von 100,000+ Verbrauchern kontrollieren/verarbeiten, oder von 25,000+ Verbrauchern bei über 50% Umsatz aus dem Verkauf personenbezogener Daten"
+deu,"Persons doing business in Iowa or targeting residents that control/process data of 100,000+ consumers, or 25,000+ consumers with over 50% revenue from sale of personal data","Personen, die in Iowa geschäftlich tätig sind oder sich an Einwohner richten und Daten von 100,000+ Verbrauchern kontrollieren/verarbeiten, oder von 25,000+ Verbrauchern bei über 50% Umsatz aus dem Verkauf personenbezogener Daten"
+deu,"Persons doing business in KY or targeting KY residents that control/process data of 100,000+ consumers, or 25,000+ consumers and over 50% of revenue from sale of personal data","Personen, die in KY geschäftlich tätig sind oder sich an Einwohner von KY richten und Daten von 100,000+ Verbrauchern kontrollieren/verarbeiten, oder von 25,000+ Verbrauchern und über 50% des Umsatzes aus dem Verkauf personenbezogener Daten"
+deu,"Persons doing business in Louisiana meeting one of: annual gross revenue over $25 million; buying/selling/sharing personal information of 75,000+ consumers, households or devices; or 50%+ of revenue from selling personal information","Personen, die in Louisiana geschäftlich tätig sind und eines der folgenden Kriterien erfüllen: jährlicher Bruttoumsatz über $25 million; Kauf/Verkauf/Weitergabe personenbezogener Informationen von 75,000+ Verbrauchern, Haushalten oder Geräten; oder 50%+ des Umsatzes aus dem Verkauf personenbezogener Informationen"
+deu,"Persons doing business in MD or targeting MD residents that handle data of 35,000+ consumers, or 10,000+ consumers with over 20% of revenue from sale of personal data","Personen, die in MD geschäftlich tätig sind oder sich an Einwohner von MD richten und Daten von 35,000+ Verbrauchern verarbeiten, oder von 10,000+ Verbrauchern bei über 20% des Umsatzes aus dem Verkauf personenbezogener Daten"
+deu,"Persons doing business in Montana or targeting residents that control/process data of 50,000+ consumers (25,000+ from 2025-10-01), or 15,000+ with over 25% revenue from sale of personal data (post-SB 297)","Personen, die in Montana geschäftlich tätig sind oder sich an Einwohner richten und Daten von 50,000+ Verbrauchern (25,000+ ab 2025-10-01) kontrollieren/verarbeiten, oder von 15,000+ bei über 25% Umsatz aus dem Verkauf personenbezogener Daten (nach SB 297)"
+deu,Persons doing business in NE that process personal data and are not small businesses under the federal Small Business Act; small businesses may not sell sensitive data without consent,"Personen, die in NE geschäftlich tätig sind, personenbezogene Daten verarbeiten und keine Kleinunternehmen im Sinne des bundesrechtlichen Small Business Act sind; Kleinunternehmen dürfen sensible Daten nicht ohne Einwilligung verkaufen"
+deu,"Persons doing business in Oregon or serving Oregon residents that control/process data of 100,000+ consumers, or 25,000+ consumers with 25% or more revenue from sale of personal data; nonprofits covered from 2025-07-01","Personen, die in Oregon geschäftlich tätig sind oder Einwohner Oregons bedienen und Daten von 100,000+ Verbrauchern kontrollieren/verarbeiten, oder von 25,000+ Verbrauchern bei 25% oder mehr Umsatz aus dem Verkauf personenbezogener Daten; gemeinnützige Organisationen ab 2025-07-01 erfasst"
+deu,"Persons doing business in RI or targeting RI residents that process data of 35,000+ consumers, or 10,000+ consumers and over 20% of revenue from sale of personal data; commercial websites and ISPs have disclosure duties","Personen, die in RI geschäftlich tätig sind oder sich an Einwohner von RI richten und Daten von 35,000+ Verbrauchern verarbeiten, oder von 10,000+ Verbrauchern und über 20% des Umsatzes aus dem Verkauf personenbezogener Daten; kommerzielle Websites und ISPs haben Offenlegungspflichten"
+deu,"Persons doing business in Tennessee or targeting residents with revenue over $25M that control/process data of 175,000+ consumers, or 25,000+ consumers with over 50% revenue from sale of personal data","Personen, die in Tennessee geschäftlich tätig sind oder sich an Einwohner richten, mit einem Umsatz über $25M, und Daten von 175,000+ Verbrauchern kontrollieren/verarbeiten, oder von 25,000+ Verbrauchern bei über 50% Umsatz aus dem Verkauf personenbezogener Daten"
+deu,Persons doing business in Texas or offering products/services to Texas residents that process or sell personal data and are not small businesses as defined by the U.S. SBA (no consumer-count threshold),"Personen, die in Texas geschäftlich tätig sind oder Einwohnern von Texas Produkte/Dienstleistungen anbieten, personenbezogene Daten verarbeiten oder verkaufen und keine Kleinunternehmen im Sinne der U.S. SBA sind (kein Schwellenwert der Verbraucherzahl)"
+deu,Peruvian Residents,Einwohner Perus
+deu,Polish Residents,Einwohner Polens
+deu,Portuguese Residents,Einwohner Portugals
+deu,"Principles for collection, processing and protection of electronic data; personal data may be accessed, used or disclosed on proper identification (unconfirmed)","Grundsätze für Erhebung, Verarbeitung und Schutz elektronischer Daten; auf personenbezogene Daten darf bei ordnungsgemäßer Identifizierung zugegriffen, sie dürfen genutzt oder offengelegt werden (unbestätigt)"
+deu,"Prior authorisation or declaration to the Authority (arts. 19, 27); transfers abroad only to adequate-protection countries (art. 32); consent rules with no legitimate-interest basis (vendor source) (unconfirmed)","Vorherige Genehmigung oder Anmeldung bei der Behörde (arts. 19, 27); Übermittlungen ins Ausland nur in Länder mit angemessenem Schutzniveau (art. 32); Einwilligungsregeln ohne Rechtsgrundlage des berechtigten Interesses (Anbieterquelle) (unbestätigt)"
+deu,Prior declaration or authorisation for processing (authorisation for sensitive/genetic data and third-country transfers); data subject rights incl. erasure; prohibition in principle of processing data on racial or ethnic origin and political opinions,Vorherige Anmeldung oder Genehmigung der Verarbeitung (Genehmigung für sensible/genetische Daten und Übermittlungen in Drittländer); Rechte der betroffenen Personen einschließlich Löschung; grundsätzliches Verbot der Verarbeitung von Daten zur rassischen oder ethnischen Herkunft und zu politischen Meinungen
+deu,"Prior declaration or authorisation, consent, data subject rights","Vorherige Anmeldung oder Genehmigung, Einwilligung, Rechte der betroffenen Personen"
+deu,"Prior declaration or CNDP authorization, consent, data subject rights, authorization for transfers to non-adequate countries","Vorherige Anmeldung oder Genehmigung der CNDP, Einwilligung, Rechte der betroffenen Personen, Genehmigung für Übermittlungen in Länder ohne angemessenes Schutzniveau"
+deu,"Prior formalities with CIL before processing; regulated cross-border transfers (contract with foreign recipient with data-return clause, encryption); fuller right to information; health data hosted in Burkina Faso unless CIL exempts","Vorherige Formalitäten bei der CIL vor der Verarbeitung; geregelte grenzüberschreitende Übermittlungen (Vertrag mit dem ausländischen Empfänger mit Datenrückgabeklausel, Verschlüsselung); umfassenderes Recht auf Information; Gesundheitsdaten werden in Burkina Faso gehostet, sofern die CIL keine Ausnahme gewährt"
+deu,"Prior informed consent, purpose limitation, data subject rights, database registration","Vorherige informierte Einwilligung, Zweckbindung, Rechte der betroffenen Personen, Registrierung von Datenbanken"
+deu,Private entities (not state/local government or Illinois courts),Private Einrichtungen (nicht staatliche/kommunale Behörden oder Gerichte von Illinois)
+deu,Private organizations,Private Organisationen
+deu,"Private organizations (corporations, partnerships, unincorporated associations, trade unions, trusts, not-for-profits) collecting, using or disclosing personal information in BC; federal PIPEDA prevails for federal works","Private Organisationen (Kapitalgesellschaften, Personengesellschaften, nicht rechtsfähige Vereinigungen, Gewerkschaften, Trusts, gemeinnützige Organisationen), die in BC personenbezogene Informationen erheben, nutzen oder offenlegen; für Bundeseinrichtungen hat das bundesrechtliche PIPEDA Vorrang"
+deu,"Private-sector enterprises carrying on an enterprise in Quebec (the Act's s.1), including those outside Quebec handling Quebec residents' data","Privatwirtschaftliche Unternehmen, die in Québec ein Unternehmen betreiben (s.1 des Gesetzes), einschließlich solcher außerhalb Québecs, die Daten von Einwohnern Québecs verarbeiten"
+deu,"Private-sector organizations in Alberta: corporations, unincorporated associations, trade unions, partnerships, individuals acting in a commercial capacity (s.1)","Privatwirtschaftliche Organisationen in Alberta: Kapitalgesellschaften, nicht rechtsfähige Vereinigungen, Gewerkschaften, Personengesellschaften, natürliche Personen, die gewerblich handeln (s.1)"
+deu,"Processing of personal data in Nigeria or of data subjects in Nigeria, incl. foreign controllers","Verarbeitung personenbezogener Daten in Nigeria oder von betroffenen Personen in Nigeria, einschließlich ausländischer Verantwortlicher"
+deu,"Processing of personal data in Vietnam and of Vietnamese data subjects, incl. foreign entities","Verarbeitung personenbezogener Daten in Vietnam und von vietnamesischen betroffenen Personen, einschließlich ausländischer Einrichtungen"
+deu,Processing outside Panama (e.g. foreign-hosted cloud),Verarbeitung außerhalb Panamas (z. B. im Ausland gehostete Cloud)
+deu,Processing requires prior authorisation of ANSICE,Die Verarbeitung erfordert die vorherige Genehmigung der ANSICE
+deu,Processing requires prior authorisation of the authority (DLA Piper),Die Verarbeitung erfordert die vorherige Genehmigung der Behörde (DLA Piper)
+deu,Processing solely for personal or household purposes; mere transmission of data through Malawi,Verarbeitung ausschließlich zu persönlichen oder häuslichen Zwecken; bloße Durchleitung von Daten durch Malawi
+deu,Public & private & cooperative sector entities,"Einrichtungen des öffentlichen, privaten & genossenschaftlichen Sektors"
+deu,Public & private bodies,Öffentliche & private Stellen
+deu,Public & private controllers and processors,Öffentliche & private Verantwortliche und Auftragsverarbeiter
+deu,Public & private controllers and processors (incl. foreign firms targeting Albania),"Öffentliche & private Verantwortliche und Auftragsverarbeiter (einschließlich ausländischer Unternehmen, die sich an Albanien richten)"
+deu,Public & private controllers and processors (incl. foreign firms targeting residents),"Öffentliche & private Verantwortliche und Auftragsverarbeiter (einschließlich ausländischer Unternehmen, die sich an Einwohner richten)"
+deu,Public & private controllers and processors (incl. foreign firms targeting Serbia),"Öffentliche & private Verantwortliche und Auftragsverarbeiter (einschließlich ausländischer Unternehmen, die sich an Serbien richten)"
+deu,Public & private controllers and processors established in North Macedonia,Öffentliche & private Verantwortliche und Auftragsverarbeiter mit Sitz in Nordmazedonien
+deu,Public & private data controllers,Öffentliche & private Verantwortliche
+deu,Public & private data controllers and processors,Öffentliche & private Verantwortliche und Auftragsverarbeiter
+deu,Public & private database controllers,Öffentliche & private Verantwortliche von Datenbanken
+deu,Public & private entities holding personal data files,"Öffentliche & private Einrichtungen, die Dateien mit personenbezogenen Daten führen"
+deu,Public & private entities processing personal data,"Öffentliche & private Einrichtungen, die personenbezogene Daten verarbeiten"
+deu,Public & private organizations,Öffentliche & private Organisationen
+deu,Public & private organizations (incl. foreign firms targeting Paraguay),"Öffentliche & private Organisationen (einschließlich ausländischer Unternehmen, die sich an Paraguay richten)"
+deu,Public & private organizations (QFC has separate rules),Öffentliche & private Organisationen (für das QFC gelten gesonderte Regeln)
+deu,Public & private owners and operators of personal databases,Öffentliche & private Eigentümer und Betreiber personenbezogener Datenbanken
+deu,Public & private sector,Öffentlicher & privater Sektor
+deu,"Public and private bodies and natural persons, for automated and non-automated processing, including controllers using processing means located in Burundi","Öffentliche und private Stellen sowie natürliche Personen, für automatisierte und nicht automatisierte Verarbeitung, einschließlich Verantwortlicher, die in Burundi befindliche Verarbeitungsmittel nutzen"
+deu,Public and private bodies and natural/legal persons that process personal data,"Öffentliche und private Stellen sowie natürliche/juristische Personen, die personenbezogene Daten verarbeiten"
+deu,Public and private bodies processing personal data by automated or non-automated means,"Öffentliche und private Stellen, die personenbezogene Daten automatisiert oder nicht automatisiert verarbeiten"
+deu,Public and private controllers (unconfirmed),Öffentliche und private Verantwortliche (unbestätigt)
+deu,Public and private controllers and processors (unconfirmed),Öffentliche und private Verantwortliche und Auftragsverarbeiter (unbestätigt)
+deu,"Public and private operators in Algeria, including foreign operators using automated means located in Algeria","Öffentliche und private Betreiber in Algerien, einschließlich ausländischer Betreiber, die in Algerien befindliche automatisierte Mittel nutzen"
+deu,Public bodies and private organisations,Öffentliche Stellen und private Organisationen
+deu,Public functions,Öffentliche Aufgaben
+deu,Public institutions,Öffentliche Einrichtungen
+deu,Public interest exceptions,Ausnahmen im öffentlichen Interesse
+deu,Public safety exceptions,Ausnahmen für die öffentliche Sicherheit
+deu,"Public security, defence, criminal investigations and sanctions enforcement (unconfirmed)","Öffentliche Sicherheit, Verteidigung, strafrechtliche Ermittlungen und Sanktionsvollstreckung (unbestätigt)"
+deu,"Purely personal or domestic activity, unless data are systematically shared with third parties for dissemination (unconfirmed)","Rein persönliche oder häusliche Tätigkeit, sofern die Daten nicht systematisch zur Verbreitung an Dritte weitergegeben werden (unbestätigt)"
+deu,Purely personal or household activity; anonymous data,Rein persönliche oder häusliche Tätigkeit; anonyme Daten
+deu,Purely personal or household use,Rein persönliche oder häusliche Nutzung
+deu,Purpose limitation & consent,Zweckbindung & Einwilligung
+deu,"Purpose limitation, notice & consent, data subject rights, security measures","Zweckbindung, Hinweis & Einwilligung, Rechte der betroffenen Personen, Sicherheitsmaßnahmen"
+deu,Reasonable period,Angemessener Zeitraum
+deu,"Registration of controllers and processors, licensing of data auditors, data subject rights","Registrierung von Verantwortlichen und Auftragsverarbeitern, Lizenzierung von Datenprüfern, Rechte der betroffenen Personen"
+deu,"Registration with the PDPC, consent, data subject rights","Registrierung bei der PDPC, Einwilligung, Rechte der betroffenen Personen"
+deu,"Registration with the PDPO, consent, data subject rights","Registrierung beim PDPO, Einwilligung, Rechte der betroffenen Personen"
+deu,Regulated entities doing business in WA or targeting WA consumers; small businesses from 2024-06-30,"Regulierte Einrichtungen, die in WA geschäftlich tätig sind oder sich an Verbraucher in WA richten; Kleinunternehmen ab 2024-06-30"
+deu,"Repeat offences within 5 years: up to CFA 100 million or 5% of pre-tax sales, capped at CFA 100 million (secondary source, no article) (unconfirmed)","Wiederholungstaten innerhalb von 5 Jahren: bis zu CFA 100 Millionen oder 5% des Umsatzes vor Steuern, begrenzt auf CFA 100 Millionen (Sekundärquelle, kein Artikel) (unbestätigt)"
+deu,"Reported administrative fines up to 4% of global turnover for serious violations; criminal penalties up to 10 years for selling personal data (sources conflict, unverified) (unconfirmed)","Berichtete Verwaltungsgeldbußen bis zu 4% des weltweiten Umsatzes bei schweren Verstößen; strafrechtliche Sanktionen bis zu 10 Jahren für den Verkauf personenbezogener Daten (Quellen widersprechen sich, nicht überprüft) (unbestätigt)"
+deu,"Reported fines of CFA 1 million to 100 million (rising for repeat violations), suspension of processing and criminal penalties; secondary sources (unconfirmed)","Berichtete Geldbußen von CFA 1 Million bis 100 Millionen (steigend bei Wiederholungsverstößen), Aussetzung der Verarbeitung und strafrechtliche Sanktionen; Sekundärquellen (unbestätigt)"
+deu,"Reported fines up to MWK 5,000,000 and/or 12 months imprisonment (unverified vendor source) (unconfirmed)","Berichtete Geldbußen bis zu MWK 5,000,000 und/oder 12 Monate Freiheitsstrafe (nicht überprüfte Anbieterquelle) (unbestätigt)"
+deu,Research data reportedly exempt (low-reliability summary; check KRS 367.3611 et seq.),Forschungsdaten angeblich ausgenommen (wenig verlässliche Zusammenfassung; KRS 367.3611 et seq. prüfen)
+deu,Residents & Businesses,Einwohner & Unternehmen
+deu,Residents of Colorado (consumers acting in individual or household context),"Einwohner Colorados (Verbraucher, die in individuellem oder häuslichem Kontext handeln)"
+deu,Residents of Connecticut acting in individual or household context,"Einwohner Connecticuts, die in individuellem oder häuslichem Kontext handeln"
+deu,Residents of Indiana acting in individual or household context,"Einwohner Indianas, die in individuellem oder häuslichem Kontext handeln"
+deu,Residents of Iowa acting in individual or household context,"Einwohner Iowas, die in individuellem oder häuslichem Kontext handeln"
+deu,Residents of Montana acting in individual or household context,"Einwohner Montanas, die in individuellem oder häuslichem Kontext handeln"
+deu,Residents of Oregon acting in individual or household context,"Einwohner Oregons, die in individuellem oder häuslichem Kontext handeln"
+deu,Residents of Tennessee acting in individual or household context,"Einwohner Tennessees, die in individuellem oder häuslichem Kontext handeln"
+deu,Residents of Texas acting in individual or household context,"Einwohner von Texas, die in individuellem oder häuslichem Kontext handeln"
+deu,Residents of the state (consumers acting in an individual or household context),"Einwohner des Bundesstaates (Verbraucher, die in individuellem oder häuslichem Kontext handeln)"
+deu,Residents of Utah acting in an individual or household context,"Einwohner Utahs, die in individuellem oder häuslichem Kontext handeln"
+deu,Residents of Virginia acting in an individual or household context (not commercial or employment context),"Einwohner Virginias, die in individuellem oder häuslichem Kontext handeln (nicht im gewerblichen oder beruflichen Kontext)"
+deu,Retain for at least one year after use for decisions about the individual; destroy or anonymize when no longer needed for legal or business purposes (s.35),"Mindestens ein Jahr nach der Verwendung für Entscheidungen über die Person aufbewahren; vernichten oder anonymisieren, wenn für rechtliche oder geschäftliche Zwecke nicht mehr benötigt (s.35)"
+deu,Retain only as long as reasonable for legal or business purposes (s.35),"Nur so lange aufbewahren, wie es für rechtliche oder geschäftliche Zwecke angemessen ist (s.35)"
+deu,Retention tied to purpose; data may not be transferred 7 years after legal retention obligation ends unless subject requests (article not confirmed),"Aufbewahrung an den Zweck gebunden; Daten dürfen 7 Jahre nach Ende der gesetzlichen Aufbewahrungspflicht nicht übermittelt werden, sofern die betroffene Person dies nicht verlangt (Artikel nicht bestätigt)"
+deu,Romanian Residents,Einwohner Rumäniens
+deu,Russian Residents,Einwohner Russlands
+deu,s.12 principles: stored in a form permitting identification no longer than necessary for the purposes of processing,"s.12 Grundsätze: in einer Form gespeichert, die die Identifizierung nicht länger ermöglicht, als für die Zwecke der Verarbeitung erforderlich"
+deu,"s.18: not retained longer than necessary for purpose unless required/authorised by law, lawful purpose, contract or data subject consent","s.18: nicht länger als für den Zweck erforderlich aufbewahrt, es sei denn, dies ist gesetzlich vorgeschrieben/erlaubt oder durch einen rechtmäßigen Zweck, einen Vertrag oder die Einwilligung der betroffenen Person gedeckt"
+deu,"s.23 storage limitation: identifiable no longer than necessary for purpose; longer for public-interest archiving, research or statistics with safeguards","s.23 Speicherbegrenzung: nicht länger identifizierbar als für den Zweck erforderlich; länger für Archivzwecke im öffentlichen Interesse, Forschung oder Statistik mit Garantien"
+deu,"s.24: not retained longer than necessary for purpose unless required by law, lawful function, contract or consent; research/statistics exceptions","s.24: nicht länger als für den Zweck erforderlich aufbewahrt, es sei denn, dies ist gesetzlich vorgeschrieben oder durch eine rechtmäßige Aufgabe, einen Vertrag oder eine Einwilligung gedeckt; Ausnahmen für Forschung/Statistik"
+deu,s.5 principles: data kept in identifiable form only for as long as necessary for the purpose of processing,"s.5 Grundsätze: Daten werden nur so lange in identifizierbarer Form aufbewahrt, wie für den Zweck der Verarbeitung erforderlich"
+deu,s.7 (Quality of data): kept in identifiable form no longer than necessary for purposes of collection or further processing,"s.7 (Datenqualität): nicht länger in identifizierbarer Form aufbewahrt, als für die Zwecke der Erhebung oder Weiterverarbeitung erforderlich"
+deu,s.9 limit on retention period: identifiable data kept only as long as necessary for purposes; archiving/research exceptions (Part I not yet in force),"s.9 Begrenzung der Aufbewahrungsdauer: identifizierbare Daten werden nur so lange aufbewahrt, wie für die Zwecke erforderlich; Ausnahmen für Archivierung/Forschung (Part I noch nicht in Kraft)"
+deu,Saudi Residents,Einwohner Saudi-Arabiens
+deu,Section 24 processing principles; lawful basis/consent; breach notice to NDPC within 72 hours; registration of major-importance controllers,Verarbeitungsgrundsätze nach Section 24; Rechtsgrundlage/Einwilligung; Meldung von Datenschutzverletzungen an die NDPC innerhalb von 72 Stunden; Registrierung von Verantwortlichen von erheblicher Bedeutung
+deu,Sensitive data,Sensible Daten
+deu,Sensitive data only when processed to uniquely identify an individual; consent required,Sensible Daten nur bei Verarbeitung zur eindeutigen Identifizierung einer Person; Einwilligung erforderlich
+deu,Sensitive data requiring opt-in consent only when processed for identification,"Sensible Daten, die nur bei Verarbeitung zur Identifizierung eine Opt-in-Einwilligung erfordern"
+deu,Sensitive data when processed to uniquely identify an individual (consent required); separate Genetic Information Privacy Act at Minn. Stat. 325F.995,Sensible Daten bei Verarbeitung zur eindeutigen Identifizierung einer Person (Einwilligung erforderlich); gesonderter Genetic Information Privacy Act in Minn. Stat. 325F.995
+deu,Sensitive information may be processed without consent for research or statistical analysis (section not found); archival/historical disclosure provision in revised text s. 44 (unconfirmed),Sensible Informationen dürfen ohne Einwilligung für Forschung oder statistische Analysen verarbeitet werden (Abschnitt nicht gefunden); Bestimmung zur Offenlegung zu Archiv-/historischen Zwecken in der überarbeiteten Fassung s. 44 (unbestätigt)
+deu,Sensitive personal data,Sensible personenbezogene Daten
+deu,Sensitive personal information,Sensible personenbezogene Informationen
+deu,"Since 2026-07-01: persons doing business in Connecticut or targeting residents that process data of 35,000+ consumers, or any amount if they process sensitive data or sell personal data","Seit 2026-07-01: Personen, die in Connecticut geschäftlich tätig sind oder sich an Einwohner richten und Daten von 35,000+ Verbrauchern verarbeiten, oder in beliebigem Umfang, wenn sie sensible Daten verarbeiten oder personenbezogene Daten verkaufen"
+deu,Singapore Residents,Einwohner Singapurs
+deu,Some processing exempt from declaration (articles not found) (unconfirmed),Einige Verarbeitungen sind von der Anmeldung ausgenommen (Artikel nicht gefunden) (unbestätigt)
+deu,Sources conflict: fines up to XAF 1 billion (Afriwise) or XAF 100 million and up to 10 years imprisonment (ConsentStack) (unconfirmed),Quellen widersprechen sich: Geldbußen bis zu XAF 1 billion (Afriwise) oder XAF 100 million und bis zu 10 Jahre Freiheitsstrafe (ConsentStack) (unbestätigt)
+deu,South Africa Residents,Einwohner Südafrikas
+deu,South Korea Residents,Einwohner Südkoreas
+deu,Spanish Residents,Einwohner Spaniens
+deu,Special category under GDPR art. 9; explicit consent or another art. 9(2) ground required,Besondere Kategorie nach GDPR art. 9; ausdrückliche Einwilligung oder ein anderer Grund nach art. 9(2) erforderlich
+deu,"State agencies and political subdivisions, GLBA financial institutions and data, HIPAA covered entities and business associates, nonprofits, higher education institutions, public utilities; certain research data","Staatliche Behörden und Gebietskörperschaften, GLBA-Finanzinstitute und -Daten, HIPAA-erfasste Einrichtungen und Geschäftspartner, gemeinnützige Organisationen, Hochschuleinrichtungen, öffentliche Versorgungsunternehmen; bestimmte Forschungsdaten"
+deu,"State agencies and political subdivisions, GLBA financial institutions, HIPAA entities, nonprofits, higher education, electric utilities, employment and B2B data, SBA small businesses (except sale of sensitive data needs consent)","Staatliche Behörden und Gebietskörperschaften, GLBA-Finanzinstitute, HIPAA-Einrichtungen, gemeinnützige Organisationen, Hochschulbildung, Stromversorger, Beschäftigten- und B2B-Daten, Kleinunternehmen nach SBA (außer: Verkauf sensibler Daten erfordert Einwilligung)"
+deu,"State agencies and political subdivisions, HIPAA entities, GLBA financial institutions, nonprofits, higher education","Staatliche Behörden und Gebietskörperschaften, HIPAA-Einrichtungen, GLBA-Finanzinstitute, gemeinnützige Organisationen, Hochschulbildung"
+deu,"State agencies and political subdivisions, nonprofits, institutions of higher education, HIPAA covered entities and data, GLBA financial institutions/data; employment and commercial contexts","Staatliche Behörden und Gebietskörperschaften, gemeinnützige Organisationen, Hochschuleinrichtungen, HIPAA-erfasste Einrichtungen und Daten, GLBA-Finanzinstitute/-Daten; Beschäftigungs- und gewerblicher Kontext"
+deu,"State bodies, companies & sole proprietors in Belarus, foreign organizations processing data there","Staatliche Stellen, Unternehmen & Einzelunternehmer in Belarus, ausländische Organisationen, die dort Daten verarbeiten"
+deu,"State, local authorities, public bodies, and private natural and legal persons processing data wholly or partly in Mali","Staat, Gebietskörperschaften, öffentliche Stellen sowie private natürliche und juristische Personen, die Daten ganz oder teilweise in Mali verarbeiten"
+deu,Storage limitation principle (no article found) (unconfirmed),Grundsatz der Speicherbegrenzung (kein Artikel gefunden) (unbestätigt)
+deu,Storage limitation principle (s.24); no fixed period found,Grundsatz der Speicherbegrenzung (s.24); keine feste Frist gefunden
+deu,Storage limitation principle (section not confirmed) (unconfirmed),Grundsatz der Speicherbegrenzung (Abschnitt nicht bestätigt) (unbestätigt)
+deu,"Supplements GDPR, Commissioner's powers, administrative fines and appeals","Ergänzt die GDPR, Befugnisse des Commissioner, Verwaltungsgeldbußen und Rechtsbehelfe"
+deu,"Supplements GDPR, lawful basis and data subject rights, Commissioner's powers","Ergänzt die GDPR, Rechtsgrundlage und Rechte der betroffenen Personen, Befugnisse des Commissioner"
+deu,"Supplements GDPR, national derogations, Law Enforcement Directive rules, supervisory powers","Ergänzt die GDPR, nationale Ausnahmen, Regeln der Richtlinie zum Datenschutz bei der Strafverfolgung, Aufsichtsbefugnisse"
+deu,"Supplements GDPR, supervisory authority duties, liability of responsible officials","Ergänzt die GDPR, Pflichten der Aufsichtsbehörde, Haftung verantwortlicher Amtsträger"
+deu,"Supplements GDPR, supervisory authority rules, video surveillance and biometric data rules","Ergänzt die GDPR, Regeln für die Aufsichtsbehörde, Regeln zu Videoüberwachung und biometrischen Daten"
+deu,"Supplements GDPR, video surveillance rules, consent age 15","Ergänzt die GDPR, Regeln zur Videoüberwachung, Einwilligungsalter 15"
+deu,Swedish Residents,Einwohner Schwedens
+deu,Swiss Residents,Einwohner der Schweiz
+deu,"Texas-style model: consumer rights (access, correct, delete, port, opt out); consent for sensitive data; data minimization, security and risk assessments","Modell nach dem Vorbild von Texas: Verbraucherrechte (Auskunft, Berichtigung, Löschung, Übertragbarkeit, Widerspruch); Einwilligung für sensible Daten; Datenminimierung, Sicherheit und Risikobewertungen"
+deu,Thai Residents,Einwohner Thailands
+deu,Turkish Residents,Einwohner der Türkei
+deu,UAE Residents,Einwohner der VAE
+deu,UK Residents,Einwohner des Vereinigten Königreichs
+deu,UNKNOWN (public security and defence processing has special rules; art. 14 exceptions not verified) (unconfirmed),UNBEKANNT (für die Verarbeitung zu Zwecken der öffentlichen Sicherheit und Verteidigung gelten Sonderregeln; Ausnahmen nach art. 14 nicht überprüft) (unbestätigt)
+deu,UNKNOWN; unverified claim of 10% turnover penalties from 2021 amendments (unconfirmed),UNBEKANNT; nicht überprüfte Behauptung von Strafen in Höhe von 10% des Umsatzes aus den Änderungen von 2021 (unbestätigt)
+deu,"Unlawful collection or retention of sensitive data without explicit consent: 1 to 5 years prison and fine of CFA 1 to 10 million, same for retention beyond legal periods and fraudulent CCTV (per IPDCP); a secondary tracker gives CFA 1 to 25 million (unconfirmed)","Unrechtmäßige Erhebung oder Aufbewahrung sensibler Daten ohne ausdrückliche Einwilligung: 1 bis 5 Jahre Freiheitsstrafe und Geldstrafe von CFA 1 bis 10 Millionen, ebenso bei Aufbewahrung über die gesetzlichen Fristen hinaus und betrügerischer Videoüberwachung (laut IPDCP); ein sekundärer Tracker nennt CFA 1 bis 25 Millionen (unbestätigt)"
+deu,"Up to $10,000 per violation under the Consumer Protection Act; discretionary 60-day cure period 2028-01-01 to 2029-06-30","Bis zu $10,000 pro Verstoß nach dem Consumer Protection Act; fakultative 60-tägige Abhilfefrist vom 2028-01-01 bis 2029-06-30"
+deu,"Up to $100,000 CAD","Bis zu $100,000 CAD"
+deu,"Up to $43,280 per violation","Bis zu $43,280 pro Verstoß"
+deu,"Up to $7,500 per violation after 30-day cure period; AG exclusive enforcement, no private right of action","Bis zu $7,500 pro Verstoß nach 30-tägiger Abhilfefrist; ausschließliche Durchsetzung durch die AG, kein privates Klagerecht"
+deu,"Up to $7,500 per violation after 30-day cure period; no private right of action","Bis zu $7,500 pro Verstoß nach 30-tägiger Abhilfefrist; kein privates Klagerecht"
+deu,"Up to $7,500 per violation after 90-day cure period; no private right of action (715D.8)","Bis zu $7,500 pro Verstoß nach 90-tägiger Abhilfefrist; kein privates Klagerecht (715D.8)"
+deu,Up to £20M or 4% revenue,Bis zu £20M oder 4% des Umsatzes
+deu,Up to ¥1M penalty,Strafe bis zu ¥1M
+deu,Up to €10M or 3% revenue,Bis zu €10M oder 3% des Umsatzes
+deu,Up to €20M or 4% revenue,Bis zu €20M oder 4% des Umsatzes
+deu,Up to ₹250 Cr penalty,Strafe bis zu ₹250 Cr
+deu,Up to 1% of prior-year annual turnover (private sector),Bis zu 1% des Jahresumsatzes des Vorjahres (Privatsektor)
+deu,"Up to 10,000 minimum daily wages (jornales mínimos)","Bis zu 10,000 Mindesttagelöhne (jornales mínimos)"
+deu,"Up to 10% of annual Singapore turnover (if >SGD 10m) or SGD 1 million, whichever higher","Bis zu 10% des jährlichen Umsatzes in Singapur (wenn >SGD 10m) oder SGD 1 million, je nachdem, welcher Betrag höher ist"
+deu,Up to 100x national minimum wage fine; prison 6 months-2 years,Geldstrafe bis zum 100-Fachen des nationalen Mindestlohns; Freiheitsstrafe 6 Monate-2 Jahre
+deu,"Up to 20,000 UTM (~USD 1.3M) for very serious infringements","Bis zu 20,000 UTM (~USD 1.3M) bei sehr schweren Verstößen"
+deu,Up to 200 base units administrative fine (Art. 23.7 Code of Administrative Offences); criminal liability also possible,Verwaltungsgeldbuße bis zu 200 Basiseinheiten (Art. 23.7 Gesetzbuch über Ordnungswidrigkeiten); auch strafrechtliche Haftung möglich
+deu,Up to 245 currency points or 2% of annual gross turnover (corporations); up to 10 years' imprisonment,Bis zu 245 currency points oder 2% des jährlichen Bruttoumsatzes (Unternehmen); Freiheitsstrafe bis zu 10 Jahren
+deu,Up to 3 years prison and/or NPR 30k fine,Bis zu 3 Jahre Freiheitsstrafe und/oder Geldstrafe von NPR 30k
+deu,"Up to 3% of total revenue; up to 10% for repeat intentional/grossly negligent violations, breaches affecting >=10m people, or ignoring PIPC orders","Bis zu 3% des Gesamtumsatzes; bis zu 10% bei wiederholten vorsätzlichen/grob fahrlässigen Verstößen, Datenschutzverletzungen mit >=10m Betroffenen oder Missachtung von Anordnungen der PIPC"
+deu,Up to 30 base salaries (salarios base) fine,Geldbuße bis zu 30 Grundgehältern (salarios base)
+deu,"Up to 320,000 UMA (~MXN 36M at 2025 UMA); doubled for sensitive data","Bis zu 320,000 UMA (~MXN 36M nach UMA 2025); verdoppelt bei sensiblen Daten"
+deu,Up to 4% of annual gross worldwide turnover (bodies corporate),Bis zu 4% des weltweiten jährlichen Bruttoumsatzes (Körperschaften)
+deu,Up to 4% of annual turnover (2% for lesser breaches),Bis zu 4% des Jahresumsatzes (2% bei geringeren Verstößen)
+deu,Up to 4% of worldwide turnover (entities); up to 10 years' imprisonment and ETB 300000 fines,Bis zu 4% des weltweiten Umsatzes (Einrichtungen); Freiheitsstrafe bis zu 10 Jahren und Geldstrafen von ETB 300000
+deu,"Up to 40 monthly minimum wages, commerce sector (~USD 14,600) for very serious infractions (unconfirmed)","Bis zu 40 monatliche Mindestlöhne des Handelssektors (~USD 14,600) bei sehr schweren Verstößen (unbestätigt)"
+deu,"Up to 5,000 penalty units and/or 10 years' imprisonment","Bis zu 5,000 penalty units und/oder Freiheitsstrafe bis zu 10 Jahren"
+deu,Up to 5% of prior-year revenue (cross-border violations); up to 10x illegal gain (data trading); up to VND 3 billion other,Bis zu 5% des Vorjahresumsatzes (grenzüberschreitende Verstöße); bis zum 10-Fachen des rechtswidrigen Gewinns (Datenhandel); bis zu VND 3 billion in sonstigen Fällen
+deu,"Up to 500,000 Indexed Units (UI) fine","Geldbuße bis zu 500,000 indexierten Einheiten (UI)"
+deu,"Up to 500,000 penalty units and/or 5 years' imprisonment","Bis zu 500,000 penalty units und/oder Freiheitsstrafe bis zu 5 Jahren"
+deu,Up to 50M BRL or 2% revenue,Bis zu 50M BRL oder 2% des Umsatzes
+deu,Up to ALL 2 billion or 4% global turnover,Bis zu ALL 2 billion oder 4% des weltweiten Umsatzes
+deu,"Up to AMD 500,000","Bis zu AMD 500,000"
+deu,Up to AUD $50M,Bis zu AUD $50M
+deu,Up to BAM 40M or 4% global turnover,Bis zu BAM 40M oder 4% des weltweiten Umsatzes
+deu,Up to BHD 20k fine; up to 1 year prison,Geldstrafe bis zu BHD 20k; Freiheitsstrafe bis zu 1 Jahr
+deu,Up to BWP 50M fine and/or imprisonment,Geldstrafe bis zu BWP 50M und/oder Freiheitsstrafe
+deu,Up to CHF 100k penalty,Strafe bis zu CHF 100k
+deu,Up to CNY 50M or 5% of prior-year turnover (serious cases); individuals CNY 100k-1M,Bis zu CNY 50M oder 5% des Vorjahresumsatzes (schwere Fälle); natürliche Personen CNY 100k-1M
+deu,Up to EGP 5M (plus imprisonment for some offences),Bis zu EGP 5M (bei einigen Straftaten zusätzlich Freiheitsstrafe)
+deu,"Up to EUR 20M or 4% of turnover under GDPR art. 83; residual PDPA violations up to BGN 5,000 (doubled on repetition); largest fine to date about EUR 2.55M (National Revenue Agency 2019)","Bis zu EUR 20M oder 4% des Umsatzes nach GDPR art. 83; verbleibende PDPA-Verstöße bis zu BGN 5,000 (bei Wiederholung verdoppelt); höchste bisherige Geldbuße etwa EUR 2.55M (Nationale Steuerbehörde 2019)"
+deu,"Up to GEL 20,000 fine","Geldbuße bis zu GEL 20,000"
+deu,Up to HKD 1M fine,Geldstrafe bis zu HKD 1M
+deu,Up to IDR 5B fine,Geldbuße bis zu IDR 5B
+deu,Up to JOD 10k per violation (doubled if repeated),Bis zu JOD 10k pro Verstoß (bei Wiederholung verdoppelt)
+deu,Up to LKR 10M per non-compliance (doubled for repeats),Bis zu LKR 10M pro Nichteinhaltung (bei Wiederholung verdoppelt)
+deu,"Up to MAD 300,000 and/or up to 2 years imprisonment (criminal); CNDP warnings, notices, authorisation withdrawal","Bis zu MAD 300,000 und/oder bis zu 2 Jahre Freiheitsstrafe (strafrechtlich); Verwarnungen, Mahnungen und Widerruf von Genehmigungen durch die CNDP"
+deu,Up to MDL 2M or 2% turnover,Bis zu MDL 2M oder 2% des Umsatzes
+deu,Up to MUR 200000 fine and/or 5 years' imprisonment,Geldstrafe bis zu MUR 200000 und/oder 5 Jahre Freiheitsstrafe
+deu,Up to NT$1M fine and 5 years prison; admin fines up to NT$500k,Geldstrafe bis zu NT$1M und 5 Jahre Freiheitsstrafe; Verwaltungsgeldbußen bis zu NT$500k
+deu,Up to NZD 200k penalty,Strafe bis zu NZD 200k
+deu,Up to OMR 500k fine (admin fines up to OMR 2k),Geldbuße bis zu OMR 500k (Verwaltungsgeldbußen bis zu OMR 2k)
+deu,Up to PHP 1M fine,Geldstrafe bis zu PHP 1M
+deu,Up to QAR 5M fine,Geldbuße bis zu QAR 5M
+deu,Up to R10M or 10% revenue,Bis zu R10M oder 10% des Umsatzes
+deu,"Up to RM1,000,000 fine and/or up to 3 years' imprisonment","Geldstrafe bis zu RM1,000,000 und/oder Freiheitsstrafe bis zu 3 Jahren"
+deu,Up to RSD 2M fine for legal entities,Geldbuße bis zu RSD 2M für juristische Personen
+deu,"Up to RUB 15M per leak (>100k subjects or special categories); repeat leaks: 1-3% of revenue, min RUB 20M, max RUB 500M","Bis zu RUB 15M pro Datenleck (>100k Betroffene oder besondere Kategorien); wiederholte Datenlecks: 1-3% des Umsatzes, mindestens RUB 20M, höchstens RUB 500M"
+deu,Up to SAR 5M (doubled for repeat); sensitive-data disclosure: up to SAR 3M and 2 years prison,Bis zu SAR 5M (bei Wiederholung verdoppelt); Offenlegung sensibler Daten: bis zu SAR 3M und 2 Jahre Freiheitsstrafe
+deu,Up to THB 5M fine,Geldbuße bis zu THB 5M
+deu,Up to the higher of NGN 10M or 2% of annual gross revenue (major importance); NGN 2M or 2% for others,Bis zum höheren Betrag von NGN 10M oder 2% des jährlichen Bruttoumsatzes (erhebliche Bedeutung); NGN 2M oder 2% für andere
+deu,Up to TRY 1M fine,Geldbuße bis zu TRY 1M
+deu,"Up to TTD 50,000 and 3 years imprisonment reported by one commercial site; penalty Part V not proclaimed (unconfirmed)","Bis zu TTD 50,000 und 3 Jahre Freiheitsstrafe laut einer kommerziellen Website; Sanktionsteil Part V nicht in Kraft gesetzt (unbestätigt)"
+deu,Up to TZS 20M (individuals) or TZS 5B (corporations),Bis zu TZS 20M (natürliche Personen) oder TZS 5B (Unternehmen)
+deu,Up to UAH 34000 administrative fine; criminal liability,Verwaltungsgeldbuße bis zu UAH 34000; strafrechtliche Haftung
+deu,"Up to USD 10,000 fine (B/.1,000-10,000); database registry closure or suspension of processing","Geldbuße bis zu USD 10,000 (B/.1,000-10,000); Schließung des Datenbankregisters oder Aussetzung der Verarbeitung"
+deu,"Up to USD 10,000 per first violation and USD 20,000 per subsequent violation under the NJ Consumer Fraud Act; no private right of action","Bis zu USD 10,000 beim ersten Verstoß und USD 20,000 bei jedem weiteren Verstoß nach dem NJ Consumer Fraud Act; kein privates Klagerecht"
+deu,"Up to USD 10,000 per violation and USD 25,000 per repeated violation under the Maryland Consumer Protection Act; misdemeanor fine up to USD 1,000 or 1 year prison reported; no private right of action","Bis zu USD 10,000 pro Verstoß und USD 25,000 pro wiederholtem Verstoß nach dem Maryland Consumer Protection Act; berichtet Geldstrafe für ein Vergehen bis zu USD 1,000 oder 1 Jahr Freiheitsstrafe; kein privates Klagerecht"
+deu,"Up to USD 10,000 per violation as deceptive trade practice (sources conflict; one lists USD 100-500); no private right of action","Bis zu USD 10,000 pro Verstoß als irreführende Geschäftspraktik (Quellen widersprechen sich; eine nennt USD 100-500); kein privates Klagerecht"
+deu,"Up to USD 10,000 per violation as unfair or deceptive practice under RSA 358-A; no private right of action","Bis zu USD 10,000 pro Verstoß als unlautere oder irreführende Praktik nach RSA 358-A; kein privates Klagerecht"
+deu,Up to USD 150000 fine,Geldbuße bis zu USD 150000
+deu,"Up to USD 7,500 per violation not cured within 30 days; injunctive relief and fees; no private right of action","Bis zu USD 7,500 pro Verstoß, der nicht innerhalb von 30 Tagen behoben wird; Unterlassungsanordnung und Kosten; kein privates Klagerecht"
+deu,"Up to USD 7,500 per violation; penalties go to a consumer privacy fund; no private right of action","Bis zu USD 7,500 pro Verstoß; Strafgelder fließen in einen Fonds für Verbraucherdatenschutz; kein privates Klagerecht"
+deu,Up to XOF 10M (repeat within 5 years: up to XOF 100M or 5% of pre-tax turnover) (unconfirmed),Bis zu XOF 10M (Wiederholung innerhalb von 5 Jahren: bis zu XOF 100M oder 5% des Umsatzes vor Steuern) (unbestätigt)
+deu,"USD 2,663 per violation; USD 7,988 per intentional violation or involving minors under 16 (inflation-adjusted) (unconfirmed)","USD 2,663 pro Verstoß; USD 7,988 pro vorsätzlichem Verstoß oder bei Beteiligung Minderjähriger unter 16 (inflationsbereinigt) (unbestätigt)"
+deu,Vermont residents (consumers); consumer health data provisions apply regardless of volume thresholds,Einwohner Vermonts (Verbraucher); Bestimmungen zu Verbrauchergesundheitsdaten gelten unabhängig von Mengenschwellen
+deu,"Violation is a deceptive trade practice under the Colorado Consumer Protection Act: civil penalty up to $20,000 per violation (6-1-112); no private right of action; mandatory cure period ended 2025-01-01","Der Verstoß ist eine irreführende Geschäftspraktik nach dem Colorado Consumer Protection Act: zivilrechtliche Strafe bis zu $20,000 pro Verstoß (6-1-112); kein privates Klagerecht; verpflichtende Abhilfefrist am 2025-01-01 beendet"
+deu,"Violation is an unfair trade practice under CUTPA: up to $5,000 per willful violation (42-110o); no private right of action","Der Verstoß ist eine unlautere Geschäftspraktik nach dem CUTPA: bis zu $5,000 pro vorsätzlichem Verstoß (42-110o); kein privates Klagerecht"
+deu,Washington consumers and persons whose consumer health data is collected in Washington,"Verbraucher in Washington und Personen, deren Verbrauchergesundheitsdaten in Washington erhoben werden"
+deu,"Written declaration to ANSICE for most processing; prior authorisation for genetic/biometric data, health research, offence records, national ID numbers; data subject rights and security obligations","Schriftliche Anmeldung bei der ANSICE für die meisten Verarbeitungen; vorherige Genehmigung für genetische/biometrische Daten, Gesundheitsforschung, Straftatenregister, nationale Identifikationsnummern; Rechte der betroffenen Personen und Sicherheitspflichten"
+deu,Written informed consent before collecting biometric data; published retention schedule and destruction guidelines (destroy at end of purpose or within 3 years of last interaction); no sale or profit from biometric data,Schriftliche informierte Einwilligung vor der Erhebung biometrischer Daten; veröffentlichter Aufbewahrungsplan und Vernichtungsrichtlinien (Vernichtung bei Zweckende oder innerhalb von 3 Jahren nach der letzten Interaktion); kein Verkauf von biometrischen Daten und keine Gewinnerzielung damit
 fra,12 data protection principles; consent (express or tacit) with exceptions; data owner rights; security; cross-border transfers authorised by public bodies,12 principes de protection des données ; consentement (exprès ou tacite) avec exceptions ; droits du titulaire des données ; sécurité ; transferts transfrontaliers autorisés par des organismes publics
 fra,2 years retention,Conservation de 2 ans
 fra,2-5 years,2 à 5 ans
@@ -1159,6 +1398,185 @@ fra,Public & private data controllers and processors,Responsables du traitement 
 fra,Public & private database controllers,Responsables de bases de données publics et privés
 fra,Public & private entities holding personal data files,Entités publiques et privées détenant des fichiers de données personnelles
 fra,Public & private entities processing personal data,Entités publiques et privées traitant des données personnelles
+fra,Public & private organizations,Organisations publiques et privées
+fra,Public & private organizations (incl. foreign firms targeting Paraguay),Organisations publiques et privées (y compris les entreprises étrangères ciblant le Paraguay)
+fra,Public & private organizations (QFC has separate rules),Organisations publiques et privées (le QFC a des règles distinctes)
+fra,Public & private owners and operators of personal databases,Propriétaires et opérateurs publics et privés de bases de données personnelles
+fra,Public & private sector,Secteur public et privé
+fra,"Public and private bodies and natural persons, for automated and non-automated processing, including controllers using processing means located in Burundi","Organismes publics et privés et personnes physiques, pour les traitements automatisés et non automatisés, y compris les responsables du traitement utilisant des moyens de traitement situés au Burundi"
+fra,Public and private bodies and natural/legal persons that process personal data,Organismes publics et privés et personnes physiques/morales qui traitent des données personnelles
+fra,Public and private bodies processing personal data by automated or non-automated means,Organismes publics et privés traitant des données personnelles par des moyens automatisés ou non automatisés
+fra,Public and private controllers (unconfirmed),Responsables du traitement publics et privés (non confirmé)
+fra,Public and private controllers and processors (unconfirmed),Responsables du traitement et sous-traitants publics et privés (non confirmé)
+fra,"Public and private operators in Algeria, including foreign operators using automated means located in Algeria","Opérateurs publics et privés en Algérie, y compris les opérateurs étrangers utilisant des moyens automatisés situés en Algérie"
+fra,Public bodies and private organisations,Organismes publics et organisations privées
+fra,Public functions,Fonctions publiques
+fra,Public institutions,Institutions publiques
+fra,Public interest exceptions,Exceptions d'intérêt public
+fra,Public safety exceptions,Exceptions de sécurité publique
+fra,"Public security, defence, criminal investigations and sanctions enforcement (unconfirmed)","Sécurité publique, défense, enquêtes pénales et exécution des sanctions (non confirmé)"
+fra,"Purely personal or domestic activity, unless data are systematically shared with third parties for dissemination (unconfirmed)","Activité purement personnelle ou domestique, sauf si les données sont systématiquement communiquées à des tiers pour diffusion (non confirmé)"
+fra,Purely personal or household activity; anonymous data,Activité purement personnelle ou domestique ; données anonymes
+fra,Purely personal or household use,Usage purement personnel ou domestique
+fra,Purpose limitation & consent,Limitation des finalités et consentement
+fra,"Purpose limitation, notice & consent, data subject rights, security measures","Limitation des finalités, information et consentement, droits des personnes concernées, mesures de sécurité"
+fra,Reasonable period,Durée raisonnable
+fra,"Registration of controllers and processors, licensing of data auditors, data subject rights","Enregistrement des responsables du traitement et des sous-traitants, agrément des auditeurs de données, droits des personnes concernées"
+fra,"Registration with the PDPC, consent, data subject rights","Enregistrement auprès de la PDPC, consentement, droits des personnes concernées"
+fra,"Registration with the PDPO, consent, data subject rights","Enregistrement auprès du PDPO, consentement, droits des personnes concernées"
+fra,Regulated entities doing business in WA or targeting WA consumers; small businesses from 2024-06-30,Entités réglementées exerçant dans l'État de WA ou ciblant des consommateurs de WA ; petites entreprises à partir du 2024-06-30
+fra,"Repeat offences within 5 years: up to CFA 100 million or 5% of pre-tax sales, capped at CFA 100 million (secondary source, no article) (unconfirmed)","Récidive dans les 5 ans : jusqu'à CFA 100 million ou 5 % du chiffre d'affaires hors taxes, plafonné à CFA 100 million (source secondaire, sans article) (non confirmé)"
+fra,"Reported administrative fines up to 4% of global turnover for serious violations; criminal penalties up to 10 years for selling personal data (sources conflict, unverified) (unconfirmed)","Amendes administratives signalées jusqu'à 4 % du chiffre d'affaires mondial pour les violations graves ; sanctions pénales jusqu'à 10 ans pour la vente de données personnelles (les sources divergent, non vérifié) (non confirmé)"
+fra,"Reported fines of CFA 1 million to 100 million (rising for repeat violations), suspension of processing and criminal penalties; secondary sources (unconfirmed)","Amendes signalées de CFA 1 million à 100 million (majorées en cas de récidive), suspension du traitement et sanctions pénales ; sources secondaires (non confirmé)"
+fra,"Reported fines up to MWK 5,000,000 and/or 12 months imprisonment (unverified vendor source) (unconfirmed)","Amendes signalées jusqu'à MWK 5,000,000 et/ou 12 mois d'emprisonnement (source de prestataire non vérifiée) (non confirmé)"
+fra,Research data reportedly exempt (low-reliability summary; check KRS 367.3611 et seq.),Données de recherche exemptées selon certaines informations (résumé peu fiable ; vérifier KRS 367.3611 et suiv.)
+fra,Residents & Businesses,Résidents et entreprises
+fra,Residents of Colorado (consumers acting in individual or household context),Résidents du Colorado (consommateurs agissant à titre individuel ou domestique)
+fra,Residents of Connecticut acting in individual or household context,Résidents du Connecticut agissant à titre individuel ou domestique
+fra,Residents of Indiana acting in individual or household context,Résidents de l'Indiana agissant à titre individuel ou domestique
+fra,Residents of Iowa acting in individual or household context,Résidents de l'Iowa agissant à titre individuel ou domestique
+fra,Residents of Montana acting in individual or household context,Résidents du Montana agissant à titre individuel ou domestique
+fra,Residents of Oregon acting in individual or household context,Résidents de l'Oregon agissant à titre individuel ou domestique
+fra,Residents of Tennessee acting in individual or household context,Résidents du Tennessee agissant à titre individuel ou domestique
+fra,Residents of Texas acting in individual or household context,Résidents du Texas agissant à titre individuel ou domestique
+fra,Residents of the state (consumers acting in an individual or household context),Résidents de l'État (consommateurs agissant à titre individuel ou domestique)
+fra,Residents of Utah acting in an individual or household context,Résidents de l'Utah agissant à titre individuel ou domestique
+fra,Residents of Virginia acting in an individual or household context (not commercial or employment context),Résidents de Virginie agissant à titre individuel ou domestique (hors contexte commercial ou d'emploi)
+fra,Retain for at least one year after use for decisions about the individual; destroy or anonymize when no longer needed for legal or business purposes (s.35),Conserver au moins un an après utilisation pour des décisions concernant la personne ; détruire ou anonymiser lorsque ce n'est plus nécessaire à des fins juridiques ou commerciales (s.35)
+fra,Retain only as long as reasonable for legal or business purposes (s.35),Conserver uniquement aussi longtemps que raisonnable à des fins juridiques ou commerciales (s.35)
+fra,Retention tied to purpose; data may not be transferred 7 years after legal retention obligation ends unless subject requests (article not confirmed),"Conservation liée à la finalité ; les données ne peuvent pas être transférées 7 ans après la fin de l'obligation légale de conservation, sauf demande de la personne concernée (article non confirmé)"
+fra,Romanian Residents,Résidents roumains
+fra,Russian Residents,Résidents russes
+fra,s.12 principles: stored in a form permitting identification no longer than necessary for the purposes of processing,Principes de la s.12 : conservées sous une forme permettant l'identification pas plus longtemps que nécessaire aux finalités du traitement
+fra,"s.18: not retained longer than necessary for purpose unless required/authorised by law, lawful purpose, contract or data subject consent","s.18 : pas conservées plus longtemps que nécessaire à la finalité, sauf si la loi l'exige/l'autorise, finalité licite, contrat ou consentement de la personne concernée"
+fra,"s.23 storage limitation: identifiable no longer than necessary for purpose; longer for public-interest archiving, research or statistics with safeguards","Limitation de la conservation de la s.23 : identifiables pas plus longtemps que nécessaire à la finalité ; plus longtemps pour l'archivage dans l'intérêt public, la recherche ou les statistiques avec garanties"
+fra,"s.24: not retained longer than necessary for purpose unless required by law, lawful function, contract or consent; research/statistics exceptions","s.24 : pas conservées plus longtemps que nécessaire à la finalité, sauf si la loi l'exige, fonction licite, contrat ou consentement ; exceptions pour la recherche/les statistiques"
+fra,s.5 principles: data kept in identifiable form only for as long as necessary for the purpose of processing,Principes de la s.5 : données conservées sous forme identifiable uniquement aussi longtemps que nécessaire à la finalité du traitement
+fra,s.7 (Quality of data): kept in identifiable form no longer than necessary for purposes of collection or further processing,s.7 (Qualité des données) : conservées sous forme identifiable pas plus longtemps que nécessaire aux finalités de la collecte ou du traitement ultérieur
+fra,s.9 limit on retention period: identifiable data kept only as long as necessary for purposes; archiving/research exceptions (Part I not yet in force),Limitation de la durée de conservation de la s.9 : données identifiables conservées uniquement aussi longtemps que nécessaire aux finalités ; exceptions pour l'archivage/la recherche (Partie I pas encore en vigueur)
+fra,Saudi Residents,Résidents saoudiens
+fra,Section 24 processing principles; lawful basis/consent; breach notice to NDPC within 72 hours; registration of major-importance controllers,Principes de traitement de la section 24 ; base juridique/consentement ; notification des violations à la NDPC sous 72 heures ; enregistrement des responsables du traitement d'importance majeure
+fra,Sensitive data,Données sensibles
+fra,Sensitive data only when processed to uniquely identify an individual; consent required,Données sensibles uniquement lorsqu'elles sont traitées pour identifier un individu de façon unique ; consentement requis
+fra,Sensitive data requiring opt-in consent only when processed for identification,Données sensibles exigeant un consentement préalable (opt-in) uniquement lorsqu'elles sont traitées à des fins d'identification
+fra,Sensitive data when processed to uniquely identify an individual (consent required); separate Genetic Information Privacy Act at Minn. Stat. 325F.995,Données sensibles lorsqu'elles sont traitées pour identifier un individu de façon unique (consentement requis) ; loi distincte Genetic Information Privacy Act à Minn. Stat. 325F.995
+fra,Sensitive information may be processed without consent for research or statistical analysis (section not found); archival/historical disclosure provision in revised text s. 44 (unconfirmed),Les informations sensibles peuvent être traitées sans consentement à des fins de recherche ou d'analyse statistique (article introuvable) ; disposition sur la communication à des fins d'archivage/historiques dans le texte révisé s. 44 (non confirmé)
+fra,Sensitive personal data,Données personnelles sensibles
+fra,Sensitive personal information,Informations personnelles sensibles
+fra,"Since 2026-07-01: persons doing business in Connecticut or targeting residents that process data of 35,000+ consumers, or any amount if they process sensitive data or sell personal data","Depuis le 2026-07-01 : personnes exerçant au Connecticut ou ciblant des résidents qui traitent les données de 35,000+ consommateurs, ou de tout nombre si elles traitent des données sensibles ou vendent des données personnelles"
+fra,Singapore Residents,Résidents de Singapour
+fra,Some processing exempt from declaration (articles not found) (unconfirmed),Certains traitements dispensés de déclaration (articles introuvables) (non confirmé)
+fra,Sources conflict: fines up to XAF 1 billion (Afriwise) or XAF 100 million and up to 10 years imprisonment (ConsentStack) (unconfirmed),Les sources divergent : amendes jusqu'à XAF 1 billion (Afriwise) ou XAF 100 million et jusqu'à 10 ans d'emprisonnement (ConsentStack) (non confirmé)
+fra,South Africa Residents,Résidents d'Afrique du Sud
+fra,South Korea Residents,Résidents de Corée du Sud
+fra,Spanish Residents,Résidents espagnols
+fra,Special category under GDPR art. 9; explicit consent or another art. 9(2) ground required,Catégorie particulière au sens de l'art. 9 du GDPR ; consentement explicite ou autre motif de l'art. 9(2) requis
+fra,"State agencies and political subdivisions, GLBA financial institutions and data, HIPAA covered entities and business associates, nonprofits, higher education institutions, public utilities; certain research data","Agences de l'État et subdivisions politiques, institutions financières et données GLBA, entités couvertes et partenaires commerciaux HIPAA, organisations à but non lucratif, établissements d'enseignement supérieur, services publics ; certaines données de recherche"
+fra,"State agencies and political subdivisions, GLBA financial institutions, HIPAA entities, nonprofits, higher education, electric utilities, employment and B2B data, SBA small businesses (except sale of sensitive data needs consent)","Agences de l'État et subdivisions politiques, institutions financières GLBA, entités HIPAA, organisations à but non lucratif, enseignement supérieur, entreprises d'électricité, données d'emploi et B2B, petites entreprises au sens de la SBA (la vente de données sensibles exige toutefois un consentement)"
+fra,"State agencies and political subdivisions, HIPAA entities, GLBA financial institutions, nonprofits, higher education","Agences de l'État et subdivisions politiques, entités HIPAA, institutions financières GLBA, organisations à but non lucratif, enseignement supérieur"
+fra,"State agencies and political subdivisions, nonprofits, institutions of higher education, HIPAA covered entities and data, GLBA financial institutions/data; employment and commercial contexts","Agences de l'État et subdivisions politiques, organisations à but non lucratif, établissements d'enseignement supérieur, entités couvertes et données HIPAA, institutions financières/données GLBA ; contextes d'emploi et commerciaux"
+fra,"State bodies, companies & sole proprietors in Belarus, foreign organizations processing data there","Organes de l'État, sociétés et entrepreneurs individuels en Biélorussie, organisations étrangères y traitant des données"
+fra,"State, local authorities, public bodies, and private natural and legal persons processing data wholly or partly in Mali","État, collectivités locales, organismes publics et personnes physiques et morales privées traitant des données en tout ou partie au Mali"
+fra,Storage limitation principle (no article found) (unconfirmed),Principe de limitation de la conservation (aucun article trouvé) (non confirmé)
+fra,Storage limitation principle (s.24); no fixed period found,Principe de limitation de la conservation (s.24) ; aucune durée fixe trouvée
+fra,Storage limitation principle (section not confirmed) (unconfirmed),Principe de limitation de la conservation (article non confirmé) (non confirmé)
+fra,"Supplements GDPR, Commissioner's powers, administrative fines and appeals","Complète le GDPR, pouvoirs du Commissaire, amendes administratives et recours"
+fra,"Supplements GDPR, lawful basis and data subject rights, Commissioner's powers","Complète le GDPR, base juridique et droits des personnes concernées, pouvoirs du Commissaire"
+fra,"Supplements GDPR, national derogations, Law Enforcement Directive rules, supervisory powers","Complète le GDPR, dérogations nationales, règles de la directive Police-Justice (Law Enforcement Directive), pouvoirs de contrôle"
+fra,"Supplements GDPR, supervisory authority duties, liability of responsible officials","Complète le GDPR, missions de l'autorité de contrôle, responsabilité des responsables désignés"
+fra,"Supplements GDPR, supervisory authority rules, video surveillance and biometric data rules","Complète le GDPR, règles relatives à l'autorité de contrôle, règles sur la vidéosurveillance et les données biométriques"
+fra,"Supplements GDPR, video surveillance rules, consent age 15","Complète le GDPR, règles sur la vidéosurveillance, âge du consentement de 15 ans"
+fra,Swedish Residents,Résidents suédois
+fra,Swiss Residents,Résidents suisses
+fra,"Texas-style model: consumer rights (access, correct, delete, port, opt out); consent for sensitive data; data minimization, security and risk assessments","Modèle de type Texas : droits des consommateurs (accès, rectification, suppression, portabilité, opposition) ; consentement pour les données sensibles ; minimisation des données, sécurité et évaluations des risques"
+fra,Thai Residents,Résidents thaïlandais
+fra,Turkish Residents,Résidents turcs
+fra,UAE Residents,Résidents des EAU
+fra,UK Residents,Résidents du Royaume-Uni
+fra,UNKNOWN (public security and defence processing has special rules; art. 14 exceptions not verified) (unconfirmed),INCONNU (le traitement relevant de la sécurité publique et de la défense obéit à des règles spéciales ; exceptions de l'art. 14 non vérifiées) (non confirmé)
+fra,UNKNOWN; unverified claim of 10% turnover penalties from 2021 amendments (unconfirmed),INCONNU ; affirmation non vérifiée de sanctions de 10 % du chiffre d'affaires issues des modifications de 2021 (non confirmé)
+fra,"Unlawful collection or retention of sensitive data without explicit consent: 1 to 5 years prison and fine of CFA 1 to 10 million, same for retention beyond legal periods and fraudulent CCTV (per IPDCP); a secondary tracker gives CFA 1 to 25 million (unconfirmed)","Collecte ou conservation illicite de données sensibles sans consentement explicite : 1 à 5 ans de prison et amende de CFA 1 à 10 million, de même pour la conservation au-delà des durées légales et la vidéosurveillance frauduleuse (selon l'IPDCP) ; un suivi secondaire indique CFA 1 à 25 million (non confirmé)"
+fra,"Up to $10,000 per violation under the Consumer Protection Act; discretionary 60-day cure period 2028-01-01 to 2029-06-30","Jusqu'à $10,000 par violation en vertu de la Consumer Protection Act ; délai de mise en conformité discrétionnaire de 60 jours du 2028-01-01 au 2029-06-30"
+fra,"Up to $100,000 CAD","Jusqu'à $100,000 CAD"
+fra,"Up to $43,280 per violation","Jusqu'à $43,280 par violation"
+fra,"Up to $7,500 per violation after 30-day cure period; AG exclusive enforcement, no private right of action","Jusqu'à $7,500 par violation après un délai de mise en conformité de 30 jours ; compétence exclusive du procureur général (AG), pas de droit d'action privé"
+fra,"Up to $7,500 per violation after 30-day cure period; no private right of action","Jusqu'à $7,500 par violation après un délai de mise en conformité de 30 jours ; pas de droit d'action privé"
+fra,"Up to $7,500 per violation after 90-day cure period; no private right of action (715D.8)","Jusqu'à $7,500 par violation après un délai de mise en conformité de 90 jours ; pas de droit d'action privé (715D.8)"
+fra,Up to £20M or 4% revenue,Jusqu'à £20M ou 4 % du chiffre d'affaires
+fra,Up to ¥1M penalty,Sanction jusqu'à ¥1M
+fra,Up to €10M or 3% revenue,Jusqu'à €10M ou 3 % du chiffre d'affaires
+fra,Up to €20M or 4% revenue,Jusqu'à €20M ou 4 % du chiffre d'affaires
+fra,Up to ₹250 Cr penalty,Sanction jusqu'à ₹250 Cr
+fra,Up to 1% of prior-year annual turnover (private sector),Jusqu'à 1 % du chiffre d'affaires annuel de l'année précédente (secteur privé)
+fra,"Up to 10,000 minimum daily wages (jornales mínimos)","Jusqu'à 10,000 salaires journaliers minimums (jornales mínimos)"
+fra,"Up to 10% of annual Singapore turnover (if >SGD 10m) or SGD 1 million, whichever higher","Jusqu'à 10 % du chiffre d'affaires annuel à Singapour (si >SGD 10m) ou SGD 1 million, le montant le plus élevé étant retenu"
+fra,Up to 100x national minimum wage fine; prison 6 months-2 years,Amende jusqu'à 100x le salaire minimum national ; prison de 6 mois à 2 ans
+fra,"Up to 20,000 UTM (~USD 1.3M) for very serious infringements","Jusqu'à 20,000 UTM (~USD 1.3M) pour les infractions très graves"
+fra,Up to 200 base units administrative fine (Art. 23.7 Code of Administrative Offences); criminal liability also possible,Amende administrative jusqu'à 200 unités de base (art. 23.7 du Code des infractions administratives) ; responsabilité pénale également possible
+fra,Up to 245 currency points or 2% of annual gross turnover (corporations); up to 10 years' imprisonment,Jusqu'à 245 currency points ou 2 % du chiffre d'affaires brut annuel (sociétés) ; jusqu'à 10 ans d'emprisonnement
+fra,Up to 3 years prison and/or NPR 30k fine,Jusqu'à 3 ans de prison et/ou amende de NPR 30k
+fra,"Up to 3% of total revenue; up to 10% for repeat intentional/grossly negligent violations, breaches affecting >=10m people, or ignoring PIPC orders","Jusqu'à 3 % du chiffre d'affaires total ; jusqu'à 10 % pour les violations intentionnelles/par négligence grave répétées, les violations touchant >=10m personnes ou le non-respect des ordonnances de la PIPC"
+fra,Up to 30 base salaries (salarios base) fine,Amende jusqu'à 30 salaires de base (salarios base)
+fra,"Up to 320,000 UMA (~MXN 36M at 2025 UMA); doubled for sensitive data","Jusqu'à 320,000 UMA (~MXN 36M selon l'UMA 2025) ; doublé pour les données sensibles"
+fra,Up to 4% of annual gross worldwide turnover (bodies corporate),Jusqu'à 4 % du chiffre d'affaires brut annuel mondial (personnes morales)
+fra,Up to 4% of annual turnover (2% for lesser breaches),Jusqu'à 4 % du chiffre d'affaires annuel (2 % pour les violations moins graves)
+fra,Up to 4% of worldwide turnover (entities); up to 10 years' imprisonment and ETB 300000 fines,Jusqu'à 4 % du chiffre d'affaires mondial (entités) ; jusqu'à 10 ans d'emprisonnement et amendes de ETB 300000
+fra,"Up to 40 monthly minimum wages, commerce sector (~USD 14,600) for very serious infractions (unconfirmed)","Jusqu'à 40 salaires minimums mensuels du secteur du commerce (~USD 14,600) pour les infractions très graves (non confirmé)"
+fra,"Up to 5,000 penalty units and/or 10 years' imprisonment","Jusqu'à 5,000 unités de pénalité et/ou 10 ans d'emprisonnement"
+fra,Up to 5% of prior-year revenue (cross-border violations); up to 10x illegal gain (data trading); up to VND 3 billion other,Jusqu'à 5 % du chiffre d'affaires de l'année précédente (violations transfrontalières) ; jusqu'à 10x le gain illicite (commerce de données) ; jusqu'à VND 3 billion pour les autres
+fra,"Up to 500,000 Indexed Units (UI) fine","Amende jusqu'à 500,000 unités indexées (UI)"
+fra,"Up to 500,000 penalty units and/or 5 years' imprisonment","Jusqu'à 500,000 unités de pénalité et/ou 5 ans d'emprisonnement"
+fra,Up to 50M BRL or 2% revenue,Jusqu'à 50M BRL ou 2 % du chiffre d'affaires
+fra,Up to ALL 2 billion or 4% global turnover,Jusqu'à ALL 2 billion ou 4 % du chiffre d'affaires mondial
+fra,"Up to AMD 500,000","Jusqu'à AMD 500,000"
+fra,Up to AUD $50M,Jusqu'à AUD $50M
+fra,Up to BAM 40M or 4% global turnover,Jusqu'à BAM 40M ou 4 % du chiffre d'affaires mondial
+fra,Up to BHD 20k fine; up to 1 year prison,Amende jusqu'à BHD 20k ; jusqu'à 1 an de prison
+fra,Up to BWP 50M fine and/or imprisonment,Amende jusqu'à BWP 50M et/ou emprisonnement
+fra,Up to CHF 100k penalty,Sanction jusqu'à CHF 100k
+fra,Up to CNY 50M or 5% of prior-year turnover (serious cases); individuals CNY 100k-1M,Jusqu'à CNY 50M ou 5 % du chiffre d'affaires de l'année précédente (cas graves) ; individus CNY 100k-1M
+fra,Up to EGP 5M (plus imprisonment for some offences),Jusqu'à EGP 5M (plus emprisonnement pour certaines infractions)
+fra,"Up to EUR 20M or 4% of turnover under GDPR art. 83; residual PDPA violations up to BGN 5,000 (doubled on repetition); largest fine to date about EUR 2.55M (National Revenue Agency 2019)","Jusqu'à EUR 20M ou 4 % du chiffre d'affaires selon l'art. 83 du GDPR ; violations résiduelles de la PDPA jusqu'à BGN 5,000 (doublé en cas de récidive) ; plus forte amende à ce jour environ EUR 2.55M (Agence nationale des recettes, 2019)"
+fra,"Up to GEL 20,000 fine","Amende jusqu'à GEL 20,000"
+fra,Up to HKD 1M fine,Amende jusqu'à HKD 1M
+fra,Up to IDR 5B fine,Amende jusqu'à IDR 5B
+fra,Up to JOD 10k per violation (doubled if repeated),Jusqu'à JOD 10k par violation (doublé en cas de récidive)
+fra,Up to LKR 10M per non-compliance (doubled for repeats),Jusqu'à LKR 10M par manquement (doublé en cas de récidive)
+fra,"Up to MAD 300,000 and/or up to 2 years imprisonment (criminal); CNDP warnings, notices, authorisation withdrawal","Jusqu'à MAD 300,000 et/ou jusqu'à 2 ans d'emprisonnement (pénal) ; avertissements, mises en demeure, retrait d'autorisation par la CNDP"
+fra,Up to MDL 2M or 2% turnover,Jusqu'à MDL 2M ou 2 % du chiffre d'affaires
+fra,Up to MUR 200000 fine and/or 5 years' imprisonment,Amende jusqu'à MUR 200000 et/ou 5 ans d'emprisonnement
+fra,Up to NT$1M fine and 5 years prison; admin fines up to NT$500k,Amende jusqu'à NT$1M et 5 ans de prison ; amendes administratives jusqu'à NT$500k
+fra,Up to NZD 200k penalty,Sanction jusqu'à NZD 200k
+fra,Up to OMR 500k fine (admin fines up to OMR 2k),Amende jusqu'à OMR 500k (amendes administratives jusqu'à OMR 2k)
+fra,Up to PHP 1M fine,Amende jusqu'à PHP 1M
+fra,Up to QAR 5M fine,Amende jusqu'à QAR 5M
+fra,Up to R10M or 10% revenue,Jusqu'à R10M ou 10 % du chiffre d'affaires
+fra,"Up to RM1,000,000 fine and/or up to 3 years' imprisonment","Amende jusqu'à RM1,000,000 et/ou jusqu'à 3 ans d'emprisonnement"
+fra,Up to RSD 2M fine for legal entities,Amende jusqu'à RSD 2M pour les personnes morales
+fra,"Up to RUB 15M per leak (>100k subjects or special categories); repeat leaks: 1-3% of revenue, min RUB 20M, max RUB 500M","Jusqu'à RUB 15M par fuite (>100k personnes concernées ou catégories particulières) ; fuites répétées : 1-3 % du chiffre d'affaires, min. RUB 20M, max. RUB 500M"
+fra,Up to SAR 5M (doubled for repeat); sensitive-data disclosure: up to SAR 3M and 2 years prison,Jusqu'à SAR 5M (doublé en cas de récidive) ; divulgation de données sensibles : jusqu'à SAR 3M et 2 ans de prison
+fra,Up to THB 5M fine,Amende jusqu'à THB 5M
+fra,Up to the higher of NGN 10M or 2% of annual gross revenue (major importance); NGN 2M or 2% for others,Jusqu'au montant le plus élevé entre NGN 10M et 2 % du chiffre d'affaires brut annuel (importance majeure) ; NGN 2M ou 2 % pour les autres
+fra,Up to TRY 1M fine,Amende jusqu'à TRY 1M
+fra,"Up to TTD 50,000 and 3 years imprisonment reported by one commercial site; penalty Part V not proclaimed (unconfirmed)","Jusqu'à TTD 50,000 et 3 ans d'emprisonnement selon un site commercial ; la Partie V relative aux sanctions n'est pas proclamée (non confirmé)"
+fra,Up to TZS 20M (individuals) or TZS 5B (corporations),Jusqu'à TZS 20M (individus) ou TZS 5B (sociétés)
+fra,Up to UAH 34000 administrative fine; criminal liability,Amende administrative jusqu'à UAH 34000 ; responsabilité pénale
+fra,"Up to USD 10,000 fine (B/.1,000-10,000); database registry closure or suspension of processing","Amende jusqu'à USD 10,000 (B/.1,000-10,000) ; fermeture du registre de la base de données ou suspension du traitement"
+fra,"Up to USD 10,000 per first violation and USD 20,000 per subsequent violation under the NJ Consumer Fraud Act; no private right of action","Jusqu'à USD 10,000 pour une première violation et USD 20,000 pour chaque violation ultérieure en vertu de la NJ Consumer Fraud Act ; pas de droit d'action privé"
+fra,"Up to USD 10,000 per violation and USD 25,000 per repeated violation under the Maryland Consumer Protection Act; misdemeanor fine up to USD 1,000 or 1 year prison reported; no private right of action","Jusqu'à USD 10,000 par violation et USD 25,000 par violation répétée en vertu de la Maryland Consumer Protection Act ; amende délictuelle jusqu'à USD 1,000 ou 1 an de prison selon certaines informations ; pas de droit d'action privé"
+fra,"Up to USD 10,000 per violation as deceptive trade practice (sources conflict; one lists USD 100-500); no private right of action","Jusqu'à USD 10,000 par violation en tant que pratique commerciale trompeuse (les sources divergent ; l'une indique USD 100-500) ; pas de droit d'action privé"
+fra,"Up to USD 10,000 per violation as unfair or deceptive practice under RSA 358-A; no private right of action","Jusqu'à USD 10,000 par violation en tant que pratique déloyale ou trompeuse au sens de la RSA 358-A ; pas de droit d'action privé"
+fra,Up to USD 150000 fine,Amende jusqu'à USD 150000
+fra,"Up to USD 7,500 per violation not cured within 30 days; injunctive relief and fees; no private right of action","Jusqu'à USD 7,500 par violation non corrigée dans les 30 jours ; mesures injonctives et frais ; pas de droit d'action privé"
+fra,"Up to USD 7,500 per violation; penalties go to a consumer privacy fund; no private right of action","Jusqu'à USD 7,500 par violation ; les sanctions alimentent un fonds pour la protection de la vie privée des consommateurs ; pas de droit d'action privé"
+fra,Up to XOF 10M (repeat within 5 years: up to XOF 100M or 5% of pre-tax turnover) (unconfirmed),Jusqu'à XOF 10M (récidive dans les 5 ans : jusqu'à XOF 100M ou 5 % du chiffre d'affaires hors taxes) (non confirmé)
+fra,"USD 2,663 per violation; USD 7,988 per intentional violation or involving minors under 16 (inflation-adjusted) (unconfirmed)","USD 2,663 par violation ; USD 7,988 par violation intentionnelle ou impliquant des mineurs de moins de 16 ans (montants indexés sur l'inflation) (non confirmé)"
+fra,Vermont residents (consumers); consumer health data provisions apply regardless of volume thresholds,Résidents du Vermont (consommateurs) ; les dispositions sur les données de santé des consommateurs s'appliquent indépendamment des seuils de volume
+fra,"Violation is a deceptive trade practice under the Colorado Consumer Protection Act: civil penalty up to $20,000 per violation (6-1-112); no private right of action; mandatory cure period ended 2025-01-01","La violation est une pratique commerciale trompeuse au sens de la Colorado Consumer Protection Act : sanction civile jusqu'à $20,000 par violation (6-1-112) ; pas de droit d'action privé ; délai de mise en conformité obligatoire terminé le 2025-01-01"
+fra,"Violation is an unfair trade practice under CUTPA: up to $5,000 per willful violation (42-110o); no private right of action","La violation est une pratique commerciale déloyale au sens de la CUTPA : jusqu'à $5,000 par violation délibérée (42-110o) ; pas de droit d'action privé"
+fra,Washington consumers and persons whose consumer health data is collected in Washington,Consommateurs de Washington et personnes dont les données de santé de consommateur sont collectées dans l'État de Washington
+fra,"Written declaration to ANSICE for most processing; prior authorisation for genetic/biometric data, health research, offence records, national ID numbers; data subject rights and security obligations","Déclaration écrite à l'ANSICE pour la plupart des traitements ; autorisation préalable pour les données génétiques/biométriques, la recherche en santé, les casiers judiciaires, les numéros d'identification nationaux ; droits des personnes concernées et obligations de sécurité"
+fra,Written informed consent before collecting biometric data; published retention schedule and destruction guidelines (destroy at end of purpose or within 3 years of last interaction); no sale or profit from biometric data,Consentement écrit éclairé avant la collecte de données biométriques ; calendrier de conservation et lignes directrices de destruction publiés (détruire à la fin de la finalité ou dans les 3 ans suivant la dernière interaction) ; ni vente ni profit tiré des données biométriques
 por,12 data protection principles; consent (express or tacit) with exceptions; data owner rights; security; cross-border transfers authorised by public bodies,12 princípios de proteção de dados; consentimento (expresso ou tácito) com exceções; direitos do titular dos dados; segurança; transferências internacionais autorizadas por órgãos públicos
 por,2 years retention,Retenção por 2 anos
 por,2-5 years,2-5 anos
@@ -1809,6 +2227,145 @@ por,Residents of Iowa acting in individual or household context,Residentes de Io
 por,Residents of Montana acting in individual or household context,Residentes de Montana que atuam em contexto individual ou doméstico
 por,Residents of Oregon acting in individual or household context,Residentes do Oregon que atuam em contexto individual ou doméstico
 por,Residents of Tennessee acting in individual or household context,Residentes do Tennessee que atuam em contexto individual ou doméstico
+por,Residents of Texas acting in individual or household context,Residentes do Texas que atuam em contexto individual ou doméstico
+por,Residents of the state (consumers acting in an individual or household context),Residentes do estado (consumidores que atuam em contexto individual ou doméstico)
+por,Residents of Utah acting in an individual or household context,Residentes de Utah que atuam em contexto individual ou doméstico
+por,Residents of Virginia acting in an individual or household context (not commercial or employment context),Residentes da Virgínia que atuam em contexto individual ou doméstico (não em contexto comercial ou de emprego)
+por,Retain for at least one year after use for decisions about the individual; destroy or anonymize when no longer needed for legal or business purposes (s.35),Reter por pelo menos um ano após o uso em decisões sobre a pessoa; destruir ou anonimizar quando não for mais necessário para fins legais ou comerciais (s.35)
+por,Retain only as long as reasonable for legal or business purposes (s.35),Reter apenas pelo tempo razoável para fins legais ou comerciais (s.35)
+por,Retention tied to purpose; data may not be transferred 7 years after legal retention obligation ends unless subject requests (article not confirmed),"Retenção vinculada à finalidade; os dados não podem ser transferidos 7 anos após o fim da obrigação legal de retenção, salvo pedido do titular (artigo não confirmado)"
+por,Romanian Residents,Residentes romenos
+por,Russian Residents,Residentes russos
+por,s.12 principles: stored in a form permitting identification no longer than necessary for the purposes of processing,Princípios da s.12: armazenados de forma que permita a identificação por não mais que o necessário para as finalidades do tratamento
+por,"s.18: not retained longer than necessary for purpose unless required/authorised by law, lawful purpose, contract or data subject consent","s.18: não retidos por mais tempo que o necessário para a finalidade, salvo se exigido/autorizado por lei, finalidade lícita, contrato ou consentimento do titular dos dados"
+por,"s.23 storage limitation: identifiable no longer than necessary for purpose; longer for public-interest archiving, research or statistics with safeguards","Limitação do armazenamento da s.23: identificáveis por não mais que o necessário para a finalidade; por mais tempo para arquivamento de interesse público, pesquisa ou estatística com salvaguardas"
+por,"s.24: not retained longer than necessary for purpose unless required by law, lawful function, contract or consent; research/statistics exceptions","s.24: não retidos por mais tempo que o necessário para a finalidade, salvo se exigido por lei, função lícita, contrato ou consentimento; exceções de pesquisa/estatística"
+por,s.5 principles: data kept in identifiable form only for as long as necessary for the purpose of processing,Princípios da s.5: dados mantidos de forma identificável apenas pelo tempo necessário para a finalidade do tratamento
+por,s.7 (Quality of data): kept in identifiable form no longer than necessary for purposes of collection or further processing,s.7 (Qualidade dos dados): mantidos de forma identificável por não mais que o necessário para as finalidades da coleta ou do tratamento posterior
+por,s.9 limit on retention period: identifiable data kept only as long as necessary for purposes; archiving/research exceptions (Part I not yet in force),Limite do prazo de retenção da s.9: dados identificáveis mantidos apenas pelo tempo necessário para as finalidades; exceções de arquivamento/pesquisa (Parte I ainda não em vigor)
+por,Saudi Residents,Residentes sauditas
+por,Section 24 processing principles; lawful basis/consent; breach notice to NDPC within 72 hours; registration of major-importance controllers,Princípios de tratamento da seção 24; base legal/consentimento; aviso de violação à NDPC em 72 horas; registro de controladores de grande importância
+por,Sensitive data,Dados sensíveis
+por,Sensitive data only when processed to uniquely identify an individual; consent required,Dados sensíveis somente quando tratados para identificar unicamente uma pessoa; consentimento exigido
+por,Sensitive data requiring opt-in consent only when processed for identification,Dados sensíveis que exigem consentimento prévio (opt-in) somente quando tratados para identificação
+por,Sensitive data when processed to uniquely identify an individual (consent required); separate Genetic Information Privacy Act at Minn. Stat. 325F.995,Dados sensíveis quando tratados para identificar unicamente uma pessoa (consentimento exigido); Genetic Information Privacy Act separada em Minn. Stat. 325F.995
+por,Sensitive information may be processed without consent for research or statistical analysis (section not found); archival/historical disclosure provision in revised text s. 44 (unconfirmed),Informações sensíveis podem ser tratadas sem consentimento para pesquisa ou análise estatística (seção não encontrada); disposição sobre divulgação para fins de arquivo/históricos no texto revisado s. 44 (não confirmado)
+por,Sensitive personal data,Dados pessoais sensíveis
+por,Sensitive personal information,Informações pessoais sensíveis
+por,"Since 2026-07-01: persons doing business in Connecticut or targeting residents that process data of 35,000+ consumers, or any amount if they process sensitive data or sell personal data","Desde 2026-07-01: pessoas que fazem negócios em Connecticut ou direcionadas a residentes que tratam dados de 35,000+ consumidores, ou de qualquer quantidade se tratarem dados sensíveis ou venderem dados pessoais"
+por,Singapore Residents,Residentes de Singapura
+por,Some processing exempt from declaration (articles not found) (unconfirmed),Alguns tratamentos isentos de declaração (artigos não encontrados) (não confirmado)
+por,Sources conflict: fines up to XAF 1 billion (Afriwise) or XAF 100 million and up to 10 years imprisonment (ConsentStack) (unconfirmed),As fontes divergem: multas de até XAF 1 bilhão (Afriwise) ou XAF 100 milhões e até 10 anos de prisão (ConsentStack) (não confirmado)
+por,South Africa Residents,Residentes da África do Sul
+por,South Korea Residents,Residentes da Coreia do Sul
+por,Spanish Residents,Residentes espanhóis
+por,Special category under GDPR art. 9; explicit consent or another art. 9(2) ground required,Categoria especial conforme o art. 9 do GDPR; consentimento explícito ou outra hipótese do art. 9(2) exigidos
+por,"State agencies and political subdivisions, GLBA financial institutions and data, HIPAA covered entities and business associates, nonprofits, higher education institutions, public utilities; certain research data","Órgãos estaduais e subdivisões políticas, instituições financeiras e dados da GLBA, entidades cobertas pela HIPAA e associados comerciais, organizações sem fins lucrativos, instituições de ensino superior, serviços públicos; certos dados de pesquisa"
+por,"State agencies and political subdivisions, GLBA financial institutions, HIPAA entities, nonprofits, higher education, electric utilities, employment and B2B data, SBA small businesses (except sale of sensitive data needs consent)","Órgãos estaduais e subdivisões políticas, instituições financeiras da GLBA, entidades da HIPAA, organizações sem fins lucrativos, ensino superior, concessionárias de energia elétrica, dados de emprego e B2B, pequenas empresas da SBA (exceto a venda de dados sensíveis, que exige consentimento)"
+por,"State agencies and political subdivisions, HIPAA entities, GLBA financial institutions, nonprofits, higher education","Órgãos estaduais e subdivisões políticas, entidades da HIPAA, instituições financeiras da GLBA, organizações sem fins lucrativos, ensino superior"
+por,"State agencies and political subdivisions, nonprofits, institutions of higher education, HIPAA covered entities and data, GLBA financial institutions/data; employment and commercial contexts","Órgãos estaduais e subdivisões políticas, organizações sem fins lucrativos, instituições de ensino superior, entidades cobertas e dados da HIPAA, instituições financeiras/dados da GLBA; contextos de emprego e comerciais"
+por,"State bodies, companies & sole proprietors in Belarus, foreign organizations processing data there","Órgãos do Estado, empresas e empresários individuais na Bielorrússia, organizações estrangeiras que tratam dados no país"
+por,"State, local authorities, public bodies, and private natural and legal persons processing data wholly or partly in Mali","Estado, autoridades locais, órgãos públicos e pessoas físicas e jurídicas privadas que tratam dados total ou parcialmente no Mali"
+por,Storage limitation principle (no article found) (unconfirmed),Princípio da limitação do armazenamento (nenhum artigo encontrado) (não confirmado)
+por,Storage limitation principle (s.24); no fixed period found,Princípio da limitação do armazenamento (s.24); nenhum prazo fixo encontrado
+por,Storage limitation principle (section not confirmed) (unconfirmed),Princípio da limitação do armazenamento (seção não confirmada) (não confirmado)
+por,"Supplements GDPR, Commissioner's powers, administrative fines and appeals","Complementa o GDPR, poderes do Commissioner, multas administrativas e recursos"
+por,"Supplements GDPR, lawful basis and data subject rights, Commissioner's powers","Complementa o GDPR, base legal e direitos dos titulares dos dados, poderes do Commissioner"
+por,"Supplements GDPR, national derogations, Law Enforcement Directive rules, supervisory powers","Complementa o GDPR, derrogações nacionais, regras da Diretiva sobre Aplicação da Lei, poderes de supervisão"
+por,"Supplements GDPR, supervisory authority duties, liability of responsible officials","Complementa o GDPR, deveres da autoridade de controle, responsabilidade dos agentes responsáveis"
+por,"Supplements GDPR, supervisory authority rules, video surveillance and biometric data rules","Complementa o GDPR, regras da autoridade de controle, regras sobre videovigilância e dados biométricos"
+por,"Supplements GDPR, video surveillance rules, consent age 15","Complementa o GDPR, regras sobre videovigilância, idade de consentimento de 15 anos"
+por,Swedish Residents,Residentes suecos
+por,Swiss Residents,Residentes suíços
+por,"Texas-style model: consumer rights (access, correct, delete, port, opt out); consent for sensitive data; data minimization, security and risk assessments","Modelo ao estilo do Texas: direitos do consumidor (acessar, corrigir, excluir, portar, recusar (opt-out)); consentimento para dados sensíveis; minimização de dados, segurança e avaliações de risco"
+por,Thai Residents,Residentes tailandeses
+por,Turkish Residents,Residentes turcos
+por,UAE Residents,Residentes dos EAU
+por,UK Residents,Residentes do Reino Unido
+por,UNKNOWN (public security and defence processing has special rules; art. 14 exceptions not verified) (unconfirmed),DESCONHECIDO (o tratamento de segurança pública e defesa tem regras especiais; exceções do art. 14 não verificadas) (não confirmado)
+por,UNKNOWN; unverified claim of 10% turnover penalties from 2021 amendments (unconfirmed),DESCONHECIDO; alegação não verificada de sanções de 10% do faturamento a partir das alterações de 2021 (não confirmado)
+por,"Unlawful collection or retention of sensitive data without explicit consent: 1 to 5 years prison and fine of CFA 1 to 10 million, same for retention beyond legal periods and fraudulent CCTV (per IPDCP); a secondary tracker gives CFA 1 to 25 million (unconfirmed)","Coleta ou retenção ilícita de dados sensíveis sem consentimento explícito: 1 a 5 anos de prisão e multa de CFA 1 a 10 milhões, o mesmo para retenção além dos prazos legais e CFTV fraudulento (segundo a IPDCP); um rastreador secundário indica CFA 1 a 25 milhões (não confirmado)"
+por,"Up to $10,000 per violation under the Consumer Protection Act; discretionary 60-day cure period 2028-01-01 to 2029-06-30","Até $10,000 por violação conforme a Consumer Protection Act; prazo de correção discricionário de 60 dias de 2028-01-01 a 2029-06-30"
+por,"Up to $100,000 CAD","Até $100,000 CAD"
+por,"Up to $43,280 per violation","Até $43,280 por violação"
+por,"Up to $7,500 per violation after 30-day cure period; AG exclusive enforcement, no private right of action","Até $7,500 por violação após prazo de correção de 30 dias; aplicação exclusiva pelo AG, sem direito de ação privado"
+por,"Up to $7,500 per violation after 30-day cure period; no private right of action","Até $7,500 por violação após prazo de correção de 30 dias; sem direito de ação privado"
+por,"Up to $7,500 per violation after 90-day cure period; no private right of action (715D.8)","Até $7,500 por violação após prazo de correção de 90 dias; sem direito de ação privado (715D.8)"
+por,Up to £20M or 4% revenue,Até £20M ou 4% da receita
+por,Up to ¥1M penalty,Sanção de até ¥1M
+por,Up to €10M or 3% revenue,Até €10M ou 3% da receita
+por,Up to €20M or 4% revenue,Até €20M ou 4% da receita
+por,Up to ₹250 Cr penalty,Sanção de até ₹250 Cr
+por,Up to 1% of prior-year annual turnover (private sector),Até 1% do faturamento anual do ano anterior (setor privado)
+por,"Up to 10,000 minimum daily wages (jornales mínimos)","Até 10,000 salários mínimos diários (jornales mínimos)"
+por,"Up to 10% of annual Singapore turnover (if >SGD 10m) or SGD 1 million, whichever higher","Até 10% do faturamento anual em Singapura (se >SGD 10m) ou SGD 1 milhão, o que for maior"
+por,Up to 100x national minimum wage fine; prison 6 months-2 years,Multa de até 100x o salário mínimo nacional; prisão de 6 meses-2 anos
+por,"Up to 20,000 UTM (~USD 1.3M) for very serious infringements","Até 20,000 UTM (~USD 1.3M) por infrações muito graves"
+por,Up to 200 base units administrative fine (Art. 23.7 Code of Administrative Offences); criminal liability also possible,Multa administrativa de até 200 unidades base (Art. 23.7 do Código de Infrações Administrativas); responsabilidade penal também possível
+por,Up to 245 currency points or 2% of annual gross turnover (corporations); up to 10 years' imprisonment,Até 245 currency points ou 2% do faturamento bruto anual (pessoas jurídicas); prisão de até 10 anos
+por,Up to 3 years prison and/or NPR 30k fine,Até 3 anos de prisão e/ou multa de NPR 30k
+por,"Up to 3% of total revenue; up to 10% for repeat intentional/grossly negligent violations, breaches affecting >=10m people, or ignoring PIPC orders","Até 3% da receita total; até 10% em caso de violações intencionais/por negligência grave reiteradas, violações que afetem >=10m pessoas ou descumprimento de ordens da PIPC"
+por,Up to 30 base salaries (salarios base) fine,Multa de até 30 salários base (salarios base)
+por,"Up to 320,000 UMA (~MXN 36M at 2025 UMA); doubled for sensitive data","Até 320,000 UMA (~MXN 36M pela UMA de 2025); em dobro para dados sensíveis"
+por,Up to 4% of annual gross worldwide turnover (bodies corporate),Até 4% do faturamento bruto mundial anual (pessoas jurídicas)
+por,Up to 4% of annual turnover (2% for lesser breaches),Até 4% do faturamento anual (2% para violações menos graves)
+por,Up to 4% of worldwide turnover (entities); up to 10 years' imprisonment and ETB 300000 fines,Até 4% do faturamento mundial (entidades); prisão de até 10 anos e multas de ETB 300000
+por,"Up to 40 monthly minimum wages, commerce sector (~USD 14,600) for very serious infractions (unconfirmed)","Até 40 salários mínimos mensais do setor de comércio (~USD 14,600) por infrações muito graves (não confirmado)"
+por,"Up to 5,000 penalty units and/or 10 years' imprisonment","Até 5,000 penalty units e/ou prisão de até 10 anos"
+por,Up to 5% of prior-year revenue (cross-border violations); up to 10x illegal gain (data trading); up to VND 3 billion other,Até 5% da receita do ano anterior (violações transfronteiriças); até 10x o ganho ilícito (comércio de dados); até VND 3 bilhões nos demais casos
+por,"Up to 500,000 Indexed Units (UI) fine","Multa de até 500,000 Unidades Indexadas (UI)"
+por,"Up to 500,000 penalty units and/or 5 years' imprisonment","Até 500,000 penalty units e/ou prisão de até 5 anos"
+por,Up to 50M BRL or 2% revenue,Até 50M BRL ou 2% da receita
+por,Up to ALL 2 billion or 4% global turnover,Até ALL 2 bilhões ou 4% do faturamento global
+por,"Up to AMD 500,000","Até AMD 500,000"
+por,Up to AUD $50M,Até AUD $50M
+por,Up to BAM 40M or 4% global turnover,Até BAM 40M ou 4% do faturamento global
+por,Up to BHD 20k fine; up to 1 year prison,Multa de até BHD 20k; até 1 ano de prisão
+por,Up to BWP 50M fine and/or imprisonment,Multa de até BWP 50M e/ou prisão
+por,Up to CHF 100k penalty,Sanção de até CHF 100k
+por,Up to CNY 50M or 5% of prior-year turnover (serious cases); individuals CNY 100k-1M,Até CNY 50M ou 5% do faturamento do ano anterior (casos graves); pessoas físicas CNY 100k-1M
+por,Up to EGP 5M (plus imprisonment for some offences),Até EGP 5M (mais prisão para alguns crimes)
+por,"Up to EUR 20M or 4% of turnover under GDPR art. 83; residual PDPA violations up to BGN 5,000 (doubled on repetition); largest fine to date about EUR 2.55M (National Revenue Agency 2019)","Até EUR 20M ou 4% do faturamento conforme o art. 83 do GDPR; violações residuais da PDPA até BGN 5,000 (em dobro na reincidência); maior multa até hoje cerca de EUR 2.55M (Agência Nacional de Receitas 2019)"
+por,"Up to GEL 20,000 fine","Multa de até GEL 20,000"
+por,Up to HKD 1M fine,Multa de até HKD 1M
+por,Up to IDR 5B fine,Multa de até IDR 5B
+por,Up to JOD 10k per violation (doubled if repeated),Até JOD 10k por violação (em dobro se reiterada)
+por,Up to LKR 10M per non-compliance (doubled for repeats),Até LKR 10M por descumprimento (em dobro na reincidência)
+por,"Up to MAD 300,000 and/or up to 2 years imprisonment (criminal); CNDP warnings, notices, authorisation withdrawal","Até MAD 300,000 e/ou até 2 anos de prisão (penal); advertências, notificações e retirada de autorização pela CNDP"
+por,Up to MDL 2M or 2% turnover,Até MDL 2M ou 2% do faturamento
+por,Up to MUR 200000 fine and/or 5 years' imprisonment,Multa de até MUR 200000 e/ou prisão de 5 anos
+por,Up to NT$1M fine and 5 years prison; admin fines up to NT$500k,Multa de até NT$1M e 5 anos de prisão; multas administrativas de até NT$500k
+por,Up to NZD 200k penalty,Sanção de até NZD 200k
+por,Up to OMR 500k fine (admin fines up to OMR 2k),Multa de até OMR 500k (multas administrativas de até OMR 2k)
+por,Up to PHP 1M fine,Multa de até PHP 1M
+por,Up to QAR 5M fine,Multa de até QAR 5M
+por,Up to R10M or 10% revenue,Até R10M ou 10% da receita
+por,"Up to RM1,000,000 fine and/or up to 3 years' imprisonment","Multa de até RM1,000,000 e/ou prisão de até 3 anos"
+por,Up to RSD 2M fine for legal entities,Multa de até RSD 2M para pessoas jurídicas
+por,"Up to RUB 15M per leak (>100k subjects or special categories); repeat leaks: 1-3% of revenue, min RUB 20M, max RUB 500M","Até RUB 15M por vazamento (>100k titulares ou categorias especiais); vazamentos reiterados: 1-3% da receita, mín. RUB 20M, máx. RUB 500M"
+por,Up to SAR 5M (doubled for repeat); sensitive-data disclosure: up to SAR 3M and 2 years prison,Até SAR 5M (em dobro na reincidência); divulgação de dados sensíveis: até SAR 3M e 2 anos de prisão
+por,Up to THB 5M fine,Multa de até THB 5M
+por,Up to the higher of NGN 10M or 2% of annual gross revenue (major importance); NGN 2M or 2% for others,Até o maior valor entre NGN 10M ou 2% da receita bruta anual (grande importância); NGN 2M ou 2% para os demais
+por,Up to TRY 1M fine,Multa de até TRY 1M
+por,"Up to TTD 50,000 and 3 years imprisonment reported by one commercial site; penalty Part V not proclaimed (unconfirmed)","Até TTD 50,000 e 3 anos de prisão segundo um site comercial; a Parte V sobre sanções não foi promulgada (não confirmado)"
+por,Up to TZS 20M (individuals) or TZS 5B (corporations),Até TZS 20M (pessoas físicas) ou TZS 5B (pessoas jurídicas)
+por,Up to UAH 34000 administrative fine; criminal liability,Multa administrativa de até UAH 34000; responsabilidade penal
+por,"Up to USD 10,000 fine (B/.1,000-10,000); database registry closure or suspension of processing","Multa de até USD 10,000 (B/.1,000-10,000); encerramento do registro da base de dados ou suspensão do tratamento"
+por,"Up to USD 10,000 per first violation and USD 20,000 per subsequent violation under the NJ Consumer Fraud Act; no private right of action","Até USD 10,000 pela primeira violação e USD 20,000 por violação subsequente conforme a NJ Consumer Fraud Act; sem direito de ação privado"
+por,"Up to USD 10,000 per violation and USD 25,000 per repeated violation under the Maryland Consumer Protection Act; misdemeanor fine up to USD 1,000 or 1 year prison reported; no private right of action","Até USD 10,000 por violação e USD 25,000 por violação reiterada conforme a Maryland Consumer Protection Act; multa por contravenção de até USD 1,000 ou 1 ano de prisão informada; sem direito de ação privado"
+por,"Up to USD 10,000 per violation as deceptive trade practice (sources conflict; one lists USD 100-500); no private right of action","Até USD 10,000 por violação como prática comercial enganosa (as fontes divergem; uma indica USD 100-500); sem direito de ação privado"
+por,"Up to USD 10,000 per violation as unfair or deceptive practice under RSA 358-A; no private right of action","Até USD 10,000 por violação como prática desleal ou enganosa conforme a RSA 358-A; sem direito de ação privado"
+por,Up to USD 150000 fine,Multa de até USD 150000
+por,"Up to USD 7,500 per violation not cured within 30 days; injunctive relief and fees; no private right of action","Até USD 7,500 por violação não corrigida em 30 dias; medida cautelar e custas; sem direito de ação privado"
+por,"Up to USD 7,500 per violation; penalties go to a consumer privacy fund; no private right of action","Até USD 7,500 por violação; as multas vão para um fundo de privacidade do consumidor; sem direito de ação privado"
+por,Up to XOF 10M (repeat within 5 years: up to XOF 100M or 5% of pre-tax turnover) (unconfirmed),Até XOF 10M (reincidência em 5 anos: até XOF 100M ou 5% do faturamento antes de impostos) (não confirmado)
+por,"USD 2,663 per violation; USD 7,988 per intentional violation or involving minors under 16 (inflation-adjusted) (unconfirmed)","USD 2,663 por violação; USD 7,988 por violação intencional ou envolvendo menores de 16 anos (ajustado pela inflação) (não confirmado)"
+por,Vermont residents (consumers); consumer health data provisions apply regardless of volume thresholds,Residentes de Vermont (consumidores); as disposições sobre dados de saúde do consumidor se aplicam independentemente dos limites de volume
+por,"Violation is a deceptive trade practice under the Colorado Consumer Protection Act: civil penalty up to $20,000 per violation (6-1-112); no private right of action; mandatory cure period ended 2025-01-01","A violação é prática comercial enganosa conforme a Colorado Consumer Protection Act: multa civil de até $20,000 por violação (6-1-112); sem direito de ação privado; prazo de correção obrigatório encerrado em 2025-01-01"
+por,"Violation is an unfair trade practice under CUTPA: up to $5,000 per willful violation (42-110o); no private right of action","A violação é prática comercial desleal conforme a CUTPA: até $5,000 por violação dolosa (42-110o); sem direito de ação privado"
+por,Washington consumers and persons whose consumer health data is collected in Washington,Consumidores de Washington e pessoas cujos dados de saúde do consumidor são coletados em Washington
+por,"Written declaration to ANSICE for most processing; prior authorisation for genetic/biometric data, health research, offence records, national ID numbers; data subject rights and security obligations","Declaração por escrito à ANSICE para a maioria dos tratamentos; autorização prévia para dados genéticos/biométricos, pesquisa em saúde, registros de infrações, números de identidade nacional; direitos dos titulares dos dados e obrigações de segurança"
+por,Written informed consent before collecting biometric data; published retention schedule and destruction guidelines (destroy at end of purpose or within 3 years of last interaction); no sale or profit from biometric data,Consentimento informado por escrito antes da coleta de dados biométricos; cronograma de retenção e diretrizes de destruição publicados (destruir ao fim da finalidade ou em até 3 anos da última interação); proibição de venda ou lucro com dados biométricos
 spa,12 data protection principles; consent (express or tacit) with exceptions; data owner rights; security; cross-border transfers authorised by public bodies,12 principios de protección de datos; consentimiento (expreso o tácito) con excepciones; derechos del titular de los datos; seguridad; transferencias transfronterizas autorizadas por organismos públicos
 spa,2 years retention,Conservación durante 2 años
 spa,2-5 years,2-5 años
