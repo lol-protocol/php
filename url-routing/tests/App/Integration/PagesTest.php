@@ -61,12 +61,13 @@ class PagesTest extends TestCase
         $cmd = [PHP_BINARY, '-d', 'display_errors=stderr', dirname(__DIR__, 2) . '/Support/request.php',
             $host, $uri, $method, $postBody, $sessionId ?? '', $autorizacion ?? ''];
 
-        $env = [
+        // $entorno first: what a test passes wins over the defaults (e.g. a database of its own).
+        $env = $entorno + [
             'DB_DSN_GENEALOGY' => 'sqlite:' . self::$dir . '/genealogy.sqlite',
             'DB_DSN_POS' => 'sqlite:' . self::$dir . '/pos.sqlite',
             'LOG_FILE' => self::$dir . '/app.log',
             'PATH' => (string)getenv('PATH'),
-        ] + $entorno;
+        ];
         if ($tokenConfigurado !== null) {
             $env['OWNER_TOKEN'] = $tokenConfigurado;
         }
@@ -860,6 +861,31 @@ class PagesTest extends TestCase
     private function restaurarMarcaDeCarlos(): void
     {
         (new Database('sqlite:' . self::$dir . '/genealogy.sqlite'))->execute('UPDATE personas SET viva = NULL WHERE id = 6128473108');
+    }
+
+    /** A new database has no user 1: the owner, who has the right token, must be told so instead of seeing a bare 404. */
+    public function testTheOwnersAccountAreaSaysWhenTheFixedUserDoesNotExist(): void
+    {
+        $vacias = [];
+        foreach (['genealogy' => 'DB_DSN_GENEALOGY', 'pos' => 'DB_DSN_POS'] as $sitio => $variable) {
+            $archivo = self::$dir . "/vacia-{$sitio}.sqlite";
+            @unlink($archivo);
+            Migrator::forSite(new Database("sqlite:{$archivo}"), $sitio)->migrate();
+            $vacias[$variable] = "sqlite:{$archivo}";
+        }
+
+        foreach ([self::GENEALOGIA, self::POS] as $host) {
+            [$codigo, $body] = $this->get($host, '/0/', tokenConfigurado: self::TOKEN, autorizacion: self::basic(self::TOKEN), entorno: $vacias);
+
+            $this->assertSame(404, $codigo, $host);
+            $this->assertStringContainsString('No existe el usuario 1', $body, $host);
+            $this->assertStringContainsString('DESPLIEGUE.md', $body, $host);
+
+            // Whoever is not the owner is still asked for the credentials, and learns nothing of the database.
+            [$codigo, $body] = $this->get($host, '/0/', tokenConfigurado: self::TOKEN, entorno: $vacias);
+            $this->assertSame(401, $codigo, $host);
+            $this->assertStringNotContainsString('usuario', $body, $host);
+        }
     }
 
     public function testThePageToMarkWhoLivesIsClosedToVisitors(): void

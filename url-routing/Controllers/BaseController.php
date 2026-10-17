@@ -57,6 +57,16 @@ class BaseController
         return $privacidad;
     }
 
+    /**
+     * The 404 text for the account area when the fixed user does not exist. Only the owner reaches
+     * it (she has already proved who she is), so it can say what is missing: on a new database
+     * /0/ would otherwise answer 404 to the right credentials and look like a wrong token.
+     */
+    protected function sinUsuario(): string
+    {
+        return 'No existe el usuario ' . self::DEFAULT_USER_ID . ' de esta base de datos (ver docs/DESPLIEGUE.md, paso 4)';
+    }
+
     /** Runs $accion only for the owner; anyone else gets a 404, as if the page did not exist. */
     protected function soloPropietario(callable $accion): string
     {

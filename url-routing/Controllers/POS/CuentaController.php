@@ -62,7 +62,7 @@ class CuentaController extends BaseController
     {
         $usuario = $this->usuario();
         if ($usuario === null) {
-            return $this->handleNotFound();
+            return $this->handleNotFound($this->sinUsuario());
         }
 
         return view($view, ['usuario' => $usuario]);

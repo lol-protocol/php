@@ -16,7 +16,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "./"
-        }
+        },
+        "exclude-from-classmap": ["tests/", "bin/", "database/", "deploy/", "docs/", "views/"]
     },
     "autoload-dev": {
         "psr-4": {

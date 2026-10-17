@@ -46,7 +46,7 @@ todavía. El proyecto no tiene cuentas de usuario (es un addon de un solo
 operador, no un producto multiusuario): la página de cuenta (`0`) actúa sobre
 una cuenta fija en vez de una sesión, y lo privado (colecciones con
 `publica = false`, cuenta, edición y pedidos) exige ser el propietario, que se
-identifica con `OWNER_TOKEN`. Ver [`ACCESO.md`](./ACCESO.md).
+identifica con `OWNER_TOKEN`. Ver [`ACCESO.md`](./ACCESO.md). Para ponerlo en un servidor: [`DESPLIEGUE.md`](./DESPLIEGUE.md).
 
 ## 🧠 Principio de diseño
 

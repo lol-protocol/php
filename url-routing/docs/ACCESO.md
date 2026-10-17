@@ -78,6 +78,8 @@ La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, 
 
 ## Despliegue
 
+La guía paso a paso, con las comprobaciones, está en [`DESPLIEGUE.md`](./DESPLIEGUE.md). Lo que importa para el acceso:
+
 - **HTTPS, obligatorio en producción.** El token viaja en la cabecera `Authorization`. Sin HTTPS lo ve cualquiera en la red.
 - **Nginx:** pasa la cabecera a PHP-FPM por defecto; no hace falta nada. Ver [`deploy/nginx.conf.example`](../deploy/nginx.conf.example).
 - **Apache:** `public/.htaccess` incluye la regla que entrega la cabecera a PHP (CGI/FPM la descartan). **No se probó en un Apache real**: comprobarlo con `curl -u x:<token> https://tudominio/0/` (debe dar 200).
