@@ -205,7 +205,67 @@ class Router
     protected function handleNotFound(): string
     {
         http_response_code(404);
-        return '<h1>404 - Pagina no encontrada</h1>';
+        $pista = $this->pista();
+
+        return '<h1>404 - Página no encontrada</h1>' . ($pista === null ? '' : "\n<p>{$pista}</p>");
+    }
+
+    /**
+     * Why this path matches nothing, read from its shape and the route config
+     * alone (HTML, already escaped). It never looks at the database: a hint
+     * must not tell a missing id from a private one.
+     */
+    private function pista(): ?string
+    {
+        $primero = $this->segments[0] ?? '';
+        $porLargo = $this->config['by_length'] ?? [];
+
+        if (ctype_digit($primero)) {
+            $entrada = $porLargo[strlen($primero)] ?? null;
+            if ($entrada === null) {
+                return $this->pistaDeLargo($primero, $porLargo);
+            }
+
+            $acciones = $entrada['actions'] ?? [];
+            $lista = implode(', ', array_map(
+                static fn(int $codigo, string $metodo): string => "{$codigo} {$metodo}",
+                array_keys($acciones),
+                $acciones
+            ));
+            $tipo = htmlspecialchars($entrada['type']);
+
+            return count($this->segments) > 2 || $acciones === []
+                ? "Una URL de {$tipo} admite " . ($acciones === [] ? 'solo el id, sin acciones.' : "una sola acción: {$lista}.")
+                : "{$tipo} no tiene esa acción. Sus acciones: {$lista}.";
+        }
+
+        return match (true) {
+            isset($this->config['place']) && preg_match('/^[a-z]{2}$/', $primero) === 1
+                => 'Un lugar es país (2 letras), región y ciudad (1-3 letras cada una), y como mucho una acción: /mx/jal/gdl/1/.',
+            preg_match('/^[a-z]{3}$/', $primero) === 1
+                => 'Un código de 3 letras es un idioma, y el idioma va en el subdominio (eng.…, spa.…), no en la ruta.',
+            preg_match('/^[a-z]{4,}$/', $primero) === 1
+                => 'Las URLs de este sitio no llevan palabras. Para buscar, usa el buscador.',
+            preg_match('/^[a-z]$/', $primero) === 1 => 'No existe esa función.',
+            default => null,
+        };
+    }
+
+    /** An id whose digit count no type uses: say so, and which padded ids it could have meant. */
+    private function pistaDeLargo(string $id, array $porLargo): string
+    {
+        $largo = strlen($id);
+        $opciones = [];
+        foreach ($porLargo as $ancho => $entrada) {
+            // A random code (an order's) padded from a guess is never the right one: don't suggest it.
+            if ($ancho > $largo && ($entrada['sugerir'] ?? true)) {
+                $url = '/' . str_pad($id, $ancho, '0', STR_PAD_LEFT) . '/';
+                $opciones[] = '<a href="' . $url . '">' . $url . '</a> (' . htmlspecialchars($entrada['type']) . ')';
+            }
+        }
+
+        $texto = "Ningún tipo usa {$largo} dígitos: cada tipo tiene un ancho fijo, con ceros a la izquierda.";
+        return $opciones === [] ? $texto : $texto . ' ¿Quisiste decir ' . implode(', ', $opciones) . '?';
     }
 
     /**

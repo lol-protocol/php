@@ -29,6 +29,9 @@ class ConfigValidator
                 if (!isset($entry['controller'])) {
                     throw new \InvalidArgumentException("Invalid reserved entry for key '{$key}'");
                 }
+                if (isset($entry['ruta']) && (!is_int($entry['ruta']) || !isset($entry['method']))) {
+                    throw new \InvalidArgumentException("Reserved entry '{$key}': ruta needs a segment count and a method");
+                }
             }
         }
 

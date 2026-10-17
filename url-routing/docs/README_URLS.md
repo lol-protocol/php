@@ -1,6 +1,6 @@
 # Esquema de URLs Abstracto — Genealogía y POS
 
-URLs sin palabras de dominio, sin guiones ni guiones bajos. El tipo de recurso se infiere de la **forma** del primer segmento de la URL (cantidad de dígitos, o letras puras para lugares). Ver [`URL_STRUCTURES.md`](./URL_STRUCTURES.md) para la tabla completa de formatos y ejemplos.
+URLs sin palabras de dominio, sin guiones ni guiones bajos. El tipo de recurso se infiere de la **forma** del primer segmento de la URL (cantidad de dígitos; 2 letras para un país, 3 para un idioma, 1 para una función del sistema). Ver [`URL_STRUCTURES.md`](./URL_STRUCTURES.md) para la gramática y los ejemplos, y [`RUTAS.md`](./RUTAS.md) para la lista completa, generada desde la configuración.
 
 ## 📁 Estructura de Archivos
 
@@ -14,7 +14,8 @@ url-routing/
 ├── Repositories/                       # Consultas por tipo (SQLite y PostgreSQL)
 ├── deploy/nginx.conf.example           # Server block para el VPS
 ├── docs/
-│   ├── URL_STRUCTURES.md               # Tabla completa de formatos
+│   ├── URL_STRUCTURES.md               # Gramática de formatos y ejemplos
+│   ├── RUTAS.md                        # Todas las rutas (generado: php bin/rutas.php)
 │   └── README_URLS.md                  # Este archivo
 ├── config/routes/
 │   ├── genealogy.php                  # Registro de tipos por largo de dígitos
@@ -51,7 +52,7 @@ identifica con `OWNER_TOKEN`. Ver [`ACCESO.md`](./ACCESO.md). Para ponerlo en un
 ## 🧠 Principio de diseño
 
 1. **Solo dígitos** → el número de dígitos selecciona el tipo. Más dígitos = mayor cardinalidad esperada de ese catálogo. `persona` es el techo (10 dígitos) en genealogía; `producto` es el techo (8 dígitos) en POS, deliberadamente menor que persona.
-2. **Solo letras** → jerarquía de lugar (país/región/ciudad), porque es una jerarquía de códigos, no una secuencia de registros.
+2. **Letras** → el largo dice qué es: 2 letras un país, y detrás región y ciudad (1-3 letras) — una jerarquía de códigos, no una secuencia de registros —; 3 letras un idioma (en el subdominio); 1 letra una función del sistema.
 3. **Segmento reservado** → rutas de sistema fuera del esquema numérico: `0` (cuenta) y, en el POS, `c` (carrito) y `p` (pago): letras sueltas que se leen igual en varios idiomas, nunca palabras. Sus pasos son acciones numéricas, por el mismo mecanismo.
 4. Un segundo segmento numérico, cuando existe, selecciona una **acción** sobre el recurso ya resuelto — su significado depende del tipo (está definido en el arreglo `actions` de cada entrada en `config/routes/*.php`). Un código de acción que no existe en ese arreglo es **404**, nunca un `show` silencioso del recurso base.
 5. **Contrato de ids**: todo id numérico se genera relleno con ceros al ancho fijo de su tipo — usa siempre `enlace($tipo, $id)` (nunca concatenes el id a mano), que hace el padding automáticamente vía `Router::typeLength()`.
@@ -116,7 +117,7 @@ spa.tudominio.local:8000/6128473190/1/     ascendencia
 spa.tudominio.local:8000/1048293/          colección (árbol)
 spa.tudominio.local:8000/582317/           grupo (apellido)
 spa.tudominio.local:8000/mx/jal/gdl/       lugar (país/región/ciudad)
-spa.tudominio.local:8000/?t=10&q=maria     búsqueda de personas
+spa.tudominio.local:8000/b/10/maria/       búsqueda de personas
 spa.tudominio.local:8000/0/                cuenta
 ```
 

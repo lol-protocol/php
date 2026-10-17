@@ -9,7 +9,8 @@ flowchart LR
     seg -->|4 digitos| grupo["grupo\nGrupoController\n(sin acciones)"]
     seg -.->|1-3 digitos| libre["(libre — headroom\npara tipos futuros)"]
 
-    reservado["Segmento reservado"] -->|vacio, con ?t= y ?q=| home["HomeController\nlistado / busqueda"]
+    reservado["Segmento reservado"] -->|vacio| home["HomeController\ninicio"]
+    reservado -->|'b'| busqueda["HomeController::buscar\n/b/{digitos}/[{texto}/][{pagina}/]"]
     reservado -->|'0'| cuenta["CuentaController\n1 perfil · 2 ordenes\n3 deseos · 4 direcciones\n5 preferencias"]
     reservado -->|'c'| cart["CartController (carrito)\n1 agregar · 2 actualizar\n3 quitar · 4 vaciar (POST)"]
     reservado -->|'p'| checkout["CheckoutController (pago)\n1 envio · 2 pago · 3 confirmar"]

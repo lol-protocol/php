@@ -12,7 +12,7 @@ La lógica está en [`Support/AccessPolicy.php`](../Support/AccessPolicy.php) y 
 | Pedidos del POS: `/{código de 16 dígitos}/` y sus acciones | **404**, igual |
 | Página de edición de una colección: `/{id}/2/` | **404** si la colección es privada; **401** si es pública |
 | Área de cuenta, genealogía y POS: `/0/` y sus acciones | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN` |
-| Búsqueda de colecciones (`/?t=7`) | las privadas no aparecen, ni buscándolas por su nombre exacto |
+| Búsqueda de colecciones (`/b/7/`) | las privadas no aparecen, ni buscándolas por su nombre exacto |
 | Marca de «vive / falleció» de una persona: `/{id de persona}/5/` | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN`. Guardar exige además el token CSRF del formulario |
 
 **Por qué 404 y no 401 o 403.** Los ids son URLs públicas y casi secuenciales: un 401 o un 403 confirmaría cuáles existen. Es lo que la sección «Recursos privados» de `README_URLS.md` ya prometía y el código no cumplía. Lo único que responde 401 es lo que se sabe que existe: el área de cuenta, la edición de una colección pública y la marca de vida de una persona (las personas son públicas, así que pedir la clave no confirma nada). El área de cuenta es además el punto de entrada del propietario.

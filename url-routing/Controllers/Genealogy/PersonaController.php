@@ -106,7 +106,7 @@ class PersonaController extends BaseController
      */
     public function viva(array $params = []): string
     {
-        $denegado = $this->exigirPropietario(ocultar: false);
+        $denegado = $this->exigirMetodo('GET', 'HEAD', 'POST') ?? $this->exigirPropietario(ocultar: false);
         if ($denegado !== null) {
             return $denegado;
         }

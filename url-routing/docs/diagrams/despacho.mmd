@@ -18,9 +18,9 @@ flowchart TD
     R -->|si, mapea| T[Controlador tipo: accion]
     R -->|no mapea| Z1
 
-    O -->|no| U{Solo letras y 'place' configurado?}
+    O -->|no| U{2 letras (pais) y 'place' configurado?}
     U -->|si| V[Separar ultimo segmento\nsi es digito -> codigo de accion]
-    V --> W{Quedan 1-3 codigos,\ntodos alfabeticos?}
+    V --> W{Quedan 1-3 codigos:\npais + subdivisiones de 1-3 letras?}
     W -->|no| L
     W -->|si| X{Codigo de accion null\no mapea en actions?}
     X -->|no mapea| L

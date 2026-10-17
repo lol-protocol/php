@@ -21,6 +21,8 @@ return [
         16 => [
             'type' => 'orden',
             'controller' => 'POS\OrderController',
+            // Never offered as a "did you mean" for a short id: a code is random, not a padded number.
+            'sugerir' => false,
             'actions' => [
                 1 => 'invoice',
                 2 => 'track',
@@ -65,6 +67,8 @@ return [
     // future low-cardinality types without renumbering anything above.
     'reserved' => [
         '' => ['controller' => 'POS\HomeController', 'method' => 'index'],
+        // Search: /b/{digit width of the type}/[{text}/][{page}/].
+        'b' => ['controller' => 'POS\HomeController', 'method' => 'buscar', 'ruta' => 3],
         Router::ACCOUNT_SEGMENT => [
             'controller' => 'POS\CuentaController',
             'method' => 'index',
@@ -96,6 +100,13 @@ return [
                 3 => 'confirm',
             ],
         ],
+    ],
+
+    // For crawlers: what may be indexed, and every catalog page.
+    'archivos' => [
+        'robots.txt' => ['controller' => 'POS\ArchivosController', 'method' => 'robots'],
+        'sitemap.xml' => ['controller' => 'POS\ArchivosController', 'method' => 'indice'],
+        'sitemap' => ['controller' => 'POS\ArchivosController', 'method' => 'parte'],
     ],
 
     // The purchase flow's old word URLs (GET only: a form posts to the new ones).

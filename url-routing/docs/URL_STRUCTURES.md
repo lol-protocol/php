@@ -1,11 +1,21 @@
 # Estructura de URLs — Esquema Abstracto por Longitud
 
-Ningún tipo de recurso aparece como palabra en la URL. El **tipo se infiere de la forma** del primer segmento:
+Ningún tipo de recurso aparece como palabra en la URL. El **tipo se infiere de la forma** del primer segmento, y cada forma significa siempre lo mismo:
 
-- **Solo dígitos** → el número de dígitos selecciona el tipo (ver tablas abajo).
-- **Solo letras** → jerarquía de lugar (país/región/ciudad).
-- **Coincidencia exacta** → rutas fijas de sistema: `0` (cuenta) y, en el POS, `c` (carrito) y `p` (pago).
-- **Nombre de archivo** → `robots.txt` y los sitemaps de genealogía.
+| Forma | Regex | Significa |
+|---|---|---|
+| vacío | `^$` | inicio |
+| `0` | `^0$` | cuenta |
+| 1 letra | `^[a-z]$` | función del sistema: `b` búsqueda; en el POS, `c` carrito y `p` pago |
+| 2 letras | `^[a-z]{2}$` | país (ISO 3166-1); detrás, región y ciudad de 1-3 letras (ISO 3166-2, UN/LOCODE) |
+| 3 letras | `^[a-z]{3}$` | idioma (ISO 639-2): va en el subdominio (`spa.`, `eng.`), nunca en la ruta |
+| 4+ letras | `^[a-z]{4,}$` | texto libre: lo que se busca, detrás de `/b/{tipo}/` |
+| solo dígitos | `^\d+$` | una entidad: la cantidad de dígitos dice el tipo (ver tablas abajo); 1 dígito detrás de algo es una acción |
+| con punto | `\.` | un archivo para buscadores: `robots.txt` y los sitemaps |
+
+La lista completa de rutas de cada sitio, generada desde `config/routes/*.php`, está en [`RUTAS.md`](./RUTAS.md) (`php bin/rutas.php > docs/RUTAS.md`; un test falla si queda desactualizada).
+
+Un 404 del router explica por qué, con lo que dice la forma de la URL: `/47/` sugiere `/0000000047/` (persona) y los demás anchos; una acción que no existe lista las que sí; `/eng/` recuerda que el idioma va en el subdominio. Nunca consulta la base de datos, así que no distingue un id inexistente de uno privado. Un método que la URL no acepta (un GET a `/c/1/`) es un **405** con la cabecera `Allow`.
 
 El largo en dígitos escala con el tamaño esperado del catálogo de cada tipo: a mayor cardinalidad prevista, más dígitos. `persona` es el techo (10 dígitos); todo lo demás queda por debajo, en orden.
 
@@ -55,7 +65,7 @@ Subdominios de 3 letras (ISO 639-2): `spa.` (español), `eng.` (inglés), etc. L
 | 7 dígitos | colección | árboles genealógicos |
 | 6 dígitos | grupo | apellidos / familias |
 | 5 dígitos | organización | instituciones / archivos |
-| texto (2-4 letras) | lugar | jerárquico país/región/ciudad; no es un registro secuencial |
+| letras: país (2) / región / ciudad (1-3) | lugar | jerárquico; no es un registro secuencial |
 
 ### Acciones (segundo segmento, numérico, con significado propio por tipo)
 
@@ -95,7 +105,9 @@ spa.tudominio.com/mx/jal/             lugar: región
 spa.tudominio.com/mx/jal/gdl/         lugar: ciudad
 spa.tudominio.com/mx/jal/gdl/1/       personas de esa ciudad
 
-spa.tudominio.com/?t=10&q=texto       listado/búsqueda de personas (t = dígitos del tipo)
+spa.tudominio.com/b/10/              todas las personas (10 = dígitos del tipo)
+spa.tudominio.com/b/10/garcia/       búsqueda de personas
+spa.tudominio.com/b/10/garcia/2/     página 2
 spa.tudominio.com/0/                  cuenta
 spa.tudominio.com/0/1/                cuenta: mis colecciones
 spa.tudominio.com/0/2/                cuenta: mis aportes
@@ -105,6 +117,8 @@ spa.tudominio.com/sitemap.xml         índice de sitemaps
 spa.tudominio.com/sitemap/10/1.xml    personas, parte 1 (50.000 URLs por parte)
 spa.tudominio.com/sitemap/l/1.xml     lugares
 ```
+
+Las páginas de una persona oculta (viva o privada) llevan `<meta name="robots" content="noindex">`. Toda página declara su URL canónica (`rel="canonical"`) y la misma ruta en los otros idiomas (`hreflang` `es`, `en` y `x-default` en el dominio sin subdominio).
 
 El sitemap lista solo lo que un visitante puede ver, lo pida quien lo pida: ninguna persona que podría estar viva o que solo está en colecciones privadas, ningún suceso ni registro que la delataría, ninguna colección privada. Cada parte se nombra por el largo de dígitos de su tipo (`10`, `9`, `8`, `7`, `6`, `5`) o `l` para lugares. Las URLs absolutas usan `SITE_URL_GENEALOGY` (o, sin ella, el esquema y el host de la petición).
 
@@ -149,7 +163,7 @@ Las URLs antiguas en palabras (`/cart/`, `/checkout/`, `/checkout/shipping/`...)
 
 ### Órdenes: código aleatorio de 16 dígitos
 
-La URL de una orden no lleva su id (que es correlativo y se podría recorrer) sino `ordenes.codigo`: 16 dígitos aleatorios, únicos, de ancho fijo. Como cualquier otro tipo, el router la reconoce por el largo: `/{16 dígitos}/`. Quien cree órdenes debe generar el código con `random_int()`. Las órdenes siguen siendo solo del propietario (ver [`ACCESO.md`](./ACCESO.md)) y nunca aparecen en la búsqueda (`?t=16` es un 400).
+La URL de una orden no lleva su id (que es correlativo y se podría recorrer) sino `ordenes.codigo`: 16 dígitos aleatorios, únicos, de ancho fijo. Como cualquier otro tipo, el router la reconoce por el largo: `/{16 dígitos}/`. Quien cree órdenes debe generar el código con `random_int()`. Las órdenes siguen siendo solo del propietario (ver [`ACCESO.md`](./ACCESO.md)) y nunca aparecen en la búsqueda (`/b/16/` es un 400).
 
 ### Ejemplos
 
@@ -161,7 +175,10 @@ spa.contrastocolor.com/81372047/2/         atributos (colores del producto)
 spa.contrastocolor.com/48213/              atributo (color)
 spa.contrastocolor.com/48213/1/            productos de ese color
 
-spa.contrastocolor.com/?t=8&q=texto        listado/búsqueda de productos
+spa.contrastocolor.com/b/8/gorra/         búsqueda de productos
+spa.contrastocolor.com/b/8/2026/1/        un texto de solo dígitos lleva su página: solo, sería una página
+
+spa.contrastocolor.com/sitemap.xml         índice: productos a la venta, colecciones, etiquetas, atributos y categorías (nunca órdenes)
 
 spa.contrastocolor.com/c/                  carrito
 spa.contrastocolor.com/p/2/                pago
@@ -179,12 +196,12 @@ spa.contrastocolor.com/0/3/                cuenta: deseos
 
 ```
 GET no canónico          -> 301 a la URL canónica (o a donde se mudó, `redirect`)
-segmento vacío           -> reserved['']  (home)
+segmento vacío           -> reserved['']  (home; /?t=&q= del buscador -> 301 a /b/)
 nombre de archivo        -> archivos[primer segmento]  (robots.txt, sitemap)
 solo dígitos             -> by_length[strlen(segmento)]
-solo letras              -> place (lugar, jerárquico; solo genealogía)
-segmento reservado       -> reserved[segmento]  ('0' cuenta; POS: 'c', 'p')
-cualquier otra cosa      -> 404
+2 letras (país)          -> place (lugar, jerárquico; solo genealogía)
+segmento reservado       -> reserved[segmento]  ('0' cuenta; 'b' búsqueda; POS: 'c', 'p')
+cualquier otra cosa      -> 404, con la pista de por qué
 ```
 
 Un segundo segmento numérico (cuando aplica) selecciona una acción dentro del tipo ya resuelto — su significado está definido por tipo, nunca es global.

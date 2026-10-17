@@ -59,7 +59,11 @@ class CartController extends BaseController
 
     public function agregar(array $params = []): string
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->validateCsrfToken()) {
+        $denegado = $this->exigirMetodo('POST');
+        if ($denegado !== null) {
+            return $denegado;
+        }
+        if (!$this->validateCsrfToken()) {
             return $this->handleForbidden();
         }
 
@@ -89,7 +93,11 @@ class CartController extends BaseController
 
     public function actualizar(array $params = []): string
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->validateCsrfToken()) {
+        $denegado = $this->exigirMetodo('POST');
+        if ($denegado !== null) {
+            return $denegado;
+        }
+        if (!$this->validateCsrfToken()) {
             return $this->handleForbidden();
         }
 
@@ -115,7 +123,11 @@ class CartController extends BaseController
 
     public function quitar(array $params = []): string
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->validateCsrfToken()) {
+        $denegado = $this->exigirMetodo('POST');
+        if ($denegado !== null) {
+            return $denegado;
+        }
+        if (!$this->validateCsrfToken()) {
             return $this->handleForbidden();
         }
 
@@ -126,7 +138,11 @@ class CartController extends BaseController
 
     public function vaciar(array $params = []): string
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->validateCsrfToken()) {
+        $denegado = $this->exigirMetodo('POST');
+        if ($denegado !== null) {
+            return $denegado;
+        }
+        if (!$this->validateCsrfToken()) {
             return $this->handleForbidden();
         }
 

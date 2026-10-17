@@ -125,6 +125,11 @@ function accionLugar(array $codes, int|string $codigo): string
     return ServiceLocator::getInstance()->getUrlHelper()->accionLugar($codes, $codigo);
 }
 
+function busqueda(int $digitos, string $texto = '', int $pagina = 1): string
+{
+    return ServiceLocator::getInstance()->getUrlHelper()->busqueda($digitos, $texto, $pagina);
+}
+
 function cuenta(int|string|null $codigo = null): string
 {
     return ServiceLocator::getInstance()->getUrlHelper()->cuenta($codigo);

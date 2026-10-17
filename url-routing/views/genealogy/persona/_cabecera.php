@@ -1,4 +1,6 @@
-<?php /* Expects $persona and $activa (0 = ficha, 1-5 = action code; 5 is the owner's). */ ?>
+<?php /* Expects $persona and $activa (0 = ficha, 1-5 = action code; 5 is the owner's). */
+// A hidden persona's page says nothing but "Persona viva/privada": not worth a search result.
+$noindex = $persona['oculta']; ?>
 <h1><?= esc($persona['nombres'] . ' ' . $persona['apellidos']) ?></h1>
 <p class="sub">
 <?php $v = vida($persona['nacimiento'], $persona['defuncion']); ?>

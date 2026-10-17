@@ -87,6 +87,8 @@ return [
     // for future low-cardinality types without renumbering anything above.
     'reserved' => [
         '' => ['controller' => 'Genealogy\HomeController', 'method' => 'index'],
+        // Search: /b/{digit width of the type}/[{text}/][{page}/].
+        'b' => ['controller' => 'Genealogy\HomeController', 'method' => 'buscar', 'ruta' => 3],
         Router::ACCOUNT_SEGMENT => [
             'controller' => 'Genealogy\CuentaController',
             'method' => 'index',

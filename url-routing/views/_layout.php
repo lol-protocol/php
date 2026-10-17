@@ -1,22 +1,33 @@
 <?php
 
 use App\Support\Flash;
+use App\Support\HostParser;
 
 /**
  * Page shell shared by both sites. Each view renders its body into $content
  * and sets $title; the per-site layout (genealogy/_layout.php,
  * pos/_layout.php) adds $sitio and $tiposBusqueda and includes this file.
+ * A view may set $noindex to keep its page out of search engines.
  */
 $lang = get_locale() === 'eng' ? 'en' : 'es';
 $flash = (new Flash())->consumir();
-$qActual = is_string($_GET['q'] ?? null) ? $_GET['q'] : '';
-$tActual = is_string($_GET['t'] ?? null) ? $_GET['t'] : (string)array_key_first($tiposBusqueda);
+// On a search page (/b/...), the box shows that search.
+$qActual = isset($query) && is_string($query) ? $query : '';
+$tActual = isset($digitos) ? (string)$digitos : (string)array_key_first($tiposBusqueda);
 ?><!DOCTYPE html>
 <html lang="<?= esc($lang) ?>">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= esc($title) ?> · <?= esc($sitio) ?></title>
+<?php if (!empty($noindex)): ?>
+    <meta name="robots" content="noindex">
+<?php endif; ?>
+<?php $ruta = (string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?'); ?>
+    <link rel="canonical" href="<?= esc(HostParser::origen() . $ruta) ?>">
+<?php foreach (HostParser::alternos($ruta) as $hreflang => $url): ?>
+    <link rel="alternate" hreflang="<?= esc($hreflang) ?>" href="<?= esc($url) ?>">
+<?php endforeach; ?>
     <style>
         :root { --fg: #1c1c1e; --muted: #6b6b70; --bg: #fff; --line: #e3e3e6; --accent: #2457c5; --soft: #f5f6f8; }
         @media (prefers-color-scheme: dark) {
