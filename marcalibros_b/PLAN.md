@@ -208,3 +208,7 @@ Hecha por Claude sin marcas de la página de revisión (no había ninguna guarda
 - `previews/`: marcalibros, plataforma-pos, lector (1200×630, SVG y PNG con Chromium).
 Texto como vectores con `texto.py` (Liberation Serif Italic). Tests en `tests/test_marca.py`.
 Pendiente de revisión del usuario: ajustar paisaje del símbolo, tipografía del logo y paletas de cabeceras.
+
+
+## Pulido de siluetas (hecho)
+Rediseñadas alas (siete plumas de punta redondeada), lobo (sentado, aullando, cola caída), gárgola (alas plegadas, cuernos, hocico), esfinge (nemes, zarpas, grupa) y mano (dedos de punta redonda y pulgar). Ayudas nuevas en `scene.py`: `bezier`, `suave` (Catmull-Rom) y `mover`. Build completo: 1000 piezas, 0 errores; 33 tests pasan; hashes de referencia regenerados.

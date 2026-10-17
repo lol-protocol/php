@@ -10948,7 +10948,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/gotico-stevenson-08.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 372,
+      "pixeles_motivo": 527,
       "franja": [
         16,
         440,
@@ -10960,7 +10960,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "09e8cdf4c3817f236af2e60b004de08f05fd6515c82716ee83dfc2207234053f"
+      "sha256": "8e375a55d84e2b2c740f97fdde710b8a69829508190058b05ee9e81f72094174"
     },
     {
       "id": "gotico-stevenson-09",
@@ -11175,7 +11175,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/gotico-stoker-04.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 171,
+      "pixeles_motivo": 400,
       "franja": [
         16,
         440,
@@ -11192,7 +11192,7 @@
         "obra": "Dracula",
         "idioma": "en"
       },
-      "sha256": "103b3a04f42a614df631bf0fc0c920f7cf70fc5a1c64e2e78c2a0b10f6edd7cb"
+      "sha256": "7ab30619f83ccc2ce73463d54c8baf183bfa6675af034c6a9d2040f3e31a8a3e"
     },
     {
       "id": "gotico-stoker-05",
@@ -13015,13 +13015,13 @@
       "motivo": "lobo",
       "paleta": "fango",
       "arquetipo": "colinas",
-      "intento": 0,
-      "semilla": 18323821128688,
+      "intento": 1,
+      "semilla": 211352161282888,
       "ancho": 200,
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-dario-10.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 247,
+      "pixeles_motivo": 517,
       "franja": [
         16,
         440,
@@ -13038,7 +13038,7 @@
         "obra": "Nocturno",
         "idioma": "es"
       },
-      "sha256": "d13fa1517a0c550ef08b4cfa31045252ca4d664f7a0bea88196afa04e819fb1e"
+      "sha256": "9c386d62ee5847c9245c2e4a4d91ea511f6d515392a771a666f65138582c4ade"
     },
     {
       "id": "modernismo-gutierrez-najera-01",
@@ -13578,7 +13578,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-herrera-reissig-04.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 362,
+      "pixeles_motivo": 249,
       "franja": [
         16,
         440,
@@ -13590,7 +13590,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "e3e616bd84203098984d80b503e42fb4967e32e51495e0f6726c73f55c1157c4"
+      "sha256": "c5737141632311549a170e6a8dd578452190706aad98677c600948a9ed991ca4"
     },
     {
       "id": "modernismo-herrera-reissig-05",
@@ -14803,7 +14803,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-nervo-05.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 272,
+      "pixeles_motivo": 531,
       "franja": [
         16,
         440,
@@ -14820,7 +14820,7 @@
         "obra": "En paz",
         "idioma": "es"
       },
-      "sha256": "fcf149cd4089f930e4ea7fc7aa721517467411fd68c77221fff8f01913f9e8f8"
+      "sha256": "cdc28056c137226a5dc9a01c9b1415e69c2effadb441a0fd066143c1fc2bef43"
     },
     {
       "id": "modernismo-nervo-06",
@@ -14971,7 +14971,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/modernismo-nervo-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 323,
+      "pixeles_motivo": 458,
       "franja": [
         16,
         440,
@@ -14983,7 +14983,7 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": null,
-      "sha256": "bd0108cc9be7d753012e5ee4ab5702bedfa11d7e8534c5c978bb23558f0b42a7"
+      "sha256": "302a4ca5ba54a3168ede4f6e33a06120ad6d2256607cf776c4075243580dd86f"
     },
     {
       "id": "modernismo-nervo-10",
@@ -17334,7 +17334,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/naturalismo-dreiser-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 370,
+      "pixeles_motivo": 390,
       "franja": [
         16,
         440,
@@ -17346,7 +17346,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "cca136614f46c73a179ecceb1e471ba2c8cea70a1c719e422e2eca4a35900113"
+      "sha256": "9f7a19baf39b36d67cb998806f0aa0cb794a5abe95811eed2991e4378e515616"
     },
     {
       "id": "naturalismo-dreiser-10",
@@ -19988,7 +19988,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/realismo-balzac-06.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 338,
+      "pixeles_motivo": 356,
       "franja": [
         16,
         440,
@@ -20000,7 +20000,7 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": null,
-      "sha256": "859ebfce39d50eb4fde87383e0b6a867fe32729e7b990a6664b74325fdbe0118"
+      "sha256": "26f91f444cb838609f7dd1beb374070cb3c37061388e72f5806b1e29390a55c1"
     },
     {
       "id": "realismo-balzac-07",
@@ -20415,7 +20415,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/realismo-blest-gana-07.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 210,
+      "pixeles_motivo": 458,
       "franja": [
         16,
         440,
@@ -20427,7 +20427,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "4f6083340e7db3d63939aa18a946e2a2eb5971a76340cf45d0e2d52ad7fb1fdc"
+      "sha256": "89721666d0fd3164c2a19f704ee7783015ef4f0a36beac610e7ec0585c12e4fa"
     },
     {
       "id": "realismo-blest-gana-08",
@@ -25850,7 +25850,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/realismo-magico-garcia-marquez-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 255,
+      "pixeles_motivo": 535,
       "franja": [
         16,
         440,
@@ -25862,7 +25862,7 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": null,
-      "sha256": "4f2f9b4a3d74913e021de0f89308c81c283b4f6752914c83152ac6f0bb6a3ce2"
+      "sha256": "4ef66da443719040964ac03e67e51b24d25c69f275796d814d477e63d4a32690"
     },
     {
       "id": "realismo-magico-garcia-marquez-10",
@@ -26552,7 +26552,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/realismo-magico-rulfo-08.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 251,
+      "pixeles_motivo": 505,
       "franja": [
         16,
         440,
@@ -26564,7 +26564,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "9b9390c57dc3d3be8de50420a8028806df953d8f8e6d0fb1bfd805a01c1dafe0"
+      "sha256": "49134b93592393760e24252de92f599f403506acb2d115176743064d20edf034"
     },
     {
       "id": "realismo-magico-rulfo-09",
@@ -31488,7 +31488,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/simbolismo-baudelaire-04.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 255,
+      "pixeles_motivo": 525,
       "franja": [
         16,
         440,
@@ -31505,7 +31505,7 @@
         "obra": "He Wishes for the Cloths of Heaven",
         "idioma": "en"
       },
-      "sha256": "aa74bdb6965d4191d1e6a312e330adcbd7d8bf826e945a704c9cf705351fdc98"
+      "sha256": "13a45ec0e22de236e26335597f55f90c941b6408d2411e0546c9aae52bc76869"
     },
     {
       "id": "simbolismo-baudelaire-05",
@@ -31688,7 +31688,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/simbolismo-baudelaire-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 344,
+      "pixeles_motivo": 253,
       "franja": [
         16,
         440,
@@ -31705,7 +31705,7 @@
         "obra": "Complainte",
         "idioma": "fr"
       },
-      "sha256": "3278c23f2caa55d3842c2042331bff2709008c5f9a6f0ddacb451b13dfd2407e"
+      "sha256": "7b1dacdbb9ac2739598fea123f31b8465b4a5cea13e4f737f06ddd4b303c93c4"
     },
     {
       "id": "simbolismo-baudelaire-10",
@@ -32193,7 +32193,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/simbolismo-maeterlinck-02.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 244,
+      "pixeles_motivo": 540,
       "franja": [
         16,
         440,
@@ -32210,7 +32210,7 @@
         "obra": "Brise marine",
         "idioma": "fr"
       },
-      "sha256": "2465b9b8abf4bf533a4c71886a62bbef59380f8c3e66b67ee7842dc9c0e47532"
+      "sha256": "9ce34bd3d45ee174c06b5f86376686b114d351a621cc061d133d365877ec8ce6"
     },
     {
       "id": "simbolismo-maeterlinck-03",
@@ -32872,7 +32872,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/simbolismo-mallarme-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 372,
+      "pixeles_motivo": 384,
       "franja": [
         16,
         440,
@@ -32884,7 +32884,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "9dc49fd8bda929248d5a44f89fbf7b07ce8d94750627e3fb90840912b07411cb"
+      "sha256": "554e7ef470473ba4fb9760e9e95125b88bf6cb8a162b6e84dd223a001d2d0fe5"
     },
     {
       "id": "simbolismo-mallarme-10",
@@ -33351,7 +33351,7 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-rilke-01.jpg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 132,
+      "pixeles_motivo": 330,
       "franja": [
         16,
         440,
@@ -33368,7 +33368,7 @@
         "obra": "Romances sans paroles",
         "idioma": "fr"
       },
-      "sha256": "66627c5b029598ee7572c00205acbb6784e9c2eeefa589a84147e0115460109d"
+      "sha256": "0cf1defed4e8edd27147dafb5420cb694b249d892c1e6ab38b8f7b0c1a4f94fd"
     },
     {
       "id": "simbolismo-rilke-02",
@@ -34740,7 +34740,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/simbolismo-villiers-06.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 492,
+      "pixeles_motivo": 422,
       "franja": [
         16,
         440,
@@ -34752,7 +34752,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "788f866e2284b100bc610581121d7f94fbea9fcc0ccaa21a53b89aeb2f085246"
+      "sha256": "d323b5c3e85431c565768c56106c994d96028cee338f6424fde588241d014875"
     },
     {
       "id": "simbolismo-villiers-07",
@@ -35762,7 +35762,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-breton-02.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 295,
+      "pixeles_motivo": 324,
       "franja": [
         16,
         440,
@@ -35779,7 +35779,7 @@
         "obra": "Mensagem",
         "idioma": "pt"
       },
-      "sha256": "6cdfaee6b53db92c7a73054fe3f532e8864c5b64f7357d4c283e210a46490ac9"
+      "sha256": "314238f1121801a889bb8aa8b0f06414765229bc177f33838cd86a51d9775d09"
     },
     {
       "id": "vanguardias-breton-03",
@@ -36514,7 +36514,7 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-huidobro-01.jpg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 261,
+      "pixeles_motivo": 542,
       "franja": [
         16,
         440,
@@ -36531,7 +36531,7 @@
         "obra": "Manifesto del Futurismo",
         "idioma": "it"
       },
-      "sha256": "5274ea04976e56752e3c4ed63f73b4130f41e3f9f6f9290c5dbf015eb4de3268"
+      "sha256": "dfa77313ec7c6129cc7db15c927e3690f7d4dc727d4435412e5840c969a71167"
     },
     {
       "id": "vanguardias-huidobro-02",
@@ -36751,7 +36751,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-huidobro-07.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 454,
+      "pixeles_motivo": 599,
       "franja": [
         16,
         440,
@@ -36763,7 +36763,7 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": null,
-      "sha256": "7191fd3161c48d965e558695859e31be6341d259331a883ea941f786856a8121"
+      "sha256": "2bee529ee91b356b15c9bdf6ee4c93f37fd8a01a0a5e3459d2b9492aac890776"
     },
     {
       "id": "vanguardias-huidobro-08",
@@ -37603,7 +37603,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-maiakovski-09.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 207,
+      "pixeles_motivo": 478,
       "franja": [
         16,
         440,
@@ -37615,7 +37615,7 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": null,
-      "sha256": "c138bc3fbc3a72d20e0ede477268462ea352c59561f9fb940b1591d0c876287e"
+      "sha256": "5aaca42bbcf9e89fd82426007dd5e3c5dedaeca8e7447cd945c53f0ce1ef82e9"
     },
     {
       "id": "vanguardias-maiakovski-10",
@@ -37751,7 +37751,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-marinetti-03.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 287,
+      "pixeles_motivo": 569,
       "franja": [
         16,
         440,
@@ -37763,7 +37763,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
-      "sha256": "bd021e927efef99c9f0824588f6b316a7ac373850af4814b07e6cb63dbfa635d"
+      "sha256": "c7485014747b4dbda6e23c688bc251df6253df8f9de1a770c4c6b32838bfe205"
     },
     {
       "id": "vanguardias-marinetti-04",
@@ -37951,7 +37951,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-marinetti-08.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 351,
+      "pixeles_motivo": 375,
       "franja": [
         16,
         440,
@@ -37968,7 +37968,7 @@
         "obra": "Manifesto del Futurismo",
         "idioma": "it"
       },
-      "sha256": "27c2a1a99d4294cccfc41a3b610f4dd4855d8897b455708c30cc3d8232aa396c"
+      "sha256": "ea80e44e23340e3bcb55a890906a34de8fc25c42fc186181229675571b31a47a"
     },
     {
       "id": "vanguardias-marinetti-09",
@@ -38951,7 +38951,7 @@
       "alto": 1400,
       "archivo": "catalog/svg/vanguardias-vallejo-03.svg",
       "version_generador": "0.8.0",
-      "pixeles_motivo": 344,
+      "pixeles_motivo": 356,
       "franja": [
         16,
         440,
@@ -38968,7 +38968,7 @@
         "obra": "Manifesto del Futurismo",
         "idioma": "it"
       },
-      "sha256": "af8b0ba02bb4866be994beb170b2b932239ab57b59be58696e4fc49a4d2a8fe5"
+      "sha256": "8c080380754e38bab17f6f0029a6d9ff674d952f548933702f9eaca3ec3d98d6"
     },
     {
       "id": "vanguardias-vallejo-04",
