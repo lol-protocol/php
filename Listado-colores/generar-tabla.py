@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Valida los CSV de Listado-colores y genera la tabla de README.md y las páginas por idioma.
 
-- colores.csv: tabla anotada, 148 colores CSS con nombre en 30 idiomas, hex y significados en español.
-  Su tabla resumida va en el README.
+- colores.csv: tabla anotada, 148 colores CSS con su forma natural en inglés, nombre en 30 idiomas, hex y
+  significados en español. Su tabla resumida va en el README. De los hex se sacan los alias (colores CSS
+  con el mismo hex, como aqua y cyan, o gray y grey).
 - significados-idiomas.csv: los significados de esos 148 colores en los otros 29 idiomas.
 - nombres-completos.csv: lista completa de nombres con hex. Sus tres primeras columnas son la fuente;
   css_cercano, delta_e y cercania se calculan aquí (color CSS más cercano según CIEDE2000, en colorimetria.py).
@@ -43,7 +44,7 @@ IDIOMAS = [
     ("id", "Indonesio"), ("sw", "Suajili"),
 ]
 COLUMNAS_ANOTADA = (
-    ["nombre_ingles"]
+    ["nombre_ingles", "forma_natural_en"]
     + [f"nombre_{c}" for c, _ in IDIOMAS[1:]]
     + ["hex", "significado_psicologico", "significado_mistico"]
 )
@@ -53,6 +54,7 @@ COLUMNAS_COMPLETA = COLUMNAS_FUENTE_COMPLETA + ["css_cercano", "delta_e", "cerca
 BANDAS_CERCANIA = [("alta", 3.0), ("media", 8.0)]
 COLUMNAS_SIGNIFICADOS = ["idioma", "nombre_ingles", "significado_psicologico", "significado_mistico"]
 RE_NOMBRE_CSS = re.compile(r"[a-z]+")
+RE_FORMA_NATURAL = re.compile(r"[a-z]+( [a-z]+)*")
 RE_HEX = re.compile(r"#[0-9A-F]{6}")
 
 
@@ -87,6 +89,9 @@ def validar_anotada(filas, errores):
         if nombre in vistos:
             errores.append(f"colores.csv línea {n}: nombre repetido: {nombre!r}")
         vistos.add(nombre)
+        natural = fila["forma_natural_en"]
+        if not RE_FORMA_NATURAL.fullmatch(natural) or natural.replace(" ", "") != nombre:
+            errores.append(f"colores.csv línea {n}: forma_natural_en debe ser {nombre!r} con espacios entre palabras: {natural!r}")
         if not RE_HEX.fullmatch(fila["hex"]):
             errores.append(f"colores.csv línea {n}: hex inválido {fila['hex']!r} (#RRGGBB en mayúsculas)")
     nombres = [f["nombre_ingles"] for f in filas]
@@ -148,6 +153,25 @@ def validar_significados(filas, anotada, errores):
         errores.append("significados-idiomas.csv: las filas deben ir ordenadas por nombre_ingles y, dentro, por el orden de IDIOMAS en generar-tabla.py")
 
 
+def alias_de(anotada):
+    """Para cada color CSS, los otros que tienen su mismo hex: [(nombre, tipo)].
+
+    El tipo es 'ortografia' si solo cambia gray por grey (la especificación CSS define las dos
+    grafías) y 'mismo_color' si son nombres distintos del mismo color (aqua y cyan, fuchsia y magenta).
+    """
+    por_hex = {}
+    for f in anotada:
+        por_hex.setdefault(f["hex"], []).append(f["nombre_ingles"])
+    alias = {f["nombre_ingles"]: [] for f in anotada}
+    for nombres in por_hex.values():
+        for a in nombres:
+            for b in nombres:
+                if a != b:
+                    tipo = "ortografia" if a.replace("grey", "gray") == b.replace("grey", "gray") else "mismo_color"
+                    alias[a].append((b, tipo))
+    return alias
+
+
 def cercania_de(delta, mismo_hex):
     if mismo_hex:
         return "exacto"
@@ -199,11 +223,13 @@ def tabla_readme(filas):
 
 
 def pagina_idioma(codigo, etiqueta, anotada, significados):
-    """Página con nombre, hex y los dos significados de los 148 colores en un idioma."""
+    """Página con nombre, hex, alias y los dos significados de los 148 colores en un idioma."""
     es = codigo == "es"
-    con_nombre = codigo != "en"
-    cabecera = "| Inglés |" + (" Nombre |" if con_nombre else "") + " Hex | Significado psicológico | Significado místico |"
-    separador = "|---|" + ("---|" if con_nombre else "") + "---|---|---|"
+    alias = alias_de(anotada)
+    # En inglés la columna de nombre es la forma natural (con espacios); en los demás, la traducción.
+    columna_nombre = "Forma natural" if codigo == "en" else "Nombre"
+    cabecera = f"| Inglés | {columna_nombre} | Hex | Alias | Significado psicológico | Significado místico |"
+    separador = "|---|---|---|---|---|---|"
     partes = [
         f"# Colores con nombre en {etiqueta} (`{codigo}`)",
         "",
@@ -212,6 +238,7 @@ def pagina_idioma(codigo, etiqueta, anotada, significados):
         "",
         "Las traducciones son propuestas y no están revisadas por hablantes nativos."
         if not es else "Los nombres y los significados en español son el original de `colores.csv`.",
+        "Alias: otros colores CSS con exactamente el mismo hex (`gray` y `grey`; `aqua` y `cyan`; `fuchsia` y `magenta`).",
         "Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README.md).",
         "",
         cabecera,
@@ -223,10 +250,14 @@ def pagina_idioma(codigo, etiqueta, anotada, significados):
             psicologico, mistico = f["significado_psicologico"], f["significado_mistico"]
         else:
             psicologico, mistico = significados[(codigo, nombre)]
-        celdas = [f"`{nombre}`"]
-        if con_nombre:
-            celdas.append(f[f"nombre_{codigo}"])
-        celdas += [f"`{f['hex']}`", psicologico, mistico]
+        celdas = [
+            f"`{nombre}`",
+            f["forma_natural_en"] if codigo == "en" else f[f"nombre_{codigo}"],
+            f"`{f['hex']}`",
+            ", ".join(f"`{otro}`" for otro, _ in alias[nombre]),
+            psicologico,
+            mistico,
+        ]
         partes.append("| " + " | ".join(celdas) + " |")
     partes.append("")
     return "\n".join(partes)

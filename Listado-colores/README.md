@@ -4,7 +4,7 @@ Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: l
 
 | Archivo | Qué contiene | Idiomas | Significados |
 |---|---|---|---|
-| `colores.csv` | 148 colores CSS, anotados: nombre en 30 idiomas, hex y significados en español | 30 (ver lista abajo) | Psicológico y místico, en español |
+| `colores.csv` | 148 colores CSS, anotados: forma natural en inglés, nombre en 30 idiomas, hex y significados en español | 30 (ver lista abajo) | Psicológico y místico, en español |
 | `significados-idiomas.csv` | Los significados de esos 148 colores en los otros 29 idiomas (4.292 filas) | 29 | Psicológico y místico, traducidos |
 | `nombres-completos.csv` | 31.935 nombres de color con su hex, de la lista de `meodai/color-names`, y el color CSS más cercano a cada uno | 1: inglés | No tiene propios; se pueden heredar del color CSS más cercano (ver «Color CSS más cercano») |
 
@@ -37,6 +37,13 @@ No existe un conjunto cerrado de "todos los colores que tienen nombre": los cat�
 La lista completa solo está en inglés. Traducir 31.935 nombres a 30 idiomas sería casi un millón de cadenas, sin fuente que las respalde, y muchos de esos nombres son marcas, nombres propios o términos sin traducción.
 
 Varias palabras de la lista completa son también palabras corrientes en español, como `coral` o `magenta`, y otras son nombres propios o términos técnicos. Para el etiquetado conviene tener en cuenta que la misma palabra puede ser un color o no, según el contexto.
+
+## Formas naturales y alias
+
+Los nombres CSS son identificadores (`lightgoldenrodyellow`), pero en un texto aparecen como «light goldenrod yellow». Para reconocerlos hay dos ayudas:
+
+- **Forma natural en inglés** (`forma_natural_en` en `colores.csv`): el mismo nombre con espacios entre palabras, en minúsculas (`alice blue`, `dark slate gray`). En los otros 29 idiomas la columna `nombre_<código>` ya está en su forma natural, con espacios donde el idioma los usa. La forma con guion que se usa como adjetivo delante del sustantivo (`light-blue shirt`) se obtiene cambiando los espacios por guiones; los exportes la incluyen.
+- **Alias:** colores CSS con exactamente el mismo hex. Se calculan a partir de `colores.csv`, no se escriben a mano, y salen en la columna *Alias* de cada página de `por-idioma/`. Hay nueve grupos de dos: `gray`/`grey`, `darkgray`/`darkgrey`, `dimgray`/`dimgrey`, `lightgray`/`lightgrey`, `slategray`/`slategrey`, `darkslategray`/`darkslategrey` y `lightslategray`/`lightslategrey` (dos grafías del mismo nombre, tipo `ortografia`), y `aqua`/`cyan` y `fuchsia`/`magenta` (nombres distintos del mismo color, tipo `mismo_color`). La especificación CSS define estos nueve pares.
 
 ## Color CSS más cercano
 
@@ -72,7 +79,7 @@ Límites que conviene tener presentes:
 
 ## Archivos
 
-- `colores.csv`: tabla anotada. Columnas: `nombre_ingles`, `nombre_es`, `nombre_fr`, `nombre_pt`, `nombre_it`, `nombre_de`, … hasta `nombre_sw` (29 columnas de idioma en total, además del inglés), `hex`, `significado_psicologico`, `significado_mistico`.
+- `colores.csv`: tabla anotada. Columnas: `nombre_ingles`, `forma_natural_en`, `nombre_es`, `nombre_fr`, `nombre_pt`, `nombre_it`, `nombre_de`, … hasta `nombre_sw` (29 columnas de idioma en total, además del inglés), `hex`, `significado_psicologico`, `significado_mistico`.
 - `significados-idiomas.csv`: los significados en los otros 29 idiomas. Columnas: `idioma`, `nombre_ingles`, `significado_psicologico`, `significado_mistico`. Una fila por color e idioma, ordenadas por `nombre_ingles` y, dentro de cada color, por el orden de idiomas de `generar-tabla.py`. Los pares que en `colores.csv` tienen el mismo texto en español (como `gray` y `grey`) tienen también el mismo texto traducido.
 - `por-idioma/<código>.md`: una página por idioma con el nombre, el hex y los dos significados de los 148 colores. Generado.
 - `colores-por-idioma.md`: índice de las páginas por idioma. Generado.
@@ -94,7 +101,7 @@ python3 generar-tabla.py --comprobar    # solo comprueba: datos válidos y archi
 
 Reglas para editar los CSV (el generador las comprueba):
 
-- `colores.csv`: `nombre_ingles` en minúsculas, sin espacios y único; `hex` en `#RRGGBB` y en mayúsculas; ningún campo vacío; ningún campo con `|` ni saltos de línea; filas ordenadas por `nombre_ingles`.
+- `colores.csv`: `nombre_ingles` en minúsculas, sin espacios y único; `forma_natural_en` igual que `nombre_ingles` pero con espacios entre palabras; `hex` en `#RRGGBB` y en mayúsculas; ningún campo vacío; ningún campo con `|` ni saltos de línea; filas ordenadas por `nombre_ingles`.
 - `significados-idiomas.csv`: un par de significados por cada color de `colores.csv` y cada idioma (todos menos `es`), sin repetidos; ningún campo vacío, con `|` ni con saltos de línea; ningún significado igual al texto en español (sin traducir). Si cambias un significado en `colores.csv`, actualiza también sus 29 traducciones.
 - `nombres-completos.csv`: nombre único sin distinguir mayúsculas; `hex` en `#RRGGBB`; `curada` vacía o `x`; filas ordenadas por nombre sin distinguir mayúsculas; ningún nombre con `|`, comas, comillas ni saltos de línea. Las tres primeras columnas se generaron una vez desde la fuente; `css_cercano`, `delta_e` y `cercania` las reescribe el generador y `--comprobar` falla si no coinciden con lo que calcula.
 
