@@ -36,3 +36,28 @@ class Escena:
     def texto(self, bloques, color):
         """Texto como contornos de glifos (ver texto.py). `bloques`: [{"tam", "glifos": [(c, x, y)]}]."""
         self.primitivas.append({"tipo": "texto", "bloques": bloques, "color": color})
+
+
+# --- Ayudas para siluetas: curvas muestreadas a polígono -----------------------------
+
+def bezier(p0, p1, p2, n=6):
+    """Curva cuadrática de p0 a p2 con control p1, sin el punto inicial."""
+    return [(round((1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t * t * p2[0], 1),
+             round((1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t * t * p2[1], 1)) for t in (k / n for k in range(1, n + 1))]
+
+
+def suave(pts, n=4):
+    """Curva Catmull-Rom abierta por los puntos dados (incluye el primero)."""
+    ext = [pts[0]] + list(pts) + [pts[-1]]
+    out = [pts[0]]
+    for i in range(1, len(ext) - 2):
+        a, b, c, d = ext[i - 1], ext[i], ext[i + 1], ext[i + 2]
+        for k in range(1, n + 1):
+            t = k / n
+            out.append((round(0.5 * (2 * b[0] + (-a[0] + c[0]) * t + (2 * a[0] - 5 * b[0] + 4 * c[0] - d[0]) * t * t + (-a[0] + 3 * b[0] - 3 * c[0] + d[0]) * t ** 3), 1),
+                        round(0.5 * (2 * b[1] + (-a[1] + c[1]) * t + (2 * a[1] - 5 * b[1] + 4 * c[1] - d[1]) * t * t + (-a[1] + 3 * b[1] - 3 * c[1] + d[1]) * t ** 3), 1)))
+    return out
+
+
+def mover(pts, x, y):
+    return [(round(x + a, 1), round(y + b, 1)) for a, b in pts]

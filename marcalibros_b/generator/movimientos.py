@@ -10,7 +10,7 @@ de 200×1400; plantillas.py los escala y los encaja en el ancho.
 """
 import math
 
-from scene import ALTO, ANCHO
+from scene import ALTO, ANCHO, bezier, mover, suave
 
 # --- Paletas -----------------------------------------------------------------------------
 # `figura` es el color nominal de las siluetas; plantillas.paleta_legible lo ajusta si no
@@ -478,11 +478,16 @@ def _escudo(esc, rng, p, altura):
 # --- Simbolismo -------------------------------------------------------------------------
 
 def _esfinge(esc, rng, p, altura):
-    """Esfinge tendida, de perfil."""
+    """Esfinge tendida, de perfil: tocado de nemes, zarpas adelantadas y grupa."""
     x = _x(rng)
     y = _suelo(altura, x)
-    esc.poligono([(x - 44, y), (x - 44, y - 16), (x - 30, y - 26), (x - 6, y - 28), (x - 4, y - 44), (x - 2, y - 56), (x + 6, y - 64),
-                  (x + 16, y - 60), (x + 18, y - 48), (x + 14, y - 38), (x + 18, y - 28), (x + 34, y - 18), (x + 40, y - 6), (x + 40, y)], p["figura"])
+    espalda = suave([(-82, -2), (-80, -14), (-62, -21), (-36, -22), (-12, -24), (-2, -28)], 3)
+    cabeza = [(-6, -40), (-14, -50), (-10, -60), (-4, -68), (-2, -76), (6, -78), (14, -74), (16, -66), (18, -61), (19, -56), (16, -52),
+              (17, -46), (13, -42)]
+    pecho = suave([(13, -42), (14, -32), (22, -23), (38, -19)], 3)
+    zarpas = [(66, -13), (70, -8), (70, 0), (-76, 0), (-90, 0), (-92, -6), (-86, -8)]
+    esc.poligono(mover(espalda + cabeza + pecho + zarpas, x, y), p["figura"])
+
 
 
 def _espejo(esc, rng, p, altura):
@@ -497,12 +502,16 @@ def _espejo(esc, rng, p, altura):
 
 
 def _mano(esc, rng, p, altura):
-    """Mano abierta que emerge del suelo."""
+    """Mano abierta que emerge del suelo: cuatro dedos de punta redonda y el pulgar."""
     x = _x(rng)
     y = _suelo(altura, x)
-    esc.poligono([(x - 10, y), (x - 8, y - 30), (x - 14, y - 36), (x - 13, y - 60), (x - 9, y - 60), (x - 8, y - 46), (x - 7, y - 78),
-                  (x - 3, y - 78), (x - 2, y - 50), (x, y - 84), (x + 4, y - 84), (x + 4, y - 52), (x + 8, y - 76), (x + 12, y - 74),
-                  (x + 10, y - 46), (x + 18, y - 56), (x + 20, y - 52), (x + 12, y - 34), (x + 10, y)], p["figura"])
+    pts = [(-9, 0), (-10, -30), (-11, -36)]
+    for i, alto in enumerate((60, 74, 78, 68)):
+        xl = -10 + 6.8 * i
+        pts += [(xl, -38 - 0), (xl, -alto + 2.8)] + [(round(xl + 2.8 - 2.8 * math.cos(a), 1), round(-alto + 2.8 - 2.8 * math.sin(a), 1))
+                                                   for a in (math.pi / 6 * k for k in range(1, 6))] + [(xl + 5.6, -38)]
+    pts += [(17, -36), (24, -50), (27, -57), (31, -53), (28, -46), (22, -32), (14, -22), (10, 0)]
+    esc.poligono(mover(pts, x, y), p["figura"])
 
 
 def _creciente(esc, rng, p, altura):

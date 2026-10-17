@@ -8,7 +8,7 @@ import random
 
 from movimientos import (ADORNOS_NUEVOS, AMBIENTALES_NUEVOS, ESCALAS_NUEVAS, FRENTE_NUEVOS, MOTIVOS_NUEVOS,
                          PALETAS_NUEVAS)
-from scene import ALTO, ANCHO, Escena
+from scene import ALTO, ANCHO, Escena, bezier, mover, suave
 
 PALETAS = {
     "atardecer": {
@@ -578,13 +578,28 @@ def _murcielagos(esc, rng, p, altura):
 
 
 def _gargola(esc, rng, p, altura):
-    """Gárgola agazapada sobre un pedestal de piedra."""
+    """Gárgola agazapada sobre un pedestal: alas plegadas, cuernos, hocico y garras."""
     x = rng.uniform(0.3, 0.7) * ANCHO
     y = _suelo(altura, x)
-    esc.poligono([(x - 24, y), (x - 24, y - 12), (x + 24, y - 12), (x + 24, y)], p["figura"])
-    esc.poligono([(x - 18, y - 12), (x - 20, y - 30), (x - 34, y - 46), (x - 22, y - 40), (x - 12, y - 52), (x - 6, y - 40),
-                  (x - 8, y - 56), (x + 2, y - 50), (x + 10, y - 56), (x + 12, y - 44), (x + 22, y - 36), (x + 36, y - 44),
-                  (x + 26, y - 28), (x + 18, y - 12)], p["figura"])
+    esc.poligono(mover([(-26, 0), (-26, -9), (-23, -12), (23, -12), (26, -9), (26, 0)], x, y), p["figura"])
+    cuerpo = [(-20, -12), (-24, -22), (-27, -34), (-22, -44), (-36, -72), (-27, -57), (-21, -78), (-14, -59), (-6, -74), (-3, -52),
+              (0, -45), (1, -52), (-1, -64), (5, -54), (9, -55), (13, -66), (14, -54), (21, -53), (31, -47), (29, -40),
+              (21, -40), (18, -34), (17, -26), (23, -19), (27, -12)]
+    esc.poligono(mover(cuerpo, x, y), p["figura"])
+
+
+def _lobo(esc, rng, p, altura):
+    """Lobo sentado que aúlla a la luna: cola caída, lomo arqueado, cabeza alzada."""
+    x = rng.uniform(0.3, 0.7) * ANCHO
+    y = _suelo(altura, x)
+    lomo = suave([(-24, -26), (-14, -38), (-2, -46), (6, -56), (10, -68)], 3)
+    cabeza = [(8, -76), (10, -86), (14, -80), (17, -92), (20, -83), (22, -80)] + bezier((22, -80), (34, -88), (44, -98), 4) \
+        + [(42, -92), (30, -80), (24, -74)]
+    pecho = suave([(24, -74), (20, -64), (22, -50), (20, -34), (19, 0)], 3)
+    patas = [(12, 0), (11, -26), (6, -30), (5, -16), (3, 0), (-6, 0), (-8, -8), (-14, -4), (-12, 0), (-22, 0)]
+    cola = [(-30, -4), (-40, -2), (-46, -4), (-42, -10), (-32, -12), (-28, -20)]
+    esc.poligono(mover(lomo + cabeza + pecho + patas + cola, x, y), p["figura"])
+
 
 
 def _mansion(esc, rng, p, altura):
@@ -605,15 +620,6 @@ def _ventana_gotica(esc, rng, p, altura):
     esc.poligono([(x - 16, y - 6), (x - 16, y - 68), (x - 9, y - 88), (x, y - 100), (x + 9, y - 88), (x + 16, y - 68), (x + 16, y - 6)], p["sol"])
     esc.poligono([(x - 1.5, y - 6), (x - 1.5, y - 100), (x + 1.5, y - 100), (x + 1.5, y - 6)], p["figura"])
     esc.poligono([(x - 16, y - 50), (x + 16, y - 50), (x + 16, y - 47), (x - 16, y - 47)], p["figura"])
-
-
-def _lobo(esc, rng, p, altura):
-    """Lobo aullando a la luna sobre una loma."""
-    x = rng.uniform(0.3, 0.7) * ANCHO
-    y = _suelo(altura, x)
-    esc.poligono([(x - 34, y), (x - 30, y - 8), (x - 24, y - 22), (x - 10, y - 28), (x - 2, y - 38), (x + 2, y - 52),
-                  (x + 10, y - 62), (x + 22, y - 66), (x + 12, y - 56), (x + 12, y - 46), (x + 6, y - 36), (x + 8, y - 22),
-                  (x + 10, y), (x + 4, y), (x + 2, y - 12), (x - 6, y - 10), (x - 14, y - 6), (x - 16, y)], p["figura"])
 
 
 def _encapuchado(esc, rng, p, altura):
@@ -741,14 +747,16 @@ def _fantasma(esc, rng, p, altura):
 
 
 def _alas(esc, rng, p, altura):
-    """Par de alas enormes de plumas, en el cielo."""
+    """Par de alas enormes con siete plumas de punta redondeada, en el cielo."""
     x, y = rng.uniform(0.35, 0.65) * ANCHO, rng.uniform(0.12, 0.22) * ALTO
+    borde = suave([(4, 10), (16, -8), (42, -20), (80, -10), (112, 16)], 4)
     for sgn in (-1, 1):
-        pts = [(x + sgn * 4, y + 10), (x + sgn * 20, y - 10)]
-        for k in range(1, 6):
-            pts += [(x + sgn * (20 + 16 * k), y - 12 + 7 * k), (x + sgn * (14 + 16 * k), y - 2 + 7 * k)]
-        pts += [(x + sgn * 6, y + 30)]
-        esc.poligono([(round(a, 1), round(b, 1)) for a, b in pts], p["sol"])
+        pts = borde[:]
+        for k in range(7):
+            bx, by = 108 - 15 * k, 20 + 2.2 * k
+            pts += [(bx, by), (bx + 2, by + 10 + k), (bx - 4, by + 21 + 2 * k), (bx - 9, by + 11 + k)]
+        pts += [(6, 34)]
+        esc.poligono([(round(x + sgn * a, 1), round(y + b, 1)) for a, b in pts], p["sol"])
 
 
 MOTIVOS.update({
