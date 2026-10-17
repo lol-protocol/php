@@ -1,6 +1,6 @@
 # Listado de colores con nombre y su significado
 
-Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y este listado da la lista de nombres a reconocer. Tiene siete archivos de datos con alcances distintos:
+Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y este listado da la lista de nombres a reconocer. Tiene siete archivos de datos con alcances distintos (más los exportes para PLN, ver «Exportes»):
 
 | Archivo | Qué contiene | Idiomas | Significados |
 |---|---|---|---|
@@ -105,6 +105,16 @@ Límites que conviene tener presentes:
 - Solo hay 148 colores CSS y están repartidos de forma desigual en el espacio de color: muchos nombres (sobre todo los apagados y los grises) terminan en `dimgray`, `tan`, `gray` o `darkslategray`.
 - Heredar el significado solo tiene sentido con cercanía `exacto` o `alta`. En `media` y `baja` el color CSS puede ser de otra familia: `Burgundy` (`#900020`) queda en `brown` con distancia 7,15 y `Lilac` (`#CEA2FD`) en `plum` con 8,62. Quien use esto debe filtrar por `cercania` y tratar el resultado como derivado.
 
+## Exportes
+
+Para usar los datos desde un programa sin leer siete CSV, el generador produce dos archivos en `exportes/` y puede construir una base SQLite. Todo sale de los CSV; no se edita a mano.
+
+- **`exportes/colores.jsonl`**: una línea JSON por cada color CSS (148), con todo lo que se sabe de él: `id` (nombre CSS), `hex`, `rgb`, `forma_natural_en`, `forma_con_guion_en` (la que se usa como adjetivo delante del sustantivo), `alias` (`id` y `tipo`), `nombres` y `significados` en los 30 idiomas (en `en`, el nombre es la forma natural), `evidencia` (base y referencias de cada significado), `culturales` (los matices del color) y `lexico` (las formas del léxico básico de los conceptos que coinciden con el color, por idioma).
+- **`exportes/gazetteer.tsv`**: lista plana de formas de superficie, para buscar una palabra y saber a qué color o concepto remite. 7.080 filas separadas por tabuladores, ordenadas por forma sin distinguir mayúsculas. Columnas: `forma`, `idioma`, `fuente` (`css` o `lexico`), `tipo`, `concepto`, `hex` y `rasgos`. Con `fuente=css`, `tipo` es `identificador` (`aliceblue`), `forma_natural` (`alice blue`), `forma_con_guion` (`alice-blue`) o `nombre` (la traducción en otro idioma). Con `fuente=lexico`, es `lema`, `flexion`, `sinonimo` o `variante` y `rasgos` trae lo que dice `lexico-basico.csv`. Una misma forma puede salir varias veces (por ejemplo, `abu-abu` en indonesio para `gray`, `grey` y como lema). La lista completa de 31.935 nombres no se repite aquí: está en `nombres-completos.csv`.
+- **Base SQLite** (no se guarda en el repositorio): `python3 generar-tabla.py --sqlite ruta.db`. Tablas: `colores`, `nombres`, `significados`, `alias`, `evidencia`, `culturales`, `referencias`, `conceptos`, `lexico` y `nombres_completos`, con índices por nombre, forma y hex. Ejemplo: `SELECT n.nombre, s.psicologico FROM nombres n JOIN significados s USING (color_id, idioma) WHERE n.color_id = 'crimson' AND n.idioma = 'ja';`.
+
+`--comprobar` compara los dos archivos de `exportes/` con lo que generan los CSV y construye la base en memoria para verificar que cada tabla tenga tantas filas como su CSV y que un cruce de tablas funcione. Las funciones están en `exportes.py`. Los exportes pesan en total unos 1,4 MB.
+
 ## Fuentes y verificación
 
 - **Nombres en inglés y hex de la tabla anotada:** especificación *CSS Color Module Level 4*, sección de colores con nombre (código fuente en `w3c/csswg-drafts`). Los 148 nombres y sus valores hex coinciden con esa fuente y con una tabla JSON de referencia (`bahamas10/css-color-names`). `rebeccapurple` aparece en la especificación como adición de CSS Color Level 4.
@@ -126,7 +136,9 @@ Límites que conviene tener presentes:
 - `colores-por-idioma.md`: índice de las páginas por idioma. Generado.
 - `nombres-completos.csv`: lista completa. Columnas de la fuente: `nombre_ingles`, `hex`, `curada`. Columnas calculadas por el generador: `css_cercano`, `delta_e`, `cercania`.
 - `colorimetria.py`: sRGB a CIELAB y CIEDE2000, con los vectores de prueba de Sharma et al. Lo importa `generar-tabla.py`.
-- `generar-tabla.py`: valida los tres CSV y genera la tabla de este README, `colores-por-idioma.md` y `por-idioma/`.
+- `exportes/colores.jsonl` y `exportes/gazetteer.tsv`: exportes para PLN. Generados.
+- `exportes.py`: genera los exportes y la base SQLite. Lo importa `generar-tabla.py`.
+- `generar-tabla.py`: valida todos los CSV y genera la tabla de este README, `colores-por-idioma.md`, `por-idioma/`, `referencias.md` y `exportes/`.
 - `LICENCIA-meodai-color-names.txt`: licencia MIT de la fuente de la lista completa.
 - `README.md`: este documento. La tabla va entre dos líneas que son marcadores HTML de inicio y fin (`tabla:inicio` y `tabla:fin`); no la edites a mano.
 
@@ -136,8 +148,9 @@ Requiere Python 3. No usa dependencias externas.
 
 ```bash
 cd Listado-colores
-python3 generar-tabla.py                # tras editar un CSV: valida y regenera README, colores-por-idioma.md y por-idioma/
-python3 generar-tabla.py --comprobar    # solo comprueba: datos válidos y archivos generados al día
+python3 generar-tabla.py                # tras editar un CSV: valida y regenera todo lo generado (tarda unos 25 s)
+python3 generar-tabla.py --comprobar    # solo comprueba: datos válidos, archivos generados al día y base SQLite coherente
+python3 generar-tabla.py --sqlite ruta.db  # construye una base SQLite con los datos
 ```
 
 Reglas para editar los CSV (el generador las comprueba):

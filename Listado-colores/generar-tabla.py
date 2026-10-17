@@ -15,9 +15,13 @@
 - Por cada idioma se genera por-idioma/<código>.md (nombre, hex y los dos significados en ese idioma)
   y colores-por-idioma.md, que es el índice de esas páginas.
 
+- Se generan además exportes/colores.jsonl y exportes/gazetteer.tsv (ver exportes.py) y, a petición, una
+  base SQLite.
+
 Uso:
-  python3 generar-tabla.py              valida los CSV y regenera README.md, colores-por-idioma.md y por-idioma/
-  python3 generar-tabla.py --comprobar  valida y sale con error si los archivos generados no están al día
+  python3 generar-tabla.py                   valida los CSV y regenera los archivos generados
+  python3 generar-tabla.py --comprobar       valida y sale con error si los archivos generados no están al día
+  python3 generar-tabla.py --sqlite ruta.db  valida los CSV y construye una base SQLite (no regenera nada más)
 """
 import csv
 import io
@@ -26,8 +30,10 @@ import sys
 from pathlib import Path
 
 CARPETA = Path(__file__).resolve().parent
+sys.dont_write_bytecode = True  # no dejar __pycache__ en la carpeta al importar los módulos de al lado
 sys.path.insert(0, str(CARPETA))
-import colorimetria  # noqa: E402  (módulo de esta carpeta)
+import colorimetria  # noqa: E402  (módulos de esta carpeta)
+import exportes  # noqa: E402
 
 ANOTADA = CARPETA / "colores.csv"
 COMPLETA = CARPETA / "nombres-completos.csv"
@@ -37,6 +43,7 @@ REFERENCIAS = CARPETA / "referencias.csv"
 EVIDENCIA = CARPETA / "evidencia.csv"
 CULTURALES = CARPETA / "significados-culturales.csv"
 REFS_MD = CARPETA / "referencias.md"
+DIR_EXPORTES = CARPETA / "exportes"
 README = CARPETA / "README.md"
 INDICE = CARPETA / "colores-por-idioma.md"
 DIR_IDIOMAS = CARPETA / "por-idioma"
@@ -614,16 +621,36 @@ def main():
     significados = {(f["idioma"], f["nombre_ingles"]): (f["significado_psicologico"], f["significado_mistico"])
                     for f in traducidos}
     evidencia = {f["nombre_ingles"]: f for f in evidencia_filas}
+    cercanias = calcular_cercanias(completa, anotada)
+    datos = {
+        "idiomas": IDIOMAS, "anotada": anotada, "completa": completa, "cercanias": cercanias,
+        "significados": significados, "lexico": lexico, "referencias": referencias, "evidencia": evidencia,
+        "culturales": culturales, "alias": alias_de(anotada),
+        "hex_concepto": {c: hex_de_concepto(c, anotada, completa) for c in CONCEPTOS},
+    }
+    if "--sqlite" in sys.argv:
+        indice = sys.argv.index("--sqlite")
+        if indice + 1 >= len(sys.argv):
+            sys.exit("--sqlite necesita la ruta de la base: python3 generar-tabla.py --sqlite ruta.db")
+        ruta = sys.argv[indice + 1]
+        conexion = exportes.construir_sqlite(ruta, datos)
+        tablas = [fila[0] for fila in conexion.execute("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name")]
+        conexion.close()
+        print(f"Base SQLite en {ruta} con las tablas: {', '.join(tablas)}.")
+        return 0
     generados = {
         README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada, evidencia)}\n{FIN}", texto),
         INDICE: indice_idiomas(anotada),
         REFS_MD: referencias_md(referencias),
-        COMPLETA: texto_completa(completa, calcular_cercanias(completa, anotada)),
+        COMPLETA: texto_completa(completa, cercanias),
+        DIR_EXPORTES / "colores.jsonl": exportes.colores_jsonl(datos),
+        DIR_EXPORTES / "gazetteer.tsv": exportes.gazetteer_tsv(datos),
     }
     for codigo, etiqueta in IDIOMAS:
         generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(
             codigo, etiqueta, anotada, significados, lexico, completa, evidencia, culturales)
-    sobrantes = sorted(p for p in DIR_IDIOMAS.glob("*") if p not in generados) if DIR_IDIOMAS.exists() else []
+    sobrantes = sorted(p for carpeta in (DIR_IDIOMAS, DIR_EXPORTES) if carpeta.exists()
+                       for p in carpeta.glob("*") if p not in generados)
 
     resumen = (f"{len(anotada)} colores anotados en {len(IDIOMAS)} idiomas, "
                f"{len(traducidos)} significados traducidos, {len(lexico)} formas de léxico básico, "
@@ -632,6 +659,10 @@ def main():
         desfasados = [p.relative_to(CARPETA).as_posix() for p, contenido in generados.items()
                       if not p.exists() or p.read_text(encoding="utf-8") != contenido]
         desfasados += [f"{p.relative_to(CARPETA).as_posix()} (sobra)" for p in sobrantes]
+        fallos_sqlite = exportes.comprobar_sqlite(datos)
+        if fallos_sqlite:
+            print("La base SQLite no coincide con los CSV: " + "; ".join(fallos_sqlite), file=sys.stderr)
+            return 1
         if desfasados:
             print(f"No coinciden con los CSV: {', '.join(desfasados)}. "
                   "Ejecuta python3 generar-tabla.py", file=sys.stderr)
@@ -640,6 +671,7 @@ def main():
         return 0
 
     DIR_IDIOMAS.mkdir(exist_ok=True)
+    DIR_EXPORTES.mkdir(exist_ok=True)
     for p, contenido in generados.items():
         p.write_text(contenido, encoding="utf-8")
     for p in sobrantes:
