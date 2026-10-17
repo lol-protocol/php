@@ -3,6 +3,7 @@
 Textos y recursos gráficos de **conce.com**, el árbol genealógico. El etiquetador POS, Contrastocolor, tiene su propia marca y no usa estos textos.
 
 - [`frases.md`](frases.md): lemas, eslóganes, redes sociales, correo y manifiesto. Empieza con una nota «Antes de usar» (las frases que afirman algo sobre la persona o su árbol están marcadas como condicionales).
+- [`VERIFICACION.md`](VERIFICACION.md): qué respalda el producto, frase por frase, y qué frases se apartaron hasta que haya respaldo.
 - [`idiomas/`](idiomas/): traducciones de la parte madura de `frases.md` a 15 idiomas (borrador sin revisión nativa).
 - [`logo/`](logo/): símbolo del árbol genealógico, en color y monocromo (`currentColor`; las ramas y los nodos son huecos, así que se ve igual sobre cualquier fondo).
 - [`imagenes/`](imagenes/): banner para redes sociales (1200×630).
