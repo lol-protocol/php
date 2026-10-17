@@ -195,3 +195,16 @@ Hecha por Claude sin marcas de la página de revisión (no había ninguna guarda
 
 - Autores definitivos: los 6 por movimiento añadidos para completar 10 son propuesta de Claude (revisables en la página de revisión).
 - Gutenberg: verificar ids cuando la sesión tenga acceso a gutenberg.org y gutendex.com.
+
+
+## Línea de marca (hecha, primera versión)
+
+`python generator/marca.py [--png]` genera `marca/` (todo versionado, pesa poco):
+- `brand-tokens.yaml`: tinta, papel, acento y un acento por movimiento sacado de su paleta, con contraste ≥4,5 sobre papel (validado en tests).
+- `logos/`: símbolo de Marcalibros (tira 1:7 con paisaje), símbolo de Plataforma POS (libro abierto con la tira como cinta del lomo) y lockups horizontales claro/oscuro; cada uno nombra a los dos.
+- `iconos/`: 15 iconos 24×24 de trazo (`currentColor`, 1,5 px) más `sprite.svg`.
+- `estados-vacios/`: biblioteca vacía, sin resultados, sin conexión, sin marcas (480×320).
+- `cabeceras/`: inicio, biblioteca, lector, editor (1920×1080, sin texto).
+- `previews/`: marcalibros, plataforma-pos, lector (1200×630, SVG y PNG con Chromium).
+Texto como vectores con `texto.py` (Liberation Serif Italic). Tests en `tests/test_marca.py`.
+Pendiente de revisión del usuario: ajustar paisaje del símbolo, tipografía del logo y paletas de cabeceras.
