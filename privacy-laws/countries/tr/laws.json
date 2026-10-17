@@ -15,9 +15,9 @@
     "enforcement_authority": "Personal Data Protection Authority (KVKK)",
     "penalties_range": "Up to TRY 1M fine",
     "exemptions": "Government functions",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not covered: 'data subject' is a living natural person; Board decision 2019/273 rejected a spouse's art. 11 request for a deceased's records",
+    "research_exemption": "Law does not apply to data anonymized for official statistics or for research, planning and statistics (art. 28(1)(c))",
+    "genetic_data": "Special category (art. 6): processing prohibited unless explicit consent or another art. 6(3) exception (as amended 2024)",
     "website_url": "https://www.kvkk.gov.tr/",
     "language": "Turkish",
     "frameworks": "CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-17",
     "sources": {
       "law_name": {
         "url": "https://koksal.av.tr/en/legislation/personal-data-protection-law-kvkk-6698/",
@@ -48,9 +48,42 @@
         "url": "https://mondaq.co.uk/turkey/data-protection/1440344/changes-in-the-pdpl-was-published-in-the-official-gazette",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.kvkk.gov.tr/Icerik/6710/2019-273",
+        "confidence": "high",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://www.erdem-erdem.av.tr/en/insights/a-public-announcement-on-personal-data-processing-activities-of-research-companies-by-dialing-random-numbers-was-published",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://mbkaya.com/turkish-data-protection-law-english-translation-kvkk/",
+        "confidence": "high",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category (art. 6): processing prohibited unless explicit consent or another art. 6(3) exception (as amended 2024)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Law does not apply to data anonymized for official statistics or for research, planning and statistics (art. 28(1)(c))"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: 'data subject' is a living natural person; Board decision 2019/273 rejected a spouse's art. 11 request for a deceased's records"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

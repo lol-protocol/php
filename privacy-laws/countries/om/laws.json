@@ -16,8 +16,8 @@
     "penalties_range": "Up to OMR 500k fine (admin fines up to OMR 2k)",
     "exemptions": "Art. 3: national security/public interest; State bodies' competences; legal/court obligation; vital interests; crime detection; personal/family use; research",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Law does not apply to historical, statistical, scientific, literary or economic research by authorised entities if published results do not identify persons (exemptions, art. 3)",
+    "genetic_data": "Genetic, biometric and health data may not be processed without a permit from the Ministry (art. 5); permit procedure in 2024 Executive Regulation",
     "website_url": "https://www.clydeco.com/en/insights/2022/2/data-protection-law-issued-in-oman",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
+    "last_checked": "2026-10-17",
     "sources": {
       "retention_period": {
         "url": "https://www.tamimi.com/news/new-omani-personal-data-protection-law-comes-into-force/",
@@ -38,9 +38,31 @@
         "url": "https://decree.om/2022/l20220006/",
         "confidence": "high",
         "checked": "2026-10-15"
+      },
+      "research_exemption": {
+        "url": "https://www.clydeco.com/en/insights/2022/2/data-protection-law-issued-in-oman",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://securiti.ai/oman-personal-data-protection-law-pdpl/",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic, biometric and health data may not be processed without a permit from the Ministry (art. 5); permit procedure in 2024 Executive Regulation"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Law does not apply to historical, statistical, scientific, literary or economic research by authorised entities if published results do not identify persons (exemptions, art. 3)"
+      },
       {
         "date": "2026-10-15",
         "field": "exemptions",

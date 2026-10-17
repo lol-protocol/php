@@ -15,9 +15,9 @@
     "enforcement_authority": "Swiss DPA Commissioner",
     "penalties_range": "Up to CHF 100k penalty",
     "exemptions": "Public interest exceptions",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "No FADP rule: the deceased-persons provision of the draft was dropped from the revised Act",
+    "research_exemption": "Overriding interest for research, planning, statistics if results published non-identifiably (art. 31(2)(e)); research privilege for federal bodies (art. 39)",
+    "genetic_data": "Sensitive personal data (art. 5 lit. c), added in revised FADP",
     "website_url": "https://www.edoeb.admin.ch/",
     "language": "German/French/Italian",
     "frameworks": "EU-Adequacy/CoE-108",
@@ -27,9 +27,43 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
-    "sources": {},
+    "last_checked": "2026-10-17",
+    "sources": {
+      "deceased_data": {
+        "url": "https://www.mll-news.com/new-swiss-data-protection-law-an-overview-of-the-most-important-revisions-of-the-swiss-federal-act-on-data-protection/?lang=en",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://onlinekommentar.ch/en/kommentare/dsg31_2_e",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://usercentrics.com/knowledge-hub/switzerland-federal-data-protection-act-fadp/",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data (art. 5 lit. c), added in revised FADP"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Overriding interest for research, planning, statistics if results published non-identifiably (art. 31(2)(e)); research privilege for federal bodies (art. 39)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "No FADP rule: the deceased-persons provision of the draft was dropped from the revised Act"
+      },
       {
         "date": "2026-10-14",
         "field": "enactment_date",

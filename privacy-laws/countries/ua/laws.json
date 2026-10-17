@@ -15,9 +15,9 @@
     "enforcement_authority": "Ukrainian Parliament Commissioner for Human Rights (Ombudsman)",
     "penalties_range": "Up to UAH 34000 administrative fine; criminal liability",
     "exemptions": "Household use; journalism",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not covered per commentary: legal capacity ends at death (Civil Code), so law protects only living persons; relatives' data may be affected (unconfirmed)",
+    "research_exemption": "No explicit research exemption found; art. 6(8) limits identifiable storage to purposes of collection or further processing; depersonalised data not restricted (art. 2) (unconfirmed)",
+    "genetic_data": "Sensitive data: processing of genetic data prohibited (art. 7(1)) unless an art. 7(2) exception applies, e.g. unambiguous consent",
     "website_url": "https://www.dlapiperdataprotection.com/index.html?c=UA&t=law",
     "language": "English",
     "frameworks": "CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-17",
     "sources": {
       "enactment_date": {
         "url": "https://www.linklaters.com/en/insights/data-protected/data-protected---ukraine",
@@ -38,9 +38,42 @@
         "url": "https://protocol.ua/ua/pro_zahist_personalnih_danih_stattya_6/",
         "confidence": "high",
         "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://medplatforma.com.ua/article/188-chi-poshirjuyetsja-zakon-ukrayini-pro-zakhist-personalnikh-danikh-na-pomerlikh-osib",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://kodeksy.com.ua/pro_zahist_personal_nih_danih/statja-6.htm",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://protocol.ua/ua/pro_zahist_personalnih_danih_stattya_7/",
+        "confidence": "high",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data: processing of genetic data prohibited (art. 7(1)) unless an art. 7(2) exception applies, e.g. unambiguous consent"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "No explicit research exemption found; art. 6(8) limits identifiable storage to purposes of collection or further processing; depersonalised data not restricted (art. 2) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered per commentary: legal capacity ends at death (Civil Code), so law protects only living persons; relatives' data may be affected (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",
