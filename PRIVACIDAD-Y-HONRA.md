@@ -84,10 +84,9 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    aplicarle la misma regla que en `url-routing`: si podría estar viva, no se
    muestra. Además, enlazar ediciones de distintos años («la misma persona en
    1960 y 1975») arma un perfil que ninguna guía tenía por sí sola.
-3. **Textos largos.** El endpoint de moderación acepta hasta 2.000 caracteres:
-   una biografía larga hay que revisarla por párrafos. En curso: con
-   [lol-protocol/php#122](https://github.com/lol-protocol/php/pull/122) acepta
-   hasta 10.000 y los revisa por párrafos él mismo.
+3. **Textos largos.** Resuelto: el endpoint de moderación acepta hasta 10.000
+   caracteres y revisa por párrafos lo que pasa de 2.000 (`LongText`). Un texto
+   más largo que eso hay que mandarlo en varias partes.
 4. **Denuncia, retiro y registro.** Hace falta un botón para pedir el retiro de
    un contenido sin crear cuenta y un plazo de respuesta (por ejemplo, ocultar
    en 24 horas mientras se revisa). También hace falta un registro de quién
