@@ -29,6 +29,7 @@ ICONS = []
 KIND = {'m': 'sq', 'f': 'ci', 'u': 'di'}
 CHAIN = {1: dict(r=7.4, h=34), 2: dict(r=6.4, h=40), 3: dict(r=5.6, h=42)}
 SMALL = {3: 3.3}
+BIG_REL = {3: 6.6}  # en las cadenas de tres generaciones el familiar se dibuja mayor: cuadrado y circulo se separan mejor
 DENSE_REL = 6.8  # en los diagramas densos (nodos de 4,5) el familiar se dibuja mayor para que se vea su forma
 ROLE = {'self': 'ink', 'rel': 'orange', 'other': 'mist', 'rel2': 'amber'}
 
@@ -148,7 +149,7 @@ def done(sc):
 def ancestor(stem, k, gender, side=None):
     if side is None:
         s = scene(stem, **CHAIN[k])
-        s.n('rel', gender, 0, 0, 'rel')
+        s.n('rel', gender, 0, 0, 'rel', size=BIG_REL.get(k))
         for i in range(1, k):
             s.n(f'm{i}', 'u', 0, i, size=SMALL.get(k))
         s.n('me', 'f', 0, k, 'self')
@@ -170,7 +171,7 @@ def descendant(stem, k, gender):
     for i in range(1, k):
         s.n(f'm{i}', 'u', 0, i, size=SMALL.get(k)).desc(prev, f'm{i}')
         prev = f'm{i}'
-    s.n('rel', gender, 0, k, 'rel').desc(prev, 'rel')
+    s.n('rel', gender, 0, k, 'rel', size=BIG_REL.get(k)).desc(prev, 'rel')
     return done(s)
 
 

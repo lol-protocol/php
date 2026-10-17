@@ -7,13 +7,13 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.5" cy="49.1" rx="14.6" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="31.54" cy="49.14" rx="14.57" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M16.5 20.8L17.5 22.2A3.8 3.8 0 0 0 23.6 17.7L22.5 16.2A3.8 3.8 0 0 0 16.5 20.8Z" fill="#883307"/><circle cx="19.5" cy="18.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
-    <g><path d="M39.5 20.8L40.5 22.2A3.8 3.8 0 0 0 46.6 17.7L45.5 16.2A3.8 3.8 0 0 0 39.5 20.8Z" fill="#883307"/><circle cx="42.5" cy="18.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
-    <g><path d="M16.5 43.8L17.5 45.2A3.8 3.8 0 0 0 23.6 40.7L22.5 39.2A3.8 3.8 0 0 0 16.5 43.8Z" fill="#883307"/><circle cx="19.5" cy="41.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
-    <g><path d="M39.5 43.8L40.5 45.2A3.8 3.8 0 0 0 46.6 40.7L45.5 39.2A3.8 3.8 0 0 0 39.5 43.8Z" fill="#883307"/><circle cx="42.5" cy="41.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
-    <g><path d="M25 34.5L26.7 36.7A7.5 7.5 0 0 0 38.7 27.7L37 25.5A7.5 7.5 0 0 0 25 34.5Z" fill="#883307"/><circle cx="31" cy="30" r="7.5" fill="url(#grad_action_collapse_orange)"/></g>
+    <g><path d="M16.64 21.02L17.54 22.22A3.8 3.8 0 0 0 23.62 17.66L22.72 16.46A3.8 3.8 0 0 0 16.64 21.02Z" fill="#883307"/><circle cx="19.5" cy="18.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
+    <g><path d="M39.64 21.02L40.54 22.22A3.8 3.8 0 0 0 46.62 17.66L45.72 16.46A3.8 3.8 0 0 0 39.64 21.02Z" fill="#883307"/><circle cx="42.5" cy="18.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
+    <g><path d="M16.64 44.02L17.54 45.22A3.8 3.8 0 0 0 23.62 40.66L22.72 39.46A3.8 3.8 0 0 0 16.64 44.02Z" fill="#883307"/><circle cx="19.5" cy="41.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
+    <g><path d="M39.64 44.02L40.54 45.22A3.8 3.8 0 0 0 46.62 40.66L45.72 39.46A3.8 3.8 0 0 0 39.64 44.02Z" fill="#883307"/><circle cx="42.5" cy="41.5" r="3.8" fill="url(#grad_action_collapse_orange)"/></g>
+    <g><path d="M25.18 34.74L26.68 36.74A7.5 7.5 0 0 0 38.68 27.74L37.18 25.74A7.5 7.5 0 0 0 25.18 34.74Z" fill="#883307"/><circle cx="31" cy="30" r="7.5" fill="url(#grad_action_collapse_orange)"/></g>
   </g>
 </svg>

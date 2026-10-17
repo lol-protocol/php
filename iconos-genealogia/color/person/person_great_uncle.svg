@@ -15,20 +15,20 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.8" cy="59.4" rx="19.1" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="32.76" cy="59.41" rx="19.09" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="links">
-    <path d="M31 10.5L31 17.2L17 17.2L17 23.8" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M17 23.8L17 37.2" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M17 37.2L17 50.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
-    <path d="M31 10.5L31 17.2L45 17.2L45 23.8" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 10.5L31 17.17L17 17.17L17 23.83" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M17 23.83L17 37.17" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M17 37.17L17 50.5" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M31 10.5L31 17.17L45 17.17L45 23.83" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
-    <g><path d="M26.7 10.5L26.8 10.2L26.9 10L27 9.8L30.3 6.5L30.5 6.4L30.7 6.3L31 6.2L31.3 6.3L31.5 6.4L31.7 6.5L35 9.8L35.1 10L36.3 11.5L36.4 11.8L36.4 12L36.4 12.3L36.3 12.5L36.1 12.7L32.8 16L32.6 16.2L32.4 16.3L32.1 16.3L31.9 16.3L31.6 16.2L31.4 16L28.2 12.7L28 12.5L26.9 11L26.8 10.8Z" fill="#767C82"/><rect x="27.7" y="7.2" width="6.6" height="6.6" rx="1" transform="rotate(45 31 10.5)" fill="url(#grad_person_great_uncle_mist)"/></g>
-    <g><path d="M12.7 23.8L12.8 23.6L12.9 23.3L13 23.1L16.3 19.9L16.5 19.7L16.7 19.6L17 19.6L17.3 19.6L17.5 19.7L17.7 19.9L21 23.1L21.1 23.3L22.3 24.9L22.4 25.1L22.4 25.4L22.4 25.6L22.3 25.9L22.1 26.1L18.8 29.3L18.6 29.5L18.4 29.6L18.1 29.6L17.9 29.6L17.6 29.5L17.4 29.3L14.2 26.1L14 25.9L12.9 24.3L12.8 24.1Z" fill="#767C82"/><rect x="13.7" y="20.5" width="6.6" height="6.6" rx="1" transform="rotate(45 17 23.8)" fill="url(#grad_person_great_uncle_mist)"/></g>
-    <g><path d="M12.7 37.2L12.8 36.9L12.9 36.7L13 36.5L16.3 33.2L16.5 33L16.7 32.9L17 32.9L17.3 32.9L17.5 33L17.7 33.2L21 36.5L21.1 36.7L22.3 38.2L22.4 38.4L22.4 38.7L22.4 38.9L22.3 39.2L22.1 39.4L18.8 42.7L18.6 42.8L18.4 42.9L18.1 43L17.9 42.9L17.6 42.8L17.4 42.7L14.2 39.4L14 39.2L12.9 37.7L12.8 37.4Z" fill="#767C82"/><rect x="13.7" y="33.9" width="6.6" height="6.6" rx="1" transform="rotate(45 17 37.2)" fill="url(#grad_person_great_uncle_mist)"/></g>
-    <g><path d="M13 53.5L14.2 55A5 5 0 0 0 22.1 49L21 47.5A5 5 0 0 0 13 53.5Z" fill="#29313D"/><circle cx="17" cy="50.5" r="5" fill="url(#grad_person_great_uncle_ink)"/></g>
-    <g><path d="M38.2 19.1L38.3 18.5L38.5 18.1L38.8 17.6L39.2 17.3L39.7 17.1L40.2 17L49.8 17L50.3 17.1L50.8 17.3L51.2 17.6L51.5 18.1L53.2 20.3L53.4 20.8L53.5 21.4L53.5 30.9L53.4 31.4L53.2 31.9L52.9 32.3L52.5 32.6L52 32.8L51.5 32.9L42 32.9L41.4 32.8L40.9 32.6L40.5 32.3L40.2 31.9L38.5 29.6L38.3 29.1L38.2 28.6Z" fill="#883307"/><rect x="38.2" y="17" width="13.6" height="13.6" rx="2" fill="url(#grad_person_great_uncle_orange)"/></g>
+    <g><path d="M36.21 11.42A1 1 0 0 1 36.12 12.73L32.85 16A1 1 0 0 1 31.44 16L28.17 12.73A1 1 0 0 1 28.07 12.62L27.11 11.34A1 1 0 0 1 27.21 10.03L30.47 6.77A1 1 0 0 1 31.89 6.77L35.15 10.03A1 1 0 0 1 35.25 10.14Z" fill="#767C82"/><rect x="27.69" y="7.19" width="6.62" height="6.62" rx="1" transform="rotate(45 31 10.5)" fill="url(#grad_person_great_uncle_mist)"/></g>
+    <g><path d="M22.21 24.76A1 1 0 0 1 22.12 26.06L18.85 29.33A1 1 0 0 1 17.44 29.33L14.17 26.06A1 1 0 0 1 14.07 25.95L13.11 24.67A1 1 0 0 1 13.21 23.37L16.47 20.1A1 1 0 0 1 17.89 20.1L21.15 23.37A1 1 0 0 1 21.25 23.47Z" fill="#767C82"/><rect x="13.69" y="20.52" width="6.62" height="6.62" rx="1" transform="rotate(45 17 23.83)" fill="url(#grad_person_great_uncle_mist)"/></g>
+    <g><path d="M22.21 38.09A1 1 0 0 1 22.12 39.4L18.85 42.66A1 1 0 0 1 17.44 42.66L14.17 39.4A1 1 0 0 1 14.07 39.29L13.11 38.01A1 1 0 0 1 13.21 36.7L16.47 33.43A1 1 0 0 1 17.89 33.43L21.15 36.7A1 1 0 0 1 21.25 36.81Z" fill="#767C82"/><rect x="13.69" y="33.86" width="6.62" height="6.62" rx="1" transform="rotate(45 17 37.17)" fill="url(#grad_person_great_uncle_mist)"/></g>
+    <g><path d="M13.19 53.73L14.15 55.02A4.99 4.99 0 0 0 22.13 49.03L21.17 47.75A4.99 4.99 0 0 0 13.19 53.73Z" fill="#29313D"/><circle cx="17" cy="50.5" r="4.99" fill="url(#grad_person_great_uncle_ink)"/></g>
+    <g><path d="M53.11 20.13A2.04 2.04 0 0 1 53.51 21.36L53.51 30.88A2.04 2.04 0 0 1 51.47 32.92L41.95 32.92A2.04 2.04 0 0 1 40.32 32.1L38.79 30.06A2.04 2.04 0 0 1 38.38 28.83L38.38 19.31A2.04 2.04 0 0 1 40.42 17.27L49.94 17.27A2.04 2.04 0 0 1 51.57 18.09Z" fill="#883307"/><rect x="38.2" y="17.03" width="13.6" height="13.6" rx="2.04" fill="url(#grad_person_great_uncle_orange)"/></g>
   </g>
   <g class="marks">
     <path d="M15.4 50.5a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0 -3.2 0Z" fill="#FFFFFF"/>

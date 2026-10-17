@@ -7,10 +7,10 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="33.1" cy="56" rx="16.7" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="33.1" cy="56" rx="16.65" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M15 16L15.2 14.4L15.8 13L16.8 11.8L18 10.8L19.4 10.2L21 10L41 10L42.6 10.2L44 10.8L45.2 11.8L46.2 13L50.4 18.6L51 20L51.2 21.6L51.2 47.6L51 49.2L50.4 50.6L49.4 51.8L48.2 52.8L46.8 53.4L45.2 53.6L25.2 53.6L23.6 53.4L22.2 52.8L21 51.8L20 50.6L15.8 45L15.2 43.6L15 42Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_status_quick_read_teal)"/></g>
+    <g><path d="M50 18A6 6 0 0 1 51.2 21.6L51.2 47.6A6 6 0 0 1 45.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_status_quick_read_teal)"/></g>
   </g>
   <g class="marks">
     <path d="M21 42L28 42" fill="none" stroke="#FFFFFF" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
