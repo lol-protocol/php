@@ -47,9 +47,11 @@ jobs:
       - name: Install tools
         run: sudo apt-get update && sudo apt-get install -y bats nginx logrotate openssh-server dnsutils bind9 bind9utils fail2ban python3-systemd certbot python3-certbot-nginx
 
-      # Un nginx preinstalado/arrancado en el runner ocuparia el puerto 80.
-      - name: Stop preinstalled services (nginx, apache, systemd-resolved)
-        run: sudo systemctl stop nginx apache2 systemd-resolved 2>/dev/null || true   # resolved ocupa el puerto 53 (test de named)
+      # Un nginx preinstalado/arrancado en el runner ocuparia el puerto 80. El puerto 53 ya no
+      # importa: el test de named real escucha en uno alto (tools.bats), asi que tampoco hay que
+      # parar systemd-resolved y dejar al runner sin DNS.
+      - name: Stop preinstalled services (nginx, apache)
+        run: sudo systemctl stop nginx apache2 2>/dev/null || true
 
       # Un test saltado (herramienta ausente, puerto 80 ocupado, no root) saldria en
       # verde sin probar nada: aqui un skip o menos de 25 tests ejecutados es un fallo.
@@ -58,8 +60,3 @@ jobs:
           sudo -E env "PATH=$PATH" REAL_TESTS=1 bats --tap vps-setup/tests/real | tee real.tap
           if grep -q '# skip' real.tap; then echo "::error::hay tests reales saltados"; exit 1; fi
           test "$(grep -c '^ok ' real.tap)" -ge 25
-
-      # Se paro systemd-resolved para liberar el puerto 53: sin DNS el runner no puede cerrar el job.
-      - name: Restaurar DNS del runner
-        if: always()
-        run: sudo systemctl start systemd-resolved
