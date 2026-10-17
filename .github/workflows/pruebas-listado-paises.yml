@@ -1,0 +1,45 @@
+name: Pruebas Listado-paises
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "Listado-paises/**"
+      - ".github/workflows/pruebas-listado-paises.yml"
+  pull_request:
+    paths:
+      - "Listado-paises/**"
+      - ".github/workflows/pruebas-listado-paises.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  listado-paises:
+    name: "Listado-paises: CSV válidos, tablas al día y pruebas"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Valida paises.csv, paises_pos.csv y niveles_lenguas.csv (IP es el maximo de las
+      # lenguas, IP local el de la primera) y falla si tabla_genealogia.md o
+      # tabla_pos.md no coinciden con lo que generan esos CSV.
+      - name: Comprobar datos y tablas
+        working-directory: Listado-paises
+        run: python3 generar_tabla.py --comprobar
+
+      # Interpolacion, suma de nacimientos y reglas de historia_poblacion.py, con
+      # series sinteticas de resultado conocido.
+      - name: Pruebas
+        working-directory: Listado-paises
+        run: python3 -m unittest -v pruebas
