@@ -3,7 +3,7 @@
 ## Antes de usar
 - Las frases que afirman algo sobre la persona o su árbol (pistas, coincidencias, hallazgos) solo se usan si es cierto para esa persona. Están en secciones marcadas como «condicionales»; en los demás casos, usa una alternativa neutra.
 - No inventes plazos, escasez ni cifras.
-- Las promesas sobre datos, seguridad y privacidad se verifican contra el producto, y contra la normativa de cada mercado, antes de publicarse.
+- Las promesas sobre datos, seguridad y privacidad se verifican contra el producto, y contra la normativa de cada mercado, antes de publicarse. Lo que se encontró, frase por frase, está en [`VERIFICACION.md`](VERIFICACION.md).
 - El nombre de la marca no está escrito en las frases: sale de `config.json` al ejecutar `php marketing/render.php` (ver el README). El nombre de cada destinatario lo rellena quien envía el mensaje.
 - Criterio de fondo: `psychology-and-marketing/08-templates-and-checklists.md` (sección 5.3) y `psychology-and-marketing/02-ethical-neuromarketing.md`.
 
@@ -57,7 +57,6 @@ Quizás por eso la vida no se trata de cuánto tiempo tenemos, sino de qué hace
 > Verificar contra el producto antes de publicar (ver «Antes de usar»).
 
 - Tu historia familiar, tratada con respeto y cuidado.
-- Un espacio seguro donde cada nombre se escribe con dignidad.
 - Cuidamos tus datos con respeto; tu legado es de tu familia.
 
 ## Llamadas a la acción
