@@ -786,9 +786,11 @@ por aparición: «follar», que es insulto y contenido sexual, trae los dos en
 `Content-Type: application/json` (415), cuerpo de hasta 64 KB (413), JSON en
 UTF-8 con `text` string (400), texto de hasta 10.000 caracteres (413) e idioma
 soportado (400). Un texto de más de 2.000 caracteres (una biografía, una nota)
-se revisa por partes (`LongText`): por párrafos, separados por una línea en
-blanco, y un párrafo muy largo por oraciones; manda la parte más grave y los
-hallazgos de todas salen juntos. Los errores responden
+se revisa por partes (`LongText`): párrafos enteros, separados por una línea en
+blanco y juntos mientras quepan, y un párrafo muy largo por oraciones, cortando en un espacio de
+cualquier tipo; la costura de cada corte se revisa también, para que una frase
+que cae sobre él («heil hitler») no quede repartida. Manda la parte más grave y
+los hallazgos de todas salen juntos. Los errores responden
 `{"error": {"code": "texto_demasiado_largo", "message": "…"}}`; un fallo
 interno, un 500 genérico (`error_interno`) sin rutas ni trazas, con el detalle
 en el log de PHP. La lógica vive
