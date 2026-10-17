@@ -10,7 +10,10 @@ import { tmpdir } from 'node:os';
 import { spawn } from 'node:child_process';
 
 // require (y no import) para que respete NODE_PATH.
-const { chromium } = createRequire(import.meta.url)('playwright');
+const requerir = createRequire(import.meta.url);
+const { chromium } = requerir('playwright');
+// axe-core revisa la accesibilidad (WCAG 2.1 A y AA). Se instala igual que Playwright, de forma global.
+const axe = requerir.resolve('axe-core/axe.min.js');
 
 const base = process.argv[2] ?? 'http://127.0.0.1:8080';
 const raiz = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -142,6 +145,40 @@ await prueba('sin JavaScript se crea un marcalibro con un paisaje', async () => 
   exigir((await medidas(p, ruta + '/1x.jpg')).join('×') === '1400×200', 'el 1x no mide 1400×200');
   await p.context().close();
 });
+
+await prueba('el filtro por motivo y color funciona desde el formulario', async () => {
+  const p = await abrir(navegador, { javaScriptEnabled: false });
+  await p.goto(base + '/');
+  await p.locator('#filtro-motivo').selectOption('faro');
+  await p.locator('#filtro-color').selectOption('ocre');
+  await Promise.all([p.waitForURL(/motivo=faro/), p.locator('.filtro button[type=submit]').click()]);
+  exigir(new URL(p.url()).searchParams.get('color') === 'ocre', `la dirección no lleva el color: ${p.url()}`);
+  const enlaces = await p.locator('.rejilla a[href^="/marcalibro/"]').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+  exigir(enlaces.length > 0, 'el filtro no devolvió marcalibros');
+  exigir(enlaces.every((h) => h.startsWith('/marcalibro/mb-modernismo-anglosajon-')), `hay resultados de otro motivo: ${enlaces}`);
+  await p.locator('text=Quitar filtros').click();
+  await p.locator('h1', { hasText: 'Elige un marcalibro' }).waitFor();
+  await p.context().close();
+});
+
+// Revisión automática de accesibilidad. La CSP no deja inyectar scripts: este contexto la ignora solo para axe.
+for (const esquema of ['light', 'dark']) {
+  await prueba(`sin problemas de accesibilidad WCAG 2.1 AA (${esquema === 'light' ? 'modo claro' : 'modo oscuro'})`, async () => {
+    const p = await abrir(navegador, { bypassCSP: true, colorScheme: esquema });
+    const problemas = [];
+    for (const ruta of ['/', '/?categoria=poesia', '/?motivo=faro&color=ocre', '/?categoria=teatro&motivo=torres', '/marcalibro/mb-historia-02', '/crear']) {
+      await p.goto(base + ruta, { waitUntil: 'networkidle' });
+      await p.addScriptTag({ path: axe });
+      const resultado = await p.evaluate(async () => {
+        const r = await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } });
+        return r.violations.map((v) => `${v.id} (${v.nodes.length}): ${v.nodes.slice(0, 2).map((n) => n.target.join(' ')).join(' | ')}`);
+      });
+      problemas.push(...resultado.map((v) => `${ruta} → ${v}`));
+    }
+    exigir(problemas.length === 0, problemas.join('\n      '));
+    await p.context().close();
+  });
+}
 
 await prueba('en modo oscuro el fondo es tinta, el texto papel y el logo va sobre papel', async () => {
   const p = await abrir(navegador, { colorScheme: 'dark' });

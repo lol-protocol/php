@@ -55,9 +55,31 @@ abstract class AppTestCase extends TestCase
         return dirname(__DIR__, 2);
     }
 
-    protected function config(int $createsPerHour = 10, int $maxStored = 5000, int $retentionDays = 30): Config
+    protected function config(int $createsPerHour = 10, int $maxStored = 5000, int $retentionDays = 30, ?string $publicUrl = null, ?string $projectRoot = null): Config
     {
-        return new Config($this->projectRoot(), $this->dir . '/almacen', $retentionDays, $createsPerHour, $maxStored);
+        return new Config($projectRoot ?? $this->projectRoot(), $this->dir . '/almacen', $retentionDays, $createsPerHour, $maxStored, publicUrl: $publicUrl);
+    }
+
+    /**
+     * Una copia liviana del proyecto (enlaces al catálogo real) con PNG falsos para los ids dados,
+     * así las pruebas no dependen de que se hayan generado los PNG de verdad.
+     *
+     * @param list<string> $pngIds
+     */
+    protected function projectWithPng(array $pngIds): string
+    {
+        $root = $this->dir . '/proyecto';
+        mkdir("$root/catalog/png", 0755, true);
+        foreach (['catalog/manifest.json', 'catalog/svg', 'catalog/preview', 'images', 'svg'] as $part) {
+            symlink($this->projectRoot() . "/$part", "$root/$part");
+        }
+        foreach ($pngIds as $id) {
+            foreach (['', '@2x'] as $suffix) {
+                $image = imagecreatetruecolor(14, 2);
+                imagepng($image, "$root/catalog/png/$id$suffix.png");
+            }
+        }
+        return $root;
     }
 
     protected function app(?Config $config = null, int $serverUploadLimit = PHP_INT_MAX): Application
@@ -74,7 +96,7 @@ abstract class AppTestCase extends TestCase
             new BookmarkMaker($bookmarks, $library, $limits),
             new BookmarkStore($bookmarks),
             new RateLimiter($config->storageDirectory . '/intentos'),
-            new View(dirname(__DIR__) . '/templates', ['retentionDays' => $config->retentionDays]),
+            new View(dirname(__DIR__) . '/templates', ['retentionDays' => $config->retentionDays, 'publicUrl' => $config->publicUrl]),
             $limits,
             fn (): int => $this->now,
             fn (string $path): bool => $this->uploaded[$path] ?? false,

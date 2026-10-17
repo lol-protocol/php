@@ -1,5 +1,5 @@
 {
-  "total": 1000,
+  "total": 1350,
   "tamano": {
     "ancho": 1400,
     "alto": 200
@@ -88,7 +88,35 @@
     "brujula": "Brújula",
     "mapa_y_ruta": "Mapa y ruta",
     "veleros": "Veleros",
-    "cordillera": "Cordillera"
+    "cordillera": "Cordillera",
+    "faro": "Faro",
+    "relojes": "Relojes",
+    "tierra_baldia": "Tierra baldía",
+    "fragmentos": "Fragmentos",
+    "castillo": "Castillo",
+    "hongos": "Hongos",
+    "llaves": "Llaves",
+    "coronas": "Coronas",
+    "versos": "Versos",
+    "pajaros_en_cable": "Pájaros en el cable",
+    "petalos": "Pétalos",
+    "lira": "Lira",
+    "linea_de_tiempo": "Línea de tiempo",
+    "piramides": "Pirámides",
+    "monedas": "Monedas",
+    "reloj_de_arena": "Reloj de arena",
+    "columnas_de_periodico": "Columnas de periódico",
+    "titulares": "Titulares",
+    "microfonos": "Micrófonos",
+    "teclas": "Teclas",
+    "lomos_de_libros": "Lomos de libros",
+    "pestanas_indice": "Pestañas de índice",
+    "lupas": "Lupas",
+    "fichero": "Fichero",
+    "atril": "Atril",
+    "ondas_de_voz": "Ondas de voz",
+    "multitud": "Multitud",
+    "megafonos": "Megáfonos"
   },
   "categorias": [
     {
@@ -129,13 +157,25 @@
     },
     {
       "slug": "modernismo",
-      "nombre": "Modernismo",
+      "nombre": "Modernismo hispanoamericano",
       "familia": "movimiento literario",
       "motivos": [
         "ondas",
         "ondas_concentricas",
         "nouveau",
         "mosaico"
+      ],
+      "total": 50
+    },
+    {
+      "slug": "modernismo-anglosajon",
+      "nombre": "Modernismo anglosajón",
+      "familia": "movimiento literario",
+      "motivos": [
+        "faro",
+        "relojes",
+        "tierra_baldia",
+        "fragmentos"
       ],
       "total": 50
     },
@@ -328,6 +368,78 @@
         "mapa_y_ruta",
         "veleros",
         "cordillera"
+      ],
+      "total": 50
+    },
+    {
+      "slug": "cuentos",
+      "nombre": "Cuentos y leyendas",
+      "familia": "tipo de texto",
+      "motivos": [
+        "castillo",
+        "hongos",
+        "llaves",
+        "coronas"
+      ],
+      "total": 50
+    },
+    {
+      "slug": "poesia",
+      "nombre": "Poesía",
+      "familia": "tipo de texto",
+      "motivos": [
+        "versos",
+        "pajaros_en_cable",
+        "petalos",
+        "lira"
+      ],
+      "total": 50
+    },
+    {
+      "slug": "historia",
+      "nombre": "Historia",
+      "familia": "tipo de texto",
+      "motivos": [
+        "linea_de_tiempo",
+        "piramides",
+        "monedas",
+        "reloj_de_arena"
+      ],
+      "total": 50
+    },
+    {
+      "slug": "periodismo",
+      "nombre": "Periodismo",
+      "familia": "tipo de texto",
+      "motivos": [
+        "columnas_de_periodico",
+        "titulares",
+        "microfonos",
+        "teclas"
+      ],
+      "total": 50
+    },
+    {
+      "slug": "diccionarios",
+      "nombre": "Diccionarios y enciclopedias",
+      "familia": "tipo de texto",
+      "motivos": [
+        "lomos_de_libros",
+        "pestanas_indice",
+        "lupas",
+        "fichero"
+      ],
+      "total": 50
+    },
+    {
+      "slug": "discursos",
+      "nombre": "Discursos",
+      "familia": "tipo de texto",
+      "motivos": [
+        "atril",
+        "ondas_de_voz",
+        "multitud",
+        "megafonos"
       ],
       "total": 50
     }
@@ -3185,7 +3297,7 @@
     },
     {
       "id": "mb-modernismo-01",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3196,15 +3308,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-01.svg",
       "vista_previa": "catalog/preview/mb-modernismo-01.jpg"
     },
     {
       "id": "mb-modernismo-02",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3215,15 +3327,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-02.svg",
       "vista_previa": "catalog/preview/mb-modernismo-02.jpg"
     },
     {
       "id": "mb-modernismo-03",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3234,15 +3346,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-03.svg",
       "vista_previa": "catalog/preview/mb-modernismo-03.jpg"
     },
     {
       "id": "mb-modernismo-04",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -3253,15 +3365,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-04.svg",
       "vista_previa": "catalog/preview/mb-modernismo-04.jpg"
     },
     {
       "id": "mb-modernismo-05",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3272,15 +3384,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-05.svg",
       "vista_previa": "catalog/preview/mb-modernismo-05.jpg"
     },
     {
       "id": "mb-modernismo-06",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3291,15 +3403,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-06.svg",
       "vista_previa": "catalog/preview/mb-modernismo-06.jpg"
     },
     {
       "id": "mb-modernismo-07",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3310,15 +3422,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-07.svg",
       "vista_previa": "catalog/preview/mb-modernismo-07.jpg"
     },
     {
       "id": "mb-modernismo-08",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -3329,15 +3441,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-08.svg",
       "vista_previa": "catalog/preview/mb-modernismo-08.jpg"
     },
     {
       "id": "mb-modernismo-09",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3348,15 +3460,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-09.svg",
       "vista_previa": "catalog/preview/mb-modernismo-09.jpg"
     },
     {
       "id": "mb-modernismo-10",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3367,15 +3479,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-10.svg",
       "vista_previa": "catalog/preview/mb-modernismo-10.jpg"
     },
     {
       "id": "mb-modernismo-11",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3386,15 +3498,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-11.svg",
       "vista_previa": "catalog/preview/mb-modernismo-11.jpg"
     },
     {
       "id": "mb-modernismo-12",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -3405,15 +3517,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-12.svg",
       "vista_previa": "catalog/preview/mb-modernismo-12.jpg"
     },
     {
       "id": "mb-modernismo-13",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3424,15 +3536,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-13.svg",
       "vista_previa": "catalog/preview/mb-modernismo-13.jpg"
     },
     {
       "id": "mb-modernismo-14",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3443,15 +3555,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-14.svg",
       "vista_previa": "catalog/preview/mb-modernismo-14.jpg"
     },
     {
       "id": "mb-modernismo-15",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3462,15 +3574,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-15.svg",
       "vista_previa": "catalog/preview/mb-modernismo-15.jpg"
     },
     {
       "id": "mb-modernismo-16",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -3481,15 +3593,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-16.svg",
       "vista_previa": "catalog/preview/mb-modernismo-16.jpg"
     },
     {
       "id": "mb-modernismo-17",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3500,15 +3612,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-17.svg",
       "vista_previa": "catalog/preview/mb-modernismo-17.jpg"
     },
     {
       "id": "mb-modernismo-18",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3519,15 +3631,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-18.svg",
       "vista_previa": "catalog/preview/mb-modernismo-18.jpg"
     },
     {
       "id": "mb-modernismo-19",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3538,15 +3650,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-19.svg",
       "vista_previa": "catalog/preview/mb-modernismo-19.jpg"
     },
     {
       "id": "mb-modernismo-20",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -3557,15 +3669,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-20.svg",
       "vista_previa": "catalog/preview/mb-modernismo-20.jpg"
     },
     {
       "id": "mb-modernismo-21",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3576,15 +3688,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-21.svg",
       "vista_previa": "catalog/preview/mb-modernismo-21.jpg"
     },
     {
       "id": "mb-modernismo-22",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3595,15 +3707,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-22.svg",
       "vista_previa": "catalog/preview/mb-modernismo-22.jpg"
     },
     {
       "id": "mb-modernismo-23",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3614,15 +3726,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-23.svg",
       "vista_previa": "catalog/preview/mb-modernismo-23.jpg"
     },
     {
       "id": "mb-modernismo-24",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -3633,15 +3745,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-24.svg",
       "vista_previa": "catalog/preview/mb-modernismo-24.jpg"
     },
     {
       "id": "mb-modernismo-25",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3652,15 +3764,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-25.svg",
       "vista_previa": "catalog/preview/mb-modernismo-25.jpg"
     },
     {
       "id": "mb-modernismo-26",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3671,15 +3783,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-26.svg",
       "vista_previa": "catalog/preview/mb-modernismo-26.jpg"
     },
     {
       "id": "mb-modernismo-27",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3690,15 +3802,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-27.svg",
       "vista_previa": "catalog/preview/mb-modernismo-27.jpg"
     },
     {
       "id": "mb-modernismo-28",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -3709,15 +3821,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-28.svg",
       "vista_previa": "catalog/preview/mb-modernismo-28.jpg"
     },
     {
       "id": "mb-modernismo-29",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3728,15 +3840,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-29.svg",
       "vista_previa": "catalog/preview/mb-modernismo-29.jpg"
     },
     {
       "id": "mb-modernismo-30",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3747,15 +3859,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-30.svg",
       "vista_previa": "catalog/preview/mb-modernismo-30.jpg"
     },
     {
       "id": "mb-modernismo-31",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3766,15 +3878,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-31.svg",
       "vista_previa": "catalog/preview/mb-modernismo-31.jpg"
     },
     {
       "id": "mb-modernismo-32",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -3785,15 +3897,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-32.svg",
       "vista_previa": "catalog/preview/mb-modernismo-32.jpg"
     },
     {
       "id": "mb-modernismo-33",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3804,15 +3916,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-33.svg",
       "vista_previa": "catalog/preview/mb-modernismo-33.jpg"
     },
     {
       "id": "mb-modernismo-34",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3823,15 +3935,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-34.svg",
       "vista_previa": "catalog/preview/mb-modernismo-34.jpg"
     },
     {
       "id": "mb-modernismo-35",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3842,15 +3954,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-35.svg",
       "vista_previa": "catalog/preview/mb-modernismo-35.jpg"
     },
     {
       "id": "mb-modernismo-36",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -3861,15 +3973,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-36.svg",
       "vista_previa": "catalog/preview/mb-modernismo-36.jpg"
     },
     {
       "id": "mb-modernismo-37",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3880,15 +3992,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-37.svg",
       "vista_previa": "catalog/preview/mb-modernismo-37.jpg"
     },
     {
       "id": "mb-modernismo-38",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3899,15 +4011,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-38.svg",
       "vista_previa": "catalog/preview/mb-modernismo-38.jpg"
     },
     {
       "id": "mb-modernismo-39",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3918,15 +4030,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-39.svg",
       "vista_previa": "catalog/preview/mb-modernismo-39.jpg"
     },
     {
       "id": "mb-modernismo-40",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -3937,15 +4049,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-40.svg",
       "vista_previa": "catalog/preview/mb-modernismo-40.jpg"
     },
     {
       "id": "mb-modernismo-41",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -3956,15 +4068,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-41.svg",
       "vista_previa": "catalog/preview/mb-modernismo-41.jpg"
     },
     {
       "id": "mb-modernismo-42",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -3975,15 +4087,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-42.svg",
       "vista_previa": "catalog/preview/mb-modernismo-42.jpg"
     },
     {
       "id": "mb-modernismo-43",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -3994,15 +4106,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-43.svg",
       "vista_previa": "catalog/preview/mb-modernismo-43.jpg"
     },
     {
       "id": "mb-modernismo-44",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -4013,15 +4125,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-44.svg",
       "vista_previa": "catalog/preview/mb-modernismo-44.jpg"
     },
     {
       "id": "mb-modernismo-45",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -4032,15 +4144,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-45.svg",
       "vista_previa": "catalog/preview/mb-modernismo-45.jpg"
     },
     {
       "id": "mb-modernismo-46",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -4051,15 +4163,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-46.svg",
       "vista_previa": "catalog/preview/mb-modernismo-46.jpg"
     },
     {
       "id": "mb-modernismo-47",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "nouveau",
@@ -4070,15 +4182,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-47.svg",
       "vista_previa": "catalog/preview/mb-modernismo-47.jpg"
     },
     {
       "id": "mb-modernismo-48",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "mosaico",
@@ -4089,15 +4201,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-48.svg",
       "vista_previa": "catalog/preview/mb-modernismo-48.jpg"
     },
     {
       "id": "mb-modernismo-49",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas",
@@ -4108,15 +4220,15 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-49.svg",
       "vista_previa": "catalog/preview/mb-modernismo-49.jpg"
     },
     {
       "id": "mb-modernismo-50",
-      "categoria": "Modernismo",
+      "categoria": "Modernismo hispanoamericano",
       "categoria_slug": "modernismo",
       "familia": "movimiento literario",
       "motivo": "ondas_concentricas",
@@ -4127,11 +4239,961 @@
       ],
       "autores_inspiracion": [
         "Rubén Darío",
-        "Virginia Woolf",
-        "James Joyce"
+        "José Martí",
+        "Leopoldo Lugones"
       ],
       "svg": "catalog/svg/mb-modernismo-50.svg",
       "vista_previa": "catalog/preview/mb-modernismo-50.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-01",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-01.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-01.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-02",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-02.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-02.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-03",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-03.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-03.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-04",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-04.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-04.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-05",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-05.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-05.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-06",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-06.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-06.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-07",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-07.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-07.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-08",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-08.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-08.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-09",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-09.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-09.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-10",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-10.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-10.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-11",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-11.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-11.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-12",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-12.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-12.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-13",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-13.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-13.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-14",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-14.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-14.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-15",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-15.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-15.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-16",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-16.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-16.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-17",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-17.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-17.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-18",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-18.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-18.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-19",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-19.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-19.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-20",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-20.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-20.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-21",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-21.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-21.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-22",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-22.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-22.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-23",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-23.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-23.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-24",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-24.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-24.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-25",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-25.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-25.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-26",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-26.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-26.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-27",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-27.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-27.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-28",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-28.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-28.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-29",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-29.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-29.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-30",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-30.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-30.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-31",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-31.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-31.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-32",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-32.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-32.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-33",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-33.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-33.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-34",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-34.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-34.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-35",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-35.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-35.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-36",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-36.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-36.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-37",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-37.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-37.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-38",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-38.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-38.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-39",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-39.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-39.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-40",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-40.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-40.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-41",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-41.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-41.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-42",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-42.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-42.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-43",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-43.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-43.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-44",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-44.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-44.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-45",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-45.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-45.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-46",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-46.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-46.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-47",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "tierra_baldia",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-47.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-47.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-48",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "fragmentos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-48.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-48.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-49",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "faro",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-49.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-49.jpg"
+    },
+    {
+      "id": "mb-modernismo-anglosajon-50",
+      "categoria": "Modernismo anglosajón",
+      "categoria_slug": "modernismo-anglosajon",
+      "familia": "movimiento literario",
+      "motivo": "relojes",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "autores_inspiracion": [
+        "Virginia Woolf",
+        "James Joyce",
+        "T. S. Eliot"
+      ],
+      "svg": "catalog/svg/mb-modernismo-anglosajon-50.svg",
+      "vista_previa": "catalog/preview/mb-modernismo-anglosajon-50.jpg"
     },
     {
       "id": "mb-vanguardias-01",
@@ -16832,6 +17894,4206 @@
       ],
       "svg": "catalog/svg/mb-viajes-50.svg",
       "vista_previa": "catalog/preview/mb-viajes-50.jpg"
+    },
+    {
+      "id": "mb-cuentos-01",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-01.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-01.jpg"
+    },
+    {
+      "id": "mb-cuentos-02",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-cuentos-02.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-02.jpg"
+    },
+    {
+      "id": "mb-cuentos-03",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-03.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-03.jpg"
+    },
+    {
+      "id": "mb-cuentos-04",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-cuentos-04.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-04.jpg"
+    },
+    {
+      "id": "mb-cuentos-05",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-05.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-05.jpg"
+    },
+    {
+      "id": "mb-cuentos-06",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-06.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-06.jpg"
+    },
+    {
+      "id": "mb-cuentos-07",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-07.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-07.jpg"
+    },
+    {
+      "id": "mb-cuentos-08",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-08.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-08.jpg"
+    },
+    {
+      "id": "mb-cuentos-09",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-09.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-09.jpg"
+    },
+    {
+      "id": "mb-cuentos-10",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-cuentos-10.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-10.jpg"
+    },
+    {
+      "id": "mb-cuentos-11",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-cuentos-11.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-11.jpg"
+    },
+    {
+      "id": "mb-cuentos-12",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-12.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-12.jpg"
+    },
+    {
+      "id": "mb-cuentos-13",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-13.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-13.jpg"
+    },
+    {
+      "id": "mb-cuentos-14",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-14.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-14.jpg"
+    },
+    {
+      "id": "mb-cuentos-15",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-15.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-15.jpg"
+    },
+    {
+      "id": "mb-cuentos-16",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-16.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-16.jpg"
+    },
+    {
+      "id": "mb-cuentos-17",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-17.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-17.jpg"
+    },
+    {
+      "id": "mb-cuentos-18",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-18.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-18.jpg"
+    },
+    {
+      "id": "mb-cuentos-19",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-19.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-19.jpg"
+    },
+    {
+      "id": "mb-cuentos-20",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-20.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-20.jpg"
+    },
+    {
+      "id": "mb-cuentos-21",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-21.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-21.jpg"
+    },
+    {
+      "id": "mb-cuentos-22",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-22.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-22.jpg"
+    },
+    {
+      "id": "mb-cuentos-23",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-23.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-23.jpg"
+    },
+    {
+      "id": "mb-cuentos-24",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-cuentos-24.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-24.jpg"
+    },
+    {
+      "id": "mb-cuentos-25",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-cuentos-25.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-25.jpg"
+    },
+    {
+      "id": "mb-cuentos-26",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-cuentos-26.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-26.jpg"
+    },
+    {
+      "id": "mb-cuentos-27",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-27.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-27.jpg"
+    },
+    {
+      "id": "mb-cuentos-28",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-28.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-28.jpg"
+    },
+    {
+      "id": "mb-cuentos-29",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-29.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-29.jpg"
+    },
+    {
+      "id": "mb-cuentos-30",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-30.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-30.jpg"
+    },
+    {
+      "id": "mb-cuentos-31",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-cuentos-31.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-31.jpg"
+    },
+    {
+      "id": "mb-cuentos-32",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-32.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-32.jpg"
+    },
+    {
+      "id": "mb-cuentos-33",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-33.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-33.jpg"
+    },
+    {
+      "id": "mb-cuentos-34",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-34.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-34.jpg"
+    },
+    {
+      "id": "mb-cuentos-35",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-35.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-35.jpg"
+    },
+    {
+      "id": "mb-cuentos-36",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-36.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-36.jpg"
+    },
+    {
+      "id": "mb-cuentos-37",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-37.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-37.jpg"
+    },
+    {
+      "id": "mb-cuentos-38",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-38.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-38.jpg"
+    },
+    {
+      "id": "mb-cuentos-39",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-cuentos-39.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-39.jpg"
+    },
+    {
+      "id": "mb-cuentos-40",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-40.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-40.jpg"
+    },
+    {
+      "id": "mb-cuentos-41",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-cuentos-41.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-41.jpg"
+    },
+    {
+      "id": "mb-cuentos-42",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-42.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-42.jpg"
+    },
+    {
+      "id": "mb-cuentos-43",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-43.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-43.jpg"
+    },
+    {
+      "id": "mb-cuentos-44",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-44.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-44.jpg"
+    },
+    {
+      "id": "mb-cuentos-45",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-45.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-45.jpg"
+    },
+    {
+      "id": "mb-cuentos-46",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-46.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-46.jpg"
+    },
+    {
+      "id": "mb-cuentos-47",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "llaves",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-47.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-47.jpg"
+    },
+    {
+      "id": "mb-cuentos-48",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "coronas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-cuentos-48.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-48.jpg"
+    },
+    {
+      "id": "mb-cuentos-49",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "castillo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-cuentos-49.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-49.jpg"
+    },
+    {
+      "id": "mb-cuentos-50",
+      "categoria": "Cuentos y leyendas",
+      "categoria_slug": "cuentos",
+      "familia": "tipo de texto",
+      "motivo": "hongos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-cuentos-50.svg",
+      "vista_previa": "catalog/preview/mb-cuentos-50.jpg"
+    },
+    {
+      "id": "mb-poesia-01",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-01.svg",
+      "vista_previa": "catalog/preview/mb-poesia-01.jpg"
+    },
+    {
+      "id": "mb-poesia-02",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-02.svg",
+      "vista_previa": "catalog/preview/mb-poesia-02.jpg"
+    },
+    {
+      "id": "mb-poesia-03",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-poesia-03.svg",
+      "vista_previa": "catalog/preview/mb-poesia-03.jpg"
+    },
+    {
+      "id": "mb-poesia-04",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-04.svg",
+      "vista_previa": "catalog/preview/mb-poesia-04.jpg"
+    },
+    {
+      "id": "mb-poesia-05",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-05.svg",
+      "vista_previa": "catalog/preview/mb-poesia-05.jpg"
+    },
+    {
+      "id": "mb-poesia-06",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-06.svg",
+      "vista_previa": "catalog/preview/mb-poesia-06.jpg"
+    },
+    {
+      "id": "mb-poesia-07",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-07.svg",
+      "vista_previa": "catalog/preview/mb-poesia-07.jpg"
+    },
+    {
+      "id": "mb-poesia-08",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-08.svg",
+      "vista_previa": "catalog/preview/mb-poesia-08.jpg"
+    },
+    {
+      "id": "mb-poesia-09",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-09.svg",
+      "vista_previa": "catalog/preview/mb-poesia-09.jpg"
+    },
+    {
+      "id": "mb-poesia-10",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-10.svg",
+      "vista_previa": "catalog/preview/mb-poesia-10.jpg"
+    },
+    {
+      "id": "mb-poesia-11",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-11.svg",
+      "vista_previa": "catalog/preview/mb-poesia-11.jpg"
+    },
+    {
+      "id": "mb-poesia-12",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-poesia-12.svg",
+      "vista_previa": "catalog/preview/mb-poesia-12.jpg"
+    },
+    {
+      "id": "mb-poesia-13",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-13.svg",
+      "vista_previa": "catalog/preview/mb-poesia-13.jpg"
+    },
+    {
+      "id": "mb-poesia-14",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-poesia-14.svg",
+      "vista_previa": "catalog/preview/mb-poesia-14.jpg"
+    },
+    {
+      "id": "mb-poesia-15",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-15.svg",
+      "vista_previa": "catalog/preview/mb-poesia-15.jpg"
+    },
+    {
+      "id": "mb-poesia-16",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-16.svg",
+      "vista_previa": "catalog/preview/mb-poesia-16.jpg"
+    },
+    {
+      "id": "mb-poesia-17",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-17.svg",
+      "vista_previa": "catalog/preview/mb-poesia-17.jpg"
+    },
+    {
+      "id": "mb-poesia-18",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-18.svg",
+      "vista_previa": "catalog/preview/mb-poesia-18.jpg"
+    },
+    {
+      "id": "mb-poesia-19",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-19.svg",
+      "vista_previa": "catalog/preview/mb-poesia-19.jpg"
+    },
+    {
+      "id": "mb-poesia-20",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-20.svg",
+      "vista_previa": "catalog/preview/mb-poesia-20.jpg"
+    },
+    {
+      "id": "mb-poesia-21",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-21.svg",
+      "vista_previa": "catalog/preview/mb-poesia-21.jpg"
+    },
+    {
+      "id": "mb-poesia-22",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-22.svg",
+      "vista_previa": "catalog/preview/mb-poesia-22.jpg"
+    },
+    {
+      "id": "mb-poesia-23",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-23.svg",
+      "vista_previa": "catalog/preview/mb-poesia-23.jpg"
+    },
+    {
+      "id": "mb-poesia-24",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-poesia-24.svg",
+      "vista_previa": "catalog/preview/mb-poesia-24.jpg"
+    },
+    {
+      "id": "mb-poesia-25",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-25.svg",
+      "vista_previa": "catalog/preview/mb-poesia-25.jpg"
+    },
+    {
+      "id": "mb-poesia-26",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-26.svg",
+      "vista_previa": "catalog/preview/mb-poesia-26.jpg"
+    },
+    {
+      "id": "mb-poesia-27",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-27.svg",
+      "vista_previa": "catalog/preview/mb-poesia-27.jpg"
+    },
+    {
+      "id": "mb-poesia-28",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-28.svg",
+      "vista_previa": "catalog/preview/mb-poesia-28.jpg"
+    },
+    {
+      "id": "mb-poesia-29",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-29.svg",
+      "vista_previa": "catalog/preview/mb-poesia-29.jpg"
+    },
+    {
+      "id": "mb-poesia-30",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-30.svg",
+      "vista_previa": "catalog/preview/mb-poesia-30.jpg"
+    },
+    {
+      "id": "mb-poesia-31",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-31.svg",
+      "vista_previa": "catalog/preview/mb-poesia-31.jpg"
+    },
+    {
+      "id": "mb-poesia-32",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-32.svg",
+      "vista_previa": "catalog/preview/mb-poesia-32.jpg"
+    },
+    {
+      "id": "mb-poesia-33",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-33.svg",
+      "vista_previa": "catalog/preview/mb-poesia-33.jpg"
+    },
+    {
+      "id": "mb-poesia-34",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-34.svg",
+      "vista_previa": "catalog/preview/mb-poesia-34.jpg"
+    },
+    {
+      "id": "mb-poesia-35",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-35.svg",
+      "vista_previa": "catalog/preview/mb-poesia-35.jpg"
+    },
+    {
+      "id": "mb-poesia-36",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-poesia-36.svg",
+      "vista_previa": "catalog/preview/mb-poesia-36.jpg"
+    },
+    {
+      "id": "mb-poesia-37",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-37.svg",
+      "vista_previa": "catalog/preview/mb-poesia-37.jpg"
+    },
+    {
+      "id": "mb-poesia-38",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-38.svg",
+      "vista_previa": "catalog/preview/mb-poesia-38.jpg"
+    },
+    {
+      "id": "mb-poesia-39",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-poesia-39.svg",
+      "vista_previa": "catalog/preview/mb-poesia-39.jpg"
+    },
+    {
+      "id": "mb-poesia-40",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-40.svg",
+      "vista_previa": "catalog/preview/mb-poesia-40.jpg"
+    },
+    {
+      "id": "mb-poesia-41",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-41.svg",
+      "vista_previa": "catalog/preview/mb-poesia-41.jpg"
+    },
+    {
+      "id": "mb-poesia-42",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-42.svg",
+      "vista_previa": "catalog/preview/mb-poesia-42.jpg"
+    },
+    {
+      "id": "mb-poesia-43",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-43.svg",
+      "vista_previa": "catalog/preview/mb-poesia-43.jpg"
+    },
+    {
+      "id": "mb-poesia-44",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-44.svg",
+      "vista_previa": "catalog/preview/mb-poesia-44.jpg"
+    },
+    {
+      "id": "mb-poesia-45",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-45.svg",
+      "vista_previa": "catalog/preview/mb-poesia-45.jpg"
+    },
+    {
+      "id": "mb-poesia-46",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-poesia-46.svg",
+      "vista_previa": "catalog/preview/mb-poesia-46.jpg"
+    },
+    {
+      "id": "mb-poesia-47",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "petalos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-poesia-47.svg",
+      "vista_previa": "catalog/preview/mb-poesia-47.jpg"
+    },
+    {
+      "id": "mb-poesia-48",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "lira",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-48.svg",
+      "vista_previa": "catalog/preview/mb-poesia-48.jpg"
+    },
+    {
+      "id": "mb-poesia-49",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "versos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-49.svg",
+      "vista_previa": "catalog/preview/mb-poesia-49.jpg"
+    },
+    {
+      "id": "mb-poesia-50",
+      "categoria": "Poesía",
+      "categoria_slug": "poesia",
+      "familia": "tipo de texto",
+      "motivo": "pajaros_en_cable",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-poesia-50.svg",
+      "vista_previa": "catalog/preview/mb-poesia-50.jpg"
+    },
+    {
+      "id": "mb-historia-01",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-01.svg",
+      "vista_previa": "catalog/preview/mb-historia-01.jpg"
+    },
+    {
+      "id": "mb-historia-02",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-02.svg",
+      "vista_previa": "catalog/preview/mb-historia-02.jpg"
+    },
+    {
+      "id": "mb-historia-03",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-03.svg",
+      "vista_previa": "catalog/preview/mb-historia-03.jpg"
+    },
+    {
+      "id": "mb-historia-04",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-04.svg",
+      "vista_previa": "catalog/preview/mb-historia-04.jpg"
+    },
+    {
+      "id": "mb-historia-05",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-05.svg",
+      "vista_previa": "catalog/preview/mb-historia-05.jpg"
+    },
+    {
+      "id": "mb-historia-06",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-historia-06.svg",
+      "vista_previa": "catalog/preview/mb-historia-06.jpg"
+    },
+    {
+      "id": "mb-historia-07",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-07.svg",
+      "vista_previa": "catalog/preview/mb-historia-07.jpg"
+    },
+    {
+      "id": "mb-historia-08",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-historia-08.svg",
+      "vista_previa": "catalog/preview/mb-historia-08.jpg"
+    },
+    {
+      "id": "mb-historia-09",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-09.svg",
+      "vista_previa": "catalog/preview/mb-historia-09.jpg"
+    },
+    {
+      "id": "mb-historia-10",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-10.svg",
+      "vista_previa": "catalog/preview/mb-historia-10.jpg"
+    },
+    {
+      "id": "mb-historia-11",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-11.svg",
+      "vista_previa": "catalog/preview/mb-historia-11.jpg"
+    },
+    {
+      "id": "mb-historia-12",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-historia-12.svg",
+      "vista_previa": "catalog/preview/mb-historia-12.jpg"
+    },
+    {
+      "id": "mb-historia-13",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-13.svg",
+      "vista_previa": "catalog/preview/mb-historia-13.jpg"
+    },
+    {
+      "id": "mb-historia-14",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-14.svg",
+      "vista_previa": "catalog/preview/mb-historia-14.jpg"
+    },
+    {
+      "id": "mb-historia-15",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-15.svg",
+      "vista_previa": "catalog/preview/mb-historia-15.jpg"
+    },
+    {
+      "id": "mb-historia-16",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-historia-16.svg",
+      "vista_previa": "catalog/preview/mb-historia-16.jpg"
+    },
+    {
+      "id": "mb-historia-17",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-historia-17.svg",
+      "vista_previa": "catalog/preview/mb-historia-17.jpg"
+    },
+    {
+      "id": "mb-historia-18",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-18.svg",
+      "vista_previa": "catalog/preview/mb-historia-18.jpg"
+    },
+    {
+      "id": "mb-historia-19",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-historia-19.svg",
+      "vista_previa": "catalog/preview/mb-historia-19.jpg"
+    },
+    {
+      "id": "mb-historia-20",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-20.svg",
+      "vista_previa": "catalog/preview/mb-historia-20.jpg"
+    },
+    {
+      "id": "mb-historia-21",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-21.svg",
+      "vista_previa": "catalog/preview/mb-historia-21.jpg"
+    },
+    {
+      "id": "mb-historia-22",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-historia-22.svg",
+      "vista_previa": "catalog/preview/mb-historia-22.jpg"
+    },
+    {
+      "id": "mb-historia-23",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-23.svg",
+      "vista_previa": "catalog/preview/mb-historia-23.jpg"
+    },
+    {
+      "id": "mb-historia-24",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-24.svg",
+      "vista_previa": "catalog/preview/mb-historia-24.jpg"
+    },
+    {
+      "id": "mb-historia-25",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-25.svg",
+      "vista_previa": "catalog/preview/mb-historia-25.jpg"
+    },
+    {
+      "id": "mb-historia-26",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-26.svg",
+      "vista_previa": "catalog/preview/mb-historia-26.jpg"
+    },
+    {
+      "id": "mb-historia-27",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-historia-27.svg",
+      "vista_previa": "catalog/preview/mb-historia-27.jpg"
+    },
+    {
+      "id": "mb-historia-28",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-historia-28.svg",
+      "vista_previa": "catalog/preview/mb-historia-28.jpg"
+    },
+    {
+      "id": "mb-historia-29",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-historia-29.svg",
+      "vista_previa": "catalog/preview/mb-historia-29.jpg"
+    },
+    {
+      "id": "mb-historia-30",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-historia-30.svg",
+      "vista_previa": "catalog/preview/mb-historia-30.jpg"
+    },
+    {
+      "id": "mb-historia-31",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-31.svg",
+      "vista_previa": "catalog/preview/mb-historia-31.jpg"
+    },
+    {
+      "id": "mb-historia-32",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-32.svg",
+      "vista_previa": "catalog/preview/mb-historia-32.jpg"
+    },
+    {
+      "id": "mb-historia-33",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-historia-33.svg",
+      "vista_previa": "catalog/preview/mb-historia-33.jpg"
+    },
+    {
+      "id": "mb-historia-34",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-34.svg",
+      "vista_previa": "catalog/preview/mb-historia-34.jpg"
+    },
+    {
+      "id": "mb-historia-35",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-35.svg",
+      "vista_previa": "catalog/preview/mb-historia-35.jpg"
+    },
+    {
+      "id": "mb-historia-36",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-36.svg",
+      "vista_previa": "catalog/preview/mb-historia-36.jpg"
+    },
+    {
+      "id": "mb-historia-37",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-historia-37.svg",
+      "vista_previa": "catalog/preview/mb-historia-37.jpg"
+    },
+    {
+      "id": "mb-historia-38",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-38.svg",
+      "vista_previa": "catalog/preview/mb-historia-38.jpg"
+    },
+    {
+      "id": "mb-historia-39",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-historia-39.svg",
+      "vista_previa": "catalog/preview/mb-historia-39.jpg"
+    },
+    {
+      "id": "mb-historia-40",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-historia-40.svg",
+      "vista_previa": "catalog/preview/mb-historia-40.jpg"
+    },
+    {
+      "id": "mb-historia-41",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-41.svg",
+      "vista_previa": "catalog/preview/mb-historia-41.jpg"
+    },
+    {
+      "id": "mb-historia-42",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-42.svg",
+      "vista_previa": "catalog/preview/mb-historia-42.jpg"
+    },
+    {
+      "id": "mb-historia-43",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-historia-43.svg",
+      "vista_previa": "catalog/preview/mb-historia-43.jpg"
+    },
+    {
+      "id": "mb-historia-44",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-44.svg",
+      "vista_previa": "catalog/preview/mb-historia-44.jpg"
+    },
+    {
+      "id": "mb-historia-45",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-historia-45.svg",
+      "vista_previa": "catalog/preview/mb-historia-45.jpg"
+    },
+    {
+      "id": "mb-historia-46",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-46.svg",
+      "vista_previa": "catalog/preview/mb-historia-46.jpg"
+    },
+    {
+      "id": "mb-historia-47",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "monedas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-47.svg",
+      "vista_previa": "catalog/preview/mb-historia-47.jpg"
+    },
+    {
+      "id": "mb-historia-48",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "reloj_de_arena",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-historia-48.svg",
+      "vista_previa": "catalog/preview/mb-historia-48.jpg"
+    },
+    {
+      "id": "mb-historia-49",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "linea_de_tiempo",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-historia-49.svg",
+      "vista_previa": "catalog/preview/mb-historia-49.jpg"
+    },
+    {
+      "id": "mb-historia-50",
+      "categoria": "Historia",
+      "categoria_slug": "historia",
+      "familia": "tipo de texto",
+      "motivo": "piramides",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-historia-50.svg",
+      "vista_previa": "catalog/preview/mb-historia-50.jpg"
+    },
+    {
+      "id": "mb-periodismo-01",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-01.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-01.jpg"
+    },
+    {
+      "id": "mb-periodismo-02",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-02.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-02.jpg"
+    },
+    {
+      "id": "mb-periodismo-03",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-03.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-03.jpg"
+    },
+    {
+      "id": "mb-periodismo-04",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-periodismo-04.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-04.jpg"
+    },
+    {
+      "id": "mb-periodismo-05",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-05.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-05.jpg"
+    },
+    {
+      "id": "mb-periodismo-06",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-06.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-06.jpg"
+    },
+    {
+      "id": "mb-periodismo-07",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-07.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-07.jpg"
+    },
+    {
+      "id": "mb-periodismo-08",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-08.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-08.jpg"
+    },
+    {
+      "id": "mb-periodismo-09",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-09.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-09.jpg"
+    },
+    {
+      "id": "mb-periodismo-10",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-10.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-10.jpg"
+    },
+    {
+      "id": "mb-periodismo-11",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-11.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-11.jpg"
+    },
+    {
+      "id": "mb-periodismo-12",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-12.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-12.jpg"
+    },
+    {
+      "id": "mb-periodismo-13",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-13.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-13.jpg"
+    },
+    {
+      "id": "mb-periodismo-14",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-14.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-14.jpg"
+    },
+    {
+      "id": "mb-periodismo-15",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-15.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-15.jpg"
+    },
+    {
+      "id": "mb-periodismo-16",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-16.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-16.jpg"
+    },
+    {
+      "id": "mb-periodismo-17",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-17.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-17.jpg"
+    },
+    {
+      "id": "mb-periodismo-18",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-18.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-18.jpg"
+    },
+    {
+      "id": "mb-periodismo-19",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-19.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-19.jpg"
+    },
+    {
+      "id": "mb-periodismo-20",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-periodismo-20.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-20.jpg"
+    },
+    {
+      "id": "mb-periodismo-21",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-periodismo-21.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-21.jpg"
+    },
+    {
+      "id": "mb-periodismo-22",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-22.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-22.jpg"
+    },
+    {
+      "id": "mb-periodismo-23",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-23.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-23.jpg"
+    },
+    {
+      "id": "mb-periodismo-24",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-24.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-24.jpg"
+    },
+    {
+      "id": "mb-periodismo-25",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-periodismo-25.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-25.jpg"
+    },
+    {
+      "id": "mb-periodismo-26",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-26.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-26.jpg"
+    },
+    {
+      "id": "mb-periodismo-27",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-27.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-27.jpg"
+    },
+    {
+      "id": "mb-periodismo-28",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-28.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-28.jpg"
+    },
+    {
+      "id": "mb-periodismo-29",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-periodismo-29.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-29.jpg"
+    },
+    {
+      "id": "mb-periodismo-30",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-30.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-30.jpg"
+    },
+    {
+      "id": "mb-periodismo-31",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-31.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-31.jpg"
+    },
+    {
+      "id": "mb-periodismo-32",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-32.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-32.jpg"
+    },
+    {
+      "id": "mb-periodismo-33",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-33.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-33.jpg"
+    },
+    {
+      "id": "mb-periodismo-34",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-periodismo-34.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-34.jpg"
+    },
+    {
+      "id": "mb-periodismo-35",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-35.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-35.jpg"
+    },
+    {
+      "id": "mb-periodismo-36",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-36.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-36.jpg"
+    },
+    {
+      "id": "mb-periodismo-37",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-37.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-37.jpg"
+    },
+    {
+      "id": "mb-periodismo-38",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-periodismo-38.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-38.jpg"
+    },
+    {
+      "id": "mb-periodismo-39",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-39.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-39.jpg"
+    },
+    {
+      "id": "mb-periodismo-40",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-40.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-40.jpg"
+    },
+    {
+      "id": "mb-periodismo-41",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-41.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-41.jpg"
+    },
+    {
+      "id": "mb-periodismo-42",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-42.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-42.jpg"
+    },
+    {
+      "id": "mb-periodismo-43",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-43.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-43.jpg"
+    },
+    {
+      "id": "mb-periodismo-44",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-44.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-44.jpg"
+    },
+    {
+      "id": "mb-periodismo-45",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-45.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-45.jpg"
+    },
+    {
+      "id": "mb-periodismo-46",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-46.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-46.jpg"
+    },
+    {
+      "id": "mb-periodismo-47",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "microfonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-periodismo-47.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-47.jpg"
+    },
+    {
+      "id": "mb-periodismo-48",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "teclas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-periodismo-48.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-48.jpg"
+    },
+    {
+      "id": "mb-periodismo-49",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "columnas_de_periodico",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-periodismo-49.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-49.jpg"
+    },
+    {
+      "id": "mb-periodismo-50",
+      "categoria": "Periodismo",
+      "categoria_slug": "periodismo",
+      "familia": "tipo de texto",
+      "motivo": "titulares",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-periodismo-50.svg",
+      "vista_previa": "catalog/preview/mb-periodismo-50.jpg"
+    },
+    {
+      "id": "mb-diccionarios-01",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-01.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-01.jpg"
+    },
+    {
+      "id": "mb-diccionarios-02",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-02.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-02.jpg"
+    },
+    {
+      "id": "mb-diccionarios-03",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-03.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-03.jpg"
+    },
+    {
+      "id": "mb-diccionarios-04",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-04.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-04.jpg"
+    },
+    {
+      "id": "mb-diccionarios-05",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-05.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-05.jpg"
+    },
+    {
+      "id": "mb-diccionarios-06",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-06.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-06.jpg"
+    },
+    {
+      "id": "mb-diccionarios-07",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-07.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-07.jpg"
+    },
+    {
+      "id": "mb-diccionarios-08",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-08.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-08.jpg"
+    },
+    {
+      "id": "mb-diccionarios-09",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-09.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-09.jpg"
+    },
+    {
+      "id": "mb-diccionarios-10",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-10.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-10.jpg"
+    },
+    {
+      "id": "mb-diccionarios-11",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-11.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-11.jpg"
+    },
+    {
+      "id": "mb-diccionarios-12",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-12.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-12.jpg"
+    },
+    {
+      "id": "mb-diccionarios-13",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-13.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-13.jpg"
+    },
+    {
+      "id": "mb-diccionarios-14",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-14.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-14.jpg"
+    },
+    {
+      "id": "mb-diccionarios-15",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-15.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-15.jpg"
+    },
+    {
+      "id": "mb-diccionarios-16",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-16.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-16.jpg"
+    },
+    {
+      "id": "mb-diccionarios-17",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-17.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-17.jpg"
+    },
+    {
+      "id": "mb-diccionarios-18",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-18.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-18.jpg"
+    },
+    {
+      "id": "mb-diccionarios-19",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-19.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-19.jpg"
+    },
+    {
+      "id": "mb-diccionarios-20",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-20.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-20.jpg"
+    },
+    {
+      "id": "mb-diccionarios-21",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-21.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-21.jpg"
+    },
+    {
+      "id": "mb-diccionarios-22",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-22.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-22.jpg"
+    },
+    {
+      "id": "mb-diccionarios-23",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-23.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-23.jpg"
+    },
+    {
+      "id": "mb-diccionarios-24",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-24.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-24.jpg"
+    },
+    {
+      "id": "mb-diccionarios-25",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-25.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-25.jpg"
+    },
+    {
+      "id": "mb-diccionarios-26",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-26.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-26.jpg"
+    },
+    {
+      "id": "mb-diccionarios-27",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-27.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-27.jpg"
+    },
+    {
+      "id": "mb-diccionarios-28",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-28.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-28.jpg"
+    },
+    {
+      "id": "mb-diccionarios-29",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-29.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-29.jpg"
+    },
+    {
+      "id": "mb-diccionarios-30",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-30.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-30.jpg"
+    },
+    {
+      "id": "mb-diccionarios-31",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-31.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-31.jpg"
+    },
+    {
+      "id": "mb-diccionarios-32",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-32.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-32.jpg"
+    },
+    {
+      "id": "mb-diccionarios-33",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-33.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-33.jpg"
+    },
+    {
+      "id": "mb-diccionarios-34",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-34.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-34.jpg"
+    },
+    {
+      "id": "mb-diccionarios-35",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-35.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-35.jpg"
+    },
+    {
+      "id": "mb-diccionarios-36",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-36.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-36.jpg"
+    },
+    {
+      "id": "mb-diccionarios-37",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-37.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-37.jpg"
+    },
+    {
+      "id": "mb-diccionarios-38",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-38.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-38.jpg"
+    },
+    {
+      "id": "mb-diccionarios-39",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-39.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-39.jpg"
+    },
+    {
+      "id": "mb-diccionarios-40",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-40.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-40.jpg"
+    },
+    {
+      "id": "mb-diccionarios-41",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-41.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-41.jpg"
+    },
+    {
+      "id": "mb-diccionarios-42",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-42.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-42.jpg"
+    },
+    {
+      "id": "mb-diccionarios-43",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-43.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-43.jpg"
+    },
+    {
+      "id": "mb-diccionarios-44",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-44.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-44.jpg"
+    },
+    {
+      "id": "mb-diccionarios-45",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-45.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-45.jpg"
+    },
+    {
+      "id": "mb-diccionarios-46",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-46.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-46.jpg"
+    },
+    {
+      "id": "mb-diccionarios-47",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lupas",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-47.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-47.jpg"
+    },
+    {
+      "id": "mb-diccionarios-48",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "fichero",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-48.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-48.jpg"
+    },
+    {
+      "id": "mb-diccionarios-49",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "lomos_de_libros",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-49.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-49.jpg"
+    },
+    {
+      "id": "mb-diccionarios-50",
+      "categoria": "Diccionarios y enciclopedias",
+      "categoria_slug": "diccionarios",
+      "familia": "tipo de texto",
+      "motivo": "pestanas_indice",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-diccionarios-50.svg",
+      "vista_previa": "catalog/preview/mb-diccionarios-50.jpg"
+    },
+    {
+      "id": "mb-discursos-01",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-01.svg",
+      "vista_previa": "catalog/preview/mb-discursos-01.jpg"
+    },
+    {
+      "id": "mb-discursos-02",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-discursos-02.svg",
+      "vista_previa": "catalog/preview/mb-discursos-02.jpg"
+    },
+    {
+      "id": "mb-discursos-03",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-discursos-03.svg",
+      "vista_previa": "catalog/preview/mb-discursos-03.jpg"
+    },
+    {
+      "id": "mb-discursos-04",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-04.svg",
+      "vista_previa": "catalog/preview/mb-discursos-04.jpg"
+    },
+    {
+      "id": "mb-discursos-05",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-05.svg",
+      "vista_previa": "catalog/preview/mb-discursos-05.jpg"
+    },
+    {
+      "id": "mb-discursos-06",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-06.svg",
+      "vista_previa": "catalog/preview/mb-discursos-06.jpg"
+    },
+    {
+      "id": "mb-discursos-07",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-07.svg",
+      "vista_previa": "catalog/preview/mb-discursos-07.jpg"
+    },
+    {
+      "id": "mb-discursos-08",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-discursos-08.svg",
+      "vista_previa": "catalog/preview/mb-discursos-08.jpg"
+    },
+    {
+      "id": "mb-discursos-09",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-09.svg",
+      "vista_previa": "catalog/preview/mb-discursos-09.jpg"
+    },
+    {
+      "id": "mb-discursos-10",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-10.svg",
+      "vista_previa": "catalog/preview/mb-discursos-10.jpg"
+    },
+    {
+      "id": "mb-discursos-11",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-11.svg",
+      "vista_previa": "catalog/preview/mb-discursos-11.jpg"
+    },
+    {
+      "id": "mb-discursos-12",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-discursos-12.svg",
+      "vista_previa": "catalog/preview/mb-discursos-12.jpg"
+    },
+    {
+      "id": "mb-discursos-13",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-13.svg",
+      "vista_previa": "catalog/preview/mb-discursos-13.jpg"
+    },
+    {
+      "id": "mb-discursos-14",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-14.svg",
+      "vista_previa": "catalog/preview/mb-discursos-14.jpg"
+    },
+    {
+      "id": "mb-discursos-15",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-15.svg",
+      "vista_previa": "catalog/preview/mb-discursos-15.jpg"
+    },
+    {
+      "id": "mb-discursos-16",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-16.svg",
+      "vista_previa": "catalog/preview/mb-discursos-16.jpg"
+    },
+    {
+      "id": "mb-discursos-17",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-17.svg",
+      "vista_previa": "catalog/preview/mb-discursos-17.jpg"
+    },
+    {
+      "id": "mb-discursos-18",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-18.svg",
+      "vista_previa": "catalog/preview/mb-discursos-18.jpg"
+    },
+    {
+      "id": "mb-discursos-19",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-19.svg",
+      "vista_previa": "catalog/preview/mb-discursos-19.jpg"
+    },
+    {
+      "id": "mb-discursos-20",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-20.svg",
+      "vista_previa": "catalog/preview/mb-discursos-20.jpg"
+    },
+    {
+      "id": "mb-discursos-21",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-21.svg",
+      "vista_previa": "catalog/preview/mb-discursos-21.jpg"
+    },
+    {
+      "id": "mb-discursos-22",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#1E2A38"
+      ],
+      "svg": "catalog/svg/mb-discursos-22.svg",
+      "vista_previa": "catalog/preview/mb-discursos-22.jpg"
+    },
+    {
+      "id": "mb-discursos-23",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-23.svg",
+      "vista_previa": "catalog/preview/mb-discursos-23.jpg"
+    },
+    {
+      "id": "mb-discursos-24",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-discursos-24.svg",
+      "vista_previa": "catalog/preview/mb-discursos-24.jpg"
+    },
+    {
+      "id": "mb-discursos-25",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-25.svg",
+      "vista_previa": "catalog/preview/mb-discursos-25.jpg"
+    },
+    {
+      "id": "mb-discursos-26",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-26.svg",
+      "vista_previa": "catalog/preview/mb-discursos-26.jpg"
+    },
+    {
+      "id": "mb-discursos-27",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-27.svg",
+      "vista_previa": "catalog/preview/mb-discursos-27.jpg"
+    },
+    {
+      "id": "mb-discursos-28",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-28.svg",
+      "vista_previa": "catalog/preview/mb-discursos-28.jpg"
+    },
+    {
+      "id": "mb-discursos-29",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-29.svg",
+      "vista_previa": "catalog/preview/mb-discursos-29.jpg"
+    },
+    {
+      "id": "mb-discursos-30",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-30.svg",
+      "vista_previa": "catalog/preview/mb-discursos-30.jpg"
+    },
+    {
+      "id": "mb-discursos-31",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-discursos-31.svg",
+      "vista_previa": "catalog/preview/mb-discursos-31.jpg"
+    },
+    {
+      "id": "mb-discursos-32",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#3E5C4A"
+      ],
+      "svg": "catalog/svg/mb-discursos-32.svg",
+      "vista_previa": "catalog/preview/mb-discursos-32.jpg"
+    },
+    {
+      "id": "mb-discursos-33",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-33.svg",
+      "vista_previa": "catalog/preview/mb-discursos-33.jpg"
+    },
+    {
+      "id": "mb-discursos-34",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-34.svg",
+      "vista_previa": "catalog/preview/mb-discursos-34.jpg"
+    },
+    {
+      "id": "mb-discursos-35",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-35.svg",
+      "vista_previa": "catalog/preview/mb-discursos-35.jpg"
+    },
+    {
+      "id": "mb-discursos-36",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-36.svg",
+      "vista_previa": "catalog/preview/mb-discursos-36.jpg"
+    },
+    {
+      "id": "mb-discursos-37",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-37.svg",
+      "vista_previa": "catalog/preview/mb-discursos-37.jpg"
+    },
+    {
+      "id": "mb-discursos-38",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-38.svg",
+      "vista_previa": "catalog/preview/mb-discursos-38.jpg"
+    },
+    {
+      "id": "mb-discursos-39",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-39.svg",
+      "vista_previa": "catalog/preview/mb-discursos-39.jpg"
+    },
+    {
+      "id": "mb-discursos-40",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#F4EEE1",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-40.svg",
+      "vista_previa": "catalog/preview/mb-discursos-40.jpg"
+    },
+    {
+      "id": "mb-discursos-41",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-41.svg",
+      "vista_previa": "catalog/preview/mb-discursos-41.jpg"
+    },
+    {
+      "id": "mb-discursos-42",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-42.svg",
+      "vista_previa": "catalog/preview/mb-discursos-42.jpg"
+    },
+    {
+      "id": "mb-discursos-43",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-43.svg",
+      "vista_previa": "catalog/preview/mb-discursos-43.jpg"
+    },
+    {
+      "id": "mb-discursos-44",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#1E2A38",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-44.svg",
+      "vista_previa": "catalog/preview/mb-discursos-44.jpg"
+    },
+    {
+      "id": "mb-discursos-45",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-45.svg",
+      "vista_previa": "catalog/preview/mb-discursos-45.jpg"
+    },
+    {
+      "id": "mb-discursos-46",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-46.svg",
+      "vista_previa": "catalog/preview/mb-discursos-46.jpg"
+    },
+    {
+      "id": "mb-discursos-47",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "multitud",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-47.svg",
+      "vista_previa": "catalog/preview/mb-discursos-47.jpg"
+    },
+    {
+      "id": "mb-discursos-48",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "megafonos",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#F4EEE1"
+      ],
+      "svg": "catalog/svg/mb-discursos-48.svg",
+      "vista_previa": "catalog/preview/mb-discursos-48.jpg"
+    },
+    {
+      "id": "mb-discursos-49",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "atril",
+      "fondo": "#1E2A38",
+      "colores": [
+        "#C98B3A",
+        "#7A9CB0"
+      ],
+      "svg": "catalog/svg/mb-discursos-49.svg",
+      "vista_previa": "catalog/preview/mb-discursos-49.jpg"
+    },
+    {
+      "id": "mb-discursos-50",
+      "categoria": "Discursos",
+      "categoria_slug": "discursos",
+      "familia": "tipo de texto",
+      "motivo": "ondas_de_voz",
+      "fondo": "#F4EEE1",
+      "colores": [
+        "#3E5C4A",
+        "#C98B3A"
+      ],
+      "svg": "catalog/svg/mb-discursos-50.svg",
+      "vista_previa": "catalog/preview/mb-discursos-50.jpg"
     }
   ]
 }

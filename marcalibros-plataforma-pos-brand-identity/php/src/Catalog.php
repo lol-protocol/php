@@ -88,6 +88,48 @@ final class Catalog
         return array_values($this->categories);
     }
 
+    /**
+     * Todos los motivos con su nombre para mostrar, en el orden del manifiesto.
+     *
+     * @return array<string, string>
+     */
+    public function motifs(): array
+    {
+        return $this->motifNames;
+    }
+
+    public function hasMotif(string $motif): bool
+    {
+        return isset($this->motifNames[$motif]);
+    }
+
+    /**
+     * Los marcalibros que cumplen a la vez los filtros dados; un filtro en null no se aplica.
+     *
+     * @param string|null $color Hex de la paleta ("#C98B3A"): el marcalibro lo usa de fondo o de acento.
+     * @return list<array<string, mixed>>
+     */
+    public function search(?string $category = null, ?string $motif = null, ?string $color = null): array
+    {
+        $color = $color === null ? null : strtoupper($color);
+        return array_values(array_filter(
+            $this->entries,
+            static function (array $entry) use ($category, $motif, $color): bool {
+                if ($category !== null && ($entry['categoria_slug'] ?? null) !== $category) {
+                    return false;
+                }
+                if ($motif !== null && ($entry['motivo'] ?? null) !== $motif) {
+                    return false;
+                }
+                if ($color === null) {
+                    return true;
+                }
+                $used = array_merge([(string) ($entry['fondo'] ?? '')], array_map('strval', (array) ($entry['colores'] ?? [])));
+                return in_array($color, array_map('strtoupper', $used), true);
+            }
+        ));
+    }
+
     /** Nombre de un motivo para mostrarlo ("arbol_solitario" da "Árbol solitario"). */
     public function motifName(string $motif): string
     {
