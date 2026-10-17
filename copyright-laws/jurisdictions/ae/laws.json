@@ -11,7 +11,7 @@
     "orphan_works": "Collective administration required",
     "digital_protection": "Dealing in TPM-circumvention devices criminalised (Decree-Law 38/2021, replaced Law 7/2002)",
     "fair_use_exceptions": "Educational exceptions",
-    "registration_required": "No (voluntary deposit with Ministry of Economy) (unconfirmed)",
+    "registration_required": "No (protection automatic on creation; optional registration/deposit with Ministry of Economy as evidence; Decree-Law 38/2021, Cabinet Decision 47/2022)",
     "enforcement_body": "Ministry of Economy (Copyright Department)",
     "treaties_signatory": "Berne/TRIPS/WCT/WPPT",
     "treaties_not_party": "",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-17",
     "sources": {
       "law_name": {
         "url": "https://uaelegislation.gov.ae/en/legislations/1534/download",
@@ -39,9 +39,9 @@
         "checked": "2026-10-14"
       },
       "registration_required": {
-        "url": "https://www.agip.com/Agip-Country-Service/en/10/c",
-        "confidence": "low",
-        "checked": "2026-10-14"
+        "url": "https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/600/",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       },
       "enforcement_body": {
         "url": "https://www.wam.ae/en/article/hszrezo1-ministry-economy-reviews-executive-regulation",
@@ -50,6 +50,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "registration_required",
+        "from": "No (voluntary deposit with Ministry of Economy) (unconfirmed)",
+        "to": "No (protection automatic on creation; optional registration/deposit with Ministry of Economy as evidence; Decree-Law 38/2021, Cabinet Decision 47/2022)"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 70 years (collective works: 70 years from lawful publication)",
     "author_rights": "Economic & moral rights",
     "moral_rights": "Personal (moral) rights incl. right of repentance/withdrawal",
-    "orphan_works": "Not specified",
+    "orphan_works": "No specific orphan-works mechanism in Law 63/10; Directive 2012/28/EU not transposed (per Hasić academic analysis)",
     "digital_protection": "Protection against circumvention of technological measures (2010 Act)",
     "fair_use_exceptions": "Closed list of limitations; quotation with source (art. 47); private reproduction with levy; teaching, disabled persons, news reporting, libraries/archives",
     "registration_required": "No",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
+    "last_checked": "2026-10-17",
     "sources": {
       "moral_rights": {
         "url": "https://godisnjak.pravni.ues.rs.ba/st%202010%20en/The%20right%20of%20repentance%20in%20the%20light%20of%20new%20Copyright%20law%20in%20Bosnia%20and%20Herzegovina.aspx",
@@ -37,9 +37,20 @@
         "url": "https://cir.unsa.ba/wp-content/uploads/2021/02/Zakon-o-autorskim-i-srodnim-pravima-BiH.pdf",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "orphan_works": {
+        "url": "https://eprints.ibu.edu.ba/files/original/a45a767f64a179d622e49f504e2bb7d4.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "orphan_works",
+        "from": "Not specified",
+        "to": "No specific orphan-works mechanism in Law 63/10; Directive 2012/28/EU not transposed (per Hasić academic analysis)"
+      },
       {
         "date": "2026-10-15",
         "field": "fair_use_exceptions",
