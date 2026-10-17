@@ -54,6 +54,25 @@ test('paper_types.csv has at least 50 types with a known category and a gsm rang
     });
 });
 
+test('paper_type_translations.csv has the 28 non-es/en languages for every paper type, in the same order', () => {
+    const LANGUAGES = [
+        'fr', 'de', 'zh', 'ja', 'pt', 'ru', 'ar', 'ko', 'it', 'nl', 'tr', 'hi', 'th', 'vi',
+        'pl', 'sv', 'no', 'da', 'fi', 'el', 'cs', 'hu', 'ro', 'bg', 'sr', 'hr', 'sk', 'uk',
+    ];
+    const types = parseCSV(read('specs/paper_types.csv'));
+    const translations = parseCSV(read('specs/paper_type_translations.csv'));
+
+    assert.deepEqual(Object.keys(translations[0]), ['type_name', ...LANGUAGES]);
+    assert.deepEqual(translations.map(row => row.type_name), types.map(row => row.type_name),
+        'paper_type_translations.csv must list the same paper types, in the same order, as paper_types.csv');
+
+    translations.forEach((row, i) => {
+        for (const lang of LANGUAGES) {
+            assert.ok(row[lang], `line ${i + 2} (${row.type_name}): missing "${lang}" translation`);
+        }
+    });
+});
+
 for (const file of csvFiles) {
     test(`${file}: every row has as many fields as the header`, () => {
         const [header, ...lines] = read(file).trim().split('\n');

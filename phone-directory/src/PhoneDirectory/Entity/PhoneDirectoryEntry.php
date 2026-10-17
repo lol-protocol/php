@@ -2,13 +2,17 @@
 
 namespace PhoneDirectory\Entity;
 
+/**
+ * @phpstan-import-type PersonNameData from PersonName
+ * @phpstan-import-type GeoLocationData from GeoLocation
+ */
 class PhoneDirectoryEntry
 {
     private int $id;
     private PersonName $personName;
     private GeoLocation $geoLocation;
     private ?string $phoneNumber;
-    private ?\DateTime $recordDate;
+    private \DateTime $recordDate;
     private ?string $sourceDirectoryId;
     private string $rawName;
     private ?int $sourceLine;
@@ -106,6 +110,7 @@ class PhoneDirectoryEntry
         return $this->personName->getFirstName();
     }
 
+    /** @return list<string> */
     public function getLastNames(): array
     {
         return $this->personName->getLastNames();
@@ -166,6 +171,19 @@ class PhoneDirectoryEntry
         return $this->sourceLine;
     }
 
+    /**
+     * @return array{
+     *     id: int,
+     *     rawName: string,
+     *     language: string|null,
+     *     person: PersonNameData,
+     *     location: GeoLocationData,
+     *     phoneNumber: string|null,
+     *     recordDate: string,
+     *     sourceDirectoryId: string|null,
+     *     sourceLine: int|null
+     * }
+     */
     public function toArray(): array
     {
         return [

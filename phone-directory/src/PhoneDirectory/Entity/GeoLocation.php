@@ -4,6 +4,15 @@ namespace PhoneDirectory\Entity;
 
 use PhoneDirectory\Validation\InputValidator;
 
+/**
+ * @phpstan-type GeoLocationData array{
+ *     countryCode: string,
+ *     zone: string|null,
+ *     city: string|null,
+ *     street: string,
+ *     fullAddress: string
+ * }
+ */
 class GeoLocation
 {
     use InputValidator;
@@ -74,6 +83,7 @@ class GeoLocation
         return implode(', ', $parts);
     }
 
+    /** @return GeoLocationData */
     public function toArray(): array
     {
         return [
