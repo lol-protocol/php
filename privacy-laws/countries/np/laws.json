@@ -17,7 +17,7 @@
     "exemptions": "Collection/use permitted for national security or peace and order; disclosure on legal demand for national security (section numbers not confirmed) (unconfirmed)",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "No explicit genetic category found; sensitive information (s.27(2)) covers caste, ethnicity, health; biometric data (incl. blood group) is personal information (unconfirmed)",
     "website_url": "https://lawcommission.gov.np/content/12261/12261-the-privacy-act-2075/",
     "language": "Nepali",
     "frameworks": "",
@@ -27,15 +27,26 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
+    "last_checked": "2026-10-17",
     "sources": {
       "exemptions": {
         "url": "https://hmis.gov.np/media/22/03_The-Privacy-Act-2075-2018.pdf",
         "confidence": "low",
         "checked": "2026-10-15"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/?c=NP&t=law",
+        "confidence": "low",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No explicit genetic category found; sensitive information (s.27(2)) covers caste, ethnicity, health; biometric data (incl. blood group) is personal information (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "exemptions",

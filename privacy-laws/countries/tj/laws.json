@@ -17,7 +17,7 @@
     "exemptions": "Not specified",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Distinct category: genetic data defined as inherited or acquired genetic characteristics from analysis of a biological sample (art. 1); listed with special and biometric categories",
     "website_url": "https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ",
     "language": "Tajik/Russian",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-17",
     "sources": {
       "law_name": {
         "url": "https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ",
@@ -73,9 +73,20 @@
         "url": "https://www.dlapiperdataprotection.com/index.html?t=law&c=TJ",
         "confidence": "low",
         "checked": "2026-10-16"
+      },
+      "genetic_data": {
+        "url": "https://gratanet.com/publications/personal-data-protection-in-the-republic-of-tajikistan",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Distinct category: genetic data defined as inherited or acquired genetic characteristics from analysis of a biological sample (art. 1); listed with special and biometric categories"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

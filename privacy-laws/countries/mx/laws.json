@@ -16,8 +16,8 @@
     "penalties_range": "Up to 320,000 UMA (~MXN 36M at 2025 UMA); doubled for sensitive data",
     "exemptions": "Government agencies",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Consent not required for data subjected to prior dissociation, useful for statistics/research (art. 10) (unconfirmed)",
+    "genetic_data": "Sensitive data includes genetic information; express written consent required",
     "website_url": "https://www.anticorrupcionybg.gob.mx/",
     "language": "Spanish",
     "frameworks": "CoE-108/APEC-CBPR",
@@ -27,15 +27,37 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-11",
+    "last_checked": "2026-10-17",
     "sources": {
       "penalties_range": {
         "url": "https://www.legiscope.com/blog/lfpdppp-mexico-guia-cumplimiento.html",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://sdv.com.mx/compendio/ley-proteccion-datos-personales/articulo-10/",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://sdv.com.mx/en/mexican-law/personal-data-protection-law/",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data includes genetic information; express written consent required"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Consent not required for data subjected to prior dissociation, useful for statistics/research (art. 10) (unconfirmed)"
+      },
       {
         "date": "2026-10-14",
         "field": "penalties_range",

@@ -16,8 +16,8 @@
     "penalties_range": "USD 2,663 per violation; USD 7,988 per intentional violation or involving minors under 16 (inflation-adjusted) (unconfirmed)",
     "exemptions": "B2B exemptions",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Deletion right exception for public-interest peer-reviewed research where deletion would impair it (s. 1798.105(d)(6)); 'research' defined in s. 1798.140, no commercial purpose",
+    "genetic_data": "Genetic data is 'sensitive personal information' (s. 1798.140(ae)); consumers may limit its use to necessary purposes",
     "website_url": "https://oag.ca.gov/privacy/ccpa",
     "language": "English",
     "frameworks": "EU-Adequacy/APEC-CBPR",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-17",
     "sources": {
       "law_name": {
         "url": "https://usercentrics.com/us/knowledge-hub/california-privacy-rights-act-cpra-enforcement/",
@@ -53,9 +53,31 @@
         "url": "https://usercentrics.com/us/knowledge-hub/california-privacy-rights-act-cpra-enforcement/",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://www.carltonfields.com/insights/publications/2019/research-exception-ccpa-right-deletion-apply",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.crowell.com/en/insights/client-alerts/ccpa-2-0-california-adopts-sweeping-new-data-privacy-protections",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data is 'sensitive personal information' (s. 1798.140(ae)); consumers may limit its use to necessary purposes"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Deletion right exception for public-interest peer-reviewed research where deletion would impair it (s. 1798.105(d)(6)); 'research' defined in s. 1798.140, no commercial purpose"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",
@@ -105,8 +127,8 @@
     "penalties_range": "Up to $43,280 per violation",
     "exemptions": "Educational institutions",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "No research exception found among the exceptions to verifiable parental consent (16 CFR 312.5(c)) (unconfirmed)",
+    "genetic_data": "2025 amendments add biometric identifiers incl. genetic data (e.g. DNA sequences) to 'personal information' (16 CFR 312.2); compliance by 22 Apr 2026",
     "website_url": "https://www.ftc.gov/coppa",
     "language": "English",
     "frameworks": "EU-Adequacy/APEC-CBPR",
@@ -116,15 +138,37 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-17",
     "sources": {
       "notes": {
         "url": "https://www.federalregister.gov/documents/2025/04/22/2025-05904/childrens-online-privacy-protection-rule",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://www.ecfr.gov/current/title-16/chapter-I/subchapter-C/part-312/section-312.5",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.mondaq.com/unitedstates/privacy-protection/1814308/the-amended-childrens-online-privacy-protection-act-coppa-regulations-what-your-business-needs-to-know",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "2025 amendments add biometric identifiers incl. genetic data (e.g. DNA sequences) to 'personal information' (16 CFR 312.2); compliance by 22 Apr 2026"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "No research exception found among the exceptions to verifiable parental consent (16 CFR 312.5(c)) (unconfirmed)"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

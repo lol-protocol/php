@@ -16,8 +16,8 @@
     "penalties_range": "Up to QAR 5M fine",
     "exemptions": "Personal or family use; official statistics",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Processing for statistical and research purposes listed among exemptions (article not confirmed); art. 18 exempts government processing for security/public interest (unconfirmed)",
+    "genetic_data": "No specific genetic rule; special-nature data (art. 16: race, health, physical/psychological condition, etc.) needs permit; Minister may add categories",
     "website_url": "https://www.dlapiperdataprotection.com/?c=QA&t=law",
     "language": "English",
     "frameworks": "",
@@ -27,9 +27,32 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
-    "sources": {},
+    "last_checked": "2026-10-17",
+    "sources": {
+      "research_exemption": {
+        "url": "https://regulations.clym.io/law-no-13-of-2016-qatar",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.mondaq.com/Article/664862",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      }
+    },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "No specific genetic rule; special-nature data (art. 16: race, health, physical/psychological condition, etc.) needs permit; Minister may add categories"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Processing for statistical and research purposes listed among exemptions (article not confirmed); art. 18 exempts government processing for security/public interest (unconfirmed)"
+      },
       {
         "date": "2026-10-08",
         "field": "row",

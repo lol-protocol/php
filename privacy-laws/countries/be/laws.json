@@ -15,9 +15,9 @@
     "enforcement_authority": "Belgian Data Protection Authority (APD/GBA)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "No specific Belgian rules on deceased persons' data; GDPR covers living persons only",
+    "research_exemption": "Title 4 regime for archiving, scientific/historical research and statistics: derogations from data subject rights with safeguards (pseudonymisation, DPO art. 190, records arts. 191-192, info art. 193)",
+    "genetic_data": "Special category (art. 9 GDPR); controller must keep list of categories of persons with access to genetic/biometric/health data and their roles, given to DPA on request",
     "website_url": "https://www.autoriteprotectiondonnees.be/",
     "language": "Dutch/French/German",
     "frameworks": "GDPR/CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-17",
     "sources": {
       "law_name": {
         "url": "https://www.jonesday.com/en/insights/2018/09/belgium-publishes-data-protection-laws-implementin",
@@ -48,9 +48,42 @@
         "url": "https://noyb.eu/en/node/494",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.whitecase.com/publications/article/gdpr-guide-national-implementation-belgium",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://www.activemind.legal/law/be-research",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://www.lexgo.be/en/news-and-articles/5411-new-belgian-data-protection-law-has-come-into-force",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category (art. 9 GDPR); controller must keep list of categories of persons with access to genetic/biometric/health data and their roles, given to DPA on request"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Title 4 regime for archiving, scientific/historical research and statistics: derogations from data subject rights with safeguards (pseudonymisation, DPO art. 190, records arts. 191-192, info art. 193)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "No specific Belgian rules on deceased persons' data; GDPR covers living persons only"
+      },
       {
         "date": "2026-10-14",
         "field": "effective_date",
