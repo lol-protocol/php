@@ -83,6 +83,27 @@ class CargaYCalculo(unittest.TestCase):
         self.assertNotEqual(filas["CU"]["poblacion_historica_acumulada"], "")
 
 
+class DatosPreparados(unittest.TestCase):
+    def test_retroproyeccion_usa_la_cuota_del_pais_en_su_region(self):
+        import preparar_datos
+        # La región tiene 100 en el año 0 y 200 en el año 100; el país tiene 20 en el año 100
+        # (cuota 0,1), así que en el año 0 se estima en 10.
+        puntos = preparar_datos.retroproyectar([(100, 20.0)], [(0, 100.0), (100, 200.0)])
+        self.assertEqual(len(puntos), 1)
+        self.assertEqual(puntos[0][0], 0)
+        self.assertAlmostEqual(puntos[0][1], 10.0)
+
+    def test_la_columna_de_nacidos_coincide_con_el_calculo_sobre_los_archivos_de_entrada(self):
+        carpeta = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, carpeta)
+        for nombre in ("paises.csv", "poblacion_larga.csv", "natalidad.csv"):
+            shutil.copy(AQUI / nombre, carpeta / nombre)
+        hp.main(carpeta)
+        guardado = {f["codigo"]: f["poblacion_historica_acumulada"] for f in leer_csv(AQUI / "paises.csv")}
+        calculado = {f["codigo"]: f["poblacion_historica_acumulada"] for f in leer_csv(carpeta / "paises.csv")}
+        self.assertEqual(guardado, calculado)
+
+
 class GeneradorDeTablas(unittest.TestCase):
     def test_los_datos_del_proyecto_son_validos_y_las_tablas_estan_al_dia(self):
         generar_tabla.main(comprobar=True)

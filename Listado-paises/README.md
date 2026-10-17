@@ -15,24 +15,31 @@ desde la prehistoria.
 
 - `paises.csv`: datos generales, una fila por país. Es la fuente de verdad de genealogía.
 - `paises_pos.csv`: campos del etiquetador POS, unidos a `paises.csv` por `codigo`.
-- `generar_tabla.py`: valida los dos CSV y genera `tabla_genealogia.md` y `tabla_pos.md`.
 - `niveles_lenguas.csv`: nivel de recursos de cada lengua (1 a 5). De ahí salen IP (el máximo de
   las lenguas de un país) e IP local (la primera lengua); `generar_tabla.py` comprueba que coincidan.
-- `historia_poblacion.py`: calcula la población histórica acumulada y la escribe en `paises.csv`.
-  Necesita datos de entrada que todavía no están (ver «Población histórica acumulada»).
-
-- `pruebas.py`: pruebas del proyecto, con series sintéticas de resultado conocido. La CI las corre
-  junto con `generar_tabla.py --comprobar` (`.github/workflows/pruebas-listado-paises.yml`).
+- `generar_tabla.py`: valida los CSV y genera `tabla_genealogia.md` y `tabla_pos.md`.
+- `preparar_datos.py`: lee las fuentes de Our World in Data (ver «Fuentes») y escribe
+  `poblacion_larga.csv` y `natalidad.csv`, y la población 2024 y el PIB PPA de `paises.csv`.
+- `codigos_iso.csv`: código ISO alfa-2 del repositorio y su código en Our World in Data (alfa-3;
+  Kosovo es `OWID_KOS`). Se generó con `pycountry` para que los scripts no dependan de él.
+- `poblacion_larga.csv` y `natalidad.csv`: datos de entrada de la población histórica, generados
+  por `preparar_datos.py`.
+- `historia_poblacion.py`: calcula los nacidos en la historia de cada país a partir de esos dos
+  archivos, y escribe la columna de `paises.csv` y `poblacion_historica_detalle.csv` (con la banda
+  de sensibilidad).
+- `pruebas.py`: pruebas del proyecto. La CI las corre junto con `generar_tabla.py --comprobar`
+  (`.github/workflows/pruebas-listado-paises.yml`).
 
 ```bash
 python3 generar_tabla.py              # valida y regenera las dos tablas
 python3 generar_tabla.py --comprobar  # valida y falla si las tablas no están al día (no escribe)
 python3 -m unittest -v pruebas        # pruebas
-python3 historia_poblacion.py         # solo hace algo si existe poblacion_larga.csv
+python3 preparar_datos.py --co2 ... --maddison ... --hyde ... --fertilidad ...   # ver «Fuentes»
+python3 historia_poblacion.py         # recalcula los nacidos en la historia
 ```
 
-Ambos scripts usan solo la biblioteca estándar de Python 3. `generar_tabla.py` se detiene con un
-mensaje si una fila está mal: encabezado distinto, índice fuera de 1–5, código repetido o que
+Todos los scripts usan solo la biblioteca estándar de Python 3. `generar_tabla.py` se detiene con
+un mensaje si una fila está mal: encabezado distinto, índice fuera de 1–5, código repetido o que
 no coincida entre los dos archivos.
 
 ## Alcance
@@ -49,11 +56,11 @@ territorios menores.
 | `pais` | Nombre en español. |
 | `tipo` | `estado`, `territorio` o `entidad disputada`. |
 | `region` | África, América, Asia, Europa u Oceanía. |
-| `poblacion_millones` | Población actual, en millones. **Sin contrastar** (ver «Estado de los datos»). |
-| `poblacion_historica_acumulada` | Personas que han nacido en el país desde la prehistoria, en millones. **Vacía: sin datos** (ver más abajo). |
+| `poblacion_millones` | Población de 2024, en millones, de Our World in Data (basada en ONU, *World Population Prospects 2024*). Puerto Rico conserva una cifra anterior sin contrastar, porque esa fuente no lo incluye. |
+| `poblacion_historica_acumulada` | Personas nacidas en el territorio del país desde el 10 000 a. C., en millones. Es una estimación (ver «Población histórica acumulada»). |
 | `idh` | Índice de Desarrollo Humano. **Sin contrastar.** |
-| `pib_per_capita_usd` | PIB per cápita **nominal** en dólares. **Sin contrastar.** |
-| `pib_per_capita_ppa_usd` | PIB per cápita en **paridad de poder adquisitivo** (dólares internacionales). **Vacía: sin datos** (ver «Estado de los datos»). |
+| `pib_per_capita_usd` | PIB per cápita **nominal** en dólares. **Sin contrastar** (ver «Estado de los datos»). |
+| `pib_per_capita_ppa_usd` | PIB per cápita en **paridad de poder adquisitivo** de 2022, en dólares internacionales de 2011 (Maddison Project Database 2023, vía Our World in Data). Vacía en 35 países sin dato, casi todos micro-estados. |
 | `indice_genealogia` | IG, de 1 a 5. |
 | `indice_operabilidad` | IO, de 1 a 5. |
 | `comentarios` | Motivo de los puntajes de genealogía. |
@@ -174,94 +181,130 @@ contrastado con fuentes (ver «Estado de los datos»).
 
 ## Población histórica acumulada
 
-**Qué mide:** el número de personas que han nacido en el territorio del país desde el inicio de
-la serie (en la práctica, desde el 10 000 a. C.). Así China o Irán, con milenios de población
-densa, quedan muy por encima de Australia o Sudamérica, que tuvieron poblaciones muy pequeñas
-durante casi toda la historia.
+**Qué mide:** el número de personas que han nacido en el territorio del país desde el 10 000 a. C.
+Así China o Irán, con milenios de población densa, quedan muy por encima de Australia o
+Sudamérica, que tuvieron poblaciones muy pequeñas durante casi toda la historia.
 
-**Método:** `N = Σ P(t) × b(t)`, sumando año por año.
+**Método:** `N = Σ P(t) × b(t)`, sumando año por año (`historia_poblacion.py`).
 
-- `P(t)`: población del año t, interpolada entre los puntos de una serie larga. Entre dos puntos
+- `P(t)`: población del año t, interpolada entre los puntos de la serie larga. Entre dos puntos
   con población positiva la interpolación es geométrica (el crecimiento es aproximadamente
   exponencial).
 - `b(t)`: tasa bruta de natalidad, como fracción (40 por mil = 0,040). Antes de 1950 se usa
-  0,040 (sociedades preindustriales). Desde 1950, la tasa de natalidad del país para ese año.
+  0,040 (sociedades preindustriales). Desde 1950, la natalidad aproximada del país.
 - Banda de sensibilidad: `N` se recalcula con `b` × 0,9 y `b` × 1,1, y el resultado queda en
   `poblacion_historica_detalle.csv`.
+
+**Serie larga de cada país** (`preparar_datos.py`, método compuesto, decidido):
+
+- **1750 a 2024:** población anual de Our World in Data.
+- **Año 1 a 1700:** los puntos de Maddison 2020 (años 1, 1000, 1500, 1600 y 1700, según el país).
+  165 de los 199 países tienen alguno.
+- **Antes del primer año conocido:** la población de la región del país según HYDE (seis
+  regiones), multiplicada por la cuota del país en esa región en su primer año conocido. Supone
+  que esa cuota fue constante hacia atrás.
+
+**Natalidad desde 1950:** 7 × la fecundidad total de la ONU (revisión 2015), interpolada entre sus
+puntos quinquenales de 1955 a 2015 y mantenida fuera de ese rango. Es una aproximación de la tasa
+bruta, con un error del orden de ±30 % en ese tramo. Andorra, Dominica, Islas Marshall, Kosovo,
+Liechtenstein, Mónaco, Nauru, Palaos, San Cristóbal y Nieves, San Marino, Taiwán y Tuvalu no
+tienen ese dato y usan 0,040.
 
 **Reglas del cálculo:**
 
 - Si una serie repite un año, el script se detiene con error. No elige uno en silencio.
-- Si una serie termina antes del año 2000, el país se salta y el script lo lista. No extiende la
-  última población hasta 2025 en silencio.
+- Si una serie termina antes del año 2000, el país se salta y queda vacío. No se extiende la
+  última población hasta 2025, ni se conserva un valor de un cálculo anterior.
 
-**Fuente elegida: Our World in Data**, el producto *Population, 10,000 BCE to 2023*. Ya trae
-totales por país desde el 10 000 a. C. y combina HYDE, Gapminder y la ONU, así que evita sumar las
-cuadrículas de HYDE con una máscara de fronteras. Como respaldo está el *Maddison Project Database
-2023* (desde el año 1; DOI `10.34894/INZBF2`). Falta habilitar el dominio y descargar el archivo.
-Esa fuente usa códigos ISO alfa-3 por país, y el repositorio usa alfa-2, así que habrá que
-convertirlos al preparar `poblacion_larga.csv`.
-
-**Datos de entrada (no están en el repositorio):**
-
-- `poblacion_larga.csv` (`codigo,anio,poblacion`): la serie larga por país.
-- `natalidad.csv` (`codigo,anio,tasa_por_mil`): natalidad anual desde 1950, de la ONU (*World
-  Population Prospects*) o del Banco Mundial (`SP.DYN.CBRT.IN`). Si falta un país, usa 0,040.
+**Resultados y comprobación de cordura.** El total mundial da unos **61 600 millones** de
+personas nacidas desde el 10 000 a. C. Los mayores son India (14 800 millones) y China (13 800
+millones). Irán (730), Egipto (910) y Japón (1 250) suman muchas veces su población actual, y
+Australia (200) casi toda en su población aborigen. El Population Reference Bureau estima unos
+107 000 millones desde el 8000 a. C., pero supone natalidades mucho más altas en la antigüedad
+(hasta 80 por mil, por la mortalidad infantil). Con 40 por mil el total es de ese orden de magnitud
+pero menor: otros investigadores lo sitúan entre 50 000 y 150 000 millones. **Las cifras sirven
+para comparar países entre sí, no como conteo exacto.**
 
 **Limitaciones que hay que conocer:**
 
-- El resultado depende sobre todo de la serie antigua, y esa incertidumbre es grande: la banda
-  de ±10 % solo cubre la natalidad, no las poblaciones de hace miles de años.
-- La fuente de HYDE antes de 1800, por país, no está documentada en el resumen que se consultó.
-  Hay que verificarla antes de usar las cifras más antiguas.
+- La retroproyección con cuota constante es gruesa: un país que antes tuvo más peso en su región
+  (por ejemplo, Irak o Egipto frente al resto de Asia y África) queda subestimado, y uno que lo
+  ganó después queda sobreestimado.
+- La banda de ±10 % solo cubre la natalidad, no las poblaciones de hace miles de años.
 - Antes de 1950 la natalidad varió mucho entre épocas y regiones; el 0,040 constante es una
   simplificación.
-- Banco Mundial empieza su natalidad en 1960; los años 1950 a 1959 quedan con 0,040 hasta que
-  haya una fuente que los cubra.
+- Puerto Rico usa Maddison de 1820 a 2018, porque Our World in Data no lo incluye.
+
+## Fuentes
+
+Los dominios de las fuentes (`ourworldindata.org`, `api.worldbank.org`, `hdr.undp.org`) están
+bloqueados por el proxy del entorno donde se trabajó: responden 403. Por eso se usaron los
+repositorios públicos de Our World in Data en GitHub, que sí son accesibles:
+
+- [`owid/co2-data`](https://github.com/owid/co2-data), commit `382ee6c` (2 de junio de 2026),
+  archivo `owid-co2-data.csv`: población por país de 1750 a 2024 y PIB de Maddison 2023.
+- [`owid/owid-datasets`](https://github.com/owid/owid-datasets), commit `6155d4c` (14 de abril de
+  2025): *Maddison Project Database 2020*, *Global Population by Region (HYDE 2016 & UN 2017)* y
+  *Fertility - UN Population Division (2015 revision)*.
+
+Para reproducir `poblacion_larga.csv` y `natalidad.csv`:
+
+```bash
+git clone --depth 1 https://github.com/owid/co2-data
+git clone --depth 1 --filter=blob:none --no-checkout https://github.com/owid/owid-datasets
+d="owid-datasets"; m="Maddison Project Database 2020 (Bolt and van Zanden (2020))"
+h="Global Population by Region with projections - HYDE (2016) & UN (2017)"
+f="Fertility - UN Population Division (2015 revision)"
+git -C $d show "HEAD:datasets/$m/$m.csv" > maddison-2020.csv
+git -C $d show "HEAD:datasets/$h/$h.csv" > hyde-regiones.csv
+git -C $d show "HEAD:datasets/$f/$f.csv" > fertilidad-onu-2015.csv
+python3 preparar_datos.py --co2 co2-data/owid-co2-data.csv --maddison maddison-2020.csv \
+    --hyde hyde-regiones.csv --fertilidad fertilidad-onu-2015.csv
+python3 historia_poblacion.py && python3 generar_tabla.py
+```
+
+Cuando los dominios estén accesibles, conviene reemplazar la serie compuesta por la serie por país
+de Our World in Data desde el 10 000 a. C., y la natalidad aproximada por la de la ONU o el Banco
+Mundial (`SP.DYN.CBRT.IN`).
 
 ## Estado de los datos
 
 Léelo antes de usar la tabla para decidir.
 
-- **Población actual, IDH y PIB per cápita nominal: son referencias cargadas de memoria, no
-  consultadas.** No se pudieron abrir las fuentes oficiales desde la sesión donde se generó la
-  tabla: el Banco Mundial y el PNUD devolvían 403 por el proxy, y en otras pruebas no resolvían. En
-  la última sesión, todos los hosts de datos (Banco Mundial, PNUD, Our World in Data y PBL) seguían
-  sin responder. Las cifras son aproximadas y redondeadas. Antes de decidir con ellas, contrástalas con:
-  - Banco Mundial: `SP.POP.TOTL` (población) y `NY.GDP.PCAP.CD` (PIB per cápita nominal).
-  - ONU, *World Population Prospects* (población).
+- **Población 2024: contrastada** con Our World in Data (ONU, WPP 2024) en 198 países. Puerto Rico
+  conserva una cifra anterior sin contrastar.
+- **PIB per cápita PPA: de Maddison 2023** (vía Our World in Data), de 2022 y en dólares
+  internacionales de 2011. Es distinto del indicador del Banco Mundial (`NY.GDP.PCAP.PP.CD`, en
+  dólares internacionales corrientes), que sigue inaccesible. Vacío en 35 países sin dato.
+- **IDH y PIB per cápita nominal: siguen siendo referencias de memoria, sin contrastar.** Las
+  fuentes (PNUD y Banco Mundial) siguen bloqueadas, y el único IDH accesible en GitHub llega solo
+  hasta 2017. Antes de decidir con ellos, contrástalos con:
   - PNUD, *Informe sobre Desarrollo Humano* (IDH).
-  - FMI, *World Economic Outlook* (PIB per cápita nominal).
-- **PIB per cápita PPA: sin datos todavía.** Se llenará desde el Banco Mundial, indicador
-  `NY.GDP.PCAP.PP.CD` (que hay que confirmar al consultarlo). No se han cargado cifras de memoria
-  para esta columna, para no mezclar dos métodos sin fuente.
+  - Banco Mundial, `NY.GDP.PCAP.CD`, o FMI, *World Economic Outlook* (PIB per cápita nominal).
 - **Celdas vacías (—):** cuando no hay una cifra fiable se deja vacía. Por ejemplo, el IDH de
-  Corea del Norte, Palestina, Siria o Nauru, o el PIB per cápita de Cuba o Corea del Norte. Una
-  revisión posterior también vació nueve IDH que quedaban fuera de su grupo de desarrollo humano:
-  Cuba, Perú, Turkmenistán, Kirguistán, Benín, Tanzania, Libia, Gabón y Cabo Verde. No se
+  Corea del Norte, Palestina, Siria o Nauru, o el PIB per cápita nominal de Cuba o Corea del Norte.
+  Una revisión posterior también vació nueve IDH que quedaban fuera de su grupo de desarrollo
+  humano: Cuba, Perú, Turkmenistán, Kirguistán, Benín, Tanzania, Libia, Gabón y Cabo Verde. No se
   reemplazaron por otra cifra de memoria.
 - **IDH repetidos sin verificar:** 0,946 aparece en Australia, Bélgica, Países Bajos y Singapur;
-  0,802 en Bielorrusia, Georgia y Mauricio. Son sospechosos de ser copias y hay que contrastarlos
-  con la fuente.
-- **Población histórica acumulada: sin datos todavía.** `historia_poblacion.py` está listo para
-  calcularla en cuanto existan `poblacion_larga.csv` y, si se quiere, `natalidad.csv`.
+  0,802 en Bielorrusia, Georgia y Mauricio. Son sospechosos de ser copias.
+- **Población histórica acumulada: estimada** con el método compuesto de arriba. Sirve para
+  comparar países, no como conteo exacto.
 - **IG, IO, IL e IP:** son juicio propio, con las rúbricas de arriba. No son datos oficiales.
   Las alfabetizaciones y la lista de recursos lingüísticos vienen de memoria, sin contrastar.
-  Algunos casos se revisaron contra la rúbrica en una revisión posterior, pero siguen siendo juicio.
 
 ## Pendientes
 
-1. **Población histórica acumulada:** habilitar `ourworldindata.org` en una sesión nueva,
-   descargar la serie, convertir los códigos a alfa-2, conseguir `natalidad.csv` y ejecutar
-   `historia_poblacion.py`.
-2. **PIB per cápita PPA:** cargar la columna desde el Banco Mundial, con el indicador
-   `NY.GDP.PCAP.PP.CD`.
-3. **Contrastar población, IDH y PIB per cápita nominal** con las fuentes oficiales, incluidos los
-   IDH repetidos de arriba.
-4. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
-5. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
+1. **IDH y PIB per cápita nominal:** contrastarlos con el PNUD y el Banco Mundial cuando sus
+   dominios estén accesibles, incluidos los IDH repetidos de arriba.
+2. **Población histórica:** reemplazar la serie compuesta por la de Our World in Data por país
+   desde el 10 000 a. C., y la natalidad aproximada por la de la ONU o el Banco Mundial, cuando
+   haya acceso.
+3. **PIB per cápita PPA:** decidir si se pasa al indicador del Banco Mundial cuando haya acceso, y
+   completar los 35 vacíos.
+4. **Población de Puerto Rico:** contrastarla con la ONU o el censo de EE. UU.
+5. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
+6. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    54. Camboya y Vietnam siguen dentro, por decisión tomada.
-6. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
+7. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
    listó, aunque se use (el inglés en Maldivas, por ejemplo). Afecta a IP, no a IP local.
-7. **Fila de este proyecto en la tabla de `README.md` de la raíz.** Ese archivo es compartido, así
-   que el cambio va en un PR aparte.

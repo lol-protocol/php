@@ -13,7 +13,7 @@
 
 Sensibilidad: N es lineal en b, así que la banda se obtiene multiplicando N por 0,9 y 1,1.
 
-Entradas (en esta carpeta; no están en el repositorio, ver README.md):
+Entradas (en esta carpeta; las genera preparar_datos.py, ver README.md):
     poblacion_larga.csv   codigo,anio,poblacion      puntos de una serie larga
     natalidad.csv         codigo,anio,tasa_por_mil   nacimientos por mil habitantes (opcional)
 
@@ -101,11 +101,14 @@ def main(carpeta=AQUI):
     detalle, sin_datos, incompletas = [], [], []
     for fila in filas:
         codigo = fila["codigo"]
+        # Un país sin serie válida queda vacío: no se arrastra el valor de un cálculo anterior.
         if codigo not in puntos:
             sin_datos.append(codigo)
+            fila["poblacion_historica_acumulada"] = ""
             continue
         if puntos[codigo][-1][0] < ANIO_MINIMO_SERIE:
             incompletas.append(codigo)
+            fila["poblacion_historica_acumulada"] = ""
             continue
         central = nacimientos(puntos[codigo], natal.get(codigo, {}))
         fila["poblacion_historica_acumulada"] = f"{central / 1e6:.2f}"

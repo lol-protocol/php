@@ -143,10 +143,10 @@ def main(comprobar=False):
 
     texto_gen = tabla_md(
         "Listado de países: genealogía",
-        "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Cifras de población, "
-        "IDH y PIB pc **sin contrastar**; ver `README.md`, «Estado de los datos».",
-        ["País", "Tipo", "Región", "Población (M)", "Población histórica acumulada (M)",
-         "IDH", "PIB pc nominal (USD)", "PIB pc PPA (USD)", "Genealogía (IG)",
+        "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Población 2024 y PIB PPA "
+        "de Our World in Data; IDH y PIB nominal **sin contrastar**; ver `README.md`, «Estado de los datos».",
+        ["País", "Tipo", "Región", "Población 2024 (M)", "Nacidos en la historia (M)",
+         "IDH", "PIB pc nominal (USD)", "PIB pc PPA 2022 ($ int. 2011)", "Genealogía (IG)",
          "Operabilidad (IO)", "Prioridad", "Excluido", "Comentarios"],
         gen_ordenado)
     texto_pos = tabla_md(
