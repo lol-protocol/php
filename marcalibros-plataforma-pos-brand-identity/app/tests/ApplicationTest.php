@@ -101,12 +101,12 @@ final class ApplicationTest extends AppTestCase
         $response = $this->get($this->app(), '/');
         $this->assertSame(200, $response->status);
         $this->assertStringContainsString('Elige un marcalibro', $response->body);
-        $this->assertSame(20, preg_match_all('#href="/\?categoria=[a-z-]+"><span>#', $response->body), 'El índice debe tener las 20 categorías.');
+        $this->assertSame(27, preg_match_all('#href="/\?categoria=[a-z-]+"><span>#', $response->body), 'El índice debe tener las 27 categorías.');
         $this->assertStringContainsString('Realismo mágico', $response->body);
         $this->assertStringContainsString('Libros sagrados', $response->body);
         $this->assertStringContainsString('Movimientos literarios', $response->body);
         $this->assertStringContainsString('Tipos de texto', $response->body);
-        $this->assertSame(40, preg_match_all('#<img class="tira" #', $response->body), 'Dos muestras por categoría.');
+        $this->assertSame(54, preg_match_all('#<img class="tira" #', $response->body), 'Dos muestras por categoría.');
     }
 
     public function testHomeShowsTheNoticeAfterDeleting(): void
@@ -219,12 +219,128 @@ final class ApplicationTest extends AppTestCase
     {
         $app = $this->app();
         $catalog = new \Marcalibros\Catalog($this->projectRoot() . '/catalog/manifest.json');
-        $this->assertSame(1000, $catalog->count());
+        $this->assertSame(1350, $catalog->count());
         foreach ($catalog->ids() as $id) {
             $response = $app->handle(new Request('GET', "/catalogo/$id.svg"));
             $this->assertSame(200, $response->status, $id);
             $this->assertLessThan(10 * 1024, (int) filesize((string) $response->file), "$id pesa más de 10 KB");
         }
+    }
+
+    // ---------------------------------------------------------- filtro del catálogo
+
+    public function testFiltersTheCatalogByMotif(): void
+    {
+        $response = $this->get($this->app(), '/', ['motivo' => 'faro']);
+        $this->assertSame(200, $response->status);
+        $this->assertStringContainsString('Resultados', $response->body);
+        $this->assertStringContainsString('marcalibros con el motivo «Faro»', $response->body);
+        preg_match_all('#href="/marcalibro/(mb-[a-z-]+-\d+)"#', $response->body, $m);
+        $this->assertNotEmpty($m[1]);
+        foreach ($m[1] as $id) {
+            $this->assertStringStartsWith('mb-modernismo-anglosajon-', $id);
+        }
+        $this->assertStringContainsString('<option value="faro" selected>', $response->body);
+    }
+
+    public function testFiltersByColorAndCombinesWithTheCategory(): void
+    {
+        $app = $this->app();
+        $catalog = new \Marcalibros\Catalog($this->projectRoot() . '/catalog/manifest.json');
+        $expected = $catalog->search('leyes', null, '#C98B3A');
+        $this->assertNotEmpty($expected);
+
+        $response = $this->get($app, '/', ['categoria' => 'leyes', 'color' => 'ocre']);
+        $this->assertSame(200, $response->status);
+        $this->assertStringContainsString(count($expected) . ' marcalibros que usan el color ocre en Leyes y reglamentos.', $response->body);
+        $this->assertStringContainsString('<input type="hidden" name="categoria" value="leyes">', $response->body);
+        $this->assertStringContainsString('href="/?categoria=leyes">Quitar filtros', $response->body);
+    }
+
+    public function testEmptyFilterValuesMeanNoFilter(): void
+    {
+        $response = $this->get($this->app(), '/', ['motivo' => '', 'color' => '']);
+        $this->assertSame(200, $response->status);
+        $this->assertStringContainsString('Elige un marcalibro', $response->body);
+    }
+
+    public function testUnknownFiltersAreNotFound(): void
+    {
+        $app = $this->app();
+        $this->assertSame(404, $this->get($app, '/', ['motivo' => 'no-existe'])->status);
+        $this->assertSame(404, $this->get($app, '/', ['color' => 'rojo'])->status);
+        $this->assertSame(404, $this->get($app, '/', ['motivo' => ['faro']])->status);
+    }
+
+    public function testAFilterWithNoResultsSaysSo(): void
+    {
+        // Las Torres son del Gótico: dentro de Teatro no hay ninguna.
+        $response = $this->get($this->app(), '/', ['categoria' => 'teatro', 'motivo' => 'torres']);
+        $this->assertSame(200, $response->status);
+        $this->assertStringContainsString('No hay marcalibros con el motivo «Torres» en Teatro.', $response->body);
+        $this->assertStringNotContainsString('class="rejilla"', $response->body);
+    }
+
+    public function testPaginationKeepsTheFilters(): void
+    {
+        $response = $this->get($this->app(), '/', ['color' => 'tinta']);
+        $this->assertStringContainsString('href="/?color=tinta&amp;pagina=2"', $response->body);
+    }
+
+    // ------------------------------------------------------- PNG y vista previa
+
+    public function testPngIsOfferedAndServedOnlyWhenItWasGenerated(): void
+    {
+        $withPng = $this->app($this->config(projectRoot: $this->projectWithPng(['mb-poesia-03'])));
+
+        $detail = $this->get($withPng, '/marcalibro/mb-poesia-03');
+        $this->assertStringContainsString('href="/catalogo/mb-poesia-03.png?descargar=1"', $detail->body);
+        $this->assertStringContainsString('href="/catalogo/mb-poesia-03@2x.png?descargar=1"', $detail->body);
+        $png = $this->get($withPng, '/catalogo/mb-poesia-03@2x.png', ['descargar' => '1']);
+        $this->assertSame(200, $png->status);
+        $this->assertSame('image/png', $png->headers['Content-Type']);
+        $this->assertSame('attachment; filename="mb-poesia-03@2x.png"', $png->headers['Content-Disposition']);
+
+        $this->assertStringNotContainsString('.png?descargar=1', $this->get($withPng, '/marcalibro/mb-poesia-04')->body);
+        $this->assertSame(404, $this->get($withPng, '/catalogo/mb-poesia-04.png')->status);
+        $this->assertSame(404, $this->get($withPng, '/catalogo/mb-no-existe-01.png')->status);
+    }
+
+    public function testServesThePreviewJpeg(): void
+    {
+        $response = $this->get($this->app(), '/catalogo/mb-historia-02.jpg');
+        $this->assertSame(200, $response->status);
+        $this->assertSame('image/jpeg', $response->headers['Content-Type']);
+        $this->assertSame(404, $this->get($this->app(), '/catalogo/mb-no-existe-01.jpg')->status);
+    }
+
+    // ------------------------------------------------- vista previa al compartir
+
+    public function testShareTagsUseAbsoluteUrlsOnlyWhenThePublicUrlIsSet(): void
+    {
+        $plain = $this->get($this->app(), '/marcalibro/mb-historia-02')->body;
+        $this->assertStringContainsString('<meta property="og:title" content="', $plain);
+        $this->assertStringNotContainsString('og:image', $plain);
+
+        $app = $this->app($this->config(publicUrl: 'https://marcalibros.example.com'));
+        $detail = $this->get($app, '/marcalibro/mb-historia-02')->body;
+        $this->assertStringContainsString('<meta property="og:url" content="https://marcalibros.example.com/marcalibro/mb-historia-02">', $detail);
+        $this->assertStringContainsString('<meta property="og:image" content="https://marcalibros.example.com/catalogo/mb-historia-02.jpg">', $detail);
+        $home = $this->get($app, '/')->body;
+        $this->assertStringContainsString('<meta property="og:image" content="https://marcalibros.example.com/paisajes/paisaje-bosque-1200x630.jpg">', $home);
+        $this->assertStringContainsString('<meta property="og:image:width" content="1200">', $home);
+    }
+
+    public function testShareImageIsThePngWhenItExists(): void
+    {
+        $app = $this->app($this->config(publicUrl: 'https://marcalibros.example.com', projectRoot: $this->projectWithPng(['mb-poesia-03'])));
+        $this->assertStringContainsString('content="https://marcalibros.example.com/catalogo/mb-poesia-03.png"', $this->get($app, '/marcalibro/mb-poesia-03')->body);
+    }
+
+    public function testPrivatePagesHaveNoShareTags(): void
+    {
+        $app = $this->app($this->config(publicUrl: 'https://marcalibros.example.com'));
+        $this->assertStringNotContainsString('og:', $this->get($app, '/crear')->body);
     }
 
     public function testLandscapesOnlyServeLibraryFiles(): void

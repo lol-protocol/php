@@ -219,6 +219,16 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
 
 .encabezado { margin-bottom: 1.75rem; }
 
+/* Filtro del catálogo por motivo y color: funciona sin JavaScript (formulario GET). */
+.filtro {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem 1.25rem;
+  margin: 0 0 1.75rem; padding: 0.9rem 1rem; border: 2px solid var(--linea); border-radius: 4px;
+}
+.filtro p { margin: 0; }
+.filtro__campo { flex: 1 1 13rem; }
+.filtro select { max-width: none; }
+.filtro__acciones { display: flex; align-items: center; gap: 1rem; }
+
 .nuevo {
   display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; padding: 0.9rem 1.1rem;
   border: 2px dashed var(--borde); border-radius: 4px; color: var(--tinta); text-decoration: none;
@@ -296,7 +306,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
 .opcional { font: 400 1rem var(--sans); color: var(--tinta-suave); }
 
 label { font-weight: 600; }
-input[type="text"], input[type="file"] {
+input[type="text"], input[type="file"], select {
   display: block; width: 100%; max-width: 32rem; margin-top: 0.35rem;
   min-height: 2.75rem; padding: 0.55rem 0.75rem;
   border: 2px solid var(--borde); border-radius: 4px; background: var(--campo); color: var(--tinta);

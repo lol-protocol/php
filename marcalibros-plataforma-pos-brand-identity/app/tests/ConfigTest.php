@@ -59,4 +59,18 @@ final class ConfigTest extends TestCase
     {
         $this->assertFalse(Config::fromEnvironment('/srv/app', ['MARCALIBROS_TRUST_FORWARDED_FOR' => 'true'])->trustForwardedFor);
     }
+
+    public function testPublicUrlIsOptionalAndValidated(): void
+    {
+        $this->assertNull(Config::fromEnvironment('/srv/app', [])->publicUrl);
+        $this->assertSame('https://marcalibros.example.com', Config::fromEnvironment('/srv/app', ['MARCALIBROS_PUBLIC_URL' => 'https://marcalibros.example.com/'])->publicUrl);
+        foreach (['marcalibros.example.com', 'https://example.com/ruta', 'javascript:alert(1)', 'https://example.com?x=1'] as $bad) {
+            try {
+                Config::fromEnvironment('/srv/app', ['MARCALIBROS_PUBLIC_URL' => $bad]);
+                $this->fail("Se esperaba un error con $bad");
+            } catch (\InvalidArgumentException) {
+                $this->addToAssertionCount(1);
+            }
+        }
+    }
 }
