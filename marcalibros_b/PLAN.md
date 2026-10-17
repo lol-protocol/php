@@ -163,6 +163,16 @@ Hecha por Claude sin marcas de la página de revisión (no había ninguna guarda
 - **Catálogo:** artefacto de CI, no git. `.gitignore` excluye `catalog/svg|jpg|revision`; el workflow `.github/workflows/marcalibros-b.yml` (en la raíz del repo, con la misma convención que los otros) genera el catálogo completo con Python 3.13 y Chromium, ejecuta los tests y sube `marcalibros-catalogo` (30 días). En git quedan manifest y `catalog/muestras/`. **El workflow no se ha podido ejecutar desde esta sesión**: hay que lanzarlo una vez (workflow_dispatch) y vigilar que los hashes de referencia coincidan entre máquinas (el seno y coseno de libm podrían diferir en la última cifra).
 - **Realismo mágico: se mantiene** (es un movimiento real e importante). Gutenberg solo aloja obras de dominio público y los autores previstos (García Márquez, Rulfo, Carpentier, Asturias) están bajo derechos de autor en la mayoría de países, así que sus obras serán `gutenberg.estado: no_disponible` una vez comprobado (estado nuevo; hoy todo es `sin_verificar`). Consecuencia: el lector no podrá sugerir marcalibro automáticamente para esos textos; el usuario lo elegirá a mano. Los nombres se usan solo como metadato: sin citas, portadas ni retratos.
 
+## Frases horneadas (hecho, generador 0.9)
+
+- 453 de las 1000 piezas llevan una frase dibujada en la franja de texto, con su autoría debajo («— Autor»); el reparto es al azar pero reproducible (se deriva del id de la pieza). Ninguna del Realismo mágico (ver abajo).
+- **Texto como vectores:** los glifos se convierten en contornos (Liberation Serif Cursiva, licencia OFL, copiada en `generator/fuentes/` con su licencia) y el SVG los define una vez y los reutiliza con `<use>`; el renderer raster rellena los mismos contornos. No depende de las fuentes del visor. Chromium y el renderer raster difieren 1,0/255 de media.
+- **Catálogo de frases:** `catalog/frases.yaml`, 86 frases breves de autores fallecidos antes de 1956 (dominio público), en su idioma original: 14 de Romanticismo, 8 de Gótico, 5 de Realismo, 2 de Naturalismo, 8 de Modernismo, 8 de Vanguardias, 14 de Barroco, 14 de Clasicismo y 13 de Simbolismo. El QA exige que el autor haya muerto antes de 1956 y que la fuente tenga todos los caracteres, y los tests comprueban que cada frase cabe en la franja.
+- **Todas las frases están escritas de memoria y sin verificar** (texto exacto, obra y atribución). Hay que verificarlas antes de usarlas fuera del catálogo.
+- **Realismo mágico no tiene frases:** sus autores (García Márquez, Rulfo, Carpentier, Asturias, Allende, Esquivel, Garro, Uslar Pietri, Amado, Belli) tienen derechos vigentes. **Naturalismo** solo tiene dos frases propias (Zola) y reutiliza las de Realismo (`usa_tambien`). Decisión pendiente: ¿las 100 piezas del Realismo mágico se quedan sin frase, o toman prestadas las de Modernismo (autores hispanos en dominio público)?
+- Peso: SVG con frase hasta 17,8 KB; el límite de QA pasa de 10 a 20 KB. La fuente va a 15 px, legible a tamaño real (200×1400) pero no en miniatura de 50×350.
+- La página de revisión muestra la frase de cada pieza.
+
 ## Decisiones de octubre (cuestionario)
 
 - **Texto del marcalibros:** cada pieza sirve para cualquier libro. El generador **hornea** la frase en la franja de unas **500 de las 1000 piezas** (elección al azar reproducible); el resto queda con la franja libre.

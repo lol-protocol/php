@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 from scene import ALTO, ANCHO
 
 UMBRAL_DUPLICADO = 6.0  # diferencia media (0–255) bajo la cual dos piezas se consideran casi iguales
-MAX_SVG_BYTES = 10 * 1024
+MAX_SVG_BYTES = 20 * 1024  # 10 KB sin frase; con frase, los contornos de los glifos añaden unos 5 KB
 MAX_JPG_BYTES = 150 * 1024
 NS_SVG = "{http://www.w3.org/2000/svg}"
 XMLNS = 'xmlns="http://www.w3.org/2000/svg"'
@@ -156,6 +156,25 @@ def hoja_de_miniaturas(piezas, salida: Path, columnas: int = 20):
         hoja.paste(img.convert("RGB"), (x, y + etiqueta))
     salida.parent.mkdir(parents=True, exist_ok=True)
     hoja.save(salida, "JPEG", quality=90)
+
+
+MUERTE_MAXIMA = 1955  # vida + 70 años: dominio público en 2026
+
+
+def validar_frases(datos, soporta):
+    """Frases: autores en dominio público, caracteres dibujables y estado válido."""
+    problemas = []
+    for mov, lista in datos["movimientos"].items():
+        for q in lista:
+            donde = f"{mov}: «{q['texto'][:32]}»"
+            if q["muerte"] > MUERTE_MAXIMA:
+                problemas.append(f"{donde}: {q['autor']} murió en {q['muerte']}; sigue con derechos")
+            if q["estado"] not in ("sin_verificar", "verificada"):
+                problemas.append(f"{donde}: estado inválido {q['estado']!r}")
+            falta = sorted({c for c in q["texto"] + q["autor"] + "—" if not soporta(c)})
+            if falta:
+                problemas.append(f"{donde}: la fuente no tiene {falta}")
+    return problemas
 
 
 def huella_visual(img: Image.Image):

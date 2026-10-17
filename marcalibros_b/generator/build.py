@@ -12,6 +12,7 @@ Reglas de formato:
 """
 import argparse
 import base64
+from functools import lru_cache
 import hashlib
 import json
 import os
@@ -26,9 +27,10 @@ import yaml
 from PIL import Image
 
 from plantillas import CONSTRUCTORES, NOMBRES_ARQUETIPOS, PALETAS
+import texto as tx
 from qa import (contraste_texto, ESCALA_MINIATURA, MIN_CONTRASTE_TEXTO, MIN_PIXELES_MOTIVO, OPACIDADES_VELO, TONOS_TEXTO, UMBRAL_DUPLICADO, hoja_de_contacto,
                 hoja_de_miniaturas, huella_visual, mejor_texto, parecido_a, pixeles_de_motivo, validar_jpg,
-                validar_svg, validar_taxonomia)
+                validar_frases, validar_svg, validar_taxonomia)
 from render_raster import a_imagen
 from render_svg import a_svg
 from scene import ALTO, ANCHO
@@ -267,6 +269,28 @@ def reservar_texto(esc):
             return t, r, op, 0.0
 
 
+@lru_cache(maxsize=1)
+def cargar_frases():
+    return yaml.safe_load((CATALOGO / "frases.yaml").read_text(encoding="utf-8"))
+
+
+def _fraccion(clave):
+    """Número en [0, 1) derivado de una cadena: reparto al azar pero reproducible."""
+    return int(hashlib.sha256(clave.encode("utf-8")).hexdigest()[:8], 16) / 2 ** 32
+
+
+def elegir_frase(ident, movimiento, frases):
+    """Frase de la pieza o None. Unas `proporcion_con_frase` de las piezas llevan una; la elige
+    entre las del movimiento (y las de los movimientos que éste comparte: `usa_tambien`)."""
+    reparto = frases["reparto"]
+    pool = list(frases["movimientos"].get(movimiento, []))
+    for otro in reparto.get("usa_tambien", {}).get(movimiento, []):
+        pool += frases["movimientos"].get(otro, [])
+    if not pool or _fraccion("frase/" + ident) >= reparto["proporcion_con_frase"]:
+        return None
+    return pool[int(_fraccion("frase-n/" + ident) * len(pool))]
+
+
 SIN_COMPROBAR_VISIBILIDAD = {"ninguno", "luna"}  # sin motivo, o la luna: siempre grande
 
 
@@ -296,6 +320,11 @@ def elegir_pieza(config, mov, autor, v, animos, previas):
         entrada["franja"] = list(esc.franja)
         entrada["texto_recomendado"], entrada["contraste_texto"], entrada["velo"] = texto, round(ratio, 1), velo
         entrada["calma_cielo"] = calma
+        frase = elegir_frase(entrada["id"], mov["id"], cargar_frases())
+        if frase:
+            bloques, _ = tx.componer(frase["texto"], frase["autor"], esc.franja)
+            esc.texto(bloques, TONOS_TEXTO[texto])
+        entrada["frase"] = ({k: frase[k] for k in ("texto", "autor", "obra", "idioma")} if frase else None)
         return entrada, esc, h, intento, None
     return entrada, esc, h, intento, problema
 
@@ -321,9 +350,10 @@ def copiar_muestras(generados, rutas, por_movimiento=3):
 # y los archivos siguen ahí, la pieza se reutiliza sin dibujarla ni pasar por Chromium.
 
 def hash_generador():
-    """Hash del código del generador y de los catálogos que lo parametrizan."""
+    """Hash del código del generador, su fuente y los catálogos que lo parametrizan."""
     h = hashlib.sha256()
-    for ruta in sorted((RAIZ / "generator").glob("*.py")) + [CATALOGO / "animos.yaml", CATALOGO / "motivos.yaml"]:
+    for ruta in (sorted((RAIZ / "generator").glob("*.py")) + sorted((RAIZ / "generator" / "fuentes").glob("*.ttf"))
+                 + [CATALOGO / "animos.yaml", CATALOGO / "motivos.yaml", CATALOGO / "frases.yaml"]):
         h.update(ruta.name.encode() + b"\0" + ruta.read_bytes() + b"\0")
     return h.hexdigest()
 
@@ -398,6 +428,7 @@ def main(argv=None):
     motivos = yaml.safe_load((CATALOGO / "motivos.yaml").read_text(encoding="utf-8"))
     animos = cargar_animos()
     problemas = validar_taxonomia(config, motivos, animos, set(NOMBRES_ARQUETIPOS), PALETAS)
+    problemas += [f"frases: {p}" for p in validar_frases(cargar_frases(), tx.soporta)]
     for p in problemas:
         print(f"  ✗ taxonomía: {p}")
     if problemas:

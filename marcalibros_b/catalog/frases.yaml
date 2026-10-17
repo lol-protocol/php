@@ -1,0 +1,536 @@
+# Frases horneadas en la franja de texto de las piezas. Ver `nota`.
+version: '0.1'
+nota: 'Frases breves de autores en dominio público (fallecidos antes de 1956), en su idioma original. Escritas de memoria: TODAS están sin verificar
+  (texto exacto, obra y atribución). Realismo mágico no tiene frases: sus autores tienen derechos vigentes. Naturalismo comparte las de Realismo
+  (solo hay dos propias).'
+reparto:
+  proporcion_con_frase: 0.5
+  usa_tambien:
+    naturalismo:
+    - realismo
+movimientos:
+  romanticismo:
+  - texto: Volverán las oscuras golondrinas
+    autor: Gustavo Adolfo Bécquer
+    obra: Rima LIII
+    idioma: es
+    muerte: 1870
+    estado: sin_verificar
+  - texto: Podrá nublarse el sol eternamente
+    autor: Gustavo Adolfo Bécquer
+    obra: Rima LXXIII
+    idioma: es
+    muerte: 1870
+    estado: sin_verificar
+  - texto: Poesía… eres tú
+    autor: Gustavo Adolfo Bécquer
+    obra: Rima XXI
+    idioma: es
+    muerte: 1870
+    estado: sin_verificar
+  - texto: Con diez cañones por banda, viento en popa a toda vela
+    autor: José de Espronceda
+    obra: Canción del pirata
+    idioma: es
+    muerte: 1842
+    estado: sin_verificar
+  - texto: Que es mi barco mi tesoro, que es mi dios la libertad
+    autor: José de Espronceda
+    obra: Canción del pirata
+    idioma: es
+    muerte: 1842
+    estado: sin_verificar
+  - texto: She walks in beauty, like the night
+    autor: Lord Byron
+    obra: She Walks in Beauty
+    idioma: en
+    muerte: 1824
+    estado: sin_verificar
+  - texto: A thing of beauty is a joy for ever
+    autor: John Keats
+    obra: Endymion
+    idioma: en
+    muerte: 1821
+    estado: sin_verificar
+  - texto: Beauty is truth, truth beauty
+    autor: John Keats
+    obra: Ode on a Grecian Urn
+    idioma: en
+    muerte: 1821
+    estado: sin_verificar
+  - texto: If Winter comes, can Spring be far behind?
+    autor: Percy Bysshe Shelley
+    obra: Ode to the West Wind
+    idioma: en
+    muerte: 1822
+    estado: sin_verificar
+  - texto: I wandered lonely as a cloud
+    autor: William Wordsworth
+    obra: Daffodils
+    idioma: en
+    muerte: 1850
+    estado: sin_verificar
+  - texto: Quoth the Raven, “Nevermore.”
+    autor: Edgar Allan Poe
+    obra: The Raven
+    idioma: en
+    muerte: 1849
+    estado: sin_verificar
+  - texto: Demain, dès l'aube, à l'heure où blanchit la campagne
+    autor: Victor Hugo
+    obra: Les Contemplations
+    idioma: fr
+    muerte: 1885
+    estado: sin_verificar
+  - texto: Escribir en Madrid es llorar
+    autor: Mariano José de Larra
+    obra: Artículos
+    idioma: es
+    muerte: 1837
+    estado: sin_verificar
+  - texto: Negra sombra que me asombras
+    autor: Rosalía de Castro
+    obra: Follas novas
+    idioma: gl
+    muerte: 1885
+    estado: sin_verificar
+  gotico:
+  - texto: Beware; for I am fearless, and therefore powerful.
+    autor: Mary Shelley
+    obra: Frankenstein
+    idioma: en
+    muerte: 1851
+    estado: sin_verificar
+  - texto: Welcome to my house! Enter freely and of your own will!
+    autor: Bram Stoker
+    obra: Dracula
+    idioma: en
+    muerte: 1912
+    estado: sin_verificar
+  - texto: The blood is the life!
+    autor: Bram Stoker
+    obra: Dracula
+    idioma: en
+    muerte: 1912
+    estado: sin_verificar
+  - texto: You are mine, you shall be mine, and you and I are one for ever.
+    autor: Sheridan Le Fanu
+    obra: Carmilla
+    idioma: en
+    muerte: 1873
+    estado: sin_verificar
+  - texto: Whatever our souls are made of, his and mine are the same.
+    autor: Emily Brontë
+    obra: Wuthering Heights
+    idioma: en
+    muerte: 1848
+    estado: sin_verificar
+  - texto: Cold in the earth, and the deep snow piled above thee
+    autor: Emily Brontë
+    obra: Remembrance
+    idioma: en
+    muerte: 1848
+    estado: sin_verificar
+  - texto: No coward soul is mine
+    autor: Emily Brontë
+    obra: No Coward Soul Is Mine
+    idioma: en
+    muerte: 1848
+    estado: sin_verificar
+  - texto: Man is not truly one, but truly two.
+    autor: Robert Louis Stevenson
+    obra: Dr Jekyll and Mr Hyde
+    idioma: en
+    muerte: 1894
+    estado: sin_verificar
+  realismo:
+  - texto: It was the best of times, it was the worst of times
+    autor: Charles Dickens
+    obra: A Tale of Two Cities
+    idioma: en
+    muerte: 1870
+    estado: sin_verificar
+  - texto: Please, sir, I want some more.
+    autor: Charles Dickens
+    obra: Oliver Twist
+    idioma: en
+    muerte: 1870
+    estado: sin_verificar
+  - texto: I loved her against reason, against promise, against peace, against hope, against happiness
+    autor: Charles Dickens
+    obra: Great Expectations
+    idioma: en
+    muerte: 1870
+    estado: sin_verificar
+  - texto: À nous deux maintenant !
+    autor: Honoré de Balzac
+    obra: Le Père Goriot
+    idioma: fr
+    muerte: 1850
+    estado: sin_verificar
+  - texto: Il faut être rangé dans sa vie et violent dans ses œuvres
+    autor: Gustave Flaubert
+    obra: Correspondance
+    idioma: fr
+    muerte: 1880
+    estado: sin_verificar
+  naturalismo:
+  - texto: J'accuse…!
+    autor: Émile Zola
+    obra: Lettre au président de la République
+    idioma: fr
+    muerte: 1902
+    estado: sin_verificar
+  - texto: Des hommes poussaient, une armée noire, vengeresse
+    autor: Émile Zola
+    obra: Germinal
+    idioma: fr
+    muerte: 1902
+    estado: sin_verificar
+  modernismo:
+  - texto: La princesa está triste… ¿qué tendrá la princesa?
+    autor: Rubén Darío
+    obra: Sonatina
+    idioma: es
+    muerte: 1916
+    estado: sin_verificar
+  - texto: Juventud, divino tesoro, ¡ya te vas para no volver!
+    autor: Rubén Darío
+    obra: Canción de otoño en primavera
+    idioma: es
+    muerte: 1916
+    estado: sin_verificar
+  - texto: Dichoso el árbol, que es apenas sensitivo
+    autor: Rubén Darío
+    obra: Lo fatal
+    idioma: es
+    muerte: 1916
+    estado: sin_verificar
+  - texto: Cultivo una rosa blanca
+    autor: José Martí
+    obra: Versos sencillos
+    idioma: es
+    muerte: 1895
+    estado: sin_verificar
+  - texto: Yo soy un hombre sincero de donde crece la palma
+    autor: José Martí
+    obra: Versos sencillos
+    idioma: es
+    muerte: 1895
+    estado: sin_verificar
+  - texto: Con los pobres de la tierra quiero yo mi suerte echar
+    autor: José Martí
+    obra: Versos sencillos
+    idioma: es
+    muerte: 1895
+    estado: sin_verificar
+  - texto: Vida, nada me debes. ¡Vida, estamos en paz!
+    autor: Amado Nervo
+    obra: En paz
+    idioma: es
+    muerte: 1919
+    estado: sin_verificar
+  - texto: Una noche toda llena de murmullos, de perfumes y de músicas de alas
+    autor: José Asunción Silva
+    obra: Nocturno
+    idioma: es
+    muerte: 1896
+    estado: sin_verificar
+  vanguardias:
+  - texto: Sous le pont Mirabeau coule la Seine
+    autor: Guillaume Apollinaire
+    obra: Le pont Mirabeau
+    idioma: fr
+    muerte: 1918
+    estado: sin_verificar
+  - texto: Vienne la nuit sonne l'heure, les jours s'en vont, je demeure
+    autor: Guillaume Apollinaire
+    obra: Le pont Mirabeau
+    idioma: fr
+    muerte: 1918
+    estado: sin_verificar
+  - texto: Verde que te quiero verde
+    autor: Federico García Lorca
+    obra: Romance sonámbulo
+    idioma: es
+    muerte: 1936
+    estado: sin_verificar
+  - texto: A las cinco de la tarde
+    autor: Federico García Lorca
+    obra: Llanto por Ignacio Sánchez Mejías
+    idioma: es
+    muerte: 1936
+    estado: sin_verificar
+  - texto: Por qué cantáis la rosa, ¡oh Poetas! Hacedla florecer en el poema
+    autor: Vicente Huidobro
+    obra: Arte poética
+    idioma: es
+    muerte: 1948
+    estado: sin_verificar
+  - texto: Hay golpes en la vida, tan fuertes… ¡Yo no sé!
+    autor: César Vallejo
+    obra: Los heraldos negros
+    idioma: es
+    muerte: 1938
+    estado: sin_verificar
+  - texto: Tudo vale a pena se a alma não é pequena
+    autor: Fernando Pessoa
+    obra: Mensagem
+    idioma: pt
+    muerte: 1935
+    estado: sin_verificar
+  - texto: Un automobile ruggente… è più bello della Vittoria di Samotracia
+    autor: F. T. Marinetti
+    obra: Manifesto del Futurismo
+    idioma: it
+    muerte: 1944
+    estado: sin_verificar
+  barroco:
+  - texto: Polvo serán, mas polvo enamorado
+    autor: Francisco de Quevedo
+    obra: Amor constante más allá de la muerte
+    idioma: es
+    muerte: 1645
+    estado: sin_verificar
+  - texto: Cerrar podrá mis ojos la postrera sombra
+    autor: Francisco de Quevedo
+    obra: Amor constante más allá de la muerte
+    idioma: es
+    muerte: 1645
+    estado: sin_verificar
+  - texto: Aprended, flores, en mí lo que va de ayer a hoy
+    autor: Luis de Góngora
+    obra: Aprended, flores
+    idioma: es
+    muerte: 1627
+    estado: sin_verificar
+  - texto: Mientras por competir con tu cabello oro bruñido al sol relumbra en vano
+    autor: Luis de Góngora
+    obra: Mientras por competir con tu cabello
+    idioma: es
+    muerte: 1627
+    estado: sin_verificar
+  - texto: ¿Qué es la vida? Un frenesí. ¿Qué es la vida? Una ilusión
+    autor: Calderón de la Barca
+    obra: La vida es sueño
+    idioma: es
+    muerte: 1681
+    estado: sin_verificar
+  - texto: Los sueños, sueños son
+    autor: Calderón de la Barca
+    obra: La vida es sueño
+    idioma: es
+    muerte: 1681
+    estado: sin_verificar
+  - texto: Hombres necios que acusáis a la mujer sin razón
+    autor: Sor Juana Inés de la Cruz
+    obra: Hombres necios
+    idioma: es
+    muerte: 1695
+    estado: sin_verificar
+  - texto: Un soneto me manda hacer Violante
+    autor: Lope de Vega
+    obra: La niña de plata
+    idioma: es
+    muerte: 1635
+    estado: sin_verificar
+  - texto: La libertad, Sancho, es uno de los más preciosos dones
+    autor: Miguel de Cervantes
+    obra: Don Quijote
+    idioma: es
+    muerte: 1616
+    estado: sin_verificar
+  - texto: En un lugar de la Mancha, de cuyo nombre no quiero acordarme
+    autor: Miguel de Cervantes
+    obra: Don Quijote
+    idioma: es
+    muerte: 1616
+    estado: sin_verificar
+  - texto: Lo bueno, si breve, dos veces bueno
+    autor: Baltasar Gracián
+    obra: Oráculo manual
+    idioma: es
+    muerte: 1658
+    estado: sin_verificar
+  - texto: No man is an island, entire of itself
+    autor: John Donne
+    obra: Devotions upon Emergent Occasions
+    idioma: en
+    muerte: 1631
+    estado: sin_verificar
+  - texto: Death, be not proud, though some have called thee mighty and dreadful
+    autor: John Donne
+    obra: Holy Sonnets
+    idioma: en
+    muerte: 1631
+    estado: sin_verificar
+  - texto: Better to reign in Hell than serve in Heaven
+    autor: John Milton
+    obra: Paradise Lost
+    idioma: en
+    muerte: 1674
+    estado: sin_verificar
+  clasicismo:
+  - texto: Arma virumque cano
+    autor: Virgilio
+    obra: Eneida
+    idioma: la
+    muerte: -19
+    estado: sin_verificar
+  - texto: Omnia vincit Amor
+    autor: Virgilio
+    obra: Bucólicas
+    idioma: la
+    muerte: -19
+    estado: sin_verificar
+  - texto: Forsan et haec olim meminisse iuvabit
+    autor: Virgilio
+    obra: Eneida
+    idioma: la
+    muerte: -19
+    estado: sin_verificar
+  - texto: Carpe diem, quam minimum credula postero
+    autor: Horacio
+    obra: Odas
+    idioma: la
+    muerte: -8
+    estado: sin_verificar
+  - texto: Dulce et decorum est pro patria mori
+    autor: Horacio
+    obra: Odas
+    idioma: la
+    muerte: -8
+    estado: sin_verificar
+  - texto: Exegi monumentum aere perennius
+    autor: Horacio
+    obra: Odas
+    idioma: la
+    muerte: -8
+    estado: sin_verificar
+  - texto: Tempus edax rerum
+    autor: Ovidio
+    obra: Metamorfosis
+    idioma: la
+    muerte: 17
+    estado: sin_verificar
+  - texto: Video meliora proboque, deteriora sequor
+    autor: Ovidio
+    obra: Metamorfosis
+    idioma: la
+    muerte: 17
+    estado: sin_verificar
+  - texto: En tanto que de rosa y azucena se muestra la color en vuestro gesto
+    autor: Garcilaso de la Vega
+    obra: Soneto XXIII
+    idioma: es
+    muerte: 1536
+    estado: sin_verificar
+  - texto: À vaincre sans péril, on triomphe sans gloire
+    autor: Pierre Corneille
+    obra: Le Cid
+    idioma: fr
+    muerte: 1684
+    estado: sin_verificar
+  - texto: Il faut manger pour vivre, et non pas vivre pour manger
+    autor: Molière
+    obra: L'Avare
+    idioma: fr
+    muerte: 1673
+    estado: sin_verificar
+  - texto: Ce n'est plus une ardeur dans mes veines cachée
+    autor: Jean Racine
+    obra: Phèdre
+    idioma: fr
+    muerte: 1699
+    estado: sin_verificar
+  - texto: Zwei Seelen wohnen, ach! in meiner Brust
+    autor: Johann Wolfgang von Goethe
+    obra: Faust
+    idioma: de
+    muerte: 1832
+    estado: sin_verificar
+  - texto: Das Ewig-Weibliche zieht uns hinan
+    autor: Johann Wolfgang von Goethe
+    obra: Faust
+    idioma: de
+    muerte: 1832
+    estado: sin_verificar
+  simbolismo:
+  - texto: Hypocrite lecteur, — mon semblable, — mon frère !
+    autor: Charles Baudelaire
+    obra: Au lecteur
+    idioma: fr
+    muerte: 1867
+    estado: sin_verificar
+  - texto: Là, tout n'est qu'ordre et beauté, luxe, calme et volupté
+    autor: Charles Baudelaire
+    obra: L'invitation au voyage
+    idioma: fr
+    muerte: 1867
+    estado: sin_verificar
+  - texto: La chair est triste, hélas ! et j'ai lu tous les livres
+    autor: Stéphane Mallarmé
+    obra: Brise marine
+    idioma: fr
+    muerte: 1898
+    estado: sin_verificar
+  - texto: Un coup de dés jamais n'abolira le hasard
+    autor: Stéphane Mallarmé
+    obra: Un coup de dés
+    idioma: fr
+    muerte: 1898
+    estado: sin_verificar
+  - texto: Je est un autre
+    autor: Arthur Rimbaud
+    obra: Lettre du voyant
+    idioma: fr
+    muerte: 1891
+    estado: sin_verificar
+  - texto: Elle est retrouvée. Quoi ? — L'éternité.
+    autor: Arthur Rimbaud
+    obra: L'Éternité
+    idioma: fr
+    muerte: 1891
+    estado: sin_verificar
+  - texto: Il pleure dans mon cœur comme il pleut sur la ville
+    autor: Paul Verlaine
+    obra: Romances sans paroles
+    idioma: fr
+    muerte: 1896
+    estado: sin_verificar
+  - texto: De la musique avant toute chose
+    autor: Paul Verlaine
+    obra: Art poétique
+    idioma: fr
+    muerte: 1896
+    estado: sin_verificar
+  - texto: Wer, wenn ich schriee, hörte mich denn aus der Engel Ordnungen?
+    autor: Rainer Maria Rilke
+    obra: Duineser Elegien
+    idioma: de
+    muerte: 1926
+    estado: sin_verificar
+  - texto: Du musst dein Leben ändern
+    autor: Rainer Maria Rilke
+    obra: Archaïscher Torso Apollos
+    idioma: de
+    muerte: 1926
+    estado: sin_verificar
+  - texto: Things fall apart; the centre cannot hold
+    autor: W. B. Yeats
+    obra: The Second Coming
+    idioma: en
+    muerte: 1939
+    estado: sin_verificar
+  - texto: Tread softly because you tread on my dreams
+    autor: W. B. Yeats
+    obra: He Wishes for the Cloths of Heaven
+    idioma: en
+    muerte: 1939
+    estado: sin_verificar
+  - texto: Ah ! que la vie est quotidienne
+    autor: Jules Laforgue
+    obra: Complainte
+    idioma: fr
+    muerte: 1887
+    estado: sin_verificar

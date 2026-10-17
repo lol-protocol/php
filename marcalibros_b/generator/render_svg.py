@@ -3,6 +3,7 @@
 Los números se formatean con {:g} para que la misma escena siempre
 produzca exactamente el mismo texto, byte a byte.
 """
+import texto as tx
 from scene import ALTO, ANCHO
 
 
@@ -27,6 +28,14 @@ def a_svg(esc):
                 f'<circle cx="{prim["cx"]:g}" cy="{prim["cy"]:g}" r="{prim["r"]:g}" '
                 f'fill="{prim["color"]}"/>'
             )
+        elif tipo == "texto":
+            usados = sorted({c for b in prim["bloques"] for c, _, _ in b["glifos"]})
+            ids = {c: f"g{ord(c):x}" for c in usados}
+            lineas.append("<defs>" + "".join(f'<path id="{ids[c]}" d="{tx.trazo(c)}"/>' for c in usados) + "</defs>")
+            for b in prim["bloques"]:
+                k = b["tam"] / tx.UNIDADES
+                usos = "".join(f'<use href="#{ids[c]}" x="{round(x / k)}" y="{round(y / k)}"/>' for c, x, y in b["glifos"])
+                lineas.append(f'<g fill="{prim["color"]}" fill-rule="evenodd" transform="scale({k:g})">{usos}</g>')
         elif tipo == "velo":
             lineas.append(
                 f'<rect x="{prim["x0"]:g}" y="{prim["y0"]:g}" width="{prim["x1"] - prim["x0"]:g}" '

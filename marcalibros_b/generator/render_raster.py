@@ -7,6 +7,7 @@ y por eso esas piezas van en JPG.
 import numpy as np
 from PIL import Image, ImageDraw
 
+import texto as tx
 from scene import ALTO, ANCHO
 
 ESCALA = 2
@@ -24,6 +25,29 @@ def _degradado(arriba, abajo, w, h, paradas=()):
     t = np.linspace(0, 1, h)
     fila = np.stack([np.interp(t, pos, cols[:, k]) for k in range(3)], axis=1)[:, None, :]  # (h, 1, 3)
     return np.broadcast_to(fila, (h, w, 3)).copy()
+
+
+def _pintar_texto(lienzo, prim, f):
+    """Rellena los contornos de cada glifo (par-impar, para que los huecos de la «o» queden vacíos)."""
+    e = ESCALA * f
+    color = _rgb(prim["color"])
+    for b in prim["bloques"]:
+        k = b["tam"] / tx.UNIDADES * e  # unidades de glifo -> píxeles del lienzo
+        for c, x, y in b["glifos"]:
+            cs = tx.contornos(c)
+            if not cs:
+                continue
+            xs = [px for ct in cs for px, _ in ct]
+            ys = [py for ct in cs for _, py in ct]
+            x0, y0 = int(x * e + min(xs) * k) - 2, int(y * e + min(ys) * k) - 2
+            ancho, alto = int((max(xs) - min(xs)) * k) + 5, int((max(ys) - min(ys)) * k) + 5
+            mascara = np.zeros((alto, ancho), dtype=bool)
+            for ct in cs:
+                capa = Image.new("L", (ancho, alto), 0)
+                ImageDraw.Draw(capa).polygon([(x * e + px * k - x0, y * e + py * k - y0) for px, py in ct], fill=255)
+                mascara ^= np.asarray(capa) > 127
+            lienzo.paste(color + (255,), (x0, y0), Image.fromarray((mascara * 255).astype(np.uint8)))
+    return lienzo
 
 
 def a_imagen(esc, escala=1.0):
@@ -46,6 +70,9 @@ def a_imagen(esc, escala=1.0):
         if tipo == "circulo":
             cx, cy, r = prim["cx"] * ESCALA * f, prim["cy"] * ESCALA * f, prim["r"] * ESCALA * f
             dibujo.ellipse([cx - r, cy - r, cx + r, cy + r], fill=_rgb(prim["color"]))
+        elif tipo == "texto":
+            lienzo = _pintar_texto(lienzo, prim, f)
+            dibujo = ImageDraw.Draw(lienzo)
         elif tipo == "velo":
             capa = Image.new("RGBA", lienzo.size, (0, 0, 0, 0))
             e = ESCALA * f

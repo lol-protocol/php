@@ -42,6 +42,7 @@ def main():
                     "id": ident, "m": mov["id"], "a": autor["id"], "v": v, "t": obra["titulo"], "tp": obra["tipo"],
                     "de": obra.get("de", ""), "mo": obra["motivo"], "an": obra["animo"], "es": e["arquetipo"],
                     "pa": e["paleta"], "f": e["formato"], "g": obra["gutenberg"]["estado"],
+                    "fr": (e.get("frase") or {}).get("texto", ""), "fa": (e.get("frase") or {}).get("autor", ""),
                     "s": [mi, len(ids)],
                 })
                 ids.append(ident)

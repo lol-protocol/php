@@ -252,7 +252,8 @@ function ficha(p) {
     el("dt", { text: "Motivo" }), el("dd", { text: DATOS.motivos[p.mo] || p.mo }),
     el("dt", { text: "Ánimo" }), el("dd", { text: ANIMOS[p.an] || p.an }),
     el("dt", { text: "Escena" }), el("dd", { text: `${ESCENAS[p.es] || p.es} · paleta ${p.pa}` }),
-    el("dt", { text: "Gutenberg" }), el("dd", { text: GUTENBERG[p.g] || p.g }));
+    el("dt", { text: "Gutenberg" }), el("dd", { text: GUTENBERG[p.g] || p.g }),
+    p.fr ? el("dt", { text: "Frase" }) : null, p.fr ? el("dd", { text: `«${p.fr}» — ${p.fa}` }) : null);
   return el("article", { class: "ficha", "data-estado": r.estado || "", "data-id": p.id },
     tira,
     el("div", { class: "datos" },

@@ -178,6 +178,48 @@ def test_gutenberg_no_disponible_no_lleva_id():
     assert any("no_disponible" in p for p in validar_taxonomia(malo, MOTIVOS, ANIMOS, ESCENAS, PALETAS))
 
 
+def test_frases_en_dominio_publico_y_dibujables():
+    import texto
+    from qa import validar_frases
+    datos = build.cargar_frases()
+    assert validar_frases(datos, texto.soporta) == []
+    for lista in datos["movimientos"].values():
+        for q in lista:
+            _, alto = texto.componer(q["texto"], q["autor"], (16, 440, 184, 860))
+            assert alto <= 380, f"«{q['texto']}» no cabe en la franja"
+
+
+def test_una_autoria_con_derechos_se_rechaza():
+    import texto
+    from qa import validar_frases
+    datos = {"movimientos": {"x": [{"texto": "hola", "autor": "A", "obra": "o", "idioma": "es", "muerte": 2014, "estado": "sin_verificar"}]}}
+    assert any("derechos" in p for p in validar_frases(datos, texto.soporta))
+
+
+def test_reparto_de_frases_es_reproducible_y_ronda_la_mitad():
+    frases = build.cargar_frases()
+    ids = [f"{m['id']}-{a['id']}-{v:02d}" for m in CONFIG["movimientos"] for a in m["autores"] for v in range(1, 11)
+           if m["id"] != "realismo-magico"]
+    primera = [build.elegir_frase(i, i.split("-")[0], frases) is not None for i in ids]
+    assert primera == [build.elegir_frase(i, i.split("-")[0], frases) is not None for i in ids]
+    assert 0.4 < sum(primera) / len(primera) < 0.6
+
+
+def test_realismo_magico_no_lleva_frases():
+    frases = build.cargar_frases()
+    assert all(build.elegir_frase(f"realismo-magico-x-{v:02d}", "realismo-magico", frases) is None for v in range(1, 50))
+
+
+def test_las_piezas_con_frase_la_llevan_dibujada():
+    manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
+    con = [e for e in manifiesto["entradas"] if e.get("frase")]
+    assert 400 < len(con) < 500
+    for e in con[:25]:
+        svg = (RAIZ / e["archivo"]).read_text(encoding="utf-8") if e["formato"] == "svg" else None
+        if svg:
+            assert "<use " in svg and "fill-rule" in svg, e["id"]
+
+
 def test_archivos_del_catalogo_validos():
     manifiesto = json.loads((RAIZ / "catalog" / "manifest.json").read_text(encoding="utf-8"))
     for e in manifiesto["entradas"]:

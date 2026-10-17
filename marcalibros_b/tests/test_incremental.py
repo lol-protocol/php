@@ -25,7 +25,7 @@ def catalogo(tmp_path, monkeypatch):
     """Raíz temporal con la taxonomía reducida a un autor de 4 obras."""
     (tmp_path / "catalog").mkdir()
     (tmp_path / "generator").symlink_to(RAIZ / "generator", target_is_directory=True)
-    for nombre in ("motivos.yaml", "animos.yaml"):
+    for nombre in ("motivos.yaml", "animos.yaml", "frases.yaml"):
         shutil.copy(RAIZ / "catalog" / nombre, tmp_path / "catalog" / nombre)
     config = yaml.safe_load((RAIZ / "catalog" / "taxonomia.yaml").read_text(encoding="utf-8"))
     mov = next(m for m in config["movimientos"] if m["id"] == MOV)
@@ -36,12 +36,14 @@ def catalogo(tmp_path, monkeypatch):
     monkeypatch.setattr(build, "RAIZ", tmp_path)
     monkeypatch.setattr(build, "CATALOGO", tmp_path / "catalog")
     build._ASIGNACIONES.clear()
+    build.cargar_frases.cache_clear()  # apunta al catálogo temporal, no al real
 
     def guardar(cfg):
         (tmp_path / "catalog" / "taxonomia.yaml").write_text(yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False),
                                                            encoding="utf-8")
     guardar(config)
-    return tmp_path, config, guardar
+    yield tmp_path, config, guardar
+    build.cargar_frases.cache_clear()
 
 
 def _ejecutar(*extra):

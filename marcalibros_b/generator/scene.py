@@ -32,3 +32,7 @@ class Escena:
         """Rectángulo translúcido (se dibuja encima de todo lo anterior)."""
         self.primitivas.append({"tipo": "velo", "x0": x0, "y0": y0, "x1": x1, "y1": y1,
                                 "color": color, "opacidad": opacidad, "radio": radio})
+
+    def texto(self, bloques, color):
+        """Texto como contornos de glifos (ver texto.py). `bloques`: [{"tam", "glifos": [(c, x, y)]}]."""
+        self.primitivas.append({"tipo": "texto", "bloques": bloques, "color": color})
