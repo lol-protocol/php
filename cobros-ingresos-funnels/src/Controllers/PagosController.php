@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Avisos;
 use App\Database;
+use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
 use App\FiltroDePeriodo;
@@ -187,10 +188,15 @@ final class PagosController
         return $boleta !== null && (bool) $boleta['anulada'];
     }
 
-    /** Tolerancia de un centavo para poder pagar exactamente el saldo restante sin que el redondeo lo rechace. */
+    /**
+     * Un pago no puede pasarse del saldo, ni por un centavo. Se compara en
+     * centavos enteros (ver Dinero): el margen de un centavo que tenia antes
+     * evitaba que el ruido de la coma flotante rechazara pagar justo el saldo,
+     * pero dejaba cobrar un centavo de mas.
+     */
     public static function montoNoSuperaElSaldo(float $monto, array $boleta): bool
     {
-        return $monto <= (float) $boleta['saldo'] + 0.01;
+        return Dinero::centavos($monto) <= Dinero::centavos($boleta['saldo']);
     }
 
     /**
@@ -199,10 +205,16 @@ final class PagosController
      * los pagos vigentes de la boleta, este mismo pago incluido, asi que
      * hay que sumarle de vuelta $montoViejo antes de comparar contra el
      * monto nuevo (si no, el pago se estaria descontando a si mismo).
+     *
+     * Dejar el monto como estaba (o bajarlo) nunca se rechaza, ni en una boleta
+     * que ya estaba sobrecobrada, con saldo negativo: sin eso un pago de esa
+     * boleta no se podria editar ni para corregirle la fecha.
      */
     public static function montoNoSuperaElSaldoAlEditar(float $montoNuevo, array $boleta, float $montoViejo): bool
     {
-        return self::montoNoSuperaElSaldo($montoNuevo, ['saldo' => (float) $boleta['saldo'] + $montoViejo]);
+        $viejo = Dinero::centavos($montoViejo);
+
+        return Dinero::centavos($montoNuevo) <= max($viejo, Dinero::centavos($boleta['saldo']) + $viejo);
     }
 
     /** El metodo tiene que ser uno de los que ofrece el formulario: lo valida la app y lo restringe la base (migracion 004). */
