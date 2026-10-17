@@ -60,7 +60,7 @@ De ahí salen tres certezas que guían todo lo demás:
 |---|---|
 | **Un apellido nunca es un insulto por sí solo.** | `defamatory-content-review`: `nameCollision` manda a revisión, nunca rechaza un linaje real. |
 | **Nadie es acusado sin fuente.** Imputar delitos, enfermedades o vida privada va siempre a revisión humana. | `defamatory-content-review`: patrones de acusación (`AccusationPatternsTest`). |
-| **Lo íntimo de un tercero no se publica sin revisión**: orientación sexual, filiación, salud, suicidio. | `defamatory-content-review`: patrones de datos sensibles (`SensitiveDataPatternsTest`). |
+| **Lo íntimo de un tercero no se publica sin revisión**: orientación sexual, filiación, salud, suicidio, religión, origen étnico, opinión política. | `defamatory-content-review`: patrones de datos sensibles (`SensitiveDataPatternsTest`). |
 | **Nadie publica el RUT, el teléfono, el correo ni la dirección de otro.** | `defamatory-content-review`: `PersonalData` (tipo `privado`), en cualquier idioma. |
 | **Nada que publique la plataforma escapa al filtro.** | `marcalibros-plataforma-pos-brand-identity/app`: el texto de cada marcalibro (se comparte por enlace) pasa por `LabelPolicy`. |
 | **Un insulto disfrazado sigue siendo un insulto.** | `EvasionCleaner`, `MaskedTerms`, letras sueltas y repetidas, signos. |
@@ -85,16 +85,22 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    muestra. Además, enlazar ediciones de distintos años («la misma persona en
    1960 y 1975») arma un perfil que ninguna guía tenía por sí sola.
 3. **Textos largos.** El endpoint de moderación acepta hasta 2.000 caracteres:
-   una biografía larga hay que revisarla por párrafos.
+   una biografía larga hay que revisarla por párrafos. En curso: con
+   [lol-protocol/php#122](https://github.com/lol-protocol/php/pull/122) acepta
+   hasta 10.000 y los revisa por párrafos él mismo.
 4. **Denuncia, retiro y registro.** Hace falta un botón para pedir el retiro de
    un contenido sin crear cuenta y un plazo de respuesta (por ejemplo, ocultar
    en 24 horas mientras se revisa). También hace falta un registro de quién
    publicó qué y quién lo revisó. Sin registro no hay cómo responder a un reclamo
    como el que cerró el proyecto anterior.
 5. **Términos de uso** que prohíban imputar hechos a terceros y publicar sus datos
-   sensibles, y que digan qué pasa con quien lo haga.
-6. **Acusaciones en otros idiomas.** Los patrones de acusación están en español
-   e inglés. Los otros 31 idiomas sólo detectan insultos.
+   sensibles, y que digan qué pasa con quien lo haga. Hay un borrador en
+   [`TERMINOS-DE-USO.md`](TERMINOS-DE-USO.md), con lo que falta decidir marcado
+   para revisarlo con un abogado.
+6. **Acusaciones en otros idiomas.** Español e inglés tienen los patrones
+   completos; portugués, francés, italiano y alemán, los básicos (delito,
+   condena, salud, vida privada, orientación sexual), sin revisión de un
+   hablante nativo. Los otros 27 idiomas sólo detectan insultos.
 
 El mapa completo de lo que cubre el filtro y lo que no está en
 [`defamatory-content-review/docs/RIESGOS.md`](defamatory-content-review/docs/RIESGOS.md).
@@ -117,8 +123,9 @@ No es asesoría legal: antes de abrir la plataforma conviene revisarlo con un ab
   y define como **sensibles** los de salud, vida sexual, origen racial, creencias
   y opiniones políticas, entre otros.
 - **Ley 21.719**: reemplaza el régimen de la 19.628 con más obligaciones y una
-  agencia fiscalizadora. Debería regir desde diciembre de 2026; hay que confirmar
-  la fecha y lo que exige a una plataforma con fichas de personas vivas.
+  agencia fiscalizadora. Rige desde el 1 de diciembre de 2026 según las fuentes
+  reunidas en `privacy-laws/countries/cl/`; hay que confirmar con el abogado lo
+  que exige a una plataforma con fichas de personas vivas.
 
 ## En una frase
 
