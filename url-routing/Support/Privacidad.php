@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Support;
 
 /**
- * What a request may see about people who may still be alive.
+ * What a request may see about people who may still be alive, or who belong
+ * only to private collections.
  *
  * A persona is presumed alive when she has no 'defuncion' event of her own and
  * her birth is less than ANIOS_VIVA years old; personas.viva overrides that
@@ -16,14 +17,21 @@ namespace App\Support;
  * says so, and hiding every undated ancestor would hollow out the catalog (mark
  * the rare living one with personas.viva instead).
  *
+ * A persona is private when she is in at least one colección and in none that
+ * is public (colecciones.publica). A private tree hides its collection, and
+ * this hides the people only it holds: otherwise anyone with a persona's id
+ * could read what a private tree was meant to keep. A persona who is in no
+ * colección at all is not private: nothing says she belongs to anyone.
+ *
  * Only the owner (see AccessPolicy) sees everything. For anyone else:
- *  - personas() hides a living persona's name, sex, surname group and who
- *    contributed it (the name reads NOMBRE_OCULTO), but keeps its id and its
+ *  - personas() hides a hidden persona's name, sex, surname group and who
+ *    contributed it (the name reads NOMBRE_OCULTO if she may be alive,
+ *    NOMBRE_PRIVADO if she is only private), but keeps its id and its
  *    parents' ids so family trees keep their shape;
- *  - a living persona is also left out of everything that is derived from
+ *  - a hidden persona is also left out of everything that is derived from
  *    names or events and could be searched, sorted or counted: the search,
  *    surname groups, birthplace lists and organization members;
- *  - sucesos() leaves out any event that has a living participant, and
+ *  - sucesos() leaves out any event that has a hidden participant, and
  *    registros() any record that documents one, because their dates, places and
  *    descriptions would otherwise give the person away. What a persona who is
  *    visible shows of such an event is only its year (sqlEventoDe()): her own
@@ -43,6 +51,9 @@ final class Privacidad
 
     /** What a living persona's name reads as. */
     public const NOMBRE_OCULTO = 'Persona viva';
+
+    /** What the name of a persona who is only in private collections reads as. */
+    public const NOMBRE_PRIVADO = 'Persona privada';
 
     /** The role of the persona an event is about: the one who is born or who dies, not a parent, a witness or a declarant. */
     public const ROL_PRINCIPAL = 'principal';
@@ -106,10 +117,29 @@ final class Privacidad
     }
 
     /**
+     * SQL boolean: the persona aliased $q is in some colección and in none that
+     * is public. Same alias rule as sqlViva().
+     */
+    public function sqlPrivada(string $q): string
+    {
+        self::alias($q);
+
+        return "(EXISTS (SELECT 1 FROM coleccion_personas {$q}_mp WHERE {$q}_mp.persona_id = {$q}.id)"
+            . " AND NOT EXISTS (SELECT 1 FROM coleccion_personas {$q}_pp JOIN colecciones {$q}_pc ON {$q}_pc.id = {$q}_pp.coleccion_id"
+            . " WHERE {$q}_pp.persona_id = {$q}.id AND {$q}_pc.publica))";
+    }
+
+    /** SQL boolean: the persona aliased $q is hidden from a visitor, whether she may be alive or is only private. */
+    public function sqlOculta(string $q): string
+    {
+        return '(' . $this->sqlViva($q) . ' OR ' . $this->sqlPrivada($q) . ')';
+    }
+
+    /**
      * personas, as this request may see them: same columns plus `oculta`
-     * (true when the persona is alive and hidden). Hidden rows keep id, padre_id
-     * and madre_id so trees keep their shape; their name, sex, surname group and
-     * contributor are replaced.
+     * (true when the persona is hidden: she may be alive, or is only in private
+     * collections). Hidden rows keep id, padre_id and madre_id so trees keep
+     * their shape; their name, sex, surname group and contributor are replaced.
      */
     public function personas(): string
     {
@@ -117,10 +147,12 @@ final class Privacidad
             return '(SELECT q.*, FALSE AS oculta FROM personas q)';
         }
 
-        $oculta = $this->sqlViva('q');
+        $viva = $this->sqlViva('q');
+        $privada = $this->sqlPrivada('q');
 
         return "(SELECT b.id,
-                CASE WHEN b.oculta THEN '" . self::NOMBRE_OCULTO . "' ELSE b.nombres END AS nombres,
+                CASE WHEN b.oculta THEN CASE WHEN b.viva_presunta THEN '" . self::NOMBRE_OCULTO . "' ELSE '" . self::NOMBRE_PRIVADO . "' END
+                     ELSE b.nombres END AS nombres,
                 CASE WHEN b.oculta THEN '' ELSE b.apellidos END AS apellidos,
                 CASE WHEN b.oculta THEN NULL ELSE b.sexo END AS sexo,
                 b.padre_id, b.madre_id,
@@ -128,10 +160,11 @@ final class Privacidad
                 CASE WHEN b.oculta THEN NULL ELSE b.aportado_por END AS aportado_por,
                 CASE WHEN b.oculta THEN NULL ELSE b.creado_en END AS creado_en,
                 b.oculta
-           FROM (SELECT q.*, {$oculta} AS oculta FROM personas q) b)";
+           FROM (SELECT x.*, (x.viva_presunta OR x.privada) AS oculta
+                   FROM (SELECT q.*, {$viva} AS viva_presunta, {$privada} AS privada FROM personas q) x) b)";
     }
 
-    /** sucesos, without any event that has a living participant. */
+    /** sucesos, without any event that has a hidden participant. */
     public function sucesos(): string
     {
         if (!$this->ocultaVivas) {
@@ -142,7 +175,7 @@ final class Privacidad
     }
 
     /**
-     * SQL boolean: the event aliased $q has no living participant, so all of it
+     * SQL boolean: the event aliased $q has no hidden participant, so all of it
      * may be seen. sucesos() is exactly the events for which this holds.
      */
     public function sqlSucesoVisible(string $q): string
@@ -154,10 +187,10 @@ final class Privacidad
         }
 
         return "NOT EXISTS (SELECT 1 FROM suceso_participantes {$q}_vp JOIN personas {$q}_vq ON {$q}_vq.id = {$q}_vp.persona_id"
-            . " WHERE {$q}_vp.suceso_id = {$q}.id AND " . $this->sqlViva("{$q}_vq") . ')';
+            . " WHERE {$q}_vp.suceso_id = {$q}.id AND " . $this->sqlOculta("{$q}_vq") . ')';
     }
 
-    /** registros, without any record that documents an event with a living participant. */
+    /** registros, without any record that documents an event with a hidden participant. */
     public function registros(): string
     {
         if (!$this->ocultaVivas) {
@@ -167,7 +200,7 @@ final class Privacidad
         return '(SELECT g.* FROM registros g WHERE NOT EXISTS ('
             . 'SELECT 1 FROM registro_sucesos gs JOIN suceso_participantes gp ON gp.suceso_id = gs.suceso_id'
             . ' JOIN personas gq ON gq.id = gp.persona_id'
-            . ' WHERE gs.registro_id = g.id AND ' . $this->sqlViva('gq') . '))';
+            . ' WHERE gs.registro_id = g.id AND ' . $this->sqlOculta('gq') . '))';
     }
 
     /**
@@ -190,7 +223,7 @@ final class Privacidad
      *
      * Only an event she is the ROL_PRINCIPAL of counts, so a persona's summary
      * shows her own birth and death and never one she merely took part in. If
-     * the event has a living participant (see sucesos()) the date comes back as
+     * the event has a hidden participant (see sucesos()) the date comes back as
      * its year alone and the place as NULL. Wrap it in siVisible(): a persona
      * who is herself hidden gets NULL.
      */
@@ -212,7 +245,7 @@ final class Privacidad
 
     /**
      * The date of the event aliased $q: whole when the event may be seen, only
-     * its year (as text) when a living participant hides it. Cast to text on
+     * its year (as text) when a hidden participant hides it. Cast to text on
      * both sides so PostgreSQL, which will not mix a date and a text in one
      * CASE, and SQLite agree.
      */
@@ -226,7 +259,7 @@ final class Privacidad
             . " ELSE SUBSTR(CAST({$q}.fecha AS TEXT), 1, 4) END";
     }
 
-    /** $expresion when the event aliased $q may be seen, NULL when a living participant hides it. */
+    /** $expresion when the event aliased $q may be seen, NULL when a hidden participant hides it. */
     private function soloSiVisible(string $q, string $expresion): string
     {
         return $this->ocultaVivas

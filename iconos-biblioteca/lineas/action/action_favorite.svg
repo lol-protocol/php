@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="solids">
-    <g><path d="M27 25L28.3 26.8A5 5 0 0 0 36.3 20.8L35 19A5 5 0 0 0 27 25Z" fill="none" stroke="#82112A" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="22" r="5" fill="none" stroke="#82112A" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M27 25L28.32 26.76A5 5 0 0 0 36.32 20.76L35 19A5 5 0 0 0 27 25Z" fill="none" stroke="#82112A" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="22" r="5" fill="none" stroke="#82112A" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
     <path d="M16 30a15 15 0 1 0 30 0a15 15 0 1 0 -30 0Z" fill="none" stroke="#82112A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>

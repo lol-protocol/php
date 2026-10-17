@@ -160,6 +160,38 @@ class PrivacidadRepositoriesTest extends TestCase
         $this->assertSame('Juan', $repo->find(self::JUAN)['nombres']);
     }
 
+    /** What the owner's form does: set the flag, read it back, and let a visitor's view follow it. */
+    #[DataProvider('drivers')]
+    public function testTheFlagCanBeSetAndReadBack(string $driver): void
+    {
+        $db = TestDatabases::fresh($driver, 'genealogy', seed: true);
+        $dueno = new PersonaRepository($db, Privacidad::propietario());
+        $visita = new PersonaRepository($db, self::publica());
+
+        $this->assertNull($dueno->marcaViva(self::CARLOS), 'unset reads as null');
+
+        $this->assertTrue($dueno->fijarViva(self::JOSE, true));
+        $this->assertTrue($dueno->marcaViva(self::JOSE));
+        $this->assertTrue($visita->find(self::JOSE)['oculta']);
+
+        $this->assertTrue($dueno->fijarViva(self::JUAN, false));
+        $this->assertFalse($dueno->marcaViva(self::JUAN), 'false is not "no value"');
+        $this->assertFalse($visita->find(self::JUAN)['oculta']);
+
+        $this->assertTrue($dueno->fijarViva(self::JUAN, null));
+        $this->assertNull($dueno->marcaViva(self::JUAN));
+        $this->assertTrue($visita->find(self::JUAN)['oculta'], 'back to deducing it from the dates');
+    }
+
+    #[DataProvider('drivers')]
+    public function testSettingTheFlagOfAPersonaThatDoesNotExistChangesNothing(string $driver): void
+    {
+        $dueno = new PersonaRepository(TestDatabases::fresh($driver, 'genealogy', seed: true), Privacidad::propietario());
+
+        $this->assertFalse($dueno->fijarViva(6128470000, true));
+        $this->assertNull($dueno->marcaViva(6128470000));
+    }
+
     // --- the persona itself ----------------------------------------------------------
 
     #[DataProvider('drivers')]

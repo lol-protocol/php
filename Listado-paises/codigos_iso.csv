@@ -1,0 +1,200 @@
+codigo,codigo_owid,nombre_iso
+AF,AFG,Afghanistan
+AL,ALB,Albania
+DE,DEU,Germany
+AD,AND,Andorra
+AO,AGO,Angola
+AG,ATG,Antigua and Barbuda
+SA,SAU,Saudi Arabia
+DZ,DZA,Algeria
+AR,ARG,Argentina
+AM,ARM,Armenia
+AU,AUS,Australia
+AT,AUT,Austria
+AZ,AZE,Azerbaijan
+BS,BHS,Bahamas
+BH,BHR,Bahrain
+BD,BGD,Bangladesh
+BB,BRB,Barbados
+BY,BLR,Belarus
+BE,BEL,Belgium
+BZ,BLZ,Belize
+BJ,BEN,Benin
+BT,BTN,Bhutan
+BO,BOL,"Bolivia, Plurinational State of"
+BA,BIH,Bosnia and Herzegovina
+BW,BWA,Botswana
+BR,BRA,Brazil
+BN,BRN,Brunei Darussalam
+BG,BGR,Bulgaria
+BF,BFA,Burkina Faso
+BI,BDI,Burundi
+CV,CPV,Cabo Verde
+KH,KHM,Cambodia
+CM,CMR,Cameroon
+CA,CAN,Canada
+QA,QAT,Qatar
+TD,TCD,Chad
+CZ,CZE,Czechia
+CL,CHL,Chile
+CN,CHN,China
+CY,CYP,Cyprus
+CO,COL,Colombia
+KM,COM,Comoros
+CG,COG,Congo
+KP,PRK,"Korea, Democratic People's Republic of"
+KR,KOR,"Korea, Republic of"
+CI,CIV,Côte d'Ivoire
+CR,CRI,Costa Rica
+HR,HRV,Croatia
+CU,CUB,Cuba
+DK,DNK,Denmark
+DM,DMA,Dominica
+EC,ECU,Ecuador
+EG,EGY,Egypt
+SV,SLV,El Salvador
+AE,ARE,United Arab Emirates
+ER,ERI,Eritrea
+SK,SVK,Slovakia
+SI,SVN,Slovenia
+ES,ESP,Spain
+SZ,SWZ,Eswatini
+US,USA,United States
+EE,EST,Estonia
+ET,ETH,Ethiopia
+FJ,FJI,Fiji
+PH,PHL,Philippines
+FI,FIN,Finland
+FR,FRA,France
+GA,GAB,Gabon
+GM,GMB,Gambia
+GE,GEO,Georgia
+GH,GHA,Ghana
+GD,GRD,Grenada
+GR,GRC,Greece
+GT,GTM,Guatemala
+GN,GIN,Guinea
+GQ,GNQ,Equatorial Guinea
+GW,GNB,Guinea-Bissau
+GY,GUY,Guyana
+HT,HTI,Haiti
+HN,HND,Honduras
+HK,HKG,Hong Kong
+HU,HUN,Hungary
+IN,IND,India
+ID,IDN,Indonesia
+IQ,IRQ,Iraq
+IR,IRN,"Iran, Islamic Republic of"
+IE,IRL,Ireland
+IS,ISL,Iceland
+MH,MHL,Marshall Islands
+SB,SLB,Solomon Islands
+IL,ISR,Israel
+IT,ITA,Italy
+JM,JAM,Jamaica
+JP,JPN,Japan
+JO,JOR,Jordan
+KZ,KAZ,Kazakhstan
+KE,KEN,Kenya
+KG,KGZ,Kyrgyzstan
+KI,KIR,Kiribati
+XK,OWID_KOS,Kosovo
+KW,KWT,Kuwait
+LA,LAO,Lao People's Democratic Republic
+LS,LSO,Lesotho
+LV,LVA,Latvia
+LB,LBN,Lebanon
+LR,LBR,Liberia
+LY,LBY,Libya
+LI,LIE,Liechtenstein
+LT,LTU,Lithuania
+LU,LUX,Luxembourg
+MO,MAC,Macao
+MK,MKD,North Macedonia
+MG,MDG,Madagascar
+MY,MYS,Malaysia
+MW,MWI,Malawi
+MV,MDV,Maldives
+ML,MLI,Mali
+MT,MLT,Malta
+MA,MAR,Morocco
+MU,MUS,Mauritius
+MR,MRT,Mauritania
+MX,MEX,Mexico
+FM,FSM,"Micronesia, Federated States of"
+MD,MDA,"Moldova, Republic of"
+MC,MCO,Monaco
+MN,MNG,Mongolia
+ME,MNE,Montenegro
+MZ,MOZ,Mozambique
+MM,MMR,Myanmar
+NA,NAM,Namibia
+NR,NRU,Nauru
+NP,NPL,Nepal
+NI,NIC,Nicaragua
+NE,NER,Niger
+NG,NGA,Nigeria
+NO,NOR,Norway
+NZ,NZL,New Zealand
+OM,OMN,Oman
+NL,NLD,Netherlands
+PK,PAK,Pakistan
+PW,PLW,Palau
+PS,PSE,"Palestine, State of"
+PA,PAN,Panama
+PG,PNG,Papua New Guinea
+PY,PRY,Paraguay
+PE,PER,Peru
+PL,POL,Poland
+PT,PRT,Portugal
+PR,PRI,Puerto Rico
+GB,GBR,United Kingdom
+CF,CAF,Central African Republic
+CD,COD,"Congo, The Democratic Republic of the"
+DO,DOM,Dominican Republic
+RW,RWA,Rwanda
+RO,ROU,Romania
+RU,RUS,Russian Federation
+WS,WSM,Samoa
+KN,KNA,Saint Kitts and Nevis
+SM,SMR,San Marino
+VC,VCT,Saint Vincent and the Grenadines
+LC,LCA,Saint Lucia
+ST,STP,Sao Tome and Principe
+SN,SEN,Senegal
+RS,SRB,Serbia
+SC,SYC,Seychelles
+SL,SLE,Sierra Leone
+SG,SGP,Singapore
+SY,SYR,Syrian Arab Republic
+SO,SOM,Somalia
+LK,LKA,Sri Lanka
+ZA,ZAF,South Africa
+SD,SDN,Sudan
+SS,SSD,South Sudan
+SE,SWE,Sweden
+CH,CHE,Switzerland
+SR,SUR,Suriname
+TH,THA,Thailand
+TW,TWN,"Taiwan, Province of China"
+TZ,TZA,"Tanzania, United Republic of"
+TJ,TJK,Tajikistan
+TL,TLS,Timor-Leste
+TG,TGO,Togo
+TO,TON,Tonga
+TT,TTO,Trinidad and Tobago
+TN,TUN,Tunisia
+TM,TKM,Turkmenistan
+TR,TUR,Türkiye
+TV,TUV,Tuvalu
+UA,UKR,Ukraine
+UG,UGA,Uganda
+UY,URY,Uruguay
+UZ,UZB,Uzbekistan
+VU,VUT,Vanuatu
+VE,VEN,"Venezuela, Bolivarian Republic of"
+VN,VNM,Viet Nam
+YE,YEM,Yemen
+DJ,DJI,Djibouti
+ZM,ZMB,Zambia
+ZW,ZWE,Zimbabwe

@@ -13,8 +13,9 @@ La lógica está en [`Support/AccessPolicy.php`](../Support/AccessPolicy.php) y 
 | Página de edición de una colección: `/{id}/2/` | **404** si la colección es privada; **401** si es pública |
 | Área de cuenta, genealogía y POS: `/0/` y sus acciones | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN` |
 | Búsqueda de colecciones (`/?t=7`) | las privadas no aparecen, ni buscándolas por su nombre exacto |
+| Marca de «vive / falleció» de una persona: `/{id de persona}/5/` | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN`. Guardar exige además el token CSRF del formulario |
 
-**Por qué 404 y no 401 o 403.** Los ids son URLs públicas y casi secuenciales: un 401 o un 403 confirmaría cuáles existen. Es lo que la sección «Recursos privados» de `README_URLS.md` ya prometía y el código no cumplía. Lo único que responde 401 es lo que se sabe que existe: el área de cuenta y la edición de una colección pública. El área de cuenta es además el punto de entrada del propietario.
+**Por qué 404 y no 401 o 403.** Los ids son URLs públicas y casi secuenciales: un 401 o un 403 confirmaría cuáles existen. Es lo que la sección «Recursos privados» de `README_URLS.md` ya prometía y el código no cumplía. Lo único que responde 401 es lo que se sabe que existe: el área de cuenta, la edición de una colección pública y la marca de vida de una persona (las personas son públicas, así que pedir la clave no confirma nada). El área de cuenta es además el punto de entrada del propietario.
 
 Las páginas públicas no piden nada: una colección con `publica = true`, las personas, los lugares, los grupos, las organizaciones, los sucesos, los registros y todo el catálogo del POS.
 
@@ -29,7 +30,7 @@ Una persona sin ninguna fecha **no** se presume viva: nada lo dice, y ocultar a 
 
 **Qué sucesos cuentan como suyos.** Un nacimiento o una defunción es de quien figura en él con el rol `principal` (`Privacidad::ROL_PRINCIPAL`). Registrar una defunción (`declarante`), ser madre, padre o padrino en un nacimiento, o ser testigo, es estar presente, no morir ni nacer: quien firmó la defunción de otra persona sigue presumiéndose viva, y en su ficha, en los lugares de nacimiento y en los apellidos solo cuentan su propio nacimiento y su propia defunción. Una defunción registrada con otro rol no da por fallecida a la persona: si nació hace menos de 110 años queda oculta (de más, no de menos); se corrige poniéndole el rol `principal` o `viva = FALSE`. Hay una excepción, a propósito: quien no tiene nacimiento propio se toma por no más joven que su hijo, así que queda oculta mientras el hijo lo esté.
 
-**Corregir la deducción.** La columna `personas.viva` (migración `002_personas_viva.sql`) manda sobre las fechas: `TRUE` = vive, `FALSE` = ya falleció, `NULL` = deducirlo. Sirve para marcar a quien vive pero no tiene fechas, o a quien ya murió sin que conste su defunción. Hoy se cambia por SQL o al importar datos; la aplicación no tiene pantalla para editarla.
+**Corregir la deducción.** La columna `personas.viva` (migración `002_personas_viva.sql`) manda sobre las fechas: `TRUE` = vive, `FALSE` = ya falleció, `NULL` = deducirlo. Sirve para marcar a quien vive pero no tiene fechas, o a quien ya murió sin que conste su defunción. El propietario la cambia en la ficha de la persona, en **Privacidad** (`/{id de persona}/5/`, un enlace que solo ella ve): «Vive», «Falleció» o «Deducirlo de las fechas». Una persona que solo está en colecciones privadas se oculta de todos modos, sea cual sea la marca.
 
 | Dónde aparece | Qué ve un visitante |
 |---|---|
@@ -45,6 +46,21 @@ Una persona sin ninguna fecha **no** se presume viva: nada lo dice, y ocultar a 
 El propietario lo ve todo y sus consultas son las de siempre.
 
 Cómo está hecho: `Privacidad` entrega **expresiones de tabla** (`personas()`, `sucesos()`, `registros()`) que sustituyen a las tablas en cada consulta, así que una consulta no puede olvidarse de ocultar algo: solo ve la versión ya oculta. Los repositorios reciben el `Privacidad` de la petición y, si nadie se lo pasa, usan el del visitante: olvidarse oculta de más, nunca de menos. `PagesTest::testNoPageShowsAVisitorAnythingAboutLivingPeople` recorre todas las páginas que la base de demostración puede producir y falla si una consulta o página nueva olvida a `Privacidad`.
+
+## Personas de colecciones privadas
+
+Una colección privada oculta **la colección** (su página, su árbol y su GEDCOM). Para que además no se pueda llegar a sus personas por su id, por la búsqueda o por una página de lugar, apellido o suceso, una persona es **privada** cuando:
+
+- está en **al menos una** colección, **y**
+- **ninguna** de sus colecciones es pública (`colecciones.publica`).
+
+Basta una colección pública para que la persona se vea: lo que alguien decidió publicar no se oculta porque otra persona lo haya guardado también en un borrador. Una persona que **no está en ninguna** colección no es privada: nada dice que pertenezca a alguien.
+
+Se oculta igual que una persona viva (ver la tabla de arriba: ficha vacía, sin búsqueda, sin lugares ni apellidos, sin sus sucesos ni los registros que la documentan, GEDCOM sin datos), con una diferencia: su nombre se lee **«Persona privada»**, no «Persona viva», porque no se trata de que viva. Los sucesos que comparte con una persona visible desaparecen de la cronología de esta, como pasa con los de una persona viva.
+
+Es una regla de lectura, no un estado: se evalúa en cada consulta. Si la colección se publica, sus personas se ven en la siguiente petición; si la única colección pública de alguien pasa a privada, deja de verse. Lo mismo ocurre con la deducción de «viva»: ninguna de las dos se guarda.
+
+El propietario lo ve todo.
 
 ## Configurar
 
@@ -62,6 +78,8 @@ La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, 
 
 ## Despliegue
 
+La guía paso a paso, con las comprobaciones, está en [`DESPLIEGUE.md`](./DESPLIEGUE.md). Lo que importa para el acceso:
+
 - **HTTPS, obligatorio en producción.** El token viaja en la cabecera `Authorization`. Sin HTTPS lo ve cualquiera en la red.
 - **Nginx:** pasa la cabecera a PHP-FPM por defecto; no hace falta nada. Ver [`deploy/nginx.conf.example`](../deploy/nginx.conf.example).
 - **Apache:** `public/.htaccess` incluye la regla que entrega la cabecera a PHP (CGI/FPM la descartan). **No se probó en un Apache real**: comprobarlo con `curl -u x:<token> https://tudominio/0/` (debe dar 200).
@@ -70,11 +88,11 @@ La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, 
 
 ## Lo que esto NO cubre
 
-Esto hace privados los **objetos** que ya se presentaban como privados y oculta a las personas que podrían estar vivas. No es una garantía de privacidad de los datos de todas las personas. Antes de afirmar en público algo sobre cuidado de datos, hay que tener presente:
+Esto hace privados los **objetos** que ya se presentaban como privados, oculta a las personas que podrían estar vivas y a las que solo figuran en colecciones privadas. No es una garantía de privacidad de los datos de todas las personas. Antes de afirmar en público algo sobre cuidado de datos, hay que tener presente:
 
-- **Las personas fallecidas son un catálogo compartido.** Una persona puede estar en varias colecciones y cualquiera puede abrir `/{id de persona}/` (y sus acciones), encontrarla en la búsqueda o verla en las páginas de lugares, grupos, organizaciones y sucesos. Que una colección sea privada oculta **la colección** (su página, su árbol y su GEDCOM), no a las personas fallecidas que contiene. Si hace falta que un árbol privado oculte también a sus personas, es otra decisión de modelo: hoy no ocurre.
+- **El catálogo de personas es compartido.** Una persona puede estar en varias colecciones, de varios usuarios. Basta que una sea pública para que cualquiera la vea, y esa persona se ve en todas las páginas aunque también esté en un borrador privado. Quien guarda una persona en su colección privada no puede impedir que otra colección pública la incluya. Una persona que no está en ninguna colección también se ve.
 - **La protección de personas vivas es una deducción, no una certeza.** Cubre a quien tiene fecha de nacimiento reciente y ninguna defunción, o la marca `viva`. No cubre a quien vive pero no tiene fechas ni marca, ni a quien nació hace más de 110 años y vive. Tampoco cubre texto libre: si alguien escribe el nombre de una persona viva en la descripción de un suceso que no la tiene como participante, o en el título de un registro sin sucesos, se verá.
-- **La persona oculta se reconoce por su ausencia.** Su página existe y dice «Persona viva», y sus padres ya muestran que tienen un descendiente oculto. Eso revela la forma del árbol, no a quién pertenece.
+- **La persona oculta se reconoce por su ausencia.** Su página existe y dice «Persona viva» o «Persona privada», y sus padres ya muestran que tienen un descendiente oculto. Eso revela la forma del árbol, no a quién pertenece.
 - **El coste crece con el catálogo.** Decidir quién vive son varias consultas por persona. Con millones de personas convendrá guardar el resultado en una columna calculada; hoy no hace falta.
 - **Un solo propietario y un solo secreto.** No hay cuentas por persona ni roles. Quien tenga el token lo ve todo, incluidas las colecciones y los pedidos de otros usuarios de la base de datos. Las páginas de cuenta actúan siempre sobre la cuenta fija (`DEFAULT_USER_ID`).
 - **Los pedidos del POS son solo del propietario.** Las páginas de pago (`/checkout/...`) todavía no crean pedidos. Cuando lo hagan, un pedido tendrá que ligarse a la sesión de quien lo hizo y abrirse también para esa sesión; hoy, ni quien lo hizo lo vería.
@@ -86,7 +104,9 @@ Esto hace privados los **objetos** que ya se presentaban como privados y oculta 
 - `tests/App/Support/PrivacidadTest.php`: el umbral, que el SQL del propietario sea el de siempre y que un alias inválido se rechace antes de llegar al SQL.
 - `tests/App/Repositories/PrivacidadRepositoriesTest.php` (en SQLite y PostgreSQL, con fecha fija): quién se oculta y quién no, el borde exacto de los 110 años, la marca `viva`, el rol de cada participante (firmar una defunción no es morir), el año que deja un suceso oculto y qué ve un visitante en cada repositorio.
 - `tests/App/Integration/ResponseHeadersTest.php`: contra el servidor integrado de PHP, porque `PagesTest` no ve cabeceras (en la CLI `header()` no hace nada): que lo oculto responda con el mismo estado, cuerpo y cabeceras que lo que no existe, que las páginas del propietario salgan `private, no-store` y que el área de cuenta pida credenciales.
-- `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos ni de Lucía (se comprobó que falla si se apaga el enmascarado).
+- `tests/App/Integration/PagesTest.php` también cubre la página de la marca de vida: cerrada a visitantes, formulario y enlace solo para el propietario, y guardar con token CSRF y valores válidos (cada prueba que guarda deja la base como estaba).
+- `tests/App/Repositories/PrivadasRepositoriesTest.php` (en SQLite y PostgreSQL): quién es privado (una colección pública basta, ninguna colección no lo es), qué se oculta de él en cada repositorio y que el propietario lo vea todo.
+- `tests/App/Integration/PagesTest.php`: cada URL privada, sin token configurado, con token y sin credenciales, con credenciales equivocadas, como propietario y por sesión; que una colección oculta sea idéntica a una inexistente; que rotar o quitar el token cierre las sesiones; y un recorrido exhaustivo de todas las páginas de la demostración como visitante, que no puede mostrar nada de Carlos, de Lucía ni de Manuel, que está solo en una colección privada (se comprobó que falla si se apaga el enmascarado).
 
 ## Texto que escriban los usuarios
 

@@ -14,7 +14,7 @@ class JuridicalEntity
     private string $street;
     private ?string $phoneNumber;
     private ?string $businessType;
-    private ?\DateTime $recordDate;
+    private \DateTime $recordDate;
     private string $countryCode;
     private ?string $sourceDirectoryId;
     private ?int $sourceLine;
@@ -101,6 +101,20 @@ class JuridicalEntity
         return $this->sourceLine;
     }
 
+    /**
+     * @return array{
+     *     id: int,
+     *     businessName: string,
+     *     legalName: string|null,
+     *     street: string,
+     *     phoneNumber: string|null,
+     *     businessType: string|null,
+     *     recordDate: string,
+     *     countryCode: string,
+     *     sourceDirectoryId: string|null,
+     *     sourceLine: int|null
+     * }
+     */
     public function toArray(): array
     {
         return [

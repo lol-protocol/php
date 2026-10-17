@@ -35,6 +35,37 @@ final class BoletasControllerTest extends TestCase
         self::assertTrue(BoletasController::montoCubreLoYaCobrado(1.0, $boleta));
     }
 
+    /**
+     * Antes tenia un margen de un centavo: bajar el monto de una boleta a
+     * 602.84 con 602.85 cobrados pasaba, y la boleta quedaba "pagada" con un
+     * centavo de sobrecobro sin aviso (justo lo que esta regla evita).
+     */
+    public function testUnCentavoPorDebajoDeLoYaCobradoNoLoCubre(): void
+    {
+        $boleta = ['pagado' => 602.85];
+
+        self::assertFalse(BoletasController::montoCubreLoYaCobrado(602.84, $boleta));
+        self::assertTrue(BoletasController::montoCubreLoYaCobrado(602.85, $boleta));
+    }
+
+    public function testLoCobradoLlegaComoTextoDeLaBase(): void
+    {
+        // BoletaRepository::porId() devuelve 'pagado' tal cual lo manda Postgres: un string.
+        $boleta = ['pagado' => '602.85'];
+
+        self::assertFalse(BoletasController::montoCubreLoYaCobrado(602.84, $boleta));
+        self::assertTrue(BoletasController::montoCubreLoYaCobrado(602.85, $boleta));
+    }
+
+    /** Lo cobrado es la suma de varios pagos: el ruido de esa suma no tiene que rechazar un monto igual. */
+    public function testElRuidoDeLaSumaDeLosPagosNoRechazaUnMontoIgual(): void
+    {
+        $boleta = ['pagado' => 0.1 + 0.2]; // 0.30000000000000004
+
+        self::assertTrue(BoletasController::montoCubreLoYaCobrado(0.3, $boleta));
+        self::assertFalse(BoletasController::montoCubreLoYaCobrado(0.29, $boleta));
+    }
+
     public function testVencimientoPosteriorOIgualALaEmisionEsValido(): void
     {
         self::assertTrue(BoletasController::vencimientoNoAnteriorALaEmision('2026-01-15', '2026-02-15'));

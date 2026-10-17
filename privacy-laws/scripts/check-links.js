@@ -7,10 +7,11 @@
 //   npm run check:links -- --no-sources       only each law's reference page, not the per-value sources
 //
 // HEAD first, GET when a server refuses HEAD. Exit status 1 when a link is broken:
-// 404/410/5xx, a host that no longer exists (DNS), an expired or wrong certificate.
-// Warnings do not fail the run: 401/403/429 ("bots not welcome"), timeouts (many
-// government sites throttle or geo-block cloud runners) and an incomplete certificate
-// chain (browsers repair it, Node does not).
+// 404/410 (any other 4xx), a host that no longer exists (DNS), an expired or wrong certificate.
+// Warnings do not fail the run: 401/403/429 ("bots not welcome"), 5xx that persist after one
+// retry (a server error or a firewall turning away cloud runners says nothing about whether
+// the page is gone), timeouts and temporary DNS failures (many government sites throttle or
+// geo-block cloud runners) and an incomplete certificate chain (browsers repair it, Node does not).
 // With GITHUB_STEP_SUMMARY set (GitHub Actions) a Markdown summary is appended to it.
 import { appendFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
@@ -23,13 +24,14 @@ const SOFT = new Set([401, 403, 429]);
 
 /** @returns {{status: "ok"|"warning"|"broken", code: number|null, detail: string, finalUrl: string}} */
 // Network failures that say little about whether the page is gone.
-const SOFT_ERRORS = /timeout|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|UND_ERR_SOCKET|ECONNRESET|UNABLE_TO_VERIFY_LEAF_SIGNATURE|UNABLE_TO_GET_ISSUER_CERT/;
+const SOFT_ERRORS = /timeout|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT|UND_ERR_SOCKET|ECONNRESET|EAI_AGAIN|UNABLE_TO_VERIFY_LEAF_SIGNATURE|UNABLE_TO_GET_ISSUER_CERT/;
 
 export function classify(code, error, finalUrl) {
   if (error && SOFT_ERRORS.test(error)) return { status: "warning", code: null, detail: `${error} (may work in a browser)`, finalUrl };
   if (error) return { status: "broken", code: null, detail: error, finalUrl };
   if (code >= 200 && code < 400) return { status: "ok", code, detail: "", finalUrl };
   if (SOFT.has(code)) return { status: "warning", code, detail: `HTTP ${code} (the site may block automated checks)`, finalUrl };
+  if (code >= 500) return { status: "warning", code, detail: `HTTP ${code} (server error, also on retry; may be temporary or block automated checks)`, finalUrl };
   return { status: "broken", code, detail: `HTTP ${code}`, finalUrl };
 }
 
@@ -44,11 +46,16 @@ async function request(url, method, timeoutMs) {
   return response;
 }
 
-export async function checkUrl(url, { timeoutMs = 15_000 } = {}) {
+export async function checkUrl(url, { timeoutMs = 15_000, retryDelayMs = 5_000 } = {}) {
   try {
     let response = await request(url, "HEAD", timeoutMs);
     // Many servers answer HEAD with 403/405/501 (or 404) while GET works.
     if (response.status >= 400) response = await request(url, "GET", timeoutMs);
+    // One more try for a 5xx: overloaded servers often recover within seconds.
+    if (response.status >= 500) {
+      await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+      response = await request(url, "GET", timeoutMs);
+    }
     return classify(response.status, null, response.url || url);
   } catch (error) {
     const cause = error.cause?.code || error.cause?.message;

@@ -11,10 +11,10 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.2" cy="56.6" rx="15.8" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="31.2" cy="56.6" rx="15.82" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M14 14L14.2 12.4L14.8 11L15.8 9.8L17 8.8L18.4 8.2L20 8L40 8L41.6 8.2L43 8.8L44.2 9.8L45.2 11L47.6 14.2L48.2 15.6L48.4 17.2L48.4 48.2L48.2 49.8L47.6 51.2L46.6 52.4L45.4 53.4L44 54L42.4 54.2L22.4 54.2L20.8 54L19.4 53.4L18.2 52.4L17.2 51.2L14.8 48L14.2 46.6L14 45Z" fill="#3B3B3B"/><rect x="14" y="8" width="32" height="43" rx="6" fill="url(#grad_ui_magazine_pink)"/></g>
+    <g><path d="M47.2 13.6A6 6 0 0 1 48.4 17.2L48.4 48.2A6 6 0 0 1 42.4 54.2L22.4 54.2A6 6 0 0 1 17.6 51.8L15.38 48.84A6 6 0 0 1 14.18 45.24L14.18 14.24A6 6 0 0 1 20.18 8.24L40.18 8.24A6 6 0 0 1 44.98 10.64Z" fill="#3B3B3B"/><rect x="14" y="8" width="32" height="43" rx="6" fill="url(#grad_ui_magazine_pink)"/></g>
     <g><rect x="20" y="24" width="20" height="14" rx="2" fill="url(#grad_ui_magazine_mist)"/></g>
   </g>
   <g class="marks">

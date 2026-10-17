@@ -57,6 +57,7 @@ Subdominios de 3 letras (ISO 639-2): `spa.` (español), `eng.` (inglés), etc. L
 | 2 | descendencia |
 | 3 | vínculos |
 | 4 | cronología |
+| 5 | privacidad (solo el propietario: marca si la persona vive) |
 
 **colección** (7 dígitos): `1` vista · `2` editar · `3` exportar
 **grupo** (6 dígitos): `1` red · `2` dispersión

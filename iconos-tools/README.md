@@ -48,6 +48,18 @@ distintos de los 576). Muestra además los pares más cercanos, aunque no
 fallen. Si un par debe quedar por debajo a propósito, se anota con su motivo
 en `ACEPTADOS` (hoy está vacío).
 
+## Cómo se dibuja el volumen
+
+Cada sólido es su cara frontal más una pared extruida hacia abajo y a la derecha (`LIGHT` en `lib.py`).
+La pared se dibuja con las mismas rectas y arcos de la forma (`exact_sweep`), no con un polígono que
+la aproxime: se ve igual de suave a 16 px que a 512 px. Dos detalles:
+
+- El borde trasero de la pared se adelanta `INSET` (0,3) a lo largo de la extrusión para que quede
+  tapado por la cara frontal. Sin eso asoma una línea gris fina en el borde antialiasado de la cara.
+  En `lineas` no se aplica: ahí la pared es un trazo y su borde trasero coincide con el de la cara.
+- Las coordenadas llevan dos decimales (`fmt`). Con uno, el redondeo de los extremos de un arco
+  de 1,5 de radio se notaba al ampliar.
+
 ## CI
 
 `.github/workflows/iconos.yml` ejecuta los tres pasos (`build.py`,

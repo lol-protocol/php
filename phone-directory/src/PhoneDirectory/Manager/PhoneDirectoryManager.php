@@ -10,6 +10,8 @@ use PhoneDirectory\Entity\PhoneDirectoryEntry;
 /**
  * @deprecated Use PhoneDirectoryManagerV2 instead, which also supports juridical entities.
  *     This class is kept only for backward compatibility and is not used by the CLI or examples.
+ *
+ * @phpstan-import-type ParseError from PhoneDirectoryParser
  */
 class PhoneDirectoryManager
 {
@@ -24,6 +26,7 @@ class PhoneDirectoryManager
         $this->database = $database ?? new PhoneDirectoryPDODatabase();
     }
 
+    /** @return array{file: string, totalParsed: int, insertedCount: int, errors: list<ParseError>, errorCount: int} */
     public function processFile(string $filePath, bool $clearExisting = false): array
     {
         $this->ensureReady();
@@ -62,6 +65,7 @@ class PhoneDirectoryManager
         return $this->database->findById($id);
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function findByName(string $name): array
     {
         $this->ensureReady();
@@ -69,6 +73,7 @@ class PhoneDirectoryManager
         return $this->database->findByName($name);
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function findByStreet(string $street): array
     {
         $this->ensureReady();
@@ -83,6 +88,7 @@ class PhoneDirectoryManager
         return $this->database->findByPhone($phone);
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function findBySurnameSound(string $surname, ?string $language = null): array
     {
         $this->ensureReady();
@@ -90,6 +96,7 @@ class PhoneDirectoryManager
         return $this->database->findBySurnameSound($surname, $language);
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function getAllEntries(): array
     {
         $this->ensureReady();
@@ -97,6 +104,10 @@ class PhoneDirectoryManager
         return $this->database->getAll();
     }
 
+    /**
+     * @param array{name?: string, street?: string, phone?: string} $criteria
+     * @return list<PhoneDirectoryEntry>
+     */
     public function search(array $criteria): array
     {
         $this->ensureReady();

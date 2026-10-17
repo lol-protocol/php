@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="links">
-    <path d="M27.5 30.5L37.2 30.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
+    <path d="M27.5 30.5L37.25 30.5" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
-    <g><path d="M10 35.8L11.9 38.3A8.8 8.8 0 0 0 26 27.8L24 25.2A8.8 8.8 0 0 0 10 35.8Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="17" cy="30.5" r="8.8" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M37.5 30.5L37.5 30L37.7 29.6L38 29.3L43.8 23.5L44.1 23.2L44.5 23L45 23L45.5 23L45.9 23.2L46.2 23.5L52 29.3L52.3 29.6L54.2 32.2L54.4 32.6L54.5 33.1L54.4 33.5L54.2 33.9L53.9 34.3L48.2 40.1L47.8 40.4L47.4 40.5L46.9 40.6L46.5 40.5L46 40.4L45.7 40.1L39.9 34.3L39.6 33.9L37.7 31.4L37.5 31Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="39.2" y="24.7" width="11.7" height="11.7" rx="1.8" transform="rotate(45 45 30.5)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M9.96 35.78L11.88 38.34A8.8 8.8 0 0 0 25.96 27.78L24.04 25.22A8.8 8.8 0 0 0 9.96 35.78Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="17" cy="30.5" r="8.8" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M54.1 32A1.76 1.76 0 0 1 53.93 34.3L48.16 40.07A1.76 1.76 0 0 1 45.68 40.07L39.91 34.3A1.76 1.76 0 0 1 39.74 34.12L37.82 31.56A1.76 1.76 0 0 1 37.99 29.26L43.76 23.49A1.76 1.76 0 0 1 46.24 23.49L52.01 29.26A1.76 1.76 0 0 1 52.18 29.44Z" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/><rect x="39.16" y="24.66" width="11.68" height="11.68" rx="1.76" transform="rotate(45 45 30.5)" fill="none" stroke="#883307" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
-    <path d="M14.3 30.5a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14.28 30.5a2.72 2.72 0 1 0 5.44 0a2.72 2.72 0 1 0 -5.44 0Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

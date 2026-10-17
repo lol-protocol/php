@@ -71,6 +71,59 @@ final class PagosControllerTest extends TestCase
         self::assertFalse(PagosController::montoNoSuperaElSaldo(100.02, $boleta));
     }
 
+    /** Antes tenia un margen de un centavo: pasarse por 0.01 se cobraba y dejaba la boleta con saldo negativo. */
+    public function testUnCentavoPorEncimaDelSaldoLoSupera(): void
+    {
+        $boleta = ['saldo' => 100.0];
+
+        self::assertFalse(PagosController::montoNoSuperaElSaldo(100.01, $boleta));
+        self::assertTrue(PagosController::montoNoSuperaElSaldo(100.00, $boleta));
+    }
+
+    public function testElSaldoLlegaComoTextoODeUnaSumaConRuido(): void
+    {
+        self::assertTrue(PagosController::montoNoSuperaElSaldo(0.3, ['saldo' => 0.1 + 0.2]), 'saldo con ruido: 0.30000000000000004');
+        self::assertFalse(PagosController::montoNoSuperaElSaldo(0.31, ['saldo' => 0.1 + 0.2]));
+        self::assertTrue(PagosController::montoNoSuperaElSaldo(602.85, ['saldo' => '602.85']));
+        self::assertFalse(PagosController::montoNoSuperaElSaldo(602.86, ['saldo' => '602.85']));
+    }
+
+    /**
+     * Pagar exactamente lo disponible al editar tiene que pasar aunque la suma
+     * saldo + monto viejo, en float, de un valor apenas menor (1370575.8399999999
+     * en vez de 1370575.84): sin centavos enteros, o sin el margen de un
+     * centavo que se quita, el pago exacto se rechazaria por ruido.
+     */
+    public function testEditarUnPagoPorElTotalDisponibleSeAceptaAunqueLaSumaEnFloatQuedeCorta(): void
+    {
+        $boleta = ['saldo' => 807751.45];
+        $montoViejo = 562824.39;
+
+        self::assertLessThan(1370575.84, 807751.45 + 562824.39, 'el caso es real: el float queda corto');
+        self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(1370575.84, $boleta, $montoViejo));
+    }
+
+    public function testEditarUnPagoUnCentavoPorEncimaDelDisponibleLoSupera(): void
+    {
+        $boleta = ['saldo' => 807751.45];
+
+        self::assertFalse(PagosController::montoNoSuperaElSaldoAlEditar(1370575.85, $boleta, 562824.39));
+    }
+
+    /**
+     * Una boleta sobrecobrada por un centavo (saldo negativo; solo pudo pasar
+     * con el margen de antes) sigue dejando editar sus pagos sin cambiar el
+     * monto, por ejemplo para corregir la fecha.
+     */
+    public function testEditarUnPagoDeUnaBoletaSobrecobradaConElMismoMontoOMenosSeAcepta(): void
+    {
+        $boleta = ['saldo' => -0.01];
+
+        self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(484.10, $boleta, 484.10));
+        self::assertTrue(PagosController::montoNoSuperaElSaldoAlEditar(484.09, $boleta, 484.10));
+        self::assertFalse(PagosController::montoNoSuperaElSaldoAlEditar(484.11, $boleta, 484.10));
+    }
+
     /**
      * Reproduce el bug real: editar un pago de $484.10 a $5000 contra una
      * boleta con saldo (ya descontando este mismo pago) de $789.86 debia

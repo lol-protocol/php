@@ -31,7 +31,7 @@ Traducciones de la parte madura de [`../frases.md`](../frases.md) a 15 idiomas (
 **No traducido, a propósito:**
 - La nota «Antes de usar».
 - Los asuntos y el botón **condicionales**: solo valen cuando hay datos reales para esa persona, y eso depende de lo que haga el producto.
-- Las promesas sobre datos, seguridad y dignidad: «Un espacio seguro donde cada nombre se escribe con dignidad.», «Cuidamos tus datos con respeto; tu legado es de tu familia.» y el pie de correo. Hay que verificarlas contra el producto y contra la normativa de cada mercado antes de publicarlas, en cualquier idioma.
+- Las promesas sobre datos y privacidad: «Cuidamos tus datos con respeto; tu legado es de tu familia.» y el pie de correo. Hay que verificarlas contra el producto y contra la normativa de cada mercado antes de publicarlas, en cualquier idioma. «Un espacio seguro donde cada nombre se escribe con dignidad.» se quitó del español porque nada la respalda hoy; el detalle está en [`../VERIFICACION.md`](../VERIFICACION.md).
 
 ## Convenciones
 

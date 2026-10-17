@@ -7,12 +7,12 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="31.6" cy="52" rx="13.4" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="31.6" cy="52" rx="13.43" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M17 16L17.2 14.4L17.8 13L18.8 11.8L20 10.8L21.4 10.2L23 10L39 10L40.6 10.2L42 10.8L43.2 11.8L44.2 13L45.4 14.6L46 16L46.2 17.6L46.2 43.6L46 45.2L45.4 46.6L44.4 47.8L43.2 48.8L41.8 49.4L40.2 49.6L24.2 49.6L22.6 49.4L21.2 48.8L20 47.8L19 46.6L17.8 45L17.2 43.6L17 42Z" fill="#3E3E3E"/><rect x="17" y="10" width="28" height="38" rx="6" fill="url(#grad_book_paperback_teal)"/></g>
+    <g><path d="M45 14A6 6 0 0 1 46.2 17.6L46.2 43.6A6 6 0 0 1 40.2 49.6L24.2 49.6A6 6 0 0 1 19.4 47.2L18.38 45.84A6 6 0 0 1 17.18 42.24L17.18 16.24A6 6 0 0 1 23.18 10.24L39.18 10.24A6 6 0 0 1 43.98 12.64Z" fill="#3E3E3E"/><rect x="17" y="10" width="28" height="38" rx="6" fill="url(#grad_book_paperback_teal)"/></g>
   </g>
   <g class="marks">
-    <path d="M22 14Q26 29 22 44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+    <path d="M22 14Q26 29 22 44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
   </g>
 </svg>

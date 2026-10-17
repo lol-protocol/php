@@ -6,10 +6,12 @@ class StreamLogger implements LoggerInterface
 {
     private const LEVELS = ['debug' => 0, 'info' => 1, 'warning' => 2, 'error' => 3];
 
+    /** @var resource */
     private $stream;
     private int $minLevel;
     private string $format;
 
+    /** @param resource|string $stream An open stream, or a path or URL to open for appending */
     public function __construct($stream = 'php://stderr', string $minLevel = 'info', string $format = '[{level}] {message}')
     {
         if (is_string($stream)) {
@@ -29,26 +31,31 @@ class StreamLogger implements LoggerInterface
         $this->format = $format;
     }
 
+    /** @param array<string, mixed> $context */
     public function debug(string $message, array $context = []): void
     {
         $this->log('debug', $message, $context);
     }
 
+    /** @param array<string, mixed> $context */
     public function info(string $message, array $context = []): void
     {
         $this->log('info', $message, $context);
     }
 
+    /** @param array<string, mixed> $context */
     public function warning(string $message, array $context = []): void
     {
         $this->log('warning', $message, $context);
     }
 
+    /** @param array<string, mixed> $context */
     public function error(string $message, array $context = []): void
     {
         $this->log('error', $message, $context);
     }
 
+    /** @param array<string, mixed> $context */
     private function log(string $level, string $message, array $context): void
     {
         if (self::LEVELS[$level] < $this->minLevel) {

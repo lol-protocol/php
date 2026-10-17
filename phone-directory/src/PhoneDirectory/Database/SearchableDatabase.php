@@ -12,9 +12,9 @@ trait SearchableDatabase
      *
      * @template T
      * @param string $sql SQL query
-     * @param array $params Query parameters
-     * @param callable $rowMapper Function to convert database row to entity
-     * @return array Mapped entities
+     * @param array<string, string|int|null> $params Query parameters
+     * @param callable(array<string, mixed>): T $rowMapper Function to convert database row to entity
+     * @return list<T> Mapped entities
      */
     protected function queryAndMap(string $sql, array $params, callable $rowMapper): array
     {
@@ -33,9 +33,9 @@ trait SearchableDatabase
      *
      * @template T
      * @param string $sql SQL query
-     * @param array $params Query parameters
-     * @param callable $rowMapper Function to convert database row to entity
-     * @return object|null Mapped entity or null
+     * @param array<string, string|int|null> $params Query parameters
+     * @param callable(array<string, mixed>): T $rowMapper Function to convert database row to entity
+     * @return T|null Mapped entity or null
      */
     protected function queryAndMapSingle(string $sql, array $params, callable $rowMapper)
     {

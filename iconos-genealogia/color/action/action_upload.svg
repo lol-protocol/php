@@ -11,11 +11,11 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="32.9" cy="54.8" rx="20.1" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="32.9" cy="54.8" rx="20.15" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M25.4 18.2L27 20.3A7 7 0 0 0 38.2 11.9L36.6 9.8A7 7 0 0 0 25.4 18.2Z" fill="#153988"/><circle cx="31" cy="14" r="7" fill="url(#grad_action_upload_blue)"/></g>
-    <g><path d="M11 46L11.1 45L11.5 44L12.2 43.2L13 42.5L14 42.1L15 42L49 42L50 42.1L51 42.5L51.8 43.2L52.5 44L54.3 46.4L54.7 47.4L54.8 48.4L54.7 49.4L54.3 50.4L53.6 51.2L52.8 51.9L51.8 52.3L50.8 52.4L16.8 52.4L15.8 52.3L14.8 51.9L14 51.2L13.3 50.4L11.5 48L11.1 47Z" fill="#29313D"/><rect x="11" y="42" width="42" height="8" rx="4" fill="url(#grad_action_upload_ink)"/></g>
+    <g><path d="M25.58 18.44L26.96 20.28A7 7 0 0 0 38.16 11.88L36.78 10.04A7 7 0 0 0 25.58 18.44Z" fill="#153988"/><circle cx="31" cy="14" r="7" fill="url(#grad_action_upload_blue)"/></g>
+    <g><path d="M54 46A4 4 0 0 1 54.8 48.4A4 4 0 0 1 50.8 52.4L16.8 52.4A4 4 0 0 1 13.6 50.8L11.98 48.64A4 4 0 0 1 11.18 46.24A4 4 0 0 1 15.18 42.24L49.18 42.24A4 4 0 0 1 52.38 43.84Z" fill="#29313D"/><rect x="11" y="42" width="42" height="8" rx="4" fill="url(#grad_action_upload_ink)"/></g>
   </g>
   <g class="marks">
     <path d="M23.5 27v5M31 27v7M38.5 27v5" fill="none" stroke="#2563EB" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>

@@ -143,7 +143,7 @@ class GenealogyRepositoriesTest extends TestCase
         $rows = (new PersonaRepository($this->db($driver), Privacidad::propietario()))->cronologia(self::ANTONIO);
 
         $this->assertSame(
-            ['nacimiento', 'migracion', 'matrimonio', 'defuncion'],
+            ['nacimiento', 'migracion', 'migracion', 'matrimonio', 'defuncion'],
             array_column($rows, 'tipo')
         );
         $this->assertSame('Oviedo', $rows[0]['lugar_nombre']);
@@ -229,7 +229,7 @@ class GenealogyRepositoriesTest extends TestCase
     {
         $repo = new OrganizacionRepository($this->db($driver), Privacidad::propietario());
 
-        $this->assertEqualsCanonicalizing([self::JUAN, 6128473107], self::ids($repo->miembros(10232)));
+        $this->assertEqualsCanonicalizing([self::JUAN, 6128473107, 6128473110], self::ids($repo->miembros(10232)));
         $this->assertSame([81372001], self::ids($repo->registros(10232)));
     }
 

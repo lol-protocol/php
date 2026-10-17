@@ -7,13 +7,13 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="35.4" cy="39" rx="8.6" ry="2.6" fill="#0F172A" opacity="0.14"/>
+    <ellipse cx="35.37" cy="39" rx="8.62" ry="2.6" fill="#0F172A" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M27 33L28.2 34.6A5 5 0 0 0 36.2 28.6L35 27A5 5 0 0 0 27 33Z" fill="#29313D"/><circle cx="31" cy="30" r="5" fill="url(#grad_ui_history_ink)"/></g>
-    <g><path d="M37.8 16.4L38.6 17.6A3.4 3.4 0 0 0 44.1 13.5L43.2 12.4A3.4 3.4 0 0 0 37.8 16.4Z" fill="#29313D"/><circle cx="40.5" cy="14.4" r="3.4" fill="url(#grad_ui_history_ink)"/></g>
+    <g><path d="M27.18 33.24L28.2 34.6A5 5 0 0 0 36.2 28.6L35.18 27.24A5 5 0 0 0 27.18 33.24Z" fill="#29313D"/><circle cx="31" cy="30" r="5" fill="url(#grad_ui_history_ink)"/></g>
+    <g><path d="M37.96 16.68L38.62 17.56A3.4 3.4 0 0 0 44.06 13.48L43.4 12.6A3.4 3.4 0 0 0 37.96 16.68Z" fill="#29313D"/><circle cx="40.5" cy="14.4" r="3.4" fill="url(#grad_ui_history_ink)"/></g>
   </g>
   <g class="marks">
-    <path d="M39 16.1A16 16 0 1 1 17.9 20.8" fill="none" stroke="#475569" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M39 16.14A16 16 0 1 1 17.89 20.82" fill="none" stroke="#475569" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 </svg>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="solids">
-    <g><path d="M19.2 33.6L20.6 35.5A6 6 0 0 0 30.2 28.3L28.8 26.4A6 6 0 0 0 19.2 33.6Z" fill="none" stroke="#482289" stroke-width="1.8" stroke-linejoin="round"/><circle cx="24" cy="30" r="6" fill="none" stroke="#482289" stroke-width="1.8" stroke-linejoin="round"/></g>
-    <g><path d="M37 18L37.2 16.4L37.8 15L38.8 13.8L40 12.8L41.4 12.2L43 12L50 12L51.6 12.2L53 12.8L54.2 13.8L55.2 15L57 17.4L57.6 18.8L57.8 20.4L57.8 44.4L57.6 46L57 47.4L56 48.6L54.8 49.6L53.4 50.2L51.8 50.4L44.8 50.4L43.2 50.2L41.8 49.6L40.6 48.6L39.6 47.4L37.8 45L37.2 43.6L37 42Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><rect x="37" y="12" width="19" height="36" rx="6" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M19.2 33.6L20.64 35.52A6 6 0 0 0 30.24 28.32L28.8 26.4A6 6 0 0 0 19.2 33.6Z" fill="none" stroke="#482289" stroke-width="1.8" stroke-linejoin="round"/><circle cx="24" cy="30" r="6" fill="none" stroke="#482289" stroke-width="1.8" stroke-linejoin="round"/></g>
+    <g><path d="M56.6 16.8A6 6 0 0 1 57.8 20.4L57.8 44.4A6 6 0 0 1 51.8 50.4L44.8 50.4A6 6 0 0 1 40 48L38.2 45.6A6 6 0 0 1 37 42L37 18A6 6 0 0 1 43 12L50 12A6 6 0 0 1 54.8 14.4Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><rect x="37" y="12" width="19" height="36" rx="6" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>
   </g>
   <g class="marks">
     <path d="M7 30h3M12.5 30h3" fill="none" stroke="#482289" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>

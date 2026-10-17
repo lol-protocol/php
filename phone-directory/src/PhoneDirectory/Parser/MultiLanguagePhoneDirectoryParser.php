@@ -9,6 +9,13 @@ use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\Entity\PersonName;
 use PhoneDirectory\PhoneDirectoryCatalog;
 
+/**
+ * @phpstan-type RawEntry array{name: string|null, phone: string|null, street: string|null, type: string|null}
+ * @phpstan-type ParseError array{line: int, reason: string, language: string, data: RawEntry}
+ * @phpstan-type NaturalEntry array{type: 'natural', entity: PhoneDirectoryEntry}
+ * @phpstan-type JuridicalEntry array{type: 'juridical', entity: JuridicalEntity}
+ * @phpstan-type ParsedEntry NaturalEntry|JuridicalEntry
+ */
 class MultiLanguagePhoneDirectoryParser
 {
     use InputValidator;
@@ -51,16 +58,19 @@ class MultiLanguagePhoneDirectoryParser
 
     private const SUPPORTED_LANGUAGES = ['es', 'en', 'fr', 'pt', 'de', 'it'];
 
-    /** @deprecated Never read; no longer built on construction. */
-    private ?PhoneDirectoryParser $parser = null;
     private string $detectedLanguage = 'en';
+    /** @var list<ParsedEntry> */
     private array $entries = [];
+    /** @var list<ParseError> */
     private array $parseErrors = [];
     private string $countryCode;
     private ?string $sourceDirectoryId;
 
+    /** @var array<string, string> */
     private array $streetPatternCache = [];
+    /** @var array<string, string|null> */
     private array $entityTypePatternCache = [];
+    /** @var array<string, string|null> */
     private array $detectionPatternCache = [];
 
     /**
@@ -97,6 +107,7 @@ class MultiLanguagePhoneDirectoryParser
         return $this->sourceDirectoryId;
     }
 
+    /** @return list<ParsedEntry> */
     public function parseFile(string $filePath, ?string $language = null): array
     {
         if (!file_exists($filePath)) {
@@ -114,7 +125,7 @@ class MultiLanguagePhoneDirectoryParser
      *
      * @param string $content The raw directory content to parse
      * @param string|null $language Language code (es, en, fr, pt, de, it). Auto-detected if null.
-     * @return array Parsed entries with 'type' => 'natural'|'juridical' and 'entity'
+     * @return list<ParsedEntry> Parsed entries, each with 'type' => 'natural'|'juridical' and its 'entity'
      * @throws \InvalidArgumentException If language is unsupported
      */
     public function parseContent(string $content, ?string $language = null): array
@@ -124,6 +135,10 @@ class MultiLanguagePhoneDirectoryParser
         return $this->parseLines(explode("\n", $content), $language);
     }
 
+    /**
+     * @param iterable<string> $lines
+     * @return list<ParsedEntry>
+     */
     private function parseLines(iterable $lines, string $language): array
     {
         $this->entries = [];
@@ -213,6 +228,7 @@ class MultiLanguagePhoneDirectoryParser
         return $scores[$best] > 0 ? $best : 'en';
     }
 
+    /** @param list<string> $words */
     private function getDetectionPattern(string $language, array $words): ?string
     {
         if (!isset($this->detectionPatternCache[$language])) {
@@ -236,6 +252,7 @@ class MultiLanguagePhoneDirectoryParser
         return $this->detectionPatternCache[$language];
     }
 
+    /** @param list<string> $lines */
     private function processBuffer(array $lines, int $startLine, string $language, string $phoneRegex): void
     {
         $data = [
@@ -275,6 +292,7 @@ class MultiLanguagePhoneDirectoryParser
         $this->finalizeEntry($data, $startLine, $language);
     }
 
+    /** @param RawEntry $data */
     private function finalizeEntry(array $data, int $startLine, string $language): void
     {
         if (!$this->validateEntry($data)) {
@@ -413,6 +431,7 @@ class MultiLanguagePhoneDirectoryParser
         return $this->entityTypePatternCache[$language];
     }
 
+    /** @param RawEntry $data */
     private function isJuridicalEntity(array $data, string $language): bool
     {
         if (!empty($data['type'])) {
@@ -423,6 +442,7 @@ class MultiLanguagePhoneDirectoryParser
         return $pattern !== null && preg_match($pattern, $data['name'] ?? '') === 1;
     }
 
+    /** @param array<string, string|null> $data */
     private static function isValidUtf8(array $data): bool
     {
         foreach ($data as $value) {
@@ -434,16 +454,19 @@ class MultiLanguagePhoneDirectoryParser
         return true;
     }
 
+    /** @param RawEntry $data */
     private function validateEntry(array $data): bool
     {
         return !empty($data['name']) && !empty($data['street']);
     }
 
+    /** @return list<ParsedEntry> */
     public function getEntries(): array
     {
         return $this->entries;
     }
 
+    /** @return list<ParseError> */
     public function getErrors(): array
     {
         return $this->parseErrors;
@@ -454,11 +477,13 @@ class MultiLanguagePhoneDirectoryParser
         return $this->detectedLanguage;
     }
 
+    /** @return array<int, NaturalEntry> Keys are the entries' original positions, so it is not a list */
     public function getNaturalPeople(): array
     {
         return array_filter($this->entries, fn($item) => $item['type'] === 'natural');
     }
 
+    /** @return array<int, JuridicalEntry> Keys are the entries' original positions, so it is not a list */
     public function getJuridicalEntities(): array
     {
         return array_filter($this->entries, fn($item) => $item['type'] === 'juridical');
