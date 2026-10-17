@@ -116,7 +116,7 @@ npm run test:e2e                   # the app in Chromium: filters, URL state, ex
 npm run check:links                # does every reference URL still answer? (--only=us,br, --json=report.json)
 ```
 
-The browser tests skip themselves when PHP, Playwright or Chromium is missing; set `E2E_REQUIRED=1` to make that an error. `check:links` exits with 1 on broken links (404/410/5xx/DNS/timeouts); 401/403/429 are only warnings because many official sites block automated requests.
+The browser tests skip themselves when PHP, Playwright or Chromium is missing; set `E2E_REQUIRED=1` to make that an error. `check:links` exits with 1 on broken links (404/410, a host that no longer exists, a bad certificate); 401/403/429, a 5xx that persists after one retry, timeouts and temporary DNS failures are only warnings, because many official sites block or throttle automated requests.
 
 CI (`.github/workflows/laws-modules.yml`) runs validation, `build:check`, `npm test` on PHP 8.1 and 8.4, and the browser tests, on every push that touches either module. `.github/workflows/laws-links.yml` checks the reference links of both datasets every Monday (and on demand) and lists the problems in the run summary.
 

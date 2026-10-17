@@ -6,8 +6,15 @@ on:
   schedule:
     - cron: '17 6 * * 1'
   workflow_dispatch:
-  # Also when the check itself changes (workflow_dispatch only works once the file is on the default branch).
+  # Also when the check itself changes. Only master and PRs: without the branch filter, any branch that
+  # merged master re-ran it on push and its red result showed up on unrelated PRs.
   push:
+    branches: [master]
+    paths:
+      - '.github/workflows/laws-links.yml'
+      - 'privacy-laws/scripts/check-links.js'
+      - 'copyright-laws/scripts/check-links.js'
+  pull_request:
     paths:
       - '.github/workflows/laws-links.yml'
       - 'privacy-laws/scripts/check-links.js'
@@ -18,7 +25,7 @@ permissions:
 
 jobs:
   links:
-    name: ${{ matrix.module }}
+    name: enlaces ${{ matrix.module }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -42,6 +49,16 @@ jobs:
 
       - name: Check reference links
         run: npm run check:links -- --json=links-report.json
+
+      # One annotation per broken link, so the failing URLs show on the check (and through the API)
+      # without downloading the artifact. Workflow commands need %, \r and \n escaped.
+      - name: Annotate broken links
+        if: always() && hashFiles(format('{0}/links-report.json', matrix.module)) != ''
+        run: |
+          jq -r '.results[] | select(.status == "broken")
+            | "\(.url) -> \(.detail) [\(.laws | join("; "))]"
+            | gsub("%"; "%25") | gsub("\r"; "%0D") | gsub("\n"; "%0A")
+            | "::error title=Enlace roto::\(.)"' links-report.json
 
       - name: Keep the report
         if: always()

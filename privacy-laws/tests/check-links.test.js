@@ -5,23 +5,48 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { classify, collectUrls, mapLimit } from "../scripts/check-links.js";
+import { checkUrl, classify, collectUrls, mapLimit } from "../scripts/check-links.js";
 import { COLUMNS, SOURCE_COLUMNS, loadMaster, toCsv } from "../scripts/lib/dataset.js";
 import { hasPhp, startPhpServer } from "./helpers/php-server.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const skip = hasPhp ? false : "php is not installed";
 
-test("status codes are classified: bot walls warn, dead pages fail", () => {
+test("status codes are classified: bot walls and server errors warn, dead pages fail", () => {
   assert.equal(classify(200, null, "u").status, "ok");
   assert.equal(classify(301, null, "u").status, "ok");
   for (const code of [401, 403, 429]) assert.equal(classify(code, null, "u").status, "warning", String(code));
-  for (const code of [404, 410, 500, 503]) assert.equal(classify(code, null, "u").status, "broken", String(code));
+  for (const code of [500, 502, 503]) assert.equal(classify(code, null, "u").status, "warning", String(code));
+  for (const code of [400, 404, 410]) assert.equal(classify(code, null, "u").status, "broken", String(code));
   assert.equal(classify(null, "getaddrinfo ENOTFOUND", "u").status, "broken");
   assert.equal(classify(null, "fetch failed (CERT_HAS_EXPIRED)", "u").status, "broken");
-  for (const soft of ["timeout after 15 s", "fetch failed (UND_ERR_CONNECT_TIMEOUT)", "fetch failed (UNABLE_TO_VERIFY_LEAF_SIGNATURE)", "fetch failed (ECONNRESET)"]) {
+  for (const soft of ["timeout after 15 s", "fetch failed (UND_ERR_CONNECT_TIMEOUT)", "fetch failed (UNABLE_TO_VERIFY_LEAF_SIGNATURE)", "fetch failed (ECONNRESET)", "fetch failed (EAI_AGAIN)"]) {
     assert.equal(classify(null, soft, "u").status, "warning", soft);
   }
+});
+
+test("a 5xx is retried once: a server that recovers is ok, one that keeps failing only warns", async (t) => {
+  const answer = (statuses) => {
+    const calls = [];
+    t.mock.method(globalThis, "fetch", async (url, init) => {
+      calls.push(init.method);
+      return new Response(null, { status: statuses[Math.min(calls.length, statuses.length) - 1] });
+    });
+    return calls;
+  };
+  let calls = answer([503, 503, 200]); // HEAD, GET, retry
+  assert.equal((await checkUrl("https://example.org/x", { retryDelayMs: 0 })).status, "ok");
+  assert.deepEqual(calls, ["HEAD", "GET", "GET"]);
+  t.mock.restoreAll();
+  calls = answer([503]);
+  const result = await checkUrl("https://example.org/x", { retryDelayMs: 0 });
+  assert.equal(result.status, "warning");
+  assert.equal(result.code, 503);
+  assert.equal(calls.length, 3);
+  t.mock.restoreAll();
+  calls = answer([404]); // a 4xx is not retried
+  assert.equal((await checkUrl("https://example.org/x", { retryDelayMs: 0 })).status, "broken");
+  assert.equal(calls.length, 2);
 });
 
 test("mapLimit keeps the order and never runs more than the limit at once", async () => {
@@ -64,7 +89,7 @@ test("the CLI checks every URL of the CSV, reports and fails only on broken link
     env: { ...process.env, GITHUB_STEP_SUMMARY: summaryFile },
   });
   assert.equal(run.status, 1, run.stdout + run.stderr);
-  assert.match(run.stdout, /7 URLs: 3 ok, 1 warnings, 3 broken/); // a refused connection (port 9) is broken, not a timeout // the two /ok rows share one URL
+  assert.match(run.stdout, /7 URLs: 3 ok, 2 warnings, 2 broken/); // a refused connection (port 9) is broken, not a timeout // the two /ok rows share one URL
 
   const { results } = JSON.parse(readFileSync(join(work, "report.json"), "utf-8"));
   const by = (path) => results.find((r) => r.url.endsWith(path));
@@ -73,6 +98,7 @@ test("the CLI checks every URL of the CSV, reports and fails only on broken link
   assert.equal(by("/blocked").status, "warning");
   assert.equal(by("/gone").code, 404);
   assert.equal(by("/error").code, 500);
+  assert.equal(by("/error").status, "warning"); // a server error, also on retry, is not a dead page
   assert.equal(by("/closed").status, "broken");
   assert.deepEqual(by("/ok").laws, ["AA Law AA", "AH Law AH"]);
 
