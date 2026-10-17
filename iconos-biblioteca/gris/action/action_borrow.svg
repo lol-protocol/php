@@ -7,10 +7,10 @@
     </linearGradient>
   </defs>
   <g class="shadow">
-    <ellipse cx="44.9" cy="43.8" rx="9.1" ry="2.6" fill="#171717" opacity="0.14"/>
+    <ellipse cx="44.9" cy="43.8" rx="9.11" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M36.8 35.4L38.6 37.8A9 9 0 0 0 53 27L51.2 24.6A9 9 0 0 0 36.8 35.4Z" fill="#3B3B3B"/><circle cx="44" cy="30" r="9" fill="url(#grad_action_borrow_sky)"/></g>
+    <g><path d="M36.98 35.64L38.6 37.8A9 9 0 0 0 53 27L51.38 24.84A9 9 0 0 0 36.98 35.64Z" fill="#3B3B3B"/><circle cx="44" cy="30" r="9" fill="url(#grad_action_borrow_sky)"/></g>
   </g>
   <g class="marks">
     <path d="M20 14L10 14L10 46L20 46" fill="none" stroke="#656565" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>

@@ -14,14 +14,14 @@
     <ellipse cx="32" cy="56.4" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><rect x="8" y="8" width="48" height="12" rx="6" fill="url(#grad_view_generations_mist)" opacity="0.6"/></g>
-    <g><path d="M27.7 16.5L28.7 17.9A4.2 4.2 0 0 0 35.4 12.9L34.3 11.5A4.2 4.2 0 0 0 27.7 16.5Z" fill="#474747"/><circle cx="31" cy="14" r="4.2" fill="url(#grad_view_generations_orange)"/></g>
-    <g><rect x="8" y="25" width="48" height="12" rx="6" fill="url(#grad_view_generations_mist)" opacity="0.6"/></g>
-    <g><path d="M17.7 33.5L18.7 34.9A4.2 4.2 0 0 0 25.4 29.9L24.3 28.5A4.2 4.2 0 0 0 17.7 33.5Z" fill="#7B7B7B"/><circle cx="21" cy="31" r="4.2" fill="url(#grad_view_generations_mist)"/></g>
-    <g><path d="M37.7 33.5L38.7 34.9A4.2 4.2 0 0 0 45.4 29.9L44.3 28.5A4.2 4.2 0 0 0 37.7 33.5Z" fill="#7B7B7B"/><circle cx="41" cy="31" r="4.2" fill="url(#grad_view_generations_mist)"/></g>
-    <g><rect x="8" y="42" width="48" height="12" rx="6" fill="url(#grad_view_generations_mist)" opacity="0.6"/></g>
-    <g><path d="M10.7 50.5L11.7 51.9A4.2 4.2 0 0 0 18.4 46.9L17.3 45.5A4.2 4.2 0 0 0 10.7 50.5Z" fill="#7B7B7B"/><circle cx="14" cy="48" r="4.2" fill="url(#grad_view_generations_mist)"/></g>
-    <g><path d="M27.7 50.5L28.7 51.9A4.2 4.2 0 0 0 35.4 46.9L34.3 45.5A4.2 4.2 0 0 0 27.7 50.5Z" fill="#7B7B7B"/><circle cx="31" cy="48" r="4.2" fill="url(#grad_view_generations_mist)"/></g>
-    <g><path d="M44.7 50.5L45.7 51.9A4.2 4.2 0 0 0 52.4 46.9L51.3 45.5A4.2 4.2 0 0 0 44.7 50.5Z" fill="#7B7B7B"/><circle cx="48" cy="48" r="4.2" fill="url(#grad_view_generations_mist)"/></g>
+    <g><rect x="8" y="8" width="48" height="12" rx="6" fill="url(#grad_view_generations_mist)" opacity="0.55"/></g>
+    <g><path d="M27.84 16.75L28.74 17.95A4.18 4.18 0 0 0 35.42 12.93L34.52 11.73A4.18 4.18 0 0 0 27.84 16.75Z" fill="#474747"/><circle cx="31" cy="14" r="4.18" fill="url(#grad_view_generations_orange)"/></g>
+    <g><rect x="8" y="25" width="48" height="12" rx="6" fill="url(#grad_view_generations_mist)" opacity="0.55"/></g>
+    <g><path d="M17.84 33.75L18.74 34.95A4.18 4.18 0 0 0 25.42 29.93L24.52 28.73A4.18 4.18 0 0 0 17.84 33.75Z" fill="#7B7B7B"/><circle cx="21" cy="31" r="4.18" fill="url(#grad_view_generations_mist)"/></g>
+    <g><path d="M37.84 33.75L38.74 34.95A4.18 4.18 0 0 0 45.42 29.93L44.52 28.73A4.18 4.18 0 0 0 37.84 33.75Z" fill="#7B7B7B"/><circle cx="41" cy="31" r="4.18" fill="url(#grad_view_generations_mist)"/></g>
+    <g><rect x="8" y="42" width="48" height="12" rx="6" fill="url(#grad_view_generations_mist)" opacity="0.55"/></g>
+    <g><path d="M10.84 50.75L11.74 51.95A4.18 4.18 0 0 0 18.42 46.93L17.52 45.73A4.18 4.18 0 0 0 10.84 50.75Z" fill="#7B7B7B"/><circle cx="14" cy="48" r="4.18" fill="url(#grad_view_generations_mist)"/></g>
+    <g><path d="M27.84 50.75L28.74 51.95A4.18 4.18 0 0 0 35.42 46.93L34.52 45.73A4.18 4.18 0 0 0 27.84 50.75Z" fill="#7B7B7B"/><circle cx="31" cy="48" r="4.18" fill="url(#grad_view_generations_mist)"/></g>
+    <g><path d="M44.84 50.75L45.74 51.95A4.18 4.18 0 0 0 52.42 46.93L51.52 45.73A4.18 4.18 0 0 0 44.84 50.75Z" fill="#7B7B7B"/><circle cx="48" cy="48" r="4.18" fill="url(#grad_view_generations_mist)"/></g>
   </g>
 </svg>
