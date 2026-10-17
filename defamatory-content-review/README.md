@@ -783,9 +783,12 @@ idiomas de la plataforma (`spa` y `eng`, tercer argumento de
 español como `"eng"` no lo cuela. `checkedLanguages` dice en cuáles se revisó. Cada hallazgo sale una vez
 por aparición: «follar», que es insulto y contenido sexual, trae los dos en
 `contentTypes` (y el primero en `contentType`). Límites: sólo `POST` (si no, 405 con `Allow: POST`) con
-`Content-Type: application/json` (415), cuerpo de hasta 16 KB (413), JSON en
-UTF-8 con `text` string (400), texto de hasta 2.000 caracteres (413) e idioma
-soportado (400). Los errores responden
+`Content-Type: application/json` (415), cuerpo de hasta 64 KB (413), JSON en
+UTF-8 con `text` string (400), texto de hasta 10.000 caracteres (413) e idioma
+soportado (400). Un texto de más de 2.000 caracteres (una biografía, una nota)
+se revisa por partes (`LongText`): por párrafos, separados por una línea en
+blanco, y un párrafo muy largo por oraciones; manda la parte más grave y los
+hallazgos de todas salen juntos. Los errores responden
 `{"error": {"code": "texto_demasiado_largo", "message": "…"}}`; un fallo
 interno, un 500 genérico (`error_interno`) sin rutas ni trazas, con el detalle
 en el log de PHP. La lógica vive
@@ -798,10 +801,11 @@ envía cabeceras CORS: una página de otro origen no puede leer sus respuestas,
 y exigir `application/json` impide que se lo mande como formulario simple.
 Las respuestas llevan `Cache-Control: no-store`, `nosniff` y
 `Content-Security-Policy: default-src 'none'`. Lo que no hace él y debe hacer
-el servidor web es limitar peticiones por cliente: revisar una línea de 2.000
-caracteres cuesta como mucho unos 45 ms de CPU (medido con letras sueltas,
-repetidas, japonés y tailandés), así que sin límite basta un bucle para
-ocupar los workers. Con nginx:
+el servidor web es limitar peticiones por cliente: revisar un texto de 10.000
+caracteres en los tres idiomas cuesta unos 250 ms de CPU (una línea corta,
+unos 50 ms). Las letras sueltas tienen un tope por línea: pasado ese tope, el
+texto va a revisión sin buscar dentro de él, que costaría segundos. Aun así,
+sin límite basta un bucle para ocupar los workers. Con nginx:
 
 ```nginx
 limit_req_zone $binary_remote_addr zone=moderar:10m rate=10r/s;

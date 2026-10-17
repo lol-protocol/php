@@ -4,6 +4,11 @@
 
 ### Añadido
 
+- **Textos largos en el endpoint**: `text` acepta hasta 10.000 caracteres (antes
+  2.000) y el cuerpo, hasta 64 KB. Lo que pasa de 2.000 se revisa por partes
+  (`LongText`): por párrafos y, si uno es muy largo, por oraciones. Manda la
+  parte más grave. Un texto corto se sigue revisando entero («pu⏎ta» se sigue
+  viendo). `LongTextTest`.
 - **Acusaciones y datos sensibles en portugués, francés, italiano y alemán**:
   delito («roubou dinheiro», «a été condamné», «è un ladro», «hat Geld
   gestohlen»), salud, vida privada y orientación sexual van a revisión, como en
@@ -16,6 +21,13 @@
   aunque sean ciertos; en genealogía son frecuentes, por eso no se bloquean.
   «el vino es negro», «la iglesia evangélica de Concepción» o «el partido
   comunista» se siguen aprobando. `SensitiveDataPatternsTest`.
+
+### Cambiado
+
+- **Tope de letras sueltas por línea** (`SpacedRunTerms`): más de 120 letras
+  deletreadas en una línea van a revisión como «texto deletreado», sin buscar
+  insultos dentro. Buscar adentro costaba hasta 1 s por cada 2.000 caracteres;
+  ahora un texto adversario de 10.000 caracteres se revisa en unos 100 ms.
 
 ## [5.0.0] - 2026-10-15
 

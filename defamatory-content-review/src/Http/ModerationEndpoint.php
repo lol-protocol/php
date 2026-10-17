@@ -14,15 +14,16 @@ use DefamatoryContentReview\Language\LanguageRegistry;
  * Límites: sólo POST con `Content-Type: application/json` (así una página de
  * otro origen no puede mandarlo como formulario simple: el navegador exige
  * permiso CORS, que no se da), cuerpo de hasta MAX_BODY_BYTES, `text` de hasta
- * MAX_TEXT_CHARS caracteres y `language` (opcional) un código soportado, de
+ * MAX_TEXT_CHARS caracteres (más de 2.000 se revisa por párrafos, ver LongText)
+ * y `language` (opcional) un código soportado, de
  * tres letras o su alias de dos («es»). Además del pedido, el texto se revisa
  * siempre en `$alwaysLanguages` (los de la plataforma): el idioma lo elige quien
  * escribe, y no debe servir para colar nada. Errores: `{"error": {"code", "message"}}`.
  */
 final class ModerationEndpoint
 {
-    public const MAX_BODY_BYTES = 16384;
-    public const MAX_TEXT_CHARS = 2000;
+    public const MAX_BODY_BYTES = 65536;
+    public const MAX_TEXT_CHARS = 10000;
 
     private readonly LanguageRegistry $registry;
     /** @var array<string,ChatLineReviewer> */
@@ -58,7 +59,10 @@ final class ModerationEndpoint
             return self::error(400, 'idioma_no_soportado', 'Usa un código de idioma soportado, como "spa" o "es".');
         }
         $checked = array_values(array_unique([$language = $this->registry->resolve($language), ...$this->alwaysLanguages]));
-        $result = CombinedReview::of($input['text'], array_map(fn(string $code): ChatLineResult => $this->reviewer($code)->review($input['text']), $checked));
+        $result = LongText::review($input['text'], fn(string $piece): ChatLineResult => CombinedReview::of(
+            $piece,
+            array_map(fn(string $code): ChatLineResult => $this->reviewer($code)->review($piece), $checked)
+        ));
 
         return ['status' => 200, 'headers' => [], 'body' => ['language' => $language, 'checkedLanguages' => $checked] + self::present($result)];
     }
