@@ -5,22 +5,23 @@ namespace DefamatoryContentReview\Chat;
 use DefamatoryContentReview\Dictionary\WordList;
 
 /**
- * Términos dentro de una racha de letras sueltas que junta varias palabras:
- * «h o l a p u t a», «p u t a p u t a». SpacedLetters une la racha entera y
- * el diccionario la busca como una sola palabra («holaputa»), así que esto no
- * lo veía. Nadie escribe letra por letra sin querer esquivar el filtro, de modo
- * que buscar dentro de la racha es razonable; pero una palabra deletreada
- * puede contener un insulto («c o m p u t a d o r a»), así que lo encontrado
- * aquí nunca bloquea solo: como mucho va a revisión (`spaced => inside`).
- *
- * Sólo términos de MIN_LETTERS letras o más, ni `low` ni ambiguos, de más
- * largo a más corto y sin solaparse. Fuera de las rachas no cambia nada.
- * Colaborador interno de ChatLineReviewer.
+ * Términos dentro de una racha de letras sueltas que junta varias palabras
+ * («h o l a p u t a»): SpacedLetters la une entera («holaputa») y el
+ * diccionario no la ve. Nadie escribe letra por letra sin querer esquivar el
+ * filtro, así que se busca adentro; pero una palabra deletreada puede contener
+ * un insulto («c o m p u t a d o r a»): lo de aquí a lo sumo va a revisión
+ * (`spaced => inside`). Sólo términos de MIN_LETTERS letras o más, ni `low` ni
+ * ambiguos, de más largo a más corto y sin solaparse. Colaborador de ChatLineReviewer.
  */
 final class SpacedRunTerms
 {
     private const MIN_LETTERS = 4;
     private const MAX_LETTERS = 24;
+    /**
+     * Letras sueltas que se revisan por línea, sumando todas sus rachas. Nadie deletrea tanto sin querer
+     * esconder algo: lo que pasa del tope va entero a revisión sin buscar adentro, que costaría segundos.
+     */
+    private const MAX_SPELLED = 120;
 
     /**
      * @param array<int,array<string,mixed>> $known lo ya encontrado en la línea: no se cuenta dos veces
@@ -30,8 +31,14 @@ final class SpacedRunTerms
     {
         $seen = array_flip(array_map(fn(array $match): string => (string) $match['original'], $known));
         $found = [];
+        $budget = self::MAX_SPELLED;
         foreach (SpacedLetters::runs($line) as $letters) {
             $count = count($letters);
+            if (($budget -= $count) < 0) {
+                $found[] = ['found' => implode(' ', $letters), 'original' => 'texto deletreado', 'category' => 'patterns', 'riskType' => 'difamatorio',
+                    'contentType' => 'difamatorio', 'severity' => 'medium', 'nameCollision' => false, 'ambiguous' => false, 'spaced' => 'long'];
+                continue;
+            }
             for ($i = 0; $i < $count; $i++) {
                 for ($length = min(self::MAX_LETTERS, $count - $i); $length >= self::MIN_LETTERS; $length--) {
                     $piece = array_slice($letters, $i, $length);
