@@ -816,7 +816,7 @@ class PagesTest extends TestCase
         }
         foreach ([10, 9, 8, 7, 6, 5] as $tipo) {
             $urls[] = "/?t={$tipo}";
-            foreach (['carlos', 'lucía', 'garcía', 'nacimiento', 'acta', 'guadalajara'] as $q) {
+            foreach (['carlos', 'lucía', 'garcía', 'nacimiento', 'acta', 'guadalajara', 'manuel', 'cano', 'padrino', 'oviedo'] as $q) {
                 $urls[] = "/?t={$tipo}&q=" . rawurlencode($q);
             }
         }
@@ -837,10 +837,84 @@ class PagesTest extends TestCase
 
         foreach ($urls as $uri) {
             [, $body] = $this->get(self::GENEALOGIA, $uri);
-            foreach (self::DATOS_DE_VIVAS as $dato) {
+            foreach (array_merge(self::DATOS_DE_VIVAS, self::DATOS_PRIVADOS) as $dato) {
                 $this->assertStringNotContainsString($dato, $body, "«{$dato}» on {$uri}");
             }
         }
+    }
+
+    // --- people who are only in private collections ------------------------------------------------------
+    // Manuel Ruiz Cano (1870-1944) is dead, and is only in the private collection "Borrador de Luis".
+
+    private const MANUEL = '/6128473110/';
+
+    /** What must not reach a visitor: every way the demo has of saying who Manuel is, or of what he took part in. */
+    private const DATOS_PRIVADOS = [
+        'Manuel', 'Ruiz Cano', '4 mar 1870', '19 ago 1944', '20 ago 1944', '10 may 1921',
+        'despedir a su padrino', 'Acta de defunción de Manuel',
+    ];
+
+    public function testAPrivatePersonaPageNamesNobodyAndListsNothing(): void
+    {
+        foreach (['', '1/', '2/', '3/', '4/'] as $accion) {
+            [$codigo, $body] = $this->get(self::GENEALOGIA, self::MANUEL . $accion);
+
+            $this->assertSame(200, $codigo, "persona {$accion}");
+            $this->assertStringContainsString('Persona privada', $body);
+            $this->assertStringContainsString('colecciones privadas', $body);
+            $this->assertStringNotContainsString('Persona viva', $body, 'he is not alive: the page must not say so');
+            foreach (self::DATOS_PRIVADOS as $dato) {
+                $this->assertStringNotContainsString($dato, $body, "{$dato} on persona {$accion}");
+            }
+            $this->assertStringNotContainsString('Oviedo', $body);
+        }
+    }
+
+    public function testTheEventsAndTheRecordOfAPrivatePersonaAreNotFoundByAVisitor(): void
+    {
+        foreach (['/412000014/', '/412000015/', '/412000016/', '/81372004/', '/81372004/1/'] as $uri) {
+            [$codigo, $body] = $this->get(self::GENEALOGIA, $uri);
+
+            $this->assertSame(404, $codigo, $uri);
+            $this->assertSame($this->get(self::GENEALOGIA, '/99999999/')[1], $body, "{$uri} must look like a page that does not exist");
+        }
+    }
+
+    public function testASearchNeverFindsAPrivatePersona(): void
+    {
+        foreach (['manuel', 'cano', 'persona privada'] as $q) {
+            [, $body] = $this->get(self::GENEALOGIA, '/?t=10&q=' . rawurlencode($q));
+
+            $this->assertStringNotContainsString('Manuel', $body, $q);
+            $this->assertStringNotContainsString('Persona privada', $body, $q);
+        }
+    }
+
+    /** His godson's page keeps the link, unnamed: the tree keeps its shape and says nothing about him. */
+    public function testAVisiblePersonasPageShowsHimAsAPrivatePersonaOrNotAtAll(): void
+    {
+        foreach (['', '3/', '4/'] as $accion) {
+            [$codigo, $body] = $this->get(self::GENEALOGIA, '/6128473103/' . $accion);
+
+            $this->assertSame(200, $codigo);
+            foreach (self::DATOS_PRIVADOS as $dato) {
+                $this->assertStringNotContainsString($dato, $body, "{$dato} on Antonio {$accion}");
+            }
+        }
+    }
+
+    public function testTheOwnerSeesAPrivatePersonaWhole(): void
+    {
+        [$codigo, $body] = $this->getComoPropietario(self::GENEALOGIA, self::MANUEL);
+
+        $this->assertSame(200, $codigo);
+        $this->assertStringContainsString('Manuel', $body);
+        $this->assertStringContainsString('Ruiz Cano', $body);
+        $this->assertStringNotContainsString('Persona privada', $body);
+
+        [$codigo, $body] = $this->getComoPropietario(self::GENEALOGIA, '/412000015/');
+        $this->assertSame(200, $codigo);
+        $this->assertStringContainsString('1944', $body);
     }
 
     /** Guards the crawl above against passing because it saw nothing: the owner's view does show them. */

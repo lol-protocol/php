@@ -212,7 +212,9 @@ los nombres de tabla y columna que no pueden enlazarse se validan en
 Una colección privada o un pedido responden **404, no 403**, a quien no es el
 propietario: los ids son secuenciales y un 403 confirmaría cuáles existen. Lo
 decide `AccessPolicy` (ver [`ACCESO.md`](./ACCESO.md), que también explica qué
-**no** protege: las personas son un catálogo compartido).
+**no** protege). Las personas que solo están en colecciones privadas se
+ocultan igual que las que podrían estar vivas (`Privacidad`); basta una
+colección pública para que una persona se vea.
 
 ### Escapar salida
 
