@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Support;
 
-use App\Routing\LiteralMatchStrategy;
-use App\Routing\OrderMatchStrategy;
+use App\Routing\ArchivoMatchStrategy;
 use App\Routing\ReservedMatchStrategy;
 use App\Routing\ByLengthMatchStrategy;
 use App\Routing\PlaceMatchStrategy;
@@ -17,7 +16,13 @@ use App\Routing\ConfigValidator;
  *
  *   - all digits  -> digit count selects the resource type
  *   - all letters -> place hierarchy (pais/region/ciudad)
- *   - exact word  -> a literal or reserved system path
+ *   - exact match -> a reserved system path (/0/, POS's /c/ and /p/)
+ *   - a file name -> robots.txt, sitemaps (see `archivos`)
+ *
+ * Every page has one canonical URL: lowercase, single slashes, ending
+ * in "/" (a file name ends in its extension instead). A GET for any
+ * other spelling is a 301 to it, and so is a path listed in a site's
+ * `redirect` map (URLs that moved).
  *
  * A second numeric segment, when present, selects a sub-action on
  * the matched resource. An action segment that doesn't map to
@@ -51,12 +56,51 @@ class Router
     protected function initializeStrategies(): void
     {
         $this->strategies = [
+            new ArchivoMatchStrategy(),       // File names (/robots.txt): before the others, a dot fits no other shape
             new ByLengthMatchStrategy(),      // Most common (numeric IDs: /1234/)
             new PlaceMatchStrategy(),          // Common (places: /mx/jalisco/)
-            new LiteralMatchStrategy(),        // Less common (exact paths)
-            new OrderMatchStrategy(),          // Specific (/order/)
-            new ReservedMatchStrategy(),       // Edge case (/0/)
+            new ReservedMatchStrategy(),       // System paths (/0/, /c/)
         ];
+    }
+
+    /**
+     * The canonical spelling of $uri (query string kept), or null when $uri
+     * already is canonical, or is something no redirect should point at.
+     * Only plain URL characters get a redirect: a "\" in a Location can read
+     * as "//" to a browser, which would send it to another host.
+     */
+    public static function canonica(string $uri): ?string
+    {
+        $corte = strpos($uri, '?');
+        $ruta = $corte === false ? $uri : substr($uri, 0, $corte);
+        $query = $corte === false ? '' : substr($uri, $corte);
+
+        $segmentos = array_values(array_filter(explode('/', $ruta), static fn(string $s): bool => $s !== ''));
+        foreach ($segmentos as $segmento) {
+            if (preg_match('/^[A-Za-z0-9._~%-]+$/', $segmento) !== 1) {
+                return null;
+            }
+        }
+
+        $canonica = '/' . strtolower(implode('/', $segmentos));
+        if ($segmentos !== [] && !str_contains(end($segmentos), '.')) {
+            $canonica .= '/';
+        }
+
+        return $canonica === $ruta ? null : $canonica . ($query === '?' ? '' : $query);
+    }
+
+    /** Where this request's path moved to, per the site's `redirect` map; null when it didn't. */
+    private function movida(): ?string
+    {
+        $destino = $this->config['redirect'][implode('/', $this->segments)] ?? null;
+        if ($destino === null) {
+            return null;
+        }
+
+        $uri = $_SERVER['REQUEST_URI'] ?? '/';
+        $corte = strpos($uri, '?');
+        return $destino . ($corte === false ? '' : substr($uri, $corte));
     }
 
     protected function parseSegments(string $uri): array
@@ -95,6 +139,16 @@ class Router
 
     public function dispatch(): string
     {
+        // Only GET/HEAD: a 301 turns a POST into a GET and would drop its body.
+        if (in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
+            $destino = $this->movida() ?? self::canonica($_SERVER['REQUEST_URI'] ?? '/');
+            if ($destino !== null) {
+                http_response_code(301);
+                header("Location: {$destino}");
+                return '';
+            }
+        }
+
         $match = $this->resolve();
 
         if (!$match) {

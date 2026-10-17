@@ -66,9 +66,9 @@ INSERT INTO coleccion_productos (coleccion_id, producto_id, orden) VALUES
     (7300001, 81372048, 1),
     (7300001, 81372047, 2);
 
-INSERT INTO ordenes (id, usuario_id, estado, total_centavos, moneda, direccion_envio, numero_guia, creada_en) VALUES
-    (8137204719000, 1, 'enviada', 64700, 'MXN', 'Av. Juárez 100, Guadalajara, JAL 44100, MX', 'MX123456789', '2026-09-01 10:15:00'),
-    (8137204719001, 2, 'pagada', 24900, 'MXN', 'Calle Uría 5, Oviedo 33003, ES', NULL, '2026-09-10 18:40:00');
+INSERT INTO ordenes (id, codigo, usuario_id, estado, total_centavos, moneda, direccion_envio, numero_guia, creada_en) VALUES
+    (8137204719000, 4821937065182734, 1, 'enviada', 64700, 'MXN', 'Av. Juárez 100, Guadalajara, JAL 44100, MX', 'MX123456789', '2026-09-01 10:15:00'),
+    (8137204719001, 7305918264731590, 2, 'pagada', 24900, 'MXN', 'Calle Uría 5, Oviedo 33003, ES', NULL, '2026-09-10 18:40:00');
 
 INSERT INTO orden_items (orden_id, sku, producto_id, nombre, cantidad, precio_unitario_centavos) VALUES
     (8137204719000, 'CAM-AZ-M', 81372047, 'Camiseta básica — Azul marino / M', 2, 19900),

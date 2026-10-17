@@ -15,7 +15,7 @@ class CheckoutController extends BaseController
         $carrito = new Cart();
         if ($carrito->estaVacio()) {
             $this->flash('Tu carrito está vacío.');
-            return $this->redirect('/cart/');
+            return $this->redirect('/c/');
         }
 
         $repo = new ProductoRepository($this->db());
@@ -24,7 +24,7 @@ class CheckoutController extends BaseController
         if (count($monedas) > 1) {
             // Checkout doesn't yet support an order that mixes currencies.
             $this->flash('Tu carrito tiene productos en distintas monedas: paga cada moneda por separado.');
-            return $this->redirect('/cart/');
+            return $this->redirect('/c/');
         }
 
         return view('pos/checkout/index');

@@ -21,16 +21,16 @@ url-routing/
 │   └── pos.php                         # Registro de tipos + flujo transaccional
 ├── Support/
 │   └── Router.php                      # Despacho por forma del segmento
-├── Routing/                            # Estrategias de matching (dígitos, lugar, literal, order, reservada)
+├── Routing/                            # Estrategias de matching (archivo, dígitos, lugar, reservada)
 ├── views/
 │   ├── _layout.php                     # Esqueleto HTML común (cabecera, buscador)
 │   ├── genealogy/<tipo>/<acción>.php   # + _layout.php y _partials/ del sitio
 │   └── pos/<tipo>/<acción>.php
 └── Controllers/
     ├── Genealogy/                      # Persona (10), Suceso (9), Registro (8), Coleccion (7),
-    │                                   # Grupo (6), Organizacion (5), Lugar, Home, Cuenta
-    └── POS/                            # Producto (8), Coleccion (7), Etiqueta (6), Atributo (5),
-                                        # Grupo (4), Home, Cuenta, Cart, Checkout, Order
+    │                                   # Grupo (6), Organizacion (5), Lugar, Home, Cuenta, Archivos
+    └── POS/                            # Order (16), Producto (8), Coleccion (7), Etiqueta (6), Atributo (5),
+                                        # Grupo (4), Home, Cuenta, Cart (c), Checkout (p)
 ```
 
 Todos los tipos registrados en `config/routes/*.php` tienen controlador,
@@ -52,7 +52,7 @@ identifica con `OWNER_TOKEN`. Ver [`ACCESO.md`](./ACCESO.md). Para ponerlo en un
 
 1. **Solo dígitos** → el número de dígitos selecciona el tipo. Más dígitos = mayor cardinalidad esperada de ese catálogo. `persona` es el techo (10 dígitos) en genealogía; `producto` es el techo (8 dígitos) en POS, deliberadamente menor que persona.
 2. **Solo letras** → jerarquía de lugar (país/región/ciudad), porque es una jerarquía de códigos, no una secuencia de registros.
-3. **Palabra exacta reservada** → rutas de sistema fuera del esquema numérico: `cart`, `checkout`, `order` (flujo de compra, en inglés por decisión explícita) y `0` (cuenta, con sus propias sub-acciones por el mismo mecanismo).
+3. **Segmento reservado** → rutas de sistema fuera del esquema numérico: `0` (cuenta) y, en el POS, `c` (carrito) y `p` (pago): letras sueltas que se leen igual en varios idiomas, nunca palabras. Sus pasos son acciones numéricas, por el mismo mecanismo.
 4. Un segundo segmento numérico, cuando existe, selecciona una **acción** sobre el recurso ya resuelto — su significado depende del tipo (está definido en el arreglo `actions` de cada entrada en `config/routes/*.php`). Un código de acción que no existe en ese arreglo es **404**, nunca un `show` silencioso del recurso base.
 5. **Contrato de ids**: todo id numérico se genera relleno con ceros al ancho fijo de su tipo — usa siempre `enlace($tipo, $id)` (nunca concatenes el id a mano), que hace el padding automáticamente vía `Router::typeLength()`.
 
@@ -126,9 +126,9 @@ spa.tudominio.local:8000/0/                cuenta
 spa.contrastocolor.local:8001/81372047/       producto
 spa.contrastocolor.local:8001/81372047/1/     variantes
 spa.contrastocolor.local:8001/48213/          atributo (color)
-spa.contrastocolor.local:8001/cart/
-spa.contrastocolor.local:8001/checkout/payment/
-spa.contrastocolor.local:8001/order/8137204719000/2/   seguimiento
+spa.contrastocolor.local:8001/c/               carrito
+spa.contrastocolor.local:8001/p/2/             pago
+spa.contrastocolor.local:8001/4821937065182734/2/   seguimiento de una orden
 ```
 
 ## 📝 Agregar un tipo de recurso nuevo
@@ -225,10 +225,10 @@ colección pública para que una persona se vea.
 ## 🎯 Convenciones
 
 - ✅ Sin guiones ni guiones bajos en ningún segmento.
-- ✅ Solo dígitos, o solo letras — nunca mezclados en un mismo segmento (excepto las rutas literales reservadas).
-- ✅ Con barra final.
-- ❌ Sin extensiones de archivo (`.php`, `.html`).
-- ❌ Sin palabras de dominio en la URL (ni en español ni en inglés), salvo el flujo transaccional de POS.
+- ✅ Solo dígitos, o solo letras — nunca mezclados en un mismo segmento.
+- ✅ En minúsculas y con barra final: cualquier otra forma recibe un 301 a la canónica.
+- ❌ Sin extensiones de archivo (`.php`, `.html`), salvo los archivos para buscadores (`robots.txt`, sitemaps).
+- ❌ Sin palabras en la URL, ni en español ni en inglés.
 
 ## 🐛 Solución de Problemas
 
@@ -236,4 +236,4 @@ colección pública para que una persona se vea.
 
 **Un id no despacha al controlador esperado**: contar los dígitos exactos del segmento — un dígito de más o de menos cae en otro tipo (o en ningún tipo, y da 404). Revisar `config/routes/{sitio}.php` → `by_length`.
 
-**Una acción no se ejecuta**: el segundo segmento debe ser un entero que exista como clave en el arreglo `actions` de ese tipo; si no coincide, el router usa `show` por defecto.
+**Una acción no se ejecuta**: el segundo segmento debe ser un entero que exista como clave en el arreglo `actions` de ese tipo; si no coincide, la respuesta es 404 (nunca un `show` silencioso).

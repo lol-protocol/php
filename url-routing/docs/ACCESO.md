@@ -9,7 +9,7 @@ La lógica está en [`Support/AccessPolicy.php`](../Support/AccessPolicy.php) y 
 | Recurso | Quien no es el propietario recibe |
 |---|---|
 | Colección con `publica = false`: `/{id}/`, `/{id}/1/`, `/{id}/3/` (GEDCOM) | **404**, idéntico al de un id que no existe |
-| Pedidos del POS: `/order/{id}/` y sus acciones | **404**, igual |
+| Pedidos del POS: `/{código de 16 dígitos}/` y sus acciones | **404**, igual |
 | Página de edición de una colección: `/{id}/2/` | **404** si la colección es privada; **401** si es pública |
 | Área de cuenta, genealogía y POS: `/0/` y sus acciones | **401** (el navegador pide la clave); **404** si no hay `OWNER_TOKEN` |
 | Búsqueda de colecciones (`/?t=7`) | las privadas no aparecen, ni buscándolas por su nombre exacto |
@@ -95,7 +95,7 @@ Esto hace privados los **objetos** que ya se presentaban como privados, oculta a
 - **La persona oculta se reconoce por su ausencia.** Su página existe y dice «Persona viva» o «Persona privada», y sus padres ya muestran que tienen un descendiente oculto. Eso revela la forma del árbol, no a quién pertenece.
 - **El coste crece con el catálogo.** Decidir quién vive son varias consultas por persona. Con millones de personas convendrá guardar el resultado en una columna calculada; hoy no hace falta.
 - **Un solo propietario y un solo secreto.** No hay cuentas por persona ni roles. Quien tenga el token lo ve todo, incluidas las colecciones y los pedidos de otros usuarios de la base de datos. Las páginas de cuenta actúan siempre sobre la cuenta fija (`DEFAULT_USER_ID`).
-- **Los pedidos del POS son solo del propietario.** Las páginas de pago (`/checkout/...`) todavía no crean pedidos. Cuando lo hagan, un pedido tendrá que ligarse a la sesión de quien lo hizo y abrirse también para esa sesión; hoy, ni quien lo hizo lo vería.
+- **Los pedidos del POS son solo del propietario.** Las páginas de pago (`/p/...`) todavía no crean pedidos. Cuando lo hagan, un pedido tendrá que ligarse a la sesión de quien lo hizo y abrirse también para esa sesión; hoy, ni quien lo hizo lo vería.
 
 ## Pruebas
 

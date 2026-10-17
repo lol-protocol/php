@@ -217,6 +217,96 @@ class PagesTest extends TestCase
         $this->assertStringNotContainsString('<b>x</b>', $body);
     }
 
+    /** @return array<string, array{string, string}> */
+    public static function noCanonicas(): array
+    {
+        return [
+            'sin barra final' => [self::GENEALOGIA, '/6128473105'],
+            'mayusculas' => [self::GENEALOGIA, '/MX/JAL/'],
+            'barras dobles' => [self::GENEALOGIA, '//mx//jal/'],
+            'pos sin barra' => [self::POS, '/81372047'],
+            'carrito en mayuscula' => [self::POS, '/C/'],
+            'carrito, ruta antigua' => [self::POS, '/cart/'],
+            'pago, ruta antigua' => [self::POS, '/checkout/'],
+            'pago, paso antiguo' => [self::POS, '/checkout/payment/'],
+        ];
+    }
+
+    /** The Location itself isn't observable here (see Support/request.php); Tests\App\Routing\CanonicaTest checks it. */
+    #[DataProvider('noCanonicas')]
+    public function testNonCanonicalUrlsRedirectPermanently(string $host, string $uri): void
+    {
+        $this->assertSame(301, $this->get($host, $uri)[0]);
+    }
+
+    public function testAMergedPersonaIdRedirectsToThePersonaThatStayed(): void
+    {
+        $this->assertSame(301, $this->get(self::GENEALOGIA, '/6128473188/')[0]);
+        $this->assertSame(301, $this->get(self::GENEALOGIA, '/6128473188/1/')[0], 'and keeps the action');
+        $this->assertSame(404, $this->get(self::GENEALOGIA, '/6128473187/')[0], 'an id that never existed is still a 404');
+    }
+
+    public function testRobotsKeepsCrawlersOutOfTheAccountAndPointsAtTheSitemap(): void
+    {
+        [$codigo, $robots] = $this->get(self::GENEALOGIA, '/robots.txt');
+
+        $this->assertSame(200, $codigo);
+        $this->assertStringContainsString('Disallow: /0/', $robots);
+        $this->assertStringContainsString('Sitemap: http://tudominio.local/sitemap.xml', $robots);
+        $this->assertSame(404, $this->get(self::POS, '/robots.txt')[0], 'the POS has none yet');
+    }
+
+    public function testSitemapIndexListsAPartPerType(): void
+    {
+        [$codigo, $indice] = $this->get(self::GENEALOGIA, '/sitemap.xml');
+
+        $this->assertSame(200, $codigo);
+        foreach (['10', '9', '8', '7', '6', '5', 'l'] as $tipo) {
+            $this->assertStringContainsString("<loc>http://tudominio.local/sitemap/{$tipo}/1.xml</loc>", $indice);
+        }
+    }
+
+    /** Even for the owner: a sitemap is what a visitor may see, whoever asks for it. */
+    public function testSitemapListsOnlyWhatAVisitorMaySee(): void
+    {
+        [, $personas] = $this->getComoPropietario(self::GENEALOGIA, '/sitemap/10/1.xml');
+        $this->assertStringContainsString('<loc>http://tudominio.local/6128473101/</loc>', $personas);
+        $this->assertStringNotContainsString(self::CARLOS, $personas, 'alive');
+        $this->assertStringNotContainsString(self::MANUEL, $personas, 'only in a private colección');
+
+        [, $colecciones] = $this->getComoPropietario(self::GENEALOGIA, '/sitemap/7/1.xml');
+        $this->assertStringContainsString('/1048293/', $colecciones);
+        $this->assertStringNotContainsString('/1048294/', $colecciones, 'private');
+
+        [, $lugares] = $this->get(self::GENEALOGIA, '/sitemap/l/1.xml');
+        $this->assertStringContainsString('<loc>http://tudominio.local/mx/jal/gdl/</loc>', $lugares);
+    }
+
+    public function testSitemapPartsThatDontExistAre404(): void
+    {
+        foreach (['/sitemap/10/2.xml', '/sitemap/99/1.xml', '/sitemap/10/0.xml', '/sitemap/10/1.txt', '/sitemap/10.xml'] as $uri) {
+            $this->assertSame(404, $this->get(self::GENEALOGIA, $uri)[0], $uri);
+        }
+    }
+
+    public function testAPostIsNeverRedirected(): void
+    {
+        // A 301 would turn it into a GET: it is answered where it was sent (403: no CSRF token).
+        $this->assertSame(403, $this->get(self::POS, '/C/1/', 'POST', 'sku=CAM-AZ-M')[0]);
+    }
+
+    public function testOrdersAreOnlyReachableByTheirCode(): void
+    {
+        $this->assertSame(404, $this->getComoPropietario(self::POS, '/order/8137204719000/')[0], 'the old /order/ path is gone');
+        $this->assertSame(404, $this->getComoPropietario(self::POS, '/0008137204719000/')[0], 'the row id, padded, is not a code');
+        $this->assertSame(200, $this->getComoPropietario(self::POS, '/4821937065182734/')[0]);
+    }
+
+    public function testOrdersCannotBeListedThroughTheSearch(): void
+    {
+        $this->assertSame(400, $this->getComoPropietario(self::POS, '/?t=16&q=')[0]);
+    }
+
     public function testSearchTreatsPercentLiterally(): void
     {
         [, $body] = $this->get(self::POS, '/?t=8&q=%25');
@@ -245,15 +335,15 @@ class PagesTest extends TestCase
             'cuenta, aportes' => [self::GENEALOGIA, '/0/2/', 'José García Álvarez', 401],
             'cuenta pos' => [self::POS, '/0/', 'ana@example.com', 401],
             'cuenta pos, perfil' => [self::POS, '/0/1/', 'ana@example.com', 401],
-            'cuenta pos, ordenes' => [self::POS, '/0/2/', '8137204719000', 401],
+            'cuenta pos, ordenes' => [self::POS, '/0/2/', '4821937065182734', 401],
             'cuenta pos, deseos' => [self::POS, '/0/3/', 'Ana Demo', 401],
             'cuenta pos, direcciones' => [self::POS, '/0/4/', 'Av. Juárez 100', 401],
             'cuenta pos, preferencias' => [self::POS, '/0/5/', 'Ana Demo', 401],
-            'pedido' => [self::POS, '/order/8137204719000/', '647.00', 404],
-            'pedido, factura' => [self::POS, '/order/8137204719000/1/', '647.00', 404],
-            'pedido, seguimiento' => [self::POS, '/order/8137204719000/2/', 'MX123456789', 404],
-            'pedido, devolucion' => [self::POS, '/order/8137204719000/3/', '647.00', 404],
-            'pedido de otra persona' => [self::POS, '/order/8137204719001/', 'Calle Uría 5', 404],
+            'pedido' => [self::POS, '/4821937065182734/', '647.00', 404],
+            'pedido, factura' => [self::POS, '/4821937065182734/1/', '647.00', 404],
+            'pedido, seguimiento' => [self::POS, '/4821937065182734/2/', 'MX123456789', 404],
+            'pedido, devolucion' => [self::POS, '/4821937065182734/3/', '647.00', 404],
+            'pedido de otra persona' => [self::POS, '/7305918264731590/', 'Calle Uría 5', 404],
         ];
     }
 
@@ -303,8 +393,8 @@ class PagesTest extends TestCase
         $this->assertSame($codigoAusente, $codigoOculta);
         $this->assertSame($ausente, $oculta);
 
-        [, $pedidoAjeno] = $this->getConTokenConfigurado(self::POS, '/order/8137204719001/');
-        [, $pedidoAusente] = $this->getConTokenConfigurado(self::POS, '/order/8137204719999/');
+        [, $pedidoAjeno] = $this->getConTokenConfigurado(self::POS, '/7305918264731590/');
+        [, $pedidoAusente] = $this->getConTokenConfigurado(self::POS, '/4821937065189999/');
         $this->assertSame($pedidoAusente, $pedidoAjeno);
     }
 
@@ -344,8 +434,8 @@ class PagesTest extends TestCase
             'cuenta, colecciones' => [self::GENEALOGIA, '/0/1/', 'Familia García'],
             'cuenta pos' => [self::POS, '/0/', 'Ana Demo'],
             'cuenta pos, direcciones' => [self::POS, '/0/4/', 'Av. Juárez 100'],
-            'pedido' => [self::POS, '/order/8137204719000/', '$647.00 MXN'],
-            'pedido, seguimiento' => [self::POS, '/order/8137204719000/2/', 'MX123456789'],
+            'pedido' => [self::POS, '/4821937065182734/', '$647.00 MXN'],
+            'pedido, seguimiento' => [self::POS, '/4821937065182734/2/', 'MX123456789'],
         ];
     }
 
@@ -388,7 +478,7 @@ class PagesTest extends TestCase
     {
         [, , $sid] = $this->get(self::POS, '/0/', tokenConfigurado: self::TOKEN, autorizacion: self::basic(self::TOKEN));
 
-        [$codigo, $body] = $this->get(self::POS, '/order/8137204719000/', sessionId: $sid, tokenConfigurado: self::TOKEN);
+        [$codigo, $body] = $this->get(self::POS, '/4821937065182734/', sessionId: $sid, tokenConfigurado: self::TOKEN);
 
         $this->assertSame(200, $codigo);
         $this->assertStringContainsString('$647.00 MXN', $body);
@@ -464,8 +554,8 @@ class PagesTest extends TestCase
     public function testAccountPagesShowTheFixedAccount(): void
     {
         [, $ordenes] = $this->getComoPropietario(self::POS, '/0/2/');
-        $this->assertStringContainsString('8137204719000', $ordenes);
-        $this->assertStringNotContainsString('8137204719001', $ordenes);
+        $this->assertStringContainsString('4821937065182734', $ordenes);
+        $this->assertStringNotContainsString('7305918264731590', $ordenes);
 
         [, $aportes] = $this->getComoPropietario(self::GENEALOGIA, '/0/2/');
         $this->assertStringContainsString('José García Álvarez', $aportes);
@@ -475,13 +565,13 @@ class PagesTest extends TestCase
     /** The owner is not a special case for ids that don't exist: still a plain 404. */
     public function testTheOwnerStillGets404ForMissingOrders(): void
     {
-        $this->assertSame(404, $this->getComoPropietario(self::POS, '/order/8137204719999/')[0]);
+        $this->assertSame(404, $this->getComoPropietario(self::POS, '/4821937065189999/')[0]);
         $this->assertSame(404, $this->getComoPropietario(self::GENEALOGIA, '/1048200/')[0]);
     }
 
     public function testCartStartsEmpty(): void
     {
-        [$codigo, $body] = $this->get(self::POS, '/cart/');
+        [$codigo, $body] = $this->get(self::POS, '/c/');
 
         $this->assertSame(200, $codigo);
         $this->assertStringContainsString('El carrito está vacío.', $body);
@@ -491,10 +581,10 @@ class PagesTest extends TestCase
     {
         [$sid, $token] = $this->primeSession();
 
-        [$codigo] = $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '2'], $sid, $token);
-        $this->assertSame(303, $codigo); // redirects to /cart/ (not observable here: see Support/request.php)
+        [$codigo] = $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '2'], $sid, $token);
+        $this->assertSame(303, $codigo); // redirects to /c/ (not observable here: see Support/request.php)
 
-        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
         $this->assertStringContainsString('Camiseta básica', $body);
         $this->assertStringContainsString('CAM-AZ-M', $body);
         $this->assertStringContainsString('$398.00 MXN', $body); // 2 x $199.00, subtotal and total both
@@ -504,41 +594,41 @@ class PagesTest extends TestCase
     {
         [$sid, $token] = $this->primeSession();
 
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '2'], $sid, $token);
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '3'], $sid, $token);
-        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '2'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '3'], $sid, $token);
+        [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
         $this->assertMatchesRegularExpression('/name="cantidad"[^>]*value="5"/', $body);
 
         // CAM-AZ-M has 30 in stock (see seed data); asking for far more clamps instead of erroring.
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '999'], $sid, $token);
-        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '999'], $sid, $token);
+        [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
         $this->assertMatchesRegularExpression('/name="cantidad"[^>]*value="30"/', $body);
     }
 
     public function testActualizarChangesQuantityAndQuitarRemovesTheLine(): void
     {
         [$sid, $token] = $this->primeSession();
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
 
-        [$codigo] = $this->post(self::POS, '/cart/actualizar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '4'], $sid, $token);
+        [$codigo] = $this->post(self::POS, '/c/2/', ['sku' => 'CAM-AZ-M', 'cantidad' => '4'], $sid, $token);
         $this->assertSame(303, $codigo);
-        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
         $this->assertStringContainsString('$796.00 MXN', $body); // 4 x $199.00
 
-        $this->post(self::POS, '/cart/quitar/', ['sku' => 'CAM-AZ-M'], $sid, $token);
-        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        $this->post(self::POS, '/c/3/', ['sku' => 'CAM-AZ-M'], $sid, $token);
+        [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
         $this->assertStringContainsString('El carrito está vacío.', $body);
     }
 
     public function testVaciarEmptiesTheWholeCart(): void
     {
         [$sid, $token] = $this->primeSession();
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'GOR-AZ', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'GOR-AZ', 'cantidad' => '1'], $sid, $token);
 
-        $this->post(self::POS, '/cart/vaciar/', [], $sid, $token);
+        $this->post(self::POS, '/c/4/', [], $sid, $token);
 
-        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
         $this->assertStringContainsString('El carrito está vacío.', $body);
     }
 
@@ -546,25 +636,25 @@ class PagesTest extends TestCase
     {
         [$sid, $token] = $this->primeSession();
 
-        $this->assertSame(400, $this->post(self::POS, '/cart/agregar/', ['sku' => 'NO-EXISTE', 'cantidad' => '1'], $sid, $token)[0]);
+        $this->assertSame(400, $this->post(self::POS, '/c/1/', ['sku' => 'NO-EXISTE', 'cantidad' => '1'], $sid, $token)[0]);
         // CAM-BL-L has 0 in stock.
-        $this->assertSame(400, $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-BL-L', 'cantidad' => '1'], $sid, $token)[0]);
+        $this->assertSame(400, $this->post(self::POS, '/c/1/', ['sku' => 'CAM-BL-L', 'cantidad' => '1'], $sid, $token)[0]);
     }
 
     public function testCartMutationsRequireAValidCsrfTokenAndPost(): void
     {
         // No token at all.
         $sinToken = http_build_query(['sku' => 'CAM-AZ-M', 'cantidad' => '1']);
-        $this->assertSame(403, $this->get(self::POS, '/cart/agregar/', 'POST', $sinToken)[0]);
+        $this->assertSame(403, $this->get(self::POS, '/c/1/', 'POST', $sinToken)[0]);
 
         [$sid, $token] = $this->primeSession();
 
         // Wrong token, valid session and method.
-        $this->assertSame(403, $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, 'no-es-el-token')[0]);
+        $this->assertSame(403, $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, 'no-es-el-token')[0]);
 
         // GET instead of POST, even with a valid token.
         $conToken = http_build_query(['sku' => 'CAM-AZ-M', 'cantidad' => '1', 'csrf_token' => $token]);
-        $this->assertSame(403, $this->get(self::POS, '/cart/agregar/', 'GET', $conToken, $sid)[0]);
+        $this->assertSame(403, $this->get(self::POS, '/c/1/', 'GET', $conToken, $sid)[0]);
     }
 
     /** Runs $work with the POS database changed by $sql, then undoes it with $restore. */
@@ -582,14 +672,14 @@ class PagesTest extends TestCase
     public function testCartTotalsEachCurrencySeparately(): void
     {
         [$sid, $token] = $this->primeSession();
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'GOR-AZ', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'GOR-AZ', 'cantidad' => '1'], $sid, $token);
 
         $this->conCambioEnPos(
             "UPDATE productos SET moneda = 'USD' WHERE id = 81372049",
             "UPDATE productos SET moneda = 'MXN' WHERE id = 81372049",
             function () use ($sid): void {
-                [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+                [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
                 $this->assertStringContainsString('Total MXN', $body);
                 $this->assertStringContainsString('Total USD', $body);
                 $this->assertStringContainsString('$249.00 USD', $body);
@@ -601,14 +691,14 @@ class PagesTest extends TestCase
     public function testDeactivatedProductLeavesTheCart(): void
     {
         [$sid, $token] = $this->primeSession();
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
 
         $this->conCambioEnPos(
             'UPDATE productos SET activo = 0 WHERE id = 81372047',
             'UPDATE productos SET activo = 1 WHERE id = 81372047',
             function () use ($sid, $token): void {
-                $this->assertSame(303, $this->post(self::POS, '/cart/actualizar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '3'], $sid, $token)[0]);
-                [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+                $this->assertSame(303, $this->post(self::POS, '/c/2/', ['sku' => 'CAM-AZ-M', 'cantidad' => '3'], $sid, $token)[0]);
+                [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
                 $this->assertStringContainsString('El carrito está vacío.', $body);
             }
         );
@@ -617,13 +707,13 @@ class PagesTest extends TestCase
     public function testCartClampsToStockThatDroppedAfterAdding(): void
     {
         [$sid, $token] = $this->primeSession();
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '5'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '5'], $sid, $token);
 
         $this->conCambioEnPos(
             "UPDATE variantes SET stock = 2 WHERE sku = 'CAM-AZ-M'",
             "UPDATE variantes SET stock = 30 WHERE sku = 'CAM-AZ-M'",
             function () use ($sid): void {
-                [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+                [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
                 $this->assertMatchesRegularExpression('/name="cantidad"[^>]*value="2"/', $body);
                 $this->assertStringContainsString('$398.00 MXN', $body); // 2 x $199.00, not 5
             }
@@ -636,35 +726,35 @@ class PagesTest extends TestCase
 
         // get() also fails on any PHP warning, e.g. "Array to string conversion".
         $tokenArray = http_build_query(['sku' => 'CAM-AZ-M', 'csrf_token' => [$token]]);
-        $this->assertSame(403, $this->get(self::POS, '/cart/agregar/', 'POST', $tokenArray, $sid)[0]);
-        $this->assertSame(400, $this->post(self::POS, '/cart/agregar/', ['sku' => ['CAM-AZ-M']], $sid, $token)[0]);
+        $this->assertSame(403, $this->get(self::POS, '/c/1/', 'POST', $tokenArray, $sid)[0]);
+        $this->assertSame(400, $this->post(self::POS, '/c/1/', ['sku' => ['CAM-AZ-M']], $sid, $token)[0]);
     }
 
     public function testCheckoutRedirectsWithAFlashWhenTheCartIsEmpty(): void
     {
         [$sid] = $this->primeSession();
 
-        [$codigo] = $this->get(self::POS, '/checkout/', 'GET', '', $sid);
+        [$codigo] = $this->get(self::POS, '/p/', 'GET', '', $sid);
         $this->assertSame(303, $codigo);
 
-        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
         $this->assertStringContainsString('Tu carrito está vacío.', $body);
     }
 
     public function testCheckoutRedirectsWithAFlashWhenTheCartMixesCurrencies(): void
     {
         [$sid, $token] = $this->primeSession();
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'GOR-AZ', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'GOR-AZ', 'cantidad' => '1'], $sid, $token);
 
         $this->conCambioEnPos(
             "UPDATE productos SET moneda = 'USD' WHERE id = 81372049",
             "UPDATE productos SET moneda = 'MXN' WHERE id = 81372049",
             function () use ($sid): void {
-                [$codigo] = $this->get(self::POS, '/checkout/', 'GET', '', $sid);
+                [$codigo] = $this->get(self::POS, '/p/', 'GET', '', $sid);
                 $this->assertSame(303, $codigo);
 
-                [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+                [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
                 $this->assertStringContainsString('distintas monedas', $body);
             }
         );
@@ -673,9 +763,9 @@ class PagesTest extends TestCase
     public function testCheckoutRendersWhenTheCartHasItemsInOneCurrency(): void
     {
         [$sid, $token] = $this->primeSession();
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
 
-        [$codigo] = $this->get(self::POS, '/checkout/', 'GET', '', $sid);
+        [$codigo] = $this->get(self::POS, '/p/', 'GET', '', $sid);
         $this->assertSame(200, $codigo);
     }
 
@@ -684,20 +774,20 @@ class PagesTest extends TestCase
         [$sid, $token] = $this->primeSession();
 
         // CAM-AZ-M has 30 in stock (see seed data); asking for more clamps and flashes.
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '999'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '999'], $sid, $token);
 
-        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
         $this->assertStringContainsString('no hay suficiente stock', $body);
     }
 
     public function testActualizarRejectsANonNumericQuantityInsteadOfSilentlyRemovingTheLine(): void
     {
         [$sid, $token] = $this->primeSession();
-        $this->post(self::POS, '/cart/agregar/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
 
-        $this->assertSame(400, $this->post(self::POS, '/cart/actualizar/', ['sku' => 'CAM-AZ-M', 'cantidad' => 'abc'], $sid, $token)[0]);
+        $this->assertSame(400, $this->post(self::POS, '/c/2/', ['sku' => 'CAM-AZ-M', 'cantidad' => 'abc'], $sid, $token)[0]);
 
-        [, $body] = $this->get(self::POS, '/cart/', 'GET', '', $sid);
+        [, $body] = $this->get(self::POS, '/c/', 'GET', '', $sid);
         $this->assertStringContainsString('CAM-AZ-M', $body); // line was not touched
     }
 

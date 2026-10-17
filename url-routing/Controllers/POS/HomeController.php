@@ -28,7 +28,8 @@ class HomeController extends BaseController
         }
 
         $tipo = ServiceLocator::getInstance()->getRouter()->typeForLength((int)$t);
-        if ($tipo === null) {
+        // Orders have a digit width too, but they are private: never listed.
+        if ($tipo === null || $tipo === 'orden') {
             return $this->handleBadRequest('Tipo de listado inválido');
         }
 

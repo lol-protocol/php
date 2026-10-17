@@ -119,3 +119,7 @@ INSERT INTO coleccion_personas (coleccion_id, persona_id) VALUES
     (1048293, 6128473104), (1048293, 6128473105), (1048293, 6128473106),
     (1048293, 6128473107), (1048293, 6128473108), (1048293, 6128473109),
     (1048294, 6128473105), (1048294, 6128473107), (1048294, 6128473110);
+
+-- Un duplicado de Juan García Hernández que se fusionó con él: su id viejo redirige.
+INSERT INTO persona_alias (id, persona_id) VALUES
+    (6128473188, 6128473105);

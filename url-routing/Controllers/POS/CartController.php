@@ -8,7 +8,7 @@ use App\Controllers\BaseController;
 use App\Repositories\POS\ProductoRepository;
 use App\Support\Cart;
 
-/** /cart/ — the cart lives in the session: there's no login, so it's tied to the browser, not an account. */
+/** /c/ — the cart lives in the session: there's no login, so it's tied to the browser, not an account. */
 class CartController extends BaseController
 {
     private function carrito(): Cart
@@ -84,7 +84,7 @@ class CartController extends BaseController
             $this->flash('Se agregó menos de lo pedido: no hay suficiente stock.');
         }
 
-        return $this->redirect('/cart/');
+        return $this->redirect('/c/');
     }
 
     public function actualizar(array $params = []): string
@@ -105,12 +105,12 @@ class CartController extends BaseController
         if ($variante === null) {
             // Removed or deactivated since it was added; drop the line instead of erroring.
             $this->carrito()->quitar($sku);
-            return $this->redirect('/cart/');
+            return $this->redirect('/c/');
         }
 
         $this->carrito()->actualizar($sku, min($cantidad, $variante['stock']));
 
-        return $this->redirect('/cart/');
+        return $this->redirect('/c/');
     }
 
     public function quitar(array $params = []): string
@@ -121,7 +121,7 @@ class CartController extends BaseController
 
         $this->carrito()->quitar($this->postString('sku'));
 
-        return $this->redirect('/cart/');
+        return $this->redirect('/c/');
     }
 
     public function vaciar(array $params = []): string
@@ -132,6 +132,6 @@ class CartController extends BaseController
 
         $this->carrito()->vaciar();
 
-        return $this->redirect('/cart/');
+        return $this->redirect('/c/');
     }
 }

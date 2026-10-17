@@ -8,7 +8,8 @@ use App\Controllers\BaseController;
 use App\Repositories\POS\OrdenRepository;
 
 /**
- * /order/{id}/ — an order holds the shipping address and what was bought, and
+ * /{codigo}/ — 16 random digits (ordenes.codigo), never the order's row id.
+ * An order holds the shipping address and what was bought, and
  * nothing here ties an order to the browser that placed it (the checkout pages
  * create none), so a link alone must not open it: orders are owner-only.
  */
@@ -18,7 +19,9 @@ class OrderController extends BaseController
     {
         return $this->soloPropietario(function () use ($params, $view, $extra): string {
             $repo = new OrdenRepository($this->db());
-            return $this->renderFound($params, $repo->find(...), $view, 'orden', $extra);
+            // $extra gets the row id: items and events hang off it, not off the code.
+            return $this->renderFound($params, $repo->porCodigo(...), $view, 'orden',
+                static fn(int $codigo, array $orden): array => $extra((int)$orden['id']));
         });
     }
 

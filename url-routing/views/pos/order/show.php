@@ -4,4 +4,4 @@
 <p><?= esc($orden['direccion_envio'] ?? '—') ?></p>
 <h2>Seguimiento</h2>
 <?php include __DIR__ . '/_eventos.php'; ?>
-<?php $content = ob_get_clean(); $title = 'Orden ' . $orden['id']; include __DIR__ . '/../_layout.php';
+<?php $content = ob_get_clean(); $title = 'Orden ' . $orden['codigo']; include __DIR__ . '/../_layout.php';

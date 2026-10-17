@@ -37,6 +37,25 @@ class PersonaController extends BaseController
         return static fn(int $id, array $persona): array => $persona['oculta'] ? $vacio : $lista($id);
     }
 
+    /**
+     * A merged-away id (persona_alias) leads to the same page of the persona
+     * it was merged into: $accion is that page's action code, null for the
+     * persona's own page.
+     *
+     * @return callable(int): ?string
+     */
+    private static function movida(PersonaRepository $repo, ?int $accion): callable
+    {
+        return static function (int $id) use ($repo, $accion): ?string {
+            $destino = $repo->aliasDe($id);
+            if ($destino === null) {
+                return null;
+            }
+
+            return $accion === null ? enlace('persona', $destino) : accion('persona', $destino, $accion);
+        };
+    }
+
     public function show(array $params = []): string
     {
         $repo = $this->repo();
@@ -44,35 +63,39 @@ class PersonaController extends BaseController
             self::salvoOculta(
                 fn(int $id) => ['vinculos' => $repo->vinculos($id), 'cronologia' => $repo->cronologia($id)],
                 ['vinculos' => [], 'cronologia' => []]
-            ));
+            ), self::movida($repo, null));
     }
 
     public function ascendencia(array $params = []): string
     {
         $repo = $this->repo();
         return $this->renderFound($params, $repo->find(...), 'genealogy/persona/ascendencia', 'persona',
-            self::salvoOculta(fn(int $id) => ['ancestros' => $repo->ascendencia($id)], ['ancestros' => []]));
+            self::salvoOculta(fn(int $id) => ['ancestros' => $repo->ascendencia($id)], ['ancestros' => []]),
+            self::movida($repo, 1));
     }
 
     public function descendencia(array $params = []): string
     {
         $repo = $this->repo();
         return $this->renderFound($params, $repo->find(...), 'genealogy/persona/descendencia', 'persona',
-            self::salvoOculta(fn(int $id) => ['descendientes' => $repo->descendencia($id)], ['descendientes' => []]));
+            self::salvoOculta(fn(int $id) => ['descendientes' => $repo->descendencia($id)], ['descendientes' => []]),
+            self::movida($repo, 2));
     }
 
     public function vinculos(array $params = []): string
     {
         $repo = $this->repo();
         return $this->renderFound($params, $repo->find(...), 'genealogy/persona/vinculos', 'persona',
-            self::salvoOculta(fn(int $id) => ['vinculos' => $repo->vinculos($id)], ['vinculos' => []]));
+            self::salvoOculta(fn(int $id) => ['vinculos' => $repo->vinculos($id)], ['vinculos' => []]),
+            self::movida($repo, 3));
     }
 
     public function cronologia(array $params = []): string
     {
         $repo = $this->repo();
         return $this->renderFound($params, $repo->find(...), 'genealogy/persona/cronologia', 'persona',
-            self::salvoOculta(fn(int $id) => ['eventos' => $repo->cronologia($id)], ['eventos' => []]));
+            self::salvoOculta(fn(int $id) => ['eventos' => $repo->cronologia($id)], ['eventos' => []]),
+            self::movida($repo, 4));
     }
 
     /**
@@ -96,7 +119,8 @@ class PersonaController extends BaseController
         $repo = $this->repo();
         $persona = $repo->find((int)$id);
         if ($persona === null) {
-            return $this->handleNotFound();
+            $destino = self::movida($repo, 5)((int)$id);
+            return $destino === null ? $this->handleNotFound() : $this->redirect($destino, 301);
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

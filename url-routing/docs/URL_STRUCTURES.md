@@ -4,11 +4,20 @@ Ningún tipo de recurso aparece como palabra en la URL. El **tipo se infiere de 
 
 - **Solo dígitos** → el número de dígitos selecciona el tipo (ver tablas abajo).
 - **Solo letras** → jerarquía de lugar (país/región/ciudad).
-- **Coincidencia exacta** → rutas fijas de sistema (`cart`, `checkout`, `order`, `0` para cuenta).
+- **Coincidencia exacta** → rutas fijas de sistema: `0` (cuenta) y, en el POS, `c` (carrito) y `p` (pago).
+- **Nombre de archivo** → `robots.txt` y los sitemaps de genealogía.
 
 El largo en dígitos escala con el tamaño esperado del catálogo de cada tipo: a mayor cardinalidad prevista, más dígitos. `persona` es el techo (10 dígitos); todo lo demás queda por debajo, en orden.
 
-No se usan guiones ni guiones bajos en ningún segmento. Los códigos de lugar se normalizan a minúsculas (`/MX/` y `/mx/` son la misma URL).
+No se usan guiones ni guiones bajos en ningún segmento.
+
+### URL canónica
+
+Cada página tiene una sola URL: en minúsculas, con barras simples y con barra final (un archivo, como `/robots.txt`, termina en su extensión). Un GET a cualquier otra forma (`/MX/JAL`, `/6128473105`, `//mx//jal/`) recibe un **301** a la canónica, conservando la query string. Un POST nunca se redirige (el 301 lo convertiría en GET): se atiende donde llegó. Las URLs que se mudaron (el flujo de compra en palabras) también dan 301, vía el mapa `redirect` de `config/routes/pos.php`.
+
+### Personas fusionadas
+
+Cuando dos personas resultan ser la misma y una se fusiona en la otra, el id que desaparece queda en `persona_alias`: `/{id viejo}/` y sus acciones dan **301** a la misma página de la persona que quedó, en vez de 404. Un id que nunca existió sigue siendo 404.
 
 ### Contrato de generación de ids (importante)
 
@@ -90,7 +99,14 @@ spa.tudominio.com/?t=10&q=texto       listado/búsqueda de personas (t = dígito
 spa.tudominio.com/0/                  cuenta
 spa.tudominio.com/0/1/                cuenta: mis colecciones
 spa.tudominio.com/0/2/                cuenta: mis aportes
+
+spa.tudominio.com/robots.txt          deja fuera /0/ y apunta al sitemap
+spa.tudominio.com/sitemap.xml         índice de sitemaps
+spa.tudominio.com/sitemap/10/1.xml    personas, parte 1 (50.000 URLs por parte)
+spa.tudominio.com/sitemap/l/1.xml     lugares
 ```
+
+El sitemap lista solo lo que un visitante puede ver, lo pida quien lo pida: ninguna persona que podría estar viva o que solo está en colecciones privadas, ningún suceso ni registro que la delataría, ninguna colección privada. Cada parte se nombra por el largo de dígitos de su tipo (`10`, `9`, `8`, `7`, `6`, `5`) o `l` para lugares. Las URLs absolutas usan `SITE_URL_GENEALOGY` (o, sin ella, el esquema y el host de la petición).
 
 ---
 
@@ -103,6 +119,7 @@ spa.tudominio.com/0/2/                cuenta: mis aportes
 | 6 dígitos | etiqueta | |
 | 5 dígitos | atributo | color / variante — conjunto acotado |
 | 4 dígitos | grupo | categoría — taxonomía pequeña |
+| 16 dígitos | orden | código aleatorio, no secuencial (ver abajo) |
 
 ### Acciones
 
@@ -110,21 +127,29 @@ spa.tudominio.com/0/2/                cuenta: mis aportes
 **etiqueta** (6 dígitos): `1` productos con esa etiqueta
 **atributo** (5 dígitos): `1` productos de ese color
 
-### Flujo transaccional (excepción deliberada — palabras cortas en inglés, sin guiones)
+**orden** (16 dígitos): `1` factura · `2` seguimiento · `3` devolución
+
+### Flujo de compra: símbolos de una letra, no palabras
+
+El carrito y el pago no tienen un id que contar, así que usan una letra que se lee igual en español, inglés y la mayoría de los idiomas con alfabeto latino. Sus pasos son acciones numéricas, como en el resto del sitio.
 
 ```
-/cart/
-/checkout/
-/checkout/shipping/
-/checkout/payment/
-/checkout/confirm/
-/order/{id}/
-/order/{id}/1/    invoice
-/order/{id}/2/    track
-/order/{id}/3/    devolucion
+/c/          carrito (c = carrito / cart / cesta)
+/c/1/        agregar      (solo POST, con token CSRF)
+/c/2/        actualizar   (solo POST)
+/c/3/        quitar       (solo POST)
+/c/4/        vaciar       (solo POST)
+/p/          pago (p = pago / pay / paiement)
+/p/1/        envío
+/p/2/        pago
+/p/3/        confirmar
 ```
 
-El id de `order` es secuencial simple (no requiere inferencia por largo, ya está bajo el prefijo `order`). Por ser secuencial se puede recorrer, así que los pedidos son solo del propietario (ver [`ACCESO.md`](./ACCESO.md)).
+Las URLs antiguas en palabras (`/cart/`, `/checkout/`, `/checkout/shipping/`...) dan 301 a las nuevas.
+
+### Órdenes: código aleatorio de 16 dígitos
+
+La URL de una orden no lleva su id (que es correlativo y se podría recorrer) sino `ordenes.codigo`: 16 dígitos aleatorios, únicos, de ancho fijo. Como cualquier otro tipo, el router la reconoce por el largo: `/{16 dígitos}/`. Quien cree órdenes debe generar el código con `random_int()`. Las órdenes siguen siendo solo del propietario (ver [`ACCESO.md`](./ACCESO.md)) y nunca aparecen en la búsqueda (`?t=16` es un 400).
 
 ### Ejemplos
 
@@ -138,10 +163,10 @@ spa.contrastocolor.com/48213/1/            productos de ese color
 
 spa.contrastocolor.com/?t=8&q=texto        listado/búsqueda de productos
 
-spa.contrastocolor.com/cart/
-spa.contrastocolor.com/checkout/payment/
-spa.contrastocolor.com/order/8137204719000/
-spa.contrastocolor.com/order/8137204719000/2/   track
+spa.contrastocolor.com/c/                  carrito
+spa.contrastocolor.com/p/2/                pago
+spa.contrastocolor.com/4821937065182734/   orden
+spa.contrastocolor.com/4821937065182734/2/ seguimiento
 
 spa.contrastocolor.com/0/                  cuenta
 spa.contrastocolor.com/0/2/                cuenta: mis órdenes
@@ -153,12 +178,12 @@ spa.contrastocolor.com/0/3/                cuenta: deseos
 ## Lógica de despacho (router)
 
 ```
+GET no canónico          -> 301 a la URL canónica (o a donde se mudó, `redirect`)
 segmento vacío           -> reserved['']  (home)
-literal exacto           -> literal[segmento]  (cart, checkout/*)
-"order" + id + acción?   -> order         (POS)
-"0" (único segmento)     -> reserved['0'] (cuenta)
+nombre de archivo        -> archivos[primer segmento]  (robots.txt, sitemap)
 solo dígitos             -> by_length[strlen(segmento)]
-solo letras              -> place (lugar, jerárquico)
+solo letras              -> place (lugar, jerárquico; solo genealogía)
+segmento reservado       -> reserved[segmento]  ('0' cuenta; POS: 'c', 'p')
 cualquier otra cosa      -> 404
 ```
 

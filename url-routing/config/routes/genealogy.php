@@ -76,6 +76,13 @@ return [
         ],
     ],
 
+    // For crawlers: what may be indexed, and every page a visitor may see.
+    'archivos' => [
+        'robots.txt' => ['controller' => 'Genealogy\ArchivosController', 'method' => 'robots'],
+        'sitemap.xml' => ['controller' => 'Genealogy\ArchivosController', 'method' => 'indice'],
+        'sitemap' => ['controller' => 'Genealogy\ArchivosController', 'method' => 'parte'],
+    ],
+
     // Lengths 1-4 are deliberately unused below organizacion (5) — headroom
     // for future low-cardinality types without renumbering anything above.
     'reserved' => [

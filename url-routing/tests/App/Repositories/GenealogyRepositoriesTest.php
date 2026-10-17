@@ -10,6 +10,7 @@ use App\Repositories\Genealogy\LugarRepository;
 use App\Repositories\Genealogy\OrganizacionRepository;
 use App\Repositories\Genealogy\PersonaRepository;
 use App\Repositories\Genealogy\RegistroRepository;
+use App\Repositories\Genealogy\SitemapRepository;
 use App\Repositories\Genealogy\SucesoRepository;
 use App\Support\Database;
 use App\Support\Privacidad;
@@ -69,6 +70,33 @@ class GenealogyRepositoriesTest extends TestCase
     public function testFindMissingPersonaIsNull(string $driver): void
     {
         $this->assertNull((new PersonaRepository($this->db($driver), Privacidad::propietario()))->find(9999999999));
+    }
+
+    #[DataProvider('drivers')]
+    public function testSitemapListsOnlyWhatAVisitorMaySee(string $driver): void
+    {
+        $repo = new SitemapRepository($this->db($driver), Privacidad::publica());
+
+        $personas = $repo->claves('10', 1);
+        $this->assertContains('6128473101', $personas);
+        $this->assertNotContains((string)self::JUAN, $personas, 'born 1925: presumed alive');
+        $this->assertNotContains((string)self::CARLOS, $personas, 'alive');
+        $this->assertNotContains('6128473110', $personas, 'only in a private colección');
+        $this->assertSame(count($personas), $repo->cuantas('10'));
+
+        $this->assertSame(['1048293'], $repo->claves('7', 1), 'public colecciones only');
+        $this->assertContains('mx/jal/gdl', $repo->claves('l', 1));
+        $this->assertSame([], $repo->claves('10', 2));
+    }
+
+    #[DataProvider('drivers')]
+    public function testAliasDePointsAMergedIdAtThePersonaThatStayed(string $driver): void
+    {
+        $repo = new PersonaRepository($this->db($driver), Privacidad::publica());
+
+        $this->assertSame(self::JUAN, $repo->aliasDe(6128473188));
+        $this->assertNull($repo->aliasDe(self::JUAN), 'a live persona is not an alias');
+        $this->assertNull($repo->aliasDe(9999999999));
     }
 
     #[DataProvider('drivers')]

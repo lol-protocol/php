@@ -113,17 +113,20 @@ class BaseController
     /**
      * The standard read action: validate the route id (400), load the
      * resource with $find (404 when missing) and render $view with it under
-     * $key, plus whatever $extra returns for that id.
+     * $key, plus whatever $extra returns for that id. When the id is missing
+     * but $movida gives the URL it moved to, that's a 301 there instead.
      *
      * @param callable(int): ?array $find
      * @param (callable(int, array): array)|null $extra
+     * @param (callable(int): ?string)|null $movida
      */
     protected function renderFound(
         array $params,
         callable $find,
         string $view,
         string $key,
-        ?callable $extra = null
+        ?callable $extra = null,
+        ?callable $movida = null
     ): string {
         $id = $this->validateId($params['id'] ?? null);
         if ($id === null) {
@@ -132,7 +135,8 @@ class BaseController
 
         $row = $find((int)$id);
         if ($row === null) {
-            return $this->handleNotFound();
+            $destino = $movida ? $movida((int)$id) : null;
+            return $destino === null ? $this->handleNotFound() : $this->redirect($destino, 301);
         }
 
         return view($view, [$key => $row] + ($extra ? $extra((int)$id, $row) : []));
@@ -169,10 +173,11 @@ class BaseController
         return '<h1>403 - ' . htmlspecialchars($message) . '</h1>';
     }
 
-    /** 303 so a browser re-fetches the target with GET instead of replaying the POST. */
-    protected function redirect(string $location): string
+    /** 303 (the default) so a browser re-fetches the target with GET instead of replaying the POST; 301 for a URL that moved for good. */
+    protected function redirect(string $location, int $status = 303): string
     {
-        header("Location: {$location}", true, 303);
+        header("Location: {$location}", true, $status);
+        http_response_code($status);
         return '';
     }
 }
