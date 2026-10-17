@@ -143,6 +143,26 @@ await prueba('sin JavaScript se crea un marcalibro con un paisaje', async () => 
   await p.context().close();
 });
 
+await prueba('en modo oscuro el fondo es tinta, el texto papel y el logo va sobre papel', async () => {
+  const p = await abrir(navegador, { colorScheme: 'dark' });
+  for (const ruta of ['/', '/crear', '/marcalibro/mb-leyes-07']) {
+    await p.goto(base + ruta, { waitUntil: 'networkidle' });
+    const [fondo, texto, logo] = await p.evaluate(() => [
+      getComputedStyle(document.body).backgroundColor,
+      getComputedStyle(document.body).color,
+      getComputedStyle(document.querySelector('.marca img')).backgroundColor,
+    ]);
+    exigir(fondo === 'rgb(30, 42, 56)', `${ruta}: el fondo es ${fondo}`);
+    exigir(texto === 'rgb(244, 238, 225)', `${ruta}: el texto es ${texto}`);
+    exigir(logo === 'rgb(244, 238, 225)', `${ruta}: el logo va sobre ${logo}`);
+  }
+  // Las muestras de color siguen mostrando la paleta real, no los colores del tema.
+  const tinta = await p.evaluate(() => getComputedStyle(document.querySelector('.muestra--tinta')).backgroundColor);
+  exigir(tinta === 'rgb(30, 42, 56)', `la muestra de tinta es ${tinta}`);
+  exigir(p.errores.length === 0, `errores en consola: ${p.errores}`);
+  await p.context().close();
+});
+
 await prueba('en el celular no hay desplazamiento horizontal', async () => {
   const p = await abrir(navegador, { viewport: { width: 360, height: 740 }, isMobile: true, hasTouch: true });
   for (const ruta of ['/', '/crear', '/?categoria=teatro']) {
