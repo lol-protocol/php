@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | white smoke | `#F5F5F5` |  | Soft neutrality, cleanliness, calm and simplicity. | Subtle smoke: the intangible, transition and the prayer that rises. |
 | `yellow` | yellow | `#FFFF00` |  | Joy, optimism, energy, mental clarity and attention; also caution. | In the chakra tradition, associated with the solar plexus: illumination, will and knowledge. |
 | `yellowgreen` | yellow green | `#9ACD32` |  | Freshness, vitality, youth and calm. | Spring and growth; new life and renewal. |
+
+## Léxico básico en Inglés
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | white |  |  |  |
+| `black` | `#000000` | black |  |  |  |
+| `red` | `#FF0000` | red |  |  |  |
+| `green` | `#008000` | green |  |  |  |
+| `yellow` | `#FFFF00` | yellow |  |  |  |
+| `blue` | `#0000FF` | blue |  |  |  |
+| `brown` | `#A52A2A` | brown |  |  |  |
+| `purple` | `#800080` | purple |  |  |  |
+| `pink` | `#FFC0CB` | pink |  |  |  |
+| `orange` | `#FFA500` | orange |  |  |  |
+| `gray` | `#808080` | gray |  |  | grey (region=GB) |
+| `lightblue` | `#ADD8E6` | light blue |  |  |  |
+| `darkblue` | `#00008B` | dark blue |  |  |  |
+| `lightgreen` | `#90EE90` | light green |  |  |  |
+| `darkgreen` | `#006400` | dark green |  |  |  |
+| `skyblue` | `#87CEEB` | sky blue |  |  |  |
+| `turquoise` | `#40E0D0` | turquoise |  |  |  |
+| `beige` | `#F5F5DC` | beige |  |  |  |
+| `gold` | `#FFD700` | gold |  | golden |  |
+| `silver` | `#C0C0C0` | silver |  | silvery |  |
+| `violet` | `#EE82EE` | violet |  |  |  |
+| `indigo` | `#4B0082` | indigo |  |  |  |
+| `lavender` | `#E6E6FA` | lavender |  |  |  |
+| `maroon` | `#800000` | maroon |  |  |  |
+| `olive` | `#808000` | olive |  |  |  |
+| `navy` | `#000080` | navy |  | navy blue |  |
+| `cyan` | `#00FFFF` | cyan |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | salmon |  |  |  |
+| `coral` | `#FF7F50` | coral |  |  |  |
+| `crimson` | `#DC143C` | crimson |  |  |  |
+| `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lime` | `#00FF00` | lime |  | lime green |  |
+| `lilac` | `#CEA2FD` | lilac |  |  |  |
+| `burgundy` | `#900020` | burgundy |  |  |  |
+| `cream` | `#FFFFC2` | cream |  |  |  |
+| `scarlet` | `#FF2400` | scarlet |  |  |  |
+| `amber` | `#FFBF00` | amber |  |  |  |

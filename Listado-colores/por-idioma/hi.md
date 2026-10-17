@@ -156,3 +156,47 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | धुआँ सफ़ेद | `#F5F5F5` |  | कोमल तटस्थता, स्वच्छता, शांति और सादगी। | सूक्ष्म धुआँ: अमूर्त, संक्रमण और ऊपर उठती प्रार्थना। |
 | `yellow` | पीला | `#FFFF00` |  | आनंद, आशावाद, ऊर्जा, मानसिक स्पष्टता और ध्यान; साथ ही सावधानी। | चक्र परंपरा में मणिपुर चक्र से जुड़ा: ज्ञानोदय, इच्छाशक्ति और ज्ञान। |
 | `yellowgreen` | पीला-हरा | `#9ACD32` |  | ताज़गी, जीवंतता, यौवन और शांति। | वसंत और विकास; नया जीवन और नवीनीकरण। |
+
+## Léxico básico en Hindi
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | सफेद |  |  | सफ़ेद (ortografia=con_nukta) |
+| `black` | `#000000` | काला | काली (f), काले (m pl) |  |  |
+| `red` | `#FF0000` | लाल |  |  |  |
+| `green` | `#008000` | हरा | हरी (f), हरे (m pl) |  |  |
+| `yellow` | `#FFFF00` | पीला | पीली (f), पीले (m pl) |  |  |
+| `blue` | `#0000FF` | नीला | नीली (f), नीले (m pl) |  |  |
+| `brown` | `#A52A2A` | भूरा | भूरी (f), भूरे (m pl) |  |  |
+| `purple` | `#800080` | बैंगनी |  | जामुनी |  |
+| `pink` | `#FFC0CB` | गुलाबी |  |  |  |
+| `orange` | `#FFA500` | नारंगी |  |  |  |
+| `gray` | `#808080` | स्लेटी |  | धूसर, ग्रे |  |
+| `lightblue` | `#ADD8E6` | हल्का नीला |  |  |  |
+| `darkblue` | `#00008B` | गहरा नीला |  |  |  |
+| `lightgreen` | `#90EE90` | हल्का हरा |  |  |  |
+| `darkgreen` | `#006400` | गहरा हरा |  |  |  |
+| `skyblue` | `#87CEEB` | आसमानी |  |  |  |
+| `turquoise` | `#40E0D0` | फिरोज़ी |  |  |  |
+| `beige` | `#F5F5DC` | बेज |  |  |  |
+| `gold` | `#FFD700` | सुनहरा | सुनहरी (f), सुनहरे (m pl) |  |  |
+| `silver` | `#C0C0C0` | रुपहला | रुपहली (f), रुपहले (m pl) | चाँदी |  |
+| `violet` | `#EE82EE` | बैंगनी |  |  |  |
+| `indigo` | `#4B0082` | नील |  | इंडिगो |  |
+| `lavender` | `#E6E6FA` | लैवेंडर |  |  |  |
+| `maroon` | `#800000` | मैरून |  |  |  |
+| `olive` | `#808000` | जैतूनी |  |  |  |
+| `navy` | `#000080` | नेवी ब्लू |  |  |  |
+| `cyan` | `#00FFFF` | सियान |  |  |  |
+| `magenta` | `#FF00FF` | मैजेंटा |  |  |  |
+| `salmon` | `#FA8072` | सैल्मन |  |  |  |
+| `coral` | `#FF7F50` | मूंगिया |  |  |  |
+| `crimson` | `#DC143C` | किरमिजी |  |  |  |
+| `khaki` | `#F0E68C` | खाकी |  |  |  |
+| `lilac` | `#CEA2FD` | लाइलैक |  |  |  |
+| `burgundy` | `#900020` | बरगंडी |  | कत्थई |  |
+| `cream` | `#FFFFC2` | क्रीम |  |  |  |
+| `scarlet` | `#FF2400` | सुर्ख |  |  |  |
+| `amber` | `#FFBF00` | एम्बर |  |  |  |

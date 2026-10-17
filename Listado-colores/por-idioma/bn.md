@@ -156,3 +156,43 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | ধোঁয়াটে সাদা | `#F5F5F5` |  | কোমল নিরপেক্ষতা, পরিচ্ছন্নতা, প্রশান্তি ও সরলতা। | সূক্ষ্ম ধোঁয়া: অস্পর্শযোগ্য, পরিবর্তন ও উর্ধ্বগামী প্রার্থনা। |
 | `yellow` | হলুদ | `#FFFF00` |  | আনন্দ, আশাবাদ, শক্তি, মানসিক স্বচ্ছতা ও মনোযোগ; সঙ্গে সতর্কতাও। | চক্র ঐতিহ্যে মণিপুর চক্রের সঙ্গে যুক্ত: আলোকপ্রাপ্তি, ইচ্ছাশক্তি ও জ্ঞান। |
 | `yellowgreen` | হলুদ-সবুজ | `#9ACD32` |  | সতেজতা, প্রাণবন্ততা, যৌবন ও প্রশান্তি। | বসন্ত ও বৃদ্ধি; নতুন জীবন ও নবায়ন। |
+
+## Léxico básico en Bengalí
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | সাদা |  |  |  |
+| `black` | `#000000` | কালো |  |  |  |
+| `red` | `#FF0000` | লাল |  |  |  |
+| `green` | `#008000` | সবুজ |  |  |  |
+| `yellow` | `#FFFF00` | হলুদ |  |  |  |
+| `blue` | `#0000FF` | নীল |  |  |  |
+| `brown` | `#A52A2A` | বাদামি |  |  |  |
+| `purple` | `#800080` | বেগুনি |  |  |  |
+| `pink` | `#FFC0CB` | গোলাপি |  |  |  |
+| `orange` | `#FFA500` | কমলা |  |  |  |
+| `gray` | `#808080` | ধূসর |  | ছাই |  |
+| `lightblue` | `#ADD8E6` | হালকা নীল |  |  |  |
+| `darkblue` | `#00008B` | গাঢ় নীল |  |  |  |
+| `lightgreen` | `#90EE90` | হালকা সবুজ |  |  |  |
+| `darkgreen` | `#006400` | গাঢ় সবুজ |  |  |  |
+| `skyblue` | `#87CEEB` | আকাশি |  |  |  |
+| `turquoise` | `#40E0D0` | ফিরোজা |  |  |  |
+| `beige` | `#F5F5DC` | বেইজ |  |  |  |
+| `gold` | `#FFD700` | সোনালি |  |  |  |
+| `silver` | `#C0C0C0` | রুপালি |  |  |  |
+| `violet` | `#EE82EE` | বেগুনি |  |  |  |
+| `indigo` | `#4B0082` | ইন্ডিগো |  |  |  |
+| `lavender` | `#E6E6FA` | ল্যাভেন্ডার |  |  |  |
+| `maroon` | `#800000` | মেরুন |  |  |  |
+| `olive` | `#808000` | জলপাই |  |  |  |
+| `navy` | `#000080` | নেভি |  |  |  |
+| `cyan` | `#00FFFF` | সায়ান |  |  |  |
+| `magenta` | `#FF00FF` | ম্যাজেন্টা |  |  |  |
+| `coral` | `#FF7F50` | প্রবাল |  |  |  |
+| `crimson` | `#DC143C` | রক্তলাল |  |  |  |
+| `khaki` | `#F0E68C` | খাকি |  |  |  |
+| `lilac` | `#CEA2FD` | লিলাক |  |  |  |
+| `cream` | `#FFFFC2` | ক্রিম |  |  |  |

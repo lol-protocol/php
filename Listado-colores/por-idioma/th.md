@@ -156,3 +156,46 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | ขาวควัน | `#F5F5F5` |  | ความเป็นกลางอ่อนโยน ความสะอาด ความสงบ และความเรียบง่าย | ควันละเอียดอ่อน: สิ่งที่จับต้องไม่ได้ การเปลี่ยนผ่าน และคำอธิษฐานที่ลอยขึ้น |
 | `yellow` | เหลือง | `#FFFF00` |  | ความสุข ความมองโลกในแง่ดี พลังงาน ความกระจ่างทางความคิด และความตั้งใจ; รวมถึงความระมัดระวัง | ในประเพณีจักระ เกี่ยวข้องกับจักระสุริยประสาท: การตรัสรู้ เจตจำนง และความรู้ |
 | `yellowgreen` | เหลืองเขียว | `#9ACD32` |  | ความสดชื่น ความมีชีวิตชีวา วัยเยาว์ และความสงบ | ฤดูใบไม้ผลิและการเติบโต; ชีวิตใหม่และการฟื้นคืน |
+
+## Léxico básico en Tailandés
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | ขาว |  |  | สีขาว (forma=con_prefijo_si) |
+| `black` | `#000000` | ดำ |  |  | สีดำ (forma=con_prefijo_si) |
+| `red` | `#FF0000` | แดง |  |  | สีแดง (forma=con_prefijo_si) |
+| `green` | `#008000` | เขียว |  |  | สีเขียว (forma=con_prefijo_si) |
+| `yellow` | `#FFFF00` | เหลือง |  |  | สีเหลือง (forma=con_prefijo_si) |
+| `blue` | `#0000FF` | น้ำเงิน |  |  | สีน้ำเงิน (forma=con_prefijo_si) |
+| `brown` | `#A52A2A` | น้ำตาล |  |  | สีน้ำตาล (forma=con_prefijo_si) |
+| `purple` | `#800080` | ม่วง |  |  | สีม่วง (forma=con_prefijo_si) |
+| `pink` | `#FFC0CB` | ชมพู |  |  | สีชมพู (forma=con_prefijo_si) |
+| `orange` | `#FFA500` | ส้ม |  |  | สีส้ม (forma=con_prefijo_si) |
+| `gray` | `#808080` | เทา |  |  | สีเทา (forma=con_prefijo_si) |
+| `lightblue` | `#ADD8E6` | ฟ้า |  | ฟ้าอ่อน | สีฟ้า (forma=con_prefijo_si) |
+| `darkblue` | `#00008B` | น้ำเงินเข้ม |  |  |  |
+| `lightgreen` | `#90EE90` | เขียวอ่อน |  |  |  |
+| `darkgreen` | `#006400` | เขียวเข้ม |  |  |  |
+| `skyblue` | `#87CEEB` | ฟ้า |  |  | สีฟ้า (forma=con_prefijo_si) |
+| `turquoise` | `#40E0D0` | เทอร์ควอยซ์ |  |  |  |
+| `beige` | `#F5F5DC` | เบจ |  |  |  |
+| `gold` | `#FFD700` | ทอง |  |  | สีทอง (forma=con_prefijo_si) |
+| `silver` | `#C0C0C0` | เงิน |  |  | สีเงิน (forma=con_prefijo_si) |
+| `violet` | `#EE82EE` | ม่วง |  |  |  |
+| `indigo` | `#4B0082` | คราม |  |  |  |
+| `lavender` | `#E6E6FA` | ลาเวนเดอร์ |  |  |  |
+| `maroon` | `#800000` | แดงเลือดหมู |  |  |  |
+| `olive` | `#808000` | เขียวมะกอก |  |  |  |
+| `navy` | `#000080` | กรมท่า |  |  |  |
+| `cyan` | `#00FFFF` | ไซแอน |  |  |  |
+| `magenta` | `#FF00FF` | มาเจนต้า |  |  |  |
+| `salmon` | `#FA8072` | แซลมอน |  |  |  |
+| `khaki` | `#F0E68C` | กากี |  |  |  |
+| `lime` | `#00FF00` | เขียวมะนาว |  |  |  |
+| `lilac` | `#CEA2FD` | ไลแลค |  |  |  |
+| `burgundy` | `#900020` | เบอร์กันดี |  |  |  |
+| `cream` | `#FFFFC2` | ครีม |  |  |  |
+| `scarlet` | `#FF2400` | แดงสด |  |  |  |
+| `amber` | `#FFBF00` | อำพัน |  |  |  |

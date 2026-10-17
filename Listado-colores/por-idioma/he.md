@@ -156,3 +156,46 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | לבן עשן | `#F5F5F5` |  | ניטרליות רכה, ניקיון, רוגע ופשטות. | עשן עדין: הבלתי מוחשי, המעבר והתפילה העולה. |
 | `yellow` | צהוב | `#FFFF00` |  | שמחה, אופטימיות, אנרגיה, בהירות מחשבתית וקשב; גם זהירות. | במסורת הצ'אקרות, קשור למקלעת השמש: הארה, רצון וידע. |
 | `yellowgreen` | צהוב-ירוק | `#9ACD32` |  | רעננות, חיוניות, נעורים ורוגע. | אביב וצמיחה; חיים חדשים והתחדשות. |
+
+## Léxico básico en Hebreo
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | לבן | לבנה (f), לבנים (m pl), לבנות (f pl) |  |  |
+| `black` | `#000000` | שחור | שחורה (f), שחורים (m pl), שחורות (f pl) |  |  |
+| `red` | `#FF0000` | אדום | אדומה (f), אדומים (m pl), אדומות (f pl) |  |  |
+| `green` | `#008000` | ירוק | ירוקה (f), ירוקים (m pl), ירוקות (f pl) |  |  |
+| `yellow` | `#FFFF00` | צהוב | צהובה (f), צהובים (m pl), צהובות (f pl) |  |  |
+| `blue` | `#0000FF` | כחול | כחולה (f), כחולים (m pl), כחולות (f pl) |  |  |
+| `brown` | `#A52A2A` | חום | חומה (f), חומים (m pl), חומות (f pl) |  |  |
+| `purple` | `#800080` | סגול | סגולה (f), סגולים (m pl), סגולות (f pl) |  |  |
+| `pink` | `#FFC0CB` | ורוד | ורודה (f), ורודים (m pl), ורודות (f pl) |  |  |
+| `orange` | `#FFA500` | כתום | כתומה (f), כתומים (m pl), כתומות (f pl) |  |  |
+| `gray` | `#808080` | אפור | אפורה (f), אפורים (m pl), אפורות (f pl) |  |  |
+| `lightblue` | `#ADD8E6` | תכלת |  |  |  |
+| `darkblue` | `#00008B` | כחול כהה |  |  |  |
+| `lightgreen` | `#90EE90` | ירוק בהיר |  |  |  |
+| `darkgreen` | `#006400` | ירוק כהה |  |  |  |
+| `skyblue` | `#87CEEB` | תכלת |  |  |  |
+| `turquoise` | `#40E0D0` | טורקיז |  |  |  |
+| `beige` | `#F5F5DC` | בז' |  |  |  |
+| `gold` | `#FFD700` | זהב |  |  |  |
+| `silver` | `#C0C0C0` | כסף |  |  |  |
+| `violet` | `#EE82EE` | סגול | סגולה (f), סגולים (m pl), סגולות (f pl) |  |  |
+| `indigo` | `#4B0082` | אינדיגו |  |  |  |
+| `lavender` | `#E6E6FA` | לבנדר |  |  |  |
+| `olive` | `#808000` | זית |  |  |  |
+| `cyan` | `#00FFFF` | ציאן |  |  |  |
+| `magenta` | `#FF00FF` | מגנטה |  |  |  |
+| `salmon` | `#FA8072` | סלמון |  |  |  |
+| `coral` | `#FF7F50` | אלמוג |  |  |  |
+| `crimson` | `#DC143C` | ארגמן |  |  |  |
+| `khaki` | `#F0E68C` | חאקי |  |  |  |
+| `lime` | `#00FF00` | ליים |  |  |  |
+| `lilac` | `#CEA2FD` | לילך |  |  |  |
+| `burgundy` | `#900020` | בורדו |  |  |  |
+| `cream` | `#FFFFC2` | קרם |  |  |  |
+| `scarlet` | `#FF2400` | שני |  |  |  |
+| `amber` | `#FFBF00` | ענבר |  |  |  |

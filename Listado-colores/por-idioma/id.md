@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | putih asap | `#F5F5F5` |  | Netralitas yang lembut, kebersihan, ketenangan, dan kesederhanaan. | Asap halus: yang tak teraba, peralihan, dan doa yang membubung. |
 | `yellow` | kuning | `#FFFF00` |  | Kegembiraan, optimisme, energi, kejernihan pikiran, dan perhatian; juga kewaspadaan. | Dalam tradisi cakra, dikaitkan dengan pleksus surya: pencerahan, kehendak, dan pengetahuan. |
 | `yellowgreen` | kuning-hijau | `#9ACD32` |  | Kesegaran, vitalitas, kemudaan, dan ketenangan. | Musim semi dan pertumbuhan; kehidupan baru dan pembaruan. |
+
+## Léxico básico en Indonesio
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | putih |  |  |  |
+| `black` | `#000000` | hitam |  |  |  |
+| `red` | `#FF0000` | merah |  |  |  |
+| `green` | `#008000` | hijau |  |  |  |
+| `yellow` | `#FFFF00` | kuning |  |  |  |
+| `blue` | `#0000FF` | biru |  |  |  |
+| `brown` | `#A52A2A` | cokelat |  |  | coklat (ortografia=alternativa) |
+| `purple` | `#800080` | ungu |  |  |  |
+| `pink` | `#FFC0CB` | merah muda |  | jambon, merah jambu, pink |  |
+| `orange` | `#FFA500` | oranye |  | jingga |  |
+| `gray` | `#808080` | abu-abu |  | kelabu |  |
+| `lightblue` | `#ADD8E6` | biru muda |  |  |  |
+| `darkblue` | `#00008B` | biru tua |  |  |  |
+| `lightgreen` | `#90EE90` | hijau muda |  |  |  |
+| `darkgreen` | `#006400` | hijau tua |  |  |  |
+| `skyblue` | `#87CEEB` | biru langit |  |  |  |
+| `turquoise` | `#40E0D0` | turkuois |  |  |  |
+| `beige` | `#F5F5DC` | beige |  |  |  |
+| `gold` | `#FFD700` | emas |  | keemasan |  |
+| `silver` | `#C0C0C0` | perak |  | keperakan |  |
+| `violet` | `#EE82EE` | violet |  |  |  |
+| `indigo` | `#4B0082` | nila |  |  |  |
+| `lavender` | `#E6E6FA` | lavender |  |  |  |
+| `maroon` | `#800000` | merah marun |  |  |  |
+| `olive` | `#808000` | hijau zaitun |  |  |  |
+| `navy` | `#000080` | biru dongker |  |  |  |
+| `cyan` | `#00FFFF` | sian |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | salmon |  |  |  |
+| `coral` | `#FF7F50` | koral |  |  |  |
+| `crimson` | `#DC143C` | merah padam |  |  |  |
+| `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lime` | `#00FF00` | hijau limau |  |  |  |
+| `lilac` | `#CEA2FD` | lilac |  |  |  |
+| `burgundy` | `#900020` | merah anggur |  |  |  |
+| `cream` | `#FFFFC2` | krem |  |  |  |
+| `scarlet` | `#FF2400` | merah menyala |  |  |  |
+| `amber` | `#FFBF00` | ambar |  |  |  |

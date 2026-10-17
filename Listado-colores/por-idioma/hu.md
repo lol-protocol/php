@@ -156,3 +156,47 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | füstfehér | `#F5F5F5` |  | Lágy semlegesség, rendezettség, nyugalom és egyszerűség. | Finom füst: a megfoghatatlan, az átmenet és a felszálló ima. |
 | `yellow` | sárga | `#FFFF00` |  | Öröm, optimizmus, energia, szellemi tisztaság és figyelem; egyben óvatosság. | A csakrahagyományban a napfonathoz kötődik: megvilágosodás, akarat és tudás. |
 | `yellowgreen` | sárgászöld | `#9ACD32` |  | Frissesség, életerő, fiatalság és nyugalom. | Tavasz és növekedés; új élet és megújulás. |
+
+## Léxico básico en Húngaro
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | fehér |  |  |  |
+| `black` | `#000000` | fekete |  |  |  |
+| `red` | `#FF0000` | piros |  | vörös |  |
+| `green` | `#008000` | zöld |  |  |  |
+| `yellow` | `#FFFF00` | sárga |  |  |  |
+| `blue` | `#0000FF` | kék |  |  |  |
+| `brown` | `#A52A2A` | barna |  |  |  |
+| `purple` | `#800080` | lila |  |  |  |
+| `pink` | `#FFC0CB` | rózsaszín |  |  |  |
+| `orange` | `#FFA500` | narancssárga |  | narancs |  |
+| `gray` | `#808080` | szürke |  |  |  |
+| `lightblue` | `#ADD8E6` | világoskék |  |  |  |
+| `darkblue` | `#00008B` | sötétkék |  |  |  |
+| `lightgreen` | `#90EE90` | világoszöld |  |  |  |
+| `darkgreen` | `#006400` | sötétzöld |  |  |  |
+| `skyblue` | `#87CEEB` | égszínkék |  |  |  |
+| `turquoise` | `#40E0D0` | türkiz |  |  |  |
+| `beige` | `#F5F5DC` | bézs |  |  |  |
+| `gold` | `#FFD700` | arany |  |  |  |
+| `silver` | `#C0C0C0` | ezüst |  |  |  |
+| `violet` | `#EE82EE` | ibolya |  |  |  |
+| `indigo` | `#4B0082` | indigó |  |  |  |
+| `lavender` | `#E6E6FA` | levendula |  |  |  |
+| `maroon` | `#800000` | gesztenyebarna |  |  |  |
+| `olive` | `#808000` | olajzöld |  |  |  |
+| `navy` | `#000080` | tengerészkék |  |  |  |
+| `cyan` | `#00FFFF` | ciánkék |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | lazacszín |  |  |  |
+| `coral` | `#FF7F50` | korall |  |  |  |
+| `crimson` | `#DC143C` | karmazsinvörös |  |  |  |
+| `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lilac` | `#CEA2FD` | orgona |  |  |  |
+| `burgundy` | `#900020` | bordó |  |  |  |
+| `cream` | `#FFFFC2` | krém |  |  |  |
+| `scarlet` | `#FF2400` | skarlát |  |  |  |
+| `amber` | `#FFBF00` | borostyán |  |  |  |

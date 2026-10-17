@@ -156,3 +156,47 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | røgvhid | `#F5F5F5` |  | Blød neutralitet, renhed, ro og enkelhed. | Subtil røg: det uhåndgribelige, overgangen og bønnen, der stiger. |
 | `yellow` | gul | `#FFFF00` |  | Glæde, optimisme, energi, mental klarhed og opmærksomhed; også forsigtighed. | I chakratraditionen forbundet med solar plexus: oplysning, vilje og viden. |
 | `yellowgreen` | gulgrøn | `#9ACD32` |  | Friskhed, vitalitet, ungdom og ro. | Forår og vækst; nyt liv og fornyelse. |
+
+## Léxico básico en Danés
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | hvid | hvidt (n), hvide (pl) |  |  |
+| `black` | `#000000` | sort | sorte (pl) |  |  |
+| `red` | `#FF0000` | rød | rødt (n), røde (pl) |  |  |
+| `green` | `#008000` | grøn | grønt (n), grønne (pl) |  |  |
+| `yellow` | `#FFFF00` | gul | gult (n), gule (pl) |  |  |
+| `blue` | `#0000FF` | blå |  |  |  |
+| `brown` | `#A52A2A` | brun | brunt (n), brune (pl) |  |  |
+| `purple` | `#800080` | lilla |  | violet |  |
+| `pink` | `#FFC0CB` | lyserød | lyserødt (n), lyserøde (pl) | pink |  |
+| `orange` | `#FFA500` | orange |  |  |  |
+| `gray` | `#808080` | grå |  |  |  |
+| `lightblue` | `#ADD8E6` | lyseblå |  |  |  |
+| `darkblue` | `#00008B` | mørkeblå |  |  |  |
+| `lightgreen` | `#90EE90` | lysegrøn | lysegrønt (n), lysegrønne (pl) |  |  |
+| `darkgreen` | `#006400` | mørkegrøn | mørkegrønt (n), mørkegrønne (pl) |  |  |
+| `skyblue` | `#87CEEB` | himmelblå |  |  |  |
+| `turquoise` | `#40E0D0` | turkis |  |  |  |
+| `beige` | `#F5F5DC` | beige |  |  |  |
+| `gold` | `#FFD700` | guld |  | gylden |  |
+| `silver` | `#C0C0C0` | sølv |  | sølvfarvet |  |
+| `violet` | `#EE82EE` | violet |  |  |  |
+| `indigo` | `#4B0082` | indigo |  |  |  |
+| `lavender` | `#E6E6FA` | lavendel |  |  |  |
+| `maroon` | `#800000` | rødbrun | rødbrunt (n), rødbrune (pl) | kastanjebrun |  |
+| `olive` | `#808000` | olivengrøn | olivengrønt (n), olivengrønne (pl) |  |  |
+| `navy` | `#000080` | marineblå |  |  |  |
+| `cyan` | `#00FFFF` | cyan |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | laksefarvet |  |  |  |
+| `coral` | `#FF7F50` | koral |  | koralrød |  |
+| `crimson` | `#DC143C` | karmosinrød | karmosinrødt (n), karmosinrøde (pl) |  |  |
+| `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lime` | `#00FF00` | limegrøn | limegrønt (n), limegrønne (pl) |  |  |
+| `burgundy` | `#900020` | bordeaux |  | vinrød |  |
+| `cream` | `#FFFFC2` | cremefarvet |  | creme |  |
+| `scarlet` | `#FF2400` | skarlagenrød | skarlagenrødt (n), skarlagenrøde (pl) |  |  |
+| `amber` | `#FFBF00` | rav |  | ravfarvet |  |

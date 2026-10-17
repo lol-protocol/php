@@ -1,11 +1,12 @@
 # Listado de colores con nombre y su significado
 
-Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y este listado da la lista de nombres a reconocer. Tiene tres archivos de datos con alcances distintos:
+Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: las palabras de color aparecen como sustantivos, adjetivos y nombres propios, y este listado da la lista de nombres a reconocer. Tiene cuatro archivos de datos con alcances distintos:
 
 | Archivo | Qué contiene | Idiomas | Significados |
 |---|---|---|---|
 | `colores.csv` | 148 colores CSS, anotados: forma natural en inglés, nombre en 30 idiomas, hex y significados en español | 30 (ver lista abajo) | Psicológico y místico, en español |
 | `significados-idiomas.csv` | Los significados de esos 148 colores en los otros 29 idiomas (4.292 filas) | 29 | Psicológico y místico, traducidos |
+| `lexico-basico.csv` | 38 términos de color de uso real (blanco, azul claro, granate…): forma base, flexiones, sinónimos y variantes | 30 | No tiene |
 | `nombres-completos.csv` | 31.935 nombres de color con su hex, de la lista de `meodai/color-names`, y el color CSS más cercano a cada uno | 1: inglés | No tiene propios; se pueden heredar del color CSS más cercano (ver «Color CSS más cercano») |
 
 Cada color de los 148 se puede leer en cualquiera de los 30 idiomas (nombre, hex y los dos significados) en `por-idioma/<código>.md`; `colores-por-idioma.md` es el índice de esas páginas.
@@ -45,6 +46,20 @@ Los nombres CSS son identificadores (`lightgoldenrodyellow`), pero en un texto a
 - **Forma natural en inglés** (`forma_natural_en` en `colores.csv`): el mismo nombre con espacios entre palabras, en minúsculas (`alice blue`, `dark slate gray`). En los otros 29 idiomas la columna `nombre_<código>` ya está en su forma natural, con espacios donde el idioma los usa. La forma con guion que se usa como adjetivo delante del sustantivo (`light-blue shirt`) se obtiene cambiando los espacios por guiones; los exportes la incluyen.
 - **Alias:** colores CSS con exactamente el mismo hex. Se calculan a partir de `colores.csv`, no se escriben a mano, y salen en la columna *Alias* de cada página de `por-idioma/`. Hay nueve grupos de dos: `gray`/`grey`, `darkgray`/`darkgrey`, `dimgray`/`dimgrey`, `lightgray`/`lightgrey`, `slategray`/`slategrey`, `darkslategray`/`darkslategrey` y `lightslategray`/`lightslategrey` (dos grafías del mismo nombre, tipo `ortografia`), y `aqua`/`cyan` y `fuchsia`/`magenta` (nombres distintos del mismo color, tipo `mismo_color`). La especificación CSS define estos nueve pares.
 
+## Léxico básico
+
+Los 148 nombres CSS son identificadores técnicos; muchas de sus traducciones (`peachpuff`, `papayawhip`) son calcos que nadie dice. `lexico-basico.csv` recoge, en cambio, los términos que sí se usan para hablar de color, y las formas que toman en una frase, que es lo que un etiquetador necesita reconocer.
+
+- **38 conceptos.** Los 11 términos básicos de color (`white`, `black`, `red`, `green`, `yellow`, `blue`, `brown`, `purple`, `pink`, `orange`, `gray`), cinco con claro y oscuro (`lightblue`, `darkblue`, `lightgreen`, `darkgreen`, `skyblue`) y 22 más frecuentes (`turquoise`, `beige`, `gold`, `maroon`, `navy`, `lilac`, `burgundy`, `cream`, `scarlet`, `amber`…). El concepto lleva el nombre del color CSS cuando existe; si no, el de un nombre de `nombres-completos.csv`, y de ahí sale su hex de referencia.
+- **Cobertura.** Los 11 básicos están en los 30 idiomas (lo exige el generador). Los demás conceptos no: donde no hay un término claro, no hay fila. El suajili tiene 18 conceptos, el bengalí 33 y el griego 35; el resto, entre 36 y 38. Hay 2.400 filas: 1.095 lemas, 1.004 flexiones, 260 sinónimos y 41 variantes.
+- **Columnas.** `concepto`, `idioma`, `forma`, `tipo` y `rasgos`.
+- **Tipos.** `lema` (la forma de diccionario; uno por concepto e idioma), `flexion` (otra forma del mismo término), `sinonimo` y `variante` (misma palabra con otra grafía o uso regional).
+- **Rasgos de las flexiones**, con los nombres de Universal Dependencies: `Gender` (`Masc`, `Fem`, `Neut`), `Number` (`Sing`, `Plur`) y `Animacy=Anim` para el plural animado del polaco y el checo; en alemán y neerlandés, `Terminacion` (`-e`, `-en`, `-er`, `-es`, `-em`). Los sinónimos y variantes pueden llevar una etiqueta `clave=valor` con `region`, `ortografia`, `registro`, `uso` o `forma` (por ejemplo `castanho` con `region=PT`, `зеленый` con `ortografia=sin_dieresis`, o el prefijo tailandés `สี` con `forma=con_prefijo_si`).
+- **Qué no incluye.** En los idiomas con casos (alemán, polaco, checo, ruso, ucraniano, griego, finés, húngaro, turco) solo hay nominativo; en alemán, las cinco terminaciones atributivas. Los términos de varias palabras (`azul claro`, `bleu clair`) y los que no cambian de forma solo traen el lema. En japonés, las formas con い (`白い`) y con 色 van como sinónimos del lema. Algunos conceptos comparten forma en un idioma (en francés, `violet` sirve para `purple` y `violet`; `bordeaux` para `maroon` y `burgundy`): es una ambigüedad real, no un error.
+- **Hex de referencia.** Es un prototipo del término, no su extensión: «blue» abarca muchos azules. Para los conceptos con color CSS es el hex CSS; para `lilac`, `burgundy`, `cream`, `scarlet` y `amber`, el de `nombres-completos.csv`. Ojo: la lista completa usa otros hex para algunos nombres que también existen en CSS (por ejemplo `turquoise`).
+- **Las formas pueden no coincidir con `colores.csv`.** Allí son traducciones del nombre CSS; aquí, el término de uso real (en `colores.csv` el alemán va con mayúscula inicial y el japonés a menudo en katakana; el léxico usa `weiß`).
+- **Calidad.** Lo escribió un asistente de IA y no lo ha revisado ningún hablante nativo. Las formas regulares (por ejemplo, los adjetivos rusos, polacos o checos) siguen reglas conocidas; las irregulares, los sinónimos y los términos poco frecuentes son lo más expuesto a error, sobre todo en suajili, bengalí, persa, tailandés y hebreo. Cada página de `por-idioma/` muestra el léxico de su idioma, para facilitar esa revisión.
+
 ## Color CSS más cercano
 
 Los 148 colores CSS tienen significados; los 31.935 nombres de la lista completa no. Para poder darles una pista sin inventar nada, `nombres-completos.csv` trae tres columnas calculadas:
@@ -80,8 +95,9 @@ Límites que conviene tener presentes:
 ## Archivos
 
 - `colores.csv`: tabla anotada. Columnas: `nombre_ingles`, `forma_natural_en`, `nombre_es`, `nombre_fr`, `nombre_pt`, `nombre_it`, `nombre_de`, … hasta `nombre_sw` (29 columnas de idioma en total, además del inglés), `hex`, `significado_psicologico`, `significado_mistico`.
+- `lexico-basico.csv`: léxico básico. Columnas: `concepto`, `idioma`, `forma`, `tipo`, `rasgos`. Filas ordenadas por concepto (en el orden de `CONCEPTOS` de `generar-tabla.py`), idioma y tipo.
 - `significados-idiomas.csv`: los significados en los otros 29 idiomas. Columnas: `idioma`, `nombre_ingles`, `significado_psicologico`, `significado_mistico`. Una fila por color e idioma, ordenadas por `nombre_ingles` y, dentro de cada color, por el orden de idiomas de `generar-tabla.py`. Los pares que en `colores.csv` tienen el mismo texto en español (como `gray` y `grey`) tienen también el mismo texto traducido.
-- `por-idioma/<código>.md`: una página por idioma con el nombre, el hex y los dos significados de los 148 colores. Generado.
+- `por-idioma/<código>.md`: una página por idioma con el nombre, el hex, los alias y los dos significados de los 148 colores, y la tabla del léxico básico de ese idioma. Generado.
 - `colores-por-idioma.md`: índice de las páginas por idioma. Generado.
 - `nombres-completos.csv`: lista completa. Columnas de la fuente: `nombre_ingles`, `hex`, `curada`. Columnas calculadas por el generador: `css_cercano`, `delta_e`, `cercania`.
 - `colorimetria.py`: sRGB a CIELAB y CIEDE2000, con los vectores de prueba de Sharma et al. Lo importa `generar-tabla.py`.
@@ -102,6 +118,7 @@ python3 generar-tabla.py --comprobar    # solo comprueba: datos válidos y archi
 Reglas para editar los CSV (el generador las comprueba):
 
 - `colores.csv`: `nombre_ingles` en minúsculas, sin espacios y único; `forma_natural_en` igual que `nombre_ingles` pero con espacios entre palabras; `hex` en `#RRGGBB` y en mayúsculas; ningún campo vacío; ningún campo con `|` ni saltos de línea; filas ordenadas por `nombre_ingles`.
+- `lexico-basico.csv`: cada fila con concepto, idioma y tipo de la lista; un solo lema por concepto e idioma; los 11 conceptos básicos con lema en los 30 idiomas; formas con lema; ninguna forma vacía, con `|`, comillas o saltos de línea; sin letras latinas en los idiomas de otra escritura (el, ru, uk, ar, he, fa, hi, bn, zh, ja, ko, th); rasgos válidos según el tipo; sin filas repetidas; filas ordenadas.
 - `significados-idiomas.csv`: un par de significados por cada color de `colores.csv` y cada idioma (todos menos `es`), sin repetidos; ningún campo vacío, con `|` ni con saltos de línea; ningún significado igual al texto en español (sin traducir). Si cambias un significado en `colores.csv`, actualiza también sus 29 traducciones.
 - `nombres-completos.csv`: nombre único sin distinguir mayúsculas; `hex` en `#RRGGBB`; `curada` vacía o `x`; filas ordenadas por nombre sin distinguir mayúsculas; ningún nombre con `|`, comas, comillas ni saltos de línea. Las tres primeras columnas se generaron una vez desde la fuente; `css_cercano`, `delta_e` y `cercania` las reescribe el generador y `--comprobar` falla si no coinciden con lo que calcula.
 

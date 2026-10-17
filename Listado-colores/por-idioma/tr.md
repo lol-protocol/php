@@ -156,3 +156,47 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | duman beyazı | `#F5F5F5` |  | Yumuşak yansızlık, temizlik, sakinlik ve sadelik. | İnce duman: soyut olan, geçiş ve yükselen dua. |
 | `yellow` | sarı | `#FFFF00` |  | Neşe, iyimserlik, enerji, zihinsel berraklık ve dikkat; ayrıca ihtiyat. | Çakra geleneğinde solar pleksusla ilişkilendirilir: aydınlanma, irade ve bilgi. |
 | `yellowgreen` | sarımsı yeşil | `#9ACD32` |  | Ferahlık, canlılık, gençlik ve sakinlik. | İlkbahar ve büyüme; yeni yaşam ve yenilenme. |
+
+## Léxico básico en Turco
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | beyaz |  |  |  |
+| `black` | `#000000` | siyah |  | kara |  |
+| `red` | `#FF0000` | kırmızı |  | al, kızıl |  |
+| `green` | `#008000` | yeşil |  |  |  |
+| `yellow` | `#FFFF00` | sarı |  |  |  |
+| `blue` | `#0000FF` | mavi |  |  |  |
+| `brown` | `#A52A2A` | kahverengi |  | kahve |  |
+| `purple` | `#800080` | mor |  |  |  |
+| `pink` | `#FFC0CB` | pembe |  |  |  |
+| `orange` | `#FFA500` | turuncu |  | portakal |  |
+| `gray` | `#808080` | gri |  | boz |  |
+| `lightblue` | `#ADD8E6` | açık mavi |  |  |  |
+| `darkblue` | `#00008B` | koyu mavi |  |  |  |
+| `lightgreen` | `#90EE90` | açık yeşil |  |  |  |
+| `darkgreen` | `#006400` | koyu yeşil |  |  |  |
+| `skyblue` | `#87CEEB` | gök mavisi |  |  |  |
+| `turquoise` | `#40E0D0` | turkuaz |  |  |  |
+| `beige` | `#F5F5DC` | bej |  |  |  |
+| `gold` | `#FFD700` | altın |  |  |  |
+| `silver` | `#C0C0C0` | gümüş |  |  |  |
+| `violet` | `#EE82EE` | menekşe |  |  |  |
+| `indigo` | `#4B0082` | çivit |  |  |  |
+| `lavender` | `#E6E6FA` | lavanta |  |  |  |
+| `maroon` | `#800000` | bordo |  | vişneçürüğü |  |
+| `olive` | `#808000` | zeytin yeşili |  |  |  |
+| `navy` | `#000080` | lacivert |  |  |  |
+| `cyan` | `#00FFFF` | camgöbeği |  |  |  |
+| `magenta` | `#FF00FF` | macenta |  |  |  |
+| `salmon` | `#FA8072` | somon |  |  |  |
+| `coral` | `#FF7F50` | mercan |  |  |  |
+| `khaki` | `#F0E68C` | haki |  |  |  |
+| `lime` | `#00FF00` | limon yeşili |  |  |  |
+| `lilac` | `#CEA2FD` | eflatun |  | lila |  |
+| `burgundy` | `#900020` | bordo |  |  |  |
+| `cream` | `#FFFFC2` | krem |  |  |  |
+| `scarlet` | `#FF2400` | al |  |  |  |
+| `amber` | `#FFBF00` | kehribar |  |  |  |

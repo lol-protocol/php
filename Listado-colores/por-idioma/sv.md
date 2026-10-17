@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | rökvit | `#F5F5F5` |  | Mjuk neutralitet, renhet, lugn och enkelhet. | Subtil rök: det ogripbara, övergången och bönen som stiger. |
 | `yellow` | gul | `#FFFF00` |  | Glädje, optimism, energi, mental klarhet och uppmärksamhet; även försiktighet. | I chakratraditionen förknippad med solarplexus: upplysning, vilja och kunskap. |
 | `yellowgreen` | gulgrön | `#9ACD32` |  | Friskhet, vitalitet, ungdom och lugn. | Vår och tillväxt; nytt liv och förnyelse. |
+
+## Léxico básico en Sueco
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | vit | vitt (n), vita (pl) |  |  |
+| `black` | `#000000` | svart | svarta (pl) |  |  |
+| `red` | `#FF0000` | röd | rött (n), röda (pl) |  |  |
+| `green` | `#008000` | grön | grönt (n), gröna (pl) |  |  |
+| `yellow` | `#FFFF00` | gul | gult (n), gula (pl) |  |  |
+| `blue` | `#0000FF` | blå |  |  |  |
+| `brown` | `#A52A2A` | brun | brunt (n), bruna (pl) |  |  |
+| `purple` | `#800080` | lila |  | purpur |  |
+| `pink` | `#FFC0CB` | rosa |  |  |  |
+| `orange` | `#FFA500` | orange |  |  |  |
+| `gray` | `#808080` | grå |  |  |  |
+| `lightblue` | `#ADD8E6` | ljusblå |  |  |  |
+| `darkblue` | `#00008B` | mörkblå |  |  |  |
+| `lightgreen` | `#90EE90` | ljusgrön | ljusgrönt (n), ljusgröna (pl) |  |  |
+| `darkgreen` | `#006400` | mörkgrön | mörkgrönt (n), mörkgröna (pl) |  |  |
+| `skyblue` | `#87CEEB` | himmelsblå |  |  |  |
+| `turquoise` | `#40E0D0` | turkos | turkost (n), turkosa (pl) |  |  |
+| `beige` | `#F5F5DC` | beige |  |  |  |
+| `gold` | `#FFD700` | guld |  | gyllene, guldfärgad |  |
+| `silver` | `#C0C0C0` | silver |  | silverfärgad |  |
+| `violet` | `#EE82EE` | violett | violetta (pl) |  |  |
+| `indigo` | `#4B0082` | indigo |  |  |  |
+| `lavender` | `#E6E6FA` | lavendel |  |  |  |
+| `maroon` | `#800000` | rödbrun | rödbrunt (n), rödbruna (pl) | kastanjebrun |  |
+| `olive` | `#808000` | olivgrön | olivgrönt (n), olivgröna (pl) |  |  |
+| `navy` | `#000080` | marinblå |  |  |  |
+| `cyan` | `#00FFFF` | cyan |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | laxrosa |  | laxfärgad |  |
+| `coral` | `#FF7F50` | korall |  | korallröd |  |
+| `crimson` | `#DC143C` | karmosinröd | karmosinrött (n), karmosinröda (pl) |  |  |
+| `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lime` | `#00FF00` | limegrön | limegrönt (n), limegröna (pl) |  |  |
+| `lilac` | `#CEA2FD` | ljuslila |  |  |  |
+| `burgundy` | `#900020` | vinröd | vinrött (n), vinröda (pl) |  |  |
+| `cream` | `#FFFFC2` | gräddvit | gräddvitt (n), gräddvita (pl) | gräddfärgad |  |
+| `scarlet` | `#FF2400` | scharlakansröd | scharlakansrött (n), scharlakansröda (pl) |  |  |
+| `amber` | `#FFBF00` | bärnstensfärgad | bärnstensfärgade (pl) |  |  |

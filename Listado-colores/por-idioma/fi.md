@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | savunvalkoinen | `#F5F5F5` |  | Pehmeä neutraalius, siisteys, rauha ja yksinkertaisuus. | Hienovarainen savu: kosketukseton, siirtymä ja ylös nouseva rukous. |
 | `yellow` | keltainen | `#FFFF00` |  | Ilo, optimismi, energia, mielen selkeys ja tarkkaavaisuus; myös varovaisuus. | Chakra-perinteessä yhdistetty aurinkopunokseen: valaistuminen, tahto ja tieto. |
 | `yellowgreen` | keltavihreä | `#9ACD32` |  | Raikkaus, elinvoima, nuoruus ja rauha. | Kevät ja kasvu; uusi elämä ja uudistuminen. |
+
+## Léxico básico en Finés
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | valkoinen | valkoiset (pl) | valkea |  |
+| `black` | `#000000` | musta | mustat (pl) |  |  |
+| `red` | `#FF0000` | punainen | punaiset (pl) |  |  |
+| `green` | `#008000` | vihreä | vihreät (pl) |  |  |
+| `yellow` | `#FFFF00` | keltainen | keltaiset (pl) |  |  |
+| `blue` | `#0000FF` | sininen | siniset (pl) |  |  |
+| `brown` | `#A52A2A` | ruskea | ruskeat (pl) |  |  |
+| `purple` | `#800080` | violetti | violetit (pl) | purppura, liila |  |
+| `pink` | `#FFC0CB` | vaaleanpunainen | vaaleanpunaiset (pl) | pinkki |  |
+| `orange` | `#FFA500` | oranssi | oranssit (pl) |  |  |
+| `gray` | `#808080` | harmaa | harmaat (pl) |  |  |
+| `lightblue` | `#ADD8E6` | vaaleansininen | vaaleansiniset (pl) |  |  |
+| `darkblue` | `#00008B` | tummansininen | tummansiniset (pl) |  |  |
+| `lightgreen` | `#90EE90` | vaaleanvihreä | vaaleanvihreät (pl) |  |  |
+| `darkgreen` | `#006400` | tummanvihreä | tummanvihreät (pl) |  |  |
+| `skyblue` | `#87CEEB` | taivaansininen | taivaansiniset (pl) |  |  |
+| `turquoise` | `#40E0D0` | turkoosi | turkoosit (pl) |  |  |
+| `beige` | `#F5F5DC` | beige |  |  |  |
+| `gold` | `#FFD700` | kulta |  | kullanvärinen |  |
+| `silver` | `#C0C0C0` | hopea |  | hopeanvärinen |  |
+| `violet` | `#EE82EE` | violetti | violetit (pl) |  |  |
+| `indigo` | `#4B0082` | indigo |  |  |  |
+| `lavender` | `#E6E6FA` | laventeli |  |  |  |
+| `maroon` | `#800000` | punaruskea | punaruskeat (pl) | kastanjanruskea |  |
+| `olive` | `#808000` | oliivinvihreä | oliivinvihreät (pl) |  |  |
+| `navy` | `#000080` | laivastonsininen | laivastonsiniset (pl) |  |  |
+| `cyan` | `#00FFFF` | syaani |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | lohenpunainen | lohenpunaiset (pl) |  |  |
+| `coral` | `#FF7F50` | koralli |  | korallinpunainen |  |
+| `crimson` | `#DC143C` | karmiininpunainen | karmiininpunaiset (pl) |  |  |
+| `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lime` | `#00FF00` | limetinvihreä | limetinvihreät (pl) |  |  |
+| `lilac` | `#CEA2FD` | lila |  |  |  |
+| `burgundy` | `#900020` | viininpunainen | viininpunaiset (pl) | burgundi |  |
+| `cream` | `#FFFFC2` | kermanvärinen | kermanväriset (pl) |  |  |
+| `scarlet` | `#FF2400` | helakanpunainen | helakanpunaiset (pl) | tulipunainen |  |
+| `amber` | `#FFBF00` | meripihkanvärinen | meripihkanväriset (pl) |  |  |

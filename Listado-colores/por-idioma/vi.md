@@ -156,3 +156,47 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | trắng khói | `#F5F5F5` |  | Trung tính dịu nhẹ, sạch sẽ, bình tĩnh và giản dị. | Làn khói vi tế: điều vô hình, sự chuyển tiếp và lời cầu nguyện bay lên. |
 | `yellow` | vàng | `#FFFF00` |  | Niềm vui, lạc quan, năng lượng, sự minh mẫn và chú ý; cũng là thận trọng. | Trong truyền thống luân xa, gắn với đám rối thái dương: giác ngộ, ý chí và tri thức. |
 | `yellowgreen` | vàng xanh | `#9ACD32` |  | Tươi mát, sức sống, tuổi trẻ và bình tĩnh. | Mùa xuân và sinh trưởng; sự sống mới và đổi mới. |
+
+## Léxico básico en Vietnamita
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | trắng |  |  |  |
+| `black` | `#000000` | đen |  |  |  |
+| `red` | `#FF0000` | đỏ |  |  |  |
+| `green` | `#008000` | xanh lá cây |  | xanh lục, xanh lá |  |
+| `yellow` | `#FFFF00` | vàng |  |  |  |
+| `blue` | `#0000FF` | xanh dương |  | xanh lam |  |
+| `brown` | `#A52A2A` | nâu |  |  |  |
+| `purple` | `#800080` | tím |  |  |  |
+| `pink` | `#FFC0CB` | hồng |  |  |  |
+| `orange` | `#FFA500` | cam |  |  |  |
+| `gray` | `#808080` | xám |  | ghi |  |
+| `lightblue` | `#ADD8E6` | xanh nhạt |  |  |  |
+| `darkblue` | `#00008B` | xanh đậm |  |  |  |
+| `lightgreen` | `#90EE90` | xanh lá nhạt |  |  |  |
+| `darkgreen` | `#006400` | xanh lá đậm |  |  |  |
+| `skyblue` | `#87CEEB` | xanh da trời |  |  |  |
+| `turquoise` | `#40E0D0` | ngọc lam |  | xanh ngọc |  |
+| `beige` | `#F5F5DC` | be |  |  |  |
+| `gold` | `#FFD700` | vàng kim |  |  |  |
+| `silver` | `#C0C0C0` | bạc |  |  |  |
+| `violet` | `#EE82EE` | tím |  |  |  |
+| `indigo` | `#4B0082` | chàm |  |  |  |
+| `lavender` | `#E6E6FA` | oải hương |  |  |  |
+| `maroon` | `#800000` | nâu đỏ |  |  |  |
+| `olive` | `#808000` | ô liu |  |  |  |
+| `navy` | `#000080` | xanh navy |  | xanh hải quân |  |
+| `cyan` | `#00FFFF` | xanh lơ |  | lục lam |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `coral` | `#FF7F50` | san hô |  |  |  |
+| `crimson` | `#DC143C` | đỏ thẫm |  |  |  |
+| `khaki` | `#F0E68C` | kaki |  |  |  |
+| `lime` | `#00FF00` | xanh chanh |  |  |  |
+| `lilac` | `#CEA2FD` | tử đinh hương |  |  |  |
+| `burgundy` | `#900020` | đỏ đô |  |  |  |
+| `cream` | `#FFFFC2` | kem |  |  |  |
+| `scarlet` | `#FF2400` | đỏ tươi |  |  |  |
+| `amber` | `#FFBF00` | hổ phách |  |  |  |

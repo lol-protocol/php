@@ -156,3 +156,46 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | alb fumuriu | `#F5F5F5` |  | Neutralitate blândă, curățenie, calm și simplitate. | Fum subtil: intangibilul, tranziția și rugăciunea care se înalță. |
 | `yellow` | galben | `#FFFF00` |  | Bucurie, optimism, energie, claritate mentală și atenție; și prudență. | În tradiția chakrelor, asociat cu plexul solar: iluminare, voință și cunoaștere. |
 | `yellowgreen` | verde-galben | `#9ACD32` |  | Prospețime, vitalitate, tinerețe și calm. | Primăvară și creștere; viață nouă și reînnoire. |
+
+## Léxico básico en Rumano
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | alb | albă (f), albi (m pl), albe (f pl) |  |  |
+| `black` | `#000000` | negru | neagră (f), negri (m pl), negre (f pl) |  |  |
+| `red` | `#FF0000` | roșu | roșie (f), roșii (m pl), roșii (f pl) |  |  |
+| `green` | `#008000` | verde | verzi (pl) |  |  |
+| `yellow` | `#FFFF00` | galben | galbenă (f), galbeni (m pl), galbene (f pl) |  |  |
+| `blue` | `#0000FF` | albastru | albastră (f), albaștri (m pl), albastre (f pl) |  |  |
+| `brown` | `#A52A2A` | maro |  |  |  |
+| `purple` | `#800080` | mov |  | violet |  |
+| `pink` | `#FFC0CB` | roz |  |  |  |
+| `orange` | `#FFA500` | portocaliu | portocalie (f), portocalii (m pl), portocalii (f pl) |  |  |
+| `gray` | `#808080` | gri |  | cenușiu |  |
+| `lightblue` | `#ADD8E6` | albastru deschis |  | bleu |  |
+| `darkblue` | `#00008B` | albastru închis |  |  |  |
+| `lightgreen` | `#90EE90` | verde deschis |  |  |  |
+| `darkgreen` | `#006400` | verde închis |  |  |  |
+| `skyblue` | `#87CEEB` | bleu |  | azuriu |  |
+| `turquoise` | `#40E0D0` | turcoaz |  |  |  |
+| `beige` | `#F5F5DC` | bej |  |  |  |
+| `gold` | `#FFD700` | auriu | aurie (f), aurii (m pl), aurii (f pl) |  |  |
+| `silver` | `#C0C0C0` | argintiu | argintie (f), argintii (m pl), argintii (f pl) |  |  |
+| `violet` | `#EE82EE` | violet | violetă (f), violeți (m pl), violete (f pl) |  |  |
+| `indigo` | `#4B0082` | indigo |  |  |  |
+| `lavender` | `#E6E6FA` | lavandă |  |  |  |
+| `maroon` | `#800000` | vișiniu | vișinie (f), vișinii (m pl), vișinii (f pl) |  |  |
+| `olive` | `#808000` | oliv |  |  |  |
+| `navy` | `#000080` | bleumarin |  |  |  |
+| `cyan` | `#00FFFF` | cian |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | somon |  |  |  |
+| `coral` | `#FF7F50` | coral |  |  |  |
+| `crimson` | `#DC143C` | stacojiu | stacojie (f), stacojii (m pl), stacojii (f pl) |  |  |
+| `khaki` | `#F0E68C` | kaki |  |  |  |
+| `lilac` | `#CEA2FD` | lila |  |  |  |
+| `burgundy` | `#900020` | bordo |  |  |  |
+| `cream` | `#FFFFC2` | crem |  |  |  |
+| `amber` | `#FFBF00` | chihlimbariu | chihlimbarie (f), chihlimbarii (m pl), chihlimbarii (f pl) |  |  |

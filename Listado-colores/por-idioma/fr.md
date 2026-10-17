@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | fumée blanche | `#F5F5F5` |  | Neutralité douce, propreté, calme et simplicité. | Fumée subtile : l'intangible, la transition et la prière qui s'élève. |
 | `yellow` | jaune | `#FFFF00` |  | Joie, optimisme, énergie, clarté mentale et attention ; aussi prudence. | Dans la tradition des chakras, associé au plexus solaire : illumination, volonté et connaissance. |
 | `yellowgreen` | jaune-vert | `#9ACD32` |  | Fraîcheur, vitalité, jeunesse et calme. | Printemps et croissance ; vie nouvelle et renouveau. |
+
+## Léxico básico en Francés
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | blanc | blanche (f), blancs (m pl), blanches (f pl) |  |  |
+| `black` | `#000000` | noir | noire (f), noirs (m pl), noires (f pl) |  |  |
+| `red` | `#FF0000` | rouge | rouges (pl) |  |  |
+| `green` | `#008000` | vert | verte (f), verts (m pl), vertes (f pl) |  |  |
+| `yellow` | `#FFFF00` | jaune | jaunes (pl) |  |  |
+| `blue` | `#0000FF` | bleu | bleue (f), bleus (m pl), bleues (f pl) |  |  |
+| `brown` | `#A52A2A` | marron |  | brun |  |
+| `purple` | `#800080` | violet | violette (f), violets (m pl), violettes (f pl) | pourpre |  |
+| `pink` | `#FFC0CB` | rose | roses (pl) |  |  |
+| `orange` | `#FFA500` | orange |  |  |  |
+| `gray` | `#808080` | gris | grise (f), gris (m pl), grises (f pl) |  |  |
+| `lightblue` | `#ADD8E6` | bleu clair |  |  |  |
+| `darkblue` | `#00008B` | bleu foncé |  |  |  |
+| `lightgreen` | `#90EE90` | vert clair |  |  |  |
+| `darkgreen` | `#006400` | vert foncé |  |  |  |
+| `skyblue` | `#87CEEB` | bleu ciel |  | azur |  |
+| `turquoise` | `#40E0D0` | turquoise |  |  |  |
+| `beige` | `#F5F5DC` | beige | beiges (pl) |  |  |
+| `gold` | `#FFD700` | doré | dorée (f), dorés (m pl), dorées (f pl) | or |  |
+| `silver` | `#C0C0C0` | argenté | argentée (f), argentés (m pl), argentées (f pl) | argent |  |
+| `violet` | `#EE82EE` | violet | violette (f), violets (m pl), violettes (f pl) |  |  |
+| `indigo` | `#4B0082` | indigo |  |  |  |
+| `lavender` | `#E6E6FA` | lavande |  |  |  |
+| `maroon` | `#800000` | bordeaux |  |  |  |
+| `olive` | `#808000` | olive |  |  |  |
+| `navy` | `#000080` | bleu marine |  |  |  |
+| `cyan` | `#00FFFF` | cyan |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | saumon |  |  |  |
+| `coral` | `#FF7F50` | corail |  |  |  |
+| `crimson` | `#DC143C` | cramoisi | cramoisie (f), cramoisis (m pl), cramoisies (f pl) |  |  |
+| `khaki` | `#F0E68C` | kaki |  |  |  |
+| `lime` | `#00FF00` | vert lime |  |  |  |
+| `lilac` | `#CEA2FD` | lilas |  |  |  |
+| `burgundy` | `#900020` | bordeaux |  |  |  |
+| `cream` | `#FFFFC2` | crème |  |  |  |
+| `scarlet` | `#FF2400` | écarlate | écarlates (pl) |  |  |
+| `amber` | `#FFBF00` | ambre |  |  |  |

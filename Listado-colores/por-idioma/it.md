@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | fumo bianco | `#F5F5F5` |  | Neutralità morbida, pulizia, calma e semplicità. | Fumo sottile: l'intangibile, la transizione e la preghiera che si innalza. |
 | `yellow` | giallo | `#FFFF00` |  | Allegria, ottimismo, energia, chiarezza mentale e attenzione; anche cautela. | Nella tradizione dei chakra, associato al plesso solare: illuminazione, volontà e conoscenza. |
 | `yellowgreen` | giallo verde | `#9ACD32` |  | Freschezza, vitalità, giovinezza e calma. | Primavera e crescita; vita nuova e rinnovamento. |
+
+## Léxico básico en Italiano
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | bianco | bianca (f), bianchi (m pl), bianche (f pl) |  |  |
+| `black` | `#000000` | nero | nera (f), neri (m pl), nere (f pl) |  |  |
+| `red` | `#FF0000` | rosso | rossa (f), rossi (m pl), rosse (f pl) |  |  |
+| `green` | `#008000` | verde | verdi (pl) |  |  |
+| `yellow` | `#FFFF00` | giallo | gialla (f), gialli (m pl), gialle (f pl) |  |  |
+| `blue` | `#0000FF` | blu |  |  |  |
+| `brown` | `#A52A2A` | marrone | marroni (pl) | bruno |  |
+| `purple` | `#800080` | viola |  | porpora |  |
+| `pink` | `#FFC0CB` | rosa |  |  |  |
+| `orange` | `#FFA500` | arancione | arancioni (pl) | arancio |  |
+| `gray` | `#808080` | grigio | grigia (f), grigi (m pl), grigie (f pl) |  |  |
+| `lightblue` | `#ADD8E6` | azzurro | azzurra (f), azzurri (m pl), azzurre (f pl) | blu chiaro |  |
+| `darkblue` | `#00008B` | blu scuro |  |  |  |
+| `lightgreen` | `#90EE90` | verde chiaro |  |  |  |
+| `darkgreen` | `#006400` | verde scuro |  |  |  |
+| `skyblue` | `#87CEEB` | celeste | celesti (pl) | azzurro |  |
+| `turquoise` | `#40E0D0` | turchese | turchesi (pl) |  |  |
+| `beige` | `#F5F5DC` | beige |  |  |  |
+| `gold` | `#FFD700` | oro |  | dorato |  |
+| `silver` | `#C0C0C0` | argento |  | argentato |  |
+| `violet` | `#EE82EE` | violetto | violetta (f), violetti (m pl), violette (f pl) |  |  |
+| `indigo` | `#4B0082` | indaco |  |  |  |
+| `lavender` | `#E6E6FA` | lavanda |  |  |  |
+| `maroon` | `#800000` | granata |  |  |  |
+| `olive` | `#808000` | oliva |  | verde oliva |  |
+| `navy` | `#000080` | blu marino |  | blu notte |  |
+| `cyan` | `#00FFFF` | ciano |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | salmone |  |  |  |
+| `coral` | `#FF7F50` | corallo |  |  |  |
+| `crimson` | `#DC143C` | cremisi |  |  |  |
+| `khaki` | `#F0E68C` | cachi |  |  |  |
+| `lime` | `#00FF00` | verde lime |  |  |  |
+| `lilac` | `#CEA2FD` | lilla |  |  |  |
+| `burgundy` | `#900020` | bordeaux |  |  |  |
+| `cream` | `#FFFFC2` | crema |  |  |  |
+| `scarlet` | `#FF2400` | scarlatto | scarlatta (f), scarlatti (m pl), scarlatte (f pl) |  |  |
+| `amber` | `#FFBF00` | ambra |  |  |  |

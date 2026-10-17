@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | 烟白色 | `#F5F5F5` |  | 柔和的中性、洁净、平静与朴素。 | 微妙的烟：无形之物、过渡与升腾的祈祷。 |
 | `yellow` | 黄色 | `#FFFF00` |  | 欢乐、乐观、能量、思维清明与专注；也有谨慎之意。 | 在脉轮传统中与太阳神经丛相关联：觉悟、意志与知识。 |
 | `yellowgreen` | 黄绿色 | `#9ACD32` |  | 清新、生机、青春与平静。 | 春天与成长；新的生命与更新。 |
+
+## Léxico básico en Chino simplificado
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | 白色 |  | 白 |  |
+| `black` | `#000000` | 黑色 |  | 黑 |  |
+| `red` | `#FF0000` | 红色 |  | 红 |  |
+| `green` | `#008000` | 绿色 |  | 绿 |  |
+| `yellow` | `#FFFF00` | 黄色 |  | 黄 |  |
+| `blue` | `#0000FF` | 蓝色 |  | 蓝 |  |
+| `brown` | `#A52A2A` | 棕色 |  | 褐色, 咖啡色 |  |
+| `purple` | `#800080` | 紫色 |  | 紫 |  |
+| `pink` | `#FFC0CB` | 粉色 |  | 粉红色, 粉红 |  |
+| `orange` | `#FFA500` | 橙色 |  | 橘色, 橙 |  |
+| `gray` | `#808080` | 灰色 |  | 灰 |  |
+| `lightblue` | `#ADD8E6` | 浅蓝色 |  |  |  |
+| `darkblue` | `#00008B` | 深蓝色 |  |  |  |
+| `lightgreen` | `#90EE90` | 浅绿色 |  |  |  |
+| `darkgreen` | `#006400` | 深绿色 |  |  |  |
+| `skyblue` | `#87CEEB` | 天蓝色 |  |  |  |
+| `turquoise` | `#40E0D0` | 绿松石色 |  | 青绿色, 蓝绿色 |  |
+| `beige` | `#F5F5DC` | 米色 |  |  |  |
+| `gold` | `#FFD700` | 金色 |  |  |  |
+| `silver` | `#C0C0C0` | 银色 |  |  |  |
+| `violet` | `#EE82EE` | 紫罗兰色 |  |  |  |
+| `indigo` | `#4B0082` | 靛蓝色 |  | 靛青 |  |
+| `lavender` | `#E6E6FA` | 薰衣草色 |  |  |  |
+| `maroon` | `#800000` | 栗色 |  |  |  |
+| `olive` | `#808000` | 橄榄色 |  |  |  |
+| `navy` | `#000080` | 海军蓝 |  |  |  |
+| `cyan` | `#00FFFF` | 青色 |  |  |  |
+| `magenta` | `#FF00FF` | 品红色 |  | 洋红色 |  |
+| `salmon` | `#FA8072` | 三文鱼色 |  |  |  |
+| `coral` | `#FF7F50` | 珊瑚色 |  |  |  |
+| `crimson` | `#DC143C` | 深红色 |  | 绯红 |  |
+| `khaki` | `#F0E68C` | 卡其色 |  |  |  |
+| `lime` | `#00FF00` | 青柠色 |  |  |  |
+| `lilac` | `#CEA2FD` | 淡紫色 |  | 丁香紫 |  |
+| `burgundy` | `#900020` | 酒红色 |  |  |  |
+| `cream` | `#FFFFC2` | 奶油色 |  |  |  |
+| `scarlet` | `#FF2400` | 猩红色 |  |  |  |
+| `amber` | `#FFBF00` | 琥珀色 |  |  |  |

@@ -156,3 +156,47 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | أبيض دخاني | `#F5F5F5` |  | حياد ناعم ونظافة وهدوء وبساطة. | دخان خفي: غير الملموس والانتقال والصلاة التي تصعد. |
 | `yellow` | أصفر | `#FFFF00` |  | بهجة وتفاؤل وطاقة وصفاء ذهني وانتباه؛ وكذلك حذر. | في تقليد التشاكرا يرتبط بالضفيرة الشمسية: استنارة وإرادة ومعرفة. |
 | `yellowgreen` | أخضر مصفر | `#9ACD32` |  | انتعاش وحيوية وشباب وهدوء. | الربيع والنمو؛ حياة جديدة وتجدد. |
+
+## Léxico básico en Árabe
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | أبيض | بيضاء (f), بيض (pl) |  |  |
+| `black` | `#000000` | أسود | سوداء (f), سود (pl) |  |  |
+| `red` | `#FF0000` | أحمر | حمراء (f), حمر (pl) |  |  |
+| `green` | `#008000` | أخضر | خضراء (f), خضر (pl) |  |  |
+| `yellow` | `#FFFF00` | أصفر | صفراء (f), صفر (pl) |  |  |
+| `blue` | `#0000FF` | أزرق | زرقاء (f), زرق (pl) |  |  |
+| `brown` | `#A52A2A` | بني | بنية (f) |  |  |
+| `purple` | `#800080` | بنفسجي | بنفسجية (f) | أرجواني |  |
+| `pink` | `#FFC0CB` | وردي | وردية (f) | زهري |  |
+| `orange` | `#FFA500` | برتقالي | برتقالية (f) |  |  |
+| `gray` | `#808080` | رمادي | رمادية (f) |  |  |
+| `lightblue` | `#ADD8E6` | أزرق فاتح |  |  |  |
+| `darkblue` | `#00008B` | أزرق غامق |  | أزرق داكن |  |
+| `lightgreen` | `#90EE90` | أخضر فاتح |  |  |  |
+| `darkgreen` | `#006400` | أخضر غامق |  | أخضر داكن |  |
+| `skyblue` | `#87CEEB` | سماوي | سماوية (f) |  |  |
+| `turquoise` | `#40E0D0` | فيروزي | فيروزية (f) |  |  |
+| `beige` | `#F5F5DC` | بيج |  |  |  |
+| `gold` | `#FFD700` | ذهبي | ذهبية (f) |  |  |
+| `silver` | `#C0C0C0` | فضي | فضية (f) |  |  |
+| `violet` | `#EE82EE` | بنفسجي | بنفسجية (f) |  |  |
+| `indigo` | `#4B0082` | نيلي | نيلية (f) |  |  |
+| `lavender` | `#E6E6FA` | خزامي | خزامية (f) |  |  |
+| `maroon` | `#800000` | كستنائي | كستنائية (f) |  |  |
+| `olive` | `#808000` | زيتي | زيتية (f) |  |  |
+| `navy` | `#000080` | كحلي | كحلية (f) |  |  |
+| `cyan` | `#00FFFF` | سيان |  |  |  |
+| `magenta` | `#FF00FF` | ماجنتا |  |  |  |
+| `salmon` | `#FA8072` | سلموني | سلمونية (f) |  |  |
+| `coral` | `#FF7F50` | مرجاني | مرجانية (f) |  |  |
+| `crimson` | `#DC143C` | قرمزي | قرمزية (f) |  |  |
+| `khaki` | `#F0E68C` | كاكي |  |  |  |
+| `lime` | `#00FF00` | ليموني | ليمونية (f) |  |  |
+| `lilac` | `#CEA2FD` | ليلكي | ليلكية (f) |  |  |
+| `burgundy` | `#900020` | عنابي | عنابية (f) |  |  |
+| `cream` | `#FFFFC2` | كريمي | كريمية (f) |  |  |
+| `amber` | `#FFBF00` | عنبري | عنبرية (f) |  |  |

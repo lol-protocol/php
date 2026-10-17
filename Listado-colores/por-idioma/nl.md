@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | rookwit | `#F5F5F5` |  | Zachte neutraliteit, properheid, rust en eenvoud. | Subtiele rook: het ongrijpbare, de overgang en het gebed dat opstijgt. |
 | `yellow` | geel | `#FFFF00` |  | Vreugde, optimisme, energie, mentale helderheid en aandacht; ook voorzichtigheid. | In de chakratraditie verbonden met de zonnevlecht: verlichting, wil en kennis. |
 | `yellowgreen` | geelgroen | `#9ACD32` |  | Frisheid, vitaliteit, jeugd en rust. | Lente en groei; nieuw leven en vernieuwing. |
+
+## Léxico básico en Neerlandés
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | wit | witte (-e) |  |  |
+| `black` | `#000000` | zwart | zwarte (-e) |  |  |
+| `red` | `#FF0000` | rood | rode (-e) |  |  |
+| `green` | `#008000` | groen | groene (-e) |  |  |
+| `yellow` | `#FFFF00` | geel | gele (-e) |  |  |
+| `blue` | `#0000FF` | blauw | blauwe (-e) |  |  |
+| `brown` | `#A52A2A` | bruin | bruine (-e) |  |  |
+| `purple` | `#800080` | paars | paarse (-e) |  | purper |
+| `pink` | `#FFC0CB` | roze |  |  |  |
+| `orange` | `#FFA500` | oranje |  |  |  |
+| `gray` | `#808080` | grijs | grijze (-e) |  |  |
+| `lightblue` | `#ADD8E6` | lichtblauw | lichtblauwe (-e) |  |  |
+| `darkblue` | `#00008B` | donkerblauw | donkerblauwe (-e) |  |  |
+| `lightgreen` | `#90EE90` | lichtgroen | lichtgroene (-e) |  |  |
+| `darkgreen` | `#006400` | donkergroen | donkergroene (-e) |  |  |
+| `skyblue` | `#87CEEB` | hemelsblauw | hemelsblauwe (-e) |  |  |
+| `turquoise` | `#40E0D0` | turkoois |  |  |  |
+| `beige` | `#F5F5DC` | beige |  |  |  |
+| `gold` | `#FFD700` | goud |  | goudkleurig, gouden |  |
+| `silver` | `#C0C0C0` | zilver |  | zilverkleurig, zilveren |  |
+| `violet` | `#EE82EE` | violet |  |  |  |
+| `indigo` | `#4B0082` | indigo |  |  |  |
+| `lavender` | `#E6E6FA` | lavendel |  |  |  |
+| `maroon` | `#800000` | kastanjebruin | kastanjebruine (-e) |  |  |
+| `olive` | `#808000` | olijfgroen | olijfgroene (-e) |  |  |
+| `navy` | `#000080` | marineblauw | marineblauwe (-e) |  |  |
+| `cyan` | `#00FFFF` | cyaan |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | zalmroze |  | zalmkleurig |  |
+| `coral` | `#FF7F50` | koraalrood | koraalrode (-e) |  |  |
+| `crimson` | `#DC143C` | karmozijnrood | karmozijnrode (-e) |  |  |
+| `khaki` | `#F0E68C` | kaki |  |  |  |
+| `lime` | `#00FF00` | limoengroen | limoengroene (-e) |  |  |
+| `lilac` | `#CEA2FD` | lila |  |  |  |
+| `burgundy` | `#900020` | bordeauxrood | bordeauxrode (-e) |  |  |
+| `cream` | `#FFFFC2` | crème |  |  |  |
+| `scarlet` | `#FF2400` | scharlaken |  | scharlakenrood |  |
+| `amber` | `#FFBF00` | amber |  |  |  |

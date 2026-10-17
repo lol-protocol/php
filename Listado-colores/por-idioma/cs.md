@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | kouřově bílá | `#F5F5F5` |  | Jemná neutralita, upravenost, klid a jednoduchost. | Jemný kouř: nehmatné, přechod a modlitba, která stoupá. |
 | `yellow` | žlutá | `#FFFF00` |  | Radost, optimismus, energie, jasnost mysli a pozornost; také opatrnost. | V tradici čaker spojený se slunečním pletencem: osvícení, vůle a poznání. |
 | `yellowgreen` | žlutozelená | `#9ACD32` |  | Svěžest, vitalita, mládí a klid. | Jaro a růst; nový život a obnova. |
+
+## Léxico básico en Checo
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | bílý | bílá (f), bílé (n), bílí (pl animado), bílá (n pl), bílé (pl) |  |  |
+| `black` | `#000000` | černý | černá (f), černé (n), černí (pl animado), černá (n pl), černé (pl) |  |  |
+| `red` | `#FF0000` | červený | červená (f), červené (n), červení (pl animado), červená (n pl), červené (pl) |  |  |
+| `green` | `#008000` | zelený | zelená (f), zelené (n), zelení (pl animado), zelená (n pl), zelené (pl) |  |  |
+| `yellow` | `#FFFF00` | žlutý | žlutá (f), žluté (n), žlutí (pl animado), žlutá (n pl), žluté (pl) |  |  |
+| `blue` | `#0000FF` | modrý | modrá (f), modré (n), modří (pl animado), modrá (n pl), modré (pl) |  |  |
+| `brown` | `#A52A2A` | hnědý | hnědá (f), hnědé (n), hnědí (pl animado), hnědá (n pl), hnědé (pl) |  |  |
+| `purple` | `#800080` | fialový | fialová (f), fialové (n), fialoví (pl animado), fialová (n pl), fialové (pl) |  |  |
+| `pink` | `#FFC0CB` | růžový | růžová (f), růžové (n), růžoví (pl animado), růžová (n pl), růžové (pl) |  |  |
+| `orange` | `#FFA500` | oranžový | oranžová (f), oranžové (n), oranžoví (pl animado), oranžová (n pl), oranžové (pl) |  |  |
+| `gray` | `#808080` | šedý | šedá (f), šedé (n), šedí (pl animado), šedá (n pl), šedé (pl) | šedivý |  |
+| `lightblue` | `#ADD8E6` | světle modrý |  |  | světlemodrý (ortografia=jedno_slovo) |
+| `darkblue` | `#00008B` | tmavě modrý |  |  | tmavomodrý (ortografia=jedno_slovo) |
+| `lightgreen` | `#90EE90` | světle zelený |  |  | světlezelený (ortografia=jedno_slovo) |
+| `darkgreen` | `#006400` | tmavě zelený |  |  | tmavozelený (ortografia=jedno_slovo) |
+| `skyblue` | `#87CEEB` | nebesky modrý |  |  |  |
+| `turquoise` | `#40E0D0` | tyrkysový | tyrkysová (f), tyrkysové (n), tyrkysoví (pl animado), tyrkysová (n pl), tyrkysové (pl) |  |  |
+| `beige` | `#F5F5DC` | béžový | béžová (f), béžové (n), béžoví (pl animado), béžová (n pl), béžové (pl) |  |  |
+| `gold` | `#FFD700` | zlatý | zlatá (f), zlaté (n), zlatí (pl animado), zlatá (n pl), zlaté (pl) |  |  |
+| `silver` | `#C0C0C0` | stříbrný | stříbrná (f), stříbrné (n), stříbrní (pl animado), stříbrná (n pl), stříbrné (pl) |  |  |
+| `violet` | `#EE82EE` | fialový | fialová (f), fialové (n), fialoví (pl animado), fialová (n pl), fialové (pl) |  |  |
+| `indigo` | `#4B0082` | indigový | indigová (f), indigové (n), indigoví (pl animado), indigová (n pl), indigové (pl) |  |  |
+| `lavender` | `#E6E6FA` | levandulový | levandulová (f), levandulové (n), levanduloví (pl animado), levandulová (n pl), levandulové (pl) |  |  |
+| `maroon` | `#800000` | kaštanový | kaštanová (f), kaštanové (n), kaštanoví (pl animado), kaštanová (n pl), kaštanové (pl) |  |  |
+| `olive` | `#808000` | olivový | olivová (f), olivové (n), olivoví (pl animado), olivová (n pl), olivové (pl) |  |  |
+| `navy` | `#000080` | námořnicky modrý |  |  |  |
+| `cyan` | `#00FFFF` | azurový | azurová (f), azurové (n), azuroví (pl animado), azurová (n pl), azurové (pl) |  |  |
+| `magenta` | `#FF00FF` | purpurový | purpurová (f), purpurové (n), purpuroví (pl animado), purpurová (n pl), purpurové (pl) |  |  |
+| `salmon` | `#FA8072` | lososový | lososová (f), lososové (n), lososoví (pl animado), lososová (n pl), lososové (pl) |  |  |
+| `coral` | `#FF7F50` | korálový | korálová (f), korálové (n), koráloví (pl animado), korálová (n pl), korálové (pl) |  |  |
+| `crimson` | `#DC143C` | karmínový | karmínová (f), karmínové (n), karmínoví (pl animado), karmínová (n pl), karmínové (pl) |  |  |
+| `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lime` | `#00FF00` | limetkový | limetková (f), limetkové (n), limetkoví (pl animado), limetková (n pl), limetkové (pl) |  |  |
+| `lilac` | `#CEA2FD` | šeříkový | šeříková (f), šeříkové (n), šeříkoví (pl animado), šeříková (n pl), šeříkové (pl) |  |  |
+| `burgundy` | `#900020` | vínový | vínová (f), vínové (n), vínoví (pl animado), vínová (n pl), vínové (pl) |  |  |
+| `cream` | `#FFFFC2` | krémový | krémová (f), krémové (n), krémoví (pl animado), krémová (n pl), krémové (pl) |  |  |
+| `scarlet` | `#FF2400` | šarlatový | šarlatová (f), šarlatové (n), šarlatoví (pl animado), šarlatová (n pl), šarlatové (pl) |  |  |
+| `amber` | `#FFBF00` | jantarový | jantarová (f), jantarové (n), jantaroví (pl animado), jantarová (n pl), jantarové (pl) |  |  |

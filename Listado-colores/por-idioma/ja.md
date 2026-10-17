@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | ホワイトスモーク | `#F5F5F5` |  | やわらかな中立、清潔感、落ち着き、素朴さ。 | 微かな煙：触れえないもの、移行、昇りゆく祈り。 |
 | `yellow` | 黄 | `#FFFF00` |  | 喜び、楽観、エネルギー、精神の明晰さ、注意；用心も。 | チャクラの伝統では太陽神経叢と結びつく：悟り、意志、知識。 |
 | `yellowgreen` | イエローグリーン | `#9ACD32` |  | 爽やかさ、活力、若さ、落ち着き。 | 春と成長；新しい生命と更新。 |
+
+## Léxico básico en Japonés
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | 白 |  | 白い, 白色, ホワイト |  |
+| `black` | `#000000` | 黒 |  | 黒い, 黒色, ブラック |  |
+| `red` | `#FF0000` | 赤 |  | 赤い, 赤色, レッド |  |
+| `green` | `#008000` | 緑 |  | 緑色, グリーン |  |
+| `yellow` | `#FFFF00` | 黄色 |  | 黄色い, 黄, イエロー |  |
+| `blue` | `#0000FF` | 青 |  | 青い, 青色, ブルー |  |
+| `brown` | `#A52A2A` | 茶色 |  | 茶, 茶色い, ブラウン |  |
+| `purple` | `#800080` | 紫 |  | 紫色, パープル |  |
+| `pink` | `#FFC0CB` | ピンク |  | 桃色 |  |
+| `orange` | `#FFA500` | オレンジ |  | オレンジ色, 橙色, 橙 |  |
+| `gray` | `#808080` | 灰色 |  | グレー, 灰, ねずみ色 | グレイ (ortografia=alternativa) |
+| `lightblue` | `#ADD8E6` | 水色 |  | ライトブルー |  |
+| `darkblue` | `#00008B` | 紺色 |  | ダークブルー |  |
+| `lightgreen` | `#90EE90` | 薄緑 |  | 明るい緑, ライトグリーン |  |
+| `darkgreen` | `#006400` | 深緑 |  | 濃い緑, ダークグリーン |  |
+| `skyblue` | `#87CEEB` | 空色 |  | スカイブルー |  |
+| `turquoise` | `#40E0D0` | ターコイズ |  | 青緑, ターコイズブルー |  |
+| `beige` | `#F5F5DC` | ベージュ |  |  |  |
+| `gold` | `#FFD700` | 金色 |  | ゴールド, 黄金色 |  |
+| `silver` | `#C0C0C0` | 銀色 |  | シルバー |  |
+| `violet` | `#EE82EE` | すみれ色 |  |  |  |
+| `indigo` | `#4B0082` | 藍色 |  | インディゴ |  |
+| `lavender` | `#E6E6FA` | ラベンダー |  |  |  |
+| `maroon` | `#800000` | えんじ色 |  | マルーン |  |
+| `olive` | `#808000` | オリーブ |  | オリーブ色 |  |
+| `navy` | `#000080` | ネイビー |  | 紺色 |  |
+| `cyan` | `#00FFFF` | シアン |  |  |  |
+| `magenta` | `#FF00FF` | マゼンタ |  |  |  |
+| `salmon` | `#FA8072` | サーモンピンク |  |  |  |
+| `coral` | `#FF7F50` | コーラル |  | 珊瑚色 |  |
+| `crimson` | `#DC143C` | 深紅 |  | クリムゾン |  |
+| `khaki` | `#F0E68C` | カーキ |  |  |  |
+| `lime` | `#00FF00` | ライム |  | ライムグリーン |  |
+| `lilac` | `#CEA2FD` | ライラック |  |  |  |
+| `burgundy` | `#900020` | ワインレッド |  | バーガンディ |  |
+| `cream` | `#FFFFC2` | クリーム |  | クリーム色 |  |
+| `scarlet` | `#FF2400` | 緋色 |  | スカーレット |  |
+| `amber` | `#FFBF00` | 琥珀色 |  | アンバー |  |

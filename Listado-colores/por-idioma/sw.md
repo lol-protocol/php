@@ -156,3 +156,28 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | nyeupe ya moshi | `#F5F5F5` |  | Kutoegemea kwa upole, usafi, utulivu na urahisi. | Moshi hafifu: kisichoshikika, mpito na sala inayopaa. |
 | `yellow` | manjano | `#FFFF00` |  | Furaha, matumaini, nguvu, uwazi wa akili na umakini; pia tahadhari. | Katika mila ya chakra, unahusishwa na mshipa wa jua: mwanga wa ufahamu, utashi na maarifa. |
 | `yellowgreen` | manjano-kijani | `#9ACD32` |  | Uchangamfu, nguvu ya uhai, ujana na utulivu. | Majira ya kuchipua na ukuaji; uhai mpya na upya. |
+
+## Léxico básico en Suajili
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | nyeupe |  |  |  |
+| `black` | `#000000` | nyeusi |  |  |  |
+| `red` | `#FF0000` | nyekundu |  |  |  |
+| `green` | `#008000` | kijani |  |  |  |
+| `yellow` | `#FFFF00` | njano |  |  |  |
+| `blue` | `#0000FF` | buluu |  | samawati |  |
+| `brown` | `#A52A2A` | kahawia |  |  |  |
+| `purple` | `#800080` | zambarau |  |  |  |
+| `pink` | `#FFC0CB` | waridi |  | pinki |  |
+| `orange` | `#FFA500` | rangi ya chungwa |  |  |  |
+| `gray` | `#808080` | kijivu |  |  |  |
+| `lightblue` | `#ADD8E6` | samawati |  |  |  |
+| `darkblue` | `#00008B` | buluu iliyokolea |  |  |  |
+| `lightgreen` | `#90EE90` | kijani hafifu |  |  |  |
+| `darkgreen` | `#006400` | kijani iliyokolea |  |  |  |
+| `skyblue` | `#87CEEB` | samawati |  |  |  |
+| `gold` | `#FFD700` | dhahabu |  |  |  |
+| `silver` | `#C0C0C0` | fedha |  |  |  |

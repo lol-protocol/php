@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | dymny biały | `#F5F5F5` |  | Miękka neutralność, schludność, spokój i prostota. | Subtelny dym: to, co nieuchwytne, przejście i modlitwa, która się wznosi. |
 | `yellow` | żółty | `#FFFF00` |  | Radość, optymizm, energia, jasność umysłu i uwaga; także ostrożność. | W tradycji czakr kojarzony ze splotem słonecznym: oświecenie, wola i wiedza. |
 | `yellowgreen` | żółtozielony | `#9ACD32` |  | Świeżość, witalność, młodość i spokój. | Wiosna i wzrost; nowe życie i odnowa. |
+
+## Léxico básico en Polaco
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | biały | biała (f), białe (n), biali (pl animado), białe (pl) |  |  |
+| `black` | `#000000` | czarny | czarna (f), czarne (n), czarni (pl animado), czarne (pl) |  |  |
+| `red` | `#FF0000` | czerwony | czerwona (f), czerwone (n), czerwoni (pl animado), czerwone (pl) |  |  |
+| `green` | `#008000` | zielony | zielona (f), zielone (n), zieloni (pl animado), zielone (pl) |  |  |
+| `yellow` | `#FFFF00` | żółty | żółta (f), żółte (n), żółci (pl animado), żółte (pl) |  |  |
+| `blue` | `#0000FF` | niebieski | niebieska (f), niebieskie (n), niebiescy (pl animado), niebieskie (pl) |  |  |
+| `brown` | `#A52A2A` | brązowy | brązowa (f), brązowe (n), brązowi (pl animado), brązowe (pl) |  |  |
+| `purple` | `#800080` | fioletowy | fioletowa (f), fioletowe (n), fioletowi (pl animado), fioletowe (pl) |  |  |
+| `pink` | `#FFC0CB` | różowy | różowa (f), różowe (n), różowi (pl animado), różowe (pl) |  |  |
+| `orange` | `#FFA500` | pomarańczowy | pomarańczowa (f), pomarańczowe (n), pomarańczowi (pl animado), pomarańczowe (pl) |  |  |
+| `gray` | `#808080` | szary | szara (f), szare (n), szarzy (pl animado), szare (pl) |  |  |
+| `lightblue` | `#ADD8E6` | jasnoniebieski | jasnoniebieska (f), jasnoniebieskie (n), jasnoniebiescy (pl animado), jasnoniebieskie (pl) | błękitny |  |
+| `darkblue` | `#00008B` | ciemnoniebieski | ciemnoniebieska (f), ciemnoniebieskie (n), ciemnoniebiescy (pl animado), ciemnoniebieskie (pl) |  |  |
+| `lightgreen` | `#90EE90` | jasnozielony | jasnozielona (f), jasnozielone (n), jasnozieloni (pl animado), jasnozielone (pl) |  |  |
+| `darkgreen` | `#006400` | ciemnozielony | ciemnozielona (f), ciemnozielone (n), ciemnozieloni (pl animado), ciemnozielone (pl) |  |  |
+| `skyblue` | `#87CEEB` | błękitny | błękitna (f), błękitne (n), błękitni (pl animado), błękitne (pl) |  |  |
+| `turquoise` | `#40E0D0` | turkusowy | turkusowa (f), turkusowe (n), turkusowi (pl animado), turkusowe (pl) |  |  |
+| `beige` | `#F5F5DC` | beżowy | beżowa (f), beżowe (n), beżowi (pl animado), beżowe (pl) |  |  |
+| `gold` | `#FFD700` | złoty | złota (f), złote (n), złoci (pl animado), złote (pl) |  |  |
+| `silver` | `#C0C0C0` | srebrny | srebrna (f), srebrne (n), srebrni (pl animado), srebrne (pl) |  |  |
+| `violet` | `#EE82EE` | fiołkowy | fiołkowa (f), fiołkowe (n), fiołkowi (pl animado), fiołkowe (pl) |  |  |
+| `indigo` | `#4B0082` | indygo |  |  |  |
+| `lavender` | `#E6E6FA` | lawendowy | lawendowa (f), lawendowe (n), lawendowi (pl animado), lawendowe (pl) |  |  |
+| `maroon` | `#800000` | bordowy | bordowa (f), bordowe (n), bordowi (pl animado), bordowe (pl) | kasztanowy |  |
+| `olive` | `#808000` | oliwkowy | oliwkowa (f), oliwkowe (n), oliwkowi (pl animado), oliwkowe (pl) |  |  |
+| `navy` | `#000080` | granatowy | granatowa (f), granatowe (n), granatowi (pl animado), granatowe (pl) |  |  |
+| `cyan` | `#00FFFF` | cyjanowy | cyjanowa (f), cyjanowe (n), cyjanowi (pl animado), cyjanowe (pl) |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | łososiowy | łososiowa (f), łososiowe (n), łososiowi (pl animado), łososiowe (pl) |  |  |
+| `coral` | `#FF7F50` | koralowy | koralowa (f), koralowe (n), koralowi (pl animado), koralowe (pl) |  |  |
+| `crimson` | `#DC143C` | karmazynowy | karmazynowa (f), karmazynowe (n), karmazynowi (pl animado), karmazynowe (pl) |  |  |
+| `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lime` | `#00FF00` | limonkowy | limonkowa (f), limonkowe (n), limonkowi (pl animado), limonkowe (pl) |  |  |
+| `lilac` | `#CEA2FD` | liliowy | liliowa (f), liliowe (n), liliowi (pl animado), liliowe (pl) |  |  |
+| `burgundy` | `#900020` | bordowy | bordowa (f), bordowe (n), bordowi (pl animado), bordowe (pl) |  |  |
+| `cream` | `#FFFFC2` | kremowy | kremowa (f), kremowe (n), kremowi (pl animado), kremowe (pl) |  |  |
+| `scarlet` | `#FF2400` | szkarłatny | szkarłatna (f), szkarłatne (n), szkarłatni (pl animado), szkarłatne (pl) |  |  |
+| `amber` | `#FFBF00` | bursztynowy | bursztynowa (f), bursztynowe (n), bursztynowi (pl animado), bursztynowe (pl) |  |  |

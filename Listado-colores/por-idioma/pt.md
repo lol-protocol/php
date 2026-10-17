@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | fumaça-branca | `#F5F5F5` |  | Neutralidade suave, limpeza, calma e simplicidade. | Fumaça sutil: o intangível, a transição e a prece que se eleva. |
 | `yellow` | amarelo | `#FFFF00` |  | Alegria, otimismo, energia, clareza mental e atenção; também precaução. | Na tradição dos chacras, associado ao plexo solar: iluminação, vontade e conhecimento. |
 | `yellowgreen` | amarelo-esverdeado | `#9ACD32` |  | Frescor, vitalidade, juventude e calma. | Primavera e crescimento; vida nova e renovação. |
+
+## Léxico básico en Portugués
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | branco | branca (f), brancos (m pl), brancas (f pl) |  |  |
+| `black` | `#000000` | preto | preta (f), pretos (m pl), pretas (f pl) | negro |  |
+| `red` | `#FF0000` | vermelho | vermelha (f), vermelhos (m pl), vermelhas (f pl) |  | encarnado (region=PT) |
+| `green` | `#008000` | verde | verdes (pl) |  |  |
+| `yellow` | `#FFFF00` | amarelo | amarela (f), amarelos (m pl), amarelas (f pl) |  |  |
+| `blue` | `#0000FF` | azul | azuis (pl) |  |  |
+| `brown` | `#A52A2A` | marrom | marrons (pl) | pardo | castanho (region=PT) |
+| `purple` | `#800080` | roxo | roxa (f), roxos (m pl), roxas (f pl) | púrpura |  |
+| `pink` | `#FFC0CB` | rosa | rosas (pl) | cor-de-rosa |  |
+| `orange` | `#FFA500` | laranja | laranjas (pl) |  |  |
+| `gray` | `#808080` | cinza | cinzas (pl) |  | cinzento (region=PT) |
+| `lightblue` | `#ADD8E6` | azul-claro |  |  | azul claro (ortografia=sem_hifen) |
+| `darkblue` | `#00008B` | azul-escuro |  |  | azul escuro (ortografia=sem_hifen) |
+| `lightgreen` | `#90EE90` | verde-claro |  |  | verde claro (ortografia=sem_hifen) |
+| `darkgreen` | `#006400` | verde-escuro |  |  | verde escuro (ortografia=sem_hifen) |
+| `skyblue` | `#87CEEB` | azul-celeste |  | celeste |  |
+| `turquoise` | `#40E0D0` | turquesa | turquesas (pl) |  |  |
+| `beige` | `#F5F5DC` | bege | beges (pl) |  |  |
+| `gold` | `#FFD700` | dourado | dourada (f), dourados (m pl), douradas (f pl) | ouro |  |
+| `silver` | `#C0C0C0` | pratedo | prateda (f), pratedos (m pl), pratedas (f pl) | prata |  |
+| `violet` | `#EE82EE` | violeta | violetas (pl) |  |  |
+| `indigo` | `#4B0082` | índigo | índigos (pl) | anil |  |
+| `lavender` | `#E6E6FA` | lavanda | lavandas (pl) |  |  |
+| `maroon` | `#800000` | grená |  |  |  |
+| `olive` | `#808000` | oliva |  | verde-oliva |  |
+| `navy` | `#000080` | azul-marinho |  |  |  |
+| `cyan` | `#00FFFF` | ciano |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | salmão | salmões (pl) |  |  |
+| `coral` | `#FF7F50` | coral | corais (pl) |  |  |
+| `crimson` | `#DC143C` | carmesim | carmesins (pl) |  |  |
+| `khaki` | `#F0E68C` | cáqui | cáquis (pl) |  |  |
+| `lime` | `#00FF00` | lima |  | verde-limão |  |
+| `lilac` | `#CEA2FD` | lilás | lilases (pl) |  |  |
+| `burgundy` | `#900020` | bordô |  | vinho |  |
+| `cream` | `#FFFFC2` | creme |  |  |  |
+| `scarlet` | `#FF2400` | escarlate | escarlates (pl) |  |  |
+| `amber` | `#FFBF00` | âmbar | âmbares (pl) |  |  |

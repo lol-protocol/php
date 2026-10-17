@@ -156,3 +156,48 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | Rauchweiß | `#F5F5F5` |  | Sanfte Neutralität, Sauberkeit, Ruhe und Schlichtheit. | Feiner Rauch: das Ungreifbare, der Übergang und das aufsteigende Gebet. |
 | `yellow` | Gelb | `#FFFF00` |  | Freude, Optimismus, Energie, geistige Klarheit und Aufmerksamkeit; auch Vorsicht. | In der Chakra-Tradition dem Solarplexus zugeordnet: Erleuchtung, Wille und Erkenntnis. |
 | `yellowgreen` | Gelbgrün | `#9ACD32` |  | Frische, Vitalität, Jugend und Ruhe. | Frühling und Wachstum; neues Leben und Erneuerung. |
+
+## Léxico básico en Alemán
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | weiß | weiße (-e), weißen (-en), weißer (-er), weißes (-es), weißem (-em) |  | weiss (region=CH) |
+| `black` | `#000000` | schwarz | schwarze (-e), schwarzen (-en), schwarzer (-er), schwarzes (-es), schwarzem (-em) |  |  |
+| `red` | `#FF0000` | rot | rote (-e), roten (-en), roter (-er), rotes (-es), rotem (-em) |  |  |
+| `green` | `#008000` | grün | grüne (-e), grünen (-en), grüner (-er), grünes (-es), grünem (-em) |  |  |
+| `yellow` | `#FFFF00` | gelb | gelbe (-e), gelben (-en), gelber (-er), gelbes (-es), gelbem (-em) |  |  |
+| `blue` | `#0000FF` | blau | blaue (-e), blauen (-en), blauer (-er), blaues (-es), blauem (-em) |  |  |
+| `brown` | `#A52A2A` | braun | braune (-e), braunen (-en), brauner (-er), braunes (-es), braunem (-em) |  |  |
+| `purple` | `#800080` | lila |  | violett |  |
+| `pink` | `#FFC0CB` | rosa |  | pink |  |
+| `orange` | `#FFA500` | orange |  |  |  |
+| `gray` | `#808080` | grau | graue (-e), grauen (-en), grauer (-er), graues (-es), grauem (-em) |  |  |
+| `lightblue` | `#ADD8E6` | hellblau | hellblaue (-e), hellblauen (-en), hellblauer (-er), hellblaues (-es), hellblauem (-em) |  |  |
+| `darkblue` | `#00008B` | dunkelblau | dunkelblaue (-e), dunkelblauen (-en), dunkelblauer (-er), dunkelblaues (-es), dunkelblauem (-em) |  |  |
+| `lightgreen` | `#90EE90` | hellgrün | hellgrüne (-e), hellgrünen (-en), hellgrüner (-er), hellgrünes (-es), hellgrünem (-em) |  |  |
+| `darkgreen` | `#006400` | dunkelgrün | dunkelgrüne (-e), dunkelgrünen (-en), dunkelgrüner (-er), dunkelgrünes (-es), dunkelgrünem (-em) |  |  |
+| `skyblue` | `#87CEEB` | himmelblau | himmelblaue (-e), himmelblauen (-en), himmelblauer (-er), himmelblaues (-es), himmelblauem (-em) |  |  |
+| `turquoise` | `#40E0D0` | türkis |  |  |  |
+| `beige` | `#F5F5DC` | beige |  |  |  |
+| `gold` | `#FFD700` | gold |  | golden |  |
+| `silver` | `#C0C0C0` | silber |  | silbern |  |
+| `violet` | `#EE82EE` | violett | violette (-e), violetten (-en), violetter (-er), violettes (-es), violettem (-em) |  |  |
+| `indigo` | `#4B0082` | indigo |  |  |  |
+| `lavender` | `#E6E6FA` | lavendel |  |  |  |
+| `maroon` | `#800000` | kastanienbraun | kastanienbraune (-e), kastanienbraunen (-en), kastanienbrauner (-er), kastanienbraunes (-es), kastanienbraunem (-em) |  |  |
+| `olive` | `#808000` | oliv |  | olivgrün |  |
+| `navy` | `#000080` | marineblau | marineblaue (-e), marineblauen (-en), marineblauer (-er), marineblaues (-es), marineblauem (-em) |  |  |
+| `cyan` | `#00FFFF` | cyan |  |  |  |
+| `magenta` | `#FF00FF` | magenta |  |  |  |
+| `salmon` | `#FA8072` | lachsfarben | lachsfarbene (-e), lachsfarbenen (-en), lachsfarbener (-er), lachsfarbenes (-es), lachsfarbenem (-em) | lachs |  |
+| `coral` | `#FF7F50` | korallenrot | korallenrote (-e), korallenroten (-en), korallenroter (-er), korallenrotes (-es), korallenrotem (-em) | korall |  |
+| `crimson` | `#DC143C` | karmesinrot | karmesinrote (-e), karmesinroten (-en), karmesinroter (-er), karmesinrotes (-es), karmesinrotem (-em) | karmesin |  |
+| `khaki` | `#F0E68C` | khaki |  |  |  |
+| `lime` | `#00FF00` | limettengrün | limettengrüne (-e), limettengrünen (-en), limettengrüner (-er), limettengrünes (-es), limettengrünem (-em) |  |  |
+| `lilac` | `#CEA2FD` | flieder |  |  |  |
+| `burgundy` | `#900020` | weinrot | weinrote (-e), weinroten (-en), weinroter (-er), weinrotes (-es), weinrotem (-em) |  |  |
+| `cream` | `#FFFFC2` | creme |  | cremefarben |  |
+| `scarlet` | `#FF2400` | scharlachrot | scharlachrote (-e), scharlachroten (-en), scharlachroter (-er), scharlachrotes (-es), scharlachrotem (-em) |  |  |
+| `amber` | `#FFBF00` | bernsteinfarben | bernsteinfarbene (-e), bernsteinfarbenen (-en), bernsteinfarbener (-er), bernsteinfarbenes (-es), bernsteinfarbenem (-em) | bernstein |  |

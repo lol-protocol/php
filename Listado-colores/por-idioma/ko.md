@@ -156,3 +156,47 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | 연기 흰색 | `#F5F5F5` |  | 부드러운 중립, 청결함, 차분함, 소박함. | 은은한 연기: 만질 수 없는 것, 이행, 피어오르는 기도. |
 | `yellow` | 노랑 | `#FFFF00` |  | 기쁨, 낙관, 에너지, 정신의 명료함, 주의; 조심도 함께. | 차크라 전통에서는 태양신경총과 연결된다: 깨달음, 의지, 지식. |
 | `yellowgreen` | 연두 | `#9ACD32` |  | 상쾌함, 활력, 젊음, 차분함. | 봄과 성장; 새로운 생명과 갱신. |
+
+## Léxico básico en Coreano
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | 흰색 |  | 하양, 하얀색, 백색 |  |
+| `black` | `#000000` | 검은색 |  | 검정, 까만색, 흑색 |  |
+| `red` | `#FF0000` | 빨간색 |  | 빨강, 붉은색, 적색 |  |
+| `green` | `#008000` | 초록색 |  | 초록, 녹색 |  |
+| `yellow` | `#FFFF00` | 노란색 |  | 노랑, 황색 |  |
+| `blue` | `#0000FF` | 파란색 |  | 파랑, 푸른색, 청색 |  |
+| `brown` | `#A52A2A` | 갈색 |  | 밤색, 브라운 |  |
+| `purple` | `#800080` | 보라색 |  | 보라 |  |
+| `pink` | `#FFC0CB` | 분홍색 |  | 분홍, 핑크 |  |
+| `orange` | `#FFA500` | 주황색 |  | 주황, 오렌지색 |  |
+| `gray` | `#808080` | 회색 |  | 잿빛, 그레이 |  |
+| `lightblue` | `#ADD8E6` | 하늘색 |  | 연한 파랑 |  |
+| `darkblue` | `#00008B` | 남색 |  | 짙은 파란색 |  |
+| `lightgreen` | `#90EE90` | 연두색 |  | 연한 초록 |  |
+| `darkgreen` | `#006400` | 진초록 |  | 짙은 초록 |  |
+| `skyblue` | `#87CEEB` | 하늘색 |  |  |  |
+| `turquoise` | `#40E0D0` | 청록색 |  |  |  |
+| `beige` | `#F5F5DC` | 베이지색 |  | 베이지 |  |
+| `gold` | `#FFD700` | 금색 |  | 황금색, 골드 |  |
+| `silver` | `#C0C0C0` | 은색 |  | 은빛, 실버 |  |
+| `indigo` | `#4B0082` | 쪽빛 |  | 인디고 |  |
+| `lavender` | `#E6E6FA` | 라벤더색 |  |  |  |
+| `maroon` | `#800000` | 적갈색 |  |  |  |
+| `olive` | `#808000` | 올리브색 |  |  |  |
+| `navy` | `#000080` | 네이비 |  | 감색 |  |
+| `cyan` | `#00FFFF` | 시안 |  |  |  |
+| `magenta` | `#FF00FF` | 마젠타 |  |  |  |
+| `salmon` | `#FA8072` | 연어색 |  |  |  |
+| `coral` | `#FF7F50` | 산호색 |  |  |  |
+| `crimson` | `#DC143C` | 진홍색 |  |  |  |
+| `khaki` | `#F0E68C` | 카키색 |  |  |  |
+| `lime` | `#00FF00` | 라임색 |  |  |  |
+| `lilac` | `#CEA2FD` | 라일락색 |  |  |  |
+| `burgundy` | `#900020` | 와인색 |  | 버건디 |  |
+| `cream` | `#FFFFC2` | 크림색 |  |  |  |
+| `scarlet` | `#FF2400` | 주홍색 |  |  |  |
+| `amber` | `#FFBF00` | 호박색 |  |  |  |

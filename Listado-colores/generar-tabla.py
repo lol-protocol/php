@@ -5,6 +5,8 @@
   significados en español. Su tabla resumida va en el README. De los hex se sacan los alias (colores CSS
   con el mismo hex, como aqua y cyan, o gray y grey).
 - significados-idiomas.csv: los significados de esos 148 colores en los otros 29 idiomas.
+- lexico-basico.csv: términos de color de uso real (blanco, azul claro, granate…) en los 30 idiomas, con
+  su forma base, flexiones, sinónimos y variantes.
 - nombres-completos.csv: lista completa de nombres con hex. Sus tres primeras columnas son la fuente;
   css_cercano, delta_e y cercania se calculan aquí (color CSS más cercano según CIEDE2000, en colorimetria.py).
 - Por cada idioma se genera por-idioma/<código>.md (nombre, hex y los dos significados en ese idioma)
@@ -27,6 +29,7 @@ import colorimetria  # noqa: E402  (módulo de esta carpeta)
 ANOTADA = CARPETA / "colores.csv"
 COMPLETA = CARPETA / "nombres-completos.csv"
 SIGNIFICADOS = CARPETA / "significados-idiomas.csv"
+LEXICO = CARPETA / "lexico-basico.csv"
 README = CARPETA / "README.md"
 INDICE = CARPETA / "colores-por-idioma.md"
 DIR_IDIOMAS = CARPETA / "por-idioma"
@@ -53,6 +56,28 @@ COLUMNAS_COMPLETA = COLUMNAS_FUENTE_COMPLETA + ["css_cercano", "delta_e", "cerca
 # Bandas de cercanía por ΔE00 al color CSS más cercano. Son umbrales de este proyecto, no un estándar.
 BANDAS_CERCANIA = [("alta", 3.0), ("media", 8.0)]
 COLUMNAS_SIGNIFICADOS = ["idioma", "nombre_ingles", "significado_psicologico", "significado_mistico"]
+COLUMNAS_LEXICO = ["concepto", "idioma", "forma", "tipo", "rasgos"]
+# Conceptos del léxico básico: el nombre del color CSS si existe; si no, un nombre de nombres-completos.csv.
+# Los once primeros son los términos básicos de color y deben estar en los 30 idiomas.
+BASICOS = ["white", "black", "red", "green", "yellow", "blue", "brown", "purple", "pink", "orange", "gray"]
+CONCEPTOS = BASICOS + [
+    "lightblue", "darkblue", "lightgreen", "darkgreen", "skyblue",
+    "turquoise", "beige", "gold", "silver", "violet", "indigo", "lavender", "maroon", "olive", "navy", "cyan",
+    "magenta", "salmon", "coral", "crimson", "khaki", "lime", "lilac", "burgundy", "cream", "scarlet", "amber",
+]
+TIPOS_LEXICO = ["lema", "flexion", "sinonimo", "variante"]
+# Rasgos válidos de las flexiones. Las claves siguen los rasgos de Universal Dependencies (Gender, Number,
+# Animacy); Terminacion marca la terminación del adjetivo alemán o neerlandés.
+RASGOS_FLEXION = {
+    "Gender=Masc;Number=Sing": "m", "Gender=Fem;Number=Sing": "f", "Gender=Neut;Number=Sing": "n",
+    "Gender=Masc;Number=Plur": "m pl", "Gender=Fem;Number=Plur": "f pl", "Gender=Neut;Number=Plur": "n pl",
+    "Number=Plur": "pl", "Number=Plur;Animacy=Anim": "pl animado",
+    "Terminacion=-e": "-e", "Terminacion=-en": "-en", "Terminacion=-er": "-er",
+    "Terminacion=-es": "-es", "Terminacion=-em": "-em",
+}
+RE_ETIQUETA = re.compile(r"(region|ortografia|registro|uso|forma)=[A-Za-z_-]+")
+# Idiomas cuya escritura no es latina: sus formas no pueden llevar letras latinas.
+SIN_LETRAS_LATINAS = {"el", "ru", "uk", "ar", "he", "fa", "hi", "bn", "zh", "ja", "ko", "th"}
 RE_NOMBRE_CSS = re.compile(r"[a-z]+")
 RE_FORMA_NATURAL = re.compile(r"[a-z]+( [a-z]+)*")
 RE_HEX = re.compile(r"#[0-9A-F]{6}")
@@ -153,6 +178,62 @@ def validar_significados(filas, anotada, errores):
         errores.append("significados-idiomas.csv: las filas deben ir ordenadas por nombre_ingles y, dentro, por el orden de IDIOMAS en generar-tabla.py")
 
 
+def hex_de_concepto(concepto, anotada, completa):
+    """Hex de referencia de un concepto: el del color CSS o, si no lo hay, el del nombre de la lista completa."""
+    for f in anotada:
+        if f["nombre_ingles"] == concepto:
+            return f["hex"]
+    for f in completa:
+        if f["nombre_ingles"].lower() == concepto:
+            return f["hex"]
+    return None
+
+
+def validar_lexico(filas, anotada, completa, errores):
+    """El léxico básico: valida cada fila y que cada concepto tenga su lema en cada idioma donde aparece."""
+    codigos = [c for c, _ in IDIOMAS]
+    orden_tipo = {tipo: n for n, tipo in enumerate(TIPOS_LEXICO)}
+    for concepto in CONCEPTOS:
+        if hex_de_concepto(concepto, anotada, completa) is None:
+            errores.append(f"lexico-basico.csv: el concepto {concepto!r} no está en colores.csv ni en nombres-completos.csv")
+    vistos, lemas, presentes = set(), {}, set()
+    claves = []
+    for n, fila in enumerate(filas, start=2):
+        concepto, idioma, forma, tipo, rasgos = (fila[c] for c in COLUMNAS_LEXICO)
+        if concepto not in CONCEPTOS or idioma not in codigos or tipo not in TIPOS_LEXICO:
+            errores.append(f"lexico-basico.csv línea {n}: concepto, idioma o tipo desconocido ({concepto}, {idioma}, {tipo})")
+            continue
+        claves.append((CONCEPTOS.index(concepto), codigos.index(idioma), orden_tipo[tipo]))
+        if not forma.strip() or forma != forma.strip() or any(c in forma for c in '|\n"'):
+            errores.append(f"lexico-basico.csv línea {n}: forma vacía, con espacios sobrantes o con '|', comillas o saltos de línea")
+        if idioma in SIN_LETRAS_LATINAS and re.search(r"[A-Za-z]", forma):
+            errores.append(f"lexico-basico.csv línea {n}: letras latinas en {idioma}: {forma!r}")
+        if tipo == "flexion" and rasgos not in RASGOS_FLEXION:
+            errores.append(f"lexico-basico.csv línea {n}: rasgos de flexión no válidos: {rasgos!r}")
+        if tipo == "lema" and rasgos:
+            errores.append(f"lexico-basico.csv línea {n}: un lema no lleva rasgos")
+        if tipo in ("sinonimo", "variante") and rasgos and not RE_ETIQUETA.fullmatch(rasgos):
+            errores.append(f"lexico-basico.csv línea {n}: etiqueta no válida: {rasgos!r}")
+        clave = (concepto, idioma, forma, tipo, rasgos)
+        if clave in vistos:
+            errores.append(f"lexico-basico.csv línea {n}: fila repetida {clave}")
+        vistos.add(clave)
+        presentes.add((concepto, idioma))
+        if tipo == "lema":
+            if (concepto, idioma) in lemas:
+                errores.append(f"lexico-basico.csv línea {n}: {concepto}/{idioma} tiene más de un lema")
+            lemas[(concepto, idioma)] = forma
+    for concepto, idioma in sorted(presentes, key=lambda par: (CONCEPTOS.index(par[0]), codigos.index(par[1]))):
+        if (concepto, idioma) not in lemas:
+            errores.append(f"lexico-basico.csv: {concepto}/{idioma} tiene formas pero no lema")
+    faltan = [(c, i) for c in BASICOS for i in codigos if (c, i) not in lemas]
+    if faltan:
+        ejemplo = ", ".join(f"{c}/{i}" for c, i in faltan[:5])
+        errores.append(f"lexico-basico.csv: faltan {len(faltan)} términos básicos (por ejemplo {ejemplo})")
+    if claves != sorted(claves):
+        errores.append("lexico-basico.csv: las filas deben ir ordenadas por concepto, idioma y tipo (lema, flexion, sinonimo, variante)")
+
+
 def alias_de(anotada):
     """Para cada color CSS, los otros que tienen su mismo hex: [(nombre, tipo)].
 
@@ -222,7 +303,31 @@ def tabla_readme(filas):
     return "\n".join(lineas)
 
 
-def pagina_idioma(codigo, etiqueta, anotada, significados):
+def tabla_lexico(codigo, lexico, anotada, completa):
+    """Tabla del léxico básico de un idioma: forma base, flexiones, sinónimos y variantes por concepto."""
+    por_concepto = {}
+    for f in lexico:
+        if f["idioma"] == codigo:
+            por_concepto.setdefault(f["concepto"], []).append(f)
+    lineas = ["| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |", "|---|---|---|---|---|---|"]
+    for concepto in CONCEPTOS:
+        filas = por_concepto.get(concepto)
+        if not filas:
+            continue
+        lema = next(f["forma"] for f in filas if f["tipo"] == "lema")
+        flexiones = ", ".join(f"{f['forma']} ({RASGOS_FLEXION[f['rasgos']]})" for f in filas if f["tipo"] == "flexion")
+
+        def con_etiqueta(f):
+            return f"{f['forma']} ({f['rasgos']})" if f["rasgos"] else f["forma"]
+
+        sinonimos = ", ".join(con_etiqueta(f) for f in filas if f["tipo"] == "sinonimo")
+        variantes = ", ".join(con_etiqueta(f) for f in filas if f["tipo"] == "variante")
+        hex_ref = hex_de_concepto(concepto, anotada, completa)
+        lineas.append(f"| `{concepto}` | `{hex_ref}` | {lema} | {flexiones} | {sinonimos} | {variantes} |")
+    return "\n".join(lineas)
+
+
+def pagina_idioma(codigo, etiqueta, anotada, significados, lexico, completa):
     """Página con nombre, hex, alias y los dos significados de los 148 colores en un idioma."""
     es = codigo == "es"
     alias = alias_de(anotada)
@@ -259,7 +364,16 @@ def pagina_idioma(codigo, etiqueta, anotada, significados):
             mistico,
         ]
         partes.append("| " + " | ".join(celdas) + " |")
-    partes.append("")
+    partes += [
+        "",
+        f"## Léxico básico en {etiqueta}",
+        "",
+        "Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; "
+        "las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.",
+        "",
+        tabla_lexico(codigo, lexico, anotada, completa),
+        "",
+    ]
     return "\n".join(partes)
 
 
@@ -289,10 +403,12 @@ def main():
         sys.exit(f"colorimetria.py: CIEDE2000 no coincide con {len(fallos)} vectores de Sharma et al.: {fallos[:2]}")
     completa = leer_completa()
     traducidos = leer(SIGNIFICADOS, COLUMNAS_SIGNIFICADOS)
+    lexico = leer(LEXICO, COLUMNAS_LEXICO)
     errores = []
     validar_anotada(anotada, errores)
     validar_completa(completa, errores)
     validar_significados(traducidos, anotada, errores)
+    validar_lexico(lexico, anotada, completa, errores)
     if errores:
         sobran = f"\n  ... y {len(errores) - 30} errores más" if len(errores) > 30 else ""
         sys.exit("Errores en los CSV:\n  " + "\n  ".join(errores[:30]) + sobran)
@@ -311,11 +427,11 @@ def main():
         COMPLETA: texto_completa(completa, calcular_cercanias(completa, anotada)),
     }
     for codigo, etiqueta in IDIOMAS:
-        generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(codigo, etiqueta, anotada, significados)
+        generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(codigo, etiqueta, anotada, significados, lexico, completa)
     sobrantes = sorted(p for p in DIR_IDIOMAS.glob("*") if p not in generados) if DIR_IDIOMAS.exists() else []
 
     resumen = (f"{len(anotada)} colores anotados en {len(IDIOMAS)} idiomas, "
-               f"{len(traducidos)} significados traducidos y {len(completa)} nombres completos")
+               f"{len(traducidos)} significados traducidos, {len(lexico)} formas de léxico básico y {len(completa)} nombres completos")
     if "--comprobar" in sys.argv:
         desfasados = [p.relative_to(CARPETA).as_posix() for p, contenido in generados.items()
                       if not p.exists() or p.read_text(encoding="utf-8") != contenido]

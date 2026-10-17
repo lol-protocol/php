@@ -156,3 +156,46 @@ Volver al [índice de idiomas](../colores-por-idioma.md) o al [README](../README
 | `whitesmoke` | سفید دودی | `#F5F5F5` |  | بی‌طرفی نرم، پاکیزگی، آرامش و سادگی. | دود لطیف: امر ناملموس، گذار و دعایی که بالا می‌رود. |
 | `yellow` | زرد | `#FFFF00` |  | شادی، خوش‌بینی، انرژی، صفای ذهن و توجه؛ همچنین احتیاط. | در سنت چاکراها، مرتبط با شبکه خورشیدی: روشن‌شدگی، اراده و دانش. |
 | `yellowgreen` | زرد مایل به سبز | `#9ACD32` |  | طراوت، سرزندگی، جوانی و آرامش. | بهار و رشد؛ زندگی نو و نوشدن. |
+
+## Léxico básico en Persa
+
+Términos de color de uso real, con su forma base y las formas que puede tomar. La forma base es la de un diccionario; las flexiones solo incluyen el nominativo en los idiomas con casos. Detalles en el README.
+
+| Concepto | Hex | Forma base | Flexiones | Sinónimos | Variantes |
+|---|---|---|---|---|---|
+| `white` | `#FFFFFF` | سفید |  |  |  |
+| `black` | `#000000` | سیاه |  | مشکی |  |
+| `red` | `#FF0000` | قرمز |  | سرخ |  |
+| `green` | `#008000` | سبز |  |  |  |
+| `yellow` | `#FFFF00` | زرد |  |  |  |
+| `blue` | `#0000FF` | آبی |  |  |  |
+| `brown` | `#A52A2A` | قهوه‌ای |  |  |  |
+| `purple` | `#800080` | بنفش |  |  |  |
+| `pink` | `#FFC0CB` | صورتی |  |  |  |
+| `orange` | `#FFA500` | نارنجی |  |  |  |
+| `gray` | `#808080` | خاکستری |  | طوسی |  |
+| `lightblue` | `#ADD8E6` | آبی روشن |  |  |  |
+| `darkblue` | `#00008B` | آبی تیره |  |  |  |
+| `lightgreen` | `#90EE90` | سبز روشن |  |  |  |
+| `darkgreen` | `#006400` | سبز تیره |  |  |  |
+| `skyblue` | `#87CEEB` | آبی آسمانی |  |  |  |
+| `turquoise` | `#40E0D0` | فیروزه‌ای |  |  |  |
+| `beige` | `#F5F5DC` | بژ |  |  |  |
+| `gold` | `#FFD700` | طلایی |  |  |  |
+| `silver` | `#C0C0C0` | نقره‌ای |  |  |  |
+| `violet` | `#EE82EE` | بنفش |  |  |  |
+| `indigo` | `#4B0082` | نیلی |  |  |  |
+| `lavender` | `#E6E6FA` | اسطوخودوسی |  |  |  |
+| `maroon` | `#800000` | عنابی |  |  |  |
+| `olive` | `#808000` | زیتونی |  |  |  |
+| `navy` | `#000080` | سرمه‌ای |  |  |  |
+| `cyan` | `#00FFFF` | سیان |  |  |  |
+| `salmon` | `#FA8072` | سالمونی |  |  |  |
+| `coral` | `#FF7F50` | مرجانی |  |  |  |
+| `crimson` | `#DC143C` | زرشکی |  |  |  |
+| `khaki` | `#F0E68C` | خاکی |  |  |  |
+| `lime` | `#00FF00` | لیمویی |  |  |  |
+| `lilac` | `#CEA2FD` | یاسی |  |  |  |
+| `burgundy` | `#900020` | شرابی |  |  |  |
+| `cream` | `#FFFFC2` | کرم |  |  |  |
+| `amber` | `#FFBF00` | کهربایی |  |  |  |
