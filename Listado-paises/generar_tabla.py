@@ -154,11 +154,12 @@ def main(comprobar=False):
 
     texto_gen = tabla_md(
         "Listado de países: genealogía",
-        "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Población 2024 y PIB PPA "
-        "de Our World in Data; PIB nominal del Banco Mundial; IDH 2023 del PNUD vía Gapminder. "
+        "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Población 2024 de Our "
+        "World in Data; PIB nominal del Banco Mundial; PIB PPA (Banco Mundial) e IDH 2023 (PNUD) vía "
+        "Gapminder. "
         "Ver `README.md`, «Estado de los datos».",
         ["País", "Tipo", "Región", "Población 2024 (M)", "Nacidos en la historia (M)",
-         "IDH 2023", "PIB pc nominal 2023 (USD)", "PIB pc PPA 2022 ($ int. 2011)",
+         "IDH 2023", "PIB pc nominal 2023 (USD)", "PIB pc PPA 2023 ($ int. 2021)",
          "Internet (% pob.)", "Genealogía (IG)",
          "Operabilidad (IO)", "Prioridad", "Excluido", "Comentarios"],
         gen_ordenado)

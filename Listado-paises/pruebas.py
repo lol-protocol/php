@@ -39,15 +39,20 @@ class InterpolacionYNacimientos(unittest.TestCase):
         self.assertEqual(hp.poblacion_en([100, 200], [50, 50], 10), 0.0)
         self.assertEqual(hp.poblacion_en([100, 200], [50, 50], 999), 50)
 
-    def test_suma_con_la_natalidad_del_archivo_y_0040_donde_falta(self):
-        # 1000 personas desde -1000: 2800 anios a 0,040 hasta 1799 y 226 anios a 0,010 desde 1800.
+    def test_natalidad_por_epoca_en_los_bordes(self):
+        self.assertEqual([hp.natalidad_por_epoca(t) for t in (-5000, 0, 1, 1649, 1650, 1749, 1750, 2000)],
+                         [0.080, 0.080, 0.060, 0.060, 0.050, 0.050, 0.040, 0.040])
+
+    def test_suma_con_la_natalidad_del_archivo_y_la_de_la_epoca_donde_falta(self):
+        # 1000 personas desde -1000. Sin archivo: 1001 anios a 0,080 (hasta el 0), 1649 a 0,060,
+        # 100 a 0,050 y 50 a 0,040 (1750-1799). Con archivo: 226 anios a 0,010 (1800-2025).
         natalidad = {t: 0.010 for t in range(1800, 2026)}
-        esperado = 1000 * 0.04 * 2800 + 1000 * 0.010 * 226
+        esperado = 1000 * (0.08 * 1001 + 0.06 * 1649 + 0.05 * 100 + 0.04 * 50 + 0.010 * 226)
         self.assertAlmostEqual(hp.nacimientos([(-1000, 1000.0), (0, 1000.0)], natalidad), esperado)
 
-    def test_suma_sin_natalidad_usa_la_tasa_preindustrial(self):
-        # 50 personas desde el anio 100 hasta 2025, siempre a 0,040.
-        esperado = 50 * 0.04 * (2026 - 100)
+    def test_suma_sin_natalidad_usa_la_de_cada_epoca(self):
+        # 50 personas desde el anio 100 hasta 2025: 1550 anios a 0,060, 100 a 0,050 y 276 a 0,040.
+        esperado = 50 * (0.06 * 1550 + 0.05 * 100 + 0.04 * 276)
         self.assertAlmostEqual(hp.nacimientos([(100, 50.0), (200, 50.0)], {}), esperado)
 
 

@@ -118,6 +118,7 @@
 | Sri Lanka | cingalés; tamil; inglés | estado | 92.7 | 54.6 | 4 | 5 | 3 | 12 | no | IP por inglés (mejor recurso listado). Cingalés con recursos pequeños; tamil con treebank |
 | Tailandia | tailandés; inglés | estado | 91.1 | 90.9 | 4 | 5 | 3 | 12 | no | IP por inglés (mejor recurso listado). Tailandés con recursos moderados; la segmentación sin espacios exige herramientas |
 | Uzbekistán | uzbeko; ruso | estado | 100.0 | 89.5 | 4 | 5 | 3 | 12 | no | IP por ruso (mejor recurso listado). Uzbeko con un treebank pequeño |
+| Benín | francés | estado | 51.4 | 34.0 | 2 | 5 | 5 | 10 | no | IP por francés (mejor recurso listado). Alfabetización baja; francés con recursos; lenguas nacionales sin recursos |
 | Costa de Marfil | francés | estado | 50.0 | 41.4 | 2 | 5 | 5 | 10 | no | IP por francés (mejor recurso listado). Francés con recursos; lenguas locales sin corpus |
 | Liberia | inglés | estado | 59.4 | 32.2 | 2 | 5 | 5 | 10 | no | IP por inglés (mejor recurso listado). Inglés con recursos; las lenguas locales casi no tienen texto digital |
 | Mozambique | portugués; emakhuwa | estado | 61.7 | 20.5 | 2 | 5 | 5 | 10 | no | IP por portugués (mejor recurso listado). Portugués con recursos; las lenguas bantúes casi sin corpus |
@@ -170,7 +171,6 @@
 | Tonga | tongano; inglés | estado | 91.0 | 67.4 | 3 | 5 | 2 | 6 | no | IP por inglés (mejor recurso listado). Tongano con recursos mínimos |
 | Tuvalu | tuvaluano; inglés | estado | 100.0 | — | 3 | 5 | 2 | 6 | no | IP por inglés (mejor recurso listado). Tuvaluano con recursos mínimos |
 | Vanuatu | bislama; inglés; francés | estado | 88.0 | — | 3 | 5 | 2 | 6 | no | IP por inglés (mejor recurso listado). Bislama con recursos mínimos |
-| Benín | francés | estado | 51.4 | 34.0 | 1 | 5 | 5 | 5 | no | IP por francés (mejor recurso listado). Alfabetización muy baja; francés con recursos; lenguas nacionales sin recursos |
 | Eritrea | tigriña; árabe | estado | — | 14.3 | 2 | 4 | 2 | 4 | no | IP por árabe (mejor recurso listado). El tigriña casi no tiene texto digital anotable |
 | Etiopía | amárico | estado | 60.5 | 21.9 | 2 | 2 | 2 | 4 | no | Amárico con corpus pequeños |
 | Gambia | mandinga; inglés | estado | 51.6 | 49.5 | 2 | 5 | 2 | 4 | no | IP por inglés (mejor recurso listado). Inglés con recursos; lenguas nacionales casi sin texto digital |
@@ -197,9 +197,9 @@
 | Nauru | nauruano; inglés | estado | 96.6 | 83.0 | 3 | 5 | 1 | 3 | sí | IP por inglés (mejor recurso listado). Nauruano sin recursos digitales; inglés con recursos |
 | Palaos | palauano; inglés | estado | 100.0 | 83.9 | 3 | 5 | 1 | 3 | sí | IP por inglés (mejor recurso listado). Inglés con recursos; el palauano casi no tiene |
 | Turkmenistán | turcomano; ruso | estado | 99.9 | — | 3 | 5 | 1 | 3 | sí | IP por ruso (mejor recurso listado). El turcomano no tiene corpus anotados ni texto digital abierto |
+| Burundi | kirundi; francés | estado | 71.4 | 8.6 | 2 | 5 | 1 | 2 | sí | IP por francés (mejor recurso listado). Alfabetización media, mercado editorial muy reducido; el kirundi no tiene corpus anotados; el francés sí tiene recursos |
 | Comoras | shikomor; francés; árabe | estado | 75.8 | 32.5 | 2 | 5 | 1 | 2 | sí | IP por francés (mejor recurso listado). El shikomor no tiene corpus anotados |
+| Somalia | somalí; árabe | estado | 54.1 | 27.9 | 2 | 4 | 1 | 2 | sí | IP por árabe (mejor recurso listado). Alfabetización baja; el somalí no tiene corpus anotados |
 | Yibuti | somalí; francés; árabe; afar | estado | — | 65.3 | 2 | 5 | 1 | 2 | sí | IP por francés (mejor recurso listado). Francés y árabe con recursos; somalí y afar casi sin |
-| Burundi | kirundi; francés | estado | 71.4 | 8.6 | 1 | 5 | 1 | 1 | sí | IP por francés (mejor recurso listado). El kirundi no tiene corpus anotados; el francés sí tiene recursos |
 | Chad | árabe chadiano; francés; árabe | estado | 30.6 | 12.6 | 1 | 5 | 1 | 1 | sí | IP por francés (mejor recurso listado). Alfabetización muy baja y casi sin recursos digitales |
 | República Centroafricana | sango; francés | estado | 42.4 | 13.8 | 1 | 5 | 1 | 1 | sí | IP por francés (mejor recurso listado). Alfabetización muy baja; el sango no tiene recursos digitales |
-| Somalia | somalí; árabe | estado | 54.1 | 27.9 | 1 | 4 | 1 | 1 | sí | IP por árabe (mejor recurso listado). El somalí no tiene corpus anotados |

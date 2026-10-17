@@ -7,12 +7,12 @@ Uso (desde esta carpeta; las rutas apuntan a copias locales de las fuentes, ver 
         --hyde hyde-regiones.csv --clio clio-infra.csv --natalidad-gapminder natalidad-gapminder.csv \\
         --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \\
         --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \\
-        --pib-bm gdp.csv --poblacion-bm population.csv
+        --pib-ppa pib-ppa-gapminder.csv --pib-bm gdp.csv --poblacion-bm population.csv
 
 Escribe:
     poblacion_larga.csv  serie larga de población por país (codigo, anio, poblacion)
     natalidad.csv        natalidad por país desde 1800 (codigo, anio, tasa_por_mil)
-    paises.csv           población 2024, IDH 2023, PIB per cápita nominal 2023 y PPA 2022,
+    paises.csv           población 2024, IDH 2023, PIB per cápita nominal y PPA de 2023,
                          alfabetización de adultos y usuarios de internet
 
 Serie larga de cada país (método compuesto). Cada fuente solo cubre los años anteriores al
@@ -27,10 +27,13 @@ Un país que OWID no tiene (Puerto Rico) usa la población del Banco Mundial des
 
 Natalidad (ver natalidad_pais): la tasa bruta de Gapminder (1800-2015) y, hasta ANIO_FIN, la
 última tasa escalada por la fecundidad de Gapminder. Un país sin tasa usa FACTOR_NATALIDAD x
-fecundidad; uno sin ninguna de las dos no entra en natalidad.csv (historia_poblacion usa 0,040).
+fecundidad; uno sin ninguna de las dos no entra en natalidad.csv (historia_poblacion usa la de
+su época).
 
 PIB per cápita nominal: PIB del Banco Mundial (NY.GDP.MKTP.CD) entre su población (SP.POP.TOTL),
 del último año entre ANIO_PIB_NOMINAL_MINIMO y ANIO_PIB_NOMINAL con los dos datos.
+PIB per cápita PPA: el de Gapminder de ANIO_PIB_PPA, en dólares internacionales de 2021 (basado
+en el Banco Mundial).
 IDH: el del PNUD de ANIO_IDH, tal como lo publica Gapminder.
 Alfabetización de adultos (UNESCO) y usuarios de internet (Banco Mundial), también vía Gapminder:
 el último dato de cada país desde ANIO_MINIMO_ALFABETIZACION y ANIO_MINIMO_INTERNET.
@@ -45,7 +48,7 @@ from historia_poblacion import ANIO_FIN, poblacion_en
 
 AQUI = Path(__file__).resolve().parent
 ANIO_POBLACION = "2024"
-ANIO_PIB_PPA = "2022"
+ANIO_PIB_PPA = 2023
 ANIO_PIB_NOMINAL = 2023
 ANIO_PIB_NOMINAL_MINIMO = 2021  # un dato más viejo no se usa: el país queda vacío
 ANIO_IDH = 2023
@@ -164,7 +167,7 @@ def formato_millones(personas):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     for nombre in ("co2", "maddison", "hyde", "clio", "natalidad-gapminder", "fecundidad-gapminder", "idh",
-                   "alfabetizacion", "internet", "pib-bm", "poblacion-bm"):
+                   "alfabetizacion", "internet", "pib-ppa", "pib-bm", "poblacion-bm"):
         ap.add_argument(f"--{nombre}", required=True)
     args = ap.parse_args()
 
@@ -172,8 +175,8 @@ def main():
     columnas = list(paises[0].keys())
     owid = {f["codigo"]: f["codigo_owid"] for f in leer(AQUI / "codigos_iso.csv")}
 
-    # co2-data: población hasta 2024 y PIB (Maddison 2023, $ internacionales de 2011).
-    poblacion, pib = {}, {}
+    # co2-data: población hasta 2024.
+    poblacion = {}
     nombre_a_codigo = dict(ALIAS)
     for f in leer(args.co2):
         clave = f["iso_code"] or ("OWID_KOS" if f["country"] == "Kosovo" else "")
@@ -182,8 +185,6 @@ def main():
         nombre_a_codigo.setdefault(f["country"], clave)
         if f["population"]:
             poblacion.setdefault(clave, {})[int(f["year"])] = float(f["population"])
-        if f["year"] == ANIO_PIB_PPA and f["gdp"] and f["population"]:
-            pib[clave] = float(f["gdp"]) / float(f["population"])
 
     maddison = {}
     for f in leer(args.maddison):
@@ -211,6 +212,7 @@ def main():
     idh = leer_gapminder(args.idh)
     alfabetizacion = leer_gapminder(args.alfabetizacion)
     internet = leer_gapminder(args.internet)
+    pib_ppa = leer_gapminder(args.pib_ppa)
 
     pib_bm, poblacion_bm = leer_bm(args.pib_bm), leer_bm(args.poblacion_bm)
     # Sin población de OWID, la del Banco Mundial hasta el mismo año.
@@ -248,10 +250,9 @@ def main():
             fila["poblacion_millones"] = formato_millones(actual)
         else:
             sin_pob.append(codigo)
-        if clave in pib:
-            fila["pib_per_capita_ppa_usd"] = str(round(pib[clave]))
-        else:
-            fila["pib_per_capita_ppa_usd"] = ""
+        ppa = pib_ppa.get(clave, {}).get(ANIO_PIB_PPA)
+        fila["pib_per_capita_ppa_usd"] = str(round(ppa)) if ppa else ""
+        if not ppa:
             sin_pib.append(codigo)
 
         nominal = None
@@ -282,7 +283,7 @@ def main():
         natal = natalidad_pais(tasas.get(clave, {}), fecundidad.get(clave, {}))
         filas_natalidad += [(codigo, a, f"{v:.2f}") for a, v in sorted(natal.items())]
         if clave not in tasas:
-            sin_natalidad.append(f"{codigo} ({'fecundidad' if natal else '0,040'})")
+            sin_natalidad.append(f"{codigo} ({'fecundidad' if natal else 'la de su época'})")
 
     with (AQUI / "poblacion_larga.csv").open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
@@ -304,7 +305,7 @@ def main():
           f"{', '.join(sin_natalidad) or 'ninguno'}")
     print(f"paises.csv: población {ANIO_POBLACION} sin dato (se mantiene la anterior): {', '.join(sin_pob) or 'ninguno'}")
     print(f"población del Banco Mundial (sin dato en OWID): {', '.join(con_poblacion_bm) or 'ninguno'}")
-    print(f"paises.csv: PIB PPA {ANIO_PIB_PPA} sin dato (vacío): {len(sin_pib)} países")
+    print(f"paises.csv: PIB PPA {ANIO_PIB_PPA} sin dato (vacío): {', '.join(sin_pib) or 'ninguno'}")
     print(f"paises.csv: PIB nominal sin dato desde {ANIO_PIB_NOMINAL_MINIMO} o excluido (vacío): "
           f"{', '.join(sin_nominal) or 'ninguno'}; de un año anterior a {ANIO_PIB_NOMINAL}: "
           f"{', '.join(nominal_anterior) or 'ninguno'}")
