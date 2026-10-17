@@ -5,7 +5,7 @@
     "region": "middle_east_africa",
     "law_name": "Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years (inferred from Art. 58 stamp rule; general article not seen); collective, audiovisual and posthumous works 50 years from first lawful publication; applied art 25 years (Art. 61) (unconfirmed)",
+    "term_of_protection": "Author's life + 50 years from end of year of death (Art. 58); joint works from death of last surviving author; collective, audiovisual and posthumous works 50 years from first publication; applied art 25 years",
     "author_rights": "Not specified",
     "moral_rights": "Disclosure, attribution, integrity and withdrawal (Art. 22 covers name, status and integrity)",
     "orphan_works": "Not specified (unconfirmed)",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-17",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/en/details.jsp?id=8323",
@@ -31,11 +31,6 @@
       "protection_type": {
         "url": "https://www.wipo.int/wipolex/en/details.jsp?id=8323",
         "confidence": "high",
-        "checked": "2026-10-16"
-      },
-      "term_of_protection": {
-        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Burundi.html",
-        "confidence": "low",
         "checked": "2026-10-16"
       },
       "moral_rights": {
@@ -57,9 +52,20 @@
         "url": "https://www.wipo.int/wipolex/en/treaties/parties/remarks/BI/15",
         "confidence": "medium",
         "checked": "2026-10-16"
+      },
+      "term_of_protection": {
+        "url": "https://c.enwp.org/wiki/Commons:CRT/Burundi",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years (inferred from Art. 58 stamp rule; general article not seen); collective, audiovisual and posthumous works 50 years from first lawful publication; applied art 25 years (Art. 61) (unconfirmed)",
+        "to": "Author's life + 50 years from end of year of death (Art. 58); joint works from death of last surviving author; collective, audiovisual and posthumous works 50 years from first publication; applied art 25 years"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

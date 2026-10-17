@@ -5,7 +5,7 @@
     "region": "middle_east_africa",
     "law_name": "Copyright Law 2026 (Royal Decree No. M/169)",
     "protection_type": "Copyright",
-    "term_of_protection": "Author's life + 50 years (unconfirmed)",
+    "term_of_protection": "Author's life + 50 years (art. 19 First(1)); anonymous/corporate works 50 years from publication; applied art and photographs 25 years",
     "author_rights": "Economic rights protected",
     "moral_rights": "Moral rights limited",
     "orphan_works": "Collective administration required",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-17",
     "sources": {
       "law_name": {
         "url": "https://www.bakermckenzie.com/en/insight/publications/2026/07/saudi-arabia-new-copyright-law-modernises-ksa-ip-framework",
@@ -29,9 +29,9 @@
         "checked": "2026-10-14"
       },
       "term_of_protection": {
-        "url": "https://www.mondaq.com/saudiarabia/licensing-syndication/1802198/saudi-arabias-new-copyright-law-key-changes-and-implications",
-        "confidence": "low",
-        "checked": "2026-10-14"
+        "url": "https://commons.wikipedia.com/wiki/Commons:CRT/Saudi_Arabia",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       },
       "digital_protection": {
         "url": "https://amlak.net.sa/en/101083/",
@@ -55,6 +55,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "term_of_protection",
+        "from": "Author's life + 50 years (unconfirmed)",
+        "to": "Author's life + 50 years (art. 19 First(1)); anonymous/corporate works 50 years from publication; applied art and photographs 25 years"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

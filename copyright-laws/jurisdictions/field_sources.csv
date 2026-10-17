@@ -2,7 +2,7 @@ country_code,law_name,field,url,confidence,checked
 AE,,law_name,https://uaelegislation.gov.ae/en/legislations/1534/download,high,2026-10-14
 AE,,term_of_protection,https://www.agip.com/Agip-Country-Service/en/10/c/1,medium,2026-10-14
 AE,,digital_protection,https://arab-digital-economy.org/?p=28026,medium,2026-10-14
-AE,,registration_required,https://www.agip.com/Agip-Country-Service/en/10/c,low,2026-10-14
+AE,,registration_required,https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/600/,medium,2026-10-17
 AE,,enforcement_body,https://www.wam.ae/en/article/hszrezo1-ministry-economy-reviews-executive-regulation,high,2026-10-14
 AL,,moral_rights,https://www.mondaq.com/Article/491146,medium,2026-10-14
 AL,,digital_protection,https://ip-documents.info/2021/IP/ALB/21_0681_00_e.pdf,low,2026-10-15
@@ -30,7 +30,6 @@ BH,,digital_protection,https://www.iipa.org/files/uploads/2017/12/2007SPEC301BAH
 BH,,fair_use_exceptions,https://www.copyrightatlas.com/details?type=country&slug=bh,medium,2026-10-15
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,law_name,https://www.wipo.int/wipolex/en/details.jsp?id=8323,high,2026-10-16
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,protection_type,https://www.wipo.int/wipolex/en/details.jsp?id=8323,high,2026-10-16
-BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Burundi.html,low,2026-10-16
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,moral_rights,https://www.memoireonline.com/11/11/4955/m_De-la-protection-des-droits-de-propriete-litteraire-et-artistique-en-droit-positif-burundais3.html,medium,2026-10-16
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,orphan_works,https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/bi/bi005en.pdf,low,2026-10-16
 BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,fair_use_exceptions,https://dti.eui.eu/database/page/258,medium,2026-10-16
@@ -38,7 +37,6 @@ BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related 
 BJ,Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouring Rights (repealed Law No. 84-008 of 15 March 1984),law_name,https://www.wipo.int/wipolex/en/text/490620,high,2026-10-16
 BJ,Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouring Rights (repealed Law No. 84-008 of 15 March 1984),protection_type,https://www.wipo.int/wipolex/en/text/490620,high,2026-10-16
 BJ,Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouring Rights (repealed Law No. 84-008 of 15 March 1984),term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Benin.html,medium,2026-10-16
-BJ,Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouring Rights (repealed Law No. 84-008 of 15 March 1984),fair_use_exceptions,https://www.wipo.int/wipolex/en/text/490620,low,2026-10-16
 BJ,Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouring Rights (repealed Law No. 84-008 of 15 March 1984),enforcement_body,https://sgg.gouv.bj/doc/decret-2007-115/download,high,2026-10-16
 BJ,Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouring Rights (repealed Law No. 84-008 of 15 March 1984),treaties_signatory,https://wipo.int/wipolex/en/treaties/ShowResults?code=BJ,medium,2026-10-16
 BN,,orphan_works,https://www.wipo.int/tk/en/databases/tklaws/articles/article_0120.html,medium,2026-10-14
@@ -117,7 +115,6 @@ HT,Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT00
 HT,Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT008),protection_type,https://www.wipo.int/wipolex/fr/legislation/details/5090,medium,2026-10-16
 HT,Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT008),term_of_protection,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Haiti.html,medium,2026-10-16
 HT,Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT008),moral_rights,https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/166/,medium,2026-10-16
-HT,Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT008),fair_use_exceptions,https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/Haiti.html,low,2026-10-16
 HT,Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT008),registration_required,https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/166/,medium,2026-10-16
 HT,Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT008),enforcement_body,https://www.wipo.int/wipolex/en/details.jsp?id=5091,high,2026-10-16
 HU,,enforcement_body,https://sztnh.gov.hu/en/home/about-us,high,2026-10-14
@@ -137,6 +134,16 @@ JM,,orphan_works,https://webiis08.mondaq.com/copyright/710130/the-2015-jamaica-c
 JM,,digital_protection,https://www.iipa.org/files/uploads/2020/02/2020SPEC301JAMAICA.pdf,high,2026-10-14
 JO,,digital_protection,https://iipa.org/files/uploads/2018/01/IIPA-301-FTA-DISPUTE-SETTLEMENT-JORDAN.pdf,medium,2026-10-14
 JP,,enforcement_body,https://www.bunka.go.jp/english/policy/copyright/,high,2026-10-14
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",law_name,https://www.wipo.int/wipolex/en/legislation/details/2695,high,2026-10-17
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",protection_type,https://www.wipo.int/wipolex/en/legislation/details/2695,high,2026-10-17
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",term_of_protection,https://c.enwp.org/wiki/Commons:FOP_Kyrgyzstan,medium,2026-10-17
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",author_rights,https://www.wipo.int/wipolex/en/legislation/details/2695,medium,2026-10-17
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",moral_rights,https://www.wipo.int/wipolex/en/legislation/details/2695,low,2026-10-17
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",orphan_works,https://www.eifl.net/node/2519,low,2026-10-17
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",fair_use_exceptions,https://www.eifl.net/node/2519,medium,2026-10-17
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",registration_required,https://www.wipo.int/wipolex/en/text/445948,high,2026-10-17
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",enforcement_body,https://24.kg/english/251302_More_than_2600_inventors_registered_in_Kyrgyzstan/amp/,medium,2026-10-17
+KG,"Law of the Kyrgyz Republic No. 6 of 14 January 1998 on Copyright and Related Rights (as amended, incl. Law No. 14 of 21 Jan 2014 and Law No. 42 of 9 Mar 2017)",treaties_signatory,https://www.wipo.int/wipolex/en/treaties/ShowResults?code=KG,high,2026-10-17
 KH,,digital_protection,https://www.iipa.org/files/uploads/2018/01/rbc20062006SPEC301CAMBODIA.pdf,medium,2026-10-14
 KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",law_name,https://www.wipo.int/wipolex/zh/legislation/details/9722,high,2026-10-16
 KP,"Law on Copyright of the DPRK (Decree No. 2141 of 2001, amended up to Decree No. 1532 of 2006)",protection_type,https://www.wipo.int/wipolex/zh/legislation/details/9722,medium,2026-10-16
@@ -212,6 +219,17 @@ NG,,term_of_protection,https://www.mondaq.com/nigeria/copyright/1356178/a-review
 NG,,digital_protection,https://www.lawglobalhub.com/section-52-nigerian-copyright-act-2022/,high,2026-10-14
 NG,,enforcement_body,https://www.mondaq.com/nigeria/copyright/1332056/an-overview-of-the-copyright-act-2022,high,2026-10-14
 NG,,notes,https://www.mondaq.com/nigeria/copyright/1332056/an-overview-of-the-copyright-act-2022,high,2026-10-14
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",law_name,https://www.wipo.int/wipolex/en/legislation/details/21425,high,2026-10-17
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",protection_type,https://www.wipo.int/wipolex/en/legislation/details/21425,high,2026-10-17
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",term_of_protection,https://c.enwp.org/wiki/Commons:CRT/Nicaragua,medium,2026-10-17
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",author_rights,https://revistas.csuca.org/Record/REVDERECHO322/Details,medium,2026-10-17
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",moral_rights,https://revistas.csuca.org/Record/REVDERECHO322/Details,low,2026-10-17
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",orphan_works,https://www.wipo.int/wipolex/en/legislation/details/21425,low,2026-10-17
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",digital_protection,https://www.wipo.int/wipolex/en/text/497150,low,2026-10-17
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",fair_use_exceptions,https://repository.ifla.org/handle/20.500.14598/5817,low,2026-10-17
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",registration_required,https://nicaragua.justia.com/nacionales/decretos-ejecutivos/reglamento-de-la-ley-de-derechos-de-autor-y-conexos-may-5-2000/gdoc,medium,2026-10-17
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",enforcement_body,https://www.wipo.int/edocs/mdocs/lac/es/ompi_jpi_jda_gdl_04/ompi_jpi_jda_gdl_04_1_ni.pdf,medium,2026-10-17
+NI,"Law No. 312 on Copyright and Related Rights (approved 6 Jul 1999, La Gaceta Nos. 166-167 of 31 Aug/1 Sep 1999), amended by Law No. 577 of 16 Mar 2006; consolidated text approved 25 Jun 2020 (La Gaceta No. 232, 16 Dec 2020)",treaties_signatory,https://wipo.int/wipolex/en/treaties/notifications/details/treaty_wppt_41,high,2026-10-17
 NL,,enforcement_body,https://internetconsultatie.nl/acr2/document/8899,medium,2026-10-14
 NO,,orphan_works,https://stortinget.no/no/Saker-og-publikasjoner/Vedtak/Beslutninger/Lovvedtak/2014-2015/vedtak-201415-098/,medium,2026-10-14
 NP,,digital_protection,http://www.nepalcopyright.gov.np/downloadfile/The%20Copyright%20Act_1315912777_1573122046.pdf,medium,2026-10-15
@@ -248,7 +266,7 @@ RU,,notes,https://en.wikipedia.org/wiki/Copyright_law_of_Russia,high,2026-10-14
 RW,,orphan_works,https://www.ensafrica.com/news/detail/9073/key-changes-introduced-by-rwandas-new-intelle,medium,2026-10-15
 RW,,digital_protection,https://spoor.com/rwanda-new-ip-legislation/,high,2026-10-14
 SA,,law_name,https://www.bakermckenzie.com/en/insight/publications/2026/07/saudi-arabia-new-copyright-law-modernises-ksa-ip-framework,high,2026-10-14
-SA,,term_of_protection,https://www.mondaq.com/saudiarabia/licensing-syndication/1802198/saudi-arabias-new-copyright-law-key-changes-and-implications,low,2026-10-14
+SA,,term_of_protection,https://commons.wikipedia.com/wiki/Commons:CRT/Saudi_Arabia,medium,2026-10-17
 SA,,digital_protection,https://amlak.net.sa/en/101083/,medium,2026-10-14
 SA,,registration_required,https://www.bakermckenzie.com/en/insight/publications/2026/07/saudi-arabia-new-copyright-law-modernises-ksa-ip-framework,medium,2026-10-14
 SA,,enforcement_body,https://gowlingwlg.com/en/insights-resources/articles/2026/saudi-arabia-copyright-law-2026,high,2026-10-14
@@ -337,3 +355,8 @@ ZM,,digital_protection,https://old.zambialii.org/zm/legislation/act/2010/no-25-2
 ZM,,fair_use_exceptions,https://wipolex-res.wipo.int/edocs/lexdocs/laws/en/zm/zm070en.pdf,medium,2026-10-14
 ZW,,digital_protection,https://zimlii.org/akn/zw/act/2000/11/eng@2004-09-10/source.pdf,high,2026-10-15
 ZW,,fair_use_exceptions,https://www.uz.ac.zw/images/library/Copyright_Guideline_eLearning.pdf,medium,2026-10-14
+BA,,orphan_works,https://eprints.ibu.edu.ba/files/original/a45a767f64a179d622e49f504e2bb7d4.pdf,medium,2026-10-17
+SN,,orphan_works,https://www.eifl.net/system/files/resources/202312/what_can_libraries_in_senegal_do_under_copyright_act_2008.pdf,medium,2026-10-17
+BI,Law No. 1/021 of 30 December 2005 on the Protection of Copyright and Related Rights,term_of_protection,https://c.enwp.org/wiki/Commons:CRT/Burundi,medium,2026-10-17
+BJ,Law No. 2005-30 of 5 April 2006 on the Protection of Copyright and Neighbouring Rights (repealed Law No. 84-008 of 15 March 1984),fair_use_exceptions,https://ictpolicyafrica.org/en/document/2h0nt7ece2t?page=9,medium,2026-10-17
+HT,Decree of 12 October 2005 on Copyright (published 9 March 2006; WIPO Lex HT008),fair_use_exceptions,https://www.memoireonline.com/12/13/8158/m_Droits-d-auteur-en-Hati--l-heure-des-nouvelles-technologies-d-information-et-de-communication17.html,medium,2026-10-17
