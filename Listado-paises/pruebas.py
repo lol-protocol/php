@@ -93,6 +93,14 @@ class DatosPreparados(unittest.TestCase):
         self.assertEqual(puntos[0][0], 0)
         self.assertAlmostEqual(puntos[0][1], 10.0)
 
+    def test_pib_nominal_usa_el_ultimo_anio_con_pib_y_poblacion_dentro_del_rango(self):
+        import preparar_datos as pd
+        pib = {pd.ANIO_PIB_NOMINAL: 300.0, pd.ANIO_PIB_NOMINAL - 1: 200.0}
+        poblacion = {pd.ANIO_PIB_NOMINAL - 1: 10.0}  # sin población del último año
+        self.assertEqual(pd.pib_nominal(pib, poblacion), (pd.ANIO_PIB_NOMINAL - 1, 20.0))
+        viejo = pd.ANIO_PIB_NOMINAL_MINIMO - 1
+        self.assertIsNone(pd.pib_nominal({viejo: 100.0}, {viejo: 10.0}))
+
     def test_la_columna_de_nacidos_coincide_con_el_calculo_sobre_los_archivos_de_entrada(self):
         carpeta = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, carpeta)

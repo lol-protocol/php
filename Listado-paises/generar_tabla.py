@@ -85,6 +85,11 @@ def main(comprobar=False):
         errores += errores_de("paises.csv", linea, f, ESCALAS_PAISES, NUMERICAS_PAISES)
         if f.get("tipo") not in TIPOS:
             errores.append(f"paises.csv línea {linea} ({f.get('codigo')}): tipo '{f.get('tipo')}' no válido")
+        try:
+            if f.get("idh") and not 0 < float(f["idh"]) < 1:
+                errores.append(f"paises.csv línea {linea} ({f['codigo']}): idh fuera de 0–1: {f['idh']}")
+        except ValueError:
+            pass  # ya lo informa errores_de
     niveles = {f["lengua"]: int(f["nivel"]) for _, f in leer(NIVELES, ["lengua", "nivel"])}
     for linea, f in pos:
         errores += errores_de("paises_pos.csv", linea, f, ESCALAS_POS, [])
@@ -144,9 +149,10 @@ def main(comprobar=False):
     texto_gen = tabla_md(
         "Listado de países: genealogía",
         "Generado por `generar_tabla.py` desde `paises.csv`. No editar a mano. Población 2024 y PIB PPA "
-        "de Our World in Data; IDH y PIB nominal **sin contrastar**; ver `README.md`, «Estado de los datos».",
+        "de Our World in Data; PIB nominal del Banco Mundial; IDH 2019 del PNUD vía Our World in Data. "
+        "Ver `README.md`, «Estado de los datos».",
         ["País", "Tipo", "Región", "Población 2024 (M)", "Nacidos en la historia (M)",
-         "IDH", "PIB pc nominal (USD)", "PIB pc PPA 2022 ($ int. 2011)", "Genealogía (IG)",
+         "IDH 2019", "PIB pc nominal 2023 (USD)", "PIB pc PPA 2022 ($ int. 2011)", "Genealogía (IG)",
          "Operabilidad (IO)", "Prioridad", "Excluido", "Comentarios"],
         gen_ordenado)
     texto_pos = tabla_md(

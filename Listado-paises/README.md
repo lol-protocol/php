@@ -18,8 +18,9 @@ desde la prehistoria.
 - `niveles_lenguas.csv`: nivel de recursos de cada lengua (1 a 5). De ahí salen IP (el máximo de
   las lenguas de un país) e IP local (la primera lengua); `generar_tabla.py` comprueba que coincidan.
 - `generar_tabla.py`: valida los CSV y genera `tabla_genealogia.md` y `tabla_pos.md`.
-- `preparar_datos.py`: lee las fuentes de Our World in Data (ver «Fuentes») y escribe
-  `poblacion_larga.csv` y `natalidad.csv`, y la población 2024 y el PIB PPA de `paises.csv`.
+- `preparar_datos.py`: lee las fuentes de Our World in Data y del Banco Mundial (ver «Fuentes») y
+  escribe `poblacion_larga.csv` y `natalidad.csv`, y la población 2024, el IDH y los dos PIB per
+  cápita de `paises.csv`.
 - `codigos_iso.csv`: código ISO alfa-2 del repositorio y su código en Our World in Data (alfa-3;
   Kosovo es `OWID_KOS`). Se generó con `pycountry` para que los scripts no dependan de él.
 - `poblacion_larga.csv` y `natalidad.csv`: datos de entrada de la población histórica, generados
@@ -34,7 +35,8 @@ desde la prehistoria.
 python3 generar_tabla.py              # valida y regenera las dos tablas
 python3 generar_tabla.py --comprobar  # valida y falla si las tablas no están al día (no escribe)
 python3 -m unittest -v pruebas        # pruebas
-python3 preparar_datos.py --co2 ... --maddison ... --hyde ... --fertilidad ...   # ver «Fuentes»
+python3 preparar_datos.py --co2 ... --maddison ... --hyde ... --fertilidad ... \
+    --pib-bm ... --poblacion-bm ... --idh ...   # ver «Fuentes»
 python3 historia_poblacion.py         # recalcula los nacidos en la historia
 ```
 
@@ -56,10 +58,10 @@ territorios menores.
 | `pais` | Nombre en español. |
 | `tipo` | `estado`, `territorio` o `entidad disputada`. |
 | `region` | África, América, Asia, Europa u Oceanía. |
-| `poblacion_millones` | Población de 2024, en millones, de Our World in Data (basada en ONU, *World Population Prospects 2024*). Puerto Rico conserva una cifra anterior sin contrastar, porque esa fuente no lo incluye. |
+| `poblacion_millones` | Población de 2024, en millones, de Our World in Data (basada en ONU, *World Population Prospects 2024*). Puerto Rico, que esa fuente no incluye, usa la del Banco Mundial (`SP.POP.TOTL`). |
 | `poblacion_historica_acumulada` | Personas nacidas en el territorio del país desde el 10 000 a. C., en millones. Es una estimación (ver «Población histórica acumulada»). |
-| `idh` | Índice de Desarrollo Humano. **Sin contrastar.** |
-| `pib_per_capita_usd` | PIB per cápita **nominal** en dólares. **Sin contrastar** (ver «Estado de los datos»). |
+| `idh` | Índice de Desarrollo Humano de **2019**, del PNUD (*Informe sobre Desarrollo Humano 2020*), vía Our World in Data. Vacía en 10 países sin IDH de 2019 en esa fuente. |
+| `pib_per_capita_usd` | PIB per cápita **nominal** de 2023 en dólares corrientes: PIB del Banco Mundial (`NY.GDP.MKTP.CD`) entre su población. Si falta 2023, el de 2022 o 2021; si no, vacía (ver «Estado de los datos»). |
 | `pib_per_capita_ppa_usd` | PIB per cápita en **paridad de poder adquisitivo** de 2022, en dólares internacionales de 2011 (Maddison Project Database 2023, vía Our World in Data). Vacía en 35 países sin dato, casi todos micro-estados. |
 | `indice_genealogia` | IG, de 1 a 5. |
 | `indice_operabilidad` | IO, de 1 a 5. |
@@ -233,21 +235,30 @@ para comparar países entre sí, no como conteo exacto.**
 - La banda de ±10 % solo cubre la natalidad, no las poblaciones de hace miles de años.
 - Antes de 1950 la natalidad varió mucho entre épocas y regiones; el 0,040 constante es una
   simplificación.
-- Puerto Rico usa Maddison de 1820 a 2018, porque Our World in Data no lo incluye.
+- Puerto Rico usa Maddison de 1820 a 1959 y el Banco Mundial desde 1960, porque Our World in Data
+  no lo incluye.
 
 ## Fuentes
 
 Los dominios de las fuentes (`ourworldindata.org`, `api.worldbank.org`, `hdr.undp.org`) están
-bloqueados por el proxy del entorno donde se trabajó: responden 403. Por eso se usaron los
-repositorios públicos de Our World in Data en GitHub, que sí son accesibles:
+bloqueados por el proxy del entorno donde se trabajó: responden 403. Por eso se usaron copias
+publicadas en GitHub, que sí son accesibles: los repositorios de Our World in Data y los de
+`datasets` (de datahub.io), que copian los indicadores del Banco Mundial.
 
 - [`owid/co2-data`](https://github.com/owid/co2-data), commit `382ee6c` (2 de junio de 2026),
   archivo `owid-co2-data.csv`: población por país de 1750 a 2024 y PIB de Maddison 2023.
 - [`owid/owid-datasets`](https://github.com/owid/owid-datasets), commit `6155d4c` (14 de abril de
   2025): *Maddison Project Database 2020*, *Global Population by Region (HYDE 2016 & UN 2017)* y
   *Fertility - UN Population Division (2015 revision)*.
+- [`owid/covid-19-data`](https://github.com/owid/covid-19-data), commit `dc00e72` (23 de marzo de
+  2026), archivo `public/data/latest/owid-covid-latest.csv`: columna `human_development_index`,
+  que según su libro de códigos son los valores de 2019 del PNUD.
+- [`datasets/gdp`](https://github.com/datasets/gdp), commit `36d761d` (27 de julio de 2026),
+  archivo `data/gdp.csv`: PIB en dólares corrientes del Banco Mundial (`NY.GDP.MKTP.CD`), hasta 2023.
+- [`datasets/population`](https://github.com/datasets/population), commit `d4b1a4a` (1 de octubre
+  de 2026), archivo `data/population.csv`: población del Banco Mundial (`SP.POP.TOTL`), hasta 2025.
 
-Para reproducir `poblacion_larga.csv` y `natalidad.csv`:
+Para reproducir `poblacion_larga.csv`, `natalidad.csv` y las columnas de `paises.csv`:
 
 ```bash
 git clone --depth 1 https://github.com/owid/co2-data
@@ -258,8 +269,13 @@ f="Fertility - UN Population Division (2015 revision)"
 git -C $d show "HEAD:datasets/$m/$m.csv" > maddison-2020.csv
 git -C $d show "HEAD:datasets/$h/$h.csv" > hyde-regiones.csv
 git -C $d show "HEAD:datasets/$f/$f.csv" > fertilidad-onu-2015.csv
+r=https://raw.githubusercontent.com
+curl -sO $r/owid/covid-19-data/dc00e7296b17ab5548092c9e388b6fac6751f095/public/data/latest/owid-covid-latest.csv
+curl -sO $r/datasets/gdp/36d761dc5617982d3e50b213e02b9a1b47c4e958/data/gdp.csv
+curl -sO $r/datasets/population/d4b1a4a9a17e2123baf0ef119de05bceced1ab1b/data/population.csv
 python3 preparar_datos.py --co2 co2-data/owid-co2-data.csv --maddison maddison-2020.csv \
-    --hyde hyde-regiones.csv --fertilidad fertilidad-onu-2015.csv
+    --hyde hyde-regiones.csv --fertilidad fertilidad-onu-2015.csv \
+    --pib-bm gdp.csv --poblacion-bm population.csv --idh owid-covid-latest.csv
 python3 historia_poblacion.py && python3 generar_tabla.py
 ```
 
@@ -271,23 +287,26 @@ Mundial (`SP.DYN.CBRT.IN`).
 
 Léelo antes de usar la tabla para decidir.
 
-- **Población 2024: contrastada** con Our World in Data (ONU, WPP 2024) en 198 países. Puerto Rico
-  conserva una cifra anterior sin contrastar.
+- **Población 2024: de fuente.** Our World in Data (ONU, WPP 2024) en 198 países; Puerto Rico, del
+  Banco Mundial.
+- **IDH: de fuente, pero de 2019.** Es el último año del PNUD publicado en GitHub; el informe más
+  reciente está en `hdr.undp.org`, bloqueado. Reemplazó a las cifras de memoria (más recientes,
+  pero sin contrastar): la mediana de la diferencia entre ambas era de −0,005 y la mayor, de 0,06.
+  Vacío en los 10 que no tienen IDH de 2019 en esa fuente: Corea del Norte, Kosovo, Macao, Mónaco,
+  Nauru, Puerto Rico, San Marino, Somalia, Taiwán y Tuvalu.
+- **PIB per cápita nominal: de fuente** (Banco Mundial), de 2023. Usan 2022 Afganistán, Bután,
+  Catar, Líbano, Liechtenstein, Mónaco y Tonga, y 2021 San Marino y Siria, porque el Banco Mundial
+  no tiene un año posterior. Vacío en:
+  - Corea del Norte y Taiwán, que el Banco Mundial no publica.
+  - Cuba, Eritrea, Sudán del Sur, Venezuela y Yemen, cuyo último dato es anterior a 2021.
+  - Chipre: el PIB del Banco Mundial cubre solo la zona que controla la República, y su población,
+    toda la isla, así que el cociente sale alrededor de un 30 % por debajo. Su indicador per cápita
+    (`NY.GDP.PCAP.CD`) sí lo corrige, pero no está publicado en GitHub.
 - **PIB per cápita PPA: de Maddison 2023** (vía Our World in Data), de 2022 y en dólares
-  internacionales de 2011. Es distinto del indicador del Banco Mundial (`NY.GDP.PCAP.PP.CD`, en
-  dólares internacionales corrientes), que sigue inaccesible. Vacío en 35 países sin dato.
-- **IDH y PIB per cápita nominal: siguen siendo referencias de memoria, sin contrastar.** Las
-  fuentes (PNUD y Banco Mundial) siguen bloqueadas, y el único IDH accesible en GitHub llega solo
-  hasta 2017. Antes de decidir con ellos, contrástalos con:
-  - PNUD, *Informe sobre Desarrollo Humano* (IDH).
-  - Banco Mundial, `NY.GDP.PCAP.CD`, o FMI, *World Economic Outlook* (PIB per cápita nominal).
-- **Celdas vacías (—):** cuando no hay una cifra fiable se deja vacía. Por ejemplo, el IDH de
-  Corea del Norte, Palestina, Siria o Nauru, o el PIB per cápita nominal de Cuba o Corea del Norte.
-  Una revisión posterior también vació nueve IDH que quedaban fuera de su grupo de desarrollo
-  humano: Cuba, Perú, Turkmenistán, Kirguistán, Benín, Tanzania, Libia, Gabón y Cabo Verde. No se
-  reemplazaron por otra cifra de memoria.
-- **IDH repetidos sin verificar:** 0,946 aparece en Australia, Bélgica, Países Bajos y Singapur;
-  0,802 en Bielorrusia, Georgia y Mauricio. Son sospechosos de ser copias.
+  internacionales de 2011. Es el PIB de Maddison entre la población de Our World in Data: donde
+  Maddison usa otra población, el cociente se desvía. Chipre es un caso (Our World in Data cuenta
+  toda la isla). Es distinto del indicador del Banco Mundial (`NY.GDP.PCAP.PP.CD`, en dólares
+  internacionales corrientes), que sigue inaccesible. Vacío en 35 países sin dato.
 - **Población histórica acumulada: estimada** con el método compuesto de arriba. Sirve para
   comparar países, no como conteo exacto.
 - **IG, IO, IL e IP:** son juicio propio, con las rúbricas de arriba. No son datos oficiales.
@@ -295,16 +314,15 @@ Léelo antes de usar la tabla para decidir.
 
 ## Pendientes
 
-1. **IDH y PIB per cápita nominal:** contrastarlos con el PNUD y el Banco Mundial cuando sus
-   dominios estén accesibles, incluidos los IDH repetidos de arriba.
+1. **IDH:** pasar al último informe del PNUD cuando `hdr.undp.org` esté accesible, y completar el
+   PIB nominal de Chipre con `NY.GDP.PCAP.CD`.
 2. **Población histórica:** reemplazar la serie compuesta por la de Our World in Data por país
    desde el 10 000 a. C., y la natalidad aproximada por la de la ONU o el Banco Mundial, cuando
    haya acceso.
 3. **PIB per cápita PPA:** decidir si se pasa al indicador del Banco Mundial cuando haya acceso, y
    completar los 35 vacíos.
-4. **Población de Puerto Rico:** contrastarla con la ONU o el censo de EE. UU.
-5. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
-6. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
+4. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
+5. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    54. Camboya y Vietnam siguen dentro, por decisión tomada.
-7. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
+6. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
    listó, aunque se use (el inglés en Maldivas, por ejemplo). Afecta a IP, no a IP local.
