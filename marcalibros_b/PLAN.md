@@ -163,8 +163,25 @@ Hecha por Claude sin marcas de la página de revisión (no había ninguna guarda
 - **Catálogo:** artefacto de CI, no git. `.gitignore` excluye `catalog/svg|jpg|revision`; el workflow `.github/workflows/marcalibros-b.yml` (en la raíz del repo, con la misma convención que los otros) genera el catálogo completo con Python 3.13 y Chromium, ejecuta los tests y sube `marcalibros-catalogo` (30 días). En git quedan manifest y `catalog/muestras/`. **El workflow no se ha podido ejecutar desde esta sesión**: hay que lanzarlo una vez (workflow_dispatch) y vigilar que los hashes de referencia coincidan entre máquinas (el seno y coseno de libm podrían diferir en la última cifra).
 - **Realismo mágico: se mantiene** (es un movimiento real e importante). Gutenberg solo aloja obras de dominio público y los autores previstos (García Márquez, Rulfo, Carpentier, Asturias) están bajo derechos de autor en la mayoría de países, así que sus obras serán `gutenberg.estado: no_disponible` una vez comprobado (estado nuevo; hoy todo es `sin_verificar`). Consecuencia: el lector no podrá sugerir marcalibro automáticamente para esos textos; el usuario lo elegirá a mano. Los nombres se usan solo como metadato: sin citas, portadas ni retratos.
 
+## Decisiones de octubre (cuestionario)
+
+- **Texto del marcalibros:** cada pieza sirve para cualquier libro. El generador **hornea** la frase en la franja de unas **500 de las 1000 piezas** (elección al azar reproducible); el resto queda con la franja libre.
+- **Frases:** citas breves de autores **en dominio público**, en su **idioma original**, con autoría. Para cada pieza la frase sale de cualquier autor de dominio público **de su movimiento** (así las piezas de autores con derechos, como García Márquez, también pueden llevarla). Se escriben de memoria y quedan marcadas para verificar; nunca de autores con derechos.
+- **Obra y autor de cada pieza:** siguen como inspiración (motivo, ánimo, escena) y metadato (el lector puede sugerir la pieza al abrir ese texto), pero no se muestran en el marcalibros.
+- **Variantes claro/oscuro:** no hacen falta; el marcalibros es una imagen y el tono de texto ya está calculado por pieza.
+- **Línea de marca:** se hace **ya**, en paralelo. Logo de Plataforma POS y variante Marcalibros. Dirección: el símbolo de Marcalibros es una **tira vertical 1:7 con un paisaje mínimo**; el de Plataforma POS, la misma tira con un libro abierto o una etiqueta. Incluye iconos 24×24, estados vacíos, cabeceras 1920×1080 y previews sociales 1200×630.
+- **Siguiente trabajo (todo):** frases horneadas, línea de marca, editor de marcalibros de usuario, modelo de datos del lector (diseño separado de la marca en el texto), versiones de alta densidad 400×2800 y pulido de siluetas.
+
+## Orden propuesto para lo que queda
+
+1. Frases horneadas (cambia las piezas: mejor antes de la alta densidad).
+2. Línea de marca: logo y símbolo, luego iconos, estados vacíos, cabeceras y previews.
+3. Pulido de siluetas.
+4. Alta densidad 400×2800.
+5. Modelo de datos del lector.
+6. Editor de marcalibros de usuario y subidas seguras.
+
 ## Decisiones abiertas
 
-- ¿Qué se hace con el plan original de marca (logo, iconos, estados vacíos, cabeceras)?
-- ¿Qué son las variantes claro/oscuro (adaptar al tema de la interfaz o recolorear)?
-- Autores definitivos de los 10 movimientos: los 6 por movimiento añadidos para completar 10 son propuesta mía.
+- Autores definitivos: los 6 por movimiento añadidos para completar 10 son propuesta de Claude (revisables en la página de revisión).
+- Gutenberg: verificar ids cuando la sesión tenga acceso a gutenberg.org y gutendex.com.
