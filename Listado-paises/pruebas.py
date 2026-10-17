@@ -107,6 +107,12 @@ class DatosPreparados(unittest.TestCase):
         self.assertEqual(pd.natalidad_pais({}, {1900: 6.0}), {1900: pd.FACTOR_NATALIDAD * 6.0})
         self.assertEqual(pd.natalidad_pais({}, {}), {})
 
+    def test_ultimo_dato_solo_si_es_desde_el_anio_minimo(self):
+        import preparar_datos as pd
+        self.assertEqual(pd.ultimo_dato({2015: 50.0, 2022: 60.0}, 2010), (2022, 60.0))
+        self.assertIsNone(pd.ultimo_dato({2008: 50.0}, 2010))
+        self.assertIsNone(pd.ultimo_dato({}, 2010))
+
     def test_pib_nominal_usa_el_ultimo_anio_con_pib_y_poblacion_dentro_del_rango(self):
         import preparar_datos as pd
         pib = {pd.ANIO_PIB_NOMINAL: 300.0, pd.ANIO_PIB_NOMINAL - 1: 200.0}

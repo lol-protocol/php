@@ -24,13 +24,15 @@ SALIDA_POS = AQUI / "tabla_pos.md"
 COLUMNAS_PAISES = [
     "codigo", "pais", "tipo", "region", "poblacion_millones",
     "poblacion_historica_acumulada", "idh", "pib_per_capita_usd", "pib_per_capita_ppa_usd",
-    "indice_genealogia", "indice_operabilidad", "comentarios",
+    "alfabetizacion_adultos", "usuarios_internet", "indice_genealogia", "indice_operabilidad", "comentarios",
 ]
 COLUMNAS_POS = ["codigo", "idioma_principal", "indice_lectura", "indice_pos", "indice_pos_local",
                 "comentarios_pos"]
 TIPOS = {"estado", "territorio", "entidad disputada"}
 NUMERICAS_PAISES = ["poblacion_millones", "poblacion_historica_acumulada", "idh",
-                    "pib_per_capita_usd", "pib_per_capita_ppa_usd"]
+                    "pib_per_capita_usd", "pib_per_capita_ppa_usd", "alfabetizacion_adultos",
+                    "usuarios_internet"]
+RANGOS = {"idh": (0, 1), "alfabetizacion_adultos": (0, 100), "usuarios_internet": (0, 100)}
 ESCALAS_PAISES = ["indice_genealogia", "indice_operabilidad"]
 ESCALAS_POS = ["indice_lectura", "indice_pos", "indice_pos_local"]
 UMBRAL_GENEALOGIA = 1  # IO <= 1: inviable para operar
@@ -85,11 +87,15 @@ def main(comprobar=False):
         errores += errores_de("paises.csv", linea, f, ESCALAS_PAISES, NUMERICAS_PAISES)
         if f.get("tipo") not in TIPOS:
             errores.append(f"paises.csv línea {linea} ({f.get('codigo')}): tipo '{f.get('tipo')}' no válido")
-        try:
-            if f.get("idh") and not 0 < float(f["idh"]) < 1:
-                errores.append(f"paises.csv línea {linea} ({f['codigo']}): idh fuera de 0–1: {f['idh']}")
-        except ValueError:
-            pass  # ya lo informa errores_de
+        for campo, (minimo, maximo) in RANGOS.items():
+            valor = f.get(campo) or ""
+            try:
+                fuera = valor and not minimo <= float(valor) <= maximo
+            except ValueError:
+                fuera = False  # ya lo informa errores_de
+            if fuera:
+                errores.append(f"paises.csv línea {linea} ({f['codigo']}): {campo} fuera de "
+                               f"{minimo}–{maximo}: {valor}")
     niveles = {f["lengua"]: int(f["nivel"]) for _, f in leer(NIVELES, ["lengua", "nivel"])}
     for linea, f in pos:
         errores += errores_de("paises_pos.csv", linea, f, ESCALAS_POS, [])
@@ -135,12 +141,12 @@ def main(comprobar=False):
             f["pais"], f["tipo"], f["region"], celda(f["poblacion_millones"]),
             celda(f["poblacion_historica_acumulada"], "pendiente"),
             celda(f["idh"]), celda(f["pib_per_capita_usd"]),
-            celda(f["pib_per_capita_ppa_usd"], "pendiente"),
+            celda(f["pib_per_capita_ppa_usd"]), celda(f["usuarios_internet"]),
             str(ig), str(io), str(ig * io), "sí" if excl_gen else "no", f["comentarios"],
         ]))
         filas_pos.append((excl_pos, -il * ipl, f["pais"], [
             f["pais"], p["idioma_principal"], f["tipo"],
-            str(il), str(ip), str(ipl), str(il * ipl), "sí" if excl_pos else "no", p["comentarios_pos"],
+            celda(f["alfabetizacion_adultos"]), celda(f["usuarios_internet"]), str(il), str(ip), str(ipl), str(il * ipl), "sí" if excl_pos else "no", p["comentarios_pos"],
         ]))
 
     gen_ordenado = [c for *_, c in sorted(filas_gen, key=lambda x: (x[0], x[1], x[2]))]
@@ -152,14 +158,17 @@ def main(comprobar=False):
         "de Our World in Data; PIB nominal del Banco Mundial; IDH 2023 del PNUD vía Gapminder. "
         "Ver `README.md`, «Estado de los datos».",
         ["País", "Tipo", "Región", "Población 2024 (M)", "Nacidos en la historia (M)",
-         "IDH 2023", "PIB pc nominal 2023 (USD)", "PIB pc PPA 2022 ($ int. 2011)", "Genealogía (IG)",
+         "IDH 2023", "PIB pc nominal 2023 (USD)", "PIB pc PPA 2022 ($ int. 2011)",
+         "Internet (% pob.)", "Genealogía (IG)",
          "Operabilidad (IO)", "Prioridad", "Excluido", "Comentarios"],
         gen_ordenado)
     texto_pos = tabla_md(
         "Listado de países: etiquetador POS",
         "Generado por `generar_tabla.py` desde `paises.csv` y `paises_pos.csv`. No editar a mano. "
-        "Índices de juicio propio; ver `README.md`, «Etiquetador POS».",
-        ["País", "Idiomas (local primero)", "Tipo", "Lectura (IL)", "IP (mejor lengua)",
+        "Alfabetización de la UNESCO e internet del Banco Mundial, vía Gapminder (último dato de cada "
+        "país); índices de juicio propio. Ver `README.md`, «Etiquetador POS».",
+        ["País", "Idiomas (local primero)", "Tipo", "Alfabetización adultos (%)", "Internet (% pob.)",
+         "Lectura (IL)", "IP (mejor lengua)",
          "IP local", "Prioridad (IL × IP local)", "Excluido", "Comentarios"],
         pos_ordenado)
 

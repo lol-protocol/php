@@ -6,12 +6,14 @@ Uso (desde esta carpeta; las rutas apuntan a copias locales de las fuentes, ver 
     python3 preparar_datos.py --co2 owid-co2-data.csv --maddison maddison-2020.csv \\
         --hyde hyde-regiones.csv --natalidad-gapminder natalidad-gapminder.csv \\
         --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \\
+        --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \\
         --pib-bm gdp.csv --poblacion-bm population.csv
 
 Escribe:
     poblacion_larga.csv  serie larga de población por país (codigo, anio, poblacion)
     natalidad.csv        natalidad por país desde 1800 (codigo, anio, tasa_por_mil)
-    paises.csv           población 2024, IDH 2023, PIB per cápita nominal 2023 y PPA 2022
+    paises.csv           población 2024, IDH 2023, PIB per cápita nominal 2023 y PPA 2022,
+                         alfabetización de adultos y usuarios de internet
 
 Serie larga de cada país (método compuesto):
     1750-2024    población de OWID (co2-data).
@@ -27,6 +29,8 @@ fecundidad; uno sin ninguna de las dos no entra en natalidad.csv (historia_pobla
 PIB per cápita nominal: PIB del Banco Mundial (NY.GDP.MKTP.CD) entre su población (SP.POP.TOTL),
 del último año entre ANIO_PIB_NOMINAL_MINIMO y ANIO_PIB_NOMINAL con los dos datos.
 IDH: el del PNUD de ANIO_IDH, tal como lo publica Gapminder.
+Alfabetización de adultos (UNESCO) y usuarios de internet (Banco Mundial), también vía Gapminder:
+el último dato de cada país desde ANIO_MINIMO_ALFABETIZACION y ANIO_MINIMO_INTERNET.
 
 Solo biblioteca estándar.
 """
@@ -42,6 +46,8 @@ ANIO_PIB_PPA = "2022"
 ANIO_PIB_NOMINAL = 2023
 ANIO_PIB_NOMINAL_MINIMO = 2021  # un dato más viejo no se usa: el país queda vacío
 ANIO_IDH = 2023
+ANIO_MINIMO_ALFABETIZACION = 2010  # la UNESCO no publica todos los años, y casi nunca en países ricos
+ANIO_MINIMO_INTERNET = 2020
 FACTOR_NATALIDAD = 7.0  # tasa bruta por mil ~ 7 x fecundidad total, para países sin tasa
 SUDAMERICA = {"AR", "BO", "BR", "CL", "CO", "EC", "GY", "PY", "PE", "SR", "UY", "VE"}
 REGION_HYDE = {"África": "Africa", "Asia": "Asia", "Europa": "Europe", "Oceanía": "Oceania"}
@@ -115,6 +121,13 @@ def natalidad_pais(tasas, fecundidad):
     return serie
 
 
+def ultimo_dato(serie, minimo):
+    """(año, valor) del último año de la serie si es desde minimo; si no, None."""
+    if not serie or max(serie) < minimo:
+        return None
+    return max(serie), serie[max(serie)]
+
+
 def pib_nominal(pib, poblacion):
     """(año, PIB per cápita) del último año del rango con PIB y población, o None."""
     for anio in range(ANIO_PIB_NOMINAL, ANIO_PIB_NOMINAL_MINIMO - 1, -1):
@@ -131,7 +144,7 @@ def formato_millones(personas):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     for nombre in ("co2", "maddison", "hyde", "natalidad-gapminder", "fecundidad-gapminder", "idh",
-                   "pib-bm", "poblacion-bm"):
+                   "alfabetizacion", "internet", "pib-bm", "poblacion-bm"):
         ap.add_argument(f"--{nombre}", required=True)
     args = ap.parse_args()
 
@@ -169,6 +182,8 @@ def main():
     tasas = leer_gapminder(args.natalidad_gapminder)
     fecundidad = leer_gapminder(args.fecundidad_gapminder)
     idh = leer_gapminder(args.idh)
+    alfabetizacion = leer_gapminder(args.alfabetizacion)
+    internet = leer_gapminder(args.internet)
 
     pib_bm, poblacion_bm = leer_bm(args.pib_bm), leer_bm(args.poblacion_bm)
     # Sin población de OWID, la del Banco Mundial hasta el mismo año.
@@ -180,7 +195,7 @@ def main():
             con_poblacion_bm.append(clave)
 
     filas_larga, filas_natalidad, sin_serie, sin_pob, sin_pib, sin_natalidad = [], [], [], [], [], []
-    sin_idh, sin_nominal, nominal_anterior = [], [], []
+    sin_idh, sin_nominal, nominal_anterior, sin_alfabetizacion, sin_internet = [], [], [], [], []
     for fila in paises:
         codigo, clave = fila["codigo"], owid[fila["codigo"]]
         modernos = sorted(poblacion.get(clave, {}).items())
@@ -221,6 +236,14 @@ def main():
         if not fila["idh"]:
             sin_idh.append(codigo)
 
+        for columna, datos, minimo, faltan in (
+                ("alfabetizacion_adultos", alfabetizacion, ANIO_MINIMO_ALFABETIZACION, sin_alfabetizacion),
+                ("usuarios_internet", internet, ANIO_MINIMO_INTERNET, sin_internet)):
+            dato = ultimo_dato(datos.get(clave, {}), minimo)
+            fila[columna] = f"{dato[1]:.1f}" if dato else ""
+            if not dato:
+                faltan.append(codigo)
+
         natal = natalidad_pais(tasas.get(clave, {}), fecundidad.get(clave, {}))
         filas_natalidad += [(codigo, a, f"{v:.2f}") for a, v in sorted(natal.items())]
         if clave not in tasas:
@@ -249,6 +272,9 @@ def main():
           f"{', '.join(sin_nominal) or 'ninguno'}; de un año anterior a {ANIO_PIB_NOMINAL}: "
           f"{', '.join(nominal_anterior) or 'ninguno'}")
     print(f"paises.csv: IDH sin dato (vacío): {', '.join(sin_idh) or 'ninguno'}")
+    print(f"paises.csv: alfabetización sin dato desde {ANIO_MINIMO_ALFABETIZACION} (vacío): "
+          f"{len(sin_alfabetizacion)} países; internet sin dato desde {ANIO_MINIMO_INTERNET}: "
+          f"{', '.join(sin_internet) or 'ninguno'}")
 
 
 if __name__ == "__main__":

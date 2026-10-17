@@ -37,7 +37,8 @@ python3 generar_tabla.py              # valida y regenera las dos tablas
 python3 generar_tabla.py --comprobar  # valida y falla si las tablas no están al día (no escribe)
 python3 -m unittest -v pruebas        # pruebas
 python3 preparar_datos.py --co2 ... --maddison ... --hyde ... --natalidad-gapminder ... \
-    --fecundidad-gapminder ... --idh ... --pib-bm ... --poblacion-bm ...   # ver «Fuentes»
+    --fecundidad-gapminder ... --idh ... --alfabetizacion ... --internet ... \
+    --pib-bm ... --poblacion-bm ...   # ver «Fuentes»
 python3 historia_poblacion.py         # recalcula los nacidos en la historia
 ```
 
@@ -64,6 +65,8 @@ territorios menores.
 | `idh` | Índice de Desarrollo Humano de **2023**, del PNUD (*Informe sobre Desarrollo Humano 2025*), vía Gapminder. Vacía en los 6 países que el PNUD no publica. |
 | `pib_per_capita_usd` | PIB per cápita **nominal** de 2023 en dólares corrientes: PIB del Banco Mundial (`NY.GDP.MKTP.CD`) entre su población. Si falta 2023, el de 2022 o 2021; si no, vacía (ver «Estado de los datos»). |
 | `pib_per_capita_ppa_usd` | PIB per cápita en **paridad de poder adquisitivo** de 2022, en dólares internacionales de 2011 (Maddison Project Database 2023, vía Our World in Data). Vacía en 35 países sin dato, casi todos micro-estados. |
+| `alfabetizacion_adultos` | Porcentaje de mayores de 15 años que saben leer y escribir (UNESCO, vía Gapminder), del último año desde 2010. Vacía en 64 países, casi todos de ingreso alto: la UNESCO no la mide donde es casi universal. |
+| `usuarios_internet` | Porcentaje de la población que usa internet (Banco Mundial, `IT.NET.USER.ZS`, vía Gapminder), del último año desde 2020; casi todos son de 2024. Vacía en 12 países. |
 | `indice_genealogia` | IG, de 1 a 5. |
 | `indice_operabilidad` | IO, de 1 a 5. |
 | `comentarios` | Motivo de los puntajes de genealogía. |
@@ -179,8 +182,8 @@ coincide con IP.
 **Corea del Norte** tiene IP = 4: su lengua (coreano) tiene recursos abiertos. Su acceso
 restringido al texto del país es un problema de IO, no de IP, como dice la definición de arriba.
 
-Los índices IL e IP son de juicio propio, con base en recursos y alfabetización que no se han
-contrastado con fuentes (ver «Estado de los datos»).
+Los índices IL e IP son de juicio propio. La tabla POS muestra al lado la alfabetización y los
+usuarios de internet, con fuente, para contrastar IL (ver «Señales para revisar» en «Pendientes»).
 
 ## Población histórica acumulada
 
@@ -259,7 +262,9 @@ Banco Mundial.
 - [`open-numbers/ddf--gapminder--systema_globalis`](https://github.com/open-numbers/ddf--gapminder--systema_globalis),
   commit `ee19060` (7 de mayo de 2026): tasa bruta de natalidad por país de 1800 a 2015
   (`crude_birth_rate_births_per_1000_population`) e IDH del PNUD de 1990 a 2023
-  (`hdi_human_development_index`).
+  (`hdi_human_development_index`), alfabetización de adultos de la UNESCO
+  (`literacy_rate_adult_total_percent_of_people_ages_15_and_above`) y usuarios de internet del
+  Banco Mundial (`internet_users`).
 - [`open-numbers/ddf--gapminder--fasttrack`](https://github.com/open-numbers/ddf--gapminder--fasttrack),
   commit `dee8978` (15 de octubre de 2026): fecundidad por país de 1800 a 2100
   (`children_per_woman_total_fertility`).
@@ -282,12 +287,16 @@ sg=$r/open-numbers/ddf--gapminder--systema_globalis/ee190605fdec9d1c35c38e18e869
 ft=$r/open-numbers/ddf--gapminder--fasttrack/dee8978535ee563526704d2793497f8537280469/countries_etc_datapoints
 curl -so natalidad-gapminder.csv $sg/ddf--datapoints--crude_birth_rate_births_per_1000_population--by--geo--time.csv
 curl -so idh-gapminder.csv $sg/ddf--datapoints--hdi_human_development_index--by--geo--time.csv
+curl -so alfabetizacion-gapminder.csv \
+    $sg/ddf--datapoints--literacy_rate_adult_total_percent_of_people_ages_15_and_above--by--geo--time.csv
+curl -so internet-gapminder.csv $sg/ddf--datapoints--internet_users--by--geo--time.csv
 curl -so fecundidad-gapminder.csv $ft/ddf--datapoints--children_per_woman_total_fertility--by--country--time.csv
 curl -sO $r/datasets/gdp/36d761dc5617982d3e50b213e02b9a1b47c4e958/data/gdp.csv
 curl -sO $r/datasets/population/d4b1a4a9a17e2123baf0ef119de05bceced1ab1b/data/population.csv
 python3 preparar_datos.py --co2 co2-data/owid-co2-data.csv --maddison maddison-2020.csv \
     --hyde hyde-regiones.csv --natalidad-gapminder natalidad-gapminder.csv \
     --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \
+    --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \
     --pib-bm gdp.csv --poblacion-bm population.csv
 python3 historia_poblacion.py && python3 generar_tabla.py
 ```
@@ -320,8 +329,12 @@ Léelo antes de usar la tabla para decidir.
   internacionales corrientes), que sigue inaccesible. Vacío en 35 países sin dato.
 - **Población histórica acumulada: estimada** con el método compuesto de arriba. Sirve para
   comparar países, no como conteo exacto.
+- **Alfabetización e internet: de fuente** (UNESCO y Banco Mundial, vía Gapminder). El año varía
+  por país; es el último disponible.
 - **IG, IO, IL e IP:** son juicio propio, con las rúbricas de arriba. No son datos oficiales.
-  Las alfabetizaciones y la lista de recursos lingüísticos vienen de memoria, sin contrastar.
+  La lista de recursos lingüísticos viene de memoria, sin contrastar. Las menciones a la
+  alfabetización en `comentarios_pos` se contrastaron con la columna nueva: coinciden salvo la de
+  Benín (ver «Señales para revisar»).
 
 ## Pendientes
 
@@ -333,6 +346,16 @@ Léelo antes de usar la tabla para decidir.
 3. **PIB per cápita PPA:** decidir si se pasa al indicador del Banco Mundial cuando haya acceso, y
    completar los 35 vacíos.
 4. **Revisar los índices** IG, IO, IL e IP con la persona que decide. La rúbrica es el criterio.
+   **Señales para revisar** (de cruzar los índices con los datos con fuente):
+   - **Burundi:** IL 1, que la rúbrica reserva para alfabetización muy baja o lenguas casi sin
+     libros, con una alfabetización del 71 % (2020), más que Marruecos (IL 3, 64 %). Su
+     comentario habla de recursos (IP), no de lectura.
+   - **Benín y Somalia:** IL 1 con un 51 % y un 54 %, más que Costa de Marfil (IL 2, 50 %). El
+     comentario de Benín dice «Alfabetización muy baja»; el de Somalia habla solo de recursos.
+   - El resto de los países con IL 1 tiene menos del 45 %. Ningún país con IL 4 tiene menos del
+     85 %; los de IL 5 no tienen dato porque la UNESCO no la mide en países de ingreso alto.
+   - **Botsuana:** IO 4 con un 57 % de usuarios de internet, el más bajo de los IO 4 (el
+     siguiente, Namibia, tiene 65 %). Si la conectividad cuenta como fricción mayor, sería IO 3.
 5. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    54. Camboya y Vietnam siguen dentro, por decisión tomada.
 6. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
