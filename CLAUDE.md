@@ -44,7 +44,7 @@ Desde la carpeta de cada proyecto, salvo donde diga «desde la raíz» (el detal
 | `url-routing/` | `composer install && ./vendor/bin/phpunit` (la CI lo corre también contra PostgreSQL) |
 | `document-formats/` | `node --test 'tests/*.test.js'` (la CI además importa a MySQL) |
 | `web-animations/` | `npm ci && npm test` (necesita el Chromium de Playwright) |
-| `iconos-genealogia/`, `iconos-biblioteca/` | desde la raíz: `python3 iconos-tools/validate.py`, y `python3 iconos-tools/build.py` no debe dejar cambios en git |
+| `iconos-genealogia/`, `iconos-biblioteca/`, `iconos-tools/` | desde la raíz: `python3 iconos-tools/validate.py`, y `python3 iconos-tools/build.py` no debe dejar cambios en git |
 | `vps-setup/` | desde la raíz: `shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh` y `bats vps-setup/tests` |
 | `Listado-colores/` | `python3 generar-tabla.py --comprobar` (valida `colores.csv`, `significados-idiomas.csv` y `nombres-completos.csv`, y que el README, `colores-por-idioma.md` y `por-idioma/` estén al día) |
 | `Listado-paises/` | `python3 generar_tabla.py --comprobar` (valida `paises.csv`, `paises_pos.csv` y `niveles_lenguas.csv`, y que `tabla_genealogia.md` y `tabla_pos.md` estén al día) y `python3 -m unittest pruebas` |
