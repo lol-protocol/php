@@ -6,7 +6,7 @@ Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: l
 |---|---|---|---|
 | `colores.csv` | 148 colores CSS, anotados: nombre en 30 idiomas, hex y significados en español | 30 (ver lista abajo) | Psicológico y místico, en español |
 | `significados-idiomas.csv` | Los significados de esos 148 colores en los otros 29 idiomas (4.292 filas) | 29 | Psicológico y místico, traducidos |
-| `nombres-completos.csv` | 31.935 nombres de color con su hex, de la lista de `meodai/color-names` | 1: inglés | No tiene |
+| `nombres-completos.csv` | 31.935 nombres de color con su hex, de la lista de `meodai/color-names`, y el color CSS más cercano a cada uno | 1: inglés | No tiene propios; se pueden heredar del color CSS más cercano (ver «Color CSS más cercano») |
 
 Cada color de los 148 se puede leer en cualquiera de los 30 idiomas (nombre, hex y los dos significados) en `por-idioma/<código>.md`; `colores-por-idioma.md` es el índice de esas páginas.
 
@@ -31,12 +31,35 @@ Código y nombre de cada idioma. En `colores.csv` el inglés es la columna `nomb
 
 No existe un conjunto cerrado de "todos los colores que tienen nombre": los catálogos comerciales (Pantone, RAL, Crayola) y las listas colaborativas tienen cada uno su propia cifra. Por eso el listado tiene dos capas:
 
-- **Lista completa** (`nombres-completos.csv`): la colección curada más grande que se pudo verificar y que tiene licencia abierta. Tiene 31.935 nombres únicos. La columna `curada` marca con `x` los 4.966 que sus curadores consideran buenos nombres (por ejemplo, `3AM Latte`); los demás son válidos pero menos típicos.
+- **Lista completa** (`nombres-completos.csv`): la colección curada más grande que se pudo verificar y que tiene licencia abierta. Tiene 31.935 nombres únicos. La columna `curada` marca con `x` los 4.966 que sus curadores consideran buenos nombres (por ejemplo, `3AM Latte`); los demás son válidos pero menos típicos. Para cada nombre, el generador calcula cuál de los 148 colores CSS es el más cercano (ver «Color CSS más cercano»).
 - **Tabla anotada** (`colores.csv`): los 148 colores con nombre de la especificación CSS, con sus nombres y sus significados en 30 idiomas. Es el conjunto estándar, verificado contra la fuente oficial.
 
 La lista completa solo está en inglés. Traducir 31.935 nombres a 30 idiomas sería casi un millón de cadenas, sin fuente que las respalde, y muchos de esos nombres son marcas, nombres propios o términos sin traducción.
 
 Varias palabras de la lista completa son también palabras corrientes en español, como `coral` o `magenta`, y otras son nombres propios o términos técnicos. Para el etiquetado conviene tener en cuenta que la misma palabra puede ser un color o no, según el contexto.
+
+## Color CSS más cercano
+
+Los 148 colores CSS tienen significados; los 31.935 nombres de la lista completa no. Para poder darles una pista sin inventar nada, `nombres-completos.csv` trae tres columnas calculadas:
+
+- `css_cercano`: el color CSS cuyo hex está más cerca del hex del nombre.
+- `delta_e`: esa distancia, con dos decimales.
+- `cercania`: una banda según la distancia: `exacto` (mismo hex), `alta` (hasta 3), `media` (hasta 8) y `baja` (más de 8).
+
+Cómo se calcula (`colorimetria.py`, solo biblioteca estándar):
+
+- El hex (sRGB) se pasa a CIELAB con el iluminante D65 y la distancia es CIEDE2000 (ΔE00), que se acerca más que la distancia euclídea a cómo se perciben las diferencias de color.
+- La implementación sigue las notas de Sharma, Wu y Dalal (2005), *The CIEDE2000 color-difference formula: Implementation notes, supplementary test data, and mathematical observations* (Color Research & Application 30(1), 21-30). El generador comprueba al empezar 16 pares de su tabla de datos de prueba y se detiene si alguno no coincide.
+- Si dos colores CSS están igual de cerca (por ejemplo `gray` y `grey`, que comparten hex, o `aqua` y `cyan`), gana el primero por orden alfabético. Por eso los nueve segundos de cada par (`cyan`, `magenta` y las siete variantes `…grey`) no aparecen nunca como color más cercano.
+- Calcularlo para toda la lista tarda unos 25 segundos; `--comprobar` lo recalcula entero.
+
+Reparto en la lista completa: 136 exactos (0,4 %), 3.814 de cercanía alta (11,9 %), 17.103 media (53,6 %) y 10.882 baja (34,1 %).
+
+Límites que conviene tener presentes:
+
+- Los umbrales de las bandas son de este proyecto, no un estándar: se eligieron a la vista de ese reparto.
+- Solo hay 148 colores CSS y están repartidos de forma desigual en el espacio de color: muchos nombres (sobre todo los apagados y los grises) terminan en `dimgray`, `tan`, `gray` o `darkslategray`.
+- Heredar el significado solo tiene sentido con cercanía `exacto` o `alta`. En `media` y `baja` el color CSS puede ser de otra familia: `Burgundy` (`#900020`) queda en `brown` con distancia 7,15 y `Lilac` (`#CEA2FD`) en `plum` con 8,62. Quien use esto debe filtrar por `cercania` y tratar el resultado como derivado.
 
 ## Fuentes y verificación
 
@@ -53,7 +76,8 @@ Varias palabras de la lista completa son también palabras corrientes en españo
 - `significados-idiomas.csv`: los significados en los otros 29 idiomas. Columnas: `idioma`, `nombre_ingles`, `significado_psicologico`, `significado_mistico`. Una fila por color e idioma, ordenadas por `nombre_ingles` y, dentro de cada color, por el orden de idiomas de `generar-tabla.py`. Los pares que en `colores.csv` tienen el mismo texto en español (como `gray` y `grey`) tienen también el mismo texto traducido.
 - `por-idioma/<código>.md`: una página por idioma con el nombre, el hex y los dos significados de los 148 colores. Generado.
 - `colores-por-idioma.md`: índice de las páginas por idioma. Generado.
-- `nombres-completos.csv`: lista completa. Columnas: `nombre_ingles`, `hex`, `curada`.
+- `nombres-completos.csv`: lista completa. Columnas de la fuente: `nombre_ingles`, `hex`, `curada`. Columnas calculadas por el generador: `css_cercano`, `delta_e`, `cercania`.
+- `colorimetria.py`: sRGB a CIELAB y CIEDE2000, con los vectores de prueba de Sharma et al. Lo importa `generar-tabla.py`.
 - `generar-tabla.py`: valida los tres CSV y genera la tabla de este README, `colores-por-idioma.md` y `por-idioma/`.
 - `LICENCIA-meodai-color-names.txt`: licencia MIT de la fuente de la lista completa.
 - `README.md`: este documento. La tabla va entre dos líneas que son marcadores HTML de inicio y fin (`tabla:inicio` y `tabla:fin`); no la edites a mano.
@@ -72,7 +96,7 @@ Reglas para editar los CSV (el generador las comprueba):
 
 - `colores.csv`: `nombre_ingles` en minúsculas, sin espacios y único; `hex` en `#RRGGBB` y en mayúsculas; ningún campo vacío; ningún campo con `|` ni saltos de línea; filas ordenadas por `nombre_ingles`.
 - `significados-idiomas.csv`: un par de significados por cada color de `colores.csv` y cada idioma (todos menos `es`), sin repetidos; ningún campo vacío, con `|` ni con saltos de línea; ningún significado igual al texto en español (sin traducir). Si cambias un significado en `colores.csv`, actualiza también sus 29 traducciones.
-- `nombres-completos.csv`: nombre único sin distinguir mayúsculas; `hex` en `#RRGGBB`; `curada` vacía o `x`; filas ordenadas por nombre sin distinguir mayúsculas. Se generó una vez desde la fuente; el generador solo lo valida.
+- `nombres-completos.csv`: nombre único sin distinguir mayúsculas; `hex` en `#RRGGBB`; `curada` vacía o `x`; filas ordenadas por nombre sin distinguir mayúsculas; ningún nombre con `|`, comas, comillas ni saltos de línea. Las tres primeras columnas se generaron una vez desde la fuente; `css_cercano`, `delta_e` y `cercania` las reescribe el generador y `--comprobar` falla si no coinciden con lo que calcula.
 
 ## Tabla
 

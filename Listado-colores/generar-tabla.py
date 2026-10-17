@@ -4,7 +4,8 @@
 - colores.csv: tabla anotada, 148 colores CSS con nombre en 30 idiomas, hex y significados en español.
   Su tabla resumida va en el README.
 - significados-idiomas.csv: los significados de esos 148 colores en los otros 29 idiomas.
-- nombres-completos.csv: lista completa de nombres con hex, sin significados. Solo se valida.
+- nombres-completos.csv: lista completa de nombres con hex. Sus tres primeras columnas son la fuente;
+  css_cercano, delta_e y cercania se calculan aquí (color CSS más cercano según CIEDE2000, en colorimetria.py).
 - Por cada idioma se genera por-idioma/<código>.md (nombre, hex y los dos significados en ese idioma)
   y colores-por-idioma.md, que es el índice de esas páginas.
 
@@ -13,11 +14,15 @@ Uso:
   python3 generar-tabla.py --comprobar  valida y sale con error si los archivos generados no están al día
 """
 import csv
+import io
 import re
 import sys
 from pathlib import Path
 
 CARPETA = Path(__file__).resolve().parent
+sys.path.insert(0, str(CARPETA))
+import colorimetria  # noqa: E402  (módulo de esta carpeta)
+
 ANOTADA = CARPETA / "colores.csv"
 COMPLETA = CARPETA / "nombres-completos.csv"
 SIGNIFICADOS = CARPETA / "significados-idiomas.csv"
@@ -42,7 +47,10 @@ COLUMNAS_ANOTADA = (
     + [f"nombre_{c}" for c, _ in IDIOMAS[1:]]
     + ["hex", "significado_psicologico", "significado_mistico"]
 )
-COLUMNAS_COMPLETA = ["nombre_ingles", "hex", "curada"]
+COLUMNAS_FUENTE_COMPLETA = ["nombre_ingles", "hex", "curada"]
+COLUMNAS_COMPLETA = COLUMNAS_FUENTE_COMPLETA + ["css_cercano", "delta_e", "cercania"]
+# Bandas de cercanía por ΔE00 al color CSS más cercano. Son umbrales de este proyecto, no un estándar.
+BANDAS_CERCANIA = [("alta", 3.0), ("media", 8.0)]
 COLUMNAS_SIGNIFICADOS = ["idioma", "nombre_ingles", "significado_psicologico", "significado_mistico"]
 RE_NOMBRE_CSS = re.compile(r"[a-z]+")
 RE_HEX = re.compile(r"#[0-9A-F]{6}")
@@ -54,6 +62,15 @@ def leer(ruta, columnas):
         if lector.fieldnames != columnas:
             sys.exit(f"{ruta.name}: cabecera inesperada {lector.fieldnames}")
         return list(lector)
+
+
+def leer_completa():
+    """Lee nombres-completos.csv con la cabecera completa o solo con las tres columnas de la fuente."""
+    with COMPLETA.open(encoding="utf-8", newline="") as f:
+        lector = csv.DictReader(f)
+        if lector.fieldnames not in (COLUMNAS_FUENTE_COMPLETA, COLUMNAS_COMPLETA):
+            sys.exit(f"{COMPLETA.name}: cabecera inesperada {lector.fieldnames}")
+        return [{c: fila[c] for c in COLUMNAS_FUENTE_COMPLETA} for fila in lector]
 
 
 def validar_anotada(filas, errores):
@@ -84,8 +101,8 @@ def validar_completa(filas, errores):
         if not nombre.strip() or nombre != nombre.strip():
             errores.append(f"nombres-completos.csv línea {n}: nombre vacío o con espacios sobrantes")
             continue
-        if "|" in nombre or "\n" in nombre:
-            errores.append(f"nombres-completos.csv línea {n}: no puede llevar '|' ni saltos de línea")
+        if any(c in nombre for c in '|,"\n'):
+            errores.append(f"nombres-completos.csv línea {n}: no puede llevar '|', ',', comillas ni saltos de línea")
         if nombre.lower() in vistos:
             errores.append(f"nombres-completos.csv línea {n}: nombre repetido (sin distinguir mayúsculas): {nombre!r}")
         vistos.add(nombre.lower())
@@ -129,6 +146,43 @@ def validar_significados(filas, anotada, errores):
     claves = [(f["nombre_ingles"], orden.get(f["idioma"], -1)) for f in filas]
     if claves != sorted(claves):
         errores.append("significados-idiomas.csv: las filas deben ir ordenadas por nombre_ingles y, dentro, por el orden de IDIOMAS en generar-tabla.py")
+
+
+def cercania_de(delta, mismo_hex):
+    if mismo_hex:
+        return "exacto"
+    for banda, tope in BANDAS_CERCANIA:
+        if delta <= tope:
+            return banda
+    return "baja"
+
+
+def calcular_cercanias(completa, anotada):
+    """Para cada nombre de la lista completa: color CSS más cercano (CIEDE2000), distancia y banda.
+
+    Si dos colores CSS están igual de cerca (por ejemplo gray y grey, que comparten hex), gana el
+    primero por orden alfabético. La comparación redondea a 9 decimales para que el desempate no
+    dependa del ruido de coma flotante entre plataformas.
+    """
+    referencias = sorted((f["nombre_ingles"], f["hex"], colorimetria.hex_a_lab(f["hex"])) for f in anotada)
+    resultado = []
+    for fila in completa:
+        lab = colorimetria.hex_a_lab(fila["hex"])
+        distancia, nombre, color = min(
+            (round(colorimetria.ciede2000(lab, ref_lab), 9), ref_nombre, ref_hex)
+            for ref_nombre, ref_hex, ref_lab in referencias
+        )
+        resultado.append((nombre, distancia, cercania_de(distancia, color == fila["hex"])))
+    return resultado
+
+
+def texto_completa(completa, cercanias):
+    salida = io.StringIO()
+    escritor = csv.writer(salida, lineterminator="\n")
+    escritor.writerow(COLUMNAS_COMPLETA)
+    for fila, (css, distancia, cercania) in zip(completa, cercanias):
+        escritor.writerow([fila["nombre_ingles"], fila["hex"], fila["curada"], css, f"{distancia:.2f}", cercania])
+    return salida.getvalue()
 
 
 def tabla_readme(filas):
@@ -199,7 +253,10 @@ def indice_idiomas(anotada):
 
 def main():
     anotada = leer(ANOTADA, COLUMNAS_ANOTADA)
-    completa = leer(COMPLETA, COLUMNAS_COMPLETA)
+    fallos = colorimetria.autoprueba()
+    if fallos:
+        sys.exit(f"colorimetria.py: CIEDE2000 no coincide con {len(fallos)} vectores de Sharma et al.: {fallos[:2]}")
+    completa = leer_completa()
     traducidos = leer(SIGNIFICADOS, COLUMNAS_SIGNIFICADOS)
     errores = []
     validar_anotada(anotada, errores)
@@ -220,6 +277,7 @@ def main():
     generados = {
         README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada)}\n{FIN}", texto),
         INDICE: indice_idiomas(anotada),
+        COMPLETA: texto_completa(completa, calcular_cercanias(completa, anotada)),
     }
     for codigo, etiqueta in IDIOMAS:
         generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(codigo, etiqueta, anotada, significados)
@@ -243,7 +301,7 @@ def main():
         p.write_text(contenido, encoding="utf-8")
     for p in sobrantes:
         p.unlink()
-    print(f"Generados README.md, colores-por-idioma.md y {len(IDIOMAS)} páginas en por-idioma/: {resumen}.")
+    print(f"Generados README.md, nombres-completos.csv, colores-por-idioma.md y {len(IDIOMAS)} páginas en por-idioma/: {resumen}.")
     return 0
 
 
