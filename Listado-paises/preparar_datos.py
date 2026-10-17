@@ -1,29 +1,32 @@
 #!/usr/bin/env python3
-"""Prepara los datos a partir de fuentes publicadas en GitHub (Our World in Data y Banco Mundial).
+"""Prepara los datos a partir de fuentes publicadas en GitHub (OWID, Gapminder y Banco Mundial).
 
 Uso (desde esta carpeta; las rutas apuntan a copias locales de las fuentes, ver README.md):
 
     python3 preparar_datos.py --co2 owid-co2-data.csv --maddison maddison-2020.csv \\
-        --hyde hyde-regiones.csv --fertilidad fertilidad-onu-2015.csv \\
-        --pib-bm gdp.csv --poblacion-bm population.csv --idh owid-covid-latest.csv
+        --hyde hyde-regiones.csv --natalidad-gapminder natalidad-gapminder.csv \\
+        --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \\
+        --pib-bm gdp.csv --poblacion-bm population.csv
 
 Escribe:
     poblacion_larga.csv  serie larga de población por país (codigo, anio, poblacion)
-    natalidad.csv        natalidad aproximada desde 1950 (codigo, anio, tasa_por_mil)
-    paises.csv           población 2024, IDH 2019, PIB per cápita nominal 2023 y PPA 2022
+    natalidad.csv        natalidad por país desde 1800 (codigo, anio, tasa_por_mil)
+    paises.csv           población 2024, IDH 2023, PIB per cápita nominal 2023 y PPA 2022
 
 Serie larga de cada país (método compuesto):
     1750-2024    población de OWID (co2-data).
     año 1-1749   puntos de Maddison 2020 (años 1, 1000, 1500, 1600, 1700...), si los hay.
     antes        la serie regional de HYDE multiplicada por la cuota del país en su región
                  en el primer año conocido. Supone que esa cuota fue constante hacia atrás.
-Natalidad desde 1950: 7 x fecundidad total de la ONU (revisión 2015), interpolada entre sus
-puntos quinquenales y mantenida fuera de 1955-2015. Es una aproximación de la tasa bruta.
 Un país que OWID no tiene (Puerto Rico) usa la población del Banco Mundial desde 1960.
+
+Natalidad (ver natalidad_pais): la tasa bruta de Gapminder (1800-2015) y, hasta ANIO_FIN, la
+última tasa escalada por la fecundidad de Gapminder. Un país sin tasa usa FACTOR_NATALIDAD x
+fecundidad; uno sin ninguna de las dos no entra en natalidad.csv (historia_poblacion usa 0,040).
 
 PIB per cápita nominal: PIB del Banco Mundial (NY.GDP.MKTP.CD) entre su población (SP.POP.TOTL),
 del último año entre ANIO_PIB_NOMINAL_MINIMO y ANIO_PIB_NOMINAL con los dos datos.
-IDH: valores de 2019 del PNUD (Informe 2020), tal como los publica OWID.
+IDH: el del PNUD de ANIO_IDH, tal como lo publica Gapminder.
 
 Solo biblioteca estándar.
 """
@@ -31,14 +34,15 @@ import argparse
 import csv
 from pathlib import Path
 
-from historia_poblacion import poblacion_en
+from historia_poblacion import ANIO_FIN, poblacion_en
 
 AQUI = Path(__file__).resolve().parent
 ANIO_POBLACION = "2024"
 ANIO_PIB_PPA = "2022"
 ANIO_PIB_NOMINAL = 2023
 ANIO_PIB_NOMINAL_MINIMO = 2021  # un dato más viejo no se usa: el país queda vacío
-FACTOR_NATALIDAD = 7.0  # tasa bruta por mil ~ 7 x fecundidad total
+ANIO_IDH = 2023
+FACTOR_NATALIDAD = 7.0  # tasa bruta por mil ~ 7 x fecundidad total, para países sin tasa
 SUDAMERICA = {"AR", "BO", "BR", "CL", "CO", "EC", "GY", "PY", "PE", "SR", "UY", "VE"}
 REGION_HYDE = {"África": "Africa", "Asia": "Asia", "Europa": "Europe", "Oceanía": "Oceania"}
 # Nombres que la fuente usa distinto de co2-data.
@@ -81,6 +85,36 @@ def leer_bm(ruta):
     return datos
 
 
+def leer_gapminder(ruta):
+    """Archivo DDF de Gapminder (geo o country, time, valor) -> código ISO alfa-3 -> {anio: valor}."""
+    datos = {}
+    for f in leer(ruta):
+        geo = f.get("geo") or f["country"]
+        (columna,) = set(f) - {"geo", "country", "time"}
+        if f[columna]:
+            datos.setdefault(geo.upper(), {})[int(f["time"])] = float(f[columna])
+    return datos
+
+
+def natalidad_pais(tasas, fecundidad):
+    """{anio: nacimientos por mil} de un país, hasta ANIO_FIN.
+
+    Con tasas: esas, y después de la última, la última escalada por la fecundidad
+    (tasa(t) = tasa(u) x TFR(t) / TFR(u)), o constante si falta la fecundidad.
+    Sin tasas: FACTOR_NATALIDAD x fecundidad. Sin ninguna de las dos: vacío.
+    """
+    if not tasas:
+        return {a: FACTOR_NATALIDAD * v for a, v in fecundidad.items() if a <= ANIO_FIN}
+    serie = {a: v for a, v in tasas.items() if a <= ANIO_FIN}
+    ultimo = max(tasas)
+    for anio in range(ultimo + 1, ANIO_FIN + 1):
+        if fecundidad.get(ultimo) and fecundidad.get(anio):
+            serie[anio] = tasas[ultimo] * fecundidad[anio] / fecundidad[ultimo]
+        else:
+            serie[anio] = tasas[ultimo]
+    return serie
+
+
 def pib_nominal(pib, poblacion):
     """(año, PIB per cápita) del último año del rango con PIB y población, o None."""
     for anio in range(ANIO_PIB_NOMINAL, ANIO_PIB_NOMINAL_MINIMO - 1, -1):
@@ -96,7 +130,8 @@ def formato_millones(personas):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    for nombre in ("co2", "maddison", "hyde", "fertilidad", "pib-bm", "poblacion-bm", "idh"):
+    for nombre in ("co2", "maddison", "hyde", "natalidad-gapminder", "fecundidad-gapminder", "idh",
+                   "pib-bm", "poblacion-bm"):
         ap.add_argument(f"--{nombre}", required=True)
     args = ap.parse_args()
 
@@ -131,12 +166,9 @@ def main():
     for serie in hyde.values():
         serie.sort()
 
-    fecundidad = {}
-    for f in leer(args.fertilidad):
-        clave = nombre_a_codigo.get(f["Entity"])
-        if clave and f[next(k for k in f if k.startswith("Fertility"))]:
-            valor = float(f[next(k for k in f if k.startswith("Fertility"))])
-            fecundidad.setdefault(clave, []).append((int(f["Year"]), valor))
+    tasas = leer_gapminder(args.natalidad_gapminder)
+    fecundidad = leer_gapminder(args.fecundidad_gapminder)
+    idh = leer_gapminder(args.idh)
 
     pib_bm, poblacion_bm = leer_bm(args.pib_bm), leer_bm(args.poblacion_bm)
     # Sin población de OWID, la del Banco Mundial hasta el mismo año.
@@ -146,7 +178,6 @@ def main():
             poblacion[clave] = {a: p for a, p in poblacion_bm[codigo_bm(clave)].items()
                                 if a <= int(ANIO_POBLACION)}
             con_poblacion_bm.append(clave)
-    idh = {f["iso_code"]: f["human_development_index"] for f in leer(args.idh) if f["iso_code"]}
 
     filas_larga, filas_natalidad, sin_serie, sin_pob, sin_pib, sin_natalidad = [], [], [], [], [], []
     sin_idh, sin_nominal, nominal_anterior = [], [], []
@@ -185,19 +216,15 @@ def main():
         if nominal and nominal[0] != ANIO_PIB_NOMINAL:
             nominal_anterior.append(f"{codigo} {nominal[0]}")
 
-        fila["idh"] = f"{float(idh[clave]):.3f}" if idh.get(clave) else ""
+        valor_idh = idh.get(clave, {}).get(ANIO_IDH)
+        fila["idh"] = f"{valor_idh:.3f}" if valor_idh else ""
         if not fila["idh"]:
             sin_idh.append(codigo)
 
-        puntos = sorted(fecundidad.get(clave, []))
-        if puntos:
-            anios, valores = [a for a, _ in puntos], [v for _, v in puntos]
-            for anio in range(1950, 2026):
-                t = min(max(anio, anios[0]), anios[-1])
-                tfr = poblacion_en(anios, valores, t)
-                filas_natalidad.append((codigo, anio, f"{FACTOR_NATALIDAD * tfr:.1f}"))
-        else:
-            sin_natalidad.append(codigo)
+        natal = natalidad_pais(tasas.get(clave, {}), fecundidad.get(clave, {}))
+        filas_natalidad += [(codigo, a, f"{v:.2f}") for a, v in sorted(natal.items())]
+        if clave not in tasas:
+            sin_natalidad.append(f"{codigo} ({'fecundidad' if natal else '0,040'})")
 
     with (AQUI / "poblacion_larga.csv").open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
@@ -213,7 +240,7 @@ def main():
         w.writerows(paises)
 
     print(f"poblacion_larga.csv: {len(filas_larga)} filas; sin serie: {', '.join(sin_serie) or 'ninguno'}")
-    print(f"natalidad.csv: {len(filas_natalidad)} filas; sin fecundidad (usarán 0,040): "
+    print(f"natalidad.csv: {len(filas_natalidad)} filas; sin tasa de Gapminder (qué usan): "
           f"{', '.join(sin_natalidad) or 'ninguno'}")
     print(f"paises.csv: población {ANIO_POBLACION} sin dato (se mantiene la anterior): {', '.join(sin_pob) or 'ninguno'}")
     print(f"población del Banco Mundial (sin dato en OWID): {', '.join(con_poblacion_bm) or 'ninguno'}")

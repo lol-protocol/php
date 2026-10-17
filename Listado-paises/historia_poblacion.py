@@ -7,9 +7,8 @@
           Antes del primer punto vale 0; después del último, se mantiene el último valor.
           Entre dos puntos positivos la interpolación es geométrica (el crecimiento es
           aproximadamente exponencial); si uno de los dos es 0, es lineal.
-    b(t)  tasa bruta de natalidad del año t, como fracción (40 por mil = 0,040).
-          Antes de 1950 vale B_PREINDUSTRIAL. Desde 1950 usa natalidad.csv si tiene el
-          país y el año; si no, B_PREINDUSTRIAL.
+    b(t)  tasa bruta de natalidad del año t, como fracción (40 por mil = 0,040): la de
+          natalidad.csv si tiene el país y el año (desde 1800); si no, B_PREINDUSTRIAL.
 
 Sensibilidad: N es lineal en b, así que la banda se obtiene multiplicando N por 0,9 y 1,1.
 
@@ -27,7 +26,6 @@ from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
 ANIO_FIN = 2025
-ANIO_INICIO_TASAS = 1950
 ANIO_MINIMO_SERIE = 2000  # una serie que termina antes se saltea: no se extiende en silencio
 B_PREINDUSTRIAL = 0.040
 
@@ -80,8 +78,7 @@ def nacimientos(puntos, natal):
     for t in range(anios[0], ANIO_FIN + 1):
         p = poblacion_en(anios, pobs, t)
         if p:
-            b = natal.get(t, B_PREINDUSTRIAL) if t >= ANIO_INICIO_TASAS else B_PREINDUSTRIAL
-            total += p * b
+            total += p * natal.get(t, B_PREINDUSTRIAL)
     return total
 
 

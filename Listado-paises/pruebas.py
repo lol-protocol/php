@@ -39,15 +39,15 @@ class InterpolacionYNacimientos(unittest.TestCase):
         self.assertEqual(hp.poblacion_en([100, 200], [50, 50], 10), 0.0)
         self.assertEqual(hp.poblacion_en([100, 200], [50, 50], 999), 50)
 
-    def test_suma_con_natalidad_desde_1950(self):
-        # 1000 personas desde -1000: 2950 anios a 0,040 hasta 1949 y 76 anios a 0,010 desde 1950.
-        natalidad = {t: 0.010 for t in range(1950, 2026)}
-        esperado = 1000 * 0.04 * 2950 + 1000 * 0.010 * 76
+    def test_suma_con_la_natalidad_del_archivo_y_0040_donde_falta(self):
+        # 1000 personas desde -1000: 2800 anios a 0,040 hasta 1799 y 226 anios a 0,010 desde 1800.
+        natalidad = {t: 0.010 for t in range(1800, 2026)}
+        esperado = 1000 * 0.04 * 2800 + 1000 * 0.010 * 226
         self.assertAlmostEqual(hp.nacimientos([(-1000, 1000.0), (0, 1000.0)], natalidad), esperado)
 
     def test_suma_sin_natalidad_usa_la_tasa_preindustrial(self):
-        # 50 personas desde el anio 100: 1850 anios hasta 1949 y 76 desde 1950, siempre a 0,040.
-        esperado = 50 * 0.04 * (1950 - 100) + 50 * 0.04 * 76
+        # 50 personas desde el anio 100 hasta 2025, siempre a 0,040.
+        esperado = 50 * 0.04 * (2026 - 100)
         self.assertAlmostEqual(hp.nacimientos([(100, 50.0), (200, 50.0)], {}), esperado)
 
 
@@ -92,6 +92,20 @@ class DatosPreparados(unittest.TestCase):
         self.assertEqual(len(puntos), 1)
         self.assertEqual(puntos[0][0], 0)
         self.assertAlmostEqual(puntos[0][1], 10.0)
+
+    def test_natalidad_escala_la_ultima_tasa_con_la_fecundidad(self):
+        import preparar_datos as pd
+        fin = hp.ANIO_FIN
+        serie = pd.natalidad_pais({fin - 2: 30.0}, {fin - 2: 3.0, fin - 1: 2.0})
+        self.assertEqual(serie[fin - 2], 30.0)
+        self.assertAlmostEqual(serie[fin - 1], 20.0)  # 30 x 2 / 3
+        self.assertEqual(serie[fin], 30.0)  # sin fecundidad ese año: la última tasa
+        self.assertNotIn(fin + 1, pd.natalidad_pais({fin + 1: 30.0}, {}))
+
+    def test_natalidad_sin_tasa_usa_la_fecundidad_y_sin_nada_queda_vacia(self):
+        import preparar_datos as pd
+        self.assertEqual(pd.natalidad_pais({}, {1900: 6.0}), {1900: pd.FACTOR_NATALIDAD * 6.0})
+        self.assertEqual(pd.natalidad_pais({}, {}), {})
 
     def test_pib_nominal_usa_el_ultimo_anio_con_pib_y_poblacion_dentro_del_rango(self):
         import preparar_datos as pd
