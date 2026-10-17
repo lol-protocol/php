@@ -38,7 +38,7 @@ Desde la carpeta de cada proyecto, salvo donde diga «desde la raíz» (el detal
 | Proyecto | Pruebas |
 |---|---|
 | `defamatory-content-review/` | `composer install && ./vendor/bin/phpunit` (la CI corre además `phpstan analyse` y `php bin/benchmark.php 2000`) |
-| `phone-directory/` | `composer install && ./vendor/bin/phpunit` (depende de `../defamatory-content-review`; la CI corre además los puertos de `ports/python` y `ports/java`) |
+| `phone-directory/` | `composer install && ./vendor/bin/phpunit` (depende de `../defamatory-content-review`; la CI corre además `phpstan analyse` y los puertos de `ports/python` y `ports/java`) |
 | `cobros-ingresos-funnels/` | con PostgreSQL y `export APP_ENV=dev`: `composer install && php bin/recrear_con_datos_de_ejemplo.php` (borra la base y la rearma con las migraciones y datos de ejemplo), luego `./vendor/bin/phpunit` (la CI corre además PHPStan) |
 | `sistema-nuevo/` | `php pruebas/ejecutar-php.php` y `./pruebas/ejecutar-js.sh`; con PostgreSQL, `php datos/generar-datos-semilla.php && php pruebas/ejecutar-integracion.php`; el e2e (`./pruebas/ejecutar-e2e.sh`) necesita los servicios de `ejecutar.sh` |
 | `url-routing/` | `composer install && ./vendor/bin/phpunit` (la CI lo corre también contra PostgreSQL) |
@@ -54,6 +54,6 @@ El resto de proyectos (`privacy-laws/`, `copyright-laws/`, `marketing/`, `marcal
 ## Entorno de las sesiones en la nube (puede cambiar)
 
 - PostgreSQL no arranca solo: `service postgresql start`. Cada proyecto espera sus propios roles y bases (están en su README).
-- Composer no logra bajar algunos paquetes desde GitHub (por ejemplo PHPStan). No insistas: el análisis estático lo corre la CI.
+- Composer no logra bajar algunos paquetes desde GitHub (por ejemplo PHPStan). No insistas: el análisis estático lo corre la CI. Para adelantarlo en local, el `vendor/` de `cobros-ingresos-funnels/` trae un `phpstan.phar` suelto: `cp /home/user/php/cobros-ingresos-funnels/vendor/sebastian/code-unit/tools/.phpstan/vendor/phpstan/phpstan/phpstan.phar /tmp/` y, desde la carpeta del proyecto con su `vendor/` al día (`composer install`, o `composer dump-autoload` si el autoload falla por un archivo que ya no existe), `php /tmp/phpstan.phar analyse --no-progress`. Hay que sacarlo de esa carpeta antes de correrlo (ahí carga reglas extra y da cientos de avisos que la CI no da). Es más viejo que el de la CI (2.1.8): compara con `master` limpio antes de creer un aviso.
 - No hay una CLI `gh` completa: `gh api <ruta REST>` funciona, y las herramientas de GitHub de la sesión cubren PR y comentarios.
 - Cada workflow solo corre si cambia la carpeta de su proyecto, o la de otro que ese proyecto usa: `phone-directory/` y `marcalibros-plataforma-pos-brand-identity/` también corren si cambia `defamatory-content-review/`. Un PR de una sola carpeta dispara pocos checks; `estructura.yml` corre siempre, y `marketing/`, `landing-page/` y `psychology-and-marketing/` no tienen más. Espera a que terminen todos antes de decir que la CI está en verde.
