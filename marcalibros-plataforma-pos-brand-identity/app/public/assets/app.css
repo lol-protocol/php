@@ -24,12 +24,20 @@
 }
 
 :root {
-  /* Paleta de la marca */
-  --tinta: #1e2a38;
-  --papel: #f4eee1;
-  --ocre: #c98b3a;
-  --verde: #3e5c4a;
-  --niebla: #7a9cb0;
+  /* Paleta de la marca: valores fijos, para las muestras de color y el logo. */
+  --marca-tinta: #1e2a38;
+  --marca-papel: #f4eee1;
+  --marca-ocre: #c98b3a;
+  --marca-verde: #3e5c4a;
+  --marca-niebla: #7a9cb0;
+
+  /* Papeles en la interfaz. En modo claro son la paleta tal cual; el modo oscuro los redefine abajo.
+     tinta: texto y trazos. papel: fondo. verde: enlaces y acentos. */
+  --tinta: var(--marca-tinta);
+  --papel: var(--marca-papel);
+  --ocre: var(--marca-ocre);
+  --verde: var(--marca-verde);
+  --niebla: var(--marca-niebla);
 
   /* Neutros derivados de la paleta. Contrastes sobre papel: tinta-suave 6.45, borde 4.1, error 7.06 */
   --hondo: #ebe3d1;
@@ -38,13 +46,34 @@
   --borde: #6a7482;
   --linea: rgba(30, 42, 56, 0.2);
   --error: #8f2d26;
+  --pie-fondo: var(--marca-tinta);
+  --pie-texto: var(--marca-papel);
 
   --serif: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   --medida: 74rem;
   --gutter: max(1rem, 3vw);
-  color-scheme: light;
+  color-scheme: light dark;
+}
+
+/* Modo oscuro: fondo tinta y texto papel (12.58). Contrastes sobre el fondo: tinta-suave 8.71,
+   borde 4.78, verde 7.86, error 7.31; sobre hondo todos superan 4. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tinta: #f4eee1;
+    --papel: #1e2a38;
+    --verde: #9cc9a9;
+    --hondo: #273648;
+    --campo: #17212c;
+    --tinta-suave: #c2c9d2;
+    --borde: #8995a4;
+    --linea: rgba(244, 238, 225, 0.22);
+    --error: #f2a49a;
+    --pie-fondo: #141c26;
+  }
+  /* El logo tiene trazo tinta: va sobre una placa papel para que se vea. */
+  .marca img { background: var(--marca-papel); border-radius: 6px; }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -122,10 +151,10 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
 .menu a:hover { border-bottom-color: var(--borde); }
 .menu a[aria-current="page"] { border-bottom-color: var(--verde); font-weight: 700; }
 
-.pie { background: var(--tinta); color: var(--papel); padding-block: 1.75rem; font-size: 0.95rem; }
+.pie { background: var(--pie-fondo); color: var(--pie-texto); padding-block: 1.75rem; font-size: 0.95rem; }
 .pie__fila { max-width: var(--medida); margin-inline: auto; padding-inline: var(--gutter); display: grid; gap: 0.25rem 2rem; }
 .pie p { margin: 0; max-width: 46rem; }
-.pie a { color: var(--papel); }
+.pie a { color: var(--pie-texto); }
 .pie :focus-visible { outline-color: var(--ocre); }
 
 /* ------------------------------------------------------------------- botones */
@@ -242,11 +271,11 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
 .muestras { list-style: none; margin: 0 0 1.5rem; padding: 0; display: grid; gap: 0.5rem; }
 .muestras li { display: flex; align-items: center; gap: 0.75rem; }
 .muestra { flex: none; width: 2.5rem; height: 2.5rem; border-radius: 4px; box-shadow: 0 0 0 1px var(--borde); }
-.muestra--tinta { background: var(--tinta); }
-.muestra--papel { background: var(--papel); }
-.muestra--ocre { background: var(--ocre); }
-.muestra--verde { background: var(--verde); }
-.muestra--niebla { background: var(--niebla); }
+.muestra--tinta { background: var(--marca-tinta); }
+.muestra--papel { background: var(--marca-papel); }
+.muestra--ocre { background: var(--marca-ocre); }
+.muestra--verde { background: var(--marca-verde); }
+.muestra--niebla { background: var(--marca-niebla); }
 .muestra--otro { background: var(--hondo); }
 
 .expira { margin-top: 1.75rem; color: var(--tinta-suave); }

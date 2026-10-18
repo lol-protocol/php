@@ -62,6 +62,8 @@ Lo que **no** hace: HTTPS ni `Strict-Transport-Security` (eso lo ponen el servid
 
 ## Despliegue
 
+La aplicación corre en **un solo VPS**, y por eso guarda los marcalibros creados en el disco local (`MARCALIBROS_STORAGE`). Respalda esa carpeta junto con el resto del servidor. Si algún día corre en más de un servidor, el disco local deja de servir: habría que llevar el almacenamiento a algo compartido.
+
 Dirige todo lo que no sea un archivo de `public/assets/` a `public/index.php`. Ejemplo para nginx con php-fpm:
 
 ```nginx
@@ -116,5 +118,4 @@ app/
 
 ## Pendiente
 
-- Sin modo oscuro.
-- El almacenamiento es disco local: sirve para un solo servidor.
+- La integración con Plataforma POS, que se dejó para después (ver el `README.md` de la carpeta superior).

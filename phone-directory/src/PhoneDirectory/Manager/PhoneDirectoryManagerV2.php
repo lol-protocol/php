@@ -10,6 +10,9 @@ use PhoneDirectory\JuridicalEntityPDODatabase;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\Entity\JuridicalEntity;
 
+/**
+ * @phpstan-import-type ParseError from MultiLanguagePhoneDirectoryParser
+ */
 class PhoneDirectoryManagerV2
 {
     private MultiLanguagePhoneDirectoryParser $parser;
@@ -26,6 +29,20 @@ class PhoneDirectoryManagerV2
         $this->juridicalDatabase = $juridicalDatabase ?? new JuridicalEntityPDODatabase();
     }
 
+    /**
+     * @return array{
+     *     file: string,
+     *     language: string,
+     *     totalParsed: int,
+     *     naturalPeople: int,
+     *     juridicalEntities: int,
+     *     naturalInserted: int,
+     *     juridicalInserted: int,
+     *     totalInserted: int,
+     *     errors: list<ParseError>,
+     *     errorCount: int
+     * }
+     */
     public function processFile(string $filePath, ?string $language = null, bool $clearExisting = false): array
     {
         $this->ensureNaturalReady();
@@ -102,6 +119,7 @@ class PhoneDirectoryManagerV2
         return $this->juridicalDatabase->findById($id);
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function findNaturalPeopleByName(string $name): array
     {
         $this->ensureNaturalReady();
@@ -109,6 +127,7 @@ class PhoneDirectoryManagerV2
         return $this->naturalDatabase->findByName($name);
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function findNaturalPeopleBySurnameSound(string $surname, ?string $language = null): array
     {
         $this->ensureNaturalReady();
@@ -116,6 +135,7 @@ class PhoneDirectoryManagerV2
         return $this->naturalDatabase->findBySurnameSound($surname, $language);
     }
 
+    /** @return list<JuridicalEntity> */
     public function findJuridicalEntitiesByName(string $name): array
     {
         $this->ensureJuridicalReady();
@@ -123,6 +143,7 @@ class PhoneDirectoryManagerV2
         return $this->juridicalDatabase->findByBusinessName($name);
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function findNaturalPeopleByStreet(string $street): array
     {
         $this->ensureNaturalReady();
@@ -130,6 +151,7 @@ class PhoneDirectoryManagerV2
         return $this->naturalDatabase->findByStreet($street);
     }
 
+    /** @return list<JuridicalEntity> */
     public function findJuridicalEntitiesByStreet(string $street): array
     {
         $this->ensureJuridicalReady();
@@ -137,6 +159,7 @@ class PhoneDirectoryManagerV2
         return $this->juridicalDatabase->findByStreet($street);
     }
 
+    /** @return array{natural: list<PhoneDirectoryEntry>, juridical: list<JuridicalEntity>} */
     public function findByStreet(string $street): array
     {
         $natural = $this->findNaturalPeopleByStreet($street);
@@ -162,6 +185,7 @@ class PhoneDirectoryManagerV2
         return $this->juridicalDatabase->findByPhone($phone);
     }
 
+    /** @return array{natural: PhoneDirectoryEntry|null, juridical: JuridicalEntity|null} */
     public function findByPhone(string $phone): array
     {
         $natural = $this->findNaturalPersonByPhone($phone);
@@ -173,6 +197,7 @@ class PhoneDirectoryManagerV2
         ];
     }
 
+    /** @return list<JuridicalEntity> */
     public function findJuridicalEntitiesByType(string $type): array
     {
         $this->ensureJuridicalReady();
@@ -180,6 +205,7 @@ class PhoneDirectoryManagerV2
         return $this->juridicalDatabase->findByBusinessType($type);
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function getAllNaturalPeople(): array
     {
         $this->ensureNaturalReady();
@@ -187,6 +213,7 @@ class PhoneDirectoryManagerV2
         return $this->naturalDatabase->getAll();
     }
 
+    /** @return list<JuridicalEntity> */
     public function getAllJuridicalEntities(): array
     {
         $this->ensureJuridicalReady();
@@ -194,6 +221,7 @@ class PhoneDirectoryManagerV2
         return $this->juridicalDatabase->getAll();
     }
 
+    /** @return array{natural: list<PhoneDirectoryEntry>, juridical: list<JuridicalEntity>} */
     public function getAll(): array
     {
         return [
@@ -202,6 +230,10 @@ class PhoneDirectoryManagerV2
         ];
     }
 
+    /**
+     * @param array{name?: string, street?: string, phone?: string} $criteria
+     * @return list<PhoneDirectoryEntry>
+     */
     public function searchNaturalPeople(array $criteria): array
     {
         $this->ensureNaturalReady();
@@ -209,6 +241,10 @@ class PhoneDirectoryManagerV2
         return $this->naturalDatabase->search($criteria);
     }
 
+    /**
+     * @param array{businessName?: string, street?: string, phone?: string, businessType?: string} $criteria
+     * @return list<JuridicalEntity>
+     */
     public function searchJuridicalEntities(array $criteria): array
     {
         $this->ensureJuridicalReady();
@@ -263,6 +299,7 @@ class PhoneDirectoryManagerV2
         return $this->getTotalNaturalPeopleCount() + $this->getTotalJuridicalEntitiesCount();
     }
 
+    /** @return array{total: int, natural_people: int, juridical_entities: int, ratio_natural_to_juridical: float|null} */
     public function getStatistics(): array
     {
         $natural = $this->getTotalNaturalPeopleCount();

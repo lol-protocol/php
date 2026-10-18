@@ -22,7 +22,7 @@ $nav = ['catalogo' => ['/', 'Catálogo'], 'crear' => ['/crear', 'Crear el mío']
 <?php if ($private): ?>
 <meta name="robots" content="noindex, nofollow">
 <?php endif ?>
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="light dark">
 <link rel="icon" href="/marca.svg" type="image/svg+xml">
 <link rel="stylesheet" href="<?= $this->e($this->asset('app.css')) ?>">
 </head>

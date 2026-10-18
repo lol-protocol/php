@@ -5,6 +5,11 @@ namespace PhoneDirectory;
 use PhoneDirectory\Database\EntityPDODatabase;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 
+/**
+ * @extends EntityPDODatabase<PhoneDirectoryEntry>
+ * @phpstan-import-type Row from EntityPDODatabase
+ * @phpstan-import-type SqlParams from EntityPDODatabase
+ */
 class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirectoryDatabaseInterface
 {
     private const TABLE_NAME = 'phone_directory';
@@ -89,6 +94,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         SQL;
     }
 
+    /** @return SqlParams */
     private function insertParams(PhoneDirectoryEntry $entry): array
     {
         return $this->entryParams($entry) + [
@@ -106,6 +112,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         return $this->validateInsertId($this->pdo->lastInsertId());
     }
 
+    /** @param array<PhoneDirectoryEntry> $entries */
     public function insertBatch(array $entries): int
     {
         return $this->insertManyWithTransaction(
@@ -122,6 +129,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         return $row ? $this->rowToEntry($row) : null;
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function findByName(string $name): array
     {
         $this->ensureConnection();
@@ -133,6 +141,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function findByStreet(string $street): array
     {
         $this->ensureConnection();
@@ -150,6 +159,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         return $row ? $this->rowToEntry($row) : null;
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function findBySurnameSound(string $surname, ?string $language = null): array
     {
         $this->ensureConnection();
@@ -177,6 +187,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function findBySourceDirectory(string $sourceDirectoryId): array
     {
         $this->ensureConnection();
@@ -187,6 +198,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
+    /** @return list<PhoneDirectoryEntry> */
     public function getAll(): array
     {
         return $this->getAllOrdered('full_name');
@@ -222,6 +234,10 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         return $this->countAll();
     }
 
+    /**
+     * @param array{name?: string, street?: string, phone?: string} $criteria
+     * @return list<PhoneDirectoryEntry>
+     */
     public function search(array $criteria): array
     {
         $this->ensureConnection();
@@ -248,11 +264,13 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         return $this->clearTable();
     }
 
+    /** @param Row $row */
     protected function rowToEntity(array $row): PhoneDirectoryEntry
     {
         return $this->rowToEntry($row);
     }
 
+    /** @return SqlParams */
     private function entryParams(PhoneDirectoryEntry $entry): array
     {
         return [
@@ -269,6 +287,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         ] + $this->surnameKeyParams($entry) + $this->foldedSearchParams($entry);
     }
 
+    /** @return SqlParams */
     private function surnameKeyParams(PhoneDirectoryEntry $entry): array
     {
         $root = $entry->getPersonName()->getSurnameRoot();
@@ -279,6 +298,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         ];
     }
 
+    /** @return SqlParams */
     private function foldedSearchParams(PhoneDirectoryEntry $entry): array
     {
         return [
@@ -287,6 +307,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         ];
     }
 
+    /** @param Row $row */
     private function rowToEntry(array $row): PhoneDirectoryEntry
     {
         return new PhoneDirectoryEntry(

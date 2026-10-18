@@ -92,6 +92,7 @@ with the resolution and the screen size.
 | `wcag_contrast.csv` | 29 | WCAG AA/AAA contrast ratios per UI element |
 | `regional_compatibility.csv` | 29 | Primary, secondary and legal standards per region |
 | `paper_types.csv` | 50 | Named paper stock — color, texture, finish and weight — independent of sheet size (see below) |
+| `paper_type_translations.csv` | 50 | `paper_types.csv` names in the 28 languages the demo doesn't cover with `type_name`/`type_name_en` |
 
 ## Columns
 
@@ -140,6 +141,20 @@ Spanish is spoken), `type_name_en`, `category`, `color`, `texture`,
 `finish`, `weight_gsm_range`, `common_use`, `notes`. Weight ranges are
 typical, not a spec any mill is bound to — paper names and grammages vary
 by manufacturer and region more than ISO sheet sizes do.
+
+`specs/paper_type_translations.csv` adds the same 50 names in the other 28
+languages the demo's `app/translations/` covers (one column per language
+code, joined on `type_name`). It's reference data, not wired into the demo
+or the database — nothing in this project reads `app/translations/` to
+pick a display language either (see "Demo" below). Unlike the sheet-size
+names, which are real international/national standards, most of these
+paper names are translated by machine, not by a native speaker of each
+language, and two (`Papel roneo`, `Papel chambril`) are Latin American
+trade terms with no standard equivalent abroad, so those two columns carry
+a loanword plus a short gloss instead of a false "foreign" name. Treat
+this file the same way as the machine-translated taglines in
+`app/translations/`: useful as a starting point, not as a verified
+translation.
 
 ## Using the data
 

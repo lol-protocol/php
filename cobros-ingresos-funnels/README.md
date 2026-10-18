@@ -447,6 +447,8 @@ src/
   EnvioUnico.php        token de un solo uso de los formularios de alta: un doble
                         clic no crea dos pagos ni dos boletas, testeado
   EstadoBoleta.php      calculo puro de saldo/estado de una boleta (testeado)
+  Dinero.php            montos en centavos enteros, para compararlos sin el ruido de
+                        la coma flotante (testeado)
   MayoriaDeEdad.php     la regla de que no se admiten clientes que no hayan cumplido
                         la edad de mayoría de su país (años cumplidos, como age()
                         de Postgres) y el tope del campo de fecha de nacimiento del
@@ -615,6 +617,21 @@ montos). Los KPIs y gráficos agregados suman `monto * tasa_a_usd` para consolid
 en USD, con la tasa que cada fila guardó al crearse (la cartera pendiente, con la de
 hoy; ver «La tasa de cada día»); las tablas de detalle (boletas, pagos, ficha de
 cliente) muestran el monto en su moneda original.
+
+**Dinero.** La base guarda los montos como `NUMERIC(14, 2)`, exactos. En PHP viajan
+como `float`, que arrastra ruido (`0.1 + 0.2` da `0.30000000000000004`), así que las
+validaciones que comparan montos de una boleta o de un pago
+(`BoletasController::montoCubreLoYaCobrado` y `PagosController::montoNoSuperaElSaldo`,
+con su versión al editar un pago) los pasan a centavos enteros con
+`App\Dinero::centavos()` y comparan ahí, sin margen: un pago no puede pasarse del saldo
+ni por un centavo, y el monto de una boleta no puede quedar un centavo por debajo de lo
+ya cobrado.
+
+Otra cosa es la regla deliberada de que **un centavo o menos cuenta como cero**, para que
+un residuo de redondeo no deje una boleta pendiente para siempre: una boleta con saldo de
+0,01 o menos es `pagada` (`EstadoBoleta`, y en SQL `BoletaRepository::ESTADO_SQL`), no se
+ofrece en el selector del formulario de pagos, la cartera por antigüedad no cuenta saldos
+de 0,01 USD o menos, y anular una boleta con 0,01 o menos cobrado no emite nota de crédito.
 
 ## Notas de diseño
 
