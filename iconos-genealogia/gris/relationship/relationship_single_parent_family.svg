@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_relationship_single_parent_family_mist" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_relationship_single_parent_family_mist_r45" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#E1E1E1"/>
       <stop offset="1" stop-color="#D3D3D3"/>
     </linearGradient>
-    <linearGradient id="grad_relationship_single_parent_family_orange" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_relationship_single_parent_family_orange_r45" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#A5A5A5"/>
       <stop offset="1" stop-color="#7B7B7B"/>
     </linearGradient>
@@ -18,8 +18,8 @@
     <path d="M31 13.5L31 30.5L51 30.5L51 47.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
-    <g><path d="M38.81 14.89A1.5 1.5 0 0 1 38.68 16.84L33.77 21.75A1.5 1.5 0 0 1 31.66 21.75L26.75 16.84A1.5 1.5 0 0 1 26.61 16.68L25.08 14.64A1.5 1.5 0 0 1 25.22 12.68L30.12 7.78A1.5 1.5 0 0 1 32.24 7.78L37.14 12.68A1.5 1.5 0 0 1 37.28 12.84Z" fill="#7B7B7B"/><rect x="26.04" y="8.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 31 13.5)" fill="url(#grad_relationship_single_parent_family_mist)"/></g>
-    <g><path d="M18.81 48.89A1.5 1.5 0 0 1 18.68 50.84L13.77 55.75A1.5 1.5 0 0 1 11.66 55.75L6.75 50.84A1.5 1.5 0 0 1 6.61 50.68L5.08 48.64A1.5 1.5 0 0 1 5.22 46.68L10.12 41.78A1.5 1.5 0 0 1 12.24 41.78L17.14 46.68A1.5 1.5 0 0 1 17.28 46.84Z" fill="#474747"/><rect x="6.04" y="42.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 11 47.5)" fill="url(#grad_relationship_single_parent_family_orange)"/></g>
-    <g><path d="M58.81 48.89A1.5 1.5 0 0 1 58.68 50.84L53.77 55.75A1.5 1.5 0 0 1 51.66 55.75L46.75 50.84A1.5 1.5 0 0 1 46.61 50.68L45.08 48.64A1.5 1.5 0 0 1 45.22 46.68L50.12 41.78A1.5 1.5 0 0 1 52.24 41.78L57.14 46.68A1.5 1.5 0 0 1 57.28 46.84Z" fill="#474747"/><rect x="46.04" y="42.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 51 47.5)" fill="url(#grad_relationship_single_parent_family_orange)"/></g>
+    <g><path d="M38.81 14.89A1.5 1.5 0 0 1 38.68 16.84L33.77 21.75A1.5 1.5 0 0 1 31.66 21.75L26.75 16.84A1.5 1.5 0 0 1 26.61 16.68L25.08 14.64A1.5 1.5 0 0 1 25.22 12.68L30.12 7.78A1.5 1.5 0 0 1 32.24 7.78L37.14 12.68A1.5 1.5 0 0 1 37.28 12.84Z" fill="#7B7B7B"/><rect x="26.04" y="8.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 31 13.5)" fill="url(#grad_relationship_single_parent_family_mist_r45)"/></g>
+    <g><path d="M18.81 48.89A1.5 1.5 0 0 1 18.68 50.84L13.77 55.75A1.5 1.5 0 0 1 11.66 55.75L6.75 50.84A1.5 1.5 0 0 1 6.61 50.68L5.08 48.64A1.5 1.5 0 0 1 5.22 46.68L10.12 41.78A1.5 1.5 0 0 1 12.24 41.78L17.14 46.68A1.5 1.5 0 0 1 17.28 46.84Z" fill="#474747"/><rect x="6.04" y="42.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 11 47.5)" fill="url(#grad_relationship_single_parent_family_orange_r45)"/></g>
+    <g><path d="M58.81 48.89A1.5 1.5 0 0 1 58.68 50.84L53.77 55.75A1.5 1.5 0 0 1 51.66 55.75L46.75 50.84A1.5 1.5 0 0 1 46.61 50.68L45.08 48.64A1.5 1.5 0 0 1 45.22 46.68L50.12 41.78A1.5 1.5 0 0 1 52.24 41.78L57.14 46.68A1.5 1.5 0 0 1 57.28 46.84Z" fill="#474747"/><rect x="46.04" y="42.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 51 47.5)" fill="url(#grad_relationship_single_parent_family_orange_r45)"/></g>
   </g>
 </svg>

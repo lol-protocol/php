@@ -385,8 +385,8 @@ ic.solid(RPoly([(32, 33), (45, 54), (19, 54)], r=2.5), 'pink', d=3)
 
 ic = new('ui_music')
 ic.solid(Block(12, 10, 39, 39, r=9.5), 'violet', d=4)
-ic.mark(f'M18 24Q24.5 16 31 24T44 24', w=2.6)
-ic.mark(f'M18 35Q24.5 27 31 35T44 35', w=2.6, op=0.7)
+ic.mark('M18 24Q24.5 16 31 24T44 24', w=2.6)
+ic.mark('M18 35Q24.5 27 31 35T44 35', w=2.6, op=0.7)
 
 ic = new('ui_magazine')
 volume(ic, 'pink', 14, 8, 32, 43, d=4)

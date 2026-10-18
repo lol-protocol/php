@@ -31,9 +31,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      # Valida colores.csv, significados-idiomas.csv y nombres-completos.csv, y
-      # falla si la tabla de README.md, colores-por-idioma.md o alguna pagina de
-      # por-idioma/ no coincide con lo que generan esos CSV.
+      # Valida los siete CSV de datos y falla si algun archivo generado (la tabla
+      # de README.md, nombres-completos.csv, colores-por-idioma.md, por-idioma/,
+      # referencias.md o exportes/) no coincide con lo que generan; construye
+      # ademas una base SQLite en memoria y comprueba que los recuentos coincidan.
+      # Tarda unos 25 s porque recalcula el color CSS mas cercano de cada nombre.
       - name: Comprobar datos y tabla
         working-directory: Listado-colores
         run: python3 generar-tabla.py --comprobar

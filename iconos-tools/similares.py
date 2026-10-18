@@ -23,8 +23,13 @@ try:
 except ImportError:
     sys.exit('Faltan dependencias: pip install -r iconos-tools/requirements.txt')
 
-ROOT = Path(__file__).resolve().parent.parent
-SETS = ('iconos-genealogia', 'iconos-biblioteca')
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+sys.path.insert(0, str(HERE))
+
+from catalogo import PREFIXES  # noqa: E402
+
+SETS = tuple(PREFIXES)
 RENDER, THUMB = 96, 24
 
 # Pares que pueden quedar por debajo del mínimo a propósito: {frozenset((icono_a, icono_b)): motivo}.

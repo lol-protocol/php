@@ -5,7 +5,7 @@
       <stop offset="0" stop-color="#F18D5A"/>
       <stop offset="1" stop-color="#EA580C"/>
     </linearGradient>
-    <linearGradient id="grad_person_grandmother_mist" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_person_grandmother_mist_r45" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#DCE2EB"/>
       <stop offset="1" stop-color="#CBD5E1"/>
     </linearGradient>
@@ -23,7 +23,7 @@
   </g>
   <g class="solids">
     <g><path d="M25.55 14.96L26.98 16.87A7.04 7.04 0 0 0 38.24 8.43L36.81 6.52A7.04 7.04 0 0 0 25.55 14.96Z" fill="#883307"/><circle cx="31" cy="10.5" r="7.04" fill="url(#grad_person_grandmother_orange)"/></g>
-    <g><path d="M38.36 31.81A1.41 1.41 0 0 1 38.22 33.65L33.61 38.26A1.41 1.41 0 0 1 31.62 38.26L27 33.65A1.41 1.41 0 0 1 26.87 33.5L25.44 31.58A1.41 1.41 0 0 1 25.57 29.74L30.18 25.13A1.41 1.41 0 0 1 32.18 25.13L36.79 29.74A1.41 1.41 0 0 1 36.92 29.9Z" fill="#767C82"/><rect x="26.33" y="25.83" width="9.34" height="9.34" rx="1.41" transform="rotate(45 31 30.5)" fill="url(#grad_person_grandmother_mist)"/></g>
+    <g><path d="M38.36 31.81A1.41 1.41 0 0 1 38.22 33.65L33.61 38.26A1.41 1.41 0 0 1 31.62 38.26L27 33.65A1.41 1.41 0 0 1 26.87 33.5L25.44 31.58A1.41 1.41 0 0 1 25.57 29.74L30.18 25.13A1.41 1.41 0 0 1 32.18 25.13L36.79 29.74A1.41 1.41 0 0 1 36.92 29.9Z" fill="#767C82"/><rect x="26.33" y="25.83" width="9.34" height="9.34" rx="1.41" transform="rotate(45 31 30.5)" fill="url(#grad_person_grandmother_mist_r45)"/></g>
     <g><path d="M25.55 54.96L26.98 56.87A7.04 7.04 0 0 0 38.24 48.43L36.81 46.52A7.04 7.04 0 0 0 25.55 54.96Z" fill="#29313D"/><circle cx="31" cy="50.5" r="7.04" fill="url(#grad_person_grandmother_ink)"/></g>
   </g>
   <g class="marks">

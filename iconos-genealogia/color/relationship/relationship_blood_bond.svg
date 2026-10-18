@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_relationship_blood_bond_orange" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_relationship_blood_bond_orange_r45" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#F18D5A"/>
       <stop offset="1" stop-color="#EA580C"/>
     </linearGradient>
@@ -13,7 +13,7 @@
     <path d="M15 30L47 30" fill="none" stroke="#DC2626" stroke-linecap="round" stroke-linejoin="round" stroke-width="6.4"/>
   </g>
   <g class="solids">
-    <g><path d="M23.44 31.42A1.63 1.63 0 0 1 23.29 33.55L17.95 38.89A1.63 1.63 0 0 1 15.65 38.89L10.31 33.55A1.63 1.63 0 0 1 10.16 33.38L8.54 31.22A1.63 1.63 0 0 1 8.69 29.09L14.03 23.75A1.63 1.63 0 0 1 16.33 23.75L21.67 29.09A1.63 1.63 0 0 1 21.82 29.26Z" fill="#883307"/><rect x="9.6" y="24.6" width="10.8" height="10.8" rx="1.63" transform="rotate(45 15 30)" fill="url(#grad_relationship_blood_bond_orange)"/></g>
-    <g><path d="M55.44 31.42A1.63 1.63 0 0 1 55.29 33.55L49.95 38.89A1.63 1.63 0 0 1 47.65 38.89L42.31 33.55A1.63 1.63 0 0 1 42.16 33.38L40.54 31.22A1.63 1.63 0 0 1 40.69 29.09L46.03 23.75A1.63 1.63 0 0 1 48.33 23.75L53.67 29.09A1.63 1.63 0 0 1 53.82 29.26Z" fill="#883307"/><rect x="41.6" y="24.6" width="10.8" height="10.8" rx="1.63" transform="rotate(45 47 30)" fill="url(#grad_relationship_blood_bond_orange)"/></g>
+    <g><path d="M23.44 31.42A1.63 1.63 0 0 1 23.29 33.55L17.95 38.89A1.63 1.63 0 0 1 15.65 38.89L10.31 33.55A1.63 1.63 0 0 1 10.16 33.38L8.54 31.22A1.63 1.63 0 0 1 8.69 29.09L14.03 23.75A1.63 1.63 0 0 1 16.33 23.75L21.67 29.09A1.63 1.63 0 0 1 21.82 29.26Z" fill="#883307"/><rect x="9.6" y="24.6" width="10.8" height="10.8" rx="1.63" transform="rotate(45 15 30)" fill="url(#grad_relationship_blood_bond_orange_r45)"/></g>
+    <g><path d="M55.44 31.42A1.63 1.63 0 0 1 55.29 33.55L49.95 38.89A1.63 1.63 0 0 1 47.65 38.89L42.31 33.55A1.63 1.63 0 0 1 42.16 33.38L40.54 31.22A1.63 1.63 0 0 1 40.69 29.09L46.03 23.75A1.63 1.63 0 0 1 48.33 23.75L53.67 29.09A1.63 1.63 0 0 1 53.82 29.26Z" fill="#883307"/><rect x="41.6" y="24.6" width="10.8" height="10.8" rx="1.63" transform="rotate(45 47 30)" fill="url(#grad_relationship_blood_bond_orange_r45)"/></g>
   </g>
 </svg>

@@ -69,6 +69,7 @@ Los SVG son salida generada, no se editan a mano — se definen en
 - El efecto 2.5D es una extrusión hacia abajo y a la derecha con sombra
   proyectada; no es una proyección isométrica estricta.
 - A 24 px los pares masculino/femenino de `person_` son los más cercanos
-  entre sí (distancia de 0,9 a 1,3, frente a 0,8 de límite):
-  `person_great_grandson` y `person_great_granddaughter`,
-  `person_grandfather` y `person_grandmother`...
+  entre sí (los diez primeros, de 0,99 a 1,2, frente a 0,8 de límite):
+  `person_grandson` y `person_granddaughter`, `person_great_grandson` y
+  `person_great_granddaughter`, `person_grandfather` y `person_grandmother`...
+  `iconos-tools/similares.py` los lista.

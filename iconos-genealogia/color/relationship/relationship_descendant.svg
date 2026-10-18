@@ -5,7 +5,7 @@
       <stop offset="0" stop-color="#828B99"/>
       <stop offset="1" stop-color="#475569"/>
     </linearGradient>
-    <linearGradient id="grad_relationship_descendant_orange" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_relationship_descendant_orange_r45" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#F18D5A"/>
       <stop offset="1" stop-color="#EA580C"/>
     </linearGradient>
@@ -19,8 +19,8 @@
   </g>
   <g class="solids">
     <g><path d="M25.2 15.23L26.73 17.27A7.48 7.48 0 0 0 38.7 8.3L37.16 6.25A7.48 7.48 0 0 0 25.2 15.23Z" fill="#29313D"/><circle cx="31" cy="10.5" r="7.48" fill="url(#grad_relationship_descendant_ink)"/></g>
-    <g><path d="M38.81 31.89A1.5 1.5 0 0 1 38.68 33.84L33.77 38.75A1.5 1.5 0 0 1 31.66 38.75L26.75 33.84A1.5 1.5 0 0 1 26.61 33.68L25.08 31.64A1.5 1.5 0 0 1 25.22 29.68L30.12 24.78A1.5 1.5 0 0 1 32.24 24.78L37.14 29.68A1.5 1.5 0 0 1 37.28 29.84Z" fill="#883307"/><rect x="26.04" y="25.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 31 30.5)" fill="url(#grad_relationship_descendant_orange)"/></g>
-    <g><path d="M38.81 51.89A1.5 1.5 0 0 1 38.68 53.84L33.77 58.75A1.5 1.5 0 0 1 31.66 58.75L26.75 53.84A1.5 1.5 0 0 1 26.61 53.68L25.08 51.64A1.5 1.5 0 0 1 25.22 49.68L30.12 44.78A1.5 1.5 0 0 1 32.24 44.78L37.14 49.68A1.5 1.5 0 0 1 37.28 49.84Z" fill="#883307"/><rect x="26.04" y="45.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 31 50.5)" fill="url(#grad_relationship_descendant_orange)"/></g>
+    <g><path d="M38.81 31.89A1.5 1.5 0 0 1 38.68 33.84L33.77 38.75A1.5 1.5 0 0 1 31.66 38.75L26.75 33.84A1.5 1.5 0 0 1 26.61 33.68L25.08 31.64A1.5 1.5 0 0 1 25.22 29.68L30.12 24.78A1.5 1.5 0 0 1 32.24 24.78L37.14 29.68A1.5 1.5 0 0 1 37.28 29.84Z" fill="#883307"/><rect x="26.04" y="25.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 31 30.5)" fill="url(#grad_relationship_descendant_orange_r45)"/></g>
+    <g><path d="M38.81 51.89A1.5 1.5 0 0 1 38.68 53.84L33.77 58.75A1.5 1.5 0 0 1 31.66 58.75L26.75 53.84A1.5 1.5 0 0 1 26.61 53.68L25.08 51.64A1.5 1.5 0 0 1 25.22 49.68L30.12 44.78A1.5 1.5 0 0 1 32.24 44.78L37.14 49.68A1.5 1.5 0 0 1 37.28 49.84Z" fill="#883307"/><rect x="26.04" y="45.54" width="9.93" height="9.93" rx="1.5" transform="rotate(45 31 50.5)" fill="url(#grad_relationship_descendant_orange_r45)"/></g>
   </g>
   <g class="marks">
     <path d="M28.69 10.5a2.31 2.31 0 1 0 4.62 0a2.31 2.31 0 1 0 -4.62 0Z" fill="#FFFFFF"/>
