@@ -208,10 +208,11 @@ africanas). **No usa sanciones ni política**: eso lo cubre IO.
 
 Los umbrales están en `UMBRALES_NIVEL` de `generar_tabla.py`. Hoy hay 21 lenguas en el nivel 5, 26
 en el 4, 35 en el 3, 11 en el 2 y 70 en el 1. El porcentaje de texto web (Common Crawl) va al lado
-como contexto: no cambia el nivel. Antes los niveles venían de memoria; al medirlos cambió el IP
-local de 93 de los 199 países que ya estaban, y varias descripciones viejas resultaron falsas (el
-islandés, por ejemplo, tiene 1,2 millones de palabras anotadas, no «un treebank pequeño»). Por eso
-se quitaron de `comentarios_pos` las frases sobre recursos.
+como contexto: no cambia el nivel. Antes los niveles venían de memoria; entre la medición y el
+nuevo orden de lenguas (árabe y criollos, ver abajo) cambió el IP local de 93 de los 199 países que
+ya estaban. Varias descripciones viejas resultaron falsas (el islandés, por ejemplo, tiene 1,2
+millones de palabras anotadas, no «un treebank pequeño»), así que se quitaron de
+`comentarios_pos` las frases sobre recursos.
 
 Hay **dos versiones**, porque responden a preguntas distintas:
 
@@ -220,26 +221,22 @@ Hay **dos versiones**, porque responden a preguntas distintas:
   Casi todos los países listan inglés, francés, español o portugués, así que **181 de 208** tienen
   IP = 5 (y 16 con 4, 7 con 3, 1 con 2 y 3 con 1). Por eso casi no distingue entre países.
 - **IP local:** el nivel de la primera lengua listada, que es la lengua local. Dice si se puede
-  etiquetar el texto que el país escribe en su propia lengua. Se reparte mejor: 98 países con 5,
-  23 con 4, 31 con 3, 7 con 2 y 49 con 1.
+  etiquetar el texto que el país escribe en su propia lengua. Se reparte mejor: 107 países con 5,
+  23 con 4, 31 con 3, 7 con 2 y 40 con 1.
 
 **La prioridad y la exclusión POS usan IP local** (decisión tomada). **Prioridad POS** =
 IL × IP local. **Excluido POS** = IP local ≤ 1, es decir, la lengua local no tiene ninguna palabra
-anotada en esas fuentes. Con los niveles medidos quedan fuera **49 países y territorios** (antes,
+anotada en esas fuentes. Con los niveles medidos quedan fuera **40 países y territorios** (antes,
 con los niveles de memoria, 13): Burundi (kirundi), Bután (dzongkha), Camboya (jemer), Chad
-(árabe chadiano), Comoras (shikomor), Congo (lingala), Curazao (papiamento), Dominica (criollo
-dominiqués), Eritrea (tigriña), Fiyi (fiyiano), Gambia (mandinga), Groenlandia (groenlandés),
-Guinea (pular), Guinea Ecuatorial (fang), Guinea-Bisáu (criollo guineense), Islas Marshall
-(marshalés), Islas Salomón (pijin de las Salomón), Jamaica (criollo jamaiquino), Kiribati
-(gilbertés), Laos (lao), Lesoto (sesoto), Madagascar (malgache), Maldivas (dhivehi), Mauricio
-(criollo mauriciano), Micronesia (chuukés), Mongolia (mongol), Myanmar (birmano), Namibia
-(oshiwambo), Nauru (nauruano), Palaos (palauano), Papúa Nueva Guinea (tok pisin), República
-Centroafricana (sango), República Democrática del Congo (lingala), Reunión (criollo reunionés),
-Samoa (samoano), San Vicente y las Granadinas (criollo), Santa Lucía (criollo santaluceño),
-Seychelles (criollo seychellense), Sierra Leona (krio), Somalia (somalí), Sudán del Sur (árabe
-juba), Tayikistán (tayiko), Timor Oriental (tetun), Tonga (tongano), Turkmenistán (turcomano),
-Tuvalu (tuvaluano), Vanuatu (bislama), Yibuti (somalí) y Zambia (bemba). El umbral está en
-`UMBRAL_POS`.
+(árabe chadiano), Comoras (shikomor), Congo (lingala), Curazao (papiamento), Eritrea (tigriña),
+Fiyi (fiyiano), Gambia (mandinga), Groenlandia (groenlandés), Guinea (pular), Guinea Ecuatorial
+(fang), Islas Marshall (marshalés), Islas Salomón (pijin de las Salomón), Kiribati (gilbertés),
+Laos (lao), Lesoto (sesoto), Madagascar (malgache), Maldivas (dhivehi), Micronesia (chuukés),
+Mongolia (mongol), Myanmar (birmano), Namibia (oshiwambo), Nauru (nauruano), Palaos (palauano),
+Papúa Nueva Guinea (tok pisin), República Centroafricana (sango), República Democrática del
+Congo (lingala), Samoa (samoano), Somalia (somalí), Sudán del Sur (árabe juba), Tayikistán
+(tayiko), Timor Oriental (tetun), Tonga (tongano), Turkmenistán (turcomano), Tuvalu (tuvaluano),
+Vanuatu (bislama), Yibuti (somalí) y Zambia (bemba). El umbral está en `UMBRAL_POS`.
 
 `generar_tabla.py` se detiene si el nivel de una lengua no sale de sus palabras anotadas, si IP no
 es el máximo de las lenguas listadas, si IP local no es el nivel de la primera, si una lengua no
@@ -262,6 +259,12 @@ el dialecto, al revés que Argelia, Irak o Marruecos; se igualaron, y a Siria, q
 dialecto, se le añadió el árabe estándar. Con los niveles medidos, los dialectos casi no tienen
 palabras anotadas, así que sin este cambio esos siete países quedaban excluidos. Chad y Sudán del
 Sur, fuera de la Liga, conservan el árabe chadiano y el árabe juba como lengua local.
+
+**Criollos** (decidido): donde el texto escrito está sobre todo en la lengua oficial, esa va
+primero y el criollo después, con el mismo criterio que el árabe. Así se reordenaron Dominica,
+Guinea-Bisáu, Jamaica, Mauricio, Reunión, San Vicente y las Granadinas, Santa Lucía, Seychelles y
+Sierra Leona, que dejaron de estar excluidos. Haití y Curazao conservan el criollo primero (el
+criollo haitiano y el papiamento), porque son lenguas oficiales y se escriben.
 
 **Corea del Norte** tiene IP = 5: su lengua (coreano) tiene recursos abiertos. Su acceso
 restringido al texto del país es un problema de IO, no de IP, como dice la definición de arriba.
@@ -499,12 +502,7 @@ Léelo antes de usar la tabla para decidir.
 3. **Natalidad antes de 1800:** contrastar con el PRB las tasas por época, que se cargaron de
    memoria.
 4. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
-5. **Lengua local en países con criollo o lengua vernácula:** en Jamaica, Mauricio, Santa Lucía,
-   Seychelles, Dominica, San Vicente, Sierra Leona o Guinea-Bisáu la lengua local listada es un
-   criollo sin palabras anotadas, aunque el texto escrito está sobre todo en inglés, francés o
-   portugués. Por eso quedan excluidos del etiquetador. Decidir si se aplica el mismo criterio que
-   con el árabe (la lengua escrita primero).
-6. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
+5. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    54. Camboya y Vietnam siguen dentro, por decisión tomada.
-7. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
+6. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
    listó, aunque se use (el inglés en Maldivas, por ejemplo). Afecta a IP, no a IP local.
