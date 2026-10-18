@@ -25,6 +25,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/barroco-calderon-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/barroco-calderon-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 150,
       "franja": [
         16,
@@ -42,6 +45,7 @@
         "obra": "Hombres necios",
         "idioma": "es"
       },
+      "sha256_2x": "a34b18da9b43c5f4cb00c805d83278f3d2bb800fe8519737ee472c32b66b4af0",
       "sha256": "7bc097b26fe6e2d99c03822a2656642271375936825afdafb1c33e1d4c2d5388"
     },
     {
@@ -420,6 +424,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/barroco-cervantes-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/barroco-cervantes-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 421,
       "franja": [
         16,
@@ -432,6 +439,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "992ad955d3144ccaa7a0ea8f39e3adfc2e7f5ba693873d15bc19efd440fe4682",
       "sha256": "a74046c8ee4574e77b296506bdae98123990aad1c0856f334c0ea8ffde579644"
     },
     {
@@ -810,6 +818,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/barroco-donne-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/barroco-donne-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 130,
       "franja": [
         16,
@@ -822,6 +833,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "d73bcc258cc11c20a25e1784e204f10007cd1c492f263367fd8b9a5a9242a286",
       "sha256": "b4419f69da8a18361b2e1c68523d3b1b8e0a1c425e14e622f23c1778608fd54f"
     },
     {
@@ -1210,6 +1222,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/barroco-gongora-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/barroco-gongora-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 101,
       "franja": [
         16,
@@ -1227,6 +1242,7 @@
         "obra": "Paradise Lost",
         "idioma": "en"
       },
+      "sha256_2x": "14ee05f1c091bbf62c1d8eae1a3cf14e457f73f915c6398c34a1273dd5a5dbf4",
       "sha256": "f58b07a177a1fd5596c938eeaab8b853ad34da84868235827853e414b00e9907"
     },
     {
@@ -1605,6 +1621,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/barroco-gracian-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/barroco-gracian-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 478,
       "franja": [
         16,
@@ -1617,6 +1636,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "dac0abf9d61bef370a8e5ddb03ddf7721bab224be8740971804c732a2310c695",
       "sha256": "92af4067902db139769bbd715bcbaa0860d6703b9b22061559e4ee4dfa0f9fc9"
     },
     {
@@ -2000,6 +2020,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/barroco-lope-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/barroco-lope-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 85,
       "franja": [
         16,
@@ -2017,6 +2040,7 @@
         "obra": "Mientras por competir con tu cabello",
         "idioma": "es"
       },
+      "sha256_2x": "43bdae94e78698844652d70570427cf9606d13880954ff444c2005bf5a5e4887",
       "sha256": "03732ae554c66071b72bb9e5dd18488b2cfba593efcc7206303d3072b3b7099b"
     },
     {
@@ -2385,6 +2409,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/barroco-milton-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/barroco-milton-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 124,
       "franja": [
         16,
@@ -2397,6 +2424,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "1248975a060309b8cec020af8c66c2aa9f75d767c9d665ccd6c512d80d288354",
       "sha256": "6454dfde77065bffe59d9879bf1d9301cf8dc5d06158ee3343c0ee06e9a6f74d"
     },
     {
@@ -2769,6 +2797,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/barroco-quevedo-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/barroco-quevedo-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 492,
       "franja": [
         16,
@@ -2786,6 +2817,7 @@
         "obra": "Mientras por competir con tu cabello",
         "idioma": "es"
       },
+      "sha256_2x": "23a8e80a1a807dbef119b91845f493cb5f79ea904414f52e954aac9e24e670b0",
       "sha256": "852c014d4861a12b91a6e71e634beee2229854b05f829ba3525de9db76d8e4f6"
     },
     {
@@ -3169,6 +3201,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/barroco-sor-juana-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/barroco-sor-juana-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 90,
       "franja": [
         16,
@@ -3186,6 +3221,7 @@
         "obra": "Don Quijote",
         "idioma": "es"
       },
+      "sha256_2x": "ab3c11a0f053f4dcdee267c6440c8e8a09e1e8882b7a8fd8ba5083c8d19221d5",
       "sha256": "767c2f40e539eece0e8a42c1d14f9c77397ea8d4260be620604dff1060667880"
     },
     {
@@ -3574,6 +3610,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/barroco-tirso-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/barroco-tirso-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 355,
       "franja": [
         16,
@@ -3586,6 +3625,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "0b21117b68e50041dfd37ac958d62f6a4c32e29fa40b9e884f6aa41c2503ba61",
       "sha256": "d3ab635892d13ec6dfebe328fcda3704da3a52cb56455d3bc3ebbb8ed4ab78ca"
     },
     {
@@ -3974,6 +4014,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/clasicismo-corneille-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/clasicismo-corneille-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 91,
       "franja": [
         16,
@@ -3991,6 +4034,7 @@
         "obra": "Odas",
         "idioma": "la"
       },
+      "sha256_2x": "0734c7b419a8a6ce9442a34a4331b7be05be5c6119ddaa38a0c00547eec4c0ef",
       "sha256": "a9fcfd7f31a773b15d59d19316cc8014e2d616bde787fa7f7cfe5843f5a9ae62"
     },
     {
@@ -4369,6 +4413,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/clasicismo-garcilaso-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/clasicismo-garcilaso-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 117,
       "franja": [
         16,
@@ -4381,6 +4428,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "10c7cb48a6c1809e82aba6fe53839cf20a36fce4da3c96a9edde0857ae797bc5",
       "sha256": "712328b31a5119b654df363436b0750d1207b1e0f189620db281b0f855155844"
     },
     {
@@ -4764,6 +4812,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/clasicismo-goethe-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/clasicismo-goethe-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 86,
       "franja": [
         16,
@@ -4781,6 +4832,7 @@
         "obra": "Phèdre",
         "idioma": "fr"
       },
+      "sha256_2x": "74f5d64244bdd5164c28c3cde6f15f2f6148cdc8c5547d2a4de10c867e56b68c",
       "sha256": "8352a0bfd99810bd6589a0eaf882cab673a11d448fff268bf0907223781efde3"
     },
     {
@@ -5159,6 +5211,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/clasicismo-homero-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/clasicismo-homero-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 77,
       "franja": [
         16,
@@ -5176,6 +5231,7 @@
         "obra": "Odas",
         "idioma": "la"
       },
+      "sha256_2x": "a05c39c6e092411ee3fa454cf693003114965142d10000118b54314ac39ced4a",
       "sha256": "9fc88cf1969699f9f357c069c771922531a783e55a7ed5b08c62da88ee0abcdf"
     },
     {
@@ -5559,6 +5615,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/clasicismo-horacio-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/clasicismo-horacio-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 211,
       "franja": [
         16,
@@ -5576,6 +5635,7 @@
         "obra": "L'Avare",
         "idioma": "fr"
       },
+      "sha256_2x": "794b7447f70cb8b38f5c05198e773bcdd6c38346c40aa7163998aa9f9d576938",
       "sha256": "6a4f8e7c4afff6e58d662677fde8d74e69019b1bfa9cb642c903b6f608094603"
     },
     {
@@ -5949,6 +6009,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/clasicismo-moliere-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/clasicismo-moliere-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 124,
       "franja": [
         16,
@@ -5966,6 +6029,7 @@
         "obra": "Bucólicas",
         "idioma": "la"
       },
+      "sha256_2x": "3bd5af79a8ee3d2c19762d1ed65485433c8c0904ad6a4dc09f946eef689dee71",
       "sha256": "9c72350c0d620a47987b927ad6b0336d0599a1610ad6a17f3a849315b5788f1c"
     },
     {
@@ -6334,6 +6398,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/clasicismo-ovidio-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/clasicismo-ovidio-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 446,
       "franja": [
         16,
@@ -6346,6 +6413,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "bb3c0332404b4f108aebcf69fdef5df76559831eecbade6ccdfcc95cceeb1d61",
       "sha256": "7b10fd071f993d98941d1d4bd4e319a3b6a850a7b54d4f2acd4883d8073d22c7"
     },
     {
@@ -6734,6 +6802,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/clasicismo-racine-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/clasicismo-racine-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 670,
       "franja": [
         16,
@@ -6746,6 +6817,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "684b968207fcf7ed5051278b9cd0dba11b352b06c06cb5c6189c4d2bf300ca70",
       "sha256": "951bab1710bf8db678d51d70116641133fe5de3bfba06de6488881f6d053ef38"
     },
     {
@@ -7129,6 +7201,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/clasicismo-sofocles-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/clasicismo-sofocles-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 286,
       "franja": [
         16,
@@ -7141,6 +7216,7 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": null,
+      "sha256_2x": "44c74c5159d1f9c4175ff16bf6e3b9173d55c6383e69ed3de69e53a8297eb56f",
       "sha256": "c9e74110144bc9cc499ba11abb157e4fa88e612525a7ce0d0bd6b9253b136fea"
     },
     {
@@ -7524,6 +7600,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/clasicismo-virgilio-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/clasicismo-virgilio-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 618,
       "franja": [
         16,
@@ -7536,6 +7615,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "ecd012fd961f2ecda15c2e5845b0b17f2a4ad1eeab009a555d34e94b0110ca0d",
       "sha256": "4ce3c2759912744d5bf237ba21d9ad952b8d6d6ca7e935a485a64bf1ecfc6db8"
     },
     {
@@ -7919,6 +7999,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/gotico-beckford-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/gotico-beckford-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 150,
       "franja": [
         16,
@@ -7936,6 +8019,7 @@
         "obra": "Carmilla",
         "idioma": "en"
       },
+      "sha256_2x": "c4d8f3b7893b334ed627ee7158c9f7ca258253d777326bd192e6dcd9f29b640b",
       "sha256": "aee82d07b2104179aa4fac42e8e0b07359c183d6766f2031ea92d094f7c10d49"
     },
     {
@@ -8309,6 +8393,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/gotico-bronte-emily-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/gotico-bronte-emily-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 393,
       "franja": [
         16,
@@ -8326,6 +8413,7 @@
         "obra": "Frankenstein",
         "idioma": "en"
       },
+      "sha256_2x": "bc1a0de4fdc40f527df0bebbc80ff9d9b117cee998084f7ace7b30252f2b982d",
       "sha256": "f6d831c08dc1f31b391a1a75ffbe8f11256f3e7ead9c377c634486309b1adae0"
     },
     {
@@ -8712,6 +8800,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/gotico-le-fanu-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/gotico-le-fanu-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 213,
       "franja": [
         16,
@@ -8724,6 +8815,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "81132146b7fa54344e112b9771673e8ef520f1f4a111fa4d56c383744fe7fc27",
       "sha256": "86b4687c7593df5be04074f0ac6f11d4a025f2ef3f8d5cb019f643eafcf6be08"
     },
     {
@@ -9102,6 +9194,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/gotico-lewis-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/gotico-lewis-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 388,
       "franja": [
         16,
@@ -9119,6 +9214,7 @@
         "obra": "Carmilla",
         "idioma": "en"
       },
+      "sha256_2x": "e3fbdc3de4659eef32db96d779db4099ea9d17fd9f6f5854132814fe9d73a58b",
       "sha256": "f5e42bdd7ad3a5c6688a9487d947d11f66bf076dc33417a50c53bb98ecf1f359"
     },
     {
@@ -9496,6 +9592,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/gotico-maturin-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/gotico-maturin-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 235,
       "franja": [
         16,
@@ -9508,6 +9607,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "f3dbdacc02704ff2492c1c5f5aad07aee5319f1d0d82d302f1b12afaa1981649",
       "sha256": "323209d038ae532fcb8459171d4c581192768c7b4e6d27763852c486f5c84911"
     },
     {
@@ -9886,6 +9986,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/gotico-radcliffe-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/gotico-radcliffe-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 534,
       "franja": [
         16,
@@ -9898,6 +10001,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "feda600d5b5eea56332115aa173131992380bf2ac283fc70bcc47fb247154318",
       "sha256": "da56a7477bb3e001e3b101440c897a137b2043562395bc3ee742de3b829593ba"
     },
     {
@@ -10275,6 +10379,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/gotico-shelley-mary-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/gotico-shelley-mary-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 46,
       "franja": [
         16,
@@ -10287,6 +10394,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "b5bdffaa18fd2d5efeb5cc0fd929071bcefa34106f5a49dfc91ad209ee65e36e",
       "sha256": "282219d5189e784de8e900ad5693d4daf98861aead16feb225f408075da6b047"
     },
     {
@@ -10674,6 +10782,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/gotico-stevenson-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/gotico-stevenson-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 818,
       "franja": [
         16,
@@ -10686,6 +10797,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "deb004e70ee18f99b0efcf81d8456f849be5e579792befe248808a9bf3e521a4",
       "sha256": "aef34f9bf5c9df3503dc44e1298931b5cf1e978b7f724fc3d0e753f38487f8b8"
     },
     {
@@ -11064,6 +11176,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/gotico-stoker-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/gotico-stoker-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 298,
       "franja": [
         16,
@@ -11076,6 +11191,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "10878723cb375c30689211c4497b5215fb9647fb4553b7b1de95002c47b0d6e4",
       "sha256": "4470b3b46c168ac2878023976f524d5bf78316331b3d6571c44894b92a2df5fe"
     },
     {
@@ -11459,6 +11575,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/gotico-walpole-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/gotico-walpole-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 518,
       "franja": [
         16,
@@ -11471,6 +11590,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "390e8a380e11182322b08eb207dcdfa54235abd17efb330d875fdbaf155b93b2",
       "sha256": "3f7eadbc87b577f074d1901156000faca8de0a1102d849a40d179823b3b29202"
     },
     {
@@ -11854,6 +11974,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/modernismo-agustini-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/modernismo-agustini-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 217,
       "franja": [
         16,
@@ -11871,6 +11994,7 @@
         "obra": "Versos sencillos",
         "idioma": "es"
       },
+      "sha256_2x": "337edf2bf611abe941ba29daa6b10158941117ece96a9604b79d789828022719",
       "sha256": "b13d9a55e7a6d1dfcdf6abae64a859318e64a3e87cc97a9618a8a8f732cea518"
     },
     {
@@ -12253,6 +12377,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/modernismo-casal-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/modernismo-casal-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 393,
       "franja": [
         16,
@@ -12270,6 +12397,7 @@
         "obra": "Sonatina",
         "idioma": "es"
       },
+      "sha256_2x": "1d604150a044390ce909fbe38d2c60be5a80314ff098f909f8d5785e44c7cce6",
       "sha256": "f1a718300324c395816618879d8d1c173325e831809c36213eb16df5663f9262"
     },
     {
@@ -12653,6 +12781,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/modernismo-dario-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/modernismo-dario-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 307,
       "franja": [
         16,
@@ -12670,6 +12801,7 @@
         "obra": "Versos sencillos",
         "idioma": "es"
       },
+      "sha256_2x": "8e7f4dcd43387cf77e34a63f57b1f656efb2b45e28e1cd58d16f70f332de6e23",
       "sha256": "e9b0f33a8a02ff3257e192bf91c4d48bf3b51b2f55d175df55f1d4f6dc5e0e2f"
     },
     {
@@ -13063,6 +13195,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/modernismo-gutierrez-najera-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/modernismo-gutierrez-najera-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 335,
       "franja": [
         16,
@@ -13080,6 +13215,7 @@
         "obra": "Versos sencillos",
         "idioma": "es"
       },
+      "sha256_2x": "649649242f1748dba6c186af5baa99af4239bc8f95c2d04d46db2cfff2e98d54",
       "sha256": "c0cff4515d245069c9dd8a777f4776036fbb722c7427dcb152014f42eb6502e8"
     },
     {
@@ -13467,6 +13603,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/modernismo-herrera-reissig-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/modernismo-herrera-reissig-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 311,
       "franja": [
         16,
@@ -13479,6 +13618,7 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": null,
+      "sha256_2x": "003a4edd204d822ee582523aa365876298ae87d4c1ab554249c41dc6ab0f4688",
       "sha256": "78a907e0067e504b16c28277f7d2b47594727ec6d6337347c87acab3f46476a4"
     },
     {
@@ -13851,6 +13991,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/modernismo-lugones-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/modernismo-lugones-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 837,
       "franja": [
         16,
@@ -13868,6 +14011,7 @@
         "obra": "Nocturno",
         "idioma": "es"
       },
+      "sha256_2x": "9932a3fd1722a66bc7d6ace74ef512b2c10245af232b1aa779c0f5680d44d601",
       "sha256": "13708f803b93c0f62fcfcfdd3c8e57bcf152782a81f2a468673d8fa06d4a65e4"
     },
     {
@@ -14241,6 +14385,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/modernismo-marti-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/modernismo-marti-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 206,
       "franja": [
         16,
@@ -14253,6 +14400,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "48d5c9f954526faf5aa1f2db35e629725643dce227238ed93d8119c175712e06",
       "sha256": "66c7a467f972d4c9772ba3bcd1e8e977f4366e97853c14d77c95dc0c61aace26"
     },
     {
@@ -14641,6 +14789,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/modernismo-nervo-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/modernismo-nervo-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "franja": [
         16,
         440,
@@ -14652,6 +14803,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "f9f63a27d0c7915e3424ffac9c35c4ce9e6da74c1994942896856f22747fd73b",
       "sha256": "7fd23f1c963a63b55e2a57b2add6c761c42270c900faf5547278c35e155eaee6"
     },
     {
@@ -15045,6 +15197,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/modernismo-silva-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/modernismo-silva-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "franja": [
         16,
         440,
@@ -15056,6 +15211,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "87061d03dde93d83d75a9ccb4b2555b05858b049b104a522c1ca48aeb1d30a31",
       "sha256": "15ebfd220e7e5e01d6c4aaeb429c9ec10f6e32ed371313423efd2abb491f02d6"
     },
     {
@@ -15439,6 +15595,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/modernismo-valle-inclan-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/modernismo-valle-inclan-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 390,
       "franja": [
         16,
@@ -15451,6 +15610,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "e54724494a483e6ac8b610b6566c78bf64c95498b74f23f16811f097c257d88e",
       "sha256": "ea3cf722b426fe752a73712dc859c7f1933971097ac1af79fc17c666752ed072"
     },
     {
@@ -15828,6 +15988,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-azevedo-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/naturalismo-azevedo-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 690,
       "franja": [
         16,
@@ -15840,6 +16003,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "2592f9c79978c508d08cb59f5826720b34cce05b087f56a0121ab09f74b7d405",
       "sha256": "e5f6c6da70e2b7600b718b3f299d1d3725a49e2c0c0098dd8d0d204e8d5b09ef"
     },
     {
@@ -16213,6 +16377,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-blasco-ibanez-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/naturalismo-blasco-ibanez-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 755,
       "franja": [
         16,
@@ -16230,6 +16397,7 @@
         "obra": "Oliver Twist",
         "idioma": "en"
       },
+      "sha256_2x": "8ffc609f49fd6955df09f00df9f278e706e10a6adaa08b8f65c001b700867d03",
       "sha256": "98e58ccdfb5207a86433115bf1f817bc949f5eea5162778861e4bf5fbc68f399"
     },
     {
@@ -16618,6 +16786,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-cambaceres-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/naturalismo-cambaceres-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 350,
       "franja": [
         16,
@@ -16630,6 +16801,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "1c3260e2701d31a32ca9744b69cf94448664547971da11e40a78aa80a8d8143e",
       "sha256": "110bbc13dc9694745fe5986587b3427b19bae71c2963840ab61a120bd1772160"
     },
     {
@@ -17013,6 +17185,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-dreiser-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/naturalismo-dreiser-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 862,
       "franja": [
         16,
@@ -17030,6 +17205,7 @@
         "obra": "A Tale of Two Cities",
         "idioma": "en"
       },
+      "sha256_2x": "a8928d9aaecacac399a6e6983587546199d13b8cfe00e1a94e0d05ecd50b05b4",
       "sha256": "f524c09d8fcbd3414c7fa6635b3a3ac8dd59c193e9f5d53344c80eb99fe6b05e"
     },
     {
@@ -17413,6 +17589,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-gamboa-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/naturalismo-gamboa-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 126,
       "franja": [
         16,
@@ -17430,6 +17609,7 @@
         "obra": "Oliver Twist",
         "idioma": "en"
       },
+      "sha256_2x": "476101c3de43d3d0efdcb97f044e8dbb515653b94251783cafe19efa5eab2cb0",
       "sha256": "1493376c3803ad0e4d4bf5880d404b26e7bc34f06e728bcc2594f701a071c925"
     },
     {
@@ -17808,6 +17988,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-huysmans-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/naturalismo-huysmans-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 435,
       "franja": [
         16,
@@ -17820,6 +18003,7 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": null,
+      "sha256_2x": "4068f746ed6981078b4a518c538676f1626f1c3adb7e397df8e7359873a118bf",
       "sha256": "87a9894f4270418bd002ab851ef69a323d5a14e1f5d9633a6c3d5a5553b5bd17"
     },
     {
@@ -18208,6 +18392,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-maupassant-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/naturalismo-maupassant-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 415,
       "franja": [
         16,
@@ -18225,6 +18412,7 @@
         "obra": "Lettre au président de la République",
         "idioma": "fr"
       },
+      "sha256_2x": "b3d66ead3d01baea514b719072139e75659fbd636c0b9c79a347f98c3f3a2a85",
       "sha256": "571f5e1d47aa88a0933270fc1be6193fba8d4de54393cbd60d3c774ab259204a"
     },
     {
@@ -18603,6 +18791,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-norris-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/naturalismo-norris-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 283,
       "franja": [
         16,
@@ -18615,6 +18806,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "56cb04f7a77ce0c97e8191ac9d2f5e9636482c92d77ac0ae4a55e3c96923738d",
       "sha256": "cb9be0bed49bfeccd07b9f410faaca4071a73bf6de20d4ce3b551a55aa17b20b"
     },
     {
@@ -19003,6 +19195,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-pardo-bazan-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/naturalismo-pardo-bazan-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 688,
       "franja": [
         16,
@@ -19020,6 +19215,7 @@
         "obra": "Lettre au président de la République",
         "idioma": "fr"
       },
+      "sha256_2x": "4fc5466708365dc7e7a1b598320d493b8576c3eba49c0b8868d1de95e3cf54a7",
       "sha256": "8810a3d55d396d1029f05275c7e96b89e35fb7a560eddbd065d82a357bb757d8"
     },
     {
@@ -19398,6 +19594,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/naturalismo-zola-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/naturalismo-zola-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 410,
       "franja": [
         16,
@@ -19415,6 +19614,7 @@
         "obra": "Germinal",
         "idioma": "fr"
       },
+      "sha256_2x": "85148d87afbfc1e64740c3cf17cc8df602fb4989617a874d4e9c82df6da60a1a",
       "sha256": "7297ef94d8535855fbb6f139deb31886ccf6452ec7af287b3717c17b284381f2"
     },
     {
@@ -19793,6 +19993,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-balzac-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-balzac-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 109,
       "franja": [
         16,
@@ -19805,6 +20008,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "797e108a2f84b5e14e225eef8203a42edbc5d4d97adcf8652082142d13edf6b8",
       "sha256": "8a4f09227e7f6f3e603150e8301dcf411391522baa5d15d6491739dbffa44dec"
     },
     {
@@ -20183,6 +20387,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-blest-gana-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-blest-gana-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 551,
       "franja": [
         16,
@@ -20200,6 +20407,7 @@
         "obra": "A Tale of Two Cities",
         "idioma": "en"
       },
+      "sha256_2x": "d2952a06c4589212b686242c25dc1a37415b545254131c9d1706c42be4fae9a4",
       "sha256": "1409b3acf1a395afd509fcd47af7b69aceda4707d0c74888ee4cbf37658a1cef"
     },
     {
@@ -20563,6 +20771,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-clarin-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-clarin-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 280,
       "franja": [
         16,
@@ -20575,6 +20786,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "8ed6dc8ff3bed16cd7428a8984c2f9639ae777912bae2c03c87c9a321ca2b60c",
       "sha256": "5c6c6d1cb5f03de17f4bc2792e29d67f595e5e848dd14a48de2ed79c1ea05bf4"
     },
     {
@@ -20948,6 +21160,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-dickens-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-dickens-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 133,
       "franja": [
         16,
@@ -20965,6 +21180,7 @@
         "obra": "Oliver Twist",
         "idioma": "en"
       },
+      "sha256_2x": "6ba72099e6a6b9fdb5d0d73a8ff2b544d35a0eff26853e16f87a188872a913aa",
       "sha256": "590ab74757e718dda7e4a825825b6cdcdc94a540b714b022150a53332a22b749"
     },
     {
@@ -21348,6 +21564,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-dostoievski-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-dostoievski-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 133,
       "franja": [
         16,
@@ -21365,6 +21584,7 @@
         "obra": "Correspondance",
         "idioma": "fr"
       },
+      "sha256_2x": "f7ec6877c3057360fc86f606caeece6473c9ac762741f18ba889a3cd8679cb52",
       "sha256": "d768f28c3c9404935afbca4e62d12084380f7fb0fcf620f9501a8b972e046709"
     },
     {
@@ -21743,6 +21963,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-eca-de-queiroz-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-eca-de-queiroz-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 531,
       "franja": [
         16,
@@ -21760,6 +21983,7 @@
         "obra": "Correspondance",
         "idioma": "fr"
       },
+      "sha256_2x": "80576245c537174fd30c32b46ecdde9dd27e39d6d0a82677c0f4a1962dc37ba7",
       "sha256": "409fb8941a71932a2c4e609ae64e0e36b20afd62f25f2e0c63bc59b99c26e463"
     },
     {
@@ -22148,6 +22372,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-eliot-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-eliot-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 417,
       "franja": [
         16,
@@ -22165,6 +22392,7 @@
         "obra": "Correspondance",
         "idioma": "fr"
       },
+      "sha256_2x": "6b2a3cd2e667d940cf449c2c8d67f59ae658ddbbf5e39606515c2479bde8e2a2",
       "sha256": "c65f7e17990cb24bdf024744767d0d94d71ee103251a6bc504de9a59ce02f99c"
     },
     {
@@ -22538,6 +22766,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-flaubert-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-flaubert-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 526,
       "franja": [
         16,
@@ -22555,6 +22786,7 @@
         "obra": "Great Expectations",
         "idioma": "en"
       },
+      "sha256_2x": "21e23a088e70063d2e4235acc7f2bd2ccc7912b9df5b186471d0f3ffbcbda4ca",
       "sha256": "c4927d5a28e59cd0d9c43e5ed02c67a0dc2e5235fe3177c455469eacae19ba9d"
     },
     {
@@ -22938,6 +23170,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-galdos-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-galdos-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 728,
       "franja": [
         16,
@@ -22950,6 +23185,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "897fe56c973671fdf8b00e18363b2cfcbbe4c68ca074619682a3bbe3b9171060",
       "sha256": "ec0179b31fef0bd5f29b77baa71c35e52f6004297774a47bd5591b8b60773ff0"
     },
     {
@@ -23338,6 +23574,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-allende-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-magico-allende-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 472,
       "franja": [
         16,
@@ -23350,6 +23589,7 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": null,
+      "sha256_2x": "d6ac323a3431fafb8becf87ff3f529d69d5cbb1c379c927020857773477d17c3",
       "sha256": "426e6104c5c1c4ad84ba65754fc3ea46dcfdbf981446ecc49a675951214ec6ad"
     },
     {
@@ -23707,6 +23947,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-amado-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-magico-amado-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 474,
       "franja": [
         16,
@@ -23719,6 +23962,7 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": null,
+      "sha256_2x": "8d52bb6d5746170859d42e38d8d39e7aa3045bc0f22645ecc8bca3abbbc3a6ee",
       "sha256": "3c2cf0072d472d7650f64fb7aefb8e44b51e002a468398af314ac5f3233ed5b6"
     },
     {
@@ -24076,6 +24320,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-asturias-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-magico-asturias-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 294,
       "franja": [
         16,
@@ -24088,6 +24335,7 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": null,
+      "sha256_2x": "cc1ba6dc0b1021a9e608fd781bf663c96c2e713615d8f30ec34dcb1653142e28",
       "sha256": "8a5bbddfb4d60dd7ea5d79a07279e794214277394e8bb65b7796c8929c243ed8"
     },
     {
@@ -24445,6 +24693,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-belli-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-magico-belli-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 265,
       "franja": [
         16,
@@ -24457,6 +24708,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "0a118a415bccb0cc1fa8612727e7c9dd86d104c673b86a016316ebb64292fde7",
       "sha256": "5b9883eabbad5fa42609c68c1c1988e9021b056cdca419d43d07eed7ceaa19a8"
     },
     {
@@ -24814,6 +25066,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-carpentier-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-magico-carpentier-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 416,
       "franja": [
         16,
@@ -24826,6 +25081,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "c6c6105da767d337d99c7e0a1961e6eb3da06c4e60e660b4da9dacaf35b8f174",
       "sha256": "00515d6100434cd98189b05993ed8d9b198580ad10552617e98241631070b1f5"
     },
     {
@@ -25184,6 +25440,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-esquivel-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-magico-esquivel-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 125,
       "franja": [
         16,
@@ -25196,6 +25455,7 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": null,
+      "sha256_2x": "7ab7d502d6a5ffcd80e2b12ca4e23d985624c9cd3ee67737819ef1f61f252487",
       "sha256": "5849f8a4cfbcbd59f372fd5a8ce832b44eaf5253d42fd0192174463eb14fd46c"
     },
     {
@@ -25554,6 +25814,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-garcia-marquez-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-magico-garcia-marquez-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 698,
       "franja": [
         16,
@@ -25566,6 +25829,7 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": null,
+      "sha256_2x": "a5d70a4924557f17b55b9b3bcb4d1d8d0e7e4acf14687f26d3af783778d02725",
       "sha256": "f4f54a29f31c501e994108a653b478091be94b729323387a72222258fcab4af6"
     },
     {
@@ -25924,6 +26188,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-garro-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-magico-garro-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 511,
       "franja": [
         16,
@@ -25936,6 +26203,7 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": null,
+      "sha256_2x": "c6d93fec5c00e12ec0105268c8d6b8e699fc07e73d0abbc7f1b8cfccbd6702ca",
       "sha256": "d1e61c7d090878a14210c0a390239155ea402e37409ecdaa163ebceb2591505a"
     },
     {
@@ -26293,6 +26561,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-rulfo-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-magico-rulfo-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 704,
       "franja": [
         16,
@@ -26305,6 +26576,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "22996fcf1c169749614f51c6095891b8345177b7ff402a28b3ca73a3b949cad1",
       "sha256": "e487dbaa7bb196d7d8e7b47faa08267248fb0677db2dea021255d6a238187397"
     },
     {
@@ -26663,6 +26935,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-magico-uslar-pietri-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-magico-uslar-pietri-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 85,
       "franja": [
         16,
@@ -26675,6 +26950,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "d57876cafa009317cc08826b0dcfd726569f3f453bc51d32b72ef1b70b35704a",
       "sha256": "8e354207098311f83b63bb42bd4a5287010f116c77c23bb70ab6a9ae03ed9206"
     },
     {
@@ -27033,6 +27309,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/realismo-tolstoi-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/realismo-tolstoi-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 58,
       "franja": [
         16,
@@ -27050,6 +27329,7 @@
         "obra": "Le Père Goriot",
         "idioma": "fr"
       },
+      "sha256_2x": "1444eba9dec61a4b4b021b1ba7e41937bef564ca917bf474f6be9a6ed41cbe0a",
       "sha256": "ad32e09d42d787da98d74ce0672b8441b92da3d944769c9e58918be08f864cd2"
     },
     {
@@ -27438,6 +27718,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/romanticismo-becquer-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/romanticismo-becquer-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 67,
       "franja": [
         16,
@@ -27450,6 +27733,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "13444bf2146d04200866ac4e6d42de77b28be6d33861ec693976a745c2253b2d",
       "sha256": "b5cdea25834604976c070721f1b76817cc6d7894797fa449be67271e9f161b0f"
     },
     {
@@ -27832,6 +28116,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/romanticismo-byron-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/romanticismo-byron-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 134,
       "franja": [
         16,
@@ -27849,6 +28136,7 @@
         "obra": "Rima XXI",
         "idioma": "es"
       },
+      "sha256_2x": "a0267b39cac0aea87c5a909851270df4d3b87e0dc9b2c13b52691d818bafb172",
       "sha256": "e5f6fbc549af746a82b5bd47398c1331b432cee2d67b582b3c9a59e56aaf1ea2"
     },
     {
@@ -28231,6 +28519,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/romanticismo-espronceda-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/romanticismo-espronceda-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 130,
       "franja": [
         16,
@@ -28248,6 +28539,7 @@
         "obra": "Ode to the West Wind",
         "idioma": "en"
       },
+      "sha256_2x": "1423996bc0dfca916798c5449f319c6b17890b8090aad35eaa5facbcb463074d",
       "sha256": "fbb68a14b12fe66f7d59a8476d11d1540bd4a0c93a3c733bf81f522c43593ee3"
     },
     {
@@ -28629,6 +28921,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/romanticismo-hugo-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/romanticismo-hugo-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 413,
       "franja": [
         16,
@@ -28641,6 +28936,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "0e9316fd96e25583166b4afe6e5b7ba2746beaa88febf1410a5e6c8e9726c3ae",
       "sha256": "2d0b2c52a053621976a373b5c4f51be533b0cef29a229a46d92d52e98ad7ed7c"
     },
     {
@@ -29019,6 +29315,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/romanticismo-keats-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/romanticismo-keats-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "franja": [
         16,
         440,
@@ -29035,6 +29334,7 @@
         "obra": "Canción del pirata",
         "idioma": "es"
       },
+      "sha256_2x": "a7f475fd51abdf250178f8e243fa2741ba46812010233d7d24bb022270e7b5eb",
       "sha256": "17ef4f0650bb95ff0b753c16722ccf29d4e6cec11ccc6824894bf0054030aa19"
     },
     {
@@ -29407,6 +29707,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/romanticismo-larra-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/romanticismo-larra-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 220,
       "franja": [
         16,
@@ -29419,6 +29722,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "e7911a0130429aad8f310bbdf59a24eac7c365c5a16e956e1381397e82e1da9e",
       "sha256": "6bfcfeffcad9690b46e1c4d2abbb9fa5782b01ba8bc15dafb4a3a8a154dd4434"
     },
     {
@@ -29807,6 +30111,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/romanticismo-poe-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/romanticismo-poe-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 106,
       "franja": [
         16,
@@ -29819,6 +30126,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "16f197566fed7be5322b852036173c3489ea5cd19c10a7292f43e18f7aeee19e",
       "sha256": "054c5dab0416300a22a4c7bd571b083caf5687b7e4d08d7d4f4119f2efe98888"
     },
     {
@@ -30195,6 +30503,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/romanticismo-rosalia-de-castro-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/romanticismo-rosalia-de-castro-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 364,
       "franja": [
         16,
@@ -30207,6 +30518,7 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": null,
+      "sha256_2x": "8afb6f3250acc44ec7694fc97d470f017204de16fc4b5a0d07c5129f439c64c4",
       "sha256": "976e86fe3b1ecdbeeca6167ff880b888056285724c9dce038d5af749fd00bab8"
     },
     {
@@ -30584,6 +30896,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/romanticismo-shelley-percy-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/romanticismo-shelley-percy-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 265,
       "franja": [
         16,
@@ -30596,6 +30911,7 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": null,
+      "sha256_2x": "5d9e565fe10d4f74851ab21ccafafdbdf858c354c47f07e320b5420a1ab310b2",
       "sha256": "03c6496c62ebd80b7b733cf738afca712199b2aaf3bc4f53c1b23eed883cca76"
     },
     {
@@ -30979,6 +31295,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/romanticismo-wordsworth-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/romanticismo-wordsworth-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 161,
       "franja": [
         16,
@@ -30996,6 +31315,7 @@
         "obra": "Les Contemplations",
         "idioma": "fr"
       },
+      "sha256_2x": "440b498635dc38047525fc6b22845f159f540b95e80bf0fafef1fd626379dc4f",
       "sha256": "ad35f3fd0c260f5f333306d0817adec595cbc0243c40f51e1f54e3a23fdf7f65"
     },
     {
@@ -31367,6 +31687,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-baudelaire-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/simbolismo-baudelaire-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 78,
       "franja": [
         16,
@@ -31384,6 +31707,7 @@
         "obra": "Romances sans paroles",
         "idioma": "fr"
       },
+      "sha256_2x": "ad6127c65a9ca1521b51282cb8799b9325045d7a25a51b55435e1c42643895e7",
       "sha256": "06eafe583922e8868bd8897733f697dce61a5c83801a7a2e9e08fcb6dba27183"
     },
     {
@@ -31772,6 +32096,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-laforgue-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/simbolismo-laforgue-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 108,
       "franja": [
         16,
@@ -31784,6 +32111,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "ba922504647a1c317740a0dc80893e5125eeb4ce7149afb4bf544e47b70dc5f9",
       "sha256": "cba421dfb58b2549aa106729ce0ad97b18509c6f41695095164ef77d768d56d0"
     },
     {
@@ -32156,6 +32484,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-maeterlinck-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/simbolismo-maeterlinck-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 143,
       "franja": [
         16,
@@ -32168,6 +32499,7 @@
       "velo": 0.0,
       "calma_cielo": 0.1,
       "frase": null,
+      "sha256_2x": "7449e7c0b7043500ed164f30fefeb65fb2dccdab1ed777a71c849615f58878b6",
       "sha256": "fef079b4280f036c0577d7f54173e29af07f3d017a52f14a234b5abc38a721bb"
     },
     {
@@ -32551,6 +32883,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-mallarme-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/simbolismo-mallarme-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 91,
       "franja": [
         16,
@@ -32563,6 +32898,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "c720e782cc324829db63ca001c79db702f90aab913aaab56169ee7bdeabbd9d5",
       "sha256": "f349b03b537a87683b0dd336f6b9d9c95a0511951837342b80d44707e9987341"
     },
     {
@@ -32951,6 +33287,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-moreas-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/simbolismo-moreas-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 258,
       "franja": [
         16,
@@ -32968,6 +33307,7 @@
         "obra": "L'invitation au voyage",
         "idioma": "fr"
       },
+      "sha256_2x": "604836b20ce5f1590c9d699fddf2dfd0a62852d696ef96f622e3d0c176cfe2be",
       "sha256": "32a34dfaf7514a6b1c22d7a5cd37b92264f64c12c2a52c7899838b9849877996"
     },
     {
@@ -33351,6 +33691,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-rilke-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/simbolismo-rilke-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 330,
       "franja": [
         16,
@@ -33368,6 +33711,7 @@
         "obra": "Romances sans paroles",
         "idioma": "fr"
       },
+      "sha256_2x": "50f1adb12a1aa89ceaa31f91553883a08bf09f0308547bda1c2c2ab0e264eeae",
       "sha256": "0cf1defed4e8edd27147dafb5420cb694b249d892c1e6ab38b8f7b0c1a4f94fd"
     },
     {
@@ -33751,6 +34095,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-rimbaud-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/simbolismo-rimbaud-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 131,
       "franja": [
         16,
@@ -33768,6 +34115,7 @@
         "obra": "The Second Coming",
         "idioma": "en"
       },
+      "sha256_2x": "cd7c351f445d7f7c9a1db047f51852087de8cf90eaa89df817b811b46a08eff0",
       "sha256": "022b327431cceccd24fc7b67db8a13842b961685100e8f9dc7e4bee9e853687e"
     },
     {
@@ -34146,6 +34494,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-verlaine-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/simbolismo-verlaine-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 68,
       "franja": [
         16,
@@ -34163,6 +34514,7 @@
         "obra": "Duineser Elegien",
         "idioma": "de"
       },
+      "sha256_2x": "26ad93af6381fa21bd9de4d70e43cb1f99ff04dc16881ea783d49d98a838db32",
       "sha256": "4647e510e55585cc7bf37f4e0a70775a58c0911a8609a65beb62a1abc5abcddb"
     },
     {
@@ -34540,6 +34892,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-villiers-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/simbolismo-villiers-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 505,
       "franja": [
         16,
@@ -34552,6 +34907,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "b8c4a52a8edb733c6e568b61d9cf37041c080e966ee1e9d73195ba453780c735",
       "sha256": "62ba3549e7d76455a8f2765be6042c7abdfb5ac4b117816d5f6cf2949c2ad98a"
     },
     {
@@ -34940,6 +35296,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/simbolismo-yeats-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/simbolismo-yeats-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 118,
       "franja": [
         16,
@@ -34957,6 +35316,7 @@
         "obra": "Art poétique",
         "idioma": "fr"
       },
+      "sha256_2x": "c11adab5d5dd059a3c89af1bac3d6c86624c631c10edfc89ed6a3610e6fb9623",
       "sha256": "10595cc5456d53accbb28a427bdf7d8171a187bc8f4b610e4f0c8f4f6de49993"
     },
     {
@@ -35330,6 +35690,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-apollinaire-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/vanguardias-apollinaire-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 322,
       "franja": [
         16,
@@ -35347,6 +35710,7 @@
         "obra": "Arte poética",
         "idioma": "es"
       },
+      "sha256_2x": "2e0e8e5113aec83aa14b7078fb0f4311f4cae1c117ddd97e0b86f02e0403b008",
       "sha256": "cf46c9e599aad22e9f65eb042f6c8fd6fc7e5d437ccdb67f13240fb3287d3b8d"
     },
     {
@@ -35725,6 +36089,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-breton-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/vanguardias-breton-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 197,
       "franja": [
         16,
@@ -35737,6 +36104,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "11ebdeb3f3981c95ea428f98ebb1d3e58c7acf5cff2248b37ecbb4dfd49f4492",
       "sha256": "0dbeae53f7db4fc0b78ea52f1f7faa4b0ecd019b15cc53439197cd69e6176ee0"
     },
     {
@@ -36130,6 +36498,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-girondo-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/vanguardias-girondo-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 392,
       "franja": [
         16,
@@ -36142,6 +36513,7 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": null,
+      "sha256_2x": "236ebb0214805a5ecd7dbefbb17a6e19bb769879c95aa223ca031b683c55e817",
       "sha256": "8a00df3a99f585efd17785775c3209f9d1c59acf357e748f2e4ae6c93485f326"
     },
     {
@@ -36514,6 +36886,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-huidobro-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/vanguardias-huidobro-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 542,
       "franja": [
         16,
@@ -36531,6 +36906,7 @@
         "obra": "Manifesto del Futurismo",
         "idioma": "it"
       },
+      "sha256_2x": "3c8155c347a21b8fc4be72098abab084cbd215d682bf4d480ea763b98c1d1fda",
       "sha256": "dfa77313ec7c6129cc7db15c927e3690f7d4dc727d4435412e5840c969a71167"
     },
     {
@@ -36903,6 +37279,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-lorca-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/vanguardias-lorca-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 620,
       "franja": [
         16,
@@ -36915,6 +37294,7 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": null,
+      "sha256_2x": "3197bb75c24a1772336f3a6636995ec1cd875f2746e1c590514efd7d83b543c6",
       "sha256": "3ced1ef80a8f8701721269199f6f8982802ee0879f3c0bb5d44731b6271b43f6"
     },
     {
@@ -37287,6 +37667,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-maiakovski-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/vanguardias-maiakovski-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 360,
       "franja": [
         16,
@@ -37299,6 +37682,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "11f14a042432763e00d4f1aa37430c37ba5b6f28b842dbfe677da52153c904e6",
       "sha256": "eeedea7482449e402bce87a40c23a0ea93e7b4d0ea52f03b58654f869e01ca8c"
     },
     {
@@ -37677,6 +38061,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-marinetti-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/vanguardias-marinetti-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 270,
       "franja": [
         16,
@@ -37689,6 +38076,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "ca50a1d8a6b090e56bc5b4c559ba90b5716ecfcb9e2f72b396ac398b6cf5ffff",
       "sha256": "a28fe94c97bfb1078296d37f495c87b8595508c752fc20a42c02bb0fc34ca5bf"
     },
     {
@@ -38072,6 +38460,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-pessoa-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/vanguardias-pessoa-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 132,
       "franja": [
         16,
@@ -38084,6 +38475,7 @@
       "velo": 0.0,
       "calma_cielo": 0.2,
       "frase": null,
+      "sha256_2x": "8378ff4b20a64157ca293c6df60b95b7b1053e2f3dd36cb5a00132cb524234ba",
       "sha256": "e4d277650a18d4e1087db22191c488a936964e3b12dfbb2e5b2f3a787c66c0ba"
     },
     {
@@ -38477,6 +38869,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-tzara-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/vanguardias-tzara-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 497,
       "franja": [
         16,
@@ -38489,6 +38884,7 @@
       "velo": 0.0,
       "calma_cielo": 0.0,
       "frase": null,
+      "sha256_2x": "6428c37fc5d348f60a6cdcbebed6d4e70a1fdaf0063fe668d827f463c3810e18",
       "sha256": "a0d4b0d952d2a8db2e3be98bc1a93829eb3308601dd2692063a71bd7a7e3531f"
     },
     {
@@ -38872,6 +39268,9 @@
       "alto": 1400,
       "archivo": "catalog/jpg/vanguardias-vallejo-01.jpg",
       "version_generador": "0.8.0",
+      "archivo_2x": "catalog/jpg2x/vanguardias-vallejo-01.jpg",
+      "ancho_2x": 400,
+      "alto_2x": 2800,
       "pixeles_motivo": 190,
       "franja": [
         16,
@@ -38889,6 +39288,7 @@
         "obra": "Le pont Mirabeau",
         "idioma": "fr"
       },
+      "sha256_2x": "e97a2dc78449837d438e86b66c8603f6140f0d6876118c81e8113fe62da2d8fc",
       "sha256": "da3f93b851933df69f6485f426485995b38bddb9d9d07b3e26d31c1b05e173d5"
     },
     {

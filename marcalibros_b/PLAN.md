@@ -212,3 +212,6 @@ Pendiente de revisión del usuario: ajustar paisaje del símbolo, tipografía de
 
 ## Pulido de siluetas (hecho)
 Rediseñadas alas (siete plumas de punta redondeada), lobo (sentado, aullando, cola caída), gárgola (alas plegadas, cuernos, hocico), esfinge (nemes, zarpas, grupa) y mano (dedos de punta redonda y pulgar). Ayudas nuevas en `scene.py`: `bezier`, `suave` (Catmull-Rom) y `mover`. Build completo: 1000 piezas, 0 errores; 33 tests pasan; hashes de referencia regenerados.
+
+## Alta densidad 400×2800 (hecho)
+Los 100 JPG se generan también a 400×2800 en `catalog/jpg2x/` (misma escena, `a_imagen(esc, 2)`, grano incluido; ~160 KB, límite 600 KB). El manifest lleva `archivo_2x`, `sha256_2x`, `ancho_2x`, `alto_2x` solo en las piezas JPG. Los SVG son vectoriales: se escalan sin versión aparte. La salida a 1× no cambió (hashes de referencia idénticos). CI: `jpg2x` va en la caché y en el artefacto.
