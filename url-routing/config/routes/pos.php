@@ -6,13 +6,29 @@ use App\Support\Router;
 
 /**
  * POS site (Contrastocolor) — same dispatch principle as genealogy:
- * digit count of the first segment selects the type. The purchase
- * flow (cart/checkout/order) is the one deliberate exception and
- * keeps short literal English words instead of a numeric code.
+ * digit count of the first segment selects the type. The purchase flow
+ * has no id to count, so it gets one-letter symbols instead of words,
+ * picked to read the same in Spanish, English and most Latin-script
+ * languages: c = carrito / cart / cesta, p = pago / pay / paiement.
+ * Its steps are numeric actions, like everywhere else.
  */
 
 return [
     'by_length' => [
+        // An order's URL id is a random 16-digit code (ordenes.codigo), not
+        // its row id: nothing else proves who placed it, so it must not be
+        // guessable from a neighbour's.
+        16 => [
+            'type' => 'orden',
+            'controller' => 'POS\OrderController',
+            // Never offered as a "did you mean" for a short id: a code is random, not a padded number.
+            'sugerir' => false,
+            'actions' => [
+                1 => 'invoice',
+                2 => 'track',
+                3 => 'devolucion',
+            ],
+        ],
         8 => [
             'type' => 'producto',
             'controller' => 'POS\ProductoController',
@@ -47,31 +63,12 @@ return [
         ],
     ],
 
-    'literal' => [
-        'cart' => ['controller' => 'POS\CartController', 'method' => 'show'],
-        'cart/agregar' => ['controller' => 'POS\CartController', 'method' => 'agregar'],
-        'cart/actualizar' => ['controller' => 'POS\CartController', 'method' => 'actualizar'],
-        'cart/quitar' => ['controller' => 'POS\CartController', 'method' => 'quitar'],
-        'cart/vaciar' => ['controller' => 'POS\CartController', 'method' => 'vaciar'],
-        'checkout' => ['controller' => 'POS\CheckoutController', 'method' => 'index'],
-        'checkout/shipping' => ['controller' => 'POS\CheckoutController', 'method' => 'shipping'],
-        'checkout/payment' => ['controller' => 'POS\CheckoutController', 'method' => 'payment'],
-        'checkout/confirm' => ['controller' => 'POS\CheckoutController', 'method' => 'confirm'],
-    ],
-
-    'order' => [
-        'controller' => 'POS\OrderController',
-        'actions' => [
-            1 => 'invoice',
-            2 => 'track',
-            3 => 'devolucion',
-        ],
-    ],
-
     // Lengths 1-3 are deliberately unused below grupo (4) — headroom for
     // future low-cardinality types without renumbering anything above.
     'reserved' => [
         '' => ['controller' => 'POS\HomeController', 'method' => 'index'],
+        // Search: /b/{digit width of the type}/[{text}/][{page}/].
+        'b' => ['controller' => 'POS\HomeController', 'method' => 'buscar', 'ruta' => 3],
         Router::ACCOUNT_SEGMENT => [
             'controller' => 'POS\CuentaController',
             'method' => 'index',
@@ -83,5 +80,41 @@ return [
                 5 => 'preferencias',
             ],
         ],
+        // The cart's actions only take a POST (with a CSRF token).
+        'c' => [
+            'controller' => 'POS\CartController',
+            'method' => 'show',
+            'actions' => [
+                1 => 'agregar',
+                2 => 'actualizar',
+                3 => 'quitar',
+                4 => 'vaciar',
+            ],
+        ],
+        'p' => [
+            'controller' => 'POS\CheckoutController',
+            'method' => 'index',
+            'actions' => [
+                1 => 'shipping',
+                2 => 'payment',
+                3 => 'confirm',
+            ],
+        ],
+    ],
+
+    // For crawlers: what may be indexed, and every catalog page.
+    'archivos' => [
+        'robots.txt' => ['controller' => 'POS\ArchivosController', 'method' => 'robots'],
+        'sitemap.xml' => ['controller' => 'POS\ArchivosController', 'method' => 'indice'],
+        'sitemap' => ['controller' => 'POS\ArchivosController', 'method' => 'parte'],
+    ],
+
+    // The purchase flow's old word URLs (GET only: a form posts to the new ones).
+    'redirect' => [
+        'cart' => '/c/',
+        'checkout' => '/p/',
+        'checkout/shipping' => '/p/1/',
+        'checkout/payment' => '/p/2/',
+        'checkout/confirm' => '/p/3/',
     ],
 ];

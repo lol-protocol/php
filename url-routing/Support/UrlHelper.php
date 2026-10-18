@@ -57,6 +57,24 @@ class UrlHelper
         return rtrim($this->enlaceLugar($codes), '/') . '/' . $codigo . '/';
     }
 
+    /**
+     * /b/{digitos}/[{texto}/][{pagina}/] — the canonical search URL. The text
+     * is lowercased (search ignores case) and percent-encoded with lowercase
+     * hex and "." as %2e, so it is already what Router::canonica() wants and
+     * the two can never bounce a request between them. A text of only digits
+     * always carries its page (/b/8/2026/1/): alone it would read as a page.
+     */
+    public function busqueda(int $digitos, string $texto = '', int $pagina = 1): string
+    {
+        $url = "/b/{$digitos}/";
+        $texto = trim((string)preg_replace('/\s+/u', ' ', mb_strtolower($texto)));
+        if ($texto !== '') {
+            $url .= str_replace('.', '%2e', strtolower(rawurlencode($texto))) . '/';
+        }
+
+        return $pagina > 1 || ($texto !== '' && ctype_digit($texto)) ? "{$url}{$pagina}/" : $url;
+    }
+
     public function cuenta(int|string|null $codigo = null): string
     {
         $base = '/' . Router::ACCOUNT_SEGMENT . '/';

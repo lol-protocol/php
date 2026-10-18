@@ -1,14 +1,33 @@
 # Estructura de URLs — Esquema Abstracto por Longitud
 
-Ningún tipo de recurso aparece como palabra en la URL. El **tipo se infiere de la forma** del primer segmento:
+Ningún tipo de recurso aparece como palabra en la URL. El **tipo se infiere de la forma** del primer segmento, y cada forma significa siempre lo mismo:
 
-- **Solo dígitos** → el número de dígitos selecciona el tipo (ver tablas abajo).
-- **Solo letras** → jerarquía de lugar (país/región/ciudad).
-- **Coincidencia exacta** → rutas fijas de sistema (`cart`, `checkout`, `order`, `0` para cuenta).
+| Forma | Regex | Significa |
+|---|---|---|
+| vacío | `^$` | inicio |
+| `0` | `^0$` | cuenta |
+| 1 letra | `^[a-z]$` | función del sistema: `b` búsqueda; en el POS, `c` carrito y `p` pago |
+| 2 letras | `^[a-z]{2}$` | país (ISO 3166-1); detrás, región y ciudad de 1-3 letras (ISO 3166-2, UN/LOCODE) |
+| 3 letras | `^[a-z]{3}$` | idioma (ISO 639-2): va en el subdominio (`spa.`, `eng.`), nunca en la ruta |
+| 4+ letras | `^[a-z]{4,}$` | texto libre: lo que se busca, detrás de `/b/{tipo}/` |
+| solo dígitos | `^\d+$` | una entidad: la cantidad de dígitos dice el tipo (ver tablas abajo); 1 dígito detrás de algo es una acción |
+| con punto | `\.` | un archivo para buscadores: `robots.txt` y los sitemaps |
+
+La lista completa de rutas de cada sitio, generada desde `config/routes/*.php`, está en [`RUTAS.md`](./RUTAS.md) (`php bin/rutas.php > docs/RUTAS.md`; un test falla si queda desactualizada).
+
+Un 404 del router explica por qué, con lo que dice la forma de la URL: `/47/` sugiere `/0000000047/` (persona) y los demás anchos; una acción que no existe lista las que sí; `/eng/` recuerda que el idioma va en el subdominio. Nunca consulta la base de datos, así que no distingue un id inexistente de uno privado. Un método que la URL no acepta (un GET a `/c/1/`) es un **405** con la cabecera `Allow`.
 
 El largo en dígitos escala con el tamaño esperado del catálogo de cada tipo: a mayor cardinalidad prevista, más dígitos. `persona` es el techo (10 dígitos); todo lo demás queda por debajo, en orden.
 
-No se usan guiones ni guiones bajos en ningún segmento. Los códigos de lugar se normalizan a minúsculas (`/MX/` y `/mx/` son la misma URL).
+No se usan guiones ni guiones bajos en ningún segmento.
+
+### URL canónica
+
+Cada página tiene una sola URL: en minúsculas, con barras simples y con barra final (un archivo, como `/robots.txt`, termina en su extensión). Un GET a cualquier otra forma (`/MX/JAL`, `/6128473105`, `//mx//jal/`) recibe un **301** a la canónica, conservando la query string. Un POST nunca se redirige (el 301 lo convertiría en GET): se atiende donde llegó. Las URLs que se mudaron (el flujo de compra en palabras) también dan 301, vía el mapa `redirect` de `config/routes/pos.php`.
+
+### Personas fusionadas
+
+Cuando dos personas resultan ser la misma y una se fusiona en la otra, el id que desaparece queda en `persona_alias`: `/{id viejo}/` y sus acciones dan **301** a la misma página de la persona que quedó, en vez de 404. Un id que nunca existió sigue siendo 404.
 
 ### Contrato de generación de ids (importante)
 
@@ -46,7 +65,7 @@ Subdominios de 3 letras (ISO 639-2): `spa.` (español), `eng.` (inglés), etc. L
 | 7 dígitos | colección | árboles genealógicos |
 | 6 dígitos | grupo | apellidos / familias |
 | 5 dígitos | organización | instituciones / archivos |
-| texto (2-4 letras) | lugar | jerárquico país/región/ciudad; no es un registro secuencial |
+| letras: país (2) / región / ciudad (1-3) | lugar | jerárquico; no es un registro secuencial |
 
 ### Acciones (segundo segmento, numérico, con significado propio por tipo)
 
@@ -86,11 +105,22 @@ spa.tudominio.com/mx/jal/             lugar: región
 spa.tudominio.com/mx/jal/gdl/         lugar: ciudad
 spa.tudominio.com/mx/jal/gdl/1/       personas de esa ciudad
 
-spa.tudominio.com/?t=10&q=texto       listado/búsqueda de personas (t = dígitos del tipo)
+spa.tudominio.com/b/10/              todas las personas (10 = dígitos del tipo)
+spa.tudominio.com/b/10/garcia/       búsqueda de personas
+spa.tudominio.com/b/10/garcia/2/     página 2
 spa.tudominio.com/0/                  cuenta
 spa.tudominio.com/0/1/                cuenta: mis colecciones
 spa.tudominio.com/0/2/                cuenta: mis aportes
+
+spa.tudominio.com/robots.txt          deja fuera /0/ y apunta al sitemap
+spa.tudominio.com/sitemap.xml         índice de sitemaps
+spa.tudominio.com/sitemap/10/1.xml    personas, parte 1 (50.000 URLs por parte)
+spa.tudominio.com/sitemap/l/1.xml     lugares
 ```
+
+Las páginas de una persona oculta (viva o privada) llevan `<meta name="robots" content="noindex">`. Toda página declara su URL canónica (`rel="canonical"`) y la misma ruta en los otros idiomas (`hreflang` `es`, `en` y `x-default` en el dominio sin subdominio).
+
+El sitemap lista solo lo que un visitante puede ver, lo pida quien lo pida: ninguna persona que podría estar viva o que solo está en colecciones privadas, ningún suceso ni registro que la delataría, ninguna colección privada. Cada parte se nombra por el largo de dígitos de su tipo (`10`, `9`, `8`, `7`, `6`, `5`) o `l` para lugares. Las URLs absolutas usan `SITE_URL_GENEALOGY` (o, sin ella, el esquema y el host de la petición).
 
 ---
 
@@ -103,6 +133,7 @@ spa.tudominio.com/0/2/                cuenta: mis aportes
 | 6 dígitos | etiqueta | |
 | 5 dígitos | atributo | color / variante — conjunto acotado |
 | 4 dígitos | grupo | categoría — taxonomía pequeña |
+| 16 dígitos | orden | código aleatorio, no secuencial (ver abajo) |
 
 ### Acciones
 
@@ -110,21 +141,29 @@ spa.tudominio.com/0/2/                cuenta: mis aportes
 **etiqueta** (6 dígitos): `1` productos con esa etiqueta
 **atributo** (5 dígitos): `1` productos de ese color
 
-### Flujo transaccional (excepción deliberada — palabras cortas en inglés, sin guiones)
+**orden** (16 dígitos): `1` factura · `2` seguimiento · `3` devolución
+
+### Flujo de compra: símbolos de una letra, no palabras
+
+El carrito y el pago no tienen un id que contar, así que usan una letra que se lee igual en español, inglés y la mayoría de los idiomas con alfabeto latino. Sus pasos son acciones numéricas, como en el resto del sitio.
 
 ```
-/cart/
-/checkout/
-/checkout/shipping/
-/checkout/payment/
-/checkout/confirm/
-/order/{id}/
-/order/{id}/1/    invoice
-/order/{id}/2/    track
-/order/{id}/3/    devolucion
+/c/          carrito (c = carrito / cart / cesta)
+/c/1/        agregar      (solo POST, con token CSRF)
+/c/2/        actualizar   (solo POST)
+/c/3/        quitar       (solo POST)
+/c/4/        vaciar       (solo POST)
+/p/          pago (p = pago / pay / paiement)
+/p/1/        envío
+/p/2/        pago
+/p/3/        confirmar
 ```
 
-El id de `order` es secuencial simple (no requiere inferencia por largo, ya está bajo el prefijo `order`). Por ser secuencial se puede recorrer, así que los pedidos son solo del propietario (ver [`ACCESO.md`](./ACCESO.md)).
+Las URLs antiguas en palabras (`/cart/`, `/checkout/`, `/checkout/shipping/`...) dan 301 a las nuevas.
+
+### Órdenes: código aleatorio de 16 dígitos
+
+La URL de una orden no lleva su id (que es correlativo y se podría recorrer) sino `ordenes.codigo`: 16 dígitos aleatorios, únicos, de ancho fijo. Como cualquier otro tipo, el router la reconoce por el largo: `/{16 dígitos}/`. Quien cree órdenes debe generar el código con `random_int()`. Las órdenes siguen siendo solo del propietario (ver [`ACCESO.md`](./ACCESO.md)) y nunca aparecen en la búsqueda (`/b/16/` es un 400).
 
 ### Ejemplos
 
@@ -136,12 +175,15 @@ spa.contrastocolor.com/81372047/2/         atributos (colores del producto)
 spa.contrastocolor.com/48213/              atributo (color)
 spa.contrastocolor.com/48213/1/            productos de ese color
 
-spa.contrastocolor.com/?t=8&q=texto        listado/búsqueda de productos
+spa.contrastocolor.com/b/8/gorra/         búsqueda de productos
+spa.contrastocolor.com/b/8/2026/1/        un texto de solo dígitos lleva su página: solo, sería una página
 
-spa.contrastocolor.com/cart/
-spa.contrastocolor.com/checkout/payment/
-spa.contrastocolor.com/order/8137204719000/
-spa.contrastocolor.com/order/8137204719000/2/   track
+spa.contrastocolor.com/sitemap.xml         índice: productos a la venta, colecciones, etiquetas, atributos y categorías (nunca órdenes)
+
+spa.contrastocolor.com/c/                  carrito
+spa.contrastocolor.com/p/2/                pago
+spa.contrastocolor.com/4821937065182734/   orden
+spa.contrastocolor.com/4821937065182734/2/ seguimiento
 
 spa.contrastocolor.com/0/                  cuenta
 spa.contrastocolor.com/0/2/                cuenta: mis órdenes
@@ -153,13 +195,13 @@ spa.contrastocolor.com/0/3/                cuenta: deseos
 ## Lógica de despacho (router)
 
 ```
-segmento vacío           -> reserved['']  (home)
-literal exacto           -> literal[segmento]  (cart, checkout/*)
-"order" + id + acción?   -> order         (POS)
-"0" (único segmento)     -> reserved['0'] (cuenta)
+GET no canónico          -> 301 a la URL canónica (o a donde se mudó, `redirect`)
+segmento vacío           -> reserved['']  (home; /?t=&q= del buscador -> 301 a /b/)
+nombre de archivo        -> archivos[primer segmento]  (robots.txt, sitemap)
 solo dígitos             -> by_length[strlen(segmento)]
-solo letras              -> place (lugar, jerárquico)
-cualquier otra cosa      -> 404
+2 letras (país)          -> place (lugar, jerárquico; solo genealogía)
+segmento reservado       -> reserved[segmento]  ('0' cuenta; 'b' búsqueda; POS: 'c', 'p')
+cualquier otra cosa      -> 404, con la pista de por qué
 ```
 
 Un segundo segmento numérico (cuando aplica) selecciona una acción dentro del tipo ya resuelto — su significado está definido por tipo, nunca es global.

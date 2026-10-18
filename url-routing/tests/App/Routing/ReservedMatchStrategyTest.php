@@ -19,6 +19,7 @@ class ReservedMatchStrategyTest extends TestCase
             'reserved' => [
                 'cuenta' => ['controller' => 'Genealogy\CuentaController', 'actions' => [1 => 'editar']],
                 '' => ['controller' => 'Genealogy\HomeController', 'method' => 'index'],
+                'b' => ['controller' => 'Genealogy\HomeController', 'method' => 'buscar', 'ruta' => 3],
             ],
         ];
     }
@@ -29,9 +30,19 @@ class ReservedMatchStrategyTest extends TestCase
         $this->assertFalse($this->strategy->matches(['unknown'], $this->config));
     }
 
-    public function testMatchesRequiresAtMostTwoSegments(): void
+    public function testAtMostOneActionSegment(): void
     {
-        $this->assertFalse($this->strategy->matches(['cuenta', '1', 'extra'], $this->config));
+        $this->assertNull($this->strategy->resolve(['cuenta', '1', 'extra'], $this->config));
+    }
+
+    public function testAnEntryWithRutaGetsTheRestOfThePath(): void
+    {
+        $match = $this->strategy->resolve(['b', '10', 'garcia', '2'], $this->config);
+
+        $this->assertSame('buscar', $match['method']);
+        $this->assertSame(['ruta' => ['10', 'garcia', '2']], $match['params']);
+        $this->assertSame(['ruta' => []], $this->strategy->resolve(['b'], $this->config)['params']);
+        $this->assertNull($this->strategy->resolve(['b', '10', 'garcia', '2', 'x'], $this->config), 'more than ruta allows');
     }
 
     public function testResolvesDefaultMethod(): void

@@ -8,13 +8,17 @@ use App\Repositories\Repository;
 
 final class OrdenRepository extends Repository
 {
+    private const COLUMNAS = 'id, codigo, usuario_id, estado, total_centavos, moneda, direccion_envio, numero_guia, creada_en';
+
     public function find(int $id): ?array
     {
-        return $this->db->fetchOne(
-            'SELECT id, usuario_id, estado, total_centavos, moneda, direccion_envio, numero_guia, creada_en
-               FROM ordenes WHERE id = ?',
-            [$id]
-        );
+        return $this->db->fetchOne('SELECT ' . self::COLUMNAS . ' FROM ordenes WHERE id = ?', [$id]);
+    }
+
+    /** By the public code in its URL (see migration 002_ordenes_codigo). */
+    public function porCodigo(int $codigo): ?array
+    {
+        return $this->db->fetchOne('SELECT ' . self::COLUMNAS . ' FROM ordenes WHERE codigo = ?', [$codigo]);
     }
 
     /** @return list<array> with each line's subtotal */
@@ -41,7 +45,7 @@ final class OrdenRepository extends Repository
     public function deUsuario(int $usuarioId): array
     {
         return $this->db->fetchAll(
-            'SELECT id, estado, total_centavos, moneda, creada_en
+            'SELECT id, codigo, estado, total_centavos, moneda, creada_en
                FROM ordenes WHERE usuario_id = ? ORDER BY creada_en DESC, id DESC',
             [$usuarioId]
         );

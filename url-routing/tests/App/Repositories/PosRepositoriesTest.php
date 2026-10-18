@@ -6,6 +6,7 @@ namespace Tests\App\Repositories;
 
 use App\Repositories\POS\CatalogoRepository;
 use App\Repositories\POS\OrdenRepository;
+use App\Repositories\POS\SitemapRepository;
 use App\Repositories\POS\ProductoRepository;
 use App\Repositories\UsuarioRepository;
 use App\Support\Database;
@@ -138,6 +139,28 @@ class PosRepositoriesTest extends TestCase
 
         $this->assertSame(['pagada', 'enviada'], array_column($repo->eventos(8137204719000), 'estado'));
         $this->assertSame([8137204719000], self::ids($repo->deUsuario(1)));
+        $this->assertSame([4821937065182734], array_map('intval', array_column($repo->deUsuario(1), 'codigo')));
+    }
+
+    #[DataProvider('drivers')]
+    public function testSitemapListsProductsOnSaleAndNoOrders(string $driver): void
+    {
+        $repo = new SitemapRepository($this->db($driver));
+
+        $this->assertSame(['8', '7', '6', '5', '4'], $repo->tipos());
+        $productos = $repo->claves('8', 1);
+        $this->assertContains('81372047', $productos);
+        $this->assertNotContains('81372050', $productos, 'discontinued');
+        $this->assertSame(count($productos), $repo->cuantas('8'));
+    }
+
+    #[DataProvider('drivers')]
+    public function testOrdenPorCodigoUsesThePublicCodeNotTheRowId(string $driver): void
+    {
+        $repo = new OrdenRepository($this->db($driver));
+
+        $this->assertSame(8137204719000, (int)$repo->porCodigo(4821937065182734)['id']);
+        $this->assertNull($repo->porCodigo(8137204719000), 'a row id is not a code');
     }
 
     #[DataProvider('drivers')]

@@ -26,13 +26,11 @@ class RouteTargetsExistTest extends TestCase
             foreach ($config['by_length'] ?? [] as $entry) {
                 self::collect($targets, $site, $entry['controller'], 'show', $entry['actions'] ?? []);
             }
-            foreach (['place', 'order'] as $section) {
-                if (isset($config[$section])) {
-                    $entry = $config[$section];
-                    self::collect($targets, $site, $entry['controller'], 'show', $entry['actions'] ?? []);
-                }
+            if (isset($config['place'])) {
+                $entry = $config['place'];
+                self::collect($targets, $site, $entry['controller'], 'show', $entry['actions'] ?? []);
             }
-            foreach (['literal', 'reserved'] as $section) {
+            foreach (['archivos', 'reserved'] as $section) {
                 foreach ($config[$section] ?? [] as $entry) {
                     self::collect($targets, $site, $entry['controller'], $entry['method'] ?? 'index', $entry['actions'] ?? []);
                 }

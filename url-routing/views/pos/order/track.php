@@ -3,4 +3,4 @@
 <p>Número de guía: <strong><?= esc($orden['numero_guia']) ?></strong></p>
 <?php endif; ?>
 <?php include __DIR__ . '/_eventos.php'; ?>
-<?php $content = ob_get_clean(); $title = 'Seguimiento · Orden ' . $orden['id']; include __DIR__ . '/../_layout.php';
+<?php $content = ob_get_clean(); $title = 'Seguimiento · Orden ' . $orden['codigo']; include __DIR__ . '/../_layout.php';

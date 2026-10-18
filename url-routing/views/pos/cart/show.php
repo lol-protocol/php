@@ -12,7 +12,7 @@
                 <br><span class="meta"><?= esc($l['variante_nombre']) ?> · <?= esc($l['sku']) ?></span></td>
             <td class="num"><?= esc(dinero($l['precio_centavos'], $l['moneda'])) ?></td>
             <td class="num">
-                <form action="/cart/actualizar/" method="post">
+                <form action="/c/2/" method="post">
                     <input type="hidden" name="csrf_token" value="<?= esc(get_csrf_token()) ?>">
                     <input type="hidden" name="sku" value="<?= esc($l['sku']) ?>">
                     <input type="number" name="cantidad" value="<?= (int)$l['cantidad'] ?>" min="1" max="<?= (int)$l['stock'] ?>" style="width: 4em">
@@ -21,7 +21,7 @@
             </td>
             <td class="num"><?= esc(dinero($l['subtotal_centavos'], $l['moneda'])) ?></td>
             <td>
-                <form action="/cart/quitar/" method="post">
+                <form action="/c/3/" method="post">
                     <input type="hidden" name="csrf_token" value="<?= esc(get_csrf_token()) ?>">
                     <input type="hidden" name="sku" value="<?= esc($l['sku']) ?>">
                     <button type="submit">Quitar</button>
@@ -38,8 +38,8 @@
 </table>
 <p class="acciones">
     <a href="/">Seguir comprando</a>
-    <a href="/checkout/">Continuar a pagar</a>
-    <form action="/cart/vaciar/" method="post" style="display: inline">
+    <a href="/p/">Continuar a pagar</a>
+    <form action="/c/4/" method="post" style="display: inline">
         <input type="hidden" name="csrf_token" value="<?= esc(get_csrf_token()) ?>">
         <button type="submit">Vaciar carrito</button>
     </form>

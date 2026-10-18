@@ -5,4 +5,4 @@
 <?php else: ?>
 <p class="aviso">Solo se pueden devolver órdenes enviadas o entregadas.</p>
 <?php endif; ?>
-<?php $content = ob_get_clean(); $title = 'Devolución · Orden ' . $orden['id']; include __DIR__ . '/../_layout.php';
+<?php $content = ob_get_clean(); $title = 'Devolución · Orden ' . $orden['codigo']; include __DIR__ . '/../_layout.php';

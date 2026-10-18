@@ -14,8 +14,8 @@ use App\Repositories\Genealogy\SucesoRepository;
 use App\Support\ServiceLocator;
 
 /**
- * Home and the listing/search page: /?t=<digits>&q=<text>&p=<page>, where t
- * is the digit width of the type to list (10 = persona, 6 = grupo, ...).
+ * Home, and the listing/search page /b/{digitos}/[{texto}/][{pagina}/], where
+ * digitos is the digit width of the type to list (10 = persona, 6 = grupo, ...).
  */
 class HomeController extends BaseController
 {
@@ -23,16 +23,26 @@ class HomeController extends BaseController
 
     public function index(array $params = []): string
     {
-        $tipo = $this->tipoPedido();
-        if ($tipo === false) {
-            return view('genealogy/home/index');
+        return $this->busquedaDeFormulario() ?? view('genealogy/home/index');
+    }
+
+    public function buscar(array $params = []): string
+    {
+        $pedida = $this->busquedaPedida($params['ruta'] ?? []);
+        if ($pedida === null) {
+            return $this->handleNotFound();
         }
+        [$digitos, $query, $pagina] = $pedida;
+        $redirigir = $this->busquedaNoCanonica($digitos, $query, $pagina);
+        if ($redirigir !== null) {
+            return $redirigir;
+        }
+
+        $tipo = ServiceLocator::getInstance()->getRouter()->typeForLength($digitos);
         if ($tipo === null) {
             return $this->handleBadRequest('Tipo de listado inválido');
         }
 
-        $query = mb_substr(trim(is_string($_GET['q'] ?? null) ? $_GET['q'] : ''), 0, 255);
-        $pagina = max(1, (int)(is_string($_GET['p'] ?? null) && ctype_digit($_GET['p']) ? $_GET['p'] : 1));
         $offset = ($pagina - 1) * self::POR_PAGINA;
         $db = $this->db();
         $privacidad = $this->privacidad();
@@ -56,25 +66,11 @@ class HomeController extends BaseController
 
         return view('genealogy/home/listado', [
             'tipo' => $tipo,
-            'digitos' => (int)$_GET['t'],
+            'digitos' => $digitos,
             'query' => $query,
             'pagina' => $pagina,
             'hayMas' => $hayMas,
             'resultados' => array_slice($resultados, 0, self::POR_PAGINA),
         ]);
-    }
-
-    /** @return string|null|false type name; null = invalid t; false = no t at all */
-    private function tipoPedido(): string|null|false
-    {
-        $t = $_GET['t'] ?? null;
-        if ($t === null) {
-            return false;
-        }
-        if (!is_string($t) || !ctype_digit($t) || strlen($t) > 2) {
-            return null;
-        }
-
-        return ServiceLocator::getInstance()->getRouter()->typeForLength((int)$t);
     }
 }

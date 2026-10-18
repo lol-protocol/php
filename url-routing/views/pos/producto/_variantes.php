@@ -13,7 +13,7 @@
             <td class="num"><?= (int)$v['stock'] > 0 ? (int)$v['stock'] : '<span class="meta">Agotado</span>' ?></td>
             <td>
 <?php if ($producto['activo'] && (int)$v['stock'] > 0): ?>
-                <form action="/cart/agregar/" method="post">
+                <form action="/c/1/" method="post">
                     <input type="hidden" name="csrf_token" value="<?= esc(get_csrf_token()) ?>">
                     <input type="hidden" name="sku" value="<?= esc($v['sku']) ?>">
                     <input type="number" name="cantidad" value="1" min="1" max="<?= (int)$v['stock'] ?>" style="width: 4em">

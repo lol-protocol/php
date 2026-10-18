@@ -14,8 +14,8 @@ class ConfigValidatorTest extends TestCase
         ConfigValidator::validate([
             'by_length' => [4 => ['type' => 'persona', 'controller' => 'X\Y']],
             'reserved' => ['home' => ['controller' => 'X\Home']],
-            'literal' => ['buscar' => ['controller' => 'X\Buscar']],
-            'order' => ['controller' => 'X\Order'],
+            'archivos' => ['robots.txt' => ['controller' => 'X\Archivos', 'method' => 'robots']],
+            'redirect' => ['viejo' => '/nuevo/'],
             'place' => ['controller' => 'X\Place'],
         ]);
 
@@ -46,21 +46,21 @@ class ConfigValidatorTest extends TestCase
         ]);
     }
 
-    public function testLiteralEntryMissingControllerThrows(): void
+    public function testArchivosEntryMissingMethodThrows(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         ConfigValidator::validate([
-            'literal' => ['buscar' => ['method' => 'index']],
+            'archivos' => ['robots.txt' => ['controller' => 'X\Archivos']],
         ]);
     }
 
-    public function testOrderEntryMissingControllerThrows(): void
+    public function testRedirectToAnotherHostThrows(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         ConfigValidator::validate([
-            'order' => ['actions' => []],
+            'redirect' => ['viejo' => '//otro.example/'],
         ]);
     }
 

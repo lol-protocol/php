@@ -12,7 +12,8 @@ sequenceDiagram
     I->>R: loadConfig(routes/pos.php)
     I->>R: dispatch()
     R->>R: parseSegments()\n-> ["81372047","1"] (minusculas)
-    R->>R: resolve(): no vacio, no literal,\nno order, no reservado,\nctype_digit -> matchByLength
+    R->>R: GET ya canonico (minusculas, barra final)\ny fuera del mapa redirect -> sin 301
+    R->>R: resolve(): no vacio, no es archivo,\nctype_digit -> matchByLength
     R->>R: strlen("81372047")=8 -> producto\naccion 1 -> "variantes"\n(maximo 2 segmentos, ya validado)
     R->>C: ProductoController->variantes(['id'=>'81372047'])
     C-->>N: HTML

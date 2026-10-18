@@ -29,22 +29,26 @@ class ConfigValidator
                 if (!isset($entry['controller'])) {
                     throw new \InvalidArgumentException("Invalid reserved entry for key '{$key}'");
                 }
-            }
-        }
-
-        // Validate literal entries
-        if (isset($config['literal'])) {
-            foreach ($config['literal'] as $path => $entry) {
-                if (!isset($entry['controller'])) {
-                    throw new \InvalidArgumentException("Invalid literal entry for path '{$path}'");
+                if (isset($entry['ruta']) && (!is_int($entry['ruta']) || !isset($entry['method']))) {
+                    throw new \InvalidArgumentException("Reserved entry '{$key}': ruta needs a segment count and a method");
                 }
             }
         }
 
-        // Validate order entry if present
-        if (isset($config['order'])) {
-            if (!isset($config['order']['controller'])) {
-                throw new \InvalidArgumentException('Invalid order entry: missing controller');
+        if (isset($config['archivos'])) {
+            foreach ($config['archivos'] as $nombre => $entry) {
+                if (!isset($entry['controller'], $entry['method'])) {
+                    throw new \InvalidArgumentException("Invalid archivos entry for '{$nombre}'");
+                }
+            }
+        }
+
+        // A redirect target is a local path: "//host" would send the browser elsewhere.
+        if (isset($config['redirect'])) {
+            foreach ($config['redirect'] as $desde => $hacia) {
+                if (!is_string($hacia) || preg_match('#^/(?!/)#', $hacia) !== 1) {
+                    throw new \InvalidArgumentException("Invalid redirect target for '{$desde}'");
+                }
             }
         }
 

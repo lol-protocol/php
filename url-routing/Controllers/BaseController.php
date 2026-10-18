@@ -113,17 +113,20 @@ class BaseController
     /**
      * The standard read action: validate the route id (400), load the
      * resource with $find (404 when missing) and render $view with it under
-     * $key, plus whatever $extra returns for that id.
+     * $key, plus whatever $extra returns for that id. When the id is missing
+     * but $movida gives the URL it moved to, that's a 301 there instead.
      *
      * @param callable(int): ?array $find
      * @param (callable(int, array): array)|null $extra
+     * @param (callable(int): ?string)|null $movida
      */
     protected function renderFound(
         array $params,
         callable $find,
         string $view,
         string $key,
-        ?callable $extra = null
+        ?callable $extra = null,
+        ?callable $movida = null
     ): string {
         $id = $this->validateId($params['id'] ?? null);
         if ($id === null) {
@@ -132,7 +135,8 @@ class BaseController
 
         $row = $find((int)$id);
         if ($row === null) {
-            return $this->handleNotFound();
+            $destino = $movida ? $movida((int)$id) : null;
+            return $destino === null ? $this->handleNotFound() : $this->redirect($destino, 301);
         }
 
         return view($view, [$key => $row] + ($extra ? $extra((int)$id, $row) : []));
@@ -157,10 +161,81 @@ class BaseController
         return is_string($value) ? $value : $default;
     }
 
+    /**
+     * A search, from /b/{digitos}/[{texto}/][{pagina}/] (params['ruta'], the
+     * segments after "b"): [digitos, texto, pagina], or null when the path
+     * isn't one. Two segments are a page when the second is all digits, a
+     * text otherwise; three are always text and page (see busqueda()).
+     *
+     * @return array{int, string, int}|null
+     */
+    protected function busquedaPedida(array $ruta): ?array
+    {
+        $digitos = $ruta[0] ?? '';
+        [$texto, $pagina] = match (count($ruta)) {
+            1 => ['', '1'],
+            2 => ctype_digit($ruta[1]) ? ['', $ruta[1]] : [rawurldecode($ruta[1]), '1'],
+            3 => [rawurldecode($ruta[1]), $ruta[2]],
+            default => [null, ''],
+        };
+
+        if (!ctype_digit($digitos) || strlen($digitos) > 2 || $texto === null || !mb_check_encoding($texto, 'UTF-8')
+            || !ctype_digit($pagina) || strlen($pagina) > 6 || (int)$pagina < 1) {
+            return null;
+        }
+
+        return [(int)$digitos, mb_substr($texto, 0, 255), (int)$pagina];
+    }
+
+    /**
+     * The search box is a plain GET form, so it can only send /?t=&q=&p=:
+     * that becomes a 301 to its /b/ URL. Null when there is no t; a 400 when
+     * t isn't a digit width.
+     */
+    protected function busquedaDeFormulario(): ?string
+    {
+        $t = $_GET['t'] ?? null;
+        if ($t === null) {
+            return null;
+        }
+        if (!is_string($t) || !ctype_digit($t) || strlen($t) > 2) {
+            return $this->handleBadRequest('Tipo de listado inválido');
+        }
+
+        $q = is_string($_GET['q'] ?? null) ? mb_substr($_GET['q'], 0, 255) : '';
+        $p = is_string($_GET['p'] ?? null) && ctype_digit($_GET['p']) && strlen($_GET['p']) <= 6 ? max(1, (int)$_GET['p']) : 1;
+        if (!mb_check_encoding($q, 'UTF-8')) {
+            return $this->handleBadRequest('Texto inválido');
+        }
+
+        return $this->redirect(busqueda((int)$t, $q, $p), 301);
+    }
+
+    /** A 301 to the canonical spelling of this search, when the request used another one. */
+    protected function busquedaNoCanonica(int $digitos, string $texto, int $pagina): ?string
+    {
+        $canonica = busqueda($digitos, $texto, $pagina);
+        $pedida = (string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?');
+
+        return $canonica === $pedida ? null : $this->redirect($canonica, 301);
+    }
+
     /** A one-shot message shown on the next page the user lands on (e.g. after a redirect). */
     protected function flash(string $mensaje): void
     {
         (new Flash())->set($mensaje);
+    }
+
+    /** Null when this request's method is one of $permitidos; otherwise a 405 that names them (Allow). */
+    protected function exigirMetodo(string ...$permitidos): ?string
+    {
+        if (in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', $permitidos, true)) {
+            return null;
+        }
+
+        header('Allow: ' . implode(', ', $permitidos));
+        http_response_code(405);
+        return '<h1>405 - Método no permitido</h1>';
     }
 
     protected function handleForbidden(string $message = 'Forbidden'): string
@@ -169,10 +244,11 @@ class BaseController
         return '<h1>403 - ' . htmlspecialchars($message) . '</h1>';
     }
 
-    /** 303 so a browser re-fetches the target with GET instead of replaying the POST. */
-    protected function redirect(string $location): string
+    /** 303 (the default) so a browser re-fetches the target with GET instead of replaying the POST; 301 for a URL that moved for good. */
+    protected function redirect(string $location, int $status = 303): string
     {
-        header("Location: {$location}", true, 303);
+        header("Location: {$location}", true, $status);
+        http_response_code($status);
         return '';
     }
 }

@@ -59,6 +59,14 @@ final class PersonaRepository extends Repository
      * personas.viva as stored: true = alive, false = dead, null = deduce it from
      * the dates (see Privacidad). Null as well when there is no such persona.
      */
+    /** The persona an id that was merged away now points to (see persona_alias); null if it isn't an alias. */
+    public function aliasDe(int $id): ?int
+    {
+        $destino = $this->db->fetchValue('SELECT persona_id FROM persona_alias WHERE id = ?', [$id]);
+
+        return $destino === null ? null : (int)$destino;
+    }
+
     public function marcaViva(int $id): ?bool
     {
         // fetchOne, not fetchValue: PostgreSQL's `false` would come back from fetchValue as "no row".

@@ -143,8 +143,8 @@ class ResponseHeadersTest extends TestCase
             'coleccion privada, arbol' => [self::GENEALOGIA, '/1048294/1/', '/1048200/1/'],
             'coleccion privada, editar' => [self::GENEALOGIA, '/1048294/2/', '/1048200/2/'],
             'coleccion privada, GEDCOM' => [self::GENEALOGIA, '/1048294/3/', '/1048200/3/'],
-            'pedido de otra persona' => [self::POS, '/order/8137204719001/', '/order/8137204719999/'],
-            'pedido, factura' => [self::POS, '/order/8137204719000/1/', '/order/8137204719999/1/'],
+            'pedido de otra persona' => [self::POS, '/7305918264731590/', '/4821937065189999/'],
+            'pedido, factura' => [self::POS, '/4821937065182734/1/', '/4821937065189999/1/'],
         ];
     }
 
