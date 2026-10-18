@@ -88,9 +88,9 @@ def a_imagen(esc, escala=1.0):
 
     img = lienzo.convert("RGB").resize((round(ANCHO * f), round(ALTO * f)), Image.Resampling.LANCZOS)
 
-    if esc.grano and escala == 1.0:
+    if esc.grano and escala >= 1.0:
         rng = np.random.default_rng(esc.semilla)
         arr = np.asarray(img, dtype=float)
-        arr += rng.normal(0, esc.grano * 255, (ALTO, ANCHO))[..., None]
+        arr += rng.normal(0, esc.grano * 255, (img.height, img.width))[..., None]
         img = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8))
     return img

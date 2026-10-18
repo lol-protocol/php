@@ -42,6 +42,7 @@ CATALOGO = RAIZ / "catalog"
 ESCALA_REVISION = 0.4  # tamaño de las vistas guardadas en caché para las hojas de contacto
 RESUMEN = {}  # recuento de la última ejecución (reutilizadas / rehechas), para los tests
 MAX_DIF_CHROMIUM = 3.0  # diferencia media tolerada entre Chromium y el renderer raster
+DENSIDAD_ALTA = 2  # los JPG se entregan también a 400×2800
 GRANO_JPG = 0.018  # textura suave: sin grano, la variante JPG se confunde con las SVG
 
 
@@ -137,6 +138,9 @@ def construir(config, mov, autor, v, intento=0, animos=None, ocultar_motivo=Fals
         "archivo": f"catalog/{formato}/{ident}.{formato}",
         "version_generador": VERSION_GENERADOR,
     }
+    if formato == "jpg":
+        entrada["archivo_2x"] = f"catalog/jpg2x/{ident}.jpg"
+        entrada["ancho_2x"], entrada["alto_2x"] = ANCHO * DENSIDAD_ALTA, ALTO * DENSIDAD_ALTA
     return entrada, esc
 
 
@@ -147,6 +151,11 @@ def escribir(entrada, esc):
         ruta.write_text(a_svg(esc), encoding="utf-8")
     else:
         a_imagen(esc).save(ruta, "JPEG", quality=85, optimize=True)
+        # alta densidad: la misma escena dibujada a 400×2800 (los SVG no lo necesitan: son vectoriales)
+        ruta2 = RAIZ / entrada["archivo_2x"]
+        ruta2.parent.mkdir(parents=True, exist_ok=True)
+        a_imagen(esc, DENSIDAD_ALTA).save(ruta2, "JPEG", quality=85, optimize=True)
+        entrada["sha256_2x"] = hashlib.sha256(ruta2.read_bytes()).hexdigest()
     entrada["sha256"] = hashlib.sha256(ruta.read_bytes()).hexdigest()
     return ruta
 
@@ -404,6 +413,10 @@ def _reutilizable(hit, clave):
         return False
     ruta = RAIZ / hit["entrada"]["archivo"]
     mini, rev = _rutas_cache(hit["entrada"]["id"])
+    if hit["entrada"]["formato"] == "jpg":
+        ruta2 = RAIZ / hit["entrada"].get("archivo_2x", "")
+        if not ruta2.is_file() or hashlib.sha256(ruta2.read_bytes()).hexdigest() != hit["entrada"].get("sha256_2x"):
+            return False
     return (ruta.exists() and mini.exists() and rev.exists()
             and hashlib.sha256(ruta.read_bytes()).hexdigest() == hit["entrada"]["sha256"])
 
@@ -510,7 +523,7 @@ def main(argv=None):
     # Archivos huérfanos (obras quitadas de la taxonomía) de los movimientos regenerados
     ids_movimientos = [m["id"] for m in config["movimientos"]]
     vigentes = {e["id"] for e in generados}
-    for sub in ("svg", "jpg"):
+    for sub in ("svg", "jpg", "jpg2x"):
         for f in sorted((CATALOGO / sub).glob("*")) if (CATALOGO / sub).exists() else []:
             if _movimiento_de(f.stem, ids_movimientos) in rehechos and f.stem not in vigentes:
                 f.unlink()
@@ -523,6 +536,10 @@ def main(argv=None):
         for problema in (validar_svg(ruta) if e["formato"] == "svg" else validar_jpg(ruta)):
             errores += 1
             print(f"  ✗ {e['id']}: {problema}")
+        if e["formato"] == "jpg":
+            for problema in validar_jpg(RAIZ / e["archivo_2x"], DENSIDAD_ALTA):
+                errores += 1
+                print(f"  ✗ {e['id']} (2x): {problema}")
     errores += fallos
 
     # Hojas de contacto (una por autor) y de miniaturas (una por movimiento): solo si cambió algo

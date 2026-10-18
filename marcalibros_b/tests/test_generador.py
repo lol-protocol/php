@@ -226,6 +226,12 @@ def test_archivos_del_catalogo_validos():
         ruta = RAIZ / e["archivo"]
         assert hashlib.sha256(ruta.read_bytes()).hexdigest() == e["sha256"], e["id"]
         assert not (validar_svg(ruta) if e["formato"] == "svg" else validar_jpg(ruta)), e["id"]
+        if e["formato"] == "jpg":  # alta densidad: 400×2800, mismo hash que el manifest
+            ruta2 = RAIZ / e["archivo_2x"]
+            assert hashlib.sha256(ruta2.read_bytes()).hexdigest() == e["sha256_2x"], e["id"]
+            assert not validar_jpg(ruta2, 2), e["id"]
+        else:
+            assert "archivo_2x" not in e, e["id"]
 
 
 if __name__ == "__main__":

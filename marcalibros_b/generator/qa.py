@@ -10,6 +10,7 @@ from scene import ALTO, ANCHO
 UMBRAL_DUPLICADO = 6.0  # diferencia media (0–255) bajo la cual dos piezas se consideran casi iguales
 MAX_SVG_BYTES = 20 * 1024  # 10 KB sin frase; con frase, los contornos de los glifos añaden unos 5 KB
 MAX_JPG_BYTES = 150 * 1024
+MAX_JPG_ALTA_BYTES = 600 * 1024  # a 400×2800 (el grano pesa)
 NS_SVG = "{http://www.w3.org/2000/svg}"
 XMLNS = 'xmlns="http://www.w3.org/2000/svg"'
 
@@ -31,15 +32,16 @@ def validar_svg(ruta: Path):
     return errores
 
 
-def validar_jpg(ruta: Path):
+def validar_jpg(ruta: Path, densidad: int = 1):
     errores = []
-    if ruta.stat().st_size > MAX_JPG_BYTES:
-        errores.append(f"pesa más de {MAX_JPG_BYTES // 1024} KB")
+    limite = MAX_JPG_BYTES if densidad == 1 else MAX_JPG_ALTA_BYTES
+    if ruta.stat().st_size > limite:
+        errores.append(f"pesa más de {limite // 1024} KB")
     with Image.open(ruta) as im:
         if im.format != "JPEG":
             errores.append(f"formato {im.format}, esperado JPEG")
-        if im.size != (ANCHO, ALTO):
-            errores.append(f"tamaño {im.size}, esperado {(ANCHO, ALTO)}")
+        if im.size != (ANCHO * densidad, ALTO * densidad):
+            errores.append(f"tamaño {im.size}, esperado {(ANCHO * densidad, ALTO * densidad)}")
         if im.info.get("exif"):
             errores.append("contiene metadatos EXIF")
     return errores

@@ -65,6 +65,7 @@ jobs:
             marcalibros_b/catalog/.cache
             marcalibros_b/catalog/svg
             marcalibros_b/catalog/jpg
+            marcalibros_b/catalog/jpg2x
             marcalibros_b/catalog/revision
           key: marcalibros-${{ runner.os }}-py3.13-${{ hashFiles('marcalibros_b/generator/*.py', 'marcalibros_b/catalog/*.yaml') }}
           restore-keys: |
@@ -87,6 +88,7 @@ jobs:
           path: |
             marcalibros_b/catalog/svg
             marcalibros_b/catalog/jpg
+            marcalibros_b/catalog/jpg2x
             marcalibros_b/catalog/revision
             marcalibros_b/catalog/manifest.json
           if-no-files-found: error

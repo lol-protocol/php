@@ -10,7 +10,7 @@ Marcalibros son los marcadores de lectura con diseño propio (libros en SVG y pa
 - `catalog/manifest.json`: índice generado de todos los marcalibros (versionado).
 - `catalog/muestras/`: unas pocas piezas de ejemplo por movimiento (versionadas).
 - Hoy: 10 movimientos × 10 autores × 10 obras = 1000 marcalibros (100 JPG y 900 SVG).
-- `catalog/svg/`, `catalog/jpg/`, `catalog/revision/`: **catálogo completo, salida del generador. No está en git**: lo publica el flujo de CI como artefacto `marcalibros-catalogo` (`.github/workflows/marcalibros-b.yml`, en la raíz del repo).
+- `catalog/svg/`, `catalog/jpg/`, `catalog/jpg2x/` (los JPG a 400×2800; los SVG son vectoriales y escalan solos), `catalog/revision/`: **catálogo completo, salida del generador. No está en git**: lo publica el flujo de CI como artefacto `marcalibros-catalogo` (`.github/workflows/marcalibros-b.yml`, en la raíz del repo).
 - `generator/`: generador reproducible. Misma entrada, misma salida. **Incremental**: solo rehace las piezas cuya configuración, o cuyo código, haya cambiado (caché en `catalog/.cache`, fuera de git).
 - `tests/`: pruebas y hashes de referencia.
 
