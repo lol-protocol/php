@@ -215,3 +215,11 @@ Rediseñadas alas (siete plumas de punta redondeada), lobo (sentado, aullando, c
 
 ## Alta densidad 400×2800 (hecho)
 Los 100 JPG se generan también a 400×2800 en `catalog/jpg2x/` (misma escena, `a_imagen(esc, 2)`, grano incluido; ~160 KB, límite 600 KB). El manifest lleva `archivo_2x`, `sha256_2x`, `ancho_2x`, `alto_2x` solo en las piezas JPG. Los SVG son vectoriales: se escalan sin versión aparte. La salida a 1× no cambió (hashes de referencia idénticos). CI: `jpg2x` va en la caché y en el artefacto.
+
+## Modelo de datos del lector (hecho)
+`datos/` (JSON Schema 2020-12) y `generator/modelo.py` (validación con `jsonschema`, dependencia de desarrollo). Tests: `tests/test_modelo.py`.
+- **Diseño** (`diseno.schema.json`): `cat:<id de pieza>` (referencia al manifest, con `sha256` opcional) o `usr:<uuid>` (receta declarativa: fondo = plantilla | generado | imagen subida con recorte 1:7, y texto opcional; propietario, visibilidad privado/compartido; compartido exige moderación aprobada). Nunca guarda SVG, HTML ni URLs: las imágenes son ids de archivos ya recodificados.
+- **Marca** (`marca.schema.json`): usuario, texto (`gutenberg`|`subido`, id, huella sha256 del texto normalizado), rango en puntos de código (`inicio`/`fin`, `inicio = fin` para un punto) con ancla de contexto opcional para recolocar si cambia la edición, etiqueta (texto plano ≤80) y `diseno` (solo el id). Cambiar o borrar un diseño no toca las marcas.
+- `sugerencias_por_gutenberg(manifest)`: id de Gutenberg → diseños sugeribles; solo cuenta `verificado`. Hoy devuelve vacío porque ningún id está verificado.
+- Decisiones por defecto (revisables): posiciones en puntos de código del texto normalizado (NFC, `\n`); una marca tiene un único diseño; los diseños de usuario no se editan, se crea uno nuevo (versionado simple).
+- Siguiente: editor de marcalibros de usuario y subidas seguras (renderizado de recetas en el servidor, recodificación, cuotas, moderación).
