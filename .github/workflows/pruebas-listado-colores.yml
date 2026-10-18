@@ -25,7 +25,7 @@ concurrency:
 jobs:
   listado-colores:
     name: "Listado-colores: CSV válidos y tabla del README al día"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
