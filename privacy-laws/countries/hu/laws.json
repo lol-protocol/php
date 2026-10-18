@@ -15,9 +15,9 @@
     "enforcement_authority": "Hungarian National Authority for Data Protection and Freedom of Information (NAIH)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Rights of deceased may be exercised for 5 years after death by designated person or, failing that, a close relative (s. 25 Infotv)",
+    "research_exemption": "Research data usable only for research; identifiers removed as soon as purpose allows; publication only with consent or if needed for historical results (quoted older wording; current Infotv text unconfirmed) (unconfirmed)",
+    "genetic_data": "GDPR art. 9 special category; separate Act XXI of 2008 on human genetic data, genetic studies/research and biobanks",
     "website_url": "https://naih.hu/",
     "language": "Hungarian",
     "frameworks": "GDPR/CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "enforcement_authority": {
         "url": "https://edpb.europa.eu/about-edpb/our-members_en",
@@ -38,9 +38,42 @@
         "url": "https://www.dataguidance.com/jurisdiction/hungary",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.whitecase.com/insight-our-thinking/gdpr-guide-national-implementation-hungary",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://mnl.gov.hu/download/file/fid/41197",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://u-szeged.hu/acf/english/sample-collection-and/laws-and-regulations",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "GDPR art. 9 special category; separate Act XXI of 2008 on human genetic data, genetic studies/research and biobanks"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Research data usable only for research; identifiers removed as soon as purpose allows; publication only with consent or if needed for historical results (quoted older wording; current Infotv text unconfirmed) (unconfirmed)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Rights of deceased may be exercised for 5 years after death by designated person or, failing that, a close relative (s. 25 Infotv)"
+      },
       {
         "date": "2026-10-16",
         "field": "law_name",
