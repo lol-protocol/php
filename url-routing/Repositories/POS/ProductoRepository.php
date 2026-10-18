@@ -121,7 +121,7 @@ final class ProductoRepository extends Repository
     {
         return $this->db->fetchAll(
             'SELECT ' . self::RESUMEN . ' FROM productos p
-              WHERE p.activo = ? AND LOWER(p.nombre)' . self::LIKE_ESCAPED . '
+              WHERE p.activo = ? AND ' . self::sinAcentos('p.nombre') . self::LIKE_ESCAPED . '
               ORDER BY p.nombre, p.id' . self::page($limit, $offset),
             [true, self::patron($texto)]
         );

@@ -29,6 +29,8 @@ Cada página tiene una sola URL: en minúsculas, con barras simples y con barra 
 
 Cuando dos personas resultan ser la misma y una se fusiona en la otra, el id que desaparece queda en `persona_alias`: `/{id viejo}/` y sus acciones dan **301** a la misma página de la persona que quedó, en vez de 404. Un id que nunca existió sigue siendo 404.
 
+La fusión se hace con `php bin/fusionar.php <duplicado> <que queda>`, que sin `--confirmar` solo muestra qué movería. En una transacción pasa a la que queda los hijos, vínculos, sucesos, organizaciones, colecciones y alias de la duplicada (sin duplicar lo que ya tenía), completa lo que le falte (padres, apellido, marca de vida), borra la duplicada y deja su id como alias. Se niega a fusionar a dos personas que no pueden ser la misma: madre o padre e hija o hijo, o dos que tienen un vínculo entre sí.
+
 ### Contrato de generación de ids (importante)
 
 Un id **debe** generarse ya relleno con ceros al ancho fijo de su tipo. `persona #47` no es `/47/` (2 dígitos → caería en un tipo de 2 dígitos, que no existe, o peor, en uno que sí exista) — es `/0000000047/` (10 dígitos). El helper `enlace($tipo, $id)` en `index.php` hace este padding automáticamente consultando `Router::typeLength()`; nunca se debe construir un enlace concatenando el id "crudo" a mano.
@@ -118,7 +120,7 @@ spa.tudominio.com/sitemap/10/1.xml    personas, parte 1 (50.000 URLs por parte)
 spa.tudominio.com/sitemap/l/1.xml     lugares
 ```
 
-Las páginas de una persona oculta (viva o privada) llevan `<meta name="robots" content="noindex">`. Toda página declara su URL canónica (`rel="canonical"`) y la misma ruta en los otros idiomas (`hreflang` `es`, `en` y `x-default` en el dominio sin subdominio).
+Las páginas de una persona oculta (viva o privada) llevan `<meta name="robots" content="noindex">`. Las de lugares, personas y productos llevan migas de pan (`Inicio › México › Jalisco › Guadalajara`), también como `BreadcrumbList` en JSON-LD; la ficha de una persona visible se describe como `Person` (nombre, nacimiento, defunción) y la de un producto como `Product` (precio, moneda, disponibilidad). Una persona oculta no emite nada sobre sí. Toda página declara su URL canónica (`rel="canonical"`) y la misma ruta en los otros idiomas (`hreflang` `es`, `en` y `x-default` en el dominio sin subdominio).
 
 El sitemap lista solo lo que un visitante puede ver, lo pida quien lo pida: ninguna persona que podría estar viva o que solo está en colecciones privadas, ningún suceso ni registro que la delataría, ninguna colección privada. Cada parte se nombra por el largo de dígitos de su tipo (`10`, `9`, `8`, `7`, `6`, `5`) o `l` para lugares. Las URLs absolutas usan `SITE_URL_GENEALOGY` (o, sin ella, el esquema y el host de la petición).
 
@@ -153,17 +155,19 @@ El carrito y el pago no tienen un id que contar, así que usan una letra que se 
 /c/2/        actualizar   (solo POST)
 /c/3/        quitar       (solo POST)
 /c/4/        vaciar       (solo POST)
-/p/          pago (p = pago / pay / paiement)
-/p/1/        envío
-/p/2/        pago
-/p/3/        confirmar
+/p/          pago (p = pago / pay / paiement): resumen de la compra
+/p/1/        envío: la dirección (GET el formulario, POST la guarda en la sesión)
+/p/2/        pago: por ahora no se cobra en línea
+/p/3/        confirmar (GET el resumen, POST crea la orden)
 ```
+
+Confirmar crea la orden en una transacción: cada línea descuenta su stock solo si todavía alcanza (`UPDATE … WHERE stock >= cantidad`), así que dos compras a la vez no venden la última unidad dos veces; si una línea ya no alcanza, no cambia nada y se vuelve al carrito. La orden copia el nombre y el precio de cada línea, queda `pendiente` de pago, y la navegación sigue a `/{código}/`. Como no hay login, la orden se asocia a la sesión que la hizo: esa sesión la puede abrir, además del propietario.
 
 Las URLs antiguas en palabras (`/cart/`, `/checkout/`, `/checkout/shipping/`...) dan 301 a las nuevas.
 
 ### Órdenes: código aleatorio de 16 dígitos
 
-La URL de una orden no lleva su id (que es correlativo y se podría recorrer) sino `ordenes.codigo`: 16 dígitos aleatorios, únicos, de ancho fijo. Como cualquier otro tipo, el router la reconoce por el largo: `/{16 dígitos}/`. Quien cree órdenes debe generar el código con `random_int()`. Las órdenes siguen siendo solo del propietario (ver [`ACCESO.md`](./ACCESO.md)) y nunca aparecen en la búsqueda (`/b/16/` es un 400).
+La URL de una orden no lleva su id (que es correlativo y se podría recorrer) sino `ordenes.codigo`: 16 dígitos aleatorios, únicos, de ancho fijo. Como cualquier otro tipo, el router la reconoce por el largo: `/{16 dígitos}/`. El checkout lo genera con `random_int()`. Una orden la ven solo el propietario y la sesión que la hizo (ver [`ACCESO.md`](./ACCESO.md)) y nunca aparecen en la búsqueda (`/b/16/` es un 400).
 
 ### Ejemplos
 

@@ -73,6 +73,18 @@ class GenealogyRepositoriesTest extends TestCase
     }
 
     #[DataProvider('drivers')]
+    public function testSearchIgnoresAccentsAndCase(string $driver): void
+    {
+        $repo = new PersonaRepository($this->db($driver), Privacidad::publica());
+        $nombres = static fn(array $filas): array => array_map(static fn(array $f): string => $f['nombres'] . ' ' . $f['apellidos'], $filas);
+
+        foreach (['alvarez', 'ÁLVAREZ', 'álvarez', 'jose garcia'] as $texto) {
+            $this->assertContains('José García Álvarez', $nombres($repo->buscar($texto)), $texto);
+        }
+        $this->assertContains('García', array_column((new GrupoRepository($this->db($driver)))->buscar('GARCIA'), 'apellido'));
+    }
+
+    #[DataProvider('drivers')]
     public function testSitemapListsOnlyWhatAVisitorMaySee(string $driver): void
     {
         $repo = new SitemapRepository($this->db($driver), Privacidad::publica());
