@@ -15,9 +15,9 @@
     "enforcement_authority": "Personal Data Protection Office (UODO)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not covered: Poland added no rules for deceased persons, so GDPR (living persons only) applies by default",
+    "research_exemption": "Not in the 2018 Act: Higher Education and Science Act art. 469b(2) allows special-category data for research if results are non-identifying; anonymise once purpose reached",
+    "genetic_data": "Special category under art. 9 GDPR; no specific rule found in the 2018 Act (unconfirmed)",
     "website_url": "https://uodo.gov.pl/",
     "language": "Polish",
     "frameworks": "GDPR/CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-17",
     "sources": {
       "enactment_date": {
         "url": "https://rm.coe.int/belarus-study-visit-may-2019-presentation-krzysztof-krol/1680947923",
@@ -38,9 +38,42 @@
         "url": "https://cms.law/en/lux/publication/gdpr-enforcement-tracker-report/poland",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.whitecase.com/insight-our-thinking/gdpr-guide-national-implementation",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://projekty.umlub.edu.pl/storage/subservices/4/files/Przewodnik_-_ABC_Badacza.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://poradnikprzedsiebiorcy.pl/-szczegolne-kategorie-danych-osobowych-i-ich-przetwarzanie-wedlug-rodo",
+        "confidence": "low",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category under art. 9 GDPR; no specific rule found in the 2018 Act (unconfirmed)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Not in the 2018 Act: Higher Education and Science Act art. 469b(2) allows special-category data for research if results are non-identifying; anonymise once purpose reached"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: Poland added no rules for deceased persons, so GDPR (living persons only) applies by default"
+      },
       {
         "date": "2026-10-14",
         "field": "enactment_date",

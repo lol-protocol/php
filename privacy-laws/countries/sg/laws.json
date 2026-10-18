@@ -15,8 +15,8 @@
     "enforcement_authority": "Personal Data Protection Commission (PDPC)",
     "penalties_range": "Up to 10% of annual Singapore turnover (if >SGD 10m) or SGD 1 million, whichever higher",
     "exemptions": "Public functions",
-    "deceased_data": "",
-    "research_exemption": "",
+    "deceased_data": "Disclosure and protection provisions apply to individuals dead 10 years or fewer (s. 4(4))",
+    "research_exemption": "Research exception to consent (Second Schedule Part 2): identifiable form necessary, consent impracticable, public-interest benefit",
     "genetic_data": "",
     "website_url": "https://www.pdpc.gov.sg/",
     "language": "English",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-17",
     "sources": {
       "enforcement_authority": {
         "url": "https://pdpc.gov.sg/Who-We-Are/About-Us",
@@ -43,9 +43,31 @@
         "url": "https://conventuslaw.com/report/amendments-to-singapores-personal-data-protection/",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.pdpc.gov.sg/-/media/Files/PDPC/PDF-Files/Data-Protection-Officers/pdpc-corporate-brochure.pdf?la=en",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://www.pdpc.gov.sg/-/media/Files/PDPC/PDF-Files/Advisory-Guidelines/AG-on-Key-Concepts/Annex-A--PDPAs-Framework-for-the-Collection-Use-and-Disclosure-of-Personal-Data-1-Feb-2021.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Research exception to consent (Second Schedule Part 2): identifiable form necessary, consent impracticable, public-interest benefit"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Disclosure and protection provisions apply to individuals dead 10 years or fewer (s. 4(4))"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

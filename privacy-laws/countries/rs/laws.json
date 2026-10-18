@@ -15,7 +15,7 @@
     "enforcement_authority": "Commissioner for Information of Public Importance and Personal Data Protection (Poverenik)",
     "penalties_range": "Up to RSD 2M fine for legal entities",
     "exemptions": "Purely personal or household use",
-    "deceased_data": "",
+    "deceased_data": "No explicit rule found; law protects natural persons and data subject is a natural person (arts. 2, 4), suggesting living persons only (unconfirmed)",
     "research_exemption": "",
     "genetic_data": "",
     "website_url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/serbia",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "high",
-    "last_checked": "2026-10-15",
+    "last_checked": "2026-10-17",
     "sources": {
       "enactment_date": {
         "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/serbia",
@@ -38,9 +38,20 @@
         "url": "https://cms.law/en/int/expert-guides/cms-expert-guide-to-data-protection-and-cyber-security-laws/serbia",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "deceased_data": {
+        "url": "https://otvoreniparlament.rs/uploads/akta/Zakon o zaštiti podataka o ličnosti.pdf",
+        "confidence": "low",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "No explicit rule found; law protects natural persons and data subject is a natural person (arts. 2, 4), suggesting living persons only (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "effective_date",

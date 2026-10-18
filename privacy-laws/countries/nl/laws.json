@@ -15,9 +15,9 @@
     "enforcement_authority": "Dutch Authority for Data Protection",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not covered: Autoriteit Persoonsgegevens states AVG does not apply directly to deceased persons' data (recital 27)",
+    "research_exemption": "Special categories for public-interest research/statistics if consent impossible (art. 24 UAVG); rights 15,16,18 may be set aside (art. 44)",
+    "genetic_data": "Prohibited in principle; allowed under same conditions as art. 24 or explicit legal basis (art. 28 UAVG)",
     "website_url": "https://www.ap.nl/",
     "language": "Dutch",
     "frameworks": "GDPR/CoE-108",
@@ -27,15 +27,48 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-17",
     "sources": {
       "notes": {
         "url": "https://zoek.officielebekendmakingen.nl/stb-2026-154.odt",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://privacy-web.nl/wp-content/uploads/po_assets/1015137.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "research_exemption": {
+        "url": "https://activemind.legal/law/nl-research",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://activemind.legal/law/nl-research",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Prohibited in principle; allowed under same conditions as art. 24 or explicit legal basis (art. 28 UAVG)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Special categories for public-interest research/statistics if consent impossible (art. 24 UAVG); rights 15,16,18 may be set aside (art. 44)"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: Autoriteit Persoonsgegevens states AVG does not apply directly to deceased persons' data (recital 27)"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

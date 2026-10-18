@@ -17,7 +17,7 @@
     "exemptions": "Art. 4(A) consent exceptions: research, statistics, national security, public interest, data made public by subject, CBJ entities; personal-purpose use excluded",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Sensitive data includes genetic and biometric data (definitions; article not confirmed); processing generally needs prior explicit written/electronic consent",
     "website_url": "https://www.clydeco.com/en/insights/2023/10/jordan-issues-first-personal-data-protection-law",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-08",
+    "last_checked": "2026-10-17",
     "sources": {
       "retention_period": {
         "url": "https://www.modee.gov.jo/ebv4.0/root_storage/en/eb_list_page/pdpl.pdf",
@@ -38,9 +38,20 @@
         "url": "https://www.modee.gov.jo/ebv4.0/root_storage/en/eb_list_page/pdpl.pdf",
         "confidence": "medium",
         "checked": "2026-10-15"
+      },
+      "genetic_data": {
+        "url": "https://www.clydeco.com/en/insights/2023/10/jordan-issues-first-personal-data-protection-law",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data includes genetic and biometric data (definitions; article not confirmed); processing generally needs prior explicit written/electronic consent"
+      },
       {
         "date": "2026-10-15",
         "field": "exemptions",

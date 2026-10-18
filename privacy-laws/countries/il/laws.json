@@ -15,9 +15,9 @@
     "enforcement_authority": "Privacy Protection Authority (PPA)",
     "penalties_range": "Administrative fines up to NIS 320,000 per violation (higher if aggravated / per-data-subject based); criminal penalties",
     "exemptions": "Government functions",
-    "deceased_data": "",
+    "deceased_data": "No express rule; commentators say the dead have no privacy rights under the Law; courts recognized a separate publicity right surviving death 25+ years (Dali, 2016) (unconfirmed)",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Governed by separate Genetic Information Law 5761-2000: testing needs informed consent/authorization; genetic data also sensitive under the Privacy Law",
     "website_url": "https://www.justice.gov.il/",
     "language": "Hebrew/English",
     "frameworks": "EU-Adequacy",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-17",
     "sources": {
       "enforcement_authority": {
         "url": "https://www.pearlcohen.com/major-amendment-to-israeli-privacy-law-set-to-take-effect/",
@@ -43,9 +43,31 @@
         "url": "https://www.pearlcohen.com/major-amendment-to-israeli-privacy-law-set-to-take-effect/",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.calcalistech.com/ctechnews/article/rkjxfdqygx",
+        "confidence": "low",
+        "checked": "2026-10-17"
+      },
+      "genetic_data": {
+        "url": "https://lawoffice.org.il/en/are-dna-tests-restricted-in-israel/",
+        "confidence": "medium",
+        "checked": "2026-10-17"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-17",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Governed by separate Genetic Information Law 5761-2000: testing needs informed consent/authorization; genetic data also sensitive under the Privacy Law"
+      },
+      {
+        "date": "2026-10-17",
+        "field": "deceased_data",
+        "from": "",
+        "to": "No express rule; commentators say the dead have no privacy rights under the Law; courts recognized a separate publicity right surviving death 25+ years (Dali, 2016) (unconfirmed)"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",
