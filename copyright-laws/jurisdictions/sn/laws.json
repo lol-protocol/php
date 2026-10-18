@@ -28,6 +28,11 @@
         "confidence": "medium",
         "checked": "2026-10-14"
       },
+      "orphan_works": {
+        "url": "https://www.eifl.net/system/files/resources/202312/what_can_libraries_in_senegal_do_under_copyright_act_2008.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
       "digital_protection": {
         "url": "https://www.memoireonline.com/10/12/6258/m_Leffectivite-de-la-protection-des-droits-de-propriete-litteraire-et-artistique17.html",
         "confidence": "high",
@@ -37,11 +42,6 @@
         "url": "https://www.eifl.net/system/files/resources/202312/que_peuvent_faire_les_bibliotheques_au_senegal_en_vertu_de_la_loi_de_2008_sur_le_droit_dauteur.pdf",
         "confidence": "medium",
         "checked": "2026-10-14"
-      },
-      "orphan_works": {
-        "url": "https://www.eifl.net/system/files/resources/202312/what_can_libraries_in_senegal_do_under_copyright_act_2008.pdf",
-        "confidence": "medium",
-        "checked": "2026-10-17"
       }
     },
     "changes": [

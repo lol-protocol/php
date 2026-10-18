@@ -33,6 +33,11 @@
         "confidence": "high",
         "checked": "2026-10-16"
       },
+      "term_of_protection": {
+        "url": "https://c.enwp.org/wiki/Commons:CRT/Burundi",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
       "moral_rights": {
         "url": "https://www.memoireonline.com/11/11/4955/m_De-la-protection-des-droits-de-propriete-litteraire-et-artistique-en-droit-positif-burundais3.html",
         "confidence": "medium",
@@ -52,11 +57,6 @@
         "url": "https://www.wipo.int/wipolex/en/treaties/parties/remarks/BI/15",
         "confidence": "medium",
         "checked": "2026-10-16"
-      },
-      "term_of_protection": {
-        "url": "https://c.enwp.org/wiki/Commons:CRT/Burundi",
-        "confidence": "medium",
-        "checked": "2026-10-17"
       }
     },
     "changes": [

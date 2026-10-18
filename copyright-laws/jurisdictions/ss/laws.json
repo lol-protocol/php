@@ -1,0 +1,46 @@
+[
+  {
+    "country_code": "SS",
+    "country_name": "South Sudan",
+    "region": "middle_east_africa",
+    "law_name": "Copyright and Neighbouring Rights Protection Act 1996 (listed by Wikimedia Commons as main law; may be inherited Sudanese law - unverified)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (inherited Sudanese Copyright and Neighbouring Rights Protection Act 1996, s. 13(2); photographs/audiovisual: 25 years from publication); no post-independence South Sudanese law confirmed (unconfirmed)",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/South_Sudan.html",
+    "notes": "Copyright Bill being fast-tracked by Ministry of Culture (late 2025); no new act found; an undated KEI note lists South Sudan as outside WIPO and Berne; no WIPO Lex or treaty record found for South Sudan",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "low",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://blogs.ashmolean.org/commons.wikimedia.org/wiki/Commons_Copyright_rules_by_territory/South_Sudan.html",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "term_of_protection": {
+        "url": "https://c.enwp.org/wiki/Commons:FOP_South_Sudan",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

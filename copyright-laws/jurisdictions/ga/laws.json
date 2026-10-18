@@ -1,0 +1,56 @@
+[
+  {
+    "country_code": "GA",
+    "country_name": "Gabon",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 1/87 of 29 July 1987 on Copyright and Neighbouring Rights; the Bangui Agreement (revised 1999), Annex VII, also applies as Gabon is an OAPI member",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Law No. 1/87 of 29 July 1987 on copyright and neighbouring rights); photographs, anonymous, audiovisual, posthumous and applied-art works: publication + 50 years",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "WCT/WPPT",
+    "treaties_not_party": "",
+    "linked_resources": "https://oapi.int/en/presentation/historical/",
+    "notes": "Gabon appears as WCT party from 6 Mar 2002 (WIPO document) and WPPT in force 20 May 2002 (Dutch treaty database). Berne/TRIPS not checked.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://c.enwp.org/wiki/Commons:CRT/Gabon",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "protection_type": {
+        "url": "https://intellectual-property-helpdesk.ec.europa.eu/system/files/2021-10/IP%20OAPI%20Fiche_0_0_0.pdf",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "term_of_protection": {
+        "url": "https://c.enwp.org/wiki/Commons:CRT/Gabon",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "treaties_signatory": {
+        "url": "https://treatydatabase.overheid.nl/en/Treaty/Details/007931_p",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
