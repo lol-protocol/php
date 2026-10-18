@@ -17,42 +17,37 @@ sys.path.insert(0, str(HERE))
 
 import biblioteca  # noqa: E402
 import genealogia  # noqa: E402
-from lib import VARIANTS, write  # noqa: E402
+from catalogo import GROUPS, VARIANTS  # noqa: E402
 
 SETS = (
     ('genealogia', 'iconos-genealogia', 'Árbol genealógico', genealogia.ICONS),
     ('biblioteca', 'iconos-biblioteca', 'Biblioteca virtual', biblioteca.ICONS),
 )
 
-GROUPS = {
-    'person': 'Personas y parentescos',
-    'relationship': 'Relaciones',
-    'state': 'Estados',
-    'view': 'Vistas',
-    'action': 'Acciones',
-    'ui': 'Interfaz',
-    'book': 'Libros',
-    'genre': 'Géneros',
-    'format': 'Ediciones y formatos',
-    'status': 'Disponibilidad y lectura',
-    'attr': 'Atributos',
-}
-
 
 def prefix(stem):
     return stem.split('_')[0]
 
 
-def build_set(folder, icons):
-    base = ROOT / folder
-    for variant in VARIANTS:
-        shutil.rmtree(base / variant, ignore_errors=True)
+def plan_set(folder, icons):
+    """Todo lo que se escribirá para un set, {ruta: texto}, comprobado antes de borrar nada."""
     stems = [i.stem for i in icons]
     repeated = sorted({s for s in stems if stems.count(s) > 1})
     if repeated:
         raise SystemExit(f'{folder}: nombres repetidos {repeated}')
-    for icon in icons:
-        write(icon, base, prefix(icon.stem))
+    unlabeled = sorted({prefix(s) for s in stems} - set(GROUPS))
+    if unlabeled:
+        raise SystemExit(f'{folder}: prefijos sin etiqueta en catalogo.GROUPS {unlabeled}')
+    base = ROOT / folder
+    return {base / v / prefix(i.stem) / f'{i.stem}.svg': i.render(v) for i in icons for v in VARIANTS}
+
+
+def write_set(folder, files):
+    for variant in VARIANTS:
+        shutil.rmtree(ROOT / folder / variant, ignore_errors=True)
+    for path, text in files.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding='utf-8')
 
 
 def gallery_data():
@@ -70,16 +65,18 @@ def gallery_data():
 TEMPLATE = (HERE / 'galeria.template.html').read_text(encoding='utf-8')
 
 
-def build_gallery():
-    html = TEMPLATE.replace('__DATA__', json.dumps(gallery_data(), ensure_ascii=False, separators=(',', ':')))
-    (ROOT / 'galeria-iconos.html').write_text(html, encoding='utf-8')
+def gallery_html():
+    return TEMPLATE.replace('__DATA__', json.dumps(gallery_data(), ensure_ascii=False, separators=(',', ':')))
 
 
 def main():
-    for _, folder, title, icons in SETS:
-        build_set(folder, icons)
+    # primero se genera y comprueba todo; solo entonces se borra y se escribe, para que un error no deje los sets a medias
+    plans = [(folder, icons, plan_set(folder, icons)) for _, folder, _, icons in SETS]
+    gallery = gallery_html()
+    for folder, icons, files in plans:
+        write_set(folder, files)
         print(f'{folder}: {len(icons)} iconos x {len(VARIANTS)} variantes')
-    build_gallery()
+    (ROOT / 'galeria-iconos.html').write_text(gallery, encoding='utf-8')
     print('galeria-iconos.html')
 
 

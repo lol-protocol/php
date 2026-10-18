@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_view_hourglass_mist" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_view_hourglass_mist_r45" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#DCE2EB"/>
       <stop offset="1" stop-color="#CBD5E1"/>
     </linearGradient>
@@ -20,10 +20,10 @@
     <path d="M31 30L31 40L43 40L43 48" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M24.51 12.97A1.06 1.06 0 0 1 24.41 14.35L20.95 17.81A1.06 1.06 0 0 1 19.45 17.81L15.99 14.35A1.06 1.06 0 0 1 15.89 14.23L14.87 12.87A1.06 1.06 0 0 1 14.97 11.49L18.43 8.03A1.06 1.06 0 0 1 19.93 8.03L23.39 11.49A1.06 1.06 0 0 1 23.49 11.61Z" fill="#767C82"/><rect x="15.5" y="8.5" width="7.01" height="7.01" rx="1.06" transform="rotate(45 19 12)" fill="url(#grad_view_hourglass_mist)"/></g>
-    <g><path d="M24.51 48.97A1.06 1.06 0 0 1 24.41 50.35L20.95 53.81A1.06 1.06 0 0 1 19.45 53.81L15.99 50.35A1.06 1.06 0 0 1 15.89 50.23L14.87 48.87A1.06 1.06 0 0 1 14.97 47.49L18.43 44.03A1.06 1.06 0 0 1 19.93 44.03L23.39 47.49A1.06 1.06 0 0 1 23.49 47.61Z" fill="#767C82"/><rect x="15.5" y="44.5" width="7.01" height="7.01" rx="1.06" transform="rotate(45 19 48)" fill="url(#grad_view_hourglass_mist)"/></g>
-    <g><path d="M48.51 12.97A1.06 1.06 0 0 1 48.41 14.35L44.95 17.81A1.06 1.06 0 0 1 43.45 17.81L39.99 14.35A1.06 1.06 0 0 1 39.89 14.23L38.87 12.87A1.06 1.06 0 0 1 38.97 11.49L42.43 8.03A1.06 1.06 0 0 1 43.93 8.03L47.39 11.49A1.06 1.06 0 0 1 47.49 11.61Z" fill="#767C82"/><rect x="39.5" y="8.5" width="7.01" height="7.01" rx="1.06" transform="rotate(45 43 12)" fill="url(#grad_view_hourglass_mist)"/></g>
-    <g><path d="M48.51 48.97A1.06 1.06 0 0 1 48.41 50.35L44.95 53.81A1.06 1.06 0 0 1 43.45 53.81L39.99 50.35A1.06 1.06 0 0 1 39.89 50.23L38.87 48.87A1.06 1.06 0 0 1 38.97 47.49L42.43 44.03A1.06 1.06 0 0 1 43.93 44.03L47.39 47.49A1.06 1.06 0 0 1 47.49 47.61Z" fill="#767C82"/><rect x="39.5" y="44.5" width="7.01" height="7.01" rx="1.06" transform="rotate(45 43 48)" fill="url(#grad_view_hourglass_mist)"/></g>
+    <g><path d="M24.51 12.97A1.06 1.06 0 0 1 24.41 14.35L20.95 17.81A1.06 1.06 0 0 1 19.45 17.81L15.99 14.35A1.06 1.06 0 0 1 15.89 14.23L14.87 12.87A1.06 1.06 0 0 1 14.97 11.49L18.43 8.03A1.06 1.06 0 0 1 19.93 8.03L23.39 11.49A1.06 1.06 0 0 1 23.49 11.61Z" fill="#767C82"/><rect x="15.5" y="8.5" width="7.01" height="7.01" rx="1.06" transform="rotate(45 19 12)" fill="url(#grad_view_hourglass_mist_r45)"/></g>
+    <g><path d="M24.51 48.97A1.06 1.06 0 0 1 24.41 50.35L20.95 53.81A1.06 1.06 0 0 1 19.45 53.81L15.99 50.35A1.06 1.06 0 0 1 15.89 50.23L14.87 48.87A1.06 1.06 0 0 1 14.97 47.49L18.43 44.03A1.06 1.06 0 0 1 19.93 44.03L23.39 47.49A1.06 1.06 0 0 1 23.49 47.61Z" fill="#767C82"/><rect x="15.5" y="44.5" width="7.01" height="7.01" rx="1.06" transform="rotate(45 19 48)" fill="url(#grad_view_hourglass_mist_r45)"/></g>
+    <g><path d="M48.51 12.97A1.06 1.06 0 0 1 48.41 14.35L44.95 17.81A1.06 1.06 0 0 1 43.45 17.81L39.99 14.35A1.06 1.06 0 0 1 39.89 14.23L38.87 12.87A1.06 1.06 0 0 1 38.97 11.49L42.43 8.03A1.06 1.06 0 0 1 43.93 8.03L47.39 11.49A1.06 1.06 0 0 1 47.49 11.61Z" fill="#767C82"/><rect x="39.5" y="8.5" width="7.01" height="7.01" rx="1.06" transform="rotate(45 43 12)" fill="url(#grad_view_hourglass_mist_r45)"/></g>
+    <g><path d="M48.51 48.97A1.06 1.06 0 0 1 48.41 50.35L44.95 53.81A1.06 1.06 0 0 1 43.45 53.81L39.99 50.35A1.06 1.06 0 0 1 39.89 50.23L38.87 48.87A1.06 1.06 0 0 1 38.97 47.49L42.43 44.03A1.06 1.06 0 0 1 43.93 44.03L47.39 47.49A1.06 1.06 0 0 1 47.49 47.61Z" fill="#767C82"/><rect x="39.5" y="44.5" width="7.01" height="7.01" rx="1.06" transform="rotate(45 43 48)" fill="url(#grad_view_hourglass_mist_r45)"/></g>
     <g><path d="M25.9 34.2L27.28 36.04A6.6 6.6 0 0 0 37.84 28.12L36.46 26.28A6.6 6.6 0 0 0 25.9 34.2Z" fill="#29313D"/><circle cx="31" cy="30" r="6.6" fill="url(#grad_view_hourglass_ink)"/></g>
   </g>
   <g class="marks">

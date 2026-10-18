@@ -81,6 +81,7 @@ Los SVG son salida generada, no se editan a mano — se definen en
   pequeños (rayas y ondas, anillo y cruz).
 - El efecto 2.5D es una extrusión hacia abajo y a la derecha con sombra
   proyectada; no es una proyección isométrica estricta.
-- A 24 px, dentro de una misma familia de géneros, algunos pares quedan
-  cerca entre sí (`genre_self_help` y `genre_travel`, 1,05, frente a 0,8 de
-  límite).
+- A 24 px algunos pares quedan cerca entre sí, frente a 0,8 de límite: el
+  más cercano es `status_read` con `status_reading` (0,97) y, dentro de una
+  misma familia de géneros, `genre_self_help` con `genre_travel` (1,04).
+  `iconos-tools/similares.py` los lista.
