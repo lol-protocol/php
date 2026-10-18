@@ -1,0 +1,358 @@
+<title>Listado de países</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600&family=Source+Sans+3:wght@400;600&display=swap">
+<!-- Plantilla de vista.html: generar_tabla.py reemplaza los datos (/*DATOS*/ y /*MAPA*/). -->
+<style>
+/* Una columna de atlas: cabecera con el índice elegido, mapa coroplético a todo el ancho con su
+   leyenda, filtros en una fila y la tabla ordenable que hace de vista de datos. */
+:root {
+  --bg: #f9f9f7; --superficie: #fcfcfb; --tinta: #0b0b0b; --tinta-2: #52514e; --tenue: #898781;
+  --linea: #e1e0d9; --borde: rgba(11, 11, 11, 0.10); --acento: #256abf; --acento-tinta: #fcfcfb;
+  --q1: #86b6ef; --q2: #5598e7; --q3: #2a78d6; --q4: #1c5cab; --q5: #0d366b;
+  --excluido: #d6d4cc; --rayado: #8f8d86; --fuera: #ecebe6; --resalte: #0b0b0b;
+  --f-titulo: "Barlow Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-texto: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d0d0d; --superficie: #1a1a19; --tinta: #f0efec; --tinta-2: #c3c2b7; --tenue: #898781;
+    --linea: #2c2c2a; --borde: rgba(255, 255, 255, 0.10); --acento: #5598e7; --acento-tinta: #0d0d0d;
+    --q1: #184f95; --q2: #256abf; --q3: #3987e5; --q4: #6da7ec; --q5: #b7d3f6;
+    --excluido: #3a3a37; --rayado: #74726b; --fuera: #242422; --resalte: #f0efec;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d0d0d; --superficie: #1a1a19; --tinta: #f0efec; --tinta-2: #c3c2b7; --tenue: #898781;
+  --linea: #2c2c2a; --borde: rgba(255, 255, 255, 0.10); --acento: #5598e7; --acento-tinta: #0d0d0d;
+  --q1: #184f95; --q2: #256abf; --q3: #3987e5; --q4: #6da7ec; --q5: #b7d3f6;
+  --excluido: #3a3a37; --rayado: #74726b; --fuera: #242422; --resalte: #f0efec;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--tinta); font: 15px/1.45 var(--f-texto);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 48px;
+}
+.pagina { max-width: 1180px; margin: 0 auto; display: grid; gap: 20px; }
+h1 { font: 600 2rem/1.1 var(--f-titulo); letter-spacing: 0.01em; margin: 0; text-wrap: balance; }
+.cabecera { display: grid; gap: 10px; }
+.bajada { color: var(--tinta-2); margin: 0; max-width: 68ch; }
+.selector { display: inline-flex; border: 1px solid var(--borde); border-radius: 8px; padding: 3px; gap: 3px;
+  background: var(--superficie); width: fit-content; flex-wrap: wrap; }
+.selector input { position: absolute; opacity: 0; pointer-events: none; }
+.selector label { font: 600 0.95rem var(--f-titulo); letter-spacing: 0.02em; padding: 6px 14px; border-radius: 6px;
+  cursor: pointer; color: var(--tinta-2); }
+.selector input:checked + label { background: var(--acento); color: var(--acento-tinta); }
+.selector input:focus-visible + label { outline: 2px solid var(--acento); outline-offset: 2px; }
+.resumen { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--tinta-2); font-variant-numeric: tabular-nums; }
+.resumen b { color: var(--tinta); font: 600 1.15rem var(--f-titulo); }
+.mapa { position: relative; background: var(--superficie); border: 1px solid var(--borde); border-radius: 10px;
+  padding: 8px; }
+.mapa svg { display: block; width: 100%; height: auto; }
+.pais { stroke: var(--superficie); stroke-width: 0.4; cursor: pointer; transition: opacity 0.15s; }
+.pais.apagado { opacity: 0.22; }
+.pais.activo { stroke: var(--resalte); stroke-width: 1.2; }
+.marca { stroke: var(--superficie); stroke-width: 0.8; cursor: pointer; }
+.marca.activo { stroke: var(--resalte); stroke-width: 1.4; }
+.fuera { fill: var(--fuera); stroke: var(--superficie); stroke-width: 0.4; }
+.leyenda { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; padding: 10px 6px 2px;
+  color: var(--tinta-2); font-size: 0.85rem; }
+.leyenda .titulo { font: 600 0.8rem var(--f-titulo); letter-spacing: 0.08em; text-transform: uppercase; color: var(--tenue); }
+.muestra { display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
+.muestra i { width: 18px; height: 12px; border-radius: 3px; display: inline-block; }
+.tip { position: absolute; z-index: 5; pointer-events: none; background: var(--superficie); color: var(--tinta);
+  border: 1px solid var(--borde); border-radius: 8px; padding: 8px 10px; font-size: 0.85rem; max-width: 280px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18); }
+.tip h3 { margin: 0 0 4px; font: 600 1rem var(--f-titulo); }
+.tip dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 1px 10px; font-variant-numeric: tabular-nums; }
+.tip dt { color: var(--tenue); }
+.tip dd { margin: 0; }
+.tip p { margin: 6px 0 0; color: var(--tinta-2); }
+.filtros { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.filtros input[type="search"], .filtros select { font: inherit; color: var(--tinta); background: var(--superficie);
+  border: 1px solid var(--borde); border-radius: 6px; padding: 6px 10px; min-width: 0; }
+.filtros input[type="search"] { flex: 1 1 220px; max-width: 360px; }
+.filtros label { display: inline-flex; gap: 6px; align-items: center; color: var(--tinta-2); }
+.filtros .cuenta { margin-left: auto; color: var(--tenue); font-variant-numeric: tabular-nums; }
+.tabla { overflow-x: auto; background: var(--superficie); border: 1px solid var(--borde); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; min-width: 860px; font-size: 0.9rem; }
+th, td { padding: 8px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--linea); }
+th { position: sticky; top: 0; background: var(--superficie); font: 600 0.78rem var(--f-titulo); letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--tenue); white-space: nowrap; }
+th button { all: unset; cursor: pointer; }
+th button:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+th[aria-sort="ascending"] button::after { content: " ▲"; }
+th[aria-sort="descending"] button::after { content: " ▼"; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+td:first-child { min-width: 15rem; }
+tbody tr:hover { background: var(--bg); }
+.nombre { font-weight: 600; }
+.nota { display: block; color: var(--tinta-2); font-size: 0.82rem; max-width: 46ch; margin-top: 2px; }
+.ficha { display: inline-block; font-size: 0.72rem; border: 1px solid var(--borde); border-radius: 4px; padding: 0 5px;
+  margin-left: 6px; color: var(--tinta-2); font-weight: 400; vertical-align: 1px; }
+.prioridad { display: inline-flex; align-items: center; gap: 6px; justify-content: flex-end; }
+.prioridad i { display: inline-block; height: 8px; border-radius: 2px; }
+.excl { display: inline-flex; align-items: center; gap: 5px; color: var(--tinta-2); white-space: nowrap; }
+.excl i { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+.rayado { background: repeating-linear-gradient(45deg, var(--excluido) 0 3px, var(--rayado) 3px 4.5px); }
+.vacio { color: var(--tenue); }
+.pie { color: var(--tenue); font-size: 0.82rem; margin: 0; max-width: 90ch; }
+@media (max-width: 560px) { h1 { font-size: 1.6rem; } .filtros .cuenta { margin-left: 0; } }
+@media (prefers-reduced-motion: reduce) { .pais { transition: none; } }
+</style>
+
+<div class="pagina">
+  <header class="cabecera">
+    <h1>Listado de países</h1>
+    <p class="bajada" id="bajada"></p>
+    <div class="selector" role="radiogroup" aria-label="Índice">
+      <input type="radio" name="modo" id="modo-gen" value="gen" checked><label for="modo-gen">Genealogía · IG × IO</label>
+      <input type="radio" name="modo" id="modo-pos" value="pos"><label for="modo-pos">Etiquetador POS · IL × IP local</label>
+    </div>
+    <div class="resumen" id="resumen"></div>
+  </header>
+
+  <figure class="mapa" style="margin:0">
+    <svg id="svg" viewBox="0 -245 1000 440" role="img" aria-label="Mapa de prioridad por país">
+      <defs>
+        <pattern id="rayas" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <rect width="5" height="5" style="fill: var(--excluido)"></rect>
+          <line x1="0" y1="0" x2="0" y2="5" style="stroke: var(--rayado); stroke-width: 1.4"></line>
+        </pattern>
+      </defs>
+      <g id="capa-paises"></g>
+      <g id="capa-marcas"></g>
+    </svg>
+    <div class="tip" id="tip" hidden></div>
+    <figcaption class="leyenda" id="leyenda"></figcaption>
+  </figure>
+
+  <div class="filtros">
+    <input type="search" id="buscar" placeholder="Buscar país, lengua o comentario" aria-label="Buscar">
+    <select id="region" aria-label="Región"><option value="">Todas las regiones</option></select>
+    <label><input type="checkbox" id="ver-excluidos" checked> Mostrar excluidos</label>
+    <span class="cuenta" id="cuenta"></span>
+  </div>
+
+  <div class="tabla"><table id="tabla"><thead></thead><tbody></tbody></table></div>
+
+  <p class="pie" id="pie"></p>
+</div>
+
+<script>
+const DATOS = /*DATOS*/null;
+const MAPA = /*MAPA*/null;
+
+const nf = (d) => new Intl.NumberFormat("es-ES", { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmt = (v, d = 0) => (v === null || v === undefined || v === "") ? null : nf(d).format(v);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const TRAMOS = [[3, "--q1", "1–3"], [6, "--q2", "4–6"], [10, "--q3", "8–10"], [16, "--q4", "12–16"], [25, "--q5", "20–25"]];
+const tramo = (p) => TRAMOS.find(([max]) => p <= max);
+
+const MODOS = {
+  gen: {
+    prioridad: (d) => d.pg, excluido: (d) => d.xg, nota: (d) => d.cg,
+    motivo: (d) => `IO ${d.io}`, formula: (d) => `IG ${d.ig} × IO ${d.io}`,
+    bajada: "Prioridad para operar un servicio de genealogía: interés en la genealogía (IG) por operabilidad (IO). Se excluye con IO ≤ 1.",
+    columnas: [
+      ["pais", "País", false], ["r", "Región", false], ["pob", "Población 2024 (M)", true, 2],
+      ["nac", "Nacidos en la historia (M)", true, 0], ["idh", "IDH 2023", true, 3], ["net", "Internet (%)", true, 1],
+      ["emi", "Emigrantes (%)", true, 1], ["ig", "IG", true, 0], ["io", "IO", true, 0], ["prio", "Prioridad", true, 0],
+      ["excl", "Excluido", false],
+    ],
+    tip: (d) => [["Población 2024", fmt(d.pob, 2) && fmt(d.pob, 2) + " M"], ["Nacidos en la historia", fmt(d.nac, 0) && fmt(d.nac, 0) + " M"],
+      ["IDH 2023", fmt(d.idh, 3)], ["Internet", fmt(d.net, 1) && fmt(d.net, 1) + " %"], ["Emigrantes", fmt(d.emi, 1) && fmt(d.emi, 1) + " %"]],
+  },
+  pos: {
+    prioridad: (d) => d.pp, excluido: (d) => d.xp, nota: (d) => d.cp,
+    motivo: (d) => `IP local ${d.ipl}`, formula: (d) => `IL ${d.il} × IP local ${d.ipl}`,
+    bajada: "Prioridad para un etiquetador gramatical (POS): interés en la lectura (IL) por los recursos de la lengua local (IP local). Se excluye con IP local ≤ 1.",
+    columnas: [
+      ["pais", "País", false], ["local", "Lengua local", false], ["alf", "Alfabetización (%)", true, 1],
+      ["net", "Internet (%)", true, 1], ["pal", "Palabras anotadas", true, 0], ["web", "Texto web (%)", true, 4],
+      ["il", "IL", true, 0], ["ipl", "IP local", true, 0], ["prio", "Prioridad", true, 0], ["excl", "Excluido", false],
+    ],
+    tip: (d) => [["Lenguas", d.lenguas], ["Palabras anotadas (local)", fmt(d.pal, 0)], ["Texto web (local)", fmt(d.web, 4) && fmt(d.web, 4) + " %"],
+      ["Alfabetización", fmt(d.alf, 1) && fmt(d.alf, 1) + " %"], ["Internet", fmt(d.net, 1) && fmt(d.net, 1) + " %"]],
+  },
+};
+
+let modo = "gen";
+let orden = { clave: "prio", desc: true };
+let fijo = null;
+const porCodigo = Object.fromEntries(DATOS.map((d) => [d.c, d]));
+const svg = document.getElementById("svg");
+const tip = document.getElementById("tip");
+const NS = "http://www.w3.org/2000/svg";
+const formas = {};
+
+function valor(d, clave) {
+  const m = MODOS[modo];
+  if (clave === "pais") return d.n;
+  if (clave === "prio") return m.excluido(d) ? -1 : m.prioridad(d);
+  if (clave === "excl") return m.excluido(d) ? 1 : 0;
+  return d[clave];
+}
+
+function relleno(d) {
+  if (!d) return "var(--fuera)";
+  const m = MODOS[modo];
+  return m.excluido(d) ? "url(#rayas)" : `var(${tramo(m.prioridad(d))[1]})`;
+}
+
+function dibujarMapa() {
+  const capa = document.getElementById("capa-paises");
+  const marcas = document.getElementById("capa-marcas");
+  for (const [codigo, trazado, x, y] of MAPA) {
+    let forma = null;
+    if (trazado) {
+      forma = document.createElementNS(NS, "path");
+      forma.setAttribute("d", trazado);
+      forma.setAttribute("class", codigo ? "pais" : "fuera");
+      capa.appendChild(forma);
+    }
+    if (!codigo) continue;
+    const chico = !forma || (() => { const b = forma.getBBox(); return b.width * b.height < 18; })();
+    if (chico) {
+      const punto = document.createElementNS(NS, "circle");
+      punto.setAttribute("cx", x); punto.setAttribute("cy", y); punto.setAttribute("r", 3.2);
+      punto.setAttribute("class", "marca");
+      marcas.appendChild(punto);
+      forma = forma ? [forma, punto] : [punto];
+    } else {
+      forma = [forma];
+    }
+    formas[codigo] = forma;
+    for (const f of forma) {
+      f.dataset.codigo = codigo;
+      f.addEventListener("pointerenter", (e) => mostrarTip(codigo, e));
+      f.addEventListener("pointermove", (e) => mostrarTip(codigo, e));
+      f.addEventListener("pointerleave", () => { if (!fijo) ocultarTip(); });
+      f.addEventListener("click", (e) => { e.stopPropagation(); fijo = fijo === codigo ? null : codigo; mostrarTip(codigo, e); });
+    }
+  }
+  document.addEventListener("click", () => { fijo = null; ocultarTip(); });
+}
+
+function mostrarTip(codigo, e) {
+  if (fijo && fijo !== codigo) return;
+  const d = porCodigo[codigo];
+  const m = MODOS[modo];
+  const filas = m.tip(d).filter(([, v]) => v).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("");
+  const estado = m.excluido(d) ? `Excluido (${m.motivo(d)})` : `Prioridad ${m.prioridad(d)} · ${m.formula(d)}`;
+  tip.innerHTML = `<h3>${esc(d.n)}</h3><dl><dt>Índice</dt><dd>${esc(estado)}</dd>${filas}</dl>` +
+    (m.nota(d) ? `<p>${esc(m.nota(d))}</p>` : "");
+  tip.hidden = false;
+  const caja = svg.parentElement.getBoundingClientRect();
+  let x = e.clientX - caja.left + 14, y = e.clientY - caja.top + 14;
+  if (x + tip.offsetWidth > caja.width - 8) x = Math.max(8, e.clientX - caja.left - tip.offsetWidth - 14);
+  if (y + tip.offsetHeight > caja.height - 8) y = Math.max(8, e.clientY - caja.top - tip.offsetHeight - 14);
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+  resaltar(codigo);
+}
+
+function ocultarTip() { tip.hidden = true; resaltar(null); }
+
+function resaltar(codigo) {
+  for (const [c, fs] of Object.entries(formas)) for (const f of fs) f.classList.toggle("activo", c === codigo);
+}
+
+function filtrados() {
+  const texto = document.getElementById("buscar").value.trim().toLowerCase();
+  const region = document.getElementById("region").value;
+  const verExcluidos = document.getElementById("ver-excluidos").checked;
+  const m = MODOS[modo];
+  return DATOS.filter((d) => (!region || d.r === region) && (verExcluidos || !m.excluido(d)) &&
+    (!texto || [d.n, d.lenguas, d.cg, d.cp].join(" ").toLowerCase().includes(texto)));
+}
+
+function celda(d, [clave, , num, dec]) {
+  const m = MODOS[modo];
+  if (clave === "pais") {
+    const nota = m.nota(d);
+    return `<td><span class="nombre">${esc(d.n)}</span>${d.t !== "estado" ? `<span class="ficha">${esc(d.t)}</span>` : ""}` +
+      (nota ? `<span class="nota">${esc(nota)}</span>` : "") + "</td>";
+  }
+  if (clave === "prio") {
+    if (m.excluido(d)) return `<td class="num"><span class="vacio">—</span></td>`;
+    const p = m.prioridad(d);
+    return `<td class="num"><span class="prioridad"><i style="width:${p * 1.6}px;background:var(${tramo(p)[1]})"></i>${p}</span></td>`;
+  }
+  if (clave === "excl") {
+    return m.excluido(d) ? `<td><span class="excl"><i class="rayado"></i>Sí · ${esc(m.motivo(d))}</span></td>`
+      : `<td><span class="vacio">no</span></td>`;
+  }
+  const v = d[clave];
+  if (num) return v === null || v === undefined ? `<td class="num"><span class="vacio">—</span></td>` : `<td class="num">${fmt(v, dec)}</td>`;
+  return `<td>${esc(v || "—")}</td>`;
+}
+
+function dibujarTabla() {
+  const m = MODOS[modo];
+  const lista = filtrados();
+  const visibles = new Set(lista.map((d) => d.c));
+  const { clave, desc } = orden;
+  lista.sort((a, b) => {
+    const va = valor(a, clave), vb = valor(b, clave);
+    const vacioA = va === null || va === undefined || va === "", vacioB = vb === null || vb === undefined || vb === "";
+    if (vacioA !== vacioB) return vacioA ? 1 : -1;
+    const c = typeof va === "string" ? va.localeCompare(vb, "es") : va - vb;
+    return (desc ? -c : c) || a.n.localeCompare(b.n, "es");
+  });
+  const thead = document.querySelector("#tabla thead");
+  thead.innerHTML = "<tr>" + m.columnas.map(([k, titulo, num]) =>
+    `<th class="${num ? "num" : ""}" aria-sort="${k === clave ? (desc ? "descending" : "ascending") : "none"}">` +
+    `<button type="button" data-clave="${k}">${esc(titulo)}</button></th>`).join("") + "</tr>";
+  document.querySelector("#tabla tbody").innerHTML = lista.map((d) =>
+    `<tr data-codigo="${d.c}">` + m.columnas.map((col) => celda(d, col)).join("") + "</tr>").join("");
+  document.getElementById("cuenta").textContent = `${lista.length} de ${DATOS.length}`;
+  for (const [c, fs] of Object.entries(formas)) for (const f of fs) {
+    f.style.fill = relleno(porCodigo[c]);
+    f.classList.toggle("apagado", !visibles.has(c));
+  }
+}
+
+function dibujarResumen() {
+  const m = MODOS[modo];
+  const excluidos = DATOS.filter(m.excluido).length;
+  const maximos = DATOS.filter((d) => !m.excluido(d) && m.prioridad(d) === 25).length;
+  document.getElementById("bajada").textContent = m.bajada;
+  document.getElementById("resumen").innerHTML =
+    `<span><b>${DATOS.length}</b> países y territorios</span><span><b>${DATOS.length - excluidos}</b> incluidos</span>` +
+    `<span><b>${excluidos}</b> excluidos</span><span><b>${maximos}</b> con prioridad máxima (25)</span>`;
+  document.getElementById("leyenda").innerHTML = `<span class="titulo">Prioridad</span>` +
+    TRAMOS.map(([, v, t]) => `<span class="muestra"><i style="background:var(${v})"></i>${t}</span>`).join("") +
+    `<span class="muestra"><i class="rayado"></i>Excluido</span>` +
+    `<span class="muestra"><i style="background:var(--fuera);border:1px solid var(--borde)"></i>Fuera de la tabla</span>`;
+}
+
+function todo() { dibujarResumen(); dibujarTabla(); }
+
+for (const r of [...new Set(DATOS.map((d) => d.r))].sort((a, b) => a.localeCompare(b, "es"))) {
+  document.getElementById("region").insertAdjacentHTML("beforeend", `<option>${esc(r)}</option>`);
+}
+document.querySelectorAll('input[name="modo"]').forEach((el) => el.addEventListener("change", () => {
+  modo = el.value; orden = { clave: "prio", desc: true }; fijo = null; ocultarTip(); todo();
+}));
+["buscar", "region", "ver-excluidos"].forEach((id) => document.getElementById(id).addEventListener("input", dibujarTabla));
+document.querySelector("#tabla thead").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-clave]");
+  if (!b) return;
+  const clave = b.dataset.clave;
+  orden = { clave, desc: orden.clave === clave ? !orden.desc : !["pais", "r", "local"].includes(clave) };
+  dibujarTabla();
+});
+const cuerpo = document.querySelector("#tabla tbody");
+cuerpo.addEventListener("pointerover", (e) => { const tr = e.target.closest("tr"); if (tr && !fijo) resaltar(tr.dataset.codigo); });
+cuerpo.addEventListener("pointerleave", () => { if (!fijo) resaltar(null); });
+document.getElementById("pie").textContent = "Datos: Our World in Data, Gapminder, Banco Mundial, PNUD, UNESCO, " +
+  "Universal Dependencies, MasakhaPOS, Common Crawl y Natural Earth (mapa). IG, IO e IL son juicio propio. " +
+  "Ver el README del proyecto Listado-paises.";
+dibujarMapa();
+todo();
+</script>
