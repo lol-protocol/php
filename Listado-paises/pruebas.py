@@ -161,5 +161,120 @@ class GeneradorDeTablas(unittest.TestCase):
             self.assertEqual(int(f["indice_pos_local"]), niveles[lenguas[0]], f["codigo"])
 
 
+class PreparacionDePuntaAPunta(unittest.TestCase):
+    """preparar_datos.main y preparar_lenguas.main sobre fuentes sintéticas mínimas.
+
+    Tres países: AA está en todas las fuentes; BB no está en OWID y usa la población del Banco
+    Mundial; CC solo está en la población de Gapminder (serie larga, sin población actual).
+    """
+
+    def setUp(self):
+        self.d = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.d)
+
+    def csv(self, nombre, columnas, filas):
+        escribir_serie(self.d / nombre, filas, columnas)
+        return str(self.d / nombre)
+
+    def test_preparar_datos(self):
+        import preparar_datos as pd
+        vacia = {c: "" for c in generar_tabla.COLUMNAS_PAISES}
+        with (self.d / "paises.csv").open("w", encoding="utf-8", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=generar_tabla.COLUMNAS_PAISES)
+            w.writeheader()
+            for codigo in ("AA", "BB", "CC"):
+                w.writerow({**vacia, "codigo": codigo, "pais": codigo, "region": "Europa"})
+        self.csv("codigos_iso.csv", ("codigo", "codigo_owid", "nombre_iso"),
+                 [("AA", "AAA", "A"), ("BB", "BBB", "B"), ("CC", "CCC", "C")])
+        hyde = "Global Population by Region (HYDE (2016) and UN (2017))"
+        a = {
+            "--co2": self.csv("co2.csv", ("iso_code", "country", "year", "population"),
+                              [("AAA", "Aland", 1850, 1_000_000), ("AAA", "Aland", 2024, 4_000_000)]),
+            "--maddison": self.csv("mad.csv", ("Entity", "Year", "Population"), [("Aland", 1700, 800_000)]),
+            "--hyde": self.csv("hyde.csv", ("Entity", "Year", hyde), [("Europe", -10000, 1e6), ("Europe", 1500, 1e8)]),
+            "--clio": self.csv("clio.csv", ("Entity", "Year", "Population (Clio)"),
+                               [("Aland", 1500, 300_000), ("Aland", 1700, 640_000)]),
+            "--natalidad-gapminder": self.csv("cbr.csv", ("geo", "time", "cbr"), [("aaa", 2015, 30.0)]),
+            "--fecundidad-gapminder": self.csv("tfr.csv", ("country", "time", "tfr"),
+                                               [("aaa", 2015, 3.0), ("aaa", 2016, 1.5)]),
+            "--idh": self.csv("idh.csv", ("geo", "time", "hdi"), [("aaa", pd.ANIO_IDH, 0.8)]),
+            "--alfabetizacion": self.csv("alf.csv", ("geo", "time", "lit"), [("aaa", 2009, 90.0), ("bbb", 2020, 70.0)]),
+            "--internet": self.csv("net.csv", ("geo", "time", "net"), [("aaa", 2024, 80.0)]),
+            "--emigrantes": self.csv("emi.csv", ("country", "time", "emigrant_n"), [("aaa", pd.ANIO_EMIGRANTES, 400_000)]),
+            "--poblacion-gapminder": self.csv("popg.csv", ("geo", "time", "pop"),
+                                              [("ccc", 1800, 1000), ("ccc", 2010, 5000), ("ccc", 2030, 9000)]),
+            "--pib-ppa": self.csv("ppa.csv", ("country", "time", "gdp_pcap"), [("aaa", pd.ANIO_PIB_PPA, 30000.4)]),
+            "--pib-bm": self.csv("gdp.csv", ("Country Name", "Country Code", "Year", "Value"),
+                                 [("A", "AAA", 2023, 8e10), ("B", "BBB", 2022, 2e9)]),
+            "--poblacion-bm": self.csv("pop.csv", ("Country Name", "Country Code", "Year", "Value"),
+                                       [("A", "AAA", 2023, 4e6), ("B", "BBB", 1960, 1e5), ("B", "BBB", 2022, 2e5),
+                                        ("B", "BBB", 2024, 2.5e5)]),
+        }
+        pd.main([x for par in a.items() for x in par], self.d)
+
+        paises = {f["codigo"]: f for f in leer_csv(self.d / "paises.csv")}
+        aa, bb, cc = paises["AA"], paises["BB"], paises["CC"]
+        self.assertEqual(aa["poblacion_millones"], "4.00")
+        self.assertEqual(aa["idh"], "0.800")
+        self.assertEqual(aa["pib_per_capita_usd"], "20000")  # 8e10 / 4e6, del Banco Mundial
+        self.assertEqual(aa["pib_per_capita_ppa_usd"], "30000")
+        self.assertEqual(aa["alfabetizacion_adultos"], "")  # 2009 es anterior al mínimo
+        self.assertEqual(aa["usuarios_internet"], "80.0")
+        self.assertEqual(aa["emigrantes_pct"], "10.0")  # 400 000 / 4 000 000
+        self.assertEqual(bb["poblacion_millones"], "0.25")  # Banco Mundial, sin OWID
+        self.assertEqual(bb["pib_per_capita_usd"], "10000")  # 2022: 2e9 / 2e5
+        self.assertEqual(bb["alfabetizacion_adultos"], "70.0")
+        self.assertEqual(cc["poblacion_millones"], "")  # Gapminder no da la población actual
+
+        larga = {}
+        for f in leer_csv(self.d / "poblacion_larga.csv"):
+            larga.setdefault(f["codigo"], {})[int(f["anio"])] = int(f["poblacion"])
+        # AA: Clio 1500 empalmado con Maddison 1700 (factor 800 000 / 640 000 = 1,25), y antes HYDE
+        # con la cuota de 1500.
+        self.assertEqual(larga["AA"][1500], 375_000)
+        self.assertEqual(larga["AA"][1700], 800_000)
+        self.assertEqual(larga["AA"][-10000], round(375_000 / 1e8 * 1e6))
+        self.assertEqual(larga["BB"][1960], 100_000)
+        self.assertNotIn(2030, larga["CC"])  # la proyección de Gapminder no entra
+        self.assertEqual(larga["CC"][2010], 5000)
+
+        natalidad = {(f["codigo"], int(f["anio"])): float(f["tasa_por_mil"])
+                     for f in leer_csv(self.d / "natalidad.csv")}
+        self.assertEqual(natalidad[("AA", 2015)], 30.0)
+        self.assertEqual(natalidad[("AA", 2016)], 15.0)  # 30 x 1,5 / 3
+
+    def test_preparar_lenguas(self):
+        import preparar_lenguas as pl
+        ud = self.d / "ud"
+        ud.mkdir()
+        (ud / "UD_Aland-Uno.xml").write_text(
+            "<treebank><size><total><tokens>9</tokens><words>600000</words></total></size></treebank>",
+            encoding="utf-8")
+        (self.d / "codes.yaml").write_text("Aland:\n  lcode: al\n  iso3: ala\n", encoding="utf-8")
+        masakha = self.d / "masakha" / "blb"
+        masakha.mkdir(parents=True)
+        (masakha / "train.txt").write_text("".join(f"palabra NOUN\n" for _ in range(20000)), encoding="utf-8")
+        self.csv("cc.csv", ("crawl", "primary_language", "pages", "urls", "%pages/crawl"),
+                 [(pl.CRAWL, "ala", 1, 1, "1.5"), ("CC-VIEJO", "blb", 1, 1, "9")])
+        self.csv("niveles_lenguas.csv", generar_tabla.COLUMNAS_NIVELES,
+                 [("alandés", "ala", "", "", "", ""), ("bolo", "blb", "", "", "", ""), ("nada", "zzz", "", "", "", "")])
+        self.csv("paises_pos.csv", generar_tabla.COLUMNAS_POS,
+                 [("BB", "bolo; alandés", "3", "", "", "IP por x (mejor recurso listado). Alfabetización baja"),
+                  ("AA", "alandés", "4", "", "", "")])
+        pl.main(["--ud-stats", str(ud), "--ud-codigos", str(self.d / "codes.yaml"),
+                 "--masakhapos", str(self.d / "masakha"), "--common-crawl", str(self.d / "cc.csv")], self.d)
+
+        lenguas = {f["lengua"]: f for f in leer_csv(self.d / "niveles_lenguas.csv")}
+        self.assertEqual((lenguas["alandés"]["palabras_anotadas"], lenguas["alandés"]["nivel"]), ("600000", "5"))
+        self.assertEqual(lenguas["alandés"]["paginas_web_pct"], "1.5000")
+        self.assertEqual((lenguas["bolo"]["palabras_anotadas"], lenguas["bolo"]["nivel"]), ("20000", "3"))
+        self.assertEqual(lenguas["bolo"]["paginas_web_pct"], "")  # solo está en otro rastreo
+        self.assertEqual(lenguas["nada"]["nivel"], "1")
+        pos = {f["codigo"]: f for f in leer_csv(self.d / "paises_pos.csv")}
+        self.assertEqual((pos["BB"]["indice_pos"], pos["BB"]["indice_pos_local"]), ("5", "3"))
+        self.assertEqual(pos["BB"]["comentarios_pos"], "IP por alandés (mejor recurso listado). Alfabetización baja")
+        self.assertEqual(pos["AA"]["comentarios_pos"], "")
+
+
 if __name__ == "__main__":
     unittest.main()
