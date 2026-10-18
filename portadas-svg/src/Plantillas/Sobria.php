@@ -27,9 +27,9 @@ final class Sobria extends Plantilla
         return 0.55;
     }
 
-    protected function coloresLomo(array $colores): array
+    protected function coloresLomo(Libro $libro): array
     {
-        return ['fondo' => $colores['acento'], 'texto' => $colores['fondo']];
+        return ['fondo' => $libro->colores['acento'], 'texto' => $libro->colores['fondo']];
     }
 
     protected function portada(Libro $libro, Rectangulo $panel): string

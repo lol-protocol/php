@@ -14,6 +14,7 @@
   "lomo_direccion": "arriba-abajo",
   "plantilla": "clasica",
   "colores": { "fondo": "#f3ead7", "texto": "#2a1f17", "acento": "#7a2e1f" },
+  "degradado": { "tipo": "radial", "colores": ["#f7f0de", "#dcc69a"] },
   "contratapa": "En el año 399 a. C., Sócrates comparece ante un jurado de ciudadanos atenienses acusado de impiedad y de corromper a la juventud.\n\nEste texto recoge, según lo recuerda Platón, la defensa que pronunció ante ellos y su negativa a dejar de filosofar aunque con ello salvara la vida.",
   "solapa_contratapa": "Las preguntas que plantea Sócrates siguen sin respuesta definitiva, y por eso este diálogo se sigue leyendo.",
   "solapa_portada": "Platón (c. 428–348 a. C.) fue discípulo de Sócrates y fundó la Academia en Atenas."

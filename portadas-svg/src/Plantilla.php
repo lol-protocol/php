@@ -47,7 +47,8 @@ abstract class Plantilla
     /** Dibuja la cubierta completa, con sangrado. */
     public function dibujar(Libro $libro, Medidas $medidas): string
     {
-        $svg = $this->rectangulo($medidas->lienzo(), ['fill' => $libro->colores['fondo']]);
+        $svg = $libro->degradado?->defs($medidas->lienzo()) ?? '';
+        $svg .= $this->rectangulo($medidas->lienzo(), ['fill' => $this->relleno($libro)]);
         $svg .= $this->portada($libro, $medidas->pieza('portada'));
         $svg .= $this->contratapa($libro, $medidas->pieza('contratapa'));
         $svg .= $this->lomo($libro, $medidas->pieza('lomo'));
@@ -75,14 +76,22 @@ abstract class Plantilla
     }
 
     /**
-     * Fondo y texto del lomo.
+     * Relleno del fondo: el color sólido, o una referencia al degradado de la cubierta. El lomo lo
+     * comparte, así que el degradado no se corta en el lomo.
+     */
+    protected function relleno(Libro $libro): string
+    {
+        return $libro->degradado === null ? $libro->colores['fondo'] : 'url(#' . Degradado::ID . ')';
+    }
+
+    /**
+     * Relleno y color del texto del lomo.
      *
-     * @param array{fondo: string, texto: string, acento: string} $colores
      * @return array{fondo: string, texto: string}
      */
-    protected function coloresLomo(array $colores): array
+    protected function coloresLomo(Libro $libro): array
     {
-        return ['fondo' => $colores['fondo'], 'texto' => $colores['texto']];
+        return ['fondo' => $this->relleno($libro), 'texto' => $libro->colores['texto']];
     }
 
     protected function contratapa(Libro $libro, Rectangulo $panel): string
@@ -110,7 +119,7 @@ abstract class Plantilla
 
     protected function lomo(Libro $libro, Rectangulo $panel): string
     {
-        $colores = $this->coloresLomo($libro->colores);
+        $colores = $this->coloresLomo($libro);
         // El lomo no tiene borde exterior, así que su color llega también al sangrado de arriba y de abajo.
         $fondo = new Rectangulo($panel->x, 0.0, $panel->ancho, $panel->alto + 2 * $libro->sangradoMm);
         $svg = $this->rectangulo($fondo, ['fill' => $colores['fondo']]);

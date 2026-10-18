@@ -57,6 +57,7 @@ final class Generador
             'Sangrado: ' . self::fmt($libro->sangradoMm) . ' mm en cada borde exterior',
             'Lomo: ' . self::fmt($libro->lomoMm) . ' mm (confírmalo con la imprenta: depende del papel)',
             $libro->solapasMm > 0 ? 'Solapas: ' . self::fmt($libro->solapasMm) . ' mm' : 'Sin solapas',
+            ...($libro->degradado === null ? [] : ['Fondo: ' . $libro->degradado->descripcion()]),
             '',
             'Tamaño de cada archivo, con sangrado (ancho × alto):',
         ];

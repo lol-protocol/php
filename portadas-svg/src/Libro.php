@@ -26,6 +26,8 @@ final class Libro
         public readonly string $solapaPortada,
         public readonly string $plantilla,
         public readonly array $colores,
+        /** Degradado del fondo, o null si el fondo es un color sólido. */
+        public readonly ?Degradado $degradado,
         /** Corte, sangrado, solapas y lomo, en mm. */
         public readonly float $anchoMm,
         public readonly float $altoMm,
@@ -65,11 +67,15 @@ final class Libro
             if (!array_key_exists($rol, $colores)) {
                 throw new \InvalidArgumentException("$id: el color '$rol' no existe; usa fondo, texto o acento.");
             }
-            if (!is_string($color) || preg_match('/^#[0-9a-f]{6}$/i', $color) !== 1) {
+            if (!is_string($color) || !Color::valido($color)) {
                 throw new \InvalidArgumentException("$id: el color '$rol' debe ser #rrggbb.");
             }
             $colores[$rol] = $color;
         }
+
+        $degradado = isset($datos['degradado'])
+            ? Degradado::desdeArray(self::objeto($datos, 'degradado'), $colores['fondo'], $colores['texto'])
+            : null;
 
         $formato = self::objeto($datos, 'formato');
         $ancho = self::numero($formato, 'ancho_mm', 135.0, 50.0);
@@ -107,6 +113,7 @@ final class Libro
             solapaPortada: self::cadena($datos, 'solapa_portada'),
             plantilla: $plantilla,
             colores: $colores,
+            degradado: $degradado,
             anchoMm: $ancho,
             altoMm: $alto,
             sangradoMm: $sangrado,

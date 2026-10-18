@@ -9,6 +9,7 @@ Cada libro es un JSON con sus datos. El generador escribe un SVG por pieza, con 
 - PHP 8.3, con las extensiones `dom` y `mbstring`.
 - Sin Composer ni dependencias.
 - Para ver o convertir los SVG: cualquier navegador, Inkscape o `rsvg-convert`.
+- El proyecto es solo PHP y SVG: no tiene HTML ni JavaScript, y una prueba lo comprueba.
 
 ## Uso
 
@@ -56,6 +57,7 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `solapas_mm` | `0` | Ancho de cada solapa. `0` no pone sobrelomo; si no es `0`, mínimo 40. |
 | `plantilla` | `clasica` | `clasica` o `sobria`. |
 | `colores.fondo`, `colores.texto`, `colores.acento` | los de la plantilla | Colores en `#rrggbb`. |
+| `degradado` | sin degradado | Degradado del fondo de toda la cubierta. Ver «Degradados». |
 | `lomo_direccion` | `arriba-abajo` | Sentido del texto del lomo: `arriba-abajo` o `abajo-arriba`. |
 | `contratapa` | vacío | Texto de la contratapa. Los párrafos van separados por una línea en blanco. |
 | `solapa_contratapa` | vacío | Texto de la solapa interior de la contratapa (solo con solapas). |
@@ -79,6 +81,22 @@ Sin solapas, esas dos no existen y el sangrado de cada lado pega con la contrata
 
 Con los ejemplos: el de Platón tiene 112 páginas, así que su lomo mide 5,6 mm y su sobrelomo, con solapas de 90 mm, mide 461,6 × 216 mm. El de Sun Tzu (96 páginas, sin solapas) mide 280,8 × 216 mm.
 
+## Degradados
+
+El fondo puede ser un degradado en lugar de un color sólido. Se escribe en SVG, dentro de un `<defs>`, y el lomo lo comparte, así que no se corta.
+
+```json
+"degradado": { "tipo": "lineal", "angulo": 90, "colores": ["#f3ead7", "#c9a96e"] }
+```
+
+- `tipo`: `lineal` (por defecto) o `radial`. El radial sale del centro de la cubierta completa y llega a las esquinas.
+- `angulo`: en grados, solo para el lineal. `0` va de izquierda a derecha y `90` de arriba abajo (por defecto `90`).
+- `colores`: una lista de 2 a 6 colores en `#rrggbb`, repartidos a partes iguales. O la palabra `"auto"` (por defecto): el fondo va hacia un segundo color que se aleja del color del texto, así que el contraste mejora de un extremo al otro.
+
+Las coordenadas van en milímetros sobre la cubierta completa. Por eso el degradado coincide al unir las piezas y cada archivo muestra su tramo correcto. El `medidas.txt` describe el degradado usado.
+
+Un `"degradado": {}` vacío equivale a un degradado `auto` lineal de arriba abajo.
+
 ## Plantillas
 
 - **`clasica`**: fondo crema, marco doble, título centrado en serif, un rombo como ornamento y el autor en mayúsculas espaciadas.
@@ -90,6 +108,7 @@ Para añadir una plantilla, crea `src/Plantillas/Nombre.php` que extienda `Plant
 
 - **Fuentes.** Los SVG piden fuentes instaladas (Georgia, Helvetica…), y Georgia o Helvetica no son libres para incrustar. Para imprimir, convierte el texto a trazos en Inkscape (Trayecto → Objeto a trazado) o usa fuentes libres (licencia OFL, como EB Garamond o Libre Baskerville) incrustadas.
 - **Ajuste del texto.** El ajuste usa un ancho medio de letra aproximado, sin medir la fuente. Mira siempre la vista previa con la fuente real.
+- **Degradados al imprimir.** Las impresoras los convierten a CMYK, y eso puede cambiar tonos o mostrar bandas en degradados suaves. Pide prueba de color al impresor.
 - **Vista previa en imagen.** `rsvg-convert -w 2000 portada.svg -o portada.png`, Inkscape o Chromium. Los SVG están en milímetros.
 - **Código de barras.** El rectángulo blanco de la contratapa es un hueco reservado para el EAN-13 del ISBN. Este sistema no genera el código: lo pone quien imprime.
 - **Tapa dura.** No se modela el grosor de las tapas. Ajusta `lomo_mm` y las medidas con la imprenta.
@@ -112,7 +131,7 @@ Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos
 
 ```
 bin/generar.php          línea de comandos
-src/                     Libro, Medidas, Texto, Svg, Generador y las plantillas
+src/                     Libro, Medidas, Texto, Color, Degradado, Svg, Generador y las plantillas
 ejemplos/*.json          libros de ejemplo
 ejemplos/salida/         SVG de los ejemplos, versionados y comprobados por CI
 pruebas/ejecutar.php     pruebas unitarias, sin dependencias

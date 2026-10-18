@@ -8,10 +8,13 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/autocarga.php';
 
+use PortadasSvg\Color;
+use PortadasSvg\Degradado;
 use PortadasSvg\Generador;
 use PortadasSvg\Libro;
 use PortadasSvg\Medidas;
 use PortadasSvg\Plantilla;
+use PortadasSvg\Rectangulo;
 use PortadasSvg\Svg;
 use PortadasSvg\Texto;
 
@@ -171,6 +174,69 @@ $pruebas = [
         Generador::escribir(libroDeEjemplo(['titulo' => 'Ana & Luis']), $dir);
         verdadero(str_contains((string) file_get_contents("$dir/portada.svg"), 'Ana &amp; Luis'), 'el & no se escapó');
         borrarDirectorio($dir);
+    },
+
+    'Color mezcla y decide si un color es claro' => function (): void {
+        igual('#666666', Color::mezclar('#000000', '#ffffff', 0.4));
+        igual('#000000', Color::mezclar('#000000', '#ffffff', 0.0));
+        verdadero(Color::esClaro('#f3ead7'), 'el crema debería ser claro');
+        verdadero(!Color::esClaro('#1c1f24'), 'el carbón no debería ser claro');
+    },
+
+    'Color rechaza lo que no es #rrggbb' => function (): void {
+        lanza(InvalidArgumentException::class, fn () => Color::rgb('#abc'));
+        lanza(InvalidArgumentException::class, fn () => Color::rgb('rojo'));
+    },
+
+    'Degradado lineal cruza el lienzo de borde a borde' => function (): void {
+        $degradado = Degradado::desdeArray(['angulo' => 0, 'colores' => ['#000000', '#ffffff']], '#000000', '#111111');
+        $defs = $degradado->defs(new Rectangulo(0.0, 0.0, 100.0, 50.0));
+        verdadero(str_contains($defs, 'x1="0" y1="25" x2="100" y2="25"'), "extremos mal: $defs");
+        verdadero(str_contains($defs, 'offset="0" stop-color="#000000"') && str_contains($defs, 'offset="1" stop-color="#ffffff"'), "paradas mal: $defs");
+    },
+
+    'Degradado radial llega a la esquina con el último color' => function (): void {
+        $degradado = Degradado::desdeArray(['tipo' => 'radial', 'colores' => ['#ffffff', '#000000']], '#ffffff', '#111111');
+        $defs = $degradado->defs(new Rectangulo(0.0, 0.0, 100.0, 50.0));
+        verdadero(str_contains($defs, 'cx="50" cy="25" r="55.902"'), "radio mal: $defs");
+    },
+
+    'Degradado «auto» se aleja del color de texto' => function (): void {
+        // Texto oscuro: el fondo se aclara. Texto claro: el fondo se oscurece.
+        igual(['#000000', '#666666'], Degradado::desdeArray([], '#000000', '#111111')->colores);
+        igual(['#ffffff', '#999999'], Degradado::desdeArray([], '#ffffff', '#ffffff')->colores);
+    },
+
+    'Degradado rechaza tipo, ángulo y colores no válidos' => function (): void {
+        lanza(InvalidArgumentException::class, fn () => Degradado::desdeArray(['tipo' => 'cónico'], '#ffffff', '#000000'));
+        lanza(InvalidArgumentException::class, fn () => Degradado::desdeArray(['angulo' => 'x'], '#ffffff', '#000000'));
+        lanza(InvalidArgumentException::class, fn () => Degradado::desdeArray(['colores' => ['#000000']], '#ffffff', '#000000'));
+        lanza(InvalidArgumentException::class, fn () => Degradado::desdeArray(['colores' => ['#000000', 'rojo']], '#ffffff', '#000000'));
+        lanza(InvalidArgumentException::class, fn () => libroDeEjemplo(['degradado' => ['tipo' => 'cónico']]));
+    },
+
+    'Con degradado, cada pieza lo referencia y no lleva HTML ni JS' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        Generador::escribir(libroDeEjemplo(['degradado' => ['angulo' => 90]]), $dir);
+        foreach (glob("$dir/*.svg") ?: [] as $archivo) {
+            $svg = (string) file_get_contents($archivo);
+            verdadero(str_contains($svg, '<linearGradient'), "$archivo sin degradado");
+            verdadero(str_contains($svg, 'fill="url(#fondo-degradado)"'), "$archivo no usa el degradado");
+            verdadero(!str_contains($svg, '<script') && !str_contains($svg, '<html'), "$archivo lleva HTML o JS");
+        }
+        verdadero(str_contains((string) file_get_contents("$dir/medidas.txt"), 'Fondo: degradado lineal, 90°'), 'medidas.txt no describe el fondo');
+        borrarDirectorio($dir);
+    },
+
+    'El proyecto no tiene HTML ni JS' => function (): void {
+        $archivos = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(dirname(__DIR__), FilesystemIterator::SKIP_DOTS));
+        $prohibidos = [];
+        foreach ($archivos as $archivo) {
+            if (in_array(strtolower($archivo->getExtension()), ['html', 'htm', 'js', 'mjs', 'cjs'], true)) {
+                $prohibidos[] = $archivo->getPathname();
+            }
+        }
+        igual([], $prohibidos);
     },
 
     'Los libros de ejemplo se cargan' => function (): void {

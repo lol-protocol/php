@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="135mm" height="216mm" viewBox="233.6 0 135 216">
 <title>Apología de Sócrates · Portada</title>
-<rect x="0" y="0" width="461.6" height="216" fill="#f3ead7"/>
+<defs>
+<radialGradient id="fondo-degradado" gradientUnits="userSpaceOnUse" cx="230.8" cy="108" r="254.819"><stop offset="0" stop-color="#f7f0de"/>
+<stop offset="1" stop-color="#dcc69a"/>
+</radialGradient>
+</defs>
+<rect x="0" y="0" width="461.6" height="216" fill="url(#fondo-degradado)"/>
 <rect x="241.6" y="11" width="119" height="194" fill="none" stroke="#7a2e1f" stroke-width="0.5"/>
 <rect x="244.1" y="13.5" width="114" height="189" fill="none" stroke="#7a2e1f" stroke-width="0.2"/>
 <text x="301.1" y="65.325" font-family="Georgia, &apos;Times New Roman&apos;, serif" font-size="13" text-anchor="middle" fill="#2a1f17"><tspan x="301.1" dy="0">Apología de</tspan>
@@ -29,7 +34,7 @@
 <text x="109" y="201" font-family="Georgia, &apos;Times New Roman&apos;, serif" font-size="3.2" text-anchor="start" fill="#2a1f17"><tspan x="109" dy="0">Edición de ejemplo · Clásicos</tspan>
 </text>
 <rect x="170" y="175" width="42" height="26" fill="#ffffff"/>
-<rect x="228" y="0" width="5.6" height="216" fill="#f3ead7"/>
+<rect x="228" y="0" width="5.6" height="216" fill="url(#fondo-degradado)"/>
 <text transform="translate(229.624 108) rotate(90)" font-family="Georgia, &apos;Times New Roman&apos;, serif" font-size="3.36" text-anchor="middle" fill="#2a1f17">Apología de Sócrates · Platón</text>
 <text x="13" y="16.2" font-family="Georgia, &apos;Times New Roman&apos;, serif" font-size="4" text-anchor="start" fill="#2a1f17"><tspan x="13" dy="0">Las preguntas que plantea Sócrates</tspan>
 <tspan x="13" dy="5.4">siguen sin respuesta definitiva, y</tspan>
