@@ -7,7 +7,10 @@ namespace PortadasSvg;
 /** Escribe las piezas de un libro en una carpeta: un SVG por pieza y un resumen de medidas para la imprenta. */
 final class Generador
 {
-    /** Archivo => [vista, nombre legible]. El sobrelomo solo existe si el libro tiene solapas. */
+    /**
+     * Archivo => [vista, nombre legible]. Cada libro lleva cuatro SVG: portada, contratapa, lomo y la
+     * cubierta, que es el sobrelomo si tiene solapas y la cubierta completa si no.
+     */
     private const PIEZAS = [
         'portada.svg' => ['portada', 'Portada'],
         'contratapa.svg' => ['contratapa', 'Contratapa'],
@@ -36,10 +39,17 @@ final class Generador
         return [...$escritos, 'medidas.txt'];
     }
 
-    /** @return array<string, array{0: string, 1: string}> */
+    /**
+     * El sobrelomo ya incluye la cubierta completa y sus solapas, así que con solapas no se escribe la
+     * cubierta completa, y sin solapas no hay sobrelomo.
+     *
+     * @return array<string, array{0: string, 1: string}>
+     */
     private static function piezas(Libro $libro): array
     {
-        return $libro->solapasMm > 0 ? self::PIEZAS : array_diff_key(self::PIEZAS, ['sobrelomo.svg' => true]);
+        $excluida = $libro->solapasMm > 0 ? 'cubierta-completa.svg' : 'sobrelomo.svg';
+
+        return array_diff_key(self::PIEZAS, [$excluida => true]);
     }
 
     private static function guardar(string $ruta, string $contenido): void

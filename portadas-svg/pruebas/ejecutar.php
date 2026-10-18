@@ -160,7 +160,7 @@ $pruebas = [
         igual(['portada.svg', 'contratapa.svg', 'lomo.svg', 'cubierta-completa.svg', 'medidas.txt'], $sin);
 
         $con = Generador::escribir(libroDeEjemplo(['solapas_mm' => 90]), "$dir/con");
-        verdadero(in_array('sobrelomo.svg', $con, true), 'falta sobrelomo.svg con solapas');
+        igual(['portada.svg', 'contratapa.svg', 'lomo.svg', 'sobrelomo.svg', 'medidas.txt'], $con);
         foreach (glob("$dir/con/*.svg") ?: [] as $archivo) {
             $xml = new DOMDocument();
             verdadero($xml->loadXML((string) file_get_contents($archivo)), "$archivo no es XML válido");

@@ -25,8 +25,10 @@ Escribe en `salida/platon-apologia/`:
 | `portada.svg` | Portada, con sangrado en los bordes exteriores. |
 | `contratapa.svg` | Contratapa, con sangrado en los bordes exteriores. |
 | `lomo.svg` | Lomo, con sangrado arriba y abajo. |
-| `cubierta-completa.svg` | Contratapa, lomo y portada en una sola pieza. Sirve para rústica o tapa dura sin sobrelomo. |
-| `sobrelomo.svg` | Cubierta completa con solapas. Solo existe si el libro tiene `solapas_mm`. |
+| `cubierta-completa.svg` | Solo sin solapas: contratapa, lomo y portada en una pieza, para rústica o tapa dura. |
+| `sobrelomo.svg` | Solo con solapas (`solapas_mm`): la cubierta completa más las solapas. Sustituye a `cubierta-completa.svg`. |
+
+Cada libro sale con cuatro SVG: portada, contratapa, lomo y la cubierta, que es el sobrelomo si tiene solapas y la cubierta completa si no.
 | `medidas.txt` | Medidas de corte y tamaño de cada archivo, para la imprenta. |
 
 Para varios libros a la vez, o para escribir en otra carpeta:
