@@ -29,6 +29,24 @@
   insultos dentro. Buscar adentro costaba hasta 1 s por cada 2.000 caracteres;
   ahora un texto adversario de 10.000 caracteres se revisa en unos 100 ms.
 
+### Arreglado
+
+- **Lo que caía sobre un corte de un texto largo se aprobaba** (`LongText`).
+  Por dos huecos: el corte sólo se hacía en el espacio ASCII, así que con
+  saltos de línea, tabuladores o espacios no separables entre palabras partía
+  a la fuerza el insulto que cayera en el carácter 2.000 («pu | ta»); y aun
+  cortando en un espacio, una frase cuyas palabras sueltas son inocentes
+  («heil hitler», «white power», «concha de tu madre») quedaba repartida en
+  dos partes. Ahora se corta en el último espacio de cualquier tipo, y la
+  costura de cada corte —200 caracteres de cada lado, `LongTextSeam`— se
+  revisa también; de ella sólo se suma lo que ninguna de sus dos mitades
+  tiene por separado, para no contar dos veces lo que ya halló cada parte.
+  Para que las costuras sean pocas, los párrafos seguidos comparten parte
+  mientras quepan en 2.000 caracteres (antes cada párrafo era una parte), y
+  una costura sin hallazgos no revisa sus mitades. Cuesta algo más: una
+  biografía de 10.000 caracteres pasa de unos 310 a unos 480 ms, y el texto
+  deletreado más adversario, de 20 a 170 ms. `LongTextCutsTest`.
+
 ## [5.0.0] - 2026-10-15
 
 Versión mayor: las clases cambian de namespace (ver «Cambiado (incompatible)»).
