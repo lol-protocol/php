@@ -8,7 +8,7 @@
     "term_of_protection": "Author's life + 70 years (Art. 39); joint works from last survivor's death (Art. 40); audiovisual and radio works 50 years (Art. 40)",
     "author_rights": "Not specified",
     "moral_rights": "Not specified",
-    "orphan_works": "Not specified (unconfirmed)",
+    "orphan_works": "No specific orphan-works scheme found; BUTDRA administers rights in heirless works (oeuvres en déshérence), folklore and waived works, proceeds used for cultural/social purposes (Decree 313/2005)",
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Folklore uses for profit outside traditional context need BUTDRA authorization against royalty (Arts. 82, 85, 86); other exceptions not seen (unconfirmed)",
     "registration_required": "Not specified",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://www.wipo.int/wipolex/fr/legislation/details/9124",
@@ -40,8 +40,8 @@
       },
       "orphan_works": {
         "url": "https://www.wipo.int/wipolex/fr/legislation/details/9124",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "confidence": "medium",
+        "checked": "2026-10-18"
       },
       "fair_use_exceptions": {
         "url": "https://www.wipo.int/wipolex/en/text/491812",
@@ -60,6 +60,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "orphan_works",
+        "from": "Not specified (unconfirmed)",
+        "to": "No specific orphan-works scheme found; BUTDRA administers rights in heirless works (oeuvres en déshérence), folklore and waived works, proceeds used for cultural/social purposes (Decree 313/2005)"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

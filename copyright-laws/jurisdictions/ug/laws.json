@@ -9,7 +9,7 @@
     "author_rights": "Economic rights",
     "moral_rights": "Attribution & integrity (s. 10)",
     "orphan_works": "No orphan regime in 2006 Act; 2025 Amendment Bill (passed 17 Mar 2026, assent unconfirmed) allows licensing orphan works if author untraceable",
-    "digital_protection": "2006 Act silent on TPMs; 2026 amendment reportedly adds anti-circumvention & RMI rules (unconfirmed)",
+    "digital_protection": "2006 Act silent on TPMs; Copyright and Neighbouring Rights (Amendment) Act 2026 (Gazette 22 May 2026) defines and prohibits circumvention of TPMs and RMI removal",
     "fair_use_exceptions": "Fair use (s. 15: private study, teaching, news reporting)",
     "registration_required": "No (voluntary registration available)",
     "enforcement_body": "Uganda Registration Services Bureau (URSB)",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-08",
+    "last_checked": "2026-10-18",
     "sources": {
       "moral_rights": {
         "url": "https://old.ulii.org/ug/judgment/commercial-court-uganda/2014/107",
@@ -34,9 +34,9 @@
         "checked": "2026-10-15"
       },
       "digital_protection": {
-        "url": "https://globallawexperts.com/copyright-and-neighbouring-rights-act-2026-uganda-or-uganda-copyright-law-2026/",
-        "confidence": "low",
-        "checked": "2026-10-14"
+        "url": "https://bills.parliament.ug/attachments/The Copyright and Neighbouring Rights (Amendment) Act",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       },
       "fair_use_exceptions": {
         "url": "https://www.cehurd.org/wp-content/uploads/downloads/2013/03/influencing-copyright.pdf",
@@ -45,6 +45,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "digital_protection",
+        "from": "2006 Act silent on TPMs; 2026 amendment reportedly adds anti-circumvention & RMI rules (unconfirmed)",
+        "to": "2006 Act silent on TPMs; Copyright and Neighbouring Rights (Amendment) Act 2026 (Gazette 22 May 2026) defines and prohibits circumvention of TPMs and RMI removal"
+      },
       {
         "date": "2026-10-15",
         "field": "orphan_works",

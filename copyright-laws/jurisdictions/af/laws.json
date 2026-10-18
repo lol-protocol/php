@@ -1,0 +1,66 @@
+[
+  {
+    "country_code": "AF",
+    "country_name": "Afghanistan",
+    "region": "asia_pacific",
+    "law_name": "Law on Supporting the Rights of Authors, Composers, Artists and Researchers (Copyright Law), 2008 (Decree No. 54)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (Law on Support of the Rights of Authors, Composers, Artists and Researchers 2008; joint works: 50 years after death of last author; pseudonymous: 50 years from first publication; unpublished: 50 years from fixation; Afghan calendar)",
+    "author_rights": "Economic rights",
+    "moral_rights": "Moral rights of authors protected (Art. 1; dedicated chapter)",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/10197",
+    "notes": "7 chapters, 49 articles; includes protection of national folklore. Adopted 21 July 2008; WIPO Lex lists 2008 as latest version.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10197",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10197",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "term_of_protection": {
+        "url": "https://en.wikipedia.org/wiki/Afghanistan_and_copyright_issues",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10197",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "moral_rights": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10197",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/10197",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

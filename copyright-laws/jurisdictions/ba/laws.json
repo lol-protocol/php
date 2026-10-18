@@ -28,6 +28,11 @@
         "confidence": "medium",
         "checked": "2026-10-14"
       },
+      "orphan_works": {
+        "url": "https://eprints.ibu.edu.ba/files/original/a45a767f64a179d622e49f504e2bb7d4.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
       "digital_protection": {
         "url": "https://merlin.obs.coe.int/article/5428",
         "confidence": "medium",
@@ -37,11 +42,6 @@
         "url": "https://cir.unsa.ba/wp-content/uploads/2021/02/Zakon-o-autorskim-i-srodnim-pravima-BiH.pdf",
         "confidence": "medium",
         "checked": "2026-10-15"
-      },
-      "orphan_works": {
-        "url": "https://eprints.ibu.edu.ba/files/original/a45a767f64a179d622e49f504e2bb7d4.pdf",
-        "confidence": "medium",
-        "checked": "2026-10-17"
       }
     },
     "changes": [
