@@ -16,6 +16,7 @@ BS,BHS,Bahamas
 BH,BHR,Bahrain
 BD,BGD,Bangladesh
 BB,BRB,Barbados
+BM,BMU,Bermuda
 BY,BLR,Belarus
 BE,BEL,Belgium
 BZ,BLZ,Belize
@@ -48,6 +49,7 @@ CI,CIV,Côte d'Ivoire
 CR,CRI,Costa Rica
 HR,HRV,Croatia
 CU,CUB,Cuba
+CW,CUW,Curaçao
 DK,DNK,Denmark
 DM,DMA,Dominica
 EC,ECU,Ecuador
@@ -70,9 +72,12 @@ GA,GAB,Gabon
 GM,GMB,Gambia
 GE,GEO,Georgia
 GH,GHA,Ghana
+GI,GIB,Gibraltar
 GD,GRD,Grenada
 GR,GRC,Greece
+GL,GRL,Greenland
 GT,GTM,Guatemala
+GG,GGY,Guernsey
 GN,GIN,Guinea
 GQ,GNQ,Equatorial Guinea
 GW,GNB,Guinea-Bissau
@@ -86,13 +91,16 @@ ID,IDN,Indonesia
 IQ,IRQ,Iraq
 IR,IRN,"Iran, Islamic Republic of"
 IE,IRL,Ireland
+IM,IMN,Isle of Man
 IS,ISL,Iceland
+FO,FRO,Faroe Islands
 MH,MHL,Marshall Islands
 SB,SLB,Solomon Islands
 IL,ISR,Israel
 IT,ITA,Italy
 JM,JAM,Jamaica
 JP,JPN,Japan
+JE,JEY,Jersey
 JO,JOR,Jordan
 KZ,KAZ,Kazakhstan
 KE,KEN,Kenya
@@ -152,6 +160,7 @@ GB,GBR,United Kingdom
 CF,CAF,Central African Republic
 CD,COD,"Congo, The Democratic Republic of the"
 DO,DOM,Dominican Republic
+RE,REU,Réunion
 RW,RWA,Rwanda
 RO,ROU,Romania
 RU,RUS,Russian Federation
