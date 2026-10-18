@@ -1,0 +1,20 @@
+{
+  "titulo": "Apología de Sócrates",
+  "subtitulo": "Defensa ante el jurado de Atenas",
+  "autor": "Platón",
+  "traductor": "",
+  "editorial": "Edición de ejemplo",
+  "coleccion": "Clásicos",
+  "isbn": "",
+  "paginas": 112,
+  "formato": { "ancho_mm": 135, "alto_mm": 210 },
+  "sangrado_mm": 3,
+  "grosor_hoja_mm": 0.1,
+  "solapas_mm": 90,
+  "lomo_direccion": "arriba-abajo",
+  "plantilla": "clasica",
+  "colores": { "fondo": "#f3ead7", "texto": "#2a1f17", "acento": "#7a2e1f" },
+  "contratapa": "En el año 399 a. C., Sócrates comparece ante un jurado de ciudadanos atenienses acusado de impiedad y de corromper a la juventud.\n\nEste texto recoge, según lo recuerda Platón, la defensa que pronunció ante ellos y su negativa a dejar de filosofar aunque con ello salvara la vida.",
+  "solapa_contratapa": "Las preguntas que plantea Sócrates siguen sin respuesta definitiva, y por eso este diálogo se sigue leyendo.",
+  "solapa_portada": "Platón (c. 428–348 a. C.) fue discípulo de Sócrates y fundó la Academia en Atenas."
+}

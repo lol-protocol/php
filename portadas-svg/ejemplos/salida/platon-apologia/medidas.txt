@@ -1,0 +1,12 @@
+Libro: Apología de Sócrates — Platón
+Corte: 135 × 210 mm
+Sangrado: 3 mm en cada borde exterior
+Lomo: 5,6 mm (confírmalo con la imprenta: depende del papel)
+Solapas: 90 mm
+
+Tamaño de cada archivo, con sangrado (ancho × alto):
+  portada.svg: 135 × 216 mm
+  contratapa.svg: 135 × 216 mm
+  lomo.svg: 5,6 × 216 mm
+  cubierta-completa.svg: 275,6 × 216 mm
+  sobrelomo.svg: 461,6 × 216 mm

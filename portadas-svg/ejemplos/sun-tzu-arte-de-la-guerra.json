@@ -1,0 +1,13 @@
+{
+  "titulo": "El arte de la guerra",
+  "autor": "Sun Tzu",
+  "traductor": "",
+  "editorial": "Edición de ejemplo",
+  "coleccion": "Clásicos",
+  "isbn": "",
+  "paginas": 96,
+  "formato": { "ancho_mm": 135, "alto_mm": 210 },
+  "sangrado_mm": 3,
+  "plantilla": "sobria",
+  "contratapa": "Tratado militar chino atribuido al general Sun Tzu, que según la tradición lo escribió hace unos 2.500 años.\n\nSus trece capítulos hablan de cálculo, engaño, espionaje y de la mejor victoria: la que se obtiene sin combatir."
+}
