@@ -108,7 +108,7 @@ final class CatalogoRepository extends Repository
         };
 
         return $this->db->fetchAll(
-            "SELECT id, nombre FROM {$tabla} WHERE LOWER(nombre)" . self::LIKE_ESCAPED . " ORDER BY nombre, id"
+            "SELECT id, nombre FROM {$tabla} WHERE " . self::sinAcentos('nombre') . self::LIKE_ESCAPED . " ORDER BY nombre, id"
                 . self::page($limit, $offset),
             [self::patron($texto)]
         );

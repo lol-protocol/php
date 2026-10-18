@@ -92,7 +92,7 @@ final class ColeccionRepository extends Repository
     public function buscar(string $texto, int $limit = 50, int $offset = 0, bool $incluirPrivadas = false): array
     {
         return $this->db->fetchAll(
-            'SELECT id, nombre FROM colecciones WHERE LOWER(nombre)' . self::LIKE_ESCAPED
+            'SELECT id, nombre FROM colecciones WHERE ' . self::sinAcentos('nombre') . self::LIKE_ESCAPED
                 . ($incluirPrivadas ? '' : ' AND publica') . ' ORDER BY nombre, id'
                 . self::page($limit, $offset),
             [self::patron($texto)]

@@ -365,6 +365,7 @@ class PagesTest extends TestCase
 
         $this->assertStringContainsString('José García Álvarez', $body);
         $this->assertStringContainsString('Resultados para «josé»', $body);
+        $this->assertStringContainsString('José García Álvarez', $this->get(self::GENEALOGIA, '/b/10/alvarez/')[1], 'without the accent');
     }
 
     /** @return array<string, array{string}> */
@@ -434,6 +435,94 @@ class PagesTest extends TestCase
     public function testA404NeverSuggestsAnOrderCode(): void
     {
         $this->assertStringNotContainsString('(orden)', $this->get(self::POS, '/47/')[1]);
+    }
+
+    public function testCheckoutPlacesTheOrderAndOnlyItsSessionCanOpenIt(): void
+    {
+        $db = new Database('sqlite:' . self::$dir . '/pos.sqlite');
+        $direccion = 'Calle Prueba 123, Guadalajara, JAL 44100, MX';
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/c/1/', ['sku' => 'SUD-RO-M', 'cantidad' => '2'], $sid, $token);
+
+        try {
+            $this->assertSame(303, $this->post(self::POS, '/p/1/', ['direccion' => $direccion], $sid, $token)[0]);
+            $this->assertSame(200, $this->get(self::POS, '/p/2/', 'GET', '', $sid)[0]);
+            [, $confirmar] = $this->get(self::POS, '/p/3/', 'GET', '', $sid);
+            $this->assertStringContainsString($direccion, $confirmar);
+            $this->assertStringContainsString('Confirmar compra', $confirmar);
+
+            $this->assertSame(303, $this->post(self::POS, '/p/3/', [], $sid, $token)[0]);
+
+            $orden = $db->fetchOne('SELECT id, codigo, estado FROM ordenes WHERE direccion_envio = ?', [$direccion]);
+            $this->assertNotNull($orden);
+            $this->assertSame('pendiente', $orden['estado']);
+            $this->assertMatchesRegularExpression('/^[1-9]\d{15}$/', (string)$orden['codigo']);
+            $this->assertSame(6, (int)$db->fetchValue("SELECT stock FROM variantes WHERE sku = 'SUD-RO-M'"), '8 - 2');
+            $this->assertSame(2, (int)$db->fetchValue('SELECT cantidad FROM orden_items WHERE orden_id = ?', [$orden['id']]));
+
+            [$codigo, $pagina] = $this->get(self::POS, "/{$orden['codigo']}/", 'GET', '', $sid);
+            $this->assertSame(200, $codigo, 'the session that placed it');
+            $this->assertStringContainsString($direccion, $pagina);
+            $this->assertStringContainsString('¡Gracias!', $pagina);
+            $this->assertStringContainsString('El carrito está vacío.', $this->get(self::POS, '/c/', 'GET', '', $sid)[1]);
+            $this->assertSame(404, $this->get(self::POS, "/{$orden['codigo']}/")[0], 'anyone else');
+        } finally {
+            $db->execute("UPDATE variantes SET stock = 8 WHERE sku = 'SUD-RO-M'");
+            $ids = 'SELECT id FROM ordenes WHERE direccion_envio = ?';
+            $db->execute("DELETE FROM orden_eventos WHERE orden_id IN ({$ids})", [$direccion]);
+            $db->execute("DELETE FROM orden_items WHERE orden_id IN ({$ids})", [$direccion]);
+            $db->execute('DELETE FROM ordenes WHERE direccion_envio = ?', [$direccion]);
+        }
+    }
+
+    public function testCheckoutStepsNeedAnAddressFirst(): void
+    {
+        [$sid, $token] = $this->primeSession();
+        $this->post(self::POS, '/c/1/', ['sku' => 'CAM-AZ-M', 'cantidad' => '1'], $sid, $token);
+
+        $this->assertSame(303, $this->get(self::POS, '/p/2/', 'GET', '', $sid)[0]);
+        $this->assertSame(303, $this->post(self::POS, '/p/3/', [], $sid, $token)[0], 'no order without an address');
+        $this->assertSame(400, $this->post(self::POS, '/p/1/', ['direccion' => 'corta'], $sid, $token)[0]);
+        $this->assertSame(403, $this->post(self::POS, '/p/1/', ['direccion' => 'Calle Prueba 123, Ciudad'], $sid, 'otro-token')[0]);
+    }
+
+    /** @return list<array> the page's JSON-LD objects */
+    private static function jsonLd(string $body): array
+    {
+        preg_match_all('#<script type="application/ld\+json">(.*?)</script>#s', $body, $m);
+        return array_map(static fn(string $j): array => json_decode($j, true, flags: JSON_THROW_ON_ERROR), $m[1]);
+    }
+
+    public function testPlacePagesHaveBreadcrumbs(): void
+    {
+        [, $body] = $this->get(self::GENEALOGIA, '/mx/jal/gdl/1/');
+
+        $this->assertMatchesRegularExpression('#aria-label="Migas de pan">\s*<a href="/">Inicio</a> › <a href="/mx/">México</a> › <a href="/mx/jal/">Jalisco</a> › <a href="/mx/jal/gdl/">Guadalajara</a> › <span aria-current="page">Personas nacidas aquí</span>#', $body);
+        $migas = array_values(array_filter(self::jsonLd($body), static fn(array $o): bool => $o['@type'] === 'BreadcrumbList'))[0];
+        $this->assertSame(['Inicio', 'México', 'Jalisco', 'Guadalajara', 'Personas nacidas aquí'], array_column($migas['itemListElement'], 'name'));
+        $this->assertSame('http://tudominio.local/mx/jal/', $migas['itemListElement'][2]['item']);
+    }
+
+    public function testAVisiblePersonaIsDescribedForSearchEnginesAndAHiddenOneIsNot(): void
+    {
+        $personas = array_values(array_filter(self::jsonLd($this->get(self::GENEALOGIA, '/6128473101/')[1]), static fn(array $o): bool => $o['@type'] === 'Person'));
+        $this->assertSame('José García Álvarez', $personas[0]['name']);
+        $this->assertSame('http://tudominio.local/6128473101/', $personas[0]['url']);
+
+        foreach ([self::CARLOS, self::MANUEL] as $oculta) {
+            $tipos = array_column(self::jsonLd($this->get(self::GENEALOGIA, $oculta)[1]), '@type');
+            $this->assertNotContains('Person', $tipos, $oculta);
+        }
+    }
+
+    public function testAProductIsDescribedWithItsPriceAndAvailability(): void
+    {
+        $producto = static fn(string $body): array => array_values(array_filter(self::jsonLd($body), static fn(array $o): bool => $o['@type'] === 'Product'))[0];
+
+        $camiseta = $producto($this->get(self::POS, '/81372047/')[1]);
+        $this->assertSame('Camiseta básica', $camiseta['name']);
+        $this->assertSame(['@type' => 'Offer', 'price' => '199.00', 'priceCurrency' => 'MXN', 'availability' => 'https://schema.org/InStock'], $camiseta['offers']);
+        $this->assertSame('https://schema.org/Discontinued', $producto($this->get(self::POS, '/81372050/')[1])['offers']['availability']);
     }
 
     public function testOrdersCannotBeListedThroughTheSearch(): void

@@ -113,8 +113,11 @@ TEST_PG_USER=routing_test TEST_PG_PASSWORD=routing_test \
 
 ## Limitaciones conocidas
 
-- La búsqueda usa `LOWER(...) LIKE`: en SQLite, `LOWER` solo pasa a minúsculas
-  ASCII, así que buscar «álvarez» no encuentra «Álvarez» (en PostgreSQL sí).
+- La búsqueda ignora mayúsculas y acentos (`Repository::sinAcentos()`): compara
+  `TRANSLATE(LOWER(columna), 'áéí…', 'aei…') LIKE ?` contra el texto normalizado
+  igual, así que «garcia» encuentra «García» y «ÁLVAREZ» encuentra «Álvarez».
+  `TRANSLATE` es de PostgreSQL; en SQLite, `Database` registra una función
+  equivalente al conectar, así que el SQL es el mismo en los dos motores.
   Para búsqueda seria en genealogía conviene `pg_trgm` o búsqueda de texto
   completo en PostgreSQL, en una migración específica de ese motor.
 - `LIKE '%texto%'` no usa índices; con millones de personas hará falta un

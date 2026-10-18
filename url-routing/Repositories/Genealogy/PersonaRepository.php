@@ -55,10 +55,6 @@ final class PersonaRepository extends Repository
         return $fila === null ? null : self::normalizar($fila);
     }
 
-    /**
-     * personas.viva as stored: true = alive, false = dead, null = deduce it from
-     * the dates (see Privacidad). Null as well when there is no such persona.
-     */
     /** The persona an id that was merged away now points to (see persona_alias); null if it isn't an alias. */
     public function aliasDe(int $id): ?int
     {
@@ -67,6 +63,10 @@ final class PersonaRepository extends Repository
         return $destino === null ? null : (int)$destino;
     }
 
+    /**
+     * personas.viva as stored: true = alive, false = dead, null = deduce it from
+     * the dates (see Privacidad). Null as well when there is no such persona.
+     */
     public function marcaViva(int $id): ?bool
     {
         // fetchOne, not fetchValue: PostgreSQL's `false` would come back from fetchValue as "no row".
@@ -190,7 +190,7 @@ final class PersonaRepository extends Repository
         return array_map(self::normalizar(...), $this->db->fetchAll(
             'SELECT ' . $this->resumen() . "
                FROM {$this->privacidad->personas()} p
-              WHERE LOWER(p.nombres || ' ' || p.apellidos)" . self::LIKE_ESCAPED . "
+              WHERE " . self::sinAcentos("p.nombres || ' ' || p.apellidos") . self::LIKE_ESCAPED . "
                 AND NOT p.oculta
               ORDER BY p.apellidos, p.nombres, p.id" . self::page($limit, $offset),
             [self::patron($texto)]

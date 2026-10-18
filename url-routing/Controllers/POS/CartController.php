@@ -25,34 +25,10 @@ class CartController extends BaseController
 
     public function show(array $params = []): string
     {
-        $repo = new ProductoRepository($this->db());
         $carrito = $this->carrito();
-        $variantes = $repo->variantesPorSkus(array_keys($carrito->items()));
-        $lineas = [];
-        $totales = [];
-
-        foreach ($carrito->items() as $sku => $cantidad) {
-            $variante = $variantes[$sku] ?? null;
-            if ($variante === null || !$variante['activo']) {
-                // Removed or deactivated since it was added: it can't be bought anymore.
-                $carrito->quitar($sku);
-                continue;
-            }
-
-            if ($cantidad > $variante['stock']) {
-                // Stock dropped since it was added: show (and keep) what can actually be bought.
-                $carrito->actualizar($sku, $variante['stock']);
-                $cantidad = $carrito->cantidadDe($sku);
-                if ($cantidad === 0) {
-                    continue;
-                }
-            }
-
-            $subtotal = $variante['precio_centavos'] * $cantidad;
-            // One total per currency: adding centavos of different currencies is meaningless.
-            $totales[$variante['moneda']] = ($totales[$variante['moneda']] ?? 0) + $subtotal;
-            $lineas[] = ['cantidad' => $cantidad, 'subtotal_centavos' => $subtotal] + $variante;
-        }
+        [$lineas, $totales] = $carrito->revisar(
+            (new ProductoRepository($this->db()))->variantesPorSkus(array_keys($carrito->items()))
+        );
 
         return view('pos/cart/show', ['lineas' => $lineas, 'totales' => $totales]);
     }
