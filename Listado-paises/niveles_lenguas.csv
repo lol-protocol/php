@@ -1,160 +1,164 @@
-lengua,nivel
-inglés,5
-español,5
-francés,5
-alemán,5
-portugués,5
-italiano,5
-ruso,5
-neerlandés,5
-sueco,5
-finlandés,5
-checo,5
-japonés,5
-turco,5
-árabe,4
-catalán,4
-euskera,4
-coreano,4
-hindi,4
-indonesio,4
-persa,4
-hebreo,4
-polaco,4
-danés,4
-noruego,4
-húngaro,4
-rumano,4
-búlgaro,4
-croata,4
-eslovaco,4
-esloveno,4
-estonio,4
-letón,4
-ucraniano,4
-griego,4
-vietnamita,4
-filipino,4
-afrikáans,4
-chino,4
-chino (mandarín),4
-chino tradicional,4
-serbio,3
-montenegrino (serbocroata),3
-lituano,3
-islandés,3
-maltés,3
-georgiano,3
-armenio,3
-azerí,3
-kazajo,3
-uzbeko,3
-mongol,3
-bengalí,3
-urdu,3
-tamil,3
-cingalés,3
-nepalí,3
-malayo,3
-tailandés,3
-suajili,3
-gallego,3
-criollo caboverdiano,3
-kurdo,3
-chino cantonés,3
-guaraní,3
-twi,3
-wolof,3
-luganda,3
-chichewa,3
-bemba,3
-nyanja,3
-shona,3
-ndebele,3
-maorí,3
-árabe egipcio,3
-árabe sirio,3
-árabe palestino,3
-árabe tunecino,3
-dari,2
-albanés,2
-bielorruso,2
-bosnio,2
-dzongkha,2
-quechua,2
-aimara,2
-setsuana,2
-moré,2
-jemer,2
-lingala,2
-bambara,2
-zarma,2
-hausa,2
-yoruba,2
-kikongo,2
-kinyarwanda,2
-samoano,2
-tok pisin,2
-susu,2
-pular,2
-mandinga,2
-ewé,2
-mina,2
-afar,2
-lenguas mayas,2
-macedonio,2
-irlandés,2
-luxemburgués,2
-romanche,2
-suazi,2
-sesoto,2
-oshiwambo,2
-sranan tongo,2
-emakhuwa,2
-krio,2
-zulú,2
-xhosa,2
-amárico,2
-tigriña,2
-malgache,2
-fiyiano,2
-bislama,2
-tongano,2
-tuvaluano,2
-tetun,2
-tayiko,2
-kirguís,2
-lao,2
-birmano,2
-punyabí,2
-pijin de las Salomón,2
-chuukés,2
-bereber,2
-árabe sudanés,2
-árabe juba,2
-árabe yemení,2
-árabe hasanía,2
-criollo,2
-criollo guineense,2
-criollo haitiano,2
-criollo jamaiquino,2
-criollo dominiqués,2
-criollo mauriciano,2
-criollo santaluceño,2
-criollo santotomense,2
-criollo seychellense,2
-pastún,1
-kirundi,1
-shikomor,1
-dhivehi,1
-igbo,1
-sango,1
-somalí,1
-fang,1
-palauano,1
-hiri motu,1
-gilbertés,1
-marshalés,1
-nauruano,1
-turcomano,1
-árabe chadiano,1
+lengua,codigos,palabras_anotadas,treebanks_ud,paginas_web_pct,nivel
+inglés,eng,1126448,13,41.8620,5
+español,spa,1022971,4,4.7448,5
+francés,fra,708727,9,4.6769,5
+alemán,deu,3810118,4,5.7252,5
+portugués,por,1545443,7,2.4899,5
+italiano,ita,1020333,11,2.4622,5
+ruso,rus,3455957,5,6.6954,5
+neerlandés,nld,505679,2,1.7381,5
+sueco,swe,229838,5,0.7196,4
+finlandés,fin,397014,4,0.3723,4
+checo,ces,4162402,6,1.1277,5
+japonés,jpn,2645130,6,5.1668,5
+turco,tur,735211,10,1.2777,5
+árabe,ara,1042020,3,0.6679,5
+catalán,cat,547262,1,0.1976,5
+euskera,eus,121443,1,0.0383,4
+coreano,kor,615756,5,0.8396,5
+hindi,hin,375533,2,0.2147,4
+indonesio,msa zsm ind,169728,3,1.1800,4
+persa,fas prs,654699,2,0.6934,5
+hebreo,heb,376192,4,0.2567,4
+polaco,pol,546602,4,2.0329,5
+danés,dan,100733,1,0.5233,4
+noruego,nor nno nob,611574,2,0.3499,5
+húngaro,hun,42032,1,0.5253,3
+rumano,ron,942151,6,0.5730,5
+búlgaro,bul,156149,1,0.3119,4
+croata,hrv srp bos cnr,297082,2,0.5279,4
+eslovaco,slk,106372,1,0.3951,4
+esloveno,slv,365490,2,0.1523,4
+estonio,est,528372,2,0.1447,5
+letón,lav,330486,2,0.0886,4
+ucraniano,ukr,231916,2,0.8138,4
+griego,ell,110892,6,0.5190,4
+vietnamita,vie,59957,2,0.9927,3
+filipino,fil tgl,1831,2,0.0121,2
+afrikáans,afr,49258,1,0.0079,3
+chino,zho cmn,309906,7,4.2255,4
+chino (mandarín),zho cmn,309906,7,4.2255,4
+chino tradicional,zho cmn,309906,7,4.2255,4
+serbio,hrv srp bos cnr,297082,2,0.5279,4
+montenegrino (serbocroata),hrv srp bos cnr,297082,2,0.5279,4
+lituano,lit,75403,2,0.1700,3
+islandés,isl,1183884,4,0.0351,5
+maltés,mlt,44162,1,0.0032,3
+georgiano,kat,83607,2,0.0457,3
+armenio,hye hyw,273213,3,0.0315,4
+azerí,aze,912,1,0.0609,2
+kazajo,kaz,10536,1,0.0428,3
+uzbeko,uzb,14451,3,0.0311,3
+mongol,mon khk,0,0,0.0159,1
+bengalí,ben,320,1,0.1100,2
+urdu,urd,138077,1,0.0308,4
+tamil,tam,12165,2,0.0449,3
+cingalés,sin,1549,2,0.0085,2
+nepalí,nep npi,801,1,0.0534,2
+malayo,msa zsm ind,169728,3,1.1800,4
+tailandés,tha,99545,2,0.3577,3
+suajili,swa swh,40789,0,0.0109,3
+gallego,glg,188180,3,0.0315,4
+criollo caboverdiano,kea,0,0,,1
+kurdo,kur kmr ckb sdh,12709,3,0.0069,3
+chino cantonés,yue,13918,1,,3
+guaraní,grn gug,217,1,0.0010,2
+twi,twi aka,41203,0,0.0003,3
+wolof,wol,88260,1,0.0002,3
+luganda,lug,24658,0,0.0004,3
+chichewa,nya,24163,0,0.0009,3
+bemba,bem,0,0,,1
+nyanja,nya,24163,0,0.0009,3
+shona,sna,39785,0,0.0011,3
+ndebele,nde,0,0,,1
+maorí,mri,0,0,0.0013,1
+árabe egipcio,arz,0,0,,1
+árabe sirio,apc,0,0,,1
+árabe palestino,ajp,789,1,,2
+árabe tunecino,aeb,0,0,,1
+dari,fas prs,654699,2,0.6934,5
+albanés,sqi als aln,20475,3,0.0481,3
+bielorruso,bel,305109,1,0.0168,4
+bosnio,hrv srp bos cnr,297082,2,0.5279,4
+dzongkha,dzo,0,0,0.0001,1
+quechua,que quz qub quy,0,0,0.0009,1
+aimara,aym ayr,0,0,0.0001,1
+setsuana,tsn,41903,1,0.0004,3
+moré,mos,33792,0,,3
+jemer,khm,0,0,0.0107,1
+lingala,lin,0,0,0.0006,1
+bambara,bam,53960,1,,3
+zarma,dje,0,0,,1
+hausa,hau,94556,4,0.0030,3
+yoruba,yor,51841,1,0.0017,3
+kikongo,kon kng ktu,0,0,,1
+kinyarwanda,kin,40558,0,0.0029,3
+samoano,smo,0,0,0.0007,1
+tok pisin,tpi,0,0,,1
+susu,sus,0,0,,1
+pular,fuf ful,0,0,,1
+mandinga,mnk man,0,0,,1
+ewé,ewe,28159,0,,3
+mina,gej,0,0,,1
+afar,aar,0,0,0.0001,1
+lenguas mayas,quc cak mam kek yua tzo tzh,10013,1,,3
+macedonio,mkd,1360,1,0.0394,2
+irlandés,gle,168563,3,0.0071,4
+luxemburgués,ltz,206,1,0.0037,2
+romanche,roh,0,0,0.0013,1
+suazi,ssw,0,0,0.0000,1
+sesoto,sot,0,0,0.0007,1
+oshiwambo,ndo kua,0,0,,1
+sranan tongo,srn,0,0,,1
+emakhuwa,vmw,0,0,,1
+krio,kri,0,0,,1
+zulú,zul,24028,0,0.0018,3
+xhosa,xho,25313,0,0.0011,3
+amárico,amh,10010,1,0.0046,3
+tigriña,tir,0,0,0.0007,1
+malgache,mlg plt,0,0,0.0036,1
+fiyiano,fij,0,0,0.0001,1
+bislama,bis,0,0,0.0002,1
+tongano,ton,0,0,0.0001,1
+tuvaluano,tvl,0,0,,1
+tetun,tet tdt,0,0,,1
+tayiko,tgk,0,0,0.0065,1
+kirguís,kir,25378,2,0.0099,3
+lao,lao,0,0,0.0055,1
+birmano,mya,0,0,0.0165,1
+punyabí,pan pnb,3810,2,0.0091,2
+pijin de las Salomón,pis,0,0,,1
+chuukés,chk,0,0,,1
+bereber,ber kab tzm zgh shi rif,0,0,,1
+árabe sudanés,apd,0,0,,1
+árabe juba,pga,0,0,,1
+árabe yemení,acq,0,0,,1
+árabe hasanía,mey,0,0,,1
+criollo,svc,0,0,,1
+criollo guineense,pov,0,0,,1
+criollo haitiano,hat,75013,2,0.0027,3
+criollo jamaiquino,jam,0,0,,1
+criollo dominiqués,acf,0,0,,1
+criollo mauriciano,mfe,0,0,0.0002,1
+criollo santaluceño,acf,0,0,,1
+criollo santotomense,cri,0,0,,1
+criollo seychellense,crs,0,0,0.0001,1
+pastún,pus pst pbt,6647,2,0.0045,2
+kirundi,run,0,0,0.0001,1
+shikomor,swb zdj wni wlc,0,0,,1
+dhivehi,div,0,0,0.0024,1
+igbo,ibo,52170,0,0.0013,3
+sango,sag,0,0,0.0005,1
+somalí,som,0,0,0.0056,1
+fang,fan,0,0,,1
+palauano,pau,0,0,,1
+hiri motu,hmo,0,0,,1
+gilbertés,gil,0,0,,1
+marshalés,mah,0,0,,1
+nauruano,nau,0,0,0.0000,1
+turcomano,tuk,0,0,0.0030,1
+árabe chadiano,shu,0,0,,1
+feroés,fao,50486,2,0.0058,3
+groenlandés,kal,0,0,0.0009,1
+papiamento,pap,0,0,,1
+criollo reunionés,rcf,0,0,,1

@@ -9,8 +9,8 @@
     "author_rights": "Economic & moral rights",
     "moral_rights": "Authorship, name, integrity, disclosure & recall (no time limit)",
     "orphan_works": "Not specified",
-    "digital_protection": "Art. 4 defines (effective) technical means and RMI; copies made by circumventing TPM or removing RMI are counterfeit (article no. unverified) (unconfirmed)",
-    "fair_use_exceptions": "Closed list: personal copying (arts. 18), free uses (art. 19), library/teaching reprography (art. 20) (unconfirmed)",
+    "digital_protection": "Law No. 262-Z of 2011 protects technical means of protection and rights-management information (anti-circumvention and CMI provisions revised in 2011, per IIPA); article no. unverified",
+    "fair_use_exceptions": "Closed list of free uses in ch. IV of Law No. 262-Z of 2011 (e.g. mass media art. 33, blind persons art. 34, libraries/archives art. 37); arts. 18-20 belonged to the repealed 1996 law",
     "registration_required": "No (voluntary registration and deposit available)",
     "enforcement_body": "National Center of Intellectual Property (NCIP)",
     "treaties_signatory": "Berne/WCT/WPPT",
@@ -21,20 +21,32 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-08",
+    "last_checked": "2026-10-18",
     "sources": {
       "digital_protection": {
-        "url": "https://natlex.ilo.org/dyn/natlex2/natlex2/files/download/90220/BLR90220.pdf",
-        "confidence": "low",
-        "checked": "2026-10-15"
+        "url": "https://www.iipa.org/files/uploads/2017/12/2014SPEC301CIS.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       },
       "fair_use_exceptions": {
-        "url": "https://www.wipo.int/wipolex/fr/legislation/details/22302",
-        "confidence": "low",
-        "checked": "2026-10-14"
+        "url": "https://www.wipo.int/en/web/wipolex/w/news/2011/article_0010",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "fair_use_exceptions",
+        "from": "Closed list: personal copying (arts. 18), free uses (art. 19), library/teaching reprography (art. 20) (unconfirmed)",
+        "to": "Closed list of free uses in ch. IV of Law No. 262-Z of 2011 (e.g. mass media art. 33, blind persons art. 34, libraries/archives art. 37); arts. 18-20 belonged to the repealed 1996 law"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "digital_protection",
+        "from": "Art. 4 defines (effective) technical means and RMI; copies made by circumventing TPM or removing RMI are counterfeit (article no. unverified) (unconfirmed)",
+        "to": "Law No. 262-Z of 2011 protects technical means of protection and rights-management information (anti-circumvention and CMI provisions revised in 2011, per IIPA); article no. unverified"
+      },
       {
         "date": "2026-10-15",
         "field": "digital_protection",

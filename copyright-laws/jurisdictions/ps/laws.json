@@ -1,0 +1,61 @@
+[
+  {
+    "country_code": "PS",
+    "country_name": "Palestine",
+    "region": "middle_east_africa",
+    "law_name": "Copyright Act 1911 (UK) as extended to Palestine by Order in Council of 21 March 1924, with the Copyright Ordinance 1924 (Mandate-era law, never replaced; a 2013 draft Palestinian copyright law was not adopted because the Legislative Council was suspended)",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 50 years (UK Copyright Act 1911 as applied in Palestine); posthumous works: publication + 50 years",
+    "author_rights": "Not specified",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "None identified: the 1911 Act lacks protection for digital works; only the unadopted 2013 draft partly covers digital works",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Not specified",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/legislation/details/2377",
+    "notes": "Situation is unclear (Commons): the 1924 Ordinance is assumed to apply in PA-controlled areas; under Jordanian rule (1948-67) the West Bank reportedly applied the Ottoman Authors' Rights Act 1910 (life + 30 years); WIPO Lex files the 1924 Ordinance under Israel; Mandate Palestine joined Berne (1908 text) on 21 March 1924 via the UK, but current State of Palestine membership not confirmed; nothing found on Gaza specifically",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://fsuproceedings.usim.edu.my/index.php/inpac/article/download/126/95/350",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/legislation/details/2377",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "term_of_protection": {
+        "url": "https://commons.wikipedia.com/wiki/Commons:CRT/State_of_Palestine",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "orphan_works": {
+        "url": "https://commons.wikipedia.com/wiki/Commons:CRT/State_of_Palestine",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "digital_protection": {
+        "url": "https://fsuproceedings.usim.edu.my/index.php/inpac/article/download/126/95/350",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]
