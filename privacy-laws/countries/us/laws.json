@@ -958,7 +958,7 @@
     "deceased_data": "Not covered: protects living consumers (residents acting in an individual or household context) only; employee and B2B data excluded",
     "research_exemption": "Exempts scientific, historical or statistical research in the public interest following ethics/IRB-type oversight (unconfirmed)",
     "genetic_data": "Genetic or biometric data processed to identify a person is sensitive data requiring opt-in consent",
-    "website_url": "https://bakerdonelson.com/webfiles/Privacy_Guide/Tennessee-Privacy-Law-Guide.pdf",
+    "website_url": "https://publications.tnsosfiles.com/acts/113/pub/pc0408.pdf",
     "language": "English",
     "frameworks": "",
     "frameworks_not": "",
@@ -1046,6 +1046,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "website_url",
+        "from": "https://bakerdonelson.com/webfiles/Privacy_Guide/Tennessee-Privacy-Law-Guide.pdf",
+        "to": "https://publications.tnsosfiles.com/acts/113/pub/pc0408.pdf"
+      },
       {
         "date": "2026-10-16",
         "field": "row",
@@ -1339,7 +1345,7 @@
     "deceased_data": "Not covered: protects living consumers (residents acting in an individual or household context) only; employee and B2B data excluded",
     "research_exemption": "Exempts research in the public interest meeting ethics/IRB-type conditions (ORS 646A.572) (unconfirmed)",
     "genetic_data": "Genetic and biometric data are sensitive data requiring opt-in consent",
-    "website_url": "https://doj.state.or.us/media-home/news-media-releases/faq_category/business-privacy-faqs",
+    "website_url": "https://doj.state.or.us/consumer-protection/for-businesses/privacy-law-faqs-for-businesses",
     "language": "English",
     "frameworks": "",
     "frameworks_not": "",
@@ -1427,6 +1433,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "website_url",
+        "from": "https://doj.state.or.us/media-home/news-media-releases/faq_category/business-privacy-faqs",
+        "to": "https://doj.state.or.us/consumer-protection/for-businesses/privacy-law-faqs-for-businesses"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

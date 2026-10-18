@@ -30,9 +30,9 @@
     "last_checked": "2026-10-17",
     "sources": {
       "deceased_data": {
-        "url": "https://presencis.com/regulations/gdpr/recital-27/",
+        "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
         "confidence": "high",
-        "checked": "2026-10-17"
+        "checked": "2026-10-18"
       },
       "research_exemption": {
         "url": "https://gdpr-info.eu/art-89-gdpr/",
