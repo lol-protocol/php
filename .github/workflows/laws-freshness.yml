@@ -17,7 +17,7 @@ permissions:
 jobs:
   freshness:
     name: ${{ matrix.module }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: ${{ matrix.module }}

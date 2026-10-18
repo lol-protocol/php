@@ -25,7 +25,7 @@ concurrency:
 jobs:
   phpunit:
     name: PHP ${{ matrix.php-version }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: defamatory-content-review
@@ -60,7 +60,7 @@ jobs:
 
   chat-front-guard:
     name: defamatory-content-review / front guard (Node)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout
