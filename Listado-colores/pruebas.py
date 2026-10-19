@@ -18,6 +18,7 @@ import csv
 import importlib.util
 import io
 import json
+import re
 import shutil
 import sqlite3
 import sys
@@ -30,6 +31,7 @@ from unittest import mock
 AQUI = Path(__file__).resolve().parent
 sys.dont_write_bytecode = True  # no dejar __pycache__ de los módulos de al lado
 sys.path.insert(0, str(AQUI))
+import ambiguedad  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 import normalizacion  # noqa: E402
@@ -86,16 +88,21 @@ def preparar_proyecto_reducido(carpeta):
     escribir_csv(carpeta / "nombres-completos.csv", gt.COLUMNAS_FUENTE_COMPLETA, elegidas)
 
 
-def ejecutar(carpeta, *argumentos):
-    """Corre main() de generar-tabla.py contra `carpeta`. Devuelve (código de salida, stdout, stderr)."""
-    rutas = {
+def rutas_para(carpeta):
+    """Las rutas de archivos de generar-tabla.py, apuntando a `carpeta`. Una prueba comprueba que no falte ninguna."""
+    return {
         "CARPETA": carpeta, "ANOTADA": carpeta / "colores.csv", "COMPLETA": carpeta / "nombres-completos.csv",
         "SIGNIFICADOS": carpeta / "significados-idiomas.csv", "LEXICO": carpeta / "lexico-basico.csv",
         "REFERENCIAS": carpeta / "referencias.csv", "EVIDENCIA": carpeta / "evidencia.csv",
         "CULTURALES": carpeta / "significados-culturales.csv", "REFS_MD": carpeta / "referencias.md",
-        "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
+        "AMBIGUEDAD": carpeta / "ambiguedad.md", "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
         "INDICE": carpeta / "colores-por-idioma.md", "DIR_IDIOMAS": carpeta / "por-idioma",
     }
+
+
+def ejecutar(carpeta, *argumentos):
+    """Corre main() de generar-tabla.py contra `carpeta`. Devuelve (código de salida, stdout, stderr)."""
+    rutas = rutas_para(carpeta)
     salida, error = io.StringIO(), io.StringIO()
     with mock.patch.multiple(gt, **rutas), mock.patch.object(sys, "argv", ["generar-tabla.py", *argumentos]), \
             contextlib.redirect_stdout(salida), contextlib.redirect_stderr(error):
@@ -602,6 +609,13 @@ class Colorimetria(unittest.TestCase):
         self.assertAlmostEqual(distancia, 100, delta=0.01)
 
 
+class Rutas(unittest.TestCase):
+    def test_las_pruebas_parchean_todas_las_rutas_del_generador(self):
+        # Si generar-tabla.py gana una ruta y rutas_para() no la lista, main() escribiría en la carpeta real del proyecto.
+        del_modulo = {nombre for nombre, valor in vars(gt).items() if nombre.isupper() and isinstance(valor, Path)}
+        self.assertEqual(del_modulo, set(rutas_para(Path("/x"))))
+
+
 class Codigo(unittest.TestCase):
     def test_los_py_no_llevan_caracteres_invisibles_literales(self):
         # Un guion blando, un espacio de ancho cero o un BOM dentro del código no se ven al leerlo y un editor
@@ -682,6 +696,109 @@ class Normalizacion(unittest.TestCase):
         self.assertEqual(normalizacion.QUITAR_MARCAS, normalizacion.LATINOS | {"el"})
 
 
+PURPURA, VIOLETA, LILA, VERDE, LIMA, GRIS = "#800080", "#EE82EE", "#CEA2FD", "#008000", "#00FF00", "#808080"
+
+
+def fila_gazetteer(forma, idioma, concepto, color, tipo="lema", fuente="lexico"):
+    return (forma, idioma, fuente, tipo, concepto, color, "", normalizacion.normalizar(forma, idioma))
+
+
+class Ambiguedad(unittest.TestCase):
+    def calcular(self, *filas, codigos=("es", "fr", "de", "pt")):
+        return ambiguedad.calcular(list(filas), list(codigos))
+
+    def assertListasVaciasSalvo(self, resultado, *claves):
+        for clave, elementos in resultado.items():
+            if clave not in claves:
+                self.assertEqual(elementos, [], clave)
+
+    def test_una_forma_con_dos_colores_en_un_idioma(self):
+        resultado = self.calcular(fila_gazetteer("violet", "fr", "purple", PURPURA), fila_gazetteer("violet", "fr", "violet", VIOLETA))
+        self.assertListasVaciasSalvo(resultado, "dentro")
+        (caso,) = resultado["dentro"]
+        self.assertEqual((caso["idioma"], caso["forma"], caso["colores"]), ("fr", "violet", [(PURPURA, ["purple"]), (VIOLETA, ["violet"])]))
+        esperada = colorimetria.ciede2000(colorimetria.hex_a_lab(PURPURA), colorimetria.hex_a_lab(VIOLETA))
+        self.assertAlmostEqual(caso["delta"], esperada, places=9)
+
+    def test_los_alias_del_mismo_hex_no_son_ambiguos(self):
+        resultado = self.calcular(fila_gazetteer("gris", "es", "gray", GRIS), fila_gazetteer("gris", "es", "grey", GRIS))
+        self.assertListasVaciasSalvo(resultado)
+
+    def test_mayusculas_distintas_son_la_misma_forma(self):
+        resultado = self.calcular(fila_gazetteer("Violet", "fr", "purple", PURPURA), fila_gazetteer("violet", "fr", "violet", VIOLETA))
+        (caso,) = resultado["dentro"]
+        self.assertEqual(caso["forma"], "Violet")
+
+    def test_la_misma_forma_con_colores_distintos_en_dos_idiomas(self):
+        resultado = self.calcular(fila_gazetteer("lila", "de", "purple", PURPURA), fila_gazetteer("lila", "es", "lilac", LILA))
+        self.assertListasVaciasSalvo(resultado, "entre")
+        (caso,) = resultado["entre"]
+        self.assertEqual(caso["forma"], "lila")
+        self.assertEqual(caso["idiomas"], [("es", ["lila"], [(LILA, ["lilac"])]), ("de", ["lila"], [(PURPURA, ["purple"])])],
+                         "en el orden de idiomas que se pasa, no en el alfabético")
+        esperada = colorimetria.ciede2000(colorimetria.hex_a_lab(PURPURA), colorimetria.hex_a_lab(LILA))
+        self.assertAlmostEqual(caso["delta"], esperada, places=9)
+
+    def test_la_misma_forma_con_el_mismo_color_en_dos_idiomas_no_es_ambigua(self):
+        resultado = self.calcular(fila_gazetteer("magenta", "es", "magenta", "#FF00FF"), fila_gazetteer("magenta", "fr", "magenta", "#FF00FF"))
+        self.assertListasVaciasSalvo(resultado)
+
+    def test_dos_idiomas_con_los_mismos_dos_colores_son_ambiguos_dentro_pero_no_entre(self):
+        filas = [fila_gazetteer("bordeaux", i, c, h) for i in ("fr", "de") for c, h in (("maroon", "#800000"), ("burgundy", "#900020"))]
+        resultado = self.calcular(*filas)
+        self.assertListasVaciasSalvo(resultado, "dentro")
+        self.assertEqual([c["idioma"] for c in resultado["dentro"]], ["fr", "de"])
+
+    def test_formas_distintas_que_solo_coinciden_al_normalizar_dentro_de_un_idioma(self):
+        resultado = self.calcular(fila_gazetteer("grün", "de", "green", VERDE), fila_gazetteer("grun", "de", "lime", LIMA))
+        self.assertListasVaciasSalvo(resultado, "dentro_normalizada")
+        (caso,) = resultado["dentro_normalizada"]
+        self.assertEqual((caso["idioma"], caso["formas"], caso["clave"]), ("de", ["grun", "grün"], "grun"))
+
+    def test_lo_que_ya_es_ambiguo_sin_normalizar_no_se_repite_en_la_lista_3(self):
+        resultado = self.calcular(fila_gazetteer("violett", "de", "purple", PURPURA), fila_gazetteer("violett", "de", "violet", VIOLETA),
+                                  fila_gazetteer("violétt", "de", "lime", LIMA))
+        self.assertListasVaciasSalvo(resultado, "dentro")
+
+    def test_formas_distintas_que_solo_coinciden_al_normalizar_entre_idiomas(self):
+        resultado = self.calcular(fila_gazetteer("lilás", "pt", "lilac", LILA), fila_gazetteer("lilas", "fr", "purple", PURPURA))
+        self.assertListasVaciasSalvo(resultado, "entre_normalizada")
+        (caso,) = resultado["entre_normalizada"]
+        self.assertEqual(caso["clave"], "lilas")
+        self.assertEqual(caso["idiomas"], [("fr", ["lilas"], [(PURPURA, ["purple"])]), ("pt", ["lilás"], [(LILA, ["lilac"])])])
+
+    def test_lo_que_ya_es_ambiguo_entre_idiomas_no_se_repite_en_la_lista_4(self):
+        resultado = self.calcular(fila_gazetteer("lila", "es", "lilac", LILA), fila_gazetteer("lila", "de", "purple", PURPURA),
+                                  fila_gazetteer("lilá", "pt", "green", VERDE))
+        self.assertListasVaciasSalvo(resultado, "entre")
+
+    def test_bandas(self):
+        for delta, esperada in ((0.0, "casi iguales"), (3.0, "casi iguales"), (3.01, "parecidos"), (8.0, "parecidos"),
+                                (8.01, "distintos"), (80.0, "distintos")):
+            self.assertEqual(ambiguedad.banda(delta), esperada, delta)
+
+    def test_el_informe_escapa_las_barras_y_dice_cuando_no_hay_casos(self):
+        filas = [fila_gazetteer("a|b", "es", "purple", PURPURA), fila_gazetteer("a|b", "es", "violet", VIOLETA)]
+        texto = ambiguedad.informe(filas, [("es", "Español"), ("fr", "Francés")])
+        self.assertIn("«a&#124;b»", texto)
+        self.assertIn("## 2. Entre idiomas: la misma forma, otro color\n\nNo hay casos.", texto)
+        self.assertTrue(texto.endswith("\n"))
+        self.assertEqual(texto, ambiguedad.informe(filas, [("es", "Español"), ("fr", "Francés")]), "es determinista")
+
+    def test_el_resumen_del_informe_coincide_con_sus_tablas(self):
+        texto = (BASE["carpeta"] / "ambiguedad.md").read_text(encoding="utf-8")
+        resumen = {int(n): int(casos) for n, casos in re.findall(r"^\| (\d)\. [^|]+\| (\d+) \|", texto, flags=re.M)}
+        self.assertEqual(sorted(resumen), [1, 2, 3, 4])
+        secciones = re.split(r"^## (\d)\. ", texto, flags=re.M)[1:]
+        for numero, cuerpo in zip(secciones[::2], secciones[1::2]):
+            filas = [linea for linea in cuerpo.splitlines() if linea.startswith("| ")]
+            esperadas = max(len(filas) - 1, 0)  # la primera es la cabecera
+            self.assertEqual(esperadas, resumen[int(numero)], f"lista {numero}")
+            if esperadas == 0:
+                self.assertIn("No hay casos.", cuerpo)
+        self.assertGreater(resumen[1], 0)
+
+
 class Auxiliares(unittest.TestCase):
     def test_ids_de(self):
         self.assertEqual(gt.ids_de(""), [])
@@ -730,9 +847,9 @@ class ArchivosGenerados(unittest.TestCase):
     """Lo que genera main() sobre el proyecto reducido, comparado con los archivos del repositorio."""
 
     def test_salvo_nombres_completos_salen_identicos_a_los_del_repositorio(self):
-        repositorio = [AQUI / "README.md", AQUI / "colores-por-idioma.md", AQUI / "referencias.md",
+        repositorio = [AQUI / "README.md", AQUI / "colores-por-idioma.md", AQUI / "referencias.md", AQUI / "ambiguedad.md",
                        *sorted((AQUI / "por-idioma").glob("*")), *sorted((AQUI / "exportes").glob("*"))]
-        self.assertEqual(len(repositorio), 3 + 30 + 2, "tres archivos sueltos, 30 páginas por idioma y 2 exportes")
+        self.assertEqual(len(repositorio), 4 + 30 + 2, "cuatro archivos sueltos, 30 páginas por idioma y 2 exportes")
         for ruta in repositorio:
             relativa = ruta.relative_to(AQUI)
             generado = BASE["carpeta"] / relativa
@@ -855,7 +972,7 @@ class Programa(unittest.TestCase):
             return texto.rstrip("\n") + "x\n"
 
         for nombre, editar in (("README.md", en_la_tabla), ("colores-por-idioma.md", al_final), ("referencias.md", al_final),
-                               ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
+                               ("ambiguedad.md", al_final), ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
                                ("por-idioma/ja.md", al_final), ("exportes/colores.jsonl", al_final),
                                ("exportes/gazetteer.tsv", al_final)):
             with self.subTest(nombre):

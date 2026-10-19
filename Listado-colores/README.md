@@ -127,6 +127,23 @@ Para buscar una palabra en texto escrito sin cuidado (mayúsculas, sin tildes, c
 
 Es una aproximación para casar texto, no una equivalencia lingüística: dos palabras distintas pueden acabar iguales (en turco, `ı` e `i`; en danés, `ø` y `o`) y no se intenta deshacer. Los plegados siguen la convención habitual de pasar a ASCII; no es una norma de ningún idioma. No hay separación de palabras para las escrituras que no usan espacios (chino, japonés, tailandés).
 
+## Ambigüedad
+
+`ambiguedad.md` (generado) lista las formas del gazetteer que designan más de un color, para saber qué formas no bastan por sí solas para decidir de qué color se habla. Una forma es ambigua si remite a más de un hex; los alias CSS (`gray` y `grey`) comparten hex y no cuentan. Cuatro listas:
+
+1. **Dentro de un idioma:** una misma forma con varios colores (en francés, `violet` es `purple` y `violet`; en español, `celeste` es `skyblue` y `lightblue`).
+2. **Entre idiomas:** la misma forma con colores distintos en cada uno (`lila` es `lilac` en español, neerlandés, finés, rumano y turco, pero `purple` en alemán, sueco y húngaro; `青色` es cian en chino y azul en japonés).
+3. **Dentro de un idioma, solo al normalizar:** formas distintas que coinciden al pasarlas por la forma normalizada y que no estaban ya en la lista 1.
+4. **Entre idiomas, solo al normalizar:** lo mismo entre idiomas, sin repetir la lista 2 (por ejemplo, `grau` en alemán, gris, y `grâu` en rumano, trigo).
+
+Cada caso trae la distancia máxima CIEDE2000 (ΔE) entre sus colores y una banda: *casi iguales* (hasta 3), *parecidos* (hasta 8) y *distintos* (más de 8). Son los umbrales de cercanía del proyecto, no un estándar. El resumen de `ambiguedad.md` tiene las cifras al día.
+
+Límites que conviene tener presentes:
+
+- Solo cubre las formas del gazetteer. No detecta palabras que, además de un color, son otra cosa (una flor, una fruta) ni palabras que no están en el listado: para eso hace falta un corpus.
+- Parte de las ambigüedades viene de la traducción, que es una propuesta sin revisión de hablantes nativos. Una forma que remite a colores muy distintos en un idioma (en francés, `violet` a `purple` y `violet`, a 39,9 de distancia) puede ser un idioma que no distingue los dos colores o una traducción que conviene revisar; el informe no lo decide.
+- Las formas flexionadas cuentan una por una: si el lema de un idioma sirve para dos colores, cada flexión sale como un caso.
+
 ## Fuentes y verificación
 
 - **Nombres en inglés y hex de la tabla anotada:** especificación *CSS Color Module Level 4*, sección de colores con nombre (código fuente en `w3c/csswg-drafts`). Los 148 nombres y sus valores hex coinciden con esa fuente y con una tabla JSON de referencia (`bahamas10/css-color-names`). `rebeccapurple` aparece en la especificación como adición de CSS Color Level 4.
@@ -150,7 +167,9 @@ Es una aproximación para casar texto, no una equivalencia lingüística: dos pa
 - `colorimetria.py`: sRGB a CIELAB y CIEDE2000, con los vectores de prueba de Sharma et al. Lo importa `generar-tabla.py`.
 - `exportes/colores.jsonl` y `exportes/gazetteer.tsv`: exportes para PLN. Generados.
 - `exportes.py`: genera los exportes y la base SQLite. Lo importa `generar-tabla.py`.
-- `normalizacion.py`: la forma normalizada de un nombre (ver «Forma normalizada»). Lo importa `exportes.py`.
+- `normalizacion.py`: la forma normalizada de un nombre (ver «Forma normalizada»). Lo importan `exportes.py` y `ambiguedad.py`.
+- `ambiguedad.md`: informe de las formas que designan más de un color (ver «Ambigüedad»). Generado.
+- `ambiguedad.py`: calcula ese informe. Lo importa `generar-tabla.py`.
 - `generar-tabla.py`: valida todos los CSV y genera la tabla de este README, `colores-por-idioma.md`, `por-idioma/`, `referencias.md` y `exportes/`.
 - `pruebas.py`: pruebas del generador (`unittest`, solo biblioteca estándar). Ver «Pruebas» en «Uso».
 - `LICENCIA-meodai-color-names.txt`: licencia MIT de la fuente de la lista completa.

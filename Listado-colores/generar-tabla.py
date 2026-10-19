@@ -16,7 +16,7 @@
   y colores-por-idioma.md, que es el índice de esas páginas.
 
 - Se generan además exportes/colores.jsonl y exportes/gazetteer.tsv (ver exportes.py) y, a petición, una
-  base SQLite.
+  base SQLite, y ambiguedad.md, el informe de las formas que designan más de un color (ver ambiguedad.py).
 
 Uso:
   python3 generar-tabla.py                   valida los CSV y regenera los archivos generados
@@ -32,7 +32,8 @@ from pathlib import Path
 CARPETA = Path(__file__).resolve().parent
 sys.dont_write_bytecode = True  # no dejar __pycache__ en la carpeta al importar los módulos de al lado
 sys.path.insert(0, str(CARPETA))
-import colorimetria  # noqa: E402  (módulos de esta carpeta)
+import ambiguedad  # noqa: E402  (módulos de esta carpeta)
+import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 
 ANOTADA = CARPETA / "colores.csv"
@@ -43,6 +44,7 @@ REFERENCIAS = CARPETA / "referencias.csv"
 EVIDENCIA = CARPETA / "evidencia.csv"
 CULTURALES = CARPETA / "significados-culturales.csv"
 REFS_MD = CARPETA / "referencias.md"
+AMBIGUEDAD = CARPETA / "ambiguedad.md"
 DIR_EXPORTES = CARPETA / "exportes"
 README = CARPETA / "README.md"
 INDICE = CARPETA / "colores-por-idioma.md"
@@ -656,6 +658,7 @@ def main():
         README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada, evidencia)}\n{FIN}", texto),
         INDICE: indice_idiomas(anotada),
         REFS_MD: referencias_md(referencias),
+        AMBIGUEDAD: ambiguedad.informe(exportes.filas_gazetteer(datos), IDIOMAS),
         COMPLETA: texto_completa(completa, cercanias),
         DIR_EXPORTES / "colores.jsonl": exportes.colores_jsonl(datos),
         DIR_EXPORTES / "gazetteer.tsv": exportes.gazetteer_tsv(datos),
