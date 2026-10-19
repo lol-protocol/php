@@ -9,7 +9,8 @@
     "comparison": "Comparison",
     "converter": "Converter",
     "statistics": "Statistics",
-    "about": "About"
+    "about": "About",
+    "paperTypes": ""
   },
   "search": {
     "placeholder": "",
@@ -112,5 +113,50 @@
   "theme": "",
   "light": "",
   "dark": "",
-  "auto": ""
+  "auto": "",
+  "demo": {
+    "title": "",
+    "subtitle": "",
+    "skip": "",
+    "sections": "",
+    "totalFormats": "",
+    "countries": "",
+    "categories": "",
+    "search": "",
+    "searchPlaceholder": "",
+    "country": "",
+    "category": "",
+    "region": "",
+    "reset": "",
+    "compareLabel": "",
+    "comparePlaceholder": "",
+    "colFormat": "",
+    "colCountry": "",
+    "colWidth": "",
+    "colHeight": "",
+    "colAspect": "",
+    "fromFormat": "",
+    "toFormat": "",
+    "selectFormat": "",
+    "cardCountry": "",
+    "cardSizeMm": "",
+    "cardSizeIn": "",
+    "cardAspect": "",
+    "proportions": "",
+    "similarity": "",
+    "resultsFormats": "",
+    "resultsPaperTypes": "",
+    "noPaperTypes": ""
+  },
+  "paperTypes": {
+    "searchPlaceholder": "",
+    "combine": "",
+    "combinedTitle": "",
+    "paperType": "",
+    "color": "",
+    "texture": "",
+    "finish": "",
+    "weight": "",
+    "commonUse": ""
+  }
 }

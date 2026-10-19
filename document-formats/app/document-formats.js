@@ -1090,7 +1090,8 @@ class SpecificationManager {
         formatEquivalence: { file: '../specs/format_equivalence_matrix.csv', key: 'source_format' },
         regionalCompatibility: { file: '../specs/regional_compatibility.csv', key: 'region' },
         standardsReference: { file: '../specs/standards_reference.csv', key: 'format_name' },
-        paperTypes: { file: '../specs/paper_types.csv', key: 'type_name' }
+        paperTypes: { file: '../specs/paper_types.csv', key: 'type_name' },
+        paperTypeTranslations: { file: '../specs/paper_type_translations.csv', key: 'type_name' }
     };
 
     constructor() {
@@ -1169,6 +1170,7 @@ class SpecificationManager {
     getPaperType(typeName) { return this.get('paperTypes', typeName); }
     getPaperTypesByCategory(category) { return this.get('paperTypes', null, {category}); }
     getAllPaperTypes() { return this.specifications.get('paperTypes') || []; }
+    getPaperTypeTranslations(typeName) { return this.get('paperTypeTranslations', typeName); }
 }
 
 // Usage:
@@ -1180,11 +1182,29 @@ class SpecificationManager {
 // const wcag = specs.getWCAGContrast('Normal Text', 'AAA');
 
 
+// Name of a paper type in a UI language. paper_types.csv carries Spanish
+// (type_name) and English (type_name_en); the other 28 languages come from the
+// row of paper_type_translations.csv for the same type_name. Anything missing
+// or empty falls back to English, so a name is never blank.
+const paperTypeName = (paperType, translations, lang) => {
+    if (lang === 'es') return paperType.type_name;
+    const translated = lang === 'en' ? null : translations?.[lang];
+    return translated || paperType.type_name_en;
+};
+
+// Fills {name} placeholders: formatMessage('{count} found', {count: 3}) -> '3 found'.
+// A placeholder with no value is left as it is, so a typo shows up on screen.
+const formatMessage = (template, values = {}) =>
+    String(template).replace(/\{(\w+)\}/g, (match, key) => (key in values ? values[key] : match));
+
+
 // Export all classes for use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         escapeHtml,
         sizeSimilarity,
+        paperTypeName,
+        formatMessage,
         FORMAT_CATALOG_FILES,
         loadFormatCatalogs,
         splitCSVLine,

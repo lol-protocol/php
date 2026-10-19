@@ -19,10 +19,20 @@
             --warning: #f59e0b;
             --danger: #ef4444;
             --text: #1f2937;
-            --text-light: #6b7280;
+            --text-light: #4b5563;
             --border: #e5e7eb;
             --bg: #f9fafb;
             --card-bg: #ffffff;
+            --accent: #2563eb;
+            --label: #1e40af;
+            --badge-standard-bg: #2563eb;
+            --badge-standard-fg: #ffffff;
+            --badge-book-bg: #047857;
+            --badge-book-fg: #ffffff;
+            --badge-legal-bg: #dc2626;
+            --badge-legal-fg: #ffffff;
+            --badge-photo-bg: #f59e0b;
+            --badge-photo-fg: #1f2937;
             --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
@@ -34,6 +44,16 @@
                 --border: #374151;
                 --bg: #111827;
                 --card-bg: #1f2937;
+                --accent: #60a5fa;
+                --label: #93c5fd;
+                --badge-standard-bg: #60a5fa;
+                --badge-standard-fg: #111827;
+                --badge-book-bg: #34d399;
+                --badge-book-fg: #111827;
+                --badge-legal-bg: #f87171;
+                --badge-legal-fg: #111827;
+                --badge-photo-bg: #fbbf24;
+                --badge-photo-fg: #111827;
             }
         }
 
@@ -93,8 +113,8 @@
         }
 
         .tab-btn.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
+            color: var(--accent);
+            border-bottom-color: var(--accent);
         }
 
         .tab-btn:hover {
@@ -151,9 +171,12 @@
 
         .control-group input:focus,
         .control-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color: var(--accent);
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
         }
 
         .stats {
@@ -174,7 +197,7 @@
         .stat-card .number {
             font-size: 32px;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--accent);
             margin-bottom: 5px;
         }
 
@@ -202,7 +225,7 @@
         .format-card:hover {
             box-shadow: var(--shadow-lg);
             transform: translateY(-4px);
-            border-color: var(--primary);
+            border-color: var(--accent);
         }
 
         .format-card-header {
@@ -231,10 +254,10 @@
             color: var(--text);
         }
 
-        .badge-standard { background: var(--primary); color: white; }
-        .badge-book { background: var(--success); color: white; }
-        .badge-legal { background: var(--danger); color: white; }
-        .badge-photo { background: var(--warning); color: white; }
+        .badge-standard { background: var(--badge-standard-bg); color: var(--badge-standard-fg); }
+        .badge-book { background: var(--badge-book-bg); color: var(--badge-book-fg); }
+        .badge-legal { background: var(--badge-legal-bg); color: var(--badge-legal-fg); }
+        .badge-photo { background: var(--badge-photo-bg); color: var(--badge-photo-fg); }
 
         .format-info {
             margin-bottom: 15px;
@@ -254,7 +277,7 @@
 
         .info-label {
             font-weight: 600;
-            color: var(--secondary);
+            color: var(--label);
         }
 
         .info-value {
@@ -326,7 +349,7 @@
 
         .comparison-table th {
             padding: 15px;
-            text-align: left;
+            text-align: start;
             font-weight: 600;
         }
 
@@ -389,7 +412,7 @@
 
         .equivalence-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
+            background: linear-gradient(90deg, #047857 0%, var(--primary) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -437,7 +460,81 @@
             to { transform: rotate(360deg); }
         }
 
+        .control-group .label-spacer {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .skip-link {
+            position: absolute;
+            inset-inline-start: 10px;
+            top: -60px;
+            z-index: 10;
+            padding: 10px 16px;
+            background: var(--card-bg);
+            color: var(--text);
+            border-radius: 6px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .skip-link:focus {
+            top: 10px;
+        }
+
+        .header {
+            position: relative;
+        }
+
+        .language-picker {
+            position: absolute;
+            top: 12px;
+            inset-inline-end: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .language-picker select {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #ffffff;
+            color: #1f2937;
+        }
+
+        .language-picker select:focus-visible {
+            outline-color: #ffffff;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
         @media (max-width: 768px) {
+            .language-picker {
+                position: static;
+                justify-content: center;
+                margin-bottom: 12px;
+            }
+
             .header h1 {
                 font-size: 24px;
             }
@@ -462,65 +559,74 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>📄 Document Formats Database</h1>
-        <p>Browse, search, and compare paper and document formats by country</p>
-    </div>
+    <a class="skip-link" href="#main" data-translate="demo.skip">Skip to content</a>
 
-    <div class="container">
+    <header class="header">
+        <div class="language-picker">
+            <label for="language-select" data-translate="language">Language:</label>
+            <select id="language-select"></select>
+        </div>
+        <h1><span aria-hidden="true">📄</span> <span data-translate="demo.title">Document Formats Database</span></h1>
+        <p data-translate="demo.subtitle">Browse, search, and compare paper and document formats by country</p>
+    </header>
+
+    <main class="container" id="main" tabindex="-1">
+        <p class="sr-only" id="status" role="status" aria-live="polite"></p>
+
         <!-- Statistics -->
         <div class="stats">
             <div class="stat-card">
                 <div class="number" id="total-formats">0</div>
-                <div class="label">Total Formats</div>
+                <div class="label" data-translate="demo.totalFormats">Total Formats</div>
             </div>
             <div class="stat-card">
                 <div class="number" id="total-countries">0</div>
-                <div class="label">Countries</div>
+                <div class="label" data-translate="demo.countries">Countries</div>
             </div>
             <div class="stat-card">
                 <div class="number" id="total-categories">0</div>
-                <div class="label">Categories</div>
+                <div class="label" data-translate="demo.categories">Categories</div>
             </div>
         </div>
 
         <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="browser">Browser</button>
-            <button class="tab-btn" data-tab="comparison">Comparison</button>
-            <button class="tab-btn" data-tab="converter">Converter</button>
-            <button class="tab-btn" data-tab="paper-types">Paper Types</button>
-            <button class="tab-btn" data-tab="about">About</button>
+        <div class="tabs" role="tablist" aria-label="Sections" data-translate="demo.sections:aria-label">
+            <button class="tab-btn active" role="tab" id="tab-browser" data-tab="browser" aria-controls="browser" aria-selected="true" data-translate="tabs.browser">Browser</button>
+            <button class="tab-btn" role="tab" id="tab-comparison" data-tab="comparison" aria-controls="comparison" aria-selected="false" tabindex="-1" data-translate="tabs.comparison">Comparison</button>
+            <button class="tab-btn" role="tab" id="tab-converter" data-tab="converter" aria-controls="converter" aria-selected="false" tabindex="-1" data-translate="tabs.converter">Converter</button>
+            <button class="tab-btn" role="tab" id="tab-paper-types" data-tab="paper-types" aria-controls="paper-types" aria-selected="false" tabindex="-1" data-translate="tabs.paperTypes">Paper Types</button>
+            <button class="tab-btn" role="tab" id="tab-about" data-tab="about" aria-controls="about" aria-selected="false" tabindex="-1" data-translate="tabs.about">About</button>
         </div>
 
         <!-- Browser Tab -->
-        <div id="browser" class="tab-content active">
+        <div id="browser" class="tab-content active" role="tabpanel" aria-labelledby="tab-browser">
+            <h2 class="sr-only" data-translate="tabs.browser">Browser</h2>
             <div class="controls">
                 <div class="control-group">
-                    <label>Search</label>
-                    <input type="text" id="search-input" placeholder="Search formats...">
+                    <label for="search-input" data-translate="demo.search">Search</label>
+                    <input type="text" id="search-input" placeholder="Search formats..." data-translate="demo.searchPlaceholder:placeholder">
                 </div>
                 <div class="control-group">
-                    <label>Country</label>
+                    <label for="country-filter" data-translate="demo.country">Country</label>
                     <select id="country-filter">
-                        <option value="">All Countries</option>
+                        <option value="" data-translate="filters.allCountries">All Countries</option>
                     </select>
                 </div>
                 <div class="control-group">
-                    <label>Category</label>
+                    <label for="category-filter" data-translate="demo.category">Category</label>
                     <select id="category-filter">
-                        <option value="">All Categories</option>
+                        <option value="" data-translate="filters.allCategories">All Categories</option>
                     </select>
                 </div>
                 <div class="control-group">
-                    <label>Region</label>
+                    <label for="region-filter" data-translate="demo.region">Region</label>
                     <select id="region-filter">
-                        <option value="">All Regions</option>
+                        <option value="" data-translate="filters.allRegions">All Regions</option>
                     </select>
                 </div>
                 <div class="control-group">
-                    <label>&nbsp;</label>
-                    <button class="btn btn-secondary" id="reset-btn">Reset Filters</button>
+                    <span class="label-spacer" aria-hidden="true">&nbsp;</span>
+                    <button class="btn btn-secondary" id="reset-btn" data-translate="demo.reset">Reset Filters</button>
                 </div>
             </div>
 
@@ -528,22 +634,23 @@
         </div>
 
         <!-- Comparison Tab -->
-        <div id="comparison" class="tab-content">
+        <div id="comparison" class="tab-content" role="tabpanel" aria-labelledby="tab-comparison">
+            <h2 class="sr-only" data-translate="tabs.comparison">Comparison</h2>
             <div class="controls">
                 <div class="control-group" style="grid-column: 1 / -1;">
-                    <label>Compare Formats</label>
-                    <input type="text" id="compare-search" placeholder="Type format names to compare...">
+                    <label for="compare-search" data-translate="demo.compareLabel">Compare Formats</label>
+                    <input type="text" id="compare-search" placeholder="Type format names to compare..." data-translate="demo.comparePlaceholder:placeholder">
                 </div>
             </div>
             <div style="overflow-x: auto;">
                 <table class="comparison-table" id="comparison-table">
                     <thead>
                         <tr>
-                            <th>Format</th>
-                            <th>Country</th>
-                            <th>Width (mm)</th>
-                            <th>Height (mm)</th>
-                            <th>Aspect Ratio</th>
+                            <th scope="col" data-translate="demo.colFormat">Format</th>
+                            <th scope="col" data-translate="demo.colCountry">Country</th>
+                            <th scope="col" data-translate="demo.colWidth">Width (mm)</th>
+                            <th scope="col" data-translate="demo.colHeight">Height (mm)</th>
+                            <th scope="col" data-translate="demo.colAspect">Aspect Ratio</th>
                         </tr>
                     </thead>
                     <tbody id="comparison-body">
@@ -553,26 +660,26 @@
         </div>
 
         <!-- Converter Tab -->
-        <div id="converter" class="tab-content">
+        <div id="converter" class="tab-content" role="tabpanel" aria-labelledby="tab-converter">
             <div class="converter-section">
-                <h3>Format Converter</h3>
+                <h2 data-translate="converter.title">Format Converter</h2>
                 <div class="converter-group">
-                    <label>From Format</label>
+                    <label for="from-format" data-translate="demo.fromFormat">From Format</label>
                     <select id="from-format">
-                        <option value="">Select format...</option>
+                        <option value="" data-translate="demo.selectFormat">Select format...</option>
                     </select>
                 </div>
 
                 <div class="converter-group">
-                    <label>To Format</label>
+                    <label for="to-format" data-translate="demo.toFormat">To Format</label>
                     <select id="to-format">
-                        <option value="">Select format...</option>
+                        <option value="" data-translate="demo.selectFormat">Select format...</option>
                     </select>
                 </div>
 
                 <div class="conversion-result" id="conversion-result">
                     <div id="conversion-info"></div>
-                    <div class="equivalence-bar">
+                    <div class="equivalence-bar" aria-hidden="true">
                         <div class="equivalence-fill" id="equivalence-fill" style="width: 0%"></div>
                     </div>
                 </div>
@@ -580,22 +687,23 @@
         </div>
 
         <!-- Paper Types Tab -->
-        <div id="paper-types" class="tab-content">
+        <div id="paper-types" class="tab-content" role="tabpanel" aria-labelledby="tab-paper-types">
+            <h2 class="sr-only" data-translate="tabs.paperTypes">Paper Types</h2>
             <div class="controls">
                 <div class="control-group">
-                    <label>Search</label>
-                    <input type="text" id="paper-search-input" placeholder="Search paper types...">
+                    <label for="paper-search-input" data-translate="demo.search">Search</label>
+                    <input type="text" id="paper-search-input" placeholder="Search paper types..." data-translate="paperTypes.searchPlaceholder:placeholder">
                 </div>
                 <div class="control-group">
-                    <label>Category</label>
+                    <label for="paper-category-filter" data-translate="demo.category">Category</label>
                     <select id="paper-category-filter">
-                        <option value="">All Categories</option>
+                        <option value="" data-translate="filters.allCategories">All Categories</option>
                     </select>
                 </div>
                 <div class="control-group">
-                    <label>Combine with a size</label>
+                    <label for="paper-size-select" data-translate="paperTypes.combine">Combine with a size</label>
                     <select id="paper-size-select">
-                        <option value="">Select format...</option>
+                        <option value="" data-translate="demo.selectFormat">Select format...</option>
                     </select>
                 </div>
             </div>
@@ -605,7 +713,12 @@
                 <div style="overflow-x: auto;">
                     <table class="comparison-table">
                         <thead>
-                            <tr><th>Paper Type</th><th>Color</th><th>Texture</th><th>Weight (gsm)</th></tr>
+                            <tr>
+                                <th scope="col" data-translate="paperTypes.paperType">Paper Type</th>
+                                <th scope="col" data-translate="paperTypes.color">Color</th>
+                                <th scope="col" data-translate="paperTypes.texture">Texture</th>
+                                <th scope="col" data-translate="paperTypes.weight">Weight (gsm)</th>
+                            </tr>
                         </thead>
                         <tbody id="paper-combined-body"></tbody>
                     </table>
@@ -616,11 +729,11 @@
         </div>
 
         <!-- About Tab -->
-        <div id="about" class="tab-content">
+        <div id="about" class="tab-content" role="tabpanel" aria-labelledby="tab-about">
             <div style="background: var(--card-bg); padding: 25px; border-radius: 8px; box-shadow: var(--shadow);">
                 <h2>About This Database</h2>
                 <p>This comprehensive document format database includes:</p>
-                <ul style="margin: 15px 0; padding-left: 20px;">
+                <ul style="margin: 15px 0; padding-inline-start: 20px;">
                     <li><strong id="about-formats">…</strong> formats across multiple categories</li>
                     <li><strong id="about-countries">…</strong> countries and regions with local and international standards</li>
                     <li><strong>Dual measurements</strong> in both metric and imperial units</li>
@@ -633,17 +746,23 @@
                 </p>
             </div>
         </div>
-    </div>
+    </main>
 
-    <div class="footer">
+    <footer class="footer">
         <p>Document Formats Database v2.0 | Built with HTML5, CSS3, and JavaScript</p>
-    </div>
+    </footer>
 
     <script src="document-formats.js"></script>
     <script>
+        const i18n = new LocalizationManager();
+        const tr = (key, values) => formatMessage(i18n.t(key), values);
+        const RTL_LANGUAGES = new Set(['ar']);
+        const announce = (text) => { document.getElementById('status').textContent = text; };
+
         class FormatBrowser {
             constructor(formats) {
                 this.formats = formats;
+                this.shown = formats;
                 this.converter = new FormatConverter(formats);
                 this.cacheElements();
                 this.setupEventListeners();
@@ -697,9 +816,25 @@
                 });
 
                 document.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('tab-btn')) {
-                        this.switchTab(e.target.dataset.tab);
-                    }
+                    const tab = e.target.closest('.tab-btn');
+                    if (tab) this.switchTab(tab.dataset.tab);
+                });
+
+                // Arrow keys, Home and End move between tabs (WAI-ARIA tabs pattern).
+                // In a right-to-left language the arrows point the other way.
+                document.addEventListener('keydown', (e) => {
+                    const current = e.target.closest?.('.tab-btn');
+                    if (!current) return;
+                    const tabs = [...this.els.tabBtns];
+                    const rtl = document.documentElement.dir === 'rtl';
+                    const steps = {ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1};
+                    let index = tabs.indexOf(current);
+                    if (e.key in steps) index = (index + steps[e.key] + tabs.length) % tabs.length;
+                    else if (e.key === 'Home') index = 0;
+                    else if (e.key === 'End') index = tabs.length - 1;
+                    else return;
+                    e.preventDefault();
+                    this.switchTab(tabs[index].dataset.tab, true);
                 });
             }
 
@@ -742,16 +877,18 @@
                     (!region || format.region === region)
                 );
                 this.renderFormats(filtered);
+                announce(tr('demo.resultsFormats', {count: filtered.length}));
             }
 
             renderFormats(formats) {
                 const {container} = this.els;
+                this.shown = formats;
 
                 if (formats.length === 0) {
                     container.innerHTML = `
                         <div class="no-results">
-                            <div class="no-results-icon">🔍</div>
-                            <p>No formats found matching your criteria.</p>
+                            <div class="no-results-icon" aria-hidden="true">🔍</div>
+                            <p>${escapeHtml(tr('messages.noResults'))}</p>
                         </div>
                     `;
                     return;
@@ -765,19 +902,19 @@
                         </div>
                         <div class="format-info">
                             <div class="info-row">
-                                <span class="info-label">Country:</span>
+                                <span class="info-label">${escapeHtml(tr('demo.cardCountry'))}</span>
                                 <span class="info-value">${escapeHtml(format.country)}</span>
                             </div>
                             <div class="info-row">
-                                <span class="info-label">Size (mm):</span>
+                                <span class="info-label">${escapeHtml(tr('demo.cardSizeMm'))}</span>
                                 <span class="info-value">${escapeHtml(format.width_mm)} × ${escapeHtml(format.height_mm)}</span>
                             </div>
                             <div class="info-row">
-                                <span class="info-label">Size (in):</span>
+                                <span class="info-label">${escapeHtml(tr('demo.cardSizeIn'))}</span>
                                 <span class="info-value">${escapeHtml(format.width_inches)}" × ${escapeHtml(format.height_inches)}"</span>
                             </div>
                             <div class="info-row">
-                                <span class="info-label">Aspect Ratio:</span>
+                                <span class="info-label">${escapeHtml(tr('demo.cardAspect'))}</span>
                                 <span class="info-value">${escapeHtml(format.aspect_ratio)}</span>
                             </div>
                         </div>
@@ -793,9 +930,10 @@
                 const scale = 100 / Math.max(format.width_mm, format.height_mm);
                 const w = format.width_mm * scale;
                 const h = format.height_mm * scale;
+                const label = escapeHtml(tr('demo.proportions', {name: format.format_name}));
 
                 return `
-                    <svg viewBox="0 0 ${w} ${h}" style="height: 120px; max-width: 100%;" role="img" aria-label="${escapeHtml(format.format_name)} proportions">
+                    <svg viewBox="0 0 ${w} ${h}" style="height: 120px; max-width: 100%;" role="img" aria-label="${label}">
                         <rect x="1" y="1" width="${w - 2}" height="${h - 2}"
                               fill="white" stroke="#999" stroke-width="1"/>
                     </svg>
@@ -809,13 +947,16 @@
                 totalCategories.textContent = new Set(this.formats.map(f => f.category)).size;
             }
 
-            switchTab(tabName) {
+            switchTab(tabName, moveFocus = false) {
                 const {tabContents, tabBtns} = this.els;
-                tabContents.forEach(tab => tab.classList.remove('active'));
-                tabBtns.forEach(btn => btn.classList.remove('active'));
-
-                document.getElementById(tabName).classList.add('active');
-                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+                tabContents.forEach(panel => panel.classList.toggle('active', panel.id === tabName));
+                tabBtns.forEach(btn => {
+                    const selected = btn.dataset.tab === tabName;
+                    btn.classList.toggle('active', selected);
+                    btn.setAttribute('aria-selected', String(selected));
+                    btn.tabIndex = selected ? 0 : -1;
+                    if (selected && moveFocus) btn.focus();
+                });
             }
 
             updateComparison() {
@@ -850,7 +991,7 @@
                     <p><strong>${escapeHtml(fromName)}</strong> (${escapeHtml(conversion.fromSize.mm)} mm)
                         → <strong>${escapeHtml(toName)}</strong> (${escapeHtml(conversion.toSize.mm)} mm)</p>
                     <p style="font-size: 14px; color: var(--text-light);">
-                        Size similarity: ${conversion.similarity}%
+                        ${escapeHtml(tr('demo.similarity', {percent: conversion.similarity}))}
                     </p>
                 `;
 
@@ -859,12 +1000,20 @@
                 fill.textContent = conversion.similarity + '%';
                 result.classList.add('show');
             }
+
+            // Redraws what JavaScript wrote with words in it, after a language change.
+            refresh() {
+                this.renderFormats(this.shown);
+                this.updateConverter();
+            }
         }
 
         class PaperTypeBrowser {
-            constructor(paperTypes, formats) {
+            constructor(paperTypes, translations, formats) {
                 this.paperTypes = paperTypes;
+                this.translations = new Map(translations.map(row => [row.type_name, row]));
                 this.formats = formats;
+                this.shown = paperTypes;
                 this.cacheElements();
                 this.setupEventListeners();
                 this.populateFilters();
@@ -881,6 +1030,11 @@
                     combinedTitle: document.getElementById('paper-combined-title'),
                     combinedBody: document.getElementById('paper-combined-body')
                 };
+            }
+
+            // The paper type's name in the language the page is showing.
+            name(paperType) {
+                return paperTypeName(paperType, this.translations.get(paperType.type_name), i18n.getLanguage());
             }
 
             setupEventListeners() {
@@ -923,63 +1077,58 @@
                 const category = categoryFilter.value;
 
                 const filtered = this.paperTypes.filter(p =>
-                    (!query || [p.type_name, p.type_name_en, p.common_use, p.notes]
+                    (!query || [p.type_name, p.type_name_en, this.name(p), p.common_use, p.notes]
                         .some(text => String(text ?? '').toLowerCase().includes(query))) &&
                     (!category || p.category === category)
                 );
                 this.render(filtered);
+                announce(tr('demo.resultsPaperTypes', {count: filtered.length}));
             }
 
             render(paperTypes) {
                 const {container} = this.els;
+                this.shown = paperTypes;
 
                 if (paperTypes.length === 0) {
                     container.innerHTML = `
                         <div class="no-results">
-                            <div class="no-results-icon">🔍</div>
-                            <p>No paper types found matching your criteria.</p>
+                            <div class="no-results-icon" aria-hidden="true">🔍</div>
+                            <p>${escapeHtml(tr('demo.noPaperTypes'))}</p>
                         </div>
                     `;
                     return;
                 }
 
                 const badgeSlug = (category) => String(category).toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                const row = (label, value) => `
+                    <div class="info-row">
+                        <span class="info-label">${escapeHtml(label)}</span>
+                        <span class="info-value">${escapeHtml(value)}</span>
+                    </div>`;
 
-                container.innerHTML = paperTypes.map(p => `
+                container.innerHTML = paperTypes.map(p => {
+                    const title = this.name(p);
+                    // The original names stay visible, except the one already used as the title.
+                    const originals = [['es', p.type_name], ['en', p.type_name_en]]
+                        .filter(([, value]) => value !== title)
+                        .map(([lang, value]) => row(i18n.getLanguageName(lang), value)).join('');
+                    return `
                     <div class="format-card">
                         <div class="format-card-header">
-                            <h3>${escapeHtml(p.type_name)}</h3>
+                            <h3>${escapeHtml(title)}</h3>
                             <span class="badge badge-${badgeSlug(p.category)}">${escapeHtml(p.category)}</span>
                         </div>
                         <div class="format-info">
-                            <div class="info-row">
-                                <span class="info-label">English:</span>
-                                <span class="info-value">${escapeHtml(p.type_name_en)}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Color:</span>
-                                <span class="info-value">${escapeHtml(p.color)}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Texture:</span>
-                                <span class="info-value">${escapeHtml(p.texture)}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Finish:</span>
-                                <span class="info-value">${escapeHtml(p.finish)}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Weight (gsm):</span>
-                                <span class="info-value">${escapeHtml(p.weight_gsm_range)}</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Common use:</span>
-                                <span class="info-value">${escapeHtml(p.common_use)}</span>
-                            </div>
+                            ${originals}
+                            ${row(tr('paperTypes.color'), p.color)}
+                            ${row(tr('paperTypes.texture'), p.texture)}
+                            ${row(tr('paperTypes.finish'), p.finish)}
+                            ${row(tr('paperTypes.weight'), p.weight_gsm_range)}
+                            ${row(tr('paperTypes.commonUse'), p.common_use)}
                         </div>
                         <p style="margin-top: 10px; font-size: 13px; color: var(--text-light);">${escapeHtml(p.notes)}</p>
-                    </div>
-                `).join('');
+                    </div>`;
+                }).join('');
             }
 
             updateCombined() {
@@ -992,11 +1141,12 @@
                 }
 
                 const format = this.formats.find(f => f.format_name === formatName);
-                combinedTitle.textContent =
-                    `${formatName} (${format.width_mm}×${format.height_mm} mm) in every paper type`;
+                combinedTitle.textContent = tr('paperTypes.combinedTitle', {
+                    format: formatName, size: `${format.width_mm}×${format.height_mm}`
+                });
                 combinedBody.innerHTML = this.paperTypes.map(p => `
                     <tr>
-                        <td>${escapeHtml(p.type_name)}</td>
+                        <td>${escapeHtml(this.name(p))}</td>
                         <td>${escapeHtml(p.color)}</td>
                         <td>${escapeHtml(p.texture)}</td>
                         <td>${escapeHtml(p.weight_gsm_range)}</td>
@@ -1004,11 +1154,62 @@
                 `).join('');
                 combinedSection.style.display = '';
             }
+
+            refresh() {
+                this.render(this.shown);
+                this.updateCombined();
+            }
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
+            let formatBrowser = null;
+            let paperBrowser = null;
+            const languageSelect = document.getElementById('language-select');
+
+            // Redraw the page in the language that just loaded: the words written in the HTML
+            // (data-translate), the language and direction of the document, and the cards and
+            // tables that JavaScript draws.
+            const applyLanguage = () => {
+                const lang = i18n.getLanguage();
+                document.documentElement.lang = lang;
+                document.documentElement.dir = RTL_LANGUAGES.has(lang) ? 'rtl' : 'ltr';
+                document.title = tr('demo.title');
+                i18n.translateElement(document.body);
+                // A string the language lacks shows in English: say so, or a screen reader
+                // would read it with the voice of the page's language.
+                document.querySelectorAll('[data-translate]').forEach(el => {
+                    const key = el.dataset.translate.split(':')[0];
+                    const missing = LocalizationManager.lookup(i18n.translations, key) === null;
+                    if (missing && lang !== 'en') el.lang = 'en';
+                    else el.removeAttribute('lang');
+                });
+                languageSelect.value = lang;
+                formatBrowser?.refresh();
+                paperBrowser?.refresh();
+            };
+
+            for (const [code, name] of Object.entries(LocalizationManager.LANGUAGE_NAMES)) {
+                const option = document.createElement('option');
+                option.value = code;
+                option.lang = code;
+                option.textContent = name;
+                languageSelect.appendChild(option);
+            }
+            languageSelect.addEventListener('change', () => i18n.setLanguage(languageSelect.value));
+            i18n.subscribe(applyLanguage);
+
+            // First visit: start in the browser's language when the demo has it.
+            try {
+                const browserLanguage = (navigator.language || '').slice(0, 2).toLowerCase();
+                if (!localStorage.getItem('preferredLanguage') && browserLanguage in LocalizationManager.LANGUAGE_NAMES) {
+                    i18n.currentLanguage = browserLanguage;
+                }
+            } catch (error) { /* storage blocked: stay in English */ }
+            await i18n.init();
+            applyLanguage();
+
             const container = document.getElementById('formats-container');
-            container.innerHTML = '<p class="no-results">Loading formats…</p>';
+            container.innerHTML = `<p class="no-results">${escapeHtml(tr('messages.loading'))}</p>`;
 
             let formats, lastModified;
             try {
@@ -1025,16 +1226,17 @@
                 return;
             }
 
-            new FormatBrowser(formats);
+            formatBrowser = new FormatBrowser(formats);
             document.getElementById('about-formats').textContent = formats.length;
             document.getElementById('about-countries').textContent = new Set(formats.map(f => f.country)).size;
             document.getElementById('about-updated').textContent = lastModified
-                ? lastModified.toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric'})
+                ? lastModified.toLocaleDateString(i18n.getLanguage(), {year: 'numeric', month: 'long', day: 'numeric'})
                 : 'unknown (server sent no Last-Modified header)';
 
             const specs = new SpecificationManager();
             await specs.loadAllSpecifications();
-            new PaperTypeBrowser(specs.getAllPaperTypes(), formats);
+            paperBrowser = new PaperTypeBrowser(
+                specs.getAllPaperTypes(), specs.specifications.get('paperTypeTranslations') ?? [], formats);
         });
     </script>
 </body>

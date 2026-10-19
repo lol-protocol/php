@@ -9,7 +9,8 @@
     "comparison": "Comparison",
     "converter": "Converter",
     "statistics": "Statistics",
-    "about": "About"
+    "about": "About",
+    "paperTypes": "Paper Types"
   },
   "search": {
     "placeholder": "Search format name, country, or use...",
@@ -112,5 +113,50 @@
   "theme": "Theme:",
   "light": "Light",
   "dark": "Dark",
-  "auto": "Auto"
+  "auto": "Auto",
+  "demo": {
+    "title": "Document Formats Database",
+    "subtitle": "Browse, search, and compare paper and document formats by country",
+    "skip": "Skip to content",
+    "sections": "Sections",
+    "totalFormats": "Total Formats",
+    "countries": "Countries",
+    "categories": "Categories",
+    "search": "Search",
+    "searchPlaceholder": "Search formats...",
+    "country": "Country",
+    "category": "Category",
+    "region": "Region",
+    "reset": "Reset Filters",
+    "compareLabel": "Compare Formats",
+    "comparePlaceholder": "Type format names to compare...",
+    "colFormat": "Format",
+    "colCountry": "Country",
+    "colWidth": "Width (mm)",
+    "colHeight": "Height (mm)",
+    "colAspect": "Aspect Ratio",
+    "fromFormat": "From Format",
+    "toFormat": "To Format",
+    "selectFormat": "Select format...",
+    "cardCountry": "Country:",
+    "cardSizeMm": "Size (mm):",
+    "cardSizeIn": "Size (in):",
+    "cardAspect": "Aspect Ratio:",
+    "proportions": "{name} proportions",
+    "similarity": "Size similarity: {percent}%",
+    "resultsFormats": "{count} formats found",
+    "resultsPaperTypes": "{count} paper types found",
+    "noPaperTypes": "No paper types found matching your criteria."
+  },
+  "paperTypes": {
+    "searchPlaceholder": "Search paper types...",
+    "combine": "Combine with a size",
+    "combinedTitle": "{format} ({size} mm) in every paper type",
+    "paperType": "Paper Type",
+    "color": "Color",
+    "texture": "Texture",
+    "finish": "Finish",
+    "weight": "Weight (gsm)",
+    "commonUse": "Common use"
+  }
 }

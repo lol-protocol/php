@@ -9,7 +9,8 @@
     "comparison": "Vergleich",
     "converter": "Umrechner",
     "statistics": "Statistiken",
-    "about": "Über"
+    "about": "Über",
+    "paperTypes": "Papiersorten"
   },
   "search": {
     "placeholder": "Formatname, Land oder Verwendung suchen...",
@@ -112,5 +113,50 @@
   "theme": "Design:",
   "light": "Hell",
   "dark": "Dunkel",
-  "auto": "Automatisch"
+  "auto": "Automatisch",
+  "demo": {
+    "title": "Datenbank für Dokumentformate",
+    "subtitle": "Papier- und Dokumentformate nach Land durchsuchen und vergleichen",
+    "skip": "Zum Inhalt springen",
+    "sections": "Bereiche",
+    "totalFormats": "Formate gesamt",
+    "countries": "Länder",
+    "categories": "Kategorien",
+    "search": "Suchen",
+    "searchPlaceholder": "Formate suchen...",
+    "country": "Land",
+    "category": "Kategorie",
+    "region": "Region",
+    "reset": "Filter zurücksetzen",
+    "compareLabel": "Formate vergleichen",
+    "comparePlaceholder": "Formatnamen zum Vergleichen eingeben...",
+    "colFormat": "Format",
+    "colCountry": "Land",
+    "colWidth": "Breite (mm)",
+    "colHeight": "Höhe (mm)",
+    "colAspect": "Seitenverhältnis",
+    "fromFormat": "Ausgangsformat",
+    "toFormat": "Zielformat",
+    "selectFormat": "Format auswählen...",
+    "cardCountry": "Land:",
+    "cardSizeMm": "Größe (mm):",
+    "cardSizeIn": "Größe (Zoll):",
+    "cardAspect": "Seitenverhältnis:",
+    "proportions": "Proportionen von {name}",
+    "similarity": "Größenähnlichkeit: {percent}%",
+    "resultsFormats": "{count} Formate gefunden",
+    "resultsPaperTypes": "{count} Papiersorten gefunden",
+    "noPaperTypes": "Keine Papiersorten gefunden, die den Kriterien entsprechen."
+  },
+  "paperTypes": {
+    "searchPlaceholder": "Papiersorten suchen...",
+    "combine": "Mit einer Größe kombinieren",
+    "combinedTitle": "{format} ({size} mm) in jeder Papiersorte",
+    "paperType": "Papiersorte",
+    "color": "Farbe",
+    "texture": "Struktur",
+    "finish": "Oberfläche",
+    "weight": "Flächengewicht (g/m²)",
+    "commonUse": "Übliche Verwendung"
+  }
 }
