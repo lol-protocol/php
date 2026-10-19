@@ -144,6 +144,29 @@ Límites que conviene tener presentes:
 - Parte de las ambigüedades viene de la traducción, que es una propuesta sin revisión de hablantes nativos. Una forma que remite a colores muy distintos en un idioma (en francés, `violet` a `purple` y `violet`, a 39,9 de distancia) puede ser un idioma que no distingue los dos colores o una traducción que conviene revisar; el informe no lo decide.
 - Las formas flexionadas cuentan una por una: si el lema de un idioma sirve para dos colores, cada flexión sale como un caso.
 
+## Versión de los datos y manifiesto
+
+Para usar los datos desde otro programa con una versión fija, `exportes/manifiesto.json` (generado) trae:
+
+- `version`: la de la primera entrada de `CHANGELOG.md` (versionado semántico de los **datos**, no del generador: mayor si se quita o renombra una columna, menor si se añade algo, parche si se corrige un dato).
+- `idiomas`: los 30 códigos, en orden.
+- `entradas` y `exportes`: de cada CSV de datos y de cada exporte, `archivo`, `filas` (sin la cabecera) y `sha256` (más `columnas` en el TSV).
+
+Para comprobar que tienes lo mismo que describe el manifiesto, desde esta carpeta:
+
+```python
+import hashlib, json
+from pathlib import Path
+m = json.loads(Path("exportes/manifiesto.json").read_text(encoding="utf-8"))
+for e in m["entradas"] + m["exportes"]:
+    suma = hashlib.sha256(Path(e["archivo"]).read_text(encoding="utf-8").encode("utf-8")).hexdigest()
+    print(e["archivo"], "igual" if suma == e["sha256"] else "DIFERENTE")
+```
+
+Las sumas se calculan sobre el texto con los finales de línea unificados, así que un checkout con CRLF (Windows) da las mismas; `sha256sum` sobre un archivo con CRLF daría otra.
+
+Quién sube la versión: el generador no puede saber si un cambio de datos merece una versión nueva. Quien cambia los datos apunta el cambio en `CHANGELOG.md` (con la versión que corresponda) y regenera. `--comprobar` falla si el manifiesto no coincide con los archivos, así que un cambio de datos nunca pasa sin regenerarlo, y el manifiesto cambia con él (alguna suma), pero **nada obliga a subir la versión**: si se olvida, la versión de dos conjuntos de datos distintos coincide y solo se ve por las sumas. `generar-tabla.py` comprueba el formato de `CHANGELOG.md` (encabezados `## X.Y.Z - AAAA-MM-DD`, versiones que bajan de arriba abajo, fechas que no suben, texto en cada entrada).
+
 ## Fuentes y verificación
 
 - **Nombres en inglés y hex de la tabla anotada:** especificación *CSS Color Module Level 4*, sección de colores con nombre (código fuente en `w3c/csswg-drafts`). Los 148 nombres y sus valores hex coinciden con esa fuente y con una tabla JSON de referencia (`bahamas10/css-color-names`). `rebeccapurple` aparece en la especificación como adición de CSS Color Level 4.
@@ -170,6 +193,9 @@ Límites que conviene tener presentes:
 - `normalizacion.py`: la forma normalizada de un nombre (ver «Forma normalizada»). Lo importan `exportes.py` y `ambiguedad.py`.
 - `ambiguedad.md`: informe de las formas que designan más de un color (ver «Ambigüedad»). Generado.
 - `ambiguedad.py`: calcula ese informe. Lo importa `generar-tabla.py`.
+- `CHANGELOG.md`: registro de cambios de los datos, con su versión (ver «Versión de los datos y manifiesto»). Se edita a mano.
+- `exportes/manifiesto.json`: versión, filas y sumas SHA-256 de los CSV y de los exportes. Generado.
+- `manifiesto.py`: valida `CHANGELOG.md` y arma el manifiesto. Lo importa `generar-tabla.py`.
 - `generar-tabla.py`: valida todos los CSV y genera la tabla de este README, `colores-por-idioma.md`, `por-idioma/`, `referencias.md` y `exportes/`.
 - `pruebas.py`: pruebas del generador (`unittest`, solo biblioteca estándar). Ver «Pruebas» en «Uso».
 - `LICENCIA-meodai-color-names.txt`: licencia MIT de la fuente de la lista completa.
@@ -198,6 +224,7 @@ python3 -m unittest -v pruebas          # unos 8 s; no escribe en la carpeta del
 Reglas para editar los CSV (el generador las comprueba):
 
 - Todos los CSV: cada fila con tantos campos como su cabecera (un texto con coma va entre comillas). Una fila con campos de más o de menos hace salir al generador con un error, en lugar de aceptarla en silencio o romper con un traceback.
+- Si cambias datos, apunta el cambio en `CHANGELOG.md` (con la versión que corresponda) y regenera con `python3 generar-tabla.py`: el manifiesto cambia con cualquier dato.
 - `colores.csv`: `nombre_ingles` en minúsculas, sin espacios y único; `forma_natural_en` igual que `nombre_ingles` pero con espacios entre palabras; `hex` en `#RRGGBB` y en mayúsculas; ningún campo vacío; ningún campo con `|` ni saltos de línea; filas ordenadas por `nombre_ingles`.
 - `lexico-basico.csv`: cada fila con concepto, idioma y tipo de la lista; un solo lema por concepto e idioma; los 11 conceptos básicos con lema en los 30 idiomas; formas con lema; ninguna forma vacía, con `|`, comillas o saltos de línea; sin letras latinas en los idiomas de otra escritura (el, ru, uk, ar, he, fa, hi, bn, zh, ja, ko, th); rasgos válidos según el tipo; sin filas repetidas; filas ordenadas.
 - `evidencia.csv`: una fila por color de `colores.csv`, en su orden; bases válidas; referencias ordenadas y existentes; los colores con estudios, exactamente los 13 indicados; los significados derivados no llevan referencias; la tradición moderna cita `leland2016`.

@@ -15,6 +15,7 @@ La CI corre además `python3 generar-tabla.py --comprobar` sobre los archivos re
 import contextlib
 import copy
 import csv
+import hashlib
 import importlib.util
 import io
 import json
@@ -34,6 +35,7 @@ sys.path.insert(0, str(AQUI))
 import ambiguedad  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
+import manifiesto  # noqa: E402
 import normalizacion  # noqa: E402
 
 # El generador se llama generar-tabla.py (con guion): no se puede importar con `import`.
@@ -42,7 +44,7 @@ gt = importlib.util.module_from_spec(_especificacion)
 _especificacion.loader.exec_module(gt)
 
 ARCHIVOS_DE_ENTRADA = ["colores.csv", "significados-idiomas.csv", "lexico-basico.csv", "evidencia.csv",
-                       "significados-culturales.csv", "referencias.csv", "README.md"]
+                       "significados-culturales.csv", "referencias.csv", "CHANGELOG.md", "README.md"]
 REAL = {}  # los CSV reales, leídos una vez; cada prueba trabaja con copias (ver real())
 BASE = {}  # la carpeta temporal con el proyecto reducido ya generado
 
@@ -95,7 +97,7 @@ def rutas_para(carpeta):
         "SIGNIFICADOS": carpeta / "significados-idiomas.csv", "LEXICO": carpeta / "lexico-basico.csv",
         "REFERENCIAS": carpeta / "referencias.csv", "EVIDENCIA": carpeta / "evidencia.csv",
         "CULTURALES": carpeta / "significados-culturales.csv", "REFS_MD": carpeta / "referencias.md",
-        "AMBIGUEDAD": carpeta / "ambiguedad.md", "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
+        "AMBIGUEDAD": carpeta / "ambiguedad.md", "CHANGELOG": carpeta / "CHANGELOG.md", "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
         "INDICE": carpeta / "colores-por-idioma.md", "DIR_IDIOMAS": carpeta / "por-idioma",
     }
 
@@ -799,6 +801,104 @@ class Ambiguedad(unittest.TestCase):
         self.assertGreater(resumen[1], 0)
 
 
+class Changelog(unittest.TestCase):
+    VALIDO = ("# Título\n\nTexto.\n\n## 1.2.0 - 2026-03-01\n\nAlgo.\n\n## 1.1.0 - 2026-02-01\n\nOtra cosa.\n\n"
+              "## 1.0.0 - 2026-01-01\n\nPrimera.\n")
+
+    def leer(self, texto):
+        errores = []
+        return manifiesto.leer_changelog(texto, errores), errores
+
+    def test_devuelve_la_primera_entrada(self):
+        self.assertEqual(self.leer(self.VALIDO), ("1.2.0", []))
+
+    def test_las_versiones_se_comparan_como_numeros(self):
+        texto = "## 1.10.0 - 2026-02-01\n\nUna.\n\n## 1.9.0 - 2026-01-01\n\nOtra.\n"
+        self.assertEqual(self.leer(texto), ("1.10.0", []))
+
+    def test_el_changelog_real_es_valido_y_su_version_es_la_del_manifiesto(self):
+        version, errores = self.leer((AQUI / "CHANGELOG.md").read_text(encoding="utf-8"))
+        self.assertEqual(errores, [])
+        self.assertEqual(version, json.loads((AQUI / "exportes" / "manifiesto.json").read_text(encoding="utf-8"))["version"])
+
+    def test_sin_entradas(self):
+        self.assertEqual(self.leer("# Solo un título\n\nTexto.\n"), (None, ["CHANGELOG.md: no hay ninguna entrada «## X.Y.Z - AAAA-MM-DD»"]))
+
+    def test_encabezados_mal_formados(self):
+        for encabezado in ("## 1.0 - 2026-01-01", "## v1.0.0 - 2026-01-01", "## 1.0.0 – 2026-01-01", "## 01.0.0 - 2026-01-01",
+                           "## 1.0.0 - 2026-1-1", "## Otra cosa"):
+            version, errores = self.leer(f"{encabezado}\n\nTexto.\n")
+            self.assertEqual(version, None, encabezado)
+            self.assertTrue(any("el encabezado debe ser" in e for e in errores), (encabezado, errores))
+
+    def test_fecha_que_no_existe(self):
+        version, errores = self.leer("## 1.0.0 - 2026-02-30\n\nTexto.\n")
+        self.assertEqual(version, None)
+        self.assertTrue(any("fecha que no existe" in e for e in errores), errores)
+
+    def test_las_versiones_deben_bajar(self):
+        for arriba, abajo in (("1.0.0", "1.0.0"), ("1.0.0", "1.1.0"), ("1.9.0", "1.10.0")):
+            _, errores = self.leer(f"## {arriba} - 2026-02-01\n\nUna.\n\n## {abajo} - 2026-01-01\n\nOtra.\n")
+            self.assertTrue(any("las versiones deben bajar" in e for e in errores), (arriba, abajo, errores))
+
+    def test_las_fechas_no_pueden_subir(self):
+        _, errores = self.leer("## 1.1.0 - 2026-01-01\n\nUna.\n\n## 1.0.0 - 2026-02-01\n\nOtra.\n")
+        self.assertTrue(any("las fechas no pueden subir" in e for e in errores), errores)
+        _, errores = self.leer("## 1.1.0 - 2026-01-01\n\nUna.\n\n## 1.0.0 - 2026-01-01\n\nOtra.\n")
+        self.assertEqual(errores, [], "el mismo día es válido")
+
+    def test_una_entrada_sin_texto(self):
+        _, errores = self.leer("## 1.1.0 - 2026-02-01\n\n## 1.0.0 - 2026-01-01\n\nOtra.\n")
+        self.assertEqual(len(errores), 1)
+        self.assertIn("línea 1: la entrada 1.1.0 no dice qué cambió", errores[0])
+
+
+class Manifiesto(unittest.TestCase):
+    @staticmethod
+    def suma(ruta):
+        return hashlib.sha256(ruta.read_text(encoding="utf-8").encode("utf-8")).hexdigest()
+
+    def comprobar_contra_archivos(self, carpeta):
+        datos = json.loads((carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8"))
+        self.assertEqual(list(datos), ["version", "idiomas", "entradas", "exportes"])
+        self.assertEqual(datos["idiomas"], [c for c, _ in gt.IDIOMAS])
+        self.assertEqual([e["archivo"] for e in datos["entradas"]],
+                         ["colores.csv", "significados-idiomas.csv", "lexico-basico.csv", "evidencia.csv",
+                          "significados-culturales.csv", "referencias.csv", "nombres-completos.csv"])
+        self.assertEqual([e["archivo"] for e in datos["exportes"]], ["exportes/colores.jsonl", "exportes/gazetteer.tsv"])
+        for entrada in datos["entradas"] + datos["exportes"]:
+            ruta = carpeta / entrada["archivo"]
+            filas = ruta.read_text(encoding="utf-8").count("\n") - (0 if ruta.suffix == ".jsonl" else 1)  # menos la cabecera
+            self.assertEqual(entrada["sha256"], self.suma(ruta), entrada["archivo"])
+            self.assertEqual(entrada["filas"], filas, entrada["archivo"])
+        self.assertEqual(datos["exportes"][1]["columnas"], exportes.COLUMNAS_GAZETTEER)
+        return datos
+
+    def test_el_manifiesto_del_repositorio_coincide_con_sus_archivos(self):
+        datos = self.comprobar_contra_archivos(AQUI)
+        self.assertEqual({e["archivo"]: e["filas"] for e in datos["entradas"]}["colores.csv"], 148)
+
+    def test_el_manifiesto_de_la_carpeta_reducida_coincide_con_sus_archivos(self):
+        datos = self.comprobar_contra_archivos(BASE["carpeta"])
+        self.assertEqual({e["archivo"]: e["filas"] for e in datos["entradas"]}["nombres-completos.csv"], 244)
+        self.assertNotEqual(datos["entradas"][-1]["sha256"],
+                            json.loads((AQUI / "exportes" / "manifiesto.json").read_text(encoding="utf-8"))["entradas"][-1]["sha256"])
+
+    def test_manifiesto_sintetico(self):
+        texto = manifiesto.manifiesto("1.2.3", ["es", "en"], [("ñandú.csv", 2, "x\n", None)], [("exportes/t.tsv", 1, "ñandú", ["a", "b"])])
+        self.assertTrue(texto.endswith("}\n"))
+        self.assertIn('"archivo": "ñandú.csv"', texto, "sin escapar los caracteres no ASCII")
+        esperado = {"version": "1.2.3", "idiomas": ["es", "en"],
+                    "entradas": [{"archivo": "ñandú.csv", "filas": 2, "sha256": hashlib.sha256(b"x\n").hexdigest()}],
+                    "exportes": [{"archivo": "exportes/t.tsv", "filas": 1, "columnas": ["a", "b"],
+                                  "sha256": hashlib.sha256("ñandú".encode("utf-8")).hexdigest()}]}
+        self.assertEqual(json.loads(texto), esperado)
+
+    def test_las_sumas_cambian_con_cualquier_byte(self):
+        self.assertNotEqual(manifiesto.sha256("a"), manifiesto.sha256("a "))
+        self.assertEqual(manifiesto.sha256("a"), hashlib.sha256(b"a").hexdigest())
+
+
 class Auxiliares(unittest.TestCase):
     def test_ids_de(self):
         self.assertEqual(gt.ids_de(""), [])
@@ -848,7 +948,9 @@ class ArchivosGenerados(unittest.TestCase):
 
     def test_salvo_nombres_completos_salen_identicos_a_los_del_repositorio(self):
         repositorio = [AQUI / "README.md", AQUI / "colores-por-idioma.md", AQUI / "referencias.md", AQUI / "ambiguedad.md",
-                       *sorted((AQUI / "por-idioma").glob("*")), *sorted((AQUI / "exportes").glob("*"))]
+                       *sorted((AQUI / "por-idioma").glob("*")),
+                       # El manifiesto de la carpeta reducida es otro (otro nombres-completos.csv): se prueba aparte.
+                       *sorted(p for p in (AQUI / "exportes").glob("*") if p.name != "manifiesto.json")]
         self.assertEqual(len(repositorio), 4 + 30 + 2, "cuatro archivos sueltos, 30 páginas por idioma y 2 exportes")
         for ruta in repositorio:
             relativa = ruta.relative_to(AQUI)
@@ -972,7 +1074,7 @@ class Programa(unittest.TestCase):
             return texto.rstrip("\n") + "x\n"
 
         for nombre, editar in (("README.md", en_la_tabla), ("colores-por-idioma.md", al_final), ("referencias.md", al_final),
-                               ("ambiguedad.md", al_final), ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
+                               ("ambiguedad.md", al_final), ("exportes/manifiesto.json", al_final), ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
                                ("por-idioma/ja.md", al_final), ("exportes/colores.jsonl", al_final),
                                ("exportes/gazetteer.tsv", al_final)):
             with self.subTest(nombre):
@@ -1068,6 +1170,45 @@ class Programa(unittest.TestCase):
                         ruta.write_text(original, encoding="utf-8")
                     self.assertEqual(codigo, 1)
                     self.assertIn(f"{nombre} línea 3: debe tener {columnas} campos", error)
+
+    def test_cambiar_un_csv_desfasa_el_manifiesto(self):
+        self.reescribir("colores.csv", lambda t: t.replace("rojo", "rojísimo", 1))
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        self.assertIn("exportes/manifiesto.json", error)
+
+    def test_la_version_del_manifiesto_sale_del_changelog(self):
+        self.reescribir("CHANGELOG.md", lambda t: t.replace("## 1.0.0 - 2026-10-19", "## 1.1.0 - 2026-10-20\n\nUn cambio.\n\n## 1.0.0 - 2026-10-19", 1))
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        self.assertIn("No coinciden con los CSV: exportes/manifiesto.json.", error, "solo el manifiesto cambia con la versión")
+        self.assertEqual(ejecutar(self.carpeta)[0], 0)
+        self.assertEqual(json.loads((self.carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8"))["version"], "1.1.0")
+        self.assertEqual(ejecutar(self.carpeta, "--comprobar")[0], 0)
+
+    def test_sin_changelog_es_un_error(self):
+        (self.carpeta / "CHANGELOG.md").unlink()
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        self.assertIn("CHANGELOG.md: no existe", error)
+
+    def test_un_changelog_invalido_es_un_error_y_no_toca_nada(self):
+        antes = self.estado()
+        self.reescribir("CHANGELOG.md", lambda t: t.replace("## 1.0.0 - 2026-10-19", "## 1.0 - 2026-10-19", 1))
+        antes["CHANGELOG.md"] = (self.carpeta / "CHANGELOG.md").read_bytes()
+        codigo, _, error = ejecutar(self.carpeta)
+        self.assertEqual(codigo, 1)
+        self.assertIn("Errores en los CSV", error)
+        self.assertIn("CHANGELOG.md línea", error)
+        self.assertEqual({str(k): v for k, v in self.estado().items()}, {str(k): v for k, v in antes.items()})
+
+    def test_un_csv_con_finales_de_linea_crlf_da_el_mismo_manifiesto(self):
+        # Un checkout de Windows con autocrlf: las sumas se calculan sobre el texto con los finales de línea unificados.
+        for nombre in ("colores.csv", "lexico-basico.csv"):
+            ruta = self.carpeta / nombre
+            ruta.write_bytes(ruta.read_bytes().replace(b"\n", b"\r\n"))
+        codigo, salida, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual((codigo, error), (0, ""), salida)
 
     def test_readme_sin_marcadores(self):
         self.reescribir("README.md", lambda t: t.replace(gt.INICIO, "<!-- otro -->"))
