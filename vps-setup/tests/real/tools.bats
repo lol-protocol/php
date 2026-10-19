@@ -140,6 +140,9 @@ exec "$@"'
     [ "$status" -eq 0 ] || { echo "$output"; return 1; }
     run fail2ban-client -d
     echo "$output" | grep -q "'add', 'sshd', 'systemd'"
+    for j in recidive nginx-botsearch nginx-http-auth nginx-bad-request; do
+        echo "$output" | grep -q "'add', '$j'" || { echo "falta el jail $j"; return 1; }
+    done
 }
 
 @test "07_A: apt-config REAL lee las actualizaciones automaticas activadas" {

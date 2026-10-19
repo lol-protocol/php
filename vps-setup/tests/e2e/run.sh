@@ -41,6 +41,10 @@ step "Servicios"
 for s in nginx php8.3-fpm postgresql fail2ban webmin; do check "$s activo" systemctl is-active --quiet "$s"; done
 check "UFW activo" bash -c 'ufw status | grep -q "Status: active"'
 check "fail2ban vigila sshd" fail2ban-client status sshd
+for j in recidive nginx-botsearch nginx-http-auth nginx-bad-request; do
+    check "fail2ban: jail $j activo" fail2ban-client status "$j"
+done
+check "UFW limita SSH (LIMIT, no solo ALLOW)" bash -c 'ufw status | grep -E "^OpenSSH +LIMIT"' 
 check "Webmin responde en 10000 (HTTPS)" bash -c 'curl -sk -o /dev/null -w "%{http_code}" https://127.0.0.1:10000/ | grep -qE "^(200|30[0-9])$"'
 check "apt: espera el lock y conserva configs (01)" grep -q 'Lock::Timeout' /etc/apt/apt.conf.d/90-vps-setup
 
@@ -58,6 +62,8 @@ check "un Host ajeno no recibe respuesta (444)" test "$(http otro.example.net /)
 step "App PHP (06_A)"
 check "06_A termina bien" ./06_A-setup-php-app.sh "$APP_PHP" "$D_PHP"
 wait_http "$D_PHP" / 200
+check "una subida de 5 MB llega a PHP (sin limite seria 413)" bash -c "head -c 5000000 /dev/zero > /tmp/e2e-state/5mb && test \"\$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: $D_PHP' -F f=@/tmp/e2e-state/5mb http://127.0.0.1/)\" = 200"
+check "PHP acepta subidas de 20M (90-vps-setup-uploads.ini)" bash -c "php-fpm8.3 -i 2>/dev/null | grep -q 'upload_max_filesize => 20M' || grep -q 'upload_max_filesize = 20M' /etc/php/8.3/fpm/conf.d/90-vps-setup-uploads.ini"
 check "PHP-FPM ejecuta la pagina de prueba" bash -c "curl -s -H 'Host: $D_PHP' http://127.0.0.1/ | grep -q 'PHP-FPM + Nginx funcionando'"
 
 step "App Python (06_B, servicio systemd real en el puerto $PY_PORT)"

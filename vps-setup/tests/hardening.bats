@@ -149,21 +149,35 @@ esac'
 }
 
 # ---- 07_A: fail2ban + parches ----
-@test "07_A: jail solo de SSH con backend systemd, sin jails de nginx" {
+@test "07_A: sshd (systemd), reincidentes y jails de nginx que cubren los logs POR DOMINIO" {
     export FAIL2BAN_JAIL="$BATS_TEST_TMPDIR/jail.local" APT_AUTO_CONF="$BATS_TEST_TMPDIR/20auto"
+    export NGINX_LOG_DIR="$BATS_TEST_TMPDIR/nginxlog"; mkdir -p "$NGINX_LOG_DIR"
     run bash "$VPS_DIR/07_A-install-fail2ban-autoupdates.sh"
     [ "$status" -eq 0 ]
     grep -q "^\[sshd\]" "$FAIL2BAN_JAIL"
     grep -q "^backend = systemd" "$FAIL2BAN_JAIL"
-    grep -q "^enabled = true" "$FAIL2BAN_JAIL"
-    ! grep -q "nginx" "$FAIL2BAN_JAIL"
+    grep -q "^\[recidive\]" "$FAIL2BAN_JAIL" && grep -q "^bantime  = 1w" "$FAIL2BAN_JAIL"
+    for j in nginx-botsearch nginx-http-auth nginx-bad-request; do grep -q "^\[$j\]" "$FAIL2BAN_JAIL"; done
+    grep -q "$NGINX_LOG_DIR/\*/error.log" "$FAIL2BAN_JAIL"     # glob: todos los dominios
+    grep -q "^logpath  = $NGINX_LOG_DIR/error.log" "$FAIL2BAN_JAIL"   # y uno que siempre existe
+    [ -f "$NGINX_LOG_DIR/error.log" ] && [ -f "$NGINX_LOG_DIR/access.log" ]
     grep -q 'Unattended-Upgrade "1"' "$APT_AUTO_CONF"
     grep -q "apt-get install -y fail2ban unattended-upgrades python3-systemd" "$SUDO_LOG"
     grep -q "systemctl restart fail2ban" "$SUDO_LOG"
 }
 
+@test "07_A sin Nginx instalado: solo sshd y reincidentes (un logpath inexistente impediria arrancar)" {
+    export FAIL2BAN_JAIL="$BATS_TEST_TMPDIR/jail.local" APT_AUTO_CONF="$BATS_TEST_TMPDIR/20auto"
+    export NGINX_LOG_DIR="$BATS_TEST_TMPDIR/no-existe"
+    run bash "$VPS_DIR/07_A-install-fail2ban-autoupdates.sh"
+    [ "$status" -eq 0 ]
+    ! grep -q nginx "$FAIL2BAN_JAIL"
+    grep -q "^\[recidive\]" "$FAIL2BAN_JAIL"
+}
+
 @test "07_A espera a fail2ban (ping) antes de consultar el jail y no aborta si tarda" {
     export FAIL2BAN_JAIL="$BATS_TEST_TMPDIR/jail.local" APT_AUTO_CONF="$BATS_TEST_TMPDIR/20auto"
+    export NGINX_LOG_DIR="$BATS_TEST_TMPDIR/nginxlog"; mkdir -p "$NGINX_LOG_DIR"
     run bash "$VPS_DIR/07_A-install-fail2ban-autoupdates.sh"
     ping=$(grep -n "fail2ban-client ping" "$SUDO_LOG" | head -1 | cut -d: -f1)
     stat=$(grep -n "fail2ban-client status sshd" "$SUDO_LOG" | head -1 | cut -d: -f1)
@@ -255,6 +269,8 @@ esac'
     grep -q 'DPkg::Lock::Timeout "300";' "$APT_TUNING_CONF"
     grep -q -- '--force-confold' "$APT_TUNING_CONF"
     grep -qF "\$nrconf{restart} = 'a';" "$NEEDRESTART_DIR/50-vps-setup.conf"
+    grep -q "^ufw limit OpenSSH" "$SUDO_LOG"          # SSH con limite de conexiones, no solo "allow"
+    ! grep -q "^ufw allow OpenSSH" "$SUDO_LOG"
 }
 
 @test "02_J llama al instalador de Webmin con --force (sin la pregunta y/N que bloquea por ssh -t)" {
