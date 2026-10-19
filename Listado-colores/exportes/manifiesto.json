@@ -1,0 +1,94 @@
+{
+  "version": "1.0.0",
+  "idiomas": [
+    "en",
+    "es",
+    "fr",
+    "pt",
+    "it",
+    "de",
+    "nl",
+    "sv",
+    "da",
+    "fi",
+    "pl",
+    "cs",
+    "ro",
+    "hu",
+    "el",
+    "ru",
+    "uk",
+    "tr",
+    "ar",
+    "he",
+    "fa",
+    "hi",
+    "bn",
+    "zh",
+    "ja",
+    "ko",
+    "vi",
+    "th",
+    "id",
+    "sw"
+  ],
+  "entradas": [
+    {
+      "archivo": "colores.csv",
+      "filas": 148,
+      "sha256": "8b28fb9a20112a2d1d7f63d029b82f2dc828ee303370f9fcebb1ad2e31ca868c"
+    },
+    {
+      "archivo": "significados-idiomas.csv",
+      "filas": 4292,
+      "sha256": "8e7f61fa808c0da9ba2d66c62b4edf5d0bc686896139b233fda7377842d31cf8"
+    },
+    {
+      "archivo": "lexico-basico.csv",
+      "filas": 2400,
+      "sha256": "9c326ed9606aa9bb693183296edf1e13babbf3bbb419c490184f3f907a3a3810"
+    },
+    {
+      "archivo": "evidencia.csv",
+      "filas": 148,
+      "sha256": "2e899ea7b77ebe1818a29b0fbc47c190c4c167eaf3b0a193a68bd1d3835dbac9"
+    },
+    {
+      "archivo": "significados-culturales.csv",
+      "filas": 28,
+      "sha256": "a9384295525e0dbbaf922ab453326a02457f3dfc0d19cf7371234989c26a33e2"
+    },
+    {
+      "archivo": "referencias.csv",
+      "filas": 35,
+      "sha256": "01a634af16693c99b1be1c1ff353742515fcf1d9fdc6093284d8b9f512202f17"
+    },
+    {
+      "archivo": "nombres-completos.csv",
+      "filas": 31935,
+      "sha256": "a2f6aad7941b85af40aa121ea5aa8d4639de3e92972549bd807cb4c72685fd14"
+    }
+  ],
+  "exportes": [
+    {
+      "archivo": "exportes/colores.jsonl",
+      "filas": 148,
+      "sha256": "6f478a254b789c1a3a12ecfc1c9fe5590c3ade723b88c0c05a36ef3e9e0f662b"
+    },
+    {
+      "archivo": "exportes/gazetteer.tsv",
+      "filas": 7080,
+      "columnas": [
+        "forma",
+        "idioma",
+        "fuente",
+        "tipo",
+        "concepto",
+        "hex",
+        "rasgos",
+        "forma_normalizada"
+      ],
+      "sha256": "e152d868c629d3a16870e8f081e222d37fe77571a6c042ac150520a0ae3215d2"
+    }
+  ]
+}

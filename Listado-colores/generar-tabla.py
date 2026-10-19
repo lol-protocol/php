@@ -16,7 +16,9 @@
   y colores-por-idioma.md, que es el índice de esas páginas.
 
 - Se generan además exportes/colores.jsonl y exportes/gazetteer.tsv (ver exportes.py) y, a petición, una
-  base SQLite.
+  base SQLite, ambiguedad.md (las formas que designan más de un color, ver ambiguedad.py) y exportes/manifiesto.json
+  (la versión de CHANGELOG.md y las filas y sumas SHA-256 de los datos, ver manifiesto.py), y auditoria-nombres.md (los
+  nombres sospechosos de la lista completa, ver auditoria.py).
 
 Uso:
   python3 generar-tabla.py                   valida los CSV y regenera los archivos generados
@@ -32,8 +34,11 @@ from pathlib import Path
 CARPETA = Path(__file__).resolve().parent
 sys.dont_write_bytecode = True  # no dejar __pycache__ en la carpeta al importar los módulos de al lado
 sys.path.insert(0, str(CARPETA))
-import colorimetria  # noqa: E402  (módulos de esta carpeta)
+import ambiguedad  # noqa: E402  (módulos de esta carpeta)
+import auditoria  # noqa: E402
+import colorimetria  # noqa: E402
 import exportes  # noqa: E402
+import manifiesto  # noqa: E402
 
 ANOTADA = CARPETA / "colores.csv"
 COMPLETA = CARPETA / "nombres-completos.csv"
@@ -43,6 +48,9 @@ REFERENCIAS = CARPETA / "referencias.csv"
 EVIDENCIA = CARPETA / "evidencia.csv"
 CULTURALES = CARPETA / "significados-culturales.csv"
 REFS_MD = CARPETA / "referencias.md"
+AMBIGUEDAD = CARPETA / "ambiguedad.md"
+AUDITORIA = CARPETA / "auditoria-nombres.md"
+CHANGELOG = CARPETA / "CHANGELOG.md"
 DIR_EXPORTES = CARPETA / "exportes"
 README = CARPETA / "README.md"
 INDICE = CARPETA / "colores-por-idioma.md"
@@ -622,6 +630,11 @@ def main():
     validar_culturales(culturales, anotada, ids, errores, usadas)
     for i in sorted(ids - usadas):
         errores.append(f"referencias.csv: la referencia {i!r} no la usa ningún otro CSV")
+    version = None
+    if CHANGELOG.exists():
+        version = manifiesto.leer_changelog(CHANGELOG.read_text(encoding="utf-8"), errores)
+    else:
+        errores.append("CHANGELOG.md: no existe")
     if errores:
         sobran = f"\n  ... y {len(errores) - 30} errores más" if len(errores) > 30 else ""
         sys.exit("Errores en los CSV:\n  " + "\n  ".join(errores[:30]) + sobran)
@@ -652,13 +665,25 @@ def main():
         conexion.close()
         print(f"Base SQLite en {ruta} con las tablas: {', '.join(tablas)}.")
         return 0
+    completa_texto = texto_completa(completa, cercanias)
+    jsonl, tsv = exportes.colores_jsonl(datos), exportes.gazetteer_tsv(datos)
+    # Las entradas del manifiesto, en el orden del README. nombres-completos.csv va con el texto que genera este programa.
+    entradas = [(ruta.name, filas, ruta.read_text(encoding="utf-8"), None) for ruta, filas in (
+        (ANOTADA, len(anotada)), (SIGNIFICADOS, len(traducidos)), (LEXICO, len(lexico)), (EVIDENCIA, len(evidencia_filas)),
+        (CULTURALES, len(culturales)), (REFERENCIAS, len(referencias)))]
+    entradas.append((COMPLETA.name, len(completa), completa_texto, None))
+    exportes_manifiesto = [("exportes/colores.jsonl", jsonl.count("\n"), jsonl, None),
+                           ("exportes/gazetteer.tsv", tsv.count("\n") - 1, tsv, exportes.COLUMNAS_GAZETTEER)]
     generados = {
         README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada, evidencia)}\n{FIN}", texto),
         INDICE: indice_idiomas(anotada),
         REFS_MD: referencias_md(referencias),
-        COMPLETA: texto_completa(completa, cercanias),
-        DIR_EXPORTES / "colores.jsonl": exportes.colores_jsonl(datos),
-        DIR_EXPORTES / "gazetteer.tsv": exportes.gazetteer_tsv(datos),
+        AMBIGUEDAD: ambiguedad.informe(exportes.filas_gazetteer(datos), IDIOMAS),
+        AUDITORIA: auditoria.informe(completa),
+        COMPLETA: completa_texto,
+        DIR_EXPORTES / "colores.jsonl": jsonl,
+        DIR_EXPORTES / "gazetteer.tsv": tsv,
+        DIR_EXPORTES / "manifiesto.json": manifiesto.manifiesto(version, [c for c, _ in IDIOMAS], entradas, exportes_manifiesto),
     }
     for codigo, etiqueta in IDIOMAS:
         generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(

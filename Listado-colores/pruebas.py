@@ -15,13 +15,16 @@ La CI corre además `python3 generar-tabla.py --comprobar` sobre los archivos re
 import contextlib
 import copy
 import csv
+import hashlib
 import importlib.util
 import io
 import json
+import re
 import shutil
 import sqlite3
 import sys
 import tempfile
+import unicodedata
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -29,8 +32,12 @@ from unittest import mock
 AQUI = Path(__file__).resolve().parent
 sys.dont_write_bytecode = True  # no dejar __pycache__ de los módulos de al lado
 sys.path.insert(0, str(AQUI))
+import ambiguedad  # noqa: E402
+import auditoria  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
+import manifiesto  # noqa: E402
+import normalizacion  # noqa: E402
 
 # El generador se llama generar-tabla.py (con guion): no se puede importar con `import`.
 _especificacion = importlib.util.spec_from_file_location("generar_tabla", AQUI / "generar-tabla.py")
@@ -38,7 +45,7 @@ gt = importlib.util.module_from_spec(_especificacion)
 _especificacion.loader.exec_module(gt)
 
 ARCHIVOS_DE_ENTRADA = ["colores.csv", "significados-idiomas.csv", "lexico-basico.csv", "evidencia.csv",
-                       "significados-culturales.csv", "referencias.csv", "README.md"]
+                       "significados-culturales.csv", "referencias.csv", "CHANGELOG.md", "README.md"]
 REAL = {}  # los CSV reales, leídos una vez; cada prueba trabaja con copias (ver real())
 BASE = {}  # la carpeta temporal con el proyecto reducido ya generado
 
@@ -84,16 +91,21 @@ def preparar_proyecto_reducido(carpeta):
     escribir_csv(carpeta / "nombres-completos.csv", gt.COLUMNAS_FUENTE_COMPLETA, elegidas)
 
 
-def ejecutar(carpeta, *argumentos):
-    """Corre main() de generar-tabla.py contra `carpeta`. Devuelve (código de salida, stdout, stderr)."""
-    rutas = {
+def rutas_para(carpeta):
+    """Las rutas de archivos de generar-tabla.py, apuntando a `carpeta`. Una prueba comprueba que no falte ninguna."""
+    return {
         "CARPETA": carpeta, "ANOTADA": carpeta / "colores.csv", "COMPLETA": carpeta / "nombres-completos.csv",
         "SIGNIFICADOS": carpeta / "significados-idiomas.csv", "LEXICO": carpeta / "lexico-basico.csv",
         "REFERENCIAS": carpeta / "referencias.csv", "EVIDENCIA": carpeta / "evidencia.csv",
         "CULTURALES": carpeta / "significados-culturales.csv", "REFS_MD": carpeta / "referencias.md",
-        "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
+        "AMBIGUEDAD": carpeta / "ambiguedad.md", "AUDITORIA": carpeta / "auditoria-nombres.md", "CHANGELOG": carpeta / "CHANGELOG.md", "DIR_EXPORTES": carpeta / "exportes", "README": carpeta / "README.md",
         "INDICE": carpeta / "colores-por-idioma.md", "DIR_IDIOMAS": carpeta / "por-idioma",
     }
+
+
+def ejecutar(carpeta, *argumentos):
+    """Corre main() de generar-tabla.py contra `carpeta`. Devuelve (código de salida, stdout, stderr)."""
+    rutas = rutas_para(carpeta)
     salida, error = io.StringIO(), io.StringIO()
     with mock.patch.multiple(gt, **rutas), mock.patch.object(sys, "argv", ["generar-tabla.py", *argumentos]), \
             contextlib.redirect_stdout(salida), contextlib.redirect_stderr(error):
@@ -600,6 +612,390 @@ class Colorimetria(unittest.TestCase):
         self.assertAlmostEqual(distancia, 100, delta=0.01)
 
 
+class Rutas(unittest.TestCase):
+    def test_las_pruebas_parchean_todas_las_rutas_del_generador(self):
+        # Si generar-tabla.py gana una ruta y rutas_para() no la lista, main() escribiría en la carpeta real del proyecto.
+        del_modulo = {nombre for nombre, valor in vars(gt).items() if nombre.isupper() and isinstance(valor, Path)}
+        self.assertEqual(del_modulo, set(rutas_para(Path("/x"))))
+
+
+class Codigo(unittest.TestCase):
+    def test_los_py_no_llevan_caracteres_invisibles_literales(self):
+        # Un guion blando, un espacio de ancho cero o un BOM dentro del código no se ven al leerlo y un editor
+        # puede quitarlos sin avisar: se escriben como \uXXXX.
+        for ruta in sorted(AQUI.glob("*.py")):
+            for n, linea in enumerate(ruta.read_text(encoding="utf-8").splitlines(), start=1):
+                invisibles = [c for c in linea if unicodedata.category(c) in ("Cf", "Zs") and c != " "]
+                self.assertEqual(invisibles, [], f"{ruta.name} línea {n}")
+
+
+class Normalizacion(unittest.TestCase):
+    def assertNormaliza(self, idioma, casos):
+        for forma, esperada in casos:
+            self.assertEqual(normalizacion.normalizar(forma, idioma), esperada, (idioma, forma))
+
+    def test_mayusculas_espacios_y_guiones(self):
+        self.assertNormaliza("es", [("Azul Marino", "azul marino"), ("azul-marino", "azul marino"),
+                                    ("  azul   marino ", "azul marino"), ("azul\u00a0marino", "azul marino"),
+                                    ("azul\u2013marino", "azul marino"), ("azul_marino", "azul marino")])
+        self.assertNormaliza("en", [("alice blue", "alice blue"), ("alice-blue", "alice blue"), ("aliceblue", "aliceblue")])
+
+    def test_se_quitan_las_marcas_en_escritura_latina(self):
+        self.assertNormaliza("fr", [("Crème Brûlée", "creme brulee")])
+        self.assertNormaliza("de", [("Grün", "grun"), ("Weiß", "weiss")])
+        self.assertNormaliza("es", [("marrón", "marron"), ("café", "cafe")])
+        self.assertNormaliza("vi", [("đỏ", "do"), ("xanh lá", "xanh la")])
+        self.assertNormaliza("pl", [("żółty", "zolty")])
+        self.assertNormaliza("cs", [("žlutá", "zluta")])
+        self.assertNormaliza("ro", [("roșu", "rosu")])
+        self.assertNormaliza("hu", [("zöld", "zold"), ("fűzöld", "fuzold")])
+        self.assertNormaliza("tr", [("Yeşil", "yesil"), ("Kırmızı", "kirmizi"), ("İstanbul", "istanbul")])
+        self.assertNormaliza("da", [("grøn", "gron"), ("blå", "bla"), ("æble", "aeble")])
+
+    def test_el_griego_pierde_los_acentos_y_la_sigma_final(self):
+        self.assertNormaliza("el", [("κόκκινο", "κοκκινο"), ("ΜΑΎΡΟ", "μαυρο"), ("άσπρος", "ασπροσ")])
+
+    def test_en_las_demas_escrituras_no_se_quita_ninguna_marca(self):
+        # Allí las marcas son parte de la letra: quitarlas daría otra palabra.
+        self.assertNormaliza("ru", [("красный", "красный"), ("Зелёный", "зелёный")])
+        self.assertNormaliza("uk", [("синій", "синій"), ("блакитний", "блакитний")])
+        self.assertNormaliza("ja", [("ピンク", "ピンク"), ("ガ", "ガ"), ("みどり", "みどり")])
+        self.assertNormaliza("th", [("สีแดง", "สีแดง"), ("เขียว", "เขียว")])
+        self.assertNormaliza("hi", [("नीला", "नीला"), ("हरा", "हरा")])
+        self.assertNormaliza("bn", [("নীল", "নীল")])
+        self.assertNormaliza("ar", [("أحمر", "أحمر")])
+        self.assertNormaliza("ko", [("빨강", "빨강")])
+        self.assertNormaliza("zh", [("红色", "红色")])
+        self.assertNormaliza("he", [("אדום", "אדום")])
+
+    def test_el_zwnj_del_persa_se_conserva(self):
+        self.assertNormaliza("fa", [("نیمه\u200cشب", "نیمه\u200cشب")])
+
+    def test_nfkc_unifica_anchos_y_kana(self):
+        self.assertNormaliza("en", [("ＡＢＣ", "abc")])
+        self.assertNormaliza("ja", [("ﾋﾟﾝｸ", "ピンク")])
+
+    def test_los_apostrofos_se_unifican_y_se_conservan(self):
+        self.assertNormaliza("fr", [("d\u2019eau", "d'eau"), ("d\u02bceau", "d'eau")])
+        self.assertNormaliza("uk", [("м\u2019ятний", "м'ятний")])
+        self.assertNormaliza("he", [("ג\u05f3ינס", "ג'ינס")])
+
+    def test_se_quitan_los_caracteres_invisibles(self):
+        self.assertNormaliza("en", [("a\u00adb", "ab"), ("a\u200bb", "ab"), ("\ufeffab", "ab")])
+
+    def test_es_idempotente_y_nunca_queda_vacia_en_las_formas_reales(self):
+        lineas = (BASE["carpeta"] / "exportes" / "gazetteer.tsv").read_text(encoding="utf-8").splitlines()[1:]
+        formas = [tuple(linea.split("\t")[:2]) for linea in lineas]
+        self.assertGreater(len(formas), 7000)
+        for forma, idioma in formas:
+            una = normalizacion.normalizar(forma, idioma)
+            self.assertEqual(normalizacion.normalizar(una, idioma), una, (forma, idioma))
+            self.assertNotEqual(una, "", (forma, idioma))
+
+    def test_los_idiomas_latinos_y_los_demas_cubren_los_30_sin_solaparse(self):
+        codigos = {c for c, _ in gt.IDIOMAS}
+        self.assertEqual(normalizacion.LATINOS | gt.SIN_LETRAS_LATINAS, codigos)
+        self.assertEqual(normalizacion.LATINOS & gt.SIN_LETRAS_LATINAS, set())
+        self.assertEqual(normalizacion.QUITAR_MARCAS, normalizacion.LATINOS | {"el"})
+
+
+PURPURA, VIOLETA, LILA, VERDE, LIMA, GRIS = "#800080", "#EE82EE", "#CEA2FD", "#008000", "#00FF00", "#808080"
+
+
+def fila_gazetteer(forma, idioma, concepto, color, tipo="lema", fuente="lexico"):
+    return (forma, idioma, fuente, tipo, concepto, color, "", normalizacion.normalizar(forma, idioma))
+
+
+class Ambiguedad(unittest.TestCase):
+    def calcular(self, *filas, codigos=("es", "fr", "de", "pt")):
+        return ambiguedad.calcular(list(filas), list(codigos))
+
+    def assertListasVaciasSalvo(self, resultado, *claves):
+        for clave, elementos in resultado.items():
+            if clave not in claves:
+                self.assertEqual(elementos, [], clave)
+
+    def test_una_forma_con_dos_colores_en_un_idioma(self):
+        resultado = self.calcular(fila_gazetteer("violet", "fr", "purple", PURPURA), fila_gazetteer("violet", "fr", "violet", VIOLETA))
+        self.assertListasVaciasSalvo(resultado, "dentro")
+        (caso,) = resultado["dentro"]
+        self.assertEqual((caso["idioma"], caso["forma"], caso["colores"]), ("fr", "violet", [(PURPURA, ["purple"]), (VIOLETA, ["violet"])]))
+        esperada = colorimetria.ciede2000(colorimetria.hex_a_lab(PURPURA), colorimetria.hex_a_lab(VIOLETA))
+        self.assertAlmostEqual(caso["delta"], esperada, places=9)
+
+    def test_los_alias_del_mismo_hex_no_son_ambiguos(self):
+        resultado = self.calcular(fila_gazetteer("gris", "es", "gray", GRIS), fila_gazetteer("gris", "es", "grey", GRIS))
+        self.assertListasVaciasSalvo(resultado)
+
+    def test_mayusculas_distintas_son_la_misma_forma(self):
+        resultado = self.calcular(fila_gazetteer("Violet", "fr", "purple", PURPURA), fila_gazetteer("violet", "fr", "violet", VIOLETA))
+        (caso,) = resultado["dentro"]
+        self.assertEqual(caso["forma"], "Violet")
+
+    def test_la_misma_forma_con_colores_distintos_en_dos_idiomas(self):
+        resultado = self.calcular(fila_gazetteer("lila", "de", "purple", PURPURA), fila_gazetteer("lila", "es", "lilac", LILA))
+        self.assertListasVaciasSalvo(resultado, "entre")
+        (caso,) = resultado["entre"]
+        self.assertEqual(caso["forma"], "lila")
+        self.assertEqual(caso["idiomas"], [("es", ["lila"], [(LILA, ["lilac"])]), ("de", ["lila"], [(PURPURA, ["purple"])])],
+                         "en el orden de idiomas que se pasa, no en el alfabético")
+        esperada = colorimetria.ciede2000(colorimetria.hex_a_lab(PURPURA), colorimetria.hex_a_lab(LILA))
+        self.assertAlmostEqual(caso["delta"], esperada, places=9)
+
+    def test_la_misma_forma_con_el_mismo_color_en_dos_idiomas_no_es_ambigua(self):
+        resultado = self.calcular(fila_gazetteer("magenta", "es", "magenta", "#FF00FF"), fila_gazetteer("magenta", "fr", "magenta", "#FF00FF"))
+        self.assertListasVaciasSalvo(resultado)
+
+    def test_dos_idiomas_con_los_mismos_dos_colores_son_ambiguos_dentro_pero_no_entre(self):
+        filas = [fila_gazetteer("bordeaux", i, c, h) for i in ("fr", "de") for c, h in (("maroon", "#800000"), ("burgundy", "#900020"))]
+        resultado = self.calcular(*filas)
+        self.assertListasVaciasSalvo(resultado, "dentro")
+        self.assertEqual([c["idioma"] for c in resultado["dentro"]], ["fr", "de"])
+
+    def test_formas_distintas_que_solo_coinciden_al_normalizar_dentro_de_un_idioma(self):
+        resultado = self.calcular(fila_gazetteer("grün", "de", "green", VERDE), fila_gazetteer("grun", "de", "lime", LIMA))
+        self.assertListasVaciasSalvo(resultado, "dentro_normalizada")
+        (caso,) = resultado["dentro_normalizada"]
+        self.assertEqual((caso["idioma"], caso["formas"], caso["clave"]), ("de", ["grun", "grün"], "grun"))
+
+    def test_lo_que_ya_es_ambiguo_sin_normalizar_no_se_repite_en_la_lista_3(self):
+        resultado = self.calcular(fila_gazetteer("violett", "de", "purple", PURPURA), fila_gazetteer("violett", "de", "violet", VIOLETA),
+                                  fila_gazetteer("violétt", "de", "lime", LIMA))
+        self.assertListasVaciasSalvo(resultado, "dentro")
+
+    def test_formas_distintas_que_solo_coinciden_al_normalizar_entre_idiomas(self):
+        resultado = self.calcular(fila_gazetteer("lilás", "pt", "lilac", LILA), fila_gazetteer("lilas", "fr", "purple", PURPURA))
+        self.assertListasVaciasSalvo(resultado, "entre_normalizada")
+        (caso,) = resultado["entre_normalizada"]
+        self.assertEqual(caso["clave"], "lilas")
+        self.assertEqual(caso["idiomas"], [("fr", ["lilas"], [(PURPURA, ["purple"])]), ("pt", ["lilás"], [(LILA, ["lilac"])])])
+
+    def test_lo_que_ya_es_ambiguo_entre_idiomas_no_se_repite_en_la_lista_4(self):
+        resultado = self.calcular(fila_gazetteer("lila", "es", "lilac", LILA), fila_gazetteer("lila", "de", "purple", PURPURA),
+                                  fila_gazetteer("lilá", "pt", "green", VERDE))
+        self.assertListasVaciasSalvo(resultado, "entre")
+
+    def test_bandas(self):
+        for delta, esperada in ((0.0, "casi iguales"), (3.0, "casi iguales"), (3.01, "parecidos"), (8.0, "parecidos"),
+                                (8.01, "distintos"), (80.0, "distintos")):
+            self.assertEqual(ambiguedad.banda(delta), esperada, delta)
+
+    def test_el_informe_escapa_las_barras_y_dice_cuando_no_hay_casos(self):
+        filas = [fila_gazetteer("a|b", "es", "purple", PURPURA), fila_gazetteer("a|b", "es", "violet", VIOLETA)]
+        texto = ambiguedad.informe(filas, [("es", "Español"), ("fr", "Francés")])
+        self.assertIn("«a&#124;b»", texto)
+        self.assertIn("## 2. Entre idiomas: la misma forma, otro color\n\nNo hay casos.", texto)
+        self.assertTrue(texto.endswith("\n"))
+        self.assertEqual(texto, ambiguedad.informe(filas, [("es", "Español"), ("fr", "Francés")]), "es determinista")
+
+    def test_el_resumen_del_informe_coincide_con_sus_tablas(self):
+        texto = (BASE["carpeta"] / "ambiguedad.md").read_text(encoding="utf-8")
+        resumen = {int(n): int(casos) for n, casos in re.findall(r"^\| (\d)\. [^|]+\| (\d+) \|", texto, flags=re.M)}
+        self.assertEqual(sorted(resumen), [1, 2, 3, 4])
+        secciones = re.split(r"^## (\d)\. ", texto, flags=re.M)[1:]
+        for numero, cuerpo in zip(secciones[::2], secciones[1::2]):
+            filas = [linea for linea in cuerpo.splitlines() if linea.startswith("| ")]
+            esperadas = max(len(filas) - 1, 0)  # la primera es la cabecera
+            self.assertEqual(esperadas, resumen[int(numero)], f"lista {numero}")
+            if esperadas == 0:
+                self.assertIn("No hay casos.", cuerpo)
+        self.assertGreater(resumen[1], 0)
+
+
+def fila_completa(nombre, color="#000000", curada=""):
+    return {"nombre_ingles": nombre, "hex": color, "curada": curada}
+
+
+class Auditoria(unittest.TestCase):
+    LIMPIOS = ["Plain Blue", "Sea Green", "Arctic Fox"]
+
+    def ejemplos(self):
+        """Un nombre que dispara cada comprobación (clave -> nombre). Los caracteres raros salen de chr() para que se vean."""
+        return {
+            "control": "Bad" + chr(7) + "Bell",
+            "formato": "Zero" + chr(0x200B) + "Width",
+            "espacios": "No" + chr(0xA0) + "Break",
+            "espacios_dobles": "Two  Spaces",
+            "no_nfc": "Cafe" + chr(0x301),
+            "mojibake": "CafÃ©",
+            "inicia_minuscula": "iCloud Blue",
+            "apostrofo_ascii": "Don't Blue",
+            "todo_mayusculas": "NASA",
+            "inicia_digito": "7 Up",
+            "frase": "One Two Three Four",
+            "letras_no_ascii": "Crème",
+            "apostrofo_tipografico": "Mann" + chr(0x2019) + "s Mint",
+            "guion": "Ice-Blue",
+        }
+
+    def test_cada_comprobacion_marca_su_ejemplo_y_ninguna_marca_los_limpios(self):
+        ejemplos = self.ejemplos()
+        self.assertEqual(set(ejemplos), {clave for clave, _t, _p in auditoria.COMPROBACIONES}, "un ejemplo por comprobación")
+        filas = [fila_completa(n) for n in [*ejemplos.values(), *self.LIMPIOS]]
+        a = auditoria.analizar(filas)
+        for clave, ejemplo in ejemplos.items():
+            self.assertIn(ejemplo, a["comprobaciones"][clave], clave)
+        for clave, nombres in a["comprobaciones"].items():
+            for limpio in self.LIMPIOS:
+                self.assertNotIn(limpio, nombres, clave)
+
+    def test_los_defectos_son_las_primeras_comprobaciones(self):
+        claves = [clave for clave, _t, _p in auditoria.COMPROBACIONES]
+        self.assertEqual(claves[:auditoria.DEFECTOS], ["control", "formato", "espacios", "espacios_dobles", "no_nfc", "mojibake",
+                                                        "inicia_minuscula", "apostrofo_ascii"])
+
+    def test_duplicados_al_normalizar(self):
+        a = auditoria.analizar([fila_completa(n) for n in ("Ice-Blue", "Ice Blue", "Icé Blue", "Fire Red", "Rose", "Rosé", "Rose Red")])
+        self.assertEqual(a["duplicados"], [["Ice Blue", "Ice-Blue", "Icé Blue"], ["Rose", "Rosé"]])
+
+    def test_hex_repetidos(self):
+        a = auditoria.analizar([fila_completa("B Red", "#FF0000"), fila_completa("A Red", "#FF0000"), fila_completa("Blue", "#0000FF"),
+                                fila_completa("Z Grey", "#808080"), fila_completa("Y Grey", "#808080")])
+        self.assertEqual(a["hex_repetidos"], [("#808080", ["Y Grey", "Z Grey"]), ("#FF0000", ["A Red", "B Red"])])
+
+    def test_curadas_y_signos(self):
+        a = auditoria.analizar([fila_completa("Abc 12 & 3", curada="x"), fila_completa("Q&A"), fila_completa("Hi-Fi")])
+        self.assertEqual(a["curadas"], {"Abc 12 & 3"})
+        self.assertEqual(a["signos"], {"0-9": ["Abc 12 & 3"], "&": ["Abc 12 & 3", "Q&A"], "-": ["Hi-Fi"]}, "un nombre cuenta una vez por signo")
+
+    def test_los_mas_largos_por_longitud_y_luego_por_nombre(self):
+        nombres = ["aaa", "bbbbb", "Ccccc", "dd", "eeeeee", "ffffff", "g", "hhhhhhh"]
+        a = auditoria.analizar([fila_completa(n) for n in nombres])
+        self.assertEqual(a["mas_largos"], ["hhhhhhh", "eeeeee", "ffffff", "bbbbb", "Ccccc"])
+
+    def test_cifras_con_formato_espanol(self):
+        self.assertEqual(auditoria._miles(31935), "31.935")
+        self.assertEqual(auditoria._miles(7), "7")
+        self.assertEqual(auditoria._porcentaje(4966, 31935), "15,6 %")
+        self.assertEqual(auditoria._porcentaje(0, 0), "0 %")
+
+    def test_el_informe_dice_cuando_no_hay_casos_y_corta_las_listas_largas(self):
+        sin_nada = auditoria.informe([fila_completa("Plain Blue", "#111111"), fila_completa("Sea Green", "#222222")])
+        self.assertIn("## Duplicados al normalizar", sin_nada)
+        self.assertEqual(sin_nada.count("No hay casos."), 2, "duplicados y hex repetidos")
+        muchos = []
+        for i in range(27):  # 27 grupos de duplicados, cada nombre con su propio hex
+            muchos += [fila_completa(f"Nombre{i:02d}", f"#{2 * i:06X}"), fila_completa(f"Nómbre{i:02d}", f"#{2 * i + 1:06X}")]
+        texto = auditoria.informe(muchos)
+        self.assertEqual(texto.count("| ... y 2 más |"), 1, "solo la lista de duplicados pasa de 25")
+        self.assertIn("«Nombre24», «Nómbre24»", texto)
+        self.assertNotIn("«Nombre25», «Nómbre25»", texto)
+        self.assertTrue(texto.endswith("\n"))
+        self.assertEqual(texto, auditoria.informe(muchos), "es determinista")
+
+    def test_el_informe_escapa_las_barras(self):
+        texto = auditoria.informe([fila_completa("A|B", "#111111"), fila_completa("Plain Blue", "#222222")])
+        self.assertIn("«A&#124;B»", texto)
+        self.assertNotIn("A|B", texto)
+
+    def test_el_informe_del_repositorio_esta_al_dia(self):
+        # nombres-completos.csv real, sin recalcular las distancias: es el mismo texto que genera main().
+        self.assertEqual(auditoria.informe(REAL["completa"]), (AQUI / "auditoria-nombres.md").read_text(encoding="utf-8"))
+
+    def test_el_informe_de_la_carpeta_reducida_cuenta_sus_nombres(self):
+        texto = (BASE["carpeta"] / "auditoria-nombres.md").read_text(encoding="utf-8")
+        self.assertIn("Revisa automáticamente los 244 nombres", texto)
+        self.assertIn("Hex distintos: 244 para 244 nombres.", texto)
+
+
+class Changelog(unittest.TestCase):
+    VALIDO = ("# Título\n\nTexto.\n\n## 1.2.0 - 2026-03-01\n\nAlgo.\n\n## 1.1.0 - 2026-02-01\n\nOtra cosa.\n\n"
+              "## 1.0.0 - 2026-01-01\n\nPrimera.\n")
+
+    def leer(self, texto):
+        errores = []
+        return manifiesto.leer_changelog(texto, errores), errores
+
+    def test_devuelve_la_primera_entrada(self):
+        self.assertEqual(self.leer(self.VALIDO), ("1.2.0", []))
+
+    def test_las_versiones_se_comparan_como_numeros(self):
+        texto = "## 1.10.0 - 2026-02-01\n\nUna.\n\n## 1.9.0 - 2026-01-01\n\nOtra.\n"
+        self.assertEqual(self.leer(texto), ("1.10.0", []))
+
+    def test_el_changelog_real_es_valido_y_su_version_es_la_del_manifiesto(self):
+        version, errores = self.leer((AQUI / "CHANGELOG.md").read_text(encoding="utf-8"))
+        self.assertEqual(errores, [])
+        self.assertEqual(version, json.loads((AQUI / "exportes" / "manifiesto.json").read_text(encoding="utf-8"))["version"])
+
+    def test_sin_entradas(self):
+        self.assertEqual(self.leer("# Solo un título\n\nTexto.\n"), (None, ["CHANGELOG.md: no hay ninguna entrada «## X.Y.Z - AAAA-MM-DD»"]))
+
+    def test_encabezados_mal_formados(self):
+        for encabezado in ("## 1.0 - 2026-01-01", "## v1.0.0 - 2026-01-01", "## 1.0.0 – 2026-01-01", "## 01.0.0 - 2026-01-01",
+                           "## 1.0.0 - 2026-1-1", "## Otra cosa"):
+            version, errores = self.leer(f"{encabezado}\n\nTexto.\n")
+            self.assertEqual(version, None, encabezado)
+            self.assertTrue(any("el encabezado debe ser" in e for e in errores), (encabezado, errores))
+
+    def test_fecha_que_no_existe(self):
+        version, errores = self.leer("## 1.0.0 - 2026-02-30\n\nTexto.\n")
+        self.assertEqual(version, None)
+        self.assertTrue(any("fecha que no existe" in e for e in errores), errores)
+
+    def test_las_versiones_deben_bajar(self):
+        for arriba, abajo in (("1.0.0", "1.0.0"), ("1.0.0", "1.1.0"), ("1.9.0", "1.10.0")):
+            _, errores = self.leer(f"## {arriba} - 2026-02-01\n\nUna.\n\n## {abajo} - 2026-01-01\n\nOtra.\n")
+            self.assertTrue(any("las versiones deben bajar" in e for e in errores), (arriba, abajo, errores))
+
+    def test_las_fechas_no_pueden_subir(self):
+        _, errores = self.leer("## 1.1.0 - 2026-01-01\n\nUna.\n\n## 1.0.0 - 2026-02-01\n\nOtra.\n")
+        self.assertTrue(any("las fechas no pueden subir" in e for e in errores), errores)
+        _, errores = self.leer("## 1.1.0 - 2026-01-01\n\nUna.\n\n## 1.0.0 - 2026-01-01\n\nOtra.\n")
+        self.assertEqual(errores, [], "el mismo día es válido")
+
+    def test_una_entrada_sin_texto(self):
+        _, errores = self.leer("## 1.1.0 - 2026-02-01\n\n## 1.0.0 - 2026-01-01\n\nOtra.\n")
+        self.assertEqual(len(errores), 1)
+        self.assertIn("línea 1: la entrada 1.1.0 no dice qué cambió", errores[0])
+
+
+class Manifiesto(unittest.TestCase):
+    @staticmethod
+    def suma(ruta):
+        return hashlib.sha256(ruta.read_text(encoding="utf-8").encode("utf-8")).hexdigest()
+
+    def comprobar_contra_archivos(self, carpeta):
+        datos = json.loads((carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8"))
+        self.assertEqual(list(datos), ["version", "idiomas", "entradas", "exportes"])
+        self.assertEqual(datos["idiomas"], [c for c, _ in gt.IDIOMAS])
+        self.assertEqual([e["archivo"] for e in datos["entradas"]],
+                         ["colores.csv", "significados-idiomas.csv", "lexico-basico.csv", "evidencia.csv",
+                          "significados-culturales.csv", "referencias.csv", "nombres-completos.csv"])
+        self.assertEqual([e["archivo"] for e in datos["exportes"]], ["exportes/colores.jsonl", "exportes/gazetteer.tsv"])
+        for entrada in datos["entradas"] + datos["exportes"]:
+            ruta = carpeta / entrada["archivo"]
+            filas = ruta.read_text(encoding="utf-8").count("\n") - (0 if ruta.suffix == ".jsonl" else 1)  # menos la cabecera
+            self.assertEqual(entrada["sha256"], self.suma(ruta), entrada["archivo"])
+            self.assertEqual(entrada["filas"], filas, entrada["archivo"])
+        self.assertEqual(datos["exportes"][1]["columnas"], exportes.COLUMNAS_GAZETTEER)
+        return datos
+
+    def test_el_manifiesto_del_repositorio_coincide_con_sus_archivos(self):
+        datos = self.comprobar_contra_archivos(AQUI)
+        self.assertEqual({e["archivo"]: e["filas"] for e in datos["entradas"]}["colores.csv"], 148)
+
+    def test_el_manifiesto_de_la_carpeta_reducida_coincide_con_sus_archivos(self):
+        datos = self.comprobar_contra_archivos(BASE["carpeta"])
+        self.assertEqual({e["archivo"]: e["filas"] for e in datos["entradas"]}["nombres-completos.csv"], 244)
+        self.assertNotEqual(datos["entradas"][-1]["sha256"],
+                            json.loads((AQUI / "exportes" / "manifiesto.json").read_text(encoding="utf-8"))["entradas"][-1]["sha256"])
+
+    def test_manifiesto_sintetico(self):
+        texto = manifiesto.manifiesto("1.2.3", ["es", "en"], [("ñandú.csv", 2, "x\n", None)], [("exportes/t.tsv", 1, "ñandú", ["a", "b"])])
+        self.assertTrue(texto.endswith("}\n"))
+        self.assertIn('"archivo": "ñandú.csv"', texto, "sin escapar los caracteres no ASCII")
+        esperado = {"version": "1.2.3", "idiomas": ["es", "en"],
+                    "entradas": [{"archivo": "ñandú.csv", "filas": 2, "sha256": hashlib.sha256(b"x\n").hexdigest()}],
+                    "exportes": [{"archivo": "exportes/t.tsv", "filas": 1, "columnas": ["a", "b"],
+                                  "sha256": hashlib.sha256("ñandú".encode("utf-8")).hexdigest()}]}
+        self.assertEqual(json.loads(texto), esperado)
+
+    def test_las_sumas_cambian_con_cualquier_byte(self):
+        self.assertNotEqual(manifiesto.sha256("a"), manifiesto.sha256("a "))
+        self.assertEqual(manifiesto.sha256("a"), hashlib.sha256(b"a").hexdigest())
+
+
 class Auxiliares(unittest.TestCase):
     def test_ids_de(self):
         self.assertEqual(gt.ids_de(""), [])
@@ -648,9 +1044,11 @@ class ArchivosGenerados(unittest.TestCase):
     """Lo que genera main() sobre el proyecto reducido, comparado con los archivos del repositorio."""
 
     def test_salvo_nombres_completos_salen_identicos_a_los_del_repositorio(self):
-        repositorio = [AQUI / "README.md", AQUI / "colores-por-idioma.md", AQUI / "referencias.md",
-                       *sorted((AQUI / "por-idioma").glob("*")), *sorted((AQUI / "exportes").glob("*"))]
-        self.assertEqual(len(repositorio), 3 + 30 + 2, "tres archivos sueltos, 30 páginas por idioma y 2 exportes")
+        repositorio = [AQUI / "README.md", AQUI / "colores-por-idioma.md", AQUI / "referencias.md", AQUI / "ambiguedad.md",
+                       *sorted((AQUI / "por-idioma").glob("*")),
+                       # El manifiesto de la carpeta reducida es otro (otro nombres-completos.csv): se prueba aparte.
+                       *sorted(p for p in (AQUI / "exportes").glob("*") if p.name != "manifiesto.json")]
+        self.assertEqual(len(repositorio), 4 + 30 + 2, "cuatro archivos sueltos, 30 páginas por idioma y 2 exportes")
         for ruta in repositorio:
             relativa = ruta.relative_to(AQUI)
             generado = BASE["carpeta"] / relativa
@@ -716,9 +1114,19 @@ class ArchivosGenerados(unittest.TestCase):
         self.assertEqual(len(filas), len(set(map(tuple, filas))), "sin filas repetidas")
         formas = [f[0] for f in filas]
         self.assertEqual(formas, sorted(formas, key=lambda x: (x.casefold(), x)))
-        self.assertIn(["alice blue", "en", "css", "forma_natural", "aliceblue", "#F0F8FF", ""], filas)
-        self.assertIn(["alice-blue", "en", "css", "forma_con_guion", "aliceblue", "#F0F8FF", ""], filas)
+        self.assertIn(["alice blue", "en", "css", "forma_natural", "aliceblue", "#F0F8FF", "", "alice blue"], filas)
+        self.assertIn(["alice-blue", "en", "css", "forma_con_guion", "aliceblue", "#F0F8FF", "", "alice blue"], filas)
+        self.assertIn(["aliceblue", "en", "css", "identificador", "aliceblue", "#F0F8FF", "", "aliceblue"], filas)
         self.assertTrue(any(f[1] == "es" and f[2] == "lexico" and f[3] == "lema" and f[4] == "red" for f in filas))
+
+    def test_gazetteer_forma_normalizada(self):
+        lineas = (BASE["carpeta"] / "exportes" / "gazetteer.tsv").read_text(encoding="utf-8").splitlines()
+        filas = [linea.split("\t") for linea in lineas[1:]]
+        self.assertEqual(exportes.COLUMNAS_GAZETTEER[-1], "forma_normalizada", "va al final: no mueve las demás columnas")
+        for forma, idioma, *_, normalizada in filas:
+            self.assertEqual(normalizada, normalizacion.normalizar(forma, idioma), (forma, idioma))
+            self.assertNotEqual(normalizada, "", (forma, idioma))
+        self.assertIn(["marrón", "es", "lexico", "lema", "brown"], [f[:5] for f in filas if f[7] == "marron"])
 
 
 class Programa(unittest.TestCase):
@@ -763,7 +1171,7 @@ class Programa(unittest.TestCase):
             return texto.rstrip("\n") + "x\n"
 
         for nombre, editar in (("README.md", en_la_tabla), ("colores-por-idioma.md", al_final), ("referencias.md", al_final),
-                               ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
+                               ("ambiguedad.md", al_final), ("auditoria-nombres.md", al_final), ("exportes/manifiesto.json", al_final), ("nombres-completos.csv", en_el_ultimo_campo), ("por-idioma/es.md", al_final),
                                ("por-idioma/ja.md", al_final), ("exportes/colores.jsonl", al_final),
                                ("exportes/gazetteer.tsv", al_final)):
             with self.subTest(nombre):
@@ -860,6 +1268,45 @@ class Programa(unittest.TestCase):
                     self.assertEqual(codigo, 1)
                     self.assertIn(f"{nombre} línea 3: debe tener {columnas} campos", error)
 
+    def test_cambiar_un_csv_desfasa_el_manifiesto(self):
+        self.reescribir("colores.csv", lambda t: t.replace("rojo", "rojísimo", 1))
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        self.assertIn("exportes/manifiesto.json", error)
+
+    def test_la_version_del_manifiesto_sale_del_changelog(self):
+        self.reescribir("CHANGELOG.md", lambda t: t.replace("## 1.0.0 - 2026-10-19", "## 1.1.0 - 2026-10-20\n\nUn cambio.\n\n## 1.0.0 - 2026-10-19", 1))
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        self.assertIn("No coinciden con los CSV: exportes/manifiesto.json.", error, "solo el manifiesto cambia con la versión")
+        self.assertEqual(ejecutar(self.carpeta)[0], 0)
+        self.assertEqual(json.loads((self.carpeta / "exportes" / "manifiesto.json").read_text(encoding="utf-8"))["version"], "1.1.0")
+        self.assertEqual(ejecutar(self.carpeta, "--comprobar")[0], 0)
+
+    def test_sin_changelog_es_un_error(self):
+        (self.carpeta / "CHANGELOG.md").unlink()
+        codigo, _, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual(codigo, 1)
+        self.assertIn("CHANGELOG.md: no existe", error)
+
+    def test_un_changelog_invalido_es_un_error_y_no_toca_nada(self):
+        antes = self.estado()
+        self.reescribir("CHANGELOG.md", lambda t: t.replace("## 1.0.0 - 2026-10-19", "## 1.0 - 2026-10-19", 1))
+        antes["CHANGELOG.md"] = (self.carpeta / "CHANGELOG.md").read_bytes()
+        codigo, _, error = ejecutar(self.carpeta)
+        self.assertEqual(codigo, 1)
+        self.assertIn("Errores en los CSV", error)
+        self.assertIn("CHANGELOG.md línea", error)
+        self.assertEqual({str(k): v for k, v in self.estado().items()}, {str(k): v for k, v in antes.items()})
+
+    def test_un_csv_con_finales_de_linea_crlf_da_el_mismo_manifiesto(self):
+        # Un checkout de Windows con autocrlf: las sumas se calculan sobre el texto con los finales de línea unificados.
+        for nombre in ("colores.csv", "lexico-basico.csv"):
+            ruta = self.carpeta / nombre
+            ruta.write_bytes(ruta.read_bytes().replace(b"\n", b"\r\n"))
+        codigo, salida, error = ejecutar(self.carpeta, "--comprobar")
+        self.assertEqual((codigo, error), (0, ""), salida)
+
     def test_readme_sin_marcadores(self):
         self.reescribir("README.md", lambda t: t.replace(gt.INICIO, "<!-- otro -->"))
         codigo, _, error = ejecutar(self.carpeta, "--comprobar")
@@ -898,6 +1345,14 @@ class Programa(unittest.TestCase):
         consulta = ("SELECT s.psicologico FROM nombres n JOIN significados s USING (color_id, idioma) "
                     "WHERE n.color_id = 'crimson' AND n.idioma = 'ja'")
         self.assertEqual(conexion.execute(consulta).fetchone()[0], japones["significado_psicologico"])
+        # Buscar sin tildes ni mayúsculas: la forma normalizada encuentra «marrón» y «alice blue».
+        self.assertIn(("marrón",), conexion.execute(
+            "SELECT forma FROM lexico WHERE forma_normalizada = 'marron' AND idioma = 'es'").fetchall())
+        self.assertEqual(conexion.execute(
+            "SELECT nombre FROM nombres WHERE nombre_normalizado = 'alice blue' AND idioma = 'en'").fetchall(), [("alice blue",)])
+        self.assertEqual(conexion.execute(
+            "SELECT nombre, nombre_normalizado FROM nombres WHERE color_id = 'crimson' AND idioma = 'es'").fetchall(),
+            [("carmesí", "carmesi")])
         conexion.close()
         ruta.unlink()
         self.assertEqual(self.estado(), antes)
