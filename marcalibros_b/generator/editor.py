@@ -14,13 +14,15 @@ Cómo servirlo (fuera de este módulo): los archivos de `AlmacenSubidas` se publ
 origen (dominio sin cookies), solo como `<img>`, con `Content-Type: image/jpeg`,
 `X-Content-Type-Options: nosniff` y `Content-Disposition: inline`.
 """
+import fcntl
 import io
 import json
 import os
-import random
 import secrets
+from functools import lru_cache
 from pathlib import Path
 
+import numpy as np
 import yaml
 from PIL import Image, ImageOps
 
@@ -41,7 +43,6 @@ CUOTA_BYTES = 100 * 1024 * 1024      # por usuario, ya recodificado
 FORMATOS = {"JPEG", "PNG", "WEBP"}
 FRANJA = (16, 440, 184, 860)         # misma franja de texto que el catálogo (168×420)
 
-Image.MAX_IMAGE_PIXELS = MAX_PIXELES  # Pillow avisa y falla ante bombas de descompresión
 
 
 class ErrorEditor(ValueError):
@@ -67,14 +68,15 @@ def recodificar(datos):
         raise ErrorEditor("solo se aceptan imágenes JPG, PNG o WebP")
     try:
         im = Image.open(io.BytesIO(datos))
-        if im.format != firma:
+        # las fotos de móvil con varias imágenes (MPO) son JPEG válidos: se usa solo la primera
+        if im.format != firma and not (firma == "JPEG" and im.format == "MPO"):
             raise ErrorEditor("el contenido no coincide con su formato")
         ancho, alto = im.size
         if ancho * alto > MAX_PIXELES or max(ancho, alto) > MAX_LADO:
             raise ErrorEditor("la imagen es demasiado grande")
         if ancho < 50 or alto < 350:
             raise ErrorEditor("la imagen es demasiado pequeña (mínimo 50×350)")
-        if getattr(im, "n_frames", 1) > 1:
+        if im.format != "MPO" and getattr(im, "n_frames", 1) > 1:
             raise ErrorEditor("no se aceptan imágenes animadas")
         im.load()
     except ErrorEditor:
@@ -82,7 +84,11 @@ def recodificar(datos):
     except Exception as e:  # archivo corrupto, truncado o bomba de descompresión
         raise ErrorEditor("no se pudo leer la imagen") from e
     im = ImageOps.exif_transpose(im)  # aplica la orientación y descarta el resto de metadatos
-    if im.mode in ("RGBA", "LA", "P"):
+    if im.mode.startswith("I"):  # 16 bits o enteros: se normaliza a 8 bits en vez de saturar
+        a = np.asarray(im, dtype=float)
+        a = a / (65535.0 if a.max() > 255 else 255.0) * 255.0
+        im = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8), "L")
+    if im.mode in ("RGBA", "LA", "P", "PA"):
         im = im.convert("RGBA")
         fondo = Image.new("RGB", im.size, (255, 255, 255))
         fondo.paste(im, mask=im.getchannel("A"))
@@ -107,6 +113,22 @@ class AlmacenSubidas:
     def _leer(self):
         return json.loads(self._indice.read_text(encoding="utf-8")) if self._indice.exists() else {}
 
+    def _escribir(self, indice):
+        tmp = self._indice.with_suffix(".tmp")
+        tmp.write_text(json.dumps(indice), encoding="utf-8")
+        os.replace(tmp, self._indice)  # atómico: nunca queda un JSON a medias
+
+    def _bloqueo(self):
+        """Exclusión entre procesos para leer-modificar-escribir el índice y la cuota."""
+        class _B:
+            def __enter__(b):
+                b.f = open(self.dir / ".lock", "w")
+                fcntl.flock(b.f, fcntl.LOCK_EX)
+            def __exit__(b, *a):
+                fcntl.flock(b.f, fcntl.LOCK_UN)
+                b.f.close()
+        return _B()
+
     def uso(self, usuario):
         mias = [v for v in self._leer().values() if v["usuario"] == usuario]
         return len(mias), sum(v["bytes"] for v in mias)
@@ -114,40 +136,49 @@ class AlmacenSubidas:
     def guardar(self, usuario, datos):
         """Devuelve el id (32 hex) de la imagen guardada."""
         jpeg = recodificar(datos)
-        n, usados = self.uso(usuario)
-        if n >= CUOTA_IMAGENES:
-            raise ErrorEditor(f"has llegado al máximo de {CUOTA_IMAGENES} imágenes")
-        if usados + len(jpeg) > CUOTA_BYTES:
-            raise ErrorEditor("has agotado tu espacio de imágenes")
-        ident = secrets.token_hex(16)
-        ruta = self.dir / f"{ident}.jpg"
-        tmp = ruta.with_suffix(".tmp")
-        tmp.write_bytes(jpeg)
-        os.replace(tmp, ruta)
-        indice = self._leer()
-        indice[ident] = {"usuario": usuario, "bytes": len(jpeg)}
-        self._indice.write_text(json.dumps(indice), encoding="utf-8")
+        with self._bloqueo():
+            indice = self._leer()
+            mias = [v for v in indice.values() if v["usuario"] == usuario]
+            if len(mias) >= CUOTA_IMAGENES:
+                raise ErrorEditor(f"has llegado al máximo de {CUOTA_IMAGENES} imágenes")
+            if sum(v["bytes"] for v in mias) + len(jpeg) > CUOTA_BYTES:
+                raise ErrorEditor("has agotado tu espacio de imágenes")
+            ident = secrets.token_hex(16)
+            ruta = self.dir / f"{ident}.jpg"
+            tmp = ruta.with_suffix(".tmp")
+            tmp.write_bytes(jpeg)
+            os.replace(tmp, ruta)
+            indice[ident] = {"usuario": usuario, "bytes": len(jpeg)}
+            self._escribir(indice)
         return ident
 
-    def ruta(self, ident, usuario=None):
-        """Ruta de una imagen. El id debe ser hexadecimal: nunca se compone una ruta con entrada libre."""
-        if len(ident) != 32 or any(c not in "0123456789abcdef" for c in ident):
+    def ruta(self, ident, usuario):
+        """Ruta de una imagen del usuario. El id debe ser hexadecimal (nunca se compone una ruta con
+        entrada libre) y `usuario` es obligatorio: no existe lectura sin comprobar propietario."""
+        if not usuario or len(ident) != 32 or any(c not in "0123456789abcdef" for c in ident):
             raise ErrorEditor("imagen desconocida")
         info = self._leer().get(ident)
-        if not info or (usuario is not None and info["usuario"] != usuario):
+        if not info or info["usuario"] != usuario:
             raise ErrorEditor("imagen desconocida")
         return self.dir / f"{ident}.jpg"
 
+    def dimensiones(self, ident, usuario):
+        """(ancho, alto) de la imagen GUARDADA (ya orientada y reducida): los recortes se miden sobre ella."""
+        with Image.open(self.ruta(ident, usuario)) as im:
+            return im.size
+
     def borrar(self, ident, usuario):
         ruta = self.ruta(ident, usuario)
-        ruta.unlink(missing_ok=True)
-        indice = self._leer()
-        indice.pop(ident, None)
-        self._indice.write_text(json.dumps(indice), encoding="utf-8")
+        with self._bloqueo():
+            ruta.unlink(missing_ok=True)
+            indice = self._leer()
+            indice.pop(ident, None)
+            self._escribir(indice)
 
 
 # --------------------------------------------------------------------------- recetas
 
+@lru_cache(maxsize=1)
 def _motivos_validos():
     datos = yaml.safe_load((RAIZ / "catalog" / "motivos.yaml").read_text(encoding="utf-8"))
     return {m["id"] for m in datos["motivos"]}
@@ -180,10 +211,11 @@ def _recorte_imagen(ruta, rec):
     return im.crop((x, y, x + w, y + h))
 
 
-def renderizar_receta(receta, manifiesto, almacen=None, usuario=None, densidad=1):
+def renderizar_receta(receta, manifiesto, *, usuario, almacen=None, densidad=1):
     """Imagen PIL (200×1400 × densidad) de una receta ya validada con modelo.validar_diseno.
     Devuelve (imagen, info) con info = {"tono", "contraste", "velo"} si hay texto."""
     fondo = receta["fondo"]
+    esc = None
     if fondo["tipo"] == "imagen":
         if almacen is None:
             raise ErrorEditor("hace falta el almacén de imágenes")
@@ -197,26 +229,40 @@ def renderizar_receta(receta, manifiesto, almacen=None, usuario=None, densidad=1
     info = {}
     t = receta.get("texto")
     if t:
-        x0, y0, x1, y1 = FRANJA
+        franja = (esc.franja if esc is not None and esc.franja else None) or FRANJA
+        x0, y0, x1, y1 = franja
         caja = base.crop((x0 * densidad, y0 * densidad, x1 * densidad, y1 * densidad))
-        tono = t.get("tono") or mejor_texto(caja)[0]
-        ratio, velo = contraste_texto(caja, tono), 0.0
-        if ratio < MIN_CONTRASTE_TEXTO:  # velo del color contrario hasta llegar al contraste
+        autor = t.get("autor", "")
+        bloques, alto = tx.componer(t["frase"], autor, franja)
+        if alto > y1 - y0:
+            raise ErrorEditor("la frase es demasiado larga para el marcalibros")
+        if not autor:  # componer reserva el hueco de «— Autor»: se centra la frase sola
+            bloques = [{"tam": bloques[0]["tam"], "glifos": [(c, x, round(y + 12, 1)) for c, x, y in bloques[0]["glifos"]]}]
+        tono, ratio, velo = _tono_legible(caja, t.get("tono"))
+        if velo:
             contrario = TONOS_TEXTO["oscuro" if tono == "claro" else "claro"]
-            for op in OPACIDADES_VELO:
-                prueba = Image.blend(caja, Image.new("RGB", caja.size, contrario), op)
-                velo, ratio = op, contraste_texto(prueba, tono)
-                if ratio >= MIN_CONTRASTE_TEXTO:
-                    break
-            if velo:
-                base.paste(Image.blend(caja, Image.new("RGB", caja.size, contrario), velo), (x0 * densidad, y0 * densidad))
-        bloques, _ = tx.componer(t["frase"], t.get("autor", ""), FRANJA)
-        if not t.get("autor"):
-            bloques = bloques[:1]
+            base.paste(Image.blend(caja, Image.new("RGB", caja.size, contrario), velo), (x0 * densidad, y0 * densidad))
         lienzo = _pintar_texto(base.convert("RGBA"), {"bloques": bloques, "color": TONOS_TEXTO[tono]}, densidad / ESCALA)
         base = lienzo.convert("RGB")
         info = {"tono": tono, "contraste": round(ratio, 2), "velo": velo}
     return base, info
+
+
+def _tono_legible(caja, pedido):
+    """(tono, contraste, velo) que llega a 4,5:1 sobre `caja`. Prueba primero el tono pedido (o el mejor),
+    sin velo y luego con velo del color contrario; después el otro tono. Si nada llega, error:
+    nunca se pinta un texto ilegible."""
+    orden = [pedido] if pedido else []
+    orden += [t for t in (mejor_texto(caja)[0], "claro", "oscuro") if t not in orden]
+    for tono in orden:
+        if contraste_texto(caja, tono) >= MIN_CONTRASTE_TEXTO:
+            return tono, contraste_texto(caja, tono), 0.0
+        contrario = TONOS_TEXTO["oscuro" if tono == "claro" else "claro"]
+        for op in OPACIDADES_VELO:
+            r = contraste_texto(Image.blend(caja, Image.new("RGB", caja.size, contrario), op), tono)
+            if r >= MIN_CONTRASTE_TEXTO:
+                return tono, r, op
+    raise ErrorEditor("el texto no se puede leer sobre esta imagen; prueba con otra o sin texto")
 
 
 def a_jpeg(img):

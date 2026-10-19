@@ -20,9 +20,9 @@
   },
   "allOf": [
     {"if": {"properties": {"origen": {"const": "catalogo"}}},
-     "then": {"required": ["pieza"], "not": {"anyOf": [{"required": ["receta"]}, {"required": ["propietario"]}, {"required": ["moderacion"]}]}}},
+     "then": {"required": ["pieza"], "properties": {"id": {"pattern": "^cat:"}}, "not": {"anyOf": [{"required": ["receta"]}, {"required": ["propietario"]}, {"required": ["moderacion"]}]}}},
     {"if": {"properties": {"origen": {"const": "usuario"}}},
-     "then": {"required": ["receta", "propietario", "creado"], "not": {"anyOf": [{"required": ["pieza"]}, {"required": ["sha256"]}]}}},
+     "then": {"required": ["receta", "propietario", "creado"], "properties": {"id": {"pattern": "^usr:"}}, "not": {"anyOf": [{"required": ["pieza"]}, {"required": ["sha256"]}]}}},
     {"if": {"properties": {"visibilidad": {"const": "compartido"}}, "required": ["visibilidad"]},
      "then": {"properties": {"moderacion": {"const": "aprobado"}}, "required": ["moderacion"]}}
   ],
@@ -61,7 +61,7 @@
       "type": "object",
       "required": ["x", "y", "ancho", "alto"],
       "additionalProperties": false,
-      "description": "Región de la imagen original en píxeles; debe ser 1:7 (alto = 7 × ancho, con ±1 px de tolerancia).",
+      "description": "Región, en píxeles de la imagen GUARDADA (ya orientada y reducida a ≤4000 px; ver AlmacenSubidas.dimensiones), no de la original; debe ser 1:7 (alto = 7 × ancho, con ±1 px de tolerancia).",
       "properties": {"x": {"type": "integer", "minimum": 0}, "y": {"type": "integer", "minimum": 0},
                      "ancho": {"type": "integer", "minimum": 50, "maximum": 4000}, "alto": {"type": "integer", "minimum": 350, "maximum": 28000}}
     }

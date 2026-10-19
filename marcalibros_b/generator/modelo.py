@@ -33,14 +33,14 @@ def validar_diseno(doc, piezas=None):
     errores = _errores("diseno", doc)
     if errores:
         return errores
+    if doc["origen"] == "catalogo" and doc["id"] != f"cat:{doc['pieza']}":
+        errores.append("el id no coincide con la pieza")
     if piezas is not None:
         refs = [doc["pieza"]] if doc["origen"] == "catalogo" else []
         fondo = doc.get("receta", {}).get("fondo", {})
         if fondo.get("tipo") == "plantilla":
             refs.append(fondo["pieza"])
         errores += [f"pieza inexistente: {r}" for r in refs if r not in piezas]
-        if doc["origen"] == "catalogo" and doc["id"] != f"cat:{doc['pieza']}":
-            errores.append("el id no coincide con la pieza")
     rec = doc.get("receta", {}).get("fondo", {}).get("recorte")
     if rec and abs(rec["alto"] - 7 * rec["ancho"]) > 1:
         errores.append(f"el recorte no es 1:7 ({rec['ancho']}×{rec['alto']})")

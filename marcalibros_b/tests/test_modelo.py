@@ -46,6 +46,16 @@ def test_disenos_invalidos():
     c["pieza"] = "no-existe-01"
     c["id"] = "cat:no-existe-01"
     assert modelo.validar_diseno(c, PIEZAS)
+    for mal_id in ("cat:otra-02", "usr:" + "ab" * 16):  # el id debe corresponder al origen y a la pieza
+        c = cargar("diseno-catalogo")
+        c["id"] = mal_id
+        assert modelo.validar_diseno(c), mal_id
+    c = cargar("diseno-catalogo")
+    c["id"] = "cat:romanticismo-becquer-02"
+    assert modelo.validar_diseno(c)  # sin pasar `piezas` también se comprueba
+    u = cargar("diseno-usuario")
+    u["id"] = "cat:romanticismo-becquer-01"  # suplantar un id de catálogo
+    assert modelo.validar_diseno(u)
     c = cargar("diseno-catalogo")
     c["propietario"] = "u-1"
     assert modelo.validar_diseno(c, PIEZAS)
