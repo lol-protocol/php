@@ -221,7 +221,7 @@ Quién sube la versión: el generador no puede saber si un cambio de datos merec
 
 ## Uso
 
-Requiere Python 3. No usa dependencias externas.
+Requiere Python 3.10 o posterior y no usa dependencias externas. Se probó con Python 3.10, 3.11, 3.12, 3.13 y 3.14 en Linux x86_64: el generador (con las 31.935 distancias, que salen idénticas al archivo guardado) y las pruebas dan el mismo resultado en todas. La CI corre además una matriz con Python 3.10 y 3.14 en Ubuntu 24.04 y 3.13 en macOS 15 (arm64). No se ha probado con versiones anteriores a la 3.10 ni en Windows.
 
 ```bash
 cd Listado-colores
@@ -237,7 +237,7 @@ cd Listado-colores
 python3 -m unittest -v pruebas          # unos 8 s; no escribe en la carpeta del proyecto
 ```
 
-`pruebas.py` rompe a propósito, una por una, las reglas de los validadores sobre una copia de los CSV reales (fila borrada, significado sin traducir, forma con letras latinas en un idioma de otra escritura, referencia inexistente o sin usar, orden roto, hex inválido…) y comprueba que cada una da su error. También ejecuta `main()` de punta a punta en una carpeta temporal con `nombres-completos.csv` reducido (para no recalcular las 31.935 distancias): comprueba que un archivo generado editado a mano, borrado o sobrante hace fallar `--comprobar`, que la base SQLite se construye y que todos los archivos generados salen idénticos a los del repositorio salvo el propio `nombres-completos.csv`. Además comprueba la distancia de color con los 16 vectores de Sharma et al. y con propiedades (simetría, negro y blanco a 100). La CI las corre junto a `--comprobar`, que sigue siendo la comprobación de los archivos reales.
+`pruebas.py` rompe a propósito, una por una, las reglas de los validadores sobre una copia de los CSV reales (fila borrada, significado sin traducir, forma con letras latinas en un idioma de otra escritura, referencia inexistente o sin usar, orden roto, hex inválido…) y comprueba que cada una da su error. También ejecuta `main()` de punta a punta en una carpeta temporal con `nombres-completos.csv` reducido (para no recalcular las 31.935 distancias): comprueba que un archivo generado editado a mano, borrado o sobrante hace fallar `--comprobar`, que la base SQLite se construye y que todos los archivos generados salen idénticos a los del repositorio salvo el propio `nombres-completos.csv`. Además comprueba la distancia de color con los 16 vectores de Sharma et al. y con propiedades (simetría, negro y blanco a 100). La CI las corre junto a `--comprobar`, que sigue siendo la comprobación de los archivos reales, y repite las dos cosas en la matriz de Python y de sistema de la sección «Uso».
 
 Reglas para editar los CSV (el generador las comprueba):
 
