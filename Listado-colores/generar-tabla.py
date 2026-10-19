@@ -133,12 +133,26 @@ RE_FORMA_NATURAL = re.compile(r"[a-z]+( [a-z]+)*")
 RE_HEX = re.compile(r"#[0-9A-F]{6}")
 
 
+def filas_de(lector, ruta):
+    """Las filas de un DictReader. Sale con error si alguna tiene más o menos campos que la cabecera.
+
+    DictReader descarta en silencio los campos que sobran (por ejemplo, tras una coma sin comillas
+    dentro de un texto, que además desplaza las columnas) y rellena con None los que faltan.
+    """
+    filas = []
+    for fila in lector:
+        if None in fila or None in fila.values():
+            sys.exit(f"{ruta.name} línea {lector.line_num}: debe tener {len(lector.fieldnames)} campos, como la cabecera")
+        filas.append(fila)
+    return filas
+
+
 def leer(ruta, columnas):
     with ruta.open(encoding="utf-8", newline="") as f:
         lector = csv.DictReader(f)
         if lector.fieldnames != columnas:
             sys.exit(f"{ruta.name}: cabecera inesperada {lector.fieldnames}")
-        return list(lector)
+        return filas_de(lector, ruta)
 
 
 def leer_completa():
@@ -147,7 +161,7 @@ def leer_completa():
         lector = csv.DictReader(f)
         if lector.fieldnames not in (COLUMNAS_FUENTE_COMPLETA, COLUMNAS_COMPLETA):
             sys.exit(f"{COMPLETA.name}: cabecera inesperada {lector.fieldnames}")
-        return [{c: fila[c] for c in COLUMNAS_FUENTE_COMPLETA} for fila in lector]
+        return [{c: fila[c] for c in COLUMNAS_FUENTE_COMPLETA} for fila in filas_de(lector, COMPLETA)]
 
 
 def validar_anotada(filas, errores):

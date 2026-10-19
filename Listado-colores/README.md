@@ -139,6 +139,7 @@ Para usar los datos desde un programa sin leer siete CSV, el generador produce d
 - `exportes/colores.jsonl` y `exportes/gazetteer.tsv`: exportes para PLN. Generados.
 - `exportes.py`: genera los exportes y la base SQLite. Lo importa `generar-tabla.py`.
 - `generar-tabla.py`: valida todos los CSV y genera la tabla de este README, `colores-por-idioma.md`, `por-idioma/`, `referencias.md` y `exportes/`.
+- `pruebas.py`: pruebas del generador (`unittest`, solo biblioteca estándar). Ver «Pruebas» en «Uso».
 - `LICENCIA-meodai-color-names.txt`: licencia MIT de la fuente de la lista completa.
 - `README.md`: este documento. La tabla va entre dos líneas que son marcadores HTML de inicio y fin (`tabla:inicio` y `tabla:fin`); no la edites a mano.
 
@@ -153,8 +154,18 @@ python3 generar-tabla.py --comprobar    # solo comprueba: datos válidos, archiv
 python3 generar-tabla.py --sqlite ruta.db  # construye una base SQLite con los datos
 ```
 
+Pruebas del generador:
+
+```bash
+cd Listado-colores
+python3 -m unittest -v pruebas          # unos 8 s; no escribe en la carpeta del proyecto
+```
+
+`pruebas.py` rompe a propósito, una por una, las reglas de los validadores sobre una copia de los CSV reales (fila borrada, significado sin traducir, forma con letras latinas en un idioma de otra escritura, referencia inexistente o sin usar, orden roto, hex inválido…) y comprueba que cada una da su error. También ejecuta `main()` de punta a punta en una carpeta temporal con `nombres-completos.csv` reducido (para no recalcular las 31.935 distancias): comprueba que un archivo generado editado a mano, borrado o sobrante hace fallar `--comprobar`, que la base SQLite se construye y que todos los archivos generados salen idénticos a los del repositorio salvo el propio `nombres-completos.csv`. Además comprueba la distancia de color con los 16 vectores de Sharma et al. y con propiedades (simetría, negro y blanco a 100). La CI las corre junto a `--comprobar`, que sigue siendo la comprobación de los archivos reales.
+
 Reglas para editar los CSV (el generador las comprueba):
 
+- Todos los CSV: cada fila con tantos campos como su cabecera (un texto con coma va entre comillas). Una fila con campos de más o de menos hace salir al generador con un error, en lugar de aceptarla en silencio o romper con un traceback.
 - `colores.csv`: `nombre_ingles` en minúsculas, sin espacios y único; `forma_natural_en` igual que `nombre_ingles` pero con espacios entre palabras; `hex` en `#RRGGBB` y en mayúsculas; ningún campo vacío; ningún campo con `|` ni saltos de línea; filas ordenadas por `nombre_ingles`.
 - `lexico-basico.csv`: cada fila con concepto, idioma y tipo de la lista; un solo lema por concepto e idioma; los 11 conceptos básicos con lema en los 30 idiomas; formas con lema; ninguna forma vacía, con `|`, comillas o saltos de línea; sin letras latinas en los idiomas de otra escritura (el, ru, uk, ar, he, fa, hi, bn, zh, ja, ko, th); rasgos válidos según el tipo; sin filas repetidas; filas ordenadas.
 - `evidencia.csv`: una fila por color de `colores.csv`, en su orden; bases válidas; referencias ordenadas y existentes; los colores con estudios, exactamente los 13 indicados; los significados derivados no llevan referencias; la tradición moderna cita `leland2016`.
