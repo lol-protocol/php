@@ -155,6 +155,7 @@ python3 generar-tabla.py --sqlite ruta.db  # construye una base SQLite con los d
 
 Reglas para editar los CSV (el generador las comprueba):
 
+- Todos los CSV: cada fila con tantos campos como su cabecera (un texto con coma va entre comillas). Una fila con campos de más o de menos hace salir al generador con un error, en lugar de aceptarla en silencio o romper con un traceback.
 - `colores.csv`: `nombre_ingles` en minúsculas, sin espacios y único; `forma_natural_en` igual que `nombre_ingles` pero con espacios entre palabras; `hex` en `#RRGGBB` y en mayúsculas; ningún campo vacío; ningún campo con `|` ni saltos de línea; filas ordenadas por `nombre_ingles`.
 - `lexico-basico.csv`: cada fila con concepto, idioma y tipo de la lista; un solo lema por concepto e idioma; los 11 conceptos básicos con lema en los 30 idiomas; formas con lema; ninguna forma vacía, con `|`, comillas o saltos de línea; sin letras latinas en los idiomas de otra escritura (el, ru, uk, ar, he, fa, hi, bn, zh, ja, ko, th); rasgos válidos según el tipo; sin filas repetidas; filas ordenadas.
 - `evidencia.csv`: una fila por color de `colores.csv`, en su orden; bases válidas; referencias ordenadas y existentes; los colores con estudios, exactamente los 13 indicados; los significados derivados no llevan referencias; la tradición moderna cita `leland2016`.

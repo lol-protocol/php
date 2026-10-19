@@ -1,6 +1,6 @@
 """Exportes de Listado-colores para tuberías de PLN: JSONL, TSV y una base SQLite.
 
-Lo usa generar-tabla.py con los datos ya leídos y validados (un diccionario `d`, ver preparar() en
+Lo usa generar-tabla.py con los datos ya leídos y validados (un diccionario `d`, ver `datos` en main() de
 generar-tabla.py). Las funciones de texto (colores_jsonl, gazetteer_tsv) son deterministas, así que
 --comprobar puede compararlas byte a byte con los archivos de exportes/. La base SQLite no se guarda
 en el repositorio: se construye con `python3 generar-tabla.py --sqlite ruta.db`, y --comprobar la
