@@ -20,6 +20,6 @@ Contenido de esta versión:
 - Exportes: `exportes/colores.jsonl` (una línea por color) y `exportes/gazetteer.tsv` con ocho columnas: `forma`, `idioma`, `fuente`, `tipo`, `concepto`, `hex`, `rasgos` y `forma_normalizada`.
 - La base SQLite que construye `python3 generar-tabla.py --sqlite ruta.db`, con `nombre_normalizado` en `nombres` y `forma_normalizada` en `lexico`.
 - `exportes/manifiesto.json`, con la versión, las filas y las sumas de lo anterior.
-- `ambiguedad.md`, el informe de las formas que designan más de un color.
+- `ambiguedad.md`, el informe de las formas que designan más de un color, y `auditoria-nombres.md`, el de los nombres sospechosos de la lista completa.
 
 Escrito por un asistente de IA y sin revisión de hablantes nativos: las traducciones de los nombres y de los significados, el léxico básico, las formas naturales y los matices culturales.

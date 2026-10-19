@@ -144,6 +144,22 @@ Límites que conviene tener presentes:
 - Parte de las ambigüedades viene de la traducción, que es una propuesta sin revisión de hablantes nativos. Una forma que remite a colores muy distintos en un idioma (en francés, `violet` a `purple` y `violet`, a 39,9 de distancia) puede ser un idioma que no distingue los dos colores o una traducción que conviene revisar; el informe no lo decide.
 - Las formas flexionadas cuentan una por una: si el lema de un idioma sirve para dos colores, cada flexión sale como un caso.
 
+## Auditoría de los nombres completos
+
+Los 31.935 nombres de `nombres-completos.csv` no se han verificado uno a uno contra otra fuente. `auditoria-nombres.md` (generado) no lo arregla, pero revisa automáticamente lo que sí se puede comprobar sin una fuente, y **marca casos sospechosos sin corregir nada**: el generador sigue aceptando el archivo.
+
+- **Ocho comprobaciones de defectos**, en las que lo normal es que no haya ningún caso: caracteres de control, caracteres invisibles o de formato, espacios que no son el espacio normal, espacios dobles o en los extremos, forma Unicode distinta de NFC, posible mojibake (UTF-8 leído como otra codificación), nombres que empiezan por minúscula y apóstrofo ASCII junto al tipográfico. Hoy ninguna encuentra nada.
+- **Seis que describen la lista**: nombres en mayúsculas, que empiezan por un dígito, de cuatro palabras o más (364), con letras que no son ASCII (295), con apóstrofo tipográfico (441) y con guion (220). Cada una trae cuántos nombres son «curados» (los de `curada` = `x`) y cinco ejemplos.
+- **Duplicados al normalizar**: nombres distintos que coinciden tras la forma normalizada (hoy `Rose`/`Rosé` y `Sable`/`Sablé`).
+- **Hex repetidos**: hoy no hay ninguno: los 31.935 nombres tienen un hex distinto.
+- **Signos que no son letras**, con cuántos nombres los llevan, y los cinco nombres más largos.
+
+Límites que conviene tener presentes:
+
+- No compara con otra fuente ni distingue el idioma de cada nombre. La lista no es solo inglés: hay nombres en pinyin con tonos (`Bái Sè White`), en hindi transliterado (`Gulābī Pink`), en español o en francés, y un etiquetador debe esperarlos.
+- Un hallazgo es un sitio donde mirar, no un error. «Cuatro palabras o más» incluye nombres que son frases (`A Brand New Day`), que pueden ser válidos como nombre de color pero no se comportan como un adjetivo en un texto.
+- Las cifras de este apartado son las de la fecha del cambio; el propio informe trae las actuales.
+
 ## Versión de los datos y manifiesto
 
 Para usar los datos desde otro programa con una versión fija, `exportes/manifiesto.json` (generado) trae:
@@ -193,6 +209,8 @@ Quién sube la versión: el generador no puede saber si un cambio de datos merec
 - `normalizacion.py`: la forma normalizada de un nombre (ver «Forma normalizada»). Lo importan `exportes.py` y `ambiguedad.py`.
 - `ambiguedad.md`: informe de las formas que designan más de un color (ver «Ambigüedad»). Generado.
 - `ambiguedad.py`: calcula ese informe. Lo importa `generar-tabla.py`.
+- `auditoria-nombres.md`: informe de los nombres sospechosos de `nombres-completos.csv` (ver «Auditoría de los nombres completos»). Generado.
+- `auditoria.py`: calcula ese informe. Lo importa `generar-tabla.py`.
 - `CHANGELOG.md`: registro de cambios de los datos, con su versión (ver «Versión de los datos y manifiesto»). Se edita a mano.
 - `exportes/manifiesto.json`: versión, filas y sumas SHA-256 de los CSV y de los exportes. Generado.
 - `manifiesto.py`: valida `CHANGELOG.md` y arma el manifiesto. Lo importa `generar-tabla.py`.

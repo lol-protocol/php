@@ -17,7 +17,8 @@
 
 - Se generan además exportes/colores.jsonl y exportes/gazetteer.tsv (ver exportes.py) y, a petición, una
   base SQLite, ambiguedad.md (las formas que designan más de un color, ver ambiguedad.py) y exportes/manifiesto.json
-  (la versión de CHANGELOG.md y las filas y sumas SHA-256 de los datos, ver manifiesto.py).
+  (la versión de CHANGELOG.md y las filas y sumas SHA-256 de los datos, ver manifiesto.py), y auditoria-nombres.md (los
+  nombres sospechosos de la lista completa, ver auditoria.py).
 
 Uso:
   python3 generar-tabla.py                   valida los CSV y regenera los archivos generados
@@ -34,6 +35,7 @@ CARPETA = Path(__file__).resolve().parent
 sys.dont_write_bytecode = True  # no dejar __pycache__ en la carpeta al importar los módulos de al lado
 sys.path.insert(0, str(CARPETA))
 import ambiguedad  # noqa: E402  (módulos de esta carpeta)
+import auditoria  # noqa: E402
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
 import manifiesto  # noqa: E402
@@ -47,6 +49,7 @@ EVIDENCIA = CARPETA / "evidencia.csv"
 CULTURALES = CARPETA / "significados-culturales.csv"
 REFS_MD = CARPETA / "referencias.md"
 AMBIGUEDAD = CARPETA / "ambiguedad.md"
+AUDITORIA = CARPETA / "auditoria-nombres.md"
 CHANGELOG = CARPETA / "CHANGELOG.md"
 DIR_EXPORTES = CARPETA / "exportes"
 README = CARPETA / "README.md"
@@ -676,6 +679,7 @@ def main():
         INDICE: indice_idiomas(anotada),
         REFS_MD: referencias_md(referencias),
         AMBIGUEDAD: ambiguedad.informe(exportes.filas_gazetteer(datos), IDIOMAS),
+        AUDITORIA: auditoria.informe(completa),
         COMPLETA: completa_texto,
         DIR_EXPORTES / "colores.jsonl": jsonl,
         DIR_EXPORTES / "gazetteer.tsv": tsv,
