@@ -44,7 +44,11 @@ final class Libro
         if ($contenido === false) {
             throw new \InvalidArgumentException("No se pudo leer $ruta.");
         }
-        $datos = json_decode($contenido, true, 512, JSON_THROW_ON_ERROR);
+        try {
+            $datos = json_decode($contenido, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $error) {
+            throw new \InvalidArgumentException("$ruta: el JSON no es válido (" . $error->getMessage() . '). Revisa comas, comillas y llaves.');
+        }
         if (!is_array($datos)) {
             throw new \InvalidArgumentException("$ruta: el JSON debe ser un objeto.");
         }

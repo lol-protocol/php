@@ -76,6 +76,15 @@ abstract class Plantilla
     }
 
     /**
+     * Ancho medio estimado para un texto. Las mayúsculas son más anchas que las minúsculas, así que un
+     * texto en mayúsculas usa un factor mayor. Es una aproximación, como `factorAncho()`.
+     */
+    public function factorPara(string $texto): float
+    {
+        return mb_strtoupper($texto) === $texto ? $this->factorAncho() * 1.4 : $this->factorAncho();
+    }
+
+    /**
      * Relleno del fondo: el color sólido, o una referencia al degradado de la cubierta. El lomo lo
      * comparte, así que el degradado no se corta en el lomo.
      */
@@ -102,16 +111,17 @@ abstract class Plantilla
 
         $svg = $this->linea($x, $panel->y + 22, $x + 12, $panel->y + 22, $colores['acento'], 0.8);
         if ($libro->contratapa !== '') {
-            $texto = Texto::ajustar($libro->contratapa, $ancho, $panel->alto * 0.5, 4.2, 2.8, $this->factorAncho(), self::INTERLINEADO);
+            $texto = Texto::ajustar($libro->contratapa, $ancho, $panel->alto * 0.5, 4.2, 2.8, $this->factorPara($libro->contratapa), self::INTERLINEADO);
             $svg .= $this->parrafo($texto['lineas'], $x, $panel->y + 34 + $texto['tamano'] * 0.8, $texto['tamano'], 'start', $colores['texto']);
         }
-        $svg .= $this->editorial($libro, $x, $panel->y + $panel->alto - 12, 'start');
 
-        // Hueco en blanco para el código de barras del ISBN: el código lo pone quien imprime.
+        // Hueco en blanco para el código de barras del ISBN: el código lo pone quien imprime. El pie
+        // llega hasta el hueco y deja 4 mm libres antes de él.
         $caja = new Rectangulo($panel->x + $panel->ancho - self::MARGEN - 42, $panel->y + $panel->alto - 38, 42, 26);
+        $svg .= $this->editorial($libro, $x, $panel->y + $panel->alto - 12, 'start', $ancho - 46);
         $svg .= $this->rectangulo($caja, ['fill' => '#ffffff']);
         if ($libro->isbn !== '') {
-            $svg .= $this->parrafo(['ISBN ' . $libro->isbn], $caja->x + 42, $caja->y - 3, 2.8, 'end', $colores['texto']);
+            $svg .= $this->rotulo('ISBN ' . $libro->isbn, $caja->x + 42, $caja->y - 3, 42, 2.8, 2.0, 'end', $colores['texto']);
         }
 
         return $svg;
@@ -128,7 +138,8 @@ abstract class Plantilla
         }
 
         $largo = $panel->alto - 2 * self::MARGEN;
-        $texto = Texto::unaLinea($libro->titulo . ' · ' . $libro->autor, $largo, min(4.5, $panel->ancho * 0.6), 2.2, $this->factorAncho());
+        $completo = $libro->titulo . ' · ' . $libro->autor;
+        $texto = Texto::unaLinea($completo, $largo, min(4.5, $panel->ancho * 0.6), 2.2, $this->factorPara($completo));
 
         // El texto va girado 90°. Al girarlo, la línea base queda en x y las letras crecen hacia un lado
         // u otro según el sentido; se corre x para que el texto quede centrado en el lomo.
@@ -153,17 +164,31 @@ abstract class Plantilla
         }
 
         $margen = 10.0;
-        $ajuste = Texto::ajustar($texto, $panel->ancho - 2 * $margen, $panel->alto - 2 * $margen, 4.0, 2.8, $this->factorAncho(), self::INTERLINEADO);
+        $ajuste = Texto::ajustar($texto, $panel->ancho - 2 * $margen, $panel->alto - 2 * $margen, 4.0, 2.8, $this->factorPara($texto), self::INTERLINEADO);
 
         return $this->parrafo($ajuste['lineas'], $panel->x + $margen, $panel->y + $margen + $ajuste['tamano'] * 0.8, $ajuste['tamano'], 'start', $libro->colores['texto']);
     }
 
-    /** Pie con editorial y colección, si hay alguna. */
-    protected function editorial(Libro $libro, float $x, float $y, string $anclaje): string
+    /** Pie con editorial y colección, si hay alguna, en una sola línea que cabe en `ancho`. */
+    protected function editorial(Libro $libro, float $x, float $y, string $anclaje, float $ancho): string
     {
         $pie = implode(' · ', array_filter([$libro->editorial, $libro->coleccion], static fn (string $dato): bool => $dato !== ''));
 
-        return $pie === '' ? '' : $this->parrafo([$pie], $x, $y, 3.2, $anclaje, $libro->colores['texto']);
+        return $pie === '' ? '' : $this->rotulo($pie, $x, $y, $ancho, 3.2, 2.4, $anclaje, $libro->colores['texto']);
+    }
+
+    /**
+     * Una línea de texto que cabe en `ancho`: baja de `tamanoMax` a `tamanoMin` y, si ni así cabe, la
+     * recorta con «…». El `letter-spacing` de `$extra` cuenta en el ancho.
+     *
+     * @param array<string, float|int|string> $extra atributos extra, como letter-spacing o font-style
+     */
+    protected function rotulo(string $texto, float $x, float $y, float $ancho, float $tamanoMax, float $tamanoMin, string $anclaje, string $color, array $extra = []): string
+    {
+        $espaciado = (float) ($extra['letter-spacing'] ?? 0.0);
+        $ajuste = Texto::unaLinea($texto, $ancho, $tamanoMax, $tamanoMin, $this->factorPara($texto), $espaciado);
+
+        return $this->parrafo([$ajuste['texto']], $x, $y, $ajuste['tamano'], $anclaje, $color, $extra);
     }
 
     /**

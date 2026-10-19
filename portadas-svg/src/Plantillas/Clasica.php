@@ -28,13 +28,13 @@ final class Clasica extends Plantilla
         $svg .= $this->rectangulo(new Rectangulo($panel->x + 10.5, $panel->y + 10.5, $panel->ancho - 21, $panel->alto - 21), ['fill' => 'none', 'stroke' => $colores['acento'], 'stroke-width' => 0.2]);
 
         $zonaAlto = $panel->alto * 0.36;
-        $titulo = Texto::ajustar($libro->titulo, $ancho, $zonaAlto, 13.0, 7.0, $this->factorAncho(), self::INTERLINEADO);
+        $titulo = Texto::ajustar($libro->titulo, $ancho, $zonaAlto, 13.0, 7.0, $this->factorPara($libro->titulo), self::INTERLINEADO);
         $y = $this->baseline($panel->y + $panel->alto * 0.14, $zonaAlto, count($titulo['lineas']), $titulo['tamano']);
         $svg .= $this->parrafo($titulo['lineas'], $cx, $y, $titulo['tamano'], 'middle', $colores['texto']);
         $fin = $y + (count($titulo['lineas']) - 1) * $titulo['tamano'] * self::INTERLINEADO;
 
         if ($libro->subtitulo !== '') {
-            $subtitulo = Texto::ajustar($libro->subtitulo, $ancho, 16.0, 5.0, 3.2, $this->factorAncho(), self::INTERLINEADO);
+            $subtitulo = Texto::ajustar($libro->subtitulo, $ancho, 16.0, 5.0, 3.2, $this->factorPara($libro->subtitulo), self::INTERLINEADO);
             $svg .= $this->parrafo($subtitulo['lineas'], $cx, $fin + 9, $subtitulo['tamano'], 'middle', $colores['texto'], ['font-style' => 'italic']);
         }
 
@@ -44,10 +44,10 @@ final class Clasica extends Plantilla
         $svg .= Svg::elemento('polygon', ['points' => $this->rombo($cx, $ornamento, 2.2), 'fill' => $colores['acento']]);
 
         if ($libro->traductor !== '') {
-            $svg .= $this->parrafo(['Traducción de ' . $libro->traductor], $cx, $ornamento + 9, 3.4, 'middle', $colores['texto'], ['font-style' => 'italic']);
+            $svg .= $this->rotulo('Traducción de ' . $libro->traductor, $cx, $ornamento + 9, $ancho, 3.4, 2.4, 'middle', $colores['texto'], ['font-style' => 'italic']);
         }
-        $svg .= $this->parrafo([mb_strtoupper($libro->autor)], $cx, $panel->y + $panel->alto * 0.8, 5.6, 'middle', $colores['texto'], ['letter-spacing' => 0.9]);
-        $svg .= $this->editorial($libro, $cx, $panel->y + $panel->alto - 18, 'middle');
+        $svg .= $this->rotulo(mb_strtoupper($libro->autor), $cx, $panel->y + $panel->alto * 0.8, $ancho, 5.6, 3.6, 'middle', $colores['texto'], ['letter-spacing' => 0.9]);
+        $svg .= $this->editorial($libro, $cx, $panel->y + $panel->alto - 18, 'middle', $ancho);
 
         return $svg;
     }

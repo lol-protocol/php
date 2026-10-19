@@ -109,7 +109,7 @@ Para añadir una plantilla, crea `src/Plantillas/Nombre.php` que extienda `Plant
 ## Antes de imprimir
 
 - **Fuentes.** Los SVG piden fuentes instaladas (Georgia, Helvetica…), y Georgia o Helvetica no son libres para incrustar. Para imprimir, convierte el texto a trazos en Inkscape (Trayecto → Objeto a trazado) o usa fuentes libres (licencia OFL, como EB Garamond o Libre Baskerville) incrustadas.
-- **Ajuste del texto.** El ajuste usa un ancho medio de letra aproximado, sin medir la fuente. Mira siempre la vista previa con la fuente real.
+- **Ajuste del texto.** El ajuste usa un ancho medio de letra aproximado, sin medir la fuente. Mira siempre la vista previa con la fuente real. Si un texto no cabe ni al tamaño mínimo, se recorta con «…»: acórtalo en el JSON en vez de dejar que se recorte.
 - **Degradados al imprimir.** Las impresoras los convierten a CMYK, y eso puede cambiar tonos o mostrar bandas en degradados suaves. Pide prueba de color al impresor.
 - **Vista previa en imagen.** `rsvg-convert -w 2000 portada.svg -o portada.png`, Inkscape o Chromium. Los SVG están en milímetros.
 - **Código de barras.** El rectángulo blanco de la contratapa es un hueco reservado para el EAN-13 del ISBN. Este sistema no genera el código: lo pone quien imprime.
@@ -126,6 +126,8 @@ Los textos antiguos (Platón, Sun Tzu) son de dominio público, pero **una tradu
 php pruebas/ejecutar.php          # pruebas unitarias
 php bin/generar.php --comprobar   # ejemplos/salida/ coincide con lo que genera el código
 ```
+
+La prueba de geometría comprueba que ningún texto se salga de su panel, con las mismas estimaciones de ancho que usan las plantillas. No mide la fuente real: eso lo hace la vista previa.
 
 Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos/*.json --salida=ejemplos/salida`. El workflow `pruebas-portadas-svg.yml` corre las dos comprobaciones cuando cambia esta carpeta.
 

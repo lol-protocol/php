@@ -65,18 +65,20 @@ final class Texto
     }
 
     /**
-     * Tamaño para que una sola línea quepa en `ancho`. Si ni al mínimo cabe, la recorta con «…».
+     * Tamaño para que una sola línea quepa en `ancho`. Cada letra ocupa `tamano * factorAncho` más el
+     * `espaciado` entre letras. Si ni al mínimo cabe, la recorta con «…».
      *
      * @return array{tamano: float, texto: string}
      */
-    public static function unaLinea(string $texto, float $ancho, float $tamanoMax, float $tamanoMin, float $factorAncho): array
+    public static function unaLinea(string $texto, float $ancho, float $tamanoMax, float $tamanoMin, float $factorAncho, float $espaciado = 0.0): array
     {
-        $tamano = min($tamanoMax, $ancho / (max(1, mb_strlen($texto)) * $factorAncho));
+        $largo = max(1, mb_strlen($texto));
+        $tamano = min($tamanoMax, ($ancho / $largo - $espaciado) / $factorAncho);
         if ($tamano >= $tamanoMin) {
             return ['tamano' => $tamano, 'texto' => $texto];
         }
 
-        $porLinea = max(1, (int) floor($ancho / ($tamanoMin * $factorAncho)));
+        $porLinea = max(1, (int) floor($ancho / ($tamanoMin * $factorAncho + $espaciado)));
         if (mb_strlen($texto) > $porLinea) {
             $texto = rtrim(mb_substr($texto, 0, $porLinea - 1)) . '…';
         }

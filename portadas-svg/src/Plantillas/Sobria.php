@@ -40,24 +40,24 @@ final class Sobria extends Plantilla
 
         $svg = $this->rectangulo(new Rectangulo($x, $panel->y + 14, 18, 2.4), ['fill' => $colores['acento']]);
 
-        $titulo = Texto::ajustar($libro->titulo, $ancho, $panel->alto * 0.42, 16.0, 8.0, $this->factorAncho(), self::INTERLINEADO);
+        $titulo = Texto::ajustar($libro->titulo, $ancho, $panel->alto * 0.42, 16.0, 8.0, $this->factorPara($libro->titulo), self::INTERLINEADO);
         $y = $panel->y + 30 + $titulo['tamano'] * 0.8;
         $svg .= $this->parrafo($titulo['lineas'], $x, $y, $titulo['tamano'], 'start', $colores['texto'], ['font-weight' => 'bold']);
         $fin = $y + (count($titulo['lineas']) - 1) * $titulo['tamano'] * self::INTERLINEADO;
 
         if ($libro->subtitulo !== '') {
-            $subtitulo = Texto::ajustar($libro->subtitulo, $ancho, 20.0, 5.0, 3.2, $this->factorAncho(), self::INTERLINEADO);
+            $subtitulo = Texto::ajustar($libro->subtitulo, $ancho, 20.0, 5.0, 3.2, $this->factorPara($libro->subtitulo), self::INTERLINEADO);
             $svg .= $this->parrafo($subtitulo['lineas'], $x, $fin + 9, $subtitulo['tamano'], 'start', $colores['acento']);
         }
 
         // Abajo: una regla de acento, el autor en mayúsculas espaciadas, el traductor y la editorial.
         $autorY = $panel->y + $panel->alto - self::MARGEN - 12;
         $svg .= $this->rectangulo(new Rectangulo($x, $autorY - 9, 12, 0.8), ['fill' => $colores['acento']]);
-        $svg .= $this->parrafo([mb_strtoupper($libro->autor)], $x, $autorY, 5.2, 'start', $colores['texto'], ['letter-spacing' => 1.2]);
+        $svg .= $this->rotulo(mb_strtoupper($libro->autor), $x, $autorY, $ancho, 5.2, 3.4, 'start', $colores['texto'], ['letter-spacing' => 1.2]);
         if ($libro->traductor !== '') {
-            $svg .= $this->parrafo(['Traducción de ' . $libro->traductor], $x, $autorY + 7, 3.4, 'start', $colores['texto']);
+            $svg .= $this->rotulo('Traducción de ' . $libro->traductor, $x, $autorY + 7, $ancho, 3.4, 2.4, 'start', $colores['texto']);
         }
-        $svg .= $this->editorial($libro, $x, $panel->y + $panel->alto - self::MARGEN + 4, 'start');
+        $svg .= $this->editorial($libro, $x, $panel->y + $panel->alto - self::MARGEN + 4, 'start', $ancho);
 
         return $svg;
     }

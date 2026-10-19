@@ -26,17 +26,25 @@ final class Generador
             throw new \RuntimeException("No se pudo crear la carpeta $directorio.");
         }
 
+        // Todo se calcula antes de tocar el disco: si algo falla al dibujar, la carpeta no cambia.
         $medidas = new Medidas($libro);
         $cuerpo = Plantilla::crear($libro->plantilla)->dibujar($libro, $medidas);
-
-        $escritos = [];
+        $contenidos = [];
         foreach (self::piezas($libro) as $archivo => [$vista, $nombre]) {
-            self::guardar("$directorio/$archivo", Svg::documento($medidas->vista($vista), "{$libro->titulo} · $nombre", $cuerpo));
-            $escritos[] = $archivo;
+            $contenidos[$archivo] = Svg::documento($medidas->vista($vista), "{$libro->titulo} · $nombre", $cuerpo);
         }
-        self::guardar("$directorio/medidas.txt", self::resumen($libro, $medidas));
+        $contenidos['medidas.txt'] = self::resumen($libro, $medidas);
 
-        return [...$escritos, 'medidas.txt'];
+        // Se quitan las piezas de una escritura anterior: si el libro cambió de solapas, el sobrelomo viejo
+        // no puede quedarse junto a la cubierta nueva.
+        foreach ([...array_keys(self::PIEZAS), 'medidas.txt'] as $archivo) {
+            self::borrar("$directorio/$archivo");
+        }
+        foreach ($contenidos as $archivo => $contenido) {
+            self::guardar("$directorio/$archivo", $contenido);
+        }
+
+        return array_keys($contenidos);
     }
 
     /**
@@ -50,6 +58,13 @@ final class Generador
         $excluida = $libro->solapasMm > 0 ? 'cubierta-completa.svg' : 'sobrelomo.svg';
 
         return array_diff_key(self::PIEZAS, [$excluida => true]);
+    }
+
+    private static function borrar(string $ruta): void
+    {
+        if (is_file($ruta) && !unlink($ruta)) {
+            throw new \RuntimeException("No se pudo borrar $ruta.");
+        }
     }
 
     private static function guardar(string $ruta, string $contenido): void
