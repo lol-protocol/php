@@ -921,7 +921,7 @@ class Programa(unittest.TestCase):
         self.assertIn("La base SQLite no coincide con los CSV", error)
         self.assertIn(f"lexico: {len(REAL['lexico']) - 1} filas, se esperaban {len(REAL['lexico'])}", error)
 
-    def test_la_autoprueba_de_color_corta_antes_de_leer_nada(self):
+    def test_si_la_autoprueba_de_color_falla_main_sale_con_1(self):
         with mock.patch.object(colorimetria, "VECTORES_SHARMA", [((50.0, 2.6772, -79.7751), (50.0, 0.0, -82.7485), 9.0)]):
             codigo, _, error = ejecutar(self.carpeta, "--comprobar")
         self.assertEqual(codigo, 1)
