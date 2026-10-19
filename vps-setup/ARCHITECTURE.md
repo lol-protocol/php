@@ -172,7 +172,8 @@ Webmin (`:10000`, opcional) es una capa de administración paralela sobre esta m
   `Content-Security-Policy` (hay que ajustarla a cada sitio).
 
 ### Firewall y endurecimiento
-- ✅ fail2ban con jail de SSH (por `07_A`): banea 1h tras 5 intentos fallidos en 10 min
+- ✅ fail2ban (por `07_A`): SSH (1 h de baneo tras 5 fallos en 10 min), Nginx en los logs de todos los dominios (bots que barren rutas, fuerza bruta a `auth_basic`, peticiones malformadas) y `recidive` (una semana a quien reincide)
+- ✅ SSH con `ufw limit` (`01`): bloquea a una IP que abre más de 6 conexiones en 30 s
 - ✅ Parches de seguridad automáticos (`unattended-upgrades`, por `07_A`); no reinicia el servidor solo
 - ✅ UFW habilitado (por `01-system-update.sh`, con SSH permitido antes de activarlo)
 - ✅ Puertos abiertos: 22 (SSH), 80 y 443 (HTTP/HTTPS, vía el perfil `Nginx Full` de UFW que abre `02_E`)

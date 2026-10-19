@@ -38,6 +38,10 @@ Host ajeno) son globales, en `/etc/nginx/conf.d/` (`07_B`, `07_E`): valen para t
 Cada app Python necesita **su propio puerto** (por defecto 8000). `06_B` rechaza uno que ya use otra
 app o en el que algo ya escuche.
 
+Las apps (`06_A`, `06_B`, `06_D`) aceptan peticiones de hasta `MAX_UPLOAD` (20M por defecto; sin esto Nginx
+corta en 1 MB con un 413) y, las de proxy, esperan a la app hasta `PROXY_TIMEOUT` (120s). Se pasan como
+variables: `MAX_UPLOAD=100M ./10_A-add-domain.sh fotos.com --type php --name fotos`.
+
 ## Agregar un dominio: `10_A-add-domain.sh`
 
 ```bash

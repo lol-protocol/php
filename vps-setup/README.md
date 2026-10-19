@@ -132,7 +132,7 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 
 | Paso | Script | Qué hace |
 |------|--------|----------|
-| 01 | `01-system-update.sh` | Actualiza APT, instala utilidades base (git, curl, build-essential) y **activa UFW** (con SSH permitido antes de encenderlo). Ajusta apt para que no se cuelgue: espera el lock hasta 5 min, conserva tus configs y `needrestart` reinicia servicios solo |
+| 01 | `01-system-update.sh` | Actualiza APT, instala utilidades base (git, curl, build-essential) y **activa UFW** (con SSH permitido —con `limit`: frena a una IP que abre más de 6 conexiones en 30 s— antes de encenderlo). Ajusta apt para que no se cuelgue: espera el lock hasta 5 min, conserva tus configs y `needrestart` reinicia servicios solo |
 | 02_A | `02_A-install-java.sh` | Instala Java 21 (OpenJDK) |
 | 02_B | `02_B-install-php.sh` | Instala PHP 8.3 + FPM + extensiones comunes |
 | 02_C | `02_C-install-python.sh` | Instala Python 3 + pip + venv |
@@ -146,21 +146,21 @@ Todo lo que hagas ahí se refleja en los mismos archivos que tocan estos scripts
 | 03 | `03-configure-nginx-site.sh <dominio>` | Crea el virtual host de Nginx (estático, sin PHP) y copia la landing page |
 | 04 | `04-setup-ssl.sh <dominio> [email] [--force] [--staging]` | Obtiene certificado SSL. Verifica antes que el DNS apunte al VPS; sin terminal y con el DNS mal, **aborta** para no gastar un intento de Let's Encrypt (`--force` lo salta). `--staging` pide un certificado de prueba sin límite semanal |
 | 05 | `05-deploy-landing-page.sh` | (Re)copia los archivos de la landing page |
-| 07_A | `07_A-install-fail2ban-autoupdates.sh` | Instala fail2ban (jail de SSH) y actualizaciones automáticas de seguridad (sin reinicio automático) |
+| 07_A | `07_A-install-fail2ban-autoupdates.sh` | Instala fail2ban y actualizaciones automáticas de seguridad (sin reinicio automático). Jails: SSH, Nginx (bots que barren rutas como `wp-login.php`, fuerza bruta a `auth_basic` y peticiones malformadas, en los logs de **todos** los dominios) y `recidive` (una semana fuera a quien reincide) |
 | 07_B | `07_B-nginx-security-headers.sh` | Agrega HSTS, X-Frame-Options, X-Content-Type-Options y Referrer-Policy a todos los dominios, oculta la versión de Nginx (`server_tokens off`) y define un vhost por defecto que corta el tráfico por IP o con un Host ajeno (archivos en `conf.d/`) |
 | 07_C | `07_C-harden-ssh.sh` | *(Opcional, requiere tu llave pública)* Autoriza tu llave y desactiva login por contraseña y de root. Exige confirmar que ya probaste la llave; `--revert` lo deshace |
 | 07_D | `07_D-setup-logrotate.sh` | Rota los logs de Nginx por dominio (`/var/log/nginx/<dominio>/*.log`), que el logrotate del paquete no cubre |
 | 07_E | `07_E-nginx-performance.sh` | Amplía gzip (CSS/JS/JSON/XML/SVG, también respuestas de apps tras proxy) y activa `open_file_cache` para todos los dominios. Si `nginx -t` rechaza la config, quita su archivo |
 | 08 | `08-healthcheck.sh` | Solo lectura: revisa servicios, UFW, puertos, DNS, HTTPS, certificado y headers. Sale con código 1 si algo falla. Uso: `./08-healthcheck.sh tudominio.com` |
 | 09_A | `09_A-setup-monitoring.sh` | *(Opcional)* Monitoreo cada 15 min (disco, RAM, carga, certificados, servicios) con alertas a webhook (Slack/Discord/Mattermost) y/o correo. Solo avisa cuando cambia el estado |
-| 06_A | `06_A-setup-php-app.sh <app> <dominio>` | *(Opcional)* Configura una app PHP adicional |
-| 06_B | `06_B-setup-python-app.sh <app> <dominio> [puerto]` | *(Opcional)* Configura una app Python (Flask + Gunicorn). Cada app necesita su propio puerto local (por defecto 8000): el script rechaza uno que ya use otra app |
+| 06_A | `06_A-setup-php-app.sh <app> <dominio>` | *(Opcional)* Configura una app PHP adicional. Permite subidas de hasta `MAX_UPLOAD` (20M por defecto) en Nginx y en PHP |
+| 06_B | `06_B-setup-python-app.sh <app> <dominio> [puerto]` | *(Opcional)* Configura una app Python (Flask + Gunicorn). Cada app necesita su propio puerto local (por defecto 8000): el script rechaza uno que ya use otra app. `MAX_UPLOAD` (20M) y `PROXY_TIMEOUT` (120s, igual en Nginx y gunicorn) son configurables |
 | 06_C | `06_C-setup-dns-server.sh <dominio> [ip]` | *(Opcional)* Instala BIND9 como servidor DNS propio, solo autoritativo (`recursion no`), con registro CAA (solo Let's Encrypt) y AAAA si das `VPS_IP6=`. Sin IP usa la pública detectada — solo si tu registrador **no** tiene gestión de registros DNS (A/CNAME/TXT) |
-| 06_D | `06_D-setup-tomcat-app.sh <dominio> [context]` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio (con la app en la raíz, `/manager` y `/host-manager` devuelven 404) — requiere `02_H` ya hecho |
+| 06_D | `06_D-setup-tomcat-app.sh <dominio> [context]` | *(Opcional)* Configura Nginx como reverse proxy hacia Tomcat para un dominio (con la app en la raíz, `/manager` y `/host-manager` devuelven 404) — requiere `02_H` ya hecho. Admite `MAX_UPLOAD` y `PROXY_TIMEOUT` como 06_B |
 | 10_A | `10_A-add-domain.sh` | Agrega un dominio nuevo (landing/php/python/tomcat, `--ssl` y `--port` opcionales) encadenando los scripts anteriores |
 | 10_B | `10_B-remove-domain.sh` | Quita un dominio **archivando** (no borrando) su vhost, sitio y logs |
 | — | `remote-run.sh` | Desde TU equipo: sube `vps-setup/` por SSH (solo llave) y ejecuta un script en el VPS. Config en `vps.env` (ver `vps.env.example`) |
-| — | `install-all.sh` | Ejecuta 01 → 02_A..F (+02_J con `--with-webmin`) → 03 → 04 (salvo `--skip-ssl`) → 05 → 07_A → 07_B → 07_D → 07_E en orden y termina corriendo 08. Admite `--dry-run`, `--resume`, `--yes`, `--with-webmin` y `--skip-ssl`. Guarda un log de cada corrida en `~/.local/state/vps-setup/install-all-<fecha>.log` |
+| — | `install-all.sh` | Ejecuta 01 → 02_A..F (+02_J con `--with-webmin`) → 03 → 04 (salvo `--skip-ssl`) → 05 → 07_A → 07_B → 07_D → 07_E en orden y termina corriendo 08. Admite `--dry-run`, `--resume`, `--yes`, `--with-webmin` y `--skip-ssl`. Guarda un log de cada corrida en `~/.local/state/vps-setup/install-all-<fecha>.log` y no deja correr dos a la vez (candado con `flock`) |
 
 Los pasos `02_G`/`02_H`/`02_I` y todos los `06_*` son opcionales e independientes entre sí — instala solo los que necesites. Las notas "requiere X ya hecho" son las únicas excepciones a "cualquier orden": son dependencias reales de software, no de orden de ejecución arbitrario.
 
@@ -232,10 +232,20 @@ crear otro tipo de sitio (o otra app) en un dominio que ya tiene uno falla con u
 anterior, igual que si otro sitio activo ya declara ese `server_name`. Ningún script usa un dominio por defecto:
 sin argumentos muestran el uso y salen con código 2.
 
+## ⚙️ Ajustes por variable de entorno
+
+| Variable | Por defecto | Para qué |
+|----------|-------------|----------|
+| `MAX_UPLOAD` | `20M` | Tamaño máximo de una petición/subida en las apps (`06_A`, `06_B`, `06_D`, y `10_A` que los llama). En PHP el límite es global y solo sube |
+| `PROXY_TIMEOUT` | `120s` | Cuánto espera Nginx a una app Python/Tomcat (y el `--timeout` de gunicorn) |
+| `PHP_VERSION` | `8.3` | Versión de PHP del stack, fijada en un solo lugar (`lib.sh`) |
+
+Ejemplo: `MAX_UPLOAD=100M ./10_A-add-domain.sh fotos.com --type php --name fotos`.
+
 ## 🔒 Seguridad
 
-Lo que los scripts endurecen: UFW activo con SSH permitido antes de encenderlo (01), fail2ban en SSH y parches
-automáticos (07_A), headers de seguridad, `server_tokens off` y vhost por defecto (07_B), SSH solo con llave y sin
+Lo que los scripts endurecen: UFW activo con SSH permitido antes de encenderlo (01), fail2ban en SSH, Nginx y
+reincidentes, y parches automáticos (07_A), headers de seguridad, `server_tokens off` y vhost por defecto (07_B), SSH solo con llave y sin
 root (07_C, opcional), logs rotados (07_D), Tomcat solo en loopback y sin `/manager` público (02_H, 06_D), BIND solo
 autoritativo (06_C), unidades systemd de apps Python con sandbox básico (06_B), descargas a directorios temporales
 privados (02_J), entradas validadas con listas blancas y `remote-run.sh` solo por llave.
