@@ -22,6 +22,7 @@ import shutil
 import sqlite3
 import sys
 import tempfile
+import unicodedata
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -31,6 +32,7 @@ sys.dont_write_bytecode = True  # no dejar __pycache__ de los módulos de al lad
 sys.path.insert(0, str(AQUI))
 import colorimetria  # noqa: E402
 import exportes  # noqa: E402
+import normalizacion  # noqa: E402
 
 # El generador se llama generar-tabla.py (con guion): no se puede importar con `import`.
 _especificacion = importlib.util.spec_from_file_location("generar_tabla", AQUI / "generar-tabla.py")
@@ -600,6 +602,86 @@ class Colorimetria(unittest.TestCase):
         self.assertAlmostEqual(distancia, 100, delta=0.01)
 
 
+class Codigo(unittest.TestCase):
+    def test_los_py_no_llevan_caracteres_invisibles_literales(self):
+        # Un guion blando, un espacio de ancho cero o un BOM dentro del código no se ven al leerlo y un editor
+        # puede quitarlos sin avisar: se escriben como \uXXXX.
+        for ruta in sorted(AQUI.glob("*.py")):
+            for n, linea in enumerate(ruta.read_text(encoding="utf-8").splitlines(), start=1):
+                invisibles = [c for c in linea if unicodedata.category(c) in ("Cf", "Zs") and c != " "]
+                self.assertEqual(invisibles, [], f"{ruta.name} línea {n}")
+
+
+class Normalizacion(unittest.TestCase):
+    def assertNormaliza(self, idioma, casos):
+        for forma, esperada in casos:
+            self.assertEqual(normalizacion.normalizar(forma, idioma), esperada, (idioma, forma))
+
+    def test_mayusculas_espacios_y_guiones(self):
+        self.assertNormaliza("es", [("Azul Marino", "azul marino"), ("azul-marino", "azul marino"),
+                                    ("  azul   marino ", "azul marino"), ("azul\u00a0marino", "azul marino"),
+                                    ("azul\u2013marino", "azul marino"), ("azul_marino", "azul marino")])
+        self.assertNormaliza("en", [("alice blue", "alice blue"), ("alice-blue", "alice blue"), ("aliceblue", "aliceblue")])
+
+    def test_se_quitan_las_marcas_en_escritura_latina(self):
+        self.assertNormaliza("fr", [("Crème Brûlée", "creme brulee")])
+        self.assertNormaliza("de", [("Grün", "grun"), ("Weiß", "weiss")])
+        self.assertNormaliza("es", [("marrón", "marron"), ("café", "cafe")])
+        self.assertNormaliza("vi", [("đỏ", "do"), ("xanh lá", "xanh la")])
+        self.assertNormaliza("pl", [("żółty", "zolty")])
+        self.assertNormaliza("cs", [("žlutá", "zluta")])
+        self.assertNormaliza("ro", [("roșu", "rosu")])
+        self.assertNormaliza("hu", [("zöld", "zold"), ("fűzöld", "fuzold")])
+        self.assertNormaliza("tr", [("Yeşil", "yesil"), ("Kırmızı", "kirmizi"), ("İstanbul", "istanbul")])
+        self.assertNormaliza("da", [("grøn", "gron"), ("blå", "bla"), ("æble", "aeble")])
+
+    def test_el_griego_pierde_los_acentos_y_la_sigma_final(self):
+        self.assertNormaliza("el", [("κόκκινο", "κοκκινο"), ("ΜΑΎΡΟ", "μαυρο"), ("άσπρος", "ασπροσ")])
+
+    def test_en_las_demas_escrituras_no_se_quita_ninguna_marca(self):
+        # Allí las marcas son parte de la letra: quitarlas daría otra palabra.
+        self.assertNormaliza("ru", [("красный", "красный"), ("Зелёный", "зелёный")])
+        self.assertNormaliza("uk", [("синій", "синій"), ("блакитний", "блакитний")])
+        self.assertNormaliza("ja", [("ピンク", "ピンク"), ("ガ", "ガ"), ("みどり", "みどり")])
+        self.assertNormaliza("th", [("สีแดง", "สีแดง"), ("เขียว", "เขียว")])
+        self.assertNormaliza("hi", [("नीला", "नीला"), ("हरा", "हरा")])
+        self.assertNormaliza("bn", [("নীল", "নীল")])
+        self.assertNormaliza("ar", [("أحمر", "أحمر")])
+        self.assertNormaliza("ko", [("빨강", "빨강")])
+        self.assertNormaliza("zh", [("红色", "红色")])
+        self.assertNormaliza("he", [("אדום", "אדום")])
+
+    def test_el_zwnj_del_persa_se_conserva(self):
+        self.assertNormaliza("fa", [("نیمه\u200cشب", "نیمه\u200cشب")])
+
+    def test_nfkc_unifica_anchos_y_kana(self):
+        self.assertNormaliza("en", [("ＡＢＣ", "abc")])
+        self.assertNormaliza("ja", [("ﾋﾟﾝｸ", "ピンク")])
+
+    def test_los_apostrofos_se_unifican_y_se_conservan(self):
+        self.assertNormaliza("fr", [("d\u2019eau", "d'eau"), ("d\u02bceau", "d'eau")])
+        self.assertNormaliza("uk", [("м\u2019ятний", "м'ятний")])
+        self.assertNormaliza("he", [("ג\u05f3ינס", "ג'ינס")])
+
+    def test_se_quitan_los_caracteres_invisibles(self):
+        self.assertNormaliza("en", [("a\u00adb", "ab"), ("a\u200bb", "ab"), ("\ufeffab", "ab")])
+
+    def test_es_idempotente_y_nunca_queda_vacia_en_las_formas_reales(self):
+        lineas = (BASE["carpeta"] / "exportes" / "gazetteer.tsv").read_text(encoding="utf-8").splitlines()[1:]
+        formas = [tuple(linea.split("\t")[:2]) for linea in lineas]
+        self.assertGreater(len(formas), 7000)
+        for forma, idioma in formas:
+            una = normalizacion.normalizar(forma, idioma)
+            self.assertEqual(normalizacion.normalizar(una, idioma), una, (forma, idioma))
+            self.assertNotEqual(una, "", (forma, idioma))
+
+    def test_los_idiomas_latinos_y_los_demas_cubren_los_30_sin_solaparse(self):
+        codigos = {c for c, _ in gt.IDIOMAS}
+        self.assertEqual(normalizacion.LATINOS | gt.SIN_LETRAS_LATINAS, codigos)
+        self.assertEqual(normalizacion.LATINOS & gt.SIN_LETRAS_LATINAS, set())
+        self.assertEqual(normalizacion.QUITAR_MARCAS, normalizacion.LATINOS | {"el"})
+
+
 class Auxiliares(unittest.TestCase):
     def test_ids_de(self):
         self.assertEqual(gt.ids_de(""), [])
@@ -716,9 +798,19 @@ class ArchivosGenerados(unittest.TestCase):
         self.assertEqual(len(filas), len(set(map(tuple, filas))), "sin filas repetidas")
         formas = [f[0] for f in filas]
         self.assertEqual(formas, sorted(formas, key=lambda x: (x.casefold(), x)))
-        self.assertIn(["alice blue", "en", "css", "forma_natural", "aliceblue", "#F0F8FF", ""], filas)
-        self.assertIn(["alice-blue", "en", "css", "forma_con_guion", "aliceblue", "#F0F8FF", ""], filas)
+        self.assertIn(["alice blue", "en", "css", "forma_natural", "aliceblue", "#F0F8FF", "", "alice blue"], filas)
+        self.assertIn(["alice-blue", "en", "css", "forma_con_guion", "aliceblue", "#F0F8FF", "", "alice blue"], filas)
+        self.assertIn(["aliceblue", "en", "css", "identificador", "aliceblue", "#F0F8FF", "", "aliceblue"], filas)
         self.assertTrue(any(f[1] == "es" and f[2] == "lexico" and f[3] == "lema" and f[4] == "red" for f in filas))
+
+    def test_gazetteer_forma_normalizada(self):
+        lineas = (BASE["carpeta"] / "exportes" / "gazetteer.tsv").read_text(encoding="utf-8").splitlines()
+        filas = [linea.split("\t") for linea in lineas[1:]]
+        self.assertEqual(exportes.COLUMNAS_GAZETTEER[-1], "forma_normalizada", "va al final: no mueve las demás columnas")
+        for forma, idioma, *_, normalizada in filas:
+            self.assertEqual(normalizada, normalizacion.normalizar(forma, idioma), (forma, idioma))
+            self.assertNotEqual(normalizada, "", (forma, idioma))
+        self.assertIn(["marrón", "es", "lexico", "lema", "brown"], [f[:5] for f in filas if f[7] == "marron"])
 
 
 class Programa(unittest.TestCase):
@@ -898,6 +990,14 @@ class Programa(unittest.TestCase):
         consulta = ("SELECT s.psicologico FROM nombres n JOIN significados s USING (color_id, idioma) "
                     "WHERE n.color_id = 'crimson' AND n.idioma = 'ja'")
         self.assertEqual(conexion.execute(consulta).fetchone()[0], japones["significado_psicologico"])
+        # Buscar sin tildes ni mayúsculas: la forma normalizada encuentra «marrón» y «alice blue».
+        self.assertIn(("marrón",), conexion.execute(
+            "SELECT forma FROM lexico WHERE forma_normalizada = 'marron' AND idioma = 'es'").fetchall())
+        self.assertEqual(conexion.execute(
+            "SELECT nombre FROM nombres WHERE nombre_normalizado = 'alice blue' AND idioma = 'en'").fetchall(), [("alice blue",)])
+        self.assertEqual(conexion.execute(
+            "SELECT nombre, nombre_normalizado FROM nombres WHERE color_id = 'crimson' AND idioma = 'es'").fetchall(),
+            [("carmesí", "carmesi")])
         conexion.close()
         ruta.unlink()
         self.assertEqual(self.estado(), antes)

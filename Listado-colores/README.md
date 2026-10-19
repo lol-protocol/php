@@ -110,10 +110,22 @@ Límites que conviene tener presentes:
 Para usar los datos desde un programa sin leer siete CSV, el generador produce dos archivos en `exportes/` y puede construir una base SQLite. Todo sale de los CSV; no se edita a mano.
 
 - **`exportes/colores.jsonl`**: una línea JSON por cada color CSS (148), con todo lo que se sabe de él: `id` (nombre CSS), `hex`, `rgb`, `forma_natural_en`, `forma_con_guion_en` (la que se usa como adjetivo delante del sustantivo), `alias` (`id` y `tipo`), `nombres` y `significados` en los 30 idiomas (en `en`, el nombre es la forma natural), `evidencia` (base y referencias de cada significado), `culturales` (los matices del color) y `lexico` (las formas del léxico básico de los conceptos que coinciden con el color, por idioma).
-- **`exportes/gazetteer.tsv`**: lista plana de formas de superficie, para buscar una palabra y saber a qué color o concepto remite. 7.080 filas separadas por tabuladores, ordenadas por forma sin distinguir mayúsculas. Columnas: `forma`, `idioma`, `fuente` (`css` o `lexico`), `tipo`, `concepto`, `hex` y `rasgos`. Con `fuente=css`, `tipo` es `identificador` (`aliceblue`), `forma_natural` (`alice blue`), `forma_con_guion` (`alice-blue`) o `nombre` (la traducción en otro idioma). Con `fuente=lexico`, es `lema`, `flexion`, `sinonimo` o `variante` y `rasgos` trae lo que dice `lexico-basico.csv`. Una misma forma puede salir varias veces (por ejemplo, `abu-abu` en indonesio para `gray`, `grey` y como lema). La lista completa de 31.935 nombres no se repite aquí: está en `nombres-completos.csv`.
-- **Base SQLite** (no se guarda en el repositorio): `python3 generar-tabla.py --sqlite ruta.db`. Tablas: `colores`, `nombres`, `significados`, `alias`, `evidencia`, `culturales`, `referencias`, `conceptos`, `lexico` y `nombres_completos`, con índices por nombre, forma y hex. Ejemplo: `SELECT n.nombre, s.psicologico FROM nombres n JOIN significados s USING (color_id, idioma) WHERE n.color_id = 'crimson' AND n.idioma = 'ja';`.
+- **`exportes/gazetteer.tsv`**: lista plana de formas de superficie, para buscar una palabra y saber a qué color o concepto remite. 7.080 filas separadas por tabuladores, ordenadas por forma sin distinguir mayúsculas. Columnas: `forma`, `idioma`, `fuente` (`css` o `lexico`), `tipo`, `concepto`, `hex`, `rasgos` y `forma_normalizada` (ver «Forma normalizada»; va al final para no mover las demás columnas). Con `fuente=css`, `tipo` es `identificador` (`aliceblue`), `forma_natural` (`alice blue`), `forma_con_guion` (`alice-blue`) o `nombre` (la traducción en otro idioma). Con `fuente=lexico`, es `lema`, `flexion`, `sinonimo` o `variante` y `rasgos` trae lo que dice `lexico-basico.csv`. Una misma forma puede salir varias veces (por ejemplo, `abu-abu` en indonesio para `gray`, `grey` y como lema). La lista completa de 31.935 nombres no se repite aquí: está en `nombres-completos.csv`.
+- **Base SQLite** (no se guarda en el repositorio): `python3 generar-tabla.py --sqlite ruta.db`. Tablas: `colores`, `nombres`, `significados`, `alias`, `evidencia`, `culturales`, `referencias`, `conceptos`, `lexico` y `nombres_completos`, con índices por nombre, forma, forma normalizada y hex. `nombres` y `lexico` tienen una columna normalizada (`nombre_normalizado`, `forma_normalizada`). Ejemplo: `SELECT n.nombre, s.psicologico FROM nombres n JOIN significados s USING (color_id, idioma) WHERE n.color_id = 'crimson' AND n.idioma = 'ja';`.
 
 `--comprobar` compara los dos archivos de `exportes/` con lo que generan los CSV y construye la base en memoria para verificar que cada tabla tenga tantas filas como su CSV y que un cruce de tablas funcione. Las funciones están en `exportes.py`. Los exportes pesan en total unos 1,4 MB.
+
+### Forma normalizada
+
+Para buscar una palabra en texto escrito sin cuidado (mayúsculas, sin tildes, con guiones o espacios distintos), el gazetteer y la base SQLite traen cada forma también normalizada (`normalizacion.py`, solo biblioteca estándar):
+
+- NFKC y minúsculas (`casefold`: «ß» pasa a «ss» y la sigma final del griego a «σ»).
+- Los apóstrofos (`’`, `ʼ`, la geresh del hebreo…) pasan a `'` y se conservan: en ucraniano son parte de la palabra.
+- Espacios, guiones, rayas, el signo menos y el guion bajo se unifican en un solo espacio: `alice-blue`, `alice blue` y `Alice   Blue` dan `alice blue`. `aliceblue` (sin espacio) es otra forma y tiene su propia fila.
+- Se quitan el guion blando, el espacio de ancho cero y el BOM. Se conservan el ZWNJ y el ZWJ, que en persa son parte de la ortografía.
+- **Solo en escritura latina y griega** se quitan las marcas combinantes (`marrón` → `marron`, `Grün` → `grun`, `κόκκινο` → `κοκκινο`) y se pliegan a ASCII las letras que no se descomponen: `ł`, `đ`, `ı`, `ø`, `æ`, `œ` (`đỏ` → `do`, `grøn` → `gron`). En las demás escrituras no se quita nada: allí las marcas son parte de la letra (la dakuten del japonés, la «й» del ruso y del ucraniano, las vocales del tailandés, el hindi y el bengalí), y quitarlas daría otra palabra.
+
+Es una aproximación para casar texto, no una equivalencia lingüística: dos palabras distintas pueden acabar iguales (en turco, `ı` e `i`; en danés, `ø` y `o`) y no se intenta deshacer. Los plegados siguen la convención habitual de pasar a ASCII; no es una norma de ningún idioma. No hay separación de palabras para las escrituras que no usan espacios (chino, japonés, tailandés).
 
 ## Fuentes y verificación
 
@@ -138,6 +150,7 @@ Para usar los datos desde un programa sin leer siete CSV, el generador produce d
 - `colorimetria.py`: sRGB a CIELAB y CIEDE2000, con los vectores de prueba de Sharma et al. Lo importa `generar-tabla.py`.
 - `exportes/colores.jsonl` y `exportes/gazetteer.tsv`: exportes para PLN. Generados.
 - `exportes.py`: genera los exportes y la base SQLite. Lo importa `generar-tabla.py`.
+- `normalizacion.py`: la forma normalizada de un nombre (ver «Forma normalizada»). Lo importa `exportes.py`.
 - `generar-tabla.py`: valida todos los CSV y genera la tabla de este README, `colores-por-idioma.md`, `por-idioma/`, `referencias.md` y `exportes/`.
 - `pruebas.py`: pruebas del generador (`unittest`, solo biblioteca estándar). Ver «Pruebas» en «Uso».
 - `LICENCIA-meodai-color-names.txt`: licencia MIT de la fuente de la lista completa.
