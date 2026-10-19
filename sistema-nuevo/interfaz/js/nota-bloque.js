@@ -12,6 +12,7 @@ export function buildNoteBlock(item) {
   const textarea = el("textarea", {
     class: "note-textarea",
     rows: "2",
+    maxlength: "5000", // el mismo tope que NOTA_MAX_CARACTERES en servidor-php/codigo/api/notas.php
     placeholder: t("note_placeholder"),
     "data-accion-id": item.id,
   });
