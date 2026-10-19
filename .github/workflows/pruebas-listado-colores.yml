@@ -39,3 +39,10 @@ jobs:
       - name: Comprobar datos y tabla
         working-directory: Listado-colores
         run: python3 generar-tabla.py --comprobar
+
+      # Pruebas del generador: cada regla de validacion rota a proposito sobre una
+      # copia de los CSV, y main() de punta a punta en una carpeta temporal con
+      # nombres-completos.csv reducido. Unos 8 s; no escribe en el proyecto.
+      - name: Pruebas del generador
+        working-directory: Listado-colores
+        run: python3 -m unittest -v pruebas
