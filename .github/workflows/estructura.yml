@@ -41,6 +41,39 @@ jobs:
             exit 1
           fi
 
+  readme-workflows:
+    name: README raíz nombra los workflows que hay
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Cada archivo de .github/workflows/ debe nombrarse entre comillas invertidas en
+      # README.md (seccion CI/CD), y cada *.yml que README.md nombra debe existir ahi; si no,
+      # el README quedo desactualizado tras agregar, renombrar o quitar un workflow.
+      - name: Comparar workflows reales contra el README
+        run: |
+          shopt -s nullglob
+          sin_readme=""
+          for f in .github/workflows/*.yml .github/workflows/*.yaml; do
+            n="${f##*/}"
+            grep -qF "\`$n\`" README.md || sin_readme="$sin_readme $n"
+          done
+          sin_archivo=""
+          for n in $(grep -oE '`[A-Za-z0-9_.-]+\.ya?ml`' README.md | tr -d '`' | sort -u); do
+            [ -f ".github/workflows/$n" ] || sin_archivo="$sin_archivo $n"
+          done
+          if [ -n "$sin_readme" ]; then
+            echo "::error::Workflows sin mencion en README.md (seccion CI/CD):$sin_readme"
+          fi
+          if [ -n "$sin_archivo" ]; then
+            echo "::error::README.md nombra workflows que no existen en .github/workflows/:$sin_archivo"
+          fi
+          if [ -n "$sin_readme$sin_archivo" ]; then
+            exit 1
+          fi
+
   claude-md-rutas:
     name: CLAUDE.md cita rutas que existen
     runs-on: ubuntu-24.04
