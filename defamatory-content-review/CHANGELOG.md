@@ -4,6 +4,12 @@
 
 ### Añadido
 
+- **`public/moderar.php` limita las peticiones por IP** (`Http\RateLimiter`):
+  30 por minuto por omisión (`MODERAR_POR_MINUTO`, `0` lo apaga); al pasarse,
+  429 con `Retry-After`. La IP se guarda como HMAC con una clave del servidor.
+  Antes el README sólo recomendaba hacerlo en nginx. `RateLimiterTest`.
+- **README al día**: datos sensibles, datos personales (`privado`) y
+  acusaciones en seis idiomas, que ya estaban en el código pero no en el README.
 - **Textos largos en el endpoint**: `text` acepta hasta 10.000 caracteres (antes
   2.000) y el cuerpo, hasta 64 KB. Lo que pasa de 2.000 se revisa por partes
   (`LongText`): por párrafos y, si uno es muy largo, por oraciones. Manda la

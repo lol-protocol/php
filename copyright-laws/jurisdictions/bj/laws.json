@@ -38,6 +38,11 @@
         "confidence": "medium",
         "checked": "2026-10-16"
       },
+      "fair_use_exceptions": {
+        "url": "https://ictpolicyafrica.org/en/document/2h0nt7ece2t?page=9",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
       "enforcement_body": {
         "url": "https://sgg.gouv.bj/doc/decret-2007-115/download",
         "confidence": "high",
@@ -47,11 +52,6 @@
         "url": "https://wipo.int/wipolex/en/treaties/ShowResults?code=BJ",
         "confidence": "medium",
         "checked": "2026-10-16"
-      },
-      "fair_use_exceptions": {
-        "url": "https://ictpolicyafrica.org/en/document/2h0nt7ece2t?page=9",
-        "confidence": "medium",
-        "checked": "2026-10-17"
       }
     },
     "changes": [

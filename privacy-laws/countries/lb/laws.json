@@ -40,14 +40,14 @@
         "checked": "2026-10-16"
       },
       "enactment_date": {
-        "url": "https://regulations.clym.io/law-no.-81-on-electronic-transactions-and-personal-data-lebanon?hsLang=en",
+        "url": "https://www.clym.io/regulations/law-no-81-on-electronic-transactions-and-personal-data-lebanon",
         "confidence": "medium",
-        "checked": "2026-10-16"
+        "checked": "2026-10-18"
       },
       "effective_date": {
-        "url": "https://regulations.clym.io/law-no.-81-on-electronic-transactions-and-personal-data-lebanon?hsLang=en",
+        "url": "https://www.clym.io/regulations/law-no-81-on-electronic-transactions-and-personal-data-lebanon",
         "confidence": "medium",
-        "checked": "2026-10-16"
+        "checked": "2026-10-18"
       },
       "scope": {
         "url": "https://www.consentstack.io/regulations/lb-law81",
@@ -60,14 +60,14 @@
         "checked": "2026-10-16"
       },
       "key_requirements": {
-        "url": "https://regulations.clym.io/law-no.-81-on-electronic-transactions-and-personal-data-lebanon?hsLang=en",
+        "url": "https://www.clym.io/regulations/law-no-81-on-electronic-transactions-and-personal-data-lebanon",
         "confidence": "low",
-        "checked": "2026-10-16"
+        "checked": "2026-10-18"
       },
       "data_categories": {
-        "url": "https://regulations.clym.io/law-no.-81-on-electronic-transactions-and-personal-data-lebanon?hsLang=en",
+        "url": "https://www.clym.io/regulations/law-no-81-on-electronic-transactions-and-personal-data-lebanon",
         "confidence": "low",
-        "checked": "2026-10-16"
+        "checked": "2026-10-18"
       },
       "retention_period": {
         "url": "https://www.consentstack.io/regulations/lb-law81",

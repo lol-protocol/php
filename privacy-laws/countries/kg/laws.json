@@ -18,7 +18,7 @@
     "deceased_data": "On state registration of death the subject gets 'deceased' status and data must be archived and stored (2022 amendment, Law No. 61); law replaced by Digital Code No. 178 from 5 Feb 2026",
     "research_exemption": "",
     "genetic_data": "No specific rule: law has no clear definition of sensitive personal data; genetic data not named (unconfirmed)",
-    "website_url": "https://dpa.gov.kg/en/npa/4",
+    "website_url": "https://reestr.dpa.gov.kg/en/npa/4",
     "language": "Kyrgyz/Russian",
     "frameworks": "",
     "frameworks_not": "",
@@ -91,6 +91,12 @@
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "website_url",
+        "from": "https://dpa.gov.kg/en/npa/4",
+        "to": "https://reestr.dpa.gov.kg/en/npa/4"
+      },
       {
         "date": "2026-10-17",
         "field": "genetic_data",

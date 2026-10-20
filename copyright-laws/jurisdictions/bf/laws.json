@@ -1,0 +1,66 @@
+[
+  {
+    "country_code": "BF",
+    "country_name": "Burkina Faso",
+    "region": "middle_east_africa",
+    "law_name": "Law No. 048-2019/AN of 12 November 2019 on the Protection of Literary and Artistic Property",
+    "protection_type": "Copyright",
+    "term_of_protection": "Author's life + 70 years (Law No. 048-2019/AN on literary and artistic property, which repealed Law No. 032-99/AN; exact article not seen)",
+    "author_rights": "Economic rights (unconfirmed)",
+    "moral_rights": "Not specified",
+    "orphan_works": "Not specified (unconfirmed)",
+    "digital_protection": "Not specified",
+    "fair_use_exceptions": "Not specified",
+    "registration_required": "Not specified",
+    "enforcement_body": "Burkinabe Copyright Bureau (Bureau burkinabe du droit d'auteur, BBDA)",
+    "treaties_signatory": "",
+    "treaties_not_party": "",
+    "linked_resources": "https://www.wipo.int/wipolex/en/text/597824",
+    "notes": "Promulgated by Decree 2019-1275/PRES on 23 Dec 2019; repeals Law 032-99/AN. Covers copyright, neighbouring rights and traditional cultural expressions. Full text not read.",
+    "pending_change": "",
+    "pending_date": "",
+    "data_status": "researched",
+    "confidence": "medium",
+    "last_checked": "2026-10-18",
+    "sources": {
+      "law_name": {
+        "url": "https://www.wipo.int/wipolex/en/text/597824",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "protection_type": {
+        "url": "https://www.wipo.int/wipolex/en/text/597824",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "term_of_protection": {
+        "url": "https://www.sidwaya.info/lettre-ouverte-kango-sawadogo-interpelle-les-deputes-sur-le-droit-dauteur/",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "author_rights": {
+        "url": "https://www.wipo.int/wipolex/en/text/597824",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "orphan_works": {
+        "url": "https://www.wipo.int/wipolex/en/text/597824",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "enforcement_body": {
+        "url": "https://www.sidwaya.info/lettre-ouverte-kango-sawadogo-interpelle-les-deputes-sur-le-droit-dauteur/",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      }
+    },
+    "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "row",
+        "from": "",
+        "to": "added"
+      }
+    ]
+  }
+]

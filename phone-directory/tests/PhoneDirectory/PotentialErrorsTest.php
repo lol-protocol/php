@@ -10,6 +10,7 @@ use PhoneDirectory\Exception\InvalidEncodingException;
 use PhoneDirectory\Exception\InvalidLanguageException;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 use PhoneDirectory\SurnameKeys;
+use PhoneDirectory\Privacy;
 
 /**
  * Tests for potential errors identified through static code analysis.
@@ -23,7 +24,7 @@ class PotentialErrorsTest extends TestCase
      */
     public function testError12_LegacyDatabaseWithNullCountryCodeFailsMigration(): void
     {
-        $db = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $db = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $db->connect();
         $db->createTable();
 
@@ -57,7 +58,7 @@ class PotentialErrorsTest extends TestCase
      */
     public function testBasicDatabaseInsertAndRetrieve(): void
     {
-        $db = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $db = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $db->connect();
         $db->createTable();
 
@@ -82,7 +83,7 @@ class PotentialErrorsTest extends TestCase
      */
     public function testBatchInsertTransactionHandling(): void
     {
-        $db = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $db = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $db->connect();
         $db->createTable();
 
@@ -101,7 +102,7 @@ class PotentialErrorsTest extends TestCase
      */
     public function testLikeWildcardsBehaviorInSearch(): void
     {
-        $db = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $db = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $db->connect();
         $db->createTable();
 
@@ -213,7 +214,7 @@ class PotentialErrorsTest extends TestCase
      */
     public function testFailedBatchInsertRollsBackEarlierRows(): void
     {
-        $db = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $db = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $db->connect();
         $db->createTable();
 

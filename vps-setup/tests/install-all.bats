@@ -154,3 +154,16 @@ steps_run() { sed 's|.*/||; s| .*||' "$RUN_LOG"; }
     [[ "$output" == *"./04-setup-ssl.sh ejemplo.com a@ejemplo.com"* ]]
     ! grep -q 04-setup-ssl "$INSTALL_STATE_FILE"     # no queda como "hecho": --resume sin el flag lo correra
 }
+
+@test "una sola corrida a la vez: con el candado tomado, otra corrida sale con error sin hacer nada" {
+    mkdir -p "$(dirname "$INSTALL_STATE_FILE")"
+    ( flock 9; sleep 5 ) 9> "$INSTALL_STATE_FILE.lock" &
+    sleep 0.5
+    ia ejemplo.com a@ejemplo.com --yes
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"ya hay otra corrida de install-all.sh en curso"* ]]
+    [ ! -s "$RUN_LOG" ]
+    wait
+    ia ejemplo.com a@ejemplo.com --yes      # liberado el candado, corre normal
+    [ "$status" -eq 0 ]
+}

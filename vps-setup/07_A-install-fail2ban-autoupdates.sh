@@ -7,6 +7,7 @@ print_header "07_A" "fail2ban + actualizaciones automaticas de seguridad"
 
 # Rutas reemplazables por variables de entorno (se usan en los tests).
 FAIL2BAN_JAIL=${FAIL2BAN_JAIL:-/etc/fail2ban/jail.local}
+NGINX_LOG_DIR=${NGINX_LOG_DIR:-/var/log/nginx}
 APT_AUTO_CONF=${APT_AUTO_CONF:-/etc/apt/apt.conf.d/20auto-upgrades}
 
 # fail2ban: lee los logs de intentos fallidos y banea (via iptables/UFW) a las IP que
@@ -16,9 +17,6 @@ APT_AUTO_CONF=${APT_AUTO_CONF:-/etc/apt/apt.conf.d/20auto-upgrades}
 # python3-systemd: necesario para "backend = systemd" (leer SSH desde el journal).
 sudo apt-get install -y fail2ban unattended-upgrades python3-systemd
 
-# Solo habilitamos el jail de SSH. Los jails de Nginx que trae fail2ban leen
-# /var/log/nginx/error.log, y aqui los logs son por dominio
-# (/var/log/nginx/<dominio>/), asi que ese archivo no existe y fail2ban fallaria.
 # backend=systemd: en Ubuntu 24.04 SSH loguea en el journal, no en /var/log/auth.log.
 # jail.local (no jail.conf) para que una actualizacion del paquete no pise esto.
 sudo tee "$FAIL2BAN_JAIL" > /dev/null <<'EOJAIL'
@@ -26,11 +24,57 @@ sudo tee "$FAIL2BAN_JAIL" > /dev/null <<'EOJAIL'
 bantime  = 1h
 findtime = 10m
 maxretry = 5
+ignoreip = 127.0.0.1/8 ::1
 
 [sshd]
 enabled = true
 backend = systemd
+
+# Reincidentes: quien ya fue baneado 3 veces en un dia (por cualquier jail) queda fuera una semana.
+[recidive]
+enabled  = true
+backend  = auto
+logpath  = /var/log/fail2ban.log
+bantime  = 1w
+findtime = 1d
+maxretry = 3
 EOJAIL
+
+# Jails de Nginx. Los logs aqui son POR DOMINIO (/var/log/nginx/<dominio>/), y los jails de fabrica
+# solo leen /var/log/nginx/{error,access}.log: el glob */ cubre todos los dominios. Esos dos archivos
+# generales se dejan tambien en la lista porque existen siempre: con un glob que no encuentra nada
+# (aun sin dominios) el jail no arrancaria. Un dominio nuevo queda vigilado cuando fail2ban recarga
+# (enable_nginx_site de lib.sh lo hace). Si Nginx no esta instalado, no se agregan.
+if [ -d "$NGINX_LOG_DIR" ]; then
+    sudo touch "$NGINX_LOG_DIR/error.log" "$NGINX_LOG_DIR/access.log"
+    sudo tee -a "$FAIL2BAN_JAIL" > /dev/null <<EOJAIL
+
+# Bots que barren rutas conocidas (wp-login.php, .env, phpmyadmin...): open() ... failed.
+[nginx-botsearch]
+enabled  = true
+backend  = auto
+logpath  = $NGINX_LOG_DIR/error.log
+           $NGINX_LOG_DIR/*/error.log
+maxretry = 10
+
+# Fuerza bruta contra paginas con usuario y clave de Nginx (auth_basic).
+[nginx-http-auth]
+enabled  = true
+backend  = auto
+logpath  = $NGINX_LOG_DIR/error.log
+           $NGINX_LOG_DIR/*/error.log
+
+# Peticiones malformadas (400) en rafaga: escaneres y exploits genericos.
+[nginx-bad-request]
+enabled  = true
+backend  = auto
+logpath  = $NGINX_LOG_DIR/access.log
+           $NGINX_LOG_DIR/*/access.log
+maxretry = 10
+EOJAIL
+else
+    echo "AVISO: $NGINX_LOG_DIR no existe (Nginx no instalado): solo se activan los jails de SSH y reincidentes."
+fi
 
 service_start_enable fail2ban
 sudo systemctl restart fail2ban   # aplica jail.local si el servicio ya estaba corriendo

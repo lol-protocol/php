@@ -12,6 +12,8 @@ require_arg "$DOMAIN" "$0 <nombre-app> <dominio> [puerto]   (ej. $0 blog blog.in
 require_valid name "$APP_NAME" "El nombre de la app (argumento 1)"
 require_valid domain "$DOMAIN" "El dominio (argumento 2)"
 require_valid port "$PORT" "El puerto (argumento 3)"
+require_valid size "$MAX_UPLOAD" "MAX_UPLOAD"
+require_valid duration "$PROXY_TIMEOUT" "PROXY_TIMEOUT"
 SYSTEMD_DIR=${SYSTEMD_DIR:-/etc/systemd/system}
 APP_PATH="/var/www/$APP_NAME"
 VENV_PATH="$APP_PATH/venv"
@@ -66,6 +68,8 @@ sudo -u www-data $VENV_PATH/bin/pip install flask gunicorn
 # En lugar de hardcoded a 4, que desperdicia recursos en VPS pequenos o
 # subutiliza los grandes. Ej: 2 cores -> 5 workers, 4 cores -> 9 workers
 WORKERS=$(($(nproc) * 2 + 1))
+# gunicorn mata un worker que tarda mas de --timeout (30 s por defecto): se alinea con el de Nginx.
+case "$PROXY_TIMEOUT" in *m) GUNICORN_TIMEOUT=$(( ${PROXY_TIMEOUT%m} * 60 )) ;; *) GUNICORN_TIMEOUT=${PROXY_TIMEOUT%s} ;; esac
 
 echo "Creando servicio systemd..."
 sudo tee "$SYSTEMD_DIR/$APP_NAME.service" > /dev/null <<EOFSERVICE
@@ -78,7 +82,7 @@ Type=notify
 User=www-data
 WorkingDirectory=$APP_PATH
 Environment="PATH=$VENV_PATH/bin"
-ExecStart=$VENV_PATH/bin/gunicorn --workers $WORKERS --bind 127.0.0.1:$PORT app:app
+ExecStart=$VENV_PATH/bin/gunicorn --workers $WORKERS --timeout $GUNICORN_TIMEOUT --bind 127.0.0.1:$PORT app:app
 Restart=always
 RestartSec=10
 # Sandbox basico: la app corre como www-data y es la parte expuesta a internet.
@@ -114,8 +118,13 @@ server {
     access_log /var/log/nginx/$DOMAIN/access.log;
     error_log /var/log/nginx/$DOMAIN/error.log;
 
+    client_max_body_size $MAX_UPLOAD;   # subidas (MAX_UPLOAD, 20M por defecto); sin esto, 1 MB
+
     location / {
         proxy_pass http://127.0.0.1:$PORT;
+        proxy_connect_timeout 10s;          # la app es local: si no acepta en 10 s, esta caida
+        proxy_send_timeout $PROXY_TIMEOUT;
+        proxy_read_timeout $PROXY_TIMEOUT;  # cuanto puede tardar la app en responder (PROXY_TIMEOUT)
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;

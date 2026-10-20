@@ -15,9 +15,9 @@
     "enforcement_authority": "Agency for Access to Public Information (AAIP)",
     "penalties_range": "Fines up to ARS 1M",
     "exemptions": "Government functions",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Heirs (universal successors) may exercise access rights for deceased persons (art. 14); successors up to second degree may bring habeas data action (art. 34)",
+    "research_exemption": "Sensitive data may be processed for statistical or scientific purposes when data subjects cannot be identified (art. 7); scientific use requires dissociated data",
+    "genetic_data": "Not expressly mentioned; doctrine treats genetic data as implicitly sensitive (health) under art. 2 and art. 7",
     "website_url": "https://www.argentina.gob.ar/",
     "language": "Spanish",
     "frameworks": "EU-Adequacy/CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://www.marval.com/publicacion/nuevos-proyectos-de-ley-de-datos-personales-en-argentina-17289?lang=en",
@@ -38,9 +38,42 @@
         "url": "https://www.coe.int/web/data-protection/argentina",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://iapp.org/news/a/notas-de-la-directora-general-iapp-america-latina-3-agosto-2022",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://www.argentina.gob.ar/normativa/nacional/64790/texto",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://aldiaargentina.microjuris.com/2017/07/31/la-informacion-genetica-en-el-proyecto-de-reforma-a-la-ley-de-proteccion-de-datos-personales-en-la-argentina-berti-garcia-bernardita/",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Not expressly mentioned; doctrine treats genetic data as implicitly sensitive (health) under art. 2 and art. 7"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Sensitive data may be processed for statistical or scientific purposes when data subjects cannot be identified (art. 7); scientific use requires dissociated data"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Heirs (universal successors) may exercise access rights for deceased persons (art. 14); successors up to second degree may bring habeas data action (art. 34)"
+      },
       {
         "date": "2026-10-14",
         "field": "law_name",

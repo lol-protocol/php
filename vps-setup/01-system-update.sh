@@ -59,7 +59,10 @@ sudo apt-get install -y curl wget git build-essential software-properties-common
 # entrar salvo por la consola de rescate del proveedor). Por eso el orden
 # aqui es estricto: primero permitir SSH, RECIEN DESPUES activar.
 echo "Configurando firewall (UFW)..."
-sudo ufw allow OpenSSH                # Permite SSH (puerto 22) ANTES de activar -- ver advertencia arriba
+# "limit" en vez de "allow": permite SSH pero bloquea una IP que abre mas de 6 conexiones en 30 s
+# (fuerza bruta), antes incluso de que actue fail2ban. Ojo si automatizas muchas conexiones
+# seguidas desde tu IP (remote-run.sh abre 2 por ejecucion).
+sudo ufw limit OpenSSH                # Permite SSH (puerto 22) ANTES de activar -- ver advertencia arriba
 sudo ufw --force enable               # --force evita que quede esperando confirmacion interactiva "y/n"
 
 echo ""

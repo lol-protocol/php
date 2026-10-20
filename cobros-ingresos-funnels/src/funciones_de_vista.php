@@ -34,6 +34,25 @@ function dinero_en_moneda(float $monto, string $codigoMoneda): string
     return ($monto < 0 ? '-' : '') . $simbolo . number_format(abs($monto), 2) . ' ' . $codigoMoneda;
 }
 
+/**
+ * El <input> del monto de los formularios de boleta y de pago, con los mismos limites que aplica el
+ * servidor (Validacion::montoEnRango): de un centavo a Validacion::MONTO_MAXIMO, de a centavos. Asi el
+ * navegador rechaza un monto fuera de rango antes de enviarlo, igual que maxlength lo hace con los
+ * textos. $valor es lo que se muestra de entrada (lo ya escrito, o el monto guardado) y se escapa aca.
+ */
+function campo_monto(string|int|float|null $valor = null): string
+{
+    $centavo = number_format(\App\Dinero::UN_CENTAVO, 2, '.', '');
+
+    return sprintf(
+        '<input type="number" name="monto" id="monto" required min="%s" max="%s" step="%s" value="%s">',
+        $centavo,
+        number_format(\App\Validacion::MONTO_MAXIMO, 2, '.', ''),
+        $centavo,
+        htmlspecialchars((string) $valor)
+    );
+}
+
 /** % de cambio de anterior a actual, o null si no hay base para comparar. */
 function variacion_pct(float $actual, float $anterior): ?float
 {

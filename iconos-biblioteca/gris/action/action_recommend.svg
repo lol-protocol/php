@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_recommend_amber" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_recommend_amber_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#AEAEAE"/>
       <stop offset="1" stop-color="#878787"/>
     </linearGradient>
@@ -10,7 +10,7 @@
     <ellipse cx="31.9" cy="54.8" rx="10.95" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M33.92 10.17A2 2 0 0 1 33.98 10.26L40.25 19.65A2 2 0 0 1 38.58 22.76L26.06 22.76A2 2 0 0 1 24.46 21.96L23.32 20.44A2 2 0 0 1 23.25 18.13L29.52 8.74A2 2 0 0 1 32.78 8.65Z" fill="#4F4F4F"/><path d="M29.34 8.5A2 2 0 0 1 32.66 8.5L38.93 17.89A2 2 0 0 1 37.26 21L24.74 21A2 2 0 0 1 23.07 17.89Z" fill="url(#grad_action_recommend_amber)"/></g>
-    <g><path d="M22.38 45.84L24 48A11 11 0 0 0 41.6 34.8L39.98 32.64A11 11 0 0 0 22.38 45.84Z" fill="#4F4F4F"/><circle cx="31" cy="39" r="11" fill="url(#grad_action_recommend_amber)"/></g>
+    <g><path d="M33.92 10.17A2 2 0 0 1 33.98 10.26L40.25 19.65A2 2 0 0 1 38.58 22.76L26.06 22.76A2 2 0 0 1 24.46 21.96L23.32 20.44A2 2 0 0 1 23.25 18.13L29.52 8.74A2 2 0 0 1 32.78 8.65Z" fill="#4F4F4F"/><path d="M29.34 8.5A2 2 0 0 1 32.66 8.5L38.93 17.89A2 2 0 0 1 37.26 21L24.74 21A2 2 0 0 1 23.07 17.89Z" fill="url(#grad_action_recommend_amber_g)"/></g>
+    <g><path d="M22.38 45.84L24 48A11 11 0 0 0 41.6 34.8L39.98 32.64A11 11 0 0 0 22.38 45.84Z" fill="#4F4F4F"/><circle cx="31" cy="39" r="11" fill="url(#grad_action_recommend_amber_g)"/></g>
   </g>
 </svg>

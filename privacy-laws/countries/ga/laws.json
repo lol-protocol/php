@@ -50,24 +50,24 @@
         "checked": "2026-10-16"
       },
       "scope": {
-        "url": "https://regulations.clym.io/law-no-025-2023-gabon",
+        "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
         "confidence": "medium",
-        "checked": "2026-10-16"
+        "checked": "2026-10-18"
       },
       "applies_to": {
-        "url": "https://regulations.clym.io/law-no-025-2023-gabon",
+        "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
         "confidence": "medium",
-        "checked": "2026-10-16"
+        "checked": "2026-10-18"
       },
       "key_requirements": {
-        "url": "https://regulations.clym.io/law-no-025-2023-gabon",
+        "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
         "confidence": "medium",
-        "checked": "2026-10-16"
+        "checked": "2026-10-18"
       },
       "data_categories": {
-        "url": "https://regulations.clym.io/law-no-025-2023-gabon",
+        "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
         "confidence": "low",
-        "checked": "2026-10-16"
+        "checked": "2026-10-18"
       },
       "enforcement_authority": {
         "url": "https://www.dlapiperdataprotection.com/?c=GA&t=law",
@@ -75,9 +75,9 @@
         "checked": "2026-10-16"
       },
       "penalties_range": {
-        "url": "https://regulations.clym.io/law-no-025-2023-gabon",
+        "url": "https://www.clym.io/regulations/law-no-0252023-gabon",
         "confidence": "low",
-        "checked": "2026-10-16"
+        "checked": "2026-10-18"
       }
     },
     "changes": [

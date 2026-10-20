@@ -17,7 +17,7 @@
     "exemptions": "Government functions",
     "deceased_data": "",
     "research_exemption": "",
-    "genetic_data": "",
+    "genetic_data": "Genetic data not expressly named; sensitive data (art. 2) covers biometric data that identify the person, racial/ethnic origin, health and sex life",
     "website_url": "https://www.gob.pe/anpd",
     "language": "Spanish",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://lpderecho.pe/reglamento-ley-proteccion-datos-personales-decreto-supremo-016-2024-jus/",
@@ -43,9 +43,20 @@
         "url": "https://lpderecho.pe/reglamento-ley-proteccion-datos-personales-decreto-supremo-016-2024-jus/",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "genetic_data": {
+        "url": "https://www.congreso.gob.pe/Docs/DGP/DIDP/files/ley_29733.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data not expressly named; sensitive data (art. 2) covers biometric data that identify the person, racial/ethnic origin, health and sex life"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

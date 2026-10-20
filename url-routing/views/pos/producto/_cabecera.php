@@ -1,7 +1,25 @@
 <?php /* Expects $producto and $activa (0 = ficha, 1 = variantes, 2 = atributos). */ ?>
-<?php if ($producto['grupo_id'] !== null): ?>
-<nav class="meta" aria-label="Categoría"><a href="<?= esc(enlace('grupo', $producto['grupo_id'])) ?>"><?= esc($producto['grupo_nombre']) ?></a></nav>
-<?php endif; ?>
+<?php
+$migas = $producto['grupo_id'] === null ? [] : [[$producto['grupo_nombre'], enlace('grupo', $producto['grupo_id'])]];
+$migas[] = [$producto['nombre'], $activa === 0 ? null : enlace('producto', $producto['id'])];
+if ($activa !== 0) {
+    $migas[] = [[1 => 'Variantes', 2 => 'Atributos'][$activa], null];
+}
+if ($activa === 0) {
+    $hayStock = array_sum(array_map('intval', array_column($variantes ?? [], 'stock'))) > 0;
+    $estructurado = [
+        '@type' => 'Product',
+        'name' => $producto['nombre'],
+        'url' => \App\Support\HostParser::origen() . enlace('producto', $producto['id']),
+        'offers' => [
+            '@type' => 'Offer',
+            'price' => number_format($producto['precio_centavos'] / 100, 2, '.', ''),
+            'priceCurrency' => $producto['moneda'],
+            'availability' => 'https://schema.org/' . (!$producto['activo'] ? 'Discontinued' : ($hayStock ? 'InStock' : 'OutOfStock')),
+        ],
+    ] + ($producto['descripcion'] !== null ? ['description' => $producto['descripcion']] : []);
+}
+?>
 <h1><?= esc($producto['nombre']) ?></h1>
 <p class="sub"><?= esc(dinero($producto['precio_centavos'], $producto['moneda'])) ?></p>
 <?php if (!$producto['activo']): ?>

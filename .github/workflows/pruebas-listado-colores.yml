@@ -31,11 +31,57 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      # Valida los siete CSV de datos y falla si algun archivo generado (la tabla
-      # de README.md, nombres-completos.csv, colores-por-idioma.md, por-idioma/,
-      # referencias.md o exportes/) no coincide con lo que generan; construye
+      # Valida los siete CSV de datos y CHANGELOG.md, y falla si algun archivo generado
+      # (la tabla de README.md, nombres-completos.csv, colores-por-idioma.md, por-idioma/,
+      # referencias.md, ambiguedad.md, auditoria-nombres.md o exportes/, con su
+      # manifiesto) no coincide con lo que generan; construye
       # ademas una base SQLite en memoria y comprueba que los recuentos coincidan.
-      # Tarda unos 25 s porque recalcula el color CSS mas cercano de cada nombre.
+      # Tarda entre 13 y 20 s porque recalcula el color CSS mas cercano de cada nombre.
       - name: Comprobar datos y tabla
         working-directory: Listado-colores
         run: python3 generar-tabla.py --comprobar
+
+      # Pruebas del generador: cada regla de validacion rota a proposito sobre una
+      # copia de los CSV, y main() de punta a punta en una carpeta temporal con
+      # nombres-completos.csv reducido. Entre 8 y 16 s; no escribe en el proyecto.
+      - name: Pruebas del generador
+        working-directory: Listado-colores
+        run: python3 -m unittest -v pruebas
+
+  # Lo mismo en otras versiones de Python y en macOS. El README dice que el desempate del
+  # color CSS mas cercano redondea a 9 decimales para no depender de la coma flotante entre
+  # plataformas: --comprobar recalcula las 31.935 distancias y las compara con el archivo
+  # guardado, asi que un resultado distinto en macOS (arm64, otra libreria matematica) o en
+  # otra version de Python haria fallar este job. El job de arriba (Python del runner) se
+  # queda como esta. Runners fijados, como en el resto del repo.
+  listado-colores-matriz:
+    name: "Listado-colores / Python ${{ matrix.python-version }} en ${{ matrix.os }}"
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            python-version: "3.10"
+          - os: ubuntu-24.04
+            python-version: "3.14"
+          - os: macos-15
+            python-version: "3.13"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Comprobar datos y tabla
+        working-directory: Listado-colores
+        run: python3 generar-tabla.py --comprobar
+
+      - name: Pruebas del generador
+        working-directory: Listado-colores
+        run: python3 -m unittest -v pruebas

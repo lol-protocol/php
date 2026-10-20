@@ -494,10 +494,13 @@ sudo ufw status
 ```
 
 ### Fail2Ban
-Lo instala y configura `07_A-install-fail2ban-autoupdates.sh` (jail de SSH: 1 h de baneo tras 5 fallos en 10 min).
+Lo instala y configura `07_A-install-fail2ban-autoupdates.sh`: jail de SSH (1 h de baneo tras 5 fallos en 10 min),
+jails de Nginx sobre los logs de todos los dominios (`nginx-botsearch`, `nginx-http-auth`, `nginx-bad-request`) y
+`recidive` (una semana fuera a quien ya fue baneado 3 veces en un día).
 ```bash
-sudo fail2ban-client status sshd                 # ver IPs baneadas
-sudo fail2ban-client set sshd unbanip <IP>       # desbanear una IP
+sudo fail2ban-client status                      # jails activos
+sudo fail2ban-client status sshd                 # ver IPs baneadas de un jail
+sudo fail2ban-client set sshd unbanip <IP>       # desbanear una IP (repetir en recidive si también está ahí)
 ```
 Protege contra intentos de acceso no autorizados.
 

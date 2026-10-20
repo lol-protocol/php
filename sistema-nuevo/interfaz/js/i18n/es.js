@@ -122,6 +122,7 @@ export default {
   err_filtro_no_encontrado: "filtro no encontrado",
   err_accion_id_requerido: "accion_id es requerido",
   err_accion_no_encontrada: "acción no encontrada",
+  err_nota_demasiado_larga: "la nota supera 5000 caracteres",
   err_demasiados_intentos: "demasiados intentos fallidos, probá de nuevo más tarde",
   err_credenciales_invalidas: "usuario o contraseña incorrectos",
   err_user_id_requerido: "user_id es requerido",

@@ -15,11 +15,11 @@
   </g>
   <g class="links">
     <path d="M31 12L31 21L12 21L12 30" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M31 12L31 21L31 21L31 30" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 12L31 21L31 30" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M31 12L31 21L50 21L50 30" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M12 30L12 39L7 39L7 48" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M12 30L12 39L17 39L17 48" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M50 30L50 39L50 39L50 48" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M50 30L50 39L50 48" fill="none" stroke="#94A3B8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
     <g><path d="M26.6 15.67L27.62 17.03A5.72 5.72 0 0 0 36.78 10.17L35.76 8.81A5.72 5.72 0 0 0 26.6 15.67Z" fill="#29313D"/><circle cx="31" cy="12" r="5.72" fill="url(#grad_view_descendants_ink)"/></g>

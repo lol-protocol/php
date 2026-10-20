@@ -16,7 +16,9 @@
   y colores-por-idioma.md, que es el índice de esas páginas.
 
 - Se generan además exportes/colores.jsonl y exportes/gazetteer.tsv (ver exportes.py) y, a petición, una
-  base SQLite.
+  base SQLite, ambiguedad.md (las formas que designan más de un color, ver ambiguedad.py) y exportes/manifiesto.json
+  (la versión de CHANGELOG.md y las filas y sumas SHA-256 de los datos, ver manifiesto.py), y auditoria-nombres.md (los
+  nombres sospechosos de la lista completa, ver auditoria.py).
 
 Uso:
   python3 generar-tabla.py                   valida los CSV y regenera los archivos generados
@@ -32,8 +34,11 @@ from pathlib import Path
 CARPETA = Path(__file__).resolve().parent
 sys.dont_write_bytecode = True  # no dejar __pycache__ en la carpeta al importar los módulos de al lado
 sys.path.insert(0, str(CARPETA))
-import colorimetria  # noqa: E402  (módulos de esta carpeta)
+import ambiguedad  # noqa: E402  (módulos de esta carpeta)
+import auditoria  # noqa: E402
+import colorimetria  # noqa: E402
 import exportes  # noqa: E402
+import manifiesto  # noqa: E402
 
 ANOTADA = CARPETA / "colores.csv"
 COMPLETA = CARPETA / "nombres-completos.csv"
@@ -43,6 +48,9 @@ REFERENCIAS = CARPETA / "referencias.csv"
 EVIDENCIA = CARPETA / "evidencia.csv"
 CULTURALES = CARPETA / "significados-culturales.csv"
 REFS_MD = CARPETA / "referencias.md"
+AMBIGUEDAD = CARPETA / "ambiguedad.md"
+AUDITORIA = CARPETA / "auditoria-nombres.md"
+CHANGELOG = CARPETA / "CHANGELOG.md"
 DIR_EXPORTES = CARPETA / "exportes"
 README = CARPETA / "README.md"
 INDICE = CARPETA / "colores-por-idioma.md"
@@ -133,12 +141,26 @@ RE_FORMA_NATURAL = re.compile(r"[a-z]+( [a-z]+)*")
 RE_HEX = re.compile(r"#[0-9A-F]{6}")
 
 
+def filas_de(lector, ruta):
+    """Las filas de un DictReader. Sale con error si alguna tiene más o menos campos que la cabecera.
+
+    DictReader descarta en silencio los campos que sobran (por ejemplo, tras una coma sin comillas
+    dentro de un texto, que además desplaza las columnas) y rellena con None los que faltan.
+    """
+    filas = []
+    for fila in lector:
+        if None in fila or None in fila.values():
+            sys.exit(f"{ruta.name} línea {lector.line_num}: debe tener {len(lector.fieldnames)} campos, como la cabecera")
+        filas.append(fila)
+    return filas
+
+
 def leer(ruta, columnas):
     with ruta.open(encoding="utf-8", newline="") as f:
         lector = csv.DictReader(f)
         if lector.fieldnames != columnas:
             sys.exit(f"{ruta.name}: cabecera inesperada {lector.fieldnames}")
-        return list(lector)
+        return filas_de(lector, ruta)
 
 
 def leer_completa():
@@ -147,7 +169,7 @@ def leer_completa():
         lector = csv.DictReader(f)
         if lector.fieldnames not in (COLUMNAS_FUENTE_COMPLETA, COLUMNAS_COMPLETA):
             sys.exit(f"{COMPLETA.name}: cabecera inesperada {lector.fieldnames}")
-        return [{c: fila[c] for c in COLUMNAS_FUENTE_COMPLETA} for fila in lector]
+        return [{c: fila[c] for c in COLUMNAS_FUENTE_COMPLETA} for fila in filas_de(lector, COMPLETA)]
 
 
 def validar_anotada(filas, errores):
@@ -586,6 +608,28 @@ def indice_idiomas(anotada):
     return "\n".join(partes)
 
 
+def comprobar_o_escribir(base, archivos, comprobar, sobrantes=()):
+    """Compara contra el disco o escribe los archivos generados (ruta, contenido) de este script.
+
+    Con comprobar=True no escribe nada: devuelve los nombres (relativos a `base`) que no coinciden
+    con lo que hay en disco o que faltan, más los de `sobrantes` con el sufijo " (sobra)"; vacía si
+    todo está al día. Con comprobar=False escribe cada archivo (creando sus carpetas) y borra los
+    sobrantes, y devuelve [].
+    """
+    archivos = list(archivos)
+    if comprobar:
+        desfasados = [ruta.relative_to(base).as_posix() for ruta, contenido in archivos
+                      if not ruta.exists() or ruta.read_text(encoding="utf-8") != contenido]
+        desfasados += [f"{ruta.relative_to(base).as_posix()} (sobra)" for ruta in sobrantes]
+        return desfasados
+    for ruta, contenido in archivos:
+        ruta.parent.mkdir(parents=True, exist_ok=True)
+        ruta.write_text(contenido, encoding="utf-8")
+    for ruta in sobrantes:
+        ruta.unlink()
+    return []
+
+
 def main():
     anotada = leer(ANOTADA, COLUMNAS_ANOTADA)
     fallos = colorimetria.autoprueba()
@@ -608,6 +652,11 @@ def main():
     validar_culturales(culturales, anotada, ids, errores, usadas)
     for i in sorted(ids - usadas):
         errores.append(f"referencias.csv: la referencia {i!r} no la usa ningún otro CSV")
+    version = None
+    if CHANGELOG.exists():
+        version = manifiesto.leer_changelog(CHANGELOG.read_text(encoding="utf-8"), errores)
+    else:
+        errores.append("CHANGELOG.md: no existe")
     if errores:
         sobran = f"\n  ... y {len(errores) - 30} errores más" if len(errores) > 30 else ""
         sys.exit("Errores en los CSV:\n  " + "\n  ".join(errores[:30]) + sobran)
@@ -638,13 +687,25 @@ def main():
         conexion.close()
         print(f"Base SQLite en {ruta} con las tablas: {', '.join(tablas)}.")
         return 0
+    completa_texto = texto_completa(completa, cercanias)
+    jsonl, tsv = exportes.colores_jsonl(datos), exportes.gazetteer_tsv(datos)
+    # Las entradas del manifiesto, en el orden del README. nombres-completos.csv va con el texto que genera este programa.
+    entradas = [(ruta.name, filas, ruta.read_text(encoding="utf-8"), None) for ruta, filas in (
+        (ANOTADA, len(anotada)), (SIGNIFICADOS, len(traducidos)), (LEXICO, len(lexico)), (EVIDENCIA, len(evidencia_filas)),
+        (CULTURALES, len(culturales)), (REFERENCIAS, len(referencias)))]
+    entradas.append((COMPLETA.name, len(completa), completa_texto, None))
+    exportes_manifiesto = [("exportes/colores.jsonl", jsonl.count("\n"), jsonl, None),
+                           ("exportes/gazetteer.tsv", tsv.count("\n") - 1, tsv, exportes.COLUMNAS_GAZETTEER)]
     generados = {
         README: patron.sub(lambda _: f"{INICIO}\n{tabla_readme(anotada, evidencia)}\n{FIN}", texto),
         INDICE: indice_idiomas(anotada),
         REFS_MD: referencias_md(referencias),
-        COMPLETA: texto_completa(completa, cercanias),
-        DIR_EXPORTES / "colores.jsonl": exportes.colores_jsonl(datos),
-        DIR_EXPORTES / "gazetteer.tsv": exportes.gazetteer_tsv(datos),
+        AMBIGUEDAD: ambiguedad.informe(exportes.filas_gazetteer(datos), IDIOMAS),
+        AUDITORIA: auditoria.informe(completa),
+        COMPLETA: completa_texto,
+        DIR_EXPORTES / "colores.jsonl": jsonl,
+        DIR_EXPORTES / "gazetteer.tsv": tsv,
+        DIR_EXPORTES / "manifiesto.json": manifiesto.manifiesto(version, [c for c, _ in IDIOMAS], entradas, exportes_manifiesto),
     }
     for codigo, etiqueta in IDIOMAS:
         generados[DIR_IDIOMAS / f"{codigo}.md"] = pagina_idioma(
@@ -655,14 +716,14 @@ def main():
     resumen = (f"{len(anotada)} colores anotados en {len(IDIOMAS)} idiomas, "
                f"{len(traducidos)} significados traducidos, {len(lexico)} formas de léxico básico, "
                f"{len(culturales)} matices culturales, {len(referencias)} referencias y {len(completa)} nombres completos")
-    if "--comprobar" in sys.argv:
-        desfasados = [p.relative_to(CARPETA).as_posix() for p, contenido in generados.items()
-                      if not p.exists() or p.read_text(encoding="utf-8") != contenido]
-        desfasados += [f"{p.relative_to(CARPETA).as_posix()} (sobra)" for p in sobrantes]
+    comprobar = "--comprobar" in sys.argv
+    if comprobar:
         fallos_sqlite = exportes.comprobar_sqlite(datos)
         if fallos_sqlite:
             print("La base SQLite no coincide con los CSV: " + "; ".join(fallos_sqlite), file=sys.stderr)
             return 1
+    desfasados = comprobar_o_escribir(CARPETA, generados.items(), comprobar, sobrantes)
+    if comprobar:
         if desfasados:
             print(f"No coinciden con los CSV: {', '.join(desfasados)}. "
                   "Ejecuta python3 generar-tabla.py", file=sys.stderr)
@@ -670,12 +731,6 @@ def main():
         print(f"OK: {resumen}; archivos generados al día.")
         return 0
 
-    DIR_IDIOMAS.mkdir(exist_ok=True)
-    DIR_EXPORTES.mkdir(exist_ok=True)
-    for p, contenido in generados.items():
-        p.write_text(contenido, encoding="utf-8")
-    for p in sobrantes:
-        p.unlink()
     print(f"Generados README.md, nombres-completos.csv, colores-por-idioma.md y {len(IDIOMAS)} páginas en por-idioma/: {resumen}.")
     return 0
 

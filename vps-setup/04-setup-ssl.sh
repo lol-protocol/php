@@ -86,7 +86,13 @@ sudo certbot run --nginx "${CERTBOT_EXTRA[@]}" \
 # 90 dias, asi que sin esto habria que renovarlos a mano cada 3 meses
 sudo systemctl enable certbot.timer
 sudo systemctl start certbot.timer
-sudo certbot renew --dry-run   # simulacro de renovacion, sin emitir nada de verdad, solo para confirmar que funcionaria
+# Simulacro de renovacion SOLO de este certificado (sin --cert-name revisaria todos los del
+# servidor, y un problema de OTRO dominio haria fallar este script con el certificado nuevo ya
+# instalado). Y no es fatal: si falla, se avisa, pero el certificado ya esta emitido y en uso.
+if ! sudo certbot renew --dry-run --cert-name "$DOMAIN"; then
+    echo "AVISO: el simulacro de renovacion de $DOMAIN fallo. El certificado YA esta instalado;"
+    echo "revisa la renovacion con: sudo certbot renew --dry-run --cert-name $DOMAIN"
+fi
 
 sudo nginx -t
 sudo systemctl reload nginx

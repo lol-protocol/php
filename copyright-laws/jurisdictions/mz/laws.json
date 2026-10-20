@@ -12,7 +12,7 @@
     "digital_protection": "Not specified",
     "fair_use_exceptions": "Not specified",
     "registration_required": "No (registration is not required for protection but creates a presumption of ownership)",
-    "enforcement_body": "National Institute of Cultural and Creative Industries, IP (INICC, IP) (unconfirmed)",
+    "enforcement_body": "National Institute of Cultural and Creative Industries (INICC, IP) - optional registration of works under Law 9/2022",
     "treaties_signatory": "",
     "treaties_not_party": "",
     "linked_resources": "https://wipo.int/wipolex/en/legislation/details/21426",
@@ -21,7 +21,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-16",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://wipo.int/wipolex/en/legislation/details/21426",
@@ -54,12 +54,18 @@
         "checked": "2026-10-16"
       },
       "enforcement_body": {
-        "url": "https://spoor.com/mozambique-new-copyright-act/",
-        "confidence": "low",
-        "checked": "2026-10-16"
+        "url": "https://inventa.com/en/news/article/793/new-mozambican-copyright-law-comes-into-force",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "enforcement_body",
+        "from": "National Institute of Cultural and Creative Industries, IP (INICC, IP) (unconfirmed)",
+        "to": "National Institute of Cultural and Creative Industries (INICC, IP) - optional registration of works under Law 9/2022"
+      },
       {
         "date": "2026-10-16",
         "field": "row",

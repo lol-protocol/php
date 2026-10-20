@@ -22,6 +22,21 @@ service_start_enable() {
 # Raiz de la configuracion de Nginx (reemplazable en los tests).
 NGINX_DIR=${NGINX_DIR:-/etc/nginx}
 
+# Version de PHP del stack: la que trae Ubuntu 24.04. Es el UNICO lugar donde se fija: los
+# paquetes (02_B), el socket de PHP-FPM (06_A), el healthcheck (08) y la lista de servicios del
+# monitor (la escribe 09_A en /etc/vps-monitor.conf) salen de aqui.
+# shellcheck disable=SC2034  # variables para los scripts que hacen "source lib.sh"
+PHP_VERSION=${PHP_VERSION:-8.3}
+# shellcheck disable=SC2034
+PHP_FPM_SERVICE="php${PHP_VERSION}-fpm"
+
+# Tamano maximo de una peticion (subidas de archivos) en las apps (06_A/06_B/06_D). Sin esto
+# Nginx usa 1 MB y rechaza cualquier subida mayor con un "413 Request Entity Too Large".
+MAX_UPLOAD=${MAX_UPLOAD:-20M}
+# Cuanto espera Nginx a una app (Python/Tomcat) antes de cortar con 504; el default (60 s) no se
+# eligio para nada en particular. Formato Nginx: 120s, 5m...
+PROXY_TIMEOUT=${PROXY_TIMEOUT:-120s}
+
 # require_arg <valor> <uso>: sin valor, muestra el uso y sale con 2. Los scripts NO usan
 # un dominio por defecto: correr uno sin argumentos en el servidor equivocado configuraria
 # (o pediria certificados para) un dominio que no es el tuyo.
@@ -72,6 +87,11 @@ enable_nginx_site() {
         return 1
     fi
     sudo systemctl reload nginx
+    # fail2ban resuelve el glob de logs por dominio (/var/log/nginx/*/...) al arrancar: un
+    # dominio nuevo no queda vigilado hasta que recarga.
+    if systemctl is-active --quiet fail2ban 2>/dev/null; then
+        sudo fail2ban-client reload > /dev/null 2>&1 || true
+    fi
 }
 
 # Safe UFW rule (only if ufw is active)
@@ -222,6 +242,16 @@ validate_ipv6() {
     [[ "$1" =~ ^[0-9a-fA-F:]+$ ]] && [[ "$1" == *:*:* ]] && [ "${#1}" -le 39 ]
 }
 
+# Tamano para Nginx/PHP: numero + K, M o G (ej. 20M). Max. 4 cifras.
+validate_size() {
+    [[ "$1" =~ ^[1-9][0-9]{0,3}[KMG]$ ]]
+}
+
+# Tiempo para Nginx: numero + s o m (ej. 120s, 5m).
+validate_duration() {
+    [[ "$1" =~ ^[1-9][0-9]{0,3}[sm]$ ]]
+}
+
 # Nombre de app / servicio systemd: minusculas, digitos, "_" y "-".
 validate_name() {
     [[ "$1" =~ ^[a-z0-9][a-z0-9_-]{0,62}$ ]]
@@ -250,6 +280,8 @@ require_valid() {
         ipv4)         hint="una IPv4 como 203.0.113.5" ;;
         ipv6)         hint="una IPv6 como 2001:db8::5" ;;
         port)         hint="un numero entre 1024 y 65535" ;;
+        size)         hint="un numero seguido de K, M o G (ej. 20M)" ;;
+        duration)     hint="un numero seguido de s o m (ej. 120s)" ;;
         name)         hint="minusculas, digitos, '_' y '-' (max. 63), debe empezar con letra o digito" ;;
         context_path) hint="letras, digitos, '.', '_' y '-' (sin '/' ni '..'); vacio = raiz" ;;
         webhook_url)  hint="una URL http(s) sin comillas, espacios, '\$' ni '\`'" ;;

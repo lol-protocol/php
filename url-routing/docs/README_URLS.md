@@ -41,9 +41,9 @@ fallan si una ruta apunta a un controlador/método inexistente o si un
 controlador referencia una vista sin archivo, así que agregar un tipo nuevo sin
 completar las piezas rompe CI en vez de dar un 500 en producción.
 
-**Pendiente:** carrito, checkout, devoluciones y preferencias muestran un
-aviso de "todavía no disponible" — son flujos de escritura sin implementar
-todavía. El proyecto no tiene cuentas de usuario (es un addon de un solo
+**Pendiente:** devoluciones y preferencias muestran un aviso de "todavía no
+disponible". El carrito y la compra (`/c/`, `/p/`) funcionan: la compra crea la
+orden, pero no cobra en línea (queda pendiente de pago). El proyecto no tiene cuentas de usuario (es un addon de un solo
 operador, no un producto multiusuario): la página de cuenta (`0`) actúa sobre
 una cuenta fija en vez de una sesión, y lo privado (colecciones con
 `publica = false`, cuenta, edición y pedidos) exige ser el propietario, que se

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_filter_ink" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_filter_ink_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8A8A8A"/>
       <stop offset="1" stop-color="#535353"/>
     </linearGradient>
@@ -10,8 +10,8 @@
     <ellipse cx="32.72" cy="52.32" rx="20.9" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M54.64 17.52A4 4 0 0 1 55.44 19.92A4 4 0 0 1 51.44 23.92L15.44 23.92A4 4 0 0 1 12.24 22.32L10.98 20.64A4 4 0 0 1 10.18 18.24A4 4 0 0 1 14.18 14.24L50.18 14.24A4 4 0 0 1 53.38 15.84Z" fill="#303030"/><rect x="10" y="14" width="44" height="8" rx="4" fill="url(#grad_action_filter_ink)"/></g>
-    <g><path d="M46.64 30.52A4 4 0 0 1 47.44 32.92A4 4 0 0 1 43.44 36.92L23.44 36.92A4 4 0 0 1 20.24 35.32L18.98 33.64A4 4 0 0 1 18.18 31.24A4 4 0 0 1 22.18 27.24L42.18 27.24A4 4 0 0 1 45.38 28.84Z" fill="#303030"/><rect x="18" y="27" width="28" height="8" rx="4" fill="url(#grad_action_filter_ink)"/></g>
-    <g><path d="M39.64 43.52A4 4 0 0 1 40.44 45.92A4 4 0 0 1 36.44 49.92L30.44 49.92A4 4 0 0 1 27.24 48.32L25.98 46.64A4 4 0 0 1 25.18 44.24A4 4 0 0 1 29.18 40.24L35.18 40.24A4 4 0 0 1 38.38 41.84Z" fill="#303030"/><rect x="25" y="40" width="14" height="8" rx="4" fill="url(#grad_action_filter_ink)"/></g>
+    <g><path d="M54.64 17.52A4 4 0 0 1 55.44 19.92A4 4 0 0 1 51.44 23.92L15.44 23.92A4 4 0 0 1 12.24 22.32L10.98 20.64A4 4 0 0 1 10.18 18.24A4 4 0 0 1 14.18 14.24L50.18 14.24A4 4 0 0 1 53.38 15.84Z" fill="#303030"/><rect x="10" y="14" width="44" height="8" rx="4" fill="url(#grad_action_filter_ink_g)"/></g>
+    <g><path d="M46.64 30.52A4 4 0 0 1 47.44 32.92A4 4 0 0 1 43.44 36.92L23.44 36.92A4 4 0 0 1 20.24 35.32L18.98 33.64A4 4 0 0 1 18.18 31.24A4 4 0 0 1 22.18 27.24L42.18 27.24A4 4 0 0 1 45.38 28.84Z" fill="#303030"/><rect x="18" y="27" width="28" height="8" rx="4" fill="url(#grad_action_filter_ink_g)"/></g>
+    <g><path d="M39.64 43.52A4 4 0 0 1 40.44 45.92A4 4 0 0 1 36.44 49.92L30.44 49.92A4 4 0 0 1 27.24 48.32L25.98 46.64A4 4 0 0 1 25.18 44.24A4 4 0 0 1 29.18 40.24L35.18 40.24A4 4 0 0 1 38.38 41.84Z" fill="#303030"/><rect x="25" y="40" width="14" height="8" rx="4" fill="url(#grad_action_filter_ink_g)"/></g>
   </g>
 </svg>

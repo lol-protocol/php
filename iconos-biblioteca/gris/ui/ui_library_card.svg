@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_ui_library_card_sky" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_ui_library_card_sky_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#969696"/>
       <stop offset="1" stop-color="#656565"/>
     </linearGradient>
@@ -10,7 +10,7 @@
     <ellipse cx="33.02" cy="53.12" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M57.14 20.52A4.5 4.5 0 0 1 58.04 23.22L58.04 46.22A4.5 4.5 0 0 1 53.54 50.72L14.54 50.72A4.5 4.5 0 0 1 10.94 48.92L9.08 46.44A4.5 4.5 0 0 1 8.18 43.74L8.18 20.74A4.5 4.5 0 0 1 12.68 16.24L51.68 16.24A4.5 4.5 0 0 1 55.28 18.04Z" fill="#3B3B3B"/><rect x="8" y="16" width="48" height="32" rx="4.5" fill="url(#grad_ui_library_card_sky)"/></g>
+    <g><path d="M57.14 20.52A4.5 4.5 0 0 1 58.04 23.22L58.04 46.22A4.5 4.5 0 0 1 53.54 50.72L14.54 50.72A4.5 4.5 0 0 1 10.94 48.92L9.08 46.44A4.5 4.5 0 0 1 8.18 43.74L8.18 20.74A4.5 4.5 0 0 1 12.68 16.24L51.68 16.24A4.5 4.5 0 0 1 55.28 18.04Z" fill="#3B3B3B"/><rect x="8" y="16" width="48" height="32" rx="4.5" fill="url(#grad_ui_library_card_sky_g)"/></g>
   </g>
   <g class="marks">
     <path d="M14.5 32a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0 -13 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>

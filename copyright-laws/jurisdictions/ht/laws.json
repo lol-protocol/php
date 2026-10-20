@@ -43,6 +43,11 @@
         "confidence": "medium",
         "checked": "2026-10-16"
       },
+      "fair_use_exceptions": {
+        "url": "https://www.memoireonline.com/12/13/8158/m_Droits-d-auteur-en-Hati--l-heure-des-nouvelles-technologies-d-information-et-de-communication17.html",
+        "confidence": "medium",
+        "checked": "2026-10-17"
+      },
       "registration_required": {
         "url": "https://gpg-pdf.chambers.com/Trade-Marks-and-Copyright-2026/166/",
         "confidence": "medium",
@@ -52,11 +57,6 @@
         "url": "https://www.wipo.int/wipolex/en/details.jsp?id=5091",
         "confidence": "high",
         "checked": "2026-10-16"
-      },
-      "fair_use_exceptions": {
-        "url": "https://www.memoireonline.com/12/13/8158/m_Droits-d-auteur-en-Hati--l-heure-des-nouvelles-technologies-d-information-et-de-communication17.html",
-        "confidence": "medium",
-        "checked": "2026-10-17"
       }
     },
     "changes": [

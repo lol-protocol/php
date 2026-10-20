@@ -109,8 +109,11 @@ final class Privacidad
         self::alias($q);
 
         return "COALESCE({$q}.viva, (("
-            . "NOT EXISTS (SELECT 1 FROM suceso_participantes {$q}_dp JOIN sucesos {$q}_ds ON {$q}_ds.id = {$q}_dp.suceso_id"
-            . " WHERE {$q}_dp.persona_id = {$q}.id AND {$q}_dp.rol = '" . self::ROL_PRINCIPAL . "' AND {$q}_ds.tipo = 'defuncion')"
+            . $this->existePersona($q, 'dp', 'suceso_participantes',
+                join: " JOIN sucesos {$q}_ds ON {$q}_ds.id = {$q}_dp.suceso_id",
+                extra: "{$q}_dp.rol = '" . self::ROL_PRINCIPAL . "' AND {$q}_ds.tipo = 'defuncion'",
+                negado: true,
+            )
             . " AND (SELECT MIN({$q}_ns.fecha) FROM suceso_participantes {$q}_np JOIN sucesos {$q}_ns ON {$q}_ns.id = {$q}_np.suceso_id"
             . " WHERE {$q}_np.persona_id = {$q}.id AND {$q}_ns.tipo = 'nacimiento') > '{$this->umbral}'"
             . ') IS TRUE))';
@@ -124,9 +127,12 @@ final class Privacidad
     {
         self::alias($q);
 
-        return "(EXISTS (SELECT 1 FROM coleccion_personas {$q}_mp WHERE {$q}_mp.persona_id = {$q}.id)"
-            . " AND NOT EXISTS (SELECT 1 FROM coleccion_personas {$q}_pp JOIN colecciones {$q}_pc ON {$q}_pc.id = {$q}_pp.coleccion_id"
-            . " WHERE {$q}_pp.persona_id = {$q}.id AND {$q}_pc.publica))";
+        return '(' . $this->existePersona($q, 'mp', 'coleccion_personas')
+            . ' AND ' . $this->existePersona($q, 'pp', 'coleccion_personas',
+                join: " JOIN colecciones {$q}_pc ON {$q}_pc.id = {$q}_pp.coleccion_id",
+                extra: "{$q}_pc.publica",
+                negado: true,
+            ) . ')';
     }
 
     /** SQL boolean: the persona aliased $q is hidden from a visitor, whether she may be alive or is only private. */
@@ -265,6 +271,19 @@ final class Privacidad
         return $this->ocultaVivas
             ? 'CASE WHEN ' . $this->sqlSucesoVisible($q) . " THEN {$expresion} END"
             : $expresion;
+    }
+
+    /**
+     * `[NOT ]EXISTS (SELECT 1 FROM $tabla {$q}_$sufijo[$join] WHERE {$q}_$sufijo.persona_id = {$q}.id[ AND $extra])`
+     * — the shape sqlViva()'s own-death check and both of sqlPrivada()'s checks repeat. $join and
+     * $extra are written as given, already built from constants here, never from a request.
+     */
+    private function existePersona(string $q, string $sufijo, string $tabla, string $join = '', string $extra = '', bool $negado = false): string
+    {
+        $alias = "{$q}_{$sufijo}";
+        $condicion = "{$alias}.persona_id = {$q}.id" . ($extra === '' ? '' : " AND {$extra}");
+
+        return ($negado ? 'NOT ' : '') . "EXISTS (SELECT 1 FROM {$tabla} {$alias}{$join} WHERE {$condicion})";
     }
 
     private static function alias(string $alias): void

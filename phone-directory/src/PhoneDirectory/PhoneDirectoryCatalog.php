@@ -236,6 +236,32 @@ class PhoneDirectoryCatalog
         return $this->directories[$directoryId] ?? null;
     }
 
+    /**
+     * The year a directory was published: the catalog's, or the one a directory id outside the
+     * catalog embeds, following the catalog's own "<country>_<year>_<place>" convention (e.g.
+     * "custom_1990_springfield"). Null when neither says.
+     *
+     * Not \b: an underscore is a "word" character too, so "custom_1990_x" has no word boundary
+     * around the digits at all; look for a 4-digit run not itself touching other digits instead.
+     */
+    public function yearOfDirectory(?string $directoryId): ?int
+    {
+        if ($directoryId === null || $directoryId === '') {
+            return null;
+        }
+
+        $catalogYear = $this->get($directoryId)['year'] ?? null;
+        if ($catalogYear !== null) {
+            return $catalogYear;
+        }
+
+        if (preg_match('/(?<!\d)(1[89]\d{2}|20\d{2})(?!\d)/', $directoryId, $m)) {
+            return (int) $m[1];
+        }
+
+        return null;
+    }
+
     /** @return array<string, Directory> */
     public function getByCountry(string $countryCode): array
     {

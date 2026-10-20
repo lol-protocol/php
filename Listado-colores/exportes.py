@@ -1,6 +1,6 @@
 """Exportes de Listado-colores para tuberías de PLN: JSONL, TSV y una base SQLite.
 
-Lo usa generar-tabla.py con los datos ya leídos y validados (un diccionario `d`, ver preparar() en
+Lo usa generar-tabla.py con los datos ya leídos y validados (un diccionario `d`, ver `datos` en main() de
 generar-tabla.py). Las funciones de texto (colores_jsonl, gazetteer_tsv) son deterministas, así que
 --comprobar puede compararlas byte a byte con los archivos de exportes/. La base SQLite no se guarda
 en el repositorio: se construye con `python3 generar-tabla.py --sqlite ruta.db`, y --comprobar la
@@ -10,11 +10,16 @@ import csv
 import io
 import json
 import sqlite3
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from normalizacion import normalizar  # noqa: E402  (módulo de esta carpeta)
 
 # Orden de las fuentes en el gazetteer y significado de cada una.
 FUENTES = ["css", "lexico"]
-COLUMNAS_GAZETTEER = ["forma", "idioma", "fuente", "tipo", "concepto", "hex", "rasgos"]
+# forma_normalizada va al final: quien lea las columnas por posición sigue leyendo las mismas.
+COLUMNAS_GAZETTEER = ["forma", "idioma", "fuente", "tipo", "concepto", "hex", "rasgos", "forma_normalizada"]
 
 
 def _json(objeto):
@@ -87,7 +92,7 @@ def filas_gazetteer(d):
     orden_fuente = {fuente: n for n, fuente in enumerate(FUENTES)}
     # Se descartan las filas idénticas (por ejemplo, un nombre CSS que coincide con la forma natural).
     unicas = sorted(set(filas), key=lambda r: (r[0].casefold(), r[0], orden_idioma[r[1]], orden_fuente[r[2]], r[3], r[4], r[6]))
-    return unicas
+    return [fila + (normalizar(fila[0], fila[1]),) for fila in unicas]
 
 
 def gazetteer_tsv(d):
@@ -100,7 +105,7 @@ def gazetteer_tsv(d):
 
 ESQUEMA = """
 CREATE TABLE colores (id TEXT PRIMARY KEY, hex TEXT NOT NULL, r INTEGER, g INTEGER, b INTEGER, forma_natural_en TEXT);
-CREATE TABLE nombres (color_id TEXT, idioma TEXT, nombre TEXT, PRIMARY KEY (color_id, idioma));
+CREATE TABLE nombres (color_id TEXT, idioma TEXT, nombre TEXT, nombre_normalizado TEXT, PRIMARY KEY (color_id, idioma));
 CREATE TABLE significados (color_id TEXT, idioma TEXT, psicologico TEXT, mistico TEXT, PRIMARY KEY (color_id, idioma));
 CREATE TABLE alias (color_id TEXT, alias_id TEXT, tipo TEXT, PRIMARY KEY (color_id, alias_id));
 CREATE TABLE evidencia (color_id TEXT PRIMARY KEY, base_psicologico TEXT, referencias_psicologico TEXT,
@@ -108,11 +113,13 @@ CREATE TABLE evidencia (color_id TEXT PRIMARY KEY, base_psicologico TEXT, refere
 CREATE TABLE culturales (color_id TEXT, ambito TEXT, matiz TEXT, solidez TEXT, referencias TEXT);
 CREATE TABLE referencias (id TEXT PRIMARY KEY, tipo TEXT, cita TEXT, url TEXT, verificacion TEXT);
 CREATE TABLE conceptos (concepto TEXT PRIMARY KEY, hex TEXT NOT NULL);
-CREATE TABLE lexico (concepto TEXT, idioma TEXT, forma TEXT, tipo TEXT, rasgos TEXT);
+CREATE TABLE lexico (concepto TEXT, idioma TEXT, forma TEXT, tipo TEXT, rasgos TEXT, forma_normalizada TEXT);
 CREATE TABLE nombres_completos (nombre TEXT PRIMARY KEY, hex TEXT NOT NULL, curada INTEGER,
                                 css_cercano TEXT, delta_e REAL, cercania TEXT);
 CREATE INDEX nombres_por_nombre ON nombres (nombre);
+CREATE INDEX nombres_por_normalizado ON nombres (nombre_normalizado, idioma);
 CREATE INDEX lexico_por_forma ON lexico (forma, idioma);
+CREATE INDEX lexico_por_normalizada ON lexico (forma_normalizada, idioma);
 CREATE INDEX completos_por_hex ON nombres_completos (hex);
 """
 
@@ -130,13 +137,14 @@ def construir_sqlite(ruta, d):
         r, g, b = _rgb(f["hex"])
         colores.append((n, f["hex"], r, g, b, f["forma_natural_en"]))
         for c in codigos:
-            nombres.append((n, c, f["forma_natural_en"] if c == "en" else f[f"nombre_{c}"]))
+            nombre = f["forma_natural_en"] if c == "en" else f[f"nombre_{c}"]
+            nombres.append((n, c, nombre, normalizar(nombre, c)))
             psico, mistico = ((f["significado_psicologico"], f["significado_mistico"]) if c == "es"
                               else d["significados"][(c, n)])
             significados.append((n, c, psico, mistico))
         alias += [(n, otro, tipo) for otro, tipo in d["alias"][n]]
     conexion.executemany("INSERT INTO colores VALUES (?,?,?,?,?,?)", colores)
-    conexion.executemany("INSERT INTO nombres VALUES (?,?,?)", nombres)
+    conexion.executemany("INSERT INTO nombres VALUES (?,?,?,?)", nombres)
     conexion.executemany("INSERT INTO significados VALUES (?,?,?,?)", significados)
     conexion.executemany("INSERT INTO alias VALUES (?,?,?)", alias)
     conexion.executemany("INSERT INTO evidencia VALUES (?,?,?,?,?)", [
@@ -147,8 +155,9 @@ def construir_sqlite(ruta, d):
     conexion.executemany("INSERT INTO referencias VALUES (?,?,?,?,?)", [
         (f["id"], f["tipo"], f["cita"], f["url"], f["verificacion"]) for f in d["referencias"]])
     conexion.executemany("INSERT INTO conceptos VALUES (?,?)", sorted(d["hex_concepto"].items()))
-    conexion.executemany("INSERT INTO lexico VALUES (?,?,?,?,?)", [
-        (f["concepto"], f["idioma"], f["forma"], f["tipo"], f["rasgos"]) for f in d["lexico"]])
+    conexion.executemany("INSERT INTO lexico VALUES (?,?,?,?,?,?)", [
+        (f["concepto"], f["idioma"], f["forma"], f["tipo"], f["rasgos"], normalizar(f["forma"], f["idioma"]))
+        for f in d["lexico"]])
     conexion.executemany("INSERT INTO nombres_completos VALUES (?,?,?,?,?,?)", [
         (f["nombre_ingles"], f["hex"], 1 if f["curada"] == "x" else 0, css, float(f"{distancia:.2f}"), cercania)
         for f, (css, distancia, cercania) in zip(d["completa"], d["cercanias"])])

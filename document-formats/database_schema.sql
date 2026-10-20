@@ -102,6 +102,31 @@ CREATE TABLE paper_types (
 );
 
 -- =====================================================================
+-- PRODUCT SPECIFICATIONS TABLE
+-- =====================================================================
+-- Weight, DPI and finish for printed products ("Brochure", "Receipt",
+-- "Sticker") that are not sheet sizes, so they cannot hang off
+-- document_formats the way technical_specifications does. paper_type_id
+-- points at the paper stock the product is normally printed on, when one
+-- is clear; finish_type uses the finish_types vocabulary, with "A/B"
+-- meaning either.
+CREATE TABLE product_specifications (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_name VARCHAR(100) NOT NULL UNIQUE,
+    typical_size_mm VARCHAR(50),
+    weight_gsm_min INT,
+    weight_gsm_max INT,
+    recommended_dpi INT,
+    finish_type VARCHAR(100),
+    uses VARCHAR(200),
+    notes TEXT,
+    paper_type_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (paper_type_id) REFERENCES paper_types(paper_type_id) ON DELETE SET NULL,
+    INDEX idx_paper_type (paper_type_id)
+);
+
+-- =====================================================================
 -- FORMAT CONVERSIONS TABLE
 -- =====================================================================
 CREATE TABLE format_conversions (

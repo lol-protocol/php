@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\Manager\PhoneDirectoryManager;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
+use PhoneDirectory\Privacy;
 
 class PhoneDirectoryManagerTest extends TestCase
 {
@@ -13,7 +14,7 @@ class PhoneDirectoryManagerTest extends TestCase
 
     protected function setUp(): void
     {
-        $db = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $db = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $db->connect();
         $db->createTable();
         $this->manager = new PhoneDirectoryManager(database: $db);
@@ -196,7 +197,7 @@ class PhoneDirectoryManagerTest extends TestCase
         // A manager built on a brand-new, uncreated database: only processFile() used to create the
         // table, so any other method (addEntry included) failed with "no such table" until it was
         // called first, even though nothing in the public API says that's required.
-        $manager = new PhoneDirectoryManager(database: new PhoneDirectoryPDODatabase('sqlite::memory:'));
+        $manager = new PhoneDirectoryManager(database: new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner()));
 
         $id = $manager->addEntry(new PhoneDirectoryEntry('SMITH, John', 'US', '123 Main Street'));
 
@@ -206,7 +207,7 @@ class PhoneDirectoryManagerTest extends TestCase
 
     public function testFindByNameWorksWithoutCallingProcessFileFirst(): void
     {
-        $manager = new PhoneDirectoryManager(database: new PhoneDirectoryPDODatabase('sqlite::memory:'));
+        $manager = new PhoneDirectoryManager(database: new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner()));
 
         $this->assertSame([], $manager->findByName('Smith'));
     }

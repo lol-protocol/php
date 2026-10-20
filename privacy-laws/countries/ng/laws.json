@@ -15,9 +15,9 @@
     "enforcement_authority": "Nigeria Data Protection Commission",
     "penalties_range": "Up to the higher of NGN 10M or 2% of annual gross revenue (major importance); NGN 2M or 2% for others",
     "exemptions": "Criminal investigation/prosecution, national public health emergencies, national security by competent authorities",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not settled: 'data subject' (s. 65) does not say whether deceased persons are covered; commentators note the gap (cf. CCB v Nwankwo 2018)",
+    "research_exemption": "Research/archiving not listed among s. 3 exemptions in commentary; partial public-interest exemption for journalism, education, artistic and literary purposes (s. 3); Commission may add exemptions by regulation",
+    "genetic_data": "Sensitive personal data includes genetic and biometric data (s. 65); higher standard of care for processing (s. 30)",
     "website_url": "https://fpf.org/blog/nigerias-new-data-protection-act-explained/",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://kpmg.com/ng/en/insights/2023/06/president-signs-the-nigerian-data-protection-bill--2023-into-law.html",
@@ -83,9 +83,42 @@
         "url": "https://www.afriwise.com/blog/www-afriwise-com-blog-the-nigeria-data-protection-act-general-application-and-implementation-directive-2025-becomes-effective-today",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://www.itedgenews.africa/transitioning-from-ndpr-to-ndpa-some-good-bad-and-ugly-provisions-of-the-newly-enacted-nigeria-data-protection-act-2023",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://mondaq.com/nigeria/privacy-protection/1508626/an-overview-of-the-exemptions-and-derogations-on-data-privacy-rights-in-nigeria",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.mondaq.com/nigeria/data-protection/1366934/the-nigerias-data-protection-act-2023-a-look-at-key-provisions",
+        "confidence": "high",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data includes genetic and biometric data (s. 65); higher standard of care for processing (s. 30)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Research/archiving not listed among s. 3 exemptions in commentary; partial public-interest exemption for journalism, education, artistic and literary purposes (s. 3); Commission may add exemptions by regulation"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not settled: 'data subject' (s. 65) does not say whether deceased persons are covered; commentators note the gap (cf. CCB v Nwankwo 2018)"
+      },
       {
         "date": "2026-10-14",
         "field": "notes",

@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 use PhoneDirectory\RecordLinker;
+use PhoneDirectory\Privacy;
 
 class RecordLinkerTest extends TestCase
 {
@@ -25,7 +26,7 @@ class RecordLinkerTest extends TestCase
         $later = $this->entry('SMITH, John', '40 Elm Road', 'us_1950_comprehensive');
         $earlier = $this->entry('SMITH, John', '12 Oak Street', 'us_1915_national');
 
-        $links = (new RecordLinker())->link([$later, $earlier]);
+        $links = (new RecordLinker(privacy: Privacy::forOwner()))->link([$later, $earlier]);
 
         $this->assertCount(1, $links);
         $this->assertSame($earlier, $links[0]->earlier);
@@ -36,7 +37,7 @@ class RecordLinkerTest extends TestCase
 
     public function testInitialAndAbbreviatedSameAddress(): void
     {
-        $links = (new RecordLinker())->link([
+        $links = (new RecordLinker(privacy: Privacy::forOwner()))->link([
             $this->entry('SMITH, J.', '12 Oak St.', 'us_1915_national'),
             $this->entry('SMITH, John', '12 Oak Street', 'us_1950_comprehensive'),
         ]);
@@ -48,7 +49,7 @@ class RecordLinkerTest extends TestCase
 
     public function testSimilarSurnameWithSamePhone(): void
     {
-        $links = (new RecordLinker())->link([
+        $links = (new RecordLinker(privacy: Privacy::forOwner()))->link([
             $this->entry('SMYTH, John', '12 Oak Street', 'us_1915_national', '555-123-4567'),
             $this->entry('SMITH, John', '8 Pine Road', 'us_1950_comprehensive', '(555) 123 4567'),
         ]);
@@ -60,7 +61,7 @@ class RecordLinkerTest extends TestCase
 
     public function testDifferentGivenNamesAreNotLinked(): void
     {
-        $links = (new RecordLinker())->link([
+        $links = (new RecordLinker(privacy: Privacy::forOwner()))->link([
             $this->entry('SMITH, John', '12 Oak Street', 'us_1915_national'),
             $this->entry('SMITH, Robert', '12 Oak Street', 'us_1950_comprehensive'),
         ]);
@@ -70,7 +71,7 @@ class RecordLinkerTest extends TestCase
 
     public function testSameDirectoryOrCountryMismatchIsNotLinked(): void
     {
-        $links = (new RecordLinker())->link([
+        $links = (new RecordLinker(privacy: Privacy::forOwner()))->link([
             $this->entry('SMITH, John', '12 Oak Street', 'us_1915_national'),
             $this->entry('SMITH, John', '40 Elm Road', 'us_1915_national'),
             $this->entry('SMITH, John', '12 Oak Street', 'uk_1930_comprehensive', null, 'GB'),
@@ -86,13 +87,13 @@ class RecordLinkerTest extends TestCase
             $this->entry('SMITH, John', '8 Pine Road', 'us_1950_comprehensive'),
         ];
 
-        $this->assertSame([], (new RecordLinker())->link($entries));
-        $this->assertCount(1, (new RecordLinker(null, 0.3))->link($entries));
+        $this->assertSame([], (new RecordLinker(privacy: Privacy::forOwner()))->link($entries));
+        $this->assertCount(1, (new RecordLinker(null, 0.3, Privacy::forOwner()))->link($entries));
     }
 
     public function testLinksAreSortedByScore(): void
     {
-        $links = (new RecordLinker())->link([
+        $links = (new RecordLinker(privacy: Privacy::forOwner()))->link([
             $this->entry('SMITH, John', '12 Oak Street', 'us_1878_ny'),
             $this->entry('SMITH, John', '40 Elm Road', 'us_1915_national'),
             $this->entry('SMITH, John', '12 Oak Street', 'us_1950_comprehensive'),
@@ -106,7 +107,7 @@ class RecordLinkerTest extends TestCase
 
     public function testLinksEntriesLoadedPerDirectoryFromDatabase(): void
     {
-        $database = new PhoneDirectoryPDODatabase();
+        $database = new PhoneDirectoryPDODatabase(privacy: Privacy::forOwner());
         $database->createTable();
         $database->insert($this->entry('GARCÍA LÓPEZ, José', 'Calle Mayor 12', 'es_1930_madrid', null, 'ES'));
         $database->insert($this->entry('GARCIA LOPEZ, Jose', 'C. Mayor 12', 'es_1975_national', null, 'ES'));
@@ -116,7 +117,7 @@ class RecordLinkerTest extends TestCase
             $database->findBySourceDirectory('es_1930_madrid'),
             $database->findBySourceDirectory('es_1975_national')
         );
-        $links = (new RecordLinker())->link($entries);
+        $links = (new RecordLinker(privacy: Privacy::forOwner()))->link($entries);
 
         $this->assertCount(1, $links);
         $this->assertSame(0.85, $links[0]->score);
@@ -135,7 +136,7 @@ class RecordLinkerTest extends TestCase
             $this->entry('SMITH, Robert', '8 Pine Road', 'us_1878_ny'),
         ];
 
-        $links = (new RecordLinker())->link($entries);
+        $links = (new RecordLinker(privacy: Privacy::forOwner()))->link($entries);
         $pairs = array_map(
             fn($l) => $l->earlier->getFirstName() . '-' . $l->later->getFirstName(),
             $links
@@ -148,7 +149,7 @@ class RecordLinkerTest extends TestCase
 
     public function testUncatalogedDirectoriesOrderByYearEmbeddedInTheId(): void
     {
-        $links = (new RecordLinker())->link([
+        $links = (new RecordLinker(privacy: Privacy::forOwner()))->link([
             $this->entry('SMITH, John', '12 Oak Street', 'custom_2020_springfield'),
             $this->entry('SMITH, John', '12 Oak Street', 'custom_1990_springfield'),
         ]);
@@ -160,7 +161,7 @@ class RecordLinkerTest extends TestCase
 
     public function testUncatalogedDirectoriesWithNoYearFallBackToInputOrder(): void
     {
-        $links = (new RecordLinker())->link([
+        $links = (new RecordLinker(privacy: Privacy::forOwner()))->link([
             $this->entry('SMITH, John', '12 Oak Street', 'my_directory_a'),
             $this->entry('SMITH, John', '12 Oak Street', 'my_directory_b'),
         ]);
@@ -168,5 +169,59 @@ class RecordLinkerTest extends TestCase
         $this->assertCount(1, $links);
         $this->assertEquals('my_directory_a', $links[0]->earlier->getSourceDirectoryId());
         $this->assertEquals('my_directory_b', $links[0]->later->getSourceDirectoryId());
+    }
+
+    // --- who may be linked --------------------------------------------------------------------
+
+    /** The link joins two editions into a profile neither had: a recent edition is held to the entries' rule. */
+    public function testAVisitorGetsNoLinkThatInvolvesAnEntryThatMayBeAlive(): void
+    {
+        $entries = [
+            $this->entry('SMITH, John', '12 Oak Street', 'us_1915_national'),
+            $this->entry('SMITH, John', '40 Elm Road', 'us_1950_comprehensive'),
+        ];
+        $visitors = Privacy::forVisitors(new \DateTimeImmutable('2026-10-20'));
+
+        $this->assertSame([], (new RecordLinker(privacy: $visitors))->link($entries));
+        $this->assertCount(1, (new RecordLinker(privacy: Privacy::forOwner()))->link($entries));
+    }
+
+    public function testAVisitorStillGetsLinksBetweenOldDirectories(): void
+    {
+        $links = (new RecordLinker(privacy: Privacy::forVisitors(new \DateTimeImmutable('2026-10-20'))))->link([
+            $this->entry('SMITH, John', '12 Oak Street', 'us_1878_ny'),
+            $this->entry('SMITH, John', '12 Oak Street', 'us_1915_national'),
+        ]);
+
+        $this->assertCount(1, $links);
+    }
+
+    public function testNotSayingWhoIsAskingMeansTheVisitor(): void
+    {
+        $recent = [
+            $this->entry('SMITH, John', '12 Oak Street', 'us_1915_national'),
+            $this->entry('SMITH, John', '40 Elm Road', 'us_1960_comprehensive'),
+        ];
+        $old = [
+            $this->entry('SMITH, John', '12 Oak Street', 'us_1878_ny'),
+            $this->entry('SMITH, John', '12 Oak Street', 'us_1915_national'),
+        ];
+
+        $this->assertSame([], (new RecordLinker())->link($recent));
+        $this->assertCount(1, (new RecordLinker())->link($old));
+    }
+
+    /** One that may be alive is dropped before blocking, so it cannot even tie two others together. */
+    public function testAnEntryThatMayBeAliveTakesNoPartInAnyLink(): void
+    {
+        $old1 = $this->entry('SMITH, John', '12 Oak Street', 'us_1878_ny');
+        $old2 = $this->entry('SMITH, John', '12 Oak Street', 'us_1915_national');
+        $recent = $this->entry('SMITH, John', '12 Oak Street', 'us_1960_comprehensive');
+
+        $links = (new RecordLinker(privacy: Privacy::forVisitors(new \DateTimeImmutable('2026-10-20'))))->link([$old1, $recent, $old2]);
+
+        $this->assertCount(1, $links);
+        $this->assertNotSame($recent, $links[0]->earlier);
+        $this->assertNotSame($recent, $links[0]->later);
     }
 }

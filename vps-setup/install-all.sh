@@ -77,6 +77,16 @@ if [ "$DRY_RUN" -eq 0 ] && [ "$ASSUME_YES" -eq 0 ]; then
 fi
 
 if [ "$DRY_RUN" -eq 0 ]; then
+    # Una sola instalacion a la vez: dos corridas simultaneas (dos sesiones SSH, o remote-run
+    # lanzado dos veces) se pisarian con apt, el estado y las configuraciones. El candado (flock)
+    # se libera solo al terminar el proceso, aunque falle o se corte la sesion.
+    mkdir -p "$(dirname "$STATE_FILE")"
+    exec 9> "$STATE_FILE.lock"
+    if ! flock -n 9; then
+        echo "ERROR: ya hay otra corrida de install-all.sh en curso (candado: $STATE_FILE.lock)."
+        echo "Espera a que termine; si no hay ninguna, el candado se libera solo."
+        exit 1
+    fi
     # Todo lo que sigue tambien queda en un log: si la sesion SSH se corta o el error se
     # pierde entre cientos de lineas de apt, se puede revisar despues.
     LOG_FILE="$(dirname "$STATE_FILE")/install-all-$(date +%Y%m%d-%H%M%S).log"
