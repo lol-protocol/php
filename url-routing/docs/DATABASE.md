@@ -92,6 +92,13 @@ php bin/migrate.php pos --seed         # aplica y carga datos de demostración (
   tope de generaciones que además protege de ciclos en datos mal cargados.
 - **Los lugares se identifican por su ruta de códigos** (`mx/jal/gdl`), que es
   exactamente la URL; consultar un lugar incluye todo lo que está debajo.
+- **Los listados `/b/…` se leen en el orden de un índice.** Cada página muestra
+  50 filas en un orden fijo (personas por apellidos y nombres; sucesos y
+  registros por fecha). `004_indices_de_listados.sql` crea un índice en
+  exactamente ese orden, para que la base lea en orden y se detenga en las
+  primeras 50 filas que cumplen el filtro de privacidad, en vez de ordenar la
+  tabla entera. `personas_apellidos_idx` (de `001`) queda como prefijo del
+  nuevo y podría quitarse; no se quita para que la migración solo agregue.
 - **El dinero se guarda en centavos enteros** (`INTEGER`), nunca en coma flotante.
 - **Las líneas de una orden copian nombre y precio** del producto al momento de
   la compra: la orden debe seguir mostrando lo que se pagó aunque el producto
@@ -121,4 +128,10 @@ TEST_PG_USER=routing_test TEST_PG_PASSWORD=routing_test \
   Para búsqueda seria en genealogía conviene `pg_trgm` o búsqueda de texto
   completo en PostgreSQL, en una migración específica de ese motor.
 - `LIKE '%texto%'` no usa índices; con millones de personas hará falta un
-  índice de trigramas (PostgreSQL) o una tabla de búsqueda aparte.
+  índice de trigramas (PostgreSQL) o una tabla de búsqueda aparte. Con texto, la
+  búsqueda recorre en orden hasta juntar 50 coincidencias: una palabra frecuente
+  termina enseguida, una rara las busca en todo el catálogo.
+- La búsqueda de sucesos en PostgreSQL no siempre usa el índice de
+  `sucesos_fecha_idx`: el plan depende del tamaño de las tablas y de sus
+  estadísticas (con 20.000 personas lee la tabla entera; con 80.000 lo usa para
+  el visitante). Las listas de un lugar no cambiaron.
