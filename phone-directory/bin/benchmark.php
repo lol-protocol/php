@@ -11,6 +11,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use PhoneDirectory\Parser\MultiLanguagePhoneDirectoryParser;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
+use PhoneDirectory\Privacy;
 
 $count = max(1, (int) ($argv[1] ?? 100000));
 $workdir = sys_get_temp_dir() . '/phonedir_benchmark_' . getmypid();
@@ -47,7 +48,8 @@ try {
     printf("%-28s %8.0f entries/s  (%.2f s, %.1f MB/s)\n", 'parse', count($entries) / $parseSeconds, $parseSeconds, $sizeMb / $parseSeconds);
     printf("%-28s %8.0f MB\n", 'peak memory after parsing', memory_get_peak_usage(true) / 1048576);
 
-    $database = new PhoneDirectoryPDODatabase("sqlite:{$dbFile}");
+    // Owner's view: the benchmark measures the queries, and its entries have no directory, so a visitor would get none.
+    $database = new PhoneDirectoryPDODatabase("sqlite:{$dbFile}", privacy: Privacy::forOwner());
     $database->createTable();
     $people = array_map(fn(array $item) => $item['entity'], $entries);
 

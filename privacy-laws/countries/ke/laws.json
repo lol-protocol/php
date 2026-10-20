@@ -16,8 +16,8 @@
     "penalties_range": "Fines up to KES 1M",
     "exemptions": "Government functions",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Further processing for historical, statistical or research purposes is compatible if solely for those purposes, not published identifiably and with safeguards (s. 53); ODPC research guidance 2025",
+    "genetic_data": "Sensitive personal data includes genetic data (s. 2); DNA analysis also listed under biometric data (s. 2)",
     "website_url": "https://www.odpc.go.ke/",
     "language": "English",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://www.odpc.go.ke/wp-content/uploads/2024/02/TheDataProtectionAct__No24of2019.pdf",
@@ -48,9 +48,31 @@
         "url": "https://www.odpc.go.ke/?p=3323",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://www.odpc.go.ke/wp-content/uploads/2025/11/ODPC-–-GUIDANCE-NOTES-Processing-for-Research-Purpose.pdf",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.dlapiperdataprotection.com/index.html?t=law&c=KE",
+        "confidence": "high",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive personal data includes genetic data (s. 2); DNA analysis also listed under biometric data (s. 2)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Further processing for historical, statistical or research purposes is compatible if solely for those purposes, not published identifiably and with safeguards (s. 53); ODPC research guidance 2025"
+      },
       {
         "date": "2026-10-14",
         "field": "effective_date",

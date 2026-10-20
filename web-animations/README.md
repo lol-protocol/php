@@ -30,6 +30,7 @@ web-animations/
 ├── tests/
 │   ├── gallery-metadata.mjs           Test automático: la galería, las páginas y esta tabla cuentan lo mismo
 │   ├── smoke.mjs                      Test automático (corre en CI)
+│   ├── particles-in-bounds.mjs        Test automático: las partículas de G no se hunden en el piso ni en las paredes
 │   └── index.html                     Tests manuales en navegador: validación,
 │                                      accesibilidad y rendimiento
 ├── docs/
@@ -74,7 +75,7 @@ npm ci
 npm test
 ```
 
-`npm test` corre dos chequeos y falla si alguno falla. Primero
+`npm test` corre tres chequeos y falla si alguno falla. Primero
 `tests/gallery-metadata.mjs` (sin navegador): cada animación se nombra en tres
 lugares, la tarjeta de la galería (`data.js`), la propia página (su `<title>`,
 su encabezado y su descripción) y la tabla de más abajo, y los tres tienen que
@@ -82,7 +83,10 @@ hablar de la misma animación; además, la dificultad de cada tarjeta tiene que
 tener color en el modal de detalles. Después `tests/smoke.mjs` abre las 37
 páginas en Chromium y falla si alguna tiene un error de JavaScript, un recurso
 que no carga, `common.css`/`common.js` sin aplicar, o un botón de pausa que no
-responde. Corre en CI en cada push.
+responde. Por último `tests/particles-in-bounds.mjs` avanza la lluvia de
+partículas (G) 1.500 cuadros, con números al azar de semilla fija, y falla si
+alguna partícula queda bajo el piso o fuera de una pared. Corre en CI en cada
+push.
 
 `tests/index.html` tiene además suites manuales (validación, accesibilidad
 WCAG 2.1 AA, rendimiento) — ver [`tests/README.md`](tests/README.md).

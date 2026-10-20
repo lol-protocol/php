@@ -20,7 +20,7 @@ use App\Validacion;
         <input type="text" name="concepto" id="concepto" required maxlength="<?= Validacion::MAX_CONCEPTO ?>" value="<?= htmlspecialchars($boleta['concepto']) ?>">
 
         <label for="monto">Monto (<?= htmlspecialchars($boleta['moneda_codigo']) ?>)</label>
-        <input type="number" name="monto" id="monto" required min="0.01" step="0.01" value="<?= htmlspecialchars((string) $boleta['monto']) ?>">
+        <?= campo_monto($boleta['monto']) ?>
 
         <label for="fecha_emision">Fecha de emisión</label>
         <input type="date" name="fecha_emision" id="fecha_emision" required value="<?= htmlspecialchars($boleta['fecha_emision']) ?>">

@@ -18,7 +18,8 @@ class ModerationServerTest extends TestCase
         fclose($probe);
         $root = dirname(__DIR__, 2);
         $command = [PHP_BINARY, '-S', '127.0.0.1:' . self::$port, $root . '/public/router.php'];
-        self::$server = proc_open($command, [1 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']], $pipes, $root) ?: null;
+        $env = ['MODERAR_LIMITES_DIR' => sys_get_temp_dir() . '/moderar-test-' . bin2hex(random_bytes(6))] + getenv();
+        self::$server = proc_open($command, [1 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']], $pipes, $root, $env) ?: null;
         for ($try = 0; $try < 50 && !@fsockopen('127.0.0.1', self::$port); $try++) {
             usleep(100000);
         }

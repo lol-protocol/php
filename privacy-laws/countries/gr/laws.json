@@ -16,8 +16,8 @@
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Processing for scientific/historical research and statistics allowed without consent with safeguards (anonymisation where possible); GDPR arts. 15, 16, 18, 21 restricted as needed (art. 30)",
+    "genetic_data": "GDPR art. 9 special category; processing of genetic data for health and life insurance expressly prohibited, even with consent (art. 23)",
     "website_url": "https://www.dpa.gr/",
     "language": "Greek",
     "frameworks": "GDPR/CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://dpa.gr/sites/default/files/2020-08/LAW 4624_2019_EN_TRANSLATED BY THE HDPA.PDF",
@@ -48,9 +48,31 @@
         "url": "https://edpb.europa.eu/about-edpb/our-members_en",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://www.activemind.legal/law/gr-research/",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://edri.org/our-work/greece-new-data-protection-law-raises-concerns/",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "GDPR art. 9 special category; processing of genetic data for health and life insurance expressly prohibited, even with consent (art. 23)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Processing for scientific/historical research and statistics allowed without consent with safeguards (anonymisation where possible); GDPR arts. 15, 16, 18, 21 restricted as needed (art. 30)"
+      },
       {
         "date": "2026-10-14",
         "field": "effective_date",

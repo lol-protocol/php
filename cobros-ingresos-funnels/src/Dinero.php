@@ -16,6 +16,24 @@ use InvalidArgumentException;
 final class Dinero
 {
     /**
+     * Un centavo. Es el monto minimo que se puede facturar o cobrar y, a la vez,
+     * la regla deliberada de que **un centavo o menos cuenta como cero**: un
+     * residuo de redondeo no deja una boleta pendiente para siempre. Una sola
+     * constante para el PHP (cuentaComoCero()), el SQL (BoletaRepository::ESTADO_SQL
+     * y la cartera por antiguedad) y los campos de monto de los formularios.
+     */
+    public const UN_CENTAVO = 0.01;
+
+    /**
+     * true si el monto es de un centavo o menos (un saldo en cero o negativo
+     * tambien). Se compara en centavos enteros, como el resto de la clase.
+     */
+    public static function cuentaComoCero(float $monto): bool
+    {
+        return self::centavos($monto) <= self::centavos(self::UN_CENTAVO);
+    }
+
+    /**
      * El monto en centavos enteros: 602.85 -> 60285. Redondea al centavo mas
      * cercano (no trunca: 0.57 * 100 da 56.99999999999999), asi que tambien
      * absorbe el ruido de una suma o resta de floats. Acepta el texto que

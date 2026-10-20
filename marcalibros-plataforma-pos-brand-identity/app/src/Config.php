@@ -24,7 +24,14 @@ final class Config
          * direcciones absolutas, y no se arman con la cabecera Host, que la puede escribir cualquiera.
          */
         public readonly ?string $publicUrl = null,
+        /** Dónde se guardan las copias de seguridad (bin/respaldar.php). Por defecto, dentro del almacenamiento. */
+        public readonly ?string $backupDirectory = null,
+        /** Cuántas copias se conservan. */
+        public readonly int $backupKeep = 7,
     ) {
+        if ($backupKeep < 1) {
+            throw new \InvalidArgumentException('Hay que conservar al menos una copia de seguridad.');
+        }
         if ($retentionDays < 1 || $createsPerHour < 1 || $maxStored < 1) {
             throw new \InvalidArgumentException('Los días de conservación, los intentos por hora y el tope deben ser 1 o más.');
         }
@@ -60,6 +67,10 @@ final class Config
             publicUrl: is_string($env['MARCALIBROS_PUBLIC_URL'] ?? false) && $env['MARCALIBROS_PUBLIC_URL'] !== ''
                 ? rtrim($env['MARCALIBROS_PUBLIC_URL'], '/')
                 : null,
+            backupDirectory: is_string($env['MARCALIBROS_BACKUP_DIR'] ?? false) && $env['MARCALIBROS_BACKUP_DIR'] !== ''
+                ? rtrim($env['MARCALIBROS_BACKUP_DIR'], '/')
+                : null,
+            backupKeep: $int('MARCALIBROS_BACKUP_KEEP', 7),
         );
     }
 }

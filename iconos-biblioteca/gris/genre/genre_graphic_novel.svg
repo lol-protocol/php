@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_genre_graphic_novel_violet" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_genre_graphic_novel_violet_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#949494"/>
       <stop offset="1" stop-color="#626262"/>
     </linearGradient>
@@ -10,7 +10,7 @@
     <ellipse cx="32.8" cy="56.2" rx="20.06" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#393939"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_graphic_novel_violet)"/></g>
+    <g><path d="M52.8 17.4A9 9 0 0 1 54.6 22.8L54.6 44.8A9 9 0 0 1 45.6 53.8L23.6 53.8A9 9 0 0 1 16.4 50.2L12.98 45.64A9 9 0 0 1 11.18 40.24L11.18 18.24A9 9 0 0 1 20.18 9.24L42.18 9.24A9 9 0 0 1 49.38 12.84Z" fill="#393939"/><rect x="11" y="9" width="40" height="40" rx="9" fill="url(#grad_genre_graphic_novel_violet_g)"/></g>
   </g>
   <g class="marks">
     <path d="M30.5 14L45.5 29L30.5 44L15.5 29Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>

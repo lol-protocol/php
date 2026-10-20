@@ -1,5 +1,6 @@
 <?php
 
+use App\Dinero;
 use App\Etiquetas;
 
 /** @var array $cliente */
@@ -65,7 +66,7 @@ $totalCobrado = array_sum(array_column($pagosVigentes, 'monto')) - $totalDevuelt
     <div class="panel stat-tile">
         <span class="label">Pagos recibidos</span>
         <span class="value"><?= count($pagosVigentes) ?></span>
-        <span class="delta"><?= dinero_en_moneda($totalCobrado, $cliente['moneda_codigo']) ?> neto<?= $totalDevuelto > 0.01 ? ' (ya descontada la devolución)' : '' ?></span>
+        <span class="delta"><?= dinero_en_moneda($totalCobrado, $cliente['moneda_codigo']) ?> neto<?= !Dinero::cuentaComoCero($totalDevuelto) ? ' (ya descontada la devolución)' : '' ?></span>
     </div>
 </div>
 

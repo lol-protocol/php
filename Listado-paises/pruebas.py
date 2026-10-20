@@ -130,13 +130,11 @@ class DatosPreparados(unittest.TestCase):
         self.assertIsNone(pd.ultimo_dato({2008: 50.0}, 2010))
         self.assertIsNone(pd.ultimo_dato({}, 2010))
 
-    def test_pib_nominal_usa_el_ultimo_anio_con_pib_y_poblacion_dentro_del_rango(self):
+    def test_pib_nominal_usa_el_ultimo_anio_con_dato_dentro_del_rango(self):
         import preparar_datos as pd
-        pib = {pd.ANIO_PIB_NOMINAL: 300.0, pd.ANIO_PIB_NOMINAL - 1: 200.0}
-        poblacion = {pd.ANIO_PIB_NOMINAL - 1: 10.0}  # sin población del último año
-        self.assertEqual(pd.pib_nominal(pib, poblacion), (pd.ANIO_PIB_NOMINAL - 1, 20.0))
-        viejo = pd.ANIO_PIB_NOMINAL_MINIMO - 1
-        self.assertIsNone(pd.pib_nominal({viejo: 100.0}, {viejo: 10.0}))
+        self.assertEqual(pd.pib_nominal({pd.ANIO_PIB_NOMINAL - 1: 200.0, pd.ANIO_PIB_NOMINAL - 2: 100.0}),
+                         (pd.ANIO_PIB_NOMINAL - 1, 200.0))
+        self.assertIsNone(pd.pib_nominal({pd.ANIO_PIB_NOMINAL_MINIMO - 1: 100.0}))
 
     def test_la_columna_de_nacidos_coincide_con_el_calculo_sobre_los_archivos_de_entrada(self):
         carpeta = Path(tempfile.mkdtemp())
@@ -204,8 +202,9 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
             "--poblacion-gapminder": self.csv("popg.csv", ("geo", "time", "pop"),
                                               [("ccc", 1800, 1000), ("ccc", 2010, 5000), ("ccc", 2030, 9000)]),
             "--pib-ppa": self.csv("ppa.csv", ("country", "time", "gdp_pcap"), [("aaa", pd.ANIO_PIB_PPA, 30000.4)]),
-            "--pib-bm": self.csv("gdp.csv", ("Country Name", "Country Code", "Year", "Value"),
-                                 [("A", "AAA", 2023, 8e10), ("B", "BBB", 2022, 2e9)]),
+            "--pib-pc-bm": self.csv("gdp.csv", ("Country Name", "Country Code", "Year", "Value"),
+                                    [("A", "AAA", pd.ANIO_PIB_NOMINAL, 20000.4),
+                                     ("B", "BBB", pd.ANIO_PIB_NOMINAL - 2, 10000)]),
             "--poblacion-bm": self.csv("pop.csv", ("Country Name", "Country Code", "Year", "Value"),
                                        [("A", "AAA", 2023, 4e6), ("B", "BBB", 1960, 1e5), ("B", "BBB", 2022, 2e5),
                                         ("B", "BBB", 2024, 2.5e5)]),
@@ -216,13 +215,13 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         aa, bb, cc = paises["AA"], paises["BB"], paises["CC"]
         self.assertEqual(aa["poblacion_millones"], "4.00")
         self.assertEqual(aa["idh"], "0.800")
-        self.assertEqual(aa["pib_per_capita_usd"], "20000")  # 8e10 / 4e6, del Banco Mundial
+        self.assertEqual(aa["pib_per_capita_usd"], "20000")
         self.assertEqual(aa["pib_per_capita_ppa_usd"], "30000")
         self.assertEqual(aa["alfabetizacion_adultos"], "")  # 2009 es anterior al mínimo
         self.assertEqual(aa["usuarios_internet"], "80.0")
         self.assertEqual(aa["emigrantes_pct"], "10.0")  # 400 000 / 4 000 000
         self.assertEqual(bb["poblacion_millones"], "0.25")  # Banco Mundial, sin OWID
-        self.assertEqual(bb["pib_per_capita_usd"], "10000")  # 2022: 2e9 / 2e5
+        self.assertEqual(bb["pib_per_capita_usd"], "10000")  # de dos años antes
         self.assertEqual(bb["alfabetizacion_adultos"], "70.0")
         self.assertEqual(cc["poblacion_millones"], "")  # Gapminder no da la población actual
 
@@ -253,7 +252,7 @@ class PreparacionDePuntaAPunta(unittest.TestCase):
         (self.d / "codes.yaml").write_text("Aland:\n  lcode: al\n  iso3: ala\n", encoding="utf-8")
         masakha = self.d / "masakha" / "blb"
         masakha.mkdir(parents=True)
-        (masakha / "train.txt").write_text("".join(f"palabra NOUN\n" for _ in range(20000)), encoding="utf-8")
+        (masakha / "train.txt").write_text("palabra NOUN\n" * 20000, encoding="utf-8")
         self.csv("cc.csv", ("crawl", "primary_language", "pages", "urls", "%pages/crawl"),
                  [(pl.CRAWL, "ala", 1, 1, "1.5"), ("CC-VIEJO", "blb", 1, 1, "9")])
         self.csv("niveles_lenguas.csv", generar_tabla.COLUMNAS_NIVELES,

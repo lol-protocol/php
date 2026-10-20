@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_view_cards_mist" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_view_cards_mist_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#E1E1E1"/>
       <stop offset="1" stop-color="#D3D3D3"/>
     </linearGradient>
-    <linearGradient id="grad_view_cards_slate" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_view_cards_slate_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#BFBFBF"/>
       <stop offset="1" stop-color="#A1A1A1"/>
     </linearGradient>
-    <linearGradient id="grad_view_cards_indigo" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_view_cards_indigo_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8F8F8F"/>
       <stop offset="1" stop-color="#5B5B5B"/>
     </linearGradient>
-    <linearGradient id="grad_view_cards_orange" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_view_cards_orange_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#A5A5A5"/>
       <stop offset="1" stop-color="#7B7B7B"/>
     </linearGradient>
@@ -22,10 +22,10 @@
     <ellipse cx="33.78" cy="56.48" rx="21.88" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M44.44 15.92A5 5 0 0 1 45.44 18.92L45.44 36.92A5 5 0 0 1 40.44 41.92L16.44 41.92A5 5 0 0 1 12.44 39.92L11.18 38.24A5 5 0 0 1 10.18 35.24L10.18 17.24A5 5 0 0 1 15.18 12.24L39.18 12.24A5 5 0 0 1 43.18 14.24Z" fill="#7B7B7B"/><rect x="10" y="12" width="34" height="28" rx="5" fill="url(#grad_view_cards_mist)"/></g>
-    <g><path d="M50.44 21.92A5 5 0 0 1 51.44 24.92L51.44 42.92A5 5 0 0 1 46.44 47.92L22.44 47.92A5 5 0 0 1 18.44 45.92L17.18 44.24A5 5 0 0 1 16.18 41.24L16.18 23.24A5 5 0 0 1 21.18 18.24L45.18 18.24A5 5 0 0 1 49.18 20.24Z" fill="#5E5E5E"/><rect x="16" y="18" width="34" height="28" rx="5" fill="url(#grad_view_cards_slate)"/></g>
-    <g><path d="M56.56 28.08A5 5 0 0 1 57.56 31.08L57.56 49.08A5 5 0 0 1 52.56 54.08L28.56 54.08A5 5 0 0 1 24.56 52.08L23.18 50.24A5 5 0 0 1 22.18 47.24L22.18 29.24A5 5 0 0 1 27.18 24.24L51.18 24.24A5 5 0 0 1 55.18 26.24Z" fill="#353535"/><rect x="22" y="24" width="34" height="28" rx="5" fill="url(#grad_view_cards_indigo)"/></g>
-    <g><circle cx="39" cy="36" r="5.5" fill="url(#grad_view_cards_orange)"/></g>
+    <g><path d="M44.44 15.92A5 5 0 0 1 45.44 18.92L45.44 36.92A5 5 0 0 1 40.44 41.92L16.44 41.92A5 5 0 0 1 12.44 39.92L11.18 38.24A5 5 0 0 1 10.18 35.24L10.18 17.24A5 5 0 0 1 15.18 12.24L39.18 12.24A5 5 0 0 1 43.18 14.24Z" fill="#7B7B7B"/><rect x="10" y="12" width="34" height="28" rx="5" fill="url(#grad_view_cards_mist_g)"/></g>
+    <g><path d="M50.44 21.92A5 5 0 0 1 51.44 24.92L51.44 42.92A5 5 0 0 1 46.44 47.92L22.44 47.92A5 5 0 0 1 18.44 45.92L17.18 44.24A5 5 0 0 1 16.18 41.24L16.18 23.24A5 5 0 0 1 21.18 18.24L45.18 18.24A5 5 0 0 1 49.18 20.24Z" fill="#5E5E5E"/><rect x="16" y="18" width="34" height="28" rx="5" fill="url(#grad_view_cards_slate_g)"/></g>
+    <g><path d="M56.56 28.08A5 5 0 0 1 57.56 31.08L57.56 49.08A5 5 0 0 1 52.56 54.08L28.56 54.08A5 5 0 0 1 24.56 52.08L23.18 50.24A5 5 0 0 1 22.18 47.24L22.18 29.24A5 5 0 0 1 27.18 24.24L51.18 24.24A5 5 0 0 1 55.18 26.24Z" fill="#353535"/><rect x="22" y="24" width="34" height="28" rx="5" fill="url(#grad_view_cards_indigo_g)"/></g>
+    <g><circle cx="39" cy="36" r="5.5" fill="url(#grad_view_cards_orange_g)"/></g>
   </g>
   <g class="marks">
     <path d="M30 47L48 47" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>

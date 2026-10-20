@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_book_collection_brown" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_book_collection_brown_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#9B9B9B"/>
       <stop offset="1" stop-color="#6B6B6B"/>
     </linearGradient>
-    <linearGradient id="grad_book_collection_indigo" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_book_collection_indigo_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8F8F8F"/>
       <stop offset="1" stop-color="#5B5B5B"/>
     </linearGradient>
-    <linearGradient id="grad_book_collection_amber" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_book_collection_amber_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#AEAEAE"/>
       <stop offset="1" stop-color="#878787"/>
     </linearGradient>
@@ -18,8 +18,8 @@
     <ellipse cx="31.9" cy="51.8" rx="20.15" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M44.8 39.4A5 5 0 0 1 45.8 42.4L45.8 44.4A5 5 0 0 1 40.8 49.4L16.8 49.4A5 5 0 0 1 12.8 47.4L11.18 45.24A5 5 0 0 1 10.18 42.24L10.18 40.24A5 5 0 0 1 15.18 35.24L39.18 35.24A5 5 0 0 1 43.18 37.24Z" fill="#3E3E3E"/><rect x="10" y="35" width="34" height="12" rx="5" fill="url(#grad_book_collection_brown)"/></g>
-    <g><path d="M48.8 28.4A5 5 0 0 1 49.8 31.4L49.8 33.4A5 5 0 0 1 44.8 38.4L20.8 38.4A5 5 0 0 1 16.8 36.4L15.18 34.24A5 5 0 0 1 14.18 31.24L14.18 29.24A5 5 0 0 1 19.18 24.24L43.18 24.24A5 5 0 0 1 47.18 26.24Z" fill="#353535"/><rect x="14" y="24" width="34" height="12" rx="5" fill="url(#grad_book_collection_indigo)"/></g>
-    <g><path d="M52.8 17.4A5 5 0 0 1 53.8 20.4L53.8 22.4A5 5 0 0 1 48.8 27.4L24.8 27.4A5 5 0 0 1 20.8 25.4L19.18 23.24A5 5 0 0 1 18.18 20.24L18.18 18.24A5 5 0 0 1 23.18 13.24L47.18 13.24A5 5 0 0 1 51.18 15.24Z" fill="#4F4F4F"/><rect x="18" y="13" width="34" height="12" rx="5" fill="url(#grad_book_collection_amber)"/></g>
+    <g><path d="M44.8 39.4A5 5 0 0 1 45.8 42.4L45.8 44.4A5 5 0 0 1 40.8 49.4L16.8 49.4A5 5 0 0 1 12.8 47.4L11.18 45.24A5 5 0 0 1 10.18 42.24L10.18 40.24A5 5 0 0 1 15.18 35.24L39.18 35.24A5 5 0 0 1 43.18 37.24Z" fill="#3E3E3E"/><rect x="10" y="35" width="34" height="12" rx="5" fill="url(#grad_book_collection_brown_g)"/></g>
+    <g><path d="M48.8 28.4A5 5 0 0 1 49.8 31.4L49.8 33.4A5 5 0 0 1 44.8 38.4L20.8 38.4A5 5 0 0 1 16.8 36.4L15.18 34.24A5 5 0 0 1 14.18 31.24L14.18 29.24A5 5 0 0 1 19.18 24.24L43.18 24.24A5 5 0 0 1 47.18 26.24Z" fill="#353535"/><rect x="14" y="24" width="34" height="12" rx="5" fill="url(#grad_book_collection_indigo_g)"/></g>
+    <g><path d="M52.8 17.4A5 5 0 0 1 53.8 20.4L53.8 22.4A5 5 0 0 1 48.8 27.4L24.8 27.4A5 5 0 0 1 20.8 25.4L19.18 23.24A5 5 0 0 1 18.18 20.24L18.18 18.24A5 5 0 0 1 23.18 13.24L47.18 13.24A5 5 0 0 1 51.18 15.24Z" fill="#4F4F4F"/><rect x="18" y="13" width="34" height="12" rx="5" fill="url(#grad_book_collection_amber_g)"/></g>
   </g>
 </svg>

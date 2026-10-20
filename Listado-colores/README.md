@@ -10,9 +10,9 @@ Léxico de colores con nombre para el proyecto de etiquetado *part-of-speech*: l
 | `evidencia.csv` | En qué se apoya cada significado de los 148 colores (hay estudios, tradición, derivado) y con qué fuentes | — | Los mismos |
 | `significados-culturales.csv` | 28 matices por ámbito cultural (China, Japón, India…) de nueve colores, cada uno con su fuente | — (texto en español) | Matices culturales |
 | `referencias.csv` | Las 35 fuentes que citan los dos archivos anteriores, con cuánto se pudo comprobar de cada una | — | — |
-| `nombres-completos.csv` | 31.935 nombres de color con su hex, de la lista de `meodai/color-names`, y el color CSS más cercano a cada uno | 1: inglés | No tiene propios; se pueden heredar del color CSS más cercano (ver «Color CSS más cercano») |
+| `nombres-completos.csv` | 31.935 nombres de color con su hex, de la lista de `meodai/color-names`, y el color CSS más cercano a cada uno | 1: inglés (con algunos nombres en otros idiomas) | No tiene propios; se pueden heredar del color CSS más cercano (ver «Color CSS más cercano») |
 
-Cada color de los 148 se puede leer en cualquiera de los 30 idiomas (nombre, hex y los dos significados) en `por-idioma/<código>.md`; `colores-por-idioma.md` es el índice de esas páginas.
+Cada color de los 148 se puede leer en cualquiera de los 30 idiomas (nombre, hex y los dos significados) en `por-idioma/<código>.md`; `colores-por-idioma.md` es el índice de esas páginas. Del resto se generan los exportes para PLN (`exportes/`, con una forma normalizada de cada nombre), dos informes (`ambiguedad.md` y `auditoria-nombres.md`) y la versión de los datos (`CHANGELOG.md` y `exportes/manifiesto.json`): ver «Exportes», «Ambigüedad», «Auditoría de los nombres completos» y «Versión de los datos y manifiesto».
 
 ## Idiomas
 
@@ -38,7 +38,7 @@ No existe un conjunto cerrado de "todos los colores que tienen nombre": los cat�
 - **Lista completa** (`nombres-completos.csv`): la colección curada más grande que se pudo verificar y que tiene licencia abierta. Tiene 31.935 nombres únicos. La columna `curada` marca con `x` los 4.966 que sus curadores consideran buenos nombres (por ejemplo, `3AM Latte`); los demás son válidos pero menos típicos. Para cada nombre, el generador calcula cuál de los 148 colores CSS es el más cercano (ver «Color CSS más cercano»).
 - **Tabla anotada** (`colores.csv`): los 148 colores con nombre de la especificación CSS, con sus nombres y sus significados en 30 idiomas. Es el conjunto estándar, verificado contra la fuente oficial.
 
-La lista completa solo está en inglés. Traducir 31.935 nombres a 30 idiomas sería casi un millón de cadenas, sin fuente que las respalde, y muchos de esos nombres son marcas, nombres propios o términos sin traducción.
+La lista completa no está traducida: sus nombres son ingleses, aunque incluye algunos en otros idiomas (pinyin con tonos, hindi transliterado, español, francés…; ver «Auditoría de los nombres completos»). Traducir 31.935 nombres a 30 idiomas sería casi un millón de cadenas, sin fuente que las respalde, y muchos de esos nombres son marcas, nombres propios o términos sin traducción.
 
 Varias palabras de la lista completa son también palabras corrientes en español, como `coral` o `magenta`, y otras son nombres propios o términos técnicos. Para el etiquetado conviene tener en cuenta que la misma palabra puede ser un color o no, según el contexto.
 
@@ -95,7 +95,7 @@ Cómo se calcula (`colorimetria.py`, solo biblioteca estándar):
 - El hex (sRGB) se pasa a CIELAB con el iluminante D65 y la distancia es CIEDE2000 (ΔE00), que se acerca más que la distancia euclídea a cómo se perciben las diferencias de color.
 - La implementación sigue las notas de Sharma, Wu y Dalal (2005), *The CIEDE2000 color-difference formula: Implementation notes, supplementary test data, and mathematical observations* (Color Research & Application 30(1), 21-30). El generador comprueba al empezar 16 pares de su tabla de datos de prueba y se detiene si alguno no coincide.
 - Si dos colores CSS están igual de cerca (por ejemplo `gray` y `grey`, que comparten hex, o `aqua` y `cyan`), gana el primero por orden alfabético. Por eso los nueve segundos de cada par (`cyan`, `magenta` y las siete variantes `…grey`) no aparecen nunca como color más cercano.
-- Calcularlo para toda la lista tarda unos 25 segundos; `--comprobar` lo recalcula entero.
+- Calcularlo para toda la lista tarda entre 13 y 20 segundos según la máquina; `--comprobar` lo recalcula entero.
 
 Reparto en la lista completa: 136 exactos (0,4 %), 3.814 de cercanía alta (11,9 %), 17.103 media (53,6 %) y 10.882 baja (34,1 %).
 
@@ -113,7 +113,7 @@ Para usar los datos desde un programa sin leer siete CSV, el generador produce d
 - **`exportes/gazetteer.tsv`**: lista plana de formas de superficie, para buscar una palabra y saber a qué color o concepto remite. 7.080 filas separadas por tabuladores, ordenadas por forma sin distinguir mayúsculas. Columnas: `forma`, `idioma`, `fuente` (`css` o `lexico`), `tipo`, `concepto`, `hex`, `rasgos` y `forma_normalizada` (ver «Forma normalizada»; va al final para no mover las demás columnas). Con `fuente=css`, `tipo` es `identificador` (`aliceblue`), `forma_natural` (`alice blue`), `forma_con_guion` (`alice-blue`) o `nombre` (la traducción en otro idioma). Con `fuente=lexico`, es `lema`, `flexion`, `sinonimo` o `variante` y `rasgos` trae lo que dice `lexico-basico.csv`. Una misma forma puede salir varias veces (por ejemplo, `abu-abu` en indonesio para `gray`, `grey` y como lema). La lista completa de 31.935 nombres no se repite aquí: está en `nombres-completos.csv`.
 - **Base SQLite** (no se guarda en el repositorio): `python3 generar-tabla.py --sqlite ruta.db`. Tablas: `colores`, `nombres`, `significados`, `alias`, `evidencia`, `culturales`, `referencias`, `conceptos`, `lexico` y `nombres_completos`, con índices por nombre, forma, forma normalizada y hex. `nombres` y `lexico` tienen una columna normalizada (`nombre_normalizado`, `forma_normalizada`). Ejemplo: `SELECT n.nombre, s.psicologico FROM nombres n JOIN significados s USING (color_id, idioma) WHERE n.color_id = 'crimson' AND n.idioma = 'ja';`.
 
-`--comprobar` compara los dos archivos de `exportes/` con lo que generan los CSV y construye la base en memoria para verificar que cada tabla tenga tantas filas como su CSV y que un cruce de tablas funcione. Las funciones están en `exportes.py`. Los exportes pesan en total unos 1,4 MB.
+`--comprobar` compara los archivos de `exportes/` (los dos exportes y el manifiesto) con lo que generan los CSV y construye la base en memoria para verificar que cada tabla tenga tantas filas como su CSV y que un cruce de tablas funcione. Las funciones están en `exportes.py`. Los tres archivos de `exportes/` pesan en total unos 1,5 MB.
 
 ### Forma normalizada
 
@@ -221,11 +221,13 @@ Quién sube la versión: el generador no puede saber si un cambio de datos merec
 
 ## Uso
 
+`README.md` (esta tabla), `colores-por-idioma.md`, `por-idioma/*.md`, `referencias.md` y lo demás que no sea un CSV de datos es salida generada — no se edita a mano. Se regenera con `python3 generar-tabla.py` (`--comprobar` solo valida que esté al día).
+
 Requiere Python 3.10 o posterior y no usa dependencias externas. Se probó con Python 3.10, 3.11, 3.12, 3.13 y 3.14 en Linux x86_64: el generador (con las 31.935 distancias, que salen idénticas al archivo guardado) y las pruebas dan el mismo resultado en todas. La CI corre además una matriz con Python 3.10 y 3.14 en Ubuntu 24.04 y 3.13 en macOS 15 (arm64). No se ha probado con versiones anteriores a la 3.10 ni en Windows.
 
 ```bash
 cd Listado-colores
-python3 generar-tabla.py                # tras editar un CSV: valida y regenera todo lo generado (tarda unos 25 s)
+python3 generar-tabla.py                # tras editar un CSV: valida y regenera todo lo generado (tarda entre 13 y 20 s)
 python3 generar-tabla.py --comprobar    # solo comprueba: datos válidos, archivos generados al día y base SQLite coherente
 python3 generar-tabla.py --sqlite ruta.db  # construye una base SQLite con los datos
 ```
@@ -234,7 +236,7 @@ Pruebas del generador:
 
 ```bash
 cd Listado-colores
-python3 -m unittest -v pruebas          # unos 8 s; no escribe en la carpeta del proyecto
+python3 -m unittest -v pruebas          # entre 8 y 16 s; no escribe en la carpeta del proyecto
 ```
 
 `pruebas.py` rompe a propósito, una por una, las reglas de los validadores sobre una copia de los CSV reales (fila borrada, significado sin traducir, forma con letras latinas en un idioma de otra escritura, referencia inexistente o sin usar, orden roto, hex inválido…) y comprueba que cada una da su error. También ejecuta `main()` de punta a punta en una carpeta temporal con `nombres-completos.csv` reducido (para no recalcular las 31.935 distancias): comprueba que un archivo generado editado a mano, borrado o sobrante hace fallar `--comprobar`, que la base SQLite se construye y que todos los archivos generados salen idénticos a los del repositorio salvo el propio `nombres-completos.csv`. Además comprueba la distancia de color con los 16 vectores de Sharma et al. y con propiedades (simetría, negro y blanco a 100). La CI las corre junto a `--comprobar`, que sigue siendo la comprobación de los archivos reales, y repite las dos cosas en la matriz de Python y de sistema de la sección «Uso».
