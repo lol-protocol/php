@@ -43,6 +43,8 @@ Se hace con variables de entorno. Todas son opcionales.
 | `MARCALIBROS_CREATES_PER_HOUR` | `10` | Intentos de crear por hora y por dirección IP (los fallidos también cuentan) |
 | `MARCALIBROS_MAX_STORED` | `5000` | Tope de marcalibros guardados a la vez; al llegar, no se aceptan más |
 | `MARCALIBROS_TRUST_FORWARDED_FOR` | apagado | Con `1`, la IP de cada persona es la última de `X-Forwarded-For`. Solo detrás de un proxy propio que la ponga |
+| `MARCALIBROS_BACKUP_DIR` | `storage/respaldos` | Dónde se guardan las copias de seguridad (`bin/respaldar.php`). Conviene un disco distinto al de la aplicación |
+| `MARCALIBROS_BACKUP_KEEP` | `7` | Cuántas copias se conservan; las más viejas se borran |
 | `MARCALIBROS_PUBLIC_URL` | sin valor | Esquema y dominio del sitio (`https://marcalibros.example.com`). Con él, los enlaces compartidos muestran imagen de vista previa (Open Graph). Sin él, solo título y descripción |
 
 ## Cómo se protege sin cuentas
@@ -85,6 +87,28 @@ server {
 En `php.ini` (o el pool de php-fpm): `upload_max_filesize = 5M` y `post_max_size = 6M`. La carpeta de almacenamiento debe pertenecer al usuario de php-fpm y no ser accesible desde la web. El proceso solo necesita leer `catalog/`, `images/` y `svg/`.
 
 Detrás de un proxy, activa `MARCALIBROS_TRUST_FORWARDED_FOR=1` solo si el proxy sobrescribe `X-Forwarded-For`; si no, todos los visitantes parecerán tener la IP del proxy y compartirán el mismo límite.
+
+### Copias de seguridad
+
+Los marcalibros creados viven solo en el disco del servidor. Una vez al día, después de la limpieza:
+
+```cron
+47 3 * * *  cd /srv/marcalibros/app && php bin/respaldar.php
+```
+
+Cada copia es un `marcalibros-AAAAMMDD-HHMMSS.tar.gz` (hora UTC) con los marcalibros completos: sus datos y sus dos imágenes. No incluye `intentos/`, donde está la clave secreta del límite de intentos. Se conservan las últimas `MARCALIBROS_BACKUP_KEEP` copias y el script nunca borra archivos de esa carpeta que no tengan ese nombre. Necesita las extensiones `phar` y `zlib` de PHP, que vienen con la instalación normal.
+
+Una copia en el mismo disco no protege de que el disco falle: apunta `MARCALIBROS_BACKUP_DIR` a otro disco o a una carpeta que otra herramienta (rsync, el respaldo del proveedor) lleve fuera del servidor.
+
+Para restaurar, copia los archivos de la copia a la carpeta de almacenamiento y deja su dueño como el usuario de php-fpm:
+
+```bash
+tar -xzf marcalibros-20261020-034700.tar.gz -C /tmp
+cp -n /tmp/marcalibros/* /srv/marcalibros/app/storage/marcalibros/
+chown -R www-data: /srv/marcalibros/app/storage/marcalibros
+```
+
+`cp -n` no pisa los marcalibros que ya existan. Un marcalibro restaurado conserva su fecha de creación: si ya pasaron sus `MARCALIBROS_RETENTION_DAYS` días, la próxima limpieza lo borra.
 
 ### PNG del catálogo
 

@@ -28,6 +28,7 @@ El estado detallado y los pendientes están en `README.md`; la paleta y las medi
 ```bash
 python3 generator/generar_marcalibros.py            # regenera los 1350 (unos 30 s); falla si un SVG pesa 10 KB o más, o si hay duplicados
 python3 generator/exportar_png.py --faltantes      # PNG del catálogo en catalog/png/ (ignorada por git)
+php app/bin/respaldar.php                           # copia de seguridad de los marcalibros creados (cron diario en producción)
 cd app && php -S localhost:8080 -t public public/index.php
 cd php && composer install && ./vendor/bin/phpunit  # igual en app/
 ```
