@@ -8,6 +8,7 @@ Aplicación independiente para elegir un marcalibro del catálogo (1350 diseños
 |---|---|---|
 | Catálogo | `/` | Ver muestras de las 27 categorías (11 movimientos literarios y 16 tipos de texto) |
 | Filtro | `/?motivo=faro&color=ocre` | Buscar por motivo y por color de la paleta, en todo el catálogo o dentro de una categoría |
+| Imprimir | `/imprimir?categoria=leyes` | Hoja A4 con los marcalibros de esa página del catálogo (mismos filtros y paginación), en tamaño real (18 cm) y con guías de corte; también sirve para guardar un PDF |
 | Categoría | `/?categoria=leyes` | Recorrer los 50 marcalibros de una categoría, de a 25 por página |
 | Detalle | `/marcalibro/mb-leyes-07` | Ver uno grande, sus colores, y descargarlo en SVG, o en PNG si se generaron (`generator/exportar_png.py`) |
 | Crear | `/crear` | Subir una imagen o elegir un paisaje de la marca, encuadrar en 7:1 y ponerle nombre |
@@ -104,11 +105,11 @@ Para restaurar, copia los archivos de la copia a la carpeta de almacenamiento y 
 
 ```bash
 tar -xzf marcalibros-20261020-034700.tar.gz -C /tmp
-cp -n /tmp/marcalibros/* /srv/marcalibros/app/storage/marcalibros/
+cp --update=none /tmp/marcalibros/* /srv/marcalibros/app/storage/marcalibros/
 chown -R www-data: /srv/marcalibros/app/storage/marcalibros
 ```
 
-`cp -n` no pisa los marcalibros que ya existan. Un marcalibro restaurado conserva su fecha de creación: si ya pasaron sus `MARCALIBROS_RETENTION_DAYS` días, la próxima limpieza lo borra.
+`--update=none` no pisa los marcalibros que ya existan. Un marcalibro restaurado conserva su fecha de creación: si ya pasaron sus `MARCALIBROS_RETENTION_DAYS` días, la próxima limpieza lo borra.
 
 ### PNG del catálogo
 
