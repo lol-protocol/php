@@ -608,6 +608,28 @@ def indice_idiomas(anotada):
     return "\n".join(partes)
 
 
+def comprobar_o_escribir(base, archivos, comprobar, sobrantes=()):
+    """Compara contra el disco o escribe los archivos generados (ruta, contenido) de este script.
+
+    Con comprobar=True no escribe nada: devuelve los nombres (relativos a `base`) que no coinciden
+    con lo que hay en disco o que faltan, más los de `sobrantes` con el sufijo " (sobra)"; vacía si
+    todo está al día. Con comprobar=False escribe cada archivo (creando sus carpetas) y borra los
+    sobrantes, y devuelve [].
+    """
+    archivos = list(archivos)
+    if comprobar:
+        desfasados = [ruta.relative_to(base).as_posix() for ruta, contenido in archivos
+                      if not ruta.exists() or ruta.read_text(encoding="utf-8") != contenido]
+        desfasados += [f"{ruta.relative_to(base).as_posix()} (sobra)" for ruta in sobrantes]
+        return desfasados
+    for ruta, contenido in archivos:
+        ruta.parent.mkdir(parents=True, exist_ok=True)
+        ruta.write_text(contenido, encoding="utf-8")
+    for ruta in sobrantes:
+        ruta.unlink()
+    return []
+
+
 def main():
     anotada = leer(ANOTADA, COLUMNAS_ANOTADA)
     fallos = colorimetria.autoprueba()
@@ -694,14 +716,14 @@ def main():
     resumen = (f"{len(anotada)} colores anotados en {len(IDIOMAS)} idiomas, "
                f"{len(traducidos)} significados traducidos, {len(lexico)} formas de léxico básico, "
                f"{len(culturales)} matices culturales, {len(referencias)} referencias y {len(completa)} nombres completos")
-    if "--comprobar" in sys.argv:
-        desfasados = [p.relative_to(CARPETA).as_posix() for p, contenido in generados.items()
-                      if not p.exists() or p.read_text(encoding="utf-8") != contenido]
-        desfasados += [f"{p.relative_to(CARPETA).as_posix()} (sobra)" for p in sobrantes]
+    comprobar = "--comprobar" in sys.argv
+    if comprobar:
         fallos_sqlite = exportes.comprobar_sqlite(datos)
         if fallos_sqlite:
             print("La base SQLite no coincide con los CSV: " + "; ".join(fallos_sqlite), file=sys.stderr)
             return 1
+    desfasados = comprobar_o_escribir(CARPETA, generados.items(), comprobar, sobrantes)
+    if comprobar:
         if desfasados:
             print(f"No coinciden con los CSV: {', '.join(desfasados)}. "
                   "Ejecuta python3 generar-tabla.py", file=sys.stderr)
@@ -709,12 +731,6 @@ def main():
         print(f"OK: {resumen}; archivos generados al día.")
         return 0
 
-    DIR_IDIOMAS.mkdir(exist_ok=True)
-    DIR_EXPORTES.mkdir(exist_ok=True)
-    for p, contenido in generados.items():
-        p.write_text(contenido, encoding="utf-8")
-    for p in sobrantes:
-        p.unlink()
     print(f"Generados README.md, nombres-completos.csv, colores-por-idioma.md y {len(IDIOMAS)} páginas en por-idioma/: {resumen}.")
     return 0
 
