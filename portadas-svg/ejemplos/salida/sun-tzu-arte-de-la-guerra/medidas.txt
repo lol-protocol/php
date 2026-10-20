@@ -1,0 +1,12 @@
+Libro: El arte de la guerra — Sun Tzu
+Corte: 135 × 210 mm
+Sangrado: 3 mm en cada borde exterior
+Lomo: 4,8 mm (confírmalo con la imprenta: depende del papel)
+Sin solapas
+Fondo: degradado lineal, 0°: #1c1f24 → #111316
+
+Tamaño de cada archivo, con sangrado (ancho × alto):
+  portada.svg: 138 × 216 mm
+  contratapa.svg: 138 × 216 mm
+  lomo.svg: 4,8 × 216 mm
+  cubierta-completa.svg: 280,8 × 216 mm

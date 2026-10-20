@@ -1,0 +1,43 @@
+name: Pruebas portadas SVG
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "portadas-svg/**"
+      - ".github/workflows/pruebas-portadas-svg.yml"
+  pull_request:
+    paths:
+      - "portadas-svg/**"
+      - ".github/workflows/pruebas-portadas-svg.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: portadas-svg
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: dom, mbstring
+          coverage: none
+
+      - name: Pruebas unitarias
+        run: php pruebas/ejecutar.php
+
+      - name: ejemplos/salida al día con el generador
+        run: php bin/generar.php --comprobar
