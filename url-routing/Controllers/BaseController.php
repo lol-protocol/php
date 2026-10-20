@@ -27,6 +27,12 @@ class BaseController
     }
 
     /**
+     * The three ways a controller can gate an action to the owner, all built on this one:
+     * `soloPropietario()` wraps it with $ocultar = true (404, hides the page) and
+     * `pedirPropietario()` with $ocultar = false (401, asks for the token). Call this one
+     * directly only when the action needs to branch on more than "run or refuse" (see
+     * PersonaController::viva() and CartController, which also check the HTTP method or CSRF).
+     *
      * Null when the owner is asking; otherwise the response that refuses:
      * a 404 that hides the page ($ocultar, for private data whose existence
      * must not be confirmed) or a 401 that asks the browser for the token.
