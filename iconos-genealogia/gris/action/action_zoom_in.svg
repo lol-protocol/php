@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_zoom_in_sky" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_zoom_in_sky_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#969696"/>
       <stop offset="1" stop-color="#656565"/>
     </linearGradient>
@@ -10,7 +10,7 @@
     <ellipse cx="43.66" cy="51.76" rx="8" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M38.72 45.48L39.98 47.16A5.5 5.5 0 0 0 48.78 40.56L47.52 38.88A5.5 5.5 0 0 0 38.72 45.48Z" fill="#3B3B3B"/><circle cx="42.94" cy="41.94" r="5.5" fill="url(#grad_action_zoom_in_sky)"/></g>
+    <g><path d="M38.72 45.48L39.98 47.16A5.5 5.5 0 0 0 48.78 40.56L47.52 38.88A5.5 5.5 0 0 0 38.72 45.48Z" fill="#3B3B3B"/><circle cx="42.94" cy="41.94" r="5.5" fill="url(#grad_action_zoom_in_sky_g)"/></g>
   </g>
   <g class="marks">
     <path d="M15.86 28.86a14 14 0 1 0 28 0a14 14 0 1 0 -28 0Z" fill="none" stroke="#656565" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>

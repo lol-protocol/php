@@ -317,7 +317,7 @@ def main(comprobar=False):
         "Gapminder. "
         "Ver `README.md`, «Estado de los datos».",
         ["País", "Tipo", "Región", "Población 2024 (M)", "Nacidos en la historia (M)",
-         "IDH 2023", "PIB pc nominal 2023 (USD)", "PIB pc PPA 2023 ($ int. 2021)",
+         "IDH 2023", "PIB pc nominal 2024 (USD)", "PIB pc PPA 2023 ($ int. 2021)",
          "Internet (% pob.)", "Emigrantes (% pob.)", "Genealogía (IG)",
          "Operabilidad (IO)", "Prioridad", "Excluido", "Comentarios"],
         gen_ordenado)

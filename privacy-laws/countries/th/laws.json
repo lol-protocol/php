@@ -15,9 +15,9 @@
     "enforcement_authority": "Thai National PDPA Committee",
     "penalties_range": "Up to THB 5M fine",
     "exemptions": "Government functions",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not covered: personal data excludes information of deceased persons (s. 6)",
+    "research_exemption": "Consent exception for historical archiving, research or statistics with safeguards (s. 24(1)); sensitive data s. 26(5)(d); 2024 PDPC notification requires ethics review",
+    "genetic_data": "Sensitive data (s. 26): explicit consent or a s. 26 exception required",
     "website_url": "https://www.pdpc.or.th/",
     "language": "Thai",
     "frameworks": "",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "enactment_date": {
         "url": "https://lawgazette.com.sg/practice/global-news/thailands-new-personal-data-protection-act/",
@@ -38,9 +38,42 @@
         "url": "https://hunton.com/media/legal/75784_full-enforcement-of-pdpa-is-postponed.pdf",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://getterms.io/blog/thailand-personal-data-protection-act-pdpa",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://iapp.org/news/a/harmonizing-research-and-privacy-in-thailand-unpacking-pdpa-notification-on-personal-data-collection-for-research-statistics",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://securiti.ai/thailand-personal-data-protection-act-pdpa",
+        "confidence": "high",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data (s. 26): explicit consent or a s. 26 exception required"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Consent exception for historical archiving, research or statistics with safeguards (s. 24(1)); sensitive data s. 26(5)(d); 2024 PDPC notification requires ethics review"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: personal data excludes information of deceased persons (s. 6)"
+      },
       {
         "date": "2026-10-14",
         "field": "effective_date",

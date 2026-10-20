@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Database;
+use App\Dinero;
 use PDO;
 
 /**
@@ -114,7 +115,7 @@ final class IngresosYCobrosRepository
                             GROUP BY boleta_id) p ON p.boleta_id = b.id
                  WHERE NOT b.anulada
              ) x
-             WHERE x.saldo_usd > 0.01
+             WHERE x.saldo_usd > ' . Dinero::UN_CENTAVO . '
              GROUP BY 1'
         )->fetchAll(PDO::FETCH_KEY_PAIR);
 

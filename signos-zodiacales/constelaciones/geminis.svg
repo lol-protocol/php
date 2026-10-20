@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
+     aria-labelledby="t-geminis d-geminis">
+  <title id="t-geminis">Constelación de Géminis</title>
+  <desc id="d-geminis">Esquema de la constelación, no a escala.</desc>
+  <defs>
+    <radialGradient id="fondo-geminis" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-geminis" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-geminis)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <g fill="#ffffff">
+    <circle cx="177.7" cy="22.1" r="0.75" fill-opacity="0.59"/>
+    <circle cx="49.2" cy="153.2" r="1.08" fill-opacity="0.51"/>
+    <circle cx="119.9" cy="161.6" r="1.00" fill-opacity="0.60"/>
+    <circle cx="144.7" cy="22.0" r="1.09" fill-opacity="0.52"/>
+    <circle cx="87.1" cy="65.1" r="0.78" fill-opacity="0.47"/>
+    <circle cx="14.7" cy="16.8" r="0.71" fill-opacity="0.33"/>
+    <circle cx="73.1" cy="147.7" r="0.43" fill-opacity="0.78"/>
+    <circle cx="102.7" cy="43.9" r="0.62" fill-opacity="0.76"/>
+    <circle cx="39.3" cy="80.8" r="0.86" fill-opacity="0.39"/>
+    <circle cx="145.6" cy="38.1" r="0.45" fill-opacity="0.36"/>
+    <circle cx="184.8" cy="66.8" r="0.96" fill-opacity="0.29"/>
+    <circle cx="129.7" cy="90.3" r="1.09" fill-opacity="0.57"/>
+    <circle cx="101.7" cy="149.7" r="1.00" fill-opacity="0.67"/>
+    <circle cx="167.3" cy="51.2" r="0.54" fill-opacity="0.58"/>
+    <circle cx="134.8" cy="154.3" r="0.42" fill-opacity="0.53"/>
+    <circle cx="76.3" cy="129.4" r="0.58" fill-opacity="0.66"/>
+    <circle cx="40.5" cy="99.3" r="0.84" fill-opacity="0.78"/>
+    <circle cx="163.3" cy="62.5" r="0.62" fill-opacity="0.60"/>
+    <circle cx="132.4" cy="123.5" r="0.68" fill-opacity="0.43"/>
+    <circle cx="11.1" cy="19.0" r="0.87" fill-opacity="0.47"/>
+    <circle cx="171.9" cy="67.6" r="0.68" fill-opacity="0.66"/>
+    <circle cx="31.6" cy="58.6" r="0.65" fill-opacity="0.78"/>
+    <circle cx="81.1" cy="114.8" r="0.98" fill-opacity="0.55"/>
+    <circle cx="16.3" cy="26.7" r="0.96" fill-opacity="0.78"/>
+    <circle cx="37.1" cy="143.0" r="0.47" fill-opacity="0.38"/>
+    <circle cx="183.4" cy="51.7" r="1.05" fill-opacity="0.38"/>
+    <circle cx="10.9" cy="58.2" r="0.50" fill-opacity="0.44"/>
+    <circle cx="171.2" cy="85.3" r="0.88" fill-opacity="0.32"/>
+    <circle cx="123.1" cy="12.4" r="0.55" fill-opacity="0.78"/>
+    <circle cx="93.6" cy="50.2" r="0.92" fill-opacity="0.77"/>
+    <circle cx="94.0" cy="106.3" r="0.54" fill-opacity="0.75"/>
+    <circle cx="157.2" cy="134.3" r="0.77" fill-opacity="0.58"/>
+    <circle cx="177.5" cy="98.4" r="0.53" fill-opacity="0.46"/>
+    <circle cx="18.6" cy="56.6" r="1.01" fill-opacity="0.78"/>
+    <circle cx="80.5" cy="103.0" r="0.76" fill-opacity="0.48"/>
+    <circle cx="30.6" cy="55.5" r="0.56" fill-opacity="0.28"/>
+    <circle cx="61.5" cy="10.9" r="0.76" fill-opacity="0.80"/>
+    <circle cx="37.8" cy="146.0" r="0.75" fill-opacity="0.78"/>
+    <circle cx="73.3" cy="63.5" r="0.79" fill-opacity="0.37"/>
+    <circle cx="126.6" cy="84.2" r="0.75" fill-opacity="0.50"/>
+    <circle cx="44.3" cy="159.0" r="0.77" fill-opacity="0.80"/>
+    <circle cx="96.6" cy="58.3" r="0.83" fill-opacity="0.69"/>
+    <circle cx="8.5" cy="94.8" r="0.63" fill-opacity="0.65"/>
+    <circle cx="45.8" cy="78.0" r="0.78" fill-opacity="0.68"/>
+    <circle cx="60.2" cy="69.9" r="0.49" fill-opacity="0.75"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">
+    <line x1="70" y1="30" x2="60" y2="80"/>
+    <line x1="60" y1="80" x2="55" y2="130"/>
+    <line x1="55" y1="130" x2="45" y2="170"/>
+    <line x1="100" y1="30" x2="95" y2="80"/>
+    <line x1="95" y1="80" x2="90" y2="130"/>
+    <line x1="90" y1="130" x2="80" y2="170"/>
+    <line x1="60" y1="80" x2="95" y2="80"/>
+    <line x1="55" y1="130" x2="90" y2="130"/>
+  </g>
+  <g fill="#ffffff" filter="url(#brillo-geminis)">
+    <circle cx="70" cy="30" r="2.8"/>
+    <circle cx="100" cy="30" r="2.0"/>
+    <circle cx="60" cy="80" r="2.4"/>
+    <circle cx="95" cy="80" r="1.6"/>
+    <circle cx="55" cy="130" r="2.0"/>
+    <circle cx="90" cy="130" r="2.4"/>
+    <circle cx="45" cy="170" r="1.6"/>
+    <circle cx="80" cy="170" r="2.4"/>
+  </g>
+  <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">GÉMINIS</text>
+</svg>

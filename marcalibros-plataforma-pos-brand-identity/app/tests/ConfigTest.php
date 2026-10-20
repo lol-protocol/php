@@ -73,4 +73,18 @@ final class ConfigTest extends TestCase
             }
         }
     }
+
+    public function testBackupSettingsHaveDefaultsAndAreValidated(): void
+    {
+        $default = Config::fromEnvironment('/srv/app', []);
+        $this->assertNull($default->backupDirectory);
+        $this->assertSame(7, $default->backupKeep);
+
+        $custom = Config::fromEnvironment('/srv/app', ['MARCALIBROS_BACKUP_DIR' => '/mnt/otro-disco/respaldos/', 'MARCALIBROS_BACKUP_KEEP' => '14']);
+        $this->assertSame('/mnt/otro-disco/respaldos', $custom->backupDirectory);
+        $this->assertSame(14, $custom->backupKeep);
+
+        $this->expectException(\InvalidArgumentException::class);
+        Config::fromEnvironment('/srv/app', ['MARCALIBROS_BACKUP_KEEP' => '0']);
+    }
 }

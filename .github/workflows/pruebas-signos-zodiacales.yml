@@ -1,0 +1,40 @@
+name: Pruebas signos-zodiacales
+
+# Misma convencion que los demas proyectos del repo: solo cuando cambia este
+# proyecto (o este archivo), en los pull requests y en master.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "signos-zodiacales/**"
+      - ".github/workflows/pruebas-signos-zodiacales.yml"
+  pull_request:
+    paths:
+      - "signos-zodiacales/**"
+      - ".github/workflows/pruebas-signos-zodiacales.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  signos-zodiacales:
+    name: "signos-zodiacales: datos válidos y archivos generados al día"
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Valida datos/signos.json (los 30 idiomas en cada nombre y descripcion, y que las
+      # lineas de cada constelacion apunten a estrellas que existan) y falla si algun SVG de
+      # constelaciones/ o signos-por-idioma.md no coincide con lo que genera ese JSON.
+      # Solo usa la biblioteca estandar de Python.
+      - name: Comprobar datos y archivos generados
+        working-directory: signos-zodiacales
+        run: python3 generar.py --comprobar

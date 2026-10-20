@@ -16,8 +16,8 @@
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "Archiving, scientific/historical research and statistics allowed with art. 89 safeguards and minimisation (s. 42); special categories (s. 54); rights restrictions (s. 61); health research regs S.I. 314/2018",
+    "genetic_data": "GDPR art. 9 special category; genetic testing needs consent; genetic data may not be processed for employment, insurance, pensions or mortgages (Disability Act 2005, s. 42)",
     "website_url": "https://www.dataprotection.ie/",
     "language": "English",
     "frameworks": "GDPR/CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "enactment_date": {
         "url": "https://community.isc2.org/t5/GDPR/New-Irish-Data-Protection-Act-introduced/m-p/10886",
@@ -38,9 +38,31 @@
         "url": "https://edpb.europa.eu/about-edpb/our-members_en",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://www.irishstatutebook.ie/2018/en/act/pub/0007/sec0042.html",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://revisedacts.lawreform.ie/eli/2005/act/14/section/42/revised/en/html",
+        "confidence": "high",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "GDPR art. 9 special category; genetic testing needs consent; genetic data may not be processed for employment, insurance, pensions or mortgages (Disability Act 2005, s. 42)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Archiving, scientific/historical research and statistics allowed with art. 89 safeguards and minimisation (s. 42); special categories (s. 54); rights restrictions (s. 61); health research regs S.I. 314/2018"
+      },
       {
         "date": "2026-10-14",
         "field": "enactment_date",

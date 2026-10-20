@@ -12,6 +12,8 @@
 # default): do not add a fastcgi_param that blanks it.
 #
 # Copy to /etc/nginx/sites-available/url-routing, adjust server_name, then:
+#   sudo mkdir -p /var/log/nginx/url-routing   (nginx creates the log files, not
+#                                               the folder: without it nginx -t fails)
 #   sudo ln -sf /etc/nginx/sites-available/url-routing /etc/nginx/sites-enabled/
 #   sudo nginx -t && sudo systemctl reload nginx
 

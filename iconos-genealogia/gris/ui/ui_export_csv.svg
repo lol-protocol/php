@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_ui_export_csv_green" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_ui_export_csv_green_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#9D9D9D"/>
       <stop offset="1" stop-color="#6F6F6F"/>
     </linearGradient>
-    <linearGradient id="grad_ui_export_csv_indigo" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_ui_export_csv_indigo_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8F8F8F"/>
       <stop offset="1" stop-color="#5B5B5B"/>
     </linearGradient>
@@ -14,8 +14,8 @@
     <ellipse cx="33.97" cy="59.5" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M50.8 14.4A8 8 0 0 1 52.4 19.2L52.4 45.2A8 8 0 0 1 44.4 53.2L20.4 53.2A8 8 0 0 1 14 50L11.78 47.04A8 8 0 0 1 10.18 42.24L10.18 16.24A8 8 0 0 1 18.18 8.24L42.18 8.24A8 8 0 0 1 48.58 11.44Z" fill="#414141"/><rect x="10" y="8" width="40" height="42" rx="8" fill="url(#grad_ui_export_csv_green)"/></g>
-    <g><path d="M41.38 52.34L42.64 54.02A8.5 8.5 0 0 0 56.24 43.82L54.98 42.14A8.5 8.5 0 0 0 41.38 52.34Z" fill="#353535"/><circle cx="48" cy="47" r="8.5" fill="url(#grad_ui_export_csv_indigo)"/></g>
+    <g><path d="M50.8 14.4A8 8 0 0 1 52.4 19.2L52.4 45.2A8 8 0 0 1 44.4 53.2L20.4 53.2A8 8 0 0 1 14 50L11.78 47.04A8 8 0 0 1 10.18 42.24L10.18 16.24A8 8 0 0 1 18.18 8.24L42.18 8.24A8 8 0 0 1 48.58 11.44Z" fill="#414141"/><rect x="10" y="8" width="40" height="42" rx="8" fill="url(#grad_ui_export_csv_green_g)"/></g>
+    <g><path d="M41.38 52.34L42.64 54.02A8.5 8.5 0 0 0 56.24 43.82L54.98 42.14A8.5 8.5 0 0 0 41.38 52.34Z" fill="#353535"/><circle cx="48" cy="47" r="8.5" fill="url(#grad_ui_export_csv_indigo_g)"/></g>
   </g>
   <g class="marks">
     <path d="M19 22H41M19 31H41M19 40H41M24.5 17V44M35.5 17V44" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

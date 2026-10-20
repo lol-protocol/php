@@ -83,7 +83,8 @@ with the resolution and the screen size.
 |---|---|---|
 | `iso_216_series.csv` | 33 | ISO 216 A0–A10, B0–B10, C0–C10 |
 | `standards_reference.csv` | 33 | ISO, ANSI, JIS, GB/T and DIN standard numbers per format |
-| `technical_specifications.csv` | 33 | Paper weight (gsm), recommended DPI, finishes |
+| `technical_specifications.csv` | 11 | Paper weight (gsm), recommended DPI and finish for each sheet size that has one |
+| `product_specifications.csv` | 22 | The same for printed products that are not a sheet size (Brochure, Receipt, Sticker…), each linked to its usual paper type when one is clear |
 | `format_equivalence_matrix.csv` | 34 | How close two formats are, and whether one folds, trims or fits into the other (see below) |
 | `fold_compatibility.csv` | 20 | Which formats fold into which (A4 → A5, Letter → half-letter…) |
 | `binding_styles.csv` | 15 | Binding methods with cost factor, durability and page range |
@@ -92,6 +93,8 @@ with the resolution and the screen size.
 | `wcag_contrast.csv` | 29 | WCAG AA/AAA contrast ratios per UI element |
 | `regional_compatibility.csv` | 29 | Primary, secondary and legal standards per region |
 | `paper_types.csv` | 50 | Named paper stock — color, texture, finish and weight — independent of sheet size (see below) |
+| `finish_types.csv` | 13 | The finish vocabulary (Uncoated, Matte, Glossy, Thermal…) every `finish` and `finish_type` column draws from |
+| `paper_weight_standards.csv` | 12 | Standard paper weights: gsm with its bond, text and cover pound equivalents |
 | `paper_type_translations.csv` | 50 | `paper_types.csv` names in the 28 languages the demo doesn't cover with `type_name`/`type_name_en` |
 
 ## Columns
@@ -141,6 +144,16 @@ Spanish is spoken), `type_name_en`, `category`, `color`, `texture`,
 `finish`, `weight_gsm_range`, `common_use`, `notes`. Weight ranges are
 typical, not a spec any mill is bound to — paper names and grammages vary
 by manufacturer and region more than ISO sheet sizes do.
+
+`finish` holds one term of `finish_types.csv`; what makes a particular
+paper special ("coated one side", "with watermark") goes in `notes`. The
+`finish_type` of `technical_specifications.csv` and
+`product_specifications.csv` uses the same terms, and `A/B` means either
+(`Matte/Glossy`). `paper_weight_standards.csv` converts between gsm and the
+US basis weights: the pound column that names the row ("20 lb Bond") is the
+nominal figure, the other two are computed from the gsm (bond 17×22", text
+25×38", cover 20×26"). A test checks all of this, so a new paper type
+can't use a finish that isn't in the list.
 
 `specs/paper_type_translations.csv` adds the same 50 names in the other 28
 languages the demo's `app/translations/` covers (one column per language
@@ -200,7 +213,7 @@ See `docs/Tutorials.md` for step-by-step examples and
 
 ### As a database
 
-`database_schema.sql` defines 15 MySQL/MariaDB tables and three views
+`database_schema.sql` defines 16 MySQL/MariaDB tables and three views
 (`v_formats_detailed`, `v_formats_by_measurement`, `v_format_equivalents`).
 `import_database.php` creates them and loads the CSV files:
 
@@ -213,12 +226,14 @@ php document-formats/import_database.php                   # later: reloads the 
 It fills countries (plus two regions, International `XI` and Europe `XE`,
 since every format needs a country), categories, `document_formats`, the
 conversions from the equivalence matrix, technical specifications, book
-margins, per-country compatibility, standard references and `paper_types`
-(unrelated to `document_formats` — it has no format or country column).
-Rows that name something other than a format, such as a product type
-("Vinyl Banner") or a book genre ("Poetry"), are skipped and listed. The
-supplier, price, paper-weight-standards, finish and variant tables have no
-CSV behind them and stay empty. Tested on MySQL 8.0 and MariaDB 10.11.
+margins, per-country compatibility and standard references. It also fills
+the tables that have no format or country behind them: `paper_types`,
+`finish_types`, `paper_weight_standards` and `product_specifications`
+(which points at `paper_types` when a product has a usual paper). Book
+margin rows that name a genre ("Poetry") instead of a format are skipped
+and listed. The `format_suppliers`, `format_prices` and `format_variants`
+tables are reserved: no CSV feeds them, so they stay empty on purpose.
+Tested on MySQL 8.0 and MariaDB 10.11.
 
 ```sql
 SELECT df1.format_name AS from_fmt, df2.format_name AS to_fmt, fc.equivalence_percentage

@@ -287,6 +287,61 @@ final class ApplicationTest extends AppTestCase
         $this->assertStringContainsString('href="/?color=tinta&amp;pagina=2"', $response->body);
     }
 
+    // ------------------------------------------------------ hoja para imprimir
+
+    /** @return list<string> */
+    private function bookmarkIds(string $html, string $prefix): array
+    {
+        preg_match_all('#' . preg_quote($prefix, '#') . '(mb-[a-z-]+-\d+)(?:\.svg)?"#', $html, $m);
+        return $m[1];
+    }
+
+    public function testPrintSheetShowsTheSameBookmarksAsTheCatalogPage(): void
+    {
+        $app = $this->app();
+        foreach ([['categoria' => 'leyes'], ['motivo' => 'faro'], ['categoria' => 'poesia', 'color' => 'ocre', 'pagina' => '2']] as $query) {
+            $catalog = $this->get($app, '/', $query);
+            $sheet = $this->get($app, '/imprimir', $query);
+            $this->assertSame(200, $sheet->status);
+            $this->assertNotEmpty($this->bookmarkIds($sheet->body, '/catalogo/'));
+            $this->assertSame($this->bookmarkIds($catalog->body, '/marcalibro/'), $this->bookmarkIds($sheet->body, '/catalogo/'), json_encode($query));
+        }
+    }
+
+    public function testPrintSheetIsPrivateAndPaged(): void
+    {
+        $app = $this->app();
+        $sheet = $this->get($app, '/imprimir', ['categoria' => 'leyes']);
+        $this->assertStringContainsString('<meta name="robots" content="noindex, nofollow">', $sheet->body);
+        $this->assertStringNotContainsString('og:', $sheet->body);
+        $this->assertStringContainsString('Leyes y reglamentos: 50 marcalibros, página 1 de 2 (25 en esta hoja).', $sheet->body);
+        $this->assertStringContainsString('href="/imprimir?categoria=leyes&amp;pagina=2"', $sheet->body);
+        $this->assertStringContainsString('href="/?categoria=leyes">Volver al catálogo', $sheet->body);
+        $this->assertCount(25, $this->bookmarkIds($sheet->body, '/catalogo/'));
+
+        $second = $this->get($app, '/imprimir', ['categoria' => 'leyes', 'pagina' => '2']);
+        $this->assertStringContainsString('href="/imprimir?categoria=leyes"', $second->body, 'La hoja 2 vuelve a la 1 sin pagina=1.');
+        $this->assertStringContainsString('href="/?categoria=leyes&amp;pagina=2">Volver al catálogo', $second->body);
+    }
+
+    public function testPrintSheetRejectsTheSameInvalidFiltersAsTheCatalog(): void
+    {
+        $app = $this->app();
+        $this->assertSame(404, $this->get($app, '/imprimir', ['categoria' => 'no-existe'])->status);
+        $this->assertSame(404, $this->get($app, '/imprimir', ['motivo' => 'no-existe'])->status);
+        $this->assertSame(404, $this->get($app, '/imprimir', ['color' => 'rojo'])->status);
+        $this->assertSame(404, $this->get($app, '/imprimir', ['motivo' => ['faro']])->status);
+        $this->assertSame(405, $this->post($app, '/imprimir')->status);
+    }
+
+    public function testCatalogListLinksToItsPrintSheetButTheHomeDoesNot(): void
+    {
+        $app = $this->app();
+        $this->assertStringContainsString('href="/imprimir?categoria=teatro&amp;color=verde">Imprimir esta página', $this->get($app, '/', ['categoria' => 'teatro', 'color' => 'verde'])->body);
+        $this->assertStringNotContainsString('/imprimir', $this->get($app, '/')->body);
+        $this->assertStringNotContainsString('Imprimir esta página', $this->get($app, '/', ['categoria' => 'teatro', 'motivo' => 'torres'])->body, 'Sin resultados no hay nada que imprimir.');
+    }
+
     // ------------------------------------------------------- PNG y vista previa
 
     public function testPngIsOfferedAndServedOnlyWhenItWasGenerated(): void

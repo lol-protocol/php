@@ -14,9 +14,11 @@ apellidos de personas, para plataformas de información genealógica.
 - **Detección de fusión fonética** — «Elba Gina» → «el vagina», «Felipe Lotas»
   → «Feli-pelotas»: nombre y apellido, ninguno ofensivo por separado, que al
   leerse seguidos componen otra palabra.
-- **Chat y textos libres**: insultos, amenazas, contenido sexual y
+- **Chat y textos libres**: insultos, amenazas, contenido sexual,
   **acusaciones contra personas** («Fulano estafó a mi familia», «fue
-  condenado», «tiene sida»), que van a revisión humana.
+  condenado», «tiene sida»), **datos sensibles** de un tercero (salud,
+  orientación sexual, religión, origen, filiación, deudas) y **datos
+  personales** (RUT, teléfono, correo, dirección), que van a revisión humana.
 
 Por qué existe esta librería: [`docs/ORIGEN.md`](docs/ORIGEN.md). Qué protege y
 qué no, y qué tiene que hacer la plataforma por fuera del código:
@@ -568,12 +570,26 @@ generan plurales y conjugaciones (ver «Lo que no cubre» para las demás).
   estafó a mi familia», «Mengano fue condenado por violación», «es narco»,
   «tiene sida», «le pone los cuernos a su señora», «funen a ese tipo». No
   traen palabrotas y son lo que más daña en una plataforma de genealogía (ver
-  [`docs/ORIGEN.md`](docs/ORIGEN.md)). Los patrones de `config/chat-topics/spa.php`
-  y `eng.php` las marcan como `difamatorio`, con la etiqueta `acusación de
-  delito`, `dato sensible (salud)`, `vida privada` o `funa o escrache`. Siempre
-  van a **revisión**, nunca se bloquean ni se aprueban solas: pueden ser
-  ciertas, y eso lo decide una persona con una fuente a la vista. «El robo del
-  banco fue en 1920» y «murió de cáncer» no se marcan.
+  [`docs/ORIGEN.md`](docs/ORIGEN.md)). Los patrones de `config/chat-topics/`
+  las marcan como `difamatorio`, con etiquetas como `acusación de delito`,
+  `dato sensible (salud)`, `vida privada` o `funa o escrache`. Siempre van a
+  **revisión**, nunca se bloquean ni se aprueban solas: pueden ser ciertas, y
+  eso lo decide una persona con una fuente a la vista. «El robo del banco fue
+  en 1920» y «murió de cáncer» no se marcan. Español e inglés tienen los
+  patrones completos; portugués, francés, italiano y alemán, los básicos
+  (delito, condena, salud, vida privada, orientación sexual), sin revisión
+  nativa todavía. Los otros 27 idiomas sólo detectan insultos.
+- **Datos sensibles de un tercero, aunque sean ciertos** (Ley 19.628):
+  orientación sexual («era homosexual»), filiación («es hijo ilegítimo»,
+  «fue adoptada»), salud y suicidio, religión, origen étnico y opinión
+  política («la familia era judía», «Fulano es mapuche», «es comunista»),
+  antecedentes penales y deudas («está en DICOM»). Van a revisión: en
+  genealogía son frecuentes, y quien revisa decide si se publican.
+- **Datos personales, en cualquier idioma** (`PersonalData`, tipo `privado`):
+  un RUT con dígito verificador válido, un correo, un teléfono con prefijo o
+  anunciado («fono», «llámalo al») y una dirección anunciada («vive en la
+  calle…»). Van a revisión y salen tapados en el texto censurado; las fechas
+  («1939-1945») no se confunden con teléfonos.
 - **Siglas y consignas de odio, en los 33 idiomas.** «nazi» en la forma de cada
   idioma («nazist», «natsi», «нацист», «ναζί», «נאצי», «نازي»…), «facho», «KKK»,
   «ACAB», «sieg heil», «heil hitler», «white power», «14/88», también camufladas
@@ -798,12 +814,17 @@ en `ModerationEndpoint`, que no toca superglobales: para montarlo en otro
 framework, pásale el método y el cuerpo y emite el `status`, `headers` y
 `body` que devuelve.
 
-**Antes de publicarlo.** El endpoint no guarda nada ni tiene efectos, y no
+**Antes de publicarlo.** El endpoint no guarda los textos que revisa (sólo la cuenta de peticiones, ver abajo), y no
 envía cabeceras CORS: una página de otro origen no puede leer sus respuestas,
 y exigir `application/json` impide que se lo mande como formulario simple.
 Las respuestas llevan `Cache-Control: no-store`, `nosniff` y
-`Content-Security-Policy: default-src 'none'`. Lo que no hace él y debe hacer
-el servidor web es limitar peticiones por cliente: revisar un texto de 10.000
+`Content-Security-Policy: default-src 'none'`. `public/moderar.php` limita las peticiones
+por IP: 30 por minuto (`MODERAR_POR_MINUTO`; `0` lo apaga), y al pasarse
+responde 429 con `Retry-After` (`demasiadas_peticiones`). Lleva la cuenta en
+`MODERAR_LIMITES_DIR` (por omisión, una carpeta en el directorio temporal),
+con la IP guardada como HMAC y no en claro. Detrás de un proxy propio que
+escriba `X-Forwarded-For`, `MODERAR_CONFIAR_X_FORWARDED_FOR=1` usa su último
+valor. Conviene limitar también en el servidor web: revisar un texto de 10.000
 caracteres en los tres idiomas cuesta unos 250 ms de CPU (una línea corta,
 unos 50 ms). Las letras sueltas tienen un tope por línea: pasado ese tope, el
 texto va a revisión sin buscar dentro de él, que costaría segundos. Aun así,

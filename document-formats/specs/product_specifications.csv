@@ -1,0 +1,23 @@
+product_name,typical_size_mm,weight_gsm_range,recommended_dpi,finish_type,uses,notes,paper_type
+Envelope,110x220,80-120,300-600,Matte,Mail,Kraft or white finish,
+Label,25x76,120-200,300-600,Glossy/Matte,Identification,Waterproof labels recommended,Papel adhesivo (etiqueta)
+Brochure,210x297,150-250,300-600,Glossy/Matte,Marketing,Trifold or bifold format,
+Flyer,216x280,150-250,300-600,Glossy/Matte,Advertising,Full color recommended,
+Poster,610x914,150-250,300-600,Matte,Display,Banner paper for outdoor,
+Banner Paper Roll,24-36 width,100-150,300-600,Matte,Large format,Vinyl or fabric backing,
+Certificate,216x279,150-300,600,Glossy/Matte,Official documents,Premium paper recommended,
+Ticket,50x100,150-250,600-1200,Matte,Events,Perforated paper,
+Menu,100x150,200-300,300-600,Matte/Glossy,Hospitality,Durable cardstock recommended,
+Booklet,148x210,80-150,300-600,Matte,Publications,Self-cover or cover + insert,
+Letterhead,210x297,80-120,300-600,Matte,Business,24 lb bond minimum,Papel membrete
+Notebook Cover,210x297,200-350,300-600,Glossy/Matte,Office,Cardstock for durability,
+Sticker,25-254 various,120-300,600-1200,Glossy/Matte,Labels,Self-adhesive vinyl,Papel adhesivo (etiqueta)
+Invoice,210x297,80-100,300-600,Matte,Financial,Plain or pre-printed,Papel bond
+Receipt,75x190,55-80,300-600,Thermal,Point of Sale,Thermal paper for fast printing,Papel térmico
+Packaging,various,120-300,300-600,Matte,Shipping,Corrugated or kraft stock,
+Vinyl Banner,various,200-400,600-1200,Glossy,Outdoor,UV resistant,
+Foam Board,various,500-2000,N/A,N/A,Display,Rigid substrate,
+Canvas,various,400-600,N/A,N/A,Art,Cotton blend,
+Magnetic,various,200-300,300-600,Glossy/Matte,Refrigeration,Magnet backing,
+Vellum,various,80-120,300-600,Translucent,Specialty,Semi-transparent paper,Papel vitela
+Cardstock,various,200-350,600-1200,Matte/Glossy,Cards,Heavy weight paper,

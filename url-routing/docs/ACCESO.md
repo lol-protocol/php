@@ -83,7 +83,7 @@ La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, 
 La guía paso a paso, con las comprobaciones, está en [`DESPLIEGUE.md`](./DESPLIEGUE.md). Lo que importa para el acceso:
 
 - **HTTPS, obligatorio en producción.** El token viaja en la cabecera `Authorization`. Sin HTTPS lo ve cualquiera en la red.
-- **Nginx:** pasa la cabecera a PHP-FPM por defecto; no hace falta nada. Ver [`deploy/nginx.conf.example`](../deploy/nginx.conf.example).
+- **Nginx:** pasa la cabecera a PHP-FPM por defecto; no hace falta nada (probado con nginx 1.24 y PHP-FPM 8.3: clave correcta 200, equivocada 401). Ver [`deploy/nginx.conf.example`](../deploy/nginx.conf.example).
 - **Apache:** `public/.htaccess` incluye la regla que entrega la cabecera a PHP (CGI/FPM la descartan). **No se probó en un Apache real**: comprobarlo con `curl -u x:<token> https://tudominio/0/` (debe dar 200).
 - **Cachés compartidas (CDN, proxy inverso):** las respuestas del propietario, que dependen de quién pregunta, llevan `Cache-Control: private, no-store` y `Vary: Authorization`. La caché no debe quitarlas ni guardar esas respuestas. Lo que se le niega a un visitante es, en cambio, un 404 **sin cabeceras propias**, igual al de una página que no existe: una cabecera que solo tuviera el 404 de lo privado delataría qué ids existen. Si la caché añade o cambia cabeceras, tiene que hacerlo igual en los dos.
 - **Fuerza bruta:** un token de 32 bytes aleatorios no es adivinable. El único freno es el limitador global (100 peticiones por minuto y por IP, `RateLimiter`).
