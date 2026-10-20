@@ -64,8 +64,9 @@ De ahí salen tres certezas que guían todo lo demás:
 | **Nadie publica el RUT, el teléfono, el correo ni la dirección de otro.** | `defamatory-content-review`: `PersonalData` (tipo `privado`), en cualquier idioma. |
 | **Nada que publique la plataforma escapa al filtro.** | `marcalibros-plataforma-pos-brand-identity/app`: el texto de cada marcalibro (se comparte por enlace) pasa por `LabelPolicy`. |
 | **Un insulto disfrazado sigue siendo un insulto.** | `EvasionCleaner`, `MaskedTerms`, letras sueltas y repetidas, signos. |
-| **Las personas vivas son privadas por defecto.** | `url-routing`: `AccessPolicy` y `Privacidad`. Sin defunción y nacida hace menos de 110 años, se muestra como «Persona viva» (ver `url-routing/docs/ACCESO.md`). |
+| **Las personas vivas son privadas por defecto.** | `url-routing`: `AccessPolicy` y `Privacidad`. Sin defunción y nacida hace menos de 110 años, se muestra como «Persona viva»; quien solo figura en colecciones privadas, como «Persona privada» (ver `url-routing/docs/ACCESO.md`). |
 | **Un registro que delata a un vivo tampoco se muestra.** | `url-routing`: sucesos y registros con un participante vivo dan 404. |
+| **Un teléfono de una guía reciente no se publica.** | `phone-directory`: `Privacy`. La base y el enlazador solo devuelven entradas de guías de hace más de 92 años (en 2026, hasta 1933); una guía sin año conocido se oculta (ver `phone-directory/README.md`). |
 | **El filtro propone, una persona decide.** | Las decisiones `review` necesitan una cola y alguien que la atienda. |
 | **Lo que promete el marketing se compara con lo que hace el producto.** | [`marketing/VERIFICACION.md`](marketing/VERIFICACION.md): frase por frase, qué respalda este repositorio y qué no. |
 
@@ -81,10 +82,16 @@ Están identificados y hay que resolverlos antes de abrir la plataforma al públ
    `review` no se muestra hasta que alguien lo apruebe. Lo importado (GEDCOM,
    registros) debería pasar por el mismo filtro.
 2. **`phone-directory` guarda nombre, dirección y teléfono de guías de hasta
-   1975.** Muchas de esas personas viven. Antes de publicar algo de ahí hay que
-   aplicarle la misma regla que en `url-routing`: si podría estar viva, no se
-   muestra. Además, enlazar ediciones de distintos años («la misma persona en
-   1960 y 1975») arma un perfil que ninguna guía tenía por sí sola.
+   1975.** Muchas de esas personas viven. Resuelto en la librería: la base y el
+   enlazador solo devuelven entradas de guías de hace más de 92 años (quien
+   figura en una guía era adulto entonces, y se presume viva a una persona 110
+   años desde su nacimiento), y enlazar ediciones tampoco arma el perfil de
+   quien podría vivir (`Privacy`). Quien lee la base como propietario, como lo
+   hace la línea de comandos, lo ve todo, así que **nada de ahí se publica sin
+   pasar por la vista de visitante**. Falta poder marcar a una persona
+   fallecida entrada por entrada para mostrar una guía reciente, y decidir qué
+   hacer con las razones sociales que llevan un nombre propio (las empresas no
+   se filtran).
 3. **Textos largos.** Resuelto: el endpoint de moderación acepta hasta 10.000
    caracteres y revisa por párrafos lo que pasa de 2.000 (`LongText`). Un texto
    más largo que eso hay que mandarlo en varias partes.
