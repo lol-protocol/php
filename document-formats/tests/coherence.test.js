@@ -95,28 +95,13 @@ test('api_reference.json: endpoints are well formed and its paper examples are r
             assert.ok(field in endpoint, `${endpoint.path}: missing "${field}"`);
         }
     }
+});
 
-    const endpoint = (pathName) => api.endpoints.find(e => e.path === pathName);
-    const sameFields = (example, row, ignore, where) => {
-        for (const [field, value] of Object.entries(example)) {
-            if (ignore.includes(field)) continue;
-            const same = typeof value === 'number' ? value === Number(row[field]) : String(value) === String(row[field]);
-            assert.ok(same, `${where}: "${field}" is ${JSON.stringify(value)} in the example and ${JSON.stringify(row[field])} in the CSV`);
-        }
-    };
-    const typeRow = (name) => paperTypes().find(row => row.type_name === name);
-    const withRange = (row) => ({ ...row, weight_gsm_min: gsmRange(row.weight_gsm_range).min, weight_gsm_max: gsmRange(row.weight_gsm_range).max });
-
-    const listed = endpoint('/paper-types').response.body.data[0];
-    sameFields(listed, withRange(typeRow(listed.type_name)), ['paper_type_id'], '/paper-types');
-    const single = endpoint('/paper-types/{paper_type_id}').response.body.data;
-    sameFields(single, withRange(typeRow(single.type_name)), ['paper_type_id'], '/paper-types/{paper_type_id}');
-
-    const finish = endpoint('/finishes').response.body.finishes[0];
-    sameFields(finish, rows('specs/finish_types.csv').find(row => row.finish_name === finish.finish_name), ['finish_id'], '/finishes');
-
-    const weight = endpoint('/paper-weights').response.body.weights[0];
-    sameFields(weight, rows('specs/paper_weight_standards.csv').find(row => row.weight_name === weight.weight_name), ['weight_id'], '/paper-weights');
+test('api_reference.json: the examples taken from CSV rows are those rows (generate_api_examples.js)', () => {
+    const { execFileSync } = require('node:child_process');
+    // Exits 1 with a message if a CSV changed and the file was not regenerated.
+    assert.doesNotThrow(() => execFileSync(process.execPath, ['generate_api_examples.js', '--check'], { cwd: ROOT, stdio: 'pipe' }),
+        'api_reference.json is out of date: run `node generate_api_examples.js`');
 });
 
 test('no file of the project is named in capitals only, except the usual convention names', () => {
@@ -146,5 +131,47 @@ test('the README table lists every CSV with its real number of rows', () => {
         assert.ok(listed.has(name), `README.md has no row for ${dir}/${name}`);
         const count = rows(`${dir}/${name}`).length;
         assert.equal(listed.get(name), count, `README.md says ${name} has ${listed.get(name)} rows, it has ${count}`);
+    }
+});
+
+// ---- CSV columns, importer and schema must name the same things --------------------------
+
+// Columns of a CSV the importer deliberately does not read, with the reason.
+const NOT_IMPORTED = {
+    'countries/countries_200_complete.csv': ['region', 'primary_language', 'iso_3166_alpha3', 'currency'], // the schema keeps only name, code and measurement system
+    'countries/country_compatibility_guide.csv': ['secondary_formats'], // only the first of the alternatives is the primary format
+    'formats/book_margins.csv': ['top_inches', 'bottom_inches', 'inner_inches', 'outer_inches'], // the schema stores millimetres only
+    'specs/format_equivalence_matrix.csv': ['can_rotate', 'can_fold', 'can_trim'], // no column for them; the level is computed from similarity_percent
+    'specs/standards_reference.csv': ['iso_standard', 'iso_number', 'ansi_standard', 'ansi_number', 'jis_standard', 'jis_number',
+        'gb_standard', 'gb_number', 'din_standard', 'din_number', 'countries_count'], // read through STANDARD_BODIES, by prefix
+    'specs/technical_specifications.csv': ['format_size_mm'], // the size comes from the catalog row of the same format
+};
+
+test('import_database.php reads every column of every CSV it loads, except the ones listed here with a reason', () => {
+    const php = read('import_database.php');
+    const files = [...new Set([...php.matchAll(/'((?:specs|countries|formats)\/[a-z0-9_]+\.csv)'/g)].map(m => m[1]))];
+    assert.ok(files.length >= 20, `only ${files.length} CSV files found in the importer`);
+
+    for (const file of files) {
+        const headers = read(file).split('\n')[0].split(',').map(h => h.trim());
+        const unused = headers.filter(h => !php.includes(`['${h}']`));
+        assert.deepEqual(unused.sort(), [...(NOT_IMPORTED[file] ?? [])].sort(),
+            `${file}: columns the importer does not read (list them in NOT_IMPORTED with the reason, or read them)`);
+    }
+});
+
+test('every INSERT of import_database.php names columns that exist in database_schema.sql', () => {
+    const php = read('import_database.php');
+    const schema = read('database_schema.sql');
+    const tables = new Map([...schema.matchAll(/CREATE TABLE (?:IF NOT EXISTS )?(\w+)\s*\(([\s\S]*?)\n\)/g)]
+        .map(m => [m[1], new Set(m[2].split('\n').map(line => line.trim().match(/^(\w+)\s+[A-Z]/)?.[1]).filter(Boolean))]));
+    assert.ok(tables.size >= 15, `only ${tables.size} tables found in the schema`);
+
+    const inserts = [...php.matchAll(/INSERT (?:IGNORE )?INTO (\w+)\s*\(([^)]*)\)/g)];
+    assert.ok(inserts.length >= 12, `only ${inserts.length} INSERTs found in the importer`);
+    for (const [, table, columns] of inserts) {
+        assert.ok(tables.has(table), `${table} is not a table of database_schema.sql`);
+        const missing = columns.split(',').map(c => c.trim()).filter(c => !tables.get(table).has(c));
+        assert.deepEqual(missing, [], `${table}: columns the schema does not have`);
     }
 });
