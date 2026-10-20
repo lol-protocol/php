@@ -50,6 +50,25 @@ final class Medidas
     }
 
     /**
+     * Paneles que dibuja cada vista. El sobrelomo lleva también las solapas si el libro las tiene.
+     *
+     * @return list<string>
+     */
+    public function paneles(string $vista): array
+    {
+        return match ($vista) {
+            'portada' => ['portada'],
+            'contratapa' => ['contratapa'],
+            'lomo' => ['lomo'],
+            'cubierta' => ['contratapa', 'lomo', 'portada'],
+            'sobrelomo' => $this->libro->solapasMm > 0
+                ? ['solapa-contratapa', 'contratapa', 'lomo', 'portada', 'solapa-portada']
+                : ['contratapa', 'lomo', 'portada'],
+            default => throw new \InvalidArgumentException("Vista desconocida: '$vista'."),
+        };
+    }
+
+    /**
      * Zona que muestra cada archivo: el panel, más el sangrado de los bordes que quedan al aire.
      * `cubierta` es contratapa, lomo y portada; `sobrelomo` es la cubierta completa con solapas.
      */

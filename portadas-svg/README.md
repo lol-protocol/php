@@ -37,7 +37,9 @@ Para varios libros a la vez, o para escribir en otra carpeta:
 php bin/generar.php libro1.json libro2.json --salida=/ruta/de/salida
 ```
 
-Cada pieza es un recorte del mismo dibujo de la cubierta completa, así que una pieza suelta coincide exactamente con su parte de la cubierta.
+Cada libro escribe en una carpeta con el nombre de su archivo JSON, así que dos archivos con el mismo nombre se rechazan antes de escribir nada. `php bin/generar.php --help` muestra el uso.
+
+Cada pieza usa las coordenadas de la cubierta completa, pero lleva solo su parte del dibujo: una pieza suelta coincide exactamente con su parte de la cubierta y no arrastra los otros paneles.
 
 ## El JSON de un libro
 
@@ -66,6 +68,8 @@ Solo `titulo`, `autor` y las páginas (o `lomo_mm`) son obligatorios. Lo demás 
 | `solapa_portada` | vacío | Texto de la solapa interior de la portada (solo con solapas). |
 
 El de `ejemplos/platon-apologia.json` usa casi todos los campos; el de Sun Tzu, solo los básicos.
+
+Los caracteres de control de un texto pegado se limpian al escribir el SVG: el salto de página que trae un PDF se lee como espacio y los demás se quitan, porque XML no los admite.
 
 ## Medidas
 
@@ -135,7 +139,7 @@ Si cambias el generador, regenera los ejemplos con `php bin/generar.php ejemplos
 
 ```
 bin/generar.php          línea de comandos
-src/                     Libro, Medidas, Texto, Color, Degradado, Svg, Generador y las plantillas
+src/                     Libro, Medidas, Texto, Color, Degradado, Svg, Generador, Cli, Archivos y las plantillas
 ejemplos/*.json          libros de ejemplo
 ejemplos/salida/         SVG de los ejemplos, versionados y comprobados por CI
 pruebas/ejecutar.php     pruebas unitarias, sin dependencias

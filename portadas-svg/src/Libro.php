@@ -40,6 +40,9 @@ final class Libro
 
     public static function desdeArchivo(string $ruta): self
     {
+        if (!is_file($ruta) || !is_readable($ruta)) {
+            throw new \InvalidArgumentException("$ruta: no existe o no se puede leer.");
+        }
         $contenido = file_get_contents($ruta);
         if ($contenido === false) {
             throw new \InvalidArgumentException("No se pudo leer $ruta.");

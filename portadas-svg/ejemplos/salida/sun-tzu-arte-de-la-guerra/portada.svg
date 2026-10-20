@@ -6,7 +6,7 @@
 <stop offset="1" stop-color="#111316"/>
 </linearGradient>
 </defs>
-<rect x="0" y="0" width="280.8" height="216" fill="url(#fondo-degradado)"/>
+<rect x="142.8" y="0" width="138" height="216" fill="url(#fondo-degradado)"/>
 <rect x="158.8" y="17" width="18" height="2.4" fill="#c8a24a"/>
 <text x="158.8" y="45.8" font-family="&apos;Helvetica Neue&apos;, Helvetica, Arial, sans-serif" font-size="16" text-anchor="start" fill="#f2efe6" font-weight="bold"><tspan x="158.8" dy="0">El arte de</tspan>
 <tspan x="158.8" dy="21.6">la guerra</tspan>
@@ -16,18 +16,4 @@
 </text>
 <text x="158.8" y="201" font-family="&apos;Helvetica Neue&apos;, Helvetica, Arial, sans-serif" font-size="3.2" text-anchor="start" fill="#f2efe6"><tspan x="158.8" dy="0">Edición de ejemplo · Clásicos</tspan>
 </text>
-<line x1="19" y1="25" x2="31" y2="25" stroke="#c8a24a" stroke-width="0.8"/>
-<text x="19" y="40.36" font-family="&apos;Helvetica Neue&apos;, Helvetica, Arial, sans-serif" font-size="4.2" text-anchor="start" fill="#f2efe6"><tspan x="19" dy="0">Tratado militar chino atribuido al general</tspan>
-<tspan x="19" dy="5.67">Sun Tzu, que según la tradición lo escribió</tspan>
-<tspan x="19" dy="5.67">hace unos 2.500 años.</tspan>
-<tspan x="19" dy="5.67"> </tspan>
-<tspan x="19" dy="5.67">Sus trece capítulos hablan de cálculo,</tspan>
-<tspan x="19" dy="5.67">engaño, espionaje y de la mejor victoria: la</tspan>
-<tspan x="19" dy="5.67">que se obtiene sin combatir.</tspan>
-</text>
-<text x="19" y="201" font-family="&apos;Helvetica Neue&apos;, Helvetica, Arial, sans-serif" font-size="3.2" text-anchor="start" fill="#f2efe6"><tspan x="19" dy="0">Edición de ejemplo · Clásicos</tspan>
-</text>
-<rect x="80" y="175" width="42" height="26" fill="#ffffff"/>
-<rect x="138" y="0" width="4.8" height="216" fill="#c8a24a"/>
-<text transform="translate(139.392 108) rotate(90)" font-family="&apos;Helvetica Neue&apos;, Helvetica, Arial, sans-serif" font-size="2.88" text-anchor="middle" fill="#1c1f24">El arte de la guerra · Sun Tzu</text>
 </svg>

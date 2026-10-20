@@ -10,8 +10,9 @@ use PortadasSvg\Plantillas\Sobria;
 /**
  * Plantilla de cubierta: dibuja la portada, la contratapa, el lomo y las solapas.
  *
- * Todo se dibuja una sola vez sobre el lienzo de la cubierta completa (ver Medidas), y cada archivo es
- * solo un recorte: así una pieza suelta coincide exactamente con su parte de la cubierta.
+ * Todo se dibuja con las coordenadas de la cubierta completa (ver Medidas), pero cada pieza lleva solo
+ * sus paneles: así una pieza suelta coincide exactamente con su parte de la cubierta y no arrastra el
+ * resto del dibujo.
  *
  * Una plantilla concreta implementa `portada()` y `coloresPorDefecto()`. Puede cambiar también la
  * fuente, el ancho medio de letra y los colores del lomo.
@@ -44,17 +45,23 @@ abstract class Plantilla
     /** @return array{fondo: string, texto: string, acento: string} */
     abstract public function coloresPorDefecto(): array;
 
-    /** Dibuja la cubierta completa, con sangrado. */
-    public function dibujar(Libro $libro, Medidas $medidas): string
+    /**
+     * Dibuja una vista (ver Medidas::vista): el fondo de esa zona y solo los paneles que caen en ella.
+     * Sin argumento, dibuja todo: la cubierta completa con sus solapas, si las tiene.
+     */
+    public function dibujar(Libro $libro, Medidas $medidas, string $vista = 'sobrelomo'): string
     {
         $svg = $libro->degradado?->defs($medidas->lienzo()) ?? '';
-        $svg .= $this->rectangulo($medidas->lienzo(), ['fill' => $this->relleno($libro)]);
-        $svg .= $this->portada($libro, $medidas->pieza('portada'));
-        $svg .= $this->contratapa($libro, $medidas->pieza('contratapa'));
-        $svg .= $this->lomo($libro, $medidas->pieza('lomo'));
-        if ($libro->solapasMm > 0) {
-            $svg .= $this->solapa($libro->solapaContratapa, $libro, $medidas->pieza('solapa-contratapa'));
-            $svg .= $this->solapa($libro->solapaPortada, $libro, $medidas->pieza('solapa-portada'));
+        $svg .= $this->rectangulo($medidas->vista($vista), ['fill' => $this->relleno($libro)]);
+        foreach ($medidas->paneles($vista) as $panel) {
+            $zona = $medidas->pieza($panel);
+            $svg .= match ($panel) {
+                'portada' => $this->portada($libro, $zona),
+                'contratapa' => $this->contratapa($libro, $zona),
+                'lomo' => $this->lomo($libro, $zona),
+                'solapa-contratapa' => $this->solapa($libro->solapaContratapa, $libro, $zona),
+                'solapa-portada' => $this->solapa($libro->solapaPortada, $libro, $zona),
+            };
         }
 
         return $svg;

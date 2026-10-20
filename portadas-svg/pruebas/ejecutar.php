@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 require __DIR__ . '/../src/autocarga.php';
 
+use PortadasSvg\Archivos;
+use PortadasSvg\Cli;
 use PortadasSvg\Color;
 use PortadasSvg\Degradado;
 use PortadasSvg\Generador;
@@ -55,18 +57,6 @@ function lanza(string $clase, callable $cuerpo): void
 function libroDeEjemplo(array $cambios = []): Libro
 {
     return Libro::desdeArray('prueba', $cambios + ['titulo' => 'Título de prueba', 'autor' => 'Autor de prueba', 'paginas' => 112]);
-}
-
-function borrarDirectorio(string $directorio): void
-{
-    foreach (glob("$directorio/*") ?: [] as $ruta) {
-        if (is_dir($ruta)) {
-            borrarDirectorio($ruta);
-        } else {
-            unlink($ruta);
-        }
-    }
-    rmdir($directorio);
 }
 
 /** Libro con todos los textos largos, para forzar los ajustes. */
@@ -282,14 +272,14 @@ $pruebas = [
             verdadero($xml->loadXML((string) file_get_contents($archivo)), "$archivo no es XML válido");
         }
 
-        borrarDirectorio($dir);
+        Archivos::borrarDirectorio($dir);
     },
 
     'El título se escapa en el SVG' => function (): void {
         $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
         Generador::escribir(libroDeEjemplo(['titulo' => 'Ana & Luis']), $dir);
         verdadero(str_contains((string) file_get_contents("$dir/portada.svg"), 'Ana &amp; Luis'), 'el & no se escapó');
-        borrarDirectorio($dir);
+        Archivos::borrarDirectorio($dir);
     },
 
     'Color mezcla y decide si un color es claro' => function (): void {
@@ -341,7 +331,7 @@ $pruebas = [
             verdadero(!str_contains($svg, '<script') && !str_contains($svg, '<html'), "$archivo lleva HTML o JS");
         }
         verdadero(str_contains((string) file_get_contents("$dir/medidas.txt"), 'Fondo: degradado lineal, 90°'), 'medidas.txt no describe el fondo');
-        borrarDirectorio($dir);
+        Archivos::borrarDirectorio($dir);
     },
 
     'El proyecto no tiene HTML ni JS' => function (): void {
@@ -394,7 +384,7 @@ $pruebas = [
         igual(['portada.svg', 'contratapa.svg', 'lomo.svg', 'cubierta-completa.svg', 'medidas.txt'], $sinSolapas);
         verdadero(!is_file("$dir/sobrelomo.svg"), 'sigue en la carpeta el sobrelomo de la escritura anterior');
         verdadero(!str_contains((string) file_get_contents("$dir/medidas.txt"), 'sobrelomo.svg'), 'medidas.txt sigue listando el sobrelomo');
-        borrarDirectorio($dir);
+        Archivos::borrarDirectorio($dir);
     },
 
     'Un JSON roto nombra el archivo que falla' => function (): void {
@@ -408,6 +398,133 @@ $pruebas = [
         } finally {
             unlink($ruta);
         }
+    },
+
+    'Svg::e quita los caracteres que XML no admite' => function (): void {
+        // El salto de página y el tabulador vertical, típicos al copiar de un PDF, se leen como espacio.
+        igual('a b c', Svg::e("a\x0Cb\x0Bc"));
+        igual('abc', Svg::e("a\x01b\x00c"));
+        igual("a\u{FFFD}b", Svg::e("a\xFFb"));
+    },
+
+    'Un salto de página pegado en un texto no rompe los SVG' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        Generador::escribir(libroDeEjemplo(['titulo' => "Título\x0Ccon control", 'contratapa' => "Texto\x0Bcon otro", 'solapas_mm' => 90]), $dir);
+        libxml_use_internal_errors(true);
+        foreach (glob("$dir/*.svg") ?: [] as $archivo) {
+            $xml = new DOMDocument();
+            verdadero($xml->load($archivo), "$archivo no es XML válido");
+        }
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'Los paneles de cada vista' => function (): void {
+        $con = new Medidas(libroDeEjemplo(['solapas_mm' => 90]));
+        igual(['contratapa', 'lomo', 'portada'], $con->paneles('cubierta'));
+        igual(['solapa-contratapa', 'contratapa', 'lomo', 'portada', 'solapa-portada'], $con->paneles('sobrelomo'));
+        igual(['contratapa', 'lomo', 'portada'], (new Medidas(libroDeEjemplo()))->paneles('sobrelomo'));
+        lanza(InvalidArgumentException::class, fn () => $con->paneles('inexistente'));
+    },
+
+    'Cada pieza lleva solo su parte del dibujo' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        // El título sale en el <title> de todas las piezas, así que la portada se identifica por su subtítulo.
+        Generador::escribir(libroDeEjemplo([
+            'subtitulo' => 'SUBTITULO-X',
+            'contratapa' => 'TEXTO-CONTRATAPA',
+            'solapa_contratapa' => 'TEXTO-SOLAPA-C',
+            'solapa_portada' => 'TEXTO-SOLAPA-P',
+            'solapas_mm' => 90,
+        ]), $dir);
+        $esta = static fn (string $archivo, string $texto): bool => str_contains((string) file_get_contents("$dir/$archivo"), $texto);
+
+        verdadero($esta('portada.svg', 'SUBTITULO-X'), 'la portada no lleva su subtítulo');
+        verdadero(!$esta('portada.svg', 'TEXTO-CONTRATAPA') && !$esta('portada.svg', 'TEXTO-SOLAPA'), 'portada.svg arrastra otros paneles');
+        verdadero($esta('contratapa.svg', 'TEXTO-CONTRATAPA'), 'la contratapa no lleva su texto');
+        verdadero(!$esta('contratapa.svg', 'SUBTITULO-X') && !$esta('contratapa.svg', 'TEXTO-SOLAPA'), 'contratapa.svg arrastra otros paneles');
+        verdadero(!$esta('lomo.svg', 'SUBTITULO-X') && !$esta('lomo.svg', 'TEXTO-CONTRATAPA') && !$esta('lomo.svg', 'TEXTO-SOLAPA'), 'lomo.svg arrastra otros paneles');
+        foreach (['SUBTITULO-X', 'TEXTO-CONTRATAPA', 'TEXTO-SOLAPA-C', 'TEXTO-SOLAPA-P'] as $texto) {
+            verdadero($esta('sobrelomo.svg', $texto), "sobrelomo.svg no lleva $texto");
+        }
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'El CLI explica el uso y rechaza lo que no entiende' => function (): void {
+        $correr = static function (array $argumentos): array {
+            $salida = '';
+            $errores = '';
+            // Un aviso de PHP se vuelve excepción para que no se cuele sin que lo vea la prueba.
+            set_error_handler(static function (int $nivel, string $mensaje): never {
+                throw new ErrorException($mensaje);
+            });
+            try {
+                $codigo = Cli::ejecutar(
+                    $argumentos,
+                    dirname(__DIR__),
+                    static function (string $texto) use (&$salida): void {
+                        $salida .= $texto;
+                    },
+                    static function (string $texto) use (&$errores): void {
+                        $errores .= $texto;
+                    },
+                );
+            } finally {
+                restore_error_handler();
+            }
+
+            return [$codigo, $salida, $errores];
+        };
+
+        [$codigo, $salida] = $correr(['--help']);
+        igual(0, $codigo);
+        verdadero(str_contains($salida, 'Uso:'), '--help no imprime el uso');
+
+        [$codigo, , $errores] = $correr(['--nada']);
+        igual(2, $codigo);
+        verdadero(str_contains($errores, '--nada'), 'el error no nombra la opción desconocida');
+
+        igual(2, $correr(['--salida='])[0]);
+        igual(2, $correr([])[0]);
+        igual(2, $correr(['--comprobar', 'libro.json'])[0]);
+
+        [$codigo, , $errores] = $correr(['/no/existe.json']);
+        igual(1, $codigo);
+        verdadero(str_contains($errores, '/no/existe.json'), 'el error no nombra el archivo');
+        verdadero(!str_contains($errores, 'Failed to open'), 'se coló un aviso de PHP');
+    },
+
+    'Dos libros con el mismo nombre de archivo se rechazan sin escribir nada' => function (): void {
+        $dir = sys_get_temp_dir() . '/portadas-svg-prueba-' . bin2hex(random_bytes(4));
+        mkdir("$dir/a", 0777, true);
+        mkdir("$dir/b", 0777, true);
+        file_put_contents("$dir/a/libro.json", '{"titulo":"A","autor":"X","paginas":100}');
+        file_put_contents("$dir/b/libro.json", '{"titulo":"B","autor":"Y","paginas":100}');
+
+        $errores = '';
+        $codigo = Cli::ejecutar(
+            ["$dir/a/libro.json", "$dir/b/libro.json", "--salida=$dir/out"],
+            dirname(__DIR__),
+            static function (string $texto): void {
+            },
+            static function (string $texto) use (&$errores): void {
+                $errores .= $texto;
+            },
+        );
+
+        igual(1, $codigo);
+        verdadero(str_contains($errores, "$dir/a/libro.json") && str_contains($errores, "$dir/b/libro.json"), 'el error no nombra los dos archivos');
+        verdadero(!is_dir("$dir/out"), 'se escribió algo antes de detectar el repetido');
+        Archivos::borrarDirectorio($dir);
+    },
+
+    'El CLI comprueba los ejemplos y no deja carpetas temporales' => function (): void {
+        $antes = count(glob(sys_get_temp_dir() . '/portadas-svg-*') ?: []);
+        $codigo = Cli::ejecutar(['--comprobar'], dirname(__DIR__), static function (string $texto): void {
+        }, static function (string $texto): void {
+        });
+
+        igual(0, $codigo);
+        igual($antes, count(glob(sys_get_temp_dir() . '/portadas-svg-*') ?: []));
     },
 
     'Los libros de ejemplo se cargan' => function (): void {

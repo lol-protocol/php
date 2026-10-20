@@ -28,9 +28,10 @@ final class Generador
 
         // Todo se calcula antes de tocar el disco: si algo falla al dibujar, la carpeta no cambia.
         $medidas = new Medidas($libro);
-        $cuerpo = Plantilla::crear($libro->plantilla)->dibujar($libro, $medidas);
+        $plantilla = Plantilla::crear($libro->plantilla);
         $contenidos = [];
         foreach (self::piezas($libro) as $archivo => [$vista, $nombre]) {
+            $cuerpo = $plantilla->dibujar($libro, $medidas, $vista);
             $contenidos[$archivo] = Svg::documento($medidas->vista($vista), "{$libro->titulo} · $nombre", $cuerpo);
         }
         $contenidos['medidas.txt'] = self::resumen($libro, $medidas);

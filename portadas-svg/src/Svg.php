@@ -8,8 +8,8 @@ namespace PortadasSvg;
 final class Svg
 {
     /**
-     * Documento SVG del tamaño físico de `vista`. `cuerpo` dibuja el lienzo entero y el viewBox
-     * recorta lo que queda fuera de la vista.
+     * Documento SVG del tamaño físico de `vista`, con el viewBox puesto sobre esa zona del lienzo.
+     * `cuerpo` dibuja solo lo que cae dentro de la vista.
      */
     public static function documento(Rectangulo $vista, string $titulo, string $cuerpo): string
     {
@@ -55,10 +55,17 @@ final class Svg
         return $salida;
     }
 
-    /** Escapa texto para contenido y atributos XML. */
+    /**
+     * Escapa texto para contenido y atributos XML, y quita lo que XML 1.0 no admite: casi todos los
+     * caracteres de control y los dos no-caracteres U+FFFE y U+FFFF. El salto de página y el tabulador
+     * vertical, típicos al copiar de un PDF, se leen como espacio. Un UTF-8 roto se sustituye por U+FFFD.
+     */
     public static function e(string $texto): string
     {
-        return htmlspecialchars($texto, ENT_QUOTES | ENT_XML1, 'UTF-8');
+        $texto = str_replace(["\x0B", "\x0C"], ' ', $texto);
+        $escapado = htmlspecialchars($texto, ENT_QUOTES | ENT_XML1 | ENT_SUBSTITUTE, 'UTF-8');
+
+        return (string) preg_replace('/[\x00-\x08\x0E-\x1F\x{FFFE}\x{FFFF}]/u', '', $escapado);
     }
 
     /** Número con punto decimal y sin ceros sobrantes: 135, 4.8, 461.6. */
