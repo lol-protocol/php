@@ -23,6 +23,8 @@ const {
     escapeHtml, splitCSVLine, parseCSV, sizeSimilarity, FORMAT_CATALOG_FILES, loadFormatCatalogs,
     FormatConverter, FormatValidator, FormatBatchProcessor, DocumentGenerator,
     BookMarginManager, ScreenDeviceManager, SpecificationManager, LocalizationManager,
+    MM_PER_INCH, mmToInches, inchesToMm, fixed, fetchCSV, indexByName, closestNames, UnknownFormatError,
+    DocumentFormats, FormatLoader, FormatSearcher, FormatStatistics,
 } = require('../app/document-formats.js');
 
 const quiet = async (fn) => {
@@ -127,7 +129,7 @@ test('device loading reads every device file and filters by size and type', asyn
 
     const phone = phones[0];
     assert.equal(devices.getDevice(phone.device_name, 'phone'), phone);
-    assert.equal(devices.getDevice(phone.device_name, 'tablet'), undefined);
+    assert.equal(devices.getDevice(phone.device_name, 'tablet'), null);
 });
 
 test('every specification file loads through its configured path', async () => {
@@ -249,4 +251,95 @@ test('every catalog has the same columns in the same order', () => {
     for (const file of FORMAT_CATALOG_FILES) {
         assert.equal(headerOf(file), expected, `${file} has different columns`);
     }
+});
+
+test('inches and millimetres convert with one factor', () => {
+    assert.equal(MM_PER_INCH, 25.4);
+    assert.equal(mmToInches(25.4), 1);
+    assert.equal(fixed(inchesToMm(8.5)), '215.9');
+    assert.equal(fixed(21), '21.0');
+    assert.equal(fixed(1 / 3, 2), '0.33');
+});
+
+test('fetchCSV stops at a missing file instead of reading the error page as rows', async () => {
+    await assert.rejects(fetchCSV('../specs/does_not_exist.csv'), /HTTP 404 for \.\.\/specs\/does_not_exist\.csv/);
+    assert.ok((await fetchCSV('../specs/paper_types.csv')).length > 0);
+});
+
+test('a loader that cannot read its file logs it and keeps an empty list', async () => {
+    const error = console.error;
+    console.error = () => {};
+    try {
+        const loader = new FormatLoader('../formats/nope.csv');
+        assert.deepEqual(await loader.load(), []);
+    } finally { console.error = error; }
+});
+
+test('indexByName keeps the last row of a repeated name', () => {
+    const index = indexByName([{ format_name: 'A4', width_mm: 1 }, { format_name: 'A4', width_mm: 2 }]);
+    assert.equal(index.size, 1);
+    assert.equal(index.get('A4').width_mm, 2);
+});
+
+test('an unknown format name suggests the closest ones', () => {
+    const formats = ['A3', 'A4', 'A5', 'Letter', 'Legal'].map(format_name => ({ format_name }));
+    assert.deepEqual(closestNames('A44', formats.map(f => f.format_name)), ['A4', 'A3', 'A5']);
+
+    const error = new UnknownFormatError('A44', formats);
+    assert.equal(error.name, 'UnknownFormatError');
+    assert.equal(error.formatName, 'A44');
+    assert.deepEqual(error.suggestions, ['A4', 'A3', 'A5']);
+    assert.match(error.message, /^Format A44 not found \(did you mean A4, A3, A5\?\)$/);
+    assert.ok(error instanceof Error);
+
+    const generator = new DocumentGenerator(formats.map(f => ({ ...f, width_mm: 1, height_mm: 1 })));
+    for (const call of [() => generator.createTemplate('A44'), () => generator.generateHTML('A44'), () => generator.generatePrintCSS('A44')]) {
+        assert.throws(call, UnknownFormatError);
+    }
+    const check = new FormatValidator(formats).validateForPrinting('A44');
+    assert.equal(check.valid, false);
+    assert.deepEqual(check.suggestions, ['A4', 'A3', 'A5']);
+});
+
+test('a single thing that is not there is null, a list that is empty is []', async () => {
+    const { formats } = await loadFormatCatalogs();
+    assert.equal(new FormatConverter(formats).convert('A4', 'Nope'), null);
+    assert.deepEqual(new FormatConverter(formats).findEquivalents('Nope'), []);
+    assert.equal(new BookMarginManager([]).getMargins('Nope'), null);
+    assert.equal(new BookMarginManager([]).calculatePrintableArea('Nope', 1, 1), null);
+
+    const devices = new ScreenDeviceManager();
+    assert.equal(devices.getDevice('Nope'), null);
+    assert.equal(devices.getPixelDensity('Nope'), null);
+
+    const specs = new SpecificationManager();
+    await specs.loadAllSpecifications();
+    assert.equal(specs.getPaperType('Nope'), null);
+    assert.deepEqual(specs.getPaperTypesByCategory('Nope'), []);
+});
+
+test('rows handed out by SpecificationManager cannot be changed for the next caller', async () => {
+    const specs = new SpecificationManager();
+    await specs.loadAllSpecifications();
+    const row = specs.getAllPaperTypes()[0];
+    assert.throws(() => { 'use strict'; row.type_name = 'changed'; }, TypeError);
+    assert.throws(() => { 'use strict'; specs.getAllPaperTypes().push({}); }, TypeError);
+    const byCategory = specs.getPaperTypesByCategory(row.category);
+    assert.throws(() => { 'use strict'; byCategory.pop(); }, TypeError);
+    assert.equal(specs.getPaperTypesByCategory(row.category), byCategory, 'the second call is the cached one');
+});
+
+test('DocumentFormats.load wires every manager from one call', async () => {
+    const docs = await quiet(() => DocumentFormats.load());
+    assert.ok(docs.formats.length > 250);
+    assert.ok(docs.lastModified instanceof Date);
+    assert.ok(docs.converter.convert('Letter', 'A4'));
+    assert.ok(docs.specs.getAllPaperTypes().length > 0);
+    assert.ok(docs.margins.getMargins('Trade Paperback'));
+    assert.ok(docs.devices.monitors.length > 0);
+    assert.ok(docs.statistics.getStats().totalCountries > 20);
+    assert.ok(docs.searcher.search('A4').length > 0);
+
+    const light = await quiet(() => DocumentFormats.load({ only: [] }));
+    assert.equal(light.specs.getAllPaperTypes().length, 0, 'what is left out is not loaded');
 });
