@@ -8,7 +8,7 @@ Uso (desde esta carpeta; las rutas apuntan a copias locales de las fuentes, ver 
         --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \\
         --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \\
         --emigrantes emigrantes-gapminder.csv --poblacion-gapminder poblacion-gapminder.csv \\
-        --pib-ppa pib-ppa-gapminder.csv --pib-bm gdp.csv --poblacion-bm population.csv
+        --pib-ppa pib-ppa-gapminder.csv --pib-pc-bm pib-pc.csv --poblacion-bm population.csv
 
 Escribe:
     poblacion_larga.csv  serie larga de población por país (codigo, anio, poblacion)
@@ -33,8 +33,8 @@ Natalidad (ver natalidad_pais): la tasa bruta de Gapminder (1800-2015) y, hasta 
 fecundidad; uno sin ninguna de las dos no entra en natalidad.csv (historia_poblacion usa la de
 su época).
 
-PIB per cápita nominal: PIB del Banco Mundial (NY.GDP.MKTP.CD) entre su población (SP.POP.TOTL),
-del último año entre ANIO_PIB_NOMINAL_MINIMO y ANIO_PIB_NOMINAL con los dos datos.
+PIB per cápita nominal: el indicador del Banco Mundial (NY.GDP.PCAP.CD), del último año entre
+ANIO_PIB_NOMINAL_MINIMO y ANIO_PIB_NOMINAL con dato.
 PIB per cápita PPA: el de Gapminder de ANIO_PIB_PPA, en dólares internacionales de 2021 (basado
 en el Banco Mundial).
 IDH: el del PNUD de ANIO_IDH, tal como lo publica Gapminder.
@@ -53,7 +53,7 @@ from historia_poblacion import ANIO_FIN, poblacion_en
 AQUI = Path(__file__).resolve().parent
 ANIO_POBLACION = "2024"
 ANIO_PIB_PPA = 2023
-ANIO_PIB_NOMINAL = 2023
+ANIO_PIB_NOMINAL = 2024
 ANIO_PIB_NOMINAL_MINIMO = 2021  # un dato más viejo no se usa: el país queda vacío
 ANIO_IDH = 2023
 ANIO_MINIMO_ALFABETIZACION = 2010  # la UNESCO no publica todos los años, y casi nunca en países ricos
@@ -67,8 +67,6 @@ REGION_HYDE = {"África": "Africa", "Asia": "Asia", "Europa": "Europe", "Oceaní
 # Nombres que la fuente usa distinto de co2-data.
 ALIAS = {"Czech Republic": "CZE", "Macedonia": "MKD", "Swaziland": "SWZ", "Timor": "TLS",
          "Puerto Rico": "PRI", "Kosovo": "OWID_KOS"}
-# Países donde el cociente PIB / población del Banco Mundial no es su PIB per cápita.
-PIB_NOMINAL_EXCLUIDO = {"CY": "el PIB cubre solo la zona que controla la República y la población, toda la isla"}
 
 
 def leer(ruta):
@@ -141,11 +139,11 @@ def ultimo_dato(serie, minimo):
     return max(serie), serie[max(serie)]
 
 
-def pib_nominal(pib, poblacion):
-    """(año, PIB per cápita) del último año del rango con PIB y población, o None."""
+def pib_nominal(serie):
+    """(año, PIB per cápita) del último año del rango con dato, o None."""
     for anio in range(ANIO_PIB_NOMINAL, ANIO_PIB_NOMINAL_MINIMO - 1, -1):
-        if anio in pib and poblacion.get(anio):
-            return anio, pib[anio] / poblacion[anio]
+        if anio in serie:
+            return anio, serie[anio]
     return None
 
 
@@ -173,7 +171,7 @@ def formato_millones(personas):
 def main(argv=None, carpeta=AQUI):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     for nombre in ("co2", "maddison", "hyde", "clio", "natalidad-gapminder", "fecundidad-gapminder", "idh",
-                   "alfabetizacion", "internet", "emigrantes", "poblacion-gapminder", "pib-ppa", "pib-bm",
+                   "alfabetizacion", "internet", "emigrantes", "poblacion-gapminder", "pib-ppa", "pib-pc-bm",
                    "poblacion-bm"):
         ap.add_argument(f"--{nombre}", required=True)
     args = ap.parse_args(argv)
@@ -222,7 +220,7 @@ def main(argv=None, carpeta=AQUI):
     pib_ppa = leer_gapminder(args.pib_ppa)
     emigrantes = leer_gapminder(args.emigrantes)
 
-    pib_bm, poblacion_bm = leer_bm(args.pib_bm), leer_bm(args.poblacion_bm)
+    pib_pc_bm, poblacion_bm = leer_bm(args.pib_pc_bm), leer_bm(args.poblacion_bm)
     # Sin población de OWID, la del Banco Mundial hasta el mismo año. Sin esa, la de Gapminder hasta
     # ANIO_MAXIMO_GAPMINDER, que solo sirve para la serie larga (no tiene ANIO_POBLACION).
     poblacion_gapminder = leer_gapminder(args.poblacion_gapminder)
@@ -273,14 +271,9 @@ def main(argv=None, carpeta=AQUI):
         if not ppa:
             sin_pib.append(codigo)
 
-        nominal = None
-        if codigo in PIB_NOMINAL_EXCLUIDO:
-            sin_nominal.append(f"{codigo} ({PIB_NOMINAL_EXCLUIDO[codigo]})")
-        else:
-            cbm = codigo_bm(clave)
-            nominal = pib_nominal(pib_bm.get(cbm, {}), poblacion_bm.get(cbm, {}))
-            if not nominal:
-                sin_nominal.append(codigo)
+        nominal = pib_nominal(pib_pc_bm.get(codigo_bm(clave), {}))
+        if not nominal:
+            sin_nominal.append(codigo)
         fila["pib_per_capita_usd"] = str(round(nominal[1])) if nominal else ""
         if nominal and nominal[0] != ANIO_PIB_NOMINAL:
             nominal_anterior.append(f"{codigo} {nominal[0]}")
@@ -326,7 +319,7 @@ def main(argv=None, carpeta=AQUI):
           f"de Gapminder, solo para la serie larga: {', '.join(con_poblacion_gapminder) or 'ninguno'}")
     print(f"paises.csv: emigrantes {ANIO_EMIGRANTES} sin dato (vacío): {', '.join(sin_emigrantes) or 'ninguno'}")
     print(f"paises.csv: PIB PPA {ANIO_PIB_PPA} sin dato (vacío): {', '.join(sin_pib) or 'ninguno'}")
-    print(f"paises.csv: PIB nominal sin dato desde {ANIO_PIB_NOMINAL_MINIMO} o excluido (vacío): "
+    print(f"paises.csv: PIB nominal sin dato desde {ANIO_PIB_NOMINAL_MINIMO} (vacío): "
           f"{', '.join(sin_nominal) or 'ninguno'}; de un año anterior a {ANIO_PIB_NOMINAL}: "
           f"{', '.join(nominal_anterior) or 'ninguno'}")
     print(f"paises.csv: IDH sin dato (vacío): {', '.join(sin_idh) or 'ninguno'}")
