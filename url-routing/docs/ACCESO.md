@@ -74,7 +74,9 @@ El propietario lo ve todo.
 - **Navegador:** abrir `/0/`. El navegador pide usuario y clave: el usuario da igual y la clave es `OWNER_TOKEN`. Al aceptarla se abre una sesión (con un id de sesión nuevo) y desde ahí se navega por las páginas privadas sin volver a escribirla.
 - **Otros clientes (`curl`, scripts):** `Authorization: Bearer <token>`, o `curl -u x:<token> ...`. Cada petición con las credenciales correctas vale por sí sola.
 
-La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, a las 12 horas. Está ligada al token: **cambiar `OWNER_TOKEN` cierra todas las sesiones abiertas**; quitarlo también. No hay una página de «salir»: cerrar el navegador termina la sesión.
+La sesión del propietario caduca a la hora sin actividad y, en cualquier caso, a las 12 horas. Cuenta como actividad cualquier página que abra el propietario, pública o privada (antes solo contaban las privadas, y quien se quedaba leyendo páginas públicas volvía a ser visitante sin aviso). Está ligada al token: **cambiar `OWNER_TOKEN` cierra todas las sesiones abiertas**; quitarlo también. No hay una página de «salir»: cerrar el navegador termina la sesión.
+
+**La hora depende también de quién limpia las sesiones.** La sesión vive en un archivo de PHP, y quien lo borra la cierra antes de tiempo. La app le pide a PHP `session.gc_maxlifetime = 3600` al abrirla, y eso basta donde PHP limpia por su cuenta (la configuración que trae PHP por omisión). En Debian y Ubuntu, que es lo que arma [`vps-setup/`](../../vps-setup/README.md), PHP no limpia (`session.gc_probability = 0`): un cron (`/etc/cron.d/php`) borra los archivos de sesión que llevan más de `session.gc_maxlifetime` **del `php.ini`** sin tocarse, 1440 segundos (24 minutos) si nadie lo cambió, y no mira lo que la app pida en ejecución. Para que valga la hora hay que subirlo ahí (`session.gc_maxlifetime = 3600` en `/etc/php/8.3/fpm/php.ini`) y recargar PHP-FPM. Si no se sube, la sesión se pierde a los 24 minutos sin actividad: falla cerrado, el propietario vuelve a ser visitante hasta que escriba la clave otra vez.
 
 ## Despliegue
 

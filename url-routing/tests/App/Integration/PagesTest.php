@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\App\Integration;
 
+use App\Support\AccessPolicy;
 use App\Support\Database;
 use App\Support\Migrator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -744,6 +745,75 @@ class PagesTest extends TestCase
 
         $this->assertSame(200, $codigo);
         $this->assertStringContainsString('$647.00 MXN', $body);
+    }
+
+    /** The file PHP's default session handler keeps a session in: the request processes and this one share it. */
+    private static function archivoDeSesion(string $sid): string
+    {
+        return rtrim(session_save_path() ?: sys_get_temp_dir(), '/') . '/sess_' . $sid;
+    }
+
+    /** The owner's "last activity" a session holds, read straight from its file. */
+    private static function ultimaActividad(string $sid): int
+    {
+        $contenido = (string)file_get_contents(self::archivoDeSesion($sid));
+        self::assertSame(1, preg_match('/s:6:"ultima";i:(\d+);/', $contenido, $m), 'the session holds no owner activity: ' . $contenido);
+
+        return (int)$m[1];
+    }
+
+    /** Makes a session look $segundos older, as if that long had passed without a request. */
+    private static function envejecerSesion(string $sid, int $segundos): void
+    {
+        $archivo = self::archivoDeSesion($sid);
+        $nuevo = preg_replace_callback(
+            '/(s:6:"ultima";i:)(\d+)(;)/',
+            static fn(array $m): string => $m[1] . ((int)$m[2] - $segundos) . $m[3],
+            (string)file_get_contents($archivo),
+            1,
+            $cambios
+        );
+        self::assertSame(1, $cambios);
+        file_put_contents($archivo, $nuevo);
+    }
+
+    /**
+     * Browsing only public pages is activity: the hour without activity runs from the last request, not
+     * from the last private page. Before, an owner who kept reading public pages for an hour was a
+     * visitor again without a word, and the living people came back masked.
+     */
+    public function testPublicPagesKeepTheOwnersSessionAlive(): void
+    {
+        [, , $sid] = $this->get(self::GENEALOGIA, '/0/', tokenConfigurado: self::TOKEN, autorizacion: self::basic(self::TOKEN));
+        self::envejecerSesion($sid, 1800);
+        $this->assertLessThan(time() - 1700, self::ultimaActividad($sid), 'the session looks half an hour old');
+
+        [$codigo] = $this->get(self::GENEALOGIA, '/b/10/', sessionId: $sid, tokenConfigurado: self::TOKEN);
+
+        $this->assertSame(200, $codigo);
+        $this->assertGreaterThanOrEqual(time() - 10, self::ultimaActividad($sid), 'a public page the owner opened counts as activity');
+        $this->assertSame(200, $this->get(self::GENEALOGIA, '/1048294/', sessionId: $sid, tokenConfigurado: self::TOKEN)[0], 'and it is still the owner');
+    }
+
+    /** Renewing is not reviving: a session that already ran out of its hour stays out, whatever page is opened. */
+    public function testAPublicPageDoesNotReviveAnExpiredOwnerSession(): void
+    {
+        [, , $sid] = $this->get(self::GENEALOGIA, '/0/', tokenConfigurado: self::TOKEN, autorizacion: self::basic(self::TOKEN));
+        self::envejecerSesion($sid, AccessPolicy::INACTIVIDAD_MAXIMA + 60);
+
+        $this->get(self::GENEALOGIA, '/b/10/', sessionId: $sid, tokenConfigurado: self::TOKEN);
+
+        $this->assertSame(404, $this->get(self::GENEALOGIA, '/1048294/', sessionId: $sid, tokenConfigurado: self::TOKEN)[0]);
+    }
+
+    /** Only the account area and the private pages open the owner's session; credentials on a public page do not leave one behind. */
+    public function testAPublicPageDoesNotOpenAnOwnerSession(): void
+    {
+        [$codigo, , $sid] = $this->get(self::GENEALOGIA, '/b/10/', tokenConfigurado: self::TOKEN, autorizacion: self::basic(self::TOKEN));
+
+        $this->assertSame(200, $codigo);
+        $this->assertStringNotContainsString('propietario|', (string)file_get_contents(self::archivoDeSesion($sid)));
+        $this->assertSame(404, $this->get(self::GENEALOGIA, '/1048294/', sessionId: $sid, tokenConfigurado: self::TOKEN)[0], 'the session alone opens nothing');
     }
 
     /** The session remembers a token, not a boolean: rotating OWNER_TOKEN must end sessions opened with the old one. */

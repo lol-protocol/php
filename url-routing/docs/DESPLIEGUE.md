@@ -102,6 +102,8 @@ La raíz del sitio es **`public/`**. Si apuntara a la carpeta del proyecto, cual
 
 **Apache** (no probado aquí): `AllowOverride All`, y los módulos `rewrite` y `headers`. El `.htaccess` de `public/` trae la regla que entrega `Authorization` a PHP; si el paso 6 da 401 con la clave correcta, empieza por ahí.
 
+**La hora de la sesión del propietario** (ver [`ACCESO.md`](./ACCESO.md)): en Debian y Ubuntu un cron borra las sesiones inactivas según el `php.ini`, que trae 24 minutos. Sube `session.gc_maxlifetime = 3600` en `/etc/php/8.3/fpm/php.ini`; sin eso la sesión se pierde antes de la hora que dice el paso 7.
+
 Después de cambiar la configuración, recarga el servicio (`sudo nginx -t && sudo systemctl reload nginx`) y PHP-FPM (`sudo systemctl reload php8.3-fpm`).
 
 ## 6. Comprobar que quedó bien
@@ -135,7 +137,7 @@ curl -s -o /dev/null -w '%{http_code}\n' https://$D/composer.json    # 404
 
 ## 7. Usarlo como propietario
 
-- **Navegador:** abre `https://$D/0/`; pide usuario y clave (el usuario da igual, la clave es `OWNER_TOKEN`) y abre una sesión. La sesión caduca a la hora sin actividad y a las 12 horas.
+- **Navegador:** abre `https://$D/0/`; pide usuario y clave (el usuario da igual, la clave es `OWNER_TOKEN`) y abre una sesión. La sesión caduca a la hora sin actividad (cuenta cualquier página que abras, pública o privada) y a las 12 horas.
 - **Marcar a quien vive:** en la ficha de una persona aparece **Privacidad**, solo para ti. Sirve para quien vive pero no tiene fechas, o quien murió sin defunción registrada. Ver [`ACCESO.md`](./ACCESO.md).
 - **`curl` o scripts:** `curl -u x:$T …` o `Authorization: Bearer $T`.
 

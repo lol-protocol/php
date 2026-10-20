@@ -60,6 +60,9 @@ class BaseController
     {
         $privacidad = Privacidad::paraSolicitud();
         if (!$privacidad->ocultaVivas()) {
+            // The owner browsing public pages is activity too: only private pages used to count, and
+            // the session could run out an hour after the last one while the owner kept reading.
+            AccessPolicy::renovar();
             AccessPolicy::marcarPrivada();
         }
 
