@@ -480,11 +480,12 @@ localStorage.removeItem('preferredLanguage');
 
 ## Statistics
 
-- **Total Languages**: 30
-- **Translation Keys**: 100+
-- **File Size**: ~20KB per language
-- **Load Time**: <100ms per language
-- **Coverage**: All UI strings translated
+- **Languages**: 30
+- **Strings per language**: 130
+- **Fully translated**: 6 (English, Spanish, French, German, Chinese, Japanese)
+- **Partly translated**: 24, with 10 of the 130 strings
+
+`tests/demo.test.js` recomputes these numbers from the translation files and fails if this section is out of date.
 
 ## Support
 

@@ -208,6 +208,29 @@ const converter = new FormatConverter(loader.formats);
 converter.findEquivalents('A4', 90);
 ```
 
+`DocumentFormats.load()` does the wiring in one call: it loads every catalog and
+returns an object with `formats`, `searcher`, `converter`, `generator`, `validator`,
+`statistics`, `batch`, `specs`, `margins` and `devices` already connected
+(`DocumentFormats.load({only: ['specs']})` skips what you don't need).
+
+```javascript
+const docs = await DocumentFormats.load();
+docs.converter.convert('Letter', 'A4');
+docs.specs.getPaperType('Papel bond');
+```
+
+Conventions the classes follow:
+
+- **One thing that isn't there is `null`** (`getMargins`, `getDevice`, `getPaperType`, `convert`);
+  **a list with nothing in it is `[]`**.
+- **`DocumentGenerator` throws `UnknownFormatError`** for a format that isn't in the catalog; its
+  `suggestions` holds the three closest names (`A44` suggests `A4`). `FormatValidator.validateForPrinting`
+  reports the same suggestions in its result instead of throwing.
+- **A file that can't be read** (404, server error) is reported with its path and status, not read as rows.
+- **Rows from `SpecificationManager` are frozen**: they are shared by every caller.
+- **Units**: `MM_PER_INCH`, `mmToInches()` and `inchesToMm()` are the one place for the factor;
+  reports keep their fixed decimals as text (`"21.0"`), through `fixed()`.
+
 See `docs/Tutorials.md` for step-by-step examples and
 `docs/frontend_implementation_guide.md` for UI patterns.
 

@@ -759,16 +759,76 @@
         const RTL_LANGUAGES = new Set(['ar']);
         const announce = (text) => { document.getElementById('status').textContent = text; };
 
-        class FormatBrowser {
+        // One <option> per entry: [value, label] pairs, optionally with a placeholder already in the select.
+        const addOptions = (select, entries) => {
+            for (const [value, label] of entries) {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = label;
+                select.appendChild(option);
+            }
+        };
+        const sortedUnique = (values) => [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
+        // Same-named formats in different countries share a size, so one entry per name.
+        const formatSizeOptions = (formats) => {
+            const byName = indexByName(formats);
+            return sortedUnique([...byName.keys()])
+                .map(name => [name, `${name} (${byName.get(name).width_mm}×${byName.get(name).height_mm} mm)`]);
+        };
+
+        // A list of cards that a search box and some selects narrow down. The page draws it,
+        // announces how many are left, and redraws it when the language changes.
+        class FilterableList {
+            constructor(items, {container, emptyKey, countKey}) {
+                this.items = items;
+                this.shown = items;
+                this.container = container;
+                this.emptyKey = emptyKey;
+                this.countKey = countKey;
+            }
+
+            // Subclasses return the HTML of one card.
+            card(item) { throw new Error('card() is not implemented'); }
+
+            render(items) {
+                this.shown = items;
+                this.container.innerHTML = items.length === 0
+                    ? `<div class="no-results">
+                            <div class="no-results-icon" aria-hidden="true">🔍</div>
+                            <p>${escapeHtml(tr(this.emptyKey))}</p>
+                        </div>`
+                    : items.map(item => this.card(item)).join('');
+            }
+
+            // Keeps what the predicate accepts, draws it and tells the live region the count.
+            filter(accepts) {
+                const filtered = this.items.filter(accepts);
+                this.render(filtered);
+                announce(tr(this.countKey, {count: filtered.length}));
+            }
+
+            refresh() { this.render(this.shown); }
+        }
+
+        // The query is looked up, in lowercase, inside any of these texts.
+        const matchesQuery = (query, texts) =>
+            !query || texts.some(text => String(text ?? '').toLowerCase().includes(query));
+
+        class FormatBrowser extends FilterableList {
             constructor(formats) {
+                super(formats, {
+                    container: document.getElementById('formats-container'),
+                    emptyKey: 'messages.noResults',
+                    countKey: 'demo.resultsFormats'
+                });
                 this.formats = formats;
-                this.shown = formats;
+                this.statistics = new FormatStatistics(formats);
                 this.converter = new FormatConverter(formats);
                 this.cacheElements();
                 this.setupEventListeners();
                 this.populateFilters();
                 this.updateStats();
-                this.renderFormats(this.formats);
+                this.render(this.formats);
             }
 
             cacheElements() {
@@ -782,7 +842,6 @@
                     tabContents: document.querySelectorAll('.tab-content'),
                     fromFormat: document.getElementById('from-format'),
                     toFormat: document.getElementById('to-format'),
-                    container: document.getElementById('formats-container'),
                     compareSearch: document.getElementById('compare-search'),
                     compareBody: document.getElementById('comparison-body'),
                     totalFormats: document.getElementById('total-formats'),
@@ -839,25 +898,14 @@
             }
 
             populateFilters() {
-                const unique = (values) => [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
-                const addOptions = (select, entries) => {
-                    for (const [value, label] of entries) {
-                        const option = document.createElement('option');
-                        option.value = value;
-                        option.textContent = label;
-                        select.appendChild(option);
-                    }
-                };
                 const {countryFilter, categoryFilter, regionFilter, fromFormat, toFormat} = this.els;
+                const distinct = (field) => sortedUnique(this.formats.map(f => f[field])).map(value => [value, value]);
 
-                addOptions(countryFilter, unique(this.formats.map(f => f.country)).map(c => [c, c]));
-                addOptions(categoryFilter, unique(this.formats.map(f => f.category)).map(c => [c, c]));
-                addOptions(regionFilter, unique(this.formats.map(f => f.region)).map(r => [r, r]));
+                addOptions(countryFilter, distinct('country'));
+                addOptions(categoryFilter, distinct('category'));
+                addOptions(regionFilter, distinct('region'));
 
-                // Same-named formats in different countries share a size, so one entry per name.
-                const byName = new Map(this.formats.map(f => [f.format_name, f]));
-                const formatOptions = unique([...byName.keys()])
-                    .map(name => [name, `${name} (${byName.get(name).width_mm}×${byName.get(name).height_mm} mm)`]);
+                const formatOptions = formatSizeOptions(this.formats);
                 addOptions(fromFormat, formatOptions);
                 addOptions(toFormat, formatOptions);
             }
@@ -869,32 +917,16 @@
                 const category = categoryFilter.value;
                 const region = regionFilter.value;
 
-                const filtered = this.formats.filter(format =>
-                    (!query || [format.format_name, format.description, format.common_use]
-                        .some(text => String(text ?? '').toLowerCase().includes(query))) &&
+                this.filter(format =>
+                    matchesQuery(query, [format.format_name, format.description, format.common_use]) &&
                     (!country || format.country === country) &&
                     (!category || format.category === category) &&
                     (!region || format.region === region)
                 );
-                this.renderFormats(filtered);
-                announce(tr('demo.resultsFormats', {count: filtered.length}));
             }
 
-            renderFormats(formats) {
-                const {container} = this.els;
-                this.shown = formats;
-
-                if (formats.length === 0) {
-                    container.innerHTML = `
-                        <div class="no-results">
-                            <div class="no-results-icon" aria-hidden="true">🔍</div>
-                            <p>${escapeHtml(tr('messages.noResults'))}</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                container.innerHTML = formats.map(format => `
+            card(format) {
+                return `
                     <div class="format-card">
                         <div class="format-card-header">
                             <h3>${escapeHtml(format.format_name)}</h3>
@@ -922,7 +954,7 @@
                             ${this.generatePreviewSVG(format)}
                         </div>
                     </div>
-                `).join('');
+                `;
             }
 
             generatePreviewSVG(format) {
@@ -942,9 +974,10 @@
 
             updateStats() {
                 const {totalFormats, totalCountries, totalCategories} = this.els;
-                totalFormats.textContent = this.formats.length;
-                totalCountries.textContent = new Set(this.formats.map(f => f.country)).size;
-                totalCategories.textContent = new Set(this.formats.map(f => f.category)).size;
+                const stats = this.statistics.getStats();
+                totalFormats.textContent = stats.totalFormats;
+                totalCountries.textContent = stats.totalCountries;
+                totalCategories.textContent = stats.totalCategories;
             }
 
             switchTab(tabName, moveFocus = false) {
@@ -1003,17 +1036,21 @@
 
             // Redraws what JavaScript wrote with words in it, after a language change.
             refresh() {
-                this.renderFormats(this.shown);
+                super.refresh();
                 this.updateConverter();
             }
         }
 
-        class PaperTypeBrowser {
+        class PaperTypeBrowser extends FilterableList {
             constructor(paperTypes, translations, formats) {
+                super(paperTypes, {
+                    container: document.getElementById('paper-types-container'),
+                    emptyKey: 'demo.noPaperTypes',
+                    countKey: 'demo.resultsPaperTypes'
+                });
                 this.paperTypes = paperTypes;
                 this.translations = new Map(translations.map(row => [row.type_name, row]));
                 this.formats = formats;
-                this.shown = paperTypes;
                 this.cacheElements();
                 this.setupEventListeners();
                 this.populateFilters();
@@ -1025,7 +1062,6 @@
                     search: document.getElementById('paper-search-input'),
                     categoryFilter: document.getElementById('paper-category-filter'),
                     sizeSelect: document.getElementById('paper-size-select'),
-                    container: document.getElementById('paper-types-container'),
                     combinedSection: document.getElementById('paper-combined-section'),
                     combinedTitle: document.getElementById('paper-combined-title'),
                     combinedBody: document.getElementById('paper-combined-body')
@@ -1041,64 +1077,33 @@
                 const {search, categoryFilter, sizeSelect} = this.els;
 
                 document.addEventListener('input', (e) => {
-                    if (e.target === search) this.filter();
+                    if (e.target === search) this.applyFilters();
                 });
 
                 document.addEventListener('change', (e) => {
-                    if (e.target === categoryFilter) this.filter();
+                    if (e.target === categoryFilter) this.applyFilters();
                     else if (e.target === sizeSelect) this.updateCombined();
                 });
             }
 
             populateFilters() {
                 const {categoryFilter, sizeSelect} = this.els;
-                const categories = [...new Set(this.paperTypes.map(p => p.category))].sort((a, b) => a.localeCompare(b));
-                for (const category of categories) {
-                    const option = document.createElement('option');
-                    option.value = category;
-                    option.textContent = category;
-                    categoryFilter.appendChild(option);
-                }
-
-                // Same-named formats in different countries share a size, so one entry per name.
-                const byName = new Map(this.formats.map(f => [f.format_name, f]));
-                for (const name of [...byName.keys()].sort((a, b) => a.localeCompare(b))) {
-                    const format = byName.get(name);
-                    const option = document.createElement('option');
-                    option.value = name;
-                    option.textContent = `${name} (${format.width_mm}×${format.height_mm} mm)`;
-                    sizeSelect.appendChild(option);
-                }
+                addOptions(categoryFilter, sortedUnique(this.paperTypes.map(p => p.category)).map(c => [c, c]));
+                addOptions(sizeSelect, formatSizeOptions(this.formats));
             }
 
-            filter() {
+            applyFilters() {
                 const {search, categoryFilter} = this.els;
                 const query = search.value.toLowerCase();
                 const category = categoryFilter.value;
 
-                const filtered = this.paperTypes.filter(p =>
-                    (!query || [p.type_name, p.type_name_en, this.name(p), p.common_use, p.notes]
-                        .some(text => String(text ?? '').toLowerCase().includes(query))) &&
+                this.filter(p =>
+                    matchesQuery(query, [p.type_name, p.type_name_en, this.name(p), p.common_use, p.notes]) &&
                     (!category || p.category === category)
                 );
-                this.render(filtered);
-                announce(tr('demo.resultsPaperTypes', {count: filtered.length}));
             }
 
-            render(paperTypes) {
-                const {container} = this.els;
-                this.shown = paperTypes;
-
-                if (paperTypes.length === 0) {
-                    container.innerHTML = `
-                        <div class="no-results">
-                            <div class="no-results-icon" aria-hidden="true">🔍</div>
-                            <p>${escapeHtml(tr('demo.noPaperTypes'))}</p>
-                        </div>
-                    `;
-                    return;
-                }
-
+            card(p) {
                 const badgeSlug = (category) => String(category).toLowerCase().replace(/[^a-z0-9]+/g, '-');
                 const row = (label, value) => `
                     <div class="info-row">
@@ -1106,13 +1111,12 @@
                         <span class="info-value">${escapeHtml(value)}</span>
                     </div>`;
 
-                container.innerHTML = paperTypes.map(p => {
-                    const title = this.name(p);
-                    // The original names stay visible, except the one already used as the title.
-                    const originals = [['es', p.type_name], ['en', p.type_name_en]]
-                        .filter(([, value]) => value !== title)
-                        .map(([lang, value]) => row(i18n.getLanguageName(lang), value)).join('');
-                    return `
+                const title = this.name(p);
+                // The original names stay visible, except the one already used as the title.
+                const originals = [['es', p.type_name], ['en', p.type_name_en]]
+                    .filter(([, value]) => value !== title)
+                    .map(([lang, value]) => row(i18n.getLanguageName(lang), value)).join('');
+                return `
                     <div class="format-card">
                         <div class="format-card-header">
                             <h3>${escapeHtml(title)}</h3>
@@ -1128,7 +1132,6 @@
                         </div>
                         <p style="margin-top: 10px; font-size: 13px; color: var(--text-light);">${escapeHtml(p.notes)}</p>
                     </div>`;
-                }).join('');
             }
 
             updateCombined() {
@@ -1156,7 +1159,7 @@
             }
 
             refresh() {
-                this.render(this.shown);
+                super.refresh();
                 this.updateCombined();
             }
         }

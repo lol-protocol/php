@@ -101,3 +101,22 @@ test('every language of the demo has a name for every paper type', () => {
         }
     }
 });
+
+test('Localization.md states the real translation coverage', () => {
+    const count = (tree) => Object.values(tree).reduce((sum, v) => sum + (typeof v === 'object' ? count(v) : 1), 0);
+    const filled = (tree) => Object.values(tree).reduce((sum, v) => sum + (typeof v === 'object' ? filled(v) : v === '' ? 0 : 1), 0);
+    const total = count(english);
+    const perLanguage = LANGUAGES.map(lang => filled(JSON.parse(fs.readFileSync(path.join(APP, 'translations', `${lang}.json`), 'utf8'))));
+    const complete = perLanguage.filter(n => n === total).length;
+    const partial = [...new Set(perLanguage.filter(n => n !== total))];
+    assert.equal(partial.length, 1, 'the partial languages all translate the same strings');
+
+    const doc = fs.readFileSync(path.join(__dirname, '..', 'docs', 'Localization.md'), 'utf8');
+    const stated = (label) => doc.match(new RegExp(`\\*\\*${label}\\*\\*: (\\d+)`))?.[1];
+    assert.equal(Number(stated('Languages')), LANGUAGES.length);
+    assert.equal(Number(stated('Strings per language')), total);
+    assert.equal(Number(stated('Fully translated')), complete);
+    assert.equal(Number(stated('Partly translated')), LANGUAGES.length - complete);
+    assert.ok(doc.includes(`with ${partial[0]} of the ${total} strings`), 'the partial coverage line');
+    assert.ok(doc.includes(`${partial[0]} of the ${total} strings`), 'the intro of the languages list');
+});

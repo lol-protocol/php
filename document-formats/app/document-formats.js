@@ -31,6 +31,13 @@ const groupBy = (items, keyFn) => {
     return groups;
 };
 
+// One place for the inch/millimetre factor and for the rounding every report uses.
+const MM_PER_INCH = 25.4;
+const mmToInches = (mm) => mm / MM_PER_INCH;
+const inchesToMm = (inches) => inches * MM_PER_INCH;
+// Fixed decimals as text ("21.0"), so reports keep their trailing zeros.
+const fixed = (value, decimals = 1) => Number(value).toFixed(decimals);
+
 const HTML_ESCAPES = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, char => HTML_ESCAPES[char]);
 
@@ -106,6 +113,51 @@ const parseCSV = (text, numericFields = NUMERIC_FIELDS) => {
     });
 };
 
+// Fetches a CSV file and parses it. Unlike a bare fetch, a 404 or a server error
+// stops here with the path in the message, instead of the error page being read as rows.
+const fetchOk = async (url, options) => {
+    const response = await fetch(url, options);
+    if (!response.ok) throw new Error(`HTTP ${response.status} for ${url}`);
+    return response;
+};
+const fetchCSV = async (url) => parseCSV(await (await fetchOk(url)).text());
+
+// One format by name. Same-named formats in different countries share a size,
+// so when a name repeats, the last row stays.
+const indexByName = (formats) => new Map(formats.map(f => [f.format_name, f]));
+
+// Edit distance between two names, for "did you mean" suggestions.
+const editDistance = (a, b) => {
+    const row = Array.from({length: b.length + 1}, (_, j) => j);
+    for (let i = 1; i <= a.length; i++) {
+        let diagonal = row[0];
+        row[0] = i;
+        for (let j = 1; j <= b.length; j++) {
+            const above = row[j];
+            row[j] = Math.min(row[j] + 1, row[j - 1] + 1, diagonal + (a[i - 1] === b[j - 1] ? 0 : 1));
+            diagonal = above;
+        }
+    }
+    return row[b.length];
+};
+const closestNames = (name, names, count = 3) => [...new Set(names)]
+    .map(candidate => [candidate, editDistance(String(name).toLowerCase(), candidate.toLowerCase())])
+    .sort((x, y) => x[1] - y[1] || x[0].localeCompare(y[0]))
+    .slice(0, count)
+    .map(([candidate]) => candidate);
+
+// Thrown (or reported) when a format name isn't in the catalog. `suggestions`
+// holds the closest names, so a typo like "A44" points at "A4".
+class UnknownFormatError extends Error {
+    constructor(formatName, formats = []) {
+        const suggestions = closestNames(formatName, formats.map(f => f.format_name));
+        super(`Format ${formatName} not found` + (suggestions.length ? ` (did you mean ${suggestions.join(', ')}?)` : ''));
+        this.name = 'UnknownFormatError';
+        this.formatName = formatName;
+        this.suggestions = suggestions;
+    }
+}
+
 // ============================================
 // EXAMPLE 1: Basic Format Loader
 // ============================================
@@ -117,15 +169,12 @@ class FormatLoader {
 
     async load() {
         try {
-            const response = await fetch(this.csvUrl);
-            if (!response.ok) throw new Error(`HTTP ${response.status} for ${this.csvUrl}`);
-            const text = await response.text();
-            this.formats = parseCSV(text);
+            this.formats = await fetchCSV(this.csvUrl);
             console.log(`Loaded ${this.formats.length} formats`);
-            return this.formats;
         } catch (error) {
             console.error('Error loading formats:', error);
         }
+        return this.formats;
     }
 
 }
@@ -166,15 +215,9 @@ const REGION_OVERRIDES = { International: 'International', Europe: 'Europe' };
 // (undefined if the server sends none) so a page can show when the data was
 // last changed without hardcoding a date. Throws if any file can't be fetched.
 const loadFormatCatalogs = async (files = FORMAT_CATALOG_FILES) => {
-    const fetchFile = async (file) => {
-        const response = await fetch(file);
-        if (!response.ok) throw new Error(`HTTP ${response.status} for ${file}`);
-        return response;
-    };
-
     const [catalogResponses, countriesResponse] = await Promise.all([
-        Promise.all(files.map(fetchFile)),
-        fetchFile('../countries/countries_200_complete.csv')
+        Promise.all(files.map(file => fetchOk(file))),
+        fetchOk('../countries/countries_200_complete.csv')
     ]);
 
     const lastModified = [...catalogResponses, countriesResponse]
@@ -210,7 +253,7 @@ const loadFormatCatalogs = async (files = FORMAT_CATALOG_FILES) => {
 class FormatSearcher {
     constructor(formats) {
         this.formats = formats;
-        this.formatMap = new Map(formats.map((f, i) => [f.format_name, i]));
+        this.byName = indexByName(formats);
         this.index = this.buildIndex();
         this.countryIndex = groupBy(formats, f => f.country);
         this.categoryIndex = groupBy(formats, f => f.category);
@@ -282,6 +325,7 @@ class FormatSearcher {
             const h = parseFloat(format.height_mm);
             return w >= minWidth && w <= maxWidth && h >= minHeight && h <= maxHeight;
         });
+        Object.freeze(result);
         this.dimensionCache.set(cacheKey, result);
         return result;
     }
@@ -300,7 +344,7 @@ class FormatSearcher {
 class FormatConverter {
     constructor(formats) {
         this.formats = formats;
-        this.formatMap = new Map(formats.map((f, i) => [f.format_name, i]));
+        this.byName = indexByName(formats);
         this.calculateSimilarity = memoize(
             (f1Name, f2Name) => this._calcSimilarity(f1Name, f2Name),
             (f1, f2) => [f1, f2].sort().join('|')
@@ -308,21 +352,20 @@ class FormatConverter {
     }
 
     _calcSimilarity(f1Name, f2Name) {
-        const f1 = this.formats[this.formatMap.get(f1Name)];
-        const f2 = this.formats[this.formatMap.get(f2Name)];
+        const f1 = this.byName.get(f1Name);
+        const f2 = this.byName.get(f2Name);
         if (!f1 || !f2) return 0;
         return Math.round(sizeSimilarity(f1, f2));
     }
 
     findEquivalents(formatName, threshold = 90) {
-        const idx = this.formatMap.get(formatName);
-        if (idx === undefined) return [];
+        if (!this.byName.has(formatName)) return [];
 
         const candidates = [];
-        for (let i = 0; i < this.formats.length; i++) {
-            if (i !== idx && this.formats[i].width_mm && this.formats[i].height_mm) {
-                const sim = this.calculateSimilarity(formatName, this.formats[i].format_name);
-                if (sim >= threshold) candidates.push({format: this.formats[i], similarity: sim});
+        for (const format of this.formats) {
+            if (format.format_name !== formatName && format.width_mm && format.height_mm) {
+                const sim = this.calculateSimilarity(formatName, format.format_name);
+                if (sim >= threshold) candidates.push({format, similarity: sim});
             }
         }
 
@@ -340,12 +383,9 @@ class FormatConverter {
     }
 
     convert(fromName, toName) {
-        const fromIdx = this.formatMap.get(fromName);
-        const toIdx = this.formatMap.get(toName);
-        if (fromIdx === undefined || toIdx === undefined) return null;
-
-        const from = this.formats[fromIdx];
-        const to = this.formats[toIdx];
+        const from = this.byName.get(fromName);
+        const to = this.byName.get(toName);
+        if (!from || !to) return null;
 
         if (!from.width_mm || !to.width_mm) return null;
 
@@ -366,8 +406,8 @@ class FormatConverter {
                 inches: `${to.width_inches}"×${to.height_inches}"`
             },
             differences: {
-                width: widthDiff.toFixed(1),
-                height: heightDiff.toFixed(1)
+                width: fixed(widthDiff),
+                height: fixed(heightDiff)
             }
         };
     }
@@ -385,8 +425,14 @@ class FormatConverter {
 class DocumentGenerator {
     constructor(formats) {
         this.formats = formats;
-        this.formatMap = new Map(formats.map((f, i) => [f.format_name, i]));
+        this.byName = indexByName(formats);
         this.conversionCache = new Map();
+    }
+
+    _requireFormat(formatName) {
+        const format = this.byName.get(formatName);
+        if (!format) throw new UnknownFormatError(formatName, this.formats);
+        return format;
     }
 
     _getFormatInCM(formatName) {
@@ -394,22 +440,18 @@ class DocumentGenerator {
             return this.conversionCache.get(formatName);
         }
 
-        const idx = this.formatMap.get(formatName);
-        if (idx === undefined) return null;
-        const format = this.formats[idx];
+        const format = this._requireFormat(formatName);
 
         const result = {
-            widthCm: (parseFloat(format.width_mm) / 10).toFixed(1),
-            heightCm: (parseFloat(format.height_mm) / 10).toFixed(1)
+            widthCm: fixed(parseFloat(format.width_mm) / 10),
+            heightCm: fixed(parseFloat(format.height_mm) / 10)
         };
         this.conversionCache.set(formatName, result);
         return result;
     }
 
     createTemplate(formatName, content = '') {
-        const idx = this.formatMap.get(formatName);
-        if (idx === undefined) throw new Error(`Format ${formatName} not found`);
-        const format = this.formats[idx];
+        const format = this._requireFormat(formatName);
 
         return {
             title: `Document: ${formatName}`,
@@ -450,7 +492,6 @@ class DocumentGenerator {
 
     generateHTML(formatName, title = '', body = '') {
         const dims = this._getFormatInCM(formatName);
-        if (!dims) throw new Error(`Format ${formatName} not found`);
 
         return `
 <!DOCTYPE html>
@@ -479,7 +520,6 @@ class DocumentGenerator {
 
     generatePrintCSS(formatName) {
         const dims = this._getFormatInCM(formatName);
-        if (!dims) throw new Error(`Format ${formatName} not found`);
 
         return `
 @media print {
@@ -511,7 +551,7 @@ class DocumentGenerator {
 class FormatValidator {
     constructor(formats) {
         this.formats = formats;
-        this.formatMap = new Map(formats.map((f, i) => [f.format_name, i]));
+        this.byName = indexByName(formats);
         this.validateDimensions = memoize(
             (w, h, u) => this._validateDimensions(w, h, u),
             (w, h, u) => `${w}|${h}|${u}`
@@ -519,7 +559,7 @@ class FormatValidator {
     }
 
     _validateDimensions(width, height, unit = 'mm') {
-        const conversions = { mm: 1, cm: 10, inch: 25.4 };
+        const conversions = { mm: 1, cm: 10, inch: MM_PER_INCH };
         const factor = conversions[unit] || 1;
 
         const normalizedWidth = width * factor;
@@ -543,9 +583,10 @@ class FormatValidator {
     }
 
     validateForPrinting(formatName, dpi = 300) {
-        const idx = this.formatMap.get(formatName);
-        if (idx === undefined) return { valid: false, message: 'Format not found' };
-        const format = this.formats[idx];
+        if (!this.byName.has(formatName)) {
+            const error = new UnknownFormatError(formatName, this.formats);
+            return { valid: false, message: error.message, suggestions: error.suggestions };
+        }
 
         const minDpi = 150;
         const recommendedDpi = 300;
@@ -562,15 +603,15 @@ class FormatValidator {
     }
 
     getCompatibility(format1Name, format2Name) {
-        const idx1 = this.formatMap.get(format1Name);
-        const idx2 = this.formatMap.get(format2Name);
-        if (idx1 === undefined || idx2 === undefined) return { compatible: false };
+        const format1 = this.byName.get(format1Name);
+        const format2 = this.byName.get(format2Name);
+        if (!format1 || !format2) return { compatible: false };
 
-        const compatibility = sizeSimilarity(this.formats[idx1], this.formats[idx2]);
+        const compatibility = sizeSimilarity(format1, format2);
 
         return {
             compatible: compatibility > 90,
-            compatibility: compatibility.toFixed(1),
+            compatibility: fixed(compatibility),
             recommendation: compatibility > 90
                 ? 'Formats are compatible'
                 : compatibility > 80
@@ -625,8 +666,8 @@ class FormatStatistics {
             totalCountries: countries.size,
             totalCategories: categories.size,
             totalTypes: types.size,
-            averageWidth: (sumWidth / this.formats.length).toFixed(1),
-            averageHeight: (sumHeight / this.formats.length).toFixed(1),
+            averageWidth: fixed(sumWidth / this.formats.length),
+            averageHeight: fixed(sumHeight / this.formats.length),
             largestFormat,
             smallestFormat
         };
@@ -655,15 +696,12 @@ class FormatStatistics {
 class FormatBatchProcessor {
     constructor(formats) {
         this.formats = formats;
-        this.formatMap = new Map(formats.map((f, i) => [f.format_name, i]));
+        this.byName = indexByName(formats);
     }
 
     processMultiple(formatNames, callback) {
         return formatNames
-            .map(name => {
-                const idx = this.formatMap.get(name);
-                return idx !== undefined ? this.formats[idx] : null;
-            })
+            .map(name => this.byName.get(name))
             .filter(Boolean)
             .map(callback);
     }
@@ -771,14 +809,7 @@ class LocalizationManager {
         }
 
         try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-            const response = await fetch(`${this.translationsPath}/${langCode}.json`, {signal: controller.signal});
-            clearTimeout(timeoutId);
-
-            if (!response.ok) throw new Error(`Failed to load ${langCode}.json`);
-            this.translations = await response.json();
+            this.translations = await this._fetchTranslations(langCode, timeout);
             if (langCode === 'en') this.english = this.translations;
             else await this.loadEnglish(timeout);
             this.currentLanguage = langCode;
@@ -792,17 +823,23 @@ class LocalizationManager {
         }
     }
 
+    async _fetchTranslations(langCode, timeout) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        try {
+            const response = await fetchOk(`${this.translationsPath}/${langCode}.json`, {signal: controller.signal});
+            return await response.json();
+        } finally {
+            clearTimeout(timeoutId);
+        }
+    }
+
     // The English file is only a fallback: if it can't be read, the page still works,
     // and a missing string shows the key (or the default passed to translate()).
     async loadEnglish(timeout) {
         if (this.english) return;
         try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), timeout);
-            const response = await fetch(`${this.translationsPath}/en.json`, {signal: controller.signal});
-            clearTimeout(timeoutId);
-            if (!response.ok) throw new Error('Failed to load en.json');
-            this.english = await response.json();
+            this.english = await this._fetchTranslations('en', timeout);
         } catch (error) {
             console.warn('English fallback not available:', error);
         }
@@ -929,16 +966,14 @@ class BookMarginManager {
 
     async load(csvPath = '../formats/book_margins.csv') {
         try {
-            const response = await fetch(csvPath);
-            const text = await response.text();
-            this.margins = parseCSV(text);
+            this.margins = await fetchCSV(csvPath);
         } catch (error) {
             console.error('Error loading book margins:', error);
         }
     }
 
     getMargins(bookFormat) {
-        return this.margins.find(m => m.book_format === bookFormat);
+        return this.margins.find(m => m.book_format === bookFormat) ?? null;
     }
 
     getAllMargins() {
@@ -948,6 +983,7 @@ class BookMarginManager {
     calculatePrintableArea(bookFormat, width_mm, height_mm) {
         const margins = this.getMargins(bookFormat);
         if (!margins) return null;
+        const inches = (mm) => fixed(mmToInches(mm), 2);
 
         return {
             format: bookFormat,
@@ -960,7 +996,7 @@ class BookMarginManager {
             },
             printableArea: {
                 mm: `${width_mm - margins.inner_mm - margins.outer_mm}×${height_mm - margins.top_mm - margins.bottom_mm}`,
-                inches: `${((width_mm - margins.inner_mm - margins.outer_mm) / 25.4).toFixed(2)}"×${((height_mm - margins.top_mm - margins.bottom_mm) / 25.4).toFixed(2)}"`
+                inches: `${inches(width_mm - margins.inner_mm - margins.outer_mm)}"×${inches(height_mm - margins.top_mm - margins.bottom_mm)}"`
             }
         };
     }
@@ -1029,9 +1065,7 @@ class ScreenDeviceManager {
 
     async loadDeviceType(csvPath, type) {
         try {
-            const response = await fetch(csvPath);
-            const text = await response.text();
-            this[type] = parseCSV(text);
+            this[type] = await fetchCSV(csvPath);
         } catch (error) {
             console.error(`Error loading ${type}:`, error);
         }
@@ -1039,8 +1073,8 @@ class ScreenDeviceManager {
 
     getDevice(deviceName, type = 'all') {
         const entry = this.deviceIndex.get(deviceName);
-        if (!entry) return undefined;
-        return type === 'all' || entry.type === type ? entry.device : undefined;
+        if (!entry) return null;
+        return type === 'all' || entry.type === type ? entry.device : null;
     }
 
     getDevicesBySize(minInches, maxInches, type = 'all') {
@@ -1109,9 +1143,8 @@ class SpecificationManager {
 
     async _loadAndIndex(name, csvPath) {
         try {
-            const response = await fetch(csvPath);
-            const text = await response.text();
-            const data = parseCSV(text);
+            // Frozen, because get() hands the same rows to every caller.
+            const data = Object.freeze((await fetchCSV(csvPath)).map(Object.freeze));
 
             this.specifications.set(name, data);
             this._buildIndex(name, data);
@@ -1138,14 +1171,14 @@ class SpecificationManager {
         const data = this.specifications.get(specType) || [];
 
         if (query) {
-            result = data.filter(item =>
+            result = Object.freeze(data.filter(item =>
                 Object.entries(query).every(([k, v]) => item[k] === v)
-            );
+            ));
         } else {
             const index = this.indexes.get(specType);
-            result = index ? index.get(key) : data.find(item =>
+            result = (index ? index.get(key) : data.find(item =>
                 item[SpecificationManager.SPECS[specType].key] === key
-            );
+            )) ?? null;
         }
 
         this.cache.set(cacheKey, result);
@@ -1182,6 +1215,39 @@ class SpecificationManager {
 // const wcag = specs.getWCAGContrast('Normal Text', 'AAA');
 
 
+// ============================================
+// One entry point: loads the catalogs and wires every manager
+// ============================================
+// const docs = await DocumentFormats.load();
+// docs.converter.convert('Letter', 'A4'); docs.specs.getPaperType('Papel bond');
+// Paths are the ones the page in app/ uses; pass `only` to skip what you don't need.
+class DocumentFormats {
+    static async load({only = ['specs', 'margins', 'devices']} = {}) {
+        const {formats, lastModified} = await loadFormatCatalogs();
+        const docs = new DocumentFormats(formats, lastModified);
+        const loads = [];
+        if (only.includes('specs')) loads.push(docs.specs.loadAllSpecifications());
+        if (only.includes('margins')) loads.push(docs.margins.load());
+        if (only.includes('devices')) loads.push(docs.devices.loadAllDevices());
+        await Promise.all(loads);
+        return docs;
+    }
+
+    constructor(formats, lastModified) {
+        this.formats = formats;
+        this.lastModified = lastModified;
+        this.searcher = new FormatSearcher(formats);
+        this.converter = new FormatConverter(formats);
+        this.generator = new DocumentGenerator(formats);
+        this.validator = new FormatValidator(formats);
+        this.statistics = new FormatStatistics(formats);
+        this.batch = new FormatBatchProcessor(formats);
+        this.specs = new SpecificationManager();
+        this.margins = new BookMarginManager([]);
+        this.devices = new ScreenDeviceManager();
+    }
+}
+
 // Name of a paper type in a UI language. paper_types.csv carries Spanish
 // (type_name) and English (type_name_en); the other 28 languages come from the
 // row of paper_type_translations.csv for the same type_name. Anything missing
@@ -1203,6 +1269,15 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         escapeHtml,
         sizeSimilarity,
+        MM_PER_INCH,
+        mmToInches,
+        inchesToMm,
+        fixed,
+        fetchCSV,
+        indexByName,
+        closestNames,
+        UnknownFormatError,
+        DocumentFormats,
         paperTypeName,
         formatMessage,
         FORMAT_CATALOG_FILES,
