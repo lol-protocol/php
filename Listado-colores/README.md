@@ -221,6 +221,8 @@ Quién sube la versión: el generador no puede saber si un cambio de datos merec
 
 ## Uso
 
+`README.md` (esta tabla), `colores-por-idioma.md`, `por-idioma/*.md`, `referencias.md` y lo demás que no sea un CSV de datos es salida generada — no se edita a mano. Se regenera con `python3 generar-tabla.py` (`--comprobar` solo valida que esté al día).
+
 Requiere Python 3.10 o posterior y no usa dependencias externas. Se probó con Python 3.10, 3.11, 3.12, 3.13 y 3.14 en Linux x86_64: el generador (con las 31.935 distancias, que salen idénticas al archivo guardado) y las pruebas dan el mismo resultado en todas. La CI corre además una matriz con Python 3.10 y 3.14 en Ubuntu 24.04 y 3.13 en macOS 15 (arm64). No se ha probado con versiones anteriores a la 3.10 ni en Windows.
 
 ```bash
