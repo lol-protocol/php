@@ -12,7 +12,7 @@ Varias sesiones trabajan a la vez, y ya pasó que dos hicieron lo mismo o que do
 2. Mira qué PR hay abiertos y qué carpetas tocan:
    `gh api 'repos/lol-protocol/php/pulls?state=open' --jq '.[] | "#\(.number) \(.title) [\(.head.ref)]"'`
    y, de cada uno, `gh api repos/lol-protocol/php/pulls/<n>/files --jq '.[].filename'`.
-3. Mira también las ramas con trabajo que todavía no tiene PR: `git rev-list --count origin/master..origin/<rama>`. Las ramas `claude/...` las reutilizan varias sesiones, y una puede tener commits sin fusionar de otra.
+3. Mira también las ramas con trabajo que todavía no tiene PR: `git rev-list --count origin/master..origin/<rama>`. Los PR se fusionan con squash, así que una rama ya fusionada también sale «adelantada»: antes de tomarla por trabajo pendiente, mira si su PR está fusionado (`gh api 'repos/lol-protocol/php/pulls?state=all&head=lol-protocol:<rama>' --jq '.[] | "#\(.number) \(.state) \(.merged_at)"'`). Las ramas `claude/...` las reutilizan varias sesiones, y una puede tener commits sin fusionar de otra.
 4. No toques una carpeta que tenga un PR abierto o commits sin fusionar de otra sesión. Elige otra, o pregunta.
 5. No fuerces un push ni reescribas una rama que no creaste. Si el push se rechaza, trae lo que falta y fusiona.
 
