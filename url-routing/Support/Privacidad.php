@@ -61,6 +61,7 @@ final class Privacidad
     private function __construct(
         private readonly bool $ocultaVivas,
         private readonly string $umbral,
+        private readonly bool $porFila = false,
     ) {
     }
 
@@ -81,6 +82,20 @@ final class Privacidad
     public static function paraSolicitud(): self
     {
         return AccessPolicy::esPropietario() ? self::propietario() : self::publica();
+    }
+
+    /**
+     * The same view, with the "does this persona have such a row" checks of sqlViva() and sqlPrivada()
+     * written as one lookup per persona, `(SELECT 1 ... LIMIT 1) IS NOT NULL`, instead of EXISTS.
+     * PostgreSQL turns an EXISTS into a hash of the whole table behind it, built every time the query
+     * runs: that pays off when thousands of personas are checked and costs the size of the table when
+     * only a page of them is, which is what a search for the first 50 does. SQLite runs both forms the
+     * same way. Both answer exactly the same; the choice is only the cost, so only the queries that
+     * check few personas should ask for this one (see PersonaRepository::buscar()).
+     */
+    public function porFila(): self
+    {
+        return new self($this->ocultaVivas, $this->umbral, true);
     }
 
     public function ocultaVivas(): bool
@@ -139,6 +154,18 @@ final class Privacidad
     public function sqlOculta(string $q): string
     {
         return '(' . $this->sqlViva($q) . ' OR ' . $this->sqlPrivada($q) . ')';
+    }
+
+    /**
+     * SQL boolean: the persona aliased $q may be seen by this request, which is exactly `NOT oculta` of
+     * personas(). For the owner nobody is hidden and it is a plain TRUE. It is meant to be asked of the
+     * real table (personas q), to pick which rows a query returns before personas() masks them: a query
+     * that asks it of the real table and then reads personas() for those rows cannot show more than
+     * personas() allows, and it computes `oculta` for the rows it looks at instead of for the whole table.
+     */
+    public function sqlVisible(string $q): string
+    {
+        return $this->ocultaVivas ? 'NOT ' . $this->sqlOculta($q) : 'TRUE';
     }
 
     /**
@@ -275,13 +302,18 @@ final class Privacidad
 
     /**
      * `[NOT ]EXISTS (SELECT 1 FROM $tabla {$q}_$sufijo[$join] WHERE {$q}_$sufijo.persona_id = {$q}.id[ AND $extra])`
-     * — the shape sqlViva()'s own-death check and both of sqlPrivada()'s checks repeat. $join and
-     * $extra are written as given, already built from constants here, never from a request.
+     * — the shape sqlViva()'s own-death check and both of sqlPrivada()'s checks repeat (or, in
+     * porFila() mode, the same test as a one-row lookup). $join and $extra are written as given,
+     * already built from constants here, never from a request.
      */
     private function existePersona(string $q, string $sufijo, string $tabla, string $join = '', string $extra = '', bool $negado = false): string
     {
         $alias = "{$q}_{$sufijo}";
         $condicion = "{$alias}.persona_id = {$q}.id" . ($extra === '' ? '' : " AND {$extra}");
+
+        if ($this->porFila) {
+            return "((SELECT 1 FROM {$tabla} {$alias}{$join} WHERE {$condicion} LIMIT 1) IS " . ($negado ? '' : 'NOT ') . 'NULL)';
+        }
 
         return ($negado ? 'NOT ' : '') . "EXISTS (SELECT 1 FROM {$tabla} {$alias}{$join} WHERE {$condicion})";
     }
