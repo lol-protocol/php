@@ -236,7 +236,6 @@ class PhoneDirectoryCatalog
         return $this->directories[$directoryId] ?? null;
     }
 
-    /** @return array<string, Directory> */
     /**
      * The year a directory was published: the catalog's, or the one a directory id outside the
      * catalog embeds, following the catalog's own "<country>_<year>_<place>" convention (e.g.
@@ -263,6 +262,7 @@ class PhoneDirectoryCatalog
         return null;
     }
 
+    /** @return array<string, Directory> */
     public function getByCountry(string $countryCode): array
     {
         return array_filter(
