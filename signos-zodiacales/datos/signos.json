@@ -5,14 +5,106 @@
       "tipo": "occidental",
       "fechas": "21/03 – 19/04",
       "constelacion": {
-        "estrellas": [[40, 120], [65, 100], [95, 85], [120, 70], [70, 130], [105, 125], [140, 125], [170, 110]],
-        "lineas": [[0, 1], [1, 2], [2, 3], [0, 4], [4, 5], [5, 6], [6, 7], [1, 5]]
+        "estrellas": [
+          [
+            40,
+            120
+          ],
+          [
+            65,
+            100
+          ],
+          [
+            95,
+            85
+          ],
+          [
+            120,
+            70
+          ],
+          [
+            70,
+            130
+          ],
+          [
+            105,
+            125
+          ],
+          [
+            140,
+            125
+          ],
+          [
+            170,
+            110
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            1,
+            5
+          ]
+        ]
       },
       "nombres": {
-        "es": "Aries", "en": "Aries", "pt": "Áries", "fr": "Bélier", "it": "Ariete",
-        "de": "Widder", "nl": "Ram", "sv": "Väduren", "pl": "Baran", "ru": "Овен",
-        "uk": "Овен", "tr": "Koç", "el": "Κριός", "ar": "الحمل", "he": "טלה",
-        "hi": "मेष", "zh": "白羊座", "ja": "おひつじ座", "ko": "양자리", "vi": "Bạch Dương"
+        "es": "Aries",
+        "en": "Aries",
+        "pt": "Áries",
+        "fr": "Bélier",
+        "it": "Ariete",
+        "de": "Widder",
+        "nl": "Ram",
+        "sv": "Väduren",
+        "pl": "Baran",
+        "ru": "Овен",
+        "uk": "Овен",
+        "tr": "Koç",
+        "el": "Κριός",
+        "ar": "الحمل",
+        "he": "טלה",
+        "hi": "मेष",
+        "zh": "白羊座",
+        "ja": "おひつじ座",
+        "ko": "양자리",
+        "vi": "Bạch Dương",
+        "th": "ราศีเมษ",
+        "id": "Aries",
+        "fa": "حمل",
+        "ur": "حمل",
+        "bn": "মেষ",
+        "ro": "Berbec",
+        "cs": "Beran",
+        "fi": "Oinas",
+        "sw": "Kondoo dume",
+        "da": "Vædderen"
       },
       "descripciones": {
         "es": "Valiente, impulsivo y lleno de energía.",
@@ -34,7 +126,17 @@
         "zh": "勇敢、冲动，充满活力。",
         "ja": "勇敢で衝動的、エネルギーに満ちている。",
         "ko": "용감하고 충동적이며 에너지가 넘친다.",
-        "vi": "Dũng cảm, bốc đồng và tràn đầy năng lượng."
+        "vi": "Dũng cảm, bốc đồng và tràn đầy năng lượng.",
+        "th": "กล้าหาญ หุนหันพลันแล่น และเต็มไปด้วยพลัง",
+        "id": "Berani, impulsif dan penuh energi.",
+        "fa": "شجاع، تکانشی و پر از انرژی.",
+        "ur": "بہادر، جذباتی اور توانائی سے بھرپور۔",
+        "bn": "সাহসী, আবেগপ্রবণ ও শক্তিতে ভরপুর।",
+        "ro": "Curajos, impulsiv și plin de energie.",
+        "cs": "Odvážný, impulzivní a plný energie.",
+        "fi": "Rohkea, impulsiivinen ja täynnä energiaa.",
+        "sw": "Jasiri, mwenye haraka na amejaa nguvu.",
+        "da": "Modig, impulsiv og fuld af energi."
       }
     },
     {
@@ -42,14 +144,94 @@
       "tipo": "occidental",
       "fechas": "20/04 – 20/05",
       "constelacion": {
-        "estrellas": [[40, 70], [70, 95], [100, 115], [75, 140], [120, 135], [130, 100], [160, 70]],
-        "lineas": [[0, 1], [1, 2], [2, 3], [2, 4], [4, 5], [5, 6]]
+        "estrellas": [
+          [
+            40,
+            70
+          ],
+          [
+            70,
+            95
+          ],
+          [
+            100,
+            115
+          ],
+          [
+            75,
+            140
+          ],
+          [
+            120,
+            135
+          ],
+          [
+            130,
+            100
+          ],
+          [
+            160,
+            70
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ]
+        ]
       },
       "nombres": {
-        "es": "Tauro", "en": "Taurus", "pt": "Touro", "fr": "Taureau", "it": "Toro",
-        "de": "Stier", "nl": "Stier", "sv": "Oxen", "pl": "Byk", "ru": "Телец",
-        "uk": "Телець", "tr": "Boğa", "el": "Ταύρος", "ar": "الثور", "he": "שור",
-        "hi": "वृषभ", "zh": "金牛座", "ja": "おうし座", "ko": "황소자리", "vi": "Kim Ngưu"
+        "es": "Tauro",
+        "en": "Taurus",
+        "pt": "Touro",
+        "fr": "Taureau",
+        "it": "Toro",
+        "de": "Stier",
+        "nl": "Stier",
+        "sv": "Oxen",
+        "pl": "Byk",
+        "ru": "Телец",
+        "uk": "Телець",
+        "tr": "Boğa",
+        "el": "Ταύρος",
+        "ar": "الثور",
+        "he": "שור",
+        "hi": "वृषभ",
+        "zh": "金牛座",
+        "ja": "おうし座",
+        "ko": "황소자리",
+        "vi": "Kim Ngưu",
+        "th": "ราศีพฤษภ",
+        "id": "Taurus",
+        "fa": "ثور",
+        "ur": "ثور",
+        "bn": "বৃষ",
+        "ro": "Taur",
+        "cs": "Býk",
+        "fi": "Härkä",
+        "sw": "Fahali",
+        "da": "Tyren"
       },
       "descripciones": {
         "es": "Paciente, sensual y amante de la estabilidad.",
@@ -71,7 +253,17 @@
         "zh": "耐心、感性，喜爱稳定。",
         "ja": "忍耐強く、官能的で安定を愛する。",
         "ko": "인내심이 강하고 감각적이며 안정을 사랑한다.",
-        "vi": "Kiên nhẫn, gợi cảm và yêu sự ổn định."
+        "vi": "Kiên nhẫn, gợi cảm và yêu sự ổn định.",
+        "th": "อดทน มีเสน่ห์ และรักความมั่นคง",
+        "id": "Sabar, sensual dan menyukai kestabilan.",
+        "fa": "صبور، حسی و دوستدار ثبات.",
+        "ur": "صبر والا، حسی اور استحکام پسند۔",
+        "bn": "ধৈর্যশীল, ইন্দ্রিয়াসক্ত ও স্থিতিশীলতা-প্রেমী।",
+        "ro": "Răbdător, senzual și iubitor de stabilitate.",
+        "cs": "Trpělivý, smyslný a milující stabilitu.",
+        "fi": "Kärsivällinen, aistillinen ja vakauden ystävä.",
+        "sw": "Mvumilivu, mwenye hisia na anapenda utulivu.",
+        "da": "Tålmodig, sanselig og glad for stabilitet."
       }
     },
     {
@@ -79,14 +271,106 @@
       "tipo": "occidental",
       "fechas": "21/05 – 20/06",
       "constelacion": {
-        "estrellas": [[70, 30], [100, 30], [60, 80], [95, 80], [55, 130], [90, 130], [45, 170], [80, 170]],
-        "lineas": [[0, 2], [2, 4], [4, 6], [1, 3], [3, 5], [5, 7], [2, 3], [4, 5]]
+        "estrellas": [
+          [
+            70,
+            30
+          ],
+          [
+            100,
+            30
+          ],
+          [
+            60,
+            80
+          ],
+          [
+            95,
+            80
+          ],
+          [
+            55,
+            130
+          ],
+          [
+            90,
+            130
+          ],
+          [
+            45,
+            170
+          ],
+          [
+            80,
+            170
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            4,
+            5
+          ]
+        ]
       },
       "nombres": {
-        "es": "Géminis", "en": "Gemini", "pt": "Gêmeos", "fr": "Gémeaux", "it": "Gemelli",
-        "de": "Zwillinge", "nl": "Tweelingen", "sv": "Tvillingarna", "pl": "Bliźnięta", "ru": "Близнецы",
-        "uk": "Близнюки", "tr": "İkizler", "el": "Δίδυμοι", "ar": "الجوزاء", "he": "תאומים",
-        "hi": "मिथुन", "zh": "双子座", "ja": "ふたご座", "ko": "쌍둥이자리", "vi": "Song Tử"
+        "es": "Géminis",
+        "en": "Gemini",
+        "pt": "Gêmeos",
+        "fr": "Gémeaux",
+        "it": "Gemelli",
+        "de": "Zwillinge",
+        "nl": "Tweelingen",
+        "sv": "Tvillingarna",
+        "pl": "Bliźnięta",
+        "ru": "Близнецы",
+        "uk": "Близнюки",
+        "tr": "İkizler",
+        "el": "Δίδυμοι",
+        "ar": "الجوزاء",
+        "he": "תאומים",
+        "hi": "मिथुन",
+        "zh": "双子座",
+        "ja": "ふたご座",
+        "ko": "쌍둥이자리",
+        "vi": "Song Tử",
+        "th": "ราศีมิถุน",
+        "id": "Gemini",
+        "fa": "جوزا",
+        "ur": "جوزا",
+        "bn": "মিথুন",
+        "ro": "Gemeni",
+        "cs": "Blíženci",
+        "fi": "Kaksoset",
+        "sw": "Mapacha",
+        "da": "Tvillingerne"
       },
       "descripciones": {
         "es": "Curioso, comunicativo y de mente ágil.",
@@ -108,7 +392,17 @@
         "zh": "好奇、善于沟通，思维敏捷。",
         "ja": "好奇心旺盛で、話好きで機転が利く。",
         "ko": "호기심이 많고 소통을 잘하며 머리 회전이 빠르다.",
-        "vi": "Tò mò, giao tiếp giỏi và đầu óc nhanh nhạy."
+        "vi": "Tò mò, giao tiếp giỏi và đầu óc nhanh nhạy.",
+        "th": "ช่างสงสัย พูดเก่ง และคิดเร็ว",
+        "id": "Penasaran, komunikatif dan berpikiran cepat.",
+        "fa": "کنجکاو، اهل ارتباط و زودفهم.",
+        "ur": "متجسس، باتونی اور تیز ذہن۔",
+        "bn": "কৌতূহলী, যোগাযোগপ্রবণ ও দ্রুতবুদ্ধি।",
+        "ro": "Curios, comunicativ și cu mintea agilă.",
+        "cs": "Zvědavý, komunikativní a bystrý.",
+        "fi": "Uteliias, puhelias ja nopea ajattelija.",
+        "sw": "Mdadisi, mwenye mawasiliano na akili ya haraka.",
+        "da": "Nysgerrig, kommunikativ og hurtigtænkende."
       }
     },
     {
@@ -116,14 +410,122 @@
       "tipo": "occidental",
       "fechas": "21/06 – 22/07",
       "constelacion": {
-        "estrellas": [[100, 100], [80, 85], [120, 85], [100, 120], [70, 65], [130, 65], [55, 105], [145, 105], [85, 140], [115, 140]],
-        "lineas": [[1, 2], [1, 0], [2, 0], [0, 3], [1, 4], [2, 5], [0, 6], [0, 7], [3, 8], [3, 9]]
+        "estrellas": [
+          [
+            100,
+            100
+          ],
+          [
+            80,
+            85
+          ],
+          [
+            120,
+            85
+          ],
+          [
+            100,
+            120
+          ],
+          [
+            70,
+            65
+          ],
+          [
+            130,
+            65
+          ],
+          [
+            55,
+            105
+          ],
+          [
+            145,
+            105
+          ],
+          [
+            85,
+            140
+          ],
+          [
+            115,
+            140
+          ]
+        ],
+        "lineas": [
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            0,
+            6
+          ],
+          [
+            0,
+            7
+          ],
+          [
+            3,
+            8
+          ],
+          [
+            3,
+            9
+          ]
+        ]
       },
       "nombres": {
-        "es": "Cáncer", "en": "Cancer", "pt": "Câncer", "fr": "Cancer", "it": "Cancro",
-        "de": "Krebs", "nl": "Kreeft", "sv": "Kräftan", "pl": "Rak", "ru": "Рак",
-        "uk": "Рак", "tr": "Yengeç", "el": "Καρκίνος", "ar": "السرطان", "he": "סרטן",
-        "hi": "कर्क", "zh": "巨蟹座", "ja": "かに座", "ko": "게자리", "vi": "Cự Giải"
+        "es": "Cáncer",
+        "en": "Cancer",
+        "pt": "Câncer",
+        "fr": "Cancer",
+        "it": "Cancro",
+        "de": "Krebs",
+        "nl": "Kreeft",
+        "sv": "Kräftan",
+        "pl": "Rak",
+        "ru": "Рак",
+        "uk": "Рак",
+        "tr": "Yengeç",
+        "el": "Καρκίνος",
+        "ar": "السرطان",
+        "he": "סרטן",
+        "hi": "कर्क",
+        "zh": "巨蟹座",
+        "ja": "かに座",
+        "ko": "게자리",
+        "vi": "Cự Giải",
+        "th": "ราศีกรกฎ",
+        "id": "Kanker",
+        "fa": "سرطان",
+        "ur": "سرطان",
+        "bn": "কর্কট",
+        "ro": "Rac",
+        "cs": "Rak",
+        "fi": "Rapu",
+        "sw": "Kaa",
+        "da": "Krebsen"
       },
       "descripciones": {
         "es": "Protector, sensible y muy leal a los suyos.",
@@ -145,7 +547,17 @@
         "zh": "保护欲强、敏感，对家人非常忠诚。",
         "ja": "面倒見がよく繊細で、身近な人に忠実。",
         "ko": "보호 본능이 강하고 예민하며 가족에게 충실하다.",
-        "vi": "Bảo vệ, nhạy cảm và rất trung thành với người thân."
+        "vi": "Bảo vệ, nhạy cảm và rất trung thành với người thân.",
+        "th": "คุ้มครอง อ่อนไหว และซื่อสัตย์ต่อคนที่รัก",
+        "id": "Protektif, sensitif dan sangat setia kepada orang terdekat.",
+        "fa": "حامی، حساس و بسیار وفادار به عزیزانش.",
+        "ur": "محافظ، حساس اور اپنوں سے بہت وفادار۔",
+        "bn": "রক্ষাকারী, সংবেদনশীল ও প্রিয়জনের প্রতি অনুগত।",
+        "ro": "Protector, sensibil și foarte loial celor dragi.",
+        "cs": "Ochranitelský, citlivý a velmi loajální k blízkým.",
+        "fi": "Suojeleva, herkkä ja hyvin uskollinen läheisilleen.",
+        "sw": "Mlinzi, nyeti na mwaminifu sana kwa wapendwa wake.",
+        "da": "Beskyttende, følsom og meget loyal over for sine."
       }
     },
     {
@@ -153,14 +565,106 @@
       "tipo": "occidental",
       "fechas": "23/07 – 22/08",
       "constelacion": {
-        "estrellas": [[40, 60], [60, 45], [85, 50], [95, 70], [80, 85], [140, 105], [175, 85], [120, 140]],
-        "lineas": [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [5, 7], [7, 4]]
+        "estrellas": [
+          [
+            40,
+            60
+          ],
+          [
+            60,
+            45
+          ],
+          [
+            85,
+            50
+          ],
+          [
+            95,
+            70
+          ],
+          [
+            80,
+            85
+          ],
+          [
+            140,
+            105
+          ],
+          [
+            175,
+            85
+          ],
+          [
+            120,
+            140
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            7
+          ],
+          [
+            7,
+            4
+          ]
+        ]
       },
       "nombres": {
-        "es": "Leo", "en": "Leo", "pt": "Leão", "fr": "Lion", "it": "Leone",
-        "de": "Löwe", "nl": "Leeuw", "sv": "Lejonet", "pl": "Lew", "ru": "Лев",
-        "uk": "Лев", "tr": "Aslan", "el": "Λέων", "ar": "الأسد", "he": "אריה",
-        "hi": "सिंह", "zh": "狮子座", "ja": "しし座", "ko": "사자자리", "vi": "Sư Tử"
+        "es": "Leo",
+        "en": "Leo",
+        "pt": "Leão",
+        "fr": "Lion",
+        "it": "Leone",
+        "de": "Löwe",
+        "nl": "Leeuw",
+        "sv": "Lejonet",
+        "pl": "Lew",
+        "ru": "Лев",
+        "uk": "Лев",
+        "tr": "Aslan",
+        "el": "Λέων",
+        "ar": "الأسد",
+        "he": "אריה",
+        "hi": "सिंह",
+        "zh": "狮子座",
+        "ja": "しし座",
+        "ko": "사자자리",
+        "vi": "Sư Tử",
+        "th": "ราศีสิงห์",
+        "id": "Leo",
+        "fa": "اسد",
+        "ur": "اسد",
+        "bn": "সিংহ",
+        "ro": "Leu",
+        "cs": "Lev",
+        "fi": "Leijona",
+        "sw": "Simba",
+        "da": "Løven"
       },
       "descripciones": {
         "es": "Generoso, carismático y con gusto por brillar.",
@@ -182,7 +686,17 @@
         "zh": "慷慨、有魅力，喜欢闪耀。",
         "ja": "寛大でカリスマ性があり、注目されるのが好き。",
         "ko": "관대하고 카리스마가 있으며 주목받는 것을 좋아한다.",
-        "vi": "Hào phóng, có sức hút và thích tỏa sáng."
+        "vi": "Hào phóng, có sức hút và thích tỏa sáng.",
+        "th": "ใจกว้าง มีเสน่ห์ และชอบเป็นจุดสนใจ",
+        "id": "Murah hati, karismatik dan suka tampil.",
+        "fa": "سخاوتمند، کاریزماتیک و عاشق درخشیدن.",
+        "ur": "فیاض، کرشماتی اور چمکنا پسند کرنے والا۔",
+        "bn": "উদার, মনোমুগ্ধকর ও আলো ছড়াতে ভালোবাসে।",
+        "ro": "Generos, carismatic și iubitor de lumină.",
+        "cs": "Štědrý, charismatický a rád září.",
+        "fi": "Anteliias, karismaattinen ja haluaa loistaa.",
+        "sw": "Mkarimu, mwenye haiba na anapenda kung'aa.",
+        "da": "Generøs, karismatisk og elsker at skinne."
       }
     },
     {
@@ -190,14 +704,102 @@
       "tipo": "occidental",
       "fechas": "23/08 – 22/09",
       "constelacion": {
-        "estrellas": [[30, 40], [55, 70], [80, 100], [110, 115], [105, 70], [140, 50], [165, 80], [145, 140]],
-        "lineas": [[0, 1], [1, 2], [2, 3], [3, 7], [2, 4], [4, 5], [5, 6]]
+        "estrellas": [
+          [
+            30,
+            40
+          ],
+          [
+            55,
+            70
+          ],
+          [
+            80,
+            100
+          ],
+          [
+            110,
+            115
+          ],
+          [
+            105,
+            70
+          ],
+          [
+            140,
+            50
+          ],
+          [
+            165,
+            80
+          ],
+          [
+            145,
+            140
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            7
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ]
+        ]
       },
       "nombres": {
-        "es": "Virgo", "en": "Virgo", "pt": "Virgem", "fr": "Vierge", "it": "Vergine",
-        "de": "Jungfrau", "nl": "Maagd", "sv": "Jungfrun", "pl": "Panna", "ru": "Дева",
-        "uk": "Діва", "tr": "Başak", "el": "Παρθένος", "ar": "العذراء", "he": "בתולה",
-        "hi": "कन्या", "zh": "处女座", "ja": "おとめ座", "ko": "처녀자리", "vi": "Xử Nữ"
+        "es": "Virgo",
+        "en": "Virgo",
+        "pt": "Virgem",
+        "fr": "Vierge",
+        "it": "Vergine",
+        "de": "Jungfrau",
+        "nl": "Maagd",
+        "sv": "Jungfrun",
+        "pl": "Panna",
+        "ru": "Дева",
+        "uk": "Діва",
+        "tr": "Başak",
+        "el": "Παρθένος",
+        "ar": "العذراء",
+        "he": "בתולה",
+        "hi": "कन्या",
+        "zh": "处女座",
+        "ja": "おとめ座",
+        "ko": "처녀자리",
+        "vi": "Xử Nữ",
+        "th": "ราศีกันย์",
+        "id": "Virgo",
+        "fa": "سنبله",
+        "ur": "سنبلہ",
+        "bn": "কন্যা",
+        "ro": "Fecioară",
+        "cs": "Panna",
+        "fi": "Neitsyt",
+        "sw": "Bikira",
+        "da": "Jomfruen"
       },
       "descripciones": {
         "es": "Analítico, práctico y muy detallista.",
@@ -219,7 +821,17 @@
         "zh": "善于分析、务实，非常注重细节。",
         "ja": "分析的で実際的、細部にこだわる。",
         "ko": "분석적이고 실용적이며 세부 사항에 매우 꼼꼼하다.",
-        "vi": "Phân tích, thực tế và rất chú trọng chi tiết."
+        "vi": "Phân tích, thực tế và rất chú trọng chi tiết.",
+        "th": "วิเคราะห์เก่ง ปฏิบัติได้จริง และละเอียดรอบคอบ",
+        "id": "Analitis, praktis dan sangat teliti.",
+        "fa": "تحلیلگر، عملگرا و بسیار دقیق.",
+        "ur": "تجزیاتی، عملی اور نہایت باریک بین۔",
+        "bn": "বিশ্লেষণী, ব্যবহারিক ও অত্যন্ত খুঁতখুঁতে।",
+        "ro": "Analitic, practic și foarte meticulos.",
+        "cs": "Analytický, praktický a velmi pečlivý.",
+        "fi": "Analyyttinen, käytännöllinen ja tarkka yksityiskohdissa.",
+        "sw": "Mchambuzi, mwenye vitendo na makini sana.",
+        "da": "Analytisk, praktisk og meget omhyggelig."
       }
     },
     {
@@ -227,14 +839,94 @@
       "tipo": "occidental",
       "fechas": "23/09 – 22/10",
       "constelacion": {
-        "estrellas": [[35, 120], [70, 105], [100, 95], [130, 105], [165, 120], [100, 140], [100, 55]],
-        "lineas": [[0, 1], [1, 2], [2, 3], [3, 4], [2, 5], [2, 6]]
+        "estrellas": [
+          [
+            35,
+            120
+          ],
+          [
+            70,
+            105
+          ],
+          [
+            100,
+            95
+          ],
+          [
+            130,
+            105
+          ],
+          [
+            165,
+            120
+          ],
+          [
+            100,
+            140
+          ],
+          [
+            100,
+            55
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            2,
+            6
+          ]
+        ]
       },
       "nombres": {
-        "es": "Libra", "en": "Libra", "pt": "Libra", "fr": "Balance", "it": "Bilancia",
-        "de": "Waage", "nl": "Weegschaal", "sv": "Vågen", "pl": "Waga", "ru": "Весы",
-        "uk": "Терези", "tr": "Terazi", "el": "Ζυγός", "ar": "الميزان", "he": "מאזניים",
-        "hi": "तुला", "zh": "天秤座", "ja": "てんびん座", "ko": "천칭자리", "vi": "Thiên Bình"
+        "es": "Libra",
+        "en": "Libra",
+        "pt": "Libra",
+        "fr": "Balance",
+        "it": "Bilancia",
+        "de": "Waage",
+        "nl": "Weegschaal",
+        "sv": "Vågen",
+        "pl": "Waga",
+        "ru": "Весы",
+        "uk": "Терези",
+        "tr": "Terazi",
+        "el": "Ζυγός",
+        "ar": "الميزان",
+        "he": "מאזניים",
+        "hi": "तुला",
+        "zh": "天秤座",
+        "ja": "てんびん座",
+        "ko": "천칭자리",
+        "vi": "Thiên Bình",
+        "th": "ราศีตุลย์",
+        "id": "Libra",
+        "fa": "میزان",
+        "ur": "میزان",
+        "bn": "তুলা",
+        "ro": "Balanță",
+        "cs": "Váhy",
+        "fi": "Vaaka",
+        "sw": "Mizani",
+        "da": "Vægten"
       },
       "descripciones": {
         "es": "Diplomático, sociable y en busca del equilibrio.",
@@ -256,7 +948,17 @@
         "zh": "善于交际、圆融，追求平衡。",
         "ja": "外交的で社交的、バランスを求める。",
         "ko": "외교적이고 사교적이며 균형을 추구한다.",
-        "vi": "Khéo léo, hòa đồng và tìm kiếm sự cân bằng."
+        "vi": "Khéo léo, hòa đồng và tìm kiếm sự cân bằng.",
+        "th": "ทูตสันติ เข้าสังคมเก่ง และแสวงหาความสมดุล",
+        "id": "Diplomatis, supel dan mencari keseimbangan.",
+        "fa": "دیپلمات، اجتماعی و جویای تعادل.",
+        "ur": "سفارتی، ملنسار اور توازن کا متلاشی۔",
+        "bn": "কূটনৈতিক, মিশুক ও ভারসাম্যের সন্ধানী।",
+        "ro": "Diplomatic, sociabil și în căutarea echilibrului.",
+        "cs": "Diplomatický, společenský a hledající rovnováhu.",
+        "fi": "Diplomaattinen, seurallinen ja tasapainoa etsivä.",
+        "sw": "Mwenye busara, mwenye urafiki na anatafuta usawa.",
+        "da": "Diplomatisk, social og søger balance."
       }
     },
     {
@@ -264,14 +966,110 @@
       "tipo": "occidental",
       "fechas": "23/10 – 21/11",
       "constelacion": {
-        "estrellas": [[30, 40], [55, 45], [75, 65], [85, 95], [110, 110], [140, 110], [160, 125], [165, 155], [185, 165]],
-        "lineas": [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8]]
+        "estrellas": [
+          [
+            30,
+            40
+          ],
+          [
+            55,
+            45
+          ],
+          [
+            75,
+            65
+          ],
+          [
+            85,
+            95
+          ],
+          [
+            110,
+            110
+          ],
+          [
+            140,
+            110
+          ],
+          [
+            160,
+            125
+          ],
+          [
+            165,
+            155
+          ],
+          [
+            185,
+            165
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            8
+          ]
+        ]
       },
       "nombres": {
-        "es": "Escorpio", "en": "Scorpio", "pt": "Escorpião", "fr": "Scorpion", "it": "Scorpione",
-        "de": "Skorpion", "nl": "Schorpioen", "sv": "Skorpionen", "pl": "Skorpion", "ru": "Скорпион",
-        "uk": "Скорпіон", "tr": "Akrep", "el": "Σκορπιός", "ar": "العقرب", "he": "עקרב",
-        "hi": "वृश्चिक", "zh": "天蝎座", "ja": "さそり座", "ko": "전갈자리", "vi": "Bọ Cạp"
+        "es": "Escorpio",
+        "en": "Scorpio",
+        "pt": "Escorpião",
+        "fr": "Scorpion",
+        "it": "Scorpione",
+        "de": "Skorpion",
+        "nl": "Schorpioen",
+        "sv": "Skorpionen",
+        "pl": "Skorpion",
+        "ru": "Скорпион",
+        "uk": "Скорпіон",
+        "tr": "Akrep",
+        "el": "Σκορπιός",
+        "ar": "العقرب",
+        "he": "עקרב",
+        "hi": "वृश्चिक",
+        "zh": "天蝎座",
+        "ja": "さそり座",
+        "ko": "전갈자리",
+        "vi": "Bọ Cạp",
+        "th": "ราศีพิจิก",
+        "id": "Scorpio",
+        "fa": "عقرب",
+        "ur": "عقرب",
+        "bn": "বৃশ্চিক",
+        "ro": "Scorpion",
+        "cs": "Štír",
+        "fi": "Skorpioni",
+        "sw": "Nge",
+        "da": "Skorpionen"
       },
       "descripciones": {
         "es": "Intenso, intuitivo y de voluntad firme.",
@@ -293,7 +1091,17 @@
         "zh": "热烈、直觉敏锐，意志坚定。",
         "ja": "情熱的で直感が鋭く、意志が強い。",
         "ko": "강렬하고 직관적이며 의지가 굳다.",
-        "vi": "Mãnh liệt, trực giác nhạy bén và ý chí kiên định."
+        "vi": "Mãnh liệt, trực giác nhạy bén và ý chí kiên định.",
+        "th": "เข้มข้น ใช้สัญชาตญาณ และมีจิตใจมุ่งมั่น",
+        "id": "Intens, intuitif dan berkemauan keras.",
+        "fa": "پرشور، شهودی و با اراده‌ای استوار.",
+        "ur": "پرجوش، وجدانی اور مضبوط ارادے والا۔",
+        "bn": "তীব্র, স্বজ্ঞাবান ও দৃঢ়চেতা।",
+        "ro": "Intens, intuitiv și cu voință fermă.",
+        "cs": "Intenzivní, intuitivní a silné vůle.",
+        "fi": "Intensiivinen, intuitiivinen ja vahvatahtoinen.",
+        "sw": "Mkali, mwenye angavu na nia thabiti.",
+        "da": "Intens, intuitiv og viljestærk."
       }
     },
     {
@@ -301,14 +1109,130 @@
       "tipo": "occidental",
       "fechas": "22/11 – 21/12",
       "constelacion": {
-        "estrellas": [[50, 120], [120, 120], [115, 85], [55, 85], [85, 70], [150, 80], [35, 95], [165, 45], [150, 38], [160, 60]],
-        "lineas": [[0, 1], [1, 2], [2, 3], [3, 0], [3, 4], [4, 2], [2, 5], [3, 6], [6, 0], [4, 7], [7, 8], [7, 9]]
+        "estrellas": [
+          [
+            50,
+            120
+          ],
+          [
+            120,
+            120
+          ],
+          [
+            115,
+            85
+          ],
+          [
+            55,
+            85
+          ],
+          [
+            85,
+            70
+          ],
+          [
+            150,
+            80
+          ],
+          [
+            35,
+            95
+          ],
+          [
+            165,
+            45
+          ],
+          [
+            150,
+            38
+          ],
+          [
+            160,
+            60
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            2,
+            5
+          ],
+          [
+            3,
+            6
+          ],
+          [
+            6,
+            0
+          ],
+          [
+            4,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            7,
+            9
+          ]
+        ]
       },
       "nombres": {
-        "es": "Sagitario", "en": "Sagittarius", "pt": "Sagitário", "fr": "Sagittaire", "it": "Sagittario",
-        "de": "Schütze", "nl": "Boogschutter", "sv": "Skytten", "pl": "Strzelec", "ru": "Стрелец",
-        "uk": "Стрілець", "tr": "Yay", "el": "Τοξότης", "ar": "القوس", "he": "קשת",
-        "hi": "धनु", "zh": "射手座", "ja": "いて座", "ko": "궁수자리", "vi": "Nhân Mã"
+        "es": "Sagitario",
+        "en": "Sagittarius",
+        "pt": "Sagitário",
+        "fr": "Sagittaire",
+        "it": "Sagittario",
+        "de": "Schütze",
+        "nl": "Boogschutter",
+        "sv": "Skytten",
+        "pl": "Strzelec",
+        "ru": "Стрелец",
+        "uk": "Стрілець",
+        "tr": "Yay",
+        "el": "Τοξότης",
+        "ar": "القوس",
+        "he": "קשת",
+        "hi": "धनु",
+        "zh": "射手座",
+        "ja": "いて座",
+        "ko": "궁수자리",
+        "vi": "Nhân Mã",
+        "th": "ราศีธนู",
+        "id": "Sagitarius",
+        "fa": "قوس",
+        "ur": "قوس",
+        "bn": "ধনু",
+        "ro": "Săgetător",
+        "cs": "Střelec",
+        "fi": "Jousimies",
+        "sw": "Mpiga upinde",
+        "da": "Skytten"
       },
       "descripciones": {
         "es": "Optimista, aventurero y amante de la libertad.",
@@ -330,7 +1254,17 @@
         "zh": "乐观、爱冒险，热爱自由。",
         "ja": "楽観的で冒険好き、自由を愛する。",
         "ko": "낙천적이고 모험을 즐기며 자유를 사랑한다.",
-        "vi": "Lạc quan, thích phiêu lưu và yêu tự do."
+        "vi": "Lạc quan, thích phiêu lưu và yêu tự do.",
+        "th": "มองโลกในแง่ดี รักการผจญภัย และรักอิสระ",
+        "id": "Optimis, petualang dan mencintai kebebasan.",
+        "fa": "خوش‌بین، ماجراجو و عاشق آزادی.",
+        "ur": "پرامید، مہم جو اور آزادی سے محبت کرنے والا۔",
+        "bn": "আশাবাদী, দুঃসাহসী ও স্বাধীনতাপ্রেমী।",
+        "ro": "Optimist, aventuros și iubitor de libertate.",
+        "cs": "Optimistický, dobrodružný a milující svobodu.",
+        "fi": "Optimistinen, seikkailunhaluinen ja vapauden ystävä.",
+        "sw": "Mwenye matumaini, mpenda matukio na uhuru.",
+        "da": "Optimistisk, eventyrlysten og frihedselskende."
       }
     },
     {
@@ -338,14 +1272,114 @@
       "tipo": "occidental",
       "fechas": "22/12 – 19/01",
       "constelacion": {
-        "estrellas": [[30, 60], [70, 50], [100, 80], [130, 70], [160, 100], [150, 140], [110, 150], [70, 120], [100, 110]],
-        "lineas": [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 2]]
+        "estrellas": [
+          [
+            30,
+            60
+          ],
+          [
+            70,
+            50
+          ],
+          [
+            100,
+            80
+          ],
+          [
+            130,
+            70
+          ],
+          [
+            160,
+            100
+          ],
+          [
+            150,
+            140
+          ],
+          [
+            110,
+            150
+          ],
+          [
+            70,
+            120
+          ],
+          [
+            100,
+            110
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            2
+          ]
+        ]
       },
       "nombres": {
-        "es": "Capricornio", "en": "Capricorn", "pt": "Capricórnio", "fr": "Capricorne", "it": "Capricorno",
-        "de": "Steinbock", "nl": "Steenbok", "sv": "Stenbocken", "pl": "Koziorożec", "ru": "Козерог",
-        "uk": "Козеріг", "tr": "Oğlak", "el": "Αιγόκερως", "ar": "الجدي", "he": "גדי",
-        "hi": "मकर", "zh": "摩羯座", "ja": "やぎ座", "ko": "염소자리", "vi": "Ma Kết"
+        "es": "Capricornio",
+        "en": "Capricorn",
+        "pt": "Capricórnio",
+        "fr": "Capricorne",
+        "it": "Capricorno",
+        "de": "Steinbock",
+        "nl": "Steenbok",
+        "sv": "Stenbocken",
+        "pl": "Koziorożec",
+        "ru": "Козерог",
+        "uk": "Козеріг",
+        "tr": "Oğlak",
+        "el": "Αιγόκερως",
+        "ar": "الجدي",
+        "he": "גדי",
+        "hi": "मकर",
+        "zh": "摩羯座",
+        "ja": "やぎ座",
+        "ko": "염소자리",
+        "vi": "Ma Kết",
+        "th": "ราศีมกร",
+        "id": "Capricorn",
+        "fa": "جدی",
+        "ur": "جدی",
+        "bn": "মকর",
+        "ro": "Capricorn",
+        "cs": "Kozoroh",
+        "fi": "Kauris",
+        "sw": "Mbuzi",
+        "da": "Stenbukken"
       },
       "descripciones": {
         "es": "Disciplinado, ambicioso y responsable.",
@@ -367,7 +1401,17 @@
         "zh": "自律、有野心，责任心强。",
         "ja": "規律正しく野心的で、責任感が強い。",
         "ko": "절제력이 있고 야심이 크며 책임감이 강하다.",
-        "vi": "Kỷ luật, tham vọng và có trách nhiệm."
+        "vi": "Kỷ luật, tham vọng và có trách nhiệm.",
+        "th": "มีระเบียบวินัย ทะเยอทะยาน และรับผิดชอบ",
+        "id": "Disiplin, ambisius dan bertanggung jawab.",
+        "fa": "منضبط، جاه‌طلب و مسئولیت‌پذیر.",
+        "ur": "باقاعدہ، پرعزم اور ذمہ دار۔",
+        "bn": "শৃঙ্খলাপরায়ণ, উচ্চাকাঙ্ক্ষী ও দায়িত্বশীল।",
+        "ro": "Disciplinat, ambițios și responsabil.",
+        "cs": "Disciplinovaný, ctižádostivý a zodpovědný.",
+        "fi": "Kurinalainen, kunnianhimoinen ja vastuullinen.",
+        "sw": "Mwenye nidhamu, mwenye tamaa na mwajibikaji.",
+        "da": "Disciplineret, ambitiøs og ansvarlig."
       }
     },
     {
@@ -375,14 +1419,130 @@
       "tipo": "occidental",
       "fechas": "20/01 – 18/02",
       "constelacion": {
-        "estrellas": [[25, 70], [55, 55], [85, 75], [115, 55], [145, 75], [175, 55], [25, 120], [55, 105], [85, 125], [115, 105], [145, 125], [175, 105]],
-        "lineas": [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [6, 7], [7, 8], [8, 9], [9, 10], [10, 11]]
+        "estrellas": [
+          [
+            25,
+            70
+          ],
+          [
+            55,
+            55
+          ],
+          [
+            85,
+            75
+          ],
+          [
+            115,
+            55
+          ],
+          [
+            145,
+            75
+          ],
+          [
+            175,
+            55
+          ],
+          [
+            25,
+            120
+          ],
+          [
+            55,
+            105
+          ],
+          [
+            85,
+            125
+          ],
+          [
+            115,
+            105
+          ],
+          [
+            145,
+            125
+          ],
+          [
+            175,
+            105
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            9,
+            10
+          ],
+          [
+            10,
+            11
+          ]
+        ]
       },
       "nombres": {
-        "es": "Acuario", "en": "Aquarius", "pt": "Aquário", "fr": "Verseau", "it": "Acquario",
-        "de": "Wassermann", "nl": "Waterman", "sv": "Vattumannen", "pl": "Wodnik", "ru": "Водолей",
-        "uk": "Водолій", "tr": "Kova", "el": "Υδροχόος", "ar": "الدلو", "he": "דלי",
-        "hi": "कुंभ", "zh": "水瓶座", "ja": "みずがめ座", "ko": "물병자리", "vi": "Bảo Bình"
+        "es": "Acuario",
+        "en": "Aquarius",
+        "pt": "Aquário",
+        "fr": "Verseau",
+        "it": "Acquario",
+        "de": "Wassermann",
+        "nl": "Waterman",
+        "sv": "Vattumannen",
+        "pl": "Wodnik",
+        "ru": "Водолей",
+        "uk": "Водолій",
+        "tr": "Kova",
+        "el": "Υδροχόος",
+        "ar": "الدلو",
+        "he": "דלי",
+        "hi": "कुंभ",
+        "zh": "水瓶座",
+        "ja": "みずがめ座",
+        "ko": "물병자리",
+        "vi": "Bảo Bình",
+        "th": "ราศีกุมภ์",
+        "id": "Aquarius",
+        "fa": "دلو",
+        "ur": "دلو",
+        "bn": "কুম্ভ",
+        "ro": "Vărsător",
+        "cs": "Vodnář",
+        "fi": "Vesimies",
+        "sw": "Mbeba maji",
+        "da": "Vandmanden"
       },
       "descripciones": {
         "es": "Independiente, original y humanitario.",
@@ -404,7 +1564,17 @@
         "zh": "独立、有创意，富有人道精神。",
         "ja": "独立心が強く独創的で、人道的。",
         "ko": "독립적이고 독창적이며 인도주의적이다.",
-        "vi": "Độc lập, sáng tạo và nhân văn."
+        "vi": "Độc lập, sáng tạo và nhân văn.",
+        "th": "เป็นอิสระ มีความคิดริเริ่ม และรักมนุษยชาติ",
+        "id": "Mandiri, orisinal dan humanis.",
+        "fa": "مستقل، اصیل و انسان‌دوست.",
+        "ur": "خودمختار، اصل اور انسان دوست۔",
+        "bn": "স্বাধীনচেতা, মৌলিক ও মানবহিতৈষী।",
+        "ro": "Independent, original și umanitar.",
+        "cs": "Nezávislý, originální a humanitární.",
+        "fi": "Riippumaton, omaperäinen ja humanitaarinen.",
+        "sw": "Huru, mbunifu na mwenye kujali binadamu.",
+        "da": "Uafhængig, original og humanitær."
       }
     },
     {
@@ -412,14 +1582,118 @@
       "tipo": "occidental",
       "fechas": "19/02 – 20/03",
       "constelacion": {
-        "estrellas": [[30, 50], [60, 70], [70, 100], [50, 130], [25, 150], [170, 50], [140, 70], [130, 100], [150, 130], [175, 150]],
-        "lineas": [[0, 1], [1, 2], [2, 3], [3, 4], [5, 6], [6, 7], [7, 8], [8, 9], [2, 7]]
+        "estrellas": [
+          [
+            30,
+            50
+          ],
+          [
+            60,
+            70
+          ],
+          [
+            70,
+            100
+          ],
+          [
+            50,
+            130
+          ],
+          [
+            25,
+            150
+          ],
+          [
+            170,
+            50
+          ],
+          [
+            140,
+            70
+          ],
+          [
+            130,
+            100
+          ],
+          [
+            150,
+            130
+          ],
+          [
+            175,
+            150
+          ]
+        ],
+        "lineas": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            2,
+            7
+          ]
+        ]
       },
       "nombres": {
-        "es": "Piscis", "en": "Pisces", "pt": "Peixes", "fr": "Poissons", "it": "Pesci",
-        "de": "Fische", "nl": "Vissen", "sv": "Fiskarna", "pl": "Ryby", "ru": "Рыбы",
-        "uk": "Риби", "tr": "Balık", "el": "Ιχθείς", "ar": "الحوت", "he": "דגים",
-        "hi": "मीन", "zh": "双鱼座", "ja": "うお座", "ko": "물고기자리", "vi": "Song Ngư"
+        "es": "Piscis",
+        "en": "Pisces",
+        "pt": "Peixes",
+        "fr": "Poissons",
+        "it": "Pesci",
+        "de": "Fische",
+        "nl": "Vissen",
+        "sv": "Fiskarna",
+        "pl": "Ryby",
+        "ru": "Рыбы",
+        "uk": "Риби",
+        "tr": "Balık",
+        "el": "Ιχθείς",
+        "ar": "الحوت",
+        "he": "דגים",
+        "hi": "मीन",
+        "zh": "双鱼座",
+        "ja": "うお座",
+        "ko": "물고기자리",
+        "vi": "Song Ngư",
+        "th": "ราศีมีน",
+        "id": "Pisces",
+        "fa": "حوت",
+        "ur": "حوت",
+        "bn": "মীন",
+        "ro": "Pești",
+        "cs": "Ryby",
+        "fi": "Kalat",
+        "sw": "Samaki",
+        "da": "Fiskene"
       },
       "descripciones": {
         "es": "Empático, soñador y muy intuitivo.",
@@ -441,17 +1715,53 @@
         "zh": "富有同理心、爱做梦，直觉很强。",
         "ja": "共感力が高く夢見がちで、とても直感的。",
         "ko": "공감 능력이 뛰어나고 몽상적이며 매우 직관적이다.",
-        "vi": "Đồng cảm, mơ mộng và rất trực giác."
+        "vi": "Đồng cảm, mơ mộng và rất trực giác.",
+        "th": "เอาใจเขามาใส่ใจเรา ชอบฝัน และใช้สัญชาตญาณมาก",
+        "id": "Empatik, pemimpi dan sangat intuitif.",
+        "fa": "همدل، رویایی و بسیار شهودی.",
+        "ur": "ہمدرد، خوابوں میں رہنے والا اور نہایت وجدانی۔",
+        "bn": "সহানুভূতিশীল, স্বপ্নালু ও অত্যন্ত স্বজ্ঞাবান।",
+        "ro": "Empatic, visător și foarte intuitiv.",
+        "cs": "Empatický, snivý a velmi intuitivní.",
+        "fi": "Empaattinen, unelmoiva ja hyvin intuitiivinen.",
+        "sw": "Mwenye huruma, mwenye ndoto na mwenye angavu sana.",
+        "da": "Empatisk, drømmende og meget intuitiv."
       }
     },
     {
       "id": "rata",
       "tipo": "chino",
       "nombres": {
-        "es": "Rata", "en": "Rat", "pt": "Rato", "fr": "Rat", "it": "Topo",
-        "de": "Ratte", "nl": "Rat", "sv": "Råtta", "pl": "Szczur", "ru": "Крыса",
-        "uk": "Щур", "tr": "Fare", "el": "Αρουραίος", "ar": "الفأر", "he": "עכבר",
-        "hi": "चूहा", "zh": "鼠", "ja": "ねずみ", "ko": "쥐", "vi": "Chuột"
+        "es": "Rata",
+        "en": "Rat",
+        "pt": "Rato",
+        "fr": "Rat",
+        "it": "Topo",
+        "de": "Ratte",
+        "nl": "Rat",
+        "sv": "Råtta",
+        "pl": "Szczur",
+        "ru": "Крыса",
+        "uk": "Щур",
+        "tr": "Fare",
+        "el": "Αρουραίος",
+        "ar": "الفأر",
+        "he": "עכבר",
+        "hi": "चूहा",
+        "zh": "鼠",
+        "ja": "ねずみ",
+        "ko": "쥐",
+        "vi": "Chuột",
+        "th": "หนู",
+        "id": "Tikus",
+        "fa": "موش",
+        "ur": "چوہا",
+        "bn": "ইঁদুর",
+        "ro": "Șobolan",
+        "cs": "Krysa",
+        "fi": "Rotta",
+        "sw": "Panya",
+        "da": "Rotten"
       },
       "descripciones": {
         "es": "Astuta, ágil y muy ingeniosa.",
@@ -473,17 +1783,53 @@
         "zh": "机敏、灵活，非常聪明。",
         "ja": "賢く機敏で、とても機転が利く。",
         "ko": "영리하고 민첩하며 아주 재치가 있다.",
-        "vi": "Khôn khéo, nhanh nhẹn và rất tháo vát."
+        "vi": "Khôn khéo, nhanh nhẹn và rất tháo vát.",
+        "th": "ฉลาดแกมโกง คล่องแคล่ว และมีไหวพริบ",
+        "id": "Cerdik, lincah dan sangat pandai akal.",
+        "fa": "زیرک، چابک و بسیار مبتکر.",
+        "ur": "ہوشیار، پھرتیلا اور نہایت ذہین۔",
+        "bn": "চতুর, চটপটে ও অত্যন্ত বুদ্ধিমান।",
+        "ro": "Isteț, agil și foarte ingenios.",
+        "cs": "Chytrý, hbitý a velmi vynalézavý.",
+        "fi": "Taitava, ketterä ja hyvin kekseliäs.",
+        "sw": "Mjanja, mwepesi na mbunifu sana.",
+        "da": "Snu, hurtig og meget opfindsom."
       }
     },
     {
       "id": "buey",
       "tipo": "chino",
       "nombres": {
-        "es": "Buey", "en": "Ox", "pt": "Boi", "fr": "Bœuf", "it": "Bue",
-        "de": "Ochse", "nl": "Os", "sv": "Oxe", "pl": "Wół", "ru": "Бык",
-        "uk": "Бик", "tr": "Öküz", "el": "Βόδι", "ar": "الثور", "he": "שור",
-        "hi": "बैल", "zh": "牛", "ja": "うし", "ko": "소", "vi": "Trâu"
+        "es": "Buey",
+        "en": "Ox",
+        "pt": "Boi",
+        "fr": "Bœuf",
+        "it": "Bue",
+        "de": "Ochse",
+        "nl": "Os",
+        "sv": "Oxe",
+        "pl": "Wół",
+        "ru": "Бык",
+        "uk": "Бик",
+        "tr": "Öküz",
+        "el": "Βόδι",
+        "ar": "الثور",
+        "he": "שור",
+        "hi": "बैल",
+        "zh": "牛",
+        "ja": "うし",
+        "ko": "소",
+        "vi": "Trâu",
+        "th": "วัว",
+        "id": "Kerbau",
+        "fa": "گاو",
+        "ur": "بیل",
+        "bn": "ষাঁড়",
+        "ro": "Bou",
+        "cs": "Vůl",
+        "fi": "Härkä",
+        "sw": "Ng'ombe",
+        "da": "Oksen"
       },
       "descripciones": {
         "es": "Trabajador, paciente y confiable.",
@@ -505,17 +1851,53 @@
         "zh": "勤勉、耐心，值得信赖。",
         "ja": "勤勉で忍耐強く、頼りになる。",
         "ko": "성실하고 참을성이 있으며 믿음직하다.",
-        "vi": "Chăm chỉ, kiên nhẫn và đáng tin cậy."
+        "vi": "Chăm chỉ, kiên nhẫn và đáng tin cậy.",
+        "th": "ขยัน อดทน และน่าไว้วางใจ",
+        "id": "Pekerja keras, sabar dan dapat diandalkan.",
+        "fa": "سخت‌کوش، صبور و قابل اعتماد.",
+        "ur": "محنتی، صابر اور قابلِ اعتماد۔",
+        "bn": "পরিশ্রমী, ধৈর্যশীল ও নির্ভরযোগ্য।",
+        "ro": "Harnic, răbdător și de încredere.",
+        "cs": "Pracovitý, trpělivý a spolehlivý.",
+        "fi": "Ahkera, kärsivällinen ja luotettava.",
+        "sw": "Mchapakazi, mvumilivu na mwaminifu.",
+        "da": "Hårdtarbejdende, tålmodig og pålidelig."
       }
     },
     {
       "id": "tigre",
       "tipo": "chino",
       "nombres": {
-        "es": "Tigre", "en": "Tiger", "pt": "Tigre", "fr": "Tigre", "it": "Tigre",
-        "de": "Tiger", "nl": "Tijger", "sv": "Tiger", "pl": "Tygrys", "ru": "Тигр",
-        "uk": "Тигр", "tr": "Kaplan", "el": "Τίγρη", "ar": "النمر", "he": "נמר",
-        "hi": "बाघ", "zh": "虎", "ja": "とら", "ko": "호랑이", "vi": "Hổ"
+        "es": "Tigre",
+        "en": "Tiger",
+        "pt": "Tigre",
+        "fr": "Tigre",
+        "it": "Tigre",
+        "de": "Tiger",
+        "nl": "Tijger",
+        "sv": "Tiger",
+        "pl": "Tygrys",
+        "ru": "Тигр",
+        "uk": "Тигр",
+        "tr": "Kaplan",
+        "el": "Τίγρη",
+        "ar": "النمر",
+        "he": "נמר",
+        "hi": "बाघ",
+        "zh": "虎",
+        "ja": "とら",
+        "ko": "호랑이",
+        "vi": "Hổ",
+        "th": "เสือ",
+        "id": "Macan",
+        "fa": "ببر",
+        "ur": "ببر",
+        "bn": "বাঘ",
+        "ro": "Tigru",
+        "cs": "Tygr",
+        "fi": "Tiikeri",
+        "sw": "Tigri",
+        "da": "Tigeren"
       },
       "descripciones": {
         "es": "Valiente, competitivo y apasionado.",
@@ -537,17 +1919,53 @@
         "zh": "勇敢、好胜，充满激情。",
         "ja": "勇敢で負けず嫌い、情熱的。",
         "ko": "용감하고 경쟁심이 강하며 열정적이다.",
-        "vi": "Dũng cảm, hiếu thắng và đầy đam mê."
+        "vi": "Dũng cảm, hiếu thắng và đầy đam mê.",
+        "th": "กล้าหาญ แข่งขันเก่ง และมีใจรักมาก",
+        "id": "Berani, kompetitif dan penuh gairah.",
+        "fa": "شجاع، رقابت‌جو و پرشور.",
+        "ur": "بہادر، مسابقتی اور پرجوش۔",
+        "bn": "সাহসী, প্রতিযোগিতামূলক ও আবেগী।",
+        "ro": "Curajos, competitiv și pasionat.",
+        "cs": "Odvážný, soutěživý a vášnivý.",
+        "fi": "Rohkea, kilpailuhenkinen ja intohimoinen.",
+        "sw": "Jasiri, mshindani na mwenye shauku.",
+        "da": "Modig, konkurrencepræget og lidenskabelig."
       }
     },
     {
       "id": "conejo",
       "tipo": "chino",
       "nombres": {
-        "es": "Conejo", "en": "Rabbit", "pt": "Coelho", "fr": "Lapin", "it": "Coniglio",
-        "de": "Hase", "nl": "Konijn", "sv": "Kanin", "pl": "Królik", "ru": "Кролик",
-        "uk": "Кролик", "tr": "Tavşan", "el": "Κουνέλι", "ar": "الأرنب", "he": "ארנב",
-        "hi": "खरगोश", "zh": "兔", "ja": "うさぎ", "ko": "토끼", "vi": "Mèo"
+        "es": "Conejo",
+        "en": "Rabbit",
+        "pt": "Coelho",
+        "fr": "Lapin",
+        "it": "Coniglio",
+        "de": "Hase",
+        "nl": "Konijn",
+        "sv": "Kanin",
+        "pl": "Królik",
+        "ru": "Кролик",
+        "uk": "Кролик",
+        "tr": "Tavşan",
+        "el": "Κουνέλι",
+        "ar": "الأرنب",
+        "he": "ארנב",
+        "hi": "खरगोश",
+        "zh": "兔",
+        "ja": "うさぎ",
+        "ko": "토끼",
+        "vi": "Mèo",
+        "th": "กระต่าย",
+        "id": "Kelinci",
+        "fa": "خرگوش",
+        "ur": "خرگوش",
+        "bn": "খরগোশ",
+        "ro": "Iepure",
+        "cs": "Králík",
+        "fi": "Kani",
+        "sw": "Sungura",
+        "da": "Kaninen"
       },
       "descripciones": {
         "es": "Amable, prudente y sensible.",
@@ -569,17 +1987,53 @@
         "zh": "温和、谨慎，细腻敏感。",
         "ja": "優しく慎重で、感受性が豊か。",
         "ko": "온화하고 신중하며 예민하다.",
-        "vi": "Hiền hòa, thận trọng và nhạy cảm."
+        "vi": "Hiền hòa, thận trọng và nhạy cảm.",
+        "th": "อ่อนโยน ระมัดระวัง และละเอียดอ่อน",
+        "id": "Lembut, berhati-hati dan peka.",
+        "fa": "مهربان، محتاط و حساس.",
+        "ur": "نرم خو، محتاط اور حساس۔",
+        "bn": "নম্র, সতর্ক ও সংবেদনশীল।",
+        "ro": "Blând, prudent și sensibil.",
+        "cs": "Laskavý, opatrný a citlivý.",
+        "fi": "Lempeä, varovainen ja herkkä.",
+        "sw": "Mpole, mwangalifu na nyeti.",
+        "da": "Blid, forsigtig og følsom."
       }
     },
     {
       "id": "dragon",
       "tipo": "chino",
       "nombres": {
-        "es": "Dragón", "en": "Dragon", "pt": "Dragão", "fr": "Dragon", "it": "Drago",
-        "de": "Drache", "nl": "Draak", "sv": "Draken", "pl": "Smok", "ru": "Дракон",
-        "uk": "Дракон", "tr": "Ejderha", "el": "Δράκος", "ar": "التنين", "he": "דרקון",
-        "hi": "ड्रैगन", "zh": "龙", "ja": "たつ", "ko": "용", "vi": "Rồng"
+        "es": "Dragón",
+        "en": "Dragon",
+        "pt": "Dragão",
+        "fr": "Dragon",
+        "it": "Drago",
+        "de": "Drache",
+        "nl": "Draak",
+        "sv": "Draken",
+        "pl": "Smok",
+        "ru": "Дракон",
+        "uk": "Дракон",
+        "tr": "Ejderha",
+        "el": "Δράκος",
+        "ar": "التنين",
+        "he": "דרקון",
+        "hi": "ड्रैगन",
+        "zh": "龙",
+        "ja": "たつ",
+        "ko": "용",
+        "vi": "Rồng",
+        "th": "มังกร",
+        "id": "Naga",
+        "fa": "اژدها",
+        "ur": "اژدہا",
+        "bn": "ড্রাগন",
+        "ro": "Dragon",
+        "cs": "Drak",
+        "fi": "Lohikäärme",
+        "sw": "Joka",
+        "da": "Dragen"
       },
       "descripciones": {
         "es": "Carismático, enérgico y afortunado.",
@@ -601,17 +2055,53 @@
         "zh": "有魅力、充满活力，运气好。",
         "ja": "カリスマ性があり、エネルギッシュで運が良い。",
         "ko": "카리스마가 있고 에너지가 넘치며 운이 좋다.",
-        "vi": "Có sức hút, năng động và may mắn."
+        "vi": "Có sức hút, năng động và may mắn.",
+        "th": "มีเสน่ห์ กระฉับกระเฉง และโชคดี",
+        "id": "Karismatik, energik dan beruntung.",
+        "fa": "کاریزماتیک، پرانرژی و خوش‌شانس.",
+        "ur": "کرشماتی، پرجوش اور خوش قسمت۔",
+        "bn": "মনোমুগ্ধকর, প্রাণবন্ত ও ভাগ্যবান।",
+        "ro": "Carismatic, energic și norocos.",
+        "cs": "Charismatický, energický a šťastný.",
+        "fi": "Karismaattinen, energinen ja onnekas.",
+        "sw": "Mwenye nguvu, mwenye haiba na mwenye bahati.",
+        "da": "Karismatisk, energisk og heldig."
       }
     },
     {
       "id": "serpiente",
       "tipo": "chino",
       "nombres": {
-        "es": "Serpiente", "en": "Snake", "pt": "Serpente", "fr": "Serpent", "it": "Serpente",
-        "de": "Schlange", "nl": "Slang", "sv": "Orm", "pl": "Wąż", "ru": "Змея",
-        "uk": "Змія", "tr": "Yılan", "el": "Φίδι", "ar": "الثعبان", "he": "נחש",
-        "hi": "साँप", "zh": "蛇", "ja": "へび", "ko": "뱀", "vi": "Rắn"
+        "es": "Serpiente",
+        "en": "Snake",
+        "pt": "Serpente",
+        "fr": "Serpent",
+        "it": "Serpente",
+        "de": "Schlange",
+        "nl": "Slang",
+        "sv": "Orm",
+        "pl": "Wąż",
+        "ru": "Змея",
+        "uk": "Змія",
+        "tr": "Yılan",
+        "el": "Φίδι",
+        "ar": "الثعبان",
+        "he": "נחש",
+        "hi": "साँप",
+        "zh": "蛇",
+        "ja": "へび",
+        "ko": "뱀",
+        "vi": "Rắn",
+        "th": "งู",
+        "id": "Ular",
+        "fa": "مار",
+        "ur": "سانپ",
+        "bn": "সাপ",
+        "ro": "Șarpe",
+        "cs": "Had",
+        "fi": "Käärme",
+        "sw": "Nyoka",
+        "da": "Slangen"
       },
       "descripciones": {
         "es": "Sabia, reservada y elegante.",
@@ -633,17 +2123,53 @@
         "zh": "睿智、内敛，优雅。",
         "ja": "賢明で控えめ、優雅。",
         "ko": "지혜롭고 과묵하며 우아하다.",
-        "vi": "Khôn ngoan, kín đáo và thanh lịch."
+        "vi": "Khôn ngoan, kín đáo và thanh lịch.",
+        "th": "ฉลาดรอบรู้ เก็บตัว และสง่างาม",
+        "id": "Bijaksana, pendiam dan elegan.",
+        "fa": "خردمند، محجوب و باوقار.",
+        "ur": "دانا، سنجیدہ اور باوقار۔",
+        "bn": "প্রজ্ঞাবান, সংযত ও মার্জিত।",
+        "ro": "Înțelept, rezervat și elegant.",
+        "cs": "Moudrý, rezervovaný a elegantní.",
+        "fi": "Viisas, pidättyvä ja hyvätapainen.",
+        "sw": "Mwenye hekima, mtulivu na mwenye umaridadi.",
+        "da": "Klog, reserveret og elegant."
       }
     },
     {
       "id": "caballo",
       "tipo": "chino",
       "nombres": {
-        "es": "Caballo", "en": "Horse", "pt": "Cavalo", "fr": "Cheval", "it": "Cavallo",
-        "de": "Pferd", "nl": "Paard", "sv": "Häst", "pl": "Koń", "ru": "Лошадь",
-        "uk": "Кінь", "tr": "At", "el": "Άλογο", "ar": "الحصان", "he": "סוס",
-        "hi": "घोड़ा", "zh": "马", "ja": "うま", "ko": "말", "vi": "Ngựa"
+        "es": "Caballo",
+        "en": "Horse",
+        "pt": "Cavalo",
+        "fr": "Cheval",
+        "it": "Cavallo",
+        "de": "Pferd",
+        "nl": "Paard",
+        "sv": "Häst",
+        "pl": "Koń",
+        "ru": "Лошадь",
+        "uk": "Кінь",
+        "tr": "At",
+        "el": "Άλογο",
+        "ar": "الحصان",
+        "he": "סוס",
+        "hi": "घोड़ा",
+        "zh": "马",
+        "ja": "うま",
+        "ko": "말",
+        "vi": "Ngựa",
+        "th": "ม้า",
+        "id": "Kuda",
+        "fa": "اسب",
+        "ur": "گھوڑا",
+        "bn": "ঘোড়া",
+        "ro": "Cal",
+        "cs": "Kůň",
+        "fi": "Hevonen",
+        "sw": "Farasi",
+        "da": "Hesten"
       },
       "descripciones": {
         "es": "Libre, enérgico y sociable.",
@@ -665,17 +2191,53 @@
         "zh": "自由、精力充沛，善于社交。",
         "ja": "自由奔放でエネルギッシュ、社交的。",
         "ko": "자유분방하고 활력이 넘치며 사교적이다.",
-        "vi": "Tự do, năng động và hòa đồng."
+        "vi": "Tự do, năng động và hòa đồng.",
+        "th": "รักอิสระ กระตือรือร้น และเข้าสังคมเก่ง",
+        "id": "Bebas, energik dan supel.",
+        "fa": "آزادمنش، پرانرژی و اجتماعی.",
+        "ur": "آزاد منش، پرجوش اور ملنسار۔",
+        "bn": "মুক্তমনা, উদ্যমী ও মিশুক।",
+        "ro": "Liber, energic și sociabil.",
+        "cs": "Svobodomyslný, energický a společenský.",
+        "fi": "Vapaa, energinen ja seurallinen.",
+        "sw": "Mwenye roho huru, mwenye nguvu na mwenye urafiki.",
+        "da": "Frihedselskende, energisk og social."
       }
     },
     {
       "id": "cabra",
       "tipo": "chino",
       "nombres": {
-        "es": "Cabra", "en": "Goat", "pt": "Cabra", "fr": "Chèvre", "it": "Capra",
-        "de": "Ziege", "nl": "Geit", "sv": "Get", "pl": "Koza", "ru": "Коза",
-        "uk": "Коза", "tr": "Keçi", "el": "Κατσίκα", "ar": "الماعز", "he": "עז",
-        "hi": "बकरी", "zh": "羊", "ja": "ひつじ", "ko": "양", "vi": "Dê"
+        "es": "Cabra",
+        "en": "Goat",
+        "pt": "Cabra",
+        "fr": "Chèvre",
+        "it": "Capra",
+        "de": "Ziege",
+        "nl": "Geit",
+        "sv": "Get",
+        "pl": "Koza",
+        "ru": "Коза",
+        "uk": "Коза",
+        "tr": "Keçi",
+        "el": "Κατσίκα",
+        "ar": "الماعز",
+        "he": "עז",
+        "hi": "बकरी",
+        "zh": "羊",
+        "ja": "ひつじ",
+        "ko": "양",
+        "vi": "Dê",
+        "th": "แพะ",
+        "id": "Kambing",
+        "fa": "بز",
+        "ur": "بکری",
+        "bn": "ছাগল",
+        "ro": "Capră",
+        "cs": "Koza",
+        "fi": "Vuohi",
+        "sw": "Mbuzi",
+        "da": "Geden"
       },
       "descripciones": {
         "es": "Creativa, gentil y artística.",
@@ -697,17 +2259,53 @@
         "zh": "富有创意、温柔，有艺术气质。",
         "ja": "創造的で穏やか、芸術的。",
         "ko": "창의적이고 온화하며 예술적이다.",
-        "vi": "Sáng tạo, dịu dàng và nghệ sĩ."
+        "vi": "Sáng tạo, dịu dàng và nghệ sĩ.",
+        "th": "สร้างสรรค์ อ่อนโยน และมีศิลปะในตัว",
+        "id": "Kreatif, lembut dan artistik.",
+        "fa": "خلاق، ملایم و هنرمند.",
+        "ur": "تخلیقی، نرم دل اور فنکارانہ۔",
+        "bn": "সৃজনশীল, কোমল ও শৈল্পিক।",
+        "ro": "Creativ, blând și artistic.",
+        "cs": "Tvořivý, laskavý a umělecký.",
+        "fi": "Luova, lempeä ja taiteellinen.",
+        "sw": "Mbunifu, mpole na mwenye sanaa.",
+        "da": "Kreativ, blid og kunstnerisk."
       }
     },
     {
       "id": "mono",
       "tipo": "chino",
       "nombres": {
-        "es": "Mono", "en": "Monkey", "pt": "Macaco", "fr": "Singe", "it": "Scimmia",
-        "de": "Affe", "nl": "Aap", "sv": "Apa", "pl": "Małpa", "ru": "Обезьяна",
-        "uk": "Мавпа", "tr": "Maymun", "el": "Πίθηκος", "ar": "القرد", "he": "קוף",
-        "hi": "बंदर", "zh": "猴", "ja": "さる", "ko": "원숭이", "vi": "Khỉ"
+        "es": "Mono",
+        "en": "Monkey",
+        "pt": "Macaco",
+        "fr": "Singe",
+        "it": "Scimmia",
+        "de": "Affe",
+        "nl": "Aap",
+        "sv": "Apa",
+        "pl": "Małpa",
+        "ru": "Обезьяна",
+        "uk": "Мавпа",
+        "tr": "Maymun",
+        "el": "Πίθηκος",
+        "ar": "القرد",
+        "he": "קוף",
+        "hi": "बंदर",
+        "zh": "猴",
+        "ja": "さる",
+        "ko": "원숭이",
+        "vi": "Khỉ",
+        "th": "ลิง",
+        "id": "Monyet",
+        "fa": "میمون",
+        "ur": "بندر",
+        "bn": "বানর",
+        "ro": "Maimuță",
+        "cs": "Opice",
+        "fi": "Apina",
+        "sw": "Nyani",
+        "da": "Aben"
       },
       "descripciones": {
         "es": "Inteligente, divertido e ingenioso.",
@@ -729,17 +2327,53 @@
         "zh": "聪明、有趣，机智幽默。",
         "ja": "頭が良く、楽しくてユーモアがある。",
         "ko": "똑똑하고 재미있으며 재치가 있다.",
-        "vi": "Thông minh, vui tính và dí dỏm."
+        "vi": "Thông minh, vui tính và dí dỏm.",
+        "th": "ฉลาด สนุกสนาน และมีไหวพริบ",
+        "id": "Pintar, menyenangkan dan jenaka.",
+        "fa": "باهوش، سرگرم‌کننده و بذله‌گو.",
+        "ur": "ذہین، شوخ اور حاضر جواب۔",
+        "bn": "বুদ্ধিমান, মজাদার ও রসিক।",
+        "ro": "Isteț, amuzant și spiritual.",
+        "cs": "Chytrý, zábavný a vtipný.",
+        "fi": "Älykäs, hauska ja nokkela.",
+        "sw": "Mwerevu, mcheshi na mwenye busara.",
+        "da": "Klog, sjov og kvik."
       }
     },
     {
       "id": "gallo",
       "tipo": "chino",
       "nombres": {
-        "es": "Gallo", "en": "Rooster", "pt": "Galo", "fr": "Coq", "it": "Gallo",
-        "de": "Hahn", "nl": "Haan", "sv": "Tupp", "pl": "Kogut", "ru": "Петух",
-        "uk": "Півень", "tr": "Horoz", "el": "Κόκορας", "ar": "الديك", "he": "תרנגול",
-        "hi": "मुर्गा", "zh": "鸡", "ja": "とり", "ko": "닭", "vi": "Gà"
+        "es": "Gallo",
+        "en": "Rooster",
+        "pt": "Galo",
+        "fr": "Coq",
+        "it": "Gallo",
+        "de": "Hahn",
+        "nl": "Haan",
+        "sv": "Tupp",
+        "pl": "Kogut",
+        "ru": "Петух",
+        "uk": "Півень",
+        "tr": "Horoz",
+        "el": "Κόκορας",
+        "ar": "الديك",
+        "he": "תרנגול",
+        "hi": "मुर्गा",
+        "zh": "鸡",
+        "ja": "とり",
+        "ko": "닭",
+        "vi": "Gà",
+        "th": "ไก่",
+        "id": "Ayam",
+        "fa": "خروس",
+        "ur": "مرغ",
+        "bn": "মোরগ",
+        "ro": "Cocoș",
+        "cs": "Kohout",
+        "fi": "Kukko",
+        "sw": "Jogoo",
+        "da": "Hanen"
       },
       "descripciones": {
         "es": "Organizado, honesto y observador.",
@@ -761,17 +2395,53 @@
         "zh": "有条理、诚实，观察力强。",
         "ja": "几帳面で正直、観察力がある。",
         "ko": "체계적이고 정직하며 관찰력이 뛰어나다.",
-        "vi": "Ngăn nắp, trung thực và tinh ý."
+        "vi": "Ngăn nắp, trung thực và tinh ý.",
+        "th": "เป็นระเบียบ ซื่อสัตย์ และช่างสังเกต",
+        "id": "Teratur, jujur dan teliti dalam mengamati.",
+        "fa": "منظم، صادق و تیزبین.",
+        "ur": "منظم، ایماندار اور باریک بین۔",
+        "bn": "গোছানো, সৎ ও পর্যবেক্ষণশীল।",
+        "ro": "Organizat, cinstit și atent la detalii.",
+        "cs": "Uspořádaný, poctivý a pozorný.",
+        "fi": "Järjestelmällinen, rehellinen ja tarkkaavainen.",
+        "sw": "Mpangilio, mkweli na mchunguzi.",
+        "da": "Ordentlig, ærlig og opmærksom."
       }
     },
     {
       "id": "perro",
       "tipo": "chino",
       "nombres": {
-        "es": "Perro", "en": "Dog", "pt": "Cão", "fr": "Chien", "it": "Cane",
-        "de": "Hund", "nl": "Hond", "sv": "Hund", "pl": "Pies", "ru": "Собака",
-        "uk": "Собака", "tr": "Köpek", "el": "Σκύλος", "ar": "الكلب", "he": "כלב",
-        "hi": "कुत्ता", "zh": "狗", "ja": "いぬ", "ko": "개", "vi": "Chó"
+        "es": "Perro",
+        "en": "Dog",
+        "pt": "Cão",
+        "fr": "Chien",
+        "it": "Cane",
+        "de": "Hund",
+        "nl": "Hond",
+        "sv": "Hund",
+        "pl": "Pies",
+        "ru": "Собака",
+        "uk": "Собака",
+        "tr": "Köpek",
+        "el": "Σκύλος",
+        "ar": "الكلب",
+        "he": "כלב",
+        "hi": "कुत्ता",
+        "zh": "狗",
+        "ja": "いぬ",
+        "ko": "개",
+        "vi": "Chó",
+        "th": "สุนัข",
+        "id": "Anjing",
+        "fa": "سگ",
+        "ur": "کتا",
+        "bn": "কুকুর",
+        "ro": "Câine",
+        "cs": "Pes",
+        "fi": "Koira",
+        "sw": "Mbwa",
+        "da": "Hunden"
       },
       "descripciones": {
         "es": "Leal, justo y protector.",
@@ -793,17 +2463,53 @@
         "zh": "忠诚、正直，乐于保护他人。",
         "ja": "忠実で公正、守ってくれる。",
         "ko": "충실하고 공정하며 보호 본능이 있다.",
-        "vi": "Trung thành, công bằng và bảo vệ người khác."
+        "vi": "Trung thành, công bằng và bảo vệ người khác.",
+        "th": "ซื่อสัตย์ ยุติธรรม และปกป้องคนอื่น",
+        "id": "Setia, adil dan protektif.",
+        "fa": "وفادار، عادل و محافظ.",
+        "ur": "وفادار، منصف اور محافظ۔",
+        "bn": "বিশ্বস্ত, ন্যায্য ও রক্ষাকারী।",
+        "ro": "Loial, drept și protector.",
+        "cs": "Věrný, spravedlivý a ochranitelský.",
+        "fi": "Uskollinen, oikeudenmukainen ja suojeleva.",
+        "sw": "Mwaminifu, mwadilifu na mlinzi.",
+        "da": "Loyal, retfærdig og beskyttende."
       }
     },
     {
       "id": "cerdo",
       "tipo": "chino",
       "nombres": {
-        "es": "Cerdo", "en": "Pig", "pt": "Porco", "fr": "Cochon", "it": "Maiale",
-        "de": "Schwein", "nl": "Varken", "sv": "Gris", "pl": "Świnia", "ru": "Свинья",
-        "uk": "Свиня", "tr": "Domuz", "el": "Χοίρος", "ar": "الخنزير", "he": "חזיר",
-        "hi": "सूअर", "zh": "猪", "ja": "いのしし", "ko": "돼지", "vi": "Lợn"
+        "es": "Cerdo",
+        "en": "Pig",
+        "pt": "Porco",
+        "fr": "Cochon",
+        "it": "Maiale",
+        "de": "Schwein",
+        "nl": "Varken",
+        "sv": "Gris",
+        "pl": "Świnia",
+        "ru": "Свинья",
+        "uk": "Свиня",
+        "tr": "Domuz",
+        "el": "Χοίρος",
+        "ar": "الخنزير",
+        "he": "חזיר",
+        "hi": "सूअर",
+        "zh": "猪",
+        "ja": "いのしし",
+        "ko": "돼지",
+        "vi": "Lợn",
+        "th": "หมู",
+        "id": "Babi",
+        "fa": "خوک",
+        "ur": "سور",
+        "bn": "শূকর",
+        "ro": "Porc",
+        "cs": "Prase",
+        "fi": "Sika",
+        "sw": "Nguruwe",
+        "da": "Svinet"
       },
       "descripciones": {
         "es": "Generoso, sincero y afectuoso.",
@@ -825,7 +2531,17 @@
         "zh": "慷慨、真诚，待人亲切。",
         "ja": "寛大で誠実、愛情深い。",
         "ko": "너그럽고 진실하며 정이 많다.",
-        "vi": "Hào phóng, chân thành và tình cảm."
+        "vi": "Hào phóng, chân thành và tình cảm.",
+        "th": "ใจกว้าง จริงใจ และมีความรักใคร่",
+        "id": "Murah hati, tulus dan penyayang.",
+        "fa": "سخاوتمند، صمیمی و مهربان.",
+        "ur": "فیاض، مخلص اور محبت کرنے والا۔",
+        "bn": "উদার, আন্তরিক ও স্নেহশীল।",
+        "ro": "Generos, sincer și afectuos.",
+        "cs": "Štědrý, upřímný a láskyplný.",
+        "fi": "Anteliias, vilpitön ja hellä.",
+        "sw": "Mkarimu, mkweli na mwenye upendo.",
+        "da": "Generøs, oprigtig og kærlig."
       }
     }
   ]

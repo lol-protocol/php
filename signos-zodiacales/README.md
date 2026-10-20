@@ -1,6 +1,6 @@
 # Signos del zodiaco y horóscopo chino
 
-Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, cada uno con su nombre y una descripción breve de sus supuestas características, en 20 idiomas. Además, un esquema SVG de la constelación de cada signo occidental.
+Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, cada uno con su nombre y una descripción breve de sus supuestas características, en 30 idiomas. Además, un esquema SVG de la constelación de cada signo occidental.
 
 > **Aviso.** Las descripciones recogen lo que la astrología y el horóscopo chino *atribuyen* a cada signo. No hay evidencia científica de que la fecha de nacimiento influya en el carácter. Las constelaciones son figuras de la tradición, no grupos de estrellas físicamente relacionados.
 
@@ -15,7 +15,7 @@ Los 12 signos del zodiaco occidental y los 12 animales del horóscopo chino, cad
 
 ### Idiomas
 
-Español, inglés, portugués, francés, italiano, alemán, neerlandés, sueco, polaco, ruso, ucraniano, turco, griego, árabe, hebreo, hindi, chino (simplificado), japonés, coreano y vietnamita.
+Español, inglés, portugués, francés, italiano, alemán, neerlandés, sueco, polaco, ruso, ucraniano, turco, griego, árabe, hebreo, hindi, chino (simplificado), japonés, coreano, vietnamita, tailandés, indonesio, persa, urdu, bengalí, rumano, checo, finés, suajili y danés.
 
 ### Zodiaco occidental
 
@@ -53,7 +53,7 @@ python3 generar.py --comprobar  # falla si lo committeado no coincide con datos/
 
 Para cambiar un nombre, una descripción o una estrella, edita `datos/signos.json`, ejecuta `python3 generar.py` y revisa el diff de los archivos generados.
 
-`generar.py` comprueba antes de escribir que cada signo tenga los 20 idiomas, que las líneas de cada constelación apunten a estrellas que existan y que los SVG sean XML válido.
+`generar.py` comprueba antes de escribir que cada signo tenga los 30 idiomas, que las líneas de cada constelación apunten a estrellas que existan y que los SVG sean XML válido.
 
 ## Las constelaciones
 

@@ -1,4 +1,4 @@
-# Signos del zodiaco y del horóscopo chino en 20 idiomas
+# Signos del zodiaco y del horóscopo chino en 30 idiomas
 
 > Generado por `generar.py` desde `datos/signos.json`. No editar a mano.
 
@@ -721,3 +721,363 @@
 | Gà | Ngăn nắp, trung thực và tinh ý. |
 | Chó | Trung thành, công bằng và bảo vệ người khác. |
 | Lợn | Hào phóng, chân thành và tình cảm. |
+
+## ไทย (`th`)
+
+### Zodiaco occidental
+
+| Signo | Descripción |
+| --- | --- |
+| ราศีเมษ | กล้าหาญ หุนหันพลันแล่น และเต็มไปด้วยพลัง |
+| ราศีพฤษภ | อดทน มีเสน่ห์ และรักความมั่นคง |
+| ราศีมิถุน | ช่างสงสัย พูดเก่ง และคิดเร็ว |
+| ราศีกรกฎ | คุ้มครอง อ่อนไหว และซื่อสัตย์ต่อคนที่รัก |
+| ราศีสิงห์ | ใจกว้าง มีเสน่ห์ และชอบเป็นจุดสนใจ |
+| ราศีกันย์ | วิเคราะห์เก่ง ปฏิบัติได้จริง และละเอียดรอบคอบ |
+| ราศีตุลย์ | ทูตสันติ เข้าสังคมเก่ง และแสวงหาความสมดุล |
+| ราศีพิจิก | เข้มข้น ใช้สัญชาตญาณ และมีจิตใจมุ่งมั่น |
+| ราศีธนู | มองโลกในแง่ดี รักการผจญภัย และรักอิสระ |
+| ราศีมกร | มีระเบียบวินัย ทะเยอทะยาน และรับผิดชอบ |
+| ราศีกุมภ์ | เป็นอิสระ มีความคิดริเริ่ม และรักมนุษยชาติ |
+| ราศีมีน | เอาใจเขามาใส่ใจเรา ชอบฝัน และใช้สัญชาตญาณมาก |
+
+### Horóscopo chino
+
+| Signo | Descripción |
+| --- | --- |
+| หนู | ฉลาดแกมโกง คล่องแคล่ว และมีไหวพริบ |
+| วัว | ขยัน อดทน และน่าไว้วางใจ |
+| เสือ | กล้าหาญ แข่งขันเก่ง และมีใจรักมาก |
+| กระต่าย | อ่อนโยน ระมัดระวัง และละเอียดอ่อน |
+| มังกร | มีเสน่ห์ กระฉับกระเฉง และโชคดี |
+| งู | ฉลาดรอบรู้ เก็บตัว และสง่างาม |
+| ม้า | รักอิสระ กระตือรือร้น และเข้าสังคมเก่ง |
+| แพะ | สร้างสรรค์ อ่อนโยน และมีศิลปะในตัว |
+| ลิง | ฉลาด สนุกสนาน และมีไหวพริบ |
+| ไก่ | เป็นระเบียบ ซื่อสัตย์ และช่างสังเกต |
+| สุนัข | ซื่อสัตย์ ยุติธรรม และปกป้องคนอื่น |
+| หมู | ใจกว้าง จริงใจ และมีความรักใคร่ |
+
+## Bahasa Indonesia (`id`)
+
+### Zodiaco occidental
+
+| Signo | Descripción |
+| --- | --- |
+| Aries | Berani, impulsif dan penuh energi. |
+| Taurus | Sabar, sensual dan menyukai kestabilan. |
+| Gemini | Penasaran, komunikatif dan berpikiran cepat. |
+| Kanker | Protektif, sensitif dan sangat setia kepada orang terdekat. |
+| Leo | Murah hati, karismatik dan suka tampil. |
+| Virgo | Analitis, praktis dan sangat teliti. |
+| Libra | Diplomatis, supel dan mencari keseimbangan. |
+| Scorpio | Intens, intuitif dan berkemauan keras. |
+| Sagitarius | Optimis, petualang dan mencintai kebebasan. |
+| Capricorn | Disiplin, ambisius dan bertanggung jawab. |
+| Aquarius | Mandiri, orisinal dan humanis. |
+| Pisces | Empatik, pemimpi dan sangat intuitif. |
+
+### Horóscopo chino
+
+| Signo | Descripción |
+| --- | --- |
+| Tikus | Cerdik, lincah dan sangat pandai akal. |
+| Kerbau | Pekerja keras, sabar dan dapat diandalkan. |
+| Macan | Berani, kompetitif dan penuh gairah. |
+| Kelinci | Lembut, berhati-hati dan peka. |
+| Naga | Karismatik, energik dan beruntung. |
+| Ular | Bijaksana, pendiam dan elegan. |
+| Kuda | Bebas, energik dan supel. |
+| Kambing | Kreatif, lembut dan artistik. |
+| Monyet | Pintar, menyenangkan dan jenaka. |
+| Ayam | Teratur, jujur dan teliti dalam mengamati. |
+| Anjing | Setia, adil dan protektif. |
+| Babi | Murah hati, tulus dan penyayang. |
+
+## فارسی (`fa`)
+
+### Zodiaco occidental
+
+| Signo | Descripción |
+| --- | --- |
+| حمل | شجاع، تکانشی و پر از انرژی. |
+| ثور | صبور، حسی و دوستدار ثبات. |
+| جوزا | کنجکاو، اهل ارتباط و زودفهم. |
+| سرطان | حامی، حساس و بسیار وفادار به عزیزانش. |
+| اسد | سخاوتمند، کاریزماتیک و عاشق درخشیدن. |
+| سنبله | تحلیلگر، عملگرا و بسیار دقیق. |
+| میزان | دیپلمات، اجتماعی و جویای تعادل. |
+| عقرب | پرشور، شهودی و با اراده‌ای استوار. |
+| قوس | خوش‌بین، ماجراجو و عاشق آزادی. |
+| جدی | منضبط، جاه‌طلب و مسئولیت‌پذیر. |
+| دلو | مستقل، اصیل و انسان‌دوست. |
+| حوت | همدل، رویایی و بسیار شهودی. |
+
+### Horóscopo chino
+
+| Signo | Descripción |
+| --- | --- |
+| موش | زیرک، چابک و بسیار مبتکر. |
+| گاو | سخت‌کوش، صبور و قابل اعتماد. |
+| ببر | شجاع، رقابت‌جو و پرشور. |
+| خرگوش | مهربان، محتاط و حساس. |
+| اژدها | کاریزماتیک، پرانرژی و خوش‌شانس. |
+| مار | خردمند، محجوب و باوقار. |
+| اسب | آزادمنش، پرانرژی و اجتماعی. |
+| بز | خلاق، ملایم و هنرمند. |
+| میمون | باهوش، سرگرم‌کننده و بذله‌گو. |
+| خروس | منظم، صادق و تیزبین. |
+| سگ | وفادار، عادل و محافظ. |
+| خوک | سخاوتمند، صمیمی و مهربان. |
+
+## اردو (`ur`)
+
+### Zodiaco occidental
+
+| Signo | Descripción |
+| --- | --- |
+| حمل | بہادر، جذباتی اور توانائی سے بھرپور۔ |
+| ثور | صبر والا، حسی اور استحکام پسند۔ |
+| جوزا | متجسس، باتونی اور تیز ذہن۔ |
+| سرطان | محافظ، حساس اور اپنوں سے بہت وفادار۔ |
+| اسد | فیاض، کرشماتی اور چمکنا پسند کرنے والا۔ |
+| سنبلہ | تجزیاتی، عملی اور نہایت باریک بین۔ |
+| میزان | سفارتی، ملنسار اور توازن کا متلاشی۔ |
+| عقرب | پرجوش، وجدانی اور مضبوط ارادے والا۔ |
+| قوس | پرامید، مہم جو اور آزادی سے محبت کرنے والا۔ |
+| جدی | باقاعدہ، پرعزم اور ذمہ دار۔ |
+| دلو | خودمختار، اصل اور انسان دوست۔ |
+| حوت | ہمدرد، خوابوں میں رہنے والا اور نہایت وجدانی۔ |
+
+### Horóscopo chino
+
+| Signo | Descripción |
+| --- | --- |
+| چوہا | ہوشیار، پھرتیلا اور نہایت ذہین۔ |
+| بیل | محنتی، صابر اور قابلِ اعتماد۔ |
+| ببر | بہادر، مسابقتی اور پرجوش۔ |
+| خرگوش | نرم خو، محتاط اور حساس۔ |
+| اژدہا | کرشماتی، پرجوش اور خوش قسمت۔ |
+| سانپ | دانا، سنجیدہ اور باوقار۔ |
+| گھوڑا | آزاد منش، پرجوش اور ملنسار۔ |
+| بکری | تخلیقی، نرم دل اور فنکارانہ۔ |
+| بندر | ذہین، شوخ اور حاضر جواب۔ |
+| مرغ | منظم، ایماندار اور باریک بین۔ |
+| کتا | وفادار، منصف اور محافظ۔ |
+| سور | فیاض، مخلص اور محبت کرنے والا۔ |
+
+## বাংলা (`bn`)
+
+### Zodiaco occidental
+
+| Signo | Descripción |
+| --- | --- |
+| মেষ | সাহসী, আবেগপ্রবণ ও শক্তিতে ভরপুর। |
+| বৃষ | ধৈর্যশীল, ইন্দ্রিয়াসক্ত ও স্থিতিশীলতা-প্রেমী। |
+| মিথুন | কৌতূহলী, যোগাযোগপ্রবণ ও দ্রুতবুদ্ধি। |
+| কর্কট | রক্ষাকারী, সংবেদনশীল ও প্রিয়জনের প্রতি অনুগত। |
+| সিংহ | উদার, মনোমুগ্ধকর ও আলো ছড়াতে ভালোবাসে। |
+| কন্যা | বিশ্লেষণী, ব্যবহারিক ও অত্যন্ত খুঁতখুঁতে। |
+| তুলা | কূটনৈতিক, মিশুক ও ভারসাম্যের সন্ধানী। |
+| বৃশ্চিক | তীব্র, স্বজ্ঞাবান ও দৃঢ়চেতা। |
+| ধনু | আশাবাদী, দুঃসাহসী ও স্বাধীনতাপ্রেমী। |
+| মকর | শৃঙ্খলাপরায়ণ, উচ্চাকাঙ্ক্ষী ও দায়িত্বশীল। |
+| কুম্ভ | স্বাধীনচেতা, মৌলিক ও মানবহিতৈষী। |
+| মীন | সহানুভূতিশীল, স্বপ্নালু ও অত্যন্ত স্বজ্ঞাবান। |
+
+### Horóscopo chino
+
+| Signo | Descripción |
+| --- | --- |
+| ইঁদুর | চতুর, চটপটে ও অত্যন্ত বুদ্ধিমান। |
+| ষাঁড় | পরিশ্রমী, ধৈর্যশীল ও নির্ভরযোগ্য। |
+| বাঘ | সাহসী, প্রতিযোগিতামূলক ও আবেগী। |
+| খরগোশ | নম্র, সতর্ক ও সংবেদনশীল। |
+| ড্রাগন | মনোমুগ্ধকর, প্রাণবন্ত ও ভাগ্যবান। |
+| সাপ | প্রজ্ঞাবান, সংযত ও মার্জিত। |
+| ঘোড়া | মুক্তমনা, উদ্যমী ও মিশুক। |
+| ছাগল | সৃজনশীল, কোমল ও শৈল্পিক। |
+| বানর | বুদ্ধিমান, মজাদার ও রসিক। |
+| মোরগ | গোছানো, সৎ ও পর্যবেক্ষণশীল। |
+| কুকুর | বিশ্বস্ত, ন্যায্য ও রক্ষাকারী। |
+| শূকর | উদার, আন্তরিক ও স্নেহশীল। |
+
+## Română (`ro`)
+
+### Zodiaco occidental
+
+| Signo | Descripción |
+| --- | --- |
+| Berbec | Curajos, impulsiv și plin de energie. |
+| Taur | Răbdător, senzual și iubitor de stabilitate. |
+| Gemeni | Curios, comunicativ și cu mintea agilă. |
+| Rac | Protector, sensibil și foarte loial celor dragi. |
+| Leu | Generos, carismatic și iubitor de lumină. |
+| Fecioară | Analitic, practic și foarte meticulos. |
+| Balanță | Diplomatic, sociabil și în căutarea echilibrului. |
+| Scorpion | Intens, intuitiv și cu voință fermă. |
+| Săgetător | Optimist, aventuros și iubitor de libertate. |
+| Capricorn | Disciplinat, ambițios și responsabil. |
+| Vărsător | Independent, original și umanitar. |
+| Pești | Empatic, visător și foarte intuitiv. |
+
+### Horóscopo chino
+
+| Signo | Descripción |
+| --- | --- |
+| Șobolan | Isteț, agil și foarte ingenios. |
+| Bou | Harnic, răbdător și de încredere. |
+| Tigru | Curajos, competitiv și pasionat. |
+| Iepure | Blând, prudent și sensibil. |
+| Dragon | Carismatic, energic și norocos. |
+| Șarpe | Înțelept, rezervat și elegant. |
+| Cal | Liber, energic și sociabil. |
+| Capră | Creativ, blând și artistic. |
+| Maimuță | Isteț, amuzant și spiritual. |
+| Cocoș | Organizat, cinstit și atent la detalii. |
+| Câine | Loial, drept și protector. |
+| Porc | Generos, sincer și afectuos. |
+
+## Čeština (`cs`)
+
+### Zodiaco occidental
+
+| Signo | Descripción |
+| --- | --- |
+| Beran | Odvážný, impulzivní a plný energie. |
+| Býk | Trpělivý, smyslný a milující stabilitu. |
+| Blíženci | Zvědavý, komunikativní a bystrý. |
+| Rak | Ochranitelský, citlivý a velmi loajální k blízkým. |
+| Lev | Štědrý, charismatický a rád září. |
+| Panna | Analytický, praktický a velmi pečlivý. |
+| Váhy | Diplomatický, společenský a hledající rovnováhu. |
+| Štír | Intenzivní, intuitivní a silné vůle. |
+| Střelec | Optimistický, dobrodružný a milující svobodu. |
+| Kozoroh | Disciplinovaný, ctižádostivý a zodpovědný. |
+| Vodnář | Nezávislý, originální a humanitární. |
+| Ryby | Empatický, snivý a velmi intuitivní. |
+
+### Horóscopo chino
+
+| Signo | Descripción |
+| --- | --- |
+| Krysa | Chytrý, hbitý a velmi vynalézavý. |
+| Vůl | Pracovitý, trpělivý a spolehlivý. |
+| Tygr | Odvážný, soutěživý a vášnivý. |
+| Králík | Laskavý, opatrný a citlivý. |
+| Drak | Charismatický, energický a šťastný. |
+| Had | Moudrý, rezervovaný a elegantní. |
+| Kůň | Svobodomyslný, energický a společenský. |
+| Koza | Tvořivý, laskavý a umělecký. |
+| Opice | Chytrý, zábavný a vtipný. |
+| Kohout | Uspořádaný, poctivý a pozorný. |
+| Pes | Věrný, spravedlivý a ochranitelský. |
+| Prase | Štědrý, upřímný a láskyplný. |
+
+## Suomi (`fi`)
+
+### Zodiaco occidental
+
+| Signo | Descripción |
+| --- | --- |
+| Oinas | Rohkea, impulsiivinen ja täynnä energiaa. |
+| Härkä | Kärsivällinen, aistillinen ja vakauden ystävä. |
+| Kaksoset | Uteliias, puhelias ja nopea ajattelija. |
+| Rapu | Suojeleva, herkkä ja hyvin uskollinen läheisilleen. |
+| Leijona | Anteliias, karismaattinen ja haluaa loistaa. |
+| Neitsyt | Analyyttinen, käytännöllinen ja tarkka yksityiskohdissa. |
+| Vaaka | Diplomaattinen, seurallinen ja tasapainoa etsivä. |
+| Skorpioni | Intensiivinen, intuitiivinen ja vahvatahtoinen. |
+| Jousimies | Optimistinen, seikkailunhaluinen ja vapauden ystävä. |
+| Kauris | Kurinalainen, kunnianhimoinen ja vastuullinen. |
+| Vesimies | Riippumaton, omaperäinen ja humanitaarinen. |
+| Kalat | Empaattinen, unelmoiva ja hyvin intuitiivinen. |
+
+### Horóscopo chino
+
+| Signo | Descripción |
+| --- | --- |
+| Rotta | Taitava, ketterä ja hyvin kekseliäs. |
+| Härkä | Ahkera, kärsivällinen ja luotettava. |
+| Tiikeri | Rohkea, kilpailuhenkinen ja intohimoinen. |
+| Kani | Lempeä, varovainen ja herkkä. |
+| Lohikäärme | Karismaattinen, energinen ja onnekas. |
+| Käärme | Viisas, pidättyvä ja hyvätapainen. |
+| Hevonen | Vapaa, energinen ja seurallinen. |
+| Vuohi | Luova, lempeä ja taiteellinen. |
+| Apina | Älykäs, hauska ja nokkela. |
+| Kukko | Järjestelmällinen, rehellinen ja tarkkaavainen. |
+| Koira | Uskollinen, oikeudenmukainen ja suojeleva. |
+| Sika | Anteliias, vilpitön ja hellä. |
+
+## Kiswahili (`sw`)
+
+### Zodiaco occidental
+
+| Signo | Descripción |
+| --- | --- |
+| Kondoo dume | Jasiri, mwenye haraka na amejaa nguvu. |
+| Fahali | Mvumilivu, mwenye hisia na anapenda utulivu. |
+| Mapacha | Mdadisi, mwenye mawasiliano na akili ya haraka. |
+| Kaa | Mlinzi, nyeti na mwaminifu sana kwa wapendwa wake. |
+| Simba | Mkarimu, mwenye haiba na anapenda kung'aa. |
+| Bikira | Mchambuzi, mwenye vitendo na makini sana. |
+| Mizani | Mwenye busara, mwenye urafiki na anatafuta usawa. |
+| Nge | Mkali, mwenye angavu na nia thabiti. |
+| Mpiga upinde | Mwenye matumaini, mpenda matukio na uhuru. |
+| Mbuzi | Mwenye nidhamu, mwenye tamaa na mwajibikaji. |
+| Mbeba maji | Huru, mbunifu na mwenye kujali binadamu. |
+| Samaki | Mwenye huruma, mwenye ndoto na mwenye angavu sana. |
+
+### Horóscopo chino
+
+| Signo | Descripción |
+| --- | --- |
+| Panya | Mjanja, mwepesi na mbunifu sana. |
+| Ng'ombe | Mchapakazi, mvumilivu na mwaminifu. |
+| Tigri | Jasiri, mshindani na mwenye shauku. |
+| Sungura | Mpole, mwangalifu na nyeti. |
+| Joka | Mwenye nguvu, mwenye haiba na mwenye bahati. |
+| Nyoka | Mwenye hekima, mtulivu na mwenye umaridadi. |
+| Farasi | Mwenye roho huru, mwenye nguvu na mwenye urafiki. |
+| Mbuzi | Mbunifu, mpole na mwenye sanaa. |
+| Nyani | Mwerevu, mcheshi na mwenye busara. |
+| Jogoo | Mpangilio, mkweli na mchunguzi. |
+| Mbwa | Mwaminifu, mwadilifu na mlinzi. |
+| Nguruwe | Mkarimu, mkweli na mwenye upendo. |
+
+## Dansk (`da`)
+
+### Zodiaco occidental
+
+| Signo | Descripción |
+| --- | --- |
+| Vædderen | Modig, impulsiv og fuld af energi. |
+| Tyren | Tålmodig, sanselig og glad for stabilitet. |
+| Tvillingerne | Nysgerrig, kommunikativ og hurtigtænkende. |
+| Krebsen | Beskyttende, følsom og meget loyal over for sine. |
+| Løven | Generøs, karismatisk og elsker at skinne. |
+| Jomfruen | Analytisk, praktisk og meget omhyggelig. |
+| Vægten | Diplomatisk, social og søger balance. |
+| Skorpionen | Intens, intuitiv og viljestærk. |
+| Skytten | Optimistisk, eventyrlysten og frihedselskende. |
+| Stenbukken | Disciplineret, ambitiøs og ansvarlig. |
+| Vandmanden | Uafhængig, original og humanitær. |
+| Fiskene | Empatisk, drømmende og meget intuitiv. |
+
+### Horóscopo chino
+
+| Signo | Descripción |
+| --- | --- |
+| Rotten | Snu, hurtig og meget opfindsom. |
+| Oksen | Hårdtarbejdende, tålmodig og pålidelig. |
+| Tigeren | Modig, konkurrencepræget og lidenskabelig. |
+| Kaninen | Blid, forsigtig og følsom. |
+| Dragen | Karismatisk, energisk og heldig. |
+| Slangen | Klog, reserveret og elegant. |
+| Hesten | Frihedselskende, energisk og social. |
+| Geden | Kreativ, blid og kunstnerisk. |
+| Aben | Klog, sjov og kvik. |
+| Hanen | Ordentlig, ærlig og opmærksom. |
+| Hunden | Loyal, retfærdig og beskyttende. |
+| Svinet | Generøs, oprigtig og kærlig. |

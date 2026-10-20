@@ -1,7 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img">
-  <title>Constelación de Sagitario (esquema, no a escala)</title>
-  <rect width="200" height="200" rx="12" fill="#0b1026"/>
-  <g stroke="#8fa3d9" stroke-width="1.5" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"
+     aria-labelledby="t-sagitario d-sagitario">
+  <title id="t-sagitario">Constelación de Sagitario</title>
+  <desc id="d-sagitario">Esquema de la constelación, no a escala.</desc>
+  <defs>
+    <radialGradient id="fondo-sagitario" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#1c2656"/>
+      <stop offset="1" stop-color="#050818"/>
+    </radialGradient>
+    <filter id="brillo-sagitario" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.8" result="halo"/>
+      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="14" fill="url(#fondo-sagitario)"/>
+  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>
+  <g fill="#ffffff">
+    <circle cx="32.6" cy="72.7" r="0.84" fill-opacity="0.54"/>
+    <circle cx="141.2" cy="122.0" r="1.05" fill-opacity="0.38"/>
+    <circle cx="150.6" cy="56.2" r="0.58" fill-opacity="0.62"/>
+    <circle cx="44.5" cy="25.9" r="0.49" fill-opacity="0.50"/>
+    <circle cx="161.7" cy="63.9" r="0.52" fill-opacity="0.74"/>
+    <circle cx="72.2" cy="74.8" r="0.61" fill-opacity="0.39"/>
+    <circle cx="110.3" cy="86.6" r="0.80" fill-opacity="0.43"/>
+    <circle cx="158.6" cy="102.6" r="0.76" fill-opacity="0.56"/>
+    <circle cx="120.6" cy="74.3" r="1.01" fill-opacity="0.27"/>
+    <circle cx="90.7" cy="46.4" r="0.82" fill-opacity="0.39"/>
+    <circle cx="26.9" cy="90.5" r="1.02" fill-opacity="0.35"/>
+    <circle cx="50.7" cy="26.0" r="0.75" fill-opacity="0.70"/>
+    <circle cx="68.6" cy="147.8" r="1.08" fill-opacity="0.59"/>
+    <circle cx="18.9" cy="115.1" r="0.45" fill-opacity="0.35"/>
+    <circle cx="19.3" cy="82.1" r="1.06" fill-opacity="0.55"/>
+    <circle cx="104.4" cy="137.3" r="0.73" fill-opacity="0.36"/>
+    <circle cx="159.2" cy="58.4" r="0.44" fill-opacity="0.78"/>
+    <circle cx="92.8" cy="47.1" r="1.09" fill-opacity="0.35"/>
+    <circle cx="23.7" cy="99.2" r="0.79" fill-opacity="0.79"/>
+    <circle cx="93.2" cy="125.0" r="0.88" fill-opacity="0.32"/>
+    <circle cx="29.1" cy="15.8" r="0.65" fill-opacity="0.52"/>
+    <circle cx="29.2" cy="70.8" r="0.85" fill-opacity="0.57"/>
+    <circle cx="66.9" cy="121.8" r="0.71" fill-opacity="0.41"/>
+    <circle cx="91.7" cy="38.6" r="0.59" fill-opacity="0.46"/>
+    <circle cx="88.3" cy="164.6" r="0.53" fill-opacity="0.60"/>
+    <circle cx="121.9" cy="29.8" r="1.09" fill-opacity="0.32"/>
+    <circle cx="62.6" cy="79.2" r="1.10" fill-opacity="0.56"/>
+    <circle cx="53.7" cy="65.8" r="0.48" fill-opacity="0.51"/>
+    <circle cx="88.1" cy="31.2" r="0.53" fill-opacity="0.68"/>
+    <circle cx="151.0" cy="98.4" r="0.41" fill-opacity="0.54"/>
+    <circle cx="52.0" cy="158.6" r="0.60" fill-opacity="0.64"/>
+    <circle cx="127.4" cy="35.8" r="0.72" fill-opacity="0.76"/>
+    <circle cx="28.0" cy="156.0" r="0.54" fill-opacity="0.61"/>
+    <circle cx="53.4" cy="32.3" r="0.66" fill-opacity="0.54"/>
+    <circle cx="102.3" cy="56.1" r="0.47" fill-opacity="0.34"/>
+    <circle cx="129.4" cy="50.3" r="0.59" fill-opacity="0.38"/>
+    <circle cx="93.7" cy="136.4" r="1.05" fill-opacity="0.34"/>
+    <circle cx="56.5" cy="50.9" r="0.90" fill-opacity="0.35"/>
+    <circle cx="37.3" cy="141.2" r="1.10" fill-opacity="0.55"/>
+    <circle cx="178.8" cy="27.4" r="0.77" fill-opacity="0.53"/>
+    <circle cx="26.6" cy="87.9" r="0.98" fill-opacity="0.29"/>
+    <circle cx="59.9" cy="150.5" r="0.75" fill-opacity="0.69"/>
+    <circle cx="125.8" cy="155.5" r="0.91" fill-opacity="0.55"/>
+    <circle cx="161.3" cy="141.0" r="0.49" fill-opacity="0.41"/>
+    <circle cx="156.8" cy="17.5" r="0.88" fill-opacity="0.52"/>
+  </g>
+  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">
     <line x1="50" y1="120" x2="120" y2="120"/>
     <line x1="120" y1="120" x2="115" y2="85"/>
     <line x1="115" y1="85" x2="55" y2="85"/>
@@ -15,17 +75,17 @@
     <line x1="165" y1="45" x2="150" y2="38"/>
     <line x1="165" y1="45" x2="160" y2="60"/>
   </g>
-  <g fill="#ffffff">
+  <g fill="#ffffff" filter="url(#brillo-sagitario)">
     <circle cx="50" cy="120" r="2.8"/>
-    <circle cx="120" cy="120" r="2.8"/>
-    <circle cx="115" cy="85" r="2.8"/>
-    <circle cx="55" cy="85" r="2.8"/>
-    <circle cx="85" cy="70" r="2.8"/>
-    <circle cx="150" cy="80" r="2.8"/>
-    <circle cx="35" cy="95" r="2.8"/>
-    <circle cx="165" cy="45" r="2.8"/>
-    <circle cx="150" cy="38" r="2.8"/>
-    <circle cx="160" cy="60" r="2.8"/>
+    <circle cx="120" cy="120" r="2.4"/>
+    <circle cx="115" cy="85" r="2.0"/>
+    <circle cx="55" cy="85" r="1.6"/>
+    <circle cx="85" cy="70" r="2.0"/>
+    <circle cx="150" cy="80" r="2.0"/>
+    <circle cx="35" cy="95" r="2.4"/>
+    <circle cx="165" cy="45" r="2.4"/>
+    <circle cx="150" cy="38" r="2.4"/>
+    <circle cx="160" cy="60" r="1.6"/>
   </g>
-  <text x="100" y="192" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d3f0">Sagitario</text>
+  <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">SAGITARIO</text>
 </svg>

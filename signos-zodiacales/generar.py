@@ -6,6 +6,7 @@ Uso:
   python3 generar.py --comprobar  falla si lo committeado no está al día
 """
 import json
+import random
 import sys
 from pathlib import Path
 from xml.etree import ElementTree
@@ -21,6 +22,9 @@ IDIOMAS = {
     "pl": "Polski", "ru": "Русский", "uk": "Українська", "tr": "Türkçe",
     "el": "Ελληνικά", "ar": "العربية", "he": "עברית", "hi": "हिन्दी",
     "zh": "中文", "ja": "日本語", "ko": "한국어", "vi": "Tiếng Việt",
+    "th": "ไทย", "id": "Bahasa Indonesia", "fa": "فارسی", "ur": "اردو",
+    "bn": "বাংলা", "ro": "Română", "cs": "Čeština", "fi": "Suomi",
+    "sw": "Kiswahili", "da": "Dansk",
 }
 
 GRUPOS = {"occidental": "Zodiaco occidental", "chino": "Horóscopo chino"}
@@ -32,7 +36,7 @@ def cargar():
     for s in signos:
         for campo in ("nombres", "descripciones"):
             if set(s[campo]) != set(IDIOMAS):
-                sys.exit(f"{s['id']}: {campo} no tiene exactamente los 20 idiomas")
+                sys.exit(f"{s['id']}: {campo} no tiene exactamente los 30 idiomas")
         if s["tipo"] == "occidental":
             estrellas = s["constelacion"]["estrellas"]
             for a, b in s["constelacion"]["lineas"]:
@@ -43,24 +47,49 @@ def cargar():
 
 def svg_de(signo):
     nombre = signo["nombres"]["es"]
+    ident = signo["id"]
     estrellas = signo["constelacion"]["estrellas"]
-    partes = [
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img">',
-        f"  <title>Constelación de {nombre} (esquema, no a escala)</title>",
-        '  <rect width="200" height="200" rx="12" fill="#0b1026"/>',
-        '  <g stroke="#8fa3d9" stroke-width="1.5" stroke-linecap="round">',
+    # Semilla fija por signo: el fondo y los tamaños salen igual en cada ejecución.
+    azar = random.Random(ident)
+    fondo = [
+        (azar.uniform(8, 192), azar.uniform(8, 168), azar.uniform(0.4, 1.1), azar.uniform(0.25, 0.8))
+        for _ in range(45)
     ]
+    radios = [2.8] + [azar.choice([1.6, 2.0, 2.4]) for _ in estrellas[1:]]
+    partes = [
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"',
+        f'     aria-labelledby="t-{ident} d-{ident}">',
+        f'  <title id="t-{ident}">Constelación de {nombre}</title>',
+        f'  <desc id="d-{ident}">Esquema de la constelación, no a escala.</desc>',
+        "  <defs>",
+        f'    <radialGradient id="fondo-{ident}" cx="50%" cy="42%" r="70%">',
+        '      <stop offset="0" stop-color="#1c2656"/>',
+        '      <stop offset="1" stop-color="#050818"/>',
+        "    </radialGradient>",
+        f'    <filter id="brillo-{ident}" x="-300%" y="-300%" width="700%" height="700%">',
+        '      <feGaussianBlur stdDeviation="1.8" result="halo"/>',
+        '      <feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>',
+        "    </filter>",
+        "  </defs>",
+        f'  <rect width="200" height="200" rx="14" fill="url(#fondo-{ident})"/>',
+        '  <rect x="7" y="7" width="186" height="186" rx="10" fill="none" stroke="#ffffff" stroke-opacity="0.14"/>',
+        '  <g fill="#ffffff">',
+    ]
+    for x, y, r, o in fondo:
+        partes.append(f'    <circle cx="{x:.1f}" cy="{y:.1f}" r="{r:.2f}" fill-opacity="{o:.2f}"/>')
+    partes.append("  </g>")
+    partes.append('  <g stroke="#a9bcff" stroke-width="1" stroke-opacity="0.6" stroke-linecap="round">')
     for a, b in signo["constelacion"]["lineas"]:
         (x1, y1), (x2, y2) = estrellas[a], estrellas[b]
         partes.append(f'    <line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}"/>')
     partes.append("  </g>")
-    partes.append('  <g fill="#ffffff">')
-    for x, y in estrellas:
-        partes.append(f'    <circle cx="{x}" cy="{y}" r="2.8"/>')
+    partes.append(f'  <g fill="#ffffff" filter="url(#brillo-{ident})">')
+    for (x, y), r in zip(estrellas, radios):
+        partes.append(f'    <circle cx="{x}" cy="{y}" r="{r:.1f}"/>')
     partes.append("  </g>")
     partes.append(
-        f'  <text x="100" y="192" text-anchor="middle" font-family="sans-serif" '
-        f'font-size="11" fill="#c9d3f0">{nombre}</text>'
+        f'  <text x="100" y="184" text-anchor="middle" font-family="Georgia, serif" '
+        f'font-size="10" letter-spacing="3" fill="#dfe6ff" fill-opacity="0.9">{nombre.upper()}</text>'
     )
     partes.append("</svg>")
     return "\n".join(partes) + "\n"
@@ -68,7 +97,7 @@ def svg_de(signo):
 
 def markdown_de(signos):
     lineas = [
-        "# Signos del zodiaco y del horóscopo chino en 20 idiomas",
+        "# Signos del zodiaco y del horóscopo chino en 30 idiomas",
         "",
         "> Generado por `generar.py` desde `datos/signos.json`. No editar a mano.",
         "",
