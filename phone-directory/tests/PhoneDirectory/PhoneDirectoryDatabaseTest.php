@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
 use PhoneDirectory\JuridicalEntityPDODatabase;
+use PhoneDirectory\Privacy;
 
 class PhoneDirectoryDatabaseTest extends TestCase
 {
@@ -13,7 +14,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->database = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $this->database = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $this->database->connect();
         $this->database->createTable();
     }
@@ -31,7 +32,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
     public function testCreateTable(): void
     {
         $this->database->disconnect();
-        $db = new PhoneDirectoryPDODatabase('sqlite::memory:');
+        $db = new PhoneDirectoryPDODatabase('sqlite::memory:', privacy: Privacy::forOwner());
         $db->connect();
         $db->createTable();
         $this->assertTrue($db->isConnected());
@@ -297,7 +298,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
             $legacy->exec("INSERT INTO phone_directory (full_name, street) VALUES ('John Smith', '123 Main Street')");
             $legacy = null;
 
-            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}", privacy: Privacy::forOwner());
             $database->createTable();
             $database->createTable();
 
@@ -339,7 +340,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
     {
         $file = tempnam(sys_get_temp_dir(), 'phonedir_');
         try {
-            $natural = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $natural = new PhoneDirectoryPDODatabase("sqlite:{$file}", privacy: Privacy::forOwner());
             $natural->createTable();
             $juridical = new JuridicalEntityPDODatabase("sqlite:{$file}");
             $juridical->createTable();
@@ -416,7 +417,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
             $legacy->exec("INSERT INTO phone_directory (full_name, street) VALUES ('John Smyth', '123 Main Street')");
             $legacy = null;
 
-            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}", privacy: Privacy::forOwner());
             $database->createTable();
 
             $this->assertEquals(['Smyth, John'], $this->surnames($database->findBySurnameSound('Smith')));
@@ -462,7 +463,7 @@ class PhoneDirectoryDatabaseTest extends TestCase
             $legacy->exec("INSERT INTO phone_directory (full_name, street) VALUES ('José García', '123 Main Street')");
             $legacy = null;
 
-            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}");
+            $database = new PhoneDirectoryPDODatabase("sqlite:{$file}", privacy: Privacy::forOwner());
             $database->createTable();
 
             $this->assertCount(1, $database->findByName('garcia'));
