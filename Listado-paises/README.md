@@ -47,6 +47,8 @@ tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Ma
 - `pruebas.py`: pruebas del proyecto. La CI las corre junto con `generar_tabla.py --comprobar`
   (`.github/workflows/pruebas-listado-paises.yml`).
 
+`tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv` y `vista.html` son salida generada — no se editan a mano. Se regeneran con `python3 generar_tabla.py` (`--comprobar` solo valida que estén al día).
+
 ```bash
 python3 generar_tabla.py              # valida y regenera las tablas, priorizacion.csv y vista.html
 python3 generar_tabla.py --comprobar  # valida y falla si alguna salida no está al día (no escribe)
