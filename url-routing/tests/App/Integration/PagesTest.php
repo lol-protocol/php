@@ -368,6 +368,45 @@ class PagesTest extends TestCase
         $this->assertStringContainsString('José García Álvarez', $this->get(self::GENEALOGIA, '/b/10/alvarez/')[1], 'without the accent');
     }
 
+    /**
+     * A listing shows 50 rows a page and links to the next one only when there is a next one. The
+     * controller asks for one row more than a page to know, without a COUNT(*): with 60 rows the
+     * second page holds the last 10, and with exactly 50 there is no second page.
+     */
+    public function testAListingPagesFiftyRowsAtATimeAndLinksOnlyToAPageThatExists(): void
+    {
+        $archivo = self::$dir . '/pos-paginado.sqlite';
+        @unlink($archivo);
+        Migrator::forSite(new Database("sqlite:{$archivo}"), 'pos')->migrate();
+        $pdo = new \PDO("sqlite:{$archivo}");
+        $insertar = $pdo->prepare('INSERT INTO productos (id, nombre, precio_centavos) VALUES (?, ?, 100)');
+        for ($i = 1; $i <= 60; $i++) {
+            $insertar->execute([20000000 + $i, sprintf('Paginado %02d', $i)]);
+        }
+        $entorno = ['DB_DSN_POS' => "sqlite:{$archivo}"];
+
+        [$codigo, $primera] = $this->get(self::POS, '/b/8/paginado/', entorno: $entorno);
+        $this->assertSame(200, $codigo);
+        $this->assertStringContainsString('Paginado 01', $primera);
+        $this->assertStringContainsString('Paginado 50', $primera);
+        $this->assertStringNotContainsString('Paginado 51', $primera, 'the extra row that tells there is more is not shown');
+        $this->assertStringContainsString('Siguiente', $primera);
+        $this->assertStringNotContainsString('Anterior', $primera);
+
+        [$codigo, $segunda] = $this->get(self::POS, '/b/8/paginado/2/', entorno: $entorno);
+        $this->assertSame(200, $codigo);
+        $this->assertStringContainsString('Paginado 51', $segunda);
+        $this->assertStringContainsString('Paginado 60', $segunda);
+        $this->assertStringNotContainsString('Paginado 50', $segunda);
+        $this->assertStringContainsString('Anterior', $segunda);
+        $this->assertStringNotContainsString('Siguiente', $segunda, 'the last page links to no other');
+
+        $pdo->exec('DELETE FROM productos WHERE id > 20000050');
+        $justa = $this->get(self::POS, '/b/8/paginado/', entorno: $entorno)[1];
+        $this->assertStringContainsString('Paginado 50', $justa);
+        $this->assertStringNotContainsString('Siguiente', $justa, 'exactly a page of rows: nothing after it');
+    }
+
     /** @return array<string, array{string}> */
     public static function noSonLugares(): array
     {

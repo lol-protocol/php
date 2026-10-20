@@ -20,6 +20,9 @@ class BaseController
      */
     protected const DEFAULT_USER_ID = 1;
 
+    /** Rows per page of the listing/search page (see listadoDeBusqueda()). */
+    protected const POR_PAGINA = 50;
+
     /** Whether this request is the owner's (see AccessPolicy). */
     protected function esPropietario(): bool
     {
@@ -224,6 +227,52 @@ class BaseController
         $pedida = (string)strtok($_SERVER['REQUEST_URI'] ?? '/', '?');
 
         return $canonica === $pedida ? null : $this->redirect($canonica, 301);
+    }
+
+    /**
+     * The listing/search page /b/{digitos}/[{texto}/][{pagina}/] of either site: a 404 when the path
+     * isn't one, a 301 to the canonical spelling when it was written another way, a 400 when the digit
+     * width names no type (or one of $noListables, which have a width but are never listed), and
+     * otherwise the rows $buscar returns, rendered with $vista.
+     *
+     * $buscar receives the type, the text, how many rows to fetch and from which one. It is asked for
+     * one row more than a page: having it tells whether a next page exists without a COUNT(*) (hayMas).
+     * It returns null for a type that has no listing, which is a 404.
+     *
+     * @param array<string, mixed> $params the route's parameters ('ruta': the segments after "b")
+     * @param callable(string, string, int, int): ?array $buscar [tipo, texto, limite, desplazamiento] => rows
+     * @param list<string> $noListables
+     */
+    protected function listadoDeBusqueda(array $params, string $vista, callable $buscar, array $noListables = []): string
+    {
+        $pedida = $this->busquedaPedida($params['ruta'] ?? []);
+        if ($pedida === null) {
+            return $this->handleNotFound();
+        }
+        [$digitos, $query, $pagina] = $pedida;
+        $redirigir = $this->busquedaNoCanonica($digitos, $query, $pagina);
+        if ($redirigir !== null) {
+            return $redirigir;
+        }
+
+        $tipo = ServiceLocator::getInstance()->getRouter()->typeForLength($digitos);
+        if ($tipo === null || in_array($tipo, $noListables, true)) {
+            return $this->handleBadRequest('Tipo de listado inválido');
+        }
+
+        $resultados = $buscar($tipo, $query, self::POR_PAGINA + 1, ($pagina - 1) * self::POR_PAGINA);
+        if ($resultados === null) {
+            return $this->handleNotFound('Este tipo no tiene listado');
+        }
+
+        return view($vista, [
+            'tipo' => $tipo,
+            'digitos' => $digitos,
+            'query' => $query,
+            'pagina' => $pagina,
+            'hayMas' => count($resultados) > self::POR_PAGINA,
+            'resultados' => array_slice($resultados, 0, self::POR_PAGINA),
+        ]);
     }
 
     /** A one-shot message shown on the next page the user lands on (e.g. after a redirect). */
