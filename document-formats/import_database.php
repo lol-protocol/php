@@ -12,9 +12,9 @@
  *
  * Filled: countries, format_categories, document_formats,
  * format_conversions, technical_specifications, printing_margins,
- * country_compatibility, standard_references, paper_types. No CSV feeds
- * the supplier, price, paper-weight-standards, finish or variant tables,
- * so they stay empty.
+ * country_compatibility, standard_references, paper_types,
+ * product_specifications, finish_types, paper_weight_standards. No CSV
+ * feeds the supplier, price or variant tables, so they stay empty.
  */
 
 const DATA = __DIR__;
@@ -121,7 +121,10 @@ function import(PDO $db): array
     // Rows this script owns; deleting formats cascades to their dependents.
     $db->exec('DELETE FROM country_compatibility');
     $db->exec('DELETE FROM document_formats');
+    $db->exec('DELETE FROM product_specifications');
     $db->exec('DELETE FROM paper_types');
+    $db->exec('DELETE FROM finish_types');
+    $db->exec('DELETE FROM paper_weight_standards');
 
     // Countries: upsert on the ISO code, so the schema's sample rows are updated, not duplicated.
     $upsertCountry = $db->prepare(
@@ -228,6 +231,47 @@ function import(PDO $db): array
             $gsmMin, $gsmMax, $paperType['common_use'], nullIfEmpty($paperType['notes']),
         ]);
         $report['paper_types']++;
+    }
+
+    // Products that are not sheet sizes, linked to the paper stock they are usually printed on.
+    $paperTypeIds = $db->query('SELECT type_name, paper_type_id FROM paper_types')->fetchAll(PDO::FETCH_KEY_PAIR);
+    $insertProduct = $db->prepare(
+        'INSERT INTO product_specifications (product_name, typical_size_mm, weight_gsm_min, weight_gsm_max,
+             recommended_dpi, finish_type, uses, notes, paper_type_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    );
+    $report['product_specifications'] = 0;
+    foreach (readCsv('specs/product_specifications.csv') as $product) {
+        $paperType = nullIfEmpty($product['paper_type']);
+        if ($paperType !== null && !isset($paperTypeIds[$paperType])) {
+            throw new RuntimeException("product_specifications: unknown paper type \"{$paperType}\"");
+        }
+        [$gsmMin, $gsmMax] = rangeOf($product['weight_gsm_range']);
+        [$dpi] = rangeOf($product['recommended_dpi']);
+        $insertProduct->execute([
+            $product['product_name'], nullIfEmpty($product['typical_size_mm']), $gsmMin, $gsmMax, $dpi,
+            nullIfEmpty($product['finish_type']), nullIfEmpty($product['uses']), nullIfEmpty($product['notes']),
+            $paperType === null ? null : $paperTypeIds[$paperType],
+        ]);
+        $report['product_specifications']++;
+    }
+
+    // Finish vocabulary and the standard paper weights (gsm with its lb equivalents).
+    $insertFinish = $db->prepare('INSERT INTO finish_types (finish_name, description, best_for) VALUES (?, ?, ?)');
+    $report['finish_types'] = 0;
+    foreach (readCsv('specs/finish_types.csv') as $finish) {
+        $insertFinish->execute([$finish['finish_name'], $finish['description'], $finish['best_for']]);
+        $report['finish_types']++;
+    }
+    $insertWeight = $db->prepare(
+        'INSERT INTO paper_weight_standards (weight_name, gsm, lb_bond, lb_text, lb_cover, weight_type, typical_use)
+         VALUES (?, ?, ?, ?, ?, ?, ?)'
+    );
+    $report['paper_weight_standards'] = 0;
+    foreach (readCsv('specs/paper_weight_standards.csv') as $weight) {
+        $insertWeight->execute([$weight['weight_name'], $weight['gsm'], $weight['lb_bond'], $weight['lb_text'],
+            $weight['lb_cover'], $weight['weight_type'], nullIfEmpty($weight['typical_use'])]);
+        $report['paper_weight_standards']++;
     }
 
     // Book margins; inner/outer are stored as left/right of a recto page.
