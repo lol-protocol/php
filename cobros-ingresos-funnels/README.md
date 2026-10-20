@@ -457,7 +457,9 @@ src/
   Etiquetas.php         traduce estado de boleta/metodo de pago/canal a su
                         etiqueta en español, en un solo lugar para no repetir
                         el mismo array en cada vista que los muestra, testeado
-  Paginacion.php        helper de paginación (página/offset/total, testeado)
+  Paginacion.php        helper de paginación (página/offset/total, testeado) y
+                        consultar(), el esqueleto único de los listados paginados
+                        (contar, acotar la página, traer solo esa), testeado
   Csrf.php              token CSRF por sesión propia (no depende de ningún login),
                         verificado en Router (testeado)
   ConexionSegura.php    detecta HTTPS (directo o detras de proxy), testeado
@@ -651,7 +653,9 @@ antes de enviarlo, y el servidor lo vuelve a validar.
   del funnel y las cohortes, y colores de estado reservados para la antigüedad de cartera.
 - Modo oscuro automático vía `prefers-color-scheme`.
 - Paginación de 25 filas por página, con `LIMIT`/`OFFSET` en SQL, también en
-  Boletas con filtro de estado. Auditoría es la excepción: pagina por cursor
+  Boletas con filtro de estado. Boletas, pagos y clientes la arman con
+  `Paginacion::consultar()`: cada repositorio dice las columnas, las tablas y los filtros,
+  y la cuenta, la página acotada y el `LIMIT`/`OFFSET` salen de ahí. Auditoría es la excepción: pagina por cursor
   (`?antes=`/`?despues=` con el `creado_en` y el `id` de la fila donde quedó), porque
   es la única tabla que solo crece y `OFFSET` más `COUNT(*)` crecían en línea recta
   con ella. Con 2 millones de entradas la página del fondo pasó de 1,7 s a 2 ms, y

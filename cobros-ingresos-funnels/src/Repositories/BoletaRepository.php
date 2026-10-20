@@ -10,7 +10,11 @@ use App\EstadoBoleta;
 use App\Paginacion;
 use PDO;
 
-/** CRUD de boletas. El reporting de ingresos vive en IngresosYCobrosRepository. */
+/**
+ * CRUD de boletas. El reporting de ingresos vive en IngresosYCobrosRepository.
+ *
+ * @phpstan-import-type Pagina from Paginacion
+ */
 final class BoletaRepository
 {
     use Anulable;
@@ -139,7 +143,7 @@ final class BoletaRepository
      * alcanzaba y la pantalla salia en blanco con un 500 (lo vigila
      * RendimientoAEscalaTest).
      *
-     * @return array{filas: array, total: int, totalPaginas: int, pagina: int}
+     * @return Pagina
      */
     public function listado(string $desde, string $hasta, ?string $estado = null, ?string $cliente = null, int $pagina = 1): array
     {
@@ -159,38 +163,23 @@ final class BoletaRepository
             $params[':estado'] = $estado;
         }
 
-        $stmtTotal = $this->db->prepare(
-            "SELECT COUNT(*) FROM {$tablaDelConteo} b JOIN clientes c ON c.id = b.cliente_id
-             WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}{$filtroEstado}"
-        );
-        $stmtTotal->execute($params);
-        $total = (int) $stmtTotal->fetchColumn();
-        $pagina = Paginacion::acotar($pagina, $total);
+        $where = " WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}{$filtroEstado}";
 
         // El desempate por id da un orden total: sin el, dos boletas del mismo dia
         // podian cambiar de lugar entre la pagina 1 y la 2.
-        $stmt = $this->db->prepare(
-            "SELECT b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada,
-                    c.id AS cliente_id, c.nombre AS cliente, b.pagado
-             FROM boletas_con_saldo b
-             JOIN clientes c ON c.id = b.cliente_id
-             WHERE b.fecha_emision BETWEEN :desde AND :hasta{$filtroCliente}{$filtroEstado}
-             ORDER BY b.fecha_emision DESC, b.id DESC
-             LIMIT :limite OFFSET :offset"
+        $resultado = Paginacion::consultar(
+            $this->db,
+            columnas: 'b.id, b.concepto, b.monto, b.moneda_codigo, b.fecha_emision, b.fecha_vencimiento, b.anulada,
+                    c.id AS cliente_id, c.nombre AS cliente, b.pagado',
+            desde: "boletas_con_saldo b JOIN clientes c ON c.id = b.cliente_id{$where}",
+            orden: 'b.fecha_emision DESC, b.id DESC',
+            params: $params,
+            pagina: $pagina,
+            desdeDelConteo: "{$tablaDelConteo} b JOIN clientes c ON c.id = b.cliente_id{$where}",
         );
-        foreach ($params as $clave => $valor) {
-            $stmt->bindValue($clave, $valor);
-        }
-        $stmt->bindValue(':limite', Paginacion::POR_PAGINA, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', Paginacion::offset($pagina), PDO::PARAM_INT);
-        $stmt->execute();
+        $resultado['filas'] = self::conEstadoCalculado($resultado['filas']);
 
-        return [
-            'filas' => self::conEstadoCalculado($stmt->fetchAll()),
-            'total' => $total,
-            'totalPaginas' => Paginacion::totalPaginas($total),
-            'pagina' => $pagina,
-        ];
+        return $resultado;
     }
 
     /** Agrega saldo/estado calculado (EstadoBoleta) a cada fila de un fetchAll() de boletas. */

@@ -72,7 +72,9 @@ final class TextoVisibleTest extends TestCase
                 $partes = array_merge([strip_tags($contenido)], $atributos[1]);
             } elseif ($id === T_CONSTANT_ENCAPSED_STRING || $id === T_ENCAPSED_AND_WHITESPACE) {
                 $pareceMensaje = preg_match('/[a-záéíóúñ]{3,}\s+[a-záéíóúñ]{2,}/iu', $contenido) === 1;
-                $esSql = preg_match('/\b(SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|JOIN|CREATE|ALTER)\b/', $contenido) === 1;
+                // AS, ASC y DESC: los fragmentos de SQL que se le pasan a Paginacion::consultar() (la lista
+                // de columnas, el ORDER BY) no traen SELECT ni FROM, pero tampoco son un mensaje.
+                $esSql = preg_match('/\b(SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|JOIN|CREATE|ALTER|AS|ASC|DESC)\b/', $contenido) === 1;
                 if (!$pareceMensaje || $esSql) {
                     continue;
                 }

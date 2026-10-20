@@ -8,7 +8,11 @@ use App\Database;
 use App\Paginacion;
 use PDO;
 
-/** CRUD de clientes. La segmentacion/LTV vive en SegmentacionRepository. */
+/**
+ * CRUD de clientes. La segmentacion/LTV vive en SegmentacionRepository.
+ *
+ * @phpstan-import-type Pagina from Paginacion
+ */
 final class ClienteRepository
 {
     /** Cuantos clientes caben en los desplegables de los formularios de alta (ver paraSelector()). */
@@ -42,7 +46,7 @@ final class ClienteRepository
     /**
      * Listado paginado de clientes con buscador opcional por nombre/email.
      *
-     * @return array{filas: array, total: int, totalPaginas: int, pagina: int}
+     * @return Pagina
      */
     public function buscar(string $query = '', int $pagina = 1): array
     {
@@ -53,32 +57,15 @@ final class ClienteRepository
             $params[':q'] = '%' . $query . '%';
         }
 
-        $stmtTotal = $this->db->prepare("SELECT COUNT(*) FROM clientes c{$where}");
-        $stmtTotal->execute($params);
-        $total = (int) $stmtTotal->fetchColumn();
-        $pagina = Paginacion::acotar($pagina, $total);
-
-        $stmt = $this->db->prepare(
-            "SELECT c.id, c.nombre, c.email, c.segmento, c.fecha_alta, p.nombre AS pais_nombre
-             FROM clientes c
-             JOIN paises p ON p.codigo = c.pais_codigo
-             {$where}
-             ORDER BY c.nombre, c.id
-             LIMIT :limite OFFSET :offset"
+        return Paginacion::consultar(
+            $this->db,
+            columnas: 'c.id, c.nombre, c.email, c.segmento, c.fecha_alta, p.nombre AS pais_nombre',
+            desde: "clientes c JOIN paises p ON p.codigo = c.pais_codigo{$where}",
+            orden: 'c.nombre, c.id',
+            params: $params,
+            pagina: $pagina,
+            desdeDelConteo: "clientes c{$where}",
         );
-        foreach ($params as $clave => $valor) {
-            $stmt->bindValue($clave, $valor);
-        }
-        $stmt->bindValue(':limite', Paginacion::POR_PAGINA, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', Paginacion::offset($pagina), PDO::PARAM_INT);
-        $stmt->execute();
-
-        return [
-            'filas' => $stmt->fetchAll(),
-            'total' => $total,
-            'totalPaginas' => Paginacion::totalPaginas($total),
-            'pagina' => $pagina,
-        ];
     }
 
     /**
