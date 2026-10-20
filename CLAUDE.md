@@ -19,7 +19,7 @@ Varias sesiones trabajan a la vez, y ya pasó que dos hicieron lo mismo o que do
 ## Cómo se parte el trabajo
 
 - **Un PR por carpeta de proyecto.** Si un cambio cruza carpetas, sepáralo.
-- **Los archivos compartidos son los que más chocan:** `README.md` de la raíz (la tabla de proyectos), `.gitignore` y el `composer.json` de la raíz. Cámbialos en un PR chico y aparte, para que se fusione rápido.
+- **Los archivos compartidos son los que más chocan:** `README.md` de la raíz (la tabla de proyectos), `.gitignore` y el `composer.json` de la raíz. Cámbialos en un PR chico y aparte, para que se fusione rápido. La excepción es una carpeta de proyecto nueva: trae su fila de la tabla en el mismo PR, porque `estructura.yml` falla mientras una carpeta de la raíz no tenga fila.
 - **Cada proyecto con pruebas tiene su propio workflow** (`.github/workflows/pruebas-<proyecto>.yml`, con filtro de rutas): cámbialo en el PR del proyecto, no en uno aparte. Un proyecto nuevo con pruebas trae el suyo en vez de agregar jobs al de otro.
 - **Abre los PR en borrador, y no los fusiones por tu cuenta:** fusionar lo decide la persona.
 - **Si ya hay un PR que hace lo mismo,** no abras otro en paralelo: aporta ahí, o cierra el tuyo diciendo por qué.
