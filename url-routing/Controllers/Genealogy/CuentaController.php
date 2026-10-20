@@ -18,16 +18,14 @@ use App\Repositories\UsuarioRepository;
  */
 class CuentaController extends BaseController
 {
+    private function usuario(): ?array
+    {
+        return (new UsuarioRepository($this->db()))->find(self::DEFAULT_USER_ID);
+    }
+
     public function index(array $params = []): string
     {
-        return $this->pedirPropietario(function (): string {
-            $usuario = (new UsuarioRepository($this->db()))->find(self::DEFAULT_USER_ID);
-            if ($usuario === null) {
-                return $this->handleNotFound($this->sinUsuario());
-            }
-
-            return view('genealogy/cuenta/index', ['usuario' => $usuario]);
-        });
+        return $this->pedirPropietario(fn() => $this->conUsuario('genealogy/cuenta/index'));
     }
 
     public function colecciones(array $params = []): string
@@ -43,5 +41,16 @@ class CuentaController extends BaseController
             'personas' => (new PersonaRepository($this->db(), $this->privacidad()))->aportadasPor(self::DEFAULT_USER_ID),
             'registros' => (new RegistroRepository($this->db(), $this->privacidad()))->aportadosPor(self::DEFAULT_USER_ID),
         ]));
+    }
+
+    /** A page that shows the account's user, or a 404 when that user doesn't exist. */
+    private function conUsuario(string $view): string
+    {
+        $usuario = $this->usuario();
+        if ($usuario === null) {
+            return $this->handleNotFound($this->sinUsuario());
+        }
+
+        return view($view, ['usuario' => $usuario]);
     }
 }
