@@ -180,4 +180,36 @@ class ResponseHeadersTest extends TestCase
         $this->assertSame(401, $respuesta['status']);
         $this->assertArrayHasKey('www-authenticate', $respuesta['headers']);
     }
+
+    /**
+     * ob_gzhandler already sends `Vary: Accept-Encoding` on every response, compressed or not, so
+     * HttpSecurityHeaders must not send its own: it was harmless but every response carried the same
+     * header twice. It has to be there exactly once, also next to the owner's `Vary: Authorization`.
+     */
+    public function testVaryAcceptEncodingIsSentOnceWhetherOrNotTheResponseIsCompressed(): void
+    {
+        if (!extension_loaded('zlib')) {
+            $this->markTestSkipped('Without zlib the app neither compresses nor sends Vary: Accept-Encoding.');
+        }
+
+        $propietario = ['Authorization' => 'Basic ' . base64_encode('propietario:' . self::TOKEN)];
+        $casos = [
+            'home, sin comprimir' => ['/', []],
+            'home, comprimida' => ['/', ['Accept-Encoding' => 'gzip']],
+            'un 404, comprimido' => ['/99999999/', ['Accept-Encoding' => 'gzip']],
+            'pagina del propietario, sin comprimir' => ['/1048294/', $propietario],
+            'pagina del propietario, comprimida' => ['/1048294/', $propietario + ['Accept-Encoding' => 'gzip']],
+        ];
+        foreach ($casos as $nombre => [$uri, $cabeceras]) {
+            $respuesta = $this->pedir(self::GENEALOGIA, $uri, $cabeceras);
+
+            $valores = [];
+            foreach ($respuesta['headers']['vary'] ?? [] as $linea) {
+                foreach (explode(',', $linea) as $valor) {
+                    $valores[] = strtolower(trim($valor));
+                }
+            }
+            $this->assertSame(1, count(array_keys($valores, 'accept-encoding', true)), "{$nombre}: Vary was " . implode(' | ', $respuesta['headers']['vary'] ?? ['(none)']));
+        }
+    }
 }

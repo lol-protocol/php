@@ -15,10 +15,11 @@ class HttpSecurityHeaders
     private static function enableCompression(): void
     {
         if (!headers_sent()) {
-            // Enable gzip compression for responses > 1KB
+            // Enable gzip compression for responses > 1KB. ob_gzhandler sends `Vary: Accept-Encoding`
+            // itself, on every response whether or not it compresses it: sending it here too made
+            // each response carry the header twice.
             if (extension_loaded('zlib') && !ini_get('output_handler')) {
                 ob_start('ob_gzhandler');
-                header('Vary: Accept-Encoding');
             }
         }
     }

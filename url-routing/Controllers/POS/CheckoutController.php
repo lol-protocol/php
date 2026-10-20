@@ -13,7 +13,7 @@ use App\Support\Cart;
 /**
  * /p/ — the purchase: summary (/p/), shipping address (/p/1/), payment
  * (/p/2/) and confirmation (/p/3/), whose POST places the order. Like the
- * cart, it lives in the session: there's no login. Payment isn't taken
+ * cart, it lives in the session: there are no user accounts. Payment isn't taken
  * online: an order starts 'pendiente' until the shop confirms it was paid.
  */
 class CheckoutController extends BaseController
