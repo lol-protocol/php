@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_attr_private_ink" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_attr_private_ink_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8A8A8A"/>
       <stop offset="1" stop-color="#535353"/>
     </linearGradient>
@@ -10,7 +10,7 @@
     <ellipse cx="32.2" cy="53.79" rx="19.85" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#303030"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_private_ink)"/></g>
+    <g><path d="M44.79 16.61A4 4 0 0 1 45.05 17.01L53.25 31.2A4 4 0 0 1 53.25 35.2L45.05 49.39A4 4 0 0 1 41.59 51.39L25.21 51.39A4 4 0 0 1 22.01 49.79L19.79 46.83A4 4 0 0 1 19.53 46.43L11.33 32.24A4 4 0 0 1 11.33 28.24L19.53 14.05A4 4 0 0 1 22.99 12.05L39.37 12.05A4 4 0 0 1 42.57 13.65Z" fill="#303030"/><path d="M50.85 28A4 4 0 0 1 50.85 32L42.65 46.19A4 4 0 0 1 39.19 48.19L22.81 48.19A4 4 0 0 1 19.35 46.19L11.15 32A4 4 0 0 1 11.15 28L19.35 13.81A4 4 0 0 1 22.81 11.81L39.19 11.81A4 4 0 0 1 42.65 13.81Z" fill="url(#grad_attr_private_ink_g)"/></g>
   </g>
   <g class="marks">
     <path d="M20 30a11 11 0 1 0 22 0a11 11 0 1 0 -22 0Z" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_format_limited_edition_violet" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_format_limited_edition_violet_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#949494"/>
       <stop offset="1" stop-color="#626262"/>
     </linearGradient>
@@ -10,7 +10,7 @@
     <ellipse cx="33.4" cy="56.8" rx="16.93" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M50.6 18.8A6 6 0 0 1 51.8 22.4L51.8 48.4A6 6 0 0 1 45.8 54.4L25.8 54.4A6 6 0 0 1 21 52L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#393939"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_format_limited_edition_violet)"/></g>
+    <g><path d="M50.6 18.8A6 6 0 0 1 51.8 22.4L51.8 48.4A6 6 0 0 1 45.8 54.4L25.8 54.4A6 6 0 0 1 21 52L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#393939"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_format_limited_edition_violet_g)"/></g>
   </g>
   <g class="marks">
     <path d="M20 16L42 16L42 42L20 42Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0.1 4.4"/>

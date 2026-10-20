@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_book_manuscript_paper" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_book_manuscript_paper_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#F6F6F6"/>
       <stop offset="1" stop-color="#F1F1F1"/>
     </linearGradient>
-    <linearGradient id="grad_book_manuscript_red" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_book_manuscript_red_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#909090"/>
       <stop offset="1" stop-color="#5C5C5C"/>
     </linearGradient>
@@ -14,7 +14,7 @@
     <ellipse cx="31.96" cy="52.96" rx="15.6" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M48.12 14.16A4 4 0 0 1 48.92 16.56L48.92 46.56A4 4 0 0 1 44.92 50.56L20.92 50.56A4 4 0 0 1 17.72 48.96L15.98 46.64A4 4 0 0 1 15.18 44.24L15.18 14.24A4 4 0 0 1 19.18 10.24L43.18 10.24A4 4 0 0 1 46.38 11.84Z" fill="#8C8C8C"/><rect x="15" y="10" width="32" height="38" rx="4" fill="url(#grad_book_manuscript_paper)"/></g>
-    <g><path d="M34.38 44.84L35.28 46.04A6 6 0 0 0 44.88 38.84L43.98 37.64A6 6 0 0 0 34.38 44.84Z" fill="#363636"/><circle cx="39" cy="41" r="6" fill="url(#grad_book_manuscript_red)"/></g>
+    <g><path d="M48.12 14.16A4 4 0 0 1 48.92 16.56L48.92 46.56A4 4 0 0 1 44.92 50.56L20.92 50.56A4 4 0 0 1 17.72 48.96L15.98 46.64A4 4 0 0 1 15.18 44.24L15.18 14.24A4 4 0 0 1 19.18 10.24L43.18 10.24A4 4 0 0 1 46.38 11.84Z" fill="#8C8C8C"/><rect x="15" y="10" width="32" height="38" rx="4" fill="url(#grad_book_manuscript_paper_g)"/></g>
+    <g><path d="M34.38 44.84L35.28 46.04A6 6 0 0 0 44.88 38.84L43.98 37.64A6 6 0 0 0 34.38 44.84Z" fill="#363636"/><circle cx="39" cy="41" r="6" fill="url(#grad_book_manuscript_red_g)"/></g>
   </g>
 </svg>

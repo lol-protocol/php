@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_book_index_brown" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_book_index_brown_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#9B9B9B"/>
       <stop offset="1" stop-color="#6B6B6B"/>
     </linearGradient>
-    <linearGradient id="grad_book_index_amber" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_book_index_amber_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#AEAEAE"/>
       <stop offset="1" stop-color="#878787"/>
     </linearGradient>
-    <linearGradient id="grad_book_index_pink" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_book_index_pink_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#979797"/>
       <stop offset="1" stop-color="#666666"/>
     </linearGradient>
-    <linearGradient id="grad_book_index_teal" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_book_index_teal_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#9A9A9A"/>
       <stop offset="1" stop-color="#6A6A6A"/>
     </linearGradient>
@@ -22,9 +22,9 @@
     <ellipse cx="32.86" cy="56" rx="16.43" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M46 18A6 6 0 0 1 47.2 21.6L47.2 47.6A6 6 0 0 1 41.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L37.18 10.24A6 6 0 0 1 41.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="28" height="38" rx="6" fill="url(#grad_book_index_brown)"/></g>
-    <g><path d="M50.32 15.76A2 2 0 0 1 50.72 16.96L50.72 20.96A2 2 0 0 1 48.72 22.96L43.72 22.96A2 2 0 0 1 42.12 22.16L41.58 21.44A2 2 0 0 1 41.18 20.24L41.18 16.24A2 2 0 0 1 43.18 14.24L48.18 14.24A2 2 0 0 1 49.78 15.04Z" fill="#4F4F4F"/><rect x="41" y="14" width="9" height="8" rx="2" fill="url(#grad_book_index_amber)"/></g>
-    <g><path d="M50.32 26.76A2 2 0 0 1 50.72 27.96L50.72 31.96A2 2 0 0 1 48.72 33.96L43.72 33.96A2 2 0 0 1 42.12 33.16L41.58 32.44A2 2 0 0 1 41.18 31.24L41.18 27.24A2 2 0 0 1 43.18 25.24L48.18 25.24A2 2 0 0 1 49.78 26.04Z" fill="#3B3B3B"/><rect x="41" y="25" width="9" height="8" rx="2" fill="url(#grad_book_index_pink)"/></g>
-    <g><path d="M50.32 37.76A2 2 0 0 1 50.72 38.96L50.72 42.96A2 2 0 0 1 48.72 44.96L43.72 44.96A2 2 0 0 1 42.12 44.16L41.58 43.44A2 2 0 0 1 41.18 42.24L41.18 38.24A2 2 0 0 1 43.18 36.24L48.18 36.24A2 2 0 0 1 49.78 37.04Z" fill="#3E3E3E"/><rect x="41" y="36" width="9" height="8" rx="2" fill="url(#grad_book_index_teal)"/></g>
+    <g><path d="M46 18A6 6 0 0 1 47.2 21.6L47.2 47.6A6 6 0 0 1 41.2 53.6L25.2 53.6A6 6 0 0 1 20.4 51.2L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L37.18 10.24A6 6 0 0 1 41.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="28" height="38" rx="6" fill="url(#grad_book_index_brown_g)"/></g>
+    <g><path d="M50.32 15.76A2 2 0 0 1 50.72 16.96L50.72 20.96A2 2 0 0 1 48.72 22.96L43.72 22.96A2 2 0 0 1 42.12 22.16L41.58 21.44A2 2 0 0 1 41.18 20.24L41.18 16.24A2 2 0 0 1 43.18 14.24L48.18 14.24A2 2 0 0 1 49.78 15.04Z" fill="#4F4F4F"/><rect x="41" y="14" width="9" height="8" rx="2" fill="url(#grad_book_index_amber_g)"/></g>
+    <g><path d="M50.32 26.76A2 2 0 0 1 50.72 27.96L50.72 31.96A2 2 0 0 1 48.72 33.96L43.72 33.96A2 2 0 0 1 42.12 33.16L41.58 32.44A2 2 0 0 1 41.18 31.24L41.18 27.24A2 2 0 0 1 43.18 25.24L48.18 25.24A2 2 0 0 1 49.78 26.04Z" fill="#3B3B3B"/><rect x="41" y="25" width="9" height="8" rx="2" fill="url(#grad_book_index_pink_g)"/></g>
+    <g><path d="M50.32 37.76A2 2 0 0 1 50.72 38.96L50.72 42.96A2 2 0 0 1 48.72 44.96L43.72 44.96A2 2 0 0 1 42.12 44.16L41.58 43.44A2 2 0 0 1 41.18 42.24L41.18 38.24A2 2 0 0 1 43.18 36.24L48.18 36.24A2 2 0 0 1 49.78 37.04Z" fill="#3E3E3E"/><rect x="41" y="36" width="9" height="8" rx="2" fill="url(#grad_book_index_teal_g)"/></g>
   </g>
 </svg>

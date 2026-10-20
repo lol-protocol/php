@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_person_grandfather_paternal_mist" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_person_grandfather_paternal_mist_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#E1E1E1"/>
       <stop offset="1" stop-color="#D3D3D3"/>
     </linearGradient>
-    <linearGradient id="grad_person_grandfather_paternal_ink" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_person_grandfather_paternal_ink_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8A8A8A"/>
       <stop offset="1" stop-color="#535353"/>
     </linearGradient>
-    <linearGradient id="grad_person_grandfather_paternal_orange" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_person_grandfather_paternal_orange_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#A5A5A5"/>
       <stop offset="1" stop-color="#7B7B7B"/>
     </linearGradient>
@@ -23,10 +23,10 @@
     <path d="M11 10.5L11 30.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
-    <g><path d="M19.11 26.8A2.04 2.04 0 0 1 19.51 28.02L19.51 37.54A2.04 2.04 0 0 1 17.47 39.58L7.95 39.58A2.04 2.04 0 0 1 6.32 38.77L4.79 36.72A2.04 2.04 0 0 1 4.38 35.5L4.38 25.98A2.04 2.04 0 0 1 6.42 23.94L15.94 23.94A2.04 2.04 0 0 1 17.57 24.76Z" fill="#7B7B7B"/><rect x="4.2" y="23.7" width="13.6" height="13.6" rx="2.04" fill="url(#grad_person_grandfather_paternal_mist)"/></g>
-    <g><path d="M45.2 35.23L46.73 37.27A7.48 7.48 0 0 0 58.7 28.3L57.16 26.25A7.48 7.48 0 0 0 45.2 35.23Z" fill="#7B7B7B"/><circle cx="51" cy="30.5" r="7.48" fill="url(#grad_person_grandfather_paternal_mist)"/></g>
-    <g><path d="M25.2 55.23L26.73 57.27A7.48 7.48 0 0 0 38.7 48.3L37.16 46.25A7.48 7.48 0 0 0 25.2 55.23Z" fill="#303030"/><circle cx="31" cy="50.5" r="7.48" fill="url(#grad_person_grandfather_paternal_ink)"/></g>
-    <g><path d="M19.11 6.8A2.04 2.04 0 0 1 19.51 8.02L19.51 17.54A2.04 2.04 0 0 1 17.47 19.58L7.95 19.58A2.04 2.04 0 0 1 6.32 18.77L4.79 16.72A2.04 2.04 0 0 1 4.38 15.5L4.38 5.98A2.04 2.04 0 0 1 6.42 3.94L15.94 3.94A2.04 2.04 0 0 1 17.57 4.76Z" fill="#474747"/><rect x="4.2" y="3.7" width="13.6" height="13.6" rx="2.04" fill="url(#grad_person_grandfather_paternal_orange)"/></g>
+    <g><path d="M19.11 26.8A2.04 2.04 0 0 1 19.51 28.02L19.51 37.54A2.04 2.04 0 0 1 17.47 39.58L7.95 39.58A2.04 2.04 0 0 1 6.32 38.77L4.79 36.72A2.04 2.04 0 0 1 4.38 35.5L4.38 25.98A2.04 2.04 0 0 1 6.42 23.94L15.94 23.94A2.04 2.04 0 0 1 17.57 24.76Z" fill="#7B7B7B"/><rect x="4.2" y="23.7" width="13.6" height="13.6" rx="2.04" fill="url(#grad_person_grandfather_paternal_mist_g)"/></g>
+    <g><path d="M45.2 35.23L46.73 37.27A7.48 7.48 0 0 0 58.7 28.3L57.16 26.25A7.48 7.48 0 0 0 45.2 35.23Z" fill="#7B7B7B"/><circle cx="51" cy="30.5" r="7.48" fill="url(#grad_person_grandfather_paternal_mist_g)"/></g>
+    <g><path d="M25.2 55.23L26.73 57.27A7.48 7.48 0 0 0 38.7 48.3L37.16 46.25A7.48 7.48 0 0 0 25.2 55.23Z" fill="#303030"/><circle cx="31" cy="50.5" r="7.48" fill="url(#grad_person_grandfather_paternal_ink_g)"/></g>
+    <g><path d="M19.11 6.8A2.04 2.04 0 0 1 19.51 8.02L19.51 17.54A2.04 2.04 0 0 1 17.47 19.58L7.95 19.58A2.04 2.04 0 0 1 6.32 18.77L4.79 16.72A2.04 2.04 0 0 1 4.38 15.5L4.38 5.98A2.04 2.04 0 0 1 6.42 3.94L15.94 3.94A2.04 2.04 0 0 1 17.57 4.76Z" fill="#474747"/><rect x="4.2" y="3.7" width="13.6" height="13.6" rx="2.04" fill="url(#grad_person_grandfather_paternal_orange_g)"/></g>
   </g>
   <g class="marks">
     <path d="M28.69 50.5a2.31 2.31 0 1 0 4.62 0a2.31 2.31 0 1 0 -4.62 0Z" fill="#FFFFFF"/>

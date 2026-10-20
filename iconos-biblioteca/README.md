@@ -62,10 +62,11 @@ genealogía (ver `iconos-genealogia/README.md`).
 }
 ```
 
-Los `id` internos (los gradientes, con el nombre del icono) son únicos entre
-iconos, pero las variantes `color` y `gris` de un mismo icono comparten los
-suyos: si incrustás el SVG en línea, no pongas esas dos variantes del mismo
-icono en la misma página (con `<img>` o CSS no hay problema).
+Los `id` internos (los gradientes, con el nombre del icono y, en `gris`, el
+sufijo `_g`) son únicos entre los iconos y las variantes del set, así que puedes
+incrustar varios SVG en línea en la misma página, también `color` y `gris` de un
+mismo icono. Los iconos con el mismo nombre en los dos sets (`ui_menu`...) sí
+comparten ids.
 
 ## Regenerar y validar
 

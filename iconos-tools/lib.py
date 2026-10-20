@@ -388,7 +388,9 @@ class Icon:
         return self
 
     def link(self, pts, style='line', hue='slate', w=2.6):
-        self.links.append(dict(pts=[(float(x), float(y)) for x, y in pts], style=style, hue=hue, w=w))
+        pts = [(float(x), float(y)) for x, y in pts]
+        distinct = [p for i, p in enumerate(pts) if i == 0 or p != pts[i - 1]]  # un punto repetido no dibuja nada
+        self.links.append(dict(pts=distinct if len(distinct) > 1 else pts, style=style, hue=hue, w=w))
         return self
 
     def mark(self, d, filled=False, tone='white', ink='ink', w=2.4, op=1.0, dash=None):
@@ -473,7 +475,7 @@ class Icon:
                     dfill = tones(s['depth'])[1] if s['depth'] else dark
                     parts.append(f'<path d="{sweep}" fill="{col(dfill)}"/>')
                 turn = f'_r{fmt(s["shape"].rot)}'.replace('-', 'm').replace('.', 'p') if s['shape'].rot else ''
-                gid = f'grad_{self.stem}_{s["hue"]}{turn}'
+                gid = f'grad_{self.stem}_{s["hue"]}{turn}{"_g" if variant == "gris" else ""}'
                 grads[gid] = (col(hi), col(base), s['shape'].light_axis())
                 op = f' opacity="{fmt(s["op"])}"' if s['op'] != 1 else ''
                 parts.append(s['shape'].front(f'fill="url(#{gid})"{op}'))
