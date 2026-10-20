@@ -185,4 +185,88 @@ class CliTest extends TestCase
 
         unlink($file);
     }
+
+    // --- the visitor's view (--publico) -------------------------------------------------------------
+
+    private function importOldAndRecent(): array
+    {
+        $old = $this->writeSampleFile("GARCÍA LÓPEZ, José\nCalle Mayor 12\n555-123-4567");
+        $recent = $this->writeSampleFile("GARCÍA RUIZ, José\nAvenida Nueva 5\n555-999-8888");
+        $this->runCli("import {$old} --catalog=es_1930_madrid --dsn=sqlite:{$this->dbFile}");
+        $this->runCli("import {$recent} --catalog=es_1975_national --dsn=sqlite:{$this->dbFile}");
+
+        return [$old, $recent];
+    }
+
+    public function testTheOwnerSeesEverythingByDefault(): void
+    {
+        [$old, $recent] = $this->importOldAndRecent();
+
+        [$exitCode, $stdout] = $this->runCli("search --name=garcia --dsn=sqlite:{$this->dbFile}");
+
+        $this->assertSame(0, $exitCode);
+        $this->assertStringContainsString('2 resultado(s)', $stdout);
+        $this->assertStringNotContainsString('Vista pública', $stdout);
+
+        unlink($old);
+        unlink($recent);
+    }
+
+    public function testThePublicViewHidesRecentDirectoriesAndSaysSo(): void
+    {
+        [$old, $recent] = $this->importOldAndRecent();
+
+        [$exitCode, $stdout] = $this->runCli("search --name=garcia --publico --hoy=2026-10-20 --dsn=sqlite:{$this->dbFile}");
+
+        $this->assertSame(0, $exitCode);
+        $this->assertStringContainsString('García López, José', $stdout);
+        $this->assertStringNotContainsString('García Ruiz', $stdout);
+        $this->assertStringNotContainsString('555-999-8888', $stdout);
+        $this->assertStringContainsString('1 resultado(s)', $stdout);
+        $this->assertStringContainsString('Vista pública: solo guías hasta 1933', $stdout);
+
+        [, $byPhone] = $this->runCli("search --phone=555-999-8888 --publico --hoy=2026-10-20 --dsn=sqlite:{$this->dbFile}");
+        $this->assertStringContainsString('0 resultado(s)', $byPhone);
+
+        unlink($old);
+        unlink($recent);
+    }
+
+    public function testThePublicViewLinksNothingThatInvolvesARecentDirectory(): void
+    {
+        [$old, $recent] = $this->importOldAndRecent();
+
+        [$exitCode, $stdout] = $this->runCli("link --sources=es_1930_madrid,es_1975_national --publico --hoy=2026-10-20 --dsn=sqlite:{$this->dbFile}");
+
+        $this->assertSame(0, $exitCode);
+        $this->assertStringContainsString('0 enlace(s) propuesto(s)', $stdout);
+        $this->assertStringContainsString('Vista pública', $stdout);
+
+        unlink($old);
+        unlink($recent);
+    }
+
+    public function testTheLimitOfThePublicViewFollowsTheReferenceDate(): void
+    {
+        [$old, $recent] = $this->importOldAndRecent();
+
+        // In 2070 the 1975 directory is old enough (1975 + 92 < 2070): a visitor then sees both.
+        [, $stdout] = $this->runCli("search --name=garcia --publico --hoy=2070-01-01 --dsn=sqlite:{$this->dbFile}");
+
+        $this->assertStringContainsString('2 resultado(s)', $stdout);
+        $this->assertStringContainsString('solo guías hasta 1977', $stdout);
+
+        unlink($old);
+        unlink($recent);
+    }
+
+    public function testAnInvalidReferenceDateFails(): void
+    {
+        foreach (['2026-13-40', 'ayer', '2026-1-1'] as $date) {
+            [$exitCode, , $stderr] = $this->runCli("search --name=x --publico --hoy={$date} --dsn=sqlite:{$this->dbFile}");
+
+            $this->assertSame(1, $exitCode, $date);
+            $this->assertStringContainsString('--hoy debe ser una fecha AAAA-MM-DD', $stderr, $date);
+        }
+    }
 }
