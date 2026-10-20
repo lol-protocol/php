@@ -60,7 +60,7 @@ $hoy = date('Y-m-d');
             </select>
 
             <label for="monto">Monto (en <?= htmlspecialchars($clienteElegido['moneda_codigo']) ?>)</label>
-            <input type="number" name="monto" id="monto" required min="0.01" step="0.01" value="<?= htmlspecialchars($valores['monto'] ?? '') ?>">
+            <?= campo_monto($valores['monto'] ?? '') ?>
 
             <label for="fecha_pago">Fecha de pago</label>
             <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= htmlspecialchars($valores['fecha_pago'] ?? $hoy) ?>">

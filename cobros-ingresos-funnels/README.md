@@ -634,7 +634,10 @@ ofrece en el selector del formulario de pagos, la cartera por antigüedad no cue
 de 0,01 USD o menos, y anular una boleta con 0,01 o menos cobrado no emite nota de crédito.
 Ese 0,01 está escrito en un solo lugar, `Dinero::UN_CENTAVO` (y `Dinero::cuentaComoCero()` para
 compararlo): lo leen el PHP, las consultas SQL y las vistas. Es también el monto mínimo que
-acepta `Validacion::montoEnRango()`.
+acepta `Validacion::montoEnRango()`, y el HTML de los cuatro formularios de monto (alta y
+edición de boletas y de pagos) sale de `campo_monto()`, que le pone `min`, `max` y `step` desde
+`Dinero::UN_CENTAVO` y `Validacion::MONTO_MAXIMO`: el navegador rechaza un monto fuera de rango
+antes de enviarlo, y el servidor lo vuelve a validar.
 
 ## Notas de diseño
 
