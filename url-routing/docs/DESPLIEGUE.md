@@ -2,7 +2,7 @@
 
 Cómo poner `url-routing` en un servidor y comprobar que quedó bien. Cubre los dos sitios (genealogía y POS), que son la misma aplicación: el `Host` de cada petición decide cuál se sirve.
 
-**Qué está probado y qué no.** Los pasos 1 a 4 y las comprobaciones del paso 6 se ejecutaron contra el servidor integrado de PHP, con bases SQLite y PostgreSQL (ver «Cómo se probó» al final). La configuración de nginx, la de Apache y HTTPS **no** se probaron aquí: están marcadas donde aparecen.
+**Qué está probado y qué no.** Todos los pasos se ejecutaron en un servidor real: **nginx 1.24 con PHP-FPM 8.3 (como `www-data`)**, PostgreSQL 16 y SQLite, también con HTTPS (ver «Cómo se probó» al final). **No** se probaron: Apache y su `.htaccess`, un certificado emitido por una autoridad (certbot), las unidades de systemd ni PHP 8.1 o 8.2. Están marcados donde aparecen.
 
 ## 0. Antes de empezar
 
@@ -68,14 +68,16 @@ Las variables del entorno real tienen prioridad sobre `.env`.
 ## 4. Las migraciones
 
 ```bash
-php bin/migrate.php genealogy
-php bin/migrate.php pos
+sudo -u www-data php bin/migrate.php genealogy
+sudo -u www-data php bin/migrate.php pos
 ```
+
+**Como el usuario de PHP-FPM (`www-data`), no como root.** SQLite crea `pos.sqlite` con el dueño de quien corre el comando: si es root, PHP-FPM puede leer la base pero no escribir, y la primera escritura falla con «attempt to write a readonly database». PostgreSQL no tiene ese problema, pero conviene hacer lo mismo en los dos. `www-data` lee el `.env` (paso 3), así que no hace falta nada más. Si ya la creaste como root: `sudo chown www-data:www-data /var/lib/url-routing/pos.sqlite*`.
 
 **Sin `--seed`**: esa opción carga datos de demostración y es solo para desarrollo. El comando aplica las migraciones pendientes y dice cuáles:
 
 ```
-genealogy (pgsql): aplicadas genealogy/001_esquema_inicial, genealogy/002_personas_viva
+genealogy (pgsql): aplicadas genealogy/001_esquema_inicial, genealogy/002_personas_viva, genealogy/003_persona_alias
 ```
 
 Es seguro repetirlo: lo ya aplicado no se vuelve a aplicar (`sin migraciones pendientes`). Cada migración corre en una transacción.
@@ -88,7 +90,7 @@ Las páginas de cuenta (`/0/`) actúan sobre una cuenta fija: el **usuario 1** d
 psql "dbname=genealogia user=genealogia_app host=127.0.0.1" \
   -c "INSERT INTO usuarios (id, email, nombre) VALUES (1, 'tu@correo.com', 'Tu nombre')"
 
-sqlite3 /var/lib/url-routing/pos.sqlite \
+sudo -u www-data sqlite3 /var/lib/url-routing/pos.sqlite \
   "INSERT INTO usuarios (id, email, nombre) VALUES (1, 'tu@correo.com', 'Tu nombre')"
 ```
 
@@ -98,7 +100,13 @@ Ese usuario es también el autor de las colecciones y de los aportes que veas en
 
 La raíz del sitio es **`public/`**. Si apuntara a la carpeta del proyecto, cualquiera podría bajar `.env` y las bases SQLite, y ejecutar `bin/migrate.php`.
 
-**Nginx** (no probado aquí): copia [`deploy/nginx.conf.example`](../deploy/nginx.conf.example), ajusta `server_name` y el socket de PHP-FPM, y activa HTTPS (con certbot: `sudo certbot --nginx -d tudominio.com`). Nginx pasa la cabecera `Authorization` a PHP-FPM por sí solo; no agregues un `fastcgi_param` que la borre.
+**Nginx** (probado con nginx 1.24 y PHP-FPM 8.3): copia [`deploy/nginx.conf.example`](../deploy/nginx.conf.example) a `sites-available`, ajusta `server_name`, la raíz y el socket de PHP-FPM, y **crea la carpeta de logs**: nginx crea los archivos de log, no la carpeta, y sin ella `nginx -t` falla.
+
+```bash
+sudo mkdir -p /var/log/nginx/url-routing
+```
+
+Después activa HTTPS (con certbot: `sudo certbot --nginx -d tudominio.com`). **Certbot no se probó**; sí HTTPS con un certificado autofirmado puesto en el mismo bloque `server`, que es donde certbot lo agrega. Nginx pasa la cabecera `Authorization` a PHP-FPM por sí solo; no agregues un `fastcgi_param` que la borre.
 
 **Apache** (no probado aquí): `AllowOverride All`, y los módulos `rewrite` y `headers`. El `.htaccess` de `public/` trae la regla que entrega `Authorization` a PHP; si el paso 6 da 401 con la clave correcta, empieza por ahí.
 
@@ -113,15 +121,17 @@ curl -s https://$D/health                        # {"status":"ok",...}
 curl -s -o /dev/null -w '%{http_code}\n' https://$D/            # 200
 curl -s -o /dev/null -w '%{http_code}\n' https://$D/0/          # 401: pide la clave
 curl -s -o /dev/null -w '%{http_code}\n' -u x:$T https://$D/0/  # 200 (404 si falta el usuario 1: ver paso 4)
-curl -sI -u x:$T https://$D/0/ | grep -i -E 'cache-control|vary'
+curl -sI -u x:$T https://$D/0/ | grep -i -E 'cache-control|vary|set-cookie|strict-transport'
 ```
 
-Debe verse `Cache-Control: private, no-store` y `Vary: Authorization`: lo que depende de quién pregunta no se guarda en cachés compartidas.
+Debe verse `Cache-Control: private, no-store` y `Vary: Authorization`: lo que depende de quién pregunta no se guarda en cachés compartidas. Por HTTPS, la cookie de sesión lleva `secure; HttpOnly; SameSite=Lax` y llega `Strict-Transport-Security`; por HTTP plano, la cookie sale sin `secure`.
+
+`/health` solo dice que PHP responde: sigue en `ok` aunque la base de datos esté caída. Para saber si la base responde, abre una página que la consulte (la ficha de una persona, por ejemplo).
 
 Y que lo que no debe servirse, no se sirve:
 
 ```bash
-curl -s -o /dev/null -w '%{http_code}\n' https://$D/.env             # 404
+curl -s -o /dev/null -w '%{http_code}\n' https://$D/.env             # 403 (nginx niega todo lo que empieza por punto)
 curl -s -o /dev/null -w '%{http_code}\n' https://$D/bin/migrate.php  # 404
 curl -s -o /dev/null -w '%{http_code}\n' https://$D/composer.json    # 404
 ```
@@ -130,7 +140,9 @@ curl -s -o /dev/null -w '%{http_code}\n' https://$D/composer.json    # 404
 |---|---|
 | `/0/` da **404** | Con la clave correcta y el mensaje «No existe el usuario 1»: falta crear el usuario (paso 4). Sin ese mensaje: `OWNER_TOKEN` falta o tiene menos de 20 caracteres (el log lo avisa con un *warning*) |
 | `/0/` da **401** con la clave correcta | El servidor no entrega la cabecera `Authorization` a PHP (regla de Apache, o un proxy que la quita). Con la clave equivocada también da 401: comprueba que no tiene espacios ni saltos de línea |
-| Un error de base de datos | El DSN, el usuario o los permisos del directorio de SQLite |
+| Un error de base de datos | El DSN, el usuario o los permisos del directorio de SQLite. El visitante ve solo «500 - Error interno del servidor»; el detalle (sin la clave) queda en `LOG_FILE`. Al volver la base, el sitio se recupera solo |
+| `attempt to write a readonly database` en el log | La base SQLite la creó otro usuario, normalmente root: paso 4 |
+| **429** | El limitador: 100 peticiones por minuto y por IP (`/health` no cuenta). Tú también, desde esa IP. Detrás de un proxy inverso sin `TRUSTED_PROXIES`, todos los visitantes comparten la IP del proxy (se deduce del código; no se probó con un proxy) |
 | Un `.env` descargable | La raíz web no es `public/` |
 
 ## 7. Usarlo como propietario
@@ -145,7 +157,7 @@ curl -s -o /dev/null -w '%{http_code}\n' https://$D/composer.json    # 404
 cd /var/www/php && git pull
 cd url-routing
 composer install --no-dev --optimize-autoloader
-php bin/migrate.php genealogy && php bin/migrate.php pos
+sudo -u www-data php bin/migrate.php genealogy && sudo -u www-data php bin/migrate.php pos
 sudo systemctl reload php8.3-fpm        # vacía el opcache
 ```
 
@@ -158,17 +170,22 @@ Cambia `OWNER_TOKEN` en `.env` y recarga PHP-FPM. **Cierra todas las sesiones ab
 - PostgreSQL: `pg_dump -Fc genealogia > genealogia-$(date +%F).dump`
 - SQLite: `sqlite3 /var/lib/url-routing/pos.sqlite ".backup '/ruta/pos-$(date +%F).sqlite'"`. No copies el archivo suelto con `cp`: con WAL puede quedar incompleto.
 
-Aquí no hay copia automática ni se probó la restauración: es parte de lo que falta antes de abrir la plataforma al público (ver [`PRIVACIDAD-Y-HONRA.md`](../../PRIVACIDAD-Y-HONRA.md)).
+Los dos comandos se probaron: la copia de SQLite abre y pasa `integrity_check`, y el volcado de PostgreSQL se restauró en otra base (`pg_restore -d otra_base --no-owner`) con los mismos recuentos de filas. Lo que falta es una copia **automática** y ensayar la restauración en el servidor real, antes de abrir la plataforma al público (ver [`PRIVACIDAD-Y-HONRA.md`](../../PRIVACIDAD-Y-HONRA.md)).
 
 ## Cómo se probó
 
-Con el código de esta rama, en un directorio aparte (`git archive` + `composer install --no-dev --optimize-autoloader`) y una base **vacía**, sin la demostración:
+Con el código de `master`, en un directorio aparte (`git archive` + `composer install --no-dev --optimize-autoloader`) y una base **vacía**, sin la demostración (salvo donde se dice):
 
-1. Un `.env` con los valores del paso 3: PostgreSQL para genealogía y SQLite para el POS.
-2. `php bin/migrate.php` de ambos sitios; otra vez para ver `sin migraciones pendientes`; y sobre una base que solo tenía la migración 001, para ver que aplica la 002.
-3. El `INSERT` del usuario 1: el de `psql` tal como está escrito (con el puerto de la prueba); el de SQLite por PDO, porque el cliente `sqlite3` no estaba instalado en el entorno de prueba y **ese comando no se ejecutó**.
-4. El servidor integrado de PHP (`php -S … -t public public/index.php`) y los `curl` del paso 6, con y sin clave, en genealogía y en el POS, más una sesión con cookie.
+1. Un `.env` con los valores del paso 3, con los permisos de la guía (`640`, `root:www-data`; otro usuario no lo lee): PostgreSQL 16 para genealogía y SQLite para el POS.
+2. Las migraciones de ambos sitios, otra vez para ver `sin migraciones pendientes`, y sobre una base que solo tenía la 001. Primero como root y luego como `www-data`: de ahí sale el aviso del paso 4.
+3. El `INSERT` del usuario 1 con los comandos del paso 4, `psql` y `sqlite3`.
+4. **nginx 1.24** con el ejemplo del repositorio (solo cambiaron el puerto, la raíz, el socket y la carpeta de logs) y **PHP-FPM 8.3.6** corriendo como `www-data`, con solo las extensiones de la tabla del paso 0. Los `curl` del paso 6 con y sin clave, en genealogía y en el POS, con `Authorization: Basic` y `Bearer`, y una sesión con cookie.
+5. HTTPS con un certificado autofirmado en el mismo bloque `server`: la cookie sale `secure`, llega `Strict-Transport-Security` y las redirecciones son relativas.
+6. Con la demostración cargada, desde el navegador del propietario: marcar a una persona como viva (sin el token CSRF da 403, con él 303) y ver que un visitante pasa de ver su nombre a «Persona viva» y vuelve; «Persona privada» para quien solo está en una colección privada.
+7. Fallos: la base de PostgreSQL parada (500 sin detalle en la respuesta; la clave de la base no aparece ni en la respuesta ni en el log; y el sitio se recupera al volver la base), `LOG_FILE` en una carpeta que no existe (el sitio sigue sirviendo) y `OWNER_TOKEN` de menos de 20 caracteres (`/0/` da 404 y el log avisa).
+8. El limitador (100 peticiones y luego 429), y la recarga de PHP-FPM con la señal `USR2` (la que envía `systemctl reload`) y de nginx, con OPcache activo.
+9. Los comandos de copia de seguridad del paso 10, y restaurar el volcado en una base nueva.
 
-De ahí salieron dos correcciones que ya están en la guía: sin el usuario 1, `/0/` daba 404 con la clave correcta (ahora dice qué falta, y el paso 4 lo crea), y `composer install --optimize-autoloader` imprimía avisos de PSR-4 por las clases de `tests/` (ahora se excluyen del mapa de clases).
+De ahí salieron, además de las dos correcciones de la prueba anterior (sin el usuario 1, `/0/` daba 404 con la clave correcta; y `composer install --optimize-autoloader` imprimía avisos de PSR-4 por `tests/`), tres cambios en esta guía: las migraciones y el `INSERT` de SQLite se corren como `www-data` (una base creada por root no se podía escribir), la carpeta de logs de nginx hay que crearla (sin ella `nginx -t` falla), y `/.env` da 403, no 404.
 
-Lo que ese entorno no puede probar: nginx, Apache, HTTPS y PHP-FPM.
+**Lo que sigue sin probarse:** Apache y su `.htaccess` (ver [`ACCESO.md`](./ACCESO.md)), un certificado de verdad (certbot), las unidades de systemd (la recarga se probó con la señal, no con `systemctl`), PHP 8.1 y 8.2, y un proxy inverso delante con `TRUSTED_PROXIES`.

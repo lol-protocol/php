@@ -114,6 +114,9 @@ $pageUrl = fn (int $n): string => $this->url('/', ['categoria' => $slug, 'motivo
     <header class="encabezado">
       <h1><?= $this->e($heading) ?></h1>
       <p class="lead"><?= $this->e((string) $lead) ?></p>
+<?php if ($items !== []): ?>
+      <p class="ayuda"><a href="<?= $this->e($this->url('/imprimir', ['categoria' => $slug, 'motivo' => $filters['motivo'], 'color' => $filters['color'], 'pagina' => $page > 1 ? $page : null])) ?>">Imprimir esta página</a>, en tamaño real y con guías de corte.</p>
+<?php endif ?>
     </header>
 
 <?php if ($items !== [] || !$filtering): ?>

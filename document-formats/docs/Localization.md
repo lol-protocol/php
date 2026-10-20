@@ -6,8 +6,8 @@ The Document Formats Database includes a multi-language localization system with
 
 The system supports the following 30 languages. **Six are complete** (English, Spanish,
 French, German, Chinese and Japanese). The other 24 translate only the page title, the tabs
-and the unit names (`header.*`, `tabs.*`, `format.millimeters`, `format.inches`: 10 of the 88
-strings); any string a language leaves empty or lacks is shown in English.
+and the unit names (`header.*`, `tabs.*` except `tabs.paperTypes`, `format.millimeters`,
+`format.inches`: 10 of the 130 strings); any string a language leaves empty or lacks is shown in English.
 
 - **English** (en) - English
 - **Spanish** (es) - Español
@@ -205,7 +205,8 @@ Translation files are JSON files located in the `translations/` directory. Each 
     "comparison": "Comparison",
     "converter": "Converter",
     "statistics": "Statistics",
-    "about": "About"
+    "about": "About",
+    "paperTypes": "Paper Types"
   },
   "search": {
     "placeholder": "Search...",
@@ -244,6 +245,12 @@ Translation files are JSON files located in the `translations/` directory. Each 
   }
 }
 ```
+
+The demo (`app/index.html`) adds two sections, `demo` (page title, labels, card and table captions, messages)
+and `paperTypes` (the Paper Types tab), plus `tabs.paperTypes`. A few strings carry placeholders in curly
+braces, such as `"{count} formats found"` or `"{format} ({size} mm) in every paper type"`; keep them in
+every translation, because `formatMessage()` fills them in (a test checks that they survive). The names of
+the 50 paper types are not here but in `specs/paper_type_translations.csv`, one column per language.
 
 ## Updating Translations
 
@@ -473,11 +480,12 @@ localStorage.removeItem('preferredLanguage');
 
 ## Statistics
 
-- **Total Languages**: 30
-- **Translation Keys**: 100+
-- **File Size**: ~20KB per language
-- **Load Time**: <100ms per language
-- **Coverage**: All UI strings translated
+- **Languages**: 30
+- **Strings per language**: 130
+- **Fully translated**: 6 (English, Spanish, French, German, Chinese, Japanese)
+- **Partly translated**: 24, with 10 of the 130 strings
+
+`tests/demo.test.js` recomputes these numbers from the translation files and fails if this section is out of date.
 
 ## Support
 

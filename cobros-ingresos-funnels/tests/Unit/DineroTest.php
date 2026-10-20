@@ -67,6 +67,25 @@ final class DineroTest extends TestCase
         }
     }
 
+    public function testUnCentavoOMenosCuentaComoCero(): void
+    {
+        self::assertSame(1, Dinero::centavos(Dinero::UN_CENTAVO), 'la constante es de verdad un centavo');
+
+        foreach ([0.0, 0.004, Dinero::UN_CENTAVO, -3.5] as $monto) {
+            self::assertTrue(Dinero::cuentaComoCero($monto), "{$monto} cuenta como cero");
+        }
+        foreach ([0.02, 1.0, 602.85] as $monto) {
+            self::assertFalse(Dinero::cuentaComoCero($monto), "{$monto} no cuenta como cero");
+        }
+    }
+
+    /** 0.1 + 0.2 - 0.29 da 0.010000000000000009: en float "pasa" de 0.01, en centavos es exactamente un centavo. */
+    public function testElRuidoDeUnaCuentaNoSacaAUnCentavoDeLaRegla(): void
+    {
+        self::assertGreaterThan(Dinero::UN_CENTAVO, 0.1 + 0.2 - 0.29, 'el float arrastra ruido...');
+        self::assertTrue(Dinero::cuentaComoCero(0.1 + 0.2 - 0.29), '...y la regla no');
+    }
+
     public function testUnMontoInfinitoEsUnError(): void
     {
         $this->expectException(InvalidArgumentException::class);

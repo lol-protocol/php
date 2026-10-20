@@ -9,7 +9,8 @@
     "comparison": "Comparaison",
     "converter": "Convertisseur",
     "statistics": "Statistiques",
-    "about": "À Propos"
+    "about": "À Propos",
+    "paperTypes": "Types de papier"
   },
   "search": {
     "placeholder": "Rechercher le nom du format, le pays ou l'utilisation...",
@@ -112,5 +113,50 @@
   "theme": "Thème:",
   "light": "Clair",
   "dark": "Sombre",
-  "auto": "Automatique"
+  "auto": "Automatique",
+  "demo": {
+    "title": "Base de données des formats de documents",
+    "subtitle": "Parcourez, recherchez et comparez les formats de papier et de documents par pays",
+    "skip": "Aller au contenu",
+    "sections": "Sections",
+    "totalFormats": "Total des formats",
+    "countries": "Pays",
+    "categories": "Catégories",
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher des formats...",
+    "country": "Pays",
+    "category": "Catégorie",
+    "region": "Région",
+    "reset": "Réinitialiser les filtres",
+    "compareLabel": "Comparer des formats",
+    "comparePlaceholder": "Saisissez des noms de formats à comparer...",
+    "colFormat": "Format",
+    "colCountry": "Pays",
+    "colWidth": "Largeur (mm)",
+    "colHeight": "Hauteur (mm)",
+    "colAspect": "Rapport d'aspect",
+    "fromFormat": "Format de départ",
+    "toFormat": "Format d'arrivée",
+    "selectFormat": "Choisir un format...",
+    "cardCountry": "Pays :",
+    "cardSizeMm": "Taille (mm) :",
+    "cardSizeIn": "Taille (po) :",
+    "cardAspect": "Rapport d'aspect :",
+    "proportions": "Proportions de {name}",
+    "similarity": "Similarité de taille : {percent} %",
+    "resultsFormats": "{count} formats trouvés",
+    "resultsPaperTypes": "{count} types de papier trouvés",
+    "noPaperTypes": "Aucun type de papier ne correspond à vos critères."
+  },
+  "paperTypes": {
+    "searchPlaceholder": "Rechercher des types de papier...",
+    "combine": "Combiner avec un format",
+    "combinedTitle": "{format} ({size} mm) dans chaque type de papier",
+    "paperType": "Type de papier",
+    "color": "Couleur",
+    "texture": "Texture",
+    "finish": "Finition",
+    "weight": "Grammage (g/m²)",
+    "commonUse": "Usage courant"
+  }
 }

@@ -176,4 +176,22 @@ final class FuncionesDeVistaTest extends TestCase
     {
         self::assertStringContainsString('+10.0%', insignia_de_variacion(10.0));
     }
+
+    public function testCampoMontoLlevaLosLimitesDelServidor(): void
+    {
+        self::assertSame(
+            '<input type="number" name="monto" id="monto" required min="0.01" max="999999999999.99" step="0.01" value="">',
+            campo_monto()
+        );
+        self::assertSame(\App\Validacion::MONTO_MAXIMO, 999_999_999_999.99, 'el max del HTML sale de esta constante');
+    }
+
+    public function testCampoMontoMuestraElValorYLoEscapa(): void
+    {
+        self::assertStringContainsString('value="602.85"', campo_monto('602.85'));
+        self::assertStringContainsString('value="602.85"', campo_monto(602.85));
+        self::assertStringContainsString('value="1000"', campo_monto(1000));
+        self::assertStringContainsString('value=""', campo_monto(null));
+        self::assertStringContainsString('value="&quot;&gt;&lt;script&gt;"', campo_monto('"><script>'));
+    }
 }

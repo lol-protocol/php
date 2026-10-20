@@ -1,6 +1,7 @@
 <?php
 
 use App\Csrf;
+use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
 use App\Repositories\ClienteRepository;
@@ -50,7 +51,7 @@ $hoy = date('Y-m-d');
             <select name="boleta_id" id="boleta_id">
                 <option value="">Anticipo / sin boleta asociada</option>
                 <?php foreach ($boletasCliente as $b): ?>
-                    <?php if ($b['anulada'] || $b['saldo'] <= 0.01): continue; endif; ?>
+                    <?php if ($b['anulada'] || Dinero::cuentaComoCero((float) $b['saldo'])): continue; endif; ?>
                     <option value="<?= (int) $b['id'] ?>" <?= (string) ($valores['boleta_id'] ?? '') === (string) $b['id'] ? 'selected' : '' ?>>
                         #<?= (int) $b['id'] ?> · <?= htmlspecialchars($b['concepto']) ?> ·
                         <?= dinero_en_moneda((float) $b['saldo'], $b['moneda_codigo']) ?> pendiente
@@ -59,7 +60,7 @@ $hoy = date('Y-m-d');
             </select>
 
             <label for="monto">Monto (en <?= htmlspecialchars($clienteElegido['moneda_codigo']) ?>)</label>
-            <input type="number" name="monto" id="monto" required min="0.01" step="0.01" value="<?= htmlspecialchars($valores['monto'] ?? '') ?>">
+            <?= campo_monto($valores['monto'] ?? '') ?>
 
             <label for="fecha_pago">Fecha de pago</label>
             <input type="date" name="fecha_pago" id="fecha_pago" required value="<?= htmlspecialchars($valores['fecha_pago'] ?? $hoy) ?>">

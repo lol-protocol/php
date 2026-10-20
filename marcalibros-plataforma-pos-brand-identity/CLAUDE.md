@@ -28,6 +28,7 @@ El estado detallado y los pendientes están en `README.md`; la paleta y las medi
 ```bash
 python3 generator/generar_marcalibros.py            # regenera los 1350 (unos 30 s); falla si un SVG pesa 10 KB o más, o si hay duplicados
 python3 generator/exportar_png.py --faltantes      # PNG del catálogo en catalog/png/ (ignorada por git)
+php app/bin/respaldar.php                           # copia de seguridad de los marcalibros creados (cron diario en producción)
 cd app && php -S localhost:8080 -t public public/index.php
 cd php && composer install && ./vendor/bin/phpunit  # igual en app/
 ```
@@ -46,7 +47,7 @@ Después de regenerar, `git status` no debe mostrar cambios si no tocaste el gen
 
 ## Entorno y verificación
 
-- `composer.lock` de `php/` y `app/` está en el repositorio. En el entorno donde se escribió esto, Packagist respondía pero `github.com` no (403), así que PHPUnit 10.5 se instaló y las pruebas pasaron con PHPUnit real (95 del módulo y 122 de la aplicación; con avisos esperados de pruebas que fuerzan fallos), pero **PHPStan no se pudo instalar ni correr** (su paquete se descarga de GitHub). El CI lo corre en nivel 6: si falla ahí, corrígelo.
-- Las pruebas de navegador están en `app/e2e/navegador.mjs` (Playwright 1.56.1 global, Chromium): fuentes y CSP, categoría y SVG, subida real con teclado y tamaños 1400×200 y 2800×400, borrado, rechazo de un archivo que no es imagen, creación sin JavaScript, móvil sin desplazamiento horizontal, modo oscuro, límite de intentos (con un servidor aparte que la prueba levanta), y que la franja que se ve al encuadrar sea la que se guarda (foto horizontal, vertical y vertical con orientación EXIF 6, generadas por la prueba). Para correrlas: levanta la aplicación y `NODE_PATH="$(npm root -g)" node app/e2e/navegador.mjs`. Evita `waitForFunction` con texto: la CSP bloquea `eval`.
+- `composer.lock` de `php/` y `app/` está en el repositorio. En el entorno donde se escribió esto, Packagist respondía pero `github.com` no (403), así que PHPUnit 10.5 se instaló y las pruebas pasaron con PHPUnit real (99 del módulo y 159 de la aplicación; con avisos esperados de pruebas que fuerzan fallos), pero **PHPStan no se pudo instalar ni correr** (su paquete se descarga de GitHub). El CI lo corre en nivel 6: si falla ahí, corrígelo.
+- Las pruebas de navegador están en `app/e2e/navegador.mjs` (Playwright 1.56.1 global, Chromium): fuentes y CSP, categoría y SVG, subida real con teclado y tamaños 1400×200 y 2800×400, borrado, rechazo de un archivo que no es imagen, creación sin JavaScript, móvil sin desplazamiento horizontal, modo oscuro, accesibilidad con axe, filtro, la hoja para imprimir (PDF A4, en claro aunque el sistema esté en oscuro), límite de intentos (con un servidor aparte que la prueba levanta), y que la franja que se ve al encuadrar sea la que se guarda (foto horizontal, vertical y vertical con orientación EXIF 6, generadas por la prueba). Para correrlas: levanta la aplicación y `NODE_PATH="$(npm root -g)" node app/e2e/navegador.mjs`. Evita `waitForFunction` con texto: la CSP bloquea `eval`.
 - CI: `.github/workflows/pruebas-marcalibros.yml` (PHPUnit en PHP 8.1 y 8.3, PHPStan nivel 6, comprobación de que el generador no cambia el catálogo, y las pruebas de navegador).
 - Las fuentes (Source Serif 4 e Inter) están incluidas en `app/public/assets/fuentes/`; la CSP lleva `font-src 'self'`. Las pruebas de navegador comprueban que cargan.

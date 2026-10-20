@@ -135,6 +135,9 @@ final class Application
                 default => $this->notAllowed('GET, HEAD, POST'),
             };
         }
+        if ($path === '/imprimir') {
+            return $method === 'GET' ? $this->printPage($request) : $this->notAllowed('GET, HEAD');
+        }
         if (preg_match('#^/marcalibro/([a-z0-9-]+)\z#', $path, $m) === 1) {
             return $method === 'GET' ? $this->detailPage($m[1]) : $this->notAllowed('GET, HEAD');
         }
@@ -170,7 +173,12 @@ final class Application
 
     // --------------------------------------------------------------- catálogo
 
-    private function catalogPage(Request $request): Response
+    /**
+     * Lee y valida categoría, motivo y color de la dirección. Devuelve la página de error si alguno no es válido.
+     *
+     * @return array{slug: ?string, motif: ?string, color: ?string}|Response
+     */
+    private function parseFilters(Request $request): array|Response
     {
         $slug = $request->param('categoria');
         if (isset($request->query['categoria']) && ($slug === null || !$this->catalog->hasCategory($slug))) {
@@ -190,6 +198,16 @@ final class Application
         if ($color !== null && !isset(self::PALETTE[$color])) {
             return $this->notFound('No encontramos ese color.');
         }
+        return ['slug' => $slug, 'motif' => $motif, 'color' => $color];
+    }
+
+    private function catalogPage(Request $request): Response
+    {
+        $filters = $this->parseFilters($request);
+        if ($filters instanceof Response) {
+            return $filters;
+        }
+        ['slug' => $slug, 'motif' => $motif, 'color' => $color] = $filters;
 
         $families = [];
         foreach ($this->catalog->categories() as $category) {
@@ -245,6 +263,39 @@ final class Application
             'pages' => $pages,
             'total' => count($all),
         ], $heading . ' · Marcalibros', $options + ['share' => $this->share($heading . ' · Marcalibros', $lead, $this->view->url('/', ['categoria' => $slug, 'motivo' => $motif, 'color' => $color]), '/paisajes/' . self::SHARE_IMAGE, 1200, 630)]));
+    }
+
+    /**
+     * Hoja para imprimir: los mismos marcalibros que muestra la página del catálogo con esos filtros
+     * (mismo orden y misma paginación), uno bajo otro y en tamaño real, con guías de corte.
+     */
+    private function printPage(Request $request): Response
+    {
+        $filters = $this->parseFilters($request);
+        if ($filters instanceof Response) {
+            return $filters;
+        }
+        ['slug' => $slug, 'motif' => $motif, 'color' => $color] = $filters;
+
+        $all = $this->catalog->search($slug, $motif, $color === null ? null : self::PALETTE[$color]);
+        $pages = max(1, (int) ceil(count($all) / self::PER_PAGE));
+        $requested = $request->param('pagina');
+        $page = $requested !== null && ctype_digit($requested) ? max(1, min($pages, (int) $requested)) : 1;
+        $items = array_map($this->presentEntry(...), array_slice($all, ($page - 1) * self::PER_PAGE, self::PER_PAGE));
+        $current = $slug === null ? null : $this->categoryBySlug($slug);
+        $filtering = $motif !== null || $color !== null;
+        $title = $current !== null ? (string) $current['nombre'] : ($filtering ? 'Resultados' : 'Todos los marcalibros');
+        $query = ['categoria' => $slug, 'motivo' => $motif, 'color' => $color];
+
+        return Response::html($this->view->page('imprimir', [
+            'items' => $items,
+            'heading' => $title,
+            'total' => count($all),
+            'page' => $page,
+            'pages' => $pages,
+            'backUrl' => $this->view->url('/', $query + ['pagina' => $page > 1 ? $page : null]),
+            'pageUrl' => fn (int $n): string => $this->view->url('/imprimir', $query + ['pagina' => $n > 1 ? $n : null]),
+        ], 'Imprimir · ' . $title, ['private' => true, 'scripts' => ['imprimir.js'], 'section' => 'catalogo']));
     }
 
     private function optionalParam(Request $request, string $name): ?string

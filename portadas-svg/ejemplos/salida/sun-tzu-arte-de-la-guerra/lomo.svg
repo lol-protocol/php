@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="4.8mm" height="216mm" viewBox="138 0 4.8 216">
+<title>El arte de la guerra · Lomo</title>
+<defs>
+<linearGradient id="fondo-degradado" gradientUnits="userSpaceOnUse" x1="0" y1="108" x2="280.8" y2="108"><stop offset="0" stop-color="#1c1f24"/>
+<stop offset="1" stop-color="#111316"/>
+</linearGradient>
+</defs>
+<rect x="138" y="0" width="4.8" height="216" fill="url(#fondo-degradado)"/>
+<rect x="138" y="0" width="4.8" height="216" fill="#c8a24a"/>
+<text transform="translate(139.392 108) rotate(90)" font-family="&apos;Helvetica Neue&apos;, Helvetica, Arial, sans-serif" font-size="2.88" text-anchor="middle" fill="#1c1f24">El arte de la guerra · Sun Tzu</text>
+</svg>

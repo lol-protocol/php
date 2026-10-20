@@ -166,7 +166,7 @@ for (const esquema of ['light', 'dark']) {
   await prueba(`sin problemas de accesibilidad WCAG 2.1 AA (${esquema === 'light' ? 'modo claro' : 'modo oscuro'})`, async () => {
     const p = await abrir(navegador, { bypassCSP: true, colorScheme: esquema });
     const problemas = [];
-    for (const ruta of ['/', '/?categoria=poesia', '/?motivo=faro&color=ocre', '/?categoria=teatro&motivo=torres', '/marcalibro/mb-historia-02', '/crear']) {
+    for (const ruta of ['/', '/?categoria=poesia', '/?motivo=faro&color=ocre', '/?categoria=teatro&motivo=torres', '/marcalibro/mb-historia-02', '/crear', '/imprimir?categoria=poesia']) {
       await p.goto(base + ruta, { waitUntil: 'networkidle' });
       await p.addScriptTag({ path: axe });
       const resultado = await p.evaluate(async () => {
@@ -179,6 +179,37 @@ for (const esquema of ['light', 'dark']) {
     await p.context().close();
   });
 }
+
+await prueba('la hoja para imprimir sale en A4, en claro y sin la interfaz, aunque el sistema esté en modo oscuro', async () => {
+  const p = await abrir(navegador, { colorScheme: 'dark' });
+  await p.goto(base + '/?categoria=poesia');
+  await Promise.all([p.waitForURL(/\/imprimir\?categoria=poesia/), p.locator('text=Imprimir esta página').click()]);
+  exigir((await p.locator('.pieza').count()) === 25, 'la hoja no tiene los 25 marcalibros de la página');
+  exigir(await p.locator('#imprimir').isVisible(), 'con JavaScript debería verse el botón Imprimir');
+
+  await p.emulateMedia({ media: 'print', colorScheme: 'dark' });
+  const estilos = await p.evaluate(() => ({
+    fondo: getComputedStyle(document.body).backgroundColor,
+    texto: getComputedStyle(document.body).color,
+    cabecera: getComputedStyle(document.querySelector('.cabecera')).display,
+    controles: getComputedStyle(document.querySelector('.imprimir__controles')).display,
+    ancho: document.querySelector('.pieza img').getBoundingClientRect().width,
+  }));
+  exigir(estilos.fondo === 'rgb(255, 255, 255)', `en impresión el fondo es ${estilos.fondo}`);
+  exigir(estilos.texto === 'rgb(30, 42, 56)', `en impresión el texto es ${estilos.texto}`);
+  exigir(estilos.cabecera === 'none' && estilos.controles === 'none', 'en impresión no deberían verse la cabecera ni los controles');
+  // 180 mm a 96 px por pulgada son 680,3 px.
+  exigir(Math.abs(estilos.ancho - 680.3) < 2, `cada marcalibro debería medir 180 mm (680 px) y mide ${estilos.ancho} px`);
+
+  const pdf = await p.pdf({ preferCSSPageSize: true, printBackground: false });
+  const texto = pdf.toString('latin1');
+  exigir(texto.startsWith('%PDF'), 'no se generó un PDF');
+  const hojas = (texto.match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+  exigir(hojas >= 3 && hojas <= 5, `25 marcalibros de 26 mm deberían ocupar de 3 a 5 hojas A4 y ocupan ${hojas}`);
+  const caja = texto.match(/\/MediaBox\s*\[\s*0\s+0\s+([\d.]+)\s+([\d.]+)\s*\]/);
+  exigir(caja && Math.abs(Number(caja[1]) - 595.3) < 1 && Math.abs(Number(caja[2]) - 841.9) < 1, `el PDF no es A4: ${caja?.slice(1, 3)}`);
+  await p.context().close();
+});
 
 await prueba('en modo oscuro el fondo es tinta, el texto papel y el logo va sobre papel', async () => {
   const p = await abrir(navegador, { colorScheme: 'dark' });

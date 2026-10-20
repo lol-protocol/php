@@ -67,4 +67,25 @@ check($count('SELECT COUNT(*) FROM paper_types') === count(readCsv('specs/paper_
 check($count("SELECT weight_gsm_max FROM paper_types WHERE type_name = 'Papel roneo'") === 55,
     'Papel roneo tops out at 55 gsm');
 
+// Nothing in technical_specifications.csv is skipped any more: every row is a catalog format.
+check($count('SELECT COUNT(*) FROM technical_specifications') === count(readCsv('specs/technical_specifications.csv')),
+    'one technical_specifications row per CSV row');
+
+$products = readCsv('specs/product_specifications.csv');
+check($count('SELECT COUNT(*) FROM product_specifications') === count($products),
+    count($products) . ' product specifications, one per CSV row');
+check($count('SELECT COUNT(*) FROM product_specifications WHERE paper_type_id IS NOT NULL')
+    === count(array_filter($products, fn (array $p) => $p['paper_type'] !== '')),
+    'every product that names a paper type is linked to it');
+check($count("SELECT COUNT(*) FROM product_specifications ps JOIN paper_types pt USING (paper_type_id)
+               WHERE ps.product_name = 'Receipt' AND pt.type_name = 'Papel térmico'") === 1,
+    'Receipt is printed on Papel térmico');
+
+check($count('SELECT COUNT(*) FROM finish_types') === count(readCsv('specs/finish_types.csv')), 'one finish_types row per CSV row');
+check($count('SELECT COUNT(*) FROM paper_types WHERE finish NOT IN (SELECT finish_name FROM finish_types)') === 0,
+    'every paper type uses a finish from finish_types');
+check($count('SELECT COUNT(*) FROM paper_weight_standards') === count(readCsv('specs/paper_weight_standards.csv')),
+    'one paper_weight_standards row per CSV row');
+check($count("SELECT gsm FROM paper_weight_standards WHERE weight_name = '20 lb Bond'") === 75, '20 lb Bond is 75 gsm');
+
 exit($failures === 0 ? 0 : 1);

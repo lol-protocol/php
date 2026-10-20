@@ -56,6 +56,8 @@ def palabras_ud(carpeta, codigos_ud):
         texto = archivo.read_text(encoding="utf-8")
         total = re.search(r"<total>(.*?)</total>", texto, re.S).group(1)
         cuenta = re.search(r"<words>(\d+)</words>", total) or re.search(r"<tokens>(\d+)</tokens>", total)
+        if lengua not in codigos_ud:
+            raise SystemExit(f"{archivo.name}: la lengua «{lengua}» no está en el archivo de códigos de UD")
         par = datos.setdefault(codigos_ud[lengua], [0, 0])
         par[0] += int(cuenta.group(1))
         par[1] += 1

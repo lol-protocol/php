@@ -1,5 +1,7 @@
 <?php
 
+use App\Dinero;
+
 /** @var array $boleta */
 $anulado = $boleta['anulada'];
 $pagado = (float) $boleta['pagado'];
@@ -17,7 +19,7 @@ $botonTexto = 'Sí, anular esta boleta';
     <?php else: ?>
         <p>¿Seguro que querés anular esta boleta? Queda marcada como anulada y deja de contar en los
            reportes de ingresos y cartera, pero se conserva en el historial.</p>
-        <?php if ($pagado > 0.01): ?>
+        <?php if (!Dinero::cuentaComoCero($pagado)): ?>
             <p class="error">
                 Esta boleta ya tiene <?= dinero_en_moneda($pagado, $boleta['moneda_codigo']) ?> cobrados.
                 Los pagos no se tocan: al anularla se emite una <strong>nota de crédito por ese monto</strong>,
