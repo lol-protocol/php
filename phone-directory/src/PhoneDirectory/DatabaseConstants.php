@@ -17,6 +17,7 @@ final class DatabaseConstants
     public const ERROR_BATCH_INSERT_FAILED = 'Batch insert failed: %s';
     public const ERROR_UPDATE_WITHOUT_ID = 'Cannot update entity without ID';
     public const ERROR_NO_LAST_INSERT_ID = 'Failed to get last insert ID from database';
+    public const ERROR_UNKNOWN_SEARCH_CRITERIA = 'Unknown search criteria: %s (valid: %s)';
 
     public const MIGRATION_NULL_COUNTRY_CODE = "UPDATE %s SET country_code = '%s' WHERE country_code IS NULL";
 }

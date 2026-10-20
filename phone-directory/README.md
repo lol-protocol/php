@@ -195,6 +195,8 @@ $db->search(['name' => 'Smith', 'street' => 'Oak']);
 
 Las búsquedas por nombre y calle son insensibles a mayúsculas y a acentos, de manera consistente en las tres bases de datos soportadas (antes esto solo era cierto en MySQL, por su collation por defecto).
 
+`search()` acepta `name`, `street` y `phone` en la base de personas, y `businessName`, `street`, `phone` y `businessType` en la de empresas. Una clave que no conoce lanza `InvalidArgumentException` (con la lista de las válidas) en vez de ignorarla y devolver toda la tabla; un valor vacío (`''` o `null`) cuenta como «sin criterio», y `'0'` como un valor más.
+
 ### Privacidad: personas que podrían estar vivas
 
 Una entrada de guía no trae fecha de nacimiento, pero sí la fecha de la guía, y quien figura en una guía de un año *Y* era adulto entonces: nació, como mucho, en *Y* − 18. Se presume viva a una persona durante 110 años desde su nacimiento (la misma línea que `url-routing/`), así que una entrada solo se puede mostrar cuando *Y* − 18 + 110 ya pasó. En 2026 eso es todo hasta la guía de 1933: **las guías de 1934 a 1975, la mitad reciente del catálogo, quedan ocultas.**
