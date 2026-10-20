@@ -34,7 +34,7 @@ final class Validacion
      */
     public static function montoEnRango(float $monto): bool
     {
-        return is_finite($monto) && round($monto, 2) >= 0.01 && $monto <= self::MONTO_MAXIMO;
+        return is_finite($monto) && round($monto, 2) >= Dinero::UN_CENTAVO && $monto <= self::MONTO_MAXIMO;
     }
 
     /**

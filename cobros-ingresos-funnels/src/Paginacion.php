@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
+use PDO;
+
+/**
+ * @phpstan-type Pagina array{filas: array, total: int, totalPaginas: int, pagina: int}
+ */
 final class Paginacion
 {
     public const POR_PAGINA = 25;
@@ -34,5 +39,53 @@ final class Paginacion
     public static function totalPaginas(int $totalFilas): int
     {
         return max(1, (int) ceil($totalFilas / self::POR_PAGINA));
+    }
+
+    /**
+     * Una pagina de un listado: cuenta las filas de la consulta, acota la pagina
+     * pedida a las que existen y trae solo las filas de esa pagina. Es el esqueleto
+     * que repetian BoletaRepository::listado(), ClienteRepository::buscar() y
+     * PagoRepository::listado(); lo propio de cada uno (columnas, tablas, filtros)
+     * queda en su repositorio.
+     *
+     * $desde es lo que va despues de FROM: tablas, joins y el WHERE, con los
+     * :marcadores de $params. $desdeDelConteo es lo mismo para el COUNT cuando
+     * alcanza algo mas barato (la tabla en vez de la vista que suma los pagos, o
+     * sin un join que no cambia la cantidad); sin el se cuenta sobre $desde.
+     * $orden es el ORDER BY y tiene que dar un orden total, con desempate por id:
+     * si no, dos filas empatadas pueden cambiar de lugar entre una pagina y la
+     * siguiente.
+     *
+     * @param array<string, string> $params los marcadores de $desde (y de $desdeDelConteo)
+     * @return Pagina
+     */
+    public static function consultar(
+        PDO $db,
+        string $columnas,
+        string $desde,
+        string $orden,
+        array $params,
+        int $pagina,
+        ?string $desdeDelConteo = null,
+    ): array {
+        $stmtTotal = $db->prepare('SELECT COUNT(*) FROM ' . ($desdeDelConteo ?? $desde));
+        $stmtTotal->execute($params);
+        $total = (int) $stmtTotal->fetchColumn();
+        $pagina = self::acotar($pagina, $total);
+
+        $stmt = $db->prepare("SELECT {$columnas} FROM {$desde} ORDER BY {$orden} LIMIT :limite OFFSET :offset");
+        foreach ($params as $clave => $valor) {
+            $stmt->bindValue($clave, $valor);
+        }
+        $stmt->bindValue(':limite', self::POR_PAGINA, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', self::offset($pagina), PDO::PARAM_INT);
+        $stmt->execute();
+
+        return [
+            'filas' => $stmt->fetchAll(),
+            'total' => $total,
+            'totalPaginas' => self::totalPaginas($total),
+            'pagina' => $pagina,
+        ];
     }
 }

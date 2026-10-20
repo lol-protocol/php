@@ -1,6 +1,7 @@
 <?php
 
 use App\Config;
+use App\Dinero;
 use App\Etiquetas;
 
 /** @var array $cobrosPorMes */
@@ -44,7 +45,7 @@ $cobradoNeto = $cobradoBruto - $devoluciones;
     <div class="panel stat-tile">
         <span class="label">Cobrado neto (período, USD)</span>
         <span class="value"><?= Config::dinero($cobradoNeto) ?></span>
-        <?php if ($devoluciones > 0.01): ?>
+        <?php if (!Dinero::cuentaComoCero($devoluciones)): ?>
             <span class="delta"><?= Config::dinero($cobradoBruto) ?> cobrados &minus; <?= Config::dinero($devoluciones) ?> devueltos</span>
         <?php endif; ?>
     </div>
