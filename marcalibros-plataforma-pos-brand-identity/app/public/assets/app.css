@@ -387,3 +387,30 @@ fieldset.opcion legend { padding: 0; font-weight: 600; margin-bottom: 0.5rem; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* ------------------------------------------------------------ hoja para imprimir */
+
+.imprimir h1 { margin-top: 0.25rem; }
+.hoja { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 1.25rem; }
+.pieza { margin: 0; }
+.pieza img { display: block; width: 100%; height: auto; outline: 1px dashed var(--borde); outline-offset: 3px; }
+.pieza__id { display: block; margin-top: 0.4rem; font-size: 0.8rem; color: var(--tinta-suave); }
+
+@media print {
+  /* Siempre en claro y sobre papel: con el modo oscuro del sistema, el texto saldría casi blanco sobre blanco. */
+  :root {
+    --tinta: #1e2a38; --papel: #fff; --verde: #3e5c4a; --hondo: #ebe3d1; --campo: #fff;
+    --tinta-suave: #4a5666; --borde: #6a7482; --linea: rgba(30, 42, 56, 0.2); --error: #8f2d26;
+    color-scheme: light;
+  }
+  @page { size: A4 portrait; margin: 12mm; }
+  body { background: #fff; min-height: 0; display: block; font-size: 11pt; }
+  .cabecera, .pie, .saltar, .imprimir__controles { display: none !important; }
+  .imprimir { padding: 0; max-width: none; }
+  .hoja { margin: 0; gap: 7mm; }
+  .pieza { break-inside: avoid; }
+  /* Tamaño real: 180 mm de largo por 25,7 mm de alto (proporción 7:1). */
+  .pieza img { width: 180mm; max-width: 100%; outline: 0.2mm dashed #888; outline-offset: 1.5mm;
+    print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .pieza__id { font-size: 7pt; margin-top: 2mm; }
+}
