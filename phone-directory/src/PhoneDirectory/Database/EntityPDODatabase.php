@@ -14,9 +14,6 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
 {
     abstract protected function getTableName(): string;
 
-    /** @deprecated Never called; use ensureConnection(). */
-    abstract protected function ensureConnected(): void;
-
     /**
      * @param Row $row
      * @return TEntity
@@ -64,13 +61,6 @@ abstract class EntityPDODatabase extends AbstractPDODatabase
         }
 
         return $count;
-    }
-
-    /** @deprecated Never called. Despite its name it does not open a transaction. */
-    protected function updateWithTransaction(callable $updateFn): bool
-    {
-        $this->ensureConnection();
-        return $updateFn();
     }
 
     /** @return Row|null */
