@@ -55,7 +55,6 @@ Todas bajo el namespace `PhoneDirectory\` en `src/PhoneDirectory/`.
 | `Database/EntityPDODatabase` | Base común: CRUD, lotes transaccionales, búsquedas, backfill |
 | `SqlDialect` | Diferencias entre SQLite, MySQL/MariaDB y PostgreSQL |
 | `Manager/PhoneDirectoryManagerV2` | Fachada para procesar archivos y consultar ambos tipos de entidad |
-| `Manager/PhoneDirectoryManager` | Versión anterior, solo personas naturales (`@deprecated`) |
 | `SurnameKeys` | Soundex y clave fonética por idioma del apellido |
 | `RecordLinker`, `RecordLink` | Propone qué entradas de distintos directorios son la misma persona |
 | `PhoneDirectoryCatalog` | Catálogo de 16 directorios históricos (1878–1975, 10 países) |

@@ -100,7 +100,6 @@ cd phone-directory/ports/java && javac -d build *.java && java -cp build PhoneDi
 ## Pendientes
 
 - `Config/ParserConfig` existe pero no está conectado a nada.
-- `Manager/PhoneDirectoryManager` (v1) está marcado `@deprecated`; `PhoneDirectoryManagerV2` lo reemplaza.
 - `parseFile()` acumula todas las entradas en memoria; para archivos enormes haría falta procesarlas por lotes a
   medida que se leen.
 - Los ports no tienen paridad con el PHP (ver arriba).

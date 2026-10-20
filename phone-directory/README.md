@@ -268,7 +268,7 @@ $catalog->getStatistics();
 ### PhoneDirectoryManagerV2
 Coordinador de alto nivel que integra `MultiLanguagePhoneDirectoryParser` con dos bases de datos: una para personas naturales y otra para empresas.
 
-`PhoneDirectoryManager` (v1, solo inglés y solo personas naturales) sigue existiendo por compatibilidad, pero está marcado `@deprecated`.
+El `PhoneDirectoryManager` anterior (v1, solo inglés y solo personas naturales) ya no existe: `PhoneDirectoryManagerV2` hace lo mismo para las personas naturales y además maneja empresas.
 
 ## Uso Básico
 
