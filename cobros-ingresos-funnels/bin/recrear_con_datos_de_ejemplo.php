@@ -17,6 +17,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Config;
 use App\Database;
+use App\Dinero;
 use App\MayoriaDeEdad;
 use App\Migrador;
 
@@ -401,7 +402,7 @@ foreach ($idsBoletasAAnular as $id) {
     $datos = $cobradoDe->fetch();
     $anulBoleta->execute([':id' => $id]);
 
-    if ((float) $datos['pagado'] > 0.01) {
+    if (!Dinero::cuentaComoCero((float) $datos['pagado'])) {
         $insNota->execute([
             ':boleta_id' => $id,
             ':cliente_id' => $datos['cliente_id'],

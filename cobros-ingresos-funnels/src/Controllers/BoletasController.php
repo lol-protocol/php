@@ -289,7 +289,7 @@ final class BoletasController
     private function emitirNotaDeCredito(array $boleta): void
     {
         $pagado = (float) $boleta['pagado'];
-        if ($pagado <= 0.01) {
+        if (Dinero::cuentaComoCero($pagado)) {
             return;
         }
 

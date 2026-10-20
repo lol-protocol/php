@@ -632,6 +632,9 @@ un residuo de redondeo no deje una boleta pendiente para siempre: una boleta con
 0,01 o menos es `pagada` (`EstadoBoleta`, y en SQL `BoletaRepository::ESTADO_SQL`), no se
 ofrece en el selector del formulario de pagos, la cartera por antigüedad no cuenta saldos
 de 0,01 USD o menos, y anular una boleta con 0,01 o menos cobrado no emite nota de crédito.
+Ese 0,01 está escrito en un solo lugar, `Dinero::UN_CENTAVO` (y `Dinero::cuentaComoCero()` para
+compararlo): lo leen el PHP, las consultas SQL y las vistas. Es también el monto mínimo que
+acepta `Validacion::montoEnRango()`.
 
 ## Notas de diseño
 

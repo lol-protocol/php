@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Database;
+use App\Dinero;
 use App\EstadoBoleta;
 use App\Paginacion;
 use PDO;
@@ -22,7 +23,7 @@ final class BoletaRepository
      * sobre boletas_con_saldo, que es de donde sale b.pagado.
      */
     public const ESTADO_SQL = "CASE WHEN b.anulada THEN 'anulada'
-                                    WHEN round(b.monto - b.pagado, 2) <= 0.01 THEN 'pagada'
+                                    WHEN round(b.monto - b.pagado, 2) <= " . Dinero::UN_CENTAVO . " THEN 'pagada'
                                     WHEN b.fecha_vencimiento < CURRENT_DATE THEN 'vencida'
                                     WHEN b.pagado > 0 THEN 'parcial'
                                     ELSE 'pendiente' END";

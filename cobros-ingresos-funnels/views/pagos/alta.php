@@ -1,6 +1,7 @@
 <?php
 
 use App\Csrf;
+use App\Dinero;
 use App\EnvioUnico;
 use App\Etiquetas;
 use App\Repositories\ClienteRepository;
@@ -50,7 +51,7 @@ $hoy = date('Y-m-d');
             <select name="boleta_id" id="boleta_id">
                 <option value="">Anticipo / sin boleta asociada</option>
                 <?php foreach ($boletasCliente as $b): ?>
-                    <?php if ($b['anulada'] || $b['saldo'] <= 0.01): continue; endif; ?>
+                    <?php if ($b['anulada'] || Dinero::cuentaComoCero((float) $b['saldo'])): continue; endif; ?>
                     <option value="<?= (int) $b['id'] ?>" <?= (string) ($valores['boleta_id'] ?? '') === (string) $b['id'] ? 'selected' : '' ?>>
                         #<?= (int) $b['id'] ?> · <?= htmlspecialchars($b['concepto']) ?> ·
                         <?= dinero_en_moneda((float) $b['saldo'], $b['moneda_codigo']) ?> pendiente
