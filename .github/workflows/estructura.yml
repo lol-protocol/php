@@ -1,7 +1,8 @@
 name: Estructura del repo
 
 # Corre siempre, sin filtro de rutas, a proposito: agregar o renombrar una carpeta de
-# proyecto en la raiz no toca ningun archivo que un filtro pudiera nombrar de antemano.
+# proyecto en la raiz no toca ningun archivo que un filtro pudiera nombrar de antemano, y
+# mover un script dentro de cualquier proyecto puede dejar mal una ruta de CLAUDE.md.
 
 on:
   push:
@@ -39,3 +40,17 @@ jobs:
             echo "::error::Carpetas sin fila en la tabla de README.md:$faltantes"
             exit 1
           fi
+
+  claude-md-rutas:
+    name: CLAUDE.md cita rutas que existen
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # CLAUDE.md manda a correr scripts por su ruta (php bin/..., ./pruebas/...). Si uno se
+      # mueve y el texto no se entera, la proxima sesion copia un comando que ya no existe.
+      # Que comprueba y como probarlo: el docstring del script.
+      - name: Comprobar que las rutas que cita CLAUDE.md existen
+        run: python3 .github/scripts/comprobar-rutas-de-claude-md.py
