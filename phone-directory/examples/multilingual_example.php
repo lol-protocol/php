@@ -4,6 +4,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use PhoneDirectory\Manager\PhoneDirectoryManagerV2;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
+use PhoneDirectory\Privacy;
 use PhoneDirectory\JuridicalEntityPDODatabase;
 use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\Entity\JuridicalEntity;
@@ -12,7 +13,8 @@ use PhoneDirectory\Entity\JuridicalEntity;
 $dbPath = sys_get_temp_dir() . '/genealogy_multilingual.db';
 $dsn = 'sqlite:' . $dbPath;
 
-$naturalDb = new PhoneDirectoryPDODatabase($dsn);
+// Privacy::forOwner(): este ejemplo lee su propia base local y lo ve todo (ver Privacy).
+$naturalDb = new PhoneDirectoryPDODatabase($dsn, privacy: Privacy::forOwner());
 $juridicalDb = new JuridicalEntityPDODatabase($dsn);
 
 // Crear manager V2 que maneja ambos tipos de entidades

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_person_cousin_once_removed_f_mist_r45" x1="0" y1="0.5" x2="1" y2="0.5">
+    <linearGradient id="grad_person_cousin_once_removed_f_mist_r45_g" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#E1E1E1"/>
       <stop offset="1" stop-color="#D3D3D3"/>
     </linearGradient>
-    <linearGradient id="grad_person_cousin_once_removed_f_ink" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_person_cousin_once_removed_f_ink_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8A8A8A"/>
       <stop offset="1" stop-color="#535353"/>
     </linearGradient>
-    <linearGradient id="grad_person_cousin_once_removed_f_orange" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_person_cousin_once_removed_f_orange_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#A5A5A5"/>
       <stop offset="1" stop-color="#7B7B7B"/>
     </linearGradient>
@@ -25,12 +25,12 @@
     <path d="M45 37.17L45 50.5" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"/>
   </g>
   <g class="solids">
-    <g><path d="M36.21 11.42A1 1 0 0 1 36.12 12.73L32.85 16A1 1 0 0 1 31.44 16L28.17 12.73A1 1 0 0 1 28.07 12.62L27.11 11.34A1 1 0 0 1 27.21 10.03L30.47 6.77A1 1 0 0 1 31.89 6.77L35.15 10.03A1 1 0 0 1 35.25 10.14Z" fill="#7B7B7B"/><rect x="27.69" y="7.19" width="6.62" height="6.62" rx="1" transform="rotate(45 31 10.5)" fill="url(#grad_person_cousin_once_removed_f_mist_r45)"/></g>
-    <g><path d="M22.21 24.76A1 1 0 0 1 22.12 26.06L18.85 29.33A1 1 0 0 1 17.44 29.33L14.17 26.06A1 1 0 0 1 14.07 25.95L13.11 24.67A1 1 0 0 1 13.21 23.37L16.47 20.1A1 1 0 0 1 17.89 20.1L21.15 23.37A1 1 0 0 1 21.25 23.47Z" fill="#7B7B7B"/><rect x="13.69" y="20.52" width="6.62" height="6.62" rx="1" transform="rotate(45 17 23.83)" fill="url(#grad_person_cousin_once_removed_f_mist_r45)"/></g>
-    <g><path d="M13.19 40.4L14.15 41.68A4.99 4.99 0 0 0 22.13 35.7L21.17 34.41A4.99 4.99 0 0 0 13.19 40.4Z" fill="#303030"/><circle cx="17" cy="37.17" r="4.99" fill="url(#grad_person_cousin_once_removed_f_ink)"/></g>
-    <g><path d="M50.21 24.76A1 1 0 0 1 50.12 26.06L46.85 29.33A1 1 0 0 1 45.44 29.33L42.17 26.06A1 1 0 0 1 42.07 25.95L41.11 24.67A1 1 0 0 1 41.21 23.37L44.47 20.1A1 1 0 0 1 45.89 20.1L49.15 23.37A1 1 0 0 1 49.25 23.47Z" fill="#7B7B7B"/><rect x="41.69" y="20.52" width="6.62" height="6.62" rx="1" transform="rotate(45 45 23.83)" fill="url(#grad_person_cousin_once_removed_f_mist_r45)"/></g>
-    <g><path d="M50.21 38.09A1 1 0 0 1 50.12 39.4L46.85 42.66A1 1 0 0 1 45.44 42.66L42.17 39.4A1 1 0 0 1 42.07 39.29L41.11 38.01A1 1 0 0 1 41.21 36.7L44.47 33.43A1 1 0 0 1 45.89 33.43L49.15 36.7A1 1 0 0 1 49.25 36.81Z" fill="#7B7B7B"/><rect x="41.69" y="33.86" width="6.62" height="6.62" rx="1" transform="rotate(45 45 37.17)" fill="url(#grad_person_cousin_once_removed_f_mist_r45)"/></g>
-    <g><path d="M39.2 55.23L40.73 57.27A7.48 7.48 0 0 0 52.7 48.3L51.16 46.25A7.48 7.48 0 0 0 39.2 55.23Z" fill="#474747"/><circle cx="45" cy="50.5" r="7.48" fill="url(#grad_person_cousin_once_removed_f_orange)"/></g>
+    <g><path d="M36.21 11.42A1 1 0 0 1 36.12 12.73L32.85 16A1 1 0 0 1 31.44 16L28.17 12.73A1 1 0 0 1 28.07 12.62L27.11 11.34A1 1 0 0 1 27.21 10.03L30.47 6.77A1 1 0 0 1 31.89 6.77L35.15 10.03A1 1 0 0 1 35.25 10.14Z" fill="#7B7B7B"/><rect x="27.69" y="7.19" width="6.62" height="6.62" rx="1" transform="rotate(45 31 10.5)" fill="url(#grad_person_cousin_once_removed_f_mist_r45_g)"/></g>
+    <g><path d="M22.21 24.76A1 1 0 0 1 22.12 26.06L18.85 29.33A1 1 0 0 1 17.44 29.33L14.17 26.06A1 1 0 0 1 14.07 25.95L13.11 24.67A1 1 0 0 1 13.21 23.37L16.47 20.1A1 1 0 0 1 17.89 20.1L21.15 23.37A1 1 0 0 1 21.25 23.47Z" fill="#7B7B7B"/><rect x="13.69" y="20.52" width="6.62" height="6.62" rx="1" transform="rotate(45 17 23.83)" fill="url(#grad_person_cousin_once_removed_f_mist_r45_g)"/></g>
+    <g><path d="M13.19 40.4L14.15 41.68A4.99 4.99 0 0 0 22.13 35.7L21.17 34.41A4.99 4.99 0 0 0 13.19 40.4Z" fill="#303030"/><circle cx="17" cy="37.17" r="4.99" fill="url(#grad_person_cousin_once_removed_f_ink_g)"/></g>
+    <g><path d="M50.21 24.76A1 1 0 0 1 50.12 26.06L46.85 29.33A1 1 0 0 1 45.44 29.33L42.17 26.06A1 1 0 0 1 42.07 25.95L41.11 24.67A1 1 0 0 1 41.21 23.37L44.47 20.1A1 1 0 0 1 45.89 20.1L49.15 23.37A1 1 0 0 1 49.25 23.47Z" fill="#7B7B7B"/><rect x="41.69" y="20.52" width="6.62" height="6.62" rx="1" transform="rotate(45 45 23.83)" fill="url(#grad_person_cousin_once_removed_f_mist_r45_g)"/></g>
+    <g><path d="M50.21 38.09A1 1 0 0 1 50.12 39.4L46.85 42.66A1 1 0 0 1 45.44 42.66L42.17 39.4A1 1 0 0 1 42.07 39.29L41.11 38.01A1 1 0 0 1 41.21 36.7L44.47 33.43A1 1 0 0 1 45.89 33.43L49.15 36.7A1 1 0 0 1 49.25 36.81Z" fill="#7B7B7B"/><rect x="41.69" y="33.86" width="6.62" height="6.62" rx="1" transform="rotate(45 45 37.17)" fill="url(#grad_person_cousin_once_removed_f_mist_r45_g)"/></g>
+    <g><path d="M39.2 55.23L40.73 57.27A7.48 7.48 0 0 0 52.7 48.3L51.16 46.25A7.48 7.48 0 0 0 39.2 55.23Z" fill="#474747"/><circle cx="45" cy="50.5" r="7.48" fill="url(#grad_person_cousin_once_removed_f_orange_g)"/></g>
   </g>
   <g class="marks">
     <path d="M15.4 37.17a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0 -3.2 0Z" fill="#FFFFFF"/>

@@ -156,6 +156,29 @@ def tabla_md(titulo, nota, enc, filas):
     return "\n".join(lineas) + "\n"
 
 
+def comprobar_o_escribir(archivos, comprobar):
+    """Compara contra el disco o escribe los archivos generados (ruta, contenido) de este script.
+
+    newline="" conserva el CRLF/LF exacto de priorizacion.csv al comparar y al escribir. Con
+    comprobar=True no escribe nada: devuelve los nombres que no coinciden con lo que hay en disco o
+    que faltan (vacía si todo está al día). Con comprobar=False escribe cada archivo y devuelve [].
+    """
+    if comprobar:
+        desactualizadas = []
+        for ruta, texto in archivos:
+            if not ruta.exists():
+                desactualizadas.append(ruta.name)
+                continue
+            with ruta.open(encoding="utf-8", newline="") as f:
+                if f.read() != texto:
+                    desactualizadas.append(ruta.name)
+        return desactualizadas
+    for ruta, texto in archivos:
+        with ruta.open("w", encoding="utf-8", newline="") as f:
+            f.write(texto)
+    return []
+
+
 def main(comprobar=False):
     paises = leer(PAISES, COLUMNAS_PAISES)
     pos = leer(POS, COLUMNAS_POS)
@@ -294,7 +317,7 @@ def main(comprobar=False):
         "Gapminder. "
         "Ver `README.md`, «Estado de los datos».",
         ["País", "Tipo", "Región", "Población 2024 (M)", "Nacidos en la historia (M)",
-         "IDH 2023", "PIB pc nominal 2023 (USD)", "PIB pc PPA 2023 ($ int. 2021)",
+         "IDH 2023", "PIB pc nominal 2024 (USD)", "PIB pc PPA 2023 ($ int. 2021)",
          "Internet (% pob.)", "Emigrantes (% pob.)", "Genealogía (IG)",
          "Operabilidad (IO)", "Prioridad", "Excluido", "Comentarios"],
         gen_ordenado)
@@ -312,22 +335,10 @@ def main(comprobar=False):
 
     salidas = [(SALIDA_GENEALOGIA, texto_gen), (SALIDA_POS, texto_pos),
                (SALIDA_FINAL, texto_csv(COLUMNAS_FINAL, filas_final)), (SALIDA_VISTA, vista_html(registros))]
-    if comprobar:
-        desactualizadas = []
-        for ruta, texto in salidas:
-            if not ruta.exists():
-                desactualizadas.append(ruta.name)
-                continue
-            with ruta.open(encoding="utf-8", newline="") as f:  # newline="" conserva los \r\n del CSV
-                if f.read() != texto:
-                    desactualizadas.append(ruta.name)
-        if desactualizadas:
-            sys.exit(f"No están al día: {', '.join(desactualizadas)}. "
-                     "Ejecuta python3 generar_tabla.py y confirma el resultado.")
-    else:
-        for ruta, texto in salidas:
-            with ruta.open("w", encoding="utf-8", newline="") as f:
-                f.write(texto)
+    desactualizadas = comprobar_o_escribir(salidas, comprobar)
+    if comprobar and desactualizadas:
+        sys.exit(f"No están al día: {', '.join(desactualizadas)}. "
+                 "Ejecuta python3 generar_tabla.py y confirma el resultado.")
 
     accion = "al día" if comprobar else "escritas"
     print(f"{len(paises)} países. Genealogía: {excluidos_gen} excluidos ({SALIDA_GENEALOGIA.name}). "

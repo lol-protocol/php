@@ -15,7 +15,7 @@
     "enforcement_authority": "Department of Cybersecurity and High-Tech Crime Prevention (A05) - Ministry of Public Security",
     "penalties_range": "Up to 5% of prior-year revenue (cross-border violations); up to 10x illegal gain (data trading); up to VND 3 billion other",
     "exemptions": "Micro-enterprises/household businesses exempt from DPO and DPIA; 5-year grace for small firms/startups (not if sensitive data, data services or >=100k subjects)",
-    "deceased_data": "",
+    "deceased_data": "Unclear: Decree 356/2025 lists date of death as personal data, but law does not settle post-mortem protection or who may exercise rights (unconfirmed)",
     "research_exemption": "",
     "genetic_data": "",
     "website_url": "https://thuvienphapluat.vn/van-ban/Bo-may-hanh-chinh/Law-91-2025-QH15-Personal-Data-Protection-665440.aspx",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://thuvienphapluat.vn/van-ban/Bo-may-hanh-chinh/Law-91-2025-QH15-Personal-Data-Protection-665440.aspx",
@@ -93,9 +93,20 @@
         "url": "https://luatvietnam.vn/bai-viet-lien-quan/luat-91-2025-qh15-405135.html",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://thesaigontimes.vn/saigontimes/bao-ve-du-lieu-ca-nhan-phan-1-thong-tin-cua-nguoi-da-mat-co-duoc-chia-se/",
+        "confidence": "low",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Unclear: Decree 356/2025 lists date of death as personal data, but law does not settle post-mortem protection or who may exercise rights (unconfirmed)"
+      },
       {
         "date": "2026-10-15",
         "field": "retention_period",

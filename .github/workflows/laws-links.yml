@@ -2,6 +2,9 @@ name: Leyes - enlaces de referencia
 
 # Weekly check that the reference URLs of both datasets still answer.
 # A broken link fails the job (GitHub then notifies); the summary lists every problem.
+# On a PR that changes the data (master CSV or field_sources.csv), only the jurisdictions whose rows
+# the PR adds or changes are checked (--only=…): a new broken link is caught before it reaches master,
+# and an old one elsewhere does not block an unrelated PR.
 on:
   schedule:
     - cron: '17 6 * * 1'
@@ -19,6 +22,10 @@ on:
       - '.github/workflows/laws-links.yml'
       - 'privacy-laws/scripts/check-links.js'
       - 'copyright-laws/scripts/check-links.js'
+      - 'privacy-laws/countries/privacy_laws_master.csv'
+      - 'privacy-laws/countries/field_sources.csv'
+      - 'copyright-laws/jurisdictions/copyright_laws_master.csv'
+      - 'copyright-laws/jurisdictions/field_sources.csv'
 
 permissions:
   contents: read
@@ -38,17 +45,43 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # the PR scope below compares with the base branch
+
+      # Full check on schedule, by hand, on master, and on a PR that changes the check itself.
+      # On a PR that only changes data: the jurisdictions of the added or changed CSV rows (their first
+      # column is the country code), or nothing at all if this module's data did not change.
+      - name: Decide what to check
+        id: scope
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ]; then exit 0; fi
+          base="origin/${{ github.base_ref }}"
+          if git diff --name-only "$base"...HEAD | grep -qxE '\.github/workflows/laws-links\.yml|(privacy|copyright)-laws/scripts/check-links\.js'; then
+            exit 0
+          fi
+          codes=$(git diff -U0 "$base"...HEAD -- */*_master.csv */field_sources.csv \
+            | sed -nE 's/^\+"?([A-Z]{2})"?,.*/\1/p' | sort -u | tr 'A-Z' 'a-z' | paste -sd, -)
+          if [ -z "$codes" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "${{ matrix.module }}: this PR adds or changes no rows, nothing to check." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "only=--only=$codes" >> "$GITHUB_OUTPUT"
+            echo "${{ matrix.module }}: checking only the jurisdictions this PR touches: $codes" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Set up Node.js 22
+        if: steps.scope.outputs.skip != 'true'
         uses: actions/setup-node@v5
         with:
           node-version: '22'
 
       - name: Install dependencies
+        if: steps.scope.outputs.skip != 'true'
         run: npm ci --no-audit --no-fund
 
       - name: Check reference links
-        run: npm run check:links -- --json=links-report.json
+        if: steps.scope.outputs.skip != 'true'
+        run: npm run check:links -- --json=links-report.json ${{ steps.scope.outputs.only }}
 
       # One annotation per broken link, so the failing URLs show on the check (and through the API)
       # without downloading the artifact. Workflow commands need %, \r and \n escaped.

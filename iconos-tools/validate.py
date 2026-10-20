@@ -221,11 +221,12 @@ def main():
                 counts = {v: signature(r) for v, r in roots.items()}
                 if len(set(counts.values())) != 1:
                     fail(f'{folder}/{rel}: distinto número de sólidos y marcas entre variantes {counts}')
-                for e in roots['color'].iter():
-                    if e.get('id'):
-                        if e.get('id') in seen_ids:
-                            fail(f'{folder}/{rel}: id {e.get("id")} repetido en {seen_ids[e.get("id")]}')
-                        seen_ids[e.get('id')] = rel
+                for v, root in roots.items():
+                    for e in root.iter():
+                        if e.get('id'):
+                            if e.get('id') in seen_ids:
+                                fail(f'{folder}/{v}/{rel}: id {e.get("id")} repetido en {seen_ids[e.get("id")]}')
+                            seen_ids[e.get('id')] = f'{v}/{rel}'
         by_prefix = collections.Counter(Path(r).name.split('_')[0] for r in files['color'])
         print(f'{folder}: {len(files["color"])} iconos x {len(VARIANTS)} variantes {dict(sorted(by_prefix.items()))}')
     if failures:

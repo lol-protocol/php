@@ -323,7 +323,9 @@ dato de la acción en sí, es metadata operativa. Se guarda solo con un debounce
 de 600ms **por acción** (un `Map` de timers, no un debounce compartido: escribir
 en una tarjeta no debe cancelar el guardado pendiente de otra) contra
 `POST /api/notes`; texto vacío elimina la fila en vez de guardar un string
-vacío. Para evitar N+1 requests, la nota viaja como columna más
+vacío. Una nota tiene a lo sumo 5000 caracteres (`NOTA_MAX_CARACTERES` en
+`api/notas.php`, el mismo `maxlength` en el textarea); más largo, la API
+responde 400 `nota_demasiado_larga`. Para evitar N+1 requests, la nota viaja como columna más
 (`LEFT JOIN notas_acciones`) en la misma consulta paginada de
 `AlmacenAcciones->pagina()`, no en una llamada aparte por tarjeta. Un indicador
 chico al lado del textarea muestra el estado del guardado (⏳ guardando, ✓

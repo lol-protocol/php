@@ -47,6 +47,8 @@ tabla ordenable), o usa `priorizacion.csv` desde otro programa. Las tablas en Ma
 - `pruebas.py`: pruebas del proyecto. La CI las corre junto con `generar_tabla.py --comprobar`
   (`.github/workflows/pruebas-listado-paises.yml`).
 
+`tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv` y `vista.html` son salida generada — no se editan a mano. Se regeneran con `python3 generar_tabla.py` (`--comprobar` solo valida que estén al día).
+
 ```bash
 python3 generar_tabla.py              # valida y regenera las tablas, priorizacion.csv y vista.html
 python3 generar_tabla.py --comprobar  # valida y falla si alguna salida no está al día (no escribe)
@@ -82,7 +84,7 @@ Vaticano ni otros territorios menores.
 | `poblacion_millones` | Población de 2024, en millones, de Our World in Data (basada en ONU, *World Population Prospects 2024*). Gibraltar, Isla de Man y Puerto Rico, que esa fuente no incluye, usan la del Banco Mundial (`SP.POP.TOTL`). Vacía en Guernsey, Jersey y Reunión. |
 | `poblacion_historica_acumulada` | Personas nacidas en el territorio del país desde el 10 000 a. C., en millones. Es una estimación (ver «Población histórica acumulada»). |
 | `idh` | Índice de Desarrollo Humano de **2023**, del PNUD (*Informe sobre Desarrollo Humano 2025*), vía Gapminder. Vacía donde el PNUD no lo publica: 6 países y los 9 territorios nuevos. |
-| `pib_per_capita_usd` | PIB per cápita **nominal** de 2023 en dólares corrientes: PIB del Banco Mundial (`NY.GDP.MKTP.CD`) entre su población. Si falta 2023, el de 2022 o 2021; si no, vacía (ver «Estado de los datos»). |
+| `pib_per_capita_usd` | PIB per cápita **nominal** de 2024 en dólares corrientes, del Banco Mundial (`NY.GDP.PCAP.CD`). Si falta 2024, el del último año desde 2021; si no, vacía (ver «Estado de los datos»). |
 | `pib_per_capita_ppa_usd` | PIB per cápita en **paridad de poder adquisitivo** de 2023, en dólares internacionales de 2021 (Gapminder, basado en el Banco Mundial). Vacía en Kosovo, Liechtenstein, Macao, Puerto Rico y los 9 territorios nuevos. |
 | `alfabetizacion_adultos` | Porcentaje de mayores de 15 años que saben leer y escribir (UNESCO, vía Gapminder), del último año desde 2010. Vacía en 73, casi todos de ingreso alto: la UNESCO no la mide donde es casi universal. |
 | `usuarios_internet` | Porcentaje de la población que usa internet (Banco Mundial, `IT.NET.USER.ZS`, vía Gapminder), del último año desde 2020; casi todos son de 2024. Vacía en 21. |
@@ -378,8 +380,9 @@ Banco Mundial.
   (`children_per_woman_total_fertility`), PIB per cápita PPA en dólares internacionales de 2021
   (`gdp_pcap`, versión 32, basado en el Banco Mundial) y emigrantes por país de origen
   (`emigrant_n`, de la ONU).
-- [`datasets/gdp`](https://github.com/datasets/gdp), commit `36d761d` (27 de julio de 2026),
-  archivo `data/gdp.csv`: PIB en dólares corrientes del Banco Mundial (`NY.GDP.MKTP.CD`), hasta 2023.
+- [`datasets/world-development-indicators`](https://github.com/datasets/world-development-indicators),
+  commit `4ebec5a` (1 de julio de 2026), archivo `indicators/ny.gdp.pcap.cd/data.csv`: PIB per
+  cápita en dólares corrientes del Banco Mundial (`NY.GDP.PCAP.CD`), hasta 2025.
 - [`datasets/population`](https://github.com/datasets/population), commit `d4b1a4a` (1 de octubre
   de 2026), archivo `data/population.csv`: población del Banco Mundial (`SP.POP.TOTL`), hasta 2025.
 
@@ -423,14 +426,14 @@ curl -so fecundidad-gapminder.csv $ft/ddf--datapoints--children_per_woman_total_
 curl -so pib-ppa-gapminder.csv $ft/ddf--datapoints--gdp_pcap--by--country--time.csv
 curl -so emigrantes-gapminder.csv $ft/ddf--datapoints--emigrant_n--by--country--time.csv
 curl -so poblacion-gapminder.csv $sg/ddf--datapoints--total_population_with_projections--by--geo--time.csv
-curl -sO $r/datasets/gdp/36d761dc5617982d3e50b213e02b9a1b47c4e958/data/gdp.csv
+curl -so pib-pc.csv $r/datasets/world-development-indicators/4ebec5a2273f531ba238a34dbe440394dc5a6c4b/indicators/ny.gdp.pcap.cd/data.csv
 curl -sO $r/datasets/population/d4b1a4a9a17e2123baf0ef119de05bceced1ab1b/data/population.csv
 python3 preparar_datos.py --co2 co2-data/owid-co2-data.csv --maddison maddison-2020.csv \
     --hyde hyde-regiones.csv --clio clio-infra.csv --natalidad-gapminder natalidad-gapminder.csv \
     --fecundidad-gapminder fecundidad-gapminder.csv --idh idh-gapminder.csv \
     --alfabetizacion alfabetizacion-gapminder.csv --internet internet-gapminder.csv \
     --emigrantes emigrantes-gapminder.csv --poblacion-gapminder poblacion-gapminder.csv \
-    --pib-ppa pib-ppa-gapminder.csv --pib-bm gdp.csv --poblacion-bm population.csv
+    --pib-ppa pib-ppa-gapminder.csv --pib-pc-bm pib-pc.csv --poblacion-bm population.csv
 python3 historia_poblacion.py && python3 generar_tabla.py
 ```
 
@@ -467,17 +470,17 @@ Léelo antes de usar la tabla para decidir.
   conocidos de ese informe (Islandia 0,972; Noruega y Suiza 0,970; Sudán del Sur 0,388). Vacío
   donde el PNUD no publica IDH: Corea del Norte, Kosovo, Macao, Mónaco, Puerto Rico, Taiwán y los
   nueve territorios nuevos.
-- **PIB per cápita nominal: de fuente** (Banco Mundial), de 2023. Usan 2022 Afganistán, Bermudas,
-  Bután, Catar, Curazao, Islas Feroe, Líbano, Liechtenstein, Mónaco y Tonga, y 2021 Groenlandia,
-  Isla de Man, San Marino y Siria, porque el Banco Mundial no tiene un año posterior. Vacío en:
+- **PIB per cápita nominal: de fuente** (Banco Mundial, `NY.GDP.PCAP.CD`), de 2024. Usan 2023
+  Groenlandia, Isla de Man, San Marino y Tuvalu, y 2022 Siria, porque el Banco Mundial no tiene un
+  año posterior. Vacío en:
   - Corea del Norte, Taiwán, Gibraltar, Guernsey, Jersey y Reunión, que el Banco Mundial no publica
     por separado.
-  - Cuba, Eritrea, Sudán del Sur, Venezuela y Yemen, cuyo último dato es anterior a 2021.
-  - Chipre: el PIB del Banco Mundial cubre solo la zona que controla la República, y su población,
-    toda la isla, así que el cociente sale alrededor de un 30 % por debajo. Su indicador per cápita
-    (`NY.GDP.PCAP.CD`) sí lo corrige, pero no está publicado en GitHub.
+  - Cuba, Eritrea, Sudán del Sur y Yemen, cuyo último dato es anterior a 2021.
+
+  Antes se calculaba como PIB entre población, que fallaba en Chipre: el PIB cubre solo la zona que
+  controla la República y la población, toda la isla.
 - **PIB per cápita PPA: de fuente** (Gapminder, basado en el Banco Mundial), de 2023 y en dólares
-  internacionales de 2021. Viene ya por persona, así que no tiene el problema de Chipre. Antes se
+  internacionales de 2021. Viene ya por persona. Antes se
   usaba Maddison 2023 (vía Our World in Data), que dejaba 35 vacíos. Mónaco (unos 463 000) es una
   estimación de Gapminder: el Banco Mundial no publica su PIB en PPA. Vacío en 13, entre ellos los
   territorios nuevos.
@@ -494,15 +497,13 @@ Léelo antes de usar la tabla para decidir.
 
 ## Pendientes
 
-1. **PIB nominal de Chipre:** completarlo con `NY.GDP.PCAP.CD` cuando el Banco Mundial esté
-   accesible.
-2. **Población histórica:** reemplazar la serie compuesta por la de Our World in Data por país
+1. **Población histórica:** reemplazar la serie compuesta por la de Our World in Data por país
    desde el 10 000 a. C., y la natalidad posterior a 2015 por la de la ONU o el Banco Mundial,
    cuando haya acceso.
-3. **Natalidad antes de 1800:** contrastar con el PRB las tasas por época, que se cargaron de
+2. **Natalidad antes de 1800:** contrastar con el PRB las tasas por época, que se cargaron de
    memoria.
-4. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
-5. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
+3. **Revisar los índices** IG, IO e IL con la persona que decide. La rúbrica es el criterio.
+4. **Umbral de exclusión de genealogía:** con IO ≤ 1 quedan 23 países (vigente); con IO ≤ 2,
    54. Camboya y Vietnam siguen dentro, por decisión tomada.
-6. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
+5. **Lenguas francas sin listar:** una lengua que el comentario de genealogía no nombra no se
    listó, aunque se use (el inglés en Maldivas, por ejemplo). Afecta a IP, no a IP local.

@@ -6,12 +6,15 @@ use PhoneDirectory\Entity\PhoneDirectoryEntry;
 use PhoneDirectory\JuridicalEntityPDODatabase;
 use PhoneDirectory\Manager\PhoneDirectoryManagerV2;
 use PhoneDirectory\PhoneDirectoryPDODatabase;
+use PhoneDirectory\Privacy;
 
 // Crear una instancia del manager
 $dbPath = sys_get_temp_dir() . '/genealogy_phone_directory.db';
 $dsn = 'sqlite:' . $dbPath;
+// Privacy::forOwner(): este ejemplo lee su propia base local y lo ve todo. Sin eso, la base solo devuelve
+// lo que se puede publicar (las entradas de guías de hace más de 92 años; ver Privacy).
 $manager = new PhoneDirectoryManagerV2(
-    naturalDatabase: new PhoneDirectoryPDODatabase($dsn),
+    naturalDatabase: new PhoneDirectoryPDODatabase($dsn, privacy: Privacy::forOwner()),
     juridicalDatabase: new JuridicalEntityPDODatabase($dsn)
 );
 

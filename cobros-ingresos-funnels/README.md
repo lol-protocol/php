@@ -457,7 +457,9 @@ src/
   Etiquetas.php         traduce estado de boleta/metodo de pago/canal a su
                         etiqueta en español, en un solo lugar para no repetir
                         el mismo array en cada vista que los muestra, testeado
-  Paginacion.php        helper de paginación (página/offset/total, testeado)
+  Paginacion.php        helper de paginación (página/offset/total, testeado) y
+                        consultar(), el esqueleto único de los listados paginados
+                        (contar, acotar la página, traer solo esa), testeado
   Csrf.php              token CSRF por sesión propia (no depende de ningún login),
                         verificado en Router (testeado)
   ConexionSegura.php    detecta HTTPS (directo o detras de proxy), testeado
@@ -632,6 +634,12 @@ un residuo de redondeo no deje una boleta pendiente para siempre: una boleta con
 0,01 o menos es `pagada` (`EstadoBoleta`, y en SQL `BoletaRepository::ESTADO_SQL`), no se
 ofrece en el selector del formulario de pagos, la cartera por antigüedad no cuenta saldos
 de 0,01 USD o menos, y anular una boleta con 0,01 o menos cobrado no emite nota de crédito.
+Ese 0,01 está escrito en un solo lugar, `Dinero::UN_CENTAVO` (y `Dinero::cuentaComoCero()` para
+compararlo): lo leen el PHP, las consultas SQL y las vistas. Es también el monto mínimo que
+acepta `Validacion::montoEnRango()`, y el HTML de los cuatro formularios de monto (alta y
+edición de boletas y de pagos) sale de `campo_monto()`, que le pone `min`, `max` y `step` desde
+`Dinero::UN_CENTAVO` y `Validacion::MONTO_MAXIMO`: el navegador rechaza un monto fuera de rango
+antes de enviarlo, y el servidor lo vuelve a validar.
 
 ## Notas de diseño
 
@@ -645,7 +653,9 @@ de 0,01 USD o menos, y anular una boleta con 0,01 o menos cobrado no emite nota 
   del funnel y las cohortes, y colores de estado reservados para la antigüedad de cartera.
 - Modo oscuro automático vía `prefers-color-scheme`.
 - Paginación de 25 filas por página, con `LIMIT`/`OFFSET` en SQL, también en
-  Boletas con filtro de estado. Auditoría es la excepción: pagina por cursor
+  Boletas con filtro de estado. Boletas, pagos y clientes la arman con
+  `Paginacion::consultar()`: cada repositorio dice las columnas, las tablas y los filtros,
+  y la cuenta, la página acotada y el `LIMIT`/`OFFSET` salen de ahí. Auditoría es la excepción: pagina por cursor
   (`?antes=`/`?despues=` con el `creado_en` y el `id` de la fila donde quedó), porque
   es la única tabla que solo crece y `OFFSET` más `COUNT(*)` crecían en línea recta
   con ella. Con 2 millones de entradas la página del fondo pasó de 1,7 s a 2 ms, y

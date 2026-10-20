@@ -15,9 +15,9 @@
     "enforcement_authority": "National Commission for Data Protection (CNPD)",
     "penalties_range": "Up to €20M or 4% revenue",
     "exemptions": "Legal obligations",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not covered: no specific national rule for deceased persons (GDPR recital 27 option not used); medical secrecy (Penal Code art. 458) still applies (unconfirmed)",
+    "research_exemption": "Derogations for scientific/historical research, statistics and archiving restricting rights (arts. 15,16,18,21 GDPR) with safeguards (arts. 63-65)",
+    "genetic_data": "Special category (art. 9 GDPR); processing of genetic data to exercise controller rights in labour law and insurance is prohibited",
     "website_url": "https://cnpd.lu/",
     "language": "French/German/Luxembourgish",
     "frameworks": "GDPR/CoE-108",
@@ -27,7 +27,7 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://elvingerhoss.lu/publications/luxembourg-law-complementing-gdpr",
@@ -48,9 +48,42 @@
         "url": "https://cnpd.public.lu/en/commission-nationale/activites-eur-inter.html",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://luxgap.com/lois/rgpd/cons-27/",
+        "confidence": "low",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://elvingerhoss.lu/publications/luxembourg-law-complementing-gdpr",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://elvingerhoss.lu/publications/luxembourg-law-complementing-gdpr",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Special category (art. 9 GDPR); processing of genetic data to exercise controller rights in labour law and insurance is prohibited"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Derogations for scientific/historical research, statistics and archiving restricting rights (arts. 15,16,18,21 GDPR) with safeguards (arts. 63-65)"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not covered: no specific national rule for deceased persons (GDPR recital 27 option not used); medical secrecy (Penal Code art. 458) still applies (unconfirmed)"
+      },
       {
         "date": "2026-10-14",
         "field": "effective_date",

@@ -43,6 +43,23 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         'surname_soundex', 'surname_phonetic', 'full_name_folded', 'street_folded',
     ];
 
+    private readonly Privacy $privacy;
+
+    /**
+     * @param Privacy|null $privacy who is asking: by default a visitor, who gets no entry that may be a
+     *        living person (see Privacy). Pass Privacy::forOwner() to read everything that is stored.
+     */
+    public function __construct(string $dsn = 'sqlite::memory:', ?string $username = null, ?string $password = null, ?Privacy $privacy = null)
+    {
+        parent::__construct($dsn, $username, $password);
+        $this->privacy = $privacy ?? Privacy::forVisitors();
+    }
+
+    public function getPrivacy(): Privacy
+    {
+        return $this->privacy;
+    }
+
     protected function getTableName(): string
     {
         return self::TABLE_NAME;
@@ -126,7 +143,9 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
     public function findById(int $id): ?PhoneDirectoryEntry
     {
         $row = $this->findOneById($id);
-        return $row ? $this->rowToEntry($row) : null;
+        $entry = $row ? $this->rowToEntry($row) : null;
+
+        return $entry !== null && $this->privacy->allows($entry) ? $entry : null;
     }
 
     /** @return list<PhoneDirectoryEntry> */
@@ -138,7 +157,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':name' => $this->dialect->containsValue($this->fold($name))]);
 
-        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     /** @return list<PhoneDirectoryEntry> */
@@ -150,13 +169,23 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':street' => $this->dialect->containsValue($this->fold($street))]);
 
-        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     public function findByPhone(string $phone): ?PhoneDirectoryEntry
     {
-        $row = $this->findOneByPhone($phone);
-        return $row ? $this->rowToEntry($row) : null;
+        if (!$this->privacy->hidesLiving()) {
+            $row = $this->findOneByPhone($phone);
+            return $row ? $this->rowToEntry($row) : null;
+        }
+
+        // A number is reused from one edition to the next: the first row may be a hidden 1960 entry
+        // and the next an old one that may be shown.
+        $this->ensureConnection();
+        $stmt = $this->pdo->prepare('SELECT * FROM phone_directory WHERE phone_number = :phone ORDER BY id');
+        $stmt->execute([':phone' => $phone]);
+
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC))[0] ?? null;
     }
 
     /** @return list<PhoneDirectoryEntry> */
@@ -184,7 +213,7 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         $stmt = $this->pdo->prepare("SELECT * FROM phone_directory WHERE {$where} ORDER BY full_name");
         $stmt->execute($params);
 
-        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     /** @return list<PhoneDirectoryEntry> */
@@ -195,13 +224,13 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         $stmt = $this->pdo->prepare('SELECT * FROM phone_directory WHERE source_directory_id = :source ORDER BY source_line, id');
         $stmt->execute([':source' => $sourceDirectoryId]);
 
-        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     /** @return list<PhoneDirectoryEntry> */
     public function getAll(): array
     {
-        return $this->getAllOrdered('full_name');
+        return $this->privacy->filter($this->getAllOrdered('full_name'));
     }
 
     public function update(PhoneDirectoryEntry $entry): bool
@@ -256,12 +285,23 @@ class PhoneDirectoryPDODatabase extends EntityPDODatabase implements PhoneDirect
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
 
-        return array_map([$this, 'rowToEntry'], $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        return $this->shown($stmt->fetchAll(\PDO::FETCH_ASSOC));
     }
 
     public function clear(): bool
     {
         return $this->clearTable();
+    }
+
+    /**
+     * The rows as entries, without the ones this reader may not see.
+     *
+     * @param array<Row> $rows
+     * @return list<PhoneDirectoryEntry>
+     */
+    private function shown(array $rows): array
+    {
+        return $this->privacy->filter(array_map([$this, 'rowToEntry'], $rows));
     }
 
     /** @param Row $row */

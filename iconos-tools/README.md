@@ -42,7 +42,7 @@ contenga texto; que las tres variantes (`color/`, `lineas/`, `gris/`) tengan
 los mismos archivos y formas; que `gris/` no tenga colores cromáticos y
 `lineas/` no tenga rellenos; que los nombres sigan la convención
 `<prefijo>_<descripcion>` y estén en la carpeta de su prefijo; que no haya
-ids repetidos ni iconos idénticos; que cada `url(#id)` apunte a un id definido
+ids repetidos (tampoco entre variantes) ni iconos idénticos; que cada `url(#id)` apunte a un id definido
 y todo id lo use algo; que ningún trazo, círculo ni rectángulo sin girar quede
 a menos de 1 unidad del borde del lienzo (cuenta también lo que un arco abulta
 entre sus extremos); y que todo prefijo de `catalogo.PREFIXES` tenga etiqueta
@@ -64,7 +64,8 @@ la aproxime: se ve igual de suave a 16 px que a 512 px. Tres detalles:
 - El degradado de la cara va de arriba a la izquierda a abajo a la derecha. En
   una forma girada (los rombos) se gira de vuelta (`light_axis`), porque si no
   arrastraba el giro y quedaba iluminada de arriba a abajo; cada giro distinto
-  lleva su propio degradado (`grad_<icono>_<tono>_r45`).
+  lleva su propio degradado (`grad_<icono>_<tono>_r45`). Los de `gris` terminan en
+  `_g`, para que ningún id se repita entre variantes.
 - El borde trasero de la pared se adelanta `INSET` (0,3) a lo largo de la extrusión para que quede
   tapado por la cara frontal. Sin eso asoma una línea gris fina en el borde antialiasado de la cara.
   En `lineas` no se aplica: ahí la pared es un trazo y su borde trasero coincide con el de la cara.

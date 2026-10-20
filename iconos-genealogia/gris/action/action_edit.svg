@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_edit_teal_rm45" x1="0.5" y1="0" x2="0.5" y2="1">
+    <linearGradient id="grad_action_edit_teal_rm45_g" x1="0.5" y1="0" x2="0.5" y2="1">
       <stop offset="0" stop-color="#9A9A9A"/>
       <stop offset="1" stop-color="#6A6A6A"/>
     </linearGradient>
-    <linearGradient id="grad_action_edit_ink" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_edit_ink_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8A8A8A"/>
       <stop offset="1" stop-color="#535353"/>
     </linearGradient>
@@ -14,7 +14,7 @@
     <ellipse cx="30.3" cy="53.28" rx="16.93" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M47.7 20.5A5 5 0 0 1 47.24 27.04L27.44 46.84A5 5 0 0 1 20.36 46.84A5 5 0 0 1 19.9 46.3L18.28 44.14A5 5 0 0 1 18.74 37.6L38.54 17.8A5 5 0 0 1 45.62 17.8A5 5 0 0 1 46.08 18.34Z" fill="#3E3E3E"/><rect x="13" y="26" width="38" height="10" rx="5" transform="rotate(-45 32 31)" fill="url(#grad_action_edit_teal_rm45)"/></g>
-    <g><path d="M12.8 48.4L13.58 49.44A3.6 3.6 0 0 0 19.34 45.12L18.56 44.08A3.6 3.6 0 0 0 12.8 48.4Z" fill="#303030"/><circle cx="15.5" cy="46" r="3.6" fill="url(#grad_action_edit_ink)"/></g>
+    <g><path d="M47.7 20.5A5 5 0 0 1 47.24 27.04L27.44 46.84A5 5 0 0 1 20.36 46.84A5 5 0 0 1 19.9 46.3L18.28 44.14A5 5 0 0 1 18.74 37.6L38.54 17.8A5 5 0 0 1 45.62 17.8A5 5 0 0 1 46.08 18.34Z" fill="#3E3E3E"/><rect x="13" y="26" width="38" height="10" rx="5" transform="rotate(-45 32 31)" fill="url(#grad_action_edit_teal_rm45_g)"/></g>
+    <g><path d="M12.8 48.4L13.58 49.44A3.6 3.6 0 0 0 19.34 45.12L18.56 44.08A3.6 3.6 0 0 0 12.8 48.4Z" fill="#303030"/><circle cx="15.5" cy="46" r="3.6" fill="url(#grad_action_edit_ink_g)"/></g>
   </g>
 </svg>
