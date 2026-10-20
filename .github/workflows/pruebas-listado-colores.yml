@@ -31,18 +31,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      # Valida los siete CSV de datos y falla si algun archivo generado (la tabla
-      # de README.md, nombres-completos.csv, colores-por-idioma.md, por-idioma/,
-      # referencias.md o exportes/) no coincide con lo que generan; construye
+      # Valida los siete CSV de datos y CHANGELOG.md, y falla si algun archivo generado
+      # (la tabla de README.md, nombres-completos.csv, colores-por-idioma.md, por-idioma/,
+      # referencias.md, ambiguedad.md, auditoria-nombres.md o exportes/, con su
+      # manifiesto) no coincide con lo que generan; construye
       # ademas una base SQLite en memoria y comprueba que los recuentos coincidan.
-      # Tarda unos 25 s porque recalcula el color CSS mas cercano de cada nombre.
+      # Tarda entre 13 y 20 s porque recalcula el color CSS mas cercano de cada nombre.
       - name: Comprobar datos y tabla
         working-directory: Listado-colores
         run: python3 generar-tabla.py --comprobar
 
       # Pruebas del generador: cada regla de validacion rota a proposito sobre una
       # copia de los CSV, y main() de punta a punta en una carpeta temporal con
-      # nombres-completos.csv reducido. Unos 8 s; no escribe en el proyecto.
+      # nombres-completos.csv reducido. Entre 8 y 16 s; no escribe en el proyecto.
       - name: Pruebas del generador
         working-directory: Listado-colores
         run: python3 -m unittest -v pruebas
