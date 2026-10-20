@@ -67,6 +67,7 @@ De ahí salen tres certezas que guían todo lo demás:
 | **Las personas vivas son privadas por defecto.** | `url-routing`: `AccessPolicy` y `Privacidad`. Sin defunción y nacida hace menos de 110 años, se muestra como «Persona viva» (ver `url-routing/docs/ACCESO.md`). |
 | **Un registro que delata a un vivo tampoco se muestra.** | `url-routing`: sucesos y registros con un participante vivo dan 404. |
 | **El filtro propone, una persona decide.** | Las decisiones `review` necesitan una cola y alguien que la atienda. |
+| **Lo que promete el marketing se compara con lo que hace el producto.** | [`marketing/VERIFICACION.md`](marketing/VERIFICACION.md): frase por frase, qué respalda este repositorio y qué no. |
 
 ## Cabos sueltos
 
