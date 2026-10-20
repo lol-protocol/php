@@ -49,6 +49,7 @@ Desde la carpeta de cada proyecto, salvo donde diga «desde la raíz» (el detal
 | `vps-setup/` | desde la raíz: `shellcheck -S warning vps-setup/*.sh vps-setup/monitoring/*.sh` y `bats vps-setup/tests` |
 | `Listado-colores/` | `python3 generar-tabla.py --comprobar` (valida los siete CSV, `colores.csv`, `significados-idiomas.csv`, `lexico-basico.csv`, `evidencia.csv`, `significados-culturales.csv`, `referencias.csv` y `nombres-completos.csv`, y `CHANGELOG.md`; comprueba que el README, `colores-por-idioma.md`, `por-idioma/`, `referencias.md`, `ambiguedad.md`, `auditoria-nombres.md` y `exportes/` (con su manifiesto) estén al día y construye una base SQLite en memoria; tarda entre 13 y 20 s) y `python3 -m unittest pruebas` (unos 13 s). Si cambias datos, apunta el cambio en `CHANGELOG.md` y regenera con `python3 generar-tabla.py` |
 | `Listado-paises/` | `python3 generar_tabla.py --comprobar` (valida `paises.csv`, `paises_pos.csv` y `niveles_lenguas.csv`, y que `tabla_genealogia.md`, `tabla_pos.md`, `priorizacion.csv` y `vista.html` estén al día) y `python3 -m unittest pruebas` |
+| `signos-zodiacales/` | `python3 generar.py --comprobar` (valida `datos/signos.json` — los 30 idiomas, las estrellas de cada constelación — y que `constelaciones/*.svg` y `signos-por-idioma.md` estén al día) |
 
 El resto de proyectos (`privacy-laws/`, `copyright-laws/`, `marketing/`, `marcalibros-plataforma-pos-brand-identity/`, `psychology-and-marketing/`, `landing-page/`): mira su README y los jobs de `.github/workflows/`.
 
