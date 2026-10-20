@@ -16,8 +16,8 @@
     "penalties_range": "Up to EGP 5M (plus imprisonment for some offences)",
     "exemptions": "Government functions",
     "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "research_exemption": "No general research exemption found; law does not apply to data processed to produce official statistics or under a legal provision (art. 3)",
+    "genetic_data": "Sensitive data includes genetic and biometric data, alongside health, financial and criminal data",
     "website_url": "https://eg.andersen.com/wp-content/uploads/2025/06/Law-No.-151-OF-2020.pdf",
     "language": "Arabic/English",
     "frameworks": "",
@@ -27,15 +27,37 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "low",
-    "last_checked": "2026-10-11",
+    "last_checked": "2026-10-18",
     "sources": {
       "penalties_range": {
         "url": "https://eg.andersen.com/data-protection-egypt-law/",
         "confidence": "medium",
         "checked": "2026-10-14"
+      },
+      "research_exemption": {
+        "url": "https://eg.andersen.com/wp-content/uploads/2025/06/Law-No.-151-OF-2020.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.ela.law/firms/ibrachy-dermarkar/articles/personal-data-protection-law-no-151-for-year-2020-arab-republic-of-egypt",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Sensitive data includes genetic and biometric data, alongside health, financial and criminal data"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "No general research exemption found; law does not apply to data processed to produce official statistics or under a legal provision (art. 3)"
+      },
       {
         "date": "2026-10-14",
         "field": "penalties_range",

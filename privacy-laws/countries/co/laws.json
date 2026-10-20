@@ -15,9 +15,9 @@
     "enforcement_authority": "Superintendence of Industry",
     "penalties_range": "Fines up to COP 100M",
     "exemptions": "Government function",
-    "deceased_data": "",
-    "research_exemption": "",
-    "genetic_data": "",
+    "deceased_data": "Not expressly regulated, but causahabientes (successors) may exercise the data subject's rights and file claims (arts. 14-16, 20)",
+    "research_exemption": "Sensitive data may be processed for historical, statistical or scientific purposes with measures to suppress data subjects' identity (art. 6(e))",
+    "genetic_data": "Genetic data not expressly named; sensitive data (art. 5) covers health, sex life and biometric data; processing needs explicit authorisation or art. 6 exception",
     "website_url": "https://www.sic.gov.co/",
     "language": "Spanish",
     "frameworks": "",
@@ -27,15 +27,48 @@
     "pending_date": "",
     "data_status": "researched",
     "confidence": "medium",
-    "last_checked": "2026-10-14",
+    "last_checked": "2026-10-18",
     "sources": {
       "law_name": {
         "url": "https://www.mincit.gov.co/prensa/noticias/general/actualizar-normas-proteccion-datos-personales",
         "confidence": "high",
         "checked": "2026-10-14"
+      },
+      "deceased_data": {
+        "url": "https://iapp.org/news/a/notas-de-la-directora-general-iapp-america-latina-3-agosto-2022",
+        "confidence": "medium",
+        "checked": "2026-10-18"
+      },
+      "research_exemption": {
+        "url": "https://www.unidadvictimas.gov.co/wp-content/uploads/Documentos/ley/Ley_1581_2012.pdf",
+        "confidence": "high",
+        "checked": "2026-10-18"
+      },
+      "genetic_data": {
+        "url": "https://www.unidadvictimas.gov.co/wp-content/uploads/Documentos/ley/Ley_1581_2012.pdf",
+        "confidence": "medium",
+        "checked": "2026-10-18"
       }
     },
     "changes": [
+      {
+        "date": "2026-10-18",
+        "field": "genetic_data",
+        "from": "",
+        "to": "Genetic data not expressly named; sensitive data (art. 5) covers health, sex life and biometric data; processing needs explicit authorisation or art. 6 exception"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "research_exemption",
+        "from": "",
+        "to": "Sensitive data may be processed for historical, statistical or scientific purposes with measures to suppress data subjects' identity (art. 6(e))"
+      },
+      {
+        "date": "2026-10-18",
+        "field": "deceased_data",
+        "from": "",
+        "to": "Not expressly regulated, but causahabientes (successors) may exercise the data subject's rights and file claims (arts. 14-16, 20)"
+      },
       {
         "date": "2026-10-14",
         "field": "law_name",
