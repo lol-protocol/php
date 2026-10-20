@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_add_sibling_mist_r45" x1="0" y1="0.5" x2="1" y2="0.5">
+    <linearGradient id="grad_action_add_sibling_mist_r45_g" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#E1E1E1"/>
       <stop offset="1" stop-color="#D3D3D3"/>
     </linearGradient>
-    <linearGradient id="grad_action_add_sibling_ink" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_add_sibling_ink_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8A8A8A"/>
       <stop offset="1" stop-color="#535353"/>
     </linearGradient>
-    <linearGradient id="grad_action_add_sibling_orange_r45" x1="0" y1="0.5" x2="1" y2="0.5">
+    <linearGradient id="grad_action_add_sibling_orange_r45_g" x1="0" y1="0.5" x2="1" y2="0.5">
       <stop offset="0" stop-color="#A5A5A5"/>
       <stop offset="1" stop-color="#7B7B7B"/>
     </linearGradient>
-    <linearGradient id="grad_action_add_sibling_green" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_add_sibling_green_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#9D9D9D"/>
       <stop offset="1" stop-color="#6F6F6F"/>
     </linearGradient>
@@ -26,10 +26,10 @@
     <path d="M22 21L34 21L34 34" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"/>
   </g>
   <g class="solids">
-    <g><path d="M28.29 14.21A1.19 1.19 0 0 1 28.17 15.76L24.28 19.65A1.19 1.19 0 0 1 22.6 19.65L18.71 15.76A1.19 1.19 0 0 1 18.59 15.63L17.33 13.95A1.19 1.19 0 0 1 17.45 12.4L21.34 8.51A1.19 1.19 0 0 1 23.02 8.51L26.91 12.4A1.19 1.19 0 0 1 27.03 12.53Z" fill="#7B7B7B"/><rect x="18.06" y="9.06" width="7.88" height="7.88" rx="1.19" transform="rotate(45 22 13)" fill="url(#grad_action_add_sibling_mist_r45)"/></g>
-    <g><path d="M5.43 41.8L6.69 43.48A5.94 5.94 0 0 0 16.19 36.36L14.93 34.68A5.94 5.94 0 0 0 5.43 41.8Z" fill="#303030"/><circle cx="10" cy="38" r="5.94" fill="url(#grad_action_add_sibling_ink)"/></g>
-    <g><path d="M40.29 39.21A1.19 1.19 0 0 1 40.17 40.76L36.28 44.65A1.19 1.19 0 0 1 34.6 44.65L30.71 40.76A1.19 1.19 0 0 1 30.59 40.63L29.33 38.95A1.19 1.19 0 0 1 29.45 37.4L33.34 33.51A1.19 1.19 0 0 1 35.02 33.51L38.91 37.4A1.19 1.19 0 0 1 39.03 37.53Z" fill="#474747"/><rect x="30.06" y="34.06" width="7.88" height="7.88" rx="1.19" transform="rotate(45 34 38)" fill="url(#grad_action_add_sibling_orange_r45)"/></g>
-    <g><path d="M40.3 51.4L41.56 53.08A8.6 8.6 0 0 0 55.32 42.76L54.06 41.08A8.6 8.6 0 0 0 40.3 51.4Z" fill="#414141"/><circle cx="47" cy="46" r="8.6" fill="url(#grad_action_add_sibling_green)"/></g>
+    <g><path d="M28.29 14.21A1.19 1.19 0 0 1 28.17 15.76L24.28 19.65A1.19 1.19 0 0 1 22.6 19.65L18.71 15.76A1.19 1.19 0 0 1 18.59 15.63L17.33 13.95A1.19 1.19 0 0 1 17.45 12.4L21.34 8.51A1.19 1.19 0 0 1 23.02 8.51L26.91 12.4A1.19 1.19 0 0 1 27.03 12.53Z" fill="#7B7B7B"/><rect x="18.06" y="9.06" width="7.88" height="7.88" rx="1.19" transform="rotate(45 22 13)" fill="url(#grad_action_add_sibling_mist_r45_g)"/></g>
+    <g><path d="M5.43 41.8L6.69 43.48A5.94 5.94 0 0 0 16.19 36.36L14.93 34.68A5.94 5.94 0 0 0 5.43 41.8Z" fill="#303030"/><circle cx="10" cy="38" r="5.94" fill="url(#grad_action_add_sibling_ink_g)"/></g>
+    <g><path d="M40.29 39.21A1.19 1.19 0 0 1 40.17 40.76L36.28 44.65A1.19 1.19 0 0 1 34.6 44.65L30.71 40.76A1.19 1.19 0 0 1 30.59 40.63L29.33 38.95A1.19 1.19 0 0 1 29.45 37.4L33.34 33.51A1.19 1.19 0 0 1 35.02 33.51L38.91 37.4A1.19 1.19 0 0 1 39.03 37.53Z" fill="#474747"/><rect x="30.06" y="34.06" width="7.88" height="7.88" rx="1.19" transform="rotate(45 34 38)" fill="url(#grad_action_add_sibling_orange_r45_g)"/></g>
+    <g><path d="M40.3 51.4L41.56 53.08A8.6 8.6 0 0 0 55.32 42.76L54.06 41.08A8.6 8.6 0 0 0 40.3 51.4Z" fill="#414141"/><circle cx="47" cy="46" r="8.6" fill="url(#grad_action_add_sibling_green_g)"/></g>
   </g>
   <g class="marks">
     <path d="M8.16 38a1.84 1.84 0 1 0 3.67 0a1.84 1.84 0 1 0 -3.67 0Z" fill="#FFFFFF"/>

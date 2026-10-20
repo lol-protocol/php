@@ -2,11 +2,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <g class="links">
     <path d="M31 19.25L31 21L12 21L12 24.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M31 19.25L31 21L31 21L31 24.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M31 19.25L31 21L31 24.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M31 19.25L31 21L50 21L50 24.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M12 36.5L12 39L7 39L7 43.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
     <path d="M12 36.5L12 39L17 39L17 43.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
-    <path d="M50 36.5L50 39L50 39L50 43.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
+    <path d="M50 36.5L50 39L50 43.75" fill="none" stroke="#565F6B" stroke-linecap="butt" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
     <g><path d="M26.42 15.43L27.62 17.03A5.72 5.72 0 0 0 36.78 10.17L35.58 8.57A5.72 5.72 0 0 0 26.42 15.43Z" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/><circle cx="31" cy="12" r="5.72" fill="none" stroke="#29313D" stroke-width="1.8" stroke-linejoin="round"/></g>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_book_hardcover_brown" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_book_hardcover_brown_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#9B9B9B"/>
       <stop offset="1" stop-color="#6B6B6B"/>
     </linearGradient>
@@ -10,7 +10,7 @@
     <ellipse cx="34" cy="58.4" rx="17.48" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M51.8 20.4A6 6 0 0 1 53 24L53 50A6 6 0 0 1 47 56L27 56A6 6 0 0 1 22.2 53.6L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_hardcover_brown)"/></g>
+    <g><path d="M51.8 20.4A6 6 0 0 1 53 24L53 50A6 6 0 0 1 47 56L27 56A6 6 0 0 1 22.2 53.6L16.38 45.84A6 6 0 0 1 15.18 42.24L15.18 16.24A6 6 0 0 1 21.18 10.24L41.18 10.24A6 6 0 0 1 45.98 12.64Z" fill="#3E3E3E"/><rect x="15" y="10" width="32" height="38" rx="6" fill="url(#grad_book_hardcover_brown_g)"/></g>
   </g>
   <g class="marks">
     <path d="M21 16L41 16L41 42L21 42Z" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>

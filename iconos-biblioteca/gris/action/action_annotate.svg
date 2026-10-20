@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_action_annotate_teal" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="grad_action_annotate_teal_g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#9A9A9A"/>
       <stop offset="1" stop-color="#6A6A6A"/>
     </linearGradient>
@@ -13,7 +13,7 @@
     <path d="M48 14L36 28" fill="none" stroke="#A1A1A1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"/>
   </g>
   <g class="solids">
-    <g><path d="M44.6 26.8A6 6 0 0 1 45.8 30.4L45.8 46.4A6 6 0 0 1 39.8 52.4L15.8 52.4A6 6 0 0 1 11 50L9.38 47.84A6 6 0 0 1 8.18 44.24L8.18 28.24A6 6 0 0 1 14.18 22.24L38.18 22.24A6 6 0 0 1 42.98 24.64Z" fill="#3E3E3E"/><rect x="8" y="22" width="36" height="28" rx="6" fill="url(#grad_action_annotate_teal)"/></g>
-    <g><path d="M43.38 17.84L44.4 19.2A6 6 0 0 0 54 12L52.98 10.64A6 6 0 0 0 43.38 17.84Z" fill="#3E3E3E"/><circle cx="48" cy="14" r="6" fill="url(#grad_action_annotate_teal)"/></g>
+    <g><path d="M44.6 26.8A6 6 0 0 1 45.8 30.4L45.8 46.4A6 6 0 0 1 39.8 52.4L15.8 52.4A6 6 0 0 1 11 50L9.38 47.84A6 6 0 0 1 8.18 44.24L8.18 28.24A6 6 0 0 1 14.18 22.24L38.18 22.24A6 6 0 0 1 42.98 24.64Z" fill="#3E3E3E"/><rect x="8" y="22" width="36" height="28" rx="6" fill="url(#grad_action_annotate_teal_g)"/></g>
+    <g><path d="M43.38 17.84L44.4 19.2A6 6 0 0 0 54 12L52.98 10.64A6 6 0 0 0 43.38 17.84Z" fill="#3E3E3E"/><circle cx="48" cy="14" r="6" fill="url(#grad_action_annotate_teal_g)"/></g>
   </g>
 </svg>

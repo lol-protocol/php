@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="grad_book_open_brown_rm9" x1="0.14" y1="0" x2="0.86" y2="1">
+    <linearGradient id="grad_book_open_brown_rm9_g" x1="0.14" y1="0" x2="0.86" y2="1">
       <stop offset="0" stop-color="#9B9B9B"/>
       <stop offset="1" stop-color="#6B6B6B"/>
     </linearGradient>
-    <linearGradient id="grad_book_open_brown_r9" x1="0" y1="0.14" x2="1" y2="0.86">
+    <linearGradient id="grad_book_open_brown_r9_g" x1="0" y1="0.14" x2="1" y2="0.86">
       <stop offset="0" stop-color="#9B9B9B"/>
       <stop offset="1" stop-color="#6B6B6B"/>
     </linearGradient>
@@ -14,7 +14,7 @@
     <ellipse cx="32.4" cy="51.59" rx="22" ry="2.6" fill="#171717" opacity="0.14"/>
   </g>
   <g class="solids">
-    <g><path d="M31.12 19.97A6 6 0 0 1 32.24 22.63L35.06 40.41A6 6 0 0 1 30.07 47.28L18.22 49.15A6 6 0 0 1 12.48 46.83L10.86 44.67A6 6 0 0 1 9.74 42.01L6.92 24.23A6 6 0 0 1 11.91 17.36L23.76 15.49A6 6 0 0 1 29.5 17.81Z" fill="#3E3E3E"/><rect x="8" y="16" width="24" height="30" rx="6" transform="rotate(-9 20 31)" fill="url(#grad_book_open_brown_rm9)"/></g>
-    <g><path d="M56.93 21.85A6 6 0 0 1 58.06 26.39L55.24 44.17A6 6 0 0 1 48.38 49.15L36.53 47.28A6 6 0 0 1 32.67 44.95L31.05 42.79A6 6 0 0 1 29.92 38.25L32.74 20.47A6 6 0 0 1 39.6 15.49L51.45 17.36A6 6 0 0 1 55.31 19.69Z" fill="#3E3E3E"/><rect x="31" y="16" width="24" height="30" rx="6" transform="rotate(9 43 31)" fill="url(#grad_book_open_brown_r9)"/></g>
+    <g><path d="M31.12 19.97A6 6 0 0 1 32.24 22.63L35.06 40.41A6 6 0 0 1 30.07 47.28L18.22 49.15A6 6 0 0 1 12.48 46.83L10.86 44.67A6 6 0 0 1 9.74 42.01L6.92 24.23A6 6 0 0 1 11.91 17.36L23.76 15.49A6 6 0 0 1 29.5 17.81Z" fill="#3E3E3E"/><rect x="8" y="16" width="24" height="30" rx="6" transform="rotate(-9 20 31)" fill="url(#grad_book_open_brown_rm9_g)"/></g>
+    <g><path d="M56.93 21.85A6 6 0 0 1 58.06 26.39L55.24 44.17A6 6 0 0 1 48.38 49.15L36.53 47.28A6 6 0 0 1 32.67 44.95L31.05 42.79A6 6 0 0 1 29.92 38.25L32.74 20.47A6 6 0 0 1 39.6 15.49L51.45 17.36A6 6 0 0 1 55.31 19.69Z" fill="#3E3E3E"/><rect x="31" y="16" width="24" height="30" rx="6" transform="rotate(9 43 31)" fill="url(#grad_book_open_brown_r9_g)"/></g>
   </g>
 </svg>
