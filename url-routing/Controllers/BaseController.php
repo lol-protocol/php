@@ -244,6 +244,12 @@ class BaseController
         return '<h1>405 - Método no permitido</h1>';
     }
 
+    /** Null when this request is a POST with a valid CSRF token; otherwise the 405 or 403 that refuses it. */
+    protected function exigirPost(): ?string
+    {
+        return $this->exigirMetodo('POST') ?? ($this->validateCsrfToken() ? null : $this->handleForbidden());
+    }
+
     protected function handleForbidden(string $message = 'Forbidden'): string
     {
         http_response_code(403);
