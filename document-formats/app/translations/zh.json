@@ -146,7 +146,12 @@
     "similarity": "尺寸相似度: {percent}%",
     "resultsFormats": "找到 {count} 个格式",
     "resultsPaperTypes": "找到 {count} 种纸张类型",
-    "noPaperTypes": "没有找到符合条件的纸张类型。"
+    "noPaperTypes": "没有找到符合条件的纸张类型。",
+    "loadError": "无法加载 CSV 文件（{message}）。",
+    "loadErrorHelp": "通过双击打开的页面，浏览器会阻止读取本地文件。请改为提供该文件夹：在 {folder} 中运行 {command}，然后打开 {address}。",
+    "updatedUnknown": "未知（服务器未发送 Last-Modified 头）",
+    "download": "下载 CSV",
+    "csvFilename": "document-formats"
   },
   "paperTypes": {
     "searchPlaceholder": "搜索纸张类型...",

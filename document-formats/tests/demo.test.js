@@ -45,7 +45,7 @@ test('every tab is a tab of a panel, and the panel names its tab back', () => {
 
 test('every translation key the page uses exists in en.json', () => {
     const fromMarkup = [...html.matchAll(/data-translate="([^"]+)"/g)].flatMap(m => m[1].split('|').map(part => part.split(':')[0]));
-    const fromScript = [...html.matchAll(/\btr\('([\w.]+)'/g)].map(m => m[1]);
+    const fromScript = [...html.matchAll(/\b(?:tr|fallbackLang)\('([\w.]+)'/g)].map(m => m[1]);
     const keys = new Set([...fromMarkup, ...fromScript]);
     assert.ok(keys.size > 40, `only ${keys.size} keys found`);
     const missing = [...keys].filter(key => typeof lookup(english, key) !== 'string' || lookup(english, key) === '');
@@ -65,7 +65,8 @@ test('the languages with every string translated also have the new demo strings'
 
 test('placeholders such as {count} survive translation', () => {
     const placeholders = (text) => [...String(text).matchAll(/\{(\w+)\}/g)].map(m => m[1]).sort();
-    const keys = ['demo.proportions', 'demo.similarity', 'demo.resultsFormats', 'demo.resultsPaperTypes', 'paperTypes.combinedTitle'];
+    const keys = ['demo.proportions', 'demo.similarity', 'demo.resultsFormats', 'demo.resultsPaperTypes', 'paperTypes.combinedTitle',
+        'demo.loadError', 'demo.loadErrorHelp'];
     for (const lang of ['de', 'es', 'fr', 'ja', 'zh']) {
         const tree = JSON.parse(fs.readFileSync(path.join(APP, 'translations', `${lang}.json`), 'utf8'));
         for (const key of keys) {
@@ -119,4 +120,27 @@ test('Localization.md states the real translation coverage', () => {
     assert.equal(Number(stated('Partly translated')), LANGUAGES.length - complete);
     assert.ok(doc.includes(`with ${partial[0]} of the ${total} strings`), 'the partial coverage line');
     assert.ok(doc.includes(`${partial[0]} of the ${total} strings`), 'the intro of the languages list');
+});
+
+test('the page loads the tabs and URL-state scripts it uses, after the library', () => {
+    const scripts = [...html.matchAll(/<script src="([^"]+)"/g)].map(m => m[1]);
+    assert.deepEqual(scripts, ['document-formats.js', 'tabs.js', 'url-state.js']);
+    for (const file of scripts) assert.ok(fs.existsSync(path.join(APP, file)), `${file} is missing`);
+});
+
+test('every field kept in the URL is a field of the page', () => {
+    const { URL_STATE_KEYS } = require('../app/url-state.js');
+    const fields = Object.fromEntries([...html.matchAll(/\b(\w+): '([\w-]+-(?:input|filter|search|format|select))'/g)].map(m => [m[1], m[2]]));
+    const fromPage = Object.keys(fields);
+    const kept = URL_STATE_KEYS.filter(key => !['lang', 'tab'].includes(key));
+    assert.deepEqual(fromPage.sort(), [...kept].sort(), 'STATE_FIELDS in index.html and URL_STATE_KEYS must list the same keys');
+    for (const id of Object.values(fields)) assert.match(html, new RegExp(`id="${id}"`), `#${id} is not in the page`);
+});
+
+test('the name of the downloaded CSV is plain ASCII, so every browser and file system saves it as named', () => {
+    for (const lang of LANGUAGES) {
+        const tree = JSON.parse(fs.readFileSync(path.join(APP, 'translations', `${lang}.json`), 'utf8'));
+        const name = lookup(tree, 'demo.csvFilename');
+        if (name !== '') assert.match(name, /^[a-z0-9-]+$/, `${lang}: "${name}"`);
+    }
 });

@@ -628,6 +628,10 @@
                     <span class="label-spacer" aria-hidden="true">&nbsp;</span>
                     <button class="btn btn-secondary" id="reset-btn" data-translate="demo.reset">Reset Filters</button>
                 </div>
+                <div class="control-group">
+                    <span class="label-spacer" aria-hidden="true">&nbsp;</span>
+                    <button class="btn btn-secondary" id="download-btn" data-translate="demo.download">Download CSV</button>
+                </div>
             </div>
 
             <div id="formats-container" class="formats-grid"></div>
@@ -753,11 +757,34 @@
     </footer>
 
     <script src="document-formats.js"></script>
+    <script src="tabs.js"></script>
+    <script src="url-state.js"></script>
     <script>
         const i18n = new LocalizationManager();
         const tr = (key, values) => formatMessage(i18n.t(key), values);
         const RTL_LANGUAGES = new Set(['ar']);
-        const announce = (text) => { document.getElementById('status').textContent = text; };
+        // Text that tr() had to take from English because the language lacks it: it must be
+        // marked, or a screen reader would read it with the voice of the page's language.
+        const fallbackLang = (key) =>
+            i18n.getLanguage() !== 'en' && LocalizationManager.lookup(i18n.translations, key) === null ? ' lang="en"' : '';
+        // The CSV files hold their category, country, color and use texts in English.
+        const dataLang = () => (i18n.getLanguage() === 'en' ? '' : ' lang="en"');
+        const announce = (text, key) => {
+            const status = document.getElementById('status');
+            status.textContent = text;
+            if (key && fallbackLang(key)) status.lang = 'en';
+            else status.removeAttribute('lang');
+        };
+        // Saves a file made in the page, the way a link with a download attribute would.
+        const downloadText = (filename, text, type) => {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(new Blob([text], {type}));
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(link.href), 0);
+        };
 
         // One <option> per entry: [value, label] pairs, optionally with a placeholder already in the select.
         const addOptions = (select, entries) => {
@@ -795,16 +822,17 @@
                 this.container.innerHTML = items.length === 0
                     ? `<div class="no-results">
                             <div class="no-results-icon" aria-hidden="true">🔍</div>
-                            <p>${escapeHtml(tr(this.emptyKey))}</p>
+                            <p${fallbackLang(this.emptyKey)}>${escapeHtml(tr(this.emptyKey))}</p>
                         </div>`
                     : items.map(item => this.card(item)).join('');
             }
 
-            // Keeps what the predicate accepts, draws it and tells the live region the count.
-            filter(accepts) {
+            // Keeps what the predicate accepts, draws it and tells the live region the count
+            // (not when the filters are restored from the URL: nobody asked for them just now).
+            filter(accepts, {announceCount = true} = {}) {
                 const filtered = this.items.filter(accepts);
                 this.render(filtered);
-                announce(tr(this.countKey, {count: filtered.length}));
+                if (announceCount) announce(tr(this.countKey, {count: filtered.length}), this.countKey);
             }
 
             refresh() { this.render(this.shown); }
@@ -838,8 +866,7 @@
                     categoryFilter: document.getElementById('category-filter'),
                     regionFilter: document.getElementById('region-filter'),
                     resetBtn: document.getElementById('reset-btn'),
-                    tabBtns: document.querySelectorAll('.tab-btn'),
-                    tabContents: document.querySelectorAll('.tab-content'),
+                    downloadBtn: document.getElementById('download-btn'),
                     fromFormat: document.getElementById('from-format'),
                     toFormat: document.getElementById('to-format'),
                     compareSearch: document.getElementById('compare-search'),
@@ -851,7 +878,7 @@
             }
 
             setupEventListeners() {
-                const {search, countryFilter, categoryFilter, regionFilter, resetBtn, fromFormat, toFormat, compareSearch} = this.els;
+                const {search, countryFilter, categoryFilter, regionFilter, resetBtn, downloadBtn, fromFormat, toFormat, compareSearch} = this.els;
 
                 document.addEventListener('change', (e) => {
                     if (e.target === countryFilter || e.target === categoryFilter || e.target === regionFilter) {
@@ -874,26 +901,10 @@
                     this.filterFormats();
                 });
 
-                document.addEventListener('click', (e) => {
-                    const tab = e.target.closest('.tab-btn');
-                    if (tab) this.switchTab(tab.dataset.tab);
-                });
-
-                // Arrow keys, Home and End move between tabs (WAI-ARIA tabs pattern).
-                // In a right-to-left language the arrows point the other way.
-                document.addEventListener('keydown', (e) => {
-                    const current = e.target.closest?.('.tab-btn');
-                    if (!current) return;
-                    const tabs = [...this.els.tabBtns];
-                    const rtl = document.documentElement.dir === 'rtl';
-                    const steps = {ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1};
-                    let index = tabs.indexOf(current);
-                    if (e.key in steps) index = (index + steps[e.key] + tabs.length) % tabs.length;
-                    else if (e.key === 'Home') index = 0;
-                    else if (e.key === 'End') index = tabs.length - 1;
-                    else return;
-                    e.preventDefault();
-                    this.switchTab(tabs[index].dataset.tab, true);
+                downloadBtn.addEventListener('click', () => {
+                    // UTF-8 byte order mark first, so a spreadsheet opens accents and kanji correctly.
+                    downloadText(`${tr('demo.csvFilename')}.csv`,
+                        '\uFEFF' + new FormatBatchProcessor(this.shown).exportAsCSV(), 'text/csv;charset=utf-8');
                 });
             }
 
@@ -910,7 +921,7 @@
                 addOptions(toFormat, formatOptions);
             }
 
-            filterFormats() {
+            filterFormats(options) {
                 const {search, countryFilter, categoryFilter, regionFilter} = this.els;
                 const query = search.value.toLowerCase();
                 const country = countryFilter.value;
@@ -922,7 +933,13 @@
                     (!country || format.country === country) &&
                     (!category || format.category === category) &&
                     (!region || format.region === region)
-                );
+                , options);
+            }
+
+            // The download button saves what is on screen, so it has nothing to save when nothing is.
+            render(formats) {
+                super.render(formats);
+                this.els.downloadBtn.disabled = formats.length === 0;
             }
 
             card(format) {
@@ -930,23 +947,23 @@
                     <div class="format-card">
                         <div class="format-card-header">
                             <h3>${escapeHtml(format.format_name)}</h3>
-                            <span class="badge badge-${escapeHtml(String(format.category).toLowerCase())}">${escapeHtml(format.category)}</span>
+                            <span class="badge badge-${escapeHtml(String(format.category).toLowerCase())}"${dataLang()}>${escapeHtml(format.category)}</span>
                         </div>
                         <div class="format-info">
                             <div class="info-row">
-                                <span class="info-label">${escapeHtml(tr('demo.cardCountry'))}</span>
-                                <span class="info-value">${escapeHtml(format.country)}</span>
+                                <span class="info-label"${fallbackLang('demo.cardCountry')}>${escapeHtml(tr('demo.cardCountry'))}</span>
+                                <span class="info-value"${dataLang()}>${escapeHtml(format.country)}</span>
                             </div>
                             <div class="info-row">
-                                <span class="info-label">${escapeHtml(tr('demo.cardSizeMm'))}</span>
+                                <span class="info-label"${fallbackLang('demo.cardSizeMm')}>${escapeHtml(tr('demo.cardSizeMm'))}</span>
                                 <span class="info-value">${escapeHtml(format.width_mm)} × ${escapeHtml(format.height_mm)}</span>
                             </div>
                             <div class="info-row">
-                                <span class="info-label">${escapeHtml(tr('demo.cardSizeIn'))}</span>
+                                <span class="info-label"${fallbackLang('demo.cardSizeIn')}>${escapeHtml(tr('demo.cardSizeIn'))}</span>
                                 <span class="info-value">${escapeHtml(format.width_inches)}" × ${escapeHtml(format.height_inches)}"</span>
                             </div>
                             <div class="info-row">
-                                <span class="info-label">${escapeHtml(tr('demo.cardAspect'))}</span>
+                                <span class="info-label"${fallbackLang('demo.cardAspect')}>${escapeHtml(tr('demo.cardAspect'))}</span>
                                 <span class="info-value">${escapeHtml(format.aspect_ratio)}</span>
                             </div>
                         </div>
@@ -978,18 +995,6 @@
                 totalFormats.textContent = stats.totalFormats;
                 totalCountries.textContent = stats.totalCountries;
                 totalCategories.textContent = stats.totalCategories;
-            }
-
-            switchTab(tabName, moveFocus = false) {
-                const {tabContents, tabBtns} = this.els;
-                tabContents.forEach(panel => panel.classList.toggle('active', panel.id === tabName));
-                tabBtns.forEach(btn => {
-                    const selected = btn.dataset.tab === tabName;
-                    btn.classList.toggle('active', selected);
-                    btn.setAttribute('aria-selected', String(selected));
-                    btn.tabIndex = selected ? 0 : -1;
-                    if (selected && moveFocus) btn.focus();
-                });
             }
 
             updateComparison() {
@@ -1092,7 +1097,7 @@
                 addOptions(sizeSelect, formatSizeOptions(this.formats));
             }
 
-            applyFilters() {
+            applyFilters(options) {
                 const {search, categoryFilter} = this.els;
                 const query = search.value.toLowerCase();
                 const category = categoryFilter.value;
@@ -1100,37 +1105,47 @@
                 this.filter(p =>
                     matchesQuery(query, [p.type_name, p.type_name_en, this.name(p), p.common_use, p.notes]) &&
                     (!category || p.category === category)
-                );
+                , options);
+            }
+
+            // Language of the name shown as the title: the paper type's own Spanish or English name,
+            // or the translation when the language has one.
+            nameLang(paperType) {
+                const lang = i18n.getLanguage();
+                if (lang === 'es' || lang === 'en') return lang;
+                return this.translations.get(paperType.type_name)?.[lang] ? lang : 'en';
             }
 
             card(p) {
                 const badgeSlug = (category) => String(category).toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                const row = (label, value) => `
+                // labelKey: the translation key of the label, to mark it when it fell back to English;
+                // valueLang: the lang attribute of the value (the CSV texts are English).
+                const row = (label, value, valueLang = dataLang(), labelKey = null) => `
                     <div class="info-row">
-                        <span class="info-label">${escapeHtml(label)}</span>
-                        <span class="info-value">${escapeHtml(value)}</span>
+                        <span class="info-label"${labelKey ? fallbackLang(labelKey) : ''}>${escapeHtml(label)}</span>
+                        <span class="info-value"${valueLang}>${escapeHtml(value)}</span>
                     </div>`;
 
                 const title = this.name(p);
                 // The original names stay visible, except the one already used as the title.
                 const originals = [['es', p.type_name], ['en', p.type_name_en]]
                     .filter(([, value]) => value !== title)
-                    .map(([lang, value]) => row(i18n.getLanguageName(lang), value)).join('');
+                    .map(([lang, value]) => row(i18n.getLanguageName(lang), value, ` lang="${lang}"`)).join('');
                 return `
                     <div class="format-card">
                         <div class="format-card-header">
-                            <h3>${escapeHtml(title)}</h3>
-                            <span class="badge badge-${badgeSlug(p.category)}">${escapeHtml(p.category)}</span>
+                            <h3 lang="${this.nameLang(p)}">${escapeHtml(title)}</h3>
+                            <span class="badge badge-${badgeSlug(p.category)}"${dataLang()}>${escapeHtml(p.category)}</span>
                         </div>
                         <div class="format-info">
                             ${originals}
-                            ${row(tr('paperTypes.color'), p.color)}
-                            ${row(tr('paperTypes.texture'), p.texture)}
-                            ${row(tr('paperTypes.finish'), p.finish)}
-                            ${row(tr('paperTypes.weight'), p.weight_gsm_range)}
-                            ${row(tr('paperTypes.commonUse'), p.common_use)}
+                            ${row(tr('paperTypes.color'), p.color, dataLang(), 'paperTypes.color')}
+                            ${row(tr('paperTypes.texture'), p.texture, dataLang(), 'paperTypes.texture')}
+                            ${row(tr('paperTypes.finish'), p.finish, dataLang(), 'paperTypes.finish')}
+                            ${row(tr('paperTypes.weight'), p.weight_gsm_range, '', 'paperTypes.weight')}
+                            ${row(tr('paperTypes.commonUse'), p.common_use, dataLang(), 'paperTypes.commonUse')}
                         </div>
-                        <p style="margin-top: 10px; font-size: 13px; color: var(--text-light);">${escapeHtml(p.notes)}</p>
+                        <p style="margin-top: 10px; font-size: 13px; color: var(--text-light);"${dataLang()}>${escapeHtml(p.notes)}</p>
                     </div>`;
             }
 
@@ -1164,10 +1179,66 @@
             }
         }
 
+        // Each piece of state kept in the URL, and the field it comes from.
+        const STATE_FIELDS = {
+            q: 'search-input', country: 'country-filter', category: 'category-filter', region: 'region-filter',
+            compare: 'compare-search', from: 'from-format', to: 'to-format',
+            pq: 'paper-search-input', pcat: 'paper-category-filter', size: 'paper-size-select'
+        };
+
         document.addEventListener('DOMContentLoaded', async () => {
             let formatBrowser = null;
             let paperBrowser = null;
+            let lastModified = null;
+            let loadError = null;
+            let restoring = true;   // until the URL's state is applied, the URL is not rewritten
             const languageSelect = document.getElementById('language-select');
+            const container = document.getElementById('formats-container');
+            const urlState = decodeState(location.hash);
+
+            // The URL keeps the tab, the language (when it isn't English) and every search box and filter.
+            const saveState = () => {
+                if (restoring) return;
+                const state = {lang: i18n.getLanguage() === 'en' ? '' : i18n.getLanguage(),
+                    tab: document.querySelector('.tab-btn.active')?.dataset.tab === 'browser' ? '' : document.querySelector('.tab-btn.active')?.dataset.tab};
+                for (const [key, id] of Object.entries(STATE_FIELDS)) state[key] = document.getElementById(id).value;
+                const hash = encodeState(state);
+                history.replaceState(null, '', hash ? `#${hash}` : location.pathname + location.search);
+            };
+            document.addEventListener('input', saveState);
+            document.addEventListener('change', saveState);
+            // The reset button empties the fields in its own click handler, which runs after this one.
+            document.getElementById('reset-btn').addEventListener('click', () => setTimeout(saveState));
+
+            const tabs = new Tabs(document.querySelectorAll('.tab-btn'), document.querySelectorAll('.tab-content'), {
+                isRtl: () => document.documentElement.dir === 'rtl',
+                onSelect: saveState
+            });
+            tabs.attach(document);
+            if (urlState.tab) tabs.select(urlState.tab);
+
+            const showUpdated = () => {
+                const updated = document.getElementById('about-updated');
+                updated.textContent = lastModified
+                    ? lastModified.toLocaleDateString(i18n.getLanguage(), {year: 'numeric', month: 'long', day: 'numeric'})
+                    : tr('demo.updatedUnknown');
+                if (!lastModified && fallbackLang('demo.updatedUnknown')) updated.lang = 'en';
+                else updated.removeAttribute('lang');
+            };
+
+            const showLoadError = () => {
+                const code = (text) => `<code>${escapeHtml(text)}</code>`;
+                container.innerHTML = `
+                    <div class="no-results">
+                        <p${fallbackLang('demo.loadError')}>${escapeHtml(tr('demo.loadError', {message: loadError.message}))}</p>
+                        <p${fallbackLang('demo.loadErrorHelp')}>${formatMessage(escapeHtml(i18n.t('demo.loadErrorHelp')), {
+                            command: code('python3 -m http.server'),
+                            folder: code('document-formats/'),
+                            address: code('http://localhost:8000/app/')
+                        })}</p>
+                    </div>
+                `;
+            };
 
             // Redraw the page in the language that just loaded: the words written in the HTML
             // (data-translate), the language and direction of the document, and the cards and
@@ -1182,13 +1253,15 @@
                 // would read it with the voice of the page's language.
                 document.querySelectorAll('[data-translate]').forEach(el => {
                     const key = el.dataset.translate.split(':')[0];
-                    const missing = LocalizationManager.lookup(i18n.translations, key) === null;
-                    if (missing && lang !== 'en') el.lang = 'en';
+                    if (fallbackLang(key)) el.lang = 'en';
                     else el.removeAttribute('lang');
                 });
                 languageSelect.value = lang;
+                if (loadError) showLoadError();
                 formatBrowser?.refresh();
                 paperBrowser?.refresh();
+                if (formatBrowser) showUpdated();
+                saveState();
             };
 
             for (const [code, name] of Object.entries(LocalizationManager.LANGUAGE_NAMES)) {
@@ -1201,45 +1274,52 @@
             languageSelect.addEventListener('change', () => i18n.setLanguage(languageSelect.value));
             i18n.subscribe(applyLanguage);
 
-            // First visit: start in the browser's language when the demo has it.
+            // The language: the one in the URL, else the saved one, else (first visit) the browser's
+            // when the demo has it.
             try {
                 const browserLanguage = (navigator.language || '').slice(0, 2).toLowerCase();
-                if (!localStorage.getItem('preferredLanguage') && browserLanguage in LocalizationManager.LANGUAGE_NAMES) {
+                if (urlState.lang in LocalizationManager.LANGUAGE_NAMES) {
+                    i18n.currentLanguage = urlState.lang;
+                } else if (!localStorage.getItem('preferredLanguage') && browserLanguage in LocalizationManager.LANGUAGE_NAMES) {
                     i18n.currentLanguage = browserLanguage;
                 }
             } catch (error) { /* storage blocked: stay in English */ }
             await i18n.init();
             applyLanguage();
 
-            const container = document.getElementById('formats-container');
             container.innerHTML = `<p class="no-results">${escapeHtml(tr('messages.loading'))}</p>`;
 
-            let formats, lastModified;
+            let formats;
             try {
                 ({formats, lastModified} = await loadFormatCatalogs());
             } catch (error) {
-                container.innerHTML = `
-                    <div class="no-results">
-                        <p>Couldn't load the CSV files (${escapeHtml(error.message)}).</p>
-                        <p>Browsers block reading local files from a page opened with a double click.
-                        Serve the folder instead: run <code>python3 -m http.server</code> in
-                        <code>document-formats/</code> and open <code>http://localhost:8000/app/</code>.</p>
-                    </div>
-                `;
+                loadError = error;
+                showLoadError();
                 return;
             }
 
             formatBrowser = new FormatBrowser(formats);
             document.getElementById('about-formats').textContent = formats.length;
-            document.getElementById('about-countries').textContent = new Set(formats.map(f => f.country)).size;
-            document.getElementById('about-updated').textContent = lastModified
-                ? lastModified.toLocaleDateString(i18n.getLanguage(), {year: 'numeric', month: 'long', day: 'numeric'})
-                : 'unknown (server sent no Last-Modified header)';
+            document.getElementById('about-countries').textContent = formatBrowser.statistics.getStats().totalCountries;
+            showUpdated();
 
             const specs = new SpecificationManager();
             await specs.loadAllSpecifications();
             paperBrowser = new PaperTypeBrowser(
                 specs.getAllPaperTypes(), specs.specifications.get('paperTypeTranslations') ?? [], formats);
+
+            // Now that every list has its options, put back what the URL says.
+            for (const [key, id] of Object.entries(STATE_FIELDS)) {
+                if (urlState[key] !== undefined) document.getElementById(id).value = urlState[key];
+            }
+            const quiet = {announceCount: false};
+            formatBrowser.filterFormats(quiet);
+            formatBrowser.updateComparison();
+            formatBrowser.updateConverter();
+            paperBrowser.applyFilters(quiet);
+            paperBrowser.updateCombined();
+            restoring = false;
+            saveState();
         });
     </script>
 </body>

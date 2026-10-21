@@ -146,7 +146,12 @@
     "similarity": "",
     "resultsFormats": "",
     "resultsPaperTypes": "",
-    "noPaperTypes": ""
+    "noPaperTypes": "",
+    "loadError": "",
+    "loadErrorHelp": "",
+    "updatedUnknown": "",
+    "download": "",
+    "csvFilename": ""
   },
   "paperTypes": {
     "searchPlaceholder": "",
