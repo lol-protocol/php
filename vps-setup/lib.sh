@@ -124,13 +124,26 @@ setup_nginx_domain_logs() {
     sudo mkdir -p /var/log/nginx/"$domain"
 }
 
+# app_has_code <carpeta>: 0 si la carpeta ya tiene algo que NO sea el venv/ de los scripts, es decir,
+# codigo (o archivos) de la persona. 06_A y 06_B lo usan para no pisar una app ya subida al
+# re-correrlos (por ejemplo, para cambiar el puerto o el limite de subida).
+app_has_code() {
+    [ -d "$1" ] && [ -n "$(find "$1" -mindepth 1 -maxdepth 1 ! -name venv -print -quit 2>/dev/null)" ]
+}
+
 # Setup app directories with correct ownership
 setup_app_directories() {
     local app_path=$1
     local domain=$2
 
     sudo mkdir -p "$app_path"
-    sudo chown -R www-data:www-data "$app_path"
+    # chown -R solo en una carpeta nueva o sin codigo: sobre una app ya subida cambiaria el dueno y
+    # los permisos de TODOS sus archivos (un .env con 600, un deploy con otro usuario...)
+    if app_has_code "$app_path"; then
+        sudo chown www-data:www-data "$app_path"
+    else
+        sudo chown -R www-data:www-data "$app_path"
+    fi
     setup_nginx_domain_logs "$domain"
 }
 

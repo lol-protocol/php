@@ -35,6 +35,12 @@ Los logs de cada dominio van en `/var/log/nginx/<dominio>/{access,error}.log` y 
 (`07_D`). Los headers de seguridad, gzip y el vhost por defecto (que corta peticiones por IP o con un
 Host ajeno) son globales, en `/etc/nginx/conf.d/` (`07_B`, `07_E`): valen para todos los dominios.
 
+**Re-correr es seguro para tu código.** `06_A` y `06_B` solo crean la página de prueba (`index.php`,
+`app.py`) en una carpeta vacía o con solo el `venv/`; si ya subiste tu app, la conservan y solo actualizan
+la configuración (límite de subida, puerto, timeouts, vhost). Tampoco hacen `chown -R` sobre una app con
+código: solo ajustan el dueño de la carpeta, para no cambiar los permisos de tus archivos. Ojo con `06_B`:
+si tu app escucha en un puerto fijo propio, el servicio y el proxy usan el que pasaste al script, no el de tu código.
+
 Cada app Python necesita **su propio puerto** (por defecto 8000). `06_B` rechaza uno que ya use otra
 app o en el que algo ya escuche.
 
