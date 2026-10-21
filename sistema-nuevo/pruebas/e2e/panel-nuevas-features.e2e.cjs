@@ -1,4 +1,4 @@
-const { assert, paso, resumenPasos, conNavegador, enviarLogin, paginaEnIngles, ejecutarSql, BASE_URL } = require("./ayudante-e2e.cjs");
+const { assert, paso, resumenPasos, conNavegador, enviarLogin, paginaEnIngles, ejecutarSql, consultarSql, BASE_URL } = require("./ayudante-e2e.cjs");
 
 function limpiarIntentosLogin() {
   ejecutarSql("DELETE FROM intentos_login;");
@@ -27,6 +27,31 @@ async function pasosPrincipales({ page }) {
     await page.waitForSelector(".note-status--ok", { timeout: 1000 });
     await page.waitForTimeout(2200); // el "✓" se autooculta a los 2s
     assert.equal(await page.locator(".note-status").first().textContent(), "");
+    await textarea.fill("");
+    await page.waitForResponse((r) => r.url().includes("/api/notes"));
+  });
+
+  await paso("una nota con un insulto no se guarda, y el registro lo anota", async () => {
+    const textarea = page.locator(".note-textarea").first();
+    const accionId = await textarea.getAttribute("data-accion-id");
+    const respuesta = page.waitForResponse((r) => r.url().includes("/api/notes"));
+    await textarea.fill("es un hijo de puta");
+    assert.equal((await respuesta).status(), 422);
+    await page.waitForSelector(".note-status--error", { timeout: 1000 });
+    assert.match(await page.locator(".note-status").first().getAttribute("title"), /insultos o amenazas/);
+    assert.deepEqual(consultarSql(`SELECT COUNT(*) FROM notas_acciones WHERE accion_id = '${accionId}'`), [["0"]]);
+    assert.deepEqual(consultarSql(`SELECT decision FROM registro_notas WHERE accion_id = '${accionId}' ORDER BY id DESC LIMIT 1`), [["rechazada"]]);
+  });
+
+  await paso("una acusación se guarda, marcada para revisar con sus motivos", async () => {
+    const textarea = page.locator(".note-textarea").first();
+    const respuesta = page.waitForResponse((r) => r.url().includes("/api/notes"));
+    await textarea.fill("estafó a su familia");
+    assert.equal((await respuesta).status(), 200);
+    await page.waitForSelector(".note-status--review", { timeout: 1000 });
+    assert.match(await page.locator(".note-status").first().getAttribute("title"), /revisala: acusación de delito/);
+    await page.waitForTimeout(2200); // a diferencia del "✓", el aviso no se oculta solo
+    assert.equal(await page.locator(".note-status").first().textContent(), "👁");
     await textarea.fill("");
     await page.waitForResponse((r) => r.url().includes("/api/notes"));
   });

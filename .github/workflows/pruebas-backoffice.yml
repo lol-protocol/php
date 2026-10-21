@@ -5,10 +5,16 @@ on:
     branches: [master]
     paths:
       - "sistema-nuevo/**"
+      # las notas pasan por su filtro (servidor-php/codigo/FiltroNotas.php)
+      - "defamatory-content-review/src/**"
+      - "defamatory-content-review/config/**"
       - ".github/workflows/pruebas-backoffice.yml"
   pull_request:
     paths:
       - "sistema-nuevo/**"
+      # las notas pasan por su filtro (servidor-php/codigo/FiltroNotas.php)
+      - "defamatory-content-review/src/**"
+      - "defamatory-content-review/config/**"
       - ".github/workflows/pruebas-backoffice.yml"
   workflow_dispatch:
 
@@ -49,7 +55,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: "8.4"
-          extensions: pdo_pgsql, curl, mbstring
+          extensions: pdo_pgsql, curl, mbstring, intl
           coverage: none
 
       - uses: actions/setup-java@v5
