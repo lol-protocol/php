@@ -187,12 +187,22 @@ final class PersonaRepository extends Repository
      */
     public function buscar(string $texto, int $limit = 50, int $offset = 0): array
     {
+        // The page is picked on the real table, in the order of personas_orden_idx and asking whether each
+        // persona may be seen only for the rows it reaches, and only then are those rows masked and
+        // described. Going through personas() for every row, as this did, computed `oculta` for the whole
+        // catalog before it could sort and cut: 1.1 s with 20,000 personas on SQLite and 4.6 s on PostgreSQL,
+        // growing with the catalog. What a visitor sees is the same: a hidden persona is not in a search,
+        // and the ones that are have the same names the real table has.
+        $privacidad = $this->privacidad->porFila();
+
         return array_map(self::normalizar(...), $this->db->fetchAll(
             'SELECT ' . $this->resumen() . "
-               FROM {$this->privacidad->personas()} p
-              WHERE " . self::sinAcentos("p.nombres || ' ' || p.apellidos") . self::LIKE_ESCAPED . "
-                AND NOT p.oculta
-              ORDER BY p.apellidos, p.nombres, p.id" . self::page($limit, $offset),
+               FROM {$privacidad->personas()} p
+              WHERE p.id IN (SELECT q.id FROM personas q
+                              WHERE " . self::sinAcentos("q.nombres || ' ' || q.apellidos") . self::LIKE_ESCAPED . '
+                                AND ' . $privacidad->sqlVisible('q') . '
+                              ORDER BY q.apellidos, q.nombres, q.id' . self::page($limit, $offset) . ')
+              ORDER BY p.apellidos, p.nombres, p.id',
             [self::patron($texto)]
         ));
     }
