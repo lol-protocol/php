@@ -210,8 +210,8 @@ test("the card lists every field with its source, upcoming changes and the chang
   assert.ok((await details.locator(".detail-grid > div").count()) >= 8);
   assert.match(await details.locator(".history").textContent(), /Law: Copyright Law 2026.*\(was: Saudi Copyright Law\)/);
 
-  await page.goto(url("country=ug"), { waitUntil: "networkidle" });
-  assert.match(await card.locator(".card-pending").textContent(), /Upcoming change · .*Amendment\) Bill 2025/);
+  await page.goto(url("country=pk"), { waitUntil: "networkidle" });
+  assert.match(await card.locator(".card-pending").textContent(), /Upcoming change · .*anti-circumvention clause/);
   assert.match(await page.locator("#lawsTableBody").textContent(), /Change pending/);
   const sourced = card.locator(".detail-grid a.field-source").first();
   assert.match(await sourced.getAttribute("aria-label"), /^Source: .+ · (high|medium|low) confidence · checked /);
