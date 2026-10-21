@@ -161,7 +161,7 @@ El carrito y el pago no tienen un id que contar, así que usan una letra que se 
 /p/3/        confirmar (GET el resumen, POST crea la orden)
 ```
 
-Confirmar crea la orden en una transacción: cada línea descuenta su stock solo si todavía alcanza (`UPDATE … WHERE stock >= cantidad`), así que dos compras a la vez no venden la última unidad dos veces; si una línea ya no alcanza, no cambia nada y se vuelve al carrito. La orden copia el nombre y el precio de cada línea, queda `pendiente` de pago, y la navegación sigue a `/{código}/`. Como no hay login, la orden se asocia a la sesión que la hizo: esa sesión la puede abrir, además del propietario.
+Confirmar crea la orden en una transacción: cada línea descuenta su stock solo si todavía alcanza (`UPDATE … WHERE stock >= cantidad`), así que dos compras a la vez no venden la última unidad dos veces; si una línea ya no alcanza, no cambia nada y se vuelve al carrito. La orden copia el nombre y el precio de cada línea, queda `pendiente` de pago, y la navegación sigue a `/{código}/`. Como no hay cuentas de usuario, la orden se asocia a la sesión que la hizo: esa sesión la puede abrir, además del propietario.
 
 Las URLs antiguas en palabras (`/cart/`, `/checkout/`, `/checkout/shipping/`...) dan 301 a las nuevas.
 

@@ -28,6 +28,10 @@ class SessionManager
                 'cookie_secure' => $this->isSecure(),
                 'cookie_samesite' => 'Lax',
                 'use_strict_mode' => true,
+                // PHP's garbage collector (where it runs: Debian and Ubuntu turn it off and clean with a cron
+                // job that reads php.ini instead, see docs/ACCESO.md) must not delete the session of an owner
+                // who has been idle for less than AccessPolicy::INACTIVIDAD_MAXIMA. The default is 24 minutes.
+                'gc_maxlifetime' => AccessPolicy::INACTIVIDAD_MAXIMA,
             ]);
         }
 
