@@ -19,7 +19,7 @@ El estado detallado y los pendientes están en `README.md`; la paleta y las medi
 - Además de los movimientos hay **16 tipos de texto** (manuales, libros sagrados, leyes, cartas, diarios, ciencia, cocina, filosofía, teatro, viajes, cuentos y leyendas, poesía, historia, periodismo, diccionarios y enciclopedias, discursos). Están **confirmados** junto con los movimientos y sus autores; los autores de inspiración son solo de los movimientos.
 - Son **1350 marcalibros** en total. Los PNG del catálogo se generan, no se guardan en git.
 - La aplicación es **independiente y sin login**. **No la conectes con Plataforma POS** hasta que lo pida; todavía no se sabe dónde vive esa plataforma ni cómo se identificará a las personas.
-- La aplicación corre en **un solo VPS**: los marcalibros creados se guardan en el disco local, y así se queda.
+- La aplicación corre en **un solo VPS**: los marcalibros creados se guardan en el disco local, y así se queda. **Sin copias de seguridad, a propósito:** los marcalibros creados caducan solos y el catálogo y los PNG se regeneran con `generator/`.
 - Los libros sagrados no llevan símbolos de una religión concreta.
 - Formato de la persona (parte está en `README.md`, "Convenciones"): decimales con 1, 2, 4 o 5 cifras (nunca 3); mayúsculas normales salvo siglas (API, POS, SVG, NLP); nombres de archivo en minúsculas, con guiones y sin número al inicio.
 
@@ -28,7 +28,6 @@ El estado detallado y los pendientes están en `README.md`; la paleta y las medi
 ```bash
 python3 generator/generar_marcalibros.py            # regenera los 1350 (unos 30 s); falla si un SVG pesa 10 KB o más, o si hay duplicados
 python3 generator/exportar_png.py --faltantes      # PNG del catálogo en catalog/png/ (ignorada por git)
-php app/bin/respaldar.php                           # copia de seguridad de los marcalibros creados (cron diario en producción)
 cd app && php -S localhost:8080 -t public public/index.php
 cd php && composer install && ./vendor/bin/phpunit  # igual en app/
 ```
@@ -47,7 +46,7 @@ Después de regenerar, `git status` no debe mostrar cambios si no tocaste el gen
 
 ## Entorno y verificación
 
-- `composer.lock` de `php/` y `app/` está en el repositorio. En el entorno donde se escribió esto, Packagist respondía pero `github.com` no (403), así que PHPUnit 10.5 se instaló y las pruebas pasaron con PHPUnit real (99 del módulo y 159 de la aplicación; con avisos esperados de pruebas que fuerzan fallos), pero **PHPStan no se pudo instalar ni correr** (su paquete se descarga de GitHub). El CI lo corre en nivel 6: si falla ahí, corrígelo.
+- `composer.lock` de `php/` y `app/` está en el repositorio. En el entorno donde se escribió esto, Packagist respondía pero `github.com` no (403), así que PHPUnit 10.5 se instaló y las pruebas pasaron con PHPUnit real (99 del módulo y 152 de la aplicación; con avisos esperados de pruebas que fuerzan fallos), pero **PHPStan no se pudo instalar ni correr** (su paquete se descarga de GitHub). El CI lo corre en nivel 6: si falla ahí, corrígelo.
 - Las pruebas de navegador están en `app/e2e/navegador.mjs` (Playwright 1.56.1 global, Chromium): fuentes y CSP, categoría y SVG, subida real con teclado y tamaños 1400×200 y 2800×400, borrado, rechazo de un archivo que no es imagen, creación sin JavaScript, móvil sin desplazamiento horizontal, modo oscuro, accesibilidad con axe, filtro, la hoja para imprimir (PDF A4, en claro aunque el sistema esté en oscuro), límite de intentos (con un servidor aparte que la prueba levanta), y que la franja que se ve al encuadrar sea la que se guarda (foto horizontal, vertical y vertical con orientación EXIF 6, generadas por la prueba). Para correrlas: levanta la aplicación y `NODE_PATH="$(npm root -g)" node app/e2e/navegador.mjs`. Evita `waitForFunction` con texto: la CSP bloquea `eval`.
 - CI: `.github/workflows/pruebas-marcalibros.yml` (PHPUnit en PHP 8.1 y 8.3, PHPStan nivel 6, comprobación de que el generador no cambia el catálogo, y las pruebas de navegador).
 - Las fuentes (Source Serif 4 e Inter) están incluidas en `app/public/assets/fuentes/`; la CSP lleva `font-src 'self'`. Las pruebas de navegador comprueban que cargan.
